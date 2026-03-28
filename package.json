@@ -1,0 +1,7 @@
+{
+  "name": "scummvm-web",
+  "private": true,
+  "dependencies": {
+    "playwright-core": "1.44.1"
+  }
+}
