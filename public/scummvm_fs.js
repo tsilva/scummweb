@@ -27,6 +27,23 @@ const ERRNO_CODES = {
 
 const DEBUG = false
 
+const DEFAULT_REMOTE_FILESYSTEMS = {
+    games: "https://scummvm-games.tsilva.eu"
+};
+
+function resolveFilesystemUrl(url) {
+    if (/^[a-z]+:\/\//i.test(url)) {
+        return url.replace(/\/$/, "");
+    }
+
+    const configured = globalThis.SCUMMVM_FILESYSTEM_BASES?.[url] || DEFAULT_REMOTE_FILESYSTEMS[url];
+    if (configured) {
+        return configured.replace(/\/$/, "");
+    }
+
+    return url;
+}
+
 
 export class ScummvmFS {
     url;
@@ -36,9 +53,9 @@ export class ScummvmFS {
     FS;
     constructor(_FS, _url) {
         this.FS = _FS;
-        this.url = _url
+        this.url = resolveFilesystemUrl(_url)
         var req = new XMLHttpRequest(); // a new request
-        req.open("GET", _url + "/index.json", false);
+        req.open("GET", this.url + "/index.json", false);
         req.send(null);
         var json_index = JSON.parse(req.responseText)
         this.fs_index = {}

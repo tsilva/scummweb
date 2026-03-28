@@ -2,6 +2,10 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 const [iniPath, primaryOutPath, libraryOutPath] = process.argv.slice(2);
+const gamesOrigin = (process.env.SCUMMVM_GAMES_ORIGIN || "https://scummvm-games.tsilva.eu").replace(
+  /\/$/,
+  ""
+);
 
 if (!iniPath || !primaryOutPath || !libraryOutPath) {
   throw new Error(
@@ -49,7 +53,10 @@ async function findReadmeHref(gamePath) {
     return "";
   }
 
-  return `/${path.posix.join(normalizedPath.replaceAll(path.sep, "/"), readmeEntry.name)}`;
+  return `${gamesOrigin}/${path.posix.join(
+    normalizedPath.replaceAll(path.sep, "/"),
+    readmeEntry.name
+  )}`;
 }
 
 const gameSections = sections.filter(
