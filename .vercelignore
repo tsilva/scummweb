@@ -1,0 +1,9 @@
+.git
+.next
+artifacts
+bundle
+dist
+downloads
+progress.md
+tools
+vendor

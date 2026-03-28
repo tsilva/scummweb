@@ -317,6 +317,9 @@ a {
 
 .game-grid {
   min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 18px;
 }
 
 .game-tile {
@@ -347,6 +350,12 @@ a {
   background-position: center 18%;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.tile-art-fallback {
+  background-image:
+    radial-gradient(circle at top, rgba(216, 136, 44, 0.32), transparent 36%),
+    linear-gradient(135deg, rgba(80, 42, 19, 0.96), rgba(18, 10, 5, 0.98));
 }
 
 .tile-art::before {
@@ -563,7 +572,8 @@ a {
   }
 
   .status-strip,
-  .tile-body {
+  .tile-body,
+  .game-grid {
     grid-template-columns: 1fr;
   }
 }

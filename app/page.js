@@ -2,10 +2,42 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import LaunchButton from "./launch-button";
 
-async function getGameMetadata() {
-  const metadataPath = path.join(process.cwd(), "public", "game.json");
-  const content = await fs.readFile(metadataPath, "utf8");
-  return JSON.parse(content);
+const artByTarget = {
+  sky: {
+    eyebrow: "Revolution Software",
+    screenshots: [
+      "/launcher/bass-shot-1.png",
+      "/launcher/bass-shot-2.png",
+      "/launcher/bass-shot-3.png",
+    ],
+  },
+};
+
+function formatGameCount(count) {
+  return `${count} game${count === 1 ? "" : "s"} installed`;
+}
+
+function getDisplayTitle(title) {
+  return title.replace(/\s+\([^)]*\)$/, "");
+}
+
+async function getGameLibrary() {
+  const publicDir = path.join(process.cwd(), "public");
+  const libraryPath = path.join(publicDir, "games.json");
+
+  try {
+    const library = JSON.parse(await fs.readFile(libraryPath, "utf8"));
+    return {
+      games: library.games || [],
+      primaryTarget: library.primaryTarget || library.games?.[0]?.target || "",
+    };
+  } catch {
+    const primaryGame = JSON.parse(await fs.readFile(path.join(publicDir, "game.json"), "utf8"));
+    return {
+      games: [primaryGame],
+      primaryTarget: primaryGame.target,
+    };
+  }
 }
 
 async function getSourceInfo() {
@@ -15,19 +47,32 @@ async function getSourceInfo() {
 }
 
 export default async function HomePage() {
-  const game = await getGameMetadata();
+  const { games, primaryTarget } = await getGameLibrary();
   const sourceInfo = await getSourceInfo();
-  const launchHref = `/scummvm.html#${game.target}`;
-  const screenshots = [
-    "/launcher/bass-shot-1.png",
-    "/launcher/bass-shot-2.png",
-    "/launcher/bass-shot-3.png",
-  ];
+  const primaryGame = games.find((game) => game.target === primaryTarget) || games[0];
+
+  if (!primaryGame) {
+    throw new Error("No installed game metadata found");
+  }
+
+  const launchHref = `/scummvm.html#${primaryGame.target}`;
+  const engineSummary = Array.from(
+    new Set(games.map((game) => game.engineId).filter(Boolean))
+  )
+    .map((engineId) => engineId.toUpperCase())
+    .join(", ");
   const sourceLinks = [
     { href: "/source.html", label: "Corresponding Source" },
     { href: "/doc/COPYING", label: "GPL-3.0 License" },
-    { href: "/games/bass-cd-1.2/readme.txt", label: "Game Readme" },
-  ];
+    ...games
+      .filter((game) => game.readmeHref)
+      .map((game) => ({
+        href: game.readmeHref,
+        label: `${getDisplayTitle(game.title)} Readme`,
+      })),
+  ].filter(
+    (link, index, links) => links.findIndex((candidate) => candidate.href === link.href) === index
+  );
 
   return (
     <main className="page-shell">
@@ -41,8 +86,8 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="window-status">
-            <span>Target `{game.target}` detected</span>
-            <span>WebAssembly bundle ready</span>
+            <span>{games.length} target(s) detected</span>
+            <span>{engineSummary || "ScummVM"} engine bundle ready</span>
           </div>
         </header>
 
@@ -57,10 +102,10 @@ export default async function HomePage() {
 
             <div className="sidebar-panel">
               <p className="panel-label">Library</p>
-              <strong>1 game installed</strong>
+              <strong>{formatGameCount(games.length)}</strong>
               <p>
-                The library is trimmed to a single playable entry for now. More titles can be
-                added later without changing the launcher layout.
+                The launcher reads detected ScummVM targets from the generated bundle metadata, so
+                new installs appear here without changing the shell layout.
               </p>
             </div>
 
@@ -68,12 +113,12 @@ export default async function HomePage() {
               <p className="panel-label">Build</p>
               <dl className="sidebar-stats">
                 <div>
-                  <dt>Engine</dt>
-                  <dd>{game.target.toUpperCase()}</dd>
+                  <dt>Primary target</dt>
+                  <dd>{primaryGame.target}</dd>
                 </div>
                 <div>
-                  <dt>Game data</dt>
-                  <dd>{game.path}</dd>
+                  <dt>Data path</dt>
+                  <dd>{primaryGame.path}</dd>
                 </div>
                 <div>
                   <dt>Project rev</dt>
@@ -93,21 +138,24 @@ export default async function HomePage() {
                 <p className="panel-label">Launcher</p>
                 <h2>Choose a game to launch</h2>
                 <p className="workspace-copy">
-                  Styled after ScummVM’s launcher chrome, but focused on a single ready-to-run
-                  BASS install. Clicking the tile boots straight into the game.
+                  Styled after ScummVM’s launcher chrome, with each detected install exposed as a
+                  one-click tile that jumps straight into the matching runtime target.
                 </p>
               </div>
-              <LaunchButton href={launchHref} label="Launch BASS" />
+              <LaunchButton
+                href={launchHref}
+                label={`Launch ${getDisplayTitle(primaryGame.title)}`}
+              />
             </div>
 
             <div className="status-strip" aria-label="Current selection">
               <div>
-                <span className="meta-label">Selected Game</span>
-                <strong>Beneath a Steel Sky</strong>
+                <span className="meta-label">Primary Game</span>
+                <strong>{getDisplayTitle(primaryGame.title)}</strong>
               </div>
               <div>
-                <span className="meta-label">Edition</span>
-                <strong>CD / DOS Freeware</strong>
+                <span className="meta-label">Library Size</span>
+                <strong>{games.length} ready target(s)</strong>
               </div>
               <div>
                 <span className="meta-label">Runtime</span>
@@ -117,56 +165,86 @@ export default async function HomePage() {
 
             <div className="launcher-main">
               <div className="game-grid">
-                <a className="game-tile" href={launchHref}>
-                  <div
-                    className="tile-art"
-                    style={{ "--tile-art": `url(${screenshots[2]})` }}
-                  >
-                    <span className="tile-badge">Ready</span>
-                    <div className="tile-hero-copy">
-                      <p>Revolution Software</p>
-                      <h3>Beneath a Steel Sky</h3>
-                      <span>Launches ScummVM directly into the installed `sky` target.</span>
-                    </div>
-                  </div>
+                {games.map((game) => {
+                  const art = artByTarget[game.target] || {};
+                  const screenshots = art.screenshots || [];
+                  const launchAction = `/scummvm.html#${game.target}`;
 
-                  <div className="tile-strip" aria-hidden="true">
-                    {screenshots.map((screenshot, index) => (
-                      <span
-                        key={screenshot}
-                        className={`tile-shot tile-shot-${index + 1}`}
-                        style={{ "--shot-image": `url(${screenshot})` }}
-                      />
-                    ))}
-                  </div>
+                  return (
+                    <a key={game.target} className="game-tile" href={launchAction}>
+                      <div
+                        className={`tile-art${screenshots.length === 0 ? " tile-art-fallback" : ""}`}
+                        style={
+                          screenshots.length > 0
+                            ? { "--tile-art": `url(${screenshots[screenshots.length - 1]})` }
+                            : undefined
+                        }
+                      >
+                        <span className="tile-badge">Ready</span>
+                        <div className="tile-hero-copy">
+                          <p>{art.eyebrow || game.engineId?.toUpperCase() || "ScummVM"}</p>
+                          <h3>{getDisplayTitle(game.title)}</h3>
+                          <span>
+                            Launches ScummVM directly into the installed `{game.target}` target.
+                          </span>
+                        </div>
+                      </div>
 
-                  <div className="tile-body">
-                    <div>
-                      <span className="meta-label">Installed Path</span>
-                      <strong>{game.path}</strong>
-                    </div>
-                    <div>
-                      <span className="meta-label">Launch Action</span>
-                      <strong>Open `/scummvm.html#{game.target}`</strong>
-                    </div>
-                  </div>
-                </a>
+                      {screenshots.length > 0 ? (
+                        <div className="tile-strip" aria-hidden="true">
+                          {screenshots.map((screenshot, index) => (
+                            <span
+                              key={screenshot}
+                              className={`tile-shot tile-shot-${index + 1}`}
+                              style={{ "--shot-image": `url(${screenshot})` }}
+                            />
+                          ))}
+                        </div>
+                      ) : null}
+
+                      <div className="tile-body">
+                        <div>
+                          <span className="meta-label">Installed Path</span>
+                          <strong>{game.path}</strong>
+                        </div>
+                        <div>
+                          <span className="meta-label">Engine</span>
+                          <strong>{game.engineId?.toUpperCase() || "Unknown"}</strong>
+                        </div>
+                        <div>
+                          <span className="meta-label">Launch Action</span>
+                          <strong>Open `{launchAction}`</strong>
+                        </div>
+                        <div>
+                          <span className="meta-label">Readme</span>
+                          <strong>{game.readmeHref || "Not bundled"}</strong>
+                        </div>
+                      </div>
+                    </a>
+                  );
+                })}
               </div>
 
               <aside className="selection-panel">
-                <p className="panel-label">Selected Entry</p>
-                <h3>{game.title}</h3>
+                <p className="panel-label">Primary Entry</p>
+                <h3>{primaryGame.title}</h3>
                 <p>
-                  This front page behaves like a launcher screen rather than a plain landing page.
-                  The BASS tile is the primary control, and the button below mirrors the same
-                  launch target.
+                  The front page behaves like a launcher screen rather than a plain landing page.
+                  Each tile is a direct boot target, and the primary button stays pinned to the
+                  first detected install.
                 </p>
                 <ul className="selection-list">
-                  <li>Whole tile is clickable.</li>
-                  <li>Uses captured in-game screenshots for the preview strip.</li>
-                  <li>Source and license links stay visible on the launcher screen.</li>
+                  {games.map((game) => (
+                    <li key={game.target}>
+                      {getDisplayTitle(game.title)} uses `{game.target}` from `{game.path}`.
+                    </li>
+                  ))}
                 </ul>
-                <LaunchButton href={launchHref} label="Start Game" className="launch-button-secondary" />
+                <LaunchButton
+                  href={launchHref}
+                  label="Start Primary Game"
+                  className="launch-button-secondary"
+                />
               </aside>
             </div>
 
@@ -174,7 +252,7 @@ export default async function HomePage() {
               <div>
                 <p className="panel-label">Source and License</p>
                 <p className="compliance-copy">
-                  The ScummVM bundle, source offer, GPL text, and bundled game readme remain
+                  The ScummVM bundle, source offer, GPL text, and bundled game readmes remain
                   exposed from the launcher for distribution compliance.
                 </p>
               </div>

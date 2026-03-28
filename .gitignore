@@ -1,6 +1,7 @@
 .DS_Store
 .next/
 artifacts/
+bundle/
 downloads/
 dist/
 node_modules/
@@ -12,6 +13,8 @@ public/games/
 public/favicon.ico
 public/focus-overlay.js
 public/game.json
+public/games.json
+public/index.html
 public/logo.svg
 public/manifest.json
 public/scummvm-192.png

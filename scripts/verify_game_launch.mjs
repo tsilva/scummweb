@@ -19,6 +19,59 @@ if (!executablePath) {
   throw new Error("No local Chrome/Chromium installation found for Playwright");
 }
 
+async function readGameLibrary(page) {
+  return page.evaluate(async () => {
+    const response = await fetch("/games.json", { cache: "no-store" }).catch(() => null);
+
+    if (response?.ok) {
+      return response.json();
+    }
+
+    const primaryResponse = await fetch("/game.json", { cache: "no-store" });
+    if (!primaryResponse.ok) {
+      throw new Error("Could not load launcher metadata");
+    }
+
+    const primaryGame = await primaryResponse.json();
+    return {
+      primaryTarget: primaryGame.target,
+      games: [primaryGame],
+    };
+  });
+}
+
+async function verifyTarget(context, baseUrl, game) {
+  const page = await context.newPage();
+  const pageErrors = [];
+
+  page.on("pageerror", (error) => {
+    pageErrors.push(error.message);
+  });
+
+  await page.goto(new URL(`/scummvm.html#${game.target}`, baseUrl).toString(), {
+    waitUntil: "domcontentloaded",
+  });
+  await page.waitForSelector("#canvas", { timeout: 30000 });
+  await page.waitForTimeout(15000);
+
+  const output = await page.locator("#output").inputValue();
+  const statusText = await page.locator("#status").textContent().catch(() => "");
+
+  if (pageErrors.length > 0) {
+    throw new Error(`Page errors during ${game.target} launch:\n${pageErrors.join("\n")}`);
+  }
+
+  if (/Exception thrown/i.test(statusText) || /TypeError|ReferenceError|abort\(/i.test(output)) {
+    throw new Error(`Launch failed for ${game.target}.\n${output}`);
+  }
+
+  if (!new RegExp(`User picked target '${game.target}'`).test(output)) {
+    throw new Error(`Game did not reach the expected startup state for ${game.target}.\n${output}`);
+  }
+
+  return page;
+}
+
 const browser = await chromium.launch({
   headless: true,
   executablePath,
@@ -27,51 +80,38 @@ const browser = await chromium.launch({
 const context = await browser.newContext({
   viewport: { width: 1440, height: 900 },
 });
-const page = await context.newPage();
-const pageErrors = [];
 
-page.on("pageerror", (error) => {
-  pageErrors.push(error.message);
-});
+const rootPage = await context.newPage();
+await rootPage.goto(url, { waitUntil: "domcontentloaded" });
+await rootPage.waitForLoadState("networkidle");
+await rootPage.waitForTimeout(1000);
 
-await page.goto(url, { waitUntil: "domcontentloaded" });
-await page.waitForLoadState("networkidle");
-await page.waitForTimeout(1000);
-
-if (page.url() !== url) {
-  throw new Error(`Root page redirected unexpectedly to ${page.url()}`);
+if (rootPage.url() !== url) {
+  throw new Error(`Root page redirected unexpectedly to ${rootPage.url()}`);
 }
 
-await page.locator('a[href="/scummvm.html#sky"]').first().click();
-await page.waitForFunction(
-  () => window.location.pathname === "/scummvm.html",
-  undefined,
-  {
-    timeout: 30000,
+const library = await readGameLibrary(rootPage);
+
+if (!Array.isArray(library.games) || library.games.length === 0) {
+  throw new Error("No games found in launcher metadata");
+}
+
+for (const game of library.games) {
+  const matchingLink = rootPage.locator(`a[href="/scummvm.html#${game.target}"]`).first();
+  if ((await matchingLink.count()) === 0) {
+    throw new Error(`Launcher tile for ${game.target} was not rendered`);
   }
-);
-await page.waitForSelector("#canvas", { timeout: 30000 });
-
-await page.waitForTimeout(20000);
-
-const output = await page.locator("#output").inputValue();
-const statusText = await page.locator("#status").textContent().catch(() => "");
-
-if (pageErrors.length > 0) {
-  throw new Error(`Page errors during launch:\n${pageErrors.join("\n")}`);
 }
 
-if (/Exception thrown/i.test(statusText) || /TypeError|ReferenceError|abort\(/i.test(output)) {
-  throw new Error(`Launch failed.\n${output}`);
-}
+let screenshotPage = rootPage;
 
-if (!/User picked target 'sky'/.test(output) || !/Found BASS version/.test(output)) {
-  throw new Error(`Game did not reach the expected startup state.\n${output}`);
+for (const game of library.games) {
+  screenshotPage = await verifyTarget(context, url, game);
 }
 
 fs.mkdirSync(path.dirname(screenshotPath), { recursive: true });
-await page.screenshot({ path: screenshotPath, fullPage: true });
+await screenshotPage.screenshot({ path: screenshotPath, fullPage: true });
 
 await browser.close();
 
-console.log("Verified launch and wrote screenshot to", screenshotPath);
+console.log("Verified launcher targets and wrote screenshot to", screenshotPath);
