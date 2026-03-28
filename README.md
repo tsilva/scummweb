@@ -13,7 +13,7 @@
 - ScummVM-styled launcher UI that renders every detected ScummVM target from the generated bundle metadata
 - Build pipeline that clones ScummVM, downloads the matching emsdk, and compiles a web target with the `sky` and `dreamweb` engines enabled
 - Local game payload ingestion from `downloads/bass-cd-1.2.zip` plus an optional `downloads/dreamweb*.zip` archive into the generated browser bundle
-- Production game delivery through Cloudflare R2 at `https://scummvm-games.tsilva.eu`, with the ScummVM runtime fetching game assets from that origin directly
+- Production game delivery through Cloudflare R2 at `https://scummvm-games.tsilva.eu`, proxied through the app at `/_games/*` so the browser can mount the ScummVM filesystem without cross-origin failures
 - Archive-based asset flow for the ScummVM shell only: generated non-game web files can be stored in `bundle/scummvm-public.zip` and restored into `public/` for local workflows
 - Compliance surface that keeps `source.html`, `source-info.json`, bundled license texts, and bundled game readmes accessible from the launcher
 - Playwright-based smoke verification that launches the Next.js app, checks the rendered launcher targets, and boots each detected ScummVM target
@@ -24,7 +24,7 @@
 2. **Install Game Data**: The script unpacks `downloads/bass-cd-1.2.zip` and any matching `downloads/dreamweb*.zip` archive into ScummVM's web build directory, then lets ScummVM detect installed targets.
 3. **Stamp Compliance Metadata**: `game.json`, `games.json`, `source-info.json`, and `source.html` are generated alongside ScummVM's bundled docs and runtime files.
 4. **Upload Game Data**: `scripts/upload_games_to_r2.py` uploads the extracted game payload from `dist/games/` (or `public/games/` as a fallback) to R2, preserving the directory layout behind the `scummvm-games.tsilva.eu` custom domain.
-5. **Serve the Launcher**: Next.js serves the launcher shell, while the ScummVM filesystem mounts the `games` volume from `https://scummvm-games.tsilva.eu` directly so gameplay no longer depends on a `/games/*` rewrite.
+5. **Serve the Launcher**: Next.js serves the launcher shell and proxies `/_games/*` to the configured games origin, while the ScummVM runtime keeps mounting that payload as the virtual `games` volume.
 
 The launcher shell lives in [`app/page.js`](app/page.js), the CTA component lives in [`app/launch-button.js`](app/launch-button.js), and the heavy lifting for asset generation lives in [`scripts/build_bass_web.sh`](scripts/build_bass_web.sh) plus [`scripts/prepare_scummvm_bundle.sh`](scripts/prepare_scummvm_bundle.sh).
 
@@ -57,7 +57,7 @@ Run the main verification flow:
 ./scripts/verify_bass_web.sh
 ```
 
-That script rebuilds the Next.js app, serves it locally on `127.0.0.1:3000`, launches Chromium through Playwright, verifies the launcher tiles, boots each detected target against the direct R2-backed game origin, and writes a screenshot to `artifacts/verify-launch.png`.
+That script rebuilds the Next.js app, serves it locally on `127.0.0.1:3000`, launches Chromium through Playwright, verifies the launcher tiles, boots each detected target through the app's `/_games/*` proxy, and writes a screenshot to `artifacts/verify-launch.png`.
 
 ## ⚙️ Environment Variables
 
@@ -68,12 +68,12 @@ That script rebuilds the Next.js app, serves it locally on `127.0.0.1:3000`, lau
 | `AWS_SECRET_ACCESS_KEY` | Yes for R2 upload | R2 S3 secret key used by `scripts/upload_games_to_r2.py`; the script reads it from the environment or `.env` |
 | `SCUMMVM_R2_BUCKET` | No | Overrides the default R2 bucket name (`scummvm-games`) for uploads |
 | `SCUMMVM_R2_ENDPOINT` | No | Overrides the default R2 S3 endpoint for uploads |
-| `SCUMMVM_GAMES_ORIGIN` | No | Overrides the default games origin (`https://scummvm-games.tsilva.eu`) used for generated readme links |
+| `SCUMMVM_GAMES_ORIGIN` | No | Overrides the default games origin (`https://scummvm-games.tsilva.eu`) used for generated readme links and the `/_games/*` proxy target |
 | `SCUMMVM_GAMES_UPLOAD_DIR` | No | Overrides the upload source directory; defaults to `dist/games/`, then falls back to `public/games/` |
 
 ## ☁️ Deploy to Vercel
 
-This repo deploys like a standard Next.js app once the ScummVM shell assets in `public/` are present and the game payload has been uploaded to R2. The launcher shell is deployed to Vercel, and the large game files are fetched directly from `https://scummvm-games.tsilva.eu`, so they do not need to be bundled into the Vercel deployment.
+This repo deploys like a standard Next.js app once the ScummVM shell assets in `public/` are present and the game payload has been uploaded to R2. The launcher shell is deployed to Vercel, and the large game files stay in R2 behind the app's `/_games/*` proxy, so they do not need to be bundled into the Vercel deployment.
 
 ```bash
 # Preview deployment

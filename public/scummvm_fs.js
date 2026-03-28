@@ -28,7 +28,7 @@ const ERRNO_CODES = {
 const DEBUG = false
 
 const DEFAULT_REMOTE_FILESYSTEMS = {
-    games: "https://scummvm-games.tsilva.eu"
+    games: "/_games"
 };
 
 function resolveFilesystemUrl(url) {

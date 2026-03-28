@@ -604,7 +604,7 @@ import sys
 path = Path(sys.argv[1])
 text = path.read_text()
 
-prefix = """const DEFAULT_REMOTE_FILESYSTEMS = {\n    games: \"https://scummvm-games.tsilva.eu\"\n};\n\nfunction resolveFilesystemUrl(url) {\n    if (/^[a-z]+:\\/\\//i.test(url)) {\n        return url.replace(/\\/$/, \"\");\n    }\n\n    const configured = globalThis.SCUMMVM_FILESYSTEM_BASES?.[url] || DEFAULT_REMOTE_FILESYSTEMS[url];\n    if (configured) {\n        return configured.replace(/\\/$/, \"\");\n    }\n\n    return url;\n}\n\n"""
+prefix = """const DEFAULT_REMOTE_FILESYSTEMS = {\n    games: \"/_games\"\n};\n\nfunction resolveFilesystemUrl(url) {\n    if (/^[a-z]+:\\/\\//i.test(url)) {\n        return url.replace(/\\/$/, \"\");\n    }\n\n    const configured = globalThis.SCUMMVM_FILESYSTEM_BASES?.[url] || DEFAULT_REMOTE_FILESYSTEMS[url];\n    if (configured) {\n        return configured.replace(/\\/$/, \"\");\n    }\n\n    return url;\n}\n\n"""
 needle = "const DEBUG = false\n\n\nexport class ScummvmFS {"
 replacement = "const DEBUG = false\n\n\n" + prefix + "export class ScummvmFS {"
 
