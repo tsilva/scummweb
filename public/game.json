@@ -1,0 +1,10 @@
+{
+  "target": "dreamweb-cd",
+  "title": "DreamWeb (CD/DOS/English)",
+  "path": "/games",
+  "engineId": "dreamweb",
+  "gameId": "dreamweb",
+  "platform": "pc",
+  "extra": "CD",
+  "readmeHref": ""
+}

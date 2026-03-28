@@ -14,7 +14,6 @@ managed_paths=(
   focus-overlay.js
   game.json
   games.json
-  games
   index.html
   logo.svg
   manifest.json

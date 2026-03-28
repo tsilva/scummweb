@@ -1,0 +1,24 @@
+{
+  "generated_at_utc": "2026-03-28T21:47:17.703624Z",
+  "project": {
+    "name": "scummvm-web",
+    "repository_url": "https://github.com/tsilva/scummvm-web",
+    "commit": "1d760462583ed01e712b1ec827bc45812038b997",
+    "commit_url": "https://github.com/tsilva/scummvm-web/tree/1d760462583ed01e712b1ec827bc45812038b997",
+    "archive_url": "https://github.com/tsilva/scummvm-web/archive/1d760462583ed01e712b1ec827bc45812038b997.tar.gz",
+    "dirty": true
+  },
+  "scummvm": {
+    "repository_url": "https://github.com/scummvm/scummvm",
+    "commit": "9d9b9e93108a276c551aeffa390169ccc5148e15",
+    "commit_url": "https://github.com/scummvm/scummvm/tree/9d9b9e93108a276c551aeffa390169ccc5148e15",
+    "archive_url": "https://github.com/scummvm/scummvm/archive/9d9b9e93108a276c551aeffa390169ccc5148e15.tar.gz",
+    "dirty": true
+  },
+  "local_docs": {
+    "gpl_license": "doc/COPYING",
+    "scummvm_readme": "doc/README.md",
+    "copyright": "doc/COPYRIGHT",
+    "game_readmes": []
+  }
+}
