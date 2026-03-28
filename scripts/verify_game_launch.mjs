@@ -35,7 +35,9 @@ page.on("pageerror", (error) => {
 });
 
 await page.goto(url, { waitUntil: "domcontentloaded" });
-await page.waitForURL(/scummvm\.html/, { timeout: 30000 });
+await page.waitForFunction(() => window.location.pathname === "/scummvm.html", {
+  timeout: 30000,
+});
 await page.waitForSelector("#canvas", { timeout: 30000 });
 
 await page.waitForTimeout(20000);

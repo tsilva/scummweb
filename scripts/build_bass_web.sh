@@ -6,6 +6,7 @@ ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 VENDOR_DIR="$ROOT_DIR/vendor"
 SCUMMVM_DIR="$VENDOR_DIR/scummvm"
 DIST_DIR="$ROOT_DIR/dist"
+PUBLIC_DIR="$ROOT_DIR/public"
 GAME_ZIP="$ROOT_DIR/downloads/bass-cd-1.2.zip"
 GAME_DIR_NAME="bass-cd-1.2"
 DEFAULT_EMSDK_VERSION="$(sed -n 's/^EMSDK_VERSION=\"\\([^\"]*\\)\"/\\1/p' "$SCUMMVM_DIR/dists/emscripten/build.sh" 2>/dev/null | head -n 1)"
@@ -226,4 +227,8 @@ html = f"""<!doctype html>
 (dist / "index.html").write_text(html)
 PY
 
-echo "Built site in $DIST_DIR"
+rm -rf "$PUBLIC_DIR"
+cp -R "$DIST_DIR" "$PUBLIC_DIR"
+rm -f "$PUBLIC_DIR/index.html"
+
+echo "Built site in $DIST_DIR and synced deploy assets to $PUBLIC_DIR"

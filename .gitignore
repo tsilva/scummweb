@@ -1,6 +1,8 @@
 .DS_Store
+.next/
 artifacts/
 downloads/
+dist/
 node_modules/
 tools/
 vendor/scummvm/
