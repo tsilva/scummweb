@@ -46,6 +46,7 @@ await page.waitForFunction(
     const output = document.querySelector("#output");
     return !!output && /Added \d+ games/.test(output.value);
   },
+  undefined,
   { timeout: 300000 }
 );
 

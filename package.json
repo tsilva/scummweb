@@ -2,6 +2,11 @@
   "name": "scummvm-web",
   "private": true,
   "scripts": {
+    "prepare:scummvm-bundle": "./scripts/prepare_scummvm_bundle.sh",
+    "archive:scummvm-bundle": "./scripts/archive_scummvm_bundle.sh",
+    "predev": "npm run prepare:scummvm-bundle",
+    "prebuild": "npm run prepare:scummvm-bundle",
+    "prestart": "npm run prepare:scummvm-bundle",
     "dev": "next dev",
     "build": "next build",
     "start": "next start"

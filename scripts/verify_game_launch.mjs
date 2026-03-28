@@ -42,10 +42,14 @@ if (page.url() !== url) {
   throw new Error(`Root page redirected unexpectedly to ${page.url()}`);
 }
 
-await page.getByRole("link", { name: "Launch ScummVM" }).click();
-await page.waitForFunction(() => window.location.pathname === "/scummvm.html", {
-  timeout: 30000,
-});
+await page.locator('a[href="/scummvm.html#sky"]').first().click();
+await page.waitForFunction(
+  () => window.location.pathname === "/scummvm.html",
+  undefined,
+  {
+    timeout: 30000,
+  }
+);
 await page.waitForSelector("#canvas", { timeout: 30000 });
 
 await page.waitForTimeout(20000);

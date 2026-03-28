@@ -1,9 +1,11 @@
 "use client";
 
-export default function LaunchButton({ href }) {
+export default function LaunchButton({ href, label = "Launch ScummVM", className = "" }) {
+  const classes = ["launch-button", className].filter(Boolean).join(" ");
+
   return (
-    <a className="launch-button" href={href}>
-      Launch ScummVM
+    <a className={classes} href={href}>
+      {label}
     </a>
   );
 }
