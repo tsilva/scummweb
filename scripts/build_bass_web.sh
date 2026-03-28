@@ -304,8 +304,14 @@ def display_title(value: str) -> str:
     return value
 
 
+def link_href(value: str) -> str:
+    if value.startswith(("http://", "https://")):
+        return value
+    return value.lstrip("/")
+
+
 readme_links = [
-    (game["readmeHref"].lstrip("/"), f"{display_title(game['title'])} Readme")
+    (link_href(game["readmeHref"]), f"{display_title(game['title'])} Readme")
     for game in games
     if game.get("readmeHref")
 ]
@@ -589,6 +595,26 @@ index_html = f"""<!doctype html>
 
 (dist / "source.html").write_text(source_html)
 (dist / "index.html").write_text(index_html)
+PY
+
+python3 - "$DIST_DIR/scummvm_fs.js" <<'PY'
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+text = path.read_text()
+
+prefix = """const DEFAULT_REMOTE_FILESYSTEMS = {\n    games: \"https://scummvm-games.tsilva.eu\"\n};\n\nfunction resolveFilesystemUrl(url) {\n    if (/^[a-z]+:\\/\\//i.test(url)) {\n        return url.replace(/\\/$/, \"\");\n    }\n\n    const configured = globalThis.SCUMMVM_FILESYSTEM_BASES?.[url] || DEFAULT_REMOTE_FILESYSTEMS[url];\n    if (configured) {\n        return configured.replace(/\\/$/, \"\");\n    }\n\n    return url;\n}\n\n"""
+needle = "const DEBUG = false\n\n\nexport class ScummvmFS {"
+replacement = "const DEBUG = false\n\n\n" + prefix + "export class ScummvmFS {"
+
+if prefix not in text and needle in text:
+    text = text.replace(needle, replacement, 1)
+
+text = text.replace("        this.url = _url\n", "        this.url = resolveFilesystemUrl(_url)\n", 1)
+text = text.replace('        req.open("GET", _url + "/index.json", false);\n', '        req.open("GET", this.url + "/index.json", false);\n', 1)
+
+path.write_text(text)
 PY
 
 python3 - "$DIST_DIR/scummvm.html" "$DIST_DIR/games.json" <<'PY'
