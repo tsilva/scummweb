@@ -46,7 +46,7 @@ await page.waitForFunction(
     const output = document.querySelector("#output");
     return !!output && /Added \d+ games/.test(output.value);
   },
-  { timeout: 180000 }
+  { timeout: 300000 }
 );
 
 const storage = await page.evaluate(() => Object.assign({}, window.localStorage));

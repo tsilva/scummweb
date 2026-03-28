@@ -8,8 +8,9 @@ upstream Emscripten target.
 - Fetches upstream ScummVM into `vendor/scummvm`
 - Builds a browser-targeted ScummVM with only the `sky` engine enabled
 - Unpacks the local `downloads/bass-cd-1.2.zip` payload into the web bundle
-- Generates a detected `scummvm.ini` and a small launcher page
-- Verifies launch with Playwright against the local build
+- Copies the built ScummVM assets into `public/` for Next.js static serving
+- Exposes a small Next.js App Router shell at `/`
+- Verifies launch with Playwright against the Next.js server
 
 ## Prerequisites
 
@@ -19,15 +20,15 @@ upstream Emscripten target.
 The build uses the Emscripten SDK bundled by ScummVM, so no global `node`,
 `npm`, or `emcc` install is required.
 
-## Build
+## Build ScummVM Assets
 
 ```sh
 ./scripts/build_bass_web.sh
 ```
 
-The generated site is written to `dist/`.
+The generated deployable assets are written to `public/`.
 
-## Serve
+## Run Next.js
 
 ```sh
 ./scripts/serve_dist.sh
@@ -43,5 +44,6 @@ Then open:
 ./scripts/verify_bass_web.sh
 ```
 
-This uses Playwright against the local server and saves a screenshot to
+This builds and serves the Next.js app locally, then uses Playwright against it
+and saves a screenshot to
 `artifacts/verify-launch.png`.
