@@ -16,6 +16,10 @@ ENDPOINT = os.environ.get(
     "SCUMMVM_R2_ENDPOINT",
     "https://83e1ce4a70ea388693e8525a772ccefa.r2.cloudflarestorage.com",
 )
+CACHE_CONTROL = os.environ.get(
+    "SCUMMVM_R2_CACHE_CONTROL",
+    "public, max-age=31536000, immutable",
+)
 
 
 def require_env(name: str) -> str:
@@ -81,15 +85,12 @@ def main() -> None:
 
     for index, path in enumerate(files, 1):
         key = path.relative_to(games_dir).as_posix()
-        extra_args = {}
+        extra_args = {"CacheControl": CACHE_CONTROL}
         content_type, _ = guess_type(str(path))
         if content_type:
             extra_args["ContentType"] = content_type
 
-        if extra_args:
-            client.upload_file(str(path), BUCKET, key, ExtraArgs=extra_args)
-        else:
-            client.upload_file(str(path), BUCKET, key)
+        client.upload_file(str(path), BUCKET, key, ExtraArgs=extra_args)
 
         if index % 25 == 0 or index == len(files):
             print(f"Uploaded {index}/{len(files)}: {key}")
