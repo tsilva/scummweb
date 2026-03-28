@@ -67,7 +67,6 @@ MANAGED_PUBLIC_PATHS=(
   favicon.ico
   focus-overlay.js
   game.json
-  games
   games.json
   index.html
   logo.svg

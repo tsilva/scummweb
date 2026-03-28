@@ -1,0 +1,25 @@
+{
+  "primaryTarget": "dreamweb-cd",
+  "games": [
+    {
+      "target": "dreamweb-cd",
+      "title": "DreamWeb (CD/DOS/English)",
+      "path": "/games",
+      "engineId": "dreamweb",
+      "gameId": "dreamweb",
+      "platform": "pc",
+      "extra": "CD",
+      "readmeHref": ""
+    },
+    {
+      "target": "sky",
+      "title": "Beneath a Steel Sky (v0.0372 CD/DOS)",
+      "path": "/games/bass-cd-1.2",
+      "engineId": "sky",
+      "gameId": "sky",
+      "platform": "pc",
+      "extra": "v0.0372 CD",
+      "readmeHref": "/games/bass-cd-1.2/readme.txt"
+    }
+  ]
+}
