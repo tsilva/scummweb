@@ -4,12 +4,28 @@ import LaunchButton from "./launch-button";
 
 const artByTarget = {
   sky: {
-    eyebrow: "Revolution Software",
+    eyebrow: "Featured Classic",
+    summary:
+      "Beneath a Steel Sky drops you into a polluted cyberpunk sprawl full of conspiracies, missing memories, and dry British wit. This browser build jumps straight into the CD release bundled with the ScummVM archive.",
+    genre: "Cyberpunk",
+    studio: "Revolution Software",
+    year: "1994",
+    mood: "Industrial noir",
     screenshots: [
       "/launcher/bass-shot-1.png",
       "/launcher/bass-shot-2.png",
       "/launcher/bass-shot-3.png",
     ],
+  },
+  "dreamweb-cd": {
+    eyebrow: "Installed Archive",
+    summary:
+      "DreamWeb brings a harsher strain of point-and-click science fiction into the browser: rain-soaked city blocks, cult paranoia, and a murder plot spiraling through a diseased megacity.",
+    genre: "Noir thriller",
+    studio: "Empire Interactive",
+    year: "1994",
+    mood: "Rainy dystopia",
+    screenshots: [],
   },
 };
 
@@ -19,6 +35,30 @@ function formatGameCount(count) {
 
 function getDisplayTitle(title) {
   return title.replace(/\s+\([^)]*\)$/, "");
+}
+
+function shortCommit(commit) {
+  return commit ? commit.slice(0, 7) : "Unavailable";
+}
+
+function getGameMeta(game) {
+  const art = artByTarget[game.target] || {};
+
+  return {
+    ...game,
+    art,
+    displayTitle: getDisplayTitle(game.title),
+    href: `/scummvm.html#${game.target}`,
+    eyebrow: art.eyebrow || "Installed Target",
+    summary:
+      art.summary ||
+      `Launch ${getDisplayTitle(game.title)} directly from the generated ScummVM WebAssembly bundle.`,
+    genre: art.genre || game.engineId?.toUpperCase() || "ScummVM",
+    studio: art.studio || "ScummVM Bundle",
+    year: art.year || "Archive",
+    mood: art.mood || "Ready to play",
+    screenshots: art.screenshots || [],
+  };
 }
 
 async function getGameLibrary() {
@@ -49,224 +89,268 @@ async function getSourceInfo() {
 export default async function HomePage() {
   const { games, primaryTarget } = await getGameLibrary();
   const sourceInfo = await getSourceInfo();
-  const primaryGame = games.find((game) => game.target === primaryTarget) || games[0];
 
-  if (!primaryGame) {
+  if (games.length === 0) {
     throw new Error("No installed game metadata found");
   }
 
-  const launchHref = `/scummvm.html#${primaryGame.target}`;
+  const catalog = games.map(getGameMeta);
+  const featuredGame =
+    catalog.find((game) => game.target === "sky") ||
+    catalog.find((game) => game.target === primaryTarget) ||
+    catalog[0];
+  const heroImage = featuredGame.screenshots[1] || featuredGame.screenshots[0] || "";
   const engineSummary = Array.from(
     new Set(games.map((game) => game.engineId).filter(Boolean))
   )
     .map((engineId) => engineId.toUpperCase())
-    .join(", ");
+    .join(" / ");
   const sourceLinks = [
-    { href: "/source.html", label: "Corresponding Source" },
-    { href: "/doc/COPYING", label: "GPL-3.0 License" },
-    ...games
+    { href: "/source.html", label: "Corresponding Source", detail: "Project archive" },
+    { href: "/doc/COPYING", label: "GPL-3.0 License", detail: "Distribution terms" },
+    { href: "/doc/COPYRIGHT", label: "Copyright Notes", detail: "Attribution bundle" },
+    ...catalog
       .filter((game) => game.readmeHref)
       .map((game) => ({
         href: game.readmeHref,
-        label: `${getDisplayTitle(game.title)} Readme`,
+        label: `${game.displayTitle} Readme`,
+        detail: game.target,
       })),
   ].filter(
     (link, index, links) => links.findIndex((candidate) => candidate.href === link.href) === index
   );
+  const infoHref = featuredGame.readmeHref || "/source.html";
+  const footerLinks = sourceLinks.slice(0, 4);
 
   return (
-    <main className="page-shell">
-      <section className="launcher-window">
-        <header className="launcher-titlebar">
-          <div className="launcher-brand">
-            <img alt="ScummVM" className="launcher-logo" src="/logo.svg" />
-            <div>
-              <p className="window-kicker">ScummVM Web Launcher</p>
-              <h1>Installed Games</h1>
+    <main className="cinema-page">
+      <header className="topbar">
+        <a className="brandmark" href="#browse">
+          <img alt="ScummVM" className="brandmark-logo" src="/logo.svg" />
+          <span>Archivist</span>
+        </a>
+
+        <nav className="topnav" aria-label="Main">
+          <a href="#browse">Browse</a>
+          <a href="#library">Library</a>
+          <a href="#archive">Archive</a>
+        </nav>
+
+        <div className="topbar-tools" aria-label="Build status">
+          <span className="tool-pill">{formatGameCount(catalog.length)}</span>
+          <span className="tool-pill">{engineSummary || "ScummVM"}</span>
+        </div>
+      </header>
+
+      <section className="hero" id="browse">
+        <div className="hero-media">
+          {heroImage ? (
+            <img
+              alt={`${featuredGame.displayTitle} gameplay still`}
+              className="hero-backdrop"
+              src={heroImage}
+            />
+          ) : (
+            <div className="hero-backdrop hero-backdrop-fallback" aria-hidden="true" />
+          )}
+          <div className="hero-scrim" />
+          <div className="hero-side-glow" />
+        </div>
+
+        <div className="hero-content">
+          <div className="hero-copy">
+            <p className="eyebrow">{featuredGame.eyebrow}</p>
+            <h1>{featuredGame.displayTitle}</h1>
+            <p className="hero-summary">{featuredGame.summary}</p>
+
+            <div className="hero-actions">
+              <LaunchButton
+                href={featuredGame.href}
+                label={`Launch ${featuredGame.displayTitle}`}
+              />
+              <a className="glass-button" href={infoHref}>
+                Open Game Notes
+              </a>
             </div>
-          </div>
-          <div className="window-status">
-            <span>{games.length} target(s) detected</span>
-            <span>{engineSummary || "ScummVM"} engine bundle ready</span>
-          </div>
-        </header>
 
-        <div className="launcher-body">
-          <aside className="launcher-sidebar">
-            <nav className="launcher-nav" aria-label="Launcher sections">
-              <span className="nav-chip is-active">Games</span>
-              <span className="nav-chip">Mass Add</span>
-              <span className="nav-chip">Options</span>
-              <span className="nav-chip">About</span>
-            </nav>
+            <dl className="hero-meta">
+              <div>
+                <dt>Studio</dt>
+                <dd>{featuredGame.studio}</dd>
+              </div>
+              <div>
+                <dt>Genre</dt>
+                <dd>{featuredGame.genre}</dd>
+              </div>
+              <div>
+                <dt>Runtime</dt>
+                <dd>ScummVM WebAssembly</dd>
+              </div>
+            </dl>
+          </div>
 
-            <div className="sidebar-panel">
-              <p className="panel-label">Library</p>
-              <strong>{formatGameCount(games.length)}</strong>
+          <aside className="hero-panel" aria-label="Featured bundle details">
+            <div className="hero-panel-card hero-panel-feature">
+              <p className="panel-kicker">Now Playable</p>
+              <h2>{featuredGame.displayTitle}</h2>
               <p>
-                The launcher reads detected ScummVM targets from the generated bundle metadata, so
-                new installs appear here without changing the shell layout.
+                Direct boot target <code>{featuredGame.target}</code> from{" "}
+                <code>{featuredGame.path}</code>.
               </p>
             </div>
 
-            <div className="sidebar-panel">
-              <p className="panel-label">Build</p>
-              <dl className="sidebar-stats">
-                <div>
-                  <dt>Primary target</dt>
-                  <dd>{primaryGame.target}</dd>
+            <div className="hero-shot-grid">
+              {(featuredGame.screenshots.length > 0
+                ? featuredGame.screenshots
+                : catalog.flatMap((game) => game.screenshots).slice(0, 3)
+              ).map((screenshot, index) => (
+                <div key={screenshot} className={`hero-shot hero-shot-${index + 1}`}>
+                  <img alt="" src={screenshot} />
                 </div>
-                <div>
-                  <dt>Data path</dt>
-                  <dd>{primaryGame.path}</dd>
-                </div>
-                <div>
-                  <dt>Project rev</dt>
-                  <dd>{sourceInfo.project.commit || "Unavailable"}</dd>
-                </div>
-                <div>
-                  <dt>ScummVM rev</dt>
-                  <dd>{sourceInfo.scummvm.commit || "Unavailable"}</dd>
-                </div>
-              </dl>
+              ))}
             </div>
           </aside>
-
-          <div className="launcher-workspace">
-            <div className="workspace-heading">
-              <div>
-                <p className="panel-label">Launcher</p>
-                <h2>Choose a game to launch</h2>
-                <p className="workspace-copy">
-                  Styled after ScummVM’s launcher chrome, with each detected install exposed as a
-                  one-click tile that jumps straight into the matching runtime target.
-                </p>
-              </div>
-              <LaunchButton
-                href={launchHref}
-                label={`Launch ${getDisplayTitle(primaryGame.title)}`}
-              />
-            </div>
-
-            <div className="status-strip" aria-label="Current selection">
-              <div>
-                <span className="meta-label">Primary Game</span>
-                <strong>{getDisplayTitle(primaryGame.title)}</strong>
-              </div>
-              <div>
-                <span className="meta-label">Library Size</span>
-                <strong>{games.length} ready target(s)</strong>
-              </div>
-              <div>
-                <span className="meta-label">Runtime</span>
-                <strong>ScummVM WebAssembly</strong>
-              </div>
-            </div>
-
-            <div className="launcher-main">
-              <div className="game-grid">
-                {games.map((game) => {
-                  const art = artByTarget[game.target] || {};
-                  const screenshots = art.screenshots || [];
-                  const launchAction = `/scummvm.html#${game.target}`;
-
-                  return (
-                    <a key={game.target} className="game-tile" href={launchAction}>
-                      <div
-                        className={`tile-art${screenshots.length === 0 ? " tile-art-fallback" : ""}`}
-                        style={
-                          screenshots.length > 0
-                            ? { "--tile-art": `url(${screenshots[screenshots.length - 1]})` }
-                            : undefined
-                        }
-                      >
-                        <span className="tile-badge">Ready</span>
-                        <div className="tile-hero-copy">
-                          <p>{art.eyebrow || game.engineId?.toUpperCase() || "ScummVM"}</p>
-                          <h3>{getDisplayTitle(game.title)}</h3>
-                          <span>
-                            Launches ScummVM directly into the installed `{game.target}` target.
-                          </span>
-                        </div>
-                      </div>
-
-                      {screenshots.length > 0 ? (
-                        <div className="tile-strip" aria-hidden="true">
-                          {screenshots.map((screenshot, index) => (
-                            <span
-                              key={screenshot}
-                              className={`tile-shot tile-shot-${index + 1}`}
-                              style={{ "--shot-image": `url(${screenshot})` }}
-                            />
-                          ))}
-                        </div>
-                      ) : null}
-
-                      <div className="tile-body">
-                        <div>
-                          <span className="meta-label">Installed Path</span>
-                          <strong>{game.path}</strong>
-                        </div>
-                        <div>
-                          <span className="meta-label">Engine</span>
-                          <strong>{game.engineId?.toUpperCase() || "Unknown"}</strong>
-                        </div>
-                        <div>
-                          <span className="meta-label">Launch Action</span>
-                          <strong>Open `{launchAction}`</strong>
-                        </div>
-                        <div>
-                          <span className="meta-label">Readme</span>
-                          <strong>{game.readmeHref || "Not bundled"}</strong>
-                        </div>
-                      </div>
-                    </a>
-                  );
-                })}
-              </div>
-
-              <aside className="selection-panel">
-                <p className="panel-label">Primary Entry</p>
-                <h3>{primaryGame.title}</h3>
-                <p>
-                  The front page behaves like a launcher screen rather than a plain landing page.
-                  Each tile is a direct boot target, and the primary button stays pinned to the
-                  first detected install.
-                </p>
-                <ul className="selection-list">
-                  {games.map((game) => (
-                    <li key={game.target}>
-                      {getDisplayTitle(game.title)} uses `{game.target}` from `{game.path}`.
-                    </li>
-                  ))}
-                </ul>
-                <LaunchButton
-                  href={launchHref}
-                  label="Start Primary Game"
-                  className="launch-button-secondary"
-                />
-              </aside>
-            </div>
-
-            <footer className="compliance-dock">
-              <div>
-                <p className="panel-label">Source and License</p>
-                <p className="compliance-copy">
-                  The ScummVM bundle, source offer, GPL text, and bundled game readmes remain
-                  exposed from the launcher for distribution compliance.
-                </p>
-              </div>
-              <div className="compliance-actions">
-                {sourceLinks.map((link) => (
-                  <a key={link.href} href={link.href}>
-                    {link.label}
-                  </a>
-                ))}
-              </div>
-            </footer>
-          </div>
         </div>
       </section>
+
+      <section className="content-section" id="library">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">Ready To Launch</p>
+            <h2>Installed adventures</h2>
+          </div>
+          <p className="section-copy">
+            Every tile is a direct runtime target generated from the current bundle metadata. The
+            page keeps the streaming-style presentation, but the actions still map one-to-one to
+            real ScummVM launch hashes.
+          </p>
+        </div>
+
+        <div className="feature-rail">
+          {catalog.map((game) => (
+            <a
+              key={game.target}
+              className={`feature-card${game.screenshots.length === 0 ? " is-fallback" : ""}`}
+              href={game.href}
+              style={
+                game.screenshots[0] ? { "--card-art": `url(${game.screenshots[0]})` } : undefined
+              }
+            >
+              <div className="feature-card-copy">
+                <p>{game.eyebrow}</p>
+                <h3>{game.displayTitle}</h3>
+                <span>{game.summary}</span>
+              </div>
+              <div className="feature-card-meta">
+                <strong>{game.genre}</strong>
+                <span>{game.year}</span>
+                <span>{game.target}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section className="content-section">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">Curated Library</p>
+            <h2>Launch catalog</h2>
+          </div>
+          <a className="section-link" href={featuredGame.href}>
+            Start featured game
+          </a>
+        </div>
+
+        <div className="poster-grid">
+          {catalog.map((game) => (
+            <article
+              key={game.target}
+              className={`poster-card${game.screenshots.length === 0 ? " is-fallback" : ""}`}
+              style={
+                game.screenshots[game.screenshots.length - 1]
+                  ? { "--poster-art": `url(${game.screenshots[game.screenshots.length - 1]})` }
+                  : undefined
+              }
+            >
+              <div className="poster-card-media" />
+              <div className="poster-card-copy">
+                <p className="poster-overline">{game.mood}</p>
+                <h3>{game.displayTitle}</h3>
+                <p>{game.summary}</p>
+                <div className="poster-card-footer">
+                  <span>{game.studio}</span>
+                  <a href={game.href}>Launch</a>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="content-section" id="archive">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">Archive Deck</p>
+            <h2>Source, license, and bundle notes</h2>
+          </div>
+          <p className="section-copy">
+            Compliance remains visible from the landing page: bundled docs, source offer, and the
+            exact revisions used to prepare the current public archive.
+          </p>
+        </div>
+
+        <div className="archive-grid">
+          <article className="archive-card archive-card-build">
+            <p className="panel-kicker">Runtime Build</p>
+            <h3>Prepared from the current working tree</h3>
+            <dl className="archive-metrics">
+              <div>
+                <dt>Project rev</dt>
+                <dd>{shortCommit(sourceInfo.project.commit)}</dd>
+              </div>
+              <div>
+                <dt>ScummVM rev</dt>
+                <dd>{shortCommit(sourceInfo.scummvm.commit)}</dd>
+              </div>
+              <div>
+                <dt>Generated</dt>
+                <dd>{sourceInfo.generated_at_utc.slice(0, 10)}</dd>
+              </div>
+              <div>
+                <dt>Primary launch</dt>
+                <dd>{featuredGame.target}</dd>
+              </div>
+            </dl>
+          </article>
+
+          {sourceLinks.map((link) => (
+            <a key={link.href} className="archive-card archive-link-card" href={link.href}>
+              <p className="panel-kicker">{link.detail}</p>
+              <h3>{link.label}</h3>
+              <span>Open document</span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <footer className="site-footer">
+        <div>
+          <strong>ScummVM Archivist</strong>
+          <p>
+            Editorial landing page for the generated web bundle, with launch targets and
+            compliance docs exposed in one place.
+          </p>
+        </div>
+
+        <div className="footer-links">
+          {footerLinks.map((link) => (
+            <a key={link.href} href={link.href}>
+              {link.label}
+            </a>
+          ))}
+        </div>
+      </footer>
     </main>
   );
 }
