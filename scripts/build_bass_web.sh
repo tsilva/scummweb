@@ -7,6 +7,7 @@ VENDOR_DIR="$ROOT_DIR/vendor"
 SCUMMVM_DIR="$VENDOR_DIR/scummvm"
 DIST_DIR="$ROOT_DIR/dist"
 PUBLIC_DIR="$ROOT_DIR/public"
+BUNDLE_ZIP="$ROOT_DIR/bundle/scummvm-public.zip"
 DOWNLOADS_DIR="$ROOT_DIR/downloads"
 BASS_ZIP="$DOWNLOADS_DIR/bass-cd-1.2.zip"
 DEFAULT_EMSDK_VERSION="$(sed -n 's/^EMSDK_VERSION=\"\\([^\"]*\\)\"/\\1/p' "$SCUMMVM_DIR/dists/emscripten/build.sh" 2>/dev/null | head -n 1)"
@@ -65,6 +66,7 @@ QUEEN_ZIP="$(find_optional_archive 'FOTAQ*.zip' 'fotaq*.zip' 'Flight*Amazon*Quee
 LURE_ZIP="$(find_optional_archive 'lure*.zip' 'Lure*.zip' 'LURE*.zip' || true)"
 DRASCULA_ZIP="$(find_optional_archive 'drascula*.zip' 'Drascula*.zip' 'DRASCULA*.zip' || true)"
 SWORD25_ZIP="$(find_optional_archive 'sword25*.zip' 'Sword25*.zip' 'SWORD25*.zip' || true)"
+WAXWORKS_ZIP="$(find_optional_archive 'waxworks*.zip' 'Waxworks*.zip' 'WAXWORKS*.zip' || true)"
 GAME_ARCHIVES=("$BASS_ZIP")
 MANAGED_PUBLIC_PATHS=(
   data
@@ -74,6 +76,7 @@ MANAGED_PUBLIC_PATHS=(
   game.json
   games.json
   index.html
+  launcher
   logo.svg
   manifest.json
   scummvm-192.png
@@ -115,6 +118,12 @@ if [[ -n "$SWORD25_ZIP" ]]; then
   GAME_ARCHIVES+=("$SWORD25_ZIP")
 else
   echo "Broken Sword 2.5 archive not found in $DOWNLOADS_DIR; building without Sword25." >&2
+fi
+
+if [[ -n "$WAXWORKS_ZIP" ]]; then
+  GAME_ARCHIVES+=("$WAXWORKS_ZIP")
+else
+  echo "Waxworks archive not found in $DOWNLOADS_DIR; building without Waxworks." >&2
 fi
 
 mkdir -p "$VENDOR_DIR"
@@ -307,6 +316,7 @@ cd "$SCUMMVM_DIR"
   --enable-engine=queen \
   --enable-engine=lure \
   --enable-engine=drascula \
+  --enable-engine=agos \
   --enable-engine=sword25 \
   "${SWORD25_CONFIG_ARGS[@]}" \
   --disable-seq-midi \
@@ -328,6 +338,11 @@ for game_archive in "${GAME_ARCHIVES[@]}"; do
       ;;
     drascula*.zip)
       target_dir="build-emscripten/games/drascula"
+      mkdir -p "$target_dir"
+      unzip -q -o "$game_archive" -d "$target_dir"
+      ;;
+    waxworks*.zip)
+      target_dir="build-emscripten/games/waxworks"
       mkdir -p "$target_dir"
       unzip -q -o "$game_archive" -d "$target_dir"
       ;;
@@ -386,6 +401,35 @@ guioptions=sndNoMIDI noAspect gameOption1
 ini_path.write_text(ini_text.rstrip() + "\n" + section.lstrip())
 PY
 
+python3 - "$SCUMMVM_DIR/build-emscripten/scummvm.ini" "$SCUMMVM_DIR/build-emscripten/games/waxworks" <<'PY'
+from pathlib import Path
+import sys
+
+ini_path = Path(sys.argv[1])
+game_dir = Path(sys.argv[2])
+
+if not ini_path.is_file() or not game_dir.is_dir():
+    raise SystemExit(0)
+
+ini_text = ini_path.read_text()
+if "[waxworks-demo]" in ini_text:
+    raise SystemExit(0)
+
+section = """
+[waxworks-demo]
+platform=pc
+gameid=waxworks
+description=Waxworks (Non-Interactive Demo/DOS/English)
+language=en
+extra=Non-Interactive Demo
+path=/games/waxworks
+engineid=agos
+guioptions=sndNoSpeech launchNoLoad gameOption1 gameOption4 lang_English
+"""
+
+ini_path.write_text(ini_text.rstrip() + "\n" + section.lstrip())
+PY
+
 python3 - "$SCUMMVM_DIR/build-emscripten/scummvm.ini" "$SCUMMVM_DIR/build-emscripten/games" <<'PY'
 from pathlib import Path
 import shutil
@@ -393,7 +437,7 @@ import sys
 
 ini_path = Path(sys.argv[1])
 games_dir = Path(sys.argv[2])
-allowed_engine_ids = {"dreamweb", "sky", "queen", "lure", "drascula", "sword25"}
+allowed_engine_ids = {"dreamweb", "sky", "queen", "lure", "drascula", "agos", "sword25"}
 
 lines = ini_path.read_text().splitlines()
 sections = []
@@ -448,6 +492,10 @@ PY
 mkdir -p "$DIST_DIR"
 rm -rf "$DIST_DIR"
 cp -R "$SCUMMVM_DIR/build-emscripten" "$DIST_DIR"
+
+if [[ -f "$BUNDLE_ZIP" ]]; then
+  unzip -q -o "$BUNDLE_ZIP" 'launcher/*' -d "$DIST_DIR"
+fi
 
 PROJECT_REMOTE_URL="$(git -C "$ROOT_DIR" remote get-url origin 2>/dev/null || true)"
 PROJECT_REPO_URL="$(normalize_git_url "$PROJECT_REMOTE_URL")"

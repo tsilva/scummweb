@@ -52,6 +52,16 @@
       "readmeHref": "https://scummvm-games.tsilva.eu/lure/README"
     },
     {
+      "target": "waxworks-demo",
+      "title": "Waxworks (Non-Interactive Demo/DOS/English)",
+      "path": "/games/waxworks",
+      "engineId": "agos",
+      "gameId": "waxworks",
+      "platform": "pc",
+      "extra": "Non-Interactive Demo",
+      "readmeHref": ""
+    },
+    {
       "target": "sword25",
       "title": "Broken Sword 2.5: The Return of the Templars",
       "path": "/games/broken-sword-2.5",

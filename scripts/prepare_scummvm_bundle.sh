@@ -15,6 +15,7 @@ managed_paths=(
   game.json
   games.json
   index.html
+  launcher
   logo.svg
   manifest.json
   scummvm-192.png

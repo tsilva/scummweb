@@ -91,6 +91,22 @@ const artByTarget = {
     screenshots: [],
     tone: "tone-default",
   },
+  "waxworks-demo": {
+    eyebrow: "Midnight Curio",
+    summary:
+      "Waxworks opens with a wax museum invitation, a dead-eyed host, and an Adventure Soft horror demo that wastes no time turning pulp history into gore-soaked dread.",
+    genre: "Horror Adventure",
+    studio: "Adventure Soft",
+    year: "1992",
+    badge: "DOS Demo",
+    tag: "Grotesque anthology",
+    heroImage: "/launcher/waxworks-hero.jpg?v=20260329",
+    landscapeImage: "/launcher/waxworks-cover.jpg?v=20260329",
+    posterImage: "/launcher/waxworks-cover.jpg?v=20260329",
+    spotlightImage: "/launcher/waxworks-cover.jpg?v=20260329",
+    screenshots: [],
+    tone: "tone-default",
+  },
   sword25: {
     eyebrow: "Fan Sequel Spotlight",
     summary:
