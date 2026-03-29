@@ -30,6 +30,16 @@
       "platform": "pc",
       "extra": "CD",
       "readmeHref": "https://scummvm-games.tsilva.eu/flight-of-the-amazon-queen/readme.txt"
+    },
+    {
+      "target": "lure",
+      "title": "Lure of the Temptress (VGA/DOS/English)",
+      "path": "/games/lure",
+      "engineId": "lure",
+      "gameId": "lure",
+      "platform": "pc",
+      "extra": "VGA",
+      "readmeHref": "https://scummvm-games.tsilva.eu/lure/README"
     }
   ]
 }

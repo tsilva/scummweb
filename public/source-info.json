@@ -1,11 +1,11 @@
 {
-  "generated_at_utc": "2026-03-29T08:02:50.040255Z",
+  "generated_at_utc": "2026-03-29T11:47:17.886545Z",
   "project": {
     "name": "scummvm-web",
     "repository_url": "https://github.com/tsilva/scummvm-web",
-    "commit": "d64816ae0e92a3b32bc43772b39879bbf5565d5a",
-    "commit_url": "https://github.com/tsilva/scummvm-web/tree/d64816ae0e92a3b32bc43772b39879bbf5565d5a",
-    "archive_url": "https://github.com/tsilva/scummvm-web/archive/d64816ae0e92a3b32bc43772b39879bbf5565d5a.tar.gz",
+    "commit": "ec033414ddc3ea1cdcdfe16303583f23e89503a2",
+    "commit_url": "https://github.com/tsilva/scummvm-web/tree/ec033414ddc3ea1cdcdfe16303583f23e89503a2",
+    "archive_url": "https://github.com/tsilva/scummvm-web/archive/ec033414ddc3ea1cdcdfe16303583f23e89503a2.tar.gz",
     "dirty": true
   },
   "scummvm": {

@@ -3,6 +3,8 @@ import path from "node:path";
 import LaunchButton from "./launch-button";
 
 const scummvmAssetVersion = process.env.NEXT_PUBLIC_SCUMMVM_ASSET_VERSION || "dev";
+const scummvmOfficialSite = "https://www.scummvm.org/";
+export const dynamic = "force-dynamic";
 
 const artByTarget = {
   sky: {
@@ -19,6 +21,9 @@ const artByTarget = {
       "/launcher/bass-shot-2.png",
       "/launcher/bass-shot-3.png",
     ],
+    landscapeImage: "/launcher/sky-cover.jpg",
+    posterImage: "/launcher/sky-cover.jpg",
+    spotlightImage: "/launcher/sky-cover.jpg",
     tone: "tone-sky",
   },
   "dreamweb-cd": {
@@ -30,6 +35,10 @@ const artByTarget = {
     year: "1994",
     badge: "CD Edition",
     tag: "Rain-soaked dystopia",
+    heroImage: "/launcher/dreamweb-hero.jpg",
+    landscapeImage: "/launcher/dreamweb-cover.jpg",
+    posterImage: "/launcher/dreamweb-cover.jpg",
+    spotlightImage: "/launcher/dreamweb-cover.jpg",
     screenshots: [],
     tone: "tone-dreamweb",
   },
@@ -42,6 +51,26 @@ const artByTarget = {
     year: "1995",
     badge: "Talkie CD",
     tag: "Pulp expedition",
+    heroImage: "/launcher/queen-hero.jpg",
+    landscapeImage: "/launcher/queen-cover.jpg",
+    posterImage: "/launcher/queen-cover.jpg",
+    spotlightImage: "/launcher/queen-cover.jpg",
+    screenshots: [],
+    tone: "tone-default",
+  },
+  lure: {
+    eyebrow: "Castle Intrigue",
+    summary:
+      "Lure of the Temptress drops you into a plague-struck kingdom full of shifting loyalties, suspicious guards, and the early Revolution Software menace that already points toward Beneath a Steel Sky.",
+    genre: "Fantasy Adventure",
+    studio: "Revolution Software",
+    year: "1992",
+    badge: "Freeware VGA",
+    tag: "Castle conspiracy",
+    heroImage: "/launcher/lure-hero.jpg",
+    landscapeImage: "/launcher/lure-cover.jpg",
+    posterImage: "/launcher/lure-cover.jpg",
+    spotlightImage: "/launcher/lure-cover.jpg",
     screenshots: [],
     tone: "tone-default",
   },
@@ -75,10 +104,36 @@ function getVersionedScummvmAssetPath(assetPath) {
   return `/scummvm/${encodeURIComponent(scummvmAssetVersion)}${normalizedPath}`;
 }
 
-function dedupeByHref(links) {
-  return links.filter(
-    (link, index, allLinks) => allLinks.findIndex((candidate) => candidate.href === link.href) === index
-  );
+function getArtStyle(prefix, image, options = {}) {
+  if (!image) {
+    return undefined;
+  }
+
+  const style = {
+    [`--${prefix}-art-image`]: `url(${image})`,
+  };
+
+  if (options.position) {
+    style[`--${prefix}-art-position`] = options.position;
+  }
+
+  if (options.size) {
+    style[`--${prefix}-art-size`] = options.size;
+  }
+
+  if (options.repeat) {
+    style[`--${prefix}-art-repeat`] = options.repeat;
+  }
+
+  return style;
+}
+
+function pickFeaturedGame(catalog) {
+  if (catalog.length === 0) {
+    return null;
+  }
+
+  return catalog[Math.floor(Math.random() * catalog.length)];
 }
 
 function getGameMeta(game) {
@@ -94,9 +149,12 @@ function getGameMeta(game) {
     summary:
       art.summary ||
       `Launch ${displayTitle} directly from the generated ScummVM web bundle and jump into the configured target immediately.`,
-    heroImage: art.screenshots[1] || art.screenshots[0] || "",
-    landscapeImage: art.screenshots[0] || "",
-    posterImage: art.screenshots[art.screenshots.length - 1] || art.screenshots[0] || "",
+    heroImage: art.heroImage || art.screenshots[1] || art.screenshots[0] || "",
+    landscapeImage: art.landscapeImage || art.screenshots[0] || "",
+    posterImage:
+      art.posterImage || art.screenshots[art.screenshots.length - 1] || art.screenshots[0] || "",
+    spotlightImage:
+      art.spotlightImage || art.landscapeImage || art.posterImage || art.screenshots[0] || "",
   };
 }
 
@@ -167,24 +225,6 @@ function Icon({ name, filled = false }) {
           <path d="M12 7.7h.01" />
         </svg>
       );
-    case "share":
-      return (
-        <svg {...commonProps}>
-          <circle cx="18" cy="5.5" r="2.4" />
-          <circle cx="6" cy="12" r="2.4" />
-          <circle cx="18" cy="18.5" r="2.4" />
-          <path d="m8.2 11 7.2-4.1" />
-          <path d="m8.2 13 7.2 4.1" />
-        </svg>
-      );
-    case "help":
-      return (
-        <svg {...commonProps}>
-          <circle cx="12" cy="12" r="8.2" />
-          <path d="M9.6 9.1a2.7 2.7 0 1 1 4.6 2c-.9.8-1.7 1.3-1.7 2.7" />
-          <path d="M12 17.4h.01" />
-        </svg>
-      );
     case "star":
       return (
         <svg {...commonProps} fill={filled ? "currentColor" : "none"}>
@@ -197,7 +237,7 @@ function Icon({ name, filled = false }) {
 }
 
 export default async function HomePage() {
-  const { games, primaryTarget } = await getGameLibrary();
+  const { games } = await getGameLibrary();
   const sourceInfo = await getSourceInfo();
 
   if (games.length === 0) {
@@ -205,23 +245,12 @@ export default async function HomePage() {
   }
 
   const catalog = games.map(getGameMeta);
-  const featuredGame =
-    catalog.find((game) => game.target === "sky") ||
-    catalog.find((game) => game.target === primaryTarget) ||
-    catalog[0];
+  const featuredGame = pickFeaturedGame(catalog) || catalog[0];
   const engineSummary = Array.from(
     new Set(catalog.map((game) => game.engineId).filter(Boolean))
   )
     .map((engineId) => engineId.toUpperCase())
     .join(" / ");
-  const footerLinks = dedupeByHref([
-    { href: getVersionedScummvmAssetPath("/source.html"), label: "Source" },
-    { href: getVersionedScummvmAssetPath("/doc/COPYING"), label: "License" },
-    { href: getVersionedScummvmAssetPath("/doc/COPYRIGHT"), label: "Copyright" },
-    ...catalog
-      .filter((game) => game.readmeHref)
-      .map((game) => ({ href: game.readmeHref, label: `${game.displayTitle} Readme` })),
-  ]).slice(0, 4);
   const buildStamp = `${shortCommit(sourceInfo.project.commit)} / ${shortCommit(
     sourceInfo.scummvm.commit
   )}`;
@@ -230,9 +259,12 @@ export default async function HomePage() {
     <>
       <nav className="dashboard-nav">
         <div className="nav-cluster nav-cluster-left">
-          <a className="nav-brand" href="#browse">
-            ScummVM
-          </a>
+          <div className="nav-brand-group">
+            <a className="nav-brand" href="#browse">
+              ScummVM Web
+            </a>
+            <span className="nav-badge">Unofficial WASM fork</span>
+          </div>
 
           <div className="nav-links" aria-label="Main">
             <a className="is-active" href="#browse">
@@ -240,6 +272,9 @@ export default async function HomePage() {
             </a>
             <a href="#library">Library</a>
             <a href="#archive">Archive</a>
+            <a href={scummvmOfficialSite} rel="noreferrer" target="_blank">
+              Original Project
+            </a>
           </div>
         </div>
 
@@ -267,7 +302,7 @@ export default async function HomePage() {
         <section
           className={`hero-stage ${featuredGame.tone}`}
           id="browse"
-          style={featuredGame.heroImage ? { "--hero-art": `url(${featuredGame.heroImage})` } : undefined}
+          style={getArtStyle("hero", featuredGame.heroImage)}
         >
           <div className="hero-backdrop" />
           <div className="hero-gradient" />
@@ -277,6 +312,20 @@ export default async function HomePage() {
               <p className="hero-kicker">{featuredGame.eyebrow}</p>
               <h1>{featuredGame.displayTitle}</h1>
               <p className="hero-summary">{featuredGame.summary}</p>
+              <div className="project-notice" role="note" aria-label="Project notice">
+                <p className="project-notice-kicker">ScummVM Status</p>
+                <p>
+                  This is not the official ScummVM website or a stock ScummVM release. It is an
+                  unofficial WebAssembly build forked from ScummVM for browser deployment, with
+                  source and license materials published here to respect ScummVM&apos;s GPL terms.
+                </p>
+                <div className="project-notice-links">
+                  <a href={scummvmOfficialSite} rel="noreferrer" target="_blank">
+                    Visit the original ScummVM project
+                  </a>
+                  <a href={getVersionedScummvmAssetPath("/source.html")}>Review source and license</a>
+                </div>
+              </div>
 
               <div className="hero-actions">
                 <LaunchButton href={featuredGame.href} label="Start Adventure" />
@@ -325,9 +374,7 @@ export default async function HomePage() {
                   key={game.target}
                   className={`landscape-card ${game.tone}`}
                   href={game.href}
-                  style={
-                    game.landscapeImage ? { "--card-art": `url(${game.landscapeImage})` } : undefined
-                  }
+                  style={getArtStyle("card", game.landscapeImage)}
                 >
                   <div className="landscape-overlay">
                     <h3>{game.displayTitle}</h3>
@@ -358,7 +405,7 @@ export default async function HomePage() {
                   key={game.target}
                   className={`poster-card ${game.tone}`}
                   href={game.href}
-                  style={game.posterImage ? { "--poster-art": `url(${game.posterImage})` } : undefined}
+                  style={getArtStyle("poster", game.posterImage)}
                 >
                   <div className="poster-media" />
                   <div className="poster-overlay">
@@ -383,9 +430,7 @@ export default async function HomePage() {
                   key={game.target}
                   className={`spotlight-card ${game.tone}`}
                   href={game.href}
-                  style={
-                    game.landscapeImage ? { "--spotlight-art": `url(${game.landscapeImage})` } : undefined
-                  }
+                  style={getArtStyle("spotlight", game.spotlightImage)}
                 >
                   <div className="spotlight-media" />
                   <div className="spotlight-copy">
@@ -408,36 +453,11 @@ export default async function HomePage() {
 
       <footer className="site-footer">
         <div className="footer-copy">
-          <strong>ScummVM Archivist</strong>
+          <strong>ScummVM Web</strong>
           <p>
             Bundle built {sourceInfo.generated_at_utc.slice(0, 10)} from {buildStamp}. Launcher
             targets still point directly at the detected ScummVM entries in this archive.
           </p>
-        </div>
-
-        <div className="footer-links">
-          {footerLinks.map((link) => (
-            <a key={link.href} href={link.href}>
-              {link.label}
-            </a>
-          ))}
-        </div>
-
-        <div className="footer-tools">
-          <a
-            className="footer-icon-button"
-            href={getVersionedScummvmAssetPath("/source.html")}
-            aria-label="Share source offer"
-          >
-            <Icon name="share" />
-          </a>
-          <a
-            className="footer-icon-button"
-            href={getVersionedScummvmAssetPath("/doc/README.md")}
-            aria-label="Open ScummVM readme"
-          >
-            <Icon name="help" />
-          </a>
         </div>
       </footer>
     </>
