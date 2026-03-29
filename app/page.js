@@ -2,6 +2,8 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import LaunchButton from "./launch-button";
 
+const scummvmAssetVersion = process.env.NEXT_PUBLIC_SCUMMVM_ASSET_VERSION || "dev";
+
 const artByTarget = {
   sky: {
     eyebrow: "Featured Classic",
@@ -68,6 +70,11 @@ function shortCommit(commit) {
   return commit ? commit.slice(0, 7) : "unknown";
 }
 
+function getVersionedScummvmAssetPath(assetPath) {
+  const normalizedPath = assetPath.startsWith("/") ? assetPath : `/${assetPath}`;
+  return `/scummvm/${encodeURIComponent(scummvmAssetVersion)}${normalizedPath}`;
+}
+
 function dedupeByHref(links) {
   return links.filter(
     (link, index, allLinks) => allLinks.findIndex((candidate) => candidate.href === link.href) === index
@@ -82,8 +89,8 @@ function getGameMeta(game) {
     ...game,
     ...art,
     displayTitle,
-    href: `/scummvm.html#${game.target}`,
-    infoHref: game.readmeHref || "/source.html",
+    href: `${getVersionedScummvmAssetPath("/scummvm.html")}#${game.target}`,
+    infoHref: game.readmeHref || getVersionedScummvmAssetPath("/source.html"),
     summary:
       art.summary ||
       `Launch ${displayTitle} directly from the generated ScummVM web bundle and jump into the configured target immediately.`,
@@ -208,9 +215,9 @@ export default async function HomePage() {
     .map((engineId) => engineId.toUpperCase())
     .join(" / ");
   const footerLinks = dedupeByHref([
-    { href: "/source.html", label: "Source" },
-    { href: "/doc/COPYING", label: "License" },
-    { href: "/doc/COPYRIGHT", label: "Copyright" },
+    { href: getVersionedScummvmAssetPath("/source.html"), label: "Source" },
+    { href: getVersionedScummvmAssetPath("/doc/COPYING"), label: "License" },
+    { href: getVersionedScummvmAssetPath("/doc/COPYRIGHT"), label: "Copyright" },
     ...catalog
       .filter((game) => game.readmeHref)
       .map((game) => ({ href: game.readmeHref, label: `${game.displayTitle} Readme` })),
@@ -243,7 +250,11 @@ export default async function HomePage() {
           <a className="nav-icon-button" href="#archive" aria-label="Open archive notes">
             <Icon name="bell" />
           </a>
-          <a className="nav-icon-button" href="/source.html" aria-label="Open source offer">
+          <a
+            className="nav-icon-button"
+            href={getVersionedScummvmAssetPath("/source.html")}
+            aria-label="Open source offer"
+          >
             <Icon name="settings" />
           </a>
           <a className="nav-avatar" href={featuredGame.href} aria-label={`Launch ${featuredGame.displayTitle}`}>
@@ -413,10 +424,18 @@ export default async function HomePage() {
         </div>
 
         <div className="footer-tools">
-          <a className="footer-icon-button" href="/source.html" aria-label="Share source offer">
+          <a
+            className="footer-icon-button"
+            href={getVersionedScummvmAssetPath("/source.html")}
+            aria-label="Share source offer"
+          >
             <Icon name="share" />
           </a>
-          <a className="footer-icon-button" href="/doc/README.md" aria-label="Open ScummVM readme">
+          <a
+            className="footer-icon-button"
+            href={getVersionedScummvmAssetPath("/doc/README.md")}
+            aria-label="Open ScummVM readme"
+          >
             <Icon name="help" />
           </a>
         </div>
