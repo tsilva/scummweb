@@ -40,6 +40,17 @@ async function readGameLibrary(page) {
   });
 }
 
+function normalizeUrl(value) {
+  const url = new URL(value);
+  url.hash = "";
+
+  if (url.pathname === "") {
+    url.pathname = "/";
+  }
+
+  return url.toString();
+}
+
 async function verifyTarget(context, baseUrl, game) {
   const page = await context.newPage();
   const pageErrors = [];
@@ -48,7 +59,7 @@ async function verifyTarget(context, baseUrl, game) {
     pageErrors.push(error.message);
   });
 
-  await page.goto(new URL(`/scummvm.html#${game.target}`, baseUrl).toString(), {
+  await page.goto(new URL(game.launchHref, baseUrl).toString(), {
     waitUntil: "domcontentloaded",
   });
   await page.waitForSelector("#canvas", { timeout: 30000 });
@@ -86,7 +97,7 @@ await rootPage.goto(url, { waitUntil: "domcontentloaded" });
 await rootPage.waitForLoadState("networkidle");
 await rootPage.waitForTimeout(1000);
 
-if (rootPage.url() !== url) {
+if (normalizeUrl(rootPage.url()) !== normalizeUrl(url)) {
   throw new Error(`Root page redirected unexpectedly to ${rootPage.url()}`);
 }
 
@@ -97,9 +108,14 @@ if (!Array.isArray(library.games) || library.games.length === 0) {
 }
 
 for (const game of library.games) {
-  const matchingLink = rootPage.locator(`a[href="/scummvm.html#${game.target}"]`).first();
+  const matchingLink = rootPage.locator(`a[href*="scummvm.html#${game.target}"]`).first();
   if ((await matchingLink.count()) === 0) {
     throw new Error(`Launcher tile for ${game.target} was not rendered`);
+  }
+
+  game.launchHref = await matchingLink.getAttribute("href");
+  if (!game.launchHref) {
+    throw new Error(`Launcher tile for ${game.target} did not expose a launch href`);
   }
 }
 
