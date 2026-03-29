@@ -83,12 +83,34 @@ svg {
   gap: 3rem;
 }
 
+.nav-brand-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
 .nav-brand {
   color: var(--accent);
   font-family: var(--font-display), sans-serif;
   font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: -0.04em;
+}
+
+.nav-badge,
+.project-notice-kicker {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.85rem;
+  padding: 0 0.8rem;
+  border: 1px solid rgba(127, 211, 127, 0.22);
+  background: rgba(17, 36, 17, 0.72);
+  color: var(--accent-strong);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
 .nav-links {
@@ -180,32 +202,46 @@ svg {
 .hero-backdrop {
   background:
     linear-gradient(180deg, rgba(7, 12, 10, 0.08), rgba(7, 12, 10, 0.42)),
-    var(--hero-art);
+    var(--hero-art-image, none);
   background-color: #10211a;
-  background-position: center center;
-  background-size: cover;
+  background-position: var(--hero-art-position, center center);
+  background-repeat: var(--hero-art-repeat, no-repeat);
+  background-size: var(--hero-art-size, cover);
   transform: scale(1.03);
 }
 
 .hero-stage.tone-sky .hero-backdrop {
   background:
     linear-gradient(180deg, rgba(7, 12, 10, 0.08), rgba(7, 12, 10, 0.42)),
-    var(--hero-art),
+    var(--hero-art-image, none),
     radial-gradient(circle at 70% 18%, rgba(89, 168, 168, 0.28), transparent 18%);
   background-color: #10211a;
+  background-position: 0 0, var(--hero-art-position, center center), center;
+  background-repeat: repeat, var(--hero-art-repeat, no-repeat), no-repeat;
+  background-size: auto, var(--hero-art-size, cover), auto;
 }
 
 .hero-stage.tone-dreamweb .hero-backdrop {
   background:
+    linear-gradient(180deg, rgba(7, 12, 10, 0.08), rgba(7, 12, 10, 0.42)),
+    var(--hero-art-image, none),
     radial-gradient(circle at 58% 20%, rgba(72, 148, 126, 0.32), transparent 12%),
     radial-gradient(circle at 75% 24%, rgba(18, 48, 58, 0.6), transparent 24%),
     linear-gradient(135deg, #0f1e18 0%, #102827 42%, #0b1115 100%);
+  background-position: 0 0, var(--hero-art-position, center center), center, center, center;
+  background-repeat: repeat, var(--hero-art-repeat, no-repeat), no-repeat, no-repeat, no-repeat;
+  background-size: auto, var(--hero-art-size, cover), auto, auto, auto;
 }
 
 .hero-stage.tone-default .hero-backdrop {
   background:
+    linear-gradient(180deg, rgba(7, 12, 10, 0.08), rgba(7, 12, 10, 0.42)),
+    var(--hero-art-image, none),
     radial-gradient(circle at 62% 20%, rgba(85, 170, 85, 0.24), transparent 12%),
     linear-gradient(135deg, #121c15 0%, #0e1414 100%);
+  background-position: 0 0, var(--hero-art-position, center center), center, center;
+  background-repeat: repeat, var(--hero-art-repeat, no-repeat), no-repeat, no-repeat;
+  background-size: auto, var(--hero-art-size, cover), auto, auto;
 }
 
 .hero-gradient {
@@ -273,6 +309,49 @@ svg {
   margin: 1.4rem 0 0;
   font-size: 1.02rem;
   line-height: 1.65;
+}
+
+.project-notice {
+  max-width: 38rem;
+  margin-top: 1.4rem;
+  padding: 1.15rem 1.2rem 1.2rem;
+  border: 1px solid rgba(127, 211, 127, 0.18);
+  background:
+    linear-gradient(180deg, rgba(17, 28, 19, 0.9), rgba(14, 19, 15, 0.88)),
+    rgba(15, 15, 15, 0.88);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(18px);
+}
+
+.project-notice-kicker {
+  margin-bottom: 0.85rem;
+}
+
+.project-notice p {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.project-notice-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem 1.2rem;
+  margin-top: 1rem;
+}
+
+.project-notice-links a {
+  color: var(--ink);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.project-notice-links a:hover,
+.project-notice-links a:focus-visible {
+  color: var(--accent-strong);
 }
 
 .hero-actions {
@@ -436,32 +515,44 @@ svg {
   overflow: hidden;
   background:
     linear-gradient(180deg, rgba(9, 9, 9, 0), rgba(9, 9, 9, 0.88)),
-    var(--card-art);
+    var(--card-art-image, none);
   background-color: var(--surface-high);
-  background-position: center;
-  background-size: cover;
+  background-position: var(--card-art-position, center);
+  background-repeat: var(--card-art-repeat, no-repeat);
+  background-size: var(--card-art-size, cover);
   transition: transform 220ms ease;
 }
 
 .landscape-card.tone-sky {
   background:
     linear-gradient(180deg, rgba(9, 9, 9, 0), rgba(9, 9, 9, 0.88)),
-    var(--card-art),
+    var(--card-art-image, none),
     linear-gradient(135deg, #18272a 0%, #131313 100%);
+  background-position: 0 0, var(--card-art-position, center), center;
+  background-repeat: repeat, var(--card-art-repeat, no-repeat), no-repeat;
+  background-size: auto, var(--card-art-size, cover), auto;
 }
 
 .landscape-card.tone-dreamweb {
   background:
     linear-gradient(180deg, rgba(9, 9, 9, 0), rgba(9, 9, 9, 0.88)),
+    var(--card-art-image, none),
     radial-gradient(circle at 24% 28%, rgba(142, 74, 117, 0.46), transparent 28%),
     linear-gradient(135deg, #1b1622 0%, #11161d 100%);
+  background-position: 0 0, var(--card-art-position, center), center, center;
+  background-repeat: repeat, var(--card-art-repeat, no-repeat), no-repeat, no-repeat;
+  background-size: auto, var(--card-art-size, cover), auto, auto;
 }
 
 .landscape-card.tone-default {
   background:
     linear-gradient(180deg, rgba(9, 9, 9, 0), rgba(9, 9, 9, 0.88)),
+    var(--card-art-image, none),
     radial-gradient(circle at 24% 28%, rgba(85, 170, 85, 0.3), transparent 28%),
     linear-gradient(135deg, #182118 0%, #111311 100%);
+  background-position: 0 0, var(--card-art-position, center), center, center;
+  background-repeat: repeat, var(--card-art-repeat, no-repeat), no-repeat, no-repeat;
+  background-size: auto, var(--card-art-size, cover), auto, auto;
 }
 
 .landscape-overlay {
@@ -513,9 +604,10 @@ svg {
   inset: 0;
   background:
     linear-gradient(180deg, rgba(12, 12, 12, 0.18), rgba(12, 12, 12, 0.88)),
-    var(--poster-art);
-  background-position: center;
-  background-size: cover;
+    var(--poster-art-image, none);
+  background-position: var(--poster-art-position, center);
+  background-repeat: var(--poster-art-repeat, no-repeat);
+  background-size: var(--poster-art-size, cover);
   filter: grayscale(1);
   transition:
     filter 320ms ease,
@@ -531,15 +623,23 @@ svg {
 .poster-card.tone-dreamweb .poster-media {
   background:
     linear-gradient(180deg, rgba(12, 12, 12, 0.2), rgba(12, 12, 12, 0.9)),
+    var(--poster-art-image, none),
     radial-gradient(circle at 50% 35%, rgba(144, 67, 115, 0.38), transparent 24%),
     linear-gradient(135deg, #1d1724 0%, #14171c 100%);
+  background-position: 0 0, var(--poster-art-position, center), center, center;
+  background-repeat: repeat, var(--poster-art-repeat, no-repeat), no-repeat, no-repeat;
+  background-size: auto, var(--poster-art-size, cover), auto, auto;
 }
 
 .poster-card.tone-default .poster-media {
   background:
     linear-gradient(180deg, rgba(12, 12, 12, 0.2), rgba(12, 12, 12, 0.9)),
+    var(--poster-art-image, none),
     radial-gradient(circle at 50% 35%, rgba(85, 170, 85, 0.28), transparent 24%),
     linear-gradient(135deg, #1b2118 0%, #141616 100%);
+  background-position: 0 0, var(--poster-art-position, center), center, center;
+  background-repeat: repeat, var(--poster-art-repeat, no-repeat), no-repeat, no-repeat;
+  background-size: auto, var(--poster-art-size, cover), auto, auto;
 }
 
 .poster-overlay {
@@ -568,21 +668,32 @@ svg {
   min-width: 8rem;
   background:
     linear-gradient(180deg, rgba(18, 18, 18, 0.08), rgba(18, 18, 18, 0.45)),
-    var(--spotlight-art);
-  background-position: center;
-  background-size: cover;
+    var(--spotlight-art-image, none);
+  background-position: var(--spotlight-art-position, center);
+  background-repeat: var(--spotlight-art-repeat, no-repeat);
+  background-size: var(--spotlight-art-size, cover);
 }
 
 .spotlight-card.tone-dreamweb .spotlight-media {
   background:
+    linear-gradient(180deg, rgba(18, 18, 18, 0.08), rgba(18, 18, 18, 0.45)),
+    var(--spotlight-art-image, none),
     radial-gradient(circle at 52% 30%, rgba(116, 54, 88, 0.42), transparent 24%),
     linear-gradient(135deg, #201627 0%, #12161d 100%);
+  background-position: 0 0, var(--spotlight-art-position, center), center, center;
+  background-repeat: repeat, var(--spotlight-art-repeat, no-repeat), no-repeat, no-repeat;
+  background-size: auto, var(--spotlight-art-size, cover), auto, auto;
 }
 
 .spotlight-card.tone-default .spotlight-media {
   background:
+    linear-gradient(180deg, rgba(18, 18, 18, 0.08), rgba(18, 18, 18, 0.45)),
+    var(--spotlight-art-image, none),
     radial-gradient(circle at 52% 30%, rgba(85, 170, 85, 0.32), transparent 24%),
     linear-gradient(135deg, #1b231a 0%, #131616 100%);
+  background-position: 0 0, var(--spotlight-art-position, center), center, center;
+  background-repeat: repeat, var(--spotlight-art-repeat, no-repeat), no-repeat, no-repeat;
+  background-size: auto, var(--spotlight-art-size, cover), auto, auto;
 }
 
 .spotlight-copy {
@@ -678,6 +789,10 @@ svg {
     flex-wrap: wrap;
   }
 
+  .nav-brand-group {
+    width: 100%;
+  }
+
   .nav-links,
   .nav-tools,
   .footer-links,
@@ -721,6 +836,11 @@ svg {
 
   .hero-actions {
     width: 100%;
+  }
+
+  .project-notice-links {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .launch-button,

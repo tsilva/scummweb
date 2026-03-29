@@ -61,6 +61,7 @@ find_optional_archive() {
 
 DREAMWEB_ZIP="$(find_optional_archive 'dreamweb*.zip' 'DreamWeb*.zip' 'DREAMWEB*.zip' || true)"
 QUEEN_ZIP="$(find_optional_archive 'FOTAQ*.zip' 'fotaq*.zip' 'Flight*Amazon*Queen*.zip' 'flight*amazon*queen*.zip' || true)"
+LURE_ZIP="$(find_optional_archive 'lure*.zip' 'Lure*.zip' 'LURE*.zip' || true)"
 GAME_ARCHIVES=("$BASS_ZIP")
 MANAGED_PUBLIC_PATHS=(
   data
@@ -93,6 +94,12 @@ if [[ -n "$QUEEN_ZIP" ]]; then
   GAME_ARCHIVES+=("$QUEEN_ZIP")
 else
   echo "Flight of the Amazon Queen archive not found in $DOWNLOADS_DIR; building without Queen." >&2
+fi
+
+if [[ -n "$LURE_ZIP" ]]; then
+  GAME_ARCHIVES+=("$LURE_ZIP")
+else
+  echo "Lure of the Temptress archive not found in $DOWNLOADS_DIR; building without Lure." >&2
 fi
 
 mkdir -p "$VENDOR_DIR"
@@ -175,6 +182,7 @@ cd "$SCUMMVM_DIR"
   --enable-engine=sky \
   --enable-engine=dreamweb \
   --enable-engine=queen \
+  --enable-engine=lure \
   --disable-seq-midi \
   --disable-timidity
 
@@ -335,15 +343,54 @@ readme_links = [
     for game in games
     if game.get("readmeHref")
 ]
+official_scummvm_url = "https://www.scummvm.org/"
+logo_svg = """<svg xmlns="http://www.w3.org/2000/svg" width="1546.667" height="453.333" viewBox="0 0 1546.667 453.333" role="img" aria-labelledby="title desc">
+  <title id="title">ScummVM Web</title>
+  <desc id="desc">ScummVM Web logo with a green ScummVM wordmark and a WEB banner.</desc>
+  <defs>
+    <linearGradient id="logoGreen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1af15c" />
+      <stop offset="100%" stop-color="#00b92e" />
+    </linearGradient>
+    <linearGradient id="bannerGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f8e2f" />
+      <stop offset="100%" stop-color="#19d44e" />
+    </linearGradient>
+    <filter id="softShadow" x="-10%" y="-20%" width="130%" height="160%">
+      <feDropShadow dx="0" dy="14" stdDeviation="10" flood-color="#101010" flood-opacity="0.28" />
+    </filter>
+  </defs>
+  <rect width="1546.667" height="453.333" fill="none" />
+  <g transform="translate(44 42)" filter="url(#softShadow)">
+    <text x="736" y="222" text-anchor="middle" font-family="'Trebuchet MS', 'Arial Black', sans-serif" font-size="196" font-weight="900" letter-spacing="-8" fill="#0f5b23">ScummVM</text>
+    <text x="718" y="204" text-anchor="middle" font-family="'Trebuchet MS', 'Arial Black', sans-serif" font-size="196" font-weight="900" letter-spacing="-8" fill="url(#logoGreen)" stroke="#2f2f2f" stroke-width="24" stroke-linejoin="round" paint-order="stroke fill">ScummVM</text>
+    <rect x="520" y="250" width="396" height="104" rx="28" fill="#202020" stroke="#2f2f2f" stroke-width="14" />
+    <rect x="536" y="266" width="364" height="72" rx="22" fill="url(#bannerGreen)" />
+    <text x="728" y="324" text-anchor="middle" font-family="'Trebuchet MS', 'Arial Black', sans-serif" font-size="88" font-weight="900" letter-spacing="14" fill="#16381c">WEB</text>
+    <text x="728" y="314" text-anchor="middle" font-family="'Trebuchet MS', 'Arial Black', sans-serif" font-size="88" font-weight="900" letter-spacing="14" fill="#f4fff2" stroke="#1a4d1a" stroke-width="8" paint-order="stroke fill">WEB</text>
+  </g>
+</svg>
+"""
 
 source_link_markup = "\n".join(
     f'        <a href="{html.escape(href)}">{html.escape(label)}</a>'
-    for href, label in [("doc/COPYING", "GPL-3.0 License"), ("doc/README.md", "ScummVM README"), ("doc/COPYRIGHT", "ScummVM Copyright"), *readme_links]
+    for href, label in [
+        (official_scummvm_url, "Official ScummVM Website"),
+        ("doc/COPYING", "GPL-3.0 License"),
+        ("doc/README.md", "ScummVM README"),
+        ("doc/COPYRIGHT", "ScummVM Copyright"),
+        *readme_links,
+    ]
 )
 
 index_link_markup = "\n".join(
     f'      <a href="{html.escape(href)}">{html.escape(label)}</a>'
-    for href, label in [("source.html", "Corresponding Source"), ("doc/COPYING", "GPL-3.0 License"), *readme_links]
+    for href, label in [
+        (official_scummvm_url, "Official ScummVM Website"),
+        ("source.html", "Corresponding Source"),
+        ("doc/COPYING", "GPL-3.0 License"),
+        *readme_links,
+    ]
 )
 
 source_html = f"""<!doctype html>
@@ -430,9 +477,15 @@ source_html = f"""<!doctype html>
     <section>
       <h1>Source and License Information</h1>
       <p>
-        This web bundle distributes a ScummVM browser build together with {bundle_count} installed
-        game data set(s). This page points to the corresponding source and the bundled license texts.
+        This site is not the official ScummVM website or an official ScummVM release. It distributes
+        an unofficial browser-targeted WebAssembly build forked from ScummVM together with {bundle_count} installed
+        game data set(s), and this page points to the corresponding source and bundled license texts.
       </p>
+      <div class="warning">
+        Learn more about the original project at
+        <a href="{official_scummvm_url}" rel="noreferrer" target="_blank">scummvm.org</a>.
+        The links below are provided to respect ScummVM&apos;s GPL licensing terms for redistributed builds.
+      </div>
       <div class="links">
 {source_link_markup}
       </div>
@@ -560,6 +613,13 @@ index_html = f"""<!doctype html>
       color: var(--muted);
       max-width: 58ch;
     }}
+    .warning {{
+      margin: 0 0 20px;
+      padding: 14px 16px;
+      border: 1px solid rgba(240, 228, 192, 0.15);
+      background: rgba(82, 49, 21, 0.48);
+      color: var(--ink);
+    }}
     a {{
       display: inline-block;
       padding: 14px 20px;
@@ -596,6 +656,11 @@ index_html = f"""<!doctype html>
       This bundle exposes {bundle_count} detected ScummVM target(s). Use the launcher below if the
       game does not start automatically after the page loads.
     </p>
+    <p class="warning">
+      This is not the official ScummVM website or an official ScummVM release. It is an
+      unofficial WebAssembly build forked from ScummVM for browser deployment, and it links
+      corresponding source and license material here to respect ScummVM's GPL terms.
+    </p>
     <a id="play-link" href="scummvm.html#{html.escape(target)}">Launch Game</a>
     <p class="note">Primary ScummVM target: <code>{html.escape(target)}</code></p>
     <div class="meta-links">
@@ -612,6 +677,21 @@ index_html = f"""<!doctype html>
 </body>
 </html>
 """
+
+(dist / "logo.svg").write_text(logo_svg)
+
+(dist / "manifest.json").write_text(
+    json.dumps(
+        {
+            **json.loads((dist / "manifest.json").read_text()),
+            "short_name": "ScummVM Web",
+            "name": "ScummVM Web",
+            "description": "Unofficial browser-targeted WebAssembly build forked from ScummVM.",
+        },
+        indent=4,
+    )
+    + "\n"
+)
 
 (dist / "source.html").write_text(source_html)
 (dist / "index.html").write_text(index_html)
@@ -639,30 +719,16 @@ text = text.replace('        req.open("GET", _url + "/index.json", false);\n', '
 path.write_text(text)
 PY
 
-python3 - "$DIST_DIR/scummvm.html" "$DIST_DIR/games.json" <<'PY'
+python3 - "$DIST_DIR/scummvm.html" <<'PY'
 from pathlib import Path
-import html
-import json
 import sys
 
 path = Path(sys.argv[1])
-games = json.loads(Path(sys.argv[2]).read_text())["games"]
 html_text = path.read_text()
-readme_links = "".join(
-    f'<a href="{html.escape(game["readmeHref"].lstrip("/"))}">{html.escape(game["title"])} Readme</a>'
-    for game in games
-    if game.get("readmeHref")
-)
-injection = """<style>
-#compliance-panel{position:fixed;left:12px;bottom:12px;z-index:5;max-width:min(92vw,520px);padding:10px 12px;border:1px solid rgba(240,228,192,.18);background:rgba(20,14,11,.9);color:#f0e4c0;font:14px/1.4 Georgia,"Times New Roman",serif;box-shadow:0 12px 36px rgba(0,0,0,.35)}
-#compliance-panel a{color:#f0e4c0;text-decoration:none;border-bottom:1px solid rgba(240,228,192,.3)}
-#compliance-panel-links{display:flex;flex-wrap:wrap;gap:10px 14px;margin-top:6px}
-@media (max-width:700px){#compliance-panel{left:8px;right:8px;bottom:8px;max-width:none;font-size:13px}}
-</style><script>(function(){var panel=document.createElement("aside");panel.id="compliance-panel";panel.innerHTML='ScummVM is distributed here under the GPL.<div id="compliance-panel-links"><a href="source.html">Corresponding Source</a><a href="doc/COPYING">GPL-3.0 License</a>""" + readme_links + """</div>';document.body.appendChild(panel)}());</script>"""
+updated_html = html_text.replace("<title>ScummVM</title>", "<title>ScummVM Web</title>", 1)
 
-if injection not in html_text:
-    html_text = html_text.replace("</body></html>", injection + "</body></html>")
-    path.write_text(html_text)
+if updated_html != html_text:
+    path.write_text(updated_html)
 PY
 
 mkdir -p "$PUBLIC_DIR"

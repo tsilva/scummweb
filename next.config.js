@@ -1,10 +1,3 @@
-const revalidatedScummvmShellCacheHeaders = [
-  {
-    key: "Cache-Control",
-    value: "public, max-age=0, must-revalidate",
-  },
-];
-
 const immutableScummvmShellCacheHeaders = [
   {
     key: "Cache-Control",
@@ -45,26 +38,6 @@ const scummvmVersionedAssetRoutes = [
   ["doc/:path*", "/doc/:path*"],
 ];
 
-const scummvmLegacyAssetRoutes = [
-  "/scummvm.html",
-  "/scummvm.js",
-  "/scummvm.wasm",
-  "/scummvm.ini",
-  "/scummvm_fs.js",
-  "/games.json",
-  "/game.json",
-  "/source-info.json",
-  "/source.html",
-  "/index.html",
-  "/manifest.json",
-  "/favicon.ico",
-  "/logo.svg",
-  "/scummvm-192.png",
-  "/scummvm-512.png",
-  "/data/:path*",
-  "/doc/:path*",
-];
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   env: {
@@ -77,16 +50,10 @@ const nextConfig = {
     }));
   },
   async headers() {
-    return [
-      ...scummvmVersionedAssetRoutes.map(([source]) => ({
-        source: `/scummvm/:assetVersion/${source}`,
-        headers: immutableScummvmShellCacheHeaders,
-      })),
-      ...scummvmLegacyAssetRoutes.map((source) => ({
-        source,
-        headers: revalidatedScummvmShellCacheHeaders,
-      })),
-    ];
+    return scummvmVersionedAssetRoutes.map(([source]) => ({
+      source: `/scummvm/:assetVersion/${source}`,
+      headers: immutableScummvmShellCacheHeaders,
+    }));
   },
 };
 

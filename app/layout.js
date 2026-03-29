@@ -12,8 +12,9 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata = {
-  title: "ScummVM Archivist | Browser Classics",
-  description: "Launch bundled ScummVM adventures from a cinematic web landing page.",
+  title: "ScummVM Web | Unofficial Browser WASM Fork",
+  description:
+    "Unofficial browser-targeted WebAssembly build forked from ScummVM, with source and license materials plus links to the original project.",
 };
 
 export default function RootLayout({ children }) {
