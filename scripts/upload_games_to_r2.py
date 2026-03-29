@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 
+import argparse
+import json
 import os
 from mimetypes import guess_type
 from pathlib import Path
+from typing import Dict, List, Optional, Tuple
 
 import boto3
 from botocore.config import Config
+from botocore.exceptions import ClientError
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -19,6 +23,10 @@ ENDPOINT = os.environ.get(
 CACHE_CONTROL = os.environ.get(
     "SCUMMVM_R2_CACHE_CONTROL",
     "public, max-age=31536000, immutable",
+)
+GAMES_LIBRARY_CANDIDATES = (
+    ROOT / "dist" / "games.json",
+    ROOT / "public" / "games.json",
 )
 
 
@@ -65,9 +73,122 @@ def resolve_games_dir() -> Path:
     )
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description=(
+            "Upload built game payloads to Cloudflare R2. Existing remote files are "
+            "skipped by default."
+        )
+    )
+    parser.add_argument(
+        "--game",
+        help=(
+            "Upload only a single game subtree. Accepts a launcher target like "
+            "'queen' or a relative folder like 'flight-of-the-amazon-queen'. "
+            "Root-mounted games cannot be uploaded selectively."
+        ),
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Overwrite remote files even when the key already exists.",
+    )
+    return parser.parse_args()
+
+
+def load_games_library() -> Optional[Dict]:
+    for candidate in GAMES_LIBRARY_CANDIDATES:
+        if candidate.is_file():
+            return json.loads(candidate.read_text())
+
+    return None
+
+
+def resolve_selected_prefix(games_dir: Path, selection: str) -> str:
+    normalized = selection.strip().strip("/")
+    if not normalized:
+        raise SystemExit("The --game value must not be empty.")
+
+    direct_candidate = games_dir / normalized
+    if direct_candidate.exists():
+        return normalized
+
+    library = load_games_library()
+    if not library:
+        raise SystemExit(
+            "Could not resolve --game because no launcher metadata was found in dist/games.json or public/games.json."
+        )
+
+    games = library.get("games") or []
+    matches = []
+    for game in games:
+        game_path = str(game.get("path") or "").strip()
+        game_target = str(game.get("target") or "").strip()
+        relative_path = normalize_game_relative_path(game_path)
+        basename = Path(relative_path).name if relative_path else ""
+
+        if normalized in {game_target, relative_path, basename}:
+            matches.append((game_target, relative_path))
+
+    if not matches:
+        known = ", ".join(sorted(game.get("target", "") for game in games if game.get("target")))
+        raise SystemExit(f"Unknown game '{selection}'. Known targets: {known or 'none'}")
+
+    if len(matches) > 1:
+        targets = ", ".join(sorted(target for target, _ in matches))
+        raise SystemExit(f"Ambiguous --game '{selection}'. Matching targets: {targets}")
+
+    target, relative_path = matches[0]
+    if not relative_path:
+        raise SystemExit(
+            f"Game '{target}' is mounted at the games root and cannot be uploaded selectively safely. "
+            "Run the full upload or reorganize that game into its own subdirectory first."
+        )
+
+    return relative_path
+
+
+def normalize_game_relative_path(game_path: str) -> str:
+    normalized = game_path.strip().strip("/")
+    if normalized == "games":
+        return ""
+    if normalized.startswith("games/"):
+        return normalized[len("games/") :]
+    return normalized
+
+
+def collect_files(games_dir: Path, selected_prefix: Optional[str]) -> Tuple[List[Path], str]:
+    if not selected_prefix:
+        files = sorted(path for path in games_dir.rglob("*") if path.is_file())
+        return files, "."
+
+    scoped_path = games_dir / selected_prefix
+    if scoped_path.is_file():
+        return [scoped_path], selected_prefix
+
+    if not scoped_path.is_dir():
+        raise SystemExit(f"Selected game path does not exist: {scoped_path}")
+
+    files = sorted(path for path in scoped_path.rglob("*") if path.is_file())
+    return files, selected_prefix
+
+
+def remote_key_exists(client, bucket: str, key: str) -> bool:
+    try:
+        client.head_object(Bucket=bucket, Key=key)
+        return True
+    except ClientError as exc:
+        error_code = str(exc.response.get("Error", {}).get("Code", ""))
+        if error_code in {"404", "NoSuchKey", "NotFound"}:
+            return False
+        raise
+
+
 def main() -> None:
+    args = parse_args()
     load_dotenv(ROOT / ".env")
     games_dir = resolve_games_dir()
+    selected_prefix = resolve_selected_prefix(games_dir, args.game) if args.game else None
 
     session = boto3.session.Session(
         aws_access_key_id=require_env("AWS_ACCESS_KEY_ID"),
@@ -80,9 +201,15 @@ def main() -> None:
         config=Config(signature_version="s3v4"),
     )
 
-    files = sorted(path for path in games_dir.rglob("*") if path.is_file())
-    print(f"Uploading {len(files)} files from {games_dir} to bucket '{BUCKET}' via {ENDPOINT}")
+    files, scope_label = collect_files(games_dir, selected_prefix)
+    force_label = " with overwrite enabled" if args.force else ""
+    print(
+        f"Uploading {len(files)} files from {games_dir}"
+        f" (scope: {scope_label}) to bucket '{BUCKET}' via {ENDPOINT}{force_label}"
+    )
 
+    uploaded = 0
+    skipped = 0
     for index, path in enumerate(files, 1):
         key = path.relative_to(games_dir).as_posix()
         extra_args = {"CacheControl": CACHE_CONTROL}
@@ -90,12 +217,19 @@ def main() -> None:
         if content_type:
             extra_args["ContentType"] = content_type
 
+        if not args.force and remote_key_exists(client, BUCKET, key):
+            skipped += 1
+            if skipped % 25 == 0 or index == len(files):
+                print(f"Skipped {skipped} existing files so far; latest: {key}")
+            continue
+
         client.upload_file(str(path), BUCKET, key, ExtraArgs=extra_args)
+        uploaded += 1
 
         if index % 25 == 0 or index == len(files):
-            print(f"Uploaded {index}/{len(files)}: {key}")
+            print(f"Processed {index}/{len(files)} files; uploaded latest: {key}")
 
-    print("Upload complete")
+    print(f"Upload complete: uploaded {uploaded}, skipped {skipped}")
 
 
 if __name__ == "__main__":

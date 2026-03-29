@@ -17,7 +17,11 @@
     "background_color": "#3367D6",
     "display": "fullscreen",
     "theme_color": "#c60",
-    "shortcuts": [],
+    "shortcuts": [
+     
+    ],
     "description": "ScummVM provides a way to play many classic graphical point-and-click adventure games and RPGs - such as SCUMM games (like Monkey Island and Day of the Tentacle), Revolution's Beneath A Steel Sky, and many more.",
-    "screenshots": []
+    "screenshots": [
+     
+    ]
   }
