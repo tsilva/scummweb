@@ -75,6 +75,22 @@ const artByTarget = {
     screenshots: [],
     tone: "tone-default",
   },
+  sword25: {
+    eyebrow: "Fan Sequel Spotlight",
+    summary:
+      "Broken Sword 2.5 sends George and Nico back into a hand-painted conspiracy full of autumn streets, Templar fallout, and the lavish fan-made craft that made it a ScummVM showcase.",
+    genre: "Conspiracy Adventure",
+    studio: "mindFactory",
+    year: "2008",
+    badge: "Freeware Fan Game",
+    tag: "Templar return",
+    heroImage: "/launcher/sword25-hero.jpg",
+    landscapeImage: "/launcher/sword25-cover.jpg",
+    posterImage: "/launcher/sword25-cover.jpg",
+    spotlightImage: "/launcher/sword25-cover.jpg",
+    screenshots: [],
+    tone: "tone-default",
+  },
 };
 
 const defaultArt = {

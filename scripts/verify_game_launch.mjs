@@ -89,12 +89,21 @@ async function verifyTarget(context, baseUrl, game) {
 
   const output = await page.locator("#output").inputValue();
   const statusText = await page.locator("#status").textContent().catch(() => "");
+  const fatalOutputPatterns = [
+    /Game data path does not exist/i,
+    /Couldn't identify game/i,
+    /No game data was found/i,
+  ];
 
   if (pageErrors.length > 0) {
     throw new Error(`Page errors during ${game.target} launch:\n${pageErrors.join("\n")}`);
   }
 
   if (/Exception thrown/i.test(statusText) || /TypeError|ReferenceError|abort\(/i.test(output)) {
+    throw new Error(`Launch failed for ${game.target}.\n${output}`);
+  }
+
+  if (fatalOutputPatterns.some((pattern) => pattern.test(output))) {
     throw new Error(`Launch failed for ${game.target}.\n${output}`);
   }
 

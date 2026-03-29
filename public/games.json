@@ -40,6 +40,16 @@
       "platform": "pc",
       "extra": "VGA",
       "readmeHref": "https://scummvm-games.tsilva.eu/lure/README"
+    },
+    {
+      "target": "sword25",
+      "title": "Broken Sword 2.5: The Return of the Templars",
+      "path": "/games/broken-sword-2.5",
+      "engineId": "sword25",
+      "gameId": "sword25",
+      "platform": "",
+      "extra": "",
+      "readmeHref": "https://scummvm-games.tsilva.eu/broken-sword-2.5/README"
     }
   ]
 }

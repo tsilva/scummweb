@@ -248,7 +248,11 @@ def main() -> None:
         if content_type:
             extra_args["ContentType"] = content_type
 
-        if not args.force and remote_key_exists(client, BUCKET, key):
+        should_overwrite = args.force or (
+            selected_prefix is not None and (key == "index.json" or key.endswith("/index.json"))
+        )
+
+        if not should_overwrite and remote_key_exists(client, BUCKET, key):
             skipped += 1
             if skipped % 25 == 0 or index == len(files):
                 print(f"Skipped {skipped} existing files so far; latest: {key}")

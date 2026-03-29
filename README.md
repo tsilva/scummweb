@@ -5,14 +5,14 @@
 
   Browser launcher for installed ScummVM web targets, packaged with ScummVM's upstream Emscripten build.
 
-  Next.js app for serving a prebuilt ScummVM WebAssembly bundle and booting directly into detected launcher targets such as `sky`, `dreamweb`, `queen`, and `lure`.
+  Next.js app for serving a prebuilt ScummVM WebAssembly bundle and booting directly into detected launcher targets such as `sky`, `dreamweb`, `queen`, `lure`, and `sword25`.
 </div>
 
 ## ✨ Features
 
 - ScummVM-styled launcher UI that renders every detected ScummVM target from the generated bundle metadata
-- Build pipeline that clones ScummVM, downloads the matching emsdk, and compiles a web target with the `sky`, `dreamweb`, `queen`, and `lure` engines enabled
-- Local game payload ingestion from `downloads/bass-cd-1.2.zip` plus optional `downloads/dreamweb*.zip`, `downloads/FOTAQ*.zip`, and `downloads/lure*.zip` archives into the generated browser bundle
+- Build pipeline that clones ScummVM, downloads the matching emsdk, and compiles a web target with the `sky`, `dreamweb`, `queen`, `lure`, and `sword25` engines enabled
+- Local game payload ingestion from `downloads/bass-cd-1.2.zip` plus optional `downloads/dreamweb*.zip`, `downloads/FOTAQ*.zip`, `downloads/lure*.zip`, and `downloads/sword25*.zip` archives into the generated browser bundle
 - Production game delivery through Cloudflare R2 at `https://scummvm-games.tsilva.eu`, fetched directly by the browser with CORS enabled; the local app proxy remains available only for localhost verification
 - Archive-based asset flow for the ScummVM shell only: generated non-game web files can be stored in `bundle/scummvm-public.zip` and restored into `public/` for local workflows
 - Compliance surface that keeps `source.html`, `source-info.json`, bundled license texts, and bundled game readmes accessible from the launcher
@@ -21,7 +21,7 @@
 ## 🏗️ How It Works
 
 1. **Build ScummVM**: `scripts/build_bass_web.sh` clones `vendor/scummvm` if needed, installs the matching emsdk, and runs the upstream Emscripten build with the configured engines.
-2. **Install Game Data**: The script unpacks `downloads/bass-cd-1.2.zip`, any matching `downloads/dreamweb*.zip`, `downloads/FOTAQ*.zip`, and `downloads/lure*.zip` archives into ScummVM's web build directory, then lets ScummVM detect installed targets.
+2. **Install Game Data**: The script unpacks `downloads/bass-cd-1.2.zip`, any matching `downloads/dreamweb*.zip`, `downloads/FOTAQ*.zip`, `downloads/lure*.zip`, and `downloads/sword25*.zip` archives into ScummVM's web build directory, then lets ScummVM detect installed targets.
 3. **Stamp Compliance Metadata**: `game.json`, `games.json`, `source-info.json`, and `source.html` are generated alongside ScummVM's bundled docs and runtime files.
 4. **Upload Game Data**: `scripts/upload_games_to_r2.py` uploads the extracted game payload from `dist/games/` (or `public/games/` as a fallback) to R2, preserving the directory layout behind the `scummvm-games.tsilva.eu` custom domain. It skips existing remote keys by default, supports `--force` to overwrite, and can scope uploads to a single subdirectory-backed game with `--game`.
 5. **Serve the Launcher**: Next.js serves the launcher shell, and the ScummVM runtime mounts the `games` volume from the configured games origin. On localhost, the app keeps a small `/games-proxy/*` fallback so the verification script can run even when bucket CORS is scoped to production origins.
@@ -38,6 +38,7 @@ The launcher shell lives in [`app/page.js`](app/page.js), the CTA component live
 - Optional DreamWeb archive copied into `downloads/` with a filename matching `dreamweb*.zip`
 - Optional Flight of the Amazon Queen archive copied into `downloads/` with a filename matching `FOTAQ*.zip`
 - Optional Lure of the Temptress archive copied into `downloads/` with a filename matching `lure*.zip`
+- Optional Broken Sword 2.5 archive copied into `downloads/` with a filename matching `sword25*.zip`
 - A local Chrome or Chromium install if you want to run the Playwright verification script
 
 ### Setup
@@ -57,6 +58,7 @@ Useful upload variants:
 # Upload just one subdirectory-backed game target
 python3 ./scripts/upload_games_to_r2.py --game queen
 python3 ./scripts/upload_games_to_r2.py --game lure
+python3 ./scripts/upload_games_to_r2.py --game sword25
 
 # Re-upload everything even if keys already exist
 python3 ./scripts/upload_games_to_r2.py --force
@@ -120,7 +122,8 @@ downloads/
 ├── bass-cd-1.2.zip
 ├── dreamweb*.zip
 ├── FOTAQ*.zip
-└── lure*.zip
+├── lure*.zip
+└── sword25*.zip
 scripts/
 ├── archive_scummvm_bundle.sh
 ├── build_bass_web.sh

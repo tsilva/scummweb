@@ -12,6 +12,7 @@ BASS_ZIP="$DOWNLOADS_DIR/bass-cd-1.2.zip"
 DEFAULT_EMSDK_VERSION="$(sed -n 's/^EMSDK_VERSION=\"\\([^\"]*\\)\"/\\1/p' "$SCUMMVM_DIR/dists/emscripten/build.sh" 2>/dev/null | head -n 1)"
 EMSDK_VERSION="${EMSDK_VERSION:-${DEFAULT_EMSDK_VERSION:-3.1.51}}"
 EMSDK_DIR="$SCUMMVM_DIR/dists/emscripten/emsdk-$EMSDK_VERSION"
+EMSCRIPTEN_LIBS_BUILD_DIR="$SCUMMVM_DIR/dists/emscripten/libs/build"
 
 shopt -s nullglob
 
@@ -62,6 +63,7 @@ find_optional_archive() {
 DREAMWEB_ZIP="$(find_optional_archive 'dreamweb*.zip' 'DreamWeb*.zip' 'DREAMWEB*.zip' || true)"
 QUEEN_ZIP="$(find_optional_archive 'FOTAQ*.zip' 'fotaq*.zip' 'Flight*Amazon*Queen*.zip' 'flight*amazon*queen*.zip' || true)"
 LURE_ZIP="$(find_optional_archive 'lure*.zip' 'Lure*.zip' 'LURE*.zip' || true)"
+SWORD25_ZIP="$(find_optional_archive 'sword25*.zip' 'Sword25*.zip' 'SWORD25*.zip' || true)"
 GAME_ARCHIVES=("$BASS_ZIP")
 MANAGED_PUBLIC_PATHS=(
   data
@@ -102,11 +104,52 @@ else
   echo "Lure of the Temptress archive not found in $DOWNLOADS_DIR; building without Lure." >&2
 fi
 
+if [[ -n "$SWORD25_ZIP" ]]; then
+  GAME_ARCHIVES+=("$SWORD25_ZIP")
+else
+  echo "Broken Sword 2.5 archive not found in $DOWNLOADS_DIR; building without Sword25." >&2
+fi
+
 mkdir -p "$VENDOR_DIR"
 
 if [[ ! -d "$SCUMMVM_DIR/.git" ]]; then
   git clone --depth 1 --branch v2.9.1 https://github.com/scummvm/scummvm.git "$SCUMMVM_DIR"
 fi
+
+python3 - "$SCUMMVM_DIR/engines/sword25/detection_tables.h" <<'PY'
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+text = path.read_text()
+known_md5 = 'AD_ENTRY1s("data.b25c", "1f89a63e3509aa64626cc90cd2561032", 827397764)'
+
+if known_md5 not in text:
+    anchor = '''\t{
+\t\t"sword25",
+\t\t"Latest version",
+\t\tAD_ENTRY1s("data.b25c", "880a8a67faf4a4e7ab62cf114b771428", 827397764),
+\t\tCommon::UNK_LANG,
+\t\tCommon::kPlatformUnknown,
+\t\tADGF_NO_FLAGS,
+\t\tGUIO1(GUIO_NOASPECT)
+\t},
+'''
+    replacement = anchor + '''
+\t{
+\t\t"sword25",
+\t\t"Latest version",
+\t\tAD_ENTRY1s("data.b25c", "1f89a63e3509aa64626cc90cd2561032", 827397764),
+\t\tCommon::UNK_LANG,
+\t\tCommon::kPlatformUnknown,
+\t\tADGF_NO_FLAGS,
+\t\tGUIO1(GUIO_NOASPECT)
+\t},
+'''
+    if anchor not in text:
+        raise SystemExit("Could not find Sword25 detection anchor in vendored ScummVM source")
+    path.write_text(text.replace(anchor, replacement, 1))
+PY
 
 if [[ ! -d "$EMSDK_DIR" ]]; then
   tmp_archive="$SCUMMVM_DIR/dists/emscripten/emsdk-$EMSDK_VERSION.tar.gz"
@@ -175,6 +218,79 @@ chmod +x "$ROOT_DIR/tools/bin/wget"
 
 export PATH="$ROOT_DIR/tools/bin:$PATH"
 
+source "$EMSDK_DIR/emsdk_env.sh"
+EMSDK_NPM="$(dirname "$EMSDK_NODE")/npm"
+sysroot_dir="$EMSDK_DIR/upstream/emscripten/cache/sysroot"
+vorbis_source_dir="$EMSDK_DIR/upstream/emscripten/cache/ports/vorbis/Vorbis-version_1"
+vorbis_build_dir="/tmp/scummvm-web-vorbis-build"
+SWORD25_CONFIG_ARGS=(
+  --enable-ogg
+  --enable-vorbis
+  --enable-zlib
+  --enable-png
+  --enable-theoradec
+  --with-ogg-prefix="$EMSCRIPTEN_LIBS_BUILD_DIR"
+  --with-vorbis-prefix="$EMSCRIPTEN_LIBS_BUILD_DIR"
+  --with-zlib-prefix="$EMSCRIPTEN_LIBS_BUILD_DIR"
+  --with-png-prefix="$EMSCRIPTEN_LIBS_BUILD_DIR"
+)
+
+# Prime the Emscripten ports cache so the staged codec prefix can be built
+# from the same versions ScummVM's Emscripten toolchain expects.
+cat > /tmp/scummvm-web-port-png.c <<'EOF'
+#include <png.h>
+int main(void) { return 0; }
+EOF
+emcc /tmp/scummvm-web-port-png.c -s USE_LIBPNG=1 -o /tmp/scummvm-web-port-png.js >/dev/null
+
+cat > /tmp/scummvm-web-port-vorbis.c <<'EOF'
+#include <ogg/ogg.h>
+#include <vorbis/codec.h>
+int main(void) { return 0; }
+EOF
+emcc /tmp/scummvm-web-port-vorbis.c -s USE_OGG=1 -s USE_VORBIS=1 -o /tmp/scummvm-web-port-vorbis.js >/dev/null
+
+mkdir -p \
+  "$EMSCRIPTEN_LIBS_BUILD_DIR/include" \
+  "$EMSCRIPTEN_LIBS_BUILD_DIR/include/ogg" \
+  "$EMSCRIPTEN_LIBS_BUILD_DIR/include/vorbis" \
+  "$EMSCRIPTEN_LIBS_BUILD_DIR/lib"
+
+cp "$sysroot_dir/include/ogg/"*.h "$EMSCRIPTEN_LIBS_BUILD_DIR/include/ogg/"
+cp "$sysroot_dir/include/vorbis/"*.h "$EMSCRIPTEN_LIBS_BUILD_DIR/include/vorbis/"
+cp \
+  "$sysroot_dir/include/png.h" \
+  "$sysroot_dir/include/pngconf.h" \
+  "$sysroot_dir/include/zlib.h" \
+  "$sysroot_dir/include/zconf.h" \
+  "$EMSCRIPTEN_LIBS_BUILD_DIR/include/"
+cp \
+  "$sysroot_dir/lib/wasm32-emscripten/libogg.a" \
+  "$sysroot_dir/lib/wasm32-emscripten/libpng.a" \
+  "$sysroot_dir/lib/wasm32-emscripten/libvorbis.a" \
+  "$sysroot_dir/lib/wasm32-emscripten/libz.a" \
+  "$EMSCRIPTEN_LIBS_BUILD_DIR/lib/"
+
+if [[ ! -f "$EMSCRIPTEN_LIBS_BUILD_DIR/lib/libvorbisfile.a" ]]; then
+  rm -rf "$vorbis_build_dir"
+  emcmake cmake \
+    -S "$vorbis_source_dir" \
+    -B "$vorbis_build_dir" \
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+    -DBUILD_SHARED_LIBS=OFF \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX="$EMSCRIPTEN_LIBS_BUILD_DIR" \
+    -DOGG_INCLUDE_DIRS="$EMSCRIPTEN_LIBS_BUILD_DIR/include" \
+    -DOGG_LIBRARIES="$EMSCRIPTEN_LIBS_BUILD_DIR/lib/libogg.a" >/dev/null
+  cmake --build "$vorbis_build_dir" --target vorbis vorbisfile vorbisenc -j 4 >/dev/null
+  cp \
+    "$vorbis_build_dir/lib/libvorbis.a" \
+    "$vorbis_build_dir/lib/libvorbisenc.a" \
+    "$vorbis_build_dir/lib/libvorbisfile.a" \
+    "$EMSCRIPTEN_LIBS_BUILD_DIR/lib/"
+  cp "$vorbis_source_dir/include/vorbis/"*.h "$EMSCRIPTEN_LIBS_BUILD_DIR/include/vorbis/"
+fi
+
 cd "$SCUMMVM_DIR"
 
 ./dists/emscripten/build.sh setup configure make dist \
@@ -183,11 +299,12 @@ cd "$SCUMMVM_DIR"
   --enable-engine=dreamweb \
   --enable-engine=queen \
   --enable-engine=lure \
+  --enable-engine=sword25 \
+  "${SWORD25_CONFIG_ARGS[@]}" \
   --disable-seq-midi \
   --disable-timidity
 
 source "$EMSDK_DIR/emsdk_env.sh"
-EMSDK_NPM="$(dirname "$EMSDK_NODE")/npm"
 
 mkdir -p build-emscripten/games
 rm -rf build-emscripten/games/*
@@ -198,6 +315,11 @@ for game_archive in "${GAME_ARCHIVES[@]}"; do
   case "$archive_name_lower" in
     fotaq*.zip|flight*amazon*queen*.zip)
       target_dir="build-emscripten/games/flight-of-the-amazon-queen"
+      mkdir -p "$target_dir"
+      unzip -q -o "$game_archive" -d "$target_dir"
+      ;;
+    sword25*.zip)
+      target_dir="build-emscripten/games/broken-sword-2.5"
       mkdir -p "$target_dir"
       unzip -q -o "$game_archive" -d "$target_dir"
       ;;
@@ -224,6 +346,32 @@ trap cleanup EXIT
 "$EMSDK_NODE" "$ROOT_DIR/scripts/generate_game_config.mjs" \
   "$SCUMMVM_DIR/build-emscripten" \
   "http://127.0.0.1:8000/scummvm.html#--add --path=/games --recursive"
+
+python3 - "$SCUMMVM_DIR/build-emscripten/scummvm.ini" "$SCUMMVM_DIR/build-emscripten/games/broken-sword-2.5/data.b25c" <<'PY'
+from pathlib import Path
+import sys
+
+ini_path = Path(sys.argv[1])
+game_data_path = Path(sys.argv[2])
+
+if not ini_path.is_file() or not game_data_path.is_file():
+    raise SystemExit(0)
+
+ini_text = ini_path.read_text()
+if "[sword25]" in ini_text:
+    raise SystemExit(0)
+
+section = """
+[sword25]
+description=Broken Sword 2.5: The Return of the Templars
+path=/games/broken-sword-2.5
+engineid=sword25
+gameid=sword25
+guioptions=sndNoMIDI noAspect gameOption1
+"""
+
+ini_path.write_text(ini_text.rstrip() + "\n" + section.lstrip())
+PY
 
 mkdir -p "$DIST_DIR"
 rm -rf "$DIST_DIR"
