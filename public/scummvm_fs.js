@@ -30,12 +30,41 @@ const DEBUG = false
 
 const PRODUCTION_GAMES_ORIGIN = 'https://scummvm-games.tsilva.eu';
 
+function getScummvmAssetVersion() {
+    const pathname = globalThis.location?.pathname || "";
+    const match = pathname.match(/\/scummvm\/([^/]+)\//);
+    return match ? decodeURIComponent(match[1]) : "";
+}
+
+function withCacheKey(url, cacheKey) {
+    if (!cacheKey) {
+        return url;
+    }
+
+    const resolved = new URL(url, globalThis.location?.href || "http://localhost");
+    resolved.searchParams.set("v", cacheKey);
+    return resolved.toString();
+}
+
+function buildRemoteUrl(baseUrl, remotePath) {
+    const resolved = new URL(baseUrl, globalThis.location?.href || "http://localhost");
+    const normalizedPath = remotePath.startsWith("/") ? remotePath : `/${remotePath}`;
+    resolved.pathname = `${resolved.pathname.replace(/\/$/, "")}${normalizedPath}`;
+    return resolved.toString();
+}
+
 function getDefaultRemoteFilesystems() {
     const hostname = globalThis.location?.hostname || "";
     const useLocalProxy = hostname === "localhost" || hostname === "127.0.0.1";
 
+    if (useLocalProxy) {
+        return {
+            games: "/games-proxy"
+        };
+    }
+
     return {
-        games: useLocalProxy ? "/games-proxy" : PRODUCTION_GAMES_ORIGIN
+        games: withCacheKey(PRODUCTION_GAMES_ORIGIN, getScummvmAssetVersion())
     };
 }
 
@@ -62,7 +91,7 @@ export class ScummvmFS {
         this.FS = _FS;
         this.url = resolveFilesystemUrl(_url)
         var req = new XMLHttpRequest(); // a new request
-        req.open("GET", this.url + "/index.json", false);
+        req.open("GET", buildRemoteUrl(this.url, "/index.json"), false);
         req.send(null);
         var json_index = JSON.parse(req.responseText)
         this.fs_index = {}
@@ -182,7 +211,7 @@ export class ScummvmFS {
         self = this;
         let data = null;
         const req = new XMLHttpRequest();
-        const url = _url + path;
+        const url = buildRemoteUrl(_url, path);
         req.open('GET', url, false);
 
         let err = null;
