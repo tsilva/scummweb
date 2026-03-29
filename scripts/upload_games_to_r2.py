@@ -24,6 +24,10 @@ CACHE_CONTROL = os.environ.get(
     "SCUMMVM_R2_CACHE_CONTROL",
     "public, max-age=31536000, immutable",
 )
+INDEX_CACHE_CONTROL = os.environ.get(
+    "SCUMMVM_R2_INDEX_CACHE_CONTROL",
+    "public, max-age=60, stale-while-revalidate=300",
+)
 GAMES_LIBRARY_CANDIDATES = (
     ROOT / "dist" / "games.json",
     ROOT / "public" / "games.json",
@@ -157,6 +161,24 @@ def normalize_game_relative_path(game_path: str) -> str:
     return normalized
 
 
+def collect_required_index_files(games_dir: Path, selected_prefix: str) -> List[Path]:
+    """Include ancestor index manifests so scoped uploads stay discoverable."""
+    required: List[Path] = []
+    current = games_dir
+
+    root_index = current / "index.json"
+    if root_index.is_file():
+        required.append(root_index)
+
+    for part in Path(selected_prefix).parts[:-1]:
+        current = current / part
+        index_path = current / "index.json"
+        if index_path.is_file():
+            required.append(index_path)
+
+    return required
+
+
 def collect_files(games_dir: Path, selected_prefix: Optional[str]) -> Tuple[List[Path], str]:
     if not selected_prefix:
         files = sorted(path for path in games_dir.rglob("*") if path.is_file())
@@ -170,6 +192,14 @@ def collect_files(games_dir: Path, selected_prefix: Optional[str]) -> Tuple[List
         raise SystemExit(f"Selected game path does not exist: {scoped_path}")
 
     files = sorted(path for path in scoped_path.rglob("*") if path.is_file())
+    seen = {path.relative_to(games_dir).as_posix() for path in files}
+
+    for index_path in collect_required_index_files(games_dir, selected_prefix):
+        relative_key = index_path.relative_to(games_dir).as_posix()
+        if relative_key not in seen:
+            files.insert(0, index_path)
+            seen.add(relative_key)
+
     return files, selected_prefix
 
 
@@ -212,7 +242,8 @@ def main() -> None:
     skipped = 0
     for index, path in enumerate(files, 1):
         key = path.relative_to(games_dir).as_posix()
-        extra_args = {"CacheControl": CACHE_CONTROL}
+        cache_control = INDEX_CACHE_CONTROL if key == "index.json" or key.endswith("/index.json") else CACHE_CONTROL
+        extra_args = {"CacheControl": cache_control}
         content_type, _ = guess_type(str(path))
         if content_type:
             extra_args["ContentType"] = content_type

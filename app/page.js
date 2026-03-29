@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import LaunchButton from "./launch-button";
+import ProjectNoticeModal from "./project-notice-modal";
 
 const scummvmAssetVersion = process.env.NEXT_PUBLIC_SCUMMVM_ASSET_VERSION || "dev";
 const scummvmOfficialSite = "https://www.scummvm.org/";
@@ -246,24 +247,23 @@ export default async function HomePage() {
 
   const catalog = games.map(getGameMeta);
   const featuredGame = pickFeaturedGame(catalog) || catalog[0];
-  const engineSummary = Array.from(
-    new Set(catalog.map((game) => game.engineId).filter(Boolean))
-  )
-    .map((engineId) => engineId.toUpperCase())
-    .join(" / ");
   const buildStamp = `${shortCommit(sourceInfo.project.commit)} / ${shortCommit(
     sourceInfo.scummvm.commit
   )}`;
 
   return (
     <>
+      <ProjectNoticeModal
+        officialHref={scummvmOfficialSite}
+        sourceHref={getVersionedScummvmAssetPath("/source.html")}
+      />
+
       <nav className="dashboard-nav">
         <div className="nav-cluster nav-cluster-left">
           <div className="nav-brand-group">
             <a className="nav-brand" href="#browse">
               ScummVM Web
             </a>
-            <span className="nav-badge">Unofficial WASM fork</span>
           </div>
 
           <div className="nav-links" aria-label="Main">
@@ -312,20 +312,6 @@ export default async function HomePage() {
               <p className="hero-kicker">{featuredGame.eyebrow}</p>
               <h1>{featuredGame.displayTitle}</h1>
               <p className="hero-summary">{featuredGame.summary}</p>
-              <div className="project-notice" role="note" aria-label="Project notice">
-                <p className="project-notice-kicker">ScummVM Status</p>
-                <p>
-                  This is not the official ScummVM website or a stock ScummVM release. It is an
-                  unofficial WebAssembly build forked from ScummVM for browser deployment, with
-                  source and license materials published here to respect ScummVM&apos;s GPL terms.
-                </p>
-                <div className="project-notice-links">
-                  <a href={scummvmOfficialSite} rel="noreferrer" target="_blank">
-                    Visit the original ScummVM project
-                  </a>
-                  <a href={getVersionedScummvmAssetPath("/source.html")}>Review source and license</a>
-                </div>
-              </div>
 
               <div className="hero-actions">
                 <LaunchButton href={featuredGame.href} label="Start Adventure" />
@@ -343,10 +329,6 @@ export default async function HomePage() {
                 <div>
                   <dt>Genre</dt>
                   <dd>{featuredGame.genre}</dd>
-                </div>
-                <div>
-                  <dt>Runtime</dt>
-                  <dd>{engineSummary || "ScummVM"}</dd>
                 </div>
               </dl>
 

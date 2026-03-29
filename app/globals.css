@@ -98,7 +98,6 @@ svg {
   letter-spacing: -0.04em;
 }
 
-.nav-badge,
 .project-notice-kicker {
   display: inline-flex;
   align-items: center;
@@ -323,6 +322,32 @@ svg {
   backdrop-filter: blur(18px);
 }
 
+.project-notice-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.project-notice-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 10, 7, 0.78);
+  backdrop-filter: blur(14px);
+}
+
+.project-notice-panel {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 52rem);
+  max-width: 52rem;
+  margin: 0;
+  padding: 2rem;
+}
+
 .project-notice-kicker {
   margin-bottom: 0.85rem;
 }
@@ -352,6 +377,33 @@ svg {
 .project-notice-links a:hover,
 .project-notice-links a:focus-visible {
   color: var(--accent-strong);
+}
+
+.project-notice-dismiss {
+  margin-top: 1.35rem;
+  padding: 0.85rem 1.15rem;
+  border: 1px solid rgba(127, 211, 127, 0.22);
+  background: rgba(25, 25, 25, 0.84);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.project-notice-dismiss:hover,
+.project-notice-dismiss:focus-visible {
+  transform: translateY(-2px);
+  color: var(--accent-strong);
+  border-color: rgba(127, 211, 127, 0.36);
+  background: rgba(31, 38, 33, 0.92);
 }
 
 .hero-actions {
@@ -408,7 +460,7 @@ svg {
 
 .hero-metadata {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
   max-width: 40rem;
   margin: 2rem 0 0;
@@ -841,6 +893,14 @@ svg {
   .project-notice-links {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .project-notice-panel {
+    padding: 1.3rem;
+  }
+
+  .project-notice-dismiss {
+    width: 100%;
   }
 
   .launch-button,

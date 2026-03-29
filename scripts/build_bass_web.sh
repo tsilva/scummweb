@@ -706,7 +706,7 @@ path = Path(sys.argv[1])
 text = path.read_text()
 games_origin = os.environ.get("SCUMMVM_GAMES_ORIGIN", "https://scummvm-games.tsilva.eu").rstrip("/")
 
-prefix = f"""const PRODUCTION_GAMES_ORIGIN = {games_origin!r};\n\nfunction getDefaultRemoteFilesystems() {{\n    const hostname = globalThis.location?.hostname || \"\";\n    const useLocalProxy = hostname === \"localhost\" || hostname === \"127.0.0.1\";\n\n    return {{\n        games: useLocalProxy ? \"/games-proxy\" : PRODUCTION_GAMES_ORIGIN\n    }};\n}}\n\nfunction resolveFilesystemUrl(url) {{\n    if (/^[a-z]+:\\/\\//i.test(url)) {{\n        return url.replace(/\\/$/, \"\");\n    }}\n\n    const configured = globalThis.SCUMMVM_FILESYSTEM_BASES?.[url] || getDefaultRemoteFilesystems()[url];\n    if (configured) {{\n        return configured.replace(/\\/$/, \"\");\n    }}\n\n    return url;\n}}\n\n"""
+prefix = f"""const PRODUCTION_GAMES_ORIGIN = {games_origin!r};\n\nfunction getScummvmAssetVersion() {{\n    const pathname = globalThis.location?.pathname || \"\";\n    const match = pathname.match(/\\/scummvm\\/([^/]+)\\//);\n    return match ? decodeURIComponent(match[1]) : \"\";\n}}\n\nfunction withCacheKey(url, cacheKey) {{\n    if (!cacheKey) {{\n        return url;\n    }}\n\n    const resolved = new URL(url, globalThis.location?.href || \"http://localhost\");\n    resolved.searchParams.set(\"v\", cacheKey);\n    return resolved.toString();\n}}\n\nfunction buildRemoteUrl(baseUrl, remotePath) {{\n    const resolved = new URL(baseUrl, globalThis.location?.href || \"http://localhost\");\n    const normalizedPath = remotePath.startsWith(\"/\") ? remotePath : `/${{remotePath}}`;\n    resolved.pathname = `${{resolved.pathname.replace(/\\/$/, \"\")}}${{normalizedPath}}`;\n    return resolved.toString();\n}}\n\nfunction getDefaultRemoteFilesystems() {{\n    const hostname = globalThis.location?.hostname || \"\";\n    const useLocalProxy = hostname === \"localhost\" || hostname === \"127.0.0.1\";\n\n    if (useLocalProxy) {{\n        return {{\n            games: \"/games-proxy\"\n        }};\n    }}\n\n    return {{\n        games: withCacheKey(PRODUCTION_GAMES_ORIGIN, getScummvmAssetVersion())\n    }};\n}}\n\nfunction resolveFilesystemUrl(url) {{\n    if (/^[a-z]+:\\/\\//i.test(url)) {{\n        return url.replace(/\\/$/, \"\");\n    }}\n\n    const configured = globalThis.SCUMMVM_FILESYSTEM_BASES?.[url] || getDefaultRemoteFilesystems()[url];\n    if (configured) {{\n        return configured.replace(/\\/$/, \"\");\n    }}\n\n    return url;\n}}\n\n"""
 needle = "const DEBUG = false\n\n\nexport class ScummvmFS {"
 replacement = "const DEBUG = false\n\n\n" + prefix + "export class ScummvmFS {"
 
@@ -714,7 +714,8 @@ if prefix not in text and needle in text:
     text = text.replace(needle, replacement, 1)
 
 text = text.replace("        this.url = _url\n", "        this.url = resolveFilesystemUrl(_url)\n", 1)
-text = text.replace('        req.open("GET", _url + "/index.json", false);\n', '        req.open("GET", this.url + "/index.json", false);\n', 1)
+text = text.replace('        req.open("GET", _url + "/index.json", false);\n', '        req.open("GET", buildRemoteUrl(this.url, "/index.json"), false);\n', 1)
+text = text.replace("        const url = _url + path;\n", "        const url = buildRemoteUrl(_url, path);\n", 1)
 
 path.write_text(text)
 PY
