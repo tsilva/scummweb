@@ -63,6 +63,7 @@ find_optional_archive() {
 DREAMWEB_ZIP="$(find_optional_archive 'dreamweb*.zip' 'DreamWeb*.zip' 'DREAMWEB*.zip' || true)"
 QUEEN_ZIP="$(find_optional_archive 'FOTAQ*.zip' 'fotaq*.zip' 'Flight*Amazon*Queen*.zip' 'flight*amazon*queen*.zip' || true)"
 LURE_ZIP="$(find_optional_archive 'lure*.zip' 'Lure*.zip' 'LURE*.zip' || true)"
+DRASCULA_ZIP="$(find_optional_archive 'drascula*.zip' 'Drascula*.zip' 'DRASCULA*.zip' || true)"
 SWORD25_ZIP="$(find_optional_archive 'sword25*.zip' 'Sword25*.zip' 'SWORD25*.zip' || true)"
 GAME_ARCHIVES=("$BASS_ZIP")
 MANAGED_PUBLIC_PATHS=(
@@ -102,6 +103,12 @@ if [[ -n "$LURE_ZIP" ]]; then
   GAME_ARCHIVES+=("$LURE_ZIP")
 else
   echo "Lure of the Temptress archive not found in $DOWNLOADS_DIR; building without Lure." >&2
+fi
+
+if [[ -n "$DRASCULA_ZIP" ]]; then
+  GAME_ARCHIVES+=("$DRASCULA_ZIP")
+else
+  echo "Drascula archive not found in $DOWNLOADS_DIR; building without Drascula." >&2
 fi
 
 if [[ -n "$SWORD25_ZIP" ]]; then
@@ -299,6 +306,7 @@ cd "$SCUMMVM_DIR"
   --enable-engine=dreamweb \
   --enable-engine=queen \
   --enable-engine=lure \
+  --enable-engine=drascula \
   --enable-engine=sword25 \
   "${SWORD25_CONFIG_ARGS[@]}" \
   --disable-seq-midi \
@@ -318,6 +326,11 @@ for game_archive in "${GAME_ARCHIVES[@]}"; do
       mkdir -p "$target_dir"
       unzip -q -o "$game_archive" -d "$target_dir"
       ;;
+    drascula*.zip)
+      target_dir="build-emscripten/games/drascula"
+      mkdir -p "$target_dir"
+      unzip -q -o "$game_archive" -d "$target_dir"
+      ;;
     sword25*.zip)
       target_dir="build-emscripten/games/broken-sword-2.5"
       mkdir -p "$target_dir"
@@ -328,7 +341,7 @@ for game_archive in "${GAME_ARCHIVES[@]}"; do
       ;;
   esac
 done
-"$EMSDK_NODE" dists/emscripten/build-make_http_index.js build-emscripten/games
+"$EMSDK_NODE" "$SCUMMVM_DIR/dists/emscripten/build-make_http_index.js" "$SCUMMVM_DIR/build-emscripten/games"
 
 cd "$ROOT_DIR"
 mkdir -p artifacts
@@ -372,6 +385,65 @@ guioptions=sndNoMIDI noAspect gameOption1
 
 ini_path.write_text(ini_text.rstrip() + "\n" + section.lstrip())
 PY
+
+python3 - "$SCUMMVM_DIR/build-emscripten/scummvm.ini" "$SCUMMVM_DIR/build-emscripten/games" <<'PY'
+from pathlib import Path
+import shutil
+import sys
+
+ini_path = Path(sys.argv[1])
+games_dir = Path(sys.argv[2])
+allowed_engine_ids = {"dreamweb", "sky", "queen", "lure", "drascula", "sword25"}
+
+lines = ini_path.read_text().splitlines()
+sections = []
+current = None
+
+for line in lines:
+    if line.startswith("[") and line.endswith("]"):
+        current = {"name": line[1:-1], "lines": [line], "values": {}}
+        sections.append(current)
+        continue
+
+    if current is None:
+        sections.append({"name": "", "lines": [line], "values": {}})
+        continue
+
+    current["lines"].append(line)
+    if "=" in line:
+        key, value = line.split("=", 1)
+        current["values"][key.strip()] = value.strip()
+
+pruned_paths = []
+kept_lines = []
+
+for section in sections:
+    name = section["name"]
+    values = section["values"]
+
+    if not name or name == "scummvm":
+      kept_lines.extend(section["lines"])
+      continue
+
+    engine_id = values.get("engineid", "")
+    game_path = values.get("path", "")
+
+    if engine_id in allowed_engine_ids:
+      kept_lines.extend(section["lines"])
+      continue
+
+    if game_path.startswith("/games/"):
+      pruned_paths.append(game_path.removeprefix("/games/"))
+
+ini_path.write_text("\n".join(kept_lines).rstrip() + "\n")
+
+for relative_path in sorted(set(pruned_paths)):
+    target = games_dir / relative_path
+    if target.exists():
+        shutil.rmtree(target)
+PY
+
+"$EMSDK_NODE" "$SCUMMVM_DIR/dists/emscripten/build-make_http_index.js" "$SCUMMVM_DIR/build-emscripten/games"
 
 mkdir -p "$DIST_DIR"
 rm -rf "$DIST_DIR"

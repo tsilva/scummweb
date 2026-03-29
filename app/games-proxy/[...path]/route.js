@@ -1,4 +1,4 @@
-const gamesOrigin = (process.env.SCUMMVM_GAMES_ORIGIN || "https://scummvm-games.tsilva.eu").replace(
+export const gamesOrigin = (process.env.SCUMMVM_GAMES_ORIGIN || "https://scummvm-games.tsilva.eu").replace(
   /\/$/,
   ""
 );
@@ -27,15 +27,24 @@ const upstreamBaseHeaders = {
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
 };
 
-async function proxyToGamesOrigin(request, params) {
+export function getGamesOriginUrl(params) {
   const segments = Array.isArray(params?.path) ? params.path : [];
 
   if (segments.length === 0) {
-    return new Response("Missing games path", { status: 400 });
+    return null;
   }
 
   const upstreamPath = segments.map((segment) => encodeURIComponent(segment)).join("/");
-  const upstreamUrl = new URL(upstreamPath, `${gamesOrigin}/`);
+  return new URL(upstreamPath, `${gamesOrigin}/`);
+}
+
+export async function proxyToGamesOrigin(request, params) {
+  const upstreamUrl = getGamesOriginUrl(params);
+
+  if (!upstreamUrl) {
+    return new Response("Missing games path", { status: 400 });
+  }
+
   const requestHeaders = new Headers(upstreamBaseHeaders);
 
   for (const headerName of ["range", "if-none-match", "if-modified-since"]) {

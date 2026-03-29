@@ -75,6 +75,22 @@ const artByTarget = {
     screenshots: [],
     tone: "tone-default",
   },
+  drascula: {
+    eyebrow: "Vampire Farce",
+    summary:
+      "Drascula throws a dimwitted hero, cartoon vampire melodrama, and rapid-fire gag writing into a point-and-click comedy that never lets its B-movie premise sit still.",
+    genre: "Comedy Horror Adventure",
+    studio: "Alcachofa Soft",
+    year: "1996",
+    badge: "English Freeware",
+    tag: "Spanish cult comedy",
+    heroImage: "/launcher/drascula-hero.jpg",
+    landscapeImage: "/launcher/drascula-cover.jpg",
+    posterImage: "/launcher/drascula-cover.jpg",
+    spotlightImage: "/launcher/drascula-cover.jpg",
+    screenshots: [],
+    tone: "tone-default",
+  },
   sword25: {
     eyebrow: "Fan Sequel Spotlight",
     summary:

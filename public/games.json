@@ -22,6 +22,16 @@
       "readmeHref": "https://scummvm-games.tsilva.eu/bass-cd-1.2/readme.txt"
     },
     {
+      "target": "drascula",
+      "title": "Drascula: The Vampire Strikes Back (DOS/English)",
+      "path": "/games/drascula",
+      "engineId": "drascula",
+      "gameId": "drascula",
+      "platform": "pc",
+      "extra": "",
+      "readmeHref": "https://scummvm-games.tsilva.eu/drascula/readme.txt"
+    },
+    {
       "target": "queen",
       "title": "Flight of the Amazon Queen (CD/DOS/English)",
       "path": "/games/flight-of-the-amazon-queen",
