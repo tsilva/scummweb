@@ -31,6 +31,18 @@ const artByTarget = {
     screenshots: [],
     tone: "tone-dreamweb",
   },
+  queen: {
+    eyebrow: "Jungle Matinee",
+    summary:
+      "Flight of the Amazon Queen throws a pulp pilot, a film star, and a lost-city conspiracy into a bright comic-book trek across the Amazon. It is breezier than DreamWeb and a lot better dressed for danger.",
+    genre: "Comic Adventure",
+    studio: "Interactive Binary Illusions",
+    year: "1995",
+    badge: "Talkie CD",
+    tag: "Pulp expedition",
+    screenshots: [],
+    tone: "tone-default",
+  },
 };
 
 const defaultArt = {

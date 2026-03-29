@@ -60,6 +60,7 @@ find_optional_archive() {
 }
 
 DREAMWEB_ZIP="$(find_optional_archive 'dreamweb*.zip' 'DreamWeb*.zip' 'DREAMWEB*.zip' || true)"
+QUEEN_ZIP="$(find_optional_archive 'FOTAQ*.zip' 'fotaq*.zip' 'Flight*Amazon*Queen*.zip' 'flight*amazon*queen*.zip' || true)"
 GAME_ARCHIVES=("$BASS_ZIP")
 MANAGED_PUBLIC_PATHS=(
   data
@@ -86,6 +87,12 @@ if [[ -n "$DREAMWEB_ZIP" ]]; then
   GAME_ARCHIVES+=("$DREAMWEB_ZIP")
 else
   echo "DreamWeb archive not found in $DOWNLOADS_DIR; building with BASS data only." >&2
+fi
+
+if [[ -n "$QUEEN_ZIP" ]]; then
+  GAME_ARCHIVES+=("$QUEEN_ZIP")
+else
+  echo "Flight of the Amazon Queen archive not found in $DOWNLOADS_DIR; building without Queen." >&2
 fi
 
 mkdir -p "$VENDOR_DIR"
@@ -167,6 +174,7 @@ cd "$SCUMMVM_DIR"
   --disable-all-engines \
   --enable-engine=sky \
   --enable-engine=dreamweb \
+  --enable-engine=queen \
   --disable-seq-midi \
   --disable-timidity
 
@@ -176,7 +184,19 @@ EMSDK_NPM="$(dirname "$EMSDK_NODE")/npm"
 mkdir -p build-emscripten/games
 rm -rf build-emscripten/games/*
 for game_archive in "${GAME_ARCHIVES[@]}"; do
-  unzip -q -o "$game_archive" -d build-emscripten/games
+  archive_name="$(basename "$game_archive")"
+  archive_name_lower="$(printf '%s' "$archive_name" | tr '[:upper:]' '[:lower:]')"
+
+  case "$archive_name_lower" in
+    fotaq*.zip|flight*amazon*queen*.zip)
+      target_dir="build-emscripten/games/flight-of-the-amazon-queen"
+      mkdir -p "$target_dir"
+      unzip -q -o "$game_archive" -d "$target_dir"
+      ;;
+    *)
+      unzip -q -o "$game_archive" -d build-emscripten/games
+      ;;
+  esac
 done
 "$EMSDK_NODE" dists/emscripten/build-make_http_index.js build-emscripten/games
 
@@ -598,13 +618,15 @@ index_html = f"""<!doctype html>
 PY
 
 python3 - "$DIST_DIR/scummvm_fs.js" <<'PY'
+import os
 from pathlib import Path
 import sys
 
 path = Path(sys.argv[1])
 text = path.read_text()
+games_origin = os.environ.get("SCUMMVM_GAMES_ORIGIN", "https://scummvm-games.tsilva.eu").rstrip("/")
 
-prefix = """const DEFAULT_REMOTE_FILESYSTEMS = {\n    games: \"/_games\"\n};\n\nfunction resolveFilesystemUrl(url) {\n    if (/^[a-z]+:\\/\\//i.test(url)) {\n        return url.replace(/\\/$/, \"\");\n    }\n\n    const configured = globalThis.SCUMMVM_FILESYSTEM_BASES?.[url] || DEFAULT_REMOTE_FILESYSTEMS[url];\n    if (configured) {\n        return configured.replace(/\\/$/, \"\");\n    }\n\n    return url;\n}\n\n"""
+prefix = f"""const PRODUCTION_GAMES_ORIGIN = {games_origin!r};\n\nfunction getDefaultRemoteFilesystems() {{\n    const hostname = globalThis.location?.hostname || \"\";\n    const useLocalProxy = hostname === \"localhost\" || hostname === \"127.0.0.1\";\n\n    return {{\n        games: useLocalProxy ? \"/games-proxy\" : PRODUCTION_GAMES_ORIGIN\n    }};\n}}\n\nfunction resolveFilesystemUrl(url) {{\n    if (/^[a-z]+:\\/\\//i.test(url)) {{\n        return url.replace(/\\/$/, \"\");\n    }}\n\n    const configured = globalThis.SCUMMVM_FILESYSTEM_BASES?.[url] || getDefaultRemoteFilesystems()[url];\n    if (configured) {{\n        return configured.replace(/\\/$/, \"\");\n    }}\n\n    return url;\n}}\n\n"""
 needle = "const DEBUG = false\n\n\nexport class ScummvmFS {"
 replacement = "const DEBUG = false\n\n\n" + prefix + "export class ScummvmFS {"
 

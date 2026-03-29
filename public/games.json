@@ -20,6 +20,16 @@
       "platform": "pc",
       "extra": "v0.0372 CD",
       "readmeHref": "https://scummvm-games.tsilva.eu/bass-cd-1.2/readme.txt"
+    },
+    {
+      "target": "queen",
+      "title": "Flight of the Amazon Queen (CD/DOS/English)",
+      "path": "/games/flight-of-the-amazon-queen",
+      "engineId": "queen",
+      "gameId": "queen",
+      "platform": "pc",
+      "extra": "CD",
+      "readmeHref": "https://scummvm-games.tsilva.eu/flight-of-the-amazon-queen/readme.txt"
     }
   ]
 }

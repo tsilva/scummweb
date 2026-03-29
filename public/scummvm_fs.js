@@ -1,11 +1,11 @@
 
 /*
  * ScummvmFS - A custom Emscripten filesystem for ScummVM
- *
- * This is the filesystem used to load any read-only files used by ScummVM: data, games and
+ * 
+ * This is the filesystem used to load any read-only files used by ScummVM: data, games and 
  * plugins. It supports range-requests and caches data in memory to minimize latency when loading
- * data from the network.
- *
+ * data from the network. 
+ * 
  * Adapted from Emscripten's NodeFS and BrowserFS' EmscriptenFS + XHR backend:
  * https://github.com/emscripten-core/emscripten/blob/main/src/library_nodefs.js
  * https://github.com/jvilk/BrowserFS/blob/master/src/generic/emscripten_fs.ts
@@ -27,23 +27,30 @@ const ERRNO_CODES = {
 
 const DEBUG = false
 
-const DEFAULT_REMOTE_FILESYSTEMS = {
-    games: "/_games"
-};
+
+const PRODUCTION_GAMES_ORIGIN = 'https://scummvm-games.tsilva.eu';
+
+function getDefaultRemoteFilesystems() {
+    const hostname = globalThis.location?.hostname || "";
+    const useLocalProxy = hostname === "localhost" || hostname === "127.0.0.1";
+
+    return {
+        games: useLocalProxy ? "/games-proxy" : PRODUCTION_GAMES_ORIGIN
+    };
+}
 
 function resolveFilesystemUrl(url) {
     if (/^[a-z]+:\/\//i.test(url)) {
         return url.replace(/\/$/, "");
     }
 
-    const configured = globalThis.SCUMMVM_FILESYSTEM_BASES?.[url] || DEFAULT_REMOTE_FILESYSTEMS[url];
+    const configured = globalThis.SCUMMVM_FILESYSTEM_BASES?.[url] || getDefaultRemoteFilesystems()[url];
     if (configured) {
         return configured.replace(/\/$/, "");
     }
 
     return url;
 }
-
 
 export class ScummvmFS {
     url;
@@ -220,11 +227,11 @@ export class ScummvmFS {
                     logger(path, "First block: " + first_block + " last block: " + last_block + "Text length: " + text.length)
                     var char_length = Math.round((range_end - range_start + 1) / text.length);
                     if (char_length == 2 && text.length == (range_end - range_start + 1) / 2 - 1) {
-                        // The above hack to get binary data as text breaks if the first two bytes of the range are U+FEFF which is a BOM
-                        // for UTF16 and the browsers convert the data into a UTF16 string. I initially tied to fix this by breaking up
-                        // the UTF16 characters into 2 bytes and prepend the stripped BOM again,  but it turned out that there were other
-                        // issues how browsers handle UTF16 (e.g. 0xDFC3, 0xDFAD, 0xDFFB, 0xDF5B all somehow getting converted to 0xFFFD
-                        // - i.e. "REPLACEMENT CHARACTER") so this now just reruns shifts the start of the download.
+                        // The above hack to get binary data as text breaks if the first two bytes of the range are U+FEFF which is a BOM 
+                        // for UTF16 and the browsers convert the data into a UTF16 string. I initially tied to fix this by breaking up 
+                        // the UTF16 characters into 2 bytes and prepend the stripped BOM again,  but it turned out that there were other 
+                        // issues how browsers handle UTF16 (e.g. 0xDFC3, 0xDFAD, 0xDFFB, 0xDF5B all somehow getting converted to 0xFFFD 
+                        // - i.e. "REPLACEMENT CHARACTER") so this now just reruns shifts the start of the download. 
                         // That's wasting some data, but it's a rare enough occurrence
                         //
                         // TODO: The only proper fix for this is to implement a asynchronous filesystem for emscripten. Something which currently

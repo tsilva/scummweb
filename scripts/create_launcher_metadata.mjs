@@ -37,6 +37,7 @@ for (const line of iniText.split(/\r?\n/)) {
 async function findReadmeHref(gamePath) {
   const normalizedPath = gamePath.startsWith("/") ? gamePath.slice(1) : gamePath;
   const absoluteGamePath = path.join(distDir, normalizedPath);
+  const publicGamePath = normalizedPath.replace(/^games(?:\/|$)/, "");
   let entries = [];
 
   try {
@@ -53,10 +54,11 @@ async function findReadmeHref(gamePath) {
     return "";
   }
 
-  return `${gamesOrigin}/${path.posix.join(
-    normalizedPath.replaceAll(path.sep, "/"),
-    readmeEntry.name
-  )}`;
+  const readmePath = publicGamePath
+    ? path.posix.join(publicGamePath.replaceAll(path.sep, "/"), readmeEntry.name)
+    : readmeEntry.name;
+
+  return `${gamesOrigin}/${readmePath}`;
 }
 
 const gameSections = sections.filter(
