@@ -61,6 +61,49 @@ find_optional_archive() {
   return 1
 }
 
+extract_game_archive_into_game_id_dir() {
+  local archive_path="$1"
+  local target_dir="$2"
+  local temp_dir
+
+  temp_dir="$(mktemp -d "${TMPDIR:-/tmp}/scummvm-web-game.XXXXXX")"
+  unzip -q -o "$archive_path" -d "$temp_dir"
+
+  python3 - "$temp_dir" "$target_dir" <<'PY'
+from pathlib import Path
+import shutil
+import sys
+
+source_dir = Path(sys.argv[1])
+target_dir = Path(sys.argv[2])
+target_dir.mkdir(parents=True, exist_ok=True)
+
+top_level_entries = [
+    path for path in sorted(source_dir.iterdir()) if path.name != "__MACOSX"
+]
+
+if len(top_level_entries) == 1 and top_level_entries[0].is_dir():
+    normalized_root = top_level_entries[0]
+else:
+    normalized_root = source_dir
+
+for child in sorted(normalized_root.iterdir()):
+    if child.name == "__MACOSX":
+        continue
+
+    destination = target_dir / child.name
+    if destination.exists():
+        if destination.is_dir():
+            shutil.rmtree(destination)
+        else:
+            destination.unlink()
+
+    shutil.move(str(child), destination)
+PY
+
+  rm -rf "$temp_dir"
+}
+
 DREAMWEB_ZIP="$(find_optional_archive 'dreamweb*.zip' 'DreamWeb*.zip' 'DREAMWEB*.zip' || true)"
 QUEEN_ZIP="$(find_optional_archive 'FOTAQ*.zip' 'fotaq*.zip' 'Flight*Amazon*Queen*.zip' 'flight*amazon*queen*.zip' || true)"
 LURE_ZIP="$(find_optional_archive 'lure*.zip' 'Lure*.zip' 'LURE*.zip' || true)"
@@ -331,30 +374,36 @@ for game_archive in "${GAME_ARCHIVES[@]}"; do
   archive_name_lower="$(printf '%s' "$archive_name" | tr '[:upper:]' '[:lower:]')"
 
   case "$archive_name_lower" in
+    bass-cd-1.2.zip)
+      target_game_id="sky"
+      ;;
+    dreamweb*.zip)
+      target_game_id="dreamweb"
+      ;;
     fotaq*.zip|flight*amazon*queen*.zip)
-      target_dir="build-emscripten/games/flight-of-the-amazon-queen"
-      mkdir -p "$target_dir"
-      unzip -q -o "$game_archive" -d "$target_dir"
+      target_game_id="queen"
+      ;;
+    lure*.zip)
+      target_game_id="lure"
       ;;
     drascula*.zip)
-      target_dir="build-emscripten/games/drascula"
-      mkdir -p "$target_dir"
-      unzip -q -o "$game_archive" -d "$target_dir"
+      target_game_id="drascula"
       ;;
     waxworks*.zip)
-      target_dir="build-emscripten/games/waxworks"
-      mkdir -p "$target_dir"
-      unzip -q -o "$game_archive" -d "$target_dir"
+      target_game_id="waxworks"
       ;;
     sword25*.zip)
-      target_dir="build-emscripten/games/broken-sword-2.5"
-      mkdir -p "$target_dir"
-      unzip -q -o "$game_archive" -d "$target_dir"
+      target_game_id="sword25"
       ;;
     *)
-      unzip -q -o "$game_archive" -d build-emscripten/games
+      echo "Unsupported game archive layout for $archive_name" >&2
+      exit 1
       ;;
   esac
+
+  target_dir="build-emscripten/games/$target_game_id"
+  rm -rf "$target_dir"
+  extract_game_archive_into_game_id_dir "$game_archive" "$target_dir"
 done
 "$EMSDK_NODE" "$SCUMMVM_DIR/dists/emscripten/build-make_http_index.js" "$SCUMMVM_DIR/build-emscripten/games"
 
@@ -375,7 +424,7 @@ trap cleanup EXIT
   "$SCUMMVM_DIR/build-emscripten" \
   "http://127.0.0.1:8000/scummvm.html#--add --path=/games --recursive"
 
-python3 - "$SCUMMVM_DIR/build-emscripten/scummvm.ini" "$SCUMMVM_DIR/build-emscripten/games/broken-sword-2.5/data.b25c" <<'PY'
+python3 - "$SCUMMVM_DIR/build-emscripten/scummvm.ini" "$SCUMMVM_DIR/build-emscripten/games/sword25/data.b25c" <<'PY'
 from pathlib import Path
 import sys
 
@@ -392,7 +441,7 @@ if "[sword25]" in ini_text:
 section = """
 [sword25]
 description=Broken Sword 2.5: The Return of the Templars
-path=/games/broken-sword-2.5
+path=/games/sword25
 engineid=sword25
 gameid=sword25
 guioptions=sndNoMIDI noAspect gameOption1
@@ -438,6 +487,7 @@ import sys
 ini_path = Path(sys.argv[1])
 games_dir = Path(sys.argv[2])
 allowed_engine_ids = {"dreamweb", "sky", "queen", "lure", "drascula", "agos", "sword25"}
+seen_game_ids = set()
 
 lines = ini_path.read_text().splitlines()
 sections = []
@@ -461,6 +511,24 @@ for line in lines:
 pruned_paths = []
 kept_lines = []
 
+def normalize_section_lines(section_lines, game_id):
+    normalized_path = f"path=/games/{game_id}"
+    normalized_lines = []
+    found_path = False
+
+    for line in section_lines:
+        if line.startswith("path="):
+            normalized_lines.append(normalized_path)
+            found_path = True
+            continue
+
+        normalized_lines.append(line)
+
+    if not found_path:
+        normalized_lines.append(normalized_path)
+
+    return normalized_lines
+
 for section in sections:
     name = section["name"]
     values = section["values"]
@@ -471,17 +539,29 @@ for section in sections:
 
     engine_id = values.get("engineid", "")
     game_path = values.get("path", "")
+    game_id = values.get("gameid", "")
 
     if engine_id in allowed_engine_ids:
-      kept_lines.extend(section["lines"])
+      if not game_id:
+          raise SystemExit(f"Missing gameid for kept ScummVM target: {name}")
+      if game_id in seen_game_ids:
+          raise SystemExit(f"Duplicate gameid '{game_id}' for kept ScummVM target: {name}")
+
+      seen_game_ids.add(game_id)
+      kept_lines.extend(normalize_section_lines(section["lines"], game_id))
       continue
 
-    if game_path.startswith("/games/"):
+    if game_path == "/games":
+      pruned_paths.append("")
+    elif game_path.startswith("/games/"):
       pruned_paths.append(game_path.removeprefix("/games/"))
 
 ini_path.write_text("\n".join(kept_lines).rstrip() + "\n")
 
 for relative_path in sorted(set(pruned_paths)):
+    if not relative_path:
+        continue
+
     target = games_dir / relative_path
     if target.exists():
         shutil.rmtree(target)

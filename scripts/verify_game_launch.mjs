@@ -269,22 +269,30 @@ let screenshotPage = rootPage;
 const featuredTrigger = rootPage
   .locator(`[data-game-target="${library.games[0].target}"][aria-haspopup="dialog"]`)
   .first();
+const featuredDialogHref = await featuredTrigger.getAttribute("href");
+if (!featuredDialogHref || !featuredDialogHref.startsWith("#")) {
+  throw new Error(`Featured game trigger for ${library.games[0].target} did not point to a modal`);
+}
+
+const featuredDialog = rootPage.locator(featuredDialogHref);
 await featuredTrigger.click();
-await rootPage.locator(".game-detail-modal").waitFor({ state: "visible", timeout: 10000 });
+await featuredDialog.waitFor({ state: "visible", timeout: 10000 });
 
 if (normalizeUrl(rootPage.url()) !== normalizeUrl(url)) {
   throw new Error(`Root page navigated unexpectedly after opening game details: ${rootPage.url()}`);
 }
 
-const featuredLaunchHref = await rootPage.locator(".game-detail-actions .launch-button").getAttribute("href");
+const featuredLaunchHref = await featuredDialog
+  .locator(".game-detail-actions .launch-button")
+  .getAttribute("href");
 if (featuredLaunchHref !== library.games[0].routePath) {
   throw new Error(
     `Modal launch button pointed to ${featuredLaunchHref} instead of ${library.games[0].routePath}`
   );
 }
 
-await rootPage.locator(".game-detail-close").click();
-await rootPage.locator(".game-detail-modal").waitFor({ state: "hidden", timeout: 10000 });
+await featuredDialog.locator(".game-detail-close").click();
+await featuredDialog.waitFor({ state: "hidden", timeout: 10000 });
 
 for (const game of library.games) {
   screenshotPage = await verifyTarget(context, url, game);

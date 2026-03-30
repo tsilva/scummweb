@@ -88,14 +88,21 @@ def parse_args() -> argparse.Namespace:
         "--game",
         help=(
             "Upload only a single game subtree. Accepts a launcher target like "
-            "'queen' or a relative folder like 'flight-of-the-amazon-queen'. "
-            "Root-mounted games cannot be uploaded selectively."
+            "'queen' or a canonical gameId folder like 'sword25'."
         ),
     )
     parser.add_argument(
         "--force",
         action="store_true",
         help="Overwrite remote files even when the key already exists.",
+    )
+    parser.add_argument(
+        "--prune",
+        action="store_true",
+        help=(
+            "Delete remote objects that are not present in the local upload scope. "
+            "When used without --game, this removes legacy keys across the entire bucket."
+        ),
     )
     return parser.parse_args()
 
@@ -145,8 +152,7 @@ def resolve_selected_prefix(games_dir: Path, selection: str) -> str:
     target, relative_path = matches[0]
     if not relative_path:
         raise SystemExit(
-            f"Game '{target}' is mounted at the games root and cannot be uploaded selectively safely. "
-            "Run the full upload or reorganize that game into its own subdirectory first."
+            f"Game '{target}' does not resolve to a canonical gameId subdirectory."
         )
 
     return relative_path
@@ -214,6 +220,39 @@ def remote_key_exists(client, bucket: str, key: str) -> bool:
         raise
 
 
+def list_remote_keys(client, bucket: str, prefix: Optional[str] = None) -> List[str]:
+    paginator = client.get_paginator("list_objects_v2")
+    keys: List[str] = []
+
+    paginate_args = {"Bucket": bucket}
+    if prefix:
+        paginate_args["Prefix"] = prefix
+
+    for page in paginator.paginate(**paginate_args):
+        for entry in page.get("Contents", []):
+            key = entry.get("Key")
+            if key:
+                keys.append(key)
+
+    return keys
+
+
+def delete_remote_keys(client, bucket: str, keys: List[str]) -> int:
+    deleted = 0
+    for start in range(0, len(keys), 1000):
+        batch = keys[start : start + 1000]
+        if not batch:
+            continue
+
+        client.delete_objects(
+            Bucket=bucket,
+            Delete={"Objects": [{"Key": key} for key in batch], "Quiet": True},
+        )
+        deleted += len(batch)
+
+    return deleted
+
+
 def main() -> None:
     args = parse_args()
     load_dotenv(ROOT / ".env")
@@ -233,11 +272,13 @@ def main() -> None:
 
     files, scope_label = collect_files(games_dir, selected_prefix)
     force_label = " with overwrite enabled" if args.force else ""
+    prune_label = " with prune enabled" if args.prune else ""
     print(
         f"Uploading {len(files)} files from {games_dir}"
-        f" (scope: {scope_label}) to bucket '{BUCKET}' via {ENDPOINT}{force_label}"
+        f" (scope: {scope_label}) to bucket '{BUCKET}' via {ENDPOINT}{force_label}{prune_label}"
     )
 
+    local_keys = {path.relative_to(games_dir).as_posix() for path in files}
     uploaded = 0
     skipped = 0
     for index, path in enumerate(files, 1):
@@ -264,7 +305,15 @@ def main() -> None:
         if index % 25 == 0 or index == len(files):
             print(f"Processed {index}/{len(files)} files; uploaded latest: {key}")
 
-    print(f"Upload complete: uploaded {uploaded}, skipped {skipped}")
+    deleted = 0
+    if args.prune:
+        remote_scope_prefix = selected_prefix if selected_prefix else None
+        remote_keys = list_remote_keys(client, BUCKET, remote_scope_prefix)
+        keys_to_delete = [key for key in remote_keys if key not in local_keys]
+        deleted = delete_remote_keys(client, BUCKET, keys_to_delete)
+        print(f"Pruned {deleted} remote files outside the local scope")
+
+    print(f"Upload complete: uploaded {uploaded}, skipped {skipped}, deleted {deleted}")
 
 
 if __name__ == "__main__":
