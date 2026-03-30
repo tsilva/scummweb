@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { Inter, Space_Grotesk } from "next/font/google";
+import { getVersionedSiteAssetPath } from "./game-library";
 
 const inter = Inter({
   display: "optional",
@@ -20,6 +21,24 @@ export const metadata = {
   title: "ScummVM Web | Unofficial Browser WASM Fork",
   description:
     "Unofficial browser-targeted WebAssembly build forked from ScummVM, with source and license materials plus links to the original project.",
+  manifest: getVersionedSiteAssetPath("/manifest.json"),
+  icons: {
+    icon: [
+      { url: getVersionedSiteAssetPath("/favicon.ico") },
+      {
+        url: getVersionedSiteAssetPath("/scummvm-192.png"),
+        sizes: "192x192",
+        type: "image/png",
+      },
+      {
+        url: getVersionedSiteAssetPath("/scummvm-512.png"),
+        sizes: "512x512",
+        type: "image/png",
+      },
+    ],
+    apple: [{ url: getVersionedSiteAssetPath("/scummvm-192.png") }],
+    shortcut: [getVersionedSiteAssetPath("/favicon.ico")],
+  },
 };
 
 export default function RootLayout({ children }) {

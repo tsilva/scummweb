@@ -57,8 +57,17 @@ function addGameRoutes(games) {
 }
 
 export function getVersionedScummvmAssetPath(assetPath) {
-  const normalizedPath = assetPath.startsWith("/") ? assetPath : `/${assetPath}`;
-  return `/scummvm/${encodeURIComponent(scummvmAssetVersion)}${normalizedPath}`;
+  return getVersionedSiteAssetPath(assetPath);
+}
+
+export function getVersionedSiteAssetPath(assetPath) {
+  if (!assetPath || !assetPath.startsWith("/")) {
+    return assetPath;
+  }
+
+  const resolved = new URL(assetPath, "https://scummvm-web.local");
+  resolved.searchParams.set("v", scummvmAssetVersion);
+  return `${resolved.pathname}${resolved.search}${resolved.hash}`;
 }
 
 export async function getGameLibrary() {

@@ -110,6 +110,7 @@ LURE_ZIP="$(find_optional_archive 'lure*.zip' 'Lure*.zip' 'LURE*.zip' || true)"
 DRASCULA_ZIP="$(find_optional_archive 'drascula*.zip' 'Drascula*.zip' 'DRASCULA*.zip' || true)"
 SWORD25_ZIP="$(find_optional_archive 'sword25*.zip' 'Sword25*.zip' 'SWORD25*.zip' || true)"
 WAXWORKS_ZIP="$(find_optional_archive 'waxworks*.zip' 'Waxworks*.zip' 'WAXWORKS*.zip' || true)"
+NIPPON_AMIGA_ZIP="$(find_optional_archive 'nippon-amiga*.zip' 'Nippon-amiga*.zip' 'NIPPON-AMIGA*.zip' 'nippon*amiga*.zip' 'Nippon*Amiga*.zip' || true)"
 GAME_ARCHIVES=("$BASS_ZIP")
 MANAGED_PUBLIC_PATHS=(
   data
@@ -167,6 +168,12 @@ if [[ -n "$WAXWORKS_ZIP" ]]; then
   GAME_ARCHIVES+=("$WAXWORKS_ZIP")
 else
   echo "Waxworks archive not found in $DOWNLOADS_DIR; building without Waxworks." >&2
+fi
+
+if [[ -n "$NIPPON_AMIGA_ZIP" ]]; then
+  GAME_ARCHIVES+=("$NIPPON_AMIGA_ZIP")
+else
+  echo "Nippon Safes Amiga archive not found in $DOWNLOADS_DIR; building without Nippon Safes." >&2
 fi
 
 mkdir -p "$VENDOR_DIR"
@@ -360,6 +367,7 @@ cd "$SCUMMVM_DIR"
   --enable-engine=lure \
   --enable-engine=drascula \
   --enable-engine=agos \
+  --enable-engine=parallaction \
   --enable-engine=sword25 \
   "${SWORD25_CONFIG_ARGS[@]}" \
   --disable-seq-midi \
@@ -391,6 +399,9 @@ for game_archive in "${GAME_ARCHIVES[@]}"; do
       ;;
     waxworks*.zip)
       target_game_id="waxworks"
+      ;;
+    nippon*amiga*.zip)
+      target_game_id="nippon"
       ;;
     sword25*.zip)
       target_game_id="sword25"
@@ -486,7 +497,7 @@ import sys
 
 ini_path = Path(sys.argv[1])
 games_dir = Path(sys.argv[2])
-allowed_engine_ids = {"dreamweb", "sky", "queen", "lure", "drascula", "agos", "sword25"}
+allowed_engine_ids = {"dreamweb", "sky", "queen", "lure", "drascula", "agos", "parallaction", "sword25"}
 seen_game_ids = set()
 
 lines = ini_path.read_text().splitlines()
@@ -904,7 +915,7 @@ source_html = f"""<!doctype html>
       }}
     }}
 
-    fetch("source-info.json", {{ cache: "no-store" }})
+    fetch("source-info.json")
       .then(function (response) {{ return response.json(); }})
       .then(function (info) {{
         renderSection("project", info.project);
@@ -1060,7 +1071,7 @@ path = Path(sys.argv[1])
 text = path.read_text()
 games_origin = os.environ.get("SCUMMVM_GAMES_ORIGIN", "https://scummvm-games.tsilva.eu").rstrip("/")
 
-prefix = f"""const PRODUCTION_GAMES_ORIGIN = {games_origin!r};\n\nfunction getScummvmAssetVersion() {{\n    const pathname = globalThis.location?.pathname || \"\";\n    const match = pathname.match(/\\/scummvm\\/([^/]+)\\//);\n    return match ? decodeURIComponent(match[1]) : \"\";\n}}\n\nfunction withCacheKey(url, cacheKey) {{\n    if (!cacheKey) {{\n        return url;\n    }}\n\n    const resolved = new URL(url, globalThis.location?.href || \"http://localhost\");\n    resolved.searchParams.set(\"v\", cacheKey);\n    return resolved.toString();\n}}\n\nfunction buildRemoteUrl(baseUrl, remotePath) {{\n    const resolved = new URL(baseUrl, globalThis.location?.href || \"http://localhost\");\n    const normalizedPath = remotePath.startsWith(\"/\") ? remotePath : `/${{remotePath}}`;\n    resolved.pathname = `${{resolved.pathname.replace(/\\/$/, \"\")}}${{normalizedPath}}`;\n    return resolved.toString();\n}}\n\nfunction getDefaultRemoteFilesystems() {{\n    const hostname = globalThis.location?.hostname || \"\";\n    const useLocalProxy = hostname === \"localhost\" || hostname === \"127.0.0.1\";\n\n    if (useLocalProxy) {{\n        return {{\n            games: \"/games-proxy\"\n        }};\n    }}\n\n    return {{\n        games: withCacheKey(PRODUCTION_GAMES_ORIGIN, getScummvmAssetVersion())\n    }};\n}}\n\nfunction resolveFilesystemUrl(url) {{\n    if (/^[a-z]+:\\/\\//i.test(url)) {{\n        return url.replace(/\\/$/, \"\");\n    }}\n\n    const configured = globalThis.SCUMMVM_FILESYSTEM_BASES?.[url] || getDefaultRemoteFilesystems()[url];\n    if (configured) {{\n        return configured.replace(/\\/$/, \"\");\n    }}\n\n    return url;\n}}\n\n"""
+prefix = f"""const PRODUCTION_GAMES_ORIGIN = {games_origin!r};\n\nfunction getScummvmAssetVersion() {{\n    const search = globalThis.location?.search || \"\";\n    const searchVersion = new URLSearchParams(search).get(\"v\");\n    if (searchVersion) {{\n        return searchVersion;\n    }}\n\n    const pathname = globalThis.location?.pathname || \"\";\n    const match = pathname.match(/\\/scummvm\\/([^/]+)\\//);\n    return match ? decodeURIComponent(match[1]) : \"\";\n}}\n\nfunction withCacheKey(url, cacheKey) {{\n    if (!cacheKey) {{\n        return url;\n    }}\n\n    const resolved = new URL(url, globalThis.location?.href || \"http://localhost\");\n    resolved.searchParams.set(\"v\", cacheKey);\n    return resolved.toString();\n}}\n\nfunction buildRemoteUrl(baseUrl, remotePath) {{\n    const resolved = new URL(baseUrl, globalThis.location?.href || \"http://localhost\");\n    const normalizedPath = remotePath.startsWith(\"/\") ? remotePath : `/${{remotePath}}`;\n    resolved.pathname = `${{resolved.pathname.replace(/\\/$/, \"\")}}${{normalizedPath}}`;\n    return withCacheKey(resolved.toString(), getScummvmAssetVersion());\n}}\n\nfunction getDefaultRemoteFilesystems() {{\n    const hostname = globalThis.location?.hostname || \"\";\n    const useLocalProxy = hostname === \"localhost\" || hostname === \"127.0.0.1\";\n\n    if (useLocalProxy) {{\n        return {{\n            games: \"/games-proxy\"\n        }};\n    }}\n\n    return {{\n        games: withCacheKey(PRODUCTION_GAMES_ORIGIN, getScummvmAssetVersion())\n    }};\n}}\n\nfunction resolveFilesystemUrl(url) {{\n    if (/^[a-z]+:\\/\\//i.test(url)) {{\n        return url.replace(/\\/$/, \"\");\n    }}\n\n    const configured = globalThis.SCUMMVM_FILESYSTEM_BASES?.[url] || getDefaultRemoteFilesystems()[url];\n    if (configured) {{\n        return configured.replace(/\\/$/, \"\");\n    }}\n\n    return url;\n}}\n\n"""
 needle = "const DEBUG = false\n\n\nexport class ScummvmFS {"
 replacement = "const DEBUG = false\n\n\n" + prefix + "export class ScummvmFS {"
 
@@ -1081,11 +1092,31 @@ import sys
 path = Path(sys.argv[1])
 html_text = path.read_text()
 updated_html = html_text.replace("<title>ScummVM</title>", "<title>ScummVM Web</title>", 1)
-redirect_script = """<script>(function(){const exitTo=new URLSearchParams(window.location.search).get("exitTo");if(!exitTo)return;const resolvedExitHref=(()=>{try{const resolvedUrl=new URL(exitTo,window.location.href);return resolvedUrl.origin===window.location.origin?`${resolvedUrl.pathname}${resolvedUrl.search}${resolvedUrl.hash}`:"/"}catch{return "/"}})();let didHandleExit=false;let hasUserInteracted=false;const markUserInteraction=()=>{hasUserInteracted=true};for(const eventName of["mousedown","touchstart"]){window.addEventListener(eventName,markUserInteraction,{capture:true,passive:true})}const handleExit=status=>{if(didHandleExit)return;didHandleExit=true;const exitMessage={type:"scummvm-exit",href:resolvedExitHref,status};if(window.parent&&window.parent!==window){try{window.parent.postMessage(exitMessage,window.location.origin);return}catch{}}try{window.location.replace(resolvedExitHref)}catch{window.location.href=resolvedExitHref}};window.Module=window.Module||{};const originalQuit=window.Module.quit;window.Module.quit=function(status,toThrow){if(hasUserInteracted){handleExit(status)}if(typeof originalQuit==="function"){return originalQuit(status,toThrow)}throw toThrow||new Error(`ScummVM exited (${status})`)}})();</script>"""
+redirect_script = """<script>(function(){const exitTo=new URLSearchParams(window.location.search).get("exitTo");if(!exitTo)return;const resolvedExitHref=(()=>{try{const resolvedUrl=new URL(exitTo,window.location.href);return resolvedUrl.origin===window.location.origin?`${resolvedUrl.pathname}${resolvedUrl.search}${resolvedUrl.hash}`:"/"}catch{return "/"}})();let didHandleExit=false;let hasUserInteracted=false;const markUserInteraction=()=>{hasUserInteracted=true};for(const eventName of["mousedown","touchstart"]){window.addEventListener(eventName,markUserInteraction,{capture:true,passive:true})}const canvas=document.getElementById("canvas");if(canvas){let allowHiddenCursor=false;let requestedCursor=canvas.style.cursor||"";const style=canvas.style;const cursorDescriptor=Object.getOwnPropertyDescriptor(CSSStyleDeclaration.prototype,"cursor");const originalSetProperty=style.setProperty.bind(style);const applyCanvasCursor=()=>{const effectiveCursor=!allowHiddenCursor&&requestedCursor==="none"?"default":requestedCursor||"default";cursorDescriptor.set.call(style,effectiveCursor)};Object.defineProperty(style,"cursor",{configurable:true,enumerable:cursorDescriptor.enumerable,get(){return cursorDescriptor.get.call(style)},set(value){requestedCursor=value||"";applyCanvasCursor()}});style.setProperty=(name,value,priority)=>{if(String(name).toLowerCase()==="cursor"){requestedCursor=value||"";applyCanvasCursor();return}originalSetProperty(name,value,priority)};for(const eventName of["mouseenter","pointerenter"]){canvas.addEventListener(eventName,()=>{allowHiddenCursor=false;applyCanvasCursor()},{passive:true})}canvas.addEventListener("mouseleave",()=>{allowHiddenCursor=false;applyCanvasCursor()},{passive:true});for(const eventName of["mousedown","touchstart"]){canvas.addEventListener(eventName,()=>{allowHiddenCursor=true;applyCanvasCursor()},{capture:true,passive:true})}applyCanvasCursor()}const handleExit=status=>{if(didHandleExit)return;didHandleExit=true;const exitMessage={type:"scummvm-exit",href:resolvedExitHref,status};if(window.parent&&window.parent!==window){try{window.parent.postMessage(exitMessage,window.location.origin);return}catch{}}try{window.location.replace(resolvedExitHref)}catch{window.location.href=resolvedExitHref}};window.Module=window.Module||{};const originalQuit=window.Module.quit;window.Module.quit=function(status,toThrow){if(hasUserInteracted){handleExit(status)}if(typeof originalQuit==="function"){return originalQuit(status,toThrow)}throw toThrow||new Error(`ScummVM exited (${status})`)}})();</script>"""
+module_loader = """<script type=module>(function(){const v=new URLSearchParams(window.location.search).get("v");const moduleUrl=v?`./scummvm_fs.js?v=${encodeURIComponent(v)}`:"./scummvm_fs.js";window.ScummvmFSReady=import(moduleUrl).then(({ScummvmFS})=>{window.ScummvmFS=ScummvmFS})})();</script>"""
 script_tag = "<script src=scummvm.js async></script>"
+versioned_scummvm_loader = """<script>(function(){const v=new URLSearchParams(window.location.search).get("v");window.Module=window.Module||{};const originalLocateFile=window.Module.locateFile;window.Module.locateFile=function(path,prefix){const raw=typeof originalLocateFile=="function"?originalLocateFile(path,prefix):`${prefix||""}${path}`;if(!v)return raw;const resolved=new URL(raw,window.location.href);resolved.searchParams.set("v",v);return resolved.toString()};const script=document.createElement("script");script.async=true;script.src=v?`scummvm.js?v=${encodeURIComponent(v)}`:"scummvm.js";document.body.appendChild(script)})();</script>"""
+
+updated_html = updated_html.replace(
+    '<script type=module>import{ScummvmFS}from"./scummvm_fs.js";window.ScummvmFS=ScummvmFS</script>',
+    module_loader,
+    1,
+)
+updated_html = updated_html.replace(
+    'fetch("scummvm.ini")',
+    'fetch((()=>{const e=new URL("scummvm.ini",window.location.href),t=new URLSearchParams(window.location.search).get("v");return t&&e.searchParams.set("v",t),e.toString()})())',
+    1,
+)
+updated_html = updated_html.replace(
+    'function setupFilesystem(){addRunDependency("scummvm-fs-setup"),setupLocalFilesystem().then((()=>{setupHTTPFilesystem("games"),setupHTTPFilesystem("data"),removeRunDependency("scummvm-fs-setup")}))}',
+    'function setupFilesystem(){addRunDependency("scummvm-fs-setup"),Promise.all([window.ScummvmFSReady||Promise.resolve(),setupLocalFilesystem()]).then((()=>{setupHTTPFilesystem("games"),setupHTTPFilesystem("data"),removeRunDependency("scummvm-fs-setup")}))}',
+    1,
+)
 
 if redirect_script not in updated_html and script_tag in updated_html:
-    updated_html = updated_html.replace(script_tag, f"{redirect_script}{script_tag}", 1)
+    updated_html = updated_html.replace(script_tag, f"{redirect_script}{versioned_scummvm_loader}", 1)
+else:
+    updated_html = updated_html.replace(script_tag, versioned_scummvm_loader, 1)
 
 if updated_html != html_text:
     path.write_text(updated_html)

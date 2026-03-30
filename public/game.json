@@ -1,7 +1,7 @@
 {
   "target": "dreamweb-cd",
   "title": "DreamWeb (CD/DOS/English)",
-  "path": "/games",
+  "path": "/games/dreamweb",
   "engineId": "dreamweb",
   "gameId": "dreamweb",
   "platform": "pc",

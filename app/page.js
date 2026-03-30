@@ -1,6 +1,10 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { getGameLibrary, getVersionedScummvmAssetPath } from "./game-library";
+import {
+  getGameLibrary,
+  getVersionedScummvmAssetPath,
+  getVersionedSiteAssetPath,
+} from "./game-library";
 import HomeShell from "./home-shell";
 
 const scummvmOfficialSite = "https://www.scummvm.org/";
@@ -91,6 +95,22 @@ const artByTarget = {
     screenshots: [],
     tone: "tone-default",
   },
+  "nippon-amiga": {
+    eyebrow: "Heist Fever Dream",
+    summary:
+      "Nippon Safes, Inc. turns a three-way caper into a neon cartoon of crooks, bad luck, and sharply drawn Amiga absurdity. It feels like a pulp comic strip that got lost in a cyberpunk fever dream.",
+    genre: "Comedy Caper Adventure",
+    studio: "Dynabyte",
+    year: "1992",
+    badge: "Amiga Freeware",
+    tag: "Multi-hero heist",
+    heroImage: "/launcher/nippon-hero.jpg",
+    landscapeImage: "/launcher/nippon-cover.jpg",
+    posterImage: "/launcher/nippon-cover.jpg",
+    spotlightImage: "/launcher/nippon-cover.jpg",
+    screenshots: [],
+    tone: "tone-default",
+  },
   "waxworks-demo": {
     eyebrow: "Midnight Curio",
     summary:
@@ -154,20 +174,28 @@ function pickFeaturedGame(catalog, primaryTarget) {
 
 function getGameMeta(game) {
   const art = { ...defaultArt, ...(artByTarget[game.target] || {}) };
+  const screenshots = art.screenshots.map(getVersionedSiteAssetPath);
 
   return {
     ...game,
     ...art,
     infoHref: game.readmeHref || getVersionedScummvmAssetPath("/source.html"),
+    screenshots,
     summary:
       art.summary ||
       `Launch ${game.displayTitle} directly from its dedicated ScummVM Web route and jump into the configured target immediately.`,
-    heroImage: art.heroImage || art.screenshots[1] || art.screenshots[0] || "",
-    landscapeImage: art.landscapeImage || art.screenshots[0] || "",
+    heroImage: getVersionedSiteAssetPath(
+      art.heroImage || screenshots[1] || screenshots[0] || ""
+    ),
+    landscapeImage: getVersionedSiteAssetPath(art.landscapeImage || screenshots[0] || ""),
     posterImage:
-      art.posterImage || art.screenshots[art.screenshots.length - 1] || art.screenshots[0] || "",
+      getVersionedSiteAssetPath(
+        art.posterImage || screenshots[screenshots.length - 1] || screenshots[0] || ""
+      ),
     spotlightImage:
-      art.spotlightImage || art.landscapeImage || art.posterImage || art.screenshots[0] || "",
+      getVersionedSiteAssetPath(
+        art.spotlightImage || art.landscapeImage || art.posterImage || screenshots[0] || ""
+      ),
   };
 }
 
