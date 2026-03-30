@@ -239,6 +239,12 @@ await rootPage.goto(url, { waitUntil: "domcontentloaded" });
 await rootPage.waitForLoadState("networkidle");
 await rootPage.waitForTimeout(1000);
 
+const noticeDismiss = rootPage.locator(".project-notice-dismiss");
+if ((await noticeDismiss.count()) > 0) {
+  await noticeDismiss.click();
+  await rootPage.waitForTimeout(200);
+}
+
 if (normalizeUrl(rootPage.url()) !== normalizeUrl(url)) {
   throw new Error(`Root page redirected unexpectedly to ${rootPage.url()}`);
 }
@@ -250,14 +256,35 @@ if (!Array.isArray(library.games) || library.games.length === 0) {
 }
 
 for (const game of library.games) {
-  const matchingLink = rootPage.locator(`a[href="${game.routePath}"]`).first();
+  const matchingTrigger = rootPage
+    .locator(`[data-game-target="${game.target}"][aria-haspopup="dialog"]`)
+    .first();
 
-  if ((await matchingLink.count()) === 0) {
-    throw new Error(`Launcher route for ${game.target} was not rendered at ${game.routePath}`);
+  if ((await matchingTrigger.count()) === 0) {
+    throw new Error(`Launcher trigger for ${game.target} was not rendered on the home page`);
   }
 }
 
 let screenshotPage = rootPage;
+const featuredTrigger = rootPage
+  .locator(`[data-game-target="${library.games[0].target}"][aria-haspopup="dialog"]`)
+  .first();
+await featuredTrigger.click();
+await rootPage.locator(".game-detail-modal").waitFor({ state: "visible", timeout: 10000 });
+
+if (normalizeUrl(rootPage.url()) !== normalizeUrl(url)) {
+  throw new Error(`Root page navigated unexpectedly after opening game details: ${rootPage.url()}`);
+}
+
+const featuredLaunchHref = await rootPage.locator(".game-detail-actions .launch-button").getAttribute("href");
+if (featuredLaunchHref !== library.games[0].routePath) {
+  throw new Error(
+    `Modal launch button pointed to ${featuredLaunchHref} instead of ${library.games[0].routePath}`
+  );
+}
+
+await rootPage.locator(".game-detail-close").click();
+await rootPage.locator(".game-detail-modal").waitFor({ state: "hidden", timeout: 10000 });
 
 for (const game of library.games) {
   screenshotPage = await verifyTarget(context, url, game);

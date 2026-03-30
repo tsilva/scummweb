@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getGameBySlug, getVersionedScummvmAssetPath } from "../game-library";
+import GameRouteFrame from "../game-route-frame";
 
 export const dynamic = "force-dynamic";
 
@@ -29,9 +30,9 @@ export default async function GameRoutePage({ params }) {
     notFound();
   }
 
-  const launchHref = `${getVersionedScummvmAssetPath("/scummvm.html")}#${encodeURIComponent(
-    game.target
-  )}`;
+  const launchHref = `${getVersionedScummvmAssetPath(
+    "/scummvm.html"
+  )}?exitTo=${encodeURIComponent("/")}#${encodeURIComponent(game.target)}`;
   const infoHref = getGameInfoHref(game);
 
   return (
@@ -51,14 +52,9 @@ export default async function GameRoutePage({ params }) {
         </a>
       </div>
 
-      <iframe
-        allow="autoplay; fullscreen"
-        allowFullScreen
-        className="game-route-frame"
-        data-scummvm-route-frame="true"
-        data-scummvm-target={game.target}
-        loading="eager"
+      <GameRouteFrame
         src={launchHref}
+        target={game.target}
         title={`${game.displayTitle} playable ScummVM frame`}
       />
     </main>

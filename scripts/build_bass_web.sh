@@ -487,6 +487,37 @@ for relative_path in sorted(set(pruned_paths)):
         shutil.rmtree(target)
 PY
 
+python3 - "$SCUMMVM_DIR/build-emscripten/scummvm.ini" <<'PY'
+from pathlib import Path
+import sys
+
+ini_path = Path(sys.argv[1])
+lines = ini_path.read_text().splitlines()
+
+try:
+    section_start = lines.index("[scummvm]")
+except ValueError:
+    raise SystemExit(0)
+
+section_end = next(
+    (
+        index
+        for index in range(section_start + 1, len(lines))
+        if lines[index].startswith("[") and lines[index].endswith("]")
+    ),
+    len(lines),
+)
+
+for index in range(section_start + 1, section_end):
+    if lines[index].startswith("gui_return_to_launcher_at_exit="):
+        lines[index] = "gui_return_to_launcher_at_exit=false"
+        break
+else:
+    lines.insert(section_end, "gui_return_to_launcher_at_exit=false")
+
+ini_path.write_text("\n".join(lines).rstrip() + "\n")
+PY
+
 "$EMSDK_NODE" "$SCUMMVM_DIR/dists/emscripten/build-make_http_index.js" "$SCUMMVM_DIR/build-emscripten/games"
 
 mkdir -p "$DIST_DIR"
@@ -995,6 +1026,11 @@ import sys
 path = Path(sys.argv[1])
 html_text = path.read_text()
 updated_html = html_text.replace("<title>ScummVM</title>", "<title>ScummVM Web</title>", 1)
+redirect_script = """<script>(function(){const exitTo=new URLSearchParams(window.location.search).get("exitTo");if(!exitTo)return;const resolvedExitHref=(()=>{try{const resolvedUrl=new URL(exitTo,window.location.href);return resolvedUrl.origin===window.location.origin?`${resolvedUrl.pathname}${resolvedUrl.search}${resolvedUrl.hash}`:"/"}catch{return "/"}})();let didHandleExit=false;let hasUserInteracted=false;const markUserInteraction=()=>{hasUserInteracted=true};for(const eventName of["mousedown","touchstart"]){window.addEventListener(eventName,markUserInteraction,{capture:true,passive:true})}const handleExit=status=>{if(didHandleExit)return;didHandleExit=true;const exitMessage={type:"scummvm-exit",href:resolvedExitHref,status};if(window.parent&&window.parent!==window){try{window.parent.postMessage(exitMessage,window.location.origin);return}catch{}}try{window.location.replace(resolvedExitHref)}catch{window.location.href=resolvedExitHref}};window.Module=window.Module||{};const originalQuit=window.Module.quit;window.Module.quit=function(status,toThrow){if(hasUserInteracted){handleExit(status)}if(typeof originalQuit==="function"){return originalQuit(status,toThrow)}throw toThrow||new Error(`ScummVM exited (${status})`)}})();</script>"""
+script_tag = "<script src=scummvm.js async></script>"
+
+if redirect_script not in updated_html and script_tag in updated_html:
+    updated_html = updated_html.replace(script_tag, f"{redirect_script}{script_tag}", 1)
 
 if updated_html != html_text:
     path.write_text(updated_html)
