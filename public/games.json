@@ -2,26 +2,6 @@
   "primaryTarget": "dreamweb-cd",
   "games": [
     {
-      "target": "dreamweb-cd",
-      "title": "DreamWeb (CD/DOS/English)",
-      "path": "/games",
-      "engineId": "dreamweb",
-      "gameId": "dreamweb",
-      "platform": "pc",
-      "extra": "CD",
-      "readmeHref": ""
-    },
-    {
-      "target": "sky",
-      "title": "Beneath a Steel Sky (v0.0372 CD/DOS)",
-      "path": "/games/bass-cd-1.2",
-      "engineId": "sky",
-      "gameId": "sky",
-      "platform": "pc",
-      "extra": "v0.0372 CD",
-      "readmeHref": "https://scummvm-games.tsilva.eu/bass-cd-1.2/readme.txt"
-    },
-    {
       "target": "drascula",
       "title": "Drascula: The Vampire Strikes Back (DOS/English)",
       "path": "/games/drascula",
@@ -32,14 +12,14 @@
       "readmeHref": "https://scummvm-games.tsilva.eu/drascula/readme.txt"
     },
     {
-      "target": "queen",
-      "title": "Flight of the Amazon Queen (CD/DOS/English)",
-      "path": "/games/flight-of-the-amazon-queen",
-      "engineId": "queen",
-      "gameId": "queen",
+      "target": "dreamweb-cd",
+      "title": "DreamWeb (CD/DOS/English)",
+      "path": "/games/dreamweb",
+      "engineId": "dreamweb",
+      "gameId": "dreamweb",
       "platform": "pc",
       "extra": "CD",
-      "readmeHref": "https://scummvm-games.tsilva.eu/flight-of-the-amazon-queen/readme.txt"
+      "readmeHref": ""
     },
     {
       "target": "lure",
@@ -50,6 +30,36 @@
       "platform": "pc",
       "extra": "VGA",
       "readmeHref": "https://scummvm-games.tsilva.eu/lure/README"
+    },
+    {
+      "target": "nippon-amiga",
+      "title": "Nippon Safes, Inc. (Multi-lingual/Amiga)",
+      "path": "/games/nippon",
+      "engineId": "parallaction",
+      "gameId": "nippon",
+      "platform": "amiga",
+      "extra": "Multi-lingual",
+      "readmeHref": "https://scummvm-games.tsilva.eu/nippon/readme.txt"
+    },
+    {
+      "target": "queen",
+      "title": "Flight of the Amazon Queen (CD/DOS/English)",
+      "path": "/games/queen",
+      "engineId": "queen",
+      "gameId": "queen",
+      "platform": "pc",
+      "extra": "CD",
+      "readmeHref": "https://scummvm-games.tsilva.eu/queen/readme.txt"
+    },
+    {
+      "target": "sky",
+      "title": "Beneath a Steel Sky (v0.0372 CD/DOS)",
+      "path": "/games/sky",
+      "engineId": "sky",
+      "gameId": "sky",
+      "platform": "pc",
+      "extra": "v0.0372 CD",
+      "readmeHref": "https://scummvm-games.tsilva.eu/sky/readme.txt"
     },
     {
       "target": "waxworks-demo",
@@ -64,12 +74,12 @@
     {
       "target": "sword25",
       "title": "Broken Sword 2.5: The Return of the Templars",
-      "path": "/games/broken-sword-2.5",
+      "path": "/games/sword25",
       "engineId": "sword25",
       "gameId": "sword25",
       "platform": "",
       "extra": "",
-      "readmeHref": "https://scummvm-games.tsilva.eu/broken-sword-2.5/README"
+      "readmeHref": "https://scummvm-games.tsilva.eu/sword25/README"
     }
   ]
 }
