@@ -220,6 +220,8 @@ svg {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 38%;
+  filter: brightness(1.28) contrast(1.06) saturate(1.08);
   transform: scale(1.03);
   pointer-events: none;
 }
@@ -232,23 +234,21 @@ svg {
 
 .hero-stage.tone-dreamweb .hero-backdrop::after {
   background:
-    linear-gradient(180deg, rgba(7, 12, 10, 0.08), rgba(7, 12, 10, 0.42)),
-    radial-gradient(circle at 58% 20%, rgba(72, 148, 126, 0.32), transparent 12%),
-    radial-gradient(circle at 75% 24%, rgba(18, 48, 58, 0.6), transparent 24%),
-    linear-gradient(135deg, #0f1e18 0%, #102827 42%, #0b1115 100%);
+    linear-gradient(180deg, rgba(7, 12, 10, 0.12), rgba(7, 12, 10, 0.48)),
+    radial-gradient(circle at 58% 20%, rgba(72, 148, 126, 0.22), transparent 12%),
+    radial-gradient(circle at 75% 24%, rgba(18, 48, 58, 0.32), transparent 24%);
 }
 
 .hero-stage.tone-default .hero-backdrop::after {
   background:
-    linear-gradient(180deg, rgba(7, 12, 10, 0.08), rgba(7, 12, 10, 0.42)),
-    radial-gradient(circle at 62% 20%, rgba(85, 170, 85, 0.24), transparent 12%),
-    linear-gradient(135deg, #121c15 0%, #0e1414 100%);
+    linear-gradient(180deg, rgba(7, 12, 10, 0.12), rgba(7, 12, 10, 0.48)),
+    radial-gradient(circle at 62% 20%, rgba(85, 170, 85, 0.18), transparent 12%);
 }
 
 .hero-gradient {
   background:
-    linear-gradient(180deg, rgba(19, 19, 19, 0.04) 0%, rgba(19, 19, 19, 0.46) 55%, var(--surface) 100%),
-    linear-gradient(90deg, rgba(19, 19, 19, 0.92) 0%, rgba(19, 19, 19, 0.78) 34%, rgba(19, 19, 19, 0.24) 72%, rgba(19, 19, 19, 0.78) 100%);
+    linear-gradient(180deg, rgba(19, 19, 19, 0.02) 0%, rgba(19, 19, 19, 0.28) 55%, var(--surface) 100%),
+    linear-gradient(90deg, rgba(19, 19, 19, 0.78) 0%, rgba(19, 19, 19, 0.52) 34%, rgba(19, 19, 19, 0.08) 72%, rgba(19, 19, 19, 0.54) 100%);
 }
 
 .hero-inner {
@@ -815,33 +815,40 @@ svg {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  filter: grayscale(1) brightness(0.94) contrast(1.02) saturate(0.82);
+  transition:
+    filter 320ms ease,
+    transform 320ms ease;
+}
+
+.landscape-card:hover .landscape-card-image,
+.landscape-card:focus-visible .landscape-card-image {
+  filter: brightness(1.18) contrast(1.04) saturate(1.08);
+  transform: scale(1.05);
 }
 
 .landscape-card::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(9, 9, 9, 0), rgba(9, 9, 9, 0.88));
+  background: linear-gradient(180deg, rgba(9, 9, 9, 0), rgba(9, 9, 9, 0.58));
 }
 
 .landscape-card.tone-sky::after {
   background:
-    linear-gradient(180deg, rgba(9, 9, 9, 0), rgba(9, 9, 9, 0.88)),
-    linear-gradient(135deg, #18272a 0%, #131313 100%);
+    linear-gradient(180deg, rgba(9, 9, 9, 0), rgba(9, 9, 9, 0.78));
 }
 
 .landscape-card.tone-dreamweb::after {
   background:
-    linear-gradient(180deg, rgba(9, 9, 9, 0), rgba(9, 9, 9, 0.88)),
-    radial-gradient(circle at 24% 28%, rgba(142, 74, 117, 0.46), transparent 28%),
-    linear-gradient(135deg, #1b1622 0%, #11161d 100%);
+    linear-gradient(180deg, rgba(9, 9, 9, 0.04), rgba(9, 9, 9, 0.78)),
+    radial-gradient(circle at 24% 28%, rgba(142, 74, 117, 0.28), transparent 28%);
 }
 
 .landscape-card.tone-default::after {
   background:
-    linear-gradient(180deg, rgba(9, 9, 9, 0), rgba(9, 9, 9, 0.88)),
-    radial-gradient(circle at 24% 28%, rgba(85, 170, 85, 0.3), transparent 28%),
-    linear-gradient(135deg, #182118 0%, #111311 100%);
+    linear-gradient(180deg, rgba(9, 9, 9, 0.04), rgba(9, 9, 9, 0.78)),
+    radial-gradient(circle at 24% 28%, rgba(85, 170, 85, 0.18), transparent 28%);
 }
 
 .landscape-overlay {
@@ -899,7 +906,7 @@ svg {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(12, 12, 12, 0.18), rgba(12, 12, 12, 0.88));
+  background: linear-gradient(180deg, rgba(12, 12, 12, 0.12), rgba(12, 12, 12, 0.54));
 }
 
 .poster-media-image {
@@ -908,7 +915,7 @@ svg {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(1);
+  filter: grayscale(1) brightness(0.94) contrast(1.02) saturate(0.82);
   transition:
     filter 320ms ease,
     transform 320ms ease;
@@ -916,22 +923,20 @@ svg {
 
 .poster-card:hover .poster-media-image,
 .poster-card:focus-visible .poster-media-image {
-  filter: grayscale(0);
+  filter: brightness(1.12) contrast(1.04) saturate(1.06);
   transform: scale(1.05);
 }
 
 .poster-card.tone-dreamweb .poster-media::after {
   background:
-    linear-gradient(180deg, rgba(12, 12, 12, 0.2), rgba(12, 12, 12, 0.9)),
-    radial-gradient(circle at 50% 35%, rgba(144, 67, 115, 0.38), transparent 24%),
-    linear-gradient(135deg, #1d1724 0%, #14171c 100%);
+    linear-gradient(180deg, rgba(12, 12, 12, 0.16), rgba(12, 12, 12, 0.78)),
+    radial-gradient(circle at 50% 35%, rgba(144, 67, 115, 0.22), transparent 24%);
 }
 
 .poster-card.tone-default .poster-media::after {
   background:
-    linear-gradient(180deg, rgba(12, 12, 12, 0.2), rgba(12, 12, 12, 0.9)),
-    radial-gradient(circle at 50% 35%, rgba(85, 170, 85, 0.28), transparent 24%),
-    linear-gradient(135deg, #1b2118 0%, #141616 100%);
+    linear-gradient(180deg, rgba(12, 12, 12, 0.16), rgba(12, 12, 12, 0.78)),
+    radial-gradient(circle at 50% 35%, rgba(85, 170, 85, 0.16), transparent 24%);
 }
 
 .poster-overlay {
@@ -975,20 +980,28 @@ svg {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  filter: grayscale(1) brightness(0.94) contrast(1.02) saturate(0.82);
+  transition:
+    filter 320ms ease,
+    transform 320ms ease;
+}
+
+.spotlight-card:hover .spotlight-media-image,
+.spotlight-card:focus-visible .spotlight-media-image {
+  filter: brightness(1.08) contrast(1.03) saturate(1.02);
+  transform: scale(1.04);
 }
 
 .spotlight-card.tone-dreamweb .spotlight-media::after {
   background:
-    linear-gradient(180deg, rgba(18, 18, 18, 0.08), rgba(18, 18, 18, 0.45)),
-    radial-gradient(circle at 52% 30%, rgba(116, 54, 88, 0.42), transparent 24%),
-    linear-gradient(135deg, #201627 0%, #12161d 100%);
+    linear-gradient(180deg, rgba(18, 18, 18, 0.08), rgba(18, 18, 18, 0.36)),
+    radial-gradient(circle at 52% 30%, rgba(116, 54, 88, 0.24), transparent 24%);
 }
 
 .spotlight-card.tone-default .spotlight-media::after {
   background:
-    linear-gradient(180deg, rgba(18, 18, 18, 0.08), rgba(18, 18, 18, 0.45)),
-    radial-gradient(circle at 52% 30%, rgba(85, 170, 85, 0.32), transparent 24%),
-    linear-gradient(135deg, #1b231a 0%, #131616 100%);
+    linear-gradient(180deg, rgba(18, 18, 18, 0.08), rgba(18, 18, 18, 0.36)),
+    radial-gradient(circle at 52% 30%, rgba(85, 170, 85, 0.18), transparent 24%);
 }
 
 .spotlight-copy {

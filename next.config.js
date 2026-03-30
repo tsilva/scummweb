@@ -48,12 +48,6 @@ const nextConfig = {
   },
   async rewrites() {
     return {
-      beforeFiles: [
-        {
-          source: "/",
-          destination: "/static-home",
-        },
-      ],
       afterFiles: scummvmVersionedAssetRoutes.map(([source, destination]) => ({
         source: `/scummvm/:assetVersion/${source}`,
         destination,

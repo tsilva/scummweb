@@ -69,11 +69,27 @@ if (gameSections.length === 0) {
   throw new Error("No playable game entries found in scummvm.ini");
 }
 
+const missingGameIds = gameSections
+  .filter((section) => !section.values.gameid)
+  .map((section) => section.name);
+
+if (missingGameIds.length > 0) {
+  throw new Error(`Missing gameId for playable ScummVM target(s): ${missingGameIds.join(", ")}`);
+}
+
+const seenGameIds = new Set();
+for (const section of gameSections) {
+  const gameId = section.values.gameid;
+  if (seenGameIds.has(gameId)) {
+    throw new Error(`Duplicate gameId detected for playable ScummVM target: ${gameId}`);
+  }
+
+  seenGameIds.add(gameId);
+}
+
 const games = await Promise.all(
   gameSections.map(async (section) => {
-    const normalizedPath = section.values.path.startsWith("/")
-      ? section.values.path
-      : `/${section.values.path}`;
+    const normalizedPath = `/games/${section.values.gameid}`;
 
     return {
       target: section.name,
@@ -88,7 +104,10 @@ const games = await Promise.all(
   })
 );
 
-const primaryGame = games[0];
+const primaryGame =
+  games.find((game) => game.target === "dreamweb-cd") ||
+  games.find((game) => game.target === "sky") ||
+  games[0];
 
 await fs.writeFile(primaryOutPath, JSON.stringify(primaryGame, null, 2) + "\n");
 await fs.writeFile(

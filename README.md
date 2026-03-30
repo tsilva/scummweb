@@ -21,9 +21,9 @@
 ## 🏗️ How It Works
 
 1. **Build ScummVM**: `scripts/build_bass_web.sh` clones `vendor/scummvm` if needed, installs the matching emsdk, and runs the upstream Emscripten build with the configured engines.
-2. **Install Game Data**: The script unpacks `downloads/bass-cd-1.2.zip`, any matching `downloads/dreamweb*.zip`, `downloads/FOTAQ*.zip`, `downloads/lure*.zip`, `downloads/drascula*.zip`, and `downloads/sword25*.zip` archives into ScummVM's web build directory, then lets ScummVM detect installed targets.
+2. **Install Game Data**: The script unpacks `downloads/bass-cd-1.2.zip`, any matching `downloads/dreamweb*.zip`, `downloads/FOTAQ*.zip`, `downloads/lure*.zip`, `downloads/drascula*.zip`, and `downloads/sword25*.zip` archives into canonical `/games/<gameId>` folders inside ScummVM's web build directory, then lets ScummVM detect installed targets.
 3. **Stamp Compliance Metadata**: `game.json`, `games.json`, `source-info.json`, and `source.html` are generated alongside ScummVM's bundled docs and runtime files.
-4. **Upload Game Data**: `scripts/upload_games_to_r2.py` uploads the extracted game payload from `dist/games/` (or `public/games/` as a fallback) to R2, preserving the directory layout behind the `scummvm-games.tsilva.eu` custom domain. It skips existing remote keys by default, supports `--force` to overwrite, and can scope uploads to a single subdirectory-backed game with `--game`.
+4. **Upload Game Data**: `scripts/upload_games_to_r2.py` uploads the extracted game payload from `dist/games/` (or `public/games/` as a fallback) to R2, preserving the canonical `gameId`-backed directory layout behind the `scummvm-games.tsilva.eu` custom domain. It skips existing remote keys by default, supports `--force` to overwrite, can scope uploads to a single subdirectory-backed game with `--game`, and supports `--prune` to delete legacy remote keys that are no longer present locally.
 5. **Serve the Launcher**: Next.js serves the launcher shell, and the ScummVM runtime mounts the `games` volume from the configured games origin. On localhost, the app keeps a small `/games-proxy/*` fallback so the verification script can run even when bucket CORS is scoped to production origins.
 
 The launcher shell lives in [`app/page.js`](app/page.js), the CTA component lives in [`app/launch-button.js`](app/launch-button.js), and the heavy lifting for asset generation lives in [`scripts/build_bass_web.sh`](scripts/build_bass_web.sh) plus [`scripts/prepare_scummvm_bundle.sh`](scripts/prepare_scummvm_bundle.sh).
@@ -62,8 +62,8 @@ python3 ./scripts/upload_games_to_r2.py --game lure
 python3 ./scripts/upload_games_to_r2.py --game drascula
 python3 ./scripts/upload_games_to_r2.py --game sword25
 
-# Re-upload everything even if keys already exist
-python3 ./scripts/upload_games_to_r2.py --force
+# Re-upload everything and delete legacy remote keys
+python3 ./scripts/upload_games_to_r2.py --force --prune
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
