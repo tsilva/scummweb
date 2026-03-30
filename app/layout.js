@@ -1,50 +1,34 @@
-import "./globals.css";
+import fs from "node:fs";
+import path from "node:path";
+import { Inter, Space_Grotesk } from "next/font/google";
+
+const inter = Inter({
+  display: "optional",
+  subsets: ["latin"],
+  variable: "--font-body",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  display: "optional",
+  subsets: ["latin"],
+  variable: "--font-display",
+});
+
+const globalStyles = fs.readFileSync(path.join(process.cwd(), "app", "globals.css"), "utf8");
 
 export const metadata = {
-  metadataBase: new URL("https://scummvm.tsilva.eu"),
-  title: "ScummVM Web | Browser Launcher For Freeware Classics",
+  title: "ScummVM Web | Unofficial Browser WASM Fork",
   description:
-    "Static launcher for a browser-targeted ScummVM WebAssembly build, with direct game routes plus source and license materials for the hosted bundle.",
-  alternates: {
-    canonical: "/",
-  },
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/scummvm-192.png",
-  },
-  openGraph: {
-    title: "ScummVM Web",
-    description:
-      "Play hosted ScummVM freeware targets in the browser and inspect the matching source and license materials.",
-    url: "https://scummvm.tsilva.eu/",
-    siteName: "ScummVM Web",
-    images: [
-      {
-        url: "/scummvm-512.png",
-        width: 512,
-        height: 512,
-        alt: "ScummVM Web icon",
-      },
-    ],
-    type: "website",
-  },
-  twitter: {
-    card: "summary",
-    title: "ScummVM Web",
-    description:
-      "Hosted ScummVM freeware routes with source and license materials linked from the live site.",
-    images: ["/scummvm-512.png"],
-  },
-};
-
-export const viewport = {
-  themeColor: "#0f1411",
+    "Unofficial browser-targeted WebAssembly build forked from ScummVM, with source and license materials plus links to the original project.",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <head>
+        <style dangerouslySetInnerHTML={{ __html: globalStyles }} />
+      </head>
+      <body className={`${inter.variable} ${spaceGrotesk.variable}`}>{children}</body>
     </html>
   );
 }
