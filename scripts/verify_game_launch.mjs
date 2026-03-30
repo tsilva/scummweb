@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { chromium } from "playwright-core";
 
 const [url, screenshotPath] = process.argv.slice(2);
@@ -14,81 +15,131 @@ const chromeCandidates = [
 ];
 
 const executablePath = chromeCandidates.find((candidate) => fs.existsSync(candidate));
+const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 if (!executablePath) {
   throw new Error("No local Chrome/Chromium installation found for Playwright");
 }
 
-async function readGameLibrary(page, assetBasePath) {
-  return page.evaluate(async (resolvedAssetBasePath) => {
-    const response = await fetch(`${resolvedAssetBasePath}/games.json`, { cache: "no-store" }).catch(
-      () => null
-    );
-
-    if (response?.ok) {
-      return response.json();
-    }
-
-    const primaryResponse = await fetch(`${resolvedAssetBasePath}/game.json`, {
-      cache: "no-store",
-    });
-    if (!primaryResponse.ok) {
-      throw new Error("Could not load launcher metadata");
-    }
-
-    const primaryGame = await primaryResponse.json();
-    return {
-      primaryTarget: primaryGame.target,
-      games: [primaryGame],
-    };
-  }, assetBasePath);
+function getDisplayTitle(title) {
+  return title.replace(/\s+\([^)]*\)$/, "");
 }
 
-async function getScummvmAssetBasePath(page) {
-  const launchHref = await page.locator('a[href*="/scummvm/"][href*="/scummvm.html#"]').first().getAttribute("href");
+function slugifySegment(value) {
+  return value
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .replace(/-{2,}/g, "-");
+}
 
-  if (!launchHref) {
-    throw new Error("Could not locate a versioned ScummVM launch link");
+function getUniqueGameSlug(game, usedSlugs) {
+  const baseSlug = slugifySegment(getDisplayTitle(game.title || ""));
+  const targetSlug = slugifySegment(game.target || "game") || "game";
+  const preferredSlug = baseSlug || targetSlug;
+
+  if (!usedSlugs.has(preferredSlug)) {
+    usedSlugs.add(preferredSlug);
+    return preferredSlug;
   }
 
-  const launchUrl = new URL(launchHref, page.url());
-  const scummvmHtmlMarker = "/scummvm.html";
-  const markerIndex = launchUrl.pathname.lastIndexOf(scummvmHtmlMarker);
+  const fallbackBase = `${preferredSlug}-${targetSlug}`.replace(/-{2,}/g, "-");
+  let suffix = 2;
+  let candidate = fallbackBase;
 
-  if (markerIndex === -1) {
-    throw new Error(`Could not derive asset base path from ${launchHref}`);
+  while (usedSlugs.has(candidate)) {
+    candidate = `${fallbackBase}-${suffix}`;
+    suffix += 1;
   }
 
-  return launchUrl.pathname.slice(0, markerIndex);
+  usedSlugs.add(candidate);
+  return candidate;
+}
+
+function readGameLibraryFromDisk() {
+  const publicDir = path.join(rootDir, "public");
+  const libraryPath = path.join(publicDir, "games.json");
+
+  try {
+    const library = JSON.parse(fs.readFileSync(libraryPath, "utf8"));
+    const games = Array.isArray(library.games) ? library.games : [];
+
+    return {
+      games,
+      primaryTarget: library.primaryTarget || games[0]?.target || "",
+    };
+  } catch {
+    const primaryGame = JSON.parse(fs.readFileSync(path.join(publicDir, "game.json"), "utf8"));
+
+    return {
+      games: [primaryGame],
+      primaryTarget: primaryGame.target,
+    };
+  }
+}
+
+function addGameRoutes(library) {
+  const usedSlugs = new Set();
+
+  return {
+    ...library,
+    games: library.games.map((game) => {
+      const slug = getUniqueGameSlug(game, usedSlugs);
+
+      return {
+        ...game,
+        displayTitle: getDisplayTitle(game.title),
+        routePath: `/${slug}`,
+      };
+    }),
+  };
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function normalizeUrl(value) {
-  const url = new URL(value);
-  url.hash = "";
+  const resolvedUrl = new URL(value);
+  resolvedUrl.hash = "";
 
-  if (url.pathname === "") {
-    url.pathname = "/";
+  if (resolvedUrl.pathname === "") {
+    resolvedUrl.pathname = "/";
   }
 
-  return url.toString();
+  return resolvedUrl.toString();
 }
 
 async function verifyTarget(context, baseUrl, game) {
   const page = await context.newPage();
   const pageErrors = [];
+  const routeUrl = new URL(game.routePath, baseUrl).toString();
 
   page.on("pageerror", (error) => {
     pageErrors.push(error.message);
   });
 
-  await page.goto(new URL(game.launchHref, baseUrl).toString(), {
+  await page.goto(routeUrl, {
     waitUntil: "domcontentloaded",
   });
-  await page.waitForSelector("#canvas", { timeout: 30000 });
+
+  if (normalizeUrl(page.url()) !== normalizeUrl(routeUrl)) {
+    throw new Error(`Game route redirected unexpectedly from ${routeUrl} to ${page.url()}`);
+  }
+
+  await page.waitForSelector('iframe[data-scummvm-route-frame="true"]', {
+    timeout: 30000,
+  });
+
+  const frame = page.frameLocator('iframe[data-scummvm-route-frame="true"]');
+  await frame.locator("#canvas").waitFor({ timeout: 30000 });
   await page.waitForTimeout(15000);
 
-  const output = await page.locator("#output").inputValue();
-  const statusText = await page.locator("#status").textContent().catch(() => "");
+  const output = await frame.locator("#output").inputValue();
+  const statusText = await frame.locator("#status").textContent().catch(() => "");
   const fatalOutputPatterns = [
     /Game data path does not exist/i,
     /Couldn't identify game/i,
@@ -107,7 +158,7 @@ async function verifyTarget(context, baseUrl, game) {
     throw new Error(`Launch failed for ${game.target}.\n${output}`);
   }
 
-  if (!new RegExp(`User picked target '${game.target}'`).test(output)) {
+  if (!new RegExp(`User picked target '${escapeRegExp(game.target)}'`).test(output)) {
     throw new Error(`Game did not reach the expected startup state for ${game.target}.\n${output}`);
   }
 
@@ -192,22 +243,17 @@ if (normalizeUrl(rootPage.url()) !== normalizeUrl(url)) {
   throw new Error(`Root page redirected unexpectedly to ${rootPage.url()}`);
 }
 
-const assetBasePath = await getScummvmAssetBasePath(rootPage);
-const library = await readGameLibrary(rootPage, assetBasePath);
+const library = addGameRoutes(readGameLibraryFromDisk());
 
 if (!Array.isArray(library.games) || library.games.length === 0) {
   throw new Error("No games found in launcher metadata");
 }
 
 for (const game of library.games) {
-  const matchingLink = rootPage.locator(`a[href*="scummvm.html#${game.target}"]`).first();
-  if ((await matchingLink.count()) === 0) {
-    throw new Error(`Launcher tile for ${game.target} was not rendered`);
-  }
+  const matchingLink = rootPage.locator(`a[href="${game.routePath}"]`).first();
 
-  game.launchHref = await matchingLink.getAttribute("href");
-  if (!game.launchHref) {
-    throw new Error(`Launcher tile for ${game.target} did not expose a launch href`);
+  if ((await matchingLink.count()) === 0) {
+    throw new Error(`Launcher route for ${game.target} was not rendered at ${game.routePath}`);
   }
 }
 
@@ -229,4 +275,4 @@ await screenshotPage.screenshot({ path: screenshotPath, fullPage: true });
 
 await browser.close();
 
-console.log("Verified launcher targets and wrote screenshot to", screenshotPath);
+console.log("Verified launcher routes and wrote screenshot to", screenshotPath);

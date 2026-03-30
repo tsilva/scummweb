@@ -11,3 +11,4 @@ public/games/
 public/.scummvm-bundle.stamp
 .vercel
 .env
+.env.sentry-build-plugin

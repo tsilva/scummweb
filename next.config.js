@@ -1,3 +1,5 @@
+const { withSentryConfig } = require("@sentry/nextjs");
+
 const immutableScummvmShellCacheHeaders = [
   {
     key: "Cache-Control",
@@ -40,6 +42,9 @@ const scummvmVersionedAssetRoutes = [
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    instrumentationHook: true,
+  },
   env: {
     NEXT_PUBLIC_SCUMMVM_ASSET_VERSION: scummvmAssetVersion,
   },
@@ -57,4 +62,15 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+const sentryWebpackPluginOptions = {
+  silent: !process.env.CI,
+};
+
+if (process.env.SENTRY_AUTH_TOKEN) {
+  sentryWebpackPluginOptions.authToken = process.env.SENTRY_AUTH_TOKEN;
+  sentryWebpackPluginOptions.org = process.env.SENTRY_ORG;
+  sentryWebpackPluginOptions.project = process.env.SENTRY_PROJECT;
+  sentryWebpackPluginOptions.widenClientFileUpload = true;
+}
+
+module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions);

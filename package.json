@@ -12,9 +12,10 @@
     "start": "next start"
   },
   "dependencies": {
+    "@sentry/nextjs": "^10.46.0",
     "next": "13.5.11",
+    "playwright-core": "1.44.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "playwright-core": "1.44.1"
+    "react-dom": "18.2.0"
   }
 }

@@ -1,10 +1,11 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { getGameLibrary, getVersionedScummvmAssetPath } from "./game-library";
 import LaunchButton from "./launch-button";
 import ProjectNoticeModal from "./project-notice-modal";
 
-const scummvmAssetVersion = process.env.NEXT_PUBLIC_SCUMMVM_ASSET_VERSION || "dev";
 const scummvmOfficialSite = "https://www.scummvm.org/";
+const projectRepositoryUrl = "https://github.com/tsilva/scummvm-web";
 export const dynamic = "force-dynamic";
 
 const artByTarget = {
@@ -140,17 +141,8 @@ function formatGameCount(count) {
   return `${count} game${count === 1 ? "" : "s"} installed`;
 }
 
-function getDisplayTitle(title) {
-  return title.replace(/\s+\([^)]*\)$/, "");
-}
-
 function shortCommit(commit) {
   return commit ? commit.slice(0, 7) : "unknown";
-}
-
-function getVersionedScummvmAssetPath(assetPath) {
-  const normalizedPath = assetPath.startsWith("/") ? assetPath : `/${assetPath}`;
-  return `/scummvm/${encodeURIComponent(scummvmAssetVersion)}${normalizedPath}`;
 }
 
 function getArtStyle(prefix, image, options = {}) {
@@ -187,17 +179,14 @@ function pickFeaturedGame(catalog) {
 
 function getGameMeta(game) {
   const art = { ...defaultArt, ...(artByTarget[game.target] || {}) };
-  const displayTitle = getDisplayTitle(game.title);
 
   return {
     ...game,
     ...art,
-    displayTitle,
-    href: `${getVersionedScummvmAssetPath("/scummvm.html")}#${game.target}`,
     infoHref: game.readmeHref || getVersionedScummvmAssetPath("/source.html"),
     summary:
       art.summary ||
-      `Launch ${displayTitle} directly from the generated ScummVM web bundle and jump into the configured target immediately.`,
+      `Launch ${game.displayTitle} directly from its dedicated ScummVM Web route and jump into the configured target immediately.`,
     heroImage: art.heroImage || art.screenshots[1] || art.screenshots[0] || "",
     landscapeImage: art.landscapeImage || art.screenshots[0] || "",
     posterImage:
@@ -205,25 +194,6 @@ function getGameMeta(game) {
     spotlightImage:
       art.spotlightImage || art.landscapeImage || art.posterImage || art.screenshots[0] || "",
   };
-}
-
-async function getGameLibrary() {
-  const publicDir = path.join(process.cwd(), "public");
-  const libraryPath = path.join(publicDir, "games.json");
-
-  try {
-    const library = JSON.parse(await fs.readFile(libraryPath, "utf8"));
-    return {
-      games: library.games || [],
-      primaryTarget: library.primaryTarget || library.games?.[0]?.target || "",
-    };
-  } catch {
-    const primaryGame = JSON.parse(await fs.readFile(path.join(publicDir, "game.json"), "utf8"));
-    return {
-      games: [primaryGame],
-      primaryTarget: primaryGame.target,
-    };
-  }
 }
 
 async function getSourceInfo() {
@@ -280,6 +250,17 @@ function Icon({ name, filled = false }) {
           <path d="m12 4.7 2.2 4.5 5 .7-3.6 3.5.9 4.9-4.5-2.4-4.5 2.4.9-4.9-3.6-3.5 5-.7Z" />
         </svg>
       );
+    case "github":
+      return (
+        <svg
+          {...commonProps}
+          fill="currentColor"
+          stroke="none"
+          viewBox="0 0 24 24"
+        >
+          <path d="M12 2C6.48 2 2 6.58 2 12.22c0 4.51 2.87 8.33 6.84 9.68.5.1.68-.22.68-.49 0-.24-.01-1.04-.01-1.88-2.78.62-3.37-1.21-3.37-1.21-.46-1.19-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.64-1.37-2.22-.26-4.56-1.15-4.56-5.1 0-1.13.39-2.05 1.04-2.78-.11-.26-.45-1.31.1-2.72 0 0 .85-.28 2.78 1.06A9.4 9.4 0 0 1 12 6.89c.85 0 1.71.12 2.51.36 1.93-1.34 2.78-1.06 2.78-1.06.55 1.41.21 2.46.1 2.72.65.73 1.04 1.65 1.04 2.78 0 3.96-2.35 4.84-4.59 5.09.36.32.69.94.69 1.91 0 1.38-.01 2.49-.01 2.83 0 .27.18.6.69.49A10.24 10.24 0 0 0 22 12.22C22 6.58 17.52 2 12 2Z" />
+        </svg>
+      );
     default:
       return null;
   }
@@ -327,6 +308,15 @@ export default async function HomePage() {
         </div>
 
         <div className="nav-tools" aria-label="Actions">
+          <a
+            className="nav-icon-button"
+            href={projectRepositoryUrl}
+            aria-label="View project on GitHub"
+            rel="noreferrer"
+            target="_blank"
+          >
+            <Icon name="github" />
+          </a>
           <a className="nav-icon-button" href="#library" aria-label="Browse games">
             <Icon name="search" />
           </a>
@@ -486,7 +476,7 @@ export default async function HomePage() {
           <strong>ScummVM Web</strong>
           <p>
             Bundle built {sourceInfo.generated_at_utc.slice(0, 10)} from {buildStamp}. Launcher
-            targets still point directly at the detected ScummVM entries in this archive.
+            routes now boot directly into the detected ScummVM entries in this archive.
           </p>
         </div>
       </footer>
