@@ -643,33 +643,6 @@ readme_links = [
     if game.get("readmeHref")
 ]
 official_scummvm_url = "https://www.scummvm.org/"
-logo_svg = """<svg xmlns="http://www.w3.org/2000/svg" width="1546.667" height="453.333" viewBox="0 0 1546.667 453.333" role="img" aria-labelledby="title desc">
-  <title id="title">ScummVM Web</title>
-  <desc id="desc">ScummVM Web logo with a green ScummVM wordmark and a WEB banner.</desc>
-  <defs>
-    <linearGradient id="logoGreen" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#1af15c" />
-      <stop offset="100%" stop-color="#00b92e" />
-    </linearGradient>
-    <linearGradient id="bannerGreen" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0f8e2f" />
-      <stop offset="100%" stop-color="#19d44e" />
-    </linearGradient>
-    <filter id="softShadow" x="-10%" y="-20%" width="130%" height="160%">
-      <feDropShadow dx="0" dy="14" stdDeviation="10" flood-color="#101010" flood-opacity="0.28" />
-    </filter>
-  </defs>
-  <rect width="1546.667" height="453.333" fill="none" />
-  <g transform="translate(44 42)" filter="url(#softShadow)">
-    <text x="736" y="222" text-anchor="middle" font-family="'Trebuchet MS', 'Arial Black', sans-serif" font-size="196" font-weight="900" letter-spacing="-8" fill="#0f5b23">ScummVM</text>
-    <text x="718" y="204" text-anchor="middle" font-family="'Trebuchet MS', 'Arial Black', sans-serif" font-size="196" font-weight="900" letter-spacing="-8" fill="url(#logoGreen)" stroke="#2f2f2f" stroke-width="24" stroke-linejoin="round" paint-order="stroke fill">ScummVM</text>
-    <rect x="520" y="250" width="396" height="104" rx="28" fill="#202020" stroke="#2f2f2f" stroke-width="14" />
-    <rect x="536" y="266" width="364" height="72" rx="22" fill="url(#bannerGreen)" />
-    <text x="728" y="324" text-anchor="middle" font-family="'Trebuchet MS', 'Arial Black', sans-serif" font-size="88" font-weight="900" letter-spacing="14" fill="#16381c">WEB</text>
-    <text x="728" y="314" text-anchor="middle" font-family="'Trebuchet MS', 'Arial Black', sans-serif" font-size="88" font-weight="900" letter-spacing="14" fill="#f4fff2" stroke="#1a4d1a" stroke-width="8" paint-order="stroke fill">WEB</text>
-  </g>
-</svg>
-"""
 
 source_link_markup = "\n".join(
     f'        <a href="{html.escape(href)}">{html.escape(label)}</a>'
@@ -977,8 +950,6 @@ index_html = f"""<!doctype html>
 </html>
 """
 
-(dist / "logo.svg").write_text(logo_svg)
-
 (dist / "manifest.json").write_text(
     json.dumps(
         {
@@ -995,6 +966,10 @@ index_html = f"""<!doctype html>
 (dist / "source.html").write_text(source_html)
 (dist / "index.html").write_text(index_html)
 PY
+
+python3 "$ROOT_DIR/scripts/generate_logo_assets.py" \
+  --source "$ROOT_DIR/branding/scummvm-logo-master.png" \
+  --out-dir "$DIST_DIR"
 
 python3 - "$DIST_DIR/scummvm_fs.js" <<'PY'
 import os
