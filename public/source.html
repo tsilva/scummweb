@@ -93,9 +93,9 @@
       </div>
       <div class="links">
         <a href="https://www.scummvm.org/">Official ScummVM Website</a>
-        <a href="doc/COPYING">GPL-3.0 License</a>
-        <a href="doc/README.md">ScummVM README</a>
-        <a href="doc/COPYRIGHT">ScummVM Copyright</a>
+        <a href="doc/COPYING?v=dev">GPL-3.0 License</a>
+        <a href="doc/README.md?v=dev">ScummVM README</a>
+        <a href="doc/COPYRIGHT?v=dev">ScummVM Copyright</a>
         <a href="https://scummvm-games.tsilva.eu/drascula/readme.txt">Drascula: The Vampire Strikes Back Readme</a>
         <a href="https://scummvm-games.tsilva.eu/lure/README">Lure of the Temptress Readme</a>
         <a href="https://scummvm-games.tsilva.eu/nippon/readme.txt">Nippon Safes, Inc. Readme</a>
@@ -166,7 +166,7 @@
       }
     }
 
-    fetch("source-info.json")
+    fetch("source-info.json?v=dev")
       .then(function (response) { return response.json(); })
       .then(function (info) {
         renderSection("project", info.project);

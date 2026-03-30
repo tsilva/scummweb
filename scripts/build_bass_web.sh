@@ -14,6 +14,9 @@ DEFAULT_EMSDK_VERSION="$(sed -n 's/^EMSDK_VERSION=\"\\([^\"]*\\)\"/\\1/p' "$SCUM
 EMSDK_VERSION="${EMSDK_VERSION:-${DEFAULT_EMSDK_VERSION:-3.1.51}}"
 EMSDK_DIR="$SCUMMVM_DIR/dists/emscripten/emsdk-$EMSDK_VERSION"
 EMSCRIPTEN_LIBS_BUILD_DIR="$SCUMMVM_DIR/dists/emscripten/libs/build"
+SCUMMVM_BUNDLE_ASSET_VERSION_RAW="${SCUMMVM_ASSET_VERSION:-${VERCEL_DEPLOYMENT_ID:-${VERCEL_URL:-${VERCEL_GIT_COMMIT_SHA:-dev}}}}"
+SCUMMVM_BUNDLE_ASSET_VERSION="${SCUMMVM_BUNDLE_ASSET_VERSION_RAW//[^a-zA-Z0-9._-]/-}"
+export SCUMMVM_BUNDLE_ASSET_VERSION
 
 shopt -s nullglob
 
@@ -650,6 +653,20 @@ import urllib.parse
 import sys
 
 dist = Path(sys.argv[1])
+asset_version = os.environ.get("SCUMMVM_BUNDLE_ASSET_VERSION", "dev")
+
+
+def bundle_href(value: str) -> str:
+    parsed = urllib.parse.urlparse(value)
+    if parsed.scheme or parsed.netloc:
+        return value
+
+    query = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
+    query = [(key, val) for key, val in query if key != "v"]
+    query.append(("v", asset_version))
+    return urllib.parse.urlunparse(
+        parsed._replace(query=urllib.parse.urlencode(query, doseq=True))
+    )
 
 
 def commit_url(base: str, commit: str) -> str:
@@ -686,9 +703,9 @@ info = {
         "dirty": os.environ.get("SCUMMVM_DIRTY", "false") == "true",
     },
     "local_docs": {
-        "gpl_license": "doc/COPYING",
-        "scummvm_readme": "doc/README.md",
-        "copyright": "doc/COPYRIGHT",
+        "gpl_license": bundle_href("doc/COPYING"),
+        "scummvm_readme": bundle_href("doc/README.md"),
+        "copyright": bundle_href("doc/COPYRIGHT"),
         "game_readmes": [],
     },
 }
@@ -705,7 +722,9 @@ python3 - "$DIST_DIR" <<'PY'
 from pathlib import Path
 import html
 import json
+import os
 import sys
+import urllib.parse
 
 dist = Path(sys.argv[1])
 primary_game = json.loads((dist / "game.json").read_text())
@@ -728,6 +747,18 @@ def link_href(value: str) -> str:
     return value.lstrip("/")
 
 
+asset_version = os.environ.get("SCUMMVM_BUNDLE_ASSET_VERSION", "dev")
+
+
+def bundle_href(value: str) -> str:
+    if value.startswith(("http://", "https://")):
+        return value
+
+    normalized = value.lstrip("/")
+    separator = "&" if "?" in normalized else "?"
+    return f"{normalized}{separator}v={urllib.parse.quote(asset_version, safe='')}"
+
+
 readme_links = [
     (link_href(game["readmeHref"]), f"{display_title(game['title'])} Readme")
     for game in games
@@ -739,9 +770,9 @@ source_link_markup = "\n".join(
     f'        <a href="{html.escape(href)}">{html.escape(label)}</a>'
     for href, label in [
         (official_scummvm_url, "Official ScummVM Website"),
-        ("doc/COPYING", "GPL-3.0 License"),
-        ("doc/README.md", "ScummVM README"),
-        ("doc/COPYRIGHT", "ScummVM Copyright"),
+        (bundle_href("doc/COPYING"), "GPL-3.0 License"),
+        (bundle_href("doc/README.md"), "ScummVM README"),
+        (bundle_href("doc/COPYRIGHT"), "ScummVM Copyright"),
         *readme_links,
     ]
 )
@@ -750,8 +781,8 @@ index_link_markup = "\n".join(
     f'      <a href="{html.escape(href)}">{html.escape(label)}</a>'
     for href, label in [
         (official_scummvm_url, "Official ScummVM Website"),
-        ("source.html", "Corresponding Source"),
-        ("doc/COPYING", "GPL-3.0 License"),
+        (bundle_href("source.html"), "Corresponding Source"),
+        (bundle_href("doc/COPYING"), "GPL-3.0 License"),
         *readme_links,
     ]
 )
@@ -915,7 +946,7 @@ source_html = f"""<!doctype html>
       }}
     }}
 
-    fetch("source-info.json")
+    fetch("{bundle_href("source-info.json")}")
       .then(function (response) {{ return response.json(); }})
       .then(function (info) {{
         renderSection("project", info.project);
@@ -1024,7 +1055,7 @@ index_html = f"""<!doctype html>
       unofficial WebAssembly build forked from ScummVM for browser deployment, and it links
       corresponding source and license material here to respect ScummVM's GPL terms.
     </p>
-    <a id="play-link" href="scummvm.html#{html.escape(target)}">Launch Game</a>
+    <a id="play-link" href="{html.escape(bundle_href('scummvm.html'))}#{html.escape(target)}">Launch Game</a>
     <p class="note">Primary ScummVM target: <code>{html.escape(target)}</code></p>
     <div class="meta-links">
 {index_link_markup}
@@ -1041,18 +1072,20 @@ index_html = f"""<!doctype html>
 </html>
 """
 
-(dist / "manifest.json").write_text(
-    json.dumps(
-        {
-            **json.loads((dist / "manifest.json").read_text()),
-            "short_name": "ScummVM Web",
-            "name": "ScummVM Web",
-            "description": "Unofficial browser-targeted WebAssembly build forked from ScummVM.",
-        },
-        indent=4,
-    )
-    + "\n"
-)
+manifest = json.loads((dist / "manifest.json").read_text())
+manifest["icons"] = [
+    {
+        **icon,
+        "src": bundle_href(icon["src"]),
+    }
+    for icon in manifest.get("icons", [])
+]
+manifest["short_name"] = "ScummVM Web"
+manifest["name"] = "ScummVM Web"
+manifest["description"] = "Unofficial browser-targeted WebAssembly build forked from ScummVM."
+manifest["start_url"] = bundle_href("scummvm.html")
+
+(dist / "manifest.json").write_text(json.dumps(manifest, indent=4) + "\n")
 
 (dist / "source.html").write_text(source_html)
 (dist / "index.html").write_text(index_html)
@@ -1086,12 +1119,14 @@ path.write_text(text)
 PY
 
 python3 - "$DIST_DIR/scummvm.html" <<'PY'
+import os
 from pathlib import Path
 import sys
 
 path = Path(sys.argv[1])
 html_text = path.read_text()
 updated_html = html_text.replace("<title>ScummVM</title>", "<title>ScummVM Web</title>", 1)
+asset_version = os.environ.get("SCUMMVM_BUNDLE_ASSET_VERSION", "dev")
 redirect_script = """<script>(function(){const exitTo=new URLSearchParams(window.location.search).get("exitTo");if(!exitTo)return;const resolvedExitHref=(()=>{try{const resolvedUrl=new URL(exitTo,window.location.href);return resolvedUrl.origin===window.location.origin?`${resolvedUrl.pathname}${resolvedUrl.search}${resolvedUrl.hash}`:"/"}catch{return "/"}})();let didHandleExit=false;let hasUserInteracted=false;const markUserInteraction=()=>{hasUserInteracted=true};for(const eventName of["mousedown","touchstart"]){window.addEventListener(eventName,markUserInteraction,{capture:true,passive:true})}const canvas=document.getElementById("canvas");if(canvas){const visibleCursorClass="scummvm-browser-cursor-visible";const cursorStyle=document.createElement("style");cursorStyle.textContent=`#canvas.${visibleCursorClass}{cursor:default!important}`;document.head.appendChild(cursorStyle);const showBrowserCursor=()=>{canvas.classList.add(visibleCursorClass)};const allowGameCursor=()=>{canvas.classList.remove(visibleCursorClass)};for(const eventName of["mouseenter","pointerenter","mouseleave"]){canvas.addEventListener(eventName,showBrowserCursor,{passive:true})}for(const eventName of["mousedown","touchstart"]){canvas.addEventListener(eventName,allowGameCursor,{capture:true,passive:true})}showBrowserCursor()}const handleExit=status=>{if(didHandleExit)return;didHandleExit=true;const exitMessage={type:"scummvm-exit",href:resolvedExitHref,status};if(window.parent&&window.parent!==window){try{window.parent.postMessage(exitMessage,window.location.origin);return}catch{}}try{window.location.replace(resolvedExitHref)}catch{window.location.href=resolvedExitHref}};window.Module=window.Module||{};const originalQuit=window.Module.quit;window.Module.quit=function(status,toThrow){if(hasUserInteracted){handleExit(status)}if(typeof originalQuit==="function"){return originalQuit(status,toThrow)}throw toThrow||new Error(`ScummVM exited (${status})`)}})();</script>"""
 module_loader = """<script type=module>(function(){const v=new URLSearchParams(window.location.search).get("v");const moduleUrl=v?`./scummvm_fs.js?v=${encodeURIComponent(v)}`:"./scummvm_fs.js";window.ScummvmFSReady=import(moduleUrl).then(({ScummvmFS})=>{window.ScummvmFS=ScummvmFS})})();</script>"""
 script_tag = "<script src=scummvm.js async></script>"
@@ -1100,6 +1135,21 @@ versioned_scummvm_loader = """<script>(function(){const v=new URLSearchParams(wi
 updated_html = updated_html.replace(
     '<script type=module>import{ScummvmFS}from"./scummvm_fs.js";window.ScummvmFS=ScummvmFS</script>',
     module_loader,
+    1,
+)
+updated_html = updated_html.replace(
+    '<link href=manifest.json rel=manifest>',
+    f'<link href=manifest.json?v={asset_version} rel=manifest>',
+    1,
+)
+updated_html = updated_html.replace(
+    '<link href=scummvm-192.png rel=apple-touch-icon>',
+    f'<link href=scummvm-192.png?v={asset_version} rel=apple-touch-icon>',
+    1,
+)
+updated_html = updated_html.replace(
+    'background:url("logo.svg");',
+    f'background:url("logo.svg?v={asset_version}");',
     1,
 )
 updated_html = updated_html.replace(

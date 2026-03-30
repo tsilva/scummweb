@@ -1,5 +1,9 @@
 import { notFound } from "next/navigation";
-import { getGameBySlug, getGameLibrary, getVersionedScummvmAssetPath } from "../game-library";
+import {
+  buildVersionedSiteAssetPath,
+  getGameBySlug,
+  getGameLibrary,
+} from "../game-library";
 import GameRouteFrame from "../game-route-frame";
 
 export const dynamic = "force-static";
@@ -11,10 +15,6 @@ export async function generateStaticParams() {
   return games.map((game) => ({
     gameSlug: game.slug,
   }));
-}
-
-function getGameInfoHref(game) {
-  return game.readmeHref || getVersionedScummvmAssetPath("/source.html");
 }
 
 export async function generateMetadata({ params }) {
@@ -39,28 +39,13 @@ export default async function GameRoutePage({ params }) {
     notFound();
   }
 
-  const launchHref = `${getVersionedScummvmAssetPath(
-    "/scummvm.html"
-  )}?exitTo=${encodeURIComponent("/")}#${encodeURIComponent(game.target)}`;
-  const infoHref = getGameInfoHref(game);
+  const launchHref = buildVersionedSiteAssetPath("/scummvm.html", {
+    searchParams: { exitTo: "/" },
+    hash: game.target,
+  });
 
   return (
     <main className="game-route-page">
-      <div className="game-route-toolbar">
-        <a className="game-route-pill" href="/">
-          Back To Library
-        </a>
-
-        <div className="game-route-meta">
-          <span className="game-route-label">Launching</span>
-          <strong>{game.displayTitle}</strong>
-        </div>
-
-        <a className="game-route-pill" href={infoHref} rel="noreferrer" target="_blank">
-          Game Info
-        </a>
-      </div>
-
       <GameRouteFrame
         src={launchHref}
         target={game.target}

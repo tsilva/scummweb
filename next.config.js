@@ -38,19 +38,6 @@ const scummvmVersionedAssetRoutes = [
   ["doc/:path*", "/doc/:path*"],
 ];
 
-const immutableScummvmDirectRoutes = Array.from(
-  new Set(scummvmVersionedAssetRoutes.map(([, destination]) => destination))
-);
-
-const immutableSiteChromeRoutes = [
-  "/launcher/:path*",
-  "/favicon.ico",
-  "/logo.svg",
-  "/manifest.json",
-  "/scummvm-192.png",
-  "/scummvm-512.png",
-];
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
@@ -69,16 +56,8 @@ const nextConfig = {
   },
   async headers() {
     return [
-      ...immutableScummvmDirectRoutes.map((source) => ({
-        source,
-        headers: immutableScummvmShellCacheHeaders,
-      })),
       ...scummvmVersionedAssetRoutes.map(([source]) => ({
         source: `/scummvm/:assetVersion/${source}`,
-        headers: immutableScummvmShellCacheHeaders,
-      })),
-      ...immutableSiteChromeRoutes.map((source) => ({
-        source,
         headers: immutableScummvmShellCacheHeaders,
       })),
     ];

@@ -31,6 +31,12 @@ const DEBUG = false
 const PRODUCTION_GAMES_ORIGIN = 'https://scummvm-games.tsilva.eu';
 
 function getScummvmAssetVersion() {
+    const search = globalThis.location?.search || "";
+    const searchVersion = new URLSearchParams(search).get("v");
+    if (searchVersion) {
+        return searchVersion;
+    }
+
     const pathname = globalThis.location?.pathname || "";
     const match = pathname.match(/\/scummvm\/([^/]+)\//);
     return match ? decodeURIComponent(match[1]) : "";
@@ -50,7 +56,7 @@ function buildRemoteUrl(baseUrl, remotePath) {
     const resolved = new URL(baseUrl, globalThis.location?.href || "http://localhost");
     const normalizedPath = remotePath.startsWith("/") ? remotePath : `/${remotePath}`;
     resolved.pathname = `${resolved.pathname.replace(/\/$/, "")}${normalizedPath}`;
-    return resolved.toString();
+    return withCacheKey(resolved.toString(), getScummvmAssetVersion());
 }
 
 function getDefaultRemoteFilesystems() {

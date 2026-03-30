@@ -3,17 +3,17 @@
     "name": "ScummVM Web",
     "icons": [
         {
-            "src": "scummvm-192.png",
+            "src": "scummvm-192.png?v=dev",
             "type": "image/png",
             "sizes": "192x192"
         },
         {
-            "src": "scummvm-512.png",
+            "src": "scummvm-512.png?v=dev",
             "type": "image/png",
             "sizes": "512x512"
         }
     ],
-    "start_url": "scummvm.html",
+    "start_url": "scummvm.html?v=dev",
     "background_color": "#3367D6",
     "display": "fullscreen",
     "theme_color": "#c60",
