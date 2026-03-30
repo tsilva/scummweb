@@ -1,8 +1,17 @@
 import { notFound } from "next/navigation";
-import { getGameBySlug, getVersionedScummvmAssetPath } from "../game-library";
+import { getGameBySlug, getGameLibrary, getVersionedScummvmAssetPath } from "../game-library";
 import GameRouteFrame from "../game-route-frame";
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  const { games } = await getGameLibrary();
+
+  return games.map((game) => ({
+    gameSlug: game.slug,
+  }));
+}
 
 function getGameInfoHref(game) {
   return game.readmeHref || getVersionedScummvmAssetPath("/source.html");

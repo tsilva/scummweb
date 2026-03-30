@@ -1,102 +1,8 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import LaunchButton from "./launch-button";
-import ProjectNoticeModal from "./project-notice-modal";
-
 function formatGameCount(count) {
   return `${count} game${count === 1 ? "" : "s"} installed`;
 }
 
-function getArtStyle(prefix, image, options = {}) {
-  if (!image) {
-    return undefined;
-  }
-
-  const style = {
-    [`--${prefix}-art-image`]: `url(${image})`,
-  };
-
-  if (options.position) {
-    style[`--${prefix}-art-position`] = options.position;
-  }
-
-  if (options.size) {
-    style[`--${prefix}-art-size`] = options.size;
-  }
-
-  if (options.repeat) {
-    style[`--${prefix}-art-repeat`] = options.repeat;
-  }
-
-  return style;
-}
-
-function Icon({ name, filled = false }) {
-  const commonProps = {
-    "aria-hidden": "true",
-    className: "icon",
-    fill: "none",
-    stroke: "currentColor",
-    strokeLinecap: "round",
-    strokeLinejoin: "round",
-    strokeWidth: 1.8,
-    viewBox: "0 0 24 24",
-  };
-
-  switch (name) {
-    case "search":
-      return (
-        <svg {...commonProps}>
-          <circle cx="11" cy="11" r="6.5" />
-          <path d="m16 16 4 4" />
-        </svg>
-      );
-    case "bell":
-      return (
-        <svg {...commonProps}>
-          <path d="M6.5 16.5h11l-1.3-1.8V10a4.2 4.2 0 0 0-8.4 0v4.7Z" />
-          <path d="M10 19a2.2 2.2 0 0 0 4 0" />
-        </svg>
-      );
-    case "settings":
-      return (
-        <svg {...commonProps}>
-          <circle cx="12" cy="12" r="3.2" />
-          <path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.4-2.4 1a8.2 8.2 0 0 0-1.8-1l-.3-2.5h-4l-.3 2.5a8.2 8.2 0 0 0-1.8 1l-2.4-1-2 3.4L5.1 11A7 7 0 0 0 5 12c0 .3 0 .7.1 1l-2 1.5 2 3.4 2.4-1a8.2 8.2 0 0 0 1.8 1l.3 2.5h4l.3-2.5a8.2 8.2 0 0 0 1.8-1l2.4 1 2-3.4-2-1.5c.1-.3.1-.7.1-1Z" />
-        </svg>
-      );
-    case "info":
-      return (
-        <svg {...commonProps}>
-          <circle cx="12" cy="12" r="8.2" />
-          <path d="M12 10.2v5.1" />
-          <path d="M12 7.7h.01" />
-        </svg>
-      );
-    case "star":
-      return (
-        <svg {...commonProps} fill={filled ? "currentColor" : "none"}>
-          <path d="m12 4.7 2.2 4.5 5 .7-3.6 3.5.9 4.9-4.5-2.4-4.5 2.4.9-4.9-3.6-3.5 5-.7Z" />
-        </svg>
-      );
-    case "github":
-      return (
-        <svg
-          {...commonProps}
-          fill="currentColor"
-          stroke="none"
-          viewBox="0 0 24 24"
-        >
-          <path d="M12 2C6.48 2 2 6.58 2 12.22c0 4.51 2.87 8.33 6.84 9.68.5.1.68-.22.68-.49 0-.24-.01-1.04-.01-1.88-2.78.62-3.37-1.21-3.37-1.21-.46-1.19-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.64-1.37-2.22-.26-4.56-1.15-4.56-5.1 0-1.13.39-2.05 1.04-2.78-.11-.26-.45-1.31.1-2.72 0 0 .85-.28 2.78 1.06A9.4 9.4 0 0 1 12 6.89c.85 0 1.71.12 2.51.36 1.93-1.34 2.78-1.06 2.78-1.06.55 1.41.21 2.46.1 2.72.65.73 1.04 1.65 1.04 2.78 0 3.96-2.35 4.84-4.59 5.09.36.32.69.94.69 1.91 0 1.38-.01 2.49-.01 2.83 0 .27.18.6.69.49A10.24 10.24 0 0 0 22 12.22C22 6.58 17.52 2 12 2Z" />
-        </svg>
-      );
-    default:
-      return null;
-  }
-}
-
-function getDialogLinkProps(href) {
+function getLinkProps(href) {
   if (!href.startsWith("http://") && !href.startsWith("https://")) {
     return {};
   }
@@ -105,6 +11,10 @@ function getDialogLinkProps(href) {
     rel: "noreferrer",
     target: "_blank",
   };
+}
+
+function getCardImage(game) {
+  return game.landscapeImage || game.posterImage || game.heroImage || game.screenshots[0] || "";
 }
 
 export default function HomeShell({
@@ -116,340 +26,223 @@ export default function HomeShell({
   sourceHref,
   sourceInfoDate,
 }) {
-  const [selectedGame, setSelectedGame] = useState(null);
-
-  useEffect(() => {
-    if (!selectedGame) {
-      return undefined;
-    }
-
-    const previousOverflow = document.body.style.overflow;
-
-    function handleKeyDown(event) {
-      if (event.key === "Escape") {
-        setSelectedGame(null);
-      }
-    }
-
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [selectedGame]);
-
-  function openGameDetails(game) {
-    setSelectedGame(game);
-  }
-
   return (
     <>
-      <ProjectNoticeModal officialHref={scummvmOfficialSite} sourceHref={sourceHref} />
+      <a className="skip-link" href="#main-content">
+        Skip to content
+      </a>
 
-      <nav className="dashboard-nav">
-        <div className="nav-cluster nav-cluster-left">
-          <div className="nav-brand-group">
-            <a className="nav-brand" href="#browse">
-              ScummVM Web
-            </a>
-          </div>
+      <header className="site-header">
+        <div className="site-header-inner">
+          <a className="site-brand" href="/">
+            ScummVM Web
+          </a>
 
-          <div className="nav-links" aria-label="Main">
-            <a className="is-active" href="#browse">
-              Browse
-            </a>
+          <nav className="site-nav" aria-label="Primary">
             <a href="#library">Library</a>
-            <a href="#archive">Archive</a>
+            <a href="#build-info">Build</a>
+            <a href={sourceHref}>Source</a>
             <a href={scummvmOfficialSite} rel="noreferrer" target="_blank">
-              Original Project
+              ScummVM
             </a>
-          </div>
+          </nav>
         </div>
+      </header>
 
-        <div className="nav-tools" aria-label="Actions">
-          <a
-            className="nav-icon-button"
-            href={projectRepositoryUrl}
-            aria-label="View project on GitHub"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <Icon name="github" />
-          </a>
-          <a className="nav-icon-button" href="#library" aria-label="Browse games">
-            <Icon name="search" />
-          </a>
-          <a className="nav-icon-button" href="#archive" aria-label="Open archive notes">
-            <Icon name="bell" />
-          </a>
-          <a className="nav-icon-button" href={sourceHref} aria-label="Open source offer">
-            <Icon name="settings" />
-          </a>
-          <button
-            aria-label={`Open details for ${featuredGame.displayTitle}`}
-            aria-haspopup="dialog"
-            className="nav-avatar"
-            data-game-target={featuredGame.target}
-            onClick={() => openGameDetails(featuredGame)}
-            type="button"
-          >
-            {featuredGame.displayTitle.slice(0, 2).toUpperCase()}
-          </button>
-        </div>
-      </nav>
+      <main className="home-page" id="main-content">
+        <section className="hero-shell">
+          <div className="hero-copy-simple">
+            <p className="hero-kicker">Browser-ready freeware adventures</p>
+            <h1>Play ScummVM classics instantly from a static web shell.</h1>
+            <p className="hero-summary">
+              This launcher ships a prebuilt ScummVM WebAssembly bundle, points game payloads at
+              the bucket origin, and exposes the matching source and license materials for the
+              hosted build.
+            </p>
 
-      <main className="page-shell">
-        <section
-          className={`hero-stage ${featuredGame.tone}`}
-          id="browse"
-          style={getArtStyle("hero", featuredGame.heroImage)}
-        >
-          <div className="hero-backdrop" />
-          <div className="hero-gradient" />
-
-          <div className="hero-inner">
-            <div className="hero-copy">
-              <p className="hero-kicker">{featuredGame.eyebrow}</p>
-              <h1>{featuredGame.displayTitle}</h1>
-              <p className="hero-summary">{featuredGame.summary}</p>
-
-              <div className="hero-actions">
-                <LaunchButton href={featuredGame.href} label="Start Adventure" />
-                <button
-                  className="secondary-button"
-                  onClick={() => openGameDetails(featuredGame)}
-                  type="button"
-                >
-                  <Icon name="info" />
-                  <span>More Info</span>
-                </button>
-              </div>
-
-              <dl className="hero-metadata">
-                <div>
-                  <dt>Studio</dt>
-                  <dd>{featuredGame.studio}</dd>
-                </div>
-                <div>
-                  <dt>Genre</dt>
-                  <dd>{featuredGame.genre}</dd>
-                </div>
-              </dl>
-
-              <div className="hero-status">
-                <span>{formatGameCount(catalog.length)}</span>
-                <span>{featuredGame.target}</span>
-                <span>{featuredGame.badge}</span>
-              </div>
+            <div className="hero-actions">
+              <a className="launch-button" href={featuredGame.href}>
+                Play {featuredGame.displayTitle}
+              </a>
+              <a className="secondary-button" href={sourceHref}>
+                Source And Licenses
+              </a>
             </div>
+
+            <ul className="hero-stats" role="list">
+              <li>{formatGameCount(catalog.length)}</li>
+              <li>{featuredGame.target}</li>
+              <li>{featuredGame.badge}</li>
+            </ul>
+          </div>
+
+          <aside className="hero-panel-simple">
+            <img
+              alt="ScummVM Web logo"
+              className="hero-logo"
+              decoding="async"
+              height="88"
+              src="/logo.svg"
+              width="88"
+            />
+
+            <div className="hero-panel-block">
+              <p className="eyebrow-label">Featured Route</p>
+              <strong>{featuredGame.displayTitle}</strong>
+              <p>{featuredGame.summary}</p>
+            </div>
+
+            <div className="hero-panel-block">
+              <p className="eyebrow-label">Build</p>
+              <strong>{sourceInfoDate}</strong>
+              <p>{buildStamp}</p>
+            </div>
+          </aside>
+        </section>
+
+        <section className="legal-banner" aria-labelledby="project-status-title">
+          <div>
+            <p className="eyebrow-label" id="project-status-title">
+              Project Status
+            </p>
+            <p>
+              This is not the official ScummVM website or a stock ScummVM release. It is an
+              unofficial browser deployment that keeps the upstream project and bundled materials
+              visible from the live site.
+            </p>
+          </div>
+
+          <div className="legal-actions">
+            <a href={scummvmOfficialSite} rel="noreferrer" target="_blank">
+              Visit ScummVM.org
+            </a>
+            <a href={sourceHref}>Review source offer</a>
           </div>
         </section>
 
-        <div className="section-stack">
-          <section className="content-band" id="library">
-            <div className="section-header">
-              <h2>
-                <span className="section-mark" />
-                Recently Played
-              </h2>
+        <section className="catalog-section" id="library">
+          <div className="section-header-simple">
+            <div>
+              <p className="eyebrow-label">Installed Library</p>
+              <h2>Launch any detected target directly.</h2>
             </div>
+            <a className="section-link-simple" href={projectRepositoryUrl} rel="noreferrer" target="_blank">
+              View repository
+            </a>
+          </div>
 
-            <div className="landscape-rail">
-              {catalog.map((game) => (
-                <button
-                  key={game.target}
-                  aria-haspopup="dialog"
-                  className={`landscape-card ${game.tone}`}
-                  data-game-target={game.target}
-                  onClick={() => openGameDetails(game)}
-                  style={getArtStyle("card", game.landscapeImage)}
-                  type="button"
-                >
-                  <div className="landscape-overlay">
-                    <h3>{game.displayTitle}</h3>
-                    <div className="landscape-meta">
-                      <span>{game.genre}</span>
-                      <span>{game.studio}</span>
+          <ul className="catalog-grid" role="list">
+            {catalog.map((game) => {
+              const cardImage = getCardImage(game);
+
+              return (
+                <li className="game-card-simple" key={game.target}>
+                  <a
+                    aria-label={`Launch ${game.displayTitle}`}
+                    className="game-card-media"
+                    href={game.href}
+                  >
+                    {cardImage ? (
+                      <img
+                        alt={`Artwork for ${game.displayTitle}`}
+                        decoding="async"
+                        fetchPriority="low"
+                        height="540"
+                        loading="lazy"
+                        src={cardImage}
+                        width="960"
+                      />
+                    ) : (
+                      <span aria-hidden="true" className="game-card-fallback" />
+                    )}
+                  </a>
+
+                  <div className="game-card-body">
+                    <p className="game-card-badge">{game.badge}</p>
+                    <h3>
+                      <a href={game.href}>{game.displayTitle}</a>
+                    </h3>
+                    <p className="game-card-summary">{game.summary}</p>
+
+                    <dl className="game-card-meta">
+                      <div>
+                        <dt>Genre</dt>
+                        <dd>{game.genre}</dd>
+                      </div>
+                      <div>
+                        <dt>Studio</dt>
+                        <dd>{game.studio}</dd>
+                      </div>
+                      <div>
+                        <dt>Released</dt>
+                        <dd>{game.year}</dd>
+                      </div>
+                      <div>
+                        <dt>Target</dt>
+                        <dd>{game.target}</dd>
+                      </div>
+                    </dl>
+
+                    <div className="game-card-actions">
+                      <a className="launch-button" href={game.href}>
+                        Play Now
+                      </a>
+                      <a
+                        className="secondary-button"
+                        href={game.infoHref}
+                        {...getLinkProps(game.infoHref)}
+                      >
+                        Notes
+                      </a>
                     </div>
                   </div>
-                </button>
-              ))}
-            </div>
-          </section>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
 
-          <section className="content-band">
-            <div className="section-header section-header-split">
-              <h2>
-                <span className="section-mark" />
-                Installed Library
-              </h2>
-              <button
-                aria-haspopup="dialog"
-                className="section-link"
-                data-game-target={featuredGame.target}
-                onClick={() => openGameDetails(featuredGame)}
-                type="button"
-              >
-                Open Featured
-              </button>
-            </div>
+        <section className="build-grid" id="build-info">
+          <article className="info-card">
+            <p className="eyebrow-label">Deployment Shape</p>
+            <h2>Static launcher, versioned shell assets, bucket-backed games.</h2>
+            <p>
+              The landing page is pre-rendered. The ScummVM shell is served from immutable,
+              versioned routes, and the game files stay on the bucket origin instead of crossing
+              the app server.
+            </p>
+          </article>
 
-            <div className="poster-grid">
-              {catalog.map((game) => (
-                <button
-                  key={game.target}
-                  aria-haspopup="dialog"
-                  className={`poster-card ${game.tone}`}
-                  data-game-target={game.target}
-                  onClick={() => openGameDetails(game)}
-                  style={getArtStyle("poster", game.posterImage)}
-                  type="button"
-                >
-                  <div className="poster-media" />
-                  <div className="poster-overlay">
-                    <p>{game.displayTitle}</p>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </section>
-
-          <section className="content-band" id="archive">
-            <div className="section-header">
-              <h2>
-                <span className="section-mark" />
-                Adventure Deck
-              </h2>
-            </div>
-
-            <div className="spotlight-rail">
-              {catalog.map((game) => (
-                <button
-                  key={game.target}
-                  aria-haspopup="dialog"
-                  className={`spotlight-card ${game.tone}`}
-                  data-game-target={game.target}
-                  onClick={() => openGameDetails(game)}
-                  style={getArtStyle("spotlight", game.spotlightImage)}
-                  type="button"
-                >
-                  <div className="spotlight-media" />
-                  <div className="spotlight-copy">
-                    <div>
-                      <span className="spotlight-kicker">{game.tag}</span>
-                      <h3>{game.displayTitle}</h3>
-                      <p>{game.summary}</p>
-                    </div>
-                    <div className="spotlight-badge">
-                      <Icon name="star" filled />
-                      <span>{game.badge}</span>
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </section>
-        </div>
+          <article className="info-card">
+            <p className="eyebrow-label">Verification Path</p>
+            <h2>Desktop and mobile audits are run against the live domain.</h2>
+            <p>
+              Playwright is used for visual checks, and Lighthouse is run against the production URL
+              after deploy so the final result matches the actual site users receive.
+            </p>
+          </article>
+        </section>
       </main>
 
-      <footer className="site-footer">
+      <footer className="site-footer home-footer">
         <div className="footer-copy">
           <strong>ScummVM Web</strong>
           <p>
-            Bundle built {sourceInfoDate} from {buildStamp}. Launcher routes now boot directly into
-            the detected ScummVM entries in this archive.
+            Bundle built {sourceInfoDate} from {buildStamp}. Hosted launcher routes boot directly
+            into the detected ScummVM entries in this archive.
           </p>
         </div>
-      </footer>
 
-      {selectedGame ? (
-        <div
-          aria-labelledby="game-detail-title"
-          className="game-detail-modal"
-          role="dialog"
-          aria-modal="true"
-        >
-          <div className="game-detail-backdrop" onClick={() => setSelectedGame(null)} />
-          <div className={`game-detail-panel ${selectedGame.tone}`}>
-            <div
-              className="game-detail-visual"
-              style={getArtStyle(
-                "modal",
-                selectedGame.heroImage || selectedGame.landscapeImage || selectedGame.posterImage
-              )}
-            >
-              <div className="game-detail-visual-copy">
-                <p className="hero-kicker">{selectedGame.eyebrow}</p>
-                <h2 id="game-detail-title">{selectedGame.displayTitle}</h2>
-                <div className="game-detail-visual-meta">
-                  <span>{selectedGame.year}</span>
-                  <span>{selectedGame.genre}</span>
-                  <span>{selectedGame.badge}</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="game-detail-copy">
-              <button
-                aria-label={`Close details for ${selectedGame.displayTitle}`}
-                className="game-detail-close"
-                onClick={() => setSelectedGame(null)}
-                type="button"
-              >
-                ×
-              </button>
-
-              <p className="game-detail-summary">{selectedGame.summary}</p>
-
-              <div className="game-detail-actions">
-                <LaunchButton href={selectedGame.href} label="Launch Game" />
-                <a
-                  className="secondary-button"
-                  href={selectedGame.infoHref}
-                  {...getDialogLinkProps(selectedGame.infoHref)}
-                >
-                  <Icon name="info" />
-                  <span>Read Notes</span>
-                </a>
-              </div>
-
-              <dl className="game-detail-metadata">
-                <div>
-                  <dt>Studio</dt>
-                  <dd>{selectedGame.studio}</dd>
-                </div>
-                <div>
-                  <dt>Release</dt>
-                  <dd>{selectedGame.year}</dd>
-                </div>
-                <div>
-                  <dt>Target</dt>
-                  <dd>{selectedGame.target}</dd>
-                </div>
-                <div>
-                  <dt>Collection</dt>
-                  <dd>{selectedGame.tag}</dd>
-                </div>
-              </dl>
-
-              {selectedGame.screenshots.length > 0 ? (
-                <div className="game-detail-strip" aria-label={`${selectedGame.displayTitle} screenshots`}>
-                  {selectedGame.screenshots.map((shot, index) => (
-                    <div
-                      key={shot}
-                      className="game-detail-shot"
-                      style={getArtStyle("shot", shot)}
-                      title={`${selectedGame.displayTitle} screenshot ${index + 1}`}
-                    />
-                  ))}
-                </div>
-              ) : null}
-            </div>
-          </div>
+        <div className="footer-links">
+          <a href={projectRepositoryUrl} rel="noreferrer" target="_blank">
+            GitHub
+          </a>
+          <a href={sourceHref}>Source Offer</a>
+          <a href={scummvmOfficialSite} rel="noreferrer" target="_blank">
+            Original Project
+          </a>
         </div>
-      ) : null}
+      </footer>
     </>
   );
 }

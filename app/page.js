@@ -5,7 +5,7 @@ import HomeShell from "./home-shell";
 
 const scummvmOfficialSite = "https://www.scummvm.org/";
 const projectRepositoryUrl = "https://github.com/tsilva/scummvm-web";
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
 
 const artByTarget = {
   sky: {
@@ -140,12 +140,16 @@ function shortCommit(commit) {
   return commit ? commit.slice(0, 7) : "unknown";
 }
 
-function pickFeaturedGame(catalog) {
+function pickFeaturedGame(catalog, primaryTarget) {
   if (catalog.length === 0) {
     return null;
   }
 
-  return catalog[Math.floor(Math.random() * catalog.length)];
+  return (
+    catalog.find((game) => game.target === primaryTarget) ||
+    catalog.find((game) => game.target === "sky") ||
+    catalog[0]
+  );
 }
 
 function getGameMeta(game) {
@@ -174,7 +178,7 @@ async function getSourceInfo() {
 }
 
 export default async function HomePage() {
-  const { games } = await getGameLibrary();
+  const { games, primaryTarget } = await getGameLibrary();
   const sourceInfo = await getSourceInfo();
 
   if (games.length === 0) {
@@ -182,7 +186,7 @@ export default async function HomePage() {
   }
 
   const catalog = games.map(getGameMeta);
-  const featuredGame = pickFeaturedGame(catalog) || catalog[0];
+  const featuredGame = pickFeaturedGame(catalog, primaryTarget) || catalog[0];
   const buildStamp = `${shortCommit(sourceInfo.project.commit)} / ${shortCommit(
     sourceInfo.scummvm.commit
   )}`;
