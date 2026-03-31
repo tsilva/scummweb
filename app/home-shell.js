@@ -111,6 +111,7 @@ export default function HomeShell({
   buildStamp,
   catalog,
   featuredGame,
+  logoSrc,
   projectRepositoryUrl,
   scummvmOfficialSite,
   sourceHref,
@@ -123,8 +124,17 @@ export default function HomeShell({
       <nav className="dashboard-nav">
         <div className="nav-cluster nav-cluster-left">
           <div className="nav-brand-group">
-            <a className="nav-brand" href="#browse">
-              ScummVM Web
+            <a className="nav-brand" href="#browse" aria-label="ScummVM Web">
+              <img
+                alt=""
+                aria-hidden="true"
+                className="nav-brand-logo"
+                decoding="async"
+                height="372"
+                loading="eager"
+                src={logoSrc}
+                width="1884"
+              />
             </a>
           </div>
 

@@ -214,6 +214,7 @@ export default async function HomePage() {
       buildStamp={buildStamp}
       catalog={catalog}
       featuredGame={featuredGame}
+      logoSrc={getVersionedSiteAssetPath("/logo.svg")}
       projectRepositoryUrl={projectRepositoryUrl}
       scummvmOfficialSite={scummvmOfficialSite}
       sourceHref={getVersionedScummvmAssetPath("/source.html")}

@@ -633,6 +633,7 @@ fi
 SCUMMVM_REMOTE_URL="$(git -C "$SCUMMVM_DIR" remote get-url origin 2>/dev/null || true)"
 SCUMMVM_REPO_URL="$(normalize_git_url "$SCUMMVM_REMOTE_URL")"
 SCUMMVM_COMMIT="$(git -C "$SCUMMVM_DIR" rev-parse HEAD 2>/dev/null || true)"
+SCUMMVM_VERSION="$(git -C "$SCUMMVM_DIR" describe --tags --always 2>/dev/null || true)"
 SCUMMVM_DIRTY="false"
 if [[ -n "$(git -C "$SCUMMVM_DIR" status --porcelain 2>/dev/null)" ]]; then
   SCUMMVM_DIRTY="true"
@@ -643,6 +644,7 @@ PROJECT_COMMIT="$PROJECT_COMMIT" \
 PROJECT_DIRTY="$PROJECT_DIRTY" \
 SCUMMVM_REPO_URL="$SCUMMVM_REPO_URL" \
 SCUMMVM_COMMIT="$SCUMMVM_COMMIT" \
+SCUMMVM_VERSION="$SCUMMVM_VERSION" \
 SCUMMVM_DIRTY="$SCUMMVM_DIRTY" \
 python3 - "$DIST_DIR" <<'PY'
 from datetime import datetime, timezone
@@ -697,6 +699,7 @@ info = {
     },
     "scummvm": {
         "repository_url": os.environ.get("SCUMMVM_REPO_URL", ""),
+        "version": os.environ.get("SCUMMVM_VERSION", ""),
         "commit": os.environ.get("SCUMMVM_COMMIT", ""),
         "commit_url": commit_url(os.environ.get("SCUMMVM_REPO_URL", ""), os.environ.get("SCUMMVM_COMMIT", "")),
         "archive_url": archive_url(os.environ.get("SCUMMVM_REPO_URL", ""), os.environ.get("SCUMMVM_COMMIT", "")),
@@ -1127,7 +1130,7 @@ path = Path(sys.argv[1])
 html_text = path.read_text()
 updated_html = html_text.replace("<title>ScummVM</title>", "<title>ScummVM Web</title>", 1)
 asset_version = os.environ.get("SCUMMVM_BUNDLE_ASSET_VERSION", "dev")
-redirect_script = """<script>(function(){const exitTo=new URLSearchParams(window.location.search).get("exitTo");if(!exitTo)return;const resolvedExitHref=(()=>{try{const resolvedUrl=new URL(exitTo,window.location.href);return resolvedUrl.origin===window.location.origin?`${resolvedUrl.pathname}${resolvedUrl.search}${resolvedUrl.hash}`:"/"}catch{return "/"}})();let didHandleExit=false;let hasUserInteracted=false;const markUserInteraction=()=>{hasUserInteracted=true};for(const eventName of["mousedown","touchstart"]){window.addEventListener(eventName,markUserInteraction,{capture:true,passive:true})}const canvas=document.getElementById("canvas");if(canvas){const visibleCursorClass="scummvm-browser-cursor-visible";const cursorStyle=document.createElement("style");cursorStyle.textContent=`#canvas.${visibleCursorClass}{cursor:default!important}`;document.head.appendChild(cursorStyle);const showBrowserCursor=()=>{canvas.classList.add(visibleCursorClass)};const allowGameCursor=()=>{canvas.classList.remove(visibleCursorClass)};for(const eventName of["mouseenter","pointerenter","mouseleave"]){canvas.addEventListener(eventName,showBrowserCursor,{passive:true})}for(const eventName of["mousedown","touchstart"]){canvas.addEventListener(eventName,allowGameCursor,{capture:true,passive:true})}showBrowserCursor()}const handleExit=status=>{if(didHandleExit)return;didHandleExit=true;const exitMessage={type:"scummvm-exit",href:resolvedExitHref,status};if(window.parent&&window.parent!==window){try{window.parent.postMessage(exitMessage,window.location.origin);return}catch{}}try{window.location.replace(resolvedExitHref)}catch{window.location.href=resolvedExitHref}};window.Module=window.Module||{};const originalQuit=window.Module.quit;window.Module.quit=function(status,toThrow){if(hasUserInteracted){handleExit(status)}if(typeof originalQuit==="function"){return originalQuit(status,toThrow)}throw toThrow||new Error(`ScummVM exited (${status})`)}})();</script>"""
+redirect_script = """<script>(function(){const exitTo=new URLSearchParams(window.location.search).get("exitTo");if(!exitTo)return;const resolvedExitHref=(()=>{try{const resolvedUrl=new URL(exitTo,window.location.href);return resolvedUrl.origin===window.location.origin?`${resolvedUrl.pathname}${resolvedUrl.search}${resolvedUrl.hash}`:"/"}catch{return "/"}})();let didHandleExit=false;let hasUserInteracted=false;const markUserInteraction=event=>{if(event.type==="keydown"&&(event.metaKey||event.ctrlKey||event.altKey))return;hasUserInteracted=true};for(const eventName of["keydown","mousedown","touchstart"]){window.addEventListener(eventName,markUserInteraction,{capture:true,passive:eventName!=="keydown"})}const canvas=document.getElementById("canvas");if(canvas){const visibleCursorClass="scummvm-browser-cursor-visible";const cursorStyle=document.createElement("style");cursorStyle.textContent=`#canvas.${visibleCursorClass}{cursor:default!important}`;document.head.appendChild(cursorStyle);const showBrowserCursor=()=>{canvas.classList.add(visibleCursorClass)};const allowGameCursor=()=>{canvas.classList.remove(visibleCursorClass)};for(const eventName of["mouseenter","pointerenter","mouseleave"]){canvas.addEventListener(eventName,showBrowserCursor,{passive:true})}for(const eventName of["mousedown","touchstart"]){canvas.addEventListener(eventName,allowGameCursor,{capture:true,passive:true})}showBrowserCursor()}const handleExit=status=>{if(didHandleExit)return;didHandleExit=true;const exitMessage={type:"scummvm-exit",href:resolvedExitHref,status};if(window.parent&&window.parent!==window){try{window.parent.postMessage(exitMessage,window.location.origin);return}catch{}}try{window.location.replace(resolvedExitHref)}catch{window.location.href=resolvedExitHref}};window.Module=window.Module||{};const originalQuit=window.Module.quit;window.Module.quit=function(status,toThrow){if(hasUserInteracted){handleExit(status)}if(typeof originalQuit==="function"){return originalQuit(status,toThrow)}throw toThrow||new Error(`ScummVM exited (${status})`)}})();</script>"""
 module_loader = """<script type=module>(function(){const v=new URLSearchParams(window.location.search).get("v");const moduleUrl=v?`./scummvm_fs.js?v=${encodeURIComponent(v)}`:"./scummvm_fs.js";window.ScummvmFSReady=import(moduleUrl).then(({ScummvmFS})=>{window.ScummvmFS=ScummvmFS})})();</script>"""
 script_tag = "<script src=scummvm.js async></script>"
 versioned_scummvm_loader = """<script>(function(){const v=new URLSearchParams(window.location.search).get("v");window.Module=window.Module||{};const originalLocateFile=window.Module.locateFile;window.Module.locateFile=function(path,prefix){const raw=typeof originalLocateFile=="function"?originalLocateFile(path,prefix):`${prefix||""}${path}`;if(!v)return raw;const resolved=new URL(raw,window.location.href);resolved.searchParams.set("v",v);return resolved.toString()};const script=document.createElement("script");script.async=true;script.src=v?`scummvm.js?v=${encodeURIComponent(v)}`:"scummvm.js";document.body.appendChild(script)})();</script>"""
@@ -1163,10 +1166,18 @@ updated_html = updated_html.replace(
     1,
 )
 
-if redirect_script not in updated_html and script_tag in updated_html:
-    updated_html = updated_html.replace(script_tag, f"{redirect_script}{versioned_scummvm_loader}", 1)
+redirect_script_prefix = '<script>(function(){const exitTo=new URLSearchParams(window.location.search).get("exitTo");'
+redirect_start = updated_html.find(redirect_script_prefix)
+if redirect_start != -1:
+    redirect_end = updated_html.find("</script>", redirect_start)
+    if redirect_end != -1:
+        updated_html = updated_html[:redirect_start] + updated_html[redirect_end + len("</script>"):]
+
+combined_loader = f"{redirect_script}{versioned_scummvm_loader}"
+if script_tag in updated_html:
+    updated_html = updated_html.replace(script_tag, combined_loader, 1)
 else:
-    updated_html = updated_html.replace(script_tag, versioned_scummvm_loader, 1)
+    updated_html = updated_html.replace(versioned_scummvm_loader, combined_loader, 1)
 
 if updated_html != html_text:
     path.write_text(updated_html)
