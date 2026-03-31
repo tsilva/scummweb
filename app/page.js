@@ -1,3 +1,4 @@
+import { randomInt } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import {
@@ -9,7 +10,7 @@ import HomeShell from "./home-shell";
 
 const scummvmOfficialSite = "https://www.scummvm.org/";
 const projectRepositoryUrl = "https://github.com/tsilva/scummvm-web";
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 const artByTarget = {
   sky: {
@@ -160,16 +161,12 @@ function shortCommit(commit) {
   return commit ? commit.slice(0, 7) : "unknown";
 }
 
-function pickFeaturedGame(catalog, primaryTarget) {
+function pickFeaturedGame(catalog) {
   if (catalog.length === 0) {
     return null;
   }
 
-  return (
-    catalog.find((game) => game.target === primaryTarget) ||
-    catalog.find((game) => game.target === "sky") ||
-    catalog[0]
-  );
+  return catalog[randomInt(catalog.length)];
 }
 
 function getGameMeta(game) {
@@ -206,7 +203,7 @@ async function getSourceInfo() {
 }
 
 export default async function HomePage() {
-  const { games, primaryTarget } = await getGameLibrary();
+  const { games } = await getGameLibrary();
   const sourceInfo = await getSourceInfo();
 
   if (games.length === 0) {
@@ -214,7 +211,7 @@ export default async function HomePage() {
   }
 
   const catalog = games.map(getGameMeta);
-  const featuredGame = pickFeaturedGame(catalog, primaryTarget) || catalog[0];
+  const featuredGame = pickFeaturedGame(catalog) || catalog[0];
   const buildStamp = `${shortCommit(sourceInfo.project.commit)} / ${shortCommit(
     sourceInfo.scummvm.commit
   )}`;
