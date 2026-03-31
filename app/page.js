@@ -8,7 +8,6 @@ import {
 import HomeShell from "./home-shell";
 
 const scummvmOfficialSite = "https://www.scummvm.org/";
-const projectRepositoryUrl = "https://github.com/tsilva/scummvm-web";
 export const dynamic = "force-dynamic";
 
 const artByTarget = {
@@ -21,6 +20,7 @@ const artByTarget = {
     year: "1994",
     badge: "CD Release",
     tag: "Industrial noir",
+    heroImage: "/launcher/sky-hero.jpg",
     screenshots: [
       "/launcher/bass-shot-1.png",
       "/launcher/bass-shot-2.png",
@@ -215,9 +215,7 @@ export default async function HomePage() {
       catalog={catalog}
       featuredGame={featuredGame}
       logoSrc={getVersionedSiteAssetPath("/logo.svg")}
-      projectRepositoryUrl={projectRepositoryUrl}
       scummvmOfficialSite={scummvmOfficialSite}
-      sourceHref={getVersionedScummvmAssetPath("/source.html")}
       sourceInfoDate={sourceInfo.generated_at_utc.slice(0, 10)}
     />
   );
