@@ -9,6 +9,7 @@ function DecorativeImage({
   fetchPriority,
   loading = "lazy",
   src,
+  style,
 }) {
   if (!src) {
     return null;
@@ -24,6 +25,7 @@ function DecorativeImage({
       fetchPriority={resolvedFetchPriority}
       loading={loading}
       src={src}
+      style={style}
     />
   );
 }
@@ -49,6 +51,17 @@ function Icon({ name }) {
           <path d="M12 7.7h.01" />
         </svg>
       );
+    case "github":
+      return (
+        <svg
+          {...commonProps}
+          fill="currentColor"
+          stroke="none"
+          viewBox="0 0 24 24"
+        >
+          <path d="M12 2C6.48 2 2 6.58 2 12.22c0 4.51 2.87 8.33 6.84 9.68.5.1.68-.22.68-.49 0-.24-.01-1.04-.01-1.88-2.78.62-3.37-1.21-3.37-1.21-.46-1.19-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.64-1.37-2.22-.26-4.56-1.15-4.56-5.1 0-1.13.39-2.05 1.04-2.78-.11-.26-.45-1.31.1-2.72 0 0 .85-.28 2.78 1.06A9.4 9.4 0 0 1 12 6.89c.85 0 1.71.12 2.51.36 1.93-1.34 2.78-1.06 2.78-1.06.55 1.41.21 2.46.1 2.72.65.73 1.04 1.65 1.04 2.78 0 3.96-2.35 4.84-4.59 5.09.36.32.69.94.69 1.91 0 1.38-.01 2.49-.01 2.83 0 .27.18.6.69.49A10.24 10.24 0 0 0 22 12.22C22 6.58 17.52 2 12 2Z" />
+        </svg>
+      );
     default:
       return null;
   }
@@ -69,6 +82,26 @@ function getDialogLinkProps(href) {
   };
 }
 
+function getHeroImageStyle(position) {
+  if (!position) {
+    return undefined;
+  }
+
+  return {
+    objectPosition: position,
+  };
+}
+
+const installedLibraryOrder = [
+  "sky",
+  "queen",
+  "dreamweb-cd",
+  "lure",
+  "sword25",
+  "drascula",
+  "nippon-amiga",
+];
+
 export default function HomeShell({
   buildStamp,
   catalog,
@@ -78,6 +111,18 @@ export default function HomeShell({
   sourceInfoDate,
 }) {
   const featuredDialogId = getDialogId(featuredGame);
+  const installedCatalog = [...catalog].sort((left, right) => {
+    const leftIndex = installedLibraryOrder.indexOf(left.target);
+    const rightIndex = installedLibraryOrder.indexOf(right.target);
+    const normalizedLeftIndex = leftIndex === -1 ? installedLibraryOrder.length : leftIndex;
+    const normalizedRightIndex = rightIndex === -1 ? installedLibraryOrder.length : rightIndex;
+
+    if (normalizedLeftIndex !== normalizedRightIndex) {
+      return normalizedLeftIndex - normalizedRightIndex;
+    }
+
+    return left.displayTitle.localeCompare(right.displayTitle);
+  });
 
   return (
     <>
@@ -108,6 +153,18 @@ export default function HomeShell({
             </a>
           </div>
         </div>
+
+        <div className="nav-actions">
+          <a
+            aria-label="View scummvm-web on GitHub"
+            className="nav-icon-link"
+            href="https://github.com/tsilva/scummvm-web"
+            rel="noreferrer"
+            target="_blank"
+          >
+            <Icon name="github" />
+          </a>
+        </div>
       </nav>
 
       <main className="page-shell">
@@ -118,6 +175,7 @@ export default function HomeShell({
               fetchPriority="high"
               loading="eager"
               src={featuredGame.heroImage}
+              style={getHeroImageStyle(featuredGame.heroImagePosition)}
             />
           </div>
           <div className="hero-gradient" />
@@ -196,7 +254,7 @@ export default function HomeShell({
             </div>
 
             <div className="poster-grid">
-              {catalog.map((game) => (
+              {installedCatalog.map((game) => (
                 <a
                   key={game.target}
                   aria-haspopup="dialog"
@@ -246,7 +304,19 @@ export default function HomeShell({
               role="dialog"
             >
               <div className="game-detail-visual">
-                <DecorativeImage className="game-detail-visual-image" src={modalImage} />
+                <DecorativeImage
+                  className="game-detail-visual-image"
+                  loading="eager"
+                  src={modalImage}
+                  style={getHeroImageStyle(game.heroImagePosition)}
+                />
+                <a
+                  aria-label={`Close details for ${game.displayTitle}`}
+                  className="game-detail-close"
+                  href="#browse"
+                >
+                  ×
+                </a>
                 <div className="game-detail-visual-copy">
                   <p className="hero-kicker">{game.eyebrow}</p>
                   <h2 id={`${dialogId}-title`}>{game.displayTitle}</h2>
@@ -255,32 +325,23 @@ export default function HomeShell({
                     <span>{game.genre}</span>
                     <span>{game.badge}</span>
                   </div>
+                  <p className="game-detail-summary">{game.summary}</p>
+
+                  <div className="game-detail-actions">
+                    <LaunchButton href={game.href} label="Launch Game" />
+                    <a
+                      className="secondary-button"
+                      href={game.infoHref}
+                      {...getDialogLinkProps(game.infoHref)}
+                    >
+                      <Icon name="info" />
+                      <span>Read Notes</span>
+                    </a>
+                  </div>
                 </div>
               </div>
 
               <div className="game-detail-copy">
-                <a
-                  aria-label={`Close details for ${game.displayTitle}`}
-                  className="game-detail-close"
-                  href="#browse"
-                >
-                  ×
-                </a>
-
-                <p className="game-detail-summary">{game.summary}</p>
-
-                <div className="game-detail-actions">
-                  <LaunchButton href={game.href} label="Launch Game" />
-                  <a
-                    className="secondary-button"
-                    href={game.infoHref}
-                    {...getDialogLinkProps(game.infoHref)}
-                  >
-                    <Icon name="info" />
-                    <span>Read Notes</span>
-                  </a>
-                </div>
-
                 <dl className="game-detail-metadata">
                   <div>
                     <dt>Studio</dt>

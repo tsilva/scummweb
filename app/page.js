@@ -57,6 +57,7 @@ const artByTarget = {
     badge: "Talkie CD",
     tag: "Pulp expedition",
     heroImage: "/launcher/queen-hero.jpg",
+    heroImagePosition: "74% 30%",
     landscapeImage: "/launcher/queen-cover.jpg",
     posterImage: "/launcher/queen-cover.jpg",
     spotlightImage: "/launcher/queen-cover.jpg",
@@ -108,22 +109,6 @@ const artByTarget = {
     landscapeImage: "/launcher/nippon-cover.jpg",
     posterImage: "/launcher/nippon-cover.jpg",
     spotlightImage: "/launcher/nippon-cover.jpg",
-    screenshots: [],
-    tone: "tone-default",
-  },
-  "waxworks-demo": {
-    eyebrow: "Midnight Curio",
-    summary:
-      "Waxworks opens with a wax museum invitation, a dead-eyed host, and an Adventure Soft horror demo that wastes no time turning pulp history into gore-soaked dread.",
-    genre: "Horror Adventure",
-    studio: "Adventure Soft",
-    year: "1992",
-    badge: "DOS Demo",
-    tag: "Grotesque anthology",
-    heroImage: "/launcher/waxworks-hero.jpg?v=20260329",
-    landscapeImage: "/launcher/waxworks-cover.jpg?v=20260329",
-    posterImage: "/launcher/waxworks-cover.jpg?v=20260329",
-    spotlightImage: "/launcher/waxworks-cover.jpg?v=20260329",
     screenshots: [],
     tone: "tone-default",
   },
@@ -180,6 +165,7 @@ function getGameMeta(game) {
     summary:
       art.summary ||
       `Launch ${game.displayTitle} directly from its dedicated ScummVM Web route and jump into the configured target immediately.`,
+    heroImagePosition: art.heroImagePosition || undefined,
     heroImage: getVersionedSiteAssetPath(
       art.heroImage || screenshots[1] || screenshots[0] || ""
     ),
