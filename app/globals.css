@@ -72,7 +72,6 @@ svg {
 .nav-tools,
 .hero-actions,
 .hero-status,
-.section-header-split,
 .footer-links,
 .footer-tools {
   display: flex;
@@ -124,7 +123,6 @@ svg {
 }
 
 .nav-links a,
-.section-link,
 .footer-links a {
   color: var(--ink-soft);
   font-size: 0.68rem;
@@ -136,8 +134,6 @@ svg {
 
 .nav-links a:hover,
 .nav-links a:focus-visible,
-.section-link:hover,
-.section-link:focus-visible,
 .footer-links a:hover,
 .footer-links a:focus-visible {
   color: var(--ink);
@@ -761,11 +757,6 @@ svg {
   margin-bottom: 2rem;
 }
 
-.section-header-split {
-  justify-content: space-between;
-  gap: 1rem;
-}
-
 .section-header h2 {
   display: flex;
   align-items: center;
@@ -780,17 +771,6 @@ svg {
   width: 0.22rem;
   height: 1.75rem;
   background: var(--accent);
-}
-
-.section-link {
-  appearance: none;
-  border: 0;
-  background: none;
-  cursor: pointer;
-  font: inherit;
-  padding: 0;
-  text-align: inherit;
-  white-space: nowrap;
 }
 
 .landscape-rail,
@@ -1315,11 +1295,6 @@ svg {
 
   .game-detail-strip {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .section-header-split {
-    flex-direction: column;
-    align-items: flex-start;
   }
 
   .spotlight-card {
