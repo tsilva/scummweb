@@ -17,6 +17,7 @@
 - Archive-based asset flow for the ScummVM shell only: generated non-game web files can be stored in `bundle/scummvm-public.zip` and restored into `public/` for local workflows
 - Compliance surface that keeps `source.html`, `source-info.json`, bundled license texts, and bundled game readmes accessible from the launcher
 - Playwright-based smoke verification that launches the Next.js app, checks the rendered launcher targets, and boots each detected ScummVM target
+- App Router crawl metadata with `robots.txt` and a sitemap generated from `public/games.json`, so newly added game routes are included automatically
 
 ## 🏗️ How It Works
 
@@ -89,10 +90,13 @@ That script rebuilds the Next.js app, serves it locally on `127.0.0.1:3000`, lau
 | `SCUMMVM_R2_ENDPOINT` | No | Overrides the default R2 S3 endpoint for uploads |
 | `SCUMMVM_GAMES_ORIGIN` | No | Overrides the default games origin (`https://scummvm-games.tsilva.eu`) used for generated readme links and the production browser filesystem mount |
 | `SCUMMVM_GAMES_UPLOAD_DIR` | No | Overrides the upload source directory; defaults to `dist/games/`, then falls back to `public/games/` |
+| `NEXT_PUBLIC_SITE_URL` | No | Overrides the default production site URL (`https://scummvm.tsilva.eu`) used for `metadataBase`, `robots.txt`, and `sitemap.xml` |
 
 ## ☁️ Deploy to Vercel
 
 This repo deploys like a standard Next.js app once the ScummVM shell assets in `public/` are present and the game payload has been uploaded to R2. The launcher shell is deployed to Vercel, and the large game files stay in R2 behind the configured games origin, so they do not need to be bundled into the Vercel deployment.
+
+The generated sitemap is based on the same `public/games.json` library that powers route generation, so adding a game through the existing metadata pipeline automatically adds its canonical route to `sitemap.xml` on the next build.
 
 ```bash
 # Preview deployment

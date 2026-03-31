@@ -162,7 +162,33 @@ async function verifyTarget(context, baseUrl, game) {
     throw new Error(`Game did not reach the expected startup state for ${game.target}.\n${output}`);
   }
 
-  return page;
+  return { frame, page, routeUrl };
+}
+
+async function verifyEscapeStaysInGame(page, frame, routeUrl) {
+  await frame.locator("#canvas").press("Escape");
+  await page.waitForTimeout(500);
+
+  if (normalizeUrl(page.url()) !== normalizeUrl(routeUrl)) {
+    throw new Error(`Escape redirected unexpectedly from ${routeUrl} to ${page.url()}`);
+  }
+}
+
+async function verifyQuitReturnsHome(page, frame, baseUrl) {
+  await frame.locator("#canvas").press("a");
+  await page.waitForTimeout(200);
+
+  await frame.locator("#canvas").evaluate(() => {
+    try {
+      window.Module?.quit?.(0, new Error("verification quit"));
+    } catch {
+      // The wrapped quit path may throw after posting the exit message.
+    }
+  });
+
+  await page.waitForURL((currentUrl) => normalizeUrl(currentUrl.toString()) === normalizeUrl(baseUrl), {
+    timeout: 10000,
+  });
 }
 
 async function seedStaleIni(context, baseUrl) {
@@ -295,14 +321,24 @@ await featuredDialog.locator(".game-detail-close").click();
 await featuredDialog.waitFor({ state: "hidden", timeout: 10000 });
 
 for (const game of library.games) {
-  screenshotPage = await verifyTarget(context, url, game);
+  const { frame, page, routeUrl } = await verifyTarget(context, url, game);
+
+  await verifyEscapeStaysInGame(page, frame, routeUrl);
+  await verifyQuitReturnsHome(page, frame, url);
+
+  screenshotPage = page;
 }
 
 const staleRecoveryContext = await browser.newContext({
   viewport: { width: 1440, height: 900 },
 });
 await seedStaleIni(staleRecoveryContext, url);
-await verifyTarget(staleRecoveryContext, url, library.games[library.games.length - 1]);
+const { page: staleRecoveryPage } = await verifyTarget(
+  staleRecoveryContext,
+  url,
+  library.games[library.games.length - 1]
+);
+await staleRecoveryPage.close();
 await staleRecoveryContext.close();
 
 fs.mkdirSync(path.dirname(screenshotPath), { recursive: true });

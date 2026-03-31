@@ -91,11 +91,18 @@ svg {
 }
 
 .nav-brand {
+  display: inline-flex;
+  align-items: center;
   color: var(--accent);
   font-family: var(--font-display), sans-serif;
   font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: -0.04em;
+}
+
+.nav-brand-logo {
+  width: auto;
+  height: 1.35rem;
 }
 
 .project-notice-kicker {
@@ -1088,12 +1095,73 @@ svg {
     #050505;
 }
 
+.game-route-shell {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+}
+
 .game-route-frame {
   display: block;
   width: 100vw;
   height: 100vh;
   border: 0;
   background: #000;
+}
+
+.game-route-shell:fullscreen {
+  width: 100%;
+  height: 100%;
+}
+
+.game-route-shell:-webkit-full-screen {
+  width: 100%;
+  height: 100%;
+}
+
+.game-route-shell:fullscreen .game-route-frame,
+.game-route-shell:-webkit-full-screen .game-route-frame {
+  width: 100%;
+  height: 100%;
+}
+
+.game-route-fullscreen-button {
+  position: absolute;
+  top: max(1rem, env(safe-area-inset-top));
+  right: max(1rem, env(safe-area-inset-right));
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid rgba(246, 224, 138, 0.55);
+  border-radius: 999px;
+  background: rgba(5, 5, 5, 0.72);
+  color: #f6e08a;
+  box-shadow: 0 0.75rem 1.75rem rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.game-route-fullscreen-button:hover,
+.game-route-fullscreen-button:focus-visible {
+  background: rgba(198, 96, 0, 0.82);
+  border-color: rgba(246, 224, 138, 0.85);
+  color: #fff6d5;
+  transform: translateY(-1px);
+}
+
+.game-route-fullscreen-button:focus-visible {
+  outline: 2px solid rgba(246, 224, 138, 0.95);
+  outline-offset: 2px;
 }
 
 @media (max-width: 900px) {
@@ -1117,6 +1185,10 @@ svg {
 
   .nav-brand-group {
     width: 100%;
+  }
+
+  .nav-brand-logo {
+    height: 1.2rem;
   }
 
   .nav-links,
