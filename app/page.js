@@ -1,8 +1,7 @@
 import { randomInt } from "node:crypto";
-import fs from "node:fs/promises";
-import path from "node:path";
 import {
   getGameLibrary,
+  getSourceInfo,
   getVersionedScummvmAssetPath,
   getVersionedSiteAssetPath,
 } from "./game-library";
@@ -194,12 +193,6 @@ function getGameMeta(game) {
         art.spotlightImage || art.landscapeImage || art.posterImage || screenshots[0] || ""
       ),
   };
-}
-
-async function getSourceInfo() {
-  const infoPath = path.join(process.cwd(), "public", "source-info.json");
-  const content = await fs.readFile(infoPath, "utf8");
-  return JSON.parse(content);
 }
 
 export default async function HomePage() {

@@ -1,5 +1,6 @@
-import fs from "node:fs/promises";
-import path from "node:path";
+import primaryGameData from "../public/game.json";
+import gameLibraryData from "../public/games.json";
+import sourceInfoData from "../public/source-info.json";
 
 export const scummvmAssetVersion = process.env.NEXT_PUBLIC_SCUMMVM_ASSET_VERSION || "dev";
 
@@ -95,29 +96,36 @@ export function getVersionedSiteAssetPath(assetPath) {
   return buildVersionedSiteAssetPath(assetPath);
 }
 
-export async function getGameLibrary() {
-  const publicDir = path.join(process.cwd(), "public");
-  const libraryPath = path.join(publicDir, "games.json");
+function getBundledGameLibrary() {
+  const games = Array.isArray(gameLibraryData?.games) ? gameLibraryData.games : [];
 
-  try {
-    const library = JSON.parse(await fs.readFile(libraryPath, "utf8"));
-    const games = Array.isArray(library.games) ? library.games : [];
-
+  if (games.length > 0) {
     return {
-      games: addGameRoutes(games),
-      primaryTarget: library.primaryTarget || games[0]?.target || "",
-    };
-  } catch {
-    const primaryGame = JSON.parse(await fs.readFile(path.join(publicDir, "game.json"), "utf8"));
-
-    return {
-      games: addGameRoutes([primaryGame]),
-      primaryTarget: primaryGame.target,
+      games,
+      primaryTarget: gameLibraryData.primaryTarget || games[0]?.target || "",
     };
   }
+
+  return {
+    games: primaryGameData ? [primaryGameData] : [],
+    primaryTarget: primaryGameData?.target || "",
+  };
+}
+
+export async function getGameLibrary() {
+  const library = getBundledGameLibrary();
+
+  return {
+    games: addGameRoutes(library.games),
+    primaryTarget: library.primaryTarget,
+  };
 }
 
 export async function getGameBySlug(gameSlug) {
   const { games } = await getGameLibrary();
   return games.find((game) => game.slug === gameSlug) || null;
+}
+
+export async function getSourceInfo() {
+  return sourceInfoData;
 }
