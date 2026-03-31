@@ -28,7 +28,7 @@ function DecorativeImage({
   );
 }
 
-function Icon({ name, filled = false }) {
+function Icon({ name }) {
   const commonProps = {
     "aria-hidden": "true",
     className: "icon",
@@ -48,13 +48,6 @@ function Icon({ name, filled = false }) {
           <path d="m16 16 4 4" />
         </svg>
       );
-    case "bell":
-      return (
-        <svg {...commonProps}>
-          <path d="M6.5 16.5h11l-1.3-1.8V10a4.2 4.2 0 0 0-8.4 0v4.7Z" />
-          <path d="M10 19a2.2 2.2 0 0 0 4 0" />
-        </svg>
-      );
     case "settings":
       return (
         <svg {...commonProps}>
@@ -68,12 +61,6 @@ function Icon({ name, filled = false }) {
           <circle cx="12" cy="12" r="8.2" />
           <path d="M12 10.2v5.1" />
           <path d="M12 7.7h.01" />
-        </svg>
-      );
-    case "star":
-      return (
-        <svg {...commonProps} fill={filled ? "currentColor" : "none"}>
-          <path d="m12 4.7 2.2 4.5 5 .7-3.6 3.5.9 4.9-4.5-2.4-4.5 2.4.9-4.9-3.6-3.5 5-.7Z" />
         </svg>
       );
     case "github":
@@ -143,7 +130,6 @@ export default function HomeShell({
               Browse
             </a>
             <a href="#library">Library</a>
-            <a href="#archive">Archive</a>
             <a href={scummvmOfficialSite} rel="noreferrer" target="_blank">
               Original Project
             </a>
@@ -162,9 +148,6 @@ export default function HomeShell({
           </a>
           <a className="nav-icon-button" href="#library" aria-label="Browse games">
             <Icon name="search" />
-          </a>
-          <a className="nav-icon-button" href="#archive" aria-label="Open archive notes">
-            <Icon name="bell" />
           </a>
           <a className="nav-icon-button" href={sourceHref} aria-label="Open source offer">
             <Icon name="settings" />
@@ -259,19 +242,11 @@ export default function HomeShell({
           </section>
 
           <section className="content-band">
-            <div className="section-header section-header-split">
+            <div className="section-header">
               <h2>
                 <span className="section-mark" />
                 Installed Library
               </h2>
-              <a
-                aria-haspopup="dialog"
-                className="section-link"
-                data-game-target={featuredGame.target}
-                href={`#${featuredDialogId}`}
-              >
-                Open Featured
-              </a>
             </div>
 
             <div className="poster-grid">
@@ -294,41 +269,6 @@ export default function HomeShell({
             </div>
           </section>
 
-          <section className="content-band" id="archive">
-            <div className="section-header">
-              <h2>
-                <span className="section-mark" />
-                Adventure Deck
-              </h2>
-            </div>
-
-            <div className="spotlight-rail">
-              {catalog.map((game) => (
-                <a
-                  key={game.target}
-                  aria-haspopup="dialog"
-                  className={`spotlight-card ${game.tone}`}
-                  data-game-target={game.target}
-                  href={`#${getDialogId(game)}`}
-                >
-                  <div className="spotlight-media">
-                    <DecorativeImage className="spotlight-media-image" src={game.spotlightImage} />
-                  </div>
-                  <div className="spotlight-copy">
-                    <div>
-                      <span className="spotlight-kicker">{game.tag}</span>
-                      <h3>{game.displayTitle}</h3>
-                      <p>{game.summary}</p>
-                    </div>
-                    <div className="spotlight-badge">
-                      <Icon name="star" filled />
-                      <span>{game.badge}</span>
-                    </div>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </section>
         </div>
       </main>
 
