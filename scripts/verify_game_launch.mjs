@@ -174,6 +174,79 @@ async function verifyEscapeStaysInGame(page, frame, routeUrl) {
   }
 }
 
+async function verifyCursorGrabHint(frame) {
+  const canvas = frame.locator("#canvas");
+  const grabHint = frame.locator("#scummvm-cursor-grab-hint");
+  const readHintState = () =>
+    grabHint.evaluate((element) => ({
+      text: element.textContent?.trim() || "",
+      visible: element.classList.contains("scummvm-cursor-grab-hint-visible"),
+    }));
+  const waitForHintTransition = () =>
+    canvas.evaluate(
+      () => new Promise((resolve) => {
+        window.setTimeout(resolve, 150);
+      }),
+    );
+
+  await canvas.hover();
+  await waitForHintTransition();
+
+  const initialHintState = await readHintState();
+
+  if (!initialHintState.visible) {
+    throw new Error("Cursor grab hint did not appear when hovering the game canvas.");
+  }
+
+  if (initialHintState.text !== "Click the game to grab the cursor.") {
+    throw new Error(`Unexpected cursor grab hint text: ${initialHintState.text}`);
+  }
+
+  const initialCursorState = await canvas.evaluate((element) => ({
+    classApplied: element.classList.contains("scummvm-browser-cursor-visible"),
+    cursor: window.getComputedStyle(element).cursor,
+  }));
+
+  if (!initialCursorState.classApplied) {
+    throw new Error("Browser cursor override was not applied while the grab hint was visible.");
+  }
+
+  if (initialCursorState.cursor !== "default") {
+    throw new Error(`Expected the canvas cursor to be default while hinting, got ${initialCursorState.cursor}.`);
+  }
+
+  await canvas.click();
+  await waitForHintTransition();
+
+  const releasedHintState = await readHintState();
+
+  if (releasedHintState.visible) {
+    throw new Error("Cursor grab hint remained visible after clicking the game canvas.");
+  }
+
+  const releasedCursorState = await canvas.evaluate((element) => ({
+    classApplied: element.classList.contains("scummvm-browser-cursor-visible"),
+  }));
+
+  if (releasedCursorState.classApplied) {
+    throw new Error("Browser cursor override remained after clicking the game canvas.");
+  }
+
+  await canvas.evaluate((element) => {
+    element.dispatchEvent(new MouseEvent("mouseleave", { bubbles: false }));
+  });
+  await canvas.evaluate((element) => {
+    element.dispatchEvent(new MouseEvent("mouseenter", { bubbles: false }));
+  });
+  await waitForHintTransition();
+
+  const reenteredHintState = await readHintState();
+
+  if (!reenteredHintState.visible) {
+    throw new Error("Cursor grab hint did not reappear after re-entering the game canvas.");
+  }
+}
+
 async function verifyQuitReturnsHome(page, frame, baseUrl) {
   await frame.locator("#canvas").press("a");
   await page.waitForTimeout(200);
@@ -323,6 +396,7 @@ await featuredDialog.waitFor({ state: "hidden", timeout: 10000 });
 for (const game of library.games) {
   const { frame, page, routeUrl } = await verifyTarget(context, url, game);
 
+  await verifyCursorGrabHint(frame);
   await verifyEscapeStaysInGame(page, frame, routeUrl);
   await verifyQuitReturnsHome(page, frame, url);
 

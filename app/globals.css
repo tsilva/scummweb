@@ -69,7 +69,6 @@ svg {
 
 .nav-cluster,
 .nav-links,
-.nav-tools,
 .hero-actions,
 .hero-status,
 .footer-links,
@@ -151,11 +150,6 @@ svg {
   background: var(--accent);
 }
 
-.nav-tools {
-  gap: 1rem;
-}
-
-.nav-icon-button,
 .footer-icon-button {
   display: inline-flex;
   align-items: center;
@@ -168,29 +162,9 @@ svg {
     background-color 180ms ease;
 }
 
-.nav-icon-button:hover,
-.nav-icon-button:focus-visible,
 .footer-icon-button:hover,
 .footer-icon-button:focus-visible {
   color: var(--ink);
-}
-
-.nav-avatar {
-  appearance: none;
-  border: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #345534 0%, #6cae6c 100%);
-  color: #081108;
-  cursor: pointer;
-  font: inherit;
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
 }
 
 .hero-stage {
@@ -1152,7 +1126,6 @@ svg {
 
   .nav-cluster-left,
   .nav-links,
-  .nav-tools,
   .footer-links,
   .footer-tools {
     width: 100%;
@@ -1172,7 +1145,6 @@ svg {
   }
 
   .nav-links,
-  .nav-tools,
   .footer-links,
   .footer-tools {
     justify-content: flex-start;
