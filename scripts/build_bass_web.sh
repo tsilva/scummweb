@@ -10,6 +10,8 @@ PUBLIC_DIR="$ROOT_DIR/public"
 BUNDLE_ZIP="$ROOT_DIR/bundle/scummvm-public.zip"
 DOWNLOADS_DIR="$ROOT_DIR/downloads"
 BASS_ZIP="$DOWNLOADS_DIR/bass-cd-1.2.zip"
+QUEEN_ORIGINAL_ARCHIVE="$DOWNLOADS_DIR/FOTAQ_Talkie-original.zip"
+QUEEN_ORIGINAL_ARCHIVE_URL="https://downloads.scummvm.org/frs/extras/Flight%20of%20the%20Amazon%20Queen/FOTAQ_Talkie-original.zip"
 SCUMMVM_BUNDLE_ASSET_VERSION_RAW="${SCUMMVM_ASSET_VERSION:-${VERCEL_DEPLOYMENT_ID:-${VERCEL_URL:-${VERCEL_GIT_COMMIT_SHA:-dev}}}}"
 SCUMMVM_BUNDLE_ASSET_VERSION="${SCUMMVM_BUNDLE_ASSET_VERSION_RAW//[^a-zA-Z0-9._-]/-}"
 export SCUMMVM_BUNDLE_ASSET_VERSION
@@ -28,6 +30,51 @@ log_stage() {
   printf '\n==> %s\n' "$1"
 }
 
+archive_contains_path() {
+  local archive_path="$1"
+  local archive_member="$2"
+
+  unzip -Z1 "$archive_path" | grep -Fxq "$archive_member"
+}
+
+resolve_queen_archive() {
+  local queen_zip
+
+  queen_zip="$(
+    find_optional_archive "$DOWNLOADS_DIR" \
+      'FOTAQ_Talkie-original.zip' \
+      'fotaq_talkie-original.zip' \
+      'FOTAQ*original*.zip' \
+      'fotaq*original*.zip' \
+      'Flight*Amazon*Queen*original*.zip' \
+      'flight*amazon*queen*original*.zip' || true
+  )"
+  if [[ -n "$queen_zip" ]]; then
+    printf '%s\n' "$queen_zip"
+    return 0
+  fi
+
+  queen_zip="$(
+    find_optional_archive "$DOWNLOADS_DIR" \
+      'FOTAQ*.zip' \
+      'fotaq*.zip' \
+      'Flight*Amazon*Queen*.zip' \
+      'flight*amazon*queen*.zip' || true
+  )"
+  if [[ -z "$queen_zip" ]]; then
+    return 1
+  fi
+
+  if archive_contains_path "$queen_zip" 'queen.1c'; then
+    echo "Queen archive $queen_zip contains compressed queen.1c data; downloading the original talkie package with uncompressed speech from ScummVM." >&2
+    curl -L --fail "$QUEEN_ORIGINAL_ARCHIVE_URL" -o "$QUEEN_ORIGINAL_ARCHIVE"
+    printf '%s\n' "$QUEEN_ORIGINAL_ARCHIVE"
+    return 0
+  fi
+
+  printf '%s\n' "$queen_zip"
+}
+
 discover_game_archives() {
   local dreamweb_zip queen_zip lure_zip drascula_zip drascula_audio_zip sword25_zip nippon_amiga_zip
 
@@ -37,7 +84,7 @@ discover_game_archives() {
   fi
 
   dreamweb_zip="$(find_optional_archive "$DOWNLOADS_DIR" 'dreamweb*.zip' 'DreamWeb*.zip' 'DREAMWEB*.zip' || true)"
-  queen_zip="$(find_optional_archive "$DOWNLOADS_DIR" 'FOTAQ*.zip' 'fotaq*.zip' 'Flight*Amazon*Queen*.zip' 'flight*amazon*queen*.zip' || true)"
+  queen_zip="$(resolve_queen_archive || true)"
   lure_zip="$(find_optional_archive "$DOWNLOADS_DIR" 'lure*.zip' 'Lure*.zip' 'LURE*.zip' || true)"
   drascula_zip="$(find_optional_archive "$DOWNLOADS_DIR" 'drascula*.zip' 'Drascula*.zip' 'DRASCULA*.zip' || true)"
   drascula_audio_zip="$(
@@ -105,6 +152,8 @@ bootstrap_scummvm_checkout() {
 
   python3 "$ROOT_DIR/scripts/patch_sword25_detection.py" \
     "$SCUMMVM_DIR/engines/sword25/detection_tables.h"
+  python3 "$ROOT_DIR/scripts/patch_scummvm_queen_dialogue.py" \
+    "$SCUMMVM_DIR/engines/queen/talk.cpp"
 }
 
 bootstrap_toolchain() {

@@ -33,7 +33,7 @@ const artByTarget = {
     year: "1994",
     badge: "CD Edition",
     tag: "Rain-soaked dystopia",
-    heroImage: "/launcher/dreamweb-hero.jpg",
+    heroImage: "/launcher/dreamweb-cover.jpg",
     landscapeImage: "/launcher/dreamweb-cover.jpg",
     posterImage: "/launcher/dreamweb-cover.jpg",
     spotlightImage: "/launcher/dreamweb-cover.jpg",

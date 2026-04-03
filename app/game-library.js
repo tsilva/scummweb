@@ -24,10 +24,20 @@ function normalizeSkipIntroConfig(skipIntro) {
 
   const key =
     typeof skipIntro.key === "string" && skipIntro.key.trim() ? skipIntro.key.trim() : "Escape";
+  const parsedPressCount = Number(skipIntro.pressCount);
+  const pressCount =
+    Number.isFinite(parsedPressCount) && parsedPressCount > 0 ? Math.floor(parsedPressCount) : 1;
+  const parsedPressIntervalMs = Number(skipIntro.pressIntervalMs);
+  const pressIntervalMs =
+    Number.isFinite(parsedPressIntervalMs) && parsedPressIntervalMs >= 0
+      ? parsedPressIntervalMs
+      : 0;
 
   return {
     durationMinutes,
     key,
+    pressCount,
+    pressIntervalMs,
   };
 }
 

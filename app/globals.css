@@ -465,6 +465,7 @@ svg {
   justify-content: center;
   display: none;
   overflow-y: auto;
+  pointer-events: none;
   padding:
     var(--game-detail-pad-top)
     var(--game-detail-pad-right)
@@ -480,6 +481,7 @@ svg {
   position: absolute;
   inset: 0;
   display: block;
+  pointer-events: auto;
   background: rgba(6, 10, 7, 0.82);
   backdrop-filter: blur(18px);
 }
@@ -487,6 +489,7 @@ svg {
 .game-detail-panel {
   position: relative;
   z-index: 1;
+  pointer-events: auto;
   width: min(100%, 82rem);
   max-height: min(
     58rem,
@@ -549,17 +552,17 @@ svg {
 
 .game-detail-panel.tone-dreamweb .game-detail-visual::after {
   background:
-    linear-gradient(180deg, rgba(7, 12, 10, 0.08), rgba(7, 12, 10, 0.28)),
-    radial-gradient(circle at 58% 20%, rgba(72, 148, 126, 0.32), transparent 12%),
-    radial-gradient(circle at 75% 24%, rgba(18, 48, 58, 0.6), transparent 24%),
-    linear-gradient(135deg, #0f1e18 0%, #102827 42%, #0b1115 100%);
+    linear-gradient(180deg, rgba(8, 11, 9, 0.08) 0%, rgba(8, 11, 9, 0.16) 42%, rgba(8, 11, 9, 0.74) 100%),
+    linear-gradient(90deg, rgba(8, 11, 9, 0.06) 0%, rgba(8, 11, 9, 0.12) 42%, rgba(8, 11, 9, 0.8) 100%),
+    radial-gradient(circle at 58% 20%, rgba(72, 148, 126, 0.2), transparent 12%),
+    radial-gradient(circle at 75% 24%, rgba(18, 48, 58, 0.24), transparent 24%);
 }
 
 .game-detail-panel.tone-default .game-detail-visual::after {
   background:
-    linear-gradient(180deg, rgba(7, 12, 10, 0.08), rgba(7, 12, 10, 0.28)),
-    radial-gradient(circle at 62% 20%, rgba(85, 170, 85, 0.24), transparent 12%),
-    linear-gradient(135deg, #121c15 0%, #0e1414 100%);
+    linear-gradient(180deg, rgba(8, 11, 9, 0.08) 0%, rgba(8, 11, 9, 0.16) 42%, rgba(8, 11, 9, 0.74) 100%),
+    linear-gradient(90deg, rgba(8, 11, 9, 0.06) 0%, rgba(8, 11, 9, 0.12) 42%, rgba(8, 11, 9, 0.8) 100%),
+    radial-gradient(circle at 62% 20%, rgba(85, 170, 85, 0.16), transparent 12%);
 }
 
 .game-detail-visual::after {
@@ -896,6 +899,8 @@ svg {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform: scale(1.04);
+  transform-origin: center;
   filter: grayscale(1) brightness(0.94) contrast(1.02) saturate(0.82);
   transition:
     filter 320ms ease,
@@ -905,7 +910,7 @@ svg {
 .poster-card:hover .poster-media-image,
 .poster-card:focus-visible .poster-media-image {
   filter: brightness(1.12) contrast(1.04) saturate(1.06);
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 .poster-card.tone-dreamweb .poster-media::after {
@@ -1308,9 +1313,23 @@ svg {
   pointer-events: none;
 }
 
-.game-route-control-button {
+.game-route-control-group {
   position: fixed;
   top: max(1rem, env(safe-area-inset-top));
+  display: flex;
+  gap: 0.625rem;
+  pointer-events: none;
+}
+
+.game-route-control-group.is-left {
+  left: min(max(0.5rem, env(safe-area-inset-left)), 1rem);
+}
+
+.game-route-control-group.is-right {
+  right: min(max(0.5rem, env(safe-area-inset-right)), 1rem);
+}
+
+.game-route-control-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1331,14 +1350,6 @@ svg {
     border-color 160ms ease,
     color 160ms ease,
     box-shadow 160ms ease;
-}
-
-.game-route-control-button.is-exit {
-  left: min(max(0.5rem, env(safe-area-inset-left)), 1rem);
-}
-
-.game-route-control-button.is-fullscreen {
-  right: min(max(0.5rem, env(safe-area-inset-right)), 1rem);
 }
 
 .game-route-control-button:hover,

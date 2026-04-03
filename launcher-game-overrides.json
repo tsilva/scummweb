@@ -1,5 +1,35 @@
 {
   "byTarget": {
+    "drascula": {
+      "skipIntro": {
+        "durationMinutes": 2,
+        "key": "Escape",
+        "pressCount": 1
+      }
+    },
+    "dreamweb-cd": {
+      "skipIntro": {
+        "durationMinutes": 2,
+        "key": "Escape",
+        "pressCount": 3,
+        "pressIntervalMs": 500
+      }
+    },
+    "lure": {
+      "skipIntro": {
+        "durationMinutes": 2,
+        "key": "Escape",
+        "pressCount": 1
+      }
+    },
+    "queen": {
+      "skipIntro": {
+        "durationMinutes": 2,
+        "key": "Escape",
+        "pressCount": 5,
+        "pressIntervalMs": 1000
+      }
+    },
     "sky": {
       "skipIntro": {
         "durationMinutes": 2,

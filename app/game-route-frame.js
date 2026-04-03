@@ -1,11 +1,13 @@
 "use client";
 
-import { LogOut, Maximize, Minimize } from "lucide-react";
+import { LogOut, Maximize, Menu, Minimize } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { recordRecentGameTarget } from "./recent-games";
 
 const MOBILE_BREAKPOINT_QUERY = "(max-width: 900px)";
 const MOBILE_POINTER_QUERY = "(pointer: coarse)";
 const LANDSCAPE_QUERY = "(orientation: landscape)";
+const SCUMMVM_MENU_REVEAL_DELAY_MS = 2500;
 const SKIP_INTRO_REVEAL_DELAY_MS = 4500;
 const TOUCH_CLICK_MODE_STORAGE_KEY = "scummweb.touchClickMode";
 const BOOT_FAILURE_PATTERNS = [
@@ -131,14 +133,35 @@ function getHeroImageStyle(position) {
   };
 }
 
-function getKeyboardDescriptor(key) {
-  const normalizedKey = typeof key === "string" && key.trim() ? key.trim() : "Escape";
+function getKeyboardDescriptor(input) {
+  const options = typeof input === "string" ? { key: input } : input && typeof input === "object" ? input : {};
+  const normalizedKey = typeof options.key === "string" && options.key.trim() ? options.key.trim() : "Escape";
 
   if (/^esc(?:ape)?$/i.test(normalizedKey)) {
     return {
       key: "Escape",
       code: "Escape",
       keyCode: 27,
+      ctrlKey: Boolean(options.ctrlKey),
+      altKey: Boolean(options.altKey),
+      metaKey: Boolean(options.metaKey),
+      shiftKey: Boolean(options.shiftKey),
+    };
+  }
+
+  if (/^f(?:[1-9]|1[0-2])$/i.test(normalizedKey)) {
+    const functionKey = normalizedKey.toUpperCase();
+    const functionNumber = Number.parseInt(functionKey.slice(1), 10);
+
+    return {
+      key: functionKey,
+      code:
+        typeof options.code === "string" && options.code.trim() ? options.code.trim() : functionKey,
+      keyCode: Number.isFinite(options.keyCode) ? options.keyCode : 111 + functionNumber,
+      ctrlKey: Boolean(options.ctrlKey),
+      altKey: Boolean(options.altKey),
+      metaKey: Boolean(options.metaKey),
+      shiftKey: Boolean(options.shiftKey),
     };
   }
 
@@ -149,15 +172,31 @@ function getKeyboardDescriptor(key) {
 
     return {
       key: isLetter ? upperKey : normalizedKey,
-      code: isLetter ? `Key${upperKey}` : isDigit ? `Digit${normalizedKey}` : "",
-      keyCode: upperKey.charCodeAt(0),
+      code:
+        typeof options.code === "string" && options.code.trim()
+          ? options.code.trim()
+          : isLetter
+            ? `Key${upperKey}`
+            : isDigit
+              ? `Digit${normalizedKey}`
+              : "",
+      keyCode: Number.isFinite(options.keyCode) ? options.keyCode : upperKey.charCodeAt(0),
+      ctrlKey: Boolean(options.ctrlKey),
+      altKey: Boolean(options.altKey),
+      metaKey: Boolean(options.metaKey),
+      shiftKey: Boolean(options.shiftKey),
     };
   }
 
   return {
     key: normalizedKey,
-    code: normalizedKey,
-    keyCode: 0,
+    code:
+      typeof options.code === "string" && options.code.trim() ? options.code.trim() : normalizedKey,
+    keyCode: Number.isFinite(options.keyCode) ? options.keyCode : 0,
+    ctrlKey: Boolean(options.ctrlKey),
+    altKey: Boolean(options.altKey),
+    metaKey: Boolean(options.metaKey),
+    shiftKey: Boolean(options.shiftKey),
   };
 }
 
@@ -182,6 +221,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
   const [isMobileViewport, setIsMobileViewport] = useState(false);
   const [isLandscapeViewport, setIsLandscapeViewport] = useState(true);
   const [needsImmersiveRetry, setNeedsImmersiveRetry] = useState(false);
+  const [showScummvmMenuButton, setShowScummvmMenuButton] = useState(false);
   const [showSkipIntroButton, setShowSkipIntroButton] = useState(false);
   const [touchControlsUnlocked, setTouchControlsUnlocked] = useState(() => !skipIntro);
   const [bootStatusText, setBootStatusText] = useState("Downloading ScummVM...");
@@ -202,6 +242,11 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
   });
   const autoImmersiveAttemptedRef = useRef(false);
   const immersiveRetryInFlightRef = useRef(false);
+
+  function dismissSkipIntroButton() {
+    setShowSkipIntroButton(false);
+    setTouchControlsUnlocked(true);
+  }
 
   function syncTouchClickModeToFrame(nextMode) {
     const frameWindow = frameRef.current?.contentWindow;
@@ -246,6 +291,11 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
   }, [src]);
 
   useEffect(() => {
+    recordRecentGameTarget(target);
+  }, [target]);
+
+  useEffect(() => {
+    setShowScummvmMenuButton(false);
     setShowSkipIntroButton(false);
     setTouchControlsUnlocked(!skipIntro);
   }, [skipIntro, src]);
@@ -272,6 +322,23 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
       iframe.removeEventListener("load", syncMode);
     };
   }, [src, touchClickMode]);
+
+  useEffect(() => {
+    if (!hasBootCompleted || hasBootFailed) {
+      setShowScummvmMenuButton(false);
+      return;
+    }
+
+    // The ScummVM splash is rendered inside the canvas after the boot overlay clears,
+    // so keep the menu hidden briefly until the game itself is on screen.
+    const revealTimer = window.setTimeout(() => {
+      setShowScummvmMenuButton(true);
+    }, SCUMMVM_MENU_REVEAL_DELAY_MS);
+
+    return () => {
+      window.clearTimeout(revealTimer);
+    };
+  }, [hasBootCompleted, hasBootFailed, src]);
 
   useEffect(() => {
     if (!skipIntro || !hasBootCompleted || hasBootFailed) {
@@ -471,12 +538,55 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     }
 
     const timeoutId = window.setTimeout(() => {
-      setShowSkipIntroButton(false);
-      setTouchControlsUnlocked(true);
+      dismissSkipIntroButton();
     }, skipIntro.durationMinutes * 60 * 1000);
 
     return () => {
       window.clearTimeout(timeoutId);
+    };
+  }, [showSkipIntroButton, skipIntro, src]);
+
+  useEffect(() => {
+    if (!skipIntro || !showSkipIntroButton) {
+      return;
+    }
+
+    const iframe = frameRef.current;
+
+    function handleEscapeKeydown(event) {
+      if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) {
+        return;
+      }
+
+      if (!/^esc(?:ape)?$/i.test(event.key || "")) {
+        return;
+      }
+
+      dismissSkipIntroButton();
+    }
+
+    function addFrameListeners() {
+      try {
+        iframe?.contentWindow?.addEventListener("keydown", handleEscapeKeydown, true);
+        iframe?.contentDocument?.addEventListener("keydown", handleEscapeKeydown, true);
+      } catch {}
+    }
+
+    function removeFrameListeners() {
+      try {
+        iframe?.contentWindow?.removeEventListener("keydown", handleEscapeKeydown, true);
+        iframe?.contentDocument?.removeEventListener("keydown", handleEscapeKeydown, true);
+      } catch {}
+    }
+
+    window.addEventListener("keydown", handleEscapeKeydown, true);
+    addFrameListeners();
+    iframe?.addEventListener("load", addFrameListeners);
+
+    return () => {
+      window.removeEventListener("keydown", handleEscapeKeydown, true);
+      iframe?.removeEventListener("load", addFrameListeners);
+      removeFrameListeners();
     };
   }, [showSkipIntroButton, skipIntro, src]);
 
@@ -717,20 +827,22 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     }
 
     const descriptor = getKeyboardDescriptor(key);
+    const frameWindow = frame.contentWindow;
+    const KeyboardEventConstructor = frameWindow?.KeyboardEvent || window.KeyboardEvent;
 
     try {
       frame.focus({ preventScroll: true });
     } catch {}
 
     try {
-      frame.contentWindow?.focus();
+      frameWindow?.focus();
     } catch {}
 
     let targets = [];
 
     try {
-      if (frame.contentWindow) {
-        targets.push(frame.contentWindow);
+      if (frameWindow) {
+        targets.push(frameWindow);
       }
 
       const frameDocument = frame.contentDocument;
@@ -765,15 +877,20 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
       bubbles: true,
       cancelable: true,
       composed: true,
+      view: frameWindow || window,
       key: descriptor.key,
       code: descriptor.code,
       keyCode: descriptor.keyCode,
       which: descriptor.keyCode,
+      ctrlKey: descriptor.ctrlKey,
+      altKey: descriptor.altKey,
+      metaKey: descriptor.metaKey,
+      shiftKey: descriptor.shiftKey,
     };
 
     for (const eventType of ["keydown", "keypress", "keyup"]) {
       for (const eventTarget of targets) {
-        const keyboardEvent = new KeyboardEvent(eventType, eventInit);
+        const keyboardEvent = new KeyboardEventConstructor(eventType, eventInit);
 
         try {
           Object.defineProperty(keyboardEvent, "keyCode", {
@@ -793,23 +910,55 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     return true;
   }
 
+  async function dispatchSyntheticKeypressSequence(skipIntroConfig) {
+    const pressCount = Math.max(1, skipIntroConfig?.pressCount || 1);
+    const pressIntervalMs = Math.max(0, skipIntroConfig?.pressIntervalMs || 0);
+
+    for (let pressIndex = 0; pressIndex < pressCount; pressIndex += 1) {
+      const dispatched = dispatchSyntheticKeypress(skipIntroConfig);
+
+      if (!dispatched) {
+        return;
+      }
+
+      if (pressIndex < pressCount - 1 && pressIntervalMs > 0) {
+        await new Promise((resolve) => {
+          window.setTimeout(resolve, pressIntervalMs);
+        });
+      }
+    }
+  }
+
   function handleSkipIntroClick() {
-    setShowSkipIntroButton(false);
-    setTouchControlsUnlocked(true);
+    dismissSkipIntroButton();
 
     if (!skipIntro) {
       return;
     }
 
-    dispatchSyntheticKeypress(skipIntro.key);
+    void dispatchSyntheticKeypressSequence(skipIntro);
   }
 
   function handleTouchClickToggle() {
     setTouchClickMode((currentMode) => (currentMode === "left" ? "right" : "left"));
   }
 
+  function handleControlMouseDown(event) {
+    event.preventDefault();
+  }
+
+  function handleScummvmMenuClick() {
+    void dispatchSyntheticKeypressSequence({
+      key: "F5",
+      code: "F5",
+      keyCode: 116,
+      ctrlKey: true,
+    });
+  }
+
   const FullscreenIcon = isFullscreen ? Minimize : Maximize;
   const fullscreenLabel = isFullscreen ? "Exit fullscreen" : "Enter fullscreen";
+  const scummvmMenuLabel = "Open ScummVM menu";
   const showBootOverlay = !hasBootCompleted || hasBootFailed;
   const showBootProgress =
     typeof bootProgressValue === "number" &&
@@ -916,27 +1065,45 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
       ) : null}
       <div className="game-route-controls">
         {showExitControl ? (
-          <button
-            aria-label="Exit game"
-            className="game-route-control-button is-exit"
-            onClick={handleExitClick}
-            title="Exit game"
-            type="button"
-          >
-            <LogOut aria-hidden="true" size={17} strokeWidth={2} />
-          </button>
+          <div className="game-route-control-group is-left">
+            <button
+              aria-label="Exit game"
+              className="game-route-control-button is-exit"
+              onClick={handleExitClick}
+              onMouseDown={handleControlMouseDown}
+              title="Exit game"
+              type="button"
+            >
+              <LogOut aria-hidden="true" size={17} strokeWidth={2} />
+            </button>
+          </div>
         ) : null}
-        {canFullscreen ? (
-          <button
-            aria-label={fullscreenLabel}
-            className="game-route-control-button is-fullscreen"
-            onClick={handleFullscreenToggle}
-            title={fullscreenLabel}
-            type="button"
-          >
-            <FullscreenIcon aria-hidden="true" size={18} strokeWidth={2} />
-          </button>
-        ) : null}
+        <div className="game-route-control-group is-right">
+          {showScummvmMenuButton ? (
+            <button
+              aria-label={scummvmMenuLabel}
+              className="game-route-control-button is-menu"
+              onClick={handleScummvmMenuClick}
+              onMouseDown={handleControlMouseDown}
+              title={scummvmMenuLabel}
+              type="button"
+            >
+              <Menu aria-hidden="true" size={18} strokeWidth={2} />
+            </button>
+          ) : null}
+          {canFullscreen ? (
+            <button
+              aria-label={fullscreenLabel}
+              className="game-route-control-button is-fullscreen"
+              onClick={handleFullscreenToggle}
+              onMouseDown={handleControlMouseDown}
+              title={fullscreenLabel}
+              type="button"
+            >
+              <FullscreenIcon aria-hidden="true" size={18} strokeWidth={2} />
+            </button>
+          ) : null}
+        </div>
       </div>
       {showBottomActions ? (
         <div className="game-route-bottom-actions">

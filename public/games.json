@@ -9,7 +9,12 @@
       "gameId": "drascula",
       "platform": "pc",
       "extra": "",
-      "readmeHref": "https://scummvm-games.tsilva.eu/drascula/readme.txt"
+      "readmeHref": "https://scummvm-games.tsilva.eu/drascula/readme.txt",
+      "skipIntro": {
+        "durationMinutes": 2,
+        "key": "Escape",
+        "pressCount": 1
+      }
     },
     {
       "target": "dreamweb-cd",
@@ -19,7 +24,13 @@
       "gameId": "dreamweb",
       "platform": "pc",
       "extra": "CD",
-      "readmeHref": ""
+      "readmeHref": "",
+      "skipIntro": {
+        "durationMinutes": 2,
+        "key": "Escape",
+        "pressCount": 3,
+        "pressIntervalMs": 500
+      }
     },
     {
       "target": "lure",
@@ -29,7 +40,12 @@
       "gameId": "lure",
       "platform": "pc",
       "extra": "VGA",
-      "readmeHref": "https://scummvm-games.tsilva.eu/lure/README"
+      "readmeHref": "https://scummvm-games.tsilva.eu/lure/README",
+      "skipIntro": {
+        "durationMinutes": 2,
+        "key": "Escape",
+        "pressCount": 1
+      }
     },
     {
       "target": "nippon-amiga",
@@ -49,7 +65,13 @@
       "gameId": "queen",
       "platform": "pc",
       "extra": "CD",
-      "readmeHref": "https://scummvm-games.tsilva.eu/queen/readme.txt"
+      "readmeHref": "https://scummvm-games.tsilva.eu/queen/readme.txt",
+      "skipIntro": {
+        "durationMinutes": 2,
+        "key": "Escape",
+        "pressCount": 5,
+        "pressIntervalMs": 1000
+      }
     },
     {
       "target": "sky",
@@ -67,12 +89,12 @@
     },
     {
       "target": "sword25",
-      "title": "Broken Sword 2.5: The Return of the Templars",
+      "title": "Broken Sword 2.5: The Return of the Templars (Latest version)",
       "path": "/games/sword25",
       "engineId": "sword25",
       "gameId": "sword25",
       "platform": "",
-      "extra": "",
+      "extra": "Latest version",
       "readmeHref": "https://scummvm-games.tsilva.eu/sword25/README"
     }
   ]
