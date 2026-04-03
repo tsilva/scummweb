@@ -1,23 +1,28 @@
 {
-    "short_name": "scummweb",
-    "name": "scummweb",
-    "icons": [
-        {
-            "src": "scummvm-192.png?v=dev",
-            "type": "image/png",
-            "sizes": "192x192"
-        },
-        {
-            "src": "scummvm-512.png?v=dev",
-            "type": "image/png",
-            "sizes": "512x512"
-        }
-    ],
-    "start_url": "scummvm.html?v=dev",
-    "background_color": "#3367D6",
-    "display": "fullscreen",
-    "theme_color": "#c60",
-    "shortcuts": [],
-    "description": "Unofficial browser-targeted WebAssembly build forked from ScummVM.",
-    "screenshots": []
+  "id": "/",
+  "short_name": "scummweb",
+  "name": "scummweb",
+  "description": "Unofficial browser-targeted WebAssembly build forked from ScummVM.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#10211a",
+  "theme_color": "#1a4d1a",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    {
+      "src": "/scummvm-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "/scummvm-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [],
+  "screenshots": []
 }

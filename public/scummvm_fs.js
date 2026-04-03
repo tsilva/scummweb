@@ -28,8 +28,6 @@ const ERRNO_CODES = {
 const DEBUG = false
 
 
-const PRODUCTION_GAMES_ORIGIN = 'https://scummvm-games.tsilva.eu';
-
 function getScummvmAssetVersion() {
     const search = globalThis.location?.search || "";
     const searchVersion = new URLSearchParams(search).get("v");
@@ -59,18 +57,17 @@ function buildRemoteUrl(baseUrl, remotePath) {
     return withCacheKey(resolved.toString(), getScummvmAssetVersion());
 }
 
-function getDefaultRemoteFilesystems() {
-    const hostname = globalThis.location?.hostname || "";
-    const useLocalProxy = hostname === "localhost" || hostname === "127.0.0.1";
-
-    if (useLocalProxy) {
-        return {
-            games: "/games-proxy"
-        };
+function getVersionedGamesProxyBase(cacheKey) {
+    if (!cacheKey) {
+        return "/games-proxy";
     }
 
+    return `/scummvm/${encodeURIComponent(cacheKey)}/games`;
+}
+
+function getDefaultRemoteFilesystems() {
     return {
-        games: withCacheKey(PRODUCTION_GAMES_ORIGIN, getScummvmAssetVersion())
+        games: getVersionedGamesProxyBase(getScummvmAssetVersion())
     };
 }
 

@@ -1,9 +1,11 @@
 import { Inter, Space_Grotesk } from "next/font/google";
 import Script from "next/script";
 import { getVersionedSiteAssetPath } from "./game-library";
+import { getMetadataBase } from "./site-config";
 import "./globals.css";
 
 const GOOGLE_ANALYTICS_ID = "G-60XHS2QKX7";
+const APP_THEME_COLOR = "#1a4d1a";
 
 const inter = Inter({
   display: "optional",
@@ -18,10 +20,17 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata = {
+  metadataBase: getMetadataBase(),
+  applicationName: "scummweb",
   title: "scummweb | Unofficial Browser WASM Fork",
   description:
     "Unofficial browser-targeted WebAssembly build forked from ScummVM, with source and license materials plus links to the original project.",
   manifest: getVersionedSiteAssetPath("/manifest.json"),
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "scummweb",
+  },
   icons: {
     icon: [
       { url: getVersionedSiteAssetPath("/favicon.ico") },
@@ -39,11 +48,23 @@ export const metadata = {
     apple: [{ url: getVersionedSiteAssetPath("/scummvm-192.png") }],
     shortcut: [getVersionedSiteAssetPath("/favicon.ico")],
   },
+  other: {
+    "mobile-web-app-capable": "yes",
+    "msapplication-TileColor": APP_THEME_COLOR,
+  },
+};
+
+export const viewport = {
+  colorScheme: "dark",
+  themeColor: APP_THEME_COLOR,
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <meta content={APP_THEME_COLOR} name="theme-color" />
+      </head>
       <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`}
@@ -55,6 +76,19 @@ export default function RootLayout({ children }) {
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '${GOOGLE_ANALYTICS_ID}');
+          `}
+        </Script>
+        <Script id="register-service-worker" strategy="afterInteractive">
+          {`
+            if ('serviceWorker' in navigator) {
+              window.addEventListener('load', function () {
+                navigator.serviceWorker
+                  .register('${getVersionedSiteAssetPath("/sw.js")}')
+                  .catch(function (error) {
+                    console.error('Failed to register service worker.', error);
+                  });
+              });
+            }
           `}
         </Script>
         {children}
