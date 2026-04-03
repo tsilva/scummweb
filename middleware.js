@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 const versionedBundlePaths = new Set([
   "/favicon.ico",
   "/focus-overlay.js",
-  "/game.json",
   "/games.json",
   "/index.html",
   "/logo.svg",
@@ -44,7 +43,6 @@ export const config = {
   matcher: [
     "/favicon.ico",
     "/focus-overlay.js",
-    "/game.json",
     "/games.json",
     "/index.html",
     "/logo.svg",
