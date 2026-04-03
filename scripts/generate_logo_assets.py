@@ -39,7 +39,7 @@ def build_logo_svg(image: Image.Image) -> str:
     image.save(buffer, format="PNG")
     encoded_png = base64.b64encode(buffer.getvalue()).decode("ascii")
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{image.width}" height="{image.height}" viewBox="0 0 {image.width} {image.height}" role="img" aria-labelledby="title desc">
-  <title id="title">ScummVM Web</title>
+  <title id="title">ScummWEB</title>
   <desc id="desc">ScummVM logo wordmark.</desc>
   <image width="{image.width}" height="{image.height}" preserveAspectRatio="xMidYMid meet" href="data:image/png;base64,{encoded_png}" />
 </svg>

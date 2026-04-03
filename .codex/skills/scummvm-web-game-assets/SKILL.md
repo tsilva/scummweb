@@ -3,7 +3,7 @@ name: scummvm-web-game-assets
 description: Use when working in the scummvm-web repo and the user asks to add, replace, refresh, or verify game artwork, cover art, posters, hero images, screenshots, or dashboard assets for one or more games. This skill covers sourcing appropriate online art, storing it locally, wiring it into the dashboard metadata, preserving the repo's managed ScummVM bundle workflow, and verifying the result with Playwright.
 ---
 
-# ScummVM Web Game Assets
+# ScummWEB Game Assets
 
 ## Overview
 
