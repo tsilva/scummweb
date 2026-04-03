@@ -14,7 +14,6 @@ from botocore.exceptions import ClientError
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST_GAMES_DIR = ROOT / "dist" / "games"
-PUBLIC_GAMES_DIR = ROOT / "public" / "games"
 BUCKET = os.environ.get("SCUMMVM_R2_BUCKET", "scummvm-games")
 ENDPOINT = os.environ.get(
     "SCUMMVM_R2_ENDPOINT",
@@ -28,10 +27,7 @@ INDEX_CACHE_CONTROL = os.environ.get(
     "SCUMMVM_R2_INDEX_CACHE_CONTROL",
     "public, max-age=60, stale-while-revalidate=300",
 )
-GAMES_LIBRARY_CANDIDATES = (
-    ROOT / "dist" / "games.json",
-    ROOT / "public" / "games.json",
-)
+GAMES_LIBRARY_PATH = ROOT / "dist" / "games.json"
 
 
 def require_env(name: str) -> str:
@@ -68,13 +64,10 @@ def resolve_games_dir() -> Path:
             return candidate
         raise SystemExit(f"Configured SCUMMVM_GAMES_UPLOAD_DIR does not exist: {candidate}")
 
-    for candidate in (DIST_GAMES_DIR, PUBLIC_GAMES_DIR):
-        if candidate.is_dir():
-            return candidate
+    if DIST_GAMES_DIR.is_dir():
+        return DIST_GAMES_DIR
 
-    raise SystemExit(
-        f"Missing games directory. Checked {DIST_GAMES_DIR} and {PUBLIC_GAMES_DIR}"
-    )
+    raise SystemExit(f"Missing games directory. Expected build output at {DIST_GAMES_DIR}")
 
 
 def parse_args() -> argparse.Namespace:
@@ -108,9 +101,8 @@ def parse_args() -> argparse.Namespace:
 
 
 def load_games_library() -> Optional[Dict]:
-    for candidate in GAMES_LIBRARY_CANDIDATES:
-        if candidate.is_file():
-            return json.loads(candidate.read_text())
+    if GAMES_LIBRARY_PATH.is_file():
+        return json.loads(GAMES_LIBRARY_PATH.read_text())
 
     return None
 
@@ -127,7 +119,7 @@ def resolve_selected_prefix(games_dir: Path, selection: str) -> str:
     library = load_games_library()
     if not library:
         raise SystemExit(
-            "Could not resolve --game because no launcher metadata was found in dist/games.json or public/games.json."
+            f"Could not resolve --game because no launcher metadata was found at {GAMES_LIBRARY_PATH}."
         )
 
     games = library.get("games") or []

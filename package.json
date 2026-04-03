@@ -4,14 +4,18 @@
   "packageManager": "pnpm@10.27.0",
   "scripts": {
     "preinstall": "node -e \"const ua = process.env.npm_config_user_agent || ''; if (!ua.startsWith('pnpm/')) { console.error('Use pnpm for this repo.'); process.exit(1); }\"",
-    "prepare:scummvm-bundle": "./scripts/prepare_scummvm_bundle.sh",
-    "archive:scummvm-bundle": "./scripts/archive_scummvm_bundle.sh",
-    "predev": "pnpm run prepare:scummvm-bundle",
-    "prebuild": "pnpm run prepare:scummvm-bundle",
-    "prestart": "pnpm run prepare:scummvm-bundle",
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "prepare": "./scripts/prepare_scummvm_bundle.sh",
+    "build:bundle": "./scripts/build_bass_web.sh",
+    "archive:bundle": "./scripts/archive_scummvm_bundle.sh",
+    "publish:games": "python3 ./scripts/upload_games_to_r2.py",
+    "bundle:prepare": "pnpm run prepare",
+    "bundle:build": "pnpm run build:bundle",
+    "bundle:archive": "pnpm run archive:bundle",
+    "games:upload": "pnpm run publish:games",
+    "verify": "./scripts/verify_bass_web.sh",
+    "dev": "pnpm run prepare && next dev",
+    "build": "pnpm run prepare && next build",
+    "start": "pnpm run prepare && next start"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.46.0",

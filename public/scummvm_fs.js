@@ -30,14 +30,7 @@ const DEBUG = false
 
 function getScummvmAssetVersion() {
     const search = globalThis.location?.search || "";
-    const searchVersion = new URLSearchParams(search).get("v");
-    if (searchVersion) {
-        return searchVersion;
-    }
-
-    const pathname = globalThis.location?.pathname || "";
-    const match = pathname.match(/\/scummvm\/([^/]+)\//);
-    return match ? decodeURIComponent(match[1]) : "";
+    return new URLSearchParams(search).get("v") || "";
 }
 
 function withCacheKey(url, cacheKey) {
@@ -57,17 +50,9 @@ function buildRemoteUrl(baseUrl, remotePath) {
     return withCacheKey(resolved.toString(), getScummvmAssetVersion());
 }
 
-function getVersionedGamesProxyBase(cacheKey) {
-    if (!cacheKey) {
-        return "/games-proxy";
-    }
-
-    return `/scummvm/${encodeURIComponent(cacheKey)}/games`;
-}
-
 function getDefaultRemoteFilesystems() {
     return {
-        games: getVersionedGamesProxyBase(getScummvmAssetVersion())
+        games: "/games-proxy"
     };
 }
 
