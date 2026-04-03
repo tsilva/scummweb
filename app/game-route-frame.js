@@ -1,6 +1,6 @@
 "use client";
 
-import { Maximize, Minimize } from "lucide-react";
+import { LogOut, Maximize, Minimize } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 function getSafeHref(href) {
@@ -21,10 +21,25 @@ function getSafeHref(href) {
   }
 }
 
+function getExitHrefFromSrc(src) {
+  if (typeof window === "undefined") {
+    return "/";
+  }
+
+  try {
+    const resolvedUrl = new URL(src, window.location.href);
+    return getSafeHref(resolvedUrl.searchParams.get("exitTo") || "/");
+  } catch {
+    return "/";
+  }
+}
+
 export default function GameRouteFrame({ src, target, title }) {
   const shellRef = useRef(null);
+  const frameRef = useRef(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [canFullscreen, setCanFullscreen] = useState(true);
+  const [exitHref, setExitHref] = useState("/");
 
   useEffect(() => {
     function navigateHome(href = "/") {
@@ -45,6 +60,79 @@ export default function GameRouteFrame({ src, target, title }) {
       window.removeEventListener("message", handleMessage);
     };
   }, []);
+
+  useEffect(() => {
+    setExitHref(getExitHrefFromSrc(src));
+  }, [src]);
+
+  useEffect(() => {
+    let focusTimer = 0;
+    let attempts = 0;
+    const iframe = frameRef.current;
+
+    if (!iframe) {
+      return;
+    }
+
+    function focusGameCanvas() {
+      const frame = frameRef.current;
+
+      if (!frame) {
+        return false;
+      }
+
+      try {
+        frame.focus({ preventScroll: true });
+      } catch {}
+
+      try {
+        frame.contentWindow?.focus();
+      } catch {}
+
+      try {
+        const canvas = frame.contentDocument?.getElementById("canvas");
+
+        if (!(canvas instanceof HTMLElement)) {
+          return false;
+        }
+
+        canvas.focus({ preventScroll: true });
+        return frame.contentDocument?.activeElement === canvas;
+      } catch {
+        return false;
+      }
+    }
+
+    function scheduleFocusAttempt() {
+      if (focusTimer) {
+        return;
+      }
+
+      const runAttempt = () => {
+        attempts += 1;
+        focusTimer = 0;
+
+        if (focusGameCanvas() || attempts >= 40) {
+          return;
+        }
+
+        focusTimer = window.setTimeout(runAttempt, 250);
+      };
+
+      runAttempt();
+    }
+
+    scheduleFocusAttempt();
+    iframe.addEventListener("load", scheduleFocusAttempt);
+
+    return () => {
+      iframe.removeEventListener("load", scheduleFocusAttempt);
+
+      if (focusTimer) {
+        window.clearTimeout(focusTimer);
+      }
+    };
+  }, [src]);
 
   useEffect(() => {
     function syncFullscreenState() {
@@ -102,28 +190,60 @@ export default function GameRouteFrame({ src, target, title }) {
     }
   }
 
+  async function handleExitClick() {
+    const shell = shellRef.current;
+
+    if (shell) {
+      try {
+        if (document.fullscreenElement === shell || document.webkitFullscreenElement === shell) {
+          if (document.exitFullscreen) {
+            await document.exitFullscreen();
+          } else if (document.webkitExitFullscreen) {
+            await document.webkitExitFullscreen();
+          }
+        }
+      } catch (error) {
+        console.error("Failed to exit fullscreen mode before leaving the game.", error);
+      }
+    }
+
+    window.location.replace(exitHref);
+  }
+
   const FullscreenIcon = isFullscreen ? Minimize : Maximize;
   const fullscreenLabel = isFullscreen ? "Exit fullscreen" : "Enter fullscreen";
 
   return (
     <div className="game-route-shell" ref={shellRef}>
-      {canFullscreen ? (
+      <div className="game-route-controls">
+        {canFullscreen ? (
+          <button
+            aria-label={fullscreenLabel}
+            className="game-route-control-button"
+            onClick={handleFullscreenToggle}
+            title={fullscreenLabel}
+            type="button"
+          >
+            <FullscreenIcon aria-hidden="true" size={18} strokeWidth={2} />
+          </button>
+        ) : null}
         <button
-          aria-label={fullscreenLabel}
-          className="game-route-fullscreen-button"
-          onClick={handleFullscreenToggle}
-          title={fullscreenLabel}
+          aria-label="Exit game"
+          className="game-route-control-button"
+          onClick={handleExitClick}
+          title="Exit game"
           type="button"
         >
-          <FullscreenIcon aria-hidden="true" size={18} strokeWidth={2} />
+          <LogOut aria-hidden="true" size={17} strokeWidth={2} />
         </button>
-      ) : null}
+      </div>
       <iframe
         allow="autoplay; fullscreen"
         allowFullScreen
         className="game-route-frame"
         data-scummvm-route-frame="true"
         data-scummvm-target={target}
+        ref={frameRef}
         loading="eager"
         src={src}
         title={title}

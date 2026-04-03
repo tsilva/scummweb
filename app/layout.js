@@ -15,7 +15,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata = {
-  title: "ScummVM Web | Unofficial Browser WASM Fork",
+  title: "ScummWEB | Unofficial Browser WASM Fork",
   description:
     "Unofficial browser-targeted WebAssembly build forked from ScummVM, with source and license materials plus links to the original project.",
   manifest: getVersionedSiteAssetPath("/manifest.json"),

@@ -107,12 +107,79 @@ PY
   rm -rf "$temp_dir"
 }
 
+overlay_game_archive_into_dir() {
+  local archive_path="$1"
+  local target_dir="$2"
+  local source_subdir="${3:-}"
+  local temp_dir
+
+  temp_dir="$(mktemp -d "${TMPDIR:-/tmp}/scummvm-web-overlay.XXXXXX")"
+  unzip -q -o "$archive_path" -d "$temp_dir"
+
+  python3 - "$temp_dir" "$target_dir" "$source_subdir" <<'PY'
+from pathlib import Path
+import shutil
+import sys
+
+source_dir = Path(sys.argv[1])
+target_dir = Path(sys.argv[2])
+source_subdir = sys.argv[3].strip()
+target_dir.mkdir(parents=True, exist_ok=True)
+
+top_level_entries = [
+    path for path in sorted(source_dir.iterdir()) if path.name != "__MACOSX"
+]
+
+if len(top_level_entries) == 1 and top_level_entries[0].is_dir():
+    normalized_root = top_level_entries[0]
+else:
+    normalized_root = source_dir
+
+if source_subdir:
+    normalized_root = normalized_root / source_subdir
+    if not normalized_root.exists():
+        raise SystemExit(f"Overlay subdirectory '{source_subdir}' not found in {source_dir}")
+
+def merge(source: Path, destination: Path) -> None:
+    if source.name == "__MACOSX":
+        return
+
+    if source.is_dir():
+        destination.mkdir(parents=True, exist_ok=True)
+        for child in sorted(source.iterdir()):
+            merge(child, destination / child.name)
+        return
+
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    if destination.exists():
+        if destination.is_dir():
+            shutil.rmtree(destination)
+        else:
+            destination.unlink()
+
+    shutil.move(str(source), destination)
+
+for child in sorted(normalized_root.iterdir()):
+    merge(child, target_dir / child.name)
+PY
+
+  rm -rf "$temp_dir"
+}
+
 DREAMWEB_ZIP="$(find_optional_archive 'dreamweb*.zip' 'DreamWeb*.zip' 'DREAMWEB*.zip' || true)"
 QUEEN_ZIP="$(find_optional_archive 'FOTAQ*.zip' 'fotaq*.zip' 'Flight*Amazon*Queen*.zip' 'flight*amazon*queen*.zip' || true)"
 LURE_ZIP="$(find_optional_archive 'lure*.zip' 'Lure*.zip' 'LURE*.zip' || true)"
 DRASCULA_ZIP="$(find_optional_archive 'drascula*.zip' 'Drascula*.zip' 'DRASCULA*.zip' || true)"
+DRASCULA_AUDIO_ZIP="$(
+  find_optional_archive \
+    'drascula-audio-2.0.zip' \
+    'Drascula-audio-2.0.zip' \
+    'DRASCULA-AUDIO-2.0.zip' \
+    'drascula-audio-*.zip' \
+    'Drascula-audio-*.zip' \
+    'DRASCULA-AUDIO-*.zip' || true
+)"
 SWORD25_ZIP="$(find_optional_archive 'sword25*.zip' 'Sword25*.zip' 'SWORD25*.zip' || true)"
-WAXWORKS_ZIP="$(find_optional_archive 'waxworks*.zip' 'Waxworks*.zip' 'WAXWORKS*.zip' || true)"
 NIPPON_AMIGA_ZIP="$(find_optional_archive 'nippon-amiga*.zip' 'Nippon-amiga*.zip' 'NIPPON-AMIGA*.zip' 'nippon*amiga*.zip' 'Nippon*Amiga*.zip' || true)"
 GAME_ARCHIVES=("$BASS_ZIP")
 MANAGED_PUBLIC_PATHS=(
@@ -161,16 +228,14 @@ else
   echo "Drascula archive not found in $DOWNLOADS_DIR; building without Drascula." >&2
 fi
 
+if [[ -n "$DRASCULA_ZIP" && -z "$DRASCULA_AUDIO_ZIP" ]]; then
+  echo "Drascula music addon not found in $DOWNLOADS_DIR; packaging Drascula without extracted CD audio." >&2
+fi
+
 if [[ -n "$SWORD25_ZIP" ]]; then
   GAME_ARCHIVES+=("$SWORD25_ZIP")
 else
   echo "Broken Sword 2.5 archive not found in $DOWNLOADS_DIR; building without Sword25." >&2
-fi
-
-if [[ -n "$WAXWORKS_ZIP" ]]; then
-  GAME_ARCHIVES+=("$WAXWORKS_ZIP")
-else
-  echo "Waxworks archive not found in $DOWNLOADS_DIR; building without Waxworks." >&2
 fi
 
 if [[ -n "$NIPPON_AMIGA_ZIP" ]]; then
@@ -369,7 +434,6 @@ cd "$SCUMMVM_DIR"
   --enable-engine=queen \
   --enable-engine=lure \
   --enable-engine=drascula \
-  --enable-engine=agos \
   --enable-engine=parallaction \
   --enable-engine=sword25 \
   "${SWORD25_CONFIG_ARGS[@]}" \
@@ -400,9 +464,6 @@ for game_archive in "${GAME_ARCHIVES[@]}"; do
     drascula*.zip)
       target_game_id="drascula"
       ;;
-    waxworks*.zip)
-      target_game_id="waxworks"
-      ;;
     nippon*amiga*.zip)
       target_game_id="nippon"
       ;;
@@ -418,6 +479,10 @@ for game_archive in "${GAME_ARCHIVES[@]}"; do
   target_dir="build-emscripten/games/$target_game_id"
   rm -rf "$target_dir"
   extract_game_archive_into_game_id_dir "$game_archive" "$target_dir"
+
+  if [[ "$target_game_id" == "drascula" && -n "$DRASCULA_AUDIO_ZIP" ]]; then
+    overlay_game_archive_into_dir "$DRASCULA_AUDIO_ZIP" "$target_dir/audio" "audio"
+  fi
 done
 "$EMSDK_NODE" "$SCUMMVM_DIR/dists/emscripten/build-make_http_index.js" "$SCUMMVM_DIR/build-emscripten/games"
 
@@ -425,7 +490,14 @@ cd "$ROOT_DIR"
 mkdir -p artifacts
 
 cd "$ROOT_DIR"
-"$EMSDK_NPM" install --no-fund --no-audit
+PNPM_BIN="${PNPM_BIN:-$(command -v pnpm || true)}"
+if [[ ! -d "$ROOT_DIR/node_modules" ]]; then
+  if [[ -z "$PNPM_BIN" ]]; then
+    echo "Missing pnpm. Install pnpm to prepare repo dependencies." >&2
+    exit 1
+  fi
+  "$PNPM_BIN" install
+fi
 
 python3 -m http.server 8000 --bind 127.0.0.1 --directory "$SCUMMVM_DIR/build-emscripten" >/tmp/scummvm-web-build-server.log 2>&1 &
 SERVER_PID=$!
@@ -464,35 +536,6 @@ guioptions=sndNoMIDI noAspect gameOption1
 ini_path.write_text(ini_text.rstrip() + "\n" + section.lstrip())
 PY
 
-python3 - "$SCUMMVM_DIR/build-emscripten/scummvm.ini" "$SCUMMVM_DIR/build-emscripten/games/waxworks" <<'PY'
-from pathlib import Path
-import sys
-
-ini_path = Path(sys.argv[1])
-game_dir = Path(sys.argv[2])
-
-if not ini_path.is_file() or not game_dir.is_dir():
-    raise SystemExit(0)
-
-ini_text = ini_path.read_text()
-if "[waxworks-demo]" in ini_text:
-    raise SystemExit(0)
-
-section = """
-[waxworks-demo]
-platform=pc
-gameid=waxworks
-description=Waxworks (Non-Interactive Demo/DOS/English)
-language=en
-extra=Non-Interactive Demo
-path=/games/waxworks
-engineid=agos
-guioptions=sndNoSpeech launchNoLoad gameOption1 gameOption4 lang_English
-"""
-
-ini_path.write_text(ini_text.rstrip() + "\n" + section.lstrip())
-PY
-
 python3 - "$SCUMMVM_DIR/build-emscripten/scummvm.ini" "$SCUMMVM_DIR/build-emscripten/games" <<'PY'
 from pathlib import Path
 import shutil
@@ -500,7 +543,7 @@ import sys
 
 ini_path = Path(sys.argv[1])
 games_dir = Path(sys.argv[2])
-allowed_engine_ids = {"dreamweb", "sky", "queen", "lure", "drascula", "agos", "parallaction", "sword25"}
+allowed_engine_ids = {"dreamweb", "sky", "queen", "lure", "drascula", "parallaction", "sword25"}
 seen_game_ids = set()
 
 lines = ini_path.read_text().splitlines()
@@ -1083,8 +1126,8 @@ manifest["icons"] = [
     }
     for icon in manifest.get("icons", [])
 ]
-manifest["short_name"] = "ScummVM Web"
-manifest["name"] = "ScummVM Web"
+manifest["short_name"] = "ScummWEB"
+manifest["name"] = "ScummWEB"
 manifest["description"] = "Unofficial browser-targeted WebAssembly build forked from ScummVM."
 manifest["start_url"] = bundle_href("scummvm.html")
 
@@ -1128,9 +1171,9 @@ import sys
 
 path = Path(sys.argv[1])
 html_text = path.read_text()
-updated_html = html_text.replace("<title>ScummVM</title>", "<title>ScummVM Web</title>", 1)
+updated_html = html_text.replace("<title>ScummVM</title>", "<title>ScummWEB</title>", 1)
 asset_version = os.environ.get("SCUMMVM_BUNDLE_ASSET_VERSION", "dev")
-redirect_script = """<script>(function(){const exitTo=new URLSearchParams(window.location.search).get("exitTo");if(!exitTo)return;const resolvedExitHref=(()=>{try{const resolvedUrl=new URL(exitTo,window.location.href);return resolvedUrl.origin===window.location.origin?`${resolvedUrl.pathname}${resolvedUrl.search}${resolvedUrl.hash}`:"/"}catch{return "/"}})();const escapeRedirectWindowMs=1500;let didHandleExit=false;let hasUserInteracted=false;let lastInteractionAt=0;let lastInteractionKey="";let lastEscapeAt=0;let recentEscapeCount=0;const markUserInteraction=event=>{if(event.type==="keydown"){if(event.metaKey||event.ctrlKey||event.altKey)return;lastInteractionKey=event.key||"";lastInteractionAt=Date.now();if(event.key==="Escape"){recentEscapeCount=lastInteractionAt-lastEscapeAt<=escapeRedirectWindowMs?recentEscapeCount+1:1;lastEscapeAt=lastInteractionAt}else{recentEscapeCount=0;lastEscapeAt=0}}else{lastInteractionKey="";lastInteractionAt=Date.now();recentEscapeCount=0;lastEscapeAt=0}hasUserInteracted=true};for(const eventName of["keydown","mousedown","touchstart"]){window.addEventListener(eventName,markUserInteraction,{capture:true,passive:eventName!=="keydown"})}const canvas=document.getElementById("canvas");if(canvas){const visibleCursorClass="scummvm-browser-cursor-visible";const visibleHintClass="scummvm-cursor-grab-hint-visible";const hintId="scummvm-cursor-grab-hint";const cursorStyle=document.createElement("style");cursorStyle.textContent=`#canvas.${visibleCursorClass}{cursor:default!important}#${hintId}{position:fixed;top:max(1rem,calc(env(safe-area-inset-top) + .75rem));left:50%;transform:translateX(-50%);max-width:min(calc(100vw - 2rem),26rem);padding:.7rem 1rem;border:1px solid rgba(246,224,138,.55);border-radius:999px;background:rgba(5,5,5,.82);box-shadow:0 .9rem 2.5rem rgba(0,0,0,.38);color:#f6e08a;font:600 .9rem/1.3 "Trebuchet MS",Verdana,Tahoma,sans-serif;letter-spacing:.01em;text-align:center;opacity:0;pointer-events:none;transition:opacity 120ms ease;z-index:4}#${hintId}.${visibleHintClass}{opacity:1}`;document.head.appendChild(cursorStyle);const grabHint=document.createElement("div");grabHint.id=hintId;grabHint.textContent="Click the game to grab the cursor.";document.body.appendChild(grabHint);const showBrowserCursor=()=>{canvas.classList.add(visibleCursorClass)};const allowGameCursor=()=>{canvas.classList.remove(visibleCursorClass)};const showGrabHint=()=>{grabHint.classList.add(visibleHintClass)};const hideGrabHint=()=>{grabHint.classList.remove(visibleHintClass)};const promptCursorGrab=()=>{showBrowserCursor();showGrabHint()};const releaseCursorPrompt=()=>{hideGrabHint();allowGameCursor()};canvas.addEventListener("mouseenter",promptCursorGrab,{passive:true});canvas.addEventListener("pointerenter",promptCursorGrab,{passive:true});canvas.addEventListener("mouseleave",()=>{showBrowserCursor();hideGrabHint()},{passive:true});for(const eventName of["mousedown","touchstart"]){canvas.addEventListener(eventName,releaseCursorPrompt,{capture:true,passive:true})}promptCursorGrab()}const shouldRedirectOnQuit=()=>{if(!hasUserInteracted)return false;const now=Date.now();const quitFollowsRecentEscape=lastInteractionKey==="Escape"&&now-lastInteractionAt<=escapeRedirectWindowMs;if(!quitFollowsRecentEscape)return true;return recentEscapeCount>=2&&now-lastEscapeAt<=escapeRedirectWindowMs};const handleExit=status=>{if(didHandleExit)return;didHandleExit=true;const exitMessage={type:"scummvm-exit",href:resolvedExitHref,status};if(window.parent&&window.parent!==window){try{window.parent.postMessage(exitMessage,window.location.origin);return}catch{}}try{window.location.replace(resolvedExitHref)}catch{window.location.href=resolvedExitHref}};window.Module=window.Module||{};const originalQuit=window.Module.quit;window.Module.quit=function(status,toThrow){if(shouldRedirectOnQuit()){handleExit(status)}if(typeof originalQuit==="function"){return originalQuit(status,toThrow)}throw toThrow||new Error(`ScummVM exited (${status})`)}})();</script>"""
+redirect_script = """<script>(function(){const exitTo=new URLSearchParams(window.location.search).get("exitTo");if(!exitTo)return;const resolvedExitHref=(()=>{try{const resolvedUrl=new URL(exitTo,window.location.href);return resolvedUrl.origin===window.location.origin?`${resolvedUrl.pathname}${resolvedUrl.search}${resolvedUrl.hash}`:"/"}catch{return "/"}})();const target=(window.location.hash||"").replace(/^#/,"").trim();const launchPattern=target?new RegExp(`User picked target '${target.replace(/[.*+?^${}()|[\\]\\\\]/g,"\\\\$&")}'`):null;const escapeRedirectWindowMs=1500;let didHandleExit=false;let hasUserInteracted=false;let lastInteractionAt=0;let lastInteractionKey="";let lastEscapeAt=0;let recentEscapeCount=0;let pendingExitStatus=null;let pendingExitTimer=0;const markUserInteraction=event=>{if(event.type==="keydown"){if(event.metaKey||event.ctrlKey||event.altKey)return;lastInteractionKey=event.key||"";lastInteractionAt=Date.now();if(event.key==="Escape"){recentEscapeCount=lastInteractionAt-lastEscapeAt<=escapeRedirectWindowMs?recentEscapeCount+1:1;lastEscapeAt=lastInteractionAt}else{recentEscapeCount=0;lastEscapeAt=0}}else{lastInteractionKey="";lastInteractionAt=Date.now();recentEscapeCount=0;lastEscapeAt=0}hasUserInteracted=true};for(const eventName of["keydown","mousedown","touchstart"]){window.addEventListener(eventName,markUserInteraction,{capture:true,passive:eventName!=="keydown"})}const handleExit=status=>{if(didHandleExit)return;didHandleExit=true;if(pendingExitTimer){window.clearTimeout(pendingExitTimer);pendingExitTimer=0}const exitMessage={type:"scummvm-exit",href:resolvedExitHref,status};if(window.parent&&window.parent!==window){try{window.parent.postMessage(exitMessage,window.location.origin);return}catch{}}try{window.location.replace(resolvedExitHref)}catch{window.location.href=resolvedExitHref}};const requestExit=status=>{pendingExitStatus=Number.isFinite(status)?status:0;if(pendingExitTimer)return;pendingExitTimer=window.setTimeout((()=>{pendingExitTimer=0;if(pendingExitStatus!==null){handleExit(pendingExitStatus)}}),150)};globalThis.__scummvmRequestExit=requestExit;const canvas=document.getElementById("canvas");const output=document.getElementById("output");if(canvas){const visibleCursorClass="scummvm-browser-cursor-visible";const visibleHintClass="scummvm-cursor-grab-hint-visible";const hintId="scummvm-cursor-grab-hint";let gameRunning=!launchPattern;let hoverActive=false;let launchPollTimer=0;const cursorStyle=document.createElement("style");cursorStyle.textContent=`#canvas.${visibleCursorClass}{cursor:default!important}#${hintId}{position:fixed;top:max(1rem,calc(env(safe-area-inset-top) + .75rem));left:50%;transform:translateX(-50%);max-width:min(calc(100vw - 2rem),26rem);padding:.7rem 1rem;border:1px solid rgba(246,224,138,.55);border-radius:999px;background:rgba(5,5,5,.82);box-shadow:0 .9rem 2.5rem rgba(0,0,0,.38);color:#f6e08a;font:600 .9rem/1.3 "Trebuchet MS",Verdana,Tahoma,sans-serif;letter-spacing:.01em;text-align:center;opacity:0;pointer-events:none;transition:opacity 120ms ease;z-index:4}#${hintId}.${visibleHintClass}{opacity:1}`;document.head.appendChild(cursorStyle);const grabHint=document.createElement("div");grabHint.id=hintId;grabHint.textContent="Click the game to grab the cursor.";document.body.appendChild(grabHint);const showBrowserCursor=()=>{canvas.classList.add(visibleCursorClass)};const allowGameCursor=()=>{canvas.classList.remove(visibleCursorClass)};const showGrabHint=()=>{grabHint.classList.add(visibleHintClass)};const hideGrabHint=()=>{grabHint.classList.remove(visibleHintClass)};const hasLaunchOutput=()=>Boolean(launchPattern&&output&&launchPattern.test(output.value||""));const setGameRunning=()=>{if(gameRunning)return false;gameRunning=true;if(launchPollTimer){window.clearInterval(launchPollTimer);launchPollTimer=0}return true};const syncCursorPrompt=()=>{if(!gameRunning&&hasLaunchOutput())setGameRunning();if(gameRunning&&hoverActive){showBrowserCursor();showGrabHint();return}hideGrabHint();allowGameCursor()};const promptCursorGrab=()=>{hoverActive=true;syncCursorPrompt()};const clearCursorPrompt=()=>{hoverActive=false;syncCursorPrompt()};const releaseCursorPrompt=()=>{hideGrabHint();allowGameCursor()};canvas.addEventListener("mouseenter",promptCursorGrab,{passive:true});canvas.addEventListener("pointerenter",promptCursorGrab,{passive:true});canvas.addEventListener("mouseleave",clearCursorPrompt,{passive:true});canvas.addEventListener("pointerleave",clearCursorPrompt,{passive:true});for(const eventName of["mousedown","touchstart"]){canvas.addEventListener(eventName,releaseCursorPrompt,{capture:true,passive:true})}if(hasLaunchOutput()){setGameRunning()}else if(launchPattern&&output){launchPollTimer=window.setInterval((()=>{if(hasLaunchOutput()){setGameRunning();syncCursorPrompt()}}),250)}syncCursorPrompt()}const shouldRedirectOnQuit=()=>{if(pendingExitStatus!==null)return true;if(!hasUserInteracted)return false;const now=Date.now();const quitFollowsRecentEscape=lastInteractionKey==="Escape"&&now-lastInteractionAt<=escapeRedirectWindowMs;if(!quitFollowsRecentEscape)return true;return recentEscapeCount>=2&&now-lastEscapeAt<=escapeRedirectWindowMs};window.Module=window.Module||{};const originalQuit=window.Module.quit;window.Module.quit=function(status,toThrow){if(shouldRedirectOnQuit()){handleExit(status)}if(typeof originalQuit==="function"){return originalQuit(status,toThrow)}throw toThrow||new Error(`ScummVM exited (${status})`)}})();</script>"""
 module_loader = """<script type=module>(function(){const v=new URLSearchParams(window.location.search).get("v");const moduleUrl=v?`./scummvm_fs.js?v=${encodeURIComponent(v)}`:"./scummvm_fs.js";window.ScummvmFSReady=import(moduleUrl).then(({ScummvmFS})=>{window.ScummvmFS=ScummvmFS})})();</script>"""
 script_tag = "<script src=scummvm.js async></script>"
 versioned_scummvm_loader = """<script>(function(){const v=new URLSearchParams(window.location.search).get("v");window.Module=window.Module||{};const originalLocateFile=window.Module.locateFile;window.Module.locateFile=function(path,prefix){const raw=typeof originalLocateFile=="function"?originalLocateFile(path,prefix):`${prefix||""}${path}`;if(!v)return raw;const resolved=new URL(raw,window.location.href);resolved.searchParams.set("v",v);return resolved.toString()};const script=document.createElement("script");script.async=true;script.src=v?`scummvm.js?v=${encodeURIComponent(v)}`:"scummvm.js";document.body.appendChild(script)})();</script>"""

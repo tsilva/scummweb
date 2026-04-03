@@ -20,17 +20,21 @@ if [[ ! -d "$EMSDK_DIR" ]]; then
 fi
 
 source "$EMSDK_DIR/emsdk_env.sh"
-EMSDK_NPM="$(dirname "$EMSDK_NODE")/npm"
+PNPM_BIN="${PNPM_BIN:-$(command -v pnpm || true)}"
 
-"$EMSDK_NPM" install --no-fund --no-audit >/dev/null
-"$EMSDK_NPM" run build >/tmp/scummvm-web-next-build.log 2>&1
-"$EMSDK_NPM" run start -- --hostname 127.0.0.1 --port 3000 >/tmp/scummvm-web-verify-server.log 2>&1 &
+if [[ -z "$PNPM_BIN" ]]; then
+  echo "Missing pnpm. Install pnpm to run this verification script." >&2
+  exit 1
+fi
+
+"$PNPM_BIN" build >/tmp/scummvm-web-next-build.log 2>&1
+"$PNPM_BIN" start -- --hostname 127.0.0.1 --port 3000 >/tmp/scummvm-web-verify-server.log 2>&1 &
 SERVER_PID=$!
 cleanup() {
   kill "$SERVER_PID" 2>/dev/null || true
 }
 trap cleanup EXIT
 
-"$EMSDK_NODE" "$ROOT_DIR/scripts/verify_game_launch.mjs" \
+node "$ROOT_DIR/scripts/verify_game_launch.mjs" \
   "http://127.0.0.1:3000/" \
   "$ROOT_DIR/artifacts/verify-launch.png"

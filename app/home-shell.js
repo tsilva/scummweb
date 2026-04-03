@@ -129,7 +129,7 @@ export default function HomeShell({
       <nav className="dashboard-nav">
         <div className="nav-cluster nav-cluster-left">
           <div className="nav-brand-group">
-            <a className="nav-brand" href="#browse" aria-label="ScummVM Web">
+            <a className="nav-brand" href="#browse" aria-label="ScummWEB">
               <img
                 alt=""
                 aria-hidden="true"
@@ -278,7 +278,7 @@ export default function HomeShell({
 
       <footer className="site-footer">
         <div className="footer-copy">
-          <strong>ScummVM Web</strong>
+          <strong>ScummWEB</strong>
           <p>
             Bundle built {sourceInfoDate} from {buildStamp}. Launcher routes now boot directly into
             the detected ScummVM entries in this archive.

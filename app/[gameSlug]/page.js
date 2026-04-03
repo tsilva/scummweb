@@ -22,13 +22,13 @@ export async function generateMetadata({ params }) {
 
   if (!game) {
     return {
-      title: "Game Not Found | ScummVM Web",
+      title: "Game Not Found | ScummWEB",
     };
   }
 
   return {
-    title: `${game.displayTitle} | ScummVM Web`,
-    description: `Launch ${game.displayTitle} directly from its dedicated ScummVM Web route.`,
+    title: `${game.displayTitle} | ScummWEB`,
+    description: `Launch ${game.displayTitle} directly from its dedicated ScummWEB route.`,
   };
 }
 

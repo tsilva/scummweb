@@ -113,7 +113,38 @@ function normalizeUrl(value) {
   return resolvedUrl.toString();
 }
 
-async function verifyTarget(context, baseUrl, game) {
+async function waitForGameStartup(page, frame, game) {
+  const output = await frame.locator("#output").inputValue();
+  const statusText = await frame.locator("#status").textContent().catch(() => "");
+  const targetPattern = new RegExp(`User picked target '${escapeRegExp(game.target)}'`);
+  const fatalOutputPatterns = [
+    /Game data path does not exist/i,
+    /Couldn't identify game/i,
+    /No game data was found/i,
+  ];
+
+  if (/Exception thrown/i.test(statusText) || /TypeError|ReferenceError|abort\(/i.test(output)) {
+    throw new Error(`Launch failed for ${game.target}.\n${output}`);
+  }
+
+  if (fatalOutputPatterns.some((pattern) => pattern.test(output))) {
+    throw new Error(`Launch failed for ${game.target}.\n${output}`);
+  }
+
+  if (targetPattern.test(output)) {
+    return;
+  }
+
+  await page.waitForTimeout(15000);
+
+  const retriedOutput = await frame.locator("#output").inputValue();
+
+  if (!targetPattern.test(retriedOutput)) {
+    throw new Error(`Game did not reach the expected startup state for ${game.target}.\n${retriedOutput}`);
+  }
+}
+
+async function verifyTarget(context, baseUrl, game, { waitForLaunch = true } = {}) {
   const page = await context.newPage();
   const pageErrors = [];
   const routeUrl = new URL(game.routePath, baseUrl).toString();
@@ -136,37 +167,36 @@ async function verifyTarget(context, baseUrl, game) {
 
   const frame = page.frameLocator('iframe[data-scummvm-route-frame="true"]');
   await frame.locator("#canvas").waitFor({ timeout: 30000 });
-  await page.waitForTimeout(15000);
-
-  const output = await frame.locator("#output").inputValue();
-  const statusText = await frame.locator("#status").textContent().catch(() => "");
-  const fatalOutputPatterns = [
-    /Game data path does not exist/i,
-    /Couldn't identify game/i,
-    /No game data was found/i,
-  ];
 
   if (pageErrors.length > 0) {
     throw new Error(`Page errors during ${game.target} launch:\n${pageErrors.join("\n")}`);
   }
 
-  if (/Exception thrown/i.test(statusText) || /TypeError|ReferenceError|abort\(/i.test(output)) {
-    throw new Error(`Launch failed for ${game.target}.\n${output}`);
-  }
-
-  if (fatalOutputPatterns.some((pattern) => pattern.test(output))) {
-    throw new Error(`Launch failed for ${game.target}.\n${output}`);
-  }
-
-  if (!new RegExp(`User picked target '${escapeRegExp(game.target)}'`).test(output)) {
-    throw new Error(`Game did not reach the expected startup state for ${game.target}.\n${output}`);
+  if (waitForLaunch) {
+    await waitForGameStartup(page, frame, game);
   }
 
   return { frame, page, routeUrl };
 }
 
+async function verifyRouteFrameAutofocus(page) {
+  const activeFrame = await page.evaluate(() => {
+    const activeElement = document.activeElement;
+
+    if (!(activeElement instanceof HTMLIFrameElement)) {
+      return false;
+    }
+
+    return activeElement.dataset.scummvmRouteFrame === "true";
+  });
+
+  if (!activeFrame) {
+    throw new Error("Game route iframe did not receive keyboard focus automatically.");
+  }
+}
+
 async function verifyEscapeStaysInGame(page, frame, routeUrl) {
-  await frame.locator("#canvas").press("Escape");
+  await page.keyboard.press("Escape");
   await page.waitForTimeout(500);
 
   if (normalizeUrl(page.url()) !== normalizeUrl(routeUrl)) {
@@ -189,7 +219,10 @@ async function verifyCursorGrabHint(frame) {
       }),
     );
 
-  await canvas.hover();
+  await canvas.evaluate((element) => {
+    element.dispatchEvent(new MouseEvent("mouseenter", { bubbles: false }));
+    element.dispatchEvent(new PointerEvent("pointerenter", { bubbles: false }));
+  });
   await waitForHintTransition();
 
   const initialHintState = await readHintState();
@@ -234,9 +267,11 @@ async function verifyCursorGrabHint(frame) {
 
   await canvas.evaluate((element) => {
     element.dispatchEvent(new MouseEvent("mouseleave", { bubbles: false }));
+    element.dispatchEvent(new PointerEvent("pointerleave", { bubbles: false }));
   });
   await canvas.evaluate((element) => {
     element.dispatchEvent(new MouseEvent("mouseenter", { bubbles: false }));
+    element.dispatchEvent(new PointerEvent("pointerenter", { bubbles: false }));
   });
   await waitForHintTransition();
 
@@ -247,12 +282,46 @@ async function verifyCursorGrabHint(frame) {
   }
 }
 
+async function verifyCursorGrabHintHiddenDuringBoot(page, game) {
+  const frame = page.frameLocator('iframe[data-scummvm-route-frame="true"]');
+  const canvas = frame.locator("#canvas");
+
+  await canvas.evaluate((element) => {
+    element.dispatchEvent(new MouseEvent("mouseenter", { bubbles: false }));
+    element.dispatchEvent(new PointerEvent("pointerenter", { bubbles: false }));
+  });
+  await page.waitForTimeout(200);
+
+  const initialState = await canvas.evaluate((element, currentGameTarget) => {
+    const hint = document.getElementById("scummvm-cursor-grab-hint");
+    const output = document.getElementById("output");
+    const targetPattern = new RegExp(`User picked target '${currentGameTarget.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}'`);
+
+    return {
+      launched: targetPattern.test(output?.value || ""),
+      visible: hint?.classList.contains("scummvm-cursor-grab-hint-visible") || false,
+    };
+  }, game.target);
+
+  if (!initialState.launched && initialState.visible) {
+    throw new Error(`Cursor grab hint appeared before ${game.target} finished booting.`);
+  }
+
+  await canvas.evaluate((element) => {
+    element.dispatchEvent(new MouseEvent("mouseleave", { bubbles: false }));
+  });
+  await canvas.evaluate((element) => {
+    element.dispatchEvent(new PointerEvent("pointerleave", { bubbles: false }));
+  });
+}
+
 async function verifyQuitReturnsHome(page, frame, baseUrl) {
   await frame.locator("#canvas").press("a");
   await page.waitForTimeout(200);
 
   await frame.locator("#canvas").evaluate(() => {
     try {
+      window.__scummvmRequestExit?.(0);
       window.Module?.quit?.(0, new Error("verification quit"));
     } catch {
       // The wrapped quit path may throw after posting the exit message.
@@ -394,9 +463,12 @@ await featuredDialog.locator(".game-detail-close").click();
 await featuredDialog.waitFor({ state: "hidden", timeout: 10000 });
 
 for (const game of library.games) {
-  const { frame, page, routeUrl } = await verifyTarget(context, url, game);
+  const { frame, page, routeUrl } = await verifyTarget(context, url, game, { waitForLaunch: false });
 
+  await verifyCursorGrabHintHiddenDuringBoot(page, game);
+  await waitForGameStartup(page, frame, game);
   await verifyCursorGrabHint(frame);
+  await verifyRouteFrameAutofocus(page);
   await verifyEscapeStaysInGame(page, frame, routeUrl);
   await verifyQuitReturnsHome(page, frame, url);
 
