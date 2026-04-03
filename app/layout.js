@@ -1,6 +1,6 @@
 import { Inter, Space_Grotesk } from "next/font/google";
 import Script from "next/script";
-import { getVersionedSiteAssetPath } from "./game-library";
+import { getVersionedSiteAssetPath } from "./asset-paths";
 import { getMetadataBase } from "./site-config";
 import "./globals.css";
 
@@ -24,7 +24,7 @@ export const metadata = {
   applicationName: "scummweb",
   title: "scummweb | Unofficial Browser WASM Fork",
   description:
-    "Unofficial browser-targeted WebAssembly build forked from ScummVM, with source and license materials plus links to the original project.",
+    "Unofficial browser-targeted WebAssembly build forked from ScummVM, with source and license materials plus links to ScummVM.",
   manifest: getVersionedSiteAssetPath("/manifest.json"),
   appleWebApp: {
     capable: true,
@@ -76,19 +76,6 @@ export default function RootLayout({ children }) {
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '${GOOGLE_ANALYTICS_ID}');
-          `}
-        </Script>
-        <Script id="register-service-worker" strategy="afterInteractive">
-          {`
-            if ('serviceWorker' in navigator) {
-              window.addEventListener('load', function () {
-                navigator.serviceWorker
-                  .register('${getVersionedSiteAssetPath("/sw.js")}')
-                  .catch(function (error) {
-                    console.error('Failed to register service worker.', error);
-                  });
-              });
-            }
           `}
         </Script>
         {children}
