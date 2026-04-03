@@ -62,23 +62,17 @@ function getUniqueGameSlug(game, usedSlugs) {
 function readGameLibraryFromDisk() {
   const publicDir = path.join(rootDir, "public");
   const libraryPath = path.join(publicDir, "games.json");
+  const library = JSON.parse(fs.readFileSync(libraryPath, "utf8"));
+  const games = Array.isArray(library.games) ? library.games : [];
 
-  try {
-    const library = JSON.parse(fs.readFileSync(libraryPath, "utf8"));
-    const games = Array.isArray(library.games) ? library.games : [];
-
-    return {
-      games,
-      primaryTarget: library.primaryTarget || games[0]?.target || "",
-    };
-  } catch {
-    const primaryGame = JSON.parse(fs.readFileSync(path.join(publicDir, "game.json"), "utf8"));
-
-    return {
-      games: [primaryGame],
-      primaryTarget: primaryGame.target,
-    };
+  if (games.length === 0) {
+    throw new Error(`No installed game metadata found in ${libraryPath}`);
   }
+
+  return {
+    games,
+    primaryTarget: library.primaryTarget || games[0]?.target || "",
+  };
 }
 
 function addGameRoutes(library) {
@@ -144,6 +138,55 @@ async function waitForGameStartup(page, frame, game) {
   }
 }
 
+async function verifyLaunchOverlayBeforeStartup(page, game) {
+  const overlaySnapshot = await page.waitForFunction(
+    ({ displayTitle, target }) => {
+      const element = document.querySelector('[data-launch-overlay="true"]');
+
+      if (!element || element.getAttribute("data-launch-overlay-state") !== "visible") {
+        return null;
+      }
+
+      const text = element.textContent || "";
+
+      if (!text.includes(displayTitle) || !text.includes(target)) {
+        return null;
+      }
+
+      return {
+        state: element.getAttribute("data-launch-overlay-state"),
+        text,
+      };
+    },
+    {
+      displayTitle: game.displayTitle,
+      target: game.target,
+    },
+    { timeout: 10000 }
+  );
+
+  const overlayState = await overlaySnapshot.jsonValue();
+
+  if (overlayState?.state !== "visible") {
+    throw new Error(`Expected launch overlay to be visible for ${game.target}, got ${overlayState?.state}.`);
+  }
+}
+
+async function verifyLaunchOverlayAfterStartup(page, game) {
+  const overlay = page.locator('[data-launch-overlay="true"]');
+
+  await page.waitForFunction(() => {
+    const element = document.querySelector('[data-launch-overlay="true"]');
+    return element?.getAttribute("data-launch-overlay-state") === "hidden";
+  });
+
+  const overlayState = await overlay.getAttribute("data-launch-overlay-state");
+
+  if (overlayState !== "hidden") {
+    throw new Error(`Expected launch overlay to hide for ${game.target}, got ${overlayState}.`);
+  }
+}
+
 async function verifyTarget(context, baseUrl, game, { waitForLaunch = true } = {}) {
   const page = await context.newPage();
   const pageErrors = [];
@@ -164,6 +207,7 @@ async function verifyTarget(context, baseUrl, game, { waitForLaunch = true } = {
   await page.waitForSelector('iframe[data-scummvm-route-frame="true"]', {
     timeout: 30000,
   });
+  await verifyLaunchOverlayBeforeStartup(page, game);
 
   const frame = page.frameLocator('iframe[data-scummvm-route-frame="true"]');
   await frame.locator("#canvas").waitFor({ timeout: 30000 });
@@ -202,6 +246,72 @@ async function verifyEscapeStaysInGame(page, frame, routeUrl) {
   if (normalizeUrl(page.url()) !== normalizeUrl(routeUrl)) {
     throw new Error(`Escape redirected unexpectedly from ${routeUrl} to ${page.url()}`);
   }
+}
+
+async function verifySkipIntroButton(page, frame, game) {
+  if (!game.skipIntro) {
+    return;
+  }
+
+  const expectedKey =
+    typeof game.skipIntro.key === "string" && game.skipIntro.key.trim()
+      ? game.skipIntro.key.trim()
+      : "Escape";
+  const skipIntroButton = page.locator(".game-route-skip-intro-button");
+  await skipIntroButton.waitFor({ state: "visible", timeout: 15000 });
+
+  await frame.locator("#canvas").evaluate(() => {
+    window.__skipIntroVerificationEvents = [];
+
+    const targets = [window, document, document.body, document.getElementById("canvas")].filter(Boolean);
+
+    for (const target of targets) {
+      target.addEventListener(
+        "keydown",
+        (event) => {
+          window.__skipIntroVerificationEvents.push({
+            key: event.key,
+            code: event.code,
+            which: event.which,
+            keyCode: event.keyCode,
+          });
+        },
+        { capture: true, once: true }
+      );
+    }
+  });
+
+  await skipIntroButton.click();
+
+  await frame.locator("#canvas").evaluate(
+    (_, { key }) =>
+      new Promise((resolve, reject) => {
+        const startedAt = Date.now();
+
+        function check() {
+          const events = window.__skipIntroVerificationEvents || [];
+
+          if (events.some((event) => event.key === key)) {
+            resolve();
+            return;
+          }
+
+          if (Date.now() - startedAt >= 1500) {
+            reject(
+              new Error(`Skip intro button did not dispatch ${key}. Recorded events: ${JSON.stringify(events)}`)
+            );
+            return;
+          }
+
+          window.setTimeout(check, 50);
+        }
+
+        check();
+      }),
+    { key: expectedKey }
+  );
+
+  await skipIntroButton.waitFor({ state: "hidden", timeout: 5000 });
 }
 
 async function verifyCursorGrabHint(frame) {
@@ -467,9 +577,11 @@ for (const game of library.games) {
 
   await verifyCursorGrabHintHiddenDuringBoot(page, game);
   await waitForGameStartup(page, frame, game);
+  await verifyLaunchOverlayAfterStartup(page, game);
   await verifyCursorGrabHint(frame);
   await verifyRouteFrameAutofocus(page);
   await verifyEscapeStaysInGame(page, frame, routeUrl);
+  await verifySkipIntroButton(page, frame, game);
   await verifyQuitReturnsHome(page, frame, url);
 
   screenshotPage = page;

@@ -1,0 +1,10 @@
+{
+  "byTarget": {
+    "sky": {
+      "skipIntro": {
+        "durationMinutes": 2,
+        "key": "Escape"
+      }
+    }
+  }
+}

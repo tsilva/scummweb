@@ -103,11 +103,12 @@ const installedLibraryOrder = [
 ];
 
 export default function HomeShell({
-  buildStamp,
   catalog,
   featuredGame,
   logoSrc,
+  scummvmVersion,
   scummvmOfficialSite,
+  scummwebVersion,
   sourceInfoDate,
 }) {
   const featuredDialogId = getDialogId(featuredGame);
@@ -127,29 +128,29 @@ export default function HomeShell({
   return (
     <>
       <nav className="dashboard-nav">
-        <div className="nav-cluster nav-cluster-left">
-          <div className="nav-brand-group">
-            <a className="nav-brand" href="#browse" aria-label="scummweb">
-              <img
-                alt=""
-                aria-hidden="true"
-                className="nav-brand-logo"
-                decoding="async"
-                height="372"
-                loading="eager"
-                src={logoSrc}
-                width="1884"
-              />
-            </a>
-          </div>
+          <div className="nav-cluster nav-cluster-left">
+            <div className="nav-brand-group">
+              <div className="nav-brand-stack">
+                <a className="nav-brand" href="#browse" aria-label="scummweb">
+                  <img
+                    alt=""
+                    aria-hidden="true"
+                    className="nav-brand-logo"
+                    decoding="async"
+                    height="372"
+                    loading="eager"
+                    src={logoSrc}
+                    width="1884"
+                  />
+                </a>
+                <p className="nav-brand-tagline">Unofficial ScummVM WASM port</p>
+              </div>
+            </div>
 
           <div className="nav-links" aria-label="Main">
-            <a className="is-active" href="#browse">
-              Browse
-            </a>
             <a href="#library">Library</a>
             <a href={scummvmOfficialSite} rel="noreferrer" target="_blank">
-              Original Project
+              ScummVM
             </a>
           </div>
         </div>
@@ -280,8 +281,8 @@ export default function HomeShell({
         <div className="footer-copy">
           <strong>scummweb</strong>
           <p>
-            Bundle built {sourceInfoDate} from {buildStamp}. Launcher routes now boot directly into
-            the detected ScummVM entries in this archive.
+            Bundle built {sourceInfoDate}. scummweb version {scummwebVersion}. ScummVM version{" "}
+            {scummvmVersion}.
           </p>
         </div>
       </footer>
@@ -329,14 +330,6 @@ export default function HomeShell({
 
                   <div className="game-detail-actions">
                     <LaunchButton href={game.href} label="Launch Game" />
-                    <a
-                      className="secondary-button"
-                      href={game.infoHref}
-                      {...getDialogLinkProps(game.infoHref)}
-                    >
-                      <Icon name="info" />
-                      <span>Read Notes</span>
-                    </a>
                   </div>
                 </div>
               </div>

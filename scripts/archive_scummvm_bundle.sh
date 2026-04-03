@@ -24,7 +24,6 @@ managed_paths = [
     "doc",
     "favicon.ico",
     "focus-overlay.js",
-    "game.json",
     "games.json",
     "index.html",
     "launcher",
@@ -42,7 +41,6 @@ managed_paths = [
 ]
 
 required_paths = [
-    "game.json",
     "scummvm.html",
     "scummvm.js",
     "scummvm.wasm",

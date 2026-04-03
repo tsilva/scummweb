@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
 import {
-  buildVersionedSiteAssetPath,
   getGameBySlug,
   getGameLibrary,
 } from "../game-library";
+import { buildVersionedAssetPath } from "../asset-paths";
+import { getGamePresentation } from "../game-presentation";
 import GameRouteFrame from "../game-route-frame";
 
 export const dynamic = "force-static";
@@ -39,7 +40,9 @@ export default async function GameRoutePage({ params }) {
     notFound();
   }
 
-  const launchHref = buildVersionedSiteAssetPath("/scummvm.html", {
+  const presentedGame = getGamePresentation(game);
+
+  const launchHref = buildVersionedAssetPath("/scummvm.html", {
     searchParams: { exitTo: "/" },
     hash: game.target,
   });
@@ -47,6 +50,8 @@ export default async function GameRoutePage({ params }) {
   return (
     <main className="game-route-page">
       <GameRouteFrame
+        game={presentedGame}
+        skipIntro={game.skipIntro}
         src={launchHref}
         target={game.target}
         title={`${game.displayTitle} playable ScummVM frame`}

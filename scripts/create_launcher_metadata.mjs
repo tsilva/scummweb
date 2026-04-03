@@ -1,20 +1,41 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
-const [iniPath, primaryOutPath, libraryOutPath] = process.argv.slice(2);
+const [iniPath, libraryOutPath] = process.argv.slice(2);
 const gamesOrigin = (process.env.SCUMMVM_GAMES_ORIGIN || "https://scummvm-games.tsilva.eu").replace(
   /\/$/,
   ""
 );
 
-if (!iniPath || !primaryOutPath || !libraryOutPath) {
-  throw new Error(
-    "usage: create_launcher_metadata.mjs <scummvm.ini> <primary-out.json> <library-out.json>"
-  );
+if (!iniPath || !libraryOutPath) {
+  throw new Error("usage: create_launcher_metadata.mjs <scummvm.ini> <library-out.json>");
+}
+
+async function loadMetadataOverrides() {
+  try {
+    const overridesText = await fs.readFile(
+      new URL("../launcher-game-overrides.json", import.meta.url),
+      "utf8"
+    );
+    const parsed = JSON.parse(overridesText);
+
+    if (!parsed || typeof parsed !== "object") {
+      return {};
+    }
+
+    return parsed.byTarget && typeof parsed.byTarget === "object" ? parsed.byTarget : {};
+  } catch (error) {
+    if (error?.code === "ENOENT") {
+      return {};
+    }
+
+    throw error;
+  }
 }
 
 const iniText = await fs.readFile(iniPath, "utf8");
 const distDir = path.dirname(iniPath);
+const metadataOverrides = await loadMetadataOverrides();
 const sections = [];
 let current = null;
 
@@ -90,6 +111,7 @@ for (const section of gameSections) {
 const games = await Promise.all(
   gameSections.map(async (section) => {
     const normalizedPath = `/games/${section.values.gameid}`;
+    const targetOverrides = metadataOverrides[section.name];
 
     return {
       target: section.name,
@@ -100,6 +122,7 @@ const games = await Promise.all(
       platform: section.values.platform || "",
       extra: section.values.extra || "",
       readmeHref: await findReadmeHref(normalizedPath),
+      ...(targetOverrides && typeof targetOverrides === "object" ? targetOverrides : {}),
     };
   })
 );
@@ -109,7 +132,6 @@ const primaryGame =
   games.find((game) => game.target === "sky") ||
   games[0];
 
-await fs.writeFile(primaryOutPath, JSON.stringify(primaryGame, null, 2) + "\n");
 await fs.writeFile(
   libraryOutPath,
   JSON.stringify(

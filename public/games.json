@@ -59,7 +59,11 @@
       "gameId": "sky",
       "platform": "pc",
       "extra": "v0.0372 CD",
-      "readmeHref": "https://scummvm-games.tsilva.eu/sky/readme.txt"
+      "readmeHref": "https://scummvm-games.tsilva.eu/sky/readme.txt",
+      "skipIntro": {
+        "durationMinutes": 2,
+        "key": "Escape"
+      }
     },
     {
       "target": "sword25",
