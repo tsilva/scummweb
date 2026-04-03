@@ -1,5 +1,5 @@
 {
-  "name": "scummvm-web",
+  "name": "scummweb",
   "private": true,
   "packageManager": "pnpm@10.27.0",
   "scripts": {

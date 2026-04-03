@@ -1,4 +1,0 @@
-interface:
-  display_name: "ScummWEB Assets"
-  short_description: "Update game artwork for scummvm-web"
-  default_prompt: "Use $scummvm-web-game-assets to add or refresh dashboard art for a game in scummvm-web."

@@ -52,7 +52,7 @@ required_paths = [
 missing = [path for path in required_paths if not (public_dir / path).exists()]
 if missing:
     print(
-        f"Missing ScummVM web bundle assets in {public_dir}: {' '.join(missing)}",
+        f"Missing scummweb bundle assets in {public_dir}: {' '.join(missing)}",
         file=sys.stderr,
     )
     sys.exit(1)

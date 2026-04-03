@@ -1,6 +1,6 @@
 {
-    "short_name": "ScummWEB",
-    "name": "ScummWEB",
+    "short_name": "scummweb",
+    "name": "scummweb",
     "icons": [
         {
             "src": "scummvm-192.png?v=dev",

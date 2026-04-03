@@ -72,7 +72,7 @@ export function buildVersionedSiteAssetPath(assetPath, options = {}) {
     return assetPath;
   }
 
-  const resolved = new URL(assetPath, "https://scummvm-web.local");
+  const resolved = new URL(assetPath, "https://scummweb.local");
   const searchParams = options.searchParams || {};
 
   for (const [key, value] of Object.entries(searchParams)) {
