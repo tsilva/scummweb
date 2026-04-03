@@ -1,11 +1,34 @@
-import primaryGameData from "../public/game.json";
 import gameLibraryData from "../public/games.json";
 import sourceInfoData from "../public/source-info.json";
-
-export const scummvmAssetVersion = process.env.NEXT_PUBLIC_SCUMMVM_ASSET_VERSION || "dev";
+export {
+  buildVersionedAssetPath as buildVersionedSiteAssetPath,
+  getVersionedScummvmAssetPath,
+  getVersionedSiteAssetPath,
+  scummvmAssetVersion,
+} from "./asset-paths";
 
 export function getDisplayTitle(title) {
   return title.replace(/\s+\([^)]*\)$/, "");
+}
+
+function normalizeSkipIntroConfig(skipIntro) {
+  if (!skipIntro || typeof skipIntro !== "object") {
+    return null;
+  }
+
+  const durationMinutes = Number(skipIntro.durationMinutes);
+
+  if (!Number.isFinite(durationMinutes) || durationMinutes <= 0) {
+    return null;
+  }
+
+  const key =
+    typeof skipIntro.key === "string" && skipIntro.key.trim() ? skipIntro.key.trim() : "Escape";
+
+  return {
+    durationMinutes,
+    key,
+  };
 }
 
 function slugifySegment(value) {
@@ -50,6 +73,7 @@ function addGameRoutes(games) {
 
     return {
       ...game,
+      skipIntro: normalizeSkipIntroConfig(game.skipIntro),
       displayTitle: getDisplayTitle(game.title),
       slug,
       href: `/${slug}`,
@@ -57,58 +81,16 @@ function addGameRoutes(games) {
   });
 }
 
-export function getVersionedScummvmAssetPath(assetPath) {
-  return getVersionedSiteAssetPath(assetPath);
-}
-
-function appendAssetVersion(url) {
-  url.searchParams.delete("v");
-  url.searchParams.append("v", scummvmAssetVersion);
-  return url;
-}
-
-export function buildVersionedSiteAssetPath(assetPath, options = {}) {
-  if (!assetPath || !assetPath.startsWith("/")) {
-    return assetPath;
-  }
-
-  const resolved = new URL(assetPath, "https://scummweb.local");
-  const searchParams = options.searchParams || {};
-
-  for (const [key, value] of Object.entries(searchParams)) {
-    if (value == null) {
-      continue;
-    }
-
-    resolved.searchParams.delete(key);
-    resolved.searchParams.append(key, String(value));
-  }
-
-  if (options.hash) {
-    resolved.hash = options.hash;
-  }
-
-  appendAssetVersion(resolved);
-  return `${resolved.pathname}${resolved.search}${resolved.hash}`;
-}
-
-export function getVersionedSiteAssetPath(assetPath) {
-  return buildVersionedSiteAssetPath(assetPath);
-}
-
 function getBundledGameLibrary() {
   const games = Array.isArray(gameLibraryData?.games) ? gameLibraryData.games : [];
 
-  if (games.length > 0) {
-    return {
-      games,
-      primaryTarget: gameLibraryData.primaryTarget || games[0]?.target || "",
-    };
+  if (games.length === 0) {
+    throw new Error("No installed game metadata found in public/games.json");
   }
 
   return {
-    games: primaryGameData ? [primaryGameData] : [],
-    primaryTarget: primaryGameData?.target || "",
+    games,
+    primaryTarget: gameLibraryData.primaryTarget || games[0]?.target || "",
   };
 }
 

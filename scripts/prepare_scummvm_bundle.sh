@@ -12,7 +12,6 @@ managed_paths=(
   doc
   favicon.ico
   focus-overlay.js
-  game.json
   games.json
   index.html
   launcher
@@ -30,11 +29,16 @@ managed_paths=(
 )
 
 required_files=(
-  game.json
   scummvm.html
   scummvm.js
   scummvm.wasm
   scummvm_fs.js
+)
+
+stale_paths=(
+  game.json
+  home-static.html
+  sw.js
 )
 
 bundle_signature() {
@@ -52,12 +56,31 @@ if [[ -f "$BUNDLE_ZIP" ]]; then
   mkdir -p "$PUBLIC_DIR"
   signature="$(bundle_signature "$BUNDLE_ZIP")"
   existing_signature="$(cat "$STAMP_FILE" 2>/dev/null || true)"
+  should_restore=0
+
+  for stale_path in "${stale_paths[@]}"; do
+    rm -rf "$PUBLIC_DIR/$stale_path"
+  done
 
   if [[ "$signature" != "$existing_signature" ]]; then
-    for managed_path in "${managed_paths[@]}"; do
-      rm -rf "$PUBLIC_DIR/$managed_path"
+    should_restore=1
+  else
+    for required_file in "${required_files[@]}"; do
+      if [[ ! -e "$PUBLIC_DIR/$required_file" ]]; then
+        should_restore=1
+        break
+      fi
+    done
+  fi
+
+  if (( should_restore )); then
+    for cleanup_path in "${managed_paths[@]}" "${stale_paths[@]}"; do
+      rm -rf "$PUBLIC_DIR/$cleanup_path"
     done
     unzip -q -o "$BUNDLE_ZIP" -d "$PUBLIC_DIR"
+    for stale_path in "${stale_paths[@]}"; do
+      rm -rf "$PUBLIC_DIR/$stale_path"
+    done
     printf '%s\n' "$signature" > "$STAMP_FILE"
   fi
 fi
