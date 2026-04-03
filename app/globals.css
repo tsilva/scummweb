@@ -454,13 +454,22 @@ svg {
 }
 
 .game-detail-modal {
+  --game-detail-pad-top: max(1.5rem, env(safe-area-inset-top));
+  --game-detail-pad-right: max(1.5rem, env(safe-area-inset-right));
+  --game-detail-pad-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  --game-detail-pad-left: max(1.5rem, env(safe-area-inset-left));
   position: fixed;
   inset: 0;
   z-index: 75;
   align-items: center;
   justify-content: center;
   display: none;
-  padding: 1.5rem;
+  overflow-y: auto;
+  padding:
+    var(--game-detail-pad-top)
+    var(--game-detail-pad-right)
+    var(--game-detail-pad-bottom)
+    var(--game-detail-pad-left);
 }
 
 .game-detail-modal:target {
@@ -479,11 +488,23 @@ svg {
   position: relative;
   z-index: 1;
   width: min(100%, 82rem);
-  max-height: min(92vh, 58rem);
+  max-height: min(
+    58rem,
+    calc(100dvh - var(--game-detail-pad-top) - var(--game-detail-pad-bottom))
+  );
   overflow: auto;
   border: 1px solid rgba(127, 211, 127, 0.14);
   background: linear-gradient(180deg, rgba(16, 18, 16, 0.98), rgba(8, 9, 8, 0.99));
   box-shadow: 0 40px 96px rgba(0, 0, 0, 0.58);
+}
+
+@supports not (height: 100dvh) {
+  .game-detail-panel {
+    max-height: min(
+      58rem,
+      calc(100vh - var(--game-detail-pad-top) - var(--game-detail-pad-bottom))
+    );
+  }
 }
 
 .game-detail-visual {
@@ -514,10 +535,10 @@ svg {
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(7, 11, 9, 0.72) 0%, rgba(7, 11, 9, 0.56) 34%, rgba(7, 11, 9, 0.24) 58%, rgba(7, 11, 9, 0) 78%),
-    linear-gradient(180deg, rgba(7, 11, 9, 0.1) 0%, rgba(7, 11, 9, 0.18) 40%, rgba(7, 11, 9, 0.42) 100%);
-  backdrop-filter: blur(22px) saturate(0.8);
-  -webkit-backdrop-filter: blur(22px) saturate(0.8);
+    linear-gradient(90deg, rgba(7, 11, 9, 0.58) 0%, rgba(7, 11, 9, 0.4) 34%, rgba(7, 11, 9, 0.14) 58%, rgba(7, 11, 9, 0) 78%),
+    linear-gradient(180deg, rgba(7, 11, 9, 0.06) 0%, rgba(7, 11, 9, 0.12) 40%, rgba(7, 11, 9, 0.34) 100%);
+  backdrop-filter: blur(6px) saturate(0.94);
+  -webkit-backdrop-filter: blur(6px) saturate(0.94);
 }
 
 .game-detail-panel.tone-sky .game-detail-visual::after {
@@ -1051,16 +1072,23 @@ svg {
 .game-route-shell {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   background: #000;
 }
 
 .game-route-frame {
   display: block;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   border: 0;
   background: #000;
+}
+
+@supports not (height: 100dvh) {
+  .game-route-shell,
+  .game-route-frame {
+    height: 100vh;
+  }
 }
 
 .game-route-boot-overlay {
@@ -1275,17 +1303,14 @@ svg {
 
 .game-route-controls {
   position: fixed;
-  top: max(1rem, env(safe-area-inset-top));
-  left: max(1rem, env(safe-area-inset-left));
-  right: max(1rem, env(safe-area-inset-right));
+  inset: 0;
   z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   pointer-events: none;
 }
 
 .game-route-control-button {
+  position: fixed;
+  top: max(1rem, env(safe-area-inset-top));
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1308,6 +1333,14 @@ svg {
     box-shadow 160ms ease;
 }
 
+.game-route-control-button.is-exit {
+  left: min(max(0.5rem, env(safe-area-inset-left)), 1rem);
+}
+
+.game-route-control-button.is-fullscreen {
+  right: min(max(0.5rem, env(safe-area-inset-right)), 1rem);
+}
+
 .game-route-control-button:hover,
 .game-route-control-button:focus-visible {
   background: rgba(255, 255, 255, 0.14);
@@ -1323,9 +1356,9 @@ svg {
 }
 
 .game-route-bottom-actions {
-  position: absolute;
-  right: max(1rem, env(safe-area-inset-right));
-  bottom: max(1rem, env(safe-area-inset-bottom));
+  position: fixed;
+  right: min(max(0.75rem, env(safe-area-inset-right)), 1rem);
+  bottom: min(max(0.75rem, env(safe-area-inset-bottom)), 1rem);
   z-index: 10;
   display: flex;
   flex-direction: column;
@@ -1563,8 +1596,16 @@ svg {
     grid-template-columns: 1fr;
   }
 
+  .game-detail-modal {
+    align-items: flex-start;
+    --game-detail-pad-top: max(0.75rem, env(safe-area-inset-top));
+    --game-detail-pad-right: max(0.75rem, env(safe-area-inset-right));
+    --game-detail-pad-bottom: max(0.75rem, env(safe-area-inset-bottom));
+    --game-detail-pad-left: max(0.75rem, env(safe-area-inset-left));
+  }
+
   .game-detail-panel {
-    max-height: calc(100vh - 1.5rem);
+    width: 100%;
   }
 
   .game-detail-visual-copy,
@@ -1668,10 +1709,15 @@ svg {
   }
 
   .game-detail-modal {
-    padding: 0.75rem;
+    --game-detail-pad-top: max(0.5rem, env(safe-area-inset-top));
+    --game-detail-pad-right: max(0.75rem, env(safe-area-inset-right));
+    --game-detail-pad-bottom: max(0.75rem, env(safe-area-inset-bottom));
+    --game-detail-pad-left: max(0.75rem, env(safe-area-inset-left));
   }
 
   .game-detail-visual {
+    display: flex;
+    align-items: flex-end;
     min-height: 24rem;
   }
 
@@ -1681,6 +1727,10 @@ svg {
   }
 
   .game-detail-visual-copy {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    margin-top: auto;
     padding-top: 4.5rem;
   }
 

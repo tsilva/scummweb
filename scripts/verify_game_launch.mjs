@@ -258,7 +258,9 @@ async function verifySkipIntroButton(page, frame, game) {
       ? game.skipIntro.key.trim()
       : "Escape";
   const skipIntroButton = page.locator(".game-route-skip-intro-button");
+  const exitButton = page.locator(".game-route-control-button.is-exit");
   await skipIntroButton.waitFor({ state: "visible", timeout: 15000 });
+  await exitButton.waitFor({ state: "visible", timeout: 15000 });
 
   await frame.locator("#canvas").evaluate(() => {
     window.__skipIntroVerificationEvents = [];

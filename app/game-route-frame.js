@@ -183,6 +183,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
   const [isLandscapeViewport, setIsLandscapeViewport] = useState(true);
   const [needsImmersiveRetry, setNeedsImmersiveRetry] = useState(false);
   const [showSkipIntroButton, setShowSkipIntroButton] = useState(false);
+  const [touchControlsUnlocked, setTouchControlsUnlocked] = useState(() => !skipIntro);
   const [bootStatusText, setBootStatusText] = useState("Downloading ScummVM...");
   const [bootProgressValue, setBootProgressValue] = useState(null);
   const [bootProgressMax, setBootProgressMax] = useState(null);
@@ -246,6 +247,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
 
   useEffect(() => {
     setShowSkipIntroButton(false);
+    setTouchControlsUnlocked(!skipIntro);
   }, [skipIntro, src]);
 
   useEffect(() => {
@@ -470,6 +472,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
 
     const timeoutId = window.setTimeout(() => {
       setShowSkipIntroButton(false);
+      setTouchControlsUnlocked(true);
     }, skipIntro.durationMinutes * 60 * 1000);
 
     return () => {
@@ -792,6 +795,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
 
   function handleSkipIntroClick() {
     setShowSkipIntroButton(false);
+    setTouchControlsUnlocked(true);
 
     if (!skipIntro) {
       return;
@@ -822,7 +826,13 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     ? "Your browser needs one tap before scummweb can enter fullscreen on mobile."
     : "scummweb plays in landscape on mobile. Rotate your device to keep the game visible.";
   const showSkipIntroAction = showSkipIntroButton && skipIntro && hasBootCompleted && !hasBootFailed;
-  const showTouchClickToggle = isMobileViewport && !showMobileOverlay;
+  const showExitControl = !skipIntro || hasBootFailed || showSkipIntroAction || touchControlsUnlocked;
+  const showTouchClickToggle =
+    isMobileViewport &&
+    hasBootCompleted &&
+    !hasBootFailed &&
+    !showMobileOverlay &&
+    touchControlsUnlocked;
   const showBottomActions = showSkipIntroAction || showTouchClickToggle;
   const touchClickToggleLabel =
     touchClickMode === "right" ? "Tap sends right click" : "Tap sends left click";
@@ -905,19 +915,21 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
         </div>
       ) : null}
       <div className="game-route-controls">
-        <button
-          aria-label="Exit game"
-          className="game-route-control-button"
-          onClick={handleExitClick}
-          title="Exit game"
-          type="button"
-        >
-          <LogOut aria-hidden="true" size={17} strokeWidth={2} />
-        </button>
+        {showExitControl ? (
+          <button
+            aria-label="Exit game"
+            className="game-route-control-button is-exit"
+            onClick={handleExitClick}
+            title="Exit game"
+            type="button"
+          >
+            <LogOut aria-hidden="true" size={17} strokeWidth={2} />
+          </button>
+        ) : null}
         {canFullscreen ? (
           <button
             aria-label={fullscreenLabel}
-            className="game-route-control-button"
+            className="game-route-control-button is-fullscreen"
             onClick={handleFullscreenToggle}
             title={fullscreenLabel}
             type="button"
