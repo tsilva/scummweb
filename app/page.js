@@ -32,7 +32,6 @@ export default async function HomePage() {
 
   const catalog = games.map(getGamePresentation);
   const featuredGame = pickFeaturedGame(catalog) || catalog[0];
-  const scummwebVersion = shortCommit(sourceInfo.project.commit);
   const scummvmVersion = sourceInfo.scummvm.version
     ? `${sourceInfo.scummvm.version} (${shortCommit(sourceInfo.scummvm.commit)})`
     : shortCommit(sourceInfo.scummvm.commit);
@@ -44,7 +43,6 @@ export default async function HomePage() {
       logoSrc={getVersionedSiteAssetPath("/logo.svg")}
       scummvmVersion={scummvmVersion}
       scummvmOfficialSite={scummvmOfficialSite}
-      scummwebVersion={scummwebVersion}
       sourceInfoDate={sourceInfo.generated_at_utc.slice(0, 10)}
     />
   );

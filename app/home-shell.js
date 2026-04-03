@@ -1,4 +1,5 @@
 import LaunchButton from "./launch-button";
+import RecentGamesRail from "./recent-games-rail";
 
 function formatGameCount(count) {
   return `${count} game${count === 1 ? "" : "s"} installed`;
@@ -108,7 +109,6 @@ export default function HomeShell({
   logoSrc,
   scummvmVersion,
   scummvmOfficialSite,
-  scummwebVersion,
   sourceInfoDate,
 }) {
   const featuredDialogId = getDialogId(featuredGame);
@@ -224,26 +224,7 @@ export default function HomeShell({
               </h2>
             </div>
 
-            <div className="landscape-rail">
-              {catalog.map((game) => (
-                <a
-                  key={game.target}
-                  aria-haspopup="dialog"
-                  className={`landscape-card ${game.tone}`}
-                  data-game-target={game.target}
-                  href={`#${getDialogId(game)}`}
-                >
-                  <DecorativeImage className="landscape-card-image" src={game.landscapeImage} />
-                  <div className="landscape-overlay">
-                    <h3>{game.displayTitle}</h3>
-                    <div className="landscape-meta">
-                      <span>{game.genre}</span>
-                      <span>{game.studio}</span>
-                    </div>
-                  </div>
-                </a>
-              ))}
-            </div>
+            <RecentGamesRail catalog={catalog} />
           </section>
 
           <section className="content-band">
@@ -279,10 +260,9 @@ export default function HomeShell({
 
       <footer className="site-footer">
         <div className="footer-copy">
-          <strong>scummweb</strong>
+          <strong>ScummWEB</strong>
           <p>
-            Bundle built {sourceInfoDate}. scummweb version {scummwebVersion}. ScummVM version{" "}
-            {scummvmVersion}.
+            Bundle built {sourceInfoDate}. ScummVM version {scummvmVersion}.
           </p>
         </div>
       </footer>

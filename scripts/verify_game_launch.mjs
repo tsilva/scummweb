@@ -257,6 +257,14 @@ async function verifySkipIntroButton(page, frame, game) {
     typeof game.skipIntro.key === "string" && game.skipIntro.key.trim()
       ? game.skipIntro.key.trim()
       : "Escape";
+  const expectedPressCount =
+    Number.isFinite(Number(game.skipIntro.pressCount)) && Number(game.skipIntro.pressCount) > 0
+      ? Math.floor(Number(game.skipIntro.pressCount))
+      : 1;
+  const expectedPressIntervalMs =
+    Number.isFinite(Number(game.skipIntro.pressIntervalMs)) && Number(game.skipIntro.pressIntervalMs) >= 0
+      ? Number(game.skipIntro.pressIntervalMs)
+      : 0;
   const skipIntroButton = page.locator(".game-route-skip-intro-button");
   const exitButton = page.locator(".game-route-control-button.is-exit");
   await skipIntroButton.waitFor({ state: "visible", timeout: 15000 });
@@ -264,43 +272,59 @@ async function verifySkipIntroButton(page, frame, game) {
 
   await frame.locator("#canvas").evaluate(() => {
     window.__skipIntroVerificationEvents = [];
+    const originalDispatchEvent = window.dispatchEvent.bind(window);
 
-    const targets = [window, document, document.body, document.getElementById("canvas")].filter(Boolean);
+    window.dispatchEvent = (event) => {
+      if (event?.type === "keydown") {
+        window.__skipIntroVerificationEvents.push({
+          key: event.key,
+          code: event.code,
+          which: event.which,
+          keyCode: event.keyCode,
+          timestamp: performance.now(),
+        });
+      }
 
-    for (const target of targets) {
-      target.addEventListener(
-        "keydown",
-        (event) => {
-          window.__skipIntroVerificationEvents.push({
-            key: event.key,
-            code: event.code,
-            which: event.which,
-            keyCode: event.keyCode,
-          });
-        },
-        { capture: true, once: true }
-      );
-    }
+      return originalDispatchEvent(event);
+    };
   });
 
   await skipIntroButton.click();
 
   await frame.locator("#canvas").evaluate(
-    (_, { key }) =>
+    (_, { key, pressCount, pressIntervalMs }) =>
       new Promise((resolve, reject) => {
         const startedAt = Date.now();
 
         function check() {
           const events = window.__skipIntroVerificationEvents || [];
+          const matchingEvents = events.filter((event) => event.key === key);
 
-          if (events.some((event) => event.key === key)) {
+          if (matchingEvents.length >= pressCount) {
+            if (pressCount > 1 && pressIntervalMs > 0) {
+              for (let index = 1; index < pressCount; index += 1) {
+                const interval = matchingEvents[index].timestamp - matchingEvents[index - 1].timestamp;
+
+                if (interval < pressIntervalMs - 100) {
+                  reject(
+                    new Error(
+                      `Skip intro button dispatched ${key} too quickly. Recorded events: ${JSON.stringify(matchingEvents)}`
+                    )
+                  );
+                  return;
+                }
+              }
+            }
+
             resolve();
             return;
           }
 
-          if (Date.now() - startedAt >= 1500) {
+          if (Date.now() - startedAt >= Math.max(1500, pressCount * (pressIntervalMs + 500))) {
             reject(
-              new Error(`Skip intro button did not dispatch ${key}. Recorded events: ${JSON.stringify(events)}`)
+              new Error(
+                `Skip intro button did not dispatch ${key} ${pressCount} time(s). Recorded events: ${JSON.stringify(events)}`
+              )
             );
             return;
           }
@@ -310,10 +334,150 @@ async function verifySkipIntroButton(page, frame, game) {
 
         check();
       }),
-    { key: expectedKey }
+    {
+      key: expectedKey,
+      pressCount: expectedPressCount,
+      pressIntervalMs: expectedPressIntervalMs,
+    }
   );
 
   await skipIntroButton.waitFor({ state: "hidden", timeout: 5000 });
+}
+
+async function verifyScummvmMenuButton(page, frame, routeUrl) {
+  const menuButton = page.locator('.game-route-control-button.is-menu[title="Open ScummVM menu"]');
+  const exitButton = page.locator('.game-route-control-button.is-exit[title="Exit game"]');
+  const fullscreenButton = page.locator('.game-route-control-button.is-fullscreen');
+
+  await exitButton.waitFor({ state: "visible", timeout: 15000 });
+  await menuButton.waitFor({ state: "hidden", timeout: 1000 });
+  await menuButton.waitFor({ state: "visible", timeout: 15000 });
+
+  const controlLayout = await page.evaluate(() => {
+    function readBox(selector) {
+      const element = document.querySelector(selector);
+
+      if (!(element instanceof HTMLElement)) {
+        return null;
+      }
+
+      const rect = element.getBoundingClientRect();
+
+      return {
+        left: rect.left,
+        right: rect.right,
+        top: rect.top,
+        bottom: rect.bottom,
+        width: rect.width,
+        height: rect.height,
+      };
+    }
+
+    return {
+      viewportWidth: window.innerWidth,
+      exit: readBox(".game-route-control-button.is-exit"),
+      menu: readBox(".game-route-control-button.is-menu"),
+      fullscreen: readBox(".game-route-control-button.is-fullscreen"),
+    };
+  });
+
+  if (!controlLayout.exit || !controlLayout.menu) {
+    throw new Error(`Missing control layout boxes: ${JSON.stringify(controlLayout)}`);
+  }
+
+  const overlapsExit =
+    controlLayout.menu.left < controlLayout.exit.right &&
+    controlLayout.menu.right > controlLayout.exit.left &&
+    controlLayout.menu.top < controlLayout.exit.bottom &&
+    controlLayout.menu.bottom > controlLayout.exit.top;
+
+  if (overlapsExit) {
+    throw new Error(`ScummVM menu button overlaps exit button: ${JSON.stringify(controlLayout)}`);
+  }
+
+  if (controlLayout.menu.left < controlLayout.viewportWidth / 2) {
+    throw new Error(`ScummVM menu button is not positioned in the right-side control cluster: ${JSON.stringify(controlLayout)}`);
+  }
+
+  if (await fullscreenButton.count()) {
+    const fullscreenBox = controlLayout.fullscreen;
+
+    if (!fullscreenBox) {
+      throw new Error(`Missing fullscreen control layout box: ${JSON.stringify(controlLayout)}`);
+    }
+
+    if (controlLayout.menu.right > fullscreenBox.left) {
+      throw new Error(`ScummVM menu button is not placed next to fullscreen: ${JSON.stringify(controlLayout)}`);
+    }
+  }
+
+  await frame.locator("#canvas").evaluate((canvas) => {
+    window.__menuButtonVerificationEvents = [];
+    const record = (label) => (event) => {
+      window.__menuButtonVerificationEvents.push({
+        label,
+        key: event.key,
+        code: event.code,
+        which: event.which,
+        keyCode: event.keyCode,
+        ctrlKey: event.ctrlKey,
+        timestamp: performance.now(),
+      });
+    };
+
+    const targets = [
+      ["window", window],
+      ["document", document],
+      ["body", document.body],
+      ["canvas", canvas],
+    ];
+
+    for (const [label, target] of targets) {
+      if (target && typeof target.addEventListener === "function") {
+        target.addEventListener("keydown", record(label), true);
+      }
+    }
+  });
+
+  await menuButton.click();
+
+  await frame.locator("#canvas").evaluate(
+    () =>
+      new Promise((resolve, reject) => {
+        const startedAt = Date.now();
+
+        function check() {
+          const events = window.__menuButtonVerificationEvents || [];
+          const matchingEvent = events.find(
+            (event) => event.key === "F5" && event.code === "F5" && event.keyCode === 116 && event.ctrlKey
+          );
+
+          if (matchingEvent) {
+            resolve();
+            return;
+          }
+
+          if (Date.now() - startedAt >= 1500) {
+            reject(
+              new Error(
+                `ScummVM menu button did not dispatch Ctrl+F5. Recorded events: ${JSON.stringify(events)}`
+              )
+            );
+            return;
+          }
+
+          window.setTimeout(check, 50);
+        }
+
+        check();
+      }),
+  );
+
+  await page.waitForTimeout(300);
+
+  if (normalizeUrl(page.url()) !== normalizeUrl(routeUrl)) {
+    throw new Error(`ScummVM menu button redirected unexpectedly from ${routeUrl} to ${page.url()}`);
+  }
 }
 
 async function verifyCursorGrabHint(frame) {
@@ -415,9 +579,40 @@ async function verifyCursorGrabHintHiddenDuringBoot(page, game) {
     };
   }, game.target);
 
-  if (!initialState.launched && initialState.visible) {
-    throw new Error(`Cursor grab hint appeared before ${game.target} finished booting.`);
+  if (initialState.visible) {
+    throw new Error(`Cursor grab hint appeared before ${game.target} cleared its launch delay.`);
   }
+
+  await canvas.evaluate(
+    (_, currentGameTarget) =>
+      new Promise((resolve, reject) => {
+        const output = document.getElementById("output");
+        const hint = document.getElementById("scummvm-cursor-grab-hint");
+        const targetPattern = new RegExp(`User picked target '${currentGameTarget.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}'`);
+        const startedAt = Date.now();
+
+        function check() {
+          if (targetPattern.test(output?.value || "")) {
+            resolve(hint?.classList.contains("scummvm-cursor-grab-hint-visible") || false);
+            return;
+          }
+
+          if (Date.now() - startedAt >= 15000) {
+            reject(new Error(`Timed out waiting for ${currentGameTarget} launch output.`));
+            return;
+          }
+
+          window.setTimeout(check, 100);
+        }
+
+        check();
+      }),
+    game.target
+  ).then((visibleAfterLaunchOutput) => {
+    if (visibleAfterLaunchOutput) {
+      throw new Error(`Cursor grab hint appeared immediately after ${game.target} launch output instead of waiting for the splash delay.`);
+    }
+  });
 
   await canvas.evaluate((element) => {
     element.dispatchEvent(new MouseEvent("mouseleave", { bubbles: false }));
@@ -584,6 +779,7 @@ for (const game of library.games) {
   await verifyRouteFrameAutofocus(page);
   await verifyEscapeStaysInGame(page, frame, routeUrl);
   await verifySkipIntroButton(page, frame, game);
+  await verifyScummvmMenuButton(page, frame, routeUrl);
   await verifyQuitReturnsHome(page, frame, url);
 
   screenshotPage = page;

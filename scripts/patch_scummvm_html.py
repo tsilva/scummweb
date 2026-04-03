@@ -35,16 +35,18 @@ if(canvas){
 const visibleCursorClass="scummvm-browser-cursor-visible";
 const visibleHintClass="scummvm-cursor-grab-hint-visible";
 const hintId="scummvm-cursor-grab-hint";
+const cursorGrabHintRevealDelayMs=2500;
 const touchTapDurationMs=260;
 const touchTapMoveThresholdPx=28;
 const touchClickModeStorageKey="scummweb.touchClickMode";
 let gameRunning=!launchPattern;
 let hoverActive=false;
 let launchPollTimer=0;
+let launchRevealTimer=0;
 let activeTouchGesture=null;
 let touchClickMode="left";
 const cursorStyle=document.createElement("style");
-cursorStyle.textContent=`#canvas{touch-action:none!important;-webkit-user-select:none;user-select:none}#canvas.${visibleCursorClass}{cursor:default!important}#${hintId}{position:fixed;top:max(1rem,calc(env(safe-area-inset-top) + .75rem));left:50%;transform:translateX(-50%);max-width:min(calc(100vw - 2rem),26rem);padding:.7rem 1rem;border:1px solid rgba(246,224,138,.55);border-radius:999px;background:rgba(5,5,5,.82);box-shadow:0 .9rem 2.5rem rgba(0,0,0,.38);color:#f6e08a;font:600 .9rem/1.3 "Trebuchet MS",Verdana,Tahoma,sans-serif;letter-spacing:.01em;text-align:center;opacity:0;pointer-events:none;transition:opacity 120ms ease;z-index:4}#${hintId}.${visibleHintClass}{opacity:1}`;
+cursorStyle.textContent=`#canvas{touch-action:none!important;-webkit-user-select:none;user-select:none}#canvas.${visibleCursorClass}{cursor:default!important}#${hintId}{position:fixed;top:max(1rem,calc(env(safe-area-inset-top) + .75rem));left:50%;transform:translateX(-50%);max-width:min(calc(100vw - 2rem),26rem);padding:.7rem 1rem;border:1px solid rgba(255,255,255,.3);border-radius:999px;background:rgba(12,12,12,.84);box-shadow:0 .9rem 2.5rem rgba(0,0,0,.38);color:rgba(255,255,255,.92);font:600 .9rem/1.3 "Trebuchet MS",Verdana,Tahoma,sans-serif;letter-spacing:.01em;text-align:center;opacity:0;pointer-events:none;transition:opacity 120ms ease;z-index:4}#${hintId}.${visibleHintClass}{opacity:1}`;
 document.head.appendChild(cursorStyle);
 const grabHint=document.createElement("div");
 grabHint.id=hintId;
@@ -55,8 +57,9 @@ const allowGameCursor=()=>{canvas.classList.remove(visibleCursorClass)};
 const showGrabHint=()=>{grabHint.classList.add(visibleHintClass)};
 const hideGrabHint=()=>{grabHint.classList.remove(visibleHintClass)};
 const hasLaunchOutput=()=>Boolean(launchPattern&&output&&launchPattern.test(output.value||""));
-const setGameRunning=()=>{if(gameRunning)return false;gameRunning=true;if(launchPollTimer){window.clearInterval(launchPollTimer);launchPollTimer=0}return true};
-const syncCursorPrompt=()=>{if(!gameRunning&&hasLaunchOutput())setGameRunning();if(gameRunning&&hoverActive){showBrowserCursor();showGrabHint();return}hideGrabHint();allowGameCursor()};
+const setGameRunning=()=>{if(gameRunning)return false;gameRunning=true;if(launchPollTimer){window.clearInterval(launchPollTimer);launchPollTimer=0}if(launchRevealTimer){window.clearTimeout(launchRevealTimer);launchRevealTimer=0}return true};
+const scheduleGameRunning=()=>{if(gameRunning||launchRevealTimer)return false;if(launchPollTimer){window.clearInterval(launchPollTimer);launchPollTimer=0}launchRevealTimer=window.setTimeout((()=>{launchRevealTimer=0;if(setGameRunning())syncCursorPrompt()}),cursorGrabHintRevealDelayMs);return true};
+const syncCursorPrompt=()=>{if(!gameRunning&&hasLaunchOutput())scheduleGameRunning();if(gameRunning&&hoverActive){showBrowserCursor();showGrabHint();return}hideGrabHint();allowGameCursor()};
 const promptCursorGrab=()=>{hoverActive=true;syncCursorPrompt()};
 const clearCursorPrompt=()=>{hoverActive=false;syncCursorPrompt()};
 const releaseCursorPrompt=()=>{hideGrabHint();allowGameCursor()};
@@ -89,7 +92,7 @@ canvas.addEventListener("touchstart",handleTouchStart,{passive:false});
 canvas.addEventListener("touchmove",handleTouchMove,{passive:false});
 canvas.addEventListener("touchend",handleTouchEnd,{passive:false});
 canvas.addEventListener("touchcancel",handleTouchCancel,{passive:false});
-if(hasLaunchOutput()){setGameRunning()}else if(launchPattern&&output){launchPollTimer=window.setInterval((()=>{if(hasLaunchOutput()){setGameRunning();syncCursorPrompt()}}),250)}
+if(hasLaunchOutput()){scheduleGameRunning()}else if(launchPattern&&output){launchPollTimer=window.setInterval((()=>{if(hasLaunchOutput()){scheduleGameRunning();syncCursorPrompt()}}),250)}
 syncCursorPrompt()
 }
 const shouldRedirectOnQuit=()=>{if(pendingExitStatus!==null)return true;if(!hasUserInteracted)return false;const now=Date.now();const quitFollowsRecentEscape=lastInteractionKey==="Escape"&&now-lastInteractionAt<=escapeRedirectWindowMs;if(!quitFollowsRecentEscape)return true;return recentEscapeCount>=2&&now-lastEscapeAt<=escapeRedirectWindowMs};
