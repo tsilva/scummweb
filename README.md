@@ -1,9 +1,9 @@
 <div align="center">
-  <img src="./public/logo.svg" width="180" alt="ScummWEB logo" />
+  <img src="./public/logo.svg" width="180" alt="scummweb logo" />
 
-  # ScummWEB
+  # scummweb
 
-  Browser launcher for installed ScummVM web targets, packaged with ScummVM's upstream Emscripten build.
+  Browser launcher for installed scummweb targets, packaged with ScummVM's upstream Emscripten build.
 
   Next.js app for serving a prebuilt ScummVM WebAssembly bundle and booting directly into detected launcher targets such as `sky`, `dreamweb`, `queen`, `lure`, `drascula`, `nippon-amiga`, and `sword25`.
 </div>
@@ -48,8 +48,8 @@ The launcher shell lives in [`app/page.js`](app/page.js), the CTA component live
 ### Setup
 
 ```bash
-git clone https://github.com/tsilva/scummvm-web.git
-cd scummvm-web
+git clone https://github.com/tsilva/scummweb.git
+cd scummweb
 npm install
 ./scripts/build_bass_web.sh
 python3 ./scripts/upload_games_to_r2.py
@@ -92,6 +92,22 @@ That script rebuilds the Next.js app, serves it locally on `127.0.0.1:3000`, lau
 | `SCUMMVM_GAMES_ORIGIN` | No | Overrides the default games origin (`https://scummvm-games.tsilva.eu`) used for generated readme links and the production browser filesystem mount |
 | `SCUMMVM_GAMES_UPLOAD_DIR` | No | Overrides the upload source directory; defaults to `dist/games/`, then falls back to `public/games/` |
 | `NEXT_PUBLIC_SITE_URL` | No | Overrides the default production site URL (`https://scummvm.tsilva.eu`) used for `metadataBase`, `robots.txt`, and `sitemap.xml` |
+
+### Sentry Access For Codex
+
+This repo already supports Sentry source map upload through the local `.env.sentry-build-plugin` file, but that token is not guaranteed to have the read scopes needed for Codex's Sentry workflow.
+
+For read-only issue and event access, create a local `.env.sentry-mcp` file from `.env.sentry-mcp.example` with a token that has:
+
+- `org:read`
+- `project:read`
+- `event:read`
+
+Default project settings for this repo:
+
+- `SENTRY_ORG=tsilva`
+- `SENTRY_PROJECT=scummweb`
+- `SENTRY_BASE_URL=https://sentry.io`
 
 ## ☁️ Deploy to Vercel
 

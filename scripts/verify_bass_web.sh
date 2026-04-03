@@ -27,8 +27,8 @@ if [[ -z "$PNPM_BIN" ]]; then
   exit 1
 fi
 
-"$PNPM_BIN" build >/tmp/scummvm-web-next-build.log 2>&1
-"$PNPM_BIN" start -- --hostname 127.0.0.1 --port 3000 >/tmp/scummvm-web-verify-server.log 2>&1 &
+"$PNPM_BIN" build >/tmp/scummweb-next-build.log 2>&1
+"$PNPM_BIN" start -- --hostname 127.0.0.1 --port 3000 >/tmp/scummweb-verify-server.log 2>&1 &
 SERVER_PID=$!
 cleanup() {
   kill "$SERVER_PID" 2>/dev/null || true

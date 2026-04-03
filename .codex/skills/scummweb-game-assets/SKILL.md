@@ -1,13 +1,13 @@
 ---
-name: scummvm-web-game-assets
-description: Use when working in the scummvm-web repo and the user asks to add, replace, refresh, or verify game artwork, cover art, posters, hero images, screenshots, or dashboard assets for one or more games. This skill covers sourcing appropriate online art, storing it locally, wiring it into the dashboard metadata, preserving the repo's managed ScummVM bundle workflow, and verifying the result with Playwright.
+name: scummweb-game-assets
+description: Use when working in the scummweb repo and the user asks to add, replace, refresh, or verify game artwork, cover art, posters, hero images, screenshots, or dashboard assets for one or more games. This skill covers sourcing appropriate online art, storing it locally, wiring it into the dashboard metadata, preserving the repo's managed ScummVM bundle workflow, and verifying the result with Playwright.
 ---
 
-# ScummWEB Game Assets
+# scummweb Game Assets
 
 ## Overview
 
-Use this skill for artwork changes in `scummvm-web`, especially requests like "add assets to game X", "replace the cover art", or "make the dashboard art better". The goal is to source good art online, store it locally in the repo, wire it into the UI correctly, and verify both the dashboard and launcher flow.
+Use this skill for artwork changes in `scummweb`, especially requests like "add assets to game X", "replace the cover art", or "make the dashboard art better". The goal is to source good art online, store it locally in the repo, wire it into the UI correctly, and verify both the dashboard and launcher flow.
 
 ## Workflow
 
@@ -119,7 +119,7 @@ node scripts/verify_game_launch.mjs \
 
 ## Repo-Specific Constraints
 
-- `bundle/scummvm-public.zip` is the source of truth for managed ScummVM web assets.
+- `bundle/scummvm-public.zip` is the source of truth for managed scummweb assets.
 - `npm run dev`, `npm run build`, and `npm run start` restore the bundle into `public/`.
 - If launcher assets need to persist as part of the managed bundle, run:
 

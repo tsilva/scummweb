@@ -19,7 +19,7 @@ RESAMPLE = Image.Resampling.LANCZOS if hasattr(Image, "Resampling") else Image.L
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Generate ScummVM logo assets from a master PNG.")
+    parser = argparse.ArgumentParser(description="Generate scummweb logo assets from a master PNG.")
     parser.add_argument("--source", required=True, type=Path, help="Path to the master PNG source.")
     parser.add_argument("--out-dir", required=True, type=Path, help="Directory to write generated assets into.")
     return parser.parse_args()
@@ -39,8 +39,8 @@ def build_logo_svg(image: Image.Image) -> str:
     image.save(buffer, format="PNG")
     encoded_png = base64.b64encode(buffer.getvalue()).decode("ascii")
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{image.width}" height="{image.height}" viewBox="0 0 {image.width} {image.height}" role="img" aria-labelledby="title desc">
-  <title id="title">ScummWEB</title>
-  <desc id="desc">ScummVM logo wordmark.</desc>
+  <title id="title">scummweb</title>
+  <desc id="desc">scummweb logo wordmark.</desc>
   <image width="{image.width}" height="{image.height}" preserveAspectRatio="xMidYMid meet" href="data:image/png;base64,{encoded_png}" />
 </svg>
 """

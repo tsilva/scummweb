@@ -70,7 +70,7 @@ for required_file in "${required_files[@]}"; do
 done
 
 if (( ${#missing_files[@]} > 0 )); then
-  echo "Missing ScummVM web bundle assets in $PUBLIC_DIR: ${missing_files[*]}" >&2
+  echo "Missing scummweb bundle assets in $PUBLIC_DIR: ${missing_files[*]}" >&2
   if [[ -f "$BUNDLE_ZIP" ]]; then
     echo "Archive exists but did not restore the required files: $BUNDLE_ZIP" >&2
   else

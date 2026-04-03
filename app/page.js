@@ -164,7 +164,7 @@ function getGameMeta(game) {
     screenshots,
     summary:
       art.summary ||
-      `Launch ${game.displayTitle} directly from its dedicated ScummWEB route and jump into the configured target immediately.`,
+      `Launch ${game.displayTitle} directly from its dedicated scummweb route and jump into the configured target immediately.`,
     heroImagePosition: art.heroImagePosition || undefined,
     heroImage: getVersionedSiteAssetPath(
       art.heroImage || screenshots[1] || screenshots[0] || ""
