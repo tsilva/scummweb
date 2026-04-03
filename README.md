@@ -91,7 +91,7 @@ That script rebuilds the Next.js app, serves it locally on `127.0.0.1:3000`, lau
 | `SCUMMVM_R2_ENDPOINT` | No | Overrides the default R2 S3 endpoint for uploads |
 | `SCUMMVM_GAMES_ORIGIN` | No | Overrides the default games origin (`https://scummvm-games.tsilva.eu`) used for generated readme links and the production browser filesystem mount |
 | `SCUMMVM_GAMES_UPLOAD_DIR` | No | Overrides the upload source directory; defaults to `dist/games/`, then falls back to `public/games/` |
-| `NEXT_PUBLIC_SITE_URL` | No | Overrides the default production site URL (`https://scummvm.tsilva.eu`) used for `metadataBase`, `robots.txt`, and `sitemap.xml` |
+| `NEXT_PUBLIC_SITE_URL` | No | Overrides the default production site URL (`https://scummweb.tsilva.eu`) used for `metadataBase`, `robots.txt`, and `sitemap.xml` |
 
 ### Sentry Access For Codex
 

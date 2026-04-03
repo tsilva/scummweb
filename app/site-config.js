@@ -1,4 +1,4 @@
-const defaultSiteUrl = "https://scummvm.tsilva.eu";
+const defaultSiteUrl = "https://scummweb.tsilva.eu";
 
 function normalizeSiteUrl(siteUrl) {
   return siteUrl.replace(/\/+$/, "");
