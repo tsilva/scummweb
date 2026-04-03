@@ -50,9 +50,19 @@ function buildRemoteUrl(baseUrl, remotePath) {
     return withCacheKey(resolved.toString(), getScummvmAssetVersion());
 }
 
+function isLoopbackHost(hostname) {
+    return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1";
+}
+
+function getDefaultGamesOrigin() {
+    return "https://scummvm-games.tsilva.eu";
+}
+
 function getDefaultRemoteFilesystems() {
+    const hostname = globalThis.location?.hostname || "";
+
     return {
-        games: "/games-proxy"
+        games: isLoopbackHost(hostname) ? "/games-proxy" : getDefaultGamesOrigin()
     };
 }
 
@@ -69,6 +79,67 @@ function resolveFilesystemUrl(url) {
     return url;
 }
 
+function getFilesystemBaseCandidates(url) {
+    const candidates = [];
+    const configured = globalThis.SCUMMVM_FILESYSTEM_BASES?.[url];
+    const resolved = resolveFilesystemUrl(url);
+    const defaultConfigured = getDefaultRemoteFilesystems()[url];
+
+    for (const candidate of [configured, resolved, defaultConfigured]) {
+        if (!candidate) {
+            continue;
+        }
+
+        const normalized = candidate.replace(/\/$/, "");
+        if (!normalized || candidates.includes(normalized)) {
+            continue;
+        }
+
+        candidates.push(normalized);
+    }
+
+    return candidates;
+}
+
+function tryLoadFilesystemIndex(baseUrl) {
+    const req = new XMLHttpRequest();
+    const requestUrl = buildRemoteUrl(baseUrl, "/index.json");
+
+    req.open("GET", requestUrl, false);
+    req.send(null);
+
+    if (req.status < 200 || req.status >= 300) {
+        return { ok: false, requestUrl, status: req.status, body: req.responseText };
+    }
+
+    try {
+        return { ok: true, requestUrl, json: JSON.parse(req.responseText) };
+    } catch (error) {
+        return { ok: false, requestUrl, status: req.status, body: req.responseText, error };
+    }
+}
+
+function loadFilesystemIndex(url) {
+    const failures = [];
+
+    for (const baseUrl of getFilesystemBaseCandidates(url)) {
+        const result = tryLoadFilesystemIndex(baseUrl);
+        if (result.ok) {
+            return { url: baseUrl, json: result.json };
+        }
+
+        failures.push(result);
+    }
+
+    const failureSummary = failures.map((failure) => {
+        const status = failure.status || 0;
+        const bodyPreview = (failure.body || "").trim().slice(0, 120).replace(/\s+/g, " ");
+        return `${failure.requestUrl} -> ${status}${bodyPreview ? ` (${bodyPreview})` : ""}`;
+    }).join("; ");
+
+    throw new Error(`Unable to load ScummVM filesystem index for '${url}'. Tried: ${failureSummary || "no candidates"}`);
+}
+
 export class ScummvmFS {
     url;
     fs_index;
@@ -77,11 +148,9 @@ export class ScummvmFS {
     FS;
     constructor(_FS, _url) {
         this.FS = _FS;
-        this.url = resolveFilesystemUrl(_url)
-        var req = new XMLHttpRequest(); // a new request
-        req.open("GET", buildRemoteUrl(this.url, "/index.json"), false);
-        req.send(null);
-        var json_index = JSON.parse(req.responseText)
+        const filesystemIndex = loadFilesystemIndex(_url)
+        this.url = filesystemIndex.url
+        var json_index = filesystemIndex.json
         this.fs_index = {}
         var walk_index = function (path, dir) {
             logger(path, "walk_index")

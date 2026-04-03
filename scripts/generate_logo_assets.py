@@ -34,6 +34,17 @@ def load_logo(source: Path) -> Image.Image:
     return image.crop(bbox)
 
 
+def load_logo_with_fallback(source: Path, out_dir: Path) -> Image.Image:
+    if source.is_file():
+        return load_logo(source)
+
+    fallback_icon = out_dir / "scummvm-512.png"
+    if fallback_icon.is_file():
+        return load_logo(fallback_icon)
+
+    raise SystemExit(f"Missing logo source and no fallback icon available: {source}")
+
+
 def build_logo_svg(image: Image.Image) -> str:
     buffer = BytesIO()
     image.save(buffer, format="PNG")
@@ -62,7 +73,7 @@ def main() -> None:
     args = parse_args()
     args.out_dir.mkdir(parents=True, exist_ok=True)
 
-    logo = load_logo(args.source)
+    logo = load_logo_with_fallback(args.source, args.out_dir)
     (args.out_dir / "logo.svg").write_text(build_logo_svg(logo))
 
     for size in ICON_SPECS:
