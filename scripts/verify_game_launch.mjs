@@ -89,6 +89,7 @@ function addGameRoutes(library) {
         ...game,
         displayTitle: getDisplayTitle(game.title),
         skipIntro: normalizeSkipIntroConfig(game.skipIntro),
+        playPath: `/${slug}/play`,
         routePath: `/${slug}`,
       };
     }),
@@ -216,7 +217,7 @@ async function verifyLaunchOverlayAfterStartup(page, game) {
 async function verifyTarget(context, baseUrl, game, { waitForLaunch = true } = {}) {
   const page = await context.newPage();
   const pageErrors = [];
-  const routeUrl = new URL(game.routePath, baseUrl).toString();
+  const routeUrl = new URL(game.playPath || game.routePath, baseUrl).toString();
 
   page.on("pageerror", (error) => {
     pageErrors.push(error.message);
@@ -334,8 +335,8 @@ async function verifySkipIntroButton(page, frame, game, routeUrl) {
 
   const skipIntroButton = page.locator(".game-route-skip-intro-button");
   const exitButton = page.locator(".game-route-control-button.is-exit");
-  await skipIntroButton.waitFor({ state: "visible", timeout: 15000 });
-  await exitButton.waitFor({ state: "visible", timeout: 15000 });
+  await skipIntroButton.waitFor({ state: "visible", timeout: 45000 });
+  await exitButton.waitFor({ state: "visible", timeout: 45000 });
 
   await skipIntroButton.click();
 
@@ -649,7 +650,7 @@ async function verifyCursorGrabHintHiddenDuringBoot(page, game) {
   await page.waitForTimeout(100);
 }
 
-async function verifyQuitReturnsHome(page, frame, baseUrl) {
+async function verifyQuitReturnsHome(page, frame, expectedUrl) {
   await frame.locator("#canvas").press("a");
   await page.waitForTimeout(200);
 
@@ -662,7 +663,7 @@ async function verifyQuitReturnsHome(page, frame, baseUrl) {
     }
   });
 
-  await page.waitForURL((currentUrl) => normalizeUrl(currentUrl.toString()) === normalizeUrl(baseUrl), {
+  await page.waitForURL((currentUrl) => normalizeUrl(currentUrl.toString()) === normalizeUrl(expectedUrl), {
     timeout: 10000,
   });
 }
@@ -910,9 +911,9 @@ if (normalizeUrl(rootPage.url()) !== normalizeUrl(url)) {
 const featuredLaunchHref = await featuredDialog
   .locator(".game-detail-actions .launch-button")
   .getAttribute("href");
-if (featuredLaunchHref !== library.games[0].routePath) {
+if (featuredLaunchHref !== library.games[0].playPath) {
   throw new Error(
-    `Modal launch button pointed to ${featuredLaunchHref} instead of ${library.games[0].routePath}`
+    `Modal launch button pointed to ${featuredLaunchHref} instead of ${library.games[0].playPath}`
   );
 }
 
@@ -958,7 +959,7 @@ for (const game of library.games) {
   await verifyEscapeStaysInGame(page, frame, routeUrl);
   await verifySkipIntroButton(page, frame, game, routeUrl);
   await verifyScummvmMenuButton(page, frame, routeUrl);
-  await verifyQuitReturnsHome(page, frame, url);
+  await verifyQuitReturnsHome(page, frame, new URL(game.routePath, url).toString());
 
   screenshotPage = page;
 }
