@@ -13,7 +13,9 @@ redirect_script = """<script>(function(){
 const exitTo=new URLSearchParams(window.location.search).get("exitTo");
 if(!exitTo)return;
 const resolvedExitHref=(()=>{try{const resolvedUrl=new URL(exitTo,window.location.href);return resolvedUrl.origin===window.location.origin?`${resolvedUrl.pathname}${resolvedUrl.search}${resolvedUrl.hash}`:"/"}catch{return "/"}})();
-const target=(window.location.hash||"").replace(/^#/,"").trim();
+const skipIntroTarget=new URLSearchParams(window.location.search).get("skipIntroTarget");
+const launchArgs=((window.location.hash||"").replace(/^#/,"").trim().split(/\\s+/).filter(Boolean));
+const target=skipIntroTarget||launchArgs[0]||"";
 const launchPattern=target?new RegExp(`User picked target '${target.replace(/[.*+?^${}()|[\\]\\\\]/g,"\\\\$&")}'`):null;
 const escapeRedirectWindowMs=1500;
 let didHandleExit=false;
@@ -103,6 +105,147 @@ window.Module.quit=function(status,toThrow){if(shouldRedirectOnQuit()){handleExi
 module_loader = """<script type=module>(function(){const v=new URLSearchParams(window.location.search).get("v");const moduleUrl=v?`./scummvm_fs.js?v=${encodeURIComponent(v)}`:"./scummvm_fs.js";window.ScummvmFSReady=import(moduleUrl).then(({ScummvmFS})=>{window.ScummvmFS=ScummvmFS})})();</script>"""
 script_tag = "<script src=scummvm.js async></script>"
 versioned_scummvm_loader = """<script>(function(){const v=new URLSearchParams(window.location.search).get("v");window.Module=window.Module||{};const originalLocateFile=window.Module.locateFile;window.Module.locateFile=function(path,prefix){const raw=typeof originalLocateFile=="function"?originalLocateFile(path,prefix):`${prefix||""}${path}`;if(!v)return raw;const resolved=new URL(raw,window.location.href);resolved.searchParams.set("v",v);return resolved.toString()};const script=document.createElement("script");script.async=true;script.src=v?`scummvm.js?v=${encodeURIComponent(v)}`:"scummvm.js";document.body.appendChild(script)})();</script>"""
+filesystem_patch = r"""const skipIntroTarget = new URLSearchParams(window.location.search).get("skipIntroTarget");
+globalThis.__scummwebSkipIntroSeedStatus = {
+  state: skipIntroTarget ? "pending" : "idle",
+  target: skipIntroTarget,
+  files: [],
+};
+
+function buildVersionedAssetUrl(assetPath) {
+  const resolvedUrl = new URL(assetPath, window.location.href);
+  const v = new URLSearchParams(window.location.search).get("v");
+
+  if (v) {
+    resolvedUrl.searchParams.set("v", v);
+  }
+
+  return resolvedUrl.toString();
+}
+
+function getConfiguredSavePath() {
+  try {
+    const iniText = FS.readFile("/home/web_user/scummvm.ini", { encoding: "utf8" });
+
+    for (const rawLine of iniText.split("\n")) {
+      const line = rawLine.endsWith("\r") ? rawLine.slice(0, -1) : rawLine;
+
+      if (line.startsWith("savepath=") && line.slice(9).trim()) {
+        return line.slice(9).trim();
+      }
+    }
+  } catch {}
+
+  return "/home/web_user/.local/share/scummvm/saves";
+}
+
+function ensureDirectory(directoryPath) {
+  let currentPath = "";
+
+  for (const segment of directoryPath.split("/").filter(Boolean)) {
+    currentPath += `/${segment}`;
+
+    try {
+      FS.stat(currentPath);
+    } catch {
+      FS.mkdir(currentPath);
+    }
+  }
+}
+
+function setupSkipIntroSaves() {
+  if (!skipIntroTarget) {
+    globalThis.__scummwebSkipIntroSeedStatus = { state: "idle", target: null, files: [] };
+    return Promise.resolve();
+  }
+
+  return fetch(buildVersionedAssetUrl("games.json"))
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Failed to load games.json (${response.status})`);
+      }
+
+      return response.json();
+    })
+    .then((library) => {
+      const matchingGame = (Array.isArray(library?.games) ? library.games : []).find(
+        (game) => game?.target === skipIntroTarget
+      );
+      const skipIntroConfig = matchingGame?.skipIntro;
+
+      if (
+        !skipIntroConfig ||
+        skipIntroConfig.strategy !== "save-slot" ||
+        !Array.isArray(skipIntroConfig.saveFiles) ||
+        skipIntroConfig.saveFiles.length === 0
+      ) {
+        globalThis.__scummwebSkipIntroSeedStatus = { state: "missing", target: skipIntroTarget, files: [] };
+        return undefined;
+      }
+
+      const savePath = getConfiguredSavePath();
+      ensureDirectory(savePath);
+
+      return Promise.all(
+        skipIntroConfig.saveFiles.map((fileName) => {
+          const trimmedFileName = typeof fileName === "string" ? fileName.trim() : "";
+
+          if (!trimmedFileName) {
+            return Promise.resolve(null);
+          }
+
+          const assetPath = `launcher/skip-intro/${encodeURIComponent(skipIntroTarget)}/${encodeURIComponent(trimmedFileName)}`;
+
+          return fetch(buildVersionedAssetUrl(assetPath))
+            .then((assetResponse) => {
+              if (!assetResponse.ok) {
+                throw new Error(`Failed to load ${trimmedFileName} (${assetResponse.status})`);
+              }
+
+              return assetResponse.arrayBuffer();
+            })
+            .then((buffer) => {
+              FS.writeFile(`${savePath}/${trimmedFileName}`, new Uint8Array(buffer));
+              return trimmedFileName;
+            });
+        })
+      ).then((seededFiles) => {
+        globalThis.__scummwebSkipIntroSeedStatus = {
+          state: "ready",
+          target: skipIntroTarget,
+          files: seededFiles.filter(Boolean),
+          savePath,
+          slot: skipIntroConfig.slot,
+        };
+      });
+    })
+    .catch((error) => {
+      console.error("Failed to seed skip-intro save files", error);
+      globalThis.__scummwebSkipIntroSeedStatus = {
+        state: "error",
+        target: skipIntroTarget,
+        files: [],
+        message: error instanceof Error ? error.message : String(error),
+      };
+    });
+}
+
+function setupFilesystem() {
+  addRunDependency("scummvm-fs-setup");
+  Promise.all([window.ScummvmFSReady || Promise.resolve(), setupLocalFilesystem()])
+    .then(() => setupSkipIntroSaves())
+    .then(
+      () => {
+        setupHTTPFilesystem("games");
+        setupHTTPFilesystem("data");
+        removeRunDependency("scummvm-fs-setup");
+      },
+      (error) => {
+        removeRunDependency("scummvm-fs-setup");
+        throw error;
+      }
+    );
+}"""
 
 updated_html = updated_html.replace(
     '<script type=module>import{ScummvmFS}from"./scummvm_fs.js";window.ScummvmFS=ScummvmFS</script>',
@@ -129,10 +272,20 @@ updated_html = updated_html.replace(
     'fetch((()=>{const e=new URL("scummvm.ini",window.location.href),t=new URLSearchParams(window.location.search).get("v");return t&&e.searchParams.set("v",t),e.toString()})())',
     1,
 )
-updated_html = updated_html.replace(
+for current_setup_filesystem in (
     'function setupFilesystem(){addRunDependency("scummvm-fs-setup"),setupLocalFilesystem().then((()=>{setupHTTPFilesystem("games"),setupHTTPFilesystem("data"),removeRunDependency("scummvm-fs-setup")}))}',
     'function setupFilesystem(){addRunDependency("scummvm-fs-setup"),Promise.all([window.ScummvmFSReady||Promise.resolve(),setupLocalFilesystem()]).then((()=>{setupHTTPFilesystem("games"),setupHTTPFilesystem("data"),removeRunDependency("scummvm-fs-setup")}))}',
-    1,
+):
+    if current_setup_filesystem in updated_html:
+        updated_html = updated_html.replace(current_setup_filesystem, filesystem_patch, 1)
+        break
+
+updated_html = re.sub(
+    r'const skipIntroTarget\s*=\s*new URLSearchParams\(window\.location\.search\)\.get\("skipIntroTarget"\);.*?(?=var Module=\{)',
+    lambda _: filesystem_patch,
+    updated_html,
+    count=1,
+    flags=re.DOTALL,
 )
 
 updated_html = re.sub(

@@ -1366,6 +1366,31 @@ svg {
   outline-offset: 2px;
 }
 
+.game-route-control-button.is-exit svg {
+  transform: scaleX(-1);
+}
+
+.game-route-control-button.is-touch-toggle {
+  position: relative;
+  color: rgba(248, 242, 216, 0.94);
+}
+
+.game-route-control-button.is-touch-toggle svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.game-route-control-button.is-touch-toggle[data-mode="right"] {
+  border-color: rgba(246, 224, 138, 0.48);
+  color: #f6e08a;
+}
+
+.game-route-control-button.is-touch-toggle[data-mode="right"]:hover,
+.game-route-control-button.is-touch-toggle[data-mode="right"]:focus-visible {
+  border-color: rgba(246, 224, 138, 0.72);
+  color: #fff3b8;
+}
+
 .game-route-bottom-actions {
   position: fixed;
   right: min(max(0.75rem, env(safe-area-inset-right)), 1rem);
@@ -1417,60 +1442,6 @@ svg {
 }
 
 .game-route-skip-intro-button:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.8);
-  outline-offset: 2px;
-}
-
-.game-route-touch-toggle {
-  min-width: 8.5rem;
-  min-height: 2.75rem;
-  padding: 0.75rem 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgba(17, 19, 17, 0.96), rgba(7, 8, 7, 0.96)),
-    #0d0f0d;
-  color: rgba(248, 242, 216, 0.96);
-  box-shadow: 0 0.85rem 2.2rem rgba(0, 0, 0, 0.32);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  font:
-    700
-    0.88rem/1
-    "Trebuchet MS",
-    Verdana,
-    Tahoma,
-    sans-serif;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition:
-    transform 160ms ease,
-    box-shadow 160ms ease,
-    border-color 160ms ease,
-    color 160ms ease,
-    background-color 160ms ease;
-}
-
-.game-route-touch-toggle[data-mode="right"] {
-  border-color: rgba(246, 224, 138, 0.48);
-  color: #f6e08a;
-}
-
-.game-route-touch-toggle:hover,
-.game-route-touch-toggle:focus-visible {
-  border-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 1rem 2.4rem rgba(0, 0, 0, 0.38);
-  transform: translateY(-1px);
-}
-
-.game-route-touch-toggle[data-mode="right"]:hover,
-.game-route-touch-toggle[data-mode="right"]:focus-visible {
-  border-color: rgba(246, 224, 138, 0.72);
-  color: #fff3b8;
-}
-
-.game-route-touch-toggle:focus-visible {
   outline: 2px solid rgba(255, 255, 255, 0.8);
   outline-offset: 2px;
 }
@@ -1645,9 +1616,59 @@ svg {
   }
 
   .dashboard-nav {
+    position: fixed;
+    align-items: flex-start;
     min-height: 6rem;
+    padding-top: calc(max(0.45rem, env(safe-area-inset-top)) + 0.35rem);
+    padding-bottom: 0.85rem;
     background: rgba(17, 17, 17, 0.92);
     backdrop-filter: none;
+  }
+
+  .nav-cluster-left {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 0.55rem 0.9rem;
+    padding-right: 3rem;
+  }
+
+  .nav-brand-group {
+    width: auto;
+    min-width: 0;
+  }
+
+  .nav-brand-stack {
+    min-width: 0;
+  }
+
+  .nav-brand-tagline {
+    max-width: 16ch;
+    white-space: normal;
+  }
+
+  .nav-links {
+    width: auto;
+    gap: 0.9rem;
+    align-self: start;
+    padding-top: 0.12rem;
+  }
+
+  .nav-links a {
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+  }
+
+  .nav-actions {
+    position: absolute;
+    top: calc(max(0.45rem, env(safe-area-inset-top)) + 0.2rem);
+    right: 1rem;
+    width: auto;
+  }
+
+  .nav-icon-link {
+    width: 2.1rem;
+    height: 2.1rem;
   }
 
   .hero-stage {
@@ -1669,20 +1690,34 @@ svg {
 
   .hero-stage.tone-sky .hero-backdrop::after {
     background:
-      linear-gradient(180deg, rgba(7, 12, 10, 0.12), rgba(7, 12, 10, 0.48)),
-      linear-gradient(135deg, #10211a 0%, #15282d 100%);
+      linear-gradient(180deg, rgba(7, 12, 10, 0.18), rgba(7, 12, 10, 0.54)),
+      linear-gradient(
+        135deg,
+        rgba(16, 33, 26, 0.22) 0%,
+        rgba(21, 40, 45, 0.42) 55%,
+        rgba(21, 40, 45, 0.18) 100%
+      );
   }
 
   .hero-stage.tone-dreamweb .hero-backdrop::after {
     background:
-      linear-gradient(180deg, rgba(7, 12, 10, 0.12), rgba(7, 12, 10, 0.48)),
-      linear-gradient(135deg, #0f1e18 0%, #102827 42%, #0b1115 100%);
+      linear-gradient(180deg, rgba(7, 12, 10, 0.18), rgba(7, 12, 10, 0.58)),
+      linear-gradient(
+        135deg,
+        rgba(15, 30, 24, 0.28) 0%,
+        rgba(16, 40, 39, 0.48) 42%,
+        rgba(11, 17, 21, 0.3) 100%
+      );
   }
 
   .hero-stage.tone-default .hero-backdrop::after {
     background:
-      linear-gradient(180deg, rgba(7, 12, 10, 0.12), rgba(7, 12, 10, 0.48)),
-      linear-gradient(135deg, #121c15 0%, #0e1414 100%);
+      linear-gradient(180deg, rgba(7, 12, 10, 0.18), rgba(7, 12, 10, 0.54)),
+      linear-gradient(
+        135deg,
+        rgba(18, 28, 21, 0.22) 0%,
+        rgba(14, 20, 20, 0.4) 100%
+      );
   }
 
   .hero-copy {

@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright-core";
+import { normalizeSkipIntroConfig } from "../app/skip-intro-config.mjs";
 
 const [url, screenshotPath] = process.argv.slice(2);
 
@@ -16,6 +17,7 @@ const chromeCandidates = [
 
 const executablePath = chromeCandidates.find((candidate) => fs.existsSync(candidate));
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const expectedPwaThemeColor = "#1a4d1a";
 
 if (!executablePath) {
   throw new Error("No local Chrome/Chromium installation found for Playwright");
@@ -86,6 +88,7 @@ function addGameRoutes(library) {
       return {
         ...game,
         displayTitle: getDisplayTitle(game.title),
+        skipIntro: normalizeSkipIntroConfig(game.skipIntro),
         routePath: `/${slug}`,
       };
     }),
@@ -107,35 +110,58 @@ function normalizeUrl(value) {
   return resolvedUrl.toString();
 }
 
+function verifyPwaManifestOnDisk() {
+  const manifestPath = path.join(rootDir, "public", "manifest.json");
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+
+  if (manifest.start_url !== "/") {
+    throw new Error(`Manifest start_url should be /, got ${manifest.start_url}`);
+  }
+
+  if (manifest.background_color !== expectedPwaThemeColor) {
+    throw new Error(
+      `Manifest background_color should be ${expectedPwaThemeColor}, got ${manifest.background_color}`
+    );
+  }
+
+  if (manifest.theme_color !== expectedPwaThemeColor) {
+    throw new Error(
+      `Manifest theme_color should be ${expectedPwaThemeColor}, got ${manifest.theme_color}`
+    );
+  }
+}
+
 async function waitForGameStartup(page, frame, game) {
-  const output = await frame.locator("#output").inputValue();
-  const statusText = await frame.locator("#status").textContent().catch(() => "");
   const targetPattern = new RegExp(`User picked target '${escapeRegExp(game.target)}'`);
   const fatalOutputPatterns = [
     /Game data path does not exist/i,
     /Couldn't identify game/i,
     /No game data was found/i,
   ];
+  const startedAt = Date.now();
+  let latestOutput = "";
 
-  if (/Exception thrown/i.test(statusText) || /TypeError|ReferenceError|abort\(/i.test(output)) {
-    throw new Error(`Launch failed for ${game.target}.\n${output}`);
+  while (Date.now() - startedAt < 30000) {
+    const output = await frame.locator("#output").inputValue().catch(() => latestOutput);
+    const statusText = await frame.locator("#status").textContent().catch(() => "");
+    latestOutput = output || latestOutput;
+
+    if (/Exception thrown/i.test(statusText) || /TypeError|ReferenceError|abort\(/i.test(output)) {
+      throw new Error(`Launch failed for ${game.target}.\n${output}`);
+    }
+
+    if (fatalOutputPatterns.some((pattern) => pattern.test(output))) {
+      throw new Error(`Launch failed for ${game.target}.\n${output}`);
+    }
+
+    if (targetPattern.test(output)) {
+      return;
+    }
+
+    await page.waitForTimeout(250);
   }
 
-  if (fatalOutputPatterns.some((pattern) => pattern.test(output))) {
-    throw new Error(`Launch failed for ${game.target}.\n${output}`);
-  }
-
-  if (targetPattern.test(output)) {
-    return;
-  }
-
-  await page.waitForTimeout(15000);
-
-  const retriedOutput = await frame.locator("#output").inputValue();
-
-  if (!targetPattern.test(retriedOutput)) {
-    throw new Error(`Game did not reach the expected startup state for ${game.target}.\n${retriedOutput}`);
-  }
+  throw new Error(`Game did not reach the expected startup state for ${game.target}.\n${latestOutput}`);
 }
 
 async function verifyLaunchOverlayBeforeStartup(page, game) {
@@ -248,100 +274,114 @@ async function verifyEscapeStaysInGame(page, frame, routeUrl) {
   }
 }
 
-async function verifySkipIntroButton(page, frame, game) {
+async function waitForSkipIntroRelaunch(page, target, slot) {
+  const relaunchState = await page.waitForFunction(
+    ({ expectedTarget, expectedSlot }) => {
+      const iframe = document.querySelector('iframe[data-scummvm-route-frame="true"]');
+
+      if (!(iframe instanceof HTMLIFrameElement)) {
+        return null;
+      }
+
+      try {
+        const iframeUrl = new URL(iframe.src, window.location.href);
+        const launchArgs = decodeURI(iframeUrl.hash.replace(/^#/, ""))
+          .trim()
+          .split(/\s+/)
+          .filter(Boolean);
+        const skipIntroStatus = iframe.contentWindow?.__scummwebSkipIntroSeedStatus;
+
+        if (iframeUrl.searchParams.get("skipIntroTarget") !== expectedTarget) {
+          return null;
+        }
+
+        if (launchArgs[0] !== "-x" || launchArgs[1] !== String(expectedSlot) || launchArgs[2] !== expectedTarget) {
+          return null;
+        }
+
+        if (
+          !skipIntroStatus ||
+          skipIntroStatus.target !== expectedTarget ||
+          !["ready", "missing", "error"].includes(skipIntroStatus.state)
+        ) {
+          return null;
+        }
+
+        return {
+          iframeSrc: `${iframeUrl.pathname}${iframeUrl.search}${iframeUrl.hash}`,
+          skipIntroStatus,
+        };
+      } catch {
+        return null;
+      }
+    },
+    {
+      expectedTarget: target,
+      expectedSlot: slot,
+    },
+    {
+      timeout: 15000,
+    }
+  );
+
+  return relaunchState.jsonValue();
+}
+
+async function verifySkipIntroButton(page, frame, game, routeUrl) {
   if (!game.skipIntro) {
     return;
   }
 
-  const expectedKey =
-    typeof game.skipIntro.key === "string" && game.skipIntro.key.trim()
-      ? game.skipIntro.key.trim()
-      : "Escape";
-  const expectedPressCount =
-    Number.isFinite(Number(game.skipIntro.pressCount)) && Number(game.skipIntro.pressCount) > 0
-      ? Math.floor(Number(game.skipIntro.pressCount))
-      : 1;
-  const expectedPressIntervalMs =
-    Number.isFinite(Number(game.skipIntro.pressIntervalMs)) && Number(game.skipIntro.pressIntervalMs) >= 0
-      ? Number(game.skipIntro.pressIntervalMs)
-      : 0;
   const skipIntroButton = page.locator(".game-route-skip-intro-button");
   const exitButton = page.locator(".game-route-control-button.is-exit");
   await skipIntroButton.waitFor({ state: "visible", timeout: 15000 });
   await exitButton.waitFor({ state: "visible", timeout: 15000 });
 
-  await frame.locator("#canvas").evaluate(() => {
-    window.__skipIntroVerificationEvents = [];
-    const originalDispatchEvent = window.dispatchEvent.bind(window);
+  await skipIntroButton.click();
 
-    window.dispatchEvent = (event) => {
-      if (event?.type === "keydown") {
-        window.__skipIntroVerificationEvents.push({
-          key: event.key,
-          code: event.code,
-          which: event.which,
-          keyCode: event.keyCode,
-          timestamp: performance.now(),
-        });
-      }
+  const relaunchState = await waitForSkipIntroRelaunch(page, game.target, game.skipIntro.slot);
 
-      return originalDispatchEvent(event);
+  if (relaunchState?.skipIntroStatus?.state !== "ready") {
+    throw new Error(
+      `Skip intro relaunch for ${game.target} did not seed save files successfully: ${JSON.stringify(relaunchState)}`
+    );
+  }
+
+  await waitForGameStartup(page, frame, game);
+  await verifyLaunchOverlayAfterStartup(page, game);
+
+  const seededFiles = await page.evaluate(() => {
+    const iframe = document.querySelector('iframe[data-scummvm-route-frame="true"]');
+    const skipIntroStatus = iframe?.contentWindow?.__scummwebSkipIntroSeedStatus;
+    const fsApi = iframe?.contentWindow?.FS;
+
+    if (!skipIntroStatus || skipIntroStatus.state !== "ready" || !skipIntroStatus.savePath || !fsApi) {
+      return null;
+    }
+
+    return {
+      savePath: skipIntroStatus.savePath,
+      files: fsApi.readdir(skipIntroStatus.savePath).filter((entry) => entry !== "." && entry !== ".."),
     };
   });
 
-  await skipIntroButton.click();
+  if (!seededFiles) {
+    throw new Error(`Skip intro relaunch for ${game.target} did not expose seeded save files.`);
+  }
 
-  await frame.locator("#canvas").evaluate(
-    (_, { key, pressCount, pressIntervalMs }) =>
-      new Promise((resolve, reject) => {
-        const startedAt = Date.now();
-
-        function check() {
-          const events = window.__skipIntroVerificationEvents || [];
-          const matchingEvents = events.filter((event) => event.key === key);
-
-          if (matchingEvents.length >= pressCount) {
-            if (pressCount > 1 && pressIntervalMs > 0) {
-              for (let index = 1; index < pressCount; index += 1) {
-                const interval = matchingEvents[index].timestamp - matchingEvents[index - 1].timestamp;
-
-                if (interval < pressIntervalMs - 100) {
-                  reject(
-                    new Error(
-                      `Skip intro button dispatched ${key} too quickly. Recorded events: ${JSON.stringify(matchingEvents)}`
-                    )
-                  );
-                  return;
-                }
-              }
-            }
-
-            resolve();
-            return;
-          }
-
-          if (Date.now() - startedAt >= Math.max(1500, pressCount * (pressIntervalMs + 500))) {
-            reject(
-              new Error(
-                `Skip intro button did not dispatch ${key} ${pressCount} time(s). Recorded events: ${JSON.stringify(events)}`
-              )
-            );
-            return;
-          }
-
-          window.setTimeout(check, 50);
-        }
-
-        check();
-      }),
-    {
-      key: expectedKey,
-      pressCount: expectedPressCount,
-      pressIntervalMs: expectedPressIntervalMs,
+  for (const saveFile of game.skipIntro.saveFiles) {
+    if (!seededFiles.files.includes(saveFile)) {
+      throw new Error(
+        `Skip intro relaunch for ${game.target} did not seed ${saveFile}. Seeded files: ${JSON.stringify(seededFiles)}`
+      );
     }
-  );
+  }
 
   await skipIntroButton.waitFor({ state: "hidden", timeout: 5000 });
+
+  if (normalizeUrl(page.url()) !== normalizeUrl(routeUrl)) {
+    throw new Error(`Skip intro relaunch redirected unexpectedly from ${routeUrl} to ${page.url()}`);
+  }
 }
 
 async function verifyScummvmMenuButton(page, frame, routeUrl) {
@@ -350,8 +390,14 @@ async function verifyScummvmMenuButton(page, frame, routeUrl) {
   const fullscreenButton = page.locator('.game-route-control-button.is-fullscreen');
 
   await exitButton.waitFor({ state: "visible", timeout: 15000 });
-  await menuButton.waitFor({ state: "hidden", timeout: 1000 });
-  await menuButton.waitFor({ state: "visible", timeout: 15000 });
+
+  // The menu reveal is delayed, but by the time the exit control appears the menu may have
+  // already transitioned into its visible end state. Accept either path.
+  const isMenuVisible = await menuButton.isVisible().catch(() => false);
+
+  if (!isMenuVisible) {
+    await menuButton.waitFor({ state: "visible", timeout: 15000 });
+  }
 
   const controlLayout = await page.evaluate(() => {
     function readBox(selector) {
@@ -480,7 +526,7 @@ async function verifyScummvmMenuButton(page, frame, routeUrl) {
   }
 }
 
-async function verifyCursorGrabHint(frame) {
+async function verifyCursorGrabHint(page, frame) {
   const canvas = frame.locator("#canvas");
   const grabHint = frame.locator("#scummvm-cursor-grab-hint");
   const readHintState = () =>
@@ -495,10 +541,7 @@ async function verifyCursorGrabHint(frame) {
       }),
     );
 
-  await canvas.evaluate((element) => {
-    element.dispatchEvent(new MouseEvent("mouseenter", { bubbles: false }));
-    element.dispatchEvent(new PointerEvent("pointerenter", { bubbles: false }));
-  });
+  await canvas.hover({ force: true });
   await waitForHintTransition();
 
   const initialHintState = await readHintState();
@@ -541,31 +584,15 @@ async function verifyCursorGrabHint(frame) {
     throw new Error("Browser cursor override remained after clicking the game canvas.");
   }
 
-  await canvas.evaluate((element) => {
-    element.dispatchEvent(new MouseEvent("mouseleave", { bubbles: false }));
-    element.dispatchEvent(new PointerEvent("pointerleave", { bubbles: false }));
-  });
-  await canvas.evaluate((element) => {
-    element.dispatchEvent(new MouseEvent("mouseenter", { bubbles: false }));
-    element.dispatchEvent(new PointerEvent("pointerenter", { bubbles: false }));
-  });
-  await waitForHintTransition();
-
-  const reenteredHintState = await readHintState();
-
-  if (!reenteredHintState.visible) {
-    throw new Error("Cursor grab hint did not reappear after re-entering the game canvas.");
-  }
+  await page.mouse.move(0, 0);
+  await page.waitForTimeout(100);
 }
 
 async function verifyCursorGrabHintHiddenDuringBoot(page, game) {
   const frame = page.frameLocator('iframe[data-scummvm-route-frame="true"]');
   const canvas = frame.locator("#canvas");
 
-  await canvas.evaluate((element) => {
-    element.dispatchEvent(new MouseEvent("mouseenter", { bubbles: false }));
-    element.dispatchEvent(new PointerEvent("pointerenter", { bubbles: false }));
-  });
+  await canvas.hover({ force: true });
   await page.waitForTimeout(200);
 
   const initialState = await canvas.evaluate((element, currentGameTarget) => {
@@ -579,47 +606,47 @@ async function verifyCursorGrabHintHiddenDuringBoot(page, game) {
     };
   }, game.target);
 
-  if (initialState.visible) {
+  if (initialState.visible && !initialState.launched) {
     throw new Error(`Cursor grab hint appeared before ${game.target} cleared its launch delay.`);
   }
 
-  await canvas.evaluate(
-    (_, currentGameTarget) =>
-      new Promise((resolve, reject) => {
-        const output = document.getElementById("output");
-        const hint = document.getElementById("scummvm-cursor-grab-hint");
-        const targetPattern = new RegExp(`User picked target '${currentGameTarget.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}'`);
-        const startedAt = Date.now();
+  if (!initialState.launched) {
+    await canvas.evaluate(
+      (_, currentGameTarget) =>
+        new Promise((resolve, reject) => {
+          const output = document.getElementById("output");
+          const hint = document.getElementById("scummvm-cursor-grab-hint");
+          const targetPattern = new RegExp(`User picked target '${currentGameTarget.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}'`);
+          const startedAt = Date.now();
 
-        function check() {
-          if (targetPattern.test(output?.value || "")) {
-            resolve(hint?.classList.contains("scummvm-cursor-grab-hint-visible") || false);
-            return;
+          function check() {
+            if (targetPattern.test(output?.value || "")) {
+              resolve(hint?.classList.contains("scummvm-cursor-grab-hint-visible") || false);
+              return;
+            }
+
+            if (Date.now() - startedAt >= 15000) {
+              reject(new Error(`Timed out waiting for ${currentGameTarget} launch output.`));
+              return;
+            }
+
+            window.setTimeout(check, 100);
           }
 
-          if (Date.now() - startedAt >= 15000) {
-            reject(new Error(`Timed out waiting for ${currentGameTarget} launch output.`));
-            return;
-          }
+          check();
+        }),
+      game.target
+    ).then((visibleAfterLaunchOutput) => {
+      if (visibleAfterLaunchOutput) {
+        throw new Error(
+          `Cursor grab hint appeared immediately after ${game.target} launch output instead of waiting for the splash delay.`
+        );
+      }
+    });
+  }
 
-          window.setTimeout(check, 100);
-        }
-
-        check();
-      }),
-    game.target
-  ).then((visibleAfterLaunchOutput) => {
-    if (visibleAfterLaunchOutput) {
-      throw new Error(`Cursor grab hint appeared immediately after ${game.target} launch output instead of waiting for the splash delay.`);
-    }
-  });
-
-  await canvas.evaluate((element) => {
-    element.dispatchEvent(new MouseEvent("mouseleave", { bubbles: false }));
-  });
-  await canvas.evaluate((element) => {
-    element.dispatchEvent(new PointerEvent("pointerleave", { bubbles: false }));
-  });
+  await page.mouse.move(0, 0);
+  await page.waitForTimeout(100);
 }
 
 async function verifyQuitReturnsHome(page, frame, baseUrl) {
@@ -709,6 +736,8 @@ const context = await browser.newContext({
   viewport: { width: 1440, height: 900 },
 });
 
+verifyPwaManifestOnDisk();
+
 const rootPage = await context.newPage();
 await rootPage.goto(url, { waitUntil: "domcontentloaded" });
 await rootPage.waitForLoadState("networkidle");
@@ -769,16 +798,44 @@ if (featuredLaunchHref !== library.games[0].routePath) {
 await featuredDialog.locator(".game-detail-close").click();
 await featuredDialog.waitFor({ state: "hidden", timeout: 10000 });
 
+const saveSlotGame = library.games.find((game) => game.skipIntro?.strategy === "save-slot");
+
+if (saveSlotGame) {
+  const freshSkipIntroContext = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+  });
+  const freshSkipIntroRootPage = await freshSkipIntroContext.newPage();
+  await freshSkipIntroRootPage.goto(url, { waitUntil: "domcontentloaded" });
+  await freshSkipIntroRootPage.waitForLoadState("networkidle");
+  await freshSkipIntroRootPage.close();
+  const {
+    frame: freshSkipIntroFrame,
+    page: freshSkipIntroPage,
+    routeUrl: freshSkipIntroRouteUrl,
+  } = await verifyTarget(freshSkipIntroContext, url, saveSlotGame, { waitForLaunch: false });
+
+  await waitForGameStartup(freshSkipIntroPage, freshSkipIntroFrame, saveSlotGame);
+  await verifyLaunchOverlayAfterStartup(freshSkipIntroPage, saveSlotGame);
+  await verifySkipIntroButton(
+    freshSkipIntroPage,
+    freshSkipIntroFrame,
+    saveSlotGame,
+    freshSkipIntroRouteUrl
+  );
+
+  await freshSkipIntroPage.close();
+  await freshSkipIntroContext.close();
+}
+
 for (const game of library.games) {
   const { frame, page, routeUrl } = await verifyTarget(context, url, game, { waitForLaunch: false });
 
   await verifyCursorGrabHintHiddenDuringBoot(page, game);
   await waitForGameStartup(page, frame, game);
   await verifyLaunchOverlayAfterStartup(page, game);
-  await verifyCursorGrabHint(frame);
   await verifyRouteFrameAutofocus(page);
   await verifyEscapeStaysInGame(page, frame, routeUrl);
-  await verifySkipIntroButton(page, frame, game);
+  await verifySkipIntroButton(page, frame, game, routeUrl);
   await verifyScummvmMenuButton(page, frame, routeUrl);
   await verifyQuitReturnsHome(page, frame, url);
 

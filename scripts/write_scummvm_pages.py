@@ -365,7 +365,9 @@ manifest["icons"] = [
 manifest["short_name"] = "scummweb"
 manifest["name"] = "scummweb"
 manifest["description"] = "Unofficial browser-targeted WebAssembly build forked from ScummVM."
-manifest["start_url"] = bundle_href("scummvm.html")
+manifest["start_url"] = "/"
+manifest["background_color"] = "#1a4d1a"
+manifest["theme_color"] = "#1a4d1a"
 
 (dist / "manifest.json").write_text(json.dumps(manifest, indent=4) + "\n")
 (dist / "source.html").write_text(source_html)

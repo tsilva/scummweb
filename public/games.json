@@ -11,9 +11,12 @@
       "extra": "",
       "readmeHref": "https://scummvm-games.tsilva.eu/drascula/readme.txt",
       "skipIntro": {
+        "strategy": "save-slot",
         "durationMinutes": 2,
-        "key": "Escape",
-        "pressCount": 1
+        "slot": 0,
+        "saveFiles": [
+          "drascula.000"
+        ]
       }
     },
     {
@@ -26,10 +29,12 @@
       "extra": "CD",
       "readmeHref": "",
       "skipIntro": {
+        "strategy": "save-slot",
         "durationMinutes": 2,
-        "key": "Escape",
-        "pressCount": 3,
-        "pressIntervalMs": 500
+        "slot": 0,
+        "saveFiles": [
+          "DREAMWEB.D00"
+        ]
       }
     },
     {
@@ -42,9 +47,12 @@
       "extra": "VGA",
       "readmeHref": "https://scummvm-games.tsilva.eu/lure/README",
       "skipIntro": {
+        "strategy": "save-slot",
         "durationMinutes": 2,
-        "key": "Escape",
-        "pressCount": 1
+        "slot": 0,
+        "saveFiles": [
+          "lure.000"
+        ]
       }
     },
     {
@@ -67,10 +75,12 @@
       "extra": "CD",
       "readmeHref": "https://scummvm-games.tsilva.eu/queen/readme.txt",
       "skipIntro": {
+        "strategy": "save-slot",
         "durationMinutes": 2,
-        "key": "Escape",
-        "pressCount": 5,
-        "pressIntervalMs": 1000
+        "slot": 0,
+        "saveFiles": [
+          "queen.s00"
+        ]
       }
     },
     {
@@ -83,8 +93,12 @@
       "extra": "v0.0372 CD",
       "readmeHref": "https://scummvm-games.tsilva.eu/sky/readme.txt",
       "skipIntro": {
+        "strategy": "save-slot",
         "durationMinutes": 2,
-        "key": "Escape"
+        "slot": 0,
+        "saveFiles": [
+          "SKY-VM.000"
+        ]
       }
     },
     {

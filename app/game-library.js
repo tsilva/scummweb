@@ -1,5 +1,6 @@
 import gameLibraryData from "../public/games.json";
 import sourceInfoData from "../public/source-info.json";
+import { normalizeSkipIntroConfig } from "./skip-intro-config.mjs";
 export {
   buildVersionedAssetPath as buildVersionedSiteAssetPath,
   getVersionedScummvmAssetPath,
@@ -9,36 +10,6 @@ export {
 
 export function getDisplayTitle(title) {
   return title.replace(/\s+\([^)]*\)$/, "");
-}
-
-function normalizeSkipIntroConfig(skipIntro) {
-  if (!skipIntro || typeof skipIntro !== "object") {
-    return null;
-  }
-
-  const durationMinutes = Number(skipIntro.durationMinutes);
-
-  if (!Number.isFinite(durationMinutes) || durationMinutes <= 0) {
-    return null;
-  }
-
-  const key =
-    typeof skipIntro.key === "string" && skipIntro.key.trim() ? skipIntro.key.trim() : "Escape";
-  const parsedPressCount = Number(skipIntro.pressCount);
-  const pressCount =
-    Number.isFinite(parsedPressCount) && parsedPressCount > 0 ? Math.floor(parsedPressCount) : 1;
-  const parsedPressIntervalMs = Number(skipIntro.pressIntervalMs);
-  const pressIntervalMs =
-    Number.isFinite(parsedPressIntervalMs) && parsedPressIntervalMs >= 0
-      ? parsedPressIntervalMs
-      : 0;
-
-  return {
-    durationMinutes,
-    key,
-    pressCount,
-    pressIntervalMs,
-  };
 }
 
 function slugifySegment(value) {

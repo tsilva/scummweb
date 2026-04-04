@@ -119,6 +119,21 @@ function getExitHrefFromSrc(src) {
   }
 }
 
+function buildSkipIntroSaveSlotSrc(src, target, slot) {
+  if (typeof window === "undefined") {
+    return src;
+  }
+
+  try {
+    const resolvedUrl = new URL(src, window.location.href);
+    resolvedUrl.searchParams.set("skipIntroTarget", target);
+    resolvedUrl.hash = ["-x", String(slot), target].join(" ");
+    return `${resolvedUrl.pathname}${resolvedUrl.search}${resolvedUrl.hash}`;
+  } catch {
+    return src;
+  }
+}
+
 function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
@@ -212,9 +227,42 @@ function normalizeTouchClickMode(value) {
   return value === "right" ? "right" : "left";
 }
 
+function TouchClickModeIcon({ mode }) {
+  const isRightMode = mode === "right";
+
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24">
+      <path
+        d="M12 3.5c3.59 0 6.5 2.91 6.5 6.5v4.2c0 3.76-2.91 6.8-6.5 6.8s-6.5-3.04-6.5-6.8V10c0-3.59 2.91-6.5 6.5-6.5Z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.7"
+      />
+      <path
+        d="M12 4.2v6.15"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="1.4"
+      />
+      <path
+        d="M7.2 9.55c.22-2.27 2.14-4.05 4.48-4.05h.32v5.2H7.2v-1.15Z"
+        fill={isRightMode ? "none" : "currentColor"}
+        fillOpacity={isRightMode ? undefined : "0.92"}
+      />
+      <path
+        d="M12 5.5h.32c2.34 0 4.26 1.78 4.48 4.05v1.15H12V5.5Z"
+        fill={isRightMode ? "currentColor" : "none"}
+        fillOpacity={isRightMode ? "0.92" : undefined}
+      />
+    </svg>
+  );
+}
+
 export default function GameRouteFrame({ game = null, src, target, title, skipIntro = null }) {
   const shellRef = useRef(null);
   const frameRef = useRef(null);
+  const [frameSrc, setFrameSrc] = useState(src);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [canFullscreen, setCanFullscreen] = useState(false);
   const [exitHref, setExitHref] = useState("/");
@@ -228,7 +276,9 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
   const [bootProgressValue, setBootProgressValue] = useState(null);
   const [bootProgressMax, setBootProgressMax] = useState(null);
   const [hasBootCompleted, setHasBootCompleted] = useState(false);
+  const [hasBootPresentationCompleted, setHasBootPresentationCompleted] = useState(false);
   const [hasBootFailed, setHasBootFailed] = useState(false);
+  const [skipIntroConsumed, setSkipIntroConsumed] = useState(false);
   const [touchClickMode, setTouchClickMode] = useState(() => {
     if (typeof window === "undefined") {
       return "left";
@@ -287,18 +337,24 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
   }, []);
 
   useEffect(() => {
-    setExitHref(getExitHrefFromSrc(src));
+    setFrameSrc(src);
+    setSkipIntroConsumed(false);
   }, [src]);
+
+  useEffect(() => {
+    setExitHref(getExitHrefFromSrc(frameSrc));
+  }, [frameSrc]);
 
   useEffect(() => {
     recordRecentGameTarget(target);
   }, [target]);
 
   useEffect(() => {
+    setHasBootPresentationCompleted(false);
     setShowScummvmMenuButton(false);
     setShowSkipIntroButton(false);
-    setTouchControlsUnlocked(!skipIntro);
-  }, [skipIntro, src]);
+    setTouchControlsUnlocked(!skipIntro || skipIntroConsumed);
+  }, [frameSrc, skipIntro, skipIntroConsumed]);
 
   useEffect(() => {
     try {
@@ -321,10 +377,11 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     return () => {
       iframe.removeEventListener("load", syncMode);
     };
-  }, [src, touchClickMode]);
+  }, [frameSrc, touchClickMode]);
 
   useEffect(() => {
     if (!hasBootCompleted || hasBootFailed) {
+      setHasBootPresentationCompleted(false);
       setShowScummvmMenuButton(false);
       return;
     }
@@ -332,16 +389,17 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     // The ScummVM splash is rendered inside the canvas after the boot overlay clears,
     // so keep the menu hidden briefly until the game itself is on screen.
     const revealTimer = window.setTimeout(() => {
+      setHasBootPresentationCompleted(true);
       setShowScummvmMenuButton(true);
     }, SCUMMVM_MENU_REVEAL_DELAY_MS);
 
     return () => {
       window.clearTimeout(revealTimer);
     };
-  }, [hasBootCompleted, hasBootFailed, src]);
+  }, [frameSrc, hasBootCompleted, hasBootFailed]);
 
   useEffect(() => {
-    if (!skipIntro || !hasBootCompleted || hasBootFailed) {
+    if (!skipIntro || skipIntroConsumed || !hasBootCompleted || hasBootFailed) {
       return;
     }
 
@@ -354,7 +412,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     return () => {
       window.clearTimeout(revealTimer);
     };
-  }, [hasBootCompleted, hasBootFailed, skipIntro, src]);
+  }, [frameSrc, hasBootCompleted, hasBootFailed, skipIntro, skipIntroConsumed]);
 
   useEffect(() => {
     const targetPattern = new RegExp(`User picked target '${escapeRegExp(target)}'`);
@@ -434,7 +492,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
         window.clearTimeout(pollTimer);
       }
     };
-  }, [src, target]);
+  }, [frameSrc, target]);
 
   useEffect(() => {
     function syncViewportState() {
@@ -530,7 +588,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
         window.clearTimeout(focusTimer);
       }
     };
-  }, [src]);
+  }, [frameSrc]);
 
   useEffect(() => {
     if (!skipIntro || !showSkipIntroButton) {
@@ -544,7 +602,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [showSkipIntroButton, skipIntro, src]);
+  }, [frameSrc, showSkipIntroButton, skipIntro]);
 
   useEffect(() => {
     if (!skipIntro || !showSkipIntroButton) {
@@ -588,7 +646,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
       iframe?.removeEventListener("load", addFrameListeners);
       removeFrameListeners();
     };
-  }, [showSkipIntroButton, skipIntro, src]);
+  }, [frameSrc, showSkipIntroButton, skipIntro]);
 
   useEffect(() => {
     function syncFullscreenState() {
@@ -910,12 +968,23 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     return true;
   }
 
-  async function dispatchSyntheticKeypressSequence(skipIntroConfig) {
-    const pressCount = Math.max(1, skipIntroConfig?.pressCount || 1);
-    const pressIntervalMs = Math.max(0, skipIntroConfig?.pressIntervalMs || 0);
+  function handleSkipIntroClick() {
+    dismissSkipIntroButton();
+
+    if (!skipIntro) {
+      return;
+    }
+
+    setSkipIntroConsumed(true);
+    setFrameSrc((currentSrc) => buildSkipIntroSaveSlotSrc(currentSrc, target, skipIntro.slot));
+  }
+
+  async function dispatchSyntheticKeypressSequence(keypressConfig) {
+    const pressCount = Math.max(1, keypressConfig?.pressCount || 1);
+    const pressIntervalMs = Math.max(0, keypressConfig?.pressIntervalMs || 0);
 
     for (let pressIndex = 0; pressIndex < pressCount; pressIndex += 1) {
-      const dispatched = dispatchSyntheticKeypress(skipIntroConfig);
+      const dispatched = dispatchSyntheticKeypress(keypressConfig);
 
       if (!dispatched) {
         return;
@@ -927,16 +996,6 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
         });
       }
     }
-  }
-
-  function handleSkipIntroClick() {
-    dismissSkipIntroButton();
-
-    if (!skipIntro) {
-      return;
-    }
-
-    void dispatchSyntheticKeypressSequence(skipIntro);
   }
 
   function handleTouchClickToggle() {
@@ -969,22 +1028,28 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
   const bootProgressPercent = showBootProgress
     ? Math.max(0, Math.min(100, Math.round((bootProgressValue / bootProgressMax) * 100)))
     : null;
-  const showMobileOverlay = isMobileViewport && (needsImmersiveRetry || !isLandscapeViewport);
+  const showMobileOverlay =
+    hasBootPresentationCompleted &&
+    isMobileViewport &&
+    (needsImmersiveRetry || !isLandscapeViewport);
   const mobileOverlayTitle = needsImmersiveRetry ? "Tap to continue" : "Rotate to landscape";
   const mobileOverlayBody = needsImmersiveRetry
     ? "Your browser needs one tap before scummweb can enter fullscreen on mobile."
     : "scummweb plays in landscape on mobile. Rotate your device to keep the game visible.";
   const showSkipIntroAction = showSkipIntroButton && skipIntro && hasBootCompleted && !hasBootFailed;
-  const showExitControl = !skipIntro || hasBootFailed || showSkipIntroAction || touchControlsUnlocked;
+  const showExitControl =
+    !skipIntro || hasBootFailed || showSkipIntroAction || touchControlsUnlocked || skipIntroConsumed;
   const showTouchClickToggle =
     isMobileViewport &&
     hasBootCompleted &&
     !hasBootFailed &&
     !showMobileOverlay &&
     touchControlsUnlocked;
-  const showBottomActions = showSkipIntroAction || showTouchClickToggle;
+  const showBottomActions = showSkipIntroAction;
   const touchClickToggleLabel =
-    touchClickMode === "right" ? "Tap sends right click" : "Tap sends left click";
+    touchClickMode === "right"
+      ? "Touch click mode: right click. Tap to switch to left click."
+      : "Touch click mode: left click. Tap to switch to right click.";
 
   return (
     <div className="game-route-shell" ref={shellRef}>
@@ -1091,6 +1156,20 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
               <Menu aria-hidden="true" size={18} strokeWidth={2} />
             </button>
           ) : null}
+          {showTouchClickToggle ? (
+            <button
+              aria-label={touchClickToggleLabel}
+              aria-pressed={touchClickMode === "right"}
+              className="game-route-control-button is-touch-toggle"
+              data-mode={touchClickMode}
+              onClick={handleTouchClickToggle}
+              onMouseDown={handleControlMouseDown}
+              title={touchClickToggleLabel}
+              type="button"
+            >
+              <TouchClickModeIcon mode={touchClickMode} />
+            </button>
+          ) : null}
           {canFullscreen ? (
             <button
               aria-label={fullscreenLabel}
@@ -1116,19 +1195,6 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
               Skip intro
             </button>
           ) : null}
-          {showTouchClickToggle ? (
-            <button
-              aria-label={touchClickToggleLabel}
-              aria-pressed={touchClickMode === "right"}
-              className="game-route-touch-toggle"
-              data-mode={touchClickMode}
-              onClick={handleTouchClickToggle}
-              title={touchClickToggleLabel}
-              type="button"
-            >
-              {touchClickMode === "right" ? "Right click" : "Left click"}
-            </button>
-          ) : null}
         </div>
       ) : null}
       <iframe
@@ -1138,7 +1204,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
         data-scummvm-target={target}
         ref={frameRef}
         loading="eager"
-        src={src}
+        src={frameSrc}
         title={title}
       />
     </div>

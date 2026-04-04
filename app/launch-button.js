@@ -1,4 +1,4 @@
-export default function LaunchButton({ href, label = "Launch ScummVM", className = "" }) {
+export default function LaunchButton({ href, label = "Play", className = "" }) {
   const classes = ["launch-button", className].filter(Boolean).join(" ");
 
   return (

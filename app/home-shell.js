@@ -188,7 +188,7 @@ export default function HomeShell({
               <p className="hero-summary">{featuredGame.summary}</p>
 
               <div className="hero-actions">
-                <LaunchButton href={featuredGame.href} label="Start Adventure" />
+                <LaunchButton href={featuredGame.href} label="Play" />
                 <a className="secondary-button" href={`#${featuredDialogId}`}>
                   <Icon name="info" />
                   <span>More Info</span>
@@ -309,7 +309,7 @@ export default function HomeShell({
                   <p className="game-detail-summary">{game.summary}</p>
 
                   <div className="game-detail-actions">
-                    <LaunchButton href={game.href} label="Launch Game" />
+                    <LaunchButton href={game.href} label="Play" />
                   </div>
                 </div>
               </div>

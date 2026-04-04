@@ -2,38 +2,52 @@
   "byTarget": {
     "drascula": {
       "skipIntro": {
+        "strategy": "save-slot",
         "durationMinutes": 2,
-        "key": "Escape",
-        "pressCount": 1
+        "slot": 0,
+        "saveFiles": [
+          "drascula.000"
+        ]
       }
     },
     "dreamweb-cd": {
       "skipIntro": {
+        "strategy": "save-slot",
         "durationMinutes": 2,
-        "key": "Escape",
-        "pressCount": 3,
-        "pressIntervalMs": 500
+        "slot": 0,
+        "saveFiles": [
+          "DREAMWEB.D00"
+        ]
       }
     },
     "lure": {
       "skipIntro": {
+        "strategy": "save-slot",
         "durationMinutes": 2,
-        "key": "Escape",
-        "pressCount": 1
+        "slot": 0,
+        "saveFiles": [
+          "lure.000"
+        ]
       }
     },
     "queen": {
       "skipIntro": {
+        "strategy": "save-slot",
         "durationMinutes": 2,
-        "key": "Escape",
-        "pressCount": 5,
-        "pressIntervalMs": 1000
+        "slot": 0,
+        "saveFiles": [
+          "queen.s00"
+        ]
       }
     },
     "sky": {
       "skipIntro": {
+        "strategy": "save-slot",
         "durationMinutes": 2,
-        "key": "Escape"
+        "slot": 0,
+        "saveFiles": [
+          "SKY-VM.000"
+        ]
       }
     }
   }

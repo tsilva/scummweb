@@ -13,10 +13,10 @@
             "sizes": "512x512"
         }
     ],
-    "start_url": "scummvm.html?v=dev",
-    "background_color": "#3367D6",
+    "start_url": "/",
+    "background_color": "#1a4d1a",
     "display": "fullscreen",
-    "theme_color": "#c60",
+    "theme_color": "#1a4d1a",
     "shortcuts": [],
     "description": "Unofficial browser-targeted WebAssembly build forked from ScummVM.",
     "screenshots": []
