@@ -1,4 +1,4 @@
-import { ImageResponse } from "next/server";
+import { ImageResponse } from "next/og";
 import { getPresentedGameBySlug } from "../game-page-data";
 import { getSiteUrl } from "../site-config";
 

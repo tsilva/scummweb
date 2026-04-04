@@ -133,7 +133,7 @@ export default function HomeShell({
           <div className="nav-cluster nav-cluster-left">
             <div className="nav-brand-group">
               <div className="nav-brand-stack">
-                <a className="nav-brand" href="#browse" aria-label="scummweb">
+                <a className="nav-brand" href="#browse" aria-label="ScummWEB">
                   <img
                     alt=""
                     aria-hidden="true"
@@ -326,9 +326,6 @@ export default function HomeShell({
 
                   <div className="game-detail-actions">
                     <LaunchButton href={game.playHref} label="Play" />
-                    <a className="secondary-button" href={game.href}>
-                      <span>Game Page</span>
-                    </a>
                     <a
                       className="secondary-button"
                       href={game.infoHref}
