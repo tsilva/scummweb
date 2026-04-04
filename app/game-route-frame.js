@@ -1042,6 +1042,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
   const showSkipIntroAction = showSkipIntroButton && skipIntro && hasBootCompleted && !hasBootFailed;
   const showExitControl =
     !skipIntro || hasBootFailed || showSkipIntroAction || touchControlsUnlocked || skipIntroConsumed;
+  const showFullscreenControl = canFullscreen && hasBootPresentationCompleted;
   const showTouchClickToggle =
     isMobileViewport &&
     hasBootCompleted &&
@@ -1161,7 +1162,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
               >
                 <TouchClickModeIcon mode={touchClickMode} />
               </button>
-              {canFullscreen ? (
+              {showFullscreenControl ? (
                 <button
                   aria-label={fullscreenLabel}
                   className="game-route-control-button is-fullscreen"
@@ -1188,7 +1189,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
             </>
           ) : (
             <>
-              {canFullscreen ? (
+              {showFullscreenControl ? (
                 <button
                   aria-label={fullscreenLabel}
                   className="game-route-control-button is-fullscreen"
