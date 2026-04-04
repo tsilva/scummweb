@@ -9,8 +9,19 @@ function getScummvmAssetVersion() {
   return rawVersion.replace(/[^a-zA-Z0-9._-]+/g, "-");
 }
 
+function getDistDir() {
+  if (process.env.NODE_ENV !== "development") {
+    return ".next";
+  }
+
+  // Keep dev servers isolated so another local build or dev session cannot delete
+  // the active server's runtime chunks.
+  return `.next-dev-${process.pid}`;
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  distDir: getDistDir(),
   env: {
     NEXT_PUBLIC_SCUMMVM_ASSET_VERSION: getScummvmAssetVersion(),
   },

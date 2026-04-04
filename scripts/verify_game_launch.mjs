@@ -452,8 +452,8 @@ async function verifyScummvmMenuButton(page, frame, routeUrl) {
       throw new Error(`Missing fullscreen control layout box: ${JSON.stringify(controlLayout)}`);
     }
 
-    if (controlLayout.menu.right > fullscreenBox.left) {
-      throw new Error(`ScummVM menu button is not placed next to fullscreen: ${JSON.stringify(controlLayout)}`);
+    if (fullscreenBox.right > controlLayout.menu.left) {
+      throw new Error(`Fullscreen button is not placed next to the ScummVM menu button: ${JSON.stringify(controlLayout)}`);
     }
   }
 
@@ -727,6 +727,127 @@ guioptions=gameOption1 lang_English
   await page.close();
 }
 
+async function verifyMobileTouchClickToggle(browser, baseUrl, game) {
+  const mobileContext = await browser.newContext({
+    viewport: { width: 932, height: 430 },
+    screen: { width: 932, height: 430 },
+    hasTouch: true,
+    isMobile: true,
+  });
+
+  try {
+    const {
+      frame,
+      page,
+      routeUrl,
+    } = await verifyTarget(mobileContext, baseUrl, game, { waitForLaunch: false });
+
+    await waitForGameStartup(page, frame, game);
+    await verifyLaunchOverlayAfterStartup(page, game);
+
+    const continueButton = page.locator(".game-route-mobile-button");
+    const continueVisible = await continueButton.isVisible().catch(() => false);
+
+    if (continueVisible) {
+      await continueButton.tap();
+      await continueButton.waitFor({ state: "hidden", timeout: 5000 }).catch(() => {});
+    }
+
+    const touchToggle = page.locator(".game-route-control-button.is-touch-toggle");
+    await touchToggle.waitFor({ state: "visible", timeout: 15000 });
+
+    const initialMode = await touchToggle.getAttribute("data-mode");
+
+    if (initialMode !== "left") {
+      throw new Error(`Expected mobile touch toggle to start in left-click mode, got ${initialMode}.`);
+    }
+
+    await frame.locator("#canvas").evaluate((canvas) => {
+      window.__touchClickVerificationEvents = [];
+      const record = (label) => (event) => {
+        window.__touchClickVerificationEvents.push({
+          label,
+          type: event.type,
+          button: typeof event.button === "number" ? event.button : null,
+          buttons: typeof event.buttons === "number" ? event.buttons : null,
+          touches: "touches" in event ? event.touches.length : null,
+          changedTouches: "changedTouches" in event ? event.changedTouches.length : null,
+        });
+      };
+
+      for (const eventName of [
+        "touchstart",
+        "touchmove",
+        "touchend",
+        "touchcancel",
+        "pointerdown",
+        "pointerup",
+        "mousedown",
+        "mouseup",
+        "click",
+        "contextmenu",
+      ]) {
+        canvas.addEventListener(eventName, record("capture"), true);
+        canvas.addEventListener(eventName, record("bubble"));
+      }
+    });
+
+    await touchToggle.tap();
+
+    await page.waitForFunction(() => {
+      const button = document.querySelector(".game-route-control-button.is-touch-toggle");
+      return button?.getAttribute("data-mode") === "right" && button.getAttribute("aria-pressed") === "true";
+    });
+
+    const frameTouchMode = await frame.locator("#canvas").evaluate(
+      () => window.localStorage.getItem("scummweb.touchClickMode")
+    );
+
+    if (frameTouchMode !== "right") {
+      throw new Error(`Touch mode did not sync into the game frame after toggle: ${frameTouchMode}`);
+    }
+
+    await frame.locator("#canvas").tap({ position: { x: 160, y: 120 }, force: true });
+    await page.waitForTimeout(250);
+
+    const verification = await frame.locator("#canvas").evaluate(() => {
+      const events = Array.isArray(window.__touchClickVerificationEvents)
+        ? window.__touchClickVerificationEvents
+        : [];
+
+      return {
+        events,
+        sawLeakedTouchEvent: events.some((event) => event.type.startsWith("touch")),
+        sawRightMouseDown: events.some((event) => event.type === "mousedown" && event.button === 2),
+        sawRightMouseUp: events.some((event) => event.type === "mouseup" && event.button === 2),
+        sawContextMenu: events.some((event) => event.type === "contextmenu" && event.button === 2),
+      };
+    });
+
+    if (verification.sawLeakedTouchEvent) {
+      throw new Error(
+        `Native touch events leaked past the scummweb mobile shim: ${JSON.stringify(verification.events)}`
+      );
+    }
+
+    if (!verification.sawRightMouseDown || !verification.sawRightMouseUp || !verification.sawContextMenu) {
+      throw new Error(
+        `Mobile right-click toggle did not synthesize the expected secondary-click events: ${JSON.stringify(
+          verification.events
+        )}`
+      );
+    }
+
+    if (normalizeUrl(page.url()) !== normalizeUrl(routeUrl)) {
+      throw new Error(`Mobile touch toggle redirected unexpectedly from ${routeUrl} to ${page.url()}`);
+    }
+
+    await page.close();
+  } finally {
+    await mobileContext.close();
+  }
+}
+
 const browser = await chromium.launch({
   headless: true,
   executablePath,
@@ -853,6 +974,12 @@ const { page: staleRecoveryPage } = await verifyTarget(
 );
 await staleRecoveryPage.close();
 await staleRecoveryContext.close();
+
+await verifyMobileTouchClickToggle(
+  browser,
+  url,
+  library.games.find((game) => !game.skipIntro) || library.games[0]
+);
 
 fs.mkdirSync(path.dirname(screenshotPath), { recursive: true });
 await screenshotPage.screenshot({ path: screenshotPath, fullPage: true });

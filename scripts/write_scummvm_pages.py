@@ -42,7 +42,7 @@ def bundle_href(value: str) -> str:
 
 
 readme_links = [
-    (link_href(game["readmeHref"]), f"{display_title(game['title'])} Readme")
+    (link_href(game["readmeHref"]), f"{display_title(game['title'])} Notice")
     for game in games
     if game.get("readmeHref")
 ]

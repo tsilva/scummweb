@@ -1057,9 +1057,16 @@ svg {
 }
 
 .footer-links {
+  display: flex;
+  align-items: center;
   gap: 1.25rem;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.footer-button {
+  min-height: 3.25rem;
+  padding: 0 1.4rem;
 }
 
 .footer-tools {
@@ -1087,6 +1094,12 @@ svg {
   height: 100dvh;
   border: 0;
   background: #000;
+  outline: none;
+}
+
+.game-route-frame:focus,
+.game-route-frame:focus-visible {
+  outline: none;
 }
 
 @supports not (height: 100dvh) {
@@ -1406,12 +1419,10 @@ svg {
   min-width: 8rem;
   min-height: 2.75rem;
   padding: 0.75rem 1.1rem;
-  border: 1px solid rgba(246, 224, 138, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.32);
   border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgba(18, 22, 19, 0.96), rgba(8, 9, 8, 0.96)),
-    #0d0f0d;
-  color: #f6e08a;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.86);
   box-shadow: 0 0.85rem 2.2rem rgba(0, 0, 0, 0.32);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -1435,8 +1446,9 @@ svg {
 
 .game-route-skip-intro-button:hover,
 .game-route-skip-intro-button:focus-visible {
-  border-color: rgba(246, 224, 138, 0.68);
-  color: #fff3b8;
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #fff;
   box-shadow: 0 1rem 2.4rem rgba(0, 0, 0, 0.38);
   transform: translateY(-1px);
 }

@@ -1,5 +1,6 @@
 import LaunchButton from "./launch-button";
 import RecentGamesRail from "./recent-games-rail";
+import { getVersionedScummvmAssetPath } from "./asset-paths";
 
 function formatGameCount(count) {
   return `${count} game${count === 1 ? "" : "s"} installed`;
@@ -112,6 +113,7 @@ export default function HomeShell({
   sourceInfoDate,
 }) {
   const featuredDialogId = getDialogId(featuredGame);
+  const sourceInfoHref = getVersionedScummvmAssetPath("/source.html");
   const installedCatalog = [...catalog].sort((left, right) => {
     const leftIndex = installedLibraryOrder.indexOf(left.target);
     const rightIndex = installedLibraryOrder.indexOf(right.target);
@@ -149,6 +151,7 @@ export default function HomeShell({
 
           <div className="nav-links" aria-label="Main">
             <a href="#library">Library</a>
+            <a href={sourceInfoHref}>Source &amp; Licenses</a>
             <a href={scummvmOfficialSite} rel="noreferrer" target="_blank">
               ScummVM
             </a>
@@ -184,11 +187,18 @@ export default function HomeShell({
           <div className="hero-inner">
             <div className="hero-copy">
               <p className="hero-kicker">{featuredGame.eyebrow}</p>
-              <h1>{featuredGame.displayTitle}</h1>
+              <h1>
+                <a
+                  href={featuredGame.href}
+                  style={{ color: "inherit", textDecoration: "none" }}
+                >
+                  {featuredGame.displayTitle}
+                </a>
+              </h1>
               <p className="hero-summary">{featuredGame.summary}</p>
 
               <div className="hero-actions">
-                <LaunchButton href={featuredGame.href} label="Play" />
+                <LaunchButton href={featuredGame.playHref} label="Play" />
                 <a className="secondary-button" href={`#${featuredDialogId}`}>
                   <Icon name="info" />
                   <span>More Info</span>
@@ -265,6 +275,12 @@ export default function HomeShell({
             Bundle built {sourceInfoDate}. ScummVM version {scummvmVersion}.
           </p>
         </div>
+        <div className="footer-links">
+          <a className="secondary-button footer-button" href={sourceInfoHref}>
+            <Icon name="info" />
+            <span>Source &amp; Licenses</span>
+          </a>
+        </div>
       </footer>
 
       {catalog.map((game) => {
@@ -309,7 +325,18 @@ export default function HomeShell({
                   <p className="game-detail-summary">{game.summary}</p>
 
                   <div className="game-detail-actions">
-                    <LaunchButton href={game.href} label="Play" />
+                    <LaunchButton href={game.playHref} label="Play" />
+                    <a className="secondary-button" href={game.href}>
+                      <span>Game Page</span>
+                    </a>
+                    <a
+                      className="secondary-button"
+                      href={game.infoHref}
+                      {...getDialogLinkProps(game.infoHref)}
+                    >
+                      <Icon name="info" />
+                      <span>Readme / License</span>
+                    </a>
                   </div>
                 </div>
               </div>

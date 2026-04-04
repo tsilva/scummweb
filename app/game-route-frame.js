@@ -999,7 +999,9 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
   }
 
   function handleTouchClickToggle() {
-    setTouchClickMode((currentMode) => (currentMode === "left" ? "right" : "left"));
+    const nextMode = touchClickMode === "left" ? "right" : "left";
+    setTouchClickMode(nextMode);
+    syncTouchClickModeToFrame(nextMode);
   }
 
   function handleControlMouseDown(event) {
@@ -1028,8 +1030,9 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
   const bootProgressPercent = showBootProgress
     ? Math.max(0, Math.min(100, Math.round((bootProgressValue / bootProgressMax) * 100)))
     : null;
+  const hasBootOverlayDismissed = !showBootOverlay;
   const showMobileOverlay =
-    hasBootPresentationCompleted &&
+    hasBootOverlayDismissed &&
     isMobileViewport &&
     (needsImmersiveRetry || !isLandscapeViewport);
   const mobileOverlayTitle = needsImmersiveRetry ? "Tap to continue" : "Rotate to landscape";
@@ -1144,44 +1147,73 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
           </div>
         ) : null}
         <div className="game-route-control-group is-right">
-          {showScummvmMenuButton ? (
-            <button
-              aria-label={scummvmMenuLabel}
-              className="game-route-control-button is-menu"
-              onClick={handleScummvmMenuClick}
-              onMouseDown={handleControlMouseDown}
-              title={scummvmMenuLabel}
-              type="button"
-            >
-              <Menu aria-hidden="true" size={18} strokeWidth={2} />
-            </button>
-          ) : null}
           {showTouchClickToggle ? (
-            <button
-              aria-label={touchClickToggleLabel}
-              aria-pressed={touchClickMode === "right"}
-              className="game-route-control-button is-touch-toggle"
-              data-mode={touchClickMode}
-              onClick={handleTouchClickToggle}
-              onMouseDown={handleControlMouseDown}
-              title={touchClickToggleLabel}
-              type="button"
-            >
-              <TouchClickModeIcon mode={touchClickMode} />
-            </button>
-          ) : null}
-          {canFullscreen ? (
-            <button
-              aria-label={fullscreenLabel}
-              className="game-route-control-button is-fullscreen"
-              onClick={handleFullscreenToggle}
-              onMouseDown={handleControlMouseDown}
-              title={fullscreenLabel}
-              type="button"
-            >
-              <FullscreenIcon aria-hidden="true" size={18} strokeWidth={2} />
-            </button>
-          ) : null}
+            <>
+              <button
+                aria-label={touchClickToggleLabel}
+                aria-pressed={touchClickMode === "right"}
+                className="game-route-control-button is-touch-toggle"
+                data-mode={touchClickMode}
+                onClick={handleTouchClickToggle}
+                onMouseDown={handleControlMouseDown}
+                title={touchClickToggleLabel}
+                type="button"
+              >
+                <TouchClickModeIcon mode={touchClickMode} />
+              </button>
+              {canFullscreen ? (
+                <button
+                  aria-label={fullscreenLabel}
+                  className="game-route-control-button is-fullscreen"
+                  onClick={handleFullscreenToggle}
+                  onMouseDown={handleControlMouseDown}
+                  title={fullscreenLabel}
+                  type="button"
+                >
+                  <FullscreenIcon aria-hidden="true" size={18} strokeWidth={2} />
+                </button>
+              ) : null}
+              {showScummvmMenuButton ? (
+                <button
+                  aria-label={scummvmMenuLabel}
+                  className="game-route-control-button is-menu"
+                  onClick={handleScummvmMenuClick}
+                  onMouseDown={handleControlMouseDown}
+                  title={scummvmMenuLabel}
+                  type="button"
+                >
+                  <Menu aria-hidden="true" size={18} strokeWidth={2} />
+                </button>
+              ) : null}
+            </>
+          ) : (
+            <>
+              {canFullscreen ? (
+                <button
+                  aria-label={fullscreenLabel}
+                  className="game-route-control-button is-fullscreen"
+                  onClick={handleFullscreenToggle}
+                  onMouseDown={handleControlMouseDown}
+                  title={fullscreenLabel}
+                  type="button"
+                >
+                  <FullscreenIcon aria-hidden="true" size={18} strokeWidth={2} />
+                </button>
+              ) : null}
+              {showScummvmMenuButton ? (
+                <button
+                  aria-label={scummvmMenuLabel}
+                  className="game-route-control-button is-menu"
+                  onClick={handleScummvmMenuClick}
+                  onMouseDown={handleControlMouseDown}
+                  title={scummvmMenuLabel}
+                  type="button"
+                >
+                  <Menu aria-hidden="true" size={18} strokeWidth={2} />
+                </button>
+              ) : null}
+            </>
+          )}
         </div>
       </div>
       {showBottomActions ? (

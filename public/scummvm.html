@@ -199,6 +199,7 @@ const measureDistance=(pointA,pointB)=>{if(!pointA||!pointB)return Number.POSITI
 const normalizeTouchClickMode=value=>value==="right"?"right":"left";
 const setTouchClickMode=nextMode=>{touchClickMode=normalizeTouchClickMode(nextMode);try{window.localStorage.setItem(touchClickModeStorageKey,touchClickMode)}catch{}};
 const getTouchClickButton=()=>touchClickMode==="right"?2:0;
+const consumeTouchEvent=event=>{if(event.cancelable)event.preventDefault();if(typeof event.stopImmediatePropagation==="function")event.stopImmediatePropagation();event.stopPropagation()};
 const getTouchPoint=touchLike=>{if(!touchLike)return null;const rect=canvas.getBoundingClientRect();const maxX=rect.width>0?rect.right:rect.left;const maxY=rect.height>0?rect.bottom:rect.top;const clientX=clamp(Number.isFinite(touchLike.clientX)?touchLike.clientX:rect.left,rect.left,maxX);const clientY=clamp(Number.isFinite(touchLike.clientY)?touchLike.clientY:rect.top,rect.top,maxY);return{clientX,clientY,screenX:Number.isFinite(touchLike.screenX)?touchLike.screenX:clientX,screenY:Number.isFinite(touchLike.screenY)?touchLike.screenY:clientY,pageX:Number.isFinite(touchLike.pageX)?touchLike.pageX:clientX+window.scrollX,pageY:Number.isFinite(touchLike.pageY)?touchLike.pageY:clientY+window.scrollY}};
 const getGesturePoint=touchList=>{const touches=Array.from(touchList||[]);if(touches.length===0)return null;touches.sort(((leftTouch,rightTouch)=>leftTouch.clientX-rightTouch.clientX));return getTouchPoint(touches[touches.length-1])};
 const focusCanvas=()=>{try{canvas.focus({preventScroll:true})}catch{}};
@@ -207,10 +208,10 @@ const dispatchMouseEvent=(eventName,point,{button=0,buttons=0,detail=1}={})=>{if
 const dispatchSyntheticMove=point=>{if(!point)return;focusCanvas();dispatchPointerEvent("pointermove",point,{button:0,buttons:0});dispatchMouseEvent("mousemove",point,{button:0,buttons:0,detail:0})};
 const dispatchSyntheticClick=(point,button)=>{if(!point)return;const buttons=button===2?2:1;focusCanvas();dispatchSyntheticMove(point);dispatchPointerEvent("pointerdown",point,{button,buttons});dispatchMouseEvent("mousedown",point,{button,buttons});dispatchPointerEvent("pointerup",point,{button,buttons:0});dispatchMouseEvent("mouseup",point,{button,buttons:0});if(button===2){dispatchMouseEvent("contextmenu",point,{button,buttons:0,detail:2});return}dispatchMouseEvent("click",point,{button,buttons:0,detail:2})};
 const handleScummwebMessage=event=>{if(event.origin!==window.location.origin||event.data?.type!=="scummweb-touch-click-mode")return;setTouchClickMode(event.data.mode)};
-const handleTouchStart=event=>{if(event.touches.length===0)return;const point=getGesturePoint(event.touches);activeTouchGesture={startedAt:Date.now(),startPoint:point,lastPoint:point,moved:false};dispatchSyntheticMove(point);if(event.cancelable)event.preventDefault()};
-const handleTouchMove=event=>{if(!activeTouchGesture||event.touches.length===0)return;const point=getGesturePoint(event.touches);if(!point)return;if(measureDistance(activeTouchGesture.startPoint,point)>touchTapMoveThresholdPx){activeTouchGesture.moved=true}activeTouchGesture.lastPoint=point;dispatchSyntheticMove(point);if(event.cancelable)event.preventDefault()};
-const handleTouchEnd=event=>{const point=getGesturePoint(event.touches)||getGesturePoint(event.changedTouches)||activeTouchGesture?.lastPoint||null;if(point){dispatchSyntheticMove(point)}if(!activeTouchGesture){if(event.cancelable)event.preventDefault();return}if(point&&measureDistance(activeTouchGesture.startPoint,point)>touchTapMoveThresholdPx){activeTouchGesture.moved=true}if(event.touches.length>0){activeTouchGesture.lastPoint=point||activeTouchGesture.lastPoint;if(event.cancelable)event.preventDefault();return}const completedGesture={...activeTouchGesture,endedAt:Date.now(),endPoint:point||activeTouchGesture.lastPoint};activeTouchGesture=null;if(event.cancelable)event.preventDefault();const gestureDuration=completedGesture.endedAt-completedGesture.startedAt;const isTap=!completedGesture.moved&&gestureDuration<=touchTapDurationMs&&completedGesture.endPoint;if(!isTap)return;dispatchSyntheticClick(completedGesture.endPoint,getTouchClickButton())};
-const handleTouchCancel=event=>{activeTouchGesture=null;if(event.cancelable)event.preventDefault()};
+const handleTouchStart=event=>{if(event.touches.length===0)return;consumeTouchEvent(event);const point=getGesturePoint(event.touches);activeTouchGesture={startedAt:Date.now(),startPoint:point,lastPoint:point,moved:false};dispatchSyntheticMove(point)};
+const handleTouchMove=event=>{if(!activeTouchGesture||event.touches.length===0)return;consumeTouchEvent(event);const point=getGesturePoint(event.touches);if(!point)return;if(measureDistance(activeTouchGesture.startPoint,point)>touchTapMoveThresholdPx){activeTouchGesture.moved=true}activeTouchGesture.lastPoint=point;dispatchSyntheticMove(point)};
+const handleTouchEnd=event=>{consumeTouchEvent(event);const point=getGesturePoint(event.touches)||getGesturePoint(event.changedTouches)||activeTouchGesture?.lastPoint||null;if(point){dispatchSyntheticMove(point)}if(!activeTouchGesture){return}if(point&&measureDistance(activeTouchGesture.startPoint,point)>touchTapMoveThresholdPx){activeTouchGesture.moved=true}if(event.touches.length>0){activeTouchGesture.lastPoint=point||activeTouchGesture.lastPoint;return}const completedGesture={...activeTouchGesture,endedAt:Date.now(),endPoint:point||activeTouchGesture.lastPoint};activeTouchGesture=null;const gestureDuration=completedGesture.endedAt-completedGesture.startedAt;const isTap=!completedGesture.moved&&gestureDuration<=touchTapDurationMs&&completedGesture.endPoint;if(!isTap)return;dispatchSyntheticClick(completedGesture.endPoint,getTouchClickButton())};
+const handleTouchCancel=event=>{consumeTouchEvent(event);activeTouchGesture=null};
 try{setTouchClickMode(window.localStorage.getItem(touchClickModeStorageKey))}catch{setTouchClickMode("left")}
 window.addEventListener("message",handleScummwebMessage);
 canvas.addEventListener("mouseenter",promptCursorGrab,{passive:true});
@@ -219,10 +220,10 @@ canvas.addEventListener("mouseleave",clearCursorPrompt,{passive:true});
 canvas.addEventListener("pointerleave",clearCursorPrompt,{passive:true});
 canvas.addEventListener("contextmenu",(event=>{if(event.cancelable)event.preventDefault()}));
 for(const eventName of["mousedown","touchstart"]){canvas.addEventListener(eventName,releaseCursorPrompt,{capture:true,passive:true})}
-canvas.addEventListener("touchstart",handleTouchStart,{passive:false});
-canvas.addEventListener("touchmove",handleTouchMove,{passive:false});
-canvas.addEventListener("touchend",handleTouchEnd,{passive:false});
-canvas.addEventListener("touchcancel",handleTouchCancel,{passive:false});
+canvas.addEventListener("touchstart",handleTouchStart,{capture:true,passive:false});
+canvas.addEventListener("touchmove",handleTouchMove,{capture:true,passive:false});
+canvas.addEventListener("touchend",handleTouchEnd,{capture:true,passive:false});
+canvas.addEventListener("touchcancel",handleTouchCancel,{capture:true,passive:false});
 if(hasLaunchOutput()){scheduleGameRunning()}else if(launchPattern&&output){launchPollTimer=window.setInterval((()=>{if(hasLaunchOutput()){scheduleGameRunning();syncCursorPrompt()}}),250)}
 syncCursorPrompt()
 }

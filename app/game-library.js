@@ -58,6 +58,7 @@ function addGameRoutes(games) {
       displayTitle: getDisplayTitle(game.title),
       slug,
       href: `/${slug}`,
+      playHref: `/${slug}/play`,
     };
   });
 }
