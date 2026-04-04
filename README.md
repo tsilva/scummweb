@@ -81,6 +81,7 @@ Disposable generated state:
 - `dist/`
 - `vendor/`
 - `.next/`
+- `.next-dev-*`
 - `artifacts/`
 
 Do not hand-edit files restored into `public/`. Regenerate them through the build scripts and refresh the bundle archive instead.

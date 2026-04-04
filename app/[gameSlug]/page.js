@@ -1,25 +1,25 @@
 import { notFound } from "next/navigation";
 import {
-  getGameBySlug,
-  getGameLibrary,
+  getVersionedSiteAssetPath,
 } from "../game-library";
-import { buildVersionedAssetPath } from "../asset-paths";
-import { getGamePresentation } from "../game-presentation";
-import GameRouteFrame from "../game-route-frame";
+import {
+  buildGameMetadata,
+  getGameStaticParams,
+  getHomeShellData,
+  getPresentedGameBySlug,
+} from "../game-page-data";
+import HomeShell from "../home-shell";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
+const scummvmOfficialSite = "https://www.scummvm.org/";
 
 export async function generateStaticParams() {
-  const { games } = await getGameLibrary();
-
-  return games.map((game) => ({
-    gameSlug: game.slug,
-  }));
+  return getGameStaticParams();
 }
 
 export async function generateMetadata({ params }) {
-  const game = await getGameBySlug(params.gameSlug);
+  const game = await getPresentedGameBySlug(params.gameSlug);
 
   if (!game) {
     return {
@@ -27,35 +27,26 @@ export async function generateMetadata({ params }) {
     };
   }
 
-  return {
-    title: `${game.displayTitle} | scummweb`,
-    description: `Launch ${game.displayTitle} directly from its dedicated scummweb route.`,
-  };
+  return buildGameMetadata(game);
 }
 
-export default async function GameRoutePage({ params }) {
-  const game = await getGameBySlug(params.gameSlug);
+export default async function GameLandingPage({ params }) {
+  const shellData = await getHomeShellData({
+    featuredGameSlug: params.gameSlug,
+  });
 
-  if (!game) {
+  if (!shellData) {
     notFound();
   }
 
-  const presentedGame = getGamePresentation(game);
-
-  const launchHref = buildVersionedAssetPath("/scummvm.html", {
-    searchParams: { exitTo: "/" },
-    hash: game.target,
-  });
-
   return (
-    <main className="game-route-page">
-      <GameRouteFrame
-        game={presentedGame}
-        skipIntro={game.skipIntro}
-        src={launchHref}
-        target={game.target}
-        title={`${game.displayTitle} playable ScummVM frame`}
-      />
-    </main>
+    <HomeShell
+      catalog={shellData.catalog}
+      featuredGame={shellData.featuredGame}
+      logoSrc={getVersionedSiteAssetPath("/logo.svg")}
+      scummvmVersion={shellData.scummvmVersion}
+      scummvmOfficialSite={scummvmOfficialSite}
+      sourceInfoDate={shellData.sourceInfoDate}
+    />
   );
 }

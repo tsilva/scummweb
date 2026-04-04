@@ -3,12 +3,12 @@
     "name": "scummweb",
     "icons": [
         {
-            "src": "scummvm-192.png?v=dev",
+            "src": "scummvm-192.png?v=dev&v=dev&v=dev",
             "type": "image/png",
             "sizes": "192x192"
         },
         {
-            "src": "scummvm-512.png?v=dev",
+            "src": "scummvm-512.png?v=dev&v=dev&v=dev",
             "type": "image/png",
             "sizes": "512x512"
         }

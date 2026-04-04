@@ -55,7 +55,7 @@ for (const line of iniText.split(/\r?\n/)) {
   }
 }
 
-async function findReadmeHref(gamePath) {
+async function findNoticeHref(gamePath) {
   const normalizedPath = gamePath.startsWith("/") ? gamePath.slice(1) : gamePath;
   const absoluteGamePath = path.join(distDir, normalizedPath);
   const publicGamePath = normalizedPath.replace(/^games(?:\/|$)/, "");
@@ -67,19 +67,39 @@ async function findReadmeHref(gamePath) {
     return "";
   }
 
-  const readmeEntry = entries
-    .filter((entry) => entry.isFile() && /readme/i.test(entry.name))
-    .sort((left, right) => left.name.localeCompare(right.name))[0];
+  const noticePatterns = [/readme/i, /license/i, /copying/i];
+  const noticePriority = [
+    [/^readme(?:\.[^.]+)?$/i, 0],
+    [/readme/i, 1],
+    [/^license(?:-original)?(?:\.[^.]+)?$/i, 2],
+    [/^copying(?:\.[^.]+)?$/i, 3],
+    [/license/i, 4],
+    [/copying/i, 5],
+  ];
+  const noticeEntry = entries
+    .filter((entry) => entry.isFile() && noticePatterns.some((pattern) => pattern.test(entry.name)))
+    .sort((left, right) => {
+      const leftPriority =
+        noticePriority.find(([pattern]) => pattern.test(left.name))?.[1] ?? Number.MAX_SAFE_INTEGER;
+      const rightPriority =
+        noticePriority.find(([pattern]) => pattern.test(right.name))?.[1] ?? Number.MAX_SAFE_INTEGER;
 
-  if (!readmeEntry) {
+      if (leftPriority !== rightPriority) {
+        return leftPriority - rightPriority;
+      }
+
+      return left.name.localeCompare(right.name);
+    })[0];
+
+  if (!noticeEntry) {
     return "";
   }
 
-  const readmePath = publicGamePath
-    ? path.posix.join(publicGamePath.replaceAll(path.sep, "/"), readmeEntry.name)
-    : readmeEntry.name;
+  const noticePath = publicGamePath
+    ? path.posix.join(publicGamePath.replaceAll(path.sep, "/"), noticeEntry.name)
+    : noticeEntry.name;
 
-  return `${gamesOrigin}/${readmePath}`;
+  return `${gamesOrigin}/${noticePath}`;
 }
 
 const gameSections = sections.filter(
@@ -121,7 +141,7 @@ const games = await Promise.all(
       gameId: section.values.gameid || "",
       platform: section.values.platform || "",
       extra: section.values.extra || "",
-      readmeHref: await findReadmeHref(normalizedPath),
+      readmeHref: await findNoticeHref(normalizedPath),
       ...(targetOverrides && typeof targetOverrides === "object" ? targetOverrides : {}),
     };
   })

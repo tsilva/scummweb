@@ -27,7 +27,7 @@
       "gameId": "dreamweb",
       "platform": "pc",
       "extra": "CD",
-      "readmeHref": "",
+      "readmeHref": "https://scummvm-games.tsilva.eu/dreamweb/license.txt",
       "skipIntro": {
         "strategy": "save-slot",
         "durationMinutes": 2,
