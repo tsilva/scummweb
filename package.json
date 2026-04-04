@@ -20,7 +20,7 @@
   "dependencies": {
     "@sentry/nextjs": "^10.46.0",
     "lucide-react": "^1.7.0",
-    "next": "13.5.11",
+    "next": "15.5.14",
     "playwright-core": "1.44.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
