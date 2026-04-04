@@ -25,7 +25,6 @@ managed_paths=(
   scummvm.wasm
   scummvm_fs.js
   source-info.json
-  source.html
 )
 
 required_files=(
@@ -38,6 +37,7 @@ required_files=(
 stale_paths=(
   game.json
   home-static.html
+  source.html
   sw.js
 )
 

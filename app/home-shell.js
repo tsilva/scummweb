@@ -1,6 +1,5 @@
 import LaunchButton from "./launch-button";
 import RecentGamesRail from "./recent-games-rail";
-import { getVersionedScummvmAssetPath } from "./asset-paths";
 
 function formatGameCount(count) {
   return `${count} game${count === 1 ? "" : "s"} installed`;
@@ -113,7 +112,6 @@ export default function HomeShell({
   sourceInfoDate,
 }) {
   const featuredDialogId = getDialogId(featuredGame);
-  const sourceInfoHref = getVersionedScummvmAssetPath("/source.html");
   const installedCatalog = [...catalog].sort((left, right) => {
     const leftIndex = installedLibraryOrder.indexOf(left.target);
     const rightIndex = installedLibraryOrder.indexOf(right.target);
@@ -151,7 +149,6 @@ export default function HomeShell({
 
           <div className="nav-links" aria-label="Main">
             <a href="#library">Library</a>
-            <a href={sourceInfoHref}>Source &amp; Licenses</a>
             <a href={scummvmOfficialSite} rel="noreferrer" target="_blank">
               ScummVM
             </a>
@@ -275,12 +272,6 @@ export default function HomeShell({
             Bundle built {sourceInfoDate}. ScummVM version {scummvmVersion}.
           </p>
         </div>
-        <div className="footer-links">
-          <a className="secondary-button footer-button" href={sourceInfoHref}>
-            <Icon name="info" />
-            <span>Source &amp; Licenses</span>
-          </a>
-        </div>
       </footer>
 
       {catalog.map((game) => {
@@ -326,14 +317,16 @@ export default function HomeShell({
 
                   <div className="game-detail-actions">
                     <LaunchButton href={game.playHref} label="Play" />
-                    <a
-                      className="secondary-button"
-                      href={game.infoHref}
-                      {...getDialogLinkProps(game.infoHref)}
-                    >
-                      <Icon name="info" />
-                      <span>Readme / License</span>
-                    </a>
+                    {game.infoHref ? (
+                      <a
+                        className="secondary-button"
+                        href={game.infoHref}
+                        {...getDialogLinkProps(game.infoHref)}
+                      >
+                        <Icon name="info" />
+                        <span>Readme / License</span>
+                      </a>
+                    ) : null}
                   </div>
                 </div>
               </div>

@@ -44,13 +44,6 @@
       color: var(--muted);
       max-width: 58ch;
     }
-    .warning {
-      margin: 0 0 20px;
-      padding: 14px 16px;
-      border: 1px solid rgba(240, 228, 192, 0.15);
-      background: rgba(82, 49, 21, 0.48);
-      color: var(--ink);
-    }
     a {
       display: inline-block;
       padding: 14px 20px;
@@ -64,20 +57,6 @@
       margin-top: 16px;
       font-size: 0.92rem;
     }
-    .meta-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px 18px;
-      margin-top: 24px;
-    }
-    .meta-links a {
-      padding: 0;
-      color: var(--ink);
-      background: none;
-      border: 0;
-      font-weight: 400;
-      border-bottom: 1px solid rgba(240, 228, 192, 0.28);
-    }
   </style>
 </head>
 <body>
@@ -87,25 +66,8 @@
       This bundle exposes 7 detected ScummVM target(s). Use the launcher below if the
       game does not start automatically after the page loads.
     </p>
-    <p class="warning">
-      This is not the official ScummVM website or an official ScummVM release. It is an
-      unofficial WebAssembly build forked from ScummVM for browser deployment, and it links
-      corresponding source and license material here to respect ScummVM's GPL terms.
-    </p>
     <a id="play-link" href="scummvm.html?v=dev#dreamweb-cd">Launch Game</a>
     <p class="note">Primary ScummVM target: <code>dreamweb-cd</code></p>
-    <div class="meta-links">
-      <a href="https://www.scummvm.org/">Official ScummVM Website</a>
-      <a href="source.html?v=dev">Corresponding Source</a>
-      <a href="doc/COPYING?v=dev">GPL-3.0 License</a>
-      <a href="https://scummvm-games.tsilva.eu/drascula/readme.txt">Drascula: The Vampire Strikes Back Notice</a>
-      <a href="https://scummvm-games.tsilva.eu/dreamweb/license.txt">DreamWeb Notice</a>
-      <a href="https://scummvm-games.tsilva.eu/lure/README">Lure of the Temptress Notice</a>
-      <a href="https://scummvm-games.tsilva.eu/nippon/readme.txt">Nippon Safes, Inc. Notice</a>
-      <a href="https://scummvm-games.tsilva.eu/queen/readme.txt">Flight of the Amazon Queen Notice</a>
-      <a href="https://scummvm-games.tsilva.eu/sky/readme.txt">Beneath a Steel Sky Notice</a>
-      <a href="https://scummvm-games.tsilva.eu/sword25/README">Broken Sword 2.5: The Return of the Templars Notice</a>
-    </div>
   </main>
   <script>
     window.addEventListener("load", function () {

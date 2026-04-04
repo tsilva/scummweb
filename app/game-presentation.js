@@ -141,7 +141,7 @@ export function getGamePresentation(game) {
   return {
     ...game,
     ...art,
-    infoHref: game.readmeHref || getVersionedScummvmAssetPath("/source.html"),
+    infoHref: game.readmeHref || null,
     screenshots,
     summary:
       art.summary ||

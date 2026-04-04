@@ -23,12 +23,12 @@ managed_paths=(
   scummvm.wasm
   scummvm_fs.js
   source-info.json
-  source.html
 )
 
 stale_paths=(
   game.json
   home-static.html
+  source.html
   sw.js
 )
 

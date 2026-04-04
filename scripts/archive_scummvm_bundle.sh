@@ -37,7 +37,6 @@ managed_paths = [
     "scummvm.wasm",
     "scummvm_fs.js",
     "source-info.json",
-    "source.html",
 ]
 
 required_paths = [

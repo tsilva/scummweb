@@ -36,7 +36,7 @@ pnpm run archive:bundle
 2. Bootstraps emsdk and codec libs
 3. Builds the ScummVM web target
 4. Extracts detected game archives into `build-emscripten/games`
-5. Regenerates `games.json`, `source-info.json`, `source.html`, launcher assets, and patched runtime files
+5. Regenerates `games.json`, `source-info.json`, launcher assets, and patched runtime files
 6. Syncs the managed shell back into `public/`
 
 `pnpm run archive:bundle` refreshes `bundle/scummvm-public.zip` from the current managed shell in `public/`.
