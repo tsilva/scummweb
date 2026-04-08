@@ -1,11 +1,9 @@
 .git
 .next
 artifacts
-bundle
 dist
 downloads
 public/games
-public/.scummvm-bundle.stamp
 progress.md
 tools
 vendor

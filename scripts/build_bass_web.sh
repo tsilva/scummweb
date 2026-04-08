@@ -7,7 +7,6 @@ VENDOR_DIR="$ROOT_DIR/vendor"
 SCUMMVM_DIR="$VENDOR_DIR/scummvm"
 DIST_DIR="$ROOT_DIR/dist"
 PUBLIC_DIR="$ROOT_DIR/public"
-BUNDLE_ZIP="$ROOT_DIR/bundle/scummvm-public.zip"
 DOWNLOADS_DIR="$ROOT_DIR/downloads"
 BASS_ZIP="$DOWNLOADS_DIR/bass-cd-1.2.zip"
 QUEEN_ORIGINAL_ARCHIVE="$DOWNLOADS_DIR/FOTAQ_Talkie-original.zip"
@@ -412,7 +411,7 @@ generate_detected_config() {
     "$SCUMMVM_DIR/build-emscripten" \
     "http://127.0.0.1:8000/scummvm.html#--add --path=/games --recursive"
 
-  python3 "$ROOT_DIR/scripts/normalize_scummvm_bundle.py" \
+  python3 "$ROOT_DIR/scripts/normalize_scummvm_shell.py" \
     "$SCUMMVM_DIR/build-emscripten/scummvm.ini" \
     "$SCUMMVM_DIR/build-emscripten/games" \
     "$SCUMMVM_DIR/build-emscripten/games/sword25/data.b25c"
@@ -432,7 +431,6 @@ finalize_dist_workspace() {
     "$SCUMMVM_DIR" \
     "$DIST_DIR" \
     "$PUBLIC_DIR" \
-    "$BUNDLE_ZIP" \
     "$EMSDK_NODE"
 }
 
@@ -462,7 +460,7 @@ main() {
   log_stage "Stage dist workspace"
   stage_dist_workspace
 
-  log_stage "Finalize dist bundle"
+  log_stage "Finalize dist shell"
   finalize_dist_workspace
 
   echo "Built site in $DIST_DIR and synced deploy assets to $PUBLIC_DIR"

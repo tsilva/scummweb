@@ -6,7 +6,7 @@ import test from "node:test";
 import { execFileSync } from "node:child_process";
 
 const rootDir = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
-const bundleManagerPath = path.join(rootDir, "scripts", "bundle-manager.mjs");
+const managerPath = path.join(rootDir, "scripts", "manage_scummvm_assets.mjs");
 
 function writeFile(targetPath, contents = "test") {
   fs.mkdirSync(path.dirname(targetPath), { recursive: true });
@@ -25,15 +25,15 @@ function createManagedTree(directory) {
   writeFile(path.join(directory, "doc", "readme.txt"), "readme");
 }
 
-function runBundleManager(...args) {
-  execFileSync("node", [bundleManagerPath, ...args], {
+function runManager(...args) {
+  execFileSync("node", [managerPath, ...args], {
     cwd: rootDir,
     stdio: "pipe",
   });
 }
 
-test("bundle manager sync replaces managed paths and removes stale ones", () => {
-  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "scummweb-bundle-sync-"));
+test("asset manager sync replaces managed paths and removes stale ones", () => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "scummweb-assets-sync-"));
   const sourceDir = path.join(tempDir, "dist");
   const targetDir = path.join(tempDir, "public");
 
@@ -41,7 +41,7 @@ test("bundle manager sync replaces managed paths and removes stale ones", () => 
   writeFile(path.join(targetDir, "sw.js"), "stale");
   writeFile(path.join(targetDir, "notes.txt"), "keep me");
 
-  runBundleManager("sync", sourceDir, targetDir);
+  runManager("sync", sourceDir, targetDir);
 
   assert.equal(fs.existsSync(path.join(targetDir, "scummvm.html")), true);
   assert.equal(fs.existsSync(path.join(targetDir, "launcher", "hero.jpg")), true);
@@ -49,26 +49,19 @@ test("bundle manager sync replaces managed paths and removes stale ones", () => 
   assert.equal(fs.readFileSync(path.join(targetDir, "notes.txt"), "utf8"), "keep me");
 });
 
-test("bundle manager archive, validate, and restore round-trip managed assets", () => {
-  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "scummweb-bundle-archive-"));
-  const sourcePublicDir = path.join(tempDir, "public");
-  const restoredPublicDir = path.join(tempDir, "restored");
-  const bundleZipPath = path.join(tempDir, "bundle", "scummvm-public.zip");
+test("asset manager validate accepts managed trees and rejects incomplete ones", () => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "scummweb-assets-validate-"));
+  const validDir = path.join(tempDir, "valid");
+  const invalidDir = path.join(tempDir, "invalid");
 
-  createManagedTree(sourcePublicDir);
+  createManagedTree(validDir);
+  createManagedTree(invalidDir);
+  fs.rmSync(path.join(invalidDir, "scummvm.js"));
 
-  runBundleManager("validate", sourcePublicDir);
-  runBundleManager("archive", sourcePublicDir, bundleZipPath);
+  runManager("validate", validDir);
 
-  writeFile(path.join(restoredPublicDir, "source.html"), "stale");
-  runBundleManager("restore", bundleZipPath, restoredPublicDir);
-
-  assert.equal(fs.existsSync(path.join(restoredPublicDir, "scummvm.html")), true);
-  assert.equal(fs.existsSync(path.join(restoredPublicDir, "launcher", "hero.jpg")), true);
-  assert.equal(fs.existsSync(path.join(restoredPublicDir, "source.html")), false);
-  assert.equal(fs.existsSync(path.join(restoredPublicDir, ".scummvm-bundle.stamp")), true);
-
-  fs.rmSync(path.join(restoredPublicDir, "scummvm.js"));
-  runBundleManager("restore", bundleZipPath, restoredPublicDir);
-  assert.equal(fs.existsSync(path.join(restoredPublicDir, "scummvm.js")), true);
+  assert.throws(
+    () => runManager("validate", invalidDir),
+    /Missing required managed ScummVM assets/
+  );
 });

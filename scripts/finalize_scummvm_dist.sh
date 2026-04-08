@@ -3,16 +3,16 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-SCUMMVM_DIR="${1:?usage: finalize_scummvm_dist.sh <scummvm-dir> <dist-dir> <public-dir> <bundle-zip> <node-bin>}"
-DIST_DIR="${2:?usage: finalize_scummvm_dist.sh <scummvm-dir> <dist-dir> <public-dir> <bundle-zip> <node-bin>}"
-PUBLIC_DIR="${3:?usage: finalize_scummvm_dist.sh <scummvm-dir> <dist-dir> <public-dir> <bundle-zip> <node-bin>}"
-BUNDLE_ZIP="${4:?usage: finalize_scummvm_dist.sh <scummvm-dir> <dist-dir> <public-dir> <bundle-zip> <node-bin>}"
-NODE_BIN="${5:?usage: finalize_scummvm_dist.sh <scummvm-dir> <dist-dir> <public-dir> <bundle-zip> <node-bin>}"
+SCUMMVM_DIR="${1:?usage: finalize_scummvm_dist.sh <scummvm-dir> <dist-dir> <public-dir> <node-bin>}"
+DIST_DIR="${2:?usage: finalize_scummvm_dist.sh <scummvm-dir> <dist-dir> <public-dir> <node-bin>}"
+PUBLIC_DIR="${3:?usage: finalize_scummvm_dist.sh <scummvm-dir> <dist-dir> <public-dir> <node-bin>}"
+NODE_BIN="${4:?usage: finalize_scummvm_dist.sh <scummvm-dir> <dist-dir> <public-dir> <node-bin>}"
 
 source "$ROOT_DIR/scripts/build_helpers.sh"
 
-if [[ -f "$BUNDLE_ZIP" ]]; then
-  unzip -q -o "$BUNDLE_ZIP" 'launcher/*' -d "$DIST_DIR"
+if [[ -d "$PUBLIC_DIR/launcher" ]]; then
+  rm -rf "$DIST_DIR/launcher"
+  cp -R "$PUBLIC_DIR/launcher" "$DIST_DIR/launcher"
 fi
 
 PROJECT_REMOTE_URL="$(git -C "$ROOT_DIR" remote get-url origin 2>/dev/null || true)"
@@ -53,4 +53,4 @@ python3 "$ROOT_DIR/scripts/generate_logo_assets.py" \
 
 python3 "$ROOT_DIR/scripts/patch_scummvm_fs.py" "$DIST_DIR/scummvm_fs.js"
 python3 "$ROOT_DIR/scripts/patch_scummvm_html.py" "$DIST_DIR/scummvm.html"
-"$ROOT_DIR/scripts/sync_bundle_assets.sh" "$DIST_DIR" "$PUBLIC_DIR"
+node "$ROOT_DIR/scripts/manage_scummvm_assets.mjs" sync "$DIST_DIR" "$PUBLIC_DIR"

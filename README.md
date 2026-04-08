@@ -4,8 +4,7 @@ Browser launcher for a managed ScummVM WebAssembly shell with game payloads host
 
 This repo treats the ScummVM shell and game payloads as two different products:
 
-- `bundle/scummvm-public.zip` is the source of truth for the managed browser shell.
-- `public/` is a disposable restored workspace, not a hand-edited source directory.
+- `public/` is the source of truth for the managed browser shell that ships with the app.
 - `dist/` is disposable build output.
 - Game payloads live in R2 and should be fetched directly by the browser in production.
 
@@ -15,22 +14,20 @@ This repo treats the ScummVM shell and game payloads as two different products:
 
 ```bash
 pnpm install
-pnpm run prepare
 pnpm run dev
 ```
 
-`pnpm run prepare` restores the managed ScummVM shell from `bundle/scummvm-public.zip` into `public/`.
+`pnpm run prepare` validates that the tracked managed ScummVM shell in `public/` is complete.
 
 Open [http://localhost:3000](http://localhost:3000).
 
 ### 2. Rebuild The ScummVM Shell
 
 ```bash
-pnpm run build:bundle
-pnpm run archive:bundle
+pnpm run build:scummvm
 ```
 
-`pnpm run build:bundle` does the full shell rebuild:
+`pnpm run build:scummvm` does the full shell rebuild:
 
 1. Clones or reuses `vendor/scummvm`
 2. Bootstraps emsdk and codec libs
@@ -38,8 +35,6 @@ pnpm run archive:bundle
 4. Extracts detected game archives into `build-emscripten/games`
 5. Regenerates `games.json`, `source-info.json`, launcher assets, and patched runtime files
 6. Syncs the managed shell back into `public/`
-
-`pnpm run archive:bundle` refreshes `bundle/scummvm-public.zip` from the current managed shell in `public/`.
 
 ### 3. Upload Game Payloads
 
@@ -63,28 +58,27 @@ Run the main verification path:
 pnpm run verify
 ```
 
-`scripts/verify_bass_web.sh` restores the bundle, builds the app, launches Chromium through Playwright, verifies the launcher, and boots each detected target.
+`scripts/verify_bass_web.sh` validates the tracked shell in `public/`, builds the app, launches Chromium through Playwright, verifies the launcher, and boots each detected target.
 
 ## Generated Files Policy
 
 Tracked source inputs:
 
 - `app/`
+- `public/`
 - `scripts/`
-- `bundle/scummvm-public.zip`
 - `launcher-game-overrides.json`
 - config and docs
 
 Disposable generated state:
 
-- `public/`
 - `dist/`
 - `vendor/`
 - `.next/`
 - `.next-dev-*`
 - `artifacts/`
 
-Do not hand-edit files restored into `public/`. Regenerate them through the build scripts and refresh the bundle archive instead.
+`public/` is tracked and deployable. Prefer regenerating managed shell files through the build scripts instead of hand-editing them, then commit the resulting `public/` changes directly.
 
 ## Metadata Contract
 
@@ -109,20 +103,10 @@ The generated launcher library lives in `public/games.json` and `dist/games.json
 
 ```bash
 pnpm run prepare
-pnpm run build:bundle
-pnpm run archive:bundle
+pnpm run build:scummvm
 pnpm run publish:games
 pnpm run verify
 pnpm run sentry:issues -- --help
-```
-
-Legacy aliases are still available:
-
-```bash
-pnpm run bundle:prepare
-pnpm run bundle:build
-pnpm run bundle:archive
-pnpm run games:upload
 ```
 
 ## Environment
@@ -159,5 +143,5 @@ pnpm run sentry:issues -- --days 7 --limit 5
 ## Notes
 
 - The required playable baseline is Beneath a Steel Sky from `downloads/bass-cd-1.2.zip`.
-- Optional freeware archives can be added in `downloads/` and will be detected during `pnpm run build:bundle`.
+- Optional freeware archives can be added in `downloads/` and will be detected during `pnpm run build:scummvm`.
 - Deployments only need the shell assets; the large game payloads stay in R2.
