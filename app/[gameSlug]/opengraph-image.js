@@ -8,6 +8,7 @@ export const size = {
 };
 
 export const contentType = "image/png";
+export const dynamic = "force-dynamic";
 
 function getAbsoluteAssetUrl(pathname) {
   return new URL(pathname, `${getSiteUrl()}/`).toString();
