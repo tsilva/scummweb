@@ -87,7 +87,7 @@ export default function HomeShell({
                   width="1884"
                 />
               </a>
-              <p className="nav-brand-tagline">Classic freeware adventures in your browser</p>
+              <p className="nav-brand-tagline">Classic adventures in your browser</p>
             </div>
           </div>
 

@@ -127,7 +127,7 @@ export default function OpenGraphImage({ params }) {
               }}
               >
                 {game?.summary ||
-                  "Play classic freeware adventure games directly in your browser."}
+                  "Play classic adventure games directly in your browser."}
               </div>
             </div>
           </div>
