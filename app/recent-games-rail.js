@@ -1,19 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import DecorativeImage from "./home-shell/decorative-image";
+import { getGameDialogId } from "./home-shell/shared";
 import { getRecentGameTargets, sortGamesByRecentPlay } from "./recent-games";
-
-function DecorativeImage({ src }) {
-  if (!src) {
-    return null;
-  }
-
-  return <img alt="" className="landscape-card-image" decoding="async" loading="lazy" src={src} />;
-}
-
-function getDialogId(game) {
-  return `game-${game.slug || game.target}`;
-}
 
 export default function RecentGamesRail({ catalog }) {
   const [recentTargets, setRecentTargets] = useState([]);
@@ -32,9 +22,9 @@ export default function RecentGamesRail({ catalog }) {
           aria-haspopup="dialog"
           className={`landscape-card ${game.tone}`}
           data-game-target={game.target}
-          href={`#${getDialogId(game)}`}
+          href={`#${getGameDialogId(game)}`}
         >
-          <DecorativeImage src={game.landscapeImage} />
+          <DecorativeImage className="landscape-card-image" src={game.landscapeImage} />
           <div className="landscape-overlay">
             <h3>{game.displayTitle}</h3>
             <div className="landscape-meta">

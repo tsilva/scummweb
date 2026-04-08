@@ -16,8 +16,8 @@ export const size = {
 
 export const contentType = "image/png";
 
-export default async function OpenGraphImage() {
-  const featuredGame = await getPresentedGameByTarget(HOME_FEATURED_GAME_TARGET);
+export default function OpenGraphImage() {
+  const featuredGame = getPresentedGameByTarget(HOME_FEATURED_GAME_TARGET);
   const backgroundImage =
     featuredGame?.spotlightImage || featuredGame?.heroImage || featuredGame?.posterImage || "";
   const backgroundUrl = backgroundImage ? buildAbsoluteUrl(backgroundImage) : "";

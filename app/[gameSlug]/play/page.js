@@ -10,12 +10,12 @@ import GameRouteFrame from "../../game-route-frame";
 export const dynamic = "force-static";
 export const dynamicParams = false;
 
-export async function generateStaticParams() {
+export function generateStaticParams() {
   return getGameStaticParams();
 }
 
-export async function generateMetadata({ params }) {
-  const game = await getPresentedGameBySlug(params.gameSlug);
+export function generateMetadata({ params }) {
+  const game = getPresentedGameBySlug(params.gameSlug);
 
   if (!game) {
     return {
@@ -30,8 +30,8 @@ export async function generateMetadata({ params }) {
   return buildPlayRouteMetadata(game);
 }
 
-export default async function GamePlayRoutePage({ params }) {
-  const game = await getPresentedGameBySlug(params.gameSlug);
+export default function GamePlayRoutePage({ params }) {
+  const game = getPresentedGameBySlug(params.gameSlug);
 
   if (!game) {
     notFound();

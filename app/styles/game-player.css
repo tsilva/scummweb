@@ -1,0 +1,768 @@
+.game-route-page {
+  position: relative;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(85, 170, 85, 0.18), transparent 24%),
+    #050505;
+}
+
+.game-route-shell {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  background: #000;
+}
+
+.game-route-frame {
+  display: block;
+  width: 100vw;
+  height: 100dvh;
+  border: 0;
+  background: #000;
+  outline: none;
+}
+
+.game-route-frame:focus,
+.game-route-frame:focus-visible {
+  outline: none;
+}
+
+@supports not (height: 100dvh) {
+  .game-route-shell,
+  .game-route-frame {
+    height: 100vh;
+  }
+}
+
+.game-route-boot-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(85, 170, 85, 0.18), transparent 24%),
+    #050505;
+  opacity: 1;
+  pointer-events: auto;
+  transition:
+    opacity 260ms ease,
+    visibility 260ms ease;
+}
+
+.game-route-boot-overlay.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.game-route-boot-backdrop,
+.game-route-boot-scrim {
+  position: absolute;
+  inset: 0;
+}
+
+.game-route-boot-backdrop {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.game-route-boot-scrim {
+  background:
+    linear-gradient(180deg, rgba(6, 8, 7, 0.18), rgba(6, 8, 7, 0.84)),
+    radial-gradient(circle at 22% 18%, rgba(246, 224, 138, 0.18), transparent 30%),
+    linear-gradient(135deg, rgba(16, 33, 26, 0.82), rgba(6, 8, 7, 0.94));
+}
+
+.game-route-boot-overlay.tone-dreamweb .game-route-boot-scrim {
+  background:
+    linear-gradient(180deg, rgba(5, 8, 9, 0.22), rgba(5, 8, 9, 0.88)),
+    radial-gradient(circle at 22% 18%, rgba(126, 208, 219, 0.16), transparent 30%),
+    linear-gradient(135deg, rgba(10, 25, 28, 0.84), rgba(4, 8, 10, 0.96));
+}
+
+.game-route-boot-overlay.tone-sky .game-route-boot-scrim {
+  background:
+    linear-gradient(180deg, rgba(4, 9, 8, 0.2), rgba(4, 9, 8, 0.84)),
+    radial-gradient(circle at 22% 18%, rgba(246, 224, 138, 0.2), transparent 30%),
+    linear-gradient(135deg, rgba(17, 39, 31, 0.82), rgba(6, 9, 8, 0.95));
+}
+
+.game-route-boot-overlay.is-error .game-route-boot-scrim {
+  background:
+    linear-gradient(180deg, rgba(14, 3, 3, 0.36), rgba(14, 3, 3, 0.9)),
+    radial-gradient(circle at 22% 18%, rgba(255, 98, 98, 0.2), transparent 30%),
+    linear-gradient(135deg, rgba(33, 8, 8, 0.9), rgba(9, 5, 5, 0.96));
+}
+
+.game-route-boot-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  min-height: 100%;
+  padding:
+    max(1.25rem, env(safe-area-inset-top))
+    max(1.25rem, env(safe-area-inset-right))
+    max(1.5rem, env(safe-area-inset-bottom))
+    max(1.25rem, env(safe-area-inset-left));
+}
+
+.game-route-boot-card {
+  width: min(100%, 34rem);
+  padding: 1.35rem 1.35rem 1.25rem;
+  border: 1px solid rgba(246, 224, 138, 0.26);
+  border-radius: 1.5rem;
+  background:
+    linear-gradient(180deg, rgba(17, 21, 18, 0.92), rgba(7, 9, 8, 0.96)),
+    #0b0d0c;
+  color: #f8f2d8;
+  box-shadow: 0 1.3rem 3.6rem rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.game-route-boot-card.is-error {
+  border-color: rgba(255, 98, 98, 0.4);
+  background:
+    linear-gradient(180deg, rgba(28, 10, 10, 0.94), rgba(10, 5, 5, 0.97)),
+    #120808;
+}
+
+.game-route-boot-kicker,
+.game-route-boot-status-label {
+  margin: 0;
+  color: #f6e08a;
+  font:
+    700
+    0.78rem/1.3
+    "Trebuchet MS",
+    Verdana,
+    Tahoma,
+    sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.game-route-boot-card.is-error .game-route-boot-kicker,
+.game-route-boot-card.is-error .game-route-boot-status-label {
+  color: #ff9e9e;
+}
+
+.game-route-boot-title {
+  margin: 0.55rem 0 0;
+  font-size: clamp(2.1rem, 5vw, 3.7rem);
+  line-height: 0.96;
+}
+
+.game-route-boot-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.9rem;
+}
+
+.game-route-boot-meta span {
+  padding: 0.38rem 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(248, 242, 216, 0.88);
+  font-size: 0.82rem;
+  line-height: 1;
+}
+
+.game-route-boot-summary {
+  margin: 1rem 0 0;
+  color: rgba(248, 242, 216, 0.84);
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+.game-route-boot-status-block {
+  margin-top: 1.15rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.game-route-boot-status-text {
+  margin: 0.38rem 0 0;
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.game-route-boot-progress-shell {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+.game-route-boot-progress-track {
+  position: relative;
+  flex: 1;
+  height: 0.45rem;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.game-route-boot-progress-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #f6e08a 0%, #fff1bb 100%);
+}
+
+.game-route-boot-progress-value {
+  min-width: 2.8rem;
+  color: rgba(248, 242, 216, 0.84);
+  font:
+    700
+    0.82rem/1
+    "Trebuchet MS",
+    Verdana,
+    Tahoma,
+    sans-serif;
+  text-align: right;
+}
+
+.game-route-shell:fullscreen {
+  width: 100%;
+  height: 100%;
+}
+
+.game-route-shell:-webkit-full-screen {
+  width: 100%;
+  height: 100%;
+}
+
+.game-route-shell:fullscreen .game-route-frame,
+.game-route-shell:-webkit-full-screen .game-route-frame {
+  width: 100%;
+  height: 100%;
+}
+
+.game-route-controls {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.game-route-control-group {
+  position: fixed;
+  top: max(1rem, env(safe-area-inset-top));
+  display: flex;
+  gap: 0.625rem;
+  pointer-events: none;
+}
+
+.game-route-control-group.is-left {
+  left: min(max(0.5rem, env(safe-area-inset-left)), 1rem);
+}
+
+.game-route-control-group.is-right {
+  right: min(max(0.5rem, env(safe-area-inset-right)), 1rem);
+}
+
+.game-route-control-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 0.45rem 1.4rem rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.game-route-control-button:hover,
+.game-route-control-button:focus-visible {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #fff;
+  box-shadow: 0 0.7rem 1.8rem rgba(0, 0, 0, 0.26);
+  transform: translateY(-1px);
+}
+
+.game-route-control-button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.72);
+  outline-offset: 2px;
+}
+
+.game-route-control-button.is-exit svg {
+  transform: scaleX(-1);
+}
+
+.game-route-control-button.is-touch-toggle {
+  position: relative;
+  color: rgba(248, 242, 216, 0.94);
+}
+
+.game-route-control-button.is-touch-toggle svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.game-route-control-button.is-touch-toggle[data-mode="right"] {
+  border-color: rgba(246, 224, 138, 0.48);
+  color: #f6e08a;
+}
+
+.game-route-control-button.is-touch-toggle[data-mode="right"]:hover,
+.game-route-control-button.is-touch-toggle[data-mode="right"]:focus-visible {
+  border-color: rgba(246, 224, 138, 0.72);
+  color: #fff3b8;
+}
+
+.game-route-bottom-actions {
+  position: fixed;
+  right: min(max(0.75rem, env(safe-area-inset-right)), 1rem);
+  bottom: min(max(0.75rem, env(safe-area-inset-bottom)), 1rem);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.game-route-skip-intro-button {
+  min-width: 8rem;
+  min-height: 2.75rem;
+  padding: 0.75rem 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 0.85rem 2.2rem rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font:
+    700
+    0.92rem/1
+    "Trebuchet MS",
+    Verdana,
+    Tahoma,
+    sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    background-color 160ms ease;
+}
+
+.game-route-skip-intro-button:hover,
+.game-route-skip-intro-button:focus-visible {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #fff;
+  box-shadow: 0 1rem 2.4rem rgba(0, 0, 0, 0.38);
+  transform: translateY(-1px);
+}
+
+.game-route-skip-intro-button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 2px;
+}
+
+.game-route-mobile-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding:
+    max(1rem, env(safe-area-inset-top))
+    max(1rem, env(safe-area-inset-right))
+    max(1rem, env(safe-area-inset-bottom))
+    max(1rem, env(safe-area-inset-left));
+  background: rgba(0, 0, 0, 0.76);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.game-route-mobile-card {
+  width: min(100%, 22rem);
+  padding: 1.2rem 1.1rem;
+  border: 1px solid rgba(246, 224, 138, 0.34);
+  border-radius: 1.1rem;
+  background:
+    linear-gradient(180deg, rgba(22, 25, 22, 0.96), rgba(10, 11, 10, 0.96)),
+    #111;
+  color: #f8f2d8;
+  text-align: center;
+  box-shadow: 0 1.2rem 3rem rgba(0, 0, 0, 0.42);
+}
+
+.game-route-mobile-title {
+  margin: 0;
+  color: #f6e08a;
+  font:
+    700
+    1rem/1.3
+    "Trebuchet MS",
+    Verdana,
+    Tahoma,
+    sans-serif;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.game-route-mobile-copy {
+  margin: 0.75rem 0 0;
+  color: rgba(248, 242, 216, 0.88);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.game-route-mobile-button {
+  margin-top: 1rem;
+  width: 100%;
+  min-height: 2.85rem;
+  border: 1px solid rgba(246, 224, 138, 0.48);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #f6e08a 0%, #d7bd62 100%);
+  color: #141414;
+  font:
+    700
+    0.95rem/1
+    "Trebuchet MS",
+    Verdana,
+    Tahoma,
+    sans-serif;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    filter 160ms ease;
+}
+
+.game-route-mobile-button:hover,
+.game-route-mobile-button:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 0.7rem 1.8rem rgba(0, 0, 0, 0.26);
+  filter: brightness(1.03);
+}
+
+.game-route-mobile-button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  .dashboard-nav,
+  .site-footer {
+    flex-wrap: wrap;
+  }
+
+  .nav-cluster-left,
+  .nav-actions,
+  .nav-links,
+  .footer-links,
+  .footer-tools {
+    width: 100%;
+  }
+
+  .nav-cluster-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .nav-brand-group {
+    width: 100%;
+  }
+
+  .nav-brand-logo {
+    height: 1.2rem;
+  }
+
+  .nav-brand-tagline {
+    font-size: 0.44rem;
+    letter-spacing: 0.16em;
+  }
+
+  .nav-links,
+  .nav-actions,
+  .footer-links,
+  .footer-tools {
+    justify-content: flex-start;
+  }
+
+  .hero-inner {
+    padding-top: 12rem;
+  }
+
+  .hero-metadata {
+    grid-template-columns: 1fr;
+  }
+
+  .game-detail-modal {
+    --game-detail-pad-top: max(0.75rem, env(safe-area-inset-top));
+    --game-detail-pad-right: max(0.75rem, env(safe-area-inset-right));
+    --game-detail-pad-bottom: max(0.75rem, env(safe-area-inset-bottom));
+    --game-detail-pad-left: max(0.75rem, env(safe-area-inset-left));
+  }
+
+  .game-detail-panel {
+    width: 100%;
+  }
+
+  .game-detail-visual-copy,
+  .game-detail-copy {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .game-detail-metadata {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .game-route-boot-content {
+    align-items: flex-end;
+  }
+
+}
+
+@media (max-width: 640px) {
+  .dashboard-nav,
+  .hero-inner,
+  .content-band,
+  .site-footer {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .dashboard-nav {
+    position: fixed;
+    align-items: flex-start;
+    min-height: 6rem;
+    padding-top: calc(max(0.45rem, env(safe-area-inset-top)) + 0.35rem);
+    padding-bottom: 0.85rem;
+    background: rgba(17, 17, 17, 0.92);
+    backdrop-filter: none;
+  }
+
+  .nav-cluster-left {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 0.55rem 0.9rem;
+    padding-right: 3rem;
+  }
+
+  .nav-brand-group {
+    width: auto;
+    min-width: 0;
+  }
+
+  .nav-brand-stack {
+    min-width: 0;
+  }
+
+  .nav-brand-tagline {
+    max-width: 16ch;
+    white-space: normal;
+  }
+
+  .nav-links {
+    width: auto;
+    gap: 0.9rem;
+    align-self: start;
+    padding-top: 0.12rem;
+  }
+
+  .nav-links a {
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+  }
+
+  .nav-actions {
+    position: absolute;
+    top: calc(max(0.45rem, env(safe-area-inset-top)) + 0.2rem);
+    right: 1rem;
+    width: auto;
+  }
+
+  .nav-icon-link {
+    width: 2.1rem;
+    height: 2.1rem;
+  }
+
+  .hero-stage {
+    min-height: 48rem;
+  }
+
+  .hero-backdrop-image {
+    transform: none;
+  }
+
+  .hero-gradient {
+    background: linear-gradient(
+      180deg,
+      rgba(19, 19, 19, 0.08) 0%,
+      rgba(19, 19, 19, 0.56) 58%,
+      var(--surface) 100%
+    );
+  }
+
+  .hero-stage.tone-sky .hero-backdrop::after {
+    background:
+      linear-gradient(180deg, rgba(7, 12, 10, 0.18), rgba(7, 12, 10, 0.54)),
+      linear-gradient(
+        135deg,
+        rgba(16, 33, 26, 0.22) 0%,
+        rgba(21, 40, 45, 0.42) 55%,
+        rgba(21, 40, 45, 0.18) 100%
+      );
+  }
+
+  .hero-stage.tone-dreamweb .hero-backdrop::after {
+    background:
+      linear-gradient(180deg, rgba(7, 12, 10, 0.18), rgba(7, 12, 10, 0.58)),
+      linear-gradient(
+        135deg,
+        rgba(15, 30, 24, 0.28) 0%,
+        rgba(16, 40, 39, 0.48) 42%,
+        rgba(11, 17, 21, 0.3) 100%
+      );
+  }
+
+  .hero-stage.tone-default .hero-backdrop::after {
+    background:
+      linear-gradient(180deg, rgba(7, 12, 10, 0.18), rgba(7, 12, 10, 0.54)),
+      linear-gradient(
+        135deg,
+        rgba(18, 28, 21, 0.22) 0%,
+        rgba(14, 20, 20, 0.4) 100%
+      );
+  }
+
+  .hero-copy {
+    min-height: 32rem;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(3rem, 15vw, 4.4rem);
+  }
+
+  .hero-actions {
+    width: 100%;
+  }
+
+  .project-notice-links {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .project-notice-panel {
+    padding: 1.3rem;
+  }
+
+  .project-notice-dismiss {
+    width: 100%;
+  }
+
+  .launch-button,
+  .secondary-button {
+    width: 100%;
+  }
+
+  .secondary-button {
+    backdrop-filter: none;
+  }
+
+  .game-detail-modal {
+    --game-detail-pad-top: max(0.5rem, env(safe-area-inset-top));
+    --game-detail-pad-right: max(0.75rem, env(safe-area-inset-right));
+    --game-detail-pad-bottom: max(0.75rem, env(safe-area-inset-bottom));
+    --game-detail-pad-left: max(0.75rem, env(safe-area-inset-left));
+  }
+
+  .game-detail-visual {
+    display: flex;
+    align-items: flex-end;
+    min-height: 24rem;
+  }
+
+  .game-detail-visual-copy,
+  .game-detail-copy {
+    padding: 1.25rem;
+  }
+
+  .game-detail-visual-copy {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    margin-top: auto;
+    padding-top: 4.5rem;
+  }
+
+  .game-detail-visual-copy h2 {
+    font-size: clamp(2.35rem, 10.5vw, 3.6rem);
+  }
+
+  .game-detail-actions {
+    width: 100%;
+  }
+
+  .game-detail-metadata {
+    grid-template-columns: 1fr;
+  }
+
+  .game-detail-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .spotlight-card {
+    flex-direction: column;
+  }
+
+  .spotlight-media {
+    width: 100%;
+    min-height: 8rem;
+  }
+
+  .game-route-boot-content {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .game-route-boot-card {
+    width: 100%;
+    padding: 1.15rem 1rem 1rem;
+    border-radius: 1.15rem;
+  }
+
+  .game-route-boot-title {
+    font-size: clamp(2rem, 11vw, 3rem);
+  }
+
+  .game-route-boot-summary {
+    font-size: 0.94rem;
+  }
+
+  .game-route-boot-progress-shell {
+    gap: 0.6rem;
+  }
+
+}

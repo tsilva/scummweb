@@ -113,6 +113,7 @@ pnpm run build:bundle
 pnpm run archive:bundle
 pnpm run publish:games
 pnpm run verify
+pnpm run sentry:issues -- --help
 ```
 
 Legacy aliases are still available:
@@ -136,6 +137,24 @@ pnpm run games:upload
 | `SCUMMVM_GAMES_ORIGIN` | Override the production games origin used by generated metadata and runtime mounts |
 | `SCUMMVM_GAMES_UPLOAD_DIR` | Override the upload source directory; defaults to `dist/games/` |
 | `NEXT_PUBLIC_SITE_URL` | Override the production site URL used for metadata, sitemap, and robots |
+| `NEXT_PUBLIC_SENTRY_ENABLED` | Optional override to force Sentry on or off locally (`true` or `false`) |
+| `NEXT_PUBLIC_SENTRY_DSN` | Browser runtime DSN; required in production for client-side event capture |
+| `SENTRY_DSN` | Optional server and edge runtime DSN; falls back to `NEXT_PUBLIC_SENTRY_DSN` when unset |
+| `SENTRY_TRACES_SAMPLE_RATE` | Optional tracing sample rate override; defaults to `0.1` |
+| `SENTRY_ENVIRONMENT` | Optional explicit Sentry environment name |
+
+## Sentry
+
+- Runtime Sentry init is centralized in `sentry.runtime.config.js`.
+- Runtime event capture stays off unless the relevant runtime DSN is present; there is no hardcoded DSN fallback.
+- Production builds load `.env.sentry-build-plugin` so source map upload uses the ignored token file the repo already keeps locally.
+- Issue queries use `.env.sentry-mcp` through:
+
+```bash
+pnpm run sentry:issues -- --days 7 --limit 5
+```
+
+- Use `.env.sentry-mcp.example` and `.env.sentry-build-plugin.example` as the committed templates.
 
 ## Notes
 

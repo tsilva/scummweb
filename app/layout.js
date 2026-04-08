@@ -1,11 +1,12 @@
 import { Inter, Space_Grotesk } from "next/font/google";
 import Script from "next/script";
+import { GOOGLE_ANALYTICS_ID } from "../lib/site-config.mjs";
 import { getVersionedSiteAssetPath } from "./asset-paths";
 import { APP_THEME_COLOR, HOME_DESCRIPTION, HOME_TITLE, SITE_NAME } from "./seo";
 import { getMetadataBase } from "./site-config";
 import "./globals.css";
-
-const GOOGLE_ANALYTICS_ID = "G-60XHS2QKX7";
+import "./styles/home-shell.css";
+import "./styles/game-player.css";
 
 const inter = Inter({
   display: "optional",

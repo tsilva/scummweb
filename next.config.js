@@ -1,3 +1,45 @@
+const fs = require("node:fs");
+const path = require("node:path");
+const { withSentryConfig } = require("@sentry/nextjs");
+
+function loadIgnoredEnvFile(filename) {
+  const filePath = path.join(__dirname, filename);
+
+  if (!fs.existsSync(filePath)) {
+    return;
+  }
+
+  const raw = fs.readFileSync(filePath, "utf8");
+
+  for (const line of raw.split(/\r?\n/)) {
+    const trimmed = line.trim();
+
+    if (!trimmed || trimmed.startsWith("#")) {
+      continue;
+    }
+
+    const separatorIndex = trimmed.indexOf("=");
+
+    if (separatorIndex === -1) {
+      continue;
+    }
+
+    const key = trimmed.slice(0, separatorIndex).trim();
+    let value = trimmed.slice(separatorIndex + 1).trim();
+
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+
+    if (!(key in process.env)) {
+      process.env[key] = value;
+    }
+  }
+}
+
 function getScummvmAssetVersion() {
   const rawVersion =
     process.env.SCUMMVM_ASSET_VERSION ||
@@ -19,26 +61,38 @@ function getDistDir() {
   return `.next-dev-${process.pid}`;
 }
 
+function getSentryEnabledDefault() {
+  return process.env.VERCEL_ENV === "production" ? "true" : "false";
+}
+
+function getSentryEnvironment() {
+  return (
+    process.env.SENTRY_ENVIRONMENT ||
+    process.env.VERCEL_ENV ||
+    process.env.NODE_ENV ||
+    "development"
+  );
+}
+
+loadIgnoredEnvFile(".env.sentry-build-plugin");
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   distDir: getDistDir(),
   env: {
+    NEXT_PUBLIC_SENTRY_ENABLED_DEFAULT: getSentryEnabledDefault(),
+    NEXT_PUBLIC_SENTRY_ENVIRONMENT: getSentryEnvironment(),
     NEXT_PUBLIC_SCUMMVM_ASSET_VERSION: getScummvmAssetVersion(),
   },
 };
-module.exports = nextConfig;
 
-
-// Injected content via Sentry wizard below
-
-const { withSentryConfig } = require("@sentry/nextjs");
-
-module.exports = withSentryConfig(module.exports, {
+module.exports = withSentryConfig(nextConfig, {
   // For all available options, see:
   // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
-  org: "tsilva",
-  project: "scummweb",
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+  org: process.env.SENTRY_ORG || "tsilva",
+  project: process.env.SENTRY_PROJECT || "scummweb",
 
   // Only print logs for uploading source maps in CI
   silent: !process.env.CI,

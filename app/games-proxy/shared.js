@@ -1,7 +1,6 @@
-export const gamesOrigin = (process.env.SCUMMVM_GAMES_ORIGIN || "https://scummvm-games.tsilva.eu").replace(
-  /\/$/,
-  ""
-);
+import { getGamesOrigin, getSiteUrl } from "../../lib/site-config.mjs";
+
+export const gamesOrigin = getGamesOrigin();
 
 const passthroughHeaderNames = [
   "accept-ranges",
@@ -19,7 +18,7 @@ const upstreamBaseHeaders = {
   "Accept-Language": "en-US,en;q=0.9",
   "Cache-Control": "no-cache",
   Pragma: "no-cache",
-  Referer: "https://scummweb.tsilva.eu/",
+  Referer: `${getSiteUrl()}/`,
   "User-Agent":
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
 };
