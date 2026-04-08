@@ -10,12 +10,12 @@ EMSDK_DIR="$SCUMMVM_DIR/dists/emscripten/emsdk-$EMSDK_VERSION"
 DIST_DIR="$ROOT_DIR/public"
 
 if [[ ! -d "$DIST_DIR" ]]; then
-  echo "Missing public/. Run ./scripts/build_bass_web.sh first." >&2
+  echo "Missing public/. Run ./scripts/build_scummvm_web.sh first." >&2
   exit 1
 fi
 
 if [[ ! -d "$EMSDK_DIR" ]]; then
-  echo "Missing emsdk. Run ./scripts/build_bass_web.sh first." >&2
+  echo "Missing emsdk. Run ./scripts/build_scummvm_web.sh first." >&2
   exit 1
 fi
 

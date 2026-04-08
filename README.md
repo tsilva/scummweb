@@ -58,7 +58,7 @@ Run the main verification path:
 pnpm run verify
 ```
 
-`scripts/verify_bass_web.sh` validates the tracked shell in `public/`, builds the app, launches Chromium through Playwright, verifies the launcher, and boots each detected target.
+`scripts/verify_scummvm_web.sh` validates the tracked shell in `public/`, builds the app, launches Chromium through Playwright, verifies the launcher, and boots each detected target.
 
 ## Generated Files Policy
 
