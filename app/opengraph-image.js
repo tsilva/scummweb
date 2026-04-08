@@ -15,6 +15,7 @@ export const size = {
 };
 
 export const contentType = "image/png";
+export const dynamic = "force-dynamic";
 
 function getOpenGraphBackgroundPath(pathname) {
   if (!pathname) {
