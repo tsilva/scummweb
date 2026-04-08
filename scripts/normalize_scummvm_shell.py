@@ -31,9 +31,18 @@ allowed_engine_ids = {
     "sword25",
 }
 section_overrides = {
-    "drascula": {
+    section_name: {
         "subtitles": "true",
-    },
+    }
+    for section_name in (
+        "drascula",
+        "dreamweb-cd",
+        "lure",
+        "nippon-amiga",
+        "queen",
+        "sky",
+        "sword25",
+    )
 }
 seen_game_ids = set()
 
