@@ -30,6 +30,11 @@ allowed_engine_ids = {
     "parallaction",
     "sword25",
 }
+section_overrides = {
+    "drascula": {
+        "subtitles": "true",
+    },
+}
 seen_game_ids = set()
 
 lines = ini_path.read_text().splitlines()
@@ -52,21 +57,36 @@ for line in lines:
         current["values"][key.strip()] = value.strip()
 
 
-def normalize_section_lines(section_lines, game_id):
+def normalize_section_lines(section_name, section_lines, game_id):
     normalized_path = f"path=/games/{game_id}"
+    overrides = section_overrides.get(section_name, {})
     normalized_lines = []
     found_path = False
+    seen_keys = set()
 
     for line in section_lines:
         if line.startswith("path="):
             normalized_lines.append(normalized_path)
             found_path = True
+            seen_keys.add("path")
             continue
+
+        if "=" in line:
+            key, _ = line.split("=", 1)
+            normalized_key = key.strip()
+            seen_keys.add(normalized_key)
+            if normalized_key in overrides:
+                normalized_lines.append(f"{normalized_key}={overrides[normalized_key]}")
+                continue
 
         normalized_lines.append(line)
 
     if not found_path:
         normalized_lines.append(normalized_path)
+
+    for key, value in overrides.items():
+        if key not in seen_keys:
+            normalized_lines.append(f"{key}={value}")
 
     return normalized_lines
 
@@ -93,7 +113,7 @@ for section in sections:
             raise SystemExit(f"Duplicate gameid '{game_id}' for kept ScummVM target: {name}")
 
         seen_game_ids.add(game_id)
-        kept_lines.extend(normalize_section_lines(section["lines"], game_id))
+        kept_lines.extend(normalize_section_lines(name, section["lines"], game_id))
         continue
 
     if game_path == "/games":

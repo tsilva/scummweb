@@ -13,6 +13,8 @@
     "bundle:archive": "pnpm run archive:bundle",
     "games:upload": "pnpm run publish:games",
     "verify": "./scripts/verify_bass_web.sh",
+    "sentry:issues": "node ./scripts/list_sentry_issues.mjs",
+    "test": "node --test test/*.test.mjs",
     "dev": "pnpm run prepare && next dev",
     "build": "pnpm run prepare && next build",
     "start": "pnpm run prepare && next start"

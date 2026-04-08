@@ -1,11 +1,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { getGamesOrigin } from "../lib/site-config.mjs";
 
 const [iniPath, libraryOutPath] = process.argv.slice(2);
-const gamesOrigin = (process.env.SCUMMVM_GAMES_ORIGIN || "https://scummvm-games.tsilva.eu").replace(
-  /\/$/,
-  ""
-);
+const gamesOrigin = getGamesOrigin();
 
 if (!iniPath || !libraryOutPath) {
   throw new Error("usage: create_launcher_metadata.mjs <scummvm.ini> <library-out.json>");

@@ -8,6 +8,12 @@ import sys
 path = Path(sys.argv[1])
 html_text = path.read_text()
 updated_html = html_text.replace("<title>ScummVM</title>", "<title>scummweb</title>", 1)
+updated_html = re.sub(
+    r'canvas\.emscripten\{border:0 none;background:url\("logo\.svg(?:\?v=[^"]+)?"\);background-position:center;background-repeat:no-repeat;background-color:#c60;position:absolute;top:0;left:0;margin:0;width:100%;height:100%;overflow:hidden;display:block\}@media \(orientation:landscape\)\{canvas\.emscripten\{background-size:auto 33%\}\}@media \(orientation:portrait\)\{canvas\.emscripten\{background-size:80% auto\}\}',
+    "canvas.emscripten{border:0 none;background:#000;position:absolute;top:0;left:0;margin:0;width:100%;height:100%;overflow:hidden;display:block}",
+    updated_html,
+    count=1,
+)
 asset_version = os.environ.get("SCUMMVM_BUNDLE_ASSET_VERSION", "dev")
 redirect_script = """<script>(function(){
 const exitTo=new URLSearchParams(window.location.search).get("exitTo");

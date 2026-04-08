@@ -1,4 +1,7 @@
 import {
+  SCUMMVM_OFFICIAL_SITE_URL,
+} from "../lib/site-config.mjs";
+import {
   getVersionedSiteAssetPath,
 } from "./game-library";
 import { getHomeShellData, getPresentedGameByTarget } from "./game-page-data";
@@ -10,16 +13,15 @@ import {
   HOME_FEATURED_GAME_TARGET,
 } from "./seo";
 
-const scummvmOfficialSite = "https://www.scummvm.org/";
 export const dynamic = "force-static";
 
-export async function generateMetadata() {
-  const featuredGame = await getPresentedGameByTarget(HOME_FEATURED_GAME_TARGET);
+export function generateMetadata() {
+  const featuredGame = getPresentedGameByTarget(HOME_FEATURED_GAME_TARGET);
   return buildHomeMetadata(featuredGame);
 }
 
-export default async function HomePage() {
-  const shellData = await getHomeShellData({
+export default function HomePage() {
+  const shellData = getHomeShellData({
     featuredGameTarget: HOME_FEATURED_GAME_TARGET,
   });
 
@@ -36,7 +38,7 @@ export default async function HomePage() {
         logoSrc={getVersionedSiteAssetPath("/logo.svg")}
         pageMode="home"
         scummvmVersion={shellData.scummvmVersion}
-        scummvmOfficialSite={scummvmOfficialSite}
+        scummvmOfficialSite={SCUMMVM_OFFICIAL_SITE_URL}
         sourceInfoDate={shellData.sourceInfoDate}
       />
     </>

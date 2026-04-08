@@ -13,8 +13,8 @@ function getAbsoluteAssetUrl(pathname) {
   return new URL(pathname, `${getSiteUrl()}/`).toString();
 }
 
-export default async function OpenGraphImage({ params }) {
-  const game = await getPresentedGameBySlug(params.gameSlug);
+export default function OpenGraphImage({ params }) {
+  const game = getPresentedGameBySlug(params.gameSlug);
   const backgroundImage = game?.spotlightImage || game?.posterImage || game?.heroImage || "";
   const backgroundUrl = backgroundImage ? getAbsoluteAssetUrl(backgroundImage) : "";
 

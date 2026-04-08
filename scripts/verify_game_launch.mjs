@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright-core";
+import { getBundledGameLibrary } from "../lib/catalog.mjs";
 import { normalizeSkipIntroConfig } from "../app/skip-intro-config.mjs";
 
 const [url, screenshotPath] = process.argv.slice(2);
@@ -23,77 +24,13 @@ if (!executablePath) {
   throw new Error("No local Chrome/Chromium installation found for Playwright");
 }
 
-function getDisplayTitle(title) {
-  return title.replace(/\s+\([^)]*\)$/, "");
-}
-
-function slugifySegment(value) {
-  return value
-    .toLowerCase()
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/&/g, " and ")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .replace(/-{2,}/g, "-");
-}
-
-function getUniqueGameSlug(game, usedSlugs) {
-  const baseSlug = slugifySegment(getDisplayTitle(game.title || ""));
-  const targetSlug = slugifySegment(game.target || "game") || "game";
-  const preferredSlug = baseSlug || targetSlug;
-
-  if (!usedSlugs.has(preferredSlug)) {
-    usedSlugs.add(preferredSlug);
-    return preferredSlug;
-  }
-
-  const fallbackBase = `${preferredSlug}-${targetSlug}`.replace(/-{2,}/g, "-");
-  let suffix = 2;
-  let candidate = fallbackBase;
-
-  while (usedSlugs.has(candidate)) {
-    candidate = `${fallbackBase}-${suffix}`;
-    suffix += 1;
-  }
-
-  usedSlugs.add(candidate);
-  return candidate;
-}
-
 function readGameLibraryFromDisk() {
   const publicDir = path.join(rootDir, "public");
   const libraryPath = path.join(publicDir, "games.json");
-  const library = JSON.parse(fs.readFileSync(libraryPath, "utf8"));
-  const games = Array.isArray(library.games) ? library.games : [];
-
-  if (games.length === 0) {
-    throw new Error(`No installed game metadata found in ${libraryPath}`);
-  }
-
-  return {
-    games,
-    primaryTarget: library.primaryTarget || games[0]?.target || "",
-  };
-}
-
-function addGameRoutes(library) {
-  const usedSlugs = new Set();
-
-  return {
-    ...library,
-    games: library.games.map((game) => {
-      const slug = getUniqueGameSlug(game, usedSlugs);
-
-      return {
-        ...game,
-        displayTitle: getDisplayTitle(game.title),
-        skipIntro: normalizeSkipIntroConfig(game.skipIntro),
-        playPath: `/${slug}/play`,
-        routePath: `/${slug}`,
-      };
-    }),
-  };
+  return getBundledGameLibrary(JSON.parse(fs.readFileSync(libraryPath, "utf8")), {
+    emptyLibraryMessage: `No installed game metadata found in ${libraryPath}`,
+    normalizeSkipIntro: normalizeSkipIntroConfig,
+  });
 }
 
 function escapeRegExp(value) {
@@ -217,7 +154,7 @@ async function verifyLaunchOverlayAfterStartup(page, game) {
 async function verifyTarget(context, baseUrl, game, { waitForLaunch = true } = {}) {
   const page = await context.newPage();
   const pageErrors = [];
-  const routeUrl = new URL(game.playPath || game.routePath, baseUrl).toString();
+  const routeUrl = new URL(game.playHref || game.href, baseUrl).toString();
 
   page.on("pageerror", (error) => {
     pageErrors.push(error.message);
@@ -593,7 +530,7 @@ async function verifyCursorGrabHintHiddenDuringBoot(page, game) {
   const frame = page.frameLocator('iframe[data-scummvm-route-frame="true"]');
   const canvas = frame.locator("#canvas");
 
-  await canvas.hover({ force: true });
+  await canvas.waitFor({ timeout: 30000 });
   await page.waitForTimeout(200);
 
   const initialState = await canvas.evaluate((element, currentGameTarget) => {
@@ -875,7 +812,7 @@ if (normalizeUrl(rootPage.url()) !== normalizeUrl(url)) {
   throw new Error(`Root page redirected unexpectedly to ${rootPage.url()}`);
 }
 
-const library = addGameRoutes(readGameLibraryFromDisk());
+const library = readGameLibraryFromDisk();
 
 if (!Array.isArray(library.games) || library.games.length === 0) {
   throw new Error("No games found in launcher metadata");
@@ -911,9 +848,9 @@ if (normalizeUrl(rootPage.url()) !== normalizeUrl(url)) {
 const featuredLaunchHref = await featuredDialog
   .locator(".game-detail-actions .launch-button")
   .getAttribute("href");
-if (featuredLaunchHref !== library.games[0].playPath) {
+if (featuredLaunchHref !== library.games[0].playHref) {
   throw new Error(
-    `Modal launch button pointed to ${featuredLaunchHref} instead of ${library.games[0].playPath}`
+    `Modal launch button pointed to ${featuredLaunchHref} instead of ${library.games[0].playHref}`
   );
 }
 
@@ -959,7 +896,7 @@ for (const game of library.games) {
   await verifyEscapeStaysInGame(page, frame, routeUrl);
   await verifySkipIntroButton(page, frame, game, routeUrl);
   await verifyScummvmMenuButton(page, frame, routeUrl);
-  await verifyQuitReturnsHome(page, frame, new URL(game.routePath, url).toString());
+  await verifyQuitReturnsHome(page, frame, new URL(game.href, url).toString());
 
   screenshotPage = page;
 }
