@@ -1,5 +1,11 @@
 import LaunchButton from "./launch-button";
 import RecentGamesRail from "./recent-games-rail";
+import {
+  HOME_BROWSE_LABEL,
+  HOME_HERO_KICKER,
+  HOME_HERO_SUMMARY,
+  HOME_HERO_TITLE,
+} from "./seo";
 
 function formatGameCount(count) {
   return `${count} game${count === 1 ? "" : "s"} installed`;
@@ -107,10 +113,12 @@ export default function HomeShell({
   catalog,
   featuredGame,
   logoSrc,
+  pageMode = "game",
   scummvmVersion,
   scummvmOfficialSite,
   sourceInfoDate,
 }) {
+  const isHomePage = pageMode === "home";
   const featuredDialogId = getDialogId(featuredGame);
   const installedCatalog = [...catalog].sort((left, right) => {
     const leftIndex = installedLibraryOrder.indexOf(left.target);
@@ -124,6 +132,26 @@ export default function HomeShell({
 
     return left.displayTitle.localeCompare(right.displayTitle);
   });
+  const heroKicker = isHomePage ? HOME_HERO_KICKER : featuredGame.eyebrow;
+  const heroTitle = isHomePage ? HOME_HERO_TITLE : featuredGame.displayTitle;
+  const heroSummary = isHomePage ? HOME_HERO_SUMMARY : featuredGame.summary;
+  const primaryActionLabel = isHomePage ? `Play ${featuredGame.displayTitle}` : "Play";
+  const secondaryActionHref = isHomePage ? "#library" : `#${featuredDialogId}`;
+  const secondaryActionLabel = isHomePage ? HOME_BROWSE_LABEL : "More Info";
+  const heroMetadata = isHomePage
+    ? [
+        { label: "Flagship classic", value: featuredGame.displayTitle },
+        { label: "Collection", value: "Freeware adventures" },
+      ]
+    : [
+        { label: "Studio", value: featuredGame.studio },
+        { label: "Genre", value: featuredGame.genre },
+      ];
+  const heroStatus = isHomePage
+    ? [formatGameCount(catalog.length), "Freeware classics", "Instant browser play"]
+    : [formatGameCount(catalog.length), featuredGame.target, featuredGame.badge];
+  const recentHeading = "Browser-Playable Classics";
+  const libraryHeading = "Freeware Adventure Library";
 
   return (
     <>
@@ -143,7 +171,7 @@ export default function HomeShell({
                     width="1884"
                   />
                 </a>
-                <p className="nav-brand-tagline">Unofficial ScummVM WASM port</p>
+                <p className="nav-brand-tagline">Classic freeware adventures in your browser</p>
               </div>
             </div>
 
@@ -183,40 +211,42 @@ export default function HomeShell({
 
           <div className="hero-inner">
             <div className="hero-copy">
-              <p className="hero-kicker">{featuredGame.eyebrow}</p>
+              <p className="hero-kicker">{heroKicker}</p>
               <h1>
-                <a
-                  href={featuredGame.href}
-                  style={{ color: "inherit", textDecoration: "none" }}
-                >
-                  {featuredGame.displayTitle}
-                </a>
+                {isHomePage ? (
+                  heroTitle
+                ) : (
+                  <a
+                    href={featuredGame.href}
+                    style={{ color: "inherit", textDecoration: "none" }}
+                  >
+                    {heroTitle}
+                  </a>
+                )}
               </h1>
-              <p className="hero-summary">{featuredGame.summary}</p>
+              <p className="hero-summary">{heroSummary}</p>
 
               <div className="hero-actions">
-                <LaunchButton href={featuredGame.playHref} label="Play" />
-                <a className="secondary-button" href={`#${featuredDialogId}`}>
-                  <Icon name="info" />
-                  <span>More Info</span>
+                <LaunchButton href={featuredGame.playHref} label={primaryActionLabel} />
+                <a className="secondary-button" href={secondaryActionHref}>
+                  {!isHomePage ? <Icon name="info" /> : null}
+                  <span>{secondaryActionLabel}</span>
                 </a>
               </div>
 
               <dl className="hero-metadata">
-                <div>
-                  <dt>Studio</dt>
-                  <dd>{featuredGame.studio}</dd>
-                </div>
-                <div>
-                  <dt>Genre</dt>
-                  <dd>{featuredGame.genre}</dd>
-                </div>
+                {heroMetadata.map((item) => (
+                  <div key={item.label}>
+                    <dt>{item.label}</dt>
+                    <dd>{item.value}</dd>
+                  </div>
+                ))}
               </dl>
 
               <div className="hero-status">
-                <span>{formatGameCount(catalog.length)}</span>
-                <span>{featuredGame.target}</span>
-                <span>{featuredGame.badge}</span>
+                {heroStatus.map((item) => (
+                  <span key={item}>{item}</span>
+                ))}
               </div>
             </div>
           </div>
@@ -227,7 +257,7 @@ export default function HomeShell({
             <div className="section-header">
               <h2>
                 <span className="section-mark" />
-                Recently Played
+                {recentHeading}
               </h2>
             </div>
 
@@ -238,7 +268,7 @@ export default function HomeShell({
             <div className="section-header">
               <h2>
                 <span className="section-mark" />
-                Installed Library
+                {libraryHeading}
               </h2>
             </div>
 

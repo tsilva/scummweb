@@ -1,11 +1,11 @@
 import { Inter, Space_Grotesk } from "next/font/google";
 import Script from "next/script";
 import { getVersionedSiteAssetPath } from "./asset-paths";
+import { APP_THEME_COLOR, HOME_DESCRIPTION, HOME_TITLE, SITE_NAME } from "./seo";
 import { getMetadataBase } from "./site-config";
 import "./globals.css";
 
 const GOOGLE_ANALYTICS_ID = "G-60XHS2QKX7";
-const APP_THEME_COLOR = "#1a4d1a";
 
 const inter = Inter({
   display: "optional",
@@ -21,15 +21,14 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata = {
   metadataBase: getMetadataBase(),
-  applicationName: "scummweb",
-  title: "scummweb | Unofficial Browser WASM Fork",
-  description:
-    "Unofficial browser-targeted WebAssembly build forked from ScummVM, with source and license materials plus links to ScummVM.",
+  applicationName: SITE_NAME,
+  title: HOME_TITLE,
+  description: HOME_DESCRIPTION,
   manifest: getVersionedSiteAssetPath("/manifest.json"),
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "scummweb",
+    title: SITE_NAME,
   },
   icons: {
     icon: [

@@ -78,7 +78,7 @@ export default async function OpenGraphImage({ params }) {
             }}
           >
             <span style={{ color: "#9dd7a4" }}>scummweb</span>
-            <span style={{ opacity: 0.78 }}>Play instantly in your browser</span>
+            <span style={{ opacity: 0.78 }}>Classic adventure in your browser</span>
           </div>
 
           <div
@@ -123,11 +123,11 @@ export default async function OpenGraphImage({ params }) {
                 style={{
                   fontSize: "29px",
                   lineHeight: 1.35,
-                  color: "#e3e7da",
-                }}
+                color: "#e3e7da",
+              }}
               >
                 {game?.summary ||
-                  "Shareable browser landing pages for classic ScummVM adventures."}
+                  "Play classic freeware adventure games directly in your browser."}
               </div>
             </div>
           </div>
