@@ -60,11 +60,20 @@ for line in lines:
 def normalize_section_lines(section_name, section_lines, game_id):
     normalized_path = f"path=/games/{game_id}"
     overrides = section_overrides.get(section_name, {})
+    override_lines = {f"{key}={value}" for key, value in overrides.items()}
     normalized_lines = []
     found_path = False
     seen_keys = set()
+    trailing_blank_lines = 0
 
     for line in section_lines:
+        if line == "":
+            trailing_blank_lines += 1
+            normalized_lines.append(line)
+            continue
+
+        trailing_blank_lines = 0
+
         if line.startswith("path="):
             normalized_lines.append(normalized_path)
             found_path = True
@@ -84,9 +93,21 @@ def normalize_section_lines(section_name, section_lines, game_id):
     if not found_path:
         normalized_lines.append(normalized_path)
 
+    if trailing_blank_lines:
+        normalized_lines = normalized_lines[:-trailing_blank_lines]
+
     for key, value in overrides.items():
         if key not in seen_keys:
             normalized_lines.append(f"{key}={value}")
+
+    compacted_lines = []
+    for line in normalized_lines:
+        if line in override_lines and compacted_lines and compacted_lines[-1] == "":
+            compacted_lines.pop()
+        compacted_lines.append(line)
+
+    normalized_lines = compacted_lines
+    normalized_lines.extend([""] * trailing_blank_lines)
 
     return normalized_lines
 
