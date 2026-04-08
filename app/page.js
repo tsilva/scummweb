@@ -35,7 +35,7 @@ export default function HomePage() {
       <HomeShell
         catalog={shellData.catalog}
         featuredGame={shellData.featuredGame}
-        logoSrc={getVersionedSiteAssetPath("/logo.svg")}
+        logoSrc={getVersionedSiteAssetPath("/logo-nav.png")}
         pageMode="home"
         scummvmVersion={shellData.scummvmVersion}
         scummvmOfficialSite={SCUMMVM_OFFICIAL_SITE_URL}

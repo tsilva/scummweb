@@ -7,7 +7,7 @@ import assetConfig from "../lib/scummvm-shell-assets.js";
 
 const { managedPaths, requiredPaths, stalePaths } = assetConfig;
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const defaultPublicDir = path.join(rootDir, "public");
+const defaultShellDir = path.join(rootDir, "scummvm-shell");
 const skipNames = new Set([".DS_Store"]);
 
 function usage() {
@@ -16,6 +16,9 @@ function usage() {
       "usage:",
       "  manage_scummvm_assets.mjs sync <sourceDir> <targetDir>",
       "  manage_scummvm_assets.mjs validate [directory]",
+      "",
+      "defaults:",
+      "  validate => scummvm-shell/",
     ].join("\n")
   );
 }
@@ -67,7 +70,7 @@ function syncManagedAssets(sourceDir, targetDir) {
   }
 }
 
-function validateCommand(directory = defaultPublicDir) {
+function validateCommand(directory = defaultShellDir) {
   validateManagedDirectory(directory, directory);
 }
 
@@ -85,7 +88,7 @@ function main() {
       if (args.length > 1) {
         usage();
       }
-      validateCommand(args[0] ? path.resolve(rootDir, args[0]) : defaultPublicDir);
+      validateCommand(args[0] ? path.resolve(rootDir, args[0]) : defaultShellDir);
       return;
     default:
       usage();

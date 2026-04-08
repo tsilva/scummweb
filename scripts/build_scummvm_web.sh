@@ -6,7 +6,7 @@ ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 VENDOR_DIR="$ROOT_DIR/vendor"
 SCUMMVM_DIR="$VENDOR_DIR/scummvm"
 DIST_DIR="$ROOT_DIR/dist"
-PUBLIC_DIR="$ROOT_DIR/public"
+SHELL_DIR="$ROOT_DIR/scummvm-shell"
 DOWNLOADS_DIR="$ROOT_DIR/downloads"
 BASS_ZIP="$DOWNLOADS_DIR/bass-cd-1.2.zip"
 QUEEN_ORIGINAL_ARCHIVE="$DOWNLOADS_DIR/FOTAQ_Talkie-original.zip"
@@ -430,7 +430,7 @@ finalize_dist_workspace() {
   "$ROOT_DIR/scripts/finalize_scummvm_dist.sh" \
     "$SCUMMVM_DIR" \
     "$DIST_DIR" \
-    "$PUBLIC_DIR" \
+    "$SHELL_DIR" \
     "$EMSDK_NODE"
 }
 
@@ -463,7 +463,7 @@ main() {
   log_stage "Finalize dist shell"
   finalize_dist_workspace
 
-  echo "Built site in $DIST_DIR and synced deploy assets to $PUBLIC_DIR"
+  echo "Built site in $DIST_DIR and synced managed shell assets to $SHELL_DIR"
 }
 
 main "$@"

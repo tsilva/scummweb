@@ -13,10 +13,20 @@ function getAbsoluteAssetUrl(pathname) {
   return new URL(pathname, `${getSiteUrl()}/`).toString();
 }
 
+function getOpenGraphBackgroundPath(pathname) {
+  if (!pathname) {
+    return "";
+  }
+
+  return pathname.replace(/\.webp(?=(?:\?|$))/, ".jpg");
+}
+
 export default function OpenGraphImage({ params }) {
   const game = getPresentedGameBySlug(params.gameSlug);
   const backgroundImage = game?.spotlightImage || game?.posterImage || game?.heroImage || "";
-  const backgroundUrl = backgroundImage ? getAbsoluteAssetUrl(backgroundImage) : "";
+  const backgroundUrl = backgroundImage
+    ? getAbsoluteAssetUrl(getOpenGraphBackgroundPath(backgroundImage))
+    : "";
 
   return new ImageResponse(
     (
