@@ -2,7 +2,9 @@ export default function DecorativeImage({
   className,
   fetchPriority,
   loading = "lazy",
+  sizes,
   src,
+  srcSet,
   style,
 }) {
   if (!src) {
@@ -18,7 +20,9 @@ export default function DecorativeImage({
       decoding="async"
       fetchPriority={resolvedFetchPriority}
       loading={loading}
+      sizes={sizes}
       src={src}
+      srcSet={srcSet}
       style={style}
     />
   );

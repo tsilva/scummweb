@@ -1,5 +1,5 @@
-import gameLibraryData from "../public/games.json";
-import sourceInfoData from "../public/source-info.json";
+import gameLibraryData from "../scummvm-shell/games.json";
+import sourceInfoData from "../scummvm-shell/source-info.json";
 import { getBundledGameLibrary } from "../lib/catalog.mjs";
 import { normalizeSkipIntroConfig } from "./skip-intro-config.mjs";
 
@@ -12,7 +12,7 @@ export {
 
 export function getGameLibrary() {
   return getBundledGameLibrary(gameLibraryData, {
-    emptyLibraryMessage: "No installed game metadata found in public/games.json",
+    emptyLibraryMessage: "No installed game metadata found in scummvm-shell/games.json",
     normalizeSkipIntro: normalizeSkipIntroConfig,
   });
 }

@@ -7,10 +7,10 @@ SCUMMVM_DIR="$ROOT_DIR/vendor/scummvm"
 DEFAULT_EMSDK_VERSION="$(sed -n 's/^EMSDK_VERSION=\"\\([^\"]*\\)\"/\\1/p' "$SCUMMVM_DIR/dists/emscripten/build.sh" 2>/dev/null | head -n 1)"
 EMSDK_VERSION="${EMSDK_VERSION:-${DEFAULT_EMSDK_VERSION:-3.1.51}}"
 EMSDK_DIR="$SCUMMVM_DIR/dists/emscripten/emsdk-$EMSDK_VERSION"
-DIST_DIR="$ROOT_DIR/public"
+SHELL_DIR="$ROOT_DIR/scummvm-shell"
 
-if [[ ! -d "$DIST_DIR" ]]; then
-  echo "Missing public/. Run ./scripts/build_scummvm_web.sh first." >&2
+if [[ ! -d "$SHELL_DIR" ]]; then
+  echo "Missing scummvm-shell/. Run ./scripts/build_scummvm_web.sh first." >&2
   exit 1
 fi
 

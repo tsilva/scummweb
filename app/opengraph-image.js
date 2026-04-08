@@ -16,11 +16,21 @@ export const size = {
 
 export const contentType = "image/png";
 
+function getOpenGraphBackgroundPath(pathname) {
+  if (!pathname) {
+    return "";
+  }
+
+  return pathname.replace(/\.webp(?=(?:\?|$))/, ".jpg");
+}
+
 export default function OpenGraphImage() {
   const featuredGame = getPresentedGameByTarget(HOME_FEATURED_GAME_TARGET);
   const backgroundImage =
     featuredGame?.spotlightImage || featuredGame?.heroImage || featuredGame?.posterImage || "";
-  const backgroundUrl = backgroundImage ? buildAbsoluteUrl(backgroundImage) : "";
+  const backgroundUrl = backgroundImage
+    ? buildAbsoluteUrl(getOpenGraphBackgroundPath(backgroundImage))
+    : "";
 
   return new ImageResponse(
     (

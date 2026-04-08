@@ -23,7 +23,8 @@ export default function GameDetailModal({ game }) {
         <div className="game-detail-visual">
           <DecorativeImage
             className="game-detail-visual-image"
-            loading="eager"
+            fetchPriority="low"
+            loading="lazy"
             src={modalImage}
             style={getHeroImageStyle(game.heroImagePosition)}
           />

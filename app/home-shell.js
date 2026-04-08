@@ -51,6 +51,9 @@ export default function HomeShell({
   const heroKicker = isHomePage ? HOME_HERO_KICKER : featuredGame.eyebrow;
   const heroTitle = isHomePage ? HOME_HERO_TITLE : featuredGame.displayTitle;
   const heroSummary = isHomePage ? HOME_HERO_SUMMARY : featuredGame.summary;
+  const heroBackdropSrcSet = featuredGame.heroImageMobile
+    ? `${featuredGame.heroImageMobile} 960w, ${featuredGame.heroImage} 2564w`
+    : undefined;
   const primaryActionLabel = isHomePage ? `Play ${featuredGame.displayTitle}` : "Play";
   const secondaryActionHref = isHomePage ? "#library" : `#${featuredDialogId}`;
   const secondaryActionLabel = isHomePage ? HOME_BROWSE_LABEL : "More Info";
@@ -81,10 +84,11 @@ export default function HomeShell({
                   aria-hidden="true"
                   className="nav-brand-logo"
                   decoding="async"
-                  height="372"
+                  fetchPriority="low"
+                  height="54"
                   loading="eager"
                   src={logoSrc}
-                  width="1884"
+                  width="273"
                 />
               </a>
               <p className="nav-brand-tagline">Classic adventures in your browser</p>
@@ -119,7 +123,9 @@ export default function HomeShell({
               className="hero-backdrop-image"
               fetchPriority="high"
               loading="eager"
+              sizes="100vw"
               src={featuredGame.heroImage}
+              srcSet={heroBackdropSrcSet}
               style={getHeroImageStyle(featuredGame.heroImagePosition)}
             />
           </div>
@@ -167,7 +173,6 @@ export default function HomeShell({
             </div>
           </div>
         </section>
-
         <div className="section-stack">
           <section className="content-band" id="library">
             <div className="section-header">

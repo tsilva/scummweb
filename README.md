@@ -4,7 +4,8 @@ Browser launcher for a managed ScummVM WebAssembly shell with game payloads host
 
 This repo treats the ScummVM shell and game payloads as two different products:
 
-- `public/` is the source of truth for the managed browser shell that ships with the app.
+- `scummvm-shell/` is the tracked source of truth for the managed browser shell.
+- `public/` is generated staging for those managed shell assets during `prepare`.
 - `dist/` is disposable build output.
 - Game payloads live in R2 and should be fetched directly by the browser in production.
 
@@ -17,7 +18,7 @@ pnpm install
 pnpm run dev
 ```
 
-`pnpm run prepare` validates that the tracked managed ScummVM shell in `public/` is complete.
+`pnpm run prepare` validates the tracked managed ScummVM shell in `scummvm-shell/`, stages it into `public/`, and validates the staged output.
 
 Open [http://localhost:3000](http://localhost:3000).
 
@@ -34,7 +35,7 @@ pnpm run build:scummvm
 3. Builds the ScummVM web target
 4. Extracts detected game archives into `build-emscripten/games`
 5. Regenerates `games.json`, `source-info.json`, launcher assets, and patched runtime files
-6. Syncs the managed shell back into `public/`
+6. Syncs the managed shell back into `scummvm-shell/`
 
 ### 3. Upload Game Payloads
 
@@ -58,14 +59,14 @@ Run the main verification path:
 pnpm run verify
 ```
 
-`scripts/verify_scummvm_web.sh` validates the tracked shell in `public/`, builds the app, launches Chromium through Playwright, verifies the launcher, and boots each detected target.
+`scripts/verify_scummvm_web.sh` validates that `scummvm-shell/` exists, builds the app, launches Chromium through Playwright, verifies the launcher, and boots each detected target.
 
 ## Generated Files Policy
 
 Tracked source inputs:
 
 - `app/`
-- `public/`
+- `scummvm-shell/`
 - `scripts/`
 - `launcher-game-overrides.json`
 - config and docs
@@ -78,11 +79,11 @@ Disposable generated state:
 - `.next-dev-*`
 - `artifacts/`
 
-`public/` is tracked and deployable. Prefer regenerating managed shell files through the build scripts instead of hand-editing them, then commit the resulting `public/` changes directly.
+`scummvm-shell/` is tracked and deployable. `public/` is generated staging. Prefer regenerating managed shell files through the build scripts instead of hand-editing the staged `public/` copy, then commit the resulting `scummvm-shell/` changes directly.
 
 ## Metadata Contract
 
-The generated launcher library lives in `public/games.json` and `dist/games.json` with this shape:
+The generated launcher library lives in `scummvm-shell/games.json`, `public/games.json`, and `dist/games.json` with this shape:
 
 ```json
 {

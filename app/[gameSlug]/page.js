@@ -47,7 +47,7 @@ export default function GameLandingPage({ params }) {
       <HomeShell
         catalog={shellData.catalog}
         featuredGame={shellData.featuredGame}
-        logoSrc={getVersionedSiteAssetPath("/logo.svg")}
+        logoSrc={getVersionedSiteAssetPath("/logo-nav.png")}
         scummvmVersion={shellData.scummvmVersion}
         scummvmOfficialSite={SCUMMVM_OFFICIAL_SITE_URL}
         sourceInfoDate={shellData.sourceInfoDate}
