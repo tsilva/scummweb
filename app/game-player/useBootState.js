@@ -13,11 +13,7 @@ const BOOT_FAILURE_PATTERNS = [
   /abort\(/i,
 ];
 
-function escapeRegExp(value) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-export function useBootState({ frameRef, frameSrc, target, skipIntro, skipIntroConsumed }) {
+export function useBootState({ frameRef, frameSrc, readySignal, skipIntro, skipIntroConsumed }) {
   const [showScummvmMenuButton, setShowScummvmMenuButton] = useState(false);
   const [showSkipIntroButton, setShowSkipIntroButton] = useState(false);
   const [bootStatusText, setBootStatusText] = useState("Downloading ScummVM...");
@@ -65,7 +61,17 @@ export function useBootState({ frameRef, frameSrc, target, skipIntro, skipIntroC
   }, [frameSrc, hasBootCompleted, hasBootFailed, skipIntro, skipIntroConsumed]);
 
   useEffect(() => {
-    const targetPattern = new RegExp(`User picked target '${escapeRegExp(target)}'`);
+    if (readySignal) {
+      setHasBootCompleted(true);
+      setHasBootFailed(false);
+    }
+  }, [frameSrc, readySignal]);
+
+  useEffect(() => {
+    if (readySignal) {
+      return undefined;
+    }
+
     let pollTimer = 0;
     let cancelled = false;
 
@@ -108,7 +114,6 @@ export function useBootState({ frameRef, frameSrc, target, skipIntro, skipIntroC
           statusElement?.classList.contains("error") ||
           /Exception thrown/i.test(nextStatusText) ||
           BOOT_FAILURE_PATTERNS.some((pattern) => pattern.test(outputValue));
-        const hitReadyState = targetPattern.test(outputValue);
 
         setBootStatusText((currentValue) =>
           currentValue === nextStatusText ? currentValue : nextStatusText
@@ -122,10 +127,6 @@ export function useBootState({ frameRef, frameSrc, target, skipIntro, skipIntroC
 
         if (hitFailureState) {
           setHasBootFailed(true);
-        } else if (hitReadyState) {
-          setHasBootCompleted(true);
-          setHasBootFailed(false);
-          return;
         }
       } catch {}
 
@@ -141,7 +142,11 @@ export function useBootState({ frameRef, frameSrc, target, skipIntro, skipIntroC
         window.clearTimeout(pollTimer);
       }
     };
-  }, [frameRef, frameSrc, target]);
+  }, [frameRef, frameSrc, readySignal]);
+
+  useEffect(() => {
+    setHasBootCompleted(false);
+  }, [frameSrc]);
 
   function dismissSkipIntroButton() {
     setShowSkipIntroButton(false);

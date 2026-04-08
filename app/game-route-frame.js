@@ -10,6 +10,8 @@ import { useImmersiveMode } from "./game-player/useImmersiveMode";
 import { useTouchClickMode } from "./game-player/useTouchClickMode";
 import { recordRecentGameTarget } from "./recent-games";
 
+const SCUMMWEB_FRAME_MESSAGE_SOURCE = "scummweb";
+
 function getSafeHref(href) {
   if (!href) {
     return "/";
@@ -38,6 +40,19 @@ function getExitHrefFromSrc(src) {
     return getSafeHref(resolvedUrl.searchParams.get("exitTo") || "/");
   } catch {
     return "/";
+  }
+}
+
+function getNormalizedFrameHref(href) {
+  if (typeof window === "undefined" || !href) {
+    return null;
+  }
+
+  try {
+    const resolvedUrl = new URL(href, window.location.href);
+    return `${resolvedUrl.pathname}${resolvedUrl.search}${resolvedUrl.hash}`;
+  } catch {
+    return null;
   }
 }
 
@@ -88,13 +103,14 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
   const frameRef = useRef(null);
   const [frameSrc, setFrameSrc] = useState(src);
   const [exitHref, setExitHref] = useState("/");
+  const [readySignal, setReadySignal] = useState(null);
   const [skipIntroConsumed, setSkipIntroConsumed] = useState(false);
   const bootState = useBootState({
     frameRef,
     frameSrc,
+    readySignal,
     skipIntro,
     skipIntroConsumed,
-    target,
   });
   const immersiveMode = useImmersiveMode({ shellRef });
   const touchClickMode = useTouchClickMode({
@@ -110,7 +126,36 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     }
 
     function handleMessage(event) {
-      if (event.origin !== window.location.origin || event.data?.type !== "scummvm-exit") {
+      if (event.origin !== window.location.origin) {
+        return;
+      }
+
+      if (event.data?.type === "scummvm-ready") {
+        const iframeWindow = frameRef.current?.contentWindow;
+        const expectedFrameHref = getNormalizedFrameHref(frameRef.current?.src || frameSrc);
+        const messageFrameHref = getNormalizedFrameHref(event.data?.href);
+
+        if (
+          event.data?.source !== SCUMMWEB_FRAME_MESSAGE_SOURCE ||
+          event.data?.target !== target ||
+          !iframeWindow ||
+          event.source !== iframeWindow ||
+          !expectedFrameHref ||
+          !messageFrameHref ||
+          messageFrameHref !== expectedFrameHref
+        ) {
+          return;
+        }
+
+        setReadySignal({
+          href: messageFrameHref,
+          reason: event.data?.reason || null,
+          reportedAt: event.data?.emittedAt || null,
+        });
+        return;
+      }
+
+      if (event.data?.type !== "scummvm-exit") {
         return;
       }
 
@@ -122,10 +167,11 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     return () => {
       window.removeEventListener("message", handleMessage);
     };
-  }, []);
+  }, [frameSrc, target]);
 
   useEffect(() => {
     setFrameSrc(src);
+    setReadySignal(null);
     setSkipIntroConsumed(false);
   }, [src]);
 
@@ -272,6 +318,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
       return;
     }
 
+    setReadySignal(null);
     setSkipIntroConsumed(true);
     setFrameSrc((currentSrc) => buildSkipIntroSaveSlotSrc(currentSrc, target, skipIntro.slot));
   }

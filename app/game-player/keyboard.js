@@ -79,6 +79,43 @@ function canDispatchEvents(node) {
   return Boolean(node && typeof node.dispatchEvent === "function");
 }
 
+function focusFrameContent(frame) {
+  if (!frame) {
+    return false;
+  }
+
+  try {
+    frame.contentWindow?.focus();
+  } catch {}
+
+  try {
+    const frameDocument = frame.contentDocument;
+    const canvas = frameDocument?.getElementById("canvas");
+
+    if (canFocus(canvas)) {
+      try {
+        canvas.focus({ preventScroll: true });
+      } catch {}
+
+      if (frameDocument?.activeElement === canvas) {
+        return true;
+      }
+    }
+
+    if (canFocus(frameDocument?.body)) {
+      try {
+        frameDocument.body.focus({ preventScroll: true });
+      } catch {}
+
+      if (frameDocument?.activeElement === frameDocument.body) {
+        return true;
+      }
+    }
+  } catch {}
+
+  return false;
+}
+
 export function dispatchSyntheticKeypress(frame, input) {
   if (!frame) {
     return false;
@@ -87,14 +124,7 @@ export function dispatchSyntheticKeypress(frame, input) {
   const descriptor = getKeyboardDescriptor(input);
   const frameWindow = frame.contentWindow;
   const KeyboardEventConstructor = frameWindow?.KeyboardEvent || window.KeyboardEvent;
-
-  try {
-    frame.focus({ preventScroll: true });
-  } catch {}
-
-  try {
-    frameWindow?.focus();
-  } catch {}
+  focusFrameContent(frame);
 
   let targets = [];
 
@@ -106,11 +136,7 @@ export function dispatchSyntheticKeypress(frame, input) {
     const frameDocument = frame.contentDocument;
     const canvas = frameDocument?.getElementById("canvas");
 
-    if (canFocus(canvas)) {
-      try {
-        canvas.focus({ preventScroll: true });
-      } catch {}
-
+    if (canvas) {
       targets.push(canvas);
     }
 

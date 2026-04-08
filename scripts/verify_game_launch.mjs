@@ -19,6 +19,10 @@ const chromeCandidates = [
 const executablePath = chromeCandidates.find((candidate) => fs.existsSync(candidate));
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const expectedPwaThemeColor = "#1a4d1a";
+const lureViewport = { width: 320, height: 200 };
+const lureDoorHotspotPoint = { x: 22, y: 120 };
+const lurePopupOpenPoint = { x: 36, y: 100 };
+const lureDoorRegion = { x: 0, y: 52, width: 72, height: 120 };
 
 if (!executablePath) {
   throw new Error("No local Chrome/Chromium installation found for Playwright");
@@ -33,10 +37,6 @@ function readGameLibraryFromDisk() {
   });
 }
 
-function escapeRegExp(value) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
 function normalizeUrl(value) {
   const resolvedUrl = new URL(value);
   resolvedUrl.hash = "";
@@ -46,6 +46,20 @@ function normalizeUrl(value) {
   }
 
   return resolvedUrl.toString();
+}
+
+function getSignatureDistance(before, after) {
+  if (!Array.isArray(before) || !Array.isArray(after) || before.length !== after.length) {
+    return Number.POSITIVE_INFINITY;
+  }
+
+  let distance = 0;
+
+  for (let index = 0; index < before.length; index += 1) {
+    distance += Math.abs(before[index] - after[index]);
+  }
+
+  return distance;
 }
 
 function verifyPwaManifestOnDisk() {
@@ -70,7 +84,6 @@ function verifyPwaManifestOnDisk() {
 }
 
 async function waitForGameStartup(page, frame, game) {
-  const targetPattern = new RegExp(`User picked target '${escapeRegExp(game.target)}'`);
   const fatalOutputPatterns = [
     /Game data path does not exist/i,
     /Couldn't identify game/i,
@@ -82,6 +95,10 @@ async function waitForGameStartup(page, frame, game) {
   while (Date.now() - startedAt < 30000) {
     const output = await frame.locator("#output").inputValue().catch(() => latestOutput);
     const statusText = await frame.locator("#status").textContent().catch(() => "");
+    const readyState = await frame
+      .locator("#canvas")
+      .evaluate(() => window.__scummwebReadyState || null)
+      .catch(() => null);
     latestOutput = output || latestOutput;
 
     if (/Exception thrown/i.test(statusText) || /TypeError|ReferenceError|abort\(/i.test(output)) {
@@ -92,14 +109,14 @@ async function waitForGameStartup(page, frame, game) {
       throw new Error(`Launch failed for ${game.target}.\n${output}`);
     }
 
-    if (targetPattern.test(output)) {
-      return;
+    if (readyState?.target === game.target && readyState?.state === "ready") {
+      return readyState;
     }
 
     await page.waitForTimeout(250);
   }
 
-  throw new Error(`Game did not reach the expected startup state for ${game.target}.\n${latestOutput}`);
+  throw new Error(`Game did not emit the expected ready signal for ${game.target}.\n${latestOutput}`);
 }
 
 async function verifyLaunchOverlayBeforeStartup(page, game) {
@@ -285,6 +302,7 @@ async function verifySkipIntroButton(page, frame, game, routeUrl) {
     );
   }
 
+  await verifyCursorGrabHintHiddenDuringBoot(page, game);
   await waitForGameStartup(page, frame, game);
   await verifyLaunchOverlayAfterStartup(page, game);
 
@@ -319,6 +337,238 @@ async function verifySkipIntroButton(page, frame, game, routeUrl) {
 
   if (normalizeUrl(page.url()) !== normalizeUrl(routeUrl)) {
     throw new Error(`Skip intro relaunch redirected unexpectedly from ${routeUrl} to ${page.url()}`);
+  }
+
+  if (game.target === "lure") {
+    await page.waitForTimeout(1500);
+    await verifyLurePopupMenuSelection(page, frame);
+  }
+}
+
+async function getCanvasRenderedBounds(frame) {
+  return frame.locator("#canvas").evaluate(async (canvas) => {
+    const screenshot = new Image();
+    screenshot.src = canvas.toDataURL("image/png");
+    await screenshot.decode();
+
+    const scratch = document.createElement("canvas");
+    scratch.width = screenshot.width;
+    scratch.height = screenshot.height;
+    const context = scratch.getContext("2d", { willReadFrequently: true });
+
+    if (!context) {
+      throw new Error("Unable to create scratch canvas for Lure verification.");
+    }
+
+    context.drawImage(screenshot, 0, 0);
+    const imageData = context.getImageData(0, 0, scratch.width, scratch.height);
+    const { data, width, height } = imageData;
+
+    let left = width;
+    let top = height;
+    let right = -1;
+    let bottom = -1;
+
+    for (let y = 0; y < height; y += 1) {
+      for (let x = 0; x < width; x += 1) {
+        const offset = (y * width + x) * 4;
+        const alpha = data[offset + 3];
+        const brightness = data[offset] + data[offset + 1] + data[offset + 2];
+
+        if (alpha === 0 || brightness <= 12) {
+          continue;
+        }
+
+        if (x < left) left = x;
+        if (x > right) right = x;
+        if (y < top) top = y;
+        if (y > bottom) bottom = y;
+      }
+    }
+
+    if (right < left || bottom < top) {
+      throw new Error("Unable to locate active game pixels in the Lure canvas.");
+    }
+
+    return {
+      left,
+      top,
+      width: right - left + 1,
+      height: bottom - top + 1,
+    };
+  });
+}
+
+function mapLogicalPointToCanvas(renderedBounds, point) {
+  return {
+    x: renderedBounds.left + (point.x / lureViewport.width) * renderedBounds.width,
+    y: renderedBounds.top + (point.y / lureViewport.height) * renderedBounds.height,
+  };
+}
+
+async function sampleCanvasRegion(frame, renderedBounds, region, sampleGridSize = 16) {
+  return frame.locator("#canvas").evaluate(
+    async (canvas, { bounds, logicalRegion, viewport, gridSize }) => {
+      const screenshot = new Image();
+      screenshot.src = canvas.toDataURL("image/png");
+      await screenshot.decode();
+
+      const scratch = document.createElement("canvas");
+      scratch.width = screenshot.width;
+      scratch.height = screenshot.height;
+      const context = scratch.getContext("2d", { willReadFrequently: true });
+
+      if (!context) {
+        throw new Error("Unable to create scratch canvas for Lure sampling.");
+      }
+
+      context.drawImage(screenshot, 0, 0);
+
+      const actualRegion = {
+        left: Math.max(0, Math.floor(bounds.left + (logicalRegion.x / viewport.width) * bounds.width)),
+        top: Math.max(0, Math.floor(bounds.top + (logicalRegion.y / viewport.height) * bounds.height)),
+        width: Math.max(1, Math.ceil((logicalRegion.width / viewport.width) * bounds.width)),
+        height: Math.max(1, Math.ceil((logicalRegion.height / viewport.height) * bounds.height)),
+      };
+      const imageData = context.getImageData(actualRegion.left, actualRegion.top, actualRegion.width, actualRegion.height);
+      const signature = [];
+
+      for (let gridY = 0; gridY < gridSize; gridY += 1) {
+        const startY = Math.floor((gridY / gridSize) * actualRegion.height);
+        const endY = Math.max(startY + 1, Math.floor(((gridY + 1) / gridSize) * actualRegion.height));
+
+        for (let gridX = 0; gridX < gridSize; gridX += 1) {
+          const startX = Math.floor((gridX / gridSize) * actualRegion.width);
+          const endX = Math.max(startX + 1, Math.floor(((gridX + 1) / gridSize) * actualRegion.width));
+          let redTotal = 0;
+          let greenTotal = 0;
+          let blueTotal = 0;
+          let samples = 0;
+
+          for (let y = startY; y < endY; y += 1) {
+            for (let x = startX; x < endX; x += 1) {
+              const offset = (y * actualRegion.width + x) * 4;
+              redTotal += imageData.data[offset];
+              greenTotal += imageData.data[offset + 1];
+              blueTotal += imageData.data[offset + 2];
+              samples += 1;
+            }
+          }
+
+          const averageRed = redTotal / samples;
+          const averageGreen = greenTotal / samples;
+          const averageBlue = blueTotal / samples;
+          signature.push(
+            Math.round(averageRed / 8),
+            Math.round(averageGreen / 8),
+            Math.round(averageBlue / 8)
+          );
+        }
+      }
+
+      return signature;
+    },
+    {
+      bounds: renderedBounds,
+      logicalRegion: region,
+      viewport: lureViewport,
+      gridSize: sampleGridSize,
+    }
+  );
+}
+
+async function verifyLurePopupMenuSelection(page, frame) {
+  const renderedBounds = await getCanvasRenderedBounds(frame);
+  const canvas = frame.locator("#canvas");
+  const doorBefore = await sampleCanvasRegion(frame, renderedBounds, lureDoorRegion);
+  const doorHotspot = mapLogicalPointToCanvas(renderedBounds, lureDoorHotspotPoint);
+  const popupOpen = mapLogicalPointToCanvas(renderedBounds, lurePopupOpenPoint);
+
+  await canvas.click({ button: "right", position: doorHotspot, force: true });
+  await page.waitForTimeout(300);
+  await canvas.click({ position: popupOpen, force: true });
+
+  const doorChange = await page.waitForFunction(
+    async ({ selector, bounds, region, viewport, beforeSignature }) => {
+      const canvas = document.querySelector(selector);
+
+      if (!(canvas instanceof HTMLCanvasElement)) {
+        return null;
+      }
+
+      const screenshot = new Image();
+      screenshot.src = canvas.toDataURL("image/png");
+      await screenshot.decode();
+
+      const scratch = document.createElement("canvas");
+      scratch.width = screenshot.width;
+      scratch.height = screenshot.height;
+      const context = scratch.getContext("2d", { willReadFrequently: true });
+
+      if (!context) {
+        return null;
+      }
+
+      context.drawImage(screenshot, 0, 0);
+
+      const actualRegion = {
+        left: Math.max(0, Math.floor(bounds.left + (region.x / viewport.width) * bounds.width)),
+        top: Math.max(0, Math.floor(bounds.top + (region.y / viewport.height) * bounds.height)),
+        width: Math.max(1, Math.ceil((region.width / viewport.width) * bounds.width)),
+        height: Math.max(1, Math.ceil((region.height / viewport.height) * bounds.height)),
+      };
+      const imageData = context.getImageData(actualRegion.left, actualRegion.top, actualRegion.width, actualRegion.height);
+      const currentSignature = [];
+
+      for (let gridY = 0; gridY < 16; gridY += 1) {
+        const startY = Math.floor((gridY / 16) * actualRegion.height);
+        const endY = Math.max(startY + 1, Math.floor(((gridY + 1) / 16) * actualRegion.height));
+
+        for (let gridX = 0; gridX < 16; gridX += 1) {
+          const startX = Math.floor((gridX / 16) * actualRegion.width);
+          const endX = Math.max(startX + 1, Math.floor(((gridX + 1) / 16) * actualRegion.width));
+          let redTotal = 0;
+          let greenTotal = 0;
+          let blueTotal = 0;
+          let samples = 0;
+
+          for (let y = startY; y < endY; y += 1) {
+            for (let x = startX; x < endX; x += 1) {
+              const offset = (y * actualRegion.width + x) * 4;
+              redTotal += imageData.data[offset];
+              greenTotal += imageData.data[offset + 1];
+              blueTotal += imageData.data[offset + 2];
+              samples += 1;
+            }
+          }
+
+          currentSignature.push(
+            Math.round(redTotal / samples / 8),
+            Math.round(greenTotal / samples / 8),
+            Math.round(blueTotal / samples / 8)
+          );
+        }
+      }
+
+      let distance = 0;
+      for (let index = 0; index < beforeSignature.length; index += 1) {
+        distance += Math.abs(beforeSignature[index] - currentSignature[index]);
+      }
+
+      return distance >= 220 ? distance : null;
+    },
+    {
+      selector: "#canvas",
+      bounds: renderedBounds,
+      region: lureDoorRegion,
+      viewport: lureViewport,
+      beforeSignature: doorBefore,
+    },
+    { timeout: 10000 }
+  ).then((result) => result.jsonValue());
+
+  if (typeof doorChange !== "number" || !Number.isFinite(doorChange)) {
+    throw new Error(`Lure popup-menu selection did not change the door state: ${doorChange}`);
   }
 }
 
@@ -459,6 +709,33 @@ async function verifyScummvmMenuButton(page, frame, routeUrl) {
 
   await page.waitForTimeout(300);
 
+  const focusState = await page.evaluate(() => {
+    const shell = document.querySelector(".game-route-shell");
+    const frame = document.querySelector(".game-route-frame[data-scummvm-route-frame='true']");
+
+    if (!(shell instanceof HTMLElement) || !(frame instanceof HTMLIFrameElement)) {
+      return null;
+    }
+
+    const shellStyle = window.getComputedStyle(shell);
+    const frameStyle = window.getComputedStyle(frame);
+
+    return {
+      shellOverflow: shellStyle.overflow,
+      frameOutlineStyle: frameStyle.outlineStyle,
+      frameOutlineWidth: frameStyle.outlineWidth,
+      frameBoxShadow: frameStyle.boxShadow,
+    };
+  });
+
+  if (!focusState) {
+    throw new Error("Unable to read route frame focus styles after clicking the ScummVM menu button.");
+  }
+
+  if (focusState.shellOverflow !== "hidden") {
+    throw new Error(`Game route shell did not clip iframe focus styles: ${JSON.stringify(focusState)}`);
+  }
+
   if (normalizeUrl(page.url()) !== normalizeUrl(routeUrl)) {
     throw new Error(`ScummVM menu button redirected unexpectedly from ${routeUrl} to ${page.url()}`);
   }
@@ -527,60 +804,53 @@ async function verifyCursorGrabHint(page, frame) {
 }
 
 async function verifyCursorGrabHintHiddenDuringBoot(page, game) {
-  const frame = page.frameLocator('iframe[data-scummvm-route-frame="true"]');
-  const canvas = frame.locator("#canvas");
+  const launchDetectedState = await page.waitForFunction(
+    ({ expectedTarget }) => {
+      const iframe = document.querySelector('iframe[data-scummvm-route-frame="true"]');
+      const overlay = document.querySelector('[data-launch-overlay="true"]');
 
-  await canvas.waitFor({ timeout: 30000 });
-  await page.waitForTimeout(200);
+      if (!(iframe instanceof HTMLIFrameElement)) {
+        return null;
+      }
 
-  const initialState = await canvas.evaluate((element, currentGameTarget) => {
-    const hint = document.getElementById("scummvm-cursor-grab-hint");
-    const output = document.getElementById("output");
-    const targetPattern = new RegExp(`User picked target '${currentGameTarget.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}'`);
+      const readyState = iframe.contentWindow?.__scummwebReadyState;
+      const hint = iframe.contentDocument?.getElementById("scummvm-cursor-grab-hint");
 
-    return {
-      launched: targetPattern.test(output?.value || ""),
-      visible: hint?.classList.contains("scummvm-cursor-grab-hint-visible") || false,
-    };
-  }, game.target);
+      if (
+        readyState?.target !== expectedTarget ||
+        !["launch-detected", "ready"].includes(readyState.state)
+      ) {
+        return null;
+      }
 
-  if (initialState.visible && !initialState.launched) {
-    throw new Error(`Cursor grab hint appeared before ${game.target} cleared its launch delay.`);
+      return {
+        hintVisible: hint?.classList.contains("scummvm-cursor-grab-hint-visible") || false,
+        overlayState: overlay?.getAttribute("data-launch-overlay-state") || null,
+        readyState,
+      };
+    },
+    {
+      expectedTarget: game.target,
+    },
+    {
+      timeout: 15000,
+    }
+  );
+
+  const launchState = await launchDetectedState.jsonValue();
+
+  if (launchState?.readyState?.state === "ready") {
+    throw new Error(`Ready signal for ${game.target} fired before the verifier observed the guarded launch state.`);
   }
 
-  if (!initialState.launched) {
-    await canvas.evaluate(
-      (_, currentGameTarget) =>
-        new Promise((resolve, reject) => {
-          const output = document.getElementById("output");
-          const hint = document.getElementById("scummvm-cursor-grab-hint");
-          const targetPattern = new RegExp(`User picked target '${currentGameTarget.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}'`);
-          const startedAt = Date.now();
+  if (launchState?.hintVisible) {
+    throw new Error(`Cursor grab hint appeared before ${game.target} emitted its explicit ready signal.`);
+  }
 
-          function check() {
-            if (targetPattern.test(output?.value || "")) {
-              resolve(hint?.classList.contains("scummvm-cursor-grab-hint-visible") || false);
-              return;
-            }
-
-            if (Date.now() - startedAt >= 15000) {
-              reject(new Error(`Timed out waiting for ${currentGameTarget} launch output.`));
-              return;
-            }
-
-            window.setTimeout(check, 100);
-          }
-
-          check();
-        }),
-      game.target
-    ).then((visibleAfterLaunchOutput) => {
-      if (visibleAfterLaunchOutput) {
-        throw new Error(
-          `Cursor grab hint appeared immediately after ${game.target} launch output instead of waiting for the splash delay.`
-        );
-      }
-    });
+  if (launchState?.overlayState !== "visible") {
+    throw new Error(
+      `Launch overlay hid for ${game.target} as soon as launch output appeared instead of waiting for readiness.`
+    );
   }
 
   await page.mouse.move(0, 0);
@@ -856,6 +1126,7 @@ if (featuredLaunchHref !== library.games[0].playHref) {
 
 await featuredDialog.locator(".game-detail-close").click();
 await featuredDialog.waitFor({ state: "hidden", timeout: 10000 });
+await rootPage.close();
 
 const saveSlotGame = library.games.find((game) => game.skipIntro?.strategy === "save-slot");
 
@@ -897,6 +1168,10 @@ for (const game of library.games) {
   await verifySkipIntroButton(page, frame, game, routeUrl);
   await verifyScummvmMenuButton(page, frame, routeUrl);
   await verifyQuitReturnsHome(page, frame, new URL(game.href, url).toString());
+
+  if (screenshotPage && screenshotPage !== rootPage && screenshotPage !== page && !screenshotPage.isClosed()) {
+    await screenshotPage.close();
+  }
 
   screenshotPage = page;
 }

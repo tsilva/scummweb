@@ -23,8 +23,9 @@ const upstreamBaseHeaders = {
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
 };
 
-export function getGamesOriginUrl(params) {
-  const segments = Array.isArray(params?.path) ? params.path : [];
+export async function getGamesOriginUrl(params) {
+  const resolvedParams = await params;
+  const segments = Array.isArray(resolvedParams?.path) ? resolvedParams.path : [];
 
   if (segments.length === 0) {
     return null;
@@ -35,7 +36,7 @@ export function getGamesOriginUrl(params) {
 }
 
 export async function proxyToGamesOrigin(request, params) {
-  const upstreamUrl = getGamesOriginUrl(params);
+  const upstreamUrl = await getGamesOriginUrl(params);
 
   if (!upstreamUrl) {
     return new Response("Missing games path", { status: 400 });

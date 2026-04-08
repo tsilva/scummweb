@@ -153,6 +153,8 @@ bootstrap_scummvm_checkout() {
     "$SCUMMVM_DIR/engines/sword25/detection_tables.h"
   python3 "$ROOT_DIR/scripts/patch_scummvm_queen_dialogue.py" \
     "$SCUMMVM_DIR/engines/queen/talk.cpp"
+  python3 "$ROOT_DIR/scripts/patch_scummvm_lure_menu.py" \
+    "$SCUMMVM_DIR/engines/lure/menu.cpp"
 }
 
 bootstrap_toolchain() {

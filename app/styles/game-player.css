@@ -10,6 +10,7 @@
   position: relative;
   width: 100vw;
   height: 100dvh;
+  overflow: hidden;
   background: #000;
 }
 
@@ -20,11 +21,13 @@
   border: 0;
   background: #000;
   outline: none;
+  box-shadow: none;
 }
 
 .game-route-frame:focus,
 .game-route-frame:focus-visible {
   outline: none;
+  box-shadow: none;
 }
 
 @supports not (height: 100dvh) {
