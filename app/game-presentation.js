@@ -146,7 +146,7 @@ export function getGamePresentation(game) {
     screenshots,
     summary:
       art.summary ||
-      `Explore ${game.displayTitle} from its dedicated scummweb page, then launch the configured target in one click.`,
+      `Explore ${game.displayTitle} on its dedicated ScummWEB page, then launch the configured target in one click.`,
     heroImagePosition: art.heroImagePosition || undefined,
     heroImageMobile: art.heroImageMobile
       ? getVersionedSiteAssetPath(art.heroImageMobile)

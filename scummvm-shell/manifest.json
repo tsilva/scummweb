@@ -1,6 +1,6 @@
 {
-    "short_name": "scummweb",
-    "name": "scummweb - browser adventure classics",
+    "short_name": "ScummWEB",
+    "name": "ScummWEB - classic adventure games online",
     "icons": [
         {
             "src": "scummvm-192.png?v=dev",
@@ -18,6 +18,6 @@
     "display": "fullscreen",
     "theme_color": "#1a4d1a",
     "shortcuts": [],
-    "description": "Play classic freeware point-and-click adventure games directly in your browser with scummweb.",
+    "description": "Play classic freeware point-and-click adventure games online in your browser with ScummWEB.",
     "screenshots": []
 }

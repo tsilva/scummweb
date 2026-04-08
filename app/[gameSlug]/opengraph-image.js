@@ -88,8 +88,8 @@ export default function OpenGraphImage({ params }) {
               textTransform: "uppercase",
             }}
           >
-            <span style={{ color: "#9dd7a4" }}>scummweb</span>
-            <span style={{ opacity: 0.78 }}>Classic adventure in your browser</span>
+            <span style={{ color: "#9dd7a4" }}>ScummWEB</span>
+            <span style={{ opacity: 0.78 }}>Play online in your browser</span>
           </div>
 
           <div
@@ -128,7 +128,7 @@ export default function OpenGraphImage({ params }) {
                   fontWeight: 800,
                 }}
               >
-                {game?.displayTitle || "scummweb"}
+                {game?.displayTitle || "ScummWEB"}
               </div>
               <div
                 style={{
@@ -138,7 +138,7 @@ export default function OpenGraphImage({ params }) {
               }}
               >
                 {game?.summary ||
-                  "Play classic adventure games directly in your browser."}
+                  "Play classic adventure games online in your browser with ScummWEB."}
               </div>
             </div>
           </div>

@@ -19,7 +19,7 @@ export function generateMetadata({ params }) {
 
   if (!game) {
     return {
-      title: "Game Not Found | scummweb",
+      title: "Game Not Found | ScummWEB",
       robots: {
         index: false,
         follow: false,
