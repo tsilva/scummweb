@@ -9,6 +9,8 @@ import {
   getPresentedGameBySlug,
 } from "../game-page-data";
 import HomeShell from "../home-shell";
+import SeoJsonLd from "../seo-json-ld";
+import { buildGameStructuredData } from "../seo";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -40,13 +42,16 @@ export default async function GameLandingPage({ params }) {
   }
 
   return (
-    <HomeShell
-      catalog={shellData.catalog}
-      featuredGame={shellData.featuredGame}
-      logoSrc={getVersionedSiteAssetPath("/logo.svg")}
-      scummvmVersion={shellData.scummvmVersion}
-      scummvmOfficialSite={scummvmOfficialSite}
-      sourceInfoDate={shellData.sourceInfoDate}
-    />
+    <>
+      <SeoJsonLd data={buildGameStructuredData(shellData.featuredGame)} />
+      <HomeShell
+        catalog={shellData.catalog}
+        featuredGame={shellData.featuredGame}
+        logoSrc={getVersionedSiteAssetPath("/logo.svg")}
+        scummvmVersion={shellData.scummvmVersion}
+        scummvmOfficialSite={scummvmOfficialSite}
+        sourceInfoDate={shellData.sourceInfoDate}
+      />
+    </>
   );
 }
