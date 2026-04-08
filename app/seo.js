@@ -4,13 +4,13 @@ export const APP_THEME_COLOR = "#1a4d1a";
 export const SITE_NAME = "scummweb";
 export const SITE_DISPLAY_NAME = "ScummWEB";
 export const HOME_FEATURED_GAME_TARGET = "sky";
-export const HOME_TITLE = "Play classic freeware adventure games in your browser | scummweb";
+export const HOME_TITLE = "Play classic adventure games in your browser | scummweb";
 export const HOME_DESCRIPTION =
-  "Play Beneath a Steel Sky and other classic freeware point-and-click adventures directly in your browser with scummweb.";
-export const HOME_HERO_KICKER = "Classic Freeware Adventures";
+  "Play Beneath a Steel Sky and other classic point-and-click adventures directly in your browser with scummweb.";
+export const HOME_HERO_KICKER = "Classic Adventures";
 export const HOME_HERO_TITLE = "Play classic point-and-click adventures directly in your browser";
 export const HOME_HERO_SUMMARY =
-  "Launch Beneath a Steel Sky and more freeware adventure classics instantly with scummweb, a browser-first ScummVM collection for quick play.";
+  "Launch Beneath a Steel Sky and more adventure classics instantly with scummweb, a browser-first ScummVM collection for quick play.";
 export const HOME_BROWSE_LABEL = "Browse classics";
 
 function normalizeDescription(value) {
@@ -163,7 +163,7 @@ export function buildHomeStructuredData(games) {
       "@type": "ItemList",
       "@id": itemListId,
       url: homeUrl,
-      name: "Browser-playable freeware adventure classics",
+      name: "Browser-playable adventure classics",
       numberOfItems: games.length,
       itemListElement: games.map((game, index) => ({
         "@type": "ListItem",
