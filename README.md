@@ -125,21 +125,27 @@ pnpm run sentry:issues -- --help
 | `NEXT_PUBLIC_SENTRY_ENABLED` | Optional override to force Sentry on or off locally (`true` or `false`) |
 | `NEXT_PUBLIC_SENTRY_DSN` | Browser runtime DSN; required in production for client-side event capture |
 | `SENTRY_DSN` | Optional server and edge runtime DSN; falls back to `NEXT_PUBLIC_SENTRY_DSN` when unset |
+| `SENTRY_AUTH_TOKEN` | Build-time auth token used for Sentry release creation and source map upload |
+| `SENTRY_ORG` | Optional override for the Sentry organization; defaults to `tsilva` |
+| `SENTRY_PROJECT` | Optional override for the Sentry project; defaults to `scummweb` |
+| `SENTRY_BASE_URL` | Optional base URL for Sentry API tooling; defaults to `https://sentry.io` |
 | `SENTRY_TRACES_SAMPLE_RATE` | Optional tracing sample rate override; defaults to `0.1` |
 | `SENTRY_ENVIRONMENT` | Optional explicit Sentry environment name |
+| `SENTRY_SMOKE_TEST_TOKEN` | Secret header token used by `/api/sentry-smoke` for intentional live verification |
 
 ## Sentry
 
 - Runtime Sentry init is centralized in `sentry.runtime.config.js`.
 - Runtime event capture stays off unless the relevant runtime DSN is present; there is no hardcoded DSN fallback.
-- Production builds load `.env.sentry-build-plugin` so source map upload uses the ignored token file the repo already keeps locally.
-- Issue queries use `.env.sentry-mcp` through:
+- Local defaults live in `.env`, with `.env.example` as the committed template.
+- Production and preview builds need hosted Vercel env vars for `SENTRY_AUTH_TOKEN`, `SENTRY_DSN`, and `NEXT_PUBLIC_SENTRY_DSN`.
+- Issue queries use `.env` by default, and still fall back to `.env.sentry-mcp` for older local setups:
 
 ```bash
 pnpm run sentry:issues -- --days 7 --limit 5
 ```
 
-- Use `.env.sentry-mcp.example` and `.env.sentry-build-plugin.example` as the committed templates.
+- A live smoke test can be triggered with a `POST` to `/api/sentry-smoke` using the `x-sentry-smoke-token` header. The route captures a tagged Sentry event and returns `200` with the generated `eventId`.
 
 ## Notes
 

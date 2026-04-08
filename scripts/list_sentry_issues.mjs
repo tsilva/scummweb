@@ -3,8 +3,21 @@ import path from "node:path";
 import process from "node:process";
 
 const ROOT_DIR = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
-const DEFAULT_ENV_PATH = path.join(ROOT_DIR, ".env.sentry-mcp");
+const DEFAULT_ENV_CANDIDATES = [
+  path.join(ROOT_DIR, ".env"),
+  path.join(ROOT_DIR, ".env.sentry-mcp"),
+];
 const PLACEHOLDER_TOKENS = new Set(["sntrys_your_token_here", "sntrys_", "sntryu_"]);
+
+function resolveDefaultEnvPath() {
+  for (const candidate of DEFAULT_ENV_CANDIDATES) {
+    if (fs.existsSync(candidate)) {
+      return candidate;
+    }
+  }
+
+  return DEFAULT_ENV_CANDIDATES[0];
+}
 
 function printHelp() {
   console.log(`Usage: pnpm run sentry:issues -- [options]
@@ -13,7 +26,7 @@ Options:
   --days <n>        Relative window in days. Default: 14
   --limit <n>       Maximum issues to return. Default: 10
   --query <text>    Sentry issue query string
-  --env-file <path> Alternate env file path. Default: .env.sentry-mcp
+  --env-file <path> Alternate env file path. Default: .env (falls back to .env.sentry-mcp)
   --help            Show this help message
 `);
 }
@@ -21,7 +34,7 @@ Options:
 function parseArgs(argv) {
   const options = {
     days: 14,
-    envFile: DEFAULT_ENV_PATH,
+    envFile: resolveDefaultEnvPath(),
     help: false,
     limit: 10,
     query: "",
