@@ -266,8 +266,13 @@ async function verifyLaunchOverlayAfterStartup(page, game) {
   }
 }
 
-async function verifyTouchJoystickHiddenOnDesktop(page, game) {
+async function verifyTouchCursorPadHiddenOnDesktop(page, game) {
+  const cursorPadCount = await page.locator(".game-route-touch-cursor-pad").count();
   const joystickCount = await page.locator(".game-route-touch-joystick").count();
+
+  if (cursorPadCount !== 0) {
+    throw new Error(`Touch cursor pad rendered on desktop for ${game.target}.`);
+  }
 
   if (joystickCount !== 0) {
     throw new Error(`Touch joystick rendered on desktop for ${game.target}.`);
@@ -910,13 +915,18 @@ async function verifyMobileTouchClickToggle(browser, baseUrl, game) {
     const legacyTouchToggle = page.locator(".game-route-control-button.is-touch-toggle");
     const leftTouchClickButton = page.locator('.game-route-control-button.is-touch-click[data-button="left"]');
     const rightTouchClickButton = page.locator('.game-route-control-button.is-touch-click[data-button="right"]');
-    const touchJoystick = page.locator(".game-route-touch-joystick");
-    await touchJoystick.waitFor({ state: "visible", timeout: 15000 });
+    const legacyTouchJoystick = page.locator(".game-route-touch-joystick");
+    const touchCursorPad = page.locator(".game-route-touch-cursor-pad");
+    await touchCursorPad.waitFor({ state: "visible", timeout: 15000 });
     await leftTouchClickButton.waitFor({ state: "visible", timeout: 15000 });
     await rightTouchClickButton.waitFor({ state: "visible", timeout: 15000 });
 
     if ((await legacyTouchToggle.count()) !== 0) {
       throw new Error(`Legacy touch click toggle still rendered for ${game.target}.`);
+    }
+
+    if ((await legacyTouchJoystick.count()) !== 0) {
+      throw new Error(`Legacy touch joystick still rendered for ${game.target}.`);
     }
 
     if (game.skipIntro) {
@@ -925,31 +935,31 @@ async function verifyMobileTouchClickToggle(browser, baseUrl, game) {
     }
 
     const controlLayout = await page.evaluate(() => {
-      const joystick = document.querySelector(".game-route-touch-joystick");
+      const cursorPad = document.querySelector(".game-route-touch-cursor-pad");
       const leftButton = document.querySelector('.game-route-control-button.is-touch-click[data-button="left"]');
       const rightButton = document.querySelector('.game-route-control-button.is-touch-click[data-button="right"]');
       const skipIntroButton = document.querySelector(".game-route-skip-intro-button");
 
       if (
-        !(joystick instanceof HTMLElement) ||
+        !(cursorPad instanceof HTMLElement) ||
         !(leftButton instanceof HTMLElement) ||
         !(rightButton instanceof HTMLElement)
       ) {
         return null;
       }
 
-      const joystickRect = joystick.getBoundingClientRect();
+      const cursorPadRect = cursorPad.getBoundingClientRect();
       const leftButtonRect = leftButton.getBoundingClientRect();
       const rightButtonRect = rightButton.getBoundingClientRect();
       const skipIntroRect =
         skipIntroButton instanceof HTMLElement ? skipIntroButton.getBoundingClientRect() : null;
 
       return {
-        joystick: {
-          bottom: joystickRect.bottom,
-          height: joystickRect.height,
-          left: joystickRect.left,
-          width: joystickRect.width,
+        cursorPad: {
+          bottom: cursorPadRect.bottom,
+          height: cursorPadRect.height,
+          left: cursorPadRect.left,
+          width: cursorPadRect.width,
         },
         leftButton: {
           bottom: leftButtonRect.bottom,
@@ -983,16 +993,16 @@ async function verifyMobileTouchClickToggle(browser, baseUrl, game) {
     }
 
     if (
-      controlLayout.joystick.width < 64 ||
-      controlLayout.joystick.width > 80 ||
-      controlLayout.joystick.height < 64 ||
-      controlLayout.joystick.height > 80
+      controlLayout.cursorPad.width < 68 ||
+      controlLayout.cursorPad.width > 84 ||
+      controlLayout.cursorPad.height < 68 ||
+      controlLayout.cursorPad.height > 84
     ) {
-      throw new Error(`Unexpected joystick dimensions: ${JSON.stringify(controlLayout)}`);
+      throw new Error(`Unexpected cursor pad dimensions: ${JSON.stringify(controlLayout)}`);
     }
 
-    if (controlLayout.joystick.left > 36 || controlLayout.viewportHeight - controlLayout.joystick.bottom > 36) {
-      throw new Error(`Joystick was not pinned to the bottom-left corner: ${JSON.stringify(controlLayout)}`);
+    if (controlLayout.cursorPad.left > 36 || controlLayout.viewportHeight - controlLayout.cursorPad.bottom > 36) {
+      throw new Error(`Cursor pad was not pinned to the bottom-left corner: ${JSON.stringify(controlLayout)}`);
     }
 
     if (
@@ -1002,8 +1012,8 @@ async function verifyMobileTouchClickToggle(browser, baseUrl, game) {
       throw new Error(`Touch click buttons were not pinned to the bottom-right corner: ${JSON.stringify(controlLayout)}`);
     }
 
-    if (Math.abs(controlLayout.rightButton.bottom - controlLayout.joystick.bottom) > 4) {
-      throw new Error(`Right click button was not bottom-aligned with the joystick: ${JSON.stringify(controlLayout)}`);
+    if (Math.abs(controlLayout.rightButton.bottom - controlLayout.cursorPad.bottom) > 4) {
+      throw new Error(`Right click button was not bottom-aligned with the cursor pad: ${JSON.stringify(controlLayout)}`);
     }
 
     if (Math.abs(controlLayout.leftButton.bottom - controlLayout.rightButton.bottom) > 4) {
@@ -1038,8 +1048,10 @@ async function verifyMobileTouchClickToggle(browser, baseUrl, game) {
         "touchmove",
         "touchend",
         "touchcancel",
+        "pointermove",
         "pointerdown",
         "pointerup",
+        "mousemove",
         "mousedown",
         "mouseup",
         "click",
@@ -1050,25 +1062,25 @@ async function verifyMobileTouchClickToggle(browser, baseUrl, game) {
       }
     });
 
-    const joystickBox = await touchJoystick.boundingBox();
+    const cursorPadBox = await touchCursorPad.boundingBox();
 
-    if (!joystickBox) {
-      throw new Error("Unable to read joystick bounds during mobile verification.");
+    if (!cursorPadBox) {
+      throw new Error("Unable to read cursor pad bounds during mobile verification.");
     }
 
-    const joystickCenterX = joystickBox.x + joystickBox.width / 2;
-    const joystickCenterY = joystickBox.y + joystickBox.height / 2;
+    const cursorPadCenterX = cursorPadBox.x + cursorPadBox.width / 2;
+    const cursorPadCenterY = cursorPadBox.y + cursorPadBox.height / 2;
 
     await frame.locator("#canvas").evaluate(() => {
       window.__touchClickVerificationEvents = [];
     });
 
-    await page.mouse.move(joystickCenterX, joystickCenterY);
+    await page.mouse.move(cursorPadCenterX, cursorPadCenterY);
     await page.mouse.down();
-    await page.mouse.move(joystickCenterX + 18, joystickCenterY - 12, { steps: 6 });
-    await page.waitForTimeout(250);
+    await page.mouse.move(cursorPadCenterX + 18, cursorPadCenterY - 12, { steps: 6 });
+    await page.waitForTimeout(120);
 
-    const joystickVerification = await frame.locator("#canvas").evaluate(() => {
+    const cursorPadVerification = await frame.locator("#canvas").evaluate(() => {
       const events = Array.isArray(window.__touchClickVerificationEvents)
         ? window.__touchClickVerificationEvents
         : [];
@@ -1080,15 +1092,15 @@ async function verifyMobileTouchClickToggle(browser, baseUrl, game) {
       };
     });
 
-    if (joystickVerification.sawLeakedTouchEvent) {
+    if (cursorPadVerification.sawLeakedTouchEvent) {
       throw new Error(
-        `Joystick movement leaked touch events into the ScummVM canvas: ${JSON.stringify(joystickVerification.events)}`
+        `Cursor pad movement leaked touch events into the ScummVM canvas: ${JSON.stringify(cursorPadVerification.events)}`
       );
     }
 
-    if (joystickVerification.moveEvents.length < 2) {
+    if (cursorPadVerification.moveEvents.length < 2) {
       throw new Error(
-        `Joystick movement did not synthesize enough cursor movement events: ${JSON.stringify(joystickVerification.events)}`
+        `Cursor pad movement did not synthesize enough cursor movement events: ${JSON.stringify(cursorPadVerification.events)}`
       );
     }
 
@@ -1114,7 +1126,7 @@ async function verifyMobileTouchClickToggle(browser, baseUrl, game) {
     });
 
     if (moveCountAfterSettling !== moveCountAfterRelease) {
-      throw new Error("Joystick release did not stop cursor movement promptly.");
+      throw new Error("Cursor pad release did not stop cursor movement promptly.");
     }
 
     await frame.locator("#canvas").evaluate(() => {
@@ -1124,7 +1136,53 @@ async function verifyMobileTouchClickToggle(browser, baseUrl, game) {
     await frame.locator("#canvas").tap({ position: { x: 160, y: 120 }, force: true });
     await page.waitForTimeout(250);
 
-    const canvasTapVerification = await frame.locator("#canvas").evaluate(() => {
+    const singleTapVerification = await frame.locator("#canvas").evaluate(() => {
+      const events = Array.isArray(window.__touchClickVerificationEvents)
+        ? window.__touchClickVerificationEvents
+        : [];
+
+      return {
+        events,
+        sawLeakedTouchEvent: events.some((event) => event.type.startsWith("touch")),
+        moveEvents: events.filter((event) => event.type === "mousemove" || event.type === "pointermove"),
+        sawLeftMouseDown: events.some((event) => event.type === "mousedown" && event.button === 0),
+        sawLeftMouseUp: events.some((event) => event.type === "mouseup" && event.button === 0),
+        sawClick: events.some((event) => event.type === "click" && event.button === 0),
+      };
+    });
+
+    if (singleTapVerification.sawLeakedTouchEvent) {
+      throw new Error(
+        `Native touch events leaked past the scummweb mobile shim on single tap: ${JSON.stringify(singleTapVerification.events)}`
+      );
+    }
+
+    if (singleTapVerification.moveEvents.length < 1) {
+      throw new Error(
+        `Single canvas tap did not place the cursor: ${JSON.stringify(singleTapVerification.events)}`
+      );
+    }
+
+    if (
+      singleTapVerification.sawLeftMouseDown ||
+      singleTapVerification.sawLeftMouseUp ||
+      singleTapVerification.sawClick
+    ) {
+      throw new Error(
+        `Single canvas tap triggered click events instead of placement only: ${JSON.stringify(singleTapVerification.events)}`
+      );
+    }
+
+    await frame.locator("#canvas").evaluate(() => {
+      window.__touchClickVerificationEvents = [];
+    });
+
+    await frame.locator("#canvas").tap({ position: { x: 220, y: 150 }, force: true });
+    await page.waitForTimeout(120);
+    await frame.locator("#canvas").tap({ position: { x: 224, y: 154 }, force: true });
+    await page.waitForTimeout(250);
+
+    const doubleTapVerification = await frame.locator("#canvas").evaluate(() => {
       const events = Array.isArray(window.__touchClickVerificationEvents)
         ? window.__touchClickVerificationEvents
         : [];
@@ -1138,15 +1196,15 @@ async function verifyMobileTouchClickToggle(browser, baseUrl, game) {
       };
     });
 
-    if (canvasTapVerification.sawLeakedTouchEvent) {
+    if (doubleTapVerification.sawLeakedTouchEvent) {
       throw new Error(
-        `Native touch events leaked past the scummweb mobile shim: ${JSON.stringify(canvasTapVerification.events)}`
+        `Native touch events leaked past the scummweb mobile shim on double tap: ${JSON.stringify(doubleTapVerification.events)}`
       );
     }
 
-    if (!canvasTapVerification.sawLeftMouseDown || !canvasTapVerification.sawLeftMouseUp || !canvasTapVerification.sawClick) {
+    if (!doubleTapVerification.sawLeftMouseDown || !doubleTapVerification.sawLeftMouseUp || !doubleTapVerification.sawClick) {
       throw new Error(
-        `Canvas tap did not synthesize the expected primary-click events: ${JSON.stringify(canvasTapVerification.events)}`
+        `Double tap did not synthesize the expected primary-click events: ${JSON.stringify(doubleTapVerification.events)}`
       );
     }
 
@@ -1250,12 +1308,17 @@ async function verifyTouchControlsHiddenDuringMobileOverlay(browser, baseUrl, ga
 
     const mobileOverlay = page.locator(".game-route-mobile-overlay");
     const touchButtons = page.locator(".game-route-touch-click-buttons");
+    const touchCursorPad = page.locator(".game-route-touch-cursor-pad");
     const touchJoystick = page.locator(".game-route-touch-joystick");
 
     await mobileOverlay.waitFor({ state: "visible", timeout: 15000 });
 
     if ((await touchButtons.count()) !== 0) {
       throw new Error(`Touch click buttons rendered while the mobile overlay was visible for ${game.target}.`);
+    }
+
+    if ((await touchCursorPad.count()) !== 0) {
+      throw new Error(`Touch cursor pad rendered while the mobile overlay was visible for ${game.target}.`);
     }
 
     if ((await touchJoystick.count()) !== 0) {
@@ -1375,7 +1438,7 @@ for (const game of library.games) {
   await verifyCursorGrabHintHiddenDuringBoot(page, game);
   await waitForGameStartup(page, frame, game);
   await verifyLaunchOverlayAfterStartup(page, game);
-  await verifyTouchJoystickHiddenOnDesktop(page, game);
+  await verifyTouchCursorPadHiddenOnDesktop(page, game);
   await verifyRouteFrameAutofocus(page);
   await verifyEscapeStaysInGame(page, frame, routeUrl);
   await verifySkipIntroButton(page, frame, game, routeUrl);

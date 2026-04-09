@@ -4,12 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import GameBootOverlay from "./game-player/GameBootOverlay";
 import GameMobileOverlay from "./game-player/GameMobileOverlay";
 import GamePlayerControls from "./game-player/GamePlayerControls";
-import GameTouchJoystick from "./game-player/GameTouchJoystick";
+import GameTouchCursorPad from "./game-player/GameTouchCursorPad";
 import { dispatchSyntheticKeypressSequence } from "./game-player/keyboard";
 import { useBootState } from "./game-player/useBootState";
 import { useImmersiveMode } from "./game-player/useImmersiveMode";
 import { useTouchClickActions } from "./game-player/useTouchClickMode";
-import { useTouchJoystick } from "./game-player/useTouchJoystick";
+import { useTouchCursorPad } from "./game-player/useTouchCursorPad";
 import { recordRecentGameTarget } from "./recent-games";
 
 const SCUMMWEB_FRAME_MESSAGE_SOURCE = "scummweb";
@@ -132,10 +132,9 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     bootState.hasBootCompleted &&
     !bootState.hasBootFailed &&
     !showMobileOverlay;
-  const touchJoystick = useTouchJoystick({
+  const touchCursorPad = useTouchCursorPad({
     enabled: mobileControlsReady && immersiveMode.isLandscapeViewport,
     frameRef,
-    frameSrc,
   });
 
   useEffect(() => {
@@ -365,7 +364,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
   const showFullscreenControl =
     immersiveMode.canFullscreen && bootState.hasBootPresentationCompleted;
   const showTouchClickButtons = mobileControlsReady;
-  const showTouchJoystick = mobileControlsReady;
+  const showTouchCursorPad = mobileControlsReady;
   const showBottomActions = showSkipIntroBottomAction || showTouchClickButtons;
 
   return (
@@ -402,13 +401,13 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
         showSkipIntroAction={showSkipIntroBottomAction}
         showTouchClickButtons={showTouchClickButtons}
       />
-      <GameTouchJoystick
-        knobOffset={touchJoystick.knobOffset}
-        onPointerCancel={touchJoystick.handlePointerCancel}
-        onPointerDown={touchJoystick.handlePointerDown}
-        onPointerMove={touchJoystick.handlePointerMove}
-        onPointerUp={touchJoystick.handlePointerUp}
-        showTouchJoystick={showTouchJoystick}
+      <GameTouchCursorPad
+        indicatorOffset={touchCursorPad.indicatorOffset}
+        onPointerCancel={touchCursorPad.handlePointerCancel}
+        onPointerDown={touchCursorPad.handlePointerDown}
+        onPointerMove={touchCursorPad.handlePointerMove}
+        onPointerUp={touchCursorPad.handlePointerUp}
+        showTouchCursorPad={showTouchCursorPad}
       />
       <iframe
         allow="autoplay; fullscreen"
