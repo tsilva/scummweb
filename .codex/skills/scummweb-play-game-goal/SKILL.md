@@ -10,12 +10,38 @@ Use this skill when the request is effectively "play the game until X happens" i
 ## Start Here
 
 1. Read `AGENTS.md`.
-2. Use the `playwright-interactive` skill for browser interaction.
-   In this repo, prefer `playwright-core` with a local Chrome/Chromium executable instead of assuming the `playwright` package is installed.
+2. Use direct `js_repl` for browser interaction.
+   In this repo, import `/Users/tsilva/repos/tsilva/scummweb/scripts/playwright_headless_repl.mjs` and default to headless `playwright-core` with a local Chrome/Chromium executable instead of assuming the `playwright` package is installed.
 3. Prefer the repo's existing launch path and save seeding helpers over replaying long intros.
 4. Before interacting, identify the exact game target, the exact success condition, and the shortest valid launch URL.
 5. Before the first hotspot search, load `references/canvas-targeting.md`.
 6. Load only the active game's local reference before browsing.
+7. Show key checkpoint screenshots in chat by default with `codex.emitImage(...)`. Only switch to "every analyzed frame" when the user explicitly asks for full transparency.
+
+Bootstrap example:
+
+```javascript
+var browser;
+var context;
+var page;
+var TARGET_URL = "http://127.0.0.1:3000/scummvm.html?skipIntroTarget=sky#-x 0 sky";
+
+const { startHeadlessSession } = await import(
+  "/Users/tsilva/repos/tsilva/scummweb/scripts/playwright_headless_repl.mjs"
+);
+
+({ browser, context, page } = await startHeadlessSession({ url: TARGET_URL }));
+```
+
+Default screenshot helper:
+
+```javascript
+async function emitCanvasCheckpoint(label, canvas = page.locator("#canvas")) {
+  const png = await canvas.screenshot({ type: "png" });
+  console.log(label);
+  await codex.emitImage({ bytes: png, mimeType: "image/png", detail: "original" });
+}
+```
 
 ## Execution Loop
 
@@ -23,12 +49,35 @@ Run this loop until the goal is achieved or you need to escalate:
 
 1. Identify the exact goal and shortest valid launch URL.
 2. Validate the seeded start state before acting.
-3. Capture one minimal state snapshot.
+3. Emit the first playable state in chat.
 4. Choose the next action from the local reference or a walkthrough.
 5. Execute one minimal step.
-6. Verify the outcome or escalate.
+6. Emit another screenshot only if the step is high-risk, ambiguous, or produced a meaningful state change.
+7. Verify the outcome or escalate.
 
 Minimize actions. Do not free-play once the goal is concrete.
+
+## Screenshot Reporting
+
+Default cadence for gameplay runs:
+
+- initial seeded or first playable state
+- before a high-risk or ambiguous interaction
+- after a meaningful state change
+- final proof-of-success frame
+
+Use full-scene screenshots by default.
+
+Escalate to cropped or zoomed images only when one of these directly affects the next action:
+
+- hotspot targeting is ambiguous
+- inventory state is unclear
+- cursor-shape verification is needed
+- subtitles or labels are too small to read at full frame
+
+Do not flood the chat with probe screenshots unless the user explicitly asks for every analyzed frame.
+
+Whenever you emit an image, pair it with a short commentary update that says what the screenshot is proving or what decision it informs next.
 
 ## Start-State Contract
 
@@ -83,11 +132,14 @@ Use the walkthrough to choose the shortest path, then still verify the port-spec
 - Treat the puzzle solution and the port-control sequence as separate problems.
 - Treat hotspot discovery, inventory arming, and actor positioning as control questions, not puzzle questions.
 - Treat the ScummVM canvas as a coordinate-space problem first. Do not mix viewport guesses, logical game coordinates, and screenshot pixels in the same step.
+- If you crop or zoom part of the active game frame for inspection, add the active-frame offset back before reusing that point in `locator.click({ position })` or `locator.hover({ position })`. Do not reuse cropped-image coordinates as if they were full-canvas coordinates.
 - Default to one of these two targeting methods:
   screenshot-pixel targeting from a fresh `#canvas` screenshot
   active-bounds logical mapping when a walkthrough or prior note gives game-space coordinates
+- If you are already planning to emit a screenshot for the user, prefer reusing that same fresh full-scene capture for both chat visibility and targeting decisions.
 - Use `frame.locator("#canvas")` or `page.locator("#canvas")` positions, not outer-page viewport coordinates.
 - Validate hotspot labels before object interactions. Prefer a fresh screenshot and a deterministic point choice over a blind hover sweep.
+- If the port does not surface hotspot labels reliably, use cursor-shape changes as the next control signal. In BASS-style scenes, a switch from the normal arrow to the interaction cross is strong evidence that the current point is a real hotspot.
 - If the target hotspot is small or ambiguous, first lock one nearby larger hotspot whose label you expect, then reuse that confirmed region to narrow the search for the smaller target.
 - For item pickup or direct object use, use a label-first flow:
   move the cursor onto the target
@@ -118,6 +170,7 @@ Use the walkthrough to choose the shortest path, then still verify the port-spec
 - If the app shell or proxy errors block gameplay, fix the local app path first.
 - If a UI overlay blocks interaction, dismiss it or relaunch from the closest seeded state.
 - If a room transition fails repeatedly, retry from a nearby stable state rather than compounding clicks.
+- If a room transition briefly fades to black or darkens the scene, treat that as an expected transition signal first and verify with one fresh post-fade snapshot before escalating.
 - If inventory use is ambiguous, test item selection and item application as separate steps.
 
 ## Goal Verification
@@ -126,6 +179,7 @@ Match the proof of completion to the user's goal:
 
 - obtain item: inventory header or item presence confirms pickup
 - enter room: room transition completes and the hotspot set changes
+- If the transition includes a fade or brief blackout, confirm completion from the first stable post-fade frame rather than treating the dark frame itself as failure.
 - trigger dialogue: subtitle or dialogue line appears
 - use item on hotspot: visible state change or newly unlocked follow-up interaction appears
 - reach story checkpoint: stable post-event state, unmistakable scene change, or saveable state is reached
@@ -166,6 +220,7 @@ By the end of the task:
 - the requested in-game objective is achieved
 - the action count is close to minimal for the known solution
 - the seeded start state is verified before acting when a seeded route is expected
+- key checkpoint screenshots are surfaced in chat by default, with extra crops only when they materially help the next decision
 - a short post-goal reflection is shared with the user, split into general and game-specific learnings
 - the user is asked whether those learnings should be folded into the skill or relevant game reference
 - no skill or reference update is implied or performed without explicit approval

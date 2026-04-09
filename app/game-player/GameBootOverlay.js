@@ -5,6 +5,8 @@ export default function GameBootOverlay({
   bootStatusText,
   game,
   hasBootFailed,
+  onSkipIntro,
+  showSkipIntroAction,
   showBootOverlay,
   showBootProgress,
   title,
@@ -60,6 +62,17 @@ export default function GameBootOverlay({
                   />
                 </div>
                 <span className="game-route-boot-progress-value">{bootProgressPercent}%</span>
+              </div>
+            ) : null}
+            {showSkipIntroAction ? (
+              <div className="game-route-boot-actions">
+                <button
+                  className="game-route-skip-intro-button"
+                  onClick={onSkipIntro}
+                  type="button"
+                >
+                  Skip intro
+                </button>
               </div>
             ) : null}
           </div>

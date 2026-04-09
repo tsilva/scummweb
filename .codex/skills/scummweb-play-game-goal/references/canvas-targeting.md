@@ -26,9 +26,17 @@ you can miss a hotspot by a large margin even when the target looks visually obv
 ## Minimal Helper Snippet
 
 ```javascript
+const { startHeadlessSession } = await import(
+  "/Users/tsilva/repos/tsilva/scummweb/scripts/playwright_headless_repl.mjs"
+);
 const { createRequire } = await import("node:module");
-const require = createRequire("file:///Users/tsilva/repos/tsilva/scummweb/repl.mjs");
+const require = createRequire("/Users/tsilva/repos/tsilva/scummweb/scripts/playwright_headless_repl.mjs");
 const sharp = require("sharp");
+var browser;
+var context;
+var page;
+
+({ browser, context, page } = await startHeadlessSession({ url: TARGET_URL }));
 
 async function captureCanvasState(canvas = page.locator("#canvas")) {
   const png = await canvas.screenshot({ type: "png" });

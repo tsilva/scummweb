@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 
 const SCUMMVM_MENU_REVEAL_DELAY_MS = 2500;
-const SKIP_INTRO_REVEAL_DELAY_MS = 4500;
 const INITIAL_BOOT_STATUS = "Loading ScummVM...";
 const BOOT_PHASE_PRIORITY = {
   idle: -1,
@@ -71,7 +70,6 @@ export function useBootState({
   skipIntroConsumed,
 }) {
   const [showScummvmMenuButton, setShowScummvmMenuButton] = useState(false);
-  const [showSkipIntroButton, setShowSkipIntroButton] = useState(false);
   const [bootStatusText, setBootStatusText] = useState(INITIAL_BOOT_STATUS);
   const [bootProgressValue, setBootProgressValue] = useState(null);
   const [bootProgressMax, setBootProgressMax] = useState(null);
@@ -79,6 +77,7 @@ export function useBootState({
   const [hasBootCompleted, setHasBootCompleted] = useState(false);
   const [hasBootPresentationCompleted, setHasBootPresentationCompleted] = useState(false);
   const [hasBootFailed, setHasBootFailed] = useState(false);
+  const [hasSkipIntroBeenDismissed, setHasSkipIntroBeenDismissed] = useState(false);
   const bootPhaseRef = useRef("pending");
   const bootStatusTextRef = useRef(INITIAL_BOOT_STATUS);
   const lastNonEmptyShellStatusRef = useRef(INITIAL_BOOT_STATUS);
@@ -86,7 +85,7 @@ export function useBootState({
   useEffect(() => {
     setHasBootPresentationCompleted(false);
     setShowScummvmMenuButton(false);
-    setShowSkipIntroButton(false);
+    setHasSkipIntroBeenDismissed(false);
   }, [frameSrc, skipIntro, skipIntroConsumed]);
 
   useEffect(() => {
@@ -105,20 +104,6 @@ export function useBootState({
       window.clearTimeout(revealTimer);
     };
   }, [frameSrc, hasBootCompleted, hasBootFailed]);
-
-  useEffect(() => {
-    if (!skipIntro || skipIntroConsumed || !hasBootCompleted || hasBootFailed) {
-      return;
-    }
-
-    const revealTimer = window.setTimeout(() => {
-      setShowSkipIntroButton(true);
-    }, SKIP_INTRO_REVEAL_DELAY_MS);
-
-    return () => {
-      window.clearTimeout(revealTimer);
-    };
-  }, [frameSrc, hasBootCompleted, hasBootFailed, skipIntro, skipIntroConsumed]);
 
   useEffect(() => {
     if (readySignal) {
@@ -241,8 +226,15 @@ export function useBootState({
   }, [frameSrc]);
 
   function dismissSkipIntroButton() {
-    setShowSkipIntroButton(false);
+    setHasSkipIntroBeenDismissed(true);
   }
+
+  const showSkipIntroButton =
+    Boolean(skipIntro) &&
+    !skipIntroConsumed &&
+    !hasBootFailed &&
+    !hasSkipIntroBeenDismissed &&
+    getBootPhasePriority(bootPhase) >= getBootPhasePriority("launch-detected");
 
   return {
     bootProgressMax,
