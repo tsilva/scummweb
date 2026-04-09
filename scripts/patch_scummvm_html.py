@@ -20,6 +20,11 @@ updated_html = re.sub(
     updated_html,
     count=1,
 )
+updated_html = updated_html.replace(
+    "#progress{top:0;left:0;height:10px;width:100%;overflow:hidden;display:block;position:absolute;z-index:2;border:0;background:#c60}",
+    "#progress{top:0;left:0;height:10px;width:100%;overflow:hidden;display:block;position:absolute;z-index:2;border:0;background:#c60}#progress[hidden]{display:none!important}",
+    1,
+)
 updated_html = re.sub(
     r"<hr>\s*(<textarea\b[^>]*\bid=output\b[^>]*></textarea>)",
     r"\1",
