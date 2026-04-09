@@ -15,6 +15,7 @@ export const defaultHashWidth = 32;
 export const defaultHashHeight = 18;
 export const defaultSettleIntervalMs = 150;
 export const defaultSettleSamples = 2;
+export const defaultPreviewArtifactName = "play-peek";
 export const defaultSettleThreshold = 12;
 export const defaultReviewArtifactName = "play-review";
 export const defaultExpectThresholds = {
@@ -257,6 +258,27 @@ export function buildFrameReviewPath({ target, name = defaultReviewArtifactName 
   return path.join(rootDir, "artifacts", fileName);
 }
 
+export function buildPreviewScreenshotPath({ name = defaultPreviewArtifactName } = {}) {
+  return path.join(rootDir, "artifacts", `${name}.jpg`);
+}
+
+function normalizePreviewConfig(preview) {
+  if (!preview) {
+    return null;
+  }
+
+  if (preview === true) {
+    return {
+      path: buildPreviewScreenshotPath(),
+    };
+  }
+
+  return {
+    ...preview,
+    path: preview.path || buildPreviewScreenshotPath(),
+  };
+}
+
 export async function launchGame(options = {}) {
   const {
     baseUrl = defaultBaseUrl,
@@ -273,8 +295,9 @@ export async function launchGame(options = {}) {
     game,
     seeded: options.seeded !== false,
   });
+  const normalizedPreview = normalizePreviewConfig(preview);
   const session = await startHeadlessSession({
-    preview,
+    preview: normalizedPreview,
     timeout,
     url,
     viewport,

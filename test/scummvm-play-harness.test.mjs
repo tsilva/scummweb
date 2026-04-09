@@ -7,6 +7,7 @@ import {
   buildFrameReviewPath,
   buildGameLaunchPath,
   buildGameLaunchUrl,
+  buildPreviewScreenshotPath,
   compareSceneHashes,
   getPlayGame,
   getPlayGameLibrary,
@@ -105,6 +106,7 @@ test("play harness saves review artifacts without changing capture semantics", (
   const png = Buffer.from("not-a-real-png-but-fine-for-write-tests");
 
   assert.equal(buildFrameReviewPath({ target: "sky" }).endsWith(path.join("artifacts", "sky-play-review.png")), true);
+  assert.equal(buildPreviewScreenshotPath().endsWith(path.join("artifacts", "play-peek.jpg")), true);
   assert.equal(saveCapturedFrame({ png }, { path: savePath, target: "sky" }), savePath);
   assert.deepEqual(fs.readFileSync(savePath), png);
 });

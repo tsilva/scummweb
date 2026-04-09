@@ -116,6 +116,9 @@ For `Beneath a Steel Sky` (`sky`):
 - Load `references/bass.md` first and treat it as the primary progression source.
 - Match the live run to the nearest checkpoint by room, NPC presence, key inventory, and immediate objective before taking further actions.
 - Use that checkpoint's `Critical actions` until the run diverges.
+- Default to BASS's direct path-and-act control model unless the live run proves otherwise:
+  hover the world target and `right-click` once so Foster walks over and performs the action
+  select an inventory item, hover the destination target, and `right-click` once so Foster walks over and applies it
 - Browse only if the live state still does not fit the checkpoint after one deliberate re-check.
 
 Decision rule:
@@ -137,6 +140,9 @@ Use the walkthrough to choose the shortest path, then still verify the port-spec
 
 - Treat the puzzle solution and the port-control sequence as separate problems.
 - Treat hotspot discovery, inventory arming, and actor positioning as control questions, not puzzle questions.
+- In BASS, do not decompose a normal pickup or object-use step into separate walk and act clicks unless the live run proves that one-step interaction is failing.
+- Prefer a single `right-click` on the hovered target for world interactions so the actor paths and acts in one step.
+- For inventory use in BASS, select the item, hover the destination target, then `right-click` once. Do not manually pre-walk unless a verified exception requires it.
 - Treat the ScummVM canvas as a coordinate-space problem first. Do not mix viewport guesses, logical game coordinates, and screenshot pixels in the same step.
 - If you crop or zoom part of the active game frame for inspection, add the active-frame offset back before reusing that point in `locator.click({ position })` or `locator.hover({ position })`. Do not reuse cropped-image coordinates as if they were full-canvas coordinates.
 - Default to one of these two targeting methods:
@@ -156,6 +162,7 @@ Use the walkthrough to choose the shortest path, then still verify the port-spec
 - If a click misses for unclear reasons, stop after the first miss and audit the canvas bounds or targeting method before retrying.
 - Do not use coarse CSS-pixel sweeps across the full canvas when the game frame is letterboxed or pillarboxed.
 - If the control mapping is still uncertain, test one reversible interaction before a longer chain.
+- For BASS specifically, use that reversible interaction to verify single-step `right-click` path-and-act before introducing any staged walk-then-act workaround.
 - If the game has multiple controllable actors or modes, verify which one is active before pathing.
 - After each meaningful action, wait for the animation, subtitle, inventory update, or room transition to settle before deciding the next step.
 - Keep the inventory tray closed while a room action is still resolving. Do not reopen it mid-walk, mid-pickup, or mid-use animation; in ScummVM scenes it can block the room and make a valid action look like it failed.

@@ -8,6 +8,7 @@
     "build:scummvm": "./scripts/build_scummvm_web.sh",
     "publish:games": "python3 ./scripts/upload_games_to_r2.py",
     "games:upload": "pnpm run publish:games",
+    "record:preview": "node ./scripts/record_preview_stream.mjs",
     "verify": "./scripts/verify_scummvm_web.sh",
     "sentry:issues": "node ./scripts/list_sentry_issues.mjs",
     "test": "node --test test/*.test.mjs",
