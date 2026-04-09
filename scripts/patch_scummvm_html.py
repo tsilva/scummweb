@@ -14,6 +14,18 @@ updated_html = re.sub(
     updated_html,
     count=1,
 )
+updated_html = re.sub(
+    r'textarea\.emscripten\{font-family:monospace;width:80%\}(?!#output\{)',
+    "textarea.emscripten{font-family:monospace;width:80%}#output{position:fixed;left:-10000px;top:0;width:1px!important;height:1px!important;padding:0;border:0;opacity:0;pointer-events:none;overflow:hidden;white-space:pre;z-index:-1}",
+    updated_html,
+    count=1,
+)
+updated_html = re.sub(
+    r"<hr>\s*(<textarea\b[^>]*\bid=output\b[^>]*></textarea>)",
+    r"\1",
+    updated_html,
+    count=1,
+)
 updated_html = updated_html.replace(
     'function loadingDoneMessage(){return document.getElementById("progress").style.zIndex=0,"All downloads complete."}',
     'function loadingDoneMessage(){return document.getElementById("progress").style.zIndex=0,window.__scummwebSetReadyStatePhase?window.__scummwebSetReadyStatePhase("runtime-ready","runtime-ready"):window.__scummwebPendingReadyStatePhase={state:"runtime-ready",reason:"runtime-ready"},"All downloads complete."}',
@@ -69,6 +81,7 @@ const readyFrameSampleSize=32;
 const readyFrameTimeoutMs=15000;
 const touchTapDurationMs=260;
 const touchTapMoveThresholdPx=28;
+const touchJoystickMaxSpeedPxPerSecond=720;
 const touchClickModeStorageKey="scummweb.touchClickMode";
 let gameRunning=!launchPattern;
 let hoverActive=false;
@@ -77,7 +90,11 @@ let launchRevealTimer=0;
 let readyFramePollTimer=0;
 let readyFramePollStartedAt=0;
 let activeTouchGesture=null;
+let syntheticCursorPoint=null;
 let touchClickMode="left";
+let touchJoystickState={active:false,x:0,y:0};
+let touchJoystickAnimationFrame=0;
+let lastTouchJoystickFrameAt=0;
 const readyFrameScratch=document.createElement("canvas");
 readyFrameScratch.width=readyFrameSampleSize;
 readyFrameScratch.height=readyFrameSampleSize;
@@ -110,12 +127,20 @@ const getTouchClickButton=()=>touchClickMode==="right"?2:0;
 const consumeTouchEvent=event=>{if(event.cancelable)event.preventDefault();if(typeof event.stopImmediatePropagation==="function")event.stopImmediatePropagation();event.stopPropagation()};
 const getTouchPoint=touchLike=>{if(!touchLike)return null;const rect=canvas.getBoundingClientRect();const maxX=rect.width>0?rect.right:rect.left;const maxY=rect.height>0?rect.bottom:rect.top;const clientX=clamp(Number.isFinite(touchLike.clientX)?touchLike.clientX:rect.left,rect.left,maxX);const clientY=clamp(Number.isFinite(touchLike.clientY)?touchLike.clientY:rect.top,rect.top,maxY);return{clientX,clientY,screenX:Number.isFinite(touchLike.screenX)?touchLike.screenX:clientX,screenY:Number.isFinite(touchLike.screenY)?touchLike.screenY:clientY,pageX:Number.isFinite(touchLike.pageX)?touchLike.pageX:clientX+window.scrollX,pageY:Number.isFinite(touchLike.pageY)?touchLike.pageY:clientY+window.scrollY}};
 const getGesturePoint=touchList=>{const touches=Array.from(touchList||[]);if(touches.length===0)return null;touches.sort(((leftTouch,rightTouch)=>leftTouch.clientX-rightTouch.clientX));return getTouchPoint(touches[touches.length-1])};
+const getDefaultSyntheticCursorPoint=()=>{const rect=canvas.getBoundingClientRect();const centerX=rect.width>0?rect.left+rect.width/2:rect.left;const centerY=rect.height>0?rect.top+rect.height/2:rect.top;return getTouchPoint({clientX:centerX,clientY:centerY})};
+const setSyntheticCursorPoint=point=>{if(!point)return syntheticCursorPoint;syntheticCursorPoint={...point};return syntheticCursorPoint};
+const getSyntheticCursorPoint=()=>syntheticCursorPoint?{...syntheticCursorPoint}:setSyntheticCursorPoint(getDefaultSyntheticCursorPoint());
 const focusCanvas=()=>{try{canvas.focus({preventScroll:true})}catch{}};
 const dispatchPointerEvent=(eventName,point,{button=0,buttons=0}={})=>{if(typeof PointerEvent!=="function"||!point)return;const pointerEvent=new PointerEvent(eventName,{bubbles:true,cancelable:true,composed:true,pointerId:1,pointerType:"mouse",isPrimary:true,clientX:point.clientX,clientY:point.clientY,screenX:point.screenX,screenY:point.screenY,pageX:point.pageX,pageY:point.pageY,button,buttons,pressure:buttons===0?0:.5});canvas.dispatchEvent(pointerEvent)};
 const dispatchMouseEvent=(eventName,point,{button=0,buttons=0,detail=1}={})=>{if(!point)return;const mouseEvent=new MouseEvent(eventName,{bubbles:true,cancelable:true,composed:true,clientX:point.clientX,clientY:point.clientY,screenX:point.screenX,screenY:point.screenY,button,buttons,detail});canvas.dispatchEvent(mouseEvent)};
-const dispatchSyntheticMove=point=>{if(!point)return;focusCanvas();dispatchPointerEvent("pointermove",point,{button:0,buttons:0});dispatchMouseEvent("mousemove",point,{button:0,buttons:0,detail:0})};
+const dispatchSyntheticMove=point=>{if(!point)return;const nextPoint=setSyntheticCursorPoint(point);focusCanvas();dispatchPointerEvent("pointermove",nextPoint,{button:0,buttons:0});dispatchMouseEvent("mousemove",nextPoint,{button:0,buttons:0,detail:0})};
 const dispatchSyntheticClick=(point,button)=>{if(!point)return;const buttons=button===2?2:1;focusCanvas();dispatchSyntheticMove(point);dispatchPointerEvent("pointerdown",point,{button,buttons});dispatchMouseEvent("mousedown",point,{button,buttons});dispatchPointerEvent("pointerup",point,{button,buttons:0});dispatchMouseEvent("mouseup",point,{button,buttons:0});if(button===2){dispatchMouseEvent("contextmenu",point,{button,buttons:0,detail:2});return}dispatchMouseEvent("click",point,{button,buttons:0,detail:2})};
-const handleScummwebMessage=event=>{if(event.origin!==window.location.origin||event.data?.type!=="scummweb-touch-click-mode")return;setTouchClickMode(event.data.mode)};
+const shouldAnimateTouchJoystick=()=>touchJoystickState.active&&(touchJoystickState.x!==0||touchJoystickState.y!==0);
+const stopTouchJoystickLoop=()=>{if(touchJoystickAnimationFrame){window.cancelAnimationFrame(touchJoystickAnimationFrame);touchJoystickAnimationFrame=0}lastTouchJoystickFrameAt=0};
+const stepTouchJoystick=timestamp=>{touchJoystickAnimationFrame=0;if(!shouldAnimateTouchJoystick())return;const previousPoint=getSyntheticCursorPoint();const priorFrameAt=lastTouchJoystickFrameAt||timestamp;const deltaMs=clamp(timestamp-priorFrameAt,8,48);lastTouchJoystickFrameAt=timestamp;const deltaScale=touchJoystickMaxSpeedPxPerSecond*(deltaMs/1000);const nextPoint=getTouchPoint({clientX:previousPoint.clientX+touchJoystickState.x*deltaScale,clientY:previousPoint.clientY+touchJoystickState.y*deltaScale});if(nextPoint){dispatchSyntheticMove(nextPoint)}touchJoystickAnimationFrame=window.requestAnimationFrame(stepTouchJoystick)};
+const syncTouchJoystickLoop=()=>{if(!shouldAnimateTouchJoystick()){stopTouchJoystickLoop();return}if(touchJoystickAnimationFrame)return;touchJoystickAnimationFrame=window.requestAnimationFrame(stepTouchJoystick)};
+const setTouchJoystickState=nextState=>{touchJoystickState={active:Boolean(nextState?.active),x:clamp(Number(nextState?.x)||0,-1,1),y:clamp(Number(nextState?.y)||0,-1,1)};syncTouchJoystickLoop()};
+const handleScummwebMessage=event=>{if(event.origin!==window.location.origin)return;if(event.data?.type==="scummweb-touch-click-mode"){setTouchClickMode(event.data.mode);return}if(event.data?.type!=="scummweb-touch-joystick-state")return;setTouchJoystickState(event.data)};
 const handleTouchStart=event=>{if(event.touches.length===0)return;consumeTouchEvent(event);const point=getGesturePoint(event.touches);activeTouchGesture={startedAt:Date.now(),startPoint:point,lastPoint:point,moved:false};dispatchSyntheticMove(point)};
 const handleTouchMove=event=>{if(!activeTouchGesture||event.touches.length===0)return;consumeTouchEvent(event);const point=getGesturePoint(event.touches);if(!point)return;if(measureDistance(activeTouchGesture.startPoint,point)>touchTapMoveThresholdPx){activeTouchGesture.moved=true}activeTouchGesture.lastPoint=point;dispatchSyntheticMove(point)};
 const handleTouchEnd=event=>{consumeTouchEvent(event);const point=getGesturePoint(event.touches)||getGesturePoint(event.changedTouches)||activeTouchGesture?.lastPoint||null;if(point){dispatchSyntheticMove(point)}if(!activeTouchGesture){return}if(point&&measureDistance(activeTouchGesture.startPoint,point)>touchTapMoveThresholdPx){activeTouchGesture.moved=true}if(event.touches.length>0){activeTouchGesture.lastPoint=point||activeTouchGesture.lastPoint;return}const completedGesture={...activeTouchGesture,endedAt:Date.now(),endPoint:point||activeTouchGesture.lastPoint};activeTouchGesture=null;const gestureDuration=completedGesture.endedAt-completedGesture.startedAt;const isTap=!completedGesture.moved&&gestureDuration<=touchTapDurationMs&&completedGesture.endPoint;if(!isTap)return;dispatchSyntheticClick(completedGesture.endPoint,getTouchClickButton())};

@@ -266,6 +266,14 @@ async function verifyLaunchOverlayAfterStartup(page, game) {
   }
 }
 
+async function verifyTouchJoystickHiddenOnDesktop(page, game) {
+  const joystickCount = await page.locator(".game-route-touch-joystick").count();
+
+  if (joystickCount !== 0) {
+    throw new Error(`Touch joystick rendered on desktop for ${game.target}.`);
+  }
+}
+
 async function verifyTarget(context, baseUrl, game, { waitForLaunch = true } = {}) {
   const page = await context.newPage();
   const pageErrors = [];
@@ -900,12 +908,45 @@ async function verifyMobileTouchClickToggle(browser, baseUrl, game) {
     }
 
     const touchToggle = page.locator(".game-route-control-button.is-touch-toggle");
+    const touchJoystick = page.locator(".game-route-touch-joystick");
     await touchToggle.waitFor({ state: "visible", timeout: 15000 });
+    await touchJoystick.waitFor({ state: "visible", timeout: 15000 });
 
     const initialMode = await touchToggle.getAttribute("data-mode");
 
     if (initialMode !== "left") {
       throw new Error(`Expected mobile touch toggle to start in left-click mode, got ${initialMode}.`);
+    }
+
+    const joystickLayout = await page.evaluate(() => {
+      const joystick = document.querySelector(".game-route-touch-joystick");
+
+      if (!(joystick instanceof HTMLElement)) {
+        return null;
+      }
+
+      const rect = joystick.getBoundingClientRect();
+
+      return {
+        bottom: rect.bottom,
+        height: rect.height,
+        left: rect.left,
+        viewportHeight: window.innerHeight,
+        viewportWidth: window.innerWidth,
+        width: rect.width,
+      };
+    });
+
+    if (!joystickLayout) {
+      throw new Error("Mobile touch joystick did not render.");
+    }
+
+    if (joystickLayout.width < 64 || joystickLayout.width > 80 || joystickLayout.height < 64 || joystickLayout.height > 80) {
+      throw new Error(`Unexpected joystick dimensions: ${JSON.stringify(joystickLayout)}`);
+    }
+
+    if (joystickLayout.left > 36 || joystickLayout.viewportHeight - joystickLayout.bottom > 36) {
+      throw new Error(`Joystick was not pinned to the bottom-left corner: ${JSON.stringify(joystickLayout)}`);
     }
 
     await frame.locator("#canvas").evaluate((canvas) => {
@@ -916,6 +957,8 @@ async function verifyMobileTouchClickToggle(browser, baseUrl, game) {
           type: event.type,
           button: typeof event.button === "number" ? event.button : null,
           buttons: typeof event.buttons === "number" ? event.buttons : null,
+          clientX: typeof event.clientX === "number" ? event.clientX : null,
+          clientY: typeof event.clientY === "number" ? event.clientY : null,
           touches: "touches" in event ? event.touches.length : null,
           changedTouches: "changedTouches" in event ? event.changedTouches.length : null,
         });
@@ -936,6 +979,77 @@ async function verifyMobileTouchClickToggle(browser, baseUrl, game) {
         canvas.addEventListener(eventName, record("capture"), true);
         canvas.addEventListener(eventName, record("bubble"));
       }
+    });
+
+    const joystickBox = await touchJoystick.boundingBox();
+
+    if (!joystickBox) {
+      throw new Error("Unable to read joystick bounds during mobile verification.");
+    }
+
+    const joystickCenterX = joystickBox.x + joystickBox.width / 2;
+    const joystickCenterY = joystickBox.y + joystickBox.height / 2;
+
+    await frame.locator("#canvas").evaluate(() => {
+      window.__touchClickVerificationEvents = [];
+    });
+
+    await page.mouse.move(joystickCenterX, joystickCenterY);
+    await page.mouse.down();
+    await page.mouse.move(joystickCenterX + 18, joystickCenterY - 12, { steps: 6 });
+    await page.waitForTimeout(250);
+
+    const joystickVerification = await frame.locator("#canvas").evaluate(() => {
+      const events = Array.isArray(window.__touchClickVerificationEvents)
+        ? window.__touchClickVerificationEvents
+        : [];
+
+      return {
+        events,
+        moveEvents: events.filter((event) => event.type === "mousemove" || event.type === "pointermove"),
+        sawLeakedTouchEvent: events.some((event) => event.type.startsWith("touch")),
+      };
+    });
+
+    if (joystickVerification.sawLeakedTouchEvent) {
+      throw new Error(
+        `Joystick movement leaked touch events into the ScummVM canvas: ${JSON.stringify(joystickVerification.events)}`
+      );
+    }
+
+    if (joystickVerification.moveEvents.length < 2) {
+      throw new Error(
+        `Joystick movement did not synthesize enough cursor movement events: ${JSON.stringify(joystickVerification.events)}`
+      );
+    }
+
+    await page.mouse.up();
+    await page.waitForTimeout(100);
+
+    const moveCountAfterRelease = await frame.locator("#canvas").evaluate(() => {
+      const events = Array.isArray(window.__touchClickVerificationEvents)
+        ? window.__touchClickVerificationEvents
+        : [];
+
+      return events.filter((event) => event.type === "mousemove" || event.type === "pointermove").length;
+    });
+
+    await page.waitForTimeout(250);
+
+    const moveCountAfterSettling = await frame.locator("#canvas").evaluate(() => {
+      const events = Array.isArray(window.__touchClickVerificationEvents)
+        ? window.__touchClickVerificationEvents
+        : [];
+
+      return events.filter((event) => event.type === "mousemove" || event.type === "pointermove").length;
+    });
+
+    if (moveCountAfterSettling !== moveCountAfterRelease) {
+      throw new Error("Joystick release did not stop cursor movement promptly.");
+    }
+
+    await frame.locator("#canvas").evaluate(() => {
+      window.__touchClickVerificationEvents = [];
     });
 
     await touchToggle.tap();
@@ -1101,6 +1215,7 @@ for (const game of library.games) {
   await verifyCursorGrabHintHiddenDuringBoot(page, game);
   await waitForGameStartup(page, frame, game);
   await verifyLaunchOverlayAfterStartup(page, game);
+  await verifyTouchJoystickHiddenOnDesktop(page, game);
   await verifyRouteFrameAutofocus(page);
   await verifyEscapeStaysInGame(page, frame, routeUrl);
   await verifySkipIntroButton(page, frame, game, routeUrl);

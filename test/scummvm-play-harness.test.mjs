@@ -4,10 +4,13 @@ import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 import {
+  buildPlayArtifactRun,
   buildFrameReviewPath,
   buildGameLaunchPath,
   buildGameLaunchUrl,
   buildPreviewScreenshotPath,
+  buildRunActionLogPath,
+  buildRunScreenshotPath,
   buildRoomHotspotMapPath,
   compareSceneHashes,
   getPlayGame,
@@ -113,11 +116,72 @@ test("play harness saves review artifacts without changing capture semantics", (
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "scummweb-play-harness-"));
   const savePath = path.join(tempDir, "review.png");
   const png = Buffer.from("not-a-real-png-but-fine-for-write-tests");
+  const artifactRun = buildPlayArtifactRun({
+    gameId: "sky",
+    startedAt: "2026-04-09T12:34:56.789Z",
+  });
 
   assert.equal(buildFrameReviewPath({ target: "sky" }).endsWith(path.join("artifacts", "sky-play-review.png")), true);
   assert.equal(buildPreviewScreenshotPath().endsWith(path.join("artifacts", "play-peek.jpg")), true);
   assert.equal(saveCapturedFrame({ png }, { path: savePath, target: "sky" }), savePath);
+  assert.equal(
+    saveCapturedFrame({ png }, { artifactRun, target: "sky" }).endsWith(
+      path.join("artifacts", "sky", "2026-04-09T12:34:56.789Z", "play-review.png"),
+    ),
+    true,
+  );
   assert.deepEqual(fs.readFileSync(savePath), png);
+  const logEntries = fs
+    .readFileSync(artifactRun.actionLogPath, "utf8")
+    .trim()
+    .split("\n")
+    .map((line) => JSON.parse(line));
+  assert.equal(logEntries.at(-1)?.action, "save-frame-capture");
+  fs.rmSync(artifactRun.root, { force: true, recursive: true });
+});
+
+test("play harness builds per-run artifact roots using game id and ISO timestamp", () => {
+  const artifactRun = buildPlayArtifactRun({
+    gameId: "sky",
+    startedAt: "2026-04-09T12:34:56.789Z",
+  });
+
+  assert.equal(artifactRun.gameId, "sky");
+  assert.equal(artifactRun.startedAt, "2026-04-09T12:34:56.789Z");
+  assert.equal(
+    artifactRun.root.endsWith(path.join("artifacts", "sky", "2026-04-09T12:34:56.789Z")),
+    true,
+  );
+  assert.equal(
+    buildFrameReviewPath({ artifactRun, target: "sky" }).endsWith(
+      path.join("artifacts", "sky", "2026-04-09T12:34:56.789Z", "play-review.png"),
+    ),
+    true,
+  );
+  assert.equal(
+    buildPreviewScreenshotPath({ artifactRun }).endsWith(
+      path.join("artifacts", "sky", "2026-04-09T12:34:56.789Z", "play-peek.jpg"),
+    ),
+    true,
+  );
+  assert.equal(
+    buildRoomHotspotMapPath({ artifactRun, roomKey: "room-1", target: "sky" }).endsWith(
+      path.join("artifacts", "sky", "2026-04-09T12:34:56.789Z", "room-maps", "sky", "room-1.json"),
+    ),
+    true,
+  );
+  assert.equal(
+    buildRunActionLogPath({ artifactRun }).endsWith(
+      path.join("artifacts", "sky", "2026-04-09T12:34:56.789Z", "actions.log"),
+    ),
+    true,
+  );
+  assert.equal(
+    buildRunScreenshotPath({ artifactRun, label: "checkpoint", startedAt: "2026-04-09T12:35:00.000Z" }).endsWith(
+      path.join("artifacts", "sky", "2026-04-09T12:34:56.789Z", "screenshots", "2026-04-09T12-35-00-000Z-checkpoint.png"),
+    ),
+    true,
+  );
 });
 
 test("play harness builds stable room keys from scene hashes and active bounds", () => {
@@ -167,6 +231,10 @@ test("play harness deduplicates hotspot hits by label and nearby coordinates", (
 test("play harness saves and loads room hotspot maps", () => {
   const roomKey = `test-room-${Date.now()}`;
   const target = "test-fixture";
+  const artifactRun = buildPlayArtifactRun({
+    gameId: target,
+    startedAt: "2026-04-09T12:34:56.789Z",
+  });
   const map = {
     activeBounds: { left: 0, top: 0, width: 320, height: 200 },
     generatedAt: "2026-04-09T12:00:00.000Z",
@@ -186,11 +254,17 @@ test("play harness saves and loads room hotspot maps", () => {
     sceneHash: "abc123",
     target,
   };
-  const mapPath = buildRoomHotspotMapPath({ roomKey, target });
+  const mapPath = buildRoomHotspotMapPath({ artifactRun, roomKey, target });
 
   try {
-    saveRoomHotspotMap({ map, roomKey, target });
-    assert.deepEqual(loadRoomHotspotMap({ roomKey, target }), map);
+    saveRoomHotspotMap({ artifactRun, map, roomKey, target });
+    assert.deepEqual(loadRoomHotspotMap({ artifactRun, roomKey, target }), map);
+    const logEntries = fs
+      .readFileSync(artifactRun.actionLogPath, "utf8")
+      .trim()
+      .split("\n")
+      .map((line) => JSON.parse(line));
+    assert.equal(logEntries.at(-1)?.action, "save-room-hotspot-map");
   } finally {
     fs.rmSync(path.dirname(mapPath), { force: true, recursive: true });
   }

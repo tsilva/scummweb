@@ -4,10 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import GameBootOverlay from "./game-player/GameBootOverlay";
 import GameMobileOverlay from "./game-player/GameMobileOverlay";
 import GamePlayerControls from "./game-player/GamePlayerControls";
+import GameTouchJoystick from "./game-player/GameTouchJoystick";
 import { dispatchSyntheticKeypressSequence } from "./game-player/keyboard";
 import { useBootState } from "./game-player/useBootState";
 import { useImmersiveMode } from "./game-player/useImmersiveMode";
 import { useTouchClickMode } from "./game-player/useTouchClickMode";
+import { useTouchJoystick } from "./game-player/useTouchJoystick";
 import { recordRecentGameTarget } from "./recent-games";
 
 const SCUMMWEB_FRAME_MESSAGE_SOURCE = "scummweb";
@@ -119,6 +121,17 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     frameSrc,
     skipIntro,
     skipIntroConsumed,
+  });
+  const touchJoystick = useTouchJoystick({
+    enabled:
+      immersiveMode.isMobileViewport &&
+      bootState.hasBootCompleted &&
+      !bootState.hasBootFailed &&
+      !immersiveMode.needsImmersiveRetry &&
+      immersiveMode.isLandscapeViewport &&
+      touchClickMode.touchControlsUnlocked,
+    frameRef,
+    frameSrc,
   });
 
   useEffect(() => {
@@ -359,6 +372,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     !bootState.hasBootFailed &&
     !showMobileOverlay &&
     touchClickMode.touchControlsUnlocked;
+  const showTouchJoystick = showTouchClickToggle;
   const showBottomActions = showSkipIntroBottomAction;
 
   return (
@@ -394,6 +408,14 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
         showSkipIntroAction={showSkipIntroBottomAction}
         showTouchClickToggle={showTouchClickToggle}
         touchClickMode={touchClickMode.touchClickMode}
+      />
+      <GameTouchJoystick
+        knobOffset={touchJoystick.knobOffset}
+        onPointerCancel={touchJoystick.handlePointerCancel}
+        onPointerDown={touchJoystick.handlePointerDown}
+        onPointerMove={touchJoystick.handlePointerMove}
+        onPointerUp={touchJoystick.handlePointerUp}
+        showTouchJoystick={showTouchJoystick}
       />
       <iframe
         allow="autoplay; fullscreen"
