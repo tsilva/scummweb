@@ -342,8 +342,9 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     hasBootOverlayDismissed &&
     immersiveMode.isMobileViewport &&
     (immersiveMode.needsImmersiveRetry || !immersiveMode.isLandscapeViewport);
-  const showSkipIntroAction =
-    bootState.showSkipIntroButton && skipIntro && bootState.hasBootCompleted && !bootState.hasBootFailed;
+  const showSkipIntroAction = bootState.showSkipIntroButton && skipIntro && !bootState.hasBootFailed;
+  const showSkipIntroOverlayAction = showSkipIntroAction && showBootOverlay;
+  const showSkipIntroBottomAction = showSkipIntroAction && !showBootOverlay;
   const showExitControl =
     !skipIntro ||
     bootState.hasBootFailed ||
@@ -358,7 +359,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     !bootState.hasBootFailed &&
     !showMobileOverlay &&
     touchClickMode.touchControlsUnlocked;
-  const showBottomActions = showSkipIntroAction;
+  const showBottomActions = showSkipIntroBottomAction;
 
   return (
     <div className="game-route-shell" ref={shellRef}>
@@ -367,6 +368,8 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
         bootStatusText={bootState.bootStatusText}
         game={game}
         hasBootFailed={bootState.hasBootFailed}
+        onSkipIntro={handleSkipIntroClick}
+        showSkipIntroAction={showSkipIntroOverlayAction}
         showBootOverlay={showBootOverlay}
         showBootProgress={showBootProgress}
         title={title}
@@ -388,7 +391,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
         showExitControl={showExitControl}
         showFullscreenControl={showFullscreenControl}
         showScummvmMenuButton={bootState.showScummvmMenuButton}
-        showSkipIntroAction={showSkipIntroAction}
+        showSkipIntroAction={showSkipIntroBottomAction}
         showTouchClickToggle={showTouchClickToggle}
         touchClickMode={touchClickMode.touchClickMode}
       />

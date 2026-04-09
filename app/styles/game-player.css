@@ -231,6 +231,12 @@
   text-align: right;
 }
 
+.game-route-boot-actions {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 1rem;
+}
+
 .game-route-shell:fullscreen {
   width: 100%;
   height: 100%;
