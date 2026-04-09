@@ -713,8 +713,8 @@
 
   .dashboard-nav {
     position: fixed;
-    align-items: flex-start;
-    min-height: 6rem;
+    align-items: center;
+    min-height: 4.4rem;
     padding-top: calc(max(0.45rem, env(safe-area-inset-top)) + 0.35rem);
     padding-bottom: 0.85rem;
     background: rgba(17, 17, 17, 0.92);
@@ -723,41 +723,53 @@
 
   .nav-cluster-left {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, auto) auto;
+    grid-template-rows: auto auto;
     align-items: start;
-    gap: 0.55rem 0.9rem;
+    gap: 0.12rem 0.85rem;
     padding-right: 3rem;
   }
 
   .nav-brand-group {
+    grid-column: 1;
+    grid-row: 1 / span 2;
     width: auto;
     min-width: 0;
   }
 
   .nav-brand-stack {
+    gap: 0.12rem;
     min-width: 0;
   }
 
   .nav-brand-tagline {
-    max-width: 16ch;
-    white-space: normal;
+    max-width: none;
+    font-size: 0.42rem;
+    letter-spacing: 0.13em;
+    line-height: 1;
+    white-space: nowrap;
   }
 
   .nav-links {
+    grid-column: 2;
+    grid-row: 1;
     width: auto;
-    gap: 0.9rem;
-    align-self: start;
-    padding-top: 0.12rem;
+    gap: 0.7rem;
+    align-self: center;
+    padding-top: 0;
   }
 
   .nav-links a {
-    font-size: 0.62rem;
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.1rem;
+    font-size: 0.58rem;
     letter-spacing: 0.14em;
   }
 
   .nav-actions {
     position: absolute;
-    top: calc(max(0.45rem, env(safe-area-inset-top)) + 0.2rem);
+    top: calc(max(0.45rem, env(safe-area-inset-top)) + 0.45rem);
     right: 1rem;
     width: auto;
   }
