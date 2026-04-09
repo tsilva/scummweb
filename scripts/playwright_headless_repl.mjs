@@ -8,7 +8,7 @@ const chromeCandidates = [
   "/Applications/Chromium.app/Contents/MacOS/Chromium",
 ];
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const defaultPeekScreenshotIntervalMs = 2000;
+const defaultPeekScreenshotIntervalMs = 500;
 const defaultPeekScreenshotQuality = 65;
 const canvasSelector = "#canvas";
 
