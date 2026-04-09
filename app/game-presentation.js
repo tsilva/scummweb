@@ -38,7 +38,11 @@ const artByTarget = {
     landscapeImage: "/launcher/dreamweb-cover.webp",
     posterImage: "/launcher/dreamweb-cover.webp",
     spotlightImage: "/launcher/dreamweb-cover.webp",
-    screenshots: [],
+    screenshots: [
+      "/launcher/dreamweb-shot-1.png",
+      "/launcher/dreamweb-shot-2.png",
+      "/launcher/dreamweb-shot-3.png",
+    ],
     tone: "tone-dreamweb",
   },
   queen: {
@@ -55,7 +59,11 @@ const artByTarget = {
     landscapeImage: "/launcher/queen-cover.webp",
     posterImage: "/launcher/queen-cover.webp",
     spotlightImage: "/launcher/queen-cover.webp",
-    screenshots: [],
+    screenshots: [
+      "/launcher/queen-shot-1.png",
+      "/launcher/queen-shot-2.png",
+      "/launcher/queen-shot-3.png",
+    ],
     tone: "tone-default",
   },
   lure: {
@@ -71,7 +79,11 @@ const artByTarget = {
     landscapeImage: "/launcher/lure-cover.webp",
     posterImage: "/launcher/lure-cover.webp",
     spotlightImage: "/launcher/lure-cover.webp",
-    screenshots: [],
+    screenshots: [
+      "/launcher/lure-shot-1.png",
+      "/launcher/lure-shot-2.png",
+      "/launcher/lure-shot-3.png",
+    ],
     tone: "tone-default",
   },
   drascula: {
@@ -87,7 +99,11 @@ const artByTarget = {
     landscapeImage: "/launcher/drascula-cover.webp",
     posterImage: "/launcher/drascula-cover.webp",
     spotlightImage: "/launcher/drascula-cover.webp",
-    screenshots: [],
+    screenshots: [
+      "/launcher/drascula-shot-1.png",
+      "/launcher/drascula-shot-2.png",
+      "/launcher/drascula-shot-3.png",
+    ],
     tone: "tone-default",
   },
   "nippon-amiga": {
@@ -103,7 +119,11 @@ const artByTarget = {
     landscapeImage: "/launcher/nippon-cover.webp",
     posterImage: "/launcher/nippon-cover.webp",
     spotlightImage: "/launcher/nippon-cover.webp",
-    screenshots: [],
+    screenshots: [
+      "/launcher/nippon-shot-1.png",
+      "/launcher/nippon-shot-2.png",
+      "/launcher/nippon-shot-3.png",
+    ],
     tone: "tone-default",
   },
   sword25: {
@@ -119,7 +139,11 @@ const artByTarget = {
     landscapeImage: "/launcher/sword25-cover.webp",
     posterImage: "/launcher/sword25-cover.webp",
     spotlightImage: "/launcher/sword25-cover.webp",
-    screenshots: [],
+    screenshots: [
+      "/launcher/sword25-shot-1.png",
+      "/launcher/sword25-shot-2.png",
+      "/launcher/sword25-shot-3.png",
+    ],
     tone: "tone-default",
   },
 };

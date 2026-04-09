@@ -106,6 +106,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
   const [readySignal, setReadySignal] = useState(null);
   const [skipIntroConsumed, setSkipIntroConsumed] = useState(false);
   const bootState = useBootState({
+    displayTitle: game?.displayTitle || title,
     frameRef,
     frameSrc,
     readySignal,

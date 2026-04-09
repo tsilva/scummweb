@@ -14,6 +14,11 @@ updated_html = re.sub(
     updated_html,
     count=1,
 )
+updated_html = updated_html.replace(
+    'function loadingDoneMessage(){return document.getElementById("progress").style.zIndex=0,"All downloads complete."}',
+    'function loadingDoneMessage(){return document.getElementById("progress").style.zIndex=0,window.__scummwebSetReadyStatePhase?window.__scummwebSetReadyStatePhase("runtime-ready","runtime-ready"):window.__scummwebPendingReadyStatePhase={state:"runtime-ready",reason:"runtime-ready"},"All downloads complete."}',
+    1,
+)
 asset_version = os.environ.get("SCUMMVM_BUNDLE_ASSET_VERSION", "dev")
 redirect_script = """<script>(function(){
 const exitTo=new URLSearchParams(window.location.search).get("exitTo");
@@ -40,11 +45,18 @@ globalThis.__scummvmRequestExit=requestExit;
 const scummwebMessageSource="scummweb";
 const postParentMessage=message=>{if(!(window.parent&&window.parent!==window))return false;try{window.parent.postMessage(message,window.location.origin);return true}catch{return false}};
 const buildCurrentFrameHref=()=>`${window.location.pathname}${window.location.search}${window.location.hash}`;
+const readyStatePriority={idle:-1,pending:0,"runtime-ready":1,"launch-detected":2,"awaiting-frame":3,ready:4};
+const getReadyStatePriority=state=>Object.prototype.hasOwnProperty.call(readyStatePriority,state)?readyStatePriority[state]:-1;
 let readyState={state:target?"pending":"idle",target:target||null,href:buildCurrentFrameHref(),reason:target?"awaiting-launch":"no-target",source:scummwebMessageSource,emittedAt:null};
-const syncReadyState=updates=>{readyState={...readyState,...updates,target:target||null,href:buildCurrentFrameHref(),source:scummwebMessageSource};globalThis.__scummwebReadyState=readyState;return readyState};
-const markLaunchDetected=()=>{if(!target||readyState.state==="ready"||readyState.state==="launch-detected")return readyState;return syncReadyState({state:"launch-detected",reason:"launch-output-detected"})};
+const readyStateHistory=[];
+const syncReadyState=updates=>{const previousState=readyState;readyState={...readyState,...updates,target:target||null,href:buildCurrentFrameHref(),source:scummwebMessageSource};if(!readyStateHistory.length||previousState.state!==readyState.state||previousState.reason!==readyState.reason||previousState.emittedAt!==readyState.emittedAt){readyStateHistory.push({...readyState})}globalThis.__scummwebReadyState=readyState;globalThis.__scummwebReadyStateHistory=readyStateHistory.slice();return readyState};
+const setReadyStatePhase=(state,reason)=>{if(!target||getReadyStatePriority(state)<=getReadyStatePriority(readyState.state))return readyState;return syncReadyState({state,reason:reason||state})};
+globalThis.__scummwebSetReadyStatePhase=setReadyStatePhase;
+const markLaunchDetected=()=>setReadyStatePhase("launch-detected","launch-output-detected");
+const markAwaitingFrame=()=>setReadyStatePhase("awaiting-frame","waiting-for-first-frame");
 const emitGameReady=reason=>{if(!target||readyState.state==="ready")return false;const nextReadyState=syncReadyState({state:"ready",reason,emittedAt:Date.now()});postParentMessage({type:"scummvm-ready",source:scummwebMessageSource,target:nextReadyState.target,href:nextReadyState.href,reason:nextReadyState.reason,emittedAt:nextReadyState.emittedAt});return true};
 syncReadyState({});
+if(globalThis.__scummwebPendingReadyStatePhase?.state){setReadyStatePhase(globalThis.__scummwebPendingReadyStatePhase.state,globalThis.__scummwebPendingReadyStatePhase.reason);delete globalThis.__scummwebPendingReadyStatePhase}
 const canvas=document.getElementById("canvas");
 const output=document.getElementById("output");
 if(canvas){
@@ -84,7 +96,7 @@ const hideGrabHint=()=>{grabHint.classList.remove(visibleHintClass)};
 const hasLaunchOutput=()=>Boolean(launchPattern&&output&&launchPattern.test(output.value||""));
 const hasRenderableGameFrame=()=>{if(!readyFrameContext||!canvas.width||!canvas.height)return false;try{readyFrameContext.clearRect(0,0,readyFrameSampleSize,readyFrameSampleSize);readyFrameContext.drawImage(canvas,0,0,readyFrameSampleSize,readyFrameSampleSize);const{data}=readyFrameContext.getImageData(0,0,readyFrameSampleSize,readyFrameSampleSize);let brightSampleCount=0;for(let offset=0;offset<data.length;offset+=4){if(data[offset+3]===0)continue;const brightness=data[offset]+data[offset+1]+data[offset+2];if(brightness<=24)continue;brightSampleCount+=1;if(brightSampleCount>=48)return true}}catch{}return false};
 const setGameRunning=reason=>{if(gameRunning)return false;gameRunning=true;if(launchPollTimer){window.clearInterval(launchPollTimer);launchPollTimer=0}if(launchRevealTimer){window.clearTimeout(launchRevealTimer);launchRevealTimer=0}if(readyFramePollTimer){window.clearTimeout(readyFramePollTimer);readyFramePollTimer=0}readyFramePollStartedAt=0;emitGameReady(reason);return true};
-const scheduleReadySignal=()=>{if(gameRunning)return false;if(hasRenderableGameFrame()){if(setGameRunning("rendered-frame-detected"))syncCursorPrompt();return true}if(readyFramePollTimer)return false;if(!readyFramePollStartedAt){readyFramePollStartedAt=Date.now()}const checkReadyFrame=()=>{readyFramePollTimer=0;if(gameRunning)return;if(hasRenderableGameFrame()){if(setGameRunning("rendered-frame-detected"))syncCursorPrompt();return}if(Date.now()-readyFramePollStartedAt>=readyFrameTimeoutMs){if(setGameRunning("rendered-frame-timeout"))syncCursorPrompt();return}readyFramePollTimer=window.setTimeout(checkReadyFrame,readyFramePollIntervalMs)};readyFramePollTimer=window.setTimeout(checkReadyFrame,readyFramePollIntervalMs);return true};
+const scheduleReadySignal=()=>{if(gameRunning)return false;markAwaitingFrame();if(hasRenderableGameFrame()){if(setGameRunning("rendered-frame-detected"))syncCursorPrompt();return true}if(readyFramePollTimer)return false;if(!readyFramePollStartedAt){readyFramePollStartedAt=Date.now()}const checkReadyFrame=()=>{readyFramePollTimer=0;if(gameRunning)return;if(hasRenderableGameFrame()){if(setGameRunning("rendered-frame-detected"))syncCursorPrompt();return}if(Date.now()-readyFramePollStartedAt>=readyFrameTimeoutMs){if(setGameRunning("rendered-frame-timeout"))syncCursorPrompt();return}readyFramePollTimer=window.setTimeout(checkReadyFrame,readyFramePollIntervalMs)};readyFramePollTimer=window.setTimeout(checkReadyFrame,readyFramePollIntervalMs);return true};
 const scheduleGameRunning=()=>{if(gameRunning||launchRevealTimer)return false;markLaunchDetected();if(launchPollTimer){window.clearInterval(launchPollTimer);launchPollTimer=0}launchRevealTimer=window.setTimeout((()=>{launchRevealTimer=0;scheduleReadySignal()}),cursorGrabHintRevealDelayMs);return true};
 const syncCursorPrompt=()=>{if(!gameRunning&&hasLaunchOutput())scheduleGameRunning();if(gameRunning&&hoverActive){showBrowserCursor();showGrabHint();return}hideGrabHint();allowGameCursor()};
 const promptCursorGrab=()=>{hoverActive=true;syncCursorPrompt()};

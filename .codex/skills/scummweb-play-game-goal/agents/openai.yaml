@@ -1,4 +1,4 @@
 interface:
   display_name: "scummweb Play Game"
   short_description: "Achieve gameplay goals with minimal actions"
-  default_prompt: "Use $scummweb-play-game-goal to achieve a specific in-game objective in scummweb with the fewest reliable actions: verify any seeded start state first, load local references before browsing, and stop to reclassify failures instead of brute-forcing interactions."
+  default_prompt: "Use $scummweb-play-game-goal to achieve a specific in-game objective in scummweb with the fewest reliable actions: verify any seeded start state first, load the canvas-targeting reference before hotspot work, keep hotspot clicks in one coordinate space, load local references before browsing, and stop to reclassify failures instead of brute-forcing interactions."

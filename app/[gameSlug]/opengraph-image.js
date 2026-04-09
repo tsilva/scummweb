@@ -89,7 +89,7 @@ export default function OpenGraphImage({ params }) {
             }}
           >
             <span style={{ color: "#9dd7a4" }}>ScummWEB</span>
-            <span style={{ opacity: 0.78 }}>Play online in your browser</span>
+            <span style={{ opacity: 0.78 }}>Play in your browser</span>
           </div>
 
           <div
@@ -138,7 +138,7 @@ export default function OpenGraphImage({ params }) {
               }}
               >
                 {game?.summary ||
-                  "Play classic adventure games online in your browser with ScummWEB."}
+                  "Play classic adventure games in your browser with ScummWEB."}
               </div>
             </div>
           </div>
