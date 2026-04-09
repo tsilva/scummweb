@@ -11,7 +11,7 @@ Use this skill when the request is effectively "play the game until X happens" i
 
 1. Read `AGENTS.md`.
 2. Use direct `js_repl` for browser interaction.
-   In this repo, import `/Users/tsilva/repos/tsilva/scummweb/scripts/playwright_headless_repl.mjs` and default to headless `playwright-core` with a local Chrome/Chromium executable instead of assuming the `playwright` package is installed.
+   In this repo, import `/Users/tsilva/repos/tsilva/scummweb/scripts/scummvm_play_harness.mjs` and use the harness as the gameplay source of truth instead of wiring the lower-level Playwright helper directly.
 3. Prefer the repo's existing launch path and save seeding helpers over replaying long intros.
 4. Before interacting, identify the exact game target, the exact success condition, and the shortest valid launch URL.
 5. Before the first hotspot search, load `references/canvas-targeting.md`.
@@ -23,25 +23,31 @@ Bootstrap example:
 ```javascript
 var browser;
 var context;
+var frame;
+var game;
 var page;
-var TARGET_URL = "http://127.0.0.1:3000/scummvm.html?skipIntroTarget=sky#-x 0 sky";
+var reviewPath;
+var target = "sky";
 
-const { startHeadlessSession } = await import(
-  "/Users/tsilva/repos/tsilva/scummweb/scripts/playwright_headless_repl.mjs"
+const { buildFrameReviewPath, captureFrame, launchGame, saveFrameCapture } = await import(
+  "/Users/tsilva/repos/tsilva/scummweb/scripts/scummvm_play_harness.mjs"
 );
 
-({ browser, context, page } = await startHeadlessSession({ url: TARGET_URL }));
+({ browser, context, game, page, target } = await launchGame({ target }));
+reviewPath = buildFrameReviewPath({ target });
 ```
 
 Default screenshot helper:
 
 ```javascript
-async function emitCanvasCheckpoint(label, canvas = page.locator("#canvas")) {
-  const png = await canvas.screenshot({ type: "png" });
+async function emitCanvasCheckpoint(label) {
+  frame = await saveFrameCapture(page, { path: reviewPath, target });
   console.log(label);
-  await codex.emitImage({ bytes: png, mimeType: "image/png", detail: "original" });
+  await codex.emitImage({ bytes: frame.png, mimeType: "image/png", detail: "original" });
 }
 ```
+
+Use `captureFrame(page)` for agent reasoning and hotspot work. Call `saveFrameCapture(page, { path: reviewPath, target })` only when you want to leave behind a reviewable PNG on disk for the user.
 
 ## Execution Loop
 
@@ -152,6 +158,8 @@ Use the walkthrough to choose the shortest path, then still verify the port-spec
 - If the control mapping is still uncertain, test one reversible interaction before a longer chain.
 - If the game has multiple controllable actors or modes, verify which one is active before pathing.
 - After each meaningful action, wait for the animation, subtitle, inventory update, or room transition to settle before deciding the next step.
+- Keep the inventory tray closed while a room action is still resolving. Do not reopen it mid-walk, mid-pickup, or mid-use animation; in ScummVM scenes it can block the room and make a valid action look like it failed.
+- After a pickup attempt that matters for progression, verify the inventory contents before assuming success. Prefer an explicit tray check over inferring pickup success from partial movement alone.
 - Prefer hotspot names, subtitles, inventory headers, and visible state changes over guessing from pixels alone.
 - When the user provides a correction about controls or puzzle logic, trust it and adapt immediately.
 

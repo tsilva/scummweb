@@ -26,53 +26,25 @@ you can miss a hotspot by a large margin even when the target looks visually obv
 ## Minimal Helper Snippet
 
 ```javascript
-const { startHeadlessSession } = await import(
-  "/Users/tsilva/repos/tsilva/scummweb/scripts/playwright_headless_repl.mjs"
-);
-const { createRequire } = await import("node:module");
-const require = createRequire("/Users/tsilva/repos/tsilva/scummweb/scripts/playwright_headless_repl.mjs");
-const sharp = require("sharp");
 var browser;
 var context;
+var game;
 var page;
+var target = "sky";
 
-({ browser, context, page } = await startHeadlessSession({ url: TARGET_URL }));
+const { captureFrame, launchGame } = await import(
+  "/Users/tsilva/repos/tsilva/scummweb/scripts/scummvm_play_harness.mjs"
+);
+
+({ browser, context, game, page, target } = await launchGame({ target }));
 
 async function captureCanvasState(canvas = page.locator("#canvas")) {
-  const png = await canvas.screenshot({ type: "png" });
-  const { data, info } = await sharp(png).raw().toBuffer({ resolveWithObject: true });
-  let left = info.width;
-  let top = info.height;
-  let right = -1;
-  let bottom = -1;
-
-  for (let y = 0; y < info.height; y += 1) {
-    for (let x = 0; x < info.width; x += 1) {
-      const offset = (y * info.width + x) * info.channels;
-      const r = data[offset];
-      const g = data[offset + 1];
-      const b = data[offset + 2];
-      const a = info.channels > 3 ? data[offset + 3] : 255;
-      const brightness = r + g + b;
-
-      if (a === 0 || brightness <= 12) continue;
-
-      if (x < left) left = x;
-      if (x > right) right = x;
-      if (y < top) top = y;
-      if (y > bottom) bottom = y;
-    }
-  }
+  const frame = await captureFrame(page);
 
   return {
-    png,
-    screenshotSize: { width: info.width, height: info.height },
-    activeBounds: {
-      left,
-      top,
-      width: right - left + 1,
-      height: bottom - top + 1,
-    },
+    png: frame.png,
+    screenshotSize: frame.canvasSize,
+    activeBounds: frame.activeBounds,
   };
 }
 

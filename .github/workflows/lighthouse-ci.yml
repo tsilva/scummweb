@@ -1,0 +1,102 @@
+name: Lighthouse CI
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lighthouse-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  production-audit:
+    name: Production Lighthouse Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Run Lighthouse CI
+        id: lighthouse
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          configPath: ./.lighthouserc.json
+          uploadArtifacts: true
+          artifactName: lighthouse-results
+          temporaryPublicStorage: true
+
+      - name: Summarize Lighthouse results
+        if: always()
+        env:
+          LIGHTHOUSE_LINKS: ${{ steps.lighthouse.outputs.links }}
+          LIGHTHOUSE_MANIFEST: ${{ steps.lighthouse.outputs.manifest }}
+          LIGHTHOUSE_RESULTS_PATH: ${{ steps.lighthouse.outputs.resultsPath }}
+          LIGHTHOUSE_TARGET_URL: https://scummweb.tsilva.eu/
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          summary = [
+              "## Lighthouse CI",
+              "",
+              f"- Target: `{os.environ['LIGHTHOUSE_TARGET_URL']}`",
+              "- Workflow artifact: `lighthouse-results`",
+          ]
+
+          results_path = os.environ.get("LIGHTHOUSE_RESULTS_PATH", "").strip()
+          if results_path:
+              summary.append(f"- Results path: `{results_path}`")
+
+          links_raw = os.environ.get("LIGHTHOUSE_LINKS", "").strip()
+          if links_raw:
+              try:
+                  links = json.loads(links_raw)
+              except json.JSONDecodeError:
+                  summary.append("- Public report links: unavailable (failed to parse action output)")
+              else:
+                  if links:
+                      summary.extend(["", "### Public report links"])
+                      for audited_url, report_url in links.items():
+                          summary.append(f"- [{audited_url}]({report_url})")
+                  else:
+                      summary.append("- Public report links: unavailable")
+          else:
+              summary.append("- Public report links: unavailable")
+
+          manifest_raw = os.environ.get("LIGHTHOUSE_MANIFEST", "").strip()
+          if manifest_raw:
+              try:
+                  manifest = json.loads(manifest_raw)
+              except json.JSONDecodeError:
+                  summary.append("- Representative scores: unavailable (failed to parse manifest output)")
+              else:
+                  representative_runs = [
+                      run for run in manifest if run.get("isRepresentativeRun")
+                  ] or manifest
+                  if representative_runs:
+                      summary.extend(["", "### Representative scores"])
+                      for run in representative_runs:
+                          url = run.get("url", os.environ["LIGHTHOUSE_TARGET_URL"])
+                          metrics = run.get("summary", {})
+                          formatted = ", ".join(
+                              f"{name}: {int(round(score * 100))}"
+                              for name, score in metrics.items()
+                              if isinstance(score, (int, float))
+                          )
+                          if formatted:
+                              summary.append(f"- `{url}` -> {formatted}")
+
+          Path(os.environ["GITHUB_STEP_SUMMARY"]).write_text(
+              "\n".join(summary) + "\n",
+              encoding="utf-8",
+          )
+          PY

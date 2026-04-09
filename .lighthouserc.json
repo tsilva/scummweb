@@ -1,0 +1,14 @@
+{
+  "ci": {
+    "collect": {
+      "url": ["https://scummweb.tsilva.eu/"],
+      "numberOfRuns": 3,
+      "settings": {
+        "preset": "desktop"
+      }
+    },
+    "upload": {
+      "target": "temporary-public-storage"
+    }
+  }
+}
