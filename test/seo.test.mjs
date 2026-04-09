@@ -30,10 +30,10 @@ test("homepage metadata uses ScummWEB branding and aligned social copy", () => {
   try {
     const metadata = buildHomeMetadata(sampleGame);
 
-    assert.equal(HOME_TITLE, "Play classic adventure games online in your browser | ScummWEB");
+    assert.equal(HOME_TITLE, "Play classic adventure games in your browser | ScummWEB");
     assert.equal(
       HOME_DESCRIPTION,
-      "Play Beneath a Steel Sky and more classic point-and-click adventures online in your browser with ScummWEB.",
+      "Play Beneath a Steel Sky and more classic point-and-click adventures in your browser with ScummWEB.",
     );
     assert.equal(metadata.alternates.canonical, "https://example.com/");
     assert.equal(metadata.openGraph.url, "https://example.com/");
@@ -63,11 +63,11 @@ test("game metadata and play-route metadata keep canonicals aligned and play rou
 
     assert.equal(
       metadata.title,
-      "Play Beneath a Steel Sky online in your browser | ScummWEB",
+      "Play Beneath a Steel Sky in your browser | ScummWEB",
     );
     assert.equal(
       buildGameDescription(sampleGame),
-      "Play Beneath a Steel Sky online in your browser on ScummWEB. Beneath a Steel Sky opens with a broken hovercar, a towering dystopian city, and sharp cyberpunk wit.",
+      "Play Beneath a Steel Sky in your browser on ScummWEB. Beneath a Steel Sky opens with a broken hovercar, a towering dystopian city, and sharp cyberpunk wit.",
     );
     assert.equal(
       metadata.alternates.canonical,

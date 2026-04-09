@@ -19,6 +19,8 @@ const chromeCandidates = [
 const executablePath = chromeCandidates.find((candidate) => fs.existsSync(candidate));
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const expectedPwaThemeColor = "#1a4d1a";
+const expectedLaunchPhaseSequence = ["pending", "runtime-ready", "launch-detected", "awaiting-frame", "ready"];
+const initialBootOverlayText = "Loading ScummVM...";
 const lureViewport = { width: 320, height: 200 };
 const lureDoorHotspotPoint = { x: 22, y: 120 };
 const lurePopupOpenPoint = { x: 36, y: 100 };
@@ -60,6 +62,104 @@ function getSignatureDistance(before, after) {
   }
 
   return distance;
+}
+
+function assertOrderedEntries(actualEntries, expectedEntries, label) {
+  let searchStartIndex = 0;
+
+  for (const expectedEntry of expectedEntries) {
+    const matchedIndex = actualEntries.indexOf(expectedEntry, searchStartIndex);
+
+    if (matchedIndex === -1) {
+      throw new Error(
+        `${label} did not include the expected ordered entry ${expectedEntry}. Saw: ${JSON.stringify(actualEntries)}`
+      );
+    }
+
+    searchStartIndex = matchedIndex + 1;
+  }
+}
+
+async function ensureLaunchOverlayHistoryCapture(page) {
+  await page.evaluate(() => {
+    if (window.__scummwebOverlayStatusCaptureStarted) {
+      return;
+    }
+
+    window.__scummwebOverlayStatusHistory = [];
+    const captureSnapshot = () => {
+      const overlay = document.querySelector('[data-launch-overlay="true"]');
+      const statusText = document.querySelector('[data-launch-status="true"]')?.textContent?.trim() || null;
+      const history = Array.isArray(window.__scummwebOverlayStatusHistory)
+        ? window.__scummwebOverlayStatusHistory
+        : [];
+      const nextSnapshot = {
+        state: overlay?.getAttribute("data-launch-overlay-state") || null,
+        text: statusText,
+      };
+      const previousSnapshot = history[history.length - 1];
+
+      if (
+        previousSnapshot &&
+        previousSnapshot.state === nextSnapshot.state &&
+        previousSnapshot.text === nextSnapshot.text
+      ) {
+        return;
+      }
+
+      history.push(nextSnapshot);
+      window.__scummwebOverlayStatusHistory = history;
+    };
+
+    captureSnapshot();
+    window.__scummwebOverlayStatusCaptureStarted = true;
+    window.__scummwebOverlayStatusCaptureInterval = window.setInterval(captureSnapshot, 50);
+  });
+}
+
+async function resetLaunchOverlayHistoryCapture(page) {
+  await page.evaluate(() => {
+    window.__scummwebOverlayStatusHistory = [];
+  });
+}
+
+async function readLaunchArtifacts(page, frame) {
+  const [overlayHistory, readyStateHistory] = await Promise.all([
+    page.evaluate(() => window.__scummwebOverlayStatusHistory || []),
+    frame
+      .locator("#canvas")
+      .evaluate(() => window.__scummwebReadyStateHistory || [])
+      .catch(() => []),
+  ]);
+
+  return { overlayHistory, readyStateHistory };
+}
+
+function verifyLaunchProgressHistory({ game, overlayHistory, readyStateHistory }) {
+  const observedStates = readyStateHistory
+    .filter((entry) => entry?.target === game.target)
+    .map((entry) => entry.state);
+  const observedTexts = overlayHistory.map((entry) => entry?.text).filter(Boolean);
+  const expectedTexts = [
+    initialBootOverlayText,
+    `ScummVM loaded. Starting ${game.displayTitle}...`,
+    `${game.displayTitle} engine started. Preparing the scene...`,
+    "Almost there. Waiting for the first frame...",
+  ];
+  const firstNonInitialTextIndex = observedTexts.findIndex((entry) => entry !== initialBootOverlayText);
+  const loadingRegressionIndex =
+    firstNonInitialTextIndex === -1
+      ? -1
+      : observedTexts.indexOf(initialBootOverlayText, firstNonInitialTextIndex);
+
+  assertOrderedEntries(observedStates, expectedLaunchPhaseSequence, `${game.target} ready-state history`);
+  assertOrderedEntries(observedTexts, expectedTexts, `${game.target} overlay text history`);
+
+  if (loadingRegressionIndex !== -1) {
+    throw new Error(
+      `Launch overlay for ${game.target} regressed to ${JSON.stringify(initialBootOverlayText)} after advancing. Saw: ${JSON.stringify(observedTexts)}`
+    );
+  }
 }
 
 function verifyPwaManifestOnDisk() {
@@ -110,6 +210,8 @@ async function waitForGameStartup(page, frame, game) {
     }
 
     if (readyState?.target === game.target && readyState?.state === "ready") {
+      const launchArtifacts = await readLaunchArtifacts(page, frame);
+      verifyLaunchProgressHistory({ game, ...launchArtifacts });
       return readyState;
     }
 
@@ -188,6 +290,7 @@ async function verifyTarget(context, baseUrl, game, { waitForLaunch = true } = {
   await page.waitForSelector('iframe[data-scummvm-route-frame="true"]', {
     timeout: 30000,
   });
+  await ensureLaunchOverlayHistoryCapture(page);
   await verifyLaunchOverlayBeforeStartup(page, game);
 
   const frame = page.frameLocator('iframe[data-scummvm-route-frame="true"]');
@@ -292,6 +395,7 @@ async function verifySkipIntroButton(page, frame, game, routeUrl) {
   await skipIntroButton.waitFor({ state: "visible", timeout: 45000 });
   await exitButton.waitFor({ state: "visible", timeout: 45000 });
 
+  await resetLaunchOverlayHistoryCapture(page);
   await skipIntroButton.click();
 
   const relaunchState = await waitForSkipIntroRelaunch(page, game.target, game.skipIntro.slot);
@@ -818,7 +922,7 @@ async function verifyCursorGrabHintHiddenDuringBoot(page, game) {
 
       if (
         readyState?.target !== expectedTarget ||
-        !["launch-detected", "ready"].includes(readyState.state)
+        !["awaiting-frame", "ready"].includes(readyState.state)
       ) {
         return null;
       }

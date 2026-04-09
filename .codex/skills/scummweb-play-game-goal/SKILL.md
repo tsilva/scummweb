@@ -14,7 +14,8 @@ Use this skill when the request is effectively "play the game until X happens" i
    In this repo, prefer `playwright-core` with a local Chrome/Chromium executable instead of assuming the `playwright` package is installed.
 3. Prefer the repo's existing launch path and save seeding helpers over replaying long intros.
 4. Before interacting, identify the exact game target, the exact success condition, and the shortest valid launch URL.
-5. Load only the active game's local reference before browsing.
+5. Before the first hotspot search, load `references/canvas-targeting.md`.
+6. Load only the active game's local reference before browsing.
 
 ## Execution Loop
 
@@ -55,6 +56,13 @@ If seeded start is expected and `__scummwebSkipIntroSeedStatus` is missing, fail
 
 Load the active game's local reference first.
 
+For `Beneath a Steel Sky` (`sky`):
+
+- Load `references/bass.md` first and treat it as the primary progression source.
+- Match the live run to the nearest checkpoint by room, NPC presence, key inventory, and immediate objective before taking further actions.
+- Use that checkpoint's `Critical actions` until the run diverges.
+- Browse only if the live state still does not fit the checkpoint after one deliberate re-check.
+
 Decision rule:
 
 - If the local reference has an exact verified sequence for the concrete puzzle and current room state, use it first and do not browse.
@@ -74,13 +82,21 @@ Use the walkthrough to choose the shortest path, then still verify the port-spec
 
 - Treat the puzzle solution and the port-control sequence as separate problems.
 - Treat hotspot discovery, inventory arming, and actor positioning as control questions, not puzzle questions.
-- Validate hotspot labels before object interactions. Prefer a brief hover sweep over guessing from raw pixels.
+- Treat the ScummVM canvas as a coordinate-space problem first. Do not mix viewport guesses, logical game coordinates, and screenshot pixels in the same step.
+- Default to one of these two targeting methods:
+  screenshot-pixel targeting from a fresh `#canvas` screenshot
+  active-bounds logical mapping when a walkthrough or prior note gives game-space coordinates
+- Use `frame.locator("#canvas")` or `page.locator("#canvas")` positions, not outer-page viewport coordinates.
+- Validate hotspot labels before object interactions. Prefer a fresh screenshot and a deterministic point choice over a blind hover sweep.
+- If the target hotspot is small or ambiguous, first lock one nearby larger hotspot whose label you expect, then reuse that confirmed region to narrow the search for the smaller target.
 - For item pickup or direct object use, use a label-first flow:
   move the cursor onto the target
   wait for the hotspot label
   confirm the label matches the expected object
   only then click
 - If the expected label does not appear, do not click. Reposition and re-check first.
+- If a click misses for unclear reasons, stop after the first miss and audit the canvas bounds or targeting method before retrying.
+- Do not use coarse CSS-pixel sweeps across the full canvas when the game frame is letterboxed or pillarboxed.
 - If the control mapping is still uncertain, test one reversible interaction before a longer chain.
 - If the game has multiple controllable actors or modes, verify which one is active before pathing.
 - After each meaningful action, wait for the animation, subtitle, inventory update, or room transition to settle before deciding the next step.
@@ -141,7 +157,7 @@ Update policy:
 
 Load game-specific notes only for the active game.
 
-- `Beneath a Steel Sky`: see `references/bass.md`
+- `Beneath a Steel Sky`: load `references/bass.md` first, jump to the matching checkpoint, and use it as the default progression reference before browsing
 
 ## Expected Outcome
 

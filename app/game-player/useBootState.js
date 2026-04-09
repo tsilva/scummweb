@@ -1,9 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const SCUMMVM_MENU_REVEAL_DELAY_MS = 2500;
 const SKIP_INTRO_REVEAL_DELAY_MS = 4500;
+const INITIAL_BOOT_STATUS = "Loading ScummVM...";
+const BOOT_PHASE_PRIORITY = {
+  idle: -1,
+  pending: 0,
+  "runtime-ready": 1,
+  "launch-detected": 2,
+  "awaiting-frame": 3,
+  ready: 4,
+};
 const BOOT_FAILURE_PATTERNS = [
   /Game data path does not exist/i,
   /Couldn't identify game/i,
@@ -13,15 +22,66 @@ const BOOT_FAILURE_PATTERNS = [
   /abort\(/i,
 ];
 
-export function useBootState({ frameRef, frameSrc, readySignal, skipIntro, skipIntroConsumed }) {
+function normalizeShellStatusText(value) {
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  return value.replace(/⚡️?$/u, "").trim();
+}
+
+function normalizeBootPhase(value) {
+  if (typeof value !== "string" || !(value in BOOT_PHASE_PRIORITY)) {
+    return null;
+  }
+
+  return value;
+}
+
+function getBootPhasePriority(value) {
+  const normalizedValue = normalizeBootPhase(value);
+  return normalizedValue ? BOOT_PHASE_PRIORITY[normalizedValue] : Number.NEGATIVE_INFINITY;
+}
+
+function getHigherBootPhase(currentValue, nextValue) {
+  return getBootPhasePriority(nextValue) > getBootPhasePriority(currentValue) ? nextValue : currentValue;
+}
+
+function getCuratedBootStatusText(phase, displayTitle) {
+  switch (phase) {
+    case "pending":
+      return INITIAL_BOOT_STATUS;
+    case "runtime-ready":
+      return `ScummVM loaded. Starting ${displayTitle || "the game"}...`;
+    case "launch-detected":
+      return `${displayTitle || "The game"} engine started. Preparing the scene...`;
+    case "awaiting-frame":
+      return "Almost there. Waiting for the first frame...";
+    default:
+      return "";
+  }
+}
+
+export function useBootState({
+  displayTitle,
+  frameRef,
+  frameSrc,
+  readySignal,
+  skipIntro,
+  skipIntroConsumed,
+}) {
   const [showScummvmMenuButton, setShowScummvmMenuButton] = useState(false);
   const [showSkipIntroButton, setShowSkipIntroButton] = useState(false);
-  const [bootStatusText, setBootStatusText] = useState("Downloading ScummVM...");
+  const [bootStatusText, setBootStatusText] = useState(INITIAL_BOOT_STATUS);
   const [bootProgressValue, setBootProgressValue] = useState(null);
   const [bootProgressMax, setBootProgressMax] = useState(null);
+  const [bootPhase, setBootPhase] = useState("pending");
   const [hasBootCompleted, setHasBootCompleted] = useState(false);
   const [hasBootPresentationCompleted, setHasBootPresentationCompleted] = useState(false);
   const [hasBootFailed, setHasBootFailed] = useState(false);
+  const bootPhaseRef = useRef("pending");
+  const bootStatusTextRef = useRef(INITIAL_BOOT_STATUS);
+  const lastNonEmptyShellStatusRef = useRef(INITIAL_BOOT_STATUS);
 
   useEffect(() => {
     setHasBootPresentationCompleted(false);
@@ -62,6 +122,8 @@ export function useBootState({ frameRef, frameSrc, readySignal, skipIntro, skipI
 
   useEffect(() => {
     if (readySignal) {
+      bootPhaseRef.current = "ready";
+      setBootPhase("ready");
       setHasBootCompleted(true);
       setHasBootFailed(false);
     }
@@ -75,7 +137,11 @@ export function useBootState({ frameRef, frameSrc, readySignal, skipIntro, skipI
     let pollTimer = 0;
     let cancelled = false;
 
-    setBootStatusText("Downloading ScummVM...");
+    bootPhaseRef.current = "pending";
+    bootStatusTextRef.current = INITIAL_BOOT_STATUS;
+    lastNonEmptyShellStatusRef.current = INITIAL_BOOT_STATUS;
+    setBootPhase("pending");
+    setBootStatusText(INITIAL_BOOT_STATUS);
     setBootProgressValue(null);
     setBootProgressMax(null);
     setHasBootCompleted(false);
@@ -94,10 +160,13 @@ export function useBootState({ frameRef, frameSrc, readySignal, skipIntro, skipI
 
       try {
         const frameDocument = iframe.contentDocument;
+        const frameWindow = iframe.contentWindow;
         const statusElement = frameDocument?.getElementById("status");
         const progressElement = frameDocument?.getElementById("progress");
         const outputElement = frameDocument?.getElementById("output");
-        const nextStatusText = statusElement?.textContent?.trim() || "Downloading ScummVM...";
+        const readyState = frameWindow?.__scummwebReadyState || null;
+        const rawShellStatusText = statusElement?.textContent?.trim() || "";
+        const normalizedShellStatusText = normalizeShellStatusText(rawShellStatusText);
         const outputValue =
           outputElement && typeof outputElement === "object" && "value" in outputElement
             ? outputElement.value || ""
@@ -108,22 +177,45 @@ export function useBootState({ frameRef, frameSrc, readySignal, skipIntro, skipI
           "value" in progressElement &&
           "max" in progressElement &&
           !progressElement.hidden;
-        const nextProgressValue = progressVisible ? progressElement.value : null;
-        const nextProgressMax = progressVisible ? progressElement.max : null;
+        const nextReadyPhase = normalizeBootPhase(readyState?.state);
+        const effectivePhase = nextReadyPhase
+          ? getHigherBootPhase(bootPhaseRef.current, nextReadyPhase)
+          : bootPhaseRef.current;
         const hitFailureState =
           statusElement?.classList.contains("error") ||
-          /Exception thrown/i.test(nextStatusText) ||
+          /Exception thrown/i.test(rawShellStatusText) ||
           BOOT_FAILURE_PATTERNS.some((pattern) => pattern.test(outputValue));
 
-        setBootStatusText((currentValue) =>
-          currentValue === nextStatusText ? currentValue : nextStatusText
-        );
-        setBootProgressValue((currentValue) =>
-          currentValue === nextProgressValue ? currentValue : nextProgressValue
-        );
-        setBootProgressMax((currentValue) =>
-          currentValue === nextProgressMax ? currentValue : nextProgressMax
-        );
+        if (normalizedShellStatusText) {
+          lastNonEmptyShellStatusRef.current = normalizedShellStatusText;
+        }
+
+        if (effectivePhase !== bootPhaseRef.current) {
+          bootPhaseRef.current = effectivePhase;
+          setBootPhase((currentValue) =>
+            currentValue === effectivePhase ? currentValue : effectivePhase
+          );
+        }
+
+        const curatedBootStatusText = getCuratedBootStatusText(effectivePhase, displayTitle);
+        const nextBootStatusText = hitFailureState
+          ? normalizedShellStatusText || lastNonEmptyShellStatusRef.current || bootStatusTextRef.current
+          : curatedBootStatusText ||
+            lastNonEmptyShellStatusRef.current ||
+            bootStatusTextRef.current ||
+            INITIAL_BOOT_STATUS;
+
+        if (nextBootStatusText !== bootStatusTextRef.current) {
+          bootStatusTextRef.current = nextBootStatusText;
+          setBootStatusText(nextBootStatusText);
+        }
+
+        const shouldShowBootProgress = effectivePhase === "pending" && progressVisible;
+        const nextProgressValue = shouldShowBootProgress ? progressElement.value : null;
+        const nextProgressMax = shouldShowBootProgress ? progressElement.max : null;
+
+        setBootProgressValue((currentValue) => (currentValue === nextProgressValue ? currentValue : nextProgressValue));
+        setBootProgressMax((currentValue) => (currentValue === nextProgressMax ? currentValue : nextProgressMax));
 
         if (hitFailureState) {
           setHasBootFailed(true);
@@ -155,6 +247,7 @@ export function useBootState({ frameRef, frameSrc, readySignal, skipIntro, skipI
   return {
     bootProgressMax,
     bootProgressValue,
+    bootPhase,
     bootStatusText,
     dismissSkipIntroButton,
     hasBootCompleted,
