@@ -22,6 +22,8 @@ you can miss a hotspot by a large margin even when the target looks visually obv
 - If you start from logical game coordinates, first compute the active rendered frame inside the canvas, then map logical coordinates into that active frame.
 - Prefer `locator.click({ position })` and `locator.hover({ position })` over `page.mouse` calls when targeting exact hotspots.
 - After any unexplained miss, re-snapshot and re-check the coordinate space before clicking again.
+- Default to a hover-then-screenshot confirmation loop before meaningful clicks.
+- Use one safe calibration hover at the start of a room before real puzzle actions.
 
 ## Minimal Helper Snippet
 
@@ -30,16 +32,17 @@ var browser;
 var context;
 var game;
 var page;
+var playableState;
 var target = "sky";
 
-const { captureFrame, launchGame } = await import(
+const { calibrateScreenshotTargeting, captureAndDescribeFrame, launchGame, pointFromVisionBox } = await import(
   "/Users/tsilva/repos/tsilva/scummweb/scripts/scummvm_play_harness.mjs"
 );
 
-({ browser, context, game, page, target } = await launchGame({ target }));
+({ browser, context, game, page, playableState, target } = await launchGame({ target }));
 
 async function captureCanvasState(canvas = page.locator("#canvas")) {
-  const frame = await captureFrame(page);
+  const frame = await captureAndDescribeFrame(page);
 
   return {
     png: frame.png,
@@ -53,6 +56,10 @@ function mapLogicalPoint(activeBounds, point, logicalSize) {
     x: activeBounds.left + (point.x / logicalSize.width) * activeBounds.width,
     y: activeBounds.top + (point.y / logicalSize.height) * activeBounds.height,
   };
+}
+
+async function hoverScreenshotPoint(point, options = {}, canvas = page.locator("#canvas")) {
+  await canvas.hover({ position: point, force: true, ...options });
 }
 
 async function clickScreenshotPoint(point, options = {}, canvas = page.locator("#canvas")) {
@@ -74,3 +81,24 @@ async function clickLogicalPoint(point, logicalSize, options = {}, canvas = page
 - If you are targeting from what you can see in a current screenshot, use screenshot pixels directly.
 - If you are targeting from a walkthrough, prior notes, or reusable coordinates, map through `activeBounds` first.
 - If you only need to refine a nearby point, use short local adjustments after a fresh screenshot rather than restarting a wide sweep.
+
+## Calibration Pattern
+
+1. Capture a full canvas screenshot.
+2. Choose one safe anchor box in that screenshot.
+3. Convert that box into a point with `pointFromVisionBox(...)`.
+4. Hover that point.
+5. Capture a second screenshot.
+6. Confirm the cursor or hover state is where you intended before doing any real click.
+
+Example:
+
+```javascript
+const before = await captureAndDescribeFrame(page);
+const box = { left: 24, top: 24, width: 72, height: 72 };
+const point = pointFromVisionBox(box);
+const calibration = await calibrateScreenshotTargeting(page, {
+  beforeFrame: before,
+  box,
+});
+```

@@ -4,6 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 import {
+  buildCanvasBounds,
   buildPlayArtifactRun,
   buildFrameReviewPath,
   buildGameLaunchPath,
@@ -12,11 +13,17 @@ import {
   buildRunActionLogPath,
   buildRunScreenshotPath,
   buildRoomHotspotMapPath,
+  buildTargetPointCachePath,
   compareSceneHashes,
   getPlayGame,
   getPlayGameLibrary,
+  loadTargetPointCache,
   loadRoomHotspotMap,
+  normalizeVisionBox,
+  pointFromVisionBox,
+  resolveCanvasPrimePoint,
   saveCapturedFrame,
+  saveTargetPointCache,
   saveRoomHotspotMap,
   verifyChange,
 } from "../scripts/scummvm_play_harness.mjs";
@@ -199,6 +206,44 @@ test("play harness builds stable room keys from scene hashes and active bounds",
   assert.equal(roomKey, "sky-abcdef123456-32x48x640x360");
 });
 
+test("play harness normalizes multimodal vision boxes and derives a point inside them", () => {
+  const frame = {
+    activeBounds: { left: 100, top: 80, width: 600, height: 360 },
+    canvasSize: { width: 1280, height: 720 },
+  };
+  const bounds = buildCanvasBounds(frame);
+  const box = normalizeVisionBox(
+    {
+      x1: 240,
+      y1: 160,
+      x2: 360,
+      y2: 260,
+    },
+    { bounds },
+  );
+
+  assert.deepEqual(box, {
+    left: 240,
+    top: 160,
+    width: 120,
+    height: 100,
+  });
+  assert.deepEqual(pointFromVisionBox(box), {
+    x: 299.5,
+    y: 209.5,
+  });
+});
+
+test("play harness resolves a safe prime point from canvas gutters", () => {
+  const point = resolveCanvasPrimePoint({
+    activeBounds: { left: 140, top: 100, width: 900, height: 520 },
+    canvasSize: { width: 1280, height: 720 },
+  });
+
+  assert.ok(point);
+  assert.ok(point.x < 140 || point.x > 1040 || point.y < 100 || point.y > 620);
+});
+
 test("play harness normalizes hotspot labels and screenshot filenames", () => {
   assert.equal(normalizeHotspotLabel("  Rung!!!  "), "Rung");
   assert.equal(normalizeHotspotFilename("North Door / Exit"), "north-door-exit.png");
@@ -226,6 +271,32 @@ test("play harness deduplicates hotspot hits by label and nearby coordinates", (
   assert.equal(items.length, 1);
   assert.equal(items[0].ocrConfidence, 80);
   assert.equal(items[0].cursorConfidence, 0.8);
+});
+
+test("play harness saves and loads cached target points by room", () => {
+  const roomKey = `vision-room-${Date.now()}`;
+  const target = "vision-fixture";
+  const cache = {
+    items: [
+      {
+        label: "Rung",
+        normalizedLabel: "rung",
+        point: { x: 123.5, y: 456.25 },
+        updatedAt: "2026-04-09T12:00:00.000Z",
+      },
+    ],
+    roomKey,
+    target,
+    updatedAt: "2026-04-09T12:00:00.000Z",
+  };
+  const cachePath = buildTargetPointCachePath({ roomKey, target });
+
+  try {
+    saveTargetPointCache({ cache, roomKey, target });
+    assert.deepEqual(loadTargetPointCache({ roomKey, target }), cache);
+  } finally {
+    fs.rmSync(path.dirname(cachePath), { force: true, recursive: true });
+  }
 });
 
 test("play harness saves and loads room hotspot maps", () => {

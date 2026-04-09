@@ -17,6 +17,7 @@ Use this skill when the request is effectively "play the game until X happens" i
 5. Before the first hotspot search, load `references/canvas-targeting.md`.
 6. Load only the active game's local reference before browsing.
 7. Show key checkpoint screenshots in chat by default with `codex.emitImage(...)`. Only switch to "every analyzed frame" when the user explicitly asks for full transparency.
+8. Treat GPT-5.4 vision as the primary perception layer. Do not use OCR or full-room hotspot discovery in the default loop.
 
 Bootstrap example:
 
@@ -26,14 +27,15 @@ var context;
 var frame;
 var game;
 var page;
+var playableState;
 var reviewPath;
 var target = "sky";
 
-const { buildFrameReviewPath, captureFrame, launchGame, saveFrameCapture } = await import(
+const { buildFrameReviewPath, captureAndDescribeFrame, captureFrame, launchGame, saveFrameCapture } = await import(
   "/Users/tsilva/repos/tsilva/scummweb/scripts/scummvm_play_harness.mjs"
 );
 
-({ browser, context, game, page, target } = await launchGame({ target }));
+({ browser, context, game, page, playableState, target } = await launchGame({ target }));
 reviewPath = buildFrameReviewPath({ target });
 ```
 
@@ -47,7 +49,7 @@ async function emitCanvasCheckpoint(label) {
 }
 ```
 
-Use `captureFrame(page)` for agent reasoning and hotspot work. Call `saveFrameCapture(page, { path: reviewPath, target })` only when you want to leave behind a reviewable PNG on disk for the user.
+Use `captureAndDescribeFrame(page)` for the default vision loop and `captureFrame(page)` for lower-level frame state checks. Call `saveFrameCapture(page, { path: reviewPath, target })` only when you want to leave behind a reviewable PNG on disk for the user.
 
 ## Execution Loop
 
@@ -56,10 +58,11 @@ Run this loop until the goal is achieved or you need to escalate:
 1. Identify the exact goal and shortest valid launch URL.
 2. Validate the seeded start state before acting.
 3. Emit the first playable state in chat.
-4. Choose the next action from the local reference or a walkthrough.
-5. Execute one minimal step.
-6. Emit another screenshot only if the step is high-risk, ambiguous, or produced a meaningful state change.
-7. Verify the outcome or escalate.
+4. Run a calibration step on a safe anchor before the first meaningful click.
+5. Choose the next action from the local reference or a walkthrough.
+6. Execute one minimal step.
+7. Emit another screenshot only if the step is high-risk, ambiguous, or produced a meaningful state change.
+8. Verify the outcome or escalate.
 
 Minimize actions. Do not free-play once the goal is concrete.
 
@@ -84,6 +87,19 @@ Escalate to cropped or zoomed images only when one of these directly affects the
 Do not flood the chat with probe screenshots unless the user explicitly asks for every analyzed frame.
 
 Whenever you emit an image, pair it with a short commentary update that says what the screenshot is proving or what decision it informs next.
+
+## Calibration Loop
+
+Before the first real gameplay click in a room:
+
+1. Capture a full `#canvas` screenshot.
+2. Pick one safe, distinctive anchor region from that screenshot.
+3. Hover a point inside that box.
+4. Capture a second screenshot.
+5. Confirm that the cursor landed where intended or that the hovered state matches the anchor.
+
+Use this calibration only to validate screenshot-to-canvas targeting.
+Do not spend actions probing the whole room.
 
 ## Start-State Contract
 
@@ -151,16 +167,14 @@ Use the walkthrough to choose the shortest path, then still verify the port-spec
   active-bounds logical mapping when a walkthrough or prior note gives game-space coordinates
 - If you are already planning to emit a screenshot for the user, prefer reusing that same fresh full-scene capture for both chat visibility and targeting decisions.
 - Use `frame.locator("#canvas")` or `page.locator("#canvas")` positions, not outer-page viewport coordinates.
-- Validate hotspot labels before object interactions. Prefer a fresh screenshot and a deterministic point choice over a blind hover sweep.
-- If the port does not surface hotspot labels reliably, use cursor-shape changes as the next control signal. In BASS-style scenes, a switch from the normal arrow to the interaction cross is strong evidence that the current point is a real hotspot.
-- If the target hotspot is small or ambiguous, first lock one nearby larger hotspot whose label you expect, then reuse that confirmed region to narrow the search for the smaller target.
-- If hotspot behavior is uncertain, first calibrate on one known-good hotspot in the same scene so you can verify how this port surfaces valid objects, labels, and cursor-shape changes before probing the ambiguous target.
-- For item pickup or direct object use, use a label-first flow:
-  move the cursor onto the target
-  wait for the hotspot label
-  confirm the label matches the expected object
+- For item pickup or direct object use, use a screenshot-first flow:
+  capture the current frame
+  pick one candidate box for the target
+  hover one point inside that box
+  capture a fresh frame
+  confirm the hover is on the intended target or in the intended anchor region
   only then click
-- If the expected label does not appear, do not click. Reposition and re-check first.
+- If the hover does not look correct, do not click. Refine locally inside the current candidate box and re-check first.
 - If a click misses for unclear reasons, stop after the first miss and audit the canvas bounds or targeting method before retrying.
 - Do not use coarse CSS-pixel sweeps across the full canvas when the game frame is letterboxed or pillarboxed.
 - If the control mapping is still uncertain, test one reversible interaction before a longer chain.
@@ -170,7 +184,7 @@ Use the walkthrough to choose the shortest path, then still verify the port-spec
 - Keep the inventory tray closed while a room action is still resolving. Do not reopen it mid-walk, mid-pickup, or mid-use animation; in ScummVM scenes it can block the room and make a valid action look like it failed.
 - After a pickup attempt that matters for progression, verify the inventory contents before assuming success. Prefer an explicit tray check over inferring pickup success from partial movement alone.
 - If the inventory is not empty at the start of the run, do not treat "the tray opened" as pickup proof. Confirm success from an additional item icon, an item label, or another explicit item-state change.
-- Prefer hotspot names, subtitles, inventory headers, and visible state changes over guessing from pixels alone.
+- Prefer visible state changes, cursor placement, subtitles, and inventory headers over blind clicking.
 - When the user provides a correction about controls or puzzle logic, trust it and adapt immediately.
 
 ## Failure Budget And Escalation

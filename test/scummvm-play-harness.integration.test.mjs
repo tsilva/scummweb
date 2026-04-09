@@ -1,40 +1,12 @@
 import assert from "node:assert/strict";
-import fs from "node:fs";
 import test from "node:test";
-import { ensureCurrentRoomHotspotMap, launchGame, saveFrameCapture } from "../scripts/scummvm_play_harness.mjs";
+import { calibrateScreenshotTargeting, launchGame } from "../scripts/scummvm_play_harness.mjs";
 
 const shouldRunIntegration = process.env.SCUMMWEB_RUN_INTEGRATION === "1";
 const baseUrl = process.env.SCUMMWEB_BASE_URL || "";
 
-async function waitForSeededFrame(page, timeoutMs = 240000) {
-  const deadline = Date.now() + timeoutMs;
-
-  while (Date.now() < deadline) {
-    const state = await page.locator("#canvas").evaluate(() => ({
-      seedStatus: globalThis.__scummwebSkipIntroSeedStatus || null,
-      statusText: document.getElementById("status")?.textContent || null,
-    }));
-
-    if (state.seedStatus?.state === "ready" && !state.statusText) {
-      await page.waitForTimeout(30000);
-      const frame = await saveFrameCapture(page, {
-        path: "./artifacts/integration-seeded-frame.png",
-        target: "sky",
-      });
-
-      if (frame.activeBounds.width > 0 && frame.activeBounds.height > 0) {
-        return frame;
-      }
-    }
-
-    await page.waitForTimeout(500);
-  }
-
-  throw new Error("Timed out waiting for a seeded gameplay frame");
-}
-
 test(
-  "seeded sky room discovery records at least one labeled hotspot",
+  "seeded sky launch waits for a playable state without running room discovery by default",
   {
     skip:
       !shouldRunIntegration || !baseUrl
@@ -51,21 +23,24 @@ test(
     });
 
     try {
-      await waitForSeededFrame(session.page, 240000);
-      const result = await ensureCurrentRoomHotspotMap(session.page, {
-        gridSize: 56,
-        hoverDelayMs: 120,
-        minContrastPixels: 45,
-        minCursorConfidence: 0.2,
-        minLabelConfidence: 15,
-        target: "sky",
-        timeout: 60000,
+      assert.equal(session.initialRoomScan, null);
+      assert.ok(session.playableState);
+      assert.equal(session.playableState.readyState?.state, "ready");
+      assert.equal(session.playableState.seedStatus?.state, "ready");
+      assert.ok(session.playableState.frame.brightPixelCount >= 48);
+      assert.ok(session.playableState.frame.png);
+
+      const calibration = await calibrateScreenshotTargeting(session.page, {
+        beforeFrame: session.playableState.frame,
+        point: {
+          x: 12,
+          y: 12,
+        },
       });
 
-      assert.ok(result.map.items.length >= 1);
-      assert.ok(fs.existsSync(result.map.items[0].screenshotPath));
-      assert.equal(typeof result.map.roomKey, "string");
-      assert.ok(result.map.roomKey.startsWith("sky-"));
+      assert.equal(calibration.point.x, 12);
+      assert.equal(calibration.point.y, 12);
+      assert.ok(calibration.after.png);
     } finally {
       await session.context.close();
       await session.browser.close();
