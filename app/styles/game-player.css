@@ -349,6 +349,64 @@
   gap: 0.75rem;
 }
 
+.game-route-touch-joystick-shell {
+  position: fixed;
+  left: min(max(0.75rem, env(safe-area-inset-left)), 1rem);
+  bottom: min(max(0.75rem, env(safe-area-inset-bottom)), 1rem);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.game-route-touch-joystick {
+  position: relative;
+  display: block;
+  width: 4.5rem;
+  height: 4.5rem;
+  padding: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04)),
+    rgba(8, 8, 8, 0.38);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 0.85rem 2rem rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.game-route-touch-joystick:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.72);
+  outline-offset: 2px;
+}
+
+.game-route-touch-joystick-knob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2rem;
+  height: 2rem;
+  margin-top: -1rem;
+  margin-left: -1rem;
+  border: 1px solid rgba(246, 224, 138, 0.36);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.02)),
+    linear-gradient(180deg, rgba(34, 34, 34, 0.92), rgba(15, 15, 15, 0.92));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 0.45rem 1rem rgba(0, 0, 0, 0.28);
+  pointer-events: none;
+  transition: transform 40ms linear;
+}
+
 .game-route-skip-intro-button {
   min-width: 8rem;
   min-height: 2.75rem;

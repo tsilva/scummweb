@@ -30,6 +30,7 @@ export const defaultSettleSamples = 2;
 export const defaultPreviewArtifactName = "play-peek";
 export const defaultSettleThreshold = 12;
 export const defaultReviewArtifactName = "play-review";
+export const defaultRunActionLogName = "actions.log";
 export const defaultHotspotGridSize = 48;
 export const defaultHotspotHoverDelayMs = 80;
 export const defaultHotspotMinLabelConfidence = 45;
@@ -38,10 +39,12 @@ export const defaultHotspotLabelCropHeight = 72;
 export const defaultHotspotLabelCropWidth = 220;
 export const defaultHotspotLabelScale = 3;
 export const defaultRoomMapsDirName = "room-maps";
+export const defaultRunScreenshotsDirName = "screenshots";
 export const defaultExpectThresholds = {
   "any-change": 48,
   "scene-change": 192,
 };
+const artifactRunProperty = "__scummwebArtifactRun";
 
 /**
  * @typedef {object} RoomHotspotItem
@@ -72,6 +75,11 @@ function writeArtifactFile(filePath, bytes) {
   fs.writeFileSync(tempFilePath, bytes);
   fs.renameSync(tempFilePath, filePath);
   return filePath;
+}
+
+function ensureDirectory(directoryPath) {
+  fs.mkdirSync(directoryPath, { recursive: true });
+  return directoryPath;
 }
 
 function sanitizeAssetVersion(rawVersion) {
@@ -135,6 +143,30 @@ function buildRoomMapsRoot() {
   return path.join(rootDir, "artifacts", defaultRoomMapsDirName);
 }
 
+function sanitizeRunArtifactName(rawName, fallback = "capture") {
+  const normalized = String(rawName || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return normalized || fallback;
+}
+
+function getArtifactRun(subject, options = {}) {
+  return options.artifactRun || subject?.[artifactRunProperty] || null;
+}
+
+function getArtifactRunRoot(options = {}) {
+  return options.artifactRun?.root || null;
+}
+
+function attachArtifactRun(subject, artifactRun) {
+  if (subject && artifactRun) {
+    subject[artifactRunProperty] = artifactRun;
+  }
+}
+
 function buildHotspotGridPoints(activeBounds, gridSize) {
   const points = [];
   const step = Math.max(16, Math.round(gridSize || defaultHotspotGridSize));
@@ -155,8 +187,60 @@ function buildHotspotGridPoints(activeBounds, gridSize) {
   return points;
 }
 
-function buildHotspotScreenshotPath(target, roomKey, label, index = 0) {
-  return path.join(buildRoomMapsRoot(), target, roomKey, normalizeHotspotFilename(label, index));
+function buildHotspotScreenshotPath({ artifactRun = null, index = 0, label, roomKey, target } = {}) {
+  const roomMapsRoot = artifactRun ? path.join(artifactRun.root, defaultRoomMapsDirName) : buildRoomMapsRoot();
+  return path.join(roomMapsRoot, target, roomKey, normalizeHotspotFilename(label, index));
+}
+
+export function buildRunActionLogPath({ artifactRun = null } = {}) {
+  const artifactRunRoot = getArtifactRunRoot({ artifactRun });
+
+  if (artifactRunRoot) {
+    return path.join(artifactRunRoot, defaultRunActionLogName);
+  }
+
+  return path.join(rootDir, "artifacts", defaultRunActionLogName);
+}
+
+export function buildRunScreenshotPath({ artifactRun = null, label = "capture", startedAt = new Date().toISOString() } = {}) {
+  const artifactRunRoot = getArtifactRunRoot({ artifactRun });
+  const screenshotsRoot = artifactRunRoot
+    ? path.join(artifactRunRoot, defaultRunScreenshotsDirName)
+    : path.join(rootDir, "artifacts", defaultRunScreenshotsDirName);
+  const token = startedAt.replace(/[:.]/g, "-");
+  return path.join(screenshotsRoot, `${token}-${sanitizeRunArtifactName(label)}.png`);
+}
+
+function appendArtifactRunAction(artifactRun, action, detail = {}) {
+  if (!artifactRun || !action) {
+    return null;
+  }
+
+  const entry = {
+    action,
+    at: new Date().toISOString(),
+    detail,
+  };
+
+  fs.mkdirSync(path.dirname(artifactRun.actionLogPath), { recursive: true });
+  fs.appendFileSync(artifactRun.actionLogPath, `${JSON.stringify(entry)}\n`, "utf8");
+  return entry;
+}
+
+export function buildPlayArtifactRun({ gameId, startedAt = new Date().toISOString() } = {}) {
+  if (!gameId) {
+    throw new Error("buildPlayArtifactRun requires gameId");
+  }
+
+  const root = path.join(rootDir, "artifacts", gameId, startedAt);
+
+  return {
+    actionLogPath: path.join(root, defaultRunActionLogName),
+    gameId,
+    root,
+    screenshotsRoot: path.join(root, defaultRunScreenshotsDirName),
+    startedAt,
+  };
 }
 
 function getCanvasLocator(subject) {
@@ -338,57 +422,78 @@ export function buildGameLaunchUrl({ baseUrl = defaultBaseUrl, ...options } = {}
   return new URL(buildGameLaunchPath(options), baseUrl).toString();
 }
 
-export function buildFrameReviewPath({ target, name = defaultReviewArtifactName } = {}) {
+export function buildFrameReviewPath({ artifactRun = null, target, name = defaultReviewArtifactName } = {}) {
+  const artifactRunRoot = getArtifactRunRoot({ artifactRun });
+
+  if (artifactRunRoot) {
+    return path.join(artifactRunRoot, `${name}.png`);
+  }
+
   const fileName = `${target || "play"}-${name}.png`;
   return path.join(rootDir, "artifacts", fileName);
 }
 
-export function buildPreviewScreenshotPath({ name = defaultPreviewArtifactName } = {}) {
+export function buildPreviewScreenshotPath({ artifactRun = null, name = defaultPreviewArtifactName } = {}) {
+  const artifactRunRoot = getArtifactRunRoot({ artifactRun });
+
+  if (artifactRunRoot) {
+    return path.join(artifactRunRoot, `${name}.jpg`);
+  }
+
   return path.join(rootDir, "artifacts", `${name}.jpg`);
 }
 
-export function buildRoomHotspotMapPath({ roomKey, target } = {}) {
+export function buildRoomHotspotMapPath({ artifactRun = null, roomKey, target } = {}) {
   if (!target || !roomKey) {
     throw new Error("buildRoomHotspotMapPath requires target and roomKey");
   }
 
-  return path.join(buildRoomMapsRoot(), target, `${roomKey}.json`);
+  const artifactRunRoot = getArtifactRunRoot({ artifactRun });
+  const roomMapsRoot = artifactRunRoot ? path.join(artifactRunRoot, defaultRoomMapsDirName) : buildRoomMapsRoot();
+
+  return path.join(roomMapsRoot, target, `${roomKey}.json`);
 }
 
-function normalizePreviewConfig(preview) {
+function normalizePreviewConfig(preview, options = {}) {
   if (!preview) {
     return null;
   }
 
   if (preview === true) {
     return {
-      path: buildPreviewScreenshotPath(),
+      path: buildPreviewScreenshotPath(options),
     };
   }
 
   return {
     ...preview,
-    path: preview.path || buildPreviewScreenshotPath(),
+    path: preview.path || buildPreviewScreenshotPath(options),
   };
 }
 
 export async function launchGame(options = {}) {
   const {
     baseUrl = defaultBaseUrl,
-    preview = null,
+    preview = true,
+    roomScan = true,
     target,
     timeout = 120000,
     viewport,
     waitUntil = "domcontentloaded",
   } = options;
   const game = getPlayGame(target, options);
+  const artifactRun = options.artifactRun || buildPlayArtifactRun({
+    gameId: game.gameId || game.target,
+    startedAt: options.startedAt || new Date().toISOString(),
+  });
+  ensureDirectory(artifactRun.root);
   const url = buildGameLaunchUrl({
     baseUrl,
     exitTo: options.exitTo || null,
     game,
     seeded: options.seeded !== false,
   });
-  const normalizedPreview = normalizePreviewConfig(preview);
+  const normalizedPreview = normalizePreviewConfig(preview, { artifactRun });
   const session = await startHeadlessSession({
     preview: normalizedPreview,
     timeout,
@@ -398,10 +503,29 @@ export async function launchGame(options = {}) {
   });
 
   await session.page.locator("#canvas").waitFor({ timeout });
+  attachArtifactRun(session.page, artifactRun);
+  attachArtifactRun(session.context, artifactRun);
+  appendArtifactRunAction(artifactRun, "launch-game", {
+    previewPath: session.previewScreenshotPath,
+    seeded: options.seeded !== false,
+    target: game.target,
+    url,
+  });
+
+  let initialRoomScan = null;
+
+  if (roomScan !== false) {
+    initialRoomScan = await ensureCurrentRoomHotspotMap(session.page, {
+      ...options,
+      target: game.target,
+    });
+  }
 
   return {
     ...session,
+    artifactRun,
     game,
+    initialRoomScan,
     target: game.target,
     url,
   };
@@ -417,10 +541,14 @@ export async function hoverPoint(subject, { point } = {}) {
     force: true,
     position: point,
   });
+  appendArtifactRunAction(getArtifactRun(subject), "hover-point", {
+    point,
+  });
 }
 
 export async function captureFrame(subject, options = {}) {
   const canvas = getCanvasLocator(subject);
+  const artifactRun = getArtifactRun(subject, options);
   await canvas.waitFor({ timeout: options.timeout ?? 30000 });
   const shouldIncludeScreenshot = options.includeScreenshot !== false || Boolean(options.savePath);
 
@@ -429,7 +557,7 @@ export async function captureFrame(subject, options = {}) {
     shouldIncludeScreenshot ? canvas.screenshot({ type: "png" }) : Promise.resolve(null),
   ]);
 
-  const savePath = png && options.savePath ? saveCapturedFrame({ png }, options) : null;
+  const savePath = png && options.savePath ? saveCapturedFrame({ png }, { ...options, artifactRun }) : null;
 
   return {
     ...analysis,
@@ -443,14 +571,49 @@ export function saveCapturedFrame(frame, options = {}) {
     throw new Error("saveCapturedFrame requires a captured frame with png bytes");
   }
 
-  return writeArtifactFile(
-    options.path || options.savePath || buildFrameReviewPath({ target: options.target }),
+  const savePath = writeArtifactFile(
+    options.path || options.savePath || buildFrameReviewPath({ ...options, artifactRun: options.artifactRun || null }),
     frame.png,
   );
+  appendArtifactRunAction(options.artifactRun || null, "save-frame-capture", {
+    path: savePath,
+  });
+  return savePath;
 }
 
 export async function saveFrameCapture(subject, options = {}) {
   return captureFrame(subject, { ...options, includeScreenshot: true, savePath: options.savePath || options.path });
+}
+
+export async function saveRunScreenshot(subject, options = {}) {
+  const artifactRun = getArtifactRun(subject, options);
+  const surface = options.surface || "canvas";
+  const pathOnDisk =
+    options.path ||
+    buildRunScreenshotPath({
+      artifactRun,
+      label: options.label || surface,
+      startedAt: options.startedAt || new Date().toISOString(),
+    });
+  let bytes = null;
+
+  if (surface === "canvas") {
+    bytes = await getCanvasLocator(subject).screenshot({ type: "png" });
+  } else if (subject && typeof subject.screenshot === "function") {
+    bytes = await subject.screenshot({
+      fullPage: options.fullPage === true,
+      type: "png",
+    });
+  } else {
+    throw new Error("saveRunScreenshot with surface='page' requires a Playwright Page-like subject");
+  }
+
+  writeArtifactFile(pathOnDisk, bytes);
+  appendArtifactRunAction(artifactRun, "save-run-screenshot", {
+    path: pathOnDisk,
+    surface,
+  });
+  return pathOnDisk;
 }
 
 export async function captureHotspotProbe(subject, options = {}) {
@@ -667,6 +830,10 @@ export async function clickPoint(subject, { button = "left", point } = {}) {
     force: true,
     position: point,
   });
+  appendArtifactRunAction(getArtifactRun(subject), "click-point", {
+    button,
+    point,
+  });
 }
 
 export async function getCurrentRoomState(subject, options = {}) {
@@ -688,28 +855,40 @@ export async function getCurrentRoomState(subject, options = {}) {
   };
 }
 
-export function loadRoomHotspotMap({ roomKey, target } = {}) {
-  return readRoomHotspotMap(buildRoomHotspotMapPath({ roomKey, target }));
+export function loadRoomHotspotMap({ artifactRun = null, roomKey, target } = {}) {
+  return readRoomHotspotMap(buildRoomHotspotMapPath({ artifactRun, roomKey, target }));
 }
 
-export function saveRoomHotspotMap({ map, roomKey, target } = {}) {
+export function saveRoomHotspotMap({ artifactRun = null, map, roomKey, target } = {}) {
   if (!map || !target || !roomKey) {
     throw new Error("saveRoomHotspotMap requires map, target, and roomKey");
   }
 
-  const mapPath = buildRoomHotspotMapPath({ roomKey, target });
+  const mapPath = buildRoomHotspotMapPath({ artifactRun, roomKey, target });
   writeArtifactFile(mapPath, Buffer.from(`${JSON.stringify(map, null, 2)}\n`, "utf8"));
+  appendArtifactRunAction(artifactRun, "save-room-hotspot-map", {
+    itemCount: map.items?.length ?? 0,
+    path: mapPath,
+    roomKey,
+    target,
+  });
   return mapPath;
 }
 
 export async function discoverRoomHotspots(subject, options = {}) {
   const roomState = await getCurrentRoomState(subject, options);
   const roomKey = options.roomKey || roomState.roomKey;
+  const artifactRun = getArtifactRun(subject, options);
   const gridSize = options.gridSize ?? defaultHotspotGridSize;
   const minLabelConfidence = options.minLabelConfidence ?? defaultHotspotMinLabelConfidence;
   const points = buildHotspotGridPoints(roomState.activeBounds, gridSize);
   const seenHashes = new Set();
   let items = [];
+  appendArtifactRunAction(artifactRun, "discover-room-hotspots-start", {
+    gridSize,
+    roomKey,
+    target: options.target,
+  });
 
   for (const point of points) {
     await hoverPoint(subject, { point });
@@ -778,7 +957,13 @@ export async function discoverRoomHotspots(subject, options = {}) {
   const screenshotCounts = new Map();
   const persistedItems = items.map((item) => {
     const index = screenshotCounts.get(item.normalizedLabel) || 0;
-    const screenshotPath = buildHotspotScreenshotPath(options.target, roomKey, item.normalizedLabel, index);
+    const screenshotPath = buildHotspotScreenshotPath({
+      artifactRun,
+      index,
+      label: item.normalizedLabel,
+      roomKey,
+      target: options.target,
+    });
     screenshotCounts.set(item.normalizedLabel, index + 1);
     writeArtifactFile(screenshotPath, item.png);
     const { png, ...persistedItem } = item;
@@ -787,6 +972,12 @@ export async function discoverRoomHotspots(subject, options = {}) {
       ...persistedItem,
       screenshotPath,
     };
+  });
+
+  appendArtifactRunAction(artifactRun, "discover-room-hotspots-complete", {
+    itemCount: persistedItems.length,
+    roomKey,
+    target: options.target,
   });
 
   return {
@@ -802,7 +993,9 @@ export async function discoverRoomHotspots(subject, options = {}) {
 
 export async function ensureCurrentRoomHotspotMap(subject, options = {}) {
   const roomState = await getCurrentRoomState(subject, options);
+  const artifactRun = getArtifactRun(subject, options);
   let map = loadRoomHotspotMap({
+    artifactRun,
     roomKey: roomState.roomKey,
     target: options.target,
   });
@@ -816,12 +1009,21 @@ export async function ensureCurrentRoomHotspotMap(subject, options = {}) {
       roomKey: roomState.roomKey,
     });
     saveRoomHotspotMap({
+      artifactRun,
       map,
       roomKey: roomState.roomKey,
       target: options.target,
     });
     created = true;
   }
+
+  appendArtifactRunAction(artifactRun, "ensure-room-hotspot-map", {
+    changed,
+    created,
+    itemCount: map?.items?.length ?? 0,
+    roomKey: roomState.roomKey,
+    target: options.target,
+  });
 
   return {
     changed,
@@ -839,6 +1041,7 @@ export async function findHotspotPoint(subject, options = {}) {
 }
 
 export async function safeAction(subject, options = {}) {
+  const artifactRun = getArtifactRun(subject, options);
   const before = await captureFrame(subject, options);
   await clickPoint(subject, options);
   const settled = await waitForSettle(subject, options);
@@ -848,6 +1051,14 @@ export async function safeAction(subject, options = {}) {
     beforeHash: before.sceneHash,
     expect: options.expect ?? "any-change",
     thresholds: options.thresholds,
+  });
+
+  appendArtifactRunAction(artifactRun, "safe-action", {
+    button: options.button || "left",
+    difference: verification.difference,
+    expect: verification.expect,
+    ok: verification.ok,
+    point: options.point,
   });
 
   return {
