@@ -330,9 +330,10 @@
 
 .game-route-touch-click-buttons {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  width: 4.5rem;
+  justify-content: flex-end;
+  width: auto;
   gap: 0.625rem;
   pointer-events: none;
 }

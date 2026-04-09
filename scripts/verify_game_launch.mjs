@@ -1006,16 +1006,16 @@ async function verifyMobileTouchClickToggle(browser, baseUrl, game) {
       throw new Error(`Right click button was not bottom-aligned with the joystick: ${JSON.stringify(controlLayout)}`);
     }
 
-    if (Math.abs(controlLayout.leftButton.left - controlLayout.rightButton.left) > 2) {
-      throw new Error(`Touch click buttons were not vertically aligned: ${JSON.stringify(controlLayout)}`);
+    if (Math.abs(controlLayout.leftButton.bottom - controlLayout.rightButton.bottom) > 4) {
+      throw new Error(`Touch click buttons were not bottom-aligned: ${JSON.stringify(controlLayout)}`);
     }
 
-    if (controlLayout.leftButton.bottom >= controlLayout.rightButton.top) {
-      throw new Error(`Touch click buttons overlapped instead of stacking vertically: ${JSON.stringify(controlLayout)}`);
+    if (controlLayout.leftButton.right >= controlLayout.rightButton.left) {
+      throw new Error(`Touch click buttons overlapped instead of sitting side by side: ${JSON.stringify(controlLayout)}`);
     }
 
     if (game.skipIntro && controlLayout.skipIntro && controlLayout.skipIntro.bottom >= controlLayout.leftButton.top) {
-      throw new Error(`Skip intro button overlapped the touch click stack: ${JSON.stringify(controlLayout)}`);
+      throw new Error(`Skip intro button overlapped the touch click row: ${JSON.stringify(controlLayout)}`);
     }
 
     await frame.locator("#canvas").evaluate((canvas) => {
