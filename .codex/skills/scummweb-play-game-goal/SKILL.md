@@ -96,6 +96,7 @@ Before the first gameplay click, confirm and note:
 - current room or screen
 - active actor or mode
 - whether inventory is open
+- which inventory items are already present at start, if any
 - selected item, if any
 - the exact proof that will count as success for the user's goal
 
@@ -153,6 +154,7 @@ Use the walkthrough to choose the shortest path, then still verify the port-spec
 - Validate hotspot labels before object interactions. Prefer a fresh screenshot and a deterministic point choice over a blind hover sweep.
 - If the port does not surface hotspot labels reliably, use cursor-shape changes as the next control signal. In BASS-style scenes, a switch from the normal arrow to the interaction cross is strong evidence that the current point is a real hotspot.
 - If the target hotspot is small or ambiguous, first lock one nearby larger hotspot whose label you expect, then reuse that confirmed region to narrow the search for the smaller target.
+- If hotspot behavior is uncertain, first calibrate on one known-good hotspot in the same scene so you can verify how this port surfaces valid objects, labels, and cursor-shape changes before probing the ambiguous target.
 - For item pickup or direct object use, use a label-first flow:
   move the cursor onto the target
   wait for the hotspot label
@@ -167,6 +169,7 @@ Use the walkthrough to choose the shortest path, then still verify the port-spec
 - After each meaningful action, wait for the animation, subtitle, inventory update, or room transition to settle before deciding the next step.
 - Keep the inventory tray closed while a room action is still resolving. Do not reopen it mid-walk, mid-pickup, or mid-use animation; in ScummVM scenes it can block the room and make a valid action look like it failed.
 - After a pickup attempt that matters for progression, verify the inventory contents before assuming success. Prefer an explicit tray check over inferring pickup success from partial movement alone.
+- If the inventory is not empty at the start of the run, do not treat "the tray opened" as pickup proof. Confirm success from an additional item icon, an item label, or another explicit item-state change.
 - Prefer hotspot names, subtitles, inventory headers, and visible state changes over guessing from pixels alone.
 - When the user provides a correction about controls or puzzle logic, trust it and adapt immediately.
 

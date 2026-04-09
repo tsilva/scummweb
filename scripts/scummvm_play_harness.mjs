@@ -3,6 +3,18 @@ const path = await import("node:path");
 const { fileURLToPath } = await import("node:url");
 import { normalizeSkipIntroConfig } from "../app/skip-intro-config.mjs";
 import { findGameByTarget, getBundledGameLibrary } from "../lib/catalog.mjs";
+import {
+  buildRoomKey,
+  dedupeHotspotItems,
+  defaultCursorDetectionConfidence,
+  defaultCursorSearchPadding,
+  findRoomHotspot,
+  normalizeHotspotFilename,
+  normalizeHotspotLabel,
+  readRoomHotspotMap,
+  runTesseractOcr,
+  detectCursorBox,
+} from "./scummvm_hotspot_tools.mjs";
 import { startHeadlessSession } from "./playwright_headless_repl.mjs";
 
 const bundledGameLibraryData = JSON.parse(
@@ -18,10 +30,41 @@ export const defaultSettleSamples = 2;
 export const defaultPreviewArtifactName = "play-peek";
 export const defaultSettleThreshold = 12;
 export const defaultReviewArtifactName = "play-review";
+export const defaultHotspotGridSize = 48;
+export const defaultHotspotHoverDelayMs = 80;
+export const defaultHotspotMinLabelConfidence = 45;
+export const defaultHotspotMinContrastPixels = 75;
+export const defaultHotspotLabelCropHeight = 72;
+export const defaultHotspotLabelCropWidth = 220;
+export const defaultHotspotLabelScale = 3;
+export const defaultRoomMapsDirName = "room-maps";
 export const defaultExpectThresholds = {
   "any-change": 48,
   "scene-change": 192,
 };
+
+/**
+ * @typedef {object} RoomHotspotItem
+ * @property {string} label
+ * @property {string} normalizedLabel
+ * @property {number} ocrConfidence
+ * @property {{left: number, top: number, width: number, height: number}} cursorBox
+ * @property {{x: number, y: number}} cursorCenter
+ * @property {number} cursorConfidence
+ * @property {{x: number, y: number}} samplePoint
+ * @property {string} screenshotPath
+ */
+
+/**
+ * @typedef {object} RoomHotspotMap
+ * @property {string} target
+ * @property {string} roomKey
+ * @property {string} sceneHash
+ * @property {{left: number, top: number, width: number, height: number}} activeBounds
+ * @property {number} gridSize
+ * @property {string} generatedAt
+ * @property {RoomHotspotItem[]} items
+ */
 
 function writeArtifactFile(filePath, bytes) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
@@ -72,6 +115,48 @@ function buildVersionedAssetPath(assetPath, options = {}) {
   resolved.searchParams.delete("v");
   resolved.searchParams.append("v", getAssetVersion());
   return `${resolved.pathname}${resolved.search}${resolved.hash}`;
+}
+
+function clamp(value, minimum, maximum) {
+  return Math.max(minimum, Math.min(maximum, value));
+}
+
+function dataUrlToBuffer(dataUrl) {
+  const match = String(dataUrl || "").match(/^data:[^;]+;base64,(.+)$/);
+
+  if (!match) {
+    throw new Error("Expected a base64 data URL");
+  }
+
+  return Buffer.from(match[1], "base64");
+}
+
+function buildRoomMapsRoot() {
+  return path.join(rootDir, "artifacts", defaultRoomMapsDirName);
+}
+
+function buildHotspotGridPoints(activeBounds, gridSize) {
+  const points = [];
+  const step = Math.max(16, Math.round(gridSize || defaultHotspotGridSize));
+  const xStart = activeBounds.left + Math.max(1, Math.round(step / 2));
+  const yStart = activeBounds.top + Math.max(1, Math.round(step / 2));
+  const xEnd = activeBounds.left + activeBounds.width;
+  const yEnd = activeBounds.top + activeBounds.height;
+
+  for (let y = yStart; y < yEnd; y += step) {
+    for (let x = xStart; x < xEnd; x += step) {
+      points.push({
+        x: clamp(Math.round(x), activeBounds.left, xEnd - 1),
+        y: clamp(Math.round(y), activeBounds.top, yEnd - 1),
+      });
+    }
+  }
+
+  return points;
+}
+
+function buildHotspotScreenshotPath(target, roomKey, label, index = 0) {
+  return path.join(buildRoomMapsRoot(), target, roomKey, normalizeHotspotFilename(label, index));
 }
 
 function getCanvasLocator(subject) {
@@ -262,6 +347,14 @@ export function buildPreviewScreenshotPath({ name = defaultPreviewArtifactName }
   return path.join(rootDir, "artifacts", `${name}.jpg`);
 }
 
+export function buildRoomHotspotMapPath({ roomKey, target } = {}) {
+  if (!target || !roomKey) {
+    throw new Error("buildRoomHotspotMapPath requires target and roomKey");
+  }
+
+  return path.join(buildRoomMapsRoot(), target, `${roomKey}.json`);
+}
+
 function normalizePreviewConfig(preview) {
   if (!preview) {
     return null;
@@ -314,6 +407,18 @@ export async function launchGame(options = {}) {
   };
 }
 
+export async function hoverPoint(subject, { point } = {}) {
+  if (!point || !Number.isFinite(point.x) || !Number.isFinite(point.y)) {
+    throw new Error("hoverPoint requires a finite { x, y } point");
+  }
+
+  const canvas = getCanvasLocator(subject);
+  await canvas.hover({
+    force: true,
+    position: point,
+  });
+}
+
 export async function captureFrame(subject, options = {}) {
   const canvas = getCanvasLocator(subject);
   await canvas.waitFor({ timeout: options.timeout ?? 30000 });
@@ -346,6 +451,132 @@ export function saveCapturedFrame(frame, options = {}) {
 
 export async function saveFrameCapture(subject, options = {}) {
   return captureFrame(subject, { ...options, includeScreenshot: true, savePath: options.savePath || options.path });
+}
+
+export async function captureHotspotProbe(subject, options = {}) {
+  const canvas = getCanvasLocator(subject);
+  const point = options.point;
+
+  if (!point || !Number.isFinite(point.x) || !Number.isFinite(point.y)) {
+    throw new Error("captureHotspotProbe requires a finite { x, y } point");
+  }
+
+  await canvas.waitFor({ timeout: options.timeout ?? 30000 });
+
+  return canvas.evaluate(
+    (canvasElement, settings) => {
+      const sampleWidth = Math.max(1, Math.round(canvasElement.clientWidth || canvasElement.width || 1));
+      const sampleHeight = Math.max(1, Math.round(canvasElement.clientHeight || canvasElement.height || 1));
+      const scratch = document.createElement("canvas");
+      scratch.width = sampleWidth;
+      scratch.height = sampleHeight;
+      const scratchContext = scratch.getContext("2d", { willReadFrequently: true });
+
+      if (!scratchContext) {
+        throw new Error("Unable to create scratch context for hotspot probing");
+      }
+
+      scratchContext.drawImage(canvasElement, 0, 0, sampleWidth, sampleHeight);
+      const labelWidth = Math.max(24, Math.min(settings.labelCropWidth, sampleWidth));
+      const labelHeight = Math.max(24, Math.min(settings.labelCropHeight, sampleHeight));
+      const preferLeft = settings.point.x + settings.labelOffsetX + labelWidth > sampleWidth;
+      const labelLeft = preferLeft
+        ? Math.max(0, Math.min(sampleWidth - labelWidth, settings.point.x - settings.labelOffsetX - labelWidth))
+        : Math.max(0, Math.min(sampleWidth - labelWidth, settings.point.x + settings.labelOffsetX));
+      const labelTop = Math.max(0, Math.min(sampleHeight - labelHeight, settings.point.y - Math.round(labelHeight / 2)));
+      const labelImage = scratchContext.getImageData(labelLeft, labelTop, labelWidth, labelHeight);
+      const workingCanvas = document.createElement("canvas");
+      workingCanvas.width = labelWidth;
+      workingCanvas.height = labelHeight;
+      const workingContext = workingCanvas.getContext("2d", { willReadFrequently: true });
+
+      if (!workingContext) {
+        throw new Error("Unable to create working context for hotspot probing");
+      }
+
+      workingContext.putImageData(labelImage, 0, 0);
+      const workingImage = workingContext.getImageData(0, 0, labelWidth, labelHeight);
+      const workingData = workingImage.data;
+      let contrastPixels = 0;
+      let hash = "";
+      const alphabet = "0123456789abcdef";
+
+      for (let index = 0; index < workingData.length; index += 4) {
+        const grayscale = Math.round(
+          workingData[index] * 0.299 + workingData[index + 1] * 0.587 + workingData[index + 2] * 0.114,
+        );
+        const threshold = grayscale >= settings.labelThreshold ? 255 : 0;
+        workingData[index] = threshold;
+        workingData[index + 1] = threshold;
+        workingData[index + 2] = threshold;
+        workingData[index + 3] = 255;
+
+        if (threshold === 255) {
+          contrastPixels += 1;
+        }
+
+        if ((index / 4) % 4 === 0) {
+          hash += alphabet[Math.max(0, Math.min(15, Math.round(grayscale / 17)))];
+        }
+      }
+
+      workingContext.putImageData(workingImage, 0, 0);
+      const scaledCanvas = document.createElement("canvas");
+      scaledCanvas.width = labelWidth * settings.labelScale;
+      scaledCanvas.height = labelHeight * settings.labelScale;
+      const scaledContext = scaledCanvas.getContext("2d");
+
+      if (!scaledContext) {
+        throw new Error("Unable to create scaled context for hotspot probing");
+      }
+
+      scaledContext.imageSmoothingEnabled = false;
+      scaledContext.fillStyle = "#000";
+      scaledContext.fillRect(0, 0, scaledCanvas.width, scaledCanvas.height);
+      scaledContext.drawImage(workingCanvas, 0, 0, scaledCanvas.width, scaledCanvas.height);
+
+      const cursorPadding = settings.cursorPadding;
+      const cursorLeft = Math.max(0, Math.min(sampleWidth - 1, settings.point.x - cursorPadding));
+      const cursorTop = Math.max(0, Math.min(sampleHeight - 1, settings.point.y - cursorPadding));
+      const cursorWidth = Math.max(
+        1,
+        Math.min(sampleWidth - cursorLeft, Math.min(cursorPadding * 2 + 1, sampleWidth)),
+      );
+      const cursorHeight = Math.max(
+        1,
+        Math.min(sampleHeight - cursorTop, Math.min(cursorPadding * 2 + 1, sampleHeight)),
+      );
+      const cursorImage = scratchContext.getImageData(cursorLeft, cursorTop, cursorWidth, cursorHeight);
+
+      return {
+        cursorSample: {
+          data: Array.from(cursorImage.data),
+          height: cursorHeight,
+          left: cursorLeft,
+          top: cursorTop,
+          width: cursorWidth,
+        },
+        labelBounds: {
+          height: labelHeight,
+          left: labelLeft,
+          top: labelTop,
+          width: labelWidth,
+        },
+        labelContrastPixels: contrastPixels,
+        labelHash: hash,
+        labelImageDataUrl: scaledCanvas.toDataURL("image/png"),
+      };
+    },
+    {
+      cursorPadding: options.cursorPadding ?? defaultCursorSearchPadding,
+      labelCropHeight: options.labelCropHeight ?? defaultHotspotLabelCropHeight,
+      labelCropWidth: options.labelCropWidth ?? defaultHotspotLabelCropWidth,
+      labelOffsetX: options.labelOffsetX ?? 18,
+      labelScale: options.labelScale ?? defaultHotspotLabelScale,
+      labelThreshold: options.labelThreshold ?? 180,
+      point,
+    },
+  );
 }
 
 export function compareSceneHashes(leftHash, rightHash) {
@@ -436,6 +667,175 @@ export async function clickPoint(subject, { button = "left", point } = {}) {
     force: true,
     position: point,
   });
+}
+
+export async function getCurrentRoomState(subject, options = {}) {
+  const frame = options.frame || (await waitForSettle(subject, { ...options, includeScreenshot: false }));
+  const target = options.target;
+
+  if (!target) {
+    throw new Error("getCurrentRoomState requires target");
+  }
+
+  return {
+    ...frame,
+    roomKey: buildRoomKey({
+      activeBounds: frame.activeBounds,
+      sceneHash: frame.sceneHash,
+      target,
+    }),
+    target,
+  };
+}
+
+export function loadRoomHotspotMap({ roomKey, target } = {}) {
+  return readRoomHotspotMap(buildRoomHotspotMapPath({ roomKey, target }));
+}
+
+export function saveRoomHotspotMap({ map, roomKey, target } = {}) {
+  if (!map || !target || !roomKey) {
+    throw new Error("saveRoomHotspotMap requires map, target, and roomKey");
+  }
+
+  const mapPath = buildRoomHotspotMapPath({ roomKey, target });
+  writeArtifactFile(mapPath, Buffer.from(`${JSON.stringify(map, null, 2)}\n`, "utf8"));
+  return mapPath;
+}
+
+export async function discoverRoomHotspots(subject, options = {}) {
+  const roomState = await getCurrentRoomState(subject, options);
+  const roomKey = options.roomKey || roomState.roomKey;
+  const gridSize = options.gridSize ?? defaultHotspotGridSize;
+  const minLabelConfidence = options.minLabelConfidence ?? defaultHotspotMinLabelConfidence;
+  const points = buildHotspotGridPoints(roomState.activeBounds, gridSize);
+  const seenHashes = new Set();
+  let items = [];
+
+  for (const point of points) {
+    await hoverPoint(subject, { point });
+
+    if ((options.hoverDelayMs ?? defaultHotspotHoverDelayMs) > 0) {
+      await delayOnCanvas(getCanvasLocator(subject), options.hoverDelayMs ?? defaultHotspotHoverDelayMs);
+    }
+
+    const probe = await captureHotspotProbe(subject, { ...options, point });
+
+    if (probe.labelContrastPixels < (options.minContrastPixels ?? defaultHotspotMinContrastPixels)) {
+      continue;
+    }
+
+    if (seenHashes.has(probe.labelHash)) {
+      continue;
+    }
+
+    seenHashes.add(probe.labelHash);
+    const ocrResult = runTesseractOcr({
+      imageBuffer: dataUrlToBuffer(probe.labelImageDataUrl),
+      imageExtension: "png",
+      psm: options.psm ?? 7,
+      whitelist: options.whitelist,
+      workingDirectory: options.ocrWorkingDirectory,
+    });
+
+    if (!ocrResult.ok || ocrResult.confidence < minLabelConfidence) {
+      continue;
+    }
+
+    const cursorMatch = detectCursorBox(probe.cursorSample, {
+      minConfidence: options.minCursorConfidence ?? defaultCursorDetectionConfidence,
+      offset: {
+        left: probe.cursorSample.left,
+        top: probe.cursorSample.top,
+      },
+      probePoint: {
+        x: point.x - probe.cursorSample.left,
+        y: point.y - probe.cursorSample.top,
+      },
+    });
+
+    if (!cursorMatch) {
+      continue;
+    }
+
+    const frame = await captureFrame(subject, { includeScreenshot: true, timeout: options.timeout });
+    const candidate = {
+      cursorBox: cursorMatch.cursorBox,
+      cursorCenter: cursorMatch.cursorCenter,
+      cursorConfidence: cursorMatch.confidence,
+      label: ocrResult.label,
+      normalizedLabel: normalizeHotspotLabel(ocrResult.normalizedLabel || ocrResult.label),
+      ocrConfidence: Number(ocrResult.confidence.toFixed(2)),
+      png: frame.png,
+      samplePoint: point,
+      screenshotPath: "",
+    };
+
+    items = dedupeHotspotItems(items, candidate, {
+      duplicateDistance: options.duplicateDistance,
+    });
+  }
+
+  const screenshotCounts = new Map();
+  const persistedItems = items.map((item) => {
+    const index = screenshotCounts.get(item.normalizedLabel) || 0;
+    const screenshotPath = buildHotspotScreenshotPath(options.target, roomKey, item.normalizedLabel, index);
+    screenshotCounts.set(item.normalizedLabel, index + 1);
+    writeArtifactFile(screenshotPath, item.png);
+    const { png, ...persistedItem } = item;
+
+    return {
+      ...persistedItem,
+      screenshotPath,
+    };
+  });
+
+  return {
+    activeBounds: roomState.activeBounds,
+    generatedAt: new Date().toISOString(),
+    gridSize,
+    items: persistedItems,
+    roomKey,
+    sceneHash: roomState.sceneHash,
+    target: options.target,
+  };
+}
+
+export async function ensureCurrentRoomHotspotMap(subject, options = {}) {
+  const roomState = await getCurrentRoomState(subject, options);
+  let map = loadRoomHotspotMap({
+    roomKey: roomState.roomKey,
+    target: options.target,
+  });
+  const changed = Boolean(options.previousRoomKey) && options.previousRoomKey !== roomState.roomKey;
+  let created = false;
+
+  if (!map) {
+    map = await discoverRoomHotspots(subject, {
+      ...options,
+      frame: roomState,
+      roomKey: roomState.roomKey,
+    });
+    saveRoomHotspotMap({
+      map,
+      roomKey: roomState.roomKey,
+      target: options.target,
+    });
+    created = true;
+  }
+
+  return {
+    changed,
+    created,
+    map,
+    roomKey: roomState.roomKey,
+  };
+}
+
+export async function findHotspotPoint(subject, options = {}) {
+  const currentRoom = await ensureCurrentRoomHotspotMap(subject, options);
+  const hotspot = findRoomHotspot(currentRoom.map, options.label);
+
+  return hotspot ? { ...hotspot.cursorCenter } : null;
 }
 
 export async function safeAction(subject, options = {}) {
