@@ -8,7 +8,7 @@ import GameTouchJoystick from "./game-player/GameTouchJoystick";
 import { dispatchSyntheticKeypressSequence } from "./game-player/keyboard";
 import { useBootState } from "./game-player/useBootState";
 import { useImmersiveMode } from "./game-player/useImmersiveMode";
-import { useTouchClickMode } from "./game-player/useTouchClickMode";
+import { useTouchClickActions } from "./game-player/useTouchClickMode";
 import { useTouchJoystick } from "./game-player/useTouchJoystick";
 import { recordRecentGameTarget } from "./recent-games";
 
@@ -116,20 +116,24 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     skipIntroConsumed,
   });
   const immersiveMode = useImmersiveMode({ shellRef });
-  const touchClickMode = useTouchClickMode({
+  const touchClick = useTouchClickActions({
     frameRef,
-    frameSrc,
     skipIntro,
     skipIntroConsumed,
   });
+  const showBootOverlay = !bootState.hasBootCompleted || bootState.hasBootFailed;
+  const hasBootOverlayDismissed = !showBootOverlay;
+  const showMobileOverlay =
+    hasBootOverlayDismissed &&
+    immersiveMode.isMobileViewport &&
+    (immersiveMode.needsImmersiveRetry || !immersiveMode.isLandscapeViewport);
+  const mobileControlsReady =
+    immersiveMode.isMobileViewport &&
+    bootState.hasBootCompleted &&
+    !bootState.hasBootFailed &&
+    !showMobileOverlay;
   const touchJoystick = useTouchJoystick({
-    enabled:
-      immersiveMode.isMobileViewport &&
-      bootState.hasBootCompleted &&
-      !bootState.hasBootFailed &&
-      !immersiveMode.needsImmersiveRetry &&
-      immersiveMode.isLandscapeViewport &&
-      touchClickMode.touchControlsUnlocked,
+    enabled: mobileControlsReady && immersiveMode.isLandscapeViewport,
     frameRef,
     frameSrc,
   });
@@ -239,7 +243,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
 
   function dismissSkipIntroButton() {
     bootState.dismissSkipIntroButton();
-    touchClickMode.unlockTouchControls();
+    touchClick.unlockTouchControls();
   }
 
   useEffect(() => {
@@ -337,7 +341,6 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     setFrameSrc((currentSrc) => buildSkipIntroSaveSlotSrc(currentSrc, target, skipIntro.slot));
   }
 
-  const showBootOverlay = !bootState.hasBootCompleted || bootState.hasBootFailed;
   const showBootProgress =
     typeof bootState.bootProgressValue === "number" &&
     Number.isFinite(bootState.bootProgressValue) &&
@@ -350,11 +353,6 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
         Math.min(100, Math.round((bootState.bootProgressValue / bootState.bootProgressMax) * 100)),
       )
     : null;
-  const hasBootOverlayDismissed = !showBootOverlay;
-  const showMobileOverlay =
-    hasBootOverlayDismissed &&
-    immersiveMode.isMobileViewport &&
-    (immersiveMode.needsImmersiveRetry || !immersiveMode.isLandscapeViewport);
   const showSkipIntroAction = bootState.showSkipIntroButton && skipIntro && !bootState.hasBootFailed;
   const showSkipIntroOverlayAction = showSkipIntroAction && showBootOverlay;
   const showSkipIntroBottomAction = showSkipIntroAction && !showBootOverlay;
@@ -362,18 +360,13 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     !skipIntro ||
     bootState.hasBootFailed ||
     showSkipIntroAction ||
-    touchClickMode.touchControlsUnlocked ||
+    touchClick.touchControlsUnlocked ||
     skipIntroConsumed;
   const showFullscreenControl =
     immersiveMode.canFullscreen && bootState.hasBootPresentationCompleted;
-  const showTouchClickToggle =
-    immersiveMode.isMobileViewport &&
-    bootState.hasBootCompleted &&
-    !bootState.hasBootFailed &&
-    !showMobileOverlay &&
-    touchClickMode.touchControlsUnlocked;
-  const showTouchJoystick = showTouchClickToggle;
-  const showBottomActions = showSkipIntroBottomAction;
+  const showTouchClickButtons = mobileControlsReady;
+  const showTouchJoystick = mobileControlsReady;
+  const showBottomActions = showSkipIntroBottomAction || showTouchClickButtons;
 
   return (
     <div className="game-route-shell" ref={shellRef}>
@@ -399,15 +392,15 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
         onExit={handleExitClick}
         onOpenMenu={handleScummvmMenuClick}
         onSkipIntro={handleSkipIntroClick}
+        onTouchLeftClick={() => touchClick.sendTouchClick("left")}
+        onTouchRightClick={() => touchClick.sendTouchClick("right")}
         onToggleFullscreen={immersiveMode.handleFullscreenToggle}
-        onToggleTouchClickMode={touchClickMode.toggleTouchClickMode}
         showBottomActions={showBottomActions}
         showExitControl={showExitControl}
         showFullscreenControl={showFullscreenControl}
         showScummvmMenuButton={bootState.showScummvmMenuButton}
         showSkipIntroAction={showSkipIntroBottomAction}
-        showTouchClickToggle={showTouchClickToggle}
-        touchClickMode={touchClickMode.touchClickMode}
+        showTouchClickButtons={showTouchClickButtons}
       />
       <GameTouchJoystick
         knobOffset={touchJoystick.knobOffset}

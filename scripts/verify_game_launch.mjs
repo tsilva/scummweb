@@ -907,46 +907,115 @@ async function verifyMobileTouchClickToggle(browser, baseUrl, game) {
       await continueButton.waitFor({ state: "hidden", timeout: 5000 }).catch(() => {});
     }
 
-    const touchToggle = page.locator(".game-route-control-button.is-touch-toggle");
+    const legacyTouchToggle = page.locator(".game-route-control-button.is-touch-toggle");
+    const leftTouchClickButton = page.locator('.game-route-control-button.is-touch-click[data-button="left"]');
+    const rightTouchClickButton = page.locator('.game-route-control-button.is-touch-click[data-button="right"]');
     const touchJoystick = page.locator(".game-route-touch-joystick");
-    await touchToggle.waitFor({ state: "visible", timeout: 15000 });
     await touchJoystick.waitFor({ state: "visible", timeout: 15000 });
+    await leftTouchClickButton.waitFor({ state: "visible", timeout: 15000 });
+    await rightTouchClickButton.waitFor({ state: "visible", timeout: 15000 });
 
-    const initialMode = await touchToggle.getAttribute("data-mode");
-
-    if (initialMode !== "left") {
-      throw new Error(`Expected mobile touch toggle to start in left-click mode, got ${initialMode}.`);
+    if ((await legacyTouchToggle.count()) !== 0) {
+      throw new Error(`Legacy touch click toggle still rendered for ${game.target}.`);
     }
 
-    const joystickLayout = await page.evaluate(() => {
-      const joystick = document.querySelector(".game-route-touch-joystick");
+    if (game.skipIntro) {
+      const skipIntroButton = page.locator(".game-route-skip-intro-button");
+      await skipIntroButton.waitFor({ state: "visible", timeout: 15000 });
+    }
 
-      if (!(joystick instanceof HTMLElement)) {
+    const controlLayout = await page.evaluate(() => {
+      const joystick = document.querySelector(".game-route-touch-joystick");
+      const leftButton = document.querySelector('.game-route-control-button.is-touch-click[data-button="left"]');
+      const rightButton = document.querySelector('.game-route-control-button.is-touch-click[data-button="right"]');
+      const skipIntroButton = document.querySelector(".game-route-skip-intro-button");
+
+      if (
+        !(joystick instanceof HTMLElement) ||
+        !(leftButton instanceof HTMLElement) ||
+        !(rightButton instanceof HTMLElement)
+      ) {
         return null;
       }
 
-      const rect = joystick.getBoundingClientRect();
+      const joystickRect = joystick.getBoundingClientRect();
+      const leftButtonRect = leftButton.getBoundingClientRect();
+      const rightButtonRect = rightButton.getBoundingClientRect();
+      const skipIntroRect =
+        skipIntroButton instanceof HTMLElement ? skipIntroButton.getBoundingClientRect() : null;
 
       return {
-        bottom: rect.bottom,
-        height: rect.height,
-        left: rect.left,
+        joystick: {
+          bottom: joystickRect.bottom,
+          height: joystickRect.height,
+          left: joystickRect.left,
+          width: joystickRect.width,
+        },
+        leftButton: {
+          bottom: leftButtonRect.bottom,
+          height: leftButtonRect.height,
+          left: leftButtonRect.left,
+          right: leftButtonRect.right,
+          top: leftButtonRect.top,
+          width: leftButtonRect.width,
+        },
+        rightButton: {
+          bottom: rightButtonRect.bottom,
+          height: rightButtonRect.height,
+          left: rightButtonRect.left,
+          right: rightButtonRect.right,
+          top: rightButtonRect.top,
+          width: rightButtonRect.width,
+        },
+        skipIntro: skipIntroRect
+          ? {
+              bottom: skipIntroRect.bottom,
+              top: skipIntroRect.top,
+            }
+          : null,
         viewportHeight: window.innerHeight,
         viewportWidth: window.innerWidth,
-        width: rect.width,
       };
     });
 
-    if (!joystickLayout) {
-      throw new Error("Mobile touch joystick did not render.");
+    if (!controlLayout) {
+      throw new Error("Mobile touch controls did not render.");
     }
 
-    if (joystickLayout.width < 64 || joystickLayout.width > 80 || joystickLayout.height < 64 || joystickLayout.height > 80) {
-      throw new Error(`Unexpected joystick dimensions: ${JSON.stringify(joystickLayout)}`);
+    if (
+      controlLayout.joystick.width < 64 ||
+      controlLayout.joystick.width > 80 ||
+      controlLayout.joystick.height < 64 ||
+      controlLayout.joystick.height > 80
+    ) {
+      throw new Error(`Unexpected joystick dimensions: ${JSON.stringify(controlLayout)}`);
     }
 
-    if (joystickLayout.left > 36 || joystickLayout.viewportHeight - joystickLayout.bottom > 36) {
-      throw new Error(`Joystick was not pinned to the bottom-left corner: ${JSON.stringify(joystickLayout)}`);
+    if (controlLayout.joystick.left > 36 || controlLayout.viewportHeight - controlLayout.joystick.bottom > 36) {
+      throw new Error(`Joystick was not pinned to the bottom-left corner: ${JSON.stringify(controlLayout)}`);
+    }
+
+    if (
+      controlLayout.viewportWidth - controlLayout.rightButton.right > 36 ||
+      controlLayout.viewportHeight - controlLayout.rightButton.bottom > 36
+    ) {
+      throw new Error(`Touch click buttons were not pinned to the bottom-right corner: ${JSON.stringify(controlLayout)}`);
+    }
+
+    if (Math.abs(controlLayout.rightButton.bottom - controlLayout.joystick.bottom) > 4) {
+      throw new Error(`Right click button was not bottom-aligned with the joystick: ${JSON.stringify(controlLayout)}`);
+    }
+
+    if (Math.abs(controlLayout.leftButton.left - controlLayout.rightButton.left) > 2) {
+      throw new Error(`Touch click buttons were not vertically aligned: ${JSON.stringify(controlLayout)}`);
+    }
+
+    if (controlLayout.leftButton.bottom >= controlLayout.rightButton.top) {
+      throw new Error(`Touch click buttons overlapped instead of stacking vertically: ${JSON.stringify(controlLayout)}`);
+    }
+
+    if (game.skipIntro && controlLayout.skipIntro && controlLayout.skipIntro.bottom >= controlLayout.leftButton.top) {
+      throw new Error(`Skip intro button overlapped the touch click stack: ${JSON.stringify(controlLayout)}`);
     }
 
     await frame.locator("#canvas").evaluate((canvas) => {
@@ -1052,25 +1121,43 @@ async function verifyMobileTouchClickToggle(browser, baseUrl, game) {
       window.__touchClickVerificationEvents = [];
     });
 
-    await touchToggle.tap();
-
-    await page.waitForFunction(() => {
-      const button = document.querySelector(".game-route-control-button.is-touch-toggle");
-      return button?.getAttribute("data-mode") === "right" && button.getAttribute("aria-pressed") === "true";
-    });
-
-    const frameTouchMode = await frame.locator("#canvas").evaluate(
-      () => window.localStorage.getItem("scummweb.touchClickMode")
-    );
-
-    if (frameTouchMode !== "right") {
-      throw new Error(`Touch mode did not sync into the game frame after toggle: ${frameTouchMode}`);
-    }
-
     await frame.locator("#canvas").tap({ position: { x: 160, y: 120 }, force: true });
     await page.waitForTimeout(250);
 
-    const verification = await frame.locator("#canvas").evaluate(() => {
+    const canvasTapVerification = await frame.locator("#canvas").evaluate(() => {
+      const events = Array.isArray(window.__touchClickVerificationEvents)
+        ? window.__touchClickVerificationEvents
+        : [];
+
+      return {
+        events,
+        sawLeakedTouchEvent: events.some((event) => event.type.startsWith("touch")),
+        sawLeftMouseDown: events.some((event) => event.type === "mousedown" && event.button === 0),
+        sawLeftMouseUp: events.some((event) => event.type === "mouseup" && event.button === 0),
+        sawClick: events.some((event) => event.type === "click" && event.button === 0),
+      };
+    });
+
+    if (canvasTapVerification.sawLeakedTouchEvent) {
+      throw new Error(
+        `Native touch events leaked past the scummweb mobile shim: ${JSON.stringify(canvasTapVerification.events)}`
+      );
+    }
+
+    if (!canvasTapVerification.sawLeftMouseDown || !canvasTapVerification.sawLeftMouseUp || !canvasTapVerification.sawClick) {
+      throw new Error(
+        `Canvas tap did not synthesize the expected primary-click events: ${JSON.stringify(canvasTapVerification.events)}`
+      );
+    }
+
+    await frame.locator("#canvas").evaluate(() => {
+      window.__touchClickVerificationEvents = [];
+    });
+
+    await rightTouchClickButton.tap();
+    await page.waitForTimeout(250);
+
+    const rightClickVerification = await frame.locator("#canvas").evaluate(() => {
       const events = Array.isArray(window.__touchClickVerificationEvents)
         ? window.__touchClickVerificationEvents
         : [];
@@ -1084,27 +1171,100 @@ async function verifyMobileTouchClickToggle(browser, baseUrl, game) {
       };
     });
 
-    if (verification.sawLeakedTouchEvent) {
+    if (rightClickVerification.sawLeakedTouchEvent) {
       throw new Error(
-        `Native touch events leaked past the scummweb mobile shim: ${JSON.stringify(verification.events)}`
+        `Right click button leaked touch events into the canvas: ${JSON.stringify(rightClickVerification.events)}`
       );
     }
 
-    if (!verification.sawRightMouseDown || !verification.sawRightMouseUp || !verification.sawContextMenu) {
+    if (
+      !rightClickVerification.sawRightMouseDown ||
+      !rightClickVerification.sawRightMouseUp ||
+      !rightClickVerification.sawContextMenu
+    ) {
       throw new Error(
-        `Mobile right-click toggle did not synthesize the expected secondary-click events: ${JSON.stringify(
-          verification.events
+        `Right click button did not synthesize the expected secondary-click events: ${JSON.stringify(
+          rightClickVerification.events
+        )}`
+      );
+    }
+
+    await frame.locator("#canvas").evaluate(() => {
+      window.__touchClickVerificationEvents = [];
+    });
+
+    await leftTouchClickButton.tap();
+    await page.waitForTimeout(250);
+
+    const leftClickVerification = await frame.locator("#canvas").evaluate(() => {
+      const events = Array.isArray(window.__touchClickVerificationEvents)
+        ? window.__touchClickVerificationEvents
+        : [];
+
+      return {
+        events,
+        sawLeakedTouchEvent: events.some((event) => event.type.startsWith("touch")),
+        sawLeftMouseDown: events.some((event) => event.type === "mousedown" && event.button === 0),
+        sawLeftMouseUp: events.some((event) => event.type === "mouseup" && event.button === 0),
+        sawClick: events.some((event) => event.type === "click" && event.button === 0),
+      };
+    });
+
+    if (leftClickVerification.sawLeakedTouchEvent) {
+      throw new Error(
+        `Left click button leaked touch events into the canvas: ${JSON.stringify(leftClickVerification.events)}`
+      );
+    }
+
+    if (!leftClickVerification.sawLeftMouseDown || !leftClickVerification.sawLeftMouseUp || !leftClickVerification.sawClick) {
+      throw new Error(
+        `Left click button did not synthesize the expected primary-click events: ${JSON.stringify(
+          leftClickVerification.events
         )}`
       );
     }
 
     if (normalizeUrl(page.url()) !== normalizeUrl(routeUrl)) {
-      throw new Error(`Mobile touch toggle redirected unexpectedly from ${routeUrl} to ${page.url()}`);
+      throw new Error(`Mobile touch controls redirected unexpectedly from ${routeUrl} to ${page.url()}`);
     }
 
     await page.close();
   } finally {
     await mobileContext.close();
+  }
+}
+
+async function verifyTouchControlsHiddenDuringMobileOverlay(browser, baseUrl, game) {
+  const portraitContext = await browser.newContext({
+    viewport: { width: 430, height: 932 },
+    screen: { width: 430, height: 932 },
+    hasTouch: true,
+    isMobile: true,
+  });
+
+  try {
+    const { frame, page } = await verifyTarget(portraitContext, baseUrl, game, { waitForLaunch: false });
+
+    await waitForGameStartup(page, frame, game);
+    await verifyLaunchOverlayAfterStartup(page, game);
+
+    const mobileOverlay = page.locator(".game-route-mobile-overlay");
+    const touchButtons = page.locator(".game-route-touch-click-buttons");
+    const touchJoystick = page.locator(".game-route-touch-joystick");
+
+    await mobileOverlay.waitFor({ state: "visible", timeout: 15000 });
+
+    if ((await touchButtons.count()) !== 0) {
+      throw new Error(`Touch click buttons rendered while the mobile overlay was visible for ${game.target}.`);
+    }
+
+    if ((await touchJoystick.count()) !== 0) {
+      throw new Error(`Touch joystick rendered while the mobile overlay was visible for ${game.target}.`);
+    }
+
+    await page.close();
+  } finally {
+    await portraitContext.close();
   }
 }
 
@@ -1244,7 +1404,12 @@ await staleRecoveryContext.close();
 await verifyMobileTouchClickToggle(
   browser,
   url,
-  library.games.find((game) => !game.skipIntro) || library.games[0]
+  saveSlotGame || library.games.find((game) => game.skipIntro) || library.games[0]
+);
+await verifyTouchControlsHiddenDuringMobileOverlay(
+  browser,
+  url,
+  saveSlotGame || library.games.find((game) => game.skipIntro) || library.games[0]
 );
 
 fs.mkdirSync(path.dirname(screenshotPath), { recursive: true });
