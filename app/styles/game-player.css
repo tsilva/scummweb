@@ -377,7 +377,7 @@
   pointer-events: none;
 }
 
-.game-route-touch-joystick-shell {
+.game-route-touch-cursor-pad-shell {
   position: fixed;
   left: min(max(0.75rem, env(safe-area-inset-left)), 1rem);
   bottom: min(max(0.75rem, env(safe-area-inset-bottom)), 1rem);
@@ -385,18 +385,18 @@
   pointer-events: none;
 }
 
-.game-route-touch-joystick {
+.game-route-touch-cursor-pad {
   position: relative;
   display: block;
-  width: 4.5rem;
-  height: 4.5rem;
+  width: 4.75rem;
+  height: 4.75rem;
   padding: 0;
   appearance: none;
   -webkit-appearance: none;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 999px;
+  border-radius: 1.45rem;
   background:
-    radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04)),
+    linear-gradient(180deg, rgba(29, 32, 30, 0.82), rgba(10, 12, 11, 0.9)),
     rgba(8, 8, 8, 0.38);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.06),
@@ -410,29 +410,93 @@
   -webkit-user-select: none;
 }
 
-.game-route-touch-joystick:focus-visible {
+.game-route-touch-cursor-pad:focus-visible {
   outline: 2px solid rgba(255, 255, 255, 0.72);
   outline-offset: 2px;
 }
 
-.game-route-touch-joystick-knob {
+.game-route-touch-cursor-pad-grid,
+.game-route-touch-cursor-pad-crosshair {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.game-route-touch-cursor-pad-grid {
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      90deg,
+      transparent calc(50% - 0.5px),
+      rgba(255, 255, 255, 0.08) calc(50% - 0.5px),
+      rgba(255, 255, 255, 0.08) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    ),
+    linear-gradient(
+      180deg,
+      transparent calc(50% - 0.5px),
+      rgba(255, 255, 255, 0.08) calc(50% - 0.5px),
+      rgba(255, 255, 255, 0.08) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    ),
+    radial-gradient(circle at 50% 50%, rgba(246, 224, 138, 0.08), transparent 58%);
+}
+
+.game-route-touch-cursor-pad-crosshair::before,
+.game-route-touch-cursor-pad-crosshair::after {
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 2rem;
-  height: 2rem;
-  margin-top: -1rem;
-  margin-left: -1rem;
-  border: 1px solid rgba(246, 224, 138, 0.36);
+  background: rgba(246, 224, 138, 0.34);
+  transform: translate(-50%, -50%);
+}
+
+.game-route-touch-cursor-pad-crosshair::before {
+  width: 1.35rem;
+  height: 1px;
+}
+
+.game-route-touch-cursor-pad-crosshair::after {
+  width: 1px;
+  height: 1.35rem;
+}
+
+.game-route-touch-cursor-pad-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1rem;
+  height: 1rem;
+  margin-top: -0.5rem;
+  margin-left: -0.5rem;
+  border: 1px solid rgba(246, 224, 138, 0.42);
   border-radius: 999px;
   background:
-    radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.02)),
-    linear-gradient(180deg, rgba(34, 34, 34, 0.92), rgba(15, 15, 15, 0.92));
+    radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.04)),
+    linear-gradient(180deg, rgba(54, 58, 54, 0.94), rgba(19, 20, 19, 0.96));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
     0 0.45rem 1rem rgba(0, 0, 0, 0.28);
   pointer-events: none;
   transition: transform 40ms linear;
+}
+
+.game-route-touch-cursor-pad-label {
+  position: absolute;
+  right: 0.55rem;
+  bottom: 0.45rem;
+  color: rgba(248, 242, 216, 0.82);
+  font:
+    700
+    0.58rem/1
+    "Trebuchet MS",
+    Verdana,
+    Tahoma,
+    sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
 }
 
 .game-route-skip-intro-button {
