@@ -5,7 +5,10 @@ import { useEffect, useRef, useState } from "react";
 const JOYSTICK_MESSAGE_TYPE = "scummweb-touch-joystick-state";
 const JOYSTICK_OUTER_RADIUS_PX = 36;
 const JOYSTICK_KNOB_RADIUS_PX = 16;
-const JOYSTICK_TRAVEL_RADIUS_PX = JOYSTICK_OUTER_RADIUS_PX - JOYSTICK_KNOB_RADIUS_PX;
+const JOYSTICK_MOVE_AREA_SCALE = 0.8;
+const JOYSTICK_TRAVEL_RADIUS_PX =
+  (JOYSTICK_OUTER_RADIUS_PX - JOYSTICK_KNOB_RADIUS_PX) * JOYSTICK_MOVE_AREA_SCALE;
+const JOYSTICK_INPUT_RADIUS_PX = JOYSTICK_TRAVEL_RADIUS_PX * 0.7;
 const JOYSTICK_DEADZONE = 0.18;
 
 function clamp(value, min, max) {
@@ -38,7 +41,7 @@ function normalizeOffset({ x, y }) {
     return { x: 0, y: 0 };
   }
 
-  const magnitude = clamp(distance / JOYSTICK_TRAVEL_RADIUS_PX, 0, 1);
+  const magnitude = clamp(distance / JOYSTICK_INPUT_RADIUS_PX, 0, 1);
 
   if (magnitude <= JOYSTICK_DEADZONE) {
     return { x: 0, y: 0 };
