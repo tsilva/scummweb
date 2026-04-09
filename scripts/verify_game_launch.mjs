@@ -993,10 +993,10 @@ async function verifyMobileTouchClickToggle(browser, baseUrl, game) {
     }
 
     if (
-      controlLayout.cursorPad.width < 68 ||
-      controlLayout.cursorPad.width > 84 ||
-      controlLayout.cursorPad.height < 68 ||
-      controlLayout.cursorPad.height > 84
+      controlLayout.cursorPad.width < 50 ||
+      controlLayout.cursorPad.width > 66 ||
+      controlLayout.cursorPad.height < 50 ||
+      controlLayout.cursorPad.height > 66
     ) {
       throw new Error(`Unexpected cursor pad dimensions: ${JSON.stringify(controlLayout)}`);
     }
