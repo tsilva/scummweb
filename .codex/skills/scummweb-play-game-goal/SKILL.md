@@ -136,6 +136,8 @@ For `Beneath a Steel Sky` (`sky`):
 - Default to BASS's direct path-and-act control model unless the live run proves otherwise:
   hover the world target and `right-click` once so Foster walks over and performs the action
   select an inventory item, hover the destination target, and `right-click` once so Foster walks over and applies it
+- For BASS inventory selection, target the item sprite inside the tray, not the whole slot. If you can estimate or measure the item bounding box, click the center of that box rather than the slot center.
+- After selecting a BASS inventory item, verify that it attached to the cursor before using it on a room hotspot. Prefer a cropped before/after cursor check or another explicit visual confirmation over trusting the click alone.
 - Browse only if the live state still does not fit the checkpoint after one deliberate re-check.
 
 Decision rule:
@@ -204,6 +206,7 @@ Use the walkthrough to choose the shortest path, then still verify the port-spec
 - If a room transition fails repeatedly, retry from a nearby stable state rather than compounding clicks.
 - If a room transition briefly fades to black or darkens the scene, treat that as an expected transition signal first and verify with one fresh post-fade snapshot before escalating.
 - If inventory use is ambiguous, test item selection and item application as separate steps.
+- If a BASS inventory click is not taking, stop varying room hotspots first. Re-check the tray interaction by measuring the item's painted bounds, click the item's bounding-box center, and confirm the attached-cursor state before retrying the room action.
 
 ## Goal Verification
 
