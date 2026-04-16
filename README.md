@@ -15,7 +15,7 @@
   <img alt="pnpm 10" src="https://img.shields.io/badge/pnpm-10-f69220">
 </p>
 
-**ScummWEB is a browser-first launcher for classic point-and-click adventure games, powered by a managed ScummVM WebAssembly shell and game payloads delivered from Cloudflare R2.**
+**🕹️ Classic point-and-click adventures, playable instantly in your browser 🕹️**
 
 ## Overview
 
