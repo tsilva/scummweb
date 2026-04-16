@@ -14,6 +14,21 @@ import { recordRecentGameTarget } from "./recent-games";
 
 const SCUMMWEB_FRAME_MESSAGE_SOURCE = "scummweb";
 
+function shouldHideScummvmMenuButton(game, target) {
+  return (
+    game?.engineId === "drascula" ||
+    game?.engineId === "dreamweb" ||
+    game?.gameId === "drascula" ||
+    game?.gameId === "dreamweb" ||
+    game?.gameId === "nippon" ||
+    game?.gameId === "sword25" ||
+    target === "drascula" ||
+    target === "dreamweb-cd" ||
+    target === "nippon-amiga" ||
+    target === "sword25"
+  );
+}
+
 function getSafeHref(href) {
   if (!href) {
     return "/";
@@ -363,6 +378,8 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     skipIntroConsumed;
   const showFullscreenControl =
     immersiveMode.canFullscreen && bootState.hasBootPresentationCompleted;
+  const showScummvmMenuButton =
+    bootState.showScummvmMenuButton && !shouldHideScummvmMenuButton(game, target);
   const showTouchClickButtons = mobileControlsReady;
   const showTouchCursorPad = mobileControlsReady;
   const showBottomActions = showSkipIntroBottomAction || showTouchClickButtons;
@@ -397,7 +414,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
         showBottomActions={showBottomActions}
         showExitControl={showExitControl}
         showFullscreenControl={showFullscreenControl}
-        showScummvmMenuButton={bootState.showScummvmMenuButton}
+        showScummvmMenuButton={showScummvmMenuButton}
         showSkipIntroAction={showSkipIntroBottomAction}
         showTouchClickButtons={showTouchClickButtons}
       />

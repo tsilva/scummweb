@@ -454,6 +454,21 @@ async function verifySkipIntroButton(page, frame, game, routeUrl) {
 
   await resetLaunchOverlayHistoryCapture(page);
   await skipIntroButton.click();
+  await page.waitForFunction(
+    () => {
+      const overlay = document.querySelector('[data-launch-overlay="true"]');
+      const statusText = document.querySelector('[data-launch-status="true"]')?.textContent?.trim() || "";
+
+      return (
+        overlay?.getAttribute("data-launch-overlay-state") === "visible" &&
+        statusText === "Skipping intro..."
+      );
+    },
+    null,
+    {
+      timeout: 5000,
+    }
+  );
 
   const relaunchState = await waitForSkipIntroRelaunch(page, game.target, game.skipIntro.slot);
 
@@ -524,12 +539,37 @@ async function verifyLurePopupMenuSelection(page, frame) {
   }
 }
 
-async function verifyScummvmMenuButton(page, frame, routeUrl) {
+function shouldHideScummvmMenuButton(game) {
+  return (
+    game?.engineId === "drascula" ||
+    game?.engineId === "dreamweb" ||
+    game?.gameId === "drascula" ||
+    game?.gameId === "dreamweb" ||
+    game?.gameId === "nippon" ||
+    game?.gameId === "sword25" ||
+    game?.target === "drascula" ||
+    game?.target === "dreamweb-cd" ||
+    game?.target === "nippon-amiga" ||
+    game?.target === "sword25"
+  );
+}
+
+async function verifyScummvmMenuButton(page, frame, routeUrl, game) {
   const menuButton = page.locator('.game-route-control-button.is-menu[title="Open ScummVM menu"]');
   const exitButton = page.locator('.game-route-control-button.is-exit[title="Exit game"]');
   const fullscreenButton = page.locator('.game-route-control-button.is-fullscreen');
 
   await exitButton.waitFor({ state: "visible", timeout: 15000 });
+
+  if (shouldHideScummvmMenuButton(game)) {
+    await page.waitForTimeout(3000);
+
+    if (await menuButton.isVisible().catch(() => false)) {
+      throw new Error(`ScummVM menu button should be hidden for ${game.target}`);
+    }
+
+    return;
+  }
 
   // The menu reveal is delayed, but by the time the exit control appears the menu may have
   // already transitioned into its visible end state. Accept either path.
@@ -1442,7 +1482,7 @@ for (const game of library.games) {
   await verifyRouteFrameAutofocus(page);
   await verifyEscapeStaysInGame(page, frame, routeUrl);
   await verifySkipIntroButton(page, frame, game, routeUrl);
-  await verifyScummvmMenuButton(page, frame, routeUrl);
+  await verifyScummvmMenuButton(page, frame, routeUrl, game);
   await verifyQuitReturnsHome(page, frame, new URL(game.href, url).toString());
 
   if (screenshotPage && screenshotPage !== rootPage && screenshotPage !== page && !screenshotPage.isClosed()) {
