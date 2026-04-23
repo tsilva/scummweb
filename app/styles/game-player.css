@@ -357,8 +357,8 @@
 }
 
 .game-route-control-button.is-touch-click[data-button="right"] {
-  border-color: rgba(246, 224, 138, 0.48);
-  color: #f6e08a;
+  border-color: rgba(255, 255, 255, 0.42);
+  color: rgba(255, 255, 255, 0.96);
 }
 
 .game-route-control-button.is-touch-click[data-button="left"]:hover,
@@ -369,8 +369,8 @@
 
 .game-route-control-button.is-touch-click[data-button="right"]:hover,
 .game-route-control-button.is-touch-click[data-button="right"]:focus-visible {
-  border-color: rgba(246, 224, 138, 0.72);
-  color: #fff3b8;
+  border-color: rgba(255, 255, 255, 0.68);
+  color: #fff;
 }
 
 .game-route-touch-click-label {
