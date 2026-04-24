@@ -77,6 +77,16 @@ test("game metadata and play-route metadata keep canonicals aligned and play rou
       metadata.openGraph.images[0].alt,
       "Beneath a Steel Sky Open Graph card for browser play on ScummWEB",
     );
+    assert.equal(
+      metadata.openGraph.images[0].url,
+      "https://example.com/beneath-a-steel-sky/social-card.png?v=dev",
+    );
+    assert.deepEqual(metadata.twitter.images, [
+      {
+        url: "https://example.com/beneath-a-steel-sky/social-card.png?v=dev",
+        alt: "Beneath a Steel Sky Open Graph card for browser play on ScummWEB",
+      },
+    ]);
     assert.deepEqual(playMetadata.robots, {
       index: false,
       follow: false,
