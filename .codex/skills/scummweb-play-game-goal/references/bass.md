@@ -20,11 +20,37 @@ Source note: this is a distilled agent reference built from a user-provided full
   selected-item left click on hotspot
 - Moving the pointer to the top edge opens the inventory tray.
 - The inventory tray can remain open and block the room. Close it before trying to walk or use a hotspot.
+- BASS dialogue options are selected by hovering the text until it highlights, then left-clicking the highlighted line.
 - Item use can require three separate states:
   select the item in the tray
   right click the selected item to arm it
   right click the destination hotspot
 - Verify the selected item name from the inventory header before applying it.
+
+## Verified Early Factory Memory
+
+Use this room-memory path for the lower factory section. It is faster and less error-prone than rediscovering hotspots:
+
+- Persistent room memory lives at `.codex/game-hotspot-memory/sky.json`.
+- Workshop/elevator room:
+  - room id `sky_room_000004002f80eff8`
+  - right-side `Exit` to Hobbins' room: `(710,349)`
+  - `Transporter`: `(282,279)`
+  - `Elevator`: `(407,464)`, better pad hover point `(404,500)`
+  - robot shell in foreground `Junk`: `(505,612)` after first examining/looking at `Junk`
+- Hobbins' room:
+  - room id `sky_room_0fd20ff038723873`
+  - left `Exit` back to workshop: `(205,415)`
+  - `Cupboard Door`: `(365,370)`
+  - exposed `Wrench`: `(354,398)` after the cupboard opens
+  - `Man`/Hobbins: around `(421,424)` to `(526,430)`, depending on where he is standing
+
+For the elevator-hole sequence after Joey starts the transporter:
+
+- Do not stand in front of the elevator or the transport robot cannot deliver the barrel.
+- Stand beside/behind the elevator near the vertical pole, around `(486,430)`.
+- Keep the cursor on the pad around `(404,500)` and wait for the pad to become the black `Hole`.
+- Right-click immediately when `Hole` appears. A reliable automated detector is the pad crop `(330,455)-(455,530)`: idle brightness is roughly `110-115`, and the hole frame drops to roughly `64`; click when it falls below `70`.
 
 ## Goal Lookup
 
@@ -65,7 +91,7 @@ Source note: this is a distilled agent reference built from a user-provided full
 12. Talk to `HOBBINS` until he explains how the transporter / elevator system works and mentions the broken charge device.
 13. Go west.
 14. Tell `JOEY` to fix the `TRANSPORTER`.
-15. When the transport robot places a barrel on the elevator, climb down the hole.
+15. Stand beside/behind the elevator near the vertical pole, keep the cursor over the elevator pad, and right-click the instant the transport robot's barrel makes the pad become a `Hole`.
 16. Wait for `JOEY`, then tell him to open the door.
 17. Search `REICH'S CORPSE`.
 18. Talk to `JOEY` to wake him up.
@@ -87,7 +113,9 @@ Source note: this is a distilled agent reference built from a user-provided full
 - Opening room: do not click the stairs while the guard is still below; it is lethal.
 - Opening door puzzle: the left-side item is the short dark `RUNG`, not the red hanging pipe.
 - Opening door puzzle: on the opening walkway screen, the `RUNG` hotspot is the small horizontal metal bar mounted on the wall just above and slightly right of the red hanging pipe.
-- If the transporter cannot be fixed, talk to `HOBBINS` again until he mentions the charge-device problem.
+- If `JOEY` does not offer to start the transporter, talk to `HOBBINS` again and exhaust the transporter/elevator branch. The key Hobbins option is `What's wrong with the TRANSPORTERS?`; after it disappears, Joey should expose `Can you start that TRANSPORTER?`.
+- If the transporter robot stalls, check Foster's position first. Foster must be behind/beside the pad near the pole, not standing in front of the elevator or transporter path.
+- If clicking the elevator causes Hobbins to say to get off, you clicked too early or while the hotspot still labels as `Elevator`. Wait for the black `Hole` frame and click immediately.
 - If `JOEY` stays inert after `REICH` appears, talk to him again after searching the corpse.
 
 ### Checkpoint 2: Top-level factory, power plant, and lift access
