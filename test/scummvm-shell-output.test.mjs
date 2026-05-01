@@ -27,3 +27,15 @@ test("boot polling in the app still reads shell output for failures", () => {
   assert.match(bootStateSource, /"value" in outputElement/);
   assert.match(bootStateSource, /BOOT_FAILURE_PATTERNS\.some\(\(pattern\) => pattern\.test\(outputValue\)\)/);
 });
+
+test("mobile touch click shim holds button state long enough for polling engines", () => {
+  const shellHtml = fs.readFileSync(shellHtmlPath, "utf8");
+
+  assert.match(shellHtml, /const touchSyntheticClickHoldMs=80;/);
+  assert.match(
+    shellHtml,
+    /window\.setTimeout\(\(\(\)=>\{dispatchPointerEvent\("pointerup",point,\{button,buttons:0\}\);dispatchMouseEvent\("mouseup",point,\{button,buttons:0\}\);/
+  );
+  assert.match(shellHtml, /dispatchMouseEvent\("click",point,\{button,buttons:0,detail:1\}\)/);
+  assert.match(shellHtml, /dispatchMouseEvent\("contextmenu",point,\{button,buttons,detail:0\}\)/);
+});
