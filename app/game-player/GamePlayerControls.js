@@ -1,15 +1,18 @@
-import { LogOut, Maximize, Menu, Minimize } from "lucide-react";
+import { LogOut, Maximize, Menu, Minimize, Ratio, StretchHorizontal } from "lucide-react";
 
 export default function GamePlayerControls({
   handleControlMouseDown,
+  isFillScreenAspect,
   isFullscreen,
   onExit,
   onOpenMenu,
   onSkipIntro,
+  onToggleAspectRatio,
   onTouchLeftClick,
   onTouchRightClick,
   onToggleFullscreen,
   showBottomActions,
+  showAspectRatioControl,
   showExitControl,
   showFullscreenControl,
   showScummvmMenuButton,
@@ -17,7 +20,9 @@ export default function GamePlayerControls({
   showTouchClickButtons,
 }) {
   const FullscreenIcon = isFullscreen ? Minimize : Maximize;
+  const AspectRatioIcon = isFillScreenAspect ? StretchHorizontal : Ratio;
   const fullscreenLabel = isFullscreen ? "Exit fullscreen" : "Enter fullscreen";
+  const aspectRatioLabel = isFillScreenAspect ? "Preserve aspect ratio" : "Fill screen";
   const scummvmMenuLabel = "Open ScummVM menu";
 
   return (
@@ -38,6 +43,19 @@ export default function GamePlayerControls({
           </div>
         ) : null}
         <div className="game-route-control-group is-right">
+          {showAspectRatioControl ? (
+            <button
+              aria-label={aspectRatioLabel}
+              aria-pressed={isFillScreenAspect}
+              className={`game-route-control-button is-aspect${isFillScreenAspect ? " is-active" : ""}`}
+              onClick={onToggleAspectRatio}
+              onMouseDown={handleControlMouseDown}
+              title={aspectRatioLabel}
+              type="button"
+            >
+              <AspectRatioIcon aria-hidden="true" size={18} strokeWidth={2} />
+            </button>
+          ) : null}
           {showFullscreenControl ? (
             <button
               aria-label={fullscreenLabel}
