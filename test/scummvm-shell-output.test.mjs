@@ -5,6 +5,7 @@ import test from "node:test";
 
 const rootDir = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
 const shellHtmlPath = path.join(rootDir, "scummvm-shell", "scummvm.html");
+const shellJsPath = path.join(rootDir, "scummvm-shell", "scummvm.js");
 const bootStatePath = path.join(rootDir, "app", "game-player", "useBootState.js");
 const gameRouteFramePath = path.join(rootDir, "app", "game-route-frame.js");
 const gamePlayerControlsPath = path.join(rootDir, "app", "game-player", "GamePlayerControls.js");
@@ -70,6 +71,18 @@ test("mobile shell supports fill-screen canvas aspect mode", () => {
     /const setAspectRatioMode=mode=>\{canvas\.classList\.toggle\("scummweb-fill-screen",mode==="fill"\)\}/
   );
   assert.match(shellHtml, /event\.data\?\.type==="scummweb-aspect-ratio"/);
+});
+
+test("managed ScummVM audio glue primes and sanitizes WebAudio output", () => {
+  const shellJs = fs.readFileSync(shellJsPath, "utf8");
+
+  assert.match(shellJs, /outputBuffer\["getChannelData"\]\(channel\)\.fill\(0\)/);
+  assert.match(shellJs, /if\(!Number\.isFinite\(sample\)\)\{sample=0;\+\+abnormalSamples\}/);
+  assert.match(shellJs, /if\(abnormalSamples>\$1\*numChannels\/16\)/);
+  assert.doesNotMatch(
+    shellJs,
+    /channelData\[j\]=HEAPF32\[\$0\+\(j\*numChannels\+c<<2\)>>2\]/
+  );
 });
 
 test("mobile route exposes an aspect toggle and posts mode changes to the shell", () => {
