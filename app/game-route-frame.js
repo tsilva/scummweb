@@ -13,6 +13,7 @@ import { useTouchCursorPad } from "./game-player/useTouchCursorPad";
 import { recordRecentGameTarget } from "./recent-games";
 
 const SCUMMWEB_FRAME_MESSAGE_SOURCE = "scummweb";
+const SCUMMWEB_ASPECT_RATIO_MESSAGE_TYPE = "scummweb-aspect-ratio";
 
 function shouldHideScummvmMenuButton(game, target) {
   return (
@@ -120,6 +121,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
   const frameRef = useRef(null);
   const [frameSrc, setFrameSrc] = useState(src);
   const [exitHref, setExitHref] = useState("/");
+  const [isFillScreenAspect, setIsFillScreenAspect] = useState(false);
   const [readySignal, setReadySignal] = useState(null);
   const [skipIntroConsumed, setSkipIntroConsumed] = useState(false);
   const bootState = useBootState({
@@ -206,6 +208,33 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     setReadySignal(null);
     setSkipIntroConsumed(false);
   }, [src]);
+
+  useEffect(() => {
+    const iframe = frameRef.current;
+
+    if (!iframe) {
+      return;
+    }
+
+    function postAspectRatioMode() {
+      try {
+        iframe.contentWindow?.postMessage(
+          {
+            type: SCUMMWEB_ASPECT_RATIO_MESSAGE_TYPE,
+            mode: isFillScreenAspect ? "fill" : "preserve",
+          },
+          window.location.origin,
+        );
+      } catch {}
+    }
+
+    postAspectRatioMode();
+    iframe.addEventListener("load", postAspectRatioMode);
+
+    return () => {
+      iframe.removeEventListener("load", postAspectRatioMode);
+    };
+  }, [frameSrc, isFillScreenAspect]);
 
   useEffect(() => {
     setExitHref(getExitHrefFromSrc(frameSrc));
@@ -355,6 +384,10 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     setFrameSrc((currentSrc) => buildSkipIntroSaveSlotSrc(currentSrc, target, skipIntro.slot));
   }
 
+  function handleAspectRatioToggle() {
+    setIsFillScreenAspect((currentValue) => !currentValue);
+  }
+
   const showBootProgress =
     typeof bootState.bootProgressValue === "number" &&
     Number.isFinite(bootState.bootProgressValue) &&
@@ -378,6 +411,8 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     skipIntroConsumed;
   const showFullscreenControl =
     immersiveMode.canFullscreen && bootState.hasBootPresentationCompleted;
+  const showAspectRatioControl =
+    immersiveMode.isMobileViewport && bootState.hasBootPresentationCompleted;
   const showScummvmMenuButton =
     bootState.showScummvmMenuButton && !shouldHideScummvmMenuButton(game, target);
   const showTouchClickButtons = mobileControlsReady;
@@ -404,14 +439,17 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
       />
       <GamePlayerControls
         handleControlMouseDown={handleControlMouseDown}
+        isFillScreenAspect={isFillScreenAspect}
         isFullscreen={immersiveMode.isFullscreen}
         onExit={handleExitClick}
         onOpenMenu={handleScummvmMenuClick}
         onSkipIntro={handleSkipIntroClick}
+        onToggleAspectRatio={handleAspectRatioToggle}
         onTouchLeftClick={() => touchClick.sendTouchClick("left")}
         onTouchRightClick={() => touchClick.sendTouchClick("right")}
         onToggleFullscreen={immersiveMode.handleFullscreenToggle}
         showBottomActions={showBottomActions}
+        showAspectRatioControl={showAspectRatioControl}
         showExitControl={showExitControl}
         showFullscreenControl={showFullscreenControl}
         showScummvmMenuButton={showScummvmMenuButton}
