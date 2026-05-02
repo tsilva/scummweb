@@ -39,3 +39,22 @@ test("mobile touch click shim holds button state long enough for polling engines
   assert.match(shellHtml, /dispatchMouseEvent\("click",point,\{button,buttons:0,detail:1\}\)/);
   assert.match(shellHtml, /dispatchMouseEvent\("contextmenu",point,\{button,buttons,detail:0\}\)/);
 });
+
+test("mobile canvas swipes move the synthetic cursor relatively", () => {
+  const shellHtml = fs.readFileSync(shellHtmlPath, "utf8");
+
+  assert.match(shellHtml, /const touchRelativeMoveScale=1;/);
+  assert.match(shellHtml, /const touchRelativeMoveMaxDeltaPx=48;/);
+  assert.match(
+    shellHtml,
+    /const applyRelativeTouchDelta=\(previousPoint,nextFingerPoint\)=>\{[^}]*nextFingerPoint\.clientX-previousPoint\.clientX[^}]*applyCursorPadDelta\(deltaX,deltaY\)/
+  );
+  assert.match(
+    shellHtml,
+    /if\(activeTouchGesture\.moved\)\{applyRelativeTouchDelta\(previousPoint,point\)\}activeTouchGesture\.lastPoint=point/
+  );
+  assert.match(
+    shellHtml,
+    /if\(activeTouchGesture\.moved&&point\)\{applyRelativeTouchDelta\(activeTouchGesture\.lastPoint,point\)\}/
+  );
+});
