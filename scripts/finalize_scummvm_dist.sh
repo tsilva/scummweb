@@ -53,4 +53,5 @@ python3 "$ROOT_DIR/scripts/generate_logo_assets.py" \
 
 python3 "$ROOT_DIR/scripts/patch_scummvm_fs.py" "$DIST_DIR/scummvm_fs.js"
 python3 "$ROOT_DIR/scripts/patch_scummvm_html.py" "$DIST_DIR/scummvm.html"
+python3 "$ROOT_DIR/scripts/patch_scummvm_audio.py" "$DIST_DIR/scummvm.js"
 node "$ROOT_DIR/scripts/manage_scummvm_assets.mjs" sync "$DIST_DIR" "$SHELL_DIR"
