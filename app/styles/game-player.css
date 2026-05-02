@@ -299,7 +299,7 @@
     box-shadow 160ms ease;
 }
 
-.game-route-control-button:hover,
+.game-route-control-button:active,
 .game-route-control-button:focus-visible {
   background: rgba(255, 255, 255, 0.14);
   border-color: rgba(255, 255, 255, 0.5);
@@ -311,6 +311,16 @@
 .game-route-control-button:focus-visible {
   outline: 2px solid rgba(255, 255, 255, 0.72);
   outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .game-route-control-button:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #fff;
+    box-shadow: 0 0.7rem 1.8rem rgba(0, 0, 0, 0.26);
+    transform: translateY(-1px);
+  }
 }
 
 .game-route-control-button.is-exit svg {
@@ -361,16 +371,28 @@
   color: rgba(255, 255, 255, 0.96);
 }
 
-.game-route-control-button.is-touch-click[data-button="left"]:hover,
+.game-route-control-button.is-touch-click[data-button="left"]:active,
 .game-route-control-button.is-touch-click[data-button="left"]:focus-visible {
   border-color: rgba(214, 234, 247, 0.68);
   color: #fff;
 }
 
-.game-route-control-button.is-touch-click[data-button="right"]:hover,
+.game-route-control-button.is-touch-click[data-button="right"]:active,
 .game-route-control-button.is-touch-click[data-button="right"]:focus-visible {
   border-color: rgba(255, 255, 255, 0.68);
   color: #fff;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .game-route-control-button.is-touch-click[data-button="left"]:hover {
+    border-color: rgba(214, 234, 247, 0.68);
+    color: #fff;
+  }
+
+  .game-route-control-button.is-touch-click[data-button="right"]:hover {
+    border-color: rgba(255, 255, 255, 0.68);
+    color: #fff;
+  }
 }
 
 .game-route-touch-click-label {
