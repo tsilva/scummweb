@@ -327,6 +327,27 @@
   transform: scaleX(-1);
 }
 
+.game-route-control-button.is-aspect.is-active {
+  border-color: rgba(246, 224, 138, 0.56);
+  background: rgba(246, 224, 138, 0.14);
+  color: #f6e08a;
+}
+
+.game-route-control-button.is-aspect.is-active:active,
+.game-route-control-button.is-aspect.is-active:focus-visible {
+  border-color: rgba(246, 224, 138, 0.78);
+  background: rgba(246, 224, 138, 0.2);
+  color: #fff1bb;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .game-route-control-button.is-aspect.is-active:hover {
+    border-color: rgba(246, 224, 138, 0.78);
+    background: rgba(246, 224, 138, 0.2);
+    color: #fff1bb;
+  }
+}
+
 .game-route-bottom-actions {
   position: fixed;
   right: min(max(0.75rem, env(safe-area-inset-right)), 1rem);

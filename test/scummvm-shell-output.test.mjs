@@ -6,6 +6,8 @@ import test from "node:test";
 const rootDir = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
 const shellHtmlPath = path.join(rootDir, "scummvm-shell", "scummvm.html");
 const bootStatePath = path.join(rootDir, "app", "game-player", "useBootState.js");
+const gameRouteFramePath = path.join(rootDir, "app", "game-route-frame.js");
+const gamePlayerControlsPath = path.join(rootDir, "app", "game-player", "GamePlayerControls.js");
 
 test("managed shell keeps the log sink for detection but hides it from layout", () => {
   const shellHtml = fs.readFileSync(shellHtmlPath, "utf8");
@@ -57,4 +59,26 @@ test("mobile canvas swipes move the synthetic cursor relatively", () => {
     shellHtml,
     /if\(activeTouchGesture\.moved&&point\)\{applyRelativeTouchDelta\(activeTouchGesture\.lastPoint,point\)\}/
   );
+});
+
+test("mobile shell supports fill-screen canvas aspect mode", () => {
+  const shellHtml = fs.readFileSync(shellHtmlPath, "utf8");
+
+  assert.match(shellHtml, /canvas\.emscripten\.scummweb-fill-screen\{width:100%;height:100%\}/);
+  assert.match(
+    shellHtml,
+    /const setAspectRatioMode=mode=>\{canvas\.classList\.toggle\("scummweb-fill-screen",mode==="fill"\)\}/
+  );
+  assert.match(shellHtml, /event\.data\?\.type==="scummweb-aspect-ratio"/);
+});
+
+test("mobile route exposes an aspect toggle and posts mode changes to the shell", () => {
+  const routeFrameSource = fs.readFileSync(gameRouteFramePath, "utf8");
+  const controlsSource = fs.readFileSync(gamePlayerControlsPath, "utf8");
+
+  assert.match(routeFrameSource, /SCUMMWEB_ASPECT_RATIO_MESSAGE_TYPE = "scummweb-aspect-ratio"/);
+  assert.match(routeFrameSource, /mode: isFillScreenAspect \? "fill" : "preserve"/);
+  assert.match(routeFrameSource, /showAspectRatioControl =\s+immersiveMode\.isMobileViewport/);
+  assert.match(controlsSource, /aria-pressed=\{isFillScreenAspect\}/);
+  assert.match(controlsSource, /className=\{`game-route-control-button is-aspect/);
 });
