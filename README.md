@@ -31,6 +31,7 @@ pnpm run test            # run the Node test suite
 pnpm run verify          # build, serve, and boot detected targets through Chromium
 pnpm run build:scummvm   # rebuild the ScummVM WebAssembly shell and game metadata
 pnpm run publish:games   # upload dist/games payloads to Cloudflare R2
+pnpm run record:preview  # stream distinct preview frames as a local MPEG-TS feed
 pnpm run sentry:issues   # list recent Sentry issues from local env credentials
 ```
 

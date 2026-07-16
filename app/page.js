@@ -4,26 +4,22 @@ import {
 import {
   getVersionedSiteAssetPath,
 } from "./game-library";
-import { getHomeShellData, getPresentedGameByTarget } from "./game-page-data";
+import { getHomeShellData } from "./game-page-data";
 import HomeShell from "./home-shell";
 import SeoJsonLd from "./seo-json-ld";
 import {
   buildHomeMetadata,
   buildHomeStructuredData,
-  HOME_FEATURED_GAME_TARGET,
 } from "./seo";
 
 export const dynamic = "force-static";
 
 export function generateMetadata() {
-  const featuredGame = getPresentedGameByTarget(HOME_FEATURED_GAME_TARGET);
-  return buildHomeMetadata(featuredGame);
+  return buildHomeMetadata(getHomeShellData().featuredGame);
 }
 
 export default function HomePage() {
-  const shellData = getHomeShellData({
-    featuredGameTarget: HOME_FEATURED_GAME_TARGET,
-  });
+  const shellData = getHomeShellData();
 
   if (!shellData) {
     throw new Error("Unable to resolve homepage shell data");

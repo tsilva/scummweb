@@ -1,0 +1,4 @@
+interface:
+  display_name: "scummweb Play Game (Agent Only)"
+  short_description: "Play games using native agent vision only"
+  default_prompt: "Use $scummweb-play-game-agent-only to complete an in-game objective with native agent screenshot reasoning and no external vision APIs or segmentation."

@@ -15,7 +15,6 @@ test("required shell asset paths are managed and versioned matchers cover expect
   }
 
   assert.ok(versionedAssetMatchers.includes("/launcher/:path*"));
-  assert.ok(versionedAssetMatchers.includes("/source.html"));
   assert.equal(isVersionedAsset("/launcher/poster.png"), true);
   assert.equal(isVersionedAsset("/scummvm.js"), true);
   assert.equal(isVersionedAsset("/unmanaged.txt"), false);

@@ -1,0 +1,10 @@
+{
+  "room_name": "example-room",
+  "canonical_hash": "replace-with-full-frame-hash",
+  "short_hash": "replace-me",
+  "state_snapshots": [],
+  "source_screenshots": [],
+  "interactibles": [],
+  "checked_non_hotspots": [],
+  "exits": []
+}

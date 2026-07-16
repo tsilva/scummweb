@@ -53,7 +53,7 @@ export function getHomeShellData(options = {}) {
     featuredGameTarget = null,
     randomize = false,
   } = options;
-  const { games } = getGameLibrary();
+  const { games, primaryTarget } = getGameLibrary();
   const sourceInfo = getSourceInfo();
 
   if (games.length === 0) {
@@ -67,7 +67,7 @@ export function getHomeShellData(options = {}) {
       ? catalog.find((game) => game.target === featuredGameTarget) || null
     : randomize
       ? pickFeaturedGame(catalog)
-      : catalog[0];
+    : catalog.find((game) => game.target === primaryTarget) || catalog[0];
 
   if (!featuredGame) {
     return null;

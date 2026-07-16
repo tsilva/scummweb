@@ -146,7 +146,6 @@ const games = await Promise.all(
 );
 
 const primaryGame =
-  games.find((game) => game.target === "dreamweb-cd") ||
   games.find((game) => game.target === "sky") ||
   games[0];
 
