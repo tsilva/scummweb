@@ -15,16 +15,6 @@ function formatGameCount(count) {
   return `${count} game${count === 1 ? "" : "s"} installed`;
 }
 
-const installedLibraryOrder = [
-  "sky",
-  "queen",
-  "dreamweb-cd",
-  "lure",
-  "sword25",
-  "drascula",
-  "nippon-amiga",
-];
-
 export default function HomeShell({
   catalog,
   featuredGame,
@@ -36,18 +26,7 @@ export default function HomeShell({
 }) {
   const isHomePage = pageMode === "home";
   const featuredDialogId = getGameDialogId(featuredGame);
-  const installedCatalog = [...catalog].sort((left, right) => {
-    const leftIndex = installedLibraryOrder.indexOf(left.target);
-    const rightIndex = installedLibraryOrder.indexOf(right.target);
-    const normalizedLeftIndex = leftIndex === -1 ? installedLibraryOrder.length : leftIndex;
-    const normalizedRightIndex = rightIndex === -1 ? installedLibraryOrder.length : rightIndex;
-
-    if (normalizedLeftIndex !== normalizedRightIndex) {
-      return normalizedLeftIndex - normalizedRightIndex;
-    }
-
-    return left.displayTitle.localeCompare(right.displayTitle);
-  });
+  const installedCatalog = catalog;
   const heroKicker = isHomePage ? HOME_HERO_KICKER : featuredGame.eyebrow;
   const heroTitle = isHomePage ? HOME_HERO_TITLE : featuredGame.displayTitle;
   const heroSummary = isHomePage ? HOME_HERO_SUMMARY : featuredGame.summary;

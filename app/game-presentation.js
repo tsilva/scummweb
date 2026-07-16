@@ -1,7 +1,4 @@
-import {
-  getVersionedScummvmAssetPath,
-  getVersionedSiteAssetPath,
-} from "./asset-paths";
+import { getVersionedSiteAssetPath } from "./asset-paths";
 
 const artByTarget = {
   sky: {

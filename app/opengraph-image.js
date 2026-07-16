@@ -1,8 +1,7 @@
 import { ImageResponse } from "next/og";
-import { getPresentedGameByTarget } from "./game-page-data";
+import { getHomeShellData } from "./game-page-data";
 import {
   HOME_DESCRIPTION,
-  HOME_FEATURED_GAME_TARGET,
   HOME_HERO_KICKER,
   HOME_HERO_TITLE,
   SITE_NAME,
@@ -17,20 +16,12 @@ export const size = {
 export const contentType = "image/png";
 export const dynamic = "force-dynamic";
 
-function getOpenGraphBackgroundPath(pathname) {
-  if (!pathname) {
-    return "";
-  }
-
-  return pathname.replace(/\.webp(?=(?:\?|$))/, ".jpg");
-}
-
 export default function OpenGraphImage() {
-  const featuredGame = getPresentedGameByTarget(HOME_FEATURED_GAME_TARGET);
+  const { featuredGame } = getHomeShellData();
   const backgroundImage =
     featuredGame?.spotlightImage || featuredGame?.heroImage || featuredGame?.posterImage || "";
   const backgroundUrl = backgroundImage
-    ? buildAbsoluteUrl(getOpenGraphBackgroundPath(backgroundImage))
+    ? buildAbsoluteUrl(backgroundImage)
     : "";
 
   return new ImageResponse(

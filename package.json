@@ -7,14 +7,13 @@
     "prepare": "node ./scripts/manage_scummvm_assets.mjs validate && node ./scripts/manage_scummvm_assets.mjs sync scummvm-shell public && node ./scripts/manage_scummvm_assets.mjs validate public",
     "build:scummvm": "./scripts/build_scummvm_web.sh",
     "publish:games": "python3 ./scripts/upload_games_to_r2.py",
-    "games:upload": "pnpm run publish:games",
     "record:preview": "node ./scripts/record_preview_stream.mjs",
     "verify": "./scripts/verify_scummvm_web.sh",
     "sentry:issues": "node ./scripts/list_sentry_issues.mjs",
     "test": "node --test test/*.test.mjs",
-    "dev": "pnpm run prepare && next dev",
+    "dev": "pnpm run prepare && node scripts/dev-server.mjs next dev",
     "build": "pnpm run prepare && next build",
-    "start": "pnpm run prepare && next start"
+    "start": "pnpm run prepare && node scripts/dev-server.mjs next start"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.46.0",

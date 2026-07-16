@@ -9,4 +9,5 @@ Repo notes for coding agents working in `scummweb`.
 - In this repo, when the user says `deploy`, treat it as a production deploy by default unless they explicitly ask for preview.
 - Main verification path: `./scripts/verify_scummvm_web.sh`. It requires a local Chrome or Chromium install.
 - Whenever browser testing is needed, prefer direct `js_repl` with `scripts/playwright_headless_repl.mjs` so Playwright stays headless by default. Only use a visible/headed browser path when the task explicitly requires OS-level or visually interactive debugging.
+- For agent-native gameplay that must not use OpenRouter or image segmentation, use `.codex/skills/scummweb-play-game-agent-only/SKILL.md`.
 - Avoid deleting unrelated worktree changes. This repo often has large generated-asset diffs in `public/` and `scummvm-shell/`.

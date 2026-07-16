@@ -62,3 +62,15 @@ test("getBundledGameLibrary normalizes skip-intro configs and keeps primary targ
   });
   assert.deepEqual(getGameStaticParams(library.games), [{ gameSlug: "beneath-a-steel-sky" }]);
 });
+
+test("getBundledGameLibrary places the declared primary game first", () => {
+  const library = getBundledGameLibrary({
+    primaryTarget: "sky",
+    games: [
+      { target: "queen", title: "Flight of the Amazon Queen" },
+      { target: "sky", title: "Beneath a Steel Sky" },
+    ],
+  });
+
+  assert.deepEqual(library.games.map((game) => game.target), ["sky", "queen"]);
+});

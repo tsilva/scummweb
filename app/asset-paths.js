@@ -49,7 +49,3 @@ export function buildVersionedAssetPath(assetPath, options = {}) {
 export function getVersionedSiteAssetPath(assetPath) {
   return buildVersionedAssetPath(assetPath);
 }
-
-export function getVersionedScummvmAssetPath(assetPath) {
-  return getVersionedSiteAssetPath(assetPath);
-}

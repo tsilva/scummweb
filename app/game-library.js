@@ -5,7 +5,6 @@ import { normalizeSkipIntroConfig } from "./skip-intro-config.mjs";
 
 export {
   buildVersionedAssetPath as buildVersionedSiteAssetPath,
-  getVersionedScummvmAssetPath,
   getVersionedSiteAssetPath,
   scummvmAssetVersion,
 } from "./asset-paths";
