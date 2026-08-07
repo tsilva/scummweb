@@ -1,0 +1,23 @@
+# Credential references only. Store values with `keyenv set ENV_NAME`.
+[keyenv]
+version = 1
+
+[secrets.AWS_ACCESS_KEY_ID]
+account = "scummweb/AWS_ACCESS_KEY_ID"
+required = true
+
+[secrets.AWS_SECRET_ACCESS_KEY]
+account = "scummweb/AWS_SECRET_ACCESS_KEY"
+required = true
+
+[secrets.BUCKET_DSN]
+account = "scummweb/BUCKET_DSN"
+required = true
+
+[secrets.OPENROUTER_API_KEY]
+account = "scummweb/OPENROUTER_API_KEY"
+required = true
+
+[secrets.SENTRY_AUTH_TOKEN]
+account = "scummweb/SENTRY_AUTH_TOKEN"
+required = true
