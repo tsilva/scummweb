@@ -1,5 +1,6 @@
 import { Inter, Space_Grotesk } from "next/font/google";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 import { GOOGLE_ANALYTICS_ID } from "../lib/site-config.mjs";
 import { getVersionedSiteAssetPath } from "./asset-paths";
 import { APP_THEME_COLOR, HOME_DESCRIPTION, HOME_TITLE, SITE_NAME } from "./seo";
@@ -79,6 +80,7 @@ export default function RootLayout({ children }) {
           `}
         </Script>
         {children}
+        <Analytics />
       </body>
     </html>
   );
