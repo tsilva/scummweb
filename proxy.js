@@ -5,7 +5,7 @@ const { isVersionedAsset } = assetConfig;
 const immutableCacheControl = "public, max-age=31536000, immutable";
 const revalidateCacheControl = "public, max-age=0, must-revalidate";
 
-export function middleware(request) {
+export function proxy(request) {
   const { pathname, searchParams } = request.nextUrl;
   const response = NextResponse.next();
 
