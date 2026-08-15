@@ -20,8 +20,9 @@ export function generateStaticParams() {
   return getGameStaticParams();
 }
 
-export function generateMetadata({ params }) {
-  const game = getPresentedGameBySlug(params.gameSlug);
+export async function generateMetadata({ params }) {
+  const { gameSlug } = await params;
+  const game = getPresentedGameBySlug(gameSlug);
 
   if (!game) {
     return {
@@ -32,9 +33,10 @@ export function generateMetadata({ params }) {
   return buildGameMetadata(game);
 }
 
-export default function GameLandingPage({ params }) {
+export default async function GameLandingPage({ params }) {
+  const { gameSlug } = await params;
   const shellData = getHomeShellData({
-    featuredGameSlug: params.gameSlug,
+    featuredGameSlug: gameSlug,
   });
 
   if (!shellData) {
