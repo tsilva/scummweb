@@ -11,3 +11,13 @@ Repo notes for coding agents working in `scummweb`.
 - Whenever browser testing is needed, prefer direct `js_repl` with `scripts/playwright_headless_repl.mjs` so Playwright stays headless by default. Only use a visible/headed browser path when the task explicitly requires OS-level or visually interactive debugging.
 - For agent-native gameplay that must not use OpenRouter or image segmentation, use `.codex/skills/scummweb-play-game-agent-only/SKILL.md`.
 - Avoid deleting unrelated worktree changes. This repo often has large generated-asset diffs in `public/` and `scummvm-shell/`.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
