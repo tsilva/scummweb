@@ -5,8 +5,9 @@ import {
 
 export const dynamic = "force-dynamic";
 
-export function GET(_request, { params }) {
-  return renderGameSocialCard(params.gameSlug);
+export async function GET(_request, { params }) {
+  const { gameSlug } = await params;
+  return renderGameSocialCard(gameSlug);
 }
 
 export function HEAD() {
