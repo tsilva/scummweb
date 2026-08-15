@@ -7,6 +7,7 @@ import {
 export { contentType, size };
 export const dynamic = "force-dynamic";
 
-export default function OpenGraphImage({ params }) {
-  return renderGameSocialCard(params.gameSlug);
+export default async function OpenGraphImage({ params }) {
+  const { gameSlug } = await params;
+  return renderGameSocialCard(gameSlug);
 }

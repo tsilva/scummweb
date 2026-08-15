@@ -14,8 +14,9 @@ export function generateStaticParams() {
   return getGameStaticParams();
 }
 
-export function generateMetadata({ params }) {
-  const game = getPresentedGameBySlug(params.gameSlug);
+export async function generateMetadata({ params }) {
+  const { gameSlug } = await params;
+  const game = getPresentedGameBySlug(gameSlug);
 
   if (!game) {
     return {
@@ -30,8 +31,9 @@ export function generateMetadata({ params }) {
   return buildPlayRouteMetadata(game);
 }
 
-export default function GamePlayRoutePage({ params }) {
-  const game = getPresentedGameBySlug(params.gameSlug);
+export default async function GamePlayRoutePage({ params }) {
+  const { gameSlug } = await params;
+  const game = getPresentedGameBySlug(gameSlug);
 
   if (!game) {
     notFound();
