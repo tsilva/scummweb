@@ -17,7 +17,7 @@
     "start": "pnpm run prepare && node scripts/dev-server.mjs next start"
   },
   "dependencies": {
-    "@sentry/nextjs": "^10.69.0",
+    "@sentry/nextjs": "^10.70.0",
     "@vercel/analytics": "1.6.1",
     "lucide-react": "^1.30.0",
     "next": "16.3.0",
