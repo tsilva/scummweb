@@ -92,7 +92,7 @@ function parseArgs(argv) {
 
 function loadEnvFile(filePath) {
   if (!fs.existsSync(filePath)) {
-    throw new Error(`Missing env file: ${filePath}`);
+    return {};
   }
 
   const raw = fs.readFileSync(filePath, "utf8");
@@ -131,7 +131,7 @@ function validateEnv(env) {
   const token = env.SENTRY_AUTH_TOKEN || "";
 
   if (!token) {
-    throw new Error("SENTRY_AUTH_TOKEN is required in the Sentry env file.");
+    throw new Error("SENTRY_AUTH_TOKEN is required. Use pnpm sentry:issues with Infisical.");
   }
 
   if (PLACEHOLDER_TOKENS.has(token)) {
@@ -183,8 +183,7 @@ async function fetchSentryJson(url, token) {
   });
 
   if (!response.ok) {
-    const body = await response.text();
-    throw new Error(`Sentry API request failed (${response.status}): ${body}`);
+    throw new Error(`Sentry API request failed (${response.status}); provider details suppressed.`);
   }
 
   return response.json();
@@ -198,7 +197,14 @@ async function main() {
     return;
   }
 
-  const env = loadEnvFile(options.envFile);
+  const env = {
+    SENTRY_ORG: "tsilva",
+    SENTRY_PROJECT: "scummweb",
+    SENTRY_BASE_URL: "https://sentry.io",
+    ...loadEnvFile(options.envFile),
+    ...process.env,
+    SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN ?? "",
+  };
   validateEnv(env);
 
   const humanBaseUrl = normalizeHumanBaseUrl(env.SENTRY_BASE_URL);

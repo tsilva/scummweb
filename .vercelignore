@@ -7,3 +7,15 @@ public/games
 progress.md
 tools
 vendor
+
+node_modules
+.next-dev-*
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+.codex
+.runs
+tmp

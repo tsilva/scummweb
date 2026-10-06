@@ -39,9 +39,9 @@ test("all formerly vulnerable runtime families resolve only to fixed versions", 
   const expected = new Map([
     ["@babel/core", new Set(["7.29.7"])],
     ["@opentelemetry/core", new Set(["2.10.0"])],
-    ["brace-expansion", new Set(["5.0.9"])],
-    ["fast-uri", new Set(["3.1.5"])],
-    ["nanoid", new Set(["3.3.18"])],
+    ["brace-expansion", new Set(["5.0.12"])],
+    ["fast-uri", new Set(["3.1.8"])],
+    ["nanoid", new Set(["3.3.19"])],
   ]);
 
   for (const [name, safeVersions] of expected) {

@@ -9,18 +9,24 @@
     "publish:games": "python3 ./scripts/upload_games_to_r2.py",
     "record:preview": "node ./scripts/record_preview_stream.mjs",
     "verify": "./scripts/verify_scummvm_web.sh",
-    "sentry:issues": "node ./scripts/list_sentry_issues.mjs",
+    "sentry:issues": "python3 scripts/infisical/run.py issues",
     "lint": "find app lib scripts test -type f \\( -name '*.js' -o -name '*.mjs' \\) -print0 | xargs -0 -n1 node --check",
     "test": "node --test test/*.test.mjs",
-    "dev": "pnpm run prepare && node scripts/dev-server.mjs next dev",
+    "dev": "python3 scripts/infisical/run.py dev",
     "build": "pnpm run prepare && next build",
-    "start": "pnpm run prepare && node scripts/dev-server.mjs next start"
+    "start": "pnpm run prepare && node scripts/dev-server.mjs next start",
+    "dev:app": "pnpm run prepare && node scripts/dev-server.mjs next dev",
+    "build:secrets": "python3 scripts/infisical/run.py build",
+    "secrets:check": "python3 scripts/infisical/run.py check",
+    "secrets:migrate:keyenv": "python3 scripts/infisical/migrate_keyenv.py",
+    "test:secrets": "python3 -m unittest discover -s scripts/infisical -p test_secrets.py",
+    "secrets:sync:production": "python3 scripts/infisical/sync_production.py"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.69.0",
     "@vercel/analytics": "1.6.1",
     "lucide-react": "^1.30.0",
-    "next": "16.3.0",
+    "next": "16.3.6",
     "playwright-core": "1.62.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
