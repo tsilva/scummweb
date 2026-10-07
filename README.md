@@ -1,10 +1,12 @@
-<div align="center">
+<p align="center">
   <img src="scummvm-shell/logo-nav.png" alt="ScummWEB" width="320" />
+  <br />
+  <!-- repo-tagline:start -->
+  <strong>🕹️ Classic point-and-click adventures, playable instantly in your browser 🕹️</strong>
+  <!-- repo-tagline:end -->
+</p>
 
-  **🕹️ Classic point-and-click adventures, playable instantly in your browser 🕹️**
-
-  [Live Demo](https://scummweb.tsilva.eu)
-</div>
+[Live Demo](https://scummweb.tsilva.eu)
 
 ScummWEB is a Next.js launcher for a curated ScummVM WebAssembly game collection. It builds static catalog pages, game detail pages, metadata routes, and a browser player that embeds the managed ScummVM shell.
 
