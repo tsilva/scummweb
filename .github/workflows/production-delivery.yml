@@ -1,4 +1,4 @@
-name: Production secret delivery
+name: Production delivery
 
 on:
   push:
@@ -13,8 +13,29 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  checks:
+    name: Test delivery boundaries and wait for CI
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Check out the exact main commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Test delivery boundaries without credentials
+        run: python3 -m unittest discover -s .github/scripts -p test_production_delivery.py
+      - name: Wait for this commit's CI
+        run: python3 .github/scripts/production_delivery.py check
+        env:
+          GH_TOKEN: ${{ github.token }}
+
   sync:
-    name: Sync Infisical production credential
+    name: Sync allowlisted Infisical production keys
+    needs: checks
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
@@ -28,9 +49,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Test delivery boundaries without credentials
-        run: python3 -m unittest discover -s .github/scripts -p test_production_delivery.py
-      - name: Sync the fixed production credential
+      - name: Sync the pinned production keys
         run: python3 .github/scripts/production_delivery.py sync
         env:
           GH_TOKEN: ${{ github.token }}
@@ -41,7 +60,7 @@ jobs:
     needs: sync
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
-    timeout-minutes: 55
+    timeout-minutes: 30
     environment: Production
     permissions:
       contents: read

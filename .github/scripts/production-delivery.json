@@ -3,7 +3,14 @@
   "githubRepositoryId": 1194484994,
   "identityId": "672c01c3-c025-40f9-b89b-5abcc03e8261",
   "infisicalProjectId": "4a62d836-fb3e-4b90-ad02-403cef183dc2",
-  "secretName": "SENTRY_AUTH_TOKEN",
+  "secretNames": [
+    "NEXT_PUBLIC_SENTRY_DSN",
+    "SENTRY_AUTH_TOKEN",
+    "SENTRY_DSN",
+    "SENTRY_ORG",
+    "SENTRY_PROJECT",
+    "SENTRY_SMOKE_TEST_TOKEN"
+  ],
   "destination": "vercel",
   "vercelProjectId": "prj_I5MH0YVxKnamBHxfmq46QAVANJkt",
   "vercelProjectName": "scummweb",
