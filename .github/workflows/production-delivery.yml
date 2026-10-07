@@ -13,7 +13,12 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  secrets:
+    name: Check committed secrets before production delivery
+    uses: ./.github/workflows/secret-scanning.yml
+
   checks:
+    needs: secrets
     name: Test delivery boundaries and wait for CI
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
