@@ -1,0 +1,82 @@
+name: Production delivery
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-secret-delivery
+  cancel-in-progress: false
+
+jobs:
+  secrets:
+    name: Check committed secrets before production delivery
+    uses: ./.github/workflows/secret-scanning.yml
+
+  checks:
+    needs: secrets
+    name: Test delivery boundaries and wait for CI
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Check out the exact main commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Test delivery boundaries without credentials
+        run: python3 -m unittest discover -s .github/scripts -p test_production_delivery.py
+      - name: Wait for this commit's CI
+        run: python3 .github/scripts/production_delivery.py check
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+  sync:
+    name: Sync allowlisted Infisical production keys
+    needs: checks
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment: Production
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+    steps:
+      - name: Check out the exact main commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Sync the pinned production keys
+        run: python3 .github/scripts/production_delivery.py sync
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+  deploy:
+    name: Deploy synced commit after CI succeeds
+    needs: sync
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment: Production
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Check out the exact main commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Wait for CI and deploy the exact synced commit
+        run: python3 .github/scripts/production_delivery.py deploy
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

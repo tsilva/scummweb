@@ -1,0 +1,18 @@
+{
+  "repository": "tsilva/scummweb",
+  "githubRepositoryId": 1194484994,
+  "identityId": "672c01c3-c025-40f9-b89b-5abcc03e8261",
+  "infisicalProjectId": "4a62d836-fb3e-4b90-ad02-403cef183dc2",
+  "secretNames": [
+    "NEXT_PUBLIC_SENTRY_DSN",
+    "SENTRY_AUTH_TOKEN",
+    "SENTRY_DSN",
+    "SENTRY_ORG",
+    "SENTRY_PROJECT",
+    "SENTRY_SMOKE_TEST_TOKEN"
+  ],
+  "destination": "vercel",
+  "vercelProjectId": "prj_I5MH0YVxKnamBHxfmq46QAVANJkt",
+  "vercelProjectName": "scummweb",
+  "vercelTeamId": "team_eE2Iv7IMqPOx8ZVN2xNfR2f0"
+}

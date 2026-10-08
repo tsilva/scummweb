@@ -1,10 +1,12 @@
-<div align="center">
+<p align="center">
   <img src="scummvm-shell/logo-nav.png" alt="ScummWEB" width="320" />
+  <br />
+  <!-- repo-tagline:start -->
+  <strong>🕹️ Classic point-and-click adventures, playable instantly in your browser 🕹️</strong>
+  <!-- repo-tagline:end -->
+</p>
 
-  **🕹️ Classic point-and-click adventures, playable instantly in your browser 🕹️**
-
-  [Live Demo](https://scummweb.tsilva.eu)
-</div>
+[Live Demo](https://scummweb.tsilva.eu)
 
 ScummWEB is a Next.js launcher for a curated ScummVM WebAssembly game collection. It builds static catalog pages, game detail pages, metadata routes, and a browser player that embeds the managed ScummVM shell.
 
@@ -16,10 +18,10 @@ The app keeps the deployable shell in this repo, while large game payloads are u
 git clone https://github.com/tsilva/scummweb.git
 cd scummweb
 pnpm install
-pnpm run dev
+pnpm run dev --port auto
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open the URL printed by the server.
 
 ## Commands
 
@@ -48,14 +50,6 @@ pnpm run sentry:issues   # list recent Sentry issues from local env credentials
 - Sentry is optional. Runtime capture uses `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_DSN`, `NEXT_PUBLIC_SENTRY_ENABLED`, and the Sentry project settings in `next.config.js`.
 - `NEXT_PUBLIC_SITE_URL` controls public metadata, sitemap, robots, and Open Graph URLs.
 
-## Local credentials
-
-Private local values declared in `.keyenv.toml` live in macOS Keychain. Run
-`keyenv doctor` to verify them and launch credential-dependent commands with
-`keyenv run -- <command>`. Python, Node, and their child processes receive the
-values through their normal environment APIs. Keep only public or non-secret
-configuration in dotenv files.
-
 ## Architecture
 
 ![ScummWEB architecture diagram](./architecture.png)
@@ -63,3 +57,7 @@ configuration in dotenv files.
 ## License
 
 No repository-level license file is currently included.
+
+`pnpm sentry:issues -- --help` uses the managed development token. Private tokens in local Sentry env files are ignored.
+
+Production delivery runs on pushes to `main` and supports manual secret rotations. See [production delivery](docs/production-delivery.md) for destinations, access boundaries and failure behavior.
