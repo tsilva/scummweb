@@ -14,5 +14,11 @@
   "destination": "vercel",
   "vercelProjectId": "prj_I5MH0YVxKnamBHxfmq46QAVANJkt",
   "vercelProjectName": "scummweb",
-  "vercelTeamId": "team_eE2Iv7IMqPOx8ZVN2xNfR2f0"
+  "vercelTeamId": "team_eE2Iv7IMqPOx8ZVN2xNfR2f0",
+  "configNames": [
+    "NEXT_PUBLIC_SENTRY_DSN",
+    "SENTRY_DSN",
+    "SENTRY_ORG",
+    "SENTRY_PROJECT"
+  ]
 }

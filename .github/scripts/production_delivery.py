@@ -40,10 +40,21 @@ def request(method, url, token=None, payload=None):
         with urllib.request.build_opener(NoRedirect()).open(
             req, timeout=60
         ) as response:
+            if response.status == 204:
+                return {}
             return json.load(response)
     except urllib.error.HTTPError as error:
+        reason = "unclassified"
+        try:
+            detail = json.load(error).get("error", {}).get("message", "").lower()
+            if "production" in detail and "different value" in detail:
+                reason = "production-secret-reused"
+            elif "cannot change" in detail and "type" in detail:
+                reason = "secret-type-change"
+        except Exception:
+            pass
         raise DeliveryError(
-            f"Provider request failed (HTTP {error.code}); response suppressed."
+            f"Provider request failed (HTTP {error.code}, reason: {reason}); response suppressed."
         ) from None
     except DeliveryError:
         raise
@@ -196,42 +207,144 @@ def production_matches(items, key):
     return matches
 
 
+def config_names(config):
+    names = config.get("configNames", [])
+    allowed = {
+        "ASSET_RETENTION_SECONDS",
+        "OPENROUTER_APP_NAME",
+        "OPENROUTER_MODEL",
+        "OPENROUTER_SITE_URL",
+        "R2_ACCOUNT_ID",
+        "R2_BUCKET_NAME",
+        "R2_ENDPOINT",
+        "R2_OBJECT_PREFIX",
+        "SENTRY_BASE_URL",
+        "SENTRY_DSN",
+        "SENTRY_ENVIRONMENT",
+        "SENTRY_ORG",
+        "SENTRY_PROJECT",
+        "SENTRY_TRACES_SAMPLE_RATE",
+    }
+    if (
+        not isinstance(names, list)
+        or any(not isinstance(name, str) for name in names)
+        or len(names) != len(set(names))
+        or any(name not in config["secretNames"] for name in names)
+        or any(
+            name not in allowed
+            and not name.startswith(("NEXT_PUBLIC_", "PUBLIC_", "VITE_"))
+            for name in names
+        )
+    ):
+        raise DeliveryError("Invalid pinned public configuration allowlist; no writes.")
+    return set(names)
+
+
+def confirmed_variable(result, key):
+    if result.get("failed"):
+        # Emit only fixed codes; provider messages and arbitrary codes can contain credentials.
+        known = {
+            "bad_request",
+            "forbidden",
+            "not_found",
+            "env_already_exists",
+            "env_value_invalid_length",
+        }
+        failures = result["failed"] if isinstance(result["failed"], list) else []
+        codes = []
+        for failure in failures:
+            error = failure.get("error", {}) if isinstance(failure, dict) else {}
+            code = error.get("code") if isinstance(error, dict) else None
+            if code in known:
+                codes.append(code)
+        reason = ", ".join(codes) or "unclassified"
+        raise DeliveryError(
+            f"Vercel rejected Production key {key} (code: {reason}); inspect its environment separation. "
+            "Provider response suppressed."
+        )
+    created = result.get("created")
+    if isinstance(created, list):
+        created = created[0] if len(created) == 1 else None
+    if not isinstance(created, dict) or created.get("key") != key:
+        raise DeliveryError(
+            f"Vercel did not confirm Production key {key}; response suppressed."
+        )
+    return created
+
+
 def sync_vercel(config, values):
+    public = config_names(config)
+    if set(values) != set(config["secretNames"]):
+        raise DeliveryError(
+            "Source values do not match the pinned allowlist; no writes."
+        )
     verify_vercel(config)
     path = "/v10/projects/" + config["vercelProjectId"] + "/env"
     before = vercel_request(config, "GET", path)["envs"]
-    # Validate every target before writing any key.
+    existing = {}
+    # Validate every destination and migration before writing any key.
     for key in values:
-        production_matches(before, key)
+        matches = production_matches(before, key)
+        if matches:
+            row = matches[0]
+            if not isinstance(row.get("id"), str) or not row["id"]:
+                raise DeliveryError(
+                    "Production variable identifier is missing; no writes."
+                )
+            if row.get("customEnvironmentIds") or row.get("configurationId"):
+                raise DeliveryError(
+                    "Managed or custom-environment variable requires review; no writes."
+                )
+            existing[key] = row
     for key, value in values.items():
-        result = vercel_request(
-            config,
-            "POST",
-            path + "?upsert=true",
-            {
-                "key": key,
-                "value": value,
-                "type": "sensitive",
-                "target": ["production"],
-                "comment": "Managed from Infisical by GitHub production-delivery; no deletions",
-            },
-        )
-        created = result.get("created", {})
-        if (
-            result.get("failed")
-            or not isinstance(created, dict)
-            or created.get("key") != key
-        ):
-            raise DeliveryError(
-                "Vercel did not confirm the production write; response suppressed."
+        print(f"Syncing Vercel Production key {key}.", flush=True)
+        is_config = key in public
+        kind = "encrypted" if is_config else "sensitive"
+        visibility = "config" if is_config else "secret"
+        payload = {
+            "key": key,
+            "value": value,
+            "type": kind,
+            "visibility": visibility,
+            "target": ["production"],
+            "comment": "Managed from Infisical by GitHub production-delivery",
+        }
+        row = existing.get(key)
+        if row:
+            env_path = (
+                "/v9/projects/"
+                + config["vercelProjectId"]
+                + "/env/"
+                + urllib.parse.quote(row["id"], safe="")
             )
+            was_secret = row.get("visibility") == "secret" or (
+                row.get("visibility") != "config" and row.get("type") == "sensitive"
+            )
+            if is_config and was_secret:
+                # Vercel forbids Secret -> Config in place. Replace only this
+                # explicitly classified Production row, using the loaded source.
+                vercel_request(config, "DELETE", env_path)
+                result = vercel_request(config, "POST", path, payload)
+            else:
+                # Supplying key would rename a Secret; preserve key and targets.
+                update = {
+                    k: v for k, v in payload.items() if k not in ("key", "target")
+                }
+                result = {"created": vercel_request(config, "PATCH", env_path, update)}
+        else:
+            result = vercel_request(config, "POST", path, payload)
+        created = confirmed_variable(result, key)
         matches = production_matches(vercel_request(config, "GET", path)["envs"], key)
         if (
             len(matches) != 1
-            or matches[0].get("id") != created.get("id")
-            or matches[0].get("type") != "sensitive"
+            or not created.get("id")
+            or matches[0].get("id") != created["id"]
+            or matches[0].get("type") != kind
+            or matches[0].get("visibility", visibility) != visibility
         ):
-            raise DeliveryError("Vercel secret metadata verification failed.")
+            raise DeliveryError(
+                f"Vercel Production metadata verification failed for {key}."
+            )
 
 
 def cloudflare_request(config, method, suffix, payload=None):
