@@ -61,3 +61,5 @@ No repository-level license file is currently included.
 `pnpm sentry:issues -- --help` uses the managed development token. Private tokens in local Sentry env files are ignored.
 
 Production delivery runs on pushes to `main` and supports manual secret rotations. See [production delivery](docs/production-delivery.md) for destinations, access boundaries and failure behavior.
+
+Production delivery keeps Vercel secret isolation enabled and distinguishes public configuration from private credentials; see [production delivery](docs/production-delivery.md).
