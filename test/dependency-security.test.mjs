@@ -40,7 +40,7 @@ test("all formerly vulnerable runtime families resolve only to fixed versions", 
     ["@babel/core", new Set(["7.29.7"])],
     ["@opentelemetry/core", new Set(["2.10.0"])],
     ["brace-expansion", new Set(["5.0.12"])],
-    ["fast-uri", new Set(["3.1.8"])],
+    ["fast-uri", new Set(["3.1.9"])],
     ["nanoid", new Set(["3.3.19"])],
   ]);
 
