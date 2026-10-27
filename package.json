@@ -23,10 +23,10 @@
     "secrets:sync:production": "python3 scripts/infisical/sync_production.py"
   },
   "dependencies": {
-    "@sentry/nextjs": "10.70.0",
+    "@sentry/nextjs": "10.75.2",
     "@vercel/analytics": "2.0.1",
     "lucide-react": "1.55.0",
-    "next": "16.3.8",
+    "next": "16.4.1",
     "playwright-core": "1.62.1",
     "react": "19.2.8",
     "react-dom": "19.2.8"
