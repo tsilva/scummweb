@@ -633,12 +633,12 @@ button.nav-icon-link {
   padding: 0 2.4rem 2.5rem;
 }
 
-.game-detail-modal.is-open .game-detail-visual {
+.game-detail-modal:is(.is-open, [data-game-target="monkey-demo"]) .game-detail-visual {
   display: flex;
   align-items: flex-end;
 }
 
-.game-detail-modal.is-open .game-detail-visual-copy {
+.game-detail-modal:is(.is-open, [data-game-target="monkey-demo"]) .game-detail-visual-copy {
   position: relative;
   inset: auto;
   padding-top: 3.5rem;
@@ -800,16 +800,16 @@ button.nav-icon-link {
   object-fit: cover;
 }
 
-.game-detail-modal.is-open .game-detail-shot {
+.game-detail-modal:is(.is-open, [data-game-target="monkey-demo"]) .game-detail-shot {
   aspect-ratio: 4 / 3;
   min-height: 0;
 }
 
-.game-detail-modal.is-open .game-detail-shot::after {
+.game-detail-modal:is(.is-open, [data-game-target="monkey-demo"]) .game-detail-shot::after {
   content: none;
 }
 
-.game-detail-modal.is-open .game-detail-shot-image {
+.game-detail-modal:is(.is-open, [data-game-target="monkey-demo"]) .game-detail-shot-image {
   object-fit: contain;
 }
 
@@ -968,13 +968,6 @@ button.nav-icon-link {
   background: radial-gradient(circle, #654730, #241a16 70%);
   color: #ffe1a9;
   font-size: 4rem;
-}
-
-.bucket-poster-caption {
-  display: block;
-  padding: 0.65rem 0.5rem;
-  color: var(--accent-strong);
-  font-size: 0.85rem;
 }
 
 .poster-media {
@@ -1346,14 +1339,4 @@ button.nav-icon-link {
 
 .local-game-status:empty {
   margin: 0;
-}
-
-.local-game-player {
-  display: block;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  max-height: 80vh;
-  margin-top: 1rem;
-  border: 0;
-  background: #000;
 }

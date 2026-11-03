@@ -56,6 +56,16 @@
       }
     },
     {
+      "target": "monkey-demo",
+      "title": "The Secret of Monkey Island (Demo)",
+      "path": "/games/monkey",
+      "engineId": "scumm",
+      "gameId": "monkey",
+      "platform": "pc",
+      "extra": "EGA Demo",
+      "readmeHref": "https://scummvm-games.tsilva.eu/monkey/readme"
+    },
+    {
       "target": "nippon-amiga",
       "title": "Nippon Safes, Inc. (Multi-lingual/Amiga)",
       "path": "/games/nippon",

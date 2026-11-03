@@ -29,9 +29,6 @@ export default function LibraryCards({ games, bucketTargets = [] }) {
             >
               {poster}
             </a>
-            {!game.href && (
-              <span className="bucket-poster-caption">{game.edition} · From your bucket</span>
-            )}
           </div>
         );
       })}

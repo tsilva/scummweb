@@ -115,7 +115,15 @@ function focusGameCanvas(frame) {
   }
 }
 
-export default function GameRouteFrame({ game = null, src, target, title, skipIntro: intro = null, loadArchive }) {
+export default function GameRouteFrame({
+  game = null,
+  src,
+  target,
+  title,
+  skipIntro: intro = null,
+  loadArchive,
+  archiveLoadingText = "Downloading game ZIP…",
+}) {
   const shellRef = useRef(null);
   const frameRef = useRef(null);
   const archiveFiles = useRef(null);
@@ -174,7 +182,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
 
     const archiveBootTimer = loadArchive && frameSrc ? window.setTimeout(() => {
       archiveFiles.current = null;
-      setArchiveError("ScummVM took too long to start. Reload this page to try again.");
+      setArchiveError("ScummVM took too long to start. Exit the player and try again.");
     }, 90000) : null;
 
     function navigateHome(href = "/") {
@@ -198,9 +206,10 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
           if (event.data.status === "running") {
             setReadySignal({ reason: "archive-running" });
           } else {
+            archiveFiles.current = null;
             setArchiveError(event.data.status === "undetected"
-              ? "ScummVM could not detect a supported game in this ZIP."
-              : "ScummVM could not start this game. Reload this page to try again.");
+              ? "ScummVM could not detect a supported game. Check that the ZIP contains its game data."
+              : "ScummVM could not start this game. Check that the ZIP contains the complete game data.");
           }
           return;
         }
@@ -516,7 +525,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     <div className="game-route-shell" ref={shellRef}>
       <GameBootOverlay
         bootProgressPercent={bootProgressPercent}
-        bootStatusText={archiveError || (loadArchive && !frameSrc ? "Downloading game ZIP…" : bootState.bootStatusText)}
+        bootStatusText={archiveError || (loadArchive && !frameSrc ? archiveLoadingText : bootState.bootStatusText)}
         game={game}
         hasBootFailed={hasBootFailed}
         onSkipIntro={handleSkipIntroClick}
@@ -557,7 +566,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
         onPointerUp={touchCursorPad.handlePointerUp}
         showTouchCursorPad={showTouchCursorPad}
       />
-      {frameSrc ? <iframe
+      {frameSrc && !archiveError ? <iframe
         key={loadArchive ? frameSrc : undefined}
         allow="autoplay; fullscreen"
         className="game-route-frame"
