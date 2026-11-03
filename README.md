@@ -34,10 +34,12 @@ When the opening scene appears, you’re ready to play. For more games,
   from your ScummWEB site. If the host blocks access, download the ZIP
   yourself and drop it onto the homepage.
 
-After adding games, the library scrolls smoothly to the first new poster. New posters
-briefly brighten and show color as they come into view.
-To remove an imported game, hover over its poster and select the **×** in the
-top-left corner. The button also appears when it receives keyboard focus and
+The drop overlay shows import progress and explains which files were skipped.
+Scroll inside the dialog to review a large batch. When processing finishes,
+select **Confirm** to close it. The library then scrolls to the first new
+poster. New posters briefly brighten and show color as they come into view.
+To remove an imported game, hover over its poster and select the pink **×**
+on the top-left edge. The button also appears when it receives keyboard focus and
 stays visible on touch-only devices.
 
 Put one game per ZIP, with its files at the root or in a single enclosing

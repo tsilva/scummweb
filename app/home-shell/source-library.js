@@ -41,6 +41,7 @@ export default function SourceLibrary({ catalog, officialUrl }) {
   const revealObserver = useRef(null);
   const working = useRef(false);
   const [pending, setPending] = useState([]);
+  const [importResult, setImportResult] = useState(null);
   const fileInput = useRef(null);
   const folderInput = useRef(null);
   const replacingSource = useRef(null);
@@ -125,7 +126,7 @@ export default function SourceLibrary({ catalog, officialUrl }) {
     setEntries((current) => current.filter(({ source }) => !ids.has(source.id)));
   }
 
-  async function run(action) {
+  async function run(action, reportError = setNotice) {
     if (loading || working.current) return;
     working.current = true;
     setBusy(true);
@@ -133,7 +134,7 @@ export default function SourceLibrary({ catalog, officialUrl }) {
     try {
       await action();
     } catch (error) {
-      if (error?.name !== "AbortError") setNotice(error?.message || "Could not update your game library.");
+      if (error?.name !== "AbortError") reportError(error?.message || "Could not update your game library.");
     } finally {
       working.current = false;
       setBusy(false);
@@ -173,7 +174,6 @@ export default function SourceLibrary({ catalog, officialUrl }) {
     return run(async () => {
       const roots = typeof selection === "function" ? await selection() : selection;
       if (!roots.length) return;
-      if (!replacing) scrollToLibraryItem(document.getElementById("library"), "start");
       const known = new Map(entries.map(({ source }) => [source.id, source]));
       const errors = [];
       const savedIds = new Set();
@@ -219,13 +219,13 @@ export default function SourceLibrary({ catalog, officialUrl }) {
                   try {
                     await save(await prepareLocalZip(archive));
                   } catch (error) {
-                    errors.push(`${archive.name}: ${error.message}`);
+                    errors.push({ label: archive.name, message: error.message });
                   }
                 }
               }
             }
           } catch (error) {
-            errors.push(`${label}: ${error.message}`);
+            errors.push({ label, message: error.message });
           } finally {
             setPending((current) => current.filter((item) => item.index !== index));
           }
@@ -234,13 +234,16 @@ export default function SourceLibrary({ catalog, officialUrl }) {
         setPending([]);
       }
 
-      if (!replacing && savedIds.size) setAddedIds(savedIds);
-      const summary = replacing && savedIds.size ? "Game reconnected." : "";
-      const storage = temporary ? "Some entries could only be kept in this tab." : "";
-      const access = needsSelection ? "This browser may ask you to locate local files again after reload." : "";
-      const skipped = errors.length ? `${errors.length} ${errors.length === 1 ? "item skipped" : "items skipped"}. ${errors[0]}` : "";
-      setNotice([summary, storage, access, skipped].filter(Boolean).join(" "));
-    });
+      setImportResult({ savedIds, errors, replacing, temporary, needsSelection });
+    }, (message) => setImportResult({
+      savedIds: new Set(),
+      errors: [{ label: "Game files", message }],
+    }));
+  }
+
+  function confirmImport() {
+    if (!importResult.replacing && importResult.savedIds.size) setAddedIds(importResult.savedIds);
+    setImportResult(null);
   }
 
   function chooseZip(replacing = null) {
@@ -309,7 +312,7 @@ export default function SourceLibrary({ catalog, officialUrl }) {
     });
   }
 
-  const disabled = loading || busy;
+  const disabled = loading || busy || Boolean(importResult);
 
   return (
     <>
@@ -325,16 +328,10 @@ export default function SourceLibrary({ catalog, officialUrl }) {
           if (files.length) importRoots([selectedGameFolder(files)], replacingSource.current);
           event.target.value = "";
         }} />
-      <GameDropOverlay importRoots={importRoots} disabled={disabled} />
+      <GameDropOverlay importRoots={importRoots} disabled={disabled} pending={pending}
+        result={importResult} onConfirm={confirmImport} />
       <p className="local-game-status" role="status">{notice}</p>
       <LibraryCards games={catalog}>
-        {pending.map(({ index, label, message, value, total }) => (
-          <article key={`import-${index}`} className="poster-card game-import-card" aria-busy="true">
-            <strong>{label}</strong>
-            <span>{message}</span>
-            <progress aria-label={`Importing ${label}`} value={value} max={total} />
-          </article>
-        ))}
         {entries.map(({ source, status }) => {
           const game = catalog.find(({ target }) => target === source.target)
             ?? getImportedGamePresentation(source.kind === "folder" ? source.name + ".zip" : source.name);

@@ -1263,22 +1263,118 @@ button.nav-icon-link {
   font-size: clamp(1.15rem, 3vw, 1.6rem);
 }
 
-.game-import-card {
-  display: grid;
-  align-content: center;
-  gap: 0.75rem;
-  padding: 1rem;
-  border: 1px dashed var(--accent-strong);
+.game-import-dialog {
+  width: min(34rem, calc(100% - 2rem));
+  height: min(30rem, calc(100dvh - 2rem));
+  padding: clamp(1rem, 4vw, 1.75rem);
+  border: 1px solid var(--surface-highest);
+  border-radius: 0.75rem;
+  background: var(--surface-low);
+  color: var(--ink);
+  overflow: hidden;
   overflow-wrap: anywhere;
 }
 
-.game-import-card span {
+.game-import-dialog[open] {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.game-import-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.game-import-heading,
+.game-import-items li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.game-import-heading > svg,
+.game-import-items svg {
+  flex: none;
+}
+
+.game-import-heading,
+.game-import-confirm {
+  flex: none;
+}
+
+.game-import-heading > svg {
+  color: var(--accent-strong);
+}
+
+.game-import-heading > .game-import-warning {
+  color: #f5b44c;
+}
+
+.game-import-heading h2 {
+  margin: 0;
+  font-size: 1.45rem;
+}
+
+.game-import-dialog p {
+  margin: 0.3rem 0 0;
+  color: var(--ink-muted);
   font-size: 0.85rem;
 }
 
-.game-import-card progress {
+.game-import-details {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.game-import-details:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: -2px;
+}
+
+.game-import-items {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.game-import-items li {
+  padding: 0.75rem;
+  border: 1px solid var(--surface-highest);
+  border-radius: 0.5rem;
+  background: var(--surface-high);
+}
+
+.game-import-items li > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.game-import-items progress {
   width: 100%;
+  margin-top: 0.5rem;
   accent-color: var(--accent-strong);
+}
+
+.game-import-confirm {
+  display: block;
+  align-self: flex-end;
+  padding: 0.65rem 1.15rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: var(--accent-strong);
+  color: var(--surface-lowest);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.game-import-confirm:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
 }
 
 .local-game-status {
@@ -1315,38 +1411,43 @@ button.nav-icon-link {
   filter: grayscale(1);
 }
 
-.source-poster-hint,
-.source-poster-remove {
+.source-poster-hint {
   position: absolute;
   inset-block-start: 0.6rem;
-  background: var(--surface-lowest);
-  color: var(--ink);
-}
-
-.source-poster-hint {
   inset-inline: 3rem 0.6rem;
   width: fit-content;
   max-width: calc(100% - 3.6rem);
   padding: 0.3rem 0.5rem;
   border-radius: 0.35rem;
+  background: var(--surface-lowest);
+  color: var(--ink);
   font-size: 0.75rem;
 }
 
 .source-poster-remove {
-  inset-inline-start: 0.6rem;
+  position: absolute;
+  inset-block-start: -0.75rem;
+  inset-inline-start: -0.75rem;
   z-index: 2;
   display: grid;
   width: 2rem;
   height: 2rem;
   place-items: center;
   padding: 0;
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  border: 1px solid var(--surface-lowest);
   border-radius: 50%;
+  background: #ffc4ba;
+  color: #321610;
   cursor: pointer;
 }
 
 .source-poster-remove:hover {
-  background: var(--surface-highest);
+  background: #ffe0d9;
+}
+
+.source-poster-remove:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
 }
 
 @media (hover: hover) {
