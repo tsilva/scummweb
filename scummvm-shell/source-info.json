@@ -1,19 +1,19 @@
 {
-  "generated_at_utc": "2026-11-03T13:33:43.136242Z",
+  "generated_at_utc": "2026-11-03T15:12:51.896383Z",
   "project": {
     "name": "scummweb",
     "repository_url": "https://github.com/tsilva/scummweb",
-    "commit": "eadbf66ffc3c2841724ba5a2d754a05934fcc6a5",
-    "commit_url": "https://github.com/tsilva/scummweb/tree/eadbf66ffc3c2841724ba5a2d754a05934fcc6a5",
-    "archive_url": "https://github.com/tsilva/scummweb/archive/eadbf66ffc3c2841724ba5a2d754a05934fcc6a5.tar.gz",
+    "commit": "c4ebb087ef4eba958b716107fed58fccbdca599c",
+    "commit_url": "https://github.com/tsilva/scummweb/tree/c4ebb087ef4eba958b716107fed58fccbdca599c",
+    "archive_url": "https://github.com/tsilva/scummweb/archive/c4ebb087ef4eba958b716107fed58fccbdca599c.tar.gz",
     "dirty": true
   },
   "scummvm": {
     "repository_url": "https://github.com/scummvm/scummvm",
-    "version": "v2.9.1",
-    "commit": "9d9b9e93108a276c551aeffa390169ccc5148e15",
-    "commit_url": "https://github.com/scummvm/scummvm/tree/9d9b9e93108a276c551aeffa390169ccc5148e15",
-    "archive_url": "https://github.com/scummvm/scummvm/archive/9d9b9e93108a276c551aeffa390169ccc5148e15.tar.gz",
+    "version": "v2026.4.0",
+    "commit": "7d2709da5136866589f7602f5f5a7b17de03420e",
+    "commit_url": "https://github.com/scummvm/scummvm/tree/7d2709da5136866589f7602f5f5a7b17de03420e",
+    "archive_url": "https://github.com/scummvm/scummvm/archive/7d2709da5136866589f7602f5f5a7b17de03420e.tar.gz",
     "dirty": true
   },
   "local_docs": {

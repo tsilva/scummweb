@@ -1,0 +1,20 @@
+diff --git a/base/plugins.cpp b/base/plugins.cpp
+index b29ed060..a619a5be 100644
+--- a/base/plugins.cpp
++++ b/base/plugins.cpp
+@@ -813,6 +813,7 @@ const Plugin *PluginManager::findEnginePlugin(const Common::String &engineId) {
+ 			return plugin;
+ 	}
+ 
++	#if !defined(EMSCRIPTEN) || !defined(DYNAMIC_MODULES)
+ 	// We failed to find it using the engine ID. Scan the list of plugins
+ 	PluginMan.loadFirstPlugin();
+ 	do {
+@@ -823,6 +824,7 @@ const Plugin *PluginManager::findEnginePlugin(const Common::String &engineId) {
+ 			return plugin;
+ 		}
+ 	} while (PluginMan.loadNextPlugin());
++#endif
+ 
+ 	return nullptr;
+ }

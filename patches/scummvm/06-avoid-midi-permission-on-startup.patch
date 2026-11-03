@@ -1,0 +1,25 @@
+diff --git a/dists/emscripten/custom_shell-pre.js b/dists/emscripten/custom_shell-pre.js
+index c567e001..a13c28db 100644
+--- a/dists/emscripten/custom_shell-pre.js
++++ b/dists/emscripten/custom_shell-pre.js
+@@ -9,17 +9,6 @@ if (window.location.hash.length > 0) {
+     })
+ }
+ 
+-// MIDI support
+-var midiOutputMap;
+-if (!("requestMIDIAccess" in navigator)) {
+-	console.error("No MIDI support in your browser.");
+-} else {
+-	navigator
+-		.requestMIDIAccess({ sysex: true, software: true })
+-		.then((midiAccess) => {
+-			midiOutputMap = midiAccess.outputs;
+-			midiAccess.onstatechange = (e) => {
+-				midiOutputMap = e.target.outputs;
+-			};
+-		});
+-}
++// ScummWEB uses the built-in music drivers without requesting permission
++// to access the user's MIDI devices during game startup.
++var midiOutputMap = new Map();

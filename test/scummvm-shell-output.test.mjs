@@ -10,6 +10,31 @@ const bootStatePath = path.join(rootDir, "app", "game-player", "useBootState.js"
 const gameRouteFramePath = path.join(rootDir, "app", "game-route-frame.js");
 const gamePlayerControlsPath = path.join(rootDir, "app", "game-player", "GamePlayerControls.js");
 
+test("the managed data index includes every engine as a separate WebAssembly module", () => {
+  const dataDir = path.join(rootDir, "scummvm-shell", "data");
+  const index = JSON.parse(fs.readFileSync(path.join(dataDir, "index.json"), "utf8"));
+  const engines = ["drascula", "dreamweb", "lure", "parallaction", "queen", "scumm", "sky", "sword25"];
+  const pluginNames = engines.map((engine) => `lib${engine}.so`);
+
+  assert.deepEqual(Object.keys(index.plugins).sort(), pluginNames);
+  for (const name of pluginNames) {
+    const binary = fs.readFileSync(path.join(dataDir, "plugins", name));
+    assert.equal(index.plugins[name], binary.length, name);
+    assert.ok(
+      WebAssembly.Module.customSections(new WebAssembly.Module(binary), "dylink.0").length,
+      `${name} should be a dynamically linked module`
+    );
+  }
+});
+
+test("remote directories supply a numeric stat size to Emscripten", async () => {
+  const { ScummvmFS } = await import("../scummvm-shell/scummvm_fs.js");
+  const { getattr } = new ScummvmFS(null, { url: "/data", json: {} }).node_ops;
+
+  assert.equal(BigInt(getattr({ size: null }).size), 4096n);
+  assert.equal(BigInt(getattr({ size: 0 }).size), 0n);
+});
+
 test("managed shell keeps the log sink for detection but hides it from layout", () => {
   const shellHtml = fs.readFileSync(shellHtmlPath, "utf8");
 
@@ -76,12 +101,13 @@ test("mobile shell supports fill-screen canvas aspect mode", () => {
 test("managed ScummVM audio glue primes and sanitizes WebAudio output", () => {
   const shellJs = fs.readFileSync(shellJsPath, "utf8");
 
+  assert.match(shellJs, /SDL3\.audio_playback\.currentPlaybackBuffer=outputBuffer/);
   assert.match(shellJs, /outputBuffer\["getChannelData"\]\(channel\)\.fill\(0\)/);
   assert.match(shellJs, /if\(!Number\.isFinite\(sample\)\)\{sample=0;\+\+abnormalSamples\}/);
   assert.match(shellJs, /if\(abnormalSamples>\$1\*numChannels\/16\)/);
   assert.doesNotMatch(
     shellJs,
-    /channelData\[j\]=HEAPF32\[\$0\+\(j\*numChannels\+c<<2\)>>2\]/
+    /channelData\[j\]=HEAPF32\[buf\+\(j\*numChannels\+c\)\]/
   );
 });
 

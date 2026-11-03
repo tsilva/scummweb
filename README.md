@@ -32,7 +32,9 @@ stay in browser memory until you close the player or leave the page.
 Open **Settings** using the gear icon in the top-right bar to connect a public
 HTTPS R2 or S3 bucket. Upload one game per ZIP at the bucket root using the
 exact names in the filename glossary. Allow cross-origin `HEAD` and `GET` requests
-from your ScummWEB site. Select **Check bucket**, then **Use this bucket** to save
+from your ScummWEB site. Connect only game files you’re authorized to download
+and play. If you host the files, you also need permission to make them publicly
+available. Select **Check bucket**, then **Use this bucket** to save
 the URL and matches in this browser. The Library restores bucket cards from those
 saved matches when you return. Recheck the bucket after adding or removing ZIPs.
 
@@ -70,7 +72,7 @@ pnpm run sentry:issues   # list recent Sentry issues from local env credentials
 - For games that support loading a save at launch, **Continue** opens the most recent save in this browser. **Start from beginning** opens a fresh session. Nippon Safes and Broken Sword 2.5 load saves from their in-game menus.
 - Production game payloads are served from `SCUMMVM_GAMES_ORIGIN`; localhost can use `/games-proxy/*` for verification.
 - `pnpm run verify` runs `scripts/verify_scummvm_web.sh` and needs a local Chrome or Chromium install.
-- `pnpm run build:scummvm` clones or reuses `vendor/scummvm` at ScummVM `v2.9.1`, applies local patches, regenerates `dist/`, and syncs the shell back into `scummvm-shell/`.
+- ScummWEB bundles ScummVM **2026.4.0**. See [Rebuilding and upgrading ScummVM](#rebuilding-and-upgrading-scummvm) for the source pin, patch series, and build steps.
 - For an engine or shell rebuild using the existing catalog, run `SCUMMVM_REUSE_CATALOG=1 pnpm run build:scummvm`. This preserves the tracked game list and skips preparing game payloads and detecting the catalog.
 - Catalog games and local ZIPs share the ScummVM WebAssembly runtime. The runtime uses the catalog target or detects the game from the local files, then loads the matching engine from `data/plugins/`. The homepage loads the ZIP decoder when you choose a file.
 - The build includes detection for the bundled engines. Engine plugins are staged alongside the runtime with the managed shell assets. Keep them together when rebuilding or deploying so the runtime and its plugins come from the same build.
@@ -80,6 +82,39 @@ pnpm run sentry:issues   # list recent Sentry issues from local env credentials
 - `NEXT_PUBLIC_SITE_URL` controls public metadata, sitemap, robots, and Open Graph URLs.
 - The homepage hero rotates through the installed games. The ring around the pause control shows how long until the next game. Pausing freezes the countdown. Use the chevrons to choose a game. The Play button launches the game shown in the hero.
 - The library’s poster cards link to each game’s detail page. Browser-Playable Classics cards open quick-play dialogs. The sitemap lists the homepage and game detail pages. The player routes and standalone emulator send noindex directives.
+
+## Rebuilding and upgrading ScummVM
+
+`pnpm run build:scummvm` checks out the pinned release into
+`vendor/scummvm-<tag>/`, applies the ScummWEB patches, builds WebAssembly and
+its engine plugins, and syncs the deployable bundle from `dist/` into
+`scummvm-shell/`. The build checks that it produced a plugin for every enabled
+engine before syncing the bundle.
+
+1. Update the release tag, its upstream commit, and the matching Emscripten
+   SDK in [`scripts/scummvm-version.sh`](scripts/scummvm-version.sh).
+2. Run `pnpm run build:scummvm --prepare-source`. It verifies the checkout
+   against the pin and applies [`patches/scummvm/`](patches/scummvm/) in filename
+   order. If a patch fails, port its change against the new upstream source
+   and refresh the diff with `git diff HEAD -- <path>` from the vendor checkout.
+   A fully patched checkout can be reused. Keep personal edits outside it.
+3. Maintain the browser UI and filesystem in [`web-shell/`](web-shell/).
+   The build stages those templates with the asset version and game bucket
+   origin. They own BrowserFS save compatibility, the remote filesystem,
+   and the app's boot and input integration. The native filesystem patch
+   lets ScummVM see those mounts through its POSIX backend. The shell also
+   adapts BrowserFS operations and error codes to Emscripten 4.
+4. Run `SCUMMVM_REUSE_CATALOG=1 pnpm run build:scummvm` to rebuild with the
+   existing catalog. If the SDK changes the generated SDL audio glue, port
+   [`scripts/patch_scummvm_audio.py`](scripts/patch_scummvm_audio.py) and rebuild.
+   The audio patch must succeed before the tracked bundle is replaced.
+5. Run `pnpm test` and launch a catalog game and a local ZIP in Brave.
+   Check the first frame, audio, save and resume, and that the selected
+   engine is the only engine plugin downloaded.
+
+The shell uses a recursive HTTP index for each mounted filesystem. The build
+generates that index for the runtime data and for any locally extracted games.
+Existing published game indexes use the same format.
 
 ## Game launch analytics
 
@@ -99,6 +134,15 @@ within the same visit. The play timer pauses while the game reloads or the tab
 is hidden. A visit can report a failure and later recover. Leaving before
 the player reports an outcome appears as a drop-off in the funnel.
 Local ZIP and external bucket launches are outside this catalog funnel.
+
+The player fetches the catalog and engine data indexes in parallel while
+WebAssembly initializes. ZIP launches fetch only the engine data index.
+To diagnose a launch locally, inspect the iframe's User Timing marks in the
+browser's Performance panel. `scummweb:wasm-ready` marks the start of filesystem
+setup, `scummweb:index:games` and `scummweb:index:data` mark completion of each
+index fetch, and `scummweb:filesystems-ready` marks when ScummVM can start.
+`scummweb:first-game-frame` marks the first detected rendered frame for catalog
+launches. These marks use the iframe's navigation as their time origin.
 
 In GA4 Explorations, build a closed funnel from `game_launch_attempt` to
 `game_launch` to `game_play_milestone` to compare users at each step. For

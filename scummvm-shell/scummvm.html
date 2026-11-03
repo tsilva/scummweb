@@ -1,4 +1,57 @@
-<!doctypehtml><html lang=en-us><head><meta charset=utf-8><meta content="text/html; charset=utf-8"http-equiv=Content-Type><meta content="width=device-width,initial-scale=1,viewport-fit=cover"name=viewport><link href=manifest.json?v=dev rel=manifest><link href=scummvm-192.png?v=dev rel=apple-touch-icon><title>ScummWEB</title><style>body{margin:0;padding:none;background-color:#000}.emscripten{padding-right:0;margin-left:auto;margin-right:auto;display:block}textarea.emscripten{font-family:monospace;width:80%}#output{position:fixed;left:-10000px;top:0;width:1px!important;height:1px!important;padding:0;border:0;opacity:0;pointer-events:none;overflow:hidden;white-space:pre;z-index:-1}div.emscripten{text-align:center}div.emscripten_border{border:1px solid #000;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}canvas.emscripten{border:0 none;background:#000;position:absolute;top:50%;left:50%;margin:0;width:auto;height:100%;overflow:hidden;display:block;transform:translate(-50%,-50%)}canvas.emscripten.scummweb-fill-screen{width:100%;height:100%}#progress{top:0;left:0;height:10px;width:100%;overflow:hidden;display:block;position:absolute;z-index:2;border:0;background:#c60}#progress[hidden]{display:none!important}progress::-moz-progress-bar{background:#f6e08a}progress::-webkit-progress-value{background:#f6e08a}progress{color:#f6e08a}#status{position:absolute;bottom:5em;right:0;padding:5px;text-align:right;border-top-left-radius:1em;border-bottom-left-radius:1em;padding-left:1em;padding-right:1em;z-index:3;border:3px solid #000;border-right:none;background:#f6e08a;font:bold large/1.4 "Trebuchet MS",Verdana,Tahoma,Sans-Serif}#status.error{background:red}</style></head><body><div class=emscripten><progress hidden id=progress max=100 value=0></progress></div><div class=emscripten id=status>Downloading ScummVM...</div><div class=emscripten_border><canvas class=emscripten id=canvas oncontextmenu=event.preventDefault() tabindex=-1></canvas></div><textarea class=emscripten id=output rows=8></textarea><script src=https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js crossorigin=anonymous integrity="sha512-mz0EI+Ay1uIJP7rZEX8C/JlTAcHRIQ8Sny4vxmmj8MSzDJgG9NxxY2pUmOGv1lO7imFIFMyjjCzEXEywNgaUdQ=="></script><script type=module>(function(){const v=new URLSearchParams(window.location.search).get("v");const moduleUrl=v?`./scummvm_fs.js?v=${encodeURIComponent(v)}`:"./scummvm_fs.js";window.ScummvmFSReady=import(moduleUrl).then(({ScummvmFS})=>{window.ScummvmFS=ScummvmFS})})();</script><script>var statusElement=document.getElementById("status"),progressElement=document.getElementById("progress");function loadingDoneMessage(){return document.getElementById("progress").style.zIndex=0,window.__scummwebSetReadyStatePhase?window.__scummwebSetReadyStatePhase("runtime-ready","runtime-ready"):window.__scummwebPendingReadyStatePhase={state:"runtime-ready",reason:"runtime-ready"},"All downloads complete."}function decodeInode(e){_readUInt16LE=function(e,t){return e[t>>>=0]|e[t+1]<<8},_readUInt32LE=function(e,t){return(e[t]|e[t+1]<<8|e[t+2]<<16)+16777216*e[t+3]};for(var t=window.atob(e),n=new Uint8Array(t.length),o=0;o<t.length;o++)n[o]=t.charCodeAt(o);return{id:t.substr(30),size:_readUInt32LE(n,0),mode:_readUInt16LE(n,4),atime:0,mtime:0,ctime:0}}function encodeInode(e,t,n,o,i,r){_writeUInt16LE=function(e,t,n){return t=+t,e[n>>>=0]=255&t,e[n+1]=t>>>8,n+2},_writeUInt32LE=function(e,t,n){return t=+t,e[(n>>>=0)+3]=t>>>24,e[n+2]=t>>>16,e[n+1]=t>>>8,e[n]=255&t,n+4};var s=new Uint8Array(30+e.length);_writeUInt32LE(s,t,0),_writeUInt16LE(s,n,4);for(var a=0;a<e.length;a++)s[30+a]=e.charCodeAt(a);var l="";for(a=0;a<s.length;a++)l+=String.fromCharCode(s[a]);return btoa(l)}function setupDefaultLocalData(){return null===localStorage.getItem("/")?fetch((()=>{const e=new URL("scummvm.ini",window.location.href),t=new URLSearchParams(window.location.search).get("v");return t&&e.searchParams.set("v",t),e.toString()})()).then((e=>e.text().then((function(e){for(key in ini_data=btoa(e),folder_inode_id="b3da6754-64c0-40f0-92ad-83b6ca6ffec9",folder_inode={id:folder_inode_id,size:4096,mode:16895},ini_inode_id="1b4a97d1-4ce0-417f-985c-e0f22ca21aef",ini_inode={id:ini_inode_id,size:atob(ini_data).length,mode:33206},folder_entry_id="70879b79-8d58-400c-8143-332242320b34",folder_listing={"scummvm.ini":folder_entry_id},defaultLocalStorage={},defaultLocalStorage["/"]=encodeInode(folder_inode.id,folder_inode.size,folder_inode.mode,0,0,0),defaultLocalStorage[folder_inode_id]=btoa(JSON.stringify(folder_listing)),defaultLocalStorage[folder_entry_id]=encodeInode(ini_inode.id,ini_inode.size,ini_inode.mode,0,0,0),defaultLocalStorage[ini_inode_id]=ini_data,defaultLocalStorage)localStorage.setItem(key,defaultLocalStorage[key])})))):Promise.resolve()}function setupLocalFilesystem(){return setupDefaultLocalData().then((()=>new Promise(((e,t)=>{BrowserFS.FileSystem.LocalStorage.Create((function(n,o){if(n)return t(n);BrowserFS.FileSystem.MountableFileSystem.Create({"/":o},(function(n,o){if(n)return t(n);BrowserFS.initialize(o);var i=new BrowserFS.EmscriptenFS(void 0,void 0,{EPERM:1,ENOENT:2,EINVAL:22},void 0);return FS.mount(i,{root:"/"},"/home/web_user"),e()}))}))}))))}function setupHTTPFilesystem(e){FS.mkdir("/"+e),FS.mount(new ScummvmFS(FS,e),{},"/"+e+"/")}const skipIntroTarget = new URLSearchParams(window.location.search).get("skipIntroTarget");
+<!doctypehtml><html lang=en-us><head><meta charset=utf-8><meta content="text/html; charset=utf-8"http-equiv=Content-Type><meta content="width=device-width,initial-scale=1,viewport-fit=cover"name=viewport><link href=manifest.json?v=dev rel=manifest><link href=scummvm-192.png?v=dev rel=apple-touch-icon><title>ScummWEB</title><style>body{margin:0;padding:none;background-color:#000}.emscripten{padding-right:0;margin-left:auto;margin-right:auto;display:block}textarea.emscripten{font-family:monospace;width:80%}#output{position:fixed;left:-10000px;top:0;width:1px!important;height:1px!important;padding:0;border:0;opacity:0;pointer-events:none;overflow:hidden;white-space:pre;z-index:-1}div.emscripten{text-align:center}div.emscripten_border{border:1px solid #000;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}canvas.emscripten{border:0 none;background:#000;position:absolute;top:50%;left:50%;margin:0;width:auto;height:100%;overflow:hidden;display:block;transform:translate(-50%,-50%)}canvas.emscripten.scummweb-fill-screen{width:100%;height:100%}#progress{top:0;left:0;height:10px;width:100%;overflow:hidden;display:block;position:absolute;z-index:2;border:0;background:#c60}#progress[hidden]{display:none!important}progress::-moz-progress-bar{background:#f6e08a}progress::-webkit-progress-value{background:#f6e08a}progress{color:#f6e08a}#status{position:absolute;bottom:5em;right:0;padding:5px;text-align:right;border-top-left-radius:1em;border-bottom-left-radius:1em;padding-left:1em;padding-right:1em;z-index:3;border:3px solid #000;border-right:none;background:#f6e08a;font:bold large/1.4 "Trebuchet MS",Verdana,Tahoma,Sans-Serif}#status.error{background:red}</style></head><body><div class=emscripten><progress hidden id=progress max=100 value=0></progress></div><div class=emscripten id=status>Downloading ScummVM...</div><div class=emscripten_border><canvas class=emscripten id=canvas oncontextmenu=event.preventDefault() tabindex=-1></canvas></div><textarea class=emscripten id=output rows=8></textarea><script src=https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js crossorigin=anonymous integrity="sha512-mz0EI+Ay1uIJP7rZEX8C/JlTAcHRIQ8Sny4vxmmj8MSzDJgG9NxxY2pUmOGv1lO7imFIFMyjjCzEXEywNgaUdQ=="></script><script>
+window.ScummvmFSReady = (async () => {
+  const params = new URLSearchParams(window.location.search);
+  const moduleUrl = new URL("./scummvm_fs.js", window.location.href);
+  if (params.has("v")) moduleUrl.searchParams.set("v", params.get("v"));
+  const { ScummvmFS, loadFilesystemIndex } = await import(moduleUrl);
+  const isLocalGame = window.parent !== window && params.get("localGame") === "1";
+  const mounts = isLocalGame ? ["data"] : ["games", "data"];
+  const filesystems = await Promise.all(mounts.map(async (name) => {
+    const index = await loadFilesystemIndex(name);
+    performance.mark(`scummweb:index:${name}`);
+    return { name, index };
+  }));
+  return { ScummvmFS, filesystems };
+})();
+// Observe early failures here and let setupFilesystem handle them when Wasm is ready.
+window.ScummvmFSReady.catch(() => {});
+</script><script>var statusElement=document.getElementById("status"),progressElement=document.getElementById("progress");function loadingDoneMessage(){return document.getElementById("progress").style.zIndex=0,window.__scummwebSetReadyStatePhase?window.__scummwebSetReadyStatePhase("runtime-ready","runtime-ready"):window.__scummwebPendingReadyStatePhase={state:"runtime-ready",reason:"runtime-ready"},"All downloads complete."}function decodeInode(e){_readUInt16LE=function(e,t){return e[t>>>=0]|e[t+1]<<8},_readUInt32LE=function(e,t){return(e[t]|e[t+1]<<8|e[t+2]<<16)+16777216*e[t+3]};for(var t=window.atob(e),n=new Uint8Array(t.length),o=0;o<t.length;o++)n[o]=t.charCodeAt(o);return{id:t.substr(30),size:_readUInt32LE(n,0),mode:_readUInt16LE(n,4),atime:0,mtime:0,ctime:0}}function encodeInode(e,t,n,o,i,r){_writeUInt16LE=function(e,t,n){return t=+t,e[n>>>=0]=255&t,e[n+1]=t>>>8,n+2},_writeUInt32LE=function(e,t,n){return t=+t,e[(n>>>=0)+3]=t>>>24,e[n+2]=t>>>16,e[n+1]=t>>>8,e[n]=255&t,n+4};var s=new Uint8Array(30+e.length);_writeUInt32LE(s,t,0),_writeUInt16LE(s,n,4);for(var a=0;a<e.length;a++)s[30+a]=e.charCodeAt(a);var l="";for(a=0;a<s.length;a++)l+=String.fromCharCode(s[a]);return btoa(l)}function setupDefaultLocalData(){return null===localStorage.getItem("/")?fetch((()=>{const e=new URL("scummvm.ini",window.location.href),t=new URLSearchParams(window.location.search).get("v");return t&&e.searchParams.set("v",t),e.toString()})()).then((e=>e.text().then((function(e){for(key in ini_data=btoa(e),folder_inode_id="b3da6754-64c0-40f0-92ad-83b6ca6ffec9",folder_inode={id:folder_inode_id,size:4096,mode:16895},ini_inode_id="1b4a97d1-4ce0-417f-985c-e0f22ca21aef",ini_inode={id:ini_inode_id,size:atob(ini_data).length,mode:33206},folder_entry_id="70879b79-8d58-400c-8143-332242320b34",folder_listing={"scummvm.ini":folder_entry_id},defaultLocalStorage={},defaultLocalStorage["/"]=encodeInode(folder_inode.id,folder_inode.size,folder_inode.mode,0,0,0),defaultLocalStorage[folder_inode_id]=btoa(JSON.stringify(folder_listing)),defaultLocalStorage[folder_entry_id]=encodeInode(ini_inode.id,ini_inode.size,ini_inode.mode,0,0,0),defaultLocalStorage[ini_inode_id]=ini_data,defaultLocalStorage)localStorage.setItem(key,defaultLocalStorage[key])})))):Promise.resolve()}
+
+// BrowserFS 2 uses methods that expect their operation table as the receiver.
+// Emscripten 4 calls operations such as getattr and readdir as bare functions.
+function bindBrowserFsOperations(filesystem) {
+  for (const operations of [filesystem.node_ops, filesystem.stream_ops]) {
+    for (const name of Object.getOwnPropertyNames(Object.getPrototypeOf(operations))) {
+      if (name !== "constructor" && typeof operations[name] === "function") {
+        operations[name] = operations[name].bind(operations);
+      }
+    }
+  }
+}
+
+function setupLocalFilesystem() {
+  // Translate BrowserFS errors into Emscripten's WASI errno values.
+  const errnoCodes = {
+    EACCES: 2, EBADF: 8, EBUSY: 10, EEXIST: 20, EFBIG: 22, EINVAL: 28,
+    EIO: 29, EISDIR: 31, ENOENT: 44, ENOSPC: 51, ENOTDIR: 54,
+    ENOTEMPTY: 55, ENOTSUP: 58, EPERM: 63, EROFS: 69,
+  };
+  return setupDefaultLocalData().then(() => new Promise((resolve, reject) => {
+    BrowserFS.FileSystem.LocalStorage.Create((storageError, storage) => {
+      if (storageError) return reject(storageError);
+      BrowserFS.FileSystem.MountableFileSystem.Create({ "/": storage }, (mountError, mount) => {
+        if (mountError) return reject(mountError);
+        BrowserFS.initialize(mount);
+        const filesystem = new BrowserFS.EmscriptenFS(FS, PATH, errnoCodes);
+        bindBrowserFsOperations(filesystem);
+        FS.mount(filesystem, { root: "/" }, "/home/web_user");
+        resolve();
+      });
+    });
+  }));
+}
+
+const skipIntroTarget = new URLSearchParams(window.location.search).get("skipIntroTarget");
 const isLocalGame = window.parent !== window &&
   new URLSearchParams(window.location.search).get("localGame") === "1";
 globalThis.__scummwebSkipIntroSeedStatus = {
@@ -158,20 +211,22 @@ function setupLocalGame() {
 
 function setupFilesystem() {
   addRunDependency("scummvm-fs-setup");
-  Promise.all([window.ScummvmFSReady || Promise.resolve(), setupLocalFilesystem()])
-    .then(() => isLocalGame ? setupLocalGame() : setupSkipIntroSaves())
+  performance.mark("scummweb:wasm-ready");
+  const localFilesReady = setupLocalFilesystem()
+    .then(() => isLocalGame ? setupLocalGame() : setupSkipIntroSaves());
+  Promise.all([window.ScummvmFSReady, localFilesReady])
+    .then(([{ ScummvmFS, filesystems }]) => {
+      for (const { name, index } of filesystems) {
+        FS.mkdir("/" + name);
+        FS.mount(new ScummvmFS(FS, index), {}, "/" + name + "/");
+      }
+      performance.mark("scummweb:filesystems-ready");
+    })
     .then(
-      () => {
-        if (!isLocalGame) setupHTTPFilesystem("games");
-        setupHTTPFilesystem("data");
-        removeRunDependency("scummvm-fs-setup");
-      },
+      () => removeRunDependency("scummvm-fs-setup"),
       (error) => {
-        if (isLocalGame) {
-          reportLocalGameStatus("error");
-          throw error;
-        }
-        removeRunDependency("scummvm-fs-setup");
+        if (isLocalGame) reportLocalGameStatus("error");
+        Module.printErr(`abort(${error.message})`);
         throw error;
       }
     );
@@ -209,7 +264,13 @@ const setReadyStatePhase=(state,reason)=>{if(!target||getReadyStatePriority(stat
 globalThis.__scummwebSetReadyStatePhase=setReadyStatePhase;
 const markLaunchDetected=()=>setReadyStatePhase("launch-detected","launch-output-detected");
 const markAwaitingFrame=()=>setReadyStatePhase("awaiting-frame","waiting-for-first-frame");
-const emitGameReady=reason=>{if(!target||readyState.state==="ready")return false;const nextReadyState=syncReadyState({state:"ready",reason,emittedAt:Date.now()});postParentMessage({type:"scummvm-ready",source:scummwebMessageSource,target:nextReadyState.target,href:nextReadyState.href,reason:nextReadyState.reason,emittedAt:nextReadyState.emittedAt});return true};
+const emitGameReady = (reason) => {
+  if (!target || readyState.state === "ready") return false;
+  if (reason === "rendered-frame-detected") performance.mark("scummweb:first-game-frame");
+  const nextReadyState = syncReadyState({ state: "ready", reason, emittedAt: Date.now() });
+  postParentMessage({ type: "scummvm-ready", ...nextReadyState });
+  return true;
+};
 syncReadyState({});
 if(globalThis.__scummwebPendingReadyStatePhase?.state){setReadyStatePhase(globalThis.__scummwebPendingReadyStatePhase.state,globalThis.__scummwebPendingReadyStatePhase.reason);delete globalThis.__scummwebPendingReadyStatePhase}
 const canvas=document.getElementById("canvas");

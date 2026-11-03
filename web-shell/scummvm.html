@@ -1,0 +1,382 @@
+<!doctypehtml><html lang=en-us><head><meta charset=utf-8><meta content="text/html; charset=utf-8"http-equiv=Content-Type><meta content="width=device-width,initial-scale=1,viewport-fit=cover"name=viewport><link href=manifest.json?v=__SCUMMWEB_ASSET_VERSION__ rel=manifest><link href=scummvm-192.png?v=__SCUMMWEB_ASSET_VERSION__ rel=apple-touch-icon><title>ScummWEB</title><style>body{margin:0;padding:none;background-color:#000}.emscripten{padding-right:0;margin-left:auto;margin-right:auto;display:block}textarea.emscripten{font-family:monospace;width:80%}#output{position:fixed;left:-10000px;top:0;width:1px!important;height:1px!important;padding:0;border:0;opacity:0;pointer-events:none;overflow:hidden;white-space:pre;z-index:-1}div.emscripten{text-align:center}div.emscripten_border{border:1px solid #000;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}canvas.emscripten{border:0 none;background:#000;position:absolute;top:50%;left:50%;margin:0;width:auto;height:100%;overflow:hidden;display:block;transform:translate(-50%,-50%)}canvas.emscripten.scummweb-fill-screen{width:100%;height:100%}#progress{top:0;left:0;height:10px;width:100%;overflow:hidden;display:block;position:absolute;z-index:2;border:0;background:#c60}#progress[hidden]{display:none!important}progress::-moz-progress-bar{background:#f6e08a}progress::-webkit-progress-value{background:#f6e08a}progress{color:#f6e08a}#status{position:absolute;bottom:5em;right:0;padding:5px;text-align:right;border-top-left-radius:1em;border-bottom-left-radius:1em;padding-left:1em;padding-right:1em;z-index:3;border:3px solid #000;border-right:none;background:#f6e08a;font:bold large/1.4 "Trebuchet MS",Verdana,Tahoma,Sans-Serif}#status.error{background:red}</style></head><body><div class=emscripten><progress hidden id=progress max=100 value=0></progress></div><div class=emscripten id=status>Downloading ScummVM...</div><div class=emscripten_border><canvas class=emscripten id=canvas oncontextmenu=event.preventDefault() tabindex=-1></canvas></div><textarea class=emscripten id=output rows=8></textarea><script src=https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js crossorigin=anonymous integrity="sha512-mz0EI+Ay1uIJP7rZEX8C/JlTAcHRIQ8Sny4vxmmj8MSzDJgG9NxxY2pUmOGv1lO7imFIFMyjjCzEXEywNgaUdQ=="></script><script>
+window.ScummvmFSReady = (async () => {
+  const params = new URLSearchParams(window.location.search);
+  const moduleUrl = new URL("./scummvm_fs.js", window.location.href);
+  if (params.has("v")) moduleUrl.searchParams.set("v", params.get("v"));
+  const { ScummvmFS, loadFilesystemIndex } = await import(moduleUrl);
+  const isLocalGame = window.parent !== window && params.get("localGame") === "1";
+  const mounts = isLocalGame ? ["data"] : ["games", "data"];
+  const filesystems = await Promise.all(mounts.map(async (name) => {
+    const index = await loadFilesystemIndex(name);
+    performance.mark(`scummweb:index:${name}`);
+    return { name, index };
+  }));
+  return { ScummvmFS, filesystems };
+})();
+// Observe early failures here and let setupFilesystem handle them when Wasm is ready.
+window.ScummvmFSReady.catch(() => {});
+</script><script>var statusElement=document.getElementById("status"),progressElement=document.getElementById("progress");function loadingDoneMessage(){return document.getElementById("progress").style.zIndex=0,window.__scummwebSetReadyStatePhase?window.__scummwebSetReadyStatePhase("runtime-ready","runtime-ready"):window.__scummwebPendingReadyStatePhase={state:"runtime-ready",reason:"runtime-ready"},"All downloads complete."}function decodeInode(e){_readUInt16LE=function(e,t){return e[t>>>=0]|e[t+1]<<8},_readUInt32LE=function(e,t){return(e[t]|e[t+1]<<8|e[t+2]<<16)+16777216*e[t+3]};for(var t=window.atob(e),n=new Uint8Array(t.length),o=0;o<t.length;o++)n[o]=t.charCodeAt(o);return{id:t.substr(30),size:_readUInt32LE(n,0),mode:_readUInt16LE(n,4),atime:0,mtime:0,ctime:0}}function encodeInode(e,t,n,o,i,r){_writeUInt16LE=function(e,t,n){return t=+t,e[n>>>=0]=255&t,e[n+1]=t>>>8,n+2},_writeUInt32LE=function(e,t,n){return t=+t,e[(n>>>=0)+3]=t>>>24,e[n+2]=t>>>16,e[n+1]=t>>>8,e[n]=255&t,n+4};var s=new Uint8Array(30+e.length);_writeUInt32LE(s,t,0),_writeUInt16LE(s,n,4);for(var a=0;a<e.length;a++)s[30+a]=e.charCodeAt(a);var l="";for(a=0;a<s.length;a++)l+=String.fromCharCode(s[a]);return btoa(l)}function setupDefaultLocalData(){return null===localStorage.getItem("/")?fetch((()=>{const e=new URL("scummvm.ini",window.location.href),t=new URLSearchParams(window.location.search).get("v");return t&&e.searchParams.set("v",t),e.toString()})()).then((e=>e.text().then((function(e){for(key in ini_data=btoa(e),folder_inode_id="b3da6754-64c0-40f0-92ad-83b6ca6ffec9",folder_inode={id:folder_inode_id,size:4096,mode:16895},ini_inode_id="1b4a97d1-4ce0-417f-985c-e0f22ca21aef",ini_inode={id:ini_inode_id,size:atob(ini_data).length,mode:33206},folder_entry_id="70879b79-8d58-400c-8143-332242320b34",folder_listing={"scummvm.ini":folder_entry_id},defaultLocalStorage={},defaultLocalStorage["/"]=encodeInode(folder_inode.id,folder_inode.size,folder_inode.mode,0,0,0),defaultLocalStorage[folder_inode_id]=btoa(JSON.stringify(folder_listing)),defaultLocalStorage[folder_entry_id]=encodeInode(ini_inode.id,ini_inode.size,ini_inode.mode,0,0,0),defaultLocalStorage[ini_inode_id]=ini_data,defaultLocalStorage)localStorage.setItem(key,defaultLocalStorage[key])})))):Promise.resolve()}
+
+// BrowserFS 2 uses methods that expect their operation table as the receiver.
+// Emscripten 4 calls operations such as getattr and readdir as bare functions.
+function bindBrowserFsOperations(filesystem) {
+  for (const operations of [filesystem.node_ops, filesystem.stream_ops]) {
+    for (const name of Object.getOwnPropertyNames(Object.getPrototypeOf(operations))) {
+      if (name !== "constructor" && typeof operations[name] === "function") {
+        operations[name] = operations[name].bind(operations);
+      }
+    }
+  }
+}
+
+function setupLocalFilesystem() {
+  // Translate BrowserFS errors into Emscripten's WASI errno values.
+  const errnoCodes = {
+    EACCES: 2, EBADF: 8, EBUSY: 10, EEXIST: 20, EFBIG: 22, EINVAL: 28,
+    EIO: 29, EISDIR: 31, ENOENT: 44, ENOSPC: 51, ENOTDIR: 54,
+    ENOTEMPTY: 55, ENOTSUP: 58, EPERM: 63, EROFS: 69,
+  };
+  return setupDefaultLocalData().then(() => new Promise((resolve, reject) => {
+    BrowserFS.FileSystem.LocalStorage.Create((storageError, storage) => {
+      if (storageError) return reject(storageError);
+      BrowserFS.FileSystem.MountableFileSystem.Create({ "/": storage }, (mountError, mount) => {
+        if (mountError) return reject(mountError);
+        BrowserFS.initialize(mount);
+        const filesystem = new BrowserFS.EmscriptenFS(FS, PATH, errnoCodes);
+        bindBrowserFsOperations(filesystem);
+        FS.mount(filesystem, { root: "/" }, "/home/web_user");
+        resolve();
+      });
+    });
+  }));
+}
+
+const skipIntroTarget = new URLSearchParams(window.location.search).get("skipIntroTarget");
+const isLocalGame = window.parent !== window &&
+  new URLSearchParams(window.location.search).get("localGame") === "1";
+globalThis.__scummwebSkipIntroSeedStatus = {
+  state: skipIntroTarget ? "pending" : "idle",
+  target: skipIntroTarget,
+  files: [],
+};
+
+function buildVersionedAssetUrl(assetPath) {
+  const resolvedUrl = new URL(assetPath, window.location.href);
+  const v = new URLSearchParams(window.location.search).get("v");
+
+  if (v) {
+    resolvedUrl.searchParams.set("v", v);
+  }
+
+  return resolvedUrl.toString();
+}
+
+function getConfiguredSavePath() {
+  try {
+    const iniText = FS.readFile("/home/web_user/scummvm.ini", { encoding: "utf8" });
+
+    for (const rawLine of iniText.split("\n")) {
+      const line = rawLine.endsWith("\r") ? rawLine.slice(0, -1) : rawLine;
+
+      if (line.startsWith("savepath=") && line.slice(9).trim()) {
+        return line.slice(9).trim();
+      }
+    }
+  } catch {}
+
+  return "/home/web_user/.local/share/scummvm/saves";
+}
+
+function ensureDirectory(directoryPath) {
+  let currentPath = "";
+
+  for (const segment of directoryPath.split("/").filter(Boolean)) {
+    currentPath += `/${segment}`;
+
+    try {
+      FS.stat(currentPath);
+    } catch {
+      FS.mkdir(currentPath);
+    }
+  }
+}
+
+function setupSkipIntroSaves() {
+  if (!skipIntroTarget) {
+    globalThis.__scummwebSkipIntroSeedStatus = { state: "idle", target: null, files: [] };
+    return Promise.resolve();
+  }
+
+  return fetch(buildVersionedAssetUrl("games.json"))
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Failed to load games.json (${response.status})`);
+      }
+
+      return response.json();
+    })
+    .then((library) => {
+      const matchingGame = (Array.isArray(library?.games) ? library.games : []).find(
+        (game) => game?.target === skipIntroTarget
+      );
+      const skipIntroConfig = matchingGame?.skipIntro;
+
+      if (
+        !skipIntroConfig ||
+        skipIntroConfig.strategy !== "save-slot" ||
+        !Array.isArray(skipIntroConfig.saveFiles) ||
+        skipIntroConfig.saveFiles.length === 0
+      ) {
+        globalThis.__scummwebSkipIntroSeedStatus = { state: "missing", target: skipIntroTarget, files: [] };
+        return undefined;
+      }
+
+      const savePath = getConfiguredSavePath();
+      ensureDirectory(savePath);
+
+      return Promise.all(
+        skipIntroConfig.saveFiles.map((fileName) => {
+          const trimmedFileName = typeof fileName === "string" ? fileName.trim() : "";
+
+          if (!trimmedFileName) {
+            return Promise.resolve(null);
+          }
+
+          const assetPath = `launcher/skip-intro/${encodeURIComponent(skipIntroTarget)}/${encodeURIComponent(trimmedFileName)}`;
+
+          return fetch(buildVersionedAssetUrl(assetPath))
+            .then((assetResponse) => {
+              if (!assetResponse.ok) {
+                throw new Error(`Failed to load ${trimmedFileName} (${assetResponse.status})`);
+              }
+
+              return assetResponse.arrayBuffer();
+            })
+            .then((buffer) => {
+              FS.writeFile(`${savePath}/${trimmedFileName}`, new Uint8Array(buffer));
+              return trimmedFileName;
+            });
+        })
+      ).then((seededFiles) => {
+        globalThis.__scummwebSkipIntroSeedStatus = {
+          state: "ready",
+          target: skipIntroTarget,
+          files: seededFiles.filter(Boolean),
+          savePath,
+          slot: skipIntroConfig.slot,
+        };
+      });
+    })
+    .catch((error) => {
+      console.error("Failed to seed skip-intro save files", error);
+      globalThis.__scummwebSkipIntroSeedStatus = {
+        state: "error",
+        target: skipIntroTarget,
+        files: [],
+        message: error instanceof Error ? error.message : String(error),
+      };
+    });
+}
+
+function reportLocalGameStatus(status) {
+  window.parent.postMessage({ type: "scummweb:local-game-status", status }, window.location.origin);
+}
+
+function setupLocalGame() {
+  return new Promise((resolve, reject) => {
+    function receiveFiles(event) {
+      if (event.source !== window.parent || event.origin !== window.location.origin ||
+          event.data?.type !== "scummweb:local-game-files") return;
+
+      window.removeEventListener("message", receiveFiles);
+      try {
+        FS.mkdir("/local-game");
+        for (const { path, data } of event.data.files) {
+          const parts = path.split("/");
+          if (parts.some((part) => !part || part === "." || part === ".." || part === "__proto__")) {
+            throw new Error("Invalid local game path");
+          }
+          ensureDirectory(["/local-game", ...parts.slice(0, -1)].join("/"));
+          FS.writeFile(`/local-game/${path}`, data, { canOwn: true });
+        }
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    }
+    window.addEventListener("message", receiveFiles);
+    window.parent.postMessage({ type: "scummweb:local-game-ready" }, window.location.origin);
+  });
+}
+
+function setupFilesystem() {
+  addRunDependency("scummvm-fs-setup");
+  performance.mark("scummweb:wasm-ready");
+  const localFilesReady = setupLocalFilesystem()
+    .then(() => isLocalGame ? setupLocalGame() : setupSkipIntroSaves());
+  Promise.all([window.ScummvmFSReady, localFilesReady])
+    .then(([{ ScummvmFS, filesystems }]) => {
+      for (const { name, index } of filesystems) {
+        FS.mkdir("/" + name);
+        FS.mount(new ScummvmFS(FS, index), {}, "/" + name + "/");
+      }
+      performance.mark("scummweb:filesystems-ready");
+    })
+    .then(
+      () => removeRunDependency("scummvm-fs-setup"),
+      (error) => {
+        if (isLocalGame) reportLocalGameStatus("error");
+        Module.printErr(`abort(${error.message})`);
+        throw error;
+      }
+    );
+}var Module={preRun:[setupFilesystem],postRun:[],print:function(){var e=document.getElementById("output");return e&&(e.value=""),function(t){arguments.length>1&&(t=Array.prototype.slice.call(arguments).join(" ")),console.log(t),e&&(e.value+=t+"\n",e.scrollTop=e.scrollHeight)}}(),printErr:function(e){arguments.length>1&&(e=Array.prototype.slice.call(arguments).join(" ")),console.error(e)},canvas:function(){var e=document.getElementById("canvas");return e.addEventListener("webglcontextlost",(function(e){alert("WebGL context lost. You will need to reload the page."),e.preventDefault()}),!1),e}(),setStatus:function(e){if(console.log((new Date).toLocaleTimeString()+" "+e),Module.setStatus.last||(Module.setStatus.last={time:Date.now(),text:""}),e!==Module.setStatus.last.text){var t=e.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/),n=Date.now();t&&n-Module.setStatus.last.time<30||(Module.setStatus.last.time=n,Module.setStatus.last.text=e,t?(e=t[1],progressElement.value=100*parseInt(t[2]),progressElement.max=100*parseInt(t[4]),progressElement.hidden=!1):(progressElement.value=null,progressElement.max=null,progressElement.hidden=!0),e&&e.length>0?(e+="⚡️",statusElement.style.display="block"):statusElement.style.display="none",statusElement.innerHTML=e)}},totalDependencies:0,monitorRunDependencies:function(e){this.totalDependencies=Math.max(this.totalDependencies,e),Module.setStatus(e?"Preparing... ("+(this.totalDependencies-e)+"/"+this.totalDependencies+")":loadingDoneMessage())}};Module.setStatus("Downloading ScummVM..."),window.onerror=function(){statusElement.classList.add("error"),Module.setStatus("Exception thrown, see JavaScript console"),Module.setStatus=function(e){e&&Module.printErr("[post-exception status] "+e)}}</script><script>(function(){
+const exitTo=new URLSearchParams(window.location.search).get("exitTo");
+if(!exitTo)return;
+const resolvedExitHref=(()=>{try{const resolvedUrl=new URL(exitTo,window.location.href);return resolvedUrl.origin===window.location.origin?`${resolvedUrl.pathname}${resolvedUrl.search}${resolvedUrl.hash}`:"/"}catch{return "/"}})();
+const skipIntroTarget=new URLSearchParams(window.location.search).get("skipIntroTarget");
+const launchArgs=decodeURI(window.location.hash.slice(1)).trim().split(/\s+/);
+const target=skipIntroTarget||launchArgs.at(-1)||"";
+const launchPattern=target?new RegExp(`User picked target '${target.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")}'`):null;
+const escapeRedirectWindowMs=1500;
+let didHandleExit=false;
+let hasUserInteracted=false;
+let lastInteractionAt=0;
+let lastInteractionKey="";
+let lastEscapeAt=0;
+let recentEscapeCount=0;
+let pendingExitStatus=null;
+let pendingExitTimer=0;
+const markUserInteraction=event=>{if(event.type==="keydown"){if(event.metaKey||event.ctrlKey||event.altKey)return;lastInteractionKey=event.key||"";lastInteractionAt=Date.now();if(event.key==="Escape"){recentEscapeCount=lastInteractionAt-lastEscapeAt<=escapeRedirectWindowMs?recentEscapeCount+1:1;lastEscapeAt=lastInteractionAt}else{recentEscapeCount=0;lastEscapeAt=0}}else{lastInteractionKey="";lastInteractionAt=Date.now();recentEscapeCount=0;lastEscapeAt=0}hasUserInteracted=true};
+for(const eventName of["keydown","mousedown","touchstart"]){window.addEventListener(eventName,markUserInteraction,{capture:true,passive:eventName!=="keydown"})}
+const handleExit=status=>{if(didHandleExit)return;didHandleExit=true;if(pendingExitTimer){window.clearTimeout(pendingExitTimer);pendingExitTimer=0}const exitMessage={type:"scummvm-exit",href:resolvedExitHref,status};if(window.parent&&window.parent!==window){try{window.parent.postMessage(exitMessage,window.location.origin);return}catch{}}try{window.location.replace(resolvedExitHref)}catch{window.location.href=resolvedExitHref}};
+const requestExit=status=>{pendingExitStatus=Number.isFinite(status)?status:0;if(pendingExitTimer)return;pendingExitTimer=window.setTimeout((()=>{pendingExitTimer=0;if(pendingExitStatus!==null){handleExit(pendingExitStatus)}}),150)};
+globalThis.__scummvmRequestExit=requestExit;
+const scummwebMessageSource="scummweb";
+const postParentMessage=message=>{if(!(window.parent&&window.parent!==window))return false;try{window.parent.postMessage(message,window.location.origin);return true}catch{return false}};
+const buildCurrentFrameHref=()=>`${window.location.pathname}${window.location.search}${window.location.hash}`;
+const readyStatePriority={idle:-1,pending:0,"runtime-ready":1,"launch-detected":2,"awaiting-frame":3,ready:4};
+const getReadyStatePriority=state=>Object.prototype.hasOwnProperty.call(readyStatePriority,state)?readyStatePriority[state]:-1;
+let readyState={state:target?"pending":"idle",target:target||null,href:buildCurrentFrameHref(),reason:target?"awaiting-launch":"no-target",source:scummwebMessageSource,emittedAt:null};
+const readyStateHistory=[];
+const syncReadyState=updates=>{const previousState=readyState;readyState={...readyState,...updates,target:target||null,href:buildCurrentFrameHref(),source:scummwebMessageSource};if(!readyStateHistory.length||previousState.state!==readyState.state||previousState.reason!==readyState.reason||previousState.emittedAt!==readyState.emittedAt){readyStateHistory.push({...readyState})}globalThis.__scummwebReadyState=readyState;globalThis.__scummwebReadyStateHistory=readyStateHistory.slice();return readyState};
+const setReadyStatePhase=(state,reason)=>{if(!target||getReadyStatePriority(state)<=getReadyStatePriority(readyState.state))return readyState;return syncReadyState({state,reason:reason||state})};
+globalThis.__scummwebSetReadyStatePhase=setReadyStatePhase;
+const markLaunchDetected=()=>setReadyStatePhase("launch-detected","launch-output-detected");
+const markAwaitingFrame=()=>setReadyStatePhase("awaiting-frame","waiting-for-first-frame");
+const emitGameReady = (reason) => {
+  if (!target || readyState.state === "ready") return false;
+  if (reason === "rendered-frame-detected") performance.mark("scummweb:first-game-frame");
+  const nextReadyState = syncReadyState({ state: "ready", reason, emittedAt: Date.now() });
+  postParentMessage({ type: "scummvm-ready", ...nextReadyState });
+  return true;
+};
+syncReadyState({});
+if(globalThis.__scummwebPendingReadyStatePhase?.state){setReadyStatePhase(globalThis.__scummwebPendingReadyStatePhase.state,globalThis.__scummwebPendingReadyStatePhase.reason);delete globalThis.__scummwebPendingReadyStatePhase}
+const canvas=document.getElementById("canvas");
+const output=document.getElementById("output");
+if(canvas){
+const visibleCursorClass="scummvm-browser-cursor-visible";
+const visibleHintClass="scummvm-cursor-grab-hint-visible";
+const hintId="scummvm-cursor-grab-hint";
+const cursorGrabHintRevealDelayMs=2500;
+const readyFramePollIntervalMs=120;
+const readyFrameSampleSize=32;
+const readyFrameTimeoutMs=15000;
+const touchTapDurationMs=260;
+const touchTapMoveThresholdPx=28;
+const touchDoubleTapWindowMs=300;
+const touchDoubleTapThresholdPx=32;
+const touchSyntheticClickHoldMs=80;
+const touchRelativeMoveScale=1;
+const touchRelativeMoveMaxDeltaPx=48;
+let gameRunning=!launchPattern;
+let hoverActive=false;
+let launchPollTimer=0;
+let launchRevealTimer=0;
+let readyFramePollTimer=0;
+let readyFramePollStartedAt=0;
+let activeTouchGesture=null;
+let lastCompletedTap=null;
+let syntheticCursorPoint=null;
+const readyFrameScratch=document.createElement("canvas");
+readyFrameScratch.width=readyFrameSampleSize;
+readyFrameScratch.height=readyFrameSampleSize;
+const readyFrameContext=readyFrameScratch.getContext("2d",{willReadFrequently:true});
+const cursorStyle=document.createElement("style");
+cursorStyle.textContent=`#canvas{touch-action:none!important;-webkit-user-select:none;user-select:none}#canvas.${visibleCursorClass}{cursor:default!important}#${hintId}{position:fixed;top:max(1rem,calc(env(safe-area-inset-top) + .75rem));left:50%;transform:translateX(-50%);max-width:min(calc(100vw - 2rem),26rem);padding:.7rem 1rem;border:1px solid rgba(255,255,255,.3);border-radius:999px;background:rgba(12,12,12,.84);box-shadow:0 .9rem 2.5rem rgba(0,0,0,.38);color:rgba(255,255,255,.92);font:600 .9rem/1.3 "Trebuchet MS",Verdana,Tahoma,sans-serif;letter-spacing:.01em;text-align:center;opacity:0;pointer-events:none;transition:opacity 120ms ease;z-index:4}#${hintId}.${visibleHintClass}{opacity:1}`;
+document.head.appendChild(cursorStyle);
+const grabHint=document.createElement("div");
+grabHint.id=hintId;
+grabHint.textContent="Click the game to grab the cursor.";
+document.body.appendChild(grabHint);
+const showBrowserCursor=()=>{canvas.classList.add(visibleCursorClass)};
+const allowGameCursor=()=>{canvas.classList.remove(visibleCursorClass)};
+const showGrabHint=()=>{grabHint.classList.add(visibleHintClass)};
+const hideGrabHint=()=>{grabHint.classList.remove(visibleHintClass)};
+const hasLaunchOutput=()=>Boolean(launchPattern&&output&&launchPattern.test(output.value||""));
+const hasRenderableGameFrame=()=>{if(!readyFrameContext||!canvas.width||!canvas.height)return false;try{readyFrameContext.clearRect(0,0,readyFrameSampleSize,readyFrameSampleSize);readyFrameContext.drawImage(canvas,0,0,readyFrameSampleSize,readyFrameSampleSize);const{data}=readyFrameContext.getImageData(0,0,readyFrameSampleSize,readyFrameSampleSize);let brightSampleCount=0;for(let offset=0;offset<data.length;offset+=4){if(data[offset+3]===0)continue;const brightness=data[offset]+data[offset+1]+data[offset+2];if(brightness<=24)continue;brightSampleCount+=1;if(brightSampleCount>=48)return true}}catch{}return false};
+const setGameRunning=reason=>{if(gameRunning)return false;gameRunning=true;if(launchPollTimer){window.clearInterval(launchPollTimer);launchPollTimer=0}if(launchRevealTimer){window.clearTimeout(launchRevealTimer);launchRevealTimer=0}if(readyFramePollTimer){window.clearTimeout(readyFramePollTimer);readyFramePollTimer=0}readyFramePollStartedAt=0;emitGameReady(reason);return true};
+const scheduleReadySignal=()=>{if(gameRunning)return false;markAwaitingFrame();if(hasRenderableGameFrame()){if(setGameRunning("rendered-frame-detected"))syncCursorPrompt();return true}if(readyFramePollTimer)return false;if(!readyFramePollStartedAt){readyFramePollStartedAt=Date.now()}const checkReadyFrame=()=>{readyFramePollTimer=0;if(gameRunning)return;if(hasRenderableGameFrame()){if(setGameRunning("rendered-frame-detected"))syncCursorPrompt();return}if(Date.now()-readyFramePollStartedAt>=readyFrameTimeoutMs){if(setGameRunning("rendered-frame-timeout"))syncCursorPrompt();return}readyFramePollTimer=window.setTimeout(checkReadyFrame,readyFramePollIntervalMs)};readyFramePollTimer=window.setTimeout(checkReadyFrame,readyFramePollIntervalMs);return true};
+const scheduleGameRunning=()=>{if(gameRunning||launchRevealTimer)return false;markLaunchDetected();if(launchPollTimer){window.clearInterval(launchPollTimer);launchPollTimer=0}launchRevealTimer=window.setTimeout((()=>{launchRevealTimer=0;scheduleReadySignal()}),cursorGrabHintRevealDelayMs);return true};
+const syncCursorPrompt=()=>{if(!gameRunning&&hasLaunchOutput())scheduleGameRunning();if(gameRunning&&hoverActive){showBrowserCursor();showGrabHint();return}hideGrabHint();allowGameCursor()};
+const promptCursorGrab=()=>{hoverActive=true;syncCursorPrompt()};
+const clearCursorPrompt=()=>{hoverActive=false;syncCursorPrompt()};
+const releaseCursorPrompt=()=>{hideGrabHint();allowGameCursor()};
+const clamp=(value,min,max)=>Math.min(Math.max(value,min),max);
+const measureDistance=(pointA,pointB)=>{if(!pointA||!pointB)return Number.POSITIVE_INFINITY;return Math.hypot(pointA.clientX-pointB.clientX,pointA.clientY-pointB.clientY)};
+const resolveTouchClickButtonCode=value=>value==="right"?2:0;
+const consumeTouchEvent=event=>{if(event.cancelable)event.preventDefault();if(typeof event.stopImmediatePropagation==="function")event.stopImmediatePropagation();event.stopPropagation()};
+const getTouchPoint=touchLike=>{if(!touchLike)return null;const rect=canvas.getBoundingClientRect();const maxX=rect.width>0?rect.right:rect.left;const maxY=rect.height>0?rect.bottom:rect.top;const clientX=clamp(Number.isFinite(touchLike.clientX)?touchLike.clientX:rect.left,rect.left,maxX);const clientY=clamp(Number.isFinite(touchLike.clientY)?touchLike.clientY:rect.top,rect.top,maxY);return{clientX,clientY,screenX:Number.isFinite(touchLike.screenX)?touchLike.screenX:clientX,screenY:Number.isFinite(touchLike.screenY)?touchLike.screenY:clientY,pageX:Number.isFinite(touchLike.pageX)?touchLike.pageX:clientX+window.scrollX,pageY:Number.isFinite(touchLike.pageY)?touchLike.pageY:clientY+window.scrollY}};
+const getGesturePoint=touchList=>{const touches=Array.from(touchList||[]);if(touches.length===0)return null;touches.sort(((leftTouch,rightTouch)=>leftTouch.clientX-rightTouch.clientX));return getTouchPoint(touches[touches.length-1])};
+const getDefaultSyntheticCursorPoint=()=>{const rect=canvas.getBoundingClientRect();const centerX=rect.width>0?rect.left+rect.width/2:rect.left;const centerY=rect.height>0?rect.top+rect.height/2:rect.top;return getTouchPoint({clientX:centerX,clientY:centerY})};
+const setSyntheticCursorPoint=point=>{if(!point)return syntheticCursorPoint;syntheticCursorPoint={...point};return syntheticCursorPoint};
+const getSyntheticCursorPoint=()=>syntheticCursorPoint?{...syntheticCursorPoint}:setSyntheticCursorPoint(getDefaultSyntheticCursorPoint());
+const focusCanvas=()=>{try{canvas.focus({preventScroll:true})}catch{}};
+const dispatchPointerEvent=(eventName,point,{button=0,buttons=0}={})=>{if(typeof PointerEvent!=="function"||!point)return;const pointerEvent=new PointerEvent(eventName,{bubbles:true,cancelable:true,composed:true,pointerId:1,pointerType:"mouse",isPrimary:true,clientX:point.clientX,clientY:point.clientY,screenX:point.screenX,screenY:point.screenY,pageX:point.pageX,pageY:point.pageY,button,buttons,pressure:buttons===0?0:.5});canvas.dispatchEvent(pointerEvent)};
+const dispatchMouseEvent=(eventName,point,{button=0,buttons=0,detail=1}={})=>{if(!point)return;const mouseEvent=new MouseEvent(eventName,{bubbles:true,cancelable:true,composed:true,clientX:point.clientX,clientY:point.clientY,screenX:point.screenX,screenY:point.screenY,button,buttons,detail});canvas.dispatchEvent(mouseEvent)};
+const dispatchSyntheticMove=point=>{if(!point)return;const nextPoint=setSyntheticCursorPoint(point);focusCanvas();dispatchPointerEvent("pointermove",nextPoint,{button:0,buttons:0});dispatchMouseEvent("mousemove",nextPoint,{button:0,buttons:0,detail:0})};
+const dispatchSyntheticClick=(point,button)=>{if(!point)return;const buttons=button===2?2:1;focusCanvas();dispatchSyntheticMove(point);dispatchPointerEvent("pointerdown",point,{button,buttons});dispatchMouseEvent("mousedown",point,{button,buttons});if(button===2){dispatchMouseEvent("contextmenu",point,{button,buttons,detail:0})}window.setTimeout((()=>{dispatchPointerEvent("pointerup",point,{button,buttons:0});dispatchMouseEvent("mouseup",point,{button,buttons:0});if(button!==2){dispatchMouseEvent("click",point,{button,buttons:0,detail:1})}}),touchSyntheticClickHoldMs)};
+const dispatchParentTouchClick=button=>{dispatchSyntheticClick(getSyntheticCursorPoint(),resolveTouchClickButtonCode(button))};
+const applyCursorPadDelta=(deltaX,deltaY)=>{if(!Number.isFinite(deltaX)&&!Number.isFinite(deltaY))return;const previousPoint=getSyntheticCursorPoint();const nextPoint=getTouchPoint({clientX:previousPoint.clientX+(Number(deltaX)||0),clientY:previousPoint.clientY+(Number(deltaY)||0)});if(nextPoint){dispatchSyntheticMove(nextPoint)}};
+const applyRelativeTouchDelta=(previousPoint,nextFingerPoint)=>{if(!previousPoint||!nextFingerPoint)return;const rawDeltaX=(nextFingerPoint.clientX-previousPoint.clientX)*touchRelativeMoveScale;const rawDeltaY=(nextFingerPoint.clientY-previousPoint.clientY)*touchRelativeMoveScale;const deltaX=clamp(rawDeltaX,-touchRelativeMoveMaxDeltaPx,touchRelativeMoveMaxDeltaPx);const deltaY=clamp(rawDeltaY,-touchRelativeMoveMaxDeltaPx,touchRelativeMoveMaxDeltaPx);if(deltaX||deltaY){applyCursorPadDelta(deltaX,deltaY)}};
+const setAspectRatioMode=mode=>{canvas.classList.toggle("scummweb-fill-screen",mode==="fill")};
+const handleScummwebMessage=event=>{if(event.origin!==window.location.origin)return;if(event.data?.type==="scummweb-aspect-ratio"){setAspectRatioMode(event.data?.mode);return}if(event.data?.type==="scummweb-touch-click"){dispatchParentTouchClick(event.data.button);return}if(event.data?.type!=="scummweb-touch-cursor-pad")return;applyCursorPadDelta(event.data?.deltaX,event.data?.deltaY)};
+const handleTouchStart=event=>{if(event.touches.length===0)return;consumeTouchEvent(event);const point=getGesturePoint(event.touches);activeTouchGesture={startedAt:Date.now(),startPoint:point,lastPoint:point,moved:false}};
+const handleTouchMove=event=>{if(!activeTouchGesture||event.touches.length===0)return;consumeTouchEvent(event);const point=getGesturePoint(event.touches);if(!point)return;const previousPoint=activeTouchGesture.lastPoint;if(measureDistance(activeTouchGesture.startPoint,point)>touchTapMoveThresholdPx){activeTouchGesture.moved=true}if(activeTouchGesture.moved){applyRelativeTouchDelta(previousPoint,point)}activeTouchGesture.lastPoint=point};
+const handleTouchEnd=event=>{consumeTouchEvent(event);if(!activeTouchGesture){return}const point=getGesturePoint(event.changedTouches)||getGesturePoint(event.touches)||activeTouchGesture.lastPoint||null;if(point&&measureDistance(activeTouchGesture.startPoint,point)>touchTapMoveThresholdPx){activeTouchGesture.moved=true}if(activeTouchGesture.moved&&point){applyRelativeTouchDelta(activeTouchGesture.lastPoint,point)}if(event.touches.length>0){activeTouchGesture.lastPoint=point||activeTouchGesture.lastPoint;return}const completedGesture={...activeTouchGesture,endedAt:Date.now(),endPoint:point||activeTouchGesture.lastPoint};activeTouchGesture=null;const gestureDuration=completedGesture.endedAt-completedGesture.startedAt;const isTap=!completedGesture.moved&&gestureDuration<=touchTapDurationMs&&completedGesture.endPoint;if(!isTap){lastCompletedTap=null;return}dispatchSyntheticMove(completedGesture.endPoint);const isDoubleTap=Boolean(lastCompletedTap&&completedGesture.endedAt-lastCompletedTap.endedAt<=touchDoubleTapWindowMs&&measureDistance(lastCompletedTap.point,completedGesture.endPoint)<=touchDoubleTapThresholdPx);if(isDoubleTap){dispatchSyntheticClick(completedGesture.endPoint,0);lastCompletedTap=null;return}lastCompletedTap={endedAt:completedGesture.endedAt,point:{...completedGesture.endPoint}}};
+const handleTouchCancel=event=>{consumeTouchEvent(event);activeTouchGesture=null;lastCompletedTap=null};
+window.addEventListener("message",handleScummwebMessage);
+canvas.addEventListener("mouseenter",promptCursorGrab,{passive:true});
+canvas.addEventListener("pointerenter",promptCursorGrab,{passive:true});
+canvas.addEventListener("mouseleave",clearCursorPrompt,{passive:true});
+canvas.addEventListener("pointerleave",clearCursorPrompt,{passive:true});
+canvas.addEventListener("contextmenu",(event=>{if(event.cancelable)event.preventDefault()}));
+for(const eventName of["mousedown","touchstart"]){canvas.addEventListener(eventName,releaseCursorPrompt,{capture:true,passive:true})}
+canvas.addEventListener("touchstart",handleTouchStart,{capture:true,passive:false});
+canvas.addEventListener("touchmove",handleTouchMove,{capture:true,passive:false});
+canvas.addEventListener("touchend",handleTouchEnd,{capture:true,passive:false});
+canvas.addEventListener("touchcancel",handleTouchCancel,{capture:true,passive:false});
+if(hasLaunchOutput()){scheduleGameRunning()}else if(launchPattern&&output){launchPollTimer=window.setInterval((()=>{if(hasLaunchOutput()){scheduleGameRunning();syncCursorPrompt()}}),250)}
+syncCursorPrompt()
+}
+const shouldRedirectOnQuit=()=>{if(pendingExitStatus!==null)return true;if(!hasUserInteracted)return false;const now=Date.now();const quitFollowsRecentEscape=lastInteractionKey==="Escape"&&now-lastInteractionAt<=escapeRedirectWindowMs;if(!quitFollowsRecentEscape)return true;return recentEscapeCount>=2&&now-lastEscapeAt<=escapeRedirectWindowMs};
+window.Module=window.Module||{};
+const originalQuit=window.Module.quit;
+window.Module.quit=function(status,toThrow){if(shouldRedirectOnQuit()){handleExit(status)}if(typeof originalQuit==="function"){return originalQuit(status,toThrow)}throw toThrow||new Error(`ScummVM exited (${status})`)}
+})();</script><script>
+if (isLocalGame) {
+  const print = Module.print;
+  Module.print = function (...args) {
+    print.apply(this, args);
+    const line = String(args[0]);
+    if (line.startsWith("User picked target '")) reportLocalGameStatus("running");
+    if (line.startsWith("WARNING: ScummVM could not find any game")) reportLocalGameStatus("undetected");
+  };
+  Module.onAbort = () => reportLocalGameStatus("error");
+  Module.quit = (status, error) => {
+    if (status) reportLocalGameStatus("error");
+    throw error;
+  };
+}
+</script><script>(function(){const v=new URLSearchParams(window.location.search).get("v");window.Module=window.Module||{};const originalLocateFile=window.Module.locateFile;window.Module.locateFile=function(path,prefix){const raw=typeof originalLocateFile=="function"?originalLocateFile(path,prefix):`${prefix||""}${path}`;if(!v)return raw;const resolved=new URL(raw,window.location.href);resolved.searchParams.set("v",v);return resolved.toString()};const script=document.createElement("script");script.async=true;script.src=v?`scummvm.js?v=${encodeURIComponent(v)}`:"scummvm.js";document.body.appendChild(script)})();</script></body></html>

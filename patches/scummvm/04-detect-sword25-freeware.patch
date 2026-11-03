@@ -1,0 +1,37 @@
+diff --git a/engines/sword25/detection_tables.h b/engines/sword25/detection_tables.h
+index 3facf0eb..dd3c4d63 100644
+--- a/engines/sword25/detection_tables.h
++++ b/engines/sword25/detection_tables.h
+@@ -143,6 +143,15 @@ static const ADGameDescription gameDescriptions[] = {
+ 	// Mark it as Unknown Language since it contains multiple languages. If we
+ 	// mark it as English, then changing the language in-game causes the detection
+ 	// to fail the next time we try to start the engine.
++	{
++		"sword25",
++		"Latest version",
++		AD_ENTRY1s("data.b25c", nullptr, 827397764),
++		Common::UNK_LANG,
++		Common::kPlatformUnknown,
++		ADGF_NO_FLAGS,
++		GUIO1(GUIO_NOASPECT)
++	},
+ 	{
+ 		"sword25",
+ 		"Latest version",
+@@ -153,6 +162,16 @@ static const ADGameDescription gameDescriptions[] = {
+ 		GUIO1(GUIO_NOASPECT)
+ 	},
+ 
++	{
++		"sword25",
++		"Latest version",
++		AD_ENTRY1s("data.b25c", "1f89a63e3509aa64626cc90cd2561032", 827397764),
++		Common::UNK_LANG,
++		Common::kPlatformUnknown,
++		ADGF_NO_FLAGS,
++		GUIO1(GUIO_NOASPECT)
++	},
++
+ 	AD_TABLE_END_MARKER
+ };
+ 

@@ -1,0 +1,39 @@
+diff --git a/engines/queen/talk.cpp b/engines/queen/talk.cpp
+index 1484096e..29396081 100644
+--- a/engines/queen/talk.cpp
++++ b/engines/queen/talk.cpp
+@@ -38,9 +38,12 @@
+ #include "queen/walk.h"
+ 
+ #include "common/file.h"
++#include "common/system.h"
+ 
+ namespace Queen {
+ 
++static constexpr uint32 kDialogueChoiceMouseDebounceMs = 180;
++
+ void Talk::talk(
+ 		const char *filename,
+ 		int personInRoom,
+@@ -1258,6 +1261,7 @@ int16 Talk::selectSentence() {
+ 
+ 		_vm->input()->clearKeyVerb();
+ 		_vm->input()->clearMouseButton();
++		const uint32 choiceInputDebounceUntil = g_system->getMillis() + kDialogueChoiceMouseDebounceMs;
+ 
+ 		if (sentenceCount > 0) {
+ 			int oldZone = 0;
+@@ -1271,6 +1275,13 @@ int16 Talk::selectSentence() {
+ 				int mouseButton = _vm->input()->mouseButton();
+ 				_vm->input()->clearMouseButton();
+ 
++				// On touch devices, the tap that dismisses the previous spoken line can finish
++				// after the choice list is drawn. Ignore that trailing click so dialogue choices
++				// require a deliberate follow-up tap instead of auto-selecting.
++				if (g_system->getMillis() < choiceInputDebounceUntil) {
++					mouseButton = 0;
++				}
++
+ 				if (ARROW_ZONE_UP == zone || ARROW_ZONE_DOWN == zone) {
+ 					if (oldZone > 0) {
+ 						int16 y;

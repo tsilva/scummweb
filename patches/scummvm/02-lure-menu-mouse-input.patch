@@ -1,0 +1,48 @@
+diff --git a/engines/lure/menu.cpp b/engines/lure/menu.cpp
+index 1fbcec31..9171059f 100644
+--- a/engines/lure/menu.cpp
++++ b/engines/lure/menu.cpp
+@@ -493,7 +493,43 @@ uint16 PopupMenu::Show(int numEntries, const char *actions[]) {
+ 	const uint16 yMiddle = FULL_SCREEN_HEIGHT / 2;
+ 
+ 	uint16 numLines = 0, oldX = 0, oldY = 0;
++	#ifdef EMSCRIPTEN
++	bool clickable_menu = true;
++#else
++	#ifdef EMSCRIPTEN
++	bool clickable_menu = true;
++#else
++	#ifdef EMSCRIPTEN
++	bool clickable_menu = true;
++#else
++	#ifdef EMSCRIPTEN
++	bool clickable_menu = true;
++#else
++	#ifdef EMSCRIPTEN
++	bool clickable_menu = true;
++#else
++	#ifdef EMSCRIPTEN
++	bool clickable_menu = true;
++#else
++	#ifdef EMSCRIPTEN
++	bool clickable_menu = true;
++#else
++	#ifdef EMSCRIPTEN
++	bool clickable_menu = true;
++#else
++	#ifdef EMSCRIPTEN
++	bool clickable_menu = true;
++#else
+ 	bool clickable_menu = g_system->hasFeature(OSystem::kFeatureTouchscreen);
++#endif
++#endif
++#endif
++#endif
++#endif
++#endif
++#endif
++#endif
++#endif
+ 	if (clickable_menu) {
+ 		// The whole menu is shown and the items are click-selectable
+ 		mouse.pushCursorNum(CURSOR_ARROW);

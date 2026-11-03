@@ -3,7 +3,7 @@
 Repo notes for coding agents working in `scummweb`.
 
 - Treat `scummvm-shell/` as the source of truth for managed scummweb shell assets. `npm run dev`, `npm run build`, and `npm run start` validate that tracked shell, then stage it into `public/` before starting Next.js.
-- If launcher assets or generated ScummVM shell files need to change, rebuild with `./scripts/build_scummvm_web.sh` so `dist/` is regenerated and synced back into `scummvm-shell/`.
+- Edit browser shell templates in `web-shell/` and upstream source patches in `patches/scummvm/`. Rebuild with `./scripts/build_scummvm_web.sh` so `dist/` is regenerated and synced back into `scummvm-shell/`. See the README upgrade procedure.
 - The playable entry is Beneath a Steel Sky from `downloads/bass-cd-1.2.zip`, launched through `/scummvm.html#sky`.
 - End every user-facing game demo title with `(Demo)`, for example `The Secret of Monkey Island (Demo)`. Put platform, language, and edition details in separate metadata fields.
 - Game assets should be accessed directly through the bucket origin, not proxied through the app server.

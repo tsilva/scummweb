@@ -17,11 +17,11 @@ const SEEK_SET = 0;
 const SEEK_CUR = 1;
 const SEEK_END = 2;
 const RANGE_REQUEST_BLOCK_SIZE = 1024 * 1024
+// WASI errno values used by Emscripten's POSIX filesystem.
 const ERRNO_CODES = {
-    // TODO: We should get these from Emscripten - see https://github.com/emscripten-core/emscripten/issues/10061 and https://github.com/emscripten-core/emscripten/issues/14783
-    EPERM: 1, // Operation not permitted
-    ENOENT: 2, // No such file or directory
-    EINVAL: 22 // I©nvalid argument
+    EPERM: 63,
+    ENOENT: 44,
+    EINVAL: 28
 };
 
 
@@ -101,43 +101,24 @@ function getFilesystemBaseCandidates(url) {
     return candidates;
 }
 
-function tryLoadFilesystemIndex(baseUrl) {
-    const req = new XMLHttpRequest();
-    const requestUrl = buildRemoteUrl(baseUrl, "/index.json");
-
-    req.open("GET", requestUrl, false);
-    req.send(null);
-
-    if (req.status < 200 || req.status >= 300) {
-        return { ok: false, requestUrl, status: req.status, body: req.responseText };
-    }
-
-    try {
-        return { ok: true, requestUrl, json: JSON.parse(req.responseText) };
-    } catch (error) {
-        return { ok: false, requestUrl, status: req.status, body: req.responseText, error };
-    }
-}
-
-function loadFilesystemIndex(url) {
+export async function loadFilesystemIndex(url) {
     const failures = [];
 
     for (const baseUrl of getFilesystemBaseCandidates(url)) {
-        const result = tryLoadFilesystemIndex(baseUrl);
-        if (result.ok) {
-            return { url: baseUrl, json: result.json };
+        const requestUrl = buildRemoteUrl(baseUrl, "/index.json");
+        try {
+            const response = await fetch(requestUrl);
+            if (!response.ok) {
+                failures.push(`${requestUrl} -> ${response.status}`);
+                continue;
+            }
+            return { url: baseUrl, json: await response.json() };
+        } catch (error) {
+            failures.push(`${requestUrl} -> ${error.message}`);
         }
-
-        failures.push(result);
     }
 
-    const failureSummary = failures.map((failure) => {
-        const status = failure.status || 0;
-        const bodyPreview = (failure.body || "").trim().slice(0, 120).replace(/\s+/g, " ");
-        return `${failure.requestUrl} -> ${status}${bodyPreview ? ` (${bodyPreview})` : ""}`;
-    }).join("; ");
-
-    throw new Error(`Unable to load ScummVM filesystem index for '${url}'. Tried: ${failureSummary || "no candidates"}`);
+    throw new Error(`Unable to load ScummVM filesystem index for '${url}'. Tried: ${failures.join("; ") || "no candidates"}`);
 }
 
 export class ScummvmFS {
@@ -146,11 +127,10 @@ export class ScummvmFS {
     stream_ops;
     node_ops;
     FS;
-    constructor(_FS, _url) {
+    constructor(_FS, filesystemIndex) {
         this.FS = _FS;
-        const filesystemIndex = loadFilesystemIndex(_url)
         this.url = filesystemIndex.url
-        var json_index = filesystemIndex.json
+        const json_index = filesystemIndex.json
         this.fs_index = {}
         var walk_index = function (path, dir) {
             logger(path, "walk_index")
@@ -405,7 +385,7 @@ export class ScummvmFS {
                 uid: 0,
                 gid: 0,
                 rdev: 0,
-                size: node.size,
+                size: node.size ?? 4096,
                 atime: new Date(),
                 mtime: new Date(),
                 ctime: new Date(),

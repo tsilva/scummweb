@@ -180,9 +180,20 @@ export default function GameBucket({ catalog, officialUrl }) {
               {matches.map(({ target, displayTitle }) => <li key={target}>{displayTitle}</li>)}
             </ul>
             {checked?.targets.length ? (
-              <button type="button" className="secondary-button" onClick={() => save(checked)}>
-                Use this bucket
-              </button>
+              <>
+                <p id="game-bucket-rights-notice">
+                  Only connect a bucket containing game files you’re authorized to download and play.
+                  If you host the files yourself, make sure you also have permission to make them publicly available.
+                </p>
+                <button
+                  type="button"
+                  className="secondary-button"
+                  aria-describedby="game-bucket-rights-notice"
+                  onClick={() => save(checked)}
+                >
+                  Use this bucket
+                </button>
+              </>
             ) : (
               <button type="button" className="secondary-button" disabled={checking} onClick={() => save(null)}>
                 Remove bucket
