@@ -39,6 +39,8 @@ pnpm run sentry:issues   # list recent Sentry issues from local env credentials
 
 ## Notes
 
+- Local builds skip Sentry source-map uploads. Hosted Vercel builds handle uploads.
+
 - Use `pnpm`; `package.json` rejects other package managers during install.
 - `scummvm-shell/` is the tracked source of truth for managed ScummVM shell assets.
 - `public/` is generated staging. Do not hand-edit staged shell files when the source lives in `scummvm-shell/`.
