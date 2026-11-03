@@ -4,13 +4,14 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { readRemoteGameArchive } from "../game-bucket.mjs";
-import { getImportedGamePresentation } from "../game-presentation";
+import { getGamePresentation, getImportedGamePresentation } from "../game-presentation";
 import { checkGameSource, localGame, readGameSources, removeGameSources, saveGameSources } from "../game-sources.mjs";
-import { readGameFolder, readLocalGameArchive, selectGameArchive, validateGameZip } from "../local-game-archive.mjs";
+import { maxLocalGameSize, openLocalGameZip, readGameFolder, selectGameArchive, validateGameZip } from "../local-game-archive.mjs";
 import {
   fileNode, handleNode, openLocalFolder, prepareLocalFolder, prepareLocalZip, scanGameFolder, selectedGameFolder,
 } from "../local-game-import.mjs";
 import LibraryCards, { GamePoster } from "./library-cards";
+import HomeHero from "./home-hero";
 import GameDropOverlay, { chooseZipHandles } from "./local-game";
 
 const sessionGames = new Map();
@@ -31,7 +32,9 @@ function scrollToLibraryItem(item, block) {
   item?.scrollIntoView({ behavior, block });
 }
 
-export default function SourceLibrary({ catalog, officialUrl }) {
+const reconnectStatuses = new Set(["locate", "missing", "permission"]);
+
+export default function SourceLibrary({ catalog, children, featuredGame, libraryHeading, officialUrl }) {
   const router = useRouter();
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -179,15 +182,25 @@ export default function SourceLibrary({ catalog, officialUrl }) {
       const savedIds = new Set();
       let temporary = 0;
       let needsSelection = 0;
+      let reconnected = 0;
+      const reconnectable = entries.filter(({ source, status }) =>
+        !source.url && !sessionGames.has(source.id) && (reconnectStatuses.has(status) || !source.handle)
+      ).map(({ source }) => source);
 
       function updateProgress(index, details) {
         setPending((current) => current.map((item) => item.index === index ? { ...item, ...details } : item));
       }
 
       async function save(game) {
-        const result = await saveLocal(game, known, replacing);
+        const candidates = reconnectable.filter((source) =>
+          !savedIds.has(source.id) && source.name === game.name &&
+          (source.kind ?? "zip") === game.kind
+        );
+        const reconnect = replacing ?? (candidates.length === 1 ? candidates[0] : null);
+        const result = await saveLocal(game, known, reconnect);
         savedIds.add(result.id);
-        items.push({ label: game.name, message: replacing ? "Reconnected" : "Added to your library" });
+        if (reconnect) reconnected++;
+        items.push({ label: game.name, message: reconnect ? "Reconnected" : "Added to your library" });
         if (result.temporary) temporary++;
         else if (result.needsSelection) needsSelection++;
       }
@@ -235,7 +248,7 @@ export default function SourceLibrary({ catalog, officialUrl }) {
         setPending([]);
       }
 
-      setImportResult({ savedIds, items, replacing, temporary, needsSelection });
+      setImportResult({ savedIds, items, replacing, reconnected, temporary, needsSelection });
     }, (message) => setImportResult({
       savedIds: new Set(),
       items: [{ label: "Game files", message, skipped: true }],
@@ -300,8 +313,8 @@ export default function SourceLibrary({ catalog, officialUrl }) {
         } else {
           try {
             const file = data ?? await source.handle.getFile();
-            validateGameZip(file);
-            selectGameArchive(() => readLocalGameArchive(file), game);
+            validateGameZip(file, maxLocalGameSize);
+            selectGameArchive((signal) => openLocalGameZip(file, signal), game);
           } catch {
             updateStatus(source, "missing");
             setNotice("Could not open the ZIP. Locate the file to reconnect it.");
@@ -314,6 +327,28 @@ export default function SourceLibrary({ catalog, officialUrl }) {
   }
 
   const disabled = loading || busy || Boolean(importResult);
+  const library = entries.map(({ source, status }) => {
+    const knownGame = catalog.find(({ target }) => target === source.target)
+      ?? getImportedGamePresentation(source.kind === "folder" ? source.name + ".zip" : source.name);
+    const title = knownGame?.displayTitle ?? source.name.replace(/\.zip$/i, "");
+    const game = knownGame ?? getGamePresentation({ displayTitle: title }, {
+      summary: "Play this game from your library.",
+      badge: "Library game",
+    });
+    const locate = !source.url && ["missing", "locate"].includes(status);
+    const locateLabel = source.kind === "folder" ? "Locate folder" : "Locate ZIP";
+    return {
+      source, status, game, title, locate, locateLabel,
+      action: {
+        label: locate ? `${locateLabel} for ${title}` : `Play ${title}`,
+        disabled: disabled || status === "checking",
+        onClick: () => locate ? chooseLocal(source) : play(source, knownGame),
+      },
+    };
+  });
+  const needsReconnect = library.some(({ source, status }) =>
+    !source.url && reconnectStatuses.has(status)
+  );
 
   return (
     <>
@@ -331,45 +366,53 @@ export default function SourceLibrary({ catalog, officialUrl }) {
         }} />
       <GameDropOverlay importRoots={importRoots} disabled={disabled} pending={pending}
         result={importResult} onConfirm={confirmImport} />
-      <p className="local-game-status" role="status">{notice}</p>
-      <LibraryCards games={catalog}>
-        {entries.map(({ source, status }) => {
-          const game = catalog.find(({ target }) => target === source.target)
-            ?? getImportedGamePresentation(source.kind === "folder" ? source.name + ".zip" : source.name);
-          const title = game?.displayTitle ?? source.name.replace(/\.zip$/i, "");
-          const locate = !source.url && ["missing", "locate"].includes(status);
-          const locateLabel = source.kind === "folder" ? "Locate folder" : "Locate ZIP";
-          const action = locate ? `${locateLabel} for` : "Play";
-          const hint = locate ? locateLabel : ["permission", "missing", "unverified"].includes(status)
-            ? statusText[status] : null;
-          const description = [game?.studio, game?.year, game?.badge, statusText[status]].filter(Boolean).join(" · ");
-          return (
-            <article key={source.id} className="poster-entry source-poster-entry" data-library-source-id={source.id}>
-              <button
-                type="button"
-                className={`poster-card source-poster-card ${game?.tone ?? "tone-default"}`}
-                disabled={disabled || status === "checking"}
-                aria-label={`${action} ${title}`}
-                aria-description={description}
-                title={description}
-                onClick={() => locate ? chooseLocal(source) : play(source, game)}
-              >
-                <GamePoster title={title} image={game?.posterImage} />
-                {hint && <span className="source-poster-hint" aria-hidden="true">{hint}</span>}
+      {featuredGame && <HomeHero catalog={catalog} featuredGame={featuredGame} library={library} />}
+      <div className="section-stack">
+        {children}
+        <section className="content-band" id="library">
+          <div className="section-header">
+            <h2><span className="section-mark" />{libraryHeading}</h2>
+            {needsReconnect && (
+              <button className="secondary-button" type="button" disabled={disabled} onClick={() => chooseFolder()}>
+                Reconnect game folder
               </button>
-              <button
-                type="button"
-                className="source-poster-remove"
-                disabled={disabled}
-                aria-label={`Remove ${title} from your library`}
-                onClick={() => run(() => removeSources([source]))}
-              >
-                <X aria-hidden="true" size={18} />
-              </button>
-            </article>
-          );
-        })}
-      </LibraryCards>
+            )}
+          </div>
+          <p className="local-game-status" role="status">{notice}</p>
+          <LibraryCards games={catalog}>
+            {library.map(({ source, status, game, title, locate, locateLabel, action }) => {
+              const hint = locate ? locateLabel : ["permission", "missing", "unverified"].includes(status)
+                ? statusText[status] : null;
+              const description = [game?.studio, game?.year, game?.badge, statusText[status]].filter(Boolean).join(" · ");
+              return (
+                <article key={source.id} className="poster-entry source-poster-entry" data-library-source-id={source.id}>
+                  <button
+                    type="button"
+                    className={`poster-card source-poster-card ${game?.tone ?? "tone-default"}`}
+                    disabled={action.disabled}
+                    aria-label={action.label}
+                    aria-description={description}
+                    title={description}
+                    onClick={action.onClick}
+                  >
+                    <GamePoster title={title} image={game?.posterImage} />
+                    {hint && <span className="source-poster-hint" aria-hidden="true">{hint}</span>}
+                  </button>
+                  <button
+                    type="button"
+                    className="source-poster-remove"
+                    disabled={disabled}
+                    aria-label={`Remove ${title} from your library`}
+                    onClick={() => run(() => removeSources([source]))}
+                  >
+                    <X aria-hidden="true" size={18} />
+                  </button>
+                </article>
+              );
+            })}
+          </LibraryCards>
+        </section>
+      </div>
     </>
   );
 }

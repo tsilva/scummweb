@@ -100,7 +100,8 @@ function GameImportDialog({ pending, result, onConfirm }) {
   const skipped = result?.items.filter((item) => item.skipped).length ?? 0;
   const title = !result ? "Importing games…"
     : !saved ? "No games added"
-    : result.replacing ? "Game reconnected"
+    : result.reconnected === saved ? (saved === 1 ? "Game reconnected" : `${saved} games reconnected`)
+    : result.reconnected ? `${saved} games updated`
     : saved === 1 ? "1 game added" : `${saved} games added`;
   const Icon = !result ? Download : skipped ? TriangleAlert : CircleCheck;
 
@@ -140,7 +141,7 @@ function GameImportDialog({ pending, result, onConfirm }) {
               })}
             </ul>
             {result.temporary > 0 && <p>Some games are only available in this tab.</p>}
-            {result.needsSelection > 0 && <p>Your browser may ask you to locate the files again after reload.</p>}
+            {result.needsSelection > 0 && <p>If your browser loses file access after a reload, reconnect the game folder from the library.</p>}
           </>
         ) : (
           <ul className="game-import-items" aria-live="polite">

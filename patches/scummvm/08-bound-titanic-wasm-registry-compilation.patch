@@ -1,0 +1,36 @@
+diff --git a/engines/titanic/core/saveable_object.cpp b/engines/titanic/core/saveable_object.cpp
+index 6760cf87..40c434d6 100644
+--- a/engines/titanic/core/saveable_object.cpp
++++ b/engines/titanic/core/saveable_object.cpp
+@@ -427,8 +427,7 @@ CSaveableObject::ClassDefList *CSaveableObject::_classDefs;
+ 	ClassDef *T::_type
+ #define ADDFN(CHILD, PARENT) \
+ 	CHILD::_type = new TypeTemplate<CHILD>(#CHILD, PARENT::_type); \
+-	_classDefs->push_back(CHILD::_type); \
+-	(*_classList)[#CHILD] = Function##CHILD
++	registerClass(CHILD::_type, Function##CHILD)
+ 
+ DEFFN(CArm);
+ DEFFN(CAuditoryCentre);
+@@ -1025,9 +1024,19 @@ void CSaveableObject::initClassList() {
+ 	_classDefs = new ClassDefList();
+ 	_classList = new ClassListMap();
+ 
++	// Hundreds of registrations share the same list and hash operations.
++	// Keep them out of the caller on the web so the browser can compile it quickly.
++	auto registerClass = [](ClassDef *definition, CreateFunction factory)
++#ifdef __EMSCRIPTEN__
++		__attribute__((noinline))
++#endif
++	{
++		_classDefs->push_back(definition);
++		(*_classList)[definition->_className] = factory;
++	};
++
+ 	CSaveableObject::_type = new TypeTemplate<CSaveableObject>("CSaveableObject", nullptr);
+-	_classDefs->push_back(CSaveableObject::_type);
+-	(*_classList)["CSaveableObject"] = FunctionCSaveableObject;
++	registerClass(CSaveableObject::_type, FunctionCSaveableObject);
+ 
+ 	// Setup the type definitions for each class. Note that these have to be
+ 	// in order of hierarchy from ancestor class to descendent

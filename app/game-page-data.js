@@ -60,7 +60,7 @@ export function getHomeShellData(options = {}) {
     throw new Error("No installed game metadata found");
   }
 
-  const catalog = games.map(getGamePresentation);
+  const catalog = games.map((game) => getGamePresentation(game));
   const featuredGame = featuredGameSlug
     ? catalog.find((game) => game.slug === featuredGameSlug) || null
     : featuredGameTarget

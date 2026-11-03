@@ -7,7 +7,14 @@ VENDOR_DIR="$ROOT_DIR/vendor"
 source "$ROOT_DIR/scripts/scummvm-version.sh"
 SCUMMVM_REPO_URL="https://github.com/scummvm/scummvm.git"
 SCUMMVM_DIR="$VENDOR_DIR/scummvm-$SCUMMVM_TAG"
-SCUMMVM_ENGINES=(sky dreamweb queen lure drascula parallaction sword25 scumm cge2)
+SCUMMVM_ENGINES=(
+  access agi agos bbvs cge cge2 cine composer cruise draci drascula dreamweb
+  gnap gob groovie hopkins hugo kyra lab lure made mads mohawk neverhood ngi
+  parallaction pegasus plumbers queen saga sci scumm sherlock sky sword1 sword2
+  sword25 teenagent tinsel titanic toltecs tony toon touche tsage tucker voyeur wintermute
+)
+# configure disables subengines separately from their parent plugins.
+SCUMMVM_SUBENGINES=(agos2 blueforce eob he ihnm lol myst mystme ringworld ringworld2 riven sci32 scumm_7_8)
 DIST_DIR="$ROOT_DIR/dist"
 SHELL_DIR="$ROOT_DIR/scummvm-shell"
 DOWNLOADS_DIR="$ROOT_DIR/downloads"
@@ -22,6 +29,9 @@ export SCUMMVM_BUNDLE_ASSET_VERSION
 EMSDK_DIR=""
 EMSDK_NODE=""
 EMSCRIPTEN_LIBS_BUILD_DIR=""
+FLAC_VERSION=1.5.0
+FLAC_SHA256=f2c1c76592a82ffff8413ba3c4a1299b6c7ab06c734dee03fd88630485c2b920
+FLAC_PREFIX=""
 
 shopt -s nullglob
 source "$ROOT_DIR/scripts/build_helpers.sh"
@@ -331,19 +341,48 @@ EOF
       "$EMSCRIPTEN_LIBS_BUILD_DIR/lib/"
     cp "$vorbis_source_dir/include/vorbis/"*.h "$EMSCRIPTEN_LIBS_BUILD_DIR/include/vorbis/"
   fi
+
+  prepare_flac_prefix
+}
+
+prepare_flac_prefix() {
+  local source_dir="$VENDOR_DIR/flac-$FLAC_VERSION"
+  local archive="$source_dir.tar.xz"
+  FLAC_PREFIX="$EMSCRIPTEN_LIBS_BUILD_DIR/flac-$FLAC_VERSION-pic"
+
+  if [[ -s "$FLAC_PREFIX/lib/libFLAC.a" && -f "$FLAC_PREFIX/include/FLAC/stream_decoder.h" && -f "$FLAC_PREFIX/COPYING.Xiph" ]]; then
+    return
+  fi
+
+  if [[ ! -f "$archive" ]]; then
+    curl --fail --location --output "$archive.part" "https://downloads.xiph.org/releases/flac/flac-$FLAC_VERSION.tar.xz"
+    mv "$archive.part" "$archive"
+  fi
+  printf '%s  %s\n' "$FLAC_SHA256" "$archive" | shasum -a 256 -c -
+  tar -xf "$archive" -C "$VENDOR_DIR"
+  emcmake cmake -S "$source_dir" -B "$FLAC_PREFIX/build" \
+    -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+    -DCMAKE_INSTALL_PREFIX="$FLAC_PREFIX" -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_SHARED_LIBS=OFF -DBUILD_CXXLIBS=OFF -DBUILD_PROGRAMS=OFF -DBUILD_EXAMPLES=OFF \
+    -DBUILD_TESTING=OFF -DBUILD_DOCS=OFF -DWITH_OGG=OFF -DENABLE_MULTITHREADING=OFF
+  cmake --build "$FLAC_PREFIX/build" --parallel 4
+  cmake --install "$FLAC_PREFIX/build"
+  cp "$source_dir/COPYING.Xiph" "$FLAC_PREFIX/"
 }
 
 build_scummvm_web_target() {
-  local engine
+  local engine config_key
   local engine_config_args=()
-  for engine in "${SCUMMVM_ENGINES[@]}"; do
+  for engine in "${SCUMMVM_ENGINES[@]}" "${SCUMMVM_SUBENGINES[@]}"; do
     engine_config_args+=("--enable-engine=$engine")
   done
 
-  local sword25_config_args=(
+  local codec_config_args=(
     --enable-ogg
     --enable-vorbis
     --enable-zlib
+    --enable-jpeg
+    --enable-mad
     --enable-png
     --enable-theoradec
     --with-ogg-prefix="$EMSCRIPTEN_LIBS_BUILD_DIR"
@@ -374,13 +413,21 @@ build_scummvm_web_target() {
     --default-dynamic \
     --disable-detection-full \
     "${engine_config_args[@]}" \
-    "${sword25_config_args[@]}" \
+    "${codec_config_args[@]}" \
+    --enable-flac --with-flac-prefix="$FLAC_PREFIX" \
     --disable-seq-midi \
     --disable-timidity
 
   for engine in "${SCUMMVM_ENGINES[@]}"; do
     if [[ ! -s "build-emscripten/data/plugins/lib$engine.so" ]]; then
       echo "Missing engine plugin lib$engine.so for $SCUMMVM_TAG." >&2
+      exit 1
+    fi
+  done
+  for engine in "${SCUMMVM_SUBENGINES[@]}"; do
+    config_key="$(printf '%s' "$engine" | tr '[:lower:]' '[:upper:]')"
+    if ! grep -Fxq "ENABLE_$config_key = 1" config.mk; then
+      echo "Missing subengine $engine for $SCUMMVM_TAG." >&2
       exit 1
     fi
   done
@@ -532,6 +579,11 @@ main() {
 
   log_stage "Stage ScummWEB shell and filesystem index"
   python3 "$ROOT_DIR/scripts/stage_scummvm_web_shell.py" "$SCUMMVM_DIR/build-emscripten"
+  cp "$FLAC_PREFIX/COPYING.Xiph" "$SCUMMVM_DIR/build-emscripten/doc/COPYING.FLAC"
+  cp "$SCUMMVM_DIR/dists/emscripten/libs/libmad-0.15.1b/COPYRIGHT" \
+    "$SCUMMVM_DIR/build-emscripten/doc/COPYRIGHT.MAD"
+  cp "$SCUMMVM_DIR/dists/emscripten/libs/libmad-0.15.1b/COPYING" \
+    "$SCUMMVM_DIR/build-emscripten/doc/COPYING.MAD"
   python3 "$ROOT_DIR/scripts/write_scummvm_http_index.py" "$SCUMMVM_DIR/build-emscripten/data"
 
   if [[ "${SCUMMVM_REUSE_CATALOG:-0}" == 1 ]]; then

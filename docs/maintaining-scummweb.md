@@ -145,3 +145,29 @@ into the managed shell during ScummVM rebuilds.
 - Sfinx ZIPs use the CGE2 engine. Artwork comes from the
   [original box front scan](https://gamesdb.launchbox-app.com/games/images/86024-sfinx)
   and [ScummVM gameplay captures](https://www.scummvm.org/screenshots/lkavalon/).
+- Imported Indiana Jones games use the SCUMM engine. The importer recognizes
+  the full titles in ZIP and folder names and shares art across platform,
+  language, and edition labels in parentheses. Their posters come from the
+  [Fate of Atlantis DOS box scan](https://gamesdb.launchbox-app.com/games/images/5386-indiana-jones-and-the-fate-of-atlantis)
+  and [Last Crusade Amiga box scan](https://gamesdb.launchbox-app.com/games/images/18310-indiana-jones-and-the-last-crusade-the-graphic-adventure).
+  Gameplay images come from the [ScummVM screenshot gallery](https://www.scummvm.org/screenshots/lucasarts/indy/).
+  The web build includes checksum-pinned [Xiph FLAC](https://www.xiph.org/downloads/)
+  for CD speech archives such as Fate of Atlantis’s `monster.sof`.
+- These personal SCUMM imports share one set of artwork across editions:
+
+  | Game | Box scan | Gameplay capture |
+  | --- | --- | --- |
+  | Day of the Tentacle | [DOS cover](https://gamesdb.launchbox-app.com/games/images/3575-maniac-mansion-day-of-the-tentacle) | [English DOS](https://www.scummvm.org/data/screenshots/scumm/tentacle/tentacle_dos_en_1_2_full.png) |
+  | Loom | [Original cover](https://gamesdb.launchbox-app.com/games/images/5391-loom) | [English DOS VGA](https://www.scummvm.org/data/screenshots/scumm/loom/loom_dos_en_2_2_full.png) |
+  | Maniac Mansion | [Amiga cover](https://gamesdb.launchbox-app.com/games/images/41172-maniac-mansion) | [English Amiga](https://www.scummvm.org/screenshots/lucasarts/maniac/) |
+  | Monkey Island 2: LeChuck’s Revenge | [Original cover](https://gamesdb.launchbox-app.com/games/images/723-monkey-island-2-lechucks-revenge) | [English DOS](https://www.scummvm.org/data/screenshots/scumm/monkey2/monkey2_dos_en_1_1_full.png) |
+  | Sam & Max Hit the Road | [DOS cover](https://gamesdb.launchbox-app.com/games/images/58-sam-max-hit-the-road) | [English DOS](https://www.scummvm.org/data/screenshots/scumm/samnmax/samnmax_dos_en_1_3_full.png) |
+  | Zak McKracken and the Alien Mindbenders | [Amiga cover](https://openretro.org/amiga/zak-mckracken-and-the-alien-mindbenders) | [English Amiga](https://www.scummvm.org/screenshots/lucasarts/scumm:zak/) |
+
+  The larger personal collection uses the per-title artwork and source links in
+  [`app/retro-game-artwork.json`](../app/retro-game-artwork.json). It includes
+  original box scans, gameplay captures, and title cards where a cover was
+  unavailable. Different editions can point to the same files.
+  The homepage uses a game's landscape artwork or gameplay capture as its
+  slideshow backdrop. Imported slides use the same Play and reconnect actions
+  as their library cards.

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { BlobWriter, Uint8ArrayReader, ZipWriter } from "@zip.js/zip.js";
-import { readLocalGameArchive } from "../app/local-game-archive.mjs";
+import { maxExpandedSize, readGameFolder, readLocalGameArchive } from "../app/local-game-archive.mjs";
 
 async function gameZip(paths) {
   const writer = new ZipWriter(new BlobWriter());
@@ -41,4 +41,12 @@ test("a DOS DOTT launcher without the game data reports the missing files", asyn
   const completeZip = await gameZip(["DOTT.EXE", "TENTACLE.000", "TENTACLE.001"]);
   const files = await readLocalGameArchive(completeZip);
   assert.deepEqual(files.map(({ path }) => path), ["DOTT.EXE", "TENTACLE.000", "TENTACLE.001"]);
+});
+
+test("a large local folder hands the player the original file without unpacking it", async () => {
+  const blockSize = 1024 * 1024;
+  const block = new Blob([new Uint8Array(blockSize)]);
+  const file = new File(Array(maxExpandedSize / blockSize + 1).fill(block), "video.dat");
+  const files = await readGameFolder([{ file, path: "game/video.dat" }]);
+  assert.deepEqual(files, [{ path: "video.dat", blob: file }]);
 });

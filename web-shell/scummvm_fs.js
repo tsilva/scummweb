@@ -495,7 +495,7 @@ export class ScummvmFS {
         },
 
         read: (stream, buffer, offset, length, position) => {
-            if (!position) {
+            if (position === undefined) {
                 position = stream.position
             }
             // logger(stream.path, "read stream - offset:" + offset + " length:" + length + " position:" + position)
@@ -557,6 +557,82 @@ export class ScummvmFS {
     }
 
 
+}
+
+// Keep large local games on disk. Cache a small number of fixed-size reads
+// across all files so video, speech and CD audio cannot fill the JS heap.
+const LOCAL_BLOCK_SIZE = 256 * 1024;
+const LOCAL_CACHE_BLOCKS = 32;
+
+export class LocalGameFS extends ScummvmFS {
+    constructor(fs, files) {
+        const json = Object.create(null);
+        const blobs = new Map();
+        for (const { path, blob, data } of files) {
+            const source = blob ?? new Blob([data]);
+            blobs.set("/" + path, source);
+            const parts = path.split("/");
+            const name = parts.pop();
+            let directory = json;
+            for (const part of parts) directory = directory[part] ??= Object.create(null);
+            directory[name] = source.size;
+        }
+        super(fs, { json });
+        // Remote indexes hide their own index.json. A local game's index.json
+        // is ordinary data and must remain readable.
+        for (const [path, blob] of blobs) this.fs_index[path] = blob.size;
+        this.blobs = blobs;
+        this.cache = new Map();
+    }
+
+    read({ path, start, end }) {
+        const blob = this.blobs.get(path);
+        if (!blob) throw new this.FS.ErrnoError(ERRNO_CODES.ENOENT);
+        const size = Math.max(0, Math.min(end + 1, blob.size) - start);
+        const result = new Uint8Array(size);
+        let copied = 0;
+        while (copied < size) {
+            const position = start + copied;
+            const block = Math.floor(position / LOCAL_BLOCK_SIZE);
+            const blockStart = block * LOCAL_BLOCK_SIZE;
+            const key = `${path}\0${block}`;
+            let bytes = this.cache.get(key);
+            if (bytes) {
+                this.cache.delete(key);
+            } else {
+                bytes = this.readBlock(blob.slice(blockStart, blockStart + LOCAL_BLOCK_SIZE));
+            }
+            this.cache.set(key, bytes);
+            if (this.cache.size > LOCAL_CACHE_BLOCKS) this.cache.delete(this.cache.keys().next().value);
+            const offset = position - blockStart;
+            const chunk = bytes.subarray(offset, offset + size - copied);
+            result.set(chunk, copied);
+            copied += chunk.length;
+        }
+        return { ok: true, data: result };
+    }
+
+    readBlock(blob) {
+        // Synchronous Emscripten reads run on the browser thread. A local
+        // object URL serves only the requested slice. Prefix one byte so a
+        // binary block starting with a BOM is never decoded as UTF-16.
+        const url = URL.createObjectURL(new Blob([new Uint8Array(1), blob]));
+        try {
+            const request = new XMLHttpRequest();
+            request.open("GET", url, false);
+            request.overrideMimeType("text/plain; charset=x-user-defined");
+            request.send();
+            const text = request.responseText;
+            if (request.status !== 200 || text.length !== blob.size + 1) {
+                throw new this.FS.ErrnoError(ERRNO_CODES.EINVAL);
+            }
+            const bytes = new Uint8Array(blob.size);
+            for (let i = 0; i < bytes.length; i++) bytes[i] = text.charCodeAt(i + 1);
+            return bytes;
+        } finally {
+            URL.revokeObjectURL(url);
+        }
+    }
 }
 
 function realPath(node, fileName) {

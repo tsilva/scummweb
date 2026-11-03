@@ -30,8 +30,12 @@ Game details link to each title’s bundled readme or license.
 
 - **From your device** — Drop game ZIPs or folders anywhere on the homepage or a game’s landing page.
   ScummWEB looks for ZIPs in subfolders and treats a folder without ZIPs as
-  one unpacked game. Files stay on your device. Use **Locate ZIP** or
-  **Locate folder** if access is lost.
+  one unpacked game. Files stay on your device. If your browser loses access
+  after a reload, use **Reconnect game folder** or drop the same folder again.
+  The homepage slideshow includes imported games and uses gameplay artwork for
+  recognized titles. Platform, language, and edition variants can share the same art.
+  For a large local game, drop its unpacked folder or create a ZIP with
+  compression disabled. Local games can be up to 4 GiB.
 - **From a link** — Open
   `/local/play#zip=https%3A%2F%2Fexample.com%2Fgame.zip` on your ScummWEB site.
   URL-encode the direct HTTPS ZIP address. The browser downloads and unpacks

@@ -7,10 +7,16 @@ import HeroStage from "./hero-stage";
 const SLIDE_DURATION_MS = 8000;
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
-export default function HomeHero({ catalog, featuredGame }) {
-  const slides = [featuredGame, ...catalog.filter((game) => game.target !== featuredGame.target)];
+export default function HomeHero({ catalog, featuredGame, library }) {
+  const catalogSlide = (game) => ({ id: `catalog:${game.target}`, game });
+  const slides = [
+    catalogSlide(featuredGame),
+    ...library.map(({ source, game, action }) => ({ id: `library:${source.id}`, game, action })),
+    ...catalog.filter((game) => game.target !== featuredGame.target).map(catalogSlide),
+  ];
   const slideCount = slides.length;
-  const [slideIndex, setSlideIndex] = useState(0);
+  const [selectedId, setSelectedId] = useState(null);
+  const slideIndex = Math.max(0, slides.findIndex(({ id }) => id === selectedId));
   const [rotationPaused, setRotationPaused] = useState(null);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [isPageVisible, setIsPageVisible] = useState(false);
@@ -38,7 +44,11 @@ export default function HomeHero({ catalog, featuredGame }) {
 
   function moveSlide(direction) {
     setRotationPaused(true);
-    setSlideIndex((index) => (index + direction + slideCount) % slideCount);
+    advanceSlide(direction);
+  }
+
+  function advanceSlide(direction) {
+    setSelectedId(slides[(slideIndex + direction + slideCount) % slideCount].id);
   }
 
   const currentSlide = slides[slideIndex];
@@ -47,7 +57,7 @@ export default function HomeHero({ catalog, featuredGame }) {
   return (
     <HeroStage
       carouselProps={slideCount > 1 ? {
-        "aria-label": "Featured games",
+        "aria-label": "Game slideshow",
         "aria-roledescription": "carousel",
         onPointerEnter: (event) => setHasPointer(event.pointerType === "mouse"),
         onPointerLeave: () => setHasPointer(false),
@@ -66,7 +76,7 @@ export default function HomeHero({ catalog, featuredGame }) {
           <span className="hero-carousel-count" aria-live={isPaused ? "polite" : "off"} aria-atomic="true">
             <span aria-hidden="true">{slideIndex + 1}/{slideCount}</span>
             <span className="hero-carousel-announcement">
-              {currentSlide.displayTitle}, slide {slideIndex + 1} of {slideCount}
+              {currentSlide.game.displayTitle}, slide {slideIndex + 1} of {slideCount}
             </span>
           </span>
           <button type="button" aria-label="Next game" onClick={() => moveSlide(1)}>
@@ -81,7 +91,7 @@ export default function HomeHero({ catalog, featuredGame }) {
             <svg className="hero-carousel-ring" viewBox="0 0 36 36" aria-hidden="true">
               <circle cx="18" cy="18" r="17" className="hero-carousel-ring-track" />
               <circle
-                key={slideIndex}
+                key={currentSlide.id}
                 cx="18"
                 cy="18"
                 r="17"
@@ -91,15 +101,16 @@ export default function HomeHero({ catalog, featuredGame }) {
                   animationDuration: `${SLIDE_DURATION_MS}ms`,
                   animationPlayState: isCountingDown ? "running" : "paused",
                 }}
-                onAnimationEnd={() => setSlideIndex((index) => (index + 1) % slideCount)}
+                onAnimationEnd={() => advanceSlide(1)}
               />
             </svg>
             <RotationIcon size={15} fill="currentColor" aria-hidden="true" />
           </button>
         </div>
       ) : null}
-      featuredGame={currentSlide}
-      gameCount={catalog.length}
+      featuredGame={currentSlide.game}
+      gameCount={slideCount}
+      sourceAction={currentSlide.action}
       isHomePage
       isInitialSlide={slideIndex === 0}
     />

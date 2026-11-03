@@ -1,5 +1,5 @@
 import { bucketStorageKey, bucketZipUrl, checkGameZip, readSavedBucket } from "./game-bucket.mjs";
-import { validateGameZip } from "./local-game-archive.mjs";
+import { maxLocalGameSize, validateGameZip } from "./local-game-archive.mjs";
 
 export function remoteGame(url, game) {
   const name = decodeURIComponent(new URL(url).pathname.split("/").at(-1));
@@ -33,7 +33,7 @@ export async function checkGameSource(source) {
       }
       return "missing";
     }
-    validateGameZip(await source.handle.getFile());
+    validateGameZip(await source.handle.getFile(), maxLocalGameSize);
     return "available";
   } catch {
     return source.url ? "unverified" : "missing";

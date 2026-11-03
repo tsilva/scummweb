@@ -1,6 +1,79 @@
 import { getVersionedSiteAssetPath } from "./asset-paths";
+import retroGameArtwork from "./retro-game-artwork.json";
+
+const importedScummGames = [
+  {
+    target: "tentacle",
+    titles: ["Day of the Tentacle", "Maniac Mansion: Day of the Tentacle"],
+    studio: "LucasArts",
+    year: "1993",
+    summary: "Send Bernard, Hoagie, and Laverne through time to stop Purple Tentacle from taking over the world.",
+  },
+  {
+    target: "loom",
+    titles: ["Loom"],
+    studio: "Lucasfilm Games",
+    year: "1990",
+    summary: "Play musical drafts as Bobbin Threadbare and discover what happened to the Weavers.",
+  },
+  {
+    target: "maniac",
+    titles: ["Maniac Mansion"],
+    studio: "Lucasfilm Games",
+    year: "1987",
+    summary: "Pick a team of teenagers to explore Dr. Fred's mansion and rescue Sandy.",
+  },
+  {
+    target: "monkey2",
+    titles: ["Monkey Island 2: LeChuck's Revenge"],
+    studio: "Lucasfilm Games",
+    year: "1991",
+    summary: "Search for the treasure of Big Whoop as the undead pirate LeChuck returns for revenge.",
+  },
+  {
+    target: "samnmax",
+    titles: ["Sam & Max Hit the Road", "Sam and Max Hit the Road"],
+    studio: "LucasArts",
+    year: "1993",
+    summary: "Join freelance police Sam and Max on a road trip to track down a missing carnival Bigfoot.",
+  },
+  {
+    target: "zak",
+    titles: ["Zak McKracken and the Alien Mindbenders"],
+    studio: "Lucasfilm Games",
+    year: "1988",
+    summary: "Follow tabloid reporter Zak McKracken as he uncovers an alien plot to make Earth stupid.",
+  },
+];
 
 const artByTarget = {
+  ...Object.fromEntries(importedScummGames.map(({ target, studio, year, summary }) => [target, {
+    eyebrow: `${studio} Adventure`,
+    genre: "Point-and-click adventure",
+    studio,
+    year,
+    summary,
+    posterImage: `/launcher/${target}-cover.webp`,
+    screenshots: [`/launcher/${target}-shot.webp`],
+  }])),
+  atlantis: {
+    eyebrow: "LucasArts Adventure",
+    summary: "Indy and Sophia Hapgood race to find Atlantis in an original globetrotting adventure.",
+    genre: "Point-and-click adventure",
+    studio: "LucasArts",
+    year: "1992",
+    posterImage: "/launcher/atlantis-cover.webp",
+    screenshots: ["/launcher/atlantis-shot.webp"],
+  },
+  indy3: {
+    eyebrow: "Lucasfilm Games Adventure",
+    summary: "Follow Indy and his father on the search for the Holy Grail in the graphic adventure based on the film.",
+    genre: "Point-and-click adventure",
+    studio: "Lucasfilm Games",
+    year: "1989",
+    posterImage: "/launcher/indy3-cover.webp",
+    screenshots: ["/launcher/indy3-shot.webp"],
+  },
   sfinx: {
     eyebrow: "L.K. Avalon",
     summary: "Switch between two young adventurers and solve puzzles in this colorful Polish point-and-click comedy.",
@@ -186,8 +259,8 @@ const defaultArt = {
   tone: "tone-default",
 };
 
-export function getGamePresentation(game) {
-  const art = { ...defaultArt, ...(artByTarget[game.target] || {}) };
+export function getGamePresentation(game, importedArt) {
+  const art = { ...defaultArt, ...artByTarget[game.target], ...importedArt };
   const screenshots = art.screenshots.map(getVersionedSiteAssetPath);
 
   return {
@@ -215,7 +288,72 @@ export function getGamePresentation(game) {
   };
 }
 
+function getImportedScummPresentation(target, title, variant) {
+  const platform = /\bamiga\b/i.test(variant) ? "Amiga" : /\bdos\b/i.test(variant) ? "DOS" : undefined;
+  const edition = /\bcd\b/i.test(variant) ? "CD" : undefined;
+  const demo = /\bdemo\b/i.test(variant) ? " (Demo)" : "";
+  const labels = [...variant.matchAll(/\(([^()]+)\)/g)].map(([, label]) => label);
+  return {
+    ...getGamePresentation({ target, displayTitle: title + demo, engineId: "scumm" }),
+    platform,
+    edition,
+    badge: labels.join(" · ") || "Local game",
+  };
+}
+
+const normalizeImportedTitle = (title) => title.toLowerCase().replace(/[:\s-]+/g, " ").trim();
+const splitImportedEdition = (name) => /^(.+?)((?:\s+\([^()]+\))*)$/.exec(name);
+const retroByEdition = new Map();
+const retroByTitle = new Map();
+for (const [id, record] of Object.entries(retroGameArtwork)) {
+  const game = { id, ...record };
+  for (const alias of [record.title, ...record.aliases]) {
+    retroByEdition.set(normalizeImportedTitle(alias), game);
+    const title = normalizeImportedTitle(splitImportedEdition(alias)[1]);
+    const existing = retroByTitle.get(title);
+    retroByTitle.set(title, existing === undefined || existing === game ? game : null);
+  }
+}
+
 export function getImportedGamePresentation(filename) {
+  const archive = /^(.+?)((?:\s+\([^()]+\))*)\.zip$/i.exec(filename);
+  const indy = archive && /^indiana jones and the (fate of atlantis|last crusade)(?:[: -]+the graphic adventure)?$/i.exec(archive[1]);
+  if (indy && !/\baction game\b/i.test(archive[2])) {
+    const atlantis = indy[1].toLowerCase() === "fate of atlantis";
+    return getImportedScummPresentation(
+      atlantis ? "atlantis" : "indy3",
+      `Indiana Jones and the ${atlantis ? "Fate of Atlantis" : "Last Crusade"}`,
+      archive[2]
+    );
+  }
+
+  if (archive) {
+    const title = normalizeImportedTitle(archive[1]);
+    const game = importedScummGames.find(({ titles }) =>
+      titles.some((alias) => normalizeImportedTitle(alias) === title)
+    );
+    if (game) return getImportedScummPresentation(game.target, game.titles[0], archive[2]);
+
+    const retro = retroByEdition.get(normalizeImportedTitle(archive[1] + archive[2])) ?? retroByTitle.get(title);
+    if (retro) {
+      const labels = [...archive[2].matchAll(/\(([^()]+)\)/g)].map(([, label]) => label);
+      const demo = /\bdemo\b/i.test(archive[2]) && !/\(Demo\)$/i.test(retro.title);
+      const [engineId, target] = retro.id.split(":");
+      return {
+        ...getGamePresentation({
+          target,
+          engineId: engineId === "local" ? "scumm" : engineId,
+          displayTitle: retro.title + (demo ? " (Demo)" : ""),
+        }, {
+          posterImage: retro.posterImage,
+          screenshots: retro.screenshots,
+          summary: `Play your local copy of ${retro.title} in ScummVM.`,
+        }),
+        badge: labels.join(" · ") || "Local game",
+      };
+    }
+  }
+
   const sfinx = /^sfinx(?:-(en|pl|de))?(?:-v(\d+(?:\.\d+)*))?\.zip$/i.exec(filename);
   if (!sfinx) return null;
 

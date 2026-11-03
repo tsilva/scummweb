@@ -1,7 +1,6 @@
 import GameDetailModal from "./home-shell/game-detail-modal";
 import Icon from "./home-shell/shell-icon";
 import HeroStage from "./home-shell/hero-stage";
-import HomeHero from "./home-shell/home-hero";
 import SourceLibrary from "./home-shell/source-library";
 import RecentGamesRail from "./recent-games-rail";
 import { getGamesOrigin } from "../lib/site-config.mjs";
@@ -64,12 +63,15 @@ export default function HomeShell({
       </nav>
 
       <main className="page-shell">
-        {isHomePage ? (
-          <HomeHero catalog={catalog} featuredGame={featuredGame} />
-        ) : (
+        {!isHomePage && (
           <HeroStage featuredGame={featuredGame} gameCount={catalog.length} />
         )}
-        <div className="section-stack">
+        <SourceLibrary
+          catalog={catalog}
+          featuredGame={isHomePage ? featuredGame : null}
+          libraryHeading={libraryHeading}
+          officialUrl={getGamesOrigin()}
+        >
           <section className="content-band">
             <div className="section-header">
               <h2>
@@ -80,18 +82,7 @@ export default function HomeShell({
 
             <RecentGamesRail catalog={catalog} />
           </section>
-
-          <section className="content-band" id="library">
-            <div className="section-header">
-              <h2>
-                <span className="section-mark" />
-                {libraryHeading}
-              </h2>
-            </div>
-
-            <SourceLibrary catalog={catalog} officialUrl={getGamesOrigin()} />
-          </section>
-        </div>
+        </SourceLibrary>
       </main>
 
       <footer className="site-footer">
