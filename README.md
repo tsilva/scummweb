@@ -28,7 +28,7 @@ Game details link to each title’s bundled readme or license.
 
 ## Add your games
 
-- **From your device** — Drop game ZIPs or folders anywhere on the homepage.
+- **From your device** — Drop game ZIPs or folders anywhere on the homepage or a game’s landing page.
   ScummWEB looks for ZIPs in subfolders and treats a folder without ZIPs as
   one unpacked game. Files stay on your device. Use **Locate ZIP** or
   **Locate folder** if access is lost.
@@ -37,7 +37,7 @@ Game details link to each title’s bundled readme or license.
   URL-encode the direct HTTPS ZIP address. The browser downloads and unpacks
   the ZIP directly from its host, which must allow cross-origin GET requests
   from your ScummWEB site. If the host blocks access, download the ZIP
-  yourself and drop it onto the homepage.
+  yourself and drop it onto either page.
 
 The drop overlay shows import progress and lists the added and skipped files
 when the batch finishes.
