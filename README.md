@@ -23,6 +23,19 @@ pnpm run dev --port auto
 
 Open the URL printed by the server.
 
+Under **Freeware Adventure Library**, open **Connect a game bucket** to use a
+public HTTPS R2 or S3 bucket. Upload one game per ZIP at the bucket root using the
+exact names in the filename glossary. Allow cross-origin `HEAD` and `GET` requests
+from your ScummWEB site. Select **Check bucket**, then **Use this bucket** to save
+the URL and matches in this browser. The Library restores bucket cards from those
+saved matches when you return. Recheck the bucket after adding or removing ZIPs.
+
+Click a matched Library card to download its ZIP directly from the bucket and
+play it in your browser. ZIPs can be up to 128 MiB compressed and 256 MiB unpacked. Connecting the official
+ScummWEB bucket shows the games in its existing index and keeps the standard
+Library cards and player. For the English DOS EGA demo of The Secret of Monkey
+Island, upload the [ScummVM demo](https://www.scummvm.org/demos/) as `monkey-demo.zip`.
+
 ## Commands
 
 ```bash
@@ -49,6 +62,7 @@ pnpm run sentry:issues   # list recent Sentry issues from local env credentials
 - Production game payloads are served from `SCUMMVM_GAMES_ORIGIN`; localhost can use `/games-proxy/*` for verification.
 - `pnpm run verify` runs `scripts/verify_scummvm_web.sh` and needs a local Chrome or Chromium install.
 - `pnpm run build:scummvm` clones or reuses `vendor/scummvm` at ScummVM `v2.9.1`, applies local patches, regenerates `dist/`, and syncs the shell back into `scummvm-shell/`.
+- For a runtime rebuild with the existing catalog, run `SCUMMVM_REUSE_CATALOG=1 pnpm run build:scummvm`. Keep the staged WebAssembly engine plugins and shell from the same build.
 - R2 uploads require `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and the `SCUMMVM_R2_*` settings used by `scripts/upload_games_to_r2.py`.
 - Sentry is optional. Runtime capture uses `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_DSN`, `NEXT_PUBLIC_SENTRY_ENABLED`, and the Sentry project settings in `next.config.js`.
 - `NEXT_PUBLIC_SITE_URL` controls public metadata, sitemap, robots, and Open Graph URLs.
@@ -71,7 +85,7 @@ The events share `game_slug`, `entry_point` (`hero`, `library`, `game_detail`, o
 within the same visit. The play timer pauses while the game reloads or the tab
 is hidden. A visit can report a failure and later recover. Leaving before
 the player reports an outcome appears as a drop-off in the funnel.
-Local ZIP and external bucket launches are outside this catalog funnel.
+External bucket launches are outside this catalog funnel.
 
 In GA4 Explorations, build a closed funnel from `game_launch_attempt` to
 `game_launch` to `game_play_milestone` to compare users at each step. For

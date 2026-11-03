@@ -245,7 +245,7 @@
 .hero-copy h1,
 .section-header h2,
 .landscape-overlay h3,
-.poster-overlay p,
+.poster-title,
 .spotlight-copy h3,
 .site-footer strong {
   font-family: var(--font-display), sans-serif;
@@ -845,6 +845,22 @@
   background-color: var(--surface-high);
 }
 
+.bucket-poster-button {
+  width: 100%;
+  border: 0;
+  color: inherit;
+  text-align: left;
+}
+
+.bucket-poster-placeholder {
+  display: grid;
+  height: 100%;
+  place-items: center;
+  background: radial-gradient(circle, #654730, #241a16 70%);
+  color: #ffe1a9;
+  font-size: 4rem;
+}
+
 .poster-entry .game-details-link {
   display: block;
   padding: 0.65rem 0.5rem;
@@ -903,7 +919,7 @@
   background: linear-gradient(180deg, rgba(10, 10, 10, 0), rgba(10, 10, 10, 0.94));
 }
 
-.poster-overlay p {
+.poster-title {
   margin: 0;
   font-size: 0.92rem;
   font-weight: 700;
@@ -1107,4 +1123,85 @@
     width: 2.15rem;
     height: 2.15rem;
   }
+}
+
+.game-bucket {
+  max-width: 48rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 1px solid currentColor;
+  border-radius: 0.75rem;
+}
+
+.game-bucket summary,
+.game-bucket-form label {
+  font-weight: 700;
+}
+
+.game-bucket summary {
+  cursor: pointer;
+}
+
+.game-bucket-form,
+.game-bucket-glossary,
+.game-bucket-matches {
+  margin-top: 1rem;
+}
+
+.game-bucket-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-top: 0.35rem;
+}
+
+.game-bucket-actions input {
+  flex: 1 1 15rem;
+  min-width: 0;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid currentColor;
+  border-radius: 0.4rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: max(1em, 16px);
+}
+
+.game-bucket-glossary table {
+  width: 100%;
+  margin-top: 0.5rem;
+  border-collapse: collapse;
+}
+
+.game-bucket-glossary :is(th, td) {
+  padding: 0.4rem 0.5rem 0.4rem 0;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.game-bucket-matches ul {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0;
+  list-style: none;
+}
+
+.local-game-status {
+  margin: 0.75rem 0 0;
+}
+
+.local-game-status:empty {
+  margin: 0;
+}
+
+.local-game-player {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  max-height: 80vh;
+  margin-top: 1rem;
+  border: 0;
+  background: #000;
 }

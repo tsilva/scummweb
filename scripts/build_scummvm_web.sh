@@ -155,6 +155,8 @@ bootstrap_scummvm_checkout() {
     "$SCUMMVM_DIR/engines/queen/talk.cpp"
   python3 "$ROOT_DIR/scripts/patch_scummvm_lure_menu.py" \
     "$SCUMMVM_DIR/engines/lure/menu.cpp"
+  python3 "$ROOT_DIR/scripts/patch_scummvm_plugin_lookup.py" \
+    "$SCUMMVM_DIR/base/plugins.cpp"
 }
 
 bootstrap_toolchain() {
@@ -232,6 +234,12 @@ EOF
   chmod +x "$ROOT_DIR/tools/bin/wget"
 
   export PATH="$ROOT_DIR/tools/bin:$PATH"
+  if [[ ! -x "$EMSDK_DIR/upstream/emscripten/emcc" ]]; then
+    "$EMSDK_DIR/emsdk" install "$EMSDK_VERSION"
+  fi
+  if [[ ! -f "$EMSDK_DIR/.emscripten" ]]; then
+    "$EMSDK_DIR/emsdk" activate "$EMSDK_VERSION"
+  fi
   # shellcheck disable=SC1090
   source "$EMSDK_DIR/emsdk_env.sh"
 }
@@ -314,8 +322,15 @@ build_scummvm_web_target() {
   )
 
   cd "$SCUMMVM_DIR"
+  # Objects that don't include config.h may survive a static-to-plugin reconfigure.
+  if [[ -f config.mk ]] && ! grep -qx 'DYNAMIC_MODULES = 1' config.mk; then
+    emmake make clean
+  fi
   ./dists/emscripten/build.sh setup configure make dist \
     --disable-all-engines \
+    --enable-plugins \
+    --default-dynamic \
+    --disable-detection-full \
     --enable-engine=sky \
     --enable-engine=dreamweb \
     --enable-engine=queen \
@@ -323,6 +338,7 @@ build_scummvm_web_target() {
     --enable-engine=drascula \
     --enable-engine=parallaction \
     --enable-engine=sword25 \
+    --enable-engine=scumm \
     "${sword25_config_args[@]}" \
     --disable-seq-midi \
     --disable-timidity
@@ -437,8 +453,10 @@ finalize_dist_workspace() {
 }
 
 main() {
-  log_stage "Discover game archives"
-  discover_game_archives
+  if [[ "${SCUMMVM_REUSE_CATALOG:-0}" != 1 ]]; then
+    log_stage "Discover game archives"
+    discover_game_archives
+  fi
 
   log_stage "Bootstrap ScummVM checkout"
   bootstrap_scummvm_checkout
@@ -452,15 +470,24 @@ main() {
   log_stage "Build ScummVM web target"
   build_scummvm_web_target
 
-  log_stage "Install game archives"
-  install_game_archives
+  if [[ "${SCUMMVM_REUSE_CATALOG:-0}" == 1 ]]; then
+    log_stage "Reuse tracked game config"
+    cp "$SHELL_DIR/scummvm.ini" "$SCUMMVM_DIR/build-emscripten/scummvm.ini"
+    cp "$SHELL_DIR/games.json" "$SCUMMVM_DIR/build-emscripten/games.json"
+  else
+    log_stage "Install game archives"
+    install_game_archives
 
-  log_stage "Generate detected game config"
-  ensure_repo_dependencies
-  generate_detected_config
+    log_stage "Generate detected game config"
+    ensure_repo_dependencies
+    generate_detected_config
+  fi
 
   log_stage "Stage dist workspace"
   stage_dist_workspace
+  if [[ "${SCUMMVM_REUSE_CATALOG:-0}" == 1 ]]; then
+    rm -rf "$DIST_DIR/games"
+  fi
 
   log_stage "Finalize dist shell"
   finalize_dist_workspace
