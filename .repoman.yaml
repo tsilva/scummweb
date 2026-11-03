@@ -6,3 +6,7 @@ websites:
     ga4: tag-detected
     sentry: source-detected
     checked-on: 2026-11-03
+    ga4-expectation: required
+    ga4-verification-path: /
+    sentry-expectation: required
+    sentry-verification-path: /
