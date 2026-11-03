@@ -14,6 +14,9 @@ if [[ -d "$SHELL_DIR/launcher" ]]; then
   rm -rf "$DIST_DIR/launcher"
   cp -R "$SHELL_DIR/launcher" "$DIST_DIR/launcher"
 fi
+if [[ -f "$SHELL_DIR/logo-nav.png" ]]; then
+  cp "$SHELL_DIR/logo-nav.png" "$DIST_DIR/logo-nav.png"
+fi
 
 PROJECT_REMOTE_URL="$(git -C "$ROOT_DIR" remote get-url origin 2>/dev/null || true)"
 PROJECT_REPO_URL="$(normalize_git_url "$PROJECT_REMOTE_URL")"
@@ -41,11 +44,14 @@ SCUMMVM_VERSION="$SCUMMVM_VERSION" \
 SCUMMVM_DIRTY="$SCUMMVM_DIRTY" \
 python3 "$ROOT_DIR/scripts/write_source_info.py" "$DIST_DIR"
 
-"$NODE_BIN" "$ROOT_DIR/scripts/create_launcher_metadata.mjs" \
-  "$DIST_DIR/scummvm.ini" \
-  "$DIST_DIR/games.json"
-
-python3 "$ROOT_DIR/scripts/write_scummvm_pages.py" "$DIST_DIR"
+if [[ "${SCUMMVM_REUSE_CATALOG:-0}" == 1 ]]; then
+  cp "$SHELL_DIR/index.html" "$SHELL_DIR/manifest.json" "$DIST_DIR/"
+else
+  "$NODE_BIN" "$ROOT_DIR/scripts/create_launcher_metadata.mjs" \
+    "$DIST_DIR/scummvm.ini" \
+    "$DIST_DIR/games.json"
+  python3 "$ROOT_DIR/scripts/write_scummvm_pages.py" "$DIST_DIR"
+fi
 
 python3 "$ROOT_DIR/scripts/generate_logo_assets.py" \
   --source "$ROOT_DIR/branding/scummvm-logo-master.png" \

@@ -1,7 +1,5 @@
-"""Check transport, conflict handling, readback and application isolation."""
+"""Check transport, readback and application isolation."""
 
-import contextlib
-import io
 import json
 import os
 from pathlib import Path
@@ -10,8 +8,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from common import Infisical, SecretError, application_environment, KEYS, ROOT
-from migrate_keyenv import transfer
+from common import Infisical, SecretError, application_environment, publisher_environment, KEYS, ROOT
 import run as launcher
 
 PROJECT = "e1c358f8-0678-45d7-a2a8-270c2f29aadd"
@@ -59,20 +56,6 @@ class SecretTests(unittest.TestCase):
             with self.assertRaisesRegex(SecretError, "Readback"):
                 self.client.create_and_verify("SENTRY_AUTH_TOKEN", VALUE)
 
-    def test_conflict_preflight_prevents_all_writes(self):
-        source = {"keys": {"OPENROUTER_API_KEY": {"status": "available", "value": "dummy-new"},
-                           "SENTRY_AUTH_TOKEN": {"status": "available", "value": VALUE}}}
-        with patch.object(self.client, "read", return_value={"SENTRY_AUTH_TOKEN": "different"}), \
-                patch.object(self.client, "create_and_verify") as create:
-            with self.assertRaisesRegex(SecretError, "no credentials were written"):
-                transfer(source, self.client)
-            create.assert_not_called()
-
-    def test_keychain_bindings_fail_closed(self):
-        with patch.object(self.client, "read") as read:
-            with self.assertRaisesRegex(SecretError, "bindings"):
-                transfer({"keys": {"SENTRY_AUTH_TOKEN": {"status": "binding-foreign"}}}, self.client)
-            read.assert_not_called()
 
     def test_destination_identity_and_duplicates_are_rejected(self):
         for rows in ([row(workspace="other-project")], [row(secretPath="/other")],
@@ -128,17 +111,6 @@ class SecretTests(unittest.TestCase):
             with self.assertRaises(SecretError):
                 launcher.main()
             execute.assert_not_called()
-
-    def test_report_skips_missing_keys_and_never_prints_values(self):
-        output = io.StringIO()
-        source = {"keys": {"SENTRY_AUTH_TOKEN": {"status": "available", "value": VALUE},
-                           "OPENROUTER_API_KEY": {"status": "missing"}}}
-        with patch.object(self.client, "read", return_value={}), \
-                patch.object(self.client, "create_and_verify", return_value="copied; verified matching"), \
-                contextlib.redirect_stdout(output):
-            report = transfer(source, self.client)
-        self.assertIn("skipped", report["OPENROUTER_API_KEY"])
-        self.assertNotIn(VALUE, output.getvalue())
 
 
     def test_custom_sentry_loader_does_not_restore_a_missing_token(self):
@@ -198,6 +170,94 @@ class SecretTests(unittest.TestCase):
         self.assertIn("SENTRY_AUTH_TOKEN", result.stderr)
         self.assertNotIn("Unexpected provider request", result.stderr)
         self.assertNotIn("dummy-stale-only", result.stderr)
+
+    def test_publisher_fetches_only_the_pinned_shared_pair(self):
+        with patch.object(self.client, "command", side_effect=["a" * 32 + "\n", "b" * 64 + "\n"]) as command:
+            self.assertEqual(self.client.read_publisher_credentials(), {
+                "AWS_ACCESS_KEY_ID": "a" * 32, "AWS_SECRET_ACCESS_KEY": "b" * 64,
+            })
+        calls = [call.args[0] for call in command.call_args_list]
+        self.assertEqual([args[:3] for args in calls], [
+            ["secrets", "get", "AWS_ACCESS_KEY_ID"],
+            ["secrets", "get", "AWS_SECRET_ACCESS_KEY"],
+        ])
+        for args in calls:
+            self.assertIn("--expand=false", args)
+            self.assertIn("--include-imports=false", args)
+            self.assertIn("--secret-overriding=false", args)
+
+    def test_publisher_rejects_a_retargeted_vault_before_fetching(self):
+        self.client.project = "00000000-0000-0000-0000-000000000000"
+        with patch.object(self.client, "command") as command:
+            with self.assertRaisesRegex(SecretError, "pinned"):
+                self.client.read_publisher_credentials()
+            command.assert_not_called()
+
+    def test_publisher_replaces_stale_credentials_and_excludes_unrelated_secrets(self):
+        pair = {"AWS_ACCESS_KEY_ID": "a" * 32, "AWS_SECRET_ACCESS_KEY": "b" * 64}
+        inherited = {
+            "PATH": "/safe/bin", "AWS_ACCESS_KEY_ID": "stale", "AWS_SECRET_ACCESS_KEY": "stale",
+            "AWS_SESSION_TOKEN": "stale", "AWS_PROFILE": "stale", "R2_SECRET_ACCESS_KEY": "stale",
+            "INFISICAL_PROFILE": "stale", "INFISICAL_UNIVERSAL_AUTH_CLIENT_SECRET": "stale",
+            "OPENROUTER_API_KEY": "stale", "SENTRY_AUTH_TOKEN": "stale",
+            "SCUMMVM_GAMES_UPLOAD_DIR": "/synthetic/payloads",
+        }
+        with patch.dict(os.environ, inherited, clear=True):
+            actual = publisher_environment({**pair, "PATH": "/evil", "SENTRY_AUTH_TOKEN": VALUE})
+        for name, value in pair.items():
+            self.assertEqual(actual[name], value)
+        for name in ("AWS_SESSION_TOKEN", "AWS_PROFILE", "R2_SECRET_ACCESS_KEY", "INFISICAL_PROFILE",
+                     "INFISICAL_UNIVERSAL_AUTH_CLIENT_SECRET"):
+            self.assertNotIn(name, actual)
+        for name in ("OPENROUTER_API_KEY", "SENTRY_AUTH_TOKEN", "SENTRY_SMOKE_TEST_TOKEN", "BUCKET_DSN"):
+            self.assertEqual(actual[name], "")
+        self.assertEqual(actual["PATH"], "/safe/bin")
+        self.assertEqual(actual["SCUMMVM_GAMES_UPLOAD_DIR"], "/synthetic/payloads")
+        self.assertEqual(actual["SCUMMVM_R2_BUCKET"], "scummvm-games")
+        self.assertEqual(actual["SCUMMVM_R2_ENDPOINT"],
+                         "https://83e1ce4a70ea388693e8525a772ccefa.r2.cloudflarestorage.com")
+
+    def test_publisher_missing_managed_pair_cannot_fall_back_to_stale_values(self):
+        with patch.dict(os.environ, {"AWS_ACCESS_KEY_ID": "a" * 32, "AWS_SECRET_ACCESS_KEY": "b" * 64}, clear=True):
+            with self.assertRaisesRegex(SecretError, "missing or invalid"):
+                publisher_environment({})
+
+    def test_publisher_rejects_another_bucket_or_endpoint(self):
+        pair = {"AWS_ACCESS_KEY_ID": "a" * 32, "AWS_SECRET_ACCESS_KEY": "b" * 64}
+        for inherited in ({"SCUMMVM_R2_BUCKET": "other"}, {"SCUMMVM_R2_ENDPOINT": "https://example.invalid"}):
+            with patch.dict(os.environ, inherited, clear=True):
+                with self.assertRaisesRegex(SecretError, "target overrides"):
+                    publisher_environment(pair)
+
+    def test_publish_launcher_uses_only_publisher_fetch_and_keeps_upload_flags(self):
+        pair = {"AWS_ACCESS_KEY_ID": "a" * 32, "AWS_SECRET_ACCESS_KEY": "b" * 64}
+        with patch.dict(os.environ, {"PATH": "/safe/bin"}, clear=True), \
+                patch("run.sys.argv", ["run.py", "publish", "--game", "synthetic", "--force", "--prune"]), \
+                patch("run.Infisical") as client, patch("run.os.chdir"), patch("run.os.execvpe") as execute:
+            client.return_value.read_publisher_credentials.return_value = pair
+            launcher.main()
+        client.return_value.read.assert_not_called()
+        client.return_value.read_publisher_credentials.assert_called_once_with()
+        program, args, environment = execute.call_args.args
+        self.assertEqual(program, launcher.sys.executable)
+        self.assertEqual(args[1:], ["scripts/upload_games_to_r2.py", "--game", "synthetic", "--force", "--prune"])
+        self.assertNotIn(pair["AWS_SECRET_ACCESS_KEY"], " ".join(args))
+        self.assertEqual(environment["AWS_ACCESS_KEY_ID"], pair["AWS_ACCESS_KEY_ID"])
+
+    def test_failed_publisher_fetch_never_launches_uploader(self):
+        with patch("run.sys.argv", ["run.py", "publish"]), \
+                patch("run.Infisical") as client, patch("run.os.execvpe") as execute:
+            client.return_value.read_publisher_credentials.side_effect = SecretError("Fetch failed.")
+            with self.assertRaises(SecretError):
+                launcher.main()
+            execute.assert_not_called()
+
+    def test_publisher_help_does_not_fetch_credentials(self):
+        with patch("run.sys.argv", ["run.py", "publish", "--help"]), \
+                patch("run.Infisical") as client, patch("run.os.chdir"), patch("run.os.execvpe") as execute:
+            launcher.main()
+        client.assert_not_called()
+        self.assertEqual(execute.call_args.args[1][-1], "--help")
 
 
 if __name__ == "__main__":

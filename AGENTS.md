@@ -7,14 +7,14 @@ Repo notes for coding agents working in `scummweb`.
 - The playable entry is Beneath a Steel Sky from `downloads/bass-cd-1.2.zip`, launched through `/scummvm.html#sky`.
 - Game assets should be accessed directly through the bucket origin, not proxied through the app server.
 - In this repo, when the user says `deploy`, treat it as a production deploy by default unless they explicitly ask for preview.
-- Main verification path: `./scripts/verify_scummvm_web.sh`. It requires a local Chrome or Chromium install.
-- Whenever browser testing is needed, prefer direct `js_repl` with `scripts/playwright_headless_repl.mjs` so Playwright stays headless by default. Only use a visible/headed browser path when the task explicitly requires OS-level or visually interactive debugging.
-- For agent-native gameplay that must not use OpenRouter or image segmentation, use `.codex/skills/scummweb-play-game-agent-only/SKILL.md`.
+- For agent browser interactions and rendered checks, follow the global Browser Use and Testing policy and explicitly select Brave Stable’s Agents profile through its documented runtime.
+- `./scripts/verify_scummvm_web.sh` is the existing Chrome/Chromium verification harness. Use that browser path only when the user explicitly requests that browser; it is not a fallback for unavailable Brave.
+- Keep agent gameplay procedures and experiments in the sibling `agentscumm` repository. This repository owns the browser game runtime.
 - Avoid deleting unrelated worktree changes. This repo often has large generated-asset diffs in `public/` and `scummvm-shell/`.
 
 <!-- BEGIN:nextjs-agent-rules -->
 
-# This is NOT the Next.js you know
+## This is NOT the Next.js you know
 
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
 

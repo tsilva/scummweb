@@ -46,10 +46,10 @@ export default function GameDetailModal({ game }) {
             <p className="game-detail-summary">{game.summary}</p>
 
             <div className="game-detail-actions">
-              <LaunchButton href={game.playHref} label="Play" />
+              <LaunchButton game={game} entryPoint="library" />
               {game.infoHref ? (
                 <a
-                  className="secondary-button"
+                  className="secondary-button game-detail-license"
                   href={game.infoHref}
                   {...getDialogLinkProps(game.infoHref)}
                 >
