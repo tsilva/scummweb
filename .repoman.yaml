@@ -1,0 +1,8 @@
+version: 1
+websites:
+  scummweb.tsilva.eu:
+    url: https://scummweb.tsilva.eu/
+    availability: reachable
+    ga4: tag-detected
+    sentry: source-detected
+    checked-on: 2026-11-03
