@@ -23,33 +23,33 @@ pnpm run dev --port auto
 
 Open the URL printed by the server.
 
-On the homepage, use **Play a local ZIP** to drop or choose an archive containing
-one ScummVM game. The dedicated player page unpacks it and launches the first
-game it detects. Put the complete game data at the root of the ZIP or inside a
-single enclosing folder.
-Archives can be up to 128 MiB compressed and 256 MiB unpacked. The player allows
-up to two minutes between startup milestones, including loading the emulator
-and handing it the unpacked files. If the player frame stays blank, it loads
-the emulator shell directly into a replacement frame. The game files
-stay in browser memory until you leave the player page. Choose the ZIP again
-after reloading the page.
+The homepage **Game Library** includes built-in games and games you add from this
+device or the web.
 
-Open **Settings** using the gear icon in the top-right bar to connect a public
-HTTPS R2 or S3 bucket. Upload one game per ZIP at the bucket root using the
-exact names in the **ZIP guide** tab. Allow cross-origin `HEAD` and `GET` requests
-from your ScummWEB site. Connect only game files you’re authorized to download
-and play. If you host the files, you also need permission to make them publicly
-available. In the **Connection** tab, select **Check bucket**, then select
-**Use this bucket** in the footer to save
-the URL and matches in this browser. The Library restores bucket cards from those
-saved matches when you return. Recheck the bucket after adding or removing ZIPs.
+- Drop a game ZIP on the library or select **Choose ZIP**. ScummWEB remembers
+  read access to the original file in browsers that support it. The ZIP stays
+  at its original location and its contents are never uploaded or saved in
+  browser storage. If the browser cannot remember file access, the game still
+  appears in the library. Select **Locate ZIP** to reopen it after a reload.
+- Select **Add from web** and enter a public HTTPS ZIP link or an R2 or S3 bucket
+  URL. For bucket discovery, put one ZIP per game at the bucket root and use
+  the exact filenames in the **Bucket ZIP guide**. Allow cross-origin
+  `HEAD` and `GET` requests from your ScummWEB site. The discovered ZIPs are
+  saved as individual library entries. Only connect files you are authorized
+  to download and play, and share publicly if you host them.
 
-Click a matched Library card to open its details, then select **Play** to open
-its dedicated player page. The browser downloads the ZIP directly from the saved
-bucket and applies the same size limits as local ZIPs. If the player frame stays
-blank on startup, the page retries it once using the downloaded files. Connecting
-the official ScummWEB bucket shows the games in its existing index and keeps the standard
-Library cards and player. **The Secret of Monkey Island (Demo)** is already in
+When you open the homepage, the library checks your saved ZIPs and shows their
+availability. Built-in games skip these checks. Select **Play** to grant access
+again if your browser asks. If a local file moves, use **Locate ZIP** to reconnect
+it. Submit a bucket URL again to discover new ZIPs.
+
+Local and remote ZIPs use the same player. Remote ZIPs are downloaded directly
+from the supplied URL. Put the complete data for one ScummVM game at the root of
+each ZIP or inside a single enclosing folder. The player detects the game and
+allows up to 128 MiB compressed and 256 MiB unpacked. If the player frame stays
+blank on startup, it retries once using the unpacked files.
+
+**The Secret of Monkey Island (Demo)** is already in
 the Library. Open its card and select **Play** to start the English DOS EGA demo.
 
 ## Commands
@@ -82,14 +82,14 @@ pnpm run sentry:issues   # list recent Sentry issues from local env credentials
 - `pnpm run verify` runs `scripts/verify_scummvm_web.sh` and needs a local Chrome or Chromium install.
 - ScummWEB bundles ScummVM **2026.4.0**. See [Rebuilding and upgrading ScummVM](#rebuilding-and-upgrading-scummvm) for the source pin, patch series, and build steps.
 - For an engine or shell rebuild using the existing catalog, run `SCUMMVM_REUSE_CATALOG=1 pnpm run build:scummvm`. This preserves the tracked game list and skips preparing game payloads and detecting the catalog.
-- Catalog games and local ZIPs share the ScummVM WebAssembly runtime. The runtime uses the catalog target or detects the game from the local files, then loads the matching engine from `data/plugins/`. The homepage loads the ZIP decoder when you choose a file.
+- Catalog games and local ZIPs share the ScummVM WebAssembly runtime. The runtime uses the catalog target or detects the game from the local files, then loads the matching engine from `data/plugins/`. The ZIP player loads the decoder when you launch a library entry.
 - The build includes detection for the bundled engines. Engine plugins are staged alongside the runtime with the managed shell assets. Keep them together when rebuilding or deploying so the runtime and its plugins come from the same build.
 - `pnpm run publish:games` loads only `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` from the pinned ScummWeb Infisical Development vault using the existing human CLI login. It replaces inherited AWS credentials, blocks dotenv fallback, and pins the `scummvm-games` bucket and account endpoint. No credential export or `.env` edit is needed. Build the game payloads first, or set `SCUMMVM_GAMES_UPLOAD_DIR` to their directory.
 - Publishing accepts `--game <target-or-folder>`, `--force`, and `--prune`. `--force` overwrites files; scoped uploads also refresh ancestor manifests. `--prune` deletes remote files absent locally and spans the whole bucket without `--game`. Use these flags deliberately. Website builds/deployments and existing public game delivery do not need this publishing credential.
 - Sentry is optional. Runtime capture uses `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_DSN`, `NEXT_PUBLIC_SENTRY_ENABLED`, and the Sentry project settings in `next.config.js`.
 - `NEXT_PUBLIC_SITE_URL` controls public metadata, sitemap, robots, and Open Graph URLs.
 - The homepage hero rotates through the installed games. The ring around the pause control shows how long until the next game. Pausing freezes the countdown. Use the chevrons to choose a game. The Play button launches the game shown in the hero.
-- The library’s poster cards link to each game’s detail page. Browser-Playable Classics cards open quick-play dialogs. The sitemap lists the homepage and game detail pages. The player routes and standalone emulator send noindex directives.
+- The built-in library cards link to each game’s detail page. Browser-Playable Classics cards open quick-play dialogs. The sitemap lists the homepage and game detail pages. The player routes and standalone emulator send noindex directives.
 
 ## Rebuilding and upgrading ScummVM
 

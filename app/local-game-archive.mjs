@@ -4,33 +4,36 @@ const maxEntries = 4096;
 
 class ArchiveError extends Error {}
 
-// Hand the File to the player route through this tab's memory.
+// Hand the ZIP loader to the player route through this tab's memory.
 let selectedArchive;
 
-export function selectLocalGameArchive(file) {
-  selectedArchive = file;
+export function selectGameArchive(loadArchive) {
+  selectedArchive = loadArchive;
 }
 
-export async function openSelectedLocalGameArchive(signal) {
+export async function openSelectedGameArchive(signal) {
   // Let React cancel any superseded effect before taking the selection.
   await Promise.resolve();
   signal.throwIfAborted();
-  const file = selectedArchive;
+  const loadArchive = selectedArchive;
   selectedArchive = undefined;
-  if (!file) {
-    throw new ArchiveError("Choose a game ZIP from the homepage to play it here.");
+  if (!loadArchive) {
+    throw new ArchiveError("Choose a game from the Library to play it here.");
   }
-  return readLocalGameArchive(file);
+  return loadArchive(signal);
 }
 
-export async function readLocalGameArchive(file) {
+export function validateGameZip(file) {
   if (!file.name.toLowerCase().endsWith(".zip")) {
     throw new ArchiveError("Choose a ZIP containing one ScummVM game.");
   }
   if (file.size > maxArchiveSize) {
     throw new ArchiveError("Choose a ZIP of 128 MiB or less.");
   }
+}
 
+export async function readLocalGameArchive(file) {
+  validateGameZip(file);
   const { BlobReader, ERR_UNSAFE_FILENAME, ZipReader } = await import("@zip.js/zip.js");
   const reader = new ZipReader(new BlobReader(file));
   try {
