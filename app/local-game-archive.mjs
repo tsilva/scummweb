@@ -1,6 +1,6 @@
 export const maxArchiveSize = 128 * 1024 * 1024;
-const maxExpandedSize = 256 * 1024 * 1024;
-const maxEntries = 4096;
+export const maxExpandedSize = 256 * 1024 * 1024;
+export const maxGameEntries = 4096;
 
 class ArchiveError extends Error {}
 
@@ -36,7 +36,7 @@ export function validateGameZip(file) {
   }
 }
 
-export async function readLocalGameArchive(file) {
+async function withZipEntries(file, useEntries) {
   validateGameZip(file);
   const { BlobReader, ERR_UNSAFE_FILENAME, ZipReader } = await import("@zip.js/zip.js");
   const reader = new ZipReader(new BlobReader(file));
@@ -45,20 +45,13 @@ export async function readLocalGameArchive(file) {
     let entryCount = 0;
     let totalSize = 0;
     for await (const entry of reader.getEntriesGenerator()) {
-      if (++entryCount > maxEntries) {
+      if (++entryCount > maxGameEntries) {
         throw new ArchiveError("This ZIP contains too many entries.");
       }
       if (entry.directory) continue;
 
       const path = entry.filename.replaceAll("\\", "/");
-      const parts = path.split("/");
-      if (
-        path.length > 1024 ||
-        /[\x00-\x1f\x7f:]/.test(path) ||
-        parts.some((part) => !part || part === "." || part === ".." || part === "__proto__")
-      ) {
-        throw new ArchiveError("This ZIP contains an invalid file path.");
-      }
+      const parts = gamePathParts(path);
       if (parts[0] === "__MACOSX" || parts.at(-1) === ".DS_Store") continue;
       if (entry.encrypted) {
         throw new ArchiveError("Password-protected ZIPs cannot be opened.");
@@ -74,31 +67,62 @@ export async function readLocalGameArchive(file) {
       }
       entries.set(key, { entry, parts });
     }
-    if (entries.size === 0) {
-      throw new ArchiveError("This ZIP does not contain any game files.");
+    return await useEntries(gameEntries(entries));
+  } catch (error) {
+    if (error instanceof ArchiveError) throw error;
+    if (error.message === ERR_UNSAFE_FILENAME) {
+      throw new ArchiveError("This ZIP contains an invalid file path.");
     }
+    throw new ArchiveError("This file is not a readable ZIP.");
+  } finally {
+    await reader.close();
+  }
+}
 
-    const files = [];
-    const allEntries = [...entries.values()];
-    // Game downloads often wrap their data in a single folder.
-    let prefixLength = 0;
-    while (allEntries.every(({ parts }) =>
-      parts.length > prefixLength + 1 && parts[prefixLength] === allEntries[0].parts[prefixLength]
-    )) {
-      prefixLength++;
-    }
-    // The DOS DOTT.EXE alone can be mistaken for a Remastered detection file.
-    const gamePaths = allEntries.map(({ parts }) => parts.slice(prefixLength).join("/").toLowerCase());
-    if (gamePaths.includes("dott.exe") && gamePaths.every((path) => path === "dott.exe" || path === "bootdisk.exe")) {
-      throw new ArchiveError("This ZIP is missing Day of the Tentacle game data. Include TENTACLE.000 and TENTACLE.001 from the original DOS game.");
-    }
-    for (const { entry, parts } of allEntries) {
-      for (let depth = 1; depth < parts.length; depth++) {
-        if (entries.has(parts.slice(0, depth).join("/").toLowerCase())) {
-          throw new ArchiveError("This ZIP uses the same path for a file and folder.");
-        }
+function gamePathParts(path) {
+  const parts = path.split("/");
+  if (
+    path.length > 1024 ||
+    /[\x00-\x1f\x7f:\\]/.test(path) ||
+    parts.some((part) => !part || part === "." || part === ".." || part === "__proto__")
+  ) {
+    throw new ArchiveError("This game contains an invalid file path.");
+  }
+  return parts;
+}
+
+function gameEntries(entries) {
+  if (!entries.size) throw new ArchiveError("This game does not contain any game files.");
+  const files = [...entries.values()];
+  let prefixLength = 0;
+  while (files.every(({ parts }) =>
+    parts.length > prefixLength + 1 && parts[prefixLength] === files[0].parts[prefixLength]
+  )) {
+    prefixLength++;
+  }
+  for (const { parts } of files) {
+    for (let depth = 1; depth < parts.length; depth++) {
+      if (entries.has(parts.slice(0, depth).join("/").toLowerCase())) {
+        throw new ArchiveError("This game uses the same path for a file and folder.");
       }
+    }
+  }
+  const resolved = files.map(({ parts, ...item }) => ({ ...item, path: parts.slice(prefixLength).join("/") }));
+  const paths = resolved.map(({ path }) => path.toLowerCase());
+  if (paths.includes("dott.exe") && paths.every((path) => path === "dott.exe" || path === "bootdisk.exe")) {
+    throw new ArchiveError("This game is missing Day of the Tentacle game data. Include TENTACLE.000 and TENTACLE.001 from the original DOS game.");
+  }
+  return resolved;
+}
 
+export function scanLocalGameArchive(file) {
+  return withZipEntries(file, () => {});
+}
+
+export function readLocalGameArchive(file) {
+  return withZipEntries(file, async (entries) => {
+    const files = [];
+    for (const { entry, path } of entries) {
       const data = new Uint8Array(entry.uncompressedSize);
       let offset = 0;
       try {
@@ -112,16 +136,31 @@ export async function readLocalGameArchive(file) {
       } catch {
         throw new ArchiveError("A game file could not be unpacked. Check that the ZIP is intact.");
       }
-      files.push({ path: parts.slice(prefixLength).join("/"), data });
+      files.push({ path, data });
     }
     return files;
-  } catch (error) {
-    if (error instanceof ArchiveError) throw error;
-    if (error.message === ERR_UNSAFE_FILENAME) {
-      throw new ArchiveError("This ZIP contains an invalid file path.");
-    }
-    throw new ArchiveError("This file is not a readable ZIP.");
-  } finally {
-    await reader.close();
+  });
+}
+
+export function validateGameFolder(files) {
+  const entries = new Map();
+  let size = 0;
+  for (const { file, path } of files) {
+    const parts = gamePathParts(path);
+    const key = path.toLowerCase();
+    if (entries.has(key)) throw new ArchiveError("This game folder contains duplicate file paths.");
+    entries.set(key, { parts, file });
+    size += file.size;
+    if (size > maxExpandedSize) throw new ArchiveError("Choose a game folder of 256 MiB or less.");
+    if (entries.size > maxGameEntries) throw new ArchiveError("This game folder contains too many files.");
   }
+  return gameEntries(entries);
+}
+
+export async function readGameFolder(files) {
+  const result = [];
+  for (const { file, path } of validateGameFolder(files)) {
+    result.push({ path, data: new Uint8Array(await file.arrayBuffer()) });
+  }
+  return result;
 }

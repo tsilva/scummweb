@@ -243,8 +243,8 @@ export default function GameRouteFrame({
           } else {
             archiveFiles.current = null;
             setArchiveError(event.data.status === "undetected"
-              ? "ScummVM could not detect a supported game. Check that the ZIP contains its game data."
-              : "ScummVM could not start this game. Check that the ZIP contains the complete game data.");
+              ? "ScummVM could not detect a supported game. Check that you selected the game files."
+              : "ScummVM could not start this game. Check that all the game files are present.");
           }
           return;
         }

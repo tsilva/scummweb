@@ -8,7 +8,7 @@ export function remoteGame(url, game) {
 }
 
 export function localGame(handle, file, id = crypto.randomUUID()) {
-  return { id, name: file.name, ...(handle && { handle }) };
+  return { id, name: file.name, ...(handle && { handle }), ...(file.kind === "folder" && { kind: "folder" }) };
 }
 
 export function bucketGames(url, targets, catalog) {
@@ -27,6 +27,12 @@ export async function checkGameSource(source) {
     if (source.url) return await checkRemoteGame(source) ? "available" : "missing";
     if (!source.handle) return "locate";
     if (await source.handle.queryPermission({ mode: "read" }) !== "granted") return "permission";
+    if (source.kind === "folder") {
+      for await (const entry of source.handle.values()) {
+        if (entry.name !== ".DS_Store") return "available";
+      }
+      return "missing";
+    }
     validateGameZip(await source.handle.getFile());
     return "available";
   } catch {

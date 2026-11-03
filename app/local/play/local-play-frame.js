@@ -11,11 +11,11 @@ export default function LocalPlayFrame() {
   const [game] = useState(getSelectedGamePresentation);
   return (
     <GameRouteFrame
-      archiveLoadingText="Opening game ZIP…"
+      archiveLoadingText="Opening game files…"
       game={game}
       loadArchive={openSelectedGameArchive}
       src={playerUrl}
-      title={game?.displayTitle ?? "ScummVM game ZIP"}
+      title={game?.displayTitle ?? "ScummVM game"}
     />
   );
 }
