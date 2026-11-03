@@ -90,6 +90,7 @@
 
 .nav-actions {
   justify-content: flex-end;
+  gap: 0.5rem;
 }
 
 .nav-links a,
@@ -132,6 +133,11 @@
   border-color: rgba(127, 211, 127, 0.36);
   background: rgba(21, 36, 21, 0.8);
   transform: translateY(-1px);
+}
+
+button.nav-icon-link {
+  padding: 0;
+  cursor: pointer;
 }
 
 .footer-icon-button {
@@ -1220,20 +1226,38 @@
   scroll-margin-top: 6rem;
 }
 
-.game-bucket {
-  max-width: 48rem;
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-  border: 1px solid currentColor;
+.settings-dialog {
+  width: min(48rem, calc(100% - 2rem));
+  max-height: calc(100dvh - 2rem);
+  padding: clamp(1rem, 4vw, 1.75rem);
+  border: 1px solid var(--ghost-border);
   border-radius: 0.75rem;
+  background: var(--surface-low);
+  color: var(--ink);
+  overscroll-behavior: contain;
 }
 
-.game-bucket summary,
+.settings-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.settings-dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.settings-dialog-header h2 {
+  margin: 0;
+}
+
+.game-bucket-glossary summary,
 .game-bucket-form label {
   font-weight: 700;
 }
 
-.game-bucket summary {
+.game-bucket-glossary summary {
   cursor: pointer;
 }
 

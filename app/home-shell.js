@@ -1,5 +1,5 @@
 import GameDetailModal from "./home-shell/game-detail-modal";
-import GameBucket from "./home-shell/game-bucket";
+import GameBucket, { SettingsButton } from "./home-shell/game-bucket";
 import LibraryCards from "./home-shell/library-cards";
 import Icon from "./home-shell/shell-icon";
 import HeroStage from "./home-shell/hero-stage";
@@ -23,7 +23,7 @@ export default function HomeShell({
 
   return (
     <>
-      <nav className="dashboard-nav">
+      <nav className={isHomePage ? "dashboard-nav dashboard-nav-home" : "dashboard-nav"}>
         <div className="nav-cluster nav-cluster-left">
           <div className="nav-brand-group">
             <div className="nav-brand-stack">
@@ -63,6 +63,7 @@ export default function HomeShell({
           >
             <Icon name="github" />
           </a>
+          {isHomePage && <SettingsButton />}
         </div>
       </nav>
 

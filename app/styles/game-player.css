@@ -671,6 +671,13 @@
 }
 
 @media (max-width: 900px) {
+  .dashboard-nav-home .nav-actions {
+    position: absolute;
+    top: 0.75rem;
+    right: max(1rem, env(safe-area-inset-right));
+    width: auto;
+  }
+
   .dashboard-nav,
   .site-footer {
     flex-wrap: wrap;
@@ -746,6 +753,22 @@
 }
 
 @media (max-width: 640px) {
+  .dashboard-nav-home .nav-cluster-left {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    row-gap: 0.5rem;
+    padding-right: 0;
+  }
+
+  .dashboard-nav-home .nav-brand-group {
+    grid-row: 1;
+  }
+
+  .dashboard-nav-home .nav-links {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
   .dashboard-nav,
   .hero-inner,
   .content-band,
