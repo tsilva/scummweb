@@ -73,31 +73,6 @@ export default function HomeShell({
           <HeroStage featuredGame={featuredGame} gameCount={catalog.length} />
         )}
         <div className="section-stack">
-          {!isHomePage ? (
-            <section className="content-band game-play-guide" aria-labelledby="game-play-guide">
-              <div className="section-header">
-                <h2 id="game-play-guide">
-                  <span className="section-mark" />
-                  How to play {featuredGame.displayTitle}
-                </h2>
-              </div>
-              <p><strong>Browser edition</strong> · {featuredGame.title}</p>
-              <p>
-                Use the button above to launch ScummVM in your browser. The player loads the game
-                files automatically.
-              </p>
-              <p>
-                Use your mouse to point and click. On touch devices, use the player’s on-screen
-                mouse buttons for left and right clicks.
-              </p>
-              {featuredGame.infoHref ? (
-                <a className="game-details-link" href={featuredGame.infoHref}>
-                  Readme or license for {featuredGame.displayTitle}
-                </a>
-              ) : null}
-            </section>
-          ) : null}
-
           <section className="content-band" id="library">
             <div className="section-header">
               <h2>
