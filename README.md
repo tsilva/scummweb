@@ -54,6 +54,33 @@ pnpm run sentry:issues   # list recent Sentry issues from local env credentials
 - `NEXT_PUBLIC_SITE_URL` controls public metadata, sitemap, robots, and Open Graph URLs.
 - The library links to each game’s detail page and keeps quick play in the card dialogs. The sitemap lists the homepage and game detail pages. The player routes and standalone emulator send noindex directives.
 
+## Game launch analytics
+
+On `scummweb.tsilva.eu`, GA4 tracks the following events for catalog games,
+at most once per play page visit for each event.
+
+| Event | When it fires |
+| --- | --- |
+| `game_launch_attempt` | The play page starts loading the game. |
+| `game_launch` | ScummVM confirms the first rendered game frame. `load_time_ms` measures time since the attempt began. |
+| `game_launch_failed` | The player observes a startup error or ScummVM reports a first-frame timeout before success. `failure_reason` is `startup_error` or `first_frame_timeout`. |
+| `game_play_milestone` | The ready player accumulates five minutes in the visible tab with the game controls available. `play_time_seconds` is `300`. |
+
+The events share `game_slug`, `entry_point` (`hero`, `library`, `game_detail`, or
+`direct`), and `launch_mode`. The current catalog UI starts fresh. Intro skips stay
+within the same visit. The play timer pauses while the game reloads or the tab
+is hidden. A visit can report a failure and later recover. Leaving before
+the player reports an outcome appears as a drop-off in the funnel.
+Local ZIP and external bucket launches are outside this catalog funnel.
+
+In GA4 Explorations, build a closed funnel from `game_launch_attempt` to
+`game_launch` to `game_play_milestone` to compare users at each step. For
+counts by play page visit, report **Event count** by event name. Use
+**Page path** to focus on a game and **Session source / medium** to break down
+acquisition. Analyze `game_launch_failed` separately. To report on the custom fields, register
+`game_slug`, `entry_point`, `launch_mode`, and `failure_reason` as event-scoped
+custom dimensions and `load_time_ms` as a custom metric.
+
 ## Architecture
 
 ![ScummWEB architecture diagram](./architecture.png)

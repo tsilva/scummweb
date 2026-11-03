@@ -47,6 +47,7 @@ export default async function GamePlayRoutePage({ params }) {
   return (
     <main className="game-route-page">
       <GameRouteFrame
+        key={game.slug}
         game={game}
         skipIntro={game.skipIntro}
         src={launchHref}
