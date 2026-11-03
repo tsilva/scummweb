@@ -7,20 +7,24 @@ class ArchiveError extends Error {}
 // Hand the ZIP loader to the player route through this tab's memory.
 let selectedArchive;
 
-export function selectGameArchive(loadArchive) {
-  selectedArchive = loadArchive;
+export function selectGameArchive(loadArchive, game) {
+  selectedArchive = { loadArchive, game };
+}
+
+export function getSelectedGamePresentation() {
+  return selectedArchive?.game ?? null;
 }
 
 export async function openSelectedGameArchive(signal) {
   // Let React cancel any superseded effect before taking the selection.
   await Promise.resolve();
   signal.throwIfAborted();
-  const loadArchive = selectedArchive;
+  const archive = selectedArchive;
   selectedArchive = undefined;
-  if (!loadArchive) {
+  if (!archive) {
     throw new ArchiveError("Choose a game from the Library to play it here.");
   }
-  return loadArchive(signal);
+  return archive.loadArchive(signal);
 }
 
 export function validateGameZip(file) {

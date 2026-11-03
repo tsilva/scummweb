@@ -2,7 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { X } from "lucide-react";
 import { readRemoteGameArchive } from "../game-bucket.mjs";
+import { getImportedGamePresentation } from "../game-presentation";
 import { checkGameSource, localGame, readGameSources, removeGameSources, saveGameSources } from "../game-sources.mjs";
 import { readLocalGameArchive, selectGameArchive, validateGameZip } from "../local-game-archive.mjs";
 import GameBucket from "./game-bucket";
@@ -159,10 +161,10 @@ export default function SourceLibrary({ catalog, officialUrl }) {
     ));
   }
 
-  function play(source) {
+  function play(source, game) {
     return run(async () => {
       if (source.url) {
-        selectGameArchive((signal) => readRemoteGameArchive(source.url, { signal }));
+        selectGameArchive((signal) => readRemoteGameArchive(source.url, { signal }), game);
       } else {
         let file = sessionFiles.get(source.id);
         if (!file && !source.handle) {
@@ -172,8 +174,8 @@ export default function SourceLibrary({ catalog, officialUrl }) {
         }
         if (!file) {
           if (await source.handle.requestPermission({ mode: "read" }) !== "granted") {
-            updateStatus(source, "permission");
-            setNotice("Allow access to play this ZIP, or locate it again.");
+            updateStatus(source, "locate");
+            setNotice("Locate the ZIP to grant access again.");
             return;
           }
           try {
@@ -185,7 +187,7 @@ export default function SourceLibrary({ catalog, officialUrl }) {
             return;
           }
         }
-        selectGameArchive(() => readLocalGameArchive(file));
+        selectGameArchive(() => readLocalGameArchive(file), game);
       }
       router.push("/local/play");
     });
@@ -209,31 +211,37 @@ export default function SourceLibrary({ catalog, officialUrl }) {
         removeBucket={(bucket) => removeSources(entries.map(({ source }) => source).filter((source) => source.bucket === bucket))} />
       <LibraryCards games={catalog}>
         {entries.map(({ source, status }) => {
-          const game = catalog.find(({ target }) => target === source.target);
+          const game = catalog.find(({ target }) => target === source.target)
+            ?? getImportedGamePresentation(source.name);
           const title = game?.displayTitle ?? source.name.replace(/\.zip$/i, "");
-          const canLocate = !source.url && ["permission", "missing", "locate"].includes(status);
-          const canPlay = !canLocate || status === "permission";
+          const locate = !source.url && ["missing", "locate"].includes(status);
+          const action = locate ? "Locate ZIP for" : "Play";
+          const hint = locate ? "Locate ZIP" : ["permission", "missing", "unverified"].includes(status)
+            ? statusText[status] : null;
+          const description = [game?.studio, game?.year, game?.badge, statusText[status]].filter(Boolean).join(" · ");
           return (
-            <article key={source.id} className="poster-entry">
-              <div className={`poster-card ${game?.tone ?? "tone-default"}`}>
+            <article key={source.id} className="poster-entry source-poster-entry">
+              <button
+                type="button"
+                className={`poster-card source-poster-card ${game?.tone ?? "tone-default"}`}
+                disabled={disabled || status === "checking"}
+                aria-label={`${action} ${title}`}
+                aria-description={description}
+                title={description}
+                onClick={() => locate ? chooseZip(source) : play(source, game)}
+              >
                 <GamePoster title={title} image={game?.posterImage} />
-              </div>
-              <div className="source-details">
-                <p>{source.url ? new URL(source.url).hostname : "Local ZIP"} · {statusText[status]}</p>
-                <div className="game-source-actions">
-                  {canPlay && (
-                    <button type="button" className="secondary-button" disabled={disabled || status === "checking"}
-                      aria-label={`Play ${title}`} onClick={() => play(source)}>Play</button>
-                  )}
-                  {canLocate && (
-                    <button type="button" className="secondary-button" disabled={disabled}
-                      aria-label={`Locate ZIP for ${title}`} onClick={() => chooseZip(source)}>Locate ZIP</button>
-                  )}
-                  <button type="button" className="secondary-button" disabled={disabled}
-                    aria-label={`Remove ${title} from your library`}
-                    onClick={() => run(() => removeSources([source]))}>Remove</button>
-                </div>
-              </div>
+                {hint && <span className="source-poster-hint" aria-hidden="true">{hint}</span>}
+              </button>
+              <button
+                type="button"
+                className="source-poster-remove"
+                disabled={disabled}
+                aria-label={`Remove ${title} from your library`}
+                onClick={() => run(() => removeSources([source]))}
+              >
+                <X aria-hidden="true" size={18} />
+              </button>
             </article>
           );
         })}
