@@ -19,6 +19,20 @@ export function normalizeBucketUrl(value) {
   throw new Error("Enter a public HTTPS bucket URL without credentials, a query, or a fragment.");
 }
 
+export function normalizeGameZipUrl(value) {
+  try {
+    const url = new URL(value.trim());
+    if (url.protocol === "https:" && !url.username && !url.password
+        && decodeURIComponent(url.pathname).toLowerCase().endsWith(".zip")) {
+      url.hash = "";
+      return url.href;
+    }
+  } catch {
+    // Invalid URL syntax and malformed path encoding get the same message.
+  }
+  throw new Error("Enter a direct HTTPS link to a game ZIP.");
+}
+
 export function bucketZipName(target) {
   return `${target}.zip`;
 }
@@ -47,41 +61,18 @@ export async function checkGameZip(url, signal) {
     && Number(response.headers.get("content-length")) <= maxArchiveSize;
 }
 
-export async function checkGameBucket(url, games, officialUrl, { signal, localIndex } = {}) {
-  const options = { credentials: "omit", redirect: "error", cache: "no-store", signal };
-  if (url === officialUrl) {
-    // The official bucket serves unpacked games and has a shared filesystem index.
-    const response = await fetch(localIndex || `${url}/index.json`, options);
-    if (!response.ok) throw new Error("Could not read the ScummWeb bucket index.");
-    const index = await response.json();
-    return games
-      .filter(({ path }) => path?.startsWith("/games/") && Object.hasOwn(index, path.slice("/games/".length)))
-      .map(({ target }) => target);
-  }
-
-  const results = await Promise.allSettled(games.map(async ({ target }) => {
-    return await checkGameZip(bucketZipUrl(url, target), signal) ? target : null;
-  }));
-  const matches = results.flatMap((result) => result.status === "fulfilled" && result.value ? [result.value] : []);
-  if (!matches.length && results.some((result) => result.status === "rejected")) {
-    throw new Error("Could not check the ZIPs. Make sure the bucket allows browser access from ScummWeb.");
-  }
-  return matches;
-}
-
-export function readBucketGameArchive(url, target, options) {
-  return readRemoteGameArchive(bucketZipUrl(url, target), options);
-}
-
 export async function readRemoteGameArchive(url, { signal } = {}) {
+  const zipUrl = normalizeGameZipUrl(url);
   const timeout = AbortSignal.timeout(120_000);
-  const response = await fetch(url, {
+  const response = await fetch(zipUrl, {
+    mode: "cors",
     credentials: "omit",
+    referrerPolicy: "no-referrer",
     redirect: "error",
     signal: signal ? AbortSignal.any([signal, timeout]) : timeout,
   }).catch(() => null);
   if (!response?.ok || !response.body) {
-    throw new Error("Could not download the ZIP. Check that it is public and allows browser access.");
+    throw new Error("Could not download the ZIP. Check that the direct link works and the host allows cross-origin downloads. You can also download the ZIP yourself and drop it on ScummWEB.");
   }
 
   const tooLarge = "This ZIP exceeds the 128 MiB download limit.";

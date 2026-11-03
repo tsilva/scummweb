@@ -1,10 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { BlobWriter, Uint8ArrayReader, ZipWriter } from "@zip.js/zip.js";
-import { checkGameBucket, normalizeBucketUrl, readBucketGameArchive, readSavedBucket } from "../app/game-bucket.mjs";
+import { normalizeBucketUrl, normalizeGameZipUrl, readRemoteGameArchive, readSavedBucket } from "../app/game-bucket.mjs";
 import { maxArchiveSize } from "../app/local-game-archive.mjs";
 
-const officialUrl = "https://scummvm-games.example.com";
 const customUrl = "https://games.example.com";
 const games = [
   { target: "sky", path: "/games/sky" },
@@ -12,30 +11,18 @@ const games = [
   { target: "queen", path: "/games/queen" },
 ];
 
-test("custom bucket discovery checks exact ZIP names with HEAD and ignores HTML fallback pages", async (t) => {
-  const requests = [];
-  t.mock.method(globalThis, "fetch", async (url, options) => {
-    requests.push([url, options.method, options.credentials]);
-    if (url.endsWith("sky.zip")) return new Response(null);
-    if (url.endsWith("dreamweb-cd.zip")) {
-      return new Response(null, { headers: { "content-type": "text/html" } });
-    }
-    return new Response(null, { status: 403 });
-  });
-
-  assert.deepEqual(await checkGameBucket(customUrl, games, officialUrl), ["sky"]);
-  assert.deepEqual(requests, ["sky", "dreamweb-cd", "queen"].map((target) =>
-    [`${customUrl}/${target}.zip`, "HEAD", "omit"]
-  ));
-});
-
-test("the official bucket maps unpacked index folders back to their catalog targets", async (t) => {
-  t.mock.method(globalThis, "fetch", async (url) => {
-    assert.equal(url, `${officialUrl}/index.json`);
-    return Response.json({ dreamweb: { "DREAMWEB.C00": {} }, unknown: {} });
-  });
-
-  assert.deepEqual(await checkGameBucket(officialUrl, games, officialUrl), ["dreamweb-cd"]);
+test("direct ZIP links require HTTPS and a ZIP path and keep query parameters", () => {
+  const zipUrl = `${customUrl}/folder/Game%20Demo.ZIP?key=a%2Bb`;
+  assert.equal(normalizeGameZipUrl(` ${zipUrl}#ignored `), zipUrl);
+  for (const invalid of [
+    customUrl,
+    "http://games.example.com/game.zip",
+    "https://user:password@games.example.com/game.zip",
+    `${customUrl}/game%xx.zip`,
+    `${customUrl}/download?name=game.zip`,
+  ]) {
+    assert.throws(() => normalizeGameZipUrl(invalid), /direct HTTPS link/);
+  }
 });
 
 test("saved targets are limited to the current catalog and bucket URLs exclude credentials", () => {
@@ -45,20 +32,28 @@ test("saved targets are limited to the current catalog and bucket URLs exclude c
   assert.throws(() => normalizeBucketUrl(`${customUrl}?token=abc`));
 });
 
-test("bucket play downloads and unpacks the selected ZIP, with a download limit", async (t) => {
+test("the remote ZIP loader fetches the exact URL without credentials or a referrer and enforces its limit", async (t) => {
   const zip = new ZipWriter(new BlobWriter());
   await zip.add("sky/sky.dnr", new Uint8ArrayReader(Uint8Array.of(1, 2, 3)));
   const archive = await zip.close();
-  t.mock.method(globalThis, "fetch", async (url) => {
-    if (url === `${customUrl}/sky.zip`) return new Response(archive);
+  const zipUrl = `${customUrl}/folder/sky.zip?key=a%2Bb`;
+  const request = t.mock.method(globalThis, "fetch", async (url, options) => {
+    assert.equal(options.mode, "cors");
+    assert.equal(options.credentials, "omit");
+    assert.equal(options.redirect, "error");
+    assert.equal(options.referrerPolicy, "no-referrer");
+    assert.equal(options.method ?? "GET", "GET");
+    if (url === zipUrl) return new Response(archive);
     assert.equal(url, `${customUrl}/queen.zip`);
     return new Response(new Uint8Array(1), {
       headers: { "content-length": String(maxArchiveSize + 1) },
     });
   });
 
-  assert.deepEqual(await readBucketGameArchive(customUrl, "sky"), [
+  assert.deepEqual(await readRemoteGameArchive(zipUrl), [
     { path: "sky.dnr", data: Uint8Array.of(1, 2, 3) },
   ]);
-  await assert.rejects(readBucketGameArchive(customUrl, "queen"), /128 MiB/);
+  await assert.rejects(readRemoteGameArchive(`${customUrl}/queen.zip`), /128 MiB/);
+  await assert.rejects(readRemoteGameArchive(customUrl), /direct HTTPS link/);
+  assert.equal(request.mock.callCount(), 2);
 });

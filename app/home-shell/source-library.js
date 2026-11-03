@@ -10,12 +10,12 @@ import { readGameFolder, readLocalGameArchive, selectGameArchive, validateGameZi
 import {
   fileNode, handleNode, openLocalFolder, prepareLocalFolder, prepareLocalZip, scanGameFolder, selectedGameFolder,
 } from "../local-game-import.mjs";
-import GameBucket from "./game-bucket";
 import LibraryCards, { GamePoster } from "./library-cards";
-import LocalGame, { chooseZipHandles } from "./local-game";
+import GameDropOverlay, { chooseZipHandles } from "./local-game";
 
 const sessionGames = new Map();
 const sessionSources = new Map();
+const reducedMotionQuery = "(prefers-reduced-motion: reduce)";
 const statusText = {
   checking: "Checking availability…",
   available: "Available",
@@ -26,12 +26,19 @@ const statusText = {
   locate: "ZIP selection needed",
 };
 
+function scrollToLibraryItem(item, block) {
+  const behavior = window.matchMedia(reducedMotionQuery).matches ? "instant" : "smooth";
+  item?.scrollIntoView({ behavior, block });
+}
+
 export default function SourceLibrary({ catalog, officialUrl }) {
   const router = useRouter();
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
+  const [addedIds, setAddedIds] = useState(null);
+  const revealObserver = useRef(null);
   const working = useRef(false);
   const [pending, setPending] = useState([]);
   const fileInput = useRef(null);
@@ -69,21 +76,42 @@ export default function SourceLibrary({ catalog, officialUrl }) {
     return () => { active = false; };
   }, [catalog, officialUrl]);
 
+  useEffect(() => {
+    if (window.matchMedia(reducedMotionQuery).matches) return;
+
+    const highlight = "grayscale(0) brightness(1.35) contrast(1.04) saturate(1.2)";
+    const visibleThreshold = 0.25;
+    const observer = new IntersectionObserver((visibleCards) => {
+      for (const { intersectionRatio, target } of visibleCards) {
+        if (intersectionRatio < visibleThreshold) continue;
+        observer.unobserve(target);
+        target.querySelector(".poster-media-image, .bucket-poster-placeholder")?.animate([
+          { filter: highlight, offset: 0.25 },
+          { filter: highlight, offset: 0.65 },
+        ], { duration: 1800, easing: "ease-in-out" });
+      }
+    }, { threshold: visibleThreshold });
+    revealObserver.current = observer;
+    return () => {
+      observer.disconnect();
+      revealObserver.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!addedIds) return;
+    const cards = [...document.querySelectorAll("#library [data-library-source-id]")]
+      .filter((card) => addedIds.has(card.dataset.librarySourceId));
+    cards.forEach((card) => revealObserver.current?.observe(card));
+    scrollToLibraryItem(cards[0], "center");
+  }, [addedIds]);
+
   function updateEntries(sources) {
     const ids = new Set(sources.map(({ id }) => id));
     setEntries((current) => [
       ...current.filter(({ source }) => !ids.has(source.id)),
       ...sources.map((source) => ({ source, status: sessionGames.has(source.id) ? "session" : "available" })),
     ]);
-  }
-
-  async function saveSources(sources) {
-    const saved = sources.map((source) => {
-      const previous = entries.find((entry) => entry.source.id === source.id)?.source;
-      return { ...previous, ...source };
-    });
-    await saveGameSources(saved);
-    updateEntries(saved);
   }
 
   async function removeSources(sources) {
@@ -138,16 +166,17 @@ export default function SourceLibrary({ catalog, officialUrl }) {
     }
     known.set(source.id, source);
     updateEntries([source]);
-    return { temporary: sessionSources.has(source.id), needsSelection: !game.handle };
+    return { id: source.id, temporary: sessionSources.has(source.id), needsSelection: !game.handle };
   }
 
   function importRoots(selection, replacing) {
     return run(async () => {
       const roots = typeof selection === "function" ? await selection() : selection;
       if (!roots.length) return;
+      if (!replacing) scrollToLibraryItem(document.getElementById("library"), "start");
       const known = new Map(entries.map(({ source }) => [source.id, source]));
       const errors = [];
-      let saved = 0;
+      const savedIds = new Set();
       let temporary = 0;
       let needsSelection = 0;
 
@@ -157,7 +186,7 @@ export default function SourceLibrary({ catalog, officialUrl }) {
 
       async function save(game) {
         const result = await saveLocal(game, known, replacing);
-        saved++;
+        savedIds.add(result.id);
         if (result.temporary) temporary++;
         else if (result.needsSelection) needsSelection++;
       }
@@ -168,7 +197,7 @@ export default function SourceLibrary({ catalog, officialUrl }) {
           let label = "Dropped item";
           try {
             const node = await root;
-            if (!node) throw new Error("Could not read this item. Try choosing it from the library.");
+            if (!node) throw new Error("Could not read this item. Try dropping it again.");
             label = node.name;
             updateProgress(index, { label, message: node.kind === "directory" ? "Scanning folder…" : "Checking ZIP…" });
 
@@ -205,7 +234,8 @@ export default function SourceLibrary({ catalog, officialUrl }) {
         setPending([]);
       }
 
-      const summary = saved ? (replacing ? "Game reconnected." : `${saved} ${saved === 1 ? "game" : "games"} added to your library.`) : "";
+      if (!replacing && savedIds.size) setAddedIds(savedIds);
+      const summary = replacing && savedIds.size ? "Game reconnected." : "";
       const storage = temporary ? "Some entries could only be kept in this tab." : "";
       const access = needsSelection ? "This browser may ask you to locate local files again after reload." : "";
       const skipped = errors.length ? `${errors.length} ${errors.length === 1 ? "item skipped" : "items skipped"}. ${errors[0]}` : "";
@@ -280,7 +310,6 @@ export default function SourceLibrary({ catalog, officialUrl }) {
   }
 
   const disabled = loading || busy;
-  const buckets = [...new Set(entries.flatMap(({ source }) => source.bucket ? [source.bucket] : []))];
 
   return (
     <>
@@ -296,11 +325,8 @@ export default function SourceLibrary({ catalog, officialUrl }) {
           if (files.length) importRoots([selectedGameFolder(files)], replacingSource.current);
           event.target.value = "";
         }} />
-      <LocalGame importRoots={importRoots} chooseZip={chooseZip} chooseFolder={chooseFolder} disabled={disabled} />
+      <GameDropOverlay importRoots={importRoots} disabled={disabled} />
       <p className="local-game-status" role="status">{notice}</p>
-      <GameBucket catalog={catalog} officialUrl={officialUrl} saveSources={saveSources} disabled={disabled}
-        buckets={buckets}
-        removeBucket={(bucket) => removeSources(entries.map(({ source }) => source).filter((source) => source.bucket === bucket))} />
       <LibraryCards games={catalog}>
         {pending.map(({ index, label, message, value, total }) => (
           <article key={`import-${index}`} className="poster-card game-import-card" aria-busy="true">
@@ -320,7 +346,7 @@ export default function SourceLibrary({ catalog, officialUrl }) {
             ? statusText[status] : null;
           const description = [game?.studio, game?.year, game?.badge, statusText[status]].filter(Boolean).join(" · ");
           return (
-            <article key={source.id} className="poster-entry source-poster-entry">
+            <article key={source.id} className="poster-entry source-poster-entry" data-library-source-id={source.id}>
               <button
                 type="button"
                 className={`poster-card source-poster-card ${game?.tone ?? "tone-default"}`}

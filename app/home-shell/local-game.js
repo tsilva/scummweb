@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Download } from "lucide-react";
 import { captureGameDrop } from "../local-game-import.mjs";
-import { AddWebGamesButton } from "./game-bucket";
 
 export function chooseZipHandles(multiple) {
   return window.showOpenFilePicker({
@@ -12,7 +12,7 @@ export function chooseZipHandles(multiple) {
   });
 }
 
-export default function LocalGame({ importRoots, chooseZip, chooseFolder, disabled }) {
+export default function GameDropOverlay({ importRoots, disabled }) {
   const [dragging, setDragging] = useState(false);
   const dragDepth = useRef(0);
 
@@ -44,7 +44,6 @@ export default function LocalGame({ importRoots, chooseZip, chooseFolder, disabl
       clear();
       if (disabled) return;
       const roots = captureGameDrop(event.dataTransfer);
-      document.getElementById("library")?.scrollIntoView({ behavior: "instant" });
       void importRoots(roots);
     }
 
@@ -64,27 +63,16 @@ export default function LocalGame({ importRoots, chooseZip, chooseFolder, disabl
     };
   }, [disabled, importRoots]);
 
-  return (
-    <div id="local-game-heading" className="local-game-drop">
-      <p>Drop game ZIPs or folders anywhere on this page. Your files stay on this device.</p>
-      <div className="game-source-actions">
-        <button type="button" className="secondary-button" disabled={disabled} onClick={() => chooseZip()}>
-          Choose ZIPs
-        </button>
-        <button type="button" className="secondary-button" disabled={disabled} onClick={() => chooseFolder()}>
-          Choose folder
-        </button>
-        <AddWebGamesButton disabled={disabled} />
+  if (!dragging) return null;
+
+  return createPortal(
+    <div className="game-drop-overlay" role="status">
+      <div className="game-drop-message">
+        <Download aria-hidden="true" size={32} />
+        <strong>Drop to add games to your library</strong>
+        <span>Game ZIPs and folders stay on this device.</span>
       </div>
-      {dragging && (
-        <div className="game-drop-overlay" role="status">
-          <div className="game-drop-message">
-            <Download aria-hidden="true" size={32} />
-            <strong>Drop to add games to your library</strong>
-            <span>Game ZIPs and folders stay on this device.</span>
-          </div>
-        </div>
-      )}
-    </div>
+    </div>,
+    document.body,
   );
 }

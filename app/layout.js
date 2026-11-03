@@ -1,10 +1,10 @@
 import { Inter, Space_Grotesk } from "next/font/google";
 import Script from "next/script";
-import { Analytics } from "@vercel/analytics/next";
 import { GOOGLE_ANALYTICS_ID } from "../lib/site-config.mjs";
 import { getVersionedSiteAssetPath } from "./asset-paths";
 import { APP_THEME_COLOR, HOME_DESCRIPTION, HOME_TITLE, SITE_NAME } from "./seo";
 import { getMetadataBase } from "./site-config";
+import SiteAnalytics from "./site-analytics";
 import "./globals.css";
 import "./styles/home-shell.css";
 import "./styles/game-player.css";
@@ -76,11 +76,15 @@ export default function RootLayout({ children }) {
             window.dataLayer = window.dataLayer || [];
             window.gtag = function(){window.dataLayer.push(arguments);};
             window.gtag('js', new Date());
-            window.gtag('config', '${GOOGLE_ANALYTICS_ID}');
+            const isDirectGameLink = location.pathname === '/local/play'
+              && new URLSearchParams(location.hash.slice(1)).has('zip');
+            window.gtag('config', '${GOOGLE_ANALYTICS_ID}', isDirectGameLink
+              ? { page_location: location.origin + location.pathname + location.search }
+              : {});
           `}
         </Script>
         {children}
-        <Analytics />
+        <SiteAnalytics />
       </body>
     </html>
   );

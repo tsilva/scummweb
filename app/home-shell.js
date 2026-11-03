@@ -1,5 +1,4 @@
 import GameDetailModal from "./home-shell/game-detail-modal";
-import { SettingsButton } from "./home-shell/game-bucket";
 import LibraryCards from "./home-shell/library-cards";
 import Icon from "./home-shell/shell-icon";
 import HeroStage from "./home-shell/hero-stage";
@@ -62,7 +61,6 @@ export default function HomeShell({
           >
             <Icon name="github" />
           </a>
-          {isHomePage && <SettingsButton />}
         </div>
       </nav>
 
