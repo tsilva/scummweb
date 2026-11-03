@@ -1347,13 +1347,3 @@ button.nav-icon-link {
 .local-game-status:empty {
   margin: 0;
 }
-
-.local-game-player {
-  display: block;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  max-height: 80vh;
-  margin-top: 1rem;
-  border: 0;
-  background: #000;
-}

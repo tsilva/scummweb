@@ -33,3 +33,12 @@ test("an archive cannot escape its in-memory game directory", async () => {
     /invalid file path/
   );
 });
+
+test("a DOS DOTT launcher without the game data reports the missing files", async () => {
+  const zip = await gameZip(["BOOTDISK.EXE", "DOTT.EXE", "__MACOSX/._DOTT.EXE"]);
+  await assert.rejects(readLocalGameArchive(zip), /missing Day of the Tentacle game data/);
+
+  const completeZip = await gameZip(["DOTT.EXE", "TENTACLE.000", "TENTACLE.001"]);
+  const files = await readLocalGameArchive(completeZip);
+  assert.deepEqual(files.map(({ path }) => path), ["DOTT.EXE", "TENTACLE.000", "TENTACLE.001"]);
+});

@@ -4,6 +4,25 @@ const maxEntries = 4096;
 
 class ArchiveError extends Error {}
 
+// Hand the File to the player route through this tab's memory.
+let selectedArchive;
+
+export function selectLocalGameArchive(file) {
+  selectedArchive = file;
+}
+
+export async function openSelectedLocalGameArchive(signal) {
+  // Let React cancel any superseded effect before taking the selection.
+  await Promise.resolve();
+  signal.throwIfAborted();
+  const file = selectedArchive;
+  selectedArchive = undefined;
+  if (!file) {
+    throw new ArchiveError("Choose a game ZIP from the homepage to play it here.");
+  }
+  return readLocalGameArchive(file);
+}
+
 export async function readLocalGameArchive(file) {
   if (!file.name.toLowerCase().endsWith(".zip")) {
     throw new ArchiveError("Choose a ZIP containing one ScummVM game.");
@@ -60,6 +79,11 @@ export async function readLocalGameArchive(file) {
       parts.length > prefixLength + 1 && parts[prefixLength] === allEntries[0].parts[prefixLength]
     )) {
       prefixLength++;
+    }
+    // The DOS DOTT.EXE alone can be mistaken for a Remastered detection file.
+    const gamePaths = allEntries.map(({ parts }) => parts.slice(prefixLength).join("/").toLowerCase());
+    if (gamePaths.includes("dott.exe") && gamePaths.every((path) => path === "dott.exe" || path === "bootdisk.exe")) {
+      throw new ArchiveError("This ZIP is missing Day of the Tentacle game data. Include TENTACLE.000 and TENTACLE.001 from the original DOS game.");
     }
     for (const { entry, parts } of allEntries) {
       for (let depth = 1; depth < parts.length; depth++) {
