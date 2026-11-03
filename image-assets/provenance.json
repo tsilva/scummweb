@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "profiles": [
+    "web"
+  ],
+  "sources": [
+    {
+      "path": "image-assets/sources/logo-source.png",
+      "sha256": "516ab1834fd9ed2a199f66cf66aa845aca298d66779316436525a5d559c59d50",
+      "generatedAt": "2026-11-03T16:16:35Z",
+      "evidence": "Codex native ImageGen output exec-454f4e96-d931-485c-ab6d-f4f9445e1fb1.png. Exact model was not disclosed."
+    },
+    {
+      "path": "image-assets/sources/icon-source.png",
+      "sha256": "13cbcf25e654f6a03c4bf8682f95447e3105bdceb403f6c5c1472408e4874347",
+      "generatedAt": "2026-11-03T16:15:03Z",
+      "evidence": "Codex native ImageGen output exec-7d2559f6-1e1f-44e0-b5ec-aac9a8ec246e.png. Exact model was not disclosed."
+    },
+    {
+      "path": "image-assets/sources/social-source.png",
+      "sha256": "811f81b9ab3022244136f5db8f9cd1f662be026d42c0d1ad8831034f04223df5",
+      "generatedAt": "2026-11-03T16:15:41Z",
+      "evidence": "Codex native ImageGen output exec-d49cce0a-2d9e-4898-9a89-85a3d0031820.png. Exact model was not disclosed."
+    }
+  ],
+  "exports": [
+    {
+      "role": "readme-logo",
+      "path": "logo.png",
+      "sha256": "922d78961d478a5a14d100f0c81708d953cf62f87340a8ee967f810c9782bee2",
+      "source": "image-assets/sources/logo-source.png"
+    },
+    {
+      "role": "favicon",
+      "path": "scummvm-shell/favicon.ico",
+      "sha256": "c3732ed21d5c8490b577a27ded5365140f16eee29921e9e3f5aaefa71df7c96f",
+      "source": "image-assets/sources/icon-source.png"
+    },
+    {
+      "role": "social-preview",
+      "path": "public/brand/web-seo/og-image-1200x630.png",
+      "sha256": "e4667827845aabf3751ad3c5f8d5327541a06a07dbd8a2126777469e36230c13",
+      "source": "image-assets/sources/social-source.png"
+    }
+  ]
+}
