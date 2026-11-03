@@ -40,8 +40,9 @@ saved matches when you return. Recheck the bucket after adding or removing ZIPs.
 
 Click a matched Library card to open its details, then select **Play** to open
 its dedicated player page. The browser downloads the ZIP directly from the saved
-bucket and applies the same size limits as local ZIPs. Connecting the official
-ScummWEB bucket shows the games in its existing index and keeps the standard
+bucket and applies the same size limits as local ZIPs. If the player frame stays
+blank on startup, the page retries it once using the downloaded files. Connecting
+the official ScummWEB bucket shows the games in its existing index and keeps the standard
 Library cards and player. For **The Secret of Monkey Island (Demo)**, upload the
 [English DOS EGA demo from ScummVM](https://www.scummvm.org/demos/) as `monkey-demo.zip`.
 

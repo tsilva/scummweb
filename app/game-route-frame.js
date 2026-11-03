@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { scummvmAssetVersion } from "./asset-paths";
 import { getLatestBrowserSave } from "./browser-saves.mjs";
 import GameBootOverlay from "./game-player/GameBootOverlay";
@@ -18,6 +18,7 @@ import { recordRecentGameTarget } from "./recent-games";
 
 const SCUMMWEB_FRAME_MESSAGE_SOURCE = "scummweb";
 const SCUMMWEB_ASPECT_RATIO_MESSAGE_TYPE = "scummweb-aspect-ratio";
+const ARCHIVE_FRAME_NAVIGATION_TIMEOUT_MS = 8000;
 
 function shouldHideScummvmMenuButton(game, target) {
   return (
@@ -158,7 +159,19 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     frameRef,
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    const navigationTimer = loadArchive && frameSrc === src ? window.setTimeout(() => {
+      const iframe = frameRef.current;
+      const documentUrl = iframe?.contentDocument?.URL;
+      if (!iframe || !archiveFiles.current || (documentUrl && documentUrl !== "about:blank")) return;
+
+      // Leave an active ScummVM startup alone. Only retry a frame whose document
+      // never loaded, while we still own the ZIP's unpacked files.
+      const retryUrl = new URL(src, window.location.href);
+      retryUrl.searchParams.set("launchRetry", "1");
+      setFrameSrc(`${retryUrl.pathname}${retryUrl.search}${retryUrl.hash}`);
+    }, ARCHIVE_FRAME_NAVIGATION_TIMEOUT_MS) : null;
+
     const archiveBootTimer = loadArchive && frameSrc ? window.setTimeout(() => {
       archiveFiles.current = null;
       setArchiveError("ScummVM took too long to start. Reload this page to try again.");
@@ -240,10 +253,11 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     window.addEventListener("message", handleMessage);
 
     return () => {
+      window.clearTimeout(navigationTimer);
       window.clearTimeout(archiveBootTimer);
       window.removeEventListener("message", handleMessage);
     };
-  }, [frameSrc, launchAnalytics, loadArchive, target]);
+  }, [frameSrc, launchAnalytics, loadArchive, src, target]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -544,6 +558,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
         showTouchCursorPad={showTouchCursorPad}
       />
       {frameSrc ? <iframe
+        key={loadArchive ? frameSrc : undefined}
         allow="autoplay; fullscreen"
         className="game-route-frame"
         data-scummvm-route-frame="true"
