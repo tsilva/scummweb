@@ -250,6 +250,8 @@ def main() -> None:
     load_dotenv(ROOT / ".env")
     games_dir = resolve_games_dir()
     selected_prefix = resolve_selected_prefix(games_dir, args.game) if args.game else None
+    if args.prune and selected_prefix and (games_dir / selected_prefix).is_file():
+        raise SystemExit("Pruning requires a game directory, not an individual file.")
 
     session = boto3.session.Session(
         aws_access_key_id=require_env("AWS_ACCESS_KEY_ID"),
@@ -299,7 +301,7 @@ def main() -> None:
 
     deleted = 0
     if args.prune:
-        remote_scope_prefix = selected_prefix if selected_prefix else None
+        remote_scope_prefix = f"{selected_prefix}/" if selected_prefix else None
         remote_keys = list_remote_keys(client, BUCKET, remote_scope_prefix)
         keys_to_delete = [key for key in remote_keys if key not in local_keys]
         deleted = delete_remote_keys(client, BUCKET, keys_to_delete)

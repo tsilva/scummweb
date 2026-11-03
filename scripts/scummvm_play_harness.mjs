@@ -87,49 +87,6 @@ function ensureDirectory(directoryPath) {
   return directoryPath;
 }
 
-function sanitizeAssetVersion(rawVersion) {
-  return String(rawVersion || "dev").replace(/[^a-zA-Z0-9._-]+/g, "-");
-}
-
-function getAssetVersion() {
-  const env = globalThis.process?.env || {};
-
-  return sanitizeAssetVersion(
-    env.NEXT_PUBLIC_SCUMMVM_ASSET_VERSION ||
-      env.SCUMMVM_ASSET_VERSION ||
-      env.VERCEL_DEPLOYMENT_ID ||
-      env.VERCEL_URL ||
-      env.VERCEL_GIT_COMMIT_SHA ||
-      "dev",
-  );
-}
-
-function buildVersionedAssetPath(assetPath, options = {}) {
-  if (!assetPath || !assetPath.startsWith("/")) {
-    return assetPath;
-  }
-
-  const resolved = new URL(assetPath, "https://scummweb.local");
-  const searchParams = options.searchParams || {};
-
-  for (const [key, value] of Object.entries(searchParams)) {
-    if (value == null) {
-      continue;
-    }
-
-    resolved.searchParams.delete(key);
-    resolved.searchParams.append(key, String(value));
-  }
-
-  if (options.hash) {
-    resolved.hash = options.hash;
-  }
-
-  resolved.searchParams.delete("v");
-  resolved.searchParams.append("v", getAssetVersion());
-  return `${resolved.pathname}${resolved.search}${resolved.hash}`;
-}
-
 function clamp(value, minimum, maximum) {
   return Math.max(minimum, Math.min(maximum, value));
 }
@@ -273,7 +230,10 @@ function getCanvasLocator(subject) {
     throw new Error("Expected a Playwright Page or Frame-like subject with locator()");
   }
 
-  return subject.locator("#canvas");
+  const shell = typeof subject.mainFrame === "function"
+    ? subject.frameLocator('iframe[data-scummvm-route-frame="true"]')
+    : subject;
+  return shell.locator("#canvas");
 }
 
 async function delayOnCanvas(canvas, delayMs) {
@@ -425,26 +385,17 @@ export function getPlayGame(target, options = {}) {
 }
 
 export function buildGameLaunchPath({ game, seeded = true, exitTo = null } = {}) {
-  if (!game?.target) {
-    throw new Error("buildGameLaunchPath requires a game with a target");
+  const playHref = game?.playHref || (game?.target && getPlayGame(game.target).playHref);
+  if (!playHref) {
+    throw new Error("buildGameLaunchPath requires a catalog game with a play route");
   }
 
   const shouldUseSeed =
     seeded && game.skipIntro?.strategy === "save-slot" && Number.isFinite(Number(game.skipIntro.slot));
-  const searchParams = {};
-
-  if (exitTo) {
-    searchParams.exitTo = exitTo;
-  }
-
-  if (shouldUseSeed) {
-    searchParams.skipIntroTarget = game.target;
-  }
-
-  return buildVersionedAssetPath("/scummvm.html", {
-    hash: shouldUseSeed ? `-x ${game.skipIntro.slot} ${game.target}` : game.target,
-    searchParams,
-  });
+  const launch = new URL(playHref, "https://scummweb.local");
+  if (exitTo) launch.searchParams.set("exitTo", exitTo);
+  if (shouldUseSeed) launch.hash = `seed=${game.skipIntro.slot}`;
+  return `${launch.pathname}${launch.search}${launch.hash}`;
 }
 
 export function buildGameLaunchUrl({ baseUrl = defaultBaseUrl, ...options } = {}) {
@@ -814,7 +765,7 @@ export async function launchGame(options = {}) {
     waitUntil,
   });
 
-  await session.page.locator("#canvas").waitFor({ timeout });
+  await getCanvasLocator(session.page).waitFor({ timeout });
   attachArtifactRun(session.page, artifactRun);
   attachArtifactRun(session.context, artifactRun);
   appendArtifactRunAction(artifactRun, "launch-game", {

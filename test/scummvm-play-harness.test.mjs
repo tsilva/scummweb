@@ -64,6 +64,7 @@ test("play harness normalizes library metadata and finds games by target", () =>
 test("play harness builds seeded and unseeded launch paths", () => {
   const game = {
     target: "sky",
+    playHref: "/beneath-a-steel-sky/play",
     skipIntro: {
       strategy: "save-slot",
       durationMinutes: 2,
@@ -76,15 +77,11 @@ test("play harness builds seeded and unseeded launch paths", () => {
   const unseededPath = buildGameLaunchPath({ game, seeded: false });
   const unseededUrl = new URL(unseededPath, "http://127.0.0.1:3000");
 
-  assert.equal(seededUrl.pathname, "/scummvm.html");
-  assert.equal(seededUrl.searchParams.get("skipIntroTarget"), "sky");
-  assert.equal(seededUrl.searchParams.get("v"), "dev");
-  assert.equal(decodeURIComponent(seededUrl.hash.slice(1)), "-x 0 sky");
+  assert.equal(seededUrl.pathname, game.playHref);
+  assert.equal(seededUrl.hash, "#seed=0");
 
-  assert.equal(unseededUrl.pathname, "/scummvm.html");
-  assert.equal(unseededUrl.searchParams.get("skipIntroTarget"), null);
-  assert.equal(unseededUrl.searchParams.get("v"), "dev");
-  assert.equal(decodeURIComponent(unseededUrl.hash.slice(1)), "sky");
+  assert.equal(unseededUrl.pathname, game.playHref);
+  assert.equal(unseededUrl.hash, "");
 });
 
 test("play harness compares hashes and verifies visible change thresholds", () => {

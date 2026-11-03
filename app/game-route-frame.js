@@ -334,13 +334,24 @@ export default function GameRouteFrame({
         let launchSrc = src;
         if (catalogLaunch) {
           launchAnalytics.start();
-          const slot = catalogIntroSlot ?? (window.location.hash === "#continue"
+          const launchHash = window.location.hash;
+          const requested = /^#(seed|slot)=(\d{1,9})$/.exec(launchHash);
+          const requestedSlot = requested ? Number(requested[2]) : null;
+          const seeded = catalogIntroSlot !== null || (requested?.[1] === "seed" && requestedSlot === intro?.slot);
+          const explicitSlot = requested?.[1] === "slot" || seeded ? requestedSlot : null;
+          const slot = catalogIntroSlot ?? (launchHash === "#continue"
             ? await getLatestBrowserSave(game, scummvmAssetVersion)
-            : null);
+            : explicitSlot);
           if (controller.signal.aborted) return;
           setIsResuming(catalogIntroSlot === null && slot !== null);
           if (slot !== null) {
-            launchSrc = buildSaveSlotSrc(src, target, slot, { seedIntro: catalogIntroSlot !== null });
+            launchSrc = buildSaveSlotSrc(src, target, slot, { seedIntro: seeded });
+          }
+          const exitTo = new URLSearchParams(window.location.search).get("exitTo");
+          if (exitTo) {
+            const shellUrl = new URL(launchSrc, window.location.origin);
+            shellUrl.searchParams.set("exitTo", getSafeHref(exitTo));
+            launchSrc = `${shellUrl.pathname}${shellUrl.search}${shellUrl.hash}`;
           }
         }
         if (loadArchive) {
@@ -358,7 +369,7 @@ export default function GameRouteFrame({
 
     void openGame();
     return () => { controller.abort(); };
-  }, [catalogIntroSlot, catalogLaunch, game, launchAnalytics, loadArchive, src, target]);
+  }, [catalogIntroSlot, catalogLaunch, game, intro, launchAnalytics, loadArchive, src, target]);
 
   useEffect(() => {
     if (bootState.hasBootFailed) launchAnalytics.fail("startup_error");

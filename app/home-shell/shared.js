@@ -3,7 +3,7 @@ export function getGameDialogId(game, { fromBucket = false } = {}) {
 }
 
 export function getDialogLinkProps(href) {
-  if (!href.startsWith("http://") && !href.startsWith("https://")) {
+  if (!href.startsWith("http://") && !href.startsWith("https://") && !href.startsWith("/launcher/notices/")) {
     return {};
   }
 

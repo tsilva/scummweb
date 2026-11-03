@@ -7,6 +7,10 @@ const revalidateCacheControl = "public, max-age=0, must-revalidate";
 
 export function proxy(request) {
   const { pathname, searchParams } = request.nextUrl;
+  if (pathname === "/scummvm.html" && (searchParams.get("localGame") !== "1" ||
+      request.headers.get("sec-fetch-dest") === "document")) {
+    return NextResponse.rewrite(new URL(`/legacy-play${request.nextUrl.search}`, request.url));
+  }
   const response = NextResponse.next();
 
   if (isVersionedAsset(pathname)) {
