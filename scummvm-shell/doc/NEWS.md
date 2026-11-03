@@ -1,7 +1,718 @@
 For a more comprehensive changelog of the latest experimental code, see:
         https://github.com/scummvm/scummvm/commits/
 
-#### 2.9.1 (2025-05-25)
+#### 2026.4.0 "Never-slop" (2026-10-10)
+
+ New games:
+   - Added support for Mortadelo y Filemón: Una Aventura de Cine Edición Original.
+   - Added support for Mortadelo y Filemón: Dos vaqueros chapuceros.
+   - Added support for Mortadelo y Filemón: Terror, Espanto y Pavor.
+   - Added support for Mortadelo y Filemón: La Sexta Secta.
+   - Added support for Mortadelo y Filemón: Operación Moscú.
+   - Added support for Mortadelo y Filemón: El Escarabajo de Cleopatra.
+   - Added support for Mortadelo y Filemón: La Banda de Corvino.
+   - Added support for Mortadelo y Filemón: Balones y Patadones.
+   - Added support for Mortadelo y Filemón: Mamelucos a la Romana.
+   - Added support for Dracula: Resurrection.
+   - Added support for Dracula 2: The Last Sanctuary.
+   - Added support for Amerzone: The Explorer's Legacy.
+   - Added support for The Cameron Files: The Secret at Loch Ness.
+   - Added support for The Messenger / Louvre: The Final Curse.
+   - Added support for Nancy Drew: The Secret of Shadow Ranch.
+   - Added support for Nancy Drew: Curse of Blackmoor Manor.
+   - Added support for Nancy Drew: Secret of the Old Clock.
+   - Added support for Nancy Drew: Last Train to Blue Moon Canyon.
+   - Added support for Nancy Drew: Danger by Design.
+   - Added support for Nancy Drew: The Creature of Kapu Cave.
+   - Added support for Chamber of the Sci-Mutant Priestess.
+   - Added support for Star Wars: Rebel Assault.
+   - Added support for Star Wars: Rebel Assault II: The Hidden Empire.
+   - Added support for Dragonsphere.
+   - Added support for Return of the Phantom.
+   - Added support for Once Upon a Forest.
+   - Added support for Alpha Polaris.
+   - Added support for Art of Murder: FBI Confidential.
+   - Added support for Barrow Hill - The Dark Path.
+   - Added support for Dark Fall: Lost Souls.
+   - Added support for Devil In The Capital.
+   - Added support for Dirty Split.
+   - Added support for Face Noir.
+   - Added support for Ghost in the Sheet.
+   - Added support for Hamlet.
+   - Added support for The Lost Crown - A Ghost-Hunting Adventure.
+   - Added support for Murder In Tehran's Alleys 2016.
+   - Added support for Murder In Tehran's Alleys 1933.
+   - Added support for Reversion series.
+   - Added support for Rhiannon: Curse of the Four Branches.
+   - Added support for Shadows on the Vatican series.
+   - Added support for other Wintermute engine games, over 140 titles.
+   - Added support for Der Schatz im Silbersee (Treasure of the Silver Lake).
+   - Added support for The Fool's Errand.
+   - Added support for Harvester.
+   - Added support for Lord Avalot d'Argent.
+   - Added support for Dungeon Master.
+
+ General:
+   - Optimised mixing and rate converters, for better performance.
+   - Implemented ImGui-based interface for the Event Recorder.
+   - Fixed bug with inability to specify game overrides for MIDI and MT-32
+     devices.
+   - Switched Nuked-OPL3 AdLib emulator to Nuked-OPL3-fast fork.
+   - Added support for "obfuscated" InstallShield files. This mainly affected
+     certain Nancy Drew games, that can now be run without having to run the
+     Windows installer first.
+
+ Asylum:
+   - Fixed missing or incorrect walking sounds in some scenes.
+
+ AWE:
+   - Fix sound code crash in OpenBSD.
+
+ Bagel:
+   - Fix saving options for Hodj n' Podj's Th Gesng Gme.
+
+ GLK:
+   - Fixed saved font selections not being applied correctly in some games.
+   - Added support for loading ZX Spectrum games directly from TAP/TZX tape images.
+
+ Freescape:
+   - Added support for loading ZX Spectrum games directly from TAP/TZX tape images.
+
+ Hopkins:
+   - Added the missing underwater base 3D first-person shooter.
+   - Optional quality-of-life HUD for underwater base shooter with map and autopilot.
+
+ Kyra:
+   - Added support for Korean fan-translation of kyra1 (added in 2026.3.0).
+   - Restored non-Korean kyra1 games which got broken ("You're missing the 'KYRA.DAT'
+     engine data file or it got corrupted..." message).
+   - Added an optional automap overlay for Eye of the Beholder 1 and 2.
+
+ Lure:
+   - Improved character pathfinding.
+   - Fix being unable to talk to characters after a one-sided conversation.
+
+ M4:
+   - Numerous Riddle of Master Lu fixes for crashes, missing functionality, and game bugs.
+   - Fixed original game bug where conversations with Wolf could freeze the game.
+   - Added original game cheat codes for bypassing the maze.
+   - Added translation of message log entries.
+
+ MM:
+   - Fix multiple M&M1 classic combat crashes.
+   - Implement M&M1 classic PC speaker sound.
+   - Fix stale view close handling causing crash.
+   - Fix M&M1 spelling mistakes.
+   - Improved M&M1 Enhanced mouse support, character generation, and general in-game UI.
+   - Fixed cutscene subtitle rendering.
+   - Added Xeen French translation.
+   - Fix Pharaoh voice line repeating in Dark Side of Xeen intro.
+
+ NANCY:
+   - Generic flags are no longer cleared when saving or auto-saving. Clearing
+     them introduced issues when auto-saving was done in some scenes.
+   - Loading from the GMM is now possible before starting a new scene.
+   - It's now possible to skip cutscenes and dialog lines with escape.
+   - Mouse wheel functionality has been added to several UI widgets.
+   - Fixed issues with the memory puzzle in Nancy9.
+   - Fixed issues with the "I can't" item sound.
+   - Answers entered in password kind of puzzles are now more forgiving (e.g.
+     "Xoc" and "Lady Xoc" are now both acceptable answers).
+
+ SCUMM:
+   - Improved cursor scale in early Windows HE games.
+   - Added option to use PAL timing for SID audio in C64 games. This slows
+     down the music, but that's how many non-US players would have heard it.
+
+ Sherlock:
+   - Vertical movement delta fix for Rose Tattoo.
+
+ SLUDGE:
+   - Added detection for Shape-Shift Escape.
+
+ TsAGE:
+   - Added General MIDI and MT-32 support to the games.
+   - Improved Sound Blaster sample playback.
+   - Sound is properly paused when the engine is paused.
+
+ V-Cruise:
+   - Fixed time-based puzzles sometimes getting stuck after restarting ScummVM.
+
+ Voyeur:
+   - Match original first person movement with mouse when looking at mansion.
+
+ Android port:
+   - Support Android 17.
+   - Add TTS support.
+   - Add external MIDI device support.
+
+ Atari port:
+   - Added integration with nFM library.
+
+
+#### 2026.3.0 "Carousels & Killer Whales" (2026-06-20)
+
+ New games:
+   - Added support for Nancy Drew: The Haunted Carousel.
+   - Added support for Nancy Drew: Danger on Deception Island.
+   - Added support for Noctropolis.
+   - Added support for Cartoon Carnival.
+   - Added support for Alfred Pelrock: En Busca de un Sueño.
+   - Added support for Pilot Brothers: On the Track of Striped Elephant,
+     Pilot Brothers: The Case of Serial Maniac, and five minor
+     games built on the Gamos engine.
+
+ General:
+   - Highlight clickable links in the GUI with a cursor change.
+   - Fixed window size when switching out of fullscreen mode on 3D engines.
+   - Implemented NULL OPL driver for lower-base systems.
+   - Implemented kinetic scolling in GUI lists.
+
+ ACCESS:
+   - Fixed various script issues in Martian Memorandum.
+
+ AGOS:
+   - Added support for language files used by Amiga and Macintosh
+     versions of Simon2.
+
+ GLK:
+   - Exposed text and engine settings in the GUI.
+
+ LastExpress:
+   - The game has been supported for a while now (2026.1.0), we just
+     forgot to add a news entry here. Whoops!
+   - Several inaccuracies from the character logic have been fixed,
+     which means that some rare issues concerning characters behavior
+     should now be gone.
+
+ MADS:
+   - In Rex Nebular fix game being semi-stuck while using binoculars.
+
+ MM:
+   - Reworked keymapper for MM1.
+   - Fixed MM1 Enhanced allowing trading more than the character owned.
+   - Fixed MM1 Enhanced allowing free temple healing where it shouldn't.
+   - MM1 Enhanced most recently played music was restarting after opening and closing the GMM.
+
+ MYST3:
+   - Fixed a regression for the animation of the control wheel at J'nanin's shore.
+   - Camera movement is now free after placing a symbol on the pedestal at the watch tower in J'nanin.
+
+ NANCY:
+   - Fixed a regression in ripped letter types of puzzles, affecting all the Nancy games that feature such puzzles.
+   - Fixed potential crashes in ripped letter types of puzzles, after loading a saved game.
+   - Show the correct mouse cursor in rotating lock types of puzzles.
+   - Enter the game scene directly when loading a saved game from the launcher or the GMM, instead of starting in the main game menu.
+   - Properly handle the "Continue Game" button after clicking on the "More Nancy" button.
+   - Fixed an edge case in piano types of puzzles, where clicking on a key while another was still down produced a graphical glitch.
+   - Fixed some sounds stopping prematurely in Nancy Drew: Secret of the Scarlet Hand and newer games.
+   - Fixed animation speed and timing in turning types of puzzles.
+
+ SLUDGE:
+   - Added two more games to detection, "Sam and Max Flintlocked" and
+     "Full Moon".
+
+ TwinE:
+   - Fixed soft lock collision bug with bulldozer.
+   - Fixed wrong scaling for plasma menu effect.
+   - Fixed holomap model rendering.
+   - Disable autosaves while driving a vehicle.
+
+ Atari port:
+   - Added native CDDA support.
+   - Added plugin support (now ScummVM can run with as little as a few megs of RAM).
+   - Added native YM2149 support (currently usable for Elvira 1 and 2).
+   - Reworked audio mixer (this fixes the barking poodles in SOMI).
+   - Autosave is disabled by default as it leads to audible artefacts during gameplay.
+
+ PS3 port:
+   - Added support for running ScummVM engines as separate modules/executables.
+     This saves about 90 MB of RAM. It is enabled only for release packages.
+
+
+#### 2026.2.0 "Railmonicon" (2026-03-28)
+
+ New games:
+   - Added support for Necronomicon: The Dawning of Darkness.
+   - Added ALG engine for DOS versions of American Laser Games:
+     Crime Patrol, Crime Patrol 2: Drug Wars, The Last Bounty Hunter,
+     Mad Dog McCree, Mad Dog II: The Lost Gold, Space Pirates
+     and Who Shot Johnny Rock?
+
+ General:
+   - Improved PC-Speaker emulation.
+   - Implemented multiselect in the GUI launcher games list.
+   - Updated ImGui library to 1.92.6-docker.
+   - Fixed Smart Search in the Icons Grid view in the launcher.
+   - Simulate MT-32 display for on-screen messages.
+   - Added possibility to load GUI translations from the local `po/`
+     directory. Useful for translators since it does not require
+     regeneration of the translations.dat file.
+   - Significantly reduced compilation time and memory usage when
+     building the TinyGL component.
+   - Added Help button to the main interface and improved the dialog
+     speed.
+   - Added possibility to run unpacked GUI themes.
+
+ AGOS:
+   - Added music support for the Atari ST releases of Elvira 1 and 2.
+   - Improved support of the Acorn releases of Simon the Sorcerer.
+     Original cursor is now implemented, along with support of the
+     Desktop Tracker format used for music.
+   - Improved font rendering accuracy for DOS Personal Nightmare and
+     the Amiga Elvira 1 demo.
+   - Implemented original cursors for the Amiga release of Personal
+     Nightmare.
+   - Fixed Personal Nightmare 'Wait' command being far too quick on
+     modern systems.
+   - Fixed inventory icon colors in the Amiga and Atari ST releases of
+     Personal Nightmare.
+   - Fixed Simon's sprite having no color in the Acorn floppy demo
+     of Simon the Sorcerer 1.
+
+ Alcachofa:
+   - Added support for earlier Spanish CD variant of
+     Mortadelo y Filemón: Una Aventura de Cine - Edición Especial.
+   - Added support for Russian variant of Mort & Phil: A Movie Adventure
+     (Секретные агенты: Киномонстры атакуют).
+
+ Bagel:
+   - Fixed Enter/Escape keys in The Guessing Game guess dialog.
+   - Fixed using Enter key to close info dialogs.
+   - Fixed shell animations in Mankala minigame.
+   - Fixed incorrect evolution logic in Game of Life.
+   - Hopeful fix for occasional crash entering boardgame stores.
+   - Fixed crash when hiding boardgame turn start spinner.
+   - Fixed Poker minigame bet icons rendering over game over dialog.
+   - Made in-progress speech stop when closing a minigame exit dialog.
+   - Fixed using Enter key after typing savegame name to save it.
+
+ Freescape:
+   - Added sound emulation for Driller, Dark Side, Total Eclipse and
+     Castle Master on CPC, C64 and Amiga.
+   - Added music support for Total Eclipse on Atari ST.
+   - Added WASD movement option with shift for run.
+   - Improved touchscreen controls and alternative input mappings for
+     mobile devices.
+   - Added a debugger with position and area commands.
+   - Implemented compressed data loading for Driller on Atari ST.
+   - Fixed rendering artifacts and culling issues.
+   - Fixed various UI element positions and score rendering across
+     multiple releases.
+
+ Gob:
+   - Optimized the number of screen blits, making Gobliiins and Ween
+     noticeably more responsive on weaker platforms. Other Gob games
+     are also positively affected.
+
+ M4:
+   - Added music support in Ripley.
+   - Fixed numerous bugs in Ripley.
+   - Fixed some bugs in Orion Burger.
+
+ MM:
+   - Fixed M&M1 memory corruption on exit.
+   - Fixed M&M1 display issues/corruption getting items from treasure chests.
+   - Fixed M&M1 showing incorrect name for attacking monsters in combat.
+
+ MYST3:
+   - Restored ambient sounds for harmonic frequencies puzzle in Amateria.
+   - Fixed resetting animations for turntable puzzle in Amateria.
+   - Fixed synchronization of videos that play consecutively.
+   - Fixed skipping frames in some looping videos.
+   - Fixed frame-triggered ambient sounds in scripted movies.
+   - Various tweaks for displaying subtitles and inventory in widescreen mod.
+   - Fixed scaling issues for subtitles, draggable items, inventory bar and
+     main menu in widescreen mod.
+
+ QdEngine:
+   - Fixed pathfinding bugs on Windows optimized (release) build.
+
+ SCUMM:
+   - Added support for original splash screens in Maniac Mansion NES (when
+     playing from PRG files).
+   - Added support for the playback feature of the non-interactive demos
+     of Monkey Island 1, Monkey Island 2, and Fate of Atlantis.
+   - Implemented original cursor for the Apple II release of Maniac Mansion.
+   - Fixed Maniac Mansion NES logo scroll getting stuck during the intro.
+
+ Sherlock:
+   - Fixed occasional crash when using inventory items in Rose Tattoo.
+   - Fixed crash when using keyboard keys while playing darts in Rose Tattoo.
+   - Fixed score board layout and logic for dart games in Rose Tattoo.
+
+ SLUDGE:
+   - Fixed crash at start of Nathan's Second Chance game.
+
+ Sword1:
+   - Fixed music from the original Broken Sword 1 release being played at a
+     wrong sample rate on PS3, Wii and OSXPPC.
+
+ Sword2:
+   - Fixed crash with some DXA movies, such as the ones played in the intro.
+
+ Teenagent:
+   - Fixed 'could not locate language block' error when starting the Polish and
+     Russian versions.
+
+ Tinsel:
+   - Implemented proper palette mapping for the PSX versions of Discworld 1.
+     Before this, the screen wasn't turning black when using the blindfold
+     in Act 3.
+   - Made it possible to skip the entire introduction (by pressing Escape) in
+     all Discworld 1 versions.
+   - Fixed Amazon speech accidentally stopped by the Starfish flicking a coin,
+     in Act 2 of all Discworld 1 releases having this original script bug.
+   - Fixed "calculate odds" button not always erased from the screen when asking
+     the guard for probabilities, in Act 3 of early Discworld 1 releases
+     (original script bug).
+   - Fixed crash when trying to interact with (invisible) City Guards in Act 4
+     of Discworld 1, due to an original script oversight in early releases.
+   - Fixed dragon appearing too early in town square in Act 4 of Discworld 1
+     (original script bug in early releases).
+   - Fixed conversation window not closing when being done talking with the
+     barman in Discworld 1 L-Space (original script bug in early releases).
+
+ WAGE:
+   - Implemented combat system.
+   - Numerous visual fixes.
+   - Implemented mouse scrolling of text window.
+   - Implemented way to show startup screen and play startup sound for games
+     what have those files. There will be new items in the About menu.
+
+ Atari port:
+   - Included out-of-tree m68k code optimizations for the SCUMM engine and
+     audio mixing to gather user feedback.
+
+ macOS port:
+   - Added support for the newer Text-to-Speech API of macOS 10.14+.
+   - Restored Help menu and Copy from clipboard features for macOS 10.4-10.5.
+
+ iOS port:
+   - Added support for Text-to-Speech.
+   - Ported the CoreMIDI macOS feature to the iOS/tvOS ports, allowing the use
+     of external MIDI devices for output.
+
+
+#### 2026.1.0 "Like a version" (2026-01-31)
+
+ New games:
+   - Added support for Dark Seed.
+   - Added support for God of Thunder.
+   - Added support for The Adventures of Willy Beamish.
+   - Added support for Heart of China.
+   - Added support for Nancy Drew: Secret of the Scarlet Hand.
+   - Added support for Nancy Drew: Ghost Dogs of Moon Lake.
+   - Added support for Ripley's Believe It or Not!: The Riddle of Master Lu.
+   - Added support for Little Longnose.
+   - Added support for Pilot Brothers 3: Back Side of the Earth.
+   - Added support for Pilot Brothers 3D. The Case of Garden Pests.
+   - Added support for Pilot Brothers 3D-2. Kennel Club Secrets.
+   - Added support for Features of National Fishing.
+   - Added support for Mom Don't Worry.
+   - Added support for Dog-n-cat: In the Footsteps of Unprecedented Beasts.
+   - Added support for Dog-n-cat: Island of Dr Ratiarty.
+   - Added support for Out of this World (Another World).
+   - Added support for SLUDGE-based games, such as Out of Order,
+     The Secret of Tremendous Corporation, Robin's Rescue and
+     others, 12 titles so far.
+   - Added support for Adibou 2: Nature & Sciences.
+   - Added support for WAGE-based game. More than 160 titles so far.
+   - Added support for Penumbra: Overture.
+   - Added support for Tex Murphy: Martian Memorandum.
+   - Added support for Mort&Phil: A Movie Adventure (Special Edition).
+   - Added support for Trick or Treat.
+   - Added support for Hodj 'n' Podj.
+
+ Access:
+   - Added keymapper support.
+   - Fixed foodstep sounds.
+
+ ADL:
+   - Added Text-to-Speech support.
+
+ AGS:
+   - Updated detection tables.
+
+ AGI:
+   - Added Text-to-Speech support.
+   - Added support for SQ2 French translation.
+   - Added support for KQ1, KQ2, KQ3 Hebrew translations.
+   - Fixed Mickey's Space Adventure sound on PS3, Wii, and other big-endian
+     ports.
+
+ Buried:
+   - Added keymapper support.
+
+ CinE:
+   - Added Text-to-Speech support.
+
+ Cruise:
+   - Added Text-to-Speech support.
+
+ Cryomni3D:
+   - Added support for Chinese DOS/Win95 Versailles CD version.
+
+ Draci:
+   - Added Text-to-Speech support.
+
+ Drascula:
+   - Fixed displaying accented characters.
+   - Added Text-to-Speech support.
+   - Added keymapper support.
+
+ EFH:
+   - Fixed giving and dropping unequippable items.
+   - Fixed being unable to replace 3rd party member.
+   - Fixed quitting in status menu.
+   - Added Text-to-Speech support.
+   - Added keymapper support.
+
+ Freescape:
+   - Added roll rotation to Driller and Dark Side.
+   - Added full TinyGL support for all the games.
+   - Fixed several small details across all the games including missing
+     graphics and sounds.
+
+ Gob:
+   - Added Text-to-Speech support.
+
+ Grim:
+   - Added support for the fantranslated Polish version of Grim Fandango.
+
+ Hugo:
+   - Added Text-to-Speech support.
+   - Fixed unrecognized commands, missing points, and graphics glitches
+     in the DOS version of Hugo 2.
+   - Fixed clicking to walk.
+   - Fixed closing the top menu.
+
+ Hypno:
+   - Added keymapper support.
+   - Added support for third party subtitles.
+
+ Illusions:
+   - Fixed a crash when triggering the game menu early in the game.
+
+ Kyra:
+   - Reduced CPU usage in the LoL main menu.
+   - Reduced CPU usage in EoB 1 and 2.
+   - Introduced new launcher checkbox in Eye of the Beholder 1 and 2,
+     to enable smarter replacing of thrown weapons from inventory.
+   - In Eye of the Beholder 1, Ileria and Beohram NPC data fix is now behind
+     a separate feature flag and launcher checkbox.
+
+ Lab:
+   - Added keymapper support.
+
+ Lure:
+   - Added Russian version support to lure.dat.
+
+ MADE:
+   - Added Text-to-Speech support.
+
+ MM:
+   - Fixed protection from elements spell.
+   - Added Text-to-Speech support.
+   - Fixed errors with M&M1 monster advancement in combat.
+   - Fixed doors color in M&M1 enhanced mode.
+   - Fixed rendering of M&M1 enhanced main menu circles.
+
+ Mohawk:
+   - Fixed popping noise in speech in some game releases (bug in the original).
+
+ NANCY:
+   - Added support for ScummVM's save/load screens.
+   - Fixed a crash while reading files from the Zip disk in Secret of the
+     Scarlet Hand.
+
+ Neverhood:
+   - Added keymapper support.
+
+ NGI:
+   - Added keymapper support.
+   - Fixed a crash when trying to open the game main menu several times in
+     a row.
+
+ Nuvie:
+   - Added "Transfer a Character" feature to main menu.
+
+ Parallaction:
+   - Added Text-to-Speech support.
+
+ Petka:
+   - Added keymapper support.
+
+ Pink:
+   - Added keymapper support.
+
+ Prince:
+   - Added Text-to-Speech support.
+   - Added keymapper support.
+
+ Private:
+   - Added several important missing graphics and gameplay sounds,
+     the engine is now considered to be at feature parity with the original game.
+   - Fixed inaccessible places, missing interactions or conversations.
+   - Added option to highlight decision areas for improved visibility.
+   - Added support for third party subtitles.
+   - Added missing features and fixed crashes in the desktop screen.
+   - Fixed various graphics and cursor glitches.
+   - Added keymapper support.
+
+ Queen:
+   - Added keymapper support.
+
+ SCI:
+   - Fixed PHANT1 losing save files. (ScummVM 2.9.0 bug)
+   - Fixed QFG4 v1.1/German lockup when entering cave at end of game.
+   - Fixed PQ2 PC-98 Japanese text not displaying on certain screens.
+   - Fixed KQ1 Amiga crash when incorrectly guessing gnome's name.
+   - Fixed LONGBOW Amiga crash when going to abbey.
+   - Fixed SQ4 Amiga taking three minutes to display title screen.
+   - Fixed PQ2 phone when dialing wrong numbers.
+   - Fixed script bugs in ECO1, LSL6, PEPPER.
+   - Added support for SLATER Macintosh.
+   - Virtual keyboard now correctly triggers on/off wherever text input is
+     needed.
+   - Inside the Chest and Behind the Developer's Shieled are now handled as
+     two separate demos, detected from the same set of files.
+
+ SCUMM:
+   - Added support for the classic SE variants of MI1, MI2, DOTT and FT.
+   - Added support for the remastered speech and sound effects in the
+     remastered version of Day of the Tentacle.
+   - Added speech support in the SE versions of MI1 and MI2.
+   - Improved graphics support for Macintosh DOTT, Sam & Max, The Dig, Full
+     Throttle, and the PowerPC version of Fate of Atlantis.
+   - Added an option to render Sega CD MI1 with the "Shadow Mode" palette
+     which was originally used for that release. (It's unclear whether that
+     much darker rendering was used on purpose, or unintentionally.)
+   - Added Text-to-Speech support.
+   - Added support for Catalan fan translations of Maniac Mansion, Indy3,
+     Monkey1 and Indy4.
+   - Fixed game detection for the Macintosh version of MI1 from the first
+     first LucasArts Mac CD Game Pack. Previously you had to make sure to
+     only copy the data fork, not the (empty) resource fork.
+   - Fixed various crashes when loading some old/special saves.
+   - Fixed a bug with background layers, which could cause some small
+     glitches in The Dig.
+   - Fixed an edge case when decoding SMUSH videos. This would cause some
+     gray artifacts/pixels to appear in the ending video of The Dig.
+   - Fixed minor visual issues in Backyard Baseball (1997) and Pajama Sam 3.
+   - Fixed missing graphical effects in Spy Fox in Cheese Chase.
+   - Fixed Spy Fox in Cheese Chase always preferring custom levels over the
+     built-in ones.
+
+ Sherlock:
+   - Added keymapper support.
+
+ Stark:
+   - The OpenGL renderer now works on older GPUs not supporting
+     non-power-of-two textures.
+
+ Supernova:
+   - Added keymapper support.
+
+ Sword1:
+   - Fixed harsh noise being played instead of the intended audio on PS3,
+     Wii, and other big-endian ports.
+   - Fixed some engine leaks that could lead to crashes in some situations.
+
+ Sword25:
+   - Added keymapper support.
+
+ Teenagent:
+   - Added language support for Polish, Czech and Russian versions.
+     New teenagent.dat file is generated.
+   - Added keymapper support.
+   - Added Text-to-Speech support.
+   - Added support for Polish CD version with voice-over.
+
+ Tetraedge:
+   - Added keymapper support.
+
+ Titanic:
+   - Added keymapper support.
+
+ Toltecs:
+   - Added keymapper support.
+
+ Toon:
+   - Adjusted the speed of the Gift-O-Matic machine sequence, so that it better
+     matches the way it behaved on original hardware.
+
+ Touche:
+   - Fixed a crash when quitting the game while some speech was about to be
+     played.
+
+ TwinE:
+   - Activated original bug fixes (FunFrock's HQ door and safe bugs).
+
+ V-Cruise:
+   - Fixed text rendering in Chinese and Japanese localizations.
+   - Added support for Japanese DVD version of Schizm: Mysterious Journey.
+
+ Voyeur:
+   - Added keymapper support.
+
+ Wintermute:
+   - 3D renderer enabled by default for 2D games.
+   - Added Text-to-Speech support.
+   - Added support for several fan translations.
+
+ ZVision:
+   - Added support for widescreen displays.
+   - Added high quality panorama option (uses bilinear filtering.)
+   - Improved directionality of 3D sound.
+   - Improved accuracy of volume scaling.
+   - Enabled high performance audiovisual effects in Zork Nemesis.
+   - Improved behaviour of draggable lever controls.
+   - Fixed bug causing audio to cut out after long periods of continuous gameplay.
+   - Fixed bug causing some audio not to play in certain locations after
+     restoring a saved game.
+   - Fixed bug causing music puzzles not to play all notes when using MT-32.
+   - Fixed various gameplay script bugs in Nemesis and Grand Inquisitor.
+
+ Desktop ports:
+   - Allow the user to disable manual resizing of the ScummVM window (using Ctrl+R).
+   - Add support for building with SDL3 (although SDL2 is still used by default).
+   - Add support for scaling shaders within 3D engines.
+   - Remove last remnants from the ResidualVM merge: the codebase is now fully unified.
+
+ Android port:
+   - Support Android 16.
+   - Add support for scaling shaders within 3D engines.
+   - Add support for antialiasing with 3D engines.
+   - Remove last remnants from the ResidualVM merge: the codebase is now fully unified.
+   - Take screen forbidden zones into account.
+   - Use Android networking code instead of libcurl: system HTTPS certificates are now used.
+   - Long-press on back button with latest Android versions is fixed.
+
+ Atari port:
+   - Unified paths for FreeMiNT and TOS in scummvm.cfg (better delete the old
+     config file.)
+   - Added translation for longer than 8+3 .dat filenames.
+   - Fixed slow rendering of Eco Quest's intro.
+   - Fixed cursor rendering of Phantasmagoria, KQ7 and other SCI32 games.
+   - Increased stack size to 256k to avoid stack overflow in some engines (e.g.
+     Supernova.)
+   - Fixed launching games from command line.
+
+ DS port:
+   - Migrate to latest devkitPRO SDK.
+
+ iOS port:
+   - Add support for scaling shaders within 3D engines.
+   - Add support for antialiasing with 3D engines.
+   - Remove last remnants from the ResidualVM merge: the codebase is now fully unified.
+   - Take screen forbidden zones into account.
+
+ PS3 port:
+   - Fixed crashes for games using a screen shaking effect.
+
+
+#### 2.9.1 "Slappin da BASS" (2025-05-25)
 
  AGI:
    - Added support for early version of Christmas Card 1986 with advertisements
@@ -17,7 +728,7 @@ For a more comprehensive changelog of the latest experimental code, see:
      slow down background music or other audio effects.
    - Fixed some audio volume changes not being triggered in some situations
      (e.g. automatic music volume drop during dev commentary or when a
-     characters speaks, in the Blackwell series).
+     character speaks, in the Blackwell series).
    - Added/updated detection entries for various AGS games.
 
  Asylum:
@@ -148,6 +859,7 @@ For a more comprehensive changelog of the latest experimental code, see:
 
  Windows port:
    - Restored FLAC support in the Windows 9x port.
+
 
 #### 2.9.0 "Close Encounters of the 2.9th Kind" (2024-12-22)
 
@@ -558,7 +1270,7 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Added support for macOS versions of Syberia and Syberia II.
    - Added support for The Vampire Diaries, Nancy Drew: Secrets Can Kill,
      Nancy Drew: Stay Tuned for Danger, Nancy Drew: Message in a Haunted Mansion,
-	 Nancy Drew: Treasure in the Royal Tower and Nancy Drew: The Final Scene.
+     Nancy Drew: Treasure in the Royal Tower and Nancy Drew: The Final Scene.
    - Added support for Reah: Face the Unknown and Schizm: Mysterious Journey.
    - Added support for Might and Magic Book One.
    - Added support for Muppet Treasure Island.

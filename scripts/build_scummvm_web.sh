@@ -4,7 +4,10 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 VENDOR_DIR="$ROOT_DIR/vendor"
-SCUMMVM_DIR="$VENDOR_DIR/scummvm"
+source "$ROOT_DIR/scripts/scummvm-version.sh"
+SCUMMVM_REPO_URL="https://github.com/scummvm/scummvm.git"
+SCUMMVM_DIR="$VENDOR_DIR/scummvm-$SCUMMVM_TAG"
+SCUMMVM_ENGINES=(sky dreamweb queen lure drascula parallaction sword25 scumm)
 DIST_DIR="$ROOT_DIR/dist"
 SHELL_DIR="$ROOT_DIR/scummvm-shell"
 DOWNLOADS_DIR="$ROOT_DIR/downloads"
@@ -15,7 +18,6 @@ SCUMMVM_BUNDLE_ASSET_VERSION_RAW="${SCUMMVM_ASSET_VERSION:-${VERCEL_DEPLOYMENT_I
 SCUMMVM_BUNDLE_ASSET_VERSION="${SCUMMVM_BUNDLE_ASSET_VERSION_RAW//[^a-zA-Z0-9._-]/-}"
 export SCUMMVM_BUNDLE_ASSET_VERSION
 
-EMSDK_VERSION=""
 EMSDK_DIR=""
 EMSDK_NODE=""
 EMSCRIPTEN_LIBS_BUILD_DIR=""
@@ -143,34 +145,50 @@ discover_game_archives() {
 }
 
 bootstrap_scummvm_checkout() {
-  mkdir -p "$VENDOR_DIR"
+  local patches=("$ROOT_DIR"/patches/scummvm/*.patch)
 
-  if [[ ! -d "$SCUMMVM_DIR/.git" ]]; then
-    git clone --depth 1 --branch v2.9.1 https://github.com/scummvm/scummvm.git "$SCUMMVM_DIR"
+  mkdir -p "$VENDOR_DIR"
+  if [[ ! -e "$SCUMMVM_DIR" ]]; then
+    git -c credential.helper= -c 'credential.helper=!gh auth git-credential' \
+      clone --depth 1 --branch "$SCUMMVM_TAG" "$SCUMMVM_REPO_URL" "$SCUMMVM_DIR"
   fi
 
-  python3 "$ROOT_DIR/scripts/patch_sword25_detection.py" \
-    "$SCUMMVM_DIR/engines/sword25/detection_tables.h"
-  python3 "$ROOT_DIR/scripts/patch_scummvm_queen_dialogue.py" \
-    "$SCUMMVM_DIR/engines/queen/talk.cpp"
-  python3 "$ROOT_DIR/scripts/patch_scummvm_lure_menu.py" \
-    "$SCUMMVM_DIR/engines/lure/menu.cpp"
-  python3 "$ROOT_DIR/scripts/patch_scummvm_plugin_lookup.py" \
-    "$SCUMMVM_DIR/base/plugins.cpp"
+  if [[ ! -d "$SCUMMVM_DIR/.git" ]] ||
+     [[ "$(git -C "$SCUMMVM_DIR" rev-parse HEAD)" != "$SCUMMVM_COMMIT" ]] ||
+     [[ "$(git -C "$SCUMMVM_DIR" rev-parse "$SCUMMVM_TAG^{commit}")" != "$SCUMMVM_COMMIT" ]]; then
+    echo "Expected $SCUMMVM_TAG at $SCUMMVM_COMMIT in $SCUMMVM_DIR." >&2
+    exit 1
+  fi
+
+  if [[ "${#patches[@]}" == 0 ]]; then
+    echo "Missing ScummWEB source patches in patches/scummvm." >&2
+    exit 1
+  fi
+
+  # Check the entire series before writing. Reverse-check lets a build reuse
+  # its already patched checkout without resetting files in the vendor cache.
+  if git -C "$SCUMMVM_DIR" apply --reverse --check "${patches[@]}" 2>/dev/null; then
+    return
+  fi
+  if ! git -C "$SCUMMVM_DIR" diff --quiet HEAD; then
+    echo "The source checkout is modified and does not match patches/scummvm: $SCUMMVM_DIR" >&2
+    exit 1
+  fi
+  git -C "$SCUMMVM_DIR" apply "${patches[@]}" || {
+    echo "Could not apply patches/scummvm to $SCUMMVM_TAG. Review the rejected hunks." >&2
+    exit 1
+  }
 }
 
 bootstrap_toolchain() {
-  local default_emsdk_version
-
-  default_emsdk_version="$(sed -n 's/^EMSDK_VERSION=\"\\([^\"]*\\)\"/\\1/p' "$SCUMMVM_DIR/dists/emscripten/build.sh" | head -n 1)"
-  EMSDK_VERSION="${EMSDK_VERSION:-${default_emsdk_version:-3.1.51}}"
+  export EMSDK_VERSION
   EMSDK_DIR="$SCUMMVM_DIR/dists/emscripten/emsdk-$EMSDK_VERSION"
   EMSCRIPTEN_LIBS_BUILD_DIR="$SCUMMVM_DIR/dists/emscripten/libs/build"
 
   if [[ ! -d "$EMSDK_DIR" ]]; then
     local tmp_archive
     tmp_archive="$SCUMMVM_DIR/dists/emscripten/emsdk-$EMSDK_VERSION.tar.gz"
-    curl -L "https://github.com/emscripten-core/emsdk/archive/refs/tags/${EMSDK_VERSION}.tar.gz" -o "$tmp_archive"
+    curl -fL "https://github.com/emscripten-core/emsdk/archive/refs/tags/${EMSDK_VERSION}.tar.gz" -o "$tmp_archive"
     tar -xf "$tmp_archive" -C "$SCUMMVM_DIR/dists/emscripten"
   fi
 
@@ -245,26 +263,28 @@ EOF
 }
 
 prepare_codec_prefix() {
-  local sysroot_dir vorbis_source_dir vorbis_build_dir
+  local sysroot_dir vorbis_source_dir vorbis_build_dir probe_dir
 
   # shellcheck disable=SC1090
   source "$EMSDK_DIR/emsdk_env.sh"
   sysroot_dir="$EMSDK_DIR/upstream/emscripten/cache/sysroot"
   vorbis_source_dir="$EMSDK_DIR/upstream/emscripten/cache/ports/vorbis/Vorbis-version_1"
-  vorbis_build_dir="/tmp/scummweb-vorbis-build"
+  vorbis_build_dir="$EMSCRIPTEN_LIBS_BUILD_DIR/vorbis-build"
+  probe_dir="$EMSCRIPTEN_LIBS_BUILD_DIR/probes"
+  mkdir -p "$probe_dir"
 
-  cat > /tmp/scummweb-port-png.c <<'EOF'
+  cat > "$probe_dir/png.c" <<'EOF'
 #include <png.h>
 int main(void) { return 0; }
 EOF
-  emcc /tmp/scummweb-port-png.c -s USE_LIBPNG=1 -o /tmp/scummweb-port-png.js >/dev/null
+  emcc "$probe_dir/png.c" -s USE_LIBPNG=1 -o "$probe_dir/png.js" >/dev/null
 
-  cat > /tmp/scummweb-port-vorbis.c <<'EOF'
+  cat > "$probe_dir/vorbis.c" <<'EOF'
 #include <ogg/ogg.h>
 #include <vorbis/codec.h>
 int main(void) { return 0; }
 EOF
-  emcc /tmp/scummweb-port-vorbis.c -s USE_OGG=1 -s USE_VORBIS=1 -o /tmp/scummweb-port-vorbis.js >/dev/null
+  emcc "$probe_dir/vorbis.c" -s USE_OGG=1 -s USE_VORBIS=1 -o "$probe_dir/vorbis.js" >/dev/null
 
   mkdir -p \
     "$EMSCRIPTEN_LIBS_BUILD_DIR/include" \
@@ -309,6 +329,12 @@ EOF
 }
 
 build_scummvm_web_target() {
+  local engine
+  local engine_config_args=()
+  for engine in "${SCUMMVM_ENGINES[@]}"; do
+    engine_config_args+=("--enable-engine=$engine")
+  done
+
   local sword25_config_args=(
     --enable-ogg
     --enable-vorbis
@@ -326,22 +352,33 @@ build_scummvm_web_target() {
   if [[ -f config.mk ]] && ! grep -qx 'DYNAMIC_MODULES = 1' config.mk; then
     emmake make clean
   fi
+  # Upstream's make rule tracks objects, but not the JavaScript inputs.
+  local shell_input
+  for shell_input in dists/emscripten/custom_shell{.html,-pre.js,-post.js}; do
+    if [[ "$shell_input" -nt scummvm.html ]]; then
+      rm -f scummvm.html
+      break
+    fi
+  done
+  # Upstream copies into this directory in place. Start with an empty
+  # package so a stale plugin or data file cannot slip into a rebuild.
+  rm -rf build-emscripten
   ./dists/emscripten/build.sh setup configure make dist \
     --disable-all-engines \
     --enable-plugins \
     --default-dynamic \
     --disable-detection-full \
-    --enable-engine=sky \
-    --enable-engine=dreamweb \
-    --enable-engine=queen \
-    --enable-engine=lure \
-    --enable-engine=drascula \
-    --enable-engine=parallaction \
-    --enable-engine=sword25 \
-    --enable-engine=scumm \
+    "${engine_config_args[@]}" \
     "${sword25_config_args[@]}" \
     --disable-seq-midi \
     --disable-timidity
+
+  for engine in "${SCUMMVM_ENGINES[@]}"; do
+    if [[ ! -s "build-emscripten/data/plugins/lib$engine.so" ]]; then
+      echo "Missing engine plugin lib$engine.so for $SCUMMVM_TAG." >&2
+      exit 1
+    fi
+  done
 }
 
 game_archive_target_dir() {
@@ -401,7 +438,7 @@ install_game_archives() {
     fi
   done
 
-  "$EMSDK_NODE" "$SCUMMVM_DIR/dists/emscripten/build-make_http_index.js" "$SCUMMVM_DIR/build-emscripten/games"
+  python3 "$ROOT_DIR/scripts/write_scummvm_http_index.py" "$SCUMMVM_DIR/build-emscripten/games"
 }
 
 ensure_repo_dependencies() {
@@ -417,13 +454,17 @@ ensure_repo_dependencies() {
   fi
 }
 
-generate_detected_config() {
+generate_detected_config() (
   local server_pid
 
   mkdir -p "$ROOT_DIR/artifacts"
+  # The shell uses /games-proxy on loopback. Serve the extracted archives at
+  # that path when running the standalone catalog detector.
+  ln -sfn games "$SCUMMVM_DIR/build-emscripten/games-proxy"
+  touch "$SCUMMVM_DIR/build-emscripten/scummvm.ini"
   python3 -m http.server 8000 --bind 127.0.0.1 --directory "$SCUMMVM_DIR/build-emscripten" >/tmp/scummweb-build-server.log 2>&1 &
   server_pid=$!
-  trap 'kill "$server_pid" 2>/dev/null || true' RETURN
+  trap 'kill "$server_pid" 2>/dev/null || true; rm -f "$SCUMMVM_DIR/build-emscripten/games-proxy"' EXIT
 
   "$EMSDK_NODE" "$ROOT_DIR/scripts/generate_game_config.mjs" \
     "$SCUMMVM_DIR/build-emscripten" \
@@ -434,10 +475,8 @@ generate_detected_config() {
     "$SCUMMVM_DIR/build-emscripten/games" \
     "$SCUMMVM_DIR/build-emscripten/games/sword25/data.b25c"
 
-  "$EMSDK_NODE" "$SCUMMVM_DIR/dists/emscripten/build-make_http_index.js" "$SCUMMVM_DIR/build-emscripten/games"
-  trap - RETURN
-  kill "$server_pid" 2>/dev/null || true
-}
+  python3 "$ROOT_DIR/scripts/write_scummvm_http_index.py" "$SCUMMVM_DIR/build-emscripten/games"
+)
 
 stage_dist_workspace() {
   rm -rf "$DIST_DIR"
@@ -453,13 +492,22 @@ finalize_dist_workspace() {
 }
 
 main() {
+  if [[ "$#" != 0 && ( "$#" != 1 || "$1" != --prepare-source ) ]]; then
+    echo "Usage: $0 [--prepare-source]" >&2
+    exit 1
+  fi
+
+  log_stage "Prepare ScummVM $SCUMMVM_TAG and apply source patches"
+  bootstrap_scummvm_checkout
+  if [[ "${1:-}" == --prepare-source ]]; then
+    echo "Prepared $SCUMMVM_DIR"
+    return
+  fi
+
   if [[ "${SCUMMVM_REUSE_CATALOG:-0}" != 1 ]]; then
     log_stage "Discover game archives"
     discover_game_archives
   fi
-
-  log_stage "Bootstrap ScummVM checkout"
-  bootstrap_scummvm_checkout
 
   log_stage "Bootstrap toolchain"
   bootstrap_toolchain
@@ -469,6 +517,10 @@ main() {
 
   log_stage "Build ScummVM web target"
   build_scummvm_web_target
+
+  log_stage "Stage ScummWEB shell and filesystem index"
+  python3 "$ROOT_DIR/scripts/stage_scummvm_web_shell.py" "$SCUMMVM_DIR/build-emscripten"
+  python3 "$ROOT_DIR/scripts/write_scummvm_http_index.py" "$SCUMMVM_DIR/build-emscripten/data"
 
   if [[ "${SCUMMVM_REUSE_CATALOG:-0}" == 1 ]]; then
     log_stage "Reuse tracked game config"
