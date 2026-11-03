@@ -70,8 +70,10 @@ engine before syncing the bundle.
 The regular play route downloads `<gameId>.zip` directly from the public game
 bucket, then unpacks it using the same code as a dropped ZIP. It mounts the
 files under the configured catalog path so target names and saves carry across.
-The standalone ScummVM shell still uses the published game filesystem index.
-The build also generates an HTTP index for engine data.
+Hosted standalone URLs such as `/scummvm.html#sky` forward to the ZIP-backed
+play page. The verification harness opens the same play page and reads its
+embedded canvas. The native build still uses an HTTP index for its local
+catalog detection step and generates an index for deployed engine data.
 
 ## Game launch analytics
 

@@ -1,0 +1,16 @@
+Broken Sword 2.5 -- ScummVM packaging v1.0
+
+This is a ScummVM repackaging of a fan-made game Broken Sword 2.5.
+
+The package contains the following releases merged:
+
+  - Original Broken Sword 2.5 release (http://www.brokensword25.com/)
+  - English voice over patch
+  - Hungarian subtitles by psylog (http://www.magyaritasok.hu/)
+
+We would like to express our thanks to the original Broken Sword 2.5
+development team for sharing their source code with us, so we could
+make it portable and add to ScummVM.
+
+
+ScummVM Team, 2015

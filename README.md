@@ -24,6 +24,7 @@ Start with [Beneath a Steel Sky](https://scummweb.tsilva.eu/beneath-a-steel-sky/
 a freeware cyberpunk adventure. The player downloads and unpacks the game ZIP in your browser.
 When the opening scene appears, you’re ready to play. For more games,
 [browse the ScummWEB library](https://scummweb.tsilva.eu).
+Game details link to each title’s bundled readme or license.
 
 ## Add your games
 

@@ -9,7 +9,7 @@
       "gameId": "drascula",
       "platform": "pc",
       "extra": "",
-      "readmeHref": "https://scummvm-games.tsilva.eu/drascula/readme.txt",
+      "readmeHref": "/launcher/notices/drascula.txt",
       "skipIntro": {
         "strategy": "save-slot",
         "durationMinutes": 2,
@@ -27,7 +27,7 @@
       "gameId": "dreamweb",
       "platform": "pc",
       "extra": "CD",
-      "readmeHref": "https://scummvm-games.tsilva.eu/dreamweb/license.txt",
+      "readmeHref": "/launcher/notices/dreamweb.txt",
       "skipIntro": {
         "strategy": "save-slot",
         "durationMinutes": 2,
@@ -45,7 +45,7 @@
       "gameId": "lure",
       "platform": "pc",
       "extra": "VGA",
-      "readmeHref": "https://scummvm-games.tsilva.eu/lure/README",
+      "readmeHref": "/launcher/notices/lure.txt",
       "skipIntro": {
         "strategy": "save-slot",
         "durationMinutes": 2,
@@ -63,7 +63,7 @@
       "gameId": "monkey",
       "platform": "pc",
       "extra": "EGA Demo",
-      "readmeHref": "https://scummvm-games.tsilva.eu/monkey/readme"
+      "readmeHref": "/launcher/notices/monkey.txt"
     },
     {
       "target": "nippon-amiga",
@@ -73,7 +73,7 @@
       "gameId": "nippon",
       "platform": "amiga",
       "extra": "Multi-lingual",
-      "readmeHref": "https://scummvm-games.tsilva.eu/nippon/readme.txt"
+      "readmeHref": "/launcher/notices/nippon.txt"
     },
     {
       "target": "queen",
@@ -83,7 +83,7 @@
       "gameId": "queen",
       "platform": "pc",
       "extra": "CD",
-      "readmeHref": "https://scummvm-games.tsilva.eu/queen/readme.txt",
+      "readmeHref": "/launcher/notices/queen.txt",
       "skipIntro": {
         "strategy": "save-slot",
         "durationMinutes": 2,
@@ -101,7 +101,7 @@
       "gameId": "sky",
       "platform": "pc",
       "extra": "v0.0372 CD",
-      "readmeHref": "https://scummvm-games.tsilva.eu/sky/readme.txt",
+      "readmeHref": "/launcher/notices/sky.txt",
       "skipIntro": {
         "strategy": "save-slot",
         "durationMinutes": 2,
@@ -119,7 +119,7 @@
       "gameId": "sword25",
       "platform": "",
       "extra": "Latest version",
-      "readmeHref": "https://scummvm-games.tsilva.eu/sword25/README"
+      "readmeHref": "/launcher/notices/sword25.txt"
     }
   ]
 }

@@ -30,6 +30,8 @@ def link_href(value: str) -> str:
 
 
 asset_version = os.environ.get("SCUMMVM_BUNDLE_ASSET_VERSION", "dev")
+site_url = (os.environ.get("NEXT_PUBLIC_SITE_URL") or "https://scummweb.tsilva.eu").rstrip("/")
+play_href = f"{site_url}/legacy-play#{urllib.parse.quote(target, safe='')}"
 
 
 def bundle_href(value: str) -> str:
@@ -109,7 +111,7 @@ index_html = f"""<!doctype html>
       This bundle exposes {bundle_count} detected ScummVM target(s). Use the launcher below if the
       game does not start automatically after the page loads.
     </p>
-    <a id="play-link" href="{html.escape(bundle_href('scummvm.html'))}#{html.escape(target)}">Launch Game</a>
+    <a id="play-link" href="{html.escape(play_href)}">Launch Game</a>
     <p class="note">Primary ScummVM target: <code>{html.escape(target)}</code></p>
   </main>
   <script>

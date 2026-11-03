@@ -1,9 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { getGamesOrigin } from "../lib/site-config.mjs";
 
 const [iniPath, libraryOutPath] = process.argv.slice(2);
-const gamesOrigin = getGamesOrigin();
 
 if (!iniPath || !libraryOutPath) {
   throw new Error("usage: create_launcher_metadata.mjs <scummvm.ini> <library-out.json>");
@@ -53,16 +51,17 @@ for (const line of iniText.split(/\r?\n/)) {
   }
 }
 
-async function findNoticeHref(gamePath) {
+async function stageNotice(gamePath, gameId) {
   const normalizedPath = gamePath.startsWith("/") ? gamePath.slice(1) : gamePath;
   const absoluteGamePath = path.join(distDir, normalizedPath);
-  const publicGamePath = normalizedPath.replace(/^games(?:\/|$)/, "");
+  const noticeHref = `/launcher/notices/${gameId}.txt`;
+  const noticeDestination = path.join(path.dirname(libraryOutPath), noticeHref.slice(1));
   let entries = [];
 
   try {
     entries = await fs.readdir(absoluteGamePath, { withFileTypes: true });
-  } catch {
-    return "";
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error;
   }
 
   const noticePatterns = [/readme/i, /license/i, /copying/i];
@@ -89,15 +88,19 @@ async function findNoticeHref(gamePath) {
       return left.name.localeCompare(right.name);
     })[0];
 
-  if (!noticeEntry) {
+  if (noticeEntry) {
+    await fs.mkdir(path.dirname(noticeDestination), { recursive: true });
+    const text = await fs.readFile(path.join(absoluteGamePath, noticeEntry.name), "latin1");
+    const normalized = text.replaceAll("\r\n", "\n").replace(/\x1a+$/, "").replace(/[ \t]+$/gm, "").trimEnd();
+    await fs.writeFile(noticeDestination, `${normalized}\n`, "latin1");
+  }
+  try {
+    await fs.access(noticeDestination);
+    return noticeHref;
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error;
     return "";
   }
-
-  const noticePath = publicGamePath
-    ? path.posix.join(publicGamePath.replaceAll(path.sep, "/"), noticeEntry.name)
-    : noticeEntry.name;
-
-  return `${gamesOrigin}/${noticePath}`;
 }
 
 const gameSections = sections.filter(
@@ -139,7 +142,7 @@ const games = await Promise.all(
       gameId: section.values.gameid || "",
       platform: section.values.platform || "",
       extra: section.values.extra || "",
-      readmeHref: await findNoticeHref(normalizedPath),
+      readmeHref: await stageNotice(normalizedPath, section.values.gameid),
       ...(targetOverrides && typeof targetOverrides === "object" ? targetOverrides : {}),
     };
   })

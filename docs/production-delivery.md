@@ -24,8 +24,9 @@ The regular catalog player reads `<gameId>.zip` from the bucket root. Put each
 game's files at the archive root and name the ZIP after its `gameId` in
 `scummvm-shell/games.json`. Stage the ZIP in a separate payload directory and
 use `SCUMMVM_GAMES_UPLOAD_DIR` with `pnpm run publish:games --game <gameId>.zip`
-for a single-object upload. Keep the folder data available for standalone
-ScummVM launches. The bucket must allow cross-origin GETs from ScummWEB.
+for a single-object upload. The bucket must allow cross-origin GETs from
+ScummWEB. Hosted launchers and the verification harness use the same ZIPs.
+Game notices ship with the site under `/launcher/notices/`.
 
 Rotate the account-owned single-bucket Object Read & Write token before its expiry: update both shared Development entries, readback-check them, verify a scoped synthetic upload through `pnpm run publish:games` and clean it up, then revoke the old token. Check for a running publisher before rotation. Retain a finite expiry and verify old-credential rejection after revocation. Never print credentials or place them in command arguments, logs, or checked-in files.
 
