@@ -29,8 +29,8 @@ Put the game files at the root of the ZIP or inside a single enclosing folder.
 Archives can be up to 128 MiB compressed and 256 MiB unpacked. The game files
 stay in browser memory until you close the player or leave the page.
 
-Under **Freeware Adventure Library**, open **Connect a game bucket** to use a
-public HTTPS R2 or S3 bucket. Upload one game per ZIP at the bucket root using the
+Open **Settings** using the gear icon in the top-right bar to connect a public
+HTTPS R2 or S3 bucket. Upload one game per ZIP at the bucket root using the
 exact names in the filename glossary. Allow cross-origin `HEAD` and `GET` requests
 from your ScummWEB site. Select **Check bucket**, then **Use this bucket** to save
 the URL and matches in this browser. The Library restores bucket cards from those

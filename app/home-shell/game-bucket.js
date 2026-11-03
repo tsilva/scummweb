@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Settings, X } from "lucide-react";
 import {
   bucketStorageKey,
   bucketZipName,
@@ -11,6 +12,23 @@ import {
 } from "../game-bucket.mjs";
 import { useZipGamePlayer, ZipGameFrame } from "./zip-game-player";
 import LibraryCards, { bucketOnlyGames } from "./library-cards";
+
+const settingsDialogId = "home-settings";
+
+export function SettingsButton() {
+  return (
+    <button
+      type="button"
+      className="nav-icon-link"
+      aria-label="Settings"
+      aria-haspopup="dialog"
+      aria-controls={settingsDialogId}
+      onClick={() => document.getElementById(settingsDialogId).showModal()}
+    >
+      <Settings className="icon" aria-hidden="true" />
+    </button>
+  );
+}
 
 export default function GameBucket({ catalog, officialUrl }) {
   const games = useMemo(() => [...catalog, ...bucketOnlyGames], [catalog]);
@@ -90,8 +108,16 @@ export default function GameBucket({ catalog, officialUrl }) {
 
   return (
     <>
-      <details className="game-bucket">
-        <summary>Connect a game bucket{saved ? " · Bucket saved" : ""}</summary>
+      <dialog id={settingsDialogId} className="settings-dialog" aria-labelledby="home-settings-title">
+        <div className="settings-dialog-header">
+          <h2 id="home-settings-title">Settings</h2>
+          <form method="dialog">
+            <button type="submit" className="nav-icon-link" aria-label="Close settings">
+              <X className="icon" aria-hidden="true" />
+            </button>
+          </form>
+        </div>
+        <h3>Connect a game bucket{saved ? " · Bucket saved" : ""}</h3>
         <form className="game-bucket-form" onSubmit={check}>
           <label htmlFor="game-bucket-url">Public bucket URL</label>
           <div className="game-bucket-actions">
@@ -134,7 +160,7 @@ export default function GameBucket({ catalog, officialUrl }) {
         <p className="local-game-status" role="status">{notice}</p>
         {result && (
           <section className="game-bucket-matches" aria-label="Bucket matches">
-            <h3>{matches.length} of {games.length} games {checked?.targets.length ? "found" : "saved"}</h3>
+            <h4>{matches.length} of {games.length} games {checked?.targets.length ? "found" : "saved"}</h4>
             {isOfficial && <p>These games are already in the Library. Use the existing game cards to play.</p>}
             <ul>
               {matches.map(({ target, displayTitle }) => <li key={target}>{displayTitle}</li>)}
@@ -150,7 +176,7 @@ export default function GameBucket({ catalog, officialUrl }) {
             )}
           </section>
         )}
-      </details>
+      </dialog>
       <div ref={playerSection}>
         <p className="local-game-status" role="status">{status}</p>
         {showPlayer && (
