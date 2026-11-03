@@ -56,6 +56,8 @@ function setupLocalFilesystem() {
 const skipIntroTarget = new URLSearchParams(scummwebLaunchUrl.search).get("skipIntroTarget");
 const isLocalGame = window.parent !== window &&
   new URLSearchParams(scummwebLaunchUrl.search).get("localGame") === "1";
+const catalogGame = new URLSearchParams(scummwebLaunchUrl.search).get("catalogGame");
+const isCatalogArchive = isLocalGame && /^[a-z0-9][a-z0-9_-]*$/.test(catalogGame || "");
 globalThis.__scummwebSkipIntroSeedStatus = {
   state: skipIntroTarget ? "pending" : "idle",
   target: skipIntroTarget,
@@ -223,14 +225,15 @@ function setupLocalGame() {
 
       window.removeEventListener("message", receiveFiles);
       try {
-        FS.mkdir("/local-game");
+        const gameDirectory = isCatalogArchive ? `/games/${catalogGame}` : "/local-game";
+        ensureDirectory(gameDirectory);
         for (const { path, data } of event.data.files) {
           const parts = path.split("/");
           if (parts.some((part) => !part || part === "." || part === ".." || part === "__proto__")) {
             throw new Error("Invalid local game path");
           }
-          ensureDirectory(["/local-game", ...parts.slice(0, -1)].join("/"));
-          FS.writeFile(`/local-game/${path}`, data, { canOwn: true });
+          ensureDirectory([gameDirectory, ...parts.slice(0, -1)].join("/"));
+          FS.writeFile(`${gameDirectory}/${path}`, data, { canOwn: true });
         }
         resolve();
       } catch (error) {
@@ -253,9 +256,10 @@ function setupFilesystem() {
   const localFilesReady = setupLocalFilesystem()
     // The native save manager can create the last directory only.
     .then(() => ensureDirectory(defaultSavePath))
-    .then(() => isLocalGame
-      ? setupLocalGame()
-      : installMissingCatalogTarget().then(setupSkipIntroSaves));
+    .then(() => isLocalGame ? setupLocalGame() : undefined)
+    .then(() => !isLocalGame || isCatalogArchive
+      ? installMissingCatalogTarget().then(setupSkipIntroSaves)
+      : undefined);
   Promise.all([window.ScummvmFSReady, localFilesReady])
     .then(([{ ScummvmFS, filesystems }]) => {
       for (const { name, index } of filesystems) {
@@ -279,7 +283,7 @@ const resolvedExitHref=(()=>{try{const resolvedUrl=new URL(exitTo,scummwebLaunch
 const skipIntroTarget=new URLSearchParams(scummwebLaunchUrl.search).get("skipIntroTarget");
 const launchArgs=decodeURI(scummwebLaunchUrl.hash.slice(1)).trim().split(/\s+/);
 const target=skipIntroTarget||launchArgs.at(-1)||"";
-const launchPattern=isLocalGame ? /^User picked target '/m :
+const launchPattern=isLocalGame && !isCatalogArchive ? /^User picked target '/m :
   target ? new RegExp(`User picked target '${target.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")}'`) : null;
 const escapeRedirectWindowMs=1500;
 let didHandleExit=false;
@@ -315,7 +319,7 @@ const emitGameReady = (reason) => {
     // Some engines start with dark scenes that the pixel sample cannot detect.
     // The target was selected in both cases; runtime errors report separately.
     reportLocalGameStatus("running");
-    return true;
+    if (!isCatalogArchive) return true;
   }
   postParentMessage({ type: "scummvm-ready", ...nextReadyState });
   return true;

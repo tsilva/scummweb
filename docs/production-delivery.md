@@ -20,6 +20,13 @@ Game publishing is a separate manual operation: `pnpm run publish:games`, option
 
 Build `dist/games` before publishing, or select an existing payload directory with `SCUMMVM_GAMES_UPLOAD_DIR`. Normal publishing skips existing files; `--force` overwrites them, and scoped uploads refresh ancestor `index.json` manifests. `--prune` deletes remote objects missing locally; without `--game`, it applies across the bucket. CI and production delivery do not invoke the publisher or receive this R2 pair. The public player reads existing game objects without the writer token.
 
+The regular catalog player reads `<gameId>.zip` from the bucket root. Put each
+game's files at the archive root and name the ZIP after its `gameId` in
+`scummvm-shell/games.json`. Stage the ZIP in a separate payload directory and
+use `SCUMMVM_GAMES_UPLOAD_DIR` with `pnpm run publish:games --game <gameId>.zip`
+for a single-object upload. Keep the folder data available for standalone
+ScummVM launches. The bucket must allow cross-origin GETs from ScummWEB.
+
 Rotate the account-owned single-bucket Object Read & Write token before its expiry: update both shared Development entries, readback-check them, verify a scoped synthetic upload through `pnpm run publish:games` and clean it up, then revoke the old token. Check for a running publisher before rotation. Retain a finite expiry and verify old-credential rejection after revocation. Never print credentials or place them in command arguments, logs, or checked-in files.
 
 The current publisher token is `scummweb-games-publisher-20261015`, expiring **October 15, 2027**. Its Infisical pair and managed publishing command were verified before and after retiring `R2: scummvm-games` on October 15, 2026. No website redeployment was required.

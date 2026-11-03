@@ -67,9 +67,11 @@ engine before syncing the bundle.
    Check the first frame, audio, save and resume, and that the selected
    engine is the only engine plugin downloaded.
 
-The shell uses a recursive HTTP index for each mounted filesystem. The build
-generates that index for the runtime data and for any locally extracted games.
-Existing published game indexes use the same format.
+The regular play route downloads `<gameId>.zip` directly from the public game
+bucket, then unpacks it using the same code as a dropped ZIP. It mounts the
+files under the configured catalog path so target names and saves carry across.
+The standalone ScummVM shell still uses the published game filesystem index.
+The build also generates an HTTP index for engine data.
 
 ## Game launch analytics
 
@@ -95,8 +97,8 @@ as part of the page request. Google Analytics and Vercel Analytics page
 locations omit that fragment. The client downloads the archive directly with
 credentials omitted.
 
-The player fetches the catalog and engine data indexes in parallel while
-WebAssembly initializes. ZIP launches fetch only the engine data index.
+The catalog player downloads and unpacks the game ZIP before starting
+WebAssembly. ZIP launches fetch only the engine data index.
 To diagnose a launch locally, inspect the iframe's User Timing marks in the
 browser's Performance panel. `scummweb:wasm-ready` marks the start of filesystem
 setup, `scummweb:index:games` and `scummweb:index:data` mark completion of each

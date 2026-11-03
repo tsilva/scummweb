@@ -17,7 +17,7 @@ compatible games from your own collection.
 ## Play online
 
 Start with [Beneath a Steel Sky](https://scummweb.tsilva.eu/beneath-a-steel-sky/play),
-a freeware cyberpunk adventure. The player loads the game in your browser.
+a freeware cyberpunk adventure. The player downloads and unpacks the game ZIP in your browser.
 When the opening scene appears, you’re ready to play. For more games,
 [browse the ScummWEB library](https://scummweb.tsilva.eu).
 
