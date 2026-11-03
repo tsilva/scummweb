@@ -8,6 +8,10 @@
 
 <p align="center">
   <a href="https://github.com/tsilva/scummweb/actions/workflows/ci.yml?query=branch%3Amain"><img src="https://github.com/tsilva/scummweb/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI on main" /></a>
+  <a href="https://github.com/tsilva/scummweb/actions/workflows/production-delivery.yml?query=branch%3Amain"><img src="https://github.com/tsilva/scummweb/actions/workflows/production-delivery.yml/badge.svg?branch=main" alt="Production delivery on main" /></a>
+  <a href="scummvm-shell/source-info.json"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Ftsilva%2Fscummweb%2Fmain%2Fscummvm-shell%2Fsource-info.json&amp;query=%24.scummvm.version&amp;label=ScummVM&amp;color=2e7d32" alt="Bundled ScummVM version" /></a>
+  <a href=".github/workflows/ci.yml"><img src="https://img.shields.io/badge/Node.js-22-339933?logo=nodedotjs&amp;logoColor=white" alt="Tested with Node.js 22" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/ScummWEB-0BSD-blue" alt="ScummWEB code license: 0BSD" /></a>
 </p>
 
 ScummWEB brings classic point-and-click games to your browser. It uses
@@ -69,6 +73,9 @@ This setup needs no Infisical login.
 
 ## License
 
-- [ScummVM license](scummvm-shell/doc/COPYING)
-- [Game-specific terms](https://scummweb.tsilva.eu#library) are linked from
-  each catalog entry.
+- Original ScummWEB code is available under the [Zero-Clause BSD license](LICENSE).
+- The bundled ScummVM engine and patches to ScummVM are covered by the
+  [ScummVM GPL license](scummvm-shell/doc/COPYING). Bundled third-party
+  components carry their own notices in the [ScummVM documentation](scummvm-shell/doc/).
+- Each game and its associated artwork have their own terms. See the
+  game-specific notices in the [ScummWEB catalog](https://scummweb.tsilva.eu#library).
