@@ -29,6 +29,7 @@ Open the URL printed by the server.
 pnpm run dev             # validate/sync scummvm-shell/ into public/ and start Next.js
 pnpm run build           # prepare managed shell assets and build production output
 pnpm run start           # prepare managed shell assets and start the production server
+pnpm run lint            # check JavaScript and JSX syntax with Next.js SWC
 pnpm run test            # run the Node test suite
 pnpm run verify          # build, serve, and boot detected targets through Chromium
 pnpm run build:scummvm   # rebuild the ScummVM WebAssembly shell and game metadata

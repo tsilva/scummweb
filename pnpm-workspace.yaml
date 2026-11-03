@@ -5,10 +5,20 @@ allowBuilds:
   sharp: set this to true or false
 
 overrides:
+  '@sentry/bundler-plugin-core@5.3.0>glob': 14.0.2
+  '@sentry/bundler-plugins@10.69.0>glob': 14.0.2
+  'glob@14.0.2>path-scurry': 3.0.0
+  'minimatch@11.0.1>@isaacs/nonrecursive-glob-match': 1.0.1
+  'minimatch': 11.0.1
   "fast-uri": "3.1.9"
   source-map-js: 1.2.2
   brace-expansion: 5.0.12
 
 # User-approved security patch exception; all other packages retain the age hold.
 minimumReleaseAgeExclude:
+  # Exact versions approved for the glob and minimatch security fixes.
+  - glob@14.0.2
+  - minimatch@11.0.1
+  - path-scurry@3.0.0
+  - '@isaacs/nonrecursive-glob-match@1.0.1'
   - source-map-js@1.2.2
