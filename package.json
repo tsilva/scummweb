@@ -10,7 +10,7 @@
     "record:preview": "node ./scripts/record_preview_stream.mjs",
     "verify": "./scripts/verify_scummvm_web.sh",
     "sentry:issues": "python3 scripts/infisical/run.py issues",
-    "lint": "find app lib scripts test -type f \\( -name '*.js' -o -name '*.mjs' \\) -print0 | xargs -0 -n1 node --check",
+    "lint": "find app lib scripts test -type f \\( -name '*.js' -o -name '*.mjs' \\) -print0 | xargs -0 node scripts/check-js-syntax.mjs",
     "test": "node --test test/*.test.mjs",
     "dev": "python3 scripts/infisical/run.py dev",
     "build": "pnpm run prepare && next build",
