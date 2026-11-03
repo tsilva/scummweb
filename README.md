@@ -24,10 +24,12 @@ pnpm run dev --port auto
 Open the URL printed by the server.
 
 On the homepage, use **Play a local ZIP** to drop or choose an archive containing
-one ScummVM game. The browser unpacks it and launches the first game it detects.
-Put the game files at the root of the ZIP or inside a single enclosing folder.
+one ScummVM game. The dedicated player page unpacks it and launches the first
+game it detects. Put the complete game data at the root of the ZIP or inside a
+single enclosing folder.
 Archives can be up to 128 MiB compressed and 256 MiB unpacked. The game files
-stay in browser memory until you close the player or leave the page.
+stay in browser memory until you leave the player page. Choose the ZIP again
+after reloading the page.
 
 Open **Settings** using the gear icon in the top-right bar to connect a public
 HTTPS R2 or S3 bucket. Upload one game per ZIP at the bucket root using the
