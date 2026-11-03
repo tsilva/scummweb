@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="scummvm-shell/logo-nav.png" alt="ScummWEB" width="320" />
+  <img src="logo.png" alt="ScummWEB" width="320" />
   <br />
   <!-- repo-tagline:start -->
   <strong>🕹️ Classic point-and-click adventures, playable instantly in your browser 🕹️</strong>
@@ -83,6 +83,12 @@ pnpm run sentry:issues   # list recent Sentry issues from local env credentials
 - `NEXT_PUBLIC_SITE_URL` controls public metadata, sitemap, robots, and Open Graph URLs.
 - The homepage hero rotates through the installed games. The ring around the pause control shows how long until the next game. Pausing freezes the countdown. Use the chevrons to choose a game. The Play button launches the game shown in the hero.
 - The library’s poster cards link to each game’s detail page. Browser-Playable Classics cards open quick-play dialogs. The sitemap lists the homepage and game detail pages. The player routes and standalone emulator send noindex directives.
+
+## Branding
+
+Adventure Terminal artwork uses the original ImageGen files under `image-assets/sources/`. The [provenance record](image-assets/provenance.json) connects those originals to the README logo, favicon, and homepage social image using SHA-256 hashes. The web exports and their dimensions are recorded in [the export manifest](public/brand/manifest.json).
+
+The homepage serves the static Adventure Terminal social card at `/opengraph-image`. Game pages retain their individual social cards. The shell finalizer copies the browser and install icons from `public/brand/web-seo/` into the managed shell so a ScummVM rebuild retains the branding.
 
 ## Rebuilding and upgrading ScummVM
 

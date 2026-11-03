@@ -57,6 +57,11 @@ python3 "$ROOT_DIR/scripts/generate_logo_assets.py" \
   --source "$ROOT_DIR/branding/scummvm-logo-master.png" \
   --out-dir "$DIST_DIR"
 
+BRAND_DIR="$ROOT_DIR/public/brand/web-seo"
+cp "$BRAND_DIR/favicon/favicon.ico" "$DIST_DIR/favicon.ico"
+cp "$BRAND_DIR/android-chrome-192.png" "$DIST_DIR/scummvm-192.png"
+cp "$BRAND_DIR/android-chrome-512.png" "$DIST_DIR/scummvm-512.png"
+
 python3 "$ROOT_DIR/scripts/patch_scummvm_audio.py" "$DIST_DIR/scummvm.js"
 node "$ROOT_DIR/scripts/manage_scummvm_assets.mjs" validate "$DIST_DIR"
 node "$ROOT_DIR/scripts/manage_scummvm_assets.mjs" sync "$DIST_DIR" "$SHELL_DIR"
