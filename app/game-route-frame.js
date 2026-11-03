@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { scummvmAssetVersion } from "./asset-paths";
 import { getLatestBrowserSave } from "./browser-saves.mjs";
@@ -138,6 +139,12 @@ export default function GameRouteFrame({
   }), [catalogArchiveUrl, target]);
   const loadArchive = catalogArchiveUrl ? loadCatalogArchive : loadPersonalArchive;
   const catalogLaunch = !loadArchive || Boolean(catalogArchiveUrl);
+  const router = useRouter();
+  const navigateHome = useCallback((href) => {
+    const destination = getSafeHref(href);
+    if (catalogLaunch) window.location.replace(destination);
+    else router.replace(destination);
+  }, [catalogLaunch, router]);
   const shellRef = useRef(null);
   const frameRef = useRef(null);
   const archiveFiles = useRef(null);
@@ -233,10 +240,6 @@ export default function GameRouteFrame({
       archiveFrame.addEventListener("load", restartArchiveBootTimer, { once: true });
     }
 
-    function navigateHome(href = "/") {
-      window.location.replace(getSafeHref(href));
-    }
-
     function handleMessage(event) {
       if (event.origin !== window.location.origin) {
         return;
@@ -295,7 +298,7 @@ export default function GameRouteFrame({
         return;
       }
 
-      if (event.data?.type !== "scummvm-exit") {
+      if (event.data?.type !== "scummvm-exit" || event.source !== frameRef.current?.contentWindow) {
         return;
       }
 
@@ -322,7 +325,7 @@ export default function GameRouteFrame({
       stopArchiveBootTimer();
       window.removeEventListener("message", handleMessage);
     };
-  }, [archiveFrameDocument, catalogLaunch, frameSrc, launchAnalytics, loadArchive, target]);
+  }, [archiveFrameDocument, catalogLaunch, frameSrc, launchAnalytics, loadArchive, navigateHome, target]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -529,7 +532,7 @@ export default function GameRouteFrame({
       }
     }
 
-    window.location.replace(exitHref);
+    navigateHome(exitHref);
   }
 
   function handleControlMouseDown(event) {

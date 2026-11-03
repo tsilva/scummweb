@@ -15,18 +15,21 @@ export default function HeroStage({
   gameCount,
   isHomePage = false,
   isInitialSlide = true,
+  sourceAction,
 }) {
   const featuredDialogId = getGameDialogId(featuredGame);
-  const heroKicker = isHomePage ? HOME_HERO_KICKER : featuredGame.eyebrow;
-  const heroTitle = isHomePage ? HOME_HERO_TITLE : featuredGame.displayTitle;
-  const heroSummary = isHomePage && isInitialSlide ? HOME_HERO_SUMMARY : featuredGame.summary;
+  const showHomeIntro = isHomePage && isInitialSlide;
+  const heroKicker = showHomeIntro ? HOME_HERO_KICKER : sourceAction ? "Your game library" : featuredGame.eyebrow;
+  const heroTitle = showHomeIntro ? HOME_HERO_TITLE : featuredGame.displayTitle;
+  const heroSummary = showHomeIntro ? HOME_HERO_SUMMARY : featuredGame.summary;
+  const heroImage = featuredGame.heroImage || featuredGame.landscapeImage || featuredGame.posterImage;
   const heroBackdropSrcSet = featuredGame.heroImageMobile
     ? `${featuredGame.heroImageMobile} 960w, ${featuredGame.heroImage} 1832w`
     : undefined;
   const primaryActionLabel = isHomePage ? `Play ${featuredGame.displayTitle}` : "Play";
   const secondaryActionHref = isHomePage ? "#library" : `#${featuredDialogId}`;
   const secondaryActionLabel = isHomePage ? HOME_BROWSE_LABEL : "More Info";
-  const heroMetadata = isHomePage
+  const heroMetadata = showHomeIntro
     ? [
         { label: "Flagship classic", value: featuredGame.displayTitle },
         { label: "Collection", value: "Freeware adventures" },
@@ -35,19 +38,19 @@ export default function HeroStage({
         { label: "Studio", value: featuredGame.studio },
         { label: "Genre", value: featuredGame.genre },
       ];
-  const heroStatus = isHomePage
+  const heroStatus = showHomeIntro
     ? [formatGameCount(gameCount), "Freeware classics", "Instant browser play"]
-    : [formatGameCount(gameCount), featuredGame.target, featuredGame.badge];
+    : [formatGameCount(gameCount), sourceAction ? null : featuredGame.target, featuredGame.badge].filter(Boolean);
 
   return (
     <section className={`hero-stage ${featuredGame.tone}`} id="browse" {...carouselProps}>
       <div className="hero-backdrop">
         <DecorativeImage
           className="hero-backdrop-image"
-          fetchPriority="high"
+          fetchPriority={isInitialSlide ? "high" : undefined}
           loading="eager"
           sizes="100vw"
-          src={featuredGame.heroImage}
+          src={heroImage}
           srcSet={heroBackdropSrcSet}
           style={getHeroImageStyle(featuredGame.heroImagePosition)}
         />
@@ -72,12 +75,18 @@ export default function HeroStage({
           <p className="hero-summary">{heroSummary}</p>
 
           <div className="hero-actions">
-            <LaunchButton
-              game={featuredGame}
-              entryPoint={isHomePage ? "hero" : "game_detail"}
-              label={primaryActionLabel}
-              continueLabel={isHomePage ? `Continue ${featuredGame.displayTitle}` : "Continue"}
-            />
+            {sourceAction ? (
+              <button type="button" className="launch-button" disabled={sourceAction.disabled} onClick={sourceAction.onClick}>
+                {sourceAction.label}
+              </button>
+            ) : (
+              <LaunchButton
+                game={featuredGame}
+                entryPoint={isHomePage ? "hero" : "game_detail"}
+                label={primaryActionLabel}
+                continueLabel={isHomePage ? `Continue ${featuredGame.displayTitle}` : "Continue"}
+              />
+            )}
             <a className="secondary-button" href={secondaryActionHref}>
               {!isHomePage ? <Icon name="info" /> : null}
               <span>{secondaryActionLabel}</span>

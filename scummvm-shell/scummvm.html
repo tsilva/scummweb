@@ -5,7 +5,7 @@ window.ScummvmFSReady = (async () => {
   const params = new URLSearchParams(scummwebLaunchUrl.search);
   const moduleUrl = new URL("./scummvm_fs.js", scummwebLaunchUrl.href);
   if (params.has("v")) moduleUrl.searchParams.set("v", params.get("v"));
-  const { ScummvmFS, loadFilesystemIndex } = await import(moduleUrl);
+  const { LocalGameFS, ScummvmFS, loadFilesystemIndex } = await import(moduleUrl);
   const isLocalGame = window.parent !== window && params.get("localGame") === "1";
   const mounts = isLocalGame ? ["data"] : ["games", "data"];
   const filesystems = await Promise.all(mounts.map(async (name) => {
@@ -13,7 +13,7 @@ window.ScummvmFSReady = (async () => {
     performance.mark(`scummweb:index:${name}`);
     return { name, index };
   }));
-  return { ScummvmFS, filesystems };
+  return { LocalGameFS, ScummvmFS, filesystems };
 })();
 // Observe early failures here and let setupFilesystem handle them when Wasm is ready.
 window.ScummvmFSReady.catch(() => {});
@@ -217,7 +217,8 @@ function reportLocalGameStatus(status) {
   window.parent.postMessage({ type: "scummweb:local-game-status", status }, scummwebLaunchUrl.origin);
 }
 
-function setupLocalGame() {
+async function setupLocalGame() {
+  const { LocalGameFS } = await window.ScummvmFSReady;
   return new Promise((resolve, reject) => {
     function receiveFiles(event) {
       if (event.source !== window.parent || event.origin !== scummwebLaunchUrl.origin ||
@@ -227,11 +228,20 @@ function setupLocalGame() {
       try {
         const gameDirectory = isCatalogArchive ? `/games/${catalogGame}` : "/local-game";
         ensureDirectory(gameDirectory);
-        for (const { path, data } of event.data.files) {
+        const files = event.data.files;
+        for (const { path } of files) {
           const parts = path.split("/");
           if (parts.some((part) => !part || part === "." || part === ".." || part === "__proto__")) {
             throw new Error("Invalid local game path");
           }
+        }
+        if (files.some(({ blob }) => blob instanceof Blob)) {
+          FS.mount(new LocalGameFS(FS, files), {}, gameDirectory);
+          resolve();
+          return;
+        }
+        for (const { path, data } of files) {
+          const parts = path.split("/");
           ensureDirectory([gameDirectory, ...parts.slice(0, -1)].join("/"));
           FS.writeFile(`${gameDirectory}/${path}`, data, { canOwn: true });
         }

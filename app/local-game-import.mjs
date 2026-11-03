@@ -1,4 +1,4 @@
-import { maxGameEntries, maxExpandedSize, readGameFolder, scanLocalGameArchive, validateGameFolder } from "./local-game-archive.mjs";
+import { maxGameEntries, maxLocalGameSize, readGameFolder, scanLocalGameArchive, validateGameFolder } from "./local-game-archive.mjs";
 
 const isZip = (name) => /\.zip$/i.test(name);
 
@@ -74,12 +74,15 @@ export async function scanGameFolder(folder, onProgress) {
 
   async function walk(directory, prefix = "") {
     for await (const child of directory.children()) {
+      // A sidecar beside a ZIP is Finder metadata. Loose Mac game files
+      // may have real resource forks stored in their AppleDouble sidecars.
+      if (child.name === "__MACOSX" || child.name === ".DS_Store" ||
+          (child.name.startsWith("._") && isZip(child.name))) continue;
       if (++visited > maxGameEntries) throw new Error("This folder contains too many files or subfolders.");
       if (visited % 32 === 0) {
         onProgress?.(visited);
         await new Promise((resolve) => setTimeout(resolve, 0));
       }
-      if (child.name === "__MACOSX" || child.name === ".DS_Store") continue;
       const path = prefix + (child.path ?? child.name);
       if (child.kind === "directory") await walk(child, path + "/");
       else if (isZip(child.name)) archives.push(child);
@@ -103,7 +106,7 @@ export async function prepareLocalFolder(folder, nodes) {
   for (const { path, getFile } of nodes) {
     const file = await getFile();
     size += file.size;
-    if (size > maxExpandedSize) throw new Error("Choose a game folder of 256 MiB or less.");
+    if (size > maxLocalGameSize) throw new Error("Choose a game folder of 4 GiB or less.");
     files.push({ path, file });
   }
   validateGameFolder(files);

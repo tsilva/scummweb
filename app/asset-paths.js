@@ -1,3 +1,5 @@
+import sourceInfo from "../scummvm-shell/source-info.json";
+
 function sanitizeAssetVersion(rawVersion) {
   return rawVersion.replace(/[^a-zA-Z0-9._-]+/g, "-");
 }
@@ -13,7 +15,10 @@ function getRawAssetVersion() {
   );
 }
 
-export const scummvmAssetVersion = sanitizeAssetVersion(getRawAssetVersion());
+const rawAssetVersion = getRawAssetVersion();
+export const scummvmAssetVersion = sanitizeAssetVersion(
+  rawAssetVersion === "dev" ? `dev-${sourceInfo.generated_at_utc}` : rawAssetVersion
+);
 
 function appendAssetVersion(url) {
   url.searchParams.delete("v");

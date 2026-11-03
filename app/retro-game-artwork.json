@@ -1,0 +1,3406 @@
+{
+  "access:amazon": {
+    "title": "Amazon: Guardians of Eden",
+    "aliases": [
+      "Amazon - Guardians of Eden (DOS)"
+    ],
+    "posterImage": "/launcher/retro-access-amazon-poster.webp",
+    "screenshots": [
+      "/launcher/retro-access-amazon-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Amazon_%20Guardians%20of%20Eden.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/access/amazon/amazon_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/access/access:amazon/"
+        }
+      ]
+    }
+  },
+  "agi:bc": {
+    "title": "The Black Cauldron",
+    "aliases": [
+      "The Black Cauldron (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/retro-agi-bc-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agi-bc-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Black%20Cauldron.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/bc/bc_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/disney/"
+        }
+      ]
+    }
+  },
+  "agi:goldrush": {
+    "title": "Gold Rush!",
+    "aliases": [
+      "Gold Rush! (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-agi-goldrush-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agi-goldrush-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gold%20Rush!.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/goldrush/goldrush_amiga_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/agi:goldrush/"
+        }
+      ]
+    }
+  },
+  "agi:kq2": {
+    "title": "King's Quest II: Romancing the Throne",
+    "aliases": [
+      "King's Quest 2 - Romancing the Throne (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-agi-kq2-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agi-kq2-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20II_%20Romancing%20the%20Throne.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/kq2/kq2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/"
+        }
+      ]
+    }
+  },
+  "agi:kq3": {
+    "title": "King's Quest III: To Heir Is Human",
+    "aliases": [
+      "King's Quest 3 - To Heir is Human (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-agi-kq3-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agi-kq3-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20III_%20To%20Heir%20is%20Human.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/kq3/kq3_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/"
+        }
+      ]
+    }
+  },
+  "agi:mh1": {
+    "title": "Manhunter: New York",
+    "aliases": [
+      "Manhunter 1 - New York (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-agi-mh1-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agi-mh1-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Manhunter%201_%20New%20York.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/mh1/mh1_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/manhunt/"
+        }
+      ]
+    }
+  },
+  "agi:mh2": {
+    "title": "Manhunter 2: San Francisco",
+    "aliases": [
+      "Manhunter 2 - San Francisco (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-agi-mh2-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agi-mh2-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Manhunter%202_%20San%20Francisco.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/mh2/mh2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/manhunt/"
+        }
+      ]
+    }
+  },
+  "agi:mickey": {
+    "title": "Mickey's Space Adventure",
+    "aliases": [
+      "Mickey's Space Adventure (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/retro-agi-mickey-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agi-mickey-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Mickey's%20Space%20Adventure.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/mickey/mickey_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/disney/"
+        }
+      ]
+    }
+  },
+  "agi:pq1": {
+    "title": "Police Quest: In Pursuit of the Death Angel",
+    "aliases": [
+      "Police Quest 1 - In Pursuit of the Death Angel (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-agi-pq1-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agi-pq1-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest_%20In%20Pursuit%20of%20the%20Death%20Angel.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/pq1/pq1_amiga_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/pq/"
+        }
+      ]
+    }
+  },
+  "agi:sq1": {
+    "title": "Space Quest: The Sarien Encounter",
+    "aliases": [
+      "Space Quest 1 - The Sarien Encounter (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-agi-sq1-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agi-sq1-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest_%20Chapter%20I%20-%20The%20Sarien%20Encounter%20(DOS_English).png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/sq1/sq1_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/"
+        }
+      ]
+    }
+  },
+  "agi:sq2": {
+    "title": "Space Quest II: Chapter II - Vohaul's Revenge",
+    "aliases": [
+      "Space Quest 2 - Vohaul's Revenge (Amiga)",
+      "Space Quest 2 - Vohaul's Revenge (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/retro-agi-sq2-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agi-sq2-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20II_%20Chapter%20II%20-%20Vohaul's%20Revenge%20(2.0F%201989-01-05%203.5__DOS_English).png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/sq2/sq2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/"
+        }
+      ]
+    }
+  },
+  "agi:troll": {
+    "title": "Troll's Tale",
+    "aliases": [
+      "Troll's Tale (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/retro-agi-troll-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agi-troll-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Trolls%20Tale.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/troll/troll_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/agi:troll/"
+        }
+      ]
+    }
+  },
+  "agi:winnie": {
+    "title": "Winnie the Pooh in the Hundred Acre Wood",
+    "aliases": [
+      "Winnie the Pooh in the Hundred Acre Wood (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/retro-agi-winnie-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agi-winnie-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Winnie%20the%20Pooh%20in%20the%20Hundred%20Acre%20Wood.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/winnie/winnie_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/disney/"
+        }
+      ]
+    }
+  },
+  "agos:elvira1": {
+    "title": "Elvira: Mistress of the Dark",
+    "aliases": [
+      "Elvira 1 - Mistress of the Dark (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-agos-elvira1-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agos-elvira1-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Elvira_%20Mistress%20of%20the%20Dark.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/elvira1/elvira1_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/elvira/"
+        }
+      ]
+    }
+  },
+  "agos:elvira2": {
+    "title": "Elvira II: The Jaws of Cerberus",
+    "aliases": [
+      "Elvira 2 - The Jaws of Cerberus (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-agos-elvira2-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agos-elvira2-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Elvira%20II%20-%20The%20Jaws%20of%20Cerberus.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/elvira2/elvira2_amiga_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/elvira/"
+        }
+      ]
+    }
+  },
+  "agos:feeble": {
+    "title": "The Feeble Files",
+    "aliases": [
+      "The Feeble Files (2CD Amiga)",
+      "The Feeble Files (4CD Windows)"
+    ],
+    "posterImage": "/launcher/retro-agos-feeble-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agos-feeble-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Feeble%20Files.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/feeble/feeble_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/agos:feeble/"
+        }
+      ]
+    }
+  },
+  "agos:jumble": {
+    "title": "Simon the Sorcerer's Puzzle Pack",
+    "aliases": [
+      "Simon the Sorcerer Puzzle Pack (CD Windows)"
+    ],
+    "posterImage": "/launcher/retro-agos-jumble-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agos-jumble-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Simon%20the%20Sorcerer%20Puzzle%20Pack.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/jumble/jumble_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/simon/"
+        }
+      ]
+    }
+  },
+  "agos:pn": {
+    "title": "Personal Nightmare",
+    "aliases": [
+      "Personal Nightmare (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-agos-pn-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agos-pn-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Personal%20Nightmare.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/pn/pn_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/agos:pn/"
+        }
+      ]
+    }
+  },
+  "agos:simon1": {
+    "title": "Simon the Sorcerer",
+    "aliases": [
+      "Simon the Sorcerer 1 (CD Windows)"
+    ],
+    "posterImage": "/launcher/retro-agos-simon1-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agos-simon1-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Simon%20the%20Sorcerer.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/simon1/simon1_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/simon/"
+        }
+      ]
+    }
+  },
+  "agos:simon2": {
+    "title": "Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe",
+    "aliases": [
+      "Simon the Sorcerer 2 (Amiga CD32)",
+      "Simon the Sorcerer 2 (CD Windows)"
+    ],
+    "posterImage": "/launcher/retro-agos-simon2-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agos-simon2-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Simon%20the%20Sorcerer%202.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/simon2/simon2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/simon/"
+        }
+      ]
+    }
+  },
+  "agos:waxworks": {
+    "title": "Waxworks",
+    "aliases": [
+      "Waxworks (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-agos-waxworks-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agos-waxworks-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/WaxWorks.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/waxworks/waxworks_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/agos:waxworks/"
+        }
+      ]
+    }
+  },
+  "bbvs:bbvs": {
+    "title": "MTV's Beavis and Butt-Head in Virtual Stupidity",
+    "aliases": [
+      "Beavis and Butt-head in Virtual Stupidity (CD Windows)"
+    ],
+    "posterImage": "/launcher/retro-bbvs-bbvs-poster.webp",
+    "screenshots": [
+      "/launcher/retro-bbvs-bbvs-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Beavis%20and%20Butt-Head%20in%20Virtual%20Stupidity.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/bbvs/bbvs/bbvs_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/beavisbutthead/"
+        }
+      ]
+    }
+  },
+  "cge:soltys": {
+    "title": "Sołtys",
+    "aliases": [
+      "Soltys (DOS)"
+    ],
+    "posterImage": "/launcher/retro-cge-soltys-poster.webp",
+    "screenshots": [
+      "/launcher/retro-cge-soltys-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Soltys.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/cge/soltys/soltys_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/lkavalon/cge:soltys/"
+        }
+      ]
+    }
+  },
+  "cine:fw": {
+    "title": "Future Wars: Adventures in Time",
+    "aliases": [
+      "Future Wars (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-cine-fw-poster.webp",
+    "screenshots": [
+      "/launcher/retro-cine-fw-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Future%20Wars_%20Adventures%20in%20Time.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/cine/fw/fw_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/delphine/cine:fw/"
+        }
+      ]
+    }
+  },
+  "composer:darby": {
+    "title": "Darby the Dragon",
+    "aliases": [
+      "Darby the Dragon (CD Windows)"
+    ],
+    "posterImage": "/launcher/retro-composer-darby-poster.webp",
+    "screenshots": [
+      "/launcher/retro-composer-darby-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Darby%20the%20Dragon.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/composer/darby/darby_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/animationmagic/composer:darby/"
+        }
+      ]
+    }
+  },
+  "composer:gregory": {
+    "title": "Gregory and the Hot Air Balloon",
+    "aliases": [
+      "Gregory and the Hot Air Balloon (CD Windows)"
+    ],
+    "posterImage": "/launcher/retro-composer-gregory-poster.webp",
+    "screenshots": [
+      "/launcher/retro-composer-gregory-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gregory%20and%20the%20Hot%20Air%20Balloon.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/composer/gregory/gregory_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/animationmagic/composer:gregory/"
+        }
+      ]
+    }
+  },
+  "composer:liam": {
+    "title": "Magic Tales: Liam Finds a Story",
+    "aliases": [
+      "Magic Tales - Liam Finds a Story (CD Windows)"
+    ],
+    "posterImage": "/launcher/retro-composer-liam-poster.webp",
+    "screenshots": [
+      "/launcher/retro-composer-liam-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Magic%20Tales_%20Liam%20Finds%20a%20Story.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/composer/liam/liam_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/animationmagic/magictales/"
+        }
+      ]
+    }
+  },
+  "composer:princess": {
+    "title": "Magic Tales: The Princess and the Crab",
+    "aliases": [
+      "Magic Tales - The Princess and the Crab (CD Windows)"
+    ],
+    "posterImage": "/launcher/retro-composer-princess-poster.webp",
+    "screenshots": [
+      "/launcher/retro-composer-princess-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Magic%20Tales_%20The%20Princess%20and%20the%20Crab.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/composer/princess/princess_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/animationmagic/magictales/"
+        }
+      ]
+    }
+  },
+  "composer:sleepingcub": {
+    "title": "Magic Tales: Sleeping Cub's Test of Courage",
+    "aliases": [
+      "Magic Tales - Sleeping Cub's Test of Courage (CD Windows)"
+    ],
+    "posterImage": "/launcher/retro-composer-sleepingcub-poster.webp",
+    "screenshots": [
+      "/launcher/retro-composer-sleepingcub-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Magic%20Tales_%20Sleeping%20Cubs%20Test%20of%20Courage.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/composer/sleepingcub/sleepingcub_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/animationmagic/magictales/"
+        }
+      ]
+    }
+  },
+  "cruise:cruise": {
+    "title": "Cruise for a Corpse",
+    "aliases": [
+      "Cruise for a Corpse (Atari ST)",
+      "Cruise for a Corpse (VGA DOS)"
+    ],
+    "posterImage": "/launcher/retro-cruise-cruise-poster.webp",
+    "screenshots": [
+      "/launcher/retro-cruise-cruise-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Cruise%20for%20a%20Corpse.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/cruise/cruise/cruise_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/delphine/cruise:cruise/"
+        }
+      ]
+    }
+  },
+  "draci:draci": {
+    "title": "Dragon History",
+    "aliases": [
+      "Dragon History (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/retro-draci-draci-poster.webp",
+    "screenshots": [
+      "/launcher/retro-draci-draci-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Dra%c4%8d%c3%ad%20Historie.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/draci/draci/draci_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/draci:draci/"
+        }
+      ]
+    }
+  },
+  "drascula:drascula": {
+    "title": "Dráscula: The Vampire Strikes Back",
+    "aliases": [
+      "Drascula The Vampire Strikes Back (CD DOS, Multilanguage)"
+    ],
+    "posterImage": "/launcher/drascula-cover.webp",
+    "screenshots": [
+      "/launcher/drascula-shot-1.png",
+      "/launcher/drascula-shot-2.png",
+      "/launcher/drascula-shot-3.png"
+    ]
+  },
+  "dreamweb:dreamweb": {
+    "title": "DreamWeb",
+    "aliases": [
+      "Dreamweb (CD DOS)"
+    ],
+    "posterImage": "/launcher/dreamweb-cover.webp",
+    "screenshots": [
+      "/launcher/dreamweb-shot-1.png",
+      "/launcher/dreamweb-shot-2.png",
+      "/launcher/dreamweb-shot-3.png"
+    ]
+  },
+  "gnap:gnap": {
+    "title": "Gnap (U.F.O.s)",
+    "aliases": [
+      "Gnap (CD Windows)"
+    ],
+    "posterImage": "/launcher/retro-gnap-gnap-poster.webp",
+    "screenshots": [
+      "/launcher/retro-gnap-gnap-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/U.F.O.s.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gnap/gnap/gnap_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/gnap:gnap/"
+        }
+      ]
+    }
+  },
+  "gob:bargon": {
+    "title": "Bargon Attack",
+    "aliases": [
+      "Bargon Attack (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-gob-bargon-poster.webp",
+    "screenshots": [
+      "/launcher/retro-gob-bargon-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Bargon%20Attack.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/bargon/bargon_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:bargon/"
+        }
+      ]
+    }
+  },
+  "gob:fascination": {
+    "title": "Fascination",
+    "aliases": [
+      "Fascination (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-gob-fascination-poster.webp",
+    "screenshots": [
+      "/launcher/retro-gob-fascination-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Fascination.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/fascination/fascination_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:fascination/"
+        }
+      ]
+    }
+  },
+  "gob:geisha": {
+    "title": "Geisha",
+    "aliases": [
+      "Geisha (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-gob-geisha-poster.webp",
+    "screenshots": [
+      "/launcher/retro-gob-geisha-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Geisha.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/geisha/geisha_dos_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:geisha/"
+        }
+      ]
+    }
+  },
+  "gob:gob1": {
+    "title": "Gobliiins",
+    "aliases": [
+      "Gobliiins 1 (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-gob-gob1-poster.webp",
+    "screenshots": [
+      "/launcher/retro-gob-gob1-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gobliiins.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/gob1/gob1_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/gob/"
+        }
+      ]
+    }
+  },
+  "gob:gob2": {
+    "title": "Gobliins 2: The Prince Buffoon",
+    "aliases": [
+      "Gobliins 2 (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-gob-gob2-poster.webp",
+    "screenshots": [
+      "/launcher/retro-gob-gob2-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gobliins%202.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/gob2/gob2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/gob/"
+        }
+      ]
+    }
+  },
+  "gob:gob3": {
+    "title": "Goblins Quest 3",
+    "aliases": [
+      "Goblins 3 (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-gob-gob3-poster.webp",
+    "screenshots": [
+      "/launcher/retro-gob-gob3-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Goblins%20Quest%203.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/gob3/gob3_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/gob/"
+        }
+      ]
+    }
+  },
+  "gob:lit": {
+    "title": "Lost in Time",
+    "aliases": [
+      "Lost in Time (CD DOS, Multilanguage)"
+    ],
+    "posterImage": "/launcher/retro-gob-lit-poster.webp",
+    "screenshots": [
+      "/launcher/retro-gob-lit-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Lost%20in%20Time.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/lit/lit_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:lit/"
+        }
+      ]
+    }
+  },
+  "gob:littlered": {
+    "title": "Once Upon A Time: Little Red Riding Hood",
+    "aliases": [
+      "Once Upon A Time - Little Red Riding Hood (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/retro-gob-littlered-poster.webp",
+    "screenshots": [
+      "/launcher/retro-gob-littlered-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Once%20Upon%20a%20Time_%20Little%20Red%20Riding%20Hood.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/littlered/littlered_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:littlered/"
+        }
+      ]
+    }
+  },
+  "gob:urban": {
+    "title": "Urban Runner",
+    "aliases": [
+      "Urban Runner (Windows, CD)"
+    ],
+    "posterImage": "/launcher/retro-gob-urban-poster.webp",
+    "screenshots": [
+      "/launcher/retro-gob-urban-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Urban%20Runner.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/urban/urban_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:urban/"
+        }
+      ]
+    }
+  },
+  "gob:ween": {
+    "title": "Ween: The Prophecy",
+    "aliases": [
+      "Ween The Prophecy (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-gob-ween-poster.webp",
+    "screenshots": [
+      "/launcher/retro-gob-ween-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Ween_%20The%20Prophecy.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/ween/ween_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:ween/"
+        }
+      ]
+    }
+  },
+  "gob:woodruff": {
+    "title": "The Bizarre Adventures of Woodruff and the Schnibble",
+    "aliases": [
+      "The Bizarre Adventures of Woodruff and the Schnibble of Azimuth (CD DOS, Multilanguage)"
+    ],
+    "posterImage": "/launcher/retro-gob-woodruff-poster.webp",
+    "screenshots": [
+      "/launcher/retro-gob-woodruff-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Bizarre%20Adventures%20of%20Woodruff%20and%20the%20Schnibble.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/woodruff/woodruff_win_en-gb_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:woodruff/"
+        }
+      ]
+    }
+  },
+  "groovie:t7g": {
+    "title": "The 7th Guest",
+    "aliases": [
+      "The 7th Guest (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-groovie-t7g-poster.webp",
+    "screenshots": [
+      "/launcher/retro-groovie-t7g-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%207th%20Guest.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/groovie/t7g/t7g_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/trilobyte/t7g/"
+        }
+      ]
+    }
+  },
+  "hopkins:hopkins": {
+    "title": "Hopkins FBI",
+    "aliases": [
+      "Hopkins FBI (CD Windows)"
+    ],
+    "posterImage": "/launcher/retro-hopkins-hopkins-poster.webp",
+    "screenshots": [
+      "/launcher/retro-hopkins-hopkins-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hopkins%20FBI.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/hopkins/hopkins/hopkins_linux_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/hopkins:hopkins/"
+        }
+      ]
+    }
+  },
+  "hugo:hugo1": {
+    "title": "Hugo's House of Horrors",
+    "aliases": [
+      "Hugo's House of Horrors (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/retro-hugo-hugo1-poster.webp",
+    "screenshots": [
+      "/launcher/retro-hugo-hugo1-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hugo's%20House%20of%20Horrors.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/hugo/hugo1/hugo1_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/hugo/"
+        }
+      ]
+    }
+  },
+  "hugo:hugo2": {
+    "title": "Hugo II: Whodunit?",
+    "aliases": [
+      "Hugo 2 - Whodunit (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/retro-hugo-hugo2-poster.webp",
+    "screenshots": [
+      "/launcher/retro-hugo-hugo2-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://images.launchbox-app.com/0864bc8c-f83a-49b7-a2a0-5e46edc6ccab.jpg",
+        "page": "https://gamesdb.launchbox-app.com/games/images/24616-hugo-ii-whodunit"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/hugo/hugo2/hugo2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/hugo/"
+        }
+      ]
+    }
+  },
+  "hugo:hugo3": {
+    "title": "Hugo III: Jungle of Doom",
+    "aliases": [
+      "Hugo 3 - Jungle of Doom (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/retro-hugo-hugo3-poster.webp",
+    "screenshots": [
+      "/launcher/retro-hugo-hugo3-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hugo%20III_%20Jungle%20of%20Doom.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/hugo/hugo3/hugo3_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/hugo/"
+        }
+      ]
+    }
+  },
+  "kyra:eob": {
+    "title": "Eye of the Beholder",
+    "aliases": [
+      "Eye of the Beholder (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-kyra-eob-poster.webp",
+    "screenshots": [
+      "/launcher/retro-kyra-eob-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Eye%20of%20the%20Beholder.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/kyra/eob/eob_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/westwood/eob/"
+        }
+      ]
+    }
+  },
+  "kyra:eob2": {
+    "title": "Eye of the Beholder II: The Legend of Darkmoon",
+    "aliases": [
+      "Eye of the Beholder II - The Legend of Darkmoon (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-kyra-eob2-poster.webp",
+    "screenshots": [
+      "/launcher/retro-kyra-eob2-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Eye%20of%20the%20Beholder%20II%20-%20The%20Legend%20of%20Darkmoon.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/kyra/eob2/eob2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/westwood/eob/"
+        }
+      ]
+    }
+  },
+  "kyra:kyra1": {
+    "title": "The Legend of Kyrandia",
+    "aliases": [
+      "The Legend of Kyrandia 1 (Amiga)",
+      "The Legend of Kyrandia 1 (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-kyra-kyra1-poster.webp",
+    "screenshots": [
+      "/launcher/retro-kyra-kyra1-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Legend%20of%20Kyrandia,%20The.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/kyra/kyra1/kyra1_amiga_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/westwood/kyra/"
+        }
+      ]
+    }
+  },
+  "kyra:kyra2": {
+    "title": "The Legend of Kyrandia: Hand of Fate",
+    "aliases": [
+      "The Legend of Kyrandia 2 The Hand of Fate (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-kyra-kyra2-poster.webp",
+    "screenshots": [
+      "/launcher/retro-kyra-kyra2-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Legend%20of%20Kyrandia,%20The_%20The%20Hand%20of%20Fate.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/kyra/kyra2/kyra2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/westwood/kyra/"
+        }
+      ]
+    }
+  },
+  "kyra:kyra3": {
+    "title": "The Legend of Kyrandia: Book 3 - Malcolm's Revenge",
+    "aliases": [
+      "The Legend of Kyrandia 3 Malcolm's Revenge (CD DOS, Multilanguage)"
+    ],
+    "posterImage": "/launcher/retro-kyra-kyra3-poster.webp",
+    "screenshots": [
+      "/launcher/retro-kyra-kyra3-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Legend%20of%20Kyrandia,%20The_%20Malcolm's%20Revenge.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/kyra/kyra3/kyra3_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/westwood/kyra/"
+        }
+      ]
+    }
+  },
+  "kyra:lol": {
+    "title": "Lands of Lore: The Throne of Chaos",
+    "aliases": [
+      "Lands of Lore - The Throne of Chaos (CD DOS, Multilanguage)"
+    ],
+    "posterImage": "/launcher/retro-kyra-lol-poster.webp",
+    "screenshots": [
+      "/launcher/retro-kyra-lol-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Lands%20of%20Lore_%20The%20Throne%20of%20Chaos.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/kyra/lol/lol_dos_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/westwood/kyra:lol/"
+        }
+      ]
+    }
+  },
+  "lab:lab": {
+    "title": "The Labyrinth of Time",
+    "aliases": [
+      "Labyrinth of Time (CD DOS)",
+      "The Labyrinth of Time (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-lab-lab-poster.webp",
+    "screenshots": [
+      "/launcher/retro-lab-lab-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Labyrinth%20of%20Time.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/lab/lab/lab_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/lab:lab/"
+        }
+      ]
+    }
+  },
+  "local:road": {
+    "title": "Road",
+    "aliases": [
+      "Road (Fanmade - Get's Detected as DOTT)"
+    ],
+    "posterImage": "/launcher/retro-local-road-poster.webp",
+    "screenshots": [
+      "/launcher/retro-local-road-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "title-card"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "path": "image-assets/sources/road-gameplay.jpg"
+        }
+      ]
+    }
+  },
+  "lure:lure": {
+    "title": "Lure of the Temptress",
+    "aliases": [
+      "Lure of the Temptress (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/lure-cover.webp",
+    "screenshots": [
+      "/launcher/lure-shot-1.png",
+      "/launcher/lure-shot-2.png",
+      "/launcher/lure-shot-3.png"
+    ]
+  },
+  "made:lgop2": {
+    "title": "Leather Goddesses of Phobos! 2: Gas Pump Girls Meet the Pulsating Inconvenience from Planet X",
+    "aliases": [
+      "Leather Goddesses of Phobos 2 (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/retro-made-lgop2-poster.webp",
+    "screenshots": [
+      "/launcher/retro-made-lgop2-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leather%20Goddesses%20of%20Phobos%202.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/made/lgop2/lgop2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/made:lgop2/"
+        }
+      ]
+    }
+  },
+  "made:rodney": {
+    "title": "Rodney's Funscreen",
+    "aliases": [
+      "Rodney's Fun Screen (Windows)"
+    ],
+    "posterImage": "/launcher/retro-made-rodney-poster.webp",
+    "screenshots": [
+      "/launcher/retro-made-rodney-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Rodneys%20Funscreen.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/made/rodney/rodney_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/made:rodney/"
+        }
+      ]
+    }
+  },
+  "made:rtz": {
+    "title": "Return to Zork",
+    "aliases": [
+      "Return to Zork (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-made-rtz-poster.webp",
+    "screenshots": [
+      "/launcher/retro-made-rtz-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Return%20to%20Zork.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/made/rtz/rtz_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/activision/zork/"
+        }
+      ]
+    }
+  },
+  "mads:nebular": {
+    "title": "Rex Nebular and the Cosmic Gender Bender",
+    "aliases": [
+      "Rex Nebular And The Cosmic Gender Bender (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/retro-mads-nebular-poster.webp",
+    "screenshots": [
+      "/launcher/retro-mads-nebular-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Rex%20Nebular%20and%20the%20Cosmic%20Gender%20Bender.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/mads/nebular/nebular_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/microprose/mads:nebular/"
+        }
+      ]
+    }
+  },
+  "mohawk:myst": {
+    "title": "Myst",
+    "aliases": [
+      "Myst (CD Windows)",
+      "Myst Masterpiece (DVD Windows)"
+    ],
+    "posterImage": "/launcher/retro-mohawk-myst-poster.webp",
+    "screenshots": [
+      "/launcher/retro-mohawk-myst-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Myst.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/myst/myst_win_it_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/cyan/myst/"
+        }
+      ]
+    }
+  },
+  "mohawk:riven": {
+    "title": "Riven: The Sequel to Myst",
+    "aliases": [
+      "Riven (DVD Windows)"
+    ],
+    "posterImage": "/launcher/retro-mohawk-riven-poster.webp",
+    "screenshots": [
+      "/launcher/retro-mohawk-riven-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Riven_%20The%20Sequel%20to%20Myst.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/riven/riven_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/cyan/myst/"
+        }
+      ]
+    }
+  },
+  "neverhood:neverhood": {
+    "title": "The Neverhood",
+    "aliases": [
+      "The Neverhood (CD, Windows)"
+    ],
+    "posterImage": "/launcher/retro-neverhood-neverhood-poster.webp",
+    "screenshots": [
+      "/launcher/retro-neverhood-neverhood-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Neverhood.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/neverhood/neverhood/neverhood_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/neverhood:neverhood/"
+        }
+      ]
+    }
+  },
+  "ngi:fullpipe": {
+    "title": "Full Pipe",
+    "aliases": [
+      "Full Pipe (CD, Windows)"
+    ],
+    "posterImage": "/launcher/retro-ngi-fullpipe-poster.webp",
+    "screenshots": [
+      "/launcher/retro-ngi-fullpipe-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Full%20Pipe.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/ngi/fullpipe/fullpipe_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/ngi:fullpipe/"
+        }
+      ]
+    }
+  },
+  "parallaction:bra": {
+    "title": "The Big Red Adventure",
+    "aliases": [
+      "The Big Red Adventure (DOS, Multilanguage)"
+    ],
+    "posterImage": "/launcher/retro-parallaction-bra-poster.webp",
+    "screenshots": [
+      "/launcher/retro-parallaction-bra-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Big%20Red%20Adventure.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/The%20Big%20Red%20Adventure.png"
+        }
+      ]
+    }
+  },
+  "parallaction:nippon": {
+    "title": "Nippon Safes, Inc.",
+    "aliases": [
+      "Nippon Safes Inc (Amiga, Multilanguage)",
+      "Nippon Safes Inc (Floppy DOS, Multilanguage)"
+    ],
+    "posterImage": "/launcher/nippon-cover.webp",
+    "screenshots": [
+      "/launcher/nippon-shot-1.png",
+      "/launcher/nippon-shot-2.png",
+      "/launcher/nippon-shot-3.png"
+    ]
+  },
+  "pegasus:pegasus": {
+    "title": "The Journeyman Project: Pegasus Prime",
+    "aliases": [
+      "The Journeyman Project - Pegasus Prime (CD Mac)"
+    ],
+    "posterImage": "/launcher/retro-pegasus-pegasus-poster.webp",
+    "screenshots": [
+      "/launcher/retro-pegasus-pegasus-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Journeyman%20Project_%20Pegasus%20Prime.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/pegasus/pegasus/pegasus_mac_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/presto/journeyman/"
+        }
+      ]
+    }
+  },
+  "plumbers:plumbers": {
+    "title": "Plumbers Don't Wear Ties",
+    "aliases": [
+      "Plumbers Don't Wear Ties (CD, Windows)"
+    ],
+    "posterImage": "/launcher/retro-plumbers-plumbers-poster.webp",
+    "screenshots": [
+      "/launcher/retro-plumbers-plumbers-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Plumbers%20Dont%20Wear%20Ties.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/plumbers/plumbers/plumbers_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/plumbers:plumbers/"
+        }
+      ]
+    }
+  },
+  "queen:queen": {
+    "title": "Flight of the Amazon Queen",
+    "aliases": [
+      "Flight of the Amazon Queen (CD DOS)"
+    ],
+    "posterImage": "/launcher/queen-cover.webp",
+    "screenshots": [
+      "/launcher/queen-shot-1.png",
+      "/launcher/queen-shot-2.png",
+      "/launcher/queen-shot-3.png"
+    ]
+  },
+  "saga:ihnm": {
+    "title": "Harlan Ellison: I Have No Mouth, and I Must Scream",
+    "aliases": [
+      "I Have No Mouth and I Must Scream (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-saga-ihnm-poster.webp",
+    "screenshots": [
+      "/launcher/retro-saga-ihnm-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/I%20Have%20No%20Mouth,%20and%20I%20Must%20Scream.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/saga/ihnm/ihnm_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/dreamersguild/saga:ihnm/"
+        }
+      ]
+    }
+  },
+  "saga:ite": {
+    "title": "Inherit the Earth: Quest for the Orb",
+    "aliases": [
+      "Inherit the Earth - Quest for the Orb (CD Windows-Linux-DOS)"
+    ],
+    "posterImage": "/launcher/retro-saga-ite-poster.webp",
+    "screenshots": [
+      "/launcher/retro-saga-ite-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Inherit%20the%20Earth_%20Quest%20for%20the%20Orb.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/saga/ite/ite_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/dreamersguild/saga:ite/"
+        }
+      ]
+    }
+  },
+  "sci:camelot": {
+    "title": "Conquests of Camelot: The Search for the Grail",
+    "aliases": [
+      "Conquests of Camelot (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-sci-camelot-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-camelot-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Conquests%20of%20Camelot.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/camelot/camelot_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/conquests/"
+        }
+      ]
+    }
+  },
+  "sci:castlebrain": {
+    "title": "Castle of Dr. Brain",
+    "aliases": [
+      "Castle of Dr",
+      "Castle of Dr. Brain"
+    ],
+    "posterImage": "/launcher/retro-sci-castlebrain-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-castlebrain-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Castle%20of%20Dr.%20Brain.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/castlebrain/castlebrain_dos_de_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/brain/"
+        }
+      ]
+    }
+  },
+  "sci:ecoquest": {
+    "title": "EcoQuest: The Search for Cetus",
+    "aliases": [
+      "EcoQuest 1 - The Search for Cetus (CD DOS)",
+      "EcoQuest 1 - The Search for Cetus (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/retro-sci-ecoquest-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-ecoquest-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/EcoQuest_%20The%20Search%20for%20Cetus.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/ecoquest/ecoquest_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/ecoquest/"
+        }
+      ]
+    }
+  },
+  "sci:ecoquest2": {
+    "title": "EcoQuest II: Lost Secret of the Rainforest",
+    "aliases": [
+      "EcoQuest 2 - Lost Secret of the Rainforest (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/retro-sci-ecoquest2-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-ecoquest2-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/EcoQuest%202_%20Lost%20Secret%20of%20the%20Rainforest.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/ecoquest2/ecoquest2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/ecoquest/"
+        }
+      ]
+    }
+  },
+  "sci:freddypharkas": {
+    "title": "Freddy Pharkas: Frontier Pharmacist",
+    "aliases": [
+      "Freddy Pharkas - Frontier Pharmacist (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-sci-freddypharkas-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-freddypharkas-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Freddy%20Pharkas_%20Frontier%20Pharmacist.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/freddypharkas/freddypharkas_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:freddypharkas/"
+        }
+      ]
+    }
+  },
+  "sci:funseeker": {
+    "title": "Fun Seeker's Guide to Eastern Madera County",
+    "aliases": [
+      "Fun Seeker's Guide to Eastern Madera County (CD, DOS)"
+    ],
+    "posterImage": "/launcher/retro-sci-funseeker-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-funseeker-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "title-screen-poster",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Titles/Fun%20Seeker's%20Guide%20to%20Eastern%20Madera%20County.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Fun%20Seeker's%20Guide%20to%20Eastern%20Madera%20County.png"
+        }
+      ]
+    }
+  },
+  "sci:gk1": {
+    "title": "Gabriel Knight: Sins of the Fathers",
+    "aliases": [
+      "Gabriel Knight Sins Of The Fathers (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-sci-gk1-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-gk1-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gabriel%20Knight_%20Sins%20of%20the%20Fathers.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Gabriel%20Knight_%20Sins%20of%20the%20Fathers.png"
+        }
+      ]
+    }
+  },
+  "sci:gk2": {
+    "title": "The Beast Within: A Gabriel Knight Mystery",
+    "aliases": [
+      "Gabriel Knight 2 The Beast Within (CD, DOS)"
+    ],
+    "posterImage": "/launcher/retro-sci-gk2-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-gk2-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Beast%20Within_%20A%20Gabriel%20Knight%20Mystery.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/gk2/gk2_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/gk/"
+        }
+      ]
+    }
+  },
+  "sci:iceman": {
+    "title": "Code-Name: Iceman",
+    "aliases": [
+      "Codename Iceman (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-sci-iceman-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-iceman-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Codename_%20ICEMAN.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/iceman/iceman_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:iceman/"
+        }
+      ]
+    }
+  },
+  "sci:islandbrain": {
+    "title": "The Island of Dr. Brain",
+    "aliases": [
+      "Island of Dr",
+      "The Island of Dr. Brain"
+    ],
+    "posterImage": "/launcher/retro-sci-islandbrain-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-islandbrain-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Island%20of%20Dr.%20Brain.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/islandbrain/islandbrain_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/brain/"
+        }
+      ]
+    }
+  },
+  "sci:jones": {
+    "title": "Jones in the Fast Lane",
+    "aliases": [
+      "Jones In The Fast Lane (CD Dos)"
+    ],
+    "posterImage": "/launcher/retro-sci-jones-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-jones-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Jones%20in%20the%20Fast%20Lane.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/jones/jones_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:jones/"
+        }
+      ]
+    }
+  },
+  "sci:kq1sci": {
+    "title": "King's Quest: Quest for the Crown",
+    "aliases": [
+      "King's Quest 1 - Quest for the Crown (Floppy DOS VGA Remake)"
+    ],
+    "posterImage": "/launcher/retro-sci-kq1sci-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-kq1sci-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20I_%20Quest%20for%20the%20Crown%20(SCI_DOS_English).png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/kq1sci/kq1sci_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/"
+        }
+      ]
+    }
+  },
+  "sci:kq4sci": {
+    "title": "King's Quest IV: The Perils of Rosella",
+    "aliases": [
+      "King's Quest 4 - The Perils of Rosella (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-sci-kq4sci-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-kq4sci-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20IV_%20The%20Perils%20of%20Rosella.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/kq4sci/kq4sci_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/"
+        }
+      ]
+    }
+  },
+  "sci:kq5": {
+    "title": "King's Quest V: Absence Makes the Heart Go Yonder!",
+    "aliases": [
+      "King's Quest 5 - Absence Makes the Heart go Yonder (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-sci-kq5-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-kq5-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20V_%20Absence%20Makes%20the%20Heart%20Go%20Yonder!.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/kq5/kq5_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/"
+        }
+      ]
+    }
+  },
+  "sci:kq6": {
+    "title": "King's Quest VI: Heir Today, Gone Tomorrow",
+    "aliases": [
+      "King's Quest 6 - Heir Today, Gone Tomorrow (CD DOS, Windows)"
+    ],
+    "posterImage": "/launcher/retro-sci-kq6-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-kq6-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20VI_%20Heir%20Today,%20Gone%20Tomorrow.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/kq6/kq6_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/"
+        }
+      ]
+    }
+  },
+  "sci:kq7": {
+    "title": "King's Quest VII: The Princeless Bride",
+    "aliases": [
+      "King's Quest 7 - The Princeless Bride (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-sci-kq7-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-kq7-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20VII_%20The%20Princeless%20Bride.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/kq7/kq7_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/"
+        }
+      ]
+    }
+  },
+  "sci:laurabow": {
+    "title": "Laura Bow: The Colonel's Bequest",
+    "aliases": [
+      "Laura Bow 1 - The Colonels Bequest (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-sci-laurabow-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-laurabow-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Laura%20Bow_%20The%20Colonel's%20Bequest.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/laurabow/laurabow_dos_en_1_6_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/laurabow/"
+        }
+      ]
+    }
+  },
+  "sci:laurabow2": {
+    "title": "Laura Bow 2: The Dagger of Amon Ra",
+    "aliases": [
+      "Laura Bow 2 - The Dagger of Amon-Ra (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-sci-laurabow2-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-laurabow2-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Laura%20Bow%202_%20The%20Dagger%20of%20Amon%20Ra.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/laurabow2/laurabow2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/laurabow/"
+        }
+      ]
+    }
+  },
+  "sci:lighthouse": {
+    "title": "Lighthouse: The Dark Being",
+    "aliases": [
+      "Lighthouse (CD Windows)"
+    ],
+    "posterImage": "/launcher/retro-sci-lighthouse-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-lighthouse-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Lighthouse_%20The%20Dark%20Being.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/lighthouse/lighthouse_dos_de_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:lighthouse/"
+        }
+      ]
+    }
+  },
+  "sci:longbow": {
+    "title": "Conquests of the Longbow: The Legend of Robin Hood",
+    "aliases": [
+      "Conquests of the Longbow - The Legend of Robin Hood (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-sci-longbow-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-longbow-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Conquests%20of%20the%20Longbow_%20The%20Legend%20of%20Robin%20Hood.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/longbow/longbow_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/conquests/"
+        }
+      ]
+    }
+  },
+  "sci:lsl1sci": {
+    "title": "Leisure Suit Larry in the Land of the Lounge Lizards",
+    "aliases": [
+      "Leisure Suit Larry in the Land of the Lounge Lizards (Amiga VGA Remake)"
+    ],
+    "posterImage": "/launcher/retro-sci-lsl1sci-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-lsl1sci-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%20in%20the%20Land%20of%20the%20Lounge%20Lizards.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/lsl1sci/lsl1sci_amiga_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
+        }
+      ]
+    }
+  },
+  "sci:lsl2": {
+    "title": "Leisure Suit Larry 2: Goes Looking for Love (in Several Wrong Places)",
+    "aliases": [
+      "Leisure Suit Larry 2 - Goes looking for Love (In Several Wrong Places) (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-sci-lsl2-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-lsl2-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%202_%20Goes%20Looking%20for%20Love%20(in%20Several%20Wrong%20Places)%20(DOS_English).png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/lsl2/lsl2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
+        }
+      ]
+    }
+  },
+  "sci:lsl3": {
+    "title": "Leisure Suit Larry 3: Passionate Patti in Pursuit of the Pulsating Pectorals",
+    "aliases": [
+      "Leisure Suit Larry 3 - Passionate Patti in Pursuit of the Pulsating Pectorals (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-sci-lsl3-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-lsl3-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%203_%20Passionate%20Patti%20in%20Pursuit%20of%20the%20Pulsating%20Pectorals.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/lsl3/lsl3_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
+        }
+      ]
+    }
+  },
+  "sci:lsl5": {
+    "title": "Leisure Suit Larry 5: Passionate Patti Does a Little Undercover Work",
+    "aliases": [
+      "Leisure Suit Larry 5 - Passionate Patty Does a Little Undercover Work (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-sci-lsl5-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-lsl5-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%205_%20Passionate%20Patty%20Does%20a%20Little%20Undercover%20Work.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/lsl5/lsl5_amiga_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
+        }
+      ]
+    }
+  },
+  "sci:lsl6hires": {
+    "title": "Leisure Suit Larry 6: Shape Up or Slip Out!",
+    "aliases": [
+      "Leisure Suit Larry 6 - Shape Up or Slip Out (CD DOS High Res)"
+    ],
+    "posterImage": "/launcher/retro-sci-lsl6hires-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-lsl6hires-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%206_%20Shape%20Up%20or%20Slip%20Out!.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/lsl6hires/lsl6hires_dos_de_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
+        }
+      ]
+    }
+  },
+  "sci:lsl7": {
+    "title": "Leisure Suit Larry 7: Love for Sail!",
+    "aliases": [
+      "Leisure Suit Larry 7 - Love for Sail (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-sci-lsl7-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-lsl7-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%207_%20Love%20for%20Sail!%20(DOS_English).png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/lsl7/lsl7_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
+        }
+      ]
+    }
+  },
+  "sci:msastrochicken": {
+    "title": "Ms. Astro Chicken",
+    "aliases": [
+      "Ms Astro Chicken (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/retro-sci-msastrochicken-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-msastrochicken-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "title-screen-poster",
+        "url": "https://www.gamerscreed.com/attachments/ms-astro-chicken-001-png.3459/"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.gamerscreed.com/attachments/ms-astro-chicken-005-png.3463/"
+        }
+      ]
+    }
+  },
+  "sci:pepper": {
+    "title": "Pepper's Adventures in Time",
+    "aliases": [
+      "Peppers Adventures In Time (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/retro-sci-pepper-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-pepper-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Peppers%20Adventures%20in%20Time.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/pepper/pepper_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:pepper/"
+        }
+      ]
+    }
+  },
+  "sci:phantasmagoria": {
+    "title": "Phantasmagoria",
+    "aliases": [
+      "Phantasmagoria (CD, Windows)"
+    ],
+    "posterImage": "/launcher/retro-sci-phantasmagoria-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-phantasmagoria-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Phantasmagoria.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/phantasmagoria/phantasmagoria_dos_fr_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/phantasmagoria/"
+        }
+      ]
+    }
+  },
+  "sci:phantasmagoria2": {
+    "title": "Phantasmagoria 2: A Puzzle of Flesh",
+    "aliases": [
+      "Phantasmagoria 2 (CD, Windows)"
+    ],
+    "posterImage": "/launcher/retro-sci-phantasmagoria2-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-phantasmagoria2-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Phantasmagoria%202_%20A%20Puzzle%20of%20Flesh%20(Windows_English).png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/phantasmagoria2/phantasmagoria2_win_fr_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/phantasmagoria/"
+        }
+      ]
+    }
+  },
+  "sci:pq1sci": {
+    "title": "Police Quest: In Pursuit of the Death Angel",
+    "aliases": [
+      "Police Quest 1 - In Pursuit of the Death Angel (Floppy DOS VGA Remake)"
+    ],
+    "posterImage": "/launcher/retro-agi-pq1-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agi-pq1-shot.webp"
+    ],
+    "artworkFrom": "agi:pq1"
+  },
+  "sci:pq2": {
+    "title": "Police Quest 2: The Vengeance",
+    "aliases": [
+      "Police Quest 2 - The Vengeance (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-sci-pq2-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-pq2-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest%20II_%20The%20Vengeance.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/pq2/pq2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/pq/"
+        }
+      ]
+    }
+  },
+  "sci:pq3": {
+    "title": "Police Quest 3: The Kindred",
+    "aliases": [
+      "Police Quest 3 - The Kindred (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-sci-pq3-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-pq3-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest%20III_%20The%20Kindred.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/pq3/pq3_amiga_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/pq/"
+        }
+      ]
+    }
+  },
+  "sci:pq4": {
+    "title": "Police Quest IV: Open Season",
+    "aliases": [
+      "Police Quest 4 - Open Season (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-sci-pq4-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-pq4-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest%204_%20Open%20Season.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/pq4/pq4_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/pq/"
+        }
+      ]
+    }
+  },
+  "sci:qfg1": {
+    "title": "Quest for Glory I: So You Want To Be A Hero",
+    "aliases": [
+      "Hero Quest So You Want To Be A Hero (Amiga)",
+      "Hero Quest So You Want To Be A Hero (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/retro-sci-qfg1-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-qfg1-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Quest%20for%20Glory%201_%20So%20You%20Want%20to%20Be%20a%20Hero.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/qfg1/qfg1_dos_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/qfg/"
+        }
+      ]
+    }
+  },
+  "sci:qfg1vga": {
+    "title": "Quest for Glory I: So You Want To Be A Hero",
+    "aliases": [
+      "Quest for Glory 1 - So You Want to be a Hero (Floppy DOS VGA Remake)"
+    ],
+    "posterImage": "/launcher/retro-sci-qfg1-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-qfg1-shot.webp"
+    ],
+    "artworkFrom": "sci:qfg1"
+  },
+  "sci:qfg2": {
+    "title": "Quest for Glory II: Trial by Fire",
+    "aliases": [
+      "Quest for Glory 2 - Trial by Fire (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-sci-qfg2-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-qfg2-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Quest%20for%20Glory%20II_%20Trial%20by%20Fire%20(DOS_English).png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/qfg2/qfg2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/qfg/"
+        }
+      ]
+    }
+  },
+  "sci:qfg3": {
+    "title": "Quest for Glory III: Wages of War",
+    "aliases": [
+      "Quest for Glory 3 - The Wages of War (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/retro-sci-qfg3-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-qfg3-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Quest%20for%20Glory%20III_%20Wages%20of%20War.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/qfg3/qfg3_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/qfg/"
+        }
+      ]
+    }
+  },
+  "sci:rama": {
+    "title": "RAMA",
+    "aliases": [
+      "RAMA (CD Windows)"
+    ],
+    "posterImage": "/launcher/retro-sci-rama-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-rama-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Rama.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/rama/rama_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:rama/"
+        }
+      ]
+    }
+  },
+  "sci:shivers": {
+    "title": "Shivers",
+    "aliases": [
+      "Shivers (CD, Windows)"
+    ],
+    "posterImage": "/launcher/retro-sci-shivers-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-shivers-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Shivers.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Shivers.png"
+        }
+      ]
+    }
+  },
+  "sci:sq1sci": {
+    "title": "Space Quest: The Sarien Encounter",
+    "aliases": [
+      "Space Quest 1 - The Sarien Encounter (Floppy DOS VGA Remake)"
+    ],
+    "posterImage": "/launcher/retro-agi-sq1-poster.webp",
+    "screenshots": [
+      "/launcher/retro-agi-sq1-shot.webp"
+    ],
+    "artworkFrom": "agi:sq1"
+  },
+  "sci:sq3": {
+    "title": "Space Quest III: The Pirates of Pestulon",
+    "aliases": [
+      "Space Quest 3 - The Pirates of Pestulon (Amiga)"
+    ],
+    "posterImage": "/launcher/retro-sci-sq3-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-sq3-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20III_%20The%20Pirates%20of%20Pestulon.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/sq3/sq3_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/"
+        }
+      ]
+    }
+  },
+  "sci:sq4": {
+    "title": "Space Quest IV: Roger Wilco and the Time Rippers",
+    "aliases": [
+      "Space Quest 4 - Roger Wilco and the Time Rippers (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-sci-sq4-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-sq4-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20IV_%20Roger%20Wilco%20and%20the%20Time%20Rippers.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/sq4/sq4_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/"
+        }
+      ]
+    }
+  },
+  "sci:sq5": {
+    "title": "Space Quest V: The Next Mutation",
+    "aliases": [
+      "Space Quest 5 - The Next Mutation (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/retro-sci-sq5-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-sq5-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20V_%20The%20Next%20Mutation.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/sq5/sq5_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/"
+        }
+      ]
+    }
+  },
+  "sci:sq6": {
+    "title": "Space Quest 6: Roger Wilco in the Spinal Frontier",
+    "aliases": [
+      "Space Quest 6 - The Spinal Frontier (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-sci-sq6-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-sq6-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%206_%20The%20Spinal%20Frontier.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/sq6/sq6_dos_de_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/"
+        }
+      ]
+    }
+  },
+  "sci:torin": {
+    "title": "Torin's Passage",
+    "aliases": [
+      "Torins Passage (CD Windows)"
+    ],
+    "posterImage": "/launcher/retro-sci-torin-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sci-torin-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Torin's%20Passage.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/torin/torin_win_de_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:torin/"
+        }
+      ]
+    }
+  },
+  "scumm:atlantis": {
+    "title": "Indiana Jones and the Fate of Atlantis",
+    "aliases": [
+      "Indiana Jones and the Fate of Atlantis (CD DOS)"
+    ],
+    "posterImage": "/launcher/atlantis-cover.webp",
+    "screenshots": [
+      "/launcher/atlantis-shot.webp"
+    ]
+  },
+  "scumm:bluestreasurehunt": {
+    "title": "Blue's Treasure Hunt",
+    "aliases": [
+      "Blues Treasure Hunt (CD Windows)"
+    ],
+    "posterImage": "/launcher/retro-scumm-bluestreasurehunt-poster.webp",
+    "screenshots": [
+      "/launcher/retro-scumm-bluestreasurehunt-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue's%20Treasure%20Hunt.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/bluestreasurehunt/bluestreasurehunt_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/blue/"
+        }
+      ]
+    }
+  },
+  "scumm:brstorm": {
+    "title": "Bear Stormin'",
+    "aliases": [
+      "Bear Stormin' (DOS)"
+    ],
+    "posterImage": "/launcher/retro-scumm-brstorm-poster.webp",
+    "screenshots": [
+      "/launcher/retro-scumm-brstorm-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "title-screen-poster",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Titles/Bear%20Stormin'.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Bear%20Stormin'.png"
+        }
+      ]
+    }
+  },
+  "scumm:comi": {
+    "title": "The Curse of Monkey Island",
+    "aliases": [
+      "The Curse Of Monkey Island (CD Windows)"
+    ],
+    "posterImage": "/launcher/retro-scumm-comi-poster.webp",
+    "screenshots": [
+      "/launcher/retro-scumm-comi-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Curse%20of%20Monkey%20Island.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/comi/comi_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/lucasarts/mi/"
+        }
+      ]
+    }
+  },
+  "scumm:dig": {
+    "title": "The Dig",
+    "aliases": [
+      "The Dig (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-scumm-dig-poster.webp",
+    "screenshots": [
+      "/launcher/retro-scumm-dig-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Dig.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/dig/dig_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/lucasarts/scumm:dig/"
+        }
+      ]
+    }
+  },
+  "scumm:ft": {
+    "title": "Full Throttle",
+    "aliases": [
+      "Full Throttle (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-scumm-ft-poster.webp",
+    "screenshots": [
+      "/launcher/retro-scumm-ft-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Full%20Throttle.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/ft/ft_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/lucasarts/scumm:ft/"
+        }
+      ]
+    }
+  },
+  "scumm:indy3": {
+    "title": "Indiana Jones and the Last Crusade",
+    "aliases": [
+      "Indiana Jones and the Last Crusade (Amiga)"
+    ],
+    "posterImage": "/launcher/indy3-cover.webp",
+    "screenshots": [
+      "/launcher/indy3-shot.webp"
+    ]
+  },
+  "scumm:loom": {
+    "title": "Loom",
+    "aliases": [
+      "Loom (Amiga)",
+      "Loom (CD DOS VGA)"
+    ],
+    "posterImage": "/launcher/loom-cover.webp",
+    "screenshots": [
+      "/launcher/loom-shot.webp"
+    ]
+  },
+  "scumm:maniac": {
+    "title": "Maniac Mansion",
+    "aliases": [
+      "Maniac Mansion (Amiga)"
+    ],
+    "posterImage": "/launcher/maniac-cover.webp",
+    "screenshots": [
+      "/launcher/maniac-shot.webp"
+    ]
+  },
+  "scumm:monkey": {
+    "title": "The Secret of Monkey Island",
+    "aliases": [
+      "The Secret of Monkey Island (CD DOS VGA)"
+    ],
+    "posterImage": "/launcher/retro-scumm-monkey-poster.webp",
+    "screenshots": [
+      "/launcher/retro-scumm-monkey-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Secret%20of%20Monkey%20Island.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/monkey/monkey_dos_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/lucasarts/mi/"
+        }
+      ]
+    }
+  },
+  "scumm:monkey2": {
+    "title": "Monkey Island 2: LeChuck's Revenge",
+    "aliases": [
+      "Monkey Island 2 - LeChuck's Revenge (Amiga)",
+      "Monkey Island 2 LeChuck's Revenge (Amiga)"
+    ],
+    "posterImage": "/launcher/monkey2-cover.webp",
+    "screenshots": [
+      "/launcher/monkey2-shot.webp"
+    ]
+  },
+  "scumm:pass": {
+    "title": "Passport to Adventure (Demo)",
+    "aliases": [
+      "Passport to Adventure (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-scumm-pass-poster.webp",
+    "screenshots": [
+      "/launcher/retro-scumm-pass-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Passport%20to%20Adventure.png"
+      },
+      "screenshots": [
+        {
+          "kind": "title-screen",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Passport%20to%20Adventure.png"
+        }
+      ]
+    }
+  },
+  "scumm:samnmax": {
+    "title": "Sam & Max Hit the Road",
+    "aliases": [
+      "Sam & Max Hit the Road (CD DOS)",
+      "Sam and Max Hit the Road (CD DOS)"
+    ],
+    "posterImage": "/launcher/samnmax-cover.webp",
+    "screenshots": [
+      "/launcher/samnmax-shot.webp"
+    ]
+  },
+  "scumm:tentacle": {
+    "title": "Day of the Tentacle",
+    "aliases": [
+      "Day Of The Tentacle (CD Dos)",
+      "Day of the Tentacle (CD DOS)"
+    ],
+    "posterImage": "/launcher/tentacle-cover.webp",
+    "screenshots": [
+      "/launcher/tentacle-shot.webp"
+    ]
+  },
+  "scumm:thinker1": {
+    "title": "Big Thinkers! 1st Grade",
+    "aliases": [
+      "Big Thinkers 1st Grade (Windows)"
+    ],
+    "posterImage": "/launcher/retro-scumm-thinker1-poster.webp",
+    "screenshots": [
+      "/launcher/retro-scumm-thinker1-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Big%20Thinkers%201st%20Grade.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/thinker1/thinker1_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/bigthinkers/"
+        }
+      ]
+    }
+  },
+  "scumm:thinkerk": {
+    "title": "Big Thinkers! Kindergarten",
+    "aliases": [
+      "Big Thinkers Kindergarten (Windows)"
+    ],
+    "posterImage": "/launcher/retro-scumm-thinkerk-poster.webp",
+    "screenshots": [
+      "/launcher/retro-scumm-thinkerk-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Big%20Thinkers%20Kindergarten.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/thinkerk/thinkerk_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/bigthinkers/"
+        }
+      ]
+    }
+  },
+  "scumm:zak": {
+    "title": "Zak McKracken and the Alien Mindbenders",
+    "aliases": [
+      "Zak McKracken and the Alien Mindbenders (Amiga)"
+    ],
+    "posterImage": "/launcher/zak-cover.webp",
+    "screenshots": [
+      "/launcher/zak-shot.webp"
+    ]
+  },
+  "sherlock:rosetattoo": {
+    "title": "The Lost Files of Sherlock Holmes: Case of the Rose Tattoo",
+    "aliases": [
+      "The Lost Files of Sherlock Holmes - The Case of the Rose Tattoo (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-sherlock-rosetattoo-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sherlock-rosetattoo-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Lost%20Files%20of%20Sherlock%20Holmes_%20The%20Case%20of%20the%20Rose%20Tattoo.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sherlock/rosetattoo/rosetattoo_dos_de_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/sherlock/"
+        }
+      ]
+    }
+  },
+  "sherlock:scalpel": {
+    "title": "The Lost Files of Sherlock Holmes: The Case of the Serrated Scalpel",
+    "aliases": [
+      "The Lost Files of Sherlock Holmes - The Case of the Serrated Scalpel (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-sherlock-scalpel-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sherlock-scalpel-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Lost%20Files%20of%20Sherlock%20Holmes_%20The%20Case%20of%20the%20Serrated%20Scalpel.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sherlock/scalpel/scalpel_dos_de_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/sherlock/"
+        }
+      ]
+    }
+  },
+  "sky:sky": {
+    "title": "Beneath a Steel Sky",
+    "aliases": [
+      "Beneath a Steel Sky (CD VGA)"
+    ],
+    "posterImage": "/launcher/sky-cover.webp",
+    "screenshots": [
+      "/launcher/bass-shot-1.png",
+      "/launcher/bass-shot-2.png",
+      "/launcher/bass-shot-3.png"
+    ]
+  },
+  "sword1:sword1": {
+    "title": "Broken Sword: The Shadow of the Templars",
+    "aliases": [
+      "Broken Sword 1 The Shadow of the Templar (CD Windows)"
+    ],
+    "posterImage": "/launcher/retro-sword1-sword1-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sword1-sword1-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Broken%20Sword_%20The%20Shadow%20of%20the%20Templars.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sword1/sword1/sword1_psx_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/revolution/sword/"
+        }
+      ]
+    }
+  },
+  "sword25:sword25": {
+    "title": "Broken Sword 2.5: The Return of the Templars",
+    "aliases": [
+      "Broken Sword 2.5 (Windows)"
+    ],
+    "posterImage": "/launcher/sword25-cover.webp",
+    "screenshots": [
+      "/launcher/sword25-shot-1.png",
+      "/launcher/sword25-shot-2.png",
+      "/launcher/sword25-shot-3.png"
+    ]
+  },
+  "sword2:sword2": {
+    "title": "Broken Sword II: The Smoking Mirror",
+    "aliases": [
+      "Broken Sword 2 The Smoking Mirror (CD Windows)"
+    ],
+    "posterImage": "/launcher/retro-sword2-sword2-poster.webp",
+    "screenshots": [
+      "/launcher/retro-sword2-sword2-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Broken%20Sword%20II_%20The%20Smoking%20Mirror.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sword2/sword2/sword2_psx_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/revolution/sword/"
+        }
+      ]
+    }
+  },
+  "teenagent:teenagent": {
+    "title": "Teen Agent",
+    "aliases": [
+      "TeenAgent (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/retro-teenagent-teenagent-poster.webp",
+    "screenshots": [
+      "/launcher/retro-teenagent-teenagent-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Teen%20Agent.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/teenagent/teenagent/teenagent_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/metropolis/teenagent:teenagent/"
+        }
+      ]
+    }
+  },
+  "tinsel:dw": {
+    "title": "Discworld",
+    "aliases": [
+      "Discworld 1 (CD DOS v2)",
+      "Discworld 1 (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-tinsel-dw-poster.webp",
+    "screenshots": [
+      "/launcher/retro-tinsel-dw-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Discworld.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/tinsel/dw/dw_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/dw/"
+        }
+      ]
+    }
+  },
+  "tinsel:dw2": {
+    "title": "Discworld II: Missing Presumed...!?",
+    "aliases": [
+      "Discworld 2 (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-tinsel-dw2-poster.webp",
+    "screenshots": [
+      "/launcher/retro-tinsel-dw2-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Discworld%202.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/tinsel/dw2/dw2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/dw/"
+        }
+      ]
+    }
+  },
+  "titanic:titanic": {
+    "title": "Starship Titanic",
+    "aliases": [
+      "Starship Titanic (CD, Windows)"
+    ],
+    "posterImage": "/launcher/retro-titanic-titanic-poster.webp",
+    "screenshots": [
+      "/launcher/retro-titanic-titanic-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Starship%20Titanic.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/titanic/titanic/titanic_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/titanic:titanic/"
+        }
+      ]
+    }
+  },
+  "toltecs:toltecs": {
+    "title": "3 Skulls of the Toltecs",
+    "aliases": [
+      "3 Skulls of the Toltecs (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-toltecs-toltecs-poster.webp",
+    "screenshots": [
+      "/launcher/retro-toltecs-toltecs-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/3%20Skulls%20of%20the%20Toltecs.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/toltecs/toltecs/toltecs_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/toltecs:toltecs/"
+        }
+      ]
+    }
+  },
+  "tony:tony": {
+    "title": "Tony Tough and the Night of Roasted Moths",
+    "aliases": [
+      "Tony Tough and the Night of the Roasted Moths (CD Windows)"
+    ],
+    "posterImage": "/launcher/retro-tony-tony-poster.webp",
+    "screenshots": [
+      "/launcher/retro-tony-tony-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Tony%20Tough%20and%20the%20Night%20of%20the%20Roasted%20Moths.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/tony/tony/tony_win_de_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/tony:tony/"
+        }
+      ]
+    }
+  },
+  "toon:toon": {
+    "title": "Toonstruck",
+    "aliases": [
+      "Toonstruck (CD Windows)"
+    ],
+    "posterImage": "/launcher/retro-toon-toon-poster.webp",
+    "screenshots": [
+      "/launcher/retro-toon-toon-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Toonstruck.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/toon/toon/toon_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/toon:toon/"
+        }
+      ]
+    }
+  },
+  "touche:touche": {
+    "title": "Touché: The Adventures of the Fifth Musketeer",
+    "aliases": [
+      "Touche - The Adventures of the Fifth Musketeer (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-touche-touche-poster.webp",
+    "screenshots": [
+      "/launcher/retro-touche-touche-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Touche_%20The%20Adventures%20of%20the%20Fifth%20Musketeer.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/touche/touche/touche_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/touche:touche/"
+        }
+      ]
+    }
+  },
+  "tsage:blueforce": {
+    "title": "Blue Force",
+    "aliases": [
+      "Blue Force (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-tsage-blueforce-poster.webp",
+    "screenshots": [
+      "/launcher/retro-tsage-blueforce-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue%20Force.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/tsage/blueforce/blueforce_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/tsunami/tsage:blueforce/"
+        }
+      ]
+    }
+  },
+  "tsage:ringworld": {
+    "title": "Ringworld: Revenge of the Patriarch",
+    "aliases": [
+      "Ringworld - Revenge of the Patriarch (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-tsage-ringworld-poster.webp",
+    "screenshots": [
+      "/launcher/retro-tsage-ringworld-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Ringworld_%20Revenge%20of%20the%20Patriarch.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/tsage/ringworld/ringworld_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/tsunami/ringworld/"
+        }
+      ]
+    }
+  },
+  "tsage:ringworld2": {
+    "title": "Return to Ringworld",
+    "aliases": [
+      "Return to Ringworld (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-tsage-ringworld2-poster.webp",
+    "screenshots": [
+      "/launcher/retro-tsage-ringworld2-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Return%20to%20Ringworld.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/tsage/ringworld2/ringworld2_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/tsunami/ringworld/"
+        }
+      ]
+    }
+  },
+  "tucker:tucker": {
+    "title": "Bud Tucker in Double Trouble",
+    "aliases": [
+      "Bud Tucker in Double Trouble (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-tucker-tucker-poster.webp",
+    "screenshots": [
+      "/launcher/retro-tucker-tucker-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Bud%20Tucker%20in%20Double%20Trouble.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/tucker/tucker/tucker_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/tucker:tucker/"
+        }
+      ]
+    }
+  },
+  "voyeur:voyeur": {
+    "title": "Voyeur",
+    "aliases": [
+      "Voyeur (CD DOS)"
+    ],
+    "posterImage": "/launcher/retro-voyeur-voyeur-poster.webp",
+    "screenshots": [
+      "/launcher/retro-voyeur-voyeur-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Voyeur.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/voyeur/voyeur/voyeur_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/voyeur:voyeur/"
+        }
+      ]
+    }
+  },
+  "wintermute:chivalry": {
+    "title": "Chivalry is Not Dead",
+    "aliases": [
+      "Chivalry is Not Dead (Windows)"
+    ],
+    "posterImage": "/launcher/retro-wintermute-chivalry-poster.webp",
+    "screenshots": [
+      "/launcher/retro-wintermute-chivalry-shot.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "gameplay-poster",
+        "url": "https://www.scummvm.org/data/screenshots/wintermute/chivalry/chivalry_win_en_1_2_full.png",
+        "page": "https://www.scummvm.org/screenshots/squinky/wintermute:chivalry/"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/wintermute/chivalry/chivalry_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/squinky/wintermute:chivalry/"
+        }
+      ]
+    }
+  }
+}

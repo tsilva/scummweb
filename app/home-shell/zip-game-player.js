@@ -13,6 +13,6 @@ export function sendZipGameFiles(playerWindow, files) {
   playerWindow.postMessage(
     { type: "scummweb:local-game-files", files },
     window.location.origin,
-    files.map(({ data }) => data.buffer)
+    files.flatMap(({ data }) => data ? [data.buffer] : [])
   );
 }
