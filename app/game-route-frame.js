@@ -279,6 +279,12 @@ export default function GameRouteFrame({
 
     window.addEventListener("message", handleMessage);
 
+    if (archiveFrame?.contentWindow &&
+        (!archiveFrame.contentDocument || archiveFrame.contentDocument.URL === "about:blank")) {
+      // Start navigation after the frame and ZIP handoff listener are both ready.
+      archiveFrame.contentWindow.location.replace(new URL(frameSrc, window.location.href).href);
+    }
+
     return () => {
       window.clearTimeout(navigationTimer);
       stopArchiveBootTimer();
@@ -592,7 +598,7 @@ export default function GameRouteFrame({
         data-scummvm-target={target}
         ref={frameRef}
         loading="eager"
-        src={frameSrc}
+        src={loadArchive ? "about:blank" : frameSrc}
         title={title}
       /> : null}
     </div>
