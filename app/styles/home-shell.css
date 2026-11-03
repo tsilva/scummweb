@@ -1302,11 +1302,13 @@ button.nav-icon-link {
   flex: none;
 }
 
-.game-import-heading > svg {
+.game-import-heading > svg,
+.game-import-success {
   color: var(--accent-strong);
 }
 
-.game-import-heading > .game-import-warning {
+.game-import-heading > .game-import-warning,
+.game-import-warning {
   color: #f5b44c;
 }
 

@@ -175,7 +175,7 @@ export default function SourceLibrary({ catalog, officialUrl }) {
       const roots = typeof selection === "function" ? await selection() : selection;
       if (!roots.length) return;
       const known = new Map(entries.map(({ source }) => [source.id, source]));
-      const errors = [];
+      const items = [];
       const savedIds = new Set();
       let temporary = 0;
       let needsSelection = 0;
@@ -187,6 +187,7 @@ export default function SourceLibrary({ catalog, officialUrl }) {
       async function save(game) {
         const result = await saveLocal(game, known, replacing);
         savedIds.add(result.id);
+        items.push({ label: game.name, message: replacing ? "Reconnected" : "Added to your library" });
         if (result.temporary) temporary++;
         else if (result.needsSelection) needsSelection++;
       }
@@ -219,13 +220,13 @@ export default function SourceLibrary({ catalog, officialUrl }) {
                   try {
                     await save(await prepareLocalZip(archive));
                   } catch (error) {
-                    errors.push({ label: archive.name, message: error.message });
+                    items.push({ label: archive.name, message: error.message, skipped: true });
                   }
                 }
               }
             }
           } catch (error) {
-            errors.push({ label, message: error.message });
+            items.push({ label, message: error.message, skipped: true });
           } finally {
             setPending((current) => current.filter((item) => item.index !== index));
           }
@@ -234,10 +235,10 @@ export default function SourceLibrary({ catalog, officialUrl }) {
         setPending([]);
       }
 
-      setImportResult({ savedIds, errors, replacing, temporary, needsSelection });
+      setImportResult({ savedIds, items, replacing, temporary, needsSelection });
     }, (message) => setImportResult({
       savedIds: new Set(),
-      errors: [{ label: "Game files", message }],
+      items: [{ label: "Game files", message, skipped: true }],
     }));
   }
 

@@ -97,7 +97,7 @@ function GameImportDialog({ pending, result, onConfirm }) {
   }, [complete]);
 
   const saved = result?.savedIds.size ?? 0;
-  const skipped = result?.errors.length ?? 0;
+  const skipped = result?.items.filter((item) => item.skipped).length ?? 0;
   const title = !result ? "Importing games…"
     : !saved ? "No games added"
     : result.replacing ? "Game reconnected"
@@ -127,16 +127,18 @@ function GameImportDialog({ pending, result, onConfirm }) {
         role="region" aria-label="Import details" tabIndex={0}>
         {result ? (
           <>
-            {skipped > 0 && (
-              <ul className="game-import-items">
-                {result.errors.map(({ label, message }, index) => (
+            <ul className="game-import-items">
+              {result.items.map(({ label, message, skipped }, index) => {
+                const StatusIcon = skipped ? TriangleAlert : CircleCheck;
+                return (
                   <li key={index}>
-                    <File aria-hidden="true" size={22} />
-                    <div><strong>{label}</strong><p>{message}</p></div>
+                    <StatusIcon aria-hidden="true" size={22}
+                      className={skipped ? "game-import-warning" : "game-import-success"} />
+                    <div><strong>{label}</strong><p>{skipped ? `Skipped. ${message}` : message}</p></div>
                   </li>
-                ))}
-              </ul>
-            )}
+                );
+              })}
+            </ul>
             {result.temporary > 0 && <p>Some games are only available in this tab.</p>}
             {result.needsSelection > 0 && <p>Your browser may ask you to locate the files again after reload.</p>}
           </>
