@@ -34,7 +34,8 @@ When the opening scene appears, you’re ready to play. For more games,
   from your ScummWEB site. If the host blocks access, download the ZIP
   yourself and drop it onto the homepage.
 
-The drop overlay shows import progress and explains which files were skipped.
+The drop overlay shows import progress and lists the added and skipped files
+when the batch finishes.
 Scroll inside the dialog to review a large batch. When processing finishes,
 select **Confirm** to close it. The library then scrolls to the first new
 poster. New posters briefly brighten and show color as they come into view.
