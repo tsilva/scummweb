@@ -1,5 +1,4 @@
 import DecorativeImage from "./decorative-image";
-import { getGameDialogId } from "./shared";
 
 export const bucketOnlyGames = [
   {
@@ -44,18 +43,15 @@ export default function LibraryCards({ games, bucketTargets = [], onPlay, disabl
               </button>
             ) : (
               <a
-                aria-haspopup="dialog"
                 className={cardClass}
                 data-game-target={game.target}
-                href={`#${getGameDialogId(game)}`}
+                href={game.href}
               >
                 {poster}
               </a>
             )}
-            {game.href ? (
-              <a className="game-details-link" href={game.href}>About {game.displayTitle}</a>
-            ) : (
-              <span className="game-details-link">{game.edition} · From your bucket</span>
+            {!game.href && (
+              <span className="bucket-poster-caption">{game.edition} · From your bucket</span>
             )}
           </div>
         );

@@ -77,7 +77,7 @@ pnpm run sentry:issues   # list recent Sentry issues from local env credentials
 - Sentry is optional. Runtime capture uses `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_DSN`, `NEXT_PUBLIC_SENTRY_ENABLED`, and the Sentry project settings in `next.config.js`.
 - `NEXT_PUBLIC_SITE_URL` controls public metadata, sitemap, robots, and Open Graph URLs.
 - The homepage hero rotates through the installed games. The ring around the pause control shows how long until the next game. Pausing freezes the countdown. Use the chevrons to choose a game. The Play button launches the game shown in the hero.
-- The library links to each game’s detail page and keeps quick play in the card dialogs. The sitemap lists the homepage and game detail pages. The player routes and standalone emulator send noindex directives.
+- The library’s poster cards link to each game’s detail page. Browser-Playable Classics cards open quick-play dialogs. The sitemap lists the homepage and game detail pages. The player routes and standalone emulator send noindex directives.
 
 ## Game launch analytics
 

@@ -825,12 +825,6 @@ button.nav-icon-link {
   background: var(--accent);
 }
 
-.game-details-link {
-  color: var(--accent-strong);
-  text-decoration: underline;
-  text-underline-offset: 0.18em;
-}
-
 .landscape-rail,
 .spotlight-rail {
   display: flex;
@@ -958,9 +952,10 @@ button.nav-icon-link {
   font-size: 4rem;
 }
 
-.poster-entry .game-details-link {
+.bucket-poster-caption {
   display: block;
   padding: 0.65rem 0.5rem;
+  color: var(--accent-strong);
   font-size: 0.85rem;
 }
 
