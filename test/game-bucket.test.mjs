@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { BlobWriter, Uint8ArrayReader, ZipWriter } from "@zip.js/zip.js";
-import { normalizeBucketUrl, normalizeGameZipUrl, readRemoteGameArchive, readSavedBucket } from "../app/game-bucket.mjs";
+import { normalizeBucketUrl, normalizeGameZipUrl, readCatalogGameArchive, readRemoteGameArchive, readSavedBucket } from "../app/game-bucket.mjs";
 import { maxArchiveSize } from "../app/local-game-archive.mjs";
 
 const customUrl = "https://games.example.com";
@@ -23,6 +23,27 @@ test("direct ZIP links require HTTPS and a ZIP path and keep query parameters", 
   ]) {
     assert.throws(() => normalizeGameZipUrl(invalid), /direct HTTPS link/);
   }
+});
+
+test("the catalog ZIP loader shares extraction and uses the games proxy on loopback only", async (t) => {
+  const zip = new ZipWriter(new BlobWriter());
+  await zip.add("sky.dnr", new Uint8ArrayReader(Uint8Array.of(1, 2, 3)));
+  const archive = await zip.close();
+  const url = `${customUrl}/sky.zip`;
+  const location = { hostname: "localhost" };
+  const oldWindow = Object.getOwnPropertyDescriptor(globalThis, "window");
+  Object.defineProperty(globalThis, "window", { configurable: true, value: { location } });
+  t.after(() => oldWindow ? Object.defineProperty(globalThis, "window", oldWindow) : delete globalThis.window);
+  const fetch = t.mock.method(globalThis, "fetch", async () => new Response(archive));
+
+  assert.deepEqual(await readCatalogGameArchive(url), [
+    { path: "sky.dnr", data: Uint8Array.of(1, 2, 3) },
+  ]);
+  assert.equal(fetch.mock.calls[0].arguments[0], "/games-proxy/sky.zip");
+
+  location.hostname = "scummweb.tsilva.eu";
+  await assert.rejects(readCatalogGameArchive(url, { expandedLimit: 2 }), /when unpacked/);
+  assert.equal(fetch.mock.calls[1].arguments[0], url);
 });
 
 test("saved targets are limited to the current catalog and bucket URLs exclude credentials", () => {

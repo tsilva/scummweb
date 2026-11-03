@@ -61,9 +61,20 @@ export async function checkGameZip(url, signal) {
     && Number(response.headers.get("content-length")) <= maxArchiveSize;
 }
 
-export async function readRemoteGameArchive(url, { signal } = {}) {
-  const zipUrl = normalizeGameZipUrl(url);
-  const timeout = AbortSignal.timeout(120_000);
+export async function readRemoteGameArchive(url, options) {
+  return downloadGameArchive(normalizeGameZipUrl(url), options);
+}
+
+export function readCatalogGameArchive(url, options) {
+  const { hostname } = window.location;
+  const fetchUrl = hostname === "localhost" || hostname === "127.0.0.1" || hostname === "[::1]"
+    ? `/games-proxy/${new URL(url).pathname.split("/").at(-1)}`
+    : normalizeGameZipUrl(url);
+  return downloadGameArchive(fetchUrl, options);
+}
+
+async function downloadGameArchive(zipUrl, { signal, archiveLimit = maxArchiveSize, expandedLimit, timeoutMs = 120_000 } = {}) {
+  const timeout = AbortSignal.timeout(timeoutMs);
   const response = await fetch(zipUrl, {
     mode: "cors",
     credentials: "omit",
@@ -75,8 +86,8 @@ export async function readRemoteGameArchive(url, { signal } = {}) {
     throw new Error("Could not download the ZIP. Check that the direct link works and the host allows cross-origin downloads. You can also download the ZIP yourself and drop it on ScummWEB.");
   }
 
-  const tooLarge = "This ZIP exceeds the 128 MiB download limit.";
-  if (Number(response.headers.get("content-length")) > maxArchiveSize) {
+  const tooLarge = `This ZIP exceeds the ${archiveLimit / (1024 * 1024)} MiB download limit.`;
+  if (Number(response.headers.get("content-length")) > archiveLimit) {
     await response.body.cancel();
     throw new Error(tooLarge);
   }
@@ -85,7 +96,7 @@ export async function readRemoteGameArchive(url, { signal } = {}) {
   const limitedBody = response.body.pipeThrough(new TransformStream({
     transform(chunk, controller) {
       size += chunk.byteLength;
-      if (size > maxArchiveSize) {
+      if (size > archiveLimit) {
         controller.error(new Error(tooLarge));
         return;
       }
@@ -93,5 +104,5 @@ export async function readRemoteGameArchive(url, { signal } = {}) {
     },
   }));
   const archive = await new Response(limitedBody).blob();
-  return readLocalGameArchive(new File([archive], "game.zip"));
+  return readLocalGameArchive(new File([archive], "game.zip"), { archiveLimit, expandedLimit, signal });
 }

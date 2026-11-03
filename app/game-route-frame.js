@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { scummvmAssetVersion } from "./asset-paths";
 import { getLatestBrowserSave } from "./browser-saves.mjs";
+import { readCatalogGameArchive } from "./game-bucket.mjs";
 import GameBootOverlay from "./game-player/GameBootOverlay";
 import GameMobileOverlay from "./game-player/GameMobileOverlay";
 import GamePlayerControls from "./game-player/GamePlayerControls";
@@ -20,6 +21,12 @@ const SCUMMWEB_FRAME_MESSAGE_SOURCE = "scummweb";
 const SCUMMWEB_ASPECT_RATIO_MESSAGE_TYPE = "scummweb-aspect-ratio";
 const ARCHIVE_FRAME_NAVIGATION_TIMEOUT_MS = 8000;
 const ARCHIVE_BOOT_IDLE_TIMEOUT_MS = 120_000;
+const MIB = 1024 * 1024;
+const catalogArchiveLimits = {
+  "dreamweb-cd": { archiveLimit: 300 * MIB, expandedLimit: 300 * MIB, timeoutMs: 600_000 },
+  queen: { timeoutMs: 600_000 },
+  sword25: { archiveLimit: 900 * MIB, expandedLimit: 900 * MIB, timeoutMs: 900_000 },
+};
 
 function shouldHideScummvmMenuButton(game, target) {
   return (
@@ -122,14 +129,20 @@ export default function GameRouteFrame({
   target,
   title,
   skipIntro: intro = null,
-  loadArchive,
+  loadArchive: loadPersonalArchive,
+  catalogArchiveUrl,
   archiveLoadingText = "Downloading game ZIP…",
 }) {
+  const loadCatalogArchive = useCallback((signal) => readCatalogGameArchive(catalogArchiveUrl, {
+    ...catalogArchiveLimits[target], signal,
+  }), [catalogArchiveUrl, target]);
+  const loadArchive = catalogArchiveUrl ? loadCatalogArchive : loadPersonalArchive;
+  const catalogLaunch = !loadArchive || Boolean(catalogArchiveUrl);
   const shellRef = useRef(null);
   const frameRef = useRef(null);
   const archiveFiles = useRef(null);
   const [archiveError, setArchiveError] = useState("");
-  const [launchAnalytics] = useState(() => createGameLaunchAnalytics(loadArchive ? null : game?.slug));
+  const [launchAnalytics] = useState(() => createGameLaunchAnalytics(catalogLaunch ? game?.slug : null));
   const [frameSrc, setFrameSrc] = useState(null);
   const [archiveFrameDocument, setArchiveFrameDocument] = useState(null);
   const [isResuming, setIsResuming] = useState(false);
@@ -137,6 +150,7 @@ export default function GameRouteFrame({
   const [isFillScreenAspect, setIsFillScreenAspect] = useState(false);
   const [readySignal, setReadySignal] = useState(null);
   const [skipIntroConsumed, setSkipIntroConsumed] = useState(false);
+  const [catalogIntroSlot, setCatalogIntroSlot] = useState(null);
   const skipIntro = isResuming ? null : intro;
   const bootState = useBootState({
     displayTitle: game?.displayTitle || title,
@@ -171,7 +185,7 @@ export default function GameRouteFrame({
 
   useLayoutEffect(() => {
     const navigationController = new AbortController();
-    const navigationTimer = loadArchive && frameSrc === src ? window.setTimeout(async () => {
+    const navigationTimer = loadArchive && frameSrc && !archiveFrameDocument ? window.setTimeout(async () => {
       const iframe = frameRef.current;
       function needsRetry() {
         const documentUrl = iframe?.contentDocument?.URL;
@@ -182,7 +196,7 @@ export default function GameRouteFrame({
 
       // The network response can arrive without the browser committing the frame
       // navigation. Load the same-origin shell into the replacement frame directly.
-      const retryUrl = new URL(src, window.location.href);
+      const retryUrl = new URL(frameSrc, window.location.href);
       retryUrl.searchParams.set("launchRetry", "inline");
       try {
         const response = await fetch(retryUrl, { mode: "same-origin", signal: navigationController.signal });
@@ -239,7 +253,7 @@ export default function GameRouteFrame({
         if (event.data?.type === "scummweb:local-game-status") {
           stopArchiveBootTimer();
           if (event.data.status === "running") {
-            setReadySignal({ reason: "archive-running" });
+            if (!catalogLaunch) setReadySignal({ reason: "archive-running" });
           } else {
             archiveFiles.current = null;
             setArchiveError(event.data.status === "undetected"
@@ -252,7 +266,7 @@ export default function GameRouteFrame({
 
       if (event.data?.type === "scummvm-ready") {
         const iframeWindow = frameRef.current?.contentWindow;
-        const expectedFrameHref = getNormalizedFrameHref(frameRef.current?.src || frameSrc);
+        const expectedFrameHref = getNormalizedFrameHref(loadArchive ? frameSrc : frameRef.current?.src || frameSrc);
         const messageFrameHref = getNormalizedFrameHref(event.data?.href);
 
         if (
@@ -308,39 +322,43 @@ export default function GameRouteFrame({
       stopArchiveBootTimer();
       window.removeEventListener("message", handleMessage);
     };
-  }, [archiveFrameDocument, frameSrc, launchAnalytics, loadArchive, src, target]);
+  }, [archiveFrameDocument, catalogLaunch, frameSrc, launchAnalytics, loadArchive, target]);
 
   useEffect(() => {
     const controller = new AbortController();
     setReadySignal(null);
-    setSkipIntroConsumed(false);
+    setSkipIntroConsumed(catalogIntroSlot !== null);
 
     async function openGame() {
-      if (loadArchive) {
-        try {
+      try {
+        let launchSrc = src;
+        if (catalogLaunch) {
+          launchAnalytics.start();
+          const slot = catalogIntroSlot ?? (window.location.hash === "#continue"
+            ? await getLatestBrowserSave(game, scummvmAssetVersion)
+            : null);
+          if (controller.signal.aborted) return;
+          setIsResuming(catalogIntroSlot === null && slot !== null);
+          if (slot !== null) {
+            launchSrc = buildSaveSlotSrc(src, target, slot, { seedIntro: catalogIntroSlot !== null });
+          }
+        }
+        if (loadArchive) {
           const files = await loadArchive(controller.signal);
           if (controller.signal.aborted) return;
           archiveFiles.current = files;
-          setFrameSrc(src);
-        } catch (error) {
-          if (!controller.signal.aborted) setArchiveError(error.message);
         }
-        return;
+        setFrameSrc(launchSrc);
+      } catch (error) {
+        if (controller.signal.aborted) return;
+        launchAnalytics.fail("startup_error");
+        setArchiveError(error.message);
       }
-
-      launchAnalytics.start();
-      const slot = window.location.hash === "#continue"
-        ? await getLatestBrowserSave(game, scummvmAssetVersion)
-        : null;
-      if (controller.signal.aborted) return;
-
-      setIsResuming(slot !== null);
-      setFrameSrc(slot === null ? src : buildSaveSlotSrc(src, target, slot));
     }
 
     void openGame();
     return () => { controller.abort(); };
-  }, [game, launchAnalytics, loadArchive, src, target]);
+  }, [catalogIntroSlot, catalogLaunch, game, launchAnalytics, loadArchive, src, target]);
 
   useEffect(() => {
     if (bootState.hasBootFailed) launchAnalytics.fail("startup_error");
@@ -385,8 +403,8 @@ export default function GameRouteFrame({
   }, [frameSrc, src]);
 
   useEffect(() => {
-    if (!loadArchive) recordRecentGameTarget(target);
-  }, [loadArchive, target]);
+    if (catalogLaunch) recordRecentGameTarget(target);
+  }, [catalogLaunch, target]);
 
   useEffect(() => {
     let focusTimer = 0;
@@ -525,6 +543,12 @@ export default function GameRouteFrame({
 
     setReadySignal(null);
     setSkipIntroConsumed(true);
+    if (catalogArchiveUrl) {
+      setFrameSrc(null);
+      setArchiveFrameDocument(null);
+      setCatalogIntroSlot(skipIntro.slot);
+      return;
+    }
     setFrameSrc((currentSrc) => buildSaveSlotSrc(currentSrc, target, skipIntro.slot, { seedIntro: true }));
   }
 

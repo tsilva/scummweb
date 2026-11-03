@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
+import { getGamesOrigin } from "../../../lib/site-config.mjs";
 import { buildVersionedAssetPath } from "../../asset-paths";
+import { bucketZipUrl } from "../../game-bucket.mjs";
 import {
   buildPlayRouteMetadata,
   getGameStaticParams,
@@ -40,7 +42,7 @@ export default async function GamePlayRoutePage({ params }) {
   }
 
   const launchHref = buildVersionedAssetPath("/scummvm.html", {
-    searchParams: { exitTo: game.href },
+    searchParams: { exitTo: game.href, localGame: "1", catalogGame: game.gameId },
     hash: game.target,
   });
 
@@ -49,6 +51,7 @@ export default async function GamePlayRoutePage({ params }) {
       <GameRouteFrame
         key={game.slug}
         game={game}
+        catalogArchiveUrl={bucketZipUrl(getGamesOrigin(), game.gameId)}
         skipIntro={game.skipIntro}
         src={launchHref}
         target={game.target}

@@ -27,17 +27,17 @@ export async function openSelectedGameArchive(signal) {
   return archive.loadArchive(signal);
 }
 
-export function validateGameZip(file) {
+export function validateGameZip(file, archiveLimit = maxArchiveSize) {
   if (!file.name.toLowerCase().endsWith(".zip")) {
     throw new ArchiveError("Choose a ZIP containing one ScummVM game.");
   }
-  if (file.size > maxArchiveSize) {
-    throw new ArchiveError("Choose a ZIP of 128 MiB or less.");
+  if (file.size > archiveLimit) {
+    throw new ArchiveError(`Choose a ZIP of ${archiveLimit / (1024 * 1024)} MiB or less.`);
   }
 }
 
-async function withZipEntries(file, useEntries) {
-  validateGameZip(file);
+async function withZipEntries(file, useEntries, { archiveLimit = maxArchiveSize, expandedLimit = maxExpandedSize } = {}) {
+  validateGameZip(file, archiveLimit);
   const { BlobReader, ERR_UNSAFE_FILENAME, ZipReader } = await import("@zip.js/zip.js");
   const reader = new ZipReader(new BlobReader(file));
   try {
@@ -58,8 +58,8 @@ async function withZipEntries(file, useEntries) {
       }
 
       totalSize += entry.uncompressedSize;
-      if (!Number.isSafeInteger(totalSize) || totalSize > maxExpandedSize) {
-        throw new ArchiveError("This ZIP exceeds 256 MiB when unpacked.");
+      if (!Number.isSafeInteger(totalSize) || totalSize > expandedLimit) {
+        throw new ArchiveError(`This ZIP exceeds ${expandedLimit / (1024 * 1024)} MiB when unpacked.`);
       }
       const key = path.toLowerCase();
       if (entries.has(key)) {
@@ -119,15 +119,17 @@ export function scanLocalGameArchive(file) {
   return withZipEntries(file, () => {});
 }
 
-export function readLocalGameArchive(file) {
+export function readLocalGameArchive(file, { signal, ...limits } = {}) {
   return withZipEntries(file, async (entries) => {
     const files = [];
     for (const { entry, path } of entries) {
+      signal?.throwIfAborted();
       const data = new Uint8Array(entry.uncompressedSize);
       let offset = 0;
       try {
         await entry.getData(new WritableStream({
           write(chunk) {
+            signal?.throwIfAborted();
             data.set(chunk, offset);
             offset += chunk.length;
           },
@@ -139,7 +141,7 @@ export function readLocalGameArchive(file) {
       files.push({ path, data });
     }
     return files;
-  });
+  }, limits);
 }
 
 export function validateGameFolder(files) {
