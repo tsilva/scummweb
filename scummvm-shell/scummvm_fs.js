@@ -29,7 +29,7 @@ const DEBUG = false
 
 
 function getScummvmAssetVersion() {
-    const search = globalThis.location?.search || "";
+    const search = new URL(document.baseURI).search;
     return new URLSearchParams(search).get("v") || "";
 }
 
@@ -38,13 +38,13 @@ function withCacheKey(url, cacheKey) {
         return url;
     }
 
-    const resolved = new URL(url, globalThis.location?.href || "http://localhost");
+    const resolved = new URL(url, document.baseURI);
     resolved.searchParams.set("v", cacheKey);
     return resolved.toString();
 }
 
 function buildRemoteUrl(baseUrl, remotePath) {
-    const resolved = new URL(baseUrl, globalThis.location?.href || "http://localhost");
+    const resolved = new URL(baseUrl, document.baseURI);
     const normalizedPath = remotePath.startsWith("/") ? remotePath : `/${remotePath}`;
     resolved.pathname = `${resolved.pathname.replace(/\/$/, "")}${normalizedPath}`;
     return withCacheKey(resolved.toString(), getScummvmAssetVersion());
@@ -59,7 +59,7 @@ function getDefaultGamesOrigin() {
 }
 
 function getDefaultRemoteFilesystems() {
-    const hostname = globalThis.location?.hostname || "";
+    const hostname = new URL(document.baseURI).hostname;
 
     return {
         games: isLoopbackHost(hostname) ? "/games-proxy" : getDefaultGamesOrigin()

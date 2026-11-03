@@ -131,6 +131,7 @@ export default function GameRouteFrame({
   const [archiveError, setArchiveError] = useState("");
   const [launchAnalytics] = useState(() => createGameLaunchAnalytics(loadArchive ? null : game?.slug));
   const [frameSrc, setFrameSrc] = useState(null);
+  const [archiveFrameDocument, setArchiveFrameDocument] = useState(null);
   const [isResuming, setIsResuming] = useState(false);
   const [exitHref, setExitHref] = useState("/");
   const [isFillScreenAspect, setIsFillScreenAspect] = useState(false);
@@ -169,16 +170,32 @@ export default function GameRouteFrame({
   });
 
   useLayoutEffect(() => {
-    const navigationTimer = loadArchive && frameSrc === src ? window.setTimeout(() => {
+    const navigationController = new AbortController();
+    const navigationTimer = loadArchive && frameSrc === src ? window.setTimeout(async () => {
       const iframe = frameRef.current;
-      const documentUrl = iframe?.contentDocument?.URL;
-      if (!iframe || !archiveFiles.current || (documentUrl && documentUrl !== "about:blank")) return;
+      function needsRetry() {
+        const documentUrl = iframe?.contentDocument?.URL;
+        return !navigationController.signal.aborted && iframe && archiveFiles.current &&
+          (!documentUrl || documentUrl === "about:blank");
+      }
+      if (!needsRetry()) return;
 
-      // Leave an active ScummVM startup alone. Only retry a frame whose document
-      // never loaded, while we still own the ZIP's unpacked files.
+      // The network response can arrive without the browser committing the frame
+      // navigation. Load the same-origin shell into the replacement frame directly.
       const retryUrl = new URL(src, window.location.href);
-      retryUrl.searchParams.set("launchRetry", "1");
-      setFrameSrc(`${retryUrl.pathname}${retryUrl.search}${retryUrl.hash}`);
+      retryUrl.searchParams.set("launchRetry", "inline");
+      try {
+        const response = await fetch(retryUrl, { mode: "same-origin", signal: navigationController.signal });
+        if (!response.ok) throw new Error("Could not load ScummVM.");
+        const shell = await response.text();
+        if (!shell.includes("<head>")) throw new Error("Invalid ScummVM shell.");
+        if (!needsRetry()) return;
+        const baseHref = retryUrl.href.replaceAll("&", "&amp;").replaceAll('"', "&quot;");
+        setArchiveFrameDocument(shell.replace("<head>", `<head><base href="${baseHref}">`));
+        setFrameSrc(`${retryUrl.pathname}${retryUrl.search}${retryUrl.hash}`);
+      } catch {
+        if (needsRetry()) setArchiveError("Could not load ScummVM. Exit the player and try again.");
+      }
     }, ARCHIVE_FRAME_NAVIGATION_TIMEOUT_MS) : null;
 
     const archiveFrame = loadArchive && frameSrc ? frameRef.current : null;
@@ -279,18 +296,19 @@ export default function GameRouteFrame({
 
     window.addEventListener("message", handleMessage);
 
-    if (archiveFrame?.contentWindow &&
+    if (!archiveFrameDocument && archiveFrame?.contentWindow &&
         (!archiveFrame.contentDocument || archiveFrame.contentDocument.URL === "about:blank")) {
       // Start navigation after the frame and ZIP handoff listener are both ready.
       archiveFrame.contentWindow.location.replace(new URL(frameSrc, window.location.href).href);
     }
 
     return () => {
+      navigationController.abort();
       window.clearTimeout(navigationTimer);
       stopArchiveBootTimer();
       window.removeEventListener("message", handleMessage);
     };
-  }, [frameSrc, launchAnalytics, loadArchive, src, target]);
+  }, [archiveFrameDocument, frameSrc, launchAnalytics, loadArchive, src, target]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -599,6 +617,7 @@ export default function GameRouteFrame({
         ref={frameRef}
         loading="eager"
         src={loadArchive ? "about:blank" : frameSrc}
+        srcDoc={archiveFrameDocument || undefined}
         title={title}
       /> : null}
     </div>
