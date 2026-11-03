@@ -43,6 +43,10 @@ const nextConfig = {
         source: "/scummvm.html",
         headers: [{ key: "X-Robots-Tag", value: "noindex" }],
       },
+      {
+        source: "/data/plugins/:engine.so",
+        headers: [{ key: "Content-Type", value: "application/wasm" }],
+      },
     ];
   },
   env: {

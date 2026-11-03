@@ -6,7 +6,7 @@
     "preinstall": "node -e \"const ua = process.env.npm_config_user_agent || ''; if (!ua.startsWith('pnpm/')) { console.error('Use pnpm for this repo.'); process.exit(1); }\"",
     "prepare": "node ./scripts/manage_scummvm_assets.mjs validate && node ./scripts/manage_scummvm_assets.mjs sync scummvm-shell public && node ./scripts/manage_scummvm_assets.mjs validate public",
     "build:scummvm": "./scripts/build_scummvm_web.sh",
-    "publish:games": "python3 ./scripts/upload_games_to_r2.py",
+    "publish:games": "python3 scripts/infisical/run.py publish",
     "record:preview": "node ./scripts/record_preview_stream.mjs",
     "verify": "./scripts/verify_scummvm_web.sh",
     "sentry:issues": "python3 scripts/infisical/run.py issues",
@@ -17,13 +17,13 @@
     "start": "pnpm run prepare && node scripts/dev-server.mjs next start",
     "dev:app": "pnpm run prepare && node scripts/dev-server.mjs next dev",
     "secrets:check": "python3 scripts/infisical/run.py check",
-    "secrets:migrate:keyenv": "python3 scripts/infisical/migrate_keyenv.py",
     "test:secrets": "python3 -m unittest discover -s scripts/infisical -p test_secrets.py",
     "secrets:sync:production": "python3 scripts/infisical/sync_production.py"
   },
   "dependencies": {
     "@sentry/nextjs": "10.75.2",
     "@vercel/analytics": "2.0.1",
+    "@zip.js/zip.js": "2.24.0",
     "lucide-react": "1.55.0",
     "next": "16.4.1",
     "playwright-core": "1.62.1",

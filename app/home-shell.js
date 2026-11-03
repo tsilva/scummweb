@@ -1,19 +1,12 @@
-import LaunchButton from "./launch-button";
 import GameDetailModal from "./home-shell/game-detail-modal";
-import DecorativeImage from "./home-shell/decorative-image";
+import GameBucket from "./home-shell/game-bucket";
+import LibraryCards from "./home-shell/library-cards";
 import Icon from "./home-shell/shell-icon";
+import HeroStage from "./home-shell/hero-stage";
+import HomeHero from "./home-shell/home-hero";
+import LocalGame from "./home-shell/local-game";
 import RecentGamesRail from "./recent-games-rail";
-import { getGameDialogId, getHeroImageStyle } from "./home-shell/shared";
-import {
-  HOME_BROWSE_LABEL,
-  HOME_HERO_KICKER,
-  HOME_HERO_SUMMARY,
-  HOME_HERO_TITLE,
-} from "./seo";
-
-function formatGameCount(count) {
-  return `${count} game${count === 1 ? "" : "s"} installed`;
-}
+import { getGamesOrigin } from "../lib/site-config.mjs";
 
 export default function HomeShell({
   catalog,
@@ -25,29 +18,6 @@ export default function HomeShell({
   sourceInfoDate,
 }) {
   const isHomePage = pageMode === "home";
-  const featuredDialogId = getGameDialogId(featuredGame);
-  const installedCatalog = catalog;
-  const heroKicker = isHomePage ? HOME_HERO_KICKER : featuredGame.eyebrow;
-  const heroTitle = isHomePage ? HOME_HERO_TITLE : featuredGame.displayTitle;
-  const heroSummary = isHomePage ? HOME_HERO_SUMMARY : featuredGame.summary;
-  const heroBackdropSrcSet = featuredGame.heroImageMobile
-    ? `${featuredGame.heroImageMobile} 960w, ${featuredGame.heroImage} 2564w`
-    : undefined;
-  const primaryActionLabel = isHomePage ? `Play ${featuredGame.displayTitle}` : "Play";
-  const secondaryActionHref = isHomePage ? "#library" : `#${featuredDialogId}`;
-  const secondaryActionLabel = isHomePage ? HOME_BROWSE_LABEL : "More Info";
-  const heroMetadata = isHomePage
-    ? [
-        { label: "Flagship classic", value: featuredGame.displayTitle },
-        { label: "Collection", value: "Freeware adventures" },
-      ]
-    : [
-        { label: "Studio", value: featuredGame.studio },
-        { label: "Genre", value: featuredGame.genre },
-      ];
-  const heroStatus = isHomePage
-    ? [formatGameCount(catalog.length), "Freeware classics", "Instant browser play"]
-    : [formatGameCount(catalog.length), featuredGame.target, featuredGame.badge];
   const recentHeading = "Browser-Playable Classics";
   const libraryHeading = "Freeware Adventure Library";
 
@@ -76,6 +46,7 @@ export default function HomeShell({
 
           <div className="nav-links" aria-label="Main">
             <a href="#library">Library</a>
+            {isHomePage && <a href="#local-game-heading">Local ZIP</a>}
             <a href={scummvmOfficialSite} rel="noreferrer" target="_blank">
               ScummVM
             </a>
@@ -96,62 +67,11 @@ export default function HomeShell({
       </nav>
 
       <main className="page-shell">
-        <section className={`hero-stage ${featuredGame.tone}`} id="browse">
-          <div className="hero-backdrop">
-            <DecorativeImage
-              className="hero-backdrop-image"
-              fetchPriority="high"
-              loading="eager"
-              sizes="100vw"
-              src={featuredGame.heroImage}
-              srcSet={heroBackdropSrcSet}
-              style={getHeroImageStyle(featuredGame.heroImagePosition)}
-            />
-          </div>
-          <div className="hero-gradient" />
-
-          <div className="hero-inner">
-            <div className="hero-copy">
-              <p className="hero-kicker">{heroKicker}</p>
-              <h1>
-                {isHomePage ? (
-                  heroTitle
-                ) : (
-                  <a
-                    href={featuredGame.href}
-                    style={{ color: "inherit", textDecoration: "none" }}
-                  >
-                    {heroTitle}
-                  </a>
-                )}
-              </h1>
-              <p className="hero-summary">{heroSummary}</p>
-
-              <div className="hero-actions">
-                <LaunchButton href={featuredGame.playHref} label={primaryActionLabel} />
-                <a className="secondary-button" href={secondaryActionHref}>
-                  {!isHomePage ? <Icon name="info" /> : null}
-                  <span>{secondaryActionLabel}</span>
-                </a>
-              </div>
-
-              <dl className="hero-metadata">
-                {heroMetadata.map((item) => (
-                  <div key={item.label}>
-                    <dt>{item.label}</dt>
-                    <dd>{item.value}</dd>
-                  </div>
-                ))}
-              </dl>
-
-              <div className="hero-status">
-                {heroStatus.map((item) => (
-                  <span key={item}>{item}</span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
+        {isHomePage ? (
+          <HomeHero catalog={catalog} featuredGame={featuredGame} />
+        ) : (
+          <HeroStage featuredGame={featuredGame} gameCount={catalog.length} />
+        )}
         <div className="section-stack">
           {!isHomePage ? (
             <section className="content-band game-play-guide" aria-labelledby="game-play-guide">
@@ -163,7 +83,7 @@ export default function HomeShell({
               </div>
               <p><strong>Browser edition</strong> · {featuredGame.title}</p>
               <p>
-                Select Play above to launch ScummVM in your browser. The player loads the game
+                Use the button above to launch ScummVM in your browser. The player loads the game
                 files automatically.
               </p>
               <p>
@@ -189,6 +109,8 @@ export default function HomeShell({
             <RecentGamesRail catalog={catalog} />
           </section>
 
+          {isHomePage && <LocalGame />}
+
           <section className="content-band">
             <div className="section-header">
               <h2>
@@ -197,28 +119,11 @@ export default function HomeShell({
               </h2>
             </div>
 
-            <div className="poster-grid">
-              {installedCatalog.map((game) => (
-                <div className="poster-entry" key={game.target}>
-                  <a
-                    aria-haspopup="dialog"
-                    className={`poster-card ${game.tone}`}
-                    data-game-target={game.target}
-                    href={`#${getGameDialogId(game)}`}
-                  >
-                    <div className="poster-media">
-                      <DecorativeImage className="poster-media-image" src={game.posterImage} />
-                    </div>
-                    <div className="poster-overlay">
-                      <p>{game.displayTitle}</p>
-                    </div>
-                  </a>
-                  <a className="game-details-link" href={game.href}>
-                    About {game.displayTitle}
-                  </a>
-                </div>
-              ))}
-            </div>
+            {isHomePage ? (
+              <GameBucket catalog={catalog} officialUrl={getGamesOrigin()} />
+            ) : (
+              <LibraryCards games={catalog} />
+            )}
           </section>
         </div>
       </main>

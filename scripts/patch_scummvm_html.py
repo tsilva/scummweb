@@ -7,7 +7,7 @@ import sys
 
 path = Path(sys.argv[1])
 html_text = path.read_text()
-updated_html = html_text.replace("<title>ScummVM</title>", "<title>scummweb</title>", 1)
+updated_html = html_text.replace("<title>ScummVM</title>", "<title>ScummWEB</title>", 1)
 updated_html = re.sub(
     r'canvas\.emscripten\{border:0 none;background:url\("logo\.svg(?:\?v=[^"]+)?"\);background-position:center;background-repeat:no-repeat;background-color:#c60;position:absolute;top:0;left:0;margin:0;width:100%;height:100%;overflow:hidden;display:block\}@media \(orientation:landscape\)\{canvas\.emscripten\{background-size:auto 33%\}\}@media \(orientation:portrait\)\{canvas\.emscripten\{background-size:80% auto\}\}',
     "canvas.emscripten{border:0 none;background:#000;position:absolute;top:50%;left:50%;margin:0;width:auto;height:100%;overflow:hidden;display:block;transform:translate(-50%,-50%)}canvas.emscripten.scummweb-fill-screen{width:100%;height:100%}",
@@ -42,8 +42,8 @@ const exitTo=new URLSearchParams(window.location.search).get("exitTo");
 if(!exitTo)return;
 const resolvedExitHref=(()=>{try{const resolvedUrl=new URL(exitTo,window.location.href);return resolvedUrl.origin===window.location.origin?`${resolvedUrl.pathname}${resolvedUrl.search}${resolvedUrl.hash}`:"/"}catch{return "/"}})();
 const skipIntroTarget=new URLSearchParams(window.location.search).get("skipIntroTarget");
-const launchArgs=((window.location.hash||"").replace(/^#/,"").trim().split(/\\s+/).filter(Boolean));
-const target=skipIntroTarget||launchArgs[0]||"";
+const launchArgs=decodeURI(window.location.hash.slice(1)).trim().split(/\\s+/);
+const target=skipIntroTarget||launchArgs.at(-1)||"";
 const launchPattern=target?new RegExp(`User picked target '${target.replace(/[.*+?^${}()|[\\]\\\\]/g,"\\\\$&")}'`):null;
 const escapeRedirectWindowMs=1500;
 let didHandleExit=false;
@@ -170,6 +170,8 @@ module_loader = """<script type=module>(function(){const v=new URLSearchParams(w
 script_tag = "<script src=scummvm.js async></script>"
 versioned_scummvm_loader = """<script>(function(){const v=new URLSearchParams(window.location.search).get("v");window.Module=window.Module||{};const originalLocateFile=window.Module.locateFile;window.Module.locateFile=function(path,prefix){const raw=typeof originalLocateFile=="function"?originalLocateFile(path,prefix):`${prefix||""}${path}`;if(!v)return raw;const resolved=new URL(raw,window.location.href);resolved.searchParams.set("v",v);return resolved.toString()};const script=document.createElement("script");script.async=true;script.src=v?`scummvm.js?v=${encodeURIComponent(v)}`:"scummvm.js";document.body.appendChild(script)})();</script>"""
 filesystem_patch = r"""const skipIntroTarget = new URLSearchParams(window.location.search).get("skipIntroTarget");
+const isLocalGame = window.parent !== window &&
+  new URLSearchParams(window.location.search).get("localGame") === "1";
 globalThis.__scummwebSkipIntroSeedStatus = {
   state: skipIntroTarget ? "pending" : "idle",
   target: skipIntroTarget,
@@ -294,17 +296,52 @@ function setupSkipIntroSaves() {
     });
 }
 
+function reportLocalGameStatus(status) {
+  window.parent.postMessage({ type: "scummweb:local-game-status", status }, window.location.origin);
+}
+
+function setupLocalGame() {
+  return new Promise((resolve, reject) => {
+    function receiveFiles(event) {
+      if (event.source !== window.parent || event.origin !== window.location.origin ||
+          event.data?.type !== "scummweb:local-game-files") return;
+
+      window.removeEventListener("message", receiveFiles);
+      try {
+        FS.mkdir("/local-game");
+        for (const { path, data } of event.data.files) {
+          const parts = path.split("/");
+          if (parts.some((part) => !part || part === "." || part === ".." || part === "__proto__")) {
+            throw new Error("Invalid local game path");
+          }
+          ensureDirectory(["/local-game", ...parts.slice(0, -1)].join("/"));
+          FS.writeFile(`/local-game/${path}`, data, { canOwn: true });
+        }
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    }
+    window.addEventListener("message", receiveFiles);
+    window.parent.postMessage({ type: "scummweb:local-game-ready" }, window.location.origin);
+  });
+}
+
 function setupFilesystem() {
   addRunDependency("scummvm-fs-setup");
   Promise.all([window.ScummvmFSReady || Promise.resolve(), setupLocalFilesystem()])
-    .then(() => setupSkipIntroSaves())
+    .then(() => isLocalGame ? setupLocalGame() : setupSkipIntroSaves())
     .then(
       () => {
-        setupHTTPFilesystem("games");
+        if (!isLocalGame) setupHTTPFilesystem("games");
         setupHTTPFilesystem("data");
         removeRunDependency("scummvm-fs-setup");
       },
       (error) => {
+        if (isLocalGame) {
+          reportLocalGameStatus("error");
+          throw error;
+        }
         removeRunDependency("scummvm-fs-setup");
         throw error;
       }
@@ -360,7 +397,24 @@ updated_html = re.sub(
     flags=re.DOTALL,
 )
 
-combined_loader = f"{redirect_script}{versioned_scummvm_loader}"
+local_game_loader = """<script>
+if (isLocalGame) {
+  const print = Module.print;
+  Module.print = function (...args) {
+    print.apply(this, args);
+    const line = String(args[0]);
+    if (line.startsWith("User picked target '")) reportLocalGameStatus("running");
+    if (line.startsWith("WARNING: ScummVM could not find any game")) reportLocalGameStatus("undetected");
+  };
+  Module.onAbort = () => reportLocalGameStatus("error");
+  Module.quit = (status, error) => {
+    if (status) reportLocalGameStatus("error");
+    throw error;
+  };
+}
+</script>"""
+updated_html = updated_html.replace(local_game_loader, "", 1)
+combined_loader = f"{redirect_script}{local_game_loader}{versioned_scummvm_loader}"
 if script_tag in updated_html:
     updated_html = updated_html.replace(script_tag, combined_loader, 1)
 else:

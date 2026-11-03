@@ -20,8 +20,9 @@ audio_process_replacement = (
     'SDL2.audio.currentOutputBuffer=outputBuffer;dynCall("vi",$2,[$3])};'
 )
 
+# Emscripten keys this function by a byte offset that changes when engines are linked.
 audio_copy_needle = (
-    '6350777:($0,$1)=>{var SDL2=Module["SDL2"];'
+    '($0,$1)=>{var SDL2=Module["SDL2"];'
     'var numChannels=SDL2.audio.currentOutputBuffer["numberOfChannels"];'
     'for(var c=0;c<numChannels;++c){'
     'var channelData=SDL2.audio.currentOutputBuffer["getChannelData"](c);'
@@ -29,7 +30,7 @@ audio_copy_needle = (
     'for(var j=0;j<$1;++j){channelData[j]=HEAPF32[$0+(j*numChannels+c<<2)>>2]}}},'
 )
 audio_copy_replacement = (
-    '6350777:($0,$1)=>{var SDL2=Module["SDL2"];'
+    '($0,$1)=>{var SDL2=Module["SDL2"];'
     'var outputBuffer=SDL2.audio.currentOutputBuffer;'
     'var numChannels=outputBuffer["numberOfChannels"];'
     'var abnormalSamples=0;'

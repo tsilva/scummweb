@@ -34,5 +34,10 @@ text = text.replace(
 text = text.replace("        this.url = _url\n", "        this.url = resolveFilesystemUrl(_url)\n", 1)
 text = text.replace('        req.open("GET", _url + "/index.json", false);\n', '        req.open("GET", buildRemoteUrl(this.url, "/index.json"), false);\n', 1)
 text = text.replace("        const url = _url + path;\n", "        const url = buildRemoteUrl(_url, path);\n", 1)
+text = text.replace(
+    "if (this.fs_index[path].size > (range_start - range_end + 1)) {",
+    "if (range_start > 0 || range_end < this.fs_index[path].size - 1) {",
+    1,
+)
 
 path.write_text(text)

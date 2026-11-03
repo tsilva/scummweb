@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { scummvmAssetVersion } from "./asset-paths";
+import { getLatestBrowserSave } from "./browser-saves.mjs";
 import GameBootOverlay from "./game-player/GameBootOverlay";
 import GameMobileOverlay from "./game-player/GameMobileOverlay";
 import GamePlayerControls from "./game-player/GamePlayerControls";
 import GameTouchCursorPad from "./game-player/GameTouchCursorPad";
+import { createGameLaunchAnalytics } from "./game-player/game-launch-analytics.mjs";
 import { dispatchSyntheticKeypressSequence } from "./game-player/keyboard";
 import { useBootState } from "./game-player/useBootState";
 import { useImmersiveMode } from "./game-player/useImmersiveMode";
@@ -74,19 +77,13 @@ function getNormalizedFrameHref(href) {
   }
 }
 
-function buildSkipIntroSaveSlotSrc(src, target, slot) {
-  if (typeof window === "undefined") {
-    return src;
-  }
-
-  try {
-    const resolvedUrl = new URL(src, window.location.href);
+function buildSaveSlotSrc(src, target, slot, { seedIntro = false } = {}) {
+  const resolvedUrl = new URL(src, window.location.href);
+  if (seedIntro) {
     resolvedUrl.searchParams.set("skipIntroTarget", target);
-    resolvedUrl.hash = ["-x", String(slot), target].join(" ");
-    return `${resolvedUrl.pathname}${resolvedUrl.search}${resolvedUrl.hash}`;
-  } catch {
-    return src;
   }
+  resolvedUrl.hash = ["-x", String(slot), target].join(" ");
+  return `${resolvedUrl.pathname}${resolvedUrl.search}${resolvedUrl.hash}`;
 }
 
 function focusGameCanvas(frame) {
@@ -116,14 +113,17 @@ function focusGameCanvas(frame) {
   }
 }
 
-export default function GameRouteFrame({ game = null, src, target, title, skipIntro = null }) {
+export default function GameRouteFrame({ game = null, src, target, title, skipIntro: intro = null }) {
   const shellRef = useRef(null);
   const frameRef = useRef(null);
-  const [frameSrc, setFrameSrc] = useState(src);
+  const [launchAnalytics] = useState(() => createGameLaunchAnalytics(game?.slug));
+  const [frameSrc, setFrameSrc] = useState(null);
+  const [isResuming, setIsResuming] = useState(false);
   const [exitHref, setExitHref] = useState("/");
   const [isFillScreenAspect, setIsFillScreenAspect] = useState(false);
   const [readySignal, setReadySignal] = useState(null);
   const [skipIntroConsumed, setSkipIntroConsumed] = useState(false);
+  const skipIntro = isResuming ? null : intro;
   const bootState = useBootState({
     displayTitle: game?.displayTitle || title,
     frameRef,
@@ -186,6 +186,12 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
           reason: event.data?.reason || null,
           reportedAt: event.data?.emittedAt || null,
         });
+
+        if (event.data.reason === "rendered-frame-detected") {
+          launchAnalytics.confirm();
+        } else if (event.data.reason === "rendered-frame-timeout") {
+          launchAnalytics.fail("first_frame_timeout");
+        }
         return;
       }
 
@@ -193,6 +199,12 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
         return;
       }
 
+      if (
+        event.source === frameRef.current?.contentWindow &&
+        Number.isFinite(event.data.status) && event.data.status !== 0
+      ) {
+        launchAnalytics.fail("startup_error");
+      }
       navigateHome(event.data.href || "/");
     }
 
@@ -201,13 +213,38 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     return () => {
       window.removeEventListener("message", handleMessage);
     };
-  }, [frameSrc, target]);
+  }, [frameSrc, launchAnalytics, target]);
 
   useEffect(() => {
-    setFrameSrc(src);
+    let cancelled = false;
     setReadySignal(null);
     setSkipIntroConsumed(false);
-  }, [src]);
+
+    async function openGame() {
+      launchAnalytics.start();
+      const slot = window.location.hash === "#continue"
+        ? await getLatestBrowserSave(game, scummvmAssetVersion)
+        : null;
+      if (cancelled) return;
+
+      setIsResuming(slot !== null);
+      setFrameSrc(slot === null ? src : buildSaveSlotSrc(src, target, slot));
+    }
+
+    void openGame();
+    return () => { cancelled = true; };
+  }, [game, launchAnalytics, src, target]);
+
+  useEffect(() => {
+    if (bootState.hasBootFailed) launchAnalytics.fail("startup_error");
+  }, [bootState.hasBootFailed, launchAnalytics]);
+
+  const canCountPlayTime =
+    readySignal?.reason === "rendered-frame-detected" && !showBootOverlay && !showMobileOverlay;
+
+  useEffect(() => {
+    if (canCountPlayTime) return launchAnalytics.watchPlayTime();
+  }, [canCountPlayTime, launchAnalytics]);
 
   useEffect(() => {
     const iframe = frameRef.current;
@@ -381,7 +418,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
 
     setReadySignal(null);
     setSkipIntroConsumed(true);
-    setFrameSrc((currentSrc) => buildSkipIntroSaveSlotSrc(currentSrc, target, skipIntro.slot));
+    setFrameSrc((currentSrc) => buildSaveSlotSrc(currentSrc, target, skipIntro.slot, { seedIntro: true }));
   }
 
   function handleAspectRatioToggle() {
@@ -464,7 +501,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
         onPointerUp={touchCursorPad.handlePointerUp}
         showTouchCursorPad={showTouchCursorPad}
       />
-      <iframe
+      {frameSrc ? <iframe
         allow="autoplay; fullscreen"
         className="game-route-frame"
         data-scummvm-route-frame="true"
@@ -473,7 +510,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
         loading="eager"
         src={frameSrc}
         title={title}
-      />
+      /> : null}
     </div>
   );
 }

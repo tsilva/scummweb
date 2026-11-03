@@ -1,5 +1,5 @@
 ---
-name: scummweb-freeware-release
+name: scummweb_freeware-release
 description: Use when working in the scummweb repo and the user asks to scrape, add, release, deploy, or verify another freeware game from the official ScummVM site. This skill covers sourcing the official download, enabling the matching engine, wiring launcher art and metadata, uploading the game payload to R2, refreshing the managed bundle, verifying launch, and deploying to production unless preview is requested.
 ---
 

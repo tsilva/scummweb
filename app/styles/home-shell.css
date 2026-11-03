@@ -157,6 +157,97 @@
   overflow: hidden;
 }
 
+.hero-carousel-controls {
+  position: absolute;
+  inset-inline-end: max(1.5rem, env(safe-area-inset-right));
+  inset-block-end: 1.5rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  color: var(--ink);
+}
+
+.hero-carousel-controls button {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 0.375rem solid transparent;
+  border-radius: 50%;
+  background: rgba(39, 39, 39, 0.8) padding-box;
+  color: inherit;
+  cursor: pointer;
+}
+
+.hero-carousel-controls button:hover {
+  background-color: var(--surface-highest);
+}
+
+.hero-carousel-controls button:focus-visible {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 2px;
+}
+
+.hero-carousel-rotation {
+  position: relative;
+}
+
+.hero-carousel-ring {
+  position: absolute;
+  inset: -0.125rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  pointer-events: none;
+  fill: none;
+  stroke-width: 2;
+  transform: rotate(-90deg);
+}
+
+.hero-carousel-ring-track {
+  stroke: rgba(229, 226, 225, 0.2);
+}
+
+.hero-carousel-ring-progress {
+  stroke: var(--accent-strong);
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation-name: hero-carousel-countdown;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes hero-carousel-countdown {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.hero-carousel-count {
+  min-width: 4.5ch;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 3px #000;
+}
+
+.hero-carousel-announcement {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (min-width: 64rem) and (min-height: 32rem) {
+  .hero-carousel-controls {
+    inset-block-start: min(calc(100svh - 3.75rem), calc(100% - 4.25rem));
+    inset-block-end: auto;
+  }
+}
+
 .hero-backdrop,
 .hero-gradient {
   position: absolute;
@@ -245,7 +336,7 @@
 .hero-copy h1,
 .section-header h2,
 .landscape-overlay h3,
-.poster-overlay p,
+.poster-title,
 .spotlight-copy h3,
 .site-footer strong {
   font-family: var(--font-display), sans-serif;
@@ -627,6 +718,15 @@
   font-size: 1rem;
 }
 
+.game-detail-actions:has(.start-fresh-button) .game-detail-license {
+  flex-basis: 100%;
+  justify-content: flex-start;
+  min-height: 0;
+  padding: 0;
+  background: transparent;
+  backdrop-filter: none;
+}
+
 .game-detail-metadata {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -845,6 +945,22 @@
   background-color: var(--surface-high);
 }
 
+.bucket-poster-button {
+  width: 100%;
+  border: 0;
+  color: inherit;
+  text-align: left;
+}
+
+.bucket-poster-placeholder {
+  display: grid;
+  height: 100%;
+  place-items: center;
+  background: radial-gradient(circle, #654730, #241a16 70%);
+  color: #ffe1a9;
+  font-size: 4rem;
+}
+
 .poster-entry .game-details-link {
   display: block;
   padding: 0.65rem 0.5rem;
@@ -903,7 +1019,7 @@
   background: linear-gradient(180deg, rgba(10, 10, 10, 0), rgba(10, 10, 10, 0.94));
 }
 
-.poster-overlay p {
+.poster-title {
   margin: 0;
   font-size: 0.92rem;
   font-weight: 700;
@@ -1107,4 +1223,109 @@
     width: 2.15rem;
     height: 2.15rem;
   }
+}
+
+#local-game-heading {
+  scroll-margin-top: 6rem;
+}
+
+.game-bucket {
+  max-width: 48rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 1px solid currentColor;
+  border-radius: 0.75rem;
+}
+
+.game-bucket summary,
+.game-bucket-form label {
+  font-weight: 700;
+}
+
+.game-bucket summary {
+  cursor: pointer;
+}
+
+.game-bucket-form,
+.game-bucket-glossary,
+.game-bucket-matches {
+  margin-top: 1rem;
+}
+
+.game-bucket-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-top: 0.35rem;
+}
+
+.game-bucket-actions input {
+  flex: 1 1 15rem;
+  min-width: 0;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid currentColor;
+  border-radius: 0.4rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: max(1em, 16px);
+}
+
+.game-bucket-glossary table {
+  width: 100%;
+  margin-top: 0.5rem;
+  border-collapse: collapse;
+}
+
+.game-bucket-glossary :is(th, td) {
+  padding: 0.4rem 0.5rem 0.4rem 0;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.game-bucket-matches ul {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0;
+  list-style: none;
+}
+
+.local-game-drop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  padding: 1.25rem;
+  border: 1px dashed currentColor;
+  border-radius: 0.75rem;
+}
+
+.local-game-drop.is-dragging {
+  outline: 2px solid currentColor;
+  outline-offset: -4px;
+}
+
+.local-game-drop p {
+  margin: 0;
+}
+
+.local-game-status {
+  margin: 0.75rem 0 0;
+}
+
+.local-game-status:empty {
+  margin: 0;
+}
+
+.local-game-player {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  max-height: 80vh;
+  margin-top: 1rem;
+  border: 0;
+  background: #000;
 }
