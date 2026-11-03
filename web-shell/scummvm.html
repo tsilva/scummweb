@@ -71,6 +71,8 @@ function buildVersionedAssetUrl(assetPath) {
   return resolvedUrl.toString();
 }
 
+const defaultSavePath = "/home/web_user/.local/share/scummvm/saves";
+
 function getConfiguredSavePath() {
   try {
     const iniText = FS.readFile("/home/web_user/scummvm.ini", { encoding: "utf8" });
@@ -84,7 +86,7 @@ function getConfiguredSavePath() {
     }
   } catch {}
 
-  return "/home/web_user/.local/share/scummvm/saves";
+  return defaultSavePath;
 }
 
 function ensureDirectory(directoryPath) {
@@ -213,6 +215,8 @@ function setupFilesystem() {
   addRunDependency("scummvm-fs-setup");
   performance.mark("scummweb:wasm-ready");
   const localFilesReady = setupLocalFilesystem()
+    // The native save manager can create the last directory only.
+    .then(() => ensureDirectory(defaultSavePath))
     .then(() => isLocalGame ? setupLocalGame() : setupSkipIntroSaves());
   Promise.all([window.ScummvmFSReady, localFilesReady])
     .then(([{ ScummvmFS, filesystems }]) => {
