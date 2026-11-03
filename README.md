@@ -40,8 +40,8 @@ Click a matched Library card to open its details, then select **Play** to open
 its dedicated player page. The browser downloads the ZIP directly from the saved
 bucket and applies the same size limits as local ZIPs. Connecting the official
 ScummWEB bucket shows the games in its existing index and keeps the standard
-Library cards and player. For the English DOS EGA demo of The Secret of Monkey
-Island, upload the [ScummVM demo](https://www.scummvm.org/demos/) as `monkey-demo.zip`.
+Library cards and player. For **The Secret of Monkey Island (Demo)**, upload the
+[English DOS EGA demo from ScummVM](https://www.scummvm.org/demos/) as `monkey-demo.zip`.
 
 ## Commands
 
@@ -64,7 +64,8 @@ pnpm run sentry:issues   # list recent Sentry issues from local env credentials
 - Use `pnpm`; `package.json` rejects other package managers during install.
 - `scummvm-shell/` is the tracked source of truth for managed ScummVM shell assets.
 - `public/` is generated staging. Do not hand-edit staged shell files when the source lives in `scummvm-shell/`.
-- Game hero banners live in `scummvm-shell/launcher/`. The current banners use ImageGen-restored promotional art; the gameplay screenshot galleries keep their original captures.
+- Game hero banners live in `scummvm-shell/launcher/`. The catalog banners use ImageGen-restored promotional art; the gameplay screenshot galleries keep their original captures.
+- The Monkey Island demo cover and banner are cropped and resized from [a scan of Steve Purcell's original DOS box art on LaunchBox Games Database](https://gamesdb.launchbox-app.com/games/images/139-the-secret-of-monkey-island). Its screenshot gallery uses [unaltered DOS EGA demo captures from DOS Games Archive](https://www.dosgamesarchive.com/download/the-secret-of-monkey-island).
 - The playable baseline is Beneath a Steel Sky from `downloads/bass-cd-1.2.zip`, launched through `/scummvm.html#sky`.
 - For games that support loading a save at launch, **Continue** opens the most recent save in this browser. **Start from beginning** opens a fresh session. Nippon Safes and Broken Sword 2.5 load saves from their in-game menus.
 - Production game payloads are served from `SCUMMVM_GAMES_ORIGIN`; localhost can use `/games-proxy/*` for verification.
