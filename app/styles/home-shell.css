@@ -1423,20 +1423,68 @@ button.nav-icon-link {
   margin-bottom: 0.75rem;
 }
 
-.source-details {
-  padding: 0.75rem;
-  background: var(--surface-high);
+.source-poster-entry {
+  position: relative;
 }
 
-.source-details p {
-  margin: 0 0 0.5rem;
-  font-size: 0.8rem;
-  overflow-wrap: anywhere;
+.source-poster-card {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
 }
 
-.source-details .secondary-button {
-  padding: 0.4rem 0.6rem;
-  font-size: 0.8rem;
+.source-poster-card:disabled {
+  cursor: wait;
+}
+
+.source-poster-hint,
+.source-poster-remove {
+  position: absolute;
+  inset-block-start: 0.6rem;
+  background: var(--surface-lowest);
+  color: var(--ink);
+}
+
+.source-poster-hint {
+  inset-inline: 0.6rem 3.75rem;
+  width: fit-content;
+  max-width: calc(100% - 4.35rem);
+  padding: 0.3rem 0.5rem;
+  border-radius: 0.35rem;
+  font-size: 0.75rem;
+}
+
+.source-poster-remove {
+  inset-inline-end: 0.6rem;
+  z-index: 2;
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.source-poster-remove:hover {
+  background: var(--surface-highest);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .source-poster-remove {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .source-poster-entry:is(:hover, :focus-within) .source-poster-remove {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 
 .saved-buckets {

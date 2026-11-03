@@ -7,7 +7,7 @@ VENDOR_DIR="$ROOT_DIR/vendor"
 source "$ROOT_DIR/scripts/scummvm-version.sh"
 SCUMMVM_REPO_URL="https://github.com/scummvm/scummvm.git"
 SCUMMVM_DIR="$VENDOR_DIR/scummvm-$SCUMMVM_TAG"
-SCUMMVM_ENGINES=(sky dreamweb queen lure drascula parallaction sword25 scumm)
+SCUMMVM_ENGINES=(sky dreamweb queen lure drascula parallaction sword25 scumm cge2)
 DIST_DIR="$ROOT_DIR/dist"
 SHELL_DIR="$ROOT_DIR/scummvm-shell"
 DOWNLOADS_DIR="$ROOT_DIR/downloads"

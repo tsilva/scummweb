@@ -1,6 +1,15 @@
 import { getVersionedSiteAssetPath } from "./asset-paths";
 
 const artByTarget = {
+  sfinx: {
+    eyebrow: "L.K. Avalon",
+    summary: "Switch between two young adventurers and solve puzzles in this colorful Polish point-and-click comedy.",
+    genre: "Point-and-click adventure",
+    studio: "L.K. Avalon",
+    year: "1997",
+    heroImage: "/launcher/sfinx-hero.webp",
+    posterImage: "/launcher/sfinx-cover.webp",
+  },
   "monkey-demo": {
     eyebrow: "Lucasfilm Games Demo",
     summary:
@@ -203,5 +212,20 @@ export function getGamePresentation(game) {
     spotlightImage: getVersionedSiteAssetPath(
       art.spotlightImage || art.landscapeImage || art.posterImage || screenshots[0] || ""
     ),
+  };
+}
+
+export function getImportedGamePresentation(filename) {
+  const sfinx = /^sfinx(?:-(en|pl|de))?(?:-v(\d+(?:\.\d+)*))?\.zip$/i.exec(filename);
+  if (!sfinx) return null;
+
+  const language = { en: "English", pl: "Polish", de: "German" }[sfinx[1]?.toLowerCase()];
+  const edition = sfinx[2] ? `v${sfinx[2]}` : null;
+  return {
+    ...getGamePresentation({ target: "sfinx", displayTitle: "Sfinx", engineId: "cge2" }),
+    platform: "DOS",
+    language,
+    edition,
+    badge: ["DOS", language, edition].filter(Boolean).join(" · "),
   };
 }

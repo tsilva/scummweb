@@ -13,7 +13,7 @@ const gamePlayerControlsPath = path.join(rootDir, "app", "game-player", "GamePla
 test("the managed data index includes every engine as a separate WebAssembly module", () => {
   const dataDir = path.join(rootDir, "scummvm-shell", "data");
   const index = JSON.parse(fs.readFileSync(path.join(dataDir, "index.json"), "utf8"));
-  const engines = ["drascula", "dreamweb", "lure", "parallaction", "queen", "scumm", "sky", "sword25"];
+  const engines = ["cge2", "drascula", "dreamweb", "lure", "parallaction", "queen", "scumm", "sky", "sword25"];
   const pluginNames = engines.map((engine) => `lib${engine}.so`);
 
   assert.deepEqual(Object.keys(index.plugins).sort(), pluginNames);

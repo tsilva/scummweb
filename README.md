@@ -39,9 +39,10 @@ device or the web.
   to download and play, and share publicly if you host them.
 
 When you open the homepage, the library checks your saved ZIPs and shows their
-availability. Built-in games skip these checks. Select **Play** to grant access
-again if your browser asks. If a local file moves, use **Locate ZIP** to reconnect
-it. Submit a bucket URL again to discover new ZIPs.
+availability. Built-in games skip these checks. Select an added game's poster to
+play. Grant file access again if your browser asks, or select **Locate ZIP** if
+the file has moved. Hover over or focus a poster to reveal its × removal button.
+Submit a bucket URL again to discover new ZIPs.
 
 Local and remote ZIPs use the same player. Remote ZIPs are downloaded directly
 from the supplied URL. Put the complete data for one ScummVM game at the root of
@@ -75,6 +76,7 @@ pnpm run sentry:issues   # list recent Sentry issues from local env credentials
 - `public/` is generated staging. Do not hand-edit staged shell files when the source lives in `scummvm-shell/`.
 - Game hero banners live in `scummvm-shell/launcher/`. The catalog banners use ImageGen-restored promotional art; the gameplay screenshot galleries keep their original captures.
 - The Monkey Island demo cover and banner are cropped and resized from [a scan of Steve Purcell's original DOS box art on LaunchBox Games Database](https://gamesdb.launchbox-app.com/games/images/139-the-secret-of-monkey-island). Its screenshot gallery uses [unaltered DOS EGA demo captures from DOS Games Archive](https://www.dosgamesarchive.com/download/the-secret-of-monkey-island).
+- Imported Sfinx ZIPs use the CGE2 engine, an [original box front scan from LaunchBox Games Database](https://gamesdb.launchbox-app.com/games/images/86024-sfinx), and [gameplay art from ScummVM](https://www.scummvm.org/screenshots/lkavalon/).
 - To include Monkey Island in a catalog rebuild, place the [English DOS EGA demo ZIP](https://downloads.scummvm.org/frs/demos/scumm/monkey1-dos-ega-demo-en.zip) in `downloads/` as `monkey1-dos-ega-demo-en.zip`.
 - The playable baseline is Beneath a Steel Sky from `downloads/bass-cd-1.2.zip`, launched through `/scummvm.html#sky`.
 - For games that support loading a save at launch, **Continue** opens the most recent save in this browser. **Start from beginning** opens a fresh session. Nippon Safes and Broken Sword 2.5 load saves from their in-game menus.
