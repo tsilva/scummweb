@@ -19,6 +19,7 @@ import { recordRecentGameTarget } from "./recent-games";
 const SCUMMWEB_FRAME_MESSAGE_SOURCE = "scummweb";
 const SCUMMWEB_ASPECT_RATIO_MESSAGE_TYPE = "scummweb-aspect-ratio";
 const ARCHIVE_FRAME_NAVIGATION_TIMEOUT_MS = 8000;
+const ARCHIVE_BOOT_IDLE_TIMEOUT_MS = 120_000;
 
 function shouldHideScummvmMenuButton(game, target) {
   return (
@@ -130,6 +131,7 @@ export default function GameRouteFrame({
   const [archiveError, setArchiveError] = useState("");
   const [launchAnalytics] = useState(() => createGameLaunchAnalytics(loadArchive ? null : game?.slug));
   const [frameSrc, setFrameSrc] = useState(null);
+  const [archiveFrameDocument, setArchiveFrameDocument] = useState(null);
   const [isResuming, setIsResuming] = useState(false);
   const [exitHref, setExitHref] = useState("/");
   const [isFillScreenAspect, setIsFillScreenAspect] = useState(false);
@@ -168,22 +170,54 @@ export default function GameRouteFrame({
   });
 
   useLayoutEffect(() => {
-    const navigationTimer = loadArchive && frameSrc === src ? window.setTimeout(() => {
+    const navigationController = new AbortController();
+    const navigationTimer = loadArchive && frameSrc === src ? window.setTimeout(async () => {
       const iframe = frameRef.current;
-      const documentUrl = iframe?.contentDocument?.URL;
-      if (!iframe || !archiveFiles.current || (documentUrl && documentUrl !== "about:blank")) return;
+      function needsRetry() {
+        const documentUrl = iframe?.contentDocument?.URL;
+        return !navigationController.signal.aborted && iframe && archiveFiles.current &&
+          (!documentUrl || documentUrl === "about:blank");
+      }
+      if (!needsRetry()) return;
 
-      // Leave an active ScummVM startup alone. Only retry a frame whose document
-      // never loaded, while we still own the ZIP's unpacked files.
+      // The network response can arrive without the browser committing the frame
+      // navigation. Load the same-origin shell into the replacement frame directly.
       const retryUrl = new URL(src, window.location.href);
-      retryUrl.searchParams.set("launchRetry", "1");
-      setFrameSrc(`${retryUrl.pathname}${retryUrl.search}${retryUrl.hash}`);
+      retryUrl.searchParams.set("launchRetry", "inline");
+      try {
+        const response = await fetch(retryUrl, { mode: "same-origin", signal: navigationController.signal });
+        if (!response.ok) throw new Error("Could not load ScummVM.");
+        const shell = await response.text();
+        if (!shell.includes("<head>")) throw new Error("Invalid ScummVM shell.");
+        if (!needsRetry()) return;
+        const baseHref = retryUrl.href.replaceAll("&", "&amp;").replaceAll('"', "&quot;");
+        setArchiveFrameDocument(shell.replace("<head>", `<head><base href="${baseHref}">`));
+        setFrameSrc(`${retryUrl.pathname}${retryUrl.search}${retryUrl.hash}`);
+      } catch {
+        if (needsRetry()) setArchiveError("Could not load ScummVM. Exit the player and try again.");
+      }
     }, ARCHIVE_FRAME_NAVIGATION_TIMEOUT_MS) : null;
 
-    const archiveBootTimer = loadArchive && frameSrc ? window.setTimeout(() => {
-      archiveFiles.current = null;
-      setArchiveError("ScummVM took too long to start. Exit the player and try again.");
-    }, 90000) : null;
+    const archiveFrame = loadArchive && frameSrc ? frameRef.current : null;
+    let archiveBootTimer;
+
+    function restartArchiveBootTimer() {
+      window.clearTimeout(archiveBootTimer);
+      archiveBootTimer = window.setTimeout(() => {
+        archiveFiles.current = null;
+        setArchiveError("ScummVM took too long to start. Exit the player and try again.");
+      }, ARCHIVE_BOOT_IDLE_TIMEOUT_MS);
+    }
+
+    function stopArchiveBootTimer() {
+      window.clearTimeout(archiveBootTimer);
+      archiveFrame?.removeEventListener("load", restartArchiveBootTimer);
+    }
+
+    if (archiveFrame) {
+      restartArchiveBootTimer();
+      archiveFrame.addEventListener("load", restartArchiveBootTimer, { once: true });
+    }
 
     function navigateHome(href = "/") {
       window.location.replace(getSafeHref(href));
@@ -198,11 +232,12 @@ export default function GameRouteFrame({
         if (event.data?.type === "scummweb:local-game-ready" && archiveFiles.current) {
           sendZipGameFiles(event.source, archiveFiles.current);
           archiveFiles.current = null;
+          restartArchiveBootTimer();
           return;
         }
 
         if (event.data?.type === "scummweb:local-game-status") {
-          window.clearTimeout(archiveBootTimer);
+          stopArchiveBootTimer();
           if (event.data.status === "running") {
             setReadySignal({ reason: "archive-running" });
           } else {
@@ -261,12 +296,19 @@ export default function GameRouteFrame({
 
     window.addEventListener("message", handleMessage);
 
+    if (!archiveFrameDocument && archiveFrame?.contentWindow &&
+        (!archiveFrame.contentDocument || archiveFrame.contentDocument.URL === "about:blank")) {
+      // Start navigation after the frame and ZIP handoff listener are both ready.
+      archiveFrame.contentWindow.location.replace(new URL(frameSrc, window.location.href).href);
+    }
+
     return () => {
+      navigationController.abort();
       window.clearTimeout(navigationTimer);
-      window.clearTimeout(archiveBootTimer);
+      stopArchiveBootTimer();
       window.removeEventListener("message", handleMessage);
     };
-  }, [frameSrc, launchAnalytics, loadArchive, src, target]);
+  }, [archiveFrameDocument, frameSrc, launchAnalytics, loadArchive, src, target]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -574,7 +616,8 @@ export default function GameRouteFrame({
         data-scummvm-target={target}
         ref={frameRef}
         loading="eager"
-        src={frameSrc}
+        src={loadArchive ? "about:blank" : frameSrc}
+        srcDoc={archiveFrameDocument || undefined}
         title={title}
       /> : null}
     </div>
