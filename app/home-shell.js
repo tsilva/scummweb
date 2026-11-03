@@ -1,3 +1,6 @@
+import GameBucket from "./home-shell/game-bucket";
+import LibraryCards from "./home-shell/library-cards";
+import { getGamesOrigin } from "../lib/site-config.mjs";
 import LaunchButton from "./launch-button";
 import GameDetailModal from "./home-shell/game-detail-modal";
 import DecorativeImage from "./home-shell/decorative-image";
@@ -26,7 +29,6 @@ export default function HomeShell({
 }) {
   const isHomePage = pageMode === "home";
   const featuredDialogId = getGameDialogId(featuredGame);
-  const installedCatalog = catalog;
   const heroKicker = isHomePage ? HOME_HERO_KICKER : featuredGame.eyebrow;
   const heroTitle = isHomePage ? HOME_HERO_TITLE : featuredGame.displayTitle;
   const heroSummary = isHomePage ? HOME_HERO_SUMMARY : featuredGame.summary;
@@ -197,28 +199,11 @@ export default function HomeShell({
               </h2>
             </div>
 
-            <div className="poster-grid">
-              {installedCatalog.map((game) => (
-                <div className="poster-entry" key={game.target}>
-                  <a
-                    aria-haspopup="dialog"
-                    className={`poster-card ${game.tone}`}
-                    data-game-target={game.target}
-                    href={`#${getGameDialogId(game)}`}
-                  >
-                    <div className="poster-media">
-                      <DecorativeImage className="poster-media-image" src={game.posterImage} />
-                    </div>
-                    <div className="poster-overlay">
-                      <p>{game.displayTitle}</p>
-                    </div>
-                  </a>
-                  <a className="game-details-link" href={game.href}>
-                    About {game.displayTitle}
-                  </a>
-                </div>
-              ))}
-            </div>
+            {isHomePage ? (
+              <GameBucket catalog={catalog} officialUrl={getGamesOrigin()} />
+            ) : (
+              <LibraryCards games={catalog} />
+            )}
           </section>
         </div>
       </main>

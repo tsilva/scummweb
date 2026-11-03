@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import test from "node:test";
 import assetConfig from "../lib/scummvm-shell-assets.js";
 
@@ -18,4 +19,18 @@ test("required shell asset paths are managed and versioned matchers cover expect
   assert.equal(isVersionedAsset("/launcher/poster.png"), true);
   assert.equal(isVersionedAsset("/scummvm.js"), true);
   assert.equal(isVersionedAsset("/unmanaged.txt"), false);
+});
+
+test("the bundled catalog engines and SCUMM are indexed WebAssembly plugins", () => {
+  const shell = new URL("../scummvm-shell/", import.meta.url);
+  const catalog = JSON.parse(fs.readFileSync(new URL("games.json", shell)));
+  const { plugins } = JSON.parse(fs.readFileSync(new URL("data/index.json", shell)));
+  const engines = new Set(["scumm", ...catalog.games.map(({ engineId }) => engineId)]);
+
+  for (const engine of engines) {
+    const name = `lib${engine}.so`;
+    const module = fs.readFileSync(new URL(`data/plugins/${name}`, shell));
+    assert.equal(plugins[name], module.length, `${name} must match the filesystem index`);
+    assert.equal(module.subarray(0, 4).toString(), "\0asm", `${name} must be WebAssembly`);
+  }
 });
