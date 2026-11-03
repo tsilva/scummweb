@@ -24,4 +24,4 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Secrets
 
-Default dev/build:secrets uses Infisical scummweb Development /. Only Sentry credentials enter the web process; storage/OpenRouter values are isolated from it. Production uses scummweb-production Production / and an explicit pinned manual sync command followed by redeployment. Never print or upload private values; retain Keychain originals until verified rotation.
+Local builds skip Sentry source-map uploads. Default dev uses Infisical scummweb Development / for the Sentry smoke test. Storage and OpenRouter values remain isolated from the web process. Production uses scummweb-production Production / and an explicit pinned manual sync command followed by redeployment. Never print or upload private values; retain Keychain originals until verified rotation.

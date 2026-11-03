@@ -1,44 +1,4 @@
-const fs = require("node:fs");
-const path = require("node:path");
 const { withSentryConfig } = require("@sentry/nextjs");
-
-function loadIgnoredEnvFile(filename) {
-  const filePath = path.join(__dirname, filename);
-
-  if (!fs.existsSync(filePath)) {
-    return;
-  }
-
-  const raw = fs.readFileSync(filePath, "utf8");
-
-  for (const line of raw.split(/\r?\n/)) {
-    const trimmed = line.trim();
-
-    if (!trimmed || trimmed.startsWith("#")) {
-      continue;
-    }
-
-    const separatorIndex = trimmed.indexOf("=");
-
-    if (separatorIndex === -1) {
-      continue;
-    }
-
-    const key = trimmed.slice(0, separatorIndex).trim();
-    let value = trimmed.slice(separatorIndex + 1).trim();
-
-    if (
-      (value.startsWith('"') && value.endsWith('"')) ||
-      (value.startsWith("'") && value.endsWith("'"))
-    ) {
-      value = value.slice(1, -1);
-    }
-
-    if (!(key in process.env)) {
-      process.env[key] = value;
-    }
-  }
-}
 
 function getScummvmAssetVersion() {
   const rawVersion =
@@ -74,8 +34,6 @@ function getSentryEnvironment() {
   );
 }
 
-loadIgnoredEnvFile(".env.sentry-build-plugin");
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   distDir: getDistDir(),
@@ -86,11 +44,15 @@ const nextConfig = {
   },
 };
 
+const isHostedBuild = process.env.VERCEL === "1" && Boolean(process.env.VERCEL_DEPLOYMENT_ID);
+
 module.exports = withSentryConfig(nextConfig, {
+  sourcemaps: { disable: !isHostedBuild },
+  useRunAfterProductionCompileHook: isHostedBuild ? undefined : false,
   // For all available options, see:
   // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
-  authToken: process.env.SENTRY_AUTH_TOKEN,
+  authToken: isHostedBuild ? process.env.SENTRY_AUTH_TOKEN : undefined,
   org: process.env.SENTRY_ORG || "tsilva",
   project: process.env.SENTRY_PROJECT || "scummweb",
 
@@ -110,6 +72,7 @@ module.exports = withSentryConfig(nextConfig, {
   tunnelRoute: "/monitoring",
 
   webpack: {
+    disableSentryConfig: !isHostedBuild,
     // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
     // See the following for more information:
     // https://docs.sentry.io/product/crons/
