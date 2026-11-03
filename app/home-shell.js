@@ -153,6 +153,31 @@ export default function HomeShell({
           </div>
         </section>
         <div className="section-stack">
+          {!isHomePage ? (
+            <section className="content-band game-play-guide" aria-labelledby="game-play-guide">
+              <div className="section-header">
+                <h2 id="game-play-guide">
+                  <span className="section-mark" />
+                  How to play {featuredGame.displayTitle}
+                </h2>
+              </div>
+              <p><strong>Browser edition</strong> · {featuredGame.title}</p>
+              <p>
+                Select Play above to launch ScummVM in your browser. The player loads the game
+                files automatically.
+              </p>
+              <p>
+                Use your mouse to point and click. On touch devices, use the player’s on-screen
+                mouse buttons for left and right clicks.
+              </p>
+              {featuredGame.infoHref ? (
+                <a className="game-details-link" href={featuredGame.infoHref}>
+                  Readme or license for {featuredGame.displayTitle}
+                </a>
+              ) : null}
+            </section>
+          ) : null}
+
           <section className="content-band" id="library">
             <div className="section-header">
               <h2>
@@ -174,20 +199,24 @@ export default function HomeShell({
 
             <div className="poster-grid">
               {installedCatalog.map((game) => (
-                <a
-                  key={game.target}
-                  aria-haspopup="dialog"
-                  className={`poster-card ${game.tone}`}
-                  data-game-target={game.target}
-                  href={`#${getGameDialogId(game)}`}
-                >
-                  <div className="poster-media">
-                    <DecorativeImage className="poster-media-image" src={game.posterImage} />
-                  </div>
-                  <div className="poster-overlay">
-                    <p>{game.displayTitle}</p>
-                  </div>
-                </a>
+                <div className="poster-entry" key={game.target}>
+                  <a
+                    aria-haspopup="dialog"
+                    className={`poster-card ${game.tone}`}
+                    data-game-target={game.target}
+                    href={`#${getGameDialogId(game)}`}
+                  >
+                    <div className="poster-media">
+                      <DecorativeImage className="poster-media-image" src={game.posterImage} />
+                    </div>
+                    <div className="poster-overlay">
+                      <p>{game.displayTitle}</p>
+                    </div>
+                  </a>
+                  <a className="game-details-link" href={game.href}>
+                    About {game.displayTitle}
+                  </a>
+                </div>
               ))}
             </div>
           </section>

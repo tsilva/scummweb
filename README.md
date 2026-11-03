@@ -29,6 +29,7 @@ Open the URL printed by the server.
 pnpm run dev             # validate/sync scummvm-shell/ into public/ and start Next.js
 pnpm run build           # prepare managed shell assets and build production output
 pnpm run start           # prepare managed shell assets and start the production server
+pnpm run lint            # check JavaScript and JSX syntax with Next.js SWC
 pnpm run test            # run the Node test suite
 pnpm run verify          # build, serve, and boot detected targets through Chromium
 pnpm run build:scummvm   # rebuild the ScummVM WebAssembly shell and game metadata
@@ -51,6 +52,7 @@ pnpm run sentry:issues   # list recent Sentry issues from local env credentials
 - R2 uploads require `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and the `SCUMMVM_R2_*` settings used by `scripts/upload_games_to_r2.py`.
 - Sentry is optional. Runtime capture uses `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_DSN`, `NEXT_PUBLIC_SENTRY_ENABLED`, and the Sentry project settings in `next.config.js`.
 - `NEXT_PUBLIC_SITE_URL` controls public metadata, sitemap, robots, and Open Graph URLs.
+- The library links to each game’s detail page and keeps quick play in the card dialogs. The sitemap lists the homepage and game detail pages. The player routes and standalone emulator send noindex directives.
 
 ## Architecture
 
