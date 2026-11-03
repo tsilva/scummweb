@@ -1,26 +1,28 @@
 "use client";
 
 import { useCallback } from "react";
-import { bucketStorageKey, readBucketGameArchive, readSavedBucket } from "../../../game-bucket.mjs";
+import { readRemoteGameArchive } from "../../../game-bucket.mjs";
+import { readGameSources } from "../../../game-sources.mjs";
 import GameRouteFrame from "../../../game-route-frame";
 import { buildZipGamePlayerUrl } from "../../../home-shell/zip-game-player";
 
 const playerUrl = buildZipGamePlayerUrl("/#library");
 
-export default function BucketPlayFrame({ game, officialUrl }) {
+export default function BucketPlayFrame({ game, officialUrl, catalog }) {
   const { target, displayTitle } = game;
-  const loadArchive = useCallback((signal) => {
-    let bucket;
+  const loadArchive = useCallback(async (signal) => {
+    let sources = [];
     try {
-      bucket = readSavedBucket(window.localStorage.getItem(bucketStorageKey), [{ target }]);
+      sources = await readGameSources(catalog, officialUrl);
     } catch {
-      // An unavailable or invalid saved selection can be replaced from Settings.
+      // An unavailable or invalid saved selection can be replaced in the Library.
     }
-    if (!bucket || bucket.url === officialUrl) {
-      throw new Error("Open Settings in the Library and save a game bucket containing this game.");
+    const source = sources.find((source) => source.url && source.target === target);
+    if (!source) {
+      throw new Error("Add a bucket or ZIP containing this game to your library.");
     }
-    return readBucketGameArchive(bucket.url, target, { signal });
-  }, [officialUrl, target]);
+    return readRemoteGameArchive(source.url, { signal });
+  }, [catalog, officialUrl, target]);
 
   return (
     <GameRouteFrame

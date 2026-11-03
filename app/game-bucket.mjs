@@ -34,6 +34,19 @@ export function readSavedBucket(value, games) {
   return matched.length ? { url: normalizeBucketUrl(url), targets: matched } : null;
 }
 
+export async function checkGameZip(url, signal) {
+  const response = await fetch(url, {
+    method: "HEAD",
+    credentials: "omit",
+    redirect: "error",
+    cache: "no-store",
+    signal,
+  });
+  const contentType = response.headers.get("content-type") ?? "";
+  return response.ok && !contentType.toLowerCase().startsWith("text/html")
+    && Number(response.headers.get("content-length")) <= maxArchiveSize;
+}
+
 export async function checkGameBucket(url, games, officialUrl, { signal, localIndex } = {}) {
   const options = { credentials: "omit", redirect: "error", cache: "no-store", signal };
   if (url === officialUrl) {
@@ -47,9 +60,7 @@ export async function checkGameBucket(url, games, officialUrl, { signal, localIn
   }
 
   const results = await Promise.allSettled(games.map(async ({ target }) => {
-    const response = await fetch(bucketZipUrl(url, target), { ...options, method: "HEAD" });
-    const contentType = response.headers.get("content-type") ?? "";
-    return response.ok && !contentType.toLowerCase().startsWith("text/html") ? target : null;
+    return await checkGameZip(bucketZipUrl(url, target), signal) ? target : null;
   }));
   const matches = results.flatMap((result) => result.status === "fulfilled" && result.value ? [result.value] : []);
   if (!matches.length && results.some((result) => result.status === "rejected")) {
@@ -58,9 +69,13 @@ export async function checkGameBucket(url, games, officialUrl, { signal, localIn
   return matches;
 }
 
-export async function readBucketGameArchive(url, target, { signal } = {}) {
+export function readBucketGameArchive(url, target, options) {
+  return readRemoteGameArchive(bucketZipUrl(url, target), options);
+}
+
+export async function readRemoteGameArchive(url, { signal } = {}) {
   const timeout = AbortSignal.timeout(120_000);
-  const response = await fetch(bucketZipUrl(url, target), {
+  const response = await fetch(url, {
     credentials: "omit",
     redirect: "error",
     signal: signal ? AbortSignal.any([signal, timeout]) : timeout,
@@ -87,5 +102,5 @@ export async function readBucketGameArchive(url, target, { signal } = {}) {
     },
   }));
   const archive = await new Response(limitedBody).blob();
-  return readLocalGameArchive(new File([archive], bucketZipName(target)));
+  return readLocalGameArchive(new File([archive], "game.zip"));
 }

@@ -23,7 +23,7 @@ export default async function BucketPlayPage({ params }) {
 
   return (
     <main className="game-route-page">
-      <BucketPlayFrame game={game} officialUrl={getGamesOrigin()} />
+      <BucketPlayFrame game={game} officialUrl={getGamesOrigin()} catalog={getGameLibrary().games} />
     </main>
   );
 }

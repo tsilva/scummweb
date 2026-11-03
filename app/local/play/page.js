@@ -1,7 +1,7 @@
 import LocalPlayFrame from "./local-play-frame";
 
 export const metadata = {
-  title: "Play a local ZIP | ScummWEB",
+  title: "Play a game ZIP | ScummWEB",
   robots: { index: false, follow: false },
 };
 

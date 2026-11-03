@@ -2,17 +2,17 @@
 
 import GameRouteFrame from "../../game-route-frame";
 import { buildZipGamePlayerUrl } from "../../home-shell/zip-game-player";
-import { openSelectedLocalGameArchive } from "../../local-game-archive.mjs";
+import { openSelectedGameArchive } from "../../local-game-archive.mjs";
 
-const playerUrl = buildZipGamePlayerUrl("/#local-game-heading");
+const playerUrl = buildZipGamePlayerUrl("/#library");
 
 export default function LocalPlayFrame() {
   return (
     <GameRouteFrame
       archiveLoadingText="Opening game ZIP…"
-      loadArchive={openSelectedLocalGameArchive}
+      loadArchive={openSelectedGameArchive}
       src={playerUrl}
-      title="Local ScummVM game"
+      title="ScummVM game ZIP"
     />
   );
 }

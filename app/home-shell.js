@@ -1,10 +1,10 @@
 import GameDetailModal from "./home-shell/game-detail-modal";
-import GameBucket, { SettingsButton } from "./home-shell/game-bucket";
+import { SettingsButton } from "./home-shell/game-bucket";
 import LibraryCards from "./home-shell/library-cards";
 import Icon from "./home-shell/shell-icon";
 import HeroStage from "./home-shell/hero-stage";
 import HomeHero from "./home-shell/home-hero";
-import LocalGame from "./home-shell/local-game";
+import SourceLibrary from "./home-shell/source-library";
 import RecentGamesRail from "./recent-games-rail";
 import { getGamesOrigin } from "../lib/site-config.mjs";
 
@@ -19,7 +19,7 @@ export default function HomeShell({
 }) {
   const isHomePage = pageMode === "home";
   const recentHeading = "Browser-Playable Classics";
-  const libraryHeading = "Freeware Adventure Library";
+  const libraryHeading = isHomePage ? "Game Library" : "Freeware Adventure Library";
 
   return (
     <>
@@ -46,7 +46,6 @@ export default function HomeShell({
 
           <div className="nav-links" aria-label="Main">
             <a href="#library">Library</a>
-            {isHomePage && <a href="#local-game-heading">Local ZIP</a>}
             <a href={scummvmOfficialSite} rel="noreferrer" target="_blank">
               ScummVM
             </a>
@@ -74,7 +73,7 @@ export default function HomeShell({
           <HeroStage featuredGame={featuredGame} gameCount={catalog.length} />
         )}
         <div className="section-stack">
-          <section className="content-band" id="library">
+          <section className="content-band">
             <div className="section-header">
               <h2>
                 <span className="section-mark" />
@@ -85,9 +84,7 @@ export default function HomeShell({
             <RecentGamesRail catalog={catalog} />
           </section>
 
-          {isHomePage && <LocalGame />}
-
-          <section className="content-band">
+          <section className="content-band" id="library">
             <div className="section-header">
               <h2>
                 <span className="section-mark" />
@@ -96,7 +93,7 @@ export default function HomeShell({
             </div>
 
             {isHomePage ? (
-              <GameBucket catalog={catalog} officialUrl={getGamesOrigin()} />
+              <SourceLibrary catalog={catalog} officialUrl={getGamesOrigin()} />
             ) : (
               <LibraryCards games={catalog} />
             )}
