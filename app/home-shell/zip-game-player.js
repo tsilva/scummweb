@@ -3,10 +3,22 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { buildVersionedAssetPath } from "../asset-paths";
 
-const playerUrl = buildVersionedAssetPath("/scummvm.html", {
-  searchParams: { localGame: "1" },
-  hash: "--path=/local-game --auto-detect",
-});
+export function buildZipGamePlayerUrl(exitTo) {
+  return buildVersionedAssetPath("/scummvm.html", {
+    searchParams: { localGame: "1", exitTo },
+    hash: "--path=/local-game --auto-detect",
+  });
+}
+
+export function sendZipGameFiles(playerWindow, files) {
+  playerWindow.postMessage(
+    { type: "scummweb:local-game-files", files },
+    window.location.origin,
+    files.map(({ data }) => data.buffer)
+  );
+}
+
+const playerUrl = buildZipGamePlayerUrl();
 
 export function useZipGamePlayer() {
   const player = useRef(null);
@@ -36,12 +48,7 @@ export function useZipGamePlayer() {
           event.source !== player.current?.contentWindow) return;
       const { type, status: result } = event.data ?? {};
       if (type === "scummweb:local-game-ready" && pendingFiles.current) {
-        const files = pendingFiles.current;
-        event.source.postMessage(
-          { type: "scummweb:local-game-files", files },
-          window.location.origin,
-          files.map(({ data }) => data.buffer)
-        );
+        sendZipGameFiles(event.source, pendingFiles.current);
         pendingFiles.current = null;
       }
       if (type === "scummweb:local-game-status") {

@@ -1,17 +1,19 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { Settings, X } from "lucide-react";
+import { bucketOnlyGames, getBucketPlayHref } from "../bucket-games.mjs";
 import {
   bucketStorageKey,
   bucketZipName,
   checkGameBucket,
   normalizeBucketUrl,
-  readBucketGameArchive,
   readSavedBucket,
 } from "../game-bucket.mjs";
-import { useZipGamePlayer, ZipGameFrame } from "./zip-game-player";
-import LibraryCards, { bucketOnlyGames } from "./library-cards";
+import GameDetailModal from "./game-detail-modal";
+import LibraryCards from "./library-cards";
+import { getGameDialogId } from "./shared";
 
 const settingsDialogId = "home-settings";
 
@@ -32,13 +34,22 @@ export function SettingsButton() {
 
 export default function GameBucket({ catalog, officialUrl }) {
   const games = useMemo(() => [...catalog, ...bucketOnlyGames], [catalog]);
-  const playerSection = useRef(null);
   const [url, setUrl] = useState("");
   const [saved, setSaved] = useState(null);
   const [checked, setChecked] = useState(null);
   const [checking, setChecking] = useState(false);
   const [notice, setNotice] = useState("");
-  const { player, showPlayer, opening, status, openArchive, closePlayer } = useZipGamePlayer();
+  const [dialogId, setDialogId] = useState("");
+
+  useEffect(() => {
+    function syncDialog() {
+      setDialogId(window.location.hash.slice(1));
+    }
+
+    syncDialog();
+    window.addEventListener("hashchange", syncDialog);
+    return () => window.removeEventListener("hashchange", syncDialog);
+  }, []);
 
   useEffect(() => {
     try {
@@ -76,35 +87,38 @@ export default function GameBucket({ catalog, officialUrl }) {
   }
 
   function save(bucket) {
-    setSaved(bucket);
-    setChecked(null);
-    setUrl(bucket?.url ?? "");
     try {
       if (bucket) {
         window.localStorage.setItem(bucketStorageKey, JSON.stringify(bucket));
       } else {
         window.localStorage.removeItem(bucketStorageKey);
       }
+      setSaved(bucket);
+      setChecked(null);
+      setUrl(bucket?.url ?? "");
       setNotice(bucket ? "Bucket saved in this browser." : "Bucket removed.");
     } catch {
-      setNotice("Browser storage is unavailable. This change applies for this visit.");
+      setNotice("Browser storage is unavailable. The bucket selection could not be changed.");
     }
   }
 
   const result = checked?.targets.length ? checked : saved;
   const matches = result ? games.filter(({ target }) => result.targets.includes(target)) : [];
   const isOfficial = result?.url === officialUrl;
-  const playing = opening || showPlayer;
   const bucketTargets = saved && saved.url !== officialUrl ? saved.targets : [];
   const libraryGames = [
     ...catalog,
     ...bucketOnlyGames.filter(({ target }) => bucketTargets.includes(target)),
   ];
+  const dialogGame = libraryGames.find((game) =>
+    bucketTargets.includes(game.target) && getGameDialogId(game, { fromBucket: true }) === dialogId
+  );
 
-  function playFromBucket({ target }) {
-    openArchive(() => readBucketGameArchive(saved.url, target), "Downloading ZIP…");
-    playerSection.current.scrollIntoView({ block: "nearest" });
-  }
+  useEffect(() => {
+    if (dialogGame) {
+      document.getElementById(dialogId)?.querySelector(".game-detail-close")?.focus({ preventScroll: true });
+    }
+  }, [dialogGame, dialogId]);
 
   return (
     <>
@@ -128,14 +142,14 @@ export default function GameBucket({ catalog, officialUrl }) {
               value={url}
               placeholder="https://games.example.com"
               aria-describedby="game-bucket-help"
-              disabled={checking || playing}
+              disabled={checking}
               onChange={(event) => {
                 setUrl(event.target.value);
                 setChecked(null);
                 setNotice("");
               }}
             />
-            <button type="submit" className="secondary-button" disabled={checking || playing}>
+            <button type="submit" className="secondary-button" disabled={checking}>
               Check bucket
             </button>
           </div>
@@ -170,23 +184,18 @@ export default function GameBucket({ catalog, officialUrl }) {
                 Use this bucket
               </button>
             ) : (
-              <button type="button" className="secondary-button" disabled={checking || playing} onClick={() => save(null)}>
+              <button type="button" className="secondary-button" disabled={checking} onClick={() => save(null)}>
                 Remove bucket
               </button>
             )}
           </section>
         )}
       </dialog>
-      <div ref={playerSection}>
-        <p className="local-game-status" role="status">{status}</p>
-        {showPlayer && (
-          <>
-            <button type="button" className="secondary-button" onClick={closePlayer}>Close player</button>
-            <ZipGameFrame player={player} title="ScummVM bucket game" />
-          </>
-        )}
-      </div>
-      <LibraryCards games={libraryGames} bucketTargets={bucketTargets} disabled={playing} onPlay={playFromBucket} />
+      <LibraryCards games={libraryGames} bucketTargets={bucketTargets} />
+      {dialogGame && createPortal(
+        <GameDetailModal game={dialogGame} bucketPlayHref={getBucketPlayHref(dialogGame.target)} />,
+        document.body
+      )}
     </>
   );
 }

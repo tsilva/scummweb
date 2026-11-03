@@ -36,8 +36,9 @@ from your ScummWEB site. Select **Check bucket**, then **Use this bucket** to sa
 the URL and matches in this browser. The Library restores bucket cards from those
 saved matches when you return. Recheck the bucket after adding or removing ZIPs.
 
-Click a matched Library card to download its ZIP directly from the bucket and
-play it with the same size limits as local ZIPs. Connecting the official
+Click a matched Library card to open its details, then select **Play** to open
+its dedicated player page. The browser downloads the ZIP directly from the saved
+bucket and applies the same size limits as local ZIPs. Connecting the official
 ScummWEB bucket shows the games in its existing index and keeps the standard
 Library cards and player. For the English DOS EGA demo of The Secret of Monkey
 Island, upload the [ScummVM demo](https://www.scummvm.org/demos/) as `monkey-demo.zip`.

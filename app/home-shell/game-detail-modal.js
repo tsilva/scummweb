@@ -3,16 +3,17 @@ import DecorativeImage from "./decorative-image";
 import Icon from "./shell-icon";
 import { getDialogLinkProps, getGameDialogId, getHeroImageStyle } from "./shared";
 
-export default function GameDetailModal({ game }) {
-  const dialogId = getGameDialogId(game);
+export default function GameDetailModal({ game, bucketPlayHref }) {
+  const dialogId = getGameDialogId(game, { fromBucket: Boolean(bucketPlayHref) });
   const modalImage = game.heroImage || game.landscapeImage || game.posterImage;
+  const closeHref = bucketPlayHref ? "#library" : "#browse";
 
   return (
-    <div className="game-detail-modal" id={dialogId}>
+    <div className={`game-detail-modal${bucketPlayHref ? " is-open" : ""}`} id={dialogId}>
       <a
         aria-label={`Close details for ${game.displayTitle}`}
         className="game-detail-backdrop"
-        href="#browse"
+        href={closeHref}
       />
       <div
         aria-labelledby={`${dialogId}-title`}
@@ -31,7 +32,7 @@ export default function GameDetailModal({ game }) {
           <a
             aria-label={`Close details for ${game.displayTitle}`}
             className="game-detail-close"
-            href="#browse"
+            href={closeHref}
           >
             ×
           </a>
@@ -46,7 +47,11 @@ export default function GameDetailModal({ game }) {
             <p className="game-detail-summary">{game.summary}</p>
 
             <div className="game-detail-actions">
-              <LaunchButton game={game} entryPoint="library" />
+              {bucketPlayHref ? (
+                <a className="launch-button" href={bucketPlayHref}>Play</a>
+              ) : (
+                <LaunchButton game={game} entryPoint="library" />
+              )}
               {game.infoHref ? (
                 <a
                   className="secondary-button game-detail-license"
