@@ -1,0 +1,77 @@
+{
+  "project_name": "ScummWEB",
+  "assets": [
+    {
+      "key": "logo-1024",
+      "path": "logo/logo-1024.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "key": "icon-1024",
+      "path": "icon/icon-1024.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "key": "root-logo",
+      "path": "../../logo.png",
+      "width": 785,
+      "height": 908
+    },
+    {
+      "key": "favicon-16",
+      "path": "web-seo/favicon/favicon-16.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "key": "favicon-32",
+      "path": "web-seo/favicon/favicon-32.png",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "key": "favicon-48",
+      "path": "web-seo/favicon/favicon-48.png",
+      "width": 48,
+      "height": 48
+    },
+    {
+      "key": "favicon-ico",
+      "path": "web-seo/favicon/favicon.ico",
+      "width": 48,
+      "height": 48
+    },
+    {
+      "key": "apple-touch-icon",
+      "path": "web-seo/apple-touch-icon.png",
+      "width": 180,
+      "height": 180
+    },
+    {
+      "key": "android-chrome-192",
+      "path": "web-seo/android-chrome-192.png",
+      "width": 192,
+      "height": 192
+    },
+    {
+      "key": "android-chrome-512",
+      "path": "web-seo/android-chrome-512.png",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "key": "og-image",
+      "path": "web-seo/og-image-1200x630.png",
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "key": "site-webmanifest",
+      "path": "web-seo/site.webmanifest",
+      "width": 0,
+      "height": 0
+    }
+  ]
+}
