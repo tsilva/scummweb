@@ -27,7 +27,7 @@ test("homepage metadata uses ScummWEB branding and aligned social copy", () => {
   process.env.NEXT_PUBLIC_SITE_URL = "https://example.com";
 
   try {
-    const metadata = buildHomeMetadata(sampleGame);
+    const metadata = buildHomeMetadata();
 
     assert.equal(metadata.title, "ScummVM Online – Play Classic Adventure Games | ScummWEB");
     assert.equal(
@@ -39,12 +39,12 @@ test("homepage metadata uses ScummWEB branding and aligned social copy", () => {
     assert.equal(metadata.openGraph.siteName, SITE_NAME);
     assert.equal(
       metadata.openGraph.images[0].alt,
-      "Beneath a Steel Sky and other classic adventure games playable online on ScummWEB",
+      "ScummWEB classic point-and-click adventures logo with a retro monitor and a glowing green doorway",
     );
     assert.deepEqual(metadata.twitter.images, [
       {
         url: "https://example.com/opengraph-image",
-        alt: "Beneath a Steel Sky and other classic adventure games playable online on ScummWEB",
+        alt: "ScummWEB classic point-and-click adventures logo with a retro monitor and a glowing green doorway",
       },
     ]);
   } finally {

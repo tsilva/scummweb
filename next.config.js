@@ -37,6 +37,14 @@ function getSentryEnvironment() {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   distDir: getDistDir(),
+  rewrites() {
+    return [
+      {
+        source: "/opengraph-image",
+        destination: "/brand/web-seo/og-image-1200x630.png",
+      },
+    ];
+  },
   headers() {
     return [
       {

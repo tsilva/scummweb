@@ -107,6 +107,19 @@ acquisition. Analyze `game_launch_failed` separately. To report on the custom fi
 `game_slug`, `entry_point`, `launch_mode`, and `failure_reason` as event-scoped
 custom dimensions and `load_time_ms` as a custom metric.
 
+## Branding
+
+The README uses the Adventure Terminal [logo](../logo.png). The original
+ImageGen artwork lives in [`image-assets/sources/`](../image-assets/sources/).
+The [provenance record](../image-assets/provenance.json) records source and
+export hashes, and the [web asset manifest](../public/brand/manifest.json)
+lists the exports and their dimensions.
+
+The homepage serves the Adventure Terminal social card at `/opengraph-image`.
+Game pages use their individual social cards. The shell finalizer copies the
+browser and install icons from [`public/brand/web-seo/`](../public/brand/web-seo/)
+into the managed shell during ScummVM rebuilds.
+
 ## Catalog fixtures and artwork
 
 - The playable baseline is Beneath a Steel Sky from `downloads/bass-cd-1.2.zip`,

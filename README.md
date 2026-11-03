@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="scummvm-shell/logo-nav.png" alt="ScummWEB" width="320" />
+  <img src="logo.png" alt="ScummWEB" width="320" />
   <br />
   <!-- repo-tagline:start -->
   <strong>🕹️ Classic point-and-click adventures, playable instantly in your browser 🕹️</strong>

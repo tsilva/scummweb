@@ -15,7 +15,7 @@ import {
 export const dynamic = "force-static";
 
 export function generateMetadata() {
-  return buildHomeMetadata(getHomeShellData().featuredGame);
+  return buildHomeMetadata();
 }
 
 export default function HomePage() {
