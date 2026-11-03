@@ -37,6 +37,14 @@ function getSentryEnvironment() {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   distDir: getDistDir(),
+  headers() {
+    return [
+      {
+        source: "/scummvm.html",
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+      },
+    ];
+  },
   env: {
     NEXT_PUBLIC_SENTRY_ENABLED_DEFAULT: getSentryEnabledDefault(),
     NEXT_PUBLIC_SENTRY_ENVIRONMENT: getSentryEnvironment(),

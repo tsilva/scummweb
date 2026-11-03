@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   HOME_DESCRIPTION,
-  HOME_TITLE,
   SITE_NAME,
   buildGameDescription,
   buildGameMetadata,
@@ -30,10 +29,10 @@ test("homepage metadata uses ScummWEB branding and aligned social copy", () => {
   try {
     const metadata = buildHomeMetadata(sampleGame);
 
-    assert.equal(HOME_TITLE, "Play classic adventure games in your browser | ScummWEB");
+    assert.equal(metadata.title, "ScummVM Online – Play Classic Adventure Games | ScummWEB");
     assert.equal(
-      HOME_DESCRIPTION,
-      "Play Beneath a Steel Sky and more classic point-and-click adventures in your browser with ScummWEB.",
+      metadata.description,
+      "Play Beneath a Steel Sky and other free point-and-click adventures with ScummVM online, right in your browser.",
     );
     assert.equal(metadata.alternates.canonical, "https://example.com/");
     assert.equal(metadata.openGraph.url, "https://example.com/");

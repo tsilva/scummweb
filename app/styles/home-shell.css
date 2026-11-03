@@ -713,9 +713,25 @@
 }
 
 .section-mark {
+  flex-shrink: 0;
   width: 0.22rem;
   height: 1.75rem;
   background: var(--accent);
+}
+
+.game-play-guide {
+  contain-intrinsic-size: auto 14rem;
+}
+
+.game-play-guide p {
+  max-width: 62ch;
+  color: var(--ink-soft);
+}
+
+.game-details-link {
+  color: var(--accent-strong);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
 }
 
 .landscape-rail,
@@ -822,10 +838,17 @@
 }
 
 .poster-card {
+  display: block;
   position: relative;
   overflow: hidden;
   min-height: 16.5rem;
   background-color: var(--surface-high);
+}
+
+.poster-entry .game-details-link {
+  display: block;
+  padding: 0.65rem 0.5rem;
+  font-size: 0.85rem;
 }
 
 .poster-media {
