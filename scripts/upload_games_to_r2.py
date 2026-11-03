@@ -236,10 +236,12 @@ def delete_remote_keys(client, bucket: str, keys: List[str]) -> int:
         if not batch:
             continue
 
-        client.delete_objects(
+        result = client.delete_objects(
             Bucket=bucket,
             Delete={"Objects": [{"Key": key} for key in batch], "Quiet": True},
         )
+        if result.get("Errors"):
+            raise RuntimeError("R2 reported errors deleting game objects.")
         deleted += len(batch)
 
     return deleted
