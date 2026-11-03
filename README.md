@@ -36,10 +36,11 @@ after reloading the page.
 
 Open **Settings** using the gear icon in the top-right bar to connect a public
 HTTPS R2 or S3 bucket. Upload one game per ZIP at the bucket root using the
-exact names in the filename glossary. Allow cross-origin `HEAD` and `GET` requests
+exact names in the **ZIP guide** tab. Allow cross-origin `HEAD` and `GET` requests
 from your ScummWEB site. Connect only game files you’re authorized to download
 and play. If you host the files, you also need permission to make them publicly
-available. Select **Check bucket**, then **Use this bucket** to save
+available. In the **Connection** tab, select **Check bucket**, then select
+**Use this bucket** in the footer to save
 the URL and matches in this browser. The Library restores bucket cards from those
 saved matches when you return. Recheck the bucket after adding or removing ZIPs.
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { Settings, X } from "lucide-react";
+import { Check, RefreshCw, Settings, X } from "lucide-react";
 import {
   bucketStorageKey,
   bucketZipName,
@@ -16,6 +16,10 @@ import LibraryCards from "./library-cards";
 import { getGameDialogId } from "./shared";
 
 const settingsDialogId = "home-settings";
+const bucketTabs = [
+  { id: "connection", label: "Connection" },
+  { id: "guide", label: "ZIP guide" },
+];
 
 export function SettingsButton() {
   return (
@@ -38,6 +42,7 @@ export default function GameBucket({ catalog: games, officialUrl }) {
   const [checked, setChecked] = useState(null);
   const [checking, setChecking] = useState(false);
   const [notice, setNotice] = useState("");
+  const [activeTab, setActiveTab] = useState("connection");
   const [dialogId, setDialogId] = useState("");
 
   useEffect(() => {
@@ -101,7 +106,22 @@ export default function GameBucket({ catalog: games, officialUrl }) {
     }
   }
 
-  const result = checked?.targets.length ? checked : saved;
+  function handleTabKeyDown(event) {
+    const tab = {
+      ArrowLeft: activeTab === "connection" ? "guide" : "connection",
+      ArrowRight: activeTab === "connection" ? "guide" : "connection",
+      Home: "connection",
+      End: "guide",
+    }[event.key];
+    if (!tab) return;
+
+    event.preventDefault();
+    setActiveTab(tab);
+    document.getElementById(`game-bucket-tab-${tab}`)?.focus();
+  }
+
+  const canSave = Boolean(checked?.targets.length);
+  const result = canSave ? checked : saved;
   const matches = result ? games.filter(({ target }) => result.targets.includes(target)) : [];
   const isOfficial = result?.url === officialUrl;
   const bucketTargets = saved && saved.url !== officialUrl ? saved.targets : [];
@@ -117,85 +137,141 @@ export default function GameBucket({ catalog: games, officialUrl }) {
 
   return (
     <>
-      <dialog id={settingsDialogId} className="settings-dialog" aria-labelledby="home-settings-title">
+      <dialog
+        id={settingsDialogId}
+        className="settings-dialog"
+        aria-labelledby="home-settings-title"
+        onClose={() => setActiveTab("connection")}
+      >
         <div className="settings-dialog-header">
-          <h2 id="home-settings-title">Settings</h2>
+          <h2 id="home-settings-title">Game bucket</h2>
           <form method="dialog">
             <button type="submit" className="nav-icon-link" aria-label="Close settings">
               <X className="icon" aria-hidden="true" />
             </button>
           </form>
         </div>
-        <h3>Connect a game bucket{saved ? " · Bucket saved" : ""}</h3>
-        <form className="game-bucket-form" onSubmit={check}>
-          <label htmlFor="game-bucket-url">Public bucket URL</label>
-          <div className="game-bucket-actions">
-            <input
-              id="game-bucket-url"
-              type="url"
-              required
-              value={url}
-              placeholder="https://games.example.com"
-              aria-describedby="game-bucket-help"
-              disabled={checking}
-              onChange={(event) => {
-                setUrl(event.target.value);
-                setChecked(null);
-                setNotice("");
-              }}
-            />
-            <button type="submit" className="secondary-button" disabled={checking}>
-              Check bucket
-            </button>
-          </div>
-          <p id="game-bucket-help">
-            Put one ZIP per game at the bucket root. Use the exact filenames below and allow
-            browser access from ScummWeb.
-          </p>
-        </form>
-
-        <details className="game-bucket-glossary">
-          <summary>ZIP filename glossary · {games.length} games</summary>
-          <table>
-            <thead><tr><th scope="col">Game</th><th scope="col">Required filename</th></tr></thead>
-            <tbody>
-              {games.map(({ target, title }) => (
-                <tr key={target}><td>{title}</td><td><code>{bucketZipName(target)}</code></td></tr>
-              ))}
-            </tbody>
-          </table>
-        </details>
-
-        <p className="local-game-status" role="status">{notice}</p>
-        {result && (
-          <section className="game-bucket-matches" aria-label="Bucket matches">
-            <h4>{matches.length} of {games.length} games {checked?.targets.length ? "found" : "saved"}</h4>
-            {isOfficial && <p>These games are already in the Library. Use the existing game cards to play.</p>}
-            <ul>
-              {matches.map(({ target, displayTitle }) => <li key={target}>{displayTitle}</li>)}
-            </ul>
-            {checked?.targets.length ? (
-              <>
-                <p id="game-bucket-rights-notice">
-                  Only connect a bucket containing game files you’re authorized to download and play.
-                  If you host the files yourself, make sure you also have permission to make them publicly available.
-                </p>
-                <button
-                  type="button"
-                  className="secondary-button"
-                  aria-describedby="game-bucket-rights-notice"
-                  onClick={() => save(checked)}
-                >
-                  Use this bucket
-                </button>
-              </>
-            ) : (
-              <button type="button" className="secondary-button" disabled={checking} onClick={() => save(null)}>
-                Remove bucket
+        <div className="game-bucket-tabs" role="tablist" aria-label="Game bucket" onKeyDown={handleTabKeyDown}>
+          {bucketTabs.map(({ id, label }) => {
+            const selected = activeTab === id;
+            return (
+              <button
+                key={id}
+                type="button"
+                role="tab"
+                id={`game-bucket-tab-${id}`}
+                aria-controls={`game-bucket-panel-${id}`}
+                aria-selected={selected}
+                tabIndex={selected ? 0 : -1}
+                onClick={() => setActiveTab(id)}
+              >
+                {label}
               </button>
-            )}
-          </section>
-        )}
+            );
+          })}
+        </div>
+
+        <div className="game-bucket-body">
+          <div
+            role="tabpanel"
+            id="game-bucket-panel-connection"
+            aria-labelledby="game-bucket-tab-connection"
+            hidden={activeTab !== "connection"}
+          >
+            <form className="game-bucket-form" onSubmit={check}>
+              <label htmlFor="game-bucket-url">Public bucket URL</label>
+              <div className="game-bucket-actions">
+                <input
+                  id="game-bucket-url"
+                  type="url"
+                  required
+                  value={url}
+                  placeholder="https://games.example.com"
+                  disabled={checking}
+                  onChange={(event) => {
+                    setUrl(event.target.value);
+                    setChecked(null);
+                    setNotice("");
+                  }}
+                />
+                <button type="submit" className="game-bucket-button" disabled={checking}>
+                  <RefreshCw className="icon" aria-hidden="true" />
+                  {checking ? "Checking…" : "Check bucket"}
+                </button>
+              </div>
+            </form>
+
+            <div role="status">
+              {notice && <p className="game-bucket-notice">{notice}</p>}
+              {result && (
+                <section className="game-bucket-matches" aria-label="Bucket matches">
+                  <span className="game-bucket-match-icon" aria-hidden="true">
+                    <Check className="icon" strokeWidth={3} />
+                  </span>
+                  <ul>
+                    {matches.map(({ target, displayTitle }) => (
+                      <li key={target}>
+                        <strong>{displayTitle}</strong>
+                        <code>{bucketZipName(target)}</code>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="game-bucket-count">
+                    {matches.length} of {games.length} {canSave ? "found" : "saved"}
+                  </p>
+                  {isOfficial && (
+                    <p className="game-bucket-official">These games are already available in the Library.</p>
+                  )}
+                </section>
+              )}
+            </div>
+          </div>
+
+          <div
+            className="game-bucket-guide"
+            role="tabpanel"
+            id="game-bucket-panel-guide"
+            aria-labelledby="game-bucket-tab-guide"
+            tabIndex={0}
+            hidden={activeTab !== "guide"}
+          >
+            <p>
+              Put one ZIP per game at the bucket root. Use the exact filenames below and allow
+              browser access from ScummWeb.
+            </p>
+            <table>
+              <thead><tr><th scope="col">Game</th><th scope="col">Required filename</th></tr></thead>
+              <tbody>
+                {games.map(({ target, title }) => (
+                  <tr key={target}><td>{title}</td><td><code>{bucketZipName(target)}</code></td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <footer className="game-bucket-footer">
+          <div>
+            {saved && <p className="game-bucket-saved">Bucket saved</p>}
+            <p id="game-bucket-rights-notice">
+              Only connect files you’re allowed to download and play, and share publicly if you host them.
+            </p>
+          </div>
+          {canSave ? (
+            <button
+              type="button"
+              className="game-bucket-button game-bucket-button-primary"
+              aria-describedby="game-bucket-rights-notice"
+              onClick={() => save(checked)}
+            >
+              Use this bucket
+            </button>
+          ) : saved && (
+            <button type="button" className="game-bucket-button" disabled={checking} onClick={() => save(null)}>
+              Remove bucket
+            </button>
+          )}
+        </footer>
       </dialog>
       <LibraryCards games={games} bucketTargets={bucketTargets} />
       {dialogGame && createPortal(
