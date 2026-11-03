@@ -13,6 +13,7 @@ import { useBootState } from "./game-player/useBootState";
 import { useImmersiveMode } from "./game-player/useImmersiveMode";
 import { useTouchClickActions } from "./game-player/useTouchClickMode";
 import { useTouchCursorPad } from "./game-player/useTouchCursorPad";
+import { sendZipGameFiles } from "./home-shell/zip-game-player";
 import { recordRecentGameTarget } from "./recent-games";
 
 const SCUMMWEB_FRAME_MESSAGE_SOURCE = "scummweb";
@@ -113,10 +114,12 @@ function focusGameCanvas(frame) {
   }
 }
 
-export default function GameRouteFrame({ game = null, src, target, title, skipIntro: intro = null }) {
+export default function GameRouteFrame({ game = null, src, target, title, skipIntro: intro = null, loadArchive }) {
   const shellRef = useRef(null);
   const frameRef = useRef(null);
-  const [launchAnalytics] = useState(() => createGameLaunchAnalytics(game?.slug));
+  const archiveFiles = useRef(null);
+  const [archiveError, setArchiveError] = useState("");
+  const [launchAnalytics] = useState(() => createGameLaunchAnalytics(loadArchive ? null : game?.slug));
   const [frameSrc, setFrameSrc] = useState(null);
   const [isResuming, setIsResuming] = useState(false);
   const [exitHref, setExitHref] = useState("/");
@@ -138,7 +141,8 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     skipIntro,
     skipIntroConsumed,
   });
-  const showBootOverlay = !bootState.hasBootCompleted || bootState.hasBootFailed;
+  const hasBootFailed = Boolean(archiveError) || bootState.hasBootFailed;
+  const showBootOverlay = !bootState.hasBootCompleted || hasBootFailed;
   const hasBootOverlayDismissed = !showBootOverlay;
   const showMobileOverlay =
     hasBootOverlayDismissed &&
@@ -147,7 +151,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
   const mobileControlsReady =
     immersiveMode.isMobileViewport &&
     bootState.hasBootCompleted &&
-    !bootState.hasBootFailed &&
+    !hasBootFailed &&
     !showMobileOverlay;
   const touchCursorPad = useTouchCursorPad({
     enabled: mobileControlsReady && immersiveMode.isLandscapeViewport,
@@ -155,6 +159,11 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
   });
 
   useEffect(() => {
+    const archiveBootTimer = loadArchive && frameSrc ? window.setTimeout(() => {
+      archiveFiles.current = null;
+      setArchiveError("ScummVM took too long to start. Reload this page to try again.");
+    }, 90000) : null;
+
     function navigateHome(href = "/") {
       window.location.replace(getSafeHref(href));
     }
@@ -162,6 +171,26 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     function handleMessage(event) {
       if (event.origin !== window.location.origin) {
         return;
+      }
+
+      if (loadArchive && event.source === frameRef.current?.contentWindow) {
+        if (event.data?.type === "scummweb:local-game-ready" && archiveFiles.current) {
+          sendZipGameFiles(event.source, archiveFiles.current);
+          archiveFiles.current = null;
+          return;
+        }
+
+        if (event.data?.type === "scummweb:local-game-status") {
+          window.clearTimeout(archiveBootTimer);
+          if (event.data.status === "running") {
+            setReadySignal({ reason: "archive-running" });
+          } else {
+            setArchiveError(event.data.status === "undetected"
+              ? "ScummVM could not detect a supported game in this ZIP."
+              : "ScummVM could not start this game. Reload this page to try again.");
+          }
+          return;
+        }
       }
 
       if (event.data?.type === "scummvm-ready") {
@@ -211,29 +240,42 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     window.addEventListener("message", handleMessage);
 
     return () => {
+      window.clearTimeout(archiveBootTimer);
       window.removeEventListener("message", handleMessage);
     };
-  }, [frameSrc, launchAnalytics, target]);
+  }, [frameSrc, launchAnalytics, loadArchive, target]);
 
   useEffect(() => {
-    let cancelled = false;
+    const controller = new AbortController();
     setReadySignal(null);
     setSkipIntroConsumed(false);
 
     async function openGame() {
+      if (loadArchive) {
+        try {
+          const files = await loadArchive(controller.signal);
+          if (controller.signal.aborted) return;
+          archiveFiles.current = files;
+          setFrameSrc(src);
+        } catch (error) {
+          if (!controller.signal.aborted) setArchiveError(error.message);
+        }
+        return;
+      }
+
       launchAnalytics.start();
       const slot = window.location.hash === "#continue"
         ? await getLatestBrowserSave(game, scummvmAssetVersion)
         : null;
-      if (cancelled) return;
+      if (controller.signal.aborted) return;
 
       setIsResuming(slot !== null);
       setFrameSrc(slot === null ? src : buildSaveSlotSrc(src, target, slot));
     }
 
     void openGame();
-    return () => { cancelled = true; };
-  }, [game, launchAnalytics, src, target]);
+    return () => { controller.abort(); };
+  }, [game, launchAnalytics, loadArchive, src, target]);
 
   useEffect(() => {
     if (bootState.hasBootFailed) launchAnalytics.fail("startup_error");
@@ -274,12 +316,12 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
   }, [frameSrc, isFillScreenAspect]);
 
   useEffect(() => {
-    setExitHref(getExitHrefFromSrc(frameSrc));
-  }, [frameSrc]);
+    setExitHref(getExitHrefFromSrc(frameSrc || src));
+  }, [frameSrc, src]);
 
   useEffect(() => {
-    recordRecentGameTarget(target);
-  }, [target]);
+    if (!loadArchive) recordRecentGameTarget(target);
+  }, [loadArchive, target]);
 
   useEffect(() => {
     let focusTimer = 0;
@@ -460,9 +502,9 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     <div className="game-route-shell" ref={shellRef}>
       <GameBootOverlay
         bootProgressPercent={bootProgressPercent}
-        bootStatusText={bootState.bootStatusText}
+        bootStatusText={archiveError || (loadArchive && !frameSrc ? "Downloading game ZIP…" : bootState.bootStatusText)}
         game={game}
-        hasBootFailed={bootState.hasBootFailed}
+        hasBootFailed={hasBootFailed}
         onSkipIntro={handleSkipIntroClick}
         showSkipIntroAction={showSkipIntroOverlayAction}
         showBootOverlay={showBootOverlay}

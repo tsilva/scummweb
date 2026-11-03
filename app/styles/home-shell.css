@@ -517,7 +517,8 @@ button.nav-icon-link {
     var(--game-detail-pad-left);
 }
 
-.game-detail-modal:target {
+.game-detail-modal:target,
+.game-detail-modal.is-open {
   display: flex;
 }
 
@@ -934,13 +935,6 @@ button.nav-icon-link {
   overflow: hidden;
   min-height: 16.5rem;
   background-color: var(--surface-high);
-}
-
-.bucket-poster-button {
-  width: 100%;
-  border: 0;
-  color: inherit;
-  text-align: left;
 }
 
 .bucket-poster-placeholder {

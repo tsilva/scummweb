@@ -1,5 +1,5 @@
-export function getGameDialogId(game) {
-  return `game-${game.slug || game.target}`;
+export function getGameDialogId(game, { fromBucket = false } = {}) {
+  return fromBucket ? `bucket-game-${game.target}` : `game-${game.slug || game.target}`;
 }
 
 export function getDialogLinkProps(href) {

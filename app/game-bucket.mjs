@@ -54,11 +54,12 @@ export async function checkGameBucket(url, games, officialUrl, { signal, localIn
   return matches;
 }
 
-export async function readBucketGameArchive(url, target) {
+export async function readBucketGameArchive(url, target, { signal } = {}) {
+  const timeout = AbortSignal.timeout(120_000);
   const response = await fetch(bucketZipUrl(url, target), {
     credentials: "omit",
     redirect: "error",
-    signal: AbortSignal.timeout(120_000),
+    signal: signal ? AbortSignal.any([signal, timeout]) : timeout,
   }).catch(() => null);
   if (!response?.ok || !response.body) {
     throw new Error("Could not download the ZIP. Check that it is public and allows browser access.");
