@@ -819,15 +819,6 @@
   background: var(--accent);
 }
 
-.game-play-guide {
-  contain-intrinsic-size: auto 14rem;
-}
-
-.game-play-guide p {
-  max-width: 62ch;
-  color: var(--ink-soft);
-}
-
 .game-details-link {
   color: var(--accent-strong);
   text-decoration: underline;

@@ -13,7 +13,7 @@ tools/
 vendor/
 public/games/
 public/.scummvm-bundle.stamp
-scripts/__pycache__/
+__pycache__/
 .vercel
 .env
 .env.sentry-build-plugin
