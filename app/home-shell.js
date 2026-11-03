@@ -1,5 +1,4 @@
 import GameDetailModal from "./home-shell/game-detail-modal";
-import LibraryCards from "./home-shell/library-cards";
 import Icon from "./home-shell/shell-icon";
 import HeroStage from "./home-shell/hero-stage";
 import HomeHero from "./home-shell/home-hero";
@@ -90,11 +89,7 @@ export default function HomeShell({
               </h2>
             </div>
 
-            {isHomePage ? (
-              <SourceLibrary catalog={catalog} officialUrl={getGamesOrigin()} />
-            ) : (
-              <LibraryCards games={catalog} />
-            )}
+            <SourceLibrary catalog={catalog} officialUrl={getGamesOrigin()} />
           </section>
         </div>
       </main>
