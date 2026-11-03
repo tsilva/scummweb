@@ -5,6 +5,7 @@ import GameBootOverlay from "./game-player/GameBootOverlay";
 import GameMobileOverlay from "./game-player/GameMobileOverlay";
 import GamePlayerControls from "./game-player/GamePlayerControls";
 import GameTouchCursorPad from "./game-player/GameTouchCursorPad";
+import { createGameLaunchAnalytics } from "./game-player/game-launch-analytics.mjs";
 import { dispatchSyntheticKeypressSequence } from "./game-player/keyboard";
 import { useBootState } from "./game-player/useBootState";
 import { useImmersiveMode } from "./game-player/useImmersiveMode";
@@ -119,7 +120,8 @@ function focusGameCanvas(frame) {
 export default function GameRouteFrame({ game = null, src, target, title, skipIntro = null }) {
   const shellRef = useRef(null);
   const frameRef = useRef(null);
-  const [frameSrc, setFrameSrc] = useState(src);
+  const [launchAnalytics] = useState(() => createGameLaunchAnalytics(game?.slug));
+  const [frameSrc, setFrameSrc] = useState(null);
   const [exitHref, setExitHref] = useState("/");
   const [isFillScreenAspect, setIsFillScreenAspect] = useState(false);
   const [readySignal, setReadySignal] = useState(null);
@@ -186,6 +188,12 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
           reason: event.data?.reason || null,
           reportedAt: event.data?.emittedAt || null,
         });
+
+        if (event.data.reason === "rendered-frame-detected") {
+          launchAnalytics.confirm();
+        } else if (event.data.reason === "rendered-frame-timeout") {
+          launchAnalytics.fail("first_frame_timeout");
+        }
         return;
       }
 
@@ -193,6 +201,12 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
         return;
       }
 
+      if (
+        event.source === frameRef.current?.contentWindow &&
+        Number.isFinite(event.data.status) && event.data.status !== 0
+      ) {
+        launchAnalytics.fail("startup_error");
+      }
       navigateHome(event.data.href || "/");
     }
 
@@ -201,13 +215,25 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
     return () => {
       window.removeEventListener("message", handleMessage);
     };
-  }, [frameSrc, target]);
+  }, [frameSrc, launchAnalytics, target]);
 
   useEffect(() => {
+    launchAnalytics.start();
     setFrameSrc(src);
     setReadySignal(null);
     setSkipIntroConsumed(false);
-  }, [src]);
+  }, [launchAnalytics, src]);
+
+  useEffect(() => {
+    if (bootState.hasBootFailed) launchAnalytics.fail("startup_error");
+  }, [bootState.hasBootFailed, launchAnalytics]);
+
+  const canCountPlayTime =
+    readySignal?.reason === "rendered-frame-detected" && !showBootOverlay && !showMobileOverlay;
+
+  useEffect(() => {
+    if (canCountPlayTime) return launchAnalytics.watchPlayTime();
+  }, [canCountPlayTime, launchAnalytics]);
 
   useEffect(() => {
     const iframe = frameRef.current;
@@ -464,7 +490,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
         onPointerUp={touchCursorPad.handlePointerUp}
         showTouchCursorPad={showTouchCursorPad}
       />
-      <iframe
+      {frameSrc ? <iframe
         allow="autoplay; fullscreen"
         className="game-route-frame"
         data-scummvm-route-frame="true"
@@ -473,7 +499,7 @@ export default function GameRouteFrame({ game = null, src, target, title, skipIn
         loading="eager"
         src={frameSrc}
         title={title}
-      />
+      /> : null}
     </div>
   );
 }

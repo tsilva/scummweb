@@ -128,7 +128,7 @@ export default function HomeShell({
               <p className="hero-summary">{heroSummary}</p>
 
               <div className="hero-actions">
-                <LaunchButton href={featuredGame.playHref} label={primaryActionLabel} />
+                <LaunchButton href={featuredGame.playHref} entryPoint={isHomePage ? "hero" : "game_detail"} label={primaryActionLabel} />
                 <a className="secondary-button" href={secondaryActionHref}>
                   {!isHomePage ? <Icon name="info" /> : null}
                   <span>{secondaryActionLabel}</span>
