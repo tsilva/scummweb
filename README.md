@@ -27,7 +27,9 @@ On the homepage, use **Play a local ZIP** to drop or choose an archive containin
 one ScummVM game. The dedicated player page unpacks it and launches the first
 game it detects. Put the complete game data at the root of the ZIP or inside a
 single enclosing folder.
-Archives can be up to 128 MiB compressed and 256 MiB unpacked. The game files
+Archives can be up to 128 MiB compressed and 256 MiB unpacked. The player allows
+up to two minutes between startup milestones, including loading the emulator
+and handing it the unpacked files. The game files
 stay in browser memory until you leave the player page. Choose the ZIP again
 after reloading the page.
 

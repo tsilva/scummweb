@@ -19,6 +19,7 @@ import { recordRecentGameTarget } from "./recent-games";
 const SCUMMWEB_FRAME_MESSAGE_SOURCE = "scummweb";
 const SCUMMWEB_ASPECT_RATIO_MESSAGE_TYPE = "scummweb-aspect-ratio";
 const ARCHIVE_FRAME_NAVIGATION_TIMEOUT_MS = 8000;
+const ARCHIVE_BOOT_IDLE_TIMEOUT_MS = 120_000;
 
 function shouldHideScummvmMenuButton(game, target) {
   return (
@@ -180,10 +181,26 @@ export default function GameRouteFrame({
       setFrameSrc(`${retryUrl.pathname}${retryUrl.search}${retryUrl.hash}`);
     }, ARCHIVE_FRAME_NAVIGATION_TIMEOUT_MS) : null;
 
-    const archiveBootTimer = loadArchive && frameSrc ? window.setTimeout(() => {
-      archiveFiles.current = null;
-      setArchiveError("ScummVM took too long to start. Exit the player and try again.");
-    }, 90000) : null;
+    const archiveFrame = loadArchive && frameSrc ? frameRef.current : null;
+    let archiveBootTimer;
+
+    function restartArchiveBootTimer() {
+      window.clearTimeout(archiveBootTimer);
+      archiveBootTimer = window.setTimeout(() => {
+        archiveFiles.current = null;
+        setArchiveError("ScummVM took too long to start. Exit the player and try again.");
+      }, ARCHIVE_BOOT_IDLE_TIMEOUT_MS);
+    }
+
+    function stopArchiveBootTimer() {
+      window.clearTimeout(archiveBootTimer);
+      archiveFrame?.removeEventListener("load", restartArchiveBootTimer);
+    }
+
+    if (archiveFrame) {
+      restartArchiveBootTimer();
+      archiveFrame.addEventListener("load", restartArchiveBootTimer, { once: true });
+    }
 
     function navigateHome(href = "/") {
       window.location.replace(getSafeHref(href));
@@ -198,11 +215,12 @@ export default function GameRouteFrame({
         if (event.data?.type === "scummweb:local-game-ready" && archiveFiles.current) {
           sendZipGameFiles(event.source, archiveFiles.current);
           archiveFiles.current = null;
+          restartArchiveBootTimer();
           return;
         }
 
         if (event.data?.type === "scummweb:local-game-status") {
-          window.clearTimeout(archiveBootTimer);
+          stopArchiveBootTimer();
           if (event.data.status === "running") {
             setReadySignal({ reason: "archive-running" });
           } else {
@@ -263,7 +281,7 @@ export default function GameRouteFrame({
 
     return () => {
       window.clearTimeout(navigationTimer);
-      window.clearTimeout(archiveBootTimer);
+      stopArchiveBootTimer();
       window.removeEventListener("message", handleMessage);
     };
   }, [frameSrc, launchAnalytics, loadArchive, src, target]);
