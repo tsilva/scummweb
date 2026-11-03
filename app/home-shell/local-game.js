@@ -1,60 +1,90 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Download } from "lucide-react";
+import { captureGameDrop } from "../local-game-import.mjs";
 import { AddWebGamesButton } from "./game-bucket";
 
-export async function chooseZipHandle() {
-  const [handle] = await window.showOpenFilePicker({
+export function chooseZipHandles(multiple) {
+  return window.showOpenFilePicker({
+    multiple,
     types: [{ description: "Game ZIP", accept: { "application/zip": [".zip"] } }],
   });
-  return handle;
 }
 
-export default function LocalGame({ addLocal, chooseZip, disabled }) {
+export default function LocalGame({ importRoots, chooseZip, chooseFolder, disabled }) {
   const [dragging, setDragging] = useState(false);
+  const dragDepth = useRef(0);
+
+  useEffect(() => {
+    const isFileDrag = (event) => event.dataTransfer?.types.includes("Files");
+    function over(event) {
+      if (!isFileDrag(event)) return;
+      event.preventDefault();
+      event.dataTransfer.dropEffect = disabled ? "none" : "copy";
+      setDragging(!disabled);
+    }
+    function enter(event) {
+      if (!isFileDrag(event)) return;
+      dragDepth.current++;
+      over(event);
+    }
+    function leave(event) {
+      if (!isFileDrag(event) && !dragDepth.current) return;
+      dragDepth.current = Math.max(0, dragDepth.current - 1);
+      if (!dragDepth.current) clear();
+    }
+    function clear() {
+      dragDepth.current = 0;
+      setDragging(false);
+    }
+    function drop(event) {
+      if (!isFileDrag(event)) return;
+      event.preventDefault();
+      clear();
+      if (disabled) return;
+      const roots = captureGameDrop(event.dataTransfer);
+      document.getElementById("library")?.scrollIntoView({ behavior: "instant" });
+      void importRoots(roots);
+    }
+
+    window.addEventListener("dragenter", enter);
+    window.addEventListener("dragover", over);
+    window.addEventListener("dragleave", leave);
+    window.addEventListener("dragend", clear);
+    window.addEventListener("blur", clear);
+    window.addEventListener("drop", drop);
+    return () => {
+      window.removeEventListener("dragenter", enter);
+      window.removeEventListener("dragover", over);
+      window.removeEventListener("dragleave", leave);
+      window.removeEventListener("dragend", clear);
+      window.removeEventListener("blur", clear);
+      window.removeEventListener("drop", drop);
+    };
+  }, [disabled, importRoots]);
 
   return (
-    <div
-      id="local-game-heading"
-      className={`local-game-drop${dragging ? " is-dragging" : ""}`}
-      onDragOver={(event) => {
-        if (!event.dataTransfer.types.includes("Files")) return;
-        event.preventDefault();
-        event.dataTransfer.dropEffect = disabled ? "none" : "copy";
-        setDragging(!disabled);
-      }}
-      onDragLeave={(event) => {
-        if (!(event.relatedTarget instanceof Node) || !event.currentTarget.contains(event.relatedTarget)) {
-          setDragging(false);
-        }
-      }}
-      onDrop={(event) => {
-        if (!event.dataTransfer.types.includes("Files")) return;
-        event.preventDefault();
-        setDragging(false);
-        if (disabled) return;
-
-        const { files, items } = event.dataTransfer;
-        if (files.length !== 1) {
-          addLocal(() => { throw new Error("Drop one game ZIP at a time."); });
-          return;
-        }
-        const file = files[0];
-        // Capture the handle before leaving the drop event's synchronous turn.
-        const item = [...items].find(({ kind }) => kind === "file");
-        addLocal(async () => {
-          const handle = await item?.getAsFileSystemHandle?.().catch(() => null);
-          return { handle, file };
-        });
-      }}
-    >
-      <p>Drop a ScummVM game ZIP here. Your game files stay on this device.</p>
+    <div id="local-game-heading" className="local-game-drop">
+      <p>Drop game ZIPs or folders anywhere on this page. Your files stay on this device.</p>
       <div className="game-source-actions">
         <button type="button" className="secondary-button" disabled={disabled} onClick={() => chooseZip()}>
-          Choose ZIP
+          Choose ZIPs
+        </button>
+        <button type="button" className="secondary-button" disabled={disabled} onClick={() => chooseFolder()}>
+          Choose folder
         </button>
         <AddWebGamesButton disabled={disabled} />
       </div>
+      {dragging && (
+        <div className="game-drop-overlay" role="status">
+          <div className="game-drop-message">
+            <Download aria-hidden="true" size={32} />
+            <strong>Drop to add games to your library</strong>
+            <span>Game ZIPs and folders stay on this device.</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

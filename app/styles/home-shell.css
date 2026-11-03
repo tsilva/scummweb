@@ -1392,13 +1392,57 @@ button.nav-icon-link {
   border-radius: 0.75rem;
 }
 
-.local-game-drop.is-dragging {
-  outline: 2px solid currentColor;
-  outline-offset: -4px;
-}
-
 .local-game-drop p {
   margin: 0;
+}
+
+.game-drop-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(12, 12, 12, 0.88);
+  pointer-events: none;
+}
+
+.game-drop-message {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  width: min(100%, 34rem);
+  padding: clamp(1.5rem, 5vw, 3rem);
+  border: 2px dashed var(--accent-strong);
+  border-radius: 0.75rem;
+  background: var(--surface-low);
+  text-align: center;
+}
+
+.game-drop-message svg {
+  color: var(--accent-strong);
+}
+
+.game-drop-message strong {
+  font-size: clamp(1.15rem, 3vw, 1.6rem);
+}
+
+.game-import-card {
+  display: grid;
+  align-content: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px dashed var(--accent-strong);
+  overflow-wrap: anywhere;
+}
+
+.game-import-card span {
+  font-size: 0.85rem;
+}
+
+.game-import-card progress {
+  width: 100%;
+  accent-color: var(--accent-strong);
 }
 
 .local-game-status {
