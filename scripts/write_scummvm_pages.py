@@ -18,7 +18,7 @@ bundle_count = len(games)
 
 
 def display_title(value: str) -> str:
-    if " (" in value and value.endswith(")"):
+    if " (" in value and value.endswith(")") and not value.endswith(" (Demo)"):
         return value.rsplit(" (", 1)[0]
     return value
 

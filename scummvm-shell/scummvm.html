@@ -71,6 +71,33 @@ function buildVersionedAssetUrl(assetPath) {
   return resolvedUrl.toString();
 }
 
+function findIniSection(iniText, name) {
+  const sections = iniText.split(/^(?=\[)/m);
+  return sections.find(section => section.split(/\r?\n/, 1)[0].trim() === `[${name}]`);
+}
+
+async function installMissingCatalogTarget() {
+  const target = decodeURI(window.location.hash.slice(1)).trim().split(/\s+/).at(-1);
+  if (!/^[a-z0-9][a-z0-9_-]*$/.test(target)) return;
+
+  const configPath = "/home/web_user/scummvm.ini";
+  const savedConfig = FS.readFile(configPath, { encoding: "utf8" });
+  if (findIniSection(savedConfig, target)) return;
+
+  const response = await fetch(buildVersionedAssetUrl("scummvm.ini"));
+  if (!response.ok) throw new Error(`Could not load the bundled ScummVM catalog (${response.status})`);
+  const section = findIniSection(await response.text(), target);
+  if (!section) return;
+
+  // Re-read after the fetch so we keep changes made by another player tab.
+  const currentConfig = FS.readFile(configPath, { encoding: "utf8" });
+  if (!findIniSection(currentConfig, target)) {
+    FS.writeFile(configPath, `${currentConfig.trimEnd()}\n\n${section.trimEnd()}\n`);
+  }
+}
+
+const defaultSavePath = "/home/web_user/.local/share/scummvm/saves";
+
 function getConfiguredSavePath() {
   try {
     const iniText = FS.readFile("/home/web_user/scummvm.ini", { encoding: "utf8" });
@@ -84,7 +111,7 @@ function getConfiguredSavePath() {
     }
   } catch {}
 
-  return "/home/web_user/.local/share/scummvm/saves";
+  return defaultSavePath;
 }
 
 function ensureDirectory(directoryPath) {
@@ -178,7 +205,11 @@ function setupSkipIntroSaves() {
     });
 }
 
+let localGameStatus;
+
 function reportLocalGameStatus(status) {
+  if (localGameStatus === status || localGameStatus === "undetected" || localGameStatus === "error") return;
+  localGameStatus = status;
   window.parent.postMessage({ type: "scummweb:local-game-status", status }, window.location.origin);
 }
 
@@ -213,7 +244,11 @@ function setupFilesystem() {
   addRunDependency("scummvm-fs-setup");
   performance.mark("scummweb:wasm-ready");
   const localFilesReady = setupLocalFilesystem()
-    .then(() => isLocalGame ? setupLocalGame() : setupSkipIntroSaves());
+    // The native save manager can create the last directory only.
+    .then(() => ensureDirectory(defaultSavePath))
+    .then(() => isLocalGame
+      ? setupLocalGame()
+      : installMissingCatalogTarget().then(setupSkipIntroSaves));
   Promise.all([window.ScummvmFSReady, localFilesReady])
     .then(([{ ScummvmFS, filesystems }]) => {
       for (const { name, index } of filesystems) {
@@ -231,13 +266,14 @@ function setupFilesystem() {
       }
     );
 }var Module={preRun:[setupFilesystem],postRun:[],print:function(){var e=document.getElementById("output");return e&&(e.value=""),function(t){arguments.length>1&&(t=Array.prototype.slice.call(arguments).join(" ")),console.log(t),e&&(e.value+=t+"\n",e.scrollTop=e.scrollHeight)}}(),printErr:function(e){arguments.length>1&&(e=Array.prototype.slice.call(arguments).join(" ")),console.error(e)},canvas:function(){var e=document.getElementById("canvas");return e.addEventListener("webglcontextlost",(function(e){alert("WebGL context lost. You will need to reload the page."),e.preventDefault()}),!1),e}(),setStatus:function(e){if(console.log((new Date).toLocaleTimeString()+" "+e),Module.setStatus.last||(Module.setStatus.last={time:Date.now(),text:""}),e!==Module.setStatus.last.text){var t=e.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/),n=Date.now();t&&n-Module.setStatus.last.time<30||(Module.setStatus.last.time=n,Module.setStatus.last.text=e,t?(e=t[1],progressElement.value=100*parseInt(t[2]),progressElement.max=100*parseInt(t[4]),progressElement.hidden=!1):(progressElement.value=null,progressElement.max=null,progressElement.hidden=!0),e&&e.length>0?(e+="⚡️",statusElement.style.display="block"):statusElement.style.display="none",statusElement.innerHTML=e)}},totalDependencies:0,monitorRunDependencies:function(e){this.totalDependencies=Math.max(this.totalDependencies,e),Module.setStatus(e?"Preparing... ("+(this.totalDependencies-e)+"/"+this.totalDependencies+")":loadingDoneMessage())}};Module.setStatus("Downloading ScummVM..."),window.onerror=function(){statusElement.classList.add("error"),Module.setStatus("Exception thrown, see JavaScript console"),Module.setStatus=function(e){e&&Module.printErr("[post-exception status] "+e)}}</script><script>(function(){
-const exitTo=new URLSearchParams(window.location.search).get("exitTo");
+const exitTo=new URLSearchParams(window.location.search).get("exitTo")||(isLocalGame?"/":null);
 if(!exitTo)return;
 const resolvedExitHref=(()=>{try{const resolvedUrl=new URL(exitTo,window.location.href);return resolvedUrl.origin===window.location.origin?`${resolvedUrl.pathname}${resolvedUrl.search}${resolvedUrl.hash}`:"/"}catch{return "/"}})();
 const skipIntroTarget=new URLSearchParams(window.location.search).get("skipIntroTarget");
 const launchArgs=decodeURI(window.location.hash.slice(1)).trim().split(/\s+/);
 const target=skipIntroTarget||launchArgs.at(-1)||"";
-const launchPattern=target?new RegExp(`User picked target '${target.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")}'`):null;
+const launchPattern=isLocalGame ? /^User picked target '/m :
+  target ? new RegExp(`User picked target '${target.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")}'`) : null;
 const escapeRedirectWindowMs=1500;
 let didHandleExit=false;
 let hasUserInteracted=false;
@@ -268,6 +304,10 @@ const emitGameReady = (reason) => {
   if (!target || readyState.state === "ready") return false;
   if (reason === "rendered-frame-detected") performance.mark("scummweb:first-game-frame");
   const nextReadyState = syncReadyState({ state: "ready", reason, emittedAt: Date.now() });
+  if (isLocalGame) {
+    reportLocalGameStatus(reason === "rendered-frame-detected" ? "running" : "error");
+    return true;
+  }
   postParentMessage({ type: "scummvm-ready", ...nextReadyState });
   return true;
 };
@@ -370,12 +410,17 @@ if (isLocalGame) {
   Module.print = function (...args) {
     print.apply(this, args);
     const line = String(args[0]);
-    if (line.startsWith("User picked target '")) reportLocalGameStatus("running");
     if (line.startsWith("WARNING: ScummVM could not find any game")) reportLocalGameStatus("undetected");
   };
+  function reportRuntimeError(error) {
+    if (error?.name !== "ExitStatus") reportLocalGameStatus("error");
+  }
+  window.addEventListener("error", (event) => reportRuntimeError(event.error));
+  window.addEventListener("unhandledrejection", (event) => reportRuntimeError(event.reason));
   Module.onAbort = () => reportLocalGameStatus("error");
   Module.quit = (status, error) => {
-    if (status) reportLocalGameStatus("error");
+    if (!status && localGameStatus === "running") window.__scummvmRequestExit(0);
+    else reportLocalGameStatus("error");
     throw error;
   };
 }

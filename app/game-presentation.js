@@ -1,6 +1,27 @@
 import { getVersionedSiteAssetPath } from "./asset-paths";
 
 const artByTarget = {
+  "monkey-demo": {
+    eyebrow: "Lucasfilm Games Demo",
+    summary:
+      "As aspiring pirate Guybrush Threepwood, explore Mêlée Island, question the locals, and find the magic phrase that will get you past a troll. This playable EGA demo remixes scenes and characters from the full adventure into a short story of its own.",
+    genre: "Point-and-click adventure",
+    studio: "Lucasfilm Games",
+    year: "1990",
+    badge: "English DOS EGA demo",
+    tag: "Playable Demo",
+    heroImage: "/launcher/monkey-demo-hero.webp",
+    heroImagePosition: "center 64%",
+    landscapeImage: "/launcher/monkey-demo-hero.webp",
+    posterImage: "/launcher/monkey-demo-cover.webp",
+    spotlightImage: "/launcher/monkey-demo-cover.webp",
+    screenshots: [
+      "/launcher/monkey-demo-shot-1.png",
+      "/launcher/monkey-demo-shot-2.png",
+      "/launcher/monkey-demo-shot-3.png",
+    ],
+    tone: "tone-default",
+  },
   sky: {
     eyebrow: "Featured Classic",
     summary:

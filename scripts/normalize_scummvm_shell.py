@@ -38,6 +38,7 @@ section_overrides = {
         "drascula",
         "dreamweb-cd",
         "lure",
+        "monkey-demo",
         "nippon-amiga",
         "queen",
         "sky",
@@ -136,7 +137,22 @@ for section in sections:
     game_path = values.get("path", "")
     game_id = values.get("gameid", "")
 
-    if engine_id in allowed_engine_ids:
+    is_monkey_demo = (
+        engine_id == "scumm"
+        and game_id == "monkey"
+        and values.get("extra") == "EGA Demo"
+        and values.get("language") == "en"
+        and game_path == "/games/monkey"
+    )
+    if is_monkey_demo:
+        name = "monkey-demo"
+        section["lines"][0] = f"[{name}]"
+        section["lines"] = [
+            "description=The Secret of Monkey Island (Demo)" if line.startswith("description=") else line
+            for line in section["lines"]
+        ]
+
+    if engine_id in allowed_engine_ids or is_monkey_demo:
         if not game_id:
             raise SystemExit(f"Missing gameid for kept ScummVM target: {name}")
         if game_id in seen_game_ids:

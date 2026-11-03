@@ -24,10 +24,12 @@ pnpm run dev --port auto
 Open the URL printed by the server.
 
 On the homepage, use **Play a local ZIP** to drop or choose an archive containing
-one ScummVM game. The browser unpacks it and launches the first game it detects.
-Put the game files at the root of the ZIP or inside a single enclosing folder.
+one ScummVM game. The dedicated player page unpacks it and launches the first
+game it detects. Put the complete game data at the root of the ZIP or inside a
+single enclosing folder.
 Archives can be up to 128 MiB compressed and 256 MiB unpacked. The game files
-stay in browser memory until you close the player or leave the page.
+stay in browser memory until you leave the player page. Choose the ZIP again
+after reloading the page.
 
 Open **Settings** using the gear icon in the top-right bar to connect a public
 HTTPS R2 or S3 bucket. Upload one game per ZIP at the bucket root using the
@@ -43,8 +45,8 @@ its dedicated player page. The browser downloads the ZIP directly from the saved
 bucket and applies the same size limits as local ZIPs. If the player frame stays
 blank on startup, the page retries it once using the downloaded files. Connecting
 the official ScummWEB bucket shows the games in its existing index and keeps the standard
-Library cards and player. For **The Secret of Monkey Island (Demo)**, upload the
-[English DOS EGA demo from ScummVM](https://www.scummvm.org/demos/) as `monkey-demo.zip`.
+Library cards and player. **The Secret of Monkey Island (Demo)** is already in
+the Library. Open its card and select **Play** to start the English DOS EGA demo.
 
 ## Commands
 
@@ -69,6 +71,7 @@ pnpm run sentry:issues   # list recent Sentry issues from local env credentials
 - `public/` is generated staging. Do not hand-edit staged shell files when the source lives in `scummvm-shell/`.
 - Game hero banners live in `scummvm-shell/launcher/`. The catalog banners use ImageGen-restored promotional art; the gameplay screenshot galleries keep their original captures.
 - The Monkey Island demo cover and banner are cropped and resized from [a scan of Steve Purcell's original DOS box art on LaunchBox Games Database](https://gamesdb.launchbox-app.com/games/images/139-the-secret-of-monkey-island). Its screenshot gallery uses [unaltered DOS EGA demo captures from DOS Games Archive](https://www.dosgamesarchive.com/download/the-secret-of-monkey-island).
+- To include Monkey Island in a catalog rebuild, place the [English DOS EGA demo ZIP](https://downloads.scummvm.org/frs/demos/scumm/monkey1-dos-ega-demo-en.zip) in `downloads/` as `monkey1-dos-ega-demo-en.zip`.
 - The playable baseline is Beneath a Steel Sky from `downloads/bass-cd-1.2.zip`, launched through `/scummvm.html#sky`.
 - For games that support loading a save at launch, **Continue** opens the most recent save in this browser. **Start from beginning** opens a fresh session. Nippon Safes and Broken Sword 2.5 load saves from their in-game menus.
 - Production game payloads are served from `SCUMMVM_GAMES_ORIGIN`; localhost can use `/games-proxy/*` for verification.

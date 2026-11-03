@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Settings, X } from "lucide-react";
-import { bucketOnlyGames, getBucketPlayHref } from "../bucket-games.mjs";
 import {
   bucketStorageKey,
   bucketZipName,
   checkGameBucket,
+  getBucketPlayHref,
   normalizeBucketUrl,
   readSavedBucket,
 } from "../game-bucket.mjs";
@@ -32,8 +32,7 @@ export function SettingsButton() {
   );
 }
 
-export default function GameBucket({ catalog, officialUrl }) {
-  const games = useMemo(() => [...catalog, ...bucketOnlyGames], [catalog]);
+export default function GameBucket({ catalog: games, officialUrl }) {
   const [url, setUrl] = useState("");
   const [saved, setSaved] = useState(null);
   const [checked, setChecked] = useState(null);
@@ -106,11 +105,7 @@ export default function GameBucket({ catalog, officialUrl }) {
   const matches = result ? games.filter(({ target }) => result.targets.includes(target)) : [];
   const isOfficial = result?.url === officialUrl;
   const bucketTargets = saved && saved.url !== officialUrl ? saved.targets : [];
-  const libraryGames = [
-    ...catalog,
-    ...bucketOnlyGames.filter(({ target }) => bucketTargets.includes(target)),
-  ];
-  const dialogGame = libraryGames.find((game) =>
+  const dialogGame = games.find((game) =>
     bucketTargets.includes(game.target) && getGameDialogId(game, { fromBucket: true }) === dialogId
   );
 
@@ -202,7 +197,7 @@ export default function GameBucket({ catalog, officialUrl }) {
           </section>
         )}
       </dialog>
-      <LibraryCards games={libraryGames} bucketTargets={bucketTargets} />
+      <LibraryCards games={games} bucketTargets={bucketTargets} />
       {dialogGame && createPortal(
         <GameDetailModal game={dialogGame} bucketPlayHref={getBucketPlayHref(dialogGame.target)} />,
         document.body

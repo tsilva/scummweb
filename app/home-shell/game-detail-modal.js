@@ -9,7 +9,7 @@ export default function GameDetailModal({ game, bucketPlayHref }) {
   const closeHref = bucketPlayHref ? "#library" : "#browse";
 
   return (
-    <div className={`game-detail-modal${bucketPlayHref ? " is-open" : ""}`} id={dialogId}>
+    <div className={`game-detail-modal${bucketPlayHref ? " is-open" : ""}`} data-game-target={game.target} id={dialogId}>
       <a
         aria-label={`Close details for ${game.displayTitle}`}
         className="game-detail-backdrop"

@@ -12,6 +12,7 @@ DIST_DIR="$ROOT_DIR/dist"
 SHELL_DIR="$ROOT_DIR/scummvm-shell"
 DOWNLOADS_DIR="$ROOT_DIR/downloads"
 BASS_ZIP="$DOWNLOADS_DIR/bass-cd-1.2.zip"
+MONKEY_DEMO_ZIP="$DOWNLOADS_DIR/monkey1-dos-ega-demo-en.zip"
 QUEEN_ORIGINAL_ARCHIVE="$DOWNLOADS_DIR/FOTAQ_Talkie-original.zip"
 QUEEN_ORIGINAL_ARCHIVE_URL="https://downloads.scummvm.org/frs/extras/Flight%20of%20the%20Amazon%20Queen/FOTAQ_Talkie-original.zip"
 SCUMMVM_BUNDLE_ASSET_VERSION_RAW="${SCUMMVM_ASSET_VERSION:-${VERCEL_DEPLOYMENT_ID:-${VERCEL_URL:-${VERCEL_GIT_COMMIT_SHA:-dev}}}}"
@@ -102,6 +103,10 @@ discover_game_archives() {
 
   GAME_ARCHIVES=("$BASS_ZIP")
   DRASCULA_AUDIO_ZIP="$drascula_audio_zip"
+
+  if [[ -f "$MONKEY_DEMO_ZIP" ]]; then
+    GAME_ARCHIVES+=("$MONKEY_DEMO_ZIP")
+  fi
 
   if [[ -n "$dreamweb_zip" ]]; then
     GAME_ARCHIVES+=("$dreamweb_zip")
@@ -388,6 +393,9 @@ game_archive_target_dir() {
     bass-cd-1.2.zip)
       printf 'sky\n'
       ;;
+    monkey1-dos-ega-demo-en.zip)
+      printf 'monkey\n'
+      ;;
     dreamweb*.zip)
       printf 'dreamweb\n'
       ;;
@@ -432,6 +440,10 @@ install_game_archives() {
     target_dir="build-emscripten/games/$target_game_id"
     rm -rf "$target_dir"
     extract_game_archive_into_game_id_dir "$game_archive" "$target_dir"
+
+    if [[ "$target_game_id" == "monkey" ]]; then
+      rm -f "$target_dir/midemo.exe"
+    fi
 
     if [[ "$target_game_id" == "drascula" && -n "${DRASCULA_AUDIO_ZIP:-}" ]]; then
       overlay_game_archive_into_dir "$DRASCULA_AUDIO_ZIP" "$target_dir/audio" "audio"

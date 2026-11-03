@@ -2,6 +2,10 @@ import { maxArchiveSize, readLocalGameArchive } from "./local-game-archive.mjs";
 
 export const bucketStorageKey = "scummweb.game-bucket.v1";
 
+export function getBucketPlayHref(target) {
+  return `/bucket/${encodeURIComponent(target)}/play`;
+}
+
 export function normalizeBucketUrl(value) {
   let url;
   try {
