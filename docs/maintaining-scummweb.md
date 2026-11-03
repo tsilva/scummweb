@@ -88,7 +88,12 @@ The events share `game_slug`, `entry_point` (`hero`, `library`, `game_detail`, o
 within the same visit. The play timer pauses while the game reloads or the tab
 is hidden. A visit can report a failure and later recover. Leaving before
 the player reports an outcome appears as a drop-off in the funnel.
-Local ZIP and external bucket launches are outside this catalog funnel.
+Local files, direct ZIP links, and previously saved external bucket launches
+are outside this catalog funnel. Direct play links use the `zip` parameter in
+the `/local/play` URL fragment, so the server never receives the ZIP address
+as part of the page request. Google Analytics and Vercel Analytics page
+locations omit that fragment. The client downloads the archive directly with
+credentials omitted.
 
 The player fetches the catalog and engine data indexes in parallel while
 WebAssembly initializes. ZIP launches fetch only the engine data index.
