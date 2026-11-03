@@ -16,7 +16,6 @@
     "build": "pnpm run prepare && next build",
     "start": "pnpm run prepare && node scripts/dev-server.mjs next start",
     "dev:app": "pnpm run prepare && node scripts/dev-server.mjs next dev",
-    "build:secrets": "python3 scripts/infisical/run.py build",
     "secrets:check": "python3 scripts/infisical/run.py check",
     "secrets:migrate:keyenv": "python3 scripts/infisical/migrate_keyenv.py",
     "test:secrets": "python3 -m unittest discover -s scripts/infisical -p test_secrets.py",
