@@ -90,8 +90,9 @@ with a green check and errors with a red cross.
 Scroll inside the dialog to review a large batch. When processing finishes,
 select **Confirm** to close it. The library then scrolls to the first new
 poster. New posters briefly brighten and show color as they come into view.
-To reconnect or remove an imported copy, open its details, select the version,
-then choose **Locate files** or **Remove this version**. Other copies remain available.
+To reconnect an imported copy, open its details, select the version, and use
+the primary **Locate ZIP** or file-access action when needed. Details use the genre
+when no game-specific heading is available and omit unknown release years.
 
 Saved games are checked whenever the library opens and when you return to its
 tab or window. Missing local files and folders are flagged on their posters.
@@ -104,9 +105,7 @@ folder. ZIPs can be up to 128 MiB compressed and 256 MiB unpacked. Select a
 game's poster to view its details, then choose **Play** (or locate its files when
 needed). Each imported version stores new saves separately. Compatible engines
 offer **Continue** and **Start from beginning** for the selected version; otherwise
-load progress from the game’s menu. Existing shared saves remain available through
-**Older saves → Play with older saves**. Use that option only for the edition
-that created them. Removing a library version does not delete browser saves.
+load progress from the game’s menu. Older shared saves remain stored in the browser.
 
 ## Run locally
 

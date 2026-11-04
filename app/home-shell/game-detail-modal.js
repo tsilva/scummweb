@@ -112,7 +112,7 @@ export default function GameDetailModal({ game, notice, onClose, dialogId: provi
             <p className="hero-kicker">{game.eyebrow}</p>
             <h2 id={`${dialogId}-title`}>{game.displayTitle}</h2>
             <div className="game-detail-visual-meta">
-              <span>{game.year}</span>
+              {game.year ? <span>{game.year}</span> : null}
               <span>{game.genre}</span>
               <span>{game.badge}</span>
             </div>

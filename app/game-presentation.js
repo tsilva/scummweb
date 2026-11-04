@@ -249,10 +249,9 @@ const artByTarget = {
 };
 
 const defaultArt = {
-  eyebrow: "Installed Adventure",
   genre: "ScummVM Adventure",
   studio: "ScummVM Runtime",
-  year: "Archive",
+  year: null,
   badge: "Playable Now",
   tag: "Ready to launch",
   screenshots: [],
@@ -266,6 +265,7 @@ export function getGamePresentation(game, importedArt) {
   return {
     ...game,
     ...art,
+    eyebrow: art.eyebrow || art.genre,
     familyId: game.familyId || (game.engineId && (game.gameId || game.target)
       ? `${game.engineId}:${game.gameId || game.target}` : null),
     infoHref: game.readmeHref || null,
