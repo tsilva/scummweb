@@ -19,8 +19,14 @@
           "url": "https://www.scummvm.org/data/screenshots/access/amazon/amazon_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/access/access:amazon/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3362"
       ]
-    }
+    },
+    "summary": "Search the Amazon for a missing expedition and uncover a conspiracy surrounding a remote jungle tribe.",
+    "studio": "Access Software",
+    "genre": "Jungle adventure"
   },
   "agi:bc": {
     "title": "The Black Cauldron",
@@ -42,8 +48,14 @@
           "url": "https://www.scummvm.org/data/screenshots/agi/bc/bc_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/disney/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1721"
       ]
-    }
+    },
+    "summary": "Guide Taran through the land of Prydain and stop the Horned King from using the Black Cauldron.",
+    "studio": "Sierra On-Line",
+    "genre": "Fantasy adventure"
   },
   "agi:goldrush": {
     "title": "Gold Rush!",
@@ -65,8 +77,14 @@
           "url": "https://www.scummvm.org/data/screenshots/agi/goldrush/goldrush_amiga_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/agi:goldrush/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1727"
       ]
-    }
+    },
+    "summary": "Leave Brooklyn for California and navigate the hazards of the 1849 gold rush.",
+    "studio": "MacNeill Computer Company",
+    "genre": "Historical adventure"
   },
   "agi:kq2": {
     "title": "King's Quest II: Romancing the Throne",
@@ -88,8 +106,14 @@
           "url": "https://www.scummvm.org/data/screenshots/agi/kq2/kq2_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/kq/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1718"
       ]
-    }
+    },
+    "summary": "Help King Graham explore Kolyma, unlock three magical doors, and rescue the imprisoned Valanice.",
+    "studio": "Sierra On-Line",
+    "genre": "Fantasy adventure"
   },
   "agi:kq3": {
     "title": "King's Quest III: To Heir Is Human",
@@ -111,8 +135,14 @@
           "url": "https://www.scummvm.org/data/screenshots/agi/kq3/kq3_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/kq/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1719"
       ]
-    }
+    },
+    "summary": "Escape the wizard Manannan by learning his spells and discovering the truth about your family.",
+    "studio": "Sierra On-Line",
+    "genre": "Fantasy adventure"
   },
   "agi:mh1": {
     "title": "Manhunter: New York",
@@ -134,8 +164,14 @@
           "url": "https://www.scummvm.org/data/screenshots/agi/mh1/mh1_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/manhunt/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1729"
       ]
-    }
+    },
+    "summary": "Investigate disappearances in an alien-occupied New York while secretly working against its invaders.",
+    "studio": "Evryware",
+    "genre": "Science-fiction mystery"
   },
   "agi:mh2": {
     "title": "Manhunter 2: San Francisco",
@@ -157,8 +193,14 @@
           "url": "https://www.scummvm.org/data/screenshots/agi/mh2/mh2_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/manhunt/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1730"
       ]
-    }
+    },
+    "summary": "Follow a fugitive through alien-occupied San Francisco and solve the mysteries behind a resistance movement.",
+    "studio": "Evryware",
+    "genre": "Science-fiction mystery"
   },
   "agi:mickey": {
     "title": "Mickey's Space Adventure",
@@ -180,8 +222,14 @@
           "url": "https://www.scummvm.org/data/screenshots/agi/mickey/mickey_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/disney/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2305"
       ]
-    }
+    },
+    "summary": "Travel with Mickey Mouse through the solar system to collect crystals and restore an alien world's history.",
+    "studio": "Sierra On-Line",
+    "genre": "Children's adventure"
   },
   "agi:pq1": {
     "title": "Police Quest: In Pursuit of the Death Angel",
@@ -203,8 +251,14 @@
           "url": "https://www.scummvm.org/data/screenshots/agi/pq1/pq1_amiga_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/pq/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1726"
       ]
-    }
+    },
+    "summary": "Patrol Lytton as officer Sonny Bonds and follow a traffic investigation into a dangerous drug case.",
+    "studio": "Sierra On-Line",
+    "genre": "Police procedural adventure"
   },
   "agi:sq1": {
     "title": "Space Quest: The Sarien Encounter",
@@ -226,8 +280,14 @@
           "url": "https://www.scummvm.org/data/screenshots/agi/sq1/sq1_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sq/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1723"
       ]
-    }
+    },
+    "summary": "Help janitor Roger Wilco survive a spaceship attack and recover the stolen Star Generator.",
+    "studio": "Sierra On-Line",
+    "genre": "Science-fiction comedy"
   },
   "agi:sq2": {
     "title": "Space Quest II: Chapter II - Vohaul's Revenge",
@@ -250,8 +310,14 @@
           "url": "https://www.scummvm.org/data/screenshots/agi/sq2/sq2_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sq/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1728"
       ]
-    }
+    },
+    "summary": "Escape a hostile jungle planet and stop Sludge Vohaul's plan to unleash an army of salesmen.",
+    "studio": "Sierra On-Line",
+    "genre": "Science-fiction comedy"
   },
   "agi:troll": {
     "title": "Troll's Tale",
@@ -273,8 +339,14 @@
           "url": "https://www.scummvm.org/data/screenshots/agi/troll/troll_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/agi:troll/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2309"
       ]
-    }
+    },
+    "summary": "Explore a fantasy world, choose paths through illustrated scenes, and recover treasure stolen by a troll.",
+    "studio": "Sierra On-Line",
+    "genre": "Children's adventure"
   },
   "agi:winnie": {
     "title": "Winnie the Pooh in the Hundred Acre Wood",
@@ -296,8 +368,14 @@
           "url": "https://www.scummvm.org/data/screenshots/agi/winnie/winnie_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/disney/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2306"
       ]
-    }
+    },
+    "summary": "Help Pooh explore the Hundred Acre Wood and return lost belongings to his friends.",
+    "studio": "Sierra On-Line",
+    "genre": "Children's adventure"
   },
   "agos:elvira1": {
     "title": "Elvira: Mistress of the Dark",
@@ -319,8 +397,14 @@
           "url": "https://www.scummvm.org/data/screenshots/agos/elvira1/elvira1_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/adventuresoft/elvira/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1964"
       ]
-    }
+    },
+    "summary": "Explore a haunted castle, battle its monsters, and help Elvira stop an ancient witch's return.",
+    "studio": "Horror Soft",
+    "genre": "Horror role-playing adventure"
   },
   "agos:elvira2": {
     "title": "Elvira II: The Jaws of Cerberus",
@@ -342,8 +426,14 @@
           "url": "https://www.scummvm.org/data/screenshots/agos/elvira2/elvira2_amiga_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/adventuresoft/elvira/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1966"
       ]
-    }
+    },
+    "summary": "Search a movie studio's haunted sets to rescue Elvira from a demon.",
+    "studio": "Horror Soft",
+    "genre": "Horror role-playing adventure"
   },
   "agos:feeble": {
     "title": "The Feeble Files",
@@ -366,8 +456,14 @@
           "url": "https://www.scummvm.org/data/screenshots/agos/feeble/feeble_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/adventuresoft/agos:feeble/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1682"
       ]
-    }
+    },
+    "summary": "Help an unlikely alien hero resist the OmniBrain and its oppressive interplanetary bureaucracy.",
+    "studio": "Adventure Soft",
+    "genre": "Science-fiction comedy"
   },
   "agos:jumble": {
     "title": "Simon the Sorcerer's Puzzle Pack",
@@ -389,8 +485,14 @@
           "url": "https://www.scummvm.org/data/screenshots/agos/jumble/jumble_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/adventuresoft/simon/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1807"
       ]
-    }
+    },
+    "summary": "Play Simon-themed puzzles, including Jumble, NoPatience, and Demon in My Pocket, alongside Swampy's arcade adventure.",
+    "studio": "Adventure Soft",
+    "genre": "Puzzle collection"
   },
   "agos:pn": {
     "title": "Personal Nightmare",
@@ -412,8 +514,14 @@
           "url": "https://www.scummvm.org/data/screenshots/agos/pn/pn_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/adventuresoft/agos:pn/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1968"
       ]
-    }
+    },
+    "summary": "Investigate a sinister English village where an evil presence has taken control of the inhabitants.",
+    "studio": "Horror Soft",
+    "genre": "Horror adventure"
   },
   "agos:simon1": {
     "title": "Simon the Sorcerer",
@@ -435,8 +543,14 @@
           "url": "https://www.scummvm.org/data/screenshots/agos/simon1/simon1_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/adventuresoft/simon/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1675"
       ]
-    }
+    },
+    "summary": "A magical book transports Simon into a fairy-tale world where he must become a wizard and confront Sordid.",
+    "studio": "Adventure Soft",
+    "genre": "Fantasy comedy"
   },
   "agos:simon2": {
     "title": "Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe",
@@ -459,8 +573,14 @@
           "url": "https://www.scummvm.org/data/screenshots/agos/simon2/simon2_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/adventuresoft/simon/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1676"
       ]
-    }
+    },
+    "summary": "Simon returns to a world of sarcastic fairy tales as Sordid plots his revenge.",
+    "studio": "Adventure Soft",
+    "genre": "Fantasy comedy"
   },
   "agos:waxworks": {
     "title": "Waxworks",
@@ -482,8 +602,14 @@
           "url": "https://www.scummvm.org/data/screenshots/agos/waxworks/waxworks_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/adventuresoft/agos:waxworks/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1967"
       ]
-    }
+    },
+    "summary": "Enter cursed waxwork exhibits across different eras to break an ancestral curse.",
+    "studio": "Horror Soft",
+    "genre": "Horror role-playing adventure"
   },
   "bbvs:bbvs": {
     "title": "MTV's Beavis and Butt-Head in Virtual Stupidity",
@@ -505,8 +631,14 @@
           "url": "https://www.scummvm.org/data/screenshots/bbvs/bbvs/bbvs_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/beavisbutthead/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3931"
       ]
-    }
+    },
+    "summary": "Help Beavis and Butt-Head explore Highland and attempt to impress local gang leader Todd.",
+    "studio": "Viacom New Media",
+    "genre": "Comedy adventure"
   },
   "cge:soltys": {
     "title": "Sołtys",
@@ -528,8 +660,14 @@
           "url": "https://www.scummvm.org/data/screenshots/cge/soltys/soltys_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/lkavalon/cge:soltys/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3223"
       ]
-    }
+    },
+    "summary": "Explore a Polish village as its hapless headman and help resolve a troublesome family wedding.",
+    "studio": "LK Avalon",
+    "genre": "Comedy adventure"
   },
   "cine:fw": {
     "title": "Future Wars: Adventures in Time",
@@ -551,8 +689,14 @@
           "url": "https://www.scummvm.org/data/screenshots/cine/fw/fw_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/delphine/cine:fw/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1688"
       ]
-    }
+    },
+    "summary": "A window cleaner discovers a time machine and becomes involved in a battle against alien invaders.",
+    "studio": "Delphine Software",
+    "genre": "Science-fiction adventure"
   },
   "composer:darby": {
     "title": "Darby the Dragon",
@@ -574,8 +718,14 @@
           "url": "https://www.scummvm.org/data/screenshots/composer/darby/darby_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/animationmagic/composer:darby/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3218"
       ]
-    }
+    },
+    "summary": "Help Darby gather ingredients for a potion to undo a magical-wand accident involving his sister Sparkle.",
+    "studio": "Animation Magic",
+    "genre": "Children's fantasy adventure"
   },
   "composer:gregory": {
     "title": "Gregory and the Hot Air Balloon",
@@ -597,8 +747,14 @@
           "url": "https://www.scummvm.org/data/screenshots/composer/gregory/gregory_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/animationmagic/composer:gregory/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3276"
       ]
-    }
+    },
+    "summary": "Follow Gregory and his friend on a balloon journey filled with characters, exploration, and puzzles.",
+    "studio": "Animation Magic",
+    "genre": "Children's adventure"
   },
   "composer:liam": {
     "title": "Magic Tales: Liam Finds a Story",
@@ -620,8 +776,14 @@
           "url": "https://www.scummvm.org/data/screenshots/composer/liam/liam_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/animationmagic/magictales/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3279"
       ]
-    }
+    },
+    "summary": "Help Liam find an original story to satisfy the fairy who has captured his family.",
+    "studio": "Animation Magic",
+    "genre": "Interactive storybook"
   },
   "composer:princess": {
     "title": "Magic Tales: The Princess and the Crab",
@@ -643,8 +805,14 @@
           "url": "https://www.scummvm.org/data/screenshots/composer/princess/princess_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/animationmagic/magictales/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3282"
       ]
-    }
+    },
+    "summary": "Guide a princess through a series of challenges to rescue a prince from an evil fairy's spell.",
+    "studio": "Animation Magic",
+    "genre": "Interactive storybook"
   },
   "composer:sleepingcub": {
     "title": "Magic Tales: Sleeping Cub's Test of Courage",
@@ -666,8 +834,14 @@
           "url": "https://www.scummvm.org/data/screenshots/composer/sleepingcub/sleepingcub_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/animationmagic/magictales/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3281"
       ]
-    }
+    },
+    "summary": "Join Sleeping Cub's search for the mystical elk dogs as he tries to help his people find the buffalo.",
+    "studio": "Animation Magic",
+    "genre": "Interactive storybook"
   },
   "cruise:cruise": {
     "title": "Cruise for a Corpse",
@@ -690,8 +864,14 @@
           "url": "https://www.scummvm.org/data/screenshots/cruise/cruise/cruise_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/delphine/cruise:cruise/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2195"
       ]
-    }
+    },
+    "summary": "Investigate a murder aboard a luxury ship as Inspector Raoul Dusentier and question its suspicious passengers.",
+    "studio": "Delphine Software",
+    "genre": "Detective adventure"
   },
   "draci:draci": {
     "title": "Dragon History",
@@ -713,8 +893,14 @@
           "url": "https://www.scummvm.org/data/screenshots/draci/draci/draci_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/draci:draci/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2890"
       ]
-    }
+    },
+    "summary": "Guide the young dragon Bert through a humorous world as he searches for his missing father.",
+    "studio": "NoSense",
+    "genre": "Fantasy comedy"
   },
   "drascula:drascula": {
     "title": "Dráscula: The Vampire Strikes Back",
@@ -726,7 +912,15 @@
       "/launcher/drascula-shot-1.png",
       "/launcher/drascula-shot-2.png",
       "/launcher/drascula-shot-3.png"
-    ]
+    ],
+    "summary": "Help John Hacker rescue Billie Jean from Count Drascula in a town full of vampires and absurd characters.",
+    "studio": "Alcachofa Soft",
+    "genre": "Comedy horror adventure",
+    "sources": {
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2282"
+      ]
+    }
   },
   "dreamweb:dreamweb": {
     "title": "DreamWeb",
@@ -738,7 +932,15 @@
       "/launcher/dreamweb-shot-1.png",
       "/launcher/dreamweb-shot-2.png",
       "/launcher/dreamweb-shot-3.png"
-    ]
+    ],
+    "summary": "Follow troubled bartender Ryan through a dystopian city as disturbing dreams draw him into a deadly mission.",
+    "studio": "Creative Reality",
+    "genre": "Cyberpunk adventure",
+    "sources": {
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3151"
+      ]
+    }
   },
   "gnap:gnap": {
     "title": "Gnap (U.F.O.s)",
@@ -760,8 +962,14 @@
           "url": "https://www.scummvm.org/data/screenshots/gnap/gnap/gnap_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/gnap:gnap/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=4276"
       ]
-    }
+    },
+    "summary": "Help the stranded alien Gnap repair his spacecraft while dealing with Earth's eccentric inhabitants.",
+    "studio": "Artech Digital Entertainment",
+    "genre": "Science-fiction comedy"
   },
   "gob:bargon": {
     "title": "Bargon Attack",
@@ -783,8 +991,14 @@
           "url": "https://www.scummvm.org/data/screenshots/gob/bargon/bargon_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/coktel/gob:bargon/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2015"
       ]
-    }
+    },
+    "summary": "A young programmer takes on the Bargon aliens after they conquer Earth and enslave humanity.",
+    "studio": "Coktel Vision",
+    "genre": "Science-fiction adventure"
   },
   "gob:fascination": {
     "title": "Fascination",
@@ -806,8 +1020,14 @@
           "url": "https://www.scummvm.org/data/screenshots/gob/fascination/fascination_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/coktel/gob:fascination/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2960"
       ]
-    }
+    },
+    "summary": "Pilot Doralice investigates a dangerous drug and the mysterious circumstances surrounding a dying man's request.",
+    "studio": "Coktel Vision",
+    "genre": "Mature mystery adventure"
   },
   "gob:geisha": {
     "title": "Geisha",
@@ -829,8 +1049,14 @@
           "url": "https://www.scummvm.org/data/screenshots/gob/geisha/geisha_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/coktel/gob:geisha/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3093"
       ]
-    }
+    },
+    "summary": "Rescue Eva from a scientist who intends to transform her into a robotic geisha.",
+    "studio": "Coktel Vision",
+    "genre": "Mature science-fiction adventure"
   },
   "gob:gob1": {
     "title": "Gobliiins",
@@ -852,8 +1078,14 @@
           "url": "https://www.scummvm.org/data/screenshots/gob/gob1/gob1_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/gob/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=972"
       ]
-    }
+    },
+    "summary": "Coordinate three goblins with different abilities to cure their king and overcome a series of magical obstacles.",
+    "studio": "Coktel Vision",
+    "genre": "Puzzle adventure"
   },
   "gob:gob2": {
     "title": "Gobliins 2: The Prince Buffoon",
@@ -875,8 +1107,14 @@
           "url": "https://www.scummvm.org/data/screenshots/gob/gob2/gob2_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/gob/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1685"
       ]
-    }
+    },
+    "summary": "Use Fingus and Winkle's contrasting skills to rescue a prince from an evil demon.",
+    "studio": "Coktel Vision",
+    "genre": "Puzzle adventure"
   },
   "gob:gob3": {
     "title": "Goblins Quest 3",
@@ -898,8 +1136,14 @@
           "url": "https://www.scummvm.org/data/screenshots/gob/gob3/gob3_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/gob/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1878"
       ]
-    }
+    },
+    "summary": "Help the goblin journalist Blount investigate a royal feud in a world of surreal puzzles.",
+    "studio": "Coktel Vision",
+    "genre": "Puzzle adventure"
   },
   "gob:lit": {
     "title": "Lost in Time",
@@ -921,8 +1165,14 @@
           "url": "https://www.scummvm.org/data/screenshots/gob/lit/lit_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/coktel/gob:lit/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2283"
       ]
-    }
+    },
+    "summary": "Guide Doralice between the present and the past as she investigates a ship and a hidden threat.",
+    "studio": "Coktel Vision",
+    "genre": "Time-travel adventure"
   },
   "gob:littlered": {
     "title": "Once Upon A Time: Little Red Riding Hood",
@@ -944,8 +1194,14 @@
           "url": "https://www.scummvm.org/data/screenshots/gob/littlered/littlered_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/coktel/gob:littlered/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3097"
       ]
-    }
+    },
+    "summary": "Explore an interactive fairy-tale world inspired by Little Red Riding Hood.",
+    "studio": "Coktel Vision",
+    "genre": "Children's storybook adventure"
   },
   "gob:urban": {
     "title": "Urban Runner",
@@ -967,8 +1223,14 @@
           "url": "https://www.scummvm.org/data/screenshots/gob/urban/urban_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/coktel/gob:urban/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2298"
       ]
-    }
+    },
+    "summary": "A journalist framed for murder teams up with a young woman to uncover a criminal conspiracy in Paris.",
+    "studio": "Coktel Vision",
+    "genre": "Interactive movie thriller"
   },
   "gob:ween": {
     "title": "Ween: The Prophecy",
@@ -990,8 +1252,14 @@
           "url": "https://www.scummvm.org/data/screenshots/gob/ween/ween_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/coktel/gob:ween/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1975"
       ]
-    }
+    },
+    "summary": "Gather magical objects and solve puzzles as Ween tries to defeat an evil wizard and fulfil an ancient prophecy.",
+    "studio": "Coktel Vision",
+    "genre": "Fantasy puzzle adventure"
   },
   "gob:woodruff": {
     "title": "The Bizarre Adventures of Woodruff and the Schnibble",
@@ -1013,8 +1281,14 @@
           "url": "https://www.scummvm.org/data/screenshots/gob/woodruff/woodruff_win_en-gb_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/coktel/gob:woodruff/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1879"
       ]
-    }
+    },
+    "summary": "Help Woodruff search for his missing adoptive father and challenge the rulers of a strange post-apocalyptic society.",
+    "studio": "Coktel Vision",
+    "genre": "Science-fiction comedy"
   },
   "groovie:t7g": {
     "title": "The 7th Guest",
@@ -1036,8 +1310,14 @@
           "url": "https://www.scummvm.org/data/screenshots/groovie/t7g/t7g_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/trilobyte/t7g/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2500"
       ]
-    }
+    },
+    "summary": "Explore Henry Stauf's mansion and solve its puzzles while uncovering the fate of six invited guests.",
+    "studio": "Trilobyte",
+    "genre": "Horror puzzle adventure"
   },
   "hopkins:hopkins": {
     "title": "Hopkins FBI",
@@ -1059,8 +1339,14 @@
           "url": "https://www.scummvm.org/data/screenshots/hopkins/hopkins/hopkins_linux_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/hopkins:hopkins/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3495"
       ]
-    }
+    },
+    "summary": "Track an escaped criminal as FBI agent Hopkins in an adventure mixing investigation, violence, and science fiction.",
+    "studio": "MP Entertainment",
+    "genre": "Crime thriller adventure"
   },
   "hugo:hugo1": {
     "title": "Hugo's House of Horrors",
@@ -1082,8 +1368,14 @@
           "url": "https://www.scummvm.org/data/screenshots/hugo/hugo1/hugo1_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/hugo/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3062"
       ]
-    }
+    },
+    "summary": "Enter a mansion full of monsters as Hugo searches for his missing girlfriend Penelope.",
+    "studio": "Gray Design Associates",
+    "genre": "Horror comedy adventure"
   },
   "hugo:hugo2": {
     "title": "Hugo II: Whodunit?",
@@ -1106,8 +1398,14 @@
           "url": "https://www.scummvm.org/data/screenshots/hugo/hugo2/hugo2_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/hugo/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3065"
       ]
-    }
+    },
+    "summary": "Investigate a murder and search a sprawling estate as Penelope tries to find Hugo.",
+    "studio": "Gray Design Associates",
+    "genre": "Mystery adventure"
   },
   "hugo:hugo3": {
     "title": "Hugo III: Jungle of Doom",
@@ -1129,8 +1427,14 @@
           "url": "https://www.scummvm.org/data/screenshots/hugo/hugo3/hugo3_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/hugo/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3066"
       ]
-    }
+    },
+    "summary": "Explore a jungle and search for a cure after a spider bites Penelope.",
+    "studio": "Gray Design Associates",
+    "genre": "Jungle adventure"
   },
   "kyra:eob": {
     "title": "Eye of the Beholder",
@@ -1152,8 +1456,14 @@
           "url": "https://www.scummvm.org/data/screenshots/kyra/eob/eob_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/westwood/eob/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3247"
       ]
-    }
+    },
+    "summary": "Lead a party of adventurers beneath Waterdeep to investigate an evil presence in its sewers.",
+    "studio": "Westwood Associates",
+    "genre": "Dungeon-crawling role-playing game"
   },
   "kyra:eob2": {
     "title": "Eye of the Beholder II: The Legend of Darkmoon",
@@ -1175,8 +1485,14 @@
           "url": "https://www.scummvm.org/data/screenshots/kyra/eob2/eob2_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/westwood/eob/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3248"
       ]
-    }
+    },
+    "summary": "Explore the temple of Darkmoon with a party of adventurers and confront its sinister powers.",
+    "studio": "Westwood Associates",
+    "genre": "Dungeon-crawling role-playing game"
   },
   "kyra:kyra1": {
     "title": "The Legend of Kyrandia",
@@ -1199,8 +1515,14 @@
           "url": "https://www.scummvm.org/data/screenshots/kyra/kyra1/kyra1_amiga_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/westwood/kyra/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1680"
       ]
-    }
+    },
+    "summary": "Help Brandon restore the kingdom of Kyrandia after the jester Malcolm escapes and turns its inhabitants to stone.",
+    "studio": "Westwood Studios",
+    "genre": "Fantasy adventure"
   },
   "kyra:kyra2": {
     "title": "The Legend of Kyrandia: Hand of Fate",
@@ -1222,8 +1544,14 @@
           "url": "https://www.scummvm.org/data/screenshots/kyra/kyra2/kyra2_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/westwood/kyra/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1977"
       ]
-    }
+    },
+    "summary": "Guide the alchemist Zanthia on a journey to stop Kyrandia from disappearing.",
+    "studio": "Westwood Studios",
+    "genre": "Fantasy adventure"
   },
   "kyra:kyra3": {
     "title": "The Legend of Kyrandia: Book 3 - Malcolm's Revenge",
@@ -1245,8 +1573,14 @@
           "url": "https://www.scummvm.org/data/screenshots/kyra/kyra3/kyra3_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/westwood/kyra/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1978"
       ]
-    }
+    },
+    "summary": "Play as the mischievous Malcolm, clear his name, and discover the truth behind Kyrandia's royal murders.",
+    "studio": "Westwood Studios",
+    "genre": "Fantasy comedy"
   },
   "kyra:lol": {
     "title": "Lands of Lore: The Throne of Chaos",
@@ -1268,8 +1602,14 @@
           "url": "https://www.scummvm.org/data/screenshots/kyra/lol/lol_dos_en_1_5_full.png",
           "page": "https://www.scummvm.org/screenshots/westwood/kyra:lol/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2482"
       ]
-    }
+    },
+    "summary": "Lead a party through the Lands of Lore to confront the sorceress Scotia and save the kingdom of Gladstone.",
+    "studio": "Westwood Studios",
+    "genre": "Fantasy role-playing game"
   },
   "lab:lab": {
     "title": "The Labyrinth of Time",
@@ -1292,8 +1632,14 @@
           "url": "https://www.scummvm.org/data/screenshots/lab/lab/lab_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/lab:lab/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=4182"
       ]
-    }
+    },
+    "summary": "Explore a labyrinth spanning different places and eras, solving puzzles to prevent an ancient evil from escaping.",
+    "studio": "Terra Nova Development",
+    "genre": "Surreal puzzle adventure"
   },
   "local:road": {
     "title": "Road",
@@ -1313,8 +1659,13 @@
           "kind": "gameplay",
           "path": "image-assets/sources/road-gameplay.jpg"
         }
-      ]
-    }
+      ],
+      "metadata": []
+    },
+    "summary": "Explore a small village and its surrounding paths in this fan-made adventure, which ScummVM recognizes through its Day of the Tentacle engine.",
+    "studio": "Uncredited independent creator",
+    "genre": "Fan-made adventure",
+    "metadataNote": "The creator credit could not be verified. The description is based on the locally verified fan-game build."
   },
   "lure:lure": {
     "title": "Lure of the Temptress",
@@ -1326,7 +1677,15 @@
       "/launcher/lure-shot-1.png",
       "/launcher/lure-shot-2.png",
       "/launcher/lure-shot-3.png"
-    ]
+    ],
+    "summary": "Help Diermot escape captivity and oppose the sorceress Selena in the troubled village of Turnvale.",
+    "studio": "Revolution Software",
+    "genre": "Fantasy adventure",
+    "sources": {
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1510"
+      ]
+    }
   },
   "made:lgop2": {
     "title": "Leather Goddesses of Phobos! 2: Gas Pump Girls Meet the Pulsating Inconvenience from Planet X",
@@ -1348,8 +1707,14 @@
           "url": "https://www.scummvm.org/data/screenshots/made/lgop2/lgop2_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/made:lgop2/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2467"
       ]
-    }
+    },
+    "summary": "Investigate a crashed spaceship in a desert town and become involved in an interplanetary adventure.",
+    "studio": "Infocom",
+    "genre": "Science-fiction comedy"
   },
   "made:rodney": {
     "title": "Rodney's Funscreen",
@@ -1371,8 +1736,14 @@
           "url": "https://www.scummvm.org/data/screenshots/made/rodney/rodney_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/made:rodney/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2469"
       ]
-    }
+    },
+    "summary": "Explore five colourful learning games designed to introduce children to using a computer.",
+    "studio": "Activision",
+    "genre": "Educational minigame collection"
   },
   "made:rtz": {
     "title": "Return to Zork",
@@ -1394,8 +1765,14 @@
           "url": "https://www.scummvm.org/data/screenshots/made/rtz/rtz_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/activision/zork/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2451"
       ]
-    }
+    },
+    "summary": "Travel into the Great Underground Empire, investigate a spreading evil, and discover the power behind the wizard Morphius.",
+    "studio": "Infocom",
+    "genre": "Fantasy adventure"
   },
   "mads:nebular": {
     "title": "Rex Nebular and the Cosmic Gender Bender",
@@ -1417,8 +1794,14 @@
           "url": "https://www.scummvm.org/data/screenshots/mads/nebular/nebular_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/microprose/mads:nebular/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2454"
       ]
-    }
+    },
+    "summary": "A smuggler searching for a valuable vase crash-lands on a planet whose inhabitants have a surprising secret.",
+    "studio": "MicroProse",
+    "genre": "Science-fiction comedy"
   },
   "mohawk:myst": {
     "title": "Myst",
@@ -1441,8 +1824,14 @@
           "url": "https://www.scummvm.org/data/screenshots/mohawk/myst/myst_win_it_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/cyan/myst/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2941"
       ]
-    }
+    },
+    "summary": "Explore a deserted island and travel through linking books to uncover the history of Atrus and his family.",
+    "studio": "Cyan",
+    "genre": "Exploration puzzle adventure"
   },
   "mohawk:riven": {
     "title": "Riven: The Sequel to Myst",
@@ -1464,8 +1853,14 @@
           "url": "https://www.scummvm.org/data/screenshots/mohawk/riven/riven_win_en_1_3_full.png",
           "page": "https://www.scummvm.org/screenshots/cyan/myst/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2942"
       ]
-    }
+    },
+    "summary": "Journey to Riven, decipher its machinery and culture, and help Atrus rescue Catherine from Gehn.",
+    "studio": "Cyan",
+    "genre": "Exploration puzzle adventure"
   },
   "neverhood:neverhood": {
     "title": "The Neverhood",
@@ -1487,8 +1882,14 @@
           "url": "https://www.scummvm.org/data/screenshots/neverhood/neverhood/neverhood_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/neverhood:neverhood/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3454"
       ]
-    }
+    },
+    "summary": "Guide Klaymen through a clay-built world and uncover its history through exploration and puzzles.",
+    "studio": "The Neverhood, Inc.",
+    "genre": "Claymation puzzle adventure"
   },
   "ngi:fullpipe": {
     "title": "Full Pipe",
@@ -1510,8 +1911,14 @@
           "url": "https://www.scummvm.org/data/screenshots/ngi/fullpipe/fullpipe_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/ngi:fullpipe/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3842"
       ]
-    }
+    },
+    "summary": "Follow an ordinary man through a trapdoor into a strange underground world filled with eccentric creatures and machinery.",
+    "studio": "PIPE Studio",
+    "genre": "Surreal puzzle adventure"
   },
   "parallaction:bra": {
     "title": "The Big Red Adventure",
@@ -1532,8 +1939,14 @@
           "kind": "gameplay",
           "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/The%20Big%20Red%20Adventure.png"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2023"
       ]
-    }
+    },
+    "summary": "Follow a Russian couple and an American tourist through a comic caper involving stolen treasures.",
+    "studio": "Dynabyte",
+    "genre": "Comedy adventure"
   },
   "parallaction:nippon": {
     "title": "Nippon Safes, Inc.",
@@ -1546,7 +1959,15 @@
       "/launcher/nippon-shot-1.png",
       "/launcher/nippon-shot-2.png",
       "/launcher/nippon-shot-3.png"
-    ]
+    ],
+    "summary": "Switch between three unlikely crooks as their separate jobs collide in a Japanese heist.",
+    "studio": "Dynabyte",
+    "genre": "Comedy caper adventure",
+    "sources": {
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2022"
+      ]
+    }
   },
   "pegasus:pegasus": {
     "title": "The Journeyman Project: Pegasus Prime",
@@ -1568,8 +1989,14 @@
           "url": "https://www.scummvm.org/data/screenshots/pegasus/pegasus/pegasus_mac_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/presto/journeyman/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3577"
       ]
-    }
+    },
+    "summary": "Travel through historical simulations as temporal agent Gage Blackwood to stop a plot against humanity.",
+    "studio": "Presto Studios",
+    "genre": "Time-travel adventure"
   },
   "plumbers:plumbers": {
     "title": "Plumbers Don't Wear Ties",
@@ -1591,8 +2018,14 @@
           "url": "https://www.scummvm.org/data/screenshots/plumbers/plumbers/plumbers_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/plumbers:plumbers/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=4637"
       ]
-    }
+    },
+    "summary": "Choose how a photographic comedy unfolds as a plumber and a young woman encounter romance and workplace intrigue.",
+    "studio": "Kirin Entertainment / United Pixtures",
+    "genre": "Mature interactive movie"
   },
   "queen:queen": {
     "title": "Flight of the Amazon Queen",
@@ -1604,7 +2037,15 @@
       "/launcher/queen-shot-1.png",
       "/launcher/queen-shot-2.png",
       "/launcher/queen-shot-3.png"
-    ]
+    ],
+    "summary": "Pilot Joe King crashes in the Amazon and becomes entangled in a mad scientist's plot.",
+    "studio": "Interactive Binary Illusions",
+    "genre": "Comedy adventure",
+    "sources": {
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1505"
+      ]
+    }
   },
   "saga:ihnm": {
     "title": "Harlan Ellison: I Have No Mouth, and I Must Scream",
@@ -1626,8 +2067,14 @@
           "url": "https://www.scummvm.org/data/screenshots/saga/ihnm/ihnm_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/dreamersguild/saga:ihnm/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1686"
       ]
-    }
+    },
+    "summary": "Guide five damaged characters through scenarios created by the supercomputer AM and confront their fears and past actions.",
+    "studio": "The Dreamers Guild",
+    "genre": "Psychological horror adventure"
   },
   "saga:ite": {
     "title": "Inherit the Earth: Quest for the Orb",
@@ -1649,8 +2096,14 @@
           "url": "https://www.scummvm.org/data/screenshots/saga/ite/ite_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/dreamersguild/saga:ite/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1679"
       ]
-    }
+    },
+    "summary": "Help Rif the fox clear his name after the Orb of Storms is stolen from a world of talking animals.",
+    "studio": "The Dreamers Guild",
+    "genre": "Fantasy adventure"
   },
   "sci:camelot": {
     "title": "Conquests of Camelot: The Search for the Grail",
@@ -1672,8 +2125,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/camelot/camelot_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/conquests/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2674"
       ]
-    }
+    },
+    "summary": "Guide King Arthur on a perilous quest for the Holy Grail to save Camelot.",
+    "studio": "Sierra On-Line",
+    "genre": "Arthurian adventure"
   },
   "sci:castlebrain": {
     "title": "Castle of Dr. Brain",
@@ -1696,8 +2155,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/castlebrain/castlebrain_dos_de_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/brain/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2706"
       ]
-    }
+    },
+    "summary": "Solve mathematics, language, logic, and science puzzles to explore Dr. Brain's castle.",
+    "studio": "Sierra On-Line",
+    "genre": "Educational puzzle adventure"
   },
   "sci:ecoquest": {
     "title": "EcoQuest: The Search for Cetus",
@@ -1720,8 +2185,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/ecoquest/ecoquest_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/ecoquest/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2677"
       ]
-    }
+    },
+    "summary": "Help Adam and the dolphin Delphineus explore an underwater kingdom and confront threats to the ocean.",
+    "studio": "Sierra On-Line",
+    "genre": "Environmental adventure"
   },
   "sci:ecoquest2": {
     "title": "EcoQuest II: Lost Secret of the Rainforest",
@@ -1743,8 +2214,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/ecoquest2/ecoquest2_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/ecoquest/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2679"
       ]
-    }
+    },
+    "summary": "Join Adam in the Amazon rainforest and investigate the pollution threatening its wildlife.",
+    "studio": "Sierra On-Line",
+    "genre": "Environmental adventure"
   },
   "sci:freddypharkas": {
     "title": "Freddy Pharkas: Frontier Pharmacist",
@@ -1766,8 +2243,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/freddypharkas/freddypharkas_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sci:freddypharkas/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2712"
       ]
-    }
+    },
+    "summary": "A former gunslinger working as a pharmacist must save the frontier town of Coarsegold.",
+    "studio": "Sierra On-Line",
+    "genre": "Western comedy adventure"
   },
   "sci:funseeker": {
     "title": "Fun Seeker's Guide to Eastern Madera County",
@@ -1788,8 +2271,14 @@
           "kind": "gameplay",
           "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Fun%20Seeker's%20Guide%20to%20Eastern%20Madera%20County.png"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2682"
       ]
-    }
+    },
+    "summary": "Browse Doug Oldfield's humorous interactive guide to places around Sierra's home in eastern Madera County.",
+    "studio": "Sierra On-Line",
+    "genre": "Interactive travel comedy"
   },
   "sci:gk1": {
     "title": "Gabriel Knight: Sins of the Fathers",
@@ -1810,8 +2299,14 @@
           "kind": "gameplay",
           "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Gabriel%20Knight_%20Sins%20of%20the%20Fathers.png"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2726"
       ]
-    }
+    },
+    "summary": "Investigate a series of murders in New Orleans as writer Gabriel Knight discovers his family's supernatural legacy.",
+    "studio": "Sierra On-Line",
+    "genre": "Supernatural mystery adventure"
   },
   "sci:gk2": {
     "title": "The Beast Within: A Gabriel Knight Mystery",
@@ -1833,8 +2328,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/gk2/gk2_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/gk/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3088"
       ]
-    }
+    },
+    "summary": "Alternate between Gabriel Knight and Grace Nakimura to investigate a werewolf mystery in Bavaria.",
+    "studio": "Sierra On-Line",
+    "genre": "Interactive movie mystery"
   },
   "sci:iceman": {
     "title": "Code-Name: Iceman",
@@ -1856,8 +2357,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/iceman/iceman_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sci:iceman/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2667"
       ]
-    }
+    },
+    "summary": "Join naval officer Johnny Westland on a mission involving a submarine, international intrigue, and a hostage rescue.",
+    "studio": "Sierra On-Line",
+    "genre": "Espionage adventure and simulation"
   },
   "sci:islandbrain": {
     "title": "The Island of Dr. Brain",
@@ -1880,8 +2387,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/islandbrain/islandbrain_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/brain/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2707"
       ]
-    }
+    },
+    "summary": "Explore Dr. Brain's island laboratory and solve puzzles covering science, music, language, and logic.",
+    "studio": "Sierra On-Line",
+    "genre": "Educational puzzle adventure"
   },
   "sci:jones": {
     "title": "Jones in the Fast Lane",
@@ -1903,8 +2416,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/jones/jones_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sci:jones/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2676"
       ]
-    }
+    },
+    "summary": "Compete for education, money, career success, and happiness while balancing work and daily expenses.",
+    "studio": "Sierra On-Line",
+    "genre": "Life simulation board game"
   },
   "sci:kq1sci": {
     "title": "King's Quest: Quest for the Crown",
@@ -1926,8 +2445,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/kq1sci/kq1sci_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/kq/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1717"
       ]
-    }
+    },
+    "summary": "Help Graham recover three lost treasures and restore the kingdom of Daventry in this SCI remake.",
+    "studio": "Sierra On-Line",
+    "genre": "Fantasy adventure"
   },
   "sci:kq4sci": {
     "title": "King's Quest IV: The Perils of Rosella",
@@ -1949,8 +2474,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/kq4sci/kq4sci_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/kq/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1720"
       ]
-    }
+    },
+    "summary": "Guide Princess Rosella through Tamir to find a magical fruit that can save her father.",
+    "studio": "Sierra On-Line",
+    "genre": "Fantasy adventure"
   },
   "sci:kq5": {
     "title": "King's Quest V: Absence Makes the Heart Go Yonder!",
@@ -1972,8 +2503,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/kq5/kq5_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/kq/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1753"
       ]
-    }
+    },
+    "summary": "Follow King Graham through Serenia as he searches for his family and castle after a wizard makes them disappear.",
+    "studio": "Sierra On-Line",
+    "genre": "Fantasy adventure"
   },
   "sci:kq6": {
     "title": "King's Quest VI: Heir Today, Gone Tomorrow",
@@ -1995,8 +2532,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/kq6/kq6_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/kq/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2012"
       ]
-    }
+    },
+    "summary": "Help Prince Alexander explore the Land of the Green Isles and find Princess Cassima.",
+    "studio": "Sierra On-Line",
+    "genre": "Fantasy adventure"
   },
   "sci:kq7": {
     "title": "King's Quest VII: The Princeless Bride",
@@ -2018,8 +2561,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/kq7/kq7_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/kq/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2013"
       ]
-    }
+    },
+    "summary": "Play as Valanice and Rosella as they explore a magical land and oppose the sorceress Malicia.",
+    "studio": "Sierra On-Line",
+    "genre": "Fantasy adventure"
   },
   "sci:laurabow": {
     "title": "Laura Bow: The Colonel's Bequest",
@@ -2041,8 +2590,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/laurabow/laurabow_dos_en_1_6_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/laurabow/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2664"
       ]
-    }
+    },
+    "summary": "Investigate a series of murders during a family gathering at a secluded Louisiana plantation.",
+    "studio": "Sierra On-Line",
+    "genre": "Murder mystery adventure"
   },
   "sci:laurabow2": {
     "title": "Laura Bow 2: The Dagger of Amon Ra",
@@ -2064,8 +2619,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/laurabow2/laurabow2_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/laurabow/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2666"
       ]
-    }
+    },
+    "summary": "Reporter Laura Bow investigates a museum robbery and a series of murders in 1920s New York.",
+    "studio": "Sierra On-Line",
+    "genre": "Murder mystery adventure"
   },
   "sci:lighthouse": {
     "title": "Lighthouse: The Dark Being",
@@ -2087,8 +2648,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/lighthouse/lighthouse_dos_de_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sci:lighthouse/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3286"
       ]
-    }
+    },
+    "summary": "Follow a mysterious being through a portal and explore an alternate world to rescue a kidnapped child.",
+    "studio": "Sierra On-Line",
+    "genre": "Science-fiction puzzle adventure"
   },
   "sci:longbow": {
     "title": "Conquests of the Longbow: The Legend of Robin Hood",
@@ -2110,8 +2677,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/longbow/longbow_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/conquests/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2710"
       ]
-    }
+    },
+    "summary": "Lead Robin Hood and his companions through Sherwood Forest to oppose the Sheriff and help King Richard.",
+    "studio": "Sierra On-Line",
+    "genre": "Historical adventure"
   },
   "sci:lsl1sci": {
     "title": "Leisure Suit Larry in the Land of the Lounge Lizards",
@@ -2133,8 +2706,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/lsl1sci/lsl1sci_amiga_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1724"
       ]
-    }
+    },
+    "summary": "Explore the nightlife of Lost Wages as Larry Laffer searches for romance in this SCI remake.",
+    "studio": "Sierra On-Line",
+    "genre": "Adult comedy adventure"
   },
   "sci:lsl2": {
     "title": "Leisure Suit Larry 2: Goes Looking for Love (in Several Wrong Places)",
@@ -2156,8 +2735,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/lsl2/lsl2_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2026"
       ]
-    }
+    },
+    "summary": "Larry's search for love takes him from Los Angeles to a cruise ship and a tropical island while secret agents pursue him.",
+    "studio": "Sierra On-Line",
+    "genre": "Adult comedy adventure"
   },
   "sci:lsl3": {
     "title": "Leisure Suit Larry 3: Passionate Patti in Pursuit of the Pulsating Pectorals",
@@ -2179,8 +2764,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/lsl3/lsl3_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2027"
       ]
-    }
+    },
+    "summary": "Follow Larry and Passionate Patti through the resorts and jungles of Nontoonyt Island.",
+    "studio": "Sierra On-Line",
+    "genre": "Adult comedy adventure"
   },
   "sci:lsl5": {
     "title": "Leisure Suit Larry 5: Passionate Patti Does a Little Undercover Work",
@@ -2202,8 +2793,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/lsl5/lsl5_amiga_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2028"
       ]
-    }
+    },
+    "summary": "Alternate between Larry's search for television talent and Patti's undercover investigation for the FBI.",
+    "studio": "Sierra On-Line",
+    "genre": "Adult comedy adventure"
   },
   "sci:lsl6hires": {
     "title": "Leisure Suit Larry 6: Shape Up or Slip Out!",
@@ -2225,8 +2822,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/lsl6hires/lsl6hires_dos_de_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2045"
       ]
-    }
+    },
+    "summary": "Help Larry navigate the La Costa Lotta resort, solve its guests' problems, and pursue romance.",
+    "studio": "Sierra On-Line",
+    "genre": "Adult comedy adventure"
   },
   "sci:lsl7": {
     "title": "Leisure Suit Larry 7: Love for Sail!",
@@ -2248,8 +2851,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/lsl7/lsl7_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2046"
       ]
-    }
+    },
+    "summary": "Join Larry aboard a luxury cruise ship and compete in contests for a chance to spend time with Captain Thygh.",
+    "studio": "Sierra On-Line",
+    "genre": "Adult comedy adventure"
   },
   "sci:msastrochicken": {
     "title": "Ms. Astro Chicken",
@@ -2270,8 +2879,14 @@
           "kind": "gameplay",
           "url": "https://www.gamerscreed.com/attachments/ms-astro-chicken-005-png.3463/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2673"
       ]
-    }
+    },
+    "summary": "Fly Ms. Astro Chicken through a scrolling arcade challenge inspired by Space Quest's comic universe.",
+    "studio": "Sierra On-Line",
+    "genre": "Arcade action"
   },
   "sci:pepper": {
     "title": "Pepper's Adventures in Time",
@@ -2293,8 +2908,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/pepper/pepper_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sci:pepper/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3044"
       ]
-    }
+    },
+    "summary": "Travel with Pepper and her dog Lockjaw to colonial America to stop a villain from changing history.",
+    "studio": "Sierra On-Line",
+    "genre": "Educational time-travel adventure"
   },
   "sci:phantasmagoria": {
     "title": "Phantasmagoria",
@@ -2316,8 +2937,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/phantasmagoria/phantasmagoria_dos_fr_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/phantasmagoria/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3098"
       ]
-    }
+    },
+    "summary": "Explore an isolated mansion as writer Adrienne Delaney uncovers its violent history and a supernatural threat.",
+    "studio": "Sierra On-Line",
+    "genre": "Interactive movie horror"
   },
   "sci:phantasmagoria2": {
     "title": "Phantasmagoria 2: A Puzzle of Flesh",
@@ -2339,8 +2966,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/phantasmagoria2/phantasmagoria2_win_fr_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/phantasmagoria/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3287"
       ]
-    }
+    },
+    "summary": "Investigate disturbing visions and workplace murders as Curtis Craig questions his memories and identity.",
+    "studio": "Sierra On-Line",
+    "genre": "Interactive movie horror"
   },
   "sci:pq1sci": {
     "title": "Police Quest: In Pursuit of the Death Angel",
@@ -2351,7 +2984,15 @@
     "screenshots": [
       "/launcher/retro-agi-pq1-shot.webp"
     ],
-    "artworkFrom": "agi:pq1"
+    "artworkFrom": "agi:pq1",
+    "summary": "Follow officer Sonny Bonds through traffic patrols and a drug investigation in this SCI remake.",
+    "studio": "Sierra On-Line",
+    "genre": "Police procedural adventure",
+    "sources": {
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1726"
+      ]
+    }
   },
   "sci:pq2": {
     "title": "Police Quest 2: The Vengeance",
@@ -2373,8 +3014,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/pq2/pq2_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/pq/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1993"
       ]
-    }
+    },
+    "summary": "Detective Sonny Bonds pursues the escaped criminal Jessie Bains while protecting the people he threatens.",
+    "studio": "Sierra On-Line",
+    "genre": "Police procedural adventure"
   },
   "sci:pq3": {
     "title": "Police Quest 3: The Kindred",
@@ -2396,8 +3043,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/pq3/pq3_amiga_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/pq/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1994"
       ]
-    }
+    },
+    "summary": "Investigate a series of crimes linked to a cult as Sonny Bonds and his partner patrol Lytton.",
+    "studio": "Sierra On-Line",
+    "genre": "Police procedural adventure"
   },
   "sci:pq4": {
     "title": "Police Quest IV: Open Season",
@@ -2419,8 +3072,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/pq4/pq4_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/pq/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1995"
       ]
-    }
+    },
+    "summary": "Investigate a police officer's murder as LAPD detective John Carey follows a case through Los Angeles.",
+    "studio": "Sierra On-Line",
+    "genre": "Police procedural adventure"
   },
   "sci:qfg1": {
     "title": "Quest for Glory I: So You Want To Be A Hero",
@@ -2443,8 +3102,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/qfg1/qfg1_dos_en_1_5_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/qfg/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2647"
       ]
-    }
+    },
+    "summary": "Build a hero's skills, help the people of Spielburg, and lift the curses affecting its valley.",
+    "studio": "Sierra On-Line",
+    "genre": "Role-playing adventure"
   },
   "sci:qfg1vga": {
     "title": "Quest for Glory I: So You Want To Be A Hero",
@@ -2455,7 +3120,15 @@
     "screenshots": [
       "/launcher/retro-sci-qfg1-shot.webp"
     ],
-    "artworkFrom": "sci:qfg1"
+    "artworkFrom": "sci:qfg1",
+    "summary": "Explore Spielburg as a fighter, magic user, or thief in this VGA remake of the first Quest for Glory.",
+    "studio": "Sierra On-Line",
+    "genre": "Role-playing adventure",
+    "sources": {
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2647"
+      ]
+    }
   },
   "sci:qfg2": {
     "title": "Quest for Glory II: Trial by Fire",
@@ -2477,8 +3150,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/qfg2/qfg2_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/qfg/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2650"
       ]
-    }
+    },
+    "summary": "Explore the desert city of Shapeir, confront elemental threats, and investigate neighbouring Raseir.",
+    "studio": "Sierra On-Line",
+    "genre": "Role-playing adventure"
   },
   "sci:qfg3": {
     "title": "Quest for Glory III: Wages of War",
@@ -2500,8 +3179,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/qfg3/qfg3_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/qfg/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2651"
       ]
-    }
+    },
+    "summary": "Journey to Tarna and use your skills and diplomacy to prevent a war between rival peoples.",
+    "studio": "Sierra On-Line",
+    "genre": "Role-playing adventure"
   },
   "sci:rama": {
     "title": "RAMA",
@@ -2523,8 +3208,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/rama/rama_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sci:rama/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3288"
       ]
-    }
+    },
+    "summary": "Explore an immense alien spacecraft and decipher its mathematics, language, and mysterious purpose.",
+    "studio": "Sierra On-Line",
+    "genre": "Science-fiction puzzle adventure"
   },
   "sci:shivers": {
     "title": "Shivers",
@@ -2545,8 +3236,14 @@
           "kind": "gameplay",
           "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Shivers.png"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3144"
       ]
-    }
+    },
+    "summary": "Search an abandoned museum and capture spirits released from its collection of strange exhibits.",
+    "studio": "Sierra On-Line",
+    "genre": "Horror puzzle adventure"
   },
   "sci:sq1sci": {
     "title": "Space Quest: The Sarien Encounter",
@@ -2557,7 +3254,15 @@
     "screenshots": [
       "/launcher/retro-agi-sq1-shot.webp"
     ],
-    "artworkFrom": "agi:sq1"
+    "artworkFrom": "agi:sq1",
+    "summary": "Help janitor Roger Wilco recover the Star Generator in the VGA remake of his first adventure.",
+    "studio": "Sierra On-Line",
+    "genre": "Science-fiction comedy",
+    "sources": {
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1723"
+      ]
+    }
   },
   "sci:sq3": {
     "title": "Space Quest III: The Pirates of Pestulon",
@@ -2579,8 +3284,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/sq3/sq3_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sq/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1989"
       ]
-    }
+    },
+    "summary": "Escape a space junk freighter and help the Two Guys from Andromeda in Roger Wilco's third adventure.",
+    "studio": "Sierra On-Line",
+    "genre": "Science-fiction comedy"
   },
   "sci:sq4": {
     "title": "Space Quest IV: Roger Wilco and the Time Rippers",
@@ -2602,8 +3313,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/sq4/sq4_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sq/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1990"
       ]
-    }
+    },
+    "summary": "Travel through Space Quest's past and future as Roger Wilco tries to escape the Sequel Police.",
+    "studio": "Sierra On-Line",
+    "genre": "Science-fiction comedy"
   },
   "sci:sq5": {
     "title": "Space Quest V: The Next Mutation",
@@ -2625,8 +3342,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/sq5/sq5_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sq/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1991"
       ]
-    }
+    },
+    "summary": "Command the garbage scow Eureka and help Roger Wilco uncover a conspiracy threatening StarCon.",
+    "studio": "Dynamix",
+    "genre": "Science-fiction comedy"
   },
   "sci:sq6": {
     "title": "Space Quest 6: Roger Wilco in the Spinal Frontier",
@@ -2648,8 +3371,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/sq6/sq6_dos_de_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sq/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1992"
       ]
-    }
+    },
+    "summary": "Follow Roger Wilco through a futuristic city and into a microscopic adventure inside the human body.",
+    "studio": "Sierra On-Line",
+    "genre": "Science-fiction comedy"
   },
   "sci:torin": {
     "title": "Torin's Passage",
@@ -2671,8 +3400,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sci/torin/torin_win_de_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sci:torin/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3285"
       ]
-    }
+    },
+    "summary": "Travel through the worlds beneath Strata as Torin searches for his kidnapped parents.",
+    "studio": "Sierra On-Line",
+    "genre": "Fantasy adventure"
   },
   "scumm:atlantis": {
     "title": "Indiana Jones and the Fate of Atlantis",
@@ -2682,7 +3417,15 @@
     "posterImage": "/launcher/atlantis-cover.webp",
     "screenshots": [
       "/launcher/atlantis-shot.webp"
-    ]
+    ],
+    "summary": "Join Indy and Sophia Hapgood in a race to uncover Atlantis before a Nazi expedition.",
+    "studio": "LucasArts",
+    "genre": "Archaeological adventure",
+    "sources": {
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1668"
+      ]
+    }
   },
   "scumm:bluestreasurehunt": {
     "title": "Blue's Treasure Hunt",
@@ -2704,8 +3447,14 @@
           "url": "https://www.scummvm.org/data/screenshots/scumm/bluestreasurehunt/bluestreasurehunt_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/he/blue/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2134"
       ]
-    }
+    },
+    "summary": "Help Blue and her friends collect clues, solve activities, and follow a treasure hunt.",
+    "studio": "Humongous Entertainment",
+    "genre": "Educational adventure"
   },
   "scumm:brstorm": {
     "title": "Bear Stormin'",
@@ -2726,8 +3475,14 @@
           "kind": "gameplay",
           "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Bear%20Stormin'.png"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=7006"
       ]
-    }
+    },
+    "summary": "Pilot a bear's aeroplane through a light-hearted arcade game.",
+    "studio": "Humongous Entertainment",
+    "genre": "Children's arcade action"
   },
   "scumm:comi": {
     "title": "The Curse of Monkey Island",
@@ -2749,8 +3504,14 @@
           "url": "https://www.scummvm.org/data/screenshots/scumm/comi/comi_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/lucasarts/mi/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=999"
       ]
-    }
+    },
+    "summary": "Help Guybrush Threepwood lift a curse that has transformed Elaine into a solid-gold statue.",
+    "studio": "LucasArts",
+    "genre": "Pirate comedy adventure"
   },
   "scumm:dig": {
     "title": "The Dig",
@@ -2772,8 +3533,14 @@
           "url": "https://www.scummvm.org/data/screenshots/scumm/dig/dig_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/lucasarts/scumm:dig/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1672"
       ]
-    }
+    },
+    "summary": "An asteroid mission transports three astronauts to an alien world filled with ancient technology.",
+    "studio": "LucasArts",
+    "genre": "Science-fiction adventure"
   },
   "scumm:ft": {
     "title": "Full Throttle",
@@ -2795,8 +3562,14 @@
           "url": "https://www.scummvm.org/data/screenshots/scumm/ft/ft_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/lucasarts/scumm:ft/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1673"
       ]
-    }
+    },
+    "summary": "Biker Ben investigates a murder conspiracy and tries to save his motorcycle gang.",
+    "studio": "LucasArts",
+    "genre": "Action adventure"
   },
   "scumm:indy3": {
     "title": "Indiana Jones and the Last Crusade",
@@ -2806,7 +3579,15 @@
     "posterImage": "/launcher/indy3-cover.webp",
     "screenshots": [
       "/launcher/indy3-shot.webp"
-    ]
+    ],
+    "summary": "Help Indiana Jones and his father search for the Holy Grail in the adventure based on the film.",
+    "studio": "Lucasfilm Games",
+    "genre": "Archaeological adventure",
+    "sources": {
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1666"
+      ]
+    }
   },
   "scumm:loom": {
     "title": "Loom",
@@ -2817,7 +3598,15 @@
     "posterImage": "/launcher/loom-cover.webp",
     "screenshots": [
       "/launcher/loom-shot.webp"
-    ]
+    ],
+    "summary": "Use musical drafts as Bobbin Threadbare to discover the fate of the Weavers and reshape the world.",
+    "studio": "Lucasfilm Games",
+    "genre": "Musical fantasy adventure",
+    "sources": {
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1667"
+      ]
+    }
   },
   "scumm:maniac": {
     "title": "Maniac Mansion",
@@ -2827,7 +3616,15 @@
     "posterImage": "/launcher/maniac-cover.webp",
     "screenshots": [
       "/launcher/maniac-shot.webp"
-    ]
+    ],
+    "summary": "Choose a team of teenagers to explore Dr. Fred's mansion and rescue Sandy.",
+    "studio": "Lucasfilm Games",
+    "genre": "Comedy horror adventure",
+    "sources": {
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1000"
+      ]
+    }
   },
   "scumm:monkey": {
     "title": "The Secret of Monkey Island",
@@ -2849,8 +3646,14 @@
           "url": "https://www.scummvm.org/data/screenshots/scumm/monkey/monkey_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/lucasarts/mi/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=966"
       ]
-    }
+    },
+    "summary": "Help aspiring pirate Guybrush Threepwood pass three trials, meet Elaine Marley, and confront the ghost pirate LeChuck.",
+    "studio": "Lucasfilm Games",
+    "genre": "Pirate comedy adventure"
   },
   "scumm:monkey2": {
     "title": "Monkey Island 2: LeChuck's Revenge",
@@ -2861,7 +3664,15 @@
     "posterImage": "/launcher/monkey2-cover.webp",
     "screenshots": [
       "/launcher/monkey2-shot.webp"
-    ]
+    ],
+    "summary": "Search for the treasure of Big Whoop as Guybrush Threepwood faces the returning pirate LeChuck.",
+    "studio": "Lucasfilm Games",
+    "genre": "Pirate comedy adventure",
+    "sources": {
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=998"
+      ]
+    }
   },
   "scumm:pass": {
     "title": "Passport to Adventure (Demo)",
@@ -2882,8 +3693,14 @@
           "kind": "title-screen",
           "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Passport%20to%20Adventure.png"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1789"
       ]
-    }
+    },
+    "summary": "Sample scenes featuring Indiana Jones, Monkey Island, and Loom in Lucasfilm Games' three-part adventure demo.",
+    "studio": "Lucasfilm Games",
+    "genre": "Adventure demo collection"
   },
   "scumm:samnmax": {
     "title": "Sam & Max Hit the Road",
@@ -2894,7 +3711,15 @@
     "posterImage": "/launcher/samnmax-cover.webp",
     "screenshots": [
       "/launcher/samnmax-shot.webp"
-    ]
+    ],
+    "summary": "Join freelance police Sam and Max on a road trip to track down a missing carnival Bigfoot.",
+    "studio": "LucasArts",
+    "genre": "Comedy adventure",
+    "sources": {
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1671"
+      ]
+    }
   },
   "scumm:tentacle": {
     "title": "Day of the Tentacle",
@@ -2905,7 +3730,15 @@
     "posterImage": "/launcher/tentacle-cover.webp",
     "screenshots": [
       "/launcher/tentacle-shot.webp"
-    ]
+    ],
+    "summary": "Coordinate Bernard, Hoagie, and Laverne across three eras to stop Purple Tentacle from taking over the world.",
+    "studio": "LucasArts",
+    "genre": "Time-travel comedy adventure",
+    "sources": {
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1670"
+      ]
+    }
   },
   "scumm:thinker1": {
     "title": "Big Thinkers! 1st Grade",
@@ -2927,8 +3760,14 @@
           "url": "https://www.scummvm.org/data/screenshots/scumm/thinker1/thinker1_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/he/bigthinkers/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2041"
       ]
-    }
+    },
+    "summary": "Join Ben and Becky Brightly for activities designed around first-grade learning skills.",
+    "studio": "Humongous Entertainment",
+    "genre": "Educational activity collection"
   },
   "scumm:thinkerk": {
     "title": "Big Thinkers! Kindergarten",
@@ -2950,8 +3789,14 @@
           "url": "https://www.scummvm.org/data/screenshots/scumm/thinkerk/thinkerk_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/he/bigthinkers/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2042"
       ]
-    }
+    },
+    "summary": "Explore Ben and Becky Brightly's house through activities designed for kindergarten learners.",
+    "studio": "Humongous Entertainment",
+    "genre": "Educational activity collection"
   },
   "scumm:zak": {
     "title": "Zak McKracken and the Alien Mindbenders",
@@ -2961,7 +3806,15 @@
     "posterImage": "/launcher/zak-cover.webp",
     "screenshots": [
       "/launcher/zak-shot.webp"
-    ]
+    ],
+    "summary": "Tabloid reporter Zak McKracken investigates an alien plot to make Earth's population less intelligent.",
+    "studio": "Lucasfilm Games",
+    "genre": "Science-fiction comedy",
+    "sources": {
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1665"
+      ]
+    }
   },
   "sherlock:rosetattoo": {
     "title": "The Lost Files of Sherlock Holmes: Case of the Rose Tattoo",
@@ -2983,8 +3836,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sherlock/rosetattoo/rosetattoo_dos_de_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/sherlock/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=4139"
       ]
-    }
+    },
+    "summary": "Investigate a bombing and a web of intrigue as Sherlock Holmes and Dr. Watson explore Victorian London.",
+    "studio": "Mythos Software",
+    "genre": "Detective adventure"
   },
   "sherlock:scalpel": {
     "title": "The Lost Files of Sherlock Holmes: The Case of the Serrated Scalpel",
@@ -3006,8 +3865,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sherlock/scalpel/scalpel_dos_de_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/sherlock/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=4138"
       ]
-    }
+    },
+    "summary": "Help Holmes and Watson investigate a London murder that appears to be connected to Jack the Ripper.",
+    "studio": "Mythos Software",
+    "genre": "Detective adventure"
   },
   "sky:sky": {
     "title": "Beneath a Steel Sky",
@@ -3019,7 +3884,15 @@
       "/launcher/bass-shot-1.png",
       "/launcher/bass-shot-2.png",
       "/launcher/bass-shot-3.png"
-    ]
+    ],
+    "summary": "Escape Union City with engineer Robert Foster and his robot companion Joey while uncovering the secrets of its ruling computer.",
+    "studio": "Revolution Software",
+    "genre": "Cyberpunk adventure",
+    "sources": {
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=952"
+      ]
+    }
   },
   "sword1:sword1": {
     "title": "Broken Sword: The Shadow of the Templars",
@@ -3041,8 +3914,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sword1/sword1/sword1_psx_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/revolution/sword/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1507"
       ]
-    }
+    },
+    "summary": "Join George Stobbart and Nicole Collard as a Paris bombing leads to a conspiracy involving the Knights Templar.",
+    "studio": "Revolution Software",
+    "genre": "Conspiracy adventure"
   },
   "sword25:sword25": {
     "title": "Broken Sword 2.5: The Return of the Templars",
@@ -3054,7 +3933,15 @@
       "/launcher/sword25-shot-1.png",
       "/launcher/sword25-shot-2.png",
       "/launcher/sword25-shot-3.png"
-    ]
+    ],
+    "summary": "George Stobbart returns to Paris and reunites with Nicole Collard to investigate a new conspiracy.",
+    "studio": "mindFactory",
+    "genre": "Conspiracy adventure",
+    "sources": {
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3071"
+      ]
+    }
   },
   "sword2:sword2": {
     "title": "Broken Sword II: The Smoking Mirror",
@@ -3076,8 +3963,14 @@
           "url": "https://www.scummvm.org/data/screenshots/sword2/sword2/sword2_psx_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/revolution/sword/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1506"
       ]
-    }
+    },
+    "summary": "Guide George and Nico through a mystery involving stolen artefacts, smugglers, and an ancient Mayan prophecy.",
+    "studio": "Revolution Software",
+    "genre": "Conspiracy adventure"
   },
   "teenagent:teenagent": {
     "title": "Teen Agent",
@@ -3099,8 +3992,14 @@
           "url": "https://www.scummvm.org/data/screenshots/teenagent/teenagent/teenagent_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/metropolis/teenagent:teenagent/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2503"
       ]
-    }
+    },
+    "summary": "An ordinary teenager is recruited into a secret agency and sent to investigate disappearing gold.",
+    "studio": "Metropolis Software",
+    "genre": "Comedy adventure"
   },
   "tinsel:dw": {
     "title": "Discworld",
@@ -3123,8 +4022,14 @@
           "url": "https://www.scummvm.org/data/screenshots/tinsel/dw/dw_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/dw/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1832"
       ]
-    }
+    },
+    "summary": "Help the inept wizard Rincewind stop a dragon from terrorising Ankh-Morpork.",
+    "studio": "Perfect 10 Productions / Teeny Weeny Games",
+    "genre": "Fantasy comedy"
   },
   "tinsel:dw2": {
     "title": "Discworld II: Missing Presumed...!?",
@@ -3146,8 +4051,14 @@
           "url": "https://www.scummvm.org/data/screenshots/tinsel/dw2/dw2_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/dw/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1694"
       ]
-    }
+    },
+    "summary": "Track down the missing Death as Rincewind tries to restore the natural order of the Discworld.",
+    "studio": "Perfect Entertainment",
+    "genre": "Fantasy comedy"
   },
   "titanic:titanic": {
     "title": "Starship Titanic",
@@ -3169,8 +4080,14 @@
           "url": "https://www.scummvm.org/data/screenshots/titanic/titanic/titanic_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/titanic:titanic/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=4366"
       ]
-    }
+    },
+    "summary": "Explore a luxurious interstellar cruise liner and help restore its damaged central intelligence, Titania.",
+    "studio": "The Digital Village",
+    "genre": "Science-fiction comedy"
   },
   "toltecs:toltecs": {
     "title": "3 Skulls of the Toltecs",
@@ -3192,8 +4109,14 @@
           "url": "https://www.scummvm.org/data/screenshots/toltecs/toltecs/toltecs_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/toltecs:toltecs/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3296"
       ]
-    }
+    },
+    "summary": "Help Fenimore Fillmore find three golden skulls that hold the key to a lost Toltec treasure.",
+    "studio": "Revistronic",
+    "genre": "Western comedy adventure"
   },
   "tony:tony": {
     "title": "Tony Tough and the Night of Roasted Moths",
@@ -3215,8 +4138,14 @@
           "url": "https://www.scummvm.org/data/screenshots/tony/tony/tony_win_de_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/tony:tony/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3489"
       ]
-    }
+    },
+    "summary": "Private investigator Tony Tough pursues the culprit stealing children's Halloween sweets.",
+    "studio": "Nayma Software / Prograph Research",
+    "genre": "Comedy mystery adventure"
   },
   "toon:toon": {
     "title": "Toonstruck",
@@ -3238,8 +4167,14 @@
           "url": "https://www.scummvm.org/data/screenshots/toon/toon/toon_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/toon:toon/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3054"
       ]
-    }
+    },
+    "summary": "An animator is pulled into a cartoon world and must stop a villain from turning it into a sinister new creation.",
+    "studio": "Burst Studios",
+    "genre": "Cartoon comedy adventure"
   },
   "touche:touche": {
     "title": "Touché: The Adventures of the Fifth Musketeer",
@@ -3261,8 +4196,14 @@
           "url": "https://www.scummvm.org/data/screenshots/touche/touche/touche_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/touche:touche/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=1829"
       ]
-    }
+    },
+    "summary": "Help would-be musketeer Geoffroi Le Brun investigate a murder and a stolen will in sixteenth-century France.",
+    "studio": "Clipper Software",
+    "genre": "Swashbuckling adventure"
   },
   "tsage:blueforce": {
     "title": "Blue Force",
@@ -3284,8 +4225,14 @@
           "url": "https://www.scummvm.org/data/screenshots/tsage/blueforce/blueforce_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/tsunami/tsage:blueforce/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3226"
       ]
-    }
+    },
+    "summary": "Investigate crimes as rookie officer Jake Ryan and uncover the truth about his parents' deaths.",
+    "studio": "Tsunami Media",
+    "genre": "Police procedural adventure"
   },
   "tsage:ringworld": {
     "title": "Ringworld: Revenge of the Patriarch",
@@ -3307,8 +4254,14 @@
           "url": "https://www.scummvm.org/data/screenshots/tsage/ringworld/ringworld_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/tsunami/ringworld/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3191"
       ]
-    }
+    },
+    "summary": "Explore Larry Niven's Ringworld and search for information that could prevent a war between the Kzinti and humanity.",
+    "studio": "Tsunami Media",
+    "genre": "Science-fiction adventure"
   },
   "tsage:ringworld2": {
     "title": "Return to Ringworld",
@@ -3330,8 +4283,14 @@
           "url": "https://www.scummvm.org/data/screenshots/tsage/ringworld2/ringworld2_dos_en_1_3_full.png",
           "page": "https://www.scummvm.org/screenshots/tsunami/ringworld/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3242"
       ]
-    }
+    },
+    "summary": "Return to the Ringworld and follow its travellers through another interstellar conflict.",
+    "studio": "Tsunami Media",
+    "genre": "Science-fiction adventure"
   },
   "tucker:tucker": {
     "title": "Bud Tucker in Double Trouble",
@@ -3353,8 +4312,14 @@
           "url": "https://www.scummvm.org/data/screenshots/tucker/tucker/tucker_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/tucker:tucker/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=2498"
       ]
-    }
+    },
+    "summary": "Help pizza delivery boy and lab assistant Bud Tucker rescue a professor and stop a plot involving cloned villains.",
+    "studio": "Merit Studios",
+    "genre": "Comedy adventure"
   },
   "voyeur:voyeur": {
     "title": "Voyeur",
@@ -3376,8 +4341,14 @@
           "url": "https://www.scummvm.org/data/screenshots/voyeur/voyeur/voyeur_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/other/voyeur:voyeur/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3928"
       ]
-    }
+    },
+    "summary": "Watch a powerful family's mansion through a camera and gather evidence of crimes before the weekend ends.",
+    "studio": "Entertainment Software Partners / Philips P.O.V.",
+    "genre": "Interactive movie thriller"
   },
   "wintermute:chivalry": {
     "title": "Chivalry is Not Dead",
@@ -3400,7 +4371,13 @@
           "url": "https://www.scummvm.org/data/screenshots/wintermute/chivalry/chivalry_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/squinky/wintermute:chivalry/"
         }
+      ],
+      "metadata": [
+        "https://wiki.scummvm.org/index.php?curid=3483"
       ]
-    }
+    },
+    "summary": "A peasant sent to kill the Queen of Everything discovers an open-ended quest with choices about loyalty and violence.",
+    "studio": "Deirdra Kiai (Squinky)",
+    "genre": "Fantasy adventure"
   }
 }

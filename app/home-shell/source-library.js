@@ -383,7 +383,7 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
             {library.map(({ source, status, game, title, locate, locateLabel, action }) => {
               const hint = locate ? locateLabel : ["permission", "missing", "unverified"].includes(status)
                 ? statusText[status] : null;
-              const description = [game?.studio, game?.year, game?.badge, statusText[status]].filter(Boolean).join(" · ");
+              const description = [game?.summary, game?.studio, game?.genre, game?.badge, statusText[status]].filter(Boolean).join(" · ");
               return (
                 <article key={source.id} className="poster-entry source-poster-entry" data-library-source-id={source.id}>
                   <button
@@ -398,6 +398,13 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
                     <GamePoster title={title} image={game?.posterImage} />
                     {hint && <span className="source-poster-hint" aria-hidden="true">{hint}</span>}
                   </button>
+                  <div className="source-poster-details">
+                    <p className="source-poster-summary" title={game.summary}>{game.summary}</p>
+                    <dl>
+                      <div><dt>Studio</dt><dd>{game.studio}</dd></div>
+                      <div><dt>Genre</dt><dd>{game.genre}</dd></div>
+                    </dl>
+                  </div>
                   <button
                     type="button"
                     className="source-poster-remove"

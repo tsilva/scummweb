@@ -171,3 +171,12 @@ into the managed shell during ScummVM rebuilds.
   The homepage uses a game's landscape artwork or gameplay capture as its
   slideshow backdrop. Imported slides use the same Play and reconnect actions
   as their library cards.
+
+  Every recognized title in the asset pack must include a game-specific
+  `summary`, `studio`, and `genre`. Keep metadata references in
+  `sources.metadata` and describe unresolved credits in `metadataNote`.
+  Library cards and slideshow heroes read the same record, including entries
+  imported before a metadata update. ScummVM's developer pages provide the
+  primary references; genre labels and summaries are editorial descriptions.
+  The fan game Road has an unverified creator credit and a description based
+  on its locally verified gameplay.
