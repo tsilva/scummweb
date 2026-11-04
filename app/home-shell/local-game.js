@@ -119,7 +119,6 @@ export function GameImportDialog({ pending, result, onConfirm }) {
   return (
     <dialog
       ref={dialog}
-      tabIndex={-1}
       className="game-import-dialog"
       aria-labelledby="game-import-title"
       aria-describedby={complete ? "game-import-summary" : undefined}
