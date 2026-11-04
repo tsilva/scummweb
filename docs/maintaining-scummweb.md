@@ -63,7 +63,7 @@ engine before syncing the bundle.
    existing catalog. If the SDK changes the generated SDL audio glue, port
    [`scripts/patch_scummvm_audio.py`](../scripts/patch_scummvm_audio.py) and rebuild.
    The audio patch must succeed before the tracked bundle is replaced.
-5. Run `pnpm test` and launch a catalog game and a local ZIP in Brave.
+5. Run `pnpm test` and launch a catalog game and an imported ZIP in the browser.
    Check the first frame, audio, save and resume, and that the selected
    engine is the only engine plugin downloaded.
 

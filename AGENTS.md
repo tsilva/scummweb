@@ -7,9 +7,10 @@ Repo notes for coding agents working in `scummweb`.
 - The playable entry is Beneath a Steel Sky from `downloads/bass-cd-1.2.zip`, launched through `/scummvm.html#sky`.
 - End every user-facing game demo title with `(Demo)`, for example `The Secret of Monkey Island (Demo)`. Put platform, language, and edition details in separate metadata fields.
 - Game assets should be accessed directly through the bucket origin, not proxied through the app server.
+- Keep user-facing documentation and test-status pages free of personal machine paths, storage-device names, browser-profile details, and agent tool logs. Describe game compatibility results and limitations in product terms.
 - In this repo, when the user says `deploy`, treat it as a production deploy by default unless they explicitly ask for preview.
-- For agent browser interactions and rendered checks, follow the global Browser Use and Testing policy and explicitly select Brave Stable’s Agents profile through its documented runtime.
-- `./scripts/verify_scummvm_web.sh` is the existing Chrome/Chromium verification harness. Use that browser path only when the user explicitly requests that browser; it is not a fallback for unavailable Brave.
+- For agent browser interactions and rendered checks, follow the global Browser Use and Testing policy through its documented runtime.
+- `./scripts/verify_scummvm_web.sh` is the existing Chrome/Chromium verification harness. Use that browser path only when the user explicitly requests that browser; it is not a fallback when the preferred browser is unavailable.
 - Keep agent gameplay procedures and experiments in the sibling `agentscumm` repository. This repository owns the browser game runtime.
 - Avoid deleting unrelated worktree changes. This repo often has large generated-asset diffs in `public/` and `scummvm-shell/`.
 
