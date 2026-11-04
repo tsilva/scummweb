@@ -24,7 +24,7 @@ ${entries.map((entry) => {
 
 Status recorded on **${date}**. Open [Game compatibility](https://scummweb.tsilva.eu/compatibility)
 to search these results, inspect checked editions, and visit recognized game pages.
-The checklist icon in the top bar opens a quick compatibility view.
+Select **Compatibility** in the navigation or footer to open the page.
 
 | Status | Games | Editions |
 | --- | ---: | ---: |
@@ -43,7 +43,7 @@ including earlier checks. Results apply to the listed editions; they do not
 guarantee the same behavior for every release or copy. Games can have
 editions in more than one status; ${summary.checked} editions have been checked.
 The [compatibility data](../data/game-compatibility.json) is the source of truth
-for this page and the in-app modal, including all checked editions.
+for this document and the compatibility page, including all checked editions.
 
 ## Tested: startup verified
 
