@@ -72,6 +72,12 @@
       "path": "web-seo/site.webmanifest",
       "width": 0,
       "height": 0
+    },
+    {
+      "key": "favicon-svg",
+      "path": "web-seo/favicon/favicon.svg",
+      "width": 102,
+      "height": 102
     }
   ]
 }

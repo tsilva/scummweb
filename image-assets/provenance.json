@@ -21,6 +21,12 @@
       "sha256": "811f81b9ab3022244136f5db8f9cd1f662be026d42c0d1ad8831034f04223df5",
       "generatedAt": "2026-11-03T16:15:41Z",
       "evidence": "Codex native ImageGen output exec-d49cce0a-2d9e-4898-9a89-85a3d0031820.png. Exact model was not disclosed."
+    },
+    {
+      "path": "image-assets/sources/favicon-source.svg",
+      "sha256": "96b1348deb1883b7302baea5e71bb53a67434d2535cc979d23cf5dedd2cd391a",
+      "createdAt": "2026-11-04",
+      "evidence": "Hand-authored SVG SW monogram inspired by the green lettering and charcoal outline of https://www.scummvm.org/favicon-32x32.png; rendered by scripts/generate-favicon-assets.mjs."
     }
   ],
   "exports": [
@@ -33,8 +39,8 @@
     {
       "role": "favicon",
       "path": "scummvm-shell/favicon.ico",
-      "sha256": "c3732ed21d5c8490b577a27ded5365140f16eee29921e9e3f5aaefa71df7c96f",
-      "source": "image-assets/sources/icon-source.png"
+      "sha256": "659f5d7692c02a87d82c9f96bbd000db7be7b088d032c18b0ec66c15e8686cd5",
+      "source": "image-assets/sources/favicon-source.svg"
     },
     {
       "role": "social-preview",

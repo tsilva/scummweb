@@ -162,6 +162,14 @@ Game pages use their individual social cards. The shell finalizer copies the
 browser and install icons from [`public/brand/web-seo/`](../public/brand/web-seo/)
 into the managed shell during ScummVM rebuilds.
 
+The browser favicon is a green **SW** monogram with a charcoal outline, inspired
+by the [ScummVM favicon](https://www.scummvm.org/favicon-32x32.png). Its editable
+source is [`image-assets/sources/favicon-source.svg`](../image-assets/sources/favicon-source.svg).
+Run `node scripts/generate-favicon-assets.mjs` after editing it to regenerate the
+SVG, 16/32/48px PNGs, and ICO in the branding, managed shell, and staged public
+directories. Browser tabs use this monogram; install icons retain the Adventure
+Terminal artwork.
+
 ### Social preview assets
 
 Game cards are generated offline by `pnpm generate:social-cards`, also run by

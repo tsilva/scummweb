@@ -59,6 +59,7 @@ python3 "$ROOT_DIR/scripts/generate_logo_assets.py" \
 
 BRAND_DIR="$ROOT_DIR/public/brand/web-seo"
 cp "$BRAND_DIR/favicon/favicon.ico" "$DIST_DIR/favicon.ico"
+cp "$BRAND_DIR/favicon/favicon.svg" "$DIST_DIR/favicon.svg"
 cp "$BRAND_DIR/android-chrome-192.png" "$DIST_DIR/scummvm-192.png"
 cp "$BRAND_DIR/android-chrome-512.png" "$DIST_DIR/scummvm-512.png"
 

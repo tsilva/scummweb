@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 0 102 102">
+  <title>ScummWEB</title>
+  <defs>
+    <linearGradient id="green" x1="0" y1="0" x2="0.15" y2="1">
+      <stop stop-color="#00e32c"/>
+      <stop offset="1" stop-color="#00b91b"/>
+    </linearGradient>
+  </defs>
+  <g fill="url(#green)" stroke="#303030" stroke-width="6" stroke-linejoin="round" paint-order="stroke fill">
+    <path d="M40 22C30 13 12 16 8 29C3 43 12 49 25 53C34 56 35 61 29 65C22 69 14 64 10 59L3 71C13 83 31 85 41 74C52 61 45 47 32 42L23 38C15 34 21 27 28 30L36 34Z"/>
+    <path d="M47 22L59 20L58 57L67 39L75 40L77 58L84 19L95 22L83 77L71 79L66 59L56 80L45 77Z"/>
+  </g>
+</svg>

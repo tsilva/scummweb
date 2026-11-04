@@ -34,16 +34,11 @@ export const metadata = {
   },
   icons: {
     icon: [
-      { url: getVersionedSiteAssetPath("/favicon.ico") },
+      { url: getVersionedSiteAssetPath("/favicon.ico"), sizes: "16x16 32x32 48x48" },
       {
-        url: getVersionedSiteAssetPath("/scummvm-192.png"),
-        sizes: "192x192",
-        type: "image/png",
-      },
-      {
-        url: getVersionedSiteAssetPath("/scummvm-512.png"),
-        sizes: "512x512",
-        type: "image/png",
+        url: getVersionedSiteAssetPath("/favicon.svg"),
+        sizes: "any",
+        type: "image/svg+xml",
       },
     ],
     apple: [{ url: getVersionedSiteAssetPath("/scummvm-192.png") }],
