@@ -12,5 +12,6 @@ function omitGameZipFragment(event) {
 }
 
 export default function SiteAnalytics() {
+  if (process.env.NEXT_PUBLIC_VERCEL_ANALYTICS_ENABLED !== "true") return null;
   return <Analytics beforeSend={omitGameZipFragment} />;
 }

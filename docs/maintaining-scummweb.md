@@ -149,6 +149,7 @@ launcher ignores private local Sentry env-file overrides.
 | `pnpm test` | Run the Node test suite. |
 | `pnpm build` | Stage shell assets, reconcile social cards, and build for production. |
 | `pnpm generate:social-cards` | Generate changed/new social cards and remove obsolete generated PNGs. |
+| `pnpm run generate:artwork` | Refresh smaller poster renditions from the managed originals. |
 | `pnpm run start --port auto` | Stage shell assets and serve the production build. |
 | `pnpm run verify` | Build, serve, and boot detected targets using a local Chrome or Chromium installation. |
 | `pnpm run record:preview` | Stream distinct preview frames as a local MPEG-TS feed. |
@@ -169,6 +170,26 @@ Local builds skip Sentry source-map uploads. Hosted Vercel builds handle
 uploads. Runtime capture uses `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_DSN`,
 `NEXT_PUBLIC_SENTRY_ENABLED`, and the project settings in
 [`next.config.js`](../next.config.js).
+
+Set `SCUMMWEB_DIST_DIR` to a separate project-relative directory when building
+and serving an isolated production audit. Use the same value for both commands;
+for example, `SCUMMWEB_DIST_DIR=.next-dev-audit pnpm build` followed by
+`SCUMMWEB_DIST_DIR=.next-dev-audit pnpm start --port auto`. This keeps another
+server or build from replacing the audit's runtime chunks. Vercel Web Analytics
+loads only in Vercel builds, where its platform-provided endpoint exists;
+Google Analytics remains enabled on other hosts.
+
+`prepare` generates 320px and 640px WebP poster variants under
+`scummvm-shell/launcher/responsive/` before staging the managed shell. The
+generator retains each original, skips upscaling and larger encodings, and
+records actual dimensions in `data/artwork-renditions.json`. Browser selection
+preserves the existing cover crop and falls back to the full original for
+larger displays or unknown/remote artwork. Derivatives inherit their original's
+artwork provenance. Headline fitting also runs before first paint, then remains
+active for slideshow and viewport changes.
+Offscreen poster contents use native rendering containment with the existing
+card height reserved. They remain searchable and available to assistive
+technology; focused cards render normally so their focus outlines stay visible.
 
 See [Production delivery](production-delivery.md) for deployments, secret
 rotation, and manual game publishing. The sibling AgentSCUMM repository owns

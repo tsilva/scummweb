@@ -4,6 +4,7 @@ import DecorativeImage from "./decorative-image";
 import Icon from "./shell-icon";
 import HeroTitle from "./hero-title";
 import { getHeroImageProps } from "./hero-images.mjs";
+import { fitHeroTitle } from "./hero-title-fit.mjs";
 import { getGameDialogId, getHeroImageStyle } from "./shared";
 
 export default function HeroStage({
@@ -35,10 +36,12 @@ export default function HeroStage({
     : [sourceAction ? null : featuredGame.target, featuredGame.badge].filter(Boolean);
 
   return (
+    <>
     <section className={`hero-stage ${featuredGame.tone}`} id="browse" {...carouselProps}>
       <div className="hero-backdrop">
         <DecorativeImage
           className="hero-backdrop-image"
+          decoding={isInitialSlide ? "sync" : "async"}
           fetchPriority={isInitialSlide ? "high" : undefined}
           loading="eager"
           {...getHeroImageProps(featuredGame)}
@@ -110,5 +113,9 @@ export default function HeroStage({
       </div>
       {controls}
     </section>
+    <script suppressHydrationWarning dangerouslySetInnerHTML={{
+      __html: `(${fitHeroTitle.toString()})(document.currentScript.previousElementSibling.querySelector('h1'));`,
+    }} />
+    </>
   );
 }

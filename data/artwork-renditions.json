@@ -1,0 +1,1109 @@
+{
+  "/launcher/atlantis-cover.webp": {
+    "width": 800,
+    "height": 1017,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/drascula-cover.webp": {
+    "width": 840,
+    "height": 630,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/dreamweb-cover.webp": {
+    "width": 840,
+    "height": 968,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/indy3-cover.webp": {
+    "width": 800,
+    "height": 1011,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/loom-cover.webp": {
+    "width": 800,
+    "height": 1023,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/lure-cover.webp": {
+    "width": 640,
+    "height": 480,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/maniac-cover.webp": {
+    "width": 720,
+    "height": 916,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/monkey-demo-cover.webp": {
+    "width": 951,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/monkey2-cover.webp": {
+    "width": 760,
+    "height": 1073,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/nippon-cover.webp": {
+    "width": 1600,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/queen-cover.webp": {
+    "width": 800,
+    "height": 1032,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/retro-access-amazon-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-bc-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-goldrush-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-kq2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-kq3-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-mh1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-mh2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-mickey-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-pq1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-sq1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-sq2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-troll-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-winnie-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agos-elvira1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agos-elvira2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agos-feeble-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agos-jumble-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agos-pn-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agos-simon1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agos-simon2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agos-waxworks-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-bbvs-bbvs-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-cge-soltys-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-cine-fw-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-composer-darby-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-composer-gregory-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-composer-liam-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-composer-princess-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-composer-sleepingcub-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-cruise-cruise-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-draci-draci-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gnap-gnap-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-bargon-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-fascination-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-geisha-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-gob1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-gob2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-gob3-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-lit-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-littlered-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-urban-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-ween-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-woodruff-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-groovie-t7g-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-hopkins-hopkins-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-hugo-hugo1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-hugo-hugo2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-hugo-hugo3-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-kyra-eob-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-kyra-eob2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-kyra-kyra1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-kyra-kyra2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-kyra-kyra3-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-kyra-lol-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-lab-lab-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-local-road-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-made-lgop2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-made-rodney-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-made-rtz-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-mads-nebular-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-mohawk-myst-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-mohawk-riven-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-neverhood-neverhood-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-ngi-fullpipe-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-parallaction-bra-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-pegasus-pegasus-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-plumbers-plumbers-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-saga-ihnm-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-saga-ite-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-camelot-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-castlebrain-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-ecoquest-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-ecoquest2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-freddypharkas-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-funseeker-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-gk1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-gk2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-iceman-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-islandbrain-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-jones-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-kq1sci-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-kq4sci-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-kq5-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-kq6-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-kq7-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-laurabow-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-laurabow2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-lighthouse-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-longbow-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-lsl1sci-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-lsl2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-lsl3-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-lsl5-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-lsl6hires-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-lsl7-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-msastrochicken-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-pepper-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-phantasmagoria-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-phantasmagoria2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-pq2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-pq3-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-pq4-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-qfg1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-qfg2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-qfg3-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-rama-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-shivers-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-sq3-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-sq4-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-sq5-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-sq6-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-torin-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-scumm-bluestreasurehunt-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-scumm-brstorm-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-scumm-comi-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-scumm-dig-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-scumm-ft-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-scumm-monkey-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-scumm-pass-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-scumm-thinker1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-scumm-thinkerk-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sherlock-rosetattoo-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sherlock-scalpel-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sword1-sword1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sword2-sword2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-teenagent-teenagent-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-tinsel-dw-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-tinsel-dw2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-titanic-titanic-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-toltecs-toltecs-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-tony-tony-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-toon-toon-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-touche-touche-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-tsage-blueforce-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-tsage-ringworld-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-tsage-ringworld2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-tucker-tucker-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-voyeur-voyeur-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-wintermute-chivalry-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/samnmax-cover.webp": {
+    "width": 800,
+    "height": 1010,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/sfinx-cover.webp": {
+    "width": 800,
+    "height": 1069,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/sky-cover.webp": {
+    "width": 840,
+    "height": 1073,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/sword25-cover.webp": {
+    "width": 840,
+    "height": 630,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/tentacle-cover.webp": {
+    "width": 800,
+    "height": 1016,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/zak-cover.webp": {
+    "width": 719,
+    "height": 920,
+    "widths": [
+      320,
+      640
+    ]
+  }
+}
