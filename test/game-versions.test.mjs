@@ -16,7 +16,7 @@ const { code } = await swc.transform(await readFile(presentationUrl, "utf8"), {
 const compiled = { exports: {} };
 const require = createRequire(presentationUrl);
 runInNewContext(code, { module: compiled, exports: compiled.exports,
-  require: (name) => name === "./asset-paths" ? { getVersionedSiteAssetPath: (path) => path } : require(name) });
+  require: (name) => name === "./asset-paths.js" ? { getVersionedSiteAssetPath: (path) => path } : require(name) });
 const { getGamePresentation, getImportedGamePresentation } = compiled.exports;
 
 function imported(id, name, status = "available") {

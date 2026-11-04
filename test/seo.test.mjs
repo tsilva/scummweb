@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { getGameSocialCardPath } from "../lib/social-card-paths.mjs";
 import {
   HOME_DESCRIPTION,
   SITE_NAME,
@@ -80,11 +81,11 @@ test("game metadata and play-route metadata keep canonicals aligned and play rou
     );
     assert.equal(
       metadata.openGraph.images[0].url,
-      "https://example.com/beneath-a-steel-sky/social-card.png?v=dev",
+      `https://example.com${getGameSocialCardPath(sampleGame)}`,
     );
     assert.deepEqual(metadata.twitter.images, [
       {
-        url: "https://example.com/beneath-a-steel-sky/social-card.png?v=dev",
+        url: `https://example.com${getGameSocialCardPath(sampleGame)}`,
         alt: "Beneath a Steel Sky Open Graph card for browser play on ScummWEB",
       },
     ]);

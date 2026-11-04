@@ -1,5 +1,5 @@
-import { getVersionedSiteAssetPath } from "./asset-paths";
-import retroGameArtwork from "./retro-game-artwork.json";
+import { getVersionedSiteAssetPath } from "./asset-paths.js";
+import retroGameArtwork from "./retro-game-artwork.json" with { type: "json" };
 
 const importedScummGames = [
   {

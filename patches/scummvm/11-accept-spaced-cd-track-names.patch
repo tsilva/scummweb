@@ -1,0 +1,22 @@
+diff --git a/backends/audiocd/default/default-audiocd.cpp b/backends/audiocd/default/default-audiocd.cpp
+index 8bc4dca8..1cf30cf5 100644
+--- a/backends/audiocd/default/default-audiocd.cpp
++++ b/backends/audiocd/default/default-audiocd.cpp
+@@ -57,11 +57,16 @@ void DefaultAudioCDManager::close() {
+ }
+ 
+ void DefaultAudioCDManager::fillPotentialTrackNames(Common::Array<Common::String> &trackNames, int track) const {
+-	trackNames.reserve(4);
++	trackNames.reserve(7);
+ 	trackNames.push_back(Common::String::format("track%d", track));
+ 	trackNames.push_back(Common::String::format("track%02d", track));
+ 	trackNames.push_back(Common::String::format("track_%d", track));
+ 	trackNames.push_back(Common::String::format("track_%02d", track));
++	// Spaced CD-ripper names use physical, one-based disc track numbers.
++	// The playback API and conventional ScummVM names use zero-based numbers.
++	trackNames.push_back(Common::String::format("track %d", track + 1));
++	trackNames.push_back(Common::String::format("track %02d", track + 1));
++	trackNames.push_back(Common::String::format("track %2d", track + 1));
+ }
+ 
+ bool DefaultAudioCDManager::existExtractedCDAudioFiles(uint track) {

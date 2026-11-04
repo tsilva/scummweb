@@ -15,3 +15,4 @@ filesystem = (source / "scummvm_fs.js").read_text().replace("__SCUMMWEB_GAMES_OR
 
 (target / "scummvm.html").write_text(html)
 (target / "scummvm_fs.js").write_text(filesystem)
+(target / "audio-start-control.mjs").write_text((source / "audio-start-control.mjs").read_text())

@@ -115,10 +115,16 @@
 .compatibility-game strong { display: block; font-size: 0.9rem; line-height: 1.5; }
 .compatibility-game-ids { display: block; margin-top: 0.2rem; color: var(--ink-soft); font: 0.7rem monospace; }
 .compatibility-edition { display: block; margin-top: 0.3rem; color: var(--ink-muted); font-size: 0.8rem; line-height: 1.6; }
+.compatibility-observation { margin: 0.4rem 0 0; color: var(--ink-muted); font-size: 0.75rem; line-height: 1.6; }
+.compatibility-history { margin-top: 0.5rem; color: var(--ink-soft); font-size: 0.7rem; line-height: 1.6; }
+.compatibility-history summary { cursor: pointer; }
+.compatibility-history ul { padding-left: 1.2rem; }
 .compatibility-game-status { display: grid; justify-items: end; flex-shrink: 0; gap: 0.4rem; }
 .compatibility-game-status small { font-size: 0.7rem; color: var(--ink-soft); }
 .compatibility-badge { padding: 0.3rem 0.55rem; font-size: 0.65rem; font-weight: 600; border: 1px solid var(--ghost-border); color: var(--ink-muted); }
 .compatibility-badge.startup-verified { color: var(--accent-strong); background: #1a4d1a44; border-color: #55aa5544; }
+.compatibility-badge.startup-warning { color: #f0cf85; background: #70521533; border-color: #bc953d66; }
+.compatibility-badge.startup-failed { color: #f5aaaa; background: #732d2d33; border-color: #be656566; }
 .compatibility-empty { padding: 2rem 0; color: var(--ink-muted); text-align: center; }
 .compatibility-reference { margin: 1rem 0 0; padding-top: 1rem; border-top: 1px solid var(--ghost-border); font-size: 0.7rem; }
 .compatibility-reference a { color: var(--accent-strong); text-decoration: underline; text-underline-offset: 0.2em; }

@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "cards": {
+    "beneath-a-steel-sky": {
+      "file": "beneath-a-steel-sky-73caa6a24032da2a26ecdf894abf7e6ca508e257505a949d8823e34e2cb651bd.png",
+      "inputHash": "73caa6a24032da2a26ecdf894abf7e6ca508e257505a949d8823e34e2cb651bd",
+      "imageHash": "ede1960cbb9d7c0bf7a03ce050058c1ca5fe5688f934175b4ddf64d770b4b21d"
+    },
+    "broken-sword-2-5-the-return-of-the-templars": {
+      "file": "broken-sword-2-5-the-return-of-the-templars-ee4654c2e7e4068c7ae049a57e7d74924d0b261af8de034d7c91da5d37b819fb.png",
+      "inputHash": "ee4654c2e7e4068c7ae049a57e7d74924d0b261af8de034d7c91da5d37b819fb",
+      "imageHash": "b72c1c451a454a64df6251285613921ca6407fb50f7f45acc7b7654a0ae15d74"
+    },
+    "drascula-the-vampire-strikes-back": {
+      "file": "drascula-the-vampire-strikes-back-4543ea7cc4ed490ddd6d2569579313bf97f1e01233d8a1e5fb54c8e5ce577e27.png",
+      "inputHash": "4543ea7cc4ed490ddd6d2569579313bf97f1e01233d8a1e5fb54c8e5ce577e27",
+      "imageHash": "01dc307d966b1aca0a08ea2ca08749ac1fb69a8be27ad1091e83310c5df119bb"
+    },
+    "dreamweb": {
+      "file": "dreamweb-5ce0d3f2576722e1efce105c3630c9a73752af74f6d61930ad3029cddbc3e127.png",
+      "inputHash": "5ce0d3f2576722e1efce105c3630c9a73752af74f6d61930ad3029cddbc3e127",
+      "imageHash": "d02ecba34187dbeb6bc65b1d5ba1bc2dfe96aab9f2aff0d517d2dda0b7a6f656"
+    },
+    "flight-of-the-amazon-queen": {
+      "file": "flight-of-the-amazon-queen-866f14a61b18ce53eebb58050fee073af5672b90e4c26e95ef156827267c8176.png",
+      "inputHash": "866f14a61b18ce53eebb58050fee073af5672b90e4c26e95ef156827267c8176",
+      "imageHash": "6de5719caba9ca83ac8df0d5eaeffddf5b31edf8c4de59643fb2c46067f3242d"
+    },
+    "lure-of-the-temptress": {
+      "file": "lure-of-the-temptress-bf4b84e675635aa83168e4f565c0a50caead7d9e207efe27f8df4c502e3f0b87.png",
+      "inputHash": "bf4b84e675635aa83168e4f565c0a50caead7d9e207efe27f8df4c502e3f0b87",
+      "imageHash": "0166322f757b0231cfda239ab4934bbb81202c17011c946f67c296dd00aa351d"
+    },
+    "nippon-safes-inc": {
+      "file": "nippon-safes-inc-f23a4d155c0ef31d0052ddf1ddbbf036055ccaa1477f7ecea2e0a64711dca586.png",
+      "inputHash": "f23a4d155c0ef31d0052ddf1ddbbf036055ccaa1477f7ecea2e0a64711dca586",
+      "imageHash": "dd04bf572b512b28e3411d8420d880e7b31cff703a2ee600575cdeaef6993f34"
+    },
+    "the-secret-of-monkey-island-demo": {
+      "file": "the-secret-of-monkey-island-demo-577c1bb47b1d50eb3a75fbb9c64532446e4e429297342ee2c3caf7afa04eb750.png",
+      "inputHash": "577c1bb47b1d50eb3a75fbb9c64532446e4e429297342ee2c3caf7afa04eb750",
+      "imageHash": "21a713d233473edd8a8ead215aff29376e4bc481be8d92c317e88e8afd9faa41"
+    }
+  }
+}

@@ -33,9 +33,9 @@ subgenre. Select **All genres**
 to show every genre, or **Name: A–Z** to restore alphabetical order.
 
 Select the checklist icon in the top bar to open **Game compatibility**. Search
-by title, engine, or edition and filter startup-verified games and games not yet
-tested in ScummWEB. Each checked edition has its own entry, with its edition
-label shown directly.
+by title, engine, edition, or observation and filter verified startups, warnings,
+startup failures, and games not yet tested in ScummWEB. Each checked edition has
+its own entry, with its edition label and latest observation shown directly.
 Startup verification does not establish full-game compatibility. The same
 results are available in [game testing](docs/game-testing.md).
 
@@ -54,6 +54,9 @@ ScummWEB remembers your choice and keeps demos separate from full games.
 The homepage slideshow prepares the next three backdrops and the previous one
 in advance for smooth switching.
 
+If the browser pauses sound, select **Start audio** inside the game. This also
+resumes intros that wait for audio, without skipping the cinematic.
+
 ## Add your games
 
 - **From your device** — Drop game ZIPs or folders anywhere on the homepage or a game’s landing page.
@@ -66,6 +69,8 @@ in advance for smooth switching.
   recognized titles. Platform, language, and edition variants can share the same art.
   For a large local game, drop its unpacked folder or create a ZIP with
   compression disabled. Local games can be up to 4 GiB.
+  CD rips with physical track names such as `Track  2.flac` are recognized
+  alongside ScummVM's conventional `track1.flac` naming.
 - **From a link** — Open
   `/local/play#zip=https%3A%2F%2Fexample.com%2Fgame.zip` on your ScummWEB site.
   URL-encode the direct HTTPS ZIP address. The browser downloads and unpacks
@@ -113,6 +118,12 @@ cd scummweb
 pnpm install --frozen-lockfile
 pnpm run dev:app --port auto
 ```
+
+Game social preview PNGs are precomputed and served as static assets. Development
+and production builds reuse unchanged cards, generate cards for new or changed
+copy/artwork, and remove obsolete cards. Run `pnpm generate:social-cards` after
+catalog edits and include the updated manifest and PNGs in the same change.
+See [social preview assets](docs/maintaining-scummweb.md#social-preview-assets).
 
 Open the URL printed by the server and select **Play Beneath a Steel Sky**.
 This setup needs no Infisical login.

@@ -1,0 +1,13 @@
+diff --git a/engines/access/access.cpp b/engines/access/access.cpp
+index 577a43e5..ae974505 100644
+--- a/engines/access/access.cpp
++++ b/engines/access/access.cpp
+@@ -123,7 +123,7 @@ AccessEngine::AccessEngine(OSystem *syst, const AccessGameDescription *gameDesc)
+ 
+ 	ARRAYCLEAR(_countTbl);
+ 
+-	_lang = Common::UNK_LANG;
++	_lang = gameDesc->desc.language;
+ }
+ 
+ AccessEngine::~AccessEngine() {

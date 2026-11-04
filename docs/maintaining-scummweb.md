@@ -12,7 +12,8 @@ launcher ignores private local Sentry env-file overrides.
 | --- | --- |
 | `pnpm lint` | Check JavaScript and JSX syntax. |
 | `pnpm test` | Run the Node test suite. |
-| `pnpm build` | Stage shell assets and build for production. |
+| `pnpm build` | Stage shell assets, reconcile social cards, and build for production. |
+| `pnpm generate:social-cards` | Generate changed/new social cards and remove obsolete generated PNGs. |
 | `pnpm run start --port auto` | Stage shell assets and serve the production build. |
 | `pnpm run verify` | Build, serve, and boot detected targets using a local Chrome or Chromium installation. |
 | `pnpm run record:preview` | Stream distinct preview frames as a local MPEG-TS feed. |
@@ -41,9 +42,14 @@ agent gameplay experiments.
 ## Maintaining game compatibility
 
 [`data/game-compatibility.json`](../data/game-compatibility.json) is the canonical
-compatibility list (schema version 2). The top-bar modal reads its flat `entries`
+compatibility list (schema version 3). The top-bar modal reads its flat `entries`
 list directly. Each entry has a title, ScummVM `gameId`, and a `status`:
-`startup-verified` represents one checked `edition` with an `observation`;
+`startup-verified`, `startup-warning`, and `startup-failed` represent one checked
+`edition` with an `observation`. Warnings include workarounds, audio limitations,
+and original game prompts; failures record a startup error. Optional `history`
+records retain earlier checks with their `recordedOn`, `status`, and `observation`.
+When a fix is verified, append the new check and update the entry's current status
+and observation. Preserve the failure record instead of erasing it.
 `not-tested` represents a game with no recorded edition and an `upstreamRating` from
 the versioned `upstreamReference`. Upstream ratings are separate from ScummWEB
 verification. Preserve edition-specific evidence and update `recordedOn` when
@@ -52,6 +58,18 @@ recording new results. Do not infer full-game support from a startup check.
 After editing the data, run `node scripts/generate-compatibility-docs.mjs` to
 refresh [game testing](game-testing.md). Use the same command with `--check`
 to verify that the document is current; the test suite also checks this.
+
+The runtime retains the detected language for Access games launched automatically.
+Toltecs releases without `SAMPLE.AD` or `SAMPLE.OPL` use the standard AdLib
+instrument bank after a warning; music remains enabled but differs from the
+original instruments. Extracted CD audio supports spaced physical disc names
+such as `Track  2.flac` for playback track 1, while preserving conventional
+ScummVM names. Keep these behaviors in the corresponding upstream source patches.
+
+The managed `audio-start-control.mjs` is installed before SDL input handlers.
+It offers **Start audio** while the browser's audio context is suspended and
+consumes the button gesture so movies do not interpret it as a skip command.
+Maintain it in `web-shell/`; the staging script copies it into the managed bundle.
 
 ## Rebuilding and upgrading ScummVM
 
@@ -143,6 +161,35 @@ The homepage serves the Adventure Terminal social card at `/opengraph-image`.
 Game pages use their individual social cards. The shell finalizer copies the
 browser and install icons from [`public/brand/web-seo/`](../public/brand/web-seo/)
 into the managed shell during ScummVM rebuilds.
+
+### Social preview assets
+
+Game cards are generated offline by `pnpm generate:social-cards`, also run by
+`prepare` before development, production builds, and start. The generator uses
+the same bundled catalog and presentation copy as game pages, embeds local artwork,
+and writes 1200×630 PNGs under `public/social-cards/`. It never requests a deployed
+site or an image service. The homepage continues using its existing branding PNG.
+
+`data/social-cards.json` records each card's rendered inputs and artwork hash,
+output filename, and PNG checksum. Unchanged inputs reuse the existing file
+without rewriting it. Changes to displayed copy, selected artwork bytes, the
+template, or rendering dependency versions regenerate affected cards. Deployment
+IDs, asset query versions, and unrelated catalog fields do not invalidate them.
+New games receive cards; removed games and earlier revisions are pruned from the
+generated directory. Missing or corrupted PNGs are repaired. Missing source
+artwork or a failed render fails the command, preserving the last valid manifest.
+
+After editing catalog copy or artwork, run the generator and commit the resulting
+manifest and PNG additions/deletions with the source changes. Keeping these files
+in Git allows clean CI and Vercel builds to reuse cards rather than rerendering
+every image. Builds reconcile again to catch missed changes. Rendering uses the
+pinned Next.js image renderer and Sharp; it needs no service credentials.
+
+Metadata points directly to content-versioned PNG URLs with immutable caching.
+Both `/<game-slug>/social-card.png` and `/<game-slug>/opengraph-image` remain static
+rewrites to the corresponding PNG. Unknown and removed slugs have no image
+rewrite. Image requests also bypass Proxy. There are no per-game image Functions
+or request-time rendering.
 
 ## Catalog fixtures and artwork
 
