@@ -506,15 +506,12 @@ export class ScummvmFS {
 
             var size = length
             if (typeof stream.fileData === 'object' && stream.fileSize < position + length) {
-                size = stream.fileSize - position
+                size = Math.max(0, stream.fileSize - position)
             }
 
             // logger(stream.path, "Length, Position " + length + "," + position)
             // logger(stream.path, "Size " + size)
             // logger(stream.path, "stream.fileSize " + stream.fileSize)
-            if (size < 0) {
-                throw new FS.ErrnoError(ERRNO_CODES.EINVAL);
-            }
             if (size > 0) {
                 var fileData = this.convertResult(this.read({ path: path, start: position, end: position + size - 1 }));
                 logger(stream.path, "fileData (start: " + (position) + " end: " + (position + size - 1).toString() + " (length: " + fileData.length + ")")

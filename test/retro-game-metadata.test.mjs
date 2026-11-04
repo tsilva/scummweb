@@ -6,6 +6,24 @@ import { getImportedGamePresentation } from "../app/game-presentation.js";
 
 const artwork = JSON.parse(fs.readFileSync(new URL("../app/retro-game-artwork.json", import.meta.url)));
 
+test("shared original and remake titles stay unidentified without an edition", () => {
+  for (const [originalId, remakeId] of [
+    ["agi:pq1", "sci:pq1sci"],
+    ["agi:sq1", "sci:sq1sci"],
+    ["sci:qfg1", "sci:qfg1vga"],
+  ]) {
+    const title = artwork[originalId].title;
+    assert.equal(getImportedGamePresentation(`${title}.zip`), null, title);
+    assert.equal(getImportedGamePresentation(`${title} (German).zip`), null, title);
+    for (const id of [originalId, remakeId]) {
+      for (const alias of artwork[id].aliases) {
+        assert.equal(getImportedGamePresentation(`${alias}.zip`)?.familyId, id, alias);
+      }
+    }
+  }
+  assert.equal(getImportedGamePresentation("The Dig.zip")?.familyId, "scumm:dig");
+});
+
 test("recognized galleries have three distinct managed images with explicit source gaps", () => {
   const limited = new Map([["local:road", 1], ["sci:funseeker", 2]]);
   for (const [id, game] of Object.entries(artwork)) {

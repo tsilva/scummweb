@@ -35,6 +35,7 @@ ZIP downloads show a percentage when the host provides the total file size.
 Successfully opened game ZIPs are cached in your browser, so playing the same
 URL again reuses the ZIP without downloading it. The cache holds up to four
 archives; clearing site data or ending an incognito session removes them.
+If the game ZIP fails to download, use **Exit game** to return to the library.
 
 Select a game card for details and **Play**. If sound or an intro is paused,
 select **Start audio** inside the game. Compatible saves offer **Continue**;
@@ -61,6 +62,8 @@ Click **Add a game** in the library to choose ZIPs, or drop ScummVM game ZIPs
 onto the homepage or a game’s page, then select a
 poster to play. Local game files stay on your device. Put one game in each
 ZIP, with its data files at the root or in one enclosing folder.
+When an original and remake share a title, use a recognized filename with its
+edition label; an ambiguous name keeps generic metadata rather than choosing a remake.
 
 Only ZIP files are supported. Local games can be up to 4 GiB. For large games,
 use a ZIP with compression disabled. If the browser needs file access again,
