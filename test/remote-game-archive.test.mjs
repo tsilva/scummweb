@@ -132,19 +132,98 @@ test("oversized directory responses are canceled before buffering and use the no
   assert.equal(downloads, 1);
 });
 
-test("range inspection and fallback preserve archive size and path safety limits", async (t) => {
+test("oversized or unsafe archives fail inspection without a full-download retry", async (t) => {
   const fetch = t.mock.method(globalThis, "fetch", async (_url, options) => options.headers?.Range
     ? new Response(Uint8Array.of(0), { status: 206, headers: { "content-range": `bytes 0-0/${maxArchiveSize + 1}` } })
     : new Response(Uint8Array.of(0), { headers: { "content-length": String(maxArchiveSize + 1) } }));
   await assert.rejects(prepareRemoteGameArchive(url), /128 MiB/);
-  assert.equal(fetch.mock.callCount(), 2);
+  assert.equal(fetch.mock.callCount(), 1);
 
   const bytes = Buffer.from(await makeZip(["xx/sky.dnr"]));
   for (let index = bytes.indexOf("xx/sky.dnr"); index !== -1; index = bytes.indexOf("xx/sky.dnr")) {
     bytes.write("../sky.dnr", index);
   }
   fetch.mock.mockImplementation(async (_url, options) => rangeResponse(bytes, options));
-  await assert.rejects(inspectRemoteGameArchive(url), /invalid file path/);
+  await assert.rejects(prepareRemoteGameArchive(url), /invalid file path/);
+  assert.ok(fetch.mock.calls.every(({ arguments: [, options] }) => options.headers?.Range));
+});
+
+test("HTTP errors fail after one request and cancel the error body", async (t) => {
+  for (const status of [400, 401, 403, 404, 410, 429, 500, 503]) {
+    let canceled = false;
+    const fetch = t.mock.method(globalThis, "fetch", async () => new Response(new ReadableStream({
+      cancel() { canceled = true; },
+    }), { status }));
+    await assert.rejects(prepareRemoteGameArchive(url), new RegExp(`HTTP ${status}`));
+    assert.equal(fetch.mock.callCount(), 1);
+    assert.equal(canceled, true);
+    fetch.mock.restore();
+  }
+});
+
+test("explicitly unsupported range requests still get one full-download fallback", async (t) => {
+  const bytes = await makeZip();
+  for (const status of [405, 416, 501]) {
+    const fetch = t.mock.method(globalThis, "fetch", async (_url, options) =>
+      options.headers?.Range ? new Response(null, { status }) : new Response(bytes));
+    assert.equal((await prepareRemoteGameArchive(url)).game.target, "sky");
+    assert.equal(fetch.mock.callCount(), 2);
+    fetch.mock.restore();
+  }
+});
+
+test("range-specific network or CORS failures allow one ordinary GET", async (t) => {
+  const bytes = await makeZip();
+  const fetch = t.mock.method(globalThis, "fetch", async (_url, options) => {
+    if (options.headers?.Range) throw new TypeError("Failed to fetch");
+    return new Response(bytes);
+  });
+  assert.equal((await prepareRemoteGameArchive(url)).game.target, "sky");
+  assert.equal(fetch.mock.callCount(), 2);
+});
+
+test("HTML and JSON responses are rejected from headers without buffering their body", async (t) => {
+  for (const type of ["text/html; charset=utf-8", "application/xhtml+xml", "application/json", "application/problem+json"]) {
+    let canceled = false;
+    const fetch = t.mock.method(globalThis, "fetch", async () => new Response(new ReadableStream({
+      cancel() { canceled = true; },
+    }), { headers: { "content-type": type } }));
+    await assert.rejects(prepareRemoteGameArchive(url), /instead of a game ZIP/);
+    assert.equal(fetch.mock.callCount(), 1);
+    assert.equal(canceled, true);
+    fetch.mock.restore();
+  }
+});
+
+test("corrupt ZIP contents and unsafe archive metadata do not trigger a full download", async (t) => {
+  const valid = Buffer.from(await makeZip());
+  const centralHeader = Buffer.from([0x50, 0x4b, 0x01, 0x02]);
+  const encrypted = Buffer.from(valid);
+  encrypted.writeUInt16LE(encrypted.readUInt16LE(encrypted.indexOf(centralHeader) + 8) | 1, encrypted.indexOf(centralHeader) + 8);
+  const expanded = Buffer.from(valid);
+  expanded.writeUInt32LE(256 * 1024 * 1024 + 1, expanded.indexOf(centralHeader) + 24);
+  const symlink = Buffer.from(valid);
+  const offset = symlink.indexOf(centralHeader);
+  symlink[offset + 5] = 3; // UNIX creator with a symbolic-link mode.
+  symlink.writeUInt32LE(0xa1ff0000, offset + 38);
+  for (const [bytes, message] of [
+    [Buffer.from("<script>throw new Error('Untrusted code');</script>"), /not a readable ZIP/],
+    [encrypted, /Password-protected/], [expanded, /when unpacked/], [symlink, /symbolic links/],
+  ]) {
+    const fetch = t.mock.method(globalThis, "fetch", async (_url, options) => {
+      assert.ok(options.headers?.Range, "bad ZIPs must never retry a full GET");
+      return rangeResponse(bytes, options);
+    });
+    await assert.rejects(prepareRemoteGameArchive(url), message);
+    fetch.mock.restore();
+  }
+});
+
+test("inspection timeouts stop instead of starting a longer download", async (t) => {
+  t.mock.method(AbortSignal, "timeout", () => AbortSignal.abort(new DOMException("Timed out", "TimeoutError")));
+  const fetch = t.mock.method(globalThis, "fetch", async () => { throw new Error("No request expected"); });
+  await assert.rejects(prepareRemoteGameArchive(url), /inspection timed out/);
+  assert.equal(fetch.mock.callCount(), 0);
 });
 
 test("aborted identification does not retry a full download", async (t) => {

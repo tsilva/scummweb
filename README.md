@@ -62,6 +62,10 @@ for direct ZIP links, download limits, saves, and file-access help.
 Direct ZIP links inspect the game files to show matching metadata and hero
 artwork, including when the archive has been renamed. Recognition covers a
 limited set of file signatures; other games retain the generic loading screen.
+Bad HTTP responses, web pages, and invalid archives fail without retrying a
+full download. Inspection and extraction run in your browser; archived scripts
+and programs are treated as game data, never executed as web scripts or
+operating-system programs.
 
 ## Run locally
 

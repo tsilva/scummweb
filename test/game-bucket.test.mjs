@@ -78,3 +78,20 @@ test("the remote ZIP loader fetches the exact URL without credentials or a refer
   await assert.rejects(readRemoteGameArchive(customUrl), /direct HTTPS link/);
   assert.equal(request.mock.callCount(), 2);
 });
+
+test("full downloads reject HTTP errors and web pages before reading their bodies", async (t) => {
+  for (const [options, message] of [
+    [{ status: 404 }, /HTTP 404/],
+    [{ headers: { "content-type": "text/html" } }, /instead of a game ZIP/],
+    [{ headers: { "content-type": "application/json" } }, /instead of a game ZIP/],
+  ]) {
+    let canceled = false;
+    const fetch = t.mock.method(globalThis, "fetch", async () => new Response(new ReadableStream({
+      cancel() { canceled = true; },
+    }), options));
+    await assert.rejects(readRemoteGameArchive(`${customUrl}/game.zip`), message);
+    assert.equal(canceled, true);
+    assert.equal(fetch.mock.callCount(), 1);
+    fetch.mock.restore();
+  }
+});
