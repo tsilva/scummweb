@@ -8,7 +8,8 @@ export function remoteGame(url, game) {
 }
 
 export function localGame(handle, file, id = crypto.randomUUID()) {
-  return { id, name: file.name, ...(handle && { handle }), ...(file.kind === "folder" && { kind: "folder" }) };
+  return { id, name: file.name, ...(handle && { handle }), ...(file.kind === "folder" && { kind: "folder" }),
+    ...(file.fingerprint && { fingerprint: file.fingerprint }) };
 }
 
 export function bucketGames(url, targets, catalog) {
@@ -35,8 +36,11 @@ export async function checkGameSource(source) {
     }
     validateGameZip(await source.handle.getFile(), maxLocalGameSize);
     return "available";
-  } catch {
-    return source.url ? "unverified" : "missing";
+  } catch (error) {
+    if (source.url) return "unverified";
+    if (["NotAllowedError", "SecurityError"].includes(error?.name)) return "permission";
+    if (error?.name === "NotFoundError") return "missing";
+    return "unverified";
   }
 }
 

@@ -27,7 +27,6 @@ export default function HeroStage({
   const heroBackdropSrcSet = featuredGame.heroImageMobile
     ? `${featuredGame.heroImageMobile} 960w, ${featuredGame.heroImage} 1832w`
     : undefined;
-  const primaryActionLabel = isHomePage ? `Play ${featuredGame.displayTitle}` : "Play";
   const secondaryActionHref = isHomePage ? "#library" : `#${featuredDialogId}`;
   const secondaryActionLabel = isHomePage ? HOME_BROWSE_LABEL : "More Info";
   const heroMetadata = showHomeIntro
@@ -78,14 +77,14 @@ export default function HeroStage({
           <div className="hero-actions">
             {sourceAction ? (
               <button type="button" className="launch-button" title={sourceAction.label} disabled={sourceAction.disabled} onClick={sourceAction.onClick}>
-                <span className="hero-action-label">{sourceAction.label}</span>
+                Play
               </button>
             ) : (
               <LaunchButton
                 game={featuredGame}
                 entryPoint={isHomePage ? "hero" : "game_detail"}
-                label={<span className="hero-action-label">{primaryActionLabel}</span>}
-                continueLabel={<span className="hero-action-label">{isHomePage ? `Continue ${featuredGame.displayTitle}` : "Continue"}</span>}
+                label="Play"
+                continueLabel="Play"
               />
             )}
             <a className="secondary-button" href={secondaryActionHref}>

@@ -47,3 +47,43 @@ test("bucket discoveries and direct links share a URL identity and recheck witho
   assert.equal(await checkGameSource(discovered), "missing");
   assert.equal(head.mock.callCount(), 1);
 });
+
+test("folder checks detect removal and recovery without reading game contents", async () => {
+  let missing = false;
+  let files = [{ name: "sky.dsk", kind: "file" }];
+  const source = localGame({
+    queryPermission: async () => "granted",
+    async *values() {
+      if (missing) throw new DOMException("Folder moved or drive disconnected", "NotFoundError");
+      yield* files;
+    },
+  }, { name: "Beneath a Steel Sky", kind: "folder" });
+
+  assert.equal(await checkGameSource(source), "available");
+  missing = true;
+  assert.equal(await checkGameSource(source), "missing");
+  missing = false;
+  assert.equal(await checkGameSource(source), "available");
+  files = [{ name: ".DS_Store", kind: "file" }];
+  assert.equal(await checkGameSource(source), "missing");
+});
+
+test("permission failures and unreadable sources are not falsely marked missing", async () => {
+  for (const kind of ["zip", "folder"]) {
+    for (const [name, expected] of [
+      ["NotAllowedError", "permission"],
+      ["SecurityError", "permission"],
+      ["NotFoundError", "missing"],
+      ["NotReadableError", "unverified"],
+      ["UnknownError", "unverified"],
+    ]) {
+      const fail = () => { throw new DOMException("Cannot access game", name); };
+      const source = localGame({
+        queryPermission: async () => "granted",
+        getFile: fail,
+        async *values() { fail(); },
+      }, { name: kind === "zip" ? "game.zip" : "Game", kind });
+      assert.equal(await checkGameSource(source), expected, `${kind}: ${name}`);
+    }
+  }
+});

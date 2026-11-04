@@ -171,18 +171,65 @@ into the managed shell during ScummVM rebuilds.
   The homepage uses a game's landscape artwork or gameplay capture as its
   slideshow backdrop. Imported slides use the same Play and reconnect actions
   as their library cards.
+  Saved sources are checked on library load, window focus, tab return, and
+  restoration from the browser's back/forward cache. Local checks use saved
+  handles with existing read permission; they do not request permission or
+  download game contents. Missing files and folders retain their library entries
+  and show a missing-file or missing-folder badge. Permission failures show
+  `File access needed`; other check failures remain unverified.
+  Directory imports list each archive by its relative path, with waiting,
+  checking, added/reconnected, and skipped states visible during processing.
+  Unpacked game folders list their individual data files as they are read.
+  Completed rows stay visible until the batch result replaces the progress list.
+  Reimporting local games reuses their saved source IDs and refreshes file access.
+  Matching prefers file-handle identity, then a saved fingerprint of ZIP member
+  paths, sizes and CRCs, or unpacked file paths, sizes and modification times.
+  Fingerprints ignore enclosing folders and scan order. Legacy entries without
+  fingerprints and missing entries can reconnect by a unique name and source kind;
+  ambiguous legacy names require selecting the specific poster. Stale handle
+  comparisons do not prevent matching the replacement files. Remote URL sources
+  are excluded from local matching.
   Hero titles fit their full text into a fixed three-line title area, resizing
   after viewport or font changes. Summary and metadata slots have fixed heights,
   with their full text available in tooltips. Keep action rows stable across
   slides so long titles and labels do not move the controls or the library.
+  The hero's primary action always reads `Play` and uses a fixed 10rem by
+  3.4rem button, including imported games and games with a browser save.
 
   Every recognized title in the asset pack must include a game-specific
   `summary`, `studio`, and `genre`. Keep metadata references in
   `sources.metadata` and describe unresolved credits in `metadataNote`.
   Slideshow heroes and library-card tooltips read the same record, including
   entries imported before a metadata update. Keep the library grid limited to
-  cover cards and titles; show detailed metadata in the slideshow heroes.
+  cover cards and titles; show detailed metadata in the slideshow heroes and
+  game detail modals. Catalog cards and the recent-games rail open hash-linked
+  details; imported cards open details for that specific library source, keeping
+  file access and launch actions inside the modal. Catalog details use the same
+  save-aware launch buttons as the hero. Imported games load saves through their
+  in-game menu. Details use a native modal dialog for focus containment and Escape
+  dismissal, restore focus to the opener, and prevent background scrolling.
+  The library's **Sort & filter** disclosure searches titles and filters by
+  genre, release year, and source (catalog, device, or link). It sorts the
+  combined catalog and saved-source cards by name, release year, genre, or
+  studio, with name order as the default. Release years come from presentation
+  metadata; unknown years sort last and remain selectable as `Unknown`.
+  Filters combine, update immediately, and remain active when the controls
+  are collapsed. Reset restores all games in name order.
   ScummVM's developer pages provide the
   primary references; genre labels and summaries are editorial descriptions.
   The fan game Road has an unverified creator credit and a description based
   on its locally verified gameplay.
+
+## Package a local ScummVM collection
+
+Run `python3 scripts/package_retro_games.py --source /path/to/game-folders --output /path/to/game-archives`
+to inventory the editions and check the output volume. Append `--write` to
+package and verify the archives. Existing matching archives are reused, and
+conflicting files are preserved. The script keeps the original game folders
+intact. Drop the output folder or individual ZIPs into the ScummWEB library.
+
+The packager stores the members of large ZIPs without compression. ScummWEB
+reads those games and large unpacked folders directly from disk in small
+blocks instead of loading every file into memory. Local imports support up to
+4 GiB; ZIPs over 128 MiB or over 256 MiB unpacked must use the store method.
+Hosted ZIPs retain the separate download and unpacking limits.

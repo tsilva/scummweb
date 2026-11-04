@@ -1,4 +1,5 @@
 import DecorativeImage from "./decorative-image";
+import { getGameDialogId } from "./shared";
 
 export function GamePoster({ title, image }) {
   return (
@@ -21,7 +22,7 @@ export default function LibraryCards({ games, children }) {
       {children}
       {games.map((game) => (
         <div className="poster-entry" key={game.target}>
-          <a className={`poster-card ${game.tone}`} data-game-target={game.target} href={game.href}>
+          <a aria-haspopup="dialog" aria-controls={getGameDialogId(game)} className={`poster-card ${game.tone}`} data-game-target={game.target} href={`#${getGameDialogId(game)}`}>
             <GamePoster title={game.displayTitle} image={game.posterImage} />
           </a>
         </div>
