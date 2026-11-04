@@ -71,11 +71,6 @@ export default function HomeHero({ groups, featuredGame }) {
     return () => document.removeEventListener("visibilitychange", updateVisibility);
   }, []);
 
-  function moveSlide(direction) {
-    setRotationPaused(true);
-    advanceSlide(direction);
-  }
-
   function advanceSlide(direction) {
     setSelectedId(slides[(slideIndex + direction + slideCount) % slideCount].id);
   }
@@ -88,9 +83,11 @@ export default function HomeHero({ groups, featuredGame }) {
       carouselProps={slideCount > 1 ? {
         "aria-label": "Game slideshow",
         "aria-roledescription": "carousel",
-        onPointerEnter: (event) => setHasPointer(event.pointerType === "mouse"),
+        onPointerOver: (event) => setHasPointer(
+          event.pointerType === "mouse" && !event.target.closest(".hero-carousel-controls"),
+        ),
         onPointerLeave: () => setHasPointer(false),
-        onFocusCapture: () => setHasFocus(true),
+        onFocusCapture: (event) => setHasFocus(!event.target.closest(".hero-carousel-controls")),
         onBlurCapture: (event) => {
           if (!event.currentTarget.contains(event.relatedTarget)) {
             setHasFocus(false);
@@ -99,7 +96,7 @@ export default function HomeHero({ groups, featuredGame }) {
       } : undefined}
       controls={slideCount > 1 ? (
         <div className="hero-carousel-controls" role="group" aria-label="Slideshow controls">
-          <button type="button" aria-label="Previous game" onClick={() => moveSlide(-1)}>
+          <button type="button" aria-label="Previous game" onClick={() => advanceSlide(-1)}>
             <ChevronLeft size={18} aria-hidden="true" />
           </button>
           <span className="hero-carousel-count" aria-live={isPaused ? "polite" : "off"} aria-atomic="true">
@@ -108,7 +105,7 @@ export default function HomeHero({ groups, featuredGame }) {
               {currentSlide.game.displayTitle}, slide {slideIndex + 1} of {slideCount}
             </span>
           </span>
-          <button type="button" aria-label="Next game" onClick={() => moveSlide(1)}>
+          <button type="button" aria-label="Next game" onClick={() => advanceSlide(1)}>
             <ChevronRight size={18} aria-hidden="true" />
           </button>
           <button

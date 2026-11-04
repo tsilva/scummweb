@@ -2,39 +2,55 @@
 
 import { useEffect, useState } from "react";
 import DecorativeImage from "./home-shell/decorative-image";
-import { getGameDialogId } from "./home-shell/shared";
-import { getRecentGameTargets, sortGamesByRecentPlay } from "./recent-games";
+import { getRecentGameTargets, getRecentlyPlayedGames, recentGamesUpdatedEvent } from "./recent-games";
 
-export default function RecentGamesRail({ catalog }) {
+export default function RecentGamesRail({ groups }) {
   const [recentTargets, setRecentTargets] = useState([]);
 
   useEffect(() => {
-    setRecentTargets(getRecentGameTargets());
+    const update = () => setRecentTargets(getRecentGameTargets());
+    update();
+    window.addEventListener("focus", update);
+    window.addEventListener("pageshow", update);
+    window.addEventListener("storage", update);
+    window.addEventListener(recentGamesUpdatedEvent, update);
+    return () => {
+      window.removeEventListener("focus", update);
+      window.removeEventListener("pageshow", update);
+      window.removeEventListener("storage", update);
+      window.removeEventListener(recentGamesUpdatedEvent, update);
+    };
   }, []);
 
-  const sortedCatalog = sortGamesByRecentPlay(catalog, recentTargets);
+  const recentGames = getRecentlyPlayedGames(groups, recentTargets);
+  if (!recentGames.length) return null;
 
   return (
-    <div className="landscape-rail">
-      {sortedCatalog.map((game) => (
-        <a
-          key={game.target}
-          aria-haspopup="dialog"
-          aria-controls={getGameDialogId(game)}
-          className={`landscape-card ${game.tone}`}
-          data-game-target={game.target}
-          href={`#${getGameDialogId(game)}`}
-        >
-          <DecorativeImage className="landscape-card-image" src={game.landscapeImage} />
-          <div className="landscape-overlay">
-            <h3>{game.displayTitle}</h3>
-            <div className="landscape-meta">
-              <span>{game.genre}</span>
-              <span>{game.studio}</span>
+    <section className="content-band" aria-labelledby="recently-played-heading">
+      <div className="section-header">
+        <h2 id="recently-played-heading"><span className="section-mark" />Recently Played</h2>
+      </div>
+      <div className="landscape-rail">
+        {recentGames.map(({ key, game, dialogId }) => (
+          <a
+            key={key}
+            aria-haspopup="dialog"
+            aria-controls={dialogId}
+            className={`landscape-card ${game.tone}`}
+            data-game-target={game.target}
+            href={`#${dialogId}`}
+          >
+            <DecorativeImage className="landscape-card-image" src={game.landscapeImage} />
+            <div className="landscape-overlay">
+              <h3>{game.displayTitle}</h3>
+              <div className="landscape-meta">
+                <span>{game.genre}</span>
+                <span>{game.studio}</span>
+              </div>
             </div>
-          </div>
-        </a>
-      ))}
-    </div>
+          </a>
+        ))}
+      </div>
+    </section>
   );
 }

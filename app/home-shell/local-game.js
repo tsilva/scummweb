@@ -8,6 +8,7 @@ import { captureGameDrop } from "../local-game-import.mjs";
 export function chooseZipHandles(multiple) {
   return window.showOpenFilePicker({
     multiple,
+    excludeAcceptAllOption: true,
     types: [{ description: "Game ZIP", accept: { "application/zip": [".zip"] } }],
   });
 }
@@ -74,7 +75,7 @@ export default function GameDropOverlay({ importRoots, disabled, pending, result
       <div className="game-drop-message">
         <Download aria-hidden="true" size={32} />
         <strong>Drop to add games to your library</strong>
-        <span>Game ZIPs and folders stay on this device.</span>
+        <span>Drop ScummVM game ZIPs. Files stay on this device.</span>
       </div>
     </div>,
     document.body,
@@ -89,8 +90,7 @@ export function GameImportDialog({ pending, result, onConfirm }) {
   const confirm = useRef(null);
   const complete = Boolean(result);
   const active = pending.find((item) => !item.complete && !item.status);
-  const latestScan = Math.max(0, ...pending.flatMap((item) =>
-    item.files?.length ? item.files.map((file) => file.scanOrder ?? 0) : [item.scanOrder ?? 0]));
+  const latestScan = Math.max(0, ...pending.map((item) => item.scanOrder ?? 0));
 
   useLayoutEffect(() => {
     const element = dialog.current;
@@ -153,18 +153,12 @@ export function GameImportDialog({ pending, result, onConfirm }) {
 }
 
 export function GameImportItems({ items, complete = false, showProgress = false }) {
-  const rows = items.flatMap((item, index) => {
-    if (showProgress && item.files?.length) {
-      return item.files.map((file, fileIndex) => ({ ...file, key: `${index}:${fileIndex}` }));
-    }
-    if (showProgress && item.container && !item.status) return [];
-    return [{ ...item, key: String(index) }];
-  });
+  const rows = items.map((item, index) => ({ ...item, key: String(index) }));
   if (showProgress) rows.sort((a, b) => (b.scanOrder ?? 0) - (a.scanOrder ?? 0));
   else rows.reverse();
   return (
     <ul className="game-import-items" aria-live={showProgress ? "polite" : undefined}>
-      {rows.filter((item) => item.status !== "skipped").map(({ key, label, message, status, complete: checked, files }) => {
+      {rows.filter((item) => item.status !== "skipped").map(({ key, label, message, status, complete: checked }) => {
         const error = status === "error";
         const success = status === "added" || complete || checked;
         const StatusIcon = error ? CircleX : success ? CircleCheck : File;
@@ -174,7 +168,6 @@ export function GameImportItems({ items, complete = false, showProgress = false 
               className={error ? "game-import-error" : success ? "game-import-success" : undefined} />
             <div>
               <strong>{label}</strong><p>{error ? `Error. ${message}` : message}</p>
-              {!showProgress && files?.length > 0 && <GameImportItems items={files} complete={complete} />}
             </div>
           </li>
         );

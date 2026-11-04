@@ -1,5 +1,6 @@
 const RECENT_GAMES_STORAGE_KEY = "scummweb.recentGames";
 const MAX_RECENT_GAMES = 12;
+export const recentGamesUpdatedEvent = "scummweb:recent-games-updated";
 
 function normalizeRecentGameTargets(value) {
   if (!Array.isArray(value)) {
@@ -51,35 +52,22 @@ export function recordRecentGameTarget(target) {
 
   try {
     window.localStorage.setItem(RECENT_GAMES_STORAGE_KEY, JSON.stringify(nextRecentTargets));
+    window.dispatchEvent(new Event(recentGamesUpdatedEvent));
   } catch {}
 
   return nextRecentTargets;
 }
 
-export function sortGamesByRecentPlay(catalog, recentTargets) {
-  const recentIndexByTarget = new Map(
-    normalizeRecentGameTargets(recentTargets).map((target, index) => [target, index])
-  );
-  const originalIndexByTarget = new Map(catalog.map((game, index) => [game.target, index]));
-
-  return [...catalog].sort((left, right) => {
-    const leftRecentIndex = recentIndexByTarget.get(left.target);
-    const rightRecentIndex = recentIndexByTarget.get(right.target);
-    const leftHasRecentIndex = leftRecentIndex !== undefined;
-    const rightHasRecentIndex = rightRecentIndex !== undefined;
-
-    if (leftHasRecentIndex && rightHasRecentIndex) {
-      return leftRecentIndex - rightRecentIndex;
-    }
-
-    if (leftHasRecentIndex) {
-      return -1;
-    }
-
-    if (rightHasRecentIndex) {
-      return 1;
-    }
-
-    return (originalIndexByTarget.get(left.target) ?? 0) - (originalIndexByTarget.get(right.target) ?? 0);
-  });
+export function getRecentlyPlayedGames(groups, recentTargets) {
+  const gamesById = new Map(groups.flatMap((group) => group.versions.map((version) => [
+    version.source ? `source:${version.source.id}` : version.game.target,
+    { ...group, game: version.game },
+  ])));
+  const seen = new Set();
+  return normalizeRecentGameTargets(recentTargets).flatMap((id) => {
+    const group = gamesById.get(id);
+    if (!group || seen.has(group.key)) return [];
+    seen.add(group.key);
+    return [group];
+  }).slice(0, MAX_RECENT_GAMES);
 }

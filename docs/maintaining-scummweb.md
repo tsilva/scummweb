@@ -10,6 +10,11 @@ separate browser saves. Supported engines offer **Continue** and **Start from
 beginning**; others load progress through their in-game menu. Older shared saves
 remain stored in the browser.
 
+The **Recently Played** strip shows only games you have launched, newest first,
+including imported ZIPs. Different editions of a title share one card, and
+selecting it opens the same version chooser as the library. Removed imports
+disappear from the strip. The strip stays hidden until there is play history.
+
 The sliders icon beside **Game Library** opens sorting by name, release year,
 genre, or studio and genre filtering for both public and imported games. Select
 **All genres** to remove the filter or **Name: A–Z** to restore alphabetical order.
@@ -17,21 +22,26 @@ The top-bar checklist opens **Game compatibility**, with search and filters for
 checked editions, warnings, failures, and untested games. See
 [game testing](game-testing.md) for the same results and their limitations.
 
-Drop ZIPs or folders onto the homepage or a game's page. ScummWEB searches
-subfolders for ZIPs and treats a folder without ZIPs as one unpacked game.
+Drop one or more ZIP files containing ScummVM games onto the homepage or a
+game's page. Put one game in each ZIP. Folders, loose game files, and other
+archive formats are not supported.
 The import dialog shows progress, added games, and errors; its final summary
 also counts skipped games. Reimported games count as skipped with refreshed
 file access. Scroll to review large batches, then select **Confirm** to close
 the dialog and go to the new games.
 
 Saved local sources are checked when the library opens and when you return to
-the tab. Missing files or folders and **File access needed** appear on their
-posters. Select the poster, choose the affected version, and use **Locate ZIP**,
-**Locate folder**, or the permission action. Dropping the same library again
-also refreshes access without adding duplicate entries.
+the tab. Missing ZIP files and **File access needed** appear on their posters.
+Select the poster, choose the affected version, and use **Locate ZIP** or the
+permission action. Dropping the same ZIPs again also refreshes access without
+adding duplicate entries.
 
-Local imports support up to 4 GiB. For large games, use unpacked folders or
-ZIPs with compression disabled; see [packaging a local collection](#package-a-local-scummvm-collection).
+Existing folder entries require a replacement ZIP through **Locate ZIP**;
+reconnecting preserves their source ID and browser saves.
+
+Local ZIP imports support up to 4 GiB, including their unpacked contents.
+For large games, use ZIPs with compression disabled; see
+[packaging a local collection](#package-a-local-scummvm-collection).
 Extracted CD audio accepts physical track names such as `Track  2.flac` as well
 as ScummVM's conventional `track1.flac` naming.
 
@@ -258,7 +268,7 @@ or request-time rendering.
   [original box front scan](https://gamesdb.launchbox-app.com/games/images/86024-sfinx)
   and [ScummVM gameplay captures](https://www.scummvm.org/screenshots/lkavalon/).
 - Imported Indiana Jones games use the SCUMM engine. The importer recognizes
-  the full titles in ZIP and folder names and shares art across platform,
+  the full titles in ZIP names and shares art across platform,
   language, and edition labels in parentheses. Their posters come from the
   [Fate of Atlantis DOS box scan](https://gamesdb.launchbox-app.com/games/images/5386-indiana-jones-and-the-fate-of-atlantis)
   and [Last Crusade Amiga box scan](https://gamesdb.launchbox-app.com/games/images/18310-indiana-jones-and-the-last-crusade-the-graphic-adventure).
@@ -280,9 +290,32 @@ or request-time rendering.
   [`app/retro-game-artwork.json`](../app/retro-game-artwork.json). It includes
   original box scans, gameplay captures, and title cards where a cover was
   unavailable. Different editions can point to the same files.
+  Galleries contain three distinct captures for catalog games, Sfinx, and most
+  recognized personal imports. Road retains one verified capture and Fun Seeker's
+  Guide to Eastern Madera County has two until additional matching screenshots
+  are available. Keep those gaps explicit; do not duplicate
+  images or substitute captures from another game.
+  Added captures retain their original framing and use lossless WebP encoding.
+  Per-image source URLs are recorded in the artwork JSON. Most come from the
+  [ScummVM screenshot gallery](https://www.scummvm.org/screenshots/); supplementary
+  captures come from the original Myst Masterpiece and Big Thinkers Steam store
+  galleries, [OldGames](https://www.oldgames.sk/en/game/big-red-adventure-the/screenshots),
+  [Old-Games.RU](https://www.old-games.ru/game/7755.html),
+  [Planète Aventure](https://www.planete-aventure.net/jeux.php?cat=screenshots&num_jeu=1822),
+  and the [DOSBox Staging Passport to Adventure guide](https://www.dosbox-staging.org/0.83/getting-started/passport-to-adventure/).
+  Ms. Astro Chicken uses its [GamersCreed gallery](https://www.gamerscreed.com/resources/ms-astro-chicken-flight-of-the-pullet.151/).
+  Fun Seeker's Guide includes its original introduction screen from Libretro's
+  ScummVM title-screen collection.
+  Sfinx's three captures are English DOS images 2–4 from its ScummVM gallery.
+  The Simon the Sorcerer's Puzzle Pack gallery includes Jumble and Swampy
+  Adventures, both included in the collection.
   The homepage uses a game's landscape artwork or gameplay capture as its
   slideshow backdrop. Imported slides use the same Play and reconnect actions
   as their library cards.
+  Slideshow arrows restart the eight-second countdown while preserving the
+  current play/pause setting. Hover and focus pause rotation over hero content,
+  while the slideshow controls let it continue. Hidden tabs suspend rotation,
+  and reduced-motion preferences disable automatic rotation until resumed.
   The hero preloads and decodes the next three backdrops and one previous
   backdrop, wrapping around at either end. `HERO_PRELOAD_AHEAD` in
   `app/home-shell/hero-images.mjs` controls the forward window. Preloads use
@@ -292,28 +325,27 @@ or request-time rendering.
   Saved sources are checked on library load, window focus, tab return, and
   restoration from the browser's back/forward cache. Local checks use saved
   handles with existing read permission; they do not request permission or
-  download game contents. Missing files and folders retain their library entries
-  and show a missing-file or missing-folder badge. Permission failures show
+  download game contents. Missing ZIP files retain their library entries
+  and show a missing-file badge. Permission failures show
   `File access needed`; other check failures remain unverified.
-  Directory imports list each archive by its relative path, with waiting,
-  checking, added, and error states visible during processing. Skipped rows are
-  hidden during scanning and in the final list, but included in the summary count.
-  The progress bar sits below the dialog heading. During scanning, container
-  folders are hidden and file rows appear without nesting, latest scanned first.
-  Unpacked game folders list their individual data files as they are read.
-  Added and error rows stay visible until the batch result replaces the progress list.
-  Reimporting local games reuses their saved source IDs and refreshes file access.
+  ZIP imports list each archive with waiting, checking, added, and error states
+  visible during processing. Skipped rows are hidden during scanning and in the
+  final list, but included in the summary count. The progress bar sits below the
+  dialog heading, and the latest scanned ZIP appears first. Added and error rows
+  stay visible until the batch result replaces the progress list.
+  Reimporting ZIPs reuses their saved source IDs and refreshes file access.
   These existing games count as skipped; failed imports count as errors.
-  The final dialog counts each attempted game once in its scanned total and
-  shows separate added, skipped, and error counts. Loose data-file rows are
-  details of their game folder and do not increase these counts.
+  The final dialog counts each attempted item once in its scanned total and
+  shows separate added, skipped, and error counts. Unsupported drops report an
+  error without stopping other ZIPs in the batch.
   Matching prefers file-handle identity, then a saved fingerprint of ZIP member
-  paths, sizes and CRCs, or unpacked file paths, sizes and modification times.
-  Fingerprints ignore enclosing folders and scan order. Legacy entries without
-  fingerprints and missing entries can reconnect by a unique name and source kind;
-  ambiguous legacy names require selecting the specific poster. Stale handle
-  comparisons do not prevent matching the replacement files. Remote URL sources
-  are excluded from local matching.
+  paths, sizes and CRCs. Fingerprints ignore enclosing folders and member order.
+  Legacy ZIP entries without fingerprints and missing entries can reconnect by
+  a unique name; ambiguous legacy names require selecting the specific poster.
+  Stale handle comparisons do not prevent matching replacement ZIPs. Remote URL
+  sources are excluded from local matching. Old folder entries remain in the
+  library for explicit replacement with a ZIP, preserving their save identity;
+  they are never opened as directories.
   Hero titles fit their full text into a fixed three-line title area, resizing
   after viewport or font changes. Summary and metadata slots have fixed heights,
   with their full text available in tooltips. Keep action rows stable across
@@ -380,10 +412,9 @@ Run `python3 scripts/package_retro_games.py --source /path/to/game-folders --out
 to inventory the editions and check the output volume. Append `--write` to
 package and verify the archives. Existing matching archives are reused, and
 conflicting files are preserved. The script keeps the original game folders
-intact. Drop the output folder or individual ZIPs into the ScummWEB library.
+intact. Select the output ZIP files and drop them into the ScummWEB library.
 
 The packager stores the members of large ZIPs without compression. ScummWEB
-reads those games and large unpacked folders directly from disk in small
-blocks instead of loading every file into memory. Local imports support up to
-4 GiB; ZIPs over 128 MiB or over 256 MiB unpacked must use the store method.
+reads those ZIPs directly from disk in small blocks instead of loading every
+file into memory. Local imports support up to 4 GiB; ZIPs over 128 MiB or over 256 MiB unpacked must use the store method.
 Hosted ZIPs retain the separate download and unpacking limits.

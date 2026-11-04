@@ -1,8 +1,25 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import { createHash } from "node:crypto";
 import test from "node:test";
+import { getImportedGamePresentation } from "../app/game-presentation.js";
 
 const artwork = JSON.parse(fs.readFileSync(new URL("../app/retro-game-artwork.json", import.meta.url)));
+
+test("recognized galleries have three distinct managed images with explicit source gaps", () => {
+  const limited = new Map([["local:road", 1], ["sci:funseeker", 2]]);
+  for (const [id, game] of Object.entries(artwork)) {
+    assert.equal(game.screenshots.length, limited.get(id) || 3, id);
+    const hashes = game.screenshots.map((path) => {
+      const bytes = fs.readFileSync(new URL(`../scummvm-shell${path}`, import.meta.url));
+      return createHash("sha256").update(bytes).digest("hex");
+    });
+    assert.equal(new Set(hashes).size, hashes.length, `${id} repeats a capture`);
+    const recognized = getImportedGamePresentation(`${game.aliases[0]}.zip`);
+    assert.equal(recognized?.screenshots.length, game.screenshots.length, `${id} loses its gallery during import`);
+  }
+  assert.equal(getImportedGamePresentation("Sfinx.zip").screenshots.length, 3);
+});
 
 test("every recognized imported title has specific dashboard metadata and attribution", () => {
   for (const [id, game] of Object.entries(artwork)) {

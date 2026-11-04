@@ -8,8 +8,14 @@ export function remoteGame(url, game) {
 }
 
 export function localGame(handle, file, id = crypto.randomUUID()) {
-  return { id, name: file.name, ...(handle && { handle }), ...(file.kind === "folder" && { kind: "folder" }),
+  if (!isLocalZipSource({ name: file.name, kind: file.kind, handle })) throw new Error("Choose a ZIP containing one ScummVM game.");
+  validateGameZip(file, maxLocalGameSize);
+  return { id, name: file.name, ...(handle && { handle }),
     ...(file.fingerprint && { fingerprint: file.fingerprint }) };
+}
+
+export function isLocalZipSource(source) {
+  return (!source.kind || source.kind === "zip") && source.handle?.kind !== "directory" && /\.zip$/i.test(source.name);
 }
 
 export function bucketGames(url, targets, catalog) {
@@ -26,14 +32,10 @@ export function checkRemoteGame(source) {
 export async function checkGameSource(source) {
   try {
     if (source.url) return await checkRemoteGame(source) ? "available" : "missing";
+    // Keep old folder entries reconnectable without accessing their contents.
+    if (!isLocalZipSource(source)) return "locate";
     if (!source.handle) return "locate";
     if (await source.handle.queryPermission({ mode: "read" }) !== "granted") return "permission";
-    if (source.kind === "folder") {
-      for await (const entry of source.handle.values()) {
-        if (entry.name !== ".DS_Store") return "available";
-      }
-      return "missing";
-    }
     validateGameZip(await source.handle.getFile(), maxLocalGameSize);
     return "available";
   } catch (error) {
