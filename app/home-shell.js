@@ -1,4 +1,4 @@
-import GameDetailModal from "./home-shell/game-detail-modal";
+import CompatibilityModal from "./home-shell/compatibility-modal";
 import Icon from "./home-shell/shell-icon";
 import HeroStage from "./home-shell/hero-stage";
 import SourceLibrary from "./home-shell/source-library";
@@ -50,6 +50,7 @@ export default function HomeShell({
         </div>
 
         <div className="nav-actions">
+          <CompatibilityModal />
           <a
             aria-label="View scummweb on GitHub"
             className="nav-icon-link"
@@ -94,9 +95,6 @@ export default function HomeShell({
         </div>
       </footer>
 
-      {catalog.map((game) => (
-        <GameDetailModal game={game} key={game.target} />
-      ))}
     </>
   );
 }

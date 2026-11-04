@@ -4,17 +4,21 @@ import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import HeroStage from "./hero-stage";
 import { getHeroPreloadImages } from "./hero-images.mjs";
+import { getGameFamilyKey } from "../game-versions.mjs";
 
 const SLIDE_DURATION_MS = 8000;
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
-export default function HomeHero({ catalog, featuredGame, library }) {
-  const catalogSlide = (game) => ({ id: `catalog:${game.target}`, game });
-  const slides = [
-    catalogSlide(featuredGame),
-    ...library.map(({ source, game, action }) => ({ id: `library:${source.id}`, game, action })),
-    ...catalog.filter((game) => game.target !== featuredGame.target).map(catalogSlide),
-  ];
+export default function HomeHero({ groups, featuredGame }) {
+  const featuredKey = getGameFamilyKey(featuredGame) || `catalog:${featuredGame.target}`;
+  const ordered = [...groups.filter(({ key }) => key === featuredKey), ...groups.filter(({ key }) => key !== featuredKey)];
+  const slides = ordered.map((group) => ({ id: group.key, game: group.game,
+    action: group.versions.length > 1 ? {
+      dialogId: group.dialogId,
+      label: `Choose a version of ${group.title}`,
+      onClick: () => { window.location.hash = group.dialogId; },
+    } : group.versions[0].action,
+  }));
   const slideCount = slides.length;
   const [selectedId, setSelectedId] = useState(null);
   const slideIndex = Math.max(0, slides.findIndex(({ id }) => id === selectedId));

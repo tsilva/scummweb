@@ -1,3 +1,5 @@
+import { getVersionSaveNamespace } from "./game-versions.mjs";
+
 // These engines accept a save slot on the command line. Their filenames
 // come from the corresponding ScummVM 2.9.1 metaengines.
 const savePatterns = {
@@ -51,13 +53,15 @@ function getCheckpoint(url) {
 }
 
 export async function getLatestBrowserSave(game, assetVersion) {
-  const pattern = Object.hasOwn(savePatterns, game?.target) ? savePatterns[game.target] : null;
+  const saveTarget = game?.target === "dreamweb" ? "dreamweb-cd" : game?.target;
+  const pattern = Object.hasOwn(savePatterns, saveTarget) ? savePatterns[saveTarget] : null;
   if (!pattern) return null;
 
   try {
     const storage = window.localStorage;
     let listing = readDirectory(storage, "/");
-    for (const folder of saveDirectory) {
+    const directory = game.saveVersionId ? [...saveDirectory, game.saveNamespace || await getVersionSaveNamespace(game.saveVersionId)] : saveDirectory;
+    for (const folder of directory) {
       listing = readDirectory(storage, listing[folder]);
     }
 

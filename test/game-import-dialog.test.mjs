@@ -21,7 +21,7 @@ const compiled = { exports: {} };
 runInNewContext(code, { module: compiled, exports: compiled.exports, require: createRequire(componentUrl) });
 const { GameImportDialog, GameImportItems } = compiled.exports;
 
-test("directory progress renders each waiting, active, added, skipped, and failed file", () => {
+test("directory progress renders waiting, active, added, and failed files while hiding skipped files", () => {
   const html = renderToStaticMarkup(createElement(GameImportItems, {
     showProgress: true,
     items: [{ label: "Collection", message: "Checking ZIP 4 of 5…", value: 3, total: 5, files: [
@@ -32,10 +32,11 @@ test("directory progress renders each waiting, active, added, skipped, and faile
       { label: "next.zip", message: "Waiting…" },
     ] }],
   }));
-  for (const label of ["DOS/game.zip", "old.zip", "bad.zip", "Amiga/game.zip", "next.zip"]) {
+  for (const label of ["DOS/game.zip", "bad.zip", "Amiga/game.zip", "next.zip"]) {
     assert.ok(html.includes(`<strong>${label}</strong>`), label);
   }
-  for (const status of ["Added to your library", "Skipped. Already in your library. Files refreshed.", "Error. Unreadable ZIP", "Checking ZIP…", "Waiting…"]) {
+  assert.ok(!html.includes("old.zip"));
+  for (const status of ["Added to your library", "Error. Unreadable ZIP", "Checking ZIP…", "Waiting…"]) {
     assert.ok(html.includes(status), status);
   }
   assert.ok(!html.includes("<progress"));
@@ -57,7 +58,9 @@ test("batch totals include every outcome without counting a folder's data files 
   assert.ok(html.includes('<h2 id="game-import-title">3 games scanned</h2>'));
   assert.ok(html.includes('1 game added · 1 game skipped · 1 error'));
   assert.ok(html.includes('class="game-import-confirm"'));
-  for (const [icon, colorClass] of [["circle-check", "success"], ["circle-minus", "warning"], ["circle-x", "error"]]) {
+  assert.ok(!html.includes("Existing.zip"));
+  assert.ok(!html.includes("lucide-circle-minus"));
+  for (const [icon, colorClass] of [["circle-check", "success"], ["circle-x", "error"]]) {
     assert.match(html, new RegExp(`class="[^"]*lucide-${icon}[^"]*game-import-${colorClass}`));
   }
 });
@@ -69,6 +72,8 @@ test("reimporting a library reports scanned and skipped counts", () => {
   const html = renderToStaticMarkup(createElement(GameImportDialog, { pending: [], result }));
   assert.ok(html.includes('<h2 id="game-import-title">168 games scanned</h2>'));
   assert.ok(html.includes('0 games added · 168 games skipped · 0 errors'));
+  assert.ok(!html.includes("<li"));
+  assert.ok(html.includes('class="game-import-confirm"'));
 });
 
 test("a single failed scan reports an error rather than a skipped game", () => {

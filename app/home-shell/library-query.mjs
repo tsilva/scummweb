@@ -1,12 +1,14 @@
+import { groupGameVersions } from "../game-versions.mjs";
+
 const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
 
 export const defaultLibraryQuery = { sort: "name-asc", genre: "" };
 
 export function libraryItems(catalog, library) {
-  return [
+  return groupGameVersions([
     ...catalog.map((game) => ({ key: `catalog:${game.target}`, game, title: game.displayTitle })),
     ...library.map((entry) => ({ ...entry, key: `source:${entry.source.id}` })),
-  ];
+  ]);
 }
 
 export function libraryYear(game) {

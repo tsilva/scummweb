@@ -3,14 +3,12 @@
 import { useRef, useState } from "react";
 import { ChevronDown, SlidersHorizontal } from "lucide-react";
 import { GamePoster } from "./library-cards";
-import { getGameDialogId } from "./shared";
-import { defaultLibraryQuery, libraryFacet, libraryItems, queryLibrary } from "./library-query.mjs";
+import { defaultLibraryQuery, libraryFacet, queryLibrary } from "./library-query.mjs";
 
-export default function LibraryView({ catalog, library, heading, notice, children: renderSource }) {
+export default function LibraryView({ items, heading, notice }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState(defaultLibraryQuery);
   const toggle = useRef(null);
-  const items = libraryItems(catalog, library);
   const visible = queryLibrary(items, query);
   const changed = Boolean(query.genre) || query.sort !== defaultLibraryQuery.sort;
   const update = (field) => (event) => setQuery((current) => ({ ...current, [field]: event.target.value }));
@@ -18,7 +16,7 @@ export default function LibraryView({ catalog, library, heading, notice, childre
   return (
     <section className="content-band" id="library">
       <div className="section-header library-header">
-        <h2><span className="section-mark" />{heading}</h2>
+        <h2 tabIndex={-1}><span className="section-mark" />{heading}</h2>
         <button ref={toggle} type="button" className="secondary-button library-toggle"
           aria-label="Sort and filter games" title="Sort and filter games" data-filtered={Boolean(query.genre)}
           aria-expanded={open} aria-controls="library-controls" onClick={() => setOpen(!open)}>
@@ -63,15 +61,19 @@ export default function LibraryView({ catalog, library, heading, notice, childre
         <p>No games match this genre.</p>
       </div> : <div className="poster-grid">
         {visible.map((item) => {
-          const { key, game, title, source } = item;
-          if (!source) return (
-            <div className="poster-entry" key={key}>
-              <a aria-haspopup="dialog" aria-controls={getGameDialogId(game)} className={`poster-card ${game.tone}`} data-game-target={game.target} href={`#${getGameDialogId(game)}`}>
+          const { key, game, title, versions, dialogId } = item;
+          const needsFiles = versions.every(({ source, status }) => source && !["available", "session"].includes(status));
+          const fileStatus = versions.every(({ status }) => status === "checking") ? "Checking files"
+            : versions.some(({ status }) => status === "permission") ? "File access needed" : "Locate files";
+          return (
+            <div className="poster-entry" key={key} data-library-source-ids={JSON.stringify(versions.flatMap(({ source }) => source ? [source.id] : []))}>
+              <a aria-haspopup="dialog" aria-controls={dialogId} className={`poster-card ${game.tone}`} data-game-target={game.target} href={`#${dialogId}`}>
                 <GamePoster title={title} image={game.posterImage} />
+                {versions.length > 1 && <span className="game-version-count">{versions.length} versions</span>}
+                {needsFiles && <span className="source-poster-hint">{fileStatus}</span>}
               </a>
             </div>
           );
-          return renderSource(item);
         })}
       </div>}
     </section>

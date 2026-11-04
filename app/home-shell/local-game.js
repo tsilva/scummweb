@@ -164,17 +164,16 @@ export function GameImportItems({ items, complete = false, showProgress = false 
   else rows.reverse();
   return (
     <ul className="game-import-items" aria-live={showProgress ? "polite" : undefined}>
-      {rows.map(({ key, label, message, status, complete: checked, files }) => {
-        const skipped = status === "skipped";
+      {rows.filter((item) => item.status !== "skipped").map(({ key, label, message, status, complete: checked, files }) => {
         const error = status === "error";
         const success = status === "added" || complete || checked;
-        const StatusIcon = error ? CircleX : skipped ? CircleMinus : success ? CircleCheck : File;
+        const StatusIcon = error ? CircleX : success ? CircleCheck : File;
         return (
           <li key={key}>
             <StatusIcon aria-hidden="true" size={22}
-              className={error ? "game-import-error" : skipped ? "game-import-warning" : success ? "game-import-success" : undefined} />
+              className={error ? "game-import-error" : success ? "game-import-success" : undefined} />
             <div>
-              <strong>{label}</strong><p>{error ? `Error. ${message}` : skipped ? `Skipped. ${message}` : message}</p>
+              <strong>{label}</strong><p>{error ? `Error. ${message}` : message}</p>
               {!showProgress && files?.length > 0 && <GameImportItems items={files} complete={complete} />}
             </div>
           </li>
