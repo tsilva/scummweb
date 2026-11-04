@@ -796,12 +796,21 @@ button.nav-icon-link {
 .game-version-controls label {
   display: grid;
   gap: 0.5rem;
+  min-width: 0;
   font-weight: 600;
+}
+
+.game-version-controls .library-select {
+  width: max-content;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .game-version-controls select {
   appearance: none;
-  width: 100%;
+  width: auto;
+  max-width: 100%;
+  min-width: 0;
   min-height: 2.75rem;
   padding: 0.6rem 3rem 0.6rem 1rem;
   border: 1px solid var(--ghost-border);
