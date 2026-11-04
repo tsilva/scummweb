@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import HeroStage from "./hero-stage";
 import { getHeroPreloadImages } from "./hero-images.mjs";
 import { getGameFamilyKey } from "../game-versions.mjs";
+import { readHeroSelection } from "./hero-selection.mjs";
 
 const SLIDE_DURATION_MS = 8000;
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
@@ -21,7 +22,8 @@ export default function HomeHero({ groups, featuredGame }) {
   }));
   const slideCount = slides.length;
   const [selectedId, setSelectedId] = useState(null);
-  const slideIndex = Math.max(0, slides.findIndex(({ id }) => id === selectedId));
+  const [requestedId, setRequestedId] = useState(null);
+  const slideIndex = Math.max(0, slides.findIndex(({ id }) => id === (selectedId ?? requestedId)));
   const preloadedImages = useRef(new Map());
   const preloadKey = JSON.stringify(getHeroPreloadImages(slides, slideIndex));
   const [rotationPaused, setRotationPaused] = useState(null);
@@ -31,6 +33,18 @@ export default function HomeHero({ groups, featuredGame }) {
   const [hasFocus, setHasFocus] = useState(false);
   const isPaused = rotationPaused ?? prefersReducedMotion;
   const isCountingDown = isPageVisible && !isPaused && !hasPointer && !hasFocus;
+
+  useEffect(() => {
+    const syncSelection = () => {
+      const requested = readHeroSelection(window.location.hash);
+      if (!requested) return;
+      setRequestedId(requested);
+      setSelectedId(null);
+    };
+    syncSelection();
+    window.addEventListener("hashchange", syncSelection);
+    return () => window.removeEventListener("hashchange", syncSelection);
+  }, []);
 
   useEffect(() => {
     const nextImages = new Map();
@@ -137,7 +151,7 @@ export default function HomeHero({ groups, featuredGame }) {
       featuredGame={currentSlide.game}
       sourceAction={currentSlide.action}
       isHomePage
-      isInitialSlide={slideIndex === 0}
+      isInitialSlide={slideIndex === 0 && requestedId !== currentSlide.id}
     />
   );
 }

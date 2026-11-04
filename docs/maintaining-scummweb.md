@@ -323,6 +323,11 @@ or request-time rendering.
   The homepage uses a game's landscape artwork or gameplay capture as its
   slideshow backdrop. Imported slides use the same Play and reconnect actions
   as their library cards.
+  Player exits return to `/#slide=<encoded group key>`, selecting the played
+  game's family in the homepage slideshow. Imported selections resolve when
+  saved sources finish loading. Unknown selections fall back to the first slide;
+  direct ZIP launches without library metadata return to the homepage.
+  Game landing pages remain the canonical pages for game information and sharing.
   Slideshow arrows restart the eight-second countdown while preserving the
   current play/pause setting. Hover and focus pause rotation over hero content,
   while the slideshow controls let it continue. Hidden tabs suspend rotation,
