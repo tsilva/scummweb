@@ -115,6 +115,13 @@ Only bundled games have public `/<game-slug>/play` routes; import-only games use
 the local player after import. Adding recognition metadata automatically adds
 its landing page and sitemap entry on the next build.
 
+The navigation and footer link to `/compatibility`, which includes ordinary links
+to every recognized game page in its initial HTML. Edition-specific checks match
+game pages by engine identity, with demos separate from full games. Recognized
+games without a matching result appear as **Not yet tested**. The page shares
+search, status filters, and result presentation with the checklist modal, and
+the compatibility page itself is included in the sitemap.
+
 Social-card PNGs are generated from managed artwork during tests and builds.
 Keep `data/social-cards.json` tracked; new generated PNGs are ignored and are
 recreated when missing, so they do not need to be uploaded through Git.

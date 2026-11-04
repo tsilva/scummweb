@@ -11,6 +11,7 @@ export default function HomeShell({
   scummvmVersion,
   scummvmOfficialSite,
   sourceInfoDate,
+  children,
 }) {
   const isHomePage = pageMode === "home";
   const libraryHeading = isHomePage ? "Game Library" : "Freeware Adventure Library";
@@ -21,7 +22,7 @@ export default function HomeShell({
         <div className="nav-cluster nav-cluster-left">
           <div className="nav-brand-group">
             <div className="nav-brand-stack">
-              <a className="nav-brand" href="#browse" aria-label="ScummWEB">
+              <a className="nav-brand" href={pageMode === "compatibility" ? "/" : "#browse"} aria-label="ScummWEB">
                 <img
                   alt=""
                   aria-hidden="true"
@@ -39,7 +40,8 @@ export default function HomeShell({
           </div>
 
           <div className="nav-links" aria-label="Main">
-            <a href="#library">Library</a>
+            <a href={pageMode === "compatibility" ? "/#library" : "#library"}>Library</a>
+            <a href="/compatibility" aria-current={pageMode === "compatibility" ? "page" : undefined}>Compatibility</a>
             <a href={scummvmOfficialSite} rel="noreferrer" target="_blank">
               ScummVM
             </a>
@@ -61,13 +63,13 @@ export default function HomeShell({
       </nav>
 
       <main className="page-shell">
-        <SourceLibrary
+        {children ?? <SourceLibrary
           catalog={catalog}
           featuredGame={featuredGame}
           isHomePage={isHomePage}
           libraryHeading={libraryHeading}
           officialUrl={getGamesOrigin()}
-        />
+        />}
       </main>
 
       <footer className="site-footer">
@@ -77,6 +79,7 @@ export default function HomeShell({
             Bundle built {sourceInfoDate}. ScummVM version {scummvmVersion}.
           </p>
         </div>
+        <div className="footer-links"><a href="/compatibility">Game compatibility</a></div>
       </footer>
 
     </>

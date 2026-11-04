@@ -11,6 +11,11 @@ export default async function sitemap() {
       changeFrequency: "daily",
       priority: 1,
     },
+    {
+      url: `${siteUrl}/compatibility`,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
     ...games.map((game) => ({
       url: `${siteUrl}${game.href}`,
       changeFrequency: "weekly",
