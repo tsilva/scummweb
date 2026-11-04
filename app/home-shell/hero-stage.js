@@ -67,8 +67,9 @@ export default function HeroStage({
           <div className="hero-actions">
             {sourceAction ? (
               <button type="button" className="launch-button" title={sourceAction.label} disabled={sourceAction.disabled} onClick={sourceAction.onClick}
+                aria-describedby={sourceAction.needsAccess ? "hero-file-access-help" : undefined}
                 aria-haspopup={sourceAction.dialogId ? "dialog" : undefined} aria-controls={sourceAction.dialogId}>
-                Play
+                {sourceAction.buttonLabel || "Play"}
               </button>
             ) : (
               <LaunchButton
@@ -83,6 +84,10 @@ export default function HeroStage({
               <span>{secondaryActionLabel}</span>
             </a>
           </div>
+          {sourceAction?.needsAccess && <p className="file-access-help" id="hero-file-access-help">
+            Allow access in the browser prompt so ScummWEB can read this game’s ZIP.
+            Your game files stay on your device.
+          </p>}
 
           <dl className="hero-metadata">
             {heroMetadata.map((item) => (

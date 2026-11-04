@@ -52,12 +52,16 @@ poster to play. Local game files stay on your device. Put one game in each
 ZIP, with its data files at the root or in one enclosing folder.
 
 Only ZIP files are supported. Local games can be up to 4 GiB. For large games,
-use a ZIP with compression disabled. If the browser loses file access, select the
-poster to reconnect it or drop the same ZIPs again; existing entries are
-refreshed without duplicates.
+use a ZIP with compression disabled. If the browser needs file access again,
+select the poster and **Allow file access**, then approve the browser prompt.
+The button becomes **Play** or **Continue** once access is granted. Use **Locate ZIP**
+for missing files, or drop the same ZIPs again to refresh entries without duplicates.
 
 See [playing and importing games](docs/maintaining-scummweb.md#playing-and-importing-games)
 for direct ZIP links, download limits, saves, and file-access help.
+Direct ZIP links inspect the game files to show matching metadata and hero
+artwork, including when the archive has been renamed. Recognition covers a
+limited set of file signatures; other games retain the generic loading screen.
 
 ## Run locally
 

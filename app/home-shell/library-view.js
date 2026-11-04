@@ -62,9 +62,9 @@ export default function LibraryView({ items, heading, notice }) {
       </div> : <div className="poster-grid">
         {visible.map((item) => {
           const { key, game, title, versions, dialogId } = item;
-          const needsFiles = versions.every(({ source, status }) => source && !["available", "session"].includes(status));
+          const needsFiles = versions.every(({ source, status }) => source && !["available", "session", "permission"].includes(status));
           const fileStatus = versions.every(({ status }) => status === "checking") ? "Checking files"
-            : versions.some(({ status }) => status === "permission") ? "File access needed" : "Locate files";
+            : "Locate files";
           return (
             <div className="poster-entry" key={key} data-library-source-ids={JSON.stringify(versions.flatMap(({ source }) => source ? [source.id] : []))}>
               <a aria-haspopup="dialog" aria-controls={dialogId} className={`poster-card ${game.tone}`} data-game-target={game.target} href={`#${dialogId}`}>

@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { readRemoteGameArchive } from "../game-bucket.mjs";
 import { getGamePresentation, getImportedGamePresentation } from "../game-presentation";
-import { checkGameSource, isLocalZipSource, localGame, readGameSources, removeGameSources, saveGameSources } from "../game-sources.mjs";
+import { checkGameSource, isLocalZipSource, localGame, readGameSources, removeGameSources, requestGameSourceAccess, saveGameSources } from "../game-sources.mjs";
 import { findLocalGameSource } from "../local-game-matching.mjs";
 import { maxLocalGameSize, openLocalGameZip, selectGameArchive, validateGameZip } from "../local-game-archive.mjs";
 import { fileNode, handleNode, prepareLocalZip } from "../local-game-import.mjs";
@@ -303,6 +303,13 @@ export default function SourceLibrary({ catalog, featuredGame, libraryHeading, o
   function play(source, game, resume = false, legacySaves = false) {
     if (!source.url && !isLocalZipSource(source)) return chooseZip(source);
     return run(async () => {
+      if (!source.url && source.handle && !sessionGames.has(source.id)
+        && await source.handle.queryPermission({ mode: "read" }) !== "granted") {
+        updateStatus(source, "permission");
+        const group = groups.find(({ versions }) => versions.some((version) => version.source?.id === source.id));
+        if (group) window.location.hash = group.dialogId;
+        return;
+      }
       game = { ...game, recentGameId: `source:${source.id}`, saveVersionId: legacySaves ? undefined : source.id,
         saveNamespace: legacySaves ? undefined : await getVersionSaveNamespace(source.id), skipIntro: null };
       if (source.url) {
@@ -314,25 +321,31 @@ export default function SourceLibrary({ catalog, featuredGame, libraryHeading, o
           setNotice("Locate the game ZIP to play again.");
           return;
         }
-        if (!data) {
-          if (await source.handle.requestPermission({ mode: "read" }) !== "granted") {
-            updateStatus(source, "locate");
-            setNotice("Locate the game ZIP to grant access again.");
-            return;
-          }
-        }
         try {
           const file = data ?? await source.handle.getFile();
           validateGameZip(file, maxLocalGameSize);
           selectGameArchive((signal) => openLocalGameZip(file, signal), game);
-        } catch {
-          updateStatus(source, "missing");
-          setNotice("Could not open the ZIP. Locate the file to reconnect it.");
+        } catch (error) {
+          const permission = ["NotAllowedError", "SecurityError"].includes(error?.name);
+          updateStatus(source, permission ? "permission" : "missing");
+          setNotice(permission ? "Allow file access to play this game."
+            : "Could not open the ZIP. Locate the file to reconnect it.");
           return;
         }
       }
       rememberGameVersion(getGameFamilyKey(game) || `source:${source.id}`, `source:${source.id}`);
       router.push(`/local/play${resume ? "#continue" : ""}`);
+    });
+  }
+
+  function allowAccess(source) {
+    return run(async () => {
+      // Request directly from the click, before any storage work can consume user activation.
+      const status = await requestGameSourceAccess(source);
+      updateStatus(source, status);
+      setNotice(status === "available" ? "File access allowed. You can now play."
+        : status === "permission" ? "File access was not allowed. Try again and allow access in your browser to play."
+        : "Could not open the ZIP. Locate the file to reconnect it.");
     });
   }
 
@@ -348,12 +361,15 @@ export default function SourceLibrary({ catalog, featuredGame, libraryHeading, o
     const game = { ...presentation, saveVersionId: source.id, skipIntro: null };
     const locate = !source.url && (!isLocalZipSource(source) || ["missing", "locate"].includes(status));
     const locateLabel = "Locate ZIP";
+    const needsAccess = status === "permission";
     return {
       source, status, game, title, locate, locateLabel,
       action: {
-        label: locate ? `${locateLabel} for ${title}` : `Play ${title}`,
+        label: locate ? `${locateLabel} for ${title}` : needsAccess ? `Allow file access for ${title}` : `Play ${title}`,
+        buttonLabel: locate ? locateLabel : needsAccess ? "Allow file access" : "Play",
+        needsAccess,
         disabled: disabled || status === "checking",
-        onClick: () => locate ? chooseZip(source) : play(source, game),
+        onClick: () => locate ? chooseZip(source) : needsAccess ? allowAccess(source) : play(source, game),
         onContinue: () => play(source, game, true),
         onLegacy: () => play(source, game, false, true),
         onLocate: () => chooseZip(source),

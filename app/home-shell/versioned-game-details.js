@@ -8,7 +8,7 @@ import { getLatestBrowserSave } from "../browser-saves.mjs";
 import { chooseGameVersion, readChosenVersion, rememberGameVersion } from "../game-versions.mjs";
 import GameDetailModal from "./game-detail-modal";
 
-function SourceLaunchActions({ version, onLaunch }) {
+export function SourceLaunchActions({ version, onLaunch }) {
   const [savedVersion, setSavedVersion] = useState(null);
   useEffect(() => {
     let active = true;
@@ -17,11 +17,17 @@ function SourceLaunchActions({ version, onLaunch }) {
     });
     return () => { active = false; };
   }, [version.key, version.game]);
-  const canContinue = savedVersion === version.key && !version.locate;
+  const needsAccess = version.action.needsAccess;
+  const canContinue = savedVersion === version.key && !version.locate && !needsAccess;
   return <>
+    {needsAccess && <p className="file-access-help" id="game-file-access-help">
+      To play, ScummWEB needs to read this game’s ZIP on your device. Choose Allow file access,
+      then allow access in the browser prompt. Your game files stay on your device.
+    </p>}
     <button type="button" className="launch-button" disabled={version.action.disabled}
+      aria-describedby={needsAccess ? "game-file-access-help" : undefined}
       onClick={() => { onLaunch(); (canContinue ? version.action.onContinue : version.action.onClick)(); }}>
-      {version.locate ? version.locateLabel : canContinue ? "Continue" : "Play"}
+      {version.locate ? version.locateLabel : needsAccess ? "Allow file access" : canContinue ? "Continue" : "Play"}
     </button>
     {canContinue && <button type="button" className="secondary-button start-fresh-button"
       disabled={version.action.disabled} onClick={() => { onLaunch(); version.action.onClick(); }}>Start from beginning</button>}
