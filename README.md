@@ -24,10 +24,11 @@ lists games alphabetically by title and uses freeware and demos offered on the
 ScummVM website. Import your own game
 files to build a personal dashboard.
 
-Use **Sort & filter** on the right of the Game Library heading to search by
-name, sort by name, release year, genre, or studio, and filter by genre,
-release year, or game source. The controls apply to both the public catalog
-and your imported games. Select **Reset** to show all games in name order.
+Use the sliders icon on the right of the Game Library heading to sort by
+name, release year, genre, or studio, and filter by genre. The controls apply to both the public catalog
+and your imported games. Genre options merge capitalization, spacing, and
+equivalent labels, such as Comic adventure and Comedy adventure. Select **All genres**
+to show every genre, or **Name: A–Z** to restore alphabetical order.
 
 See [game testing](docs/game-testing.md) for recorded startup results
 and games not yet tested in ScummWEB.
@@ -41,6 +42,8 @@ When the opening scene appears, you’re ready to play. For more games,
 Select a game card to open its details, with hero artwork, screenshots, metadata,
 and a Play button. Compatible browser saves add **Continue** and **Start from
 beginning** choices. Game details also link to each title’s bundled readme or license.
+The homepage slideshow prepares the next three backdrops and the previous one
+in advance for smooth switching.
 
 ## Add your games
 

@@ -3,6 +3,7 @@ import { HOME_BROWSE_LABEL, HOME_HERO_KICKER, HOME_HERO_SUMMARY, HOME_HERO_TITLE
 import DecorativeImage from "./decorative-image";
 import Icon from "./shell-icon";
 import HeroTitle from "./hero-title";
+import { getHeroImageProps } from "./hero-images.mjs";
 import { getGameDialogId, getHeroImageStyle } from "./shared";
 
 function formatGameCount(count) {
@@ -23,10 +24,6 @@ export default function HeroStage({
   const heroKicker = showHomeIntro ? HOME_HERO_KICKER : sourceAction ? "Your game library" : featuredGame.eyebrow;
   const heroTitle = showHomeIntro ? HOME_HERO_TITLE : featuredGame.displayTitle;
   const heroSummary = showHomeIntro ? HOME_HERO_SUMMARY : featuredGame.summary;
-  const heroImage = featuredGame.heroImage || featuredGame.landscapeImage || featuredGame.posterImage;
-  const heroBackdropSrcSet = featuredGame.heroImageMobile
-    ? `${featuredGame.heroImageMobile} 960w, ${featuredGame.heroImage} 1832w`
-    : undefined;
   const secondaryActionHref = isHomePage ? "#library" : `#${featuredDialogId}`;
   const secondaryActionLabel = isHomePage ? HOME_BROWSE_LABEL : "More Info";
   const heroMetadata = showHomeIntro
@@ -49,9 +46,7 @@ export default function HeroStage({
           className="hero-backdrop-image"
           fetchPriority={isInitialSlide ? "high" : undefined}
           loading="eager"
-          sizes="100vw"
-          src={heroImage}
-          srcSet={heroBackdropSrcSet}
+          {...getHeroImageProps(featuredGame)}
           style={getHeroImageStyle(featuredGame.heroImagePosition)}
         />
       </div>

@@ -171,6 +171,12 @@ into the managed shell during ScummVM rebuilds.
   The homepage uses a game's landscape artwork or gameplay capture as its
   slideshow backdrop. Imported slides use the same Play and reconnect actions
   as their library cards.
+  The hero preloads and decodes the next three backdrops and one previous
+  backdrop, wrapping around at either end. `HERO_PRELOAD_AHEAD` in
+  `app/home-shell/hero-images.mjs` controls the forward window. Preloads use
+  the visible hero's responsive sources and sizes with low fetch priority,
+  share identical artwork, and retain image references only for the current
+  window. A failed preload does not prevent slideshow navigation.
   Saved sources are checked on library load, window focus, tab return, and
   restoration from the browser's back/forward cache. Local checks use saved
   handles with existing read permission; they do not request permission or
@@ -208,13 +214,21 @@ into the managed shell during ScummVM rebuilds.
   save-aware launch buttons as the hero. Imported games load saves through their
   in-game menu. Details use a native modal dialog for focus containment and Escape
   dismissal, restore focus to the opener, and prevent background scrolling.
-  The library's **Sort & filter** disclosure searches titles and filters by
-  genre, release year, and source (catalog, device, or link). It sorts the
+  The library's sliders icon opens the sorting and genre controls. The button
+  has an accessible label and no visible text. It sorts the
   combined catalog and saved-source cards by name, release year, genre, or
   studio, with name order as the default. Release years come from presentation
-  metadata; unknown years sort last and remain selectable as `Unknown`.
-  Filters combine, update immediately, and remain active when the controls
-  are collapsed. Reset restores all games in name order.
+  metadata; unknown years sort last. Genre selection updates immediately and
+  remains active when the controls are collapsed. Select All genres to remove
+  the genre filter. The panel contains no search, year or source filters, or
+  reset action. Dropdown arrows have a 1rem inset and reserved text padding.
+  Genre facets, filtering, and sorting share `libraryGenre` normalization:
+  ignore case and repeated whitespace, merge Comic adventure into Comedy
+  adventure, Horror comedy adventure into Comedy horror adventure, and
+  Children's storybook adventure into Interactive storybook. Display the
+  resulting categories in sentence case. Original presentation metadata stays
+  available in game details and heroes; new genre aliases belong in this shared
+  normalizer so catalog and imported games match the same option.
   ScummVM's developer pages provide the
   primary references; genre labels and summaries are editorial descriptions.
   The fan game Road has an unverified creator credit and a description based

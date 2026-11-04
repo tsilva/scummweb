@@ -1,8 +1,9 @@
 "use client";
 
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import HeroStage from "./hero-stage";
+import { getHeroPreloadImages } from "./hero-images.mjs";
 
 const SLIDE_DURATION_MS = 8000;
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
@@ -17,6 +18,8 @@ export default function HomeHero({ catalog, featuredGame, library }) {
   const slideCount = slides.length;
   const [selectedId, setSelectedId] = useState(null);
   const slideIndex = Math.max(0, slides.findIndex(({ id }) => id === selectedId));
+  const preloadedImages = useRef(new Map());
+  const preloadKey = JSON.stringify(getHeroPreloadImages(slides, slideIndex));
   const [rotationPaused, setRotationPaused] = useState(null);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [isPageVisible, setIsPageVisible] = useState(false);
@@ -24,6 +27,28 @@ export default function HomeHero({ catalog, featuredGame, library }) {
   const [hasFocus, setHasFocus] = useState(false);
   const isPaused = rotationPaused ?? prefersReducedMotion;
   const isCountingDown = isPageVisible && !isPaused && !hasPointer && !hasFocus;
+
+  useEffect(() => {
+    const nextImages = new Map();
+    for (const props of JSON.parse(preloadKey)) {
+      const key = JSON.stringify(props);
+      let image = preloadedImages.current.get(key);
+      if (!image) {
+        image = new Image();
+        image.decoding = "async";
+        image.fetchPriority = "low";
+        image.sizes = props.sizes;
+        if (props.srcSet) image.srcset = props.srcSet;
+        image.src = props.src;
+        // Decode offscreen, keeping these images alive until they leave the window.
+        void image.decode().catch(() => {});
+      }
+      nextImages.set(key, image);
+    }
+    preloadedImages.current = nextImages;
+  }, [preloadKey]);
+
+  useEffect(() => () => preloadedImages.current.clear(), []);
 
   useEffect(() => {
     const query = window.matchMedia(REDUCED_MOTION_QUERY);
