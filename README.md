@@ -23,6 +23,9 @@ studio credits, and genres for recognized games. The public playable catalog
 uses freeware and demos offered on the ScummVM website. Import your own game
 files to build a personal dashboard.
 
+See [game testing](docs/game-testing.md) for recorded startup results
+and games not yet tested in ScummWEB.
+
 ## Play online
 
 Start with [Beneath a Steel Sky](https://scummweb.tsilva.eu/beneath-a-steel-sky/play),
