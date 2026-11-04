@@ -52,7 +52,8 @@ Exiting a game returns to the homepage with that game selected in the slideshow.
 
 ## Add your games
 
-Drop ScummVM game ZIPs onto the homepage or a game’s page, then select a
+Click **Add a game** in the library to choose ZIPs, or drop ScummVM game ZIPs
+onto the homepage or a game’s page, then select a
 poster to play. Local game files stay on your device. Put one game in each
 ZIP, with its data files at the root or in one enclosing folder.
 

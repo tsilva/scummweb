@@ -22,8 +22,10 @@ The top-bar checklist opens **Game compatibility**, with search and filters for
 checked editions, warnings, failures, and untested games. See
 [game testing](game-testing.md) for the same results and their limitations.
 
-Drop one or more ZIP files containing ScummVM games onto the homepage or a
-game's page. Put one game in each ZIP. Folders, loose game files, and other
+Select the **Add a game** card in the library to choose ZIPs, or drop one or
+more ZIP files containing ScummVM games onto the homepage or a game's page.
+The add card remains available when filtering the library.
+Put one game in each ZIP. Folders, loose game files, and other
 archive formats are not supported.
 The import dialog shows progress, added games, and errors; its final summary
 also counts skipped games. Reimported games count as skipped with refreshed
