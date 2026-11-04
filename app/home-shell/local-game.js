@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { CircleCheck, Download, File, TriangleAlert } from "lucide-react";
+import { CircleCheck, CircleMinus, CircleX, Download, File } from "lucide-react";
 import { captureGameDrop } from "../local-game-import.mjs";
 
 export function chooseZipHandles(multiple) {
@@ -81,10 +81,16 @@ export default function GameDropOverlay({ importRoots, disabled, pending, result
   );
 }
 
-function GameImportDialog({ pending, result, onConfirm }) {
+const gameCount = (count) => `${count} ${count === 1 ? "game" : "games"}`;
+
+export function GameImportDialog({ pending, result, onConfirm }) {
   const dialog = useRef(null);
+  const details = useRef(null);
   const confirm = useRef(null);
   const complete = Boolean(result);
+  const active = pending.find((item) => !item.complete && !item.status);
+  const latestScan = Math.max(0, ...pending.flatMap((item) =>
+    item.files?.length ? item.files.map((file) => file.scanOrder ?? 0) : [item.scanOrder ?? 0]));
 
   useLayoutEffect(() => {
     const element = dialog.current;
@@ -96,41 +102,47 @@ function GameImportDialog({ pending, result, onConfirm }) {
     if (complete) confirm.current?.focus();
   }, [complete]);
 
-  const saved = result?.savedIds.size ?? 0;
-  const skipped = result?.items.filter((item) => item.skipped).length ?? 0;
-  const title = !result ? "Importing games…"
-    : !saved ? "No games added"
-    : result.reconnected === saved ? (saved === 1 ? "Game reconnected" : `${saved} games reconnected`)
-    : result.reconnected ? `${saved} games updated`
-    : saved === 1 ? "1 game added" : `${saved} games added`;
-  const Icon = !result ? Download : skipped ? TriangleAlert : CircleCheck;
+  useLayoutEffect(() => {
+    if (!complete && details.current) details.current.scrollTop = 0;
+  }, [complete, latestScan]);
+
+  const added = result?.items.filter((item) => item.status === "added").length ?? 0;
+  const skipped = result?.items.filter((item) => item.status === "skipped").length ?? 0;
+  const errors = result?.items.filter((item) => item.status === "error").length ?? 0;
+  const title = result ? `${gameCount(result.items.length)} scanned` : "Importing games…";
+  const summary = result
+    ? `${gameCount(added)} added · ${gameCount(skipped)} skipped · ${errors} ${errors === 1 ? "error" : "errors"}`
+    : null;
+  const Icon = !result ? Download : errors ? CircleX : added ? CircleCheck : CircleMinus;
+  const iconClass = errors ? "game-import-error" : result && !added ? "game-import-warning" : undefined;
 
   return (
     <dialog
       ref={dialog}
+      tabIndex={-1}
       className="game-import-dialog"
       aria-labelledby="game-import-title"
-      aria-describedby="game-import-summary"
+      aria-describedby={complete ? "game-import-summary" : undefined}
       onCancel={(event) => {
         event.preventDefault();
         if (complete) onConfirm();
       }}
     >
       <div className="game-import-heading">
-        <Icon aria-hidden="true" size={28} className={skipped ? "game-import-warning" : undefined} />
+        <Icon aria-hidden="true" size={28} className={iconClass} />
         <div>
           <h2 id="game-import-title">{title}</h2>
-          <p id="game-import-summary">{result ? (skipped ? `${skipped} ${skipped === 1 ? "item" : "items"} skipped` : "Ready to play")
-            : "Checking files on this device."}</p>
+          {complete ? <p id="game-import-summary">{summary}</p> : (
+            <progress aria-label="Importing games" value={active?.value} max={active?.total} />
+          )}
         </div>
       </div>
-      <div className="game-import-details" key={complete ? "result" : "progress"}
+      <div ref={details} className="game-import-details" key={complete ? "result" : "progress"}
         role="region" aria-label="Import details" tabIndex={0}>
         {result ? (
           <>
             <GameImportItems items={result.items} complete />
             {result.temporary > 0 && <p>Some games are only available in this tab.</p>}
-            {result.needsSelection > 0 && <p>If your browser loses file access after a reload, select the game's poster to locate its files again.</p>}
           </>
         ) : (
           <GameImportItems items={pending} showProgress />
@@ -142,19 +154,29 @@ function GameImportDialog({ pending, result, onConfirm }) {
 }
 
 export function GameImportItems({ items, complete = false, showProgress = false }) {
-  const activeIndex = items.findIndex((item) => !item.complete);
+  const rows = items.flatMap((item, index) => {
+    if (showProgress && item.files?.length) {
+      return item.files.map((file, fileIndex) => ({ ...file, key: `${index}:${fileIndex}` }));
+    }
+    if (showProgress && item.container && !item.status) return [];
+    return [{ ...item, key: String(index) }];
+  });
+  if (showProgress) rows.sort((a, b) => (b.scanOrder ?? 0) - (a.scanOrder ?? 0));
+  else rows.reverse();
   return (
     <ul className="game-import-items" aria-live={showProgress ? "polite" : undefined}>
-      {items.map(({ label, message, skipped, complete: checked, value, total, files }, index) => {
-        const StatusIcon = skipped ? TriangleAlert : complete || checked ? CircleCheck : File;
+      {rows.map(({ key, label, message, status, complete: checked, files }) => {
+        const skipped = status === "skipped";
+        const error = status === "error";
+        const success = status === "added" || complete || checked;
+        const StatusIcon = error ? CircleX : skipped ? CircleMinus : success ? CircleCheck : File;
         return (
-          <li key={index}>
+          <li key={key}>
             <StatusIcon aria-hidden="true" size={22}
-              className={skipped ? "game-import-warning" : complete || checked ? "game-import-success" : undefined} />
+              className={error ? "game-import-error" : skipped ? "game-import-warning" : success ? "game-import-success" : undefined} />
             <div>
-              <strong>{label}</strong><p>{skipped ? `Skipped. ${message}` : message}</p>
-              {showProgress && index === activeIndex && <progress aria-label={`Importing ${label}`} value={value} max={total} />}
-              {files?.length > 0 && <GameImportItems items={files} complete={complete} />}
+              <strong>{label}</strong><p>{error ? `Error. ${message}` : skipped ? `Skipped. ${message}` : message}</p>
+              {!showProgress && files?.length > 0 && <GameImportItems items={files} complete={complete} />}
             </div>
           </li>
         );

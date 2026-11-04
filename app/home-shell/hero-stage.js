@@ -6,15 +6,10 @@ import HeroTitle from "./hero-title";
 import { getHeroImageProps } from "./hero-images.mjs";
 import { getGameDialogId, getHeroImageStyle } from "./shared";
 
-function formatGameCount(count) {
-  return `${count} game${count === 1 ? "" : "s"} installed`;
-}
-
 export default function HeroStage({
   carouselProps,
   controls,
   featuredGame,
-  gameCount,
   isHomePage = false,
   isInitialSlide = true,
   sourceAction,
@@ -36,8 +31,8 @@ export default function HeroStage({
         { label: "Genre", value: featuredGame.genre },
       ];
   const heroStatus = showHomeIntro
-    ? [formatGameCount(gameCount), "Freeware classics", "Instant browser play"]
-    : [formatGameCount(gameCount), sourceAction ? null : featuredGame.target, featuredGame.badge].filter(Boolean);
+    ? ["Freeware classics", "Instant browser play"]
+    : [sourceAction ? null : featuredGame.target, featuredGame.badge].filter(Boolean);
 
   return (
     <section className={`hero-stage ${featuredGame.tone}`} id="browse" {...carouselProps}>

@@ -134,7 +134,6 @@ export default function HomeHero({ catalog, featuredGame, library }) {
         </div>
       ) : null}
       featuredGame={currentSlide.game}
-      gameCount={slideCount}
       sourceAction={currentSlide.action}
       isHomePage
       isInitialSlide={slideIndex === 0}

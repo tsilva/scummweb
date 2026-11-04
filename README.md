@@ -26,8 +26,10 @@ files to build a personal dashboard.
 
 Use the sliders icon on the right of the Game Library heading to sort by
 name, release year, genre, or studio, and filter by genre. The controls apply to both the public catalog
-and your imported games. Genre options merge capitalization, spacing, and
-equivalent labels, such as Comic adventure and Comedy adventure. Select **All genres**
+and your imported games. Genres use 11 broad categories: Adventure, Action & arcade,
+Comedy, Family & education, Fantasy, Horror, Mystery & thriller, Puzzle,
+Role-playing, Science fiction, and Simulation. Game details retain the original
+subgenre. Select **All genres**
 to show every genre, or **Name: A–Z** to restore alphabetical order.
 
 See [game testing](docs/game-testing.md) for recorded startup results
@@ -65,10 +67,13 @@ in advance for smooth switching.
   yourself and drop it onto either page.
 
 The drop overlay lists each ZIP in a dropped directory, including its relative
-path, while it waits, imports, or finishes. Completed and skipped files stay
+path, while it waits, imports, or finishes. Progress appears below the heading,
+and files appear in a flat list with the latest scanned first. Completed files stay
 visible as the remaining files are processed. For an unpacked game folder,
-it lists each data file as it is checked. The final list shows the added and
-skipped files.
+it lists each data file as it is checked. The final heading shows how many
+games were scanned, with counts for games added, games skipped, and errors.
+Games already in your library count as skipped, with their file access refreshed.
+Added games use a green check, skipped games an amber minus, and errors a red cross.
 Scroll inside the dialog to review a large batch. When processing finishes,
 select **Confirm** to close it. The library then scrolls to the first new
 poster. New posters briefly brighten and show color as they come into view.
