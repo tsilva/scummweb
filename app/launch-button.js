@@ -15,6 +15,7 @@ export default function LaunchButton({ game, entryPoint, label = "Play", continu
     let request = 0;
 
     async function refreshSave() {
+      if (game.importRequired) return;
       const currentRequest = ++request;
       const slot = await getLatestBrowserSave(game, scummvmAssetVersion);
       if (!cancelled && currentRequest === request) setSavedTarget(slot === null ? null : game.target);
@@ -29,6 +30,10 @@ export default function LaunchButton({ game, entryPoint, label = "Play", continu
       window.removeEventListener("pageshow", refreshSave);
     };
   }, [game]);
+
+  if (game.importRequired) {
+    return <button type="button" className={`${classes} game-unavailable`} disabled>Game not included</button>;
+  }
 
   return (
     <>

@@ -1,9 +1,9 @@
-import { getGameLibrary } from "./game-library";
+import { getRecognizedGameLibrary } from "./game-library";
 import { getSiteUrl } from "./site-config";
 
 export default async function sitemap() {
   const siteUrl = getSiteUrl();
-  const { games } = await getGameLibrary();
+  const games = getRecognizedGameLibrary();
 
   return [
     {

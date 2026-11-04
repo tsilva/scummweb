@@ -2,6 +2,7 @@ import gameLibraryData from "../scummvm-shell/games.json";
 import sourceInfoData from "../scummvm-shell/source-info.json";
 import { getBundledGameLibrary } from "../lib/catalog.mjs";
 import { normalizeSkipIntroConfig } from "./skip-intro-config.mjs";
+import { getRecognizedGames } from "./recognized-games.mjs";
 
 export {
   buildVersionedAssetPath as buildVersionedSiteAssetPath,
@@ -19,6 +20,10 @@ export function getGameLibrary() {
 export function getGameBySlug(gameSlug) {
   const { games } = getGameLibrary();
   return games.find((game) => game.slug === gameSlug) || null;
+}
+
+export function getRecognizedGameLibrary() {
+  return getRecognizedGames(getGameLibrary().games);
 }
 
 export function getSourceInfo() {

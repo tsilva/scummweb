@@ -1,6 +1,5 @@
 import CompatibilityModal from "./home-shell/compatibility-modal";
 import Icon from "./home-shell/shell-icon";
-import HeroStage from "./home-shell/hero-stage";
 import SourceLibrary from "./home-shell/source-library";
 import { getGamesOrigin } from "../lib/site-config.mjs";
 
@@ -62,12 +61,10 @@ export default function HomeShell({
       </nav>
 
       <main className="page-shell">
-        {!isHomePage && (
-          <HeroStage featuredGame={featuredGame} />
-        )}
         <SourceLibrary
           catalog={catalog}
-          featuredGame={isHomePage ? featuredGame : null}
+          featuredGame={featuredGame}
+          isHomePage={isHomePage}
           libraryHeading={libraryHeading}
           officialUrl={getGamesOrigin()}
         />

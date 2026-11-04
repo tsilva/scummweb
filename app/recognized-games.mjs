@@ -1,0 +1,19 @@
+import { addGameRoutes } from "../lib/catalog.mjs";
+import { getGamePresentation, getRecognizedGamePresentations } from "./game-presentation.js";
+import { getGameFamilyKey } from "./game-versions.mjs";
+
+// Bundled games go first so their published URLs and playable editions win.
+export function getRecognizedGames(bundledGames) {
+  const games = bundledGames.map((game) => ({ ...getGamePresentation(game), importRequired: false }));
+  const families = new Set(games.map(getGameFamilyKey));
+  for (const game of getRecognizedGamePresentations()) {
+    const family = getGameFamilyKey(game);
+    if (families.has(family)) continue;
+    families.add(family);
+    games.push({ ...game, importRequired: true, badge: "Import your copy", tag: "Bring your own game" });
+  }
+  return addGameRoutes(games).map((game) => ({
+    ...game,
+    playHref: game.importRequired ? null : game.playHref,
+  })).sort((a, b) => a.displayTitle.localeCompare(b.displayTitle, "en", { sensitivity: "base", numeric: true }));
+}

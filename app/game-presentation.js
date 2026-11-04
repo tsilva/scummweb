@@ -314,6 +314,19 @@ function getImportedScummPresentation(target, title, variant) {
 }
 
 const normalizeImportedTitle = (title) => title.toLowerCase().replace(/[:\s-]+/g, " ").trim();
+
+export function getRecognizedGamePresentations() {
+  return [
+    ...Object.entries(retroGameArtwork).map(([familyId, record]) => {
+      const [engineId, target] = familyId.split(":");
+      return getGamePresentation({
+        familyId, target, engineId: engineId === "local" ? "scumm" : engineId,
+        displayTitle: record.title,
+      }, record);
+    }),
+    getGamePresentation({ target: "sfinx", engineId: "cge2", displayTitle: "Sfinx" }),
+  ];
+}
 const splitImportedEdition = (name) => /^(.+?)((?:\s+\([^()]+\))*)$/.exec(name);
 const retroByEdition = new Map();
 const retroByTitle = new Map();

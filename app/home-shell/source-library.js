@@ -13,6 +13,8 @@ import { libraryItems } from "./library-query.mjs";
 import { getGameFamilyKey, getVersionSaveNamespace, rememberGameVersion } from "../game-versions.mjs";
 import { getGameDialogId } from "./shared";
 import HomeHero from "./home-hero";
+import HeroStage from "./hero-stage";
+import GameDetailModal from "./game-detail-modal";
 import VersionedGameDetails from "./versioned-game-details";
 import GameDropOverlay, { chooseZipHandles } from "./local-game";
 import RecentGamesRail from "../recent-games-rail";
@@ -28,7 +30,7 @@ function scrollToLibraryItem(item, block) {
 
 const reconnectStatuses = new Set(["locate", "missing", "permission"]);
 
-export default function SourceLibrary({ catalog, featuredGame, libraryHeading, officialUrl }) {
+export default function SourceLibrary({ catalog, featuredGame, isHomePage = true, libraryHeading, officialUrl }) {
   const router = useRouter();
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -378,6 +380,13 @@ export default function SourceLibrary({ catalog, featuredGame, libraryHeading, o
     };
   });
   const groups = libraryItems(catalog, library);
+  const featuredGroup = featuredGame && groups.find(({ game }) => getGameFamilyKey(game) === getGameFamilyKey(featuredGame));
+  const featuredAction = featuredGroup && (featuredGame.importRequired || featuredGroup.versions.length > 1) ? {
+    dialogId: featuredGroup.dialogId,
+    label: `Choose a version of ${featuredGame.displayTitle}`,
+    disabled,
+    onClick: () => { window.location.hash = featuredGroup.dialogId; },
+  } : undefined;
   const detail = groups.find((group) => detailHash === `#${group.dialogId}` || group.versions.some(({ source, game }) =>
     !source && detailHash === `#${getGameDialogId(game)}`));
 
@@ -391,12 +400,15 @@ export default function SourceLibrary({ catalog, featuredGame, libraryHeading, o
         }} />
       <GameDropOverlay importRoots={importRoots} disabled={disabled} pending={pending}
         result={importResult} onConfirm={confirmImport} />
-      {featuredGame && <HomeHero groups={groups} featuredGame={featuredGame} />}
+      {featuredGame && (isHomePage ? <HomeHero groups={groups} featuredGame={featuredGame} />
+        : <HeroStage featuredGame={featuredGame} sourceAction={featuredAction} />)}
       <div className="section-stack">
         <RecentGamesRail groups={groups} />
         <LibraryView items={groups} heading={libraryHeading} notice={notice} />
       </div>
       {detail && <VersionedGameDetails key={detail.key} group={detail} notice={notice} onClose={closeDetails} openerElement={detailsOpener.current} />}
+      {!isHomePage && featuredGame?.importRequired && !featuredGroup && <GameDetailModal game={featuredGame}
+        notice="This game is not included due to copyright restrictions. If you own a copy, drop its ZIP onto this page to add it to your library." />}
     </>
   );
 }

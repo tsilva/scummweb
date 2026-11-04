@@ -20,6 +20,11 @@ games from your own collection. Recognized games include artwork, descriptions,
 and studio credits. Game details show three screenshots where matching captures
 are available.
 
+Every recognized title has its own searchable game page with artwork and details.
+Games outside the public library show **Game not included** and explain that
+copyright restrictions prevent ScummWEB from providing their files. If you own
+a copy, drop its ZIP onto the page to add it and enable its launch options.
+
 ## Play online
 
 [Browse the library](https://scummweb.tsilva.eu), or start with

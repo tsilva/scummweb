@@ -9,7 +9,7 @@ import reactPackage from "react/package.json" with { type: "json" };
 import sharp from "sharp";
 import { getBundledGameLibrary } from "../lib/catalog.mjs";
 import { getSocialCardData } from "../lib/social-card-data.mjs";
-import { getGamePresentation } from "../app/game-presentation.js";
+import { getRecognizedGames } from "../app/recognized-games.mjs";
 
 const rootDir = fileURLToPath(new URL("../", import.meta.url));
 const generatedName = /^[a-z0-9]+(?:-[a-z0-9]+)*-[a-f0-9]{64}\.png$/;
@@ -48,7 +48,7 @@ export async function generateSocialCards({
     await assertDirectory(outputDir);
     if (!games) {
       const library = JSON.parse(await fs.readFile(path.join(root, "scummvm-shell/games.json"), "utf8"));
-      games = getBundledGameLibrary(library).games.map((game) => getGamePresentation(game));
+      games = getRecognizedGames(getBundledGameLibrary(library).games);
     }
     const template = await fs.readFile(new URL("./social-card-template.mjs", import.meta.url));
     rendererVersion ??= hash(Buffer.concat([template, Buffer.from(JSON.stringify({

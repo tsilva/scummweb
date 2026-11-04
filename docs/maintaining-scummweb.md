@@ -93,6 +93,29 @@ guarantee against browser, ZIP-library, or emulator vulnerabilities.
 
 ## Local development
 
+### Game pages and search discovery
+
+Game landing pages and `/sitemap.xml` include the bundled catalog, every title
+in `app/retro-game-artwork.json`, and the separate Sfinx recognizer. The shared
+`app/recognized-games.mjs` projection deduplicates game families, keeps demos
+separate, and preserves bundled game URLs. Original title parentheses remain
+part of recognized titles and their slugs.
+
+Import-only pages use existing artwork, game-specific metadata, structured data,
+and generated social cards. They explain that copyright restrictions prevent
+ScummWEB from providing game files and show **Game not included** until a matching
+imported version is present in the browser library. Matching copies open the
+existing version and file-access flow.
+Only bundled games have public `/<game-slug>/play` routes; import-only games use
+the local player after import. Adding recognition metadata automatically adds
+its landing page and sitemap entry on the next build.
+
+Social-card PNGs are generated from managed artwork during tests and builds.
+Keep `data/social-cards.json` tracked; new generated PNGs are ignored and are
+recreated when missing, so they do not need to be uploaded through Git.
+
+### Development commands
+
 Use [the README quickstart](../README.md#run-locally) for a local server that
 does not require Infisical. The managed `pnpm run dev --port auto` launcher
 uses the ScummWeb Development vault for the Sentry smoke test. The same vault

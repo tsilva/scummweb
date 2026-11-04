@@ -14,14 +14,14 @@ export const dynamic = "force-static";
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return getGameStaticParams();
+  return getGameStaticParams({ playableOnly: true });
 }
 
 export async function generateMetadata({ params }) {
   const { gameSlug } = await params;
   const game = getPresentedGameBySlug(gameSlug);
 
-  if (!game) {
+  if (!game || game.importRequired) {
     return {
       title: "Game Not Found | ScummWEB",
       robots: {
@@ -38,7 +38,7 @@ export default async function GamePlayRoutePage({ params }) {
   const { gameSlug } = await params;
   const game = getPresentedGameBySlug(gameSlug);
 
-  if (!game) {
+  if (!game || game.importRequired) {
     notFound();
   }
 

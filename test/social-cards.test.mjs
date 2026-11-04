@@ -11,6 +11,7 @@ import { generateSocialCards } from "../scripts/generate-social-cards.mjs";
 import { getSocialCardData } from "../lib/social-card-data.mjs";
 import { getGameSocialCardPath } from "../lib/social-card-paths.mjs";
 import { getBundledGameLibrary } from "../lib/catalog.mjs";
+import { getRecognizedGames } from "../app/recognized-games.mjs";
 import manifest from "../data/social-cards.json" with { type: "json" };
 import library from "../scummvm-shell/games.json" with { type: "json" };
 import swc from "next/dist/build/swc/index.js";
@@ -137,8 +138,9 @@ test("the real renderer produces a complete PNG offline from local WebP artwork"
   assert.equal(metadata.height, 630);
 });
 
-test("every bundled game advertises a static asset, with static rewrites for both legacy URLs", async () => {
-  const { games } = getBundledGameLibrary(library);
+test("every recognized game advertises a static asset, with static rewrites for both legacy URLs", async () => {
+  await generateSocialCards();
+  const games = getRecognizedGames(getBundledGameLibrary(library).games);
   assert.deepEqual(Object.keys(manifest.cards).sort(), games.map((game) => game.slug).sort());
   const require = createRequire(import.meta.url);
   const config = require("../next.config.js");

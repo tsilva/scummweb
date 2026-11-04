@@ -1,0 +1,49 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import library from "../scummvm-shell/games.json" with { type: "json" };
+import { getBundledGameLibrary } from "../lib/catalog.mjs";
+import { getRecognizedGames } from "../app/recognized-games.mjs";
+import { getRecognizedGamePresentations } from "../app/game-presentation.js";
+import { getGameFamilyKey } from "../app/game-versions.mjs";
+import { buildGameMetadata, buildGameStructuredData } from "../lib/seo.mjs";
+
+const bundled = getBundledGameLibrary(library).games;
+const games = getRecognizedGames(bundled);
+
+test("every recognized family has one landing page, including separate full games and demos", () => {
+  const families = games.map(getGameFamilyKey);
+  assert.equal(new Set(families).size, games.length);
+  assert.equal(new Set(games.map(({ slug }) => slug)).size, games.length);
+  for (const game of getRecognizedGamePresentations()) {
+    assert.ok(families.includes(getGameFamilyKey(game)), game.displayTitle);
+  }
+  assert.ok(games.find(({ slug }) => slug === "sfinx"));
+  assert.equal(games.find(({ slug }) => slug === "the-secret-of-monkey-island").importRequired, true);
+  assert.equal(games.find(({ slug }) => slug === "the-secret-of-monkey-island-demo").importRequired, false);
+});
+
+test("bundled URLs and launch data are preserved and import-only games have no public launch URL", () => {
+  for (const game of bundled) {
+    const page = games.find(({ slug }) => slug === game.slug);
+    assert.equal(page.href, game.href);
+    assert.equal(page.playHref, game.playHref);
+    assert.equal(page.target, game.target);
+    assert.deepEqual(page.skipIntro, game.skipIntro);
+    assert.equal(page.importRequired, false);
+  }
+  for (const game of games.filter(({ importRequired }) => importRequired)) {
+    assert.equal(game.playHref, null, game.displayTitle);
+    assert.equal(game.badge, "Import your copy");
+  }
+});
+
+test("original title parentheses survive routing and import pages disclose the file requirement", () => {
+  assert.ok(games.find(({ slug }) => slug === "gnap-u-f-o-s"));
+  const game = games.find(({ slug }) => slug === "day-of-the-tentacle");
+  const metadata = buildGameMetadata(game);
+  assert.match(metadata.description, /Import your own copy of Day of the Tentacle/);
+  assert.match(metadata.description, /Game files are not provided due to copyright restrictions/);
+  assert.ok(metadata.alternates.canonical.endsWith(game.href));
+  assert.equal(buildGameStructuredData(game).isAccessibleForFree, undefined);
+  assert.equal(buildGameStructuredData(games.find(({ target }) => target === "sky")).isAccessibleForFree, true);
+});
