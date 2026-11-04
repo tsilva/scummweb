@@ -70,8 +70,8 @@ export default function CompatibilityModal() {
             </button>
           </div>
           <p id="compatibility-description" className="compatibility-description">
-            Startup verified means a game reached a startup screen, menu, or first scene.
-            Warnings explain limitations or original game prompts; failures did not reach startup.
+            Startup verified means an edition reached a startup screen, menu, original game prompt, or first scene.
+            Warnings and failures describe ScummVM or ScummWEB limitations. Problems caused by missing or mismatched game files are excluded.
             Full-game play and every feature have not been verified.
           </p>
           <p className="compatibility-updated">

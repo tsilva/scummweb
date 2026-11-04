@@ -94,18 +94,29 @@ agent gameplay experiments.
 ## Maintaining game compatibility
 
 [`data/game-compatibility.json`](../data/game-compatibility.json) is the canonical
-compatibility list (schema version 3). The top-bar modal reads its flat `entries`
+compatibility list (schema version 4). The top-bar modal reads its flat `entries`
 list directly. Each entry has a title, ScummVM `gameId`, and a `status`:
 `startup-verified`, `startup-warning`, and `startup-failed` represent one checked
-`edition` with an `observation`. Warnings include workarounds, audio limitations,
-and original game prompts; failures record a startup error. Optional `history`
+`edition` with an `observation`. Warnings and failures describe ScummVM or
+ScummWEB issues, with `issueScope` set to `scummvm` or `scummweb` on every warning
+or failure, including historical checks. Warnings include support limitations
+and runtime workarounds; failures record runtime issues that prevent startup.
+Normal original game prompts count as startup verified; retain any limit on
+gameplay verification in the observation. Optional `history`
 records retain earlier checks with their `recordedOn`, `status`, and `observation`.
 When a fix is verified, append the new check and update the entry's current status
-and observation. Preserve the failure record instead of erasing it.
+and observation. Preserve runtime failure records when a fix is verified.
+Do not publish missing-file warnings, corrupt or mismatched resources, or other
+problems specific to supplied game files, including in observations or history.
+Keep such diagnostics in ignored private QA evidence. If startup was observed,
+retain that positive evidence without treating the copy's missing files as a
+runtime limitation. If bad input prevented startup, omit that edition until a
+valid copy is checked; do not turn it into a verified result or a runtime failure.
 `not-tested` represents a game with no recorded edition and an `upstreamRating` from
 the versioned `upstreamReference`. Upstream ratings are separate from ScummWEB
 verification. Preserve edition-specific evidence and update `recordedOn` when
-recording new results. Do not infer full-game support from a startup check.
+recording new results. Results apply to the checked edition and do not guarantee
+behavior across every release or copy. Do not infer full-game support from a startup check.
 
 After editing the data, run `node scripts/generate-compatibility-docs.mjs` to
 refresh [game testing](game-testing.md). Use the same command with `--check`

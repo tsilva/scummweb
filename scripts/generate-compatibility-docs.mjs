@@ -32,10 +32,14 @@ in the top bar to search these results and inspect checked editions.
 | [Startup failed](#startup-failed) | ${new Set(failed.map((entry) => entry.title)).size} | ${summary.failed} |
 | [Not yet tested](#not-yet-tested) | ${summary.untested} | — |
 
-**Tested** means the game reached a startup screen, menu, or first game scene.
+**Tested** means an edition reached a startup screen, menu, original game prompt,
+or first game scene. Original game prompts count as successful startup checks.
 It does not establish full-game compatibility or confirm every feature.
-Warnings describe workarounds, audio limitations, or original game prompts.
-Failures are checked editions that stopped before startup. Games can have
+Warnings describe ScummVM or ScummWEB support limitations or workarounds.
+Failures are ScummVM or ScummWEB issues that prevented startup. Problems caused
+by missing, corrupt, or mismatched game files are excluded from public results,
+including earlier checks. Results apply to the listed editions; they do not
+guarantee the same behavior for every release or copy. Games can have
 editions in more than one status; ${summary.checked} editions have been checked.
 The [compatibility data](../data/game-compatibility.json) is the source of truth
 for this page and the in-app modal, including all checked editions.
@@ -49,7 +53,7 @@ ${checkedTable(tested)}
 
 ## Startup with warnings
 
-These editions reached a startup screen or original game prompt with the limitations below.
+These editions reached startup with the ScummVM or ScummWEB limitations below.
 
 ${checkedTable(warnings)}
 

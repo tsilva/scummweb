@@ -1,7 +1,7 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "recordedOn": "2026-11-04",
-  "scope": "Startup verification; not full-game compatibility.",
+  "scope": "Startup verification by edition; warnings and failures describe ScummVM or ScummWEB limitations, excluding problems specific to supplied game files. Not full-game compatibility.",
   "upstreamReference": {
     "version": "2026.4.0",
     "url": "https://www.scummvm.org/compatibility/2026.4.0/",
@@ -15,22 +15,10 @@
   "entries": [
     {
       "title": "3 Skulls of the Toltecs",
-      "status": "startup-warning",
+      "status": "startup-verified",
       "gameId": "toltecs:toltecs",
       "edition": "3 Skulls of the Toltecs (CD DOS).zip",
-      "observation": "Startup menu and intro render after the missing-instrument warning. Music uses built-in AdLib instruments because SAMPLE.AD and SAMPLE.OPL are absent; it may sound different from the original.",
-      "history": [
-        {
-          "recordedOn": "2026-11-04",
-          "status": "startup-failed",
-          "observation": "MILES-ADLIB: could not open timbre file (SAMPLE.AD or SAMPLE.OPL)."
-        },
-        {
-          "recordedOn": "2026-11-04",
-          "status": "startup-warning",
-          "observation": "Startup menu and intro render after the missing-instrument warning. Music uses built-in AdLib instruments because SAMPLE.AD and SAMPLE.OPL are absent; it may sound different from the original."
-        }
-      ]
+      "observation": "Startup menu and intro render."
     },
     {
       "title": "Amazon: Guardians of Eden",
@@ -42,7 +30,8 @@
         {
           "recordedOn": "2026-11-04",
           "status": "startup-failed",
-          "observation": "Could not locate appropriate access.dat entry."
+          "observation": "Could not locate appropriate access.dat entry.",
+          "issueScope": "scummweb"
         },
         {
           "recordedOn": "2026-11-04",
@@ -124,7 +113,8 @@
         {
           "recordedOn": "2026-11-04",
           "status": "startup-warning",
-          "observation": "Opening cinematic remained black. Escape skipped it and rendered the first street scene."
+          "observation": "Opening cinematic remained black. Escape skipped it and rendered the first street scene.",
+          "issueScope": "scummweb"
         },
         {
           "recordedOn": "2026-11-04",
@@ -341,19 +331,7 @@
       "status": "startup-verified",
       "gameId": "cine:fw",
       "edition": "Future Wars (CD DOS).zip",
-      "observation": "Intro renders without the missing-CD-audio warning. Spaced physical CD-track filenames are recognized.",
-      "history": [
-        {
-          "recordedOn": "2026-11-04",
-          "status": "startup-warning",
-          "observation": "Continues after the missing CD-audio warning; the archive lacks CD music tracks."
-        },
-        {
-          "recordedOn": "2026-11-04",
-          "status": "startup-verified",
-          "observation": "Intro renders without the missing-CD-audio warning. Spaced physical CD-track filenames are recognized."
-        }
-      ]
+      "observation": "Intro renders with CD audio."
     },
     {
       "title": "Gabriel Knight: Sins of the Fathers",
@@ -413,10 +391,10 @@
     },
     {
       "title": "Harlan Ellison: I Have No Mouth, and I Must Scream",
-      "status": "startup-warning",
+      "status": "startup-verified",
       "gameId": "saga:ihnm",
       "edition": "I Have No Mouth and I Must Scream (CD DOS).zip",
-      "observation": "Continues after missing SAMPLE.AD/SAMPLE.OPL warning; music fidelity is reduced."
+      "observation": "Startup reached."
     },
     {
       "title": "Hopkins FBI",
@@ -462,10 +440,10 @@
     },
     {
       "title": "Inherit the Earth: Quest for the Orb",
-      "status": "startup-warning",
+      "status": "startup-verified",
       "gameId": "saga:ite",
       "edition": "Inherit the Earth - Quest for the Orb (CD Windows-Linux-DOS).zip",
-      "observation": "Continues after missing INSTR.AD/INSTR.OPL warning; music fidelity is reduced."
+      "observation": "Startup reached."
     },
     {
       "title": "Jones in the Fast Lane",
@@ -490,7 +468,7 @@
     },
     {
       "title": "King's Quest IV: The Perils of Rosella",
-      "status": "startup-warning",
+      "status": "startup-verified",
       "gameId": "sci:kq4sci",
       "edition": "King's Quest 4 - The Perils of Rosella (Amiga).zip",
       "observation": "Original manual-question prompt reached; gameplay beyond it was not verified."
@@ -553,7 +531,7 @@
     },
     {
       "title": "Leisure Suit Larry 2: Goes Looking for Love (in Several Wrong Places)",
-      "status": "startup-warning",
+      "status": "startup-verified",
       "gameId": "sci:lsl2",
       "edition": "Leisure Suit Larry 2 - Goes looking for Love (In Several Wrong Places) (Amiga).zip",
       "observation": "Original little-black-book telephone prompt reached; gameplay beyond it was not verified."
@@ -599,25 +577,6 @@
       "gameId": "sci:lighthouse",
       "edition": "Lighthouse (CD Windows).zip",
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
-    },
-    {
-      "title": "Loom",
-      "status": "startup-failed",
-      "gameId": "scumm:loom",
-      "edition": "Loom (Amiga).zip",
-      "observation": "This checked archive has an English resource index that does not match its Spanish resources. Startup stops with Cannot read resource. Import matching game files from one edition; the DOS VGA edition starts.",
-      "history": [
-        {
-          "recordedOn": "2026-11-04",
-          "status": "startup-failed",
-          "observation": "(69:10002:0x1184): Cannot read resource."
-        },
-        {
-          "recordedOn": "2026-11-04",
-          "status": "startup-failed",
-          "observation": "This checked archive has an English resource index that does not match its Spanish resources. Startup stops with Cannot read resource. Import matching game files from one edition; the DOS VGA edition starts."
-        }
-      ]
     },
     {
       "title": "Loom",
@@ -670,7 +629,7 @@
     },
     {
       "title": "Manhunter: New York",
-      "status": "startup-warning",
+      "status": "startup-verified",
       "gameId": "agi:mh1",
       "edition": "Manhunter 1 - New York (Amiga).zip",
       "observation": "Original field-guide question reached; gameplay beyond it was not verified."
@@ -691,7 +650,7 @@
     },
     {
       "title": "Monkey Island 2: LeChuck's Revenge",
-      "status": "startup-warning",
+      "status": "startup-verified",
       "gameId": "scumm:monkey2",
       "edition": "Monkey Island 2 - LeChuck's Revenge (Amiga).zip",
       "observation": "Original copy-protection introduction reached; gameplay beyond it was not verified."
@@ -740,7 +699,7 @@
     },
     {
       "title": "Once Upon A Time: Little Red Riding Hood",
-      "status": "startup-warning",
+      "status": "startup-verified",
       "gameId": "gob:littlered",
       "edition": "Once Upon A Time - Little Red Riding Hood (Floppy DOS).zip",
       "observation": "Original book/animal-symbol prompt reached; gameplay beyond it was not verified."
@@ -883,7 +842,8 @@
       "status": "startup-warning",
       "gameId": "mads:nebular",
       "edition": "Rex Nebular And The Cosmic Gender Bender (Floppy DOS).zip",
-      "observation": "Main menu renders after ScummVM testing-support warning. Bonus-disk target not separately tested."
+      "observation": "Main menu renders after ScummVM testing-support warning. Bonus-disk target not separately tested.",
+      "issueScope": "scummvm"
     },
     {
       "title": "Ringworld: Revenge of the Patriarch",
@@ -1051,7 +1011,8 @@
       "status": "startup-warning",
       "gameId": "parallaction:bra",
       "edition": "The Big Red Adventure (DOS, Multilanguage).zip",
-      "observation": "Startup logo renders after Start anyway. ScummVM warns of incomplete support and save compatibility."
+      "observation": "Startup logo renders after Start anyway. ScummVM warns of incomplete support and save compatibility.",
+      "issueScope": "scummvm"
     },
     {
       "title": "The Bizarre Adventures of Woodruff and the Schnibble",
