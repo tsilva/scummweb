@@ -1,5 +1,6 @@
 const { withSentryConfig } = require("@sentry/nextjs");
 const socialCards = require("./data/social-cards.json");
+const runtimeAssets = require("./scummvm-shell/runtime-assets.json");
 
 function getScummvmAssetVersion() {
   const rawVersion =
@@ -7,7 +8,7 @@ function getScummvmAssetVersion() {
     process.env.VERCEL_DEPLOYMENT_ID ||
     process.env.VERCEL_URL ||
     process.env.VERCEL_GIT_COMMIT_SHA ||
-    "dev";
+    runtimeAssets.version;
 
   return rawVersion.replace(/[^a-zA-Z0-9._-]+/g, "-");
 }
@@ -56,6 +57,11 @@ const nextConfig = {
   },
   headers() {
     return [
+      ...Object.entries(runtimeAssets.files).map(([source, version]) => ({
+        source,
+        has: [{ type: "query", key: "v", value: version }],
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      })),
       {
         source: "/social-cards/:file",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],

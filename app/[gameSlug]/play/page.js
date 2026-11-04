@@ -43,7 +43,7 @@ export default async function GamePlayRoutePage({ params }) {
   }
 
   const launchHref = buildVersionedAssetPath("/scummvm.html", {
-    searchParams: { exitTo: buildGameExitHref(game), localGame: "1", catalogGame: game.gameId },
+    searchParams: { exitTo: buildGameExitHref(game), localGame: "1", catalogGame: game.gameId, engine: game.engineId },
     hash: game.target,
   });
 

@@ -64,5 +64,6 @@ cp "$BRAND_DIR/android-chrome-192.png" "$DIST_DIR/scummvm-192.png"
 cp "$BRAND_DIR/android-chrome-512.png" "$DIST_DIR/scummvm-512.png"
 
 python3 "$ROOT_DIR/scripts/patch_scummvm_audio.py" "$DIST_DIR/scummvm.js"
+node "$ROOT_DIR/scripts/generate-runtime-assets.mjs" "$DIST_DIR"
 node "$ROOT_DIR/scripts/manage_scummvm_assets.mjs" validate "$DIST_DIR"
 node "$ROOT_DIR/scripts/manage_scummvm_assets.mjs" sync "$DIST_DIR" "$SHELL_DIR"

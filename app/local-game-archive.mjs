@@ -146,6 +146,45 @@ export function readLocalGameArchive(file, { signal, onEntries, ...limits } = {}
   }, limits);
 }
 
+// The manifest describes already-verified bytes, not executable paths or ZIP
+// entries. Recheck the current limits and path rules before exposing slices.
+export function openPreparedGameArchive(archive, manifest, {
+  signal, onEntries, archiveLimit = maxArchiveSize, expandedLimit = maxExpandedSize,
+} = {}) {
+  signal?.throwIfAborted();
+  if (!Number.isSafeInteger(manifest.archiveSize) || manifest.archiveSize < 0 ||
+      !Array.isArray(manifest.entries) || manifest.entries.length > maxGameEntries) {
+    throw new ArchiveError("The cached game installation is invalid.");
+  }
+  if (manifest.archiveSize > archiveLimit) {
+    throw new ArchiveError(`This ZIP exceeds the ${archiveLimit / (1024 * 1024)} MiB download limit.`);
+  }
+  const entries = new Map();
+  let total = 0;
+  for (const item of manifest.entries) {
+    if (!Array.isArray(item) || item.length !== 3) throw new ArchiveError("The cached game installation is invalid.");
+    const [path, size, signature] = item;
+    if (typeof path !== "string" || !Number.isSafeInteger(size) || size < 0 ||
+        !Number.isInteger(signature) || signature < 0 || signature > 0xffffffff) {
+      throw new ArchiveError("The cached game installation is invalid.");
+    }
+    const parts = gamePathParts(path);
+    const key = path.toLowerCase();
+    if (entries.has(key)) throw new ArchiveError("This ZIP contains duplicate file paths.");
+    entries.set(key, { parts, entry: { uncompressedSize: size, signature }, offset: total });
+    total += size;
+    if (!Number.isSafeInteger(total) || total > expandedLimit) {
+      throw new ArchiveError(`This ZIP exceeds ${expandedLimit / (1024 * 1024)} MiB when unpacked.`);
+    }
+  }
+  if (total !== archive.size) throw new ArchiveError("The cached game installation is incomplete.");
+  const files = gameEntries(entries).map(({ path, entry, offset }) => ({
+    path, blob: archive.slice(offset, offset + entry.uncompressedSize),
+  }));
+  onEntries?.(manifest.entries);
+  return files;
+}
+
 function requiresFileBackedZip(file, totalSize) {
   return file.size > maxArchiveSize || totalSize > maxExpandedSize;
 }

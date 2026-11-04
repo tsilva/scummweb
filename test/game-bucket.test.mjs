@@ -4,7 +4,13 @@ import { BlobWriter, Uint8ArrayReader, ZipWriter } from "@zip.js/zip.js";
 import { normalizeBucketUrl, normalizeGameZipUrl, readCatalogGameArchive, readRemoteGameArchive, readSavedBucket } from "../app/game-bucket.mjs";
 import { maxArchiveSize } from "../app/local-game-archive.mjs";
 import { installGameZipCache } from "./helpers/game-zip-cache.mjs";
-import { maxCachedGameZips } from "../app/game-zip-cache.mjs";
+import { cacheGameZip, maxCachedGameZips, readCachedGameData } from "../app/game-zip-cache.mjs";
+
+async function materialize(files) {
+  return Promise.all(files.map(async ({ path, data, blob }) => ({
+    path, data: data ?? new Uint8Array(await blob.arrayBuffer()),
+  })));
+}
 
 const customUrl = "https://games.example.com";
 const games = [
@@ -131,10 +137,12 @@ test("repeat launches reuse a persisted ZIP and preserve URL query identity", as
   const fetch = t.mock.method(globalThis, "fetch", async () => new Response(archive));
   const url = `${customUrl}/sky.zip?v=1`;
   const first = await readRemoteGameArchive(url);
-  assert.equal(entries.size, 1);
   const progress = [];
   const second = await readRemoteGameArchive(url, { onProgress: (value, details) => progress.push([value, details]) });
-  assert.deepEqual(second, first);
+  assert.deepEqual(await materialize(second), first);
+  await readCachedGameData(url);
+  assert.equal(entries.size, 1);
+  assert.ok(second[0].blob instanceof Blob, "warm files are slices, not another extraction");
   assert.deepEqual(progress, [[null, { cached: true }], [100, { cached: true }]]);
   assert.equal(fetch.mock.callCount(), 1);
   await readRemoteGameArchive(`${customUrl}/sky.zip?v=2`);
@@ -152,7 +160,7 @@ test("the catalog loader reuses cached ZIPs across launches", async (t) => {
   await writer.add("sky.dnr", new Uint8ArrayReader(Uint8Array.of(1)));
   const archive = await writer.close();
   const fetch = t.mock.method(globalThis, "fetch", async () => new Response(archive));
-  assert.deepEqual(await readCatalogGameArchive(`${customUrl}/sky.zip`), await readCatalogGameArchive(`${customUrl}/sky.zip`));
+  assert.deepEqual(await materialize(await readCatalogGameArchive(`${customUrl}/sky.zip`)), await materialize(await readCatalogGameArchive(`${customUrl}/sky.zip`)));
   assert.equal(fetch.mock.callCount(), 1);
 });
 
@@ -192,9 +200,81 @@ test("the game ZIP cache evicts the oldest stored ZIP when adding a fifth archiv
   const fetch = t.mock.method(globalThis, "fetch", async () => new Response(archive));
   for (let index = 0; index <= maxCachedGameZips; index++) {
     await readRemoteGameArchive(`${customUrl}/sky.zip?v=${index}`);
+    await readCachedGameData(`${customUrl}/sky.zip?v=${index}`);
   }
   assert.equal(entries.size, maxCachedGameZips);
   assert.equal(entries.has(`${customUrl}/sky.zip?v=0`), false);
   await readRemoteGameArchive(`${customUrl}/sky.zip?v=${maxCachedGameZips}`);
   assert.equal(fetch.mock.callCount(), maxCachedGameZips + 1);
+});
+
+test("a legacy cached ZIP is migrated once to a verified installation with identical file identities", async (t) => {
+  const { stores } = installGameZipCache(t);
+  const writer = new ZipWriter(new BlobWriter());
+  await writer.add("Game/sky.dnr", new Uint8ArrayReader(Uint8Array.of(1, 2, 3)));
+  const archive = await writer.close();
+  const url = `${customUrl}/legacy.zip`;
+  await cacheGameZip(url, archive);
+  const fetch = t.mock.method(globalThis, "fetch", () => { throw new Error("No download expected"); });
+  const identities = [];
+  const first = await readRemoteGameArchive(url, { onEntries: (entries) => identities.push(entries) });
+  // The player transfers ownership of these bytes. Background persistence must
+  // already hold a snapshot before that detaches the source ArrayBuffers.
+  const transferred = structuredClone(first, { transfer: first.map(({ data }) => data.buffer) });
+  const warm = await readRemoteGameArchive(url, { onEntries: (entries) => identities.push(entries) });
+  assert.deepEqual(await materialize(warm), transferred);
+  assert.deepEqual(identities[1], identities[0]);
+  assert.equal(fetch.mock.callCount(), 0);
+  assert.equal(stores.get("scummweb.game-files.v2").entries.size, 1);
+  assert.equal(stores.get("scummweb.game-zips.v1").entries.size, 0, "migration removes the duplicate ZIP");
+});
+
+test("eviction bounds atomic prepared installations without retaining extra manifests", async (t) => {
+  const { stores } = installGameZipCache(t);
+  const writer = new ZipWriter(new BlobWriter());
+  await writer.add("game.dat", new Uint8ArrayReader(Uint8Array.of(1)));
+  const archive = await writer.close();
+  t.mock.method(globalThis, "fetch", async () => new Response(archive));
+  for (let index = 0; index < maxCachedGameZips + 2; index++) {
+    const url = `${customUrl}/evict-${index}.zip`;
+    await readRemoteGameArchive(url);
+    await readCachedGameData(url);
+  }
+  assert.equal(stores.get("scummweb.game-files.v2").entries.size, maxCachedGameZips);
+  assert.equal(stores.get("scummweb.game-zips.v1").entries.size, 0);
+});
+
+test("prepared-cache quota failures retain the original ZIP as a usable fallback", async (t) => {
+  const { cache } = installGameZipCache(t);
+  t.mock.method(cache, "put", async () => { throw new Error("Quota exceeded"); });
+  const writer = new ZipWriter(new BlobWriter());
+  await writer.add("game.dat", new Uint8ArrayReader(Uint8Array.of(1, 2)));
+  const archive = await writer.close();
+  const url = `${customUrl}/fallback.zip`;
+  const fetch = t.mock.method(globalThis, "fetch", async () => new Response(archive));
+  const original = await readRemoteGameArchive(url);
+  const cached = await readCachedGameData(url);
+  assert.equal(cached.manifest, undefined);
+  assert.equal(cached.archive.size, archive.size);
+  assert.deepEqual(await readRemoteGameArchive(url), original);
+  await readCachedGameData(url);
+  assert.equal(fetch.mock.callCount(), 1);
+});
+
+test("a truncated prepared-cache header falls back to a fresh validated download", async (t) => {
+  const { cache } = installGameZipCache(t);
+  const writer = new ZipWriter(new BlobWriter());
+  await writer.add("game.dat", new Uint8ArrayReader(Uint8Array.of(4, 5, 6)));
+  const archive = await writer.close();
+  const url = `${customUrl}/recover.zip`;
+  const fetch = t.mock.method(globalThis, "fetch", async () => new Response(archive));
+  await readRemoteGameArchive(url);
+  await readCachedGameData(url);
+  await cache.put(url, new Response(Uint8Array.of(255, 255, 255, 255), {
+    headers: { "content-type": "application/x-scummweb-game-files" },
+  }));
+  const recovered = await readRemoteGameArchive(url);
+  assert.deepEqual(recovered, [{ path: "game.dat", data: Uint8Array.of(4, 5, 6) }]);
+  await readCachedGameData(url);
+  assert.equal(fetch.mock.callCount(), 2);
 });

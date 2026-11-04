@@ -12,17 +12,28 @@ remain stored in the browser.
 During ZIP downloads, the launch status shows `Downloading game ZIP (42%)…`
 when the host provides a valid `Content-Length`; otherwise it keeps the download
 status without a percentage until the download completes.
-After successful extraction, catalog and remote game ZIPs are saved in a
-browser cache. Repeat launches of the exact same URL (including its query
-parameters) show `Opening cached game ZIP…` and unpack it locally, without a ZIP
-request or remote inspection. Up to four archives are retained; adding a fifth removes
-the oldest stored archive. Saves are separate and are not removed by this limit.
+After successful verification, catalog and remote games are saved as one atomic
+record containing a file manifest and verified bytes. Repeat launches of the exact same
+URL (including its query parameters) mount Blob slices without downloading,
+unpacking, or checksumming every file again. Existing cached ZIPs migrate after
+one local extraction. Up to four games are retained; adding a fifth removes the
+oldest installation and its manifest. Saves are separate from this limit.
+Persistence runs after verification without blocking startup; immediate restarts
+can reuse its in-memory snapshot while the write finishes. Storage failures fall
+back to caching the original ZIP when possible. Older open tabs retain a compatible
+ZIP cache; successful migration removes the duplicate ZIP.
 The cache is best effort: browsers may evict it, private sessions clear it when
 they end, and blocked or full storage leaves ordinary downloads working.
 To fetch a replacement ZIP published at the same URL, clear this site's cached
 data or use a new URL, such as a version query parameter.
 If a game ZIP fails to download or open, the failure screen keeps **Exit game**
 available so you can return to the library, including games with intro skipping.
+
+Archive preparation and ScummVM startup run concurrently. BrowserFS and the
+selected catalog engine module load alongside the main runtime. The boot overlay
+accepts an actual SDL canvas presentation, including a dark intro frame; the
+pixel detector remains a fallback for other renderers. Intro skipping remains
+an explicit action.
 
 The **Recently Played** strip shows only games you have launched, newest first,
 including imported ZIPs. Different editions of a title share one card, and
@@ -241,6 +252,22 @@ consumes the button gesture so movies do not interpret it as a skip command.
 Maintain it in `web-shell/`; the staging script copies it into the managed bundle.
 
 ## Rebuilding and upgrading ScummVM
+
+For browser-shell-only changes, run `pnpm run build:scummvm --shell-only`. This
+regenerates `dist/` and the managed shell from `web-shell/`, reusing the compiled
+engine and its source provenance. Native patches still require a full rebuild.
+`prepare` and full runtime builds generate content fingerprints for the shell,
+core runtime and engine data. Only a matching resource/version pair gets immutable
+browser caching; application deployments refresh artwork without invalidating
+unchanged runtime binaries. Keep the generated `runtime-assets.json` and compact
+`runtime-version.json` with the managed bundle.
+
+For startup diagnosis, parent-frame Performance marks record `scummweb:runtime-requested`,
+`scummweb:archive-prepared`, `scummweb:runtime-ready-for-files`,
+`scummweb:archive-transferred`, and `scummweb:game-ready`. The shell also marks
+`scummweb:wasm-ready`, `scummweb:filesystems-ready`, and `scummweb:first-game-frame`.
+Compare timestamps using each frame's `performance.timeOrigin`; test cold,
+prepared-cache and legacy-cache launches separately.
 
 `pnpm run build:scummvm` checks out the pinned release into
 `vendor/scummvm-<tag>/`, applies the ScummWEB patches, builds WebAssembly and
