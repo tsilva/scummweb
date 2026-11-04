@@ -20,6 +20,7 @@ export default function RecentGamesRail({ catalog }) {
         <a
           key={game.target}
           aria-haspopup="dialog"
+          aria-controls={getGameDialogId(game)}
           className={`landscape-card ${game.tone}`}
           data-game-target={game.target}
           href={`#${getGameDialogId(game)}`}

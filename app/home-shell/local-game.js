@@ -128,36 +128,37 @@ function GameImportDialog({ pending, result, onConfirm }) {
         role="region" aria-label="Import details" tabIndex={0}>
         {result ? (
           <>
-            <ul className="game-import-items">
-              {result.items.map(({ label, message, skipped }, index) => {
-                const StatusIcon = skipped ? TriangleAlert : CircleCheck;
-                return (
-                  <li key={index}>
-                    <StatusIcon aria-hidden="true" size={22}
-                      className={skipped ? "game-import-warning" : "game-import-success"} />
-                    <div><strong>{label}</strong><p>{skipped ? `Skipped. ${message}` : message}</p></div>
-                  </li>
-                );
-              })}
-            </ul>
+            <GameImportItems items={result.items} complete />
             {result.temporary > 0 && <p>Some games are only available in this tab.</p>}
-            {result.needsSelection > 0 && <p>If your browser loses file access after a reload, reconnect the game folder from the library.</p>}
+            {result.needsSelection > 0 && <p>If your browser loses file access after a reload, select the game's poster to locate its files again.</p>}
           </>
         ) : (
-          <ul className="game-import-items" aria-live="polite">
-            {pending.map(({ index, label, message, value, total }, position) => (
-              <li key={index}>
-                <File aria-hidden="true" size={22} />
-                <div>
-                  <strong>{label}</strong><p>{message}</p>
-                  {position === 0 && <progress aria-label={`Importing ${label}`} value={value} max={total} />}
-                </div>
-              </li>
-            ))}
-          </ul>
+          <GameImportItems items={pending} showProgress />
         )}
       </div>
       {complete && <button ref={confirm} className="game-import-confirm" type="button" onClick={onConfirm}>Confirm</button>}
     </dialog>
+  );
+}
+
+export function GameImportItems({ items, complete = false, showProgress = false }) {
+  const activeIndex = items.findIndex((item) => !item.complete);
+  return (
+    <ul className="game-import-items" aria-live={showProgress ? "polite" : undefined}>
+      {items.map(({ label, message, skipped, complete: checked, value, total, files }, index) => {
+        const StatusIcon = skipped ? TriangleAlert : complete || checked ? CircleCheck : File;
+        return (
+          <li key={index}>
+            <StatusIcon aria-hidden="true" size={22}
+              className={skipped ? "game-import-warning" : complete || checked ? "game-import-success" : undefined} />
+            <div>
+              <strong>{label}</strong><p>{skipped ? `Skipped. ${message}` : message}</p>
+              {showProgress && index === activeIndex && <progress aria-label={`Importing ${label}`} value={value} max={total} />}
+              {files?.length > 0 && <GameImportItems items={files} complete={complete} />}
+            </div>
+          </li>
+        );
+      })}
+    </ul>
   );
 }

@@ -32,7 +32,7 @@ test("homepage metadata uses ScummWEB branding and aligned social copy", () => {
     assert.equal(metadata.title, "ScummVM Online – Play Classic Adventure Games | ScummWEB");
     assert.equal(
       metadata.description,
-      "Play included freeware adventures like Beneath a Steel Sky in your browser, or drag and drop a ZIP to play your own ScummVM-compatible game.",
+      "Play free point-and-click adventures online, or drag and drop a ZIP of your own ScummVM-compatible game to play it in your browser.",
     );
     assert.equal(metadata.openGraph.description, metadata.description);
     assert.equal(metadata.twitter.description, metadata.description);

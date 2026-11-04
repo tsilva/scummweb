@@ -50,6 +50,7 @@ test("a batch captures all drag items synchronously and reads nested legacy dire
   const { archives, files } = await scanGameFolder(collection);
   assert.deepEqual(files.map(({ path }) => path), ["README.txt"]);
   assert.equal(archives.length, 1);
+  assert.equal(archives[0].path, "Nested/sfinx-en-v1.1.zip");
   assert.equal((await prepareLocalZip(archives[0])).name, file.name);
 });
 
@@ -76,7 +77,40 @@ test("a folder picked without native handles keeps the paths needed by the playe
   });
   const folder = selectedGameFolder(files);
   const scanned = await scanGameFolder(folder);
-  const prepared = await prepareLocalFolder(folder, scanned.files);
+  const updates = [];
+  const prepared = await prepareLocalFolder(folder, scanned.files, (index, status) => {
+    updates.push({ path: scanned.files[index].path, ...status });
+  });
   assert.equal(prepared.name, "Sfinx");
   assert.deepEqual((await readGameFolder(prepared.data)).map(({ path }) => path), ["disc1/vol.cat", "disc2/vol.dat"]);
+  assert.deepEqual(updates, [
+    { path: "disc1/vol.cat", message: "Reading file…" },
+    { path: "disc1/vol.cat", message: "File checked", complete: true },
+    { path: "disc2/vol.dat", message: "Reading file…" },
+    { path: "disc2/vol.dat", message: "File checked", complete: true },
+  ]);
+});
+
+test("directory scan preserves distinct paths for archives with the same name", async () => {
+  const game = new File(["test"], "game.zip");
+  const folder = directoryEntry("Collection", [
+    directoryEntry("DOS", [fileEntry(game)]),
+    directoryEntry("Amiga", [fileEntry(game)]),
+  ]);
+  const [root] = captureGameDrop({
+    items: [{ kind: "file", getAsFile: () => null, webkitGetAsEntry: () => folder }],
+    files: [],
+  });
+  const { archives } = await scanGameFolder(await root);
+  assert.deepEqual(archives.map(({ path }) => path), ["DOS/game.zip", "Amiga/game.zip"]);
+  assert.equal(await archives[0].getFile(), game);
+});
+
+test("a file that fails to read is not reported as checked", async () => {
+  const updates = [];
+  await assert.rejects(prepareLocalFolder({ name: "Game" }, [{
+    path: "data/vol.cat",
+    getFile: async () => { throw new DOMException("File moved", "NotFoundError"); },
+  }], (index, status) => updates.push({ index, ...status })), { name: "NotFoundError" });
+  assert.deepEqual(updates, [{ index: 0, message: "Reading file…" }]);
 });

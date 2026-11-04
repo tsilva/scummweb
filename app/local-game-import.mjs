@@ -1,4 +1,5 @@
 import { maxGameEntries, maxLocalGameSize, readGameFolder, scanLocalGameArchive, validateGameFolder } from "./local-game-archive.mjs";
+import { gameFileFingerprint } from "./local-game-matching.mjs";
 
 const isZip = (name) => /\.zip$/i.test(name);
 
@@ -85,7 +86,7 @@ export async function scanGameFolder(folder, onProgress) {
       }
       const path = prefix + (child.path ?? child.name);
       if (child.kind === "directory") await walk(child, path + "/");
-      else if (isZip(child.name)) archives.push(child);
+      else if (isZip(child.name)) archives.push({ ...child, path });
       else files.push({ path, getFile: child.getFile });
     }
   }
@@ -96,21 +97,27 @@ export async function scanGameFolder(folder, onProgress) {
 
 export async function prepareLocalZip(node) {
   const file = await node.getFile();
-  await scanLocalGameArchive(file);
-  return { name: file.name, handle: node.handle, data: file, kind: "zip" };
+  const files = await scanLocalGameArchive(file);
+  const fingerprint = await gameFileFingerprint("zip", files);
+  return { name: file.name, handle: node.handle, data: file, kind: "zip", fingerprint };
 }
 
-export async function prepareLocalFolder(folder, nodes) {
+export async function prepareLocalFolder(folder, nodes, onProgress) {
   const files = [];
   let size = 0;
-  for (const { path, getFile } of nodes) {
+  for (const [index, { path, getFile }] of nodes.entries()) {
+    onProgress?.(index, { message: "Reading file…" });
     const file = await getFile();
     size += file.size;
     if (size > maxLocalGameSize) throw new Error("Choose a game folder of 4 GiB or less.");
     files.push({ path, file });
+    onProgress?.(index, { message: "File checked", complete: true });
   }
-  validateGameFolder(files);
-  return { name: folder.name, handle: folder.handle, data: files, kind: "folder" };
+  const entries = validateGameFolder(files);
+  const fingerprint = await gameFileFingerprint("folder", entries.map(({ path, file }) =>
+    [path, file.size, file.lastModified]
+  ));
+  return { name: folder.name, handle: folder.handle, data: files, kind: "folder", fingerprint };
 }
 
 export async function openLocalFolder(handle) {

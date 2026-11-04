@@ -122,6 +122,7 @@ function gameEntries(entries) {
 export function scanLocalGameArchive(file) {
   return withZipEntries(file, (entries, totalSize) => {
     if (requiresFileBackedZip(file, totalSize)) validateStoredEntries(entries);
+    return entries.map(({ path, entry }) => [path, entry.uncompressedSize, entry.signature]);
   }, localZipLimits);
 }
 

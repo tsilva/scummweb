@@ -1,17 +1,20 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { readRemoteGameArchive } from "../game-bucket.mjs";
 import { getGamePresentation, getImportedGamePresentation } from "../game-presentation";
 import { checkGameSource, localGame, readGameSources, removeGameSources, saveGameSources } from "../game-sources.mjs";
+import { findLocalGameSource } from "../local-game-matching.mjs";
 import { maxLocalGameSize, openLocalGameZip, readGameFolder, selectGameArchive, validateGameZip } from "../local-game-archive.mjs";
 import {
   fileNode, handleNode, openLocalFolder, prepareLocalFolder, prepareLocalZip, scanGameFolder, selectedGameFolder,
 } from "../local-game-import.mjs";
-import LibraryCards, { GamePoster } from "./library-cards";
+import { GamePoster } from "./library-cards";
+import LibraryView from "./library-view";
 import HomeHero from "./home-hero";
+import GameDetailModal from "./game-detail-modal";
 import GameDropOverlay, { chooseZipHandles } from "./local-game";
 
 const sessionGames = new Map();
@@ -24,7 +27,7 @@ const statusText = {
   missing: "Unavailable",
   unverified: "Could not check availability",
   session: "Available in this tab",
-  locate: "ZIP selection needed",
+  locate: "Game files need locating",
 };
 
 function scrollToLibraryItem(item, block) {
@@ -40,6 +43,8 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
+  const [detailSourceId, setDetailSourceId] = useState(null);
+  const closeDetails = useCallback(() => setDetailSourceId(null), []);
   const [addedIds, setAddedIds] = useState(null);
   const revealObserver = useRef(null);
   const working = useRef(false);
@@ -48,9 +53,43 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
   const fileInput = useRef(null);
   const folderInput = useRef(null);
   const replacingSource = useRef(null);
+  const entriesRef = useRef([]);
+
+  useEffect(() => {
+    entriesRef.current = entries;
+  }, [entries]);
 
   useEffect(() => {
     let active = true;
+    const checking = new Set();
+
+    function checkSources(sources) {
+      for (const source of sources) {
+        if (checking.has(source)) continue;
+        checking.add(source);
+        // Only imports without a persistent handle rely on their in-memory copy.
+        const check = !source.handle && sessionGames.has(source.id)
+          ? Promise.resolve("session") : checkGameSource(source);
+        void check.then((status) => {
+          if (active) {
+            setEntries((current) => current.map((entry) =>
+              entry.source === source ? { source, status } : entry
+            ));
+          }
+        }).finally(() => checking.delete(source));
+      }
+    }
+
+    function recheck() {
+      if (!document.hidden && !working.current) {
+        checkSources(entriesRef.current.map(({ source }) => source));
+      }
+    }
+
+    function onPageShow(event) {
+      if (event.persisted) recheck();
+    }
+
     async function restore() {
       let saved = [];
       try {
@@ -65,19 +104,18 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
       setEntries(sources.map((source) => ({ source, status: "checking" })));
       setLoading(false);
 
-      for (const source of sources) {
-        const check = sessionGames.has(source.id) ? Promise.resolve("session") : checkGameSource(source);
-        void check.then((status) => {
-          if (active) {
-            setEntries((current) => current.map((entry) =>
-              entry.source === source ? { source, status } : entry
-            ));
-          }
-        });
-      }
+      checkSources(sources);
     }
+    window.addEventListener("focus", recheck);
+    window.addEventListener("pageshow", onPageShow);
+    document.addEventListener("visibilitychange", recheck);
     void restore();
-    return () => { active = false; };
+    return () => {
+      active = false;
+      window.removeEventListener("focus", recheck);
+      window.removeEventListener("pageshow", onPageShow);
+      document.removeEventListener("visibilitychange", recheck);
+    };
   }, [catalog, officialUrl]);
 
   useEffect(() => {
@@ -144,18 +182,10 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
     }
   }
 
-  async function saveLocal(game, known, replacing) {
-    let existing = replacing;
-    if (game.handle && !existing) {
-      for (const source of known.values()) {
-        if (source.handle?.kind === game.handle.kind && await game.handle.isSameEntry(source.handle)) {
-          existing = source;
-          break;
-        }
-      }
-    }
-
-    const source = localGame(game.handle, game, existing?.id);
+  async function saveLocal(game, known, existing) {
+    const source = { ...existing, ...localGame(game.handle, game, existing?.id) };
+    // A fallback picker must replace a stale saved handle with its fresh in-memory files.
+    if (!game.handle) delete source.handle;
     try {
       await saveGameSources([source]);
       sessionSources.delete(source.id);
@@ -182,33 +212,39 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
       const savedIds = new Set();
       let temporary = 0;
       let needsSelection = 0;
-      let reconnected = 0;
-      const reconnectable = entries.filter(({ source, status }) =>
+      const reconnectedIds = new Set();
+      const originalIds = new Set(known.keys());
+      const reconnectable = new Set(entries.filter(({ source, status }) =>
         !source.url && !sessionGames.has(source.id) && (reconnectStatuses.has(status) || !source.handle)
-      ).map(({ source }) => source);
+      ).map(({ source }) => source.id));
 
       function updateProgress(index, details) {
         setPending((current) => current.map((item) => item.index === index ? { ...item, ...details } : item));
       }
 
-      async function save(game) {
-        const candidates = reconnectable.filter((source) =>
-          !savedIds.has(source.id) && source.name === game.name &&
-          (source.kind ?? "zip") === game.kind
-        );
-        const reconnect = replacing ?? (candidates.length === 1 ? candidates[0] : null);
+      async function save(game, label = game.name) {
+        const reconnect = replacing ?? await findLocalGameSource(game, known.values(), reconnectable);
         const result = await saveLocal(game, known, reconnect);
+        const firstSave = !savedIds.has(result.id);
         savedIds.add(result.id);
-        if (reconnect) reconnected++;
-        items.push({ label: game.name, message: reconnect ? "Reconnected" : "Added to your library" });
-        if (result.temporary) temporary++;
-        else if (result.needsSelection) needsSelection++;
+        reconnectable.delete(result.id);
+        if (reconnect && originalIds.has(result.id)) reconnectedIds.add(result.id);
+        const item = { label, message: reconnect ? "Already in your library. Files refreshed." : "Added to your library" };
+        items.push(item);
+        if (firstSave && result.temporary) temporary++;
+        else if (firstSave && result.needsSelection) needsSelection++;
+        return item;
       }
 
       setPending(roots.map((root, index) => ({ index, label: root.name ?? "Game files", message: "Waiting to scan…" })));
       try {
         for (const [index, root] of roots.entries()) {
           let label = "Dropped item";
+          let fileItems = [];
+          function updateFile(position, details) {
+            fileItems = fileItems.map((item, itemIndex) => itemIndex === position ? { ...item, ...details } : item);
+            updateProgress(index, { files: fileItems });
+          }
           try {
             const node = await root;
             if (!node) throw new Error("Could not read this item. Try dropping it again.");
@@ -216,39 +252,57 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
             updateProgress(index, { label, message: node.kind === "directory" ? "Scanning folder…" : "Checking ZIP…" });
 
             if (node.kind === "file") {
-              await save(await prepareLocalZip(node));
+              const item = await save(await prepareLocalZip(node));
+              updateProgress(index, item);
             } else {
               const { archives, files } = await scanGameFolder(node, (count) => {
                 updateProgress(index, { message: `Scanning folder… ${count} items checked` });
               });
               if (!archives.length || replacing) {
-                await save(await prepareLocalFolder(node, files));
+                fileItems = files.map(({ path }) => ({ label: path, message: "Waiting…" }));
+                updateProgress(index, { message: "Checking game files…", files: fileItems });
+                const game = await prepareLocalFolder(node, files, updateFile);
+                const item = await save(game);
+                fileItems = fileItems.map((file) => ({ ...file, message: "Added with game folder", complete: true }));
+                item.files = fileItems;
+                updateProgress(index, { message: item.message, files: fileItems });
               } else {
+                fileItems = archives.map((archive) => ({ label: archive.path, message: "Waiting…" }));
+                updateProgress(index, { files: fileItems });
                 for (const [position, archive] of archives.entries()) {
                   updateProgress(index, {
                     message: `Checking ZIP ${position + 1} of ${archives.length}…`,
                     value: position,
                     total: archives.length,
                   });
+                  updateFile(position, { message: "Checking ZIP…" });
                   try {
-                    await save(await prepareLocalZip(archive));
+                    const item = await save(await prepareLocalZip(archive), archive.path);
+                    updateFile(position, { message: item.message, complete: true });
                   } catch (error) {
-                    items.push({ label: archive.name, message: error.message, skipped: true });
+                    const item = { label: archive.path, message: error.message, skipped: true };
+                    items.push(item);
+                    updateFile(position, item);
                   }
                 }
+                updateProgress(index, {
+                  message: `${archives.length} ZIPs checked`, value: archives.length, total: archives.length,
+                });
               }
             }
           } catch (error) {
-            items.push({ label, message: error.message, skipped: true });
+            fileItems = fileItems.map((file) => ({ ...file, message: "Game folder was not added", skipped: true }));
+            items.push({ label, message: error.message, skipped: true, files: fileItems });
+            updateProgress(index, { message: error.message, skipped: true, files: fileItems });
           } finally {
-            setPending((current) => current.filter((item) => item.index !== index));
+            updateProgress(index, { complete: true });
           }
         }
       } finally {
         setPending([]);
       }
 
-      setImportResult({ savedIds, items, replacing, reconnected, temporary, needsSelection });
+      setImportResult({ savedIds, items, replacing, reconnected: reconnectedIds.size, temporary, needsSelection });
     }, (message) => setImportResult({
       savedIds: new Set(),
       items: [{ label: "Game files", message, skipped: true }],
@@ -346,9 +400,7 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
       },
     };
   });
-  const needsReconnect = library.some(({ source, status }) =>
-    !source.url && reconnectStatuses.has(status)
-  );
+  const detail = library.find(({ source }) => source.id === detailSourceId);
 
   return (
     <>
@@ -369,31 +421,25 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
       {featuredGame && <HomeHero catalog={catalog} featuredGame={featuredGame} library={library} />}
       <div className="section-stack">
         {children}
-        <section className="content-band" id="library">
-          <div className="section-header">
-            <h2><span className="section-mark" />{libraryHeading}</h2>
-            {needsReconnect && (
-              <button className="secondary-button" type="button" disabled={disabled} onClick={() => chooseFolder()}>
-                Reconnect game folder
-              </button>
-            )}
-          </div>
-          <p className="local-game-status" role="status">{notice}</p>
-          <LibraryCards games={catalog}>
-            {library.map(({ source, status, game, title, locate, locateLabel, action }) => {
-              const hint = locate ? locateLabel : ["permission", "missing", "unverified"].includes(status)
-                ? statusText[status] : null;
-              const description = [game?.summary, game?.studio, game?.genre, game?.badge, statusText[status]].filter(Boolean).join(" · ");
+        <LibraryView catalog={catalog} library={library} heading={libraryHeading} notice={notice}>
+            {({ source, status, game, title, locate, locateLabel, action }) => {
+              const hint = status === "missing" && !source.url
+                ? source.kind === "folder" ? "Game folder missing" : "Game file missing"
+                : locate ? locateLabel : ["permission", "missing", "unverified"].includes(status)
+                  ? statusText[status] : null;
+              const description = [game?.summary, game?.studio, game?.genre, game?.badge, hint ?? statusText[status]].filter(Boolean).join(" · ");
               return (
                 <article key={source.id} className="poster-entry source-poster-entry" data-library-source-id={source.id}>
                   <button
                     type="button"
                     className={`poster-card source-poster-card ${game?.tone ?? "tone-default"}`}
                     disabled={action.disabled}
-                    aria-label={action.label}
+                    aria-label={`View details for ${title}`}
+                    aria-haspopup="dialog"
+                    aria-controls={`source-game-${source.id}`}
                     aria-description={description}
                     title={description}
-                    onClick={action.onClick}
+                    onClick={() => { setNotice(""); setDetailSourceId(source.id); }}
                   >
                     <GamePoster title={title} image={game?.posterImage} />
                     {hint && <span className="source-poster-hint" aria-hidden="true">{hint}</span>}
@@ -409,10 +455,11 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
                   </button>
                 </article>
               );
-            })}
-          </LibraryCards>
-        </section>
+            }}
+        </LibraryView>
       </div>
+      {detail && <GameDetailModal game={detail.game} sourceId={detail.source.id}
+        sourceAction={detail.action} notice={notice} onClose={closeDetails} />}
     </>
   );
 }
