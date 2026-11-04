@@ -613,7 +613,7 @@ export default function GameRouteFrame({
   const showSkipIntroBottomAction = showSkipIntroAction && !showBootOverlay;
   const showExitControl =
     !skipIntro ||
-    bootState.hasBootFailed ||
+    hasBootFailed ||
     showSkipIntroAction ||
     touchClick.touchControlsUnlocked ||
     skipIntroConsumed;

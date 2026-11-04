@@ -21,6 +21,8 @@ The cache is best effort: browsers may evict it, private sessions clear it when
 they end, and blocked or full storage leaves ordinary downloads working.
 To fetch a replacement ZIP published at the same URL, clear this site's cached
 data or use a new URL, such as a version query parameter.
+If a game ZIP fails to download or open, the failure screen keeps **Exit game**
+available so you can return to the library, including games with intro skipping.
 
 The **Recently Played** strip shows only games you have launched, newest first,
 including imported ZIPs. Different editions of a title share one card, and
@@ -405,6 +407,9 @@ or request-time rendering.
   [`app/retro-game-artwork.json`](../app/retro-game-artwork.json). It includes
   original box scans, gameplay captures, and title cards where a cover was
   unavailable. Different editions can point to the same files.
+  Canonical titles shared by originals and remakes remain ambiguous; only a
+  unique title or recognized edition alias selects a game family. An ambiguous
+  ZIP name keeps generic metadata until it can be identified.
   Galleries contain three distinct captures for catalog games, Sfinx, and most
   recognized personal imports. Road retains one verified capture and Fun Seeker's
   Guide to Eastern Madera County has two until additional matching screenshots

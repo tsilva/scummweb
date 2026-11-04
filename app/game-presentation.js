@@ -333,7 +333,10 @@ const retroByTitle = new Map();
 for (const [id, record] of Object.entries(retroGameArtwork)) {
   const game = { id, ...record };
   for (const alias of [record.title, ...record.aliases]) {
-    retroByEdition.set(normalizeImportedTitle(alias), game);
+    const edition = normalizeImportedTitle(alias);
+    const existingEdition = retroByEdition.get(edition);
+    // A shared canonical title is ambiguous even in the exact-alias index.
+    retroByEdition.set(edition, existingEdition === undefined || existingEdition === game ? game : null);
     const title = normalizeImportedTitle(splitImportedEdition(alias)[1]);
     const existing = retroByTitle.get(title);
     retroByTitle.set(title, existing === undefined || existing === game ? game : null);
