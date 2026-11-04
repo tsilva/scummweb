@@ -9,7 +9,7 @@ import { buildGameExitHref } from "../../../home-shell/hero-selection.mjs";
 
 export default function BucketPlayFrame({ game, officialUrl, catalog }) {
   const { target, displayTitle } = game;
-  const loadArchive = useCallback(async (signal) => {
+  const loadArchive = useCallback(async (signal, onProgress) => {
     let sources = [];
     try {
       sources = await readGameSources(catalog, officialUrl);
@@ -20,7 +20,7 @@ export default function BucketPlayFrame({ game, officialUrl, catalog }) {
     if (!source) {
       throw new Error("Add a bucket or ZIP containing this game to your library.");
     }
-    return readRemoteGameArchive(source.url, { signal });
+    return readRemoteGameArchive(source.url, { signal, onProgress });
   }, [catalog, officialUrl, target]);
 
   return (

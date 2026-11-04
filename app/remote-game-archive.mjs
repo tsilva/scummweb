@@ -66,14 +66,14 @@ export async function inspectRemoteGameArchive(url, { signal } = {}) {
   }
 }
 
-export async function prepareRemoteGameArchive(url, { signal, onDownloading } = {}) {
+export async function prepareRemoteGameArchive(url, { signal, onDownloading, onProgress } = {}) {
   const zipUrl = normalizeGameZipUrl(url);
   try {
     const files = await inspectRemoteGameArchive(zipUrl, { signal });
     signal?.throwIfAborted();
     return {
       game: getArchiveGamePresentation(files),
-      loadArchive: (launchSignal) => readRemoteGameArchive(zipUrl, { signal: launchSignal }),
+      loadArchive: (launchSignal, onProgress) => readRemoteGameArchive(zipUrl, { signal: launchSignal, onProgress }),
     };
   } catch (error) {
     signal?.throwIfAborted();
@@ -83,7 +83,7 @@ export async function prepareRemoteGameArchive(url, { signal, onDownloading } = 
     onDownloading?.();
     let game = null;
     const files = await readRemoteGameArchive(zipUrl, {
-      signal, onEntries: (entries) => { game = getArchiveGamePresentation(entries); },
+      signal, onProgress, onEntries: (entries) => { game = getArchiveGamePresentation(entries); },
     });
     signal?.throwIfAborted();
     return {

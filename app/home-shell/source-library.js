@@ -315,7 +315,7 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
       game = { ...game, recentGameId: `source:${source.id}`, saveVersionId: legacySaves ? undefined : source.id,
         saveNamespace: legacySaves ? undefined : await getVersionSaveNamespace(source.id), skipIntro: null };
       if (source.url) {
-        selectGameArchive((signal) => readRemoteGameArchive(source.url, { signal }), game);
+        selectGameArchive((signal, onProgress) => readRemoteGameArchive(source.url, { signal, onProgress }), game);
       } else {
         const data = sessionGames.get(source.id);
         if (!data && !source.handle) {

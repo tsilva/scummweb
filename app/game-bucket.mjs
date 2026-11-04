@@ -94,7 +94,7 @@ export async function validateGameArchiveResponse(response, archiveLimit = maxAr
   }
 }
 
-async function downloadGameArchive(zipUrl, { signal, onEntries, archiveLimit = maxArchiveSize, expandedLimit, timeoutMs = 120_000 } = {}) {
+async function downloadGameArchive(zipUrl, { signal, onEntries, onProgress, archiveLimit = maxArchiveSize, expandedLimit, timeoutMs = 120_000 } = {}) {
   const timeout = AbortSignal.timeout(timeoutMs);
   const response = await fetch(zipUrl, {
     mode: "cors",
@@ -106,6 +106,10 @@ async function downloadGameArchive(zipUrl, { signal, onEntries, archiveLimit = m
   await validateGameArchiveResponse(response, archiveLimit);
 
   const tooLarge = `This ZIP exceeds the ${archiveLimit / (1024 * 1024)} MiB download limit.`;
+  const total = Number(response.headers.get("content-length"));
+  const hasTotal = Number.isFinite(total) && total > 0;
+  let progress = hasTotal ? 0 : null;
+  onProgress?.(progress);
   let size = 0;
   const limitedBody = response.body.pipeThrough(new TransformStream({
     transform(chunk, controller) {
@@ -114,9 +118,17 @@ async function downloadGameArchive(zipUrl, { signal, onEntries, archiveLimit = m
         controller.error(new Error(tooLarge));
         return;
       }
+      if (hasTotal) {
+        const nextProgress = Math.min(99, Math.floor(size / total * 100));
+        if (nextProgress !== progress) {
+          progress = nextProgress;
+          onProgress?.(progress);
+        }
+      }
       controller.enqueue(chunk);
     },
   }));
   const archive = await new Response(limitedBody).blob();
+  onProgress?.(100);
   return readLocalGameArchive(new File([archive], "game.zip"), { archiveLimit, expandedLimit, signal, onEntries });
 }

@@ -9,6 +9,9 @@ selection and keeps demos separate from full games. Each imported version has
 separate browser saves. Supported engines offer **Continue** and **Start from
 beginning**; others load progress through their in-game menu. Older shared saves
 remain stored in the browser.
+During ZIP downloads, the launch status shows `Downloading game ZIP (42%)…`
+when the host provides a valid `Content-Length`; otherwise it keeps the download
+status without a percentage until the download completes.
 
 The **Recently Played** strip shows only games you have launched, newest first,
 including imported ZIPs. Different editions of a title share one card, and

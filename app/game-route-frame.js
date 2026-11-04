@@ -134,8 +134,8 @@ export default function GameRouteFrame({
   catalogArchiveUrl,
   archiveLoadingText = "Downloading game ZIP…",
 }) {
-  const loadCatalogArchive = useCallback((signal) => readCatalogGameArchive(catalogArchiveUrl, {
-    ...catalogArchiveLimits[target], signal,
+  const loadCatalogArchive = useCallback((signal, onProgress) => readCatalogGameArchive(catalogArchiveUrl, {
+    ...catalogArchiveLimits[target], signal, onProgress,
   }), [catalogArchiveUrl, target]);
   const loadArchive = catalogArchiveUrl ? loadCatalogArchive : loadPersonalArchive;
   const catalogLaunch = !loadArchive || Boolean(catalogArchiveUrl);
@@ -149,6 +149,7 @@ export default function GameRouteFrame({
   const frameRef = useRef(null);
   const archiveFiles = useRef(null);
   const [archiveError, setArchiveError] = useState("");
+  const [archiveProgress, setArchiveProgress] = useState(null);
   const [launchAnalytics] = useState(() => createGameLaunchAnalytics(catalogLaunch ? game?.slug : null));
   const [frameSrc, setFrameSrc] = useState(null);
   const [archiveFrameDocument, setArchiveFrameDocument] = useState(null);
@@ -337,6 +338,7 @@ export default function GameRouteFrame({
   useEffect(() => {
     const controller = new AbortController();
     setReadySignal(null);
+    setArchiveProgress(null);
     setSkipIntroConsumed(catalogIntroSlot !== null);
 
     async function openGame() {
@@ -375,7 +377,9 @@ export default function GameRouteFrame({
               setIsResuming(true);
             }
           }
-          const files = await loadArchive(controller.signal);
+          const files = await loadArchive(controller.signal, (progress) => {
+            if (!controller.signal.aborted) setArchiveProgress(progress);
+          });
           if (controller.signal.aborted) return;
           archiveFiles.current = files;
         }
@@ -622,7 +626,9 @@ export default function GameRouteFrame({
     <div className="game-route-shell" ref={shellRef}>
       <GameBootOverlay
         bootProgressPercent={bootProgressPercent}
-        bootStatusText={archiveError || (loadArchive && !frameSrc ? archiveLoadingText : bootState.bootStatusText)}
+        bootStatusText={archiveError || (loadArchive && !frameSrc
+          ? archiveProgress === null ? archiveLoadingText : `Downloading game ZIP (${archiveProgress}%)…`
+          : bootState.bootStatusText)}
         game={game}
         hasBootFailed={hasBootFailed}
         onSkipIntro={handleSkipIntroClick}

@@ -18,7 +18,7 @@ export function getSelectedGamePresentation() {
   return selectedArchive?.game ?? null;
 }
 
-export async function openSelectedGameArchive(signal) {
+export async function openSelectedGameArchive(signal, onProgress) {
   // Let React cancel any superseded effect before taking the selection.
   await Promise.resolve();
   signal.throwIfAborted();
@@ -27,7 +27,7 @@ export async function openSelectedGameArchive(signal) {
   if (!archive) {
     throw new ArchiveError("Choose a game from the Library to play it here.");
   }
-  return archive.loadArchive(signal);
+  return archive.loadArchive(signal, onProgress);
 }
 
 export function validateGameZip(file, archiveLimit = maxArchiveSize) {
