@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { defaultLibraryQuery, libraryFacet, libraryItems, queryLibrary } from "../app/home-shell/library-query.mjs";
+import { defaultLibraryQuery, libraryFacet, libraryGenre, libraryItems, queryLibrary } from "../app/home-shell/library-query.mjs";
 
 const catalog = [
   { target: "z", displayTitle: "Zulu", genre: "Mystery", year: "1994", studio: "Studio B" },
@@ -24,11 +24,11 @@ test("release year sorting keeps unknown dates last in both directions and break
   assert.deepEqual(titles({ sort: "year-asc" }), ["Alpha", "Beta", "Zulu", "Unidentified"]);
 });
 
-test("search, genre, year and source filters work together", () => {
-  assert.deepEqual(titles({ search: "  BEt  ", genre: "Mystery", year: "1994", source: "local" }), ["Beta"]);
-  assert.deepEqual(titles({ genre: "Mystery", source: "catalog" }), ["Zulu"]);
-  assert.deepEqual(titles({ source: "remote", year: "Unknown" }), ["Unidentified"]);
-  assert.deepEqual(titles({ genre: "Comedy", year: "1994" }), []);
+test("genre filtering covers catalog and imported games and supports unknown genres", () => {
+  assert.deepEqual(titles({ genre: "Mystery" }), ["Beta", "Zulu"]);
+  assert.deepEqual(titles({ genre: "Unknown" }), ["Unidentified"]);
+  assert.deepEqual(titles({ genre: "Comedy" }), ["Alpha"]);
+  assert.deepEqual(titles({ genre: "Horror" }), []);
 });
 
 test("facets include unique values from the whole library and make missing metadata selectable", () => {
@@ -38,7 +38,44 @@ test("facets include unique values from the whole library and make missing metad
 });
 
 test("genre and studio sorting use names to break ties", () => {
-  const known = items.filter(({ sourceType }) => sourceType !== "remote");
+  const known = items.filter(({ source }) => !source?.url);
   assert.deepEqual(queryLibrary(known, { ...defaultLibraryQuery, sort: "genre-asc" }).map(({ title }) => title), ["Alpha", "Beta", "Zulu"]);
   assert.deepEqual(queryLibrary(known, { ...defaultLibraryQuery, sort: "studio-asc" }).map(({ title }) => title), ["Alpha", "Beta", "Zulu"]);
+});
+
+test("genre categories merge catalog and import capitalization and whitespace variants", () => {
+  const catalogGame = { target: "sky", displayTitle: "Beneath a Steel Sky", genre: "Cyberpunk Adventure" };
+  const importedGame = { genre: "  cyberpunk   adventure  " };
+  const merged = libraryItems([catalogGame], [{
+    source: { id: "sky-copy" }, title: "Steel Sky copy", game: importedGame,
+  }]);
+  assert.deepEqual(libraryFacet(merged, "genre"), ["Cyberpunk adventure"]);
+  for (const genre of ["Cyberpunk adventure", "CYBERPUNK ADVENTURE"]) {
+    assert.equal(queryLibrary(merged, { ...defaultLibraryQuery, genre }).length, 2);
+  }
+  assert.equal(catalogGame.genre, "Cyberpunk Adventure");
+  assert.equal(importedGame.genre, "  cyberpunk   adventure  ");
+});
+
+test("synonymous categories filter and sort as a single genre while distinct genres stay separate", () => {
+  const variants = [
+    ["Zulu", "Comic Adventure"],
+    ["Alpha", "Comedy adventure"],
+    ["Beta", "Comedy Caper Adventure"],
+    ["Epsilon", "Horror comedy adventure"],
+    ["Delta", "Comedy Horror Adventure"],
+  ].map(([displayTitle, genre], index) => ({ target: String(index), displayTitle, genre }));
+  const combined = libraryItems(variants, []);
+  assert.deepEqual(libraryFacet(combined, "genre"), [
+    "Comedy adventure", "Comedy caper adventure", "Comedy horror adventure",
+  ]);
+  assert.deepEqual(queryLibrary(combined, { ...defaultLibraryQuery, genre: "Comic Adventure" })
+    .map(({ title }) => title), ["Alpha", "Zulu"]);
+  assert.deepEqual(queryLibrary(combined, { ...defaultLibraryQuery, genre: "Comedy horror adventure" })
+    .map(({ title }) => title), ["Delta", "Epsilon"]);
+  assert.deepEqual(queryLibrary(combined, { ...defaultLibraryQuery, sort: "genre-asc" })
+    .map(({ title }) => title), ["Alpha", "Zulu", "Beta", "Delta", "Epsilon"]);
+  assert.equal(libraryGenre({ genre: "Children's storybook adventure" }), "Interactive storybook");
+  assert.equal(libraryGenre({ genre: "  " }), "Unknown");
+  assert.equal(libraryGenre({}), "Unknown");
 });
