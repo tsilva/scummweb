@@ -1193,6 +1193,57 @@ button.nav-icon-link {
   font-size: 4rem;
 }
 
+.library-add-card {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 1.5rem;
+  border: 1px dashed #383838;
+  background: transparent;
+  color: #a3a3a3;
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+}
+
+.library-add-card svg {
+  color: #858585;
+}
+
+.library-add-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.library-add-hint {
+  max-width: 18ch;
+  color: #858585;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.library-add-card:enabled:hover,
+.library-add-card:focus-visible {
+  border-color: #666;
+  background: rgba(255, 255, 255, 0.02);
+  transform: none;
+}
+
+.library-add-card:focus-visible {
+  outline: 2px solid #a3a3a3;
+  outline-offset: 4px;
+}
+
+.library-add-card:disabled {
+  opacity: 0.5;
+  cursor: wait;
+  transform: none;
+}
+
 .poster-media {
   position: absolute;
   inset: 0;

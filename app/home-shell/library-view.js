@@ -1,11 +1,11 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { ChevronDown, SlidersHorizontal } from "lucide-react";
+import { ChevronDown, Plus, SlidersHorizontal } from "lucide-react";
 import { GamePoster } from "./library-cards";
 import { defaultLibraryQuery, libraryFacet, queryLibrary } from "./library-query.mjs";
 
-export default function LibraryView({ items, heading, notice }) {
+export default function LibraryView({ items, heading, notice, onAddGame, importDisabled }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState(defaultLibraryQuery);
   const toggle = useRef(null);
@@ -57,9 +57,10 @@ export default function LibraryView({ items, heading, notice }) {
       </div>
       {(open || changed) && <p className="library-results" role="status">Showing {visible.length} of {items.length} games</p>}
       <p className="local-game-status" role="status">{notice}</p>
-      {visible.length === 0 ? <div className="library-empty">
+      {visible.length === 0 && <div className="library-empty">
         <p>No games match this genre.</p>
-      </div> : <div className="poster-grid">
+      </div>}
+      <div className="poster-grid">
         {visible.map((item) => {
           const { key, game, title, versions, dialogId } = item;
           const needsFiles = versions.every(({ source, status }) => source && !["available", "session", "permission"].includes(status));
@@ -75,7 +76,14 @@ export default function LibraryView({ items, heading, notice }) {
             </div>
           );
         })}
-      </div>}
+        <div className="poster-entry">
+          <button type="button" className="poster-card library-add-card" onClick={onAddGame} disabled={importDisabled}>
+            <Plus size={36} strokeWidth={1.5} aria-hidden="true" />
+            <span className="library-add-title">Add a game</span>
+            <span className="library-add-hint">Click to choose or drag and drop your game ZIPs here.</span>
+          </button>
+        </div>
+      </div>
     </section>
   );
 }

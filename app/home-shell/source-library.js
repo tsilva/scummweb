@@ -404,7 +404,8 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
         : <HeroStage featuredGame={featuredGame} sourceAction={featuredAction} />)}
       <div className="section-stack">
         <RecentGamesRail groups={groups} />
-        <LibraryView items={groups} heading={libraryHeading} notice={notice} />
+        <LibraryView items={groups} heading={libraryHeading} notice={notice}
+          onAddGame={() => chooseZip()} importDisabled={disabled} />
       </div>
       {detail && <VersionedGameDetails key={detail.key} group={detail} notice={notice} onClose={closeDetails} openerElement={detailsOpener.current} />}
       {!isHomePage && featuredGame?.importRequired && !featuredGroup && <GameDetailModal game={featuredGame}
