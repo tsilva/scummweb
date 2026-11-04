@@ -95,3 +95,28 @@ test("full downloads reject HTTP errors and web pages before reading their bodie
     fetch.mock.restore();
   }
 });
+
+test("ZIP downloads report streamed percentages and handle unknown totals", async (t) => {
+  const zip = new ZipWriter(new BlobWriter());
+  await zip.add("sky.dnr", new Uint8ArrayReader(Uint8Array.of(1, 2, 3)));
+  const bytes = new Uint8Array(await (await zip.close()).arrayBuffer());
+  const midpoint = Math.floor(bytes.length / 2);
+  for (const contentLength of [String(bytes.length), null, "invalid", "0"]) {
+    const progress = [];
+    const fetch = t.mock.method(globalThis, "fetch", async () => new Response(new ReadableStream({
+      start(controller) {
+        controller.enqueue(bytes.slice(0, midpoint));
+        controller.enqueue(bytes.slice(midpoint));
+        controller.close();
+      },
+    }), { headers: contentLength === null ? {} : { "content-length": contentLength } }));
+    const files = await readRemoteGameArchive(`${customUrl}/sky.zip`, {
+      onProgress: (percent) => progress.push(percent),
+    });
+    assert.equal(files[0].path, "sky.dnr");
+    assert.deepEqual(progress, contentLength === String(bytes.length)
+      ? [0, Math.floor(midpoint / bytes.length * 100), 99, 100]
+      : [null, 100]);
+    fetch.mock.restore();
+  }
+});

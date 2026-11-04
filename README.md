@@ -31,6 +31,7 @@ a copy, drop its ZIP onto the page to add it and enable its launch options.
 [Beneath a Steel Sky](https://scummweb.tsilva.eu/beneath-a-steel-sky/play),
 a freeware cyberpunk adventure. The game downloads and unpacks in your browser;
 when the opening scene appears, you’re ready to play.
+ZIP downloads show a percentage when the host provides the total file size.
 
 Select a game card for details and **Play**. If sound or an intro is paused,
 select **Start audio** inside the game. Compatible saves offer **Continue**;

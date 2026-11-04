@@ -37,6 +37,11 @@ function RemoteArchivePlayer({ zip }) {
     prepareRemoteGameArchive(zip, {
       signal: controller.signal,
       onDownloading: () => setStatus("Downloading game ZIP…"),
+      onProgress: (progress) => {
+        if (!controller.signal.aborted) {
+          setStatus(progress === null ? "Downloading game ZIP…" : `Downloading game ZIP (${progress}%)…`);
+        }
+      },
     }).then((result) => {
       if (!controller.signal.aborted) setArchive(result);
     }).catch((failure) => {
