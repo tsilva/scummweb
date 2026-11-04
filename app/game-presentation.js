@@ -289,12 +289,17 @@ export function getGamePresentation(game, importedArt) {
 }
 
 function getImportedScummPresentation(target, title, variant) {
+  const metadata = retroGameArtwork[`scumm:${target}`];
   const platform = /\bamiga\b/i.test(variant) ? "Amiga" : /\bdos\b/i.test(variant) ? "DOS" : undefined;
   const edition = /\bcd\b/i.test(variant) ? "CD" : undefined;
   const demo = /\bdemo\b/i.test(variant) ? " (Demo)" : "";
   const labels = [...variant.matchAll(/\(([^()]+)\)/g)].map(([, label]) => label);
   return {
-    ...getGamePresentation({ target, displayTitle: title + demo, engineId: "scumm" }),
+    ...getGamePresentation({ target, displayTitle: title + demo, engineId: "scumm" }, metadata && {
+      summary: metadata.summary,
+      studio: metadata.studio,
+      genre: metadata.genre,
+    }),
     platform,
     edition,
     badge: labels.join(" · ") || "Local game",
@@ -347,7 +352,9 @@ export function getImportedGamePresentation(filename) {
         }, {
           posterImage: retro.posterImage,
           screenshots: retro.screenshots,
-          summary: `Play your local copy of ${retro.title} in ScummVM.`,
+          summary: retro.summary,
+          studio: retro.studio,
+          genre: retro.genre,
         }),
         badge: labels.join(" · ") || "Local game",
       };

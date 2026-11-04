@@ -18,6 +18,11 @@ ScummWEB brings classic point-and-click games to your browser. It uses
 ScummVM to run a library of free adventures and demos. You can also play
 compatible games from your own collection.
 
+ScummWEB maintains an asset and metadata pack with artwork, descriptions,
+studio credits, and genres for recognized games. The public playable catalog
+uses freeware and demos offered on the ScummVM website. Import your own game
+files to build a personal dashboard.
+
 ## Play online
 
 Start with [Beneath a Steel Sky](https://scummweb.tsilva.eu/beneath-a-steel-sky/play),

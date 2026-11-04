@@ -1395,6 +1395,38 @@ button.nav-icon-link {
   position: relative;
 }
 
+.source-poster-details {
+  padding: 0.85rem 0.15rem 0;
+}
+
+.source-poster-summary {
+  display: -webkit-box;
+  margin: 0 0 0.75rem;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.source-poster-details dl {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.8rem;
+}
+
+.source-poster-details dt {
+  color: var(--accent-strong);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.source-poster-details dd {
+  margin: 0.15rem 0 0;
+}
+
 .source-poster-card {
   width: 100%;
   padding: 0;
