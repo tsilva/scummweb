@@ -1,5 +1,47 @@
 # Maintaining ScummWEB
 
+## Playing and importing games
+
+Select a library card to view screenshots, metadata, game notices, and launch
+options. Recognized platform, language, and edition variants share a card;
+choose **Version** in its details to select a copy. ScummWEB remembers your
+selection and keeps demos separate from full games. Each imported version has
+separate browser saves. Supported engines offer **Continue** and **Start from
+beginning**; others load progress through their in-game menu. Older shared saves
+remain stored in the browser.
+
+The sliders icon beside **Game Library** opens sorting by name, release year,
+genre, or studio and genre filtering for both public and imported games. Select
+**All genres** to remove the filter or **Name: A–Z** to restore alphabetical order.
+The top-bar checklist opens **Game compatibility**, with search and filters for
+checked editions, warnings, failures, and untested games. See
+[game testing](game-testing.md) for the same results and their limitations.
+
+Drop ZIPs or folders onto the homepage or a game's page. ScummWEB searches
+subfolders for ZIPs and treats a folder without ZIPs as one unpacked game.
+The import dialog shows progress, added games, and errors; its final summary
+also counts skipped games. Reimported games count as skipped with refreshed
+file access. Scroll to review large batches, then select **Confirm** to close
+the dialog and go to the new games.
+
+Saved local sources are checked when the library opens and when you return to
+the tab. Missing files or folders and **File access needed** appear on their
+posters. Select the poster, choose the affected version, and use **Locate ZIP**,
+**Locate folder**, or the permission action. Dropping the same library again
+also refreshes access without adding duplicate entries.
+
+Local imports support up to 4 GiB. For large games, use unpacked folders or
+ZIPs with compression disabled; see [packaging a local collection](#package-a-local-scummvm-collection).
+Extracted CD audio accepts physical track names such as `Track  2.flac` as well
+as ScummVM's conventional `track1.flac` naming.
+
+To play a ZIP from a link, open
+`/local/play#zip=https%3A%2F%2Fexample.com%2Fgame.zip` on your ScummWEB site.
+URL-encode the direct HTTPS ZIP address. The browser downloads it directly
+from its host, which must allow cross-origin GET requests from your ScummWEB
+site. Hosted ZIPs are limited to 128 MiB compressed and 256 MiB unpacked.
+If the host blocks access, download the ZIP and drop it onto the site instead.
+
 ## Local development
 
 Use [the README quickstart](../README.md#run-locally) for a local server that
