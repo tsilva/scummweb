@@ -285,16 +285,18 @@ or request-time rendering.
   sources stay separate. A version count opens a single details panel with a
   Version dropdown showing platform, language, edition, and source type; unknown
   metadata stays explicitly unknown. Remember the last selected available version,
-  otherwise prefer an available copy matching the browser language. File access,
-  launch, Locate files, and Remove this version always apply to that selection.
+  otherwise prefer an available copy matching the browser language. File access
+  and launch always apply to that selection. Missing sources use the primary
+  file-location action. The details panel omits filenames, auxiliary file-management
+  links, save-folder hints, and legacy-save controls. Generic presentation uses the
+  genre as its heading label and omits release metadata when the year is unknown.
   Catalog details use the same save-aware launch buttons as the hero. Imported
   versions use a deterministic SHA-256 source-ID save folder passed through
   ScummVM’s `--savepath`; Continue looks only inside that version’s folder and
   retains the supported-engine filename rules in `browser-saves.mjs`. Other engines
-  load saves through their in-game menu. Older shared saves are preserved and
-  accessible only through the explicit Older saves action, which launches with the
-  legacy save folder. Removing a version leaves its browser saves untouched;
-  a reimport with a new source ID does not automatically reconnect those saves.
+  load saves through their in-game menu. Older shared saves remain stored without
+  an exposed legacy launch control. Removing a version leaves its browser saves
+  untouched; a reimport with a new source ID does not automatically reconnect them.
   Details use a native modal dialog for focus containment and Escape
   dismissal, restore focus to the opener, and prevent background scrolling.
   The library's sliders icon opens the sorting and genre controls. The button

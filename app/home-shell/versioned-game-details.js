@@ -35,8 +35,8 @@ export default function VersionedGameDetails({ group, notice, onClose, openerEle
   const remember = () => rememberGameVersion(group.key, version.key);
 
   return <GameDetailModal game={version.game} dialogId={group.dialogId} notice={notice} onClose={onClose} openerElement={openerElement}
-    controls={<div className="game-version-controls">
-      {group.versions.length > 1 && <label>Version
+    controls={group.versions.length > 1 ? <div className="game-version-controls">
+      <label>Version
         <span className="library-select">
           <select value={version.key} onChange={(event) => {
             setSelectedKey(event.target.value);
@@ -48,23 +48,8 @@ export default function VersionedGameDetails({ group, notice, onClose, openerEle
           </select>
           <ChevronDown size={16} aria-hidden="true" />
         </span>
-      </label>}
-      {version.source && <>
-        <p className="game-version-file">{version.source.name}</p>
-        <div className="game-version-management">
-          {!version.source.url && <button type="button" disabled={version.action.disabled}
-            onClick={version.action.onLocate}>Locate files</button>}
-          <button type="button" disabled={version.action.disabled} onClick={version.action.onRemove}>Remove this version</button>
-        </div>
-        <p className="game-detail-save-hint">Saves stay with this version. If Continue is unavailable, load progress from the game’s menu.</p>
-        <details className="game-version-legacy">
-          <summary>Older saves</summary>
-          <p>Played this version before? Its older saves remain in the previous shared folder and may belong to another edition.</p>
-          <button type="button" className="secondary-button" disabled={version.action.disabled || version.locate}
-            onClick={() => { remember(); version.action.onLegacy(); }}>Play with older saves</button>
-        </details>
-      </>}
-    </div>}
+      </label>
+    </div> : null}
     actions={version.source ? <SourceLaunchActions key={version.key} version={version} onLaunch={remember} />
       : <LaunchButton key={version.key} game={version.game} entryPoint="library" onLaunch={remember} />}
   />;
