@@ -32,8 +32,8 @@ disappear from the strip. The strip stays hidden until there is play history.
 The sliders icon beside **Game Library** opens sorting by name, release year,
 genre, or studio and genre filtering for both public and imported games. Select
 **All genres** to remove the filter or **Name: A–Z** to restore alphabetical order.
-The top-bar checklist opens **Game compatibility**, with search and filters for
-checked editions, warnings, failures, and untested games. See
+The **Compatibility** navigation link opens the compatibility page, with search
+and filters for checked editions, warnings, failures, and untested games. See
 [game testing](game-testing.md) for the same results and their limitations.
 
 Select the **Add a game** card in the library to choose ZIPs, or drop one or
@@ -129,9 +129,8 @@ its landing page and sitemap entry on the next build.
 The navigation and footer link to `/compatibility`, which includes ordinary links
 to every recognized game page in its initial HTML. Edition-specific checks match
 game pages by engine identity, with demos separate from full games. Recognized
-games without a matching result appear as **Not yet tested**. The page shares
-search, status filters, and result presentation with the checklist modal, and
-the compatibility page itself is included in the sitemap.
+games without a matching result appear as **Not yet tested**. The page provides
+search and status filters and is itself included in the sitemap.
 
 Social-card PNGs are generated from managed artwork during tests and builds.
 Keep `data/social-cards.json` tracked; new generated PNGs are ignored and are
@@ -200,8 +199,9 @@ agent gameplay experiments.
 ## Maintaining game compatibility
 
 [`data/game-compatibility.json`](../data/game-compatibility.json) is the canonical
-compatibility list (schema version 4). The top-bar modal reads its flat `entries`
-list directly. Each entry has a title, ScummVM `gameId`, and a `status`:
+compatibility list (schema version 4). The compatibility page uses its flat
+`entries` list to show recorded results. Each entry has a title, ScummVM `gameId`,
+and a `status`:
 `startup-verified`, `startup-warning`, and `startup-failed` represent one checked
 `edition` with an `observation`. Warnings and failures describe ScummVM or
 ScummWEB issues, with `issueScope` set to `scummvm` or `scummweb` on every warning

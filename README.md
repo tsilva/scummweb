@@ -45,9 +45,9 @@ The Recently Played strip shows games you have launched, newest first, including
 your imported ZIPs. It appears after your first launch.
 
 Use the library’s sliders icon to sort and filter games. Choose **Version** in
-a game’s details to switch platform, language, or edition. Open **Game
-compatibility** from the top-bar checklist icon, or read the
-[compatibility page](https://scummweb.tsilva.eu/compatibility) or
+a game’s details to switch platform, language, or edition. Select **Compatibility**
+in the navigation to open the
+[compatibility page](https://scummweb.tsilva.eu/compatibility), or read the
 [compatibility results](docs/game-testing.md), for tested editions and known
 ScummVM or ScummWEB limitations. Problems specific to missing or mismatched
 game files are excluded. Startup checks do not establish full-game compatibility.
