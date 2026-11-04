@@ -65,7 +65,8 @@ compatibility or infer language, platform, or edition.
 The recognition rules in `app/archive-game-presentation.mjs` currently cover
 Beneath a Steel Sky, Day of the Tentacle, Fate of Atlantis, Monkey Island 2,
 and Sam & Max through distinctive data-file groups. Shared filenames use
-size and CRC-32 signatures for the English DOS EGA Monkey Island demo and
+size and CRC-32 signatures for Drascula, Lure of the Temptress, Flight of the
+Amazon Queen, Nippon Safes, the English DOS EGA Monkey Island demo, and
 the recognized Amiga Last Crusade data. New rules must reuse existing artwork,
 avoid generic filenames without signatures, and leave multiple-game archives
 unmatched. These ZIP directory signatures identify presentation only; normal

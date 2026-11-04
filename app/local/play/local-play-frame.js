@@ -10,7 +10,6 @@ import { buildGameExitHref } from "../../home-shell/hero-selection.mjs";
 import { getSelectedGamePresentation, openSelectedGameArchive } from "../../local-game-archive.mjs";
 
 function ArchivePlayer({ game, loadArchive, remote = false }) {
-
   return (
     <GameRouteFrame
       archiveLoadingText={remote ? "Downloading game ZIP…" : "Opening game files…"}
