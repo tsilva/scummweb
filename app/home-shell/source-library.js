@@ -398,13 +398,6 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
                     <GamePoster title={title} image={game?.posterImage} />
                     {hint && <span className="source-poster-hint" aria-hidden="true">{hint}</span>}
                   </button>
-                  <div className="source-poster-details">
-                    <p className="source-poster-summary" title={game.summary}>{game.summary}</p>
-                    <dl>
-                      <div><dt>Studio</dt><dd>{game.studio}</dd></div>
-                      <div><dt>Genre</dt><dd>{game.genre}</dd></div>
-                    </dl>
-                  </div>
                   <button
                     type="button"
                     className="source-poster-remove"
