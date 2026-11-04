@@ -1,4 +1,4 @@
-import { maxArchiveSize, readLocalGameArchive } from "./local-game-archive.mjs";
+import { ArchiveError, maxArchiveSize, readLocalGameArchive } from "./local-game-archive.mjs";
 
 export const bucketStorageKey = "scummweb.game-bucket.v1";
 
@@ -73,6 +73,27 @@ export function readCatalogGameArchive(url, options) {
   return downloadGameArchive(fetchUrl, options);
 }
 
+export async function validateGameArchiveResponse(response, archiveLimit = maxArchiveSize) {
+  let message;
+  if (!response?.ok) {
+    message = response
+      ? `This ZIP link returned HTTP ${response.status}. Check the link and try again.`
+      : "Could not download the ZIP. Check that the direct link works and the host allows cross-origin downloads. You can also download the ZIP yourself and drop it on ScummWEB.";
+  } else if (/^(?:text\/html|application\/(?:xhtml\+xml|json|problem\+json)|text\/json)(?:;|$)/i.test(
+    (response.headers.get("content-type") || "").trim()
+  )) {
+    message = "This link returned a web page or JSON instead of a game ZIP. Use a direct ZIP link.";
+  } else if (Number(response.headers.get("content-length")) > archiveLimit) {
+    message = `This ZIP exceeds the ${archiveLimit / (1024 * 1024)} MiB download limit.`;
+  } else if (!response.body) {
+    message = "This ZIP link returned an empty response.";
+  }
+  if (message) {
+    await response?.body?.cancel();
+    throw new ArchiveError(message);
+  }
+}
+
 async function downloadGameArchive(zipUrl, { signal, onEntries, archiveLimit = maxArchiveSize, expandedLimit, timeoutMs = 120_000 } = {}) {
   const timeout = AbortSignal.timeout(timeoutMs);
   const response = await fetch(zipUrl, {
@@ -82,16 +103,9 @@ async function downloadGameArchive(zipUrl, { signal, onEntries, archiveLimit = m
     redirect: "error",
     signal: signal ? AbortSignal.any([signal, timeout]) : timeout,
   }).catch(() => null);
-  if (!response?.ok || !response.body) {
-    throw new Error("Could not download the ZIP. Check that the direct link works and the host allows cross-origin downloads. You can also download the ZIP yourself and drop it on ScummWEB.");
-  }
+  await validateGameArchiveResponse(response, archiveLimit);
 
   const tooLarge = `This ZIP exceeds the ${archiveLimit / (1024 * 1024)} MiB download limit.`;
-  if (Number(response.headers.get("content-length")) > archiveLimit) {
-    await response.body.cancel();
-    throw new Error(tooLarge);
-  }
-
   let size = 0;
   const limitedBody = response.body.pipeThrough(new TransformStream({
     transform(chunk, controller) {

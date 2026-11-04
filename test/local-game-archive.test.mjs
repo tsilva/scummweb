@@ -34,6 +34,18 @@ test("an archive cannot escape its in-memory game directory", async () => {
   );
 });
 
+test("archived scripts, HTML and executable files remain bytes rather than being executed", async () => {
+  const payload = new TextEncoder().encode("globalThis.scummwebArchiveScriptExecuted = true;");
+  const writer = new ZipWriter(new BlobWriter());
+  for (const name of ["game.js", "index.html", "setup.exe"]) {
+    await writer.add(name, new Uint8ArrayReader(payload));
+  }
+  const files = await readLocalGameArchive(new File([await writer.close()], "game.zip"));
+  assert.deepEqual(files.map(({ path }) => path), ["game.js", "index.html", "setup.exe"]);
+  for (const { data } of files) assert.deepEqual(data, payload);
+  assert.equal(globalThis.scummwebArchiveScriptExecuted, undefined);
+});
+
 test("a DOS DOTT launcher without the game data reports the missing files", async () => {
   const zip = await gameZip(["BOOTDISK.EXE", "DOTT.EXE", "__MACOSX/._DOTT.EXE"]);
   await assert.rejects(readLocalGameArchive(zip), /missing Day of the Tentacle game data/);

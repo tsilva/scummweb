@@ -57,7 +57,14 @@ games and show their title, metadata, and hero artwork. Archive names are not
 used for this identification. Hosts supporting byte ranges and exposing
 `Content-Range` through CORS allow identification before the full download.
 Otherwise, identification happens after one full download, reused for launch.
-Inspection is limited to 2 MiB and six seconds before falling back.
+Inspection is limited to 2 MiB and six seconds. A host that ignores ranges,
+does not expose the required headers, rejects range requests, or has a directory
+too large for the inspection budget falls back to one full download. Browsers
+cannot distinguish a range-specific CORS failure from an unreachable host, so
+an initial network/CORS error also allows one ordinary download attempt.
+HTTP errors such as 403 or 404, HTML/JSON responses, oversized archives, invalid
+ZIPs, unsafe entries, and inspection timeouts stop immediately without a full
+download retry. Download-time errors use the same response checks.
 Unknown or ambiguous contents retain the generic loading screen; ScummVM still
 detects the game when it starts. This artwork lookup does not establish game
 compatibility or infer language, platform, or edition.
@@ -73,6 +80,16 @@ unmatched. These ZIP directory signatures identify presentation only; normal
 archive validation and ScummVM detection still apply.
 
 If the host blocks access, download the ZIP and drop it onto the site instead.
+
+Direct-link inspection, extraction, and game detection run in the user's browser.
+The ZIP address stays in the URL fragment and game data downloads directly from
+its host, without app-server processing. Requests omit credentials, reject
+redirects, and send no referrer. Extracted files are data in ScummVM's browser
+filesystem: ScummWEB does not render archived HTML, load archived JavaScript,
+or launch archived programs on the operating system. Validation rejects unsafe
+paths, symbolic links, duplicate paths, password-protected entries, and size
+or entry-count violations. These safeguards are not antivirus scanning or a
+guarantee against browser, ZIP-library, or emulator vulnerabilities.
 
 ## Local development
 

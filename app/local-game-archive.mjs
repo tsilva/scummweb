@@ -5,7 +5,7 @@ export const maxGameEntries = 8192;
 
 const localZipLimits = { archiveLimit: maxLocalGameSize, expandedLimit: maxLocalGameSize };
 
-class ArchiveError extends Error {}
+export class ArchiveError extends Error {}
 
 // Hand the ZIP loader to the player route through this tab's memory.
 let selectedArchive;
