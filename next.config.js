@@ -57,7 +57,7 @@ const nextConfig = {
   },
   headers() {
     return [
-      ...Object.entries(runtimeAssets.files).map(([source, version]) => ({
+      ...Object.entries(runtimeAssets.files).filter(([source]) => source !== "/scummvm.html").map(([source, version]) => ({
         source,
         has: [{ type: "query", key: "v", value: version }],
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],

@@ -259,7 +259,8 @@ engine and its source provenance. Native patches still require a full rebuild.
 `prepare` and full runtime builds generate content fingerprints for the shell,
 core runtime and engine data. Only a matching resource/version pair gets immutable
 browser caching; application deployments refresh artwork without invalidating
-unchanged runtime binaries. Keep the generated `runtime-assets.json` and compact
+unchanged runtime binaries. The HTML shell revalidates so hosting-injected scripts
+stay fresh. Keep the generated `runtime-assets.json` and compact
 `runtime-version.json` with the managed bundle.
 
 For startup diagnosis, parent-frame Performance marks record `scummweb:runtime-requested`,

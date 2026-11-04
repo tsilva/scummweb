@@ -47,6 +47,8 @@ test("only the exact content version receives immutable caching headers", async 
   const wasm = module.exports.headers().find(({ source }) => source === "/scummvm.wasm");
   assert.equal(wasm.has[0].value, "sha-wasm");
   assert.equal(wasm.headers[0].value, "public, max-age=31536000, immutable");
+  const html = module.exports.headers().find(({ source }) => source === "/scummvm.html");
+  assert.ok(!html.headers.some(({ key }) => key === "Cache-Control"), "HTML revalidates hosting-injected scripts");
 });
 
 test("app deployments refresh artwork while retaining content-addressed runtime URLs", async (t) => {

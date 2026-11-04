@@ -6,6 +6,7 @@ import { inspectRemoteGameArchive, prepareRemoteGameArchive } from "../app/remot
 import { maxArchiveSize } from "../app/local-game-archive.mjs";
 import { readRemoteGameArchive } from "../app/game-bucket.mjs";
 import { installGameZipCache } from "./helpers/game-zip-cache.mjs";
+import { readCachedGameData } from "../app/game-zip-cache.mjs";
 
 const url = "https://example.com/completely-renamed.zip?download=1";
 
@@ -22,10 +23,15 @@ test("cached direct links identify and launch the game without inspection or dow
   const bytes = await makeZip();
   const fetch = t.mock.method(globalThis, "fetch", async () => new Response(bytes));
   const first = await readRemoteGameArchive(url);
+  await readCachedGameData(url);
   fetch.mock.mockImplementation(async () => { throw new Error("Network must not be used"); });
   const prepared = await prepareRemoteGameArchive(url);
   assert.equal(prepared.game.target, "sky");
-  assert.deepEqual(await prepared.loadArchive(), first);
+  const cached = await prepared.loadArchive();
+  assert.ok(cached.every(({ blob }) => blob instanceof Blob), "cached imports mount verified file slices");
+  assert.deepEqual(await Promise.all(cached.map(async ({ path, blob }) => ({
+    path, data: new Uint8Array(await blob.arrayBuffer()),
+  }))), first);
   assert.equal(fetch.mock.callCount(), 1);
 });
 
