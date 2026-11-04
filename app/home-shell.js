@@ -64,7 +64,7 @@ export default function HomeShell({
 
       <main className="page-shell">
         {!isHomePage && (
-          <HeroStage featuredGame={featuredGame} gameCount={catalog.length} />
+          <HeroStage featuredGame={featuredGame} />
         )}
         <SourceLibrary
           catalog={catalog}

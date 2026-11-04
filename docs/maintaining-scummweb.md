@@ -184,10 +184,16 @@ into the managed shell during ScummVM rebuilds.
   and show a missing-file or missing-folder badge. Permission failures show
   `File access needed`; other check failures remain unverified.
   Directory imports list each archive by its relative path, with waiting,
-  checking, added/reconnected, and skipped states visible during processing.
+  checking, added, skipped, and error states visible during processing.
+  The progress bar sits below the dialog heading. During scanning, container
+  folders are hidden and file rows appear without nesting, latest scanned first.
   Unpacked game folders list their individual data files as they are read.
   Completed rows stay visible until the batch result replaces the progress list.
   Reimporting local games reuses their saved source IDs and refreshes file access.
+  These existing games count as skipped; failed imports count as errors.
+  The final dialog counts each attempted game once in its scanned total and
+  shows separate added, skipped, and error counts. Loose data-file rows are
+  details of their game folder and do not increase these counts.
   Matching prefers file-handle identity, then a saved fingerprint of ZIP member
   paths, sizes and CRCs, or unpacked file paths, sizes and modification times.
   Fingerprints ignore enclosing folders and scan order. Legacy entries without
@@ -201,6 +207,8 @@ into the managed shell during ScummVM rebuilds.
   slides so long titles and labels do not move the controls or the library.
   The hero's primary action always reads `Play` and uses a fixed 10rem by
   3.4rem button, including imported games and games with a browser save.
+  Hero status badges omit library-wide game counts; game slides show only
+  status information for the displayed game.
 
   Every recognized title in the asset pack must include a game-specific
   `summary`, `studio`, and `genre`. Keep metadata references in
@@ -222,13 +230,18 @@ into the managed shell during ScummVM rebuilds.
   remains active when the controls are collapsed. Select All genres to remove
   the genre filter. The panel contains no search, year or source filters, or
   reset action. Dropdown arrows have a 1rem inset and reserved text padding.
-  Genre facets, filtering, and sorting share `libraryGenre` normalization:
-  ignore case and repeated whitespace, merge Comic adventure into Comedy
-  adventure, Horror comedy adventure into Comedy horror adventure, and
-  Children's storybook adventure into Interactive storybook. Display the
-  resulting categories in sentence case. Original presentation metadata stays
-  available in game details and heroes; new genre aliases belong in this shared
-  normalizer so catalog and imported games match the same option.
+  Genre facets, filtering, and sorting share `libraryGenre` grouping into 11
+  categories: Adventure, Action & arcade, Comedy, Family & education, Fantasy,
+  Horror, Mystery & thriller, Puzzle, Role-playing, Science fiction, and Simulation.
+  Matching ignores case and repeated whitespace. Hybrid genres use the ordered
+  rules in `genreGroups`: family and education, role-playing, action and arcade,
+  simulation, horror, science fiction, fantasy, mystery and thriller, comedy,
+  then puzzle. Other named genres use Adventure; missing metadata uses Unknown.
+  For example, educational time travel is Family & education, horror RPGs are
+  Role-playing, and science-fiction comedy is Science fiction. Original
+  presentation metadata remains available in game details and heroes. Keep
+  future grouping changes in this shared normalizer so catalog and imported
+  games match the same option.
   ScummVM's developer pages provide the
   primary references; genre labels and summaries are editorial descriptions.
   The fan game Road has an unverified creator credit and a description based

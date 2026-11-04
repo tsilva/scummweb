@@ -200,7 +200,7 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
     }
     known.set(source.id, source);
     updateEntries([source]);
-    return { id: source.id, temporary: sessionSources.has(source.id), needsSelection: !game.handle };
+    return { id: source.id, temporary: sessionSources.has(source.id) };
   }
 
   function importRoots(selection, replacing) {
@@ -211,15 +211,14 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
       const items = [];
       const savedIds = new Set();
       let temporary = 0;
-      let needsSelection = 0;
-      const reconnectedIds = new Set();
-      const originalIds = new Set(known.keys());
+      let scanOrder = 0;
       const reconnectable = new Set(entries.filter(({ source, status }) =>
         !source.url && !sessionGames.has(source.id) && (reconnectStatuses.has(status) || !source.handle)
       ).map(({ source }) => source.id));
 
       function updateProgress(index, details) {
-        setPending((current) => current.map((item) => item.index === index ? { ...item, ...details } : item));
+        const order = ++scanOrder;
+        setPending((current) => current.map((item) => item.index === index ? { ...item, ...details, scanOrder: order } : item));
       }
 
       async function save(game, label = game.name) {
@@ -228,28 +227,31 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
         const firstSave = !savedIds.has(result.id);
         savedIds.add(result.id);
         reconnectable.delete(result.id);
-        if (reconnect && originalIds.has(result.id)) reconnectedIds.add(result.id);
-        const item = { label, message: reconnect ? "Already in your library. Files refreshed." : "Added to your library" };
+        const item = {
+          label,
+          status: reconnect ? "skipped" : "added",
+          message: reconnect ? "Already in your library. Files refreshed." : "Added to your library",
+        };
         items.push(item);
         if (firstSave && result.temporary) temporary++;
-        else if (firstSave && result.needsSelection) needsSelection++;
         return item;
       }
 
-      setPending(roots.map((root, index) => ({ index, label: root.name ?? "Game files", message: "Waiting to scan…" })));
+      setPending(roots.map((root, index) => ({ index, label: root.name ?? "Game files", container: root.kind === "directory", message: "Waiting to scan…" })));
       try {
         for (const [index, root] of roots.entries()) {
           let label = "Dropped item";
           let fileItems = [];
           function updateFile(position, details) {
-            fileItems = fileItems.map((item, itemIndex) => itemIndex === position ? { ...item, ...details } : item);
+            const order = ++scanOrder;
+            fileItems = fileItems.map((item, itemIndex) => itemIndex === position ? { ...item, ...details, scanOrder: order } : item);
             updateProgress(index, { files: fileItems });
           }
           try {
             const node = await root;
             if (!node) throw new Error("Could not read this item. Try dropping it again.");
             label = node.name;
-            updateProgress(index, { label, message: node.kind === "directory" ? "Scanning folder…" : "Checking ZIP…" });
+            updateProgress(index, { label, container: node.kind === "directory", message: node.kind === "directory" ? "Scanning folder…" : "Checking ZIP…" });
 
             if (node.kind === "file") {
               const item = await save(await prepareLocalZip(node));
@@ -263,9 +265,12 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
                 updateProgress(index, { message: "Checking game files…", files: fileItems });
                 const game = await prepareLocalFolder(node, files, updateFile);
                 const item = await save(game);
-                fileItems = fileItems.map((file) => ({ ...file, message: "Added with game folder", complete: true }));
+                fileItems = fileItems.map((file) => ({
+                  ...file, status: item.status,
+                  message: item.status === "skipped" ? "Refreshed with game folder" : "Added with game folder", complete: true,
+                }));
                 item.files = fileItems;
-                updateProgress(index, { message: item.message, files: fileItems });
+                updateProgress(index, { ...item, files: fileItems });
               } else {
                 fileItems = archives.map((archive) => ({ label: archive.path, message: "Waiting…" }));
                 updateProgress(index, { files: fileItems });
@@ -278,22 +283,24 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
                   updateFile(position, { message: "Checking ZIP…" });
                   try {
                     const item = await save(await prepareLocalZip(archive), archive.path);
-                    updateFile(position, { message: item.message, complete: true });
+                    updateFile(position, { ...item, complete: true });
                   } catch (error) {
-                    const item = { label: archive.path, message: error.message, skipped: true };
+                    const item = { label: archive.path, message: error.message, status: "error" };
                     items.push(item);
                     updateFile(position, item);
                   }
                 }
                 updateProgress(index, {
                   message: `${archives.length} ZIPs checked`, value: archives.length, total: archives.length,
+                  status: fileItems.some((item) => item.status === "error") ? "error"
+                    : fileItems.every((item) => item.status === "skipped") ? "skipped" : "added",
                 });
               }
             }
           } catch (error) {
-            fileItems = fileItems.map((file) => ({ ...file, message: "Game folder was not added", skipped: true }));
-            items.push({ label, message: error.message, skipped: true, files: fileItems });
-            updateProgress(index, { message: error.message, skipped: true, files: fileItems });
+            fileItems = fileItems.map((file) => ({ ...file, message: "Game folder was not added", status: "error" }));
+            items.push({ label, message: error.message, status: "error", files: fileItems });
+            updateProgress(index, { message: error.message, status: "error", files: fileItems });
           } finally {
             updateProgress(index, { complete: true });
           }
@@ -302,10 +309,10 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
         setPending([]);
       }
 
-      setImportResult({ savedIds, items, replacing, reconnected: reconnectedIds.size, temporary, needsSelection });
+      setImportResult({ savedIds, items, replacing, temporary });
     }, (message) => setImportResult({
       savedIds: new Set(),
-      items: [{ label: "Game files", message, skipped: true }],
+      items: [{ label: "Game files", message, status: "error" }],
     }));
   }
 

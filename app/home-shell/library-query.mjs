@@ -13,17 +13,25 @@ export function libraryYear(game) {
   return /^\d{4}$/.test(String(game.year)) ? String(game.year) : "Unknown";
 }
 
+// Earlier groups take precedence for hybrids: educational time travel stays
+// family-friendly, horror RPGs stay role-playing, and sci-fi comedy stays sci-fi.
+const genreGroups = [
+  ["Family & education", /children|storybook|educat(?:ion|ional)|environmental|\bfamily\b/],
+  ["Role-playing", /role[ -]playing|\brpg\b|dungeon[ -]crawling/],
+  ["Action & arcade", /\baction\b|\barcade\b/],
+  ["Simulation", /simulation|board game/],
+  ["Horror", /horror/],
+  ["Science fiction", /science[ -]fiction|sci[ -]fi|cyberpunk|time[ -]travel/],
+  ["Fantasy", /fantasy|arthurian/],
+  ["Mystery & thriller", /mystery|thriller|detective|police|conspiracy|noir|espionage/],
+  ["Comedy", /comedy|comic|caper/],
+  ["Puzzle", /puzzle/],
+];
+
 export function libraryGenre(game) {
   const genre = (game.genre || "").trim().replace(/\s+/g, " ").toLocaleLowerCase("en");
-  const aliases = {
-    "comic adventure": "comedy adventure",
-    "horror comedy adventure": "comedy horror adventure",
-    "children's storybook adventure": "interactive storybook",
-  };
-  const category = Object.hasOwn(aliases, genre) ? aliases[genre] : genre;
-  if (!category) return "Unknown";
-  if (category === "scummvm adventure") return "ScummVM adventure";
-  return category[0].toLocaleUpperCase("en") + category.slice(1);
+  if (!genre || genre === "unknown") return "Unknown";
+  return genreGroups.find(([, pattern]) => pattern.test(genre))?.[0] ?? "Adventure";
 }
 
 export function libraryFacet(items, field) {
