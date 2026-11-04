@@ -19,7 +19,7 @@ export default function HeroStage({
   const heroKicker = showHomeIntro ? HOME_HERO_KICKER : sourceAction ? "Your game library" : featuredGame.eyebrow;
   const heroTitle = showHomeIntro ? HOME_HERO_TITLE : featuredGame.displayTitle;
   const heroSummary = showHomeIntro ? HOME_HERO_SUMMARY : featuredGame.summary;
-  const secondaryActionHref = isHomePage ? "#library" : `#${featuredDialogId}`;
+  const secondaryActionHref = isHomePage ? "#library" : `#${sourceAction?.dialogId || featuredDialogId}`;
   const secondaryActionLabel = isHomePage ? HOME_BROWSE_LABEL : "More Info";
   const heroMetadata = showHomeIntro
     ? [
@@ -84,6 +84,9 @@ export default function HeroStage({
               <span>{secondaryActionLabel}</span>
             </a>
           </div>
+          {featuredGame.importRequired && !sourceAction && <p className="file-access-help">
+            This game is not included due to copyright restrictions. If you own a copy, drop its ZIP onto this page to add it to your library.
+          </p>}
           {sourceAction?.needsAccess && <p className="file-access-help" id="hero-file-access-help">
             Allow access in the browser prompt so ScummWEB can read this game’s ZIP.
             Your game files stay on your device.

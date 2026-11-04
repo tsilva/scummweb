@@ -10,6 +10,7 @@ node_modules/
 public/*
 !public/brand/
 !public/social-cards/
+public/social-cards/*.png
 !public/.gitignore
 tools/
 vendor/

@@ -461,6 +461,19 @@ button.nav-icon-link {
   font-size: 0.75rem;
 }
 
+.launch-button.game-unavailable {
+  flex-basis: 14rem;
+  width: auto;
+  background: rgba(43, 43, 43, 0.82);
+  color: var(--ink);
+  cursor: default;
+  transform: none;
+}
+
+.launch-button.game-unavailable::before {
+  content: none;
+}
+
 .secondary-button {
   background: rgba(43, 43, 43, 0.64);
   color: var(--ink);
