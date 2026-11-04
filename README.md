@@ -92,6 +92,9 @@ pnpm run dev:app --port auto
 Open the URL printed by the server and select **Play Beneath a Steel Sky**.
 This setup needs no Infisical login.
 
+For production builds and Lighthouse checks alongside a running server, see
+the [isolated audit setup](docs/maintaining-scummweb.md#development-commands).
+
 ## Further reading
 
 - [Development, ScummVM rebuilds, and analytics](docs/maintaining-scummweb.md)

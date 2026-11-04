@@ -1176,6 +1176,15 @@ button.nav-icon-link {
   gap: 1rem;
 }
 
+.poster-entry {
+  content-visibility: auto;
+  contain-intrinsic-block-size: auto 16.5rem;
+}
+
+.poster-entry:focus-within {
+  content-visibility: visible;
+}
+
 .poster-card {
   display: block;
   position: relative;

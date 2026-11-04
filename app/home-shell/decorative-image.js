@@ -1,11 +1,14 @@
 export default function DecorativeImage({
   className,
+  decoding = "async",
   fetchPriority,
+  height,
   loading = "lazy",
   sizes,
   src,
   srcSet,
   style,
+  width,
 }) {
   if (!src) {
     return null;
@@ -17,13 +20,15 @@ export default function DecorativeImage({
     <img
       alt=""
       className={className}
-      decoding="async"
+      decoding={decoding}
       fetchPriority={resolvedFetchPriority}
+      height={height}
       loading={loading}
       sizes={sizes}
       src={src}
       srcSet={srcSet}
       style={style}
+      width={width}
     />
   );
 }
