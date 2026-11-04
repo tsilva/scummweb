@@ -7,16 +7,20 @@ in the top bar to search these results and inspect checked editions.
 
 | Status | Games | Editions |
 | --- | ---: | ---: |
-| [Tested: startup verified](#tested-startup-verified) | 144 | 157 |
-| [Startup with warnings](#startup-with-warnings) | 10 | 10 |
-| [Startup failed](#startup-failed) | 1 | 1 |
+| [Tested: startup verified](#tested-startup-verified) | 152 | 165 |
+| [Startup with warnings](#startup-with-warnings) | 2 | 2 |
+| [Startup failed](#startup-failed) | 0 | 0 |
 | [Not yet tested](#not-yet-tested) | 463 | — |
 
-**Tested** means the game reached a startup screen, menu, or first game scene.
+**Tested** means an edition reached a startup screen, menu, original game prompt,
+or first game scene. Original game prompts count as successful startup checks.
 It does not establish full-game compatibility or confirm every feature.
-Warnings describe workarounds, audio limitations, or original game prompts.
-Failures are checked editions that stopped before startup. Games can have
-editions in more than one status; 168 editions have been checked.
+Warnings describe ScummVM or ScummWEB support limitations or workarounds.
+Failures are ScummVM or ScummWEB issues that prevented startup. Problems caused
+by missing, corrupt, or mismatched game files are excluded from public results,
+including earlier checks. Results apply to the listed editions; they do not
+guarantee the same behavior for every release or copy. Games can have
+editions in more than one status; 167 editions have been checked.
 The [compatibility data](../data/game-compatibility.json) is the source of truth
 for this page and the in-app modal, including all checked editions.
 
@@ -27,6 +31,7 @@ Road is a fan game detected as Day of the Tentacle; its identity is not an offic
 
 | Game | Checked edition | Game ID | Observation |
 | --- | --- | --- | --- |
+| 3 Skulls of the Toltecs | 3 Skulls of the Toltecs (CD DOS) | `toltecs:toltecs` | Startup menu and intro render. |
 | Amazon: Guardians of Eden | Amazon - Guardians of Eden (DOS) | `access:amazon` | Intro renders after automatic detection; the access.dat startup error is resolved. Earlier check (2026-11-04): Startup failed — Could not locate appropriate access.dat entry. |
 | Bargon Attack | Bargon Attack (Amiga) | `gob:bargon` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Bear Stormin' | Bear Stormin' (DOS) | `scumm:brstorm` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
@@ -67,7 +72,7 @@ Road is a fan game detected as Day of the Tentacle; its identity is not an offic
 | Full Pipe | Full Pipe (CD, Windows) | `ngi:fullpipe` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Full Throttle | Full Throttle (CD DOS) | `scumm:ft` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Fun Seeker's Guide to Eastern Madera County | Fun Seeker's Guide to Eastern Madera County (CD, DOS) | `sci:funseeker` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
-| Future Wars: Adventures in Time | Future Wars (CD DOS) | `cine:fw` | Intro renders without the missing-CD-audio warning. Spaced physical CD-track filenames are recognized. Earlier check (2026-11-04): Startup with warnings — Continues after the missing CD-audio warning; the archive lacks CD music tracks. |
+| Future Wars: Adventures in Time | Future Wars (CD DOS) | `cine:fw` | Intro renders with CD audio. |
 | Gabriel Knight: Sins of the Fathers | Gabriel Knight Sins Of The Fathers (CD DOS) | `sci:gk1` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Geisha | Geisha (Amiga) | `gob:geisha` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Gnap (U.F.O.s) | Gnap (CD Windows) | `gnap:gnap` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
@@ -76,15 +81,18 @@ Road is a fan game detected as Day of the Tentacle; its identity is not an offic
 | Goblins Quest 3 | Goblins 3 (CD DOS) | `gob:gob3` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Gold Rush! | Gold Rush! (Amiga) | `agi:goldrush` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Gregory and the Hot Air Balloon | Gregory and the Hot Air Balloon (CD Windows) | `composer:gregory` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Harlan Ellison: I Have No Mouth, and I Must Scream | I Have No Mouth and I Must Scream (CD DOS) | `saga:ihnm` | Startup reached. |
 | Hopkins FBI | Hopkins FBI (CD Windows) | `hopkins:hopkins` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Hugo II: Whodunit? | Hugo 2 - Whodunit (Floppy DOS) | `hugo:hugo2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Hugo III: Jungle of Doom | Hugo 3 - Jungle of Doom (Floppy DOS) | `hugo:hugo3` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Hugo's House of Horrors | Hugo's House of Horrors (Floppy DOS) | `hugo:hugo1` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Indiana Jones and the Fate of Atlantis | Indiana Jones and the Fate of Atlantis (CD DOS) | `scumm:atlantis` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Indiana Jones and the Last Crusade | Indiana Jones and the Last Crusade (Amiga) | `scumm:indy3` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Inherit the Earth: Quest for the Orb | Inherit the Earth - Quest for the Orb (CD Windows-Linux-DOS) | `saga:ite` | Startup reached. |
 | Jones in the Fast Lane | Jones In The Fast Lane (CD Dos) | `sci:jones` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | King's Quest II: Romancing the Throne | King's Quest 2 - Romancing the Throne (Amiga) | `agi:kq2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | King's Quest III: To Heir Is Human | King's Quest 3 - To Heir is Human (Amiga) | `agi:kq3` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| King's Quest IV: The Perils of Rosella | King's Quest 4 - The Perils of Rosella (Amiga) | `sci:kq4sci` | Original manual-question prompt reached; gameplay beyond it was not verified. |
 | King's Quest V: Absence Makes the Heart Go Yonder! | King's Quest 5 - Absence Makes the Heart go Yonder (Amiga) | `sci:kq5` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | King's Quest VI: Heir Today, Gone Tomorrow | King's Quest 6 - Heir Today, Gone Tomorrow (CD DOS, Windows) | `sci:kq6` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | King's Quest VII: The Princeless Bride | King's Quest 7 - The Princeless Bride (CD DOS) | `sci:kq7` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
@@ -93,6 +101,7 @@ Road is a fan game detected as Day of the Tentacle; its identity is not an offic
 | Laura Bow 2: The Dagger of Amon Ra | Laura Bow 2 - The Dagger of Amon-Ra (CD DOS) | `sci:laurabow2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Laura Bow: The Colonel's Bequest | Laura Bow 1 - The Colonels Bequest (Amiga) | `sci:laurabow` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Leather Goddesses of Phobos! 2: Gas Pump Girls Meet the Pulsating Inconvenience from Planet X | Leather Goddesses of Phobos 2 (Floppy DOS) | `made:lgop2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Leisure Suit Larry 2: Goes Looking for Love (in Several Wrong Places) | Leisure Suit Larry 2 - Goes looking for Love (In Several Wrong Places) (Amiga) | `sci:lsl2` | Original little-black-book telephone prompt reached; gameplay beyond it was not verified. |
 | Leisure Suit Larry 3: Passionate Patti in Pursuit of the Pulsating Pectorals | Leisure Suit Larry 3 - Passionate Patti in Pursuit of the Pulsating Pectorals (Amiga) | `sci:lsl3` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Leisure Suit Larry 5: Passionate Patti Does a Little Undercover Work | Leisure Suit Larry 5 - Passionate Patty Does a Little Undercover Work (Amiga) | `sci:lsl5` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Leisure Suit Larry 6: Shape Up or Slip Out! | Leisure Suit Larry 6 - Shape Up or Slip Out (CD DOS High Res) | `sci:lsl6hires` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
@@ -106,14 +115,17 @@ Road is a fan game detected as Day of the Tentacle; its identity is not an offic
 | Magic Tales: Sleeping Cub's Test of Courage | Magic Tales - Sleeping Cub's Test of Courage (CD Windows) | `composer:sleepingcub` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Magic Tales: The Princess and the Crab | Magic Tales - The Princess and the Crab (CD Windows) | `composer:princess` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Manhunter 2: San Francisco | Manhunter 2 - San Francisco (Amiga) | `agi:mh2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Manhunter: New York | Manhunter 1 - New York (Amiga) | `agi:mh1` | Original field-guide question reached; gameplay beyond it was not verified. |
 | Maniac Mansion | Maniac Mansion (Amiga) | `scumm:maniac` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Mickey's Space Adventure | Mickey's Space Adventure (Floppy DOS) | `agi:mickey` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Monkey Island 2: LeChuck's Revenge | Monkey Island 2 - LeChuck's Revenge (Amiga) | `scumm:monkey2` | Original copy-protection introduction reached; gameplay beyond it was not verified. |
 | Ms. Astro Chicken | Ms Astro Chicken (Floppy DOS) | `sci:msastrochicken` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | MTV's Beavis and Butt-Head in Virtual Stupidity | Beavis and Butt-head in Virtual Stupidity (CD Windows) | `bbvs:bbvs` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Myst | Myst (CD Windows) | `mohawk:myst` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Myst | Myst Masterpiece (DVD Windows) | `mohawk:myst` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Nippon Safes, Inc. | Nippon Safes Inc (Amiga, Multilanguage) | `parallaction:nippon` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Nippon Safes, Inc. | Nippon Safes Inc (Floppy DOS, Multilanguage) | `parallaction:nippon` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Once Upon A Time: Little Red Riding Hood | Once Upon A Time - Little Red Riding Hood (Floppy DOS) | `gob:littlered` | Original book/animal-symbol prompt reached; gameplay beyond it was not verified. |
 | Passport to Adventure (Demo) | Passport to Adventure (CD DOS) | `scumm:pass` | Startup screen, publisher splash, intro, menu, or game scene rendered. Passport to Adventure (Demo) is a compilation; only its default startup was checked. |
 | Pepper's Adventures in Time | Peppers Adventures In Time (Floppy DOS) | `sci:pepper` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
 | Personal Nightmare | Personal Nightmare (Amiga) | `agos:pn` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
@@ -187,26 +199,16 @@ Road is a fan game detected as Day of the Tentacle; its identity is not an offic
 
 ## Startup with warnings
 
-These editions reached a startup screen or original game prompt with the limitations below.
+These editions reached startup with the ScummVM or ScummWEB limitations below.
 
 | Game | Checked edition | Game ID | Observation |
 | --- | --- | --- | --- |
-| 3 Skulls of the Toltecs | 3 Skulls of the Toltecs (CD DOS) | `toltecs:toltecs` | Startup menu and intro render after the missing-instrument warning. Music uses built-in AdLib instruments because SAMPLE.AD and SAMPLE.OPL are absent; it may sound different from the original. Earlier check (2026-11-04): Startup failed — MILES-ADLIB: could not open timbre file (SAMPLE.AD or SAMPLE.OPL). |
-| Harlan Ellison: I Have No Mouth, and I Must Scream | I Have No Mouth and I Must Scream (CD DOS) | `saga:ihnm` | Continues after missing SAMPLE.AD/SAMPLE.OPL warning; music fidelity is reduced. |
-| Inherit the Earth: Quest for the Orb | Inherit the Earth - Quest for the Orb (CD Windows-Linux-DOS) | `saga:ite` | Continues after missing INSTR.AD/INSTR.OPL warning; music fidelity is reduced. |
-| King's Quest IV: The Perils of Rosella | King's Quest 4 - The Perils of Rosella (Amiga) | `sci:kq4sci` | Original manual-question prompt reached; gameplay beyond it was not verified. |
-| Leisure Suit Larry 2: Goes Looking for Love (in Several Wrong Places) | Leisure Suit Larry 2 - Goes looking for Love (In Several Wrong Places) (Amiga) | `sci:lsl2` | Original little-black-book telephone prompt reached; gameplay beyond it was not verified. |
-| Manhunter: New York | Manhunter 1 - New York (Amiga) | `agi:mh1` | Original field-guide question reached; gameplay beyond it was not verified. |
-| Monkey Island 2: LeChuck's Revenge | Monkey Island 2 - LeChuck's Revenge (Amiga) | `scumm:monkey2` | Original copy-protection introduction reached; gameplay beyond it was not verified. |
-| Once Upon A Time: Little Red Riding Hood | Once Upon A Time - Little Red Riding Hood (Floppy DOS) | `gob:littlered` | Original book/animal-symbol prompt reached; gameplay beyond it was not verified. |
 | Rex Nebular and the Cosmic Gender Bender | Rex Nebular And The Cosmic Gender Bender (Floppy DOS) | `mads:nebular` | Main menu renders after ScummVM testing-support warning. Bonus-disk target not separately tested. |
 | The Big Red Adventure | The Big Red Adventure (DOS, Multilanguage) | `parallaction:bra` | Startup logo renders after Start anyway. ScummVM warns of incomplete support and save compatibility. |
 
 ## Startup failed
 
-| Game | Checked edition | Game ID | Observation |
-| --- | --- | --- | --- |
-| Loom | Loom (Amiga) | `scumm:loom` | This checked archive has an English resource index that does not match its Spanish resources. Startup stops with Cannot read resource. Import matching game files from one edition; the DOS VGA edition starts. Earlier check (2026-11-04): Startup failed — (69:10002:0x1184): Cannot read resource. |
+No recorded startup failures remain for the checked editions.
 
 ## Not yet tested
 

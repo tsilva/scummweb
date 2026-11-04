@@ -38,7 +38,8 @@ Use the library’s sliders icon to sort and filter games. Choose **Version** in
 a game’s details to switch platform, language, or edition. Open **Game
 compatibility** from the top-bar checklist icon, or read the
 [compatibility results](docs/game-testing.md), for tested editions and known
-limitations. Startup checks do not establish full-game compatibility.
+ScummVM or ScummWEB limitations. Problems specific to missing or mismatched
+game files are excluded. Startup checks do not establish full-game compatibility.
 
 The homepage slideshow advances every eight seconds. Previous and next restart
 the countdown; use the pause button to stop automatic rotation.

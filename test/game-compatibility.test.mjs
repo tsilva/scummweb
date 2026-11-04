@@ -7,13 +7,13 @@ import { renderCompatibilityDocs } from "../scripts/generate-compatibility-docs.
 const data = JSON.parse(await readFile(new URL("../data/game-compatibility.json", import.meta.url), "utf8"));
 
 test("compatibility records retain edition-specific evidence with distinct upstream ratings", () => {
-  assert.equal(data.schemaVersion, 3);
+  assert.equal(data.schemaVersion, 4);
   assert.match(data.recordedOn, /^\d{4}-\d{2}-\d{2}$/);
   const summary = getCompatibilitySummary(data.entries);
   assert.equal(summary.total, summary.checked + summary.untested);
   assert.equal(summary.checked, summary.verified + summary.warnings + summary.failed);
   assert.ok(summary.checkedGames >= 154);
-  assert.ok(summary.checked >= 168);
+  assert.ok(summary.checked >= 167);
   const ids = new Set();
   const checkedGameIds = new Set(data.entries.filter((entry) => entry.status !== "not-tested").map((entry) => entry.gameId));
   for (const entry of data.entries) {
@@ -24,6 +24,13 @@ test("compatibility records retain edition-specific evidence with distinct upstr
     assert.ok(!ids.has(key), `Duplicate entry: ${key}`);
     ids.add(key);
     assert.ok(Object.hasOwn(compatibilityStatusLabels, entry.status));
+    for (const check of [entry, ...(entry.history ?? [])]) {
+      if (["startup-warning", "startup-failed"].includes(check.status)) {
+        assert.ok(["scummvm", "scummweb"].includes(check.issueScope), `${key}: runtime issue scope required`);
+      } else {
+        assert.equal(check.issueScope, undefined);
+      }
+    }
     if (entry.status !== "not-tested") {
       assert.ok(entry.edition && entry.observation);
       assert.equal(entry.upstreamRating, undefined);
@@ -47,11 +54,11 @@ test("compatibility records retain edition-specific evidence with distinct upstr
   }
 });
 
-test("warning and failure results are counted, searchable, and rendered independently of untested games", () => {
+test("runtime warning and failure results are counted, searchable, and rendered independently of untested games", () => {
   const entries = [
     { title: "Same game", gameId: "test:game", edition: "DOS.zip", status: "startup-verified", observation: "Menu rendered." },
-    { title: "Same game", gameId: "test:game", edition: "Amiga.zip", status: "startup-failed", observation: "Cannot read resource." },
-    { title: "Music", gameId: "test:music", edition: "CD.zip", status: "startup-warning", observation: "Missing CD audio." },
+    { title: "Same game", gameId: "test:game", edition: "Amiga.zip", status: "startup-failed", issueScope: "scummweb", observation: "Engine aborts with valid resources." },
+    { title: "Music", gameId: "test:music", edition: "CD.zip", status: "startup-warning", issueScope: "scummvm", observation: "Audio codec unsupported by the engine." },
     { title: "Other", gameId: "test:other", status: "not-tested", upstreamRating: "Good" },
   ];
   assert.deepEqual(getCompatibilitySummary(entries), {
@@ -61,21 +68,41 @@ test("warning and failure results are counted, searchable, and rendered independ
   assert.deepEqual(filterCompatibilityEntries(entries, { query: "resource", status: "startup-failed" }), [entries[1]]);
   assert.deepEqual(filterCompatibilityEntries(entries, { query: "audio", status: "startup-warning" }), [entries[2]]);
   const markdown = renderCompatibilityDocs({ ...data, entries });
-  assert.match(markdown, /## Startup failed[\s\S]*Cannot read resource\./);
-  assert.match(markdown, /## Startup with warnings[\s\S]*Missing CD audio\./);
+  assert.match(markdown, /## Startup failed[\s\S]*Engine aborts with valid resources\./);
+  assert.match(markdown, /## Startup with warnings[\s\S]*Audio codec unsupported by the engine\./);
+});
+
+test("public results exclude copy-specific faults while retaining observed startup evidence", () => {
+  for (const gameId of ["toltecs:toltecs", "saga:ihnm", "saga:ite", "cine:fw"]) {
+    const entry = data.entries.find((candidate) => candidate.gameId === gameId);
+    assert.equal(entry.status, "startup-verified");
+    assert.doesNotMatch(JSON.stringify(entry), /missing|SAMPLE\.(AD|OPL)|INSTR\.(AD|OPL)|archive lacks/i);
+  }
+  const loom = data.entries.filter((entry) => entry.gameId === "scumm:loom");
+  assert.ok(loom.some((entry) => entry.status === "startup-verified"));
+  assert.ok(!loom.some((entry) => entry.edition === "Loom (Amiga).zip"));
+  assert.doesNotMatch(renderCompatibilityDocs(data), /English resource index|Spanish resources|SAMPLE\.(AD|OPL)|INSTR\.(AD|OPL)|archive lacks/i);
+});
+
+test("normal original game prompts do not create compatibility warnings", () => {
+  const prompts = data.entries.filter((entry) => /^Original .*reached; gameplay beyond it was not verified\./.test(entry.observation ?? ""));
+  assert.equal(prompts.length, 5);
+  assert.ok(prompts.every((entry) => entry.status === "startup-verified"));
+  assert.ok(prompts.every((entry) => /gameplay beyond it was not verified/.test(entry.observation)));
+  assert.deepEqual(filterCompatibilityEntries(data.entries, { status: "startup-warning" }).map((entry) => entry.gameId).sort(), ["mads:nebular", "parallaction:bra"]);
 });
 
 test("a repaired edition keeps its prior failure alongside its current verified result", () => {
   const entry = {
     title: "Repaired", gameId: "test:fixed", edition: "DOS.zip", status: "startup-verified", observation: "First scene rendered.",
     history: [
-      { recordedOn: "2026-11-03", status: "startup-failed", observation: "Could not read data." },
+      { recordedOn: "2026-11-03", status: "startup-failed", issueScope: "scummweb", observation: "Engine aborted with valid game data." },
       { recordedOn: "2026-11-04", status: "startup-verified", observation: "First scene rendered." },
     ],
   };
   const markdown = renderCompatibilityDocs({ ...data, entries: [entry] });
   assert.match(markdown, /First scene rendered\./);
-  assert.match(markdown, /Earlier check \(2026-11-03\): Startup failed — Could not read data\./);
+  assert.match(markdown, /Earlier check \(2026-11-03\): Startup failed — Engine aborted with valid game data\./);
 });
 
 test("search handles title accents, engine IDs, edition names, and combined status filters", () => {
