@@ -349,12 +349,23 @@ button.nav-icon-link {
 }
 
 .hero-copy h1 {
-  max-width: 12ch;
+  display: flex;
+  align-items: flex-end;
+  height: 2.7em;
+  flex-shrink: 0;
+  max-width: 100%;
   margin: 1rem 0 0;
   font-size: clamp(3.5rem, 8.2vw, 5.8rem);
   line-height: 0.9;
   letter-spacing: -0.05em;
   text-transform: uppercase;
+}
+
+.hero-title-text {
+  display: block;
+  width: 100%;
+  line-height: 0.9;
+  overflow-wrap: anywhere;
 }
 
 .hero-summary,
@@ -364,6 +375,11 @@ button.nav-icon-link {
 }
 
 .hero-summary {
+  display: -webkit-box;
+  height: 4.95em;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
   max-width: 33rem;
   margin: 1.4rem 0 0;
   font-size: 1.02rem;
@@ -399,8 +415,25 @@ button.nav-icon-link {
 
 .hero-actions {
   gap: 1rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  height: 3.4rem;
   margin-top: 2rem;
+}
+
+.hero-actions > .launch-button {
+  min-width: 0;
+  max-width: 33rem;
+}
+
+.hero-actions > .secondary-button {
+  flex-shrink: 0;
+}
+
+.hero-action-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .launch-button,
@@ -473,6 +506,12 @@ button.nav-icon-link {
 }
 
 .hero-metadata dd {
+  display: -webkit-box;
+  height: 2.8em;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-height: 1.4;
   margin: 0;
   font-size: 0.96rem;
   font-weight: 600;
@@ -480,11 +519,16 @@ button.nav-icon-link {
 
 .hero-status {
   gap: 0.75rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  height: 2rem;
   margin-top: 1.15rem;
 }
 
 .hero-status span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   display: inline-flex;
   align-items: center;
   min-height: 2rem;

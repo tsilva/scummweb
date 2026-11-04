@@ -2,6 +2,7 @@ import LaunchButton from "../launch-button";
 import { HOME_BROWSE_LABEL, HOME_HERO_KICKER, HOME_HERO_SUMMARY, HOME_HERO_TITLE } from "../seo";
 import DecorativeImage from "./decorative-image";
 import Icon from "./shell-icon";
+import HeroTitle from "./hero-title";
 import { getGameDialogId, getHeroImageStyle } from "./shared";
 
 function formatGameCount(count) {
@@ -60,7 +61,7 @@ export default function HeroStage({
       <div className="hero-inner">
         <div className="hero-copy">
           <p className="hero-kicker">{heroKicker}</p>
-          <h1>
+          <HeroTitle title={heroTitle}>
             {isHomePage ? (
               heroTitle
             ) : (
@@ -71,20 +72,20 @@ export default function HeroStage({
                 {heroTitle}
               </a>
             )}
-          </h1>
-          <p className="hero-summary">{heroSummary}</p>
+          </HeroTitle>
+          <p className="hero-summary" title={heroSummary}>{heroSummary}</p>
 
           <div className="hero-actions">
             {sourceAction ? (
-              <button type="button" className="launch-button" disabled={sourceAction.disabled} onClick={sourceAction.onClick}>
-                {sourceAction.label}
+              <button type="button" className="launch-button" title={sourceAction.label} disabled={sourceAction.disabled} onClick={sourceAction.onClick}>
+                <span className="hero-action-label">{sourceAction.label}</span>
               </button>
             ) : (
               <LaunchButton
                 game={featuredGame}
                 entryPoint={isHomePage ? "hero" : "game_detail"}
-                label={primaryActionLabel}
-                continueLabel={isHomePage ? `Continue ${featuredGame.displayTitle}` : "Continue"}
+                label={<span className="hero-action-label">{primaryActionLabel}</span>}
+                continueLabel={<span className="hero-action-label">{isHomePage ? `Continue ${featuredGame.displayTitle}` : "Continue"}</span>}
               />
             )}
             <a className="secondary-button" href={secondaryActionHref}>
@@ -97,14 +98,14 @@ export default function HeroStage({
             {heroMetadata.map((item) => (
               <div key={item.label}>
                 <dt>{item.label}</dt>
-                <dd>{item.value}</dd>
+                <dd title={item.value}>{item.value}</dd>
               </div>
             ))}
           </dl>
 
           <div className="hero-status">
             {heroStatus.map((item) => (
-              <span key={item}>{item}</span>
+              <span key={item} title={item}>{item}</span>
             ))}
           </div>
         </div>
