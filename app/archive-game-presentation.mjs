@@ -14,6 +14,22 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Drascula: The Vampire Strikes Back",
+    files: [["packet.001", 32847563, 1048178371]],
+  },
+  {
+    title: "Lure of the Temptress",
+    files: [["disk1.vga", 618944, 893859565], ["disk2.vga", 659616, 4000140536]],
+  },
+  {
+    title: "Flight of the Amazon Queen",
+    files: [["queen.1", 190787021, 501481959]],
+  },
+  {
+    title: "Nippon Safes, Inc.",
+    files: [["disk0", 208437, 4075295742], ["disk1", 901120, 3732423185]],
+  },
+  {
     title: "The Secret of Monkey Island (Demo)", target: "monkey-demo", engineId: "scumm", gameId: "monkey",
     files: [["000.lfl", 7607, 0x719585d5], ["disk01.lec", 266281, 0x2afb1b41]],
   },

@@ -40,6 +40,12 @@ test("shared filenames require known size and CRC signatures, including demo tit
   assert.equal(getArchiveGamePresentation(files).displayTitle, "The Secret of Monkey Island (Demo)");
   assert.equal(getArchiveGamePresentation(files.map(([name, size]) => [name, size, 0])), null);
   assert.equal(getArchiveGamePresentation([["00.lfl", 5361, 0x1145ddda], ["01.lfl", 43865, 0x373099bb]]).target, "indy3");
+  for (const [files, title] of [
+    [[["Packet.001", 32847563, 1048178371]], "Dráscula: The Vampire Strikes Back"],
+    [[["Disk1.vga", 618944, 893859565], ["Disk2.vga", 659616, 4000140536]], "Lure of the Temptress"],
+    [[["queen.1", 190787021, 501481959]], "Flight of the Amazon Queen"],
+    [[["DISK0", 208437, 4075295742], ["DISK1", 901120, 3732423185]], "Nippon Safes, Inc."],
+  ]) assert.equal(getArchiveGamePresentation(files)?.displayTitle, title);
 });
 
 test("unknown, incomplete, empty, split-directory and multiple-game archives stay generic", () => {
@@ -106,6 +112,24 @@ test("unavailable range headers fall back without breaking unknown game launches
   const archive = await prepareRemoteGameArchive(url);
   assert.equal(archive.game, null);
   assert.equal((await archive.loadArchive())[0].path, "resource.map");
+});
+
+test("oversized directory responses are canceled before buffering and use the normal download", async (t) => {
+  const bytes = await makeZip();
+  let canceled = false;
+  let downloads = 0;
+  t.mock.method(globalThis, "fetch", async (_url, options) => {
+    if (options.headers?.Range) return new Response(new ReadableStream({
+      cancel() { canceled = true; },
+    }), { status: 206, headers: { "content-range": "bytes 0-3145727/4194304" } });
+    downloads++;
+    return new Response(bytes);
+  });
+  const archive = await prepareRemoteGameArchive(url);
+  assert.equal(canceled, true);
+  assert.equal(archive.game.target, "sky");
+  await archive.loadArchive();
+  assert.equal(downloads, 1);
 });
 
 test("range inspection and fallback preserve archive size and path safety limits", async (t) => {
