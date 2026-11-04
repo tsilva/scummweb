@@ -6,8 +6,8 @@ import DecorativeImage from "./decorative-image";
 import Icon from "./shell-icon";
 import { getDialogLinkProps, getGameDialogId, getHeroImageStyle } from "./shared";
 
-export default function GameDetailModal({ game, sourceAction, sourceId, notice, onClose }) {
-  const dialogId = sourceId ? `source-game-${sourceId}` : getGameDialogId(game);
+export default function GameDetailModal({ game, notice, onClose, dialogId: providedId, controls, actions, openerElement }) {
+  const dialogId = providedId || getGameDialogId(game);
   const dialog = useRef(null);
   const syncDialog = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -28,6 +28,11 @@ export default function GameDetailModal({ game, sourceAction, sourceId, notice, 
     let trigger;
     let previousOverflow;
 
+    function restoreFocus() {
+      const target = opener?.isConnected ? opener : document.querySelector("#library h2");
+      target?.focus({ preventScroll: true });
+    }
+
     function rememberTrigger(event) {
       const link = event.target.closest?.("a[href]");
       if (link?.hash === `#${dialogId}`) trigger = link;
@@ -37,7 +42,7 @@ export default function GameDetailModal({ game, sourceAction, sourceId, notice, 
       const open = Boolean(onClose) || window.location.hash === `#${dialogId}`;
       setIsOpen(open);
       if (open && !panel.open) {
-        opener = trigger ?? document.activeElement;
+        opener = trigger ?? openerElement ?? document.activeElement;
         trigger = null;
         previousOverflow = document.body.style.overflow;
         document.body.style.overflow = "hidden";
@@ -46,7 +51,7 @@ export default function GameDetailModal({ game, sourceAction, sourceId, notice, 
       } else if (!open && panel.open) {
         panel.close();
         document.body.style.overflow = previousOverflow;
-        opener?.focus({ preventScroll: true });
+        restoreFocus();
       }
     }
 
@@ -61,10 +66,10 @@ export default function GameDetailModal({ game, sourceAction, sourceId, notice, 
       if (panel.open) {
         panel.close();
         document.body.style.overflow = previousOverflow;
-        opener?.focus({ preventScroll: true });
+        restoreFocus();
       }
     };
-  }, [dialogId, onClose]);
+  }, [dialogId, onClose, openerElement]);
 
   function close() {
     if (onClose) onClose();
@@ -112,15 +117,12 @@ export default function GameDetailModal({ game, sourceAction, sourceId, notice, 
               <span>{game.badge}</span>
             </div>
             <p className="game-detail-summary">{game.summary}</p>
+            {controls}
 
             <div className="game-detail-actions">
-              {sourceAction ? (
-                <button type="button" className="launch-button" disabled={sourceAction.disabled} onClick={sourceAction.onClick}>
-                  {sourceAction.label}
-                </button>
-              ) : isOpen ? (
+              {actions || (isOpen ? (
                 <LaunchButton game={game} entryPoint="library" />
-              ) : null}
+              ) : null)}
               {game.infoHref ? (
                 <a
                   className="secondary-button game-detail-license"
@@ -133,7 +135,6 @@ export default function GameDetailModal({ game, sourceAction, sourceId, notice, 
               ) : null}
             </div>
             {notice ? <p role="status">{notice}</p> : null}
-            {sourceAction ? <p className="game-detail-save-hint">Load saved progress from the game’s menu after launching.</p> : null}
           </div>
         </div>
 

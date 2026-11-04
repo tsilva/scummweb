@@ -66,7 +66,8 @@ export default function HeroStage({
 
           <div className="hero-actions">
             {sourceAction ? (
-              <button type="button" className="launch-button" title={sourceAction.label} disabled={sourceAction.disabled} onClick={sourceAction.onClick}>
+              <button type="button" className="launch-button" title={sourceAction.label} disabled={sourceAction.disabled} onClick={sourceAction.onClick}
+                aria-haspopup={sourceAction.dialogId ? "dialog" : undefined} aria-controls={sourceAction.dialogId}>
                 Play
               </button>
             ) : (

@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { X } from "lucide-react";
 import { readRemoteGameArchive } from "../game-bucket.mjs";
 import { getGamePresentation, getImportedGamePresentation } from "../game-presentation";
 import { checkGameSource, localGame, readGameSources, removeGameSources, saveGameSources } from "../game-sources.mjs";
@@ -11,24 +10,17 @@ import { maxLocalGameSize, openLocalGameZip, readGameFolder, selectGameArchive, 
 import {
   fileNode, handleNode, openLocalFolder, prepareLocalFolder, prepareLocalZip, scanGameFolder, selectedGameFolder,
 } from "../local-game-import.mjs";
-import { GamePoster } from "./library-cards";
 import LibraryView from "./library-view";
+import { libraryItems } from "./library-query.mjs";
+import { getGameFamilyKey, getVersionSaveNamespace, rememberGameVersion } from "../game-versions.mjs";
+import { getGameDialogId } from "./shared";
 import HomeHero from "./home-hero";
-import GameDetailModal from "./game-detail-modal";
+import VersionedGameDetails from "./versioned-game-details";
 import GameDropOverlay, { chooseZipHandles } from "./local-game";
 
 const sessionGames = new Map();
 const sessionSources = new Map();
 const reducedMotionQuery = "(prefers-reduced-motion: reduce)";
-const statusText = {
-  checking: "Checking availability…",
-  available: "Available",
-  permission: "File access needed",
-  missing: "Unavailable",
-  unverified: "Could not check availability",
-  session: "Available in this tab",
-  locate: "Game files need locating",
-};
 
 function scrollToLibraryItem(item, block) {
   const behavior = window.matchMedia(reducedMotionQuery).matches ? "instant" : "smooth";
@@ -43,8 +35,12 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
-  const [detailSourceId, setDetailSourceId] = useState(null);
-  const closeDetails = useCallback(() => setDetailSourceId(null), []);
+  const [detailHash, setDetailHash] = useState("");
+  const closeDetails = useCallback(() => {
+    window.history.replaceState(window.history.state, "", `${window.location.pathname}${window.location.search}#library`);
+    setDetailHash("");
+    setNotice("");
+  }, []);
   const [addedIds, setAddedIds] = useState(null);
   const revealObserver = useRef(null);
   const working = useRef(false);
@@ -54,6 +50,22 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
   const folderInput = useRef(null);
   const replacingSource = useRef(null);
   const entriesRef = useRef([]);
+  const detailsOpener = useRef(null);
+
+  useEffect(() => {
+    const sync = () => { setDetailHash(window.location.hash); setNotice(""); };
+    const rememberOpener = (event) => {
+      const link = event.target.closest?.('a[aria-haspopup="dialog"], button[aria-haspopup="dialog"]');
+      if (link) detailsOpener.current = link;
+    };
+    sync();
+    document.addEventListener("click", rememberOpener, true);
+    window.addEventListener("hashchange", sync);
+    return () => {
+      document.removeEventListener("click", rememberOpener, true);
+      window.removeEventListener("hashchange", sync);
+    };
+  }, []);
 
   useEffect(() => {
     entriesRef.current = entries;
@@ -142,8 +154,8 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
 
   useEffect(() => {
     if (!addedIds) return;
-    const cards = [...document.querySelectorAll("#library [data-library-source-id]")]
-      .filter((card) => addedIds.has(card.dataset.librarySourceId));
+    const cards = [...document.querySelectorAll("#library [data-library-source-ids]")]
+      .filter((card) => JSON.parse(card.dataset.librarySourceIds).some((id) => addedIds.has(id)));
     cards.forEach((card) => revealObserver.current?.observe(card));
     scrollToLibraryItem(cards[0], "center");
   }, [addedIds]);
@@ -351,8 +363,10 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
     ));
   }
 
-  function play(source, game) {
+  function play(source, game, resume = false, legacySaves = false) {
     return run(async () => {
+      game = { ...game, saveVersionId: legacySaves ? undefined : source.id,
+        saveNamespace: legacySaves ? undefined : await getVersionSaveNamespace(source.id), skipIntro: null };
       if (source.url) {
         selectGameArchive((signal) => readRemoteGameArchive(source.url, { signal }), game);
       } else {
@@ -383,7 +397,8 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
           }
         }
       }
-      router.push("/local/play");
+      rememberGameVersion(getGameFamilyKey(game) || `source:${source.id}`, `source:${source.id}`);
+      router.push(`/local/play${resume ? "#continue" : ""}`);
     });
   }
 
@@ -392,10 +407,11 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
     const knownGame = catalog.find(({ target }) => target === source.target)
       ?? getImportedGamePresentation(source.kind === "folder" ? source.name + ".zip" : source.name);
     const title = knownGame?.displayTitle ?? source.name.replace(/\.zip$/i, "");
-    const game = knownGame ?? getGamePresentation({ displayTitle: title }, {
+    const presentation = knownGame ?? getGamePresentation({ displayTitle: title }, {
       summary: "Play this game from your library.",
       badge: "Library game",
     });
+    const game = { ...presentation, saveVersionId: source.id, skipIntro: null };
     const locate = !source.url && ["missing", "locate"].includes(status);
     const locateLabel = source.kind === "folder" ? "Locate folder" : "Locate ZIP";
     return {
@@ -403,11 +419,17 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
       action: {
         label: locate ? `${locateLabel} for ${title}` : `Play ${title}`,
         disabled: disabled || status === "checking",
-        onClick: () => locate ? chooseLocal(source) : play(source, knownGame),
+        onClick: () => locate ? chooseLocal(source) : play(source, game),
+        onContinue: () => play(source, game, true),
+        onLegacy: () => play(source, game, false, true),
+        onLocate: () => chooseLocal(source),
+        onRemove: () => run(() => removeSources([source])),
       },
     };
   });
-  const detail = library.find(({ source }) => source.id === detailSourceId);
+  const groups = libraryItems(catalog, library);
+  const detail = groups.find((group) => detailHash === `#${group.dialogId}` || group.versions.some(({ source, game }) =>
+    !source && detailHash === `#${getGameDialogId(game)}`));
 
   return (
     <>
@@ -425,48 +447,12 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
         }} />
       <GameDropOverlay importRoots={importRoots} disabled={disabled} pending={pending}
         result={importResult} onConfirm={confirmImport} />
-      {featuredGame && <HomeHero catalog={catalog} featuredGame={featuredGame} library={library} />}
+      {featuredGame && <HomeHero groups={groups} featuredGame={featuredGame} />}
       <div className="section-stack">
         {children}
-        <LibraryView catalog={catalog} library={library} heading={libraryHeading} notice={notice}>
-            {({ source, status, game, title, locate, locateLabel, action }) => {
-              const hint = status === "missing" && !source.url
-                ? source.kind === "folder" ? "Game folder missing" : "Game file missing"
-                : locate ? locateLabel : ["permission", "missing", "unverified"].includes(status)
-                  ? statusText[status] : null;
-              const description = [game?.summary, game?.studio, game?.genre, game?.badge, hint ?? statusText[status]].filter(Boolean).join(" · ");
-              return (
-                <article key={source.id} className="poster-entry source-poster-entry" data-library-source-id={source.id}>
-                  <button
-                    type="button"
-                    className={`poster-card source-poster-card ${game?.tone ?? "tone-default"}`}
-                    disabled={action.disabled}
-                    aria-label={`View details for ${title}`}
-                    aria-haspopup="dialog"
-                    aria-controls={`source-game-${source.id}`}
-                    aria-description={description}
-                    title={description}
-                    onClick={() => { setNotice(""); setDetailSourceId(source.id); }}
-                  >
-                    <GamePoster title={title} image={game?.posterImage} />
-                    {hint && <span className="source-poster-hint" aria-hidden="true">{hint}</span>}
-                  </button>
-                  <button
-                    type="button"
-                    className="source-poster-remove"
-                    disabled={disabled}
-                    aria-label={`Remove ${title} from your library`}
-                    onClick={() => run(() => removeSources([source]))}
-                  >
-                    <X aria-hidden="true" size={18} />
-                  </button>
-                </article>
-              );
-            }}
-        </LibraryView>
+        <LibraryView items={groups} heading={libraryHeading} notice={notice} />
       </div>
-      {detail && <GameDetailModal game={detail.game} sourceId={detail.source.id}
-        sourceAction={detail.action} notice={notice} onClose={closeDetails} />}
+      {detail && <VersionedGameDetails key={detail.key} group={detail} notice={notice} onClose={closeDetails} openerElement={detailsOpener.current} />}
     </>
   );
 }

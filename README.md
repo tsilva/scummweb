@@ -32,8 +32,12 @@ Role-playing, Science fiction, and Simulation. Game details retain the original
 subgenre. Select **All genres**
 to show every genre, or **Name: A–Z** to restore alphabetical order.
 
-See [game testing](docs/game-testing.md) for recorded startup results
-and games not yet tested in ScummWEB.
+Select the checklist icon in the top bar to open **Game compatibility**. Search
+by title, engine, or edition and filter startup-verified games and games not yet
+tested in ScummWEB. Each checked edition has its own entry, with its edition
+label shown directly.
+Startup verification does not establish full-game compatibility. The same
+results are available in [game testing](docs/game-testing.md).
 
 ## Play online
 
@@ -44,6 +48,9 @@ When the opening scene appears, you’re ready to play. For more games,
 Select a game card to open its details, with hero artwork, screenshots, metadata,
 and a Play button. Compatible browser saves add **Continue** and **Start from
 beginning** choices. Game details also link to each title’s bundled readme or license.
+Recognized platform, language, and edition variants share one library card, with a
+version count. Choose **Version** in its details to select which copy to play;
+ScummWEB remembers your choice and keeps demos separate from full games.
 The homepage slideshow prepares the next three backdrops and the previous one
 in advance for smooth switching.
 
@@ -68,18 +75,18 @@ in advance for smooth switching.
 
 The drop overlay lists each ZIP in a dropped directory, including its relative
 path, while it waits, imports, or finishes. Progress appears below the heading,
-and files appear in a flat list with the latest scanned first. Completed files stay
+and files appear in a flat list with the latest scanned first. Added files and errors stay
 visible as the remaining files are processed. For an unpacked game folder,
 it lists each data file as it is checked. The final heading shows how many
 games were scanned, with counts for games added, games skipped, and errors.
 Games already in your library count as skipped, with their file access refreshed.
-Added games use a green check, skipped games an amber minus, and errors a red cross.
+Skipped games appear only in the summary count. The result list shows added games
+with a green check and errors with a red cross.
 Scroll inside the dialog to review a large batch. When processing finishes,
 select **Confirm** to close it. The library then scrolls to the first new
 poster. New posters briefly brighten and show color as they come into view.
-To remove an imported game, hover over its poster and select the pink **×**
-on the top-left edge. The button also appears when it receives keyboard focus and
-stays visible on touch-only devices.
+To reconnect or remove an imported copy, open its details, select the version,
+then choose **Locate files** or **Remove this version**. Other copies remain available.
 
 Saved games are checked whenever the library opens and when you return to its
 tab or window. Missing local files and folders are flagged on their posters.
@@ -90,7 +97,11 @@ the game again.
 Put one game per ZIP, with its files at the root or in a single enclosing
 folder. ZIPs can be up to 128 MiB compressed and 256 MiB unpacked. Select a
 game's poster to view its details, then choose **Play** (or locate its files when
-needed). Imported games load saves from the game's menu after launching.
+needed). Each imported version stores new saves separately. Compatible engines
+offer **Continue** and **Start from beginning** for the selected version; otherwise
+load progress from the game’s menu. Existing shared saves remain available through
+**Older saves → Play with older saves**. Use that option only for the edition
+that created them. Removing a library version does not delete browser saves.
 
 ## Run locally
 

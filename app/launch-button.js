@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { scummvmAssetVersion } from "./asset-paths";
 import { getLatestBrowserSave } from "./browser-saves.mjs";
 
-export default function LaunchButton({ game, entryPoint, label = "Play", continueLabel = "Continue", className = "" }) {
+export default function LaunchButton({ game, entryPoint, label = "Play", continueLabel = "Continue", className = "", onLaunch }) {
   const classes = ["launch-button", className].filter(Boolean).join(" ");
   const [savedTarget, setSavedTarget] = useState(null);
   const canContinue = savedTarget === game.target;
@@ -32,11 +32,11 @@ export default function LaunchButton({ game, entryPoint, label = "Play", continu
 
   return (
     <>
-      <a className={classes} href={canContinue ? `${href}#continue` : href}>
+      <a className={classes} href={canContinue ? `${href}#continue` : href} onClick={onLaunch}>
         {canContinue ? continueLabel : label}
       </a>
       {canContinue ? (
-        <a className="secondary-button start-fresh-button" href={href}>Start from beginning</a>
+        <a className="secondary-button start-fresh-button" href={href} onClick={onLaunch}>Start from beginning</a>
       ) : null}
     </>
   );

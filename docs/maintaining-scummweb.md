@@ -38,6 +38,21 @@ See [Production delivery](production-delivery.md) for deployments, secret
 rotation, and manual game publishing. The sibling AgentSCUMM repository owns
 agent gameplay experiments.
 
+## Maintaining game compatibility
+
+[`data/game-compatibility.json`](../data/game-compatibility.json) is the canonical
+compatibility list (schema version 2). The top-bar modal reads its flat `entries`
+list directly. Each entry has a title, ScummVM `gameId`, and a `status`:
+`startup-verified` represents one checked `edition` with an `observation`;
+`not-tested` represents a game with no recorded edition and an `upstreamRating` from
+the versioned `upstreamReference`. Upstream ratings are separate from ScummWEB
+verification. Preserve edition-specific evidence and update `recordedOn` when
+recording new results. Do not infer full-game support from a startup check.
+
+After editing the data, run `node scripts/generate-compatibility-docs.mjs` to
+refresh [game testing](game-testing.md). Use the same command with `--check`
+to verify that the document is current; the test suite also checks this.
+
 ## Rebuilding and upgrading ScummVM
 
 `pnpm run build:scummvm` checks out the pinned release into
@@ -184,11 +199,12 @@ into the managed shell during ScummVM rebuilds.
   and show a missing-file or missing-folder badge. Permission failures show
   `File access needed`; other check failures remain unverified.
   Directory imports list each archive by its relative path, with waiting,
-  checking, added, skipped, and error states visible during processing.
+  checking, added, and error states visible during processing. Skipped rows are
+  hidden during scanning and in the final list, but included in the summary count.
   The progress bar sits below the dialog heading. During scanning, container
   folders are hidden and file rows appear without nesting, latest scanned first.
   Unpacked game folders list their individual data files as they are read.
-  Completed rows stay visible until the batch result replaces the progress list.
+  Added and error rows stay visible until the batch result replaces the progress list.
   Reimporting local games reuses their saved source IDs and refreshes file access.
   These existing games count as skipped; failed imports count as errors.
   The final dialog counts each attempted game once in its scanned total and
@@ -217,10 +233,22 @@ into the managed shell during ScummVM rebuilds.
   entries imported before a metadata update. Keep the library grid limited to
   cover cards and titles; show detailed metadata in the slideshow heroes and
   game detail modals. Catalog cards and the recent-games rail open hash-linked
-  details; imported cards open details for that specific library source, keeping
-  file access and launch actions inside the modal. Catalog details use the same
-  save-aware launch buttons as the hero. Imported games load saves through their
-  in-game menu. Details use a native modal dialog for focus containment and Escape
+  details. Library cards and slideshow entries group recognized versions using
+  engine/game identity, with demos separated from full releases. Unrecognized
+  sources stay separate. A version count opens a single details panel with a
+  Version dropdown showing platform, language, edition, and source type; unknown
+  metadata stays explicitly unknown. Remember the last selected available version,
+  otherwise prefer an available copy matching the browser language. File access,
+  launch, Locate files, and Remove this version always apply to that selection.
+  Catalog details use the same save-aware launch buttons as the hero. Imported
+  versions use a deterministic SHA-256 source-ID save folder passed through
+  ScummVM’s `--savepath`; Continue looks only inside that version’s folder and
+  retains the supported-engine filename rules in `browser-saves.mjs`. Other engines
+  load saves through their in-game menu. Older shared saves are preserved and
+  accessible only through the explicit Older saves action, which launches with the
+  legacy save folder. Removing a version leaves its browser saves untouched;
+  a reimport with a new source ID does not automatically reconnect those saves.
+  Details use a native modal dialog for focus containment and Escape
   dismissal, restore focus to the opener, and prevent background scrolling.
   The library's sliders icon opens the sorting and genre controls. The button
   has an accessible label and no visible text. It sorts the

@@ -6,8 +6,6 @@ import GameRouteFrame from "../../game-route-frame";
 import { buildZipGamePlayerUrl } from "../../home-shell/zip-game-player";
 import { getSelectedGamePresentation, openSelectedGameArchive } from "../../local-game-archive.mjs";
 
-const playerUrl = buildZipGamePlayerUrl("/#library");
-
 function ArchivePlayer({ zip }) {
   const [game] = useState(() => zip === null ? getSelectedGamePresentation() : null);
   const [loadArchive] = useState(() => zip === null
@@ -18,8 +16,9 @@ function ArchivePlayer({ zip }) {
     <GameRouteFrame
       archiveLoadingText={zip === null ? "Opening game files…" : "Downloading game ZIP…"}
       game={game}
+      target={game?.target}
       loadArchive={loadArchive}
-      src={playerUrl}
+      src={buildZipGamePlayerUrl("/#library", { saveNamespace: game?.saveNamespace })}
       title={game?.displayTitle ?? "ScummVM game"}
     />
   );

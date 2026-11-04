@@ -1,0 +1,3977 @@
+{
+  "schemaVersion": 2,
+  "recordedOn": "2026-11-04",
+  "scope": "Startup verification; not full-game compatibility.",
+  "upstreamReference": {
+    "version": "2026.4.0",
+    "url": "https://www.scummvm.org/compatibility/2026.4.0/",
+    "scope": "Upstream ratings do not establish ScummWEB compatibility. Some engines are not included in ScummWEB."
+  },
+  "notes": [
+    "Each checked edition has its own entry. Platform and edition variants are listed separately.",
+    "Road is a fan game detected as Day of the Tentacle; its identity is not an official ScummVM game ID. Passport to Adventure is a demo compilation.",
+    "The untested list includes Excellent, Good, and Bugged upstream ratings. It excludes Broken and Untested ratings, engine groups, and alternate versions. Games with a tested edition are omitted; sequels, annual releases, and episodic parts remain separate. The upstream chart groups some supported games instead of listing each title individually."
+  ],
+  "entries": [
+    {
+      "title": "3 Skulls of the Toltecs",
+      "status": "startup-verified",
+      "gameId": "toltecs:toltecs",
+      "edition": "3 Skulls of the Toltecs (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Amazon: Guardians of Eden",
+      "status": "startup-verified",
+      "gameId": "access:amazon",
+      "edition": "Amazon - Guardians of Eden (DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Bargon Attack",
+      "status": "startup-verified",
+      "gameId": "gob:bargon",
+      "edition": "Bargon Attack (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Bear Stormin'",
+      "status": "startup-verified",
+      "gameId": "scumm:brstorm",
+      "edition": "Bear Stormin' (DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Beneath a Steel Sky",
+      "status": "startup-verified",
+      "gameId": "sky:sky",
+      "edition": "Beneath a Steel Sky (CD VGA).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Big Thinkers! 1st Grade",
+      "status": "startup-verified",
+      "gameId": "scumm:thinker1",
+      "edition": "Big Thinkers 1st Grade (Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Big Thinkers! Kindergarten",
+      "status": "startup-verified",
+      "gameId": "scumm:thinkerk",
+      "edition": "Big Thinkers Kindergarten (Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Blue Force",
+      "status": "startup-verified",
+      "gameId": "tsage:blueforce",
+      "edition": "Blue Force (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Blue's Treasure Hunt",
+      "status": "startup-verified",
+      "gameId": "scumm:bluestreasurehunt",
+      "edition": "Blues Treasure Hunt (CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Broken Sword 2.5: The Return of the Templars",
+      "status": "startup-verified",
+      "gameId": "sword25:sword25",
+      "edition": "Broken Sword 2.5 (Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Broken Sword II: The Smoking Mirror",
+      "status": "startup-verified",
+      "gameId": "sword2:sword2",
+      "edition": "Broken Sword 2 The Smoking Mirror (CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Broken Sword: The Shadow of the Templars",
+      "status": "startup-verified",
+      "gameId": "sword1:sword1",
+      "edition": "Broken Sword 1 The Shadow of the Templar (CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Bud Tucker in Double Trouble",
+      "status": "startup-verified",
+      "gameId": "tucker:tucker",
+      "edition": "Bud Tucker in Double Trouble (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Castle of Dr. Brain",
+      "status": "startup-verified",
+      "gameId": "sci:castlebrain",
+      "edition": "Castle of Dr. Brain.zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Chivalry is Not Dead",
+      "status": "startup-verified",
+      "gameId": "wintermute:chivalry",
+      "edition": "Chivalry is Not Dead (Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Code-Name: Iceman",
+      "status": "startup-verified",
+      "gameId": "sci:iceman",
+      "edition": "Codename Iceman (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Conquests of Camelot: The Search for the Grail",
+      "status": "startup-verified",
+      "gameId": "sci:camelot",
+      "edition": "Conquests of Camelot (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Conquests of the Longbow: The Legend of Robin Hood",
+      "status": "startup-verified",
+      "gameId": "sci:longbow",
+      "edition": "Conquests of the Longbow - The Legend of Robin Hood (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Cruise for a Corpse",
+      "status": "startup-verified",
+      "gameId": "cruise:cruise",
+      "edition": "Cruise for a Corpse (Atari ST).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Cruise for a Corpse",
+      "status": "startup-verified",
+      "gameId": "cruise:cruise",
+      "edition": "Cruise for a Corpse (VGA DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Darby the Dragon",
+      "status": "startup-verified",
+      "gameId": "composer:darby",
+      "edition": "Darby the Dragon (CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Day of the Tentacle",
+      "status": "startup-verified",
+      "gameId": "scumm:tentacle",
+      "edition": "Day of the Tentacle (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Discworld",
+      "status": "startup-verified",
+      "gameId": "tinsel:dw",
+      "edition": "Discworld 1 (CD DOS v2).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Discworld",
+      "status": "startup-verified",
+      "gameId": "tinsel:dw",
+      "edition": "Discworld 1 (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Discworld II: Missing Presumed...!?",
+      "status": "startup-verified",
+      "gameId": "tinsel:dw2",
+      "edition": "Discworld 2 (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Dragon History",
+      "status": "startup-verified",
+      "gameId": "draci:draci",
+      "edition": "Dragon History (Floppy DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "DreamWeb",
+      "status": "startup-verified",
+      "gameId": "dreamweb:dreamweb",
+      "edition": "Dreamweb (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Dráscula: The Vampire Strikes Back",
+      "status": "startup-verified",
+      "gameId": "drascula:drascula",
+      "edition": "Drascula The Vampire Strikes Back (CD DOS, Multilanguage).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "EcoQuest II: Lost Secret of the Rainforest",
+      "status": "startup-verified",
+      "gameId": "sci:ecoquest2",
+      "edition": "EcoQuest 2 - Lost Secret of the Rainforest (Floppy DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "EcoQuest: The Search for Cetus",
+      "status": "startup-verified",
+      "gameId": "sci:ecoquest",
+      "edition": "EcoQuest 1 - The Search for Cetus (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "EcoQuest: The Search for Cetus",
+      "status": "startup-verified",
+      "gameId": "sci:ecoquest",
+      "edition": "EcoQuest 1 - The Search for Cetus (Floppy DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Elvira II: The Jaws of Cerberus",
+      "status": "startup-verified",
+      "gameId": "agos:elvira2",
+      "edition": "Elvira 2 - The Jaws of Cerberus (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Elvira: Mistress of the Dark",
+      "status": "startup-verified",
+      "gameId": "agos:elvira1",
+      "edition": "Elvira 1 - Mistress of the Dark (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Eye of the Beholder",
+      "status": "startup-verified",
+      "gameId": "kyra:eob",
+      "edition": "Eye of the Beholder (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Eye of the Beholder II: The Legend of Darkmoon",
+      "status": "startup-verified",
+      "gameId": "kyra:eob2",
+      "edition": "Eye of the Beholder II - The Legend of Darkmoon (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Fascination",
+      "status": "startup-verified",
+      "gameId": "gob:fascination",
+      "edition": "Fascination (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Flight of the Amazon Queen",
+      "status": "startup-verified",
+      "gameId": "queen:queen",
+      "edition": "Flight of the Amazon Queen (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Freddy Pharkas: Frontier Pharmacist",
+      "status": "startup-verified",
+      "gameId": "sci:freddypharkas",
+      "edition": "Freddy Pharkas - Frontier Pharmacist (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Full Pipe",
+      "status": "startup-verified",
+      "gameId": "ngi:fullpipe",
+      "edition": "Full Pipe (CD, Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Full Throttle",
+      "status": "startup-verified",
+      "gameId": "scumm:ft",
+      "edition": "Full Throttle (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Fun Seeker's Guide to Eastern Madera County",
+      "status": "startup-verified",
+      "gameId": "sci:funseeker",
+      "edition": "Fun Seeker's Guide to Eastern Madera County (CD, DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Future Wars: Adventures in Time",
+      "status": "startup-verified",
+      "gameId": "cine:fw",
+      "edition": "Future Wars (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Gabriel Knight: Sins of the Fathers",
+      "status": "startup-verified",
+      "gameId": "sci:gk1",
+      "edition": "Gabriel Knight Sins Of The Fathers (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Geisha",
+      "status": "startup-verified",
+      "gameId": "gob:geisha",
+      "edition": "Geisha (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Gnap (U.F.O.s)",
+      "status": "startup-verified",
+      "gameId": "gnap:gnap",
+      "edition": "Gnap (CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Gobliiins",
+      "status": "startup-verified",
+      "gameId": "gob:gob1",
+      "edition": "Gobliiins 1 (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Gobliins 2: The Prince Buffoon",
+      "status": "startup-verified",
+      "gameId": "gob:gob2",
+      "edition": "Gobliins 2 (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Goblins Quest 3",
+      "status": "startup-verified",
+      "gameId": "gob:gob3",
+      "edition": "Goblins 3 (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Gold Rush!",
+      "status": "startup-verified",
+      "gameId": "agi:goldrush",
+      "edition": "Gold Rush! (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Gregory and the Hot Air Balloon",
+      "status": "startup-verified",
+      "gameId": "composer:gregory",
+      "edition": "Gregory and the Hot Air Balloon (CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Harlan Ellison: I Have No Mouth, and I Must Scream",
+      "status": "startup-verified",
+      "gameId": "saga:ihnm",
+      "edition": "I Have No Mouth and I Must Scream (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Hopkins FBI",
+      "status": "startup-verified",
+      "gameId": "hopkins:hopkins",
+      "edition": "Hopkins FBI (CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Hugo II: Whodunit?",
+      "status": "startup-verified",
+      "gameId": "hugo:hugo2",
+      "edition": "Hugo 2 - Whodunit (Floppy DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Hugo III: Jungle of Doom",
+      "status": "startup-verified",
+      "gameId": "hugo:hugo3",
+      "edition": "Hugo 3 - Jungle of Doom (Floppy DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Hugo's House of Horrors",
+      "status": "startup-verified",
+      "gameId": "hugo:hugo1",
+      "edition": "Hugo's House of Horrors (Floppy DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Indiana Jones and the Fate of Atlantis",
+      "status": "startup-verified",
+      "gameId": "scumm:atlantis",
+      "edition": "Indiana Jones and the Fate of Atlantis (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Indiana Jones and the Last Crusade",
+      "status": "startup-verified",
+      "gameId": "scumm:indy3",
+      "edition": "Indiana Jones and the Last Crusade (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Inherit the Earth: Quest for the Orb",
+      "status": "startup-verified",
+      "gameId": "saga:ite",
+      "edition": "Inherit the Earth - Quest for the Orb (CD Windows-Linux-DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Jones in the Fast Lane",
+      "status": "startup-verified",
+      "gameId": "sci:jones",
+      "edition": "Jones In The Fast Lane (CD Dos).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "King's Quest II: Romancing the Throne",
+      "status": "startup-verified",
+      "gameId": "agi:kq2",
+      "edition": "King's Quest 2 - Romancing the Throne (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "King's Quest III: To Heir Is Human",
+      "status": "startup-verified",
+      "gameId": "agi:kq3",
+      "edition": "King's Quest 3 - To Heir is Human (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "King's Quest IV: The Perils of Rosella",
+      "status": "startup-verified",
+      "gameId": "sci:kq4sci",
+      "edition": "King's Quest 4 - The Perils of Rosella (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "King's Quest V: Absence Makes the Heart Go Yonder!",
+      "status": "startup-verified",
+      "gameId": "sci:kq5",
+      "edition": "King's Quest 5 - Absence Makes the Heart go Yonder (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "King's Quest VI: Heir Today, Gone Tomorrow",
+      "status": "startup-verified",
+      "gameId": "sci:kq6",
+      "edition": "King's Quest 6 - Heir Today, Gone Tomorrow (CD DOS, Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "King's Quest VII: The Princeless Bride",
+      "status": "startup-verified",
+      "gameId": "sci:kq7",
+      "edition": "King's Quest 7 - The Princeless Bride (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "King's Quest: Quest for the Crown",
+      "status": "startup-verified",
+      "gameId": "sci:kq1sci",
+      "edition": "King's Quest 1 - Quest for the Crown (Floppy DOS VGA Remake).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Lands of Lore: The Throne of Chaos",
+      "status": "startup-verified",
+      "gameId": "kyra:lol",
+      "edition": "Lands of Lore - The Throne of Chaos (CD DOS, Multilanguage).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Laura Bow 2: The Dagger of Amon Ra",
+      "status": "startup-verified",
+      "gameId": "sci:laurabow2",
+      "edition": "Laura Bow 2 - The Dagger of Amon-Ra (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Laura Bow: The Colonel's Bequest",
+      "status": "startup-verified",
+      "gameId": "sci:laurabow",
+      "edition": "Laura Bow 1 - The Colonels Bequest (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Leather Goddesses of Phobos! 2: Gas Pump Girls Meet the Pulsating Inconvenience from Planet X",
+      "status": "startup-verified",
+      "gameId": "made:lgop2",
+      "edition": "Leather Goddesses of Phobos 2 (Floppy DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Leisure Suit Larry 2: Goes Looking for Love (in Several Wrong Places)",
+      "status": "startup-verified",
+      "gameId": "sci:lsl2",
+      "edition": "Leisure Suit Larry 2 - Goes looking for Love (In Several Wrong Places) (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Leisure Suit Larry 3: Passionate Patti in Pursuit of the Pulsating Pectorals",
+      "status": "startup-verified",
+      "gameId": "sci:lsl3",
+      "edition": "Leisure Suit Larry 3 - Passionate Patti in Pursuit of the Pulsating Pectorals (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Leisure Suit Larry 5: Passionate Patti Does a Little Undercover Work",
+      "status": "startup-verified",
+      "gameId": "sci:lsl5",
+      "edition": "Leisure Suit Larry 5 - Passionate Patty Does a Little Undercover Work (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Leisure Suit Larry 6: Shape Up or Slip Out!",
+      "status": "startup-verified",
+      "gameId": "sci:lsl6hires",
+      "edition": "Leisure Suit Larry 6 - Shape Up or Slip Out (CD DOS High Res).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Leisure Suit Larry 7: Love for Sail!",
+      "status": "startup-verified",
+      "gameId": "sci:lsl7",
+      "edition": "Leisure Suit Larry 7 - Love for Sail (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Leisure Suit Larry in the Land of the Lounge Lizards",
+      "status": "startup-verified",
+      "gameId": "sci:lsl1sci",
+      "edition": "Leisure Suit Larry in the Land of the Lounge Lizards (Amiga VGA Remake).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Lighthouse: The Dark Being",
+      "status": "startup-verified",
+      "gameId": "sci:lighthouse",
+      "edition": "Lighthouse (CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Loom",
+      "status": "startup-verified",
+      "gameId": "scumm:loom",
+      "edition": "Loom (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Loom",
+      "status": "startup-verified",
+      "gameId": "scumm:loom",
+      "edition": "Loom (CD DOS VGA).zip",
+      "observation": "Standard, Practice, and Expert difficulty menu rendered."
+    },
+    {
+      "title": "Lost in Time",
+      "status": "startup-verified",
+      "gameId": "gob:lit",
+      "edition": "Lost in Time (CD DOS, Multilanguage).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Lure of the Temptress",
+      "status": "startup-verified",
+      "gameId": "lure:lure",
+      "edition": "Lure of the Temptress (Floppy DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Magic Tales: Liam Finds a Story",
+      "status": "startup-verified",
+      "gameId": "composer:liam",
+      "edition": "Magic Tales - Liam Finds a Story (CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Magic Tales: Sleeping Cub's Test of Courage",
+      "status": "startup-verified",
+      "gameId": "composer:sleepingcub",
+      "edition": "Magic Tales - Sleeping Cub's Test of Courage (CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Magic Tales: The Princess and the Crab",
+      "status": "startup-verified",
+      "gameId": "composer:princess",
+      "edition": "Magic Tales - The Princess and the Crab (CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Manhunter 2: San Francisco",
+      "status": "startup-verified",
+      "gameId": "agi:mh2",
+      "edition": "Manhunter 2 - San Francisco (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Manhunter: New York",
+      "status": "startup-verified",
+      "gameId": "agi:mh1",
+      "edition": "Manhunter 1 - New York (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Maniac Mansion",
+      "status": "startup-verified",
+      "gameId": "scumm:maniac",
+      "edition": "Maniac Mansion (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Mickey's Space Adventure",
+      "status": "startup-verified",
+      "gameId": "agi:mickey",
+      "edition": "Mickey's Space Adventure (Floppy DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Monkey Island 2: LeChuck's Revenge",
+      "status": "startup-verified",
+      "gameId": "scumm:monkey2",
+      "edition": "Monkey Island 2 - LeChuck's Revenge (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Ms. Astro Chicken",
+      "status": "startup-verified",
+      "gameId": "sci:msastrochicken",
+      "edition": "Ms Astro Chicken (Floppy DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "MTV's Beavis and Butt-Head in Virtual Stupidity",
+      "status": "startup-verified",
+      "gameId": "bbvs:bbvs",
+      "edition": "Beavis and Butt-head in Virtual Stupidity (CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Myst",
+      "status": "startup-verified",
+      "gameId": "mohawk:myst",
+      "edition": "Myst (CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Myst",
+      "status": "startup-verified",
+      "gameId": "mohawk:myst",
+      "edition": "Myst Masterpiece (DVD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Nippon Safes, Inc.",
+      "status": "startup-verified",
+      "gameId": "parallaction:nippon",
+      "edition": "Nippon Safes Inc (Amiga, Multilanguage).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Nippon Safes, Inc.",
+      "status": "startup-verified",
+      "gameId": "parallaction:nippon",
+      "edition": "Nippon Safes Inc (Floppy DOS, Multilanguage).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Once Upon A Time: Little Red Riding Hood",
+      "status": "startup-verified",
+      "gameId": "gob:littlered",
+      "edition": "Once Upon A Time - Little Red Riding Hood (Floppy DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Passport to Adventure (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:pass",
+      "edition": "Passport to Adventure (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Pepper's Adventures in Time",
+      "status": "startup-verified",
+      "gameId": "sci:pepper",
+      "edition": "Peppers Adventures In Time (Floppy DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Personal Nightmare",
+      "status": "startup-verified",
+      "gameId": "agos:pn",
+      "edition": "Personal Nightmare (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Phantasmagoria",
+      "status": "startup-verified",
+      "gameId": "sci:phantasmagoria",
+      "edition": "Phantasmagoria (CD, Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Phantasmagoria 2: A Puzzle of Flesh",
+      "status": "startup-verified",
+      "gameId": "sci:phantasmagoria2",
+      "edition": "Phantasmagoria 2 (CD, Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Plumbers Don't Wear Ties",
+      "status": "startup-verified",
+      "gameId": "plumbers:plumbers",
+      "edition": "Plumbers Don't Wear Ties (CD, Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Police Quest 2: The Vengeance",
+      "status": "startup-verified",
+      "gameId": "sci:pq2",
+      "edition": "Police Quest 2 - The Vengeance (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Police Quest 3: The Kindred",
+      "status": "startup-verified",
+      "gameId": "sci:pq3",
+      "edition": "Police Quest 3 - The Kindred (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Police Quest IV: Open Season",
+      "status": "startup-verified",
+      "gameId": "sci:pq4",
+      "edition": "Police Quest 4 - Open Season (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Police Quest: In Pursuit of the Death Angel",
+      "status": "startup-verified",
+      "gameId": "agi:pq1",
+      "edition": "Police Quest 1 - In Pursuit of the Death Angel (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Police Quest: In Pursuit of the Death Angel",
+      "status": "startup-verified",
+      "gameId": "sci:pq1sci",
+      "edition": "Police Quest 1 - In Pursuit of the Death Angel (Floppy DOS VGA Remake).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Quest for Glory I: So You Want To Be A Hero",
+      "status": "startup-verified",
+      "gameId": "sci:qfg1",
+      "edition": "Hero Quest So You Want To Be A Hero (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Quest for Glory I: So You Want To Be A Hero",
+      "status": "startup-verified",
+      "gameId": "sci:qfg1",
+      "edition": "Hero Quest So You Want To Be A Hero (Floppy DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Quest for Glory I: So You Want To Be A Hero",
+      "status": "startup-verified",
+      "gameId": "sci:qfg1vga",
+      "edition": "Quest for Glory 1 - So You Want to be a Hero (Floppy DOS VGA Remake).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Quest for Glory II: Trial by Fire",
+      "status": "startup-verified",
+      "gameId": "sci:qfg2",
+      "edition": "Quest for Glory 2 - Trial by Fire (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Quest for Glory III: Wages of War",
+      "status": "startup-verified",
+      "gameId": "sci:qfg3",
+      "edition": "Quest for Glory 3 - The Wages of War (Floppy DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "RAMA",
+      "status": "startup-verified",
+      "gameId": "sci:rama",
+      "edition": "RAMA (CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Return to Ringworld",
+      "status": "startup-verified",
+      "gameId": "tsage:ringworld2",
+      "edition": "Return to Ringworld (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Return to Zork",
+      "status": "startup-verified",
+      "gameId": "made:rtz",
+      "edition": "Return to Zork (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Rex Nebular and the Cosmic Gender Bender",
+      "status": "startup-verified",
+      "gameId": "mads:nebular",
+      "edition": "Rex Nebular And The Cosmic Gender Bender (Floppy DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Ringworld: Revenge of the Patriarch",
+      "status": "startup-verified",
+      "gameId": "tsage:ringworld",
+      "edition": "Ringworld - Revenge of the Patriarch (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Riven: The Sequel to Myst",
+      "status": "startup-verified",
+      "gameId": "mohawk:riven",
+      "edition": "Riven (DVD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Road",
+      "status": "startup-verified",
+      "gameId": "local:road",
+      "edition": "Road (Fanmade - Get's Detected as DOTT).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Rodney's Funscreen",
+      "status": "startup-verified",
+      "gameId": "made:rodney",
+      "edition": "Rodney's Fun Screen (Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Sam & Max Hit the Road",
+      "status": "startup-verified",
+      "gameId": "scumm:samnmax",
+      "edition": "Sam & Max Hit the Road (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Shivers",
+      "status": "startup-verified",
+      "gameId": "sci:shivers",
+      "edition": "Shivers (CD, Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Simon the Sorcerer",
+      "status": "startup-verified",
+      "gameId": "agos:simon1",
+      "edition": "Simon the Sorcerer 1 (CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe",
+      "status": "startup-verified",
+      "gameId": "agos:simon2",
+      "edition": "Simon the Sorcerer 2 (Amiga CD32).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe",
+      "status": "startup-verified",
+      "gameId": "agos:simon2",
+      "edition": "Simon the Sorcerer 2 (CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Simon the Sorcerer's Puzzle Pack",
+      "status": "startup-verified",
+      "gameId": "agos:jumble",
+      "edition": "Simon the Sorcerer Puzzle Pack (CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Sołtys",
+      "status": "startup-verified",
+      "gameId": "cge:soltys",
+      "edition": "Soltys (DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Space Quest 6: Roger Wilco in the Spinal Frontier",
+      "status": "startup-verified",
+      "gameId": "sci:sq6",
+      "edition": "Space Quest 6 - The Spinal Frontier (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Space Quest II: Chapter II - Vohaul's Revenge",
+      "status": "startup-verified",
+      "gameId": "agi:sq2",
+      "edition": "Space Quest 2 - Vohaul's Revenge (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Space Quest II: Chapter II - Vohaul's Revenge",
+      "status": "startup-verified",
+      "gameId": "agi:sq2",
+      "edition": "Space Quest 2 - Vohaul's Revenge (Floppy DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Space Quest III: The Pirates of Pestulon",
+      "status": "startup-verified",
+      "gameId": "sci:sq3",
+      "edition": "Space Quest 3 - The Pirates of Pestulon (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Space Quest IV: Roger Wilco and the Time Rippers",
+      "status": "startup-verified",
+      "gameId": "sci:sq4",
+      "edition": "Space Quest 4 - Roger Wilco and the Time Rippers (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Space Quest V: The Next Mutation",
+      "status": "startup-verified",
+      "gameId": "sci:sq5",
+      "edition": "Space Quest 5 - The Next Mutation (Floppy DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Space Quest: The Sarien Encounter",
+      "status": "startup-verified",
+      "gameId": "agi:sq1",
+      "edition": "Space Quest 1 - The Sarien Encounter (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Space Quest: The Sarien Encounter",
+      "status": "startup-verified",
+      "gameId": "sci:sq1sci",
+      "edition": "Space Quest 1 - The Sarien Encounter (Floppy DOS VGA Remake).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Starship Titanic",
+      "status": "startup-verified",
+      "gameId": "titanic:titanic",
+      "edition": "Starship Titanic (CD, Windows).zip",
+      "observation": "First room rendered."
+    },
+    {
+      "title": "Teen Agent",
+      "status": "startup-verified",
+      "gameId": "teenagent:teenagent",
+      "edition": "TeenAgent (Floppy DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "The 7th Guest",
+      "status": "startup-verified",
+      "gameId": "groovie:t7g",
+      "edition": "The 7th Guest (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "The Beast Within: A Gabriel Knight Mystery",
+      "status": "startup-verified",
+      "gameId": "sci:gk2",
+      "edition": "Gabriel Knight 2 The Beast Within (CD, DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "The Big Red Adventure",
+      "status": "startup-verified",
+      "gameId": "parallaction:bra",
+      "edition": "The Big Red Adventure (DOS, Multilanguage).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "The Bizarre Adventures of Woodruff and the Schnibble",
+      "status": "startup-verified",
+      "gameId": "gob:woodruff",
+      "edition": "The Bizarre Adventures of Woodruff and the Schnibble of Azimuth (CD DOS, Multilanguage).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "The Black Cauldron",
+      "status": "startup-verified",
+      "gameId": "agi:bc",
+      "edition": "The Black Cauldron (Floppy DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "The Curse of Monkey Island",
+      "status": "startup-verified",
+      "gameId": "scumm:comi",
+      "edition": "The Curse Of Monkey Island (CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "The Dig",
+      "status": "startup-verified",
+      "gameId": "scumm:dig",
+      "edition": "The Dig (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "The Feeble Files",
+      "status": "startup-verified",
+      "gameId": "agos:feeble",
+      "edition": "The Feeble Files (2CD Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "The Feeble Files",
+      "status": "startup-verified",
+      "gameId": "agos:feeble",
+      "edition": "The Feeble Files (4CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "The Island of Dr. Brain",
+      "status": "startup-verified",
+      "gameId": "sci:islandbrain",
+      "edition": "The Island of Dr. Brain.zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "The Journeyman Project: Pegasus Prime",
+      "status": "startup-verified",
+      "gameId": "pegasus:pegasus",
+      "edition": "The Journeyman Project - Pegasus Prime (CD Mac).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "The Labyrinth of Time",
+      "status": "startup-verified",
+      "gameId": "lab:lab",
+      "edition": "The Labyrinth of Time (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "The Legend of Kyrandia",
+      "status": "startup-verified",
+      "gameId": "kyra:kyra1",
+      "edition": "The Legend of Kyrandia 1 (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "The Legend of Kyrandia",
+      "status": "startup-verified",
+      "gameId": "kyra:kyra1",
+      "edition": "The Legend of Kyrandia 1 (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "The Legend of Kyrandia: Book 3 - Malcolm's Revenge",
+      "status": "startup-verified",
+      "gameId": "kyra:kyra3",
+      "edition": "The Legend of Kyrandia 3 Malcolm's Revenge (CD DOS, Multilanguage).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "The Legend of Kyrandia: Hand of Fate",
+      "status": "startup-verified",
+      "gameId": "kyra:kyra2",
+      "edition": "The Legend of Kyrandia 2 The Hand of Fate (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "The Lost Files of Sherlock Holmes: Case of the Rose Tattoo",
+      "status": "startup-verified",
+      "gameId": "sherlock:rosetattoo",
+      "edition": "The Lost Files of Sherlock Holmes - The Case of the Rose Tattoo (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "The Lost Files of Sherlock Holmes: The Case of the Serrated Scalpel",
+      "status": "startup-verified",
+      "gameId": "sherlock:scalpel",
+      "edition": "The Lost Files of Sherlock Holmes - The Case of the Serrated Scalpel (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "The Neverhood",
+      "status": "startup-verified",
+      "gameId": "neverhood:neverhood",
+      "edition": "The Neverhood (CD, Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "The Secret of Monkey Island",
+      "status": "startup-verified",
+      "gameId": "scumm:monkey",
+      "edition": "The Secret of Monkey Island (CD DOS VGA).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Tony Tough and the Night of Roasted Moths",
+      "status": "startup-verified",
+      "gameId": "tony:tony",
+      "edition": "Tony Tough and the Night of the Roasted Moths (CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Toonstruck",
+      "status": "startup-verified",
+      "gameId": "toon:toon",
+      "edition": "Toonstruck (CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Torin's Passage",
+      "status": "startup-verified",
+      "gameId": "sci:torin",
+      "edition": "Torins Passage (CD Windows).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Touché: The Adventures of the Fifth Musketeer",
+      "status": "startup-verified",
+      "gameId": "touche:touche",
+      "edition": "Touche - The Adventures of the Fifth Musketeer (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Troll's Tale",
+      "status": "startup-verified",
+      "gameId": "agi:troll",
+      "edition": "Troll's Tale (Floppy DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Urban Runner",
+      "status": "startup-verified",
+      "gameId": "gob:urban",
+      "edition": "Urban Runner (Windows, CD).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Voyeur",
+      "status": "startup-verified",
+      "gameId": "voyeur:voyeur",
+      "edition": "Voyeur (CD DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Waxworks",
+      "status": "startup-verified",
+      "gameId": "agos:waxworks",
+      "edition": "Waxworks (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Ween: The Prophecy",
+      "status": "startup-verified",
+      "gameId": "gob:ween",
+      "edition": "Ween The Prophecy (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Winnie the Pooh in the Hundred Acre Wood",
+      "status": "startup-verified",
+      "gameId": "agi:winnie",
+      "edition": "Winnie the Pooh in the Hundred Acre Wood (Floppy DOS).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "Zak McKracken and the Alien Mindbenders",
+      "status": "startup-verified",
+      "gameId": "scumm:zak",
+      "edition": "Zak McKracken and the Alien Mindbenders (Amiga).zip",
+      "observation": "Startup screen, menu, or first game scene rendered."
+    },
+    {
+      "title": "007: James Bond - The Stealth Affair",
+      "gameId": "cine:os",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "1½ Ritter: Auf der Suche nach der hinreißenden Herzelinde",
+      "gameId": "wintermute:ritter",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "21 Solitaire",
+      "gameId": "gamos:solgamer",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "A Golden Wake",
+      "gameId": "ags:goldenwake",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Above The Waves",
+      "gameId": "sludge:atw",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Actual Destination",
+      "gameId": "wintermute:actualdest",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Adibou 1",
+      "gameId": "gob:adibou1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Adibou 2",
+      "gameId": "gob:adibou2",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Aesop's Fables: The Tortoise and the Hare",
+      "gameId": "mohawk:tortoise",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Alavi Detective - Murder of Miss Rojan",
+      "gameId": "wintermute:alavi",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Alfred Pelrock: En Busca de un Sueño",
+      "gameId": "pelrock:pelrock",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Alimardan's Mischief",
+      "gameId": "wintermute:alimardan1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Alone, Under Strange Night",
+      "gameId": "wintermute:alone",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Alpha Polaris",
+      "gameId": "wintermute:alphapolaris",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Amerzone: The Explorer's Legacy",
+      "gameId": "phoenixvr:amerzone",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Apeiron",
+      "gameId": "wintermute:apeiron",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Art of Murder: FBI Confidential",
+      "gameId": "wintermute:artofmurder1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Arthur's Birthday",
+      "gameId": "mohawk:arthurbday",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Ashina: The Red Witch",
+      "gameId": "ags:ashinaredwitch",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Astro Chicken",
+      "gameId": "sci:astrochicken",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Backyard Baseball",
+      "gameId": "scumm:baseball",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Backyard Baseball 2001",
+      "gameId": "scumm:baseball2001",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Backyard Baseball 2003",
+      "gameId": "scumm:baseball2003",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Backyard Basketball",
+      "gameId": "scumm:basketball",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Backyard Football",
+      "gameId": "scumm:football",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Backyard Football 2002",
+      "gameId": "scumm:football2002",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Backyard Soccer",
+      "gameId": "scumm:soccer",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Backyard Soccer 2004",
+      "gameId": "scumm:soccer2004",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Backyard Soccer MLS Edition",
+      "gameId": "scumm:soccermls",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Barrow Hill: The Dark Path",
+      "gameId": "wintermute:barrowhilldp",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Basis Octavus",
+      "gameId": "wintermute:basisoctavus",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Beyond the Threshold",
+      "gameId": "wintermute:bthreshold",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Bickadoodle",
+      "gameId": "wintermute:bickadoodle",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Blackwell Unbound",
+      "gameId": "ags:blackwell2",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Blade Runner",
+      "gameId": "bladerunner:bladerunner",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Blazing Dragons",
+      "gameId": "dragons:dragons",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Blue's 123 Time Activities",
+      "gameId": "scumm:blues123time",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Blue's ABC Time Activities",
+      "gameId": "scumm:bluesabctime",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Blue's Clues: Blue's Art Time Activities",
+      "gameId": "scumm:arttime",
+      "status": "not-tested",
+      "upstreamRating": "Bugged"
+    },
+    {
+      "title": "Blue's Clues: Blue's Birthday Adventure",
+      "gameId": "scumm:bluesbirthday",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Blue's Reading Time Activities",
+      "gameId": "scumm:readtime",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Book of Gron Part One",
+      "gameId": "wintermute:bookofgron",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Bookmania",
+      "gameId": "wintermute:bookmania",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Boredom of Agustin Cordes",
+      "gameId": "wintermute:agustin",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Carol Reed 10 - Bosch's Damnation",
+      "gameId": "wintermute:carolreed10",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Carol Reed 11 - Shades Of Black",
+      "gameId": "wintermute:carolreed11",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Carol Reed 12 - Profound Red",
+      "gameId": "wintermute:carolreed12",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Carol Reed 13 - The Birdwatcher",
+      "gameId": "wintermute:carolreed13",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Carol Reed 14 - The Fall Of April",
+      "gameId": "wintermute:carolreed14",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Carol Reed 15 - Geospots",
+      "gameId": "wintermute:carolreed15",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Carol Reed 16 - Quarantine Diary",
+      "gameId": "wintermute:carolreed16",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Carol Reed 4 - East Side Story",
+      "gameId": "wintermute:carolreed4",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Carol Reed 5 - The Colour of Murder",
+      "gameId": "wintermute:carolreed5",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Carol Reed 6 - Black Circle",
+      "gameId": "wintermute:carolreed6",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Carol Reed 7 - Blue Madonna",
+      "gameId": "wintermute:carolreed7",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Carol Reed 8 - Amber's Blood",
+      "gameId": "wintermute:carolreed8",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Carol Reed 9 - Cold Case Summer",
+      "gameId": "wintermute:carolreed9",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Cartoon Carnival",
+      "gameId": "bolt:carnival",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Chamber of the Sci-Mutant Priestess",
+      "gameId": "chamber:chamber",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Chaos",
+      "gameId": "wintermute:chaos",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Chewy: Esc from F5",
+      "gameId": "chewy:chewy",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Chop Suey",
+      "gameId": "director:chopsuey",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Clandestiny",
+      "gameId": "groovie:clandestiny",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Classical Cats",
+      "gameId": "director:classicalcats",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Clever & Smart - A Movie Adventure",
+      "gameId": "alcachofa:aventuradecine",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Colapso: Episode 1",
+      "gameId": "wintermute:colapso",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Colors on Canvas",
+      "gameId": "wintermute:colorsoncanvas",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Corrosion: Cold Winter Waiting",
+      "gameId": "wintermute:corrosion",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Corruption",
+      "gameId": "glk:corruption",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Crime Patrol",
+      "gameId": "alg:cpatrol",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Crime Patrol 2: Drug Wars",
+      "gameId": "alg:dwars",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Crusader: No Remorse",
+      "gameId": "ultima:remorse",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Cubert Badbone, P.I.",
+      "gameId": "sludge:cubert",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Dark Fall: Lost Souls",
+      "gameId": "wintermute:darkfallls",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Dark Side",
+      "gameId": "freescape:darkside",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Dead City",
+      "gameId": "wintermute:deadcity",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Deja Vu: A Nightmare Comes True!!",
+      "gameId": "macventure:deja_vu",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Des Reves Elastiques Avec Mille Insectes Nommes Georges",
+      "gameId": "wintermute:dreaming",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Devil In The Capital",
+      "gameId": "wintermute:devilincapital",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "DFAF Adventure",
+      "gameId": "wintermute:dfafadventure",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Dirty Split",
+      "gameId": "wintermute:dirtysplit",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Dog-n-cat: In the footsteps of unprecedented beasts",
+      "gameId": "qdengine:dogncat",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Dog-n-cat: Island of Dr Rattardy",
+      "gameId": "qdengine:dogncat2",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Donald Duck's Playground",
+      "gameId": "agi:ddp",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Dr. Bohus",
+      "gameId": "wintermute:drbohus",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Dr. Doyle - Mystery Of The Cloche Hat",
+      "gameId": "wintermute:drdoylemotch",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Dr. Seuss's ABC",
+      "gameId": "mohawk:seussabc",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Dracula 2: The Last Sanctuary",
+      "gameId": "phoenixvr:dracula2",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Dracula: Resurrection",
+      "gameId": "phoenixvr:dracula1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Dragonsphere",
+      "gameId": "mads:dragonsphere",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Dreamcat",
+      "gameId": "wintermute:dreamcat",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Dreamscape",
+      "gameId": "wintermute:dreamscape",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Driller",
+      "gameId": "freescape:driller",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Duckman: The Graphic Adventures of a Private Dick",
+      "gameId": "illusions:duckman",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Dungeon Master",
+      "gameId": "dm:dm",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Déjà Vu II: Lost in Las Vegas",
+      "gameId": "macventure:deja_vu2",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Eagle Eye Mysteries",
+      "gameId": "eem:eem1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Eagle Eye Mysteries In London",
+      "gameId": "eem:eem2",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Eastern Mind",
+      "gameId": "director:easternmind",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Eight Squares in The Garden",
+      "gameId": "wintermute:8squares",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "El Engaño de Barbapoca: Capítulo 1 - Esta Pizza Está de Muerte",
+      "gameId": "wintermute:barbapoca1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "El Engaño de Barbapoca: Capítulo 2 - Competencia Fantasmal",
+      "gameId": "wintermute:barbapoca2",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Escape From Monkey Island",
+      "gameId": "grim:monkey4",
+      "status": "not-tested",
+      "upstreamRating": "Bugged"
+    },
+    {
+      "title": "Escape from the Mansion",
+      "gameId": "wintermute:escapemansion",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Everyday Grey",
+      "gameId": "wintermute:everydaygray",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Face Noir",
+      "gameId": "wintermute:facenoir",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Fairy Tales About Toshechka and Boshechka",
+      "gameId": "wintermute:tib",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Fatty Bear's Birthday Surprise",
+      "gameId": "scumm:fbear",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Fatty Bear's FunPack",
+      "gameId": "scumm:fbpack",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Features of national fishing",
+      "gameId": "qdengine:rybalka",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Finding Hope",
+      "gameId": "wintermute:findinghope",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Fish!",
+      "gameId": "glk:fish",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Five Lethal Demons",
+      "gameId": "wintermute:5ld",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Five Magical Amulets",
+      "gameId": "wintermute:5ma",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Flip-Flop",
+      "gameId": "gamos:flop",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Football Game",
+      "gameId": "ags:footballgame",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Forgotten Sound 1 - Revelation",
+      "gameId": "wintermute:forgottensound1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Four",
+      "gameId": "wintermute:four",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "FoxTail",
+      "gameId": "wintermute:foxtail",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Framed",
+      "gameId": "wintermute:framed",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Frasse and the Peas of Kejick",
+      "gameId": "sludge:frasse",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Freddi Fish 2: The Case of the Haunted Schoolhouse",
+      "gameId": "scumm:freddi2",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Freddi Fish 3: The Case of the Stolen Conch Shell",
+      "gameId": "scumm:freddi3",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Freddi Fish 4: The Case of the Hogfish Rustlers of Briny Gulch",
+      "gameId": "scumm:freddi4",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Freddi Fish 5: The Case of the Creature of Coral Cove",
+      "gameId": "scumm:freddicove",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Freddi Fish and Luther's Maze Madness",
+      "gameId": "scumm:maze",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Freddi Fish and Luther's Water Worries",
+      "gameId": "scumm:water",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Freddi Fish and the Case of the Missing Kelp Seeds",
+      "gameId": "scumm:freddi",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Freddi Fish's One-Stop Fun Shop",
+      "gameId": "scumm:freddisfunshop",
+      "status": "not-tested",
+      "upstreamRating": "Bugged"
+    },
+    {
+      "title": "Fukuoka Go-Round",
+      "gameId": "director:fukuokagoround",
+      "status": "not-tested",
+      "upstreamRating": "Bugged"
+    },
+    {
+      "title": "Games, Games, Games: Maniac Mansion + Zak McKracken + Indiana Jones and the last Crusade",
+      "gameId": "scumm:indyzak",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Ganbare! Inuchan: Rock'n Roll Edition",
+      "gameId": "director:ganbareinuchan",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Ganbare! Inuchan: Trip Around the World",
+      "gameId": "director:ganbareinuchan2",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Gemini Rue",
+      "gameId": "ags:geminirue",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Ghost in the Sheet",
+      "gameId": "wintermute:ghostsheet",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Gobliiins5 - L'Invasion des Morglotons Part1",
+      "gameId": "ags:gobliiins5-1",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Gobliiins5 - L'Invasion des Morglotons Part2",
+      "gameId": "ags:gobliiins5-2",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Gobliiins5 - L'Invasion des Morglotons Part3",
+      "gameId": "ags:gobliiins5-3",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Gobliiins5 - L'Invasion des Morglotons Part4",
+      "gameId": "ags:gobliiins5-4",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Green Eggs and Ham",
+      "gameId": "mohawk:greeneggs",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Grim Fandango",
+      "gameId": "grim:grim",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Hades Challenge",
+      "gameId": "hadesch:hadesch",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Halls of the Dead: Faery Tale Adventure II",
+      "gameId": "saga2:fta2",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Hamlet or the last game without MMORPG features, shaders and product placement",
+      "gameId": "wintermute:hamlet",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Harry and the Haunted House",
+      "gameId": "mohawk:harryhh",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Harvester",
+      "gameId": "harvester:harvester",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Heart of China",
+      "gameId": "dgds:china",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Helga Deep In Trouble",
+      "gameId": "wintermute:helga",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Henachoco #1",
+      "gameId": "director:henachoco01",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Henachoco #2",
+      "gameId": "director:henachoco02",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Henachoco #3",
+      "gameId": "director:henachoco03",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Henachoco #4",
+      "gameId": "director:henachoco04",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Hi-Res Adventure #0: Mission Asteroid",
+      "gameId": "adl:hires0",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Hi-Res Adventure #1: Mystery House",
+      "gameId": "adl:hires1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Hi-Res Adventure #2: The Wizard and the Princess",
+      "gameId": "adl:hires2",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Hi-Res Adventure #3: Cranston Manor",
+      "gameId": "adl:hires3",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Hi-Res Adventure #4: Ulysses and the Golden Fleece",
+      "gameId": "adl:hires4",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Hi-Res Adventure #5: Time Zone",
+      "gameId": "adl:hires5",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Hi-Res Adventure #6: The Dark Crystal",
+      "gameId": "adl:hires6",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Hodj 'n' Podj",
+      "gameId": "bagel:hodjnpodj",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Hor",
+      "gameId": "wintermute:hor",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Hoyle Classic Card Games",
+      "gameId": "sci:hoyle4",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Hoyle Classic Games",
+      "gameId": "sci:hoyle5",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Hoyle Solitaire",
+      "gameId": "sci:hoyle5solitaire",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Hoyle's Official Book of Games: Volume 1",
+      "gameId": "sci:hoyle1",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Hoyle's Official Book of Games: Volume 2",
+      "gameId": "sci:hoyle2",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Hoyle's Official Book of Games: Volume 3",
+      "gameId": "sci:hoyle3",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Humongous Interactive Catalog",
+      "gameId": "scumm:catalog",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Hyperspace Delivery Boy!",
+      "gameId": "hdb:hdb",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "I Must Kill...: Fresh Meat",
+      "gameId": "wintermute:imustkill",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Indiana Jones and the Last Crusade & Loom",
+      "gameId": "scumm:indyloom",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Inside the Chest",
+      "gameId": "sci:chest",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "J.U.L.I.A.",
+      "gameId": "wintermute:julia",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "J.U.L.I.A. Untold",
+      "gameId": "wintermute:juliauntold",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Japan Art Today 07: Takashi Murakami - A Romantic Evening",
+      "gameId": "director:japanart07",
+      "status": "not-tested",
+      "upstreamRating": "Bugged"
+    },
+    {
+      "title": "Jinxter",
+      "gameId": "glk:jinxter",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Just Grandma and Me",
+      "gameId": "mohawk:grandma",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Just Ignore Them",
+      "gameId": "ags:justignorethem",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "K'NOSSOS",
+      "gameId": "wintermute:knossos",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Kathy Rain",
+      "gameId": "ags:kathyrain",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Kesha in the World of Fairy Tales",
+      "gameId": "wintermute:keshaskazok",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "King's Questions",
+      "gameId": "sci:kquestions",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Klaymen Episodes",
+      "gameId": "wintermute:klaymen1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Kulivočko",
+      "gameId": "wintermute:kulivocko",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "L-ZONE",
+      "gameId": "director:lzone",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "La Leyenda de la Biblioteca",
+      "gameId": "wintermute:leyendabiblio",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Lepton's Quest",
+      "gameId": "sludge:leptonsquest",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Let's Explore the Airport",
+      "gameId": "scumm:airport",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Let's Explore the Farm",
+      "gameId": "scumm:farm",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Let's Explore the Jungle",
+      "gameId": "scumm:jungle",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Life Flashes By",
+      "gameId": "sludge:life",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Life In 3 Minutes",
+      "gameId": "wintermute:lifein3minutes",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Little Big Adventure (Relentless: Twinsen's Adventure)",
+      "gameId": "twine:lba",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Little Longnose",
+      "gameId": "qdengine:karliknos",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Little Monster at School",
+      "gameId": "mohawk:lilmonster",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Looky",
+      "gameId": "wintermute:looky",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Lord Avalot d'Argent",
+      "gameId": "avalanche:avalanche",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Lov Mamuta",
+      "gameId": "wintermute:lovmamuta",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Machu Mayu",
+      "gameId": "wintermute:machumayu",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Mad Dog II: The Lost Gold",
+      "gameId": "alg:maddog2",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Mad Dog McCree",
+      "gameId": "alg:maddog",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Majestic Part 1: Alien Encounter",
+      "gameId": "director:majestic",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Mandy Christmas Adventure",
+      "gameId": "sludge:mandy",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Marc Brown's Arthur's Teacher Trouble",
+      "gameId": "mohawk:arthur",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Martian Memorandum",
+      "gameId": "access:martian",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Marvel Comics Spider-Man: The Sinister Six",
+      "gameId": "hypno:sinistersix",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Marvellous Mice Adventures: Meeting Sea Rat",
+      "gameId": "qdengine:3mice1",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Marvellous Mice Adventures: Sea Rat's Birthday",
+      "gameId": "qdengine:3mice2",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Mask show",
+      "gameId": "qdengine:maski",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Mental Repairs, Inc.",
+      "gameId": "wintermute:mentalrepairs",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Might and Magic: Book One - Secret of the Inner Sanctum",
+      "gameId": "mm:mm1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Might and Magic: Clouds of Xeen",
+      "gameId": "mm:cloudsofxeen",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Might and Magic: Darkside of Xeen",
+      "gameId": "mm:darksideofxeen",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Might and Magic: Swords of Xeen",
+      "gameId": "mm:swordsofxeen",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Might and Magic: World of Xeen",
+      "gameId": "mm:worldofxeen",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Mirage",
+      "gameId": "wintermute:mirage",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Miskatonic - Part One: The Inhuman Stain",
+      "gameId": "wintermute:miskatonic1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Mission Supernova 1",
+      "gameId": "supernova:msn1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Mission Supernova 2",
+      "gameId": "supernova:msn2",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Mixed Up Fairy Tales",
+      "gameId": "sci:fairytales",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Mixed-Up Mother Goose",
+      "gameId": "sci:mothergoose",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Mom don't worry",
+      "gameId": "qdengine:mng",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Monday Starts on Saturday",
+      "gameId": "wintermute:msos",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Moonbase Commander",
+      "gameId": "scumm:moonbase",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Mortadelo y Filemón: Balones y Patadones",
+      "gameId": "alcachofa:balones",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Mortadelo y Filemón: Dos vaqueros chapuceros",
+      "gameId": "alcachofa:vaqueros",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Mortadelo y Filemón: El escarabajo de Cleopatra",
+      "gameId": "alcachofa:escarabajo",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Mortadelo y Filemón: La Banda de Corvino",
+      "gameId": "alcachofa:corvino",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Mortadelo y Filemón: La Sexta Secta",
+      "gameId": "alcachofa:secta",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Mortadelo y Filemón: Mamelucos a la Romana",
+      "gameId": "alcachofa:mamelucos",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Mortadelo y Filemón: Operación Moscú",
+      "gameId": "alcachofa:moscu",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Mortadelo y Filemón: Terror, Espanto y Pavor",
+      "gameId": "alcachofa:terror",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Mortville Manor",
+      "gameId": "mortevielle:mortevielle",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Mukhtar and his Team",
+      "gameId": "wintermute:mukhtar",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Muppet Treasure Island",
+      "gameId": "mtropolis:mti",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Murder In Tehran's Alleys 1933",
+      "gameId": "wintermute:tehran1933",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Murder In Tehran's Alleys 2016",
+      "gameId": "wintermute:tehran2016",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "My Big Sister",
+      "gameId": "ags:mybigsister",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Myst III: Exile",
+      "gameId": "myst3:myst3",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Mystic Triddle",
+      "gameId": "wintermute:mystictriddle",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Myth",
+      "gameId": "glk:myth",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Nancy Drew: Curse of Blackmoor Manor",
+      "gameId": "nancy:nancy11",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Nancy Drew: Danger by Design",
+      "gameId": "nancy:nancy14",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Nancy Drew: Danger on Deception Island",
+      "gameId": "nancy:nancy9",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Nancy Drew: Ghost Dogs of Moon Lake",
+      "gameId": "nancy:nancy7",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Nancy Drew: Last Train to Blue Moon Canyon",
+      "gameId": "nancy:nancy13",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Nancy Drew: Message in a Haunted Mansion",
+      "gameId": "nancy:nancy3",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Nancy Drew: Secret of the Old Clock",
+      "gameId": "nancy:nancy12",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Nancy Drew: Secret of the Scarlet Hand",
+      "gameId": "nancy:nancy6",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Nancy Drew: Secrets Can Kill",
+      "gameId": "nancy:nancy1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Nancy Drew: Stay Tuned for Danger",
+      "gameId": "nancy:nancy2",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Nancy Drew: The Creature of Kapu Cave",
+      "gameId": "nancy:nancy15",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Nancy Drew: The Final Scene",
+      "gameId": "nancy:nancy5",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Nancy Drew: The Haunted Carousel",
+      "gameId": "nancy:nancy8",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Nancy Drew: The Secret of Shadow Ranch",
+      "gameId": "nancy:nancy10",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Nancy Drew: Treasure in the Royal Tower",
+      "gameId": "nancy:nancy4",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Nathan's Second Chance",
+      "gameId": "sludge:nsc",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Necronomicon: The Dawning of Darkness",
+      "gameId": "phoenixvr:necrono",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Nemurenu Yoru no Chiisana O-Hanashi",
+      "gameId": "director:nemurenu",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "NetWalk",
+      "gameId": "gamos:netwalk",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Night in the Fog",
+      "gameId": "wintermute:nightinthefog",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Night Train",
+      "gameId": "wintermute:nighttrain",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Nightlong: Union City Conspiracy",
+      "gameId": "trecision:nl",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Noah's Ark",
+      "gameId": "mohawk:noah",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Noctropolis",
+      "gameId": "access:noctropolis",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Nose Bound - Episode 1",
+      "gameId": "wintermute:nosebound",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Obsidian",
+      "gameId": "mtropolis:obsidian",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Octave",
+      "gameId": "wintermute:octave",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Oknytt",
+      "gameId": "wintermute:oknytt",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Old Skies",
+      "gameId": "ags:oldskies",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "On the Tracks of Dinosaurs",
+      "gameId": "wintermute:reptilesquest",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Once Upon a Forest",
+      "gameId": "mads:forest",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "One",
+      "gameId": "wintermute:one",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "One Helluva Day",
+      "gameId": "wintermute:onehelluvaday",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "OO-Topos",
+      "gameId": "glk:ootopos",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Open Quest",
+      "gameId": "wintermute:openquest",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Operación: Bomba",
+      "gameId": "wintermute:operacionbomba",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Orion Burger",
+      "gameId": "m4:burger",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Out Of Order",
+      "gameId": "sludge:outoforder",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Out of This World (Another World)",
+      "gameId": "awe:anotherworld",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Over-Ring-Under",
+      "gameId": "director:overringunder",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Paintaria",
+      "gameId": "wintermute:paintaria",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Pajama Sam 2: Thunder and Lightning Aren't so Frightening",
+      "gameId": "scumm:pajama2",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Pajama Sam 3: You Are What You Eat From Your Head To Your Feet",
+      "gameId": "scumm:pajama3",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Pajama Sam's Lost & Found",
+      "gameId": "scumm:lost",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Pajama Sam's One Stop Fun Shop",
+      "gameId": "scumm:samsfunshop",
+      "status": "not-tested",
+      "upstreamRating": "Bugged"
+    },
+    {
+      "title": "Pajama Sam's Sock Works",
+      "gameId": "scumm:socks",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Pajama Sam: Games to Play on Any Day",
+      "gameId": "scumm:pjgames",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Pajama Sam: No Need to Hide When It's Dark Outside",
+      "gameId": "scumm:pajama",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Palladion",
+      "gameId": "wintermute:palladion",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Pangea 1/2",
+      "gameId": "wintermute:pangea",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Papa's Daughters",
+      "gameId": "wintermute:papasdaughters1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Papa's Daughters Go to the Sea",
+      "gameId": "wintermute:papasdaughters2",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Penumbra: Overture",
+      "gameId": "hpl1:penumbraoverture",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Pigeons in the Park",
+      "gameId": "wintermute:pigeons",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Pilot Brothers 3: Back Side of the Earth",
+      "gameId": "qdengine:pilots3",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Pilot Brothers 3D-2. Kennel Club Secrets",
+      "gameId": "qdengine:pilots3d-2",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Pilot Brothers 3D. The Case of Garden Pests",
+      "gameId": "qdengine:pilots3d",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Pilot Brothers: On the Track of Striped Elephant",
+      "gameId": "gamos:pilots1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Pilot Brothers: The Case of Serial Maniac",
+      "gameId": "gamos:pilots2",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Pizza Morgana: Episode 1 - Monsters and Manipulations in the Magical Forest",
+      "gameId": "wintermute:pizzamorgana",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Playtoons Limited Edition - Bambou le sauveur de la jungle",
+      "gameId": "gob:bambou",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Pole Chudes",
+      "gameId": "wintermute:polechudes",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Police Quest: SWAT",
+      "gameId": "sci:pqswat",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Precious Pills, Blasting Bacon and Mowing Minds",
+      "gameId": "wintermute:preciouspills",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Primordia",
+      "gameId": "ags:primordia",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Private Eye",
+      "gameId": "private:private-eye",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Project Joe",
+      "gameId": "wintermute:projectjoe",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Project Lonely Robot",
+      "gameId": "wintermute:lonelyrobot",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Project: Doom",
+      "gameId": "wintermute:projectdoom",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Putt-Putt and Fatty Bear's Activity Pack",
+      "gameId": "scumm:activity",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Putt-Putt and Pep's Balloon-O-Rama",
+      "gameId": "scumm:balloon",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Putt-Putt and Pep's Dog on a Stick",
+      "gameId": "scumm:dog",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Putt-Putt Enters the Race",
+      "gameId": "scumm:puttrace",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Putt-Putt Goes to the Moon",
+      "gameId": "scumm:puttmoon",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Putt-Putt Joins the Circus",
+      "gameId": "scumm:puttcircus",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Putt-Putt Joins the Parade",
+      "gameId": "scumm:puttputt",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Putt-Putt Saves the Zoo",
+      "gameId": "scumm:puttzoo",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Putt-Putt Travels Through Time",
+      "gameId": "scumm:putttime",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Putt-Putt's Fun Pack",
+      "gameId": "scumm:funpack",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Putt-Putt's One-Stop Fun Shop",
+      "gameId": "scumm:puttsfunshop",
+      "status": "not-tested",
+      "upstreamRating": "Bugged"
+    },
+    {
+      "title": "Qajary Cat",
+      "gameId": "wintermute:qajarycat",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Quest for Glory IV: Shadows of Darkness",
+      "gameId": "sci:qfg4",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Reah: Face the Unknown",
+      "gameId": "vcruise:reah",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Rebecca Carlson Mystery 01 - Silent Footsteps",
+      "gameId": "wintermute:rebeccacarlson1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Red Bow",
+      "gameId": "ags:redbow",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Red Comrades 0.2: Operation F.",
+      "gameId": "wintermute:petka02",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Red Comrades 1: Save the Galaxy",
+      "gameId": "petka:petka1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Red Comrades 2: For the Great Justice",
+      "gameId": "petka:petka2",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Resonance",
+      "gameId": "ags:resonance",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Return of the Phantom",
+      "gameId": "mads:phantom",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Reversion: The Escape",
+      "gameId": "wintermute:reversion1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Reversion: The Meeting",
+      "gameId": "wintermute:reversion2",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Reversion: The Return",
+      "gameId": "wintermute:reversion3",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Rhiannon: Curse of the Four Branches",
+      "gameId": "wintermute:rhiannon",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Rise of the Dragon",
+      "gameId": "dgds:rise",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Robin's Rescue",
+      "gameId": "sludge:robinsrescue",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Rosemary",
+      "gameId": "wintermute:rosemary",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Rosewater",
+      "gameId": "ags:rosewater",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Royal Mahjong: King's Journey",
+      "gameId": "wintermute:royalmahjong",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Ruff's Bone",
+      "gameId": "mohawk:ruff",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Sanitarium",
+      "gameId": "asylum:asylum",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Satan and Sons",
+      "gameId": "wintermute:satanandsons",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Schizm: Mysterious Journey",
+      "gameId": "vcruise:schizm",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Sfinx",
+      "gameId": "cge2:sfinx",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Shaban",
+      "gameId": "wintermute:shaban",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Shadow Of Nebula",
+      "gameId": "wintermute:shadowofnebula",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Shadowgate",
+      "gameId": "macventure:shadowgate",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Shadows on the Vatican - Act 1: Greed",
+      "gameId": "wintermute:sotv1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Shadows on the Vatican - Act II: Wrath",
+      "gameId": "wintermute:sotv2",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Shardlight",
+      "gameId": "ags:shardlight",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Sheila Rae, the Brave",
+      "gameId": "mohawk:sheila",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Shelter",
+      "gameId": "wintermute:shelter",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Simon the Sorcerer's Puzzle Pack: Demon in my Pocket",
+      "gameId": "agos:dimp",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Simon the Sorcerer's Puzzle Pack: NoPatience",
+      "gameId": "agos:puzzle",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Simon the Sorcerer's Puzzle Pack: Swampy Adventures",
+      "gameId": "agos:swampy",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Slater & Charlie Go Camping",
+      "gameId": "sci:slater",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Soldier Boyz",
+      "gameId": "hypno:soldierboyz",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Space Invaders",
+      "gameId": "wintermute:spaceinvaders",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Space Madness",
+      "gameId": "wintermute:spacemadness",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Space Pirates",
+      "gameId": "alg:spirates",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Space Quest IV.5 - Roger Wilco and the Voyage Home",
+      "gameId": "ags:sq45",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Space Quest Minus 1: Decisions of the Elders",
+      "gameId": "ags:sqdote",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Space Quest: Incinerations",
+      "gameId": "ags:sqinc",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Space Quest: Vohaul Strikes Back",
+      "gameId": "ags:sqvsb",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Spaceship Warlock",
+      "gameId": "director:warlock",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Spy Fox 2: \"Some Assembly Required\"",
+      "gameId": "scumm:spyfox2",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "SPY Fox in \"Cheese Chase\"",
+      "gameId": "scumm:chase",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Spy Fox in \"Dry Cereal\"",
+      "gameId": "scumm:spyfox",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Spy Fox in \"Hold the Mustard\"",
+      "gameId": "scumm:mustard",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Spy Fox: \"Operation Ozone\"",
+      "gameId": "scumm:spyozon",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Star Wars: Rebel Assault",
+      "gameId": "scumm:rebel1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Star Wars: Rebel Assault II - The Hidden Empire",
+      "gameId": "scumm:rebel2",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Stellaluna",
+      "gameId": "mohawk:stellaluna",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Strange Change",
+      "gameId": "wintermute:strangechange",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Strangeland",
+      "gameId": "ags:strangeland",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Sumatra: Fate of Yandi",
+      "gameId": "ags:sumatra",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Sunrise: The Game",
+      "gameId": "wintermute:sunrise",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Syberia",
+      "gameId": "tetraedge:syberia",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Syberia II",
+      "gameId": "tetraedge:syberia2",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Tanya Grotter and the Disappearing Floor",
+      "gameId": "wintermute:tanya2",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Tanya Grotter and the Magical Double Bass",
+      "gameId": "wintermute:tanya1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Technobabylon",
+      "gameId": "ags:technobabylon",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Tender Loving Care",
+      "gameId": "groovie:tlc",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "TeTRIks",
+      "gameId": "wintermute:tetriks",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The 11th Hour: The Sequel to The 7th Guest",
+      "gameId": "groovie:11h",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Adventures of the Good Soldier Schweik",
+      "gameId": "qdengine:shveik",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "The Adventures of Willy Beamish",
+      "gameId": "dgds:beamish",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Ancient Mark - Episode 1",
+      "gameId": "wintermute:theancientmark1",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Berenstain Bears Get in a Fight",
+      "gameId": "mohawk:bearfight",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Berenstain Bears In The Dark",
+      "gameId": "mohawk:beardark",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Better Dead Ratification",
+      "gameId": "director:betterd",
+      "status": "not-tested",
+      "upstreamRating": "Bugged"
+    },
+    {
+      "title": "The Blackwell Convergence",
+      "gameId": "ags:blackwell3",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "The Blackwell Deception",
+      "gameId": "ags:blackwell4",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Blackwell Epiphany",
+      "gameId": "ags:blackwell5",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Blackwell Legacy",
+      "gameId": "ags:blackwell1",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "The Box",
+      "gameId": "wintermute:thebox",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Cameron Files: The Secret at Loch Ness",
+      "gameId": "phoenixvr:lochness",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Crimson Crown: Further Adventures in Transylvania",
+      "gameId": "glk:crimsoncrown",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Cute Machine",
+      "gameId": "director:cutemachine",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "The Dark Eye",
+      "gameId": "director:darkeye",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Death of Erin Myers",
+      "gameId": "wintermute:erinmyers",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Driller Incident",
+      "gameId": "wintermute:driller",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Excavation of Hob's Barrow",
+      "gameId": "ags:excavationhb",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Fool's Errand",
+      "gameId": "fool:foolserrand",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "The Game That Takes Place on a Cruise Ship",
+      "gameId": "sludge:tgttpoacs",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "The Golden Calf",
+      "gameId": "wintermute:goldencalf",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Griffon Legend",
+      "gameId": "griffon:griffon",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Guild of Thieves",
+      "gameId": "glk:guild",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Idiot's Tale",
+      "gameId": "wintermute:idiotstale",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Interview",
+      "gameId": "sludge:interview",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "The Journeyman Project 2: Buried in Time",
+      "gameId": "buried:buried",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "The Kite",
+      "gameId": "wintermute:thekite",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Last Bounty Hunter",
+      "gameId": "alg:lbhunter",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Last Express",
+      "gameId": "lastexpress:lastexpress",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "The Longest Journey",
+      "gameId": "stark:tlj",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Lost Crown - A Ghost-Hunting Adventure",
+      "gameId": "wintermute:thelostcrowngha",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Manhole",
+      "gameId": "made:manhole",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Messenger/Louvre: The Final Curse",
+      "gameId": "phoenixvr:messenger",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "The New Kid on the Block",
+      "gameId": "mohawk:newkid",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Pawn",
+      "gameId": "glk:pawn",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Pink Panther: Hokus Pokus Pink",
+      "gameId": "pink:pokus",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Pink Panther: Passport to Peril",
+      "gameId": "pink:peril",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Prince and the Coward",
+      "gameId": "prince:prince",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "The Road to Santiago",
+      "gameId": "wintermute:roadsantiago",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Secret of Tremendous Corporation",
+      "gameId": "sludge:tsotc",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "The Seven Colors: Legend of PSY・S City",
+      "gameId": "director:the7colors",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Shivah",
+      "gameId": "ags:shivah",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Tale of The Lost Bride and A Hidden Treasure",
+      "gameId": "wintermute:lostbride",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Trader of Stories",
+      "gameId": "wintermute:tradestory",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Vampire Diaries",
+      "gameId": "nancy:vampirediaries",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The Way Of Love: Sub Zero",
+      "gameId": "wintermute:wayoflove",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "The White Chamber",
+      "gameId": "wintermute:twc",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Thimbleweed Park",
+      "gameId": "twp:twp",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Time Gal",
+      "gameId": "director:timegal",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Today, Mama!",
+      "gameId": "wintermute:todaymama",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Transylvania",
+      "gameId": "glk:transylvania",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Treasure of the Silver Lake",
+      "gameId": "macs2:sis",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Trick or Treat",
+      "gameId": "tot:tot",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Ultima IV: Quest of the Avatar",
+      "gameId": "ultima:ultima4",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Ultima VI: The False Prophet",
+      "gameId": "ultima:ultima6",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Ultima VIII - Pagan",
+      "gameId": "ultima:ultima8",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Unavowed",
+      "gameId": "ags:unavowed",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Uncle Henry's Playhouse",
+      "gameId": "groovie:unclehenry",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Uninvited",
+      "gameId": "macventure:uninvited",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Unrest",
+      "gameId": "crab:unrest",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Valmaison au fil des saisons / Pepperon",
+      "gameId": "director:pepperon",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Versailles 1685",
+      "gameId": "cryomni3d:versailles",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Vitamin",
+      "gameId": "gamos:vitamin",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Wait for it! Issue 3. Song for a hare",
+      "gameId": "qdengine:nupogodi3",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "War",
+      "gameId": "wintermute:war",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Wetlands",
+      "gameId": "hypno:wetlands",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Whispers of a Machine",
+      "gameId": "ags:whispersofamachine",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Who Shot Johnny Rock?",
+      "gameId": "alg:johnroc",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "WildSnake",
+      "gameId": "gamos:wild",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Wilma Tetris",
+      "gameId": "wintermute:wtetris",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Wonderland",
+      "gameId": "glk:wonderland",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Wrath of the Gods",
+      "gameId": "director:wrath",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Yaken Rodem",
+      "gameId": "director:henachoco05",
+      "status": "not-tested",
+      "upstreamRating": "Bugged"
+    },
+    {
+      "title": "Zak McKracken & Loom",
+      "gameId": "scumm:zakloom",
+      "status": "not-tested",
+      "upstreamRating": "Excellent"
+    },
+    {
+      "title": "Zbang! The Game",
+      "gameId": "wintermute:zbang",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Zilm: A Game of Reflex",
+      "gameId": "wintermute:zilm",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Zork Nemesis: The Forbidden Lands",
+      "gameId": "zvision:znemesis",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    },
+    {
+      "title": "Zork: Grand Inquisitor",
+      "gameId": "zvision:zgi",
+      "status": "not-tested",
+      "upstreamRating": "Good"
+    }
+  ]
+}

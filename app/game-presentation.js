@@ -266,6 +266,8 @@ export function getGamePresentation(game, importedArt) {
   return {
     ...game,
     ...art,
+    familyId: game.familyId || (game.engineId && (game.gameId || game.target)
+      ? `${game.engineId}:${game.gameId || game.target}` : null),
     infoHref: game.readmeHref || null,
     screenshots,
     summary:
@@ -347,6 +349,7 @@ export function getImportedGamePresentation(filename) {
       return {
         ...getGamePresentation({
           target,
+          familyId: retro.id,
           engineId: engineId === "local" ? "scumm" : engineId,
           displayTitle: retro.title + (demo ? " (Demo)" : ""),
         }, {

@@ -780,6 +780,77 @@ button.nav-icon-link {
   line-height: 1.5;
 }
 
+.game-version-count {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  z-index: 2;
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.2rem;
+  background: rgba(8, 15, 9, 0.9);
+  color: var(--accent-strong);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.game-version-controls {
+  display: grid;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.game-version-controls label {
+  display: grid;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.game-version-controls select {
+  appearance: none;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.6rem 3rem 0.6rem 1rem;
+  border: 1px solid var(--ghost-border);
+  background: var(--surface-lowest);
+  color: var(--ink);
+  font: inherit;
+}
+
+.game-version-file {
+  margin: 0;
+  color: var(--ink-muted);
+  overflow-wrap: anywhere;
+}
+
+.game-version-legacy {
+  color: var(--ink-muted);
+  line-height: 1.5;
+}
+
+.game-version-legacy summary { cursor: pointer; }
+.game-version-legacy p { margin: 0.6rem 0; }
+
+.game-version-management {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.game-version-management button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent-strong);
+  font: inherit;
+  cursor: pointer;
+}
+
+.game-version-controls select:focus-visible,
+.game-version-management button:focus-visible {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 3px;
+}
+
 .game-detail-actions {
   display: flex;
   gap: 0.95rem;

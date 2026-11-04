@@ -247,7 +247,14 @@ export default function GameRouteFrame({
 
       if (loadArchive && event.source === frameRef.current?.contentWindow) {
         if (event.data?.type === "scummweb:local-game-ready" && archiveFiles.current) {
-          sendZipGameFiles(event.source, archiveFiles.current);
+          try {
+            sendZipGameFiles(event.source, archiveFiles.current, { saveNamespace: game?.saveNamespace });
+          } catch {
+            archiveFiles.current = null;
+            stopArchiveBootTimer();
+            setArchiveError("Could not prepare this version. Exit the player and try again.");
+            return;
+          }
           archiveFiles.current = null;
           restartArchiveBootTimer();
           return;
@@ -325,7 +332,7 @@ export default function GameRouteFrame({
       stopArchiveBootTimer();
       window.removeEventListener("message", handleMessage);
     };
-  }, [archiveFrameDocument, catalogLaunch, frameSrc, launchAnalytics, loadArchive, navigateHome, target]);
+  }, [archiveFrameDocument, catalogLaunch, frameSrc, game?.saveNamespace, launchAnalytics, loadArchive, navigateHome, target]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -358,6 +365,16 @@ export default function GameRouteFrame({
           }
         }
         if (loadArchive) {
+          if (!catalogLaunch && game?.saveVersionId && window.location.hash === "#continue") {
+            const slot = await getLatestBrowserSave(game, scummvmAssetVersion);
+            if (controller.signal.aborted) return;
+            if (slot !== null) {
+              const localUrl = new URL(launchSrc, window.location.origin);
+              localUrl.hash = decodeURIComponent(localUrl.hash.slice(1)) + ` -x ${slot}`;
+              launchSrc = `${localUrl.pathname}${localUrl.search}${localUrl.hash}`;
+              setIsResuming(true);
+            }
+          }
           const files = await loadArchive(controller.signal);
           if (controller.signal.aborted) return;
           archiveFiles.current = files;
