@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { readRemoteGameArchive } from "../../game-bucket.mjs";
 import GameRouteFrame from "../../game-route-frame";
 import { buildZipGamePlayerUrl } from "../../home-shell/zip-game-player";
+import { buildGameExitHref } from "../../home-shell/hero-selection.mjs";
 import { getSelectedGamePresentation, openSelectedGameArchive } from "../../local-game-archive.mjs";
 
 function ArchivePlayer({ zip }) {
@@ -18,7 +19,7 @@ function ArchivePlayer({ zip }) {
       game={game}
       target={game?.target}
       loadArchive={loadArchive}
-      src={buildZipGamePlayerUrl("/#library", { saveNamespace: game?.saveNamespace })}
+      src={buildZipGamePlayerUrl(buildGameExitHref(game), { saveNamespace: game?.saveNamespace })}
       title={game?.displayTitle ?? "ScummVM game"}
     />
   );

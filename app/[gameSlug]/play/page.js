@@ -8,6 +8,7 @@ import {
   getPresentedGameBySlug,
 } from "../../game-page-data";
 import GameRouteFrame from "../../game-route-frame";
+import { buildGameExitHref } from "../../home-shell/hero-selection.mjs";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -42,7 +43,7 @@ export default async function GamePlayRoutePage({ params }) {
   }
 
   const launchHref = buildVersionedAssetPath("/scummvm.html", {
-    searchParams: { exitTo: game.href, localGame: "1", catalogGame: game.gameId },
+    searchParams: { exitTo: buildGameExitHref(game), localGame: "1", catalogGame: game.gameId },
     hash: game.target,
   });
 

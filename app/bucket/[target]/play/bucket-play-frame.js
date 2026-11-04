@@ -5,8 +5,7 @@ import { readRemoteGameArchive } from "../../../game-bucket.mjs";
 import { readGameSources } from "../../../game-sources.mjs";
 import GameRouteFrame from "../../../game-route-frame";
 import { buildZipGamePlayerUrl } from "../../../home-shell/zip-game-player";
-
-const playerUrl = buildZipGamePlayerUrl("/#library");
+import { buildGameExitHref } from "../../../home-shell/hero-selection.mjs";
 
 export default function BucketPlayFrame({ game, officialUrl, catalog }) {
   const { target, displayTitle } = game;
@@ -28,7 +27,7 @@ export default function BucketPlayFrame({ game, officialUrl, catalog }) {
     <GameRouteFrame
       game={game}
       loadArchive={loadArchive}
-      src={playerUrl}
+      src={buildZipGamePlayerUrl(buildGameExitHref(game))}
       target={target}
       title={`${displayTitle} playable ScummVM frame`}
     />
