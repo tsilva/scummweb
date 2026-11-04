@@ -3,6 +3,8 @@ import test from "node:test";
 import { BlobWriter, Uint8ArrayReader, ZipWriter } from "@zip.js/zip.js";
 import { normalizeBucketUrl, normalizeGameZipUrl, readCatalogGameArchive, readRemoteGameArchive, readSavedBucket } from "../app/game-bucket.mjs";
 import { maxArchiveSize } from "../app/local-game-archive.mjs";
+import { installGameZipCache } from "./helpers/game-zip-cache.mjs";
+import { maxCachedGameZips } from "../app/game-zip-cache.mjs";
 
 const customUrl = "https://games.example.com";
 const games = [
@@ -119,4 +121,80 @@ test("ZIP downloads report streamed percentages and handle unknown totals", asyn
       : [null, 100]);
     fetch.mock.restore();
   }
+});
+
+test("repeat launches reuse a persisted ZIP and preserve URL query identity", async (t) => {
+  const { entries } = installGameZipCache(t);
+  const writer = new ZipWriter(new BlobWriter());
+  await writer.add("sky.dnr", new Uint8ArrayReader(Uint8Array.of(1, 2, 3)));
+  const archive = await writer.close();
+  const fetch = t.mock.method(globalThis, "fetch", async () => new Response(archive));
+  const url = `${customUrl}/sky.zip?v=1`;
+  const first = await readRemoteGameArchive(url);
+  assert.equal(entries.size, 1);
+  const progress = [];
+  const second = await readRemoteGameArchive(url, { onProgress: (value, details) => progress.push([value, details]) });
+  assert.deepEqual(second, first);
+  assert.deepEqual(progress, [[null, { cached: true }], [100, { cached: true }]]);
+  assert.equal(fetch.mock.callCount(), 1);
+  await readRemoteGameArchive(`${customUrl}/sky.zip?v=2`);
+  assert.equal(fetch.mock.callCount(), 2);
+  await assert.rejects(readRemoteGameArchive(url, { archiveLimit: 1 }), /download limit/);
+  await assert.rejects(readRemoteGameArchive(url, { expandedLimit: 1 }), /when unpacked/);
+});
+
+test("the catalog loader reuses cached ZIPs across launches", async (t) => {
+  installGameZipCache(t);
+  const previous = Object.getOwnPropertyDescriptor(globalThis, "window");
+  Object.defineProperty(globalThis, "window", { configurable: true, value: { location: { hostname: "scummweb.tsilva.eu" } } });
+  t.after(() => previous ? Object.defineProperty(globalThis, "window", previous) : delete globalThis.window);
+  const writer = new ZipWriter(new BlobWriter());
+  await writer.add("sky.dnr", new Uint8ArrayReader(Uint8Array.of(1)));
+  const archive = await writer.close();
+  const fetch = t.mock.method(globalThis, "fetch", async () => new Response(archive));
+  assert.deepEqual(await readCatalogGameArchive(`${customUrl}/sky.zip`), await readCatalogGameArchive(`${customUrl}/sky.zip`));
+  assert.equal(fetch.mock.callCount(), 1);
+});
+
+test("invalid, incomplete and canceled downloads never enter the game cache", async (t) => {
+  const { entries } = installGameZipCache(t);
+  const fetch = t.mock.method(globalThis, "fetch", async () => new Response("invalid ZIP"));
+  await assert.rejects(readRemoteGameArchive(`${customUrl}/invalid.zip`), /readable ZIP/);
+  assert.equal(entries.size, 0);
+  fetch.mock.mockImplementation(async () => new Response(new ReadableStream({
+    start(controller) { controller.error(new Error("connection interrupted")); },
+  })));
+  await assert.rejects(readRemoteGameArchive(`${customUrl}/partial.zip`), /connection interrupted/);
+  assert.equal(entries.size, 0);
+  const controller = new AbortController();
+  controller.abort();
+  await assert.rejects(readRemoteGameArchive(`${customUrl}/canceled.zip`, { signal: controller.signal }), { name: "AbortError" });
+  assert.equal(entries.size, 0);
+  assert.equal(fetch.mock.callCount(), 2);
+});
+
+test("cache read and write failures leave downloads usable", async (t) => {
+  const { cache } = installGameZipCache(t);
+  const writer = new ZipWriter(new BlobWriter());
+  await writer.add("sky.dnr", new Uint8ArrayReader(Uint8Array.of(1)));
+  const archive = await writer.close();
+  t.mock.method(globalThis, "fetch", async () => new Response(archive));
+  t.mock.method(cache, "match", async () => { throw new Error("Storage blocked"); });
+  t.mock.method(cache, "put", async () => { throw new Error("Quota exceeded"); });
+  assert.equal((await readRemoteGameArchive(`${customUrl}/sky.zip`))[0].path, "sky.dnr");
+});
+
+test("the game ZIP cache evicts the oldest stored ZIP when adding a fifth archive", async (t) => {
+  const { entries } = installGameZipCache(t);
+  const writer = new ZipWriter(new BlobWriter());
+  await writer.add("sky.dnr", new Uint8ArrayReader(Uint8Array.of(1)));
+  const archive = await writer.close();
+  const fetch = t.mock.method(globalThis, "fetch", async () => new Response(archive));
+  for (let index = 0; index <= maxCachedGameZips; index++) {
+    await readRemoteGameArchive(`${customUrl}/sky.zip?v=${index}`);
+  }
+  assert.equal(entries.size, maxCachedGameZips);
+  assert.equal(entries.has(`${customUrl}/sky.zip?v=0`), false);
+  await readRemoteGameArchive(`${customUrl}/sky.zip?v=${maxCachedGameZips}`);
+  assert.equal(fetch.mock.callCount(), maxCachedGameZips + 1);
 });

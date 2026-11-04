@@ -150,6 +150,7 @@ export default function GameRouteFrame({
   const archiveFiles = useRef(null);
   const [archiveError, setArchiveError] = useState("");
   const [archiveProgress, setArchiveProgress] = useState(null);
+  const [archiveCached, setArchiveCached] = useState(false);
   const [launchAnalytics] = useState(() => createGameLaunchAnalytics(catalogLaunch ? game?.slug : null));
   const [frameSrc, setFrameSrc] = useState(null);
   const [archiveFrameDocument, setArchiveFrameDocument] = useState(null);
@@ -339,6 +340,7 @@ export default function GameRouteFrame({
     const controller = new AbortController();
     setReadySignal(null);
     setArchiveProgress(null);
+    setArchiveCached(false);
     setSkipIntroConsumed(catalogIntroSlot !== null);
 
     async function openGame() {
@@ -377,8 +379,11 @@ export default function GameRouteFrame({
               setIsResuming(true);
             }
           }
-          const files = await loadArchive(controller.signal, (progress) => {
-            if (!controller.signal.aborted) setArchiveProgress(progress);
+          const files = await loadArchive(controller.signal, (progress, { cached = false } = {}) => {
+            if (!controller.signal.aborted) {
+              setArchiveProgress(progress);
+              setArchiveCached(cached);
+            }
           });
           if (controller.signal.aborted) return;
           archiveFiles.current = files;
@@ -627,7 +632,7 @@ export default function GameRouteFrame({
       <GameBootOverlay
         bootProgressPercent={bootProgressPercent}
         bootStatusText={archiveError || (loadArchive && !frameSrc
-          ? archiveProgress === null ? archiveLoadingText : `Downloading game ZIP (${archiveProgress}%)…`
+          ? archiveCached ? "Opening cached game ZIP…" : archiveProgress === null ? archiveLoadingText : `Downloading game ZIP (${archiveProgress}%)…`
           : bootState.bootStatusText)}
         game={game}
         hasBootFailed={hasBootFailed}

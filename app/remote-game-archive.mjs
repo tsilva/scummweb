@@ -1,5 +1,5 @@
 import { getArchiveGamePresentation } from "./archive-game-presentation.mjs";
-import { normalizeGameZipUrl, readRemoteGameArchive, validateGameArchiveResponse } from "./game-bucket.mjs";
+import { normalizeGameZipUrl, readCachedGameArchive, readRemoteGameArchive, validateGameArchiveResponse } from "./game-bucket.mjs";
 import { ArchiveError, maxArchiveSize, scanGameZipReader } from "./local-game-archive.mjs";
 
 const probeLimit = 2 * 1024 * 1024;
@@ -68,6 +68,19 @@ export async function inspectRemoteGameArchive(url, { signal } = {}) {
 
 export async function prepareRemoteGameArchive(url, { signal, onDownloading, onProgress } = {}) {
   const zipUrl = normalizeGameZipUrl(url);
+  let cachedGame = null;
+  const cachedFiles = await readCachedGameArchive(zipUrl, {
+    signal, onProgress, onEntries: (entries) => { cachedGame = getArchiveGamePresentation(entries); },
+  });
+  if (cachedFiles) {
+    return {
+      game: cachedGame,
+      loadArchive: async (launchSignal) => {
+        launchSignal?.throwIfAborted();
+        return cachedFiles;
+      },
+    };
+  }
   try {
     const files = await inspectRemoteGameArchive(zipUrl, { signal });
     signal?.throwIfAborted();
