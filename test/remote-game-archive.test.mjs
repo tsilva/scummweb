@@ -4,6 +4,8 @@ import { BlobWriter, Uint8ArrayReader, ZipWriter } from "@zip.js/zip.js";
 import { getArchiveGamePresentation } from "../app/archive-game-presentation.mjs";
 import { inspectRemoteGameArchive, prepareRemoteGameArchive } from "../app/remote-game-archive.mjs";
 import { maxArchiveSize } from "../app/local-game-archive.mjs";
+import { readRemoteGameArchive } from "../app/game-bucket.mjs";
+import { installGameZipCache } from "./helpers/game-zip-cache.mjs";
 
 const url = "https://example.com/completely-renamed.zip?download=1";
 
@@ -14,6 +16,18 @@ async function makeZip(paths = ["wrapper/SKY.DNR", "wrapper/SKY.DSK"]) {
   }
   return new Uint8Array(await (await writer.close()).arrayBuffer());
 }
+
+test("cached direct links identify and launch the game without inspection or download requests", async (t) => {
+  installGameZipCache(t);
+  const bytes = await makeZip();
+  const fetch = t.mock.method(globalThis, "fetch", async () => new Response(bytes));
+  const first = await readRemoteGameArchive(url);
+  fetch.mock.mockImplementation(async () => { throw new Error("Network must not be used"); });
+  const prepared = await prepareRemoteGameArchive(url);
+  assert.equal(prepared.game.target, "sky");
+  assert.deepEqual(await prepared.loadArchive(), first);
+  assert.equal(fetch.mock.callCount(), 1);
+});
 
 function rangeResponse(bytes, options) {
   const range = /^bytes=(?:(\d+)-(\d+)|-(\d+))$/.exec(options.headers.Range);

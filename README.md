@@ -32,6 +32,9 @@ a copy, drop its ZIP onto the page to add it and enable its launch options.
 a freeware cyberpunk adventure. The game downloads and unpacks in your browser;
 when the opening scene appears, you’re ready to play.
 ZIP downloads show a percentage when the host provides the total file size.
+Successfully opened game ZIPs are cached in your browser, so playing the same
+URL again reuses the ZIP without downloading it. The cache holds up to four
+archives; clearing site data or ending an incognito session removes them.
 
 Select a game card for details and **Play**. If sound or an intro is paused,
 select **Start audio** inside the game. Compatible saves offer **Continue**;

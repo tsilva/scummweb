@@ -1,4 +1,5 @@
 import { ArchiveError, maxArchiveSize, readLocalGameArchive } from "./local-game-archive.mjs";
+import { cacheGameZip, deleteCachedGameZip, readCachedGameZip } from "./game-zip-cache.mjs";
 
 export const bucketStorageKey = "scummweb.game-bucket.v1";
 
@@ -94,7 +95,34 @@ export async function validateGameArchiveResponse(response, archiveLimit = maxAr
   }
 }
 
+export async function readCachedGameArchive(zipUrl, { signal, onEntries, onProgress, archiveLimit = maxArchiveSize, expandedLimit } = {}) {
+  signal?.throwIfAborted();
+  const archive = await readCachedGameZip(zipUrl);
+  signal?.throwIfAborted();
+  if (!archive) return null;
+  // Apply the current caller's limits even when no network request is needed.
+  if (archive.size > archiveLimit) {
+    throw new ArchiveError(`This ZIP exceeds the ${archiveLimit / (1024 * 1024)} MiB download limit.`);
+  }
+  onProgress?.(null, { cached: true });
+  try {
+    const files = await readLocalGameArchive(new File([archive], "game.zip"), {
+      archiveLimit, expandedLimit, signal, onEntries,
+    });
+    signal?.throwIfAborted();
+    onProgress?.(100, { cached: true });
+    return files;
+  } catch (error) {
+    signal?.throwIfAborted();
+    if (error?.name === "AbortError") throw error;
+    await deleteCachedGameZip(zipUrl);
+    throw error;
+  }
+}
+
 async function downloadGameArchive(zipUrl, { signal, onEntries, onProgress, archiveLimit = maxArchiveSize, expandedLimit, timeoutMs = 120_000 } = {}) {
+  const cachedFiles = await readCachedGameArchive(zipUrl, { signal, onEntries, onProgress, archiveLimit, expandedLimit });
+  if (cachedFiles) return cachedFiles;
   const timeout = AbortSignal.timeout(timeoutMs);
   const response = await fetch(zipUrl, {
     mode: "cors",
@@ -130,5 +158,9 @@ async function downloadGameArchive(zipUrl, { signal, onEntries, onProgress, arch
   }));
   const archive = await new Response(limitedBody).blob();
   onProgress?.(100);
-  return readLocalGameArchive(new File([archive], "game.zip"), { archiveLimit, expandedLimit, signal, onEntries });
+  const files = await readLocalGameArchive(new File([archive], "game.zip"), { archiveLimit, expandedLimit, signal, onEntries });
+  signal?.throwIfAborted();
+  await cacheGameZip(zipUrl, archive);
+  signal?.throwIfAborted();
+  return files;
 }

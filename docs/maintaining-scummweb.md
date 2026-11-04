@@ -12,6 +12,15 @@ remain stored in the browser.
 During ZIP downloads, the launch status shows `Downloading game ZIP (42%)…`
 when the host provides a valid `Content-Length`; otherwise it keeps the download
 status without a percentage until the download completes.
+After successful extraction, catalog and remote game ZIPs are saved in a
+browser cache. Repeat launches of the exact same URL (including its query
+parameters) show `Opening cached game ZIP…` and unpack it locally, without a ZIP
+request or remote inspection. Up to four archives are retained; adding a fifth removes
+the oldest stored archive. Saves are separate and are not removed by this limit.
+The cache is best effort: browsers may evict it, private sessions clear it when
+they end, and blocked or full storage leaves ordinary downloads working.
+To fetch a replacement ZIP published at the same URL, clear this site's cached
+data or use a new URL, such as a version query parameter.
 
 The **Recently Played** strip shows only games you have launched, newest first,
 including imported ZIPs. Different editions of a title share one card, and
