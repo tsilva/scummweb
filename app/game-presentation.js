@@ -54,7 +54,7 @@ const artByTarget = {
     year,
     summary,
     posterImage: `/launcher/${target}-cover.webp`,
-    screenshots: [`/launcher/${target}-shot.webp`],
+    screenshots: retroGameArtwork[`scumm:${target}`].screenshots,
   }])),
   atlantis: {
     eyebrow: "LucasArts Adventure",
@@ -63,7 +63,7 @@ const artByTarget = {
     studio: "LucasArts",
     year: "1992",
     posterImage: "/launcher/atlantis-cover.webp",
-    screenshots: ["/launcher/atlantis-shot.webp"],
+    screenshots: retroGameArtwork["scumm:atlantis"].screenshots,
   },
   indy3: {
     eyebrow: "Lucasfilm Games Adventure",
@@ -72,7 +72,7 @@ const artByTarget = {
     studio: "Lucasfilm Games",
     year: "1989",
     posterImage: "/launcher/indy3-cover.webp",
-    screenshots: ["/launcher/indy3-shot.webp"],
+    screenshots: retroGameArtwork["scumm:indy3"].screenshots,
   },
   sfinx: {
     eyebrow: "L.K. Avalon",
@@ -82,6 +82,11 @@ const artByTarget = {
     year: "1997",
     heroImage: "/launcher/sfinx-hero.webp",
     posterImage: "/launcher/sfinx-cover.webp",
+    screenshots: [
+      "/launcher/sfinx-shot-1.webp",
+      "/launcher/sfinx-shot-2.webp",
+      "/launcher/sfinx-shot-3.webp",
+    ],
   },
   "monkey-demo": {
     eyebrow: "Lucasfilm Games Demo",

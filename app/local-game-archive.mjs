@@ -137,7 +137,7 @@ function requiresFileBackedZip(file, totalSize) {
 function validateStoredEntries(entries) {
   if (entries.some(({ entry }) => entry.compressionMethod !== 0 ||
       entry.compressedSize !== entry.uncompressedSize)) {
-    throw new ArchiveError("For a large game, use a ZIP created without compression or drop its unpacked folder.");
+    throw new ArchiveError("For a large game, use a ZIP created without compression.");
   }
 }
 
@@ -196,31 +196,4 @@ async function unpackGameEntries(entries, signal) {
     files.push({ path, data });
   }
   return files;
-}
-
-export function validateGameFolder(files) {
-  const entries = new Map();
-  let size = 0;
-  for (const { file, path } of files) {
-    const parts = gamePathParts(path);
-    const key = path.toLowerCase();
-    if (entries.has(key)) throw new ArchiveError("This game folder contains duplicate file paths.");
-    entries.set(key, { parts, file });
-    size += file.size;
-    if (size > maxLocalGameSize) throw new ArchiveError("Choose a game folder of 4 GiB or less.");
-    if (entries.size > maxGameEntries) throw new ArchiveError("This game folder contains too many files.");
-  }
-  return gameEntries(entries);
-}
-
-export async function readGameFolder(files) {
-  const entries = validateGameFolder(files);
-  if (entries.reduce((size, { file }) => size + file.size, 0) > maxExpandedSize) {
-    return entries.map(({ path, file }) => ({ path, blob: file }));
-  }
-  const result = [];
-  for (const { file, path } of entries) {
-    result.push({ path, data: new Uint8Array(await file.arrayBuffer()) });
-  }
-  return result;
 }

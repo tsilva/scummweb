@@ -1,116 +1,78 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { BlobWriter, Uint8ArrayReader, ZipWriter } from "@zip.js/zip.js";
-import { readGameFolder } from "../app/local-game-archive.mjs";
-import { captureGameDrop, prepareLocalFolder, prepareLocalZip, scanGameFolder, selectedGameFolder } from "../app/local-game-import.mjs";
+import { captureGameDrop, fileNode, handleNode, prepareLocalZip } from "../app/local-game-import.mjs";
 
-const fileEntry = (file) => ({
-  name: file.name,
-  isFile: true,
-  file: (success) => success(file),
-});
-
-function directoryEntry(name, ...batches) {
-  return {
-    name,
-    isDirectory: true,
-    createReader() {
-      let index = 0;
-      return { readEntries: (success) => success(batches[index++] ?? []) };
-    },
-  };
-}
-
-test("a batch captures all drag items synchronously and reads nested legacy directory batches", async () => {
+async function gameZip() {
   const zip = new ZipWriter(new BlobWriter());
   await zip.add("game/vol.cat", new Uint8ArrayReader(Uint8Array.of(1, 2)));
-  const file = new File([await zip.close()], "sfinx-en-v1.1.zip");
-  const modernHandle = { kind: "file", name: file.name, getFile: async () => file };
+  return new File([await zip.close()], "sfinx-en-v1.1.zip");
+}
+
+test("a mixed drop captures every handle synchronously and accepts only ZIP files", async () => {
+  const file = await gameZip();
+  const zipHandle = { kind: "file", name: file.name, getFile: async () => file };
+  const folderHandle = { kind: "directory", name: "Collection.zip", values: () => assert.fail("Do not scan directories") };
   const captures = [];
-  const item = (name, entry, handle) => ({
-    kind: "file",
-    webkitGetAsEntry: () => entry,
-    getAsFile: () => null,
-    getAsFileSystemHandle: async () => {
-      captures.push(name);
-      return handle;
-    },
-  });
-  const folder = directoryEntry("Collection",
-    [fileEntry(new File(["read me"], "README.txt"))],
-    [directoryEntry("Nested", [fileEntry(file)])],
-  );
   const roots = captureGameDrop({
-    items: [item("archive", null, modernHandle), item("folder", folder, null)],
+    items: [zipHandle, folderHandle, { kind: "file", name: "vol.cat", getFile: async () => new File(["data"], "vol.cat") }]
+      .map((handle) => ({
+        kind: "file", getAsFile: () => null,
+        getAsFileSystemHandle: () => { captures.push(handle.name); return Promise.resolve(handle); },
+      })),
     files: [],
   });
-  assert.deepEqual(captures, ["archive", "folder"]);
-  const [archive, collection] = await Promise.all(roots);
-  assert.equal((await prepareLocalZip(archive)).handle, modernHandle);
-  const { archives, files } = await scanGameFolder(collection);
-  assert.deepEqual(files.map(({ path }) => path), ["README.txt"]);
-  assert.equal(archives.length, 1);
-  assert.equal(archives[0].path, "Nested/sfinx-en-v1.1.zip");
-  assert.equal((await prepareLocalZip(archives[0])).name, file.name);
+  assert.deepEqual(captures, [file.name, "Collection.zip", "vol.cat"]);
+  const [archive, folder, loose] = await Promise.all(roots);
+  assert.equal((await prepareLocalZip(archive)).handle, zipHandle);
+  await assert.rejects(prepareLocalZip(folder), /Only ZIP files containing ScummVM games/);
+  await assert.rejects(prepareLocalZip(loose), /Choose a ZIP/);
 });
 
-test("a folder with loose game data becomes one playable entry with relative file paths", async () => {
-  const file = new File([Uint8Array.of(1, 2)], "vol.cat");
-  const folder = directoryEntry("Sfinx", [directoryEntry("data", [fileEntry(file)])]);
+test("legacy directory drops are rejected without reading their children", async () => {
   const [root] = captureGameDrop({
-    items: [{ kind: "file", getAsFile: () => null, webkitGetAsEntry: () => folder }],
-    files: [],
+    items: [{ kind: "file", getAsFile: () => null, webkitGetAsEntry: () => ({
+      name: "Collection", isDirectory: true,
+      createReader: () => assert.fail("Do not scan directories"),
+    }) }], files: [],
   });
-  const node = await root;
-  const { archives, files } = await scanGameFolder(node);
-  assert.deepEqual(archives, []);
-  const prepared = await prepareLocalFolder(node, files);
-  assert.equal(prepared.kind, "folder");
-  assert.equal(prepared.name, "Sfinx");
-  assert.deepEqual(await readGameFolder(prepared.data), [{ path: "vol.cat", data: Uint8Array.of(1, 2) }]);
+  await assert.rejects(prepareLocalZip(await root), /Only ZIP files containing ScummVM games/);
 });
 
-test("a folder picked without native handles keeps the paths needed by the player", async () => {
-  const files = ["disc1/vol.cat", "disc2/vol.dat"].map((path) => {
-    const file = new File(["test"], path.split("/").at(-1));
-    return Object.defineProperty(file, "webkitRelativePath", { value: `Sfinx/${path}` });
-  });
-  const folder = selectedGameFolder(files);
-  const scanned = await scanGameFolder(folder);
-  const updates = [];
-  const prepared = await prepareLocalFolder(folder, scanned.files, (index, status) => {
-    updates.push({ path: scanned.files[index].path, ...status });
-  });
-  assert.equal(prepared.name, "Sfinx");
-  assert.deepEqual((await readGameFolder(prepared.data)).map(({ path }) => path), ["disc1/vol.cat", "disc2/vol.dat"]);
-  assert.deepEqual(updates, [
-    { path: "disc1/vol.cat", message: "Reading file…" },
-    { path: "disc1/vol.cat", message: "File checked", complete: true },
-    { path: "disc2/vol.dat", message: "Reading file…" },
-    { path: "disc2/vol.dat", message: "File checked", complete: true },
-  ]);
-});
-
-test("directory scan preserves distinct paths for archives with the same name", async () => {
-  const game = new File(["test"], "game.zip");
-  const folder = directoryEntry("Collection", [
-    directoryEntry("DOS", [fileEntry(game)]),
-    directoryEntry("Amiga", [fileEntry(game)]),
-  ]);
+test("legacy file drops still import ZIPs when native handles are unavailable", async () => {
+  const file = await gameZip();
   const [root] = captureGameDrop({
-    items: [{ kind: "file", getAsFile: () => null, webkitGetAsEntry: () => folder }],
-    files: [],
+    items: [{ kind: "file", getAsFile: () => null,
+      getAsFileSystemHandle: async () => { throw new Error("Unsupported"); },
+      webkitGetAsEntry: () => ({ name: file.name, isFile: true, file: (success) => success(file) }),
+    }], files: [],
   });
-  const { archives } = await scanGameFolder(await root);
-  assert.deepEqual(archives.map(({ path }) => path), ["DOS/game.zip", "Amiga/game.zip"]);
-  assert.equal(await archives[0].getFile(), game);
+  const game = await prepareLocalZip(await root);
+  assert.equal(game.kind, "zip");
+  assert.equal(game.data, file);
+  assert.equal(game.handle, undefined);
 });
 
-test("a file that fails to read is not reported as checked", async () => {
-  const updates = [];
-  await assert.rejects(prepareLocalFolder({ name: "Game" }, [{
-    path: "data/vol.cat",
+test("file-list drops import multiple ZIPs without persistent handles", async () => {
+  const files = [await gameZip(), await gameZip()];
+  const roots = captureGameDrop({ items: [], files });
+  const games = await Promise.all(roots.map(async (root) => prepareLocalZip(await root)));
+  assert.deepEqual(games.map(({ data }) => data), files);
+});
+
+test("loose files and alternate archive formats are rejected", async () => {
+  for (const name of ["sky.dsk", "game.7z", "game.rar", "game.tar", "game.zip.exe"]) {
+    await assert.rejects(prepareLocalZip(fileNode(new File(["data"], name))), /Choose a ZIP/);
+  }
+  await assert.rejects(prepareLocalZip(fileNode(new File(["not a zip"], "game.zip"))), /not a readable ZIP/);
+});
+
+test("a directory named with a ZIP extension cannot enter through the picker adapter", async () => {
+  await assert.rejects(prepareLocalZip(handleNode({ kind: "directory", name: "game.zip" })), /Only ZIP/);
+});
+
+test("ZIP file read failures remain errors", async () => {
+  await assert.rejects(prepareLocalZip({ kind: "file", name: "game.zip",
     getFile: async () => { throw new DOMException("File moved", "NotFoundError"); },
-  }], (index, status) => updates.push({ index, ...status })), { name: "NotFoundError" });
-  assert.deepEqual(updates, [{ index: 0, message: "Reading file…" }]);
+  }), { name: "NotFoundError" });
 });

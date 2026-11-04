@@ -434,8 +434,8 @@ export default function GameRouteFrame({
   }, [frameSrc, src]);
 
   useEffect(() => {
-    if (catalogLaunch) recordRecentGameTarget(target);
-  }, [catalogLaunch, target]);
+    recordRecentGameTarget(catalogLaunch ? target : game?.recentGameId);
+  }, [catalogLaunch, game?.recentGameId, target]);
 
   useEffect(() => {
     let focusTimer = 0;

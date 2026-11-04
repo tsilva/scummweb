@@ -48,42 +48,34 @@ test("bucket discoveries and direct links share a URL identity and recheck witho
   assert.equal(head.mock.callCount(), 1);
 });
 
-test("folder checks detect removal and recovery without reading game contents", async () => {
-  let missing = false;
-  let files = [{ name: "sky.dsk", kind: "file" }];
-  const source = localGame({
-    queryPermission: async () => "granted",
-    async *values() {
-      if (missing) throw new DOMException("Folder moved or drive disconnected", "NotFoundError");
-      yield* files;
-    },
-  }, { name: "Beneath a Steel Sky", kind: "folder" });
+test("legacy folders require a replacement ZIP without touching the directory", async () => {
+  for (const source of [
+    { id: "old", name: "Game", kind: "folder" },
+    { id: "old", name: "Game.zip", handle: { kind: "directory" } },
+  ]) {
+    if (source.handle) source.handle.queryPermission = () => assert.fail("Do not access old folders");
+    assert.equal(await checkGameSource(source), "locate");
+  }
+});
 
-  assert.equal(await checkGameSource(source), "available");
-  missing = true;
-  assert.equal(await checkGameSource(source), "missing");
-  missing = false;
-  assert.equal(await checkGameSource(source), "available");
-  files = [{ name: ".DS_Store", kind: "file" }];
-  assert.equal(await checkGameSource(source), "missing");
+test("new local sources reject directories and non-ZIP files", () => {
+  assert.throws(() => localGame(null, { name: "Game", kind: "folder" }), /Choose a ZIP/);
+  assert.throws(() => localGame({ kind: "directory" }, { name: "Game.zip" }), /Choose a ZIP/);
+  assert.throws(() => localGame(null, new File(["data"], "Game.7z")), /Choose a ZIP/);
 });
 
 test("permission failures and unreadable sources are not falsely marked missing", async () => {
-  for (const kind of ["zip", "folder"]) {
-    for (const [name, expected] of [
-      ["NotAllowedError", "permission"],
-      ["SecurityError", "permission"],
-      ["NotFoundError", "missing"],
-      ["NotReadableError", "unverified"],
-      ["UnknownError", "unverified"],
-    ]) {
-      const fail = () => { throw new DOMException("Cannot access game", name); };
-      const source = localGame({
-        queryPermission: async () => "granted",
-        getFile: fail,
-        async *values() { fail(); },
-      }, { name: kind === "zip" ? "game.zip" : "Game", kind });
-      assert.equal(await checkGameSource(source), expected, `${kind}: ${name}`);
-    }
+  for (const [name, expected] of [
+    ["NotAllowedError", "permission"],
+    ["SecurityError", "permission"],
+    ["NotFoundError", "missing"],
+    ["NotReadableError", "unverified"],
+    ["UnknownError", "unverified"],
+  ]) {
+    const source = localGame({
+      queryPermission: async () => "granted",
+      getFile: () => { throw new DOMException("Cannot access game", name); },
+    }, { name: "game.zip", kind: "zip" });
+    assert.equal(await checkGameSource(source), expected, name);
   }
 });

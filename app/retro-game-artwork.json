@@ -6,7 +6,9 @@
     ],
     "posterImage": "/launcher/retro-access-amazon-poster.webp",
     "screenshots": [
-      "/launcher/retro-access-amazon-shot.webp"
+      "/launcher/retro-access-amazon-shot.webp",
+      "/launcher/retro-access-amazon-shot-2.webp",
+      "/launcher/retro-access-amazon-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -17,6 +19,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/access/amazon/amazon_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/access/access:amazon/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/access/amazon/amazon_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/access/access:amazon/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/access/amazon/amazon_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/access/access:amazon/"
         }
       ],
@@ -35,7 +47,9 @@
     ],
     "posterImage": "/launcher/retro-agi-bc-poster.webp",
     "screenshots": [
-      "/launcher/retro-agi-bc-shot.webp"
+      "/launcher/retro-agi-bc-shot.webp",
+      "/launcher/retro-agi-bc-shot-2.webp",
+      "/launcher/retro-agi-bc-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -46,6 +60,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/agi/bc/bc_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/disney/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/bc/bc_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/disney/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/bc/bc_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/disney/"
         }
       ],
@@ -64,7 +88,9 @@
     ],
     "posterImage": "/launcher/retro-agi-goldrush-poster.webp",
     "screenshots": [
-      "/launcher/retro-agi-goldrush-shot.webp"
+      "/launcher/retro-agi-goldrush-shot.webp",
+      "/launcher/retro-agi-goldrush-shot-2.webp",
+      "/launcher/retro-agi-goldrush-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -75,6 +101,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/agi/goldrush/goldrush_amiga_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/agi:goldrush/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/goldrush/goldrush_amiga_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/agi:goldrush/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/goldrush/goldrush_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/agi:goldrush/"
         }
       ],
@@ -93,7 +129,9 @@
     ],
     "posterImage": "/launcher/retro-agi-kq2-poster.webp",
     "screenshots": [
-      "/launcher/retro-agi-kq2-shot.webp"
+      "/launcher/retro-agi-kq2-shot.webp",
+      "/launcher/retro-agi-kq2-shot-2.webp",
+      "/launcher/retro-agi-kq2-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -104,6 +142,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/agi/kq2/kq2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/kq2/kq2_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/kq2/kq2_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/kq/"
         }
       ],
@@ -122,7 +170,9 @@
     ],
     "posterImage": "/launcher/retro-agi-kq3-poster.webp",
     "screenshots": [
-      "/launcher/retro-agi-kq3-shot.webp"
+      "/launcher/retro-agi-kq3-shot.webp",
+      "/launcher/retro-agi-kq3-shot-2.webp",
+      "/launcher/retro-agi-kq3-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -133,6 +183,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/agi/kq3/kq3_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/kq3/kq3_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/kq3/kq3_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/kq/"
         }
       ],
@@ -151,7 +211,9 @@
     ],
     "posterImage": "/launcher/retro-agi-mh1-poster.webp",
     "screenshots": [
-      "/launcher/retro-agi-mh1-shot.webp"
+      "/launcher/retro-agi-mh1-shot.webp",
+      "/launcher/retro-agi-mh1-shot-2.webp",
+      "/launcher/retro-agi-mh1-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -162,6 +224,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/agi/mh1/mh1_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/manhunt/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/mh1/mh1_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/manhunt/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/mh1/mh1_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/manhunt/"
         }
       ],
@@ -180,7 +252,9 @@
     ],
     "posterImage": "/launcher/retro-agi-mh2-poster.webp",
     "screenshots": [
-      "/launcher/retro-agi-mh2-shot.webp"
+      "/launcher/retro-agi-mh2-shot.webp",
+      "/launcher/retro-agi-mh2-shot-2.webp",
+      "/launcher/retro-agi-mh2-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -191,6 +265,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/agi/mh2/mh2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/manhunt/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/mh2/mh2_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/manhunt/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/mh2/mh2_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/manhunt/"
         }
       ],
@@ -209,7 +293,9 @@
     ],
     "posterImage": "/launcher/retro-agi-mickey-poster.webp",
     "screenshots": [
-      "/launcher/retro-agi-mickey-shot.webp"
+      "/launcher/retro-agi-mickey-shot.webp",
+      "/launcher/retro-agi-mickey-shot-2.webp",
+      "/launcher/retro-agi-mickey-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -220,6 +306,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/agi/mickey/mickey_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/disney/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/mickey/mickey_dos_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/disney/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/mickey/mickey_dos_en_2_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/disney/"
         }
       ],
@@ -238,7 +334,9 @@
     ],
     "posterImage": "/launcher/retro-agi-pq1-poster.webp",
     "screenshots": [
-      "/launcher/retro-agi-pq1-shot.webp"
+      "/launcher/retro-agi-pq1-shot.webp",
+      "/launcher/retro-agi-pq1-shot-2.webp",
+      "/launcher/retro-agi-pq1-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -249,6 +347,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/agi/pq1/pq1_amiga_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/pq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/pq1/pq1_amiga_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/pq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/pq1/pq1_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/pq/"
         }
       ],
@@ -267,7 +375,9 @@
     ],
     "posterImage": "/launcher/retro-agi-sq1-poster.webp",
     "screenshots": [
-      "/launcher/retro-agi-sq1-shot.webp"
+      "/launcher/retro-agi-sq1-shot.webp",
+      "/launcher/retro-agi-sq1-shot-2.webp",
+      "/launcher/retro-agi-sq1-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -278,6 +388,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/agi/sq1/sq1_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/sq1/sq1_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/sq1/sq1_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sq/"
         }
       ],
@@ -297,7 +417,9 @@
     ],
     "posterImage": "/launcher/retro-agi-sq2-poster.webp",
     "screenshots": [
-      "/launcher/retro-agi-sq2-shot.webp"
+      "/launcher/retro-agi-sq2-shot.webp",
+      "/launcher/retro-agi-sq2-shot-2.webp",
+      "/launcher/retro-agi-sq2-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -308,6 +430,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/agi/sq2/sq2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/sq2/sq2_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/sq2/sq2_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sq/"
         }
       ],
@@ -326,7 +458,9 @@
     ],
     "posterImage": "/launcher/retro-agi-troll-poster.webp",
     "screenshots": [
-      "/launcher/retro-agi-troll-shot.webp"
+      "/launcher/retro-agi-troll-shot.webp",
+      "/launcher/retro-agi-troll-shot-2.webp",
+      "/launcher/retro-agi-troll-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -337,6 +471,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/agi/troll/troll_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/agi:troll/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/troll/troll_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/agi:troll/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/troll/troll_dos_en_1_1_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/agi:troll/"
         }
       ],
@@ -355,7 +499,9 @@
     ],
     "posterImage": "/launcher/retro-agi-winnie-poster.webp",
     "screenshots": [
-      "/launcher/retro-agi-winnie-shot.webp"
+      "/launcher/retro-agi-winnie-shot.webp",
+      "/launcher/retro-agi-winnie-shot-2.webp",
+      "/launcher/retro-agi-winnie-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -366,6 +512,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/agi/winnie/winnie_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/disney/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/winnie/winnie_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/disney/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/winnie/winnie_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/disney/"
         }
       ],
@@ -384,7 +540,9 @@
     ],
     "posterImage": "/launcher/retro-agos-elvira1-poster.webp",
     "screenshots": [
-      "/launcher/retro-agos-elvira1-shot.webp"
+      "/launcher/retro-agos-elvira1-shot.webp",
+      "/launcher/retro-agos-elvira1-shot-2.webp",
+      "/launcher/retro-agos-elvira1-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -395,6 +553,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/agos/elvira1/elvira1_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/elvira/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/elvira1/elvira1_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/elvira/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/elvira1/elvira1_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/adventuresoft/elvira/"
         }
       ],
@@ -413,7 +581,9 @@
     ],
     "posterImage": "/launcher/retro-agos-elvira2-poster.webp",
     "screenshots": [
-      "/launcher/retro-agos-elvira2-shot.webp"
+      "/launcher/retro-agos-elvira2-shot.webp",
+      "/launcher/retro-agos-elvira2-shot-2.webp",
+      "/launcher/retro-agos-elvira2-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -424,6 +594,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/agos/elvira2/elvira2_amiga_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/elvira/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/elvira2/elvira2_amiga_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/elvira/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/elvira2/elvira2_amiga_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/adventuresoft/elvira/"
         }
       ],
@@ -443,7 +623,9 @@
     ],
     "posterImage": "/launcher/retro-agos-feeble-poster.webp",
     "screenshots": [
-      "/launcher/retro-agos-feeble-shot.webp"
+      "/launcher/retro-agos-feeble-shot.webp",
+      "/launcher/retro-agos-feeble-shot-2.webp",
+      "/launcher/retro-agos-feeble-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -454,6 +636,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/agos/feeble/feeble_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/agos:feeble/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/feeble/feeble_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/agos:feeble/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/feeble/feeble_win_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/adventuresoft/agos:feeble/"
         }
       ],
@@ -472,7 +664,9 @@
     ],
     "posterImage": "/launcher/retro-agos-jumble-poster.webp",
     "screenshots": [
-      "/launcher/retro-agos-jumble-shot.webp"
+      "/launcher/retro-agos-jumble-shot.webp",
+      "/launcher/retro-agos-jumble-shot-2.webp",
+      "/launcher/retro-agos-jumble-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -483,6 +677,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/agos/jumble/jumble_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/simon/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/jumble/jumble_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/simon/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/swampy/swampy_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/adventuresoft/simon/"
         }
       ],
@@ -501,7 +705,9 @@
     ],
     "posterImage": "/launcher/retro-agos-pn-poster.webp",
     "screenshots": [
-      "/launcher/retro-agos-pn-shot.webp"
+      "/launcher/retro-agos-pn-shot.webp",
+      "/launcher/retro-agos-pn-shot-2.webp",
+      "/launcher/retro-agos-pn-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -512,6 +718,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/agos/pn/pn_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/agos:pn/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/pn/pn_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/agos:pn/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/pn/pn_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/adventuresoft/agos:pn/"
         }
       ],
@@ -530,7 +746,9 @@
     ],
     "posterImage": "/launcher/retro-agos-simon1-poster.webp",
     "screenshots": [
-      "/launcher/retro-agos-simon1-shot.webp"
+      "/launcher/retro-agos-simon1-shot.webp",
+      "/launcher/retro-agos-simon1-shot-2.webp",
+      "/launcher/retro-agos-simon1-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -541,6 +759,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/agos/simon1/simon1_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/simon/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/simon1/simon1_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/simon/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/simon1/simon1_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/adventuresoft/simon/"
         }
       ],
@@ -560,7 +788,9 @@
     ],
     "posterImage": "/launcher/retro-agos-simon2-poster.webp",
     "screenshots": [
-      "/launcher/retro-agos-simon2-shot.webp"
+      "/launcher/retro-agos-simon2-shot.webp",
+      "/launcher/retro-agos-simon2-shot-2.webp",
+      "/launcher/retro-agos-simon2-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -571,6 +801,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/agos/simon2/simon2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/simon/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/simon2/simon2_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/simon/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/simon2/simon2_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/adventuresoft/simon/"
         }
       ],
@@ -589,7 +829,9 @@
     ],
     "posterImage": "/launcher/retro-agos-waxworks-poster.webp",
     "screenshots": [
-      "/launcher/retro-agos-waxworks-shot.webp"
+      "/launcher/retro-agos-waxworks-shot.webp",
+      "/launcher/retro-agos-waxworks-shot-2.webp",
+      "/launcher/retro-agos-waxworks-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -600,6 +842,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/agos/waxworks/waxworks_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/agos:waxworks/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/waxworks/waxworks_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/adventuresoft/agos:waxworks/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agos/waxworks/waxworks_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/adventuresoft/agos:waxworks/"
         }
       ],
@@ -618,7 +870,9 @@
     ],
     "posterImage": "/launcher/retro-bbvs-bbvs-poster.webp",
     "screenshots": [
-      "/launcher/retro-bbvs-bbvs-shot.webp"
+      "/launcher/retro-bbvs-bbvs-shot.webp",
+      "/launcher/retro-bbvs-bbvs-shot-2.webp",
+      "/launcher/retro-bbvs-bbvs-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -629,6 +883,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/bbvs/bbvs/bbvs_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/beavisbutthead/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/bbvs/bbvs/bbvs_win_en_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/beavisbutthead/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/bbvs/bbvs/bbvs_win_en_1_11_full.png",
           "page": "https://www.scummvm.org/screenshots/other/beavisbutthead/"
         }
       ],
@@ -647,7 +911,9 @@
     ],
     "posterImage": "/launcher/retro-cge-soltys-poster.webp",
     "screenshots": [
-      "/launcher/retro-cge-soltys-shot.webp"
+      "/launcher/retro-cge-soltys-shot.webp",
+      "/launcher/retro-cge-soltys-shot-2.webp",
+      "/launcher/retro-cge-soltys-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -658,6 +924,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/cge/soltys/soltys_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/lkavalon/cge:soltys/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/cge/soltys/soltys_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/lkavalon/cge:soltys/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/cge/soltys/soltys_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/lkavalon/cge:soltys/"
         }
       ],
@@ -676,7 +952,9 @@
     ],
     "posterImage": "/launcher/retro-cine-fw-poster.webp",
     "screenshots": [
-      "/launcher/retro-cine-fw-shot.webp"
+      "/launcher/retro-cine-fw-shot.webp",
+      "/launcher/retro-cine-fw-shot-2.webp",
+      "/launcher/retro-cine-fw-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -687,6 +965,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/cine/fw/fw_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/delphine/cine:fw/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/cine/fw/fw_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/delphine/cine:fw/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/cine/fw/fw_win_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/delphine/cine:fw/"
         }
       ],
@@ -705,7 +993,9 @@
     ],
     "posterImage": "/launcher/retro-composer-darby-poster.webp",
     "screenshots": [
-      "/launcher/retro-composer-darby-shot.webp"
+      "/launcher/retro-composer-darby-shot.webp",
+      "/launcher/retro-composer-darby-shot-2.webp",
+      "/launcher/retro-composer-darby-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -716,6 +1006,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/composer/darby/darby_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/animationmagic/composer:darby/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/composer/darby/darby_win_en_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/animationmagic/composer:darby/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/composer/darby/darby_win_en_1_3_full.png",
           "page": "https://www.scummvm.org/screenshots/animationmagic/composer:darby/"
         }
       ],
@@ -734,7 +1034,9 @@
     ],
     "posterImage": "/launcher/retro-composer-gregory-poster.webp",
     "screenshots": [
-      "/launcher/retro-composer-gregory-shot.webp"
+      "/launcher/retro-composer-gregory-shot.webp",
+      "/launcher/retro-composer-gregory-shot-2.webp",
+      "/launcher/retro-composer-gregory-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -745,6 +1047,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/composer/gregory/gregory_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/animationmagic/composer:gregory/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/composer/gregory/gregory_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/animationmagic/composer:gregory/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/composer/gregory/gregory_win_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/animationmagic/composer:gregory/"
         }
       ],
@@ -763,7 +1075,9 @@
     ],
     "posterImage": "/launcher/retro-composer-liam-poster.webp",
     "screenshots": [
-      "/launcher/retro-composer-liam-shot.webp"
+      "/launcher/retro-composer-liam-shot.webp",
+      "/launcher/retro-composer-liam-shot-2.webp",
+      "/launcher/retro-composer-liam-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -774,6 +1088,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/composer/liam/liam_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/animationmagic/magictales/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/composer/liam/liam_win_en_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/animationmagic/magictales/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/composer/liam/liam_win_en_1_11_full.png",
           "page": "https://www.scummvm.org/screenshots/animationmagic/magictales/"
         }
       ],
@@ -792,7 +1116,9 @@
     ],
     "posterImage": "/launcher/retro-composer-princess-poster.webp",
     "screenshots": [
-      "/launcher/retro-composer-princess-shot.webp"
+      "/launcher/retro-composer-princess-shot.webp",
+      "/launcher/retro-composer-princess-shot-2.webp",
+      "/launcher/retro-composer-princess-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -803,6 +1129,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/composer/princess/princess_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/animationmagic/magictales/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/composer/princess/princess_win_en_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/animationmagic/magictales/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/composer/princess/princess_win_en_1_11_full.png",
           "page": "https://www.scummvm.org/screenshots/animationmagic/magictales/"
         }
       ],
@@ -821,7 +1157,9 @@
     ],
     "posterImage": "/launcher/retro-composer-sleepingcub-poster.webp",
     "screenshots": [
-      "/launcher/retro-composer-sleepingcub-shot.webp"
+      "/launcher/retro-composer-sleepingcub-shot.webp",
+      "/launcher/retro-composer-sleepingcub-shot-2.webp",
+      "/launcher/retro-composer-sleepingcub-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -832,6 +1170,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/composer/sleepingcub/sleepingcub_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/animationmagic/magictales/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/composer/sleepingcub/sleepingcub_win_en_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/animationmagic/magictales/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/composer/sleepingcub/sleepingcub_win_en_1_11_full.png",
           "page": "https://www.scummvm.org/screenshots/animationmagic/magictales/"
         }
       ],
@@ -851,7 +1199,9 @@
     ],
     "posterImage": "/launcher/retro-cruise-cruise-poster.webp",
     "screenshots": [
-      "/launcher/retro-cruise-cruise-shot.webp"
+      "/launcher/retro-cruise-cruise-shot.webp",
+      "/launcher/retro-cruise-cruise-shot-2.webp",
+      "/launcher/retro-cruise-cruise-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -862,6 +1212,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/cruise/cruise/cruise_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/delphine/cruise:cruise/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/cruise/cruise/cruise_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/delphine/cruise:cruise/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/cruise/cruise/cruise_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/delphine/cruise:cruise/"
         }
       ],
@@ -880,7 +1240,9 @@
     ],
     "posterImage": "/launcher/retro-draci-draci-poster.webp",
     "screenshots": [
-      "/launcher/retro-draci-draci-shot.webp"
+      "/launcher/retro-draci-draci-shot.webp",
+      "/launcher/retro-draci-draci-shot-2.webp",
+      "/launcher/retro-draci-draci-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -891,6 +1253,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/draci/draci/draci_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/draci:draci/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/draci/draci/draci_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/draci:draci/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/draci/draci/draci_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/other/draci:draci/"
         }
       ],
@@ -949,7 +1321,9 @@
     ],
     "posterImage": "/launcher/retro-gnap-gnap-poster.webp",
     "screenshots": [
-      "/launcher/retro-gnap-gnap-shot.webp"
+      "/launcher/retro-gnap-gnap-shot.webp",
+      "/launcher/retro-gnap-gnap-shot-2.webp",
+      "/launcher/retro-gnap-gnap-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -960,6 +1334,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/gnap/gnap/gnap_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/gnap:gnap/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gnap/gnap/gnap_win_en_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/gnap:gnap/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gnap/gnap/gnap_win_en_1_11_full.png",
           "page": "https://www.scummvm.org/screenshots/other/gnap:gnap/"
         }
       ],
@@ -978,7 +1362,9 @@
     ],
     "posterImage": "/launcher/retro-gob-bargon-poster.webp",
     "screenshots": [
-      "/launcher/retro-gob-bargon-shot.webp"
+      "/launcher/retro-gob-bargon-shot.webp",
+      "/launcher/retro-gob-bargon-shot-2.webp",
+      "/launcher/retro-gob-bargon-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -989,6 +1375,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/gob/bargon/bargon_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:bargon/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/bargon/bargon_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:bargon/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/bargon/bargon_dos_en_1_1_full.png",
           "page": "https://www.scummvm.org/screenshots/coktel/gob:bargon/"
         }
       ],
@@ -1007,7 +1403,9 @@
     ],
     "posterImage": "/launcher/retro-gob-fascination-poster.webp",
     "screenshots": [
-      "/launcher/retro-gob-fascination-shot.webp"
+      "/launcher/retro-gob-fascination-shot.webp",
+      "/launcher/retro-gob-fascination-shot-2.webp",
+      "/launcher/retro-gob-fascination-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1018,6 +1416,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/gob/fascination/fascination_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:fascination/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/fascination/fascination_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:fascination/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/fascination/fascination_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/coktel/gob:fascination/"
         }
       ],
@@ -1036,7 +1444,9 @@
     ],
     "posterImage": "/launcher/retro-gob-geisha-poster.webp",
     "screenshots": [
-      "/launcher/retro-gob-geisha-shot.webp"
+      "/launcher/retro-gob-geisha-shot.webp",
+      "/launcher/retro-gob-geisha-shot-2.webp",
+      "/launcher/retro-gob-geisha-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1047,6 +1457,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/gob/geisha/geisha_dos_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:geisha/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/geisha/geisha_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:geisha/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/geisha/geisha_dos_en_1_3_full.png",
           "page": "https://www.scummvm.org/screenshots/coktel/gob:geisha/"
         }
       ],
@@ -1065,7 +1485,9 @@
     ],
     "posterImage": "/launcher/retro-gob-gob1-poster.webp",
     "screenshots": [
-      "/launcher/retro-gob-gob1-shot.webp"
+      "/launcher/retro-gob-gob1-shot.webp",
+      "/launcher/retro-gob-gob1-shot-2.webp",
+      "/launcher/retro-gob-gob1-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1076,6 +1498,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/gob/gob1/gob1_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/gob/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/gob1/gob1_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/gob/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/gob1/gob1_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/other/gob/"
         }
       ],
@@ -1094,7 +1526,9 @@
     ],
     "posterImage": "/launcher/retro-gob-gob2-poster.webp",
     "screenshots": [
-      "/launcher/retro-gob-gob2-shot.webp"
+      "/launcher/retro-gob-gob2-shot.webp",
+      "/launcher/retro-gob-gob2-shot-2.webp",
+      "/launcher/retro-gob-gob2-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1105,6 +1539,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/gob/gob2/gob2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/gob/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/gob2/gob2_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/gob/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/gob2/gob2_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/other/gob/"
         }
       ],
@@ -1123,7 +1567,9 @@
     ],
     "posterImage": "/launcher/retro-gob-gob3-poster.webp",
     "screenshots": [
-      "/launcher/retro-gob-gob3-shot.webp"
+      "/launcher/retro-gob-gob3-shot.webp",
+      "/launcher/retro-gob-gob3-shot-2.webp",
+      "/launcher/retro-gob-gob3-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1134,6 +1580,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/gob/gob3/gob3_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/gob/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/gob3/gob3_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/gob/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/gob3/gob3_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/other/gob/"
         }
       ],
@@ -1152,7 +1608,9 @@
     ],
     "posterImage": "/launcher/retro-gob-lit-poster.webp",
     "screenshots": [
-      "/launcher/retro-gob-lit-shot.webp"
+      "/launcher/retro-gob-lit-shot.webp",
+      "/launcher/retro-gob-lit-shot-2.webp",
+      "/launcher/retro-gob-lit-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1163,6 +1621,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/gob/lit/lit_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:lit/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/lit/lit_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:lit/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/lit/lit_dos_en_1_1_full.png",
           "page": "https://www.scummvm.org/screenshots/coktel/gob:lit/"
         }
       ],
@@ -1181,7 +1649,9 @@
     ],
     "posterImage": "/launcher/retro-gob-littlered-poster.webp",
     "screenshots": [
-      "/launcher/retro-gob-littlered-shot.webp"
+      "/launcher/retro-gob-littlered-shot.webp",
+      "/launcher/retro-gob-littlered-shot-2.webp",
+      "/launcher/retro-gob-littlered-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1192,6 +1662,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/gob/littlered/littlered_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:littlered/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/littlered/littlered_dos_en_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:littlered/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/littlered/littlered_dos_en_1_3_full.png",
           "page": "https://www.scummvm.org/screenshots/coktel/gob:littlered/"
         }
       ],
@@ -1210,7 +1690,9 @@
     ],
     "posterImage": "/launcher/retro-gob-urban-poster.webp",
     "screenshots": [
-      "/launcher/retro-gob-urban-shot.webp"
+      "/launcher/retro-gob-urban-shot.webp",
+      "/launcher/retro-gob-urban-shot-2.webp",
+      "/launcher/retro-gob-urban-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1221,6 +1703,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/gob/urban/urban_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:urban/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/urban/urban_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:urban/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/urban/urban_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/coktel/gob:urban/"
         }
       ],
@@ -1239,7 +1731,9 @@
     ],
     "posterImage": "/launcher/retro-gob-ween-poster.webp",
     "screenshots": [
-      "/launcher/retro-gob-ween-shot.webp"
+      "/launcher/retro-gob-ween-shot.webp",
+      "/launcher/retro-gob-ween-shot-2.webp",
+      "/launcher/retro-gob-ween-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1250,6 +1744,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/gob/ween/ween_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:ween/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/ween/ween_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:ween/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/ween/ween_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/coktel/gob:ween/"
         }
       ],
@@ -1268,7 +1772,9 @@
     ],
     "posterImage": "/launcher/retro-gob-woodruff-poster.webp",
     "screenshots": [
-      "/launcher/retro-gob-woodruff-shot.webp"
+      "/launcher/retro-gob-woodruff-shot.webp",
+      "/launcher/retro-gob-woodruff-shot-2.webp",
+      "/launcher/retro-gob-woodruff-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1279,6 +1785,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/gob/woodruff/woodruff_win_en-gb_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:woodruff/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/woodruff/woodruff_win_en-gb_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/gob:woodruff/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/gob/woodruff/woodruff_win_en-gb_1_1_full.png",
           "page": "https://www.scummvm.org/screenshots/coktel/gob:woodruff/"
         }
       ],
@@ -1297,7 +1813,9 @@
     ],
     "posterImage": "/launcher/retro-groovie-t7g-poster.webp",
     "screenshots": [
-      "/launcher/retro-groovie-t7g-shot.webp"
+      "/launcher/retro-groovie-t7g-shot.webp",
+      "/launcher/retro-groovie-t7g-shot-2.webp",
+      "/launcher/retro-groovie-t7g-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1308,6 +1826,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/groovie/t7g/t7g_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/trilobyte/t7g/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/groovie/t7g/t7g_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/trilobyte/t7g/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/groovie/t7g/t7g_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/trilobyte/t7g/"
         }
       ],
@@ -1326,7 +1854,9 @@
     ],
     "posterImage": "/launcher/retro-hopkins-hopkins-poster.webp",
     "screenshots": [
-      "/launcher/retro-hopkins-hopkins-shot.webp"
+      "/launcher/retro-hopkins-hopkins-shot.webp",
+      "/launcher/retro-hopkins-hopkins-shot-2.webp",
+      "/launcher/retro-hopkins-hopkins-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1337,6 +1867,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/hopkins/hopkins/hopkins_linux_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/hopkins:hopkins/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/hopkins/hopkins/hopkins_linux_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/hopkins:hopkins/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/hopkins/hopkins/hopkins_linux_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/other/hopkins:hopkins/"
         }
       ],
@@ -1355,7 +1895,9 @@
     ],
     "posterImage": "/launcher/retro-hugo-hugo1-poster.webp",
     "screenshots": [
-      "/launcher/retro-hugo-hugo1-shot.webp"
+      "/launcher/retro-hugo-hugo1-shot.webp",
+      "/launcher/retro-hugo-hugo1-shot-2.webp",
+      "/launcher/retro-hugo-hugo1-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1366,6 +1908,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/hugo/hugo1/hugo1_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/hugo/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/hugo/hugo1/hugo1_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/hugo/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/hugo/hugo1/hugo1_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/other/hugo/"
         }
       ],
@@ -1384,7 +1936,9 @@
     ],
     "posterImage": "/launcher/retro-hugo-hugo2-poster.webp",
     "screenshots": [
-      "/launcher/retro-hugo-hugo2-shot.webp"
+      "/launcher/retro-hugo-hugo2-shot.webp",
+      "/launcher/retro-hugo-hugo2-shot-2.webp",
+      "/launcher/retro-hugo-hugo2-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1396,6 +1950,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/hugo/hugo2/hugo2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/hugo/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/hugo/hugo2/hugo2_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/hugo/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/hugo/hugo2/hugo2_dos_en_1_1_full.png",
           "page": "https://www.scummvm.org/screenshots/other/hugo/"
         }
       ],
@@ -1414,7 +1978,9 @@
     ],
     "posterImage": "/launcher/retro-hugo-hugo3-poster.webp",
     "screenshots": [
-      "/launcher/retro-hugo-hugo3-shot.webp"
+      "/launcher/retro-hugo-hugo3-shot.webp",
+      "/launcher/retro-hugo-hugo3-shot-2.webp",
+      "/launcher/retro-hugo-hugo3-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1425,6 +1991,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/hugo/hugo3/hugo3_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/hugo/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/hugo/hugo3/hugo3_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/hugo/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/hugo/hugo3/hugo3_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/other/hugo/"
         }
       ],
@@ -1443,7 +2019,9 @@
     ],
     "posterImage": "/launcher/retro-kyra-eob-poster.webp",
     "screenshots": [
-      "/launcher/retro-kyra-eob-shot.webp"
+      "/launcher/retro-kyra-eob-shot.webp",
+      "/launcher/retro-kyra-eob-shot-2.webp",
+      "/launcher/retro-kyra-eob-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1454,6 +2032,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/kyra/eob/eob_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/westwood/eob/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/kyra/eob/eob_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/westwood/eob/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/kyra/eob/eob_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/westwood/eob/"
         }
       ],
@@ -1472,7 +2060,9 @@
     ],
     "posterImage": "/launcher/retro-kyra-eob2-poster.webp",
     "screenshots": [
-      "/launcher/retro-kyra-eob2-shot.webp"
+      "/launcher/retro-kyra-eob2-shot.webp",
+      "/launcher/retro-kyra-eob2-shot-2.webp",
+      "/launcher/retro-kyra-eob2-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1483,6 +2073,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/kyra/eob2/eob2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/westwood/eob/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/kyra/eob2/eob2_dos_en_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/westwood/eob/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/kyra/eob2/eob2_dos_en_1_3_full.png",
           "page": "https://www.scummvm.org/screenshots/westwood/eob/"
         }
       ],
@@ -1502,7 +2102,9 @@
     ],
     "posterImage": "/launcher/retro-kyra-kyra1-poster.webp",
     "screenshots": [
-      "/launcher/retro-kyra-kyra1-shot.webp"
+      "/launcher/retro-kyra-kyra1-shot.webp",
+      "/launcher/retro-kyra-kyra1-shot-2.webp",
+      "/launcher/retro-kyra-kyra1-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1513,6 +2115,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/kyra/kyra1/kyra1_amiga_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/westwood/kyra/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/kyra/kyra1/kyra1_amiga_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/westwood/kyra/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/kyra/kyra1/kyra1_dos_en_1_1_full.png",
           "page": "https://www.scummvm.org/screenshots/westwood/kyra/"
         }
       ],
@@ -1531,7 +2143,9 @@
     ],
     "posterImage": "/launcher/retro-kyra-kyra2-poster.webp",
     "screenshots": [
-      "/launcher/retro-kyra-kyra2-shot.webp"
+      "/launcher/retro-kyra-kyra2-shot.webp",
+      "/launcher/retro-kyra-kyra2-shot-2.webp",
+      "/launcher/retro-kyra-kyra2-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1542,6 +2156,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/kyra/kyra2/kyra2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/westwood/kyra/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/kyra/kyra2/kyra2_dos_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/westwood/kyra/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/kyra/kyra2/kyra2_fmtowns_ja_1_10_full.png",
           "page": "https://www.scummvm.org/screenshots/westwood/kyra/"
         }
       ],
@@ -1560,7 +2184,9 @@
     ],
     "posterImage": "/launcher/retro-kyra-kyra3-poster.webp",
     "screenshots": [
-      "/launcher/retro-kyra-kyra3-shot.webp"
+      "/launcher/retro-kyra-kyra3-shot.webp",
+      "/launcher/retro-kyra-kyra3-shot-2.webp",
+      "/launcher/retro-kyra-kyra3-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1571,6 +2197,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/kyra/kyra3/kyra3_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/westwood/kyra/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/kyra/kyra3/kyra3_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/westwood/kyra/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/kyra/kyra3/kyra3_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/westwood/kyra/"
         }
       ],
@@ -1589,7 +2225,9 @@
     ],
     "posterImage": "/launcher/retro-kyra-lol-poster.webp",
     "screenshots": [
-      "/launcher/retro-kyra-lol-shot.webp"
+      "/launcher/retro-kyra-lol-shot.webp",
+      "/launcher/retro-kyra-lol-shot-2.webp",
+      "/launcher/retro-kyra-lol-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1600,6 +2238,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/kyra/lol/lol_dos_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/westwood/kyra:lol/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/kyra/lol/lol_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/westwood/kyra:lol/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/kyra/lol/lol_dos_en_1_3_full.png",
           "page": "https://www.scummvm.org/screenshots/westwood/kyra:lol/"
         }
       ],
@@ -1619,7 +2267,9 @@
     ],
     "posterImage": "/launcher/retro-lab-lab-poster.webp",
     "screenshots": [
-      "/launcher/retro-lab-lab-shot.webp"
+      "/launcher/retro-lab-lab-shot.webp",
+      "/launcher/retro-lab-lab-shot-2.webp",
+      "/launcher/retro-lab-lab-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1630,6 +2280,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/lab/lab/lab_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/lab:lab/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/lab/lab/lab_dos_en_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/lab:lab/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/lab/lab/lab_dos_en_1_3_full.png",
           "page": "https://www.scummvm.org/screenshots/other/lab:lab/"
         }
       ],
@@ -1694,7 +2354,9 @@
     ],
     "posterImage": "/launcher/retro-made-lgop2-poster.webp",
     "screenshots": [
-      "/launcher/retro-made-lgop2-shot.webp"
+      "/launcher/retro-made-lgop2-shot.webp",
+      "/launcher/retro-made-lgop2-shot-2.webp",
+      "/launcher/retro-made-lgop2-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1705,6 +2367,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/made/lgop2/lgop2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/made:lgop2/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/made/lgop2/lgop2_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/made:lgop2/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/made/lgop2/lgop2_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/other/made:lgop2/"
         }
       ],
@@ -1723,7 +2395,9 @@
     ],
     "posterImage": "/launcher/retro-made-rodney-poster.webp",
     "screenshots": [
-      "/launcher/retro-made-rodney-shot.webp"
+      "/launcher/retro-made-rodney-shot.webp",
+      "/launcher/retro-made-rodney-shot-2.webp",
+      "/launcher/retro-made-rodney-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1734,6 +2408,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/made/rodney/rodney_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/made:rodney/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/made/rodney/rodney_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/made:rodney/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/made/rodney/rodney_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/other/made:rodney/"
         }
       ],
@@ -1752,7 +2436,9 @@
     ],
     "posterImage": "/launcher/retro-made-rtz-poster.webp",
     "screenshots": [
-      "/launcher/retro-made-rtz-shot.webp"
+      "/launcher/retro-made-rtz-shot.webp",
+      "/launcher/retro-made-rtz-shot-2.webp",
+      "/launcher/retro-made-rtz-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1763,6 +2449,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/made/rtz/rtz_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/activision/zork/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/made/rtz/rtz_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/activision/zork/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/made/rtz/rtz_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/activision/zork/"
         }
       ],
@@ -1781,7 +2477,9 @@
     ],
     "posterImage": "/launcher/retro-mads-nebular-poster.webp",
     "screenshots": [
-      "/launcher/retro-mads-nebular-shot.webp"
+      "/launcher/retro-mads-nebular-shot.webp",
+      "/launcher/retro-mads-nebular-shot-2.webp",
+      "/launcher/retro-mads-nebular-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1792,6 +2490,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/mads/nebular/nebular_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/microprose/mads:nebular/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/mads/nebular/nebular_dos_en_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/microprose/mads:nebular/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/mads/nebular/nebular_dos_en_1_11_full.png",
           "page": "https://www.scummvm.org/screenshots/microprose/mads:nebular/"
         }
       ],
@@ -1811,7 +2519,9 @@
     ],
     "posterImage": "/launcher/retro-mohawk-myst-poster.webp",
     "screenshots": [
-      "/launcher/retro-mohawk-myst-shot.webp"
+      "/launcher/retro-mohawk-myst-shot.webp",
+      "/launcher/retro-mohawk-myst-shot-2.webp",
+      "/launcher/retro-mohawk-myst-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1823,6 +2533,16 @@
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/mohawk/myst/myst_win_it_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/cyan/myst/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/myst/myst_win_it_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/cyan/myst/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/63660/b51d70a8d972580f458e69a4ed12ffe5e1c29b0f/ss_b51d70a8d972580f458e69a4ed12ffe5e1c29b0f.1920x1080.jpg?t=1773701726",
+          "page": "https://store.steampowered.com/app/63660/"
         }
       ],
       "metadata": [
@@ -1840,7 +2560,9 @@
     ],
     "posterImage": "/launcher/retro-mohawk-riven-poster.webp",
     "screenshots": [
-      "/launcher/retro-mohawk-riven-shot.webp"
+      "/launcher/retro-mohawk-riven-shot.webp",
+      "/launcher/retro-mohawk-riven-shot-2.webp",
+      "/launcher/retro-mohawk-riven-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1851,6 +2573,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/mohawk/riven/riven_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/cyan/myst/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/riven/riven_win_en_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/cyan/myst/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/riven/riven_win_en_1_11_full.png",
           "page": "https://www.scummvm.org/screenshots/cyan/myst/"
         }
       ],
@@ -1869,7 +2601,9 @@
     ],
     "posterImage": "/launcher/retro-neverhood-neverhood-poster.webp",
     "screenshots": [
-      "/launcher/retro-neverhood-neverhood-shot.webp"
+      "/launcher/retro-neverhood-neverhood-shot.webp",
+      "/launcher/retro-neverhood-neverhood-shot-2.webp",
+      "/launcher/retro-neverhood-neverhood-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1880,6 +2614,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/neverhood/neverhood/neverhood_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/neverhood:neverhood/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/neverhood/neverhood/neverhood_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/neverhood:neverhood/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/neverhood/neverhood/neverhood_win_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/other/neverhood:neverhood/"
         }
       ],
@@ -1898,7 +2642,9 @@
     ],
     "posterImage": "/launcher/retro-ngi-fullpipe-poster.webp",
     "screenshots": [
-      "/launcher/retro-ngi-fullpipe-shot.webp"
+      "/launcher/retro-ngi-fullpipe-shot.webp",
+      "/launcher/retro-ngi-fullpipe-shot-2.webp",
+      "/launcher/retro-ngi-fullpipe-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1909,6 +2655,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/ngi/fullpipe/fullpipe_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/ngi:fullpipe/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/ngi/fullpipe/fullpipe_win_en_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/ngi:fullpipe/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/ngi/fullpipe/fullpipe_win_en_1_11_full.png",
           "page": "https://www.scummvm.org/screenshots/other/ngi:fullpipe/"
         }
       ],
@@ -1927,7 +2683,9 @@
     ],
     "posterImage": "/launcher/retro-parallaction-bra-poster.webp",
     "screenshots": [
-      "/launcher/retro-parallaction-bra-shot.webp"
+      "/launcher/retro-parallaction-bra-shot.webp",
+      "/launcher/retro-parallaction-bra-shot-2.webp",
+      "/launcher/retro-parallaction-bra-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1938,6 +2696,16 @@
         {
           "kind": "gameplay",
           "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/The%20Big%20Red%20Adventure.png"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.oldgames.sk/storage/images/games/adventure/big-red-adventure-the/screenshots/adv_004.png",
+          "page": "https://www.oldgames.sk/en/game/big-red-adventure-the/screenshots"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.oldgames.sk/storage/images/games/adventure/big-red-adventure-the/screenshots/adv_007.png",
+          "page": "https://www.oldgames.sk/en/game/big-red-adventure-the/screenshots"
         }
       ],
       "metadata": [
@@ -1976,7 +2744,9 @@
     ],
     "posterImage": "/launcher/retro-pegasus-pegasus-poster.webp",
     "screenshots": [
-      "/launcher/retro-pegasus-pegasus-shot.webp"
+      "/launcher/retro-pegasus-pegasus-shot.webp",
+      "/launcher/retro-pegasus-pegasus-shot-2.webp",
+      "/launcher/retro-pegasus-pegasus-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -1987,6 +2757,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/pegasus/pegasus/pegasus_mac_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/presto/journeyman/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/pegasus/pegasus/pegasus_mac_en_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/presto/journeyman/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/pegasus/pegasus/pegasus_mac_en_1_11_full.png",
           "page": "https://www.scummvm.org/screenshots/presto/journeyman/"
         }
       ],
@@ -2005,7 +2785,9 @@
     ],
     "posterImage": "/launcher/retro-plumbers-plumbers-poster.webp",
     "screenshots": [
-      "/launcher/retro-plumbers-plumbers-shot.webp"
+      "/launcher/retro-plumbers-plumbers-shot.webp",
+      "/launcher/retro-plumbers-plumbers-shot-2.webp",
+      "/launcher/retro-plumbers-plumbers-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2016,6 +2798,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/plumbers/plumbers/plumbers_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/plumbers:plumbers/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/plumbers/plumbers/plumbers_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/plumbers:plumbers/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/plumbers/plumbers/plumbers_win_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/other/plumbers:plumbers/"
         }
       ],
@@ -2054,7 +2846,9 @@
     ],
     "posterImage": "/launcher/retro-saga-ihnm-poster.webp",
     "screenshots": [
-      "/launcher/retro-saga-ihnm-shot.webp"
+      "/launcher/retro-saga-ihnm-shot.webp",
+      "/launcher/retro-saga-ihnm-shot-2.webp",
+      "/launcher/retro-saga-ihnm-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2065,6 +2859,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/saga/ihnm/ihnm_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/dreamersguild/saga:ihnm/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/saga/ihnm/ihnm_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/dreamersguild/saga:ihnm/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/saga/ihnm/ihnm_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/dreamersguild/saga:ihnm/"
         }
       ],
@@ -2083,7 +2887,9 @@
     ],
     "posterImage": "/launcher/retro-saga-ite-poster.webp",
     "screenshots": [
-      "/launcher/retro-saga-ite-shot.webp"
+      "/launcher/retro-saga-ite-shot.webp",
+      "/launcher/retro-saga-ite-shot-2.webp",
+      "/launcher/retro-saga-ite-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2094,6 +2900,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/saga/ite/ite_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/dreamersguild/saga:ite/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/saga/ite/ite_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/dreamersguild/saga:ite/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/saga/ite/ite_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/dreamersguild/saga:ite/"
         }
       ],
@@ -2112,7 +2928,9 @@
     ],
     "posterImage": "/launcher/retro-sci-camelot-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-camelot-shot.webp"
+      "/launcher/retro-sci-camelot-shot.webp",
+      "/launcher/retro-sci-camelot-shot-2.webp",
+      "/launcher/retro-sci-camelot-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2123,6 +2941,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/camelot/camelot_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/conquests/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/camelot/camelot_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/conquests/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/camelot/camelot_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/conquests/"
         }
       ],
@@ -2142,7 +2970,9 @@
     ],
     "posterImage": "/launcher/retro-sci-castlebrain-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-castlebrain-shot.webp"
+      "/launcher/retro-sci-castlebrain-shot.webp",
+      "/launcher/retro-sci-castlebrain-shot-2.webp",
+      "/launcher/retro-sci-castlebrain-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2153,6 +2983,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/castlebrain/castlebrain_dos_de_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/brain/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/castlebrain/castlebrain_dos_de_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/brain/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/castlebrain/castlebrain_dos_de_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/brain/"
         }
       ],
@@ -2172,7 +3012,9 @@
     ],
     "posterImage": "/launcher/retro-sci-ecoquest-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-ecoquest-shot.webp"
+      "/launcher/retro-sci-ecoquest-shot.webp",
+      "/launcher/retro-sci-ecoquest-shot-2.webp",
+      "/launcher/retro-sci-ecoquest-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2183,6 +3025,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/ecoquest/ecoquest_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/ecoquest/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/ecoquest/ecoquest_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/ecoquest/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/ecoquest/ecoquest_dos_en_1_1_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/ecoquest/"
         }
       ],
@@ -2201,7 +3053,9 @@
     ],
     "posterImage": "/launcher/retro-sci-ecoquest2-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-ecoquest2-shot.webp"
+      "/launcher/retro-sci-ecoquest2-shot.webp",
+      "/launcher/retro-sci-ecoquest2-shot-2.webp",
+      "/launcher/retro-sci-ecoquest2-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2213,6 +3067,16 @@
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/ecoquest2/ecoquest2_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/ecoquest/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/ecoquest2/ecoquest2_dos_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/ecoquest/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.planete-aventure.net/shot/equoquest2-pc_05.jpg",
+          "page": "https://www.planete-aventure.net/jeux.php?cat=screenshots&num_jeu=1822"
         }
       ],
       "metadata": [
@@ -2230,7 +3094,9 @@
     ],
     "posterImage": "/launcher/retro-sci-freddypharkas-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-freddypharkas-shot.webp"
+      "/launcher/retro-sci-freddypharkas-shot.webp",
+      "/launcher/retro-sci-freddypharkas-shot-2.webp",
+      "/launcher/retro-sci-freddypharkas-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2241,6 +3107,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/freddypharkas/freddypharkas_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:freddypharkas/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/freddypharkas/freddypharkas_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:freddypharkas/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/freddypharkas/freddypharkas_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sci:freddypharkas/"
         }
       ],
@@ -2259,7 +3135,8 @@
     ],
     "posterImage": "/launcher/retro-sci-funseeker-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-funseeker-shot.webp"
+      "/launcher/retro-sci-funseeker-shot.webp",
+      "/launcher/retro-sci-funseeker-shot-2.webp"
     ],
     "sources": {
       "poster": {
@@ -2270,6 +3147,10 @@
         {
           "kind": "gameplay",
           "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Fun%20Seeker's%20Guide%20to%20Eastern%20Madera%20County.png"
+        },
+        {
+          "kind": "title-screen",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Titles/Fun%20Seeker's%20Guide%20to%20Eastern%20Madera%20County.png"
         }
       ],
       "metadata": [
@@ -2287,7 +3168,9 @@
     ],
     "posterImage": "/launcher/retro-sci-gk1-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-gk1-shot.webp"
+      "/launcher/retro-sci-gk1-shot.webp",
+      "/launcher/retro-sci-gk1-shot-2.webp",
+      "/launcher/retro-sci-gk1-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2298,6 +3181,14 @@
         {
           "kind": "gameplay",
           "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Gabriel%20Knight_%20Sins%20of%20the%20Fathers.png"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/gk1/gk1_win_fr_1_10_full.png"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/gk1/gk1_win_fr_1_2_full.png"
         }
       ],
       "metadata": [
@@ -2315,7 +3206,9 @@
     ],
     "posterImage": "/launcher/retro-sci-gk2-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-gk2-shot.webp"
+      "/launcher/retro-sci-gk2-shot.webp",
+      "/launcher/retro-sci-gk2-shot-2.webp",
+      "/launcher/retro-sci-gk2-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2326,6 +3219,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/gk2/gk2_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/gk/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/gk2/gk2_win_en_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/gk/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/gk2/gk2_win_en_1_3_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/gk/"
         }
       ],
@@ -2344,7 +3247,9 @@
     ],
     "posterImage": "/launcher/retro-sci-iceman-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-iceman-shot.webp"
+      "/launcher/retro-sci-iceman-shot.webp",
+      "/launcher/retro-sci-iceman-shot-2.webp",
+      "/launcher/retro-sci-iceman-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2355,6 +3260,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/iceman/iceman_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:iceman/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/iceman/iceman_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:iceman/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/iceman/iceman_dos_en_1_1_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sci:iceman/"
         }
       ],
@@ -2374,7 +3289,9 @@
     ],
     "posterImage": "/launcher/retro-sci-islandbrain-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-islandbrain-shot.webp"
+      "/launcher/retro-sci-islandbrain-shot.webp",
+      "/launcher/retro-sci-islandbrain-shot-2.webp",
+      "/launcher/retro-sci-islandbrain-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2385,6 +3302,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/islandbrain/islandbrain_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/brain/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/islandbrain/islandbrain_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/brain/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/islandbrain/islandbrain_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/brain/"
         }
       ],
@@ -2403,7 +3330,9 @@
     ],
     "posterImage": "/launcher/retro-sci-jones-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-jones-shot.webp"
+      "/launcher/retro-sci-jones-shot.webp",
+      "/launcher/retro-sci-jones-shot-2.webp",
+      "/launcher/retro-sci-jones-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2414,6 +3343,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/jones/jones_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:jones/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/jones/jones_dos_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:jones/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/jones/jones_dos_en_2_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sci:jones/"
         }
       ],
@@ -2432,7 +3371,9 @@
     ],
     "posterImage": "/launcher/retro-sci-kq1sci-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-kq1sci-shot.webp"
+      "/launcher/retro-sci-kq1sci-shot.webp",
+      "/launcher/retro-sci-kq1sci-shot-2.webp",
+      "/launcher/retro-sci-kq1sci-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2443,6 +3384,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/kq1sci/kq1sci_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/kq1sci/kq1sci_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/kq1sci/kq1sci_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/kq/"
         }
       ],
@@ -2461,7 +3412,9 @@
     ],
     "posterImage": "/launcher/retro-sci-kq4sci-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-kq4sci-shot.webp"
+      "/launcher/retro-sci-kq4sci-shot.webp",
+      "/launcher/retro-sci-kq4sci-shot-2.webp",
+      "/launcher/retro-sci-kq4sci-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2472,6 +3425,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/kq4sci/kq4sci_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/kq4sci/kq4sci_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/kq4sci/kq4sci_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/kq/"
         }
       ],
@@ -2490,7 +3453,9 @@
     ],
     "posterImage": "/launcher/retro-sci-kq5-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-kq5-shot.webp"
+      "/launcher/retro-sci-kq5-shot.webp",
+      "/launcher/retro-sci-kq5-shot-2.webp",
+      "/launcher/retro-sci-kq5-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2501,6 +3466,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/kq5/kq5_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/kq5/kq5_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/kq5/kq5_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/kq/"
         }
       ],
@@ -2519,7 +3494,9 @@
     ],
     "posterImage": "/launcher/retro-sci-kq6-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-kq6-shot.webp"
+      "/launcher/retro-sci-kq6-shot.webp",
+      "/launcher/retro-sci-kq6-shot-2.webp",
+      "/launcher/retro-sci-kq6-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2530,6 +3507,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/kq6/kq6_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/kq6/kq6_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/kq6/kq6_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/kq/"
         }
       ],
@@ -2548,7 +3535,9 @@
     ],
     "posterImage": "/launcher/retro-sci-kq7-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-kq7-shot.webp"
+      "/launcher/retro-sci-kq7-shot.webp",
+      "/launcher/retro-sci-kq7-shot-2.webp",
+      "/launcher/retro-sci-kq7-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2559,6 +3548,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/kq7/kq7_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/kq7/kq7_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/kq7/kq7_win_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/kq/"
         }
       ],
@@ -2577,7 +3576,9 @@
     ],
     "posterImage": "/launcher/retro-sci-laurabow-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-laurabow-shot.webp"
+      "/launcher/retro-sci-laurabow-shot.webp",
+      "/launcher/retro-sci-laurabow-shot-2.webp",
+      "/launcher/retro-sci-laurabow-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2588,6 +3589,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/laurabow/laurabow_dos_en_1_6_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/laurabow/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/laurabow/laurabow_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/laurabow/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/laurabow/laurabow_dos_en_1_3_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/laurabow/"
         }
       ],
@@ -2606,7 +3617,9 @@
     ],
     "posterImage": "/launcher/retro-sci-laurabow2-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-laurabow2-shot.webp"
+      "/launcher/retro-sci-laurabow2-shot.webp",
+      "/launcher/retro-sci-laurabow2-shot-2.webp",
+      "/launcher/retro-sci-laurabow2-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2617,6 +3630,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/laurabow2/laurabow2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/laurabow/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/laurabow2/laurabow2_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/laurabow/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/laurabow2/laurabow2_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/laurabow/"
         }
       ],
@@ -2635,7 +3658,9 @@
     ],
     "posterImage": "/launcher/retro-sci-lighthouse-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-lighthouse-shot.webp"
+      "/launcher/retro-sci-lighthouse-shot.webp",
+      "/launcher/retro-sci-lighthouse-shot-2.webp",
+      "/launcher/retro-sci-lighthouse-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2646,6 +3671,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/lighthouse/lighthouse_dos_de_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:lighthouse/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/lighthouse/lighthouse_dos_de_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:lighthouse/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/lighthouse/lighthouse_dos_de_1_3_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sci:lighthouse/"
         }
       ],
@@ -2664,7 +3699,9 @@
     ],
     "posterImage": "/launcher/retro-sci-longbow-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-longbow-shot.webp"
+      "/launcher/retro-sci-longbow-shot.webp",
+      "/launcher/retro-sci-longbow-shot-2.webp",
+      "/launcher/retro-sci-longbow-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2675,6 +3712,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/longbow/longbow_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/conquests/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/longbow/longbow_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/conquests/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/longbow/longbow_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/conquests/"
         }
       ],
@@ -2693,7 +3740,9 @@
     ],
     "posterImage": "/launcher/retro-sci-lsl1sci-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-lsl1sci-shot.webp"
+      "/launcher/retro-sci-lsl1sci-shot.webp",
+      "/launcher/retro-sci-lsl1sci-shot-2.webp",
+      "/launcher/retro-sci-lsl1sci-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2704,6 +3753,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/lsl1sci/lsl1sci_amiga_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/lsl1sci/lsl1sci_amiga_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/lsl1sci/lsl1sci_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
         }
       ],
@@ -2722,7 +3781,9 @@
     ],
     "posterImage": "/launcher/retro-sci-lsl2-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-lsl2-shot.webp"
+      "/launcher/retro-sci-lsl2-shot.webp",
+      "/launcher/retro-sci-lsl2-shot-2.webp",
+      "/launcher/retro-sci-lsl2-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2733,6 +3794,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/lsl2/lsl2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/lsl2/lsl2_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/lsl2/lsl2_dos_en_1_1_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
         }
       ],
@@ -2751,7 +3822,9 @@
     ],
     "posterImage": "/launcher/retro-sci-lsl3-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-lsl3-shot.webp"
+      "/launcher/retro-sci-lsl3-shot.webp",
+      "/launcher/retro-sci-lsl3-shot-2.webp",
+      "/launcher/retro-sci-lsl3-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2762,6 +3835,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/lsl3/lsl3_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/lsl3/lsl3_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/lsl3/lsl3_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
         }
       ],
@@ -2780,7 +3863,9 @@
     ],
     "posterImage": "/launcher/retro-sci-lsl5-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-lsl5-shot.webp"
+      "/launcher/retro-sci-lsl5-shot.webp",
+      "/launcher/retro-sci-lsl5-shot-2.webp",
+      "/launcher/retro-sci-lsl5-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2791,6 +3876,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/lsl5/lsl5_amiga_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/lsl5/lsl5_amiga_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/lsl5/lsl5_dos_de_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
         }
       ],
@@ -2809,7 +3904,9 @@
     ],
     "posterImage": "/launcher/retro-sci-lsl6hires-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-lsl6hires-shot.webp"
+      "/launcher/retro-sci-lsl6hires-shot.webp",
+      "/launcher/retro-sci-lsl6hires-shot-2.webp",
+      "/launcher/retro-sci-lsl6hires-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2820,6 +3917,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/lsl6hires/lsl6hires_dos_de_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/lsl6hires/lsl6hires_dos_de_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/lsl6hires/lsl6hires_dos_de_1_11_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
         }
       ],
@@ -2838,7 +3945,9 @@
     ],
     "posterImage": "/launcher/retro-sci-lsl7-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-lsl7-shot.webp"
+      "/launcher/retro-sci-lsl7-shot.webp",
+      "/launcher/retro-sci-lsl7-shot-2.webp",
+      "/launcher/retro-sci-lsl7-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2849,6 +3958,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/lsl7/lsl7_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/lsl7/lsl7_dos_en_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/lsl7/lsl7_dos_en_1_11_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/lsl/"
         }
       ],
@@ -2867,7 +3986,9 @@
     ],
     "posterImage": "/launcher/retro-sci-msastrochicken-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-msastrochicken-shot.webp"
+      "/launcher/retro-sci-msastrochicken-shot.webp",
+      "/launcher/retro-sci-msastrochicken-shot-2.webp",
+      "/launcher/retro-sci-msastrochicken-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2878,6 +3999,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.gamerscreed.com/attachments/ms-astro-chicken-005-png.3463/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.gamerscreed.com/attachments/ms-astro-chicken-004-png.3462/",
+          "page": "https://www.gamerscreed.com/resources/ms-astro-chicken-flight-of-the-pullet.151/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.gamerscreed.com/attachments/ms-astro-chicken-006-png.3464/",
+          "page": "https://www.gamerscreed.com/resources/ms-astro-chicken-flight-of-the-pullet.151/"
         }
       ],
       "metadata": [
@@ -2895,7 +4026,9 @@
     ],
     "posterImage": "/launcher/retro-sci-pepper-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-pepper-shot.webp"
+      "/launcher/retro-sci-pepper-shot.webp",
+      "/launcher/retro-sci-pepper-shot-2.webp",
+      "/launcher/retro-sci-pepper-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2906,6 +4039,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/pepper/pepper_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:pepper/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/pepper/pepper_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:pepper/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/pepper/pepper_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sci:pepper/"
         }
       ],
@@ -2924,7 +4067,9 @@
     ],
     "posterImage": "/launcher/retro-sci-phantasmagoria-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-phantasmagoria-shot.webp"
+      "/launcher/retro-sci-phantasmagoria-shot.webp",
+      "/launcher/retro-sci-phantasmagoria-shot-2.webp",
+      "/launcher/retro-sci-phantasmagoria-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2935,6 +4080,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/phantasmagoria/phantasmagoria_dos_fr_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/phantasmagoria/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/phantasmagoria/phantasmagoria_dos_fr_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/phantasmagoria/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/phantasmagoria/phantasmagoria_dos_fr_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/phantasmagoria/"
         }
       ],
@@ -2953,7 +4108,9 @@
     ],
     "posterImage": "/launcher/retro-sci-phantasmagoria2-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-phantasmagoria2-shot.webp"
+      "/launcher/retro-sci-phantasmagoria2-shot.webp",
+      "/launcher/retro-sci-phantasmagoria2-shot-2.webp",
+      "/launcher/retro-sci-phantasmagoria2-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -2964,6 +4121,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/phantasmagoria2/phantasmagoria2_win_fr_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/phantasmagoria/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/phantasmagoria2/phantasmagoria2_win_fr_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/phantasmagoria/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/phantasmagoria2/phantasmagoria2_win_fr_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/phantasmagoria/"
         }
       ],
@@ -2982,7 +4149,9 @@
     ],
     "posterImage": "/launcher/retro-agi-pq1-poster.webp",
     "screenshots": [
-      "/launcher/retro-agi-pq1-shot.webp"
+      "/launcher/retro-agi-pq1-shot.webp",
+      "/launcher/retro-agi-pq1-shot-2.webp",
+      "/launcher/retro-agi-pq1-shot-3.webp"
     ],
     "artworkFrom": "agi:pq1",
     "summary": "Follow officer Sonny Bonds through traffic patrols and a drug investigation in this SCI remake.",
@@ -2991,6 +4160,23 @@
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1726"
+      ],
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/pq1/pq1_amiga_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/pq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/pq1/pq1_amiga_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/pq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/pq1/pq1_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/pq/"
+        }
       ]
     }
   },
@@ -3001,7 +4187,9 @@
     ],
     "posterImage": "/launcher/retro-sci-pq2-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-pq2-shot.webp"
+      "/launcher/retro-sci-pq2-shot.webp",
+      "/launcher/retro-sci-pq2-shot-2.webp",
+      "/launcher/retro-sci-pq2-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3012,6 +4200,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/pq2/pq2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/pq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/pq2/pq2_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/pq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/pq2/pq2_dos_en_1_1_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/pq/"
         }
       ],
@@ -3030,7 +4228,9 @@
     ],
     "posterImage": "/launcher/retro-sci-pq3-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-pq3-shot.webp"
+      "/launcher/retro-sci-pq3-shot.webp",
+      "/launcher/retro-sci-pq3-shot-2.webp",
+      "/launcher/retro-sci-pq3-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3041,6 +4241,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/pq3/pq3_amiga_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/pq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/pq3/pq3_amiga_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/pq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/pq3/pq3_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/pq/"
         }
       ],
@@ -3059,7 +4269,9 @@
     ],
     "posterImage": "/launcher/retro-sci-pq4-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-pq4-shot.webp"
+      "/launcher/retro-sci-pq4-shot.webp",
+      "/launcher/retro-sci-pq4-shot-2.webp",
+      "/launcher/retro-sci-pq4-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3070,6 +4282,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/pq4/pq4_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/pq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/pq4/pq4_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/pq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/pq4/pq4_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/pq/"
         }
       ],
@@ -3089,7 +4311,9 @@
     ],
     "posterImage": "/launcher/retro-sci-qfg1-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-qfg1-shot.webp"
+      "/launcher/retro-sci-qfg1-shot.webp",
+      "/launcher/retro-sci-qfg1-shot-2.webp",
+      "/launcher/retro-sci-qfg1-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3100,6 +4324,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/qfg1/qfg1_dos_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/qfg/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/qfg1/qfg1_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/qfg/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/qfg1/qfg1_dos_en_1_3_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/qfg/"
         }
       ],
@@ -3118,7 +4352,9 @@
     ],
     "posterImage": "/launcher/retro-sci-qfg1-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-qfg1-shot.webp"
+      "/launcher/retro-sci-qfg1-shot.webp",
+      "/launcher/retro-sci-qfg1-shot-2.webp",
+      "/launcher/retro-sci-qfg1-shot-3.webp"
     ],
     "artworkFrom": "sci:qfg1",
     "summary": "Explore Spielburg as a fighter, magic user, or thief in this VGA remake of the first Quest for Glory.",
@@ -3127,6 +4363,23 @@
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2647"
+      ],
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/qfg1/qfg1_dos_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/qfg/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/qfg1/qfg1_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/qfg/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/qfg1/qfg1_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/qfg/"
+        }
       ]
     }
   },
@@ -3137,7 +4390,9 @@
     ],
     "posterImage": "/launcher/retro-sci-qfg2-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-qfg2-shot.webp"
+      "/launcher/retro-sci-qfg2-shot.webp",
+      "/launcher/retro-sci-qfg2-shot-2.webp",
+      "/launcher/retro-sci-qfg2-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3148,6 +4403,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/qfg2/qfg2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/qfg/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/qfg2/qfg2_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/qfg/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/qfg2/qfg2_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/qfg/"
         }
       ],
@@ -3166,7 +4431,9 @@
     ],
     "posterImage": "/launcher/retro-sci-qfg3-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-qfg3-shot.webp"
+      "/launcher/retro-sci-qfg3-shot.webp",
+      "/launcher/retro-sci-qfg3-shot-2.webp",
+      "/launcher/retro-sci-qfg3-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3177,6 +4444,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/qfg3/qfg3_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/qfg/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/qfg3/qfg3_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/qfg/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/qfg3/qfg3_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/qfg/"
         }
       ],
@@ -3195,7 +4472,9 @@
     ],
     "posterImage": "/launcher/retro-sci-rama-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-rama-shot.webp"
+      "/launcher/retro-sci-rama-shot.webp",
+      "/launcher/retro-sci-rama-shot-2.webp",
+      "/launcher/retro-sci-rama-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3206,6 +4485,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/rama/rama_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:rama/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/rama/rama_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:rama/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/rama/rama_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sci:rama/"
         }
       ],
@@ -3224,7 +4513,9 @@
     ],
     "posterImage": "/launcher/retro-sci-shivers-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-shivers-shot.webp"
+      "/launcher/retro-sci-shivers-shot.webp",
+      "/launcher/retro-sci-shivers-shot-2.webp",
+      "/launcher/retro-sci-shivers-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3235,6 +4526,14 @@
         {
           "kind": "gameplay",
           "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Shivers.png"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/shivers/shivers_win_fr_1_10_full.png"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/shivers/shivers_win_fr_1_2_full.png"
         }
       ],
       "metadata": [
@@ -3252,7 +4551,9 @@
     ],
     "posterImage": "/launcher/retro-agi-sq1-poster.webp",
     "screenshots": [
-      "/launcher/retro-agi-sq1-shot.webp"
+      "/launcher/retro-agi-sq1-shot.webp",
+      "/launcher/retro-agi-sq1-shot-2.webp",
+      "/launcher/retro-agi-sq1-shot-3.webp"
     ],
     "artworkFrom": "agi:sq1",
     "summary": "Help janitor Roger Wilco recover the Star Generator in the VGA remake of his first adventure.",
@@ -3261,6 +4562,23 @@
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1723"
+      ],
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/sq1/sq1_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/sq1/sq1_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/agi/sq1/sq1_dos_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/"
+        }
       ]
     }
   },
@@ -3271,7 +4589,9 @@
     ],
     "posterImage": "/launcher/retro-sci-sq3-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-sq3-shot.webp"
+      "/launcher/retro-sci-sq3-shot.webp",
+      "/launcher/retro-sci-sq3-shot-2.webp",
+      "/launcher/retro-sci-sq3-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3282,6 +4602,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/sq3/sq3_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/sq3/sq3_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/sq3/sq3_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sq/"
         }
       ],
@@ -3300,7 +4630,9 @@
     ],
     "posterImage": "/launcher/retro-sci-sq4-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-sq4-shot.webp"
+      "/launcher/retro-sci-sq4-shot.webp",
+      "/launcher/retro-sci-sq4-shot-2.webp",
+      "/launcher/retro-sci-sq4-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3311,6 +4643,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/sq4/sq4_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/sq4/sq4_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/sq4/sq4_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sq/"
         }
       ],
@@ -3329,7 +4671,9 @@
     ],
     "posterImage": "/launcher/retro-sci-sq5-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-sq5-shot.webp"
+      "/launcher/retro-sci-sq5-shot.webp",
+      "/launcher/retro-sci-sq5-shot-2.webp",
+      "/launcher/retro-sci-sq5-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3340,6 +4684,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/sq5/sq5_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/sq5/sq5_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/sq5/sq5_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sq/"
         }
       ],
@@ -3358,7 +4712,9 @@
     ],
     "posterImage": "/launcher/retro-sci-sq6-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-sq6-shot.webp"
+      "/launcher/retro-sci-sq6-shot.webp",
+      "/launcher/retro-sci-sq6-shot-2.webp",
+      "/launcher/retro-sci-sq6-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3369,6 +4725,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/sq6/sq6_dos_de_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/sq6/sq6_dos_de_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/sq6/sq6_dos_de_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sq/"
         }
       ],
@@ -3387,7 +4753,9 @@
     ],
     "posterImage": "/launcher/retro-sci-torin-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-torin-shot.webp"
+      "/launcher/retro-sci-torin-shot.webp",
+      "/launcher/retro-sci-torin-shot-2.webp",
+      "/launcher/retro-sci-torin-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3398,6 +4766,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sci/torin/torin_win_de_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:torin/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/torin/torin_win_de_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:torin/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sci/torin/torin_win_de_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sci:torin/"
         }
       ],
@@ -3416,7 +4794,9 @@
     ],
     "posterImage": "/launcher/atlantis-cover.webp",
     "screenshots": [
-      "/launcher/atlantis-shot.webp"
+      "/launcher/atlantis-shot.webp",
+      "/launcher/atlantis-shot-2.webp",
+      "/launcher/atlantis-shot-3.webp"
     ],
     "summary": "Join Indy and Sophia Hapgood in a race to uncover Atlantis before a Nazi expedition.",
     "studio": "LucasArts",
@@ -3424,6 +4804,20 @@
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1668"
+      ],
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "path": "scummvm-shell/launcher/atlantis-shot.webp"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/atlantis/atlantis_dos_en_1_1_full.png"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/atlantis/atlantis_amiga_en_1_1_full.png"
+        }
       ]
     }
   },
@@ -3434,7 +4828,9 @@
     ],
     "posterImage": "/launcher/retro-scumm-bluestreasurehunt-poster.webp",
     "screenshots": [
-      "/launcher/retro-scumm-bluestreasurehunt-shot.webp"
+      "/launcher/retro-scumm-bluestreasurehunt-shot.webp",
+      "/launcher/retro-scumm-bluestreasurehunt-shot-2.webp",
+      "/launcher/retro-scumm-bluestreasurehunt-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3445,6 +4841,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/scumm/bluestreasurehunt/bluestreasurehunt_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/blue/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/bluestreasurehunt/bluestreasurehunt_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/blue/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/bluestreasurehunt/bluestreasurehunt_win_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/he/blue/"
         }
       ],
@@ -3463,7 +4869,9 @@
     ],
     "posterImage": "/launcher/retro-scumm-brstorm-poster.webp",
     "screenshots": [
-      "/launcher/retro-scumm-brstorm-shot.webp"
+      "/launcher/retro-scumm-brstorm-shot.webp",
+      "/launcher/retro-scumm-brstorm-shot-2.webp",
+      "/launcher/retro-scumm-brstorm-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3474,6 +4882,16 @@
         {
           "kind": "gameplay",
           "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Bear%20Stormin'.png"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.old-games.ru/games/pc/bear_stormin/screenshots/7755_5b4db4745fd38.png",
+          "page": "https://www.old-games.ru/game/7755.html"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.old-games.ru/games/pc/bear_stormin/screenshots/7755_5b4db3df543ae.png",
+          "page": "https://www.old-games.ru/game/7755.html"
         }
       ],
       "metadata": [
@@ -3491,7 +4909,9 @@
     ],
     "posterImage": "/launcher/retro-scumm-comi-poster.webp",
     "screenshots": [
-      "/launcher/retro-scumm-comi-shot.webp"
+      "/launcher/retro-scumm-comi-shot.webp",
+      "/launcher/retro-scumm-comi-shot-2.webp",
+      "/launcher/retro-scumm-comi-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3502,6 +4922,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/scumm/comi/comi_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/lucasarts/mi/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/comi/comi_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/lucasarts/mi/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/comi/comi_win_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/lucasarts/mi/"
         }
       ],
@@ -3520,7 +4950,9 @@
     ],
     "posterImage": "/launcher/retro-scumm-dig-poster.webp",
     "screenshots": [
-      "/launcher/retro-scumm-dig-shot.webp"
+      "/launcher/retro-scumm-dig-shot.webp",
+      "/launcher/retro-scumm-dig-shot-2.webp",
+      "/launcher/retro-scumm-dig-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3531,6 +4963,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/scumm/dig/dig_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/lucasarts/scumm:dig/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/dig/dig_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/lucasarts/scumm:dig/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/dig/dig_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/lucasarts/scumm:dig/"
         }
       ],
@@ -3549,7 +4991,9 @@
     ],
     "posterImage": "/launcher/retro-scumm-ft-poster.webp",
     "screenshots": [
-      "/launcher/retro-scumm-ft-shot.webp"
+      "/launcher/retro-scumm-ft-shot.webp",
+      "/launcher/retro-scumm-ft-shot-2.webp",
+      "/launcher/retro-scumm-ft-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3560,6 +5004,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/scumm/ft/ft_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/lucasarts/scumm:ft/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/ft/ft_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/lucasarts/scumm:ft/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/ft/ft_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/lucasarts/scumm:ft/"
         }
       ],
@@ -3578,7 +5032,9 @@
     ],
     "posterImage": "/launcher/indy3-cover.webp",
     "screenshots": [
-      "/launcher/indy3-shot.webp"
+      "/launcher/indy3-shot.webp",
+      "/launcher/indy3-shot-2.webp",
+      "/launcher/indy3-shot-3.webp"
     ],
     "summary": "Help Indiana Jones and his father search for the Holy Grail in the adventure based on the film.",
     "studio": "Lucasfilm Games",
@@ -3586,6 +5042,20 @@
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1666"
+      ],
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "path": "scummvm-shell/launcher/indy3-shot.webp"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/indy3/indy3_dos_en_1_2_full.png"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/indy3/indy3_dos_en_2_2_full.png"
+        }
       ]
     }
   },
@@ -3597,7 +5067,9 @@
     ],
     "posterImage": "/launcher/loom-cover.webp",
     "screenshots": [
-      "/launcher/loom-shot.webp"
+      "/launcher/loom-shot.webp",
+      "/launcher/loom-shot-2.webp",
+      "/launcher/loom-shot-3.webp"
     ],
     "summary": "Use musical drafts as Bobbin Threadbare to discover the fate of the Weavers and reshape the world.",
     "studio": "Lucasfilm Games",
@@ -3605,6 +5077,20 @@
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1667"
+      ],
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "path": "scummvm-shell/launcher/loom-shot.webp"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/loom/loom_amiga_en_1_1_full.png"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/loom/loom_pce_en_1_2_full.png"
+        }
       ]
     }
   },
@@ -3615,7 +5101,9 @@
     ],
     "posterImage": "/launcher/maniac-cover.webp",
     "screenshots": [
-      "/launcher/maniac-shot.webp"
+      "/launcher/maniac-shot.webp",
+      "/launcher/maniac-shot-2.webp",
+      "/launcher/maniac-shot-3.webp"
     ],
     "summary": "Choose a team of teenagers to explore Dr. Fred's mansion and rescue Sandy.",
     "studio": "Lucasfilm Games",
@@ -3623,6 +5111,20 @@
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1000"
+      ],
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "path": "scummvm-shell/launcher/maniac-shot.webp"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/maniac/maniac_amiga_en_1_2_full.png"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/maniac/maniac_amiga_en_1_3_full.png"
+        }
       ]
     }
   },
@@ -3633,7 +5135,9 @@
     ],
     "posterImage": "/launcher/retro-scumm-monkey-poster.webp",
     "screenshots": [
-      "/launcher/retro-scumm-monkey-shot.webp"
+      "/launcher/retro-scumm-monkey-shot.webp",
+      "/launcher/retro-scumm-monkey-shot-2.webp",
+      "/launcher/retro-scumm-monkey-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3644,6 +5148,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/scumm/monkey/monkey_dos_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/lucasarts/mi/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/monkey/monkey_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/lucasarts/mi/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/monkey/monkey_dos_en_1_3_full.png",
           "page": "https://www.scummvm.org/screenshots/lucasarts/mi/"
         }
       ],
@@ -3663,7 +5177,9 @@
     ],
     "posterImage": "/launcher/monkey2-cover.webp",
     "screenshots": [
-      "/launcher/monkey2-shot.webp"
+      "/launcher/monkey2-shot.webp",
+      "/launcher/monkey2-shot-2.webp",
+      "/launcher/monkey2-shot-3.webp"
     ],
     "summary": "Search for the treasure of Big Whoop as Guybrush Threepwood faces the returning pirate LeChuck.",
     "studio": "Lucasfilm Games",
@@ -3671,6 +5187,20 @@
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=998"
+      ],
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "path": "scummvm-shell/launcher/monkey2-shot.webp"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/monkey2/monkey2_dos_en_1_2_full.png"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/monkey2/monkey2_dos_en_1_3_full.png"
+        }
       ]
     }
   },
@@ -3681,7 +5211,9 @@
     ],
     "posterImage": "/launcher/retro-scumm-pass-poster.webp",
     "screenshots": [
-      "/launcher/retro-scumm-pass-shot.webp"
+      "/launcher/retro-scumm-pass-shot.webp",
+      "/launcher/retro-scumm-pass-shot-2.webp",
+      "/launcher/retro-scumm-pass-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3692,6 +5224,16 @@
         {
           "kind": "title-screen",
           "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Passport%20to%20Adventure.png"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.dosbox-staging.org/static/images/getting-started/indy3-start-small.jpg",
+          "page": "https://www.dosbox-staging.org/0.83/getting-started/passport-to-adventure/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.dosbox-staging.org/static/images/getting-started/loom-ingame-vga-small.jpg",
+          "page": "https://www.dosbox-staging.org/0.83/getting-started/passport-to-adventure/"
         }
       ],
       "metadata": [
@@ -3710,7 +5252,9 @@
     ],
     "posterImage": "/launcher/samnmax-cover.webp",
     "screenshots": [
-      "/launcher/samnmax-shot.webp"
+      "/launcher/samnmax-shot.webp",
+      "/launcher/samnmax-shot-2.webp",
+      "/launcher/samnmax-shot-3.webp"
     ],
     "summary": "Join freelance police Sam and Max on a road trip to track down a missing carnival Bigfoot.",
     "studio": "LucasArts",
@@ -3718,6 +5262,20 @@
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1671"
+      ],
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "path": "scummvm-shell/launcher/samnmax-shot.webp"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/samnmax/samnmax_dos_en_1_2_full.png"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/samnmax/samnmax_dos_en_1_1_full.png"
+        }
       ]
     }
   },
@@ -3729,7 +5287,9 @@
     ],
     "posterImage": "/launcher/tentacle-cover.webp",
     "screenshots": [
-      "/launcher/tentacle-shot.webp"
+      "/launcher/tentacle-shot.webp",
+      "/launcher/tentacle-shot-2.webp",
+      "/launcher/tentacle-shot-3.webp"
     ],
     "summary": "Coordinate Bernard, Hoagie, and Laverne across three eras to stop Purple Tentacle from taking over the world.",
     "studio": "LucasArts",
@@ -3737,6 +5297,20 @@
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1670"
+      ],
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "path": "scummvm-shell/launcher/tentacle-shot.webp"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/tentacle/tentacle_dos_de_1_1_full.png"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/tentacle/tentacle_dos_en_1_1_full.png"
+        }
       ]
     }
   },
@@ -3747,7 +5321,9 @@
     ],
     "posterImage": "/launcher/retro-scumm-thinker1-poster.webp",
     "screenshots": [
-      "/launcher/retro-scumm-thinker1-shot.webp"
+      "/launcher/retro-scumm-thinker1-shot.webp",
+      "/launcher/retro-scumm-thinker1-shot-2.webp",
+      "/launcher/retro-scumm-thinker1-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3759,6 +5335,16 @@
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/scumm/thinker1/thinker1_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/he/bigthinkers/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/thinker1/thinker1_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/bigthinkers/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/376770/ss_ac0f8c30c8e8a6afb0b1c34ebfe20b4a7ab81b84.1920x1080.jpg?t=1578517336",
+          "page": "https://store.steampowered.com/app/376770/"
         }
       ],
       "metadata": [
@@ -3776,7 +5362,9 @@
     ],
     "posterImage": "/launcher/retro-scumm-thinkerk-poster.webp",
     "screenshots": [
-      "/launcher/retro-scumm-thinkerk-shot.webp"
+      "/launcher/retro-scumm-thinkerk-shot.webp",
+      "/launcher/retro-scumm-thinkerk-shot-2.webp",
+      "/launcher/retro-scumm-thinkerk-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3788,6 +5376,16 @@
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/scumm/thinkerk/thinkerk_win_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/he/bigthinkers/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/thinkerk/thinkerk_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/bigthinkers/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/376760/ss_25f38878fe4082dd368a77127102e5b4176edc40.1920x1080.jpg?t=1578517524",
+          "page": "https://store.steampowered.com/app/376760/"
         }
       ],
       "metadata": [
@@ -3805,7 +5403,9 @@
     ],
     "posterImage": "/launcher/zak-cover.webp",
     "screenshots": [
-      "/launcher/zak-shot.webp"
+      "/launcher/zak-shot.webp",
+      "/launcher/zak-shot-2.webp",
+      "/launcher/zak-shot-3.webp"
     ],
     "summary": "Tabloid reporter Zak McKracken investigates an alien plot to make Earth's population less intelligent.",
     "studio": "Lucasfilm Games",
@@ -3813,6 +5413,20 @@
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1665"
+      ],
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "path": "scummvm-shell/launcher/zak-shot.webp"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/zak/zak_fmtowns_en_1_2_full.png"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/scumm/zak/zak_fmtowns_en_1_3_full.png"
+        }
       ]
     }
   },
@@ -3823,7 +5437,9 @@
     ],
     "posterImage": "/launcher/retro-sherlock-rosetattoo-poster.webp",
     "screenshots": [
-      "/launcher/retro-sherlock-rosetattoo-shot.webp"
+      "/launcher/retro-sherlock-rosetattoo-shot.webp",
+      "/launcher/retro-sherlock-rosetattoo-shot-2.webp",
+      "/launcher/retro-sherlock-rosetattoo-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3834,6 +5450,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sherlock/rosetattoo/rosetattoo_dos_de_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/sherlock/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sherlock/rosetattoo/rosetattoo_dos_de_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/sherlock/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sherlock/rosetattoo/rosetattoo_dos_de_1_11_full.png",
           "page": "https://www.scummvm.org/screenshots/other/sherlock/"
         }
       ],
@@ -3852,7 +5478,9 @@
     ],
     "posterImage": "/launcher/retro-sherlock-scalpel-poster.webp",
     "screenshots": [
-      "/launcher/retro-sherlock-scalpel-shot.webp"
+      "/launcher/retro-sherlock-scalpel-shot.webp",
+      "/launcher/retro-sherlock-scalpel-shot-2.webp",
+      "/launcher/retro-sherlock-scalpel-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3863,6 +5491,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sherlock/scalpel/scalpel_dos_de_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/sherlock/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sherlock/scalpel/scalpel_dos_de_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/sherlock/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sherlock/scalpel/scalpel_dos_de_1_11_full.png",
           "page": "https://www.scummvm.org/screenshots/other/sherlock/"
         }
       ],
@@ -3901,7 +5539,9 @@
     ],
     "posterImage": "/launcher/retro-sword1-sword1-poster.webp",
     "screenshots": [
-      "/launcher/retro-sword1-sword1-shot.webp"
+      "/launcher/retro-sword1-sword1-shot.webp",
+      "/launcher/retro-sword1-sword1-shot-2.webp",
+      "/launcher/retro-sword1-sword1-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3912,6 +5552,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sword1/sword1/sword1_psx_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/revolution/sword/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sword1/sword1/sword1_psx_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/revolution/sword/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sword1/sword1/sword1_psx_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/revolution/sword/"
         }
       ],
@@ -3950,7 +5600,9 @@
     ],
     "posterImage": "/launcher/retro-sword2-sword2-poster.webp",
     "screenshots": [
-      "/launcher/retro-sword2-sword2-shot.webp"
+      "/launcher/retro-sword2-sword2-shot.webp",
+      "/launcher/retro-sword2-sword2-shot-2.webp",
+      "/launcher/retro-sword2-sword2-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3961,6 +5613,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/sword2/sword2/sword2_psx_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/revolution/sword/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sword2/sword2/sword2_psx_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/revolution/sword/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/sword2/sword2/sword2_psx_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/revolution/sword/"
         }
       ],
@@ -3979,7 +5641,9 @@
     ],
     "posterImage": "/launcher/retro-teenagent-teenagent-poster.webp",
     "screenshots": [
-      "/launcher/retro-teenagent-teenagent-shot.webp"
+      "/launcher/retro-teenagent-teenagent-shot.webp",
+      "/launcher/retro-teenagent-teenagent-shot-2.webp",
+      "/launcher/retro-teenagent-teenagent-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3990,6 +5654,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/teenagent/teenagent/teenagent_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/metropolis/teenagent:teenagent/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/teenagent/teenagent/teenagent_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/metropolis/teenagent:teenagent/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/teenagent/teenagent/teenagent_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/metropolis/teenagent:teenagent/"
         }
       ],
@@ -4009,7 +5683,9 @@
     ],
     "posterImage": "/launcher/retro-tinsel-dw-poster.webp",
     "screenshots": [
-      "/launcher/retro-tinsel-dw-shot.webp"
+      "/launcher/retro-tinsel-dw-shot.webp",
+      "/launcher/retro-tinsel-dw-shot-2.webp",
+      "/launcher/retro-tinsel-dw-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -4020,6 +5696,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/tinsel/dw/dw_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/dw/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/tinsel/dw/dw_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/dw/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/tinsel/dw/dw_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/other/dw/"
         }
       ],
@@ -4038,7 +5724,9 @@
     ],
     "posterImage": "/launcher/retro-tinsel-dw2-poster.webp",
     "screenshots": [
-      "/launcher/retro-tinsel-dw2-shot.webp"
+      "/launcher/retro-tinsel-dw2-shot.webp",
+      "/launcher/retro-tinsel-dw2-shot-2.webp",
+      "/launcher/retro-tinsel-dw2-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -4049,6 +5737,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/tinsel/dw2/dw2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/dw/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/tinsel/dw2/dw2_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/dw/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/tinsel/dw2/dw2_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/other/dw/"
         }
       ],
@@ -4067,7 +5765,9 @@
     ],
     "posterImage": "/launcher/retro-titanic-titanic-poster.webp",
     "screenshots": [
-      "/launcher/retro-titanic-titanic-shot.webp"
+      "/launcher/retro-titanic-titanic-shot.webp",
+      "/launcher/retro-titanic-titanic-shot-2.webp",
+      "/launcher/retro-titanic-titanic-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -4078,6 +5778,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/titanic/titanic/titanic_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/titanic:titanic/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/titanic/titanic/titanic_win_en_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/titanic:titanic/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/titanic/titanic/titanic_win_en_1_3_full.png",
           "page": "https://www.scummvm.org/screenshots/other/titanic:titanic/"
         }
       ],
@@ -4096,7 +5806,9 @@
     ],
     "posterImage": "/launcher/retro-toltecs-toltecs-poster.webp",
     "screenshots": [
-      "/launcher/retro-toltecs-toltecs-shot.webp"
+      "/launcher/retro-toltecs-toltecs-shot.webp",
+      "/launcher/retro-toltecs-toltecs-shot-2.webp",
+      "/launcher/retro-toltecs-toltecs-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -4107,6 +5819,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/toltecs/toltecs/toltecs_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/toltecs:toltecs/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/toltecs/toltecs/toltecs_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/toltecs:toltecs/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/toltecs/toltecs/toltecs_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/other/toltecs:toltecs/"
         }
       ],
@@ -4125,7 +5847,9 @@
     ],
     "posterImage": "/launcher/retro-tony-tony-poster.webp",
     "screenshots": [
-      "/launcher/retro-tony-tony-shot.webp"
+      "/launcher/retro-tony-tony-shot.webp",
+      "/launcher/retro-tony-tony-shot-2.webp",
+      "/launcher/retro-tony-tony-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -4136,6 +5860,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/tony/tony/tony_win_de_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/tony:tony/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/tony/tony/tony_win_de_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/tony:tony/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/tony/tony/tony_win_de_1_11_full.png",
           "page": "https://www.scummvm.org/screenshots/other/tony:tony/"
         }
       ],
@@ -4154,7 +5888,9 @@
     ],
     "posterImage": "/launcher/retro-toon-toon-poster.webp",
     "screenshots": [
-      "/launcher/retro-toon-toon-shot.webp"
+      "/launcher/retro-toon-toon-shot.webp",
+      "/launcher/retro-toon-toon-shot-2.webp",
+      "/launcher/retro-toon-toon-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -4165,6 +5901,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/toon/toon/toon_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/toon:toon/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/toon/toon/toon_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/toon:toon/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/toon/toon/toon_win_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/other/toon:toon/"
         }
       ],
@@ -4183,7 +5929,9 @@
     ],
     "posterImage": "/launcher/retro-touche-touche-poster.webp",
     "screenshots": [
-      "/launcher/retro-touche-touche-shot.webp"
+      "/launcher/retro-touche-touche-shot.webp",
+      "/launcher/retro-touche-touche-shot-2.webp",
+      "/launcher/retro-touche-touche-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -4194,6 +5942,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/touche/touche/touche_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/touche:touche/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/touche/touche/touche_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/touche:touche/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/touche/touche/touche_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/other/touche:touche/"
         }
       ],
@@ -4212,7 +5970,9 @@
     ],
     "posterImage": "/launcher/retro-tsage-blueforce-poster.webp",
     "screenshots": [
-      "/launcher/retro-tsage-blueforce-shot.webp"
+      "/launcher/retro-tsage-blueforce-shot.webp",
+      "/launcher/retro-tsage-blueforce-shot-2.webp",
+      "/launcher/retro-tsage-blueforce-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -4223,6 +5983,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/tsage/blueforce/blueforce_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/tsunami/tsage:blueforce/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/tsage/blueforce/blueforce_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/tsunami/tsage:blueforce/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/tsage/blueforce/blueforce_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/tsunami/tsage:blueforce/"
         }
       ],
@@ -4241,7 +6011,9 @@
     ],
     "posterImage": "/launcher/retro-tsage-ringworld-poster.webp",
     "screenshots": [
-      "/launcher/retro-tsage-ringworld-shot.webp"
+      "/launcher/retro-tsage-ringworld-shot.webp",
+      "/launcher/retro-tsage-ringworld-shot-2.webp",
+      "/launcher/retro-tsage-ringworld-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -4252,6 +6024,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/tsage/ringworld/ringworld_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/tsunami/ringworld/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/tsage/ringworld/ringworld_dos_en_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/tsunami/ringworld/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/tsage/ringworld/ringworld_dos_en_1_3_full.png",
           "page": "https://www.scummvm.org/screenshots/tsunami/ringworld/"
         }
       ],
@@ -4270,7 +6052,9 @@
     ],
     "posterImage": "/launcher/retro-tsage-ringworld2-poster.webp",
     "screenshots": [
-      "/launcher/retro-tsage-ringworld2-shot.webp"
+      "/launcher/retro-tsage-ringworld2-shot.webp",
+      "/launcher/retro-tsage-ringworld2-shot-2.webp",
+      "/launcher/retro-tsage-ringworld2-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -4281,6 +6065,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/tsage/ringworld2/ringworld2_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/tsunami/ringworld/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/tsage/ringworld2/ringworld2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/tsunami/ringworld/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/tsage/ringworld2/ringworld2_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/tsunami/ringworld/"
         }
       ],
@@ -4299,7 +6093,9 @@
     ],
     "posterImage": "/launcher/retro-tucker-tucker-poster.webp",
     "screenshots": [
-      "/launcher/retro-tucker-tucker-shot.webp"
+      "/launcher/retro-tucker-tucker-shot.webp",
+      "/launcher/retro-tucker-tucker-shot-2.webp",
+      "/launcher/retro-tucker-tucker-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -4310,6 +6106,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/tucker/tucker/tucker_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/tucker:tucker/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/tucker/tucker/tucker_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/tucker:tucker/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/tucker/tucker/tucker_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/other/tucker:tucker/"
         }
       ],
@@ -4328,7 +6134,9 @@
     ],
     "posterImage": "/launcher/retro-voyeur-voyeur-poster.webp",
     "screenshots": [
-      "/launcher/retro-voyeur-voyeur-shot.webp"
+      "/launcher/retro-voyeur-voyeur-shot.webp",
+      "/launcher/retro-voyeur-voyeur-shot-2.webp",
+      "/launcher/retro-voyeur-voyeur-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -4339,6 +6147,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/voyeur/voyeur/voyeur_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/voyeur:voyeur/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/voyeur/voyeur/voyeur_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/voyeur:voyeur/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/voyeur/voyeur/voyeur_dos_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/other/voyeur:voyeur/"
         }
       ],
@@ -4357,7 +6175,9 @@
     ],
     "posterImage": "/launcher/retro-wintermute-chivalry-poster.webp",
     "screenshots": [
-      "/launcher/retro-wintermute-chivalry-shot.webp"
+      "/launcher/retro-wintermute-chivalry-shot.webp",
+      "/launcher/retro-wintermute-chivalry-shot-2.webp",
+      "/launcher/retro-wintermute-chivalry-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -4369,6 +6189,16 @@
         {
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/wintermute/chivalry/chivalry_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/squinky/wintermute:chivalry/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/wintermute/chivalry/chivalry_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/squinky/wintermute:chivalry/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/wintermute/chivalry/chivalry_win_en_1_4_full.png",
           "page": "https://www.scummvm.org/screenshots/squinky/wintermute:chivalry/"
         }
       ],

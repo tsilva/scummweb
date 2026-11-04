@@ -4,12 +4,10 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { readRemoteGameArchive } from "../game-bucket.mjs";
 import { getGamePresentation, getImportedGamePresentation } from "../game-presentation";
-import { checkGameSource, localGame, readGameSources, removeGameSources, saveGameSources } from "../game-sources.mjs";
+import { checkGameSource, isLocalZipSource, localGame, readGameSources, removeGameSources, saveGameSources } from "../game-sources.mjs";
 import { findLocalGameSource } from "../local-game-matching.mjs";
-import { maxLocalGameSize, openLocalGameZip, readGameFolder, selectGameArchive, validateGameZip } from "../local-game-archive.mjs";
-import {
-  fileNode, handleNode, openLocalFolder, prepareLocalFolder, prepareLocalZip, scanGameFolder, selectedGameFolder,
-} from "../local-game-import.mjs";
+import { maxLocalGameSize, openLocalGameZip, selectGameArchive, validateGameZip } from "../local-game-archive.mjs";
+import { fileNode, handleNode, prepareLocalZip } from "../local-game-import.mjs";
 import LibraryView from "./library-view";
 import { libraryItems } from "./library-query.mjs";
 import { getGameFamilyKey, getVersionSaveNamespace, rememberGameVersion } from "../game-versions.mjs";
@@ -17,6 +15,7 @@ import { getGameDialogId } from "./shared";
 import HomeHero from "./home-hero";
 import VersionedGameDetails from "./versioned-game-details";
 import GameDropOverlay, { chooseZipHandles } from "./local-game";
+import RecentGamesRail from "../recent-games-rail";
 
 const sessionGames = new Map();
 const sessionSources = new Map();
@@ -29,7 +28,7 @@ function scrollToLibraryItem(item, block) {
 
 const reconnectStatuses = new Set(["locate", "missing", "permission"]);
 
-export default function SourceLibrary({ catalog, children, featuredGame, libraryHeading, officialUrl }) {
+export default function SourceLibrary({ catalog, featuredGame, libraryHeading, officialUrl }) {
   const router = useRouter();
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -47,7 +46,6 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
   const [pending, setPending] = useState([]);
   const [importResult, setImportResult] = useState(null);
   const fileInput = useRef(null);
-  const folderInput = useRef(null);
   const replacingSource = useRef(null);
   const entriesRef = useRef([]);
   const detailsOpener = useRef(null);
@@ -80,7 +78,7 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
         if (checking.has(source)) continue;
         checking.add(source);
         // Only imports without a persistent handle rely on their in-memory copy.
-        const check = !source.handle && sessionGames.has(source.id)
+        const check = isLocalZipSource(source) && !source.handle && sessionGames.has(source.id)
           ? Promise.resolve("session") : checkGameSource(source);
         void check.then((status) => {
           if (active) {
@@ -198,6 +196,8 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
     const source = { ...existing, ...localGame(game.handle, game, existing?.id) };
     // A fallback picker must replace a stale saved handle with its fresh in-memory files.
     if (!game.handle) delete source.handle;
+    // A ZIP can replace a legacy folder while retaining its source ID and saves.
+    delete source.kind;
     try {
       await saveGameSources([source]);
       sessionSources.delete(source.id);
@@ -249,70 +249,21 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
         return item;
       }
 
-      setPending(roots.map((root, index) => ({ index, label: root.name ?? "Game files", container: root.kind === "directory", message: "Waiting to scan…" })));
+      setPending(roots.map((root, index) => ({ index, label: root.name ?? "Game ZIP", message: "Waiting to scan…" })));
       try {
         for (const [index, root] of roots.entries()) {
           let label = "Dropped item";
-          let fileItems = [];
-          function updateFile(position, details) {
-            const order = ++scanOrder;
-            fileItems = fileItems.map((item, itemIndex) => itemIndex === position ? { ...item, ...details, scanOrder: order } : item);
-            updateProgress(index, { files: fileItems });
-          }
           try {
             const node = await root;
             if (!node) throw new Error("Could not read this item. Try dropping it again.");
             label = node.name;
-            updateProgress(index, { label, container: node.kind === "directory", message: node.kind === "directory" ? "Scanning folder…" : "Checking ZIP…" });
-
-            if (node.kind === "file") {
-              const item = await save(await prepareLocalZip(node));
-              updateProgress(index, item);
-            } else {
-              const { archives, files } = await scanGameFolder(node, (count) => {
-                updateProgress(index, { message: `Scanning folder… ${count} items checked` });
-              });
-              if (!archives.length || replacing) {
-                fileItems = files.map(({ path }) => ({ label: path, message: "Waiting…" }));
-                updateProgress(index, { message: "Checking game files…", files: fileItems });
-                const game = await prepareLocalFolder(node, files, updateFile);
-                const item = await save(game);
-                fileItems = fileItems.map((file) => ({
-                  ...file, status: item.status,
-                  message: item.status === "skipped" ? "Refreshed with game folder" : "Added with game folder", complete: true,
-                }));
-                item.files = fileItems;
-                updateProgress(index, { ...item, files: fileItems });
-              } else {
-                fileItems = archives.map((archive) => ({ label: archive.path, message: "Waiting…" }));
-                updateProgress(index, { files: fileItems });
-                for (const [position, archive] of archives.entries()) {
-                  updateProgress(index, {
-                    message: `Checking ZIP ${position + 1} of ${archives.length}…`,
-                    value: position,
-                    total: archives.length,
-                  });
-                  updateFile(position, { message: "Checking ZIP…" });
-                  try {
-                    const item = await save(await prepareLocalZip(archive), archive.path);
-                    updateFile(position, { ...item, complete: true });
-                  } catch (error) {
-                    const item = { label: archive.path, message: error.message, status: "error" };
-                    items.push(item);
-                    updateFile(position, item);
-                  }
-                }
-                updateProgress(index, {
-                  message: `${archives.length} ZIPs checked`, value: archives.length, total: archives.length,
-                  status: fileItems.some((item) => item.status === "error") ? "error"
-                    : fileItems.every((item) => item.status === "skipped") ? "skipped" : "added",
-                });
-              }
-            }
+            updateProgress(index, { label, message: "Checking ZIP…", value: index, total: roots.length });
+            const item = await save(await prepareLocalZip(node));
+            updateProgress(index, item);
           } catch (error) {
-            fileItems = fileItems.map((file) => ({ ...file, message: "Game folder was not added", status: "error" }));
-            items.push({ label, message: error.message, status: "error", files: fileItems });
-            updateProgress(index, { message: error.message, status: "error", files: fileItems });
+            const item = { label, message: error.message, status: "error" };
+            items.push(item);
+            updateProgress(index, item);
           } finally {
             updateProgress(index, { complete: true });
           }
@@ -324,7 +275,7 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
       setImportResult({ savedIds, items, replacing, temporary });
     }, (message) => setImportResult({
       savedIds: new Set(),
-      items: [{ label: "Game files", message, status: "error" }],
+      items: [{ label: "Game ZIP", message, status: "error" }],
     }));
   }
 
@@ -343,20 +294,6 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
     }
   }
 
-  function chooseFolder(replacing = null) {
-    if (typeof window.showDirectoryPicker === "function") {
-      importRoots(async () => [handleNode(await window.showDirectoryPicker({ mode: "read" }))], replacing);
-    } else {
-      replacingSource.current = replacing;
-      folderInput.current.click();
-    }
-  }
-
-  function chooseLocal(source) {
-    if (source.kind === "folder") chooseFolder(source);
-    else chooseZip(source);
-  }
-
   function updateStatus(source, status) {
     setEntries((current) => current.map((entry) =>
       entry.source === source ? { source, status } : entry
@@ -364,8 +301,9 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
   }
 
   function play(source, game, resume = false, legacySaves = false) {
+    if (!source.url && !isLocalZipSource(source)) return chooseZip(source);
     return run(async () => {
-      game = { ...game, saveVersionId: legacySaves ? undefined : source.id,
+      game = { ...game, recentGameId: `source:${source.id}`, saveVersionId: legacySaves ? undefined : source.id,
         saveNamespace: legacySaves ? undefined : await getVersionSaveNamespace(source.id), skipIntro: null };
       if (source.url) {
         selectGameArchive((signal) => readRemoteGameArchive(source.url, { signal }), game);
@@ -373,28 +311,24 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
         const data = sessionGames.get(source.id);
         if (!data && !source.handle) {
           updateStatus(source, "locate");
-          setNotice("Locate the game files to play again.");
+          setNotice("Locate the game ZIP to play again.");
           return;
         }
         if (!data) {
           if (await source.handle.requestPermission({ mode: "read" }) !== "granted") {
             updateStatus(source, "locate");
-            setNotice("Locate the game files to grant access again.");
+            setNotice("Locate the game ZIP to grant access again.");
             return;
           }
         }
-        if (source.kind === "folder") {
-          selectGameArchive(() => data ? readGameFolder(data) : openLocalFolder(source.handle), game);
-        } else {
-          try {
-            const file = data ?? await source.handle.getFile();
-            validateGameZip(file, maxLocalGameSize);
-            selectGameArchive((signal) => openLocalGameZip(file, signal), game);
-          } catch {
-            updateStatus(source, "missing");
-            setNotice("Could not open the ZIP. Locate the file to reconnect it.");
-            return;
-          }
+        try {
+          const file = data ?? await source.handle.getFile();
+          validateGameZip(file, maxLocalGameSize);
+          selectGameArchive((signal) => openLocalGameZip(file, signal), game);
+        } catch {
+          updateStatus(source, "missing");
+          setNotice("Could not open the ZIP. Locate the file to reconnect it.");
+          return;
         }
       }
       rememberGameVersion(getGameFamilyKey(game) || `source:${source.id}`, `source:${source.id}`);
@@ -405,24 +339,24 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
   const disabled = loading || busy || Boolean(importResult);
   const library = entries.map(({ source, status }) => {
     const knownGame = catalog.find(({ target }) => target === source.target)
-      ?? getImportedGamePresentation(source.kind === "folder" ? source.name + ".zip" : source.name);
+      ?? getImportedGamePresentation(/\.zip$/i.test(source.name) ? source.name : source.name + ".zip");
     const title = knownGame?.displayTitle ?? source.name.replace(/\.zip$/i, "");
     const presentation = knownGame ?? getGamePresentation({ displayTitle: title }, {
       summary: "Play this game from your library.",
       badge: "Library game",
     });
     const game = { ...presentation, saveVersionId: source.id, skipIntro: null };
-    const locate = !source.url && ["missing", "locate"].includes(status);
-    const locateLabel = source.kind === "folder" ? "Locate folder" : "Locate ZIP";
+    const locate = !source.url && (!isLocalZipSource(source) || ["missing", "locate"].includes(status));
+    const locateLabel = "Locate ZIP";
     return {
       source, status, game, title, locate, locateLabel,
       action: {
         label: locate ? `${locateLabel} for ${title}` : `Play ${title}`,
         disabled: disabled || status === "checking",
-        onClick: () => locate ? chooseLocal(source) : play(source, game),
+        onClick: () => locate ? chooseZip(source) : play(source, game),
         onContinue: () => play(source, game, true),
         onLegacy: () => play(source, game, false, true),
-        onLocate: () => chooseLocal(source),
+        onLocate: () => chooseZip(source),
         onRemove: () => run(() => removeSources([source])),
       },
     };
@@ -439,17 +373,11 @@ export default function SourceLibrary({ catalog, children, featuredGame, library
           if (files.length) importRoots(files.map(fileNode), replacingSource.current);
           event.target.value = "";
         }} />
-      <input ref={folderInput} type="file" webkitdirectory="" multiple hidden
-        onChange={(event) => {
-          const files = [...event.target.files];
-          if (files.length) importRoots([selectedGameFolder(files)], replacingSource.current);
-          event.target.value = "";
-        }} />
       <GameDropOverlay importRoots={importRoots} disabled={disabled} pending={pending}
         result={importResult} onConfirm={confirmImport} />
       {featuredGame && <HomeHero groups={groups} featuredGame={featuredGame} />}
       <div className="section-stack">
-        {children}
+        <RecentGamesRail groups={groups} />
         <LibraryView items={groups} heading={libraryHeading} notice={notice} />
       </div>
       {detail && <VersionedGameDetails key={detail.key} group={detail} notice={notice} onClose={closeDetails} openerElement={detailsOpener.current} />}

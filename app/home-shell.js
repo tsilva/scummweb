@@ -2,7 +2,6 @@ import CompatibilityModal from "./home-shell/compatibility-modal";
 import Icon from "./home-shell/shell-icon";
 import HeroStage from "./home-shell/hero-stage";
 import SourceLibrary from "./home-shell/source-library";
-import RecentGamesRail from "./recent-games-rail";
 import { getGamesOrigin } from "../lib/site-config.mjs";
 
 export default function HomeShell({
@@ -15,7 +14,6 @@ export default function HomeShell({
   sourceInfoDate,
 }) {
   const isHomePage = pageMode === "home";
-  const recentHeading = "Browser-Playable Classics";
   const libraryHeading = isHomePage ? "Game Library" : "Freeware Adventure Library";
 
   return (
@@ -72,18 +70,7 @@ export default function HomeShell({
           featuredGame={isHomePage ? featuredGame : null}
           libraryHeading={libraryHeading}
           officialUrl={getGamesOrigin()}
-        >
-          <section className="content-band">
-            <div className="section-header">
-              <h2>
-                <span className="section-mark" />
-                {recentHeading}
-              </h2>
-            </div>
-
-            <RecentGamesRail catalog={catalog} />
-          </section>
-        </SourceLibrary>
+        />
       </main>
 
       <footer className="site-footer">

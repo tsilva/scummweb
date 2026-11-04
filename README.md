@@ -17,7 +17,8 @@
 ScummWEB brings classic point-and-click adventures to your browser, powered by
 ScummVM. Play freeware and demos from the public library, or import compatible
 games from your own collection. Recognized games include artwork, descriptions,
-and studio credits.
+and studio credits. Game details show three screenshots where matching captures
+are available.
 
 ## Play online
 
@@ -30,21 +31,27 @@ Select a game card for details and **Play**. If sound or an intro is paused,
 select **Start audio** inside the game. Compatible saves offer **Continue**;
 other games load progress through their in-game menu.
 
+The Recently Played strip shows games you have launched, newest first, including
+your imported ZIPs. It appears after your first launch.
+
 Use the library’s sliders icon to sort and filter games. Choose **Version** in
 a game’s details to switch platform, language, or edition. Open **Game
 compatibility** from the top-bar checklist icon, or read the
 [compatibility results](docs/game-testing.md), for tested editions and known
 limitations. Startup checks do not establish full-game compatibility.
 
+The homepage slideshow advances every eight seconds. Previous and next restart
+the countdown; use the pause button to stop automatic rotation.
+
 ## Add your games
 
-Drop game ZIPs or folders onto the homepage or a game’s page, then select a
+Drop ScummVM game ZIPs onto the homepage or a game’s page, then select a
 poster to play. Local game files stay on your device. Put one game in each
 ZIP, with its data files at the root or in one enclosing folder.
 
-Local games can be up to 4 GiB. For large games, use an unpacked folder or a
-ZIP with compression disabled. If the browser loses file access, select the
-poster to reconnect it or drop the same library again; existing entries are
+Only ZIP files are supported. Local games can be up to 4 GiB. For large games,
+use a ZIP with compression disabled. If the browser loses file access, select the
+poster to reconnect it or drop the same ZIPs again; existing entries are
 refreshed without duplicates.
 
 See [playing and importing games](docs/maintaining-scummweb.md#playing-and-importing-games)

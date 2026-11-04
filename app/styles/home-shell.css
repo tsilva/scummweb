@@ -908,8 +908,8 @@ button.nav-icon-link {
 .section-stack {
   display: flex;
   flex-direction: column;
-  gap: 5.5rem;
-  padding: 0 0 5rem;
+  gap: 3rem;
+  padding: clamp(1.5rem, 3vw, 3rem) 0 5rem;
 }
 
 .content-band {

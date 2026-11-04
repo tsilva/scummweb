@@ -21,18 +21,18 @@ const compiled = { exports: {} };
 runInNewContext(code, { module: compiled, exports: compiled.exports, require: createRequire(componentUrl) });
 const { GameImportDialog, GameImportItems } = compiled.exports;
 
-test("directory progress renders waiting, active, added, and failed files while hiding skipped files", () => {
+test("ZIP progress renders waiting, active, added, and failed archives while hiding skipped ZIPs", () => {
   const html = renderToStaticMarkup(createElement(GameImportItems, {
     showProgress: true,
-    items: [{ label: "Collection", message: "Checking ZIP 4 of 5…", value: 3, total: 5, files: [
-      { label: "DOS/game.zip", message: "Added to your library", status: "added", complete: true },
+    items: [
+      { label: "game.zip", message: "Added to your library", status: "added", complete: true },
       { label: "old.zip", message: "Already in your library. Files refreshed.", status: "skipped" },
       { label: "bad.zip", message: "Unreadable ZIP", status: "error" },
-      { label: "Amiga/game.zip", message: "Checking ZIP…" },
+      { label: "active.zip", message: "Checking ZIP…" },
       { label: "next.zip", message: "Waiting…" },
-    ] }],
+    ],
   }));
-  for (const label of ["DOS/game.zip", "bad.zip", "Amiga/game.zip", "next.zip"]) {
+  for (const label of ["game.zip", "bad.zip", "active.zip", "next.zip"]) {
     assert.ok(html.includes(`<strong>${label}</strong>`), label);
   }
   assert.ok(!html.includes("old.zip"));
@@ -40,18 +40,14 @@ test("directory progress renders waiting, active, added, and failed files while 
     assert.ok(html.includes(status), status);
   }
   assert.ok(!html.includes("<progress"));
-  assert.ok(!html.includes("<strong>Collection</strong>"));
 });
 
-test("batch totals include every outcome without counting a folder's data files as games", () => {
+test("batch totals count valid ZIPs, skipped ZIPs, and rejected drops", () => {
   const result = {
     items: [
-      { label: "New folder", status: "added", message: "Added to your library", files: [
-        { label: "game.000", status: "added", message: "Added with game folder" },
-        { label: "game.001", status: "added", message: "Added with game folder" },
-      ] },
+      { label: "New.zip", status: "added", message: "Added to your library" },
       { label: "Existing.zip", status: "skipped", message: "Already in your library. Files refreshed." },
-      { label: "Broken.zip", status: "error", message: "Unreadable ZIP" },
+      { label: "Game folder", status: "error", message: "Only ZIP files containing ScummVM games are supported. Choose a game ZIP." },
     ],
   };
   const html = renderToStaticMarkup(createElement(GameImportDialog, { pending: [], result }));
@@ -59,7 +55,7 @@ test("batch totals include every outcome without counting a folder's data files 
   assert.ok(html.includes('1 game added · 1 game skipped · 1 error'));
   assert.ok(html.includes('class="game-import-confirm"'));
   assert.ok(!html.includes("Existing.zip"));
-  assert.ok(!html.includes("lucide-circle-minus"));
+  assert.ok(html.includes("Only ZIP files containing ScummVM games are supported"));
   for (const [icon, colorClass] of [["circle-check", "success"], ["circle-x", "error"]]) {
     assert.match(html, new RegExp(`class="[^"]*lucide-${icon}[^"]*game-import-${colorClass}`));
   }
@@ -84,28 +80,6 @@ test("a single failed scan reports an error rather than a skipped game", () => {
   assert.ok(html.includes('Error. Unreadable ZIP'));
 });
 
-test("progress follows the active directory and final results retain loose file rows", () => {
-  const items = [
-    { label: "First", message: "Added to your library", complete: true },
-    { label: "Second", message: "Checking game files…", files: [
-      { label: "data/vol.cat", message: "File checked", complete: true },
-      { label: "data/vol.dat", message: "Reading file…" },
-    ] },
-  ];
-  items[1].value = 1;
-  items[1].total = 2;
-  const progress = renderToStaticMarkup(createElement(GameImportDialog, { pending: items }));
-  assert.ok(progress.includes('aria-label="Importing games" value="1" max="2"'));
-  assert.equal((progress.match(/<progress /g) ?? []).length, 1);
-  assert.ok(progress.indexOf("<progress") < progress.indexOf('class="game-import-details"'));
-  assert.ok(!progress.includes("Checking files on this device."));
-  assert.ok(!progress.includes("<strong>Second</strong>"));
-  const result = renderToStaticMarkup(createElement(GameImportItems, { items, complete: true }));
-  assert.ok(result.includes("data/vol.cat"));
-  assert.ok(result.includes("data/vol.dat"));
-  assert.ok(!result.includes("<progress"));
-});
-
 test("progress advances past added, skipped, and failed items", () => {
   const html = renderToStaticMarkup(createElement(GameImportDialog, {
     pending: [
@@ -119,20 +93,16 @@ test("progress advances past added, skipped, and failed items", () => {
   assert.ok(html.includes('aria-label="Importing games" value="2" max="3"'));
 });
 
-test("latest scanned rows lead a flat list across folders and precede waiting files", () => {
+test("latest scanned ZIPs precede waiting files in a flat list", () => {
   const items = [
-    { label: "First collection", files: [
-      { label: "first.zip", status: "added", scanOrder: 2 },
-      { label: "failed.zip", status: "error", scanOrder: 4 },
-    ] },
-    { label: "Second collection", files: [
-      { label: "active.zip", message: "Checking ZIP…", scanOrder: 5 },
-      { label: "waiting.zip", message: "Waiting…" },
-    ] },
+    { label: "first.zip", status: "added", scanOrder: 2 },
+    { label: "failed.zip", status: "error", scanOrder: 4 },
+    { label: "active.zip", message: "Checking ZIP…", scanOrder: 5 },
+    { label: "waiting.zip", message: "Waiting…" },
   ];
   const html = renderToStaticMarkup(createElement(GameImportItems, { items, showProgress: true }));
   const labels = [...html.matchAll(/<strong>(.*?)<\/strong>/g)].map((match) => match[1]);
   assert.deepEqual(labels, ["active.zip", "failed.zip", "first.zip", "waiting.zip"]);
   assert.equal((html.match(/<ul /g) ?? []).length, 1);
-  assert.equal(items[0].files[0].label, "first.zip");
+  assert.equal(items[0].label, "first.zip");
 });

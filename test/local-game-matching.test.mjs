@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { BlobWriter, Uint8ArrayReader, ZipWriter } from "@zip.js/zip.js";
 import { localGame } from "../app/game-sources.mjs";
-import { fileNode, prepareLocalFolder, prepareLocalZip } from "../app/local-game-import.mjs";
+import { fileNode, prepareLocalZip } from "../app/local-game-import.mjs";
 import { findLocalGameSource } from "../app/local-game-matching.mjs";
 
 async function zipGame(name, contents = [1, 2]) {
@@ -73,16 +73,4 @@ test("a missing entry can be repaired with a more complete same-name copy", asyn
   const game = await zipGame("Game.zip");
   const source = { id: "missing", name: game.name, fingerprint: "incomplete" };
   assert.equal(await findLocalGameSource(game, [source], new Set([source.id])), source);
-});
-
-test("folder fingerprints survive reordered scans and a new enclosing folder", async () => {
-  const nodes = ["disc1/vol.cat", "disc2/vol.dat"].map((path) => ({
-    path, getFile: async () => new File([path], path.split("/").at(-1), { lastModified: 1234 }),
-  }));
-  const game = await prepareLocalFolder({ name: "Game" }, nodes);
-  const copy = await prepareLocalFolder({ name: "Moved game" }, nodes.toReversed().map((node) =>
-    ({ ...node, path: `new-wrapper/${node.path}` })
-  ));
-  const source = localGame(null, game, "folder");
-  assert.equal(await findLocalGameSource(copy, [source]), source);
 });
