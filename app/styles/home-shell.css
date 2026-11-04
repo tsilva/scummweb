@@ -830,6 +830,18 @@ button.nav-icon-link {
   flex-wrap: wrap;
 }
 
+.file-access-help {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.hero-copy > .file-access-help {
+  margin-top: 1rem;
+}
+
 .game-detail-actions .launch-button,
 .game-detail-actions .secondary-button {
   min-height: 4rem;

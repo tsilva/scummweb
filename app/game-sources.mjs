@@ -46,6 +46,16 @@ export async function checkGameSource(source) {
   }
 }
 
+export async function requestGameSourceAccess(source) {
+  try {
+    if (await source.handle.requestPermission({ mode: "read" }) !== "granted") return "permission";
+    return await checkGameSource(source);
+  } catch (error) {
+    if (["NotAllowedError", "SecurityError"].includes(error?.name)) return "permission";
+    throw error;
+  }
+}
+
 async function withGameStore(mode, operation) {
   const db = await new Promise((resolve, reject) => {
     const request = indexedDB.open("scummweb.game-library", 1);

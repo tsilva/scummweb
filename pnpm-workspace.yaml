@@ -7,6 +7,7 @@ allowBuilds:
 overrides:
   '@sentry/bundler-plugin-core@5.3.0>glob': 14.0.2
   '@sentry/bundler-plugins@10.69.0>glob': 14.0.2
+  '@sentry/bundler-plugins@11.10.0>glob': 14.0.2
   'glob@14.0.2>path-scurry': 3.0.0
   'minimatch@11.0.1>@isaacs/nonrecursive-glob-match': 1.0.1
   'minimatch': 11.0.1

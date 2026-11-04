@@ -73,7 +73,7 @@ export function readCatalogGameArchive(url, options) {
   return downloadGameArchive(fetchUrl, options);
 }
 
-async function downloadGameArchive(zipUrl, { signal, archiveLimit = maxArchiveSize, expandedLimit, timeoutMs = 120_000 } = {}) {
+async function downloadGameArchive(zipUrl, { signal, onEntries, archiveLimit = maxArchiveSize, expandedLimit, timeoutMs = 120_000 } = {}) {
   const timeout = AbortSignal.timeout(timeoutMs);
   const response = await fetch(zipUrl, {
     mode: "cors",
@@ -104,5 +104,5 @@ async function downloadGameArchive(zipUrl, { signal, archiveLimit = maxArchiveSi
     },
   }));
   const archive = await new Response(limitedBody).blob();
-  return readLocalGameArchive(new File([archive], "game.zip"), { archiveLimit, expandedLimit, signal });
+  return readLocalGameArchive(new File([archive], "game.zip"), { archiveLimit, expandedLimit, signal, onEntries });
 }

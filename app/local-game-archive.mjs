@@ -41,13 +41,19 @@ export function validateGameZip(file, archiveLimit = maxArchiveSize) {
 
 async function withZipEntries(file, useEntries, { archiveLimit = maxArchiveSize, expandedLimit = maxExpandedSize } = {}) {
   validateGameZip(file, archiveLimit);
-  const { BlobReader, ERR_UNSAFE_FILENAME, ZipReader } = await import("@zip.js/zip.js");
-  const reader = new ZipReader(new BlobReader(file));
+  const { BlobReader } = await import("@zip.js/zip.js");
+  return withGameZipEntries(new BlobReader(file), useEntries, { expandedLimit });
+}
+
+async function withGameZipEntries(source, useEntries, { expandedLimit = maxExpandedSize, signal } = {}) {
+  const { ERR_UNSAFE_FILENAME, ZipReader } = await import("@zip.js/zip.js");
+  const reader = new ZipReader(source);
   try {
     const entries = new Map();
     let entryCount = 0;
     let totalSize = 0;
     for await (const entry of reader.getEntriesGenerator()) {
+      signal?.throwIfAborted();
       if (++entryCount > maxGameEntries) {
         throw new ArchiveError("This ZIP contains too many entries.");
       }
@@ -81,6 +87,12 @@ async function withZipEntries(file, useEntries, { archiveLimit = maxArchiveSize,
   } finally {
     await reader.close();
   }
+}
+
+// Inspect a seekable ZIP without extracting any game data.
+export function scanGameZipReader(reader, options) {
+  return withGameZipEntries(reader, (entries) =>
+    entries.map(({ path, entry }) => [path, entry.uncompressedSize, entry.signature]), options);
 }
 
 function gamePathParts(path) {
@@ -126,8 +138,12 @@ export function scanLocalGameArchive(file) {
   }, localZipLimits);
 }
 
-export function readLocalGameArchive(file, { signal, ...limits } = {}) {
-  return withZipEntries(file, (entries) => unpackGameEntries(entries, signal), limits);
+export function readLocalGameArchive(file, { signal, onEntries, ...limits } = {}) {
+  return withZipEntries(file, (entries) => {
+    signal?.throwIfAborted();
+    onEntries?.(entries.map(({ path, entry }) => [path, entry.uncompressedSize, entry.signature]));
+    return unpackGameEntries(entries, signal);
+  }, limits);
 }
 
 function requiresFileBackedZip(file, totalSize) {

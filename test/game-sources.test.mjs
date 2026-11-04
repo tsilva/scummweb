@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { bucketGames, checkGameSource, localGame, remoteGame } from "../app/game-sources.mjs";
+import { bucketGames, checkGameSource, localGame, remoteGame, requestGameSourceAccess } from "../app/game-sources.mjs";
 
 test("availability checks read file metadata only with existing permission", async () => {
   const file = new File(["test"], "adventure.zip");
@@ -77,5 +77,42 @@ test("permission failures and unreadable sources are not falsely marked missing"
       getFile: () => { throw new DOMException("Cannot access game", name); },
     }, { name: "game.zip", kind: "zip" });
     assert.equal(await checkGameSource(source), expected, name);
+  }
+});
+
+test("explicit access requests run immediately and validate the ZIP after approval", async () => {
+  let requested = false;
+  let permission = "prompt";
+  let reads = 0;
+  const source = localGame({
+    requestPermission(options) {
+      assert.deepEqual(options, { mode: "read" });
+      requested = true;
+      permission = "granted";
+      return Promise.resolve(permission);
+    },
+    queryPermission: async () => permission,
+    getFile: async () => { reads++; return new File(["test"], "game.zip"); },
+  }, { name: "game.zip" });
+  const pending = requestGameSourceAccess(source);
+  assert.equal(requested, true, "request must preserve the click's user activation");
+  assert.equal(await pending, "available");
+  assert.equal(reads, 1);
+  source.handle.getFile = async () => { throw new DOMException("Moved", "NotFoundError"); };
+  assert.equal(await requestGameSourceAccess(source), "missing");
+});
+
+test("declined or dismissed permission stays retryable without reading the ZIP", async () => {
+  let attempts = 0;
+  const source = { handle: {
+    requestPermission: async () => { attempts++; return "denied"; },
+    getFile: () => assert.fail("Do not read without permission"),
+  } };
+  assert.equal(await requestGameSourceAccess(source), "permission");
+  assert.equal(await requestGameSourceAccess(source), "permission");
+  assert.equal(attempts, 2);
+  for (const name of ["NotAllowedError", "SecurityError"]) {
+    source.handle.requestPermission = async () => { throw new DOMException("Denied", name); };
+    assert.equal(await requestGameSourceAccess(source), "permission");
   }
 });

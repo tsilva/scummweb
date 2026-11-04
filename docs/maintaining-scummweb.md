@@ -31,10 +31,12 @@ file access. Scroll to review large batches, then select **Confirm** to close
 the dialog and go to the new games.
 
 Saved local sources are checked when the library opens and when you return to
-the tab. Missing ZIP files and **File access needed** appear on their posters.
-Select the poster, choose the affected version, and use **Locate ZIP** or the
-permission action. Dropping the same ZIPs again also refreshes access without
-adding duplicate entries.
+the tab. Missing ZIP files show **Locate files** on their posters. When read
+permission is needed, the affected version offers **Allow file access** with an
+explanation before the browser prompt. Approving access changes the button to
+**Play** or **Continue**; it does not launch the game automatically. Declining
+keeps the permission action available to retry. Select **Locate ZIP** for missing
+files. Dropping the same ZIPs again also refreshes access without adding duplicates.
 
 Existing folder entries require a replacement ZIP through **Locate ZIP**;
 reconnecting preserves their source ID and browser saves.
@@ -50,6 +52,25 @@ To play a ZIP from a link, open
 URL-encode the direct HTTPS ZIP address. The browser downloads it directly
 from its host, which must allow cross-origin GET requests from your ScummWEB
 site. Hosted ZIPs are limited to 128 MiB compressed and 256 MiB unpacked.
+Before launching, ScummWEB inspects the ZIP's file list to identify recognized
+games and show their title, metadata, and hero artwork. Archive names are not
+used for this identification. Hosts supporting byte ranges and exposing
+`Content-Range` through CORS allow identification before the full download.
+Otherwise, identification happens after one full download, reused for launch.
+Inspection is limited to 2 MiB and six seconds before falling back.
+Unknown or ambiguous contents retain the generic loading screen; ScummVM still
+detects the game when it starts. This artwork lookup does not establish game
+compatibility or infer language, platform, or edition.
+
+The recognition rules in `app/archive-game-presentation.mjs` currently cover
+Beneath a Steel Sky, Day of the Tentacle, Fate of Atlantis, Monkey Island 2,
+and Sam & Max through distinctive data-file groups. Shared filenames use
+size and CRC-32 signatures for the English DOS EGA Monkey Island demo and
+the recognized Amiga Last Crusade data. New rules must reuse existing artwork,
+avoid generic filenames without signatures, and leave multiple-game archives
+unmatched. These ZIP directory signatures identify presentation only; normal
+archive validation and ScummVM detection still apply.
+
 If the host blocks access, download the ZIP and drop it onto the site instead.
 
 ## Local development
@@ -342,8 +363,10 @@ or request-time rendering.
   restoration from the browser's back/forward cache. Local checks use saved
   handles with existing read permission; they do not request permission or
   download game contents. Missing ZIP files retain their library entries
-  and show a missing-file badge. Permission failures show
-  `File access needed`; other check failures remain unverified.
+  and show a missing-file badge. Permission failures use an explicit
+  `Allow file access` action with explanatory text in game details and the hero,
+  without adding a poster badge. Only this action requests browser permission;
+  launching rechecks existing permission. Other check failures remain unverified.
   ZIP imports list each archive with waiting, checking, added, and error states
   visible during processing. Skipped rows are hidden during scanning and in the
   final list, but included in the summary count. The progress bar sits below the

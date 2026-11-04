@@ -1,27 +1,68 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { readRemoteGameArchive } from "../../game-bucket.mjs";
+import { LogOut } from "lucide-react";
+import { prepareRemoteGameArchive } from "../../remote-game-archive.mjs";
 import GameRouteFrame from "../../game-route-frame";
+import GameBootOverlay from "../../game-player/GameBootOverlay";
 import { buildZipGamePlayerUrl } from "../../home-shell/zip-game-player";
 import { buildGameExitHref } from "../../home-shell/hero-selection.mjs";
 import { getSelectedGamePresentation, openSelectedGameArchive } from "../../local-game-archive.mjs";
 
-function ArchivePlayer({ zip }) {
-  const [game] = useState(() => zip === null ? getSelectedGamePresentation() : null);
-  const [loadArchive] = useState(() => zip === null
-    ? openSelectedGameArchive
-    : (signal) => readRemoteGameArchive(zip, { signal }));
+function ArchivePlayer({ game, loadArchive, remote = false }) {
 
   return (
     <GameRouteFrame
-      archiveLoadingText={zip === null ? "Opening game files…" : "Downloading game ZIP…"}
+      archiveLoadingText={remote ? "Downloading game ZIP…" : "Opening game files…"}
       game={game}
       target={game?.target}
       loadArchive={loadArchive}
       src={buildZipGamePlayerUrl(buildGameExitHref(game), { saveNamespace: game?.saveNamespace })}
       title={game?.displayTitle ?? "ScummVM game"}
     />
+  );
+}
+
+function SelectedArchivePlayer() {
+  const [game] = useState(getSelectedGamePresentation);
+  return <ArchivePlayer game={game} loadArchive={openSelectedGameArchive} />;
+}
+
+function RemoteArchivePlayer({ zip }) {
+  const [archive, setArchive] = useState(null);
+  const [status, setStatus] = useState("Identifying game…");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const controller = new AbortController();
+    prepareRemoteGameArchive(zip, {
+      signal: controller.signal,
+      onDownloading: () => setStatus("Downloading game ZIP…"),
+    }).then((result) => {
+      if (!controller.signal.aborted) setArchive(result);
+    }).catch((failure) => {
+      if (!controller.signal.aborted) setError(failure.message);
+    });
+    return () => controller.abort();
+  }, [zip]);
+
+  if (archive) return <ArchivePlayer {...archive} remote />;
+  return (
+    <div className="game-route-shell">
+      <div className="game-route-controls">
+        <div className="game-route-control-group is-left">
+          <a className="game-route-control-button is-exit" href="/" aria-label="Exit game" title="Exit game">
+            <LogOut aria-hidden="true" size={17} strokeWidth={2} />
+          </a>
+        </div>
+      </div>
+      <GameBootOverlay
+        title="ScummVM game"
+        bootStatusText={error || status}
+        hasBootFailed={Boolean(error)}
+        showBootOverlay
+      />
+    </div>
   );
 }
 
@@ -40,5 +81,5 @@ export default function LocalPlayFrame() {
   if (hash === null) return null;
   // A direct link lives in the fragment so its ZIP address stays out of the page request.
   const zip = new URLSearchParams(hash.slice(1)).get("zip");
-  return <ArchivePlayer key={hash} zip={zip} />;
+  return zip === null ? <SelectedArchivePlayer key={hash} /> : <RemoteArchivePlayer key={hash} zip={zip} />;
 }
