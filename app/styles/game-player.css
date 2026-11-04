@@ -903,7 +903,23 @@
   }
 
   .hero-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, 3.4rem);
+    height: 7.8rem;
     width: 100%;
+  }
+
+  .hero-actions > .launch-button {
+    grid-column: 1 / -1;
+    max-width: none;
+  }
+
+  .hero-actions > .secondary-button {
+    min-width: 0;
+    width: auto;
+    padding-inline: 0.75rem;
+    font-size: 0.85rem;
   }
 
   .project-notice-links {

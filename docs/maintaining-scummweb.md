@@ -171,6 +171,10 @@ into the managed shell during ScummVM rebuilds.
   The homepage uses a game's landscape artwork or gameplay capture as its
   slideshow backdrop. Imported slides use the same Play and reconnect actions
   as their library cards.
+  Hero titles fit their full text into a fixed three-line title area, resizing
+  after viewport or font changes. Summary and metadata slots have fixed heights,
+  with their full text available in tooltips. Keep action rows stable across
+  slides so long titles and labels do not move the controls or the library.
 
   Every recognized title in the asset pack must include a game-specific
   `summary`, `studio`, and `genre`. Keep metadata references in
