@@ -1,4 +1,5 @@
 const { withSentryConfig } = require("@sentry/nextjs");
+const socialCards = require("./data/social-cards.json");
 
 function getScummvmAssetVersion() {
   const rawVersion =
@@ -43,10 +44,18 @@ const nextConfig = {
         source: "/opengraph-image",
         destination: "/brand/web-seo/og-image-1200x630.png",
       },
+      ...Object.entries(socialCards.cards).flatMap(([slug, card]) => [
+        { source: `/${slug}/social-card.png`, destination: `/social-cards/${card.file}` },
+        { source: `/${slug}/opengraph-image`, destination: `/social-cards/${card.file}` },
+      ]),
     ];
   },
   headers() {
     return [
+      {
+        source: "/social-cards/:file",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
       {
         source: "/scummvm.html",
         headers: [{ key: "X-Robots-Tag", value: "noindex" }],

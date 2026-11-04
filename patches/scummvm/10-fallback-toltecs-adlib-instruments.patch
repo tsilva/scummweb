@@ -1,0 +1,37 @@
+diff --git a/engines/toltecs/music.cpp b/engines/toltecs/music.cpp
+index 9dcecc67..372d062b 100644
+--- a/engines/toltecs/music.cpp
++++ b/engines/toltecs/music.cpp
+@@ -21,7 +21,10 @@
+ 
+ #include "audio/midiparser.h"
+ #include "audio/miles.h"
++#include "common/file.h"
+ #include "common/textconsole.h"
++#include "common/translation.h"
++#include "gui/message.h"
+ 
+ #include "toltecs/toltecs.h"
+ #include "toltecs/music.h"
+@@ -35,8 +38,19 @@ MusicPlayer::MusicPlayer(bool isGM) : _isGM(isGM), _buffer(NULL) {
+ 
+ 	switch (musicType) {
+ 	case MT_ADLIB:
+-		_milesAudioMode = true;
+-		_driver = Audio::MidiDriver_Miles_AdLib_create("SAMPLE.AD", "SAMPLE.OPL");
++		if (Common::File::exists("SAMPLE.AD") || Common::File::exists("SAMPLE.OPL")) {
++			_milesAudioMode = true;
++			_driver = Audio::MidiDriver_Miles_AdLib_create("SAMPLE.AD", "SAMPLE.OPL");
++		} else {
++			// Some releases include only WESTERN. Keep music enabled using
++			// the standard AdLib driver's built-in instrument definitions.
++			GUI::MessageDialog dialog(_("Could not find SAMPLE.AD or SAMPLE.OPL.\n"
++				"Music will use built-in instruments and may sound different\n"
++				"from the original game."));
++			dialog.runModal();
++			_milesAudioMode = false;
++			MidiPlayer::createDriver();
++		}
+ 		break;
+ 	case MT_MT32:
+ 		// Not recommended since it sounds awful, but apparently the

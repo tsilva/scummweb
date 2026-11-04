@@ -1,4 +1,4 @@
-import sourceInfo from "../scummvm-shell/source-info.json";
+import sourceInfo from "../scummvm-shell/source-info.json" with { type: "json" };
 
 function sanitizeAssetVersion(rawVersion) {
   return rawVersion.replace(/[^a-zA-Z0-9._-]+/g, "-");

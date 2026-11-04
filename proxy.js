@@ -24,5 +24,6 @@ export function proxy(request) {
 }
 
 export const config = {
-  matcher: ["/:path*"],
+  // Social previews are served entirely by static files and rewrites.
+  matcher: ["/((?!social-cards/|[^/]+/(?:social-card\\.png|opengraph-image)(?:/|$)).*)"],
 };

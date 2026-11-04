@@ -7,11 +7,16 @@ in the top bar to search these results and inspect checked editions.
 
 | Status | Games | Editions |
 | --- | ---: | ---: |
-| [Tested: startup verified](#tested-startup-verified) | 154 | 168 |
-| [Not yet tested](#not-yet-tested) | 464 | — |
+| [Tested: startup verified](#tested-startup-verified) | 144 | 157 |
+| [Startup with warnings](#startup-with-warnings) | 10 | 10 |
+| [Startup failed](#startup-failed) | 1 | 1 |
+| [Not yet tested](#not-yet-tested) | 463 | — |
 
 **Tested** means the game reached a startup screen, menu, or first game scene.
 It does not establish full-game compatibility or confirm every feature.
+Warnings describe workarounds, audio limitations, or original game prompts.
+Failures are checked editions that stopped before startup. Games can have
+editions in more than one status; 168 editions have been checked.
 The [compatibility data](../data/game-compatibility.json) is the source of truth
 for this page and the in-app modal, including all checked editions.
 
@@ -20,176 +25,188 @@ for this page and the in-app modal, including all checked editions.
 Each checked edition has its own entry. Platform and edition variants are listed separately.
 Road is a fan game detected as Day of the Tentacle; its identity is not an official ScummVM game ID. Passport to Adventure is a demo compilation.
 
-| Game | Checked edition | Game ID |
-| --- | --- | --- |
-| 3 Skulls of the Toltecs | 3 Skulls of the Toltecs (CD DOS) | `toltecs:toltecs` |
-| Amazon: Guardians of Eden | Amazon - Guardians of Eden (DOS) | `access:amazon` |
-| Bargon Attack | Bargon Attack (Amiga) | `gob:bargon` |
-| Bear Stormin' | Bear Stormin' (DOS) | `scumm:brstorm` |
-| Beneath a Steel Sky | Beneath a Steel Sky (CD VGA) | `sky:sky` |
-| Big Thinkers! 1st Grade | Big Thinkers 1st Grade (Windows) | `scumm:thinker1` |
-| Big Thinkers! Kindergarten | Big Thinkers Kindergarten (Windows) | `scumm:thinkerk` |
-| Blue Force | Blue Force (CD DOS) | `tsage:blueforce` |
-| Blue's Treasure Hunt | Blues Treasure Hunt (CD Windows) | `scumm:bluestreasurehunt` |
-| Broken Sword 2.5: The Return of the Templars | Broken Sword 2.5 (Windows) | `sword25:sword25` |
-| Broken Sword II: The Smoking Mirror | Broken Sword 2 The Smoking Mirror (CD Windows) | `sword2:sword2` |
-| Broken Sword: The Shadow of the Templars | Broken Sword 1 The Shadow of the Templar (CD Windows) | `sword1:sword1` |
-| Bud Tucker in Double Trouble | Bud Tucker in Double Trouble (CD DOS) | `tucker:tucker` |
-| Castle of Dr. Brain | Castle of Dr. Brain | `sci:castlebrain` |
-| Chivalry is Not Dead | Chivalry is Not Dead (Windows) | `wintermute:chivalry` |
-| Code-Name: Iceman | Codename Iceman (Amiga) | `sci:iceman` |
-| Conquests of Camelot: The Search for the Grail | Conquests of Camelot (Amiga) | `sci:camelot` |
-| Conquests of the Longbow: The Legend of Robin Hood | Conquests of the Longbow - The Legend of Robin Hood (Amiga) | `sci:longbow` |
-| Cruise for a Corpse | Cruise for a Corpse (Atari ST) | `cruise:cruise` |
-| Cruise for a Corpse | Cruise for a Corpse (VGA DOS) | `cruise:cruise` |
-| Darby the Dragon | Darby the Dragon (CD Windows) | `composer:darby` |
-| Day of the Tentacle | Day of the Tentacle (CD DOS) | `scumm:tentacle` |
-| Discworld | Discworld 1 (CD DOS v2) | `tinsel:dw` |
-| Discworld | Discworld 1 (CD DOS) | `tinsel:dw` |
-| Discworld II: Missing Presumed...!? | Discworld 2 (CD DOS) | `tinsel:dw2` |
-| Dragon History | Dragon History (Floppy DOS) | `draci:draci` |
-| Dráscula: The Vampire Strikes Back | Drascula The Vampire Strikes Back (CD DOS, Multilanguage) | `drascula:drascula` |
-| DreamWeb | Dreamweb (CD DOS) | `dreamweb:dreamweb` |
-| EcoQuest II: Lost Secret of the Rainforest | EcoQuest 2 - Lost Secret of the Rainforest (Floppy DOS) | `sci:ecoquest2` |
-| EcoQuest: The Search for Cetus | EcoQuest 1 - The Search for Cetus (CD DOS) | `sci:ecoquest` |
-| EcoQuest: The Search for Cetus | EcoQuest 1 - The Search for Cetus (Floppy DOS) | `sci:ecoquest` |
-| Elvira II: The Jaws of Cerberus | Elvira 2 - The Jaws of Cerberus (Amiga) | `agos:elvira2` |
-| Elvira: Mistress of the Dark | Elvira 1 - Mistress of the Dark (Amiga) | `agos:elvira1` |
-| Eye of the Beholder | Eye of the Beholder (CD DOS) | `kyra:eob` |
-| Eye of the Beholder II: The Legend of Darkmoon | Eye of the Beholder II - The Legend of Darkmoon (CD DOS) | `kyra:eob2` |
-| Fascination | Fascination (Amiga) | `gob:fascination` |
-| Flight of the Amazon Queen | Flight of the Amazon Queen (CD DOS) | `queen:queen` |
-| Freddy Pharkas: Frontier Pharmacist | Freddy Pharkas - Frontier Pharmacist (CD DOS) | `sci:freddypharkas` |
-| Full Pipe | Full Pipe (CD, Windows) | `ngi:fullpipe` |
-| Full Throttle | Full Throttle (CD DOS) | `scumm:ft` |
-| Fun Seeker's Guide to Eastern Madera County | Fun Seeker's Guide to Eastern Madera County (CD, DOS) | `sci:funseeker` |
-| Future Wars: Adventures in Time | Future Wars (CD DOS) | `cine:fw` |
-| Gabriel Knight: Sins of the Fathers | Gabriel Knight Sins Of The Fathers (CD DOS) | `sci:gk1` |
-| Geisha | Geisha (Amiga) | `gob:geisha` |
-| Gnap (U.F.O.s) | Gnap (CD Windows) | `gnap:gnap` |
-| Gobliiins | Gobliiins 1 (CD DOS) | `gob:gob1` |
-| Gobliins 2: The Prince Buffoon | Gobliins 2 (CD DOS) | `gob:gob2` |
-| Goblins Quest 3 | Goblins 3 (CD DOS) | `gob:gob3` |
-| Gold Rush! | Gold Rush! (Amiga) | `agi:goldrush` |
-| Gregory and the Hot Air Balloon | Gregory and the Hot Air Balloon (CD Windows) | `composer:gregory` |
-| Harlan Ellison: I Have No Mouth, and I Must Scream | I Have No Mouth and I Must Scream (CD DOS) | `saga:ihnm` |
-| Hopkins FBI | Hopkins FBI (CD Windows) | `hopkins:hopkins` |
-| Hugo II: Whodunit? | Hugo 2 - Whodunit (Floppy DOS) | `hugo:hugo2` |
-| Hugo III: Jungle of Doom | Hugo 3 - Jungle of Doom (Floppy DOS) | `hugo:hugo3` |
-| Hugo's House of Horrors | Hugo's House of Horrors (Floppy DOS) | `hugo:hugo1` |
-| Indiana Jones and the Fate of Atlantis | Indiana Jones and the Fate of Atlantis (CD DOS) | `scumm:atlantis` |
-| Indiana Jones and the Last Crusade | Indiana Jones and the Last Crusade (Amiga) | `scumm:indy3` |
-| Inherit the Earth: Quest for the Orb | Inherit the Earth - Quest for the Orb (CD Windows-Linux-DOS) | `saga:ite` |
-| Jones in the Fast Lane | Jones In The Fast Lane (CD Dos) | `sci:jones` |
-| King's Quest II: Romancing the Throne | King's Quest 2 - Romancing the Throne (Amiga) | `agi:kq2` |
-| King's Quest III: To Heir Is Human | King's Quest 3 - To Heir is Human (Amiga) | `agi:kq3` |
-| King's Quest IV: The Perils of Rosella | King's Quest 4 - The Perils of Rosella (Amiga) | `sci:kq4sci` |
-| King's Quest V: Absence Makes the Heart Go Yonder! | King's Quest 5 - Absence Makes the Heart go Yonder (Amiga) | `sci:kq5` |
-| King's Quest VI: Heir Today, Gone Tomorrow | King's Quest 6 - Heir Today, Gone Tomorrow (CD DOS, Windows) | `sci:kq6` |
-| King's Quest VII: The Princeless Bride | King's Quest 7 - The Princeless Bride (CD DOS) | `sci:kq7` |
-| King's Quest: Quest for the Crown | King's Quest 1 - Quest for the Crown (Floppy DOS VGA Remake) | `sci:kq1sci` |
-| Lands of Lore: The Throne of Chaos | Lands of Lore - The Throne of Chaos (CD DOS, Multilanguage) | `kyra:lol` |
-| Laura Bow 2: The Dagger of Amon Ra | Laura Bow 2 - The Dagger of Amon-Ra (CD DOS) | `sci:laurabow2` |
-| Laura Bow: The Colonel's Bequest | Laura Bow 1 - The Colonels Bequest (Amiga) | `sci:laurabow` |
-| Leather Goddesses of Phobos! 2: Gas Pump Girls Meet the Pulsating Inconvenience from Planet X | Leather Goddesses of Phobos 2 (Floppy DOS) | `made:lgop2` |
-| Leisure Suit Larry 2: Goes Looking for Love (in Several Wrong Places) | Leisure Suit Larry 2 - Goes looking for Love (In Several Wrong Places) (Amiga) | `sci:lsl2` |
-| Leisure Suit Larry 3: Passionate Patti in Pursuit of the Pulsating Pectorals | Leisure Suit Larry 3 - Passionate Patti in Pursuit of the Pulsating Pectorals (Amiga) | `sci:lsl3` |
-| Leisure Suit Larry 5: Passionate Patti Does a Little Undercover Work | Leisure Suit Larry 5 - Passionate Patty Does a Little Undercover Work (Amiga) | `sci:lsl5` |
-| Leisure Suit Larry 6: Shape Up or Slip Out! | Leisure Suit Larry 6 - Shape Up or Slip Out (CD DOS High Res) | `sci:lsl6hires` |
-| Leisure Suit Larry 7: Love for Sail! | Leisure Suit Larry 7 - Love for Sail (CD DOS) | `sci:lsl7` |
-| Leisure Suit Larry in the Land of the Lounge Lizards | Leisure Suit Larry in the Land of the Lounge Lizards (Amiga VGA Remake) | `sci:lsl1sci` |
-| Lighthouse: The Dark Being | Lighthouse (CD Windows) | `sci:lighthouse` |
-| Loom | Loom (Amiga) | `scumm:loom` |
-| Loom | Loom (CD DOS VGA) | `scumm:loom` |
-| Lost in Time | Lost in Time (CD DOS, Multilanguage) | `gob:lit` |
-| Lure of the Temptress | Lure of the Temptress (Floppy DOS) | `lure:lure` |
-| Magic Tales: Liam Finds a Story | Magic Tales - Liam Finds a Story (CD Windows) | `composer:liam` |
-| Magic Tales: Sleeping Cub's Test of Courage | Magic Tales - Sleeping Cub's Test of Courage (CD Windows) | `composer:sleepingcub` |
-| Magic Tales: The Princess and the Crab | Magic Tales - The Princess and the Crab (CD Windows) | `composer:princess` |
-| Manhunter 2: San Francisco | Manhunter 2 - San Francisco (Amiga) | `agi:mh2` |
-| Manhunter: New York | Manhunter 1 - New York (Amiga) | `agi:mh1` |
-| Maniac Mansion | Maniac Mansion (Amiga) | `scumm:maniac` |
-| Mickey's Space Adventure | Mickey's Space Adventure (Floppy DOS) | `agi:mickey` |
-| Monkey Island 2: LeChuck's Revenge | Monkey Island 2 - LeChuck's Revenge (Amiga) | `scumm:monkey2` |
-| Ms. Astro Chicken | Ms Astro Chicken (Floppy DOS) | `sci:msastrochicken` |
-| MTV's Beavis and Butt-Head in Virtual Stupidity | Beavis and Butt-head in Virtual Stupidity (CD Windows) | `bbvs:bbvs` |
-| Myst | Myst (CD Windows) | `mohawk:myst` |
-| Myst | Myst Masterpiece (DVD Windows) | `mohawk:myst` |
-| Nippon Safes, Inc. | Nippon Safes Inc (Amiga, Multilanguage) | `parallaction:nippon` |
-| Nippon Safes, Inc. | Nippon Safes Inc (Floppy DOS, Multilanguage) | `parallaction:nippon` |
-| Once Upon A Time: Little Red Riding Hood | Once Upon A Time - Little Red Riding Hood (Floppy DOS) | `gob:littlered` |
-| Passport to Adventure (Demo) | Passport to Adventure (CD DOS) | `scumm:pass` |
-| Pepper's Adventures in Time | Peppers Adventures In Time (Floppy DOS) | `sci:pepper` |
-| Personal Nightmare | Personal Nightmare (Amiga) | `agos:pn` |
-| Phantasmagoria | Phantasmagoria (CD, Windows) | `sci:phantasmagoria` |
-| Phantasmagoria 2: A Puzzle of Flesh | Phantasmagoria 2 (CD, Windows) | `sci:phantasmagoria2` |
-| Plumbers Don't Wear Ties | Plumbers Don't Wear Ties (CD, Windows) | `plumbers:plumbers` |
-| Police Quest 2: The Vengeance | Police Quest 2 - The Vengeance (Amiga) | `sci:pq2` |
-| Police Quest 3: The Kindred | Police Quest 3 - The Kindred (Amiga) | `sci:pq3` |
-| Police Quest IV: Open Season | Police Quest 4 - Open Season (CD DOS) | `sci:pq4` |
-| Police Quest: In Pursuit of the Death Angel | Police Quest 1 - In Pursuit of the Death Angel (Amiga) | `agi:pq1` |
-| Police Quest: In Pursuit of the Death Angel | Police Quest 1 - In Pursuit of the Death Angel (Floppy DOS VGA Remake) | `sci:pq1sci` |
-| Quest for Glory I: So You Want To Be A Hero | Hero Quest So You Want To Be A Hero (Amiga) | `sci:qfg1` |
-| Quest for Glory I: So You Want To Be A Hero | Hero Quest So You Want To Be A Hero (Floppy DOS) | `sci:qfg1` |
-| Quest for Glory I: So You Want To Be A Hero | Quest for Glory 1 - So You Want to be a Hero (Floppy DOS VGA Remake) | `sci:qfg1vga` |
-| Quest for Glory II: Trial by Fire | Quest for Glory 2 - Trial by Fire (Amiga) | `sci:qfg2` |
-| Quest for Glory III: Wages of War | Quest for Glory 3 - The Wages of War (Floppy DOS) | `sci:qfg3` |
-| RAMA | RAMA (CD Windows) | `sci:rama` |
-| Return to Ringworld | Return to Ringworld (CD DOS) | `tsage:ringworld2` |
-| Return to Zork | Return to Zork (CD DOS) | `made:rtz` |
-| Rex Nebular and the Cosmic Gender Bender | Rex Nebular And The Cosmic Gender Bender (Floppy DOS) | `mads:nebular` |
-| Ringworld: Revenge of the Patriarch | Ringworld - Revenge of the Patriarch (CD DOS) | `tsage:ringworld` |
-| Riven: The Sequel to Myst | Riven (DVD Windows) | `mohawk:riven` |
-| Road | Road (Fanmade - Get's Detected as DOTT) | `local:road` |
-| Rodney's Funscreen | Rodney's Fun Screen (Windows) | `made:rodney` |
-| Sam & Max Hit the Road | Sam & Max Hit the Road (CD DOS) | `scumm:samnmax` |
-| Shivers | Shivers (CD, Windows) | `sci:shivers` |
-| Simon the Sorcerer | Simon the Sorcerer 1 (CD Windows) | `agos:simon1` |
-| Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe | Simon the Sorcerer 2 (Amiga CD32) | `agos:simon2` |
-| Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe | Simon the Sorcerer 2 (CD Windows) | `agos:simon2` |
-| Simon the Sorcerer's Puzzle Pack | Simon the Sorcerer Puzzle Pack (CD Windows) | `agos:jumble` |
-| Sołtys | Soltys (DOS) | `cge:soltys` |
-| Space Quest 6: Roger Wilco in the Spinal Frontier | Space Quest 6 - The Spinal Frontier (CD DOS) | `sci:sq6` |
-| Space Quest II: Chapter II - Vohaul's Revenge | Space Quest 2 - Vohaul's Revenge (Amiga) | `agi:sq2` |
-| Space Quest II: Chapter II - Vohaul's Revenge | Space Quest 2 - Vohaul's Revenge (Floppy DOS) | `agi:sq2` |
-| Space Quest III: The Pirates of Pestulon | Space Quest 3 - The Pirates of Pestulon (Amiga) | `sci:sq3` |
-| Space Quest IV: Roger Wilco and the Time Rippers | Space Quest 4 - Roger Wilco and the Time Rippers (CD DOS) | `sci:sq4` |
-| Space Quest V: The Next Mutation | Space Quest 5 - The Next Mutation (Floppy DOS) | `sci:sq5` |
-| Space Quest: The Sarien Encounter | Space Quest 1 - The Sarien Encounter (Amiga) | `agi:sq1` |
-| Space Quest: The Sarien Encounter | Space Quest 1 - The Sarien Encounter (Floppy DOS VGA Remake) | `sci:sq1sci` |
-| Starship Titanic | Starship Titanic (CD, Windows) | `titanic:titanic` |
-| Teen Agent | TeenAgent (Floppy DOS) | `teenagent:teenagent` |
-| The 7th Guest | The 7th Guest (CD DOS) | `groovie:t7g` |
-| The Beast Within: A Gabriel Knight Mystery | Gabriel Knight 2 The Beast Within (CD, DOS) | `sci:gk2` |
-| The Big Red Adventure | The Big Red Adventure (DOS, Multilanguage) | `parallaction:bra` |
-| The Bizarre Adventures of Woodruff and the Schnibble | The Bizarre Adventures of Woodruff and the Schnibble of Azimuth (CD DOS, Multilanguage) | `gob:woodruff` |
-| The Black Cauldron | The Black Cauldron (Floppy DOS) | `agi:bc` |
-| The Curse of Monkey Island | The Curse Of Monkey Island (CD Windows) | `scumm:comi` |
-| The Dig | The Dig (CD DOS) | `scumm:dig` |
-| The Feeble Files | The Feeble Files (2CD Amiga) | `agos:feeble` |
-| The Feeble Files | The Feeble Files (4CD Windows) | `agos:feeble` |
-| The Island of Dr. Brain | The Island of Dr. Brain | `sci:islandbrain` |
-| The Journeyman Project: Pegasus Prime | The Journeyman Project - Pegasus Prime (CD Mac) | `pegasus:pegasus` |
-| The Labyrinth of Time | The Labyrinth of Time (CD DOS) | `lab:lab` |
-| The Legend of Kyrandia | The Legend of Kyrandia 1 (Amiga) | `kyra:kyra1` |
-| The Legend of Kyrandia | The Legend of Kyrandia 1 (CD DOS) | `kyra:kyra1` |
-| The Legend of Kyrandia: Book 3 - Malcolm's Revenge | The Legend of Kyrandia 3 Malcolm's Revenge (CD DOS, Multilanguage) | `kyra:kyra3` |
-| The Legend of Kyrandia: Hand of Fate | The Legend of Kyrandia 2 The Hand of Fate (CD DOS) | `kyra:kyra2` |
-| The Lost Files of Sherlock Holmes: Case of the Rose Tattoo | The Lost Files of Sherlock Holmes - The Case of the Rose Tattoo (CD DOS) | `sherlock:rosetattoo` |
-| The Lost Files of Sherlock Holmes: The Case of the Serrated Scalpel | The Lost Files of Sherlock Holmes - The Case of the Serrated Scalpel (CD DOS) | `sherlock:scalpel` |
-| The Neverhood | The Neverhood (CD, Windows) | `neverhood:neverhood` |
-| The Secret of Monkey Island | The Secret of Monkey Island (CD DOS VGA) | `scumm:monkey` |
-| Tony Tough and the Night of Roasted Moths | Tony Tough and the Night of the Roasted Moths (CD Windows) | `tony:tony` |
-| Toonstruck | Toonstruck (CD Windows) | `toon:toon` |
-| Torin's Passage | Torins Passage (CD Windows) | `sci:torin` |
-| Touché: The Adventures of the Fifth Musketeer | Touche - The Adventures of the Fifth Musketeer (CD DOS) | `touche:touche` |
-| Troll's Tale | Troll's Tale (Floppy DOS) | `agi:troll` |
-| Urban Runner | Urban Runner (Windows, CD) | `gob:urban` |
-| Voyeur | Voyeur (CD DOS) | `voyeur:voyeur` |
-| Waxworks | Waxworks (Amiga) | `agos:waxworks` |
-| Ween: The Prophecy | Ween The Prophecy (Amiga) | `gob:ween` |
-| Winnie the Pooh in the Hundred Acre Wood | Winnie the Pooh in the Hundred Acre Wood (Floppy DOS) | `agi:winnie` |
-| Zak McKracken and the Alien Mindbenders | Zak McKracken and the Alien Mindbenders (Amiga) | `scumm:zak` |
+| Game | Checked edition | Game ID | Observation |
+| --- | --- | --- | --- |
+| Amazon: Guardians of Eden | Amazon - Guardians of Eden (DOS) | `access:amazon` | Intro renders after automatic detection; the access.dat startup error is resolved. Earlier check (2026-11-04): Startup failed — Could not locate appropriate access.dat entry. |
+| Bargon Attack | Bargon Attack (Amiga) | `gob:bargon` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Bear Stormin' | Bear Stormin' (DOS) | `scumm:brstorm` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Beneath a Steel Sky | Beneath a Steel Sky (CD VGA) | `sky:sky` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Big Thinkers! 1st Grade | Big Thinkers 1st Grade (Windows) | `scumm:thinker1` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Big Thinkers! Kindergarten | Big Thinkers Kindergarten (Windows) | `scumm:thinkerk` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Blue Force | Blue Force (CD DOS) | `tsage:blueforce` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Blue's Treasure Hunt | Blues Treasure Hunt (CD Windows) | `scumm:bluestreasurehunt` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Broken Sword 2.5: The Return of the Templars | Broken Sword 2.5 (Windows) | `sword25:sword25` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Broken Sword II: The Smoking Mirror | Broken Sword 2 The Smoking Mirror (CD Windows) | `sword2:sword2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Broken Sword: The Shadow of the Templars | Broken Sword 1 The Shadow of the Templar (CD Windows) | `sword1:sword1` | Opening cinematic and main menu render. Select Start audio if the browser pauses sound; skipping the intro is no longer required. Earlier check (2026-11-04): Startup with warnings — Opening cinematic remained black. Escape skipped it and rendered the first street scene. |
+| Bud Tucker in Double Trouble | Bud Tucker in Double Trouble (CD DOS) | `tucker:tucker` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Castle of Dr. Brain | Castle of Dr. Brain | `sci:castlebrain` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Chivalry is Not Dead | Chivalry is Not Dead (Windows) | `wintermute:chivalry` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Code-Name: Iceman | Codename Iceman (Amiga) | `sci:iceman` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Conquests of Camelot: The Search for the Grail | Conquests of Camelot (Amiga) | `sci:camelot` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Conquests of the Longbow: The Legend of Robin Hood | Conquests of the Longbow - The Legend of Robin Hood (Amiga) | `sci:longbow` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Cruise for a Corpse | Cruise for a Corpse (Atari ST) | `cruise:cruise` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Cruise for a Corpse | Cruise for a Corpse (VGA DOS) | `cruise:cruise` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Darby the Dragon | Darby the Dragon (CD Windows) | `composer:darby` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Day of the Tentacle | Day of the Tentacle (CD DOS) | `scumm:tentacle` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Discworld | Discworld 1 (CD DOS v2) | `tinsel:dw` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Discworld | Discworld 1 (CD DOS) | `tinsel:dw` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Discworld II: Missing Presumed...!? | Discworld 2 (CD DOS) | `tinsel:dw2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Dragon History | Dragon History (Floppy DOS) | `draci:draci` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Dráscula: The Vampire Strikes Back | Drascula The Vampire Strikes Back (CD DOS, Multilanguage) | `drascula:drascula` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| DreamWeb | Dreamweb (CD DOS) | `dreamweb:dreamweb` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| EcoQuest II: Lost Secret of the Rainforest | EcoQuest 2 - Lost Secret of the Rainforest (Floppy DOS) | `sci:ecoquest2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| EcoQuest: The Search for Cetus | EcoQuest 1 - The Search for Cetus (CD DOS) | `sci:ecoquest` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| EcoQuest: The Search for Cetus | EcoQuest 1 - The Search for Cetus (Floppy DOS) | `sci:ecoquest` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Elvira II: The Jaws of Cerberus | Elvira 2 - The Jaws of Cerberus (Amiga) | `agos:elvira2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Elvira: Mistress of the Dark | Elvira 1 - Mistress of the Dark (Amiga) | `agos:elvira1` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Eye of the Beholder | Eye of the Beholder (CD DOS) | `kyra:eob` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Eye of the Beholder II: The Legend of Darkmoon | Eye of the Beholder II - The Legend of Darkmoon (CD DOS) | `kyra:eob2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Fascination | Fascination (Amiga) | `gob:fascination` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Flight of the Amazon Queen | Flight of the Amazon Queen (CD DOS) | `queen:queen` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Freddy Pharkas: Frontier Pharmacist | Freddy Pharkas - Frontier Pharmacist (CD DOS) | `sci:freddypharkas` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Full Pipe | Full Pipe (CD, Windows) | `ngi:fullpipe` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Full Throttle | Full Throttle (CD DOS) | `scumm:ft` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Fun Seeker's Guide to Eastern Madera County | Fun Seeker's Guide to Eastern Madera County (CD, DOS) | `sci:funseeker` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Future Wars: Adventures in Time | Future Wars (CD DOS) | `cine:fw` | Intro renders without the missing-CD-audio warning. Spaced physical CD-track filenames are recognized. Earlier check (2026-11-04): Startup with warnings — Continues after the missing CD-audio warning; the archive lacks CD music tracks. |
+| Gabriel Knight: Sins of the Fathers | Gabriel Knight Sins Of The Fathers (CD DOS) | `sci:gk1` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Geisha | Geisha (Amiga) | `gob:geisha` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Gnap (U.F.O.s) | Gnap (CD Windows) | `gnap:gnap` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Gobliiins | Gobliiins 1 (CD DOS) | `gob:gob1` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Gobliins 2: The Prince Buffoon | Gobliins 2 (CD DOS) | `gob:gob2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Goblins Quest 3 | Goblins 3 (CD DOS) | `gob:gob3` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Gold Rush! | Gold Rush! (Amiga) | `agi:goldrush` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Gregory and the Hot Air Balloon | Gregory and the Hot Air Balloon (CD Windows) | `composer:gregory` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Hopkins FBI | Hopkins FBI (CD Windows) | `hopkins:hopkins` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Hugo II: Whodunit? | Hugo 2 - Whodunit (Floppy DOS) | `hugo:hugo2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Hugo III: Jungle of Doom | Hugo 3 - Jungle of Doom (Floppy DOS) | `hugo:hugo3` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Hugo's House of Horrors | Hugo's House of Horrors (Floppy DOS) | `hugo:hugo1` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Indiana Jones and the Fate of Atlantis | Indiana Jones and the Fate of Atlantis (CD DOS) | `scumm:atlantis` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Indiana Jones and the Last Crusade | Indiana Jones and the Last Crusade (Amiga) | `scumm:indy3` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Jones in the Fast Lane | Jones In The Fast Lane (CD Dos) | `sci:jones` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| King's Quest II: Romancing the Throne | King's Quest 2 - Romancing the Throne (Amiga) | `agi:kq2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| King's Quest III: To Heir Is Human | King's Quest 3 - To Heir is Human (Amiga) | `agi:kq3` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| King's Quest V: Absence Makes the Heart Go Yonder! | King's Quest 5 - Absence Makes the Heart go Yonder (Amiga) | `sci:kq5` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| King's Quest VI: Heir Today, Gone Tomorrow | King's Quest 6 - Heir Today, Gone Tomorrow (CD DOS, Windows) | `sci:kq6` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| King's Quest VII: The Princeless Bride | King's Quest 7 - The Princeless Bride (CD DOS) | `sci:kq7` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| King's Quest: Quest for the Crown | King's Quest 1 - Quest for the Crown (Floppy DOS VGA Remake) | `sci:kq1sci` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Lands of Lore: The Throne of Chaos | Lands of Lore - The Throne of Chaos (CD DOS, Multilanguage) | `kyra:lol` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Laura Bow 2: The Dagger of Amon Ra | Laura Bow 2 - The Dagger of Amon-Ra (CD DOS) | `sci:laurabow2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Laura Bow: The Colonel's Bequest | Laura Bow 1 - The Colonels Bequest (Amiga) | `sci:laurabow` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Leather Goddesses of Phobos! 2: Gas Pump Girls Meet the Pulsating Inconvenience from Planet X | Leather Goddesses of Phobos 2 (Floppy DOS) | `made:lgop2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Leisure Suit Larry 3: Passionate Patti in Pursuit of the Pulsating Pectorals | Leisure Suit Larry 3 - Passionate Patti in Pursuit of the Pulsating Pectorals (Amiga) | `sci:lsl3` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Leisure Suit Larry 5: Passionate Patti Does a Little Undercover Work | Leisure Suit Larry 5 - Passionate Patty Does a Little Undercover Work (Amiga) | `sci:lsl5` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Leisure Suit Larry 6: Shape Up or Slip Out! | Leisure Suit Larry 6 - Shape Up or Slip Out (CD DOS High Res) | `sci:lsl6hires` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Leisure Suit Larry 7: Love for Sail! | Leisure Suit Larry 7 - Love for Sail (CD DOS) | `sci:lsl7` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Leisure Suit Larry in the Land of the Lounge Lizards | Leisure Suit Larry in the Land of the Lounge Lizards (Amiga VGA Remake) | `sci:lsl1sci` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Lighthouse: The Dark Being | Lighthouse (CD Windows) | `sci:lighthouse` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Loom | Loom (CD DOS VGA) | `scumm:loom` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Lost in Time | Lost in Time (CD DOS, Multilanguage) | `gob:lit` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Lure of the Temptress | Lure of the Temptress (Floppy DOS) | `lure:lure` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Magic Tales: Liam Finds a Story | Magic Tales - Liam Finds a Story (CD Windows) | `composer:liam` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Magic Tales: Sleeping Cub's Test of Courage | Magic Tales - Sleeping Cub's Test of Courage (CD Windows) | `composer:sleepingcub` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Magic Tales: The Princess and the Crab | Magic Tales - The Princess and the Crab (CD Windows) | `composer:princess` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Manhunter 2: San Francisco | Manhunter 2 - San Francisco (Amiga) | `agi:mh2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Maniac Mansion | Maniac Mansion (Amiga) | `scumm:maniac` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Mickey's Space Adventure | Mickey's Space Adventure (Floppy DOS) | `agi:mickey` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Ms. Astro Chicken | Ms Astro Chicken (Floppy DOS) | `sci:msastrochicken` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| MTV's Beavis and Butt-Head in Virtual Stupidity | Beavis and Butt-head in Virtual Stupidity (CD Windows) | `bbvs:bbvs` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Myst | Myst (CD Windows) | `mohawk:myst` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Myst | Myst Masterpiece (DVD Windows) | `mohawk:myst` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Nippon Safes, Inc. | Nippon Safes Inc (Amiga, Multilanguage) | `parallaction:nippon` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Nippon Safes, Inc. | Nippon Safes Inc (Floppy DOS, Multilanguage) | `parallaction:nippon` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Passport to Adventure (Demo) | Passport to Adventure (CD DOS) | `scumm:pass` | Startup screen, publisher splash, intro, menu, or game scene rendered. Passport to Adventure (Demo) is a compilation; only its default startup was checked. |
+| Pepper's Adventures in Time | Peppers Adventures In Time (Floppy DOS) | `sci:pepper` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Personal Nightmare | Personal Nightmare (Amiga) | `agos:pn` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Phantasmagoria | Phantasmagoria (CD, Windows) | `sci:phantasmagoria` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Phantasmagoria 2: A Puzzle of Flesh | Phantasmagoria 2 (CD, Windows) | `sci:phantasmagoria2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Plumbers Don't Wear Ties | Plumbers Don't Wear Ties (CD, Windows) | `plumbers:plumbers` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Police Quest 2: The Vengeance | Police Quest 2 - The Vengeance (Amiga) | `sci:pq2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Police Quest 3: The Kindred | Police Quest 3 - The Kindred (Amiga) | `sci:pq3` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Police Quest IV: Open Season | Police Quest 4 - Open Season (CD DOS) | `sci:pq4` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Police Quest: In Pursuit of the Death Angel | Police Quest 1 - In Pursuit of the Death Angel (Amiga) | `agi:pq1` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Police Quest: In Pursuit of the Death Angel | Police Quest 1 - In Pursuit of the Death Angel (Floppy DOS VGA Remake) | `sci:pq1sci` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Quest for Glory I: So You Want To Be A Hero | Hero Quest So You Want To Be A Hero (Amiga) | `sci:qfg1` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Quest for Glory I: So You Want To Be A Hero | Hero Quest So You Want To Be A Hero (Floppy DOS) | `sci:qfg1` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Quest for Glory I: So You Want To Be A Hero | Quest for Glory 1 - So You Want to be a Hero (Floppy DOS VGA Remake) | `sci:qfg1vga` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Quest for Glory II: Trial by Fire | Quest for Glory 2 - Trial by Fire (Amiga) | `sci:qfg2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Quest for Glory III: Wages of War | Quest for Glory 3 - The Wages of War (Floppy DOS) | `sci:qfg3` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| RAMA | RAMA (CD Windows) | `sci:rama` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Return to Ringworld | Return to Ringworld (CD DOS) | `tsage:ringworld2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Return to Zork | Return to Zork (CD DOS) | `made:rtz` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Ringworld: Revenge of the Patriarch | Ringworld - Revenge of the Patriarch (CD DOS) | `tsage:ringworld` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Riven: The Sequel to Myst | Riven (DVD Windows) | `mohawk:riven` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Road | Road (Fanmade - Get's Detected as DOTT) | `local:road` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Rodney's Funscreen | Rodney's Fun Screen (Windows) | `made:rodney` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Sam & Max Hit the Road | Sam & Max Hit the Road (CD DOS) | `scumm:samnmax` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Shivers | Shivers (CD, Windows) | `sci:shivers` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Simon the Sorcerer | Simon the Sorcerer 1 (CD Windows) | `agos:simon1` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe | Simon the Sorcerer 2 (Amiga CD32) | `agos:simon2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe | Simon the Sorcerer 2 (CD Windows) | `agos:simon2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Simon the Sorcerer's Puzzle Pack: Demon in my Pocket | Simon the Sorcerer Puzzle Pack (CD Windows) | `agos:dimp` | Startup screen, publisher splash, intro, menu, or game scene rendered. Auto-detect selected Demon in My Pocket; other Puzzle Pack games were not individually launched. |
+| Sołtys | Soltys (DOS) | `cge:soltys` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Space Quest 6: Roger Wilco in the Spinal Frontier | Space Quest 6 - The Spinal Frontier (CD DOS) | `sci:sq6` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Space Quest II: Chapter II - Vohaul's Revenge | Space Quest 2 - Vohaul's Revenge (Amiga) | `agi:sq2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Space Quest II: Chapter II - Vohaul's Revenge | Space Quest 2 - Vohaul's Revenge (Floppy DOS) | `agi:sq2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Space Quest III: The Pirates of Pestulon | Space Quest 3 - The Pirates of Pestulon (Amiga) | `sci:sq3` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Space Quest IV: Roger Wilco and the Time Rippers | Space Quest 4 - Roger Wilco and the Time Rippers (CD DOS) | `sci:sq4` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Space Quest V: The Next Mutation | Space Quest 5 - The Next Mutation (Floppy DOS) | `sci:sq5` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Space Quest: The Sarien Encounter | Space Quest 1 - The Sarien Encounter (Amiga) | `agi:sq1` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Space Quest: The Sarien Encounter | Space Quest 1 - The Sarien Encounter (Floppy DOS VGA Remake) | `sci:sq1sci` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Starship Titanic | Starship Titanic (CD, Windows) | `titanic:titanic` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Teen Agent | TeenAgent (Floppy DOS) | `teenagent:teenagent` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| The 7th Guest | The 7th Guest (CD DOS) | `groovie:t7g` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| The Beast Within: A Gabriel Knight Mystery | Gabriel Knight 2 The Beast Within (CD, DOS) | `sci:gk2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| The Bizarre Adventures of Woodruff and the Schnibble | The Bizarre Adventures of Woodruff and the Schnibble of Azimuth (CD DOS, Multilanguage) | `gob:woodruff` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| The Black Cauldron | The Black Cauldron (Floppy DOS) | `agi:bc` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| The Curse of Monkey Island | The Curse Of Monkey Island (CD Windows) | `scumm:comi` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| The Dig | The Dig (CD DOS) | `scumm:dig` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| The Feeble Files | The Feeble Files (2CD Amiga) | `agos:feeble` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| The Feeble Files | The Feeble Files (4CD Windows) | `agos:feeble` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| The Island of Dr. Brain | The Island of Dr. Brain | `sci:islandbrain` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| The Journeyman Project: Pegasus Prime | The Journeyman Project - Pegasus Prime (CD Mac) | `pegasus:pegasus` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| The Labyrinth of Time | The Labyrinth of Time (CD DOS) | `lab:lab` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| The Legend of Kyrandia | The Legend of Kyrandia 1 (Amiga) | `kyra:kyra1` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| The Legend of Kyrandia | The Legend of Kyrandia 1 (CD DOS) | `kyra:kyra1` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| The Legend of Kyrandia: Book 3 - Malcolm's Revenge | The Legend of Kyrandia 3 Malcolm's Revenge (CD DOS, Multilanguage) | `kyra:kyra3` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| The Legend of Kyrandia: Hand of Fate | The Legend of Kyrandia 2 The Hand of Fate (CD DOS) | `kyra:kyra2` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| The Lost Files of Sherlock Holmes: Case of the Rose Tattoo | The Lost Files of Sherlock Holmes - The Case of the Rose Tattoo (CD DOS) | `sherlock:rosetattoo` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| The Lost Files of Sherlock Holmes: The Case of the Serrated Scalpel | The Lost Files of Sherlock Holmes - The Case of the Serrated Scalpel (CD DOS) | `sherlock:scalpel` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| The Neverhood | The Neverhood (CD, Windows) | `neverhood:neverhood` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| The Secret of Monkey Island | The Secret of Monkey Island (CD DOS VGA) | `scumm:monkey` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Tony Tough and the Night of Roasted Moths | Tony Tough and the Night of the Roasted Moths (CD Windows) | `tony:tony` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Toonstruck | Toonstruck (CD Windows) | `toon:toon` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Torin's Passage | Torins Passage (CD Windows) | `sci:torin` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Touché: The Adventures of the Fifth Musketeer | Touche - The Adventures of the Fifth Musketeer (CD DOS) | `touche:touche` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Troll's Tale | Troll's Tale (Floppy DOS) | `agi:troll` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Urban Runner | Urban Runner (Windows, CD) | `gob:urban` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Voyeur | Voyeur (CD DOS) | `voyeur:voyeur` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Waxworks | Waxworks (Amiga) | `agos:waxworks` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Ween: The Prophecy | Ween The Prophecy (Amiga) | `gob:ween` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Winnie the Pooh in the Hundred Acre Wood | Winnie the Pooh in the Hundred Acre Wood (Floppy DOS) | `agi:winnie` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+| Zak McKracken and the Alien Mindbenders | Zak McKracken and the Alien Mindbenders (Amiga) | `scumm:zak` | Startup screen, publisher splash, intro, menu, or game scene rendered. |
+
+## Startup with warnings
+
+These editions reached a startup screen or original game prompt with the limitations below.
+
+| Game | Checked edition | Game ID | Observation |
+| --- | --- | --- | --- |
+| 3 Skulls of the Toltecs | 3 Skulls of the Toltecs (CD DOS) | `toltecs:toltecs` | Startup menu and intro render after the missing-instrument warning. Music uses built-in AdLib instruments because SAMPLE.AD and SAMPLE.OPL are absent; it may sound different from the original. Earlier check (2026-11-04): Startup failed — MILES-ADLIB: could not open timbre file (SAMPLE.AD or SAMPLE.OPL). |
+| Harlan Ellison: I Have No Mouth, and I Must Scream | I Have No Mouth and I Must Scream (CD DOS) | `saga:ihnm` | Continues after missing SAMPLE.AD/SAMPLE.OPL warning; music fidelity is reduced. |
+| Inherit the Earth: Quest for the Orb | Inherit the Earth - Quest for the Orb (CD Windows-Linux-DOS) | `saga:ite` | Continues after missing INSTR.AD/INSTR.OPL warning; music fidelity is reduced. |
+| King's Quest IV: The Perils of Rosella | King's Quest 4 - The Perils of Rosella (Amiga) | `sci:kq4sci` | Original manual-question prompt reached; gameplay beyond it was not verified. |
+| Leisure Suit Larry 2: Goes Looking for Love (in Several Wrong Places) | Leisure Suit Larry 2 - Goes looking for Love (In Several Wrong Places) (Amiga) | `sci:lsl2` | Original little-black-book telephone prompt reached; gameplay beyond it was not verified. |
+| Manhunter: New York | Manhunter 1 - New York (Amiga) | `agi:mh1` | Original field-guide question reached; gameplay beyond it was not verified. |
+| Monkey Island 2: LeChuck's Revenge | Monkey Island 2 - LeChuck's Revenge (Amiga) | `scumm:monkey2` | Original copy-protection introduction reached; gameplay beyond it was not verified. |
+| Once Upon A Time: Little Red Riding Hood | Once Upon A Time - Little Red Riding Hood (Floppy DOS) | `gob:littlered` | Original book/animal-symbol prompt reached; gameplay beyond it was not verified. |
+| Rex Nebular and the Cosmic Gender Bender | Rex Nebular And The Cosmic Gender Bender (Floppy DOS) | `mads:nebular` | Main menu renders after ScummVM testing-support warning. Bonus-disk target not separately tested. |
+| The Big Red Adventure | The Big Red Adventure (DOS, Multilanguage) | `parallaction:bra` | Startup logo renders after Start anyway. ScummVM warns of incomplete support and save compatibility. |
+
+## Startup failed
+
+| Game | Checked edition | Game ID | Observation |
+| --- | --- | --- | --- |
+| Loom | Loom (Amiga) | `scumm:loom` | This checked archive has an English resource index that does not match its Spanish resources. Startup stops with Cannot read resource. Import matching game files from one edition; the DOS VGA edition starts. Earlier check (2026-11-04): Startup failed — (69:10002:0x1184): Cannot read resource. |
 
 ## Not yet tested
 
@@ -554,7 +571,6 @@ The untested list includes Excellent, Good, and Bugged upstream ratings. It excl
 | Shardlight | `ags:shardlight` | Good |
 | Sheila Rae, the Brave | `mohawk:sheila` | Good |
 | Shelter | `wintermute:shelter` | Good |
-| Simon the Sorcerer's Puzzle Pack: Demon in my Pocket | `agos:dimp` | Good |
 | Simon the Sorcerer's Puzzle Pack: NoPatience | `agos:puzzle` | Good |
 | Simon the Sorcerer's Puzzle Pack: Swampy Adventures | `agos:swampy` | Good |
 | Slater & Charlie Go Camping | `sci:slater` | Excellent |

@@ -9,6 +9,7 @@ dist/
 node_modules/
 public/*
 !public/brand/
+!public/social-cards/
 !public/.gitignore
 tools/
 vendor/
@@ -23,3 +24,4 @@ tmp/
 .runs/
 /INBOX.md
 /.internal/
+/data/.social-cards.lock/

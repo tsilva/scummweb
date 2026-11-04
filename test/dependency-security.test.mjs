@@ -81,8 +81,6 @@ test("dynamic game routes await Next.js route parameters", () => {
   for (const relativePath of [
     "app/[gameSlug]/page.js",
     "app/[gameSlug]/play/page.js",
-    "app/[gameSlug]/opengraph-image.js",
-    "app/[gameSlug]/social-card.png/route.js",
   ]) {
     const source = fs.readFileSync(path.join(rootDir, relativePath), "utf8");
     assert.match(source, /const \{ gameSlug \} = await params;/, relativePath);

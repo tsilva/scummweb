@@ -3,12 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import { ListChecks, Search, X } from "lucide-react";
 import compatibility from "../../data/game-compatibility.json";
-import { filterCompatibilityEntries, getCompatibilitySummary } from "../../lib/game-compatibility.mjs";
+import { compatibilityStatusLabels, filterCompatibilityEntries, getCompatibilitySummary } from "../../lib/game-compatibility.mjs";
 
 const summary = getCompatibilitySummary(compatibility.entries);
 const filters = [
   ["all", "All entries", summary.total],
   ["startup-verified", "Startup verified", summary.verified],
+  ["startup-warning", "With warnings", summary.warnings],
+  ["startup-failed", "Startup failed", summary.failed],
   ["not-tested", "Not yet tested", summary.untested],
 ];
 const recordedDate = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(compatibility.recordedOn));
@@ -69,10 +71,11 @@ export default function CompatibilityModal() {
           </div>
           <p id="compatibility-description" className="compatibility-description">
             Startup verified means a game reached a startup screen, menu, or first scene.
+            Warnings explain limitations or original game prompts; failures did not reach startup.
             Full-game play and every feature have not been verified.
           </p>
           <p className="compatibility-updated">
-            {summary.verified} editions checked · {summary.verifiedGames} games · Updated <time dateTime={compatibility.recordedOn}>{recordedDate}</time>
+            {summary.checked} editions checked · {summary.checkedGames} games · Updated <time dateTime={compatibility.recordedOn}>{recordedDate}</time>
           </p>
           <label className="compatibility-search">
             <Search className="icon" aria-hidden="true" />
@@ -98,10 +101,22 @@ export default function CompatibilityModal() {
                       <strong>{entry.title}</strong>
                       {entry.edition ? <span className="compatibility-edition">{entry.edition.replace(/\.zip$/i, "")}</span> : null}
                       <span className="compatibility-game-ids">{entry.gameId}</span>
+                      {entry.observation ? <p className="compatibility-observation">{entry.observation}</p> : null}
+                      {entry.history?.length > 1 ? (
+                        <details className="compatibility-history">
+                          <summary>Earlier checks</summary>
+                          <ul>{entry.history.slice(0, -1).map((check, index) => (
+                            <li key={`${check.recordedOn}:${index}`}>
+                              <time dateTime={check.recordedOn}>{check.recordedOn}</time>
+                              {" · "}{compatibilityStatusLabels[check.status]}: {check.observation}
+                            </li>
+                          ))}</ul>
+                        </details>
+                      ) : null}
                     </div>
                     <div className="compatibility-game-status">
                       <span className={`compatibility-badge ${entry.status}`}>
-                        {entry.status === "startup-verified" ? "Startup verified" : "Not yet tested"}
+                        {compatibilityStatusLabels[entry.status]}
                       </span>
                       {entry.upstreamRating ? <small>ScummVM: {entry.upstreamRating}</small> : null}
                     </div>

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "recordedOn": "2026-11-04",
   "scope": "Startup verification; not full-game compatibility.",
   "upstreamReference": {
@@ -15,1179 +15,1239 @@
   "entries": [
     {
       "title": "3 Skulls of the Toltecs",
-      "status": "startup-verified",
+      "status": "startup-warning",
       "gameId": "toltecs:toltecs",
       "edition": "3 Skulls of the Toltecs (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup menu and intro render after the missing-instrument warning. Music uses built-in AdLib instruments because SAMPLE.AD and SAMPLE.OPL are absent; it may sound different from the original.",
+      "history": [
+        {
+          "recordedOn": "2026-11-04",
+          "status": "startup-failed",
+          "observation": "MILES-ADLIB: could not open timbre file (SAMPLE.AD or SAMPLE.OPL)."
+        },
+        {
+          "recordedOn": "2026-11-04",
+          "status": "startup-warning",
+          "observation": "Startup menu and intro render after the missing-instrument warning. Music uses built-in AdLib instruments because SAMPLE.AD and SAMPLE.OPL are absent; it may sound different from the original."
+        }
+      ]
     },
     {
       "title": "Amazon: Guardians of Eden",
       "status": "startup-verified",
       "gameId": "access:amazon",
       "edition": "Amazon - Guardians of Eden (DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Intro renders after automatic detection; the access.dat startup error is resolved.",
+      "history": [
+        {
+          "recordedOn": "2026-11-04",
+          "status": "startup-failed",
+          "observation": "Could not locate appropriate access.dat entry."
+        },
+        {
+          "recordedOn": "2026-11-04",
+          "status": "startup-verified",
+          "observation": "Intro renders after automatic detection; the access.dat startup error is resolved."
+        }
+      ]
     },
     {
       "title": "Bargon Attack",
       "status": "startup-verified",
       "gameId": "gob:bargon",
       "edition": "Bargon Attack (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Bear Stormin'",
       "status": "startup-verified",
       "gameId": "scumm:brstorm",
       "edition": "Bear Stormin' (DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Beneath a Steel Sky",
       "status": "startup-verified",
       "gameId": "sky:sky",
       "edition": "Beneath a Steel Sky (CD VGA).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Big Thinkers! 1st Grade",
       "status": "startup-verified",
       "gameId": "scumm:thinker1",
       "edition": "Big Thinkers 1st Grade (Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Big Thinkers! Kindergarten",
       "status": "startup-verified",
       "gameId": "scumm:thinkerk",
       "edition": "Big Thinkers Kindergarten (Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Blue Force",
       "status": "startup-verified",
       "gameId": "tsage:blueforce",
       "edition": "Blue Force (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Blue's Treasure Hunt",
       "status": "startup-verified",
       "gameId": "scumm:bluestreasurehunt",
       "edition": "Blues Treasure Hunt (CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Broken Sword 2.5: The Return of the Templars",
       "status": "startup-verified",
       "gameId": "sword25:sword25",
       "edition": "Broken Sword 2.5 (Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Broken Sword II: The Smoking Mirror",
       "status": "startup-verified",
       "gameId": "sword2:sword2",
       "edition": "Broken Sword 2 The Smoking Mirror (CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Broken Sword: The Shadow of the Templars",
       "status": "startup-verified",
       "gameId": "sword1:sword1",
       "edition": "Broken Sword 1 The Shadow of the Templar (CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Opening cinematic and main menu render. Select Start audio if the browser pauses sound; skipping the intro is no longer required.",
+      "history": [
+        {
+          "recordedOn": "2026-11-04",
+          "status": "startup-warning",
+          "observation": "Opening cinematic remained black. Escape skipped it and rendered the first street scene."
+        },
+        {
+          "recordedOn": "2026-11-04",
+          "status": "startup-verified",
+          "observation": "Opening cinematic and main menu render. Select Start audio if the browser pauses sound; skipping the intro is no longer required."
+        }
+      ]
     },
     {
       "title": "Bud Tucker in Double Trouble",
       "status": "startup-verified",
       "gameId": "tucker:tucker",
       "edition": "Bud Tucker in Double Trouble (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Castle of Dr. Brain",
       "status": "startup-verified",
       "gameId": "sci:castlebrain",
       "edition": "Castle of Dr. Brain.zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Chivalry is Not Dead",
       "status": "startup-verified",
       "gameId": "wintermute:chivalry",
       "edition": "Chivalry is Not Dead (Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Code-Name: Iceman",
       "status": "startup-verified",
       "gameId": "sci:iceman",
       "edition": "Codename Iceman (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Conquests of Camelot: The Search for the Grail",
       "status": "startup-verified",
       "gameId": "sci:camelot",
       "edition": "Conquests of Camelot (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Conquests of the Longbow: The Legend of Robin Hood",
       "status": "startup-verified",
       "gameId": "sci:longbow",
       "edition": "Conquests of the Longbow - The Legend of Robin Hood (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Cruise for a Corpse",
       "status": "startup-verified",
       "gameId": "cruise:cruise",
       "edition": "Cruise for a Corpse (Atari ST).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Cruise for a Corpse",
       "status": "startup-verified",
       "gameId": "cruise:cruise",
       "edition": "Cruise for a Corpse (VGA DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Darby the Dragon",
       "status": "startup-verified",
       "gameId": "composer:darby",
       "edition": "Darby the Dragon (CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Day of the Tentacle",
       "status": "startup-verified",
       "gameId": "scumm:tentacle",
       "edition": "Day of the Tentacle (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Discworld",
       "status": "startup-verified",
       "gameId": "tinsel:dw",
       "edition": "Discworld 1 (CD DOS v2).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Discworld",
       "status": "startup-verified",
       "gameId": "tinsel:dw",
       "edition": "Discworld 1 (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Discworld II: Missing Presumed...!?",
       "status": "startup-verified",
       "gameId": "tinsel:dw2",
       "edition": "Discworld 2 (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Dragon History",
       "status": "startup-verified",
       "gameId": "draci:draci",
       "edition": "Dragon History (Floppy DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "DreamWeb",
       "status": "startup-verified",
       "gameId": "dreamweb:dreamweb",
       "edition": "Dreamweb (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Dráscula: The Vampire Strikes Back",
       "status": "startup-verified",
       "gameId": "drascula:drascula",
       "edition": "Drascula The Vampire Strikes Back (CD DOS, Multilanguage).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "EcoQuest II: Lost Secret of the Rainforest",
       "status": "startup-verified",
       "gameId": "sci:ecoquest2",
       "edition": "EcoQuest 2 - Lost Secret of the Rainforest (Floppy DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "EcoQuest: The Search for Cetus",
       "status": "startup-verified",
       "gameId": "sci:ecoquest",
       "edition": "EcoQuest 1 - The Search for Cetus (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "EcoQuest: The Search for Cetus",
       "status": "startup-verified",
       "gameId": "sci:ecoquest",
       "edition": "EcoQuest 1 - The Search for Cetus (Floppy DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Elvira II: The Jaws of Cerberus",
       "status": "startup-verified",
       "gameId": "agos:elvira2",
       "edition": "Elvira 2 - The Jaws of Cerberus (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Elvira: Mistress of the Dark",
       "status": "startup-verified",
       "gameId": "agos:elvira1",
       "edition": "Elvira 1 - Mistress of the Dark (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Eye of the Beholder",
       "status": "startup-verified",
       "gameId": "kyra:eob",
       "edition": "Eye of the Beholder (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Eye of the Beholder II: The Legend of Darkmoon",
       "status": "startup-verified",
       "gameId": "kyra:eob2",
       "edition": "Eye of the Beholder II - The Legend of Darkmoon (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Fascination",
       "status": "startup-verified",
       "gameId": "gob:fascination",
       "edition": "Fascination (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Flight of the Amazon Queen",
       "status": "startup-verified",
       "gameId": "queen:queen",
       "edition": "Flight of the Amazon Queen (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Freddy Pharkas: Frontier Pharmacist",
       "status": "startup-verified",
       "gameId": "sci:freddypharkas",
       "edition": "Freddy Pharkas - Frontier Pharmacist (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Full Pipe",
       "status": "startup-verified",
       "gameId": "ngi:fullpipe",
       "edition": "Full Pipe (CD, Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Full Throttle",
       "status": "startup-verified",
       "gameId": "scumm:ft",
       "edition": "Full Throttle (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Fun Seeker's Guide to Eastern Madera County",
       "status": "startup-verified",
       "gameId": "sci:funseeker",
       "edition": "Fun Seeker's Guide to Eastern Madera County (CD, DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Future Wars: Adventures in Time",
       "status": "startup-verified",
       "gameId": "cine:fw",
       "edition": "Future Wars (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Intro renders without the missing-CD-audio warning. Spaced physical CD-track filenames are recognized.",
+      "history": [
+        {
+          "recordedOn": "2026-11-04",
+          "status": "startup-warning",
+          "observation": "Continues after the missing CD-audio warning; the archive lacks CD music tracks."
+        },
+        {
+          "recordedOn": "2026-11-04",
+          "status": "startup-verified",
+          "observation": "Intro renders without the missing-CD-audio warning. Spaced physical CD-track filenames are recognized."
+        }
+      ]
     },
     {
       "title": "Gabriel Knight: Sins of the Fathers",
       "status": "startup-verified",
       "gameId": "sci:gk1",
       "edition": "Gabriel Knight Sins Of The Fathers (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Geisha",
       "status": "startup-verified",
       "gameId": "gob:geisha",
       "edition": "Geisha (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Gnap (U.F.O.s)",
       "status": "startup-verified",
       "gameId": "gnap:gnap",
       "edition": "Gnap (CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Gobliiins",
       "status": "startup-verified",
       "gameId": "gob:gob1",
       "edition": "Gobliiins 1 (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Gobliins 2: The Prince Buffoon",
       "status": "startup-verified",
       "gameId": "gob:gob2",
       "edition": "Gobliins 2 (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Goblins Quest 3",
       "status": "startup-verified",
       "gameId": "gob:gob3",
       "edition": "Goblins 3 (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Gold Rush!",
       "status": "startup-verified",
       "gameId": "agi:goldrush",
       "edition": "Gold Rush! (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Gregory and the Hot Air Balloon",
       "status": "startup-verified",
       "gameId": "composer:gregory",
       "edition": "Gregory and the Hot Air Balloon (CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Harlan Ellison: I Have No Mouth, and I Must Scream",
-      "status": "startup-verified",
+      "status": "startup-warning",
       "gameId": "saga:ihnm",
       "edition": "I Have No Mouth and I Must Scream (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Continues after missing SAMPLE.AD/SAMPLE.OPL warning; music fidelity is reduced."
     },
     {
       "title": "Hopkins FBI",
       "status": "startup-verified",
       "gameId": "hopkins:hopkins",
       "edition": "Hopkins FBI (CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Hugo II: Whodunit?",
       "status": "startup-verified",
       "gameId": "hugo:hugo2",
       "edition": "Hugo 2 - Whodunit (Floppy DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Hugo III: Jungle of Doom",
       "status": "startup-verified",
       "gameId": "hugo:hugo3",
       "edition": "Hugo 3 - Jungle of Doom (Floppy DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Hugo's House of Horrors",
       "status": "startup-verified",
       "gameId": "hugo:hugo1",
       "edition": "Hugo's House of Horrors (Floppy DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Indiana Jones and the Fate of Atlantis",
       "status": "startup-verified",
       "gameId": "scumm:atlantis",
       "edition": "Indiana Jones and the Fate of Atlantis (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Indiana Jones and the Last Crusade",
       "status": "startup-verified",
       "gameId": "scumm:indy3",
       "edition": "Indiana Jones and the Last Crusade (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Inherit the Earth: Quest for the Orb",
-      "status": "startup-verified",
+      "status": "startup-warning",
       "gameId": "saga:ite",
       "edition": "Inherit the Earth - Quest for the Orb (CD Windows-Linux-DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Continues after missing INSTR.AD/INSTR.OPL warning; music fidelity is reduced."
     },
     {
       "title": "Jones in the Fast Lane",
       "status": "startup-verified",
       "gameId": "sci:jones",
       "edition": "Jones In The Fast Lane (CD Dos).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "King's Quest II: Romancing the Throne",
       "status": "startup-verified",
       "gameId": "agi:kq2",
       "edition": "King's Quest 2 - Romancing the Throne (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "King's Quest III: To Heir Is Human",
       "status": "startup-verified",
       "gameId": "agi:kq3",
       "edition": "King's Quest 3 - To Heir is Human (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "King's Quest IV: The Perils of Rosella",
-      "status": "startup-verified",
+      "status": "startup-warning",
       "gameId": "sci:kq4sci",
       "edition": "King's Quest 4 - The Perils of Rosella (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Original manual-question prompt reached; gameplay beyond it was not verified."
     },
     {
       "title": "King's Quest V: Absence Makes the Heart Go Yonder!",
       "status": "startup-verified",
       "gameId": "sci:kq5",
       "edition": "King's Quest 5 - Absence Makes the Heart go Yonder (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "King's Quest VI: Heir Today, Gone Tomorrow",
       "status": "startup-verified",
       "gameId": "sci:kq6",
       "edition": "King's Quest 6 - Heir Today, Gone Tomorrow (CD DOS, Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "King's Quest VII: The Princeless Bride",
       "status": "startup-verified",
       "gameId": "sci:kq7",
       "edition": "King's Quest 7 - The Princeless Bride (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "King's Quest: Quest for the Crown",
       "status": "startup-verified",
       "gameId": "sci:kq1sci",
       "edition": "King's Quest 1 - Quest for the Crown (Floppy DOS VGA Remake).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Lands of Lore: The Throne of Chaos",
       "status": "startup-verified",
       "gameId": "kyra:lol",
       "edition": "Lands of Lore - The Throne of Chaos (CD DOS, Multilanguage).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Laura Bow 2: The Dagger of Amon Ra",
       "status": "startup-verified",
       "gameId": "sci:laurabow2",
       "edition": "Laura Bow 2 - The Dagger of Amon-Ra (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Laura Bow: The Colonel's Bequest",
       "status": "startup-verified",
       "gameId": "sci:laurabow",
       "edition": "Laura Bow 1 - The Colonels Bequest (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Leather Goddesses of Phobos! 2: Gas Pump Girls Meet the Pulsating Inconvenience from Planet X",
       "status": "startup-verified",
       "gameId": "made:lgop2",
       "edition": "Leather Goddesses of Phobos 2 (Floppy DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Leisure Suit Larry 2: Goes Looking for Love (in Several Wrong Places)",
-      "status": "startup-verified",
+      "status": "startup-warning",
       "gameId": "sci:lsl2",
       "edition": "Leisure Suit Larry 2 - Goes looking for Love (In Several Wrong Places) (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Original little-black-book telephone prompt reached; gameplay beyond it was not verified."
     },
     {
       "title": "Leisure Suit Larry 3: Passionate Patti in Pursuit of the Pulsating Pectorals",
       "status": "startup-verified",
       "gameId": "sci:lsl3",
       "edition": "Leisure Suit Larry 3 - Passionate Patti in Pursuit of the Pulsating Pectorals (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Leisure Suit Larry 5: Passionate Patti Does a Little Undercover Work",
       "status": "startup-verified",
       "gameId": "sci:lsl5",
       "edition": "Leisure Suit Larry 5 - Passionate Patty Does a Little Undercover Work (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Leisure Suit Larry 6: Shape Up or Slip Out!",
       "status": "startup-verified",
       "gameId": "sci:lsl6hires",
       "edition": "Leisure Suit Larry 6 - Shape Up or Slip Out (CD DOS High Res).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Leisure Suit Larry 7: Love for Sail!",
       "status": "startup-verified",
       "gameId": "sci:lsl7",
       "edition": "Leisure Suit Larry 7 - Love for Sail (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Leisure Suit Larry in the Land of the Lounge Lizards",
       "status": "startup-verified",
       "gameId": "sci:lsl1sci",
       "edition": "Leisure Suit Larry in the Land of the Lounge Lizards (Amiga VGA Remake).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Lighthouse: The Dark Being",
       "status": "startup-verified",
       "gameId": "sci:lighthouse",
       "edition": "Lighthouse (CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Loom",
-      "status": "startup-verified",
+      "status": "startup-failed",
       "gameId": "scumm:loom",
       "edition": "Loom (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "This checked archive has an English resource index that does not match its Spanish resources. Startup stops with Cannot read resource. Import matching game files from one edition; the DOS VGA edition starts.",
+      "history": [
+        {
+          "recordedOn": "2026-11-04",
+          "status": "startup-failed",
+          "observation": "(69:10002:0x1184): Cannot read resource."
+        },
+        {
+          "recordedOn": "2026-11-04",
+          "status": "startup-failed",
+          "observation": "This checked archive has an English resource index that does not match its Spanish resources. Startup stops with Cannot read resource. Import matching game files from one edition; the DOS VGA edition starts."
+        }
+      ]
     },
     {
       "title": "Loom",
       "status": "startup-verified",
       "gameId": "scumm:loom",
       "edition": "Loom (CD DOS VGA).zip",
-      "observation": "Standard, Practice, and Expert difficulty menu rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Lost in Time",
       "status": "startup-verified",
       "gameId": "gob:lit",
       "edition": "Lost in Time (CD DOS, Multilanguage).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Lure of the Temptress",
       "status": "startup-verified",
       "gameId": "lure:lure",
       "edition": "Lure of the Temptress (Floppy DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Magic Tales: Liam Finds a Story",
       "status": "startup-verified",
       "gameId": "composer:liam",
       "edition": "Magic Tales - Liam Finds a Story (CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Magic Tales: Sleeping Cub's Test of Courage",
       "status": "startup-verified",
       "gameId": "composer:sleepingcub",
       "edition": "Magic Tales - Sleeping Cub's Test of Courage (CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Magic Tales: The Princess and the Crab",
       "status": "startup-verified",
       "gameId": "composer:princess",
       "edition": "Magic Tales - The Princess and the Crab (CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Manhunter 2: San Francisco",
       "status": "startup-verified",
       "gameId": "agi:mh2",
       "edition": "Manhunter 2 - San Francisco (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Manhunter: New York",
-      "status": "startup-verified",
+      "status": "startup-warning",
       "gameId": "agi:mh1",
       "edition": "Manhunter 1 - New York (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Original field-guide question reached; gameplay beyond it was not verified."
     },
     {
       "title": "Maniac Mansion",
       "status": "startup-verified",
       "gameId": "scumm:maniac",
       "edition": "Maniac Mansion (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Mickey's Space Adventure",
       "status": "startup-verified",
       "gameId": "agi:mickey",
       "edition": "Mickey's Space Adventure (Floppy DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Monkey Island 2: LeChuck's Revenge",
-      "status": "startup-verified",
+      "status": "startup-warning",
       "gameId": "scumm:monkey2",
       "edition": "Monkey Island 2 - LeChuck's Revenge (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Original copy-protection introduction reached; gameplay beyond it was not verified."
     },
     {
       "title": "Ms. Astro Chicken",
       "status": "startup-verified",
       "gameId": "sci:msastrochicken",
       "edition": "Ms Astro Chicken (Floppy DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "MTV's Beavis and Butt-Head in Virtual Stupidity",
       "status": "startup-verified",
       "gameId": "bbvs:bbvs",
       "edition": "Beavis and Butt-head in Virtual Stupidity (CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Myst",
       "status": "startup-verified",
       "gameId": "mohawk:myst",
       "edition": "Myst (CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Myst",
       "status": "startup-verified",
       "gameId": "mohawk:myst",
       "edition": "Myst Masterpiece (DVD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Nippon Safes, Inc.",
       "status": "startup-verified",
       "gameId": "parallaction:nippon",
       "edition": "Nippon Safes Inc (Amiga, Multilanguage).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Nippon Safes, Inc.",
       "status": "startup-verified",
       "gameId": "parallaction:nippon",
       "edition": "Nippon Safes Inc (Floppy DOS, Multilanguage).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Once Upon A Time: Little Red Riding Hood",
-      "status": "startup-verified",
+      "status": "startup-warning",
       "gameId": "gob:littlered",
       "edition": "Once Upon A Time - Little Red Riding Hood (Floppy DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Original book/animal-symbol prompt reached; gameplay beyond it was not verified."
     },
     {
       "title": "Passport to Adventure (Demo)",
       "status": "startup-verified",
       "gameId": "scumm:pass",
       "edition": "Passport to Adventure (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered. Passport to Adventure (Demo) is a compilation; only its default startup was checked."
     },
     {
       "title": "Pepper's Adventures in Time",
       "status": "startup-verified",
       "gameId": "sci:pepper",
       "edition": "Peppers Adventures In Time (Floppy DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Personal Nightmare",
       "status": "startup-verified",
       "gameId": "agos:pn",
       "edition": "Personal Nightmare (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Phantasmagoria",
       "status": "startup-verified",
       "gameId": "sci:phantasmagoria",
       "edition": "Phantasmagoria (CD, Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Phantasmagoria 2: A Puzzle of Flesh",
       "status": "startup-verified",
       "gameId": "sci:phantasmagoria2",
       "edition": "Phantasmagoria 2 (CD, Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Plumbers Don't Wear Ties",
       "status": "startup-verified",
       "gameId": "plumbers:plumbers",
       "edition": "Plumbers Don't Wear Ties (CD, Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Police Quest 2: The Vengeance",
       "status": "startup-verified",
       "gameId": "sci:pq2",
       "edition": "Police Quest 2 - The Vengeance (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Police Quest 3: The Kindred",
       "status": "startup-verified",
       "gameId": "sci:pq3",
       "edition": "Police Quest 3 - The Kindred (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Police Quest IV: Open Season",
       "status": "startup-verified",
       "gameId": "sci:pq4",
       "edition": "Police Quest 4 - Open Season (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Police Quest: In Pursuit of the Death Angel",
       "status": "startup-verified",
       "gameId": "agi:pq1",
       "edition": "Police Quest 1 - In Pursuit of the Death Angel (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Police Quest: In Pursuit of the Death Angel",
       "status": "startup-verified",
       "gameId": "sci:pq1sci",
       "edition": "Police Quest 1 - In Pursuit of the Death Angel (Floppy DOS VGA Remake).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Quest for Glory I: So You Want To Be A Hero",
       "status": "startup-verified",
       "gameId": "sci:qfg1",
       "edition": "Hero Quest So You Want To Be A Hero (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Quest for Glory I: So You Want To Be A Hero",
       "status": "startup-verified",
       "gameId": "sci:qfg1",
       "edition": "Hero Quest So You Want To Be A Hero (Floppy DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Quest for Glory I: So You Want To Be A Hero",
       "status": "startup-verified",
       "gameId": "sci:qfg1vga",
       "edition": "Quest for Glory 1 - So You Want to be a Hero (Floppy DOS VGA Remake).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Quest for Glory II: Trial by Fire",
       "status": "startup-verified",
       "gameId": "sci:qfg2",
       "edition": "Quest for Glory 2 - Trial by Fire (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Quest for Glory III: Wages of War",
       "status": "startup-verified",
       "gameId": "sci:qfg3",
       "edition": "Quest for Glory 3 - The Wages of War (Floppy DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "RAMA",
       "status": "startup-verified",
       "gameId": "sci:rama",
       "edition": "RAMA (CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Return to Ringworld",
       "status": "startup-verified",
       "gameId": "tsage:ringworld2",
       "edition": "Return to Ringworld (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Return to Zork",
       "status": "startup-verified",
       "gameId": "made:rtz",
       "edition": "Return to Zork (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Rex Nebular and the Cosmic Gender Bender",
-      "status": "startup-verified",
+      "status": "startup-warning",
       "gameId": "mads:nebular",
       "edition": "Rex Nebular And The Cosmic Gender Bender (Floppy DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Main menu renders after ScummVM testing-support warning. Bonus-disk target not separately tested."
     },
     {
       "title": "Ringworld: Revenge of the Patriarch",
       "status": "startup-verified",
       "gameId": "tsage:ringworld",
       "edition": "Ringworld - Revenge of the Patriarch (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Riven: The Sequel to Myst",
       "status": "startup-verified",
       "gameId": "mohawk:riven",
       "edition": "Riven (DVD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Road",
       "status": "startup-verified",
       "gameId": "local:road",
       "edition": "Road (Fanmade - Get's Detected as DOTT).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Rodney's Funscreen",
       "status": "startup-verified",
       "gameId": "made:rodney",
       "edition": "Rodney's Fun Screen (Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Sam & Max Hit the Road",
       "status": "startup-verified",
       "gameId": "scumm:samnmax",
       "edition": "Sam & Max Hit the Road (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Shivers",
       "status": "startup-verified",
       "gameId": "sci:shivers",
       "edition": "Shivers (CD, Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Simon the Sorcerer",
       "status": "startup-verified",
       "gameId": "agos:simon1",
       "edition": "Simon the Sorcerer 1 (CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe",
       "status": "startup-verified",
       "gameId": "agos:simon2",
       "edition": "Simon the Sorcerer 2 (Amiga CD32).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe",
       "status": "startup-verified",
       "gameId": "agos:simon2",
       "edition": "Simon the Sorcerer 2 (CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
-      "title": "Simon the Sorcerer's Puzzle Pack",
+      "title": "Simon the Sorcerer's Puzzle Pack: Demon in my Pocket",
       "status": "startup-verified",
-      "gameId": "agos:jumble",
+      "gameId": "agos:dimp",
       "edition": "Simon the Sorcerer Puzzle Pack (CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered. Auto-detect selected Demon in My Pocket; other Puzzle Pack games were not individually launched."
     },
     {
       "title": "Sołtys",
       "status": "startup-verified",
       "gameId": "cge:soltys",
       "edition": "Soltys (DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Space Quest 6: Roger Wilco in the Spinal Frontier",
       "status": "startup-verified",
       "gameId": "sci:sq6",
       "edition": "Space Quest 6 - The Spinal Frontier (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Space Quest II: Chapter II - Vohaul's Revenge",
       "status": "startup-verified",
       "gameId": "agi:sq2",
       "edition": "Space Quest 2 - Vohaul's Revenge (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Space Quest II: Chapter II - Vohaul's Revenge",
       "status": "startup-verified",
       "gameId": "agi:sq2",
       "edition": "Space Quest 2 - Vohaul's Revenge (Floppy DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Space Quest III: The Pirates of Pestulon",
       "status": "startup-verified",
       "gameId": "sci:sq3",
       "edition": "Space Quest 3 - The Pirates of Pestulon (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Space Quest IV: Roger Wilco and the Time Rippers",
       "status": "startup-verified",
       "gameId": "sci:sq4",
       "edition": "Space Quest 4 - Roger Wilco and the Time Rippers (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Space Quest V: The Next Mutation",
       "status": "startup-verified",
       "gameId": "sci:sq5",
       "edition": "Space Quest 5 - The Next Mutation (Floppy DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Space Quest: The Sarien Encounter",
       "status": "startup-verified",
       "gameId": "agi:sq1",
       "edition": "Space Quest 1 - The Sarien Encounter (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Space Quest: The Sarien Encounter",
       "status": "startup-verified",
       "gameId": "sci:sq1sci",
       "edition": "Space Quest 1 - The Sarien Encounter (Floppy DOS VGA Remake).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Starship Titanic",
       "status": "startup-verified",
       "gameId": "titanic:titanic",
       "edition": "Starship Titanic (CD, Windows).zip",
-      "observation": "First room rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Teen Agent",
       "status": "startup-verified",
       "gameId": "teenagent:teenagent",
       "edition": "TeenAgent (Floppy DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "The 7th Guest",
       "status": "startup-verified",
       "gameId": "groovie:t7g",
       "edition": "The 7th Guest (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "The Beast Within: A Gabriel Knight Mystery",
       "status": "startup-verified",
       "gameId": "sci:gk2",
       "edition": "Gabriel Knight 2 The Beast Within (CD, DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "The Big Red Adventure",
-      "status": "startup-verified",
+      "status": "startup-warning",
       "gameId": "parallaction:bra",
       "edition": "The Big Red Adventure (DOS, Multilanguage).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup logo renders after Start anyway. ScummVM warns of incomplete support and save compatibility."
     },
     {
       "title": "The Bizarre Adventures of Woodruff and the Schnibble",
       "status": "startup-verified",
       "gameId": "gob:woodruff",
       "edition": "The Bizarre Adventures of Woodruff and the Schnibble of Azimuth (CD DOS, Multilanguage).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "The Black Cauldron",
       "status": "startup-verified",
       "gameId": "agi:bc",
       "edition": "The Black Cauldron (Floppy DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "The Curse of Monkey Island",
       "status": "startup-verified",
       "gameId": "scumm:comi",
       "edition": "The Curse Of Monkey Island (CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "The Dig",
       "status": "startup-verified",
       "gameId": "scumm:dig",
       "edition": "The Dig (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "The Feeble Files",
       "status": "startup-verified",
       "gameId": "agos:feeble",
       "edition": "The Feeble Files (2CD Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "The Feeble Files",
       "status": "startup-verified",
       "gameId": "agos:feeble",
       "edition": "The Feeble Files (4CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "The Island of Dr. Brain",
       "status": "startup-verified",
       "gameId": "sci:islandbrain",
       "edition": "The Island of Dr. Brain.zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "The Journeyman Project: Pegasus Prime",
       "status": "startup-verified",
       "gameId": "pegasus:pegasus",
       "edition": "The Journeyman Project - Pegasus Prime (CD Mac).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "The Labyrinth of Time",
       "status": "startup-verified",
       "gameId": "lab:lab",
       "edition": "The Labyrinth of Time (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "The Legend of Kyrandia",
       "status": "startup-verified",
       "gameId": "kyra:kyra1",
       "edition": "The Legend of Kyrandia 1 (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "The Legend of Kyrandia",
       "status": "startup-verified",
       "gameId": "kyra:kyra1",
       "edition": "The Legend of Kyrandia 1 (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "The Legend of Kyrandia: Book 3 - Malcolm's Revenge",
       "status": "startup-verified",
       "gameId": "kyra:kyra3",
       "edition": "The Legend of Kyrandia 3 Malcolm's Revenge (CD DOS, Multilanguage).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "The Legend of Kyrandia: Hand of Fate",
       "status": "startup-verified",
       "gameId": "kyra:kyra2",
       "edition": "The Legend of Kyrandia 2 The Hand of Fate (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "The Lost Files of Sherlock Holmes: Case of the Rose Tattoo",
       "status": "startup-verified",
       "gameId": "sherlock:rosetattoo",
       "edition": "The Lost Files of Sherlock Holmes - The Case of the Rose Tattoo (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "The Lost Files of Sherlock Holmes: The Case of the Serrated Scalpel",
       "status": "startup-verified",
       "gameId": "sherlock:scalpel",
       "edition": "The Lost Files of Sherlock Holmes - The Case of the Serrated Scalpel (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "The Neverhood",
       "status": "startup-verified",
       "gameId": "neverhood:neverhood",
       "edition": "The Neverhood (CD, Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "The Secret of Monkey Island",
       "status": "startup-verified",
       "gameId": "scumm:monkey",
       "edition": "The Secret of Monkey Island (CD DOS VGA).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Tony Tough and the Night of Roasted Moths",
       "status": "startup-verified",
       "gameId": "tony:tony",
       "edition": "Tony Tough and the Night of the Roasted Moths (CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Toonstruck",
       "status": "startup-verified",
       "gameId": "toon:toon",
       "edition": "Toonstruck (CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Torin's Passage",
       "status": "startup-verified",
       "gameId": "sci:torin",
       "edition": "Torins Passage (CD Windows).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Touché: The Adventures of the Fifth Musketeer",
       "status": "startup-verified",
       "gameId": "touche:touche",
       "edition": "Touche - The Adventures of the Fifth Musketeer (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Troll's Tale",
       "status": "startup-verified",
       "gameId": "agi:troll",
       "edition": "Troll's Tale (Floppy DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Urban Runner",
       "status": "startup-verified",
       "gameId": "gob:urban",
       "edition": "Urban Runner (Windows, CD).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Voyeur",
       "status": "startup-verified",
       "gameId": "voyeur:voyeur",
       "edition": "Voyeur (CD DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Waxworks",
       "status": "startup-verified",
       "gameId": "agos:waxworks",
       "edition": "Waxworks (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Ween: The Prophecy",
       "status": "startup-verified",
       "gameId": "gob:ween",
       "edition": "Ween The Prophecy (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Winnie the Pooh in the Hundred Acre Wood",
       "status": "startup-verified",
       "gameId": "agi:winnie",
       "edition": "Winnie the Pooh in the Hundred Acre Wood (Floppy DOS).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "Zak McKracken and the Alien Mindbenders",
       "status": "startup-verified",
       "gameId": "scumm:zak",
       "edition": "Zak McKracken and the Alien Mindbenders (Amiga).zip",
-      "observation": "Startup screen, menu, or first game scene rendered."
+      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
       "title": "007: James Bond - The Stealth Affair",
@@ -3304,12 +3364,6 @@
     {
       "title": "Shelter",
       "gameId": "wintermute:shelter",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
-      "title": "Simon the Sorcerer's Puzzle Pack: Demon in my Pocket",
-      "gameId": "agos:dimp",
       "status": "not-tested",
       "upstreamRating": "Good"
     },

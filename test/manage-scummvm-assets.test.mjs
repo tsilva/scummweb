@@ -14,6 +14,7 @@ function writeFile(targetPath, contents = "test") {
 }
 
 function createManagedTree(directory) {
+  writeFile(path.join(directory, "audio-start-control.mjs"), "export const installAudioStartControl = () => {};");
   writeFile(path.join(directory, "scummvm.html"), "<html></html>");
   writeFile(path.join(directory, "scummvm.js"), "console.log('boot');");
   writeFile(path.join(directory, "scummvm.wasm"), "wasm");

@@ -1,19 +1,21 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-import { filterCompatibilityEntries, getCompatibilitySummary } from "../lib/game-compatibility.mjs";
+import { compatibilityStatusLabels, filterCompatibilityEntries, getCompatibilitySummary } from "../lib/game-compatibility.mjs";
 import { renderCompatibilityDocs } from "../scripts/generate-compatibility-docs.mjs";
 
 const data = JSON.parse(await readFile(new URL("../data/game-compatibility.json", import.meta.url), "utf8"));
 
 test("compatibility records retain edition-specific evidence with distinct upstream ratings", () => {
-  assert.equal(data.schemaVersion, 2);
+  assert.equal(data.schemaVersion, 3);
   assert.match(data.recordedOn, /^\d{4}-\d{2}-\d{2}$/);
   const summary = getCompatibilitySummary(data.entries);
-  assert.equal(summary.total, summary.verified + summary.untested);
-  assert.ok(summary.verifiedGames >= 154);
-  assert.ok(summary.verified >= 168);
+  assert.equal(summary.total, summary.checked + summary.untested);
+  assert.equal(summary.checked, summary.verified + summary.warnings + summary.failed);
+  assert.ok(summary.checkedGames >= 154);
+  assert.ok(summary.checked >= 168);
   const ids = new Set();
+  const checkedGameIds = new Set(data.entries.filter((entry) => entry.status !== "not-tested").map((entry) => entry.gameId));
   for (const entry of data.entries) {
     assert.ok(entry.title);
     assert.ok(!entry.title.includes("(Demo) (Demo)"));
@@ -21,15 +23,59 @@ test("compatibility records retain edition-specific evidence with distinct upstr
     const key = `${entry.gameId}:${entry.edition ?? ""}`;
     assert.ok(!ids.has(key), `Duplicate entry: ${key}`);
     ids.add(key);
-    if (entry.status === "startup-verified") {
+    assert.ok(Object.hasOwn(compatibilityStatusLabels, entry.status));
+    if (entry.status !== "not-tested") {
       assert.ok(entry.edition && entry.observation);
       assert.equal(entry.upstreamRating, undefined);
+      if (entry.history) {
+        assert.ok(entry.history.length > 0);
+        for (const check of entry.history) {
+          assert.match(check.recordedOn, /^\d{4}-\d{2}-\d{2}$/);
+          assert.ok(Object.hasOwn(compatibilityStatusLabels, check.status));
+          assert.notEqual(check.status, "not-tested");
+          assert.ok(check.observation);
+        }
+        assert.equal(entry.history.at(-1).status, entry.status);
+        assert.equal(entry.history.at(-1).observation, entry.observation);
+      }
     } else {
       assert.equal(entry.status, "not-tested");
+      assert.ok(!checkedGameIds.has(entry.gameId), `${entry.gameId} already has a checked edition`);
       assert.equal(entry.edition, undefined);
       assert.ok(["Excellent", "Good", "Bugged"].includes(entry.upstreamRating));
     }
   }
+});
+
+test("warning and failure results are counted, searchable, and rendered independently of untested games", () => {
+  const entries = [
+    { title: "Same game", gameId: "test:game", edition: "DOS.zip", status: "startup-verified", observation: "Menu rendered." },
+    { title: "Same game", gameId: "test:game", edition: "Amiga.zip", status: "startup-failed", observation: "Cannot read resource." },
+    { title: "Music", gameId: "test:music", edition: "CD.zip", status: "startup-warning", observation: "Missing CD audio." },
+    { title: "Other", gameId: "test:other", status: "not-tested", upstreamRating: "Good" },
+  ];
+  assert.deepEqual(getCompatibilitySummary(entries), {
+    total: 4, verified: 1, verifiedGames: 1, warnings: 1, failed: 1,
+    checked: 3, checkedGames: 2, untested: 1,
+  });
+  assert.deepEqual(filterCompatibilityEntries(entries, { query: "resource", status: "startup-failed" }), [entries[1]]);
+  assert.deepEqual(filterCompatibilityEntries(entries, { query: "audio", status: "startup-warning" }), [entries[2]]);
+  const markdown = renderCompatibilityDocs({ ...data, entries });
+  assert.match(markdown, /## Startup failed[\s\S]*Cannot read resource\./);
+  assert.match(markdown, /## Startup with warnings[\s\S]*Missing CD audio\./);
+});
+
+test("a repaired edition keeps its prior failure alongside its current verified result", () => {
+  const entry = {
+    title: "Repaired", gameId: "test:fixed", edition: "DOS.zip", status: "startup-verified", observation: "First scene rendered.",
+    history: [
+      { recordedOn: "2026-11-03", status: "startup-failed", observation: "Could not read data." },
+      { recordedOn: "2026-11-04", status: "startup-verified", observation: "First scene rendered." },
+    ],
+  };
+  const markdown = renderCompatibilityDocs({ ...data, entries: [entry] });
+  assert.match(markdown, /First scene rendered\./);
+  assert.match(markdown, /Earlier check \(2026-11-03\): Startup failed — Could not read data\./);
 });
 
 test("search handles title accents, engine IDs, edition names, and combined status filters", () => {
