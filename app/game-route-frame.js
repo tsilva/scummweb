@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { scummvmAssetVersion } from "./asset-paths";
+import { getAssetVersion } from "./asset-paths";
 import { getLatestBrowserSave } from "./browser-saves.mjs";
 import { readCatalogGameArchive } from "./game-bucket.mjs";
 import GameBootOverlay from "./game-player/GameBootOverlay";
@@ -148,6 +148,8 @@ export default function GameRouteFrame({
   const shellRef = useRef(null);
   const frameRef = useRef(null);
   const archiveFiles = useRef(null);
+  const archiveReceiver = useRef(null);
+  const [archivePrepared, setArchivePrepared] = useState(false);
   const [archiveError, setArchiveError] = useState("");
   const [archiveProgress, setArchiveProgress] = useState(null);
   const [archiveCached, setArchiveCached] = useState(false);
@@ -198,7 +200,7 @@ export default function GameRouteFrame({
       const iframe = frameRef.current;
       function needsRetry() {
         const documentUrl = iframe?.contentDocument?.URL;
-        return !navigationController.signal.aborted && iframe && archiveFiles.current &&
+        return !navigationController.signal.aborted && iframe &&
           (!documentUrl || documentUrl === "about:blank");
       }
       if (!needsRetry()) return;
@@ -237,9 +239,24 @@ export default function GameRouteFrame({
       archiveFrame?.removeEventListener("load", restartArchiveBootTimer);
     }
 
-    if (archiveFrame) {
+    if (archiveFrame && archivePrepared) {
       restartArchiveBootTimer();
       archiveFrame.addEventListener("load", restartArchiveBootTimer, { once: true });
+    }
+
+    function deliverArchiveFiles() {
+      const receiver = archiveReceiver.current;
+      if (!archiveFiles.current || !receiver || receiver !== frameRef.current?.contentWindow) return;
+      try {
+        sendZipGameFiles(receiver, archiveFiles.current, { saveNamespace: game?.saveNamespace });
+        window.performance?.mark?.("scummweb:archive-transferred");
+        archiveFiles.current = null;
+        restartArchiveBootTimer();
+      } catch {
+        archiveFiles.current = null;
+        stopArchiveBootTimer();
+        setArchiveError("Could not prepare this version. Exit the player and try again.");
+      }
     }
 
     function handleMessage(event) {
@@ -248,17 +265,10 @@ export default function GameRouteFrame({
       }
 
       if (loadArchive && event.source === frameRef.current?.contentWindow) {
-        if (event.data?.type === "scummweb:local-game-ready" && archiveFiles.current) {
-          try {
-            sendZipGameFiles(event.source, archiveFiles.current, { saveNamespace: game?.saveNamespace });
-          } catch {
-            archiveFiles.current = null;
-            stopArchiveBootTimer();
-            setArchiveError("Could not prepare this version. Exit the player and try again.");
-            return;
-          }
-          archiveFiles.current = null;
-          restartArchiveBootTimer();
+        if (event.data?.type === "scummweb:local-game-ready") {
+          window.performance?.mark?.("scummweb:runtime-ready-for-files");
+          archiveReceiver.current = event.source;
+          deliverArchiveFiles();
           return;
         }
 
@@ -300,6 +310,7 @@ export default function GameRouteFrame({
         });
 
         if (event.data.reason === "rendered-frame-detected") {
+          window.performance?.mark?.("scummweb:game-ready");
           launchAnalytics.confirm();
         } else if (event.data.reason === "rendered-frame-timeout") {
           launchAnalytics.fail("first_frame_timeout");
@@ -321,6 +332,7 @@ export default function GameRouteFrame({
     }
 
     window.addEventListener("message", handleMessage);
+    deliverArchiveFiles();
 
     if (!archiveFrameDocument && archiveFrame?.contentWindow &&
         (!archiveFrame.contentDocument || archiveFrame.contentDocument.URL === "about:blank")) {
@@ -334,13 +346,16 @@ export default function GameRouteFrame({
       stopArchiveBootTimer();
       window.removeEventListener("message", handleMessage);
     };
-  }, [archiveFrameDocument, catalogLaunch, frameSrc, game?.saveNamespace, launchAnalytics, loadArchive, navigateHome, target]);
+  }, [archiveFrameDocument, archivePrepared, catalogLaunch, frameSrc, game?.saveNamespace, launchAnalytics, loadArchive, navigateHome, target]);
 
   useEffect(() => {
     const controller = new AbortController();
     setReadySignal(null);
     setArchiveProgress(null);
     setArchiveCached(false);
+    setArchivePrepared(false);
+    archiveFiles.current = null;
+    archiveReceiver.current = null;
     setSkipIntroConsumed(catalogIntroSlot !== null);
 
     async function openGame() {
@@ -354,7 +369,7 @@ export default function GameRouteFrame({
           const seeded = catalogIntroSlot !== null || (requested?.[1] === "seed" && requestedSlot === intro?.slot);
           const explicitSlot = requested?.[1] === "slot" || seeded ? requestedSlot : null;
           const slot = catalogIntroSlot ?? (launchHash === "#continue"
-            ? await getLatestBrowserSave(game, scummvmAssetVersion)
+            ? await getLatestBrowserSave(game, getAssetVersion("/scummvm.ini"))
             : explicitSlot);
           if (controller.signal.aborted) return;
           setIsResuming(catalogIntroSlot === null && slot !== null);
@@ -370,7 +385,7 @@ export default function GameRouteFrame({
         }
         if (loadArchive) {
           if (!catalogLaunch && game?.saveVersionId && window.location.hash === "#continue") {
-            const slot = await getLatestBrowserSave(game, scummvmAssetVersion);
+            const slot = await getLatestBrowserSave(game, getAssetVersion("/scummvm.ini"));
             if (controller.signal.aborted) return;
             if (slot !== null) {
               const localUrl = new URL(launchSrc, window.location.origin);
@@ -379,6 +394,10 @@ export default function GameRouteFrame({
               setIsResuming(true);
             }
           }
+          // Load/compile ScummVM while the archive downloads or opens. The
+          // handoff below supports either side becoming ready first.
+          window.performance?.mark?.("scummweb:runtime-requested");
+          setFrameSrc(launchSrc);
           const files = await loadArchive(controller.signal, (progress, { cached = false } = {}) => {
             if (!controller.signal.aborted) {
               setArchiveProgress(progress);
@@ -387,6 +406,8 @@ export default function GameRouteFrame({
           });
           if (controller.signal.aborted) return;
           archiveFiles.current = files;
+          window.performance?.mark?.("scummweb:archive-prepared");
+          setArchivePrepared(true);
         }
         setFrameSrc(launchSrc);
       } catch (error) {
@@ -631,8 +652,8 @@ export default function GameRouteFrame({
     <div className="game-route-shell" ref={shellRef}>
       <GameBootOverlay
         bootProgressPercent={bootProgressPercent}
-        bootStatusText={archiveError || (loadArchive && !frameSrc
-          ? archiveCached ? "Opening cached game ZIP…" : archiveProgress === null ? archiveLoadingText : `Downloading game ZIP (${archiveProgress}%)…`
+        bootStatusText={archiveError || (loadArchive && !archivePrepared
+          ? archiveCached ? "Opening cached game…" : archiveProgress === null ? archiveLoadingText : `Downloading game ZIP (${archiveProgress}%)…`
           : bootState.bootStatusText)}
         game={game}
         hasBootFailed={hasBootFailed}

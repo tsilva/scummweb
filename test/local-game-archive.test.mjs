@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { BlobWriter, Uint8ArrayReader, ZipWriter } from "@zip.js/zip.js";
-import { maxExpandedSize, maxLocalGameSize, openLocalGameZip, readLocalGameArchive, scanLocalGameArchive, validateGameZip } from "../app/local-game-archive.mjs";
+import { maxExpandedSize, maxLocalGameSize, openLocalGameZip, openPreparedGameArchive, readLocalGameArchive, scanLocalGameArchive, validateGameZip } from "../app/local-game-archive.mjs";
 
 async function gameZip(paths) {
   const writer = new ZipWriter(new BlobWriter());
@@ -10,6 +10,23 @@ async function gameZip(paths) {
   }
   return new File([await writer.close()], "game.zip");
 }
+
+test("prepared installations keep file offsets, paths, identities and current safety limits", async () => {
+  const bundle = new Blob([Uint8Array.of(1, 2, 3, 4, 5)]);
+  const manifest = { archiveSize: 10, entries: [["a.dat", 3, 1], ["audio/b.dat", 2, 2]] };
+  const identities = [];
+  const files = openPreparedGameArchive(bundle, manifest, { onEntries: (entries) => identities.push(entries) });
+  assert.deepEqual(await Promise.all(files.map(async ({ path, blob }) => [path, [...new Uint8Array(await blob.arrayBuffer())]])), [
+    ["a.dat", [1, 2, 3]], ["audio/b.dat", [4, 5]],
+  ]);
+  assert.deepEqual(identities, [manifest.entries]);
+  assert.throws(() => openPreparedGameArchive(bundle, manifest, { archiveLimit: 9 }), /download limit/);
+  assert.throws(() => openPreparedGameArchive(bundle, manifest, { expandedLimit: 4 }), /when unpacked/);
+  assert.throws(() => openPreparedGameArchive(bundle.slice(1), manifest), /incomplete/);
+  for (const entries of [[["../escape.dat", 5, 0]], [["A.dat", 3, 0], ["a.dat", 2, 0]], [["file.dat", -5, 0]], [["file.dat", 5, -1]]]) {
+    assert.throws(() => openPreparedGameArchive(bundle, { archiveSize: 10, entries }));
+  }
+});
 
 test("a wrapped game keeps its file layout under the detected game directory", async () => {
   const zip = await gameZip(["Demo/000.lfl", "Demo/audio/track.ogg", "__MACOSX/._Demo"]);

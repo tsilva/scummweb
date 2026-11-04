@@ -11,6 +11,7 @@ asset_version = os.environ.get("SCUMMVM_BUNDLE_ASSET_VERSION", "dev")
 games_origin = os.environ.get("SCUMMVM_GAMES_ORIGIN", "https://scummvm-games.tsilva.eu").rstrip("/")
 
 html = (source / "scummvm.html").read_text().replace("__SCUMMWEB_ASSET_VERSION__", asset_version)
+html = html.replace("/*__SCUMMWEB_FRAME_OBSERVER__*/", (source / "first-frame.mjs").read_text().replace("export ", "", 1))
 filesystem = (source / "scummvm_fs.js").read_text().replace("__SCUMMWEB_GAMES_ORIGIN__", json.dumps(games_origin))
 
 (target / "scummvm.html").write_text(html)

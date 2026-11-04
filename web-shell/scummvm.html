@@ -1,30 +1,52 @@
-<!doctypehtml><html lang=en-us><head><meta charset=utf-8><meta content="text/html; charset=utf-8"http-equiv=Content-Type><meta content="width=device-width,initial-scale=1,viewport-fit=cover"name=viewport><link href=manifest.json?v=__SCUMMWEB_ASSET_VERSION__ rel=manifest><link href=scummvm-192.png?v=__SCUMMWEB_ASSET_VERSION__ rel=apple-touch-icon><title>ScummWEB</title><style>body{margin:0;padding:none;background-color:#000}.emscripten{padding-right:0;margin-left:auto;margin-right:auto;display:block}textarea.emscripten{font-family:monospace;width:80%}#output{position:fixed;left:-10000px;top:0;width:1px!important;height:1px!important;padding:0;border:0;opacity:0;pointer-events:none;overflow:hidden;white-space:pre;z-index:-1}div.emscripten{text-align:center}div.emscripten_border{border:1px solid #000;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}canvas.emscripten{border:0 none;outline:none;box-shadow:none;background:#000;position:absolute;top:50%;left:50%;margin:0;width:auto;height:100%;overflow:hidden;display:block;transform:translate(-50%,-50%)}canvas.emscripten.scummweb-fill-screen{width:100%;height:100%}#progress{top:0;left:0;height:10px;width:100%;overflow:hidden;display:block;position:absolute;z-index:2;border:0;background:#c60}#progress[hidden]{display:none!important}progress::-moz-progress-bar{background:#f6e08a}progress::-webkit-progress-value{background:#f6e08a}progress{color:#f6e08a}#status{position:absolute;bottom:5em;right:0;padding:5px;text-align:right;border-top-left-radius:1em;border-bottom-left-radius:1em;padding-left:1em;padding-right:1em;z-index:3;border:3px solid #000;border-right:none;background:#f6e08a;font:bold large/1.4 "Trebuchet MS",Verdana,Tahoma,Sans-Serif}#status.error{background:red}</style></head><body><div class=emscripten><progress hidden id=progress max=100 value=0></progress></div><div class=emscripten id=status>Downloading ScummVM...</div><div class=emscripten_border><canvas class=emscripten id=canvas oncontextmenu=event.preventDefault() tabindex=-1></canvas></div><textarea class=emscripten id=output rows=8></textarea><script src=https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js crossorigin=anonymous integrity="sha512-mz0EI+Ay1uIJP7rZEX8C/JlTAcHRIQ8Sny4vxmmj8MSzDJgG9NxxY2pUmOGv1lO7imFIFMyjjCzEXEywNgaUdQ=="></script><script>
+<!doctypehtml><html lang=en-us><head><meta charset=utf-8><meta content="text/html; charset=utf-8"http-equiv=Content-Type><meta content="width=device-width,initial-scale=1,viewport-fit=cover"name=viewport><link href=manifest.json?v=__SCUMMWEB_ASSET_VERSION__ rel=manifest><link href=scummvm-192.png?v=__SCUMMWEB_ASSET_VERSION__ rel=apple-touch-icon><title>ScummWEB</title><link id=scummweb-js-preload rel=preload as=script href=scummvm.js><link id=scummweb-wasm-preload rel=preload as=fetch crossorigin=anonymous href=scummvm.wasm><style>body{margin:0;padding:none;background-color:#000}.emscripten{padding-right:0;margin-left:auto;margin-right:auto;display:block}textarea.emscripten{font-family:monospace;width:80%}#output{position:fixed;left:-10000px;top:0;width:1px!important;height:1px!important;padding:0;border:0;opacity:0;pointer-events:none;overflow:hidden;white-space:pre;z-index:-1}div.emscripten{text-align:center}div.emscripten_border{border:1px solid #000;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}canvas.emscripten{border:0 none;outline:none;box-shadow:none;background:#000;position:absolute;top:50%;left:50%;margin:0;width:auto;height:100%;overflow:hidden;display:block;transform:translate(-50%,-50%)}canvas.emscripten.scummweb-fill-screen{width:100%;height:100%}#progress{top:0;left:0;height:10px;width:100%;overflow:hidden;display:block;position:absolute;z-index:2;border:0;background:#c60}#progress[hidden]{display:none!important}progress::-moz-progress-bar{background:#f6e08a}progress::-webkit-progress-value{background:#f6e08a}progress{color:#f6e08a}#status{position:absolute;bottom:5em;right:0;padding:5px;text-align:right;border-top-left-radius:1em;border-bottom-left-radius:1em;padding-left:1em;padding-right:1em;z-index:3;border:3px solid #000;border-right:none;background:#f6e08a;font:bold large/1.4 "Trebuchet MS",Verdana,Tahoma,Sans-Serif}#status.error{background:red}</style></head><body><div class=emscripten><progress hidden id=progress max=100 value=0></progress></div><div class=emscripten id=status>Downloading ScummVM...</div><div class=emscripten_border><canvas class=emscripten id=canvas oncontextmenu=event.preventDefault() tabindex=-1></canvas></div><textarea class=emscripten id=output rows=8></textarea><script id=scummweb-runtime-assets>globalThis.SCUMMWEB_RUNTIME_ASSETS={};</script><script>
+const scummwebBrowserFsReady=new Promise((resolve,reject)=>{
+  const script=document.createElement("script");
+  script.src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js";
+  script.async=true;
+  script.crossOrigin="anonymous";
+  script.integrity="sha512-mz0EI+Ay1uIJP7rZEX8C/JlTAcHRIQ8Sny4vxmmj8MSzDJgG9NxxY2pUmOGv1lO7imFIFMyjjCzEXEywNgaUdQ==";
+  script.onload=resolve;
+  script.onerror=()=>reject(new Error("Could not load browser storage support."));
+  document.head.appendChild(script);
+});
+scummwebBrowserFsReady.catch(()=>{});
+</script><script>
 const scummwebInlineFrame = window.location.pathname === "srcdoc";
 const scummwebLaunchUrl = new URL(scummwebInlineFrame ? document.baseURI : window.location.href);
-const scummwebAudioControlUrl = new URL("./audio-start-control.mjs", scummwebLaunchUrl.href);
-const scummwebAudioVersion = scummwebLaunchUrl.searchParams.get("v");
-if (scummwebAudioVersion) scummwebAudioControlUrl.searchParams.set("v", scummwebAudioVersion);
+function buildVersionedAssetUrl(assetPath) {
+  const resolvedUrl = new URL(assetPath, scummwebLaunchUrl.href);
+  const contentVersion = resolvedUrl.origin === scummwebLaunchUrl.origin &&
+    globalThis.SCUMMWEB_RUNTIME_ASSETS?.[resolvedUrl.pathname];
+  const version = contentVersion || scummwebLaunchUrl.searchParams.get("v");
+  if (version) resolvedUrl.searchParams.set("v", version);
+  return resolvedUrl.toString();
+}
+const scummwebAudioControlUrl = new URL(buildVersionedAssetUrl("./audio-start-control.mjs"));
 // Load the gesture control before SDL installs its input listeners.
 const scummwebAudioControlReady = import(scummwebAudioControlUrl.href).then(({ installAudioStartControl }) => {
   installAudioStartControl({ document, window, getAudioContext: () => window.SDL3?.audioContext });
 });
 window.ScummvmFSReady = (async () => {
   const params = new URLSearchParams(scummwebLaunchUrl.search);
-  const moduleUrl = new URL("./scummvm_fs.js", scummwebLaunchUrl.href);
-  if (params.has("v")) moduleUrl.searchParams.set("v", params.get("v"));
+  const moduleUrl = new URL(buildVersionedAssetUrl("./scummvm_fs.js"));
   const { LocalGameFS, ScummvmFS, loadFilesystemIndex } = await import(moduleUrl);
   const isLocalGame = window.parent !== window && params.get("localGame") === "1";
   const mounts = isLocalGame ? ["data"] : ["games", "data"];
   const filesystems = await Promise.all(mounts.map(async (name) => {
     const index = await loadFilesystemIndex(name);
     performance.mark(`scummweb:index:${name}`);
-    return { name, index };
+    const filesystem = new ScummvmFS(null, index);
+    const engine = params.get("engine");
+    if (name === "data" && /^[a-z0-9_-]+$/.test(engine || "")) {
+      await filesystem.prefetch(`/plugins/lib${engine}.so`);
+    }
+    return { name, filesystem };
   }));
-  return { LocalGameFS, ScummvmFS, filesystems };
+  return { LocalGameFS, filesystems };
 })();
 // Observe early failures here and let setupFilesystem handle them when Wasm is ready.
 window.ScummvmFSReady.catch(() => {});
-</script><script>var statusElement=document.getElementById("status"),progressElement=document.getElementById("progress");function loadingDoneMessage(){return document.getElementById("progress").style.zIndex=0,window.__scummwebSetReadyStatePhase?window.__scummwebSetReadyStatePhase("runtime-ready","runtime-ready"):window.__scummwebPendingReadyStatePhase={state:"runtime-ready",reason:"runtime-ready"},"All downloads complete."}function decodeInode(e){_readUInt16LE=function(e,t){return e[t>>>=0]|e[t+1]<<8},_readUInt32LE=function(e,t){return(e[t]|e[t+1]<<8|e[t+2]<<16)+16777216*e[t+3]};for(var t=window.atob(e),n=new Uint8Array(t.length),o=0;o<t.length;o++)n[o]=t.charCodeAt(o);return{id:t.substr(30),size:_readUInt32LE(n,0),mode:_readUInt16LE(n,4),atime:0,mtime:0,ctime:0}}function encodeInode(e,t,n,o,i,r){_writeUInt16LE=function(e,t,n){return t=+t,e[n>>>=0]=255&t,e[n+1]=t>>>8,n+2},_writeUInt32LE=function(e,t,n){return t=+t,e[(n>>>=0)+3]=t>>>24,e[n+2]=t>>>16,e[n+1]=t>>>8,e[n]=255&t,n+4};var s=new Uint8Array(30+e.length);_writeUInt32LE(s,t,0),_writeUInt16LE(s,n,4);for(var a=0;a<e.length;a++)s[30+a]=e.charCodeAt(a);var l="";for(a=0;a<s.length;a++)l+=String.fromCharCode(s[a]);return btoa(l)}function setupDefaultLocalData(){return null===localStorage.getItem("/")?fetch((()=>{const e=new URL("scummvm.ini",scummwebLaunchUrl.href),t=new URLSearchParams(scummwebLaunchUrl.search).get("v");return t&&e.searchParams.set("v",t),e.toString()})()).then((e=>e.text().then((function(e){for(key in ini_data=btoa(e),folder_inode_id="b3da6754-64c0-40f0-92ad-83b6ca6ffec9",folder_inode={id:folder_inode_id,size:4096,mode:16895},ini_inode_id="1b4a97d1-4ce0-417f-985c-e0f22ca21aef",ini_inode={id:ini_inode_id,size:atob(ini_data).length,mode:33206},folder_entry_id="70879b79-8d58-400c-8143-332242320b34",folder_listing={"scummvm.ini":folder_entry_id},defaultLocalStorage={},defaultLocalStorage["/"]=encodeInode(folder_inode.id,folder_inode.size,folder_inode.mode,0,0,0),defaultLocalStorage[folder_inode_id]=btoa(JSON.stringify(folder_listing)),defaultLocalStorage[folder_entry_id]=encodeInode(ini_inode.id,ini_inode.size,ini_inode.mode,0,0,0),defaultLocalStorage[ini_inode_id]=ini_data,defaultLocalStorage)localStorage.setItem(key,defaultLocalStorage[key])})))):Promise.resolve()}
+</script><script>var statusElement=document.getElementById("status"),progressElement=document.getElementById("progress");function loadingDoneMessage(){return document.getElementById("progress").style.zIndex=0,window.__scummwebSetReadyStatePhase?window.__scummwebSetReadyStatePhase("runtime-ready","runtime-ready"):window.__scummwebPendingReadyStatePhase={state:"runtime-ready",reason:"runtime-ready"},"All downloads complete."}function decodeInode(e){_readUInt16LE=function(e,t){return e[t>>>=0]|e[t+1]<<8},_readUInt32LE=function(e,t){return(e[t]|e[t+1]<<8|e[t+2]<<16)+16777216*e[t+3]};for(var t=window.atob(e),n=new Uint8Array(t.length),o=0;o<t.length;o++)n[o]=t.charCodeAt(o);return{id:t.substr(30),size:_readUInt32LE(n,0),mode:_readUInt16LE(n,4),atime:0,mtime:0,ctime:0}}function encodeInode(e,t,n,o,i,r){_writeUInt16LE=function(e,t,n){return t=+t,e[n>>>=0]=255&t,e[n+1]=t>>>8,n+2},_writeUInt32LE=function(e,t,n){return t=+t,e[(n>>>=0)+3]=t>>>24,e[n+2]=t>>>16,e[n+1]=t>>>8,e[n]=255&t,n+4};var s=new Uint8Array(30+e.length);_writeUInt32LE(s,t,0),_writeUInt16LE(s,n,4);for(var a=0;a<e.length;a++)s[30+a]=e.charCodeAt(a);var l="";for(a=0;a<s.length;a++)l+=String.fromCharCode(s[a]);return btoa(l)}function setupDefaultLocalData(){return null===localStorage.getItem("/")?fetch(buildVersionedAssetUrl("scummvm.ini")).then((e=>e.text().then((function(e){for(key in ini_data=btoa(e),folder_inode_id="b3da6754-64c0-40f0-92ad-83b6ca6ffec9",folder_inode={id:folder_inode_id,size:4096,mode:16895},ini_inode_id="1b4a97d1-4ce0-417f-985c-e0f22ca21aef",ini_inode={id:ini_inode_id,size:atob(ini_data).length,mode:33206},folder_entry_id="70879b79-8d58-400c-8143-332242320b34",folder_listing={"scummvm.ini":folder_entry_id},defaultLocalStorage={},defaultLocalStorage["/"]=encodeInode(folder_inode.id,folder_inode.size,folder_inode.mode,0,0,0),defaultLocalStorage[folder_inode_id]=btoa(JSON.stringify(folder_listing)),defaultLocalStorage[folder_entry_id]=encodeInode(ini_inode.id,ini_inode.size,ini_inode.mode,0,0,0),defaultLocalStorage[ini_inode_id]=ini_data,defaultLocalStorage)localStorage.setItem(key,defaultLocalStorage[key])})))):Promise.resolve()}
 
 // BrowserFS 2 uses methods that expect their operation table as the receiver.
 // Emscripten 4 calls operations such as getattr and readdir as bare functions.
@@ -45,7 +67,7 @@ function setupLocalFilesystem() {
     EIO: 29, EISDIR: 31, ENOENT: 44, ENOSPC: 51, ENOTDIR: 54,
     ENOTEMPTY: 55, ENOTSUP: 58, EPERM: 63, EROFS: 69,
   };
-  return setupDefaultLocalData().then(() => new Promise((resolve, reject) => {
+  return scummwebBrowserFsReady.then(setupDefaultLocalData).then(() => new Promise((resolve, reject) => {
     BrowserFS.FileSystem.LocalStorage.Create((storageError, storage) => {
       if (storageError) return reject(storageError);
       BrowserFS.FileSystem.MountableFileSystem.Create({ "/": storage }, (mountError, mount) => {
@@ -71,16 +93,6 @@ globalThis.__scummwebSkipIntroSeedStatus = {
   files: [],
 };
 
-function buildVersionedAssetUrl(assetPath) {
-  const resolvedUrl = new URL(assetPath, scummwebLaunchUrl.href);
-  const v = new URLSearchParams(scummwebLaunchUrl.search).get("v");
-
-  if (v) {
-    resolvedUrl.searchParams.set("v", v);
-  }
-
-  return resolvedUrl.toString();
-}
 
 function findIniSection(iniText, name) {
   const sections = iniText.split(/^(?=\[)/m);
@@ -278,10 +290,11 @@ function setupFilesystem() {
       ? installMissingCatalogTarget().then(setupSkipIntroSaves)
       : undefined);
   Promise.all([window.ScummvmFSReady, localFilesReady])
-    .then(([{ ScummvmFS, filesystems }]) => {
-      for (const { name, index } of filesystems) {
+    .then(([{ filesystems }]) => {
+      for (const { name, filesystem } of filesystems) {
+        filesystem.FS = FS;
         FS.mkdir("/" + name);
-        FS.mount(new ScummvmFS(FS, index), {}, "/" + name + "/");
+        FS.mount(filesystem, {}, "/" + name + "/");
       }
       performance.mark("scummweb:filesystems-ready");
     })
@@ -349,7 +362,8 @@ if(canvas){
 const visibleCursorClass="scummvm-browser-cursor-visible";
 const visibleHintClass="scummvm-cursor-grab-hint-visible";
 const hintId="scummvm-cursor-grab-hint";
-const cursorGrabHintRevealDelayMs=2500;
+/*__SCUMMWEB_FRAME_OBSERVER__*/
+let stopObservingFrame=()=>{};
 const readyFramePollIntervalMs=120;
 const readyFrameSampleSize=32;
 const readyFrameTimeoutMs=15000;
@@ -363,7 +377,6 @@ const touchRelativeMoveMaxDeltaPx=48;
 let gameRunning=!launchPattern;
 let hoverActive=false;
 let launchPollTimer=0;
-let launchRevealTimer=0;
 let readyFramePollTimer=0;
 let readyFramePollStartedAt=0;
 let activeTouchGesture=null;
@@ -386,10 +399,17 @@ const showGrabHint=()=>{grabHint.classList.add(visibleHintClass)};
 const hideGrabHint=()=>{grabHint.classList.remove(visibleHintClass)};
 const hasLaunchOutput=()=>Boolean(launchPattern&&output&&launchPattern.test(output.value||""));
 const hasRenderableGameFrame=()=>{if(!readyFrameContext||!canvas.width||!canvas.height)return false;try{readyFrameContext.clearRect(0,0,readyFrameSampleSize,readyFrameSampleSize);readyFrameContext.drawImage(canvas,0,0,readyFrameSampleSize,readyFrameSampleSize);const{data}=readyFrameContext.getImageData(0,0,readyFrameSampleSize,readyFrameSampleSize);let brightSampleCount=0;for(let offset=0;offset<data.length;offset+=4){if(data[offset+3]===0)continue;const brightness=data[offset]+data[offset+1]+data[offset+2];if(brightness<=24)continue;brightSampleCount+=1;if(brightSampleCount>=48)return true}}catch{}return false};
-const setGameRunning=reason=>{if(gameRunning)return false;gameRunning=true;if(launchPollTimer){window.clearInterval(launchPollTimer);launchPollTimer=0}if(launchRevealTimer){window.clearTimeout(launchRevealTimer);launchRevealTimer=0}if(readyFramePollTimer){window.clearTimeout(readyFramePollTimer);readyFramePollTimer=0}readyFramePollStartedAt=0;emitGameReady(reason);return true};
+const setGameRunning=reason=>{if(gameRunning)return false;gameRunning=true;if(launchPollTimer){window.clearInterval(launchPollTimer);launchPollTimer=0}if(readyFramePollTimer){window.clearTimeout(readyFramePollTimer);readyFramePollTimer=0}readyFramePollStartedAt=0;emitGameReady(reason);stopObservingFrame();return true};
 const scheduleReadySignal=()=>{if(gameRunning)return false;markAwaitingFrame();if(hasRenderableGameFrame()){if(setGameRunning("rendered-frame-detected"))syncCursorPrompt();return true}if(readyFramePollTimer)return false;if(!readyFramePollStartedAt){readyFramePollStartedAt=Date.now()}const checkReadyFrame=()=>{readyFramePollTimer=0;if(gameRunning)return;if(hasRenderableGameFrame()){if(setGameRunning("rendered-frame-detected"))syncCursorPrompt();return}if(Date.now()-readyFramePollStartedAt>=readyFrameTimeoutMs){if(setGameRunning("rendered-frame-timeout"))syncCursorPrompt();return}readyFramePollTimer=window.setTimeout(checkReadyFrame,readyFramePollIntervalMs)};readyFramePollTimer=window.setTimeout(checkReadyFrame,readyFramePollIntervalMs);return true};
-const scheduleGameRunning=()=>{if(gameRunning||launchRevealTimer)return false;markLaunchDetected();if(launchPollTimer){window.clearInterval(launchPollTimer);launchPollTimer=0}launchRevealTimer=window.setTimeout((()=>{launchRevealTimer=0;scheduleReadySignal()}),cursorGrabHintRevealDelayMs);return true};
+const scheduleGameRunning=()=>{if(gameRunning)return false;markLaunchDetected();if(launchPollTimer){window.clearInterval(launchPollTimer);launchPollTimer=0}return scheduleReadySignal()};
 const syncCursorPrompt=()=>{if(!gameRunning&&hasLaunchOutput())scheduleGameRunning();if(gameRunning&&hoverActive){showBrowserCursor();showGrabHint();return}hideGrabHint();allowGameCursor()};
+stopObservingFrame=observeCanvasPresentation(canvas,()=>{
+  if(gameRunning)return true;
+  if(!hasLaunchOutput())return false;
+  markLaunchDetected();
+  if(setGameRunning("rendered-frame-detected"))syncCursorPrompt();
+  return true;
+});
 const promptCursorGrab=()=>{hoverActive=true;syncCursorPrompt()};
 const clearCursorPrompt=()=>{hoverActive=false;syncCursorPrompt()};
 const releaseCursorPrompt=()=>{hideGrabHint();allowGameCursor()};
@@ -454,4 +474,4 @@ if (isLocalGame) {
     throw error;
   };
 }
-</script><script>(function(){const v=new URLSearchParams(scummwebLaunchUrl.search).get("v");window.Module=window.Module||{};const originalLocateFile=window.Module.locateFile;window.Module.locateFile=function(path,prefix){const raw=typeof originalLocateFile=="function"?originalLocateFile(path,prefix):`${prefix||""}${path}`;if(!v)return raw;const resolved=new URL(raw,scummwebLaunchUrl.href);resolved.searchParams.set("v",v);return resolved.toString()};const script=document.createElement("script");script.async=true;script.src=v?`scummvm.js?v=${encodeURIComponent(v)}`:"scummvm.js";scummwebAudioControlReady.then(()=>document.body.appendChild(script))})();</script></body></html>
+</script><script>(function(){const v=new URLSearchParams(scummwebLaunchUrl.search).get("v");window.Module=window.Module||{};const originalLocateFile=window.Module.locateFile;window.Module.locateFile=function(path,prefix){const raw=typeof originalLocateFile=="function"?originalLocateFile(path,prefix):`${prefix||""}${path}`;return buildVersionedAssetUrl(raw)};const script=document.createElement("script");script.async=true;script.src=buildVersionedAssetUrl("scummvm.js");scummwebAudioControlReady.then(()=>document.body.appendChild(script))})();</script></body></html>

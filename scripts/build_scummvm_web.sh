@@ -551,9 +551,20 @@ finalize_dist_workspace() {
 }
 
 main() {
-  if [[ "$#" != 0 && ( "$#" != 1 || "$1" != --prepare-source ) ]]; then
-    echo "Usage: $0 [--prepare-source]" >&2
+  if [[ "$#" != 0 && ( "$#" != 1 || ( "$1" != --prepare-source && "$1" != --shell-only ) ) ]]; then
+    echo "Usage: $0 [--prepare-source|--shell-only]" >&2
     exit 1
+  fi
+
+  if [[ "${1:-}" == --shell-only ]]; then
+    # Reuse the compiled engine and regenerate only browser-shell assets.
+    node "$ROOT_DIR/scripts/manage_scummvm_assets.mjs" validate "$SHELL_DIR"
+    node "$ROOT_DIR/scripts/manage_scummvm_assets.mjs" sync "$SHELL_DIR" "$DIST_DIR"
+    python3 "$ROOT_DIR/scripts/stage_scummvm_web_shell.py" "$DIST_DIR"
+    node "$ROOT_DIR/scripts/generate-runtime-assets.mjs" "$DIST_DIR"
+    node "$ROOT_DIR/scripts/manage_scummvm_assets.mjs" sync "$DIST_DIR" "$SHELL_DIR"
+    echo "Regenerated browser shell in $DIST_DIR and $SHELL_DIR; compiled engine unchanged"
+    return
   fi
 
   log_stage "Prepare ScummVM $SCUMMVM_TAG and apply source patches"

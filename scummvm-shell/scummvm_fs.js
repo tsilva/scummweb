@@ -34,12 +34,11 @@ function getScummvmAssetVersion() {
 }
 
 function withCacheKey(url, cacheKey) {
-    if (!cacheKey) {
-        return url;
-    }
-
     const resolved = new URL(url, document.baseURI);
-    resolved.searchParams.set("v", cacheKey);
+    const contentVersion = resolved.origin === new URL(document.baseURI).origin &&
+        globalThis.SCUMMWEB_RUNTIME_ASSETS?.[resolved.pathname];
+    const version = contentVersion || cacheKey;
+    if (version) resolved.searchParams.set("v", version);
     return resolved.toString();
 }
 
@@ -198,6 +197,27 @@ export class ScummvmFS {
         return { ok: true, data: this.fs_index[path].data };
     }
 
+    // Fetch the selected engine while the main Wasm module loads. This fills
+    // the same block cache used by normal reads, avoiding a synchronous XHR
+    // and binary-string conversion on the engine startup path.
+    async prefetch(path) {
+        const file = this.get({ path });
+        if (!file.ok || !Number.isInteger(file.size) || file.size <= 0 || file.size > 16 * 1024 * 1024) return false;
+        try {
+            const response = await fetch(buildRemoteUrl(this.url, path), { signal: AbortSignal.timeout(10_000) });
+            if (!response.ok) return false;
+            const bytes = new Uint8Array(await response.arrayBuffer());
+            if (bytes.length !== file.size) return false;
+            for (let offset = 0, block = 0; offset < bytes.length; offset += RANGE_REQUEST_BLOCK_SIZE, block++) {
+                file.data[block] = bytes.subarray(offset, offset + RANGE_REQUEST_BLOCK_SIZE);
+            }
+            return true;
+        } catch {
+            // Keep the ordinary filesystem path available after a failed hint.
+            return false;
+        }
+    }
+
     read(args) {
         const path = args.path;
         logger(path, "read, args:" + JSON.stringify(args))
@@ -207,7 +227,7 @@ export class ScummvmFS {
             throw new FS.ErrnoError(ERRNO_CODES.EPERM);
         }
         const start = args.start;
-        const end = (args.end > (this.fs_index[path].size)) ? (this.fs_index[path].size) : args.end // sometimes we get requests beyond the end of the file (????)
+        const end = Math.min(args.end, this.fs_index[path].size - 1);
         var first_block = Math.floor(start / RANGE_REQUEST_BLOCK_SIZE)
         var last_block = Math.floor(end / RANGE_REQUEST_BLOCK_SIZE)
         if (start > end) {
@@ -230,12 +250,11 @@ export class ScummvmFS {
         if (alreadyLoaded) {
             data = new Uint8Array(end - start + 1);
             for (var block = first_block; block <= last_block; block++) {
-                // TODO: we should start at start at the request start and not block start (same for end)
-                for (var idx = Math.max(start, block * RANGE_REQUEST_BLOCK_SIZE); idx <= Math.min(end, block * RANGE_REQUEST_BLOCK_SIZE + this.fs_index[path].data[block].length - 1); idx++) {
-                    if (idx >= start && idx <= end) {
-                        data[idx - start] = this.fs_index[path].data[block][idx - block * RANGE_REQUEST_BLOCK_SIZE]
-                    }
-                }
+                const blockStart = block * RANGE_REQUEST_BLOCK_SIZE;
+                const bytes = this.fs_index[path].data[block];
+                const from = Math.max(start, blockStart);
+                const to = Math.min(end + 1, blockStart + bytes.length);
+                data.set(bytes.subarray(from - blockStart, to - blockStart), from - start);
             }
             logger(path, "cache loaded ")
         } else {
@@ -245,7 +264,7 @@ export class ScummvmFS {
         return { ok: true, data: data };
     }
     download(path, _url, first_block, last_block, start, end) {
-        self = this;
+        const self = this;
         let data = null;
         const req = new XMLHttpRequest();
         const url = buildRemoteUrl(_url, path);

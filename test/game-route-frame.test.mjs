@@ -82,3 +82,145 @@ for (const message of ["This ZIP link returned HTTP 404.", "Could not download t
     assert.deepEqual(navigations, ["/#library"]);
   });
 }
+
+function pendingArchivePlayer() {
+  const archive = Promise.withResolvers();
+  const hooks = [];
+  const messages = new Set();
+  const timers = new Map();
+  const deliveries = [];
+  let cursor = 0;
+  let dirty = false;
+  let children = [];
+  let layouts = [];
+  let effects = [];
+  let loadCount = 0;
+  const frame = {
+    contentDocument: { URL: "about:blank", getElementById: () => null },
+    contentWindow: { focus() {}, postMessage() {}, location: { replace(href) { frame.contentDocument.URL = href; } } },
+    addEventListener() {}, removeEventListener() {}, focus() {},
+  };
+  const window = {
+    location: { href: "https://example.test/sky/play", origin: "https://example.test", hash: "", search: "" },
+    setTimeout(callback, delay) { const id = Symbol(); timers.set(id, { callback, delay }); return id; },
+    clearTimeout(id) { timers.delete(id); },
+    addEventListener(name, handler) { if (name === "message") messages.add(handler); },
+    removeEventListener(name, handler) { if (name === "message") messages.delete(handler); },
+  };
+  function memo(factory, deps) {
+    const index = cursor++;
+    if (!hooks[index] || deps.some((dep, n) => !Object.is(dep, hooks[index].deps[n]))) {
+      hooks[index] = { deps, value: factory() };
+    }
+    return hooks[index].value;
+  }
+  function effect(callback, deps, queue) {
+    const index = cursor++;
+    const previous = hooks[index];
+    if (!previous || !deps || deps.some((dep, n) => !Object.is(dep, previous.deps[n]))) {
+      const entry = { deps };
+      hooks[index] = entry;
+      queue.push(() => { previous?.cleanup?.(); entry.cleanup = callback(); });
+    }
+  }
+  function Controls() {}
+  function Overlay() {}
+  const module = { exports: {} };
+  runInNewContext(code, {
+    module, exports: module.exports, window, URL, URLSearchParams, AbortController, HTMLElement: class {},
+    require(name) {
+      if (name === "react") return {
+        useState(initial) {
+          const index = cursor++;
+          hooks[index] ??= { value: typeof initial === "function" ? initial() : initial };
+          return [hooks[index].value, (update) => {
+            const value = typeof update === "function" ? update(hooks[index].value) : update;
+            if (!Object.is(value, hooks[index].value)) { hooks[index].value = value; dirty = true; }
+          }];
+        },
+        useRef: (current) => memo(() => ({ current }), []),
+        useCallback: (callback, deps) => memo(() => callback, deps),
+        useEffect: (callback, deps) => effect(callback, deps, effects),
+        useLayoutEffect: (callback, deps) => effect(callback, deps, layouts),
+      };
+      if (name === "react/jsx-runtime") return nativeRequire(name);
+      if (name === "next/navigation") return { useRouter: () => ({}) };
+      if (name === "./game-bucket.mjs") return { readCatalogGameArchive: (_url, { onProgress }) => {
+        loadCount++;
+        onProgress(13);
+        return archive.promise;
+      } };
+      if (name.endsWith("/GamePlayerControls")) return Controls;
+      if (name.endsWith("/GameBootOverlay")) return Overlay;
+      if (name.endsWith("/useBootState")) return { useBootState: () => ({ hasBootCompleted: false, hasBootFailed: false }) };
+      if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({}) };
+      if (name.endsWith("/useTouchClickMode")) return { useTouchClickActions: () => ({}) };
+      if (name.endsWith("/useTouchCursorPad")) return { useTouchCursorPad: () => ({}) };
+      if (name.endsWith("/game-launch-analytics.mjs")) return { createGameLaunchAnalytics: () => ({ start() {}, fail() {} }) };
+      if (name === "./recent-games") return { recordRecentGameTarget() {} };
+      if (name.endsWith("/zip-game-player")) return { sendZipGameFiles: (receiver, files) => deliveries.push({ receiver, files }) };
+      return {};
+    },
+  });
+  const props = { game: { target: "sky", slug: "sky" }, target: "sky", src: "/scummvm.html?localGame=1#sky", catalogArchiveUrl: "https://example.test/sky.zip" };
+  function render() {
+    let attempts = 0;
+    do {
+      assert.ok(attempts++ < 20, "component should settle");
+      dirty = false;
+      cursor = 0;
+      children = module.exports.default(props).props.children.filter(Boolean);
+      const iframe = children.find(({ type }) => type === "iframe");
+      if (iframe) iframe.props.ref.current = frame;
+      for (const run of layouts.splice(0)) run();
+      for (const run of effects.splice(0)) run();
+    } while (dirty);
+  }
+  return {
+    archive, frame, deliveries, timers, render,
+    get children() { return children; },
+    get loadCount() { return loadCount; },
+    get overlay() { return children.find(({ type }) => type === Overlay).props; },
+    ready(origin = window.location.origin, source = frame.contentWindow) {
+      for (const handler of [...messages]) handler({ origin, source, data: { type: "scummweb:local-game-ready" } });
+    },
+    unmount() { for (const hook of hooks) hook?.cleanup?.(); },
+  };
+}
+
+for (const runtimeFirst of [true, false]) {
+  test(`parallel launch hands off exactly once when ${runtimeFirst ? "runtime" : "archive"} is ready first`, async () => {
+    const player = pendingArchivePlayer();
+    player.render();
+    assert.ok(player.children.some(({ type }) => type === "iframe"), "runtime starts before the ZIP finishes");
+    assert.equal(player.overlay.bootStatusText, "Downloading game ZIP (13%)…");
+    assert.equal([...player.timers.values()].some(({ delay }) => delay === 120_000), false, "slow downloads do not trip the runtime timeout");
+    player.ready("https://untrusted.test");
+    player.ready("https://example.test", {});
+    if (runtimeFirst) player.ready();
+    assert.equal(player.deliveries.length, 0);
+    const files = [{ path: "sky.dnr", data: Uint8Array.of(1, 2, 3) }];
+    player.archive.resolve(files);
+    await new Promise(setImmediate);
+    player.render();
+    if (!runtimeFirst) { assert.equal(player.deliveries.length, 0); player.ready(); }
+    assert.equal(player.deliveries.length, 1);
+    assert.equal(player.deliveries[0].receiver, player.frame.contentWindow);
+    assert.equal(player.deliveries[0].files, files);
+    player.ready();
+    assert.equal(player.deliveries.length, 1);
+    assert.equal(player.loadCount, 1);
+    player.unmount();
+    assert.equal(player.timers.size, 0);
+  });
+}
+
+test("leaving a pending launch cancels its handoff", async () => {
+  const player = pendingArchivePlayer();
+  player.render();
+  player.ready();
+  player.unmount();
+  player.archive.resolve([{ path: "sky.dnr", data: Uint8Array.of(1) }]);
+  await new Promise(setImmediate);
+  assert.equal(player.deliveries.length, 0);
+});
