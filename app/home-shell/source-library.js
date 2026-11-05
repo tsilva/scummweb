@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { readRemoteGameArchive } from "../game-bucket.mjs";
 import { getGamePresentation, getImportedGamePresentation } from "../game-presentation";
 import { checkGameSource, isLocalZipSource, localGame, readGameSources, removeGameSources, requestGameSourceAccess, saveGameSources } from "../game-sources.mjs";
@@ -12,11 +12,9 @@ import { fileNode, handleNode, inspectLocalSourceFiles, prepareLocalZip } from "
 import LibraryView from "./library-view";
 import { libraryItems } from "./library-query.mjs";
 import { getGameFamilyKey, getVersionSaveNamespace, rememberGameVersion } from "../game-versions.mjs";
-import { getGameDialogId } from "./shared";
+import { getRecognizedGames } from "../recognized-games.mjs";
+import { buildGameExitHref, readHeroSelection } from "./hero-selection.mjs";
 import HomeHero from "./home-hero";
-import HeroStage from "./hero-stage";
-import GameDetailModal from "./game-detail-modal";
-import VersionedGameDetails from "./versioned-game-details";
 import GameDropOverlay, { chooseZipHandles } from "./local-game";
 import RecentGamesRail from "../recent-games-rail";
 
@@ -37,12 +35,8 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
-  const [detailHash, setDetailHash] = useState("");
-  const closeDetails = useCallback(() => {
-    window.history.replaceState(window.history.state, "", `${window.location.pathname}${window.location.search}#library`);
-    setDetailHash("");
-    setNotice("");
-  }, []);
+  const recognizedGames = useMemo(() => getRecognizedGames(catalog), [catalog]);
+  const [selection, setSelection] = useState(null);
   const [addedIds, setAddedIds] = useState(null);
   const revealObserver = useRef(null);
   const working = useRef(false);
@@ -51,21 +45,12 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
   const fileInput = useRef(null);
   const replacingSource = useRef(null);
   const entriesRef = useRef([]);
-  const detailsOpener = useRef(null);
 
   useEffect(() => {
-    const sync = () => { setDetailHash(window.location.hash); setNotice(""); };
-    const rememberOpener = (event) => {
-      const link = event.target.closest?.('a[aria-haspopup="dialog"], button[aria-haspopup="dialog"]');
-      if (link) detailsOpener.current = link;
-    };
+    const sync = () => setSelection(readHeroSelection(window.location.hash));
     sync();
-    document.addEventListener("click", rememberOpener, true);
     window.addEventListener("hashchange", sync);
-    return () => {
-      document.removeEventListener("click", rememberOpener, true);
-      window.removeEventListener("hashchange", sync);
-    };
+    return () => window.removeEventListener("hashchange", sync);
   }, []);
 
   useEffect(() => {
@@ -324,7 +309,7 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
         && await source.handle.queryPermission({ mode: "read" }) !== "granted") {
         updateStatus(source, "permission");
         const group = groups.find(({ versions }) => versions.some((version) => version.source?.id === source.id));
-        if (group) window.location.hash = group.dialogId;
+        if (group) router.push(buildGameExitHref(group.game));
         return;
       }
       game = { ...game, recentGameId: `source:${source.id}`, saveVersionId: legacySaves ? undefined : source.id,
@@ -379,7 +364,9 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
       summary: "Play this game from your library.",
       badge: "Library game",
     });
-    const game = { ...presentation, saveVersionId: source.id, skipIntro: null };
+    const route = recognizedGames.find((game) => getGameFamilyKey(game)
+      && getGameFamilyKey(game) === getGameFamilyKey(presentation));
+    const game = { ...presentation, href: route?.href, slug: route?.slug, saveVersionId: source.id, skipIntro: null };
     const locate = !source.url && (!isLocalZipSource(source) || ["missing", "locate"].includes(status));
     const locateLabel = "Locate ZIP";
     const needsAccess = status === "permission";
@@ -399,15 +386,13 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
     };
   });
   const groups = libraryItems(catalog, library);
+  const launchPending = loading || entries.some(({ status }) => status === "checking");
   const featuredGroup = featuredGame && groups.find(({ game }) => getGameFamilyKey(game) === getGameFamilyKey(featuredGame));
-  const featuredAction = featuredGroup && (featuredGame.importRequired || featuredGroup.versions.length > 1) ? {
-    dialogId: featuredGroup.dialogId,
-    label: `Choose a version of ${featuredGame.displayTitle}`,
-    disabled,
-    onClick: () => { window.location.hash = featuredGroup.dialogId; },
-  } : undefined;
-  const detail = groups.find((group) => detailHash === `#${group.dialogId}` || group.versions.some(({ source, game }) =>
-    !source && detailHash === `#${getGameDialogId(game)}`));
+  const featuredKey = getGameFamilyKey(featuredGame) || `catalog:${featuredGame?.target}`;
+  const heroGroups = featuredGroup || isHomePage ? groups : [...groups, {
+    key: featuredKey, game: featuredGame, title: featuredGame.displayTitle,
+    versions: [{ key: `catalog:${featuredGame.target}`, game: featuredGame }],
+  }];
 
   return (
     <>
@@ -419,16 +404,13 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
         }} />
       <GameDropOverlay importRoots={importRoots} disabled={disabled} pending={pending}
         result={importResult} onConfirm={confirmImport} />
-      {featuredGame && (isHomePage ? <HomeHero groups={groups} featuredGame={featuredGame} />
-        : <HeroStage featuredGame={featuredGame} sourceAction={featuredAction} />)}
+      {featuredGame && <HomeHero key={`${isHomePage}:${featuredKey}`} groups={heroGroups} featuredGame={featuredGame}
+        isHomePage={isHomePage} launchPending={launchPending} notice={notice} />}
       <div className="section-stack">
         <RecentGamesRail groups={groups} />
         <LibraryView items={groups} heading={libraryHeading} notice={notice}
-          onAddGame={() => chooseZip()} importDisabled={disabled} />
+          onAddGame={() => chooseZip()} importDisabled={disabled} selectedKey={selection || (!isHomePage ? featuredKey : null)} />
       </div>
-      {detail && <VersionedGameDetails key={detail.key} group={detail} notice={notice} onClose={closeDetails} openerElement={detailsOpener.current} />}
-      {!isHomePage && featuredGame?.importRequired && !featuredGroup && <GameDetailModal game={featuredGame}
-        notice="This game is not included due to copyright restrictions. If you own a copy, drop its ZIP onto this page to add it to your library." />}
     </>
   );
 }

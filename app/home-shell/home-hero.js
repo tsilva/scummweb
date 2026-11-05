@@ -1,30 +1,33 @@
 "use client";
 
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import HeroStage from "./hero-stage";
 import { getHeroPreloadImages } from "./hero-images.mjs";
-import { getGameFamilyKey } from "../game-versions.mjs";
-import { readHeroSelection } from "./hero-selection.mjs";
+import { chooseGameVersion, getGameFamilyKey, readChosenVersion, rememberGameVersion } from "../game-versions.mjs";
+import { buildGameExitHref, readHeroSelection } from "./hero-selection.mjs";
 
 const SLIDE_DURATION_MS = 8000;
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
-export default function HomeHero({ groups, featuredGame }) {
+export default function HomeHero({ groups, featuredGame, launchPending = false, isHomePage = true, notice }) {
+  const router = useRouter();
   const featuredKey = getGameFamilyKey(featuredGame) || `catalog:${featuredGame.target}`;
-  const ordered = [...groups.filter(({ key }) => key === featuredKey), ...groups.filter(({ key }) => key !== featuredKey)];
-  const slides = ordered.map((group) => ({ id: group.key, game: group.game,
-    sourceVersion: group.versions.length === 1 && group.versions[0].source ? group.versions[0] : undefined,
-    action: group.versions.length > 1 ? {
-      dialogId: group.dialogId,
-      label: `Choose a version of ${group.title}`,
-      onClick: () => { window.location.hash = group.dialogId; },
-    } : group.versions[0].action,
-  }));
+  const slides = groups.map((group) => ({ ...group, id: group.key }));
   const slideCount = slides.length;
   const [selectedId, setSelectedId] = useState(null);
   const [requestedId, setRequestedId] = useState(null);
-  const slideIndex = Math.max(0, slides.findIndex(({ id }) => id === (selectedId ?? requestedId)));
+  const slideIndex = Math.max(0, slides.findIndex(({ id }) => id === (selectedId ?? requestedId ?? featuredKey)));
+  const currentSlide = slides[slideIndex];
+  const [chosen, setChosen] = useState(null);
+  const versionKeys = JSON.stringify(currentSlide.versions.map(({ key, status }) => [key, status]));
+  const version = chooseGameVersion(currentSlide.versions, chosen?.group === currentSlide.id ? chosen.key : null);
+  useEffect(() => {
+    const language = new Intl.DisplayNames(["en"], { type: "language" }).of(navigator.language.split("-")[0]);
+    const preferred = chooseGameVersion(currentSlide.versions, readChosenVersion(currentSlide.id), language);
+    setChosen({ group: currentSlide.id, key: preferred.key });
+  }, [currentSlide.id, versionKeys]);
   const preloadedImages = useRef(new Map());
   const preloadKey = JSON.stringify(getHeroPreloadImages(slides, slideIndex));
   const [rotationPaused, setRotationPaused] = useState(null);
@@ -32,7 +35,7 @@ export default function HomeHero({ groups, featuredGame }) {
   const [isPageVisible, setIsPageVisible] = useState(false);
   const [hasPointer, setHasPointer] = useState(false);
   const [hasFocus, setHasFocus] = useState(false);
-  const isPaused = rotationPaused ?? prefersReducedMotion;
+  const isPaused = rotationPaused ?? (!isHomePage || Boolean(requestedId) || prefersReducedMotion);
   const isCountingDown = isPageVisible && !isPaused && !hasPointer && !hasFocus;
 
   useEffect(() => {
@@ -103,11 +106,16 @@ export default function HomeHero({ groups, featuredGame }) {
     return () => document.removeEventListener("visibilitychange", updateVisibility);
   }, []);
 
-  function advanceSlide(direction) {
-    setSelectedId(slides[(slideIndex + direction + slideCount) % slideCount].id);
+  function advanceSlide(direction, navigate = true) {
+    const next = slides[(slideIndex + direction + slideCount) % slideCount];
+    setSelectedId(next.id);
+    if (navigate) {
+      setRotationPaused(true);
+      router.push(buildGameExitHref(next.game), { scroll: false });
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
   }
 
-  const currentSlide = slides[slideIndex];
   const RotationIcon = isPaused ? Play : Pause;
 
   return (
@@ -159,18 +167,28 @@ export default function HomeHero({ groups, featuredGame }) {
                   animationDuration: `${SLIDE_DURATION_MS}ms`,
                   animationPlayState: isCountingDown ? "running" : "paused",
                 }}
-                onAnimationEnd={() => advanceSlide(1)}
+                onAnimationEnd={() => advanceSlide(1, false)}
               />
             </svg>
             <RotationIcon size={15} fill="currentColor" aria-hidden="true" />
           </button>
         </div>
       ) : null}
-      featuredGame={currentSlide.game}
-      sourceAction={currentSlide.action}
-      sourceVersion={currentSlide.sourceVersion}
-      isHomePage
-      isInitialSlide={slideIndex === 0 && requestedId !== currentSlide.id}
+      featuredGame={version.game}
+      launchPending={launchPending || (currentSlide.versions.length > 1 && chosen?.group !== currentSlide.id)}
+      sourceAction={version.source ? undefined : version.action}
+      sourceVersion={version.source ? version : undefined}
+      versions={currentSlide.versions}
+      selectedVersionKey={version.key}
+      onVersionChange={(key) => {
+        setChosen({ group: currentSlide.id, key });
+        rememberGameVersion(currentSlide.id, key);
+        setRotationPaused(true);
+      }}
+      onLaunch={() => rememberGameVersion(currentSlide.id, version.key)}
+      notice={notice}
+      isHomePage={isHomePage}
+      isInitialSlide={!selectedId && !requestedId}
     />
   );
 }

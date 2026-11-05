@@ -5,13 +5,15 @@ import { runInNewContext } from "node:vm";
 import test from "node:test";
 import { renderToStaticMarkup } from "react-dom/server";
 import swc from "next/dist/build/swc/index.js";
+import { chooseGameVersion, readChosenVersion, rememberGameVersion } from "../app/game-versions.mjs";
 
 await swc.loadBindings();
 let savedIdentity = null;
 const saveHooks = { useState: () => [savedIdentity, () => {}], useEffect() {} };
-const staticHooks = { useState: (value) => [value, () => {}], useRef: (value) => ({ current: value }), useEffect() {} };
+let stateIndex = 0, preferredVersion = null;
+const staticHooks = { useState: (value) => [stateIndex++ === 2 ? preferredVersion : value, () => {}], useRef: (value) => ({ current: value }), useEffect() {} };
 
-async function loadComponent(path, imports = {}, hooks = saveHooks) {
+async function loadComponent(path, imports = {}, hooks = saveHooks, globals = {}) {
   const url = new URL(path, import.meta.url);
   const nativeRequire = createRequire(url);
   const { code } = await swc.transform(await readFile(url, "utf8"), {
@@ -21,6 +23,7 @@ async function loadComponent(path, imports = {}, hooks = saveHooks) {
   });
   const compiled = { exports: {} };
   runInNewContext(code, {
+    ...globals,
     module: compiled, exports: compiled.exports,
     require(name) {
       if (name === "react") return hooks;
@@ -31,29 +34,55 @@ async function loadComponent(path, imports = {}, hooks = saveHooks) {
   return compiled.exports.default;
 }
 
-const LaunchButton = await loadComponent("../app/launch-button.js");
-const SourceLaunchActions = await loadComponent("../app/home-shell/source-launch-actions.js");
+const LaunchPending = await loadComponent("../app/launch-pending.js");
+const useBrowserSave = (game) => savedIdentity === undefined ? undefined
+  : savedIdentity === (game.saveVersionId || game.target) ? 0 : null;
+const LaunchButton = await loadComponent("../app/launch-button.js", {
+  "./use-browser-save": useBrowserSave, "./launch-pending": LaunchPending,
+});
+const SourceLaunchActions = await loadComponent("../app/home-shell/source-launch-actions.js", {
+  "../use-browser-save": useBrowserSave, "../launch-pending": LaunchPending,
+});
 const HeroStage = await loadComponent("../app/home-shell/hero-stage.js", {
   "../launch-button": LaunchButton,
+  "../launch-pending": LaunchPending,
   "./source-launch-actions": SourceLaunchActions,
   "./decorative-image": () => null,
   "./shell-icon": () => null,
   "./hero-title": ({ children }) => children,
+  "./game-screenshots": () => null,
   "./hero-images.mjs": { getHeroImageProps: () => ({}) },
   "./hero-title-fit.mjs": { fitHeroTitle() {} },
   "./shared": { getGameDialogId: () => "game-test", getHeroImageStyle: () => ({}) },
 });
 const HomeHero = await loadComponent("../app/home-shell/home-hero.js", {
+  "next/navigation": { useRouter: () => ({ push() {} }) },
   "./hero-stage": HeroStage,
   "./hero-images.mjs": { getHeroPreloadImages: () => [] },
-  "../game-versions.mjs": { getGameFamilyKey: (game) => game.target },
+  "../game-versions.mjs": { getGameFamilyKey: (game) => game.target, chooseGameVersion, readChosenVersion, rememberGameVersion },
 }, staticHooks);
 const game = { target: "sky", displayTitle: "Beneath a Steel Sky", playHref: "/beneath-a-steel-sky/play" };
 
-function slideFor(versions) {
+function slideFor(versions, launchPending = false, options = {}) {
+  stateIndex = 0;
   return HomeHero({ featuredGame: game, groups: [{ key: game.target, title: game.displayTitle,
-    game, dialogId: "game-test", versions }] });
+    game, dialogId: "game-test", versions }], launchPending, ...options });
 }
+
+test("game routes render the game's copy and start with rotation paused", () => {
+  savedIdentity = null;
+  const versions = [{ key: "catalog:sky", game }];
+  const slide = slideFor(versions, false, { isHomePage: false, groups: [
+    { key: game.target, game, versions },
+    { key: "queen", game: { ...game, target: "queen" }, versions },
+  ] });
+  assert.equal(slide.props.isHomePage, false);
+  assert.equal(slide.props.isInitialSlide, true);
+  const html = renderToStaticMarkup(slide);
+  assert.match(html, /Resume slideshow/);
+  assert.match(html, /Beneath a Steel Sky/);
+  assert.doesNotMatch(html, /More Info|Back to library|aria-haspopup="dialog"/);
+});
 
 test("catalog slideshow offers Continue with the resume URL after a player save", () => {
   const slide = slideFor([{ key: "catalog:sky", game }]);
@@ -69,7 +98,7 @@ test("catalog slideshow offers Continue with the resume URL after a player save"
 
 test("imported slideshow shares save-aware actions and never reuses another version's save", () => {
   const clicks = [];
-  const version = { key: "source:zip", source: { id: "zip" }, game,
+  const version = { key: "source:zip", source: { id: "zip" }, game: { ...game, saveVersionId: "source:zip" },
     action: { onClick: () => clicks.push("fresh"), onContinue: () => clicks.push("continue") } };
   const slide = slideFor([version]);
   assert.equal(slide.props.sourceVersion, version);
@@ -86,7 +115,7 @@ test("imported slideshow shares save-aware actions and never reuses another vers
 });
 
 test("file reconnection takes precedence over Continue in the slideshow", () => {
-  const version = { key: "source:zip", source: { id: "zip" }, game,
+  const version = { key: "source:zip", source: { id: "zip" }, game: { ...game, saveVersionId: "source:zip" },
     action: { needsAccess: true, onClick() {}, onContinue() {} } };
   savedIdentity = version.key;
   const html = renderToStaticMarkup(slideFor([version]));
@@ -100,11 +129,90 @@ test("file reconnection takes precedence over Continue in the slideshow", () => 
   assert.match(renderToStaticMarkup(slideFor([version])), />Locate ZIP<\/button>/);
 });
 
-test("multiple versions keep the slideshow's version chooser", () => {
+test("multiple versions expose an inline chooser and launch the selected catalog edition", () => {
   savedIdentity = "sky";
+  preferredVersion = { group: game.target, key: "catalog:sky" };
   const slide = slideFor([{ key: "catalog:sky", game }, { key: "source:zip", game, source: { id: "zip" } }]);
   assert.equal(slide.props.sourceVersion, undefined);
   const html = renderToStaticMarkup(slide);
-  assert.match(html, /aria-controls="game-test"/);
-  assert.doesNotMatch(html, />Continue|#continue/);
+  assert.match(html, /<select/);
+  assert.match(html, />Continue<\/a>/);
+  assert.doesNotMatch(html, /aria-haspopup="dialog"/);
+  preferredVersion = null;
+});
+
+test("refresh never exposes a launch action before versions and saves are checked", () => {
+  const versions = [{ key: "catalog:sky", game }];
+  savedIdentity = "sky";
+  const restoring = renderToStaticMarkup(slideFor(versions, true));
+  assert.match(restoring, /disabled="" aria-busy="true" aria-label="Checking saved games"/);
+  assert.doesNotMatch(restoring, />Continue|#continue|Start from beginning|href="\/beneath-a-steel-sky\/play/);
+  savedIdentity = undefined;
+  const checking = renderToStaticMarkup(slideFor(versions));
+  assert.match(checking, /launch-button-pending/);
+  assert.doesNotMatch(checking, />Continue|#continue|href="\/beneath-a-steel-sky\/play/);
+  savedIdentity = null;
+  assert.match(renderToStaticMarkup(slideFor(versions)), />Play<\/a>/);
+  savedIdentity = "sky";
+  const restored = [...versions, { key: "source:other", game, source: { id: "other" } }];
+  const choosing = renderToStaticMarkup(slideFor(restored));
+  assert.match(choosing, /<select/);
+  assert.match(choosing, /Checking saved games/);
+  assert.doesNotMatch(choosing, />Continue|#continue/);
+});
+
+test("imported games wait for saves while access and unavailable actions remain immediate", () => {
+  savedIdentity = undefined;
+  const version = { key: "source:zip", game, action: { onClick() {}, onContinue() {} } };
+  assert.match(renderToStaticMarkup(SourceLaunchActions({ version })), /launch-button-pending/);
+  version.action.needsAccess = true;
+  assert.match(renderToStaticMarkup(SourceLaunchActions({ version })), />Allow file access<\/button>/);
+  assert.match(renderToStaticMarkup(LaunchButton({ game: { ...game, importRequired: true } })), />Game not included/);
+});
+
+test("save checks distinguish pending, no save and slot zero without leaking across versions", async () => {
+  let state = null, dependencies, pendingEffect, cleanup;
+  const requests = [], listeners = new Map();
+  const hooks = {
+    useState: () => [state, (next) => { state = next; }],
+    useEffect(effect, next) {
+      if (!dependencies || next.some((value, i) => value !== dependencies[i])) {
+        pendingEffect = effect;
+        dependencies = next;
+      }
+    },
+  };
+  const hook = await loadComponent("../app/use-browser-save.js", {
+    "./asset-paths": { scummvmAssetVersion: "test" },
+    "./browser-saves.mjs": { getLatestBrowserSave: () => new Promise((resolve) => requests.push(resolve)) },
+  }, hooks, { window: {
+    addEventListener: (event, fn) => listeners.set(event, fn),
+    removeEventListener: (event) => listeners.delete(event),
+  } });
+  function commit() { cleanup?.(); cleanup = pendingEffect(); pendingEffect = null; }
+  assert.equal(hook(game), undefined);
+  commit();
+  requests.shift()(0);
+  await new Promise(setImmediate);
+  assert.equal(hook(game), 0);
+  const imported = { ...game, importRequired: true, saveVersionId: "other" };
+  assert.equal(hook(imported), undefined);
+  commit();
+  requests.shift()(null);
+  await new Promise(setImmediate);
+  assert.equal(hook(imported), null);
+  listeners.get("scummweb:saves-changed")();
+  listeners.get("storage")();
+  const older = requests.shift(), newer = requests.shift();
+  newer(2);
+  await new Promise(setImmediate);
+  older(null);
+  await new Promise(setImmediate);
+  assert.equal(hook(imported), 2);
+  listeners.get("pageshow")();
+  cleanup();
+  requests.shift()(null);
+  await new Promise(setImmediate);
+  assert.equal(hook(imported), 2);
+  assert.equal(listeners.size, 0);
 });

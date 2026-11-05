@@ -14,11 +14,11 @@ export default function HomeShell({
   children,
 }) {
   const isHomePage = pageMode === "home";
-  const libraryHeading = isHomePage ? "Game Library" : "Freeware Adventure Library";
+  const libraryHeading = "Game Library";
 
   return (
     <>
-      <nav className={isHomePage ? "dashboard-nav dashboard-nav-home" : "dashboard-nav"}>
+      <nav className={pageMode === "compatibility" ? "dashboard-nav" : "dashboard-nav dashboard-nav-home"}>
         <div className="nav-cluster nav-cluster-left">
           <div className="nav-brand-group">
             <div className="nav-brand-stack">
