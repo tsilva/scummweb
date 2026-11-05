@@ -1,5 +1,6 @@
 import { captureFilesystem, restoreSaveGroups, safePath } from "./filesystem.mjs";
 import { getVersionSaveNamespace } from "../game-versions.mjs";
+import { saveIndexPrefix } from "../../web-shell/continue-saves.mjs";
 
 export const saveLockName = "scummweb-saves";
 const maxBytes = 64 * 1024 * 1024;
@@ -213,4 +214,9 @@ export async function applyImport({ storage, rows, destinations, revision, initi
   // Preserve both sides durably before any active files change.
   await preserve(archived);
   restoreSaveGroups(storage, updates, revision, initialConfig);
+  if (updates.length && typeof storage.key === "function") {
+    // Native save metadata belongs to the old bytes, even if sizes/times match.
+    const keys = Array.from({ length: storage.length }, (_, index) => storage.key(index));
+    for (const key of keys) if (key?.startsWith(saveIndexPrefix)) storage.removeItem(key);
+  }
 }
