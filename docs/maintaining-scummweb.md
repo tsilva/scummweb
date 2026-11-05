@@ -16,8 +16,23 @@ them. The shell fills missing `originalsaveload`, `original_gui` (SCUMM), and
 games and personal imports alike. Existing application and per-game choices
 take precedence. This also updates older browser configurations without
 replacing game entries, save paths or other settings. Games without an original
-screen option retain their engine's usual interface; ScummVM's global menu
-remains available. Save queries do not change these settings.
+screen option retain their engine's usual interface. Save queries do not change
+these settings.
+
+The player's **Open game menu** button appears only for explicitly supported
+native menu shortcuts. It never sends Ctrl+F5 or falls back to ScummVM's global
+menu. Current mappings cover the full versions of Beneath a Steel Sky (F5),
+Flight of the Amazon Queen (F1, journal), and Broken Sword: The Shadow of the
+Templars (F5). Demos, interview editions and unrecognized games omit the button;
+their existing in-game controls remain available. Games can restrict menu access
+during intros, cutscenes or scripted sequences.
+
+Maintain the allowlist in `app/game-player/game-menu.mjs`, shared with the launch
+verification harness. Match engine and game identity, check edition restrictions,
+and trace the shortcut to the native interface in the pinned engine source before
+adding support. Do not add shortcuts that can open ScummVM's menu depending on
+saved settings or platform; SCUMM's F5 is one such shortcut. Run
+`node --test test/game-menu.test.mjs test/game-route-frame.test.mjs` after changes.
 
 Imports matching an included game's data use the bundled copy and do not add a
 second version. The default for other editions also prefers the included copy;
@@ -63,6 +78,21 @@ Run `node --test test/browser-saves.test.mjs test/continue-saves.test.mjs` for
 latest-save ordering, checkpoint exclusion, missing files, native query scope,
 version isolation and engine exceptions. Patch 13 owns the native bridge;
 rebuild the compiled runtime when changing it.
+
+### Player controls
+
+Desktop top controls appear for three seconds once the boot presentation
+finishes. Moving into the top 80 CSS pixels reveals them; leaving that area
+starts a one-second delay followed by a short fade. Continued movement below
+the reveal area does not restart the delay. Hidden buttons do not intercept
+pointer input and remain available through keyboard navigation. Focus within
+the controls prevents hiding. Reduced-motion preferences disable the fade.
+
+The visibility observer listens in the host and same-origin game documents,
+reattaches after frame navigation, and releases listeners and timers on cleanup.
+Pointer capture hides the controls; releasing it or pressing **Esc** reveals
+them for three seconds. Opening the game menu pins them until **Esc** or
+cursor capture. Touch/mobile controls and bottom actions do not auto-hide.
 
 ### Mobile play
 

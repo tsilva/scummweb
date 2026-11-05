@@ -1,6 +1,11 @@
 import { LogOut, Maximize, Menu, Minimize, Ratio, StretchHorizontal } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { observeControlVisibility } from "./control-visibility.mjs";
 
 export default function GamePlayerControls({
+  autoHide = false,
+  frameRef,
+  menuShortcut,
   handleControlMouseDown,
   isFillScreenAspect,
   isFullscreen,
@@ -15,19 +20,39 @@ export default function GamePlayerControls({
   showAspectRatioControl,
   showExitControl,
   showFullscreenControl,
-  showScummvmMenuButton,
+  showGameMenuButton,
   showSkipIntroAction,
   showTouchClickButtons,
 }) {
+  const controlsRef = useRef(null);
+  const visibilityRef = useRef(null);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    if (!autoHide) return;
+    const visibility = observeControlVisibility({
+      controls: controlsRef.current,
+      frame: frameRef.current,
+      hostWindow: window,
+      menuShortcut,
+      onVisible: setVisible,
+    });
+    visibilityRef.current = visibility;
+    return () => {
+      visibility.dispose();
+      visibilityRef.current = null;
+    };
+  }, [autoHide, frameRef, menuShortcut]);
+
   const FullscreenIcon = isFullscreen ? Minimize : Maximize;
   const AspectRatioIcon = isFillScreenAspect ? StretchHorizontal : Ratio;
   const fullscreenLabel = isFullscreen ? "Exit fullscreen" : "Enter fullscreen";
   const aspectRatioLabel = isFillScreenAspect ? "Preserve aspect ratio" : "Fill screen";
-  const scummvmMenuLabel = "Open ScummVM menu";
+  const gameMenuLabel = "Open game menu";
 
   return (
     <>
-      <div className="game-route-controls">
+      <div className={`game-route-controls${autoHide && !visible ? " is-idle" : ""}`} ref={controlsRef}>
         {showExitControl ? (
           <div className="game-route-control-group is-left">
             <button
@@ -68,13 +93,16 @@ export default function GamePlayerControls({
               <FullscreenIcon aria-hidden="true" size={18} strokeWidth={2} />
             </button>
           ) : null}
-          {showScummvmMenuButton ? (
+          {showGameMenuButton ? (
             <button
-              aria-label={scummvmMenuLabel}
+              aria-label={gameMenuLabel}
               className="game-route-control-button is-menu"
-              onClick={onOpenMenu}
+              onClick={() => {
+                visibilityRef.current?.holdForMenu();
+                onOpenMenu();
+              }}
               onMouseDown={handleControlMouseDown}
-              title={scummvmMenuLabel}
+              title={gameMenuLabel}
               type="button"
             >
               <Menu aria-hidden="true" size={18} strokeWidth={2} />
