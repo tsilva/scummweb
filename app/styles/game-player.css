@@ -195,42 +195,6 @@
   line-height: 1.45;
 }
 
-.game-route-boot-progress-shell {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  margin-top: 0.8rem;
-}
-
-.game-route-boot-progress-track {
-  position: relative;
-  flex: 1;
-  height: 0.45rem;
-  border-radius: 999px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.14);
-}
-
-.game-route-boot-progress-fill {
-  position: absolute;
-  inset: 0 auto 0 0;
-  border-radius: inherit;
-  background: linear-gradient(90deg, #f6e08a 0%, #fff1bb 100%);
-}
-
-.game-route-boot-progress-value {
-  min-width: 2.8rem;
-  color: rgba(248, 242, 216, 0.84);
-  font:
-    700
-    0.82rem/1
-    "Trebuchet MS",
-    Verdana,
-    Tahoma,
-    sans-serif;
-  text-align: right;
-}
-
 .game-route-boot-actions {
   display: flex;
   justify-content: flex-start;
@@ -1013,9 +977,4 @@
   .game-route-boot-summary {
     font-size: 0.94rem;
   }
-
-  .game-route-boot-progress-shell {
-    gap: 0.6rem;
-  }
-
 }

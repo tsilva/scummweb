@@ -22,6 +22,9 @@ export default function SettingsPanel({ catalog, scummvmVersion, sourceInfoDate 
   const [error, setError] = useState("");
   const [data, setData] = useState({ sets: [], stored: [], destinations: [], revision: "" });
   const [review, setReview] = useState(null);
+  const [downloadReady, setDownloadReady] = useState(null);
+
+  useEffect(() => () => { if (downloadReady) URL.revokeObjectURL(downloadReady.href); }, [downloadReady]);
 
   async function refresh() {
     const sources = await readGameSources(catalog, getGamesOrigin());
@@ -38,6 +41,7 @@ export default function SettingsPanel({ catalog, scummvmVersion, sourceInfoDate 
     setBusy(true);
     setError("");
     setNotice("");
+    setDownloadReady(null);
     try { await action(); }
     catch (failure) { setError(failure?.message || "Could not update saved games. Your current progress is still available."); }
     finally { working.current = false; setBusy(false); }
@@ -98,9 +102,11 @@ export default function SettingsPanel({ catalog, scummvmVersion, sourceInfoDate 
       const link = document.createElement("a");
       link.href = href;
       link.download = `scummweb-saves-${new Date().toISOString().slice(0, 10)}.zip`;
+      setDownloadReady({ href, name: link.download });
+      document.body.appendChild(link);
       link.click();
-      setTimeout(() => URL.revokeObjectURL(href), 60000);
-      setNotice("Backup downloaded. Keep the ZIP somewhere safe.");
+      link.remove();
+      setNotice("Backup ready. Keep the ZIP somewhere safe.");
     });
   }
 
@@ -148,7 +154,9 @@ export default function SettingsPanel({ catalog, scummvmVersion, sourceInfoDate 
           <button type="button" className="settings-close" aria-label="Close settings" disabled={busy} onClick={close}><X size={24} /></button>
         </header>
         {error && <p className="settings-error" role="alert">{error}</p>}
-        <p className="settings-status" role="status">{busy ? "Working with saved games…" : notice}</p>
+        <p className="settings-status" role="status">{busy ? "Working with saved games…" : notice}
+          {downloadReady && <a className="settings-download" href={downloadReady.href} download={downloadReady.name}>Download ZIP</a>}
+        </p>
         <button type="button" className={`settings-section-heading ${section === "saves" ? "is-active" : ""}`}
           aria-expanded={section === "saves"} aria-controls="settings-saves" disabled={busy}
           onClick={() => setSection(section === "saves" ? "" : "saves")}>

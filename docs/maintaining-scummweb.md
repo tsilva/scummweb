@@ -75,7 +75,8 @@ Run `node --test test/save-backups.test.mjs` to check backup round-trips,
 cross-device game matching, conflicts, legacy isolation, quota failures and
 archive validation.
 
-### Game downloads
+### Library and game files
+The launch overlay uses status text without a progress bar.
 During ZIP downloads, the launch status shows `Downloading game ZIP (42%)…`
 when the host provides a valid `Content-Length`; otherwise it keeps the download
 status without a percentage until the download completes.

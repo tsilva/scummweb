@@ -83,8 +83,6 @@ export function useBootState({
   const [bootStatusText, setBootStatusText] = useState(() =>
     getInitialBootStatusText(isSkippingIntro)
   );
-  const [bootProgressValue, setBootProgressValue] = useState(null);
-  const [bootProgressMax, setBootProgressMax] = useState(null);
   const [bootPhase, setBootPhase] = useState("pending");
   const [hasBootCompleted, setHasBootCompleted] = useState(false);
   const [hasBootPresentationCompleted, setHasBootPresentationCompleted] = useState(false);
@@ -141,8 +139,6 @@ export function useBootState({
     lastNonEmptyShellStatusRef.current = initialBootStatusText;
     setBootPhase("pending");
     setBootStatusText(initialBootStatusText);
-    setBootProgressValue(null);
-    setBootProgressMax(null);
     setHasBootCompleted(false);
     setHasBootFailed(false);
 
@@ -161,7 +157,6 @@ export function useBootState({
         const frameDocument = iframe.contentDocument;
         const frameWindow = iframe.contentWindow;
         const statusElement = frameDocument?.getElementById("status");
-        const progressElement = frameDocument?.getElementById("progress");
         const outputElement = frameDocument?.getElementById("output");
         const readyState = frameWindow?.__scummwebReadyState || null;
         const rawShellStatusText = statusElement?.textContent?.trim() || "";
@@ -170,12 +165,6 @@ export function useBootState({
           outputElement && typeof outputElement === "object" && "value" in outputElement
             ? outputElement.value || ""
             : "";
-        const progressVisible =
-          progressElement &&
-          typeof progressElement === "object" &&
-          "value" in progressElement &&
-          "max" in progressElement &&
-          !progressElement.hidden;
         const nextReadyPhase = normalizeBootPhase(readyState?.state);
         const effectivePhase = nextReadyPhase
           ? getHigherBootPhase(bootPhaseRef.current, nextReadyPhase)
@@ -213,13 +202,6 @@ export function useBootState({
           setBootStatusText(nextBootStatusText);
         }
 
-        const shouldShowBootProgress = effectivePhase === "pending" && progressVisible;
-        const nextProgressValue = shouldShowBootProgress ? progressElement.value : null;
-        const nextProgressMax = shouldShowBootProgress ? progressElement.max : null;
-
-        setBootProgressValue((currentValue) => (currentValue === nextProgressValue ? currentValue : nextProgressValue));
-        setBootProgressMax((currentValue) => (currentValue === nextProgressMax ? currentValue : nextProgressMax));
-
         if (hitFailureState) {
           setHasBootFailed(true);
         }
@@ -255,8 +237,6 @@ export function useBootState({
     getBootPhasePriority(bootPhase) >= getBootPhasePriority("launch-detected");
 
   return {
-    bootProgressMax,
-    bootProgressValue,
     bootPhase,
     bootStatusText,
     dismissSkipIntroButton,
