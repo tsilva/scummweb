@@ -90,7 +90,10 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
       const extra = params.get("saveExtra") || "";
       if (extra.length > 256 || /[\r\n\[\]\x00]/.test(extra)) throw new Error("Invalid save edition");
       FS.writeFile("/tmp/scummweb-query.ini", `[scummvm]\nsavepath=${savePath}\n\n[${target}]\nengineid=${engine}\ngameid=${gameId}\nextra=${extra}\n`);
-      Module.arguments.splice(0, Module.arguments.length, "--config=/tmp/scummweb-query.ini", "--list-saves", `--game=${target}`);
+      // The native bridge terminates query mode before engine construction.
+      // Use ordinary plugin initialization; the CLI listing command runs
+      // before the web backend is ready for dynamic engine modules.
+      Module.arguments.splice(0, Module.arguments.length, "--config=/tmp/scummweb-query.ini", target);
     }
     // Match actual checkpoint bytes. Slot zero becomes a player save as soon
     // as the player overwrites it; never exclude a slot just by its number.
