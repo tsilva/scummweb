@@ -36,3 +36,4 @@ tmp/
 /scummvm-shell/launcher/*.avif
 /image-assets/sources/road-gameplay.jpg
 /.next-continue-dev/
+/.next-continue-build/
