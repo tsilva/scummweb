@@ -162,6 +162,13 @@ and source credits remain in Git. See the
 for the verified migration and update workflow.
 Delivery variants use responsive WebP images and AVIF alternatives where they
 reduce transfer size at the selected quality; original captures remain available.
+Use the [game-assets skill](.codex/skills/scummweb_game-assets/SKILL.md) to generate
+heroes from original game artwork or restore original box fronts for portrait
+cards, preserving their original artwork, title typography and layout. Generation dates and
+source/export hashes are tracked in [`data/generated-artwork.json`](data/generated-artwork.json).
+The bundled catalog's restored box fronts preserve their original cover designs.
+Restored covers and recomposed heroes use verified R2 delivery variants.
+Gameplay screenshots remain original captures and are never AI-generated.
 
 For production builds and Lighthouse checks alongside a running server, see
 the [isolated audit setup](docs/maintaining-scummweb.md#development-commands).

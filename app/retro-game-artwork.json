@@ -909,7 +909,7 @@
     "aliases": [
       "Soltys (DOS)"
     ],
-    "posterImage": "/launcher/retro-cge-soltys-poster.webp",
+    "posterImage": "/launcher/soltys-scummweb-generated-2026-11-05-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-cge-soltys-shot.webp",
       "/launcher/retro-cge-soltys-shot-2.webp",
@@ -917,8 +917,11 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Soltys.png"
+        "kind": "generated-box-restoration",
+        "url": "https://pliki.ppe.pl/storage/8a94f55f7ab2c07cad58/8a94f55f7ab2c07cad58.jpg",
+        "referenceKind": "box-scan",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)"
       },
       "screenshots": [
         {
@@ -1279,7 +1282,7 @@
     "aliases": [
       "Drascula The Vampire Strikes Back (CD DOS, Multilanguage)"
     ],
-    "posterImage": "/launcher/drascula-cover.webp",
+    "posterImage": "/launcher/drascula-scummweb-generated-2026-11-05-r1-cover.webp",
     "screenshots": [
       "/launcher/drascula-shot-1.png",
       "/launcher/drascula-shot-2.png",
@@ -1291,7 +1294,14 @@
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2282"
-      ]
+      ],
+      "poster": {
+        "kind": "generated-box-restoration",
+        "url": "https://cdn.devuego.es/portadas/drascula.jpg",
+        "referenceKind": "box-scan",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)"
+      }
     }
   },
   "dreamweb:dreamweb": {
@@ -1299,7 +1309,7 @@
     "aliases": [
       "Dreamweb (CD DOS)"
     ],
-    "posterImage": "/launcher/dreamweb-cover.webp",
+    "posterImage": "/launcher/dreamweb-scummweb-generated-2026-11-05-r1-cover.webp",
     "screenshots": [
       "/launcher/dreamweb-shot-1.png",
       "/launcher/dreamweb-shot-2.png",
@@ -1311,7 +1321,14 @@
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3151"
-      ]
+      ],
+      "poster": {
+        "kind": "generated-box-restoration",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Dreamweb.png",
+        "referenceKind": "box-scan",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)"
+      }
     }
   },
   "gnap:gnap": {
@@ -2332,7 +2349,7 @@
     "aliases": [
       "Lure of the Temptress (Floppy DOS)"
     ],
-    "posterImage": "/launcher/lure-cover.webp",
+    "posterImage": "/launcher/lure-scummweb-generated-2026-11-05-r1-cover.webp",
     "screenshots": [
       "/launcher/lure-shot-1.png",
       "/launcher/lure-shot-2.png",
@@ -2344,7 +2361,14 @@
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1510"
-      ]
+      ],
+      "poster": {
+        "kind": "generated-box-restoration",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Lure%20of%20the%20Temptress.png",
+        "referenceKind": "box-scan",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)"
+      }
     }
   },
   "made:lgop2": {
@@ -2722,7 +2746,7 @@
       "Nippon Safes Inc (Amiga, Multilanguage)",
       "Nippon Safes Inc (Floppy DOS, Multilanguage)"
     ],
-    "posterImage": "/launcher/nippon-cover.webp",
+    "posterImage": "/launcher/nippon-scummweb-generated-2026-11-05-r1-cover.webp",
     "screenshots": [
       "/launcher/nippon-shot-1.png",
       "/launcher/nippon-shot-2.png",
@@ -2734,7 +2758,14 @@
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2022"
-      ]
+      ],
+      "poster": {
+        "kind": "generated-box-restoration",
+        "url": "https://cdn.mobygames.com/covers/10760757-nippon-safes-inc-amiga-front-cover.jpg",
+        "referenceKind": "box-scan",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)"
+      }
     }
   },
   "pegasus:pegasus": {
@@ -2824,7 +2855,7 @@
     "aliases": [
       "Flight of the Amazon Queen (CD DOS)"
     ],
-    "posterImage": "/launcher/queen-cover.webp",
+    "posterImage": "/launcher/queen-scummweb-generated-2026-11-05-r1-cover.webp",
     "screenshots": [
       "/launcher/queen-shot-1.png",
       "/launcher/queen-shot-2.png",
@@ -2836,7 +2867,14 @@
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1505"
-      ]
+      ],
+      "poster": {
+        "kind": "generated-box-restoration",
+        "referenceAsset": "/launcher/queen-cover.webp",
+        "referenceKind": "box-scan",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)"
+      }
     }
   },
   "saga:ihnm": {
@@ -5148,7 +5186,7 @@
     "aliases": [
       "The Secret of Monkey Island (CD DOS VGA)"
     ],
-    "posterImage": "/launcher/retro-scumm-monkey-poster.webp",
+    "posterImage": "/launcher/monkey-demo-scummweb-generated-2026-11-05-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-scumm-monkey-shot.webp",
       "/launcher/retro-scumm-monkey-shot-2.webp",
@@ -5156,8 +5194,11 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Secret%20of%20Monkey%20Island.png"
+        "kind": "generated-box-restoration",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Secret%20of%20Monkey%20Island.png",
+        "referenceKind": "box-scan",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)"
       },
       "screenshots": [
         {
@@ -5532,7 +5573,7 @@
     "aliases": [
       "Beneath a Steel Sky (CD VGA)"
     ],
-    "posterImage": "/launcher/sky-cover.webp",
+    "posterImage": "/launcher/sky-scummweb-generated-2026-11-05-r2-cover.webp",
     "screenshots": [
       "/launcher/bass-shot-1.png",
       "/launcher/bass-shot-2.png",
@@ -5544,7 +5585,14 @@
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=952"
-      ]
+      ],
+      "poster": {
+        "kind": "generated-box-restoration",
+        "referenceKind": "box-scan",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "referenceAsset": "/launcher/sky-cover.webp"
+      }
     }
   },
   "sword1:sword1": {
@@ -5593,7 +5641,7 @@
     "aliases": [
       "Broken Sword 2.5 (Windows)"
     ],
-    "posterImage": "/launcher/sword25-cover.webp",
+    "posterImage": "/launcher/sword25-scummweb-generated-2026-11-05-r1-cover.webp",
     "screenshots": [
       "/launcher/sword25-shot-1.png",
       "/launcher/sword25-shot-2.png",
@@ -5605,7 +5653,14 @@
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3071"
-      ]
+      ],
+      "poster": {
+        "kind": "generated-box-restoration",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Broken%20Sword%202.5.png",
+        "referenceKind": "box-scan",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)"
+      }
     }
   },
   "sword2:sword2": {
@@ -6231,7 +6286,7 @@
       "Mystery House",
       "Mystery House (Apple II)"
     ],
-    "posterImage": "/launcher/classic-hires1-cover.webp",
+    "posterImage": "/launcher/hires1-scummweb-generated-2026-11-05-r1-cover.webp",
     "screenshots": [
       "/launcher/classic-hires1-shot-1.webp",
       "/launcher/classic-hires1-shot-2.webp",
@@ -6239,8 +6294,11 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%231_%20Mystery%20House.png"
+        "kind": "generated-box-restoration",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%231_%20Mystery%20House.png",
+        "referenceKind": "box-scan",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)"
       },
       "screenshots": [
         {

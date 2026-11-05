@@ -587,6 +587,32 @@ The optional `images` map selects a WebP fallback and ordered WebP/AVIF variants
 for each logical source path. Activation publishes this delivery map and the
 object records together, so the app cannot reference unpublished variants.
 
+The Beneath a Steel Sky hero at
+`/launcher/sky-scummweb-generated-2026-11-05-r1-hero.webp` is an ImageGen
+reinterpretation of the original game's promotional artwork, whose characters
+and designs belong to Revolution Software and their respective creators. It
+retains the inked comic composition and orange/blue palette, with a quieter
+left side for the page title. The original `/launcher/sky-hero.webp` remains
+available. The revised hero uses verified immutable R2 objects and responsive delivery
+variants.
+
+Flight of the Amazon Queen uses
+`/launcher/queen-scummweb-generated-2026-11-05-r1-hero.webp`, an ImageGen
+reinterpretation of its original painted promotional artwork. Original artwork
+is credited to Muttill (1994), as signed on the source image; characters and
+designs remain with their respective creators and rights holders. The revised
+composition retains the pilot, companion, temple and crashed aircraft, with
+shaded masonry behind the page title. The original `/launcher/queen-hero.webp`
+remains available. This revision uses verified R2 delivery variants.
+
+The other six bundled games also use their registered dated ImageGen
+heroes: Drascula, DreamWeb, Lure of the Temptress, The Secret of Monkey Island
+(Demo), Nippon Safes, Inc., and Broken Sword 2.5. Their original promotional
+artwork references, generation dates and hashes are retained in
+`data/generated-artwork.json`. Characters and original designs remain with their
+respective creators and rights holders. These mappings use 1600×960 WebP exports with verified responsive R2 delivery.
+Original hero objects, card covers and gameplay screenshots remain available.
+
 Game mappings and source credits stay in `app/game-presentation.js`,
 `app/retro-game-artwork.json`, and this guide. Responsive width mappings remain
 in `data/artwork-renditions.json`. The Road source capture is included; branding,
@@ -637,6 +663,62 @@ existing width mappings survive builds without local originals.
 Game publishing with `--prune` preserves the reserved `artwork/` namespace.
 Artwork retirement does not rewrite Git history. Old image revisions remain
 in earlier commits.
+
+### Generated heroes and card box art
+
+Use [`scummweb_game-assets`](../.codex/skills/scummweb_game-assets/SKILL.md)
+and its [generation procedure](../.codex/skills/scummweb_game-assets/references/generation.md)
+for original-reference hero banners and portrait card covers. For heroes, existing
+original hero/banner art is the first reference; official box art or promotional
+artwork is the fallback. Card covers must faithfully regenerate the original box
+front to improve quality, preserving its artwork, original title typography,
+branding, layout and palette. Use the actual original box front as the primary
+reference; never substitute reimagined hero art. Remove scan damage and extraneous
+stickers without redesigning the cover. Report missing original box references.
+Screenshots always remain original gameplay captures; never generate or repaint them.
+
+The eleven bundled card covers use ImageGen restorations of their original box
+fronts: Beneath a Steel Sky, Broken Sword 2.5, Drascula, DreamWeb, Flight of the
+Amazon Queen, Mystery House, Lure of the Temptress, Nippon Safes, Inc., Sfinx,
+Sołtys and The Secret of Monkey Island (Demo). The original full-game Monkey
+Island cover is retained; the application supplies the demo label separately.
+All cover exports are 900×1200 WebP at quality 80, effort 6, with smaller card
+renditions. The registry retains original reference URLs and hashes, generation
+dates and prompts. Original artwork, lettering and brands remain the property
+of their respective creators and rights holders. These revisions use verified immutable R2 objects and responsive delivery
+variants.
+
+`data/generated-artwork.json` records each generated revision's date, role,
+reference sources, prompt or historical prompt summary, source/export hashes,
+decoded dimensions and readiness. Resizing/encoding alone does not make an
+original image creatively generated. Current default final exports are 1600×960
+(5:3) heroes and 900×1200 (3:4) card covers; check the current consumers and actual
+decoded pixels before export. The initial quality-90 hero candidates remain
+previews until their final dimension and delivery optimization gates pass.
+
+New generated filenames use
+`<slug>-scummweb-generated-YYYY-MM-DD-r<N>-hero.webp` or `-cover.webp`.
+The role must remain at the end of the stem so rendition/AVIF discovery works.
+Existing mapped names remain valid through their registry records. The registry,
+live logical mapping and matching bytes determine provenance; names alone do not.
+
+To inventory the bundled catalog without generating or publishing anything:
+
+```sh
+node .codex/skills/scummweb_game-assets/scripts/inventory-bundled.mjs
+node .codex/skills/scummweb_game-assets/scripts/inventory-bundled.mjs --role hero --missing
+node .codex/skills/scummweb_game-assets/scripts/inventory-bundled.mjs --role cover --missing
+node .codex/skills/scummweb_game-assets/scripts/inventory-bundled.mjs --needs-apply
+```
+
+`--missing` excludes matching saved candidates as well as applied generated art;
+`--needs-apply` identifies saved generations whose live mapping is still original
+or unknown. Recover unavailable candidate bytes rather than assuming a registry
+entry means the image is available. For new sources, publish/activate originals
+before running the existing optimizer, which reads published manifest records;
+then publish/activate its verified responsive delivery map. Preserve old live
+mappings until replacement objects are verified. Generation and local preview
+requests do not themselves authorize publication or deployment.
 
 ### Delivery encoding and sizing
 

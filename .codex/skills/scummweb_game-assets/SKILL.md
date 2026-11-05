@@ -1,11 +1,41 @@
 ---
 name: scummweb_game-assets
-description: Add, refresh, or verify ScummWEB game artwork in R2 while retaining mappings and source credits in Git. Use for catalog games and supported personal imports, including ZIP handoffs for newly supported local games.
+description: Generate or refresh ScummWEB hero banners and card box art from original game artwork, track generated provenance, and optimize or publish artwork in R2. Also supports artwork verification and personal-game ZIP handoffs. Never generate gameplay screenshots.
 ---
 
 # scummweb: Game Assets
 
 Read the repository's `AGENTS.md` and the [artwork publishing procedure](../../../docs/maintaining-scummweb.md#artwork-storage-and-publishing). Check `scummvm-shell/games.json` for catalog targets and `app/game-presentation.js` for artwork and imported-title recognition. Keep personal imports distinct from the public catalog.
+
+## Generate heroes and card box art
+
+For generation, batch replacement, provenance inventory, or deciding which games
+still need artwork, read [generation.md](references/generation.md). Use the
+`imagegen` skill and built-in image generation, one image per game and role.
+Default bulk requests to the bundled catalog unless the user selects another
+scope. Generate only the requested roles; applying, publishing and deployment
+remain distinct actions within the user's requested scope.
+
+- For heroes, recompose original hero/banner artwork first; fall back to official box art
+  or other official promotional art. Preserve recognizable characters, original
+  medium, palette and mood. Use original references rather than our generated
+  revisions as the sole inspiration for a new generation.
+- Heroes reserve quiet dark space on the left for real page text, with key
+  subjects safely framed on the right.
+- All card box art MUST be a faithful quality-improving regeneration of the
+  original box front. Preserve its original artwork, title typography, logos,
+  layout and palette; improve clarity and remove scan damage. Do not reinterpret
+  a hero, invent a new cover or strip the original title/branding. Use the actual
+  original box front as the primary reference. If unavailable, report the gap.
+- Verify actual decoded dimensions; prompt dimensions are not proof. Check the
+  rendered crop and text readability before calling an asset ready.
+- Record every generated candidate, including previews, in
+  `data/generated-artwork.json`. Use dated generated filenames for new assets;
+  retain existing names when registering earlier work. This registry tracks
+  creative generation, separately from ordinary image resizing and encoding.
+- Never generate, repaint, extend, relight, or replace gameplay screenshots with
+  synthetic images. Preserve original captures and their credits. Only the
+  existing lossless delivery pipeline may create screenshot format/size variants.
 
 ## Artwork
 
@@ -18,6 +48,11 @@ Read the repository's `AGENTS.md` and the [artwork publishing procedure](../../.
 
 1. Prepare the new or revised local images, update their logical mappings and source credits, then run `pnpm run generate:artwork` to generate responsive poster variants and update `data/artwork-renditions.json`.
    Use `pnpm run optimize:artwork` for a complete delivery pass from verified published originals. It preserves source objects, verifies lossless PNG-to-WebP conversions, creates responsive variants without upscaling, and screens AVIF alternatives for size and decoded quality. Inspect representative candidates before publication; numerical quality checks alone do not establish visual equivalence.
+   New originals are not optimizer inputs until registered in the published
+   storage manifest. Follow the two-pass source-publication/delivery-publication
+   sequence in the generation reference; do not claim a one-off WebP export is
+   fully optimized. Generated filenames must end in `-hero`, `-cover` or `-poster`
+   before the extension so the existing rendition and AVIF selectors recognize them.
 2. Run `pnpm run artwork:plan`. It preserves the active storage mapping, retains previously published records without local originals, and prepares a private upload plan and exact image copies. Keep this evidence under the repository's ignored `.internal/` directory.
 3. Use an authorized credential route to run `pnpm run publish:artwork`. The publisher targets the existing bucket's reserved `artwork/` namespace, creates content-addressed objects conditionally, and checks every object's bytes and metadata by readback. It does not overwrite or prune existing objects or change bucket settings.
 4. Run `pnpm run artwork:activate`. This verifies every public image's checksum, length, MIME type, and immutable cache metadata before atomically switching the tracked storage manifest.

@@ -1,0 +1,930 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "target": "sky",
+      "role": "hero",
+      "asset": "/launcher/sky-hero-v2.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "99664866001c23fefd99d85d2a6a34f9e4e2bd96e6f63d9b861a590e3c6e3215",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "5ec8fc6a11d894b8ecb9066cbee552b03f30d84747feba932c8ed9ba7a318844",
+        "width": 1619,
+        "height": 971,
+        "format": "webp",
+        "quality": 90,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/sky-hero.webp",
+          "sha256": "eced8b9e6f0ed570e70717d075fa1f05c8eccc0cfa8449d49eb750aea4172902",
+          "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+        }
+      ],
+      "promptSummary": "Recompose original Beneath a Steel Sky comic key art into a 5:3 website hero, preserving Foster, Joey, helicopter, linework and orange/blue palette, with quiet dark left 42% for real UI and safe right-side subjects. No text, logo, watermark or UI."
+    },
+    {
+      "target": "queen",
+      "role": "hero",
+      "asset": "/launcher/queen-hero-v2.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "df29f05c778d428d6b95cfdb80b8c90fa3c16a5a8294d39a4bae2263213f2435",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "40ae460949edbdf3e6e546e8d21f3b8cb7e5dd89e9d5aef2a3f72867a7937aed",
+        "width": 1619,
+        "height": 971,
+        "format": "webp",
+        "quality": 90,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/queen-hero.webp",
+          "sha256": "cc15a0afa96199603f0ccb421907411552e73d9a7b62f3a05a8e49ea8178ae4c",
+          "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+        }
+      ],
+      "promptSummary": "Recompose original Flight of the Amazon Queen painted key art into a 5:3 website hero, preserving pilot, companion, temple, crashed plane and sunny pulp palette. Shaded quiet left 42% for real UI; subjects safely on right. No title, logos, watermark or UI."
+    },
+    {
+      "target": "drascula",
+      "role": "hero",
+      "asset": "/launcher/drascula-hero-v2.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "db820335ea070ad39d5a6cffe54cf2adb99b25aaf23e4c237d7227b9123d6ac6",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "9b068f85d8ea28e3ade5bf47dc14d5843129f0da3f3229df4aa7b17d475e3b84",
+        "width": 1619,
+        "height": 971,
+        "format": "webp",
+        "quality": 90,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/drascula-hero.webp",
+          "sha256": "6764eb2a2fa2e1488080a93e3e4ce460f61c6db06285a5f9f3065bd6d49f3f47",
+          "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed responsive ScummWEB hero background. Output landscape 1920x1152 pixels, 5:3. Faithfully reinterpret the supplied ORIGINAL game artwork for a banner, preserving its own illustration medium, palette, character designs and mood. Put recognizable visual subjects in the RIGHT half, faces/important emblems around 65-78% of width and 25-40% of height, comfortably inset from edges. LEFT 42% must be naturally dark, quiet, low-contrast scenery with negative space for the website's real white heading and green play button. Keep top 9% and bottom 12% low detail for navigation and fade. Full bleed, coherent illustration, no stretching. NO title, NO words, NO logo, NO signature, NO watermark, NO inset screenshot, NO boxed cover, NO UI, NO border. Game: Drascula: The Vampire Strikes Back. Original references include a composed website graphic and a box scan: extract the illustrated subject, NOT the blurred backdrop, screenshot inset or typography. Recreate the exuberant 1990s humorous cartoon cover: the same grinning lanky vampire, pale yellow face, huge pointed ears and long nose, black pointed hair, fangs, black formal suit with white bow tie and purple-lined red high-collared cape, looming with curled fingers over the same bespectacled orange-haired nervous young hero in purple clothes and blonde woman in blue. Right-side character group; a crooked castle with warm yellow walls and red roofs on a grassy hill behind them. Left side quiet dark purple night sky, crooked forest silhouettes and castle approach. Preserve bold black ink outlines and flat bright cartoon colors; playful horror comedy, not scary realism. Match the original character identities closely."
+    },
+    {
+      "target": "dreamweb-cd",
+      "role": "hero",
+      "asset": "/launcher/dreamweb-hero-v2.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "8b119708ef8302ee7796bf6b6eed3484cf907359533db96aeccdabbe657f7145",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "0fba4f1212c8263ac31ed88f65c79ee33225174a9020024ee0a5bc56102b969a",
+        "width": 1619,
+        "height": 971,
+        "format": "webp",
+        "quality": 90,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/dreamweb-hero.webp",
+          "sha256": "71eb377a16f6e4e5f2d0a8d2e98e90b717eed33bd7a60cd9dcec11b2ac82423f",
+          "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed responsive ScummWEB hero background. Output landscape 1920x1152 pixels, 5:3. Faithfully reinterpret the supplied ORIGINAL game artwork for a banner, preserving its own illustration medium, palette, character designs and mood. Put recognizable visual subjects in the RIGHT half, faces/important emblems around 65-78% of width and 25-40% of height, comfortably inset from edges. LEFT 42% must be naturally dark, quiet, low-contrast scenery with negative space for the website's real white heading and green play button. Keep top 9% and bottom 12% low detail for navigation and fade. Full bleed, coherent illustration, no stretching. NO title, NO words, NO logo, NO signature, NO watermark, NO inset screenshot, NO boxed cover, NO UI, NO border. Game: DreamWeb. Recompose the original iconic cover's intensely staring violet-blue eye, red-orange face fragment and black expressive hair on the RIGHT, keeping the iris around x72%, y34%. Surround with dystopian urban industrial framework, riveted metal, silhouetted tall buildings, cables and pipes along the margins and bottom, faithful to the original illustration. LEFT side shadowy nearly-black industrial structure with faint dark crimson light, no competing eye or face there. Preserve the original hand-inked scratchy crosshatching, saturated vermilion, black and purple palette, oppressive surreal cyberpunk noir. Remove all original metallic DreamWeb lettering; let industrial pipes replace that space. No added protagonists or guns."
+    },
+    {
+      "target": "lure",
+      "role": "hero",
+      "asset": "/launcher/lure-hero-v2.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "5227976b871e8cbd811d013a2792227a8544bbf1ab35011d01a9f4e84136a606",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "57ef03d459c7577b7e5682031e71962fce77239cd71c3444ae9e2761651d475a",
+        "width": 1619,
+        "height": 971,
+        "format": "webp",
+        "quality": 90,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/lure-hero.webp",
+          "sha256": "f084f5298aac77db5aa2a08163494bd1dd663230727d90ff465e0b644f495fb9",
+          "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed responsive ScummWEB hero background. Output landscape 1920x1152 pixels, 5:3. Faithfully reinterpret the supplied ORIGINAL game artwork for a banner, preserving its own illustration medium, palette, character designs and mood. Put recognizable visual subjects in the RIGHT half, faces/important emblems around 65-78% of width and 25-40% of height, comfortably inset from edges. LEFT 42% must be naturally dark, quiet, low-contrast scenery with negative space for the website's real white heading and green play button. Keep top 9% and bottom 12% low detail for navigation and fade. Full bleed, coherent illustration, no stretching. NO title, NO words, NO logo, NO signature, NO watermark, NO inset screenshot, NO boxed cover, NO UI, NO border. Game: Lure of the Temptress. Faithfully recompose the original painted fantasy cover subject on RIGHT: same pale green-eyed dark-haired sorceress in flowing vivid green medieval gown, long black hair streaming upward and outward, seated at a dark stone throne, one hand supporting a luminous swirling white-yellow magical orb edged pink and green. Her whole head including hair comfortably inset rather than cropped. At lower right foreground a horned dragon skull and a small human skull with candle flame, based on original cover. Background stormy deep blue fantasy sky, distant medieval castle silhouette; LEFT side darker midnight blue mist and restrained castle ramparts, unobtrusive beneath white website text. Retain painterly fantasy illustration and original face, costume and magical atmosphere. Remove the original game logo AND inset gameplay screenshot entirely. No new characters or modern armor.",
+      "revisionPrompts": [
+        "Edit target: supplied Lure of the Temptress artwork. Change ONLY the canvas composition/aspect ratio: output an image at 1920 wide by 1152 high, exactly 5:3 landscape, NOT an ultrawide 3:1 banner. Expand vertically above AND below existing artwork with naturally painted stormy blue sky at top, flowing green gown/throne/stone and mist at bottom, and scale/reposition the whole right-side character group so all her head and hair have generous headroom. Preserve the exact sorceress identity, face, green dress, glowing orb, skull props, castle, painted texture, blue/green palette and quiet shadowed LEFT 42% for title overlay. Do NOT stretch. Main woman's face approximately 73% across and 30% down. Everything should be one seamless full-bleed 5:3 painting with no words, no title, no logo, no UI, no border. More vertical scene, less panoramic. Exact aspect ratio 5:3."
+      ]
+    },
+    {
+      "target": "monkey-demo",
+      "role": "hero",
+      "asset": "/launcher/monkey-demo-hero-v2.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "de87c756364a5262bb7f684c96f15869d1271ebb04312651b8d769a5074c2be1",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "e0055f315820116916f068d814aca753f81d7498c537615cfed4375093779d6d",
+        "width": 1619,
+        "height": 971,
+        "format": "webp",
+        "quality": 90,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/monkey-demo-hero.webp",
+          "sha256": "ae498ad83864b26c5d3dda19c472949174ba6c185265455bd1e06a9ed5f2c7ab",
+          "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed responsive ScummWEB hero background. Output landscape 1920x1152 pixels, 5:3. Faithfully reinterpret the supplied ORIGINAL game artwork for a banner, preserving its own illustration medium, palette, character designs and mood. Put recognizable visual subjects in the RIGHT half, faces/important emblems around 65-78% of width and 25-40% of height, comfortably inset from edges. LEFT 42% must be naturally dark, quiet, low-contrast scenery with negative space for the website's real white heading and green play button. Keep top 9% and bottom 12% low detail for navigation and fade. Full bleed, coherent illustration, no stretching. NO title, NO words, NO logo, NO signature, NO watermark, NO inset screenshot, NO boxed cover, NO UI, NO border. Game: The Secret of Monkey Island (Demo). Source is original illustrated box-art imagery. Retain the original cover's warm painterly 1990s swashbuckling adventure style and luminous palette: young wide-eyed blond aspiring pirate Guybrush in loose white shirt holding a slim cutlass, on RIGHT foreground, his face at x73%, y40% with generous headroom. A huge pale skull-shaped island rock formation behind him toward center-right, its sockets lit indigo, warm firelit tropical foliage, pirate ship with tall masts in blue moonlit water farther right background, hints of comical pirates behind him. Use original character look and painted texture. LEFT half quiet shadowy midnight-blue tropical leaves, sea and distant island horizon, subdued enough for overlaid heading. Skull must sit behind right-side subjects rather than crowding title area. Whimsical mysterious Caribbean night, not realistic horror. No text even though demo's actual website title includes (Demo), no logo, no inset screenshot."
+    },
+    {
+      "target": "nippon-amiga",
+      "role": "hero",
+      "asset": "/launcher/nippon-hero-v2.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "3e7c7f82cbd0f06908249de9aaf43bb17c2f51160387c9a7978f42faa5787c38",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "937d32e5618b90fb5d440db8d9669092724d77192068457985588e02ac84fc90",
+        "width": 1619,
+        "height": 971,
+        "format": "webp",
+        "quality": 90,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/nippon-hero.webp",
+          "sha256": "7b3bc5dca13377492942cdc6d453b936e6641a10ff297978357431848b63e446",
+          "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed responsive ScummWEB hero background. Output landscape 1920x1152 pixels, 5:3. Faithfully reinterpret the supplied ORIGINAL game artwork for a banner, preserving its own illustration medium, palette, character designs and mood. Put recognizable visual subjects in the RIGHT half, faces/important emblems around 65-78% of width and 25-40% of height, comfortably inset from edges. LEFT 42% must be naturally dark, quiet, low-contrast scenery with negative space for the website's real white heading and green play button. Keep top 9% and bottom 12% low detail for navigation and fade. Full bleed, coherent illustration, no stretching. NO title, NO words, NO logo, NO signature, NO watermark, NO inset screenshot, NO boxed cover, NO UI, NO border. Game: Nippon Safes, Inc. Input 1 is a composed website hero with an embedded gameplay reference; input 2 is an original gameplay frame. Use ONLY the actual game's cartoon visual designs, not the blur, frame, logo, dialogue balloon or text. Reimagine the original colorful Amiga cartoon scenery as a crisp hand-painted/inked 1990s adventure illustration, preserving exaggerated funny faces, angular city architecture and the red/purple/teal palette. Scene: quirky Japanese-inspired city at dusk, a red car beside ornate urban buildings, the original tall muscled brown-haired man in white sleeveless shirt and blue trousers on the right beside the original short shady figure in long black coat and black brimmed hat with eyes shadowed. Keep the muscleman's original friendly goofy expression and proportions, and the black-coated figure's short mysterious silhouette. Right background a nightclub-style entrance with red doors, purple pillars and teal flooring reminiscent of the original game. Left side naturally quiet dark violet city wall, deep teal pavement and subdued distant high-rise silhouettes, uncluttered for website title. No new main characters. NO lettering anywhere, NO dialogue balloon, NO screenshot panel, NO brand, NO big floating portrait. Stay close to source's comedy-caper mood, not cyberpunk photorealism."
+    },
+    {
+      "target": "sword25",
+      "role": "hero",
+      "asset": "/launcher/sword25-hero-v2.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "3b0b6bc0a9d804351a5b082ebbdc092b68391a63239c89fa32cc7ccebabb1fb7",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "6f99b8061a859f20ddfc2da8e8d98b6ad1b3ea55f1b9f9b242286864913b6d6b",
+        "width": 1619,
+        "height": 971,
+        "format": "webp",
+        "quality": 90,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/sword25-hero.webp",
+          "sha256": "3b23a1f411b30cb13ea23ab3d829352fd587a0d956486c78509280b91ad2443c",
+          "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed responsive ScummWEB hero background. Output landscape 1920x1152 pixels, 5:3. Faithfully reinterpret the supplied ORIGINAL game artwork for a banner, preserving its own illustration medium, palette, character designs and mood. Put recognizable visual subjects in the RIGHT half, faces/important emblems around 65-78% of width and 25-40% of height, comfortably inset from edges. LEFT 42% must be naturally dark, quiet, low-contrast scenery with negative space for the website's real white heading and green play button. Keep top 9% and bottom 12% low detail for navigation and fade. Full bleed, coherent illustration, no stretching. NO title, NO words, NO logo, NO signature, NO watermark, NO inset screenshot, NO boxed cover, NO UI, NO border. Game: Broken Sword 2.5: The Return of the Templars. Closely preserve the iconic original promotional subject: a solemn aged ivory skull inside a voluminous deep crimson hood, a small golden Templar cross on the hood's forehead, and ornate golden cross/sword wrapped in the same golden dragon motif below. Arrange this coherent emblem-like subject entirely on RIGHT, skull face around x73%,y34%; hood and ornate dragon cross/sword visible without cropping. Background dark burgundy and brown parchment/stone texture with warm amber aura immediately around the right subject fading into dark low-detail oxblood shadows on LEFT. Original richly painted adventure-game promotional illustration; retain the source's specific skull anatomy, hood folds, gold patina and antique mood. No new living characters, no modern objects. CRITICAL: remove every part of the original title typography and subtitle, DO NOT render Broken Sword or any numbers/letters; fill formerly lettered regions with natural folds/shadows. Subtle Templar mystery, not gory horror."
+    },
+    {
+      "target": "sky",
+      "role": "cover",
+      "asset": "/launcher/sky-scummweb-generated-2026-11-05-r2-cover.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "regenerationType": "original-box-restoration",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "72be402632f881bc4d3931f0e6cb448b213ee50b27f120aa39d7630185868001",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "81b5b419da19dbfb271e294740db376170ac41d3a5796c7b089b149bb16cb6fc",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/sky-cover.webp",
+          "sha256": "d59ac841e94d3b0e4d6d27401e1679659d5634e0e3c67703d0dca2a5ee7e0e55",
+          "note": "Original box-front scan; retains original skyline emblem, title treatment and Revolution Software / Virgin credits."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: flat PORTRAIT FRONT BOX ART for Beneath a Steel Sky, for a clickable game card. Primary request: create a clean, faithfully restored/recreated version BASED ON THE SUPPLIED ORIGINAL BOX FRONT, preserving its restrained graphic design, not the colorful character illustration from promotional artwork. Input image 1 is the original box front and the sole visual reference. Output one full-bleed portrait image with exact 3:4 aspect ratio, request 1200x1600 pixels for a final 900x1200 card export. Match the original composition: deep charcoal with a subtle slate-violet tone, very subtle original paper/print grain; centered tall silver-white rounded rectangular emblem occupying roughly 60% of width and 65% of height. In the top half of that emblem, faithfully reproduce the original abstract white modernist skyscraper skyline silhouette against black, including the characteristic dark concave framing shapes. In its lower half, reproduce the ORIGINAL bold black stacked game-title typography on silver-white. Text exactly: 'BENEATH A' on the small first line, 'STEEL' on the very large second line, 'SKY' on the very large third line. Match the distinct original heavy geometric letterforms and relative sizes rather than inventing a modern font. Title sharply legible at small card scale. Keep the original large uncluttered dark margins and ample safety for card hover zoom. Subtle silver ink/paper texture; clean professional recreation of the vintage printed box, straight-on and flat, no mockup perspective or visible box edges. At the bottom, retain the original small silver 'REVOLUTION SOFTWARE' publisher credit at left and the original silver Virgin handwritten wordmark at right, each comfortably inset from the crop. Remove the white outer scan border, remove the Arcadia distributor sticker completely, remove scanning damage, discoloration and blur. No Foster, no Joey, no helicopter, no orange city painting, no new illustrations. No additional words, badges, UI, extra branding or watermarks. Stay very close to the actual original box-art design."
+    },
+    {
+      "target": "dreamweb-cd",
+      "role": "cover",
+      "asset": "/launcher/dreamweb-scummweb-generated-2026-11-05-r1-cover.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "0494d58ef0350e46bfc6f17539b8434c7e9c37e5a92e89ed33655f9c54bf82c4",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "91eaf22bb3648b96ccae8d090d812b160fc5aab01324219e8be48daa1700cdef",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Dreamweb.png",
+          "sha256": "3fccdb6151032bbb60e467c5560dba3a5e65e4d5be77065feaa07c53a98c4f71",
+          "credit": "Original box-front scan hosted by thumbnails.libretro.com; original artwork and branding belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Task: FAITHFUL QUALITY-IMPROVING REGENERATION of the supplied ORIGINAL BOX FRONT, not a redesign. Output ONE flat portrait front face at exactly 3:4 width:height, request 1200x1600 pixels for a final 900x1200 export. The input is the primary original-front reference: preserve its whole composition, character designs, original illustration style, palette, original title typography, publisher logos and printed layout. Restore sharp clean linework, legible lettering and faithful print color; remove scan wear, skew, blur and scanning borders. Preserve intentional painted/inked texture and original decorative borders. Do not invent new art, add characters or transform it into a hero banner. Fit the card ratio with minimal neutral margin adjustments; do not crop away original content. Keep all title lettering and publisher credits comfortably inset to survive a 4% card zoom. No 3D box mockup, spine, new badges, UI or watermarks. Game: DreamWeb. Match the supplied original front's black industrial metal panels: Empire Interactive presents at the top; red-orange face with the single violet eye in the central framed illustration; large weathered silver pipe-integrated 'DreamWeb' lettering below; small bottom tagline exactly 'A game to die for!'. Keep those three stacked zones, typography and purple/red/black metallic mood. Improve the tiny reference's clarity without inventing content."
+    },
+    {
+      "target": "queen",
+      "role": "cover",
+      "asset": "/launcher/queen-scummweb-generated-2026-11-05-r1-cover.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "a8f8f3752c1441a294ba3af882159c09e9174d9360eed0042c15a4534807cc5d",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "1709a7051f8f1afa82c95f253c519fadf8c49a6e5d5c24d1c2f93faf56427435",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/queen-cover.webp",
+          "sha256": "0065292e908c3e881ccb6ce40043fa6e1156db0293c9acfead84d5424275ce62",
+          "credit": "Original Flight of the Amazon Queen box artwork; retain existing creator and publisher credits."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Task: FAITHFUL QUALITY-IMPROVING REGENERATION of the supplied ORIGINAL BOX FRONT, not a redesign. Output ONE flat portrait front face at exactly 3:4 width:height, request 1200x1600 pixels for a final 900x1200 export. The input is the primary original-front reference: preserve its whole composition, character designs, original illustration style, palette, original title typography, publisher logos and printed layout. Restore sharp clean linework, legible lettering and faithful print color; remove scan wear, skew, blur and scanning borders. Preserve intentional painted/inked texture and original decorative borders. Do not invent new art, add characters or transform it into a hero banner. Fit the card ratio with minimal neutral margin adjustments; do not crop away original content. Keep all title lettering and publisher credits comfortably inset to survive a 4% card zoom. No 3D box mockup, spine, new badges, UI or watermarks. Game: Flight of the Amazon Queen. Match the original painted cover exactly: ornate golden title 'FLIGHT OF THE AMAZON QUEEN' at top, adventurer in blue cap and brown leather jacket holding a bat on his shoulder beside blonde woman in cream blouse and brown trousers, ruined stone temple and green jungle, distant crashed red-tail plane and blue sky. Preserve the existing positions and painted 1990s pulp mood. Keep lower Pirate logo, bottom creator credit exactly 'A GAME BY JOHN PASSFIELD AND STEVE STAMATIADIS' and Interactive Binary Illusions logo. Restore lettering and paint detail; retain original title styling rather than using a generic font."
+    },
+    {
+      "target": "drascula",
+      "role": "cover",
+      "asset": "/launcher/drascula-scummweb-generated-2026-11-05-r1-cover.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "eaa8f62d0563b3a276a35d238c2b0f220ab3dc8c7b29d8937210751f65e563d1",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "e80f979f17a0224765f81369492cf2d73c76397797753e82bfd3e89fbc771bc4",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://cdn.devuego.es/portadas/drascula.jpg",
+          "sha256": "77cc0fbd47cdff72d0d37ea8ec3f3e0cc32ec77e05ebb0591dd48b28b29e5a43",
+          "credit": "Original box-front scan hosted by cdn.devuego.es; original artwork and branding belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Task: FAITHFUL QUALITY-IMPROVING REGENERATION of the supplied ORIGINAL BOX FRONT, not a redesign. Output ONE flat portrait front face at exactly 3:4 width:height, request 1200x1600 pixels for a final 900x1200 export. The input is the primary original-front reference: preserve its whole composition, character designs, original illustration style, palette, original title typography, publisher logos and printed layout. Restore sharp clean linework, legible lettering and faithful print color; remove scan wear, skew, blur and scanning borders. Preserve intentional painted/inked texture and original decorative borders. Do not invent new art, add characters or transform it into a hero banner. Fit the card ratio with minimal neutral margin adjustments; do not crop away original content. Keep all title lettering and publisher credits comfortably inset to survive a 4% card zoom. No 3D box mockup, spine, new badges, UI or watermarks. Game: Dráscula. Restore exactly the supplied ORIGINAL portrait front: red serif italic title 'DRÁSCULA' at top on black, original cartoon cast in the same compact composition, looming vampire behind blonde woman and orange-haired bespectacled man holding a cross, little bald man at left, hunched purple figure holding red paint can below, castle on grassy cliff to the left. Preserve all figures and expressions rather than replacing them with generic characters. Keep original DDM Digital Dreams Multimedia and Alcachofa logos at bottom, same black negative space. Bright flat inked cartoon colors, precise clean linework, no added subtitle."
+    },
+    {
+      "target": "lure",
+      "role": "cover",
+      "asset": "/launcher/lure-scummweb-generated-2026-11-05-r1-cover.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "1fc1046b87b480f7aee688586b80e52a322b12123f2e04040ba655c530b58aaa",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "47eb70c6ab1c159a9ad882c6a956d7eb575410c607255c600124c7835da5d03f",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Lure%20of%20the%20Temptress.png",
+          "sha256": "a3953fae6ee1c7a5ad61852011d5bd2fdd19b6bbd7507f7536b45e628bfdca8f",
+          "credit": "Original box-front scan hosted by thumbnails.libretro.com; original artwork and branding belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Task: FAITHFUL QUALITY-IMPROVING REGENERATION of the supplied ORIGINAL BOX FRONT, not a redesign. Output ONE flat portrait front face at exactly 3:4 width:height, request 1200x1600 pixels for a final 900x1200 export. The input is the primary original-front reference: preserve its whole composition, character designs, original illustration style, palette, original title typography, publisher logos and printed layout. Restore sharp clean linework, legible lettering and faithful print color; remove scan wear, skew, blur and scanning borders. Preserve intentional painted/inked texture and original decorative borders. Do not invent new art, add characters or transform it into a hero banner. Fit the card ratio with minimal neutral margin adjustments; do not crop away original content. Keep all title lettering and publisher credits comfortably inset to survive a 4% card zoom. No 3D box mockup, spine, new badges, UI or watermarks. Game: Lure of the Temptress. Restore exactly this ORIGINAL front including its actual full composition: ornate golden 'LURE OF THE Temptress' title enclosed by green serpent and red bat wings across the top, green-gowned sorceress on stone steps holding luminous orb, black hair flowing upward, the TWO muscular red creatures at the bottom, original skull staffs and severed jester head, stormy blue sky and distant castle. Keep the title spelling, publisher Revolution and Virgin Games logos at bottom. Retain the small blue original requirements panel at lower left as a panel, do not replace it with invented modern copy. Preserve original painted style and all arrangements. Improve damaged print clarity; no new scene."
+    },
+    {
+      "target": "monkey-demo",
+      "role": "cover",
+      "asset": "/launcher/monkey-demo-scummweb-generated-2026-11-05-r1-cover.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "47a255a5f7eee004b992cb9e8c5b8b74bb0438edc733cf5d6016ba7f8524b101",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "bc694abd88ced0f1731b986872ee3b461810f46854c387f76d40f8089bec4d21",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Secret%20of%20Monkey%20Island.png",
+          "sha256": "bdb3276b36cfb2783729d26baf32b6ecb8172e455068f2f7b819e918fa2176b1",
+          "credit": "Original box-front scan hosted by thumbnails.libretro.com; original artwork and branding belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Task: FAITHFUL QUALITY-IMPROVING REGENERATION of the supplied ORIGINAL BOX FRONT, not a redesign. Output ONE flat portrait front face at exactly 3:4 width:height, request 1200x1600 pixels for a final 900x1200 export. The input is the primary original-front reference: preserve its whole composition, character designs, original illustration style, palette, original title typography, publisher logos and printed layout. Restore sharp clean linework, legible lettering and faithful print color; remove scan wear, skew, blur and scanning borders. Preserve intentional painted/inked texture and original decorative borders. Do not invent new art, add characters or transform it into a hero banner. Fit the card ratio with minimal neutral margin adjustments; do not crop away original content. Keep all title lettering and publisher credits comfortably inset to survive a 4% card zoom. No 3D box mockup, spine, new badges, UI or watermarks. Game: The Secret of Monkey Island. Preserve this actual original Lucasfilm front cover in full: huge magenta/black original title 'THE SECRET OF MONKEY ISLAND', subtitle 'A GRAPHIC ADVENTURE BY RON GILBERT', patterned green decorative outer border, skull island, moonlit ship, frightened young blond pirate with sword at lower right, woman and monkey at lower left, supporting pirates. Preserve exactly the original painted composition and colors, original Lucasfilm Games badge centered at bottom, and original white IBM specification box on the left. Do not add '(Demo)' to the original box art because it was not printed there; the application labels the bundled demo separately. Improve damaged scan quality without modernizing the title font or moving subjects."
+    },
+    {
+      "target": "nippon-amiga",
+      "role": "cover",
+      "asset": "/launcher/nippon-scummweb-generated-2026-11-05-r1-cover.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "8153cd6c5745ee615ed387d6b354c3bc1741b75b8b1eb5cd2adab309a48465fe",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "438b88613d028e7bc2a01a139c1e4785be87defecb51a94fbbefa231d23f33d7",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://cdn.mobygames.com/covers/10760757-nippon-safes-inc-amiga-front-cover.jpg",
+          "sha256": "78f349704dad93b852f174dcbe569927074df562677d7fc0077c2decf913fb85",
+          "credit": "Original box-front scan hosted by cdn.mobygames.com; original artwork and branding belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Task: FAITHFUL QUALITY-IMPROVING REGENERATION of the supplied ORIGINAL BOX FRONT, not a redesign. Output ONE flat portrait front face at exactly 3:4 width:height, request 1200x1600 pixels for a final 900x1200 export. The input is the primary original-front reference: preserve its whole composition, character designs, original illustration style, palette, original title typography, publisher logos and printed layout. Restore sharp clean linework, legible lettering and faithful print color; remove scan wear, skew, blur and scanning borders. Preserve intentional painted/inked texture and original decorative borders. Do not invent new art, add characters or transform it into a hero banner. Fit the card ratio with minimal neutral margin adjustments; do not crop away original content. Keep all title lettering and publisher credits comfortably inset to survive a 4% card zoom. No 3D box mockup, spine, new badges, UI or watermarks. Game: Nippon Safes Inc. Faithfully restore this original Amiga box front: loose cartoon orange-to-red title 'NIPPON SAFES INC.' against a golden sun at top; pale warm background, black Japanese-style temple roof; same glamorous woman in green seated on huge gold die upper left; same thin bespectacled man stepping along scaffolding lower left; same stocky muscular man with white vest, green trousers, insect net lower-right, butterflies, green beams and orange posts. Preserve the Amiga Versione Italiana printed circle at top-right exactly as original and the blue DYNABYTE logo lower right. Preserve all composition, character faces and original illustration style. Improve clarity/color fidelity, do not substitute game-screen characters or turn this into a new design."
+    },
+    {
+      "target": "sword25",
+      "role": "cover",
+      "asset": "/launcher/sword25-scummweb-generated-2026-11-05-r1-cover.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "a0c2164e7cbf07473bfd081efcdb975dcb09e70abdfce59447cef26f8f0c625d",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "cd196167dcf3aa57b8c9472ddb0200d2c383a73d6de1975b5d0d2d7bdc989c62",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Broken%20Sword%202.5.png",
+          "sha256": "ba1e280e21682fbc3e6145a5ec69fb13f9a78a3825a5f66dc83f1f36f9f13023",
+          "credit": "Original box-front scan hosted by thumbnails.libretro.com; original artwork and branding belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Task: FAITHFUL QUALITY-IMPROVING REGENERATION of the supplied ORIGINAL BOX FRONT, not a redesign. Output ONE flat portrait front face at exactly 3:4 width:height, request 1200x1600 pixels for a final 900x1200 export. The input is the primary original-front reference: preserve its whole composition, character designs, original illustration style, palette, original title typography, publisher logos and printed layout. Restore sharp clean linework, legible lettering and faithful print color; remove scan wear, skew, blur and scanning borders. Preserve intentional painted/inked texture and original decorative borders. Do not invent new art, add characters or transform it into a hero banner. Fit the card ratio with minimal neutral margin adjustments; do not crop away original content. Keep all title lettering and publisher credits comfortably inset to survive a 4% card zoom. No 3D box mockup, spine, new badges, UI or watermarks. Game: Broken Sword 2.5: The Return of the Templars. Faithfully restore this exact original cover: intricate repeating brown ornamental border on all sides, parchment fading brown/orange to pale cream, crimson-hooded skull with golden Templar cross framed by flames in upper half, golden dragon wrapped round a red sword/cross in middle. Preserve the original golden medieval title layout: 'BROKEN SWORD' then large '2.5' on its own line and bottom subtitle 'THE RETURN OF THE TEMPLARS'. Preserve the small faded circular seal lower-right and overall original layout. Restore clarity and original printed texture, no new characters, no alternate logo from other Broken Sword games."
+    },
+    {
+      "target": "sfinx",
+      "role": "cover",
+      "asset": "/launcher/sfinx-scummweb-generated-2026-11-05-r1-cover.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "ac2ba2a053f905588ca17c8afb8d140a7da34ff0bd3bcc657b671e66f5ccd7c8",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "c83e4d5bf7573a5a734fc2c9f3451815213a64fd32164ae1d13b6ad573895c35",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Sfinx.png",
+          "sha256": "396adf1c32b45e11d69c3fff57361e37a42f788f879b108545920709cddd30b7",
+          "credit": "Original box-front scan hosted by thumbnails.libretro.com; original artwork and branding belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Task: FAITHFUL QUALITY-IMPROVING REGENERATION of the supplied ORIGINAL BOX FRONT, not a redesign. Output ONE flat portrait front face at exactly 3:4 width:height, request 1200x1600 pixels for a final 900x1200 export. The input is the primary original-front reference: preserve its whole composition, character designs, original illustration style, palette, original title typography, publisher logos and printed layout. Restore sharp clean linework, legible lettering and faithful print color; remove scan wear, skew, blur and scanning borders. Preserve intentional painted/inked texture and original decorative borders. Do not invent new art, add characters or transform it into a hero banner. Fit the card ratio with minimal neutral margin adjustments; do not crop away original content. Keep all title lettering and publisher credits comfortably inset to survive a 4% card zoom. No 3D box mockup, spine, new badges, UI or watermarks. Game: Sfinx (LK Avalon). Faithfully regenerate this exact original Polish front cover: original large red brush-stroke title 'SFINX' at top, lime-yellow original bonus banner along top edge reading 'Dodatkowo: Bastion, Carnage, Noc, Santa’s, Wolfsbane', green subtitle 'Nowa gra twórców \"Sołtysa\"', original PC CD-ROM circular badge left. Same cartoon characters and positions: sleepy blond boy in turquoise sweater at left, smiling orange-haired young woman in red shirt center, old bespectacled man in lab coat holding paper behind right; black cat at lower right, tiny green alien at lower left, saucer at bottom. Purple starry sky, yellow crescent moon, floating blue planets and silhouetted city. Original LK AVALON red logo bottom-left and red question marks at bottom-right. Preserve typography, all figures and flat cartoon style. Improve source clarity, do not modernize or redesign."
+    },
+    {
+      "target": "soltys",
+      "role": "cover",
+      "asset": "/launcher/soltys-scummweb-generated-2026-11-05-r1-cover.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "298d414834f06c66f0656f54f88fc2c17664c1bb2abd9a21c835b9bc5fc2ac59",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "0c652130c1dc64158d90edbdb00a799707eb5c7d92eacf4eb935bdd8978de6a2",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://pliki.ppe.pl/storage/8a94f55f7ab2c07cad58/8a94f55f7ab2c07cad58.jpg",
+          "sha256": "b10969ce93619d7a18caeb9213ebefd61fedc28e10a9163075c28bb9785250e1",
+          "credit": "Original box-front scan hosted by pliki.ppe.pl; original artwork and branding belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Faithful quality-improving regeneration of the supplied ORIGINAL Sołtys box front, not a redesign. Generate one flat portrait front at 1200x1600 pixels, 3:4, for final 900x1200 export. Preserve the exact original composition, cartoon faces, title typography, logo, colors and painted illustration style. Huge peach-to-yellow and pink-shadowed title 'SOŁTYS' at top, black outer background, narrow lavender rectangular frame around blue sky and green village meadow. Same running red-moustached farmer in green vest, purple trousers, red hat with rooster perched on it, holding original yellow paper with green numeral 1 in left hand and pitchfork over right shoulder. Same cow running behind him lower-right, small rural house right, original scattered humorous flying objects and black boot. Preserve original red rectangular 'LK AVALON' logo bottom-center. Restore sharp linework, faithful paint texture and original print detail, remove scan blur and wear. Keep all lettering and subjects comfortably inset for 4% card hover zoom. Minimal neutral margin adjustment to fit 3:4; preserve whole original cover without cropping or rearranging. No new characters, badges, words, watermark, UI, 3D mockup or spine."
+    },
+    {
+      "target": "hires1",
+      "role": "cover",
+      "asset": "/launcher/hires1-scummweb-generated-2026-11-05-r1-cover.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "e69eebb772918b7f2e2729e4b52c66a178b2bf73d44e18f95636d406833e15cb",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "edd40f28c72eb7defd0c7f06ba5add449d1e0bcb35aa712b2e8ff8be47f6193c",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%231_%20Mystery%20House.png",
+          "sha256": "68901de8a551b8c3c90609326787f498687a837540b36d35582136c48411df90",
+          "credit": "Original box-front scan hosted by thumbnails.libretro.com; original artwork and branding belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Faithful quality-improving regeneration of supplied ORIGINAL Mystery House box front. Generate one flat portrait front at 1200x1600 pixels, 3:4, for 900x1200 export. Preserve original whole composition, hand-painted vintage illustration, exact lettering and muted purple blue black palette. Small 'HI-RES ADVENTURE #1' at top. Large original blue 'MYSTERY HOUSE' title lettering with tree-root-like descending blue mist extending into central scene. Thin lavender art-deco rectangular frame. Exact same Victorian haunted house and tall central tower with orange lit barred windows; original tiny people seen in windows, stone grave markers and large silver cross at bottom, leafless black tree on left, large pale full moon and flying bats upper-left, hanging skeleton on gallows at right. Preserve heart, spade, club and diamond motifs, all architectural design and original positions. Original blue underlined 'SIERRAVENTURE' wordmark at bottom. Improve clarity and print fidelity while retaining painted texture. Remove scan wear, borders and blur, preserve intentional decorative frame. Keep lettering, gallows and gravestones comfortably inset for 4% hover zoom. Fit 3:4 with minimal neutral outer margin adjustment; do not crop, add characters or redesign. No UI, new text, watermark, spine or 3D mockup."
+    },
+    {
+      "target": "sky",
+      "role": "hero",
+      "asset": "/launcher/sky-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "99664866001c23fefd99d85d2a6a34f9e4e2bd96e6f63d9b861a590e3c6e3215",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "12e3d789f19af975bda571e34710f28e4c09b4226c6142ee3e8337fdd0fbfcd9",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/sky-hero.webp",
+          "sha256": "eced8b9e6f0ed570e70717d075fa1f05c8eccc0cfa8449d49eb750aea4172902",
+          "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+        }
+      ],
+      "promptSummary": "Recompose original Beneath a Steel Sky comic key art into a 5:3 website hero, preserving Foster, Joey, helicopter, linework and orange/blue palette, with quiet dark left 42% for real UI and safe right-side subjects. No text, logo, watermark or UI."
+    },
+    {
+      "target": "queen",
+      "role": "hero",
+      "asset": "/launcher/queen-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "df29f05c778d428d6b95cfdb80b8c90fa3c16a5a8294d39a4bae2263213f2435",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "5a391443971b55197aaa4834d40d3b6502b2a7cbc3adb4102c1adac936ac4924",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/queen-hero.webp",
+          "sha256": "cc15a0afa96199603f0ccb421907411552e73d9a7b62f3a05a8e49ea8178ae4c",
+          "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+        }
+      ],
+      "promptSummary": "Recompose original Flight of the Amazon Queen painted key art into a 5:3 website hero, preserving pilot, companion, temple, crashed plane and sunny pulp palette. Shaded quiet left 42% for real UI; subjects safely on right. No title, logos, watermark or UI."
+    },
+    {
+      "target": "drascula",
+      "role": "hero",
+      "asset": "/launcher/drascula-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "db820335ea070ad39d5a6cffe54cf2adb99b25aaf23e4c237d7227b9123d6ac6",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "299c162a73cc8036096aa4f6774cb74ed3b131be8669bc75fb1b6594526da4da",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/drascula-hero.webp",
+          "sha256": "6764eb2a2fa2e1488080a93e3e4ce460f61c6db06285a5f9f3065bd6d49f3f47",
+          "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed responsive ScummWEB hero background. Output landscape 1920x1152 pixels, 5:3. Faithfully reinterpret the supplied ORIGINAL game artwork for a banner, preserving its own illustration medium, palette, character designs and mood. Put recognizable visual subjects in the RIGHT half, faces/important emblems around 65-78% of width and 25-40% of height, comfortably inset from edges. LEFT 42% must be naturally dark, quiet, low-contrast scenery with negative space for the website's real white heading and green play button. Keep top 9% and bottom 12% low detail for navigation and fade. Full bleed, coherent illustration, no stretching. NO title, NO words, NO logo, NO signature, NO watermark, NO inset screenshot, NO boxed cover, NO UI, NO border. Game: Drascula: The Vampire Strikes Back. Original references include a composed website graphic and a box scan: extract the illustrated subject, NOT the blurred backdrop, screenshot inset or typography. Recreate the exuberant 1990s humorous cartoon cover: the same grinning lanky vampire, pale yellow face, huge pointed ears and long nose, black pointed hair, fangs, black formal suit with white bow tie and purple-lined red high-collared cape, looming with curled fingers over the same bespectacled orange-haired nervous young hero in purple clothes and blonde woman in blue. Right-side character group; a crooked castle with warm yellow walls and red roofs on a grassy hill behind them. Left side quiet dark purple night sky, crooked forest silhouettes and castle approach. Preserve bold black ink outlines and flat bright cartoon colors; playful horror comedy, not scary realism. Match the original character identities closely."
+    },
+    {
+      "target": "dreamweb-cd",
+      "role": "hero",
+      "asset": "/launcher/dreamweb-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "8b119708ef8302ee7796bf6b6eed3484cf907359533db96aeccdabbe657f7145",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "68a79b1eb2eb5b5e2d55946a1018fadf075e2381b73f4efbee6bcaa755c66cd0",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/dreamweb-hero.webp",
+          "sha256": "71eb377a16f6e4e5f2d0a8d2e98e90b717eed33bd7a60cd9dcec11b2ac82423f",
+          "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed responsive ScummWEB hero background. Output landscape 1920x1152 pixels, 5:3. Faithfully reinterpret the supplied ORIGINAL game artwork for a banner, preserving its own illustration medium, palette, character designs and mood. Put recognizable visual subjects in the RIGHT half, faces/important emblems around 65-78% of width and 25-40% of height, comfortably inset from edges. LEFT 42% must be naturally dark, quiet, low-contrast scenery with negative space for the website's real white heading and green play button. Keep top 9% and bottom 12% low detail for navigation and fade. Full bleed, coherent illustration, no stretching. NO title, NO words, NO logo, NO signature, NO watermark, NO inset screenshot, NO boxed cover, NO UI, NO border. Game: DreamWeb. Recompose the original iconic cover's intensely staring violet-blue eye, red-orange face fragment and black expressive hair on the RIGHT, keeping the iris around x72%, y34%. Surround with dystopian urban industrial framework, riveted metal, silhouetted tall buildings, cables and pipes along the margins and bottom, faithful to the original illustration. LEFT side shadowy nearly-black industrial structure with faint dark crimson light, no competing eye or face there. Preserve the original hand-inked scratchy crosshatching, saturated vermilion, black and purple palette, oppressive surreal cyberpunk noir. Remove all original metallic DreamWeb lettering; let industrial pipes replace that space. No added protagonists or guns."
+    },
+    {
+      "target": "lure",
+      "role": "hero",
+      "asset": "/launcher/lure-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "5227976b871e8cbd811d013a2792227a8544bbf1ab35011d01a9f4e84136a606",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "d70b2cfbb19cc10eebc9a0c244bb4ee81705c3e73e52eef551882c70f34b3b84",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/lure-hero.webp",
+          "sha256": "f084f5298aac77db5aa2a08163494bd1dd663230727d90ff465e0b644f495fb9",
+          "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed responsive ScummWEB hero background. Output landscape 1920x1152 pixels, 5:3. Faithfully reinterpret the supplied ORIGINAL game artwork for a banner, preserving its own illustration medium, palette, character designs and mood. Put recognizable visual subjects in the RIGHT half, faces/important emblems around 65-78% of width and 25-40% of height, comfortably inset from edges. LEFT 42% must be naturally dark, quiet, low-contrast scenery with negative space for the website's real white heading and green play button. Keep top 9% and bottom 12% low detail for navigation and fade. Full bleed, coherent illustration, no stretching. NO title, NO words, NO logo, NO signature, NO watermark, NO inset screenshot, NO boxed cover, NO UI, NO border. Game: Lure of the Temptress. Faithfully recompose the original painted fantasy cover subject on RIGHT: same pale green-eyed dark-haired sorceress in flowing vivid green medieval gown, long black hair streaming upward and outward, seated at a dark stone throne, one hand supporting a luminous swirling white-yellow magical orb edged pink and green. Her whole head including hair comfortably inset rather than cropped. At lower right foreground a horned dragon skull and a small human skull with candle flame, based on original cover. Background stormy deep blue fantasy sky, distant medieval castle silhouette; LEFT side darker midnight blue mist and restrained castle ramparts, unobtrusive beneath white website text. Retain painterly fantasy illustration and original face, costume and magical atmosphere. Remove the original game logo AND inset gameplay screenshot entirely. No new characters or modern armor.",
+      "revisionPrompts": [
+        "Edit target: supplied Lure of the Temptress artwork. Change ONLY the canvas composition/aspect ratio: output an image at 1920 wide by 1152 high, exactly 5:3 landscape, NOT an ultrawide 3:1 banner. Expand vertically above AND below existing artwork with naturally painted stormy blue sky at top, flowing green gown/throne/stone and mist at bottom, and scale/reposition the whole right-side character group so all her head and hair have generous headroom. Preserve the exact sorceress identity, face, green dress, glowing orb, skull props, castle, painted texture, blue/green palette and quiet shadowed LEFT 42% for title overlay. Do NOT stretch. Main woman's face approximately 73% across and 30% down. Everything should be one seamless full-bleed 5:3 painting with no words, no title, no logo, no UI, no border. More vertical scene, less panoramic. Exact aspect ratio 5:3."
+      ]
+    },
+    {
+      "target": "monkey-demo",
+      "role": "hero",
+      "asset": "/launcher/monkey-demo-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "de87c756364a5262bb7f684c96f15869d1271ebb04312651b8d769a5074c2be1",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "d6fd021dd8b821165014a442b60154e87756843ea064fce157816e96fe667fd5",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/monkey-demo-hero.webp",
+          "sha256": "ae498ad83864b26c5d3dda19c472949174ba6c185265455bd1e06a9ed5f2c7ab",
+          "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed responsive ScummWEB hero background. Output landscape 1920x1152 pixels, 5:3. Faithfully reinterpret the supplied ORIGINAL game artwork for a banner, preserving its own illustration medium, palette, character designs and mood. Put recognizable visual subjects in the RIGHT half, faces/important emblems around 65-78% of width and 25-40% of height, comfortably inset from edges. LEFT 42% must be naturally dark, quiet, low-contrast scenery with negative space for the website's real white heading and green play button. Keep top 9% and bottom 12% low detail for navigation and fade. Full bleed, coherent illustration, no stretching. NO title, NO words, NO logo, NO signature, NO watermark, NO inset screenshot, NO boxed cover, NO UI, NO border. Game: The Secret of Monkey Island (Demo). Source is original illustrated box-art imagery. Retain the original cover's warm painterly 1990s swashbuckling adventure style and luminous palette: young wide-eyed blond aspiring pirate Guybrush in loose white shirt holding a slim cutlass, on RIGHT foreground, his face at x73%, y40% with generous headroom. A huge pale skull-shaped island rock formation behind him toward center-right, its sockets lit indigo, warm firelit tropical foliage, pirate ship with tall masts in blue moonlit water farther right background, hints of comical pirates behind him. Use original character look and painted texture. LEFT half quiet shadowy midnight-blue tropical leaves, sea and distant island horizon, subdued enough for overlaid heading. Skull must sit behind right-side subjects rather than crowding title area. Whimsical mysterious Caribbean night, not realistic horror. No text even though demo's actual website title includes (Demo), no logo, no inset screenshot."
+    },
+    {
+      "target": "nippon-amiga",
+      "role": "hero",
+      "asset": "/launcher/nippon-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "3e7c7f82cbd0f06908249de9aaf43bb17c2f51160387c9a7978f42faa5787c38",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "4eb090f195f035181c4a87f6b8b5c26ac59f5e215b028757d2b1433d363176d8",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/nippon-hero.webp",
+          "sha256": "7b3bc5dca13377492942cdc6d453b936e6641a10ff297978357431848b63e446",
+          "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed responsive ScummWEB hero background. Output landscape 1920x1152 pixels, 5:3. Faithfully reinterpret the supplied ORIGINAL game artwork for a banner, preserving its own illustration medium, palette, character designs and mood. Put recognizable visual subjects in the RIGHT half, faces/important emblems around 65-78% of width and 25-40% of height, comfortably inset from edges. LEFT 42% must be naturally dark, quiet, low-contrast scenery with negative space for the website's real white heading and green play button. Keep top 9% and bottom 12% low detail for navigation and fade. Full bleed, coherent illustration, no stretching. NO title, NO words, NO logo, NO signature, NO watermark, NO inset screenshot, NO boxed cover, NO UI, NO border. Game: Nippon Safes, Inc. Input 1 is a composed website hero with an embedded gameplay reference; input 2 is an original gameplay frame. Use ONLY the actual game's cartoon visual designs, not the blur, frame, logo, dialogue balloon or text. Reimagine the original colorful Amiga cartoon scenery as a crisp hand-painted/inked 1990s adventure illustration, preserving exaggerated funny faces, angular city architecture and the red/purple/teal palette. Scene: quirky Japanese-inspired city at dusk, a red car beside ornate urban buildings, the original tall muscled brown-haired man in white sleeveless shirt and blue trousers on the right beside the original short shady figure in long black coat and black brimmed hat with eyes shadowed. Keep the muscleman's original friendly goofy expression and proportions, and the black-coated figure's short mysterious silhouette. Right background a nightclub-style entrance with red doors, purple pillars and teal flooring reminiscent of the original game. Left side naturally quiet dark violet city wall, deep teal pavement and subdued distant high-rise silhouettes, uncluttered for website title. No new main characters. NO lettering anywhere, NO dialogue balloon, NO screenshot panel, NO brand, NO big floating portrait. Stay close to source's comedy-caper mood, not cyberpunk photorealism."
+    },
+    {
+      "target": "sword25",
+      "role": "hero",
+      "asset": "/launcher/sword25-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "3b0b6bc0a9d804351a5b082ebbdc092b68391a63239c89fa32cc7ccebabb1fb7",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "146055998df6f92cf0421367c13b852bc6e9b9e98af11250778c97848d447384",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/sword25-hero.webp",
+          "sha256": "3b23a1f411b30cb13ea23ab3d829352fd587a0d956486c78509280b91ad2443c",
+          "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed responsive ScummWEB hero background. Output landscape 1920x1152 pixels, 5:3. Faithfully reinterpret the supplied ORIGINAL game artwork for a banner, preserving its own illustration medium, palette, character designs and mood. Put recognizable visual subjects in the RIGHT half, faces/important emblems around 65-78% of width and 25-40% of height, comfortably inset from edges. LEFT 42% must be naturally dark, quiet, low-contrast scenery with negative space for the website's real white heading and green play button. Keep top 9% and bottom 12% low detail for navigation and fade. Full bleed, coherent illustration, no stretching. NO title, NO words, NO logo, NO signature, NO watermark, NO inset screenshot, NO boxed cover, NO UI, NO border. Game: Broken Sword 2.5: The Return of the Templars. Closely preserve the iconic original promotional subject: a solemn aged ivory skull inside a voluminous deep crimson hood, a small golden Templar cross on the hood's forehead, and ornate golden cross/sword wrapped in the same golden dragon motif below. Arrange this coherent emblem-like subject entirely on RIGHT, skull face around x73%,y34%; hood and ornate dragon cross/sword visible without cropping. Background dark burgundy and brown parchment/stone texture with warm amber aura immediately around the right subject fading into dark low-detail oxblood shadows on LEFT. Original richly painted adventure-game promotional illustration; retain the source's specific skull anatomy, hood folds, gold patina and antique mood. No new living characters, no modern objects. CRITICAL: remove every part of the original title typography and subtitle, DO NOT render Broken Sword or any numbers/letters; fill formerly lettered regions with natural folds/shadows. Subtle Templar mystery, not gory horror."
+    }
+  ]
+}
