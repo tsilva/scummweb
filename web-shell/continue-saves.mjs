@@ -43,6 +43,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
   let timer;
   let excluded = new Set();
   let scannedFiles;
+  let resumeReported = false;
 
   function files() {
     try {
@@ -70,6 +71,10 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     const key = saveIndexKey(namespace, params.get("catalogGame") || snapshot.target);
     try { scope.localStorage.setItem(key, JSON.stringify(snapshot)); } catch {}
     const save = latestPlayerSave(snapshot, listing);
+    if (params.get("continue") === "1" && !resumeReported) {
+      scope.console?.info(`ScummWEB Continue: ${snapshot.engineId}:${snapshot.gameId}, slot ${save?.slot ?? "unavailable"}`);
+      resumeReported = true;
+    }
     scope.__scummwebSaveStatus = { ...snapshot, latestSlot: save?.slot ?? null };
     scope.parent.postMessage({ type: "scummweb:saves-listed", query: params.get("saveQuery"),
       ...snapshot, latestSlot: save?.slot ?? null }, launchUrl.origin);
