@@ -1,30 +1,4 @@
-diff --git a/base/commandLine.cpp b/base/commandLine.cpp
-index c29d1eb0..d416259b 100644
---- a/base/commandLine.cpp
-+++ b/base/commandLine.cpp
-@@ -26,6 +26,9 @@
- 
- #include "engines/advancedDetector.h"
- #include "engines/metaengine.h"
-+#ifdef __EMSCRIPTEN__
-+extern int scummwebReportSaves(const MetaEngine &, const Common::String &, const Common::String &, const Common::String &);
-+#endif
- #include "base/commandLine.h"
- #include "base/plugins.h"
- #include "base/version.h"
-@@ -1550,6 +1553,10 @@ static Common::Error listSaves(const Common::String &singleTarget) {
- 		const MetaEngine &metaEngine = enginePlugin->get<MetaEngine>();
- 		Common::String qualifiedGameId = buildQualifiedGameName(gameTarget.game.engineId, gameTarget.game.gameId);
- 
-+#ifdef __EMSCRIPTEN__
-+		scummwebReportSaves(metaEngine, gameTarget.game.engineId, gameTarget.game.gameId, gameTarget.target);
-+#endif
-+
- 		if (!metaEngine.hasFeature(MetaEngine::kSupportsListSaves)) {
- 			// If the target was specified, treat this as an error, and otherwise skip it.
- 			if (!singleTarget.empty()) {
 diff --git a/base/main.cpp b/base/main.cpp
-index ef3997f1..72b8e1fa 100644
 --- a/base/main.cpp
 +++ b/base/main.cpp
 @@ -30,8 +30,14 @@
@@ -42,7 +16,7 @@ index ef3997f1..72b8e1fa 100644
  #include "base/commandLine.h"
  #include "base/plugins.h"
  #include "base/version.h"
-@@ -187,6 +193,62 @@ void saveLastLaunchedTarget(const Common::String &target) {
+@@ -187,6 +193,62 @@
  }
  
  // TODO: specify the possible return values here
@@ -105,19 +79,23 @@ index ef3997f1..72b8e1fa 100644
  static Common::Error runGame(const Plugin *enginePlugin, OSystem &system, const DetectedGame &game, const void *meDescriptor) {
  	assert(enginePlugin);
  
-@@ -223,6 +285,11 @@ static Common::Error runGame(const Plugin *enginePlugin, OSystem &system, const
+@@ -223,6 +285,15 @@
  		// Apparently some engines query them in their constructor, thus we
  		// need to set this up before instance creation.
  		metaEngine.registerDefaultSettings(target);
 +#ifdef __EMSCRIPTEN__
 +		const int resumeSlot = scummwebReportSaves(metaEngine, game.engineId, game.gameId, target);
++		// Query frames use the same initialized plugin path as a launch, but
++		// must never instantiate an engine or fall through to the launcher.
++		if (EM_ASM_INT({ return new URL(globalThis.document.baseURI).searchParams.has('saveQuery') ? 1 : 0; }))
++			emscripten_force_exit(0);
 +		if (resumeSlot >= 0)
 +			ConfMan.setInt("save_slot", resumeSlot, Common::ConfigManager::kTransientDomain);
 +#endif
  		err = metaEngine.createInstance(&system, &engine, game, meDescriptor);
  	}
  
-@@ -325,7 +392,17 @@ static Common::Error runGame(const Plugin *enginePlugin, OSystem &system, const
+@@ -325,7 +396,17 @@
  	system.getEventManager()->purgeMouseEvents();
  
  	// Run the engine
@@ -135,3 +113,27 @@ index ef3997f1..72b8e1fa 100644
  
  	// Make sure we do not return to the launcher if this is not possible.
  	if (!engine->hasFeature(Engine::kSupportsReturnToLauncher))
+diff --git a/base/commandLine.cpp b/base/commandLine.cpp
+--- a/base/commandLine.cpp
++++ b/base/commandLine.cpp
+@@ -26,6 +26,9 @@
+ 
+ #include "engines/advancedDetector.h"
+ #include "engines/metaengine.h"
++#ifdef __EMSCRIPTEN__
++extern int scummwebReportSaves(const MetaEngine &, const Common::String &, const Common::String &, const Common::String &);
++#endif
+ #include "base/commandLine.h"
+ #include "base/plugins.h"
+ #include "base/version.h"
+@@ -1549,6 +1552,10 @@
+ 
+ 		const MetaEngine &metaEngine = enginePlugin->get<MetaEngine>();
+ 		Common::String qualifiedGameId = buildQualifiedGameName(gameTarget.game.engineId, gameTarget.game.gameId);
++
++#ifdef __EMSCRIPTEN__
++		scummwebReportSaves(metaEngine, gameTarget.game.engineId, gameTarget.game.gameId, gameTarget.target);
++#endif
+ 
+ 		if (!metaEngine.hasFeature(MetaEngine::kSupportsListSaves)) {
+ 			// If the target was specified, treat this as an error, and otherwise skip it.
