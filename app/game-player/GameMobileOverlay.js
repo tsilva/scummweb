@@ -1,6 +1,7 @@
 export default function GameMobileOverlay({
   needsImmersiveRetry,
   onContinue,
+  onDismiss,
   showMobileOverlay,
 }) {
   if (!showMobileOverlay) {
@@ -10,7 +11,7 @@ export default function GameMobileOverlay({
   const mobileOverlayTitle = needsImmersiveRetry ? "Tap to continue" : "Rotate to landscape";
   const mobileOverlayBody = needsImmersiveRetry
     ? "Your browser needs one tap before scummweb can enter fullscreen on mobile."
-    : "scummweb plays in landscape on mobile. Rotate your device to keep the game visible.";
+    : "Rotate your device for a larger game view, or keep playing in portrait.";
 
   return (
     <div className="game-route-mobile-overlay" role="status" aria-live="polite">
@@ -28,6 +29,9 @@ export default function GameMobileOverlay({
             Continue
           </button>
         ) : null}
+        <button className="game-route-mobile-button" onClick={onDismiss} type="button">
+          {needsImmersiveRetry ? "Play in browser" : "Play in portrait"}
+        </button>
       </div>
     </div>
   );

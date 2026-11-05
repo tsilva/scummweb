@@ -1,23 +1,29 @@
-.settings-trigger { display: inline-flex; align-items: center; gap: .6rem; padding: .55rem .6rem; border: 0; background: transparent; color: var(--ink); font: inherit; font-size: .88rem; font-weight: 700; cursor: pointer; }
-.settings-trigger:hover, .settings-trigger[aria-expanded="true"] { color: var(--accent-strong); }
-.settings-drawer { position: fixed; inset: 5rem 0 0 auto; margin: 0; padding: 0; width: min(38rem, 100%); max-width: 100%; height: calc(100dvh - 5rem); max-height: calc(100dvh - 5rem); border: 0; border-left: 1px solid #343434; background: #191919; color: var(--ink); overflow-y: auto; overscroll-behavior: contain; }
-.settings-drawer::backdrop { background: rgb(0 0 0 / 55%); clip-path: inset(5rem 0 0); }
+.settings-trigger[aria-expanded="true"] { color: var(--accent-strong); }
+.settings-drawer { position: fixed; inset: 5rem 0 0 auto; margin: 0; padding: 0; width: min(38rem, 100%); max-width: 100%; height: calc(100dvh - 5rem); max-height: calc(100dvh - 5rem); border: 0; border-left: 1px solid #343434; background: #191919; color: var(--ink); font-size: .875rem; overflow-y: auto; overscroll-behavior: contain; -webkit-user-select: none; user-select: none; transform: translateX(100%); transition: transform 240ms cubic-bezier(.2, .8, .2, 1), display 240ms allow-discrete, overlay 240ms allow-discrete; }
+.settings-drawer[open] { transform: translateX(0); }
+.settings-drawer::backdrop { background: rgb(0 0 0 / 55%); clip-path: inset(5rem 0 0); opacity: 0; transition: opacity 240ms ease, display 240ms allow-discrete, overlay 240ms allow-discrete; }
+.settings-drawer[open]::backdrop { opacity: 1; }
+@starting-style {
+  .settings-drawer[open] { transform: translateX(100%); }
+  .settings-drawer[open]::backdrop { opacity: 0; }
+}
 .settings-content { display: flex; flex-direction: column; min-height: 100%; padding: 1rem 1.75rem 1.75rem; }
 .settings-heading { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding-bottom: 1rem; border-bottom: 1px solid #363636; background: #191919; }
-.settings-heading h2 { margin: 0; font-family: var(--font-display), sans-serif; font-size: 2rem; letter-spacing: -.04em; }
+.settings-heading h2 { margin: 0; font-family: var(--font-display), sans-serif; font-size: 1.35rem; letter-spacing: -.04em; }
 .settings-close { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border: 0; background: transparent; color: var(--ink); cursor: pointer; }
-.settings-content h3 { margin: 1.6rem 0 .75rem; font-size: 1.65rem; line-height: 1.3; font-family: var(--font-display), sans-serif; }
-.settings-content p { margin: 0; color: #c5c5c5; font-size: 1rem; line-height: 1.65; }
+.settings-content h3 { margin: 1.6rem 0 .75rem; font-size: 1.1rem; line-height: 1.3; font-family: var(--font-display), sans-serif; }
+.settings-content p { margin: 0; color: #c5c5c5; font-size: .875rem; line-height: 1.65; }
 .settings-content button:disabled { opacity: .45; cursor: not-allowed; }
 .settings-content button:focus-visible, .settings-trigger:focus-visible, .settings-content select:focus-visible { outline: 2px solid var(--accent-strong); outline-offset: 4px; }
-.settings-section-heading { display: flex; align-items: center; width: 100%; gap: .85rem; padding: 1.25rem 0; border: 0; border-bottom: 1px solid #444; background: transparent; color: var(--ink); text-align: left; font: inherit; font-size: 1.4rem; font-weight: 750; cursor: pointer; }
+.settings-section-heading { display: flex; align-items: center; width: 100%; gap: .85rem; padding: 1.25rem 0; border: 0; border-bottom: 1px solid #444; background: transparent; color: var(--ink); text-align: left; font: inherit; font-size: 1rem; font-weight: 750; cursor: pointer; }
+.settings-section-heading > svg, .settings-action-block > svg, .settings-manage > svg { width: 1.25rem; height: 1.25rem; flex-shrink: 0; }
 .settings-section-heading > span { flex: 1; }
 .settings-section-heading.is-active { border-bottom: 3px solid var(--accent-strong); }
 .settings-section-heading.is-active > svg:last-child { transform: rotate(180deg); }
 .settings-action-block { display: grid; grid-template-columns: 1.6rem 1fr; column-gap: .85rem; padding: 1.5rem 0; border-bottom: 1px solid #555; }
 .settings-action-block > svg { margin-top: .3rem; }
-.settings-content h4 { margin: 0 0 .3rem; font-size: 1.35rem; }
-.settings-wide { grid-column: 1 / -1; display: flex; justify-content: center; align-items: center; gap: .65rem; width: 100%; margin-top: 1.5rem; min-height: 3.2rem; border-radius: 4px; font: inherit; font-size: 1rem; font-weight: 700; cursor: pointer; }
+.settings-content h4 { margin: 0 0 .3rem; font-size: 1rem; }
+.settings-wide { grid-column: 1 / -1; display: flex; justify-content: center; align-items: center; gap: .65rem; width: 100%; margin-top: 1.5rem; min-height: 3.2rem; border-radius: 4px; font: inherit; font-size: .875rem; font-weight: 700; cursor: pointer; }
 .settings-content .secondary-button { background: transparent; border: 1px solid #a6a6a6; color: #f5f5f5; }
 .settings-content .launch-button { background: var(--accent-strong); border: 1px solid var(--accent-strong); color: #101810; }
 .settings-content .launch-button::before { content: none; }
@@ -27,8 +33,8 @@
 .settings-content .settings-empty { grid-column: 1 / -1; margin-top: .8rem; font-size: .82rem; }
 .settings-manage { display: flex; align-items: center; gap: .85rem; width: 100%; padding: 1.75rem 0; background: transparent; border: 0; border-bottom: 1px solid #444; color: var(--ink); text-align: left; font: inherit; cursor: pointer; }
 .settings-manage > span { flex: 1; }
-.settings-manage strong { display: block; font-size: 1.35rem; margin-bottom: .35rem; }
-.settings-manage small, .settings-set small, .settings-choice small { display: block; color: #bdbdbd; font-size: .95rem; line-height: 1.5; }
+.settings-manage strong { display: block; font-size: 1rem; margin-bottom: .35rem; }
+.settings-manage small, .settings-set small, .settings-choice small { display: block; color: #bdbdbd; font-size: .8125rem; line-height: 1.5; }
 .settings-content .settings-footnote { margin-top: auto; padding-top: 4rem; font-size: .8rem; font-style: italic; }
 .settings-content .settings-status:empty { display: none; }
 .settings-content .settings-status:not(:empty), .settings-content .settings-error { margin: 1rem 0; padding: .75rem; border-left: 3px solid var(--accent-strong); background: #222; }
@@ -36,7 +42,7 @@
 .settings-download { display: inline-block; margin-left: .65rem; color: var(--accent-strong); text-decoration: underline; }
 .settings-back { display: flex; align-items: center; gap: .5rem; margin-top: 1.5rem; padding: .3rem 0; border: 0; color: var(--accent-strong); background: transparent; font: inherit; font-size: .85rem; cursor: pointer; }
 .settings-review-game { min-width: 0; margin: 1.75rem 0; padding: 1rem 0 0; border: 0; border-top: 1px solid #555; }
-.settings-review-game legend { max-width: 100%; overflow-wrap: anywhere; padding: 0 .6rem 0 0; font-size: 1.1rem; font-weight: 700; }
+.settings-review-game legend { max-width: 100%; overflow-wrap: anywhere; padding: 0 .6rem 0 0; font-size: .95rem; font-weight: 700; }
 .settings-destination { display: block; font-size: .83rem; color: #bdbdbd; }
 .settings-destination select { display: block; width: 100%; margin: .5rem 0 1rem; padding: .8rem .5rem; background: #101010; color: var(--ink); border: 1px solid #555; font: inherit; }
 .settings-choice { display: flex; gap: .9rem; align-items: center; padding: 1rem 0; border-bottom: 1px solid #444; cursor: pointer; font-size: .9rem; }
@@ -49,10 +55,11 @@
 .settings-set button { justify-self: start; margin-top: .5rem; }
 .settings-active { display: flex; align-items: center; gap: .4rem; color: var(--accent-strong) !important; font-size: .85rem; }
 #settings-about a { display: inline-block; margin-top: 1rem; color: var(--accent-strong); }
-@media (max-width: 700px) {
-  .settings-trigger { padding: .5rem; }
-  .settings-trigger span { display: none; }
+@media (max-width: 900px) {
   .settings-drawer { inset: 0 0 0 auto; height: 100dvh; max-height: 100dvh; }
-  .settings-content { padding: 1.2rem; }
-  .settings-content h3 { font-size: 1.35rem; }
+  .settings-drawer::backdrop { clip-path: none; }
+  .settings-content { padding: max(1.2rem, env(safe-area-inset-top)) max(1.2rem, env(safe-area-inset-right)) max(1.2rem, env(safe-area-inset-bottom)) max(1.2rem, env(safe-area-inset-left)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .settings-drawer, .settings-drawer::backdrop { transition: none; }
 }

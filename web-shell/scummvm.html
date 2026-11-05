@@ -1,4 +1,4 @@
-<!doctypehtml><html lang=en-us><head><meta charset=utf-8><meta content="text/html; charset=utf-8"http-equiv=Content-Type><meta content="width=device-width,initial-scale=1,viewport-fit=cover"name=viewport><link href=manifest.json?v=__SCUMMWEB_ASSET_VERSION__ rel=manifest><link href=scummvm-192.png?v=__SCUMMWEB_ASSET_VERSION__ rel=apple-touch-icon><!-- Revalidate the shell document; fingerprint runtime code and data. --><title>ScummWEB</title><link id=scummweb-js-preload rel=preload as=script href=scummvm.js><link id=scummweb-wasm-preload rel=preload as=fetch crossorigin=anonymous href=scummvm.wasm><style>body{margin:0;padding:none;background-color:#000}.emscripten{padding-right:0;margin-left:auto;margin-right:auto;display:block}textarea.emscripten{font-family:monospace;width:80%}#output{position:fixed;left:-10000px;top:0;width:1px!important;height:1px!important;padding:0;border:0;opacity:0;pointer-events:none;overflow:hidden;white-space:pre;z-index:-1}div.emscripten{text-align:center}div.emscripten_border{border:1px solid #000;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}canvas.emscripten{border:0 none;outline:none;box-shadow:none;background:#000;position:absolute;top:50%;left:50%;margin:0;width:auto;height:100%;overflow:hidden;display:block;transform:translate(-50%,-50%)}canvas.emscripten.scummweb-fill-screen{width:100%;height:100%}#progress{top:0;left:0;height:10px;width:100%;overflow:hidden;display:block;position:absolute;z-index:2;border:0;background:#c60}#progress[hidden]{display:none!important}progress::-moz-progress-bar{background:#f6e08a}progress::-webkit-progress-value{background:#f6e08a}progress{color:#f6e08a}#status{position:absolute;bottom:5em;right:0;padding:5px;text-align:right;border-top-left-radius:1em;border-bottom-left-radius:1em;padding-left:1em;padding-right:1em;z-index:3;border:3px solid #000;border-right:none;background:#f6e08a;font:bold large/1.4 "Trebuchet MS",Verdana,Tahoma,Sans-Serif}#status.error{background:red}</style></head><body><div class=emscripten><progress hidden id=progress max=100 value=0></progress></div><div class=emscripten id=status>Downloading ScummVM...</div><div class=emscripten_border><canvas class=emscripten id=canvas oncontextmenu=event.preventDefault() tabindex=-1></canvas></div><textarea class=emscripten id=output rows=8></textarea><script id=scummweb-runtime-assets>globalThis.SCUMMWEB_RUNTIME_ASSETS={};</script><script>
+<!doctypehtml><html lang=en-us><head><meta charset=utf-8><meta content="text/html; charset=utf-8"http-equiv=Content-Type><meta content="width=device-width,initial-scale=1,viewport-fit=cover"name=viewport><link href=manifest.json?v=__SCUMMWEB_ASSET_VERSION__ rel=manifest><link href=scummvm-192.png?v=__SCUMMWEB_ASSET_VERSION__ rel=apple-touch-icon><!-- Revalidate the shell document; fingerprint runtime code and data. --><title>ScummWEB</title><link id=scummweb-js-preload rel=preload as=script href=scummvm.js><link id=scummweb-wasm-preload rel=preload as=fetch crossorigin=anonymous href=scummvm.wasm><style>body{margin:0;padding:none;background-color:#000}.emscripten{padding-right:0;margin-left:auto;margin-right:auto;display:block}textarea.emscripten{font-family:monospace;width:80%}#output{position:fixed;left:-10000px;top:0;width:1px!important;height:1px!important;padding:0;border:0;opacity:0;pointer-events:none;overflow:hidden;white-space:pre;z-index:-1}div.emscripten{text-align:center}div.emscripten_border{border:1px solid #000;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}canvas.emscripten{border:0 none;outline:none;box-shadow:none;background:#000;position:absolute;top:calc((100% + env(safe-area-inset-top) - env(safe-area-inset-bottom)) / 2);left:calc((100% + env(safe-area-inset-left) - env(safe-area-inset-right)) / 2);margin:0;width:min(100vw,calc(100vh * var(--scummweb-canvas-ratio,1.333333)));width:min(calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right)),calc((100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) * var(--scummweb-canvas-ratio,1.333333)));height:auto;aspect-ratio:var(--scummweb-canvas-ratio,1.333333);overflow:hidden;display:block;transform:translate(-50%,-50%)}canvas.emscripten.scummweb-fill-screen{width:100%;height:100%}#progress{top:0;left:0;height:10px;width:100%;overflow:hidden;display:block;position:absolute;z-index:2;border:0;background:#c60}#progress[hidden]{display:none!important}progress::-moz-progress-bar{background:#f6e08a}progress::-webkit-progress-value{background:#f6e08a}progress{color:#f6e08a}#status{position:absolute;bottom:5em;right:0;padding:5px;text-align:right;border-top-left-radius:1em;border-bottom-left-radius:1em;padding-left:1em;padding-right:1em;z-index:3;border:3px solid #000;border-right:none;background:#f6e08a;font:bold large/1.4 "Trebuchet MS",Verdana,Tahoma,Sans-Serif}#status.error{background:red}</style></head><body><div class=emscripten><progress hidden id=progress max=100 value=0></progress></div><div class=emscripten id=status>Downloading ScummVM...</div><div class=emscripten_border><canvas class=emscripten id=canvas oncontextmenu=event.preventDefault() tabindex=-1></canvas></div><textarea class=emscripten id=output rows=8></textarea><script id=scummweb-runtime-assets>globalThis.SCUMMWEB_RUNTIME_ASSETS={};</script><script>
 const scummwebBrowserFsReady=new Promise((resolve,reject)=>{
   const script=document.createElement("script");
   script.src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js";
@@ -294,6 +294,14 @@ async function setupLocalGame() {
   });
 }
 
+/*__SCUMMWEB_GAME_DEFAULTS__*/
+function setupGameDefaults() {
+  const configPath = "/home/web_user/scummvm.ini";
+  const config = FS.readFile(configPath, { encoding: "utf8" });
+  const updated = applyGameDefaults(config);
+  if (updated !== config) FS.writeFile(configPath, updated);
+}
+
 /*__SCUMMWEB_SAVE_BRIDGE__*/
 function setupFilesystem() {
   if (scummwebInlineFrame) {
@@ -310,6 +318,7 @@ function setupFilesystem() {
     .then(() => !scummwebLaunchUrl.searchParams.has("saveQuery") && (!isLocalGame || isCatalogArchive)
       ? installMissingCatalogTarget().then(setupSkipIntroSaves)
       : undefined)
+    .then(() => !scummwebLaunchUrl.searchParams.has("saveQuery") ? setupGameDefaults() : undefined)
     .then(() => globalThis.__scummwebInstallContinueSaves?.({ scope: window, FS, Module,
       launchUrl: scummwebLaunchUrl, assetUrl: buildVersionedAssetUrl }));
   Promise.all([window.ScummvmFSReady, localFilesReady])
@@ -377,6 +386,8 @@ if(globalThis.__scummwebPendingReadyStatePhase?.state){setReadyStatePhase(global
 const canvas=document.getElementById("canvas");
 const output=document.getElementById("output");
 if(canvas){
+/*__SCUMMWEB_CANVAS_FIT__*/
+installCanvasFit(canvas,MutationObserver);
 const visibleCursorClass="scummvm-browser-cursor-visible";
 const visibleHintClass="scummvm-cursor-grab-hint-visible";
 const hintId="scummvm-cursor-grab-hint";

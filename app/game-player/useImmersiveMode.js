@@ -54,12 +54,6 @@ function isLandscapeClient() {
     return true;
   }
 
-  const orientationApi = getOrientationApi();
-
-  if (typeof orientationApi?.type === "string") {
-    return orientationApi.type.startsWith("landscape");
-  }
-
   if (typeof window.matchMedia === "function") {
     return window.matchMedia(LANDSCAPE_QUERY).matches;
   }
@@ -81,8 +75,8 @@ export function useImmersiveMode({ shellRef }) {
   const [isMobileViewport, setIsMobileViewport] = useState(false);
   const [isLandscapeViewport, setIsLandscapeViewport] = useState(true);
   const [needsImmersiveRetry, setNeedsImmersiveRetry] = useState(false);
+  const [mobileOverlayDismissed, setMobileOverlayDismissed] = useState(false);
   const autoImmersiveAttemptedRef = useRef(false);
-  const immersiveRetryInFlightRef = useRef(false);
 
   useEffect(() => {
     function syncViewportState() {
@@ -170,48 +164,6 @@ export function useImmersiveMode({ shellRef }) {
   }, [canFullscreen, isMobileViewport, shellRef]);
 
   useEffect(() => {
-    if (!isMobileViewport || !needsImmersiveRetry) {
-      return;
-    }
-
-    async function retryImmersiveMode() {
-      if (immersiveRetryInFlightRef.current) {
-        return;
-      }
-
-      immersiveRetryInFlightRef.current = true;
-
-      try {
-        const entered = await enterImmersiveMode({ shellRef, silenceErrors: true });
-
-        if (entered) {
-          setNeedsImmersiveRetry(false);
-        }
-      } finally {
-        immersiveRetryInFlightRef.current = false;
-      }
-    }
-
-    function handleRetryKeydown(event) {
-      if (event.metaKey || event.ctrlKey || event.altKey) {
-        return;
-      }
-
-      void retryImmersiveMode();
-    }
-
-    window.addEventListener("pointerup", retryImmersiveMode, { passive: true });
-    window.addEventListener("touchend", retryImmersiveMode, { passive: true });
-    window.addEventListener("keydown", handleRetryKeydown);
-
-    return () => {
-      window.removeEventListener("pointerup", retryImmersiveMode);
-      window.removeEventListener("touchend", retryImmersiveMode);
-      window.removeEventListener("keydown", handleRetryKeydown);
-    };
-  }, [isMobileViewport, needsImmersiveRetry, shellRef]);
-
-  useEffect(() => {
     return () => {
       const orientationApi = getOrientationApi();
 
@@ -241,21 +193,25 @@ export function useImmersiveMode({ shellRef }) {
   }
 
   async function handleImmersiveResume() {
-    const entered = await enterImmersiveMode({ shellRef });
+    await enterImmersiveMode({ shellRef, silenceErrors: true });
+    dismissMobileOverlay();
+  }
 
-    if (entered) {
-      setNeedsImmersiveRetry(false);
-    }
+  function dismissMobileOverlay() {
+    setNeedsImmersiveRetry(false);
+    setMobileOverlayDismissed(true);
   }
 
   return {
     canFullscreen,
+    dismissMobileOverlay,
     exitImmersiveMode,
     handleFullscreenToggle,
     handleImmersiveResume,
     isFullscreen,
     isLandscapeViewport,
     isMobileViewport,
+    mobileOverlayDismissed,
     needsImmersiveRetry,
   };
 }

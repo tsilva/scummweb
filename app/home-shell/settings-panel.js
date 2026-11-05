@@ -142,9 +142,9 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
   const storedOnly = data.stored.filter((set) => !data.sets.some((active) => active.destination.key === set.destination.key && active.hash === set.hash));
 
   return <>
-    <button ref={trigger} type="button" className="settings-trigger" aria-label="Settings" aria-haspopup="dialog" aria-expanded={open}
+    <button ref={trigger} type="button" className="nav-icon-link settings-trigger" aria-label="Settings" title="Settings" aria-haspopup="dialog" aria-expanded={open}
       aria-controls="site-settings" onClick={() => { setSection("saves"); setOpen(true); }}>
-      <Settings size={20} aria-hidden="true" /><span>Settings</span>
+      <Settings className="icon" aria-hidden="true" />
     </button>
     <dialog ref={dialog} id="site-settings" className="settings-drawer" aria-labelledby="settings-title"
       onCancel={(event) => { event.preventDefault(); close(); }} onClick={(event) => { if (event.target === dialog.current) close(); }}>
@@ -218,7 +218,13 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
           aria-expanded={section === "about"} aria-controls="settings-about" disabled={busy} onClick={() => setSection(section === "about" ? "" : "about")}>
           <Info size={24} /><span>About</span><ChevronDown size={20} />
         </button>
-        <section id="settings-about" hidden={section !== "about"}><h3>ScummWEB</h3><p>Classic adventures in your browser.</p><p>ScummVM {scummvmVersion}<br />Bundle built {sourceInfoDate}.</p><a href="https://www.scummvm.org/" target="_blank" rel="noreferrer">Visit ScummVM</a></section>
+        <section id="settings-about" hidden={section !== "about"}>
+          <h3>ScummWEB</h3>
+          <p>Classic adventures in your browser.</p>
+          <p>ScummWEB is an independent browser frontend for ScummVM. It is not affiliated with, endorsed by, or sponsored by the ScummVM project.</p>
+          <p>ScummVM {scummvmVersion}<br />Bundle built {sourceInfoDate}.</p>
+          <a href="https://www.scummvm.org/" target="_blank" rel="noreferrer">Visit ScummVM</a>
+        </section>
         <p className="settings-footnote">Game files are not included in backups.</p>
         <input ref={picker} type="file" accept=".zip,application/zip" aria-label="Choose save backup ZIP" hidden onChange={chooseBackup} />
       </div>

@@ -14,8 +14,11 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-0BSD-blue" alt="License: 0BSD (original ScummWEB code)" /></a>
 </p>
 
-ScummWEB brings classic point-and-click adventures to your browser, powered by
-ScummVM. Play freeware and demos from the public library, or import compatible
+ScummWEB is an independent browser frontend for [ScummVM](https://www.scummvm.org/).
+It is not affiliated with, endorsed by, or sponsored by the ScummVM project.
+
+Play classic point-and-click adventures in your browser. Choose freeware and
+demos from the public library, or import compatible
 games from your own collection. Recognized games include artwork, descriptions,
 and studio credits. Game details show three screenshots where matching captures
 are available.
@@ -49,7 +52,17 @@ also works for personal imports, with progress kept separate for each version.
 Intro checkpoints do not enable Continue. Other games stay on **Play** and load
 progress through their in-game menu.
 
-Open **Settings → Saved games** to export a backup ZIP or import one on another
+Games default to their original save/load screens wherever ScummVM supports
+them. Existing saved preferences take precedence; games without an original
+screen option keep their usual interface.
+
+On phones, landscape gives the largest game view. You can also choose **Play in
+portrait** or **Play in browser** without fullscreen. Drag on the game or cursor
+pad to move the pointer; use **L** and **R** for left and right clicks. Double-tap
+the game for a left click. The top controls open the game menu or exit to the library.
+
+Open the **Settings** gear icon to the right of GitHub to slide in the settings panel.
+Choose **Saved games** to export a backup ZIP or import one on another
 device. Review imports before applying them; different progress for the same
 game is kept as separate save sets. **Save sets** lets you choose which set is
 active. Close games in all tabs first. Backups contain progress, not game files.
@@ -68,6 +81,8 @@ game files are excluded. Startup checks do not establish full-game compatibility
 The homepage slideshow advances every eight seconds. Previous and next restart
 the countdown; use the pause button to stop automatic rotation.
 Exiting a game returns to the homepage with that game selected in the slideshow.
+For a single-version game with a supported player save, select **Continue** there
+to resume, or **Start from beginning** to start fresh.
 Quitting inside a game or choosing ScummVM’s **Return to Launcher** also returns
 to ScummWEB without opening ScummVM’s game-selection menu.
 

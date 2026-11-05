@@ -1,6 +1,6 @@
 .game-route-page {
   position: relative;
-  min-height: 100vh;
+  min-height: 100dvh;
   background:
     radial-gradient(circle at 20% 0%, rgba(85, 170, 85, 0.18), transparent 24%),
     #050505;
@@ -41,7 +41,8 @@
   position: absolute;
   inset: 0;
   z-index: 8;
-  overflow: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   background:
     radial-gradient(circle at 20% 0%, rgba(85, 170, 85, 0.18), transparent 24%),
     #050505;
@@ -233,19 +234,21 @@
 }
 
 .game-route-control-group.is-left {
-  left: min(max(0.5rem, env(safe-area-inset-left)), 1rem);
+  left: max(0.5rem, env(safe-area-inset-left));
 }
 
 .game-route-control-group.is-right {
-  right: min(max(0.5rem, env(safe-area-inset-right)), 1rem);
+  right: max(0.5rem, env(safe-area-inset-right));
 }
 
 .game-route-control-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0;
+  touch-action: manipulation;
   border: 1px solid rgba(255, 255, 255, 0.32);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.07);
@@ -314,8 +317,8 @@
 
 .game-route-bottom-actions {
   position: fixed;
-  right: min(max(0.75rem, env(safe-area-inset-right)), 1rem);
-  bottom: min(max(0.75rem, env(safe-area-inset-bottom)), 1rem);
+  right: max(0.75rem, env(safe-area-inset-right));
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
   z-index: 10;
   display: flex;
   flex-direction: column;
@@ -386,8 +389,8 @@
 
 .game-route-touch-cursor-pad-shell {
   position: fixed;
-  left: min(max(0.75rem, env(safe-area-inset-left)), 1rem);
-  bottom: min(max(0.75rem, env(safe-area-inset-bottom)), 1rem);
+  left: max(0.75rem, env(safe-area-inset-left));
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
   z-index: 10;
   pointer-events: none;
 }
@@ -552,7 +555,8 @@
 .game-route-mobile-overlay {
   position: absolute;
   inset: 0;
-  z-index: 11;
+  z-index: 9;
+  overflow-y: auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -635,9 +639,20 @@
 }
 
 @media (max-width: 900px) {
+  .nav-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
+
+  .nav-icon-link {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
   .dashboard-nav-home .nav-actions {
     position: absolute;
-    top: 0.75rem;
+    top: calc(max(0.45rem, env(safe-area-inset-top)) + 0.45rem);
     right: max(1rem, env(safe-area-inset-right));
     width: auto;
   }
@@ -717,18 +732,18 @@
 }
 
 @media (max-width: 640px) {
-  .dashboard-nav-home .nav-cluster-left {
+  .dashboard-nav .nav-cluster-left {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto;
     row-gap: 0.5rem;
     padding-right: 0;
   }
 
-  .dashboard-nav-home .nav-brand-group {
+  .dashboard-nav .nav-brand-group {
     grid-row: 1;
   }
 
-  .dashboard-nav-home .nav-links {
+  .dashboard-nav .nav-links {
     grid-column: 1;
     grid-row: 2;
   }
@@ -737,8 +752,8 @@
   .hero-inner,
   .content-band,
   .site-footer {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
   }
 
   .dashboard-nav {
@@ -792,7 +807,7 @@
   .nav-links a {
     display: inline-flex;
     align-items: center;
-    min-height: 1.1rem;
+    min-height: 2.75rem;
     font-size: 0.58rem;
     letter-spacing: 0.14em;
   }
@@ -800,13 +815,13 @@
   .nav-actions {
     position: absolute;
     top: calc(max(0.45rem, env(safe-area-inset-top)) + 0.45rem);
-    right: 1rem;
+    right: max(1rem, env(safe-area-inset-right));
     width: auto;
   }
 
   .nav-icon-link {
-    width: 2.1rem;
-    height: 2.1rem;
+    width: 2.75rem;
+    height: 2.75rem;
   }
 
   .hero-stage {
@@ -977,4 +992,16 @@
   .game-route-boot-summary {
     font-size: 0.94rem;
   }
+}
+
+/* Keep loading and orientation actions reachable on short landscape screens. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .game-route-boot-content {
+    padding-top: max(4.5rem, env(safe-area-inset-top));
+    align-items: flex-start;
+  }
+
+  .game-route-boot-title { font-size: 2rem; }
+  .game-route-boot-summary { margin-top: 0.65rem; }
+  .game-route-mobile-overlay { align-items: flex-start; padding-top: 4.5rem; }
 }

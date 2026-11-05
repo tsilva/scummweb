@@ -1,4 +1,5 @@
 import LaunchButton from "../launch-button";
+import SourceLaunchActions from "./source-launch-actions";
 import { HOME_BROWSE_LABEL, HOME_HERO_KICKER, HOME_HERO_SUMMARY, HOME_HERO_TITLE } from "../seo";
 import DecorativeImage from "./decorative-image";
 import Icon from "./shell-icon";
@@ -14,6 +15,7 @@ export default function HeroStage({
   isHomePage = false,
   isInitialSlide = true,
   sourceAction,
+  sourceVersion,
 }) {
   const featuredDialogId = getGameDialogId(featuredGame);
   const showHomeIntro = isHomePage && isInitialSlide;
@@ -68,7 +70,9 @@ export default function HeroStage({
           <p className="hero-summary" title={heroSummary}>{heroSummary}</p>
 
           <div className="hero-actions">
-            {sourceAction ? (
+            {sourceVersion ? (
+              <SourceLaunchActions key={sourceVersion.key} version={sourceVersion} helpId="hero-file-access-help" showAccessHelp={false} />
+            ) : sourceAction ? (
               <button type="button" className="launch-button" title={sourceAction.label} disabled={sourceAction.disabled} onClick={sourceAction.onClick}
                 aria-describedby={sourceAction.needsAccess ? "hero-file-access-help" : undefined}
                 aria-haspopup={sourceAction.dialogId ? "dialog" : undefined} aria-controls={sourceAction.dialogId}>
@@ -79,7 +83,6 @@ export default function HeroStage({
                 game={featuredGame}
                 entryPoint={isHomePage ? "hero" : "game_detail"}
                 label="Play"
-                continueLabel="Play"
               />
             )}
             <a className="secondary-button" href={secondaryActionHref}>

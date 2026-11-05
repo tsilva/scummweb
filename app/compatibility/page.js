@@ -25,9 +25,9 @@ export const metadata = {
 
 export default function CompatibilityPage() {
   const entries = buildCompatibilityPageEntries(compatibility.entries, getRecognizedGameLibrary());
-  const { scummvmVersion, sourceInfoDate } = getHomeShellData();
+  const { catalog, scummvmVersion, sourceInfoDate } = getHomeShellData();
 
-  return <HomeShell pageMode="compatibility" logoSrc={getVersionedSiteAssetPath("/logo-nav.png")}
+  return <HomeShell catalog={catalog} pageMode="compatibility" logoSrc={getVersionedSiteAssetPath("/logo-nav.png")}
     scummvmVersion={scummvmVersion} sourceInfoDate={sourceInfoDate} scummvmOfficialSite={SCUMMVM_OFFICIAL_SITE_URL}>
     <section className="compatibility-page" aria-labelledby="compatibility-page-title">
       <CompatibilityView entries={entries} recordedOn={compatibility.recordedOn}

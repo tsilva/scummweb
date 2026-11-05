@@ -14,6 +14,7 @@ export default function HomeHero({ groups, featuredGame }) {
   const featuredKey = getGameFamilyKey(featuredGame) || `catalog:${featuredGame.target}`;
   const ordered = [...groups.filter(({ key }) => key === featuredKey), ...groups.filter(({ key }) => key !== featuredKey)];
   const slides = ordered.map((group) => ({ id: group.key, game: group.game,
+    sourceVersion: group.versions.length === 1 && group.versions[0].source ? group.versions[0] : undefined,
     action: group.versions.length > 1 ? {
       dialogId: group.dialogId,
       label: `Choose a version of ${group.title}`,
@@ -167,6 +168,7 @@ export default function HomeHero({ groups, featuredGame }) {
       ) : null}
       featuredGame={currentSlide.game}
       sourceAction={currentSlide.action}
+      sourceVersion={currentSlide.sourceVersion}
       isHomePage
       isInitialSlide={slideIndex === 0 && requestedId !== currentSlide.id}
     />
