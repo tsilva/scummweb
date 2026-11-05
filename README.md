@@ -97,9 +97,11 @@ ScummVM or ScummWEB limitations. Problems specific to missing or mismatched
 game files are excluded. Startup checks do not establish full-game compatibility.
 
 Select a library or Recently Played card to open the game’s shareable page and
-jump instantly to its hero. The game’s artwork, description, launch actions and
-screenshots fill the opening view, with the library below the fold and compact
-portrait box-art cards. Reserved text and action areas keep the slideshow stable.
+jump instantly to its hero. The artwork, description, launch actions, screenshots
+and URL update in the current page without a route fetch or library reload. Browser
+Back and Forward restore the selection, and direct links still open that game.
+The hero and screenshots fill the opening view, with the library below the fold
+and compact portrait box-art cards. Reserved text and action areas keep the slideshow stable.
 Select a screenshot to expand it inline; use the arrows to browse and Escape to close it.
 
 The homepage slideshow advances every eight seconds; use the pause button to stop

@@ -6,10 +6,8 @@ import {
 } from "./game-library";
 import { getHomeShellData } from "./game-page-data";
 import HomeShell from "./home-shell";
-import SeoJsonLd from "./seo-json-ld";
 import {
   buildHomeMetadata,
-  buildHomeStructuredData,
 } from "./seo";
 
 export const dynamic = "force-static";
@@ -27,7 +25,6 @@ export default function HomePage() {
 
   return (
     <>
-      <SeoJsonLd data={buildHomeStructuredData(shellData.catalog)} />
       <HomeShell
         catalog={shellData.catalog}
         featuredGame={shellData.featuredGame}

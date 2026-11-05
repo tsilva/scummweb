@@ -11,7 +11,7 @@ await swc.loadBindings();
 let savedIdentity = null;
 const saveHooks = { useState: () => [savedIdentity, () => {}], useEffect() {} };
 let stateIndex = 0, preferredVersion = null;
-const staticHooks = { useState: (value) => [stateIndex++ === 2 ? preferredVersion : value, () => {}], useRef: (value) => ({ current: value }), useEffect() {} };
+const staticHooks = { useState: (value) => [stateIndex++ === 1 ? preferredVersion : value, () => {}], useRef: (value) => ({ current: value }), useEffect() {} };
 
 async function loadComponent(path, imports = {}, hooks = saveHooks, globals = {}) {
   const url = new URL(path, import.meta.url);
@@ -56,6 +56,7 @@ const HeroStage = await loadComponent("../app/home-shell/hero-stage.js", {
   "./shared": { getGameDialogId: () => "game-test", getHeroImageStyle: () => ({}) },
 });
 const HomeHero = await loadComponent("../app/home-shell/home-hero.js", {
+  "./game-navigation": { useGameNavigation: () => null },
   "next/navigation": { useRouter: () => ({ push() {} }) },
   "./hero-stage": HeroStage,
   "./hero-images.mjs": { getHeroPreloadImages: () => [] },
