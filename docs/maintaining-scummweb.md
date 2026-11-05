@@ -879,6 +879,11 @@ or request-time rendering.
   launches without library metadata return to the homepage.
   Slug routes render the selected game's hero and screenshots on the server,
   retaining the canonical metadata and structured data for sharing and search.
+  Within the mounted library, game cards and slideshow arrows update selection
+  using the native History API without fetching a new route. The library stays
+  mounted, including imports and browsing controls; Back and Forward restore
+  the hero and selected card. Title, canonical URL, social metadata and structured
+  data follow the selected route. Links outside this library use Next.js routing.
   Slideshow arrows navigate to the previous or next game's route and pause
   rotation. The homepage rotates every eight seconds; game routes and explicit
   imported-game selections open paused until resumed. Hover and focus pause rotation over hero content,

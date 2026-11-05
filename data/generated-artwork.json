@@ -925,6 +925,1889 @@
         }
       ],
       "prompt": "Use case: illustration-story. Asset: one full-bleed responsive ScummWEB hero background. Output landscape 1920x1152 pixels, 5:3. Faithfully reinterpret the supplied ORIGINAL game artwork for a banner, preserving its own illustration medium, palette, character designs and mood. Put recognizable visual subjects in the RIGHT half, faces/important emblems around 65-78% of width and 25-40% of height, comfortably inset from edges. LEFT 42% must be naturally dark, quiet, low-contrast scenery with negative space for the website's real white heading and green play button. Keep top 9% and bottom 12% low detail for navigation and fade. Full bleed, coherent illustration, no stretching. NO title, NO words, NO logo, NO signature, NO watermark, NO inset screenshot, NO boxed cover, NO UI, NO border. Game: Broken Sword 2.5: The Return of the Templars. Closely preserve the iconic original promotional subject: a solemn aged ivory skull inside a voluminous deep crimson hood, a small golden Templar cross on the hood's forehead, and ornate golden cross/sword wrapped in the same golden dragon motif below. Arrange this coherent emblem-like subject entirely on RIGHT, skull face around x73%,y34%; hood and ornate dragon cross/sword visible without cropping. Background dark burgundy and brown parchment/stone texture with warm amber aura immediately around the right subject fading into dark low-detail oxblood shadows on LEFT. Original richly painted adventure-game promotional illustration; retain the source's specific skull anatomy, hood folds, gold patina and antique mood. No new living characters, no modern objects. CRITICAL: remove every part of the original title typography and subtitle, DO NOT render Broken Sword or any numbers/letters; fill formerly lettered regions with natural folds/shadows. Subtle Templar mystery, not gory horror."
+    },
+    {
+      "target": "sfinx",
+      "role": "hero",
+      "asset": "/launcher/sfinx-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "e35237aa84ed6014ef45458afc78198fba8011b370d736ff75f9a9614d025683",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "7c652a328ada853a30ac4b47f0ea94e09a6fd033ef41da35a48cd128e5c77f74",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Sfinx.png",
+          "credit": "Original LK Avalon box-front artwork, scan hosted by Libretro; characters and original designs belong to their respective creators.",
+          "sha256": "396adf1c32b45e11d69c3fff57361e37a42f788f879b108545920709cddd30b7"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Game: Sfinx. Preserve the original Polish cover's flat cartoon linework and purple starry night: sleepy blond boy in turquoise sweater, smiling orange-haired young woman in red shirt and blue jeans, balding bespectacled scientist with paper, black cat and small green alien, small glass-domed flying saucer. Place the core character group safely on the right with the saucer below them. Distant dark city silhouettes and soft purple night gradients form the quiet left. Keep humorous expressions, original proportions and saturated turquoise/red/purple colors. Remove the large red SFINX lettering, bonus banner and every other word/logo."
+    },
+    {
+      "target": "soltys",
+      "role": "hero",
+      "asset": "/launcher/soltys-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "014bbc43709414da9668ed945b16048ebe33e173d30454c9240a2a58d31ee18d",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "bfc7ee9af442cc01e470ba788cd739b759af9b573c037b3cb4a9eb6785808324",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://pliki.ppe.pl/storage/8a94f55f7ab2c07cad58/8a94f55f7ab2c07cad58.jpg",
+          "credit": "Original LK Avalon box-front artwork, scan hosted by PPE; retain original characters and illustration style.",
+          "sha256": "b10969ce93619d7a18caeb9213ebefd61fedc28e10a9163075c28bb9785250e1"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Game: Sołtys. Preserve the original cover's whimsical painted cartoon farmer: red moustache, green vest, purple trousers, black boots, red hat with a rooster perched on top; pitchfork over his shoulder and yellow paper in his hand. Preserve the cow behind him, Polish thatched village cottage and green meadow. Farmer, rooster and cow grouped on the right, with clear inset head and pitchfork. Left becomes a shaded orchard/meadow edge with quiet dark green trees; maintain the sunny blue sky and warm rural colors around the right subjects. Yellow paper is blank: remove the numeral along with all SOŁTYS title text, logos and decorative border. This is original painted cover art, not pixel-art gameplay."
+    },
+    {
+      "target": "hires1",
+      "role": "hero",
+      "asset": "/launcher/hires1-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "f21085664577aab49a1818fb460c4b14e8e23add52587f4d7fd2874ef8d64881",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "3e01a6e395960686aa1458577afe389c4dc8b3a306a62ccbe52fe896533eb6a8",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%231_%20Mystery%20House.png",
+          "credit": "Original Mystery House / SierraVenture cover artwork, scan hosted by Libretro; original designs belong to their respective creators.",
+          "sha256": "68901de8a551b8c3c90609326787f498687a837540b36d35582136c48411df90"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Game: Mystery House. Recompose the original hand-painted haunted Victorian mansion, tall central tower, orange-lit barred windows and tiny figures seen inside, cemetery and large silver cross, leafless trees, moon, bats, and skeletal gallows into a wide nocturnal hero. Mansion and its tower safely on the right; retain the source's distinctive architecture and muted blue/lavender/charcoal palette. Keep the moon and subtle pale light behind the right-hand mansion, never a bright moon in the left text area. Quiet left dark cemetery trees and fog, restrained details. No gore. No title lettering or blue text-shaped mist, no SierraVenture logo, no printed border. Do not turn it into a generic photorealistic haunted house."
+    },
+    {
+      "target": "atlantis",
+      "role": "hero",
+      "asset": "/launcher/atlantis-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "af02e1157d631359adc8ed9d372c0593430ccdd94118c37d0694ed8723b8b838",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "7a869c3f10e151ff41454203ccf0b4520419e5042d7488c740e664ec6a70cb7e",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/atlantis-cover.webp",
+          "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+          "sha256": "f293965042d7fcfc713511d434b9227d1b2cbc02e0726dc2c610a58495746bf9"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Game: Indiana Jones and the Fate of Atlantis. Preserve the original painted cover's recognizable Indiana Jones portrait with brown fedora, stubble and leather jacket, huge ancient bronze Atlantean face/idol, molten golden-orange stream, and red-haired Sophia in purple with the threatening uniformed officer. Recompose these original elements as an adventure-poster montage on RIGHT with Indy's face around x68%, y34% and the bronze idol behind. Left quiet deep teal shadowy ancient stone architecture, subtly map-textured only without writing. Preserve the original warm amber against blue-green palette and painterly 1990s box-art medium, not photorealistic replacement actors. No title lettering or publisher marks, no unrelated ruins or new characters."
+    },
+    {
+      "target": "indy3",
+      "role": "hero",
+      "asset": "/launcher/indy3-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "416d825475e2467100da34ef691ee76ac18fc68e0db0e6b107d46d626a3e609d",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "56e37fe925f079313477e74c11c1d8bc260f734f13d07bfee6b612dfee8fd47b",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/indy3-cover.webp",
+          "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+          "sha256": "aa55500051a34d1fa8c42b69523883414ba28af69e165d4e16c2a86ccab47a50"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Game: Indiana Jones and the Last Crusade. The reference uses PHOTOGRAPHIC original film key art, not a painting: faithfully retain Indiana Jones/Harrison Ford and Professor Henry Jones/Sean Connery as portrayed there, with their exact faces, brown fedora and leather jacket, Henry's checked bucket hat, round glasses, grey beard, brown tweed suit and black bow tie. Recompose their warm father-and-son shoulder portrait on the RIGHT; both heads fully inset below the navigation zone. Quiet dark warm-brown rocky backdrop on left, source's amber landscape light around right figures. Preserve photographic analog-film texture and source identity without stylizing as comic art. Remove every word, badge, logo and decorative box border; do not add other film scenes or props."
+    },
+    {
+      "target": "loom",
+      "role": "hero",
+      "asset": "/launcher/loom-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "4d3d358755e510d2f551948d9cb22e2e3a35244000a81b6de10bb44327e79a63",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "471a274a9014f9d5cb66306dc759b483974c0c88eb9b4cc15e5d9aae81e5aafd",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/loom-cover.webp",
+          "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+          "sha256": "aef9c8e01d47c1bb9f9a3d540f47600a9e74e257522a130314055640bfb4ae45"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Game: Loom. Faithfully recompose the original softly painted fantasy cover's two human hands emerging from coarse grey-blue robe sleeves, weaving the same fine luminous golden threads between palms, delicate concentric rainbow rings, tiny star-like lights, dark blue sea and far silhouetted rocky island, with original soft lavender birds flying across the upper sky. Hands and glowing threads grouped fully on the RIGHT, hands comfortably inset with all fingers visible, main light around x72%,y40%. Keep the original painted realism of hands, soft airbrushed night-sky palette and mysterious calm. LEFT 42% a very quiet deep indigo sea/sky with faint low-contrast stars, never the bright woven light. Remove LOOM lettering, other text, border, seal and logos. No new wizard's face or invented characters."
+    },
+    {
+      "target": "maniac",
+      "role": "hero",
+      "asset": "/launcher/maniac-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "366ad600ecfd35a2272bf2667edcae509c98e4691ea3dd41f29957039cc52f16",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "b7239cdebb006cab44a32243a580f4fee7d562700cce96bca09d0c1d02a83468",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/maniac-cover.webp",
+          "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+          "sha256": "d3b7e560082de491e4ceb2d32385690f5a5529efef86f41f2b17ef0f1c6a0af7"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Game: Maniac Mansion. Keep the original painted 1980s cover montage: the same five young protagonists (blond sunglasses-wearing youth in black, brown-haired young man in blue, bespectacled nerd in white lab coat holding flashlight, red-haired punk woman in black, and long-haired blond surfer with white surfboard); original crooked purple mansion with yellow windows on hill; subtle huge grinning blue face and falling meteor. Recompose core group together on RIGHT below inset mansion silhouette, with faces around x70%,y45%. LEFT quiet deep blue night and low-contrast haunted grounds; keep meteor/head glow behind right group. Preserve painted original faces, outfits and 1980s palette. Remove every title, T-shirt word, label and logo."
+    },
+    {
+      "target": "tentacle",
+      "role": "hero",
+      "asset": "/launcher/tentacle-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "97f9dc1222ca9f131a0d7564ec75af4fa559a9bc3563927ddd7ddf63d9f6b830",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "bfdcc0e8241ea54ca7d96dfdf52f4e04f76cb1ee260ae3d55d016586dc61a64b",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/tentacle-cover.webp",
+          "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+          "sha256": "30250cc96149a2c77f58b76dd289cf04e5ce301d0aafba498a59793b2ce5e1ee"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Game: Day of the Tentacle. Preserve original exuberant bold black cartoon outlines and simple flat shapes: terrified Bernard with huge white glasses, white shirt, red undershirt and grey trousers, stumbling/falling with hands up, and original purple tentacle with lime-green underside and three green suction cups, holding a red ray gun. Recompose both on RIGHT with all expressive hands and tentacle tip safely inset; original crooked mansion far-right background under a blue-purple starry night. LEFT quiet dark indigo hillside and sky; preserve twisted cartoony perspective. Do not add Hoagie or Laverne because they are absent from this reference. No title lettering, border, yellow sticker, words, logos or UI."
+    },
+    {
+      "target": "monkey2",
+      "role": "hero",
+      "asset": "/launcher/monkey2-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "ad57abad51d0fc02d5a918f2eda84fd028423d45c11034e0474d0d19770a4774",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "3c013f1bed0ab53d33813d48100b4beafffa65639f7607346eaa43135010b578",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/monkey2-cover.webp",
+          "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+          "sha256": "1df7edad4566f5cca5127f89ed08304d417745855f6d57fbac6b6c755428ea37"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Game: Monkey Island 2: LeChuck's Revenge. Recompose original painted Steve Purcell-style cover: huge undead skeletal pirate LeChuck in enormous skull-emblazoned brown tricorn, black curly beard, red-orange naval coat and glowing eyes, holding the original little voodoo doll; frightened blond-bearded Guybrush in green coat slightly behind; original red-faced brown monkey dangling from a rope above, skulls, ship rigging and timber rail. Group original subjects on RIGHT with LeChuck's head around x70%,y35%, doll and hand inset. LEFT low-detail deep blue ship timbers, night sea and shadowed rigging. Preserve richly painted original orange/gold versus midnight-blue palette and exact pirate designs, not modern redesigns. Remove all title typography, lettering, inset hardware labels, borders and logos."
+    },
+    {
+      "target": "samnmax",
+      "role": "hero",
+      "asset": "/launcher/samnmax-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "7e5590d3d14c6d1c878c0701f22af7d5eb1a54f931d7d2a7fb3b7eadfd896aea",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "b6fc2c5e970d60e62ae3c9508a9f99ff459f50e953dab4f64582999d289ead6a",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/samnmax-cover.webp",
+          "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+          "sha256": "0fe3b0613d65ea1c2bf8f3c7179b9c31276cc1af0c42b58d5726b5c0aee14a7e"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Game: Sam & Max Hit the Road. Recompose the original richly painted cartoon road-trip cover: Sam the brown dog detective in grey suit and fedora driving the black-and-white open-top DeSoto, Max the white rabbit with long ears, wide toothy grin and waving hand riding beside him; same whimsical antlered rabbit hood ornament, road-trip scenery and distant carnival, dinosaur and carved-monument motifs. Sam, Max and the convertible occupy RIGHT; their faces, Max's ears and waving fingers fully inset. LEFT quiet shaded roadside/desert verge and soft dusk sky. Keep the source's hand-painted comic linework, muted colorful vintage palette and absurd cheerful tone. No redesigned 3D characters, no new passengers. Remove all title typography, roadsign numbers, license lettering, publisher logos and border."
+    },
+    {
+      "target": "zak",
+      "role": "hero",
+      "asset": "/launcher/zak-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "d27e78b1e2a60c693604e83abfaec2564cc85b3a4db85cafd59906a35d394cc3",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "f0f63c38a8cd8c824b7eba18ac0f68c4c955c90412976bd58c110f9e8da8d1f0",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/zak-cover.webp",
+          "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+          "sha256": "446f79638df8e4566a9bee18fc5143be4b4d20192a2efeac5d63f8d196e18b65"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Game: Zak McKracken and the Alien Mindbenders. Preserve the original warm painted-comic box artwork: smiling dark-haired Zak in blue rolled-sleeve shirt, loose red tie and black trousers holding a long loaf of bread in one hand and a round goldfish bowl in the other; same dark-haired woman in purple with fake-nose moustache glasses, original two-headed squirrel and quirky blue-green creature, living broom motifs, monumental golden carved temple columns. Group Zak and companion and the recognizable source creatures on RIGHT, heads inset around x70%,y35%. LEFT quiet shadowed ochre temple passage with low-detail carvings and faint warm light confined behind right figures. Preserve exact character faces, clothing and original 1980s painted illustration medium; not pixel-art gameplay. No title lettering, inscriptions, hardware badge, logos or borders."
+    },
+    {
+      "target": "amazon",
+      "role": "hero",
+      "asset": "/launcher/amazon-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "63950b8202de3e240566fcc8611d043147991dee6fc3549ee2c1fc575fc7f854",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "e620b3dccb71721569f3738fa5285df0186dc2454d39663b88f60a80375b7491",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-access-amazon-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Amazon_%20Guardians%20of%20Eden.png",
+          "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+          "sha256": "645e71e4ef77f31070d2df215ad984e560e2ba7ad505e522211bcecf8209730b"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Game: Amazon: Guardians of Eden. Recompose the original pulpy painted cover's adventurous blond man in olive open-collared shirt, gripping a staff and reaching outward, with the skull/skeletal explorer below, thick dark jungle vines, coiled serpent and the source's mysterious jungle woman's eyes/face emerging subtly behind. Use these original illustrated subjects on RIGHT; omit the back-facing secondary figure to keep the banner uncluttered. Left quiet dark emerald jungle foliage, same green-black atmosphere, warm golden light around hero's face. Preserve source faces, original painting style and adventurous supernatural mood. No game lettering, seal, hardware specification box or logos."
+    },
+    {
+      "target": "goldrush",
+      "role": "hero",
+      "asset": "/launcher/goldrush-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "44aae1ae1f8136762147e65ce2315487690e032f84694d72efae625b91d726f3",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "974d005f6b69e6a8f2db0ed493f017514ce0a3d4946e94fd1f71891da7c88f02",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-goldrush-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gold%20Rush!.png",
+          "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+          "sha256": "237f976dd1b20fed91cfbd2677ef8a059327b21375e53505bfd4e935758f9b15"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Game: Gold Rush! Recompose the original Western illustration's scene: worried bearded prospector kneeling in blue shirt and red neckerchief with hands raised, original masked bandit in red shirt and brown hat pointing his long firearm, two distant miners beside stream and pale rocky mountains. Arrange the same characters and dramatic interaction on RIGHT, faces and gun comfortably inset; left quiet shaded trees, stream bank and rocks, no bright competing action. Preserve the vintage hand-drawn painted historical-adventure medium and warm sepia/red/blue palette. Omit the decorative title/portrait medallion/banner layout, recreate only the original illustrated scene as a landscape. No shooting or injuries. No letters, hardware panels, stickers, title or logos."
+    },
+    {
+      "target": "mh1",
+      "role": "hero",
+      "asset": "/launcher/mh1-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "3b6f20d00dd7defc1c78ceeed96e86ee6462dee3ab30813afc8d52890b24e34e",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "87ea3d4f9ecdcc66e80c42ead9bf56b45e6e0f1137bf032bbfd946959fcdff19",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-mh1-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Manhunter%201_%20New%20York.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "d557be921f8c6c8e7d69152ab02edd9519fe02cec2b9ab4b547a920a403c5114"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Game: Manhunter: New York. Preserve the original gritty red-and-black 1980s painted/airbrushed cover montage: ominous hooded human eyes in dark folds looming above the New York skyline, and the original aged Statue of Liberty. Compose hooded eyes, skyline and statue on RIGHT; left dark low-detail cracked stone and deep crimson haze. Eyes around x72%,y30%; statue safely inset at right. Original distressed painted textures, black, faded crimson and blue-grey patina. No actual title letters disguised as buildings, no words, logos, labels or new characters."
+    },
+    {
+      "target": "kq3",
+      "role": "hero",
+      "asset": "/launcher/kq3-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "26131d9a70bc4bd3987b2e91b7b9c4a1adbaa761bb321437e1da6cd65abbc4c3",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "d0e83023576f1f4fe66da5bb7ce6a8fb47f7f2ed9d84600ceae43b4a0fada4d5",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-kq3-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20III_%20To%20Heir%20is%20Human.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "bc81dc8c1351cd11d7b70ec05d49102245e4f73c3e0ff2b632b0cb567bbc5f1a"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Game: King's Quest III: To Heir Is Human. Same original richly painted fantasy wizard: burgundy hood, stern wrinkled face, immensely long white beard, ornate cuffs and rings, hands around a glowing crystal ball containing the frightened brown-haired boy in pale blue-green shirt. Same carved beast finials and diamond-paned window behind. Wizard, complete orb and expressive hands safely on RIGHT, face x73%, y29%; left dark shadowy study/window and burgundy drapery. Preserve original painted source style, no photographic real people. Remove printed title, sticker and all lettering."
+    },
+    {
+      "target": "kq2",
+      "role": "hero",
+      "asset": "/launcher/kq2-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "92038978de0fdb6d02f7d4eec23ec0ce39a02613f7b078cba999a70a54070ac5",
+        "width": 1717,
+        "height": 916
+      },
+      "output": {
+        "sha256": "f24179302f41fd67ce43fdf2c6fde02451e8ba3710f664b3228035909819a0f1",
+        "width": 1717,
+        "height": 916,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-kq2-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20II_%20Romancing%20the%20Throne.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "09b9c777418b2827bdd08e98771539550e10a3d5a8f929e37696455c28bbc5ab"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Game: King's Quest II: Romancing the Throne. Keep the original painted fantasy scene: feather-capped young king in red tunic, green trousers and brown boots leaping through a shattered stone opening with golden sword, turquoise foaming sea, and the original nested glowing rectangular magical doorway revealing a golden path and distant tower. Arrange character and magical doorway on RIGHT; left quiet dark teal ocean and shadowed stone. Preserve original illustration style and recognizable costume. The magical doorway is part of the artwork and must remain; remove only printed titles, labels, logos and box layout."
+    },
+    {
+      "target": "kq2",
+      "role": "hero",
+      "asset": "/launcher/kq2-scummweb-generated-2026-11-05-r2-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "1496432ec86b9b912612878a6d7a5fc596db18565b50128f973fbfcab97a8d12",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "a939be44558445ac896fe2c1b4425d2ca65f79495f87e5cdd646b6d9072aa99c",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-kq2-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20II_%20Romancing%20the%20Throne.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "09b9c777418b2827bdd08e98771539550e10a3d5a8f929e37696455c28bbc5ab"
+        },
+        {
+          "asset": "/launcher/kq2-scummweb-generated-2026-11-05-r1-hero.webp",
+          "note": "Earlier generated candidate used as an edit target to correct its wrong aspect ratio; original box artwork remains the style and identity reference."
+        }
+      ],
+      "prompt": "Edit Image 1 to correct ONLY its canvas proportions and native resolution. Image 1 is the generated King's Quest II hero and must retain the same painted character, pose, feathered cap, red/green clothing, sword, cracked stone arch, sea, colors and glowing magical doorway. Image 2 is the ORIGINAL box artwork for identity/style reference. Deliver ONE landscape image with EXACT 5:3 width:height ratio, request 1920x1152, at least 1600x960 native pixels. The current image is too wide and too short. Extend the same dark sky/stone at top and ocean/waves at bottom as needed, maintaining the quiet dark left 42% and the character/portal on the right; do not stretch or crop away content. Do not add text, logos, borders, people or new objects. Keep the top navigation area and bottom fade unobstructed. Preserve the painting rather than redesigning it."
+    },
+    {
+      "target": "mh2",
+      "role": "hero",
+      "asset": "/launcher/mh2-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "5ef008b30f4e87dafb8c8d79a7b2b17fa89d7b2bfe42717e291da1e28d807403",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "196145bc0733ed11115c9f148ef5da0930cfa6e357b3e101d7e1bd4d9b127afa",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-mh2-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Manhunter%202_%20San%20Francisco.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "dee0225f98695af15f7eac58a549d33623d0a15a026db1231759c9454f1874a3"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Game: Manhunter 2: San Francisco. Recompose only the original cover's dark painted scene: the same three ominous hooded men, tipped red-and-blue cable car with smashed windows, shadowed rubble and the distressed long-haired woman in grey at lower right. Keep original unsettling faces, hooded clothing, steep urban setting and red/black/grey palette, with no graphic injuries or added violence. Group scene on RIGHT with key faces inset; left quiet dark red sky, urban silhouettes and shadowed pavement. Remove the large Manhunter title, numeral 2, sticker, road-sign writing and logos."
+    },
+    {
+      "target": "pq1",
+      "role": "hero",
+      "asset": "/launcher/pq1-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "3777919d94a9fe7b2ed2a81d0d5694ef2f9eef906d49d1bc383410264791f9d7",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "033eb80f5aa10afa00d5abcb026e42a07de98631d31cce98d57eac96581c6442",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-pq1-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest_%20In%20Pursuit%20of%20the%20Death%20Angel.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "acd31798d69cc4e1af4b767a3499285f1cd5dff4be1acf4493598379fd1b3342"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Game: Police Quest: In Pursuit of the Death Angel, original version. Extract the original gritty painted blue-lit crime scene from below the title: the same serious blond man in dark jacket in foreground, black-and-white patrol car with door open, red/blue light bar, wet street and dark brick storefront. Man's head and shoulders on RIGHT, face around x73%,y38%; patrol car just behind, source's muted cobalt blue and red highlights. LEFT quiet midnight-blue rain-slick street and shadowy brickwork. Preserve original illustration medium and man’s exact face/hair. No giant title lettering, bullet-hole typography, readable police markings, badges, hardware labels or logos."
+    },
+    {
+      "target": "sq1",
+      "role": "hero",
+      "asset": "/launcher/sq1-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "7b122c0d9b83980be5dc493d2c5391a0384535a22aacd2b6dc292a3a442dd53f",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "4778f9c81134a55de4c7d38087d4e0fd7dc9d607ac5a7582cdd28fb2983582b1",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-sq1-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest_%20Chapter%20I%20-%20The%20Sarien%20Encounter%20(DOS_English).png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "f2dcfc53bd40f773b3eae8699153692fe677c1bcdd61f2ec8d605fd15a9c072a"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Space Quest I: preserve the purple and scarlet illustrated spaceship from the lower-right original box, sweeping through a rich blue-violet starfield. Do not reproduce the inset screenshot or turn the large title lettering into a spacecraft."
+    },
+    {
+      "target": "sq2",
+      "role": "hero",
+      "asset": "/launcher/sq2-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "c750a7d6f8c23df5b7930cf1e53b0b78ab656fbc82e4102f92e9b8b13bcff7a0",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "42ba4cbf52d862d0dcd01214782bfd7d5574c0f66a758cd97c5be24cab77afd2",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-sq2-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20II_%20Chapter%20II%20-%20Vohaul's%20Revenge%20(2.0F%201989-01-05%203.5__DOS_English).png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "df7120907a127cc3b268283ff96b7f1020a00b741c318aa4081b07f1557b202f"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Space Quest II: preserve the surreal painted suited men floating on tall dark pedestal-like mechanical devices under head-mounted rectangular machines. Use the original blue-violet starfield and rusty red asteroid. Keep them grouped right; omit all large title letter shapes."
+    },
+    {
+      "target": "troll",
+      "role": "hero",
+      "asset": "/launcher/troll-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "40f1e7839e114dcf146612420e61551d6c925f4b7208548bb116e98db058a6eb",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "82a9d3faf88c6fbe66786a2e38cbe0423ec8349263ee57114efe200e40c40fdd",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-troll-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Trolls%20Tale.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "161b839fd746bacf3e24e2007f17f6bbc83f484dace43ab8889e8355c3f8378a"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Troll's Tale: preserve the friendly horned troll's broad grin, round belly, shaggy boots, medallion and pickaxe, drawn in the original burgundy ink linework on parchment. Place troll at right; quiet left can be dark burgundy cavern with restrained parchment texture, matching the limited two-color print aesthetic."
+    },
+    {
+      "target": "elvira1",
+      "role": "hero",
+      "asset": "/launcher/elvira1-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "2e48959e3112023e247d46a24e0d445c8103204adde0acc3e5623bffbedce9c4",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "06f354a65e8a00608a4e1983c3eb60a988cadbd15d8b36f01a42bbd7406a1e6d",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agos-elvira1-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Elvira_%20Mistress%20of%20the%20Dark.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "d293c519c84c06d0751a99a7bdcddd7722320e3973f8b1e08769a3e8b72008c8"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Elvira: preserve the original photographic portrait of Elvira with tall black hair, dark dress and hands by the orange pumpkin, against blue moonlit clouds. Preserve her face and clothing as shown, tasteful same framing, and place her at right with dim blue clouded sky at left."
+    },
+    {
+      "target": "elvira2",
+      "role": "hero",
+      "asset": "/launcher/elvira2-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "0fe326f39413f21ade9ec85a12289a082e16ed00fdbe2b68bdf174ef92eb144c",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "7b6bbf255ee2825c90a5783b6c32c5ae401334e2f7cae4e6b58560fa3b69c6b3",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agos-elvira2-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Elvira%20II%20-%20The%20Jaws%20of%20Cerberus.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "1847bb937772e1b4b52a56d98eaa872f615f8b3e852ab3ff9638eff4849b72e3"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Elvira II: preserve the dramatic painted three-headed snarling Cerberus rising amid orange infernal fire, the tiny dark silhouetted woman and graveyard below, and the original fantasy horror paint texture. Cerberus and silhouette at right, dark smoky ember-filled atmosphere at left."
+    },
+    {
+      "target": "sq2",
+      "role": "hero",
+      "asset": "/launcher/sq2-scummweb-generated-2026-11-05-r2-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "f3828bdaa3937b670b1827a8bb10ee52759a753eb5bffbf87e410b7513791324",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "ff0e5e9d539ce2cec9890cf8c6b14fe58cbfdc8a48f9c4184d802296327b4171",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-sq2-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20II_%20Chapter%20II%20-%20Vohaul's%20Revenge%20(2.0F%201989-01-05%203.5__DOS_English).png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "df7120907a127cc3b268283ff96b7f1020a00b741c318aa4081b07f1557b202f"
+        }
+      ],
+      "prompt": "Edit image 1, a previously generated Space Quest II hero. Keep its 5:3 landscape composition and all other pixels visually consistent, including three suited figures and asteroid on right, dark starfield left. REMOVE the large purple floating roman numeral II near upper-center-right, completely replacing it with natural blue starfield. There must be absolutely no typography, numerals or letter-shaped objects anywhere. Image 2 is the original box art for provenance only. Output landscape1920x1152, minimum1600x960."
+    },
+    {
+      "target": "jumble",
+      "role": "hero",
+      "asset": "/launcher/jumble-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "a3e93521d7bfd89c99f885df408c3ba4bbca2f245cbb96e465795bddb6e55b23",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "61ed29444ab7dfc1a4c32dc1ce37f769fe1ca1e8950b38f7fcae299552bae465",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agos-jumble-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Simon%20the%20Sorcerer%20Puzzle%20Pack.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "a037336dd55d2ab0536e364e3c7e09f27f15425ff989bab0666b37327ef91080"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Simon's Puzzle Pack: preserve the painted young sorcerer in a mustard star-patterned pointed hat with glowing wand, small green swamp creature and blue mechanical companion at right. Purple magical night sky and distant castle should fade to quiet shadow on left."
+    },
+    {
+      "target": "feeble",
+      "role": "hero",
+      "asset": "/launcher/feeble-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "41b248e287299302e28cb7db0dffebd67cb32b4df5a2e50dbaa9f07088ac55e1",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "312a616d2844bd480999a4fdf54dc71f05ea4e52e9eec25b026ea4ed87b8e4df",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agos-feeble-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Feeble%20Files.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "c769f43d0aeb36510da5df8cd2185cb51a7e35127ea026a32ed86c0528a270d6"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. The Feeble Files: preserve the original early CGI green alien face, enormous glossy black oval eyes with warm orange rims, spotted cheeks and red mouth, on right. Keep the space backdrop purple-black with small distant planet, matching original rendered aesthetic."
+    },
+    {
+      "target": "simon1",
+      "role": "hero",
+      "asset": "/launcher/simon1-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "8aa3e45ef1e801485eef9251bf7bf221e1dbc45ff50f6e36e26992213b8c82b3",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "b3d04998b656f6345e4a673d77e99060dbaaaf802b10bfdc87ce9115a78a902f",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agos-simon1-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Simon%20the%20Sorcerer.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "d2204c6c783bd347ade573f1b147fbf2e2a82d04e573c51ea347bdf5bddcdb19"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Simon the Sorcerer: preserve the fantasy painted comic ensemble, purple-robed pointed-hat Simon holding open book and staff, white dog, looming skeletal demonic sorcerer with long hands, and small fantastic companions. Group detailed ensemble in right half against dark green magical scenery."
+    },
+    {
+      "target": "waxworks",
+      "role": "hero",
+      "asset": "/launcher/waxworks-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "afc738f751d19a36d5fb3ac28e2d2283eb5305bb340ef04b055cc61355197568",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "ddc4f3a2eeee7ec5a3a493d77f3e18dc1afc6371864a10f699e92a125b4c26fc",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agos-waxworks-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/WaxWorks.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "47f561fdba28c0c6b6e8d4b7d0d996ce6b059a129ec91a8fdd1b3902e240d623"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Waxworks: preserve the grotesque sculpted ivory candle whose melted wax forms ghostly human faces, bright flame at upper-right, and heavy wooden door within blue-gray stone arch. Right subject, dim medieval stone interior left. No lettering in arch."
+    },
+    {
+      "target": "simon2",
+      "role": "hero",
+      "asset": "/launcher/simon2-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "0d5253e932cea6e2265821a2542682dacc565135e2564b51d029edd06eabd33c",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "c11f36a0333e174a0e6ef920ddcb3b3286e8694fee3b91504aabb82e8e569549",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agos-simon2-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Simon%20the%20Sorcerer%202.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "1115ef95fa3a0a7487d82698f4eaef9f0d17cd4d875b45a1f5da08d6f0a45c02"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Simon the Sorcerer II: preserve the comically painted red-hatted red-robed Simon in the wardrobe doorway, large sleeping orange cat below and odd surrounding fantasy characters. Compose ensemble right with dim woodland interior left. Remove golden decorative border and all numeral or title shapes."
+    },
+    {
+      "target": "bbvs",
+      "role": "hero",
+      "asset": "/launcher/bbvs-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "1912e41af76c2bb846a6c10c064a68320d2e49ba0937f923050ebc847382cf55",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "47924cbc167e0a05060816426db67a238507c827a7ef4ea28053823f4442a63f",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-bbvs-bbvs-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Beavis%20and%20Butt-Head%20in%20Virtual%20Stupidity.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "e86fe270770778d11d3300475ca5bf884a18b22393205d2ed618f096b2f84db8"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Beavis and Butt-Head in Virtual Stupidity: preserve the original rough flat-color cartoon with the two teenagers in huge virtual-reality goggles, one tall quiff and one rounded brown hair, in blue and dark shirts. Both right, muted green-blue void left. Shirts have no words or band logos."
+    },
+    {
+      "target": "fw",
+      "role": "hero",
+      "asset": "/launcher/fw-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "af40cb920f743f55d98add7d3cae4dd58e9eb053b1b87c033c320a4e3ed3cd05",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "947750a4c86c9233a4f18c688dafec993964fde9075c12b17ff83d16e4a23e90",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-cine-fw-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Future%20Wars_%20Adventures%20in%20Time.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "ee75cba1b8478315022fc43388b0a72b9f258bc02e268dd4a2a3de3f8730c72a"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Future Wars: preserve the painted montage of the white-shirted man under a bright circular sci-fi light beam, red-haired woman's portrait, white-bearded elder, distant stone ruins, octopus and small mechanical figures. All character elements grouped on right; purple wire-grid sci-fi atmosphere recedes quietly left. No title-letter-shaped forms."
+    },
+    {
+      "target": "gregory",
+      "role": "hero",
+      "asset": "/launcher/gregory-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "b14bd06c684ce2768d6169cd38df8a6b131cc43f712cda1f89bb71c37e95b15d",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "78f1efefe8d5aab59dea4af53a91cb8ad2086de0100c6219b2accec97f3149aa",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-composer-gregory-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gregory%20and%20the%20Hot%20Air%20Balloon.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "9f949bae0306066131c724dc6c67acc1718afba4602812d57299985a7d35f277"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Gregory and the Hot Air Balloon: preserve the warmly illustrated cheerful young porcupine-like animal boy in turquoise shirt leaning over a wicker balloon basket, and small green long-necked companion. Balloon basket and characters right above rolling green countryside, softly shaded forest at left. Do not retain decorative book frame."
+    },
+    {
+      "target": "liam",
+      "role": "hero",
+      "asset": "/launcher/liam-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "6622670afe41b6ea1c3fde3c7488be8df0a32d25ceb768b0611fe24eb2954798",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "15d309f071f85405a6067d4c6488901526523f60ab3913fb94a4484e12888f1c",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-composer-liam-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Magic%20Tales_%20Liam%20Finds%20a%20Story.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "e2bfebb8342b0dbf4d2c7b1d431d14e80f0ca2bc9cf8b4deeaa5d8d0f513d886"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Liam Finds a Story: preserve the hand-drawn smiling boy in brown cap and brown outfit playing fiddle among immense red toadstools, the pale flowing fairy-like figure and little green-clothed companion. Magical forest on right with shaded low-detail woodland left. Keep original lively storybook linework."
+    },
+    {
+      "target": "darby",
+      "role": "hero",
+      "asset": "/launcher/darby-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "5d8da0653fa910e9632efdee0f95da335e32d39ca3149b840dbaff9d67489341",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "2572ab07286ffd4998be26911b8a6d1c2f612d893b21df37cd27f22959ab8bc9",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-composer-darby-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Darby%20the%20Dragon.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "b981bb62d945bfd5b4164be8c1efde24612c47fffb8d62c91697e2ff4f78b375"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Darby the Dragon: preserve the bright friendly green baby dragon with wide wings breathing a small orange flame toward rocky cliff on right, small red flying dragon above. Original children's painted illustration and warm landscape, deep shaded green valley left."
+    },
+    {
+      "target": "princess",
+      "role": "hero",
+      "asset": "/launcher/princess-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "6c782e569fa49f950c2430afc020ed485a14a0fe876d3ce701839fcf7bcce697",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "fbeb68764d44906495dfa3252e8a87d9c79350b3a2e1a2feb41a04b73d11c58f",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-composer-princess-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Magic%20Tales_%20The%20Princess%20and%20the%20Crab.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "7c52d9ea77831e375426c592061df791d32fe7f64aa3638d0a544b001f0b4e58"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. The Princess and the Crab: preserve the golden-haired princess in purple dress floating or swimming beneath turquoise water toward a small bright red crab, tiny distant coastal castle. Subjects right; deep teal shaded water left. Original gentle colorful illustrated folk-tale style."
+    },
+    {
+      "target": "cruise",
+      "role": "hero",
+      "asset": "/launcher/cruise-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "5fca132d5693e9404d8c7553062aa644039f269c665802fa1cb40b57131b0afb",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "1238e0eddcb153c5e8b25f5a5da32cbd5a20fcead2982a460baca360d0a79ae5",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-cruise-cruise-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Cruise%20for%20a%20Corpse.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "9797382f1b006521ec01f92a3484ad04b220bda045a6a5cef6a946ea63b7c9d6"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Cruise for a Corpse: preserve the painted cream-suited mustached detective with brimmed hat and pipe beside ship's wheel and slumped dark-haired man in white shirt, two passengers behind. Arrange all on right against blue sailing ship deck and rigging, quieter shadowed maritime deck left. Do not generate text."
+    },
+    {
+      "target": "sleepingcub",
+      "role": "hero",
+      "asset": "/launcher/sleepingcub-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "d846f0bc13177a2d7910188b55123017dba7d9b48fa7d9655fb14e557aa87bd1",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "8c05108c89e36e3a32a14985ccbc0276413c2e42fc498bbf76d9d0fc2c6bb9c2",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-composer-sleepingcub-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Magic%20Tales_%20Sleeping%20Cubs%20Test%20of%20Courage.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "c25a900f8c8ddc3d9af4907bb6ff299d8999c047d00dbe4bb340bb54b67c76b1"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Sleeping Cub's Test of Courage: preserve the warm storybook Native American folk-tale cover ensemble: smiling young child with headband and dark braids in orange clothing riding a dark brown horse, small furry cub and orange canyon mesa landscape. Same clothing and appearances, grouped right with shaded canyon woodland left."
+    },
+    {
+      "target": "gnap",
+      "role": "hero",
+      "asset": "/launcher/gnap-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "341fdce76b21e2d140800ec8a67939b402e2da4a771edd385b8ad75c5a50d149",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "a5eb71a85f0765818ed43531dfcefa344f1843ac948fda3c2a0728964cefc7ab",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-gnap-gnap-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/U.F.O.s.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "ed3fe918ec4572d2e1f83550a2083aadedc5c52f230890b2b6a9910ced62611c"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Gnap U.F.O.s: the actual illustrated object is the small green-gray flying saucer embedded beside the large letters. Recompose ONLY that saucer against deep black-purple starfield and the curved blue planet horizon. Place saucer at right. Remove the giant three-dimensional title entirely, no letters or title-shaped spacecraft."
+    },
+    {
+      "target": "draci",
+      "role": "hero",
+      "asset": "/launcher/draci-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "176522d56be2d0c2ff3d36c9e2640f689757421021adebf6a7e9417caebae7fa",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "bd89119aaa150646ee740cd554a470fc200d03d95b3ab4e7ecde6ba472fdeabb",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-draci-draci-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Dra%c4%8d%c3%ad%20Historie.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "bbfdeaf34d3f9476b4c77e0e694c295d339178346e8d7513f611bbd567d27789"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Dragon History: preserve the playful hand-drawn ensemble: small green dragon in front with larger green dragon behind, elderly white-bearded man in mauve robe, blue star-robed wizard, short red-hatted man and armored knight with red plume. Group right in the original medieval village setting; dark quiet trees and scenery left."
+    },
+    {
+      "target": "fascination",
+      "role": "hero",
+      "asset": "/launcher/fascination-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "4e6aff7c936691d74ae4835f22555b70a0cf52c8c6cd5327fa5286cea5b1cf4d",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "40995f2661b12bc0bc72ad1d49ebce4c650a670f37633cb2c9fb9c8b5fe235ee",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-gob-fascination-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Fascination.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "c90f7bc06697e05fc85599185d1627ea3d925e1541b3c7b9fa73113f5a51a881"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Fascination: preserve the original painted noir portrait of an adult woman with earrings and broad dark hat shading her eyes, hand raised by her cheek, shoulders visible as in reference. Crop as a head-and-shoulders portrait on right with pale circular window light and deep black shadows. Do not add nudity or reveal clothing beyond original framing; no scope crosshair lines."
+    },
+    {
+      "target": "bargon",
+      "role": "hero",
+      "asset": "/launcher/bargon-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "3cb512b2c2b6c8713e00c65bba9bdc7ef80acfe3db40f72bb55b66dc1c3bcb9b",
+        "width": 1717,
+        "height": 916
+      },
+      "output": {
+        "sha256": "fb6dad8fdeaf57e85b27b5b8827fb90abde85c3c3fdb99dce5801564ee9d5550",
+        "width": 1717,
+        "height": 916,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-gob-bargon-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Bargon%20Attack.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "a75e9530464fba91978213e61110ef9c70ec6c76566a39b7f32c8bf02365cae8"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Bargon Attack: preserve the original comic-painted spectacle: bespectacled blond cap-wearing young rider in dark jacket on red motor scooter racing past city buildings and wrecked machinery, immense ominous green alien hooded face above. Subjects right, darker atmospheric city left. No title letters or logos."
+    },
+    {
+      "target": "bargon",
+      "role": "hero",
+      "asset": "/launcher/bargon-scummweb-generated-2026-11-05-r2-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "9edaeff8e95c228ade0df6f6e737998394b4f59cca47c7dc308013db3c2bdd1e",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "b25d6f3fac67fb0590111787561e3dfb85b8b56a7fdf433c8961d0b7324266c6",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-gob-bargon-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Bargon%20Attack.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "a75e9530464fba91978213e61110ef9c70ec6c76566a39b7f32c8bf02365cae8"
+        }
+      ],
+      "prompt": "Edit image 1 into a true 5:3 landscape hero of 1920x1152, minimum1600x960. Original image was too wide. Extend its painted sky above and street foreground below naturally to get the taller canvas, do not stretch or cut sides. Keep original painted red scooter rider, city, ominous green alien face, palette and style. Keep all subjects on right, main rider face around72% width and40% height, large alien's head fully inset from top edge at least10%. Left42% remains quiet dark blue sky and street, no bright objects. No lettering or logos. Image2 is original box for reference."
+    },
+    {
+      "target": "geisha",
+      "role": "hero",
+      "asset": "/launcher/geisha-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "665815ffb8184807b8da5f0c05549aa7eb0b28666ad6fb28991bd9417bc06eb8",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "dfe34c47f08fc0bf2953ff8353bab57773c7bf3858f05cada8d102919ea2f5b4",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-gob-geisha-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Geisha.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "2a95691373083e46e3852f2b4df716f710f84ceb9b4905257f1067e43405e67d"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Geisha: preserve the original painted Japanese woman in elaborate red-orange kimono seated with fan or open book, hair ornaments, and looming bronze-gold dragon behind against futuristic night-city lights. Group right, dim Tokyo-like cityscape left. Keep original dignified costuming and painted medium; omit screenshot panels."
+    },
+    {
+      "target": "gob1",
+      "role": "hero",
+      "asset": "/launcher/gob1-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "13cfa103d160b467626aeb7737f7c2dd92cabc014a01ed9767638f0eb1b5f0ca",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "9de272bbe75012b90075c9dfa1fea80ed21fae51d7553ffd3da7c7787ea74b62",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-gob-gob1-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gobliiins.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "fae46ee4446bdf3156e93d8d978ed534c9d51ae6a5e300d62fe84c25e8f8217e"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Gobliiins: preserve the original goofy painted goblin ensemble around a gray stone tower, oversized muscular horned genie looming behind with gold armlets, three small comical adventurers with pointed ears and distinctive hats. Cluster right in rocky fantasy scenery, subdued purple-blue shadows left."
+    },
+    {
+      "target": "gob3",
+      "role": "hero",
+      "asset": "/launcher/gob3-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "0c25b94e69024abe15ddc081c4f470c367423bd02e4bb8dfc5e132e8872a1b46",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "245056b76d787e5fe814b71e033035c0e6a564cb5f7acfb36aab8dce37f62b38",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-gob-gob3-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Goblins%20Quest%203.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "ee36075859dbe40bf2149ca034d7950f41deb51d6bb53af71c43a0ed7ee77022"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Goblins Quest 3: preserve the original comic drawing: grinning dark green horned monster breaking through paper behind nervous red-haired goblin, and small armored purple goblin with spiked mace. Recompose characters right in whimsical shadowy stone environment, retaining original loose illustration style. Omit checkerboard packaging, price circle and labels."
+    },
+    {
+      "target": "gob2",
+      "role": "hero",
+      "asset": "/launcher/gob2-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "88b66f17aa95b2d9eabe49f62b86fb48fe8eab1e884ff807344d4bd4e6d08038",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "1226d475318454d08e3d7285c1f28bfc6f4414c053626453435308916726b1c6",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-gob-gob2-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gobliins%202.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "16466e349adf955f6b54f2a148b7d95cdc07a5c04ea941a2c0f7f76e363b88e2"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Gobliins 2: preserve the cheerful long-nosed pointed-eared goblin perched on curved stone bridge, shorter bearded goblin with sword and playful woodland creatures, distant pale fairy-tale castle. Original painterly bright green fantasy countryside right, shaded tree roots left."
+    },
+    {
+      "target": "lit",
+      "role": "hero",
+      "asset": "/launcher/lit-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "f0ef81e268394c3baba285073a207fbc1f82b94666e3a148ac3465502ec87702",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "6a29a6c45dc76ccd3775d2c594b48781ea30fe3595787dadc667298a6c0c80a6",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-gob-lit-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Lost%20in%20Time.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "fb32c4e7437bb2743ad5e1e771cf75becd7a3b36a939217b932e5fa9dc7670ab"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Lost in Time: preserve the cover's warm orange painterly montage of dark-haired adult woman in black sleeveless dress, period-costumed man and ominous faces behind, distant sailing ship and sea. Group portraits right with dim sunset seascape left. Keep original faces and period mood."
+    },
+    {
+      "target": "littlered",
+      "role": "hero",
+      "asset": "/launcher/littlered-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "d0cf5a6d7a003c833d6b1882f9d5aa7814e1687cc2f6f549ca5f58a4492951a1",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "57b7837132973db30e300cff284b23a44022f6b9cd9d96b32c25dcef8de2a7a4",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-gob-littlered-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Once%20Upon%20a%20Time_%20Little%20Red%20Riding%20Hood.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "2f1a79c6d3a90c168b7ab423621e80b1147505f4ed0f24215a1fa16a707eba36"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Little Red Riding Hood: preserve the original soft watercolor blond girl in red hood, woven basket, little woodland house and orange squirrel. Place girl and small companions right in pastel forest, shaded muted green-blue forest left; retain watercolor paper feel without a border."
+    },
+    {
+      "target": "urban",
+      "role": "hero",
+      "asset": "/launcher/urban-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "fa7786d67233e2556c25fbfed5ba1f4b2697be2b4830c24a67e483063a624c68",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "888171fcc3c91ca8c9bb74c6580f053b14a52ca0474bc9c2b6897d588c8f3d34",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-gob-urban-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Urban%20Runner.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "93248cc983991424f2e7c4a580b851d2cf874e4aa76758826d79520dc2d0b751"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Urban Runner: preserve the original photographic action collage: close-cropped serious man's face with handgun raised, smaller dark running silhouette, golden city skyline and blue-black urban night. Arrange face and runner right, moody shadowed city left. Remove all title-shaped skyline lettering."
+    },
+    {
+      "target": "ween",
+      "role": "hero",
+      "asset": "/launcher/ween-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "58e22db82371cc6627f460770b9922e57dad25abcdd311a77702dbd1e4154e10",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "cef47d9ea2301e7be02d107662fecf94211ad55e9b9fd21587c97292a4a00745",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-gob-ween-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Ween_%20The%20Prophecy.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "f7922dad3facf57eb002d911a389586233524b832c0601b97e618d3523eb67d7"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Ween The Prophecy: preserve the original blue fantasy illustration with muscular dark-haired traveler seen from back, ornate glowing golden hourglass encircled by blue skeletal dragon-like creature and rocky spires. Group on right with dark blue moonlit mountains left. Keep illustration aesthetic, no lettering."
+    },
+    {
+      "target": "woodruff",
+      "role": "hero",
+      "asset": "/launcher/woodruff-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "829cff569c897fccc3d3a47bc957a5ea5534a2fb1f9c2904d8bbf1911df775bf",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "3f8f91b6eeea40c6906fa1337f4e64e5f4530725ef19ed90525ab0bccd240934",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-gob-woodruff-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Bizarre%20Adventures%20of%20Woodruff%20and%20the%20Schnibble.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "6cb2161dd29e6debcc3a6202625a2e7a4ea04bebaf91d0b856cb813c77a29bc1"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Woodruff and the Schnibble: preserve the original frantic cartoon blond spiky-haired long-nosed hero in orange trousers, blue book in hand, menacing dark long-nosed figure at far right and enormous red vertical city tower. Main hero right, dim purple urban world left. Same angular expressive cartoon style."
+    },
+    {
+      "target": "t7g",
+      "role": "hero",
+      "asset": "/launcher/t7g-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "0fe6bbdffe12bc2e26ad76054eea087449b4a9f01463c66666a76d180c1280fe",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "1a4e96fd9542ed62a48ab74c49eeaaece3cd025dac821fa483cfd94622b9a24d",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-groovie-t7g-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%207th%20Guest.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "1c07b2f488102e6856ce968ac7e52042a0f89898a157e7fb5c268a4c97062837"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. The 7th Guest: preserve the original eerie painted Victorian mansion perched on its narrow rocky island with winding pale path, blue-violet storm sky and distant lightning. Mansion right, subdued dark clouds and water left. Remove enclosing decorative gate frame, title letters and giant 7."
+    },
+    {
+      "target": "hopkins",
+      "role": "hero",
+      "asset": "/launcher/hopkins-scummweb-generated-2026-11-05-r1-hero.webp",
+      "generatedOn": "2026-11-05",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "100ba1feaad6c937c16caa03766dc5b43bd806c0de33a231edf6a25c2252ac18",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "f5bd0157f0b39eba80addd0d6361eac44ca4c7a9286e7896cbba6c9fa92890f3",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-hopkins-hopkins-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hopkins%20FBI.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "a42cf1200ab1a7a2c626a3c2d36fda81bd9373947ddd1b82574458416f4c0a57"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one full-bleed ScummWEB website hero, landscape 1920x1152, 5:3, intended for a final 1600x960 export. Input image is ORIGINAL BOX ART, a reference for a new hero composition, not an edit target or screenshot. Faithfully recompose its original illustration, preserving character identities, faces, clothing, objects, illustration medium, palette and mood. Do not modernize or impose another game's style. Put recognizable subjects on the RIGHT half; important faces and hands comfortably inset around 65-78% width and 25-45% height. LEFT roughly 42% must be naturally dark, quiet, low-detail scenery for white page heading and green Play button; no subject or bright focal light there. Top 9% and bottom 12% quiet and crop-safe. Extend only the illustrated world naturally; no new characters or unrelated objects. Full bleed, no stretching. Remove ALL game title typography, lettering, labels, logos, publisher marks, signatures, watermarks, borders, box edges, screenshot insets and UI. No visible text. Hopkins FBI: preserve original bold adult comic art montage of blond male agent with black pistol and distressed blond woman, a close-up metallic gun barrel and red-black diagonal action backdrop. Characters right, subdued dark red shadows left. Merge illustrated panels into full bleed composition, no panel borders or words."
     }
   ]
 }

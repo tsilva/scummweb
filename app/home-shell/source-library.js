@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { readRemoteGameArchive } from "../game-bucket.mjs";
 import { getGamePresentation, getImportedGamePresentation } from "../game-presentation";
@@ -17,6 +17,8 @@ import { buildGameExitHref, readHeroSelection } from "./hero-selection.mjs";
 import HomeHero from "./home-hero";
 import GameDropOverlay, { chooseZipHandles } from "./local-game";
 import RecentGamesRail from "../recent-games-rail";
+import { GameNavigationContext } from "./game-navigation";
+import BrowseMetadata from "./browse-metadata";
 
 const sessionGames = new Map();
 const sessionSources = new Map();
@@ -29,14 +31,18 @@ function scrollToLibraryItem(item, block) {
 
 const reconnectStatuses = new Set(["locate", "missing", "permission"]);
 
-export default function SourceLibrary({ catalog, featuredGame, isHomePage = true, libraryHeading, officialUrl }) {
+export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGame, isHomePage: initiallyHome = true, libraryHeading, officialUrl }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
   const recognizedGames = useMemo(() => getRecognizedGames(catalog), [catalog]);
+  const isHomePage = pathname === "/" || (!pathname && initiallyHome);
+  const featuredGame = recognizedGames.find((game) => game.href === pathname) ?? initialFeaturedGame;
   const [selection, setSelection] = useState(null);
+  const [navigationId, setNavigationId] = useState(0);
   const [addedIds, setAddedIds] = useState(null);
   const revealObserver = useRef(null);
   const working = useRef(false);
@@ -50,7 +56,11 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
     const sync = () => setSelection(readHeroSelection(window.location.hash));
     sync();
     window.addEventListener("hashchange", sync);
-    return () => window.removeEventListener("hashchange", sync);
+    window.addEventListener("popstate", sync);
+    return () => {
+      window.removeEventListener("hashchange", sync);
+      window.removeEventListener("popstate", sync);
+    };
   }, []);
 
   useEffect(() => {
@@ -309,7 +319,7 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
         && await source.handle.queryPermission({ mode: "read" }) !== "granted") {
         updateStatus(source, "permission");
         const group = groups.find(({ versions }) => versions.some((version) => version.source?.id === source.id));
-        if (group) router.push(buildGameExitHref(group.game));
+        if (group) selectGame(group.game);
         return;
       }
       game = { ...game, recentGameId: `source:${source.id}`, saveVersionId: legacySaves ? undefined : source.id,
@@ -393,8 +403,22 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
     versions: [{ key: `catalog:${featuredGame.target}`, game: featuredGame }],
   }];
 
+  function selectGame(game) {
+    const href = buildGameExitHref(game);
+    // Only handle selections this mounted library can render. Other links keep
+    // normal Next.js navigation, including direct links from compatibility.
+    if (!groups.some((group) => buildGameExitHref(group.game) === href)) return false;
+    if (`${window.location.pathname}${window.location.search}${window.location.hash}` !== href) {
+      window.history.pushState(null, "", href);
+    }
+    setSelection(readHeroSelection(new URL(href, window.location.origin).hash));
+    setNavigationId((value) => value + 1);
+    return true;
+  }
+
   return (
-    <>
+    <GameNavigationContext value={selectGame}>
+      <BrowseMetadata game={featuredGame} catalog={catalog} isHomePage={isHomePage} />
       <input ref={fileInput} type="file" accept=".zip,application/zip" multiple hidden
         onChange={(event) => {
           const files = [...event.target.files];
@@ -403,13 +427,13 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
         }} />
       <GameDropOverlay importRoots={importRoots} disabled={disabled} pending={pending}
         result={importResult} onConfirm={confirmImport} />
-      {featuredGame && <HomeHero key={`${isHomePage}:${featuredKey}`} groups={heroGroups} featuredGame={featuredGame}
-        isHomePage={isHomePage} notice={notice} />}
+      {featuredGame && <HomeHero groups={heroGroups} featuredGame={featuredGame}
+        isHomePage={isHomePage} selection={selection} navigationId={navigationId} notice={notice} />}
       <div className="section-stack">
         <RecentGamesRail groups={groups} />
         <LibraryView items={groups} heading={libraryHeading} notice={notice}
           onAddGame={() => chooseZip()} importDisabled={disabled} selectedKey={selection || (!isHomePage ? featuredKey : null)} />
       </div>
-    </>
+    </GameNavigationContext>
   );
 }

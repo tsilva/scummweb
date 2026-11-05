@@ -72,6 +72,7 @@
 }
 
 .game-route-boot-scrim {
+  opacity: 0.5;
   background:
     linear-gradient(180deg, rgba(6, 8, 7, 0.18), rgba(6, 8, 7, 0.84)),
     radial-gradient(circle at 22% 18%, rgba(246, 224, 138, 0.18), transparent 30%),

@@ -466,9 +466,8 @@ button.nav-icon-link {
   cursor: wait;
 }
 
-.launch-button-pending::before,
-.launch-button-pending > span {
-  visibility: hidden;
+.launch-button-pending::before {
+  content: none;
 }
 
 .launch-button.game-unavailable {

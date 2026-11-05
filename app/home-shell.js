@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Icon from "./home-shell/shell-icon";
 import SourceLibrary from "./home-shell/source-library";
 import SettingsPanel from "./home-shell/settings-panel";
@@ -22,7 +23,7 @@ export default function HomeShell({
         <div className="nav-cluster nav-cluster-left">
           <div className="nav-brand-group">
             <div className="nav-brand-stack">
-              <a className="nav-brand" href={pageMode === "compatibility" ? "/" : "#browse"} aria-label="ScummWEB">
+              <Link className="nav-brand" href={pageMode === "compatibility" ? "/" : "#browse"} aria-label="ScummWEB">
                 <img
                   alt=""
                   aria-hidden="true"
@@ -34,14 +35,14 @@ export default function HomeShell({
                   src={logoSrc}
                   width="273"
                 />
-              </a>
+              </Link>
               <p className="nav-brand-tagline">Classic adventures in your browser</p>
             </div>
           </div>
 
           <div className="nav-links" aria-label="Main">
-            <a href={pageMode === "compatibility" ? "/#library" : "#library"}>Library</a>
-            <a href="/compatibility" aria-current={pageMode === "compatibility" ? "page" : undefined}>Compatibility</a>
+            <Link href={pageMode === "compatibility" ? "/#library" : "#library"}>Library</Link>
+            <Link href="/compatibility" aria-current={pageMode === "compatibility" ? "page" : undefined}>Compatibility</Link>
             <a href={scummvmOfficialSite} rel="noreferrer" target="_blank">
               ScummVM
             </a>
@@ -82,7 +83,7 @@ export default function HomeShell({
             Bundle built {sourceInfoDate}. ScummVM version {scummvmVersion}.
           </p>
         </div>
-        <div className="footer-links"><a href="/compatibility">Game compatibility</a></div>
+        <div className="footer-links"><Link href="/compatibility">Game compatibility</Link></div>
       </footer>
 
     </>

@@ -6,18 +6,22 @@ import { useEffect, useRef, useState } from "react";
 import HeroStage from "./hero-stage";
 import { getHeroPreloadImages } from "./hero-images.mjs";
 import { chooseGameVersion, getGameFamilyKey, readChosenVersion, rememberGameVersion } from "../game-versions.mjs";
-import { buildGameExitHref, readHeroSelection } from "./hero-selection.mjs";
+import { buildGameExitHref } from "./hero-selection.mjs";
+import { useGameNavigation } from "./game-navigation";
 
 const SLIDE_DURATION_MS = 8000;
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
-export default function HomeHero({ groups, featuredGame, isHomePage = true, notice }) {
+export default function HomeHero({ groups, featuredGame, isHomePage = true, selection = null, navigationId = 0, notice }) {
   const router = useRouter();
+  const selectGame = useGameNavigation();
   const featuredKey = getGameFamilyKey(featuredGame) || `catalog:${featuredGame.target}`;
   const slides = groups.map((group) => ({ ...group, id: group.key }));
   const slideCount = slides.length;
-  const [selectedId, setSelectedId] = useState(null);
-  const [requestedId, setRequestedId] = useState(null);
+  const routeKey = `${isHomePage}:${featuredKey}:${selection}:${navigationId}`;
+  const [selectedSlide, setSelectedSlide] = useState(null);
+  const selectedId = selectedSlide?.routeKey === routeKey ? selectedSlide.id : null;
+  const requestedId = selection;
   const slideIndex = Math.max(0, slides.findIndex(({ id }) => id === (selectedId ?? requestedId ?? featuredKey)));
   const currentSlide = slides[slideIndex];
   const [chosen, setChosen] = useState(null);
@@ -30,25 +34,15 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, noti
   }, [currentSlide.id, versionKeys]);
   const preloadedImages = useRef(new Map());
   const preloadKey = JSON.stringify(getHeroPreloadImages(slides, slideIndex));
-  const [rotationPaused, setRotationPaused] = useState(null);
+  const [rotation, setRotation] = useState(null);
+  const rotationPaused = rotation?.routeKey === routeKey ? rotation.paused : null;
+  function setRotationPaused(paused) { setRotation({ routeKey, paused }); }
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [isPageVisible, setIsPageVisible] = useState(false);
   const [hasPointer, setHasPointer] = useState(false);
   const [hasFocus, setHasFocus] = useState(false);
   const isPaused = rotationPaused ?? (!isHomePage || Boolean(requestedId) || prefersReducedMotion);
   const isCountingDown = isPageVisible && !isPaused && !hasPointer && !hasFocus;
-
-  useEffect(() => {
-    const syncSelection = () => {
-      const requested = readHeroSelection(window.location.hash);
-      if (!requested) return;
-      setRequestedId(requested);
-      setSelectedId(null);
-    };
-    syncSelection();
-    window.addEventListener("hashchange", syncSelection);
-    return () => window.removeEventListener("hashchange", syncSelection);
-  }, []);
 
   useEffect(() => {
     const nextImages = new Map();
@@ -108,10 +102,10 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, noti
 
   function advanceSlide(direction, navigate = true) {
     const next = slides[(slideIndex + direction + slideCount) % slideCount];
-    setSelectedId(next.id);
+    setSelectedSlide({ routeKey, id: next.id });
     if (navigate) {
       setRotationPaused(true);
-      router.push(buildGameExitHref(next.game), { scroll: false });
+      if (!selectGame?.(next.game)) router.push(buildGameExitHref(next.game), { scroll: false });
       window.scrollTo({ top: 0, behavior: "instant" });
     }
   }
