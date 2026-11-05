@@ -1,0 +1,200 @@
+{
+  "schema_version": 1,
+  "adaptations": [
+    {
+      "path": "patches/scummvm/01-load-only-the-requested-engine.patch",
+      "status": "active",
+      "sha256": "ead19ef017503488fffed1ac6ec5c5f8998ebd975159b3ae1ac42b074186cd00",
+      "purpose": "Avoid scanning/loading every dynamic engine when a requested web engine is not found.",
+      "invariants": [
+        "Emscripten dynamic builds load only the selected engine; non-web fallback behavior remains intact."
+      ],
+      "verification": [
+        "Inspect cold and warm Brave network requests for at least two engines; no unrelated plugin downloads, including an unavailable target."
+      ],
+      "retire_when": "Upstream web plugin lookup provides equivalent selective loading without a fallback scan."
+    },
+    {
+      "path": "patches/scummvm/02-lure-menu-mouse-input.patch",
+      "status": "active",
+      "sha256": "ca5724cfef40310089539a3c7a8623f4706f0236b69d748b0b117d85b35559c1",
+      "purpose": "Make Lure popup actions click-selectable in the web build.",
+      "invariants": [
+        "Web mouse/touch can select an explicit menu item; keep native touchscreen-dependent behavior elsewhere.",
+        "The current diff contains redundant nested EMSCRIPTEN guards. Preserve the behavior when porting, not that accidental nesting."
+      ],
+      "verification": [
+        "In Brave, open a Lure popup with a mouse and touch controls; choose distinct actions and dismiss the popup."
+      ],
+      "retire_when": "Upstream web popup interaction supports these inputs without the override."
+    },
+    {
+      "path": "patches/scummvm/03-queen-dialogue-touch-debounce.patch",
+      "status": "active",
+      "sha256": "59d0528cf5e4eb709b88cae64eabf17719ac0f5b1a57669f715f96eeec32669d",
+      "purpose": "Prevent a trailing tap that dismisses speech from selecting a new Queen dialogue option.",
+      "invariants": [
+        "A new dialogue list requires deliberate input after the 180 ms debounce; options remain reachable."
+      ],
+      "verification": [
+        "In Brave Queen dialogue, dismiss a spoken line and confirm the newly drawn choices are not auto-selected; then select a choice normally."
+      ],
+      "retire_when": "Upstream input handling consumes the trailing release/tap or implements equivalent deliberate selection."
+    },
+    {
+      "path": "patches/scummvm/04-detect-sword25-freeware.patch",
+      "status": "active",
+      "sha256": "9de1b4c76b981e4cbaa043c19323440f056295a7fdc2a18df919cc4ab55dde3b",
+      "purpose": "Recognize the supported 827397764-byte freeware data.b25c package.",
+      "invariants": [
+        "Preserve unknown-language metadata so changing the game language does not break detection.",
+        "The existing series contains a size-only entry and a checksum entry (1f89a63e3509aa64626cc90cd2561032). Review collision/order behavior when porting; do not broaden detection further."
+      ],
+      "verification": [
+        "Detect and launch the supported package, change language, and relaunch; check unrelated variants are not mislabeled."
+      ],
+      "retire_when": "Upstream recognizes the exact supported package with suitable language handling; prefer its verified fingerprint over a redundant size-only fallback."
+    },
+    {
+      "path": "patches/scummvm/05-use-scummweb-filesystem-mounts.patch",
+      "status": "active",
+      "sha256": "97336316a867e8dfd4ab8e062a68c0ca8774bd7dcf135f62ed2e530ae44a3653",
+      "purpose": "Use the shell-mounted game/data/save filesystems through the POSIX backend.",
+      "invariants": [
+        "Keep OSystem_POSIX initialization and access to /data, /games and existing BrowserFS saves.",
+        "Do not restore the upstream HTTP filesystem factory over the shell mounts."
+      ],
+      "verification": [
+        "Run test/runtime-bootstrap.test.mjs and test/scummvm-filesystem.test.mjs; launch catalog and imported games and save/resume in Brave."
+      ],
+      "retire_when": "Upstream initialization natively supports these mounted filesystems without replacement or incompatible operations."
+    },
+    {
+      "path": "patches/scummvm/06-avoid-midi-permission-on-startup.patch",
+      "status": "active",
+      "sha256": "5e8e159f9b06c68c7b0d723194bdb2bbc464d9f8d2cbb8b12ecb7d380dc32b65",
+      "purpose": "Avoid requesting access to physical MIDI devices during web startup.",
+      "invariants": [
+        "No requestMIDIAccess permission prompt; midiOutputMap remains a valid empty Map for internal-driver fallback."
+      ],
+      "verification": [
+        "Check a fresh Brave launch does not prompt for MIDI permissions; verify built-in music still works on a supported title."
+      ],
+      "retire_when": "Upstream makes external MIDI access opt-in and preserves the same built-in music behavior."
+    },
+    {
+      "path": "patches/scummvm/07-detect-phantasmagoria-combined-dos.patch",
+      "status": "active",
+      "sha256": "5e04ee0180e5d0e1b46e318b6ec68342c3d039bc0542fb8da2adf39639815f87",
+      "purpose": "Recognize the supported English seven-CD combined DOS install.",
+      "invariants": [
+        "Preserve the Combined DOS install entry: ressci.000 cd5967f9b9586e3380645961c0765be3/116822037 and resmap.000 9a479f0ab586359b424e35165dd7559e/16468.",
+        "Keep English DOS metadata and Phantasmagoria GUI options; do not conflate other language editions."
+      ],
+      "verification": [
+        "Using an owned matching package, verify native detection, startup and access to combined-disc resources in Brave."
+      ],
+      "retire_when": "Upstream has an equivalent combined-DOS detection entry and the matching package passes regression checks."
+    },
+    {
+      "path": "patches/scummvm/08-bound-titanic-wasm-registry-compilation.patch",
+      "status": "active",
+      "sha256": "9fd37557492916efd8225b6b8978da5fb94692412827f956a4f3aa3b2a8ced20",
+      "purpose": "Keep Titanic class registrations from becoming one expensive browser compilation unit.",
+      "invariants": [
+        "The Emscripten registration helper stays out of line; class names, inheritance and factories remain identical."
+      ],
+      "verification": [
+        "Measure Titanic launch in Brave and verify a scene plus save/load class reconstruction; compare startup compilation behavior."
+      ],
+      "retire_when": "Upstream or the selected compiler bounds compilation cost while preserving the class registry and save compatibility."
+    },
+    {
+      "path": "patches/scummvm/09-initialize-access-detected-language.patch",
+      "status": "active",
+      "sha256": "69aead3f081490adedee7218ecf1b0d9479438a91ba7d68ff7715498d7ef8f28",
+      "purpose": "Initialize the Access engine language from the detected game description.",
+      "invariants": [
+        "Use detected language rather than unknown-language initialization, preserving per-edition behavior."
+      ],
+      "verification": [
+        "Launch an owned supported Access edition in Brave; confirm correct language/resource handling and no startup assertion."
+      ],
+      "retire_when": "Upstream initializes the same language correctly and the edition passes the check."
+    },
+    {
+      "path": "patches/scummvm/10-fallback-toltecs-adlib-instruments.patch",
+      "status": "active",
+      "sha256": "19f7f5a4e09c6a63e36594f81e4773b1e87672067879c97c1c7ca4845bba6ff1",
+      "purpose": "Allow Toltecs releases lacking both custom AdLib instrument tables to use built-in instruments.",
+      "invariants": [
+        "Keep the Miles path when custom SAMPLE.AD or SAMPLE.OPL data is present.",
+        "If both tables are absent, show the sound-difference warning and keep music through the standard driver."
+      ],
+      "verification": [
+        "Check an owned Toltecs release with absent tables: dismiss the warning and verify music; retain the custom-table path when available."
+      ],
+      "retire_when": "Upstream provides the same missing-table fallback and honest user notice."
+    },
+    {
+      "path": "patches/scummvm/11-accept-spaced-cd-track-names.patch",
+      "status": "active",
+      "sha256": "3c614b09bc545b113f7450be1019f11ddddccf6959b165a9e7172722c3386cfc",
+      "purpose": "Recognize spaced CD-ripper filenames while retaining conventional ScummVM names.",
+      "invariants": [
+        "Preserve existing trackN, trackNN, track_N and track_NN candidates.",
+        "Spaced names use physical one-based track numbers; the playback API uses zero-based numbers. Preserve plain, zero-padded and space-padded spaced names."
+      ],
+      "verification": [
+        "Verify first and later extracted CD tracks play correctly with both conventional and spaced naming; avoid an off-by-one track shift."
+      ],
+      "retire_when": "Upstream candidate generation covers the same formats and numbering semantics."
+    },
+    {
+      "path": "patches/scummvm/12-report-native-game-frames.patch",
+      "status": "active",
+      "sha256": "82f1473bdab2613f315b68fb300cbdfae593fcef4e771e8343f74cb9a9d5f06f",
+      "purpose": "Report a real native game presentation to the browser shell instead of relying on WebGL brightness polling.",
+      "invariants": [
+        "Announce __scummwebNativeFrames and call __scummwebOnGameFrame after refresh, with g_engine, no overlay, and splash completed or GUI already launched.",
+        "Only an accepted callback ends reporting; support intentionally dark frames and exclude splash/GUI setup draws.",
+        "Keep the change web-only and preserve the native splash/intro timing."
+      ],
+      "verification": [
+        "Run first-frame, runtime-bootstrap and game-route-frame tests. In Brave, verify DreamWeb and another engine reach native readiness, preserve intro/skip, and compare warm launch timings; inspect the callback contract on an SDK change."
+      ],
+      "retire_when": "Upstream exposes an equivalent reliable game-presentation lifecycle signal that ScummWEB consumes and verifies."
+    },
+    {
+      "path": "scripts/patch_scummvm_audio.py",
+      "status": "active",
+      "sha256": "4a2dbaefaa42d68d58d7bceb5e33749cdf8eaa18fce6bd712df5fe8f34b30148",
+      "purpose": "Adapt generated SDL3 playback glue to clear output buffers and contain invalid samples.",
+      "invariants": [
+        "Prime every output channel with silence before the mixer callback.",
+        "Handle non-finite samples, clamp to [-1,1], silence excessively abnormal buffers, and leave recording behavior untouched.",
+        "Exact-pattern replacement is idempotent and fails on unsupported generated glue rather than silently skipping the adaptation."
+      ],
+      "verification": [
+        "Run test/scummvm-shell-output.test.mjs and test/audio-start-control.test.mjs; listen in Brave for startup/silence artifacts, sound playback and correct gesture handling."
+      ],
+      "retire_when": "The selected upstream SDL/Emscripten output path already provides equivalent initialization and sample containment, demonstrated by output tests and audible checks."
+    },
+    {
+      "path": "patches/scummvm/13-expose-native-save-list.patch",
+      "status": "active",
+      "sha256": "845537de4a4ea6e9116d98ceb4c2c103ce4f8933c0faec934f53a55372ea79d1",
+      "purpose": "Expose native save listing and startup loading to ScummWEB, including isolated personal imports.",
+      "invariants": [
+        "Respect both native capability flags and PreAGI/Mohawk exclusions; never force unsupported startup loading.",
+        "List real nonempty files, exclude nonexistent autosave placeholders and Kyrandia restart saves; resolve fixed prefixes through the native filename API.",
+        "Choose the latest player save again before engine construction; retain the selected version savepath and actual detected target."
+      ],
+      "verification": [
+        "Run browser save and native bridge tests; rebuild the managed runtime.",
+        "In Brave verify Play with no player saves, supported catalog and imported save/resume, latest-write ordering, checkpoint exclusion, and unsupported engines retaining Play."
+      ],
+      "retire_when": "Upstream exposes equivalent browser-callable save metadata and startup resume with the same eligibility and save isolation guarantees."
+    }
+  ]
+}

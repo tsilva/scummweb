@@ -50,9 +50,20 @@ export default function HomeHero({ groups, featuredGame }) {
     const nextImages = new Map();
     for (const props of JSON.parse(preloadKey)) {
       const key = JSON.stringify(props);
-      let image = preloadedImages.current.get(key);
-      if (!image) {
-        image = new Image();
+      let picture = preloadedImages.current.get(key);
+      if (!picture) {
+        picture = document.createElement("picture");
+        picture.hidden = true;
+        if (props.avifSrcSet) {
+          const source = document.createElement("source");
+          source.type = "image/avif";
+          source.sizes = props.sizes;
+          source.srcset = props.avifSrcSet;
+          picture.append(source);
+        }
+        const image = new Image();
+        picture.append(image);
+        document.body.append(picture);
         image.decoding = "async";
         image.fetchPriority = "low";
         image.sizes = props.sizes;
@@ -61,12 +72,18 @@ export default function HomeHero({ groups, featuredGame }) {
         // Decode offscreen, keeping these images alive until they leave the window.
         void image.decode().catch(() => {});
       }
-      nextImages.set(key, image);
+      nextImages.set(key, picture);
+    }
+    for (const [key, picture] of preloadedImages.current) {
+      if (!nextImages.has(key)) picture.remove();
     }
     preloadedImages.current = nextImages;
   }, [preloadKey]);
 
-  useEffect(() => () => preloadedImages.current.clear(), []);
+  useEffect(() => () => {
+    for (const picture of preloadedImages.current.values()) picture.remove();
+    preloadedImages.current.clear();
+  }, []);
 
   useEffect(() => {
     const query = window.matchMedia(REDUCED_MOTION_QUERY);

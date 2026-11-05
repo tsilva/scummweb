@@ -14,7 +14,8 @@ test("poster candidates preserve asset versions, original fallback and intrinsic
   assert.ok(props.srcSet.includes(`${artworkUrl("/launcher/responsive/monkey-demo-cover-320.webp?v=release-1")} 320w`));
   assert.ok(props.srcSet.endsWith(`${src} ${props.width}w`));
   assert.ok(props.width > 0 && props.height > 0);
-  assert.equal(getPosterImageProps(src, true).sizes, "100vw");
+  assert.match(getPosterImageProps(src, true).sizes, /\/ 1 \* 1\.04/);
+  assert.ok(!props.sizes.includes("25vw"));
 });
 
 test("remote, blob and unknown artwork keep their direct source without a proxy", () => {

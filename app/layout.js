@@ -7,6 +7,7 @@ import { getMetadataBase } from "./site-config";
 import SiteAnalytics from "./site-analytics";
 import "./globals.css";
 import "./styles/home-shell.css";
+import "./styles/settings.css";
 import "./styles/game-player.css";
 
 const inter = Inter({

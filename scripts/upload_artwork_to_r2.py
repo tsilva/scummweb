@@ -17,6 +17,14 @@ ENDPOINT = f"https://{ACCOUNT}.r2.cloudflarestorage.com"
 CACHE_CONTROL = "public, max-age=31536000, immutable"
 
 
+def artwork_workspace():
+    import re
+    name = os.environ.get("SCUMMWEB_ARTWORK_WORKSPACE", "artwork-migration")
+    if not re.fullmatch(r"[a-z0-9][a-z0-9-]{0,63}", name):
+        raise ValueError("Invalid artwork workspace name")
+    return Path(".internal/evidence") / name
+
+
 def publish(client, manifest, root=ROOT):
     if (manifest.get("version") != 1 or manifest.get("origin") != "https://scummvm-games.tsilva.eu"
             or not isinstance(manifest.get("files"), dict) or not manifest["files"]):
@@ -27,11 +35,11 @@ def publish(client, manifest, root=ROOT):
         sha256 = entry["sha256"]
         if (not re.fullmatch(r"[a-f0-9]{64}", sha256)
                 or entry["key"] != f"artwork/{sha256}/{Path(name).name}"
-                or not re.fullmatch(r"(?:/launcher/(?:responsive/)?[a-z0-9-]+\.(?:webp|png)|/image-assets/sources/road-gameplay\.jpg)", name)
-                or entry["contentType"] not in {"image/png", "image/webp", "image/jpeg"}
+                or not re.fullmatch(r"(?:/launcher/(?:(?:responsive|optimized)/)?[a-z0-9-]+\.(?:webp|png|avif)|/image-assets/sources/road-gameplay\.jpg)", name)
+                or entry["contentType"] not in {"image/png", "image/webp", "image/avif", "image/jpeg"}
                 or type(entry["bytes"]) is not int or entry["bytes"] < 1):
             raise ValueError("Invalid artwork object")
-        filename = root / ".internal/evidence/artwork-migration/objects" / entry["key"]
+        filename = root / artwork_workspace() / "objects" / entry["key"]
         if filename.is_file():
             data = filename.read_bytes()
             if len(data) != entry["bytes"] or hashlib.sha256(data).hexdigest() != sha256:
@@ -88,7 +96,7 @@ def main():
                           aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
                           aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],
                           config=Config(signature_version="s3v4", retries={"max_attempts": 2}))
-    manifest = json.loads((ROOT / ".internal/evidence/artwork-migration/manifest.json").read_text())
+    manifest = json.loads((ROOT / artwork_workspace() / "manifest.json").read_text())
     print(json.dumps(publish(client, manifest)))
 
 

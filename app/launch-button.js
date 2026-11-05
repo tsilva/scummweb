@@ -24,10 +24,12 @@ export default function LaunchButton({ game, entryPoint, label = "Play", continu
     void refreshSave();
     window.addEventListener("storage", refreshSave);
     window.addEventListener("pageshow", refreshSave);
+    window.addEventListener("scummweb:saves-changed", refreshSave);
     return () => {
       cancelled = true;
       window.removeEventListener("storage", refreshSave);
       window.removeEventListener("pageshow", refreshSave);
+      window.removeEventListener("scummweb:saves-changed", refreshSave);
     };
   }, [game]);
 

@@ -1,0 +1,134 @@
+diff --git a/base/commandLine.cpp b/base/commandLine.cpp
+index c29d1eb0..d416259b 100644
+--- a/base/commandLine.cpp
++++ b/base/commandLine.cpp
+@@ -26,6 +26,9 @@
+ 
+ #include "engines/advancedDetector.h"
+ #include "engines/metaengine.h"
++#ifdef __EMSCRIPTEN__
++extern int scummwebReportSaves(const MetaEngine &, const Common::String &, const Common::String &, const Common::String &);
++#endif
+ #include "base/commandLine.h"
+ #include "base/plugins.h"
+ #include "base/version.h"
+@@ -1550,6 +1553,10 @@ static Common::Error listSaves(const Common::String &singleTarget) {
+ 		const MetaEngine &metaEngine = enginePlugin->get<MetaEngine>();
+ 		Common::String qualifiedGameId = buildQualifiedGameName(gameTarget.game.engineId, gameTarget.game.gameId);
+ 
++#ifdef __EMSCRIPTEN__
++		scummwebReportSaves(metaEngine, gameTarget.game.engineId, gameTarget.game.gameId, gameTarget.target);
++#endif
++
+ 		if (!metaEngine.hasFeature(MetaEngine::kSupportsListSaves)) {
+ 			// If the target was specified, treat this as an error, and otherwise skip it.
+ 			if (!singleTarget.empty()) {
+diff --git a/base/main.cpp b/base/main.cpp
+index ef3997f1..73d9acae 100644
+--- a/base/main.cpp
++++ b/base/main.cpp
+@@ -30,8 +30,14 @@
+ // FIXME: Avoid using printf
+ #define FORBIDDEN_SYMBOL_EXCEPTION_printf
+ 
++#ifdef __EMSCRIPTEN__
++#include <emscripten.h>
++#endif
+ #include "engines/engine.h"
+ #include "engines/metaengine.h"
++#ifdef __EMSCRIPTEN__
++#include "common/savefile.h"
++#endif
+ #include "base/commandLine.h"
+ #include "base/plugins.h"
+ #include "base/version.h"
+@@ -187,6 +193,59 @@ void saveLastLaunchedTarget(const Common::String &target) {
+ }
+ 
+ // TODO: specify the possible return values here
++#ifdef __EMSCRIPTEN__
++static const MetaEngine *scummwebMetaEngine = nullptr;
++static Common::String scummwebEngineId, scummwebGameId, scummwebTarget;
++
++// Also used by --list-saves, before an engine instance exists. Keep this on
++// ScummVM's native save API so engine filename/slot conventions remain native.
++int scummwebReportSaves(const MetaEngine &meta, const Common::String &engineId,
++		const Common::String &gameId, const Common::String &target) {
++	bool supported = meta.hasFeature(MetaEngine::kSupportsListSaves) &&
++		meta.hasFeature(MetaEngine::kSupportsLoadingDuringStartup);
++	if (engineId == "agi" && (gameId == "mickey" || gameId == "winnie" || gameId == "troll"))
++		supported = false;
++	if (engineId == "mohawk" && gameId != "myst" && gameId != "riven")
++		supported = false;
++	Common::String extra = ConfMan.get("extra");
++	extra.toLowercase();
++	if (engineId == "mohawk" && extra.contains("demo"))
++		supported = false;
++	EM_ASM({ if (globalThis.__scummwebBeginSaveScan) globalThis.__scummwebBeginSaveScan(UTF8ToString($0), UTF8ToString($1), UTF8ToString($2), $3, UTF8ToString($4)); },
++		engineId.c_str(), gameId.c_str(), target.c_str(), supported, extra.c_str());
++	if (supported) {
++		const SaveStateList saves = meta.listSaves(target.c_str());
++		for (const auto &save : saves) {
++			const int slot = save.getSaveSlot();
++			if (slot < 0 || slot > meta.getMaximumSaveSlot() || save.getLocked())
++				continue;
++			// These are restart checkpoints, not player progress.
++			if (engineId == "kyra" && slot == 0 && (gameId == "kyra1" || gameId == "kyra2" || gameId == "kyra3"))
++				continue;
++			if (meta.hasFeature(MetaEngine::kSavesSupportMetaInfo) &&
++				meta.querySaveMetaInfos(target.c_str(), slot).getSaveSlot() < 0)
++				continue;
++			// These engines deliberately use a fixed prefix across targets.
++			const char *prefix = (engineId == "lure" || engineId == "queen" || engineId == "tony")
++				? engineId.c_str() : target.c_str();
++			const Common::String filename = meta.getSavegameFile(slot, prefix);
++			Common::InSaveFile *file = g_system->getSavefileManager()->openForLoading(filename);
++			const bool exists = file && file->size() > 0;
++			delete file;
++			// SCI, Cine and Pegasus can list a nonexistent autosave placeholder.
++			if (exists)
++				EM_ASM({ if (globalThis.__scummwebAddSave) globalThis.__scummwebAddSave($0, UTF8ToString($1)); }, slot, filename.c_str());
++		}
++	}
++	return EM_ASM_INT({ return globalThis.__scummwebEndSaveScan ? globalThis.__scummwebEndSaveScan() : -1; });
++}
++
++extern "C" EMSCRIPTEN_KEEPALIVE void scummweb_refresh_saves() {
++	if (scummwebMetaEngine)
++		scummwebReportSaves(*scummwebMetaEngine, scummwebEngineId, scummwebGameId, scummwebTarget);
++}
++#endif
++
+ static Common::Error runGame(const Plugin *enginePlugin, OSystem &system, const DetectedGame &game, const void *meDescriptor) {
+ 	assert(enginePlugin);
+ 
+@@ -223,6 +282,11 @@ static Common::Error runGame(const Plugin *enginePlugin, OSystem &system, const
+ 		// Apparently some engines query them in their constructor, thus we
+ 		// need to set this up before instance creation.
+ 		metaEngine.registerDefaultSettings(target);
++#ifdef __EMSCRIPTEN__
++		const int resumeSlot = scummwebReportSaves(metaEngine, game.engineId, game.gameId, target);
++		if (resumeSlot >= 0)
++			ConfMan.setInt("save_slot", resumeSlot, Common::ConfigManager::kTransientDomain);
++#endif
+ 		err = metaEngine.createInstance(&system, &engine, game, meDescriptor);
+ 	}
+ 
+@@ -325,7 +389,17 @@ static Common::Error runGame(const Plugin *enginePlugin, OSystem &system, const
+ 	system.getEventManager()->purgeMouseEvents();
+ 
+ 	// Run the engine
++#ifdef __EMSCRIPTEN__
++	scummwebMetaEngine = &metaEngine;
++	scummwebEngineId = game.engineId;
++	scummwebGameId = game.gameId;
++	scummwebTarget = target;
++#endif
+ 	Common::Error result = engine->run();
++#ifdef __EMSCRIPTEN__
++	scummweb_refresh_saves();
++	scummwebMetaEngine = nullptr;
++#endif
+ 
+ 	// Make sure we do not return to the launcher if this is not possible.
+ 	if (!engine->hasFeature(Engine::kSupportsReturnToLauncher))

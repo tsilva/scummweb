@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import DecorativeImage from "./home-shell/decorative-image";
+import { getArtworkImageProps } from "./home-shell/artwork-image-props.mjs";
 import { getRecentGameTargets, getRecentlyPlayedGames, recentGamesUpdatedEvent } from "./recent-games";
 
 export default function RecentGamesRail({ groups }) {
@@ -40,7 +41,7 @@ export default function RecentGamesRail({ groups }) {
             data-game-target={game.target}
             href={`#${dialogId}`}
           >
-            <DecorativeImage className="landscape-card-image" src={game.landscapeImage} />
+            <DecorativeImage className="landscape-card-image" {...getArtworkImageProps(game.landscapeImage, "landscape")} />
             <div className="landscape-overlay">
               <h3>{game.displayTitle}</h3>
               <div className="landscape-meta">

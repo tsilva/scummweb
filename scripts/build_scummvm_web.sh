@@ -4,6 +4,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 VENDOR_DIR="$ROOT_DIR/vendor"
+python3 "$ROOT_DIR/.codex/skills/scummweb_upgrade-scummvm/scripts/upgrade_check.py" --repo-path "$ROOT_DIR" --offline >/dev/null
 source "$ROOT_DIR/scripts/scummvm-version.sh"
 SCUMMVM_REPO_URL="https://github.com/scummvm/scummvm.git"
 SCUMMVM_DIR="$VENDOR_DIR/scummvm-$SCUMMVM_TAG"

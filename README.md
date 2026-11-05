@@ -42,8 +42,16 @@ Dark opening scenes play as soon as the game is ready; use **Skip intro**, when
 offered, to jump ahead.
 
 Select a game card for details and **Play**. If sound or an intro is paused,
-select **Start audio** inside the game. Compatible saves offer **Continue**;
-other games load progress through their in-game menu.
+select **Start audio** inside the game. Supported games offer **Continue** when
+a player save exists, loading the most recently written save directly. This
+also works for personal imports, with progress kept separate for each version.
+Intro checkpoints do not enable Continue. Other games stay on **Play** and load
+progress through their in-game menu.
+
+Open **Settings → Saved games** to export a backup ZIP or import one on another
+device. Review imports before applying them; different progress for the same
+game is kept as separate save sets. **Save sets** lets you choose which set is
+active. Close games in all tabs first. Backups contain progress, not game files.
 
 The Recently Played strip shows games you have launched, newest first, including
 your imported ZIPs. It appears after your first launch.
@@ -104,9 +112,14 @@ Game artwork loads directly from R2 using the tracked
 and source credits remain in Git. See the
 [artwork publishing procedure](docs/maintaining-scummweb.md#artwork-storage-and-publishing)
 for the verified migration and update workflow.
+Delivery variants use responsive WebP images and AVIF alternatives where they
+reduce transfer size at the selected quality; original captures remain available.
 
 For production builds and Lighthouse checks alongside a running server, see
 the [isolated audit setup](docs/maintaining-scummweb.md#development-commands).
+For engine upgrades, use the
+[ScummVM upgrade skill](.codex/skills/scummweb_upgrade-scummvm/SKILL.md), which
+checks stable releases and preserves the documented local patch requirements.
 
 ## Further reading
 

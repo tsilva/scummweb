@@ -66,6 +66,18 @@ function bindBrowserFsOperations(filesystem) {
   }
 }
 
+function acquireSaveSession() {
+  if (!globalThis.navigator?.locks) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    navigator.locks.request("scummweb-saves", { mode: "shared", ifAvailable: true }, async (lock) => {
+      if (!lock) { reject(new Error("Save restore is in progress. Finish it before launching a game.")); return; }
+      resolve();
+      // The browser releases this lock when the game document closes.
+      await new Promise(() => {});
+    }).catch(reject);
+  });
+}
+
 function setupLocalFilesystem() {
   // Translate BrowserFS errors into Emscripten's WASI errno values.
   const errnoCodes = {
@@ -73,7 +85,7 @@ function setupLocalFilesystem() {
     EIO: 29, EISDIR: 31, ENOENT: 44, ENOSPC: 51, ENOTDIR: 54,
     ENOTEMPTY: 55, ENOTSUP: 58, EPERM: 63, EROFS: 69,
   };
-  return scummwebBrowserFsReady.then(setupDefaultLocalData).then(() => new Promise((resolve, reject) => {
+  return acquireSaveSession().then(() => scummwebBrowserFsReady).then(setupDefaultLocalData).then(() => new Promise((resolve, reject) => {
     BrowserFS.FileSystem.LocalStorage.Create((storageError, storage) => {
       if (storageError) return reject(storageError);
       BrowserFS.FileSystem.MountableFileSystem.Create({ "/": storage }, (mountError, mount) => {
@@ -282,6 +294,7 @@ async function setupLocalGame() {
   });
 }
 
+/*__SCUMMWEB_SAVE_BRIDGE__*/
 function setupFilesystem() {
   if (scummwebInlineFrame) {
     // Emscripten retains this array when it enters preRun.
@@ -294,9 +307,11 @@ function setupFilesystem() {
     // The native save manager can create the last directory only.
     .then(() => ensureDirectory(defaultSavePath))
     .then(() => isLocalGame ? setupLocalGame() : undefined)
-    .then(() => !isLocalGame || isCatalogArchive
+    .then(() => !scummwebLaunchUrl.searchParams.has("saveQuery") && (!isLocalGame || isCatalogArchive)
       ? installMissingCatalogTarget().then(setupSkipIntroSaves)
-      : undefined);
+      : undefined)
+    .then(() => globalThis.__scummwebInstallContinueSaves?.({ scope: window, FS, Module,
+      launchUrl: scummwebLaunchUrl, assetUrl: buildVersionedAssetUrl }));
   Promise.all([window.ScummvmFSReady, localFilesReady])
     .then(([{ filesystems }]) => {
       for (const { name, filesystem } of filesystems) {

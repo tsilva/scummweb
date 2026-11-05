@@ -4,14 +4,16 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import sharp from "sharp";
+import { resolveArtworkWorkspace } from "./artwork-workspace.mjs";
 
 const rootDir = fileURLToPath(new URL("../", import.meta.url));
 const origin = "https://scummvm-games.tsilva.eu";
-const types = { ".webp": "image/webp", ".png": "image/png", ".jpg": "image/jpeg" };
+const types = { ".webp": "image/webp", ".avif": "image/avif", ".png": "image/png", ".jpg": "image/jpeg" };
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const manifestFile = "data/artwork-storage.json";
-const backupDir = ".internal/evidence/artwork-migration/objects";
-const pendingFile = ".internal/evidence/artwork-migration/manifest.json";
+const workspace = resolveArtworkWorkspace();
+const backupDir = `${workspace}/objects`;
+const pendingFile = `${workspace}/manifest.json`;
 
 async function writeManifest(filename, manifest) {
   const temporary = `${filename}.${randomUUID()}.tmp`;
@@ -27,12 +29,32 @@ export function validateManifest(manifest) {
     throw new Error("Invalid or empty artwork storage manifest");
   }
   for (const [name, file] of Object.entries(manifest.files)) {
-    if (!/^\/launcher\/(?:responsive\/)?[a-z0-9-]+\.(?:webp|png)$/.test(name)
+    if (!/^\/launcher\/(?:(?:responsive|optimized)\/)?[a-z0-9-]+\.(?:webp|png|avif)$/.test(name)
       && name !== "/image-assets/sources/road-gameplay.jpg") throw new Error(`Invalid artwork path: ${name}`);
     if (!/^[a-f0-9]{64}$/.test(file.sha256) || file.key !== `artwork/${file.sha256}/${path.posix.basename(name)}`
       || !Number.isSafeInteger(file.bytes) || file.bytes < 1 || file.contentType !== types[path.extname(name)]
       || !Number.isSafeInteger(file.width) || file.width < 1 || !Number.isSafeInteger(file.height) || file.height < 1) {
       throw new Error(`Invalid artwork record: ${name}`);
+    }
+  }
+  for (const [source, image] of Object.entries(manifest.images || {})) {
+    const original = manifest.files[source];
+    const fallback = manifest.files[image.fallback];
+    if (!original || !fallback || image.width !== original.width || image.height !== original.height
+      || fallback.width !== image.width || fallback.height !== image.height
+      || !Array.isArray(image.webp) || !image.webp.includes(image.fallback) || !Array.isArray(image.avif)) {
+      throw new Error(`Invalid image delivery mapping: ${source}`);
+    }
+    for (const [format, names] of [["image/webp", image.webp], ["image/avif", image.avif]]) {
+      let previousWidth = 0;
+      for (const name of names) {
+        const file = manifest.files[name];
+        if (!file || file.contentType !== format || file.width <= previousWidth || file.width > image.width
+          || Math.abs(file.height / file.width - image.height / image.width) > 0.01) {
+          throw new Error(`Invalid image variant: ${name}`);
+        }
+        previousWidth = file.width;
+      }
     }
   }
   return manifest;
@@ -41,30 +63,42 @@ export function validateManifest(manifest) {
 export async function planArtwork(root = rootDir) {
   const previous = JSON.parse(await fs.readFile(path.join(root, manifestFile)));
   if (previous.published) validateManifest(previous);
-  const names = [];
-  for (const directory of ["scummvm-shell/launcher", "scummvm-shell/launcher/responsive"]) {
+  const names = new Map();
+  for (const base of ["scummvm-shell", `${workspace}/inputs`]) {
+  for (const relative of ["launcher", "launcher/responsive", "launcher/optimized"]) {
+    const directory = `${base}/${relative}`;
     for (const entry of await fs.readdir(path.join(root, directory), { withFileTypes: true }).catch((error) => {
       if (error.code !== "ENOENT") throw error; return [];
     })) {
-      if (entry.isFile() && types[path.extname(entry.name)]) names.push(`${directory}/${entry.name}`);
+      if (entry.isFile() && types[path.extname(entry.name)]) names.set(`/${relative}/${entry.name}`, `${directory}/${entry.name}`);
     }
   }
+  }
   if (await fs.stat(path.join(root, "image-assets/sources/road-gameplay.jpg")).catch(() => null)) {
-    names.push("image-assets/sources/road-gameplay.jpg");
+    names.set("/image-assets/sources/road-gameplay.jpg", "image-assets/sources/road-gameplay.jpg");
   }
   const files = { ...previous.files };
-  for (const filename of names.sort()) {
+  for (const [name, filename] of [...names].sort(([a], [b]) => a.localeCompare(b, "en"))) {
     const bytes = await fs.readFile(path.join(root, filename));
     const sha256 = digest(bytes);
     const { width, height } = await sharp(bytes).metadata();
-    const name = `/${filename.replace(/^scummvm-shell\//, "")}`;
     const key = `artwork/${sha256}/${path.basename(filename)}`;
     const destination = path.join(root, backupDir, key);
     await fs.mkdir(path.dirname(destination), { recursive: true });
     await fs.writeFile(destination, bytes);
     files[name] = { key, sha256, bytes: bytes.length, contentType: types[path.extname(filename)], width, height };
   }
-  const manifest = validateManifest({ version: 1, published: false, origin, files });
+  const delivery = await fs.readFile(path.join(root, workspace, "delivery.json"), "utf8")
+    .then(JSON.parse).catch((error) => { if (error.code !== "ENOENT") throw error; return null; });
+  const images = delivery?.images || previous.images;
+  if (delivery?.sourceRecords && Object.entries(delivery.sourceRecords).some(([name, hash]) => files[name]?.sha256 !== hash)) {
+    throw new Error("Artwork source inputs changed after optimization");
+  }
+  if (delivery && delivery.sourceHash !== digest(await fs.readFile(path.join(root, manifestFile)))
+    && JSON.stringify(delivery.images) !== JSON.stringify(previous.images)) {
+    throw new Error("Artwork storage changed after optimization; regenerate delivery candidates");
+  }
+  const manifest = validateManifest({ version: 1, published: false, origin, files, ...(images ? { images } : {}) });
   await fs.mkdir(path.dirname(path.join(root, pendingFile)), { recursive: true });
   await writeManifest(path.join(root, pendingFile), manifest);
   return manifest;
@@ -132,7 +166,7 @@ export async function retireArtwork(root = rootDir, request = fetch) {
   for (const [name, file] of Object.entries(manifest.files)) {
     const backup = path.join(root, backupDir, file.key);
     for (const relative of name.startsWith("/launcher/")
-      ? [`scummvm-shell${name}`, `public${name}`, `dist${name}`] : [name.slice(1)]) {
+      ? [`${workspace}/inputs${name}`, `scummvm-shell${name}`, `public${name}`, `dist${name}`] : [name.slice(1)]) {
       const local = path.join(root, relative);
       const bytes = await fs.readFile(local).catch((error) => { if (error.code !== "ENOENT") throw error; return null; });
       if (!bytes) continue;

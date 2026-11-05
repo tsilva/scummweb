@@ -15,6 +15,23 @@ Repo notes for coding agents working in `scummweb`.
 - Keep agent gameplay procedures and experiments in the sibling `agentscumm` repository. This repository owns the browser game runtime.
 - Avoid deleting unrelated worktree changes. This repo often has large generated-asset diffs in `public/` and `scummvm-shell/`.
 
+## ScummVM upgrades and patch memory
+
+Use [$scummweb_upgrade-scummvm](.codex/skills/scummweb_upgrade-scummvm/SKILL.md)
+to check for and upgrade ScummVM releases, and when maintaining ScummVM patches.
+Every added, modified, renamed or retired native patch and generated-runtime
+patch adapter must update the skill's
+[patch ledger](.codex/skills/scummweb_upgrade-scummvm/references/patches.json)
+in the same change: purpose, preservation requirements, regression checks,
+retirement condition and current SHA-256. Retired entries keep the upstream fix
+and verification evidence. Record cross-cutting upgrade lessons in the skill's
+[upgrade memory](.codex/skills/scummweb_upgrade-scummvm/references/upgrade-memory.md).
+Keep native patches in `patches/scummvm/*.patch` and generated-runtime adapters
+under `scripts/patch_scummvm_*`; extend the checker when introducing a new kind.
+Do not bypass a failed patch or memory check to complete an upgrade. Run the
+skill's `scripts/upgrade_check.py --offline` before rebuilding; builds and tests
+enforce coverage. Keep per-run evidence in ignored `.internal/`.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 ## This is NOT the Next.js you know

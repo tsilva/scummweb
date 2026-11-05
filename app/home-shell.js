@@ -1,5 +1,6 @@
 import Icon from "./home-shell/shell-icon";
 import SourceLibrary from "./home-shell/source-library";
+import SettingsPanel from "./home-shell/settings-panel";
 import { getGamesOrigin } from "../lib/site-config.mjs";
 
 export default function HomeShell({
@@ -48,6 +49,7 @@ export default function HomeShell({
         </div>
 
         <div className="nav-actions">
+          <SettingsPanel catalog={catalog} scummvmVersion={scummvmVersion} sourceInfoDate={sourceInfoDate} />
           <a
             aria-label="View scummweb on GitHub"
             className="nav-icon-link"

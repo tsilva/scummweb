@@ -9,6 +9,72 @@ selection and keeps demos separate from full games. Each imported version has
 separate browser saves. Supported engines offer **Continue** and **Start from
 beginning**; others load progress through their in-game menu. Older shared saves
 remain stored in the browser.
+
+Continue uses the selected engine's native save listing and startup-load
+capabilities. It appears only for an existing, nonempty player save, and selects
+the latest file write time, including player autosaves. Continue checks again
+at startup so a removed or replaced save cannot select a stale slot. Bundled
+intro checkpoints, empty autosave placeholders, and Kyrandia restart checkpoints
+do not count as player saves. **Start from beginning** keeps existing saves.
+
+AGOS, Composer, Parallaction, Sword25, Gob, MADE and Plumbers retain **Play**.
+PreAGI titles also retain Play; Mohawk supports this flow for Myst and Riven,
+excluding Myst demos and Making of Myst. Other demos or activities without
+player saves naturally retain Play. Continue resumes saved progress, not an
+unsaved session or a browser-wide memory snapshot.
+
+The runtime records actual detected engine/target identities and native save
+slots in a browser-local index. Imported versions use their existing isolated
+save directory even when their ZIP name is unrecognized. The library verifies
+the index against the files; changed or previously unindexed known games use a
+serialized, temporary native save query. An unrecognized import gains its
+detected identity on launch. The query uses a temporary configuration and does
+not rewrite the player's ScummVM configuration or start the game.
+
+Run `node --test test/browser-saves.test.mjs test/continue-saves.test.mjs` for
+latest-save ordering, checkpoint exclusion, missing files, native query scope,
+version isolation and engine exceptions. Patch 13 owns the native bridge;
+rebuild the compiled runtime when changing it.
+
+### Backing up and transferring saved progress
+
+Open **Settings** in the header, then **Saved games**. **Export all saves**
+downloads a ScummWEB ZIP containing active progress and preserved save sets.
+On another device, add the matching game edition and choose **Import backup**.
+Review each destination before confirming. Local imports are matched by their
+game-file fingerprint when possible; unmatched sets can be kept unassigned and
+connected later through **Save sets → Review and activate**.
+
+Different games are added without deleting existing progress. Identical files
+are skipped. For conflicting progress in one game, the default keeps the current
+set active and preserves the imported set. Choosing **Use imported saves**
+preserves the current set before switching. Whole sets, including companion
+files and timestamps, stay together; individual save slots are not combined.
+Older shared saves with an unknown filename convention are backed up together
+as **Other shared saves** to avoid splitting dependent files.
+
+Close games in every tab before exporting, importing or switching sets. The
+runtime holds a shared Web Lock while it uses the save filesystem; backup work
+requires an exclusive lock. Browsers without Web Locks can play, but cannot use
+the backup actions. Current saves remain in BrowserFS localStorage; preserved
+sets use IndexedDB. Both remain local to this site and browser profile until
+exported, and clearing site data removes them. There is no automatic cloud sync.
+
+Backups use format `scummweb-save-backup`, version `1`: `manifest.json` identifies
+game destinations and lists logical filenames, timestamps, ZIP entry names and
+SHA-256 checksums. Save bytes are stored separately under `saves/`. Imports are
+limited to 64 MiB expanded and compressed, 4,096 save files and 1,000 sets, and
+reject unsafe paths, unsupported versions, unexpected entries and failed
+checksums. Export reserves space for the manifest within that limit. Restores
+stage new BrowserFS nodes before atomically replacing the root inode; quota
+failure preserves the active tree. Restoring can need temporary storage space
+for both trees. This format does not accept arbitrary desktop ScummVM ZIPs.
+
+Run `node --test test/save-backups.test.mjs` to check backup round-trips,
+cross-device game matching, conflicts, legacy isolation, quota failures and
+archive validation.
+
+### Game downloads
 During ZIP downloads, the launch status shows `Downloading game ZIP (42%)…`
 when the host provides a valid `Content-Length`; otherwise it keeps the download
 status without a percentage until the download completes.
@@ -293,6 +359,22 @@ its engine plugins, and syncs the deployable bundle from `dist/` into
 `scummvm-shell/`. The build checks that it produced a plugin for every enabled
 engine before syncing the bundle.
 
+Use the repository skill
+[`scummweb_upgrade-scummvm`](../.codex/skills/scummweb_upgrade-scummvm/SKILL.md)
+to check the official stable release and perform an upgrade. Its checker has a
+read-only default and an explicit pin-update mode. Its maintained patch ledger
+records why every native patch and generated-runtime adapter exists, what must
+survive, how to verify it, and when upstream support permits retirement.
+New or changed patches must update that ledger and its hashes in the same change;
+cross-cutting SDK/browser lessons belong in the skill's upgrade memory. Builds
+and tests reject missing or stale entries. To validate without network or writes:
+
+```sh
+python3 .codex/skills/scummweb_upgrade-scummvm/scripts/upgrade_check.py --offline
+```
+
+The underlying deterministic build procedure remains:
+
 1. Update the release tag, its upstream commit, and the matching Emscripten
    SDK in [`scripts/scummvm-version.sh`](../scripts/scummvm-version.sh).
 2. Run `pnpm run build:scummvm --prepare-source`. It verifies the checkout
@@ -371,6 +453,9 @@ the browser loads registered images directly from the existing R2 bucket at
 `https://scummvm-games.tsilva.eu/artwork/<sha256>/<filename>`. There is no app
 proxy. Each record retains its logical path, SHA-256, size, MIME type and image
 dimensions. Changed bytes get a new URL; retain older objects for older deployments.
+The optional `images` map selects a WebP fallback and ordered WebP/AVIF variants
+for each logical source path. Activation publishes this delivery map and the
+object records together, so the app cannot reference unpublished variants.
 
 Game mappings and source credits stay in `app/game-presentation.js`,
 `app/retro-game-artwork.json`, and this guide. Responsive width mappings remain
@@ -380,9 +465,18 @@ records are logical identifiers after migration, resolved through the storage ma
 
 To migrate or update artwork:
 
+Concurrent artwork operations should use separate private plans. Set
+`SCUMMWEB_ARTWORK_WORKSPACE` to the same short lowercase slug for every optimizer,
+plan, publish, verify, activate and retirement command in one operation. It selects
+an ignored directory under `.internal/evidence/`, never a different bucket or
+credential scope. The default remains `artwork-migration`.
+
 1. Place new or revised originals in `scummvm-shell/launcher/`, update game mappings
    and source credits, and run `pnpm run generate:artwork`. Upload inputs are ignored
    for new files; existing tracked originals remain until the initial migration completes.
+   For a complete delivery optimization pass, run `pnpm run optimize:artwork`.
+   It reads verified cached or public originals, preserves them, and prepares
+   responsive images plus a private delivery map for the next upload plan.
 2. Run `pnpm run artwork:plan`. This retains the active manifest, creates a private
    upload plan, and preserves content-addressed copies of every local image.
    Published mappings without local originals are retained for subsequent updates.
@@ -411,6 +505,28 @@ existing width mappings survive builds without local originals.
 Game publishing with `--prune` preserves the reserved `artwork/` namespace.
 Artwork retirement does not rewrite Git history. Old image revisions remain
 in earlier commits.
+
+### Delivery encoding and sizing
+
+PNG screenshots receive full-resolution lossless WebP copies, verified against
+their decoded source pixels. Smaller screenshot variants use lossless WebP;
+posters and promotional heroes use WebP quality 80, effort 6. Resizing preserves
+aspect ratio and never upscales. Original source objects and credits remain intact.
+
+AVIF candidates use 4:4:4 chroma, effort 6, and quality 70 or 60. A candidate
+must save at least 10% against its WebP counterpart and meet a decoded RGB PSNR
+floor of 35 dB. These are screening limits, not a guarantee of perceptual quality;
+inspect representative text, fine detail, gradients, and pixel-art framing before
+publication. Offer an AVIF picture source only when it covers every WebP width;
+otherwise retain WebP delivery so a browser cannot select an undersized AVIF.
+AVIF encoding runs only in the explicit optimizer, outside normal builds.
+
+Posters advertise source sizes from the auto-fit 10rem grid, 1rem gaps, capped
+100rem container, current result count, crop and zoom. Keep this calculation in
+sync with the grid CSS. Hero sizes account for viewport height and cover cropping;
+gallery sizes reflect the two- or three-column layout. Variant width descriptors
+come from the decoded image dimensions. Hero preloading uses the same picture
+sources as visible images to avoid downloading both format alternatives.
 
 ## Branding
 

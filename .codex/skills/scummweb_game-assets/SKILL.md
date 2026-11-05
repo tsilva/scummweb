@@ -17,6 +17,7 @@ Read the repository's `AGENTS.md` and the [artwork publishing procedure](../../.
 ## Publishing artwork
 
 1. Prepare the new or revised local images, update their logical mappings and source credits, then run `pnpm run generate:artwork` to generate responsive poster variants and update `data/artwork-renditions.json`.
+   Use `pnpm run optimize:artwork` for a complete delivery pass from verified published originals. It preserves source objects, verifies lossless PNG-to-WebP conversions, creates responsive variants without upscaling, and screens AVIF alternatives for size and decoded quality. Inspect representative candidates before publication; numerical quality checks alone do not establish visual equivalence.
 2. Run `pnpm run artwork:plan`. It preserves the active storage mapping, retains previously published records without local originals, and prepares a private upload plan and exact image copies. Keep this evidence under the repository's ignored `.internal/` directory.
 3. Use an authorized credential route to run `pnpm run publish:artwork`. The publisher targets the existing bucket's reserved `artwork/` namespace, creates content-addressed objects conditionally, and checks every object's bytes and metadata by readback. It does not overwrite or prune existing objects or change bucket settings.
 4. Run `pnpm run artwork:activate`. This verifies every public image's checksum, length, MIME type, and immutable cache metadata before atomically switching the tracked storage manifest.
@@ -28,6 +29,7 @@ The existing Infisical publisher passes the scoped S3 key pair into its subproce
 For verification-only requests, run `pnpm run artwork:plan` to prepare the intended image set, then `pnpm run artwork:verify`. Verification reads public objects without publishing, activating, or retiring files and requires no storage credentials. Unpublished local revisions in the plan can legitimately fail public verification.
 
 Normal builds need no storage credentials. Social-card generation reads checksum-verified public or cached originals after local inputs are retired, so a fresh checkout needs access to the public bucket. Published responsive mappings survive builds without local originals. For runtime changes, follow the maintenance guide's separate ScummVM rebuild procedure.
+The storage manifest's optional `images` map activates optimized fallbacks and complete responsive format sets alongside verified object records. Keep logical source paths and credits unchanged. AVIF picture sources must cover every WebP candidate width; keep WebP when a complete, smaller set does not meet the quality checks. Normal builds never rerun AVIF encoding.
 
 ## ZIP handoff for newly supported personal games
 

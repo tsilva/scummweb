@@ -12,10 +12,21 @@ export function SourceLaunchActions({ version, onLaunch }) {
   const [savedVersion, setSavedVersion] = useState(null);
   useEffect(() => {
     let active = true;
-    void getLatestBrowserSave(version.game, scummvmAssetVersion).then((slot) => {
-      if (active) setSavedVersion(slot === null ? null : version.key);
-    });
-    return () => { active = false; };
+    let request = 0;
+    function refresh() {
+      const current = ++request;
+      void getLatestBrowserSave(version.game, scummvmAssetVersion).then((slot) => {
+        if (active && current === request) setSavedVersion(slot === null ? null : version.key);
+      });
+    }
+    refresh();
+    window.addEventListener("storage", refresh);
+    window.addEventListener("scummweb:saves-changed", refresh);
+    return () => {
+      active = false;
+      window.removeEventListener("storage", refresh);
+      window.removeEventListener("scummweb:saves-changed", refresh);
+    };
   }, [version.key, version.game]);
   const needsAccess = version.action.needsAccess;
   const canContinue = savedVersion === version.key && !version.locate && !needsAccess;

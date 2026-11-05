@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import LaunchButton from "../launch-button";
 import DecorativeImage from "./decorative-image";
+import { getArtworkImageProps } from "./artwork-image-props.mjs";
 import Icon from "./shell-icon";
 import { getDialogLinkProps, getGameDialogId, getHeroImageStyle } from "./shared";
 
@@ -97,7 +98,7 @@ export default function GameDetailModal({ game, notice, onClose, dialogId: provi
             className="game-detail-visual-image"
             fetchPriority="low"
             loading="lazy"
-            src={modalImage}
+            {...getArtworkImageProps(modalImage, "detail")}
             style={getHeroImageStyle(game.heroImagePosition)}
           /> : null}
           <button
@@ -151,7 +152,7 @@ export default function GameDetailModal({ game, notice, onClose, dialogId: provi
                   className="game-detail-shot"
                   title={`${game.displayTitle} screenshot ${index + 1}`}
                 >
-                  <DecorativeImage className="game-detail-shot-image" src={shot} />
+                  <DecorativeImage className="game-detail-shot-image" {...getArtworkImageProps(shot)} />
                 </div>
               ))}
             </div>
