@@ -38,7 +38,9 @@ test("platform editions share one recognized game card with distinct launch sour
 test("catalog and localized imported titles use engine identity rather than title spelling", () => {
   const catalog = getGamePresentation({ target: "drascula", gameId: "drascula", engineId: "drascula",
     displayTitle: "Drascula: The Vampire Strikes Back", title: "Drascula (DOS/English)", slug: "drascula" });
-  const groups = libraryItems([catalog], [imported("local", "Drascula The Vampire Strikes Back (CD DOS, Multilanguage).zip")]);
+  const local = imported("local", "Drascula The Vampire Strikes Back (CD DOS, Multilanguage).zip");
+  local.source.archiveFiles = [["localized.dat", 100, 123]];
+  const groups = libraryItems([catalog], [local]);
   assert.equal(groups.length, 1);
   assert.equal(groups[0].dialogId, "game-drascula");
   assert.equal(groups[0].versions[0].game.language, "English");

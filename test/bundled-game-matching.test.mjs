@@ -56,7 +56,10 @@ test("existing duplicate imports are excluded from versions without deleting the
   const oldSource = { id: "old", name: source.name };
   assert.equal(libraryItems([game], [{ ...entries[0], source: oldSource,
     archiveFiles: bundled.games.sky.files }])[0].versions.length, 1);
-  assert.equal(libraryItems([game], [{ ...entries[0], source: oldSource }])[0].versions.length, 2);
+  assert.equal(libraryItems([game], [{ ...entries[0], source: oldSource }])[0].versions.length, 1);
+  assert.equal(libraryItems([game], [{ ...entries[0], source: oldSource,
+    archiveFiles: [["different.dat", 10, 1]] }])[0].versions.length, 2);
+  assert.equal(libraryItems([{ ...game, importRequired: true }], [{ ...entries[0], source: oldSource }])[0].versions.length, 2);
 });
 
 test("bundled is the default but an explicit choice of a distinct imported release is remembered", () => {

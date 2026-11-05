@@ -1,4 +1,4 @@
-import { groupGameVersions } from "../game-versions.mjs";
+import { getGameFamilyKey, groupGameVersions } from "../game-versions.mjs";
 import { findBundledGame } from "../bundled-game-matching.mjs";
 
 const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
@@ -6,10 +6,17 @@ const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" })
 export const defaultLibraryQuery = { sort: "name-asc", genre: "" };
 
 export function libraryItems(catalog, library) {
+  const includedFamilies = new Set(catalog.filter((game) => !game.importRequired)
+    .map(getGameFamilyKey).filter(Boolean));
   return groupGameVersions([
     ...catalog.map((game) => ({ key: `catalog:${game.target}`, game, title: game.displayTitle })),
-    ...library.filter((entry) => !findBundledGame({ ...entry.source,
-      archiveFiles: entry.archiveFiles ?? entry.source.archiveFiles }, catalog))
+    ...library.filter((entry) => {
+      const archiveFiles = entry.archiveFiles ?? entry.source.archiveFiles;
+      if (findBundledGame({ ...entry.source, archiveFiles }, catalog)) return false;
+      // Legacy imports without readable data default to the included copy.
+      // Retain their source and saves; reimporting verifies distinct editions.
+      return Boolean(archiveFiles?.length) || !includedFamilies.has(getGameFamilyKey(entry.game));
+    })
       .map((entry) => ({ ...entry, key: `source:${entry.source.id}` })),
   ]);
 }
