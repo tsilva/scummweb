@@ -104,3 +104,42 @@ test("Unsupported engines and title exceptions remain on Play even with files", 
     assert.equal(await getLatestBrowserSave(game, "test"), null, engineId + ":" + gameId);
   }
 });
+
+test("unindexed imported saves use one native query with origin, source and nonce checks", async (t) => {
+  const game = { target: "atlantis", gameId: "atlantis", engineId: "scumm", saveVersionId: "query-test" };
+  const namespace = await getVersionSaveNamespace(game.saveVersionId);
+  game.saveNamespace = namespace;
+  useStorage(t, makeBrowserStorage([], { [namespace]: [["atlantis.s01", "player", 123]] }));
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, "document");
+  t.after(() => { if (descriptor) Object.defineProperty(globalThis, "document", descriptor); else delete globalThis.document; });
+  const listeners = new Set();
+  Object.assign(window, { location: { href: "https://example.test/", origin: "https://example.test" },
+    setTimeout, clearTimeout, addEventListener: (_, fn) => listeners.add(fn), removeEventListener: (_, fn) => listeners.delete(fn) });
+  let appended = 0, removed = 0, queryUrl;
+  const frame = { contentWindow: {}, setAttribute() {}, remove: () => removed++ };
+  const { files } = await readBrowserSaveFiles(game);
+  globalThis.document = {
+    createElement: () => frame,
+    body: { appendChild: () => {
+      appended++;
+      queryUrl = new URL(frame.src);
+      const data = { type: "scummweb:saves-listed", query: queryUrl.searchParams.get("saveQuery"),
+        schemaVersion: 1, engineId: "scumm", gameId: "atlantis", supported: true,
+        revision: saveRevision(files), saves: [{ ...files[0], slot: 1 }] };
+      window.localStorage.setItem(saveIndexKey(namespace), JSON.stringify(data));
+      queueMicrotask(() => {
+        for (const receive of [...listeners]) {
+          receive({ origin: "https://wrong.test", source: frame.contentWindow, data });
+          receive({ origin: window.location.origin, source: {}, data });
+          receive({ origin: window.location.origin, source: frame.contentWindow, data: { ...data, query: "wrong" } });
+          assert.equal(removed, 0, "untrusted messages must not finish the native query");
+          receive({ origin: window.location.origin, source: frame.contentWindow, data });
+        }
+      });
+    } },
+  };
+  assert.deepEqual(await Promise.all([getLatestBrowserSave(game, "test"), getLatestBrowserSave(game, "test")]), [1, 1]);
+  assert.equal(appended, 1); assert.equal(removed, 1); assert.equal(listeners.size, 0);
+  assert.equal(queryUrl.searchParams.get("saveNamespace"), namespace);
+  assert.equal(queryUrl.searchParams.get("saveEngine"), "scumm");
+});
