@@ -10,6 +10,15 @@ separate browser saves. Supported engines offer **Continue** and **Start from
 beginning**; others load progress through their in-game menu. Older shared saves
 remain stored in the browser.
 
+Games default to their original save/load screens where the engine supports
+them. The shell fills missing `originalsaveload`, `original_gui` (SCUMM), and
+`original_menus` (MADS) application settings before engine startup, for bundled
+games and personal imports alike. Existing application and per-game choices
+take precedence. This also updates older browser configurations without
+replacing game entries, save paths or other settings. Games without an original
+screen option retain their engine's usual interface; ScummVM's global menu
+remains available. Save queries do not change these settings.
+
 Imports matching an included game's data use the bundled copy and do not add a
 second version. The default for other editions also prefers the included copy;
 an explicit choice of a distinct edition is remembered. Existing duplicate source
@@ -55,9 +64,30 @@ latest-save ordering, checkpoint exclusion, missing files, native query scope,
 version isolation and engine exceptions. Patch 13 owns the native bridge;
 rebuild the compiled runtime when changing it.
 
+### Mobile play
+
+The player uses the visible viewport height and respects display safe areas.
+Landscape is recommended, but **Play in portrait** keeps touch controls available
+without rotating. When fullscreen needs a gesture, **Continue** requests it;
+**Play in browser** dismisses the prompt. A rejected fullscreen request also
+allows play in the browser, and later game taps do not retry fullscreen.
+Orientation follows the viewport rather than the physical screen, so split-screen
+windows and tablets use the available space. Dragging moves the cursor; the
+cursor pad offers smaller movements, **L**/**R** send clicks, and double-tapping
+the game sends a left click. Loading screens scroll on short landscape viewports.
+
+Check the launcher, game details, compatibility search, settings and player at
+320px and 390px portrait widths, a short landscape viewport and tablet widths.
+Verify rotation, exit, menu, left/right clicks, cursor dragging, Start audio and
+fullscreen refusal on physical Android and iOS devices before claiming device
+coverage; desktop viewport checks do not emulate mobile browser APIs or touch.
+
 ### Backing up and transferring saved progress
 
-Open **Settings** in the header, then **Saved games**. **Export all saves**
+Open the **Settings** gear icon to the right of GitHub in the header, then **Saved games**.
+The drawer slides from the right, uses compact typography and prevents text selection.
+It opens and closes immediately when reduced motion is enabled.
+**Export all saves**
 downloads a ScummWEB ZIP containing active progress and preserved save sets.
 On another device, add the matching game edition and choose **Import backup**.
 Review each destination before confirming. Local imports are matched by their
@@ -681,8 +711,10 @@ or request-time rendering.
   The Simon the Sorcerer's Puzzle Pack gallery includes Jumble and Swampy
   Adventures, both included in the collection.
   The homepage uses a game's landscape artwork or gameplay capture as its
-  slideshow backdrop. Imported slides use the same Play and reconnect actions
-  as their library cards.
+  slideshow backdrop. Single-version slides use the same Play, Continue,
+  Start from beginning and reconnect actions as their library details.
+  Continue refreshes after browser saves change or the page is restored.
+  Multi-version slides open the version chooser before launching.
   Player exits return to `/#slide=<encoded group key>`, selecting the played
   game's family in the homepage slideshow. Imported selections resolve when
   saved sources finish loading. Unknown selections fall back to the first slide;

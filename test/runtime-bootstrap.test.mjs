@@ -13,13 +13,18 @@ test("generated shell overlaps engine, storage and runtime loading and mounts on
   const prefetched = [];
   const mounts = [];
   const dependencies = new Set();
+  let config = "[scummvm]\nsavepath=/saves\n\n[dreamweb-cd]\nengineid=dreamweb\n";
   class ScummvmFS {
     constructor(fs, index) { this.FS = fs; this.index = index; }
     prefetch(name) { prefetched.push(name); return engine.promise; }
   }
   const FS = {
+    readFile(name) { assert.equal(name, "/home/web_user/scummvm.ini"); return config; },
+    writeFile(name, value) { assert.equal(name, "/home/web_user/scummvm.ini"); config = value; },
     mkdir() {},
     mount(filesystem, _options, name) {
+      assert.match(config, /\[scummvm\]\noriginalsaveload=true\noriginal_gui=true\noriginal_menus=true\n/,
+        "original screen defaults are installed before engine entry");
       assert.equal(filesystem.FS, FS, "late binding uses the initialized Emscripten filesystem");
       mounts.push(name);
     },
@@ -45,6 +50,8 @@ test("generated shell overlaps engine, storage and runtime loading and mounts on
   });
   context.window = context;
   function run(script) { return new Script(script.replace(/\bimport\(/g, "loadModule(")).runInContext(context); }
+  run(html.match(/function applyGameDefaults\(iniText\) \{[\s\S]*?\n\}/)[0]);
+  run(html.match(/function setupGameDefaults\(\) \{[\s\S]*?\n\}/)[0]);
   run(scripts.find((script) => script.startsWith("globalThis.SCUMMWEB_RUNTIME_ASSETS=")));
   run(scripts.find((script) => script.includes("const scummwebBrowserFsReady=")));
   run(scripts.find((script) => script.includes("const scummwebInlineFrame")));

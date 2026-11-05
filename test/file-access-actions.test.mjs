@@ -6,7 +6,7 @@ import test from "node:test";
 import { renderToStaticMarkup } from "react-dom/server";
 import swc from "next/dist/build/swc/index.js";
 
-const componentUrl = new URL("../app/home-shell/versioned-game-details.js", import.meta.url);
+const componentUrl = new URL("../app/home-shell/source-launch-actions.js", import.meta.url);
 await swc.loadBindings();
 const { code } = await swc.transform(await readFile(componentUrl, "utf8"), {
   filename: componentUrl.pathname, swcrc: false, configFile: false,
@@ -24,7 +24,7 @@ runInNewContext(code, {
     return {};
   },
 });
-const { SourceLaunchActions } = compiled.exports;
+const SourceLaunchActions = compiled.exports.default;
 
 test("access approval replaces both Play and Continue until granted", () => {
   const clicks = [];

@@ -63,3 +63,23 @@ test("initial compatibility HTML contains every game link before any interaction
   assert.match(html, /Search game compatibility/);
   assert.match(html, /Not yet tested/);
 });
+
+test("compatibility page supplies the catalog needed by saved-game settings", async () => {
+  const pageUrl = new URL("../app/compatibility/page.js", import.meta.url);
+  const { code } = await swc.transform(await readFile(pageUrl, "utf8"), {
+    filename: pageUrl.pathname, swcrc: false, configFile: false,
+    module: { type: "commonjs" },
+    jsc: { parser: { syntax: "ecmascript", jsx: true }, transform: { react: { runtime: "automatic" } } },
+  });
+  const page = { exports: {} };
+  const catalog = [{ target: "sky", displayTitle: "Beneath a Steel Sky" }];
+  const require = createRequire(pageUrl);
+  runInNewContext(code, { module: page, exports: page.exports, require(name) {
+    if (name.endsWith("/game-page-data")) return { getHomeShellData: () => ({ catalog }) };
+    if (name.endsWith("/game-library")) return { getRecognizedGameLibrary: () => games, getVersionedSiteAssetPath: (path) => path };
+    if (name.endsWith("/home-shell")) return { default: function HomeShell() {} };
+    if (name === "./compatibility-view") return {};
+    return require(name);
+  } });
+  assert.equal(page.exports.default().props.catalog, catalog);
+});

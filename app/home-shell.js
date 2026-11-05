@@ -49,7 +49,6 @@ export default function HomeShell({
         </div>
 
         <div className="nav-actions">
-          <SettingsPanel catalog={catalog} officialUrl={getGamesOrigin()} scummvmVersion={scummvmVersion} sourceInfoDate={sourceInfoDate} />
           <a
             aria-label="View scummweb on GitHub"
             className="nav-icon-link"
@@ -59,6 +58,7 @@ export default function HomeShell({
           >
             <Icon name="github" />
           </a>
+          <SettingsPanel catalog={catalog} officialUrl={getGamesOrigin()} scummvmVersion={scummvmVersion} sourceInfoDate={sourceInfoDate} />
         </div>
       </nav>
 
@@ -75,6 +75,9 @@ export default function HomeShell({
       <footer className="site-footer">
         <div className="footer-copy">
           <strong>ScummWEB</strong>
+          <p>
+            ScummWEB is an independent browser frontend for ScummVM. It is not affiliated with, endorsed by, or sponsored by the ScummVM project.
+          </p>
           <p>
             Bundle built {sourceInfoDate}. ScummVM version {scummvmVersion}.
           </p>

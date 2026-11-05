@@ -182,6 +182,7 @@ export default function GameRouteFrame({
   const showMobileOverlay =
     hasBootOverlayDismissed &&
     immersiveMode.isMobileViewport &&
+    !immersiveMode.mobileOverlayDismissed &&
     (immersiveMode.needsImmersiveRetry || !immersiveMode.isLandscapeViewport);
   const mobileControlsReady =
     immersiveMode.isMobileViewport &&
@@ -189,7 +190,7 @@ export default function GameRouteFrame({
     !hasBootFailed &&
     !showMobileOverlay;
   const touchCursorPad = useTouchCursorPad({
-    enabled: mobileControlsReady && immersiveMode.isLandscapeViewport,
+    enabled: mobileControlsReady,
     frameRef,
   });
 
@@ -622,12 +623,7 @@ export default function GameRouteFrame({
   const showSkipIntroAction = bootState.showSkipIntroButton && skipIntro && !bootState.hasBootFailed;
   const showSkipIntroOverlayAction = showSkipIntroAction && showBootOverlay;
   const showSkipIntroBottomAction = showSkipIntroAction && !showBootOverlay;
-  const showExitControl =
-    !skipIntro ||
-    hasBootFailed ||
-    showSkipIntroAction ||
-    touchClick.touchControlsUnlocked ||
-    skipIntroConsumed;
+  const showExitControl = true;
   const showFullscreenControl =
     immersiveMode.canFullscreen && bootState.hasBootPresentationCompleted;
   const showAspectRatioControl =
@@ -654,6 +650,7 @@ export default function GameRouteFrame({
       <GameMobileOverlay
         needsImmersiveRetry={immersiveMode.needsImmersiveRetry}
         onContinue={immersiveMode.handleImmersiveResume}
+        onDismiss={immersiveMode.dismissMobileOverlay}
         showMobileOverlay={showMobileOverlay}
       />
       <GamePlayerControls

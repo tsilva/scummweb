@@ -162,6 +162,8 @@
 .compatibility-game a:focus-visible { color: var(--ink); }
 
 @media (max-width: 600px) {
+  .compatibility-search input { font-size: 1rem; }
+  .compatibility-filters button { min-height: 2.75rem; }
   .compatibility-modal { width: calc(100% - 1rem); max-height: calc(100dvh - 1rem); }
   .compatibility-panel { padding: 1rem; max-height: calc(100dvh - 1rem - 2px); }
   .compatibility-results > ul > li { flex-direction: column; gap: 0.6rem; }
