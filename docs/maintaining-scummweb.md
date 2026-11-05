@@ -219,6 +219,8 @@ and filters for checked editions, warnings, failures, and untested games. See
 Select the **Add a game** card in the library to choose ZIPs, or drop one or
 more ZIP files containing ScummVM games onto the homepage or a game's page.
 The add card remains available when filtering the library.
+Mobile layouts and devices with a coarse primary pointer show tap-to-choose
+instructions; desktop layouts retain the drag-and-drop hint.
 Put one game in each ZIP. Folders, loose game files, and other
 archive formats are not supported.
 The import dialog shows progress, added games, and errors; its final summary
@@ -366,8 +368,9 @@ generator retains each original, skips upscaling and larger encodings, and
 records actual dimensions in `data/artwork-renditions.json`. Browser selection
 preserves the existing cover crop and falls back to the full original for
 larger displays or unknown/remote artwork. Derivatives inherit their original's
-artwork provenance. Hero titles fit within a reserved responsive heading slot.
-Descriptions and launch controls also reserve stable space across slideshow changes.
+artwork provenance. Desktop hero titles fit within a reserved responsive heading
+slot. Descriptions and launch controls also reserve stable space across desktop
+slideshow changes. The static mobile hero uses natural content heights.
 Offscreen poster contents use native rendering containment with the existing
 card height reserved. They remain searchable and available to assistive
 technology; focused cards render normally so their focus outlines stay visible.
@@ -885,7 +888,7 @@ or request-time rendering.
   the hero and selected card. Title, canonical URL, social metadata and structured
   data follow the selected route. Links outside this library use Next.js routing.
   Slideshow arrows navigate to the previous or next game's route and pause
-  rotation. The homepage rotates every eight seconds; game routes and explicit
+  rotation. The desktop homepage rotates every eight seconds; game routes and explicit
   imported-game selections open paused until resumed. Hover and focus pause rotation over hero content,
   while the slideshow controls let it continue. Hidden tabs suspend rotation,
   and reduced-motion preferences disable automatic rotation until resumed.
@@ -895,6 +898,16 @@ or request-time rendering.
   the visible hero's responsive sources and sizes with low fetch priority,
   share identical artwork, and retain image references only for the current
   window. A failed preload does not prevent slideshow navigation.
+  At widths up to 48rem, the hero is static with no slideshow controls or animation.
+  Each homepage load randomly picks an included catalog group, excluding the previous
+  pick stored in session storage when alternatives exist. Storage failures fall back
+  to a random pick without persistence. Direct routes and `#slide=` selections take
+  precedence. The selected game stays stable while local sources restore, and mobile
+  only preloads its current backdrop. Desktop retains its normal slideshow behavior.
+  Mobile uses full-width artwork, natural-height mixed-case titles, compact summaries
+  and metadata, stacked full-width action buttons, and an unlabeled screenshot strip.
+  Detailed facts and the license link are hidden in the mobile hero. Original gameplay
+  captures remain unchanged and the screenshot viewer stays accessible by keyboard.
   Saved sources are checked on library load, window focus, tab return, and
   restoration from the browser's back/forward cache. Local checks use saved
   handles with existing read permission; they do not request permission or
@@ -921,12 +934,13 @@ or request-time rendering.
   sources are excluded from local matching. Old folder entries remain in the
   library for explicit replacement with a ZIP, preserving their save identity;
   they are never opened as directories.
-  Hero titles fit their full text into a fixed three-line title area, resizing
+  Desktop hero titles fit their full text into a fixed three-line title area, resizing
   after viewport or font changes. Summary and metadata slots have fixed heights,
   with their full text available in tooltips. Keep action rows stable across
   slides so long titles and labels do not move the controls or the library.
-  The hero's primary action always reads `Play` and uses a fixed 10rem by
-  3.4rem button, including imported games and games with a browser save.
+  The desktop hero's primary action reserves a fixed button width. All layouts
+  retain save-aware Play/Continue and file-access actions; mobile buttons span
+  the available width with a minimum 3rem height.
   Hero status badges omit library-wide game counts; game slides show only
   status information for the displayed game.
 
@@ -956,9 +970,10 @@ or request-time rendering.
   load saves through their in-game menu. Older shared saves remain stored without
   an exposed legacy launch control. Removing a version leaves its browser saves
   untouched; a reimport with a new source ID does not automatically reconnect them.
-  The hero and compact screenshot strip occupy at least the initial viewport,
-  placing the library below the fold. Screenshot thumbnails are 12rem wide on
-  desktop and 9rem on mobile, with horizontal overflow and uncropped images.
+  On desktop the hero and compact screenshot strip occupy at least the initial
+  viewport, placing the library below the fold. Screenshot thumbnails are 12rem
+  wide on desktop. Mobile uses natural content height and fits two thumbnails
+  across the screen, with horizontal overflow and uncropped original images.
   Library covers retain a 3:4 portrait box-art shape. The screenshot strip renders
   without deferred content sizing so changing games does not move later sections.
   Selecting a thumbnail expands a viewer inline. Previous/next and arrow keys

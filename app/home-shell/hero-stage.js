@@ -14,6 +14,7 @@ export default function HeroStage({
   featuredGame,
   isHomePage = false,
   isInitialSlide = true,
+  isMobile = false,
   sourceAction,
   sourceVersion,
   versions = [],
@@ -22,7 +23,7 @@ export default function HeroStage({
   onLaunch,
   notice,
 }) {
-  const showHomeIntro = isHomePage && isInitialSlide;
+  const showHomeIntro = isHomePage && isInitialSlide && !isMobile;
   const heroKicker = showHomeIntro ? HOME_HERO_KICKER : featuredGame.eyebrow;
   const heroTitle = showHomeIntro ? HOME_HERO_TITLE : featuredGame.displayTitle;
   const heroSummary = showHomeIntro ? HOME_HERO_SUMMARY : featuredGame.summary;
@@ -41,8 +42,9 @@ export default function HeroStage({
         <div className="hero-inner">
           <div className="hero-copy">
             <p className="hero-kicker">{heroKicker}</p>
-            <HeroTitle title={heroTitle}>{heroTitle}</HeroTitle>
-            <p className="hero-summary">{heroSummary}</p>
+            <HeroTitle title={heroTitle} fit={!isMobile}>{heroTitle}</HeroTitle>
+            <p className="hero-mobile-facts">{[featuredGame.studio, featuredGame.year, featuredGame.mobileBadge].filter(Boolean).join(" · ")}</p>
+            <p className="hero-summary">{isMobile ? featuredGame.mobileSummary || heroSummary : heroSummary}</p>
             <div className="hero-launch">
               <div className="hero-actions">
                 {sourceVersion ? (
@@ -55,7 +57,7 @@ export default function HeroStage({
                   </button>
                 ) : <LaunchButton game={featuredGame} entryPoint={isHomePage ? "hero" : "game_detail"}
                   label="Play" onLaunch={onLaunch} />}
-                <a className="secondary-button" href="#library">{HOME_BROWSE_LABEL}</a>
+                <a className="secondary-button hero-browse" href="#library">{HOME_BROWSE_LABEL}</a>
                 {featuredGame.infoHref && <a className="hero-license" href={featuredGame.infoHref}
                   {...getDialogLinkProps(featuredGame.infoHref)}>Readme / License</a>}
               </div>

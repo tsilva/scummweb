@@ -6,11 +6,13 @@ import { useEffect, useRef, useState } from "react";
 import HeroStage from "./hero-stage";
 import { getHeroPreloadImages } from "./hero-images.mjs";
 import { chooseGameVersion, getGameFamilyKey, readChosenVersion, rememberGameVersion } from "../game-versions.mjs";
-import { buildGameExitHref } from "./hero-selection.mjs";
+import { buildGameExitHref, chooseMobileHeroId, readHeroSelection } from "./hero-selection.mjs";
 import { useGameNavigation } from "./game-navigation";
 
 const SLIDE_DURATION_MS = 8000;
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+const MOBILE_QUERY = "(max-width: 48rem)";
+const MOBILE_HERO_KEY = "scummweb:mobile-hero";
 
 export default function HomeHero({ groups, featuredGame, isHomePage = true, selection = null, navigationId = 0, notice }) {
   const router = useRouter();
@@ -20,9 +22,13 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
   const slideCount = slides.length;
   const routeKey = `${isHomePage}:${featuredKey}:${selection}:${navigationId}`;
   const [selectedSlide, setSelectedSlide] = useState(null);
+  const [mobileHero, setMobileHero] = useState(null);
+  const mobilePick = useRef(null);
+  const isMobile = mobileHero?.matches ?? false;
   const selectedId = selectedSlide?.routeKey === routeKey ? selectedSlide.id : null;
   const requestedId = selection;
-  const slideIndex = Math.max(0, slides.findIndex(({ id }) => id === (selectedId ?? requestedId ?? featuredKey)));
+  const homeId = isMobile && isHomePage ? mobileHero.id : null;
+  const slideIndex = Math.max(0, slides.findIndex(({ id }) => id === (selectedId ?? requestedId ?? homeId ?? featuredKey)));
   const currentSlide = slides[slideIndex];
   const [chosen, setChosen] = useState(null);
   const versionKeys = JSON.stringify(currentSlide.versions.map(({ key, status }) => [key, status]));
@@ -33,7 +39,8 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
     setChosen({ group: currentSlide.id, key: preferred.key });
   }, [currentSlide.id, versionKeys]);
   const preloadedImages = useRef(new Map());
-  const preloadKey = JSON.stringify(getHeroPreloadImages(slides, slideIndex));
+  const preloadKey = JSON.stringify(isMobile
+    ? getHeroPreloadImages([currentSlide], 0) : getHeroPreloadImages(slides, slideIndex));
   const [rotation, setRotation] = useState(null);
   const rotationPaused = rotation?.routeKey === routeKey ? rotation.paused : null;
   function setRotationPaused(paused) { setRotation({ routeKey, paused }); }
@@ -42,7 +49,25 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
   const [hasPointer, setHasPointer] = useState(false);
   const [hasFocus, setHasFocus] = useState(false);
   const isPaused = rotationPaused ?? (!isHomePage || Boolean(requestedId) || prefersReducedMotion);
-  const isCountingDown = isPageVisible && !isPaused && !hasPointer && !hasFocus;
+  const isCountingDown = !isMobile && isPageVisible && !isPaused && !hasPointer && !hasFocus;
+
+  useEffect(() => {
+    const query = window.matchMedia(MOBILE_QUERY);
+    const update = () => {
+      if (query.matches && !mobilePick.current && isHomePage && !selection && navigationId === 0
+        && !readHeroSelection(window.location.hash)) {
+        let previousId;
+        try { previousId = sessionStorage.getItem(MOBILE_HERO_KEY); } catch {}
+        mobilePick.current = chooseMobileHeroId(slides, previousId);
+        try { if (mobilePick.current) sessionStorage.setItem(MOBILE_HERO_KEY, mobilePick.current); } catch {}
+      }
+      setMobileHero({ matches: query.matches, id: mobilePick.current });
+    };
+    // Read the URL before the library's hash-selection effect has restored state.
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
 
   useEffect(() => {
     const nextImages = new Map();
@@ -114,7 +139,7 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
 
   return (
     <HeroStage
-      carouselProps={slideCount > 1 ? {
+      carouselProps={!isMobile && slideCount > 1 ? {
         "aria-label": "Game slideshow",
         "aria-roledescription": "carousel",
         onPointerOver: (event) => setHasPointer(
@@ -128,7 +153,7 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
           }
         },
       } : undefined}
-      controls={slideCount > 1 ? (
+      controls={!isMobile && slideCount > 1 ? (
         <div className="hero-carousel-controls" role="group" aria-label="Slideshow controls">
           <button type="button" aria-label="Previous game" onClick={() => advanceSlide(-1)}>
             <ChevronLeft size={18} aria-hidden="true" />
@@ -181,6 +206,7 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
       onLaunch={() => rememberGameVersion(currentSlide.id, version.key)}
       notice={notice}
       isHomePage={isHomePage}
+      isMobile={isMobile}
       isInitialSlide={!selectedId && !requestedId}
     />
   );

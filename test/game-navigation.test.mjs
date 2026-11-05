@@ -167,6 +167,57 @@ test("a mounted hero resets to the requested game after automatic rotation or re
   assert.equal(render(queen, 2).props.featuredGame.target, queen.target, "reselecting restores the route's game without remounting");
 });
 
+test("mobile hero stays static, changes on reload, and honors direct routes and hash selections", async () => {
+  const groups = libraryItems([sky, queen], []);
+  const storage = new Map();
+  async function mount({ isHomePage = true, hash = "", stored = storage } = {}) {
+    const hooks = [], refs = [], effects = [];
+    let cursor = 0, refCursor = 0;
+    const Hero = await component("home-hero", {
+      react: {
+        useState(initial) {
+          const index = cursor++;
+          if (!(index in hooks)) hooks[index] = initial;
+          return [hooks[index], (value) => { hooks[index] = value; }];
+        },
+        useEffect: (effect) => effects.push(effect),
+        useRef(current) { return refs[refCursor++] ??= { current }; },
+      },
+      "next/navigation": { useRouter: () => ({ push() { assert.fail("initial selection must not navigate"); } }) },
+      "lucide-react": { ChevronLeft: "left", ChevronRight: "right", Play: "play", Pause: "pause" },
+      "../game-versions.mjs": versions,
+      "./hero-selection.mjs": selection,
+      "./hero-images.mjs": { getHeroPreloadImages: () => [] },
+      "./game-navigation": { useGameNavigation: () => null },
+    }, {
+      Math: { random: () => 0, max: Math.max },
+      window: { location: { hash }, matchMedia: () => ({ matches: true, addEventListener() {}, removeEventListener() {} }) },
+      sessionStorage: { getItem: (key) => stored.get(key), setItem: (key, value) => stored.set(key, value) },
+    });
+    function render() {
+      cursor = 0; refCursor = 0;
+      return Hero({ groups, featuredGame: sky, isHomePage });
+    }
+    render();
+    const cleanup = effects[1]();
+    // Strict Mode replay must not choose twice on a single load.
+    cleanup(); effects[1]();
+    return { render, get result() { return render(); } };
+  }
+  const first = await mount();
+  const firstId = first.result.props.featuredGame.target;
+  assert.equal(first.result.props.isMobile, true);
+  assert.equal(first.result.props.controls, null);
+  assert.equal(first.result.props.carouselProps, undefined);
+  assert.equal(first.result.props.featuredGame.target, firstId, "restoring sources does not change the pick");
+  const reloaded = await mount();
+  assert.notEqual(reloaded.result.props.featuredGame.target, firstId);
+  assert.equal((await mount({ isHomePage: false })).result.props.featuredGame.target, sky.target);
+  assert.equal((await mount({ hash: `#slide=${encodeURIComponent(groups[0].key)}` })).result.props.featuredGame.target, sky.target);
+  const blocked = { get() { throw new Error("Storage disabled"); }, set() { throw new Error("Storage disabled"); } };
+  assert.equal((await mount({ stored: blocked })).result.props.isMobile, true);
+});
+
 test("local game changes and history restoration keep metadata and structured data aligned", async () => {
   const values = new Map();
   const names = ["description", "og:title", "og:description", "og:url", "og:image", "og:image:alt", "twitter:title", "twitter:description", "twitter:image", "twitter:image:alt"];

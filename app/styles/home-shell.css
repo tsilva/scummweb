@@ -879,6 +879,20 @@ button.nav-icon-link {
   line-height: 1.6;
 }
 
+.library-add-hint-mobile {
+  display: none;
+}
+
+@media (max-width: 900px), (pointer: coarse) {
+  .library-add-hint-desktop {
+    display: none;
+  }
+
+  .library-add-hint-mobile {
+    display: block;
+  }
+}
+
 .library-add-card:enabled:hover,
 .library-add-card:focus-visible {
   border-color: #666;
@@ -1130,7 +1144,7 @@ button.nav-icon-link {
   }
 
   .nav-brand-stack {
-    gap: 0.12rem;
+    gap: 0.3rem;
     min-width: 0;
   }
 
@@ -1465,6 +1479,10 @@ button.nav-icon-link {
 .hero-launch {
   min-height: 13rem;
   margin-top: 1.25rem;
+}
+
+.hero-mobile-facts {
+  display: none;
 }
 
 .hero-stage-library .hero-actions {

@@ -83,7 +83,6 @@ export default function HomeShell({
             Bundle built {sourceInfoDate}. ScummVM version {scummvmVersion}.
           </p>
         </div>
-        <div className="footer-links"><Link href="/compatibility">Game compatibility</Link></div>
       </footer>
 
     </>
