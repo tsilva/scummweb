@@ -15,7 +15,8 @@ capabilities. It appears only for an existing, nonempty player save, and selects
 the latest file write time, including player autosaves. Continue checks again
 at startup so a removed or replaced save cannot select a stale slot. Bundled
 intro checkpoints, empty autosave placeholders, and Kyrandia restart checkpoints
-do not count as player saves. **Start from beginning** keeps existing saves.
+and Groovie reserved slots do not count as player saves. **Start from beginning**
+keeps existing saves.
 
 AGOS, Composer, Parallaction, Sword25, Gob, MADE and Plumbers retain **Play**.
 PreAGI titles also retain Play; Mohawk supports this flow for Myst and Riven,

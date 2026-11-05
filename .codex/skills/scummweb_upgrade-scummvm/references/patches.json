@@ -183,11 +183,11 @@
     {
       "path": "patches/scummvm/13-expose-native-save-list.patch",
       "status": "active",
-      "sha256": "845537de4a4ea6e9116d98ceb4c2c103ce4f8933c0faec934f53a55372ea79d1",
+      "sha256": "96090ec840ae5a4728afdefca003d84e57d7b2045c9d67933aecd9961661ea40",
       "purpose": "Expose native save listing and startup loading to ScummWEB, including isolated personal imports.",
       "invariants": [
         "Respect both native capability flags and PreAGI/Mohawk exclusions; never force unsupported startup loading.",
-        "List real nonempty files, exclude nonexistent autosave placeholders and Kyrandia restart saves; resolve fixed prefixes through the native filename API.",
+        "List real nonempty files; exclude nonexistent autosave placeholders, Kyrandia restart saves and Groovie slot 0 reserved/Open House state. Resolve fixed prefixes for Lure, Queen, Tony, Cruise and Draci through the native filename API.",
         "Choose the latest player save again before engine construction; retain the selected version savepath and actual detected target."
       ],
       "verification": [

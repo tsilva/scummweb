@@ -57,6 +57,8 @@ tests when porting; do not treat an old implementation shape as the requirement.
   tests provide local regression coverage. Node tests do not replace gameplay,
   audible output, real save/resume or launch-time measurements in Brave.
 
+- The web save bridge (patch 13) must retain actual detected identities and per-version save paths. Capability flags alone are insufficient: PreAGI and non-Myst/Riven Mohawk titles are excluded. Keep nonexistent autosave placeholders, bundled intro bytes, Kyrandia restart saves and Groovie reserved slot zero out of Continue. Native filename getters may need fixed engine prefixes for engines whose saves ignore target names. Query mode uses a temporary configuration; it must not rewrite user targets. Save timestamps and index validation remain in the shell/library contract.
+
 ## Keeping this memory useful
 
 When a patch is introduced or changed, update its ledger purpose, invariants,

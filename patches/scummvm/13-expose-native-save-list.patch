@@ -24,7 +24,7 @@ index c29d1eb0..d416259b 100644
  			// If the target was specified, treat this as an error, and otherwise skip it.
  			if (!singleTarget.empty()) {
 diff --git a/base/main.cpp b/base/main.cpp
-index ef3997f1..73d9acae 100644
+index ef3997f1..72b8e1fa 100644
 --- a/base/main.cpp
 +++ b/base/main.cpp
 @@ -30,8 +30,14 @@
@@ -42,7 +42,7 @@ index ef3997f1..73d9acae 100644
  #include "base/commandLine.h"
  #include "base/plugins.h"
  #include "base/version.h"
-@@ -187,6 +193,59 @@ void saveLastLaunchedTarget(const Common::String &target) {
+@@ -187,6 +193,62 @@ void saveLastLaunchedTarget(const Common::String &target) {
  }
  
  // TODO: specify the possible return values here
@@ -75,11 +75,14 @@ index ef3997f1..73d9acae 100644
 +			// These are restart checkpoints, not player progress.
 +			if (engineId == "kyra" && slot == 0 && (gameId == "kyra1" || gameId == "kyra2" || gameId == "kyra3"))
 +				continue;
++			if (engineId == "groovie" && slot == 0) // Reserved/Open House, not player progress
++				continue;
 +			if (meta.hasFeature(MetaEngine::kSavesSupportMetaInfo) &&
 +				meta.querySaveMetaInfos(target.c_str(), slot).getSaveSlot() < 0)
 +				continue;
 +			// These engines deliberately use a fixed prefix across targets.
-+			const char *prefix = (engineId == "lure" || engineId == "queen" || engineId == "tony")
++			const char *prefix = (engineId == "lure" || engineId == "queen" || engineId == "tony" ||
++				engineId == "cruise" || engineId == "draci")
 +				? engineId.c_str() : target.c_str();
 +			const Common::String filename = meta.getSavegameFile(slot, prefix);
 +			Common::InSaveFile *file = g_system->getSavefileManager()->openForLoading(filename);
@@ -102,7 +105,7 @@ index ef3997f1..73d9acae 100644
  static Common::Error runGame(const Plugin *enginePlugin, OSystem &system, const DetectedGame &game, const void *meDescriptor) {
  	assert(enginePlugin);
  
-@@ -223,6 +282,11 @@ static Common::Error runGame(const Plugin *enginePlugin, OSystem &system, const
+@@ -223,6 +285,11 @@ static Common::Error runGame(const Plugin *enginePlugin, OSystem &system, const
  		// Apparently some engines query them in their constructor, thus we
  		// need to set this up before instance creation.
  		metaEngine.registerDefaultSettings(target);
@@ -114,7 +117,7 @@ index ef3997f1..73d9acae 100644
  		err = metaEngine.createInstance(&system, &engine, game, meDescriptor);
  	}
  
-@@ -325,7 +389,17 @@ static Common::Error runGame(const Plugin *enginePlugin, OSystem &system, const
+@@ -325,7 +392,17 @@ static Common::Error runGame(const Plugin *enginePlugin, OSystem &system, const
  	system.getEventManager()->purgeMouseEvents();
  
  	// Run the engine
