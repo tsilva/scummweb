@@ -387,7 +387,7 @@ function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl }) {
       const extra = params.get("saveExtra") || "";
       if (extra.length > 256 || /[\r\n\[\]\x00]/.test(extra)) throw new Error("Invalid save edition");
       FS.writeFile("/tmp/scummweb-query.ini", `[scummvm]\nsavepath=${savePath}\n\n[${target}]\nengineid=${engine}\ngameid=${gameId}\nextra=${extra}\n`);
-      Module.arguments.splice(0, Module.arguments.length, "--config=/tmp/scummweb-query.ini", "--list-saves", target);
+      Module.arguments.splice(0, Module.arguments.length, "--config=/tmp/scummweb-query.ini", "--list-saves", `--game=${target}`);
     }
     // Match actual checkpoint bytes. Slot zero becomes a player save as soon
     // as the player overwrites it; never exclude a slot just by its number.

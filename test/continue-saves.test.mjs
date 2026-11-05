@@ -75,7 +75,7 @@ test("latest save selection uses write time across slots and is refreshed before
 
 test("native query uses an ephemeral config and the exact selected import namespace", async () => {
   const namespace = "version-" + "a".repeat(64), f = shell({ namespace, query: true }); await f.start();
-  assert.deepEqual(f.Module.arguments, ["--config=/tmp/scummweb-query.ini", "--list-saves", "sky"]);
+  assert.deepEqual(f.Module.arguments, ["--config=/tmp/scummweb-query.ini", "--list-saves", "--game=sky"]);
   const ini = new TextDecoder().decode(f.files.get("/tmp/scummweb-query.ini").bytes);
   assert.match(ini, new RegExp("savepath=.*saves/" + namespace));
   f.scan([]);
