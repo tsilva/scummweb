@@ -56,10 +56,17 @@ Games default to their original save/load screens wherever ScummVM supports
 them. Existing saved preferences take precedence; games without an original
 screen option keep their usual interface.
 
+On desktop, the top controls fade away during play. Move the pointer into the
+top 80 pixels to reveal them, or press **Esc** to release a captured cursor and
+show them briefly. Keyboard focus keeps controls visible. Opening the game
+menu keeps them visible until **Esc** or the game captures the cursor again.
+Touch controls stay visible.
+
 On phones, landscape gives the largest game view. You can also choose **Play in
 portrait** or **Play in browser** without fullscreen. Drag on the game or cursor
 pad to move the pointer; use **L** and **R** for left and right clicks. Double-tap
-the game for a left click. The top controls open the game menu or exit to the library.
+the game for a left click. The top controls exit to the library and, for supported
+games, open the game's own menu. The menu button never opens ScummVM's global menu.
 
 Open the **Settings** gear icon to the right of GitHub to slide in the settings panel.
 Choose **Saved games** to export a backup ZIP or import one on another

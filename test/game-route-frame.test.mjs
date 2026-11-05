@@ -4,6 +4,7 @@ import { createRequire } from "node:module";
 import { runInNewContext } from "node:vm";
 import test from "node:test";
 import swc from "next/dist/build/swc/index.js";
+import * as gameMenu from "../app/game-player/game-menu.mjs";
 
 const componentUrl = new URL("../app/game-route-frame.js", import.meta.url);
 const nativeRequire = createRequire(componentUrl);
@@ -41,6 +42,7 @@ for (const message of ["This ZIP link returned HTTP 404.", "Could not download t
           useEffect: (effect) => effects.push(effect), useLayoutEffect() {},
         };
         if (name === "react/jsx-runtime") return nativeRequire(name);
+        if (name.endsWith("/game-menu.mjs")) return gameMenu;
         if (name === "next/navigation") return { useRouter: () => ({}) };
         if (name === "./game-bucket.mjs") return { readCatalogGameArchive: async () => {
           downloads++;
@@ -147,6 +149,7 @@ function pendingArchivePlayer({ stalledNavigation = false } = {}) {
         useLayoutEffect: (callback, deps) => effect(callback, deps, layouts),
       };
       if (name === "react/jsx-runtime") return nativeRequire(name);
+      if (name.endsWith("/game-menu.mjs")) return gameMenu;
       if (name === "next/navigation") return { useRouter: () => ({}) };
       if (name === "./game-bucket.mjs") return { readCatalogGameArchive: (_url, { onProgress }) => {
         loadCount++;
@@ -247,4 +250,67 @@ test("leaving a pending launch cancels its handoff", async () => {
   player.archive.resolve([{ path: "sky.dnr", data: Uint8Array.of(1) }]);
   await new Promise(setImmediate);
   assert.equal(player.deliveries.length, 0);
+});
+
+function menuPlayer(game, { ready = true, failed = false } = {}) {
+  function Controls() {}
+  const keypresses = [];
+  const frame = { contentWindow: {} };
+  let refIndex = 0;
+  const module = { exports: {} };
+  runInNewContext(code, {
+    module, exports: module.exports, URL, URLSearchParams,
+    window: { location: { href: "https://example.test/play", origin: "https://example.test", hash: "", search: "" } },
+    require(name) {
+      if (name === "react") return {
+        useState: (value) => [typeof value === "function" ? value() : value, () => {}],
+        useRef: (current) => ({ current: refIndex++ === 1 ? frame : current }),
+        useCallback: (callback) => callback,
+        useEffect() {}, useLayoutEffect() {},
+      };
+      if (name === "react/jsx-runtime") return nativeRequire(name);
+      if (name === "next/navigation") return { useRouter: () => ({}) };
+      if (name.endsWith("/game-menu.mjs")) return gameMenu;
+      if (name.endsWith("/keyboard")) return { dispatchSyntheticKeypressSequence: async (frame, shortcut) => keypresses.push({ frame, shortcut }) };
+      if (name.endsWith("/GamePlayerControls")) return Controls;
+      if (name.endsWith("/useBootState")) return { useBootState: () => ({
+        hasBootCompleted: ready, hasBootPresentationCompleted: ready,
+        showGameMenuButton: ready, hasBootFailed: failed,
+      }) };
+      if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({}) };
+      if (name.endsWith("/useTouchClickMode")) return { useTouchClickActions: () => ({}) };
+      if (name.endsWith("/useTouchCursorPad")) return { useTouchCursorPad: () => ({}) };
+      if (name.endsWith("/game-launch-analytics.mjs")) return { createGameLaunchAnalytics: () => ({}) };
+      return {};
+    },
+  });
+  const children = module.exports.default({ game, target: game.target, src: "/scummvm.html#game" }).props.children.filter(Boolean);
+  return { controls: children.find(({ type }) => type === Controls).props, frame, keypresses };
+}
+
+for (const [game, expectedKey] of [
+  [{ engineId: "sky", gameId: "sky", target: "sky" }, "F5"],
+  [{ engineId: "queen", gameId: "queen", target: "queen" }, "F1"],
+  [{ engineId: "scumm", gameId: "monkey", target: "monkey-demo" }, null],
+  [{ engineId: "sci", gameId: "phantasmagoria", target: "phantasmagoria" }, null],
+  [{ target: "unknown-import" }, null],
+]) {
+  test(`menu control uses only a supported native action for ${game.target}`, async () => {
+    const player = menuPlayer(game);
+    assert.equal(player.controls.showGameMenuButton, Boolean(expectedKey));
+    await player.controls.onOpenMenu();
+    assert.equal(player.keypresses.length, expectedKey ? 1 : 0);
+    if (expectedKey) {
+      assert.equal(player.keypresses[0].frame, player.frame);
+      assert.equal(player.keypresses[0].shortcut.key, expectedKey);
+      assert.equal(Boolean(player.keypresses[0].shortcut.ctrlKey), false);
+    }
+  });
+}
+
+test("native menu stays hidden while loading and after a boot failure", () => {
+  const game = { engineId: "sky", gameId: "sky", target: "sky" };
+  for (const state of [{ ready: false }, { failed: true }]) {
+    assert.equal(menuPlayer(game, state).controls.showGameMenuButton, false);
+  }
 });

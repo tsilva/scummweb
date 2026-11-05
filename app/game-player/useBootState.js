@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const SCUMMVM_MENU_REVEAL_DELAY_MS = 2500;
+const GAME_MENU_REVEAL_DELAY_MS = 2500;
 const INITIAL_BOOT_STATUS = "Loading ScummVM...";
 const SKIP_INTRO_BOOT_STATUS = "Skipping intro...";
 const BOOT_PHASE_PRIORITY = {
@@ -79,7 +79,7 @@ export function useBootState({
   skipIntroConsumed,
 }) {
   const isSkippingIntro = Boolean(skipIntro && skipIntroConsumed);
-  const [showScummvmMenuButton, setShowScummvmMenuButton] = useState(false);
+  const [showGameMenuButton, setShowGameMenuButton] = useState(false);
   const [bootStatusText, setBootStatusText] = useState(() =>
     getInitialBootStatusText(isSkippingIntro)
   );
@@ -94,21 +94,21 @@ export function useBootState({
 
   useEffect(() => {
     setHasBootPresentationCompleted(false);
-    setShowScummvmMenuButton(false);
+    setShowGameMenuButton(false);
     setHasSkipIntroBeenDismissed(false);
   }, [frameSrc, skipIntro, skipIntroConsumed]);
 
   useEffect(() => {
     if (!hasBootCompleted || hasBootFailed) {
       setHasBootPresentationCompleted(false);
-      setShowScummvmMenuButton(false);
+      setShowGameMenuButton(false);
       return;
     }
 
     const revealTimer = window.setTimeout(() => {
       setHasBootPresentationCompleted(true);
-      setShowScummvmMenuButton(true);
-    }, SCUMMVM_MENU_REVEAL_DELAY_MS);
+      setShowGameMenuButton(true);
+    }, GAME_MENU_REVEAL_DELAY_MS);
 
     return () => {
       window.clearTimeout(revealTimer);
@@ -243,7 +243,7 @@ export function useBootState({
     hasBootCompleted,
     hasBootFailed,
     hasBootPresentationCompleted,
-    showScummvmMenuButton,
+    showGameMenuButton,
     showSkipIntroButton,
   };
 }

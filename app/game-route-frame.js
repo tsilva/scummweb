@@ -10,6 +10,7 @@ import GameTouchCursorPad from "./game-player/GameTouchCursorPad";
 import { createGameLaunchAnalytics } from "./game-player/game-launch-analytics.mjs";
 import { observeStartupDiagnostics } from "./game-player/startup-diagnostics.mjs";
 import { dispatchSyntheticKeypressSequence } from "./game-player/keyboard";
+import { getGameMenuShortcut } from "./game-player/game-menu.mjs";
 import { useBootState } from "./game-player/useBootState";
 import { useImmersiveMode } from "./game-player/useImmersiveMode";
 import { useTouchClickActions } from "./game-player/useTouchClickMode";
@@ -27,21 +28,6 @@ const catalogArchiveLimits = {
   queen: { timeoutMs: 600_000 },
   sword25: { archiveLimit: 900 * MIB, expandedLimit: 900 * MIB, timeoutMs: 900_000 },
 };
-
-function shouldHideScummvmMenuButton(game, target) {
-  return (
-    game?.engineId === "drascula" ||
-    game?.engineId === "dreamweb" ||
-    game?.gameId === "drascula" ||
-    game?.gameId === "dreamweb" ||
-    game?.gameId === "nippon" ||
-    game?.gameId === "sword25" ||
-    target === "drascula" ||
-    target === "dreamweb-cd" ||
-    target === "nippon-amiga" ||
-    target === "sword25"
-  );
-}
 
 function getSafeHref(href) {
   if (!href) {
@@ -589,13 +575,11 @@ export default function GameRouteFrame({
     event.preventDefault();
   }
 
-  async function handleScummvmMenuClick() {
-    await dispatchSyntheticKeypressSequence(frameRef.current, {
-      key: "F5",
-      code: "F5",
-      keyCode: 116,
-      ctrlKey: true,
-    });
+  const gameMenuShortcut = getGameMenuShortcut(game);
+
+  async function handleGameMenuClick() {
+    if (!gameMenuShortcut) return;
+    await dispatchSyntheticKeypressSequence(frameRef.current, gameMenuShortcut);
   }
 
   function handleSkipIntroClick() {
@@ -628,8 +612,8 @@ export default function GameRouteFrame({
     immersiveMode.canFullscreen && bootState.hasBootPresentationCompleted;
   const showAspectRatioControl =
     immersiveMode.isMobileViewport && bootState.hasBootPresentationCompleted;
-  const showScummvmMenuButton =
-    bootState.showScummvmMenuButton && !shouldHideScummvmMenuButton(game, target);
+  const showGameMenuButton =
+    Boolean(gameMenuShortcut) && bootState.showGameMenuButton && !hasBootFailed;
   const showTouchClickButtons = mobileControlsReady;
   const showTouchCursorPad = mobileControlsReady;
   const showBottomActions = showSkipIntroBottomAction || showTouchClickButtons;
@@ -654,11 +638,14 @@ export default function GameRouteFrame({
         showMobileOverlay={showMobileOverlay}
       />
       <GamePlayerControls
+        autoHide={bootState.hasBootPresentationCompleted && !showBootOverlay && !immersiveMode.isMobileViewport}
+        frameRef={frameRef}
+        menuShortcut={gameMenuShortcut}
         handleControlMouseDown={handleControlMouseDown}
         isFillScreenAspect={isFillScreenAspect}
         isFullscreen={immersiveMode.isFullscreen}
         onExit={handleExitClick}
-        onOpenMenu={handleScummvmMenuClick}
+        onOpenMenu={handleGameMenuClick}
         onSkipIntro={handleSkipIntroClick}
         onToggleAspectRatio={handleAspectRatioToggle}
         onTouchLeftClick={() => touchClick.sendTouchClick("left")}
@@ -668,7 +655,7 @@ export default function GameRouteFrame({
         showAspectRatioControl={showAspectRatioControl}
         showExitControl={showExitControl}
         showFullscreenControl={showFullscreenControl}
-        showScummvmMenuButton={showScummvmMenuButton}
+        showGameMenuButton={showGameMenuButton}
         showSkipIntroAction={showSkipIntroBottomAction}
         showTouchClickButtons={showTouchClickButtons}
       />
