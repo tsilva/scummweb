@@ -68,6 +68,8 @@ game files are excluded. Startup checks do not establish full-game compatibility
 The homepage slideshow advances every eight seconds. Previous and next restart
 the countdown; use the pause button to stop automatic rotation.
 Exiting a game returns to the homepage with that game selected in the slideshow.
+Quitting inside a game or choosing ScummVM’s **Return to Launcher** also returns
+to ScummWEB without opening ScummVM’s game-selection menu.
 
 ## Add your games
 

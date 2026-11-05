@@ -338,19 +338,14 @@ const launchArgs=decodeURI(scummwebLaunchUrl.hash.slice(1)).trim().split(/\s+/);
 const target=skipIntroTarget||launchArgs.at(-1)||"";
 const launchPattern=isLocalGame && !isCatalogArchive ? /^User picked target '/m :
   target ? new RegExp(`User picked target '${target.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")}'`) : null;
-const escapeRedirectWindowMs=1500;
 let didHandleExit=false;
-let hasUserInteracted=false;
-let lastInteractionAt=0;
-let lastInteractionKey="";
-let lastEscapeAt=0;
-let recentEscapeCount=0;
 let pendingExitStatus=null;
 let pendingExitTimer=0;
-const markUserInteraction=event=>{if(event.type==="keydown"){if(event.metaKey||event.ctrlKey||event.altKey)return;lastInteractionKey=event.key||"";lastInteractionAt=Date.now();if(event.key==="Escape"){recentEscapeCount=lastInteractionAt-lastEscapeAt<=escapeRedirectWindowMs?recentEscapeCount+1:1;lastEscapeAt=lastInteractionAt}else{recentEscapeCount=0;lastEscapeAt=0}}else{lastInteractionKey="";lastInteractionAt=Date.now();recentEscapeCount=0;lastEscapeAt=0}hasUserInteracted=true};
-for(const eventName of["keydown","mousedown","touchstart"]){window.addEventListener(eventName,markUserInteraction,{capture:true,passive:eventName!=="keydown"})}
-const handleExit=status=>{if(didHandleExit)return;didHandleExit=true;if(pendingExitTimer){window.clearTimeout(pendingExitTimer);pendingExitTimer=0}const exitMessage={type:"scummvm-exit",href:resolvedExitHref,status};if(window.parent&&window.parent!==window){try{window.parent.postMessage(exitMessage,scummwebLaunchUrl.origin);return}catch{}}try{window.location.replace(resolvedExitHref)}catch{scummwebLaunchUrl.href=resolvedExitHref}};
-const requestExit=status=>{pendingExitStatus=Number.isFinite(status)?status:0;if(pendingExitTimer)return;pendingExitTimer=window.setTimeout((()=>{pendingExitTimer=0;if(pendingExitStatus!==null){handleExit(pendingExitStatus)}}),150)};
+const hideExitedGame=()=>{const canvas=document.getElementById("canvas");if(canvas)canvas.style.visibility="hidden"};
+const handleExit=status=>{if(didHandleExit)return;didHandleExit=true;hideExitedGame();if(pendingExitTimer){window.clearTimeout(pendingExitTimer);pendingExitTimer=0}const exitMessage={type:"scummvm-exit",href:resolvedExitHref,status};if(window.parent&&window.parent!==window){try{window.parent.postMessage(exitMessage,scummwebLaunchUrl.origin);return}catch{}}try{window.location.replace(resolvedExitHref)}catch{scummwebLaunchUrl.href=resolvedExitHref}};
+// Native exit/launcher callbacks are authoritative, including exits without input.
+// Hide synchronously while allowing native cleanup to finish before navigation.
+const requestExit=status=>{if(didHandleExit||pendingExitStatus!==null)return;pendingExitStatus=Number.isFinite(status)?status:0;hideExitedGame();pendingExitTimer=window.setTimeout((()=>{pendingExitTimer=0;handleExit(pendingExitStatus)}),150)};
 globalThis.__scummvmRequestExit=requestExit;
 const scummwebMessageSource="scummweb";
 const postParentMessage=message=>{if(!(window.parent&&window.parent!==window))return false;try{window.parent.postMessage(message,scummwebLaunchUrl.origin);return true}catch{return false}};
@@ -483,10 +478,9 @@ canvas.addEventListener("touchcancel",handleTouchCancel,{capture:true,passive:fa
 if(hasLaunchOutput()){scheduleGameRunning()}else if(launchPattern&&output){launchPollTimer=window.setInterval((()=>{if(hasLaunchOutput()){scheduleGameRunning();syncCursorPrompt()}}),250)}
 syncCursorPrompt()
 }
-const shouldRedirectOnQuit=()=>{if(pendingExitStatus!==null)return true;if(!hasUserInteracted)return false;const now=Date.now();const quitFollowsRecentEscape=lastInteractionKey==="Escape"&&now-lastInteractionAt<=escapeRedirectWindowMs;if(!quitFollowsRecentEscape)return true;return recentEscapeCount>=2&&now-lastEscapeAt<=escapeRedirectWindowMs};
 window.Module=window.Module||{};
 const originalQuit=window.Module.quit;
-window.Module.quit=function(status,toThrow){if(shouldRedirectOnQuit()){handleExit(status)}if(typeof originalQuit==="function"){return originalQuit(status,toThrow)}throw toThrow||new Error(`ScummVM exited (${status})`)}
+window.Module.quit=function(status,toThrow){requestExit(status);if(typeof originalQuit==="function"){return originalQuit(status,toThrow)}throw toThrow||new Error(`ScummVM exited (${status})`)}
 })();</script><script>
 if (isLocalGame) {
   const print = Module.print;

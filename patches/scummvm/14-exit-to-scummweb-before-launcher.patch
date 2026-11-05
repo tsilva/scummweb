@@ -1,0 +1,38 @@
+diff --git a/base/main.cpp b/base/main.cpp
+--- a/base/main.cpp
++++ b/base/main.cpp
+@@ -106,7 +106,23 @@
+ 
+ #include "gui/dump-all-dialogs.h"
+ 
++#ifdef __EMSCRIPTEN__
++static bool scummwebExitToHost() {
++	return EM_ASM_INT({
++		if (typeof globalThis.__scummvmRequestExit !== 'function') return 0;
++		globalThis.__scummvmRequestExit(0);
++		return 1;
++	});
++}
++#endif
++
+ static bool launcherDialog() {
++#ifdef __EMSCRIPTEN__
++	// ScummWEB owns game selection. Never construct or draw the native
++	// launcher in a hosted player, including return-to-launcher requests.
++	if (scummwebExitToHost())
++		return false;
++#endif
+ 
+ 	// Discard any command line options. Those that affect the graphics
+ 	// mode and the others (like bootparam etc.) should not
+@@ -1042,5 +1058,10 @@
+ 	EngineManager::destroy();
+ 	Graphics::YUVToRGBManager::destroy();
+ 
++#ifdef __EMSCRIPTEN__
++	// Emscripten can keep the runtime alive after main returns, bypassing
++	// Module.quit/onExit. Report ordinary engine quits explicitly as well.
++	scummwebExitToHost();
++#endif
+ 	return 0;
+ }

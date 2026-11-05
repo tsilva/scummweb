@@ -195,6 +195,22 @@
         "In Brave verify Play with no player saves, supported catalog and imported save/resume, latest-write ordering, checkpoint exclusion, and unsupported engines retaining Play."
       ],
       "retire_when": "Upstream exposes equivalent browser-callable save metadata and startup resume with the same eligibility and save isolation guarantees."
+    },
+    {
+      "path": "patches/scummvm/14-exit-to-scummweb-before-launcher.patch",
+      "status": "active",
+      "sha256": "8617d75c060bcb16810deacd3acaccda1de3897967508c81b8d2cf8f304a9cda",
+      "purpose": "Return hosted game sessions to ScummWEB before the native launcher can be constructed, and explicitly signal ordinary engine exits.",
+      "invariants": [
+        "When __scummvmRequestExit is installed, launcherDialog signals the host and returns before creating any native launcher UI, for both initial fallback and return-to-launcher.",
+        "Successful main teardown explicitly signals the host; do not depend on Module.quit/onExit because the generated keepalive runtime can bypass both.",
+        "Keep non-web and bridge-free command-line tooling behavior; preserve native error dialogs, save cleanup, and same-origin host navigation. The shell hides the canvas synchronously and sends one exit notification regardless of prior input."
+      ],
+      "verification": [
+        "Run test/game-exit.test.mjs and rebuild the managed runtime.",
+        "In Brave verify a game-native quit, ScummVM Return to Launcher, app Exit game, and a relaunch. The native launcher must never appear; verify Escape still works as ordinary game/menu input."
+      ],
+      "retire_when": "Upstream provides a host-controlled single-session lifecycle that prevents native launcher presentation and reliably reports engine termination with runtime keepalive enabled."
     }
   ]
 }

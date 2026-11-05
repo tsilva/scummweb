@@ -43,6 +43,11 @@ tests when porting; do not treat an old implementation shape as the requirement.
   explicit porting points. Preserve original splash/intro behavior. Dark game
   frames are valid; brightness polling alone can miss them or cleared WebGL
   backbuffers. Keep the shell/native callback contract and software fallbacks.
+- A hosted game can request Return to Launcher without terminating the runtime.
+  Patch 14 guards native launcher construction and explicitly signals successful
+  main teardown. Emscripten's keepalive runtime can bypass both `Module.quit` and
+  `Module.onExit`; input/Escape heuristics cannot establish a real exit. Preserve
+  the native host callback, synchronous canvas hiding, and idempotent navigation.
 - Cached archives use validated atomic manifest/payload records and Blob slices.
   Do not reintroduce ZIP extraction/checksumming on every launch, all-file MEMFS
   copies, or unbounded preloading. Preserve 8 MiB local cache eviction, optional

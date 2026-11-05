@@ -8,11 +8,19 @@ from pathlib import Path
 from unittest.mock import Mock, patch
 
 from botocore.exceptions import ClientError
-from upload_artwork_to_r2 import publish, CACHE_CONTROL
+from upload_artwork_to_r2 import publish, CACHE_CONTROL, artwork_workspace
 import upload_games_to_r2 as games
 
 
 class ArtworkPublishingTests(unittest.TestCase):
+    def test_workspace_names_cannot_change_the_source_root_or_target_bucket(self):
+        with patch.dict("os.environ", {"SCUMMWEB_ARTWORK_WORKSPACE": "artwork-optimization"}):
+            self.assertEqual(artwork_workspace(), Path(".internal/evidence/artwork-optimization"))
+        for value in ("../other", "/tmp/other", "a/b", ""):
+            with patch.dict("os.environ", {"SCUMMWEB_ARTWORK_WORKSPACE": value}):
+                with self.assertRaises(ValueError):
+                    artwork_workspace()
+
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
