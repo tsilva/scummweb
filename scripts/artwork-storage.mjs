@@ -61,7 +61,8 @@ export function validateManifest(manifest) {
 }
 
 export async function planArtwork(root = rootDir) {
-  const previous = JSON.parse(await fs.readFile(path.join(root, manifestFile)));
+  const previousBytes = await fs.readFile(path.join(root, manifestFile));
+  const previous = JSON.parse(previousBytes);
   if (previous.published) validateManifest(previous);
   const names = new Map();
   for (const base of ["scummvm-shell", `${workspace}/inputs`]) {
@@ -98,7 +99,8 @@ export async function planArtwork(root = rootDir) {
     && JSON.stringify(delivery.images) !== JSON.stringify(previous.images)) {
     throw new Error("Artwork storage changed after optimization; regenerate delivery candidates");
   }
-  const manifest = validateManifest({ version: 1, published: false, origin, files, ...(images ? { images } : {}) });
+  const manifest = validateManifest({ version: 1, published: false, origin, files, ...(images ? { images } : {}), baseHash: digest(previousBytes) });
+  if (!previousBytes.equals(await fs.readFile(path.join(root, manifestFile)))) throw new Error("Artwork storage changed during planning");
   await fs.mkdir(path.dirname(path.join(root, pendingFile)), { recursive: true });
   await writeManifest(path.join(root, pendingFile), manifest);
   return manifest;
@@ -146,10 +148,12 @@ export async function activateArtwork(root = rootDir, request = fetch) {
   const before = await fs.readFile(filename, "utf8");
   const pending = await fs.readFile(path.join(root, pendingFile), "utf8");
   const manifest = JSON.parse(pending);
+  if (manifest.baseHash && manifest.baseHash !== digest(before)) throw new Error("Artwork storage changed since planning; merge and replan before activation");
   await verifyArtwork(manifest, request, root);
   if (before !== await fs.readFile(filename, "utf8")) throw new Error("Artwork manifest changed during verification");
   if (pending !== await fs.readFile(path.join(root, pendingFile), "utf8")) throw new Error("Artwork plan changed during verification");
   manifest.published = true;
+  delete manifest.baseHash;
   await writeManifest(filename, manifest);
   return manifest;
 }

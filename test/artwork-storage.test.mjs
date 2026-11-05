@@ -94,6 +94,18 @@ test("retirement preserves saves and notices and rejects changed originals befor
   assert.equal(await fs.readFile(path.join(root, "scummvm-shell/launcher/skip-intro/sky/SKY-VM.000"), "utf8"), "save");
 });
 
+test("activation preserves concurrent storage edits made after planning", async (t) => {
+  const root = await fixture(t);
+  await planArtwork(root);
+  const filename = path.join(root, manifestFile);
+  const changed = `${await fs.readFile(filename, "utf8")}\n`;
+  await fs.writeFile(filename, changed);
+  let calls = 0;
+  await assert.rejects(activateArtwork(root, async () => { calls += 1; return response(); }), /changed since planning/);
+  assert.equal(calls, 0);
+  assert.equal(await fs.readFile(filename, "utf8"), changed);
+});
+
 test("published poster variants and social-card projections use the same logical mapping", async (t) => {
   const root = await fixture(t);
   const manifest = { ...sample, published: true, files: {
