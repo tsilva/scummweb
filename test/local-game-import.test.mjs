@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { BlobWriter, Uint8ArrayReader, ZipWriter } from "@zip.js/zip.js";
-import { captureGameDrop, fileNode, handleNode, prepareLocalZip } from "../app/local-game-import.mjs";
+import { captureGameDrop, fileNode, handleNode, inspectLocalSourceFiles, prepareLocalZip } from "../app/local-game-import.mjs";
 
 async function gameZip() {
   const zip = new ZipWriter(new BlobWriter());
@@ -75,4 +75,26 @@ test("ZIP file read failures remain errors", async () => {
   await assert.rejects(prepareLocalZip({ kind: "file", name: "game.zip",
     getFile: async () => { throw new DOMException("File moved", "NotFoundError"); },
   }), { name: "NotFoundError" });
+});
+
+test("existing imports are inspected with granted access and changed ZIPs invalidate the directory cache", async () => {
+  const original = await gameZip();
+  let file = new File([original], original.name, { lastModified: 1 });
+  let permission = "prompt";
+  let reads = 0;
+  const source = { handle: { kind: "file", queryPermission: async () => permission,
+    requestPermission: () => assert.fail("Background inspection must not request access"),
+    getFile: async () => { reads++; return file; } } };
+  const cache = new WeakMap();
+  assert.equal(await inspectLocalSourceFiles(source, cache), undefined);
+  assert.equal(reads, 0);
+  permission = "granted";
+  const files = await inspectLocalSourceFiles(source, cache);
+  assert.deepEqual(files, (await prepareLocalZip(fileNode(file))).archiveFiles);
+  assert.equal(await inspectLocalSourceFiles(source, cache), files);
+  const zip = new ZipWriter(new BlobWriter());
+  await zip.add("game/vol.cat", new Uint8ArrayReader(Uint8Array.of(3, 4)));
+  file = new File([await zip.close()], original.name, { lastModified: 2 });
+  assert.notDeepEqual(await inspectLocalSourceFiles(source, cache), files);
+  assert.equal(await inspectLocalSourceFiles({ url: "https://example.com/game.zip", ...source }, cache), undefined);
 });

@@ -1,4 +1,5 @@
 import { groupGameVersions } from "../game-versions.mjs";
+import { findBundledGame } from "../bundled-game-matching.mjs";
 
 const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
 
@@ -7,7 +8,9 @@ export const defaultLibraryQuery = { sort: "name-asc", genre: "" };
 export function libraryItems(catalog, library) {
   return groupGameVersions([
     ...catalog.map((game) => ({ key: `catalog:${game.target}`, game, title: game.displayTitle })),
-    ...library.map((entry) => ({ ...entry, key: `source:${entry.source.id}` })),
+    ...library.filter((entry) => !findBundledGame({ ...entry.source,
+      archiveFiles: entry.archiveFiles ?? entry.source.archiveFiles }, catalog))
+      .map((entry) => ({ ...entry, key: `source:${entry.source.id}` })),
   ]);
 }
 

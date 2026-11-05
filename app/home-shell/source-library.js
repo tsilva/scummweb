@@ -6,8 +6,9 @@ import { readRemoteGameArchive } from "../game-bucket.mjs";
 import { getGamePresentation, getImportedGamePresentation } from "../game-presentation";
 import { checkGameSource, isLocalZipSource, localGame, readGameSources, removeGameSources, requestGameSourceAccess, saveGameSources } from "../game-sources.mjs";
 import { findLocalGameSource } from "../local-game-matching.mjs";
+import { findBundledGame } from "../bundled-game-matching.mjs";
 import { maxLocalGameSize, openLocalGameZip, selectGameArchive, validateGameZip } from "../local-game-archive.mjs";
-import { fileNode, handleNode, prepareLocalZip } from "../local-game-import.mjs";
+import { fileNode, handleNode, inspectLocalSourceFiles, prepareLocalZip } from "../local-game-import.mjs";
 import LibraryView from "./library-view";
 import { libraryItems } from "./library-query.mjs";
 import { getGameFamilyKey, getVersionSaveNamespace, rememberGameVersion } from "../game-versions.mjs";
@@ -74,6 +75,7 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
   useEffect(() => {
     let active = true;
     const checking = new Set();
+    const inspected = new WeakMap();
 
     function checkSources(sources) {
       for (const source of sources) {
@@ -82,10 +84,16 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
         // Only imports without a persistent handle rely on their in-memory copy.
         const check = isLocalZipSource(source) && !source.handle && sessionGames.has(source.id)
           ? Promise.resolve("session") : checkGameSource(source);
-        void check.then((status) => {
+        void check.then(async (status) => {
+          let archiveFiles = source.archiveFiles;
+          // Recheck legacy imports and changed ZIPs using existing read access.
+          // Never delete source records or request permission in the background.
+          if (status === "available" && !source.url && source.handle) {
+            archiveFiles = await inspectLocalSourceFiles(source, inspected).catch(() => []);
+          }
           if (active) {
             setEntries((current) => current.map((entry) =>
-              entry.source === source ? { source, status } : entry
+              entry.source === source ? { ...entry, status, archiveFiles } : entry
             ));
           }
         }).finally(() => checking.delete(source));
@@ -237,6 +245,12 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
 
       async function save(game, label = game.name) {
         const reconnect = replacing ?? await findLocalGameSource(game, known.values(), reconnectable);
+        const included = findBundledGame(game, catalog);
+        if (included && !reconnect) {
+          const item = { label, status: "skipped", message: "Already included. Using the bundled copy." };
+          items.push(item);
+          return item;
+        }
         const result = await saveLocal(game, known, reconnect);
         const firstSave = !savedIds.has(result.id);
         savedIds.add(result.id);
@@ -244,7 +258,8 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
         const item = {
           label,
           status: reconnect ? "skipped" : "added",
-          message: reconnect ? "Already in your library. Files refreshed." : "Added to your library",
+          message: included ? "Already included. Using the bundled copy. Existing saves are preserved."
+            : reconnect ? "Already in your library. Files refreshed." : "Added to your library",
         };
         items.push(item);
         if (firstSave && result.temporary) temporary++;
@@ -298,7 +313,7 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
 
   function updateStatus(source, status) {
     setEntries((current) => current.map((entry) =>
-      entry.source === source ? { source, status } : entry
+      entry.source === source ? { ...entry, status } : entry
     ));
   }
 
@@ -345,6 +360,10 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
       // Request directly from the click, before any storage work can consume user activation.
       const status = await requestGameSourceAccess(source);
       updateStatus(source, status);
+      if (status === "available") {
+        const archiveFiles = await inspectLocalSourceFiles(source, new WeakMap()).catch(() => []);
+        setEntries((current) => current.map((entry) => entry.source === source ? { ...entry, archiveFiles } : entry));
+      }
       setNotice(status === "available" ? "File access allowed. You can now play."
         : status === "permission" ? "File access was not allowed. Try again and allow access in your browser to play."
         : "Could not open the ZIP. Locate the file to reconnect it.");
@@ -352,7 +371,7 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
   }
 
   const disabled = loading || busy || Boolean(importResult);
-  const library = entries.map(({ source, status }) => {
+  const library = entries.map(({ source, status, archiveFiles }) => {
     const knownGame = catalog.find(({ target }) => target === source.target)
       ?? getImportedGamePresentation(/\.zip$/i.test(source.name) ? source.name : source.name + ".zip");
     const title = knownGame?.displayTitle ?? source.name.replace(/\.zip$/i, "");
@@ -365,7 +384,7 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
     const locateLabel = "Locate ZIP";
     const needsAccess = status === "permission";
     return {
-      source, status, game, title, locate, locateLabel,
+      source, status, archiveFiles, game, title, locate, locateLabel,
       action: {
         label: locate ? `${locateLabel} for ${title}` : needsAccess ? `Allow file access for ${title}` : `Play ${title}`,
         buttonLabel: locate ? locateLabel : needsAccess ? "Allow file access" : "Play",

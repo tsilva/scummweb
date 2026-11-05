@@ -44,5 +44,16 @@ export async function prepareLocalZip(node) {
   const file = await node.getFile();
   const files = await scanLocalGameArchive(file);
   const fingerprint = await gameFileFingerprint("zip", files);
-  return { name: file.name, handle: node.handle, data: file, kind: "zip", fingerprint };
+  return { name: file.name, handle: node.handle, data: file, kind: "zip", fingerprint, archiveFiles: files };
+}
+
+export async function inspectLocalSourceFiles(source, cache) {
+  if (source.url || source.handle?.kind !== "file"
+    || await source.handle.queryPermission({ mode: "read" }) !== "granted") return undefined;
+  const file = await source.handle.getFile();
+  const previous = cache.get(source);
+  if (previous?.size === file.size && previous.modified === file.lastModified) return previous.files;
+  const files = scanLocalGameArchive(file);
+  cache.set(source, { size: file.size, modified: file.lastModified, files });
+  return files;
 }
