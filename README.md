@@ -36,6 +36,10 @@ a copy, drop its ZIP onto the page to add it and enable its launch options.
 [Beneath a Steel Sky](https://scummweb.tsilva.eu/beneath-a-steel-sky/play),
 a freeware cyberpunk adventure. The game downloads and unpacks in your browser;
 when the opening scene appears, you’re ready to play.
+The bundled classics also include the English freeware editions of **Sołtys**
+and **Sfinx**, and the original Apple II **Mystery House** public-domain release.
+**God of Thunder** is supported through personal ZIP imports; its game files
+are not included.
 The launch screen shows loading status text without a progress bar. ZIP downloads
 show a percentage in that text when the host provides the total file size.
 Successfully opened games are cached in your browser, so playing the same

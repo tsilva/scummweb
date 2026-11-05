@@ -491,6 +491,33 @@ play page. The verification harness opens the same play page and reads its
 embedded canvas. The native build still uses an HTTP index for its local
 catalog detection step and generates an index for deployed engine data.
 
+### Classic freeware additions
+
+[`data/classic-freeware.json`](../data/classic-freeware.json) pins the official
+English Sołtys v1.0, Sfinx v1.1 and Mystery House archives, source URLs and SHA-256
+checksums. Download those exact files into `downloads/` before rebuilding with
+`SCUMMVM_REUSE_CATALOG=1 pnpm run build:scummvm`. The build installs available
+packages, retains their licenses, registers their targets and regenerates launcher
+metadata without redetecting or removing existing catalog games. A mismatched
+archive fails the build. Missing optional archives leave the existing catalog
+unchanged. Publish and verify the resulting game ZIPs before deploying new targets.
+The normalized ZIPs are written to `dist/games/<gameId>.zip`. Use a file-only
+scoped upload (`--game soltys.zip`, `--game sfinx.zip`, `--game hires1.zip`)
+so an additive catalog rebuild never replaces the remote root filesystem index
+with an incomplete directory inventory. Prepare matching fingerprints before
+publication with `node scripts/generate-bundled-game-files.mjs --local-dir dist/games`;
+it reads available local ZIPs and uses bounded public directory reads for the
+remaining catalog games. Re-run without the option after publication to verify
+the actual hosted ZIPs.
+
+The ADL plugin supports the original Apple II Mystery House disk image; its
+keyboard text commands remain part of gameplay. The GOT plugin supports personal
+God of Thunder ZIP imports. The official `gotfree.zip` is currently excluded from
+public bundling because its included `LICENSE.TXT` prohibits redistribution,
+despite the download page describing it as freeware. Clarify the applicable
+redistribution permission before adding a public game package. Keep the original
+notice intact.
+
 ## Game launch analytics
 
 On `scummweb.tsilva.eu`, GA4 tracks the following events for catalog games,

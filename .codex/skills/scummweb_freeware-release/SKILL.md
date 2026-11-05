@@ -1,138 +1,168 @@
 ---
 name: scummweb_freeware-release
-description: Use when working in the scummweb repo and the user asks to scrape, add, release, deploy, or verify another freeware game from the official ScummVM site. This skill covers sourcing the official download, enabling the matching engine, wiring launcher art and metadata, uploading the game payload to R2, refreshing the managed bundle, verifying launch, and deploying to production unless preview is requested.
+description: Add and verify official ScummVM freeware games in ScummWEB, including engine plugins, checksum-pinned packages, catalog metadata, artwork and R2 delivery. Use for adding, publishing or deploying eligible games; publish and deploy only within the user's requested scope.
 ---
 
-# scummweb Freeware Release
+# scummweb: Freeware Release
 
-Use this skill when a request is effectively "add another official ScummVM freeware game here" or "scrape and release another game from the ScummVM site".
+Work on the current branch. Read `AGENTS.md`, the existing catalog and the relevant
+sections of `docs/maintaining-scummweb.md`. Preserve unrelated staged, unstaged and
+generated changes. An addition request authorizes implementation and verification;
+a production deployment requires publication authorization. In this repository,
+`deploy` means Production unless the user explicitly requests Preview.
 
-## Start Here
+## Select the source and edition
 
-1. Read `AGENTS.md`.
-2. Inspect the current release path in:
-   `scripts/build_bass_web.sh`
-   `app/page.js`
-   `README.md`
-3. Check the worktree before editing. This repo often has unrelated generated changes in `public/` and `bundle/`.
+Use the official [game downloads](https://www.scummvm.org/games/) and archives under
+`https://downloads.scummvm.org/frs/extras/`. Check the actual list: its introductory
+paragraph can omit downloadable games farther down the page. ScummVM hosts the
+packages; do not describe it as their original publisher.
 
-## Official Sources
+Prefer English, then CD, then talkie editions. Other languages require an explicit
+request. Reuse a local archive in `downloads/` when its SHA-256 matches the official
+page. Otherwise download the selected package and verify its published checksum
+before extracting or registering it.
 
-- Official downloads index:
-  `https://www.scummvm.org/games/`
-- Official screenshots index for first-party Revolution titles:
-  `https://www.scummvm.org/screenshots/revolution/`
-- Prefer official ScummVM-hosted download URLs under:
-  `https://downloads.scummvm.org/frs/extras/`
+Inspect the archive's license and release evidence. Free download availability or
+an open-source engine does not establish permission to redistribute game assets.
+Keep every original license and copyright notice. If terms conflict, complete
+engine and personal-import support while withholding public game data. In
+particular, the official `gotfree.zip` currently retains a redistribution ban in
+`LICENSE.TXT`; God of Thunder remains import-only until that conflict is resolved.
+Mystery House's original Apple II package is a public-domain release; retain the
+release-history reference supplied by the installer.
 
-Before redownloading, hash any existing archive in `downloads/` and compare it to the SHA-256 published on the ScummVM games page. If the bytes already match, reuse the local file.
+## Wire the maintained sources
 
-## Variant Selection Rules
+- `scripts/build_scummvm_web.sh` owns the enabled engine/subengine arrays and
+  verifies each compiled plugin. `scripts/normalize_scummvm_shell.py` owns the
+  detected-catalog allowlist. Update both where relevant.
+- `data/classic-freeware.json` and `scripts/install_classic_freeware.py` implement
+  additive, checksum-pinned packages. Extend the existing manifest when its schema
+  and layout handling fit. The installer flattens one enclosing directory,
+  preserves original files, registers stable targets and writes normalized ZIPs.
+  Add explicit handling for genuinely different layouts rather than guessing.
+- Catalog additions run after the tracked configuration is reused. This keeps
+  existing games when their original archives are unavailable. `finalize_scummvm_dist.sh`
+  regenerates `games.json` and notices from the resulting configuration.
+- `app/game-presentation.js` owns bundled presentation; `app/retro-game-artwork.json`
+  owns shared artwork, aliases and original-source attribution. Ensure an imported
+  title and its bundled edition share the correct family. Official archive names
+  such as `gotfree.zip` need appropriate aliases. Where necessary, extend the
+  size/CRC-based rules in `app/archive-game-presentation.mjs`; generic names such
+  as `vol.dat` alone are insufficient identification.
+- Keep platform, language and edition metadata accurate, and retain `(Demo)` at
+  the end of every demo title. Preserve established routes and target/save names.
+- Native Continue eligibility is mirrored in `web-shell/continue-saves.mjs`.
+  For a new engine, compare the pinned native save-list/startup-loading flags and
+  filename conventions. Preserve the existing exclusions and capability tests.
 
-- Always prioritize the English release.
-- Never install a non-English archive unless the user explicitly asks for it.
-- When multiple English variants exist, prefer the CD release over floppy or cut-down releases.
-- When multiple English CD variants exist, prefer the talkie release over non-talkie releases.
-- If the official page offers several archives, inspect filenames, release notes, and checksums carefully before downloading so the chosen archive matches `English -> CD -> talkie` priority.
-- Reflect the chosen variant accurately in launcher copy and verification notes so the installed build is unambiguous.
+Use `$scummweb_game-assets` for artwork. Reuse published logical mappings where
+available; new originals, screenshots and responsive assets must be published and
+verified before activation. Gameplay screenshots stay original captures. Images
+and game ZIPs load directly from the bucket, with provenance and mappings in Git.
 
-## Release Workflow
+Update the README and maintenance guide when supported games or commands change.
+Record edition-specific startup results in `data/game-compatibility.json`, then
+run `node scripts/generate-compatibility-docs.mjs`. Keep run-specific reports and
+screenshots in ignored `.internal/`, following repository exclusion checks.
 
-1. Add or verify the archive in `downloads/`.
-2. Patch `scripts/build_bass_web.sh`:
-   add a `find_optional_archive` pattern for the new game
-   append the archive to `GAME_ARCHIVES`
-   enable the correct ScummVM engine
-   add any special unzip target directory only if the archive layout needs it
-   update any engine allowlist or post-processing prune step so the new engine and game directory survive bundle generation
-3. Update launcher copy in `app/page.js`:
-   add an `artByTarget` entry for the new target
-   store art locally under `public/launcher/`
-   do not rely on manual edits to `public/scummvm.ini` or `public/games.json`; those files are generated and will be overwritten on the next rebuild
-4. Update `README.md` so supported engines and optional archives stay accurate.
-5. Run the build:
+## Rebuild the runtime and catalog
 
-```bash
-./scripts/build_bass_web.sh
+Use `$scummweb_upgrade-scummvm` for engine/patch maintenance. Preserve the pinned
+release and SDK unless an upgrade was requested. Run its offline checker before
+rebuilding; changed native patches or generated adapters require matching ledger
+updates.
+
+```sh
+python3 .codex/skills/scummweb_upgrade-scummvm/scripts/upgrade_check.py --offline
+SCUMMVM_REUSE_CATALOG=1 pnpm run build:scummvm
 ```
 
-6. Upload the new game payload to R2. Prefer a scoped upload when the game lives in its own subdirectory:
+This rebuilds the selected engines and installs available pinned additions from
+`downloads/`. Missing optional archives preserve existing targets; checksum
+mismatches fail the build. Verify that new plugins, required engine data, notices,
+configuration and catalog entries reach `scummvm-shell/`.
 
-```bash
-python3 ./scripts/upload_games_to_r2.py --game <target-or-folder>
+For template-only changes, `pnpm run build:scummvm --shell-only` reuses compiled
+engines. It cannot add an engine. Edit browser templates in `web-shell/`, not the
+generated HTML/JS. Preserve UTF-8 byte encoding before Base64 initialization:
+passing configuration text directly to `btoa()` fails on titles such as Sołtys.
+
+`scummvm-shell/` is the managed source of truth. `pnpm run prepare` validates and
+stages it into `public/`; do not hand-edit generated catalog/runtime files or use
+retired bundle-archive commands. The older catalog detector still invokes Chrome;
+do not run it under the default Brave policy. Use the additive manifest/reuse path
+when appropriate, or adapt detection through the documented Brave runtime.
+
+## Publish eligible packages and artwork
+
+Follow the repository's reviewed credential route. Its current legacy R2 publisher
+uses real keys for local S3 signing; without a compatible reviewed proxy, obtain
+explicit authorization for that scoped raw-credential operation before running
+it. Never fetch/export keys as an implicit fallback. Preserve the pinned vault,
+environment, bucket and launcher. Approval from an earlier operation does not
+cover a later upload.
+
+The current play route consumes `<gameId>.zip`, not a remote directory mount.
+The additive installer writes `dist/games/<gameId>.zip`. Prefer a **file-only**
+scoped upload through the approved launcher, for example:
+
+```sh
+python3 scripts/infisical/run.py publish --game soltys.zip
 ```
 
-If the game is mounted at `/games`, do the full upload instead.
+Do not upload an incomplete root `index.json` from an additive build. Directory
+scopes also overwrite ancestor indexes and can hide existing remote games when
+older payloads are absent locally. Preserve existing objects; pruning or replacing
+published bytes needs the corresponding authorization.
 
-Scoped uploads must keep bucket manifests fresh. The project uploader now overwrites
-the root and ancestor `index.json` manifests during scoped uploads so new
-subdirectory-backed games become discoverable immediately.
+Prepare local ZIP matching metadata before publication if needed:
 
-7. Refresh the managed ScummVM bundle source of truth:
-
-```bash
-npm run archive:scummvm-bundle
+```sh
+node scripts/generate-bundled-game-files.mjs --local-dir dist/games
 ```
 
-8. Run the main verification path:
+After upload, verify exact public ZIP bytes and regenerate from hosted packages:
 
-```bash
-./scripts/verify_bass_web.sh
+```sh
+node scripts/generate-bundled-game-files.mjs
 ```
 
-9. Deploy. In this repo, `deploy` means production unless the user explicitly asks for preview.
-10. Verify the live site after deploy:
-    confirm the homepage/library tile renders
-    launch the game from the production homepage or library link instead of hand-constructing `/scummvm.html#target`
-    check the browser console and runtime log for the actual ScummVM startup line, not just the presence of the target link
-    wait for a real engine-level boot signal such as `Running <game>` and, when possible, capture a production screenshot of the rendered game
+This uses bounded public ZIP-directory reads. Follow the game-assets skill's
+plan, publish, verify and activate procedure for images. Scope plans so unrelated
+pending artwork is not published. Keep local inputs until delivery verification
+and any separately applicable removal authorization are complete.
 
-## Common Failure Modes
+## Verify and deploy
 
-- Engine requested but silently disabled during configure:
-  inspect the configure output and the generated `config.mk` if the new engine does not appear in the built binary. Some engines need extra codec/image dependencies in the Emscripten toolchain before ScummVM will enable them.
-- Game appears in metadata but live ScummVM says `Could not find any engine capable of running the selected game`:
-  the managed bundle was rebuilt without the engine. Check `scripts/build_bass_web.sh`, not `public/`, for the real source-of-truth changes: configure flags, archive extraction, generated `scummvm.ini`, and any engine prune allowlist.
-- Game appears in launcher metadata but fails live with `Game data path does not exist`:
-  check the bucket root `index.json` first. A stale manifest will hide the new game directory from the browser filesystem even when the homepage already shows the new tile.
-- Game files exist but ScummVM does not auto-detect the install:
-  compare the extracted files against the engine detection tables and the generated `scummvm.ini`. If detection still misses the official archive variant, patch the engine detector or append an explicit `scummvm.ini` stanza as a fallback during the build.
-- Launcher art works until the next rebuild and then disappears:
-  the build pipeline is not preserving `launcher/` into the managed bundle. Fix the build/bundle restore path so a fresh `./scripts/build_bass_web.sh` followed by `npm run archive:scummvm-bundle` still contains the new art.
+Run syntax, relevant regression tests and a production application build. Use a
+separate `SCUMMWEB_DIST_DIR` when a local server is running. Do not run preparation
+or rebuild steps concurrently with gameplay verification when their file changes
+would invalidate the active runtime. Preserve existing servers; new npm previews
+use `--port auto`, and report their printed URL.
 
-## Launcher Art Rules
+Use the bundled Browser runtime with explicit `agent.browsers.get("brave")` and
+its documentation. Launch from each game's visible page/library action. Require
+both the correct native `Running <game>` line and a rendered game screen; a target
+selection or removed loading overlay alone is insufficient. Check cold and cached
+starts, input, audio gesture and supported save/resume behavior. Verify a personal
+ZIP import when adding an import-only engine. Use isolated game sessions to avoid
+resource contention; focused canvas key presses are more reliable for text games
+than unfocused accessibility typing. Report unverified checks plainly.
 
-- Prefer official ScummVM-hosted screenshots when possible.
-- Download source images first, then convert them into local `public/launcher/<game>-*.jpg` assets.
-- Good defaults:
-  `heroImage`: the widest, moodiest scene
-  `landscapeImage` and `spotlightImage`: readable scene with a character or landmark
-  `posterImage`: reuse the landscape asset if there is no portrait art
-- Keep assets local. Do not hotlink the official screenshot URLs in the app.
+For an authorized deployment, use `$private-skills_push` and the existing
+`.github/workflows/production-delivery.yml` on the configured production branch.
+Review and commit only the requested release changes; preserve unrelated local
+work. Follow the established HTTPS/`gh` transport and description reconciliation.
+Do not bypass the trusted delivery workflow with a direct Vercel deploy: it waits
+for exact-commit CI, syncs allowlisted Production configuration and verifies the
+resulting deployment. Do not create a GitHub Release, tags or outbound messages
+unless separately requested; messages retain the draft-approval rule.
 
-Useful commands:
-
-```bash
-curl -L --fail -o /tmp/game-shot.png <official-image-url>
-sips -s format jpeg -Z 1600 /tmp/game-shot.png --out public/launcher/<game>-hero.jpg
-sips -g pixelWidth -g pixelHeight public/launcher/<game>-hero.jpg
-```
-
-## Verification Notes
-
-- `public/games.json`, `public/game.json`, `public/scummvm.ini`, `public/source.html`, and `public/scummvm.html` are generated by the build. Do not hand-edit them unless debugging.
-- If you temporarily hand-edit a generated file while debugging, move that change back into the build source of truth before deploy or the next bundle refresh will erase it.
-- `./scripts/verify_bass_web.sh` depends on a local Chrome or Chromium install.
-- Game payloads must be served from the bucket origin, not through the app server in production.
-- Treat `User picked target ...` as necessary but not sufficient. A real successful boot should also avoid `Game data path does not exist`, `Couldn't identify game`, `Could not find any engine capable of running the selected game`, and similar ScummVM warnings in the runtime log.
-
-## Lure Example
-
-For `Lure of the Temptress`, the official English archive is:
-`https://downloads.scummvm.org/frs/extras/Lure of the Temptress/lure-1.1.zip`
-
-The matching published SHA-256 on the ScummVM games page is:
-`f3178245a1483da1168c3a11e70b65d33c389f1f5df63d4f3a356886c1890108`
-
-The official screenshots page exposes usable VGA screenshots under:
-`https://www.scummvm.org/data/screenshots/lure/lure/`
+Monitor the CI and Production delivery runs for the exact pushed SHA. On failure,
+inspect the failed gate and follow its recovery policy. Confirm the intended
+Vercel project/team, Production READY state, commit and live custom-domain alias.
+Then repeat visible library/page launch checks on production and retain a proof
+screenshot. Report local, pushed and verified-live status distinctly, including
+any game withheld from public bundling.

@@ -46,10 +46,11 @@ python3 "$ROOT_DIR/scripts/write_source_info.py" "$DIST_DIR"
 
 if [[ "${SCUMMVM_REUSE_CATALOG:-0}" == 1 ]]; then
   cp "$SHELL_DIR/index.html" "$SHELL_DIR/manifest.json" "$DIST_DIR/"
-else
-  "$NODE_BIN" "$ROOT_DIR/scripts/create_launcher_metadata.mjs" \
-    "$DIST_DIR/scummvm.ini" \
-    "$DIST_DIR/games.json"
+fi
+"$NODE_BIN" "$ROOT_DIR/scripts/create_launcher_metadata.mjs" \
+  "$DIST_DIR/scummvm.ini" \
+  "$DIST_DIR/games.json"
+if [[ "${SCUMMVM_REUSE_CATALOG:-0}" != 1 ]]; then
   python3 "$ROOT_DIR/scripts/write_scummvm_pages.py" "$DIST_DIR"
 fi
 

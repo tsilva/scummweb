@@ -9,8 +9,8 @@ source "$ROOT_DIR/scripts/scummvm-version.sh"
 SCUMMVM_REPO_URL="https://github.com/scummvm/scummvm.git"
 SCUMMVM_DIR="$VENDOR_DIR/scummvm-$SCUMMVM_TAG"
 SCUMMVM_ENGINES=(
-  access agi agos bbvs cge cge2 cine composer cruise draci drascula dreamweb
-  gnap gob groovie hopkins hugo kyra lab lure made mads mohawk neverhood ngi
+  access adl agi agos bbvs cge cge2 cine composer cruise draci drascula dreamweb
+  gnap gob got groovie hopkins hugo kyra lab lure made mads mohawk neverhood ngi
   parallaction pegasus plumbers queen saga sci scumm sherlock sky sword1 sword2
   sword25 teenagent tinsel titanic toltecs tony toon touche tsage tucker voyeur wintermute
 )
@@ -616,6 +616,10 @@ main() {
   if [[ "${SCUMMVM_REUSE_CATALOG:-0}" == 1 ]]; then
     rm -rf "$DIST_DIR/games"
   fi
+
+  log_stage "Install verified classic freeware additions"
+  python3 "$ROOT_DIR/scripts/install_classic_freeware.py" "$DIST_DIR"
+  python3 "$ROOT_DIR/scripts/write_scummvm_http_index.py" "$DIST_DIR/games"
 
   log_stage "Finalize dist shell"
   finalize_dist_workspace

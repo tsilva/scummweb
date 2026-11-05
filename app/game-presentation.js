@@ -47,6 +47,9 @@ const importedScummGames = [
 ];
 
 const artByTarget = {
+  soltys: { ...retroGameArtwork["cge:soltys"], year: "1995" },
+  hires1: { ...retroGameArtwork["adl:hires1"], year: "1980" },
+  got: { ...retroGameArtwork["got:got"], year: "1993" },
   ...Object.fromEntries(importedScummGames.map(({ target, studio, year, summary }) => [target, {
     eyebrow: `${studio} Adventure`,
     genre: "Point-and-click adventure",

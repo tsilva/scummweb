@@ -1141,5 +1141,19 @@
     "widths": [
       320
     ]
+  },
+  "/launcher/classic-got-cover.webp": {
+    "width": 512,
+    "height": 509,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/classic-hires1-cover.webp": {
+    "width": 512,
+    "height": 674,
+    "widths": [
+      320
+    ]
   }
 }

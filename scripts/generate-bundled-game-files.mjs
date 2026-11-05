@@ -1,16 +1,27 @@
 import fs from "node:fs/promises";
-import { HttpRangeReader } from "@zip.js/zip.js";
+import path from "node:path";
+import { HttpRangeReader, Uint8ArrayReader } from "@zip.js/zip.js";
 import { scanGameZipReader, maxLocalGameSize } from "../app/local-game-archive.mjs";
 import { gameFileFingerprint } from "../app/local-game-matching.mjs";
 
 const root = new URL("../", import.meta.url);
+const args = process.argv.slice(2);
+if (args.length && (args.length !== 2 || args[0] !== "--local-dir")) {
+  throw new Error("Usage: node scripts/generate-bundled-game-files.mjs [--local-dir DIRECTORY]");
+}
+const localDir = args[1];
 const catalog = JSON.parse(await fs.readFile(new URL("scummvm-shell/games.json", root))).games;
 const games = {};
 for (const game of catalog) {
   const url = `https://scummvm-games.tsilva.eu/${game.gameId}.zip`;
   const signal = AbortSignal.timeout(30_000);
   let remaining = 2 * 1024 * 1024;
-  const reader = new HttpRangeReader(url, { forceRangeRequests: true, combineSizeEocd: true,
+  const localPath = localDir && path.join(localDir, `${game.gameId}.zip`);
+  const localBytes = localPath && await fs.readFile(localPath).catch((error) => {
+    if (error.code !== "ENOENT") throw error;
+    return null;
+  });
+  const reader = localBytes ? new Uint8ArrayReader(localBytes) : new HttpRangeReader(url, { forceRangeRequests: true, combineSizeEocd: true,
     fetch: async (requestUrl, options) => {
       if (!options.headers?.Range) throw new Error("Only ZIP directory range reads are allowed");
       const response = await fetch(requestUrl, { ...options, redirect: "error", signal });

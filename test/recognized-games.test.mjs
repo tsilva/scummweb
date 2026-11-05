@@ -10,6 +10,18 @@ import { buildGameMetadata, buildGameStructuredData } from "../lib/seo.mjs";
 const bundled = getBundledGameLibrary(library).games;
 const games = getRecognizedGames(bundled);
 
+test("classic freeware has public launch routes while God of Thunder remains import-only", () => {
+  for (const target of ["soltys", "sfinx", "hires1"]) {
+    const game = games.find((entry) => entry.target === target);
+    assert.equal(game.importRequired, false, target);
+    assert.ok(game.playHref.endsWith("/play"), target);
+    assert.ok(game.readmeHref, target);
+  }
+  const got = games.find((entry) => entry.familyId === "got:got");
+  assert.equal(got.importRequired, true);
+  assert.equal(got.playHref, null);
+});
+
 test("every recognized family has one landing page, including separate full games and demos", () => {
   const families = games.map(getGameFamilyKey);
   assert.equal(new Set(families).size, games.length);

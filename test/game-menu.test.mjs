@@ -39,6 +39,6 @@ test("demo and interview editions do not inherit full-game menu support", () => 
 });
 
 test("only bundled games with native menu support expose the shortcut", async () => {
-  const { games } = JSON.parse(await readFile(new URL("../public/games.json", import.meta.url), "utf8"));
+  const { games } = JSON.parse(await readFile(new URL("../scummvm-shell/games.json", import.meta.url), "utf8"));
   assert.deepEqual(games.filter(getGameMenuShortcut).map(({ target }) => target).sort(), ["queen", "sky"]);
 });

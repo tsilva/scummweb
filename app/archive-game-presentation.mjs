@@ -14,6 +14,22 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "God of Thunder",
+    files: [["gotres.dat", 739710, 34139293]],
+  },
+  {
+    title: "Hi-Res Adventure #1: Mystery House",
+    files: [["mysthous.dsk", 143360, 1258297292]],
+  },
+  {
+    title: "Sołtys",
+    files: [["vol.cat", 50176, 623096146], ["vol.dat", 8430868, 1606659223]],
+  },
+  {
+    title: "Sfinx",
+    files: [["vol.cat", 129024, 950468179], ["vol.dat", 34182773, 4051689322]],
+  },
+  {
     title: "Drascula: The Vampire Strikes Back",
     files: [["packet.001", 32847563, 1048178371]],
   },
