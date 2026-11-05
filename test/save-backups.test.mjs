@@ -157,3 +157,57 @@ test("ZIP validation rejects traversal, duplicate slots, wrong families, and unk
   assert.equal(safePath("a\\b"), false);
   assert.equal(destinationMatches(shared, "version-" + "a".repeat(64)), false);
 });
+
+test("every staging failure, including the root commit, leaves the old filesystem intact", async () => {
+  const updates = [{ namespace: "", matches: (name) => name.startsWith("SKY-VM."), files: [file("SKY-VM.002", "new")] }];
+  const initial = storageFixture({ "SKY-VM.001": bytes("current") });
+  let writeCount = 0;
+  const write = initial.setItem;
+  initial.setItem = (key, value) => { writeCount++; write(key, value); };
+  restoreSaveGroups(initial, updates, captureFilesystem(initial).revision);
+  for (let failAt = 1; failAt <= writeCount; failAt++) {
+    const storage = storageFixture({ "SKY-VM.001": bytes("current") });
+    const before = new Map(storage.values);
+    const put = storage.setItem;
+    let calls = 0;
+    storage.setItem = (key, value) => {
+      if (++calls === failAt) throw new DOMException("full", "QuotaExceededError");
+      put(key, value);
+    };
+    assert.throws(() => restoreSaveGroups(storage, updates, captureFilesystem(storage).revision), /current saves are unchanged/);
+    assert.deepEqual(storage.values, before, `write ${failAt} must roll back`);
+  }
+});
+
+test("multiple histories can be preserved while only one set is activated", async () => {
+  const storage = storageFixture();
+  const first = await set(sky, [file("SKY-VM.001", "first")]);
+  const second = await set(sky, [file("SKY-VM.002", "second")]);
+  const preserved = await restore(storage, [first, second], ["imported", "stored"]);
+  assert.equal(preserved.length, 2);
+  assert.deepEqual(captureFilesystem(storage).files.map((item) => item.path), ["SKY-VM.001"]);
+});
+
+test("backup operations refuse a held game lock and runtime locks before mounting", async (t) => {
+  const { withSaveLock, saveLockName } = await import("../app/save-backups/backups.mjs");
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, "navigator");
+  t.after(() => { if (descriptor) Object.defineProperty(globalThis, "navigator", descriptor); else delete globalThis.navigator; });
+  Object.defineProperty(globalThis, "navigator", { configurable: true, value: { locks: {
+    request: async (name, options, use) => {
+      assert.equal(name, saveLockName);
+      assert.equal(options.mode, "exclusive");
+      assert.equal(options.ifAvailable, true);
+      return use(null);
+    },
+  } } });
+  await assert.rejects(withSaveLock(() => assert.fail("must not run while a game holds the lock")), /Close games/);
+  const { readFile } = await import("node:fs/promises");
+  const { runInNewContext } = await import("node:vm");
+  const shell = await readFile(new URL("../scummvm-shell/scummvm.html", import.meta.url), "utf8");
+  const source = shell.slice(shell.indexOf("function acquireSaveSession()"), shell.indexOf("function setupLocalFilesystem()"));
+  let mode;
+  const navigator = { locks: { request: (_name, options, use) => { mode = options.mode; return use({}); } } };
+  await runInNewContext(source + "\nacquireSaveSession()", { navigator, Promise });
+  assert.equal(mode, "shared");
+  assert.match(shell, /acquireSaveSession\(\)\.then\(/);
+});

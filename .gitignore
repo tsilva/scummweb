@@ -1,6 +1,6 @@
 .DS_Store
 .next/
-.next-dev-*/
+.next-*/
 artifacts/
 bundle/*
 !bundle/scummvm-public.zip
@@ -35,5 +35,3 @@ tmp/
 /scummvm-shell/launcher/optimized/
 /scummvm-shell/launcher/*.avif
 /image-assets/sources/road-gameplay.jpg
-/.next-continue-dev/
-/.next-continue-build/

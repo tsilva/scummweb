@@ -619,18 +619,6 @@ export default function GameRouteFrame({
     setIsFillScreenAspect((currentValue) => !currentValue);
   }
 
-  const showBootProgress =
-    typeof bootState.bootProgressValue === "number" &&
-    Number.isFinite(bootState.bootProgressValue) &&
-    typeof bootState.bootProgressMax === "number" &&
-    Number.isFinite(bootState.bootProgressMax) &&
-    bootState.bootProgressMax > 0;
-  const bootProgressPercent = showBootProgress
-    ? Math.max(
-        0,
-        Math.min(100, Math.round((bootState.bootProgressValue / bootState.bootProgressMax) * 100)),
-      )
-    : null;
   const showSkipIntroAction = bootState.showSkipIntroButton && skipIntro && !bootState.hasBootFailed;
   const showSkipIntroOverlayAction = showSkipIntroAction && showBootOverlay;
   const showSkipIntroBottomAction = showSkipIntroAction && !showBootOverlay;
@@ -653,7 +641,6 @@ export default function GameRouteFrame({
   return (
     <div className="game-route-shell" ref={shellRef}>
       <GameBootOverlay
-        bootProgressPercent={bootProgressPercent}
         bootStatusText={archiveError || (loadArchive && !archivePrepared
           ? archiveCached ? "Opening cached game…" : archiveProgress === null ? archiveLoadingText : `Downloading game ZIP (${archiveProgress}%)…`
           : bootState.bootStatusText)}
@@ -662,7 +649,6 @@ export default function GameRouteFrame({
         onSkipIntro={handleSkipIntroClick}
         showSkipIntroAction={showSkipIntroOverlayAction}
         showBootOverlay={showBootOverlay}
-        showBootProgress={showBootProgress}
         title={title}
       />
       <GameMobileOverlay

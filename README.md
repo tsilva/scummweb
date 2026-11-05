@@ -33,7 +33,8 @@ a copy, drop its ZIP onto the page to add it and enable its launch options.
 [Beneath a Steel Sky](https://scummweb.tsilva.eu/beneath-a-steel-sky/play),
 a freeware cyberpunk adventure. The game downloads and unpacks in your browser;
 when the opening scene appears, you’re ready to play.
-ZIP downloads show a percentage when the host provides the total file size.
+The launch screen shows loading status text without a progress bar. ZIP downloads
+show a percentage in that text when the host provides the total file size.
 Successfully opened games are cached in your browser, so playing the same
 URL again skips downloading and unpacking the ZIP. The cache holds up to four
 games; clearing site data or ending an incognito session removes them.

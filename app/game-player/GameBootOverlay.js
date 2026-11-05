@@ -1,14 +1,12 @@
 import { getHeroImageStyle } from "../home-shell/shared";
 
 export default function GameBootOverlay({
-  bootProgressPercent,
   bootStatusText,
   game,
   hasBootFailed,
   onSkipIntro,
   showSkipIntroAction,
   showBootOverlay,
-  showBootProgress,
   title,
 }) {
   return (
@@ -53,17 +51,6 @@ export default function GameBootOverlay({
             <p className="game-route-boot-status-text" data-launch-status="true">
               {bootStatusText}
             </p>
-            {showBootProgress ? (
-              <div className="game-route-boot-progress-shell">
-                <div className="game-route-boot-progress-track" aria-hidden="true">
-                  <div
-                    className="game-route-boot-progress-fill"
-                    style={{ width: `${bootProgressPercent}%` }}
-                  />
-                </div>
-                <span className="game-route-boot-progress-value">{bootProgressPercent}%</span>
-              </div>
-            ) : null}
             {showSkipIntroAction ? (
               <div className="game-route-boot-actions">
                 <button
