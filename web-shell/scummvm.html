@@ -37,8 +37,14 @@ window.ScummvmFSReady = (async () => {
     performance.mark(`scummweb:index:${name}`);
     const filesystem = new ScummvmFS(null, index);
     const engine = params.get("engine");
-    if (name === "data" && /^[a-z0-9_-]+$/.test(engine || "")) {
-      await filesystem.prefetch(`/plugins/lib${engine}.so`);
+    if (name === "data") {
+      // These headers/themes are read by the native GUI before any game frame.
+      // Fetch only the translation prefix that startup consumes.
+      const pending = [filesystem.prefetch("/translations.dat", { maxBytes: 1024 * 1024 }),
+        ...["shaders.dat", "scummmodern.zip", "helpdialog.zip", "residualvm.zip",
+          "scummremastered.zip", "wintermute.zip", "scummclassic.zip"].map(path => filesystem.prefetch(`/${path}`))];
+      if (/^[a-z0-9_-]+$/.test(engine || "")) pending.push(filesystem.prefetch(`/plugins/lib${engine}.so`));
+      await Promise.all(pending);
     }
     return { name, filesystem };
   }));
@@ -239,7 +245,7 @@ function reportLocalGameStatus(status) {
 async function setupLocalGame() {
   const { LocalGameFS } = await window.ScummvmFSReady;
   return new Promise((resolve, reject) => {
-    function receiveFiles(event) {
+    async function receiveFiles(event) {
       if (event.source !== window.parent || event.origin !== scummwebLaunchUrl.origin ||
           event.data?.type !== "scummweb:local-game-files") return;
 
@@ -255,7 +261,9 @@ async function setupLocalGame() {
           }
         }
         if (files.some(({ blob }) => blob instanceof Blob)) {
-          FS.mount(new LocalGameFS(FS, files), {}, gameDirectory);
+          const filesystem = new LocalGameFS(FS, files);
+          await filesystem.prefetchSmallFiles();
+          FS.mount(filesystem, {}, gameDirectory);
           resolve();
           return;
         }
@@ -398,18 +406,28 @@ const allowGameCursor=()=>{canvas.classList.remove(visibleCursorClass)};
 const showGrabHint=()=>{grabHint.classList.add(visibleHintClass)};
 const hideGrabHint=()=>{grabHint.classList.remove(visibleHintClass)};
 const hasLaunchOutput=()=>Boolean(launchPattern&&output&&launchPattern.test(output.value||""));
-const hasRenderableGameFrame=()=>{if(!readyFrameContext||!canvas.width||!canvas.height)return false;try{readyFrameContext.clearRect(0,0,readyFrameSampleSize,readyFrameSampleSize);readyFrameContext.drawImage(canvas,0,0,readyFrameSampleSize,readyFrameSampleSize);const{data}=readyFrameContext.getImageData(0,0,readyFrameSampleSize,readyFrameSampleSize);let brightSampleCount=0;for(let offset=0;offset<data.length;offset+=4){if(data[offset+3]===0)continue;const brightness=data[offset]+data[offset+1]+data[offset+2];if(brightness<=24)continue;brightSampleCount+=1;if(brightSampleCount>=48)return true}}catch{}return false};
+const hasRenderableGameFrame=()=>{if(globalThis.__scummwebNativeFrames||!readyFrameContext||!canvas.width||!canvas.height)return false;try{readyFrameContext.clearRect(0,0,readyFrameSampleSize,readyFrameSampleSize);readyFrameContext.drawImage(canvas,0,0,readyFrameSampleSize,readyFrameSampleSize);const{data}=readyFrameContext.getImageData(0,0,readyFrameSampleSize,readyFrameSampleSize);let brightSampleCount=0;for(let offset=0;offset<data.length;offset+=4){if(data[offset+3]===0)continue;const brightness=data[offset]+data[offset+1]+data[offset+2];if(brightness<=24)continue;brightSampleCount+=1;if(brightSampleCount>=48)return true}}catch{}return false};
 const setGameRunning=reason=>{if(gameRunning)return false;gameRunning=true;if(launchPollTimer){window.clearInterval(launchPollTimer);launchPollTimer=0}if(readyFramePollTimer){window.clearTimeout(readyFramePollTimer);readyFramePollTimer=0}readyFramePollStartedAt=0;emitGameReady(reason);stopObservingFrame();return true};
 const scheduleReadySignal=()=>{if(gameRunning)return false;markAwaitingFrame();if(hasRenderableGameFrame()){if(setGameRunning("rendered-frame-detected"))syncCursorPrompt();return true}if(readyFramePollTimer)return false;if(!readyFramePollStartedAt){readyFramePollStartedAt=Date.now()}const checkReadyFrame=()=>{readyFramePollTimer=0;if(gameRunning)return;if(hasRenderableGameFrame()){if(setGameRunning("rendered-frame-detected"))syncCursorPrompt();return}if(Date.now()-readyFramePollStartedAt>=readyFrameTimeoutMs){if(setGameRunning("rendered-frame-timeout"))syncCursorPrompt();return}readyFramePollTimer=window.setTimeout(checkReadyFrame,readyFramePollIntervalMs)};readyFramePollTimer=window.setTimeout(checkReadyFrame,readyFramePollIntervalMs);return true};
 const scheduleGameRunning=()=>{if(gameRunning)return false;markLaunchDetected();if(launchPollTimer){window.clearInterval(launchPollTimer);launchPollTimer=0}return scheduleReadySignal()};
 const syncCursorPrompt=()=>{if(!gameRunning&&hasLaunchOutput())scheduleGameRunning();if(gameRunning&&hoverActive){showBrowserCursor();showGrabHint();return}hideGrabHint();allowGameCursor()};
-stopObservingFrame=observeCanvasPresentation(canvas,()=>{
+const acceptGameFrame=(presentation="canvas")=>{
   if(gameRunning)return true;
   if(!hasLaunchOutput())return false;
+  canvas.dataset.scummwebPresentation=presentation;
   markLaunchDetected();
   if(setGameRunning("rendered-frame-detected"))syncCursorPrompt();
   return true;
-});
+};
+globalThis.__scummwebOnGameFrame=()=>{
+  const accepted=acceptGameFrame("native");
+  if(accepted)delete globalThis.__scummwebOnGameFrame;
+  return accepted;
+};
+stopObservingFrame=observeCanvasPresentation(canvas,()=>{
+  if(globalThis.__scummwebNativeFrames)return false;
+  return acceptGameFrame();
+},type=>{canvas.dataset.scummwebRenderer=type});
 const promptCursorGrab=()=>{hoverActive=true;syncCursorPrompt()};
 const clearCursorPrompt=()=>{hoverActive=false;syncCursorPrompt()};
 const releaseCursorPrompt=()=>{hideGrabHint();allowGameCursor()};

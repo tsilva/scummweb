@@ -56,6 +56,7 @@ for (const message of ["This ZIP link returned HTTP 404.", "Could not download t
         if (name.endsWith("/useTouchCursorPad")) return { useTouchCursorPad: () => ({}) };
         if (name.endsWith("/game-launch-analytics.mjs")) return { createGameLaunchAnalytics: () => ({ start() {}, fail() {} }) };
         if (name === "./recent-games") return { recordRecentGameTarget() {} };
+        if (name.endsWith("/startup-diagnostics.mjs")) return { observeStartupDiagnostics() {} };
         return {};
       },
     });
@@ -83,7 +84,7 @@ for (const message of ["This ZIP link returned HTTP 404.", "Could not download t
   });
 }
 
-function pendingArchivePlayer() {
+function pendingArchivePlayer({ stalledNavigation = false } = {}) {
   const archive = Promise.withResolvers();
   const hooks = [];
   const messages = new Set();
@@ -95,9 +96,10 @@ function pendingArchivePlayer() {
   let layouts = [];
   let effects = [];
   let loadCount = 0;
+  let confirmations = 0;
   const frame = {
     contentDocument: { URL: "about:blank", getElementById: () => null },
-    contentWindow: { focus() {}, postMessage() {}, location: { replace(href) { frame.contentDocument.URL = href; } } },
+    contentWindow: { focus() {}, postMessage() {}, location: { replace(href) { if (!stalledNavigation) frame.contentDocument.URL = href; } } },
     addEventListener() {}, removeEventListener() {}, focus() {},
   };
   const window = {
@@ -128,6 +130,7 @@ function pendingArchivePlayer() {
   const module = { exports: {} };
   runInNewContext(code, {
     module, exports: module.exports, window, URL, URLSearchParams, AbortController, HTMLElement: class {},
+    fetch: async () => ({ ok: true, text: async () => "<html><head></head><body></body></html>" }),
     require(name) {
       if (name === "react") return {
         useState(initial) {
@@ -156,7 +159,8 @@ function pendingArchivePlayer() {
       if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({}) };
       if (name.endsWith("/useTouchClickMode")) return { useTouchClickActions: () => ({}) };
       if (name.endsWith("/useTouchCursorPad")) return { useTouchCursorPad: () => ({}) };
-      if (name.endsWith("/game-launch-analytics.mjs")) return { createGameLaunchAnalytics: () => ({ start() {}, fail() {} }) };
+      if (name.endsWith("/game-launch-analytics.mjs")) return { createGameLaunchAnalytics: () => ({ start() {}, fail() {}, confirm() { confirmations++; } }) };
+      if (name.endsWith("/startup-diagnostics.mjs")) return { observeStartupDiagnostics() {} };
       if (name === "./recent-games") return { recordRecentGameTarget() {} };
       if (name.endsWith("/zip-game-player")) return { sendZipGameFiles: (receiver, files) => deliveries.push({ receiver, files }) };
       return {};
@@ -180,13 +184,33 @@ function pendingArchivePlayer() {
     archive, frame, deliveries, timers, render,
     get children() { return children; },
     get loadCount() { return loadCount; },
+    get confirmations() { return confirmations; },
     get overlay() { return children.find(({ type }) => type === Overlay).props; },
     ready(origin = window.location.origin, source = frame.contentWindow) {
       for (const handler of [...messages]) handler({ origin, source, data: { type: "scummweb:local-game-ready" } });
     },
+    gameReady(href) {
+      for (const handler of [...messages]) handler({ origin: window.location.origin, source: frame.contentWindow,
+        data: { type: "scummvm-ready", source: "scummweb", target: "sky", href, reason: "rendered-frame-detected" } });
+    },
     unmount() { for (const hook of hooks) hook?.cleanup?.(); },
   };
 }
+
+test("a slow archive keeps the fallback frame identity through the first-frame message", async () => {
+  const player = pendingArchivePlayer({ stalledNavigation: true });
+  player.render();
+  await [...player.timers.values()].find(({ delay }) => delay === 8000).callback();
+  player.render();
+  player.ready();
+  player.archive.resolve([{ path: "sky.dnr", data: Uint8Array.of(1) }]);
+  await new Promise(setImmediate);
+  player.render();
+  assert.equal(player.deliveries.length, 1);
+  player.gameReady("/scummvm.html?localGame=1&launchRetry=inline#sky");
+  assert.equal(player.confirmations, 1, "the parent accepts the actual fallback frame's ready message");
+  player.unmount();
+});
 
 for (const runtimeFirst of [true, false]) {
   test(`parallel launch hands off exactly once when ${runtimeFirst ? "runtime" : "archive"} is ready first`, async () => {

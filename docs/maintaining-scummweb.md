@@ -31,9 +31,15 @@ available so you can return to the library, including games with intro skipping.
 
 Archive preparation and ScummVM startup run concurrently. BrowserFS and the
 selected catalog engine module load alongside the main runtime. The boot overlay
-accepts an actual SDL canvas presentation, including a dark intro frame; the
-pixel detector remains a fallback for other renderers. Intro skipping remains
-an explicit action.
+accepts a native game presentation, including a dark intro frame. The native
+OpenGL signal excludes ScummVM's splash and GUI overlays; canvas draw observers
+and the pixel detector remain fallbacks for other renderers. Intro skipping
+remains an explicit action.
+The native GUI's startup themes and translation prefix also prefetch in parallel;
+later reads reuse their binary buffers. Range responses must match the requested
+prefix and indexed file size, and failed hints retain the ordinary read path.
+Prepared games prewarm small files asynchronously, preferring shallow paths,
+within the same 8 MiB memory cache. Larger files remain backed by Blob slices.
 
 The **Recently Played** strip shows only games you have launched, newest first,
 including imported ZIPs. Different editions of a title share one card, and
@@ -273,6 +279,13 @@ For startup diagnosis, parent-frame Performance marks record `scummweb:runtime-r
 `scummweb:wasm-ready`, `scummweb:filesystems-ready`, and `scummweb:first-game-frame`.
 Compare timestamps using each frame's `performance.timeOrigin`; test cold,
 prepared-cache and legacy-cache launches separately.
+Append `?startupTrace=1` to a player URL to print one `[scummweb:startup]`
+console record when its first frame is ready. It includes both frames' marks,
+resource paths and timings, and the renderer when available. Request queries,
+Blob identities, saves and game bytes are excluded; the report stays in the
+local console. Omit the query to disable collection.
+For prepared games, the report also totals local file reads, bytes and elapsed
+read time without recording filenames.
 
 `pnpm run build:scummvm` checks out the pinned release into
 `vendor/scummvm-<tag>/`, applies the ScummWEB patches, builds WebAssembly and
