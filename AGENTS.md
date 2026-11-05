@@ -7,6 +7,7 @@ Repo notes for coding agents working in `scummweb`.
 - The playable entry is Beneath a Steel Sky from `downloads/bass-cd-1.2.zip`, launched through `/scummvm.html#sky`.
 - End every user-facing game demo title with `(Demo)`, for example `The Secret of Monkey Island (Demo)`. Put platform, language, and edition details in separate metadata fields.
 - Game assets should be accessed directly through the bucket origin, not proxied through the app server.
+- Game artwork storage is controlled by `data/artwork-storage.json`. Published images use immutable R2 object URLs; keep logical game mappings and source credits in Git. Until `published` is true, artwork remains local. Follow the artwork publishing procedure in `docs/maintaining-scummweb.md`; upload and verify all objects before activation or removal of originals. `launcher/notices/` and `launcher/skip-intro/` remain runtime assets in Git.
 - Keep user-facing documentation and test-status pages free of personal machine paths, storage-device names, browser-profile details, and agent tool logs. Describe game compatibility results and limitations in product terms.
 - In this repo, when the user says `deploy`, treat it as a production deploy by default unless they explicitly ask for preview.
 - For agent browser interactions and rendered checks, follow the global Browser Use and Testing policy through its documented runtime.

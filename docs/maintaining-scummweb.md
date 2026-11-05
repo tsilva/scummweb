@@ -197,7 +197,7 @@ server or build from replacing the audit's runtime chunks. Vercel Web Analytics
 loads only in Vercel builds, where its platform-provided endpoint exists;
 Google Analytics remains enabled on other hosts.
 
-`prepare` generates 320px and 640px WebP poster variants under
+For local artwork, `prepare` generates 320px and 640px WebP poster variants under
 `scummvm-shell/launcher/responsive/` before staging the managed shell. The
 generator retains each original, skips upscaling and larger encodings, and
 records actual dimensions in `data/artwork-renditions.json`. Browser selection
@@ -363,6 +363,55 @@ acquisition. Analyze `game_launch_failed` separately. To report on the custom fi
 `game_slug`, `entry_point`, `launch_mode`, and `failure_reason` as event-scoped
 custom dimensions and `load_time_ms` as a custom metric.
 
+## Artwork storage and publishing
+
+[`data/artwork-storage.json`](../data/artwork-storage.json) controls game image
+delivery. With `published: false`, images remain local. With `published: true`,
+the browser loads registered images directly from the existing R2 bucket at
+`https://scummvm-games.tsilva.eu/artwork/<sha256>/<filename>`. There is no app
+proxy. Each record retains its logical path, SHA-256, size, MIME type and image
+dimensions. Changed bytes get a new URL; retain older objects for older deployments.
+
+Game mappings and source credits stay in `app/game-presentation.js`,
+`app/retro-game-artwork.json`, and this guide. Responsive width mappings remain
+in `data/artwork-renditions.json`. The Road source capture is included; branding,
+runtime notices, and skip-intro saves stay in Git. Source paths in provenance
+records are logical identifiers after migration, resolved through the storage manifest.
+
+To migrate or update artwork:
+
+1. Place new or revised originals in `scummvm-shell/launcher/`, update game mappings
+   and source credits, and run `pnpm run generate:artwork`. Upload inputs are ignored
+   for new files; existing tracked originals remain until the initial migration completes.
+2. Run `pnpm run artwork:plan`. This retains the active manifest, creates a private
+   upload plan, and preserves content-addressed copies of every local image.
+   Published mappings without local originals are retained for subsequent updates.
+3. Through a reviewed publishing credential route, run `pnpm run publish:artwork`.
+   The existing launcher uses the pinned ScummWEB Development R2 pair and bucket;
+   agents require explicit authorization for that raw credential operation until
+   a compatible broker is reviewed. The uploader never loads dotenv, overwrites
+   an existing object, prunes objects, or changes bucket settings. Every object
+   is read back and checked for its exact bytes and HTTP metadata.
+4. Run `pnpm run artwork:verify`, then `pnpm run artwork:activate`. Activation
+   independently checks every public image's SHA-256, length, MIME type and
+   immutable cache metadata before writing the tracked storage manifest.
+5. Run `pnpm run artwork:retire-local` to verify delivery again, preserve exact
+   private copies, and remove the registered image binaries from the shell,
+   public staging directory, and existing dist staging directory. It rejects
+   changed local originals. Notices and skip-intro saves are preserved.
+6. Run `pnpm run prepare`, `pnpm run lint`, `pnpm test`, and a production build.
+   Check covers, heroes and galleries in the browser before publishing the change.
+
+Normal builds need no storage credentials. Social-card generation uses verified
+local or cached image bytes, downloading checksum-verified originals from the
+public bucket when necessary. A fresh checkout therefore needs network access
+to R2 during generation. Responsive variants are published images, so their
+existing width mappings survive builds without local originals.
+
+Game publishing with `--prune` preserves the reserved `artwork/` namespace.
+Artwork retirement does not rewrite Git history. Old image revisions remain
+in earlier commits.
+
 ## Branding
 
 The README uses the Adventure Terminal [logo](../logo.png). The original
@@ -386,11 +435,12 @@ Terminal artwork.
 
 ### Social preview assets
 
-Game cards are generated offline by `pnpm generate:social-cards`, also run by
+Game cards are rendered by `pnpm generate:social-cards`, also run by
 `prepare` before development, production builds, and start. The generator uses
-the same bundled catalog and presentation copy as game pages, embeds local artwork,
+the same bundled catalog and presentation copy as game pages, embeds verified artwork bytes,
 and writes 1200×630 PNGs under `public/social-cards/`. It never requests a deployed
-site or an image service. The homepage continues using its existing branding PNG.
+site or an image rendering service. Published source images are downloaded from R2
+when absent from the local build cache. The homepage continues using its existing branding PNG.
 
 `data/social-cards.json` records each card's rendered inputs and artwork hash,
 output filename, and PNG checksum. Unchanged inputs reuse the existing file
@@ -402,9 +452,9 @@ generated directory. Missing or corrupted PNGs are repaired. Missing source
 artwork or a failed render fails the command, preserving the last valid manifest.
 
 After editing catalog copy or artwork, run the generator and commit the resulting
-manifest and PNG additions/deletions with the source changes. Keeping these files
-in Git allows clean CI and Vercel builds to reuse cards rather than rerendering
-every image. Builds reconcile again to catch missed changes. Rendering uses the
+manifest with the source changes. PNG outputs are ignored build artifacts;
+clean CI and Vercel builds regenerate missing cards from their verified sources.
+Builds reconcile again to catch missed changes. Rendering uses the
 pinned Next.js image renderer and Sharp; it needs no service credentials.
 
 Metadata points directly to content-versioned PNG URLs with immutable caching.
@@ -420,7 +470,10 @@ or request-time rendering.
 - To include The Secret of Monkey Island (Demo) in a catalog rebuild, place the
   [English DOS EGA demo ZIP](https://downloads.scummvm.org/frs/demos/scumm/monkey1-dos-ega-demo-en.zip)
   in `downloads/` as `monkey1-dos-ega-demo-en.zip`.
-- Catalog hero banners live in [`scummvm-shell/launcher/`](../scummvm-shell/launcher/).
+- Catalog hero banners, covers, and screenshots are delivered directly from R2.
+  Their logical paths and object checksums are recorded in
+  [`data/artwork-storage.json`](../data/artwork-storage.json). New upload inputs
+  temporarily use `scummvm-shell/launcher/` as described in the publishing procedure.
   The banners use ImageGen-restored promotional art. Screenshot galleries retain
   the original captures.
 - The Secret of Monkey Island (Demo) uses

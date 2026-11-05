@@ -10,6 +10,7 @@ import sharp from "sharp";
 import { getBundledGameLibrary } from "../lib/catalog.mjs";
 import { getSocialCardData } from "../lib/social-card-data.mjs";
 import { getRecognizedGames } from "../app/recognized-games.mjs";
+import { readArtworkFile } from "./artwork-files.mjs";
 
 const rootDir = fileURLToPath(new URL("../", import.meta.url));
 const generatedName = /^[a-z0-9]+(?:-[a-z0-9]+)*-[a-f0-9]{64}\.png$/;
@@ -72,7 +73,8 @@ export async function generateSocialCards({
         const assetRoot = path.join(root, card.artwork.startsWith("/launcher/") ? "scummvm-shell" : "public");
         const assetPath = path.resolve(assetRoot, `.${decodeURIComponent(card.artwork)}`);
         if (!assetPath.startsWith(`${assetRoot}${path.sep}`)) throw new Error("Artwork escapes asset root");
-        artwork = await fs.readFile(assetPath);
+        artwork = card.artwork.startsWith("/launcher/")
+          ? await readArtworkFile(root, card.artwork) : await fs.readFile(assetPath);
       }
       const inputHash = hash(JSON.stringify({ rendererVersion, card, artworkHash: artwork ? hash(artwork) : null }));
       const file = `${game.slug}-${inputHash}.png`;

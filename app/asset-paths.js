@@ -1,5 +1,6 @@
 import sourceInfo from "../scummvm-shell/source-info.json" with { type: "json" };
 import runtimeAssets from "../scummvm-shell/runtime-version.json" with { type: "json" };
+import { artworkUrl } from "../lib/artwork-storage.mjs";
 
 function sanitizeAssetVersion(rawVersion) {
   return rawVersion.replace(/[^a-zA-Z0-9._-]+/g, "-");
@@ -32,6 +33,8 @@ function appendAssetVersion(url) {
 }
 
 export function buildVersionedAssetPath(assetPath, options = {}) {
+  const artwork = artworkUrl(assetPath);
+  if (artwork !== assetPath) return artwork;
   if (!assetPath || !assetPath.startsWith("/")) {
     return assetPath;
   }

@@ -20,7 +20,12 @@
     "secrets:check": "python3 scripts/infisical/run.py check",
     "test:secrets": "python3 -m unittest discover -s scripts/infisical -p test_secrets.py",
     "secrets:sync:production": "python3 scripts/infisical/sync_production.py",
-    "generate:artwork": "node ./scripts/generate-artwork-renditions.mjs"
+    "generate:artwork": "node ./scripts/generate-artwork-renditions.mjs",
+    "artwork:plan": "node ./scripts/artwork-storage.mjs plan",
+    "artwork:verify": "node ./scripts/artwork-storage.mjs verify",
+    "artwork:activate": "node ./scripts/artwork-storage.mjs activate",
+    "artwork:retire-local": "node ./scripts/artwork-storage.mjs retire-local",
+    "publish:artwork": "python3 scripts/infisical/run.py publish-artwork"
   },
   "dependencies": {
     "@sentry/nextjs": "10.75.2",

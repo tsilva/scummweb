@@ -3,6 +3,7 @@ import fs from "node:fs";
 import { createHash } from "node:crypto";
 import test from "node:test";
 import { getImportedGamePresentation } from "../app/game-presentation.js";
+import storage from "../data/artwork-storage.json" with { type: "json" };
 
 const artwork = JSON.parse(fs.readFileSync(new URL("../app/retro-game-artwork.json", import.meta.url)));
 
@@ -29,6 +30,10 @@ test("recognized galleries have three distinct managed images with explicit sour
   for (const [id, game] of Object.entries(artwork)) {
     assert.equal(game.screenshots.length, limited.get(id) || 3, id);
     const hashes = game.screenshots.map((path) => {
+      if (storage.published) {
+        assert.ok(storage.files[path], `${id} needs a published image mapping`);
+        return storage.files[path].sha256;
+      }
       const bytes = fs.readFileSync(new URL(`../scummvm-shell${path}`, import.meta.url));
       return createHash("sha256").update(bytes).digest("hex");
     });

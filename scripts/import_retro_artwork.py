@@ -22,6 +22,7 @@ SOURCE_HOSTS = {
     "thumbnails.libretro.com",
     "www.gamerscreed.com",
     "www.scummvm.org",
+    "scummvm-games.tsilva.eu",
 }
 
 
@@ -111,8 +112,18 @@ def generate(task, args):
             download(source["url"], original)
         elif "path" in source:
             original = (ROOT / source["path"]).resolve()
-            if not original.is_relative_to(ROOT / "image-assets" / "sources") or not original.is_file():
+            if not original.is_relative_to(ROOT / "image-assets" / "sources"):
                 raise ValueError(f"Invalid local artwork source: {source['path']}")
+            if not original.is_file():
+                storage = json.loads((ROOT / "data/artwork-storage.json").read_text())
+                entry = storage["files"].get("/" + source["path"])
+                if not storage["published"] or not entry or storage["origin"] != "https://scummvm-games.tsilva.eu":
+                    raise ValueError("Missing artwork source; publish its storage mapping first")
+                original = temporary / "original"
+                download(storage["origin"] + "/" + entry["key"], original)
+                import hashlib
+                if hashlib.sha256(original.read_bytes()).hexdigest() != entry["sha256"]:
+                    raise ValueError("Artwork source checksum mismatch")
         render(source["kind"], title, original, output, args.font)
         os.replace(output, destination)
     return True
