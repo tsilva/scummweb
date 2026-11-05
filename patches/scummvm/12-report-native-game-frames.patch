@@ -1,0 +1,51 @@
+diff --git a/backends/graphics/opengl/opengl-graphics.cpp b/backends/graphics/opengl/opengl-graphics.cpp
+index 459563a8..003e85f4 100644
+--- a/backends/graphics/opengl/opengl-graphics.cpp
++++ b/backends/graphics/opengl/opengl-graphics.cpp
+@@ -20,6 +20,12 @@
+  */
+ 
+ 
++#ifdef __EMSCRIPTEN__
++#include <emscripten.h>
++#include "gui/gui-manager.h"
++extern bool splash;
++#endif
++
+ #include "backends/graphics/opengl/opengl-graphics.h"
+ #include "backends/graphics/opengl/texture.h"
+ #include "backends/graphics/opengl/pipelines/pipeline.h"
+@@ -726,6 +732,14 @@ void OpenGLGraphicsManager::renderCursor() {
+ }
+ 
+ void OpenGLGraphicsManager::updateScreen() {
++#ifdef __EMSCRIPTEN__
++	static bool announcedFrameObserver = false;
++	static bool reportedGameFrame = false;
++	if (!announcedFrameObserver) {
++		EM_ASM({ globalThis.__scummwebNativeFrames = true; });
++		announcedFrameObserver = true;
++	}
++#endif
+ 	if ((!_gameScreen
+ #if defined(USE_OPENGL_GAME) || defined(USE_OPENGL_SHADERS)
+ 		&& !_renderer3d
+@@ -945,6 +959,18 @@ void OpenGLGraphicsManager::updateScreen() {
+ 	_forceRedraw = false;
+ 	refreshScreen();
+ 
++#ifdef __EMSCRIPTEN__
++	// A WebGL draw may belong to the splash or a GUI overlay. Notify the
++	// host only after presenting an engine frame without either overlay.
++	if (!reportedGameFrame && g_engine && !_overlayVisible &&
++	    (splash || GUI::GuiManager::instance()._launched)) {
++		reportedGameFrame = EM_ASM_INT({
++			return typeof globalThis.__scummwebOnGameFrame === 'function' &&
++				globalThis.__scummwebOnGameFrame() ? 1 : 0;
++		});
++	}
++#endif
++
+ #if defined(USE_OPENGL_GAME) || defined(USE_OPENGL_SHADERS)
+ 	if (_renderer3d) {
+ 		_renderer3d->enter3D();

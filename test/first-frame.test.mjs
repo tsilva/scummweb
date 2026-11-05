@@ -37,3 +37,34 @@ test("a failed canvas write never reports readiness and cleanup preserves later 
   stop();
   assert.equal(context.putImageData, replacement);
 });
+
+for (const type of ["webgl", "webgl2", "experimental-webgl"]) {
+  test(`${type} context discovery does not mistake splash draws for game readiness`, () => {
+    const draw = () => 7;
+    const context = { drawElements: draw };
+    const canvas = { getContext: () => context };
+    const observed = [];
+    let accepted = 0;
+    observeCanvasPresentation(canvas, () => { accepted++; return true; }, value => observed.push(value));
+    assert.equal(canvas.getContext(type), context);
+    assert.equal(context.drawElements(), 7);
+    assert.equal(context.drawElements, draw);
+    assert.equal(accepted, 0);
+    assert.deepEqual(observed, [type]);
+  });
+}
+
+test("a runtime-owned getContext wrapper does not reinstall observers after cleanup", () => {
+  const original = () => {};
+  const context = { putImageData: original };
+  const canvas = { getContext: () => context };
+  const stop = observeCanvasPresentation(canvas, () => true);
+  const observed = canvas.getContext;
+  const runtimeWrapper = (...args) => observed(...args);
+  canvas.getContext = runtimeWrapper;
+  canvas.getContext("2d");
+  stop();
+  canvas.getContext("2d");
+  assert.equal(context.putImageData, original);
+  assert.equal(canvas.getContext, runtimeWrapper);
+});

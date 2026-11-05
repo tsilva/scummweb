@@ -10,6 +10,7 @@ import GameMobileOverlay from "./game-player/GameMobileOverlay";
 import GamePlayerControls from "./game-player/GamePlayerControls";
 import GameTouchCursorPad from "./game-player/GameTouchCursorPad";
 import { createGameLaunchAnalytics } from "./game-player/game-launch-analytics.mjs";
+import { observeStartupDiagnostics } from "./game-player/startup-diagnostics.mjs";
 import { dispatchSyntheticKeypressSequence } from "./game-player/keyboard";
 import { useBootState } from "./game-player/useBootState";
 import { useImmersiveMode } from "./game-player/useImmersiveMode";
@@ -193,6 +194,8 @@ export default function GameRouteFrame({
     enabled: mobileControlsReady && immersiveMode.isLandscapeViewport,
     frameRef,
   });
+
+  useEffect(() => observeStartupDiagnostics(window, frameRef), []);
 
   useLayoutEffect(() => {
     const navigationController = new AbortController();
@@ -409,7 +412,7 @@ export default function GameRouteFrame({
           window.performance?.mark?.("scummweb:archive-prepared");
           setArchivePrepared(true);
         }
-        setFrameSrc(launchSrc);
+        if (!loadArchive) setFrameSrc(launchSrc);
       } catch (error) {
         if (controller.signal.aborted) return;
         launchAnalytics.fail("startup_error");

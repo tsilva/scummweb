@@ -36,6 +36,8 @@ Successfully opened games are cached in your browser, so playing the same
 URL again skips downloading and unpacking the ZIP. The cache holds up to four
 games; clearing site data or ending an incognito session removes them.
 If the game ZIP fails to download, use **Exit game** to return to the library.
+Dark opening scenes play as soon as the game is ready; use **Skip intro**, when
+offered, to jump ahead.
 
 Select a game card for details and **Play**. If sound or an intro is paused,
 select **Start audio** inside the game. Compatible saves offer **Continue**;
