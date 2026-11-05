@@ -5,6 +5,7 @@ import path from "node:path";
 import { runInNewContext } from "node:vm";
 import test from "node:test";
 import { generateRuntimeAssets } from "../scripts/generate-runtime-assets.mjs";
+import assetConfig from "../lib/scummvm-shell-assets.js";
 
 test("runtime URLs remain stable across app changes and invalidate only changed resource bytes", async (t) => {
   const root = await mkdtemp(path.join(os.tmpdir(), "scummweb-runtime-"));
@@ -40,6 +41,7 @@ test("only the exact content version receives immutable caching headers", async 
       if (name === "@sentry/nextjs") return { withSentryConfig: (config) => config };
       if (name.includes("social-cards")) return { cards: {} };
       if (name.includes("runtime-assets")) return runtime;
+      if (name.includes("scummvm-shell-assets")) return assetConfig;
       throw new Error(name);
     },
   });
@@ -49,6 +51,9 @@ test("only the exact content version receives immutable caching headers", async 
   assert.equal(wasm.headers[0].value, "public, max-age=31536000, immutable");
   const html = module.exports.headers().find(({ source }) => source === "/scummvm.html");
   assert.ok(!html.headers.some(({ key }) => key === "Cache-Control"), "HTML revalidates hosting-injected scripts");
+  const artwork = module.exports.headers().find(({ source }) => source === "/launcher/:path*");
+  assert.equal(artwork.has[0].value, "dpl-another-app-deployment");
+  assert.ok(!module.exports.headers().some(({ source }) => source === "/data/:path*"), "runtime data requires its exact content fingerprint");
 });
 
 test("app deployments refresh artwork while retaining content-addressed runtime URLs", async (t) => {
