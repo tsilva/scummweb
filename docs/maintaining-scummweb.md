@@ -772,6 +772,9 @@ or request-time rendering.
   slideshow backdrop. Heroes share save-aware Play, Continue, Start from beginning
   and reconnect actions, with an inline Version selector for multiple editions.
   Continue refreshes after browser saves change or the page is restored.
+  Save checks show **Checking saves…** and fall back to **Play** after five
+  seconds while the native query continues. A late result can still enable
+  **Continue**. Equivalent game objects retain the same in-flight check.
   Player exits return to the game's slug route when available. Unrecognized
   imports retain `/#slide=<encoded group key>` and resolve when saved sources
   finish loading. Unknown selections fall back to the featured game; direct ZIP

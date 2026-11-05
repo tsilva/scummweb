@@ -172,9 +172,10 @@ test("imported games wait for saves while access and unavailable actions remain 
 
 test("save checks distinguish pending, no save and slot zero without leaking across versions", async () => {
   let state = null, dependencies, pendingEffect, cleanup;
-  const requests = [], listeners = new Map();
+  const requests = [], listeners = new Map(), timers = new Map();
+  let timerId = 0;
   const hooks = {
-    useState: () => [state, (next) => { state = next; }],
+    useState: () => [state, (next) => { state = typeof next === "function" ? next(state) : next; }],
     useEffect(effect, next) {
       if (!dependencies || next.some((value, i) => value !== dependencies[i])) {
         pendingEffect = effect;
@@ -188,13 +189,21 @@ test("save checks distinguish pending, no save and slot zero without leaking acr
   }, hooks, { window: {
     addEventListener: (event, fn) => listeners.set(event, fn),
     removeEventListener: (event) => listeners.delete(event),
+    setTimeout: (fn, delay) => { assert.equal(delay, 5000); timers.set(++timerId, fn); return timerId; },
+    clearTimeout: (id) => timers.delete(id),
   } });
   function commit() { cleanup?.(); cleanup = pendingEffect(); pendingEffect = null; }
   assert.equal(hook(game), undefined);
   commit();
+  assert.equal(hook({ ...game }), undefined);
+  assert.equal(pendingEffect, null, "equivalent game objects must not restart the pending check");
+  for (const timeout of timers.values()) timeout();
+  assert.equal(hook(game), null, "a stalled scan must allow Play after five seconds");
   requests.shift()(0);
   await new Promise(setImmediate);
   assert.equal(hook(game), 0);
+  for (const timeout of timers.values()) timeout();
+  assert.equal(hook(game), 0, "the fallback must preserve a detected save, including slot zero");
   const imported = { ...game, importRequired: true, saveVersionId: "other" };
   assert.equal(hook(imported), undefined);
   commit();
@@ -215,4 +224,21 @@ test("save checks distinguish pending, no save and slot zero without leaking acr
   await new Promise(setImmediate);
   assert.equal(hook(imported), 2);
   assert.equal(listeners.size, 0);
+  assert.equal(timers.size, 0);
+});
+
+test("a rejected save check releases the pending launch action", async () => {
+  let state = null, effect, cleanup;
+  const hook = await loadComponent("../app/use-browser-save.js", {
+    "./asset-paths": { scummvmAssetVersion: "test" },
+    "./browser-saves.mjs": { getLatestBrowserSave: async () => { throw new Error("storage unavailable"); } },
+  }, {
+    useState: () => [state, (next) => { state = typeof next === "function" ? next(state) : next; }],
+    useEffect: (next) => { effect = next; },
+  }, { window: { setTimeout, clearTimeout, addEventListener() {}, removeEventListener() {} } });
+  assert.equal(hook(game), undefined);
+  cleanup = effect();
+  await new Promise(setImmediate);
+  assert.equal(hook(game), null);
+  cleanup();
 });
