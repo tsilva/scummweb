@@ -10,6 +10,23 @@ separate browser saves. Supported engines offer **Continue** and **Start from
 beginning**; others load progress through their in-game menu. Older shared saves
 remain stored in the browser.
 
+Imports matching an included game's data use the bundled copy and do not add a
+second version. The default for other editions also prefers the included copy;
+an explicit choice of a distinct edition is remembered. Existing duplicate source
+records and their isolated saves are retained for backup and transfer in Settings.
+Old imports are compared using their saved fingerprint or, when read permission
+already exists, by inspecting their ZIP directory. An inaccessible, unverified
+copy stays separate until it can be compared.
+
+`data/bundled-game-files.json` records the published catalog ZIP directories and
+their fingerprints. Regenerate it with `node scripts/generate-bundled-game-files.mjs`
+after publishing changed game payloads. This command uses bounded public range
+reads and requires no storage credentials. Comparisons use normalized data paths,
+uncompressed lengths and CRC-32 values, ignoring manuals, licenses, DOS launchers
+and configuration files. They do not rely on titles, ZIP filenames or compression.
+Changed or additional game data remains a separate edition; these signatures
+identify copies and are not an authenticity check for untrusted archives.
+
 Continue uses the selected engine's native save listing and startup-load
 capabilities. It appears only for an existing, nonempty player save, and selects
 the latest file write time, including player autosaves. Continue checks again

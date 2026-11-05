@@ -59,6 +59,7 @@ export function chooseGameVersion(versions, remembered, language = "") {
   const available = versions.filter(({ source, status }) => !source || ["available", "session"].includes(status));
   const choices = available.length ? available : versions;
   return choices.find(({ key }) => key === remembered)
+    || choices.find(({ source, game }) => !source && !game.importRequired)
     || choices.find(({ game }) => game.language?.toLowerCase() === language.toLowerCase())
     || choices[0];
 }

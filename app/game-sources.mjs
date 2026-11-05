@@ -11,7 +11,8 @@ export function localGame(handle, file, id = crypto.randomUUID()) {
   if (!isLocalZipSource({ name: file.name, kind: file.kind, handle })) throw new Error("Choose a ZIP containing one ScummVM game.");
   validateGameZip(file, maxLocalGameSize);
   return { id, name: file.name, ...(handle && { handle }),
-    ...(file.fingerprint && { fingerprint: file.fingerprint }) };
+    ...(file.fingerprint && { fingerprint: file.fingerprint }),
+    ...(file.archiveFiles && { archiveFiles: file.archiveFiles }) };
 }
 
 export function isLocalZipSource(source) {
