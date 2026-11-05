@@ -1,7 +1,7 @@
 .settings-trigger { display: inline-flex; align-items: center; gap: .6rem; padding: .55rem .6rem; border: 0; background: transparent; color: var(--ink); font: inherit; font-size: .88rem; font-weight: 700; cursor: pointer; }
 .settings-trigger:hover, .settings-trigger[aria-expanded="true"] { color: var(--accent-strong); }
 .settings-drawer { position: fixed; inset: 5rem 0 0 auto; margin: 0; padding: 0; width: min(38rem, 100%); max-width: 100%; height: calc(100dvh - 5rem); max-height: calc(100dvh - 5rem); border: 0; border-left: 1px solid #343434; background: #191919; color: var(--ink); overflow-y: auto; overscroll-behavior: contain; }
-.settings-drawer::backdrop { background: rgb(0 0 0 / 55%); }
+.settings-drawer::backdrop { background: rgb(0 0 0 / 55%); clip-path: inset(5rem 0 0); }
 .settings-content { display: flex; flex-direction: column; min-height: 100%; padding: 1.5rem 1.75rem 1.75rem; }
 .settings-heading { display: flex; align-items: center; justify-content: space-between; padding-bottom: 1.4rem; border-bottom: 1px solid #363636; }
 .settings-heading h2 { margin: 0; font-family: var(--font-display), sans-serif; font-size: 1.8rem; letter-spacing: -.04em; }
