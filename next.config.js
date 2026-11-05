@@ -1,6 +1,7 @@
 const { withSentryConfig } = require("@sentry/nextjs");
 const socialCards = require("./data/social-cards.json");
 const runtimeAssets = require("./scummvm-shell/runtime-assets.json");
+const assetConfig = require("./lib/scummvm-shell-assets.js");
 
 function getScummvmAssetVersion() {
   const rawVersion =
@@ -56,7 +57,15 @@ const nextConfig = {
     ];
   },
   headers() {
+    const appVersion = getScummvmAssetVersion().replaceAll(".", "\\.");
     return [
+      ...assetConfig.versionedAssetMatchers.filter((source) =>
+        !runtimeAssets.files[source] && source !== "/data/:path*" && source !== "/scummvm.html"
+      ).map((source) => ({
+        source,
+        has: [{ type: "query", key: "v", value: appVersion }],
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      })),
       ...Object.entries(runtimeAssets.files).filter(([source]) => source !== "/scummvm.html").map(([source, version]) => ({
         source,
         has: [{ type: "query", key: "v", value: version }],

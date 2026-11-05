@@ -262,6 +262,10 @@ browser caching; application deployments refresh artwork without invalidating
 unchanged runtime binaries. The HTML shell revalidates so hosting-injected scripts
 stay fresh. Keep the generated `runtime-assets.json` and compact
 `runtime-version.json` with the managed bundle.
+Static cache rules live in `next.config.js`. The proxy matches only
+`/scummvm.html` to preserve the standalone legacy launcher; game iframes and
+inline fallback fetches use `localGame=1` to reach the runtime shell. Ordinary
+pages, runtime binaries and artwork bypass the proxy.
 
 For startup diagnosis, parent-frame Performance marks record `scummweb:runtime-requested`,
 `scummweb:archive-prepared`, `scummweb:runtime-ready-for-files`,

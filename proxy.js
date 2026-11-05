@@ -1,9 +1,4 @@
 import { NextResponse } from "next/server";
-import assetConfig from "./lib/scummvm-shell-assets.js";
-
-const { isVersionedAsset } = assetConfig;
-const immutableCacheControl = "public, max-age=31536000, immutable";
-const revalidateCacheControl = "public, max-age=0, must-revalidate";
 
 export function proxy(request) {
   const { pathname, searchParams } = request.nextUrl;
@@ -11,19 +6,10 @@ export function proxy(request) {
       request.headers.get("sec-fetch-dest") === "document")) {
     return NextResponse.rewrite(new URL(`/legacy-play${request.nextUrl.search}`, request.url));
   }
-  const response = NextResponse.next();
-
-  if (isVersionedAsset(pathname)) {
-    response.headers.set(
-      "Cache-Control",
-      searchParams.has("v") ? immutableCacheControl : revalidateCacheControl
-    );
-  }
-
-  return response;
+  return NextResponse.next();
 }
 
 export const config = {
-  // Social previews are served entirely by static files and rewrites.
-  matcher: ["/((?!social-cards/|[^/]+/(?:social-card\\.png|opengraph-image)(?:/|$)).*)"],
+  // Static cache headers live in next.config.js; assets need no proxy hop.
+  matcher: ["/scummvm.html"],
 };

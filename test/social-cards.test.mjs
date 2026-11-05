@@ -168,7 +168,7 @@ test("the card projection strips deployment query strings and retains all displa
   }
 });
 
-test("social card requests bypass Proxy while game pages and managed assets retain their behavior", async () => {
+test("social cards, game pages and assets bypass Proxy while the runtime entry keeps its legacy route", async () => {
   const moduleUrl = new URL("../proxy.js", import.meta.url);
   const source = await fs.readFile(moduleUrl, "utf8");
   await swc.loadBindings();
@@ -182,7 +182,9 @@ test("social card requests bypass Proxy while game pages and managed assets reta
   assert.equal(matches("/social-cards/sample-abc.png"), false);
   assert.equal(matches("/beneath-a-steel-sky/social-card.png?v=old-deployment"), false);
   assert.equal(matches("/beneath-a-steel-sky/opengraph-image?oldhash"), false);
-  for (const url of ["/", "/beneath-a-steel-sky", "/beneath-a-steel-sky/play", "/scummvm.html?localGame=1", "/launcher/sky-cover.webp?v=1", "/data/plugins/libsky.so?v=1"]) {
-    assert.equal(matches(url), true, url);
+  for (const url of ["/", "/beneath-a-steel-sky", "/beneath-a-steel-sky/play", "/launcher/sky-cover.webp?v=1", "/data/plugins/libsky.so?v=1", "/_next/static/chunks/app.js"]) {
+    assert.equal(matches(url), false, url);
   }
+  assert.equal(matches("/scummvm.html?localGame=1"), true);
+  assert.equal(matches("/scummvm.html"), true);
 });
