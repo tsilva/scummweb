@@ -974,7 +974,9 @@ or request-time rendering.
   viewport, placing the library below the fold. Screenshot thumbnails are 12rem
   wide on desktop. Mobile uses natural content height and fits two thumbnails
   across the screen, with horizontal overflow and uncropped original images.
-  Library covers retain a 3:4 portrait box-art shape. The screenshot strip renders
+  Library covers retain a 3:4 portrait box-art shape. At widths of 64rem and up,
+  the library uses exactly five columns; narrower layouts keep their responsive grid.
+  The screenshot strip renders
   without deferred content sizing so changing games does not move later sections.
   Selecting a thumbnail expands a viewer inline. Previous/next and arrow keys
   browse the screenshots; Close screenshot or Escape collapses the viewer and
