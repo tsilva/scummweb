@@ -56,8 +56,9 @@ also works for personal imports, with progress kept separate for each version.
 Intro checkpoints do not enable Continue. Other games stay on **Play** and load
 progress through their in-game menu.
 
-Launch actions show a neutral placeholder until the browser finishes checking
-game versions and saved progress, so refreshing does not show an incorrect action.
+Launch actions show **Checking saves…** while the browser checks game versions
+and saved progress. If save detection takes longer than five seconds, **Play**
+becomes available; **Continue** appears if the background check finds progress.
 
 Games default to their original save/load screens wherever ScummVM supports
 them. Existing saved preferences take precedence; games without an original
