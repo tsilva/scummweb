@@ -49,7 +49,7 @@ function rangeResponse(bytes, options) {
 test("contents identify renamed, wrapped and case-insensitive game archives", () => {
   const game = getArchiveGamePresentation([["any/folder/SKY.DNR", 100], ["any/folder/sky.dsk", 200]]);
   assert.equal(game.displayTitle, "Beneath a Steel Sky");
-  assert.match(game.heroImage, /sky-hero\.webp/);
+  assert.match(game.heroImage, /sky-scummweb-generated-2026-11-05-r1-hero\.webp/);
   assert.equal(game.studio, "Revolution Software");
   assert.equal(game.badge, "Remote game");
   assert.equal(game.platform, undefined);

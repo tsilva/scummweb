@@ -15,6 +15,18 @@ Repo notes for coding agents working in `scummweb`.
 - Keep agent gameplay procedures and experiments in the sibling `agentscumm` repository. This repository owns the browser game runtime.
 - Avoid deleting unrelated worktree changes. This repo often has large generated-asset diffs in `public/` and `scummvm-shell/`.
 
+## Game artwork generation
+
+Use [$scummweb_game-assets](.codex/skills/scummweb_game-assets/SKILL.md) for
+hero banners, card box art, generated-artwork inventories and R2 artwork delivery.
+Record generated candidates and dates in `data/generated-artwork.json`; retain
+original reference credits. Card box art must faithfully regenerate the original
+box front to improve quality, preserving its artwork, title typography, branding
+and layout. Do not use reimagined hero art as a replacement box cover.
+Gameplay screenshots must remain original captures,
+never generated or repainted. Resizing and lossless delivery encoding do not
+change their original-capture provenance.
+
 ## ScummVM upgrades and patch memory
 
 Use [$scummweb_upgrade-scummvm](.codex/skills/scummweb_upgrade-scummvm/SKILL.md)

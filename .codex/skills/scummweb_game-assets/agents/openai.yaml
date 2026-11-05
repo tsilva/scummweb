@@ -1,4 +1,4 @@
 interface:
   display_name: "scummweb: Game Assets"
-  short_description: "Manage game artwork in R2 and retain source credits"
-  default_prompt: "Use $scummweb_game-assets to add or refresh game artwork in R2 while keeping mappings and source credits in the scummweb repository."
+  short_description: "Generate heroes and box art with provenance and R2 delivery"
+  default_prompt: "Use $scummweb_game-assets to generate game heroes or faithfully regenerate original box fronts for higher-quality card art, preserving their title typography and layout, original screenshots, provenance and optimized R2 delivery."

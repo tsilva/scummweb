@@ -13850,6 +13850,1030 @@
       "contentType": "image/webp",
       "width": 320,
       "height": 421
+    },
+    "/launcher/drascula-hero-v2.webp": {
+      "key": "artwork/9b068f85d8ea28e3ade5bf47dc14d5843129f0da3f3229df4aa7b17d475e3b84/drascula-hero-v2.webp",
+      "sha256": "9b068f85d8ea28e3ade5bf47dc14d5843129f0da3f3229df4aa7b17d475e3b84",
+      "bytes": 272670,
+      "contentType": "image/webp",
+      "width": 1619,
+      "height": 971
+    },
+    "/launcher/drascula-scummweb-generated-2026-11-05-r1-cover.webp": {
+      "key": "artwork/e80f979f17a0224765f81369492cf2d73c76397797753e82bfd3e89fbc771bc4/drascula-scummweb-generated-2026-11-05-r1-cover.webp",
+      "sha256": "e80f979f17a0224765f81369492cf2d73c76397797753e82bfd3e89fbc771bc4",
+      "bytes": 161678,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/drascula-scummweb-generated-2026-11-05-r1-hero.webp": {
+      "key": "artwork/299c162a73cc8036096aa4f6774cb74ed3b131be8669bc75fb1b6594526da4da/drascula-scummweb-generated-2026-11-05-r1-hero.webp",
+      "sha256": "299c162a73cc8036096aa4f6774cb74ed3b131be8669bc75fb1b6594526da4da",
+      "bytes": 175606,
+      "contentType": "image/webp",
+      "width": 1600,
+      "height": 960
+    },
+    "/launcher/dreamweb-hero-v2.webp": {
+      "key": "artwork/0fba4f1212c8263ac31ed88f65c79ee33225174a9020024ee0a5bc56102b969a/dreamweb-hero-v2.webp",
+      "sha256": "0fba4f1212c8263ac31ed88f65c79ee33225174a9020024ee0a5bc56102b969a",
+      "bytes": 243156,
+      "contentType": "image/webp",
+      "width": 1619,
+      "height": 971
+    },
+    "/launcher/dreamweb-scummweb-generated-2026-11-05-r1-cover.webp": {
+      "key": "artwork/91eaf22bb3648b96ccae8d090d812b160fc5aab01324219e8be48daa1700cdef/dreamweb-scummweb-generated-2026-11-05-r1-cover.webp",
+      "sha256": "91eaf22bb3648b96ccae8d090d812b160fc5aab01324219e8be48daa1700cdef",
+      "bytes": 215428,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/dreamweb-scummweb-generated-2026-11-05-r1-hero.webp": {
+      "key": "artwork/68a79b1eb2eb5b5e2d55946a1018fadf075e2381b73f4efbee6bcaa755c66cd0/dreamweb-scummweb-generated-2026-11-05-r1-hero.webp",
+      "sha256": "68a79b1eb2eb5b5e2d55946a1018fadf075e2381b73f4efbee6bcaa755c66cd0",
+      "bytes": 132022,
+      "contentType": "image/webp",
+      "width": 1600,
+      "height": 960
+    },
+    "/launcher/hires1-scummweb-generated-2026-11-05-r1-cover.webp": {
+      "key": "artwork/edd40f28c72eb7defd0c7f06ba5add449d1e0bcb35aa712b2e8ff8be47f6193c/hires1-scummweb-generated-2026-11-05-r1-cover.webp",
+      "sha256": "edd40f28c72eb7defd0c7f06ba5add449d1e0bcb35aa712b2e8ff8be47f6193c",
+      "bytes": 132732,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/lure-hero-v2.webp": {
+      "key": "artwork/57ef03d459c7577b7e5682031e71962fce77239cd71c3444ae9e2761651d475a/lure-hero-v2.webp",
+      "sha256": "57ef03d459c7577b7e5682031e71962fce77239cd71c3444ae9e2761651d475a",
+      "bytes": 170402,
+      "contentType": "image/webp",
+      "width": 1619,
+      "height": 971
+    },
+    "/launcher/lure-scummweb-generated-2026-11-05-r1-cover.webp": {
+      "key": "artwork/47eb70c6ab1c159a9ad882c6a956d7eb575410c607255c600124c7835da5d03f/lure-scummweb-generated-2026-11-05-r1-cover.webp",
+      "sha256": "47eb70c6ab1c159a9ad882c6a956d7eb575410c607255c600124c7835da5d03f",
+      "bytes": 195662,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/lure-scummweb-generated-2026-11-05-r1-hero.webp": {
+      "key": "artwork/d70b2cfbb19cc10eebc9a0c244bb4ee81705c3e73e52eef551882c70f34b3b84/lure-scummweb-generated-2026-11-05-r1-hero.webp",
+      "sha256": "d70b2cfbb19cc10eebc9a0c244bb4ee81705c3e73e52eef551882c70f34b3b84",
+      "bytes": 97918,
+      "contentType": "image/webp",
+      "width": 1600,
+      "height": 960
+    },
+    "/launcher/monkey-demo-hero-v2.webp": {
+      "key": "artwork/e0055f315820116916f068d814aca753f81d7498c537615cfed4375093779d6d/monkey-demo-hero-v2.webp",
+      "sha256": "e0055f315820116916f068d814aca753f81d7498c537615cfed4375093779d6d",
+      "bytes": 266288,
+      "contentType": "image/webp",
+      "width": 1619,
+      "height": 971
+    },
+    "/launcher/monkey-demo-scummweb-generated-2026-11-05-r1-cover.webp": {
+      "key": "artwork/bc694abd88ced0f1731b986872ee3b461810f46854c387f76d40f8089bec4d21/monkey-demo-scummweb-generated-2026-11-05-r1-cover.webp",
+      "sha256": "bc694abd88ced0f1731b986872ee3b461810f46854c387f76d40f8089bec4d21",
+      "bytes": 287406,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/monkey-demo-scummweb-generated-2026-11-05-r1-hero.webp": {
+      "key": "artwork/d6fd021dd8b821165014a442b60154e87756843ea064fce157816e96fe667fd5/monkey-demo-scummweb-generated-2026-11-05-r1-hero.webp",
+      "sha256": "d6fd021dd8b821165014a442b60154e87756843ea064fce157816e96fe667fd5",
+      "bytes": 150758,
+      "contentType": "image/webp",
+      "width": 1600,
+      "height": 960
+    },
+    "/launcher/nippon-hero-v2.webp": {
+      "key": "artwork/937d32e5618b90fb5d440db8d9669092724d77192068457985588e02ac84fc90/nippon-hero-v2.webp",
+      "sha256": "937d32e5618b90fb5d440db8d9669092724d77192068457985588e02ac84fc90",
+      "bytes": 159952,
+      "contentType": "image/webp",
+      "width": 1619,
+      "height": 971
+    },
+    "/launcher/nippon-scummweb-generated-2026-11-05-r1-cover.webp": {
+      "key": "artwork/438b88613d028e7bc2a01a139c1e4785be87defecb51a94fbbefa231d23f33d7/nippon-scummweb-generated-2026-11-05-r1-cover.webp",
+      "sha256": "438b88613d028e7bc2a01a139c1e4785be87defecb51a94fbbefa231d23f33d7",
+      "bytes": 248336,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/nippon-scummweb-generated-2026-11-05-r1-hero.webp": {
+      "key": "artwork/4eb090f195f035181c4a87f6b8b5c26ac59f5e215b028757d2b1433d363176d8/nippon-scummweb-generated-2026-11-05-r1-hero.webp",
+      "sha256": "4eb090f195f035181c4a87f6b8b5c26ac59f5e215b028757d2b1433d363176d8",
+      "bytes": 89908,
+      "contentType": "image/webp",
+      "width": 1600,
+      "height": 960
+    },
+    "/launcher/queen-hero-v2.webp": {
+      "key": "artwork/40ae460949edbdf3e6e546e8d21f3b8cb7e5dd89e9d5aef2a3f72867a7937aed/queen-hero-v2.webp",
+      "sha256": "40ae460949edbdf3e6e546e8d21f3b8cb7e5dd89e9d5aef2a3f72867a7937aed",
+      "bytes": 431374,
+      "contentType": "image/webp",
+      "width": 1619,
+      "height": 971
+    },
+    "/launcher/queen-scummweb-generated-2026-11-05-r1-cover.webp": {
+      "key": "artwork/1709a7051f8f1afa82c95f253c519fadf8c49a6e5d5c24d1c2f93faf56427435/queen-scummweb-generated-2026-11-05-r1-cover.webp",
+      "sha256": "1709a7051f8f1afa82c95f253c519fadf8c49a6e5d5c24d1c2f93faf56427435",
+      "bytes": 304884,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/queen-scummweb-generated-2026-11-05-r1-hero.webp": {
+      "key": "artwork/5a391443971b55197aaa4834d40d3b6502b2a7cbc3adb4102c1adac936ac4924/queen-scummweb-generated-2026-11-05-r1-hero.webp",
+      "sha256": "5a391443971b55197aaa4834d40d3b6502b2a7cbc3adb4102c1adac936ac4924",
+      "bytes": 255336,
+      "contentType": "image/webp",
+      "width": 1600,
+      "height": 960
+    },
+    "/launcher/responsive/drascula-scummweb-generated-2026-11-05-r1-cover-320.webp": {
+      "key": "artwork/5c2296cb87fd5b085c8339c91136b8fecf0582865f1101eb55c61c3b0ca365ab/drascula-scummweb-generated-2026-11-05-r1-cover-320.webp",
+      "sha256": "5c2296cb87fd5b085c8339c91136b8fecf0582865f1101eb55c61c3b0ca365ab",
+      "bytes": 34822,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/drascula-scummweb-generated-2026-11-05-r1-cover-640.webp": {
+      "key": "artwork/218e890e39555c71b7b5df0084436c5a6f4310b764ca87a9cf0e051c1e188c7d/drascula-scummweb-generated-2026-11-05-r1-cover-640.webp",
+      "sha256": "218e890e39555c71b7b5df0084436c5a6f4310b764ca87a9cf0e051c1e188c7d",
+      "bytes": 89846,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/dreamweb-scummweb-generated-2026-11-05-r1-cover-320.webp": {
+      "key": "artwork/20ff202316638ce14f2f0eebcaab46ee73f1880675be99dd44c7b13ef3989e13/dreamweb-scummweb-generated-2026-11-05-r1-cover-320.webp",
+      "sha256": "20ff202316638ce14f2f0eebcaab46ee73f1880675be99dd44c7b13ef3989e13",
+      "bytes": 34410,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/dreamweb-scummweb-generated-2026-11-05-r1-cover-640.webp": {
+      "key": "artwork/103f202870eef6bab5c722bba5dc1a71c623da8dca992327d21e1427408fee4c/dreamweb-scummweb-generated-2026-11-05-r1-cover-640.webp",
+      "sha256": "103f202870eef6bab5c722bba5dc1a71c623da8dca992327d21e1427408fee4c",
+      "bytes": 103442,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/hires1-scummweb-generated-2026-11-05-r1-cover-320.webp": {
+      "key": "artwork/cefbba8d06124aba937a94819916f4935fa77fce3be870535fe869ad1472b4c0/hires1-scummweb-generated-2026-11-05-r1-cover-320.webp",
+      "sha256": "cefbba8d06124aba937a94819916f4935fa77fce3be870535fe869ad1472b4c0",
+      "bytes": 22076,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/hires1-scummweb-generated-2026-11-05-r1-cover-640.webp": {
+      "key": "artwork/d946c036bfba34a41c26d545446afc5bc9ee7a8a63a2e59cfe854dc65428cc18/hires1-scummweb-generated-2026-11-05-r1-cover-640.webp",
+      "sha256": "d946c036bfba34a41c26d545446afc5bc9ee7a8a63a2e59cfe854dc65428cc18",
+      "bytes": 66380,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/lure-scummweb-generated-2026-11-05-r1-cover-320.webp": {
+      "key": "artwork/1dbd1968c1a12165f839e37a34dc52e78ebef338dc251da701d10edba016b282/lure-scummweb-generated-2026-11-05-r1-cover-320.webp",
+      "sha256": "1dbd1968c1a12165f839e37a34dc52e78ebef338dc251da701d10edba016b282",
+      "bytes": 32158,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/lure-scummweb-generated-2026-11-05-r1-cover-640.webp": {
+      "key": "artwork/c28fec8e79e5ba3f85b330ff7dd99563e0bc1c43f01696e2bb41605a8ee0c8d1/lure-scummweb-generated-2026-11-05-r1-cover-640.webp",
+      "sha256": "c28fec8e79e5ba3f85b330ff7dd99563e0bc1c43f01696e2bb41605a8ee0c8d1",
+      "bytes": 95372,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/monkey-demo-scummweb-generated-2026-11-05-r1-cover-320.webp": {
+      "key": "artwork/6dae892da21e3feb1496cb4ff7a618bcc93d94cd76879184887e223eb77c83ae/monkey-demo-scummweb-generated-2026-11-05-r1-cover-320.webp",
+      "sha256": "6dae892da21e3feb1496cb4ff7a618bcc93d94cd76879184887e223eb77c83ae",
+      "bytes": 50100,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/monkey-demo-scummweb-generated-2026-11-05-r1-cover-640.webp": {
+      "key": "artwork/6075ba4b0dcc2b8c6f905031a7948fbf28d228336625838fc226d63340303c8a/monkey-demo-scummweb-generated-2026-11-05-r1-cover-640.webp",
+      "sha256": "6075ba4b0dcc2b8c6f905031a7948fbf28d228336625838fc226d63340303c8a",
+      "bytes": 144560,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/nippon-scummweb-generated-2026-11-05-r1-cover-320.webp": {
+      "key": "artwork/a05dd023f651f2bf7208605d34e79c46436c7f8e7a49099106c12d11480d5158/nippon-scummweb-generated-2026-11-05-r1-cover-320.webp",
+      "sha256": "a05dd023f651f2bf7208605d34e79c46436c7f8e7a49099106c12d11480d5158",
+      "bytes": 43168,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/nippon-scummweb-generated-2026-11-05-r1-cover-640.webp": {
+      "key": "artwork/bd4df22a84e1c618df4d7fca2d1b06e04f50e511fde1cce22a91d67c44c2d7de/nippon-scummweb-generated-2026-11-05-r1-cover-640.webp",
+      "sha256": "bd4df22a84e1c618df4d7fca2d1b06e04f50e511fde1cce22a91d67c44c2d7de",
+      "bytes": 124390,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/queen-scummweb-generated-2026-11-05-r1-cover-320.webp": {
+      "key": "artwork/db0c80798ea4441ce5fc7c653efeafcf352cb2614989ac042363f7ffd6c5019d/queen-scummweb-generated-2026-11-05-r1-cover-320.webp",
+      "sha256": "db0c80798ea4441ce5fc7c653efeafcf352cb2614989ac042363f7ffd6c5019d",
+      "bytes": 48822,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/queen-scummweb-generated-2026-11-05-r1-cover-640.webp": {
+      "key": "artwork/815ee5ba06ba90f86e1b908e0a1adf288cf79f9d9cd98e9bc0d405a46bca1caf/queen-scummweb-generated-2026-11-05-r1-cover-640.webp",
+      "sha256": "815ee5ba06ba90f86e1b908e0a1adf288cf79f9d9cd98e9bc0d405a46bca1caf",
+      "bytes": 147284,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/sfinx-scummweb-generated-2026-11-05-r1-cover-320.webp": {
+      "key": "artwork/c70d9849b8db224f6b6c984b9ed58027850e796af7158b97a88951a9fb12b2aa/sfinx-scummweb-generated-2026-11-05-r1-cover-320.webp",
+      "sha256": "c70d9849b8db224f6b6c984b9ed58027850e796af7158b97a88951a9fb12b2aa",
+      "bytes": 31248,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/sfinx-scummweb-generated-2026-11-05-r1-cover-640.webp": {
+      "key": "artwork/83d5caeca72d42ae239f06163a72e7881bcd0b4e494e7a1426dc4befd076eee7/sfinx-scummweb-generated-2026-11-05-r1-cover-640.webp",
+      "sha256": "83d5caeca72d42ae239f06163a72e7881bcd0b4e494e7a1426dc4befd076eee7",
+      "bytes": 80130,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/sky-scummweb-generated-2026-11-05-r2-cover-320.webp": {
+      "key": "artwork/8065feedbda8fa8fccc0e99f5f42b1b7d50d79fee5d429d27b58f977767f5fde/sky-scummweb-generated-2026-11-05-r2-cover-320.webp",
+      "sha256": "8065feedbda8fa8fccc0e99f5f42b1b7d50d79fee5d429d27b58f977767f5fde",
+      "bytes": 6444,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/sky-scummweb-generated-2026-11-05-r2-cover-640.webp": {
+      "key": "artwork/8668339b39a97518f4369be1bfce67d02e21077def5ee0f11a2609de1af5c1bf/sky-scummweb-generated-2026-11-05-r2-cover-640.webp",
+      "sha256": "8668339b39a97518f4369be1bfce67d02e21077def5ee0f11a2609de1af5c1bf",
+      "bytes": 17160,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/soltys-scummweb-generated-2026-11-05-r1-cover-320.webp": {
+      "key": "artwork/2d6326edf4a836299282d4b53e6c18e996b471b005b247b670b7715dcd532875/soltys-scummweb-generated-2026-11-05-r1-cover-320.webp",
+      "sha256": "2d6326edf4a836299282d4b53e6c18e996b471b005b247b670b7715dcd532875",
+      "bytes": 27862,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/soltys-scummweb-generated-2026-11-05-r1-cover-640.webp": {
+      "key": "artwork/7f0a7aa7a7e944823f05ea6233c4f826fc702e1fe29c2e616d448b0132d5258c/soltys-scummweb-generated-2026-11-05-r1-cover-640.webp",
+      "sha256": "7f0a7aa7a7e944823f05ea6233c4f826fc702e1fe29c2e616d448b0132d5258c",
+      "bytes": 83066,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/sword25-scummweb-generated-2026-11-05-r1-cover-320.webp": {
+      "key": "artwork/e0e2adb0db4e6d1bacb20b9afad873d334e538d2bdf6027de7639060a2fd2a25/sword25-scummweb-generated-2026-11-05-r1-cover-320.webp",
+      "sha256": "e0e2adb0db4e6d1bacb20b9afad873d334e538d2bdf6027de7639060a2fd2a25",
+      "bytes": 40124,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/sword25-scummweb-generated-2026-11-05-r1-cover-640.webp": {
+      "key": "artwork/657e090990713449e3386e2d8d989a72109c8e04e489eab3000ab9509e5e6673/sword25-scummweb-generated-2026-11-05-r1-cover-640.webp",
+      "sha256": "657e090990713449e3386e2d8d989a72109c8e04e489eab3000ab9509e5e6673",
+      "bytes": 132314,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/sfinx-scummweb-generated-2026-11-05-r1-cover.webp": {
+      "key": "artwork/c83e4d5bf7573a5a734fc2c9f3451815213a64fd32164ae1d13b6ad573895c35/sfinx-scummweb-generated-2026-11-05-r1-cover.webp",
+      "sha256": "c83e4d5bf7573a5a734fc2c9f3451815213a64fd32164ae1d13b6ad573895c35",
+      "bytes": 154944,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/sky-hero-v2.webp": {
+      "key": "artwork/5ec8fc6a11d894b8ecb9066cbee552b03f30d84747feba932c8ed9ba7a318844/sky-hero-v2.webp",
+      "sha256": "5ec8fc6a11d894b8ecb9066cbee552b03f30d84747feba932c8ed9ba7a318844",
+      "bytes": 302238,
+      "contentType": "image/webp",
+      "width": 1619,
+      "height": 971
+    },
+    "/launcher/sky-scummweb-generated-2026-11-05-r1-hero.webp": {
+      "key": "artwork/12e3d789f19af975bda571e34710f28e4c09b4226c6142ee3e8337fdd0fbfcd9/sky-scummweb-generated-2026-11-05-r1-hero.webp",
+      "sha256": "12e3d789f19af975bda571e34710f28e4c09b4226c6142ee3e8337fdd0fbfcd9",
+      "bytes": 189860,
+      "contentType": "image/webp",
+      "width": 1600,
+      "height": 960
+    },
+    "/launcher/sky-scummweb-generated-2026-11-05-r2-cover.webp": {
+      "key": "artwork/81b5b419da19dbfb271e294740db376170ac41d3a5796c7b089b149bb16cb6fc/sky-scummweb-generated-2026-11-05-r2-cover.webp",
+      "sha256": "81b5b419da19dbfb271e294740db376170ac41d3a5796c7b089b149bb16cb6fc",
+      "bytes": 38614,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/soltys-scummweb-generated-2026-11-05-r1-cover.webp": {
+      "key": "artwork/0c652130c1dc64158d90edbdb00a799707eb5c7d92eacf4eb935bdd8978de6a2/soltys-scummweb-generated-2026-11-05-r1-cover.webp",
+      "sha256": "0c652130c1dc64158d90edbdb00a799707eb5c7d92eacf4eb935bdd8978de6a2",
+      "bytes": 176244,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/sword25-hero-v2.webp": {
+      "key": "artwork/6f99b8061a859f20ddfc2da8e8d98b6ad1b3ea55f1b9f9b242286864913b6d6b/sword25-hero-v2.webp",
+      "sha256": "6f99b8061a859f20ddfc2da8e8d98b6ad1b3ea55f1b9f9b242286864913b6d6b",
+      "bytes": 106688,
+      "contentType": "image/webp",
+      "width": 1619,
+      "height": 971
+    },
+    "/launcher/sword25-scummweb-generated-2026-11-05-r1-cover.webp": {
+      "key": "artwork/cd196167dcf3aa57b8c9472ddb0200d2c383a73d6de1975b5d0d2d7bdc989c62/sword25-scummweb-generated-2026-11-05-r1-cover.webp",
+      "sha256": "cd196167dcf3aa57b8c9472ddb0200d2c383a73d6de1975b5d0d2d7bdc989c62",
+      "bytes": 276146,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/sword25-scummweb-generated-2026-11-05-r1-hero.webp": {
+      "key": "artwork/146055998df6f92cf0421367c13b852bc6e9b9e98af11250778c97848d447384/sword25-scummweb-generated-2026-11-05-r1-hero.webp",
+      "sha256": "146055998df6f92cf0421367c13b852bc6e9b9e98af11250778c97848d447384",
+      "bytes": 53826,
+      "contentType": "image/webp",
+      "width": 1600,
+      "height": 960
+    },
+    "/launcher/optimized/classic-hires1-cover.avif": {
+      "key": "artwork/96d84677ddc2cfa796ec1e3b5ef4776c7b7afe7316b57980bf8dd118e50c403d/classic-hires1-cover.avif",
+      "sha256": "96d84677ddc2cfa796ec1e3b5ef4776c7b7afe7316b57980bf8dd118e50c403d",
+      "bytes": 42207,
+      "contentType": "image/avif",
+      "width": 512,
+      "height": 674
+    },
+    "/launcher/optimized/dreamweb-scummweb-generated-2026-11-05-r1-hero.avif": {
+      "key": "artwork/d945d0efd6055db0db753369361c53e374c4702d935d2fc2c1ece4615df13d3b/dreamweb-scummweb-generated-2026-11-05-r1-hero.avif",
+      "sha256": "d945d0efd6055db0db753369361c53e374c4702d935d2fc2c1ece4615df13d3b",
+      "bytes": 105502,
+      "contentType": "image/avif",
+      "width": 1600,
+      "height": 960
+    },
+    "/launcher/optimized/lure-scummweb-generated-2026-11-05-r1-hero.avif": {
+      "key": "artwork/b38bd38fd94fd5c1128e8a83c39bfe7b61ffa16c398425c710ff87b7c8649537/lure-scummweb-generated-2026-11-05-r1-hero.avif",
+      "sha256": "b38bd38fd94fd5c1128e8a83c39bfe7b61ffa16c398425c710ff87b7c8649537",
+      "bytes": 75680,
+      "contentType": "image/avif",
+      "width": 1600,
+      "height": 960
+    },
+    "/launcher/optimized/sword25-scummweb-generated-2026-11-05-r1-hero.avif": {
+      "key": "artwork/d8c5688d8d7f7ff846a4613de8c8e5e5c31265e17a6c289c02e69dcb5c3d09e6/sword25-scummweb-generated-2026-11-05-r1-hero.avif",
+      "sha256": "d8c5688d8d7f7ff846a4613de8c8e5e5c31265e17a6c289c02e69dcb5c3d09e6",
+      "bytes": 41350,
+      "contentType": "image/avif",
+      "width": 1600,
+      "height": 960
+    },
+    "/launcher/responsive/classic-got-cover-480.webp": {
+      "key": "artwork/0fab8ecf237394f87048b3cf8a0bb1454a0a64c17c4a1edb9bea49321b22f2fe/classic-got-cover-480.webp",
+      "sha256": "0fab8ecf237394f87048b3cf8a0bb1454a0a64c17c4a1edb9bea49321b22f2fe",
+      "bytes": 38804,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 477
+    },
+    "/launcher/responsive/classic-got-shot-1-320.webp": {
+      "key": "artwork/d8a89fd9da11dae6fb92d88a7caa02630caa9c3006e19356638c5324251281d5/classic-got-shot-1-320.webp",
+      "sha256": "d8a89fd9da11dae6fb92d88a7caa02630caa9c3006e19356638c5324251281d5",
+      "bytes": 135852,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/classic-got-shot-2-320.webp": {
+      "key": "artwork/032a62ccf444c7c8923ad8b18f146410db7e653bacb25031828169a46513bd34/classic-got-shot-2-320.webp",
+      "sha256": "032a62ccf444c7c8923ad8b18f146410db7e653bacb25031828169a46513bd34",
+      "bytes": 37444,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/classic-got-shot-3-320.webp": {
+      "key": "artwork/0aed51c775b83e09a07690623a42634e8a52d1e8f66e3a6f787da0ad5a1a0b9c/classic-got-shot-3-320.webp",
+      "sha256": "0aed51c775b83e09a07690623a42634e8a52d1e8f66e3a6f787da0ad5a1a0b9c",
+      "bytes": 21320,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/classic-hires1-cover-320.avif": {
+      "key": "artwork/b3ab4e2c8dc1383cb3605678d98279993e61e335396998f18289075f3c1b8d0c/classic-hires1-cover-320.avif",
+      "sha256": "b3ab4e2c8dc1383cb3605678d98279993e61e335396998f18289075f3c1b8d0c",
+      "bytes": 12808,
+      "contentType": "image/avif",
+      "width": 320,
+      "height": 421
+    },
+    "/launcher/responsive/classic-hires1-cover-480.avif": {
+      "key": "artwork/864fe41d88649055382e9df5981fee4a0867bdff3c0fe5103c9c08ba59932cbc/classic-hires1-cover-480.avif",
+      "sha256": "864fe41d88649055382e9df5981fee4a0867bdff3c0fe5103c9c08ba59932cbc",
+      "bytes": 23079,
+      "contentType": "image/avif",
+      "width": 480,
+      "height": 632
+    },
+    "/launcher/responsive/classic-hires1-cover-480.webp": {
+      "key": "artwork/79cbea02aa60954d3a9c4c8484f051f357c872ce4fd5d81d0641f288ecd2b092/classic-hires1-cover-480.webp",
+      "sha256": "79cbea02aa60954d3a9c4c8484f051f357c872ce4fd5d81d0641f288ecd2b092",
+      "bytes": 28582,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 632
+    },
+    "/launcher/responsive/drascula-hero-v2-1280.webp": {
+      "key": "artwork/866c73c219555f32ad34944070fe8d8479d3a6dd75d412aa7c9331a9cd890984/drascula-hero-v2-1280.webp",
+      "sha256": "866c73c219555f32ad34944070fe8d8479d3a6dd75d412aa7c9331a9cd890984",
+      "bytes": 111926,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/drascula-hero-v2-640.webp": {
+      "key": "artwork/95a4e7dfcc6eed9e9655752dd3405f88c1a6d59d32fae223c73b5f1feb4d5f05/drascula-hero-v2-640.webp",
+      "sha256": "95a4e7dfcc6eed9e9655752dd3405f88c1a6d59d32fae223c73b5f1feb4d5f05",
+      "bytes": 40454,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/drascula-hero-v2-960.webp": {
+      "key": "artwork/8989d4d1eb966ce00fbd2c9f9cebb5bcbe1d072e0b11a3d93cb86da4564699c8/drascula-hero-v2-960.webp",
+      "sha256": "8989d4d1eb966ce00fbd2c9f9cebb5bcbe1d072e0b11a3d93cb86da4564699c8",
+      "bytes": 75644,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/drascula-scummweb-generated-2026-11-05-r1-cover-480.webp": {
+      "key": "artwork/77a8ae8139e5251312ccee7c115595f8f3027aa1fd6699d7de87191ee96ef771/drascula-scummweb-generated-2026-11-05-r1-cover-480.webp",
+      "sha256": "77a8ae8139e5251312ccee7c115595f8f3027aa1fd6699d7de87191ee96ef771",
+      "bytes": 61334,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/drascula-scummweb-generated-2026-11-05-r1-hero-1280.webp": {
+      "key": "artwork/095505763b8ba5b197095574cb8025faa68ac2207200d72bfb2503ce4c9c8c9e/drascula-scummweb-generated-2026-11-05-r1-hero-1280.webp",
+      "sha256": "095505763b8ba5b197095574cb8025faa68ac2207200d72bfb2503ce4c9c8c9e",
+      "bytes": 109192,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/drascula-scummweb-generated-2026-11-05-r1-hero-640.webp": {
+      "key": "artwork/213a5b5f21b3082c34ab6b7d42cf383b7e22718fff74cb455e9d98a4c253f8be/drascula-scummweb-generated-2026-11-05-r1-hero-640.webp",
+      "sha256": "213a5b5f21b3082c34ab6b7d42cf383b7e22718fff74cb455e9d98a4c253f8be",
+      "bytes": 40594,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/drascula-scummweb-generated-2026-11-05-r1-hero-960.webp": {
+      "key": "artwork/ef0c94e03643ffb0a46de8ed862158db127211b80ee246b7538c8dcbf3206695/drascula-scummweb-generated-2026-11-05-r1-hero-960.webp",
+      "sha256": "ef0c94e03643ffb0a46de8ed862158db127211b80ee246b7538c8dcbf3206695",
+      "bytes": 75908,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/dreamweb-hero-v2-1280.webp": {
+      "key": "artwork/0ea8fb2aee382b1e54472cba3a617d174d0f413820fc22fe163cbb37cac4c437/dreamweb-hero-v2-1280.webp",
+      "sha256": "0ea8fb2aee382b1e54472cba3a617d174d0f413820fc22fe163cbb37cac4c437",
+      "bytes": 74750,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/dreamweb-hero-v2-640.webp": {
+      "key": "artwork/8f52b05bbebeb3e8c296bf657b787829213b654e1d6cbccd850f1b3e13fecb4f/dreamweb-hero-v2-640.webp",
+      "sha256": "8f52b05bbebeb3e8c296bf657b787829213b654e1d6cbccd850f1b3e13fecb4f",
+      "bytes": 26596,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/dreamweb-hero-v2-960.webp": {
+      "key": "artwork/097015c7d0fc1696cbabb6f5390d37bc71d1533cb978c81b6c400e330c0d34fd/dreamweb-hero-v2-960.webp",
+      "sha256": "097015c7d0fc1696cbabb6f5390d37bc71d1533cb978c81b6c400e330c0d34fd",
+      "bytes": 49180,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/dreamweb-scummweb-generated-2026-11-05-r1-cover-480.webp": {
+      "key": "artwork/f253e62a39107dc1c755ffcbfec18b74cc8debd821d2d06eeae9034097b4b3f3/dreamweb-scummweb-generated-2026-11-05-r1-cover-480.webp",
+      "sha256": "f253e62a39107dc1c755ffcbfec18b74cc8debd821d2d06eeae9034097b4b3f3",
+      "bytes": 66066,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/dreamweb-scummweb-generated-2026-11-05-r1-hero-1280.avif": {
+      "key": "artwork/da08f3d06094ba7b6afa53b80173b44ff45d28e29db3196b1e66b9add8612995/dreamweb-scummweb-generated-2026-11-05-r1-hero-1280.avif",
+      "sha256": "da08f3d06094ba7b6afa53b80173b44ff45d28e29db3196b1e66b9add8612995",
+      "bytes": 64427,
+      "contentType": "image/avif",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/dreamweb-scummweb-generated-2026-11-05-r1-hero-1280.webp": {
+      "key": "artwork/65cee983970847c404ea6e52b7eb6b45e704cf44ec47bd4ffea002e7ac2546d0/dreamweb-scummweb-generated-2026-11-05-r1-hero-1280.webp",
+      "sha256": "65cee983970847c404ea6e52b7eb6b45e704cf44ec47bd4ffea002e7ac2546d0",
+      "bytes": 72080,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/dreamweb-scummweb-generated-2026-11-05-r1-hero-640.avif": {
+      "key": "artwork/098ed3c72047f3cf3c3aaa0003da6fd83123e15313f1bf87e8d6be5fbb921d97/dreamweb-scummweb-generated-2026-11-05-r1-hero-640.avif",
+      "sha256": "098ed3c72047f3cf3c3aaa0003da6fd83123e15313f1bf87e8d6be5fbb921d97",
+      "bytes": 20701,
+      "contentType": "image/avif",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/dreamweb-scummweb-generated-2026-11-05-r1-hero-640.webp": {
+      "key": "artwork/6c7e67f87476d06907037ee1827098faacddc04072ff6f80afae58d73bd0a60b/dreamweb-scummweb-generated-2026-11-05-r1-hero-640.webp",
+      "sha256": "6c7e67f87476d06907037ee1827098faacddc04072ff6f80afae58d73bd0a60b",
+      "bytes": 26558,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/dreamweb-scummweb-generated-2026-11-05-r1-hero-960.avif": {
+      "key": "artwork/fa2e0a0693e6aa0acf7c2626d5768ec03e0a2cda67984b741e844615b2dd764a/dreamweb-scummweb-generated-2026-11-05-r1-hero-960.avif",
+      "sha256": "fa2e0a0693e6aa0acf7c2626d5768ec03e0a2cda67984b741e844615b2dd764a",
+      "bytes": 41045,
+      "contentType": "image/avif",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/dreamweb-scummweb-generated-2026-11-05-r1-hero-960.webp": {
+      "key": "artwork/9f89d21f49e56ae0189143cd13b6a8eadc48c3673f171f2fb194d12391006824/dreamweb-scummweb-generated-2026-11-05-r1-hero-960.webp",
+      "sha256": "9f89d21f49e56ae0189143cd13b6a8eadc48c3673f171f2fb194d12391006824",
+      "bytes": 49074,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/hires1-scummweb-generated-2026-11-05-r1-cover-480.webp": {
+      "key": "artwork/f41e25d1c1254b4e2040c2fd87dfebb013b15f44ed89eb24bac72c5c09ac5a5a/hires1-scummweb-generated-2026-11-05-r1-cover-480.webp",
+      "sha256": "f41e25d1c1254b4e2040c2fd87dfebb013b15f44ed89eb24bac72c5c09ac5a5a",
+      "bytes": 42294,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/lure-hero-v2-1280.webp": {
+      "key": "artwork/ff99ace9c88ae78448432c28cb8d52fecd078dfebcd7db5fcd24713d865cbf0e/lure-hero-v2-1280.webp",
+      "sha256": "ff99ace9c88ae78448432c28cb8d52fecd078dfebcd7db5fcd24713d865cbf0e",
+      "bytes": 61478,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/lure-hero-v2-640.webp": {
+      "key": "artwork/94b017907cb0de47319cf50ee06d90fc6af1f5cb9372f3cb8eea2c29b5941529/lure-hero-v2-640.webp",
+      "sha256": "94b017907cb0de47319cf50ee06d90fc6af1f5cb9372f3cb8eea2c29b5941529",
+      "bytes": 23060,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/lure-hero-v2-960.webp": {
+      "key": "artwork/b39e977f2e3adff4a3f78e1c72360cd293f6ec710be7b09d44a601f74d32a176/lure-hero-v2-960.webp",
+      "sha256": "b39e977f2e3adff4a3f78e1c72360cd293f6ec710be7b09d44a601f74d32a176",
+      "bytes": 41996,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/lure-scummweb-generated-2026-11-05-r1-cover-480.webp": {
+      "key": "artwork/6eb7fe18c98f1a8ddcc1be379989fa8aa55f0dd5f94ac66633bbd033149a2d17/lure-scummweb-generated-2026-11-05-r1-cover-480.webp",
+      "sha256": "6eb7fe18c98f1a8ddcc1be379989fa8aa55f0dd5f94ac66633bbd033149a2d17",
+      "bytes": 60742,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/lure-scummweb-generated-2026-11-05-r1-hero-1280.avif": {
+      "key": "artwork/2bedf4ce21c2c51d10026ad4a1e43af77abb2f53ac8d397d03603ef294cf8020/lure-scummweb-generated-2026-11-05-r1-hero-1280.avif",
+      "sha256": "2bedf4ce21c2c51d10026ad4a1e43af77abb2f53ac8d397d03603ef294cf8020",
+      "bytes": 50650,
+      "contentType": "image/avif",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/lure-scummweb-generated-2026-11-05-r1-hero-1280.webp": {
+      "key": "artwork/9616dd4db9fc88edb5d99b7dbd51c9e75e5017fd8c65b4ff7412d0ae5f44e15e/lure-scummweb-generated-2026-11-05-r1-hero-1280.webp",
+      "sha256": "9616dd4db9fc88edb5d99b7dbd51c9e75e5017fd8c65b4ff7412d0ae5f44e15e",
+      "bytes": 58572,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/lure-scummweb-generated-2026-11-05-r1-hero-640.avif": {
+      "key": "artwork/7ed47d7d782ce2ae8c8fbabfe47be8938487d9d4c4b5b475f0185424d42fcb82/lure-scummweb-generated-2026-11-05-r1-hero-640.avif",
+      "sha256": "7ed47d7d782ce2ae8c8fbabfe47be8938487d9d4c4b5b475f0185424d42fcb82",
+      "bytes": 19114,
+      "contentType": "image/avif",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/lure-scummweb-generated-2026-11-05-r1-hero-640.webp": {
+      "key": "artwork/9104137a4daa91e16a9758a331bd4260155895c749213a17b16b18e9bd1e1640/lure-scummweb-generated-2026-11-05-r1-hero-640.webp",
+      "sha256": "9104137a4daa91e16a9758a331bd4260155895c749213a17b16b18e9bd1e1640",
+      "bytes": 23034,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/lure-scummweb-generated-2026-11-05-r1-hero-960.avif": {
+      "key": "artwork/9113fe0238923bc9a2508c937662733e740638093fc5ae3e8ea7c397df9c3678/lure-scummweb-generated-2026-11-05-r1-hero-960.avif",
+      "sha256": "9113fe0238923bc9a2508c937662733e740638093fc5ae3e8ea7c397df9c3678",
+      "bytes": 35322,
+      "contentType": "image/avif",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/lure-scummweb-generated-2026-11-05-r1-hero-960.webp": {
+      "key": "artwork/a9837157d623dc2627c4045680cbcc85b3d3d32bcbee19de71546d5ad57d6027/lure-scummweb-generated-2026-11-05-r1-hero-960.webp",
+      "sha256": "a9837157d623dc2627c4045680cbcc85b3d3d32bcbee19de71546d5ad57d6027",
+      "bytes": 41678,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/monkey-demo-hero-v2-1280.webp": {
+      "key": "artwork/efeaf7075d947a7ee82c69279a7405e6de50fd02562d4a8c74733a0f97c209a0/monkey-demo-hero-v2-1280.webp",
+      "sha256": "efeaf7075d947a7ee82c69279a7405e6de50fd02562d4a8c74733a0f97c209a0",
+      "bytes": 92288,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/monkey-demo-hero-v2-640.webp": {
+      "key": "artwork/46cce6ca81c3ee2b9acac13e6db7b96ee14f2659c0010282c98bae4c4acb74da/monkey-demo-hero-v2-640.webp",
+      "sha256": "46cce6ca81c3ee2b9acac13e6db7b96ee14f2659c0010282c98bae4c4acb74da",
+      "bytes": 34488,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/monkey-demo-hero-v2-960.webp": {
+      "key": "artwork/c3c0e1b5ac5423ae7f36d113e17f03b5ba484bbbce0ae63dc879f3bdf658c88e/monkey-demo-hero-v2-960.webp",
+      "sha256": "c3c0e1b5ac5423ae7f36d113e17f03b5ba484bbbce0ae63dc879f3bdf658c88e",
+      "bytes": 63690,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/monkey-demo-scummweb-generated-2026-11-05-r1-cover-480.webp": {
+      "key": "artwork/94798324742120332e548c287f810df3e6349eaf879d76c608c05eb397d32686/monkey-demo-scummweb-generated-2026-11-05-r1-cover-480.webp",
+      "sha256": "94798324742120332e548c287f810df3e6349eaf879d76c608c05eb397d32686",
+      "bytes": 94554,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/monkey-demo-scummweb-generated-2026-11-05-r1-hero-1280.webp": {
+      "key": "artwork/5bb398c541cdbcaca9d42e70221778e24d42c387e8eff8be4e26fe08964c81c0/monkey-demo-scummweb-generated-2026-11-05-r1-hero-1280.webp",
+      "sha256": "5bb398c541cdbcaca9d42e70221778e24d42c387e8eff8be4e26fe08964c81c0",
+      "bytes": 89002,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/monkey-demo-scummweb-generated-2026-11-05-r1-hero-640.webp": {
+      "key": "artwork/2f791262047e5bf52291c149e84707d1442369fcfd45bde3f9feca5137ca85a8/monkey-demo-scummweb-generated-2026-11-05-r1-hero-640.webp",
+      "sha256": "2f791262047e5bf52291c149e84707d1442369fcfd45bde3f9feca5137ca85a8",
+      "bytes": 34442,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/monkey-demo-scummweb-generated-2026-11-05-r1-hero-960.webp": {
+      "key": "artwork/a2c190159beb84d1e8ee13c84e57f0f08aeae5cdf6109d573bc955600528b3ef/monkey-demo-scummweb-generated-2026-11-05-r1-hero-960.webp",
+      "sha256": "a2c190159beb84d1e8ee13c84e57f0f08aeae5cdf6109d573bc955600528b3ef",
+      "bytes": 63400,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/nippon-hero-v2-1280.webp": {
+      "key": "artwork/ced244726fad55e39a824c8e089bb1636690ce84065f19d24b1ab32aa497ff91/nippon-hero-v2-1280.webp",
+      "sha256": "ced244726fad55e39a824c8e089bb1636690ce84065f19d24b1ab32aa497ff91",
+      "bytes": 56020,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/nippon-hero-v2-640.webp": {
+      "key": "artwork/78ff5d9fab9c66a60e30029e7e761f8197d8cba7491e0b831582228ffcb1a7f8/nippon-hero-v2-640.webp",
+      "sha256": "78ff5d9fab9c66a60e30029e7e761f8197d8cba7491e0b831582228ffcb1a7f8",
+      "bytes": 22092,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/nippon-hero-v2-960.webp": {
+      "key": "artwork/9144c35dca706f1c99977a56e7248215cd64f3548632f7caaadde3d7e6827773/nippon-hero-v2-960.webp",
+      "sha256": "9144c35dca706f1c99977a56e7248215cd64f3548632f7caaadde3d7e6827773",
+      "bytes": 39454,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/nippon-scummweb-generated-2026-11-05-r1-cover-480.webp": {
+      "key": "artwork/bf9f912de1b62c146318669d915224d41b47566804c94dde0350cec5ac858646/nippon-scummweb-generated-2026-11-05-r1-cover-480.webp",
+      "sha256": "bf9f912de1b62c146318669d915224d41b47566804c94dde0350cec5ac858646",
+      "bytes": 80800,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/nippon-scummweb-generated-2026-11-05-r1-hero-1280.webp": {
+      "key": "artwork/ec306ad02406fd166d65131529ce8f00eefed96d0cfea2975c28559779e91c24/nippon-scummweb-generated-2026-11-05-r1-hero-1280.webp",
+      "sha256": "ec306ad02406fd166d65131529ce8f00eefed96d0cfea2975c28559779e91c24",
+      "bytes": 54626,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/nippon-scummweb-generated-2026-11-05-r1-hero-640.webp": {
+      "key": "artwork/c83b3cfdb4bd4aacc2b784da991fea96cfec4d51da2d53da5957df1ac13e9d10/nippon-scummweb-generated-2026-11-05-r1-hero-640.webp",
+      "sha256": "c83b3cfdb4bd4aacc2b784da991fea96cfec4d51da2d53da5957df1ac13e9d10",
+      "bytes": 22286,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/nippon-scummweb-generated-2026-11-05-r1-hero-960.webp": {
+      "key": "artwork/f76c90d9346bc1f71122d927b5d710f84082d64646e7e2cc80e606a2fa129b36/nippon-scummweb-generated-2026-11-05-r1-hero-960.webp",
+      "sha256": "f76c90d9346bc1f71122d927b5d710f84082d64646e7e2cc80e606a2fa129b36",
+      "bytes": 39082,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/queen-hero-v2-1280.webp": {
+      "key": "artwork/09a50a741a5b4e9a4d9994b48caa8751fbf27ca908d74f4a7707ffc75c28d41e/queen-hero-v2-1280.webp",
+      "sha256": "09a50a741a5b4e9a4d9994b48caa8751fbf27ca908d74f4a7707ffc75c28d41e",
+      "bytes": 152878,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/queen-hero-v2-640.webp": {
+      "key": "artwork/8b576a1d50974def18a8cec9e4e8d2560f82d2506a1a499edfd31f7d024e0e71/queen-hero-v2-640.webp",
+      "sha256": "8b576a1d50974def18a8cec9e4e8d2560f82d2506a1a499edfd31f7d024e0e71",
+      "bytes": 50768,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/queen-hero-v2-960.webp": {
+      "key": "artwork/3a5f694b57cb6fadea5b31563ae0a54b4a92764141acbaa1eb9a05a1f6d24fb3/queen-hero-v2-960.webp",
+      "sha256": "3a5f694b57cb6fadea5b31563ae0a54b4a92764141acbaa1eb9a05a1f6d24fb3",
+      "bytes": 97272,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/queen-scummweb-generated-2026-11-05-r1-cover-480.webp": {
+      "key": "artwork/b4cb9df9fe357d9f0f550ea66a2b68932f3b008d8131a6875416c68a6c495dfc/queen-scummweb-generated-2026-11-05-r1-cover-480.webp",
+      "sha256": "b4cb9df9fe357d9f0f550ea66a2b68932f3b008d8131a6875416c68a6c495dfc",
+      "bytes": 94944,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/queen-scummweb-generated-2026-11-05-r1-hero-1280.webp": {
+      "key": "artwork/ad2b5243a66c3555bd6945b6b49f16002a0748ac034d93bb374119e175f9f53a/queen-scummweb-generated-2026-11-05-r1-hero-1280.webp",
+      "sha256": "ad2b5243a66c3555bd6945b6b49f16002a0748ac034d93bb374119e175f9f53a",
+      "bytes": 147322,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/queen-scummweb-generated-2026-11-05-r1-hero-640.webp": {
+      "key": "artwork/fd26c8498d961f4fbc374cee1f72a6aa8e2b0b90a989a9aca5543ba3b8dc4472/queen-scummweb-generated-2026-11-05-r1-hero-640.webp",
+      "sha256": "fd26c8498d961f4fbc374cee1f72a6aa8e2b0b90a989a9aca5543ba3b8dc4472",
+      "bytes": 50674,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/queen-scummweb-generated-2026-11-05-r1-hero-960.webp": {
+      "key": "artwork/e8dc63d05070f12fa4170e776e79e7d454915ee4027e5289cd1da77779725642/queen-scummweb-generated-2026-11-05-r1-hero-960.webp",
+      "sha256": "e8dc63d05070f12fa4170e776e79e7d454915ee4027e5289cd1da77779725642",
+      "bytes": 97392,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/sfinx-scummweb-generated-2026-11-05-r1-cover-480.webp": {
+      "key": "artwork/8e30f42be2cc915f9d31858ec65032e9bb3d80815657a456ac497114f0918520/sfinx-scummweb-generated-2026-11-05-r1-cover-480.webp",
+      "sha256": "8e30f42be2cc915f9d31858ec65032e9bb3d80815657a456ac497114f0918520",
+      "bytes": 54548,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/sky-hero-v2-1280.webp": {
+      "key": "artwork/3acd06b9561c86c097bd3699302b3efc7e5b6e9620bab57fb16ef1a1a4f2b539/sky-hero-v2-1280.webp",
+      "sha256": "3acd06b9561c86c097bd3699302b3efc7e5b6e9620bab57fb16ef1a1a4f2b539",
+      "bytes": 117680,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/sky-hero-v2-640.webp": {
+      "key": "artwork/dcdc4675496b83f3b9e94d6a6ce7ca55490633a949fe130597c2156df4a592ba/sky-hero-v2-640.webp",
+      "sha256": "dcdc4675496b83f3b9e94d6a6ce7ca55490633a949fe130597c2156df4a592ba",
+      "bytes": 40814,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/sky-hero-v2-960.webp": {
+      "key": "artwork/af2ada787de6cd3651c941c8c8ca1b71dee19b261508b8a1a882a329b4eacf54/sky-hero-v2-960.webp",
+      "sha256": "af2ada787de6cd3651c941c8c8ca1b71dee19b261508b8a1a882a329b4eacf54",
+      "bytes": 77532,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/sky-scummweb-generated-2026-11-05-r1-hero-1280.webp": {
+      "key": "artwork/c6d1f53be773e8bc077fbaebde8d813ef035a08f2210508126221fbf4fa4e85c/sky-scummweb-generated-2026-11-05-r1-hero-1280.webp",
+      "sha256": "c6d1f53be773e8bc077fbaebde8d813ef035a08f2210508126221fbf4fa4e85c",
+      "bytes": 114656,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/sky-scummweb-generated-2026-11-05-r1-hero-640.webp": {
+      "key": "artwork/b8854ec27d7f82493a19076e02424233fdeba4d7b9a6b7a82aeea481e33d38de/sky-scummweb-generated-2026-11-05-r1-hero-640.webp",
+      "sha256": "b8854ec27d7f82493a19076e02424233fdeba4d7b9a6b7a82aeea481e33d38de",
+      "bytes": 40814,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/sky-scummweb-generated-2026-11-05-r1-hero-960.webp": {
+      "key": "artwork/f1018844baed9ccf14bc014accc2c384222cd51d1edac9375c35dbafe9ba1dbe/sky-scummweb-generated-2026-11-05-r1-hero-960.webp",
+      "sha256": "f1018844baed9ccf14bc014accc2c384222cd51d1edac9375c35dbafe9ba1dbe",
+      "bytes": 77668,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/sky-scummweb-generated-2026-11-05-r2-cover-480.webp": {
+      "key": "artwork/d8d37a16007786dd15caa5c73b3124d4f23443fb06ab8748d3f057391258a8d1/sky-scummweb-generated-2026-11-05-r2-cover-480.webp",
+      "sha256": "d8d37a16007786dd15caa5c73b3124d4f23443fb06ab8748d3f057391258a8d1",
+      "bytes": 11058,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/soltys-scummweb-generated-2026-11-05-r1-cover-480.webp": {
+      "key": "artwork/61c5beb0c5e7f73cf00daf137c95304d81d47d64f4dd14120f71d5e2710e25cc/soltys-scummweb-generated-2026-11-05-r1-cover-480.webp",
+      "sha256": "61c5beb0c5e7f73cf00daf137c95304d81d47d64f4dd14120f71d5e2710e25cc",
+      "bytes": 52870,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/sword25-hero-v2-1280.webp": {
+      "key": "artwork/d40fa7132fe796126eaa32c8a77b8a33fadbfac8bdab2ab1e56576c8aae5acaf/sword25-hero-v2-1280.webp",
+      "sha256": "d40fa7132fe796126eaa32c8a77b8a33fadbfac8bdab2ab1e56576c8aae5acaf",
+      "bytes": 32864,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/sword25-hero-v2-640.webp": {
+      "key": "artwork/77498e3a637d413f26bfa94263cbed8115975fc9b930418dcd9927ac8049b1c4/sword25-hero-v2-640.webp",
+      "sha256": "77498e3a637d413f26bfa94263cbed8115975fc9b930418dcd9927ac8049b1c4",
+      "bytes": 12370,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/sword25-hero-v2-960.webp": {
+      "key": "artwork/d2d02cac360259bf6b59a23e2fe6451618cc60a341176b2617acfab128be9afe/sword25-hero-v2-960.webp",
+      "sha256": "d2d02cac360259bf6b59a23e2fe6451618cc60a341176b2617acfab128be9afe",
+      "bytes": 22234,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/sword25-scummweb-generated-2026-11-05-r1-cover-480.webp": {
+      "key": "artwork/8d0cda62336d89c76834e17aac8b9ad13af4e4fb3d4e1724a36a9f34db8b535e/sword25-scummweb-generated-2026-11-05-r1-cover-480.webp",
+      "sha256": "8d0cda62336d89c76834e17aac8b9ad13af4e4fb3d4e1724a36a9f34db8b535e",
+      "bytes": 82320,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/sword25-scummweb-generated-2026-11-05-r1-hero-1280.avif": {
+      "key": "artwork/6f78a5e694c140c47df6296b86e6efcc6dcf04e69c8ca48ce7b84fa91c5c4dc7/sword25-scummweb-generated-2026-11-05-r1-hero-1280.avif",
+      "sha256": "6f78a5e694c140c47df6296b86e6efcc6dcf04e69c8ca48ce7b84fa91c5c4dc7",
+      "bytes": 27672,
+      "contentType": "image/avif",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/sword25-scummweb-generated-2026-11-05-r1-hero-1280.webp": {
+      "key": "artwork/0ec88f7520a25f894a746023617777ce45723979e9521965856c180a155af6c0/sword25-scummweb-generated-2026-11-05-r1-hero-1280.webp",
+      "sha256": "0ec88f7520a25f894a746023617777ce45723979e9521965856c180a155af6c0",
+      "bytes": 31450,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/sword25-scummweb-generated-2026-11-05-r1-hero-640.avif": {
+      "key": "artwork/2a836d0d4c4e1bf52ab70471943630dbdf8cd83026ef100ec7340de287d315a1/sword25-scummweb-generated-2026-11-05-r1-hero-640.avif",
+      "sha256": "2a836d0d4c4e1bf52ab70471943630dbdf8cd83026ef100ec7340de287d315a1",
+      "bytes": 10394,
+      "contentType": "image/avif",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/sword25-scummweb-generated-2026-11-05-r1-hero-640.webp": {
+      "key": "artwork/2e36b0986977f7c0bfce67a0768668ee570e523099b46ed3d1435deb6d32b611/sword25-scummweb-generated-2026-11-05-r1-hero-640.webp",
+      "sha256": "2e36b0986977f7c0bfce67a0768668ee570e523099b46ed3d1435deb6d32b611",
+      "bytes": 12456,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/sword25-scummweb-generated-2026-11-05-r1-hero-960.avif": {
+      "key": "artwork/d7dfbbd818800f83d326247f614749f0c042e5560a14120012f97a542892e525/sword25-scummweb-generated-2026-11-05-r1-hero-960.avif",
+      "sha256": "d7dfbbd818800f83d326247f614749f0c042e5560a14120012f97a542892e525",
+      "bytes": 18972,
+      "contentType": "image/avif",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/sword25-scummweb-generated-2026-11-05-r1-hero-960.webp": {
+      "key": "artwork/a9b752d38bcea9cf7cfef575bf6baf3fd9ac37825dcf3f91f0106ede0efcf28c/sword25-scummweb-generated-2026-11-05-r1-hero-960.webp",
+      "sha256": "a9b752d38bcea9cf7cfef575bf6baf3fd9ac37825dcf3f91f0106ede0efcf28c",
+      "bytes": 22056,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
     }
   },
   "images": {
@@ -13930,6 +14954,89 @@
       ],
       "avif": []
     },
+    "/launcher/classic-got-cover.webp": {
+      "width": 512,
+      "height": 509,
+      "fallback": "/launcher/classic-got-cover.webp",
+      "webp": [
+        "/launcher/responsive/classic-got-cover-320.webp",
+        "/launcher/responsive/classic-got-cover-480.webp",
+        "/launcher/classic-got-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/classic-got-shot-1.webp": {
+      "width": 640,
+      "height": 480,
+      "fallback": "/launcher/classic-got-shot-1.webp",
+      "webp": [
+        "/launcher/responsive/classic-got-shot-1-320.webp",
+        "/launcher/classic-got-shot-1.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/classic-got-shot-2.webp": {
+      "width": 640,
+      "height": 480,
+      "fallback": "/launcher/classic-got-shot-2.webp",
+      "webp": [
+        "/launcher/responsive/classic-got-shot-2-320.webp",
+        "/launcher/classic-got-shot-2.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/classic-got-shot-3.webp": {
+      "width": 640,
+      "height": 480,
+      "fallback": "/launcher/classic-got-shot-3.webp",
+      "webp": [
+        "/launcher/responsive/classic-got-shot-3-320.webp",
+        "/launcher/classic-got-shot-3.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/classic-hires1-cover.webp": {
+      "width": 512,
+      "height": 674,
+      "fallback": "/launcher/classic-hires1-cover.webp",
+      "webp": [
+        "/launcher/responsive/classic-hires1-cover-320.webp",
+        "/launcher/responsive/classic-hires1-cover-480.webp",
+        "/launcher/classic-hires1-cover.webp"
+      ],
+      "avif": [
+        "/launcher/responsive/classic-hires1-cover-320.avif",
+        "/launcher/responsive/classic-hires1-cover-480.avif",
+        "/launcher/optimized/classic-hires1-cover.avif"
+      ]
+    },
+    "/launcher/classic-hires1-shot-1.webp": {
+      "width": 2800,
+      "height": 1920,
+      "fallback": "/launcher/classic-hires1-shot-1.webp",
+      "webp": [
+        "/launcher/classic-hires1-shot-1.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/classic-hires1-shot-2.webp": {
+      "width": 2800,
+      "height": 1920,
+      "fallback": "/launcher/classic-hires1-shot-2.webp",
+      "webp": [
+        "/launcher/classic-hires1-shot-2.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/classic-hires1-shot-3.webp": {
+      "width": 2800,
+      "height": 1920,
+      "fallback": "/launcher/classic-hires1-shot-3.webp",
+      "webp": [
+        "/launcher/classic-hires1-shot-3.webp"
+      ],
+      "avif": []
+    },
     "/launcher/drascula-cover.webp": {
       "width": 840,
       "height": 630,
@@ -13938,6 +15045,18 @@
         "/launcher/responsive/drascula-cover-320.webp",
         "/launcher/responsive/drascula-cover-480.webp",
         "/launcher/drascula-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/drascula-hero-v2.webp": {
+      "width": 1619,
+      "height": 971,
+      "fallback": "/launcher/drascula-hero-v2.webp",
+      "webp": [
+        "/launcher/responsive/drascula-hero-v2-640.webp",
+        "/launcher/responsive/drascula-hero-v2-960.webp",
+        "/launcher/responsive/drascula-hero-v2-1280.webp",
+        "/launcher/drascula-hero-v2.webp"
       ],
       "avif": []
     },
@@ -13959,6 +15078,30 @@
         "/launcher/responsive/drascula-hero-1920.avif",
         "/launcher/optimized/drascula-hero.avif"
       ]
+    },
+    "/launcher/drascula-scummweb-generated-2026-11-05-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/drascula-scummweb-generated-2026-11-05-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/drascula-scummweb-generated-2026-11-05-r1-cover-320.webp",
+        "/launcher/responsive/drascula-scummweb-generated-2026-11-05-r1-cover-480.webp",
+        "/launcher/responsive/drascula-scummweb-generated-2026-11-05-r1-cover-640.webp",
+        "/launcher/drascula-scummweb-generated-2026-11-05-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/drascula-scummweb-generated-2026-11-05-r1-hero.webp": {
+      "width": 1600,
+      "height": 960,
+      "fallback": "/launcher/drascula-scummweb-generated-2026-11-05-r1-hero.webp",
+      "webp": [
+        "/launcher/responsive/drascula-scummweb-generated-2026-11-05-r1-hero-640.webp",
+        "/launcher/responsive/drascula-scummweb-generated-2026-11-05-r1-hero-960.webp",
+        "/launcher/responsive/drascula-scummweb-generated-2026-11-05-r1-hero-1280.webp",
+        "/launcher/drascula-scummweb-generated-2026-11-05-r1-hero.webp"
+      ],
+      "avif": []
     },
     "/launcher/drascula-shot-1.png": {
       "width": 1600,
@@ -14008,6 +15151,18 @@
       ],
       "avif": []
     },
+    "/launcher/dreamweb-hero-v2.webp": {
+      "width": 1619,
+      "height": 971,
+      "fallback": "/launcher/dreamweb-hero-v2.webp",
+      "webp": [
+        "/launcher/responsive/dreamweb-hero-v2-640.webp",
+        "/launcher/responsive/dreamweb-hero-v2-960.webp",
+        "/launcher/responsive/dreamweb-hero-v2-1280.webp",
+        "/launcher/dreamweb-hero-v2.webp"
+      ],
+      "avif": []
+    },
     "/launcher/dreamweb-hero.webp": {
       "width": 1839,
       "height": 855,
@@ -14019,6 +15174,35 @@
         "/launcher/dreamweb-hero.webp"
       ],
       "avif": []
+    },
+    "/launcher/dreamweb-scummweb-generated-2026-11-05-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/dreamweb-scummweb-generated-2026-11-05-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/dreamweb-scummweb-generated-2026-11-05-r1-cover-320.webp",
+        "/launcher/responsive/dreamweb-scummweb-generated-2026-11-05-r1-cover-480.webp",
+        "/launcher/responsive/dreamweb-scummweb-generated-2026-11-05-r1-cover-640.webp",
+        "/launcher/dreamweb-scummweb-generated-2026-11-05-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/dreamweb-scummweb-generated-2026-11-05-r1-hero.webp": {
+      "width": 1600,
+      "height": 960,
+      "fallback": "/launcher/dreamweb-scummweb-generated-2026-11-05-r1-hero.webp",
+      "webp": [
+        "/launcher/responsive/dreamweb-scummweb-generated-2026-11-05-r1-hero-640.webp",
+        "/launcher/responsive/dreamweb-scummweb-generated-2026-11-05-r1-hero-960.webp",
+        "/launcher/responsive/dreamweb-scummweb-generated-2026-11-05-r1-hero-1280.webp",
+        "/launcher/dreamweb-scummweb-generated-2026-11-05-r1-hero.webp"
+      ],
+      "avif": [
+        "/launcher/responsive/dreamweb-scummweb-generated-2026-11-05-r1-hero-640.avif",
+        "/launcher/responsive/dreamweb-scummweb-generated-2026-11-05-r1-hero-960.avif",
+        "/launcher/responsive/dreamweb-scummweb-generated-2026-11-05-r1-hero-1280.avif",
+        "/launcher/optimized/dreamweb-scummweb-generated-2026-11-05-r1-hero.avif"
+      ]
     },
     "/launcher/dreamweb-shot-1.png": {
       "width": 640,
@@ -14047,6 +15231,18 @@
       "webp": [
         "/launcher/responsive/dreamweb-shot-3-320.webp",
         "/launcher/optimized/dreamweb-shot-3.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/hires1-scummweb-generated-2026-11-05-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/hires1-scummweb-generated-2026-11-05-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/hires1-scummweb-generated-2026-11-05-r1-cover-320.webp",
+        "/launcher/responsive/hires1-scummweb-generated-2026-11-05-r1-cover-480.webp",
+        "/launcher/responsive/hires1-scummweb-generated-2026-11-05-r1-cover-640.webp",
+        "/launcher/hires1-scummweb-generated-2026-11-05-r1-cover.webp"
       ],
       "avif": []
     },
@@ -14150,6 +15346,18 @@
       ],
       "avif": []
     },
+    "/launcher/lure-hero-v2.webp": {
+      "width": 1619,
+      "height": 971,
+      "fallback": "/launcher/lure-hero-v2.webp",
+      "webp": [
+        "/launcher/responsive/lure-hero-v2-640.webp",
+        "/launcher/responsive/lure-hero-v2-960.webp",
+        "/launcher/responsive/lure-hero-v2-1280.webp",
+        "/launcher/lure-hero-v2.webp"
+      ],
+      "avif": []
+    },
     "/launcher/lure-hero.webp": {
       "width": 2400,
       "height": 1350,
@@ -14162,6 +15370,35 @@
         "/launcher/lure-hero.webp"
       ],
       "avif": []
+    },
+    "/launcher/lure-scummweb-generated-2026-11-05-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/lure-scummweb-generated-2026-11-05-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/lure-scummweb-generated-2026-11-05-r1-cover-320.webp",
+        "/launcher/responsive/lure-scummweb-generated-2026-11-05-r1-cover-480.webp",
+        "/launcher/responsive/lure-scummweb-generated-2026-11-05-r1-cover-640.webp",
+        "/launcher/lure-scummweb-generated-2026-11-05-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/lure-scummweb-generated-2026-11-05-r1-hero.webp": {
+      "width": 1600,
+      "height": 960,
+      "fallback": "/launcher/lure-scummweb-generated-2026-11-05-r1-hero.webp",
+      "webp": [
+        "/launcher/responsive/lure-scummweb-generated-2026-11-05-r1-hero-640.webp",
+        "/launcher/responsive/lure-scummweb-generated-2026-11-05-r1-hero-960.webp",
+        "/launcher/responsive/lure-scummweb-generated-2026-11-05-r1-hero-1280.webp",
+        "/launcher/lure-scummweb-generated-2026-11-05-r1-hero.webp"
+      ],
+      "avif": [
+        "/launcher/responsive/lure-scummweb-generated-2026-11-05-r1-hero-640.avif",
+        "/launcher/responsive/lure-scummweb-generated-2026-11-05-r1-hero-960.avif",
+        "/launcher/responsive/lure-scummweb-generated-2026-11-05-r1-hero-1280.avif",
+        "/launcher/optimized/lure-scummweb-generated-2026-11-05-r1-hero.avif"
+      ]
     },
     "/launcher/lure-shot-1.png": {
       "width": 640,
@@ -14244,6 +15481,18 @@
       ],
       "avif": []
     },
+    "/launcher/monkey-demo-hero-v2.webp": {
+      "width": 1619,
+      "height": 971,
+      "fallback": "/launcher/monkey-demo-hero-v2.webp",
+      "webp": [
+        "/launcher/responsive/monkey-demo-hero-v2-640.webp",
+        "/launcher/responsive/monkey-demo-hero-v2-960.webp",
+        "/launcher/responsive/monkey-demo-hero-v2-1280.webp",
+        "/launcher/monkey-demo-hero-v2.webp"
+      ],
+      "avif": []
+    },
     "/launcher/monkey-demo-hero.webp": {
       "width": 1440,
       "height": 810,
@@ -14253,6 +15502,30 @@
         "/launcher/responsive/monkey-demo-hero-960.webp",
         "/launcher/responsive/monkey-demo-hero-1280.webp",
         "/launcher/monkey-demo-hero.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/monkey-demo-scummweb-generated-2026-11-05-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/monkey-demo-scummweb-generated-2026-11-05-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/monkey-demo-scummweb-generated-2026-11-05-r1-cover-320.webp",
+        "/launcher/responsive/monkey-demo-scummweb-generated-2026-11-05-r1-cover-480.webp",
+        "/launcher/responsive/monkey-demo-scummweb-generated-2026-11-05-r1-cover-640.webp",
+        "/launcher/monkey-demo-scummweb-generated-2026-11-05-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/monkey-demo-scummweb-generated-2026-11-05-r1-hero.webp": {
+      "width": 1600,
+      "height": 960,
+      "fallback": "/launcher/monkey-demo-scummweb-generated-2026-11-05-r1-hero.webp",
+      "webp": [
+        "/launcher/responsive/monkey-demo-scummweb-generated-2026-11-05-r1-hero-640.webp",
+        "/launcher/responsive/monkey-demo-scummweb-generated-2026-11-05-r1-hero-960.webp",
+        "/launcher/responsive/monkey-demo-scummweb-generated-2026-11-05-r1-hero-1280.webp",
+        "/launcher/monkey-demo-scummweb-generated-2026-11-05-r1-hero.webp"
       ],
       "avif": []
     },
@@ -14337,6 +15610,18 @@
       ],
       "avif": []
     },
+    "/launcher/nippon-hero-v2.webp": {
+      "width": 1619,
+      "height": 971,
+      "fallback": "/launcher/nippon-hero-v2.webp",
+      "webp": [
+        "/launcher/responsive/nippon-hero-v2-640.webp",
+        "/launcher/responsive/nippon-hero-v2-960.webp",
+        "/launcher/responsive/nippon-hero-v2-1280.webp",
+        "/launcher/nippon-hero-v2.webp"
+      ],
+      "avif": []
+    },
     "/launcher/nippon-hero.webp": {
       "width": 2400,
       "height": 1350,
@@ -14347,6 +15632,30 @@
         "/launcher/responsive/nippon-hero-1280.webp",
         "/launcher/responsive/nippon-hero-1920.webp",
         "/launcher/nippon-hero.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/nippon-scummweb-generated-2026-11-05-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/nippon-scummweb-generated-2026-11-05-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/nippon-scummweb-generated-2026-11-05-r1-cover-320.webp",
+        "/launcher/responsive/nippon-scummweb-generated-2026-11-05-r1-cover-480.webp",
+        "/launcher/responsive/nippon-scummweb-generated-2026-11-05-r1-cover-640.webp",
+        "/launcher/nippon-scummweb-generated-2026-11-05-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/nippon-scummweb-generated-2026-11-05-r1-hero.webp": {
+      "width": 1600,
+      "height": 960,
+      "fallback": "/launcher/nippon-scummweb-generated-2026-11-05-r1-hero.webp",
+      "webp": [
+        "/launcher/responsive/nippon-scummweb-generated-2026-11-05-r1-hero-640.webp",
+        "/launcher/responsive/nippon-scummweb-generated-2026-11-05-r1-hero-960.webp",
+        "/launcher/responsive/nippon-scummweb-generated-2026-11-05-r1-hero-1280.webp",
+        "/launcher/nippon-scummweb-generated-2026-11-05-r1-hero.webp"
       ],
       "avif": []
     },
@@ -14389,6 +15698,18 @@
       ],
       "avif": []
     },
+    "/launcher/queen-hero-v2.webp": {
+      "width": 1619,
+      "height": 971,
+      "fallback": "/launcher/queen-hero-v2.webp",
+      "webp": [
+        "/launcher/responsive/queen-hero-v2-640.webp",
+        "/launcher/responsive/queen-hero-v2-960.webp",
+        "/launcher/responsive/queen-hero-v2-1280.webp",
+        "/launcher/queen-hero-v2.webp"
+      ],
+      "avif": []
+    },
     "/launcher/queen-hero.webp": {
       "width": 1672,
       "height": 941,
@@ -14398,6 +15719,30 @@
         "/launcher/responsive/queen-hero-960.webp",
         "/launcher/responsive/queen-hero-1280.webp",
         "/launcher/queen-hero.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/queen-scummweb-generated-2026-11-05-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/queen-scummweb-generated-2026-11-05-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/queen-scummweb-generated-2026-11-05-r1-cover-320.webp",
+        "/launcher/responsive/queen-scummweb-generated-2026-11-05-r1-cover-480.webp",
+        "/launcher/responsive/queen-scummweb-generated-2026-11-05-r1-cover-640.webp",
+        "/launcher/queen-scummweb-generated-2026-11-05-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/queen-scummweb-generated-2026-11-05-r1-hero.webp": {
+      "width": 1600,
+      "height": 960,
+      "fallback": "/launcher/queen-scummweb-generated-2026-11-05-r1-hero.webp",
+      "webp": [
+        "/launcher/responsive/queen-scummweb-generated-2026-11-05-r1-hero-640.webp",
+        "/launcher/responsive/queen-scummweb-generated-2026-11-05-r1-hero-960.webp",
+        "/launcher/responsive/queen-scummweb-generated-2026-11-05-r1-hero-1280.webp",
+        "/launcher/queen-scummweb-generated-2026-11-05-r1-hero.webp"
       ],
       "avif": []
     },
@@ -20571,6 +21916,18 @@
         "/launcher/optimized/sfinx-hero.avif"
       ]
     },
+    "/launcher/sfinx-scummweb-generated-2026-11-05-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/sfinx-scummweb-generated-2026-11-05-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/sfinx-scummweb-generated-2026-11-05-r1-cover-320.webp",
+        "/launcher/responsive/sfinx-scummweb-generated-2026-11-05-r1-cover-480.webp",
+        "/launcher/responsive/sfinx-scummweb-generated-2026-11-05-r1-cover-640.webp",
+        "/launcher/sfinx-scummweb-generated-2026-11-05-r1-cover.webp"
+      ],
+      "avif": []
+    },
     "/launcher/sfinx-shot-1.webp": {
       "width": 640,
       "height": 480,
@@ -20623,6 +21980,18 @@
       ],
       "avif": []
     },
+    "/launcher/sky-hero-v2.webp": {
+      "width": 1619,
+      "height": 971,
+      "fallback": "/launcher/sky-hero-v2.webp",
+      "webp": [
+        "/launcher/responsive/sky-hero-v2-640.webp",
+        "/launcher/responsive/sky-hero-v2-960.webp",
+        "/launcher/responsive/sky-hero-v2-1280.webp",
+        "/launcher/sky-hero-v2.webp"
+      ],
+      "avif": []
+    },
     "/launcher/sky-hero.webp": {
       "width": 1832,
       "height": 858,
@@ -20635,6 +22004,42 @@
       ],
       "avif": []
     },
+    "/launcher/sky-scummweb-generated-2026-11-05-r1-hero.webp": {
+      "width": 1600,
+      "height": 960,
+      "fallback": "/launcher/sky-scummweb-generated-2026-11-05-r1-hero.webp",
+      "webp": [
+        "/launcher/responsive/sky-scummweb-generated-2026-11-05-r1-hero-640.webp",
+        "/launcher/responsive/sky-scummweb-generated-2026-11-05-r1-hero-960.webp",
+        "/launcher/responsive/sky-scummweb-generated-2026-11-05-r1-hero-1280.webp",
+        "/launcher/sky-scummweb-generated-2026-11-05-r1-hero.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/sky-scummweb-generated-2026-11-05-r2-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/sky-scummweb-generated-2026-11-05-r2-cover.webp",
+      "webp": [
+        "/launcher/responsive/sky-scummweb-generated-2026-11-05-r2-cover-320.webp",
+        "/launcher/responsive/sky-scummweb-generated-2026-11-05-r2-cover-480.webp",
+        "/launcher/responsive/sky-scummweb-generated-2026-11-05-r2-cover-640.webp",
+        "/launcher/sky-scummweb-generated-2026-11-05-r2-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/soltys-scummweb-generated-2026-11-05-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/soltys-scummweb-generated-2026-11-05-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/soltys-scummweb-generated-2026-11-05-r1-cover-320.webp",
+        "/launcher/responsive/soltys-scummweb-generated-2026-11-05-r1-cover-480.webp",
+        "/launcher/responsive/soltys-scummweb-generated-2026-11-05-r1-cover-640.webp",
+        "/launcher/soltys-scummweb-generated-2026-11-05-r1-cover.webp"
+      ],
+      "avif": []
+    },
     "/launcher/sword25-cover.webp": {
       "width": 840,
       "height": 630,
@@ -20644,6 +22049,18 @@
         "/launcher/responsive/sword25-cover-480.webp",
         "/launcher/responsive/sword25-cover-640.webp",
         "/launcher/sword25-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/sword25-hero-v2.webp": {
+      "width": 1619,
+      "height": 971,
+      "fallback": "/launcher/sword25-hero-v2.webp",
+      "webp": [
+        "/launcher/responsive/sword25-hero-v2-640.webp",
+        "/launcher/responsive/sword25-hero-v2-960.webp",
+        "/launcher/responsive/sword25-hero-v2-1280.webp",
+        "/launcher/sword25-hero-v2.webp"
       ],
       "avif": []
     },
@@ -20662,6 +22079,35 @@
         "/launcher/responsive/sword25-hero-960.avif",
         "/launcher/responsive/sword25-hero-1280.avif",
         "/launcher/optimized/sword25-hero.avif"
+      ]
+    },
+    "/launcher/sword25-scummweb-generated-2026-11-05-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/sword25-scummweb-generated-2026-11-05-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/sword25-scummweb-generated-2026-11-05-r1-cover-320.webp",
+        "/launcher/responsive/sword25-scummweb-generated-2026-11-05-r1-cover-480.webp",
+        "/launcher/responsive/sword25-scummweb-generated-2026-11-05-r1-cover-640.webp",
+        "/launcher/sword25-scummweb-generated-2026-11-05-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/sword25-scummweb-generated-2026-11-05-r1-hero.webp": {
+      "width": 1600,
+      "height": 960,
+      "fallback": "/launcher/sword25-scummweb-generated-2026-11-05-r1-hero.webp",
+      "webp": [
+        "/launcher/responsive/sword25-scummweb-generated-2026-11-05-r1-hero-640.webp",
+        "/launcher/responsive/sword25-scummweb-generated-2026-11-05-r1-hero-960.webp",
+        "/launcher/responsive/sword25-scummweb-generated-2026-11-05-r1-hero-1280.webp",
+        "/launcher/sword25-scummweb-generated-2026-11-05-r1-hero.webp"
+      ],
+      "avif": [
+        "/launcher/responsive/sword25-scummweb-generated-2026-11-05-r1-hero-640.avif",
+        "/launcher/responsive/sword25-scummweb-generated-2026-11-05-r1-hero-960.avif",
+        "/launcher/responsive/sword25-scummweb-generated-2026-11-05-r1-hero-1280.avif",
+        "/launcher/optimized/sword25-scummweb-generated-2026-11-05-r1-hero.avif"
       ]
     },
     "/launcher/sword25-shot-1.png": {
