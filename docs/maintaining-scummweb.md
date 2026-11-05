@@ -482,6 +482,8 @@ credential scope. The default remains `artwork-migration`.
 2. Run `pnpm run artwork:plan`. This retains the active manifest, creates a private
    upload plan, and preserves content-addressed copies of every local image.
    Published mappings without local originals are retained for subsequent updates.
+   Plans record the current storage fingerprint; activation rejects a stale plan
+   so concurrent artwork updates must be merged before switching delivery.
 3. Through a reviewed publishing credential route, run `pnpm run publish:artwork`.
    The existing launcher uses the pinned ScummWEB Development R2 pair and bucket;
    agents require explicit authorization for that raw credential operation until
