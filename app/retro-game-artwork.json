@@ -6224,5 +6224,89 @@
     "summary": "A peasant sent to kill the Queen of Everything discovers an open-ended quest with choices about loyalty and violence.",
     "studio": "Deirdra Kiai (Squinky)",
     "genre": "Fantasy adventure"
+  },
+  "adl:hires1": {
+    "title": "Hi-Res Adventure #1: Mystery House",
+    "aliases": [
+      "Mystery House",
+      "Mystery House (Apple II)"
+    ],
+    "posterImage": "/launcher/classic-hires1-cover.webp",
+    "screenshots": [
+      "/launcher/classic-hires1-shot-1.webp",
+      "/launcher/classic-hires1-shot-2.webp",
+      "/launcher/classic-hires1-shot-3.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%231_%20Mystery%20House.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/adl/hires1/hires1_apple2_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hires/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/adl/hires1/hires1_apple2_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hires/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/adl/hires1/hires1_apple2_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hires/"
+        }
+      ],
+      "metadata": [
+        "https://www.scummvm.org/en/news/20160915/"
+      ]
+    },
+    "summary": "Explore an isolated Victorian house, search for treasure, and uncover a killer using typed commands.",
+    "studio": "On-Line Systems",
+    "genre": "Text-command graphic adventure"
+  },
+  "got:got": {
+    "title": "God of Thunder",
+    "aliases": [
+      "God of Thunder (DOS)",
+      "gotfree"
+    ],
+    "posterImage": "/launcher/classic-got-cover.webp",
+    "screenshots": [
+      "/launcher/classic-got-shot-1.webp",
+      "/launcher/classic-got-shot-2.webp",
+      "/launcher/classic-got-shot-3.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/God%20of%20Thunder.png"
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/got/got/got_dos_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/got:got/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/got/got/got_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/got:got/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/got/got/got_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/got:got/"
+        }
+      ],
+      "metadata": [
+        "https://www.adeptsoftware.com/got/"
+      ]
+    },
+    "summary": "Wield Thor’s hammer, solve environmental puzzles, and battle monsters across three Norse adventures.",
+    "studio": "Adept Software",
+    "genre": "Action puzzle adventure"
   }
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 4,
-  "recordedOn": "2026-11-04",
+  "recordedOn": "2026-11-05",
   "scope": "Startup verification by edition; warnings and failures describe ScummVM or ScummWEB limitations, excluding problems specific to supplied game files. Not full-game compatibility.",
   "upstreamReference": {
     "version": "2026.4.0",
@@ -1211,6 +1211,34 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "God of Thunder",
+      "status": "startup-verified",
+      "gameId": "got:got",
+      "edition": "Official v1.1:144 (DOS/English; personal ZIP import)",
+      "observation": "Game is detected and title/high-score screens render. Game files are not included in the public library."
+    },
+    {
+      "title": "Hi-Res Adventure #1: Mystery House",
+      "status": "startup-verified",
+      "gameId": "adl:hires1",
+      "edition": "Official public-domain release (Apple II/English)",
+      "observation": "Original title screen and opening yard render. Type G and press Enter at the opening prompt to start."
+    },
+    {
+      "title": "Sfinx",
+      "status": "startup-verified",
+      "gameId": "cge2:sfinx",
+      "edition": "Official freeware v1.1 (DOS/English)",
+      "observation": "Intro and first room render."
+    },
+    {
+      "title": "Sołtys",
+      "status": "startup-verified",
+      "gameId": "cge:soltys",
+      "edition": "Official freeware v1.0 (DOS/English)",
+      "observation": "English freeware intro and title screen render."
+    },
+    {
       "title": "007: James Bond - The Stealth Affair",
       "gameId": "cine:os",
       "status": "not-tested",
@@ -2125,12 +2153,6 @@
     {
       "title": "Hi-Res Adventure #0: Mission Asteroid",
       "gameId": "adl:hires0",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
-      "title": "Hi-Res Adventure #1: Mystery House",
-      "gameId": "adl:hires1",
       "status": "not-tested",
       "upstreamRating": "Good"
     },
@@ -3273,12 +3295,6 @@
       "gameId": "vcruise:schizm",
       "status": "not-tested",
       "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Sfinx",
-      "gameId": "cge2:sfinx",
-      "status": "not-tested",
-      "upstreamRating": "Good"
     },
     {
       "title": "Shaban",

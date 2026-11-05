@@ -120,6 +120,36 @@
       "platform": "",
       "extra": "Latest version",
       "readmeHref": "/launcher/notices/sword25.txt"
+    },
+    {
+      "target": "soltys",
+      "title": "Sołtys (Freeware v1.0/DOS/English)",
+      "path": "/games/soltys",
+      "engineId": "cge",
+      "gameId": "soltys",
+      "platform": "pc",
+      "extra": "Freeware v1.0",
+      "readmeHref": "/launcher/notices/soltys.txt"
+    },
+    {
+      "target": "sfinx",
+      "title": "Sfinx (Freeware v1.1/DOS/English)",
+      "path": "/games/sfinx",
+      "engineId": "cge2",
+      "gameId": "sfinx",
+      "platform": "pc",
+      "extra": "Freeware v1.1",
+      "readmeHref": "/launcher/notices/sfinx.txt"
+    },
+    {
+      "target": "hires1",
+      "title": "Hi-Res Adventure #1: Mystery House (Public Domain/Apple II/English)",
+      "path": "/games/hires1",
+      "engineId": "adl",
+      "gameId": "hires1",
+      "platform": "apple2",
+      "extra": "Public Domain",
+      "readmeHref": "/launcher/notices/hires1.txt"
     }
   ]
 }

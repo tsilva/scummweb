@@ -226,6 +226,11 @@
       "inputHash": "7b187ebf3a4cbc469ff62f41a16034d1c8e0e4b7501332c42fd5e82761f9020a",
       "imageHash": "cca10a6b521c637a680b316d7e01ec3288ee7c34f06bb04eabb9afac02a7d08d"
     },
+    "god-of-thunder": {
+      "file": "god-of-thunder-719e24bf181df64e53888e0b294b59797bdaccca677ff2930242c08632166ae6.png",
+      "inputHash": "719e24bf181df64e53888e0b294b59797bdaccca677ff2930242c08632166ae6",
+      "imageHash": "1ceb1d09e3fdd577aac0a5560a720b09f902c675adefdba5c87d8fc783488ffe"
+    },
     "gold-rush": {
       "file": "gold-rush-026ab5be2517ee0c6c173eed5ed274877cdb935c4e51fcbc86b536c7637d320c.png",
       "inputHash": "026ab5be2517ee0c6c173eed5ed274877cdb935c4e51fcbc86b536c7637d320c",
@@ -240,6 +245,11 @@
       "file": "harlan-ellison-i-have-no-mouth-and-i-must-scream-c48b4cd6d967e6a87a57ae13d30d7c2b2ee9b6b9558ca3a8c99b172f642ec4e6.png",
       "inputHash": "c48b4cd6d967e6a87a57ae13d30d7c2b2ee9b6b9558ca3a8c99b172f642ec4e6",
       "imageHash": "b94845d2822edea6db097434caa8f8defec58a9dbf972423264b3ccd5bb9ca2a"
+    },
+    "hi-res-adventure-1-mystery-house": {
+      "file": "hi-res-adventure-1-mystery-house-a0c568373bc6dc599d5549516f51bfee02d8e91ed902c168a40ccc25387b95dc.png",
+      "inputHash": "a0c568373bc6dc599d5549516f51bfee02d8e91ed902c168a40ccc25387b95dc",
+      "imageHash": "7fa22935c516f94e38083f82c5795d1a5ded5b41f748303ff34d02b13b961de6"
     },
     "hopkins-fbi": {
       "file": "hopkins-fbi-7050b30c90ff472a75c45752fafa4d7980e5fce2d816d6875f0429a2be1f0486.png",
@@ -572,9 +582,9 @@
       "imageHash": "94d98706af5d20a270ad9e67002c3820af0eb9b3d7aa0bb83db4837283f07a40"
     },
     "sfinx": {
-      "file": "sfinx-5641f6b350c8eb96179faf3173e25e568d5a4d5644c5576fbee1828de1da05fb.png",
-      "inputHash": "5641f6b350c8eb96179faf3173e25e568d5a4d5644c5576fbee1828de1da05fb",
-      "imageHash": "d5843bfd9c22262cd44f9ae0f3827b590f7065aa02823a900e02b74aac4c1fee"
+      "file": "sfinx-f092573b0f7cdc90c5eec4b97a13825072ab991ed0c1e75ec58da36971a3b327.png",
+      "inputHash": "f092573b0f7cdc90c5eec4b97a13825072ab991ed0c1e75ec58da36971a3b327",
+      "imageHash": "5a142826ac181130f231025b9b1fe236b7ab5bbcc42347d7bfdd1f6c98ffa5b7"
     },
     "shivers": {
       "file": "shivers-a07906fcc5cbac1ec5082bc945164050ffb2345c52274d32660ebd38d4277fd9.png",
@@ -597,9 +607,9 @@
       "imageHash": "557c8f2e6b65120d972d7f43931d4f617d6159250fc69b053ca07b9542a089bb"
     },
     "so-tys": {
-      "file": "so-tys-fd2d8b5d6d284df9d5577de3e1118181c7a6dfe1fcd5f2924954d5bfda1cc549.png",
-      "inputHash": "fd2d8b5d6d284df9d5577de3e1118181c7a6dfe1fcd5f2924954d5bfda1cc549",
-      "imageHash": "a4d479ccf2adb98a83f7748861278067ed87dbfb4db9e3eda02889c43abdbe0f"
+      "file": "so-tys-08623d4dd5b048c0b7ff5acd30236e8acb2b7d4c85d68f36979253a67ccd8f0e.png",
+      "inputHash": "08623d4dd5b048c0b7ff5acd30236e8acb2b7d4c85d68f36979253a67ccd8f0e",
+      "imageHash": "b25381d454cb78257c1a0098e44c81d19cce4d9211faa30928a250aa6a0a5c1f"
     },
     "space-quest-6-roger-wilco-in-the-spinal-frontier": {
       "file": "space-quest-6-roger-wilco-in-the-spinal-frontier-4aa994056af2ee423fb43bb3aab81b66984972bd44a2d881143be146b559894f.png",

@@ -25,7 +25,7 @@ test("the bundled catalog engines and SCUMM are indexed WebAssembly plugins", ()
   const shell = new URL("../scummvm-shell/", import.meta.url);
   const catalog = JSON.parse(fs.readFileSync(new URL("games.json", shell)));
   const { plugins } = JSON.parse(fs.readFileSync(new URL("data/index.json", shell)));
-  const engines = new Set(["scumm", ...catalog.games.map(({ engineId }) => engineId)]);
+  const engines = new Set(["scumm", "got", ...catalog.games.map(({ engineId }) => engineId)]);
 
   for (const engine of engines) {
     const name = `lib${engine}.so`;

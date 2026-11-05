@@ -6,9 +6,10 @@ export function observeControlVisibility({ controls, frame, hostWindow, menuShor
   let frameDocument;
   const hostDocument = controls.ownerDocument;
   const listeners = [];
+  const listenerOptions = { capture: true };
   const listen = (target, type, callback) => {
-    target.addEventListener(type, callback, true);
-    listeners.push(() => target.removeEventListener(type, callback, true));
+    target.addEventListener(type, callback, listenerOptions);
+    listeners.push(() => target.removeEventListener(type, callback, listenerOptions));
   };
   const cancelHide = () => {
     hostWindow.clearTimeout(timer);
@@ -78,9 +79,9 @@ export function observeControlVisibility({ controls, frame, hostWindow, menuShor
     if (!frameDocument) return;
     const document = frameDocument;
     const events = [["pointermove", move], ["keydown", keydown], ["pointerlockchange", pointerLockChanged]];
-    for (const [type, callback] of events) document.addEventListener(type, callback, true);
+    for (const [type, callback] of events) document.addEventListener(type, callback, listenerOptions);
     removeFrameListeners = () => {
-      for (const [type, callback] of events) document.removeEventListener(type, callback, true);
+      for (const [type, callback] of events) document.removeEventListener(type, callback, listenerOptions);
     };
   };
   listen(hostDocument, "pointermove", move);

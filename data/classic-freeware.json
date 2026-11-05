@@ -1,0 +1,37 @@
+{
+  "games": [
+    {
+      "target": "soltys",
+      "title": "Sołtys (Freeware v1.0/DOS/English)",
+      "engineId": "cge",
+      "gameId": "soltys",
+      "platform": "pc",
+      "extra": "Freeware v1.0",
+      "archive": "soltys-en-v1.0.zip",
+      "url": "https://downloads.scummvm.org/frs/extras/Soltys/soltys-en-v1.0.zip",
+      "sha256": "87b89e654b8a5b8ebe342cb4c5c6049ab9a43a5efb474d9c49bafb77dcce48f6"
+    },
+    {
+      "target": "sfinx",
+      "title": "Sfinx (Freeware v1.1/DOS/English)",
+      "engineId": "cge2",
+      "gameId": "sfinx",
+      "platform": "pc",
+      "extra": "Freeware v1.1",
+      "archive": "sfinx-en-v1.1.zip",
+      "url": "https://downloads.scummvm.org/frs/extras/Sfinx/sfinx-en-v1.1.zip",
+      "sha256": "f516b30a046526f78cbc923d8f907d267ab964ccd9b770afc72350e8d467ec4d"
+    },
+    {
+      "target": "hires1",
+      "title": "Hi-Res Adventure #1: Mystery House (Public Domain/Apple II/English)",
+      "engineId": "adl",
+      "gameId": "hires1",
+      "platform": "apple2",
+      "extra": "Public Domain",
+      "archive": "MYSTHOUS.zip",
+      "url": "https://downloads.scummvm.org/frs/extras/Mystery%20House/MYSTHOUS.zip",
+      "sha256": "ada412228a149394489b28c6c7f9ebab0722b52e04732fd0aa22949673cfa3a0"
+    }
+  ]
+}

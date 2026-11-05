@@ -3373,6 +3373,64 @@
           2117664086
         ]
       ]
+    },
+    "soltys": {
+      "url": "https://scummvm-games.tsilva.eu/soltys.zip",
+      "fingerprint": "c7c381f4ccb40d3a8c01a33bd89f3b02f876698fd7adf29baf61ba94615d3040",
+      "files": [
+        [
+          "license.txt",
+          1324,
+          3106563318
+        ],
+        [
+          "vol.cat",
+          50176,
+          623096146
+        ],
+        [
+          "vol.dat",
+          8430868,
+          1606659223
+        ]
+      ]
+    },
+    "sfinx": {
+      "url": "https://scummvm-games.tsilva.eu/sfinx.zip",
+      "fingerprint": "ff8f72824d5be85a6286376543db36172756b69c78aec414dcfeafe353505164",
+      "files": [
+        [
+          "license.txt",
+          1322,
+          1440773036
+        ],
+        [
+          "vol.cat",
+          129024,
+          950468179
+        ],
+        [
+          "vol.dat",
+          34182773,
+          4051689322
+        ]
+      ]
+    },
+    "hires1": {
+      "url": "https://scummvm-games.tsilva.eu/hires1.zip",
+      "fingerprint": "5cd5235619bb8f0f2975193ed48eb5af00841e4090aa170621325c95ca26b130",
+      "files": [
+        [
+          "MYSTHOUS.DSK",
+          143360,
+          1258297292
+        ],
+        [
+          "readme.txt",
+          342,
+          1857464709
+        ]
+      ]
     }
   }
 }

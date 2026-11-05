@@ -2,7 +2,7 @@
 // files enter this index; an index never substitutes for the files themselves.
 export const saveIndexPrefix = "scummweb.continue.v1:";
 export const defaultSavePath = "/home/web_user/.local/share/scummvm/saves";
-const supportedEngines = new Set("access agi bbvs cge cge2 cine cruise draci drascula dreamweb gnap groovie hopkins hugo kyra lab lure mads mohawk neverhood ngi pegasus queen saga sci scumm sherlock sky sword1 sword2 teenagent tinsel titanic toltecs tony toon touche tsage tucker voyeur wintermute".split(" "));
+const supportedEngines = new Set("access adl agi bbvs cge cge2 cine cruise draci drascula dreamweb gnap got groovie hopkins hugo kyra lab lure mads mohawk neverhood ngi pegasus queen saga sci scumm sherlock sky sword1 sword2 teenagent tinsel titanic toltecs tony toon touche tsage tucker voyeur wintermute".split(" "));
 
 export function supportsContinue(engineId, gameId, extra = "") {
   return supportedEngines.has(engineId)

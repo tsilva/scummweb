@@ -13770,6 +13770,86 @@
       "contentType": "image/webp",
       "width": 320,
       "height": 240
+    },
+    "/launcher/classic-got-cover.webp": {
+      "key": "artwork/06bb59136f93d4ea92e38b4fdac7b909c8635703cf75f5f0a36f6fbd8f51c72b/classic-got-cover.webp",
+      "sha256": "06bb59136f93d4ea92e38b4fdac7b909c8635703cf75f5f0a36f6fbd8f51c72b",
+      "bytes": 420824,
+      "contentType": "image/webp",
+      "width": 512,
+      "height": 509
+    },
+    "/launcher/classic-got-shot-1.webp": {
+      "key": "artwork/3481e3ceb4cc37f1c5d02f8fe979a394f360fca530bed68b3c58e67825b7a10a/classic-got-shot-1.webp",
+      "sha256": "3481e3ceb4cc37f1c5d02f8fe979a394f360fca530bed68b3c58e67825b7a10a",
+      "bytes": 227512,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/classic-got-shot-2.webp": {
+      "key": "artwork/1a1e29abff29695b6ca68343677a47584a15d7103263737c124e7fe9f7d5c7ff/classic-got-shot-2.webp",
+      "sha256": "1a1e29abff29695b6ca68343677a47584a15d7103263737c124e7fe9f7d5c7ff",
+      "bytes": 44762,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/classic-got-shot-3.webp": {
+      "key": "artwork/9a545e15cb81f7c70743dda0f1393d9aacb2658d6b2438ba5327e73da9c6b1a3/classic-got-shot-3.webp",
+      "sha256": "9a545e15cb81f7c70743dda0f1393d9aacb2658d6b2438ba5327e73da9c6b1a3",
+      "bytes": 43090,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/classic-hires1-cover.webp": {
+      "key": "artwork/8e7f92423c0c26e3e2e06eea1429e0267a69e1e7e8a1624e89d314ff54c77046/classic-hires1-cover.webp",
+      "sha256": "8e7f92423c0c26e3e2e06eea1429e0267a69e1e7e8a1624e89d314ff54c77046",
+      "bytes": 313094,
+      "contentType": "image/webp",
+      "width": 512,
+      "height": 674
+    },
+    "/launcher/classic-hires1-shot-1.webp": {
+      "key": "artwork/15f19ebb8e71485179d349533c930fbe915afc913fd4ad11e9dcccacd0a7bf6b/classic-hires1-shot-1.webp",
+      "sha256": "15f19ebb8e71485179d349533c930fbe915afc913fd4ad11e9dcccacd0a7bf6b",
+      "bytes": 5462,
+      "contentType": "image/webp",
+      "width": 2800,
+      "height": 1920
+    },
+    "/launcher/classic-hires1-shot-2.webp": {
+      "key": "artwork/131de4ad1856f5b0916eb0dffe482df483237ffc8670b14baab0bee24cea410f/classic-hires1-shot-2.webp",
+      "sha256": "131de4ad1856f5b0916eb0dffe482df483237ffc8670b14baab0bee24cea410f",
+      "bytes": 4002,
+      "contentType": "image/webp",
+      "width": 2800,
+      "height": 1920
+    },
+    "/launcher/classic-hires1-shot-3.webp": {
+      "key": "artwork/4fafb5a5143f73f43db2313ee7eaf6f4e3c102752b3ce2ef0ac507126bddd758/classic-hires1-shot-3.webp",
+      "sha256": "4fafb5a5143f73f43db2313ee7eaf6f4e3c102752b3ce2ef0ac507126bddd758",
+      "bytes": 2424,
+      "contentType": "image/webp",
+      "width": 2800,
+      "height": 1920
+    },
+    "/launcher/responsive/classic-got-cover-320.webp": {
+      "key": "artwork/dfdf67d964e6a5c8bd53565e2983c9b247524deef68a420dda6b193a72f658b2/classic-got-cover-320.webp",
+      "sha256": "dfdf67d964e6a5c8bd53565e2983c9b247524deef68a420dda6b193a72f658b2",
+      "bytes": 21770,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 318
+    },
+    "/launcher/responsive/classic-hires1-cover-320.webp": {
+      "key": "artwork/095a41f9fb03d65b24579b27851449eacecf77a3932295d1a21c4cb5dca5e88f/classic-hires1-cover-320.webp",
+      "sha256": "095a41f9fb03d65b24579b27851449eacecf77a3932295d1a21c4cb5dca5e88f",
+      "bytes": 16110,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 421
     }
   },
   "images": {
