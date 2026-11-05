@@ -1662,7 +1662,7 @@ button.nav-icon-link {
 
 @media (min-width: 64rem) {
   .section-stack .poster-grid {
-    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
 }

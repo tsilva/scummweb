@@ -101,7 +101,8 @@ jump instantly to its hero. The artwork, description, launch actions, screenshot
 and URL update in the current page without a route fetch or library reload. Browser
 Back and Forward restore the selection, and direct links still open that game.
 On desktop, the hero and screenshots fill the opening view, with the library below
-the fold and compact portrait box-art cards. Reserved text and action areas keep the slideshow stable.
+the fold and five portrait box-art cards per row at desktop widths (1024px and up).
+Reserved text and action areas keep the slideshow stable.
 Mobile uses a compact, static artwork hero, shorter descriptions, full-width launch
 and browse buttons, and an image strip without a visible heading. Extra game details
 and the license link are omitted from the mobile hero.
