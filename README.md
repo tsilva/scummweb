@@ -19,6 +19,8 @@ ScummVM. Play freeware and demos from the public library, or import compatible
 games from your own collection. Recognized games include artwork, descriptions,
 and studio credits. Game details show three screenshots where matching captures
 are available.
+Originals and remakes keep separate cards, with remake labels and artwork that
+matches each game. Platform and language variants share artwork within that edition.
 
 Every recognized title has its own searchable game page with artwork and details.
 Games outside the public library show **Game not included** and explain that

@@ -1105,5 +1105,41 @@
       320,
       640
     ]
+  },
+  "/launcher/retro-sci-lsl1sci-remake-poster.webp": {
+    "width": 512,
+    "height": 625,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-pq1sci-poster.webp": {
+    "width": 512,
+    "height": 636,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-qfg1-original-poster.webp": {
+    "width": 512,
+    "height": 645,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-qfg1vga-poster.webp": {
+    "width": 701,
+    "height": 865,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/retro-sci-sq1sci-poster.webp": {
+    "width": 512,
+    "height": 640,
+    "widths": [
+      320
+    ]
   }
 }

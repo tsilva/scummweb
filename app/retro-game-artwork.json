@@ -3403,7 +3403,8 @@
     },
     "summary": "Help Graham recover three lost treasures and restore the kingdom of Daventry in this SCI remake.",
     "studio": "Sierra On-Line",
-    "genre": "Fantasy adventure"
+    "genre": "Fantasy adventure",
+    "editionLabel": "SCI Remake"
   },
   "sci:kq4sci": {
     "title": "King's Quest IV: The Perils of Rosella",
@@ -3738,7 +3739,7 @@
     "aliases": [
       "Leisure Suit Larry in the Land of the Lounge Lizards (Amiga VGA Remake)"
     ],
-    "posterImage": "/launcher/retro-sci-lsl1sci-poster.webp",
+    "posterImage": "/launcher/retro-sci-lsl1sci-remake-poster.webp",
     "screenshots": [
       "/launcher/retro-sci-lsl1sci-shot.webp",
       "/launcher/retro-sci-lsl1sci-shot-2.webp",
@@ -3747,7 +3748,7 @@
     "sources": {
       "poster": {
         "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%20in%20the%20Land%20of%20the%20Lounge%20Lizards.png"
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%20in%20the%20Land%20of%20the%20Lounge%20Lizards%20(SCI_DOS_English).png"
       },
       "screenshots": [
         {
@@ -3772,7 +3773,8 @@
     },
     "summary": "Explore the nightlife of Lost Wages as Larry Laffer searches for romance in this SCI remake.",
     "studio": "Sierra On-Line",
-    "genre": "Adult comedy adventure"
+    "genre": "Adult comedy adventure",
+    "editionLabel": "VGA Remake"
   },
   "sci:lsl2": {
     "title": "Leisure Suit Larry 2: Goes Looking for Love (in Several Wrong Places)",
@@ -4147,13 +4149,12 @@
     "aliases": [
       "Police Quest 1 - In Pursuit of the Death Angel (Floppy DOS VGA Remake)"
     ],
-    "posterImage": "/launcher/retro-agi-pq1-poster.webp",
+    "posterImage": "/launcher/retro-sci-pq1sci-poster.webp",
     "screenshots": [
-      "/launcher/retro-agi-pq1-shot.webp",
-      "/launcher/retro-agi-pq1-shot-2.webp",
-      "/launcher/retro-agi-pq1-shot-3.webp"
+      "/launcher/retro-sci-pq1sci-shot.webp",
+      "/launcher/retro-sci-pq1sci-shot-2.webp",
+      "/launcher/retro-sci-pq1sci-shot-3.webp"
     ],
-    "artworkFrom": "agi:pq1",
     "summary": "Follow officer Sonny Bonds through traffic patrols and a drug investigation in this SCI remake.",
     "studio": "Sierra On-Line",
     "genre": "Police procedural adventure",
@@ -4164,21 +4165,26 @@
       "screenshots": [
         {
           "kind": "gameplay",
-          "url": "https://www.scummvm.org/data/screenshots/agi/pq1/pq1_amiga_en_1_2_full.png",
+          "url": "https://www.scummvm.org/data/screenshots/sci/pq1sci/pq1sci_dos_en_1_1_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/pq/"
         },
         {
           "kind": "gameplay",
-          "url": "https://www.scummvm.org/data/screenshots/agi/pq1/pq1_amiga_en_1_1_full.png",
+          "url": "https://www.scummvm.org/data/screenshots/sci/pq1sci/pq1sci_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/pq/"
         },
         {
           "kind": "gameplay",
-          "url": "https://www.scummvm.org/data/screenshots/agi/pq1/pq1_dos_en_1_2_full.png",
+          "url": "https://www.scummvm.org/data/screenshots/sci/pq1sci/pq1sci_dos_en_1_3_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/pq/"
         }
-      ]
-    }
+      ],
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest_%20In%20Pursuit%20of%20the%20Death%20Angel%20(SCI_DOS_English).png"
+      }
+    },
+    "editionLabel": "VGA Remake"
   },
   "sci:pq2": {
     "title": "Police Quest 2: The Vengeance",
@@ -4309,7 +4315,7 @@
       "Hero Quest So You Want To Be A Hero (Amiga)",
       "Hero Quest So You Want To Be A Hero (Floppy DOS)"
     ],
-    "posterImage": "/launcher/retro-sci-qfg1-poster.webp",
+    "posterImage": "/launcher/retro-sci-qfg1-original-poster.webp",
     "screenshots": [
       "/launcher/retro-sci-qfg1-shot.webp",
       "/launcher/retro-sci-qfg1-shot-2.webp",
@@ -4318,7 +4324,7 @@
     "sources": {
       "poster": {
         "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Quest%20for%20Glory%201_%20So%20You%20Want%20to%20Be%20a%20Hero.png"
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Quest%20for%20Glory%201.png"
       },
       "screenshots": [
         {
@@ -4350,13 +4356,12 @@
     "aliases": [
       "Quest for Glory 1 - So You Want to be a Hero (Floppy DOS VGA Remake)"
     ],
-    "posterImage": "/launcher/retro-sci-qfg1-poster.webp",
+    "posterImage": "/launcher/retro-sci-qfg1vga-poster.webp",
     "screenshots": [
-      "/launcher/retro-sci-qfg1-shot.webp",
-      "/launcher/retro-sci-qfg1-shot-2.webp",
-      "/launcher/retro-sci-qfg1-shot-3.webp"
+      "/launcher/retro-sci-qfg1vga-shot.webp",
+      "/launcher/retro-sci-qfg1vga-shot-2.webp",
+      "/launcher/retro-sci-qfg1vga-shot-3.webp"
     ],
-    "artworkFrom": "sci:qfg1",
     "summary": "Explore Spielburg as a fighter, magic user, or thief in this VGA remake of the first Quest for Glory.",
     "studio": "Sierra On-Line",
     "genre": "Role-playing adventure",
@@ -4367,21 +4372,27 @@
       "screenshots": [
         {
           "kind": "gameplay",
-          "url": "https://www.scummvm.org/data/screenshots/sci/qfg1/qfg1_dos_en_1_5_full.png",
+          "url": "https://www.scummvm.org/data/screenshots/sci/qfg1vga/qfg1vga_dos_en_1_1_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/qfg/"
         },
         {
           "kind": "gameplay",
-          "url": "https://www.scummvm.org/data/screenshots/sci/qfg1/qfg1_dos_en_1_2_full.png",
+          "url": "https://www.scummvm.org/data/screenshots/sci/qfg1vga/qfg1vga_dos_en_1_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/qfg/"
         },
         {
           "kind": "gameplay",
-          "url": "https://www.scummvm.org/data/screenshots/sci/qfg1/qfg1_dos_en_1_3_full.png",
+          "url": "https://www.scummvm.org/data/screenshots/sci/qfg1vga/qfg1vga_dos_en_1_3_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/qfg/"
         }
-      ]
-    }
+      ],
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://images.launchbox-app.com/a91f59a9-d9cc-4de2-a1ce-247563859cfd.jpg",
+        "page": "https://gamesdb.launchbox-app.com/games/images/93222-quest-for-glory-i-so-you-want-to-be-a-hero-vga-remake"
+      }
+    },
+    "editionLabel": "VGA Remake"
   },
   "sci:qfg2": {
     "title": "Quest for Glory II: Trial by Fire",
@@ -4549,13 +4560,12 @@
     "aliases": [
       "Space Quest 1 - The Sarien Encounter (Floppy DOS VGA Remake)"
     ],
-    "posterImage": "/launcher/retro-agi-sq1-poster.webp",
+    "posterImage": "/launcher/retro-sci-sq1sci-poster.webp",
     "screenshots": [
-      "/launcher/retro-agi-sq1-shot.webp",
-      "/launcher/retro-agi-sq1-shot-2.webp",
-      "/launcher/retro-agi-sq1-shot-3.webp"
+      "/launcher/retro-sci-sq1sci-shot.webp",
+      "/launcher/retro-sci-sq1sci-shot-2.webp",
+      "/launcher/retro-sci-sq1sci-shot-3.webp"
     ],
-    "artworkFrom": "agi:sq1",
     "summary": "Help janitor Roger Wilco recover the Star Generator in the VGA remake of his first adventure.",
     "studio": "Sierra On-Line",
     "genre": "Science-fiction comedy",
@@ -4566,21 +4576,26 @@
       "screenshots": [
         {
           "kind": "gameplay",
-          "url": "https://www.scummvm.org/data/screenshots/agi/sq1/sq1_dos_en_1_2_full.png",
+          "url": "https://www.scummvm.org/data/screenshots/sci/sq1sci/sq1sci_dos_en_2_1_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sq/"
         },
         {
           "kind": "gameplay",
-          "url": "https://www.scummvm.org/data/screenshots/agi/sq1/sq1_dos_en_1_3_full.png",
+          "url": "https://www.scummvm.org/data/screenshots/sci/sq1sci/sq1sci_dos_en_2_2_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sq/"
         },
         {
           "kind": "gameplay",
-          "url": "https://www.scummvm.org/data/screenshots/agi/sq1/sq1_dos_en_1_4_full.png",
+          "url": "https://www.scummvm.org/data/screenshots/sci/sq1sci/sq1sci_dos_en_2_3_full.png",
           "page": "https://www.scummvm.org/screenshots/sierra/sq/"
         }
-      ]
-    }
+      ],
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20I_%20Roger%20Wilco%20in%20the%20Sarien%20Encounter%20(SCI_DOS_English).png"
+      }
+    },
+    "editionLabel": "VGA Remake"
   },
   "sci:sq3": {
     "title": "Space Quest III: The Pirates of Pestulon",

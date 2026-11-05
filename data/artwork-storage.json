@@ -6426,6 +6426,166 @@
       "contentType": "image/webp",
       "width": 640,
       "height": 480
+    },
+    "/launcher/responsive/retro-sci-lsl1sci-remake-poster-320.webp": {
+      "key": "artwork/ca2a449f43f8e8f8f28754029fd364f8c48f13a33929c2a5e7914cbca9b0a396/retro-sci-lsl1sci-remake-poster-320.webp",
+      "sha256": "ca2a449f43f8e8f8f28754029fd364f8c48f13a33929c2a5e7914cbca9b0a396",
+      "bytes": 33382,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 391
+    },
+    "/launcher/responsive/retro-sci-pq1sci-poster-320.webp": {
+      "key": "artwork/27567e89546d353993a328e1727f3cf447235f2812e82b0df05b2f6423086b9a/retro-sci-pq1sci-poster-320.webp",
+      "sha256": "27567e89546d353993a328e1727f3cf447235f2812e82b0df05b2f6423086b9a",
+      "bytes": 14620,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 398
+    },
+    "/launcher/responsive/retro-sci-qfg1-original-poster-320.webp": {
+      "key": "artwork/ae3e5e2c67f12fd9968253fd29e815ff5ae5de21a06574b4d06d1bea5ed32616/retro-sci-qfg1-original-poster-320.webp",
+      "sha256": "ae3e5e2c67f12fd9968253fd29e815ff5ae5de21a06574b4d06d1bea5ed32616",
+      "bytes": 29082,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 403
+    },
+    "/launcher/responsive/retro-sci-qfg1vga-poster-320.webp": {
+      "key": "artwork/be2efcc6544684cc34d2f49d23ee0f1fdbcd372c7984dc509a29fe35ed98dd4c/retro-sci-qfg1vga-poster-320.webp",
+      "sha256": "be2efcc6544684cc34d2f49d23ee0f1fdbcd372c7984dc509a29fe35ed98dd4c",
+      "bytes": 33882,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 395
+    },
+    "/launcher/responsive/retro-sci-qfg1vga-poster-640.webp": {
+      "key": "artwork/05a370eeddad89088aad4e599b2aca8cb0701efad2447d2843450d4d27903357/retro-sci-qfg1vga-poster-640.webp",
+      "sha256": "05a370eeddad89088aad4e599b2aca8cb0701efad2447d2843450d4d27903357",
+      "bytes": 87942,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 790
+    },
+    "/launcher/responsive/retro-sci-sq1sci-poster-320.webp": {
+      "key": "artwork/ff4c68e89b00686af39ffbb3a13b1a50e456f595cd8ec687456cb13086dfff94/retro-sci-sq1sci-poster-320.webp",
+      "sha256": "ff4c68e89b00686af39ffbb3a13b1a50e456f595cd8ec687456cb13086dfff94",
+      "bytes": 19858,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 400
+    },
+    "/launcher/retro-sci-lsl1sci-remake-poster.webp": {
+      "key": "artwork/cdc8c801ed3b992829888d641bbdf9c2b0d410fef3a4ace4707c45659bd36819/retro-sci-lsl1sci-remake-poster.webp",
+      "sha256": "cdc8c801ed3b992829888d641bbdf9c2b0d410fef3a4ace4707c45659bd36819",
+      "bytes": 115492,
+      "contentType": "image/webp",
+      "width": 512,
+      "height": 625
+    },
+    "/launcher/retro-sci-pq1sci-poster.webp": {
+      "key": "artwork/077306e5db9fb0c36080caf46c7b3889c851ac079648a4ffad866c0fb8f1ac5e/retro-sci-pq1sci-poster.webp",
+      "sha256": "077306e5db9fb0c36080caf46c7b3889c851ac079648a4ffad866c0fb8f1ac5e",
+      "bytes": 65566,
+      "contentType": "image/webp",
+      "width": 512,
+      "height": 636
+    },
+    "/launcher/retro-sci-pq1sci-shot-2.webp": {
+      "key": "artwork/bd7b700cbf3a272f4646514bdde72ae976489633456f27f5279f98326e36db28/retro-sci-pq1sci-shot-2.webp",
+      "sha256": "bd7b700cbf3a272f4646514bdde72ae976489633456f27f5279f98326e36db28",
+      "bytes": 81970,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-pq1sci-shot-3.webp": {
+      "key": "artwork/794d8e1b0ba43984df44a57e03ffd1b3eef21750f910511d32f2d840687cfdfa/retro-sci-pq1sci-shot-3.webp",
+      "sha256": "794d8e1b0ba43984df44a57e03ffd1b3eef21750f910511d32f2d840687cfdfa",
+      "bytes": 79714,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-pq1sci-shot.webp": {
+      "key": "artwork/abafc84064501bf73357da71f72293dcefc32c98de458a3a4c30effb564bfb79/retro-sci-pq1sci-shot.webp",
+      "sha256": "abafc84064501bf73357da71f72293dcefc32c98de458a3a4c30effb564bfb79",
+      "bytes": 64864,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-qfg1-original-poster.webp": {
+      "key": "artwork/82ea218c23d547474f9b1814fe6dd2aea4dd21d51c5d984f5d89cc32d9ccb6ca/retro-sci-qfg1-original-poster.webp",
+      "sha256": "82ea218c23d547474f9b1814fe6dd2aea4dd21d51c5d984f5d89cc32d9ccb6ca",
+      "bytes": 127532,
+      "contentType": "image/webp",
+      "width": 512,
+      "height": 645
+    },
+    "/launcher/retro-sci-qfg1vga-poster.webp": {
+      "key": "artwork/2051bc2604152442dd7be146a6e9c6a31a89f5cc74d0b14c5071f9ef2f011f79/retro-sci-qfg1vga-poster.webp",
+      "sha256": "2051bc2604152442dd7be146a6e9c6a31a89f5cc74d0b14c5071f9ef2f011f79",
+      "bytes": 238784,
+      "contentType": "image/webp",
+      "width": 701,
+      "height": 865
+    },
+    "/launcher/retro-sci-qfg1vga-shot-2.webp": {
+      "key": "artwork/692ec07ccf2a5828be62ce140e9d762c87b4900d8248c0edf75bb6a150942e08/retro-sci-qfg1vga-shot-2.webp",
+      "sha256": "692ec07ccf2a5828be62ce140e9d762c87b4900d8248c0edf75bb6a150942e08",
+      "bytes": 142218,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-qfg1vga-shot-3.webp": {
+      "key": "artwork/c929278e0131c1e4d4cea58fa0b332d5ef8c84a58d06b48d179b55369408f285/retro-sci-qfg1vga-shot-3.webp",
+      "sha256": "c929278e0131c1e4d4cea58fa0b332d5ef8c84a58d06b48d179b55369408f285",
+      "bytes": 111514,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-qfg1vga-shot.webp": {
+      "key": "artwork/0eede95fa93a4e90081fb52da646c8cae85a97e54ad96b64a33380d917939624/retro-sci-qfg1vga-shot.webp",
+      "sha256": "0eede95fa93a4e90081fb52da646c8cae85a97e54ad96b64a33380d917939624",
+      "bytes": 139810,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-sq1sci-poster.webp": {
+      "key": "artwork/f99f914fd03c799aacb6b2f0c29ec7eedebfa770515b3ced682607b9846ec34b/retro-sci-sq1sci-poster.webp",
+      "sha256": "f99f914fd03c799aacb6b2f0c29ec7eedebfa770515b3ced682607b9846ec34b",
+      "bytes": 73088,
+      "contentType": "image/webp",
+      "width": 512,
+      "height": 640
+    },
+    "/launcher/retro-sci-sq1sci-shot-2.webp": {
+      "key": "artwork/984dd83ee298ac17015299a21d25e00bb48d217988bb5315aa585505009c5a03/retro-sci-sq1sci-shot-2.webp",
+      "sha256": "984dd83ee298ac17015299a21d25e00bb48d217988bb5315aa585505009c5a03",
+      "bytes": 123194,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-sq1sci-shot-3.webp": {
+      "key": "artwork/2e448efd3d7fd5d61655000ad0079f34c3c8ed85fb2bd3eb91ee12d0827906c1/retro-sci-sq1sci-shot-3.webp",
+      "sha256": "2e448efd3d7fd5d61655000ad0079f34c3c8ed85fb2bd3eb91ee12d0827906c1",
+      "bytes": 86738,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-sq1sci-shot.webp": {
+      "key": "artwork/5477997f95bc17635d9fbca30af92db9c6f055cba83f47befd2067385a8a06df/retro-sci-sq1sci-shot.webp",
+      "sha256": "5477997f95bc17635d9fbca30af92db9c6f055cba83f47befd2067385a8a06df",
+      "bytes": 134320,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
     }
   }
 }
