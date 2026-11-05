@@ -32,4 +32,7 @@ tmp/
 /scummvm-shell/launcher/*.webp
 /scummvm-shell/launcher/*.png
 /scummvm-shell/launcher/responsive/
+/scummvm-shell/launcher/optimized/
+/scummvm-shell/launcher/*.avif
 /image-assets/sources/road-gameplay.jpg
+/.next-continue-dev/

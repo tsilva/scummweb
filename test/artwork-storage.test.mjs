@@ -102,7 +102,7 @@ test("published poster variants and social-card projections use the same logical
   } };
   await fs.writeFile(path.join(root, manifestFile), JSON.stringify(manifest));
   await fs.writeFile(path.join(root, "data/artwork-renditions.json"), JSON.stringify({ "/launcher/sample-cover.webp": { width: 540, height: 720, widths: [320] } }));
-  for (const filename of ["lib/artwork-storage.mjs", "lib/social-card-data.mjs", "app/home-shell/poster-images.mjs"]) {
+  for (const filename of ["lib/artwork-storage.mjs", "lib/social-card-data.mjs", "app/home-shell/poster-images.mjs", "app/home-shell/artwork-image-props.mjs"]) {
     await fs.mkdir(path.dirname(path.join(root, filename)), { recursive: true });
     await fs.copyFile(new URL(`../${filename}`, import.meta.url), path.join(root, filename));
   }

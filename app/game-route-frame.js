@@ -2,8 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { getAssetVersion } from "./asset-paths";
-import { getLatestBrowserSave } from "./browser-saves.mjs";
 import { readCatalogGameArchive } from "./game-bucket.mjs";
 import GameBootOverlay from "./game-player/GameBootOverlay";
 import GameMobileOverlay from "./game-player/GameMobileOverlay";
@@ -266,6 +264,13 @@ export default function GameRouteFrame({
       if (event.origin !== window.location.origin) {
         return;
       }
+      if (event.data?.type === "scummweb:saves-listed" && event.source === frameRef.current?.contentWindow) {
+        if (new URL(frameSrc, window.location.href).searchParams.get("continue") === "1") {
+          setIsResuming(Number.isInteger(event.data.latestSlot));
+        }
+        window.dispatchEvent(new Event("scummweb:saves-changed"));
+        return;
+      }
 
       if (loadArchive && event.source === frameRef.current?.contentWindow) {
         if (event.data?.type === "scummweb:local-game-ready") {
@@ -364,6 +369,12 @@ export default function GameRouteFrame({
     async function openGame() {
       try {
         let launchSrc = src;
+        if (window.location.hash === "#continue") {
+          const resumeUrl = new URL(launchSrc, window.location.origin);
+          resumeUrl.searchParams.set("continue", "1");
+          launchSrc = `${resumeUrl.pathname}${resumeUrl.search}${resumeUrl.hash}`;
+          setIsResuming(true);
+        }
         if (catalogLaunch) {
           launchAnalytics.start();
           const launchHash = window.location.hash;
@@ -371,11 +382,9 @@ export default function GameRouteFrame({
           const requestedSlot = requested ? Number(requested[2]) : null;
           const seeded = catalogIntroSlot !== null || (requested?.[1] === "seed" && requestedSlot === intro?.slot);
           const explicitSlot = requested?.[1] === "slot" || seeded ? requestedSlot : null;
-          const slot = catalogIntroSlot ?? (launchHash === "#continue"
-            ? await getLatestBrowserSave(game, getAssetVersion("/scummvm.ini"))
-            : explicitSlot);
+          const slot = catalogIntroSlot ?? explicitSlot;
           if (controller.signal.aborted) return;
-          setIsResuming(catalogIntroSlot === null && slot !== null);
+          setIsResuming(launchHash === "#continue" || (catalogIntroSlot === null && slot !== null));
           if (slot !== null) {
             launchSrc = buildSaveSlotSrc(src, target, slot, { seedIntro: seeded });
           }
@@ -387,16 +396,6 @@ export default function GameRouteFrame({
           }
         }
         if (loadArchive) {
-          if (!catalogLaunch && game?.saveVersionId && window.location.hash === "#continue") {
-            const slot = await getLatestBrowserSave(game, getAssetVersion("/scummvm.ini"));
-            if (controller.signal.aborted) return;
-            if (slot !== null) {
-              const localUrl = new URL(launchSrc, window.location.origin);
-              localUrl.hash = decodeURIComponent(localUrl.hash.slice(1)) + ` -x ${slot}`;
-              launchSrc = `${localUrl.pathname}${localUrl.search}${localUrl.hash}`;
-              setIsResuming(true);
-            }
-          }
           // Load/compile ScummVM while the archive downloads or opens. The
           // handoff below supports either side becoming ready first.
           window.performance?.mark?.("scummweb:runtime-requested");

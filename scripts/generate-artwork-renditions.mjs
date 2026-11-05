@@ -11,10 +11,12 @@ const manifestPath = path.join(root, "data/artwork-renditions.json");
 const storage = JSON.parse(await fs.readFile(path.join(root, "data/artwork-storage.json"), "utf8"));
 const manifest = storage.published ? JSON.parse(await fs.readFile(manifestPath, "utf8")) : {};
 const wanted = new Set();
+const processed = new Set();
 await fs.mkdir(output, { recursive: true });
 
 for (const name of (await fs.readdir(launcher)).sort()) {
   if (!/-(cover|poster)\.webp$/.test(name)) continue;
+  processed.add(name.slice(0, -5));
   const source = await fs.readFile(path.join(launcher, name));
   const { width, height } = await sharp(source).metadata();
   const widths = [];
@@ -37,7 +39,9 @@ for (const name of (await fs.readdir(launcher)).sort()) {
   if (widths.length) manifest[`/launcher/${name}`] = { width, height, widths };
 }
 for (const name of await fs.readdir(output)) {
-  if (/-(cover|poster)-(320|640)\.webp$/.test(name) && !wanted.has(name)) {
+  const generated = /^(.*)-(320|640)\.webp$/.exec(name);
+  if (generated && /-(cover|poster)$/.test(generated[1]) && !wanted.has(name)
+    && (!storage.published || processed.has(generated[1]))) {
     await fs.unlink(path.join(output, name));
   }
 }

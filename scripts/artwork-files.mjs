@@ -6,7 +6,7 @@ const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
 
 // Build-time only. Browsers always request published artwork directly from R2.
 export async function readArtworkFile(root, name, request = fetch) {
-  if (!/^\/launcher\/(?:responsive\/)?[a-z0-9-]+\.(?:webp|png)$/.test(name)) {
+  if (!/^\/launcher\/(?:(?:responsive|optimized)\/)?[a-z0-9-]+\.(?:webp|png|avif)$/.test(name)) {
     throw new Error(`Invalid artwork path: ${name}`);
   }
   const manifest = await fs.readFile(path.join(root, "data/artwork-storage.json"), "utf8")

@@ -7,6 +7,7 @@ export default function DecorativeImage({
   sizes,
   src,
   srcSet,
+  avifSrcSet,
   style,
   width,
 }) {
@@ -16,7 +17,7 @@ export default function DecorativeImage({
 
   const resolvedFetchPriority = fetchPriority || (loading === "lazy" ? "low" : undefined);
 
-  return (
+  const image = (
     <img
       alt=""
       className={className}
@@ -31,4 +32,5 @@ export default function DecorativeImage({
       width={width}
     />
   );
+  return avifSrcSet ? <picture><source type="image/avif" srcSet={avifSrcSet} sizes={sizes} />{image}</picture> : image;
 }
