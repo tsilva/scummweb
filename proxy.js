@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 
 export function proxy(request) {
   const { pathname, searchParams } = request.nextUrl;
-  if (pathname === "/scummvm.html" && (searchParams.get("localGame") !== "1" ||
+  const isPlayerFrame = searchParams.get("localGame") === "1" || searchParams.has("saveQuery");
+  if (pathname === "/scummvm.html" && (!isPlayerFrame ||
       request.headers.get("sec-fetch-dest") === "document")) {
     return NextResponse.rewrite(new URL(`/legacy-play${request.nextUrl.search}`, request.url));
   }

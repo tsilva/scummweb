@@ -27,11 +27,21 @@ function request(path, destination) {
 }
 
 test("standalone runtime documents keep the legacy launcher rewrite", () => {
-  for (const [path, destination] of [["/scummvm.html?v=sha-shell", undefined], ["/scummvm.html?localGame=1&v=sha-shell", "document"]]) {
+  for (const [path, destination] of [["/scummvm.html?v=sha-shell", undefined],
+    ["/scummvm.html?localGame=1&v=sha-shell", "document"],
+    ["/scummvm.html?saveQuery=query-id&saveTarget=sky", "document"]]) {
     const response = request(path, destination);
     assert.equal(response.kind, "rewrite");
     assert.equal(response.url.pathname, "/legacy-play");
     assert.equal(response.url.search, new URL(path, "https://example.test").search);
+  }
+});
+
+test("native save-query frames reach the shell without starting a local archive handoff", () => {
+  for (const destination of ["iframe", "empty", undefined]) {
+    const response = request("/scummvm.html?saveQuery=query-id&saveEngine=sky&saveGameId=sky&saveTarget=sky", destination);
+    assert.equal(response.kind, "next");
+    assert.equal(response.headers.get("Cache-Control"), null);
   }
 });
 
