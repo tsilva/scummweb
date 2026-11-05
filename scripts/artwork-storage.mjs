@@ -66,14 +66,14 @@ export async function planArtwork(root = rootDir) {
   if (previous.published) validateManifest(previous);
   const names = new Map();
   for (const base of ["scummvm-shell", `${workspace}/inputs`]) {
-  for (const relative of ["launcher", "launcher/responsive", "launcher/optimized"]) {
-    const directory = `${base}/${relative}`;
-    for (const entry of await fs.readdir(path.join(root, directory), { withFileTypes: true }).catch((error) => {
-      if (error.code !== "ENOENT") throw error; return [];
-    })) {
-      if (entry.isFile() && types[path.extname(entry.name)]) names.set(`/${relative}/${entry.name}`, `${directory}/${entry.name}`);
+    for (const relative of ["launcher", "launcher/responsive", "launcher/optimized"]) {
+      const directory = `${base}/${relative}`;
+      for (const entry of await fs.readdir(path.join(root, directory), { withFileTypes: true }).catch((error) => {
+        if (error.code !== "ENOENT") throw error; return [];
+      })) {
+        if (entry.isFile() && types[path.extname(entry.name)]) names.set(`/${relative}/${entry.name}`, `${directory}/${entry.name}`);
+      }
     }
-  }
   }
   if (await fs.stat(path.join(root, "image-assets/sources/road-gameplay.jpg")).catch(() => null)) {
     names.set("/image-assets/sources/road-gameplay.jpg", "image-assets/sources/road-gameplay.jpg");

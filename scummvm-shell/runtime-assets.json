@@ -1,8 +1,8 @@
 {
-  "version": "sha-825c362d72173f8ecd6cec62",
+  "version": "sha-d3b00b43150b824ae664454d",
   "files": {
-    "/scummvm.js": "sha-d3c8771cc743b9d0792d2441",
-    "/scummvm.wasm": "sha-49f3c17bc15338c8aad52cbc",
+    "/scummvm.js": "sha-fa868e1603a7e13532802275",
+    "/scummvm.wasm": "sha-0139a7006167a729fd5b1553",
     "/scummvm_fs.js": "sha-a1070971ba693ed248d9e700",
     "/audio-start-control.mjs": "sha-5be22420debc1de1477fe594",
     "/scummvm.ini": "sha-130e419d7c4cc8428f9b9511",
@@ -115,6 +115,6 @@
     "/launcher/skip-intro/lure/lure.000": "sha-51bd53a4763706b92c357180",
     "/launcher/skip-intro/queen/queen.s00": "sha-a8ba6d91d0b2bfef6a1c61db",
     "/launcher/skip-intro/sky/SKY-VM.000": "sha-4a980c9a92fb713cf4e4f990",
-    "/scummvm.html": "sha-825c362d72173f8ecd6cec62"
+    "/scummvm.html": "sha-d3b00b43150b824ae664454d"
   }
 }

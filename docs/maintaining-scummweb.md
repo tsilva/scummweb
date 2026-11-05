@@ -330,6 +330,12 @@ Maintain it in `web-shell/`; the staging script copies it into the managed bundl
 For browser-shell-only changes, run `pnpm run build:scummvm --shell-only`. This
 regenerates `dist/` and the managed shell from `web-shell/`, reusing the compiled
 engine and its source provenance. Native patches still require a full rebuild.
+Hosted players intercept native launcher entry before it can draw and explicitly
+signal successful engine termination. Keep both paths in
+`14-exit-to-scummweb-before-launcher.patch`: the Emscripten keepalive runtime
+can bypass `Module.quit` and `Module.onExit`. The shell hides the canvas as soon
+as the exit signal arrives and returns to its same-origin `exitTo` destination,
+including when the game exits without recent input or requests Return to Launcher.
 `prepare` and full runtime builds generate content fingerprints for the shell,
 core runtime and engine data. Only a matching resource/version pair gets immutable
 browser caching; application deployments refresh artwork without invalidating
