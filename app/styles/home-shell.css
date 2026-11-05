@@ -1311,6 +1311,14 @@ button.nav-icon-link {
   font-weight: 700;
 }
 
+.poster-edition {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--accent, #8cde94);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
 .spotlight-card {
   display: flex;
   flex: 0 0 min(28rem, 92vw);

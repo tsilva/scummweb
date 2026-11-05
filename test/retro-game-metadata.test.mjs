@@ -7,6 +7,26 @@ import storage from "../data/artwork-storage.json" with { type: "json" };
 
 const artwork = JSON.parse(fs.readFileSync(new URL("../app/retro-game-artwork.json", import.meta.url)));
 
+test("remakes retain separate identities, labels and edition-matched artwork", () => {
+  const originals = { "sci:pq1sci": "agi:pq1", "sci:qfg1vga": "sci:qfg1", "sci:sq1sci": "agi:sq1" };
+  for (const [id, game] of Object.entries(artwork).filter(([, game]) => /remake/i.test(game.summary))) {
+    assert.equal(game.editionLabel, id === "sci:kq1sci" ? "SCI Remake" : "VGA Remake", id);
+    assert.equal(game.artworkFrom, undefined, id);
+    for (const source of game.sources.screenshots) {
+      assert.ok(source.url.includes(`/sci/${id.split(":")[1]}/`), `${id} borrows another game's capture`);
+    }
+    const original = artwork[originals[id]];
+    if (original) {
+      assert.notEqual(game.posterImage, original.posterImage, id);
+      assert.ok(game.screenshots.every((image) => !original.screenshots.includes(image)), id);
+    }
+    const imported = getImportedGamePresentation(`${game.aliases[0]}.zip`);
+    assert.equal(imported.familyId, id);
+    assert.equal(imported.displayTitle, game.title);
+    assert.equal(imported.editionLabel, game.editionLabel);
+  }
+});
+
 test("shared original and remake titles stay unidentified without an edition", () => {
   for (const [originalId, remakeId] of [
     ["agi:pq1", "sci:pq1sci"],

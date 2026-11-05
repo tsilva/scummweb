@@ -19,7 +19,7 @@ export default function GameDetailModal({ game, notice, onClose, dialogId: provi
     ["Collection", game.tag],
     ["Platform", game.platform],
     ["Language", game.language],
-    ["Edition", game.edition],
+    ["Edition", [game.editionLabel, game.edition].filter(Boolean).join(" · ")],
   ].filter(([, value]) => value);
 
   useEffect(() => {

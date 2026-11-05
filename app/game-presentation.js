@@ -379,6 +379,7 @@ export function getImportedGamePresentation(filename) {
           summary: retro.summary,
           studio: retro.studio,
           genre: retro.genre,
+          editionLabel: retro.editionLabel,
         }),
         badge: labels.join(" · ") || "Local game",
       };

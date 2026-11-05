@@ -504,7 +504,16 @@ or request-time rendering.
   The larger personal collection uses the per-title artwork and source links in
   [`app/retro-game-artwork.json`](../app/retro-game-artwork.json). It includes
   original box scans, gameplay captures, and title cards where a cover was
-  unavailable. Different editions can point to the same files.
+  unavailable. Platform and language variants can point to the same files, but
+  originals and remakes must have separate artwork sets and matching gameplay
+  captures. Keep remake labels in `editionLabel`, separate from the canonical title
+  and recognition aliases. King's Quest 1 uses **SCI Remake** (its remake is EGA);
+  Leisure Suit Larry 1, Police Quest 1, Quest for Glory 1, and Space Quest 1 use
+  **VGA Remake**. Preserve their separate engine/game identities and URLs.
+  Leisure Suit Larry 1, Police Quest 1, and Space Quest 1 remake covers come from the edition-specific
+  Libretro box scans; Quest for Glory 1 uses the original Hero's Quest scan for
+  the original game and a LaunchBox remake scan. Exact image URLs and the
+  corresponding ScummVM remake gallery links are retained in the artwork JSON.
   Canonical titles shared by originals and remakes remain ambiguous; only a
   unique title or recognized edition alias selects a game family. An ambiguous
   ZIP name keeps generic metadata until it can be identified.

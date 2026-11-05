@@ -69,7 +69,7 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
           return (
             <div className="poster-entry" key={key} data-library-source-ids={JSON.stringify(versions.flatMap(({ source }) => source ? [source.id] : []))}>
               <a aria-haspopup="dialog" aria-controls={dialogId} className={`poster-card ${game.tone}`} data-game-target={game.target} href={`#${dialogId}`}>
-                <GamePoster title={title} image={game.posterImage} />
+                <GamePoster title={title} image={game.posterImage} editionLabel={game.editionLabel} />
                 {versions.length > 1 && <span className="game-version-count">{versions.length} versions</span>}
                 {needsFiles && <span className="source-poster-hint">{fileStatus}</span>}
               </a>
