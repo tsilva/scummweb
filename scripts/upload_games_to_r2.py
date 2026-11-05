@@ -267,6 +267,8 @@ def main() -> None:
     )
 
     files, scope_label = collect_files(games_dir, selected_prefix)
+    if any(path.relative_to(games_dir).parts[0] == "artwork" for path in files):
+        raise SystemExit("The artwork/ namespace is reserved for the artwork publisher.")
     force_label = " with overwrite enabled" if args.force else ""
     prune_label = " with prune enabled" if args.prune else ""
     print(
@@ -305,7 +307,8 @@ def main() -> None:
     if args.prune:
         remote_scope_prefix = f"{selected_prefix}/" if selected_prefix else None
         remote_keys = list_remote_keys(client, BUCKET, remote_scope_prefix)
-        keys_to_delete = [key for key in remote_keys if key not in local_keys]
+        keys_to_delete = [key for key in remote_keys
+                          if key not in local_keys and not key.startswith("artwork/")]
         deleted = delete_remote_keys(client, BUCKET, keys_to_delete)
         print(f"Pruned {deleted} remote files outside the local scope")
 

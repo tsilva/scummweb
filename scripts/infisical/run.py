@@ -11,12 +11,17 @@ COMMANDS = {
     "check": ["node", "scripts/check-infisical-secrets.mjs"],
     "issues": ["node", "scripts/list_sentry_issues.mjs"],
     "publish": [sys.executable, "scripts/upload_games_to_r2.py"],
+    "publish-artwork": [sys.executable, "scripts/upload_artwork_to_r2.py"],
 }
 
 
 def selected_command(arguments):
     if not arguments or arguments[0] not in COMMANDS:
-        raise SecretError("Usage: python3 scripts/infisical/run.py <dev|check|issues|publish>")
+        raise SecretError("Usage: python3 scripts/infisical/run.py <dev|check|issues|publish|publish-artwork>")
+    if arguments[0] == "publish-artwork":
+        if arguments[1:]:
+            raise SecretError("Artwork publishing does not accept target overrides or flags.")
+        return COMMANDS["publish-artwork"]
     if arguments[0] == "publish":
         # Validate before fetching secrets. The uploader retains the flag semantics.
         parser = argparse.ArgumentParser(add_help=False)
@@ -38,7 +43,7 @@ def selected_command(arguments):
 
 def main():
     command = selected_command(sys.argv[1:])
-    if sys.argv[1] == "publish":
+    if sys.argv[1] in ("publish", "publish-artwork"):
         environment = (cli_environment() if any(arg in ("--help", "-h") for arg in sys.argv[2:])
                        else publisher_environment(Infisical().read_publisher_credentials()))
     else:

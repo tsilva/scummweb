@@ -26,3 +26,10 @@ tmp/
 /INBOX.md
 /.internal/
 /data/.social-cards.lock/
+/data/artwork-storage.json.*.tmp
+/.cache/artwork/
+# Game artwork is published to R2; temporary originals are upload inputs.
+/scummvm-shell/launcher/*.webp
+/scummvm-shell/launcher/*.png
+/scummvm-shell/launcher/responsive/
+/image-assets/sources/road-gameplay.jpg

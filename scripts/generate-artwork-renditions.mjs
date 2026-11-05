@@ -8,7 +8,8 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const launcher = path.join(root, "scummvm-shell/launcher");
 const output = path.join(launcher, "responsive");
 const manifestPath = path.join(root, "data/artwork-renditions.json");
-const manifest = {};
+const storage = JSON.parse(await fs.readFile(path.join(root, "data/artwork-storage.json"), "utf8"));
+const manifest = storage.published ? JSON.parse(await fs.readFile(manifestPath, "utf8")) : {};
 const wanted = new Set();
 await fs.mkdir(output, { recursive: true });
 
@@ -17,6 +18,7 @@ for (const name of (await fs.readdir(launcher)).sort()) {
   const source = await fs.readFile(path.join(launcher, name));
   const { width, height } = await sharp(source).metadata();
   const widths = [];
+  delete manifest[`/launcher/${name}`];
   for (const size of [320, 640]) {
     if (size >= width) continue;
     const image = await sharp(source).resize({ width: size }).webp({ quality: 80, effort: 6 }).toBuffer();

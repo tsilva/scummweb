@@ -97,6 +97,12 @@ pnpm run dev:app --port auto
 Open the URL printed by the server and select **Play Beneath a Steel Sky**.
 This setup needs no Infisical login.
 
+Game artwork loads directly from R2 using the tracked
+[`data/artwork-storage.json`](data/artwork-storage.json) manifest. Game mappings
+and source credits remain in Git. See the
+[artwork publishing procedure](docs/maintaining-scummweb.md#artwork-storage-and-publishing)
+for the verified migration and update workflow.
+
 For production builds and Lighthouse checks alongside a running server, see
 the [isolated audit setup](docs/maintaining-scummweb.md#development-commands).
 

@@ -252,6 +252,17 @@ class SecretTests(unittest.TestCase):
                 launcher.main()
             execute.assert_not_called()
 
+    def test_artwork_launcher_uses_only_the_pinned_publisher_credentials(self):
+        pair = {"AWS_ACCESS_KEY_ID": "a" * 32, "AWS_SECRET_ACCESS_KEY": "b" * 64}
+        with patch.dict(os.environ, {"PATH": "/safe/bin"}, clear=True), \
+                patch("run.sys.argv", ["run.py", "publish-artwork"]), \
+                patch("run.Infisical") as client, patch("run.os.chdir"), patch("run.os.execvpe") as execute:
+            client.return_value.read_publisher_credentials.return_value = pair
+            launcher.main()
+        client.return_value.read.assert_not_called()
+        self.assertEqual(execute.call_args.args[1][1:], ["scripts/upload_artwork_to_r2.py"])
+        self.assertEqual(execute.call_args.args[2]["AWS_SECRET_ACCESS_KEY"], pair["AWS_SECRET_ACCESS_KEY"])
+
     def test_publisher_help_does_not_fetch_credentials(self):
         with patch("run.sys.argv", ["run.py", "publish", "--help"]), \
                 patch("run.Infisical") as client, patch("run.os.chdir"), patch("run.os.execvpe") as execute:

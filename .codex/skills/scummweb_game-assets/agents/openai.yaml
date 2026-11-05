@@ -1,4 +1,4 @@
 interface:
-  display_name: "scummweb: scummweb Assets"
-  short_description: "Update game artwork for scummweb"
-  default_prompt: "Use $scummweb_game-assets to add or refresh dashboard art for a game in scummweb."
+  display_name: "scummweb: Game Assets"
+  short_description: "Manage game artwork in R2 and retain source credits"
+  default_prompt: "Use $scummweb_game-assets to add or refresh game artwork in R2 while keeping mappings and source credits in the scummweb repository."

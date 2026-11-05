@@ -18,7 +18,13 @@ Native Infisical syncs are disabled after this workflow has successfully replace
 
 Game publishing is a separate manual operation: `pnpm run publish:games`, optionally with `--game <target-or-folder>`, `--force`, or `--prune`. It fetches only the shared `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` entries from ScummWeb Development (`e1c358f8-0678-45d7-a2a8-270c2f29aadd`, `dev`, `/`) through the existing human Infisical login. The publishing subprocess receives that pair instead of inherited or dotenv credentials, plus the pinned `scummvm-games` bucket and Cloudflare account endpoint. Target overrides are rejected. Sentry/OpenRouter and Infisical authentication values are excluded from the publisher's environment.
 
-Build `dist/games` before publishing, or select an existing payload directory with `SCUMMVM_GAMES_UPLOAD_DIR`. Normal publishing skips existing files; `--force` overwrites them, and scoped uploads refresh ancestor `index.json` manifests. `--prune` deletes remote objects missing locally; without `--game`, it applies across the bucket. CI and production delivery do not invoke the publisher or receive this R2 pair. The public player reads existing game objects without the writer token.
+Build `dist/games` before publishing, or select an existing payload directory with `SCUMMVM_GAMES_UPLOAD_DIR`. Normal publishing skips existing files; `--force` overwrites them, and scoped uploads refresh ancestor `index.json` manifests. `--prune` deletes remote game objects missing locally; without `--game`, it applies across the bucket except the reserved `artwork/` namespace. CI and production delivery do not invoke the publisher or receive this R2 pair. The public player reads existing game objects without the writer token.
+
+Artwork uses a separate content-addressed publisher and a public checksum gate.
+See [artwork storage and publishing](maintaining-scummweb.md#artwork-storage-and-publishing).
+The existing publisher injects the R2 pair into its subprocess. Agents need an
+explicit exception for that credential operation until a reviewed compatible
+broker route is available; the migration request alone does not grant one.
 
 The regular catalog player reads `<gameId>.zip` from the bucket root. Put each
 game's files at the archive root and name the ZIP after its `gameId` in
