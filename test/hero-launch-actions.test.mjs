@@ -38,10 +38,10 @@ const LaunchPending = await loadComponent("../app/launch-pending.js");
 const useBrowserSave = (game) => savedIdentity === undefined ? undefined
   : savedIdentity === (game.saveVersionId || game.target) ? 0 : null;
 const LaunchButton = await loadComponent("../app/launch-button.js", {
-  "./use-browser-save": useBrowserSave, "./launch-pending": LaunchPending,
+  "./use-browser-save": useBrowserSave, "./browser-saves.mjs": { cancelBrowserSaveQueries() {} },
 });
 const SourceLaunchActions = await loadComponent("../app/home-shell/source-launch-actions.js", {
-  "../use-browser-save": useBrowserSave, "../launch-pending": LaunchPending,
+  "../use-browser-save": useBrowserSave, "../browser-saves.mjs": { cancelBrowserSaveQueries() {} },
 });
 const HeroStage = await loadComponent("../app/home-shell/hero-stage.js", {
   "../launch-button": LaunchButton,
@@ -141,104 +141,49 @@ test("multiple versions expose an inline chooser and launch the selected catalog
   preferredVersion = null;
 });
 
-test("refresh never exposes a launch action before versions and saves are checked", () => {
+test("hero stays actionable while unrelated sources and version preferences restore", () => {
   const versions = [{ key: "catalog:sky", game }];
   savedIdentity = "sky";
-  const restoring = renderToStaticMarkup(slideFor(versions, true));
-  assert.match(restoring, /disabled="" aria-busy="true" aria-label="Checking saved games"/);
-  assert.doesNotMatch(restoring, />Continue|#continue|Start from beginning|href="\/beneath-a-steel-sky\/play/);
+  assert.match(renderToStaticMarkup(slideFor(versions, true)), />Continue<\/a>/);
   savedIdentity = undefined;
   const checking = renderToStaticMarkup(slideFor(versions));
-  assert.match(checking, /launch-button-pending/);
-  assert.doesNotMatch(checking, />Continue|#continue|href="\/beneath-a-steel-sky\/play/);
-  savedIdentity = null;
-  assert.match(renderToStaticMarkup(slideFor(versions)), />Play<\/a>/);
+  assert.match(checking, />Play<\/a>/);
+  assert.doesNotMatch(checking, /Checking saves|launch-button-pending/);
   savedIdentity = "sky";
-  const restored = [...versions, { key: "source:other", game, source: { id: "other" } }];
+  const restored = [...versions, { key: "source:other", game, source: { id: "other" }, status: "checking" }];
   const choosing = renderToStaticMarkup(slideFor(restored));
   assert.match(choosing, /<select/);
-  assert.match(choosing, /Checking saved games/);
-  assert.doesNotMatch(choosing, />Continue|#continue/);
+  assert.match(choosing, />Continue<\/a>/);
 });
 
-test("imported games wait for saves while access and unavailable actions remain immediate", () => {
+test("imports offer Play during save reconciliation and retain access/reconnection actions", () => {
   savedIdentity = undefined;
   const version = { key: "source:zip", game, action: { onClick() {}, onContinue() {} } };
-  assert.match(renderToStaticMarkup(SourceLaunchActions({ version })), /launch-button-pending/);
+  assert.match(renderToStaticMarkup(SourceLaunchActions({ version })), />Play<\/button>/);
   version.action.needsAccess = true;
   assert.match(renderToStaticMarkup(SourceLaunchActions({ version })), />Allow file access<\/button>/);
   assert.match(renderToStaticMarkup(LaunchButton({ game: { ...game, importRequired: true } })), />Game not included/);
 });
 
-test("save checks distinguish pending, no save and slot zero without leaking across versions", async () => {
-  let state = null, dependencies, pendingEffect, cleanup;
-  const requests = [], listeners = new Map(), timers = new Map();
-  let timerId = 0;
-  const hooks = {
-    useState: () => [state, (next) => { state = typeof next === "function" ? next(state) : next; }],
-    useEffect(effect, next) {
-      if (!dependencies || next.some((value, i) => value !== dependencies[i])) {
-        pendingEffect = effect;
-        dependencies = next;
-      }
+test("save hook reads cached slots synchronously with a hydration-safe Play fallback", async () => {
+  const slots = new Map([["sky", 0], ["version-b", 2]]);
+  let subscription, serverSnapshot;
+  const hook = await loadComponent("../app/use-browser-save.js", {
+    "./asset-paths": { scummvmAssetVersion: "test" },
+    "./browser-saves.mjs": {
+      getCachedBrowserSave: (identity) => slots.get(identity.saveVersionId || identity.target) ?? null,
+      subscribeBrowserSaves: () => { throw new Error("render must not start a native query"); },
     },
-  };
-  const hook = await loadComponent("../app/use-browser-save.js", {
-    "./asset-paths": { scummvmAssetVersion: "test" },
-    "./browser-saves.mjs": { getLatestBrowserSave: () => new Promise((resolve) => requests.push(resolve)) },
-  }, hooks, { window: {
-    addEventListener: (event, fn) => listeners.set(event, fn),
-    removeEventListener: (event) => listeners.delete(event),
-    setTimeout: (fn, delay) => { assert.equal(delay, 5000); timers.set(++timerId, fn); return timerId; },
-    clearTimeout: (id) => timers.delete(id),
-  } });
-  function commit() { cleanup?.(); cleanup = pendingEffect(); pendingEffect = null; }
-  assert.equal(hook(game), undefined);
-  commit();
-  assert.equal(hook({ ...game }), undefined);
-  assert.equal(pendingEffect, null, "equivalent game objects must not restart the pending check");
-  for (const timeout of timers.values()) timeout();
-  assert.equal(hook(game), null, "a stalled scan must allow Play after five seconds");
-  requests.shift()(0);
-  await new Promise(setImmediate);
-  assert.equal(hook(game), 0);
-  for (const timeout of timers.values()) timeout();
-  assert.equal(hook(game), 0, "the fallback must preserve a detected save, including slot zero");
-  const imported = { ...game, importRequired: true, saveVersionId: "other" };
-  assert.equal(hook(imported), undefined);
-  commit();
-  requests.shift()(null);
-  await new Promise(setImmediate);
-  assert.equal(hook(imported), null);
-  listeners.get("scummweb:saves-changed")();
-  listeners.get("storage")();
-  const older = requests.shift(), newer = requests.shift();
-  newer(2);
-  await new Promise(setImmediate);
-  older(null);
-  await new Promise(setImmediate);
-  assert.equal(hook(imported), 2);
-  listeners.get("pageshow")();
-  cleanup();
-  requests.shift()(null);
-  await new Promise(setImmediate);
-  assert.equal(hook(imported), 2);
-  assert.equal(listeners.size, 0);
-  assert.equal(timers.size, 0);
-});
-
-test("a rejected save check releases the pending launch action", async () => {
-  let state = null, effect, cleanup;
-  const hook = await loadComponent("../app/use-browser-save.js", {
-    "./asset-paths": { scummvmAssetVersion: "test" },
-    "./browser-saves.mjs": { getLatestBrowserSave: async () => { throw new Error("storage unavailable"); } },
   }, {
-    useState: () => [state, (next) => { state = typeof next === "function" ? next(state) : next; }],
-    useEffect: (next) => { effect = next; },
-  }, { window: { setTimeout, clearTimeout, addEventListener() {}, removeEventListener() {} } });
-  assert.equal(hook(game), undefined);
-  cleanup = effect();
-  await new Promise(setImmediate);
-  assert.equal(hook(game), null);
-  cleanup();
+    useCallback: (fn) => fn,
+    useSyncExternalStore: (subscribe, snapshot, server) => {
+      subscription = subscribe; serverSnapshot = server; return snapshot();
+    },
+  });
+  assert.equal(hook(game), 0, "slot zero must be available on the first client snapshot");
+  assert.equal(serverSnapshot(), null, "server and initial hydration HTML use Play");
+  assert.equal(hook({ ...game, saveVersionId: "version-b" }), 2);
+  assert.equal(hook({ ...game, saveVersionId: "version-c" }), null);
+  assert.equal(hook(game, false), null);
+  assert.equal(typeof subscription(() => {}), "function");
 });

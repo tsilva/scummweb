@@ -213,10 +213,13 @@ export async function applyImport({ storage, rows, destinations, revision, initi
   }
   // Preserve both sides durably before any active files change.
   await preserve(archived);
-  restoreSaveGroups(storage, updates, revision, initialConfig);
   if (updates.length && typeof storage.key === "function") {
     // Native save metadata belongs to the old bytes, even if sizes/times match.
+    // Invalidate BEFORE the root swap so interruption cannot leave an old
+    // positive record attached to replacement bytes. Failed restores can repair
+    // the now-missing index in the background without changing player files.
     const keys = Array.from({ length: storage.length }, (_, index) => storage.key(index));
     for (const key of keys) if (key?.startsWith(saveIndexPrefix)) storage.removeItem(key);
   }
+  restoreSaveGroups(storage, updates, revision, initialConfig);
 }

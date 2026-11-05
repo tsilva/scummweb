@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { getLatestBrowserSave, readBrowserSaveFiles } from "../app/browser-saves.mjs";
+import { cancelBrowserSaveQueries, getCachedBrowserSave, getLatestBrowserSave, readBrowserSaveFiles, subscribeBrowserSaves } from "../app/browser-saves.mjs";
 import { saveIndexKey, saveRevision } from "../web-shell/continue-saves.mjs";
 import { getVersionSaveNamespace } from "../app/game-versions.mjs";
 
@@ -142,4 +142,108 @@ test("unindexed imported saves use one native query with origin, source and nonc
   assert.equal(appended, 1); assert.equal(removed, 1); assert.equal(listeners.size, 0);
   assert.equal(queryUrl.searchParams.get("saveNamespace"), namespace);
   assert.equal(queryUrl.searchParams.get("saveEngine"), "scumm");
+});
+
+test("cache reads are synchronous and never create a runtime, including missing/corrupt storage", async (t) => {
+  const game = { target: "sky", engineId: "sky", gameId: "sky" };
+  useStorage(t, makeBrowserStorage([["SKY-VM.001", "player", 20]]));
+  assert.equal(getCachedBrowserSave(game), null);
+  await indexSaves(game, [["SKY-VM.001", 1]]);
+  assert.equal(getCachedBrowserSave(game), 1);
+  window.localStorage.setItem(saveIndexKey("", "sky"), "{");
+  assert.equal(getCachedBrowserSave(game), null);
+  window.localStorage = { getItem() { throw new Error("storage disabled"); } };
+  assert.equal(getCachedBrowserSave(game), null);
+});
+
+test("changed shared directory and deleted latest save retain other valid indexed saves", async (t) => {
+  const game = { target: "sky", engineId: "sky", gameId: "sky" };
+  useStorage(t, makeBrowserStorage([["SKY-VM.001", "old", 10], ["SKY-VM.002", "new", 20]]));
+  await indexSaves(game, [["SKY-VM.001", 1], ["SKY-VM.002", 2]]);
+  const index = window.localStorage.getItem(saveIndexKey("", "sky"));
+  window.localStorage = makeBrowserStorage([["SKY-VM.001", "old", 10], ["queen.s01", "other", 30]]);
+  window.localStorage.setItem(saveIndexKey("", "sky"), index);
+  assert.equal(getCachedBrowserSave(game), 1);
+  assert.equal(await getLatestBrowserSave(game, "test"), 1, "failed repair preserves valid entries");
+  window.localStorage = makeBrowserStorage([]);
+  window.localStorage.setItem(saveIndexKey("", "sky"), index);
+  assert.equal(getCachedBrowserSave(game), null);
+});
+
+test("pending filenames and catalog identity mismatches cannot reuse cached progress", async (t) => {
+  const game = { target: "sky", engineId: "sky", gameId: "sky" };
+  useStorage(t, makeBrowserStorage([["SKY-VM.001", "player", 20]]));
+  await indexSaves(game, [["SKY-VM.001", 1]]);
+  const key = saveIndexKey("", "sky"), index = JSON.parse(window.localStorage.getItem(key));
+  window.localStorage.setItem(key, JSON.stringify({ ...index, pending: ["SKY-VM.001"] }));
+  assert.equal(getCachedBrowserSave(game), null);
+  window.localStorage.setItem(key, JSON.stringify({ ...index, gameId: "queen" }));
+  assert.equal(getCachedBrowserSave(game), null);
+});
+
+test("cached namespace lookup offers immediate Continue for an unknown import without version leakage", async (t) => {
+  const namespace = await getVersionSaveNamespace("cached-import");
+  useStorage(t, makeBrowserStorage([], { [namespace]: [["lure.001", "player", 20]] }));
+  const game = { target: "unrecognized", saveVersionId: "cached-import" };
+  await indexSaves({ ...game, engineId: "lure", gameId: "lure", saveNamespace: namespace }, [["lure.001", 1]]);
+  assert.equal(getCachedBrowserSave(game), 1);
+  assert.equal(getCachedBrowserSave({ ...game, saveVersionId: "never-opened-import" }), null);
+});
+
+test("storage bursts coalesce, unrelated preferences are ignored, and subscriptions clean up", async (t) => {
+  useStorage(t, makeBrowserStorage([]));
+  const listeners = new Map(), timers = new Map(); let id = 0, notified = 0;
+  Object.assign(window, {
+    addEventListener: (name, fn) => listeners.set(name, fn), removeEventListener: (name) => listeners.delete(name),
+    setTimeout: (fn) => { timers.set(++id, fn); return id; }, clearTimeout: (key) => timers.delete(key),
+  });
+  const unsubscribe = subscribeBrowserSaves({ target: "sky" }, "test", () => ++notified);
+  assert.equal(timers.size, 1);
+  for (let i = 0; i < 10; i++) listeners.get("storage")({ key: saveIndexKey("", "sky") });
+  assert.equal(timers.size, 1);
+  const before = notified;
+  listeners.get("storage")({ key: "scummweb.version:sky" });
+  assert.equal(notified, before);
+  listeners.get("pageshow")(); listeners.get("focus")();
+  assert.equal(timers.size, 1);
+  unsubscribe();
+  assert.equal(timers.size, 0); assert.equal(listeners.size, 0);
+});
+
+test("launch cancels an in-flight repair and prevents queued query frames from starting", async (t) => {
+  const game = { target: "cancel-test", gameId: "atlantis", engineId: "scumm", saveVersionId: "cancel-test" };
+  const namespace = await getVersionSaveNamespace(game.saveVersionId);
+  const other = { ...game, saveVersionId: "cancel-queued-test" };
+  const otherNamespace = await getVersionSaveNamespace(other.saveVersionId);
+  useStorage(t, makeBrowserStorage([], { [namespace]: [["atlantis.s01", "player", 20]],
+    [otherNamespace]: [["atlantis.s01", "player", 20]] }));
+  const previous = globalThis.document;
+  t.after(() => { if (previous === undefined) delete globalThis.document; else globalThis.document = previous; });
+  let appended = 0, removed = 0;
+  const listeners = new Map();
+  Object.assign(window, { location: { href: "https://example.test/", origin: "https://example.test" },
+    setTimeout, clearTimeout, addEventListener: (name, fn) => listeners.set(name, fn), removeEventListener: (name) => listeners.delete(name) });
+  globalThis.document = { createElement: () => ({ contentWindow: {}, setAttribute() {}, remove: () => ++removed }),
+    body: { appendChild: () => ++appended } };
+  const request = getLatestBrowserSave(game, "test");
+  await new Promise(setImmediate);
+  assert.equal(appended, 1);
+  const queued = getLatestBrowserSave(other, "test");
+  await new Promise(setImmediate);
+  cancelBrowserSaveQueries();
+  assert.equal(await request, null);
+  assert.equal(await queued, null);
+  assert.equal(appended, 1);
+  assert.equal(removed, 1); assert.equal(listeners.size, 0);
+});
+
+test("background reconciliation yields while a game or restore owns the filesystem", async (t) => {
+  const game = { target: "locked-query", engineId: "lure", gameId: "lure", saveVersionId: "locked-query" };
+  const namespace = await getVersionSaveNamespace(game.saveVersionId);
+  useStorage(t, makeBrowserStorage([], { [namespace]: [["lure.001", "player", 20]] }));
+  window.navigator = { locks: { query: async () => ({ held: [{ name: "scummweb-saves" }] }) } };
+  const previous = globalThis.document;
+  t.after(() => { if (previous === undefined) delete globalThis.document; else globalThis.document = previous; });
+  globalThis.document = { createElement() { assert.fail("a repair must not boot a competing runtime"); } };
+  assert.equal(await getLatestBrowserSave(game, "test"), null);
 });

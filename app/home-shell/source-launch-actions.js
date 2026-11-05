@@ -1,13 +1,12 @@
 "use client";
 
 import useBrowserSave from "../use-browser-save";
-import LaunchPending from "../launch-pending";
+import { cancelBrowserSaveQueries } from "../browser-saves.mjs";
 
 export default function SourceLaunchActions({ version, onLaunch, helpId = "game-file-access-help", showAccessHelp = true }) {
   const slot = useBrowserSave(version.game);
   const needsAccess = version.action.needsAccess;
   const canContinue = slot !== undefined && slot !== null && !version.locate && !needsAccess;
-  if (slot === undefined && !version.locate && !needsAccess) return <LaunchPending />;
   return <>
     {needsAccess && showAccessHelp && <p className="file-access-help" id={helpId}>
       To play, ScummWEB needs to read this game’s ZIP on your device. Choose Allow file access,
@@ -15,10 +14,10 @@ export default function SourceLaunchActions({ version, onLaunch, helpId = "game-
     </p>}
     <button type="button" className="launch-button" disabled={version.action.disabled}
       aria-describedby={needsAccess ? helpId : undefined}
-      onClick={() => { onLaunch?.(); (canContinue ? version.action.onContinue : version.action.onClick)(); }}>
+      onClick={() => { cancelBrowserSaveQueries(); onLaunch?.(); (canContinue ? version.action.onContinue : version.action.onClick)(); }}>
       {version.locate ? version.locateLabel : needsAccess ? "Allow file access" : canContinue ? "Continue" : "Play"}
     </button>
     {canContinue && <button type="button" className="secondary-button start-fresh-button"
-      disabled={version.action.disabled} onClick={() => { onLaunch?.(); version.action.onClick(); }}>Start from beginning</button>}
+      disabled={version.action.disabled} onClick={() => { cancelBrowserSaveQueries(); onLaunch?.(); version.action.onClick(); }}>Start from beginning</button>}
   </>;
 }

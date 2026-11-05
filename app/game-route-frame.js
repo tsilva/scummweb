@@ -259,6 +259,12 @@ export default function GameRouteFrame({
         return;
       }
 
+      if (event.data?.type === "scummweb:save-session-busy" && event.source === frameRef.current?.contentWindow) {
+        stopArchiveBootTimer();
+        setArchiveError("Another game or save operation is active. Close it in the other tab, then try again.");
+        return;
+      }
+
       if (loadArchive && event.source === frameRef.current?.contentWindow) {
         if (event.data?.type === "scummweb:local-game-ready") {
           window.performance?.mark?.("scummweb:runtime-ready-for-files");
@@ -273,9 +279,9 @@ export default function GameRouteFrame({
             if (!catalogLaunch) setReadySignal({ reason: "archive-running" });
           } else {
             archiveFiles.current = null;
-            setArchiveError(event.data.status === "undetected"
+            setArchiveError((current) => current || (event.data.status === "undetected"
               ? "ScummVM could not detect a supported game. Check that you selected the game files."
-              : "ScummVM could not start this game. Check that all the game files are present.");
+              : "ScummVM could not start this game. Check that all the game files are present."));
           }
           return;
         }

@@ -1,6 +1,5 @@
 import { ChevronDown } from "lucide-react";
 import LaunchButton from "../launch-button";
-import LaunchPending from "../launch-pending";
 import SourceLaunchActions from "./source-launch-actions";
 import { HOME_BROWSE_LABEL, HOME_HERO_KICKER, HOME_HERO_SUMMARY, HOME_HERO_TITLE } from "../seo";
 import DecorativeImage from "./decorative-image";
@@ -15,7 +14,6 @@ export default function HeroStage({
   featuredGame,
   isHomePage = false,
   isInitialSlide = true,
-  launchPending = false,
   sourceAction,
   sourceVersion,
   versions = [],
@@ -47,7 +45,7 @@ export default function HeroStage({
             <p className="hero-summary">{heroSummary}</p>
             <div className="hero-launch">
               <div className="hero-actions">
-                {launchPending ? <LaunchPending /> : sourceVersion ? (
+                {sourceVersion ? (
                   <SourceLaunchActions key={sourceVersion.key} version={sourceVersion} onLaunch={onLaunch}
                     helpId="hero-file-access-help" showAccessHelp={false} />
                 ) : sourceAction ? (

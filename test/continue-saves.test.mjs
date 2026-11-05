@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { installContinueSaves, latestPlayerSave, saveIndexKey, saveRevision, supportsContinue } from "../web-shell/continue-saves.mjs";
 
-function shell({ namespace = "", resume = false, seed = false, query = false } = {}) {
+function shell({ namespace = "", resume = false, seed = false, query = false, storage = new Map() } = {}) {
   const files = new Map();
   const base = "/home/web_user/.local/share/scummvm/saves" + (namespace ? `/${namespace}` : "");
   function put(name, contents, modifiedAt) { files.set(`${base}/${name}`, { bytes: new TextEncoder().encode(contents), modifiedAt }); }
@@ -15,10 +15,10 @@ function shell({ namespace = "", resume = false, seed = false, query = false } =
     readFile: (path) => { const file = files.get(path); if (!file) throw new Error("missing"); return file.bytes; },
     writeFile: (path, text) => files.set(path, { bytes: new TextEncoder().encode(text), modifiedAt: 1 }),
   };
-  const storage = new Map(), messages = [], Module = { arguments: ["sky"] };
+  const messages = [], Module = { arguments: ["sky"] };
   let poll;
   const scope = {
-    localStorage: { setItem: (key, value) => storage.set(key, value) },
+    localStorage: { getItem: (key) => storage.get(key) ?? null, setItem: (key, value) => storage.set(key, value) },
     parent: { postMessage: (message) => messages.push(message) },
     fetch: async (url) => url.endsWith("games.json")
       ? new Response(JSON.stringify({ games: [{ target: "sky", skipIntro: { saveFiles: ["SKY-VM.000"] } }] }))
@@ -96,4 +96,85 @@ test("all shipped engines agree with the pinned native capability declarations",
     const loading = method.includes("kSupportsLoadingDuringStartup");
     assert.equal(supportsContinue(engine, engine === "mohawk" ? "myst" : "normal"), listing && loading, engine);
   }
+});
+
+test("completed output publishes immediately without a timer or close-tab handler", async () => {
+  const f = shell({ resume: true }); await f.start(); f.scan([]);
+  f.Module._scummweb_refresh_saves = () => f.scan([[1, "SKY-VM.001"]]);
+  assert.equal(f.scope.__scummwebBeginSaveWrite("SKY-VM.001"), true);
+  f.put("SKY-VM.001", "player", 200);
+  f.poll();
+  assert.equal(f.scope.__scummwebSaveStatus.latestSlot, null, "an open stream is not a save");
+  if (f.scope.__scummwebEndSaveWrite("SKY-VM.001", true)) f.Module._scummweb_refresh_saves();
+  const stored = JSON.parse(f.storage.get(saveIndexKey("", "sky")));
+  assert.equal(latestPlayerSave(stored, stored.saves).slot, 1);
+  assert.deepEqual(stored.pending, []);
+  assert.equal(f.messages.at(-1).persisted, true);
+});
+
+test("interrupted same-size/time overwrites stay excluded after a new document opens", async () => {
+  const f = shell({ resume: true }); await f.start();
+  f.put("SKY-VM.001", "player", 200); f.scan([[1, "SKY-VM.001"]]);
+  assert.equal(f.scope.__scummwebBeginSaveWrite("SKY-VM.001"), true);
+  const reopened = shell({ resume: true, storage: f.storage });
+  reopened.put("SKY-VM.001", "broken", 200); await reopened.start();
+  assert.equal(reopened.scan([[1, "SKY-VM.001"]]), -1);
+  assert.equal(reopened.scope.__scummwebBeginSaveWrite("SKY-VM.001"), true);
+  reopened.put("SKY-VM.001", "repaired player save", 300);
+  assert.equal(reopened.scope.__scummwebEndSaveWrite("SKY-VM.001", true), true);
+  assert.equal(reopened.scan([[1, "SKY-VM.001"]]), 1);
+});
+
+test("write/finalization and BrowserFS close failures never become Continue", async () => {
+  for (const failure of ["write", "close"]) {
+    const f = shell({ resume: true }); await f.start(); f.scan([]);
+    f.scope.__scummwebBeginSaveWrite("SKY-VM.001");
+    f.put("SKY-VM.001", "valid-looking truncated header", 200);
+    if (failure === "close") f.scope.__scummwebSaveIoFailed("/home/web_user/.local/share/scummvm/saves/SKY-VM.001");
+    f.scope.__scummwebEndSaveWrite("SKY-VM.001", failure !== "write");
+    assert.equal(f.scan([[1, "SKY-VM.001"]]), -1);
+    assert.deepEqual(JSON.parse(f.storage.get(saveIndexKey("", "sky"))).pending, ["SKY-VM.001"]);
+  }
+});
+
+test("pending-marker failures refuse overwrites and completed-index failures retry", async () => {
+  const f = shell({ resume: true }); await f.start();
+  f.put("SKY-VM.001", "player", 200); f.scan([[1, "SKY-VM.001"]]);
+  const setItem = f.scope.localStorage.setItem;
+  f.scope.localStorage.setItem = () => { throw new Error("quota"); };
+  assert.equal(f.scope.__scummwebBeginSaveWrite("SKY-VM.001"), false);
+  f.scope.localStorage.setItem = setItem;
+  assert.equal(f.scope.__scummwebBeginSaveWrite("SKY-VM.001"), true);
+  f.put("SKY-VM.001", "new player save", 300);
+  f.scope.__scummwebEndSaveWrite("SKY-VM.001", true);
+  f.scope.localStorage.setItem = () => { throw new Error("quota"); };
+  f.scan([[1, "SKY-VM.001"]]);
+  assert.equal(f.messages.at(-1).persisted, false);
+  assert.deepEqual(JSON.parse(f.storage.get(saveIndexKey("", "sky"))).pending, ["SKY-VM.001"]);
+  f.scope.localStorage.setItem = setItem;
+  f.Module._scummweb_refresh_saves = () => f.scan([[1, "SKY-VM.001"]]);
+  f.poll();
+  assert.equal(f.messages.at(-1).persisted, true);
+  assert.deepEqual(JSON.parse(f.storage.get(saveIndexKey("", "sky"))).pending, []);
+});
+
+test("restoring identical checkpoint bytes with a new time never creates player progress", async () => {
+  const f = shell({ seed: true, resume: true }); await f.start();
+  f.scope.__scummwebBeginSaveWrite("SKY-VM.000");
+  f.put("SKY-VM.000", "player", 200);
+  f.scope.__scummwebEndSaveWrite("SKY-VM.000", true);
+  assert.equal(f.scan([[0, "SKY-VM.000"]]), 0);
+  f.put("SKY-VM.000", "checkpoint", 300);
+  assert.equal(f.scan([[0, "SKY-VM.000"]]), -1);
+});
+
+test("multiple open outputs defer refresh until all close; deletion clears pending state", async () => {
+  const f = shell(); await f.start(); f.scan([]);
+  f.scope.__scummwebBeginSaveWrite("SKY-VM.001");
+  f.scope.__scummwebBeginSaveWrite("SKY-VM.SAV");
+  assert.equal(f.scope.__scummwebEndSaveWrite("SKY-VM.001", true), false);
+  assert.equal(f.scope.__scummwebEndSaveWrite("SKY-VM.SAV", false), true);
+  assert.equal(f.scope.__scummwebSaveDeleted("SKY-VM.SAV"), true);
+  f.scan([]);
+  assert.deepEqual(JSON.parse(f.storage.get(saveIndexKey("", "sky"))).pending, []);
 });

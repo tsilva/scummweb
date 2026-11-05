@@ -386,7 +386,6 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
     };
   });
   const groups = libraryItems(catalog, library);
-  const launchPending = loading || entries.some(({ status }) => status === "checking");
   const featuredGroup = featuredGame && groups.find(({ game }) => getGameFamilyKey(game) === getGameFamilyKey(featuredGame));
   const featuredKey = getGameFamilyKey(featuredGame) || `catalog:${featuredGame?.target}`;
   const heroGroups = featuredGroup || isHomePage ? groups : [...groups, {
@@ -405,7 +404,7 @@ export default function SourceLibrary({ catalog, featuredGame, isHomePage = true
       <GameDropOverlay importRoots={importRoots} disabled={disabled} pending={pending}
         result={importResult} onConfirm={confirmImport} />
       {featuredGame && <HomeHero key={`${isHomePage}:${featuredKey}`} groups={heroGroups} featuredGame={featuredGame}
-        isHomePage={isHomePage} launchPending={launchPending} notice={notice} />}
+        isHomePage={isHomePage} notice={notice} />}
       <div className="section-stack">
         <RecentGamesRail groups={groups} />
         <LibraryView items={groups} heading={libraryHeading} notice={notice}

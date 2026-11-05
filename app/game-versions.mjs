@@ -72,7 +72,24 @@ export function rememberGameVersion(groupKey, versionKey) {
   try { window.localStorage.setItem(`scummweb.version:${groupKey}`, versionKey); } catch { /* Play works without preferences. */ }
 }
 
+const saveNamespaces = new Map();
+const namespacePrefix = "scummweb.save-namespace.v1:";
+
+export function readVersionSaveNamespace(versionId) {
+  if (saveNamespaces.has(versionId)) return saveNamespaces.get(versionId);
+  try {
+    const namespace = window.localStorage.getItem(namespacePrefix + versionId);
+    if (/^version-[a-f0-9]{64}$/.test(namespace)) return namespace;
+  } catch { /* Storage may be unavailable. */ }
+  return null;
+}
+
 export async function getVersionSaveNamespace(versionId) {
+  const cached = readVersionSaveNamespace(versionId);
+  if (cached) return cached;
   const hash = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(versionId));
-  return "version-" + Array.from(new Uint8Array(hash), (byte) => byte.toString(16).padStart(2, "0")).join("");
+  const namespace = "version-" + Array.from(new Uint8Array(hash), (byte) => byte.toString(16).padStart(2, "0")).join("");
+  saveNamespaces.set(versionId, namespace);
+  try { window.localStorage.setItem(namespacePrefix + versionId, namespace); } catch { /* Optional lookup cache. */ }
+  return namespace;
 }

@@ -64,6 +64,15 @@ tests when porting; do not treat an old implementation shape as the requirement.
 
 - The web save bridge (patch 13) must retain actual detected identities and per-version save paths. Capability flags alone are insufficient: PreAGI and non-Myst/Riven Mohawk titles are excluded. Keep nonexistent autosave placeholders, bundled intro bytes, Kyrandia restart saves and Groovie reserved slot zero out of Continue. Native filename getters may need fixed engine prefixes for engines whose saves ignore target names. Query mode uses a temporary configuration; it must not rewrite user targets. Route query iframes to the actual shell, follow ordinary web backend/plugin initialization and terminate natively after reporting, before creating an engine. The native CLI listing branch runs too early for this dynamic WebAssembly backend; do not substitute it for the web query path. Save timestamps and index validation remain in the shell/library contract.
 
+- Save completion (patch 15) belongs at the shared save-manager output lifetime,
+  not Engine::saveGameState or finalize alone: original dialogs can bypass the
+  former and Lure deletes its stream without the latter. BrowserFS LocalStorage
+  persists buffered bytes at descriptor close. Finalize compression and destroy
+  the wrapped stream before native listing; do not reenter native listing from
+  FS.close. Preserve the shell's close-error observer, pending filenames written
+  before truncation, retryable metadata persistence and exclusive save-session
+  lock. Metadata does not make multi-key filesystem writes crash-atomic.
+
 ## Keeping this memory useful
 
 When a patch is introduced or changed, update its ledger purpose, invariants,
