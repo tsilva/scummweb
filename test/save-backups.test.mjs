@@ -211,3 +211,19 @@ test("backup operations refuse a held game lock and runtime locks before mountin
   assert.equal(mode, "shared");
   assert.match(shell, /acquireSaveSession\(\)\.then\(/);
 });
+
+test("unsafe directory depth and prototype-like names cannot enter the save tree", () => {
+  assert.equal(safePath(Array(25).fill("nested").join("/")), false);
+  assert.equal(safePath("__proto__/save.001"), false);
+  assert.equal(safePath("hasOwnProperty"), false);
+});
+
+test("restoring bytes invalidates native Continue metadata even when filenames and times match", async () => {
+  const storage = storageFixture({ "SKY-VM.001": bytes("old") });
+  Object.defineProperty(storage, "length", { get: () => storage.values.size });
+  storage.key = (index) => [...storage.values.keys()][index] ?? null;
+  storage.setItem("scummweb.continue.v1:catalog:sky", "old native metadata");
+  await restore(storage, [await set(sky, [file("SKY-VM.001", "new", 100)])]);
+  assert.equal(storage.getItem("scummweb.continue.v1:catalog:sky"), null);
+  assert.equal(storage.getItem("scummweb.other-preference"), "preserve me");
+});

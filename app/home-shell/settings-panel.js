@@ -3,13 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, Check, ChevronDown, ChevronRight, Download, Info, Layers, Save, Settings, Upload, X } from "lucide-react";
 import { readGameSources } from "../game-sources.mjs";
-import { getGamesOrigin } from "../../lib/site-config.mjs";
 import { applyImport, exportBackup, getActiveSaveSets, getSaveDestinations, matchDestination, readBackup, readStoredSets, withSaveLock } from "../save-backups/backups.mjs";
 import { captureFilesystem } from "../save-backups/filesystem.mjs";
 
 const countFiles = (set) => `${set.files.length} save ${set.files.length === 1 ? "file" : "files"}`;
 
-export default function SettingsPanel({ catalog, scummvmVersion, sourceInfoDate }) {
+export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, sourceInfoDate }) {
   const dialog = useRef(null);
   const trigger = useRef(null);
   const picker = useRef(null);
@@ -27,7 +26,7 @@ export default function SettingsPanel({ catalog, scummvmVersion, sourceInfoDate 
   useEffect(() => () => { if (downloadReady) URL.revokeObjectURL(downloadReady.href); }, [downloadReady]);
 
   async function refresh() {
-    const sources = await readGameSources(catalog, getGamesOrigin());
+    const sources = await readGameSources(catalog, officialUrl);
     const destinations = await getSaveDestinations(catalog, sources);
     const [active, stored] = await Promise.all([getActiveSaveSets(window.localStorage, destinations), readStoredSets()]);
     const result = { ...active, stored, destinations };

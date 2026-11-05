@@ -18,7 +18,8 @@ export function decodeBytes(value) {
 
 export function safePath(path) {
   return typeof path === "string" && path.length <= 512 && !/[\\\x00-\x1f\x7f]/.test(path)
-    && path.split("/").every((part) => part && part !== "." && part !== ".." && !part.includes(":"));
+    && path.split("/").length <= 24
+    && path.split("/").every((part) => part && ![".", "..", "__proto__", "constructor", "prototype", "hasOwnProperty"].includes(part) && !part.includes(":"));
 }
 
 export function captureFilesystem(storage) {
@@ -103,6 +104,12 @@ export function restoreSaveGroups(storage, updates, expectedRevision, initialCon
   const staged = [];
   const retained = new Set();
   const now = Date.now();
+  let nodeCount = 0;
+  function validateTree(node, depth = 0) {
+    if (++nodeCount > 20000 || depth > 32) throw new Error("This backup would create too many save directories.");
+    for (const child of node.children?.values() || []) validateTree(child, depth + 1);
+  }
+  validateTree(snapshot.root);
   function put(key, value) {
     staged.push(key);
     storage.setItem(key, value);
