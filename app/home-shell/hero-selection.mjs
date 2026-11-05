@@ -2,6 +2,8 @@ import { getGameFamilyKey } from "../game-versions.mjs";
 
 export function buildGameExitHref(game) {
   if (!game) return "/";
+  if (game.href?.startsWith("/") && !game.href.startsWith("//")) return game.href;
+  if (game.slug) return `/${encodeURIComponent(game.slug)}`;
   const key = getGameFamilyKey(game)
     || game.recentGameId
     || (game.saveVersionId ? `source:${game.saveVersionId}` : null)

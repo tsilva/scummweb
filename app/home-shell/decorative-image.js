@@ -1,4 +1,5 @@
 export default function DecorativeImage({
+  alt = "",
   className,
   decoding = "async",
   fetchPriority,
@@ -19,7 +20,7 @@ export default function DecorativeImage({
 
   const image = (
     <img
-      alt=""
+      alt={alt}
       className={className}
       decoding={decoding}
       fetchPriority={resolvedFetchPriority}

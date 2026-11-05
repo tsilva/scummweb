@@ -1,33 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { scummvmAssetVersion } from "../asset-paths";
-import { getLatestBrowserSave } from "../browser-saves.mjs";
+import useBrowserSave from "../use-browser-save";
+import LaunchPending from "../launch-pending";
 
 export default function SourceLaunchActions({ version, onLaunch, helpId = "game-file-access-help", showAccessHelp = true }) {
-  const [savedVersion, setSavedVersion] = useState(null);
-  useEffect(() => {
-    let active = true;
-    let request = 0;
-    function refresh() {
-      const current = ++request;
-      void getLatestBrowserSave(version.game, scummvmAssetVersion).then((slot) => {
-        if (active && current === request) setSavedVersion(slot === null ? null : version.key);
-      });
-    }
-    refresh();
-    window.addEventListener("storage", refresh);
-    window.addEventListener("pageshow", refresh);
-    window.addEventListener("scummweb:saves-changed", refresh);
-    return () => {
-      active = false;
-      window.removeEventListener("storage", refresh);
-      window.removeEventListener("pageshow", refresh);
-      window.removeEventListener("scummweb:saves-changed", refresh);
-    };
-  }, [version.key, version.game]);
+  const slot = useBrowserSave(version.game);
   const needsAccess = version.action.needsAccess;
-  const canContinue = savedVersion === version.key && !version.locate && !needsAccess;
+  const canContinue = slot !== undefined && slot !== null && !version.locate && !needsAccess;
+  if (slot === undefined && !version.locate && !needsAccess) return <LaunchPending />;
   return <>
     {needsAccess && showAccessHelp && <p className="file-access-help" id={helpId}>
       To play, ScummWEB needs to read this game’s ZIP on your device. Choose Allow file access,

@@ -52,6 +52,9 @@ also works for personal imports, with progress kept separate for each version.
 Intro checkpoints do not enable Continue. Other games stay on **Play** and load
 progress through their in-game menu.
 
+Launch actions show a neutral placeholder until the browser finishes checking
+game versions and saved progress, so refreshing does not show an incorrect action.
+
 Games default to their original save/load screens wherever ScummVM supports
 them. Existing saved preferences take precedence; games without an original
 screen option keep their usual interface.
@@ -77,17 +80,25 @@ active. Close games in all tabs first. Backups contain progress, not game files.
 The Recently Played strip shows games you have launched, newest first, including
 your imported ZIPs. It appears after your first launch.
 
-Use the library’s sliders icon to sort and filter games. Choose **Version** in
-a game’s details to switch platform, language, or edition. Select **Compatibility**
+Use the library’s sliders icon to sort and filter games. These choices remain
+active while navigating between game pages. Choose **Version** in
+the hero to switch platform, language, or edition. Select **Compatibility**
 in the navigation to open the
 [compatibility page](https://scummweb.tsilva.eu/compatibility), or read the
 [compatibility results](docs/game-testing.md), for tested editions and known
 ScummVM or ScummWEB limitations. Problems specific to missing or mismatched
 game files are excluded. Startup checks do not establish full-game compatibility.
 
-The homepage slideshow advances every eight seconds. Previous and next restart
-the countdown; use the pause button to stop automatic rotation.
-Exiting a game returns to the homepage with that game selected in the slideshow.
+Select a library or Recently Played card to open the game’s shareable page and
+jump instantly to its hero. The game’s artwork, description, launch actions and
+screenshots fill the opening view, with the library below the fold and compact
+portrait box-art cards. Reserved text and action areas keep the slideshow stable.
+Select a screenshot to expand it inline; use the arrows to browse and Escape to close it.
+
+The homepage slideshow advances every eight seconds; use the pause button to stop
+automatic rotation. Previous and next select a game and navigate to its page.
+Game pages open with rotation paused. Exiting a catalog game returns to its game
+page; unrecognized imports return to the homepage with their game selected.
 For a single-version game with a supported player save, select **Continue** there
 to resume, or **Start from beginning** to start fresh.
 Quitting inside a game or choosing ScummVM’s **Return to Launcher** also returns

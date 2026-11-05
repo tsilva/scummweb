@@ -2,9 +2,10 @@
 
 ## Playing and importing games
 
-Select a library card to view screenshots, metadata, game notices, and launch
+Select a library or Recently Played card to navigate to the game’s slug route
+and jump instantly to its hero, screenshots, metadata, game notices, and launch
 options. Recognized platform, language, and edition variants share a card;
-choose **Version** in its details to select a copy. ScummWEB remembers your
+choose **Version** in the hero to select a copy. ScummWEB remembers your
 selection and keeps demos separate from full games. Each imported version has
 separate browser saves. Supported engines offer **Continue** and **Start from
 beginning**; others load progress through their in-game menu. Older shared saves
@@ -106,7 +107,7 @@ windows and tablets use the available space. Dragging moves the cursor; the
 cursor pad offers smaller movements, **L**/**R** send clicks, and double-tapping
 the game sends a left click. Loading screens scroll on short landscape viewports.
 
-Check the launcher, game details, compatibility search, settings and player at
+Check the launcher, game landing hero, screenshot viewer, compatibility search, settings and player at
 320px and 390px portrait widths, a short landscape viewport and tablet widths.
 Verify rotation, exit, menu, left/right clicks, cursor dragging, Start audio and
 fullscreen refusal on physical Android and iOS devices before claiming device
@@ -349,8 +350,8 @@ generator retains each original, skips upscaling and larger encodings, and
 records actual dimensions in `data/artwork-renditions.json`. Browser selection
 preserves the existing cover crop and falls back to the full original for
 larger displays or unknown/remote artwork. Derivatives inherit their original's
-artwork provenance. Headline fitting also runs before first paint, then remains
-active for slideshow and viewport changes.
+artwork provenance. Hero titles fit within a reserved responsive heading slot.
+Descriptions and launch controls also reserve stable space across slideshow changes.
 Offscreen poster contents use native rendering containment with the existing
 card height reserved. They remain searchable and available to assistive
 technology; focused cards render normally so their focus outlines stay visible.
@@ -612,7 +613,7 @@ AVIF encoding runs only in the explicit optimizer, outside normal builds.
 Posters advertise source sizes from the auto-fit 10rem grid, 1rem gaps, capped
 100rem container, current result count, crop and zoom. Keep this calculation in
 sync with the grid CSS. Hero sizes account for viewport height and cover cropping;
-gallery sizes reflect the two- or three-column layout. Variant width descriptors
+gallery images preserve their original proportions. Variant width descriptors
 come from the decoded image dimensions. Hero preloading uses the same picture
 sources as visible images to avoid downloading both format alternatives.
 
@@ -741,17 +742,18 @@ or request-time rendering.
   The Simon the Sorcerer's Puzzle Pack gallery includes Jumble and Swampy
   Adventures, both included in the collection.
   The homepage uses a game's landscape artwork or gameplay capture as its
-  slideshow backdrop. Single-version slides use the same Play, Continue,
-  Start from beginning and reconnect actions as their library details.
+  slideshow backdrop. Heroes share save-aware Play, Continue, Start from beginning
+  and reconnect actions, with an inline Version selector for multiple editions.
   Continue refreshes after browser saves change or the page is restored.
-  Multi-version slides open the version chooser before launching.
-  Player exits return to `/#slide=<encoded group key>`, selecting the played
-  game's family in the homepage slideshow. Imported selections resolve when
-  saved sources finish loading. Unknown selections fall back to the first slide;
-  direct ZIP launches without library metadata return to the homepage.
-  Game landing pages remain the canonical pages for game information and sharing.
-  Slideshow arrows restart the eight-second countdown while preserving the
-  current play/pause setting. Hover and focus pause rotation over hero content,
+  Player exits return to the game's slug route when available. Unrecognized
+  imports retain `/#slide=<encoded group key>` and resolve when saved sources
+  finish loading. Unknown selections fall back to the featured game; direct ZIP
+  launches without library metadata return to the homepage.
+  Slug routes render the selected game's hero and screenshots on the server,
+  retaining the canonical metadata and structured data for sharing and search.
+  Slideshow arrows navigate to the previous or next game's route and pause
+  rotation. The homepage rotates every eight seconds; game routes and explicit
+  imported-game selections open paused until resumed. Hover and focus pause rotation over hero content,
   while the slideshow controls let it continue. Hidden tabs suspend rotation,
   and reduced-motion preferences disable automatic rotation until resumed.
   The hero preloads and decodes the next three backdrops and one previous
@@ -765,7 +767,7 @@ or request-time rendering.
   handles with existing read permission; they do not request permission or
   download game contents. Missing ZIP files retain their library entries
   and show a missing-file badge. Permission failures use an explicit
-  `Allow file access` action with explanatory text in game details and the hero,
+  `Allow file access` action with explanatory text in the hero,
   without adding a poster badge. Only this action requests browser permission;
   launching rechecks existing permission. Other check failures remain unverified.
   ZIP imports list each archive with waiting, checking, added, and error states
@@ -801,32 +803,43 @@ or request-time rendering.
   Slideshow heroes and library-card tooltips read the same record, including
   entries imported before a metadata update. Keep the library grid limited to
   cover cards and titles; show detailed metadata in the slideshow heroes and
-  game detail modals. Catalog cards and the recent-games rail open hash-linked
-  details. Library cards and slideshow entries group recognized versions using
+  inline screenshot gallery. Catalog cards and the recent-games rail navigate
+  to the game's slug route with an instant scroll to the top. Recognized imports
+  use the same canonical route; unrecognized imports use a homepage selection
+  fragment. Library cards and slideshow entries group recognized versions using
   engine/game identity, with demos separated from full releases. Unrecognized
-  sources stay separate. A version count opens a single details panel with a
+  sources stay separate. Version counts remain on cards; the hero contains a
   Version dropdown showing platform, language, edition, and source type; unknown
   metadata stays explicitly unknown. Remember the last selected available version,
   otherwise prefer an available copy matching the browser language. File access
   and launch always apply to that selection. Missing sources use the primary
-  file-location action. The details panel omits filenames, auxiliary file-management
+  file-location action. The hero omits filenames, auxiliary file-management
   links, save-folder hints, and legacy-save controls. Generic presentation uses the
   genre as its heading label and omits release metadata when the year is unknown.
-  Catalog details use the same save-aware launch buttons as the hero. Imported
+  All selected editions use save-aware launch buttons in the hero. Imported
   versions use a deterministic SHA-256 source-ID save folder passed through
   ScummVM’s `--savepath`; Continue looks only inside that version’s folder and
   retains the supported-engine filename rules in `browser-saves.mjs`. Other engines
   load saves through their in-game menu. Older shared saves remain stored without
   an exposed legacy launch control. Removing a version leaves its browser saves
   untouched; a reimport with a new source ID does not automatically reconnect them.
-  Details use a native modal dialog for focus containment and Escape
-  dismissal, restore focus to the opener, and prevent background scrolling.
+  The hero and compact screenshot strip occupy at least the initial viewport,
+  placing the library below the fold. Screenshot thumbnails are 12rem wide on
+  desktop and 9rem on mobile, with horizontal overflow and uncropped images.
+  Library covers retain a 3:4 portrait box-art shape. The screenshot strip renders
+  without deferred content sizing so changing games does not move later sections.
+  Selecting a thumbnail expands a viewer inline. Previous/next and arrow keys
+  browse the screenshots; Close screenshot or Escape collapses the viewer and
+  restores focus to the thumbnail. Game changes reset the expanded image.
+  Game details do not open a modal or lock background scrolling.
   The library's sliders icon opens the sorting and genre controls. The button
   has an accessible label and no visible text. It sorts the
   combined catalog and saved-source cards by name, release year, genre, or
   studio, with name order as the default. Release years come from presentation
   metadata; unknown years sort last. Genre selection updates immediately and
-  remains active when the controls are collapsed. Select All genres to remove
+  remains active when the controls are collapsed or a game card changes the route
+  within the same tab. Sort, genre and panel visibility reset on a full reload.
+  Select All genres to remove
   the genre filter. The panel contains no search, year or source filters, or
   reset action. Dropdown arrows have a 1rem inset and reserved text padding.
   Genre facets, filtering, and sorting share `libraryGenre` grouping into 11
@@ -838,7 +851,7 @@ or request-time rendering.
   then puzzle. Other named genres use Adventure; missing metadata uses Unknown.
   For example, educational time travel is Family & education, horror RPGs are
   Role-playing, and science-fiction comedy is Science fiction. Original
-  presentation metadata remains available in game details and heroes. Keep
+  presentation metadata remains available in game heroes. Keep
   future grouping changes in this shared normalizer so catalog and imported
   games match the same option.
   ScummVM's developer pages provide the

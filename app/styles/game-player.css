@@ -720,27 +720,6 @@
     grid-template-columns: 1fr;
   }
 
-  .game-detail-modal {
-    --game-detail-pad-top: max(0.75rem, env(safe-area-inset-top));
-    --game-detail-pad-right: max(0.75rem, env(safe-area-inset-right));
-    --game-detail-pad-bottom: max(0.75rem, env(safe-area-inset-bottom));
-    --game-detail-pad-left: max(0.75rem, env(safe-area-inset-left));
-  }
-
-  .game-detail-panel {
-    width: 100%;
-  }
-
-  .game-detail-visual-copy,
-  .game-detail-copy {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-
-  .game-detail-metadata {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .game-route-boot-content {
     align-items: flex-end;
   }
@@ -937,48 +916,6 @@
 
   .secondary-button {
     backdrop-filter: none;
-  }
-
-  .game-detail-modal {
-    --game-detail-pad-top: max(0.5rem, env(safe-area-inset-top));
-    --game-detail-pad-right: max(0.75rem, env(safe-area-inset-right));
-    --game-detail-pad-bottom: max(0.75rem, env(safe-area-inset-bottom));
-    --game-detail-pad-left: max(0.75rem, env(safe-area-inset-left));
-  }
-
-  .game-detail-visual {
-    display: flex;
-    align-items: flex-end;
-    min-height: 24rem;
-  }
-
-  .game-detail-visual-copy,
-  .game-detail-copy {
-    padding: 1.25rem;
-  }
-
-  .game-detail-visual-copy {
-    position: relative;
-    inset: auto;
-    width: 100%;
-    margin-top: auto;
-    padding-top: 4.5rem;
-  }
-
-  .game-detail-visual-copy h2 {
-    font-size: clamp(2.35rem, 10.5vw, 3.6rem);
-  }
-
-  .game-detail-actions {
-    width: 100%;
-  }
-
-  .game-detail-metadata {
-    grid-template-columns: 1fr;
-  }
-
-  .game-detail-strip {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .spotlight-card {

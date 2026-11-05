@@ -1,5 +1,5 @@
 import DecorativeImage from "./decorative-image";
-import { getGameDialogId } from "./shared";
+import GameSelectionLink from "./game-selection-link";
 import { getPosterImageProps } from "./poster-images.mjs";
 
 export function GamePoster({ title, image, editionLabel, singleColumn = false, count = 8 }) {
@@ -25,9 +25,9 @@ export default function LibraryCards({ games, children }) {
       {children}
       {games.map((game) => (
         <div className="poster-entry" key={game.target}>
-          <a aria-haspopup="dialog" aria-controls={getGameDialogId(game)} className={`poster-card ${game.tone}`} data-game-target={game.target} href={`#${getGameDialogId(game)}`}>
+          <GameSelectionLink game={game} className={`poster-card ${game.tone}`} data-game-target={game.target}>
             <GamePoster title={game.displayTitle} image={game.posterImage} editionLabel={game.editionLabel} singleColumn={games.length === 1} count={games.length + (children ? 1 : 0)} />
-          </a>
+          </GameSelectionLink>
         </div>
       ))}
     </div>

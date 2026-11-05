@@ -3,15 +3,26 @@
 import { useRef, useState } from "react";
 import { ChevronDown, Plus, SlidersHorizontal } from "lucide-react";
 import { GamePoster } from "./library-cards";
+import GameSelectionLink from "./game-selection-link";
 import { defaultLibraryQuery, libraryFacet, queryLibrary } from "./library-query.mjs";
 
-export default function LibraryView({ items, heading, notice, onAddGame, importDisabled }) {
-  const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState(defaultLibraryQuery);
+// Keep browsing choices across client-side game routes in this tab.
+const browsing = { open: false, query: defaultLibraryQuery };
+
+export default function LibraryView({ items, heading, notice, onAddGame, importDisabled, selectedKey }) {
+  const [open, setOpen] = useState(() => browsing.open);
+  const [query, setQuery] = useState(() => browsing.query);
   const toggle = useRef(null);
   const visible = queryLibrary(items, query);
   const changed = Boolean(query.genre) || query.sort !== defaultLibraryQuery.sort;
-  const update = (field) => (event) => setQuery((current) => ({ ...current, [field]: event.target.value }));
+  const update = (field) => (event) => {
+    browsing.query = { ...query, [field]: event.target.value };
+    setQuery(browsing.query);
+  };
+  function showControls(value) {
+    browsing.open = value;
+    setOpen(value);
+  }
 
   return (
     <section className="content-band" id="library">
@@ -19,7 +30,7 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
         <h2 tabIndex={-1}><span className="section-mark" />{heading}</h2>
         <button ref={toggle} type="button" className="secondary-button library-toggle"
           aria-label="Sort and filter games" title="Sort and filter games" data-filtered={Boolean(query.genre)}
-          aria-expanded={open} aria-controls="library-controls" onClick={() => setOpen(!open)}>
+          aria-expanded={open} aria-controls="library-controls" onClick={() => showControls(!open)}>
           <SlidersHorizontal size={17} aria-hidden="true" />
           <ChevronDown size={16} aria-hidden="true" className={open ? "is-open" : undefined} />
         </button>
@@ -28,7 +39,7 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
         onKeyDown={(event) => {
           if (event.key === "Escape") {
             event.preventDefault();
-            setOpen(false);
+            showControls(false);
             toggle.current?.focus();
           }
         }}>
@@ -62,17 +73,17 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
       </div>}
       <div className="poster-grid">
         {visible.map((item) => {
-          const { key, game, title, versions, dialogId } = item;
+          const { key, game, title, versions } = item;
           const needsFiles = versions.every(({ source, status }) => source && !["available", "session", "permission"].includes(status));
           const fileStatus = versions.every(({ status }) => status === "checking") ? "Checking files"
             : "Locate files";
           return (
             <div className="poster-entry" key={key} data-library-source-ids={JSON.stringify(versions.flatMap(({ source }) => source ? [source.id] : []))}>
-              <a aria-haspopup="dialog" aria-controls={dialogId} className={`poster-card ${game.tone}`} data-game-target={game.target} href={`#${dialogId}`}>
+              <GameSelectionLink game={game} aria-current={key === selectedKey ? "page" : undefined} className={`poster-card ${game.tone}`} data-game-target={game.target}>
                 <GamePoster title={title} image={game.posterImage} editionLabel={game.editionLabel} count={visible.length + 1} />
                 {versions.length > 1 && <span className="game-version-count">{versions.length} versions</span>}
                 {needsFiles && <span className="source-poster-hint">{fileStatus}</span>}
-              </a>
+              </GameSelectionLink>
             </div>
           );
         })}
