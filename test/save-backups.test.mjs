@@ -128,7 +128,7 @@ test("atomic restore is readable by Continue and initializes first-use configura
   assert.equal(await getLatestBrowserSave({ target: "sky" }, "test"), null);
   const { files } = await readBrowserSaveFiles({ target: "sky" });
   storage.setItem(saveIndexKey("", "sky"), JSON.stringify({ schemaVersion: 1, supported: true,
-    engineId: "sky", gameId: "sky", revision: saveRevision(files), saves: [{ ...files[0], slot: 7 }] }));
+    engineId: "sky", gameId: "sky", target: "sky", revision: saveRevision(files), saves: [{ ...files[0], slot: 7 }] }));
   assert.equal(await getLatestBrowserSave({ target: "sky" }, "test"), 7);
   assert.equal(new TextDecoder().decode(captureFilesystem(storage).root.children.get("scummvm.ini").data), config);
 });
@@ -208,7 +208,9 @@ test("backup operations refuse a held game lock and runtime locks before mountin
   let mode;
   const navigator = { locks: { request: (_name, options, use) => { mode = options.mode; return use({}); } } };
   await runInNewContext(source + "\nacquireSaveSession()", { navigator, Promise });
-  assert.equal(mode, "shared");
+  assert.equal(mode, "exclusive");
+  const blocked = { locks: { request: (_name, options, use) => use(null) } };
+  await assert.rejects(runInNewContext(source + "\nacquireSaveSession()", { navigator: blocked, Promise }), /Another game or save operation/);
   assert.match(shell, /acquireSaveSession\(\)\.then\(/);
 });
 
@@ -223,7 +225,18 @@ test("restoring bytes invalidates native Continue metadata even when filenames a
   Object.defineProperty(storage, "length", { get: () => storage.values.size });
   storage.key = (index) => [...storage.values.keys()][index] ?? null;
   storage.setItem("scummweb.continue.v1:catalog:sky", "old native metadata");
+  const put = storage.setItem;
+  let committed = false;
+  storage.setItem = (key, value) => {
+    if (key === "/") {
+      assert.equal(storage.getItem("scummweb.continue.v1:catalog:sky"), null,
+        "old metadata must be gone before replacement bytes become visible");
+      committed = true;
+    }
+    put(key, value);
+  };
   await restore(storage, [await set(sky, [file("SKY-VM.001", "new", 100)])]);
+  assert.equal(committed, true);
   assert.equal(storage.getItem("scummweb.continue.v1:catalog:sky"), null);
   assert.equal(storage.getItem("scummweb.other-preference"), "preserve me");
 });

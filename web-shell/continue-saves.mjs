@@ -21,11 +21,11 @@ export function saveRevision(files) {
 
 export function latestPlayerSave(index, files) {
   if (index?.schemaVersion !== 1 || !index.supported || !supportsContinue(index.engineId, index.gameId, index.extra)
-    || !Array.isArray(index.saves)) return null;
+    || !Array.isArray(index.saves) || (index.pending != null && !Array.isArray(index.pending))) return null;
   const byName = new Map(files.map((file) => [file.name, file]));
   const saves = index.saves.filter((save) => {
     const file = byName.get(save.name);
-    return Number.isInteger(save.slot) && save.slot >= 0 && save.slot <= 999
+    return !index.pending?.includes(save.name) && Number.isInteger(save.slot) && save.slot >= 0 && save.slot <= 999
       && file?.size > 0 && Number.isFinite(file.modifiedAt)
       && file.size === save.size && file.modifiedAt === save.modifiedAt;
   });
@@ -41,7 +41,12 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
   let snapshot;
   let lastRevision;
   let timer;
-  let excluded = new Set();
+  const checkpoints = new Map();
+  const pending = new Set();
+  const writers = new Map();
+  const ioFailures = new Set();
+  let restoredPending = false;
+  let needsPublish = false;
   let scannedFiles;
   let resumeReported = false;
 
@@ -54,22 +59,85 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     } catch { return []; }
   }
 
+  const validName = (name) => typeof name === "string" && name.length > 0 && !/[\\/\x00-\x1f]/.test(name);
+  const indexKey = () => saveIndexKey(namespace, params.get("catalogGame") || snapshot?.target);
+  function persist() {
+    if (!snapshot) return false;
+    snapshot.pending = [...pending];
+    snapshot.revision = saveRevision(files());
+    try {
+      scope.localStorage.setItem(indexKey(), JSON.stringify(snapshot));
+      lastRevision = snapshot.revision;
+      needsPublish = false;
+      return true;
+    } catch {
+      needsPublish = true;
+      return false;
+    }
+  }
+  function isCheckpoint(name) {
+    if (!checkpoints.has(name)) return false;
+    const checkpoint = checkpoints.get(name);
+    if (!checkpoint) return true; // Unknown provenance stays excluded.
+    try {
+      const current = FS.readFile(`${savePath}/${name}`);
+      return current.length === checkpoint.length && current.every((byte, i) => byte === checkpoint[i]);
+    } catch { return true; }
+  }
+  // Native save ownership brackets the complete compressed output lifetime.
+  // Persist the pending name BEFORE opening/truncating a previously indexed slot.
+  scope.__scummwebBeginSaveWrite = (name) => {
+    if (!snapshot || !validName(name) || writers.has(name)) return false;
+    const wasPending = pending.has(name);
+    pending.add(name);
+    const previousSaves = snapshot.saves;
+    // Older library code also sees no positive entry while this slot is open.
+    snapshot.saves = snapshot.saves.filter((save) => save.name !== name);
+    if (!persist()) {
+      if (!wasPending) pending.delete(name);
+      snapshot.saves = previousSaves;
+      return false;
+    }
+    writers.set(name, true);
+    ioFailures.delete(name);
+    return true;
+  };
+  scope.__scummwebSaveIoFailed = (path) => {
+    if (path.startsWith(savePath + "/")) ioFailures.add(path.slice(savePath.length + 1));
+  };
+  scope.__scummwebEndSaveWrite = (name, success) => {
+    if (!writers.delete(name)) return false;
+    if (success && !ioFailures.has(name)) pending.delete(name);
+    needsPublish = true;
+    // Native code calls refresh only after the last output stream has closed.
+    return writers.size === 0;
+  };
+  scope.__scummwebSaveDeleted = (name) => {
+    pending.delete(name);
+    needsPublish = true;
+    return writers.size === 0;
+  };
+
   scope.__scummwebBeginSaveScan = (engineId, gameId, target, supported, extra = "") => {
     scannedFiles = new Map(files().map((file) => [file.name, file]));
     snapshot = { schemaVersion: 1, engineId, gameId, target, extra, supported: Boolean(supported), saves: [] };
+    if (!restoredPending) {
+      restoredPending = true;
+      try {
+        const previous = JSON.parse(scope.localStorage.getItem(indexKey()));
+        for (const name of previous?.pending || []) if (validName(name)) pending.add(name);
+      } catch { /* Missing or invalid cache. */ }
+    }
   };
   scope.__scummwebAddSave = (slot, name) => {
-    if (!snapshot || excluded.has(name) || /[\\/\x00-\x1f]/.test(name)) return;
+    if (!snapshot || !validName(name) || pending.has(name) || isCheckpoint(name)) return;
     const file = scannedFiles.get(name);
     if (file?.size > 0) snapshot.saves.push({ ...file, slot });
   };
   scope.__scummwebEndSaveScan = () => {
     if (!snapshot) return -1;
     const listing = files();
-    snapshot.revision = saveRevision(listing);
-    lastRevision = snapshot.revision;
-    const key = saveIndexKey(namespace, params.get("catalogGame") || snapshot.target);
-    try { scope.localStorage.setItem(key, JSON.stringify(snapshot)); } catch {}
+    const persisted = persist();
     const save = latestPlayerSave(snapshot, listing);
     if (params.get("continue") === "1" && !resumeReported) {
       scope.console?.info(`ScummWEB Continue: ${snapshot.engineId}:${snapshot.gameId}, slot ${save?.slot ?? "unavailable"}`);
@@ -77,7 +145,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     }
     scope.__scummwebSaveStatus = { ...snapshot, latestSlot: save?.slot ?? null };
     scope.parent.postMessage({ type: "scummweb:saves-listed", query: params.get("saveQuery"),
-      ...snapshot, latestSlot: save?.slot ?? null }, launchUrl.origin);
+      ...snapshot, persisted, latestSlot: save?.slot ?? null }, launchUrl.origin);
     return params.get("continue") === "1" ? save?.slot ?? -1 : -1;
   };
 
@@ -104,28 +172,25 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
       const intro = library.games?.find((game) => game.target === target)?.skipIntro;
       await Promise.all((intro?.saveFiles || []).map(async (name) => {
         try {
-          const current = FS.readFile(`${savePath}/${name}`);
           const response = await scope.fetch(assetUrl(`launcher/skip-intro/${encodeURIComponent(target)}/${encodeURIComponent(name)}`));
           if (!response.ok) throw new Error("Checkpoint unavailable");
-          const checkpoint = new Uint8Array(await response.arrayBuffer());
-          if (current.length === checkpoint.length && current.every((byte, i) => byte === checkpoint[i])) excluded.add(name);
+          checkpoints.set(name, new Uint8Array(await response.arrayBuffer()));
         } catch {
           // Fail closed for a checkpoint slot when its provenance is unknown.
-          excluded.add(name);
+          checkpoints.set(name, null);
         }
       }));
     }
-    // Re-check checkpoint identity after writes, including overwrites of slot 0.
-    const baseline = new Map(files().map((file) => [file.name, `${file.size}:${file.modifiedAt}`]));
-    timer = scope.setInterval(() => {
-      const listing = files();
-      if (saveRevision(listing) === lastRevision) return;
-      for (const file of listing) {
-        if (baseline.get(file.name) !== `${file.size}:${file.modifiedAt}`) excluded.delete(file.name);
-      }
+    // Repair missed external mutations and retry metadata quota failures. Saves
+    // themselves publish synchronously at native stream completion, not on exit.
+    const poll = () => {
+      if (writers.size || (!needsPublish && saveRevision(files()) === lastRevision)) return;
       try { Module._scummweb_refresh_saves?.(); } catch {}
-    }, 2000);
-    scope.addEventListener("pagehide", () => scope.clearInterval(timer), { once: true });
+    };
+    const resume = () => { scope.clearInterval(timer); timer = scope.setInterval(poll, 2000); };
+    resume();
+    scope.addEventListener("pagehide", () => scope.clearInterval(timer));
+    scope.addEventListener("pageshow", resume);
   }
   return start();
 }

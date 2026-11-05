@@ -196,9 +196,31 @@ function pendingArchivePlayer({ stalledNavigation = false } = {}) {
       for (const handler of [...messages]) handler({ origin: window.location.origin, source: frame.contentWindow,
         data: { type: "scummvm-ready", source: "scummweb", target: "sky", href, reason: "rendered-frame-detected" } });
     },
+    saveSessionBusy(origin = window.location.origin, source = frame.contentWindow) {
+      for (const handler of [...messages]) handler({ origin, source, data: { type: "scummweb:save-session-busy" } });
+    },
+    genericError() {
+      for (const handler of [...messages]) handler({ origin: window.location.origin, source: frame.contentWindow,
+        data: { type: "scummweb:local-game-status", status: "error" } });
+    },
     unmount() { for (const hook of hooks) hook?.cleanup?.(); },
   };
 }
+
+test("save-lock contention explains recovery and rejects messages from unrelated frames", () => {
+  const player = pendingArchivePlayer();
+  player.render();
+  player.saveSessionBusy("https://untrusted.test");
+  player.saveSessionBusy("https://example.test", {});
+  player.render();
+  assert.equal(player.overlay.hasBootFailed, false);
+  player.saveSessionBusy();
+  player.genericError();
+  player.render();
+  assert.equal(player.overlay.hasBootFailed, true);
+  assert.match(player.overlay.bootStatusText, /Close it in the other tab/);
+  player.unmount();
+});
 
 test("a slow archive keeps the fallback frame identity through the first-frame message", async () => {
   const player = pendingArchivePlayer({ stalledNavigation: true });

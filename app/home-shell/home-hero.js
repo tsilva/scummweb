@@ -11,7 +11,7 @@ import { buildGameExitHref, readHeroSelection } from "./hero-selection.mjs";
 const SLIDE_DURATION_MS = 8000;
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
-export default function HomeHero({ groups, featuredGame, launchPending = false, isHomePage = true, notice }) {
+export default function HomeHero({ groups, featuredGame, isHomePage = true, notice }) {
   const router = useRouter();
   const featuredKey = getGameFamilyKey(featuredGame) || `catalog:${featuredGame.target}`;
   const slides = groups.map((group) => ({ ...group, id: group.key }));
@@ -175,7 +175,6 @@ export default function HomeHero({ groups, featuredGame, launchPending = false, 
         </div>
       ) : null}
       featuredGame={version.game}
-      launchPending={launchPending || (currentSlide.versions.length > 1 && chosen?.group !== currentSlide.id)}
       sourceAction={version.source ? undefined : version.action}
       sourceVersion={version.source ? version : undefined}
       versions={currentSlide.versions}

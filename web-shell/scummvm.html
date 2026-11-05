@@ -74,8 +74,13 @@ function bindBrowserFsOperations(filesystem) {
 function acquireSaveSession() {
   if (!globalThis.navigator?.locks) return Promise.resolve();
   return new Promise((resolve, reject) => {
-    navigator.locks.request("scummweb-saves", { mode: "shared", ifAvailable: true }, async (lock) => {
-      if (!lock) { reject(new Error("Save restore is in progress. Finish it before launching a game.")); return; }
+    navigator.locks.request("scummweb-saves", { mode: "exclusive", ifAvailable: true }, async (lock) => {
+      if (!lock) {
+        const error = new Error("Another game or save operation is active. Close it before launching a game.");
+        error.name = "SaveSessionBusyError";
+        reject(error);
+        return;
+      }
       resolve();
       // The browser releases this lock when the game document closes.
       await new Promise(() => {});
@@ -98,6 +103,16 @@ function setupLocalFilesystem() {
         BrowserFS.initialize(mount);
         const filesystem = new BrowserFS.EmscriptenFS(FS, PATH, errnoCodes);
         bindBrowserFsOperations(filesystem);
+        // StdioStream destruction cannot report fclose's return code to the
+        // owning save stream. Retain BrowserFS close failures for that callback.
+        const close = filesystem.stream_ops.close;
+        filesystem.stream_ops.close = (stream) => {
+          try { return close(stream); }
+          catch (error) {
+            globalThis.__scummwebSaveIoFailed?.(FS.getPath(stream.node));
+            throw error;
+          }
+        };
         FS.mount(filesystem, { root: "/" }, "/home/web_user");
         resolve();
       });
@@ -338,7 +353,13 @@ function setupFilesystem() {
     .then(
       () => removeRunDependency("scummvm-fs-setup"),
       (error) => {
-        if (isLocalGame) reportLocalGameStatus("error");
+        if (scummwebLaunchUrl.searchParams.has("saveQuery")) {
+          window.parent.postMessage({ type: "scummweb:saves-query-error",
+            query: scummwebLaunchUrl.searchParams.get("saveQuery") }, scummwebLaunchUrl.origin);
+        }
+        if (error.name === "SaveSessionBusyError") {
+          window.parent.postMessage({ type: "scummweb:save-session-busy" }, scummwebLaunchUrl.origin);
+        } else if (isLocalGame) reportLocalGameStatus("error");
         Module.printErr(`abort(${error.message})`);
         throw error;
       }

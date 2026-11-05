@@ -20,6 +20,7 @@ runInNewContext(code, {
   module: compiled, exports: compiled.exports,
   require(name) {
     if (name === "../use-browser-save") return () => savedVersion === null ? null : 0;
+    if (name === "../browser-saves.mjs") return { cancelBrowserSaveQueries() {} };
     if (name === "react/jsx-runtime" || name === "lucide-react") return nativeRequire(name);
     return {};
   },

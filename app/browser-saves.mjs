@@ -1,9 +1,17 @@
-import { getVersionSaveNamespace } from "./game-versions.mjs";
-import { latestPlayerSave, saveIndexKey, saveRevision, supportsContinue } from "../web-shell/continue-saves.mjs";
+import { getVersionSaveNamespace, readVersionSaveNamespace } from "./game-versions.mjs";
+import { latestPlayerSave, saveIndexKey, saveIndexPrefix, saveRevision, supportsContinue } from "../web-shell/continue-saves.mjs";
 
 const saveDirectory = [".local", "share", "scummvm", "saves"];
 const queries = new Map();
+const attempts = new Map();
+const cancellations = new Set();
+let queryGeneration = 0;
 let queryQueue = Promise.resolve();
+
+export function cancelBrowserSaveQueries() {
+  ++queryGeneration;
+  for (const cancel of [...cancellations]) cancel();
+}
 
 function readInode(storage, key) {
   if (!key) return null;
@@ -25,6 +33,10 @@ function readDirectory(storage, key) {
 
 export async function readBrowserSaveFiles(game) {
   const namespace = game.saveVersionId ? game.saveNamespace || await getVersionSaveNamespace(game.saveVersionId) : "";
+  return readSaveFiles(namespace);
+}
+
+function readSaveFiles(namespace) {
   const storage = window.localStorage;
   let listing = readDirectory(storage, "/");
   for (const folder of namespace ? [...saveDirectory, namespace] : saveDirectory) {
@@ -39,9 +51,33 @@ export async function readBrowserSaveFiles(game) {
   return { namespace, files };
 }
 
-function queryNativeSaves(game, namespace, assetVersion) {
+function readIndex(namespace, game) {
+  try {
+    const index = JSON.parse(window.localStorage.getItem(saveIndexKey(namespace, game.target)));
+    // Unknown imports learn their identity at native startup.
+    if (!namespace && (index?.target !== (game.nativeTarget || game.target)
+      || (game.engineId && index?.engineId !== game.engineId)
+      || (game.gameId && index?.gameId !== game.gameId)
+      || (game.extra && index?.extra?.toLowerCase() !== game.extra.toLowerCase()))) return null;
+    return index;
+  } catch { return null; }
+}
+
+export function getCachedBrowserSave(game) {
+  try {
+    if (game.engineId && !supportsContinue(game.engineId, game.gameId || game.target, game.extra)) return null;
+    const namespace = game.saveVersionId ? game.saveNamespace || readVersionSaveNamespace(game.saveVersionId) : "";
+    if (namespace === null) return null;
+    const { files } = readSaveFiles(namespace);
+    return latestPlayerSave(readIndex(namespace, game), files)?.slot ?? null;
+  } catch { return null; }
+}
+
+async function queryNativeSaves(game, namespace, assetVersion, generation) {
   const gameId = game.gameId || game.target;
   if (!supportsContinue(game.engineId, gameId, game.extra) || !gameId || typeof document === "undefined") return Promise.resolve(null);
+  const locks = await window.navigator?.locks?.query();
+  if (generation !== queryGeneration || locks?.held.some(({ name }) => name === "scummweb-saves")) return null;
   return new Promise((resolve) => {
     const query = crypto.randomUUID();
     const frame = document.createElement("iframe");
@@ -58,16 +94,19 @@ function queryNativeSaves(game, namespace, assetVersion) {
     const finish = (result) => {
       window.clearTimeout(timer);
       window.removeEventListener("message", receive);
+      cancellations.delete(cancel);
       frame.remove();
       resolve(result);
     };
     function receive(event) {
       if (event.origin !== window.location.origin || event.source !== frame.contentWindow
-        || event.data?.type !== "scummweb:saves-listed" || event.data.query !== query) return;
-      finish(event.data);
+        || !["scummweb:saves-listed", "scummweb:saves-query-error"].includes(event.data?.type) || event.data.query !== query) return;
+      finish(event.data.type === "scummweb:saves-listed" ? event.data : null);
     }
+    const cancel = () => finish(null);
     const timer = window.setTimeout(() => finish(null), 45000);
     window.addEventListener("message", receive);
+    cancellations.add(cancel);
     frame.src = url.href;
     document.body.appendChild(frame);
   });
@@ -78,28 +117,59 @@ export async function getLatestBrowserSave(game, assetVersion) {
     const { namespace, files } = await readBrowserSaveFiles(game);
     if (!files.length) return null;
     const key = saveIndexKey(namespace, game.target);
-    let index;
-    try { index = JSON.parse(window.localStorage.getItem(key)); } catch {}
+    let index = readIndex(namespace, game);
     const revision = saveRevision(files);
     if (index?.schemaVersion !== 1 || index.revision !== revision) {
       const queryKey = `${key}:${revision}`;
-      if (!queries.has(queryKey)) {
+      if (!queries.has(queryKey) && Date.now() - (attempts.get(key) || 0) >= 30000) {
+        const generation = queryGeneration;
         // Engine modules are large: never boot several save-query runtimes at once.
-        const request = queryQueue.then(() => queryNativeSaves({ ...game,
+        const request = queryQueue.then(() => {
+          if (generation !== queryGeneration || saveRevision(readSaveFiles(namespace).files) !== revision) return null;
+          attempts.set(key, Date.now());
+          return queryNativeSaves({ ...game,
           engineId: index?.engineId || game.engineId, gameId: index?.gameId || game.gameId,
-          extra: index?.extra ?? game.extra, nativeTarget: index?.target }, namespace, assetVersion));
+          extra: index?.extra ?? game.extra, nativeTarget: index?.target }, namespace, assetVersion, generation);
+        });
         queryQueue = request.catch(() => null);
         queries.set(queryKey, request);
         void request.finally(() => queries.delete(queryKey)).catch(() => {});
       }
-      index = await queries.get(queryKey);
+      await queries.get(queryKey);
     }
     // Re-read after native work: another player tab or a restore may have
     // changed storage while the runtime was loading.
     const current = await readBrowserSaveFiles(game);
-    if (index?.revision !== saveRevision(current.files)) return null;
+    index = readIndex(namespace, game);
     return latestPlayerSave(index, current.files)?.slot ?? null;
   } catch {
     return null;
   }
+}
+
+export function subscribeBrowserSaves(game, assetVersion, notify) {
+  let active = true;
+  let timer;
+  const refresh = () => {
+    if (!active) return;
+    notify();
+    if (timer !== undefined) return;
+    timer = window.setTimeout(() => {
+      timer = undefined;
+      void getLatestBrowserSave(game, assetVersion).finally(() => { if (active) notify(); });
+    }, 50);
+  };
+  const onStorage = (event) => {
+    if (event.key == null || event.key === "/" || event.key.startsWith(saveIndexPrefix)
+      || event.key.startsWith("scummweb.save-namespace.v1:") || /^[a-f0-9-]{36}$/i.test(event.key)) refresh();
+  };
+  window.addEventListener("storage", onStorage);
+  for (const event of ["pageshow", "focus", "scummweb:saves-changed"]) window.addEventListener(event, refresh);
+  refresh();
+  return () => {
+    active = false;
+    window.clearTimeout(timer);
+    window.removeEventListener("storage", onStorage);
+    for (const event of ["pageshow", "focus", "scummweb:saves-changed"]) window.removeEventListener(event, refresh);
+  };
 }

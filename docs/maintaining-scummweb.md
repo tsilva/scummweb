@@ -68,17 +68,32 @@ player saves naturally retain Play. Continue resumes saved progress, not an
 unsaved session or a browser-wide memory snapshot.
 
 The runtime records actual detected engine/target identities and native save
-slots in a browser-local index. Imported versions use their existing isolated
-save directory even when their ZIP name is unrecognized. The library verifies
-the index against the files; changed or previously unindexed known games use a
-serialized, temporary native save query. An unrecognized import gains its
-detected identity on launch. The query uses a temporary configuration and does
-not rewrite the player's ScummVM configuration or start the game.
+slots in a browser-local index. Launch actions read this index immediately:
+valid cached progress offers Continue, otherwise Play stays available. Server
+HTML uses Play; hydration reads browser metadata without a pending action.
+Imported versions use their existing isolated save directory even when their
+ZIP name is unrecognized. Individual indexed files are checked for existence,
+size and modification time, so deleting the newest save can expose an older
+valid one. Changed or previously unindexed games use a serialized background
+native query. A launch cancels pending queries. An unrecognized import gains its
+detected identity on launch. Queries use temporary configuration, never rewrite
+player targets, and never start a game. Imported file access remains required;
+checks on unrelated sources do not block the hero's selected launch action.
 
-Run `node --test test/browser-saves.test.mjs test/continue-saves.test.mjs` for
+The native output owner records pending filenames before opening a save and
+refreshes metadata after compression and filesystem close complete. This covers
+original save menus, autosaves and engines that omit explicit finalization.
+Failed or interrupted writes remain excluded, including after reload; a
+successful overwrite or restored save set can replace them. Metadata-write
+failures retry during play. Intro checkpoints are compared by their bytes after
+changes. No final save scan depends on tab-close handlers. Browser storage can
+still be cleared or evicted, and metadata does not make save-file writes atomic.
+
+Run `node --test test/browser-saves.test.mjs test/continue-saves.test.mjs test/native-save-completion.test.mjs test/hero-launch-actions.test.mjs test/save-backups.test.mjs` for
 latest-save ordering, checkpoint exclusion, missing files, native query scope,
-version isolation and engine exceptions. Patch 13 owns the native bridge;
-rebuild the compiled runtime when changing it.
+version isolation, output completion/failure and engine exceptions. Patch 13 owns
+native listing; patch 15 owns save completion. Rebuild the compiled runtime when
+changing either. The native owner test uses a local C++ compiler when available.
 
 ### Player controls
 
@@ -134,8 +149,9 @@ Older shared saves with an unknown filename convention are backed up together
 as **Other shared saves** to avoid splitting dependent files.
 
 Close games in every tab before exporting, importing or switching sets. The
-runtime holds a shared Web Lock while it uses the save filesystem; backup work
-requires an exclusive lock. Browsers without Web Locks can play, but cannot use
+runtime holds an exclusive Web Lock while it uses the save filesystem; a second
+game or backup operation must wait until it closes. Library tabs remain usable.
+Browsers without Web Locks can play without cross-tab coordination, but cannot use
 the backup actions. Current saves remain in BrowserFS localStorage; preserved
 sets use IndexedDB. Both remain local to this site and browser profile until
 exported, and clearing site data removes them. There is no automatic cloud sync.
@@ -772,9 +788,9 @@ or request-time rendering.
   slideshow backdrop. Heroes share save-aware Play, Continue, Start from beginning
   and reconnect actions, with an inline Version selector for multiple editions.
   Continue refreshes after browser saves change or the page is restored.
-  Save checks show **Checking saves…** and fall back to **Play** after five
-  seconds while the native query continues. A late result can still enable
-  **Continue**. Equivalent game objects retain the same in-flight check.
+  Play or Continue appears immediately from cached browser metadata while stale
+  records are reconciled in the background. Background native queries yield to
+  launch clicks, and unrelated source checks do not block the hero action.
   Player exits return to the game's slug route when available. Unrecognized
   imports retain `/#slide=<encoded group key>` and resolve when saved sources
   finish loading. Unknown selections fall back to the featured game; direct ZIP

@@ -212,6 +212,22 @@
         "In Brave verify a game-native quit, ScummVM Return to Launcher, app Exit game, and a relaunch. The native launcher must never appear; verify Escape still works as ordinary game/menu input."
       ],
       "retire_when": "Upstream provides a host-controlled single-session lifecycle that prevents native launcher presentation and reliably reports engine termination with runtime keepalive enabled."
+    },
+    {
+      "path": "patches/scummvm/15-publish-completed-browser-saves.patch",
+      "status": "active",
+      "sha256": "7f2e49de429d81357dcded998c17f480bac64fbcb964789f887830a8e0077c88",
+      "purpose": "Publish browser save metadata after completed native output streams, including original engine save dialogs and autosaves.",
+      "invariants": [
+        "Invalidate the cached filename before opening or truncating its output; refuse the write if invalidation cannot persist.",
+        "Finalize compression, close the underlying descriptor, then refresh native save listing outside FS.close; cover destructor-only saves and propagate finalization and BrowserFS close failures.",
+        "Track pending or failed filenames across reloads; failed or interrupted writes cannot become Continue candidates. Successful deletions refresh metadata. Keep non-web behavior unchanged."
+      ],
+      "verification": [
+        "Run browser-saves, continue-saves, native-save-completion and hero-launch-actions tests; rebuild the managed runtime.",
+        "In Brave verify Lure original-menu saving and Sky manual/autosaves, immediate tab-close persistence, failed-write exclusion, restore conflicts and single-writer gameplay locking."
+      ],
+      "retire_when": "Upstream provides equivalent browser save completion and failure callbacks after persistent stream closure, consumed with the same pending-write and validation guarantees."
     }
   ]
 }
