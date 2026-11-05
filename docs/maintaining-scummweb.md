@@ -15,8 +15,9 @@ second version. The default for other editions also prefers the included copy;
 an explicit choice of a distinct edition is remembered. Existing duplicate source
 records and their isolated saves are retained for backup and transfer in Settings.
 Old imports are compared using their saved fingerprint or, when read permission
-already exists, by inspecting their ZIP directory. An inaccessible, unverified
-copy stays separate until it can be compared.
+already exists, by inspecting their ZIP directory. Older unverified imports of an
+included title default to its bundled copy. Reimport the ZIP to verify a distinct
+release and make it selectable again.
 
 `data/bundled-game-files.json` records the published catalog ZIP directories and
 their fingerprints. Regenerate it with `node scripts/generate-bundled-game-files.mjs`

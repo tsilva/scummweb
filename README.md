@@ -87,7 +87,9 @@ The button becomes **Play** or **Continue** once access is granted. Use **Locate
 for missing files, or drop the same ZIPs again to refresh entries without duplicates.
 Imports are compared with the included games by their data files. Matching copies
 use the bundled game instead of adding another version; distinct releases remain
-available. Existing imported saves remain available in **Settings → Saved games**.
+available. Older unverified copies of included titles also default to the bundled
+game; reimport their ZIP to compare them. Existing imported saves remain available
+in **Settings → Saved games**.
 
 See [playing and importing games](docs/maintaining-scummweb.md#playing-and-importing-games)
 for direct ZIP links, download limits, saves, and file-access help.
