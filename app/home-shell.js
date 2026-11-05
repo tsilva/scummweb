@@ -49,7 +49,7 @@ export default function HomeShell({
         </div>
 
         <div className="nav-actions">
-          <SettingsPanel catalog={catalog} scummvmVersion={scummvmVersion} sourceInfoDate={sourceInfoDate} />
+          <SettingsPanel catalog={catalog} officialUrl={getGamesOrigin()} scummvmVersion={scummvmVersion} sourceInfoDate={sourceInfoDate} />
           <a
             aria-label="View scummweb on GitHub"
             className="nav-icon-link"
