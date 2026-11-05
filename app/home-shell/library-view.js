@@ -91,7 +91,8 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
           <button type="button" className="poster-card library-add-card" onClick={onAddGame} disabled={importDisabled}>
             <Plus size={36} strokeWidth={1.5} aria-hidden="true" />
             <span className="library-add-title">Add a game</span>
-            <span className="library-add-hint">Click to choose or drag and drop your game ZIPs here.</span>
+            <span className="library-add-hint library-add-hint-desktop">Click to choose or drag and drop your game ZIPs here.</span>
+            <span className="library-add-hint library-add-hint-mobile">Tap to choose your game ZIPs.</span>
           </button>
         </div>
       </div>

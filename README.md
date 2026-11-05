@@ -100,12 +100,19 @@ Select a library or Recently Played card to open the game’s shareable page and
 jump instantly to its hero. The artwork, description, launch actions, screenshots
 and URL update in the current page without a route fetch or library reload. Browser
 Back and Forward restore the selection, and direct links still open that game.
-The hero and screenshots fill the opening view, with the library below the fold
-and compact portrait box-art cards. Reserved text and action areas keep the slideshow stable.
+On desktop, the hero and screenshots fill the opening view, with the library below
+the fold and compact portrait box-art cards. Reserved text and action areas keep the slideshow stable.
+Mobile uses a compact, static artwork hero, shorter descriptions, full-width launch
+and browse buttons, and an image strip without a visible heading. Extra game details
+and the license link are omitted from the mobile hero.
 Select a screenshot to expand it inline; use the arrows to browse and Escape to close it.
 
-The homepage slideshow advances every eight seconds; use the pause button to stop
+The desktop homepage slideshow advances every eight seconds; use the pause button to stop
 automatic rotation. Previous and next select a game and navigate to its page.
+On mobile, each homepage reload picks an included game at random, avoiding the
+previous pick in the same tab when browser storage is available. There is no mobile
+slideshow or automatic rotation. Direct game links and explicit selections always
+keep the requested game.
 Game pages open with rotation paused. Exiting a catalog game returns to its game
 page; unrecognized imports return to the homepage with their game selected.
 For a single-version game with a supported player save, select **Continue** there
@@ -115,7 +122,8 @@ to ScummWEB without opening ScummVM’s game-selection menu.
 
 ## Add your games
 
-Click **Add a game** in the library to choose ZIPs, or drop ScummVM game ZIPs
+Select **Add a game** in the library to choose ZIPs. On mobile, the card prompts
+you to tap to choose your game ZIPs. On desktop, you can also drop ScummVM game ZIPs
 onto the homepage or a game’s page, then select a
 poster to play. Local game files stay on your device. Put one game in each
 ZIP, with its data files at the root or in one enclosing folder.

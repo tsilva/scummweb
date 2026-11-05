@@ -1,9 +1,21 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { buildGameExitHref, readHeroSelection } from "../app/home-shell/hero-selection.mjs";
+import { buildGameExitHref, chooseMobileHeroId, readHeroSelection } from "../app/home-shell/hero-selection.mjs";
 import { libraryItems } from "../app/home-shell/library-query.mjs";
 
 const catalogGame = { target: "sky", engineId: "sky", gameId: "sky", displayTitle: "Beneath a Steel Sky" };
+
+test("mobile homepage picks an included game and avoids the previous reload's pick", () => {
+  const slide = (id, game = {}, versions = [{}]) => ({ id, game, versions });
+  const slides = [slide("sky"), slide("queen"), slide("import", {}, [{ source: { id: "zip" } }]),
+    slide("unavailable", { importRequired: true })];
+  assert.equal(chooseMobileHeroId(slides, null, () => 0), "sky");
+  assert.equal(chooseMobileHeroId(slides, null, () => 0.999), "queen");
+  assert.equal(chooseMobileHeroId(slides, "sky", () => 0), "queen");
+  assert.equal(chooseMobileHeroId(slides, "queen", () => 0.999), "sky");
+  assert.equal(chooseMobileHeroId([slides[0]], "sky"), "sky");
+  assert.equal(chooseMobileHeroId([], "sky"), null);
+});
 
 test("published game routes take precedence over legacy slideshow fragments", () => {
   assert.equal(buildGameExitHref({ ...catalogGame, href: "/beneath-a-steel-sky" }), "/beneath-a-steel-sky");

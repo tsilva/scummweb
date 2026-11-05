@@ -8,8 +8,12 @@ export default function HeroTitle({ title, children, fit = true }) {
   const headingRef = useRef(null);
 
   useLayoutEffect(() => {
-    if (!fit) return;
     const heading = headingRef.current;
+    if (!fit) {
+      heading?.firstElementChild?.style.removeProperty("font-size");
+      if (heading) delete heading.__scummwebTitleFit;
+      return;
+    }
     let active = true;
 
     function fitHeading() {

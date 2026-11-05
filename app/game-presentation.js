@@ -93,6 +93,7 @@ const artByTarget = {
   },
   "monkey-demo": {
     eyebrow: "Lucasfilm Games Demo",
+    mobileSummary: "Explore Mêlée Island as aspiring pirate Guybrush Threepwood in this playable demo.",
     summary:
       "As aspiring pirate Guybrush Threepwood, explore Mêlée Island, question the locals, and find the magic phrase that will get you past a troll. This playable EGA demo remixes scenes and characters from the full adventure into a short story of its own.",
     genre: "Point-and-click adventure",
@@ -114,6 +115,7 @@ const artByTarget = {
   },
   sky: {
     eyebrow: "Featured Classic",
+    mobileSummary: "Escape a towering dystopian city in this classic cyberpunk adventure.",
     summary:
       "Beneath a Steel Sky opens with a broken hovercar, a towering dystopian city, and the kind of dry wit that only 90s cyberpunk adventures could get away with.",
     genre: "Cyberpunk Adventure",
@@ -135,6 +137,7 @@ const artByTarget = {
   },
   "dreamweb-cd": {
     eyebrow: "Night Shift Pick",
+    mobileSummary: "Uncover a sinister cult in a rain-soaked city of the future.",
     summary:
       "DreamWeb trades bright heroics for rain, cult dread, and a killer drifting through a diseased future city. It is still one of the strangest things you can boot from ScummVM.",
     genre: "Noir Thriller",
@@ -156,6 +159,7 @@ const artByTarget = {
   },
   queen: {
     eyebrow: "Jungle Matinee",
+    mobileSummary: "Join a pulp pilot on a comic adventure through the Amazon.",
     summary:
       "Flight of the Amazon Queen throws a pulp pilot, a film star, and a lost-city conspiracy into a bright comic-book trek across the Amazon. It is breezier than DreamWeb and a lot better dressed for danger.",
     genre: "Comic Adventure",
@@ -177,6 +181,7 @@ const artByTarget = {
   },
   lure: {
     eyebrow: "Castle Intrigue",
+    mobileSummary: "Explore a troubled kingdom and outwit the forces threatening its people.",
     summary:
       "Lure of the Temptress drops you into a plague-struck kingdom full of shifting loyalties, suspicious guards, and the early Revolution Software menace that already points toward Beneath a Steel Sky.",
     genre: "Fantasy Adventure",
@@ -198,6 +203,7 @@ const artByTarget = {
   },
   drascula: {
     eyebrow: "Vampire Farce",
+    mobileSummary: "Take on a cartoon vampire in a point-and-click comedy full of B-movie antics.",
     summary:
       "Drascula throws a dimwitted hero, cartoon vampire melodrama, and rapid-fire gag writing into a point-and-click comedy that never lets its B-movie premise sit still.",
     genre: "Comedy Horror Adventure",
@@ -219,6 +225,7 @@ const artByTarget = {
   },
   "nippon-amiga": {
     eyebrow: "Heist Fever Dream",
+    mobileSummary: "Follow three unlikely crooks through a colorful caper full of bad luck.",
     summary:
       "Nippon Safes, Inc. turns a three-way caper into a neon cartoon of crooks, bad luck, and sharply drawn Amiga absurdity. It feels like a pulp comic strip that got lost in a cyberpunk fever dream.",
     genre: "Comedy Caper Adventure",
@@ -240,6 +247,8 @@ const artByTarget = {
   },
   sword25: {
     eyebrow: "Fan Sequel Spotlight",
+    mobileSummary: "Join George and Nico in a hand-painted Templar conspiracy.",
+    mobileBadge: "Fan game",
     summary:
       "Broken Sword 2.5 sends George and Nico back into a hand-painted conspiracy full of autumn streets, Templar fallout, and the lavish fan-made craft that made it a ScummVM showcase.",
     genre: "Conspiracy Adventure",
