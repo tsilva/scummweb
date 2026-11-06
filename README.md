@@ -119,6 +119,8 @@ Reserved text and action areas keep the slideshow stable.
 Mobile uses a compact, static artwork hero, shorter descriptions, full-width launch
 and browse buttons, and an image strip without a visible heading. Extra game details
 and the license link are omitted from the mobile hero.
+Mobile artwork starts directly below the header, with extra space between the
+hero buttons and screenshot strip.
 Game cards stay in color on mobile and touch screens without requiring hover.
 The mobile header keeps the logo and action buttons in one compact row, with
 the Library, Compatibility, and ScummVM links hidden.
