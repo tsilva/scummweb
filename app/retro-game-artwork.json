@@ -3111,7 +3111,7 @@
     "aliases": [
       "Hugo's House of Horrors (Floppy DOS)"
     ],
-    "posterImage": "/launcher/retro-hugo-hugo1-poster.webp",
+    "posterImage": "/launcher/hugo1-scummweb-generated-2026-11-06-r2-cover.webp",
     "screenshots": [
       "/launcher/retro-hugo-hugo1-shot.webp",
       "/launcher/retro-hugo-hugo1-shot-2.webp",
@@ -3119,8 +3119,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hugo's%20House%20of%20Horrors.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-illustrated-cover",
+        "references": [
+          {
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hugo's%20House%20of%20Horrors.png",
+            "sha256": "81c0532525ff20e9efd9c44f09c5b76351c6db85a787f228c94d776c29c70e33",
+            "credit": "Original box art hosted by Libretro; game characters, original artwork and brands belong to their respective creators and rights holders.",
+            "usage": "Visual identity, palette and setting reference for a user-approved original illustrated cover, not a reproduction of the original packaging."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -3245,7 +3256,7 @@
     "aliases": [
       "Hugo 3 - Jungle of Doom (Floppy DOS)"
     ],
-    "posterImage": "/launcher/retro-hugo-hugo3-poster.webp",
+    "posterImage": "/launcher/hugo3-scummweb-generated-2026-11-06-r2-cover.webp",
     "screenshots": [
       "/launcher/retro-hugo-hugo3-shot.webp",
       "/launcher/retro-hugo-hugo3-shot-2.webp",
@@ -3253,8 +3264,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hugo%20III_%20Jungle%20of%20Doom.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-illustrated-cover",
+        "references": [
+          {
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hugo%20III_%20Jungle%20of%20Doom.png",
+            "sha256": "6be3ceb44c9fcab20ce2ed3475ccfadd3d1d13c1ae02258f81dbc6d021c2b402",
+            "credit": "Original box art hosted by Libretro; game characters, original artwork and brands belong to their respective creators and rights holders.",
+            "usage": "Visual identity, palette and setting reference for a user-approved original illustrated cover, not a reproduction of the original packaging."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -3799,13 +3821,25 @@
     "aliases": [
       "Road (Fanmade - Get's Detected as DOTT)"
     ],
-    "posterImage": "/launcher/retro-local-road-poster.webp",
+    "posterImage": "/launcher/road-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-local-road-shot.webp"
     ],
     "sources": {
       "poster": {
-        "kind": "title-card"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-illustrated-cover",
+        "references": [
+          {
+            "asset": "/launcher/retro-local-road-shot.webp",
+            "kind": "gameplay",
+            "path": "image-assets/sources/road-gameplay.jpg",
+            "sha256": "dcacac145bd9b76a3eb3057cd5df0a6ff62bc84b0fe32f3210bb4684759ccc47",
+            "usage": "Style, setting and character-design reference only for a user-approved original illustrated cover; source capture unchanged, new composition without gameplay interface."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -7999,7 +8033,7 @@
     "aliases": [
       "Blues Treasure Hunt (CD Windows)"
     ],
-    "posterImage": "/launcher/bluestreasurehunt-scummweb-generated-2026-11-06-r1-cover.webp",
+    "posterImage": "/launcher/bluestreasurehunt-scummweb-generated-2026-11-06-r2-cover.webp",
     "screenshots": [
       "/launcher/retro-scumm-bluestreasurehunt-shot.webp",
       "/launcher/retro-scumm-bluestreasurehunt-shot-2.webp",
@@ -8010,14 +8044,14 @@
         "kind": "generated-cover",
         "generatedOn": "2026-11-06",
         "generator": "image_gen (built-in)",
-        "creativeBasis": "box-front-restoration",
+        "creativeBasis": "original-illustrated-cover",
         "references": [
           {
-            "asset": "/launcher/retro-scumm-bluestreasurehunt-poster.webp",
             "kind": "box-scan",
             "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue's%20Treasure%20Hunt.png",
-            "sha256": "d54d4b07d92f724d84ba5a582e5ad802cd08073aac54fdb3271eff73eed6f24f",
-            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+            "sha256": "b552533f754bf37db1ee334ca034cb1ac9d1fa876d164c2a7c87c82fc830a531",
+            "credit": "Original box art hosted by Libretro; game characters, original artwork and brands belong to their respective creators and rights holders.",
+            "usage": "Visual identity, palette and setting reference for a user-approved original illustrated cover, not a reproduction of the original packaging."
           }
         ]
       },
@@ -8066,7 +8100,7 @@
     "aliases": [
       "Bear Stormin' (DOS)"
     ],
-    "posterImage": "/launcher/retro-scumm-brstorm-poster.webp",
+    "posterImage": "/launcher/brstorm-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-scumm-brstorm-shot.webp",
       "/launcher/retro-scumm-brstorm-shot-2.webp",
@@ -8074,8 +8108,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "title-screen-poster",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Titles/Bear%20Stormin'.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-illustrated-cover",
+        "references": [
+          {
+            "asset": "/launcher/retro-scumm-brstorm-shot.webp",
+            "kind": "gameplay",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Bear%20Stormin'.png",
+            "sha256": "e150d6cdce54568c39f541da2dbff7315820801bae26d41bc82daccb93565ad3",
+            "usage": "Style, setting and character-design reference only for a user-approved original illustrated cover; source capture unchanged, new composition without gameplay interface."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -10246,7 +10291,7 @@
     "aliases": [
       "Chivalry is Not Dead (Windows)"
     ],
-    "posterImage": "/launcher/retro-wintermute-chivalry-poster.webp",
+    "posterImage": "/launcher/chivalry-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-wintermute-chivalry-shot.webp",
       "/launcher/retro-wintermute-chivalry-shot-2.webp",
@@ -10254,9 +10299,20 @@
     ],
     "sources": {
       "poster": {
-        "kind": "gameplay-poster",
-        "url": "https://www.scummvm.org/data/screenshots/wintermute/chivalry/chivalry_win_en_1_2_full.png",
-        "page": "https://www.scummvm.org/screenshots/squinky/wintermute:chivalry/"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-illustrated-cover",
+        "references": [
+          {
+            "asset": "/launcher/retro-wintermute-chivalry-shot.webp",
+            "kind": "gameplay",
+            "url": "https://www.scummvm.org/data/screenshots/wintermute/chivalry/chivalry_win_en_1_2_full.png",
+            "page": "https://www.scummvm.org/screenshots/squinky/wintermute:chivalry/",
+            "sha256": "abf4286c5b698fe67c3cfbf76eb1ffb9017f4288b8f82025526021d69144e3b4",
+            "usage": "Style, setting and character-design reference only for a user-approved original illustrated cover; source capture unchanged, new composition without gameplay interface."
+          }
+        ]
       },
       "screenshots": [
         {

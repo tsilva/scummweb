@@ -1,8 +1,8 @@
 {
-  "version": "sha-1ecf567bb43da4b5aa250b04",
+  "version": "sha-4b93d20d843c80ab9709b8cd",
   "files": {
     "/scummvm.js": "sha-e729db80d8cdf2117de6dcca",
-    "/scummvm.wasm": "sha-4f4fb4423cb3732b22b94941",
+    "/scummvm.wasm": "sha-ee22083e7a30d0f53747f42d",
     "/scummvm_fs.js": "sha-a1070971ba693ed248d9e700",
     "/audio-start-control.mjs": "sha-5be22420debc1de1477fe594",
     "/scummvm.ini": "sha-46c65ef7733dc83672f3708c",
@@ -19,12 +19,12 @@
     "/data/gui-icons.dat": "sha-e772a8bb64ad3d7a807e859a",
     "/data/helpdialog.zip": "sha-9ff3c7964a63b18ffa0e9cfc",
     "/data/hugo.dat": "sha-228dd029399ce7318a60aebe",
-    "/data/index.json": "sha-213259943a677e6747737183",
+    "/data/index.json": "sha-75d871eb1d2d167fefbcf1b3",
     "/data/kyra.dat": "sha-6b2cc168d3201305039e78bc",
     "/data/lure.dat": "sha-9c17cfb5349c4bd13e56b065",
     "/data/macgui.dat": "sha-5e55c29903809bf5297a28fe",
     "/data/neverhood.dat": "sha-b86cb788237ace2988f7a8b7",
-    "/data/plugins/index.json": "sha-fbe0f6c16ac4af30bf437133",
+    "/data/plugins/index.json": "sha-22c5cc6c7c337136573d65ef",
     "/data/plugins/libaccess.so": "sha-478c115b71d379d29bda4fc7",
     "/data/plugins/libadl.so": "sha-d4f5398e74296590e43a4416",
     "/data/plugins/libagi.so": "sha-cf970bcfcae0dbfe6e678899",
@@ -55,7 +55,7 @@
     "/data/plugins/libparallaction.so": "sha-73f414634855d3f91604890d",
     "/data/plugins/libpegasus.so": "sha-f3aee6bea3e6122ccee0055d",
     "/data/plugins/libplumbers.so": "sha-1a290211d439ac38635d193e",
-    "/data/plugins/libqueen.so": "sha-1b413dd213ea3393a79e6386",
+    "/data/plugins/libqueen.so": "sha-75845e4901372de8e8f6994c",
     "/data/plugins/libsaga.so": "sha-6a0fb4be18bbe50163ac68dd",
     "/data/plugins/libsci.so": "sha-f8d68651b5153e174b77a668",
     "/data/plugins/libscumm.so": "sha-3d1c4f2618b0ccb6359795bb",
@@ -119,6 +119,6 @@
     "/launcher/skip-intro/lure/lure.000": "sha-51bd53a4763706b92c357180",
     "/launcher/skip-intro/queen/queen.s00": "sha-a8ba6d91d0b2bfef6a1c61db",
     "/launcher/skip-intro/sky/SKY-VM.000": "sha-4a980c9a92fb713cf4e4f990",
-    "/scummvm.html": "sha-1ecf567bb43da4b5aa250b04"
+    "/scummvm.html": "sha-4b93d20d843c80ab9709b8cd"
   }
 }

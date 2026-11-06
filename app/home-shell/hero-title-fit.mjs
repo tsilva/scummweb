@@ -4,8 +4,17 @@ export function fitHeroTitle(heading) {
   const text = heading?.firstElementChild;
   if (!text) return;
   const style = getComputedStyle(heading);
+  // CSS knows the viewport before hydration. Mobile titles use natural height
+  // and must never inherit a desktop fitter's inline font size.
+  if (style.getPropertyValue("--hero-title-fit").trim() === "none") {
+    text.style.removeProperty("font-size");
+    delete heading.__scummwebTitleFit;
+    return;
+  }
   const font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
-  const signature = `${heading.clientWidth}:${heading.clientHeight}:${font}:${style.letterSpacing}:${text.textContent}:${document.fonts.check(font, text.textContent)}`;
+  // Fonts use display: optional. A completed download does not mean the face
+  // replaced the fallback on this visit, so do not resize again on fonts.ready.
+  const signature = `${heading.clientWidth}:${heading.clientHeight}:${font}:${style.letterSpacing}:${text.textContent}`;
   if (heading.__scummwebTitleFit === signature) return;
   const maximum = parseFloat(style.fontSize);
   let low = 1;
@@ -24,3 +33,18 @@ export function fitHeroTitle(heading) {
   text.style.fontSize = `${low}px`;
   heading.__scummwebTitleFit = signature;
 }
+
+// Observe the initial streamed heading from the document head. This runs before
+// the first paint, even when the React bundle is slow or unavailable. Disconnect
+// after finding the heading; subsequent navigation is handled by HeroTitle.
+export const initialHeroTitleFit = `(() => {
+  const fit = ${fitHeroTitle.toString()};
+  const observer = new MutationObserver(() => {
+    const heading = document.querySelector('.hero-copy h1');
+    if (!heading?.firstElementChild?.textContent) return;
+    fit(heading);
+    observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+  document.addEventListener('DOMContentLoaded', () => observer.disconnect(), { once: true });
+})();`;

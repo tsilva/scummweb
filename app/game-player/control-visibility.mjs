@@ -27,19 +27,31 @@ export function observeControlVisibility({ controls, frame, hostWindow, menuShor
     cancelHide();
     onVisible(true);
   };
+  const pointerLocked = () => frameDocument?.pointerLockElement || hostDocument.pointerLockElement;
   const move = (event) => {
     if (event.pointerType && event.pointerType !== "mouse") return;
     // Locked pointer coordinates stay fixed and cannot reveal the toolbar.
-    if (frameDocument?.pointerLockElement || hostDocument.pointerLockElement) return;
-    const offset = event.view === frame?.contentWindow ? frame.getBoundingClientRect().top : 0;
-    nearTop = controls.contains(event.target) || event.clientY + offset <= 80;
+    if (pointerLocked()) return;
+    const inFrame = event.view === frame?.contentWindow;
+    const offset = inFrame ? frame.getBoundingClientRect().top : 0;
+    const canvas = frameDocument?.getElementById("canvas");
+    const bounds = canvas?.getBoundingClientRect();
+    // The iframe fills the viewport; its letterbox margins are outside gameplay.
+    const outsideGame = !inFrame || (bounds && (
+      event.clientX < bounds.left || event.clientX >= bounds.right ||
+      event.clientY < bounds.top || event.clientY >= bounds.bottom
+    ));
+    nearTop = controls.contains(event.target) || outsideGame || event.clientY + offset <= 80;
     if (nearTop) reveal();
     else scheduleHide();
   };
   const leave = (event) => {
-    if (event.target !== hostDocument.documentElement) return;
-    nearTop = false;
-    scheduleHide();
+    if (event.pointerType && event.pointerType !== "mouse") return;
+    if (pointerLocked()) return;
+    if (event.target !== hostDocument.documentElement && event.target !== frameDocument?.documentElement &&
+      event.target !== frameDocument?.getElementById("canvas")) return;
+    nearTop = true;
+    reveal();
   };
   const keydown = (event) => {
     if (event.key === "Escape") {
@@ -80,7 +92,7 @@ export function observeControlVisibility({ controls, frame, hostWindow, menuShor
     frameDocument = frame?.contentDocument;
     if (!frameDocument) return;
     const document = frameDocument;
-    const events = [["pointermove", move], ["keydown", keydown], ["pointerlockchange", pointerLockChanged]];
+    const events = [["pointermove", move], ["pointerleave", leave], ["keydown", keydown], ["pointerlockchange", pointerLockChanged]];
     for (const [type, callback] of events) document.addEventListener(type, callback, listenerOptions);
     removeFrameListeners = () => {
       for (const [type, callback] of events) document.removeEventListener(type, callback, listenerOptions);

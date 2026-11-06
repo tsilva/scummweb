@@ -82,3 +82,8 @@ covers Python, JavaScript and shell adapters. Extend coverage for new adapter ki
 Retired entries retain the lesson and identify the upstream fix; they must not
 leave an active file behind. Update this file for cross-cutting SDK, build or
 browser-integration lessons. Store verified conclusions, not guesses or raw QA.
+
+## Evaluator-only room telemetry
+
+- Patch 16 reports Queen room variables after display update only when an external evaluator opts in. Keep pending transitions and cutaways distinct from a ready room. Preserve the bounded transition queue and explicit overflow failure so a polling consumer cannot silently miss an endpoint. This telemetry is evaluator data, not player observations.
+- Include Emscripten headers before ScummVM headers that define forbidden C-library symbols. Parenthesize JavaScript object literals containing commas inside `EM_ASM`, since the C preprocessor does not group macro arguments by JavaScript braces.

@@ -89,6 +89,12 @@ test("game routes render the game's copy and start with rotation paused", () => 
   assert.doesNotMatch(html, /More Info|Back to library|aria-haspopup="dialog"/);
 });
 
+test("homepage ships desktop and mobile copy together before hydration", () => {
+  const html = renderToStaticMarkup(slideFor([{ key: "catalog:sky", game }], false, { isHomePage: true }));
+  assert.match(html, /class="hero-desktop-copy"/);
+  assert.match(html, /class="hero-mobile-copy">Beneath a Steel Sky<\/span>/);
+});
+
 test("catalog slideshow offers Continue with the resume URL after a player save", () => {
   const slide = slideFor([{ key: "catalog:sky", game }]);
   savedIdentity = "sky";

@@ -228,6 +228,22 @@
         "In Brave verify Lure original-menu saving and Sky manual/autosaves, immediate tab-close persistence, failed-write exclusion, restore conflicts and single-writer gameplay locking."
       ],
       "retire_when": "Upstream provides equivalent browser save completion and failure callbacks after persistent stream closure, consumed with the same pending-write and validation guarantees."
+    },
+    {
+      "path": "patches/scummvm/16-report-queen-evaluation-variables.patch",
+      "status": "active",
+      "sha256": "5fafb060ac5753e72cfd30e74627f2ee73c628f95319ef5c0abab04db82e7f22",
+      "purpose": "Provide opt-in read-only Queen room telemetry for an external benchmark evaluator.",
+      "invariants": [
+        "No telemetry unless the evaluator enables it before launch; no gameplay mutation or MCP observation fields.",
+        "Report current room after display update; room_ready requires no pending room transition and no running cutaway.",
+        "Retain ordered room/ready transitions until consumed; overflow is explicit, never silently discard a possible endpoint."
+      ],
+      "verification": [
+        "Run test/queen-evaluation.test.mjs; build the native Queen plugin.",
+        "Through AgentSCUMM, start a fresh Queen game and verify room 70 does not stop it, room 71 stops with success, and later inputs are not delivered."
+      ],
+      "retire_when": "Upstream supplies equivalent opt-in room/presentation telemetry with verified transition semantics."
     }
   ]
 }

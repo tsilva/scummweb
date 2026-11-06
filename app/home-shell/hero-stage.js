@@ -14,7 +14,6 @@ export default function HeroStage({
   featuredGame,
   isHomePage = false,
   isInitialSlide = true,
-  isMobile = false,
   sourceAction,
   sourceVersion,
   versions = [],
@@ -23,7 +22,7 @@ export default function HeroStage({
   onLaunch,
   notice,
 }) {
-  const showHomeIntro = isHomePage && isInitialSlide && !isMobile;
+  const showHomeIntro = isHomePage && isInitialSlide;
   const heroKicker = showHomeIntro ? HOME_HERO_KICKER : featuredGame.eyebrow;
   const heroTitle = showHomeIntro ? HOME_HERO_TITLE : featuredGame.displayTitle;
   const heroSummary = showHomeIntro ? HOME_HERO_SUMMARY : featuredGame.summary;
@@ -44,14 +43,23 @@ export default function HeroStage({
         <div className="hero-gradient" />
         <div className="hero-inner">
           <div className="hero-copy">
-            <p className="hero-kicker">{heroKicker}</p>
-            <HeroTitle title={heroTitle} fit={!isMobile}>{heroTitle}</HeroTitle>
+            <p className="hero-kicker">{showHomeIntro ? <>
+              <span className="hero-desktop-copy">{heroKicker}</span>
+              <span className="hero-mobile-copy">{featuredGame.eyebrow}</span>
+            </> : heroKicker}</p>
+            <HeroTitle title={heroTitle}>{showHomeIntro ? <>
+              <span className="hero-desktop-copy">{heroTitle}</span>
+              <span className="hero-mobile-copy">{featuredGame.displayTitle}</span>
+            </> : heroTitle}</HeroTitle>
             <p className="hero-mobile-facts">
               <span>{[featuredGame.studio, featuredGame.year].filter(Boolean).join(" · ")}</span>
               <span className="hero-edition" data-reserved={hasMultipleVersions || undefined}
                 aria-hidden={hasMultipleVersions || undefined} title={versionLabel}>{versionLabel}</span>
             </p>
-            <p className="hero-summary">{isMobile ? featuredGame.mobileSummary || heroSummary : heroSummary}</p>
+            <p className="hero-summary">
+              <span className="hero-desktop-copy">{heroSummary}</span>
+              <span className="hero-mobile-copy">{featuredGame.mobileSummary || featuredGame.summary}</span>
+            </p>
             <ul className="hero-facts" aria-label="Game information">
               {metadata.map((value, index) => <li key={`${index}:${value}`}>{value}</li>)}
               <li className="hero-edition" data-reserved={hasMultipleVersions || undefined}
@@ -99,7 +107,7 @@ export default function HeroStage({
           </div>
         </div>
         {featuredGame.screenshots?.length > 0 && <a className="hero-scroll-cue" href="#game-screenshots">
-          <ChevronDown size={20} aria-hidden="true" />Scroll for screenshots
+          <ChevronDown size={20} aria-hidden="true" />Scroll for screenshots &amp; more games
         </a>}
         {controls}
       </section>
