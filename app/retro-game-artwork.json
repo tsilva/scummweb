@@ -90,11 +90,35 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1721"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "creativeBasis": "original-setting-scene",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-agi-bc-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Black%20Cauldron.png",
+            "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+            "sha256": "936786f30b392498291edb2456c01d8205318943ddbcc960c26ea9c3110f250e",
+            "usage": "Original box reviewed for palette, medium and motifs; no image submitted to generator. New environment-only promotional composition."
+          },
+          {
+            "asset": "/launcher/bc-scummweb-generated-2026-11-06-r1-hero.webp",
+            "sha256": "736d249a2aca00263c9ac62e9eaed90a5f7a9c7888cba7285a6fe76dd6868bde",
+            "masterSha256": "78f2a5b21409b86ddfbe370599ca8180cff2e8c67ad6f41d01e2af3991b73c32",
+            "usage": "Previous generated master used as an edit target to raise the focal subject for responsive presentation; original visual references retained."
+          }
+        ]
+      }
     },
     "summary": "Guide Taran through the land of Prydain and stop the Horned King from using the Black Cauldron.",
     "studio": "Sierra On-Line",
-    "genre": "Fantasy adventure"
+    "genre": "Fantasy adventure",
+    "heroImage": "/launcher/bc-scummweb-generated-2026-11-06-r2-hero.webp",
+    "heroImagePosition": "80% 38%",
+    "heroImageMobilePosition": "100% top"
   },
   "agi:goldrush": {
     "title": "Gold Rush!",
@@ -415,11 +439,29 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2305"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "creativeBasis": "original-setting-scene",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-agi-mickey-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Mickey's%20Space%20Adventure.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "099b5e3a6c1ebae136a43882eb5500aa38df97715d9c37ecf2155ef059e7d9b9",
+            "usage": "Original box reviewed for palette, medium and motifs; no image submitted to generator. New environment-only promotional composition."
+          }
+        ]
+      }
     },
     "summary": "Travel with Mickey Mouse through the solar system to collect crystals and restore an alien world's history.",
     "studio": "Sierra On-Line",
-    "genre": "Children's adventure"
+    "genre": "Children's adventure",
+    "heroImage": "/launcher/mickey-scummweb-generated-2026-11-06-r1-hero.webp",
+    "heroImagePosition": "80% 38%",
+    "heroImageMobilePosition": "100% top"
   },
   "agi:pq1": {
     "title": "Police Quest: In Pursuit of the Death Angel",
@@ -687,11 +729,28 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2306"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "creativeBasis": "original-setting-scene",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-agi-winnie-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Winnie%20the%20Pooh%20in%20the%20Hundred%20Acre%20Wood.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "d39133ca1271098b8f47bb5e47ec8c357772b0aafeae3600ab31fa640585c746",
+            "usage": "Original box reviewed for palette, medium and motifs; no image submitted to generator. New environment-only promotional composition."
+          }
+        ]
+      }
     },
     "summary": "Help Pooh explore the Hundred Acre Wood and return lost belongings to his friends.",
     "studio": "Sierra On-Line",
-    "genre": "Children's adventure"
+    "genre": "Children's adventure",
+    "heroImage": "/launcher/winnie-scummweb-generated-2026-11-06-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "agos:elvira1": {
     "title": "Elvira: Mistress of the Dark",
@@ -953,11 +1012,29 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1968"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "creativeBasis": "original-setting-scene",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-agos-pn-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Personal%20Nightmare.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "90d3ffa7fb0af4c76377df47d7a964e3fae60a5e82dce7f1af1deffe5eb5116b",
+            "usage": "Original box reviewed for palette, medium and motifs; no image submitted to generator. New environment-only promotional composition."
+          }
+        ]
+      }
     },
     "summary": "Investigate a sinister English village where an evil presence has taken control of the inhabitants.",
     "studio": "Horror Soft",
-    "genre": "Horror adventure"
+    "genre": "Horror adventure",
+    "heroImage": "/launcher/pn-scummweb-generated-2026-11-06-r1-hero.webp",
+    "heroImagePosition": "80% 38%",
+    "heroImageMobilePosition": "100% top"
   },
   "agos:simon1": {
     "title": "Simon the Sorcerer",
@@ -2601,11 +2678,36 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3062"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "creativeBasis": "original-setting-scene",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-hugo-hugo1-shot.webp",
+            "kind": "gameplay",
+            "url": "https://www.scummvm.org/data/screenshots/hugo/hugo1/hugo1_dos_en_1_2_full.png",
+            "page": "https://www.scummvm.org/screenshots/other/hugo/",
+            "sha256": "b4d5d5091f0cb57ff8b6e368bf5dc7a9391cf662a6059fb25e56e80649025396",
+            "usage": "Visual style, palette, setting and character-design reference only; original capture unchanged, with a new promotional scene and composition."
+          },
+          {
+            "asset": "/launcher/hugo1-scummweb-generated-2026-11-06-r1-hero.webp",
+            "sha256": "87c743656dc2b2132634f34936739ac613d6743079673699c3cc8a303486761b",
+            "masterSha256": "291bd76288a38cc0ecb32d4f51160cd128ac3ae71c73902136a0c6a0410635e9",
+            "usage": "Previous generated master used as an edit target to raise the focal subject for responsive presentation; original visual references retained."
+          }
+        ]
+      }
     },
     "summary": "Enter a mansion full of monsters as Hugo searches for his missing girlfriend Penelope.",
     "studio": "Gray Design Associates",
-    "genre": "Horror comedy adventure"
+    "genre": "Horror comedy adventure",
+    "heroImage": "/launcher/hugo1-scummweb-generated-2026-11-06-r2-hero.webp",
+    "heroImagePosition": "80% 20%",
+    "heroImageMobilePosition": "100% top"
   },
   "hugo:hugo2": {
     "title": "Hugo II: Whodunit?",
@@ -2699,11 +2801,36 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3066"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "creativeBasis": "original-setting-scene",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-hugo-hugo3-shot.webp",
+            "kind": "gameplay",
+            "url": "https://www.scummvm.org/data/screenshots/hugo/hugo3/hugo3_dos_en_1_2_full.png",
+            "page": "https://www.scummvm.org/screenshots/other/hugo/",
+            "sha256": "73f930bf01c362e9be8cc4f180f409e5b5212b6773e4510ff607170f8952cbfb",
+            "usage": "Visual style, palette, setting and character-design reference only; original capture unchanged, with a new promotional scene and composition."
+          },
+          {
+            "asset": "/launcher/hugo3-scummweb-generated-2026-11-06-r1-hero.webp",
+            "sha256": "49c887effdad2c87a10483dc6ffee10237eb4d5544fea23220052b51892b1229",
+            "masterSha256": "1584797b588abfcf53207a5658aca125db2e2035c2966e9ac9d48a92ae88a84b",
+            "usage": "Previous generated master used as an edit target to raise the focal subject for responsive presentation; original visual references retained."
+          }
+        ]
+      }
     },
     "summary": "Explore a jungle and search for a cure after a spider bites Penelope.",
     "studio": "Gray Design Associates",
-    "genre": "Jungle adventure"
+    "genre": "Jungle adventure",
+    "heroImage": "/launcher/hugo3-scummweb-generated-2026-11-06-r2-hero.webp",
+    "heroImagePosition": "80% 38%",
+    "heroImageMobilePosition": "100% top"
   },
   "kyra:eob": {
     "title": "Eye of the Beholder",
@@ -3130,12 +3257,29 @@
           "path": "image-assets/sources/road-gameplay.jpg"
         }
       ],
-      "metadata": []
+      "metadata": [],
+      "hero": {
+        "kind": "generated-hero",
+        "creativeBasis": "original-setting-scene",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-local-road-shot.webp",
+            "kind": "gameplay",
+            "path": "image-assets/sources/road-gameplay.jpg",
+            "sha256": "dcacac145bd9b76a3eb3057cd5df0a6ff62bc84b0fe32f3210bb4684759ccc47",
+            "usage": "Visual style, palette, setting and character-design reference only; original capture unchanged, with a new promotional scene and composition."
+          }
+        ]
+      }
     },
     "summary": "Explore a small village and its surrounding paths in this fan-made adventure, which ScummVM recognizes through its Day of the Tentacle engine.",
     "studio": "Uncredited independent creator",
     "genre": "Fan-made adventure",
-    "metadataNote": "The creator credit could not be verified. The description is based on the locally verified fan-game build."
+    "metadataNote": "The creator credit could not be verified. The description is based on the locally verified fan-game build.",
+    "heroImage": "/launcher/road-scummweb-generated-2026-11-06-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "lure:lure": {
     "title": "Lure of the Temptress",
@@ -3213,11 +3357,29 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2467"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "creativeBasis": "original-setting-scene",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-made-lgop2-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leather%20Goddesses%20of%20Phobos%202.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "c81aa29019609f8c7f3a64ea5b8e6cd59c2283905ac0850687faab28373d48cc",
+            "usage": "Original box reviewed for palette, medium and motifs; no image submitted to generator. New environment-only promotional composition."
+          }
+        ]
+      }
     },
     "summary": "Investigate a crashed spaceship in a desert town and become involved in an interplanetary adventure.",
     "studio": "Infocom",
-    "genre": "Science-fiction comedy"
+    "genre": "Science-fiction comedy",
+    "heroImage": "/launcher/lgop2-scummweb-generated-2026-11-06-r1-hero.webp",
+    "heroImagePosition": "80% 38%",
+    "heroImageMobilePosition": "100% top"
   },
   "made:rodney": {
     "title": "Rodney's Funscreen",
@@ -4295,11 +4457,29 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2682"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "creativeBasis": "original-setting-scene",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-funseeker-shot.webp",
+            "kind": "gameplay",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Fun%20Seeker's%20Guide%20to%20Eastern%20Madera%20County.png",
+            "sha256": "c3c7ce3100f5ba1ea28850416586882b1f85072d8b170a547ddd2405765d243e",
+            "usage": "Visual style, palette, setting and character-design reference only; original capture unchanged, with a new promotional scene and composition."
+          }
+        ]
+      }
     },
     "summary": "Browse Doug Oldfield's humorous interactive guide to places around Sierra's home in eastern Madera County.",
     "studio": "Sierra On-Line",
-    "genre": "Interactive travel comedy"
+    "genre": "Interactive travel comedy",
+    "heroImage": "/launcher/funseeker-scummweb-generated-2026-11-06-r1-hero.webp",
+    "heroImagePosition": "80% 38%",
+    "heroImageMobilePosition": "100% top"
   },
   "sci:gk1": {
     "title": "Gabriel Knight: Sins of the Fathers",
@@ -4333,11 +4513,29 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2726"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "creativeBasis": "original-setting-scene",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-gk1-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gabriel%20Knight_%20Sins%20of%20the%20Fathers.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "16be185df45880693df9df99d4fdde42d8268ed32152eab518eb6e550b83c441",
+            "usage": "Original box reviewed for palette, medium and motifs; no image submitted to generator. New environment-only promotional composition."
+          }
+        ]
+      }
     },
     "summary": "Investigate a series of murders in New Orleans as writer Gabriel Knight discovers his family's supernatural legacy.",
     "studio": "Sierra On-Line",
-    "genre": "Supernatural mystery adventure"
+    "genre": "Supernatural mystery adventure",
+    "heroImage": "/launcher/gk1-scummweb-generated-2026-11-06-r1-hero.webp",
+    "heroImagePosition": "80% 38%",
+    "heroImageMobilePosition": "100% top"
   },
   "sci:gk2": {
     "title": "The Beast Within: A Gabriel Knight Mystery",
@@ -5452,11 +5650,28 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2673"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "creativeBasis": "original-setting-scene",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-msastrochicken-shot.webp",
+            "kind": "gameplay",
+            "url": "https://www.gamerscreed.com/attachments/ms-astro-chicken-005-png.3463/",
+            "sha256": "c76464d0fd79fb6c6c96cd413520d7ca9ebfce88d6485e3fc745ce1aac13c2ae",
+            "usage": "Visual style, palette, setting and character-design reference only; original capture unchanged, with a new promotional scene and composition."
+          }
+        ]
+      }
     },
     "summary": "Fly Ms. Astro Chicken through a scrolling arcade challenge inspired by Space Quest's comic universe.",
     "studio": "Sierra On-Line",
-    "genre": "Arcade action"
+    "genre": "Arcade action",
+    "heroImage": "/launcher/msastrochicken-scummweb-generated-2026-11-06-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:pepper": {
     "title": "Pepper's Adventures in Time",
@@ -5605,11 +5820,29 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3287"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "creativeBasis": "original-setting-scene",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-phantasmagoria2-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Phantasmagoria%202_%20A%20Puzzle%20of%20Flesh%20(Windows_English).png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "4ddea5dc714630a37620f860bdae67df49ffbe05ccd008e4aa7d3e55cb6d55a3",
+            "usage": "Original box reviewed for palette, medium and motifs; no image submitted to generator. New environment-only promotional composition."
+          }
+        ]
+      }
     },
     "summary": "Investigate disturbing visions and workplace murders as Curtis Craig questions his memories and identity.",
     "studio": "Sierra On-Line",
-    "genre": "Interactive movie horror"
+    "genre": "Interactive movie horror",
+    "heroImage": "/launcher/phantasmagoria2-scummweb-generated-2026-11-06-r1-hero.webp",
+    "heroImagePosition": "80% 38%",
+    "heroImageMobilePosition": "100% top"
   },
   "sci:pq1sci": {
     "title": "Police Quest: In Pursuit of the Death Angel",
@@ -6659,11 +6892,29 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=7006"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "creativeBasis": "original-setting-scene",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-scumm-brstorm-shot.webp",
+            "kind": "gameplay",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Bear%20Stormin'.png",
+            "sha256": "e150d6cdce54568c39f541da2dbff7315820801bae26d41bc82daccb93565ad3",
+            "usage": "Visual style, palette, setting and character-design reference only; original capture unchanged, with a new promotional scene and composition."
+          }
+        ]
+      }
     },
     "summary": "Pilot a bear's aeroplane through a light-hearted arcade game.",
     "studio": "Humongous Entertainment",
-    "genre": "Children's arcade action"
+    "genre": "Children's arcade action",
+    "heroImage": "/launcher/brstorm-scummweb-generated-2026-11-06-r1-hero.webp",
+    "heroImagePosition": "80% 38%",
+    "heroImageMobilePosition": "100% top"
   },
   "scumm:comi": {
     "title": "The Curse of Monkey Island",
@@ -8481,11 +8732,29 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3483"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "creativeBasis": "original-setting-scene",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-wintermute-chivalry-shot.webp",
+            "kind": "gameplay",
+            "url": "https://www.scummvm.org/data/screenshots/wintermute/chivalry/chivalry_win_en_1_2_full.png",
+            "page": "https://www.scummvm.org/screenshots/squinky/wintermute:chivalry/",
+            "sha256": "abf4286c5b698fe67c3cfbf76eb1ffb9017f4288b8f82025526021d69144e3b4",
+            "usage": "Visual style, palette, setting and character-design reference only; original capture unchanged, with a new promotional scene and composition."
+          }
+        ]
+      }
     },
     "summary": "A peasant sent to kill the Queen of Everything discovers an open-ended quest with choices about loyalty and violence.",
     "studio": "Deirdra Kiai (Squinky)",
-    "genre": "Fantasy adventure"
+    "genre": "Fantasy adventure",
+    "heroImage": "/launcher/chivalry-scummweb-generated-2026-11-06-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "adl:hires1": {
     "title": "Hi-Res Adventure #1: Mystery House",

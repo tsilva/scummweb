@@ -6275,6 +6275,658 @@
         }
       ],
       "prompt": "Edit image1, the generated ScummWEB hero. Image2 is original game box artwork, retained for character identity, medium, palette and mood. Remove gold packaging border strips along TOP and BOTTOM. Extend red-brown ancient carved relief to all edges, entirely full bleed. Preserve turquoise mosaic skull, pink eyes, artifact above forehead, textures and dark quiet left42%. No other content changes. No letters, numerals, logos, watermarks, borders or UI anywhere. Output one full-bleed landscape1920x1152,5:3, minimum1600x960."
+    },
+    {
+      "target": "bc",
+      "role": "hero",
+      "asset": "/launcher/bc-scummweb-generated-2026-11-06-r1-hero.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-setting-scene",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "78f2a5b21409b86ddfbe370599ca8180cff2e8c67ad6f41d01e2af3991b73c32",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "736d249a2aca00263c9ac62e9eaed90a5f7a9c7888cba7285a6fe76dd6868bde",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-bc-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Black%20Cauldron.png",
+          "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+          "sha256": "936786f30b392498291edb2456c01d8205318943ddbcc960c26ea9c3110f250e",
+          "usage": "Original box reviewed for palette, medium and motifs; no image submitted to generator. New environment-only promotional composition."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one original ScummWEB promotional hero illustration, full bleed LANDSCAPE 1920x1152 pixels, aspect ratio 5:3, minimum1600x960, destined for1600x960. Create a NEW scene, not a screenshot, box front or repaint of a capture. Main recognizable motifs and important faces comfortably inset on RIGHT at65-78% width,25-45%height. LEFT42% naturally dark, quiet, low-detail negative space for white real website text. Keep top9% and bottom12% quiet/crop-safe. No lettering, words, numerals, logos, signatures, watermark, border, dialog or interface. No game UI or screenshot layout. Game context: The Black Cauldron. An original environment-only dark fantasy scene: an ancient black iron cauldron with a subtle green magical glow sits in the right side of a craggy stone chamber; a distant ruined castle is glimpsed through a tall arch. Deep plum, charcoal and emerald palette, richly inked 1980s hand-painted animated-fantasy illustration. No characters or people. Atmospheric wonder, not graphic horror."
+    },
+    {
+      "target": "chivalry",
+      "role": "hero",
+      "asset": "/launcher/chivalry-scummweb-generated-2026-11-06-r1-hero.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-setting-scene",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "f5b22e58b0ffe93cf38cced33b15e49de893b92815b22f5fb00a9fa583e55a2f",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "81b32236baae4df9c589b8c7792cb807f2677908dda4e525e99a4aec84e987cd",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-wintermute-chivalry-shot.webp",
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/wintermute/chivalry/chivalry_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/squinky/wintermute:chivalry/",
+          "sha256": "abf4286c5b698fe67c3cfbf76eb1ffb9017f4288b8f82025526021d69144e3b4",
+          "usage": "Visual style, palette, setting and character-design reference only; original capture unchanged, with a new promotional scene and composition."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one original ScummWEB promotional hero illustration, full bleed LANDSCAPE 1920x1152 pixels, aspect ratio 5:3, minimum1600x960, destined for1600x960. Create a NEW scene, not a screenshot, box front or repaint of a capture. Main recognizable motifs and important faces comfortably inset on RIGHT at65-78% width,25-45%height. LEFT42% naturally dark, quiet, low-detail negative space for white real website text. Keep top9% and bottom12% quiet/crop-safe. No lettering, words, numerals, logos, signatures, watermark, border, dialog or interface. No game UI or screenshot layout. Game: Chivalry is Not Dead. Screenshot ONLY references the deliberately quirky hand-drawn flat2D cartoon style, thick uneven black outlines, flat colors and character designs. NEW scene at the stone castle courtyard arch at night: the blonde queen in blue gown and tiny gold crown chats with the gray-clad paper-bag-headed protagonist, both at right, a purple curtain visible through the arch and a pale crescent moon overhead. Match their large outlined eyes, lanky poses and charmingly awkward shapes faithfully. New setting/camera, not a screenshot repaint. Quiet navy courtyard left; no dialogue or UI."
+    },
+    {
+      "target": "gk1",
+      "role": "hero",
+      "asset": "/launcher/gk1-scummweb-generated-2026-11-06-r1-hero.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-setting-scene",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "8f63251dcda9359aedac2d4d30dadc23a8164977ef1781f66d8fc8b4ff5d2538",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "4537c86edb98e3473025e1485f933d2210f6a919cc4bcf12b084b00e172c217b",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-sci-gk1-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gabriel%20Knight_%20Sins%20of%20the%20Fathers.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "16be185df45880693df9df99d4fdde42d8268ed32152eab518eb6e550b83c441",
+          "usage": "Original box reviewed for palette, medium and motifs; no image submitted to generator. New environment-only promotional composition."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one original ScummWEB promotional hero illustration, full bleed LANDSCAPE 1920x1152 pixels, aspect ratio 5:3, minimum1600x960, destined for1600x960. Create a NEW scene, not a screenshot, box front or repaint of a capture. Main recognizable motifs and important faces comfortably inset on RIGHT at65-78% width,25-45%height. LEFT42% naturally dark, quiet, low-detail negative space for white real website text. Keep top9% and bottom12% quiet/crop-safe. No lettering, words, numerals, logos, signatures, watermark, border, dialog or interface. No game UI or screenshot layout. Game context: Gabriel Knight: Sins of the Fathers. Original environment-only New Orleans mystery scene: an old occult book open on a wooden bookstore table at right, an antique brass candelabrum, wrought-iron balcony and arched window overlooking a moonlit French Quarter street. Brooding painted 1990s mystery-cover atmosphere, deep indigo/violet, subtle amber candlelight and aged paper. Empty room and street, no people or figures. Pages have abstract unreadable texture, no letters. Quiet dark bookshelves left."
+    },
+    {
+      "target": "brstorm",
+      "role": "hero",
+      "asset": "/launcher/brstorm-scummweb-generated-2026-11-06-r1-hero.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-setting-scene",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "46cdc57817d2e136f698a3d1df5b752766d15c46f1ea83d71966b42086adcee0",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "e23b8191c5c5bede488b1b0b774e45e46228411fdff0ddb2946230096acffbc0",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-scumm-brstorm-shot.webp",
+          "kind": "gameplay",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Bear%20Stormin'.png",
+          "sha256": "e150d6cdce54568c39f541da2dbff7315820801bae26d41bc82daccb93565ad3",
+          "usage": "Visual style, palette, setting and character-design reference only; original capture unchanged, with a new promotional scene and composition."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one original ScummWEB promotional hero illustration, full bleed LANDSCAPE 1920x1152 pixels, aspect ratio 5:3, minimum1600x960, destined for1600x960. Create a NEW scene, not a screenshot, box front or repaint of a capture. Main recognizable motifs and important faces comfortably inset on RIGHT at65-78% width,25-45%height. LEFT42% naturally dark, quiet, low-detail negative space for white real website text. Keep top9% and bottom12% quiet/crop-safe. No lettering, words, numerals, logos, signatures, watermark, border, dialog or interface. No game UI or screenshot layout. Game: BearStormin. Screenshot ONLY references the green biplane, small brown bear pilot and cheerful early Humongous pixel-cartoon style. NEW promotional illustration of the bright green biplane banking gently over rolling lime-green hills at right, the little teddy-bear pilot in the open cockpit, a few soft white clouds and pale blue distant mountains. Fresh three-quarter angle, not source gameplay composition. Crisp chunky 1990s colorful pixel-cartoon shapes, friendly and simple. Quiet darker blue sky left. No fuel gauge, interface, sparks, text or border."
+    },
+    {
+      "target": "hugo1",
+      "role": "hero",
+      "asset": "/launcher/hugo1-scummweb-generated-2026-11-06-r1-hero.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-setting-scene",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "291bd76288a38cc0ecb32d4f51160cd128ac3ae71c73902136a0c6a0410635e9",
+        "width": 1619,
+        "height": 972
+      },
+      "output": {
+        "sha256": "87c743656dc2b2132634f34936739ac613d6743079673699c3cc8a303486761b",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-hugo-hugo1-shot.webp",
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/hugo/hugo1/hugo1_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/hugo/",
+          "sha256": "b4d5d5091f0cb57ff8b6e368bf5dc7a9391cf662a6059fb25e56e80649025396",
+          "usage": "Style, palette, setting and character-design reference only. Original capture unchanged; new promotional scene and composition."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one original ScummWEB promotional hero illustration, full bleed LANDSCAPE 1920x1152 pixels, aspect ratio 5:3, minimum1600x960, destined for1600x960. Create a NEW scene, not a screenshot, box front or repaint of a capture. Main recognizable motifs and important faces comfortably inset on RIGHT at65-78% width,25-45%height. LEFT42% naturally dark, quiet, low-detail negative space for white real website text. Keep top9% and bottom12% quiet/crop-safe. No lettering, words, numerals, logos, signatures, watermark, border, dialog or interface. No game UI or screenshot layout. Game: Hugo’s House of Horrors. Input screenshot is ONLY a reference for the limited EGA palette, deliberate pixel clusters and character/object design. Invent a different view of the haunted mansion: a diagonal staircase recedes into dark teal patterned walls at left, while at right the small red-haired adventurer in cyan shirt and magenta trousers cautiously approaches an open red door beside a candlelit table and bat painting. New camera angle and room arrangement, not the source capture. Crisp early1990s EGA pixel-art promotional scene with flat16-color forms and patterned dithering, NOT modern painting or3D."
+    },
+    {
+      "target": "funseeker",
+      "role": "hero",
+      "asset": "/launcher/funseeker-scummweb-generated-2026-11-06-r1-hero.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-setting-scene",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "5cdc6a25deebdccf91dc453bfc4eca8d065b2fb17010a674ee7f64104e6b7e8e",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "6501c4c4fc2280574cfc14dcf2a8ef88072e65fd395cb57f9a58273d267b166d",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-sci-funseeker-shot.webp",
+          "kind": "gameplay",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Fun%20Seeker's%20Guide%20to%20Eastern%20Madera%20County.png",
+          "sha256": "c3c7ce3100f5ba1ea28850416586882b1f85072d8b170a547ddd2405765d243e",
+          "usage": "Visual style, palette, setting and character-design reference only; original capture unchanged, with a new promotional scene and composition."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one original ScummWEB promotional hero illustration, full bleed LANDSCAPE 1920x1152 pixels, aspect ratio 5:3, minimum1600x960, destined for1600x960. Create a NEW scene, not a screenshot, box front or repaint of a capture. Main recognizable motifs and important faces comfortably inset on RIGHT at65-78% width,25-45%height. LEFT42% naturally dark, quiet, low-detail negative space for white real website text. Keep top9% and bottom12% quiet/crop-safe. No lettering, words, numerals, logos, signatures, watermark, border, dialog or interface. No game UI or screenshot layout. Game: Fun Seeker’s Guide to Eastern Madera County. Source guide screenshot ONLY supplies the simple16-color pixel illustration style and its brown talking-bear landmark. Make a NEW setting illustration: a friendly brown bear-shaped roadside monument on a gray boulder at right, with pine-covered California foothills, a winding rural trail and tiny wooden visitor hut behind. Restrained EGA palette and patterned dithering, deliberately simple pixel clusters and humorous travel-guide charm. No plaque lettering, signs or guidebook page layout. Deep blue/green pine shadows left."
+    },
+    {
+      "target": "hugo3",
+      "role": "hero",
+      "asset": "/launcher/hugo3-scummweb-generated-2026-11-06-r1-hero.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-setting-scene",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "1584797b588abfcf53207a5658aca125db2e2035c2966e9ac9d48a92ae88a84b",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "49c887effdad2c87a10483dc6ffee10237eb4d5544fea23220052b51892b1229",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-hugo-hugo3-shot.webp",
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/hugo/hugo3/hugo3_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/hugo/",
+          "sha256": "73f930bf01c362e9be8cc4f180f409e5b5212b6773e4510ff607170f8952cbfb",
+          "usage": "Style, palette, setting and character-design reference only. Original capture unchanged; new promotional scene and composition."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one original ScummWEB promotional hero illustration, full bleed LANDSCAPE 1920x1152 pixels, aspect ratio 5:3, minimum1600x960, destined for1600x960. Create a NEW scene, not a screenshot, box front or repaint of a capture. Main recognizable motifs and important faces comfortably inset on RIGHT at65-78% width,25-45%height. LEFT42% naturally dark, quiet, low-detail negative space for white real website text. Keep top9% and bottom12% quiet/crop-safe. No lettering, words, numerals, logos, signatures, watermark, border, dialog or interface. No game UI or screenshot layout. Game: HugoIII Jungle of Doom. Screenshot is ONLY style/setting reference. Invent a new three-quarter scene of the white propeller plane lodged in a dense green jungle clearing, viewed from behind broad foreground vines; at right the small explorer in a red shirt, yellow trousers and yellow hat looks toward the plane. Original EGA pixel clusters, saturated16-color greens, cobalt sky and ochre earth, patterned dithering. Fresh perspective and arrangement, not the screenshot. Plane fuselage unmarked, no registration letters. Quiet shadowed jungle left."
+    },
+    {
+      "target": "lgop2",
+      "role": "hero",
+      "asset": "/launcher/lgop2-scummweb-generated-2026-11-06-r1-hero.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-setting-scene",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "b274f49400c76cfb2f95a19456b54d4743d52f10cae200d5e651570f65c44ad0",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "85f039846529138fe26d402b7a4a05ffe99084f10724cac0d2cfd1f325d0e3ba",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-made-lgop2-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leather%20Goddesses%20of%20Phobos%202.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "c81aa29019609f8c7f3a64ea5b8e6cd59c2283905ac0850687faab28373d48cc",
+          "usage": "Original box reviewed for palette, medium and motifs; no image submitted to generator. New environment-only promotional composition."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one original ScummWEB promotional hero illustration, full bleed LANDSCAPE 1920x1152 pixels, aspect ratio 5:3, minimum1600x960, destined for1600x960. Create a NEW scene, not a screenshot, box front or repaint of a capture. Main recognizable motifs and important faces comfortably inset on RIGHT at65-78% width,25-45%height. LEFT42% naturally dark, quiet, low-detail negative space for white real website text. Keep top9% and bottom12% quiet/crop-safe. No lettering, words, numerals, logos, signatures, watermark, border, dialog or interface. No game UI or screenshot layout. Game context: Leather Goddesses of Phobos 2. Original environment-only humorous retro science-fiction scene: an unmarked red 1950s gasoline pump beside an empty desert filling station at right, chrome trim, soft warm neon glow, green flying saucer high above the distant desert ridge. Pulp airbrushed poster illustration, cherry red, cream, emerald and midnight blue. The pump is blank with no labels or numerals. No people or characters. Whimsical space adventure."
+    },
+    {
+      "target": "msastrochicken",
+      "role": "hero",
+      "asset": "/launcher/msastrochicken-scummweb-generated-2026-11-06-r1-hero.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-setting-scene",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "77bad1bbc8571350e3effa660f66798de9abe254928c2046323b18a61ba5aba8",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "9c03127bcfc07910827ff14f1ecdb027b82641c3b330a0a6c9267e27444b4536",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-sci-msastrochicken-shot.webp",
+          "kind": "gameplay",
+          "url": "https://www.gamerscreed.com/attachments/ms-astro-chicken-005-png.3463/",
+          "sha256": "c76464d0fd79fb6c6c96cd413520d7ca9ebfce88d6485e3fc745ce1aac13c2ae",
+          "usage": "Visual style, palette, setting and character-design reference only; original capture unchanged, with a new promotional scene and composition."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one original ScummWEB promotional hero illustration, full bleed LANDSCAPE 1920x1152 pixels, aspect ratio 5:3, minimum1600x960, destined for1600x960. Create a NEW scene, not a screenshot, box front or repaint of a capture. Main recognizable motifs and important faces comfortably inset on RIGHT at65-78% width,25-45%height. LEFT42% naturally dark, quiet, low-detail negative space for white real website text. Keep top9% and bottom12% quiet/crop-safe. No lettering, words, numerals, logos, signatures, watermark, border, dialog or interface. No game UI or screenshot layout. Game: Ms.AstroChicken. Screenshot ONLY references the little white hen with pink bonnet/crest, yellow beak, red feet and retro VGA sprite style. NEW promotional scene: the same little hen flying boldly at right through a deep black/indigo starfield, a curving bright-green alien planet far below, a small cratered moon in the distance. Crisp colorful VGA pixel-art style, playful arcade space adventure, no gameplay framing. Hen fully inset and large enough to recognize; quiet sparse stars left. No score, egg counter or window border."
+    },
+    {
+      "target": "mickey",
+      "role": "hero",
+      "asset": "/launcher/mickey-scummweb-generated-2026-11-06-r1-hero.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-setting-scene",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "2b9662586b96aa88728bd5b9c0f4480297da9cdb5fc6b3603cdeb68eb8d810ad",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "dff55491ebe7a4b23dcbbc21ddfdc56dc8077f79415766f411b332b8e3fe3828",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-mickey-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Mickey's%20Space%20Adventure.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "099b5e3a6c1ebae136a43882eb5500aa38df97715d9c37ecf2155ef059e7d9b9",
+          "usage": "Original box reviewed for palette, medium and motifs; no image submitted to generator. New environment-only promotional composition."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one original ScummWEB promotional hero illustration, full bleed LANDSCAPE 1920x1152 pixels, aspect ratio 5:3, minimum1600x960, destined for1600x960. Create a NEW scene, not a screenshot, box front or repaint of a capture. Main recognizable motifs and important faces comfortably inset on RIGHT at65-78% width,25-45%height. LEFT42% naturally dark, quiet, low-detail negative space for white real website text. Keep top9% and bottom12% quiet/crop-safe. No lettering, words, numerals, logos, signatures, watermark, border, dialog or interface. No game UI or screenshot layout. Game context: Mickey’s Space Adventure. Original environment-only optimistic space-exploration illustration: a cheerful rounded golden rocket rests on a pale cratered lunar surface at right, a luminous blue Earth and distant colorful planets above. Smooth friendly 1980s airbrushed cartoon shading, deep navy, warm gold and cyan. No characters or people. Dark starfield left. This is a new setting illustration, not an official promotional image."
+    },
+    {
+      "target": "phantasmagoria2",
+      "role": "hero",
+      "asset": "/launcher/phantasmagoria2-scummweb-generated-2026-11-06-r1-hero.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-setting-scene",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "0c0ca867ecb7798e15fb1cb1e1ff9a809ee442a8b659a6e6754b5ba3a4cfca7c",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "d834f837c1168102f9c19d5ee5d021b1b843925f595aa5f65b7644e69e92e66b",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-sci-phantasmagoria2-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Phantasmagoria%202_%20A%20Puzzle%20of%20Flesh%20(Windows_English).png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "4ddea5dc714630a37620f860bdae67df49ffbe05ccd008e4aa7d3e55cb6d55a3",
+          "usage": "Original box reviewed for palette, medium and motifs; no image submitted to generator. New environment-only promotional composition."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one original ScummWEB promotional hero illustration, full bleed LANDSCAPE 1920x1152 pixels, aspect ratio 5:3, minimum1600x960, destined for1600x960. Create a NEW scene, not a screenshot, box front or repaint of a capture. Main recognizable motifs and important faces comfortably inset on RIGHT at65-78% width,25-45%height. LEFT42% naturally dark, quiet, low-detail negative space for white real website text. Keep top9% and bottom12% quiet/crop-safe. No lettering, words, numerals, logos, signatures, watermark, border, dialog or interface. No game UI or screenshot layout. Game context: Phantasmagoria2: A Puzzle of Flesh. Original object-only psychological mystery illustration: an antique mirror and a scattered geometric jigsaw puzzle on a dark desk at right, a warm red-orange light glows through a partly open doorway, ochre shadows and layered analog photographic grain. Late1990s surreal photographic poster aesthetic. Empty space, no people or body parts. No text on mirror, paper or puzzle. Quiet charcoal left."
+    },
+    {
+      "target": "pn",
+      "role": "hero",
+      "asset": "/launcher/pn-scummweb-generated-2026-11-06-r1-hero.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-setting-scene",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "a3ed8bc3cd5b1e465998fa1f98a363453eec0c8a86b6dae3146a45a62f6bd964",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "e31a9ebe09c9b19372c3e3917edb1104d191e840a30c58bc403a1f6fa815a742",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agos-pn-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Personal%20Nightmare.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "90d3ffa7fb0af4c76377df47d7a964e3fae60a5e82dce7f1af1deffe5eb5116b",
+          "usage": "Original box reviewed for palette, medium and motifs; no image submitted to generator. New environment-only promotional composition."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one original ScummWEB promotional hero illustration, full bleed LANDSCAPE 1920x1152 pixels, aspect ratio 5:3, minimum1600x960, destined for1600x960. Create a NEW scene, not a screenshot, box front or repaint of a capture. Main recognizable motifs and important faces comfortably inset on RIGHT at65-78% width,25-45%height. LEFT42% naturally dark, quiet, low-detail negative space for white real website text. Keep top9% and bottom12% quiet/crop-safe. No lettering, words, numerals, logos, signatures, watermark, border, dialog or interface. No game UI or screenshot layout. Game context: Personal Nightmare. Original environment-only supernatural mystery illustration: a weathered gray arched headstone beside an old English village church at twilight, faint red light filtering through mist from a distant stained-glass window. Restrained 1980s airbrushed photographic poster texture, cold gray stone, charcoal and red accent. Right-side headstone and church; quiet shadowed cemetery path left. No people or figures. Headstone entirely unlettered."
+    },
+    {
+      "target": "road",
+      "role": "hero",
+      "asset": "/launcher/road-scummweb-generated-2026-11-06-r1-hero.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-setting-scene",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "56e80df57e3af7e3bb5c7206360033a44d6d75a9acb6ffbae8b5f11c5712d42f",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "da4bd617280561868ed27eb8e6a710189dd36b6de906ca2ca7e569d7a164ace5",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-local-road-shot.webp",
+          "kind": "gameplay",
+          "path": "image-assets/sources/road-gameplay.jpg",
+          "sha256": "dcacac145bd9b76a3eb3057cd5df0a6ff62bc84b0fe32f3210bb4684759ccc47",
+          "usage": "Visual style, palette, setting and character-design reference only; original capture unchanged, with a new promotional scene and composition."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one original ScummWEB promotional hero illustration, full bleed LANDSCAPE 1920x1152 pixels, aspect ratio 5:3, minimum1600x960, destined for1600x960. Create a NEW scene, not a screenshot, box front or repaint of a capture. Main recognizable motifs and important faces comfortably inset on RIGHT at65-78% width,25-45%height. LEFT42% naturally dark, quiet, low-detail negative space for white real website text. Keep top9% and bottom12% quiet/crop-safe. No lettering, words, numerals, logos, signatures, watermark, border, dialog or interface. No game UI or screenshot layout. Game: Road, the recognized fan adventure. Screenshot is ONLY style/setting reference. Original oblique pixel-art village vista: a gray cobblestone path curves toward small weathered brown timber cottages and a tiny thatched well at right, a small red-coated traveler at the path bend, lush green hedges and foreground leaves. Match the source’s richly textured low-resolution 1990s adventure pixel style and muted green/brown/stone palette. New viewing angle and village layout. Dark shaded foliage and unoccupied path left. No verb bar, cursor or text."
+    },
+    {
+      "target": "winnie",
+      "role": "hero",
+      "asset": "/launcher/winnie-scummweb-generated-2026-11-06-r1-hero.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-setting-scene",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "74650f380ffed420a28d976bba2168526f5dc1397741db5c02de3f5af0200107",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "fa48f42ff3c07e1ccd38e7ece3d1d4a7345a701534a0440089b39c57440bc64c",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-winnie-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Winnie%20the%20Pooh%20in%20the%20Hundred%20Acre%20Wood.png",
+          "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+          "sha256": "d39133ca1271098b8f47bb5e47ec8c357772b0aafeae3600ab31fa640585c746",
+          "usage": "Original box reviewed for palette, medium and motifs; no image submitted to generator. New environment-only promotional composition."
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: one original ScummWEB promotional hero illustration, full bleed LANDSCAPE 1920x1152 pixels, aspect ratio 5:3, minimum1600x960, destined for1600x960. Create a NEW scene, not a screenshot, box front or repaint of a capture. Main recognizable motifs and important faces comfortably inset on RIGHT at65-78% width,25-45%height. LEFT42% naturally dark, quiet, low-detail negative space for white real website text. Keep top9% and bottom12% quiet/crop-safe. No lettering, words, numerals, logos, signatures, watermark, border, dialog or interface. No game UI or screenshot layout. Game context: Winnie the Pooh in the Hundred Acre Wood. Original setting-only storybook woodland scene: an inviting hollow oak-tree doorway on right, a little unmarked lavender honey pot on a weathered stump, a winding path, soft golden leaves and dappled late-afternoon light. Gentle rounded hand-painted storybook cartoon forms, warm honey gold, leaf green and soft blue; deep leafy shadows left. No characters or people. No lettering on pot or door."
+    },
+    {
+      "target": "bc",
+      "role": "hero",
+      "asset": "/launcher/bc-scummweb-generated-2026-11-06-r2-hero.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-setting-scene",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "1ee02f8cd0ad599ee483ccae20b1a578169aa81a1a179de635a6e64606762853",
+        "width": 1620,
+        "height": 971
+      },
+      "output": {
+        "sha256": "fcb0f9a5b878b89c0df0fb35e766d623e06cd220e31c5a3c9d40a877a36da6e7",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-bc-poster.webp",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Black%20Cauldron.png",
+          "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+          "sha256": "936786f30b392498291edb2456c01d8205318943ddbcc960c26ea9c3110f250e",
+          "usage": "Original box reviewed for palette, medium and motifs; no image submitted to generator. New environment-only promotional composition."
+        },
+        {
+          "asset": "/launcher/bc-scummweb-generated-2026-11-06-r1-hero.webp",
+          "sha256": "736d249a2aca00263c9ac62e9eaed90a5f7a9c7888cba7285a6fe76dd6868bde",
+          "masterSha256": "78f2a5b21409b86ddfbe370599ca8180cff2e8c67ad6f41d01e2af3991b73c32",
+          "usage": "Previous generated master used as an edit target to raise the focal subject for responsive presentation; original visual references retained."
+        }
+      ],
+      "prompt": "Edit Image1, the existing generated promotional hero. Move the cauldron and its supporting stone platform UP substantially. The entire cauldron must sit at x60-92% and y18-52% of the canvas, with its center near76%width,35%height. Raise the platform naturally under it; it must not float. The current cauldron is much too low for the mobile website crop. Preserve the castle/arch, green mist, deep-plum painted style and quiet dark LEFT42%. Preserve all other scene details and the original illustration medium. Any further input image is ONLY the original game visual-style reference, not a screenshot edit target. Full bleed LANDSCAPE1920x1152,5:3,minimum1600x960. No lettering, words, numbers, logos, signature, watermark, borders, dialogue or UI."
+    },
+    {
+      "target": "hugo1",
+      "role": "hero",
+      "asset": "/launcher/hugo1-scummweb-generated-2026-11-06-r2-hero.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-setting-scene",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "2b06e22dfea46f6502627bbc2fa270a4c398b790c9be88b739f95308360de3f1",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "0c0929de20b8fa39b0b68f74d5b0ef0268236f1e3ee21751f6ef8179ab9b5178",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-hugo-hugo1-shot.webp",
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/hugo/hugo1/hugo1_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/hugo/",
+          "sha256": "b4d5d5091f0cb57ff8b6e368bf5dc7a9391cf662a6059fb25e56e80649025396",
+          "usage": "Visual style, palette, setting and character-design reference only; original capture unchanged, with a new promotional scene and composition."
+        },
+        {
+          "asset": "/launcher/hugo1-scummweb-generated-2026-11-06-r1-hero.webp",
+          "sha256": "87c743656dc2b2132634f34936739ac613d6743079673699c3cc8a303486761b",
+          "masterSha256": "291bd76288a38cc0ecb32d4f51160cd128ac3ae71c73902136a0c6a0410635e9",
+          "usage": "Previous generated master used as an edit target to raise the focal subject for responsive presentation; original visual references retained."
+        }
+      ],
+      "prompt": "Edit Image1, the existing generated promotional hero. Remove the adventurer from the ground-floor doorway and place him instead on the UPPER balcony at right, cautiously approaching a red door. His face must be at73%canvaswidth and28%canvasheight, body entirely within x65-83% and y24-51%. Preserve his red skin/dark hair, cyan shirt, magenta trousers, crisp EGA pixel clusters and the mansion red doors, dark teal patterned walls, staircase, bat painting and candle. Quiet dark LEFT42%. Keep it a new promotional scene, no game UI. Preserve all other scene details and the original illustration medium. Any further input image is ONLY the original game visual-style reference, not a screenshot edit target. Full bleed LANDSCAPE1920x1152,5:3,minimum1600x960. No lettering, words, numbers, logos, signature, watermark, borders, dialogue or UI."
+    },
+    {
+      "target": "hugo3",
+      "role": "hero",
+      "asset": "/launcher/hugo3-scummweb-generated-2026-11-06-r2-hero.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-setting-scene",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "4d07ad87444137091375e5794d1c7f351e842d6e0c55d22432c1a4f5762d4615",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "9fd9e013d86c104699905912c9e71aa5d20e18dd6060687297f8fe6f4740761e",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-hugo-hugo3-shot.webp",
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/hugo/hugo3/hugo3_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/hugo/",
+          "sha256": "73f930bf01c362e9be8cc4f180f409e5b5212b6773e4510ff607170f8952cbfb",
+          "usage": "Visual style, palette, setting and character-design reference only; original capture unchanged, with a new promotional scene and composition."
+        },
+        {
+          "asset": "/launcher/hugo3-scummweb-generated-2026-11-06-r1-hero.webp",
+          "sha256": "49c887effdad2c87a10483dc6ffee10237eb4d5544fea23220052b51892b1229",
+          "masterSha256": "1584797b588abfcf53207a5658aca125db2e2035c2966e9ac9d48a92ae88a84b",
+          "usage": "Previous generated master used as an edit target to raise the focal subject for responsive presentation; original visual references retained."
+        }
+      ],
+      "prompt": "Edit Image1, the existing generated promotional hero. Recompose the plane and explorer HIGHER in the right half. The white plane must occupy x50-84%,y18-49%; the explorer in red shirt/yellow trousers/yellow hat must stand at x85%, with head at y27% and feet at y50%. Put their jungle clearing ground plane higher naturally, with sloping dense foliage in the lower half. Preserve saturated EGA green vines/cobalt sky/ochre soil, crisp pixel clusters and the original white plane design. Explorer and plane must be fully inside the right edge; no registration markings. Quiet dark LEFT42%. Preserve all other scene details and the original illustration medium. Any further input image is ONLY the original game visual-style reference, not a screenshot edit target. Full bleed LANDSCAPE1920x1152,5:3,minimum1600x960. No lettering, words, numbers, logos, signature, watermark, borders, dialogue or UI."
     }
   ]
 }

@@ -647,18 +647,26 @@ artwork references, generation dates and hashes are retained in
 respective creators and rights holders. These mappings use 1600×960 WebP exports with verified responsive R2 delivery.
 Original hero objects, card covers and gameplay screenshots remain available.
 
-The recognized-game library now shares generated heroes across 146 recognized
-games, including personal imports. This includes the eleven bundled
-games and 138 newly composed banners from original box artwork or promotional
-references. Each new hero is a 1600×960 export; original reference credits and
-revision hashes remain in `data/generated-artwork.json`, with logical hero
-mappings and source credits in `app/retro-game-artwork.json`. Import recognition
-uses the same hero and focal position as the corresponding catalog presentation.
-The optional `heroImageMobilePosition` overrides the shared narrow-screen crop
-for artwork whose main subject would otherwise fall outside the visible area.
-Fourteen recognized games retain their previous artwork where a suitable
-original reference or usable generation was unavailable. Card covers and original
-gameplay captures retain their separate provenance.
+The library uses generated heroes for all 160 recognized games, including
+personal imports and the eleven bundled games. The first 146 banner sets
+recompose original box or promotional artwork. Fourteen additional heroes are
+original setting-based compositions that follow the games’ palettes, drawing
+styles and motifs; they are not official promotional images. The registry marks
+these with `creativeBasis: "original-setting-scene"` and records the reviewed
+references, exact prompts, generation dates and master/export hashes.
+
+For Hugo’s House of Horrors, Hugo III, Road, Fun Seeker’s Guide, Ms. Astro Chicken,
+Bear Stormin’ and Chivalry is Not Dead, original gameplay captures supply visual
+style, setting and character-design references for new promotional scenes.
+The captures themselves remain unchanged. The other seven new scenes emphasize
+scenery and objects inspired by their original box artwork. Each new export is
+1600×960, with verified responsive R2 delivery. Logical hero mappings and source
+credits remain in `app/retro-game-artwork.json`; full generation provenance is in
+`data/generated-artwork.json`. Card box fronts retain their separate provenance.
+Import recognition uses the same hero and focal position as the corresponding
+catalog presentation. The optional `heroImageMobilePosition` overrides the shared
+narrow-screen crop for artwork whose main subject would otherwise fall outside
+the visible area.
 
 Game mappings and source credits stay in `app/game-presentation.js`,
 `app/retro-game-artwork.json`, and this guide. Responsive width mappings remain
