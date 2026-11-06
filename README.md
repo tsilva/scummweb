@@ -108,7 +108,8 @@ ScummVM or ScummWEB limitations. Problems specific to missing or mismatched
 game files are excluded. Startup checks do not establish full-game compatibility.
 
 Select a library or Recently Played card to open the game’s shareable page and
-jump instantly to its hero. The artwork, description, launch actions, screenshots
+jump instantly to its hero. Recently Played cards show the artwork and game title.
+The artwork, description, launch actions, screenshots
 and URL update in the current page without a route fetch or library reload. Browser
 Back and Forward restore the selection, and direct links still open that game.
 On desktop, the hero and screenshots fill the opening view, with the library below
