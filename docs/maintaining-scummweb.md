@@ -247,7 +247,8 @@ selected catalog engine module load alongside the main runtime. The boot overlay
 accepts a native game presentation, including a dark intro frame. The native
 OpenGL signal excludes ScummVM's splash and GUI overlays; canvas draw observers
 and the pixel detector remain fallbacks for other renderers. Intro skipping
-remains an explicit action.
+remains an explicit action shown in the player controls after the loading screen
+closes; the download and startup panel does not offer **Skip intro**.
 The native GUI's startup themes and translation prefix also prefetch in parallel;
 later reads reuse their binary buffers. Range responses must match the requested
 prefix and indexed file size, and failed hints retain the ordinary read path.

@@ -595,7 +595,6 @@ export default function GameRouteFrame({
   }
 
   const showSkipIntroAction = bootState.showSkipIntroButton && skipIntro && !bootState.hasBootFailed;
-  const showSkipIntroOverlayAction = showSkipIntroAction && showBootOverlay;
   const showSkipIntroBottomAction = showSkipIntroAction && !showBootOverlay;
   const showExitControl = true;
   const showFullscreenControl =
@@ -614,8 +613,6 @@ export default function GameRouteFrame({
           : bootState.bootStatusText)}
         game={game}
         hasBootFailed={hasBootFailed}
-        onSkipIntro={handleSkipIntroClick}
-        showSkipIntroAction={showSkipIntroOverlayAction}
         showBootOverlay={showBootOverlay}
         title={title}
       />
