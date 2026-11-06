@@ -27,7 +27,8 @@ beginning**; others load progress through their in-game menu. Older shared saves
 remain stored in the browser.
 
 The hero's **Scroll for screenshots & more games** link appears on desktop and
-mobile when screenshots are available. On mobile it follows the launch controls.
+mobile when screenshots are available and stays visible after browsing the library.
+On mobile it follows the launch controls.
 
 Games default to their original save/load screens where the engine supports
 them. The shell fills missing `originalsaveload`, `original_gui` (SCUMM), and
