@@ -956,7 +956,9 @@ or request-time rendering.
   Adventures, both included in the collection.
   The homepage uses a game's landscape artwork or gameplay capture as its
   slideshow backdrop. Heroes share save-aware Play, Continue, Start from beginning
-  and reconnect actions, with an inline Version selector for multiple editions.
+  and reconnect actions, with an inline Version selector rendered from the start.
+  With one known edition the selector is disabled; restored local editions update
+  its options in place without adding a new row or changing the hero's height.
   Continue refreshes after browser saves change or the page is restored.
   Play or Continue appears immediately from cached browser metadata while stale
   records are reconciled in the background. Background native queries yield to
@@ -1042,10 +1044,22 @@ or request-time rendering.
   use the same canonical route; unrecognized imports use a homepage selection
   fragment. Library cards and slideshow entries group recognized versions using
   engine/game identity, with demos separated from full releases. Unrecognized
-  sources stay separate. Version counts remain on cards; the hero contains a
-  Version dropdown showing known platform, language, and edition details, omitting
-  storage types and missing metadata. Use a numbered version label when no details
-  are available; never infer a language from the game title alone. Remember the last selected available version,
+  sources stay separate. Version counts remain on cards; the hero's
+  Version dropdown uses `Language · Platform · Media · Graphics · Revision` for
+  all games, omitting unknown fields. Normalize platform and language names,
+  preserve disc counts such as `2CD`, and retain revision precision. Graphics
+  appear only when multiple known modes distinguish editions on the same platform;
+  one edition or identical modes omit graphics. Hero edition badges use the same
+  formatted metadata. Identical labels receive `Copy 1`, `Copy 2` suffixes without
+  exposing filenames; source IDs, launch actions and saves remain unchanged.
+  Beneath a Steel Sky CD imports identify
+  revisions v0.0368 and v0.0372 from the inspected `sky.dnr` and `sky.dsk` sizes
+  using ScummVM's detection table, overriding incomplete or stale filename labels.
+  Unknown file pairs retain filename metadata without guessing a revision.
+  Structured media, graphics and revision fields are separate; legacy `edition`
+  and `extra` fields remain parsing fallbacks.
+  Use a numbered version label when no details are available; never infer a
+  language from the game title alone. Remember the last selected available version,
   otherwise prefer an available copy matching the browser language. File access
   and launch always apply to that selection. Missing sources use the primary
   file-location action. The hero omits filenames, auxiliary file-management

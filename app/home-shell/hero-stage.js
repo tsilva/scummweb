@@ -71,16 +71,17 @@ export default function HeroStage({
                 {metadata.map((value, index) => <li key={`${index}:${value}`}>{value}</li>)}
                 {featuredGame.badge && <li className="hero-edition">{featuredGame.badge}</li>}
               </ul>
-              {versions.length > 1 && <label className="hero-version-control">Version
+              <label className="hero-version-control">Version
                 <span className="library-select">
-                  <select value={selectedVersionKey} onChange={(event) => onVersionChange(event.target.value)}>
-                    {versions.map((version) => <option key={version.key} value={version.key}>
-                      {version.label}
+                  <select value={selectedVersionKey} disabled={versions.length < 2}
+                    onChange={(event) => onVersionChange(event.target.value)}>
+                    {versions.map((version, index) => <option key={version.key} value={version.key}>
+                      {version.label || `Version ${index + 1}`}
                     </option>)}
                   </select>
                   <ChevronDown size={16} aria-hidden="true" />
                 </span>
-              </label>}
+              </label>
               {!notice && featuredGame.importRequired && !sourceVersion && !sourceAction && <p className="file-access-help">
                 This game is not included due to copyright restrictions. If you own a copy, drop its ZIP onto this page to add it to your library.
               </p>}

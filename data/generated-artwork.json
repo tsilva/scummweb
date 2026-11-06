@@ -6927,6 +6927,1441 @@
         }
       ],
       "prompt": "Edit Image1, the existing generated promotional hero. Recompose the plane and explorer HIGHER in the right half. The white plane must occupy x50-84%,y18-49%; the explorer in red shirt/yellow trousers/yellow hat must stand at x85%, with head at y27% and feet at y50%. Put their jungle clearing ground plane higher naturally, with sloping dense foliage in the lower half. Preserve saturated EGA green vines/cobalt sky/ochre soil, crisp pixel clusters and the original white plane design. Explorer and plane must be fully inside the right edge; no registration markings. Quiet dark LEFT42%. Preserve all other scene details and the original illustration medium. Any further input image is ONLY the original game visual-style reference, not a screenshot edit target. Full bleed LANDSCAPE1920x1152,5:3,minimum1600x960. No lettering, words, numbers, logos, signature, watermark, borders, dialogue or UI."
+    },
+    {
+      "target": "amazon",
+      "role": "cover",
+      "asset": "/launcher/amazon-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "9f690c6b3e43af7e71dc1a08bc1cf9b45f6e7df7a5beb66f53fc37fc8e5e0e6a",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "46d9f7536796e9537c4372ec22fbd7605af1996c2cb5268b19f6f800d44f5cca",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-access-amazon-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Amazon_%20Guardians%20of%20Eden.png",
+          "sha256": "645e71e4ef77f31070d2df215ad984e560e2ba7ad505e522211bcecf8209730b",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Restore this original Amazon: Guardians of Eden box front as one clean flat portrait cover at 1200x1600, 3:4. Preserve its original painted illustration, characters, composition, palette, gold AMAZON typography, GUARDIANS OF EDEN subtitle, ACCESS logo, VGA and Multimedia Version markings. Improve scan clarity and remove scratches, wear and outside scan padding. Remove the circular Radio Shack retail sticker and restore the illustration beneath it. Keep the complete original front and its branding visible, using minimal matching margins if needed. Do not redesign, add text, crop important art, create a 3D mockup or add a watermark."
+    },
+    {
+      "target": "mh1",
+      "role": "cover",
+      "asset": "/launcher/mh1-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "ae19313973339a30b81fdaaa883441a1c687986682ec6475028bb3016dff8d04",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "172a884b85a18c70ba76ae6a6d3d2862da66fc6af3651d9f628b898c916989ef",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-mh1-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Manhunter%201_%20New%20York.png",
+          "sha256": "d557be921f8c6c8e7d69152ab02edd9519fe02cec2b9ab4b547a920a403c5114",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Manhunter: New York. Preserve MANHUNTER NEW YORK typography, eye montage, skyline, Statue of Liberty and Sierra. Remove only the gray round TANDY retail sticker."
+    },
+    {
+      "target": "goldrush",
+      "role": "cover",
+      "asset": "/launcher/goldrush-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "fb3ba91004b997e95793c177d9e600ed4ce0ab5b0376b836c1693ca8231fd1ec",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "73f24029698865d8d5d24d514c24f6d2b6fcd3bf3634b8ee56b4b6c8b7bab8d3",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-goldrush-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gold%20Rush!.png",
+          "sha256": "237f976dd1b20fed91cfbd2677ef8a059327b21375e53505bfd4e935758f9b15",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Gold Rush!. Preserve GOLD RUSH! lettering and the original frontier montage, small Sierra branding and printed promotional circles."
+    },
+    {
+      "target": "kq2",
+      "role": "cover",
+      "asset": "/launcher/kq2-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "05e09c6de93f97862f903cedde799ad4af6cd8d349f2d6809772b8051b3d392f",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "769229b753556aa0edfd3e21ec3ccd881a6b71875b271ccc083039541c13e602",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-kq2-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20II_%20Romancing%20the%20Throne.png",
+          "sha256": "09b9c777418b2827bdd08e98771539550e10a3d5a8f929e37696455c28bbc5ab",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: King's Quest II: Romancing the Throne. Preserve KING’S QUEST, the roman numeral II, and Romancing the Throne script, original doorway/ocean illustration and Sierra/platform/corner printing."
+    },
+    {
+      "target": "mh2",
+      "role": "cover",
+      "asset": "/launcher/mh2-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "561511eca3dc887e4cd8d00cb3bb90eb7af03f6684309cc66e3d57f9bcde46bf",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "d4df236a342918748d552e6b2c21f5ce77b7f672bc54378fe75095e42b80b6f7",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-mh2-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Manhunter%202_%20San%20Francisco.png",
+          "sha256": "dee0225f98695af15f7eac58a549d33623d0a15a026db1231759c9454f1874a3",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Manhunter 2: San Francisco. Preserve MANHUNTER2 SAN FRANCISCO title, cable car/creature art, original printed Prodigy badge and Sierra."
+    },
+    {
+      "target": "kq3",
+      "role": "cover",
+      "asset": "/launcher/kq3-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "95f682cc44e1344ba17fd8cc7dd19ea3e2bbfc015eb9baba352f21aaff18793e",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "7d1ef9a96eb49f671fcb1417ab62f34471b69e26040dd73cb949d3fec3ddcf0f",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-kq3-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20III_%20To%20Heir%20is%20Human.png",
+          "sha256": "bc81dc8c1351cd11d7b70ec05d49102245e4f73c3e0ff2b632b0cb567bbc5f1a",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: King's Quest III: To Heir Is Human. Preserve King’s Quest III: To Heir is Human typography, original wizard/crystal ball/cat artwork and Sierra printed badges."
+    },
+    {
+      "target": "pq1",
+      "role": "cover",
+      "asset": "/launcher/pq1-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "f5f53751f314b52401e48d6ca34a2621e835a0d926ab9444d1f7ed2aef6058ae",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "daab2dcb1f79f125786f698a5a7205500376b8581225a784a8e2704b9be271ca",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-pq1-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest_%20In%20Pursuit%20of%20the%20Death%20Angel.png",
+          "sha256": "acd31798d69cc4e1af4b767a3499285f1cd5dff4be1acf4493598379fd1b3342",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Police Quest: In Pursuit of the Death Angel. Preserve large POLICE QUEST lettering, bullet-hole design, In Pursuit of the Death Angel red script, police montage and Sierra."
+    },
+    {
+      "target": "sq1",
+      "role": "cover",
+      "asset": "/launcher/sq1-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration-with-screenshot-removal",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "b30ef8cc1a8a19b4e79a2aa0c30545c8e60fa2e1b38dcb92c06a23086e5c1fc9",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "eb35a9d532a26fa0d4b1f6179fc09191de371bdcce7200079153164392e6f1b9",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-sq1-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest_%20Chapter%20I%20-%20The%20Sarien%20Encounter%20(DOS_English).png",
+          "sha256": "f2dcfc53bd40f773b3eae8699153692fe677c1bcdd61f2ec8d605fd15a9c072a",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Space Quest: The Sarien Encounter. Create the user-requested clean restoration WITHOUT the small pink-framed gameplay screenshot inset at lower left. Replace ONLY that inset with a continuation of the original blue starfield. Preserve the SPACE QUEST 3D block title, CHAPTER I / THE SARIEN ENCOUNTER lettering, spacecraft, Sierra and other original printed layout. Remove gray TANDY retail sticker."
+    },
+    {
+      "target": "sq2",
+      "role": "cover",
+      "asset": "/launcher/sq2-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "0607319473ea8cb0691f488606c6a855ea5976c7c97edf93b62f23a0d11462b7",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "ccb4735f3aa52d07e5b00b87cdbf250959f6d0e8686230eb22bc4bdb34b99075",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-sq2-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20II_%20Chapter%20II%20-%20Vohaul's%20Revenge%20(2.0F%201989-01-05%203.5__DOS_English).png",
+          "sha256": "df7120907a127cc3b268283ff96b7f1020a00b741c318aa4081b07f1557b202f",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Space Quest II: Chapter II - Vohaul's Revenge. Preserve SPACE QUEST II 3D typography, CHAPTER II / VOHAUL’S REVENGE, two suspended illustrated figures, space background and Sierra."
+    },
+    {
+      "target": "troll",
+      "role": "cover",
+      "asset": "/launcher/troll-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "38395b33c344f0402ac09e09256ac6129b4cddedfe34fa6c9199b1c7549b4369",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "a914fe3b8e03ec424c62c26fdbaf30b567a92da46ce58c17ab1bf514f5dfdba5",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agi-troll-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Trolls%20Tale.png",
+          "sha256": "161b839fd746bacf3e24e2007f17f6bbc83f484dace43ab8889e8355c3f8378a",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Troll's Tale. Preserve TROLL’S TALE lettering and the original smiling troll line drawing on cream paper. Keep the original minimalist design; no new illustration."
+    },
+    {
+      "target": "hugo1",
+      "role": "cover",
+      "asset": "/launcher/hugo1-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration-with-screenshot-removal",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "866ef692fd7a9de483550abbbb7022965112b52e10623e9d9b56b4327a71c844",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "8bcfa9371f7de0c2a5c9aab1290b65655885c745e0457955e18e01cd6b8551ee",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-hugo-hugo1-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hugo's%20House%20of%20Horrors.png",
+          "sha256": "66d7c4d4a6e3ce03eeb5911c516a3baadab8056cf8eea56f0beac9983024d74e",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Hugo's House of Horrors. Try the user-requested clean version WITHOUT the CRT monitor and its gameplay screenshot. Remove the monitor entirely, continuing the original flat dark green printed background through its area. Preserve Hugo’s House of Horrors title design, original tagline, David Gray credit, PERSONAL COMPANION logo, PC badge, rescue copy and diagonal printed banner. Do not invent a replacement illustration, screenshot, monitor or new branding. Keep the original cover’s graphic identity; clear understated typography is preferable to fabricated art."
+    },
+    {
+      "target": "atlantis",
+      "role": "cover",
+      "asset": "/launcher/atlantis-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "f0b57477c784c9b4ee6b27aa66a85f96fb449b3698949a4fb3c09a67b709264e",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "f0dc1e0c98f3ad6aae7e7b08207f087c7fe0ac29ea15aef7dbd2457a6870a912",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/atlantis-cover.webp",
+          "kind": "box-scan",
+          "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+          "sha256": "f293965042d7fcfc713511d434b9227d1b2cbc02e0726dc2c610a58495746bf9"
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Indiana Jones and the Fate of Atlantis. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "hugo3",
+      "role": "cover",
+      "asset": "/launcher/hugo3-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration-with-screenshot-removal",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "a6b0ebcf9ea997232a4d03277b49092d34fa017758b8d7b3c11b7898ab426f5b",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "9871990276001306926c0d9d13b573b50fc401f4b09abad9fd818aa56189f780",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-hugo-hugo3-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hugo%20III_%20Jungle%20of%20Doom.png",
+          "sha256": "15379fe0eef40c337550294863a84df798d93d866fc65e1ce855172d918b4055",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Hugo III: Jungle of Doom. Try the user-requested clean version WITHOUT the CRT monitor and its gameplay screenshot. Remove the monitor entirely, continuing the original flat blue printed background. Preserve Jungle of Doom title design, Rescue Hugo and Penelope tagline, By David Gray, PERSONAL COMPANION logo, PC badge, Can You Escape the Jungle of Doom...Awesome Graphics! copy and printed diagonal banner. No invented replacement illustration or screenshot."
+    },
+    {
+      "target": "indy3",
+      "role": "cover",
+      "asset": "/launcher/indy3-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "d424901aa3f019ddc7da1d52f2fa9534b8facd059f8997ef5c153834e42d4e52",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "7e70f35b7aabe3ad1701be0b6cd7a69faa04e6a77bd6e422a037b7a65d6a9663",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/indy3-cover.webp",
+          "kind": "box-scan",
+          "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+          "sha256": "aa55500051a34d1fa8c42b69523883414ba28af69e165d4e16c2a86ccab47a50"
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Indiana Jones and the Last Crusade. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "loom",
+      "role": "cover",
+      "asset": "/launcher/loom-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "5eee562d6bbb4f5074dbbbc071180ec697e22e6d8c773bfa78e165c98a006f6c",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "3dbf2c2010d54fd553afc057d80fbb8e70b8001250ba62d99a06094871d7a342",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/loom-cover.webp",
+          "kind": "box-scan",
+          "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+          "sha256": "aef9c8e01d47c1bb9f9a3d540f47600a9e74e257522a130314055640bfb4ae45"
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Loom. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "maniac",
+      "role": "cover",
+      "asset": "/launcher/maniac-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "5b2be06ccadd6b58a48a9832bd8bfa4700e7fd01d707964cec487c2b2bbb355a",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "3597f054e238d569832397bb376601cfcb1106ac2b295f022dbdbec7cdf86c6d",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/maniac-cover.webp",
+          "kind": "box-scan",
+          "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+          "sha256": "d3b7e560082de491e4ceb2d32385690f5a5529efef86f41f2b17ef0f1c6a0af7"
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Maniac Mansion. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "monkey2",
+      "role": "cover",
+      "asset": "/launcher/monkey2-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "2e17cd32590d9281844cf1c61f5e7db754bc777104d8140ead19bf31612497c1",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "aa25702b686c54a31dab6285b9e81857006a5ea39787d3d9dc3b9929bc8aac43",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/monkey2-cover.webp",
+          "kind": "box-scan",
+          "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+          "sha256": "1df7edad4566f5cca5127f89ed08304d417745855f6d57fbac6b6c755428ea37"
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Monkey Island 2: LeChuck's Revenge. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "feeble",
+      "role": "cover",
+      "asset": "/launcher/feeble-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "7fbcf837bef086e75d289c8a5161a89136b653a0f54b54d9892730b68c93cf27",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "3fccde65caea2c966c00eba891cc28b998c15a64eaf1322235f842cf7fb62502",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agos-feeble-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Feeble%20Files.png",
+          "sha256": "c769f43d0aeb36510da5df8cd2185cb51a7e35127ea026a32ed86c0528a270d6",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: The Feeble Files. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "jumble",
+      "role": "cover",
+      "asset": "/launcher/jumble-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "41f7850a869f6363ead54cbb73f94748f6bdbbdc9ecdb151f34ed1441ea0fbf1",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "3fd5ba38c53c9fc8a6e93ee329c21344f34de2248295bc41a46238b08d25c145",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agos-jumble-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Simon%20the%20Sorcerer%20Puzzle%20Pack.png",
+          "sha256": "a037336dd55d2ab0536e364e3c7e09f27f15425ff989bab0666b37327ef91080",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Simon the Sorcerer's Puzzle Pack. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "samnmax",
+      "role": "cover",
+      "asset": "/launcher/samnmax-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "37d21248cdf1974a29bbb5b1f95a35f2d9adf971a3606871857462638d92be8f",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "29444d50684e7cdf25ca1d67c4f0ba09c79d34960f51ef5299e48d19bfe57f2c",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/samnmax-cover.webp",
+          "kind": "box-scan",
+          "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+          "sha256": "0fe3b0613d65ea1c2bf8f3c7179b9c31276cc1af0c42b58d5726b5c0aee14a7e"
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Sam & Max Hit the Road. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "simon2",
+      "role": "cover",
+      "asset": "/launcher/simon2-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "10afc233dab65cd02d1b5f7f69d4170f65fb7789673acc1ccf336cb4d910b0dd",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "fe55986fbf0302d11108b69bc3d77b630ec60228567bfe784ccdb9afae90d7dd",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agos-simon2-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Simon%20the%20Sorcerer%202.png",
+          "sha256": "1115ef95fa3a0a7487d82698f4eaef9f0d17cd4d875b45a1f5da08d6f0a45c02",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "pn",
+      "role": "cover",
+      "asset": "/launcher/pn-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "63b7340f600280cb4da8c0f190fba4062bc04056c59ec5bca937befc19216fdb",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "a5e790ba4be5fffa8c37408b23b425d46b3d4944ddbcba6d1db4263647f51c4d",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agos-pn-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Personal%20Nightmare.png",
+          "sha256": "90d3ffa7fb0af4c76377df47d7a964e3fae60a5e82dce7f1af1deffe5eb5116b",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Personal Nightmare. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "tentacle",
+      "role": "cover",
+      "asset": "/launcher/tentacle-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "d049a58a57d59b497a48b2602092c0191018b7eb0f6689dd56f686dc141cd990",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "2b1f313dffe939ebdeba5769981badd3f6a8c52a1dd7ef493c26fa2e24c463ca",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/tentacle-cover.webp",
+          "kind": "box-scan",
+          "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+          "sha256": "30250cc96149a2c77f58b76dd289cf04e5ce301d0aafba498a59793b2ce5e1ee"
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Day of the Tentacle. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "waxworks",
+      "role": "cover",
+      "asset": "/launcher/waxworks-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "d9dd9652abbb56ee6385a55d1d2b0aef286cdff70b377b4c2292e1cccc3f5ea7",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "a5dfdc13097af6e09e7cb7f23e99e4cdaeb387bd85acaea02d147d2f2770b479",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agos-waxworks-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/WaxWorks.png",
+          "sha256": "47f561fdba28c0c6b6e8d4b7d0d996ce6b059a129ec91a8fdd1b3902e240d623",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Waxworks. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "bbvs",
+      "role": "cover",
+      "asset": "/launcher/bbvs-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "9c8a465efcc03e8b3a99c073d10a1c91a20e564225ad50cfccf1c936769c792d",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "4d24270bdeb24bc4fa67c00457ccd2f5b574fb2607bf5f62eeff3fb904d973ba",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-bbvs-bbvs-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Beavis%20and%20Butt-Head%20in%20Virtual%20Stupidity.png",
+          "sha256": "e86fe270770778d11d3300475ca5bf884a18b22393205d2ed618f096b2f84db8",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: MTV's Beavis and Butt-Head in Virtual Stupidity. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "simon1",
+      "role": "cover",
+      "asset": "/launcher/simon1-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "9798d14aa1a22d7ace1243075ade0d3de0db7c18ad56067d81e9ec42ede60fc2",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "7df4ff42636b96129d809cccf875e0dc942a0d79ae75f254020611cbd5415ece",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agos-simon1-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Simon%20the%20Sorcerer.png",
+          "sha256": "d2204c6c783bd347ade573f1b147fbf2e2a82d04e573c51ea347bdf5bddcdb19",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Simon the Sorcerer. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "zak",
+      "role": "cover",
+      "asset": "/launcher/zak-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "a799f08778a56c27f37b25625aa8f25f72a7588dc9504efc6922ff67f96518ad",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "b7972ca00b7d2ce17229ea81c6b8387eaa49d17aed97b0a447d75ac5fa8e4f1e",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/zak-cover.webp",
+          "kind": "box-scan",
+          "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+          "sha256": "446f79638df8e4566a9bee18fc5143be4b4d20192a2efeac5d63f8d196e18b65"
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Zak McKracken and the Alien Mindbenders. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "darby",
+      "role": "cover",
+      "asset": "/launcher/darby-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "1d84234579d00eac8e96da57989dcb819dca63cbc2f3ed58e8db7a9f0265cc8d",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "be4b5622ce8c33471f64d1f33de884c0645bbddac49e0f963dbcb1bde2f8fe79",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-composer-darby-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Darby%20the%20Dragon.png",
+          "sha256": "b981bb62d945bfd5b4164be8c1efde24612c47fffb8d62c91697e2ff4f78b375",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Darby the Dragon. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "elvira1",
+      "role": "cover",
+      "asset": "/launcher/elvira1-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "6e86ad586ecb504b47b6920ff2c9ffa1734844e7e836ffe731d71113c6b9ebc9",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "d9ad84e5dc4b898201bb09ec52eb5e2eb93eea9bec44ac9007a9cf8107bbe6cd",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agos-elvira1-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Elvira_%20Mistress%20of%20the%20Dark.png",
+          "sha256": "d293c519c84c06d0751a99a7bdcddd7722320e3973f8b1e08769a3e8b72008c8",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Elvira: Mistress of the Dark. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "sleepingcub",
+      "role": "cover",
+      "asset": "/launcher/sleepingcub-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "b10d57c70f1c7c5240c04240d5f5d49324299a80277556cfc9ccca6a854ad239",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "064dfeed6a31b5c6d78a47b1918c25a9fcaa756194111877fbd2c4472bd1e717",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-composer-sleepingcub-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Magic%20Tales_%20Sleeping%20Cubs%20Test%20of%20Courage.png",
+          "sha256": "c25a900f8c8ddc3d9af4907bb6ff299d8999c047d00dbe4bb340bb54b67c76b1",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Magic Tales: Sleeping Cub's Test of Courage. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "fw",
+      "role": "cover",
+      "asset": "/launcher/fw-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "46088a7763f6e650bbfbdadef3d6307cd82ae1fa1b9a0a7862e936441981162e",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "6ba70bb2d9d497e0da564c97a1457b81c6849fa8ace96fddf6d0e765c12b37e5",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-cine-fw-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Future%20Wars_%20Adventures%20in%20Time.png",
+          "sha256": "ee75cba1b8478315022fc43388b0a72b9f258bc02e268dd4a2a3de3f8730c72a",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Future Wars: Adventures in Time. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "elvira2",
+      "role": "cover",
+      "asset": "/launcher/elvira2-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "fffc77f3c4611c55c886ca5fdbf7240b706dd9fdce58b7d2c37e95b56b24b1e6",
+        "width": 1087,
+        "height": 1447
+      },
+      "output": {
+        "sha256": "e4edbd2551bf6bb5067fd1a81fbee35d732c602b87fe0681be5ccc93fd739091",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-agos-elvira2-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Elvira%20II%20-%20The%20Jaws%20of%20Cerberus.png",
+          "sha256": "1847bb937772e1b4b52a56d98eaa872f615f8b3e852ab3ff9638eff4849b72e3",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Elvira II: The Jaws of Cerberus. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "liam",
+      "role": "cover",
+      "asset": "/launcher/liam-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "9ccb907b046ff57727ca34a6280593b873179402f8bb76ebe2894263f2d7d578",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "a67c8e44c962b4af9d89db81ec95ebd4193105b751e7970b258d1300b66ee86a",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-composer-liam-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Magic%20Tales_%20Liam%20Finds%20a%20Story.png",
+          "sha256": "e2bfebb8342b0dbf4d2c7b1d431d14e80f0ca2bc9cf8b4deeaa5d8d0f513d886",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Magic Tales: Liam Finds a Story. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "cruise",
+      "role": "cover",
+      "asset": "/launcher/cruise-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "dcbb7fb997ab4643c7599440a4db249c44aa81547c810c739e5023a542426451",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "424d004797fc619865c0401090175e81964cd24ae102bcbf4afd7622b7c4a23f",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-cruise-cruise-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Cruise%20for%20a%20Corpse.png",
+          "sha256": "9797382f1b006521ec01f92a3484ad04b220bda045a6a5cef6a946ea63b7c9d6",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Cruise for a Corpse. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "gnap",
+      "role": "cover",
+      "asset": "/launcher/gnap-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "20b7cc206d2cfde2076ea4f877ef29792eba200416acff8bfdc1d1d550e30a63",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "18efa08a112cd6b752d135dd36199e422db30054b1929c856b3d5a02df821c40",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-gnap-gnap-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/U.F.O.s.png",
+          "sha256": "ed3fe918ec4572d2e1f83550a2083aadedc5c52f230890b2b6a9910ced62611c",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Gnap (U.F.O.s). Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "draci",
+      "role": "cover",
+      "asset": "/launcher/draci-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "dadd95e45ca47ae8b1dc27ed85c6807e654f390d6aa6aa7f5caa90be10059939",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "797d16eb5e6ace9459261f2b6a4b1d9da74d872191365a27f74507a4568e95cf",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-draci-draci-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Dra%c4%8d%c3%ad%20Historie.png",
+          "sha256": "bbfdeaf34d3f9476b4c77e0e694c295d339178346e8d7513f611bbd567d27789",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Dragon History. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "princess",
+      "role": "cover",
+      "asset": "/launcher/princess-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "acf1dd6df5e9e104af86abc94cbe398c6efdf5d66e003b84ac005434e707fe17",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "81dc7908b8b5d7fa79a70b66c64d4204e6ffc518d8abf992a20871390458ca4c",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-composer-princess-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Magic%20Tales_%20The%20Princess%20and%20the%20Crab.png",
+          "sha256": "7c52d9ea77831e375426c592061df791d32fe7f64aa3638d0a544b001f0b4e58",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Magic Tales: The Princess and the Crab. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "bargon",
+      "role": "cover",
+      "asset": "/launcher/bargon-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "1843292b185c40bbdea229ff6adfa9cbb764c28642c9fef1f284015b4271fcd5",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "debf27f0f7a0c0ae1c61ed094ffcd29d854aeb5448cd022c076ace5e9351399b",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-gob-bargon-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Bargon%20Attack.png",
+          "sha256": "a75e9530464fba91978213e61110ef9c70ec6c76566a39b7f32c8bf02365cae8",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Bargon Attack. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+    },
+    {
+      "target": "fascination",
+      "role": "cover",
+      "asset": "/launcher/fascination-scummweb-generated-2026-11-06-r1-cover.webp",
+      "generatedOn": "2026-11-06",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "0d06b1442aca301c5bd85dbdc71cbe67e0b2a9c836d509a3d8456b8294c26dab",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "ec729a630aa295131d65a9436c78b81246c267a071f0eed0aed48f65678d51b9",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-gob-fascination-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Fascination.png",
+          "sha256": "c90f7bc06697e05fc85599185d1627ea3d925e1541b3c7b9fa73113f5a51a881",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Fascination. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
     }
   ]
 }
