@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { exitImmersiveMode } from "../game-player/immersive-mode.mjs";
 import { readRemoteGameArchive } from "../game-bucket.mjs";
 import { getGamePresentation, getImportedGamePresentation } from "../game-presentation";
 import { checkGameSource, isLocalZipSource, localGame, readGameSources, removeGameSources, requestGameSourceAccess, saveGameSources } from "../game-sources.mjs";
@@ -314,6 +315,7 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
 
   function play(source, game, resume = false, legacySaves = false) {
     if (!source.url && !isLocalZipSource(source)) return chooseZip(source);
+    let navigated = false;
     return run(async () => {
       if (!source.url && source.handle && !sessionGames.has(source.id)
         && await source.handle.queryPermission({ mode: "read" }) !== "granted") {
@@ -347,7 +349,8 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
       }
       rememberGameVersion(getGameFamilyKey(game) || `source:${source.id}`, `source:${source.id}`);
       router.push(`/local/play${resume ? "#continue" : ""}`);
-    });
+      navigated = true;
+    }).finally(() => { if (!navigated) void exitImmersiveMode(); }).then(() => navigated);
   }
 
   function allowAccess(source) {

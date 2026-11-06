@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { readCatalogGameArchive } from "./game-bucket.mjs";
+import { gameLoadingStatus } from "./game-loading-status.mjs";
 import GameBootOverlay from "./game-player/GameBootOverlay";
-import GameMobileOverlay from "./game-player/GameMobileOverlay";
 import GamePlayerControls from "./game-player/GamePlayerControls";
 import GameTouchCursorPad from "./game-player/GameTouchCursorPad";
 import { createGameLaunchAnalytics } from "./game-player/game-launch-analytics.mjs";
@@ -117,7 +117,7 @@ export default function GameRouteFrame({
   skipIntro: intro = null,
   loadArchive: loadPersonalArchive,
   catalogArchiveUrl,
-  archiveLoadingText = "Downloading game ZIP…",
+  archiveLoadingText = "Loading game…",
 }) {
   const loadCatalogArchive = useCallback((signal, onProgress) => readCatalogGameArchive(catalogArchiveUrl, {
     ...catalogArchiveLimits[target], signal, onProgress,
@@ -125,11 +125,6 @@ export default function GameRouteFrame({
   const loadArchive = catalogArchiveUrl ? loadCatalogArchive : loadPersonalArchive;
   const catalogLaunch = !loadArchive || Boolean(catalogArchiveUrl);
   const router = useRouter();
-  const navigateHome = useCallback((href) => {
-    const destination = getSafeHref(href);
-    if (catalogLaunch) window.location.replace(destination);
-    else router.replace(destination);
-  }, [catalogLaunch, router]);
   const shellRef = useRef(null);
   const frameRef = useRef(null);
   const archiveFiles = useRef(null);
@@ -143,7 +138,6 @@ export default function GameRouteFrame({
   const [archiveFrameDocument, setArchiveFrameDocument] = useState(null);
   const [isResuming, setIsResuming] = useState(false);
   const [exitHref, setExitHref] = useState("/");
-  const [isFillScreenAspect, setIsFillScreenAspect] = useState(false);
   const [readySignal, setReadySignal] = useState(null);
   const [skipIntroConsumed, setSkipIntroConsumed] = useState(false);
   const [catalogIntroSlot, setCatalogIntroSlot] = useState(null);
@@ -157,6 +151,12 @@ export default function GameRouteFrame({
     skipIntroConsumed,
   });
   const immersiveMode = useImmersiveMode({ shellRef });
+  const navigateHome = useCallback(async (href) => {
+    await immersiveMode.exitImmersiveMode?.({ silenceErrors: true });
+    const destination = getSafeHref(href);
+    if (catalogLaunch) window.location.replace(destination);
+    else router.replace(destination);
+  }, [catalogLaunch, router, immersiveMode.exitImmersiveMode]);
   const touchClick = useTouchClickActions({
     frameRef,
     skipIntro,
@@ -164,17 +164,8 @@ export default function GameRouteFrame({
   });
   const hasBootFailed = Boolean(archiveError) || bootState.hasBootFailed;
   const showBootOverlay = !bootState.hasBootCompleted || hasBootFailed;
-  const hasBootOverlayDismissed = !showBootOverlay;
-  const showMobileOverlay =
-    hasBootOverlayDismissed &&
-    immersiveMode.isMobileViewport &&
-    !immersiveMode.mobileOverlayDismissed &&
-    (immersiveMode.needsImmersiveRetry || !immersiveMode.isLandscapeViewport);
   const mobileControlsReady =
-    immersiveMode.isMobileViewport &&
-    bootState.hasBootCompleted &&
-    !hasBootFailed &&
-    !showMobileOverlay;
+    immersiveMode.isMobileViewport && bootState.hasBootCompleted && !hasBootFailed;
   const touchCursorPad = useTouchCursorPad({
     enabled: mobileControlsReady,
     frameRef,
@@ -393,9 +384,9 @@ export default function GameRouteFrame({
           // handoff below supports either side becoming ready first.
           window.performance?.mark?.("scummweb:runtime-requested");
           setFrameSrc(launchSrc);
-          const files = await loadArchive(controller.signal, (progress, { cached = false } = {}) => {
+          const files = await loadArchive(controller.signal, (_progress, { cached = false, loaded, total } = {}) => {
             if (!controller.signal.aborted) {
-              setArchiveProgress(progress);
+              setArchiveProgress(Number.isFinite(loaded) ? { loaded, total } : null);
               setArchiveCached(cached);
             }
           });
@@ -421,7 +412,7 @@ export default function GameRouteFrame({
   }, [bootState.hasBootFailed, launchAnalytics]);
 
   const canCountPlayTime =
-    readySignal?.reason === "rendered-frame-detected" && !showBootOverlay && !showMobileOverlay;
+    readySignal?.reason === "rendered-frame-detected" && !showBootOverlay;
 
   useEffect(() => {
     if (canCountPlayTime) return launchAnalytics.watchPlayTime();
@@ -439,7 +430,7 @@ export default function GameRouteFrame({
         iframe.contentWindow?.postMessage(
           {
             type: SCUMMWEB_ASPECT_RATIO_MESSAGE_TYPE,
-            mode: isFillScreenAspect ? "fill" : "preserve",
+            mode: immersiveMode.isMobileViewport ? "fit-height" : "preserve",
           },
           window.location.origin,
         );
@@ -452,7 +443,7 @@ export default function GameRouteFrame({
     return () => {
       iframe.removeEventListener("load", postAspectRatioMode);
     };
-  }, [frameSrc, isFillScreenAspect]);
+  }, [frameSrc, immersiveMode.isMobileViewport]);
 
   useEffect(() => {
     setExitHref(getExitHrefFromSrc(frameSrc || src));
@@ -565,16 +556,8 @@ export default function GameRouteFrame({
     };
   }, [bootState.showSkipIntroButton, frameSrc, skipIntro]);
 
-  async function handleExitClick() {
-    if (shellRef.current) {
-      try {
-        await immersiveMode.exitImmersiveMode({ silenceErrors: true });
-      } catch (error) {
-        console.error("Failed to exit fullscreen mode before leaving the game.", error);
-      }
-    }
-
-    navigateHome(exitHref);
+  function handleExitClick() {
+    return navigateHome(exitHref);
   }
 
   function handleControlMouseDown(event) {
@@ -606,18 +589,12 @@ export default function GameRouteFrame({
     setFrameSrc((currentSrc) => buildSaveSlotSrc(currentSrc, target, skipIntro.slot, { seedIntro: true }));
   }
 
-  function handleAspectRatioToggle() {
-    setIsFillScreenAspect((currentValue) => !currentValue);
-  }
-
   const showSkipIntroAction = bootState.showSkipIntroButton && skipIntro && !bootState.hasBootFailed;
   const showSkipIntroOverlayAction = showSkipIntroAction && showBootOverlay;
   const showSkipIntroBottomAction = showSkipIntroAction && !showBootOverlay;
   const showExitControl = true;
   const showFullscreenControl =
     immersiveMode.canFullscreen && bootState.hasBootPresentationCompleted;
-  const showAspectRatioControl =
-    immersiveMode.isMobileViewport && bootState.hasBootPresentationCompleted;
   const showGameMenuButton =
     Boolean(gameMenuShortcut) && bootState.showGameMenuButton && !hasBootFailed;
   const showTouchClickButtons = mobileControlsReady;
@@ -628,7 +605,7 @@ export default function GameRouteFrame({
     <div className="game-route-shell" ref={shellRef}>
       <GameBootOverlay
         bootStatusText={archiveError || (loadArchive && !archivePrepared
-          ? archiveCached ? "Opening cached game…" : archiveProgress === null ? archiveLoadingText : `Downloading game ZIP (${archiveProgress}%)…`
+          ? archiveCached ? "Opening cached game…" : archiveProgress === null ? archiveLoadingText : gameLoadingStatus(archiveProgress)
           : bootState.bootStatusText)}
         game={game}
         hasBootFailed={hasBootFailed}
@@ -637,28 +614,19 @@ export default function GameRouteFrame({
         showBootOverlay={showBootOverlay}
         title={title}
       />
-      <GameMobileOverlay
-        needsImmersiveRetry={immersiveMode.needsImmersiveRetry}
-        onContinue={immersiveMode.handleImmersiveResume}
-        onDismiss={immersiveMode.dismissMobileOverlay}
-        showMobileOverlay={showMobileOverlay}
-      />
       <GamePlayerControls
         autoHide={bootState.hasBootPresentationCompleted && !showBootOverlay && !immersiveMode.isMobileViewport}
         frameRef={frameRef}
         menuShortcut={gameMenuShortcut}
         handleControlMouseDown={handleControlMouseDown}
-        isFillScreenAspect={isFillScreenAspect}
         isFullscreen={immersiveMode.isFullscreen}
         onExit={handleExitClick}
         onOpenMenu={handleGameMenuClick}
         onSkipIntro={handleSkipIntroClick}
-        onToggleAspectRatio={handleAspectRatioToggle}
         onTouchLeftClick={() => touchClick.sendTouchClick("left")}
         onTouchRightClick={() => touchClick.sendTouchClick("right")}
         onToggleFullscreen={immersiveMode.handleFullscreenToggle}
         showBottomActions={showBottomActions}
-        showAspectRatioControl={showAspectRatioControl}
         showExitControl={showExitControl}
         showFullscreenControl={showFullscreenControl}
         showGameMenuButton={showGameMenuButton}

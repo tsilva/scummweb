@@ -42,7 +42,7 @@ export const metadata = {
         type: "image/svg+xml",
       },
     ],
-    apple: [{ url: getVersionedSiteAssetPath("/scummvm-192.png") }],
+    apple: [{ url: getVersionedSiteAssetPath("/brand/web-seo/apple-touch-icon.png"), sizes: "180x180", type: "image/png" }],
     shortcut: [getVersionedSiteAssetPath("/favicon.ico")],
   },
   other: {

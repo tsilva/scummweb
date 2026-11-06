@@ -47,6 +47,24 @@
       "path": "public/brand/web-seo/og-image-1200x630.png",
       "sha256": "e4667827845aabf3751ad3c5f8d5327541a06a07dbd8a2126777469e36230c13",
       "source": "image-assets/sources/social-source.png"
+    },
+    {
+      "role": "apple-touch-icon",
+      "path": "public/brand/web-seo/apple-touch-icon.png",
+      "sha256": "15acc54945ff4aee8d07787cd56589cbf46b3e06cd733f88490f7cdb83422907",
+      "source": "image-assets/sources/favicon-source.svg"
+    },
+    {
+      "role": "install-icon",
+      "path": "public/brand/web-seo/android-chrome-192.png",
+      "sha256": "5e9eb73a97c453234bb9a1978ac24281477ee313b3e005d630749f5e3a128041",
+      "source": "image-assets/sources/favicon-source.svg"
+    },
+    {
+      "role": "install-icon",
+      "path": "public/brand/web-seo/android-chrome-512.png",
+      "sha256": "d1093accfb9d92c43c972152b44dd1bb5f31960b1fea76b57ee7d9037006e3be",
+      "source": "image-assets/sources/favicon-source.svg"
     }
   ]
 }

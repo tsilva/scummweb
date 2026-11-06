@@ -20,6 +20,8 @@ runInNewContext(code, {
   module: compiled, exports: compiled.exports,
   require(name) {
     if (name === "../use-browser-save") return () => savedVersion === null ? null : 0;
+    if (name === "../game-player/useLaunchFeedback") return () => ({ show() {}, dismiss() {}, overlay: null });
+    if (name === "../game-player/immersive-mode.mjs") return { beginMobileGameLaunch: () => false };
     if (name === "../browser-saves.mjs") return { cancelBrowserSaveQueries() {} };
     if (name === "react/jsx-runtime" || name === "lucide-react") return nativeRequire(name);
     return {};

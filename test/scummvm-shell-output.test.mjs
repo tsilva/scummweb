@@ -95,7 +95,7 @@ test("mobile shell supports fill-screen canvas aspect mode", () => {
   assert.match(shellHtml, /canvas\.emscripten\.scummweb-fill-screen\{width:100%;height:100%\}/);
   assert.match(
     shellHtml,
-    /const setAspectRatioMode=mode=>\{canvas\.classList\.toggle\("scummweb-fill-screen",mode==="fill"\)\}/
+    /const setAspectRatioMode=mode=>\{canvas\.classList\.toggle\("scummweb-fill-screen",mode==="fill"\);canvas\.classList\.toggle\("scummweb-fit-height",mode==="fit-height"\)\}/
   );
   assert.match(shellHtml, /event\.data\?\.type==="scummweb-aspect-ratio"/);
 });
@@ -113,13 +113,15 @@ test("managed ScummVM audio glue primes and sanitizes WebAudio output", () => {
   );
 });
 
-test("mobile route exposes an aspect toggle and posts mode changes to the shell", () => {
+test("mobile route defaults to fit-height and has no aspect toggle", () => {
   const routeFrameSource = fs.readFileSync(gameRouteFramePath, "utf8");
   const controlsSource = fs.readFileSync(gamePlayerControlsPath, "utf8");
 
   assert.match(routeFrameSource, /SCUMMWEB_ASPECT_RATIO_MESSAGE_TYPE = "scummweb-aspect-ratio"/);
-  assert.match(routeFrameSource, /mode: isFillScreenAspect \? "fill" : "preserve"/);
-  assert.match(routeFrameSource, /showAspectRatioControl =\s+immersiveMode\.isMobileViewport/);
-  assert.match(controlsSource, /aria-pressed=\{isFillScreenAspect\}/);
-  assert.match(controlsSource, /className=\{`game-route-control-button is-aspect/);
+  assert.match(routeFrameSource, /mode: immersiveMode\.isMobileViewport \? "fit-height" : "preserve"/);
+  assert.match(routeFrameSource, /\[frameSrc, immersiveMode\.isMobileViewport\]/);
+  assert.doesNotMatch(routeFrameSource, /showAspectRatioControl|handleAspectRatioToggle|isFillScreenAspect/);
+  assert.doesNotMatch(controlsSource, /is-aspect|AspectRatio|FillScreenAspect/);
+  const shellHtml = fs.readFileSync(shellHtmlPath, "utf8");
+  assert.match(shellHtml, /canvas\.emscripten\.scummweb-fit-height\{width:calc\(100vh \* var\(--scummweb-canvas-ratio,1\.333333\)\);width:calc\(\(100dvh - env\(safe-area-inset-top\) - env\(safe-area-inset-bottom\)\) \* var\(--scummweb-canvas-ratio,1\.333333\)\);height:auto\}/);
 });

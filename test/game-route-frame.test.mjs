@@ -5,6 +5,7 @@ import { runInNewContext } from "node:vm";
 import test from "node:test";
 import swc from "next/dist/build/swc/index.js";
 import * as gameMenu from "../app/game-player/game-menu.mjs";
+import { gameLoadingStatus } from "../app/game-loading-status.mjs";
 
 const componentUrl = new URL("../app/game-route-frame.js", import.meta.url);
 const nativeRequire = createRequire(componentUrl);
@@ -44,6 +45,7 @@ for (const message of ["This ZIP link returned HTTP 404.", "Could not download t
         if (name === "react/jsx-runtime") return nativeRequire(name);
         if (name.endsWith("/game-menu.mjs")) return gameMenu;
         if (name === "next/navigation") return { useRouter: () => ({}) };
+        if (name === "./game-loading-status.mjs") return { gameLoadingStatus };
         if (name === "./game-bucket.mjs") return { readCatalogGameArchive: async () => {
           downloads++;
           throw new Error(message);
@@ -86,7 +88,7 @@ for (const message of ["This ZIP link returned HTTP 404.", "Could not download t
   });
 }
 
-function pendingArchivePlayer({ stalledNavigation = false } = {}) {
+function pendingArchivePlayer({ stalledNavigation = false, downloadDetails = { loaded: 12_400_000, total: 85_200_000 } } = {}) {
   const archive = Promise.withResolvers();
   const hooks = [];
   const messages = new Set();
@@ -151,9 +153,10 @@ function pendingArchivePlayer({ stalledNavigation = false } = {}) {
       if (name === "react/jsx-runtime") return nativeRequire(name);
       if (name.endsWith("/game-menu.mjs")) return gameMenu;
       if (name === "next/navigation") return { useRouter: () => ({}) };
+      if (name === "./game-loading-status.mjs") return { gameLoadingStatus };
       if (name === "./game-bucket.mjs") return { readCatalogGameArchive: (_url, { onProgress }) => {
         loadCount++;
-        onProgress(13);
+        onProgress(13, downloadDetails);
         return archive.promise;
       } };
       if (name.endsWith("/GamePlayerControls")) return Controls;
@@ -242,7 +245,7 @@ for (const runtimeFirst of [true, false]) {
     const player = pendingArchivePlayer();
     player.render();
     assert.ok(player.children.some(({ type }) => type === "iframe"), "runtime starts before the ZIP finishes");
-    assert.equal(player.overlay.bootStatusText, "Downloading game ZIP (13%)…");
+    assert.equal(player.overlay.bootStatusText, "Loading game (12.4 / 85.2 MB)…");
     assert.equal([...player.timers.values()].some(({ delay }) => delay === 120_000), false, "slow downloads do not trip the runtime timeout");
     player.ready("https://untrusted.test");
     player.ready("https://example.test", {});
@@ -261,6 +264,20 @@ for (const runtimeFirst of [true, false]) {
     assert.equal(player.loadCount, 1);
     player.unmount();
     assert.equal(player.timers.size, 0);
+  });
+}
+
+for (const [downloadDetails, label] of [
+  [{ loaded: 12_400_000, total: null }, "Loading game (12.4 MB)…"],
+  [{ loaded: 0, total: 85_200_000 }, "Loading game (0.0 / 85.2 MB)…"],
+  [{ cached: true }, "Opening cached game…"],
+  [{}, "Loading game…"],
+]) {
+  test(`archive loading status: ${label}`, () => {
+    const player = pendingArchivePlayer({ downloadDetails });
+    player.render();
+    assert.equal(player.overlay.bootStatusText, label);
+    player.unmount();
   });
 }
 

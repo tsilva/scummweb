@@ -102,24 +102,42 @@ finishes. Moving into the top 80 CSS pixels reveals them; leaving that area
 starts a one-second delay followed by a short fade. Continued movement below
 the reveal area does not restart the delay. Hidden buttons do not intercept
 pointer input and remain available through keyboard navigation. Focus within
-the controls prevents hiding. Reduced-motion preferences disable the fade.
+the controls prevents idle hiding. Cursor capture clears toolbar focus so the
+buttons can hide. Reduced-motion preferences disable the fade.
 
 The visibility observer listens in the host and same-origin game documents,
 reattaches after frame navigation, and releases listeners and timers on cleanup.
-Pointer capture hides the controls; releasing it or pressing **Esc** reveals
-them for three seconds. Opening the game menu pins them until **Esc** or
+Pointer lock hides the controls, including when already active at observer
+startup or frame navigation; releasing it or pressing **Esc** reveals them for
+three seconds. Opening the game menu pins them until **Esc** or
 cursor capture. Touch/mobile controls and bottom actions do not auto-hide.
 
 ### Mobile play
 
 The player uses the visible viewport height and respects display safe areas.
-Landscape is recommended, but **Play in portrait** keeps touch controls available
-without rotating. When fullscreen needs a gesture, **Continue** requests it;
-**Play in browser** dismisses the prompt. A rejected fullscreen request also
-allows play in the browser, and later game taps do not retry fullscreen.
+Mobile canvases fit that height while preserving the game’s aspect ratio; narrower
+viewports can crop the sides. Desktop canvases continue to fit within both dimensions.
+The toolbar has no aspect-ratio toggle. The parent reapplies the viewport’s sizing
+mode after frame navigation and when the mobile viewport classification changes.
+**Play**, **Continue** and **Start from beginning** show the game's loading screen
+from the launch gesture, before route loading or ZIP preparation. The launcher
+uses the same boot presentation as the player and keeps it visible until the
+player mounts. Failed ZIP preparation dismisses it so recovery actions remain
+available; file-access and locate prompts do not show the loading screen.
+
+These actions request fullscreen directly
+from the launch gesture, then request landscape. Mobile catalog launches use
+client navigation with the persistent document root in fullscreen. The player
+shows no fullscreen or rotation modal; unsupported or refused requests leave
+play and touch controls available in the current orientation. Exit requests
+portrait while fullscreen is still active, then exits fullscreen and releases
+the orientation lock. Browsers may reject locking or restore their own rotation
+policy after fullscreen; physical rotation cannot be guaranteed on those devices.
+File-access and locate actions keep their normal prompts without entering fullscreen.
 Orientation follows the viewport rather than the physical screen, so split-screen
 windows and tablets use the available space. Dragging moves the cursor; the
-cursor pad offers smaller movements, **L**/**R** send clicks, and double-tapping
+enlarged **Adjust** cursor pad offers smaller movements, the broad mouse-shaped
+**L**/**R** buttons send clicks, and double-tapping
 the game sends a left click. Loading screens scroll on short landscape viewports.
 
 Check the launcher, game landing hero, screenshot viewer, compatibility search, settings and player at
@@ -172,9 +190,10 @@ archive validation.
 
 ### Library and game files
 The launch overlay uses status text without a progress bar.
-During ZIP downloads, the launch status shows `Downloading game ZIP (42%)…`
-when the host provides a valid `Content-Length`; otherwise it keeps the download
-status without a percentage until the download completes.
+During ZIP downloads, the launch status shows `Loading game (12.4 / 85.2 MB)…`
+when the host provides a valid `Content-Length`; otherwise it shows the downloaded
+megabytes, such as `Loading game (12.4 MB)…`. Sizes use decimal megabytes
+(1 MB = 1,000,000 bytes), rounded to one decimal place.
 After successful verification, catalog and remote games are saved as one atomic
 record containing a file manifest and verified bytes. Repeat launches of the exact same
 URL (including its query parameters) mount Blob slices without downloading,
@@ -218,7 +237,10 @@ and filters for checked editions, warnings, failures, and untested games. See
 
 Select the **Add a game** card in the library to choose ZIPs, or drop one or
 more ZIP files containing ScummVM games onto the homepage or a game's page.
-The add card remains available when filtering the library.
+The add card is first in the grid and remains available when filtering or sorting
+the library. Mobile headers hide the Library, Compatibility, and ScummVM links
+and align the brand and action buttons in one row, respecting the top safe area.
+Mobile library-to-footer spacing uses reduced bottom and top padding.
 Mobile layouts and devices with a coarse primary pointer show tap-to-choose
 instructions; desktop layouts retain the drag-and-drop hint.
 Put one game in each ZIP. Folders, loose game files, and other
@@ -371,6 +393,9 @@ larger displays or unknown/remote artwork. Derivatives inherit their original's
 artwork provenance. Desktop hero titles fit within a reserved responsive heading
 slot. Descriptions and launch controls also reserve stable space across desktop
 slideshow changes. The static mobile hero uses natural content heights.
+Game cards show full-color artwork at widths up to 48rem and on devices without
+hover or with a coarse pointer. Desktop cards retain their grayscale-to-color
+hover and keyboard-focus treatment.
 Offscreen poster contents use native rendering containment with the existing
 card height reserved. They remain searchable and available to assistive
 technology; focused cards render normally so their focus outlines stay visible.
@@ -434,6 +459,12 @@ signal successful engine termination. Keep both paths in
 can bypass `Module.quit` and `Module.onExit`. The shell hides the canvas as soon
 as the exit signal arrives and returns to its same-origin `exitTo` destination,
 including when the game exits without recent input or requests Return to Launcher.
+Emscripten throws `ExitStatus` during termination. The shell ignores this signal
+when its status is zero, or when the generated unload hook raises SIGINT
+(status 130) during `beforeunload`. A capture listener marks teardown before
+the generated hook runs. Both error events and unhandled rejections use this
+check; other nonzero exits and unrelated exceptions retain error reporting. Keep
+`test/runtime-errors.test.mjs` passing alongside the exit-bridge tests.
 `prepare` and full runtime builds generate content fingerprints for the shell,
 core runtime and engine data. Only a matching resource/version pair gets immutable
 browser caching; application deployments refresh artwork without invalidating
@@ -776,8 +807,11 @@ by the [ScummVM favicon](https://www.scummvm.org/favicon-32x32.png). Its editabl
 source is [`image-assets/sources/favicon-source.svg`](../image-assets/sources/favicon-source.svg).
 Run `node scripts/generate-favicon-assets.mjs` after editing it to regenerate the
 SVG, 16/32/48px PNGs, and ICO in the branding, managed shell, and staged public
-directories. Browser tabs use this monogram; install icons retain the Adventure
-Terminal artwork.
+directories. Browser tabs and installed apps use this same monogram. The command
+also renders 192/512px install icons directly from the vector source and an opaque
+180px Apple touch icon, updates install-icon URLs in the shell and public manifests,
+and records the install exports in the provenance file. Install icons use the
+standard `any` purpose; the monogram is not designed for maskable cropping.
 
 ### Social preview assets
 

@@ -28,6 +28,7 @@ async function loadComponent(path, imports = {}, hooks = saveHooks, globals = {}
     require(name) {
       if (name === "react") return hooks;
       if (name === "react/jsx-runtime" || name === "lucide-react") return nativeRequire(name);
+      if (name.endsWith("/useLaunchFeedback")) return imports[name] || (() => ({ show() {}, dismiss() {}, overlay: null }));
       return imports[name] || {};
     },
   });
@@ -38,9 +39,12 @@ const LaunchPending = await loadComponent("../app/launch-pending.js");
 const useBrowserSave = (game) => savedIdentity === undefined ? undefined
   : savedIdentity === (game.saveVersionId || game.target) ? 0 : null;
 const LaunchButton = await loadComponent("../app/launch-button.js", {
+  "next/navigation": { useRouter: () => ({ push() {} }) },
+  "./game-player/immersive-mode.mjs": { beginMobileGameLaunch: () => false },
   "./use-browser-save": useBrowserSave, "./browser-saves.mjs": { cancelBrowserSaveQueries() {} },
 });
 const SourceLaunchActions = await loadComponent("../app/home-shell/source-launch-actions.js", {
+  "../game-player/immersive-mode.mjs": { beginMobileGameLaunch: () => false },
   "../use-browser-save": useBrowserSave, "../browser-saves.mjs": { cancelBrowserSaveQueries() {} },
 });
 const HeroStage = await loadComponent("../app/home-shell/hero-stage.js", {
@@ -187,4 +191,103 @@ test("save hook reads cached slots synchronously with a hydration-safe Play fall
   assert.equal(hook({ ...game, saveVersionId: "version-c" }), null);
   assert.equal(hook(game, false), null);
   assert.equal(typeof subscription(() => {}), "function");
+});
+
+
+test("mobile Play preserves the gesture and navigates in the fullscreen document", async () => {
+  const calls = [];
+  const MobileLaunch = await loadComponent("../app/launch-button.js", {
+    "./game-player/useLaunchFeedback": () => ({ show() { calls.push("loading screen"); }, overlay: null }),
+    "./use-browser-save": () => 0,
+    "./browser-saves.mjs": { cancelBrowserSaveQueries() { calls.push("cancel saves"); } },
+    "next/navigation": { useRouter: () => ({ push(href) { calls.push(href); } }) },
+    "./game-player/immersive-mode.mjs": { beginMobileGameLaunch() { calls.push("fullscreen"); return true; } },
+  });
+  const links = MobileLaunch({ game, entryPoint: "hero" }).props.children;
+  for (const link of links.filter(Boolean)) {
+    calls.length = 0;
+    link.props.onClick({ button: 0, currentTarget: { getAttribute: () => link.props.href },
+      preventDefault() { calls.push("prevent navigation"); } });
+    assert.deepEqual(calls, ["loading screen", "cancel saves", "fullscreen", "prevent navigation", link.props.href]);
+  }
+  calls.length = 0;
+  links[0].props.onClick({ button: 0, ctrlKey: true });
+  assert.deepEqual(calls, []);
+});
+
+test("source file-access and locate actions do not request fullscreen", async () => {
+  const calls = [];
+  const SourceActions = await loadComponent("../app/home-shell/source-launch-actions.js", {
+    "../use-browser-save": () => null,
+    "../browser-saves.mjs": { cancelBrowserSaveQueries() {} },
+    "../game-player/immersive-mode.mjs": { beginMobileGameLaunch() { calls.push("fullscreen"); } },
+  });
+  for (const status of [{}, { locate: true }, { needsAccess: true }]) {
+    calls.length = 0;
+    const component = SourceActions({ version: { game, locate: status.locate,
+      action: { needsAccess: status.needsAccess, onClick() { calls.push("action"); } } } });
+    component.props.children[1].props.onClick();
+    assert.deepEqual(calls, status.locate || status.needsAccess ? ["action"] : ["fullscreen", "action"]);
+  }
+});
+
+
+test("source launch feedback appears before asynchronous preparation and clears on failure", async () => {
+  const calls = [];
+  const SourceActions = await loadComponent("../app/home-shell/source-launch-actions.js", {
+    "../use-browser-save": () => null,
+    "../browser-saves.mjs": { cancelBrowserSaveQueries() {} },
+    "../game-player/useLaunchFeedback": () => ({
+      show(value) { assert.equal(value, game); calls.push("loading screen"); },
+      dismiss() { calls.push("dismiss"); }, overlay: null,
+    }),
+    "../game-player/immersive-mode.mjs": { beginMobileGameLaunch() { calls.push("fullscreen"); } },
+  });
+  for (const navigated of [true, false]) {
+    calls.length = 0;
+    const pending = Promise.withResolvers();
+    const component = SourceActions({ version: { game, action: { onClick() { calls.push("prepare"); return pending.promise; } } } });
+    component.props.children[1].props.onClick();
+    assert.deepEqual(calls, ["loading screen", "fullscreen", "prepare"]);
+    pending.resolve(navigated);
+    await new Promise(setImmediate);
+    assert.deepEqual(calls, navigated ? ["loading screen", "fullscreen", "prepare"] : ["loading screen", "fullscreen", "prepare", "dismiss"]);
+  }
+  for (const status of [{ locate: true }, { needsAccess: true }]) {
+    calls.length = 0;
+    const component = SourceActions({ version: { game, locate: status.locate,
+      action: { needsAccess: status.needsAccess, onClick() { calls.push("access"); } } } });
+    component.props.children[1].props.onClick();
+    await new Promise(setImmediate);
+    assert.deepEqual(calls, ["access"]);
+  }
+});
+
+test("launch feedback commits synchronously and portals the existing boot screen outside the hero", async () => {
+  let selected = null;
+  const calls = [];
+  const body = {};
+  function BootOverlay() {}
+  const useFeedback = await loadComponent("../app/game-player/useLaunchFeedback.js", {
+    "./GameBootOverlay": BootOverlay,
+    "react-dom": {
+      flushSync(callback) { calls.push("flush start"); callback(); calls.push("flush end"); },
+      createPortal(content, target) { assert.equal(target, body); return content; },
+    },
+  }, {
+    useState: () => [selected, (value) => { selected = value; calls.push("state committed"); }],
+    useEffect() {},
+  }, { document: { body } });
+  const initial = useFeedback();
+  assert.equal(initial.overlay, null);
+  initial.show(game);
+  assert.deepEqual(calls, ["flush start", "state committed", "flush end"]);
+  const overlay = useFeedback().overlay;
+  assert.equal(overlay.props.className, "game-launch-feedback");
+  assert.equal(overlay.props.children.type, BootOverlay);
+  assert.equal(overlay.props.children.props.game, game);
+  assert.equal(overlay.props.children.props.showBootOverlay, true);
+  assert.equal(overlay.props.children.props.bootStatusText, "Loading game…");
+  useFeedback().dismiss();
+  assert.equal(useFeedback().overlay, null);
 });

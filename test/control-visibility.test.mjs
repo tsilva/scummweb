@@ -2,10 +2,11 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { observeControlVisibility } from "../app/game-player/control-visibility.mjs";
 
-function player(menuShortcut) {
+function player(menuShortcut, { initiallyCaptured = false } = {}) {
   const host = new EventTarget();
   host.documentElement = new EventTarget();
   const game = new EventTarget();
+  if (initiallyCaptured) game.pointerLockElement = {};
   const controls = new EventTarget();
   controls.ownerDocument = host;
   controls.contains = (element) => element === controls;
@@ -101,6 +102,45 @@ test("cursor capture hides controls, ignores fixed coordinates, and Escape relea
   client.game.pointerLockElement = null;
   client.fire(client.game, "pointerlockchange");
   assert.equal(client.visible, true);
+  client.observer.dispose();
+});
+
+test("controls start hidden when the game captured the cursor before observation", () => {
+  const client = player(undefined, { initiallyCaptured: true });
+  assert.equal(client.visible, false);
+  assert.equal(client.timers.size, 0);
+  client.game.pointerLockElement = null;
+  client.fire(client.game, "pointerlockchange");
+  assert.equal(client.visible, true);
+  client.observer.dispose();
+});
+
+test("cursor capture clears toolbar focus so it cannot keep buttons visible", () => {
+  const client = player();
+  client.controls.blur = () => {
+    client.host.activeElement = null;
+    client.fire(client.controls, "focusout");
+  };
+  client.host.activeElement = client.controls;
+  client.fire(client.controls, "focusin");
+  client.game.pointerLockElement = {};
+  client.fire(client.game, "pointerlockchange");
+  assert.equal(client.host.activeElement, null);
+  assert.equal(client.visible, false);
+  assert.equal(client.timers.size, 0);
+  client.move(20);
+  assert.equal(client.visible, false);
+  client.observer.dispose();
+});
+
+test("frame navigation immediately honors an already captured cursor", () => {
+  const client = player();
+  const replacement = new EventTarget();
+  replacement.pointerLockElement = {};
+  client.frame.contentDocument = replacement;
+  client.fire(client.frame, "load");
+  assert.equal(client.visible, false);
+  assert.equal(client.timers.size, 0);
   client.observer.dispose();
 });
 

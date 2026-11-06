@@ -61,8 +61,10 @@ export function observeControlVisibility({ controls, frame, hostWindow, menuShor
     nearTop = false;
     if (frameDocument?.pointerLockElement || hostDocument.pointerLockElement) {
       menuPinned = false;
+      // Capture takes priority over :focus-within keeping the toolbar visible.
+      if (focused()) hostDocument.activeElement.blur();
       cancelHide();
-      if (!focused()) onVisible(false);
+      onVisible(false);
     } else {
       reveal();
       scheduleHide(3000);
@@ -83,6 +85,7 @@ export function observeControlVisibility({ controls, frame, hostWindow, menuShor
     removeFrameListeners = () => {
       for (const [type, callback] of events) document.removeEventListener(type, callback, listenerOptions);
     };
+    pointerLockChanged();
   };
   listen(hostDocument, "pointermove", move);
   listen(hostDocument, "keydown", keydown);
@@ -95,9 +98,8 @@ export function observeControlVisibility({ controls, frame, hostWindow, menuShor
     timer = hostWindow.setTimeout(() => { timer = undefined; scheduleHide(); }, 0);
   });
   if (frame) listen(frame, "load", attachFrame);
-  attachFrame();
-  reveal();
-  scheduleHide(3000);
+  if (frame?.contentDocument) attachFrame();
+  else pointerLockChanged();
   return {
     holdForMenu,
     dispose() {
