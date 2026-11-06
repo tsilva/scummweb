@@ -43,7 +43,8 @@ and **Sfinx**, and the original Apple II **Mystery House** public-domain release
 **God of Thunder** is supported through personal ZIP imports; its game files
 are not included.
 The launch screen shows loading status text without a progress bar. ZIP downloads
-show a percentage in that text when the host provides the total file size.
+show “Loading game (12.4 / 85.2 MB)…” with the downloaded and total megabytes.
+When the host does not provide the total size, only downloaded megabytes appear.
 Successfully opened games are cached in your browser, so playing the same
 URL again skips downloading and unpacking the ZIP. The cache holds up to four
 games; clearing site data or ending an incognito session removes them.
@@ -70,13 +71,21 @@ screen option keep their usual interface.
 
 On desktop, the top controls fade away during play. Move the pointer into the
 top 80 pixels to reveal them, or press **Esc** to release a captured cursor and
-show them briefly. Keyboard focus keeps controls visible. Opening the game
-menu keeps them visible until **Esc** or the game captures the cursor again.
+show them briefly. Cursor capture hides the controls immediately, including
+during startup. Keyboard focus keeps controls visible until cursor capture.
+Opening the game menu keeps them visible until **Esc** or the game captures the cursor again.
 Touch controls stay visible.
 
-On phones, landscape gives the largest game view. You can also choose **Play in
-portrait** or **Play in browser** without fullscreen. Drag on the game or cursor
-pad to move the pointer; use **L** and **R** for left and right clicks. Double-tap
+Installed desktop apps use the same green **SW** icon as browser tabs, rendered
+at 192×192 and 512×512 for sharp display.
+
+Tapping **Play** shows the game loading screen immediately while the player opens.
+On phones, **Play** requests fullscreen and landscape immediately, without an
+extra prompt. Exiting requests portrait before returning to the library. Where
+the browser does not support fullscreen or orientation locking, play continues
+in the current orientation. Drag on the game or cursor
+pad to move the pointer; the larger **Adjust** pad helps with fine movements.
+The two large mouse-shaped **L** and **R** buttons send left and right clicks. Double-tap
 the game for a left click. The top controls exit to the library and, for supported
 games, open the game's own menu. The menu button never opens ScummVM's global menu.
 
@@ -108,6 +117,9 @@ Reserved text and action areas keep the slideshow stable.
 Mobile uses a compact, static artwork hero, shorter descriptions, full-width launch
 and browse buttons, and an image strip without a visible heading. Extra game details
 and the license link are omitted from the mobile hero.
+Game cards stay in color on mobile and touch screens without requiring hover.
+The mobile header keeps the logo and action buttons in one compact row, with
+the Library, Compatibility, and ScummVM links hidden.
 Select a screenshot to expand it inline; use the arrows to browse and Escape to close it.
 
 The desktop homepage slideshow advances every eight seconds; use the pause button to stop
@@ -120,12 +132,15 @@ Game pages open with rotation paused. Exiting a catalog game returns to its game
 page; unrecognized imports return to the homepage with their game selected.
 For a single-version game with a supported player save, select **Continue** there
 to resume, or **Start from beginning** to start fresh.
+Mobile games fit the available screen height while preserving their proportions.
+The player toolbar provides fullscreen and game-menu controls without an aspect-ratio toggle.
 Quitting inside a game or choosing ScummVM’s **Return to Launcher** also returns
-to ScummWEB without opening ScummVM’s game-selection menu.
+to ScummWEB without opening ScummVM’s game-selection menu or showing a JavaScript
+error banner for a successful quit.
 
 ## Add your games
 
-Select **Add a game** in the library to choose ZIPs. On mobile, the card prompts
+Select **Add a game**, the first card in the library, to choose ZIPs. On mobile, the card prompts
 you to tap to choose your game ZIPs. On desktop, you can also drop ScummVM game ZIPs
 onto the homepage or a game’s page, then select a
 poster to play. Local game files stay on your device. Put one game in each

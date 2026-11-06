@@ -1379,6 +1379,16 @@ button.nav-icon-link {
   filter: grayscale(1);
 }
 
+/* Mobile and touch cards show their color without requiring hover. */
+@media (max-width: 48rem), (hover: none), (pointer: coarse) {
+  .landscape-card-image,
+  .poster-media-image,
+  .spotlight-media-image,
+  .source-poster-card .bucket-poster-placeholder {
+    filter: none;
+  }
+}
+
 .source-poster-hint {
   position: absolute;
   inset-block-start: 0.6rem;

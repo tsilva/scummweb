@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { LogOut } from "lucide-react";
 import { prepareRemoteGameArchive } from "../../remote-game-archive.mjs";
+import { gameLoadingStatus } from "../../game-loading-status.mjs";
 import GameRouteFrame from "../../game-route-frame";
 import GameBootOverlay from "../../game-player/GameBootOverlay";
 import { buildZipGamePlayerUrl } from "../../home-shell/zip-game-player";
@@ -12,7 +13,7 @@ import { getSelectedGamePresentation, openSelectedGameArchive } from "../../loca
 function ArchivePlayer({ game, loadArchive, remote = false }) {
   return (
     <GameRouteFrame
-      archiveLoadingText={remote ? "Downloading game ZIP…" : "Opening game files…"}
+      archiveLoadingText={remote ? "Loading game…" : "Opening game files…"}
       game={game}
       target={game?.target}
       loadArchive={loadArchive}
@@ -36,10 +37,10 @@ function RemoteArchivePlayer({ zip }) {
     const controller = new AbortController();
     prepareRemoteGameArchive(zip, {
       signal: controller.signal,
-      onDownloading: () => setStatus("Downloading game ZIP…"),
-      onProgress: (progress, { cached = false } = {}) => {
+      onDownloading: () => setStatus("Loading game…"),
+      onProgress: (_progress, details) => {
         if (!controller.signal.aborted) {
-          setStatus(cached ? "Opening cached game ZIP…" : progress === null ? "Downloading game ZIP…" : `Downloading game ZIP (${progress}%)…`);
+          setStatus(gameLoadingStatus(details));
         }
       },
     }).then((result) => {

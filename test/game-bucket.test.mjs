@@ -104,7 +104,7 @@ test("full downloads reject HTTP errors and web pages before reading their bodie
   }
 });
 
-test("ZIP downloads report streamed percentages and handle unknown totals", async (t) => {
+test("ZIP downloads report streamed byte counts and handle unknown totals", async (t) => {
   const zip = new ZipWriter(new BlobWriter());
   await zip.add("sky.dnr", new Uint8ArrayReader(Uint8Array.of(1, 2, 3)));
   const bytes = new Uint8Array(await (await zip.close()).arrayBuffer());
@@ -119,12 +119,22 @@ test("ZIP downloads report streamed percentages and handle unknown totals", asyn
       },
     }), { headers: contentLength === null ? {} : { "content-length": contentLength } }));
     const files = await readRemoteGameArchive(`${customUrl}/sky.zip`, {
-      onProgress: (percent) => progress.push(percent),
+      onProgress: (percent, details) => progress.push([percent, details]),
     });
     assert.equal(files[0].path, "sky.dnr");
     assert.deepEqual(progress, contentLength === String(bytes.length)
-      ? [0, Math.floor(midpoint / bytes.length * 100), 99, 100]
-      : [null, 100]);
+      ? [
+        [0, { loaded: 0, total: bytes.length }],
+        [Math.floor(midpoint / bytes.length * 100), { loaded: midpoint, total: bytes.length }],
+        [99, { loaded: bytes.length, total: bytes.length }],
+        [100, { loaded: bytes.length, total: bytes.length }],
+      ]
+      : [
+        [null, { loaded: 0, total: null }],
+        [null, { loaded: midpoint, total: null }],
+        [null, { loaded: bytes.length, total: null }],
+        [100, { loaded: bytes.length, total: bytes.length }],
+      ]);
     fetch.mock.restore();
   }
 });

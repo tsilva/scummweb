@@ -3,12 +3,12 @@
     "name": "ScummWEB - classic adventure games online",
     "icons": [
         {
-            "src": "scummvm-192.png?v=dev",
+            "src": "scummvm-192.png?v=sw-5e9eb73a97c45323",
             "type": "image/png",
             "sizes": "192x192"
         },
         {
-            "src": "scummvm-512.png?v=dev",
+            "src": "scummvm-512.png?v=sw-d1093accfb9d92c4",
             "type": "image/png",
             "sizes": "512x512"
         }

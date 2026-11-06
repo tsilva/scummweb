@@ -1,5 +1,5 @@
 {
-  "version": "sha-af45c05f9e759b639c61c71f",
+  "version": "sha-1ecf567bb43da4b5aa250b04",
   "files": {
     "/scummvm.js": "sha-e729db80d8cdf2117de6dcca",
     "/scummvm.wasm": "sha-4f4fb4423cb3732b22b94941",
@@ -119,6 +119,6 @@
     "/launcher/skip-intro/lure/lure.000": "sha-51bd53a4763706b92c357180",
     "/launcher/skip-intro/queen/queen.s00": "sha-a8ba6d91d0b2bfef6a1c61db",
     "/launcher/skip-intro/sky/SKY-VM.000": "sha-4a980c9a92fb713cf4e4f990",
-    "/scummvm.html": "sha-af45c05f9e759b639c61c71f"
+    "/scummvm.html": "sha-1ecf567bb43da4b5aa250b04"
   }
 }

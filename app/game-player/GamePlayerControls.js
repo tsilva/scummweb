@@ -1,4 +1,4 @@
-import { LogOut, Maximize, Menu, Minimize, Ratio, StretchHorizontal } from "lucide-react";
+import { LogOut, Maximize, Menu, Minimize } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { observeControlVisibility } from "./control-visibility.mjs";
 
@@ -7,17 +7,14 @@ export default function GamePlayerControls({
   frameRef,
   menuShortcut,
   handleControlMouseDown,
-  isFillScreenAspect,
   isFullscreen,
   onExit,
   onOpenMenu,
   onSkipIntro,
-  onToggleAspectRatio,
   onTouchLeftClick,
   onTouchRightClick,
   onToggleFullscreen,
   showBottomActions,
-  showAspectRatioControl,
   showExitControl,
   showFullscreenControl,
   showGameMenuButton,
@@ -45,9 +42,7 @@ export default function GamePlayerControls({
   }, [autoHide, frameRef, menuShortcut]);
 
   const FullscreenIcon = isFullscreen ? Minimize : Maximize;
-  const AspectRatioIcon = isFillScreenAspect ? StretchHorizontal : Ratio;
   const fullscreenLabel = isFullscreen ? "Exit fullscreen" : "Enter fullscreen";
-  const aspectRatioLabel = isFillScreenAspect ? "Preserve aspect ratio" : "Fill screen";
   const gameMenuLabel = "Open game menu";
 
   return (
@@ -68,19 +63,6 @@ export default function GamePlayerControls({
           </div>
         ) : null}
         <div className="game-route-control-group is-right">
-          {showAspectRatioControl ? (
-            <button
-              aria-label={aspectRatioLabel}
-              aria-pressed={isFillScreenAspect}
-              className={`game-route-control-button is-aspect${isFillScreenAspect ? " is-active" : ""}`}
-              onClick={onToggleAspectRatio}
-              onMouseDown={handleControlMouseDown}
-              title={aspectRatioLabel}
-              type="button"
-            >
-              <AspectRatioIcon aria-hidden="true" size={18} strokeWidth={2} />
-            </button>
-          ) : null}
           {showFullscreenControl ? (
             <button
               aria-label={fullscreenLabel}
