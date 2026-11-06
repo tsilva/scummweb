@@ -594,7 +594,7 @@ export default function GameRouteFrame({
   const showSkipIntroBottomAction = showSkipIntroAction && !showBootOverlay;
   const showExitControl = true;
   const showFullscreenControl =
-    immersiveMode.canFullscreen && bootState.hasBootPresentationCompleted;
+    !immersiveMode.isMobileViewport && immersiveMode.canFullscreen && bootState.hasBootPresentationCompleted;
   const showGameMenuButton =
     Boolean(gameMenuShortcut) && bootState.showGameMenuButton && !hasBootFailed;
   const showTouchClickButtons = mobileControlsReady;

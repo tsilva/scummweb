@@ -127,7 +127,8 @@ available; file-access and locate prompts do not show the loading screen.
 
 These actions request fullscreen directly
 from the launch gesture, then request landscape. Mobile catalog launches use
-client navigation with the persistent document root in fullscreen. The player
+client navigation with the persistent document root in fullscreen. The fullscreen
+toolbar button is available only in desktop mode. The player
 shows no fullscreen or rotation modal; unsupported or refused requests leave
 play and touch controls available in the current orientation. Exit requests
 portrait while fullscreen is still active, then exits fullscreen and releases
@@ -240,6 +241,8 @@ more ZIP files containing ScummVM games onto the homepage or a game's page.
 The add card is first in the grid and remains available when filtering or sorting
 the library. Mobile headers hide the Library, Compatibility, and ScummVM links
 and align the brand and action buttons in one row, respecting the top safe area.
+Keep the header tagline at a contrast ratio of at least 4.5:1 against the
+navigation background, including on the compatibility page.
 Mobile library-to-footer spacing uses reduced bottom and top padding.
 Mobile layouts and devices with a coarse primary pointer show tap-to-choose
 instructions; desktop layouts retain the drag-and-drop hint.
@@ -329,6 +332,20 @@ existing version and file-access flow.
 Only bundled games have public `/<game-slug>/play` routes; import-only games use
 the local player after import. Adding recognition metadata automatically adds
 its landing page and sitemap entry on the next build.
+
+Search and sharing titles identify import requirements and edition labels.
+Optional `shortTitle` values in the artwork catalog provide concise names for
+long titles without changing display titles, game matching, or public URLs.
+The title formatter includes the site name when it fits the 65-character
+editorial budget. Descriptions use the game's mobile summary or summary,
+shortened at word boundaries to 160 characters with access requirements first.
+These budgets guide copy; search engines choose their own snippet widths.
+Player links reuse their landing page's Open Graph and Twitter card metadata
+while retaining `noindex` and the landing-page canonical URL.
+
+Structured data only emits developer/creator and publisher credits from explicit,
+verified `developer` and `publisher` fields. The generic display `studio` credit
+does not establish either role; omit uncertain credits rather than infer them.
 
 The navigation and footer link to `/compatibility`, which includes ordinary links
 to every recognized game page in its initial HTML. Edition-specific checks match
@@ -826,7 +843,10 @@ standard `any` purpose; the monogram is not designed for maskable cropping.
 Game cards are rendered by `pnpm generate:social-cards`, also run by
 `prepare` before development, production builds, and start. The generator uses
 the same bundled catalog and presentation copy as game pages, embeds verified artwork bytes,
-and writes 1200×630 PNGs under `public/social-cards/`. It never requests a deployed
+and writes 1200×630 PNGs under `public/social-cards/`. Cards prefer hero artwork,
+falling back to spotlight or poster art when no hero is configured. The artwork
+uses 50% opacity beneath the dark gradient; brighter text and dark text shadows
+keep the title, description, and credits readable. It never requests a deployed
 site or an image rendering service. Published source images are downloaded from R2
 when absent from the local build cache. The homepage continues using its existing branding PNG.
 

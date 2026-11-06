@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import library from "../scummvm-shell/games.json" with { type: "json" };
+import { getBundledGameLibrary } from "../lib/catalog.mjs";
+import { getRecognizedGames } from "../app/recognized-games.mjs";
 import { getGameSocialCardPath } from "../lib/social-card-paths.mjs";
 import {
   HOME_DESCRIPTION,
@@ -33,7 +36,7 @@ test("homepage metadata uses ScummWEB branding and aligned social copy", () => {
     assert.equal(metadata.title, "ScummVM Online – Play Classic Adventure Games | ScummWEB");
     assert.equal(
       metadata.description,
-      "ScummWEB is an independent browser frontend for ScummVM, unaffiliated with the ScummVM project. Play free adventures or import your own compatible games.",
+      "Play free classic adventures in your browser or import your own ScummVM games. ScummWEB is independent and unaffiliated with ScummVM.",
     );
     assert.equal(metadata.openGraph.description, metadata.description);
     assert.equal(metadata.twitter.description, metadata.description);
@@ -51,7 +54,8 @@ test("homepage metadata uses ScummWEB branding and aligned social copy", () => {
       },
     ]);
   } finally {
-    process.env.NEXT_PUBLIC_SITE_URL = previousSiteUrl;
+    if (previousSiteUrl === undefined) delete process.env.NEXT_PUBLIC_SITE_URL;
+    else process.env.NEXT_PUBLIC_SITE_URL = previousSiteUrl;
   }
 });
 
@@ -65,11 +69,11 @@ test("game metadata and play-route metadata keep canonicals aligned and play rou
 
     assert.equal(
       metadata.title,
-      "Play Beneath a Steel Sky in your browser | ScummWEB",
+      "Beneath a Steel Sky — Play Online | ScummWEB",
     );
     assert.equal(
       buildGameDescription(sampleGame),
-      "Play Beneath a Steel Sky in your browser on ScummWEB. Beneath a Steel Sky opens with a broken hovercar, a towering dystopian city, and sharp cyberpunk wit.",
+      "Play free in your browser. Beneath a Steel Sky opens with a broken hovercar, a towering dystopian city, and sharp cyberpunk wit.",
     );
     assert.equal(
       metadata.alternates.canonical,
@@ -77,7 +81,7 @@ test("game metadata and play-route metadata keep canonicals aligned and play rou
     );
     assert.equal(
       metadata.openGraph.images[0].alt,
-      "Beneath a Steel Sky Open Graph card for browser play on ScummWEB",
+      "Beneath a Steel Sky artwork on ScummWEB",
     );
     assert.equal(
       metadata.openGraph.images[0].url,
@@ -86,7 +90,7 @@ test("game metadata and play-route metadata keep canonicals aligned and play rou
     assert.deepEqual(metadata.twitter.images, [
       {
         url: `https://example.com${getGameSocialCardPath(sampleGame)}`,
-        alt: "Beneath a Steel Sky Open Graph card for browser play on ScummWEB",
+        alt: "Beneath a Steel Sky artwork on ScummWEB",
       },
     ]);
     assert.deepEqual(playMetadata.robots, {
@@ -101,8 +105,12 @@ test("game metadata and play-route metadata keep canonicals aligned and play rou
       playMetadata.alternates.canonical,
       "https://example.com/beneath-a-steel-sky",
     );
+    assert.deepEqual(playMetadata.openGraph, metadata.openGraph);
+    assert.deepEqual(playMetadata.twitter, metadata.twitter);
+    assert.equal(playMetadata.description, metadata.description);
   } finally {
-    process.env.NEXT_PUBLIC_SITE_URL = previousSiteUrl;
+    if (previousSiteUrl === undefined) delete process.env.NEXT_PUBLIC_SITE_URL;
+    else process.env.NEXT_PUBLIC_SITE_URL = previousSiteUrl;
   }
 });
 
@@ -122,8 +130,50 @@ test("structured data matches the new brand and metadata copy", () => {
     );
     assert.equal(gameStructuredData.description, buildGameDescription(sampleGame));
     assert.equal(gameStructuredData.image, "https://example.com/launcher/sky-cover.webp");
-    assert.equal(gameStructuredData.publisher.name, "Revolution Software");
+    assert.equal(gameStructuredData.publisher, undefined);
+    assert.equal(gameStructuredData.creator, undefined);
+    const credited = buildGameStructuredData({ ...sampleGame, developer: "Verified Developer", publisher: "Verified Publisher" });
+    assert.equal(credited.creator.name, "Verified Developer");
+    assert.equal(credited.publisher.name, "Verified Publisher");
   } finally {
-    process.env.NEXT_PUBLIC_SITE_URL = previousSiteUrl;
+    if (previousSiteUrl === undefined) delete process.env.NEXT_PUBLIC_SITE_URL;
+    else process.env.NEXT_PUBLIC_SITE_URL = previousSiteUrl;
   }
+});
+
+test("catalog metadata is concise, unique, edition-specific and clear about imports", () => {
+  const games = getRecognizedGames(getBundledGameLibrary(library).games);
+  const titles = new Set();
+  const descriptions = new Set();
+  for (const game of games) {
+    const metadata = buildGameMetadata(game);
+    assert.ok(metadata.title.length <= 65, `${game.slug}: ${metadata.title}`);
+    assert.ok(metadata.description.length <= 160, `${game.slug}: ${metadata.description}`);
+    assert.ok(!titles.has(metadata.title), `Duplicate title: ${metadata.title}`);
+    assert.ok(!descriptions.has(metadata.description), `Duplicate description: ${metadata.description}`);
+    titles.add(metadata.title);
+    descriptions.add(metadata.description);
+    if (game.importRequired) {
+      assert.match(metadata.title, /Import & Play/);
+      assert.match(metadata.description, /^Import your copy to play online\./);
+      assert.equal(buildGameStructuredData(game).isAccessibleForFree, undefined);
+    }
+    if (game.editionLabel) {
+      assert.ok(metadata.title.includes(`(${game.editionLabel})`), game.slug);
+      assert.ok(buildGameStructuredData(game).name.endsWith(`(${game.editionLabel})`), game.slug);
+    }
+    if (/\(Demo\)$/.test(game.displayTitle)) assert.match(metadata.title, /\(Demo\)/);
+    assert.equal(metadata.openGraph.title, metadata.title);
+    assert.equal(metadata.twitter.description, metadata.description);
+  }
+});
+
+test("long descriptions shorten at word boundaries while retaining access requirements", () => {
+  const game = { ...sampleGame, importRequired: true, summary: "An elaborate adventure through unfamiliar lands and ancient ruins. ".repeat(8) };
+  const description = buildGameDescription(game);
+  assert.ok(description.length <= 160);
+  assert.match(description, /^Import your copy to play online\./);
+  assert.ok(description.endsWith("…"));
+  const excerpt = description.replace(/^Import your copy to play online\. /, "").slice(0, -1);
+  assert.ok(`${game.summary} `.includes(`${excerpt} `), "Excerpt must end on a complete word");
 });

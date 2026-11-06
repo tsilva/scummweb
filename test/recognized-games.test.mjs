@@ -53,8 +53,8 @@ test("original title parentheses survive routing and import pages disclose the f
   assert.ok(games.find(({ slug }) => slug === "gnap-u-f-o-s"));
   const game = games.find(({ slug }) => slug === "day-of-the-tentacle");
   const metadata = buildGameMetadata(game);
-  assert.match(metadata.description, /Import your own copy of Day of the Tentacle/);
-  assert.match(metadata.description, /Game files are not provided due to copyright restrictions/);
+  assert.match(metadata.title, /Day of the Tentacle.*Import & Play/);
+  assert.match(metadata.description, /^Import your copy to play online\./);
   assert.ok(metadata.alternates.canonical.endsWith(game.href));
   assert.equal(buildGameStructuredData(game).isAccessibleForFree, undefined);
   assert.equal(buildGameStructuredData(games.find(({ target }) => target === "sky")).isAccessibleForFree, true);
