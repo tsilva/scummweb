@@ -5,7 +5,7 @@ import useLaunchFeedback from "../game-player/useLaunchFeedback";
 import useBrowserSave from "../use-browser-save";
 import { cancelBrowserSaveQueries } from "../browser-saves.mjs";
 
-export default function SourceLaunchActions({ version, onLaunch, helpId = "game-file-access-help", showAccessHelp = true }) {
+export default function SourceLaunchActions({ version, onLaunch, helpId = "game-file-access-help", showAccessHelp = true, browseHref }) {
   const launchFeedback = useLaunchFeedback();
   const slot = useBrowserSave(version.game);
   const needsAccess = version.action.needsAccess;
@@ -37,6 +37,7 @@ export default function SourceLaunchActions({ version, onLaunch, helpId = "game-
     </button>
     {canContinue && <button type="button" className="secondary-button start-fresh-button"
       disabled={version.action.disabled} onClick={() => { void launch(version.action.onClick); }}>Start from beginning</button>}
+    {!canContinue && browseHref && <a className="secondary-button browse-games-button" href={browseHref}>Browse Games</a>}
     {launchFeedback.overlay}
   </>;
 }

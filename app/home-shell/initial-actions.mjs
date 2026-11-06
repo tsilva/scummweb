@@ -80,6 +80,15 @@ export function prepareInitialActions(container, readSave) {
     restart.href = href;
     restart.hidden = !save;
     if (state.source) { restart.removeAttribute("href"); restart.setAttribute("aria-disabled", "true"); }
+    let browse = container.querySelector(".browse-games-button");
+    if (!browse) {
+      browse = document.createElement("a");
+      browse.className = "secondary-button browse-games-button";
+      browse.textContent = "Browse Games";
+      primary.after(browse);
+    }
+    browse.href = "#library";
+    browse.hidden = Boolean(save);
     const license = container.querySelector(".hero-license");
     const licenseUrl = state.infoHref && new URL(state.infoHref, window.location.origin);
     if (license) {
@@ -90,7 +99,8 @@ export function prepareInitialActions(container, readSave) {
     if (Array.isArray(state.versions) && state.versions.length > 1) {
       chooser.removeAttribute("data-reserved");
       chooser.removeAttribute("aria-hidden");
-      chooser.innerHTML = '<label class="library-select"><select aria-label="Game version" disabled></select><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"/></svg></label>';
+      chooser.innerHTML = '<label class="library-select"><span class="hero-version-value" aria-hidden="true"></span><select aria-label="Game version" disabled></select><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"/></svg></label>';
+      chooser.querySelector(".hero-version-value").textContent = state.versions.find(({ key }) => key === state.version)?.label || "Included version";
       for (const version of state.versions) {
         const option = document.createElement("option");
         option.value = version.key; option.textContent = version.label || "Included version";

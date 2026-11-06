@@ -133,10 +133,15 @@ export function groupGameVersions(items) {
 export function chooseGameVersion(versions, remembered, language = "") {
   const available = versions.filter(({ source, status }) => !source || ["available", "session"].includes(status));
   const choices = available.length ? available : versions;
-  return choices.find(({ key }) => key === remembered)
-    || choices.find(({ source, game }) => !source && !game.importRequired)
-    || choices.find(({ game }) => game.language?.toLowerCase() === language.toLowerCase())
-    || choices[0];
+  const selected = choices.find(({ key }) => key === remembered);
+  if (selected) return selected;
+  const revisions = choices.filter(({ game }) => game.revision);
+  const compare = (a, b) => a.game.revision.localeCompare(b.game.revision, "en", { numeric: true, sensitivity: "base" });
+  const latest = revisions.reduce((best, version) => !best || compare(version, best) > 0 ? version : best, null);
+  const defaults = latest ? revisions.filter((version) => compare(version, latest) === 0) : choices;
+  return defaults.find(({ source, game }) => !source && !game.importRequired)
+    || defaults.find(({ game }) => game.language?.toLowerCase() === language.toLowerCase())
+    || defaults[0];
 }
 
 export function readChosenVersion(groupKey) {
