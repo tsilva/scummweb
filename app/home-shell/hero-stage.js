@@ -70,6 +70,7 @@ export default function HeroStage({
                 </button>
               ) : <LaunchButton game={featuredGame} entryPoint={isHomePage ? "hero" : "game_detail"}
                 label="Play" onLaunch={onLaunch} />}
+              <a className="secondary-button hero-browse" href="#library">{HOME_BROWSE_LABEL}</a>
               <div className="hero-version-control" data-reserved={!hasMultipleVersions || undefined}
                 aria-hidden={!hasMultipleVersions || undefined}>
                 {hasMultipleVersions && <label className="library-select">
@@ -83,7 +84,6 @@ export default function HeroStage({
                   <ChevronDown size={16} aria-hidden="true" />
                 </label>}
               </div>
-              <a className="secondary-button hero-browse" href="#library">{HOME_BROWSE_LABEL}</a>
               {featuredGame.infoHref && <a className="hero-license" href={featuredGame.infoHref}
                 {...getDialogLinkProps(featuredGame.infoHref)}>Readme / License</a>}
             </div>

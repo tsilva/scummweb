@@ -5,7 +5,9 @@
 Select a library or Recently Played card to navigate to the game’s slug route
 and jump instantly to its hero, screenshots, metadata, game notices, and launch
 options. Recognized platform, language, and edition variants share a card;
-use the version selector beside **Play** in the hero to select a copy. Games
+use the version selector below **Play** and **Browse Games** in the hero to select
+a copy. The buttons share the first row, and the selector spans both columns on
+desktop and mobile. Games
 with one version show an edition badge beside their metadata instead of a selector.
 The badge is hidden when multiple versions are available. Both positions reserve
 their layout space so restoring versions does not move nearby controls or resize
