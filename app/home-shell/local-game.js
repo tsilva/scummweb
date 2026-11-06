@@ -75,7 +75,7 @@ export default function GameDropOverlay({ importRoots, disabled, pending, result
       <div className="game-drop-message">
         <Download aria-hidden="true" size={32} />
         <strong>Drop to add games to your library</strong>
-        <span>Drop ScummVM game ZIPs. Files stay on this device.</span>
+        <span>Drop ScummVM game ZIPs or folders containing them. Files stay on this device.</span>
       </div>
     </div>,
     document.body,
