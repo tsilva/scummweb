@@ -1570,7 +1570,7 @@ button.nav-icon-link {
 
 .game-screenshots.content-band {
   max-width: 94rem;
-  padding: 0 3.25rem 2rem;
+  padding: 2rem 3.25rem 2rem;
   margin: 0 auto;
   content-visibility: visible;
   contain-intrinsic-size: none;
