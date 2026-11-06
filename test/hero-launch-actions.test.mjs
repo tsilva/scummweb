@@ -60,7 +60,7 @@ const HeroStage = await loadComponent("../app/home-shell/hero-stage.js", {
   "./game-screenshots": () => null,
   "./hero-images.mjs": { getHeroImageProps: () => ({}) },
   "./hero-title-fit.mjs": { fitHeroTitle() {} },
-  "./shared": { getGameDialogId: () => "game-test", getHeroImageStyle: () => ({}) },
+  "./shared": { getGameDialogId: () => "game-test", getHeroImageStyle: () => ({}), getDialogLinkProps: () => ({}) },
 });
 const HomeHero = await loadComponent("../app/home-shell/home-hero.js", {
   "./game-navigation": { useGameNavigation: () => null },
@@ -96,6 +96,13 @@ test("homepage ships desktop and mobile copy together before hydration", () => {
   const html = renderToStaticMarkup(slideFor([{ key: "catalog:sky", game }], false, { isHomePage: true }));
   assert.match(html, /class="hero-desktop-copy"/);
   assert.match(html, /class="hero-mobile-copy">Beneath a Steel Sky<\/span>/);
+});
+
+test("the license row stays present without an active link when an edition has no readme", () => {
+  const included = renderToStaticMarkup(HeroStage({ featuredGame: { ...game, infoHref: "/launcher/notices/sky.txt" } }));
+  assert.match(included, /<a class="hero-license" href="\/launcher\/notices\/sky.txt">Readme \/ License<\/a>/);
+  const imported = renderToStaticMarkup(HeroStage({ featuredGame: game }));
+  assert.match(imported, /<a class="hero-license" data-reserved="true" aria-hidden="true">Readme \/ License<\/a>/);
 });
 
 test("catalog slideshow offers Continue with the resume URL after a player save", () => {
