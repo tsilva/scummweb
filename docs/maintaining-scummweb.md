@@ -77,8 +77,10 @@ unsaved session or a browser-wide memory snapshot.
 
 The runtime records actual detected engine/target identities and native save
 slots in a browser-local index. Launch actions read this index immediately:
-valid cached progress offers Continue, otherwise Play stays available. Server
-HTML uses Play; hydration reads browser metadata without a pending action.
+valid cached progress offers Continue, otherwise Play stays available. The hero
+reserves its action slots until the saved library and selected edition are ready,
+then reveals the matching actions together. Server HTML retains Play for browsers
+without JavaScript.
 Imported versions use their existing isolated save directory even when their
 ZIP name is unrecognized. Individual indexed files are checked for existence,
 size and modification time, so deleting the newest save can expose an older
@@ -1031,9 +1033,15 @@ or request-time rendering.
   while hidden, so restoring local editions does not move the action row or
   change the hero's height. Hidden slots contain no focusable controls.
   Continue refreshes after browser saves change or the page is restored.
-  Play or Continue appears immediately from cached browser metadata while stale
-  records are reconciled in the background. Background native queries yield to
-  launch clicks, and unrelated source checks do not block the hero action.
+  Launch options use reserved placeholders until the saved library and the
+  selected game's source checks restore its remembered edition. Version
+  preferences resolve before the controls are revealed, so a catalog copy's
+  Continue action cannot flash before an imported copy's Play action. Restart
+  and Readme / License occupy fixed cells below the version selector.
+  Once the selected copy is known, cached browser metadata supplies Play or
+  Continue while stale records reconcile in the background. Pages without
+  JavaScript retain their server-rendered Play link. Background native queries
+  yield to launch clicks, and unrelated source checks do not block the hero action.
   Player exits return to the game's slug route when available. Unrecognized
   imports retain `/#slide=<encoded group key>` and resolve when saved sources
   finish loading. Unknown selections fall back to the featured game; direct ZIP

@@ -12,6 +12,7 @@ export default function HeroStage({
   carouselProps,
   controls,
   featuredGame,
+  actionsReady = true,
   isHomePage = false,
   isInitialSlide = true,
   sourceAction,
@@ -66,8 +67,11 @@ export default function HeroStage({
                 aria-hidden={hasMultipleVersions || undefined} title={versionLabel}>{versionLabel}</li>
             </ul>
           </div>
-          <div className="hero-launch">
-            <div className="hero-actions">
+          <div className="hero-launch" aria-busy={!actionsReady || undefined}>
+            {!actionsReady && <div className="hero-actions-placeholder" role="status" aria-label="Loading play options">
+              <span /><span />
+            </div>}
+            <div className="hero-actions" data-ready={actionsReady ? undefined : "false"}>
               {sourceVersion ? (
                 <SourceLaunchActions key={sourceVersion.key} version={sourceVersion} onLaunch={onLaunch}
                   helpId="hero-file-access-help" showAccessHelp={false} />
@@ -95,6 +99,8 @@ export default function HeroStage({
               {featuredGame.infoHref && <a className="hero-license" href={featuredGame.infoHref}
                 {...getDialogLinkProps(featuredGame.infoHref)}>Readme / License</a>}
             </div>
+            <noscript><style>{`.hero-actions[data-ready="false"] { visibility: visible; }
+              .hero-actions-placeholder { display: none; }`}</style></noscript>
             {notice ? <p className="file-access-help hero-notice" id="hero-file-access-help"
               role="status" data-tone={notice.tone}>{notice.message}</p>
               : (sourceVersion?.action.needsAccess || sourceAction?.needsAccess) && <p className="file-access-help" id="hero-file-access-help">

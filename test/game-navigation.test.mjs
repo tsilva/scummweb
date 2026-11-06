@@ -143,7 +143,7 @@ test("a mounted hero resets to the requested game after automatic rotation or re
         if (!(index in hooks)) hooks[index] = initial;
         return [hooks[index], (value) => { hooks[index] = value; }];
       },
-      useEffect() {}, useRef: (current) => ({ current }),
+      useEffect() {}, useLayoutEffect() {}, useRef: (current) => ({ current }),
     },
     "next/navigation": { useRouter: () => ({ push() { assert.fail("arrow must use local selection"); } }) },
     "lucide-react": { ChevronLeft: "left", ChevronRight: "right", Play: "play", Pause: "pause" },
@@ -182,6 +182,7 @@ test("mobile hero keeps its initial game through hydration and honors explicit s
           return [hooks[index], (value) => { hooks[index] = value; }];
         },
         useEffect: (effect) => effects.push(effect),
+        useLayoutEffect: (effect) => effects.push(effect),
         useRef(current) { return refs[refCursor++] ??= { current }; },
       },
       "next/navigation": { useRouter: () => ({ push() { assert.fail("initial selection must not navigate"); } }) },
@@ -214,6 +215,59 @@ test("mobile hero keeps its initial game through hydration and honors explicit s
   assert.equal((await mount({ isHomePage: false, featuredGame: queen })).result.props.featuredGame.target, queen.target);
   const queenId = groups.find(({ game }) => game.target === queen.target).key;
   assert.equal((await mount({ selected: queenId })).result.props.featuredGame.target, queen.target);
+});
+
+test("launch options stay hidden until the remembered copy and its save identity settle", async () => {
+  const hooks = [], effects = [], remembered = new Map([[versions.getGameFamilyKey(sky), "source:floppy"]]);
+  let cursor = 0;
+  const Hero = await component("home-hero", {
+    react: {
+      useState(initial) {
+        const index = cursor++;
+        if (!(index in hooks)) hooks[index] = initial;
+        return [hooks[index], value => { hooks[index] = value; }];
+      },
+      useLayoutEffect: fn => effects.push(fn), useEffect: fn => effects.push(fn),
+      useRef: current => ({ current }),
+    },
+    "next/navigation": { useRouter: () => ({}) },
+    "lucide-react": { Play: "play", Pause: "pause" },
+    "./hero-images.mjs": { getHeroPreloadImages: () => [] },
+    "../game-versions.mjs": { ...versions,
+      readChosenVersion: group => remembered.get(group),
+      rememberGameVersion: (group, key) => remembered.set(group, key),
+    },
+    "./game-navigation": { useGameNavigation: () => null },
+  }, { navigator: { language: "en" } });
+  const groupKey = versions.getGameFamilyKey(sky);
+  const catalog = { key: "catalog:sky", game: sky };
+  const imported = { key: "source:floppy", source: { id: "floppy" },
+    game: { ...sky, saveVersionId: "floppy" }, status: "available" };
+  function render({ copies = [catalog], loadingSources = false, pendingSourceGroups = [] } = {}) {
+    cursor = 0; effects.length = 0;
+    const props = { groups: [{ key: groupKey, game: sky, versions: copies }], featuredGame: sky,
+      loadingSources, pendingSourceGroups, isHomePage: false };
+    const beforeLayout = Hero(props);
+    effects[0]();
+    cursor = 0;
+    return { beforeLayout, settled: Hero(props) };
+  }
+  let view = render({ loadingSources: true });
+  assert.equal(view.beforeLayout.props.actionsReady, false, "server defaults must not flash");
+  assert.equal(view.settled.props.actionsReady, false);
+  view = render({ copies: [catalog, { ...imported, status: "checking" }], pendingSourceGroups: [groupKey] });
+  assert.equal(view.settled.props.actionsReady, false, "the provisional catalog save must stay hidden");
+  view = render({ copies: [catalog, imported] });
+  assert.equal(view.beforeLayout.props.actionsReady, false, "a changed copy list cannot expose the previous selection");
+  assert.equal(view.settled.props.actionsReady, true);
+  assert.equal(view.settled.props.featuredGame.saveVersionId, "floppy");
+  view = render({ copies: [catalog, imported], pendingSourceGroups: [versions.getGameFamilyKey(queen)] });
+  assert.equal(view.settled.props.actionsReady, true, "unrelated source checks must not delay play");
+  view.settled.props.onVersionChange(catalog.key);
+  cursor = 0;
+  const chosen = Hero({ groups: [{ key: groupKey, game: sky, versions: [catalog, imported] }], featuredGame: sky });
+  assert.equal(chosen.props.actionsReady, true, "manual selection stays immediately usable");
+  assert.equal(chosen.props.featuredGame.saveVersionId, undefined);
 });
 
 test("local game changes and history restoration keep metadata and structured data aligned", async () => {

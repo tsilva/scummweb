@@ -2,7 +2,7 @@
 
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import HeroStage from "./hero-stage";
 import { getHeroPreloadImages } from "./hero-images.mjs";
 import { chooseGameVersion, getGameFamilyKey, readChosenVersion, rememberGameVersion } from "../game-versions.mjs";
@@ -13,7 +13,8 @@ const SLIDE_DURATION_MS = 8000;
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const MOBILE_QUERY = "(max-width: 48rem)";
 
-export default function HomeHero({ groups, featuredGame, isHomePage = true, selection = null, navigationId = 0, notice }) {
+export default function HomeHero({ groups, featuredGame, isHomePage = true, selection = null, navigationId = 0,
+  loadingSources = false, pendingSourceGroups = [], notice }) {
   const router = useRouter();
   const selectGame = useGameNavigation();
   const featuredKey = getGameFamilyKey(featuredGame) || `catalog:${featuredGame.target}`;
@@ -30,11 +31,13 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
   const [chosen, setChosen] = useState(null);
   const versionKeys = JSON.stringify(currentSlide.versions.map(({ key, status }) => [key, status]));
   const version = chooseGameVersion(currentSlide.versions, chosen?.group === currentSlide.id ? chosen.key : null);
-  useEffect(() => {
+  useLayoutEffect(() => {
     const language = new Intl.DisplayNames(["en"], { type: "language" }).of(navigator.language.split("-")[0]);
     const preferred = chooseGameVersion(currentSlide.versions, readChosenVersion(currentSlide.id), language);
-    setChosen({ group: currentSlide.id, key: preferred.key });
+    setChosen({ group: currentSlide.id, key: preferred.key, versionKeys });
   }, [currentSlide.id, versionKeys]);
+  const actionsReady = !loadingSources && !pendingSourceGroups.includes(currentSlide.id)
+    && chosen?.group === currentSlide.id && chosen.versionKeys === versionKeys;
   const preloadedImages = useRef(new Map());
   const preloadKey = JSON.stringify(isMobile
     ? getHeroPreloadImages([currentSlide], 0) : getHeroPreloadImages(slides, slideIndex));
@@ -181,12 +184,13 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
         </div>
       ) : null}
       featuredGame={version.game}
+      actionsReady={actionsReady}
       sourceAction={version.source ? undefined : version.action}
       sourceVersion={version.source ? version : undefined}
       versions={currentSlide.versions}
       selectedVersionKey={version.key}
       onVersionChange={(key) => {
-        setChosen({ group: currentSlide.id, key });
+        setChosen({ group: currentSlide.id, key, versionKeys });
         rememberGameVersion(currentSlide.id, key);
         setRotationPaused(true);
       }}

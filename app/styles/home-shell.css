@@ -1498,6 +1498,7 @@ button.nav-icon-link {
   position: relative;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: 3.4rem 2.75rem 2.5rem;
   width: 21rem;
   max-width: 100%;
   height: auto;
@@ -1526,12 +1527,38 @@ button.nav-icon-link {
   min-height: 3.4rem;
 }
 
-/* Save detection must not change the primary action row's geometry. */
-.hero-actions > .start-fresh-button {
+/* Reserve every action slot while browser saves and imported copies restore. */
+.hero-actions[data-ready="false"] {
+  visibility: hidden;
+}
+
+.hero-actions-placeholder {
   position: absolute;
-  inset: calc(100% + 0.6rem) auto auto 0;
-  min-height: 1.75rem;
-  padding: 0;
+  inset: 0 auto auto 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  width: 21rem;
+  max-width: 100%;
+  height: 3.4rem;
+  pointer-events: none;
+}
+
+.hero-actions-placeholder span {
+  border-radius: 0.15rem;
+  background: rgba(85, 170, 85, 0.16);
+}
+
+.hero-actions-placeholder span + span {
+  background: rgba(229, 226, 225, 0.08);
+}
+
+.hero-stage-library .hero-actions > .start-fresh-button {
+  position: static;
+  grid-column: 1;
+  grid-row: 3;
+  min-height: 2.5rem;
+  padding: 0.75rem 0;
   background: transparent;
   font-size: 0.8rem;
   font-weight: 500;
@@ -1551,7 +1578,8 @@ button.nav-icon-link {
 }
 
 .hero-license {
-  grid-column: 1 / -1;
+  grid-column: 2;
+  grid-row: 3;
   padding: 0.75rem 0.25rem;
   font-size: 0.85rem;
   text-decoration: underline;

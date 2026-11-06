@@ -430,6 +430,9 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
       <GameDropOverlay importRoots={importRoots} disabled={disabled} pending={pending}
         result={importResult} onConfirm={confirmImport} />
       {featuredGame && <HomeHero groups={heroGroups} featuredGame={featuredGame}
+        loadingSources={loading}
+        pendingSourceGroups={library.filter(({ status }) => status === "checking")
+          .map(({ game, source }) => getGameFamilyKey(game) || `source:${source.id}`)}
         isHomePage={isHomePage} selection={selection} navigationId={navigationId} notice={notice} />}
       <div className="section-stack">
         <RecentGamesRail groups={groups} />
