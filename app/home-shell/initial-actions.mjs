@@ -113,6 +113,10 @@ export function prepareInitialActions(container, readSave) {
         option.selected = version.key === state.version;
         chooser.querySelector("select").append(option);
       }
+    } else {
+      chooser.setAttribute("data-reserved", "true");
+      chooser.setAttribute("aria-hidden", "true");
+      chooser.innerHTML = "";
     }
     container.dataset.prepared = "true";
   } catch { /* Unknown or inaccessible browser data retains the safe fallback. */ }

@@ -1638,13 +1638,13 @@ button.nav-icon-link {
   max-width: 100%;
 }
 
-/* Keep the edition badge aligned while unused action rows collapse. */
+/* Keep both edition slots aligned across games with different version counts. */
 .hero-edition[data-reserved] {
   visibility: hidden;
 }
 
 .hero-version-control[data-reserved] {
-  display: none;
+  visibility: hidden;
 }
 
 .hero-stage-library .hero-carousel-controls {
