@@ -1027,7 +1027,21 @@
 
   .hero-stage-library .hero-actions {
     height: auto;
+    grid-template-rows: 3rem 2.75rem 2.5rem;
     gap: 0.6rem;
+  }
+
+  .hero-actions-placeholder {
+    width: 100%;
+    height: 3rem;
+    gap: 0.6rem;
+  }
+
+  .hero-stage-library .hero-actions > .secondary-button.start-fresh-button {
+    grid-column: 1;
+    min-height: 2.5rem;
+    padding: 0.5rem 0;
+    font-size: 0.75rem;
   }
 
   .hero-stage-library .hero-actions > .launch-button,
