@@ -81,18 +81,22 @@ export default function HeroStage({
             <div className="hero-actions" data-ready={actionsReady ? undefined : "false"}>
               {sourceVersion ? (
                 <SourceLaunchActions key={sourceVersion.key} version={sourceVersion} onLaunch={onLaunch}
-                  helpId="hero-file-access-help" showAccessHelp={false} />
+                  helpId="hero-file-access-help" showAccessHelp={false} browseHref="#library" />
               ) : sourceAction ? (
-                <button type="button" className="launch-button" title={sourceAction.label}
-                  disabled={sourceAction.disabled} onClick={sourceAction.onClick}>
-                  {sourceAction.buttonLabel || "Play"}
-                </button>
+                <>
+                  <button type="button" className="launch-button" title={sourceAction.label}
+                    disabled={sourceAction.disabled} onClick={sourceAction.onClick}>
+                    {sourceAction.buttonLabel || "Play"}
+                  </button>
+                  <a className="secondary-button browse-games-button" href="#library">Browse Games</a>
+                </>
               ) : <LaunchButton game={featuredGame} entryPoint={isHomePage ? "hero" : "game_detail"}
-                label="Play" onLaunch={onLaunch} />}
+                label="Play" onLaunch={onLaunch} browseHref="#library" />}
               <div className="hero-version-control" data-reserved={!hasMultipleVersions || undefined}
                 aria-hidden={!hasMultipleVersions || undefined}>
                 {hasMultipleVersions && <label className="library-select">
                   <span className="hero-version-label">Version</span>
+                  <span className="hero-version-value" aria-hidden="true">{versionLabel}</span>
                   <select value={selectedVersionKey} aria-label="Game version" title={versionLabel}
                     onChange={(event) => onVersionChange(event.target.value)}>
                     {versions.map((version, index) => <option key={version.key} value={version.key}>

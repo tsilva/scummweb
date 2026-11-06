@@ -6,12 +6,15 @@ Select a library or Recently Played card to navigate to the game’s slug route
 and jump instantly to its hero, screenshots, metadata, game notices, and launch
 options. Recognized platform, language, and edition variants share a card;
 use the version selector below **Play** and **Browse Games** in the hero to select
-a copy. The buttons share the first row, and the selector spans both columns on
-desktop and mobile. Games
+a copy. The buttons share the first row; **Browse Games** links to the library
+when **Start from beginning** is absent. The borderless selector sits below them
+and spans the combined width of both buttons on desktop and mobile. Games
 with one version show an edition badge beside their metadata instead of a selector.
 The badge is hidden when multiple versions are available. Both positions reserve
 their layout space so restoring versions does not move nearby controls or resize
-the hero. ScummWEB remembers your selection and keeps demos separate from full games. Each imported version has
+the hero. ScummWEB remembers your available selection; otherwise it selects the
+latest known revision, preferring the included copy or browser language when
+revisions match or are unknown. Demos stay separate from full games. Each imported version has
 separate browser saves. Supported engines offer **Continue** and **Start from
 beginning**; others load progress through their in-game menu. Older shared saves
 remain stored in the browser.
@@ -44,8 +47,9 @@ saved settings or platform; SCUMM's F5 is one such shortcut. Run
 `node --test test/game-menu.test.mjs test/game-route-frame.test.mjs` after changes.
 
 Imports matching an included game's data use the bundled copy and do not add a
-second version. The default for other editions also prefers the included copy;
-an explicit choice of a distinct edition is remembered. Existing duplicate source
+second version. Other editions default to the latest known revision, with the
+included copy preferred when revisions match or are unknown; an explicit choice
+of a distinct edition is remembered. Existing duplicate source
 records and their isolated saves are retained for backup and transfer in Settings.
 Old imports are compared using their saved fingerprint or, when read permission
 already exists, by inspecting their ZIP directory. Older unverified imports of an

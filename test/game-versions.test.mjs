@@ -190,6 +190,24 @@ test("defaults prefer a remembered available version then browser language and a
   assert.equal(chooseGameVersion([versions[0]], null).key, "missing");
 });
 
+test("defaults use the newest known revision unless an available choice was remembered", () => {
+  const versions = [
+    { key: "older", game: { revision: "v0.0368" } },
+    { key: "latest", source: {}, status: "available", game: { revision: "v0.0372" } },
+    { key: "unknown", source: {}, status: "available", game: {} },
+    { key: "missing", source: {}, status: "missing", game: { revision: "v1.0" } },
+  ];
+  assert.equal(chooseGameVersion(versions, null).key, "latest");
+  assert.equal(chooseGameVersion(versions, "older").key, "older");
+  assert.equal(chooseGameVersion(versions, "unknown").key, "unknown");
+  assert.equal(chooseGameVersion(versions, "missing").key, "latest");
+  assert.equal(chooseGameVersion(versions.toReversed(), null).key, "latest");
+  assert.equal(chooseGameVersion([
+    { key: "nine", game: { revision: "v1.9" } },
+    { key: "ten", game: { revision: "v1.10" } },
+  ], null).key, "ten");
+});
+
 test("save namespaces are stable, safe path components and isolate different source IDs", async () => {
   const first = await getVersionSaveNamespace("source:dos-english");
   assert.match(first, /^version-[0-9a-f]{64}$/);

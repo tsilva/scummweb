@@ -104,10 +104,12 @@ test("catalog slideshow offers Continue with the resume URL after a player save"
   const html = renderToStaticMarkup(slide);
   assert.match(html, /href="\/beneath-a-steel-sky\/play\?launch_from=hero#continue">Continue<\/a>/);
   assert.match(html, />Start from beginning<\/a>/);
+  assert.doesNotMatch(html, /browse-games-button/);
   savedIdentity = null;
   const fresh = renderToStaticMarkup(slide);
   assert.match(fresh, /href="\/beneath-a-steel-sky\/play\?launch_from=hero">Play<\/a>/);
   assert.doesNotMatch(fresh, /#continue|Start from beginning/);
+  assert.match(fresh, /class="secondary-button browse-games-button" href="#library">Browse Games<\/a>/);
 });
 
 test("imported slideshow shares save-aware actions and never reuses another version's save", () => {
@@ -126,6 +128,7 @@ test("imported slideshow shares save-aware actions and never reuses another vers
   const fresh = renderToStaticMarkup(slide);
   assert.match(fresh, />Play<\/button>/);
   assert.doesNotMatch(fresh, />Continue|Start from beginning/);
+  assert.match(fresh, /href="#library">Browse Games<\/a>/);
 });
 
 test("file reconnection takes precedence over Continue in the slideshow", () => {
@@ -137,6 +140,7 @@ test("file reconnection takes precedence over Continue in the slideshow", () => 
   assert.match(html, /aria-describedby="hero-file-access-help"/);
   assert.equal((html.match(/id="hero-file-access-help"/g) || []).length, 1);
   assert.doesNotMatch(html, />Continue|Start from beginning/);
+  assert.match(html, /href="#library">Browse Games<\/a>/);
   version.action.needsAccess = false;
   version.locate = true;
   version.locateLabel = "Locate ZIP";

@@ -16,11 +16,12 @@ function fixture(t, state = descriptor()) {
       setAttribute(key, value) { this.attributes[key] = value; },
       removeAttribute(key) { delete this.attributes[key]; if (key === "href") delete this.href; } };
   }
-  const primary = node(), restart = node(), license = node(), options = [];
+  const primary = node(), restart = node(), browse = node(), license = node(), options = [];
   const chooser = { removeAttribute() {}, querySelector: () => ({ append: option => options.push(option) }) };
   const container = { dataset: { initialActions: JSON.stringify(state), entryPoint: "game_detail" },
     parentElement: { querySelector: () => ({ innerHTML: "server controls", nextElementSibling: {} }) },
     querySelector: selector => ({ ".launch-button": primary, ".start-fresh-button": restart,
+      ".browse-games-button": browse,
       ".hero-license": license, ".hero-version-control": chooser })[selector] };
   const priorWindow = globalThis.window, priorDocument = globalThis.document;
   t.after(() => {
@@ -29,7 +30,7 @@ function fixture(t, state = descriptor()) {
   });
   globalThis.window = { localStorage: storage, location: { origin: "https://example.test" } };
   globalThis.document = { createElement: node };
-  return { values, storage, container, primary, restart, license, options };
+  return { values, storage, container, primary, restart, browse, license, options };
 }
 
 test("first-paint catalog actions use the validated browser index, including slot zero", t => {
@@ -42,6 +43,7 @@ test("first-paint catalog actions use the validated browser index, including slo
   assert.equal(f.primary.textContent, "Continue");
   assert.equal(f.primary.href, "/beneath-a-steel-sky/play?launch_from=game_detail#continue");
   assert.equal(f.restart.hidden, false);
+  assert.equal(f.browse.hidden, true);
   assert.equal(f.license.href, "https://example.test/launcher/notices/sky.txt");
 });
 
@@ -51,6 +53,8 @@ test("no indexed save shows Play immediately with no restart link", t => {
   assert.equal(f.container.dataset.prepared, "true");
   assert.equal(f.primary.textContent, "Play");
   assert.equal(f.restart.hidden, true);
+  assert.equal(f.browse.hidden, false);
+  assert.equal(f.browse.href, "#library");
 });
 
 test("remembered imports use their own cached identity and wait for access validation before clicks", t => {
