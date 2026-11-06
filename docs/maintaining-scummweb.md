@@ -16,6 +16,9 @@ separate browser saves. Supported engines offer **Continue** and **Start from
 beginning**; others load progress through their in-game menu. Older shared saves
 remain stored in the browser.
 
+The hero's **Scroll for screenshots & more games** link appears on desktop and
+mobile when screenshots are available. On mobile it follows the launch controls.
+
 Games default to their original save/load screens where the engine supports
 them. The shell fills missing `originalsaveload`, `original_gui` (SCUMM), and
 `original_menus` (MADS) application settings before engine startup, for bundled
@@ -144,8 +147,10 @@ policy after fullscreen; physical rotation cannot be guaranteed on those devices
 File-access and locate actions keep their normal prompts without entering fullscreen.
 Orientation follows the viewport rather than the physical screen, so split-screen
 windows and tablets use the available space. Dragging moves the cursor; the
-enlarged **Adjust** cursor pad offers smaller movements, the broad mouse-shaped
-**L**/**R** buttons send clicks, and double-tapping
+large square **Adjust** cursor pad offers smaller movements, and the compact
+mouse-shaped **L**/**R** buttons send clicks. The pad, click buttons and exit
+control share a translucent fill, muted labels and subtle outlines to keep the
+game prominent; pressing or keyboard-focusing a control highlights it. Double-tapping
 the game sends a left click. Loading screens scroll on short landscape viewports.
 
 Check the launcher, game landing hero, screenshot viewer, compatibility search, settings and player at
