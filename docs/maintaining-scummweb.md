@@ -338,9 +338,20 @@ and generated social cards. They explain that copyright restrictions prevent
 ScummWEB from providing game files and show **Game not included** until a matching
 imported version is present in the browser library. Matching copies open the
 existing version and file-access flow.
-Only bundled games have public `/<game-slug>/play` routes; import-only games use
-the local player after import. Adding recognition metadata automatically adds
-its landing page and sitemap entry on the next build.
+Every recognized game has a `/<game-slug>/play` route, whether its files are
+bundled, imported from a local ZIP, or supplied through a hosted ZIP. The player
+restores the browser library's selected available version and its save namespace.
+When an import-only game's files are unavailable, the same route shows the game
+and library controls to import a copy, reconnect its ZIP, or allow file access.
+Game files remain on their original device or host. Adding recognition metadata
+automatically adds its landing page, play route and sitemap entry on the next build.
+
+`/local/play` remains an entry point for unidentified archives and direct ZIP
+links. Once a recognized game is identified, it opens its game-specific play
+route. Direct ZIP addresses remain in the URL fragment, including after this
+navigation, so reopening the URL works without sending the ZIP address to the
+app server. Old `/bucket/<target>/play` links also forward to the game's play
+route while preserving their source and legacy saves.
 
 Search and sharing titles identify import requirements and edition labels.
 Optional `shortTitle` values in the artwork catalog provide concise names for

@@ -4,7 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { exitImmersiveMode } from "../game-player/immersive-mode.mjs";
 import { readRemoteGameArchive } from "../game-bucket.mjs";
-import { getGamePresentation, getImportedGamePresentation } from "../game-presentation";
+import { getGamePlayHref, getSourceGamePresentation } from "../game-play-source.mjs";
 import { checkGameSource, isLocalZipSource, localGame, readGameSources, removeGameSources, requestGameSourceAccess, saveGameSources } from "../game-sources.mjs";
 import { findLocalGameSource } from "../local-game-matching.mjs";
 import { findBundledGame } from "../bundled-game-matching.mjs";
@@ -32,7 +32,7 @@ function scrollToLibraryItem(item, block) {
 
 const reconnectStatuses = new Set(["locate", "missing", "permission"]);
 
-export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGame, isHomePage: initiallyHome = true, libraryHeading, officialUrl }) {
+export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGame, isHomePage: initiallyHome = true, libraryHeading, officialUrl, onPlayArchive, playerRoute = false }) {
   const router = useRouter();
   const pathname = usePathname();
   const [entries, setEntries] = useState([]);
@@ -352,7 +352,9 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
         }
       }
       rememberGameVersion(getGameFamilyKey(game) || `source:${source.id}`, `source:${source.id}`);
-      router.push(`/local/play${resume ? "#continue" : ""}`);
+      if (!onPlayArchive?.(game, resume)) {
+        router.push(`${getGamePlayHref(game)}${resume ? "#continue" : ""}`);
+      }
       navigated = true;
     }).finally(() => { if (!navigated) void exitImmersiveMode(); }).then(() => navigated);
   }
@@ -374,16 +376,8 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
 
   const disabled = loading || busy || Boolean(importResult);
   const library = entries.map(({ source, status, archiveFiles }) => {
-    const knownGame = catalog.find(({ target }) => target === source.target)
-      ?? getImportedGamePresentation(/\.zip$/i.test(source.name) ? source.name : source.name + ".zip");
-    const title = knownGame?.displayTitle ?? source.name.replace(/\.zip$/i, "");
-    const presentation = knownGame ?? getGamePresentation({ displayTitle: title }, {
-      summary: "Play this game from your library.",
-      badge: "Library game",
-    });
-    const route = recognizedGames.find((game) => getGameFamilyKey(game)
-      && getGameFamilyKey(game) === getGameFamilyKey(presentation));
-    const game = { ...presentation, href: route?.href, slug: route?.slug, saveVersionId: source.id, skipIntro: null };
+    const game = getSourceGamePresentation(source, catalog, recognizedGames);
+    const title = game.displayTitle;
     const locate = !source.url && (!isLocalZipSource(source) || ["missing", "locate"].includes(status));
     const locateLabel = "Locate ZIP";
     const needsAccess = status === "permission";
@@ -411,6 +405,7 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
   }];
 
   function selectGame(game) {
+    if (playerRoute) return false;
     const href = buildGameExitHref(game);
     // Only handle selections this mounted library can render. Other links keep
     // normal Next.js navigation, including direct links from compatibility.
@@ -425,7 +420,7 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
 
   return (
     <GameNavigationContext value={selectGame}>
-      <BrowseMetadata game={featuredGame} catalog={catalog} isHomePage={isHomePage} />
+      {!playerRoute && <BrowseMetadata game={featuredGame} catalog={catalog} isHomePage={isHomePage} />}
       <input ref={fileInput} type="file" accept=".zip,application/zip" multiple hidden
         onChange={(event) => {
           const files = [...event.target.files];

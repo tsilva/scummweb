@@ -6,6 +6,7 @@ import test from "node:test";
 import swc from "next/dist/build/swc/index.js";
 import * as selection from "../app/home-shell/hero-selection.mjs";
 import * as versions from "../app/game-versions.mjs";
+import * as playSources from "../app/game-play-source.mjs";
 import { libraryItems } from "../app/home-shell/library-query.mjs";
 import * as seo from "../lib/seo.mjs";
 
@@ -49,6 +50,7 @@ async function library() {
   function Hero() {}
   function View() {}
   const SourceLibrary = await component("source-library", {
+    "../game-play-source.mjs": playSources,
     react: { useState: state, useRef: (current) => state({ current })[0], useMemo: (fn) => fn(), useEffect: (fn) => effects.push(fn) },
     "next/navigation": { usePathname: () => window.location.pathname, useRouter: () => ({ push() { assert.fail("selection must not fetch a Next.js route"); } }) },
     "../recognized-games.mjs": { getRecognizedGames: () => catalog },
