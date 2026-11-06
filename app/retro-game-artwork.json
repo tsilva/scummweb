@@ -34,11 +34,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3362"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-access-amazon-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Amazon_%20Guardians%20of%20Eden.png",
+            "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+            "sha256": "645e71e4ef77f31070d2df215ad984e560e2ba7ad505e522211bcecf8209730b"
+          }
+        ]
+      }
     },
     "summary": "Search the Amazon for a missing expedition and uncover a conspiracy surrounding a remote jungle tribe.",
     "studio": "Access Software",
-    "genre": "Jungle adventure"
+    "genre": "Jungle adventure",
+    "heroImage": "/launcher/amazon-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "agi:bc": {
     "title": "The Black Cauldron",
@@ -116,11 +131,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1727"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-agi-goldrush-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gold%20Rush!.png",
+            "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+            "sha256": "237f976dd1b20fed91cfbd2677ef8a059327b21375e53505bfd4e935758f9b15"
+          }
+        ]
+      }
     },
     "summary": "Leave Brooklyn for California and navigate the hazards of the 1849 gold rush.",
     "studio": "MacNeill Computer Company",
-    "genre": "Historical adventure"
+    "genre": "Historical adventure",
+    "heroImage": "/launcher/goldrush-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "agi:kq2": {
     "title": "King's Quest II: Romancing the Throne",
@@ -157,11 +187,30 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1718"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-agi-kq2-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20II_%20Romancing%20the%20Throne.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "09b9c777418b2827bdd08e98771539550e10a3d5a8f929e37696455c28bbc5ab"
+          },
+          {
+            "asset": "/launcher/kq2-scummweb-generated-2026-11-05-r1-hero.webp",
+            "note": "Earlier generated candidate used as an edit target to correct its wrong aspect ratio; original box artwork remains the style and identity reference."
+          }
+        ]
+      }
     },
     "summary": "Help King Graham explore Kolyma, unlock three magical doors, and rescue the imprisoned Valanice.",
     "studio": "Sierra On-Line",
-    "genre": "Fantasy adventure"
+    "genre": "Fantasy adventure",
+    "heroImage": "/launcher/kq2-scummweb-generated-2026-11-05-r2-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "agi:kq3": {
     "title": "King's Quest III: To Heir Is Human",
@@ -198,11 +247,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1719"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-agi-kq3-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20III_%20To%20Heir%20is%20Human.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "bc81dc8c1351cd11d7b70ec05d49102245e4f73c3e0ff2b632b0cb567bbc5f1a"
+          }
+        ]
+      }
     },
     "summary": "Escape the wizard Manannan by learning his spells and discovering the truth about your family.",
     "studio": "Sierra On-Line",
-    "genre": "Fantasy adventure"
+    "genre": "Fantasy adventure",
+    "heroImage": "/launcher/kq3-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "agi:mh1": {
     "title": "Manhunter: New York",
@@ -239,11 +303,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1729"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-agi-mh1-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Manhunter%201_%20New%20York.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "d557be921f8c6c8e7d69152ab02edd9519fe02cec2b9ab4b547a920a403c5114"
+          }
+        ]
+      }
     },
     "summary": "Investigate disappearances in an alien-occupied New York while secretly working against its invaders.",
     "studio": "Evryware",
-    "genre": "Science-fiction mystery"
+    "genre": "Science-fiction mystery",
+    "heroImage": "/launcher/mh1-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "agi:mh2": {
     "title": "Manhunter 2: San Francisco",
@@ -280,11 +359,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1730"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-agi-mh2-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Manhunter%202_%20San%20Francisco.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "dee0225f98695af15f7eac58a549d33623d0a15a026db1231759c9454f1874a3"
+          }
+        ]
+      }
     },
     "summary": "Follow a fugitive through alien-occupied San Francisco and solve the mysteries behind a resistance movement.",
     "studio": "Evryware",
-    "genre": "Science-fiction mystery"
+    "genre": "Science-fiction mystery",
+    "heroImage": "/launcher/mh2-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "agi:mickey": {
     "title": "Mickey's Space Adventure",
@@ -362,11 +456,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1726"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-agi-pq1-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest_%20In%20Pursuit%20of%20the%20Death%20Angel.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "acd31798d69cc4e1af4b767a3499285f1cd5dff4be1acf4493598379fd1b3342"
+          }
+        ]
+      }
     },
     "summary": "Patrol Lytton as officer Sonny Bonds and follow a traffic investigation into a dangerous drug case.",
     "studio": "Sierra On-Line",
-    "genre": "Police procedural adventure"
+    "genre": "Police procedural adventure",
+    "heroImage": "/launcher/pq1-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "agi:sq1": {
     "title": "Space Quest: The Sarien Encounter",
@@ -403,11 +512,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1723"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-agi-sq1-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest_%20Chapter%20I%20-%20The%20Sarien%20Encounter%20(DOS_English).png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "f2dcfc53bd40f773b3eae8699153692fe677c1bcdd61f2ec8d605fd15a9c072a"
+          }
+        ]
+      }
     },
     "summary": "Help janitor Roger Wilco survive a spaceship attack and recover the stolen Star Generator.",
     "studio": "Sierra On-Line",
-    "genre": "Science-fiction comedy"
+    "genre": "Science-fiction comedy",
+    "heroImage": "/launcher/sq1-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "agi:sq2": {
     "title": "Space Quest II: Chapter II - Vohaul's Revenge",
@@ -445,11 +569,32 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1728"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-agi-sq2-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20II_%20Chapter%20II%20-%20Vohaul's%20Revenge%20(2.0F%201989-01-05%203.5__DOS_English).png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "df7120907a127cc3b268283ff96b7f1020a00b741c318aa4081b07f1557b202f"
+          },
+          {
+            "asset": "/launcher/sq2-scummweb-generated-2026-11-05-r1-hero.webp",
+            "sha256": "42ba4cbf52d862d0dcd01214782bfd7d5574c0f66a758cd97c5be24cab77afd2",
+            "credit": "Previous generated candidate master, revised with its original box-art reference retained.",
+            "masterSha256": "c750a7d6f8c23df5b7930cf1e53b0b78ab656fbc82e4102f92e9b8b13bcff7a0"
+          }
+        ]
+      }
     },
     "summary": "Escape a hostile jungle planet and stop Sludge Vohaul's plan to unleash an army of salesmen.",
     "studio": "Sierra On-Line",
-    "genre": "Science-fiction comedy"
+    "genre": "Science-fiction comedy",
+    "heroImage": "/launcher/sq2-scummweb-generated-2026-11-05-r2-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "agi:troll": {
     "title": "Troll's Tale",
@@ -486,11 +631,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2309"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-agi-troll-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Trolls%20Tale.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "161b839fd746bacf3e24e2007f17f6bbc83f484dace43ab8889e8355c3f8378a"
+          }
+        ]
+      }
     },
     "summary": "Explore a fantasy world, choose paths through illustrated scenes, and recover treasure stolen by a troll.",
     "studio": "Sierra On-Line",
-    "genre": "Children's adventure"
+    "genre": "Children's adventure",
+    "heroImage": "/launcher/troll-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "agi:winnie": {
     "title": "Winnie the Pooh in the Hundred Acre Wood",
@@ -568,11 +728,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1964"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-agos-elvira1-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Elvira_%20Mistress%20of%20the%20Dark.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "d293c519c84c06d0751a99a7bdcddd7722320e3973f8b1e08769a3e8b72008c8"
+          }
+        ]
+      }
     },
     "summary": "Explore a haunted castle, battle its monsters, and help Elvira stop an ancient witch's return.",
     "studio": "Horror Soft",
-    "genre": "Horror role-playing adventure"
+    "genre": "Horror role-playing adventure",
+    "heroImage": "/launcher/elvira1-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "agos:elvira2": {
     "title": "Elvira II: The Jaws of Cerberus",
@@ -609,11 +784,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1966"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-agos-elvira2-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Elvira%20II%20-%20The%20Jaws%20of%20Cerberus.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "1847bb937772e1b4b52a56d98eaa872f615f8b3e852ab3ff9638eff4849b72e3"
+          }
+        ]
+      }
     },
     "summary": "Search a movie studio's haunted sets to rescue Elvira from a demon.",
     "studio": "Horror Soft",
-    "genre": "Horror role-playing adventure"
+    "genre": "Horror role-playing adventure",
+    "heroImage": "/launcher/elvira2-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "agos:feeble": {
     "title": "The Feeble Files",
@@ -651,11 +841,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1682"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-agos-feeble-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Feeble%20Files.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "c769f43d0aeb36510da5df8cd2185cb51a7e35127ea026a32ed86c0528a270d6"
+          }
+        ]
+      }
     },
     "summary": "Help an unlikely alien hero resist the OmniBrain and its oppressive interplanetary bureaucracy.",
     "studio": "Adventure Soft",
-    "genre": "Science-fiction comedy"
+    "genre": "Science-fiction comedy",
+    "heroImage": "/launcher/feeble-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "agos:jumble": {
     "title": "Simon the Sorcerer's Puzzle Pack",
@@ -692,11 +897,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1807"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-agos-jumble-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Simon%20the%20Sorcerer%20Puzzle%20Pack.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "a037336dd55d2ab0536e364e3c7e09f27f15425ff989bab0666b37327ef91080"
+          }
+        ]
+      }
     },
     "summary": "Play Simon-themed puzzles, including Jumble, NoPatience, and Demon in My Pocket, alongside Swampy's arcade adventure.",
     "studio": "Adventure Soft",
-    "genre": "Puzzle collection"
+    "genre": "Puzzle collection",
+    "heroImage": "/launcher/jumble-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "agos:pn": {
     "title": "Personal Nightmare",
@@ -774,11 +994,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1675"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-agos-simon1-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Simon%20the%20Sorcerer.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "d2204c6c783bd347ade573f1b147fbf2e2a82d04e573c51ea347bdf5bddcdb19"
+          }
+        ]
+      }
     },
     "summary": "A magical book transports Simon into a fairy-tale world where he must become a wizard and confront Sordid.",
     "studio": "Adventure Soft",
-    "genre": "Fantasy comedy"
+    "genre": "Fantasy comedy",
+    "heroImage": "/launcher/simon1-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "agos:simon2": {
     "title": "Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe",
@@ -816,11 +1051,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1676"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-agos-simon2-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Simon%20the%20Sorcerer%202.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "1115ef95fa3a0a7487d82698f4eaef9f0d17cd4d875b45a1f5da08d6f0a45c02"
+          }
+        ]
+      }
     },
     "summary": "Simon returns to a world of sarcastic fairy tales as Sordid plots his revenge.",
     "studio": "Adventure Soft",
-    "genre": "Fantasy comedy"
+    "genre": "Fantasy comedy",
+    "heroImage": "/launcher/simon2-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "agos:waxworks": {
     "title": "Waxworks",
@@ -857,11 +1107,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1967"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-agos-waxworks-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/WaxWorks.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "47f561fdba28c0c6b6e8d4b7d0d996ce6b059a129ec91a8fdd1b3902e240d623"
+          }
+        ]
+      }
     },
     "summary": "Enter cursed waxwork exhibits across different eras to break an ancestral curse.",
     "studio": "Horror Soft",
-    "genre": "Horror role-playing adventure"
+    "genre": "Horror role-playing adventure",
+    "heroImage": "/launcher/waxworks-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "bbvs:bbvs": {
     "title": "MTV's Beavis and Butt-Head in Virtual Stupidity",
@@ -898,11 +1163,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3931"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-bbvs-bbvs-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Beavis%20and%20Butt-Head%20in%20Virtual%20Stupidity.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "e86fe270770778d11d3300475ca5bf884a18b22393205d2ed618f096b2f84db8"
+          }
+        ]
+      }
     },
     "summary": "Help Beavis and Butt-Head explore Highland and attempt to impress local gang leader Todd.",
     "studio": "Viacom New Media",
-    "genre": "Comedy adventure"
+    "genre": "Comedy adventure",
+    "heroImage": "/launcher/bbvs-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "cge:soltys": {
     "title": "Sołtys",
@@ -942,11 +1222,25 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3223"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "url": "https://pliki.ppe.pl/storage/8a94f55f7ab2c07cad58/8a94f55f7ab2c07cad58.jpg",
+            "credit": "Original LK Avalon box-front artwork, scan hosted by PPE; retain original characters and illustration style.",
+            "sha256": "b10969ce93619d7a18caeb9213ebefd61fedc28e10a9163075c28bb9785250e1"
+          }
+        ]
+      }
     },
     "summary": "Explore a Polish village as its hapless headman and help resolve a troublesome family wedding.",
     "studio": "LK Avalon",
-    "genre": "Comedy adventure"
+    "genre": "Comedy adventure",
+    "heroImage": "/launcher/soltys-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "cine:fw": {
     "title": "Future Wars: Adventures in Time",
@@ -983,11 +1277,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1688"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-cine-fw-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Future%20Wars_%20Adventures%20in%20Time.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "ee75cba1b8478315022fc43388b0a72b9f258bc02e268dd4a2a3de3f8730c72a"
+          }
+        ]
+      }
     },
     "summary": "A window cleaner discovers a time machine and becomes involved in a battle against alien invaders.",
     "studio": "Delphine Software",
-    "genre": "Science-fiction adventure"
+    "genre": "Science-fiction adventure",
+    "heroImage": "/launcher/fw-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "composer:darby": {
     "title": "Darby the Dragon",
@@ -1024,11 +1333,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3218"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-composer-darby-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Darby%20the%20Dragon.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "b981bb62d945bfd5b4164be8c1efde24612c47fffb8d62c91697e2ff4f78b375"
+          }
+        ]
+      }
     },
     "summary": "Help Darby gather ingredients for a potion to undo a magical-wand accident involving his sister Sparkle.",
     "studio": "Animation Magic",
-    "genre": "Children's fantasy adventure"
+    "genre": "Children's fantasy adventure",
+    "heroImage": "/launcher/darby-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "composer:gregory": {
     "title": "Gregory and the Hot Air Balloon",
@@ -1065,11 +1389,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3276"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-composer-gregory-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gregory%20and%20the%20Hot%20Air%20Balloon.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "9f949bae0306066131c724dc6c67acc1718afba4602812d57299985a7d35f277"
+          }
+        ]
+      }
     },
     "summary": "Follow Gregory and his friend on a balloon journey filled with characters, exploration, and puzzles.",
     "studio": "Animation Magic",
-    "genre": "Children's adventure"
+    "genre": "Children's adventure",
+    "heroImage": "/launcher/gregory-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "composer:liam": {
     "title": "Magic Tales: Liam Finds a Story",
@@ -1106,11 +1445,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3279"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-composer-liam-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Magic%20Tales_%20Liam%20Finds%20a%20Story.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "e2bfebb8342b0dbf4d2c7b1d431d14e80f0ca2bc9cf8b4deeaa5d8d0f513d886"
+          }
+        ]
+      }
     },
     "summary": "Help Liam find an original story to satisfy the fairy who has captured his family.",
     "studio": "Animation Magic",
-    "genre": "Interactive storybook"
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/liam-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "composer:princess": {
     "title": "Magic Tales: The Princess and the Crab",
@@ -1147,11 +1501,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3282"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-composer-princess-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Magic%20Tales_%20The%20Princess%20and%20the%20Crab.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "7c52d9ea77831e375426c592061df791d32fe7f64aa3638d0a544b001f0b4e58"
+          }
+        ]
+      }
     },
     "summary": "Guide a princess through a series of challenges to rescue a prince from an evil fairy's spell.",
     "studio": "Animation Magic",
-    "genre": "Interactive storybook"
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/princess-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "composer:sleepingcub": {
     "title": "Magic Tales: Sleeping Cub's Test of Courage",
@@ -1188,11 +1557,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3281"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-composer-sleepingcub-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Magic%20Tales_%20Sleeping%20Cubs%20Test%20of%20Courage.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "c25a900f8c8ddc3d9af4907bb6ff299d8999c047d00dbe4bb340bb54b67c76b1"
+          }
+        ]
+      }
     },
     "summary": "Join Sleeping Cub's search for the mystical elk dogs as he tries to help his people find the buffalo.",
     "studio": "Animation Magic",
-    "genre": "Interactive storybook"
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/sleepingcub-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "cruise:cruise": {
     "title": "Cruise for a Corpse",
@@ -1230,11 +1614,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2195"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-cruise-cruise-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Cruise%20for%20a%20Corpse.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "9797382f1b006521ec01f92a3484ad04b220bda045a6a5cef6a946ea63b7c9d6"
+          }
+        ]
+      }
     },
     "summary": "Investigate a murder aboard a luxury ship as Inspector Raoul Dusentier and question its suspicious passengers.",
     "studio": "Delphine Software",
-    "genre": "Detective adventure"
+    "genre": "Detective adventure",
+    "heroImage": "/launcher/cruise-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "draci:draci": {
     "title": "Dragon History",
@@ -1271,11 +1670,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2890"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-draci-draci-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Dra%c4%8d%c3%ad%20Historie.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "bbfdeaf34d3f9476b4c77e0e694c295d339178346e8d7513f611bbd567d27789"
+          }
+        ]
+      }
     },
     "summary": "Guide the young dragon Bert through a humorous world as he searches for his missing father.",
     "studio": "NoSense",
-    "genre": "Fantasy comedy"
+    "genre": "Fantasy comedy",
+    "heroImage": "/launcher/draci-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "drascula:drascula": {
     "title": "Dráscula: The Vampire Strikes Back",
@@ -1301,8 +1715,22 @@
         "referenceKind": "box-scan",
         "generatedOn": "2026-11-05",
         "generator": "image_gen (built-in)"
+      },
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/drascula-hero.webp",
+            "sha256": "6764eb2a2fa2e1488080a93e3e4ce460f61c6db06285a5f9f3065bd6d49f3f47",
+            "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+          }
+        ]
       }
-    }
+    },
+    "heroImage": "/launcher/drascula-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "dreamweb:dreamweb": {
     "title": "DreamWeb",
@@ -1328,8 +1756,22 @@
         "referenceKind": "box-scan",
         "generatedOn": "2026-11-05",
         "generator": "image_gen (built-in)"
+      },
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/dreamweb-hero.webp",
+            "sha256": "71eb377a16f6e4e5f2d0a8d2e98e90b717eed33bd7a60cd9dcec11b2ac82423f",
+            "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+          }
+        ]
       }
-    }
+    },
+    "heroImage": "/launcher/dreamweb-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "gnap:gnap": {
     "title": "Gnap (U.F.O.s)",
@@ -1366,11 +1808,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=4276"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-gnap-gnap-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/U.F.O.s.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "ed3fe918ec4572d2e1f83550a2083aadedc5c52f230890b2b6a9910ced62611c"
+          }
+        ]
+      }
     },
     "summary": "Help the stranded alien Gnap repair his spacecraft while dealing with Earth's eccentric inhabitants.",
     "studio": "Artech Digital Entertainment",
-    "genre": "Science-fiction comedy"
+    "genre": "Science-fiction comedy",
+    "heroImage": "/launcher/gnap-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "gob:bargon": {
     "title": "Bargon Attack",
@@ -1407,11 +1864,32 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2015"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-bargon-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Bargon%20Attack.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "a75e9530464fba91978213e61110ef9c70ec6c76566a39b7f32c8bf02365cae8"
+          },
+          {
+            "asset": "/launcher/bargon-scummweb-generated-2026-11-05-r1-hero.webp",
+            "sha256": "fb6dad8fdeaf57e85b27b5b8827fb90abde85c3c3fdb99dce5801564ee9d5550",
+            "credit": "Previous generated candidate master, revised with its original box-art reference retained.",
+            "masterSha256": "3cb512b2c2b6c8713e00c65bba9bdc7ef80acfe3db40f72bb55b66dc1c3bcb9b"
+          }
+        ]
+      }
     },
     "summary": "A young programmer takes on the Bargon aliens after they conquer Earth and enslave humanity.",
     "studio": "Coktel Vision",
-    "genre": "Science-fiction adventure"
+    "genre": "Science-fiction adventure",
+    "heroImage": "/launcher/bargon-scummweb-generated-2026-11-05-r2-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "gob:fascination": {
     "title": "Fascination",
@@ -1448,11 +1926,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2960"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-fascination-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Fascination.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "c90f7bc06697e05fc85599185d1627ea3d925e1541b3c7b9fa73113f5a51a881"
+          }
+        ]
+      }
     },
     "summary": "Pilot Doralice investigates a dangerous drug and the mysterious circumstances surrounding a dying man's request.",
     "studio": "Coktel Vision",
-    "genre": "Mature mystery adventure"
+    "genre": "Mature mystery adventure",
+    "heroImage": "/launcher/fascination-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "gob:geisha": {
     "title": "Geisha",
@@ -1489,11 +1982,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3093"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-geisha-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Geisha.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "2a95691373083e46e3852f2b4df716f710f84ceb9b4905257f1067e43405e67d"
+          }
+        ]
+      }
     },
     "summary": "Rescue Eva from a scientist who intends to transform her into a robotic geisha.",
     "studio": "Coktel Vision",
-    "genre": "Mature science-fiction adventure"
+    "genre": "Mature science-fiction adventure",
+    "heroImage": "/launcher/geisha-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "gob:gob1": {
     "title": "Gobliiins",
@@ -1530,11 +2038,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=972"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-gob1-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gobliiins.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "fae46ee4446bdf3156e93d8d978ed534c9d51ae6a5e300d62fe84c25e8f8217e"
+          }
+        ]
+      }
     },
     "summary": "Coordinate three goblins with different abilities to cure their king and overcome a series of magical obstacles.",
     "studio": "Coktel Vision",
-    "genre": "Puzzle adventure"
+    "genre": "Puzzle adventure",
+    "heroImage": "/launcher/gob1-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "gob:gob2": {
     "title": "Gobliins 2: The Prince Buffoon",
@@ -1571,11 +2094,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1685"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-gob2-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gobliins%202.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "16466e349adf955f6b54f2a148b7d95cdc07a5c04ea941a2c0f7f76e363b88e2"
+          }
+        ]
+      }
     },
     "summary": "Use Fingus and Winkle's contrasting skills to rescue a prince from an evil demon.",
     "studio": "Coktel Vision",
-    "genre": "Puzzle adventure"
+    "genre": "Puzzle adventure",
+    "heroImage": "/launcher/gob2-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "gob:gob3": {
     "title": "Goblins Quest 3",
@@ -1612,11 +2150,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1878"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-gob3-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Goblins%20Quest%203.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "ee36075859dbe40bf2149ca034d7950f41deb51d6bb53af71c43a0ed7ee77022"
+          }
+        ]
+      }
     },
     "summary": "Help the goblin journalist Blount investigate a royal feud in a world of surreal puzzles.",
     "studio": "Coktel Vision",
-    "genre": "Puzzle adventure"
+    "genre": "Puzzle adventure",
+    "heroImage": "/launcher/gob3-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "gob:lit": {
     "title": "Lost in Time",
@@ -1653,11 +2206,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2283"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-lit-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Lost%20in%20Time.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "fb32c4e7437bb2743ad5e1e771cf75becd7a3b36a939217b932e5fa9dc7670ab"
+          }
+        ]
+      }
     },
     "summary": "Guide Doralice between the present and the past as she investigates a ship and a hidden threat.",
     "studio": "Coktel Vision",
-    "genre": "Time-travel adventure"
+    "genre": "Time-travel adventure",
+    "heroImage": "/launcher/lit-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "gob:littlered": {
     "title": "Once Upon A Time: Little Red Riding Hood",
@@ -1694,11 +2262,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3097"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-littlered-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Once%20Upon%20a%20Time_%20Little%20Red%20Riding%20Hood.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "2f1a79c6d3a90c168b7ab423621e80b1147505f4ed0f24215a1fa16a707eba36"
+          }
+        ]
+      }
     },
     "summary": "Explore an interactive fairy-tale world inspired by Little Red Riding Hood.",
     "studio": "Coktel Vision",
-    "genre": "Children's storybook adventure"
+    "genre": "Children's storybook adventure",
+    "heroImage": "/launcher/littlered-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "gob:urban": {
     "title": "Urban Runner",
@@ -1735,11 +2318,27 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2298"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-urban-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Urban%20Runner.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "93248cc983991424f2e7c4a580b851d2cf874e4aa76758826d79520dc2d0b751"
+          }
+        ]
+      }
     },
     "summary": "A journalist framed for murder teams up with a young woman to uncover a criminal conspiracy in Paris.",
     "studio": "Coktel Vision",
-    "genre": "Interactive movie thriller"
+    "genre": "Interactive movie thriller",
+    "heroImage": "/launcher/urban-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%",
+    "heroImageMobilePosition": "100% top"
   },
   "gob:ween": {
     "title": "Ween: The Prophecy",
@@ -1776,11 +2375,27 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1975"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-ween-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Ween_%20The%20Prophecy.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "f7922dad3facf57eb002d911a389586233524b832c0601b97e618d3523eb67d7"
+          }
+        ]
+      }
     },
     "summary": "Gather magical objects and solve puzzles as Ween tries to defeat an evil wizard and fulfil an ancient prophecy.",
     "studio": "Coktel Vision",
-    "genre": "Fantasy puzzle adventure"
+    "genre": "Fantasy puzzle adventure",
+    "heroImage": "/launcher/ween-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%",
+    "heroImageMobilePosition": "100% top"
   },
   "gob:woodruff": {
     "title": "The Bizarre Adventures of Woodruff and the Schnibble",
@@ -1817,11 +2432,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1879"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-woodruff-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Bizarre%20Adventures%20of%20Woodruff%20and%20the%20Schnibble.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "6cb2161dd29e6debcc3a6202625a2e7a4ea04bebaf91d0b856cb813c77a29bc1"
+          }
+        ]
+      }
     },
     "summary": "Help Woodruff search for his missing adoptive father and challenge the rulers of a strange post-apocalyptic society.",
     "studio": "Coktel Vision",
-    "genre": "Science-fiction comedy"
+    "genre": "Science-fiction comedy",
+    "heroImage": "/launcher/woodruff-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "groovie:t7g": {
     "title": "The 7th Guest",
@@ -1858,11 +2488,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2500"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-groovie-t7g-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%207th%20Guest.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "1c07b2f488102e6856ce968ac7e52042a0f89898a157e7fb5c268a4c97062837"
+          }
+        ]
+      }
     },
     "summary": "Explore Henry Stauf's mansion and solve its puzzles while uncovering the fate of six invited guests.",
     "studio": "Trilobyte",
-    "genre": "Horror puzzle adventure"
+    "genre": "Horror puzzle adventure",
+    "heroImage": "/launcher/t7g-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "hopkins:hopkins": {
     "title": "Hopkins FBI",
@@ -1899,11 +2544,27 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3495"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-hopkins-hopkins-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hopkins%20FBI.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "a42cf1200ab1a7a2c626a3c2d36fda81bd9373947ddd1b82574458416f4c0a57"
+          }
+        ]
+      }
     },
     "summary": "Track an escaped criminal as FBI agent Hopkins in an adventure mixing investigation, violence, and science fiction.",
     "studio": "MP Entertainment",
-    "genre": "Crime thriller adventure"
+    "genre": "Crime thriller adventure",
+    "heroImage": "/launcher/hopkins-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%",
+    "heroImageMobilePosition": "100% top"
   },
   "hugo:hugo1": {
     "title": "Hugo's House of Horrors",
@@ -1982,11 +2643,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3065"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-hugo-hugo2-poster.webp",
+            "url": "https://images.launchbox-app.com/0864bc8c-f83a-49b7-a2a0-5e46edc6ccab.jpg",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "47b4bddd05b2513c9c8bf67f2d4236be8ddabfe9177f6860d63d4fb7270aabfe"
+          }
+        ]
+      }
     },
     "summary": "Investigate a murder and search a sprawling estate as Penelope tries to find Hugo.",
     "studio": "Gray Design Associates",
-    "genre": "Mystery adventure"
+    "genre": "Mystery adventure",
+    "heroImage": "/launcher/hugo2-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "hugo:hugo3": {
     "title": "Hugo III: Jungle of Doom",
@@ -2064,11 +2740,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3247"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-kyra-eob-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Eye%20of%20the%20Beholder.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "ed72695b59efa2f152833991d4e96020ac2fad6651333f3923614e84e0f3d49e"
+          }
+        ]
+      }
     },
     "summary": "Lead a party of adventurers beneath Waterdeep to investigate an evil presence in its sewers.",
     "studio": "Westwood Associates",
-    "genre": "Dungeon-crawling role-playing game"
+    "genre": "Dungeon-crawling role-playing game",
+    "heroImage": "/launcher/eob-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "kyra:eob2": {
     "title": "Eye of the Beholder II: The Legend of Darkmoon",
@@ -2105,11 +2796,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3248"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-kyra-eob2-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Eye%20of%20the%20Beholder%20II%20-%20The%20Legend%20of%20Darkmoon.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "7fcd2e8a3d85d2e3d2688c64195027097000c45266ffa32a6d150ab5c431421f"
+          }
+        ]
+      }
     },
     "summary": "Explore the temple of Darkmoon with a party of adventurers and confront its sinister powers.",
     "studio": "Westwood Associates",
-    "genre": "Dungeon-crawling role-playing game"
+    "genre": "Dungeon-crawling role-playing game",
+    "heroImage": "/launcher/eob2-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "kyra:kyra1": {
     "title": "The Legend of Kyrandia",
@@ -2147,11 +2853,32 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1680"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-kyra-kyra1-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Legend%20of%20Kyrandia,%20The.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "c2199b5b2a9a4dd05e6df1ea923ac513b7f393bfd5222416630b2152136b6eab"
+          },
+          {
+            "asset": "/launcher/kyra1-scummweb-generated-2026-11-05-r1-hero.webp",
+            "sha256": "7ac2b529c54127902d6d3a698dd564490e2a7fa683e728388bc61832bc8ae02f",
+            "credit": "Previous generated candidate master, revised with its original box-art reference retained.",
+            "masterSha256": "0e84f8efe834b4137ef3de3f2a230adef7932bdbb5986b3461082eadaafbc5fc"
+          }
+        ]
+      }
     },
     "summary": "Help Brandon restore the kingdom of Kyrandia after the jester Malcolm escapes and turns its inhabitants to stone.",
     "studio": "Westwood Studios",
-    "genre": "Fantasy adventure"
+    "genre": "Fantasy adventure",
+    "heroImage": "/launcher/kyra1-scummweb-generated-2026-11-05-r2-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "kyra:kyra2": {
     "title": "The Legend of Kyrandia: Hand of Fate",
@@ -2188,11 +2915,32 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1977"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-kyra-kyra2-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Legend%20of%20Kyrandia,%20The_%20The%20Hand%20of%20Fate.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "0da0c240e1ca1cce0674e3cff280496ab319bc9b791c92835d5787f053b57d7c"
+          },
+          {
+            "asset": "/launcher/kyra2-scummweb-generated-2026-11-05-r1-hero.webp",
+            "sha256": "ac5710a080528841b05139c6923744ac3bf573399b3ccc6315d615fe60ae8f6a",
+            "credit": "Previous generated candidate master, revised with its original box-art reference retained.",
+            "masterSha256": "5ead8b6e4348e6b25a2b28802a664704148c3d290b84f98c67c6f30286d8d1b1"
+          }
+        ]
+      }
     },
     "summary": "Guide the alchemist Zanthia on a journey to stop Kyrandia from disappearing.",
     "studio": "Westwood Studios",
-    "genre": "Fantasy adventure"
+    "genre": "Fantasy adventure",
+    "heroImage": "/launcher/kyra2-scummweb-generated-2026-11-05-r2-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "kyra:kyra3": {
     "title": "The Legend of Kyrandia: Book 3 - Malcolm's Revenge",
@@ -2229,11 +2977,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1978"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-kyra-kyra3-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Legend%20of%20Kyrandia,%20The_%20Malcolm's%20Revenge.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "88c912f42872672d12d35545b426ed995154d29892b1917a334f96c29b5e3dd3"
+          }
+        ]
+      }
     },
     "summary": "Play as the mischievous Malcolm, clear his name, and discover the truth behind Kyrandia's royal murders.",
     "studio": "Westwood Studios",
-    "genre": "Fantasy comedy"
+    "genre": "Fantasy comedy",
+    "heroImage": "/launcher/kyra3-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "kyra:lol": {
     "title": "Lands of Lore: The Throne of Chaos",
@@ -2270,11 +3033,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2482"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-kyra-lol-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Lands%20of%20Lore_%20The%20Throne%20of%20Chaos.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "39050b8b17d0c55ede0f08d52b45b48a4c81112fa6b271a1b894a69119a1d892"
+          }
+        ]
+      }
     },
     "summary": "Lead a party through the Lands of Lore to confront the sorceress Scotia and save the kingdom of Gladstone.",
     "studio": "Westwood Studios",
-    "genre": "Fantasy role-playing game"
+    "genre": "Fantasy role-playing game",
+    "heroImage": "/launcher/lol-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "lab:lab": {
     "title": "The Labyrinth of Time",
@@ -2312,11 +3090,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=4182"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-lab-lab-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Labyrinth%20of%20Time.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "64e167198059f31394145d52e09764bbbfb8afd1dca8a2c268e6ec3c226ffd31"
+          }
+        ]
+      }
     },
     "summary": "Explore a labyrinth spanning different places and eras, solving puzzles to prevent an ancient evil from escaping.",
     "studio": "Terra Nova Development",
-    "genre": "Surreal puzzle adventure"
+    "genre": "Surreal puzzle adventure",
+    "heroImage": "/launcher/lab-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "local:road": {
     "title": "Road",
@@ -2368,8 +3161,22 @@
         "referenceKind": "box-scan",
         "generatedOn": "2026-11-05",
         "generator": "image_gen (built-in)"
+      },
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/lure-hero.webp",
+            "sha256": "f084f5298aac77db5aa2a08163494bd1dd663230727d90ff465e0b644f495fb9",
+            "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+          }
+        ]
       }
-    }
+    },
+    "heroImage": "/launcher/lure-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "made:lgop2": {
     "title": "Leather Goddesses of Phobos! 2: Gas Pump Girls Meet the Pulsating Inconvenience from Planet X",
@@ -2447,11 +3254,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2469"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-made-rodney-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Rodneys%20Funscreen.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "4b67bc6984b8bf16c78a0c0fc4d381f28fefa421caa941f226f6d0fe98055384"
+          }
+        ]
+      }
     },
     "summary": "Explore five colourful learning games designed to introduce children to using a computer.",
     "studio": "Activision",
-    "genre": "Educational minigame collection"
+    "genre": "Educational minigame collection",
+    "heroImage": "/launcher/rodney-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "made:rtz": {
     "title": "Return to Zork",
@@ -2488,11 +3310,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2451"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-made-rtz-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Return%20to%20Zork.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "ea809a84d5945b725a4f9bbd2cf08f60c8cb421cec27aa7f026068b2de5ecc9f"
+          }
+        ]
+      }
     },
     "summary": "Travel into the Great Underground Empire, investigate a spreading evil, and discover the power behind the wizard Morphius.",
     "studio": "Infocom",
-    "genre": "Fantasy adventure"
+    "genre": "Fantasy adventure",
+    "heroImage": "/launcher/rtz-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "mads:nebular": {
     "title": "Rex Nebular and the Cosmic Gender Bender",
@@ -2529,11 +3366,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2454"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-mads-nebular-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Rex%20Nebular%20and%20the%20Cosmic%20Gender%20Bender.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "07a487353b7ae05471ca090977e8815984d1c9690e20f294eb00ae3cb52f9014"
+          }
+        ]
+      }
     },
     "summary": "A smuggler searching for a valuable vase crash-lands on a planet whose inhabitants have a surprising secret.",
     "studio": "MicroProse",
-    "genre": "Science-fiction comedy"
+    "genre": "Science-fiction comedy",
+    "heroImage": "/launcher/nebular-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "mohawk:myst": {
     "title": "Myst",
@@ -2571,11 +3423,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2941"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-mohawk-myst-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Myst.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "da8c76a4e8d0debc2dfe1acdb590fd803bcdc24fedf2d7cf6db528ea9ee0d35b"
+          }
+        ]
+      }
     },
     "summary": "Explore a deserted island and travel through linking books to uncover the history of Atrus and his family.",
     "studio": "Cyan",
-    "genre": "Exploration puzzle adventure"
+    "genre": "Exploration puzzle adventure",
+    "heroImage": "/launcher/myst-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "mohawk:riven": {
     "title": "Riven: The Sequel to Myst",
@@ -2612,11 +3479,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2942"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-mohawk-riven-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Riven_%20The%20Sequel%20to%20Myst.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "a631d80310e8906acdf17430f8610769eb39624f3d647810bfc0e58a363afedc"
+          }
+        ]
+      }
     },
     "summary": "Journey to Riven, decipher its machinery and culture, and help Atrus rescue Catherine from Gehn.",
     "studio": "Cyan",
-    "genre": "Exploration puzzle adventure"
+    "genre": "Exploration puzzle adventure",
+    "heroImage": "/launcher/riven-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "neverhood:neverhood": {
     "title": "The Neverhood",
@@ -2653,11 +3535,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3454"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-neverhood-neverhood-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Neverhood.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "9932a396aff5449562d0c6c577e092af321e301b86edcfa96fa6d69c385fbe6e"
+          }
+        ]
+      }
     },
     "summary": "Guide Klaymen through a clay-built world and uncover its history through exploration and puzzles.",
     "studio": "The Neverhood, Inc.",
-    "genre": "Claymation puzzle adventure"
+    "genre": "Claymation puzzle adventure",
+    "heroImage": "/launcher/neverhood-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "ngi:fullpipe": {
     "title": "Full Pipe",
@@ -2694,11 +3591,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3842"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-ngi-fullpipe-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Full%20Pipe.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "b30691b9241aacaa9bacb7e99180713f1bb4e0f566b44b41f4e3621129e54c31"
+          }
+        ]
+      }
     },
     "summary": "Follow an ordinary man through a trapdoor into a strange underground world filled with eccentric creatures and machinery.",
     "studio": "PIPE Studio",
-    "genre": "Surreal puzzle adventure"
+    "genre": "Surreal puzzle adventure",
+    "heroImage": "/launcher/fullpipe-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "parallaction:bra": {
     "title": "The Big Red Adventure",
@@ -2734,11 +3646,32 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2023"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-parallaction-bra-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Big%20Red%20Adventure.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "304e97561c7813cf8a4383d910892547041b399729d0271a4b93f4741c558f75"
+          },
+          {
+            "asset": "/launcher/bra-scummweb-generated-2026-11-05-r1-hero.webp",
+            "sha256": "99b4255aeca13561f33637786cc91e08463038424fc827409598f2e91375bf22",
+            "credit": "Previous generated candidate master, revised with its original box-art reference retained.",
+            "masterSha256": "61991c376eefd90e79bf2c9eed0dfdfc8eb66e4b1ed627a8890e6ae165883a5f"
+          }
+        ]
+      }
     },
     "summary": "Follow a Russian couple and an American tourist through a comic caper involving stolen treasures.",
     "studio": "Dynabyte",
-    "genre": "Comedy adventure"
+    "genre": "Comedy adventure",
+    "heroImage": "/launcher/bra-scummweb-generated-2026-11-05-r2-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "parallaction:nippon": {
     "title": "Nippon Safes, Inc.",
@@ -2765,8 +3698,22 @@
         "referenceKind": "box-scan",
         "generatedOn": "2026-11-05",
         "generator": "image_gen (built-in)"
+      },
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/nippon-hero.webp",
+            "sha256": "7b3bc5dca13377492942cdc6d453b936e6641a10ff297978357431848b63e446",
+            "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+          }
+        ]
       }
-    }
+    },
+    "heroImage": "/launcher/nippon-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "pegasus:pegasus": {
     "title": "The Journeyman Project: Pegasus Prime",
@@ -2803,11 +3750,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3577"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-pegasus-pegasus-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Journeyman%20Project_%20Pegasus%20Prime.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "556f5f714ed15a555527d9dd5e7013e522741b8f011bde352a81ceccc506f915"
+          }
+        ]
+      }
     },
     "summary": "Travel through historical simulations as temporal agent Gage Blackwood to stop a plot against humanity.",
     "studio": "Presto Studios",
-    "genre": "Time-travel adventure"
+    "genre": "Time-travel adventure",
+    "heroImage": "/launcher/pegasus-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "plumbers:plumbers": {
     "title": "Plumbers Don't Wear Ties",
@@ -2844,11 +3806,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=4637"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-plumbers-plumbers-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Plumbers%20Dont%20Wear%20Ties.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "d02aeceb335b461e27e2b4d2a3063d1f4aa403f1322beaaf2013dd1f1ec7d712"
+          }
+        ]
+      }
     },
     "summary": "Choose how a photographic comedy unfolds as a plumber and a young woman encounter romance and workplace intrigue.",
     "studio": "Kirin Entertainment / United Pixtures",
-    "genre": "Mature interactive movie"
+    "genre": "Mature interactive movie",
+    "heroImage": "/launcher/plumbers-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "queen:queen": {
     "title": "Flight of the Amazon Queen",
@@ -2874,8 +3851,22 @@
         "referenceKind": "box-scan",
         "generatedOn": "2026-11-05",
         "generator": "image_gen (built-in)"
+      },
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/queen-hero.webp",
+            "sha256": "cc15a0afa96199603f0ccb421907411552e73d9a7b62f3a05a8e49ea8178ae4c",
+            "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+          }
+        ]
       }
-    }
+    },
+    "heroImage": "/launcher/queen-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "saga:ihnm": {
     "title": "Harlan Ellison: I Have No Mouth, and I Must Scream",
@@ -2912,11 +3903,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1686"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-saga-ihnm-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/I%20Have%20No%20Mouth,%20and%20I%20Must%20Scream.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "9d06c33874db507b5420a51974bef3b8a6b80f465cb86b9a0f5c147a57c3b176"
+          }
+        ]
+      }
     },
     "summary": "Guide five damaged characters through scenarios created by the supercomputer AM and confront their fears and past actions.",
     "studio": "The Dreamers Guild",
-    "genre": "Psychological horror adventure"
+    "genre": "Psychological horror adventure",
+    "heroImage": "/launcher/ihnm-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "saga:ite": {
     "title": "Inherit the Earth: Quest for the Orb",
@@ -2953,11 +3959,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1679"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-saga-ite-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Inherit%20the%20Earth_%20Quest%20for%20the%20Orb.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "211bed784ca3d409ae881a99bdaec32bb75bf5fc139e8782be225b0099fa7547"
+          }
+        ]
+      }
     },
     "summary": "Help Rif the fox clear his name after the Orb of Storms is stolen from a world of talking animals.",
     "studio": "The Dreamers Guild",
-    "genre": "Fantasy adventure"
+    "genre": "Fantasy adventure",
+    "heroImage": "/launcher/ite-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:camelot": {
     "title": "Conquests of Camelot: The Search for the Grail",
@@ -2994,11 +4015,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2674"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-camelot-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Conquests%20of%20Camelot.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "4e71666d539aad9dc39407dd4f5837cd3e5583edd47717c174c2a6f8572df064"
+          }
+        ]
+      }
     },
     "summary": "Guide King Arthur on a perilous quest for the Holy Grail to save Camelot.",
     "studio": "Sierra On-Line",
-    "genre": "Arthurian adventure"
+    "genre": "Arthurian adventure",
+    "heroImage": "/launcher/camelot-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:castlebrain": {
     "title": "Castle of Dr. Brain",
@@ -3036,11 +4072,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2706"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-castlebrain-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Castle%20of%20Dr.%20Brain.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "388b0fa64bba3f34f54935631cc26e2dbd0d94fd4bd75da0fd7ca1b646164464"
+          }
+        ]
+      }
     },
     "summary": "Solve mathematics, language, logic, and science puzzles to explore Dr. Brain's castle.",
     "studio": "Sierra On-Line",
-    "genre": "Educational puzzle adventure"
+    "genre": "Educational puzzle adventure",
+    "heroImage": "/launcher/castlebrain-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:ecoquest": {
     "title": "EcoQuest: The Search for Cetus",
@@ -3078,11 +4129,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2677"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-ecoquest-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/EcoQuest_%20The%20Search%20for%20Cetus.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "86408b31521887cd400c5540c637b35a7f72dcccdb2f506dad27a5adfc403a31"
+          }
+        ]
+      }
     },
     "summary": "Help Adam and the dolphin Delphineus explore an underwater kingdom and confront threats to the ocean.",
     "studio": "Sierra On-Line",
-    "genre": "Environmental adventure"
+    "genre": "Environmental adventure",
+    "heroImage": "/launcher/ecoquest-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:ecoquest2": {
     "title": "EcoQuest II: Lost Secret of the Rainforest",
@@ -3119,11 +4185,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2679"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-ecoquest2-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/EcoQuest%202_%20Lost%20Secret%20of%20the%20Rainforest.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "32456b43bd3224363007a6b75fa7afe4f2d8163583ee96375091928e8d2425fb"
+          }
+        ]
+      }
     },
     "summary": "Join Adam in the Amazon rainforest and investigate the pollution threatening its wildlife.",
     "studio": "Sierra On-Line",
-    "genre": "Environmental adventure"
+    "genre": "Environmental adventure",
+    "heroImage": "/launcher/ecoquest2-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:freddypharkas": {
     "title": "Freddy Pharkas: Frontier Pharmacist",
@@ -3160,11 +4241,32 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2712"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-freddypharkas-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Freddy%20Pharkas_%20Frontier%20Pharmacist.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "835786f035db8ee17fe2b131cd8fa5281392626252be7b898d63efbae3b8cb4e"
+          },
+          {
+            "asset": "/launcher/freddypharkas-scummweb-generated-2026-11-05-r1-hero.webp",
+            "sha256": "9fecd9bcb2a9815733def2f375163bd39f10430b29a8f68423c4e94d5eeac6e4",
+            "credit": "Previous generated candidate master, revised with its original box-art reference retained.",
+            "masterSha256": "857b4a81d54826fa15769d35b3f693351113ea75277fc61bd20f17ea2767d2bd"
+          }
+        ]
+      }
     },
     "summary": "A former gunslinger working as a pharmacist must save the frontier town of Coarsegold.",
     "studio": "Sierra On-Line",
-    "genre": "Western comedy adventure"
+    "genre": "Western comedy adventure",
+    "heroImage": "/launcher/freddypharkas-scummweb-generated-2026-11-05-r2-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:funseeker": {
     "title": "Fun Seeker's Guide to Eastern Madera County",
@@ -3272,11 +4374,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3088"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-gk2-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Beast%20Within_%20A%20Gabriel%20Knight%20Mystery.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "6e942213ee6b2ba289cfa84bc2b2c48a811194a8f867652d606bd4aa1448319d"
+          }
+        ]
+      }
     },
     "summary": "Alternate between Gabriel Knight and Grace Nakimura to investigate a werewolf mystery in Bavaria.",
     "studio": "Sierra On-Line",
-    "genre": "Interactive movie mystery"
+    "genre": "Interactive movie mystery",
+    "heroImage": "/launcher/gk2-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:iceman": {
     "title": "Code-Name: Iceman",
@@ -3313,11 +4430,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2667"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-iceman-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Codename_%20ICEMAN.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "82f0b3a264ea802b36d1275d2508a1173e17126497daaa333e85e38effd9a7f5"
+          }
+        ]
+      }
     },
     "summary": "Join naval officer Johnny Westland on a mission involving a submarine, international intrigue, and a hostage rescue.",
     "studio": "Sierra On-Line",
-    "genre": "Espionage adventure and simulation"
+    "genre": "Espionage adventure and simulation",
+    "heroImage": "/launcher/iceman-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:islandbrain": {
     "title": "The Island of Dr. Brain",
@@ -3355,11 +4487,32 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2707"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-islandbrain-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Island%20of%20Dr.%20Brain.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "4b9b4e20539fa4a44dfa42ceb469d34e871e8a33d48ff9c27eaf648441627509"
+          },
+          {
+            "asset": "/launcher/islandbrain-scummweb-generated-2026-11-05-r1-hero.webp",
+            "sha256": "7892b76a9652da330a7064915cf2df1c67ef8dca0c5f1b69df3e295427c3eb92",
+            "credit": "Previous generated candidate master, revised with its original box-art reference retained.",
+            "masterSha256": "88f9dd5301a71e8c3eda53211abb187e02c61f3a5a6c84f5ca951aef709241f2"
+          }
+        ]
+      }
     },
     "summary": "Explore Dr. Brain's island laboratory and solve puzzles covering science, music, language, and logic.",
     "studio": "Sierra On-Line",
-    "genre": "Educational puzzle adventure"
+    "genre": "Educational puzzle adventure",
+    "heroImage": "/launcher/islandbrain-scummweb-generated-2026-11-05-r2-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:jones": {
     "title": "Jones in the Fast Lane",
@@ -3396,11 +4549,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2676"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-jones-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Jones%20in%20the%20Fast%20Lane.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "de998c16abcab5badd45ab21ddec14b88be46842ec9046544fa0c44a881b7cd6"
+          }
+        ]
+      }
     },
     "summary": "Compete for education, money, career success, and happiness while balancing work and daily expenses.",
     "studio": "Sierra On-Line",
-    "genre": "Life simulation board game"
+    "genre": "Life simulation board game",
+    "heroImage": "/launcher/jones-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:kq1sci": {
     "title": "King's Quest: Quest for the Crown",
@@ -3437,12 +4605,27 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1717"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-kq1sci-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20I_%20Quest%20for%20the%20Crown%20(SCI_DOS_English).png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "0d0424cf26fefab482c301e98d2eca6055a745feda6334fa3b1ee8c0a4bcc0a2"
+          }
+        ]
+      }
     },
     "summary": "Help Graham recover three lost treasures and restore the kingdom of Daventry in this SCI remake.",
     "studio": "Sierra On-Line",
     "genre": "Fantasy adventure",
-    "editionLabel": "SCI Remake"
+    "editionLabel": "SCI Remake",
+    "heroImage": "/launcher/kq1sci-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:kq4sci": {
     "title": "King's Quest IV: The Perils of Rosella",
@@ -3479,11 +4662,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1720"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-kq4sci-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20IV_%20The%20Perils%20of%20Rosella.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "1a65a758109f1fb1bad48ca070dc2018b160d60d5ba848bb346f625c1a130b68"
+          }
+        ]
+      }
     },
     "summary": "Guide Princess Rosella through Tamir to find a magical fruit that can save her father.",
     "studio": "Sierra On-Line",
-    "genre": "Fantasy adventure"
+    "genre": "Fantasy adventure",
+    "heroImage": "/launcher/kq4sci-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:kq5": {
     "title": "King's Quest V: Absence Makes the Heart Go Yonder!",
@@ -3520,11 +4718,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1753"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-kq5-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20V_%20Absence%20Makes%20the%20Heart%20Go%20Yonder!.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "1275a8828a1fc876ffd20ad09befcaa3aa531d21204a333a764b9cd05834509f"
+          }
+        ]
+      }
     },
     "summary": "Follow King Graham through Serenia as he searches for his family and castle after a wizard makes them disappear.",
     "studio": "Sierra On-Line",
-    "genre": "Fantasy adventure"
+    "genre": "Fantasy adventure",
+    "heroImage": "/launcher/kq5-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:kq6": {
     "title": "King's Quest VI: Heir Today, Gone Tomorrow",
@@ -3561,11 +4774,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2012"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-kq6-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20VI_%20Heir%20Today,%20Gone%20Tomorrow.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "e99e1bbe201eb9b8bb506442015607cf9b430a51cae03fd75ea923f12c03f12a"
+          }
+        ]
+      }
     },
     "summary": "Help Prince Alexander explore the Land of the Green Isles and find Princess Cassima.",
     "studio": "Sierra On-Line",
-    "genre": "Fantasy adventure"
+    "genre": "Fantasy adventure",
+    "heroImage": "/launcher/kq6-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:kq7": {
     "title": "King's Quest VII: The Princeless Bride",
@@ -3602,11 +4830,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2013"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-kq7-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20VII_%20The%20Princeless%20Bride.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "bb67b5133db739be0d5325f01192cecd82ae3276e551de55fce4fe5f02e1103c"
+          }
+        ]
+      }
     },
     "summary": "Play as Valanice and Rosella as they explore a magical land and oppose the sorceress Malicia.",
     "studio": "Sierra On-Line",
-    "genre": "Fantasy adventure"
+    "genre": "Fantasy adventure",
+    "heroImage": "/launcher/kq7-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:laurabow": {
     "title": "Laura Bow: The Colonel's Bequest",
@@ -3643,11 +4886,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2664"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-laurabow-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Laura%20Bow_%20The%20Colonel's%20Bequest.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "c174ae141a5d9b3ea8c670b173ae0169407a48d106f0a8346bd95db6900c4abf"
+          }
+        ]
+      }
     },
     "summary": "Investigate a series of murders during a family gathering at a secluded Louisiana plantation.",
     "studio": "Sierra On-Line",
-    "genre": "Murder mystery adventure"
+    "genre": "Murder mystery adventure",
+    "heroImage": "/launcher/laurabow-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:laurabow2": {
     "title": "Laura Bow 2: The Dagger of Amon Ra",
@@ -3684,11 +4942,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2666"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-laurabow2-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Laura%20Bow%202_%20The%20Dagger%20of%20Amon%20Ra.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "7f6f6ed09b721bd9894df46dfaa5ecb97577eec3ac57b03458792d0ba76e7ad8"
+          }
+        ]
+      }
     },
     "summary": "Reporter Laura Bow investigates a museum robbery and a series of murders in 1920s New York.",
     "studio": "Sierra On-Line",
-    "genre": "Murder mystery adventure"
+    "genre": "Murder mystery adventure",
+    "heroImage": "/launcher/laurabow2-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:lighthouse": {
     "title": "Lighthouse: The Dark Being",
@@ -3725,11 +4998,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3286"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-lighthouse-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Lighthouse_%20The%20Dark%20Being.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "fa50df01ab2e5c6d0cf4b801ce808fdc5ed4f04882cb592b58ee7de537f2898d"
+          }
+        ]
+      }
     },
     "summary": "Follow a mysterious being through a portal and explore an alternate world to rescue a kidnapped child.",
     "studio": "Sierra On-Line",
-    "genre": "Science-fiction puzzle adventure"
+    "genre": "Science-fiction puzzle adventure",
+    "heroImage": "/launcher/lighthouse-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:longbow": {
     "title": "Conquests of the Longbow: The Legend of Robin Hood",
@@ -3766,11 +5054,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2710"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-longbow-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Conquests%20of%20the%20Longbow_%20The%20Legend%20of%20Robin%20Hood.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "3637149c569b19abeee7d50bdea97476494abb9d93fa6a1058d27691136f9ec6"
+          }
+        ]
+      }
     },
     "summary": "Lead Robin Hood and his companions through Sherwood Forest to oppose the Sheriff and help King Richard.",
     "studio": "Sierra On-Line",
-    "genre": "Historical adventure"
+    "genre": "Historical adventure",
+    "heroImage": "/launcher/longbow-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:lsl1sci": {
     "title": "Leisure Suit Larry in the Land of the Lounge Lizards",
@@ -3807,12 +5110,27 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1724"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-lsl1sci-remake-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%20in%20the%20Land%20of%20the%20Lounge%20Lizards%20(SCI_DOS_English).png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "cdc8c801ed3b992829888d641bbdf9c2b0d410fef3a4ace4707c45659bd36819"
+          }
+        ]
+      }
     },
     "summary": "Explore the nightlife of Lost Wages as Larry Laffer searches for romance in this SCI remake.",
     "studio": "Sierra On-Line",
     "genre": "Adult comedy adventure",
-    "editionLabel": "VGA Remake"
+    "editionLabel": "VGA Remake",
+    "heroImage": "/launcher/lsl1sci-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:lsl2": {
     "title": "Leisure Suit Larry 2: Goes Looking for Love (in Several Wrong Places)",
@@ -3849,11 +5167,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2026"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-lsl2-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%202_%20Goes%20Looking%20for%20Love%20(in%20Several%20Wrong%20Places)%20(DOS_English).png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "c0901a817be9d4f5cad2d3f70601e14c6ee36bf1cbb8730bb5fc7c64a3457e94"
+          }
+        ]
+      }
     },
     "summary": "Larry's search for love takes him from Los Angeles to a cruise ship and a tropical island while secret agents pursue him.",
     "studio": "Sierra On-Line",
-    "genre": "Adult comedy adventure"
+    "genre": "Adult comedy adventure",
+    "heroImage": "/launcher/lsl2-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:lsl3": {
     "title": "Leisure Suit Larry 3: Passionate Patti in Pursuit of the Pulsating Pectorals",
@@ -3890,11 +5223,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2027"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-lsl3-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%203_%20Passionate%20Patti%20in%20Pursuit%20of%20the%20Pulsating%20Pectorals.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "2f0d852ab71ad76a5f87993951724255bf51d77ee8d0cc82e0f4d3ceff831bc2"
+          }
+        ]
+      }
     },
     "summary": "Follow Larry and Passionate Patti through the resorts and jungles of Nontoonyt Island.",
     "studio": "Sierra On-Line",
-    "genre": "Adult comedy adventure"
+    "genre": "Adult comedy adventure",
+    "heroImage": "/launcher/lsl3-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:lsl5": {
     "title": "Leisure Suit Larry 5: Passionate Patti Does a Little Undercover Work",
@@ -3931,11 +5279,32 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2028"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-lsl5-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%205_%20Passionate%20Patty%20Does%20a%20Little%20Undercover%20Work.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "863df7795bc222e0bce6340e2bea071f4d4258fe713dcac130d06085577013b6"
+          },
+          {
+            "asset": "/launcher/lsl5-scummweb-generated-2026-11-05-r1-hero.webp",
+            "sha256": "bcc11a829c57cae8b2d631cef097f7a3a96c42a3c476f307ff5050f7d430ca1a",
+            "credit": "Previous generated candidate master, revised with its original box-art reference retained.",
+            "masterSha256": "9e5b0a9ae3d26f311c1159337ab9f9be00ee850a5ae94c45d3c7b429aa98becc"
+          }
+        ]
+      }
     },
     "summary": "Alternate between Larry's search for television talent and Patti's undercover investigation for the FBI.",
     "studio": "Sierra On-Line",
-    "genre": "Adult comedy adventure"
+    "genre": "Adult comedy adventure",
+    "heroImage": "/launcher/lsl5-scummweb-generated-2026-11-05-r2-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:lsl6hires": {
     "title": "Leisure Suit Larry 6: Shape Up or Slip Out!",
@@ -3972,11 +5341,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2045"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-lsl6hires-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%206_%20Shape%20Up%20or%20Slip%20Out!.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "ff99fd6acbad1bf7260d1f2b228cec5d54c3f5c896302c1cd3dfb59a8d7d9d26"
+          }
+        ]
+      }
     },
     "summary": "Help Larry navigate the La Costa Lotta resort, solve its guests' problems, and pursue romance.",
     "studio": "Sierra On-Line",
-    "genre": "Adult comedy adventure"
+    "genre": "Adult comedy adventure",
+    "heroImage": "/launcher/lsl6hires-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:lsl7": {
     "title": "Leisure Suit Larry 7: Love for Sail!",
@@ -4013,11 +5397,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2046"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-lsl7-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%207_%20Love%20for%20Sail!%20(DOS_English).png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "0e5a2dcce58f52cdaa6e05d1afdaf69e26766bc23b005519f82276fafd821c17"
+          }
+        ]
+      }
     },
     "summary": "Join Larry aboard a luxury cruise ship and compete in contests for a chance to spend time with Captain Thygh.",
     "studio": "Sierra On-Line",
-    "genre": "Adult comedy adventure"
+    "genre": "Adult comedy adventure",
+    "heroImage": "/launcher/lsl7-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:msastrochicken": {
     "title": "Ms. Astro Chicken",
@@ -4094,11 +5493,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3044"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-pepper-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Peppers%20Adventures%20in%20Time.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "cd3dc5a4b947ba1160c4a0596bf2019a7a652185f83c7a27d86dd2d24a3efa30"
+          }
+        ]
+      }
     },
     "summary": "Travel with Pepper and her dog Lockjaw to colonial America to stop a villain from changing history.",
     "studio": "Sierra On-Line",
-    "genre": "Educational time-travel adventure"
+    "genre": "Educational time-travel adventure",
+    "heroImage": "/launcher/pepper-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:phantasmagoria": {
     "title": "Phantasmagoria",
@@ -4135,11 +5549,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3098"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-phantasmagoria-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Phantasmagoria.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "c88faed37e47722484cc5bc507db1d94125db94a633daf2d4c8b0759bdba95ba"
+          }
+        ]
+      }
     },
     "summary": "Explore an isolated mansion as writer Adrienne Delaney uncovers its violent history and a supernatural threat.",
     "studio": "Sierra On-Line",
-    "genre": "Interactive movie horror"
+    "genre": "Interactive movie horror",
+    "heroImage": "/launcher/phantasmagoria-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:phantasmagoria2": {
     "title": "Phantasmagoria 2: A Puzzle of Flesh",
@@ -4220,9 +5649,24 @@
       "poster": {
         "kind": "box-scan",
         "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest_%20In%20Pursuit%20of%20the%20Death%20Angel%20(SCI_DOS_English).png"
+      },
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-pq1sci-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest_%20In%20Pursuit%20of%20the%20Death%20Angel%20(SCI_DOS_English).png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "077306e5db9fb0c36080caf46c7b3889c851ac079648a4ffad866c0fb8f1ac5e"
+          }
+        ]
       }
     },
-    "editionLabel": "VGA Remake"
+    "editionLabel": "VGA Remake",
+    "heroImage": "/launcher/pq1sci-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:pq2": {
     "title": "Police Quest 2: The Vengeance",
@@ -4259,11 +5703,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1993"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-pq2-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest%20II_%20The%20Vengeance.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "a338f318052d2c4d77b33dac8f58240a238310aaf444c39118a6cc8990c2bcf9"
+          }
+        ]
+      }
     },
     "summary": "Detective Sonny Bonds pursues the escaped criminal Jessie Bains while protecting the people he threatens.",
     "studio": "Sierra On-Line",
-    "genre": "Police procedural adventure"
+    "genre": "Police procedural adventure",
+    "heroImage": "/launcher/pq2-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:pq3": {
     "title": "Police Quest 3: The Kindred",
@@ -4300,11 +5759,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1994"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-pq3-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest%20III_%20The%20Kindred.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "306df0b58c0ee98552465067040a1bf5889388ba5e0d1b3941228d85bc28353b"
+          }
+        ]
+      }
     },
     "summary": "Investigate a series of crimes linked to a cult as Sonny Bonds and his partner patrol Lytton.",
     "studio": "Sierra On-Line",
-    "genre": "Police procedural adventure"
+    "genre": "Police procedural adventure",
+    "heroImage": "/launcher/pq3-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:pq4": {
     "title": "Police Quest IV: Open Season",
@@ -4341,11 +5815,32 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1995"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-pq4-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest%204_%20Open%20Season.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "24146b5f484abef687e2273466275607eb0ff3a1c51c52e10e1a4c87c8da1239"
+          },
+          {
+            "asset": "/launcher/pq4-scummweb-generated-2026-11-05-r1-hero.webp",
+            "sha256": "9d4e63768810c54b1865558e72f0104f841177f34382187849d9a55a158c8404",
+            "credit": "Previous generated candidate master, revised with its original box-art reference retained.",
+            "masterSha256": "f1c3866d7e92797a5c728958fb74912286082fcf20819230d7ab0c7918333a08"
+          }
+        ]
+      }
     },
     "summary": "Investigate a police officer's murder as LAPD detective John Carey follows a case through Los Angeles.",
     "studio": "Sierra On-Line",
-    "genre": "Police procedural adventure"
+    "genre": "Police procedural adventure",
+    "heroImage": "/launcher/pq4-scummweb-generated-2026-11-05-r2-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:qfg1": {
     "title": "Quest for Glory I: So You Want To Be A Hero",
@@ -4383,11 +5878,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2647"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-qfg1-original-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Quest%20for%20Glory%201.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "82ea218c23d547474f9b1814fe6dd2aea4dd21d51c5d984f5d89cc32d9ccb6ca"
+          }
+        ]
+      }
     },
     "summary": "Build a hero's skills, help the people of Spielburg, and lift the curses affecting its valley.",
     "studio": "Sierra On-Line",
-    "genre": "Role-playing adventure"
+    "genre": "Role-playing adventure",
+    "heroImage": "/launcher/qfg1-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:qfg1vga": {
     "title": "Quest for Glory I: So You Want To Be A Hero",
@@ -4428,9 +5938,24 @@
         "kind": "box-scan",
         "url": "https://images.launchbox-app.com/a91f59a9-d9cc-4de2-a1ce-247563859cfd.jpg",
         "page": "https://gamesdb.launchbox-app.com/games/images/93222-quest-for-glory-i-so-you-want-to-be-a-hero-vga-remake"
+      },
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-qfg1vga-poster.webp",
+            "url": "https://images.launchbox-app.com/a91f59a9-d9cc-4de2-a1ce-247563859cfd.jpg",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "2051bc2604152442dd7be146a6e9c6a31a89f5cc74d0b14c5071f9ef2f011f79"
+          }
+        ]
       }
     },
-    "editionLabel": "VGA Remake"
+    "editionLabel": "VGA Remake",
+    "heroImage": "/launcher/qfg1vga-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:qfg2": {
     "title": "Quest for Glory II: Trial by Fire",
@@ -4467,11 +5992,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2650"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-qfg2-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Quest%20for%20Glory%20II_%20Trial%20by%20Fire%20(DOS_English).png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "9f87d082cf78372a3bdd35e5946b50c36b63ab48b882fd3d02dd127868f02c48"
+          }
+        ]
+      }
     },
     "summary": "Explore the desert city of Shapeir, confront elemental threats, and investigate neighbouring Raseir.",
     "studio": "Sierra On-Line",
-    "genre": "Role-playing adventure"
+    "genre": "Role-playing adventure",
+    "heroImage": "/launcher/qfg2-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:qfg3": {
     "title": "Quest for Glory III: Wages of War",
@@ -4508,11 +6048,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2651"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-qfg3-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Quest%20for%20Glory%20III_%20Wages%20of%20War.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "276e21afa0e194705fde8ab47846444e8bd53f30801824c5fa39adfe4d7b4769"
+          }
+        ]
+      }
     },
     "summary": "Journey to Tarna and use your skills and diplomacy to prevent a war between rival peoples.",
     "studio": "Sierra On-Line",
-    "genre": "Role-playing adventure"
+    "genre": "Role-playing adventure",
+    "heroImage": "/launcher/qfg3-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:rama": {
     "title": "RAMA",
@@ -4549,11 +6104,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3288"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-rama-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Rama.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "40f6f2604184c45608a7df7b06d81a9e26be47f658cc392a0970f2732ff55799"
+          }
+        ]
+      }
     },
     "summary": "Explore an immense alien spacecraft and decipher its mathematics, language, and mysterious purpose.",
     "studio": "Sierra On-Line",
-    "genre": "Science-fiction puzzle adventure"
+    "genre": "Science-fiction puzzle adventure",
+    "heroImage": "/launcher/rama-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:shivers": {
     "title": "Shivers",
@@ -4587,11 +6157,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3144"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-shivers-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Shivers.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "a93ecfb090ee429f8f946e79ff9a735d74bc5bae8805fb1d6501043467c5375c"
+          }
+        ]
+      }
     },
     "summary": "Search an abandoned museum and capture spirits released from its collection of strange exhibits.",
     "studio": "Sierra On-Line",
-    "genre": "Horror puzzle adventure"
+    "genre": "Horror puzzle adventure",
+    "heroImage": "/launcher/shivers-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:sq1sci": {
     "title": "Space Quest: The Sarien Encounter",
@@ -4631,9 +6216,24 @@
       "poster": {
         "kind": "box-scan",
         "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20I_%20Roger%20Wilco%20in%20the%20Sarien%20Encounter%20(SCI_DOS_English).png"
+      },
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-sq1sci-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20I_%20Roger%20Wilco%20in%20the%20Sarien%20Encounter%20(SCI_DOS_English).png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "f99f914fd03c799aacb6b2f0c29ec7eedebfa770515b3ced682607b9846ec34b"
+          }
+        ]
       }
     },
-    "editionLabel": "VGA Remake"
+    "editionLabel": "VGA Remake",
+    "heroImage": "/launcher/sq1sci-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:sq3": {
     "title": "Space Quest III: The Pirates of Pestulon",
@@ -4670,11 +6270,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1989"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-sq3-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20III_%20The%20Pirates%20of%20Pestulon.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "aa0c8c7824e51b056f1b0293a992b92bcf1a77b7ca98344ae920ac798b4bc3a7"
+          }
+        ]
+      }
     },
     "summary": "Escape a space junk freighter and help the Two Guys from Andromeda in Roger Wilco's third adventure.",
     "studio": "Sierra On-Line",
-    "genre": "Science-fiction comedy"
+    "genre": "Science-fiction comedy",
+    "heroImage": "/launcher/sq3-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:sq4": {
     "title": "Space Quest IV: Roger Wilco and the Time Rippers",
@@ -4711,11 +6326,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1990"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-sq4-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20IV_%20Roger%20Wilco%20and%20the%20Time%20Rippers.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "d73ff6a3f55e76a3c04b7560d352b51cf96535e81adcd1c11394a226e4ccb92c"
+          }
+        ]
+      }
     },
     "summary": "Travel through Space Quest's past and future as Roger Wilco tries to escape the Sequel Police.",
     "studio": "Sierra On-Line",
-    "genre": "Science-fiction comedy"
+    "genre": "Science-fiction comedy",
+    "heroImage": "/launcher/sq4-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:sq5": {
     "title": "Space Quest V: The Next Mutation",
@@ -4752,11 +6382,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1991"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-sq5-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20V_%20The%20Next%20Mutation.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "f959b21d28c26a5dbcc0f69fe8fdb5e742c7c652166a8a15958cb9a7f97798e1"
+          }
+        ]
+      }
     },
     "summary": "Command the garbage scow Eureka and help Roger Wilco uncover a conspiracy threatening StarCon.",
     "studio": "Dynamix",
-    "genre": "Science-fiction comedy"
+    "genre": "Science-fiction comedy",
+    "heroImage": "/launcher/sq5-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:sq6": {
     "title": "Space Quest 6: Roger Wilco in the Spinal Frontier",
@@ -4793,11 +6438,32 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1992"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-sq6-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%206_%20The%20Spinal%20Frontier.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "ce7be4a4ab2a352c98ac17a54dcf33dae06798f18b7bda9e7661c86839d69225"
+          },
+          {
+            "asset": "/launcher/sq6-scummweb-generated-2026-11-05-r1-hero.webp",
+            "sha256": "3bef7d29eed6876ee63c29c36a7c2101be6b6279fe16ba7fa7d0e8e3b8ce034a",
+            "credit": "Previous generated candidate master, revised with its original box-art reference retained.",
+            "masterSha256": "98b300144f0ec362f5bb581e13c47fa00416bc01551118219bc8a34af8b73a1a"
+          }
+        ]
+      }
     },
     "summary": "Follow Roger Wilco through a futuristic city and into a microscopic adventure inside the human body.",
     "studio": "Sierra On-Line",
-    "genre": "Science-fiction comedy"
+    "genre": "Science-fiction comedy",
+    "heroImage": "/launcher/sq6-scummweb-generated-2026-11-05-r2-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sci:torin": {
     "title": "Torin's Passage",
@@ -4834,11 +6500,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3285"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-torin-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Torin's%20Passage.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "5252f3e8a8724cce7a3a67823bd1936f92b98ab4d51a6bcd7950319d29b1d185"
+          }
+        ]
+      }
     },
     "summary": "Travel through the worlds beneath Strata as Torin searches for his kidnapped parents.",
     "studio": "Sierra On-Line",
-    "genre": "Fantasy adventure"
+    "genre": "Fantasy adventure",
+    "heroImage": "/launcher/torin-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "scumm:atlantis": {
     "title": "Indiana Jones and the Fate of Atlantis",
@@ -4871,8 +6552,22 @@
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/scumm/atlantis/atlantis_amiga_en_1_1_full.png"
         }
-      ]
-    }
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/atlantis-cover.webp",
+            "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+            "sha256": "f293965042d7fcfc713511d434b9227d1b2cbc02e0726dc2c610a58495746bf9"
+          }
+        ]
+      }
+    },
+    "heroImage": "/launcher/atlantis-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "scumm:bluestreasurehunt": {
     "title": "Blue's Treasure Hunt",
@@ -4909,11 +6604,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2134"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-scumm-bluestreasurehunt-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue's%20Treasure%20Hunt.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "d54d4b07d92f724d84ba5a582e5ad802cd08073aac54fdb3271eff73eed6f24f"
+          }
+        ]
+      }
     },
     "summary": "Help Blue and her friends collect clues, solve activities, and follow a treasure hunt.",
     "studio": "Humongous Entertainment",
-    "genre": "Educational adventure"
+    "genre": "Educational adventure",
+    "heroImage": "/launcher/bluestreasurehunt-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "scumm:brstorm": {
     "title": "Bear Stormin'",
@@ -4990,11 +6700,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=999"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-scumm-comi-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Curse%20of%20Monkey%20Island.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "4de2782cc794e9868a0de3774a851c3f3224f4eb64433b6bfa62c1758e3877a3"
+          }
+        ]
+      }
     },
     "summary": "Help Guybrush Threepwood lift a curse that has transformed Elaine into a solid-gold statue.",
     "studio": "LucasArts",
-    "genre": "Pirate comedy adventure"
+    "genre": "Pirate comedy adventure",
+    "heroImage": "/launcher/comi-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "scumm:dig": {
     "title": "The Dig",
@@ -5031,11 +6756,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1672"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-scumm-dig-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Dig.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "091fc7b86f2cc9a8a35e14d3bb87dcdf2c4bdebdf18b3b79b3827a2e7b382acc"
+          }
+        ]
+      }
     },
     "summary": "An asteroid mission transports three astronauts to an alien world filled with ancient technology.",
     "studio": "LucasArts",
-    "genre": "Science-fiction adventure"
+    "genre": "Science-fiction adventure",
+    "heroImage": "/launcher/dig-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "scumm:ft": {
     "title": "Full Throttle",
@@ -5072,11 +6812,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1673"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-scumm-ft-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Full%20Throttle.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "eca67ebfd4a8c3ea6c63ed964fac4f25d7b8c090c7c0ad14807956d7bb674a83"
+          }
+        ]
+      }
     },
     "summary": "Biker Ben investigates a murder conspiracy and tries to save his motorcycle gang.",
     "studio": "LucasArts",
-    "genre": "Action adventure"
+    "genre": "Action adventure",
+    "heroImage": "/launcher/ft-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "scumm:indy3": {
     "title": "Indiana Jones and the Last Crusade",
@@ -5109,8 +6864,22 @@
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/scumm/indy3/indy3_dos_en_2_2_full.png"
         }
-      ]
-    }
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/indy3-cover.webp",
+            "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+            "sha256": "aa55500051a34d1fa8c42b69523883414ba28af69e165d4e16c2a86ccab47a50"
+          }
+        ]
+      }
+    },
+    "heroImage": "/launcher/indy3-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "scumm:loom": {
     "title": "Loom",
@@ -5144,8 +6913,22 @@
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/scumm/loom/loom_pce_en_1_2_full.png"
         }
-      ]
-    }
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/loom-cover.webp",
+            "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+            "sha256": "aef9c8e01d47c1bb9f9a3d540f47600a9e74e257522a130314055640bfb4ae45"
+          }
+        ]
+      }
+    },
+    "heroImage": "/launcher/loom-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "scumm:maniac": {
     "title": "Maniac Mansion",
@@ -5178,8 +6961,22 @@
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/scumm/maniac/maniac_amiga_en_1_3_full.png"
         }
-      ]
-    }
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/maniac-cover.webp",
+            "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+            "sha256": "d3b7e560082de491e4ceb2d32385690f5a5529efef86f41f2b17ef0f1c6a0af7"
+          }
+        ]
+      }
+    },
+    "heroImage": "/launcher/maniac-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "scumm:monkey": {
     "title": "The Secret of Monkey Island",
@@ -5219,11 +7016,25 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=966"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/monkey-demo-hero.webp",
+            "sha256": "ae498ad83864b26c5d3dda19c472949174ba6c185265455bd1e06a9ed5f2c7ab",
+            "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+          }
+        ]
+      }
     },
     "summary": "Help aspiring pirate Guybrush Threepwood pass three trials, meet Elaine Marley, and confront the ghost pirate LeChuck.",
     "studio": "Lucasfilm Games",
-    "genre": "Pirate comedy adventure"
+    "genre": "Pirate comedy adventure",
+    "heroImage": "/launcher/monkey-demo-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "scumm:monkey2": {
     "title": "Monkey Island 2: LeChuck's Revenge",
@@ -5257,8 +7068,22 @@
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/scumm/monkey2/monkey2_dos_en_1_3_full.png"
         }
-      ]
-    }
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/monkey2-cover.webp",
+            "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+            "sha256": "1df7edad4566f5cca5127f89ed08304d417745855f6d57fbac6b6c755428ea37"
+          }
+        ]
+      }
+    },
+    "heroImage": "/launcher/monkey2-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "scumm:pass": {
     "title": "Passport to Adventure (Demo)",
@@ -5294,11 +7119,32 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1789"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-scumm-pass-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Passport%20to%20Adventure.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "5209270ed5df91331533df1cd1e24736973d2543587813ae2a97f2ef92a236ca"
+          },
+          {
+            "asset": "/launcher/pass-scummweb-generated-2026-11-05-r1-hero.webp",
+            "sha256": "8bbc29410e1a5a2dca4adaa90035d2b85b134320f18af37f75b01a18ef60230a",
+            "credit": "Previous generated candidate master, revised with its original box-art reference retained.",
+            "masterSha256": "ae78cc2b581710ab1f3899135cf7f0074d3346cea19d03a7cc55249e885f9f9e"
+          }
+        ]
+      }
     },
     "summary": "Sample scenes featuring Indiana Jones, Monkey Island, and Loom in Lucasfilm Games' three-part adventure demo.",
     "studio": "Lucasfilm Games",
-    "genre": "Adventure demo collection"
+    "genre": "Adventure demo collection",
+    "heroImage": "/launcher/pass-scummweb-generated-2026-11-05-r2-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "scumm:samnmax": {
     "title": "Sam & Max Hit the Road",
@@ -5332,8 +7178,22 @@
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/scumm/samnmax/samnmax_dos_en_1_1_full.png"
         }
-      ]
-    }
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/samnmax-cover.webp",
+            "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+            "sha256": "0fe3b0613d65ea1c2bf8f3c7179b9c31276cc1af0c42b58d5726b5c0aee14a7e"
+          }
+        ]
+      }
+    },
+    "heroImage": "/launcher/samnmax-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "scumm:tentacle": {
     "title": "Day of the Tentacle",
@@ -5367,8 +7227,22 @@
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/scumm/tentacle/tentacle_dos_en_1_1_full.png"
         }
-      ]
-    }
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/tentacle-cover.webp",
+            "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+            "sha256": "30250cc96149a2c77f58b76dd289cf04e5ce301d0aafba498a59793b2ce5e1ee"
+          }
+        ]
+      }
+    },
+    "heroImage": "/launcher/tentacle-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "scumm:thinker1": {
     "title": "Big Thinkers! 1st Grade",
@@ -5405,11 +7279,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2041"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-scumm-thinker1-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Big%20Thinkers%201st%20Grade.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "5c5cd24d90c8e60fe4f059c126019a852e6acd051a439ccdd07cdd84a828b3b0"
+          }
+        ]
+      }
     },
     "summary": "Join Ben and Becky Brightly for activities designed around first-grade learning skills.",
     "studio": "Humongous Entertainment",
-    "genre": "Educational activity collection"
+    "genre": "Educational activity collection",
+    "heroImage": "/launcher/thinker1-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "scumm:thinkerk": {
     "title": "Big Thinkers! Kindergarten",
@@ -5446,11 +7335,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2042"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-scumm-thinkerk-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Big%20Thinkers%20Kindergarten.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "8639fdc36536ba38ab1ee48c31b41f44f144eba800cfb0012e95b2e7a93715b3"
+          }
+        ]
+      }
     },
     "summary": "Explore Ben and Becky Brightly's house through activities designed for kindergarten learners.",
     "studio": "Humongous Entertainment",
-    "genre": "Educational activity collection"
+    "genre": "Educational activity collection",
+    "heroImage": "/launcher/thinkerk-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "scumm:zak": {
     "title": "Zak McKracken and the Alien Mindbenders",
@@ -5483,8 +7387,22 @@
           "kind": "gameplay",
           "url": "https://www.scummvm.org/data/screenshots/scumm/zak/zak_fmtowns_en_1_3_full.png"
         }
-      ]
-    }
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/zak-cover.webp",
+            "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+            "sha256": "446f79638df8e4566a9bee18fc5143be4b4d20192a2efeac5d63f8d196e18b65"
+          }
+        ]
+      }
+    },
+    "heroImage": "/launcher/zak-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sherlock:rosetattoo": {
     "title": "The Lost Files of Sherlock Holmes: Case of the Rose Tattoo",
@@ -5521,11 +7439,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=4139"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sherlock-rosetattoo-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Lost%20Files%20of%20Sherlock%20Holmes_%20The%20Case%20of%20the%20Rose%20Tattoo.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "a5cc44f483aac0d057eab6c231b44b3072630f9f7323f2d90ff0e2b22a1eca5e"
+          }
+        ]
+      }
     },
     "summary": "Investigate a bombing and a web of intrigue as Sherlock Holmes and Dr. Watson explore Victorian London.",
     "studio": "Mythos Software",
-    "genre": "Detective adventure"
+    "genre": "Detective adventure",
+    "heroImage": "/launcher/rosetattoo-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sherlock:scalpel": {
     "title": "The Lost Files of Sherlock Holmes: The Case of the Serrated Scalpel",
@@ -5562,11 +7495,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=4138"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sherlock-scalpel-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Lost%20Files%20of%20Sherlock%20Holmes_%20The%20Case%20of%20the%20Serrated%20Scalpel.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "1d7e7afcfbb1d63b8567defb0a2a28b41c115722a7c7445a6a4576099cc41c67"
+          }
+        ]
+      }
     },
     "summary": "Help Holmes and Watson investigate a London murder that appears to be connected to Jack the Ripper.",
     "studio": "Mythos Software",
-    "genre": "Detective adventure"
+    "genre": "Detective adventure",
+    "heroImage": "/launcher/scalpel-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sky:sky": {
     "title": "Beneath a Steel Sky",
@@ -5592,8 +7540,22 @@
         "generatedOn": "2026-11-05",
         "generator": "image_gen (built-in)",
         "referenceAsset": "/launcher/sky-cover.webp"
+      },
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/sky-hero.webp",
+            "sha256": "eced8b9e6f0ed570e70717d075fa1f05c8eccc0cfa8449d49eb750aea4172902",
+            "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+          }
+        ]
       }
-    }
+    },
+    "heroImage": "/launcher/sky-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sword1:sword1": {
     "title": "Broken Sword: The Shadow of the Templars",
@@ -5630,11 +7592,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1507"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sword1-sword1-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Broken%20Sword_%20The%20Shadow%20of%20the%20Templars.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "2524764fb5a39aef4c36b9add81968d8f0350ee0f945ad991556489bc8cacbbe"
+          }
+        ]
+      }
     },
     "summary": "Join George Stobbart and Nicole Collard as a Paris bombing leads to a conspiracy involving the Knights Templar.",
     "studio": "Revolution Software",
-    "genre": "Conspiracy adventure"
+    "genre": "Conspiracy adventure",
+    "heroImage": "/launcher/sword1-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sword25:sword25": {
     "title": "Broken Sword 2.5: The Return of the Templars",
@@ -5660,8 +7637,22 @@
         "referenceKind": "box-scan",
         "generatedOn": "2026-11-05",
         "generator": "image_gen (built-in)"
+      },
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/sword25-hero.webp",
+            "sha256": "3b23a1f411b30cb13ea23ab3d829352fd587a0d956486c78509280b91ad2443c",
+            "note": "Original game artwork as used in the previous ScummWEB hero; retain existing source credits."
+          }
+        ]
       }
-    }
+    },
+    "heroImage": "/launcher/sword25-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "sword2:sword2": {
     "title": "Broken Sword II: The Smoking Mirror",
@@ -5698,11 +7689,32 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1506"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-sword2-sword2-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Broken%20Sword%20II_%20The%20Smoking%20Mirror.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "916d8351026ed8a9168c2ac9d4fb6a59405f43e6dc2c15d5119dbadef5a4d490"
+          },
+          {
+            "asset": "/launcher/sword2-scummweb-generated-2026-11-05-r1-hero.webp",
+            "sha256": "30c81861b68d0f48d17d9e14cd971fe5014b72de5eb5f9e946b7d2a46ffb975f",
+            "credit": "Previous generated candidate master, revised with its original box-art reference retained.",
+            "masterSha256": "395629e8c7747fe1e98c949477663ddab04529e8cc47eea27f9c41a292f158c1"
+          }
+        ]
+      }
     },
     "summary": "Guide George and Nico through a mystery involving stolen artefacts, smugglers, and an ancient Mayan prophecy.",
     "studio": "Revolution Software",
-    "genre": "Conspiracy adventure"
+    "genre": "Conspiracy adventure",
+    "heroImage": "/launcher/sword2-scummweb-generated-2026-11-05-r2-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "teenagent:teenagent": {
     "title": "Teen Agent",
@@ -5739,11 +7751,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2503"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-teenagent-teenagent-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Teen%20Agent.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "200cae15bf0466f6c77cbb33241716681dd4fcb6d8796f86f347edd23ea9a8a4"
+          }
+        ]
+      }
     },
     "summary": "An ordinary teenager is recruited into a secret agency and sent to investigate disappearing gold.",
     "studio": "Metropolis Software",
-    "genre": "Comedy adventure"
+    "genre": "Comedy adventure",
+    "heroImage": "/launcher/teenagent-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "tinsel:dw": {
     "title": "Discworld",
@@ -5781,11 +7808,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1832"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-tinsel-dw-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Discworld.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "2530d1afa3d0025cbb189f969ab16bedbe2bff60dcca4bdc59824c5a83a42621"
+          }
+        ]
+      }
     },
     "summary": "Help the inept wizard Rincewind stop a dragon from terrorising Ankh-Morpork.",
     "studio": "Perfect 10 Productions / Teeny Weeny Games",
-    "genre": "Fantasy comedy"
+    "genre": "Fantasy comedy",
+    "heroImage": "/launcher/dw-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "tinsel:dw2": {
     "title": "Discworld II: Missing Presumed...!?",
@@ -5822,11 +7864,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1694"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-tinsel-dw2-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Discworld%202.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "72843a3f14db5c38397f9b29095ea45b9a0d8905e1461ec6ebc949aad62cea86"
+          }
+        ]
+      }
     },
     "summary": "Track down the missing Death as Rincewind tries to restore the natural order of the Discworld.",
     "studio": "Perfect Entertainment",
-    "genre": "Fantasy comedy"
+    "genre": "Fantasy comedy",
+    "heroImage": "/launcher/dw2-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "titanic:titanic": {
     "title": "Starship Titanic",
@@ -5863,11 +7920,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=4366"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-titanic-titanic-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Starship%20Titanic.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "c0dbb62edb9539b18624fcc8d276d8193f4ef16b381a69cd88bc98b811b0ccca"
+          }
+        ]
+      }
     },
     "summary": "Explore a luxurious interstellar cruise liner and help restore its damaged central intelligence, Titania.",
     "studio": "The Digital Village",
-    "genre": "Science-fiction comedy"
+    "genre": "Science-fiction comedy",
+    "heroImage": "/launcher/titanic-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "toltecs:toltecs": {
     "title": "3 Skulls of the Toltecs",
@@ -5904,11 +7976,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3296"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-toltecs-toltecs-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/3%20Skulls%20of%20the%20Toltecs.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "7e2fc9b6a5eed277c33f0d6acc75978c82f888216ccf7df8307abebc747ee406"
+          }
+        ]
+      }
     },
     "summary": "Help Fenimore Fillmore find three golden skulls that hold the key to a lost Toltec treasure.",
     "studio": "Revistronic",
-    "genre": "Western comedy adventure"
+    "genre": "Western comedy adventure",
+    "heroImage": "/launcher/toltecs-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "tony:tony": {
     "title": "Tony Tough and the Night of Roasted Moths",
@@ -5945,11 +8032,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3489"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-tony-tony-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Tony%20Tough%20and%20the%20Night%20of%20the%20Roasted%20Moths.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "b5df691bfa6030887308aed38993c0d521c73a4a922e2328f043fb5863852d48"
+          }
+        ]
+      }
     },
     "summary": "Private investigator Tony Tough pursues the culprit stealing children's Halloween sweets.",
     "studio": "Nayma Software / Prograph Research",
-    "genre": "Comedy mystery adventure"
+    "genre": "Comedy mystery adventure",
+    "heroImage": "/launcher/tony-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "toon:toon": {
     "title": "Toonstruck",
@@ -5986,11 +8088,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3054"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-toon-toon-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Toonstruck.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "49ad5f1182dc7d4a9cc2f8eac742d7cdd26a06d8685e2758e7676e17cf6d4ab4"
+          }
+        ]
+      }
     },
     "summary": "An animator is pulled into a cartoon world and must stop a villain from turning it into a sinister new creation.",
     "studio": "Burst Studios",
-    "genre": "Cartoon comedy adventure"
+    "genre": "Cartoon comedy adventure",
+    "heroImage": "/launcher/toon-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "touche:touche": {
     "title": "Touché: The Adventures of the Fifth Musketeer",
@@ -6027,11 +8144,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1829"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-touche-touche-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Touche_%20The%20Adventures%20of%20the%20Fifth%20Musketeer.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "a3d805bf46a33f58e48db84480cd52d05b4f05c75c6d853d9fcb926567a60e5b"
+          }
+        ]
+      }
     },
     "summary": "Help would-be musketeer Geoffroi Le Brun investigate a murder and a stolen will in sixteenth-century France.",
     "studio": "Clipper Software",
-    "genre": "Swashbuckling adventure"
+    "genre": "Swashbuckling adventure",
+    "heroImage": "/launcher/touche-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "tsage:blueforce": {
     "title": "Blue Force",
@@ -6068,11 +8200,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3226"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-tsage-blueforce-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue%20Force.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "1769557f670004b6de5e307dcce3dadb7889eb02e4ed15a3bc6fd22c73d405e8"
+          }
+        ]
+      }
     },
     "summary": "Investigate crimes as rookie officer Jake Ryan and uncover the truth about his parents' deaths.",
     "studio": "Tsunami Media",
-    "genre": "Police procedural adventure"
+    "genre": "Police procedural adventure",
+    "heroImage": "/launcher/blueforce-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "tsage:ringworld": {
     "title": "Ringworld: Revenge of the Patriarch",
@@ -6109,11 +8256,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3191"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-tsage-ringworld-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Ringworld_%20Revenge%20of%20the%20Patriarch.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "db357fd213d01b4b71efb0cdc8a3cb252ccb0b05a978f8414f608f0ab184eb1a"
+          }
+        ]
+      }
     },
     "summary": "Explore Larry Niven's Ringworld and search for information that could prevent a war between the Kzinti and humanity.",
     "studio": "Tsunami Media",
-    "genre": "Science-fiction adventure"
+    "genre": "Science-fiction adventure",
+    "heroImage": "/launcher/ringworld-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "tsage:ringworld2": {
     "title": "Return to Ringworld",
@@ -6150,11 +8312,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3242"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-tsage-ringworld2-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Return%20to%20Ringworld.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "562b6f82dd5683693f98b50f6bb130d600a50af1db1e879bf7416261b3cfa6eb"
+          }
+        ]
+      }
     },
     "summary": "Return to the Ringworld and follow its travellers through another interstellar conflict.",
     "studio": "Tsunami Media",
-    "genre": "Science-fiction adventure"
+    "genre": "Science-fiction adventure",
+    "heroImage": "/launcher/ringworld2-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "tucker:tucker": {
     "title": "Bud Tucker in Double Trouble",
@@ -6191,11 +8368,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2498"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-tucker-tucker-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Bud%20Tucker%20in%20Double%20Trouble.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "0427557498c7d8ec273e612a19d9434b692915b70fd29fa7c334aa0252d7c4fb"
+          }
+        ]
+      }
     },
     "summary": "Help pizza delivery boy and lab assistant Bud Tucker rescue a professor and stop a plot involving cloned villains.",
     "studio": "Merit Studios",
-    "genre": "Comedy adventure"
+    "genre": "Comedy adventure",
+    "heroImage": "/launcher/tucker-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "voyeur:voyeur": {
     "title": "Voyeur",
@@ -6232,11 +8424,26 @@
       ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3928"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/retro-voyeur-voyeur-poster.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Voyeur.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "9bd1ca2d7e4ab58b296b97a117974489b5bb53f2f20d4f55dfb3b18ef389aa46"
+          }
+        ]
+      }
     },
     "summary": "Watch a powerful family's mansion through a camera and gather evidence of crimes before the weekend ends.",
     "studio": "Entertainment Software Partners / Philips P.O.V.",
-    "genre": "Interactive movie thriller"
+    "genre": "Interactive movie thriller",
+    "heroImage": "/launcher/voyeur-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "wintermute:chivalry": {
     "title": "Chivalry is Not Dead",
@@ -6319,11 +8526,25 @@
       ],
       "metadata": [
         "https://www.scummvm.org/en/news/20160915/"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%231_%20Mystery%20House.png",
+            "credit": "Original Mystery House / SierraVenture cover artwork, scan hosted by Libretro; original designs belong to their respective creators.",
+            "sha256": "68901de8a551b8c3c90609326787f498687a837540b36d35582136c48411df90"
+          }
+        ]
+      }
     },
     "summary": "Explore an isolated Victorian house, search for treasure, and uncover a killer using typed commands.",
     "studio": "On-Line Systems",
-    "genre": "Text-command graphic adventure"
+    "genre": "Text-command graphic adventure",
+    "heroImage": "/launcher/hires1-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   },
   "got:got": {
     "title": "God of Thunder",
@@ -6361,10 +8582,25 @@
       ],
       "metadata": [
         "https://www.adeptsoftware.com/got/"
-      ]
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-05",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "asset": "/launcher/classic-got-cover.webp",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/God%20of%20Thunder.png",
+            "credit": "Original game box-front artwork as retained by ScummWEB; original designs belong to their respective creators and rights holders.",
+            "sha256": "06bb59136f93d4ea92e38b4fdac7b909c8635703cf75f5f0a36f6fbd8f51c72b"
+          }
+        ]
+      }
     },
     "summary": "Wield Thor’s hammer, solve environmental puzzles, and battle monsters across three Norse adventures.",
     "studio": "Adept Software",
-    "genre": "Action puzzle adventure"
+    "genre": "Action puzzle adventure",
+    "heroImage": "/launcher/got-scummweb-generated-2026-11-05-r1-hero.webp",
+    "heroImagePosition": "80% 38%"
   }
 }

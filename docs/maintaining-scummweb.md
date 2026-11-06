@@ -616,6 +616,19 @@ artwork references, generation dates and hashes are retained in
 respective creators and rights holders. These mappings use 1600×960 WebP exports with verified responsive R2 delivery.
 Original hero objects, card covers and gameplay screenshots remain available.
 
+The recognized-game library now shares generated heroes across 146 recognized
+games, including personal imports. This includes the eleven bundled
+games and 138 newly composed banners from original box artwork or promotional
+references. Each new hero is a 1600×960 export; original reference credits and
+revision hashes remain in `data/generated-artwork.json`, with logical hero
+mappings and source credits in `app/retro-game-artwork.json`. Import recognition
+uses the same hero and focal position as the corresponding catalog presentation.
+The optional `heroImageMobilePosition` overrides the shared narrow-screen crop
+for artwork whose main subject would otherwise fall outside the visible area.
+Fourteen recognized games retain their previous artwork where a suitable
+original reference or usable generation was unavailable. Card covers and original
+gameplay captures retain their separate provenance.
+
 Game mappings and source credits stay in `app/game-presentation.js`,
 `app/retro-game-artwork.json`, and this guide. Responsive width mappings remain
 in `data/artwork-renditions.json`. The Road source capture is included; branding,

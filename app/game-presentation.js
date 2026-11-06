@@ -83,7 +83,8 @@ const artByTarget = {
     genre: "Point-and-click adventure",
     studio: "L.K. Avalon",
     year: "1997",
-    heroImage: "/launcher/sfinx-hero.webp",
+    heroImage: "/launcher/sfinx-scummweb-generated-2026-11-05-r1-hero.webp",
+    heroImagePosition: "80% 38%",
     posterImage: "/launcher/sfinx-scummweb-generated-2026-11-05-r1-cover.webp",
     screenshots: [
       "/launcher/sfinx-shot-1.webp",
@@ -320,6 +321,9 @@ function getImportedScummPresentation(target, title, variant) {
   const labels = [...variant.matchAll(/\(([^()]+)\)/g)].map(([, label]) => label);
   return {
     ...getGamePresentation({ target, displayTitle: title + demo, engineId: "scumm" }, metadata && {
+      heroImage: metadata.heroImage,
+      heroImagePosition: metadata.heroImagePosition,
+      heroImageMobilePosition: metadata.heroImageMobilePosition,
       summary: metadata.summary,
       studio: metadata.studio,
       genre: metadata.genre,
@@ -391,6 +395,9 @@ export function getImportedGamePresentation(filename) {
           engineId: engineId === "local" ? "scumm" : engineId,
           displayTitle: retro.title + (demo ? " (Demo)" : ""),
         }, {
+          heroImage: retro.heroImage,
+          heroImagePosition: retro.heroImagePosition,
+          heroImageMobilePosition: retro.heroImageMobilePosition,
           posterImage: retro.posterImage,
           screenshots: retro.screenshots,
           summary: retro.summary,

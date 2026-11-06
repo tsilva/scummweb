@@ -3,9 +3,20 @@ import fs from "node:fs";
 import { createHash } from "node:crypto";
 import test from "node:test";
 import { getImportedGamePresentation } from "../app/game-presentation.js";
+import { getVersionedSiteAssetPath } from "../app/asset-paths.js";
 import storage from "../data/artwork-storage.json" with { type: "json" };
 
 const artwork = JSON.parse(fs.readFileSync(new URL("../app/retro-game-artwork.json", import.meta.url)));
+
+test("recognized imports retain their shared hero artwork and focal position", () => {
+  for (const [id, game] of Object.entries(artwork)) {
+    if (!game.heroImage) continue;
+    const imported = getImportedGamePresentation(`${game.aliases[0]}.zip`);
+    assert.equal(imported?.heroImage, getVersionedSiteAssetPath(game.heroImage), id);
+    assert.equal(imported.heroImagePosition, game.heroImagePosition, id);
+    assert.equal(imported.heroImageMobilePosition, game.heroImageMobilePosition, id);
+  }
+});
 
 test("remakes retain separate identities, labels and edition-matched artwork", () => {
   const originals = { "sci:pq1sci": "agi:pq1", "sci:qfg1vga": "sci:qfg1", "sci:sq1sci": "agi:sq1" };
