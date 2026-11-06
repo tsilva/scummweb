@@ -935,12 +935,12 @@
     padding:
       calc(max(6rem, env(safe-area-inset-top)) + clamp(10rem, 27svh, 14rem))
       max(1rem, env(safe-area-inset-right))
-      1.25rem
+      2rem
       max(1rem, env(safe-area-inset-left));
   }
 
   .hero-stage-library .hero-backdrop {
-    inset: 5.5rem 0 0;
+    inset: calc(3.75rem + env(safe-area-inset-top)) 0 0;
   }
 
   .hero-stage-library .hero-backdrop-image {

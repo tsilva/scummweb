@@ -961,6 +961,8 @@ or request-time rendering.
   only preloads its current backdrop. Desktop retains its normal slideshow behavior.
   Mobile uses full-width artwork, natural-height mixed-case titles, compact summaries
   and metadata, stacked full-width action buttons, and an unlabeled screenshot strip.
+  Artwork starts at the compact header's bottom edge, including its safe-area inset;
+  the hero keeps 2rem of space below its content before the screenshot strip.
   Detailed facts and the license link are hidden in the mobile hero. Original gameplay
   captures remain unchanged and the screenshot viewer stays accessible by keyboard.
   Saved sources are checked on library load, window focus, tab return, and
