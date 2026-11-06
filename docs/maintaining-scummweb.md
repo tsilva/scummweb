@@ -169,9 +169,10 @@ It opens and closes immediately when reduced motion is enabled.
 **Export all saves**
 downloads a ScummWEB ZIP containing active progress and preserved save sets.
 On another device, add the matching game edition and choose **Import backup**.
-Review each destination before confirming. Local imports are matched by their
-game-file fingerprint when possible; unmatched sets can be kept unassigned and
-connected later through **Save sets → Review and activate**.
+Save destinations are matched automatically by game identity, using the game-file
+fingerprint for local imports when possible; there is no manual destination selector.
+Unmatched sets are preserved without changing active saves. After adding the matching
+game edition, connect them through **Save sets → Review and activate**.
 
 Different games are added without deleting existing progress. Identical files
 are skipped. For conflicting progress in one game, the default keeps the current

@@ -41,7 +41,7 @@ function storageFixture(files = {}) {
 
 async function restore(storage, sets, choices = [], options = {}) {
   const archived = [];
-  await applyImport({ storage, destinations, rows: sets.map((value, index) => ({ set: value, destinationKey: value.destination.key, choice: choices[index] || "imported" })),
+  await applyImport({ storage, destinations, rows: sets.map((value, index) => ({ set: value, destinationKey: matchDestination(value, options.destinations || destinations), choice: choices[index] || "imported" })),
     revision: captureFilesystem(storage).revision, initialConfig: config, preserve: async (values) => archived.push(...values), ...options });
   return archived;
 }
@@ -90,7 +90,27 @@ test("fingerprints reconnect the same local game across different source IDs", a
   const storage = storageFixture();
   await restore(storage, [imported], [], { destinations: [destination], rows: [{ set: imported, destinationKey: destination.key, choice: "imported" }] });
   assert.equal(captureFilesystem(storage).files[0].path, `${destination.namespace}/game.001`);
-  assert.equal(matchDestination(imported, []), "", "unmatched saves require explicit destination selection");
+  assert.equal(matchDestination(imported, []), "", "unmatched saves stay preserved until the matching game is added");
+});
+
+test("automatic matching preserves a missing edition instead of restoring to a game with the same title", async () => {
+  const fingerprint = "a".repeat(64);
+  const [otherEdition] = await getSaveDestinations([], [{ id: "other-edition", name: "My Game.zip", fingerprint: "b".repeat(64) }]);
+  const namespace = "version-" + "c".repeat(64);
+  const original = await set({ key: namespace, namespace, title: "My Game", fingerprint }, [file("game.001", "progress")]);
+  const [imported] = await readBackup(await exportBackup([original]));
+  const storage = storageFixture({ [otherEdition.namespace]: { "game.001": bytes("other progress") } });
+  const before = captureFilesystem(storage);
+  const preserved = await restore(storage, [imported], [], { destinations: [otherEdition] });
+  assert.deepEqual(captureFilesystem(storage), before);
+  assert.equal(preserved.length, 1);
+  assert.deepEqual(preserved[0], imported);
+
+  const [matchingEdition] = await getSaveDestinations([], [{ id: "matching-edition", name: "My Game.zip", fingerprint }]);
+  await restore(storage, preserved, [], { destinations: [otherEdition, matchingEdition] });
+  const files = captureFilesystem(storage).files;
+  assert.equal(new TextDecoder().decode(files.find(({ path }) => path === `${matchingEdition.namespace}/game.001`).data), "progress");
+  assert.equal(new TextDecoder().decode(files.find(({ path }) => path === `${otherEdition.namespace}/game.001`).data), "other progress");
 });
 
 test("quota failures roll back staged nodes without changing existing files", async () => {
