@@ -1,0 +1,65 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import { dispatchSyntheticKeypress, dispatchSyntheticKeypressSequence } from "../app/game-player/keyboard.js";
+
+function fixture({ canvas = true } = {}) {
+  class KeyboardEvent extends Event {
+    constructor(type, init) {
+      super(type, init);
+      for (const name of ["key", "code", "keyCode", "which", "charCode", "ctrlKey", "altKey", "metaKey", "shiftKey"]) {
+        this[name] = init[name];
+      }
+    }
+  }
+  // Model the DOM ancestor chain so duplicated dispatches are observable at SDL's listener.
+  class Target extends EventTarget {
+    constructor(parent) { super(); this.parent = parent; this.received = []; }
+    focus() { document.activeElement = this; }
+    dispatchEvent(event) {
+      this.received.push(event);
+      const accepted = super.dispatchEvent(event);
+      if (event.bubbles) this.parent?.dispatchEvent(event);
+      return accepted;
+    }
+  }
+  const window = new Target();
+  window.KeyboardEvent = KeyboardEvent;
+  const document = new Target(window);
+  document.body = new Target(document);
+  document.canvas = canvas ? new Target(document.body) : null;
+  document.activeElement = document.body;
+  document.getElementById = () => document.canvas;
+  return { contentWindow: window, contentDocument: document };
+}
+
+test("one shortcut reaches each ancestor listener exactly once per event", () => {
+  const frame = fixture();
+  assert.equal(dispatchSyntheticKeypress(frame, "g"), true);
+  const { canvas, body, activeElement } = frame.contentDocument;
+  assert.equal(activeElement, canvas);
+  for (const target of [canvas, body, frame.contentDocument, frame.contentWindow]) {
+    assert.deepEqual(target.received.map(({ type }) => type), ["keydown", "keypress", "keyup"]);
+  }
+  assert.equal(frame.contentWindow.received[1].charCode, 71);
+});
+
+test("menu shortcuts preserve function keys and modifiers with a body fallback", () => {
+  const frame = fixture({ canvas: false });
+  dispatchSyntheticKeypress(frame, { key: "F5", ctrlKey: true });
+  assert.equal(frame.contentWindow.received.length, 3);
+  for (const event of frame.contentWindow.received) {
+    assert.equal(event.key, "F5");
+    assert.equal(event.code, "F5");
+    assert.equal(event.keyCode, 116);
+    assert.equal(event.ctrlKey, true);
+    assert.equal(event.charCode, 0);
+  }
+});
+
+test("explicit repeated shortcuts send the configured number of presses", async () => {
+  const frame = fixture();
+  await dispatchSyntheticKeypressSequence(frame, { key: "Escape", pressCount: 2 });
+  assert.deepEqual(frame.contentWindow.received.map(({ type }) => type),
+    ["keydown", "keypress", "keyup", "keydown", "keypress", "keyup"]);
+  assert.equal(dispatchSyntheticKeypress(null, "Escape"), false);
+});

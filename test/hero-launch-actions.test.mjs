@@ -6,6 +6,7 @@ import test from "node:test";
 import { renderToStaticMarkup } from "react-dom/server";
 import swc from "next/dist/build/swc/index.js";
 import { chooseGameVersion, readChosenVersion, rememberGameVersion } from "../app/game-versions.mjs";
+import * as initialActions from "../app/home-shell/initial-actions.mjs";
 
 await swc.loadBindings();
 let savedIdentity = null;
@@ -28,6 +29,7 @@ async function loadComponent(path, imports = {}, hooks = saveHooks, globals = {}
     require(name) {
       if (name === "react") return hooks;
       if (name === "react/jsx-runtime" || name === "lucide-react") return nativeRequire(name);
+      if (name === "./initial-actions.mjs") return imports[name] || initialActions;
       if (name.endsWith("/useLaunchFeedback")) return imports[name] || (() => ({ show() {}, dismiss() {}, overlay: null }));
       return imports[name] || {};
     },
@@ -48,6 +50,7 @@ const SourceLaunchActions = await loadComponent("../app/home-shell/source-launch
   "../use-browser-save": useBrowserSave, "../browser-saves.mjs": { cancelBrowserSaveQueries() {} },
 });
 const HeroStage = await loadComponent("../app/home-shell/hero-stage.js", {
+  "./initial-actions.mjs": { initialActionsMarkup: "" },
   "../launch-button": LaunchButton,
   "../launch-pending": LaunchPending,
   "./source-launch-actions": SourceLaunchActions,

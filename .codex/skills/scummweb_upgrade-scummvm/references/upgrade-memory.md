@@ -73,6 +73,17 @@ tests when porting; do not treat an old implementation shape as the requirement.
   before truncation, retryable metadata persistence and exclusive save-session
   lock. Metadata does not make multi-key filesystem writes crash-atomic.
 
+## Keyboard callback lifetime
+
+- SDL 3.2.4's Emscripten unregister path dereferences the numeric window target
+  sentinel as a string and skips keyboard cleanup. ScummVM display recreation
+  accumulates listeners: Mystery House received six native callbacks for one
+  trusted, non-repeating browser keydown. The generated keyboard adapter replaces
+  only the same callback/target/type/capture registration, retaining the newest
+  window userData. Do not debounce characters or suppress held-key repeat to hide
+  this lifecycle bug. Apply on shell-only and full builds; test after display
+  initialization and preserve independent callbacks and ordinary DOM listeners.
+
 ## Keeping this memory useful
 
 When a patch is introduced or changed, update its ledger purpose, invariants,

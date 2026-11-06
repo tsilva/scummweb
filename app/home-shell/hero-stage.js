@@ -1,18 +1,21 @@
 import { ChevronDown } from "lucide-react";
 import LaunchButton from "../launch-button";
 import SourceLaunchActions from "./source-launch-actions";
-import { HOME_BROWSE_LABEL, HOME_HERO_KICKER, HOME_HERO_SUMMARY, HOME_HERO_TITLE } from "../seo";
+import { HOME_HERO_KICKER, HOME_HERO_SUMMARY, HOME_HERO_TITLE } from "../seo";
 import DecorativeImage from "./decorative-image";
 import HeroTitle from "./hero-title";
+import HeroScrollCue from "./hero-scroll-cue";
 import GameScreenshots from "./game-screenshots";
 import { getHeroImageProps } from "./hero-images.mjs";
 import { getDialogLinkProps, getHeroImageStyle } from "./shared";
+import { initialActionsMarkup } from "./initial-actions.mjs";
 
 export default function HeroStage({
   carouselProps,
   controls,
   featuredGame,
   actionsReady = true,
+  initialActions,
   isHomePage = false,
   isInitialSlide = true,
   sourceAction,
@@ -67,7 +70,11 @@ export default function HeroStage({
                 aria-hidden={hasMultipleVersions || undefined} title={versionLabel}>{versionLabel}</li>
             </ul>
           </div>
-          <div className="hero-launch" aria-busy={!actionsReady || undefined}>
+          <div className="hero-launch">
+            {!actionsReady && initialActions && <div className="hero-actions hero-initial-actions"
+              data-initial-actions={JSON.stringify(initialActions)}
+              data-entry-point={isHomePage ? "hero" : "game_detail"}
+              suppressHydrationWarning dangerouslySetInnerHTML={{ __html: initialActionsMarkup }} />}
             {!actionsReady && <div className="hero-actions-placeholder" role="status" aria-label="Loading play options">
               <span /><span />
             </div>}
@@ -82,7 +89,6 @@ export default function HeroStage({
                 </button>
               ) : <LaunchButton game={featuredGame} entryPoint={isHomePage ? "hero" : "game_detail"}
                 label="Play" onLaunch={onLaunch} />}
-              <a className="secondary-button hero-browse" href="#library">{HOME_BROWSE_LABEL}</a>
               <div className="hero-version-control" data-reserved={!hasMultipleVersions || undefined}
                 aria-hidden={!hasMultipleVersions || undefined}>
                 {hasMultipleVersions && <label className="library-select">
@@ -112,9 +118,7 @@ export default function HeroStage({
             </p>}
           </div>
         </div>
-        {featuredGame.screenshots?.length > 0 && <a className="hero-scroll-cue" href="#game-screenshots">
-          <ChevronDown size={20} aria-hidden="true" />Scroll for screenshots &amp; more games
-        </a>}
+        {featuredGame.screenshots?.length > 0 && <HeroScrollCue />}
         {controls}
       </section>
       <GameScreenshots key={featuredGame.screenshots?.join("|") || featuredGame.displayTitle} game={featuredGame} />

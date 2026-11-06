@@ -77,10 +77,12 @@ unsaved session or a browser-wide memory snapshot.
 
 The runtime records actual detected engine/target identities and native save
 slots in a browser-local index. Launch actions read this index immediately:
-valid cached progress offers Continue, otherwise Play stays available. The hero
-reserves its action slots until the saved library and selected edition are ready,
-then reveals the matching actions together. Server HTML retains Play for browsers
-without JavaScript.
+valid cached progress offers Continue, otherwise Play stays available. Before the
+first paint, the hero reads this same file-validated index and shows the matching
+action. A small local summary identifies the last restored edition without
+waiting for IndexedDB. Imported actions remain inactive until file access is
+checked; unknown or stale edition summaries retain reserved placeholders until
+restoration completes. Server HTML retains Play for browsers without JavaScript.
 Imported versions use their existing isolated save directory even when their
 ZIP name is unrecognized. Individual indexed files are checked for existence,
 size and modification time, so deleting the newest save can expose an older
@@ -530,6 +532,12 @@ a native rebuild; regenerating browser shell templates alone cannot add it.
 For browser-shell-only changes, run `pnpm run build:scummvm --shell-only`. This
 regenerates `dist/` and the managed shell from `web-shell/`, reusing the compiled
 engine and its source provenance. Native patches still require a full rebuild.
+Shell staging also applies `scripts/patch_scummvm_keyboard.py` to the generated
+JavaScript. It replaces stale registrations of the same native keyboard callback
+when SDL recreates its window, preserving independent listeners and held-key
+repeat. The adapter is idempotent and rejects unsupported generated glue. After
+changing SDL or Emscripten, verify single-character typing and Backspace in
+Mystery House after startup, as well as native game menu shortcuts.
 Hosted players intercept native launcher entry before it can draw and explicitly
 signal successful engine termination. Keep both paths in
 `14-exit-to-scummweb-before-launcher.patch`: the Emscripten keepalive runtime
@@ -1037,10 +1045,12 @@ or request-time rendering.
   while hidden, so restoring local editions does not move the action row or
   change the hero's height. Hidden slots contain no focusable controls.
   Continue refreshes after browser saves change or the page is restored.
-  Launch options use reserved placeholders until the saved library and the
-  selected game's source checks restore its remembered edition. Version
-  preferences resolve before the controls are revealed, so a catalog copy's
-  Continue action cannot flash before an imported copy's Play action. Restart
+  Launch options read the browser save index before first paint. A local summary
+  of the last restored edition supplies its save identity and version labels;
+  it never caches a possibly stale Continue boolean. The actual files and native
+  index are checked on every load. A changed preference, unknown edition or
+  changed runtime retains placeholders until the selected copy is known, so a
+  catalog copy's Continue action cannot flash before an imported copy's Play action. Restart
   and Readme / License occupy fixed cells below the version selector.
   Once the selected copy is known, cached browser metadata supplies Play or
   Continue while stale records reconcile in the background. Pages without
