@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, Check, ChevronDown, ChevronRight, Download, Info, Layers, Save, Settings, Upload, X } from "lucide-react";
+import { Check, ChevronDown, ChevronRight, Download, Info, Layers, Save, Settings, Upload, X } from "lucide-react";
 import { readGameSources } from "../game-sources.mjs";
 import { applyImport, exportBackup, getActiveSaveSets, getSaveDestinations, matchDestination, readBackup, readStoredSets, withSaveLock } from "../save-backups/backups.mjs";
 import { captureFilesystem } from "../save-backups/filesystem.mjs";
@@ -83,11 +83,9 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
     setView("review");
   }
 
-  function updateRow(index, field, value) {
-    const choice = field === "destinationKey"
-      ? (data.sets.some((set) => set.destination.key === value) ? "current" : "stored") : value;
+  function updateChoice(index, choice) {
     setReview((current) => ({ ...current, rows: current.rows.map((row, i) => i === index
-      ? { ...row, [field]: value, ...(field === "destinationKey" ? { choice } : {}) } : row) }));
+      ? { ...row, choice } : row) }));
   }
 
   async function download() {
@@ -180,32 +178,25 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
               <Layers size={25} /><span><strong>Save sets</strong><small>Keep separate playthroughs and choose which one is active.</small></span><ChevronRight size={20} />
             </button>
           </>}
-          {view !== "home" && <button type="button" className="settings-back" disabled={busy} onClick={() => { setView("home"); setReview(null); setError(""); }}><ArrowLeft size={17} />Back to saved games</button>}
           {view === "sets" && <div className="settings-sets"><h3>Save sets</h3><p>Only the active set is used when you play. Switching preserves both sets.</p>
             {data.sets.length === 0 && storedOnly.length === 0 && <p>No saved progress on this browser yet.</p>}
-            {data.sets.map((set) => <div className="settings-set" key={set.destination.key}><strong>{set.destination.title}</strong><small>{countFiles(set)}</small><span className="settings-active"><Check size={16} />Active</span></div>)}
+            {data.sets.map((set) => <div className="settings-set" key={set.destination.key}><strong>{set.destination.title}</strong><small>{countFiles(set)}</small></div>)}
             {storedOnly.map((set) => <div className="settings-set" key={set.id}><strong>{set.destination.title}</strong><small>{countFiles(set)} · Preserved {new Date(set.preservedAt).toLocaleDateString()}</small>
               <button type="button" className="secondary-button" disabled={busy} onClick={() => run(async () => prepareReview([set], await withSaveLock(refresh), true))}>Review and activate</button></div>)}
           </div>}
           {view === "review" && review && <div className="settings-review"><h3>{review.activating ? "Activate save set" : "Review import"}</h3>
-            <p>Choose the matching game edition. Games missing from this backup stay unchanged.</p>
+            <p>Saves are matched to their games automatically. Games missing from this backup stay unchanged.</p>
             {review.rows.map((row, index) => {
               const active = data.sets.find((set) => set.destination.key === row.destinationKey);
               const identical = active?.hash === row.set.hash;
               return <fieldset key={index} className="settings-review-game" disabled={busy}><legend>{row.set.destination.title}</legend>
-                <label className="settings-destination">Restore to
-                  <select value={row.destinationKey} onChange={(event) => updateRow(index, "destinationKey", event.target.value)}>
-                    <option value="">Keep unassigned until the game is added</option>
-                    {data.destinations.map((item) => <option key={item.key} value={item.key}>{item.title}{item.namespace ? " · Imported version" : " · Included / shared"}</option>)}
-                  </select>
-                </label>
                 {identical ? <p className="settings-active"><Check size={17} />Identical saves — nothing to change.</p> : !row.destinationKey ? <p>This set will be preserved. Add the game, then activate it from Save sets.</p> : <>
                   {active && <p>Different saves exist on this device.</p>}
                   <label className="settings-choice"><input type="radio" name={`save-choice-${index}`} checked={row.choice !== "imported"}
-                    onChange={() => updateRow(index, "choice", active ? "current" : "stored")} />
+                    onChange={() => updateChoice(index, active ? "current" : "stored")} />
                     <span><strong>{active ? "Keep current saves active" : "Preserve without activating"}</strong><small>{active ? `This device · ${countFiles(active)}` : "Activate later from Save sets"}</small></span></label>
                   <label className="settings-choice"><input type="radio" name={`save-choice-${index}`} checked={row.choice === "imported"}
-                    onChange={() => updateRow(index, "choice", "imported")} /><span><strong>Use imported saves</strong><small>Backup · {countFiles(row.set)}</small></span></label>
+                    onChange={() => updateChoice(index, "imported")} /><span><strong>Use imported saves</strong><small>Backup · {countFiles(row.set)}</small></span></label>
                 </>}
               </fieldset>;
             })}
