@@ -83,6 +83,26 @@ test("unknown or stale remembered editions never expose the catalog's Continue s
   }
 });
 
+test("a removed preference can immediately use its last verified catalog fallback", t => {
+  const f = fixture(t);
+  const remembered = "source:removed";
+  f.values.set("scummweb.version:sky:sky:full", remembered);
+  f.values.set("scummweb.hero-actions.v1:sky:sky:full", JSON.stringify({ ...descriptor(), preference: remembered }));
+  prepareInitialActions(f.container, () => ({ slot: 1 }));
+  assert.equal(f.primary.textContent, "Continue");
+  assert.equal(f.container.dataset.prepared, "true");
+});
+
+test("changed native identity in an unrecognized import requires reconciliation", t => {
+  const f = fixture(t);
+  const cached = { ...descriptor(), version: "source:unknown", source: true,
+    game: { target: "unknown", saveVersionId: "unknown" }, nativeIdentity: ["lure", "lure", ""] };
+  f.values.set("scummweb.version:sky:sky:full", cached.version);
+  f.values.set("scummweb.hero-actions.v1:sky:sky:full", JSON.stringify(cached));
+  prepareInitialActions(f.container, () => ({ slot: 1, engineId: "agi", gameId: "mickey" }));
+  assert.equal(f.container.dataset.prepared, undefined);
+});
+
 test("the standalone head script runs without a React bundle or imported closures", t => {
   const f = fixture(t);
   let onMutation, disconnected = false;
