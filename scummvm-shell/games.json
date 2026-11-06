@@ -63,7 +63,15 @@
       "gameId": "monkey",
       "platform": "pc",
       "extra": "EGA Demo",
-      "readmeHref": "/launcher/notices/monkey.txt"
+      "readmeHref": "/launcher/notices/monkey.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "durationMinutes": 2,
+        "slot": 1,
+        "saveFiles": [
+          "monkey-demo.s01"
+        ]
+      }
     },
     {
       "target": "nippon-amiga",
@@ -73,7 +81,12 @@
       "gameId": "nippon",
       "platform": "amiga",
       "extra": "Multi-lingual",
-      "readmeHref": "/launcher/notices/nippon.txt"
+      "readmeHref": "/launcher/notices/nippon.txt",
+      "skipIntro": {
+        "strategy": "boot-param",
+        "durationMinutes": 5,
+        "bootParam": 1
+      }
     },
     {
       "target": "queen",
@@ -119,7 +132,15 @@
       "gameId": "sword25",
       "platform": "",
       "extra": "Latest version",
-      "readmeHref": "/launcher/notices/sword25.txt"
+      "readmeHref": "/launcher/notices/sword25.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "durationMinutes": 6,
+        "slot": 0,
+        "saveFiles": [
+          "sword25.000"
+        ]
+      }
     },
     {
       "target": "soltys",
@@ -129,7 +150,15 @@
       "gameId": "soltys",
       "platform": "pc",
       "extra": "Freeware v1.0",
-      "readmeHref": "/launcher/notices/soltys.txt"
+      "readmeHref": "/launcher/notices/soltys.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "durationMinutes": 2,
+        "slot": 1,
+        "saveFiles": [
+          "soltys.001"
+        ]
+      }
     },
     {
       "target": "sfinx",
@@ -139,7 +168,15 @@
       "gameId": "sfinx",
       "platform": "pc",
       "extra": "Freeware v1.1",
-      "readmeHref": "/launcher/notices/sfinx.txt"
+      "readmeHref": "/launcher/notices/sfinx.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "durationMinutes": 2,
+        "slot": 1,
+        "saveFiles": [
+          "sfinx.001"
+        ]
+      }
     },
     {
       "target": "hires1",
@@ -149,7 +186,15 @@
       "gameId": "hires1",
       "platform": "apple2",
       "extra": "Public Domain",
-      "readmeHref": "/launcher/notices/hires1.txt"
+      "readmeHref": "/launcher/notices/hires1.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "durationMinutes": 2,
+        "slot": 0,
+        "saveFiles": [
+          "hires1.s00"
+        ]
+      }
     }
   ]
 }

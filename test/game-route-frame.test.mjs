@@ -4,6 +4,7 @@ import { createRequire } from "node:module";
 import { runInNewContext } from "node:vm";
 import test from "node:test";
 import swc from "next/dist/build/swc/index.js";
+import * as skipIntroConfig from "../app/skip-intro-config.mjs";
 import * as gameMenu from "../app/game-player/game-menu.mjs";
 import { gameLoadingStatus } from "../app/game-loading-status.mjs";
 
@@ -43,6 +44,7 @@ for (const message of ["This ZIP link returned HTTP 404.", "Could not download t
           useEffect: (effect) => effects.push(effect), useLayoutEffect() {},
         };
         if (name === "react/jsx-runtime") return nativeRequire(name);
+        if (name === "./skip-intro-config.mjs") return skipIntroConfig;
         if (name.endsWith("/game-menu.mjs")) return gameMenu;
         if (name === "next/navigation") return { useRouter: () => ({}) };
         if (name === "./game-loading-status.mjs") return { gameLoadingStatus };
@@ -151,6 +153,7 @@ function pendingArchivePlayer({ stalledNavigation = false, downloadDetails = { l
         useLayoutEffect: (callback, deps) => effect(callback, deps, layouts),
       };
       if (name === "react/jsx-runtime") return nativeRequire(name);
+      if (name === "./skip-intro-config.mjs") return skipIntroConfig;
       if (name.endsWith("/game-menu.mjs")) return gameMenu;
       if (name === "next/navigation") return { useRouter: () => ({}) };
       if (name === "./game-loading-status.mjs") return { gameLoadingStatus };
@@ -308,6 +311,7 @@ function menuPlayer(game, { ready = true, failed = false } = {}) {
         useEffect() {}, useLayoutEffect() {},
       };
       if (name === "react/jsx-runtime") return nativeRequire(name);
+      if (name === "./skip-intro-config.mjs") return skipIntroConfig;
       if (name === "next/navigation") return { useRouter: () => ({}) };
       if (name.endsWith("/game-menu.mjs")) return gameMenu;
       if (name.endsWith("/keyboard")) return { dispatchSyntheticKeypressSequence: async (frame, shortcut) => keypresses.push({ frame, shortcut }) };

@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { buildSkipIntroLaunchSrc } from "./skip-intro-config.mjs";
 import { readCatalogGameArchive } from "./game-bucket.mjs";
 import { gameLoadingStatus } from "./game-loading-status.mjs";
 import GameBootOverlay from "./game-player/GameBootOverlay";
@@ -140,7 +141,7 @@ export default function GameRouteFrame({
   const [exitHref, setExitHref] = useState("/");
   const [readySignal, setReadySignal] = useState(null);
   const [skipIntroConsumed, setSkipIntroConsumed] = useState(false);
-  const [catalogIntroSlot, setCatalogIntroSlot] = useState(null);
+  const [catalogIntroLaunch, setCatalogIntroLaunch] = useState(null);
   const skipIntro = isResuming ? null : intro;
   const bootState = useBootState({
     displayTitle: game?.displayTitle || title,
@@ -348,7 +349,7 @@ export default function GameRouteFrame({
     setArchivePrepared(false);
     archiveFiles.current = null;
     archiveReceiver.current = null;
-    setSkipIntroConsumed(catalogIntroSlot !== null);
+    setSkipIntroConsumed(catalogIntroLaunch !== null);
 
     async function openGame() {
       try {
@@ -364,12 +365,16 @@ export default function GameRouteFrame({
           const launchHash = window.location.hash;
           const requested = /^#(seed|slot)=(\d{1,9})$/.exec(launchHash);
           const requestedSlot = requested ? Number(requested[2]) : null;
-          const seeded = catalogIntroSlot !== null || (requested?.[1] === "seed" && requestedSlot === intro?.slot);
+          const introLaunch = catalogIntroLaunch || (launchHash === "#skip-intro" ? intro : null);
+          if (introLaunch) setSkipIntroConsumed(true);
+          const seeded = introLaunch?.strategy === "save-slot" || (requested?.[1] === "seed" && requestedSlot === intro?.slot);
           const explicitSlot = requested?.[1] === "slot" || seeded ? requestedSlot : null;
-          const slot = catalogIntroSlot ?? explicitSlot;
+          const slot = introLaunch?.strategy === "save-slot" ? introLaunch.slot : explicitSlot;
           if (controller.signal.aborted) return;
-          setIsResuming(launchHash === "#continue" || (catalogIntroSlot === null && slot !== null));
-          if (slot !== null) {
+          setIsResuming(launchHash === "#continue" || (!introLaunch && slot !== null));
+          if (introLaunch?.strategy === "boot-param") {
+            launchSrc = buildSkipIntroLaunchSrc(src, target, introLaunch, window.location.href);
+          } else if (slot !== null) {
             launchSrc = buildSaveSlotSrc(src, target, slot, { seedIntro: seeded });
           }
           const exitTo = new URLSearchParams(window.location.search).get("exitTo");
@@ -405,7 +410,7 @@ export default function GameRouteFrame({
 
     void openGame();
     return () => { controller.abort(); };
-  }, [catalogIntroSlot, catalogLaunch, game, intro, launchAnalytics, loadArchive, src, target]);
+  }, [catalogIntroLaunch, catalogLaunch, game, intro, launchAnalytics, loadArchive, src, target]);
 
   useEffect(() => {
     if (bootState.hasBootFailed) launchAnalytics.fail("startup_error");
@@ -583,10 +588,10 @@ export default function GameRouteFrame({
     if (catalogArchiveUrl) {
       setFrameSrc(null);
       setArchiveFrameDocument(null);
-      setCatalogIntroSlot(skipIntro.slot);
+      setCatalogIntroLaunch(skipIntro);
       return;
     }
-    setFrameSrc((currentSrc) => buildSaveSlotSrc(currentSrc, target, skipIntro.slot, { seedIntro: true }));
+    setFrameSrc((currentSrc) => buildSkipIntroLaunchSrc(currentSrc, target, skipIntro, window.location.href));
   }
 
   const showSkipIntroAction = bootState.showSkipIntroButton && skipIntro && !bootState.hasBootFailed;

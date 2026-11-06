@@ -337,3 +337,11 @@ test("play harness saves and loads room hotspot maps", () => {
     fs.rmSync(path.dirname(mapPath), { force: true, recursive: true });
   }
 });
+
+
+test("play harness preserves native intro choices without inventing a save seed", () => {
+  const game = { target: "nippon-amiga", playHref: "/nippon-safes-inc/play",
+    skipIntro: { strategy: "boot-param", durationMinutes: 5, bootParam: 1 } };
+  assert.equal(buildGameLaunchPath({ game }), "/nippon-safes-inc/play#skip-intro");
+  assert.equal(buildGameLaunchPath({ game, seeded: false }), "/nippon-safes-inc/play");
+});

@@ -260,6 +260,24 @@
         "In Brave Mystery House, verify a single G, Return, typed commands and Backspace after display initialization; verify a native game menu shortcut."
       ],
       "retire_when": "The selected SDL/Emscripten combination reliably unregisters keyboard callbacks when recreating a window, with one callback per browser event verified after Mystery House startup and display changes."
+    },
+    {
+      "path": "patches/scummvm/17-startup-intro-checkpoints.patch",
+      "status": "active",
+      "sha256": "a3cd24cec337897506378e85791de6eb2ba48942c022ae3681b0fdbc405433e1",
+      "purpose": "Skip Nippon Safes intro while preserving language/character choices, and load Sword25 intro checkpoints through native Lua persistence.",
+      "invariants": [
+        "Ordinary launches retain their original intros and menus.",
+        "Nippon Safes boot parameter 1 skips logos/story and preserves language and character selection; no character is selected by a checkpoint.",
+        "Sword25 queues the native Lua persistence load after resources and interface initialization; its startup marker must occur exactly once and the slot must be in range.",
+        "Changes apply only to Emscripten; save serializers and original game data remain unchanged."
+      ],
+      "verification": [
+        "In Brave launch both titles normally, then click Skip intro. Nippon Safes must retain language and character selection; Sword25 must restore its untouched first playable scene.",
+        "Verify native saving and loading from the original game interfaces.",
+        "Reject out-of-range Sword25 slots and changed startup scripts explicitly."
+      ],
+      "retire_when": "Upstream provides equivalent Nippon Safes intro skipping with original choices and Sword25 startup loads at safe Lua persistence timing."
     }
   ]
 }
