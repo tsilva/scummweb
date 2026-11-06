@@ -1429,7 +1429,7 @@ button.nav-icon-link {
   }
 }
 
-/* Reserve one viewport for the selected game before the library starts. */
+/* The game always fills the first viewport; screenshots begin after it. */
 .game-showcase {
   display: flex;
   flex-direction: column;
@@ -1439,44 +1439,63 @@ button.nav-icon-link {
 .hero-stage.hero-stage-library {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  min-height: calc(100svh - 12.5rem);
+  flex: none;
+  height: max(100svh, 46rem);
+  min-height: 0;
 }
 
 .hero-stage-library .hero-inner {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
   flex: 1;
+  min-height: 0;
   width: 100%;
-  max-width: 94rem;
-  padding: 8rem 3.25rem 4rem;
+  max-width: 100rem;
+  padding: 7rem 3.25rem clamp(9rem, 16svh, 11rem);
 }
 
 .hero-stage-library .hero-copy {
   min-height: 0;
-  max-width: 40rem;
+  width: min(43vw, 40rem);
+  max-width: 100%;
+  align-self: center;
+  transform: translateY(-1.5rem);
 }
 
 .hero-stage-library .hero-copy h1 {
   display: flex;
   align-items: center;
-  height: 1.8em;
+  height: 1.5em;
   margin-top: 0.75rem;
-  font-size: clamp(2.75rem, 4.6vw, 4.2rem);
+  font-size: clamp(3.5rem, 8.4vw, 6rem);
+  font-family: var(--font-body), sans-serif;
+  font-weight: 800;
+}
+
+.hero-stage-library .hero-kicker {
+  font-size: 0.95rem;
+  letter-spacing: 0.25em;
+  height: 1.4em;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .hero-stage-library .hero-summary {
-  display: block;
-  height: 6.2em;
+  display: -webkit-box;
+  height: 4.65em;
   max-width: 35rem;
   margin-top: 1rem;
   color: var(--ink);
+  font-size: 1.2rem;
   line-height: 1.55;
 }
 
 .hero-launch {
-  min-height: 13rem;
-  margin-top: 1.25rem;
+  position: relative;
+  min-height: 3.4rem;
+  margin-top: 2rem;
 }
 
 .hero-mobile-facts {
@@ -1484,19 +1503,48 @@ button.nav-icon-link {
 }
 
 .hero-stage-library .hero-actions {
-  flex-wrap: wrap;
-  height: auto;
+  position: relative;
+  flex-wrap: nowrap;
+  height: 3.4rem;
   margin-top: 0;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .hero-stage-library .hero-actions > .launch-button {
-  height: 3rem;
-  min-height: 3rem;
+  height: 3.4rem;
+  min-height: 3.4rem;
+}
+
+.hero-stage-library .launch-button:not(.game-unavailable):not(.launch-button-pending) {
+  background: #4fbe43;
 }
 
 .hero-stage-library .secondary-button {
-  min-height: 3rem;
+  min-height: 3.4rem;
+}
+
+/* Save detection must not change the primary action row's geometry. */
+.hero-actions > .start-fresh-button {
+  position: absolute;
+  inset: calc(100% + 0.6rem) auto auto 0;
+  min-height: 1.75rem;
+  padding: 0;
+  background: transparent;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.hero-launch > .file-access-help {
+  position: absolute;
+  inset: calc(100% + 0.5rem) auto auto 0;
+  max-width: 40rem;
+  margin: 0;
+}
+
+.hero-launch:has(.start-fresh-button) > .file-access-help {
+  inset-block-start: calc(100% + 2.4rem);
 }
 
 .hero-license {
@@ -1511,11 +1559,13 @@ button.nav-icon-link {
   align-items: center;
   flex-wrap: wrap;
   gap: 0.5rem 0.8rem;
-  min-height: 3.5rem;
-  margin: 1.25rem 0 0;
+  height: 2.8em;
+  margin: 1rem 0 0;
   padding: 0;
   list-style: none;
-  font-size: 0.82rem;
+  font-size: 1rem;
+  line-height: 1.4;
+  overflow: hidden;
 }
 
 .hero-facts li + li::before {
@@ -1524,29 +1574,34 @@ button.nav-icon-link {
   color: var(--ink-soft);
 }
 
-.hero-facts .hero-edition {
-  padding: 0.25rem 0.6rem;
-  border: 1px solid var(--ghost-border);
-  border-radius: 0.3rem;
-  color: var(--ink-muted);
-  font-size: 0.75rem;
-}
-
-.hero-facts .hero-edition::before {
-  content: none;
-}
-
 .hero-stage-library .hero-carousel-controls {
-  inset-block: auto 1.25rem;
+  inset-block: auto 2rem;
+  inset-inline-end: max(3.25rem, calc((100vw - 93.5rem) / 2));
 }
 
 .hero-version-control {
-  display: grid;
-  gap: 0.45rem;
-  max-width: 32rem;
-  margin-top: 1rem;
-  font-size: 0.8rem;
-  color: var(--ink-muted);
+  display: flex;
+  align-items: center;
+  flex: 0 0 clamp(11rem, 20vw, 19rem);
+  width: clamp(11rem, 20vw, 19rem);
+  min-width: 0;
+  padding-inline: 0.75rem;
+  border-inline: 1px solid rgba(229, 226, 225, 0.3);
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+
+.hero-version-control .library-select {
+  width: 100%;
+  min-width: 0;
+}
+
+.hero-version-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
 }
 
 .hero-version-control select {
@@ -1555,12 +1610,46 @@ button.nav-icon-link {
   min-width: 0;
   max-width: 100%;
   min-height: 2.75rem;
-  padding: 0.6rem 3rem 0.6rem 1rem;
-  border: 1px solid var(--ghost-border);
-  border-radius: 0.2rem;
-  background: var(--surface-lowest);
+  padding: 0.6rem 1.75rem 0.6rem 0.25rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
   color: var(--ink);
   font: inherit;
+  text-overflow: ellipsis;
+}
+
+.hero-version-control option {
+  background: var(--surface-lowest);
+}
+
+.hero-version-control .library-select > svg {
+  right: 0.25rem;
+}
+
+.hero-version-value {
+  overflow: hidden;
+  padding: 0.6rem 0.25rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hero-version-control select:focus-visible,
+.hero-scroll-cue:focus-visible {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 4px;
+}
+
+.hero-scroll-cue {
+  position: absolute;
+  inset-block-end: 2.5rem;
+  inset-inline-start: max(3.25rem, calc((100vw - 93.5rem) / 2));
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--ink);
 }
 
 .hero-notice[data-tone="success"],
@@ -1574,15 +1663,32 @@ button.nav-icon-link {
 }
 
 .game-screenshots.content-band {
-  max-width: 94rem;
-  padding: 2rem 3.25rem 2rem;
+  width: 100%;
+  max-width: 100rem;
+  padding: 3rem 3.25rem 2rem;
   margin: 0 auto;
+  scroll-margin-top: 5rem;
   content-visibility: visible;
   contain-intrinsic-size: none;
 }
 
 .game-screenshots .section-header {
-  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.game-screenshots .section-header h2 {
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.game-screenshot-hint {
+  flex-shrink: 0;
+  color: var(--ink);
+  font-size: 0.8rem;
 }
 
 .game-screenshot-strip {
@@ -1597,8 +1703,8 @@ button.nav-icon-link {
   border: 1px solid transparent;
   background: #000;
   cursor: zoom-in;
-  flex: 0 0 12rem;
-  aspect-ratio: 1.6;
+  flex: 0 0 calc((100% - 2rem) / 3);
+  aspect-ratio: 4 / 3;
   min-width: 0;
   overflow: hidden;
 }
@@ -1747,7 +1853,18 @@ button.nav-icon-link {
 
 .hero-stage-library .hero-backdrop {
   inset-block-start: 5rem;
-  inset-inline-start: 35%;
+  inset-block-end: 0;
+  inset-inline-start: 0;
+}
+
+@media (min-width: 48.001rem) {
+  .dashboard-nav-home .nav-brand-logo {
+    height: 1.75rem;
+  }
+
+  .dashboard-nav-home .nav-links a {
+    font-size: 0.8rem;
+  }
 }
 
 .hero-stage-library .hero-backdrop-image {
@@ -1758,7 +1875,30 @@ button.nav-icon-link {
 .hero-stage-library .hero-gradient {
   background:
     linear-gradient(180deg, transparent 65%, var(--surface) 100%),
-    linear-gradient(90deg, var(--surface) 24%, rgba(19, 19, 19, 0.94) 32%, rgba(19, 19, 19, 0.12) 65%);
+    linear-gradient(90deg, rgba(19, 19, 19, 0.94), rgba(19, 19, 19, 0.8) 24%, rgba(19, 19, 19, 0.4) 43%, transparent 72%);
+}
+
+.hero-stage.hero-stage-library .hero-backdrop::after {
+  background: linear-gradient(180deg, rgba(7, 12, 10, 0.05) 45%, rgba(19, 19, 19, 0.18) 65%, var(--surface) 100%);
+}
+
+@media (min-width: 48.001rem) and (max-width: 64rem) {
+  .hero-stage-library .hero-backdrop {
+    inset-block-end: 12rem;
+  }
+
+  .hero-stage-library .hero-actions > .launch-button {
+    flex-basis: 9rem;
+    width: 9rem;
+  }
+
+  .hero-stage-library .secondary-button {
+    padding-inline: 1.5rem;
+  }
+
+  .hero-stage-library .hero-actions {
+    gap: 0.75rem;
+  }
 }
 
 .section-stack > .content-band {
