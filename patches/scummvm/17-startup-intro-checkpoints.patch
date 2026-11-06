@@ -1,0 +1,74 @@
+diff --git a/engines/parallaction/gui_ns.cpp b/engines/parallaction/gui_ns.cpp
+index d33ee56e..93b37201 100644
+--- a/engines/parallaction/gui_ns.cpp
++++ b/engines/parallaction/gui_ns.cpp
+@@ -136,6 +136,11 @@ public:
+ 	ChooseLanguageInputState_NS(Parallaction *vm, MenuInputHelper *helper) : MenuInputState("chooselanguage", helper), _vm(vm) {
+ 		_allowChoice = false;
+ 		_nextState = "selectgame";
++#ifdef __EMSCRIPTEN__
++		// Preserve language and character selection while skipping the story.
++		if (ConfMan.getInt("boot_param") == 1)
++			_nextState = "selectcharacter";
++#endif
+ 		_label = nullptr;
+ 		_blocks = nullptr;
+ 
+@@ -1062,7 +1067,12 @@ void Parallaction_ns::startGui() {
+ 	new ChooseLanguageInputState_NS(this, _menuHelper);
+ 	new SplashInputState1_NS(this, _menuHelper);
+ 	new SplashInputState0_NS(this, _menuHelper);
+-	_menuHelper->setState("intro0");
++#ifdef __EMSCRIPTEN__
++	if (ConfMan.getInt("boot_param") == 1)
++		_menuHelper->setState("chooselanguage");
++	else
++#endif
++		_menuHelper->setState("intro0");
+ 
+ 	_input->_inputMode = Input::kInputModeMenu;
+ }
+diff --git a/engines/sword25/script/luascript.cpp b/engines/sword25/script/luascript.cpp
+index cc3153b1..e6e72959 100644
+--- a/engines/sword25/script/luascript.cpp
++++ b/engines/sword25/script/luascript.cpp
+@@ -29,6 +29,8 @@
+  */
+ 
+ #include "common/memstream.h"
++#include "common/config-manager.h"
++#include "sword25/kernel/persistenceservice.h"
+ #include "common/debug-channels.h"
+ 
+ #include "sword25/sword25.h"
+@@ -151,8 +153,29 @@ bool LuaScriptEngine::executeFile(const Common::String &fileName) {
+ 		return false;
+ 	}
+ 
++	const byte *scriptData = fileData;
++	uint scriptSize = fileSize;
++#ifdef __EMSCRIPTEN__
++	Common::String startupScript;
++	if (fileName == "/system/resourceloader.lua" && ConfMan.hasKey("save_slot") && ConfMan.getInt("save_slot") >= 0) {
++		const int slot = ConfMan.getInt("save_slot");
++		if (slot >= (int)PersistenceService::getSlotCount())
++			error("Invalid Sword25 startup save slot %d", slot);
++		startupScript = Common::String((const char *)fileData, fileSize);
++		const Common::String marker = "ChangeRoom(Rooms._default)";
++		const size_t position = startupScript.find(marker);
++		if (position == Common::String::npos || startupScript.find(marker, position + marker.size()) != Common::String::npos)
++			error("Unsupported Sword25 startup script for save loading");
++		// Queue through the game's original persistence service after resources
++		// and Interface:Init(), at the same frame boundary as its load menu.
++		startupScript.replace(position, marker.size(), Common::String::format("Persistence:LoadGame(%d)", slot + 1));
++		scriptData = (const byte *)startupScript.c_str();
++		scriptSize = startupScript.size();
++		ConfMan.removeKey("save_slot", Common::ConfigManager::kTransientDomain);
++	}
++#endif
+ 	// Run the file content
+-	if (!executeBuffer(fileData, fileSize, "@" + pPackage->getAbsolutePath(fileName))) {
++	if (!executeBuffer(scriptData, scriptSize, "@" + pPackage->getAbsolutePath(fileName))) {
+ 		// Release file buffer
+ 		delete[] fileData;
+ #ifdef DEBUG

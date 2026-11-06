@@ -127,10 +127,29 @@ const artByTarget = {
     heroImage: "/launcher/sky-scummweb-generated-2026-11-05-r1-hero.webp",
     heroImagePosition: "80% 38%",
     screenshots: [
-      "/launcher/bass-shot-1.png",
-      "/launcher/bass-shot-2.png",
-      "/launcher/bass-shot-3.png",
+      "/launcher/bass-gameplay-shot-walkway.png",
+      "/launcher/bass-gameplay-shot-travelco.png",
+      "/launcher/bass-gameplay-shot-garden.png",
     ],
+    sources: {
+      screenshots: [
+        {
+          kind: "gameplay",
+          url: "https://www.scummvm.org/data/screenshots/sky/sky/sky_dos_en_1_2_full.png",
+          page: "https://www.scummvm.org/screenshots/revolution/sky:sky/",
+        },
+        {
+          kind: "gameplay",
+          url: "https://www.scummvm.org/data/screenshots/sky/sky/sky_dos_en_1_4_full.png",
+          page: "https://www.scummvm.org/screenshots/revolution/sky:sky/",
+        },
+        {
+          kind: "gameplay",
+          url: "https://www.scummvm.org/data/screenshots/sky/sky/sky_dos_en_1_5_full.png",
+          page: "https://www.scummvm.org/screenshots/revolution/sky:sky/",
+        },
+      ],
+    },
     landscapeImage: "/launcher/sky-cover.webp",
     posterImage: "/launcher/sky-scummweb-generated-2026-11-05-r2-cover.webp",
     spotlightImage: "/launcher/sky-scummweb-generated-2026-11-05-r2-cover.webp",

@@ -395,6 +395,7 @@ export function buildGameLaunchPath({ game, seeded = true, exitTo = null } = {})
   const launch = new URL(playHref, "https://scummweb.local");
   if (exitTo) launch.searchParams.set("exitTo", exitTo);
   if (shouldUseSeed) launch.hash = `seed=${game.skipIntro.slot}`;
+  else if (seeded && game.skipIntro?.strategy === "boot-param") launch.hash = "skip-intro";
   return `${launch.pathname}${launch.search}${launch.hash}`;
 }
 

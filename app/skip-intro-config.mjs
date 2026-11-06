@@ -49,5 +49,26 @@ export function normalizeSkipIntroConfig(skipIntro) {
     return normalizeSaveSlotSkipIntro(skipIntro, durationMinutes);
   }
 
+  if (parsedStrategy === "boot-param") {
+    const bootParam = Number(skipIntro.bootParam);
+    return Number.isSafeInteger(bootParam) && bootParam > 0
+      ? { strategy: "boot-param", durationMinutes, bootParam }
+      : null;
+  }
+
   return null;
+}
+
+export function buildSkipIntroLaunchSrc(src, target, skipIntro, baseUrl) {
+  const config = normalizeSkipIntroConfig(skipIntro);
+  if (!config) throw new Error("Invalid skip-intro launch configuration");
+  const url = new URL(src, baseUrl);
+  if (config.strategy === "save-slot") {
+    url.searchParams.set("skipIntroTarget", target);
+    url.hash = `-x ${config.slot} ${target}`;
+  } else {
+    url.searchParams.delete("skipIntroTarget");
+    url.hash = `-b ${config.bootParam} ${target}`;
+  }
+  return `${url.pathname}${url.search}${url.hash}`;
 }

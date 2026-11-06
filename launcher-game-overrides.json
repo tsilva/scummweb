@@ -49,6 +49,63 @@
           "SKY-VM.000"
         ]
       }
+    },
+    "soltys": {
+      "skipIntro": {
+        "strategy": "save-slot",
+        "durationMinutes": 2,
+        "slot": 1,
+        "saveFiles": [
+          "soltys.001"
+        ]
+      }
+    },
+    "sfinx": {
+      "skipIntro": {
+        "strategy": "save-slot",
+        "durationMinutes": 2,
+        "slot": 1,
+        "saveFiles": [
+          "sfinx.001"
+        ]
+      }
+    },
+    "monkey-demo": {
+      "skipIntro": {
+        "strategy": "save-slot",
+        "durationMinutes": 2,
+        "slot": 1,
+        "saveFiles": [
+          "monkey-demo.s01"
+        ]
+      }
+    },
+    "hires1": {
+      "skipIntro": {
+        "strategy": "save-slot",
+        "durationMinutes": 2,
+        "slot": 0,
+        "saveFiles": [
+          "hires1.s00"
+        ]
+      }
+    },
+    "nippon-amiga": {
+      "skipIntro": {
+        "strategy": "boot-param",
+        "durationMinutes": 5,
+        "bootParam": 1
+      }
+    },
+    "sword25": {
+      "skipIntro": {
+        "strategy": "save-slot",
+        "durationMinutes": 6,
+        "slot": 0,
+        "saveFiles": [
+          "sword25.000"
+        ]
+      }
     }
   }
 }

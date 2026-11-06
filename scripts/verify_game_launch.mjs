@@ -471,6 +471,24 @@ async function verifySkipIntroButton(page, frame, game, routeUrl) {
     }
   );
 
+  if (game.skipIntro.strategy === "boot-param") {
+    await page.waitForFunction(({ target, bootParam }) => {
+      const iframe = document.querySelector('iframe[data-scummvm-route-frame="true"]');
+      const launchHref = iframe?.contentWindow?.document.baseURI;
+      if (!launchHref) return false;
+      const launch = new URL(launchHref);
+      return decodeURIComponent(launch.hash) === `#-b ${bootParam} ${target}`
+        && !launch.searchParams.has("skipIntroTarget");
+    }, { target: game.target, bootParam: game.skipIntro.bootParam });
+    await waitForGameStartup(page, frame, game, { assertOverlayTextHistory: false });
+    await verifyLaunchOverlayAfterStartup(page, game);
+    await skipIntroButton.waitFor({ state: "hidden", timeout: 5000 });
+    if (normalizeUrl(page.url()) !== normalizeUrl(routeUrl)) {
+      throw new Error(`Native intro skip unexpectedly redirected from ${routeUrl} to ${page.url()}`);
+    }
+    return;
+  }
+
   const relaunchState = await waitForSkipIntroRelaunch(page, game.target, game.skipIntro.slot);
 
   if (relaunchState?.skipIntroStatus?.state !== "ready") {

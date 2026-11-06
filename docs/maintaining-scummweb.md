@@ -254,6 +254,35 @@ prefix and indexed file size, and failed hints retain the ordinary read path.
 Prepared games prewarm small files asynchronously, preferring shallow paths,
 within the same 8 MiB memory cache. Larger files remain backed by Blob slices.
 
+### Intro checkpoints
+
+The bundled library's **Skip intro** action restarts the matching edition with
+a native startup option or an original save taken at the first playable scene,
+before puzzle actions.
+It is offered for a fresh launch; Continue and personal ZIP editions keep their
+own save behavior. Checkpoints live in `scummvm-shell/launcher/skip-intro/` and
+must remain in Git. `launcher-game-overrides.json` is the rebuild source for each
+entry's `skipIntro` metadata; regenerate `games.json` with
+`node scripts/create_launcher_metadata.mjs scummvm-shell/scummvm.ini scummvm-shell/games.json`,
+then regenerate the runtime asset fingerprints and stage the managed shell.
+
+The additional checkpoints use the pinned ScummVM runtime and the bundled game
+fingerprints in `data/bundled-game-files.json`. Sołtys starts in its yard, Sfinx
+in the bedroom, Mystery House in the front yard, and The Secret of Monkey Island
+(Demo) on the dock. Broken Sword 2.5 starts on the landing outside Nico's
+apartment after the scripted opening conversation, before any puzzle action. Sołtys and Sfinx use slot 1 because their engines reserve
+slot 0 for autosave; the demo also uses slot 1. The demo's
+checkpoint is captured through the native debugger because it disables its save
+menu; this does not change the demo's original save restrictions.
+
+Nippon Safes uses the native `boot-param` strategy (`bootParam: 1`) through
+patch 17 to skip the story while retaining its language and character choices.
+It does not load a save or select a character. Broken Sword 2.5 uses patch 17's
+browser startup-load adapter. Sword25 loads through its original Lua persistence queue after resource loading and
+interface initialization; changed startup scripts fail explicitly. Normal
+launches keep their original startup paths. These scoped adapters do not enable
+the general Continue flow for either engine.
+
 The **Recently Played** strip shows only games you have launched, newest first,
 including imported ZIPs. Different editions of a title share one card, and
 selecting it opens the same version chooser as the library. Removed imports
@@ -982,6 +1011,14 @@ or request-time rendering.
 
 - The playable baseline is Beneath a Steel Sky from `downloads/bass-cd-1.2.zip`,
   launched through `/scummvm.html#sky`.
+- Beneath a Steel Sky's landing gallery uses original DOS/English captures from
+  the [ScummVM screenshot gallery](https://www.scummvm.org/screenshots/revolution/sky:sky/):
+  [industrial walkway](https://www.scummvm.org/data/screenshots/sky/sky/sky_dos_en_1_2_full.png),
+  [Foster and Joey outside Travelco](https://www.scummvm.org/data/screenshots/sky/sky/sky_dos_en_1_4_full.png),
+  and [garden entrance](https://www.scummvm.org/data/screenshots/sky/sky/sky_dos_en_1_5_full.png).
+  The 640×480 original PNGs retain their captured pixels; delivery variants use
+  the lossless screenshot pipeline. Original artwork belongs to Revolution
+  Software and its respective creators.
 - To include The Secret of Monkey Island (Demo) in a catalog rebuild, place the
   [English DOS EGA demo ZIP](https://downloads.scummvm.org/frs/demos/scumm/monkey1-dos-ega-demo-en.zip)
   in `downloads/` as `monkey1-dos-ega-demo-en.zip`.

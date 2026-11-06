@@ -25946,6 +25946,78 @@
       "contentType": "image/webp",
       "width": 480,
       "height": 640
+    },
+    "/launcher/bass-gameplay-shot-garden.png": {
+      "key": "artwork/9af77381c93b133cff8af2d5137af20e3740bbd395b677d58b25d91256438b74/bass-gameplay-shot-garden.png",
+      "sha256": "9af77381c93b133cff8af2d5137af20e3740bbd395b677d58b25d91256438b74",
+      "bytes": 203778,
+      "contentType": "image/png",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/bass-gameplay-shot-travelco.png": {
+      "key": "artwork/f350e3e7704223e055ef35ea4a3aed23f6756f1d4baee9f6f3f77d990b1626cb/bass-gameplay-shot-travelco.png",
+      "sha256": "f350e3e7704223e055ef35ea4a3aed23f6756f1d4baee9f6f3f77d990b1626cb",
+      "bytes": 176732,
+      "contentType": "image/png",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/bass-gameplay-shot-walkway.png": {
+      "key": "artwork/3f8062e0808117acea82d3c6849fb937487a5759fc17f874ca224736b1adc230/bass-gameplay-shot-walkway.png",
+      "sha256": "3f8062e0808117acea82d3c6849fb937487a5759fc17f874ca224736b1adc230",
+      "bytes": 188307,
+      "contentType": "image/png",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/optimized/bass-gameplay-shot-garden.webp": {
+      "key": "artwork/dd19dd18f0ddce3597545d62816f26193b2b52605eb3ed7a347a1622d285e16d/bass-gameplay-shot-garden.webp",
+      "sha256": "dd19dd18f0ddce3597545d62816f26193b2b52605eb3ed7a347a1622d285e16d",
+      "bytes": 160650,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/optimized/bass-gameplay-shot-travelco.webp": {
+      "key": "artwork/0f2b6928fe4fec8f4bf693a2cbe365d66f1b1d02b5e837d16bd85a6d3168bc7e/bass-gameplay-shot-travelco.webp",
+      "sha256": "0f2b6928fe4fec8f4bf693a2cbe365d66f1b1d02b5e837d16bd85a6d3168bc7e",
+      "bytes": 139130,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/optimized/bass-gameplay-shot-walkway.webp": {
+      "key": "artwork/3665990085edf65a89795ab7a7ced613f4280d46585bbe75ab30b5f28b60ac6c/bass-gameplay-shot-walkway.webp",
+      "sha256": "3665990085edf65a89795ab7a7ced613f4280d46585bbe75ab30b5f28b60ac6c",
+      "bytes": 150552,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/bass-gameplay-shot-garden-320.webp": {
+      "key": "artwork/ae6032be599de1bb4bf130e525a8e420a466082c3b936e164aef6ae6d5437f6f/bass-gameplay-shot-garden-320.webp",
+      "sha256": "ae6032be599de1bb4bf130e525a8e420a466082c3b936e164aef6ae6d5437f6f",
+      "bytes": 124256,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/bass-gameplay-shot-travelco-320.webp": {
+      "key": "artwork/88df6986ef7cc5ace9e84dcf394bcdcdb40c909af3712acc1f1acd88135c0d94/bass-gameplay-shot-travelco-320.webp",
+      "sha256": "88df6986ef7cc5ace9e84dcf394bcdcdb40c909af3712acc1f1acd88135c0d94",
+      "bytes": 114574,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/bass-gameplay-shot-walkway-320.webp": {
+      "key": "artwork/7de20396dca3ce73669f943d4dd3d0ed37847c5a1766af868068bfff968a243e/bass-gameplay-shot-walkway-320.webp",
+      "sha256": "7de20396dca3ce73669f943d4dd3d0ed37847c5a1766af868068bfff968a243e",
+      "bytes": 108620,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
     }
   },
   "images": {
@@ -26060,6 +26132,36 @@
         "/launcher/responsive/bargon-scummweb-generated-2026-11-06-r1-cover-480.webp",
         "/launcher/responsive/bargon-scummweb-generated-2026-11-06-r1-cover-640.webp",
         "/launcher/bargon-scummweb-generated-2026-11-06-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/bass-gameplay-shot-garden.png": {
+      "width": 640,
+      "height": 480,
+      "fallback": "/launcher/optimized/bass-gameplay-shot-garden.webp",
+      "webp": [
+        "/launcher/responsive/bass-gameplay-shot-garden-320.webp",
+        "/launcher/optimized/bass-gameplay-shot-garden.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/bass-gameplay-shot-travelco.png": {
+      "width": 640,
+      "height": 480,
+      "fallback": "/launcher/optimized/bass-gameplay-shot-travelco.webp",
+      "webp": [
+        "/launcher/responsive/bass-gameplay-shot-travelco-320.webp",
+        "/launcher/optimized/bass-gameplay-shot-travelco.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/bass-gameplay-shot-walkway.png": {
+      "width": 640,
+      "height": 480,
+      "fallback": "/launcher/optimized/bass-gameplay-shot-walkway.webp",
+      "webp": [
+        "/launcher/responsive/bass-gameplay-shot-walkway-320.webp",
+        "/launcher/optimized/bass-gameplay-shot-walkway.webp"
       ],
       "avif": []
     },

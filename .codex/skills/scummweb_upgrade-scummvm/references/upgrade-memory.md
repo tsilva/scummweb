@@ -84,6 +84,15 @@ tests when porting; do not treat an old implementation shape as the requirement.
   this lifecycle bug. Apply on shell-only and full builds; test after display
   initialization and preserve independent callbacks and ordinary DOM listeners.
 
+## Intro checkpoints
+
+- Some engines save normally but do not honor startup `save_slot`. Patch 17
+  uses Nippon Safes boot parameter 1 to retain language/character selection
+  without the story intro, and routes Sword25 through its queued Lua persistence API after resource and
+  interface initialization. Do not call Sword25's native unpersist routine from
+  inside a coroutine or before its services exist. Keep the startup-script marker
+  strict and retain the original behavior when no slot is requested.
+
 ## Keeping this memory useful
 
 When a patch is introduced or changed, update its ledger purpose, invariants,
