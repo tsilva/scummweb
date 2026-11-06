@@ -170,6 +170,7 @@ button.nav-icon-link {
   z-index: 2;
   display: flex;
   align-items: center;
+  gap: 0.5rem;
   color: var(--ink);
 }
 
@@ -556,19 +557,6 @@ button.nav-icon-link {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-}
-
-.game-version-count {
-  position: absolute;
-  top: 0.65rem;
-  right: 0.65rem;
-  z-index: 2;
-  padding: 0.35rem 0.6rem;
-  border-radius: 0.2rem;
-  background: rgba(8, 15, 9, 0.9);
-  color: var(--accent-strong);
-  font-size: 0.75rem;
-  font-weight: 700;
 }
 
 .file-access-help {
@@ -1581,7 +1569,7 @@ button.nav-icon-link {
   overflow: hidden;
 }
 
-.hero-facts > li:not(.hero-edition) {
+.hero-facts > li {
   display: flex;
   align-items: center;
   min-height: 1.75rem;
@@ -1595,25 +1583,12 @@ button.nav-icon-link {
 
 .hero-edition {
   overflow: hidden;
-  padding: 0.25rem 0.6rem;
-  border: 1px solid var(--ghost-border);
-  border-radius: 0.3rem;
-  color: var(--ink-muted);
-  font-size: 0.75rem;
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 100%;
 }
 
-.hero-facts .hero-edition::before {
-  content: none;
-}
-
-.hero-facts .hero-edition {
-  height: 1.75rem;
-}
-
-/* Keep the badge and chooser slots when their contents are not needed. */
+/* Keep the edition and chooser slots when their contents are not needed. */
 .hero-edition[data-reserved],
 .hero-version-control[data-reserved] {
   visibility: hidden;
