@@ -991,11 +991,27 @@
   }
 
   .hero-stage-library .hero-mobile-facts {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    height: 1.4em;
     margin: 0.85rem 0 0;
     color: var(--ink-muted);
     font-size: 0.85rem;
     line-height: 1.4;
+  }
+
+  .hero-mobile-facts > span:first-child {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .hero-mobile-facts .hero-edition {
+    flex-shrink: 0;
+    max-width: 50%;
+    padding: 0 0.35rem;
   }
 
   .hero-mobile-facts:empty {
@@ -1028,10 +1044,6 @@
     width: 100%;
     border: 0;
     padding: 0;
-  }
-
-  .hero-version-value {
-    margin-inline: auto;
   }
 
   .hero-stage-library .hero-actions {

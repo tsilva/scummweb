@@ -6,8 +6,10 @@ Select a library or Recently Played card to navigate to the game’s slug route
 and jump instantly to its hero, screenshots, metadata, game notices, and launch
 options. Recognized platform, language, and edition variants share a card;
 use the version selector beside **Play** in the hero to select a copy. Games
-with one version show its edition details in the same position. ScummWEB remembers your
-selection and keeps demos separate from full games. Each imported version has
+with one version show an edition badge beside their metadata instead of a selector.
+The badge is hidden when multiple versions are available. Both positions reserve
+their layout space so restoring versions does not move nearby controls or resize
+the hero. ScummWEB remembers your selection and keeps demos separate from full games. Each imported version has
 separate browser saves. Supported engines offer **Continue** and **Start from
 beginning**; others load progress through their in-game menu. Older shared saves
 remain stored in the browser.
@@ -971,9 +973,10 @@ or request-time rendering.
   Adventures, both included in the collection.
   The homepage uses a game's landscape artwork or gameplay capture as its
   slideshow backdrop. Heroes share save-aware Play, Continue, Start from beginning
-  and reconnect actions, with an inline Version selector rendered from the start.
-  With one known edition the selector is disabled; restored local editions update
-  its options in place without adding a new row or changing the hero's height.
+  and reconnect actions. One known edition shows a metadata badge; multiple
+  editions show an inline Version selector instead. Both slots retain their space
+  while hidden, so restoring local editions does not move the action row or
+  change the hero's height. Hidden slots contain no focusable controls.
   Continue refreshes after browser saves change or the page is restored.
   Play or Continue appears immediately from cached browser metadata while stale
   records are reconciled in the background. Background native queries yield to
