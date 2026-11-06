@@ -795,23 +795,11 @@ button.nav-icon-link {
   line-height: 1.05;
 }
 
-.landscape-meta {
-  display: flex;
-  gap: 0.8rem;
-  flex-wrap: wrap;
-  margin-top: 0.45rem;
-}
-
-.landscape-meta span,
 .spotlight-badge span {
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-}
-
-.landscape-meta span {
-  color: var(--accent-strong);
 }
 
 .poster-grid {

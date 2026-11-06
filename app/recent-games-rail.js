@@ -43,10 +43,6 @@ export default function RecentGamesRail({ groups }) {
             <DecorativeImage className="landscape-card-image" {...getArtworkImageProps(game.landscapeImage, "landscape")} />
             <div className="landscape-overlay">
               <h3>{game.displayTitle}</h3>
-              <div className="landscape-meta">
-                <span>{game.genre}</span>
-                <span>{game.studio}</span>
-              </div>
             </div>
           </GameSelectionLink>
         ))}
