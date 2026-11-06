@@ -18,9 +18,10 @@ export default function GameScreenshots({ game }) {
     thumbnails.current[index]?.focus();
   }
 
-  return <section className="game-screenshots content-band" aria-labelledby="game-screenshots-heading">
+  return <section id="game-screenshots" className="game-screenshots content-band" aria-labelledby="game-screenshots-heading">
     <div className="section-header">
       <h2 id="game-screenshots-heading"><span className="section-mark" />Screenshots</h2>
+      <span className="game-screenshot-hint">Click to enlarge</span>
     </div>
     <div className="game-screenshot-strip">
       {shots.map((shot, index) => <button key={shot} type="button" className="game-screenshot-thumb"
@@ -34,7 +35,7 @@ export default function GameScreenshots({ game }) {
             viewer.current?.focus({ preventScroll: true });
           });
         }}>
-        <DecorativeImage {...getArtworkImageProps(shot)} alt={`${game.displayTitle} screenshot ${index + 1}`}
+        <DecorativeImage {...getArtworkImageProps(shot)} sizes="(max-width: 48rem) 85vw, calc((min(100vw, 100rem) - 8.5rem) / 3)" alt={`${game.displayTitle} screenshot ${index + 1}`}
           loading="lazy" decoding="async" />
       </button>)}
     </div>

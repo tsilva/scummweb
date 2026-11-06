@@ -5,7 +5,8 @@
 Select a library or Recently Played card to navigate to the game’s slug route
 and jump instantly to its hero, screenshots, metadata, game notices, and launch
 options. Recognized platform, language, and edition variants share a card;
-choose **Version** in the hero to select a copy. ScummWEB remembers your
+use the version selector beside **Play** in the hero to select a copy. Games
+with one version show its edition details in the same position. ScummWEB remembers your
 selection and keeps demos separate from full games. Each imported version has
 separate browser saves. Supported engines offer **Continue** and **Start from
 beginning**; others load progress through their in-game menu. Older shared saves
@@ -412,8 +413,13 @@ records actual dimensions in `data/artwork-renditions.json`. Browser selection
 preserves the existing cover crop and falls back to the full original for
 larger displays or unknown/remote artwork. Derivatives inherit their original's
 artwork provenance. Desktop hero titles fit within a reserved responsive heading
-slot. Descriptions and launch controls also reserve stable space across desktop
-slideshow changes. The static mobile hero uses natural content heights.
+slot. Desktop heroes fill at least the first viewport, with a fixed action row
+containing Play, version details or a selector, Browse Games and the license link
+when available. Title, description and launch positions stay stable across
+slideshow changes and saved-progress checks. A scroll link leads to the screenshot
+gallery below the fold, where three large original captures fit across desktop
+screens. Narrow screens show a horizontally scrollable gallery and use natural
+content heights with a minimum of one viewport for the hero.
 Game cards show full-color artwork at widths up to 48rem and on devices without
 hover or with a coarse pointer. Desktop cards retain their grayscale-to-color
 hover and keyboard-focus treatment.
