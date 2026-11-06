@@ -43,10 +43,9 @@ export function groupGameVersions(items) {
     group.versions.push(version);
   }
   for (const group of groups.values()) {
-    const labels = group.versions.map(({ game, source }) => [
-      game.platform || "Platform unknown", game.language || "Language unknown", game.edition,
-      source ? source.url ? "Online ZIP" : source.kind === "folder" ? "ZIP required" : "Local ZIP" : "Included",
-    ].filter(Boolean).join(" · "));
+    const labels = group.versions.map(({ game }, index) => [
+      game.platform, game.language, game.edition,
+    ].filter(Boolean).join(" · ") || `Version ${index + 1}`);
     group.versions = group.versions.map((version, index) => ({ ...version,
       label: labels.filter((label) => label === labels[index]).length > 1
         ? `${labels[index]} · ${version.source?.name || index + 1} (${index + 1})` : labels[index],

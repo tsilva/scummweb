@@ -62,7 +62,18 @@ test("version labels retain real metadata and distinguish identical copies", () 
   const groups = libraryItems([], [imported("one", "Discworld (CD DOS).zip"), imported("two", "Discworld (CD DOS).zip")]);
   assert.equal(groups.length, 1);
   assert.notEqual(groups[0].versions[0].label, groups[0].versions[1].label);
-  assert.match(groups[0].versions[0].label, /Language unknown/);
+  assert.doesNotMatch(groups[0].versions[0].label, /unknown|Local ZIP/i);
+});
+
+test("version labels show known edition details without storage types or guessed languages", () => {
+  const groups = libraryItems([], [imported("feeble", "The Feeble Files (2CD Amiga).zip")]);
+  const version = groups[0].versions[0];
+  assert.equal(version.label, "Amiga");
+  assert.equal(version.game.language, undefined);
+  const english = libraryItems([], [imported("en", "The Feeble Files (Windows, English).zip")]);
+  assert.equal(english[0].versions[0].label, "Windows · English");
+  const unspecified = libraryItems([], [imported("unknown", "The Feeble Files.zip")]);
+  assert.equal(unspecified[0].versions[0].label, "Version 1");
 });
 
 test("defaults prefer a remembered available version then browser language and available alternatives", () => {

@@ -61,6 +61,12 @@ export default function HeroStage({
                 {featuredGame.infoHref && <a className="hero-license" href={featuredGame.infoHref}
                   {...getDialogLinkProps(featuredGame.infoHref)}>Readme / License</a>}
               </div>
+              {notice ? <p className="file-access-help hero-notice" id="hero-file-access-help"
+                role="status" data-tone={notice.tone}>{notice.message}</p>
+                : (sourceVersion?.action.needsAccess || sourceAction?.needsAccess) && <p className="file-access-help" id="hero-file-access-help">
+                Allow access in the browser prompt so ScummWEB can read this game’s ZIP.
+                Your game files stay on your device.
+              </p>}
               <ul className="hero-facts" aria-label="Game information">
                 {metadata.map((value, index) => <li key={`${index}:${value}`}>{value}</li>)}
                 {featuredGame.badge && <li className="hero-edition">{featuredGame.badge}</li>}
@@ -69,22 +75,16 @@ export default function HeroStage({
                 <span className="library-select">
                   <select value={selectedVersionKey} onChange={(event) => onVersionChange(event.target.value)}>
                     {versions.map((version) => <option key={version.key} value={version.key}>
-                      {version.label}{version.source && !["available", "session"].includes(version.status)
-                        ? ` — ${version.status === "checking" ? "Checking files" : version.locate ? version.locateLabel : "Check file access"}` : ""}
+                      {version.label}
                     </option>)}
                   </select>
                   <ChevronDown size={16} aria-hidden="true" />
                 </span>
               </label>}
-              {featuredGame.importRequired && !sourceVersion && !sourceAction && <p className="file-access-help">
+              {!notice && featuredGame.importRequired && !sourceVersion && !sourceAction && <p className="file-access-help">
                 This game is not included due to copyright restrictions. If you own a copy, drop its ZIP onto this page to add it to your library.
               </p>}
-              {(sourceVersion?.action.needsAccess || sourceAction?.needsAccess) && <p className="file-access-help" id="hero-file-access-help">
-                Allow access in the browser prompt so ScummWEB can read this game’s ZIP.
-                Your game files stay on your device.
-              </p>}
             </div>
-            {notice && <p className="hero-notice" role="status">{notice}</p>}
           </div>
         </div>
         {controls}

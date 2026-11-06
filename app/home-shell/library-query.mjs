@@ -1,5 +1,6 @@
 import { getGameFamilyKey, groupGameVersions } from "../game-versions.mjs";
 import { findBundledGame } from "../bundled-game-matching.mjs";
+import { compareGameTitles } from "../../lib/game-title-sort.mjs";
 
 const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
 
@@ -73,6 +74,6 @@ export function queryLibrary(items, query) {
       );
       if (comparison) return comparison * sign;
     }
-    return collator.compare(a.title, b.title) * (field === "name" ? sign : 1) || collator.compare(a.key, b.key);
+    return compareGameTitles(a.title, b.title) * (field === "name" ? sign : 1) || collator.compare(a.key, b.key);
   });
 }

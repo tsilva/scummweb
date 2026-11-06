@@ -1563,9 +1563,14 @@ button.nav-icon-link {
   font: inherit;
 }
 
-.hero-notice {
-  font-size: 0.85rem;
+.hero-notice[data-tone="success"],
+.local-game-status[data-tone="success"] {
   color: var(--accent-strong);
+}
+
+.hero-notice[data-tone="error"],
+.local-game-status[data-tone="error"] {
+  color: #ff8585;
 }
 
 .game-screenshots.content-band {

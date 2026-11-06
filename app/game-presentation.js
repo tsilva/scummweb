@@ -52,7 +52,7 @@ const artByTarget = {
   got: { ...retroGameArtwork["got:got"], year: "1993" },
   ...Object.fromEntries(importedScummGames.map(({ target, studio, year, summary }) => [target, {
     eyebrow: `${studio} Adventure`,
-    genre: "Point-and-click adventure",
+    genre: retroGameArtwork[`scumm:${target}`].genre,
     studio,
     year,
     summary,
@@ -62,7 +62,7 @@ const artByTarget = {
   atlantis: {
     eyebrow: "LucasArts Adventure",
     summary: "Indy and Sophia Hapgood race to find Atlantis in an original globetrotting adventure.",
-    genre: "Point-and-click adventure",
+    genre: retroGameArtwork["scumm:atlantis"].genre,
     studio: "LucasArts",
     year: "1992",
     posterImage: "/launcher/atlantis-cover.webp",
@@ -71,7 +71,7 @@ const artByTarget = {
   indy3: {
     eyebrow: "Lucasfilm Games Adventure",
     summary: "Follow Indy and his father on the search for the Holy Grail in the graphic adventure based on the film.",
-    genre: "Point-and-click adventure",
+    genre: retroGameArtwork["scumm:indy3"].genre,
     studio: "Lucasfilm Games",
     year: "1989",
     posterImage: "/launcher/indy3-cover.webp",
@@ -80,7 +80,7 @@ const artByTarget = {
   sfinx: {
     eyebrow: "L.K. Avalon",
     summary: "Switch between two young adventurers and solve puzzles in this colorful Polish point-and-click comedy.",
-    genre: "Point-and-click adventure",
+    genre: "Comedy adventure",
     studio: "L.K. Avalon",
     year: "1997",
     heroImage: "/launcher/sfinx-scummweb-generated-2026-11-05-r1-hero.webp",
@@ -97,7 +97,7 @@ const artByTarget = {
     mobileSummary: "Explore Mêlée Island as aspiring pirate Guybrush Threepwood in this playable demo.",
     summary:
       "As aspiring pirate Guybrush Threepwood, explore Mêlée Island, question the locals, and find the magic phrase that will get you past a troll. This playable EGA demo remixes scenes and characters from the full adventure into a short story of its own.",
-    genre: "Point-and-click adventure",
+    genre: retroGameArtwork["scumm:monkey"].genre,
     studio: "Lucasfilm Games",
     year: "1990",
     badge: "English DOS EGA demo",
@@ -275,7 +275,7 @@ const defaultArt = {
   genre: "ScummVM Adventure",
   studio: "ScummVM Runtime",
   year: null,
-  badge: "Playable Now",
+  badge: null,
   tag: "Ready to launch",
   screenshots: [],
   tone: "tone-default",

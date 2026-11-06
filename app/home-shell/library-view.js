@@ -67,7 +67,7 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
         </label>
       </div>
       {(open || changed) && <p className="library-results" role="status">Showing {visible.length} of {items.length} games</p>}
-      <p className="local-game-status" role="status">{notice}</p>
+      <p className="local-game-status" role="status" data-tone={notice?.tone}>{notice?.message}</p>
       {visible.length === 0 && <div className="library-empty">
         <p>No games match this genre.</p>
       </div>}
