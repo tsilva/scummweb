@@ -1498,8 +1498,9 @@ button.nav-icon-link {
   position: relative;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: 3.4rem 2.75rem 2.5rem;
-  width: 21rem;
+  grid-template-rows: 3.4rem;
+  grid-auto-rows: auto;
+  width: 26rem;
   max-width: 100%;
   height: auto;
   margin-top: 0;
@@ -1512,11 +1513,6 @@ button.nav-icon-link {
   width: 100%;
   height: 3.4rem;
   min-height: 3.4rem;
-}
-
-.hero-stage-library .hero-browse {
-  grid-column: 2;
-  grid-row: 1;
 }
 
 .hero-stage-library .launch-button:not(.game-unavailable):not(.launch-button-pending) {
@@ -1532,13 +1528,40 @@ button.nav-icon-link {
   visibility: hidden;
 }
 
+.hero-stage-library .hero-initial-actions {
+  display: none;
+  visibility: hidden;
+}
+
+.hero-initial-actions[data-prepared="true"] {
+  display: grid;
+  visibility: visible;
+}
+
+.hero-launch:has(.hero-initial-actions[data-prepared="true"]) > .hero-actions[data-ready="false"] {
+  position: absolute;
+  inset: 0 auto auto 0;
+}
+
+.hero-launch:has(.hero-initial-actions[data-prepared="true"]) > .hero-actions-placeholder {
+  display: none;
+}
+
+.hero-initial-actions [hidden] {
+  display: none !important;
+}
+
+.hero-initial-actions [aria-disabled="true"] {
+  cursor: wait;
+}
+
 .hero-actions-placeholder {
   position: absolute;
   inset: 0 auto auto 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
-  width: 21rem;
+  width: 26rem;
   max-width: 100%;
   height: 3.4rem;
   pointer-events: none;
@@ -1555,15 +1578,9 @@ button.nav-icon-link {
 
 .hero-stage-library .hero-actions > .start-fresh-button {
   position: static;
-  grid-column: 1;
-  grid-row: 3;
-  min-height: 2.5rem;
-  padding: 0.75rem 0;
-  background: transparent;
-  font-size: 0.8rem;
-  font-weight: 500;
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
+  grid-column: 2;
+  grid-row: 1;
+  padding: 0.5rem 0.75rem;
 }
 
 .hero-launch > .file-access-help {
@@ -1573,14 +1590,10 @@ button.nav-icon-link {
   margin: 0;
 }
 
-.hero-launch:has(.start-fresh-button) > .file-access-help {
-  inset-block-start: calc(100% + 2.4rem);
-}
-
 .hero-license {
-  grid-column: 2;
-  grid-row: 3;
-  padding: 0.75rem 0.25rem;
+  grid-column: 1 / -1;
+  justify-self: start;
+  padding: 0.5rem 0;
   font-size: 0.85rem;
   text-decoration: underline;
   text-underline-offset: 0.2em;
@@ -1620,10 +1633,13 @@ button.nav-icon-link {
   max-width: 100%;
 }
 
-/* Keep the edition and chooser slots when their contents are not needed. */
-.hero-edition[data-reserved],
-.hero-version-control[data-reserved] {
+/* Keep the edition badge aligned while unused action rows collapse. */
+.hero-edition[data-reserved] {
   visibility: hidden;
+}
+
+.hero-version-control[data-reserved] {
+  display: none;
 }
 
 .hero-stage-library .hero-carousel-controls {
@@ -1633,7 +1649,6 @@ button.nav-icon-link {
 
 .hero-version-control {
   grid-column: 1 / -1;
-  grid-row: 2;
   display: flex;
   align-items: center;
   width: 100%;

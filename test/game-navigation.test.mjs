@@ -9,6 +9,7 @@ import * as versions from "../app/game-versions.mjs";
 import * as playSources from "../app/game-play-source.mjs";
 import { libraryItems } from "../app/home-shell/library-query.mjs";
 import * as seo from "../lib/seo.mjs";
+import * as initialActions from "../app/home-shell/initial-actions.mjs";
 
 await swc.loadBindings();
 async function component(file, imports, globals = {}) {
@@ -22,6 +23,7 @@ async function component(file, imports, globals = {}) {
     ...globals, module, exports: module.exports, URL,
     require(name) {
       if (name === "react/jsx-runtime") return createRequire(url)(name);
+      if (name === "./initial-actions.mjs") return initialActions;
       return imports[name] ?? {};
     },
   });
@@ -199,9 +201,9 @@ test("mobile hero keeps its initial game through hydration and honors explicit s
       return Hero({ groups, featuredGame, isHomePage, selection: selected });
     }
     const initial = render();
-    const cleanup = effects[1]();
+    const cleanup = effects[2]();
     // Strict Mode replay must not change the initial selection either.
-    cleanup(); effects[1]();
+    cleanup(); effects[2]();
     return { initial, render, get result() { return render(); } };
   }
   const first = await mount();

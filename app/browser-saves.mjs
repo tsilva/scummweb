@@ -1,5 +1,6 @@
 import { getVersionSaveNamespace, readVersionSaveNamespace } from "./game-versions.mjs";
 import { latestPlayerSave, saveIndexKey, saveIndexPrefix, saveRevision, supportsContinue } from "../web-shell/continue-saves.mjs";
+import { readCachedSave } from "./browser-save-cache.mjs";
 
 const saveDirectory = [".local", "share", "scummvm", "saves"];
 const queries = new Map();
@@ -67,9 +68,8 @@ export function getCachedBrowserSave(game) {
   try {
     if (game.engineId && !supportsContinue(game.engineId, game.gameId || game.target, game.extra)) return null;
     const namespace = game.saveVersionId ? game.saveNamespace || readVersionSaveNamespace(game.saveVersionId) : "";
-    if (namespace === null) return null;
-    const { files } = readSaveFiles(namespace);
-    return latestPlayerSave(readIndex(namespace, game), files)?.slot ?? null;
+    const save = readCachedSave(game, window.localStorage, namespace);
+    return save && supportsContinue(save.engineId, save.gameId, save.extra) ? save.slot : null;
   } catch { return null; }
 }
 

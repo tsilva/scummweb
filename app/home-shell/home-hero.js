@@ -8,6 +8,7 @@ import { getHeroPreloadImages } from "./hero-images.mjs";
 import { chooseGameVersion, getGameFamilyKey, readChosenVersion, rememberGameVersion } from "../game-versions.mjs";
 import { buildGameExitHref } from "./hero-selection.mjs";
 import { useGameNavigation } from "./game-navigation";
+import { initialActionState, rememberInitialActions } from "./initial-actions.mjs";
 
 const SLIDE_DURATION_MS = 8000;
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
@@ -38,6 +39,11 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
   }, [currentSlide.id, versionKeys]);
   const actionsReady = !loadingSources && !pendingSourceGroups.includes(currentSlide.id)
     && chosen?.group === currentSlide.id && chosen.versionKeys === versionKeys;
+  const initialActions = initialActionState(currentSlide.id, version, currentSlide.versions);
+  const initialActionsKey = JSON.stringify(initialActions);
+  useLayoutEffect(() => {
+    if (actionsReady) rememberInitialActions(JSON.parse(initialActionsKey));
+  }, [actionsReady, initialActionsKey]);
   const preloadedImages = useRef(new Map());
   const preloadKey = JSON.stringify(isMobile
     ? getHeroPreloadImages([currentSlide], 0) : getHeroPreloadImages(slides, slideIndex));
@@ -185,6 +191,7 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
       ) : null}
       featuredGame={version.game}
       actionsReady={actionsReady}
+      initialActions={initialActions}
       sourceAction={version.source ? undefined : version.action}
       sourceVersion={version.source ? version : undefined}
       versions={currentSlide.versions}

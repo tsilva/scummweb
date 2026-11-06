@@ -126,36 +126,22 @@ export function dispatchSyntheticKeypress(frame, input) {
   const KeyboardEventConstructor = frameWindow?.KeyboardEvent || window.KeyboardEvent;
   focusFrameContent(frame);
 
-  let targets = [];
+  let target;
 
   try {
-    if (frameWindow) {
-      targets.push(frameWindow);
-    }
-
     const frameDocument = frame.contentDocument;
     const canvas = frameDocument?.getElementById("canvas");
-
-    if (canvas) {
-      targets.push(canvas);
-    }
-
-    if (frameDocument?.activeElement) {
-      targets.push(frameDocument.activeElement);
-    }
-
-    if (frameDocument?.body) {
-      targets.push(frameDocument.body);
-    }
-
-    if (frameDocument) {
-      targets.push(frameDocument);
-    }
+    // A single bubbling event reaches the canvas, document and window listeners.
+    // Dispatching separately to those ancestors delivers the same press repeatedly.
+    target = [canvas, frameDocument?.activeElement, frameDocument?.body, frameDocument, frameWindow]
+      .find(canDispatchEvents);
   } catch {
     return false;
   }
 
-  targets = [...new Set(targets)].filter(canDispatchEvents);
+  if (!target) {
+    return false;
+  }
 
   const eventInit = {
     bubbles: true,
@@ -173,22 +159,22 @@ export function dispatchSyntheticKeypress(frame, input) {
   };
 
   for (const eventType of ["keydown", "keypress", "keyup"]) {
-    for (const eventTarget of targets) {
-      const keyboardEvent = new KeyboardEventConstructor(eventType, eventInit);
+    const charCode = eventType === "keypress" && descriptor.key.length === 1
+      ? descriptor.key.charCodeAt(0) : 0;
+    const keyboardEvent = new KeyboardEventConstructor(eventType, { ...eventInit, charCode });
 
-      try {
-        Object.defineProperty(keyboardEvent, "keyCode", {
-          configurable: true,
-          get: () => descriptor.keyCode,
-        });
-        Object.defineProperty(keyboardEvent, "which", {
-          configurable: true,
-          get: () => descriptor.keyCode,
-        });
-      } catch {}
+    try {
+      Object.defineProperty(keyboardEvent, "keyCode", {
+        configurable: true,
+        get: () => descriptor.keyCode,
+      });
+      Object.defineProperty(keyboardEvent, "which", {
+        configurable: true,
+        get: () => descriptor.keyCode,
+      });
+    } catch {}
 
-      eventTarget.dispatchEvent(keyboardEvent);
-    }
+    target.dispatchEvent(keyboardEvent);
   }
 
   return true;
