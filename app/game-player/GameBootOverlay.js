@@ -4,8 +4,6 @@ export default function GameBootOverlay({
   bootStatusText,
   game,
   hasBootFailed,
-  onSkipIntro,
-  showSkipIntroAction,
   showBootOverlay,
   title,
 }) {
@@ -51,17 +49,6 @@ export default function GameBootOverlay({
             <p className="game-route-boot-status-text" data-launch-status="true">
               {bootStatusText}
             </p>
-            {showSkipIntroAction ? (
-              <div className="game-route-boot-actions">
-                <button
-                  className="game-route-skip-intro-button"
-                  onClick={onSkipIntro}
-                  type="button"
-                >
-                  Skip intro
-                </button>
-              </div>
-            ) : null}
           </div>
         </div>
       </div>

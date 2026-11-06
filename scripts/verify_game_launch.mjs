@@ -402,7 +402,7 @@ async function verifySkipIntroButton(page, frame, game, routeUrl) {
 
   const skipIntroButton = page.locator(".game-route-skip-intro-button");
   const exitButton = page.locator(".game-route-control-button.is-exit");
-  const earlySkipIntroState = await page.waitForFunction(
+  const skipIntroState = await page.waitForFunction(
     ({ expectedTarget }) => {
       const iframe = document.querySelector('iframe[data-scummvm-route-frame="true"]');
       const overlay = document.querySelector('[data-launch-overlay="true"]');
@@ -436,17 +436,17 @@ async function verifySkipIntroButton(page, frame, game, routeUrl) {
     }
   );
 
-  const earlySkipIntroSnapshot = await earlySkipIntroState.jsonValue();
+  const skipIntroSnapshot = await skipIntroState.jsonValue();
 
-  if (earlySkipIntroSnapshot?.overlayState !== "visible") {
+  if (skipIntroSnapshot?.overlayState !== "hidden") {
     throw new Error(
-      `Skip intro for ${game.target} did not appear while the launch overlay was still visible: ${JSON.stringify(earlySkipIntroSnapshot)}`
+      `Skip intro for ${game.target} appeared before the loading screen closed: ${JSON.stringify(skipIntroSnapshot)}`
     );
   }
 
-  if (!["launch-detected", "awaiting-frame", "ready"].includes(earlySkipIntroSnapshot?.readyState?.state)) {
+  if (!["launch-detected", "awaiting-frame", "ready"].includes(skipIntroSnapshot?.readyState?.state)) {
     throw new Error(
-      `Skip intro for ${game.target} became visible before launch detection: ${JSON.stringify(earlySkipIntroSnapshot)}`
+      `Skip intro for ${game.target} became visible before launch detection: ${JSON.stringify(skipIntroSnapshot)}`
     );
   }
 
