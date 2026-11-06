@@ -141,9 +141,19 @@ test("multiple versions expose an inline chooser and launch the selected catalog
   assert.equal(slide.props.sourceVersion, undefined);
   const html = renderToStaticMarkup(slide);
   assert.match(html, /<select/);
+  assert.match(html, /class="hero-edition" data-reserved="true" aria-hidden="true"/);
+  assert.doesNotMatch(html, /class="hero-version-control" data-reserved/);
   assert.match(html, />Continue<\/a>/);
   assert.doesNotMatch(html, /aria-haspopup="dialog"/);
   preferredVersion = null;
+});
+
+test("one version shows an edition badge with an empty, non-focusable chooser slot", () => {
+  const label = "DOS · CD · v0.0372";
+  const html = renderToStaticMarkup(slideFor([{ key: "catalog:sky", game, label }]));
+  assert.match(html, /<li class="hero-edition" title="DOS · CD · v0.0372">DOS · CD · v0.0372<\/li>/);
+  assert.match(html, /<div class="hero-version-control" data-reserved="true" aria-hidden="true"><\/div>/);
+  assert.doesNotMatch(html, /<select|hero-version-value/);
 });
 
 test("hero stays actionable while unrelated sources and version preferences restore", () => {

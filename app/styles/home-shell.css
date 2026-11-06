@@ -1557,9 +1557,10 @@ button.nav-icon-link {
 .hero-facts {
   display: flex;
   align-items: center;
+  align-content: flex-start;
   flex-wrap: wrap;
-  gap: 0.5rem 0.8rem;
-  height: 2.8em;
+  gap: 0.25rem 0.8rem;
+  height: 3.75rem;
   margin: 1rem 0 0;
   padding: 0;
   list-style: none;
@@ -1568,10 +1569,42 @@ button.nav-icon-link {
   overflow: hidden;
 }
 
+.hero-facts > li:not(.hero-edition) {
+  display: flex;
+  align-items: center;
+  min-height: 1.75rem;
+}
+
 .hero-facts li + li::before {
   content: "·";
   margin-right: 0.8rem;
   color: var(--ink-soft);
+}
+
+.hero-edition {
+  overflow: hidden;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--ghost-border);
+  border-radius: 0.3rem;
+  color: var(--ink-muted);
+  font-size: 0.75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.hero-facts .hero-edition::before {
+  content: none;
+}
+
+.hero-facts .hero-edition {
+  height: 1.75rem;
+}
+
+/* Keep the badge and chooser slots when their contents are not needed. */
+.hero-edition[data-reserved],
+.hero-version-control[data-reserved] {
+  visibility: hidden;
 }
 
 .hero-stage-library .hero-carousel-controls {
@@ -1585,6 +1618,7 @@ button.nav-icon-link {
   flex: 0 0 clamp(11rem, 20vw, 19rem);
   width: clamp(11rem, 20vw, 19rem);
   min-width: 0;
+  min-height: 2.75rem;
   padding-inline: 0.75rem;
   border-inline: 1px solid rgba(229, 226, 225, 0.3);
   font-size: 0.9rem;
@@ -1625,13 +1659,6 @@ button.nav-icon-link {
 
 .hero-version-control .library-select > svg {
   right: 0.25rem;
-}
-
-.hero-version-value {
-  overflow: hidden;
-  padding: 0.6rem 0.25rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .hero-version-control select:focus-visible,

@@ -30,6 +30,7 @@ export default function HeroStage({
   const metadata = [featuredGame.studio, featuredGame.year, featuredGame.genre].filter(Boolean);
   const selectedVersion = versions.find(({ key }) => key === selectedVersionKey) || versions[0];
   const versionLabel = selectedVersion?.label || featuredGame.badge || "Included version";
+  const hasMultipleVersions = versions.length > 1;
 
   return (
     <div className="game-showcase">
@@ -45,10 +46,16 @@ export default function HeroStage({
           <div className="hero-copy">
             <p className="hero-kicker">{heroKicker}</p>
             <HeroTitle title={heroTitle} fit={!isMobile}>{heroTitle}</HeroTitle>
-            <p className="hero-mobile-facts">{[featuredGame.studio, featuredGame.year].filter(Boolean).join(" · ")}</p>
+            <p className="hero-mobile-facts">
+              <span>{[featuredGame.studio, featuredGame.year].filter(Boolean).join(" · ")}</span>
+              <span className="hero-edition" data-reserved={hasMultipleVersions || undefined}
+                aria-hidden={hasMultipleVersions || undefined} title={versionLabel}>{versionLabel}</span>
+            </p>
             <p className="hero-summary">{isMobile ? featuredGame.mobileSummary || heroSummary : heroSummary}</p>
             <ul className="hero-facts" aria-label="Game information">
               {metadata.map((value, index) => <li key={`${index}:${value}`}>{value}</li>)}
+              <li className="hero-edition" data-reserved={hasMultipleVersions || undefined}
+                aria-hidden={hasMultipleVersions || undefined} title={versionLabel}>{versionLabel}</li>
             </ul>
           </div>
           <div className="hero-launch">
@@ -63,8 +70,9 @@ export default function HeroStage({
                 </button>
               ) : <LaunchButton game={featuredGame} entryPoint={isHomePage ? "hero" : "game_detail"}
                 label="Play" onLaunch={onLaunch} />}
-              <div className="hero-version-control">
-                {versions.length > 1 ? <label className="library-select">
+              <div className="hero-version-control" data-reserved={!hasMultipleVersions || undefined}
+                aria-hidden={!hasMultipleVersions || undefined}>
+                {hasMultipleVersions && <label className="library-select">
                   <span className="hero-version-label">Version</span>
                   <select value={selectedVersionKey} aria-label="Game version" title={versionLabel}
                     onChange={(event) => onVersionChange(event.target.value)}>
@@ -73,7 +81,7 @@ export default function HeroStage({
                     </option>)}
                   </select>
                   <ChevronDown size={16} aria-hidden="true" />
-                </label> : <span className="hero-version-value" title={versionLabel}>{versionLabel}</span>}
+                </label>}
               </div>
               <a className="secondary-button hero-browse" href="#library">{HOME_BROWSE_LABEL}</a>
               {featuredGame.infoHref && <a className="hero-license" href={featuredGame.infoHref}
