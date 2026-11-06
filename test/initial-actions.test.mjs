@@ -57,6 +57,25 @@ test("no indexed save shows Play immediately with no restart link", t => {
   assert.equal(f.browse.href, "#library");
 });
 
+test("first-paint actions reserve the license row for editions without a safe readme link", t => {
+  const f = fixture(t);
+  for (const infoHref of [undefined, "javascript:alert(1)"]) {
+    f.container.dataset.initialActions = JSON.stringify({ ...descriptor(), infoHref });
+    f.license.href = "/launcher/notices/sky.txt";
+    prepareInitialActions(f.container, () => null);
+    assert.equal(f.container.dataset.prepared, "true");
+    assert.equal(f.license.hidden, false);
+    assert.equal(f.license.href, undefined);
+    assert.equal(f.license.attributes["data-reserved"], "true");
+    assert.equal(f.license.attributes["aria-hidden"], "true");
+  }
+  f.container.dataset.initialActions = JSON.stringify(descriptor());
+  prepareInitialActions(f.container, () => null);
+  assert.equal(f.license.attributes["data-reserved"], undefined);
+  assert.equal(f.license.attributes["aria-hidden"], undefined);
+  assert.equal(f.license.href, "https://example.test/launcher/notices/sky.txt");
+});
+
 test("remembered imports use their own cached identity and wait for access validation before clicks", t => {
   const f = fixture(t);
   const imported = { key: "source:floppy", source: { id: "floppy" }, label: "DOS · Floppy",

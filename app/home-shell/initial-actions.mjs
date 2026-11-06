@@ -92,8 +92,14 @@ export function prepareInitialActions(container, readSave) {
     const license = container.querySelector(".hero-license");
     const licenseUrl = state.infoHref && new URL(state.infoHref, window.location.origin);
     if (license) {
-      license.hidden = !licenseUrl || !["http:", "https:"].includes(licenseUrl.protocol);
-      if (!license.hidden) { license.href = licenseUrl.href; license.target = "_blank"; license.rel = "noreferrer"; }
+      license.hidden = false;
+      if (licenseUrl && ["http:", "https:"].includes(licenseUrl.protocol)) {
+        license.removeAttribute("data-reserved"); license.removeAttribute("aria-hidden");
+        license.href = licenseUrl.href; license.target = "_blank"; license.rel = "noreferrer";
+      } else {
+        license.removeAttribute("href");
+        license.setAttribute("data-reserved", "true"); license.setAttribute("aria-hidden", "true");
+      }
     }
     const chooser = container.querySelector(".hero-version-control");
     if (Array.isArray(state.versions) && state.versions.length > 1) {

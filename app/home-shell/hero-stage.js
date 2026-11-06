@@ -106,8 +106,9 @@ export default function HeroStage({
                   <ChevronDown size={16} aria-hidden="true" />
                 </label>}
               </div>
-              {featuredGame.infoHref && <a className="hero-license" href={featuredGame.infoHref}
-                {...getDialogLinkProps(featuredGame.infoHref)}>Readme / License</a>}
+              <a className="hero-license" href={featuredGame.infoHref || undefined}
+                data-reserved={!featuredGame.infoHref || undefined} aria-hidden={!featuredGame.infoHref || undefined}
+                {...(featuredGame.infoHref ? getDialogLinkProps(featuredGame.infoHref) : {})}>Readme / License</a>
             </div>
             <noscript><style>{`.hero-actions[data-ready="false"] { visibility: visible; }
               .hero-actions-placeholder { display: none; }`}</style></noscript>

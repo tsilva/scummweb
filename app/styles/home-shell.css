@@ -1600,6 +1600,10 @@ button.nav-icon-link {
   text-underline-offset: 0.2em;
 }
 
+.hero-license[data-reserved] {
+  visibility: hidden;
+}
+
 .hero-facts {
   display: flex;
   align-items: center;
