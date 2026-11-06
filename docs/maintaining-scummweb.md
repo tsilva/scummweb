@@ -770,6 +770,15 @@ dates and prompts. Original artwork, lettering and brands remain the property
 of their respective creators and rights holders. These revisions use verified immutable R2 objects and responsive delivery
 variants.
 
+Restored box fronts also cover 136 additional recognized games. Together with the
+eleven bundled covers, 147 of the 160 recognized games use generated restorations.
+The remaining thirteen retain their original images where a verified box-front
+reference or an acceptable faithful restoration was unavailable. Revised covers
+preserve original title lettering, artwork and branding; selected printed screenshot
+insets are removed where a clean version preserves the cover's identity. Gameplay
+galleries remain original captures. Source references, prompts and every generated
+revision remain in the registry.
+
 `data/generated-artwork.json` records each generated revision's date, role,
 reference sources, prompt or historical prompt summary, source/export hashes,
 decoded dimensions and readiness. Resizing/encoding alone does not make an

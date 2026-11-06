@@ -4,7 +4,7 @@
     "aliases": [
       "Amazon - Guardians of Eden (DOS)"
     ],
-    "posterImage": "/launcher/retro-access-amazon-poster.webp",
+    "posterImage": "/launcher/amazon-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-access-amazon-shot.webp",
       "/launcher/retro-access-amazon-shot-2.webp",
@@ -12,8 +12,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Amazon_%20Guardians%20of%20Eden.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-access-amazon-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Amazon_%20Guardians%20of%20Eden.png",
+            "sha256": "645e71e4ef77f31070d2df215ad984e560e2ba7ad505e522211bcecf8209730b",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -125,7 +136,7 @@
     "aliases": [
       "Gold Rush! (Amiga)"
     ],
-    "posterImage": "/launcher/retro-agi-goldrush-poster.webp",
+    "posterImage": "/launcher/goldrush-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-agi-goldrush-shot.webp",
       "/launcher/retro-agi-goldrush-shot-2.webp",
@@ -133,8 +144,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gold%20Rush!.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-agi-goldrush-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gold%20Rush!.png",
+            "sha256": "237f976dd1b20fed91cfbd2677ef8a059327b21375e53505bfd4e935758f9b15",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -181,7 +203,7 @@
     "aliases": [
       "King's Quest 2 - Romancing the Throne (Amiga)"
     ],
-    "posterImage": "/launcher/retro-agi-kq2-poster.webp",
+    "posterImage": "/launcher/kq2-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-agi-kq2-shot.webp",
       "/launcher/retro-agi-kq2-shot-2.webp",
@@ -189,8 +211,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20II_%20Romancing%20the%20Throne.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-agi-kq2-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20II_%20Romancing%20the%20Throne.png",
+            "sha256": "09b9c777418b2827bdd08e98771539550e10a3d5a8f929e37696455c28bbc5ab",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -241,7 +274,7 @@
     "aliases": [
       "King's Quest 3 - To Heir is Human (Amiga)"
     ],
-    "posterImage": "/launcher/retro-agi-kq3-poster.webp",
+    "posterImage": "/launcher/kq3-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-agi-kq3-shot.webp",
       "/launcher/retro-agi-kq3-shot-2.webp",
@@ -249,8 +282,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20III_%20To%20Heir%20is%20Human.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-agi-kq3-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20III_%20To%20Heir%20is%20Human.png",
+            "sha256": "bc81dc8c1351cd11d7b70ec05d49102245e4f73c3e0ff2b632b0cb567bbc5f1a",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -297,7 +341,7 @@
     "aliases": [
       "Manhunter 1 - New York (Amiga)"
     ],
-    "posterImage": "/launcher/retro-agi-mh1-poster.webp",
+    "posterImage": "/launcher/mh1-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-agi-mh1-shot.webp",
       "/launcher/retro-agi-mh1-shot-2.webp",
@@ -305,8 +349,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Manhunter%201_%20New%20York.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-agi-mh1-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Manhunter%201_%20New%20York.png",
+            "sha256": "d557be921f8c6c8e7d69152ab02edd9519fe02cec2b9ab4b547a920a403c5114",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -353,7 +408,7 @@
     "aliases": [
       "Manhunter 2 - San Francisco (Amiga)"
     ],
-    "posterImage": "/launcher/retro-agi-mh2-poster.webp",
+    "posterImage": "/launcher/mh2-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-agi-mh2-shot.webp",
       "/launcher/retro-agi-mh2-shot-2.webp",
@@ -361,8 +416,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Manhunter%202_%20San%20Francisco.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-agi-mh2-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Manhunter%202_%20San%20Francisco.png",
+            "sha256": "dee0225f98695af15f7eac58a549d33623d0a15a026db1231759c9454f1874a3",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -470,7 +536,7 @@
     "aliases": [
       "Police Quest 1 - In Pursuit of the Death Angel (Amiga)"
     ],
-    "posterImage": "/launcher/retro-agi-pq1-poster.webp",
+    "posterImage": "/launcher/pq1-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-agi-pq1-shot.webp",
       "/launcher/retro-agi-pq1-shot-2.webp",
@@ -478,8 +544,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest_%20In%20Pursuit%20of%20the%20Death%20Angel.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-agi-pq1-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest_%20In%20Pursuit%20of%20the%20Death%20Angel.png",
+            "sha256": "acd31798d69cc4e1af4b767a3499285f1cd5dff4be1acf4493598379fd1b3342",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -528,7 +605,7 @@
     "aliases": [
       "Space Quest 1 - The Sarien Encounter (Amiga)"
     ],
-    "posterImage": "/launcher/retro-agi-sq1-poster.webp",
+    "posterImage": "/launcher/sq1-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-agi-sq1-shot.webp",
       "/launcher/retro-agi-sq1-shot-2.webp",
@@ -536,8 +613,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest_%20Chapter%20I%20-%20The%20Sarien%20Encounter%20(DOS_English).png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration-with-screenshot-removal",
+        "references": [
+          {
+            "asset": "/launcher/retro-agi-sq1-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest_%20Chapter%20I%20-%20The%20Sarien%20Encounter%20(DOS_English).png",
+            "sha256": "f2dcfc53bd40f773b3eae8699153692fe677c1bcdd61f2ec8d605fd15a9c072a",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -585,7 +673,7 @@
       "Space Quest 2 - Vohaul's Revenge (Amiga)",
       "Space Quest 2 - Vohaul's Revenge (Floppy DOS)"
     ],
-    "posterImage": "/launcher/retro-agi-sq2-poster.webp",
+    "posterImage": "/launcher/sq2-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-agi-sq2-shot.webp",
       "/launcher/retro-agi-sq2-shot-2.webp",
@@ -593,8 +681,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20II_%20Chapter%20II%20-%20Vohaul's%20Revenge%20(2.0F%201989-01-05%203.5__DOS_English).png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-agi-sq2-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20II_%20Chapter%20II%20-%20Vohaul's%20Revenge%20(2.0F%201989-01-05%203.5__DOS_English).png",
+            "sha256": "df7120907a127cc3b268283ff96b7f1020a00b741c318aa4081b07f1557b202f",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -647,7 +746,7 @@
     "aliases": [
       "Troll's Tale (Floppy DOS)"
     ],
-    "posterImage": "/launcher/retro-agi-troll-poster.webp",
+    "posterImage": "/launcher/troll-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-agi-troll-shot.webp",
       "/launcher/retro-agi-troll-shot-2.webp",
@@ -655,8 +754,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Trolls%20Tale.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-agi-troll-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Trolls%20Tale.png",
+            "sha256": "161b839fd746bacf3e24e2007f17f6bbc83f484dace43ab8889e8355c3f8378a",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -761,7 +871,7 @@
     "aliases": [
       "Elvira 1 - Mistress of the Dark (Amiga)"
     ],
-    "posterImage": "/launcher/retro-agos-elvira1-poster.webp",
+    "posterImage": "/launcher/elvira1-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-agos-elvira1-shot.webp",
       "/launcher/retro-agos-elvira1-shot-2.webp",
@@ -769,8 +879,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Elvira_%20Mistress%20of%20the%20Dark.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-agos-elvira1-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Elvira_%20Mistress%20of%20the%20Dark.png",
+            "sha256": "d293c519c84c06d0751a99a7bdcddd7722320e3973f8b1e08769a3e8b72008c8",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -817,7 +938,7 @@
     "aliases": [
       "Elvira 2 - The Jaws of Cerberus (Amiga)"
     ],
-    "posterImage": "/launcher/retro-agos-elvira2-poster.webp",
+    "posterImage": "/launcher/elvira2-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-agos-elvira2-shot.webp",
       "/launcher/retro-agos-elvira2-shot-2.webp",
@@ -825,8 +946,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Elvira%20II%20-%20The%20Jaws%20of%20Cerberus.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-agos-elvira2-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Elvira%20II%20-%20The%20Jaws%20of%20Cerberus.png",
+            "sha256": "1847bb937772e1b4b52a56d98eaa872f615f8b3e852ab3ff9638eff4849b72e3",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -874,7 +1006,7 @@
       "The Feeble Files (2CD Amiga)",
       "The Feeble Files (4CD Windows)"
     ],
-    "posterImage": "/launcher/retro-agos-feeble-poster.webp",
+    "posterImage": "/launcher/feeble-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-agos-feeble-shot.webp",
       "/launcher/retro-agos-feeble-shot-2.webp",
@@ -882,8 +1014,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Feeble%20Files.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-agos-feeble-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Feeble%20Files.png",
+            "sha256": "c769f43d0aeb36510da5df8cd2185cb51a7e35127ea026a32ed86c0528a270d6",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -930,7 +1073,7 @@
     "aliases": [
       "Simon the Sorcerer Puzzle Pack (CD Windows)"
     ],
-    "posterImage": "/launcher/retro-agos-jumble-poster.webp",
+    "posterImage": "/launcher/jumble-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-agos-jumble-shot.webp",
       "/launcher/retro-agos-jumble-shot-2.webp",
@@ -938,8 +1081,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Simon%20the%20Sorcerer%20Puzzle%20Pack.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-agos-jumble-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Simon%20the%20Sorcerer%20Puzzle%20Pack.png",
+            "sha256": "a037336dd55d2ab0536e364e3c7e09f27f15425ff989bab0666b37327ef91080",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -986,7 +1140,7 @@
     "aliases": [
       "Personal Nightmare (Amiga)"
     ],
-    "posterImage": "/launcher/retro-agos-pn-poster.webp",
+    "posterImage": "/launcher/pn-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-agos-pn-shot.webp",
       "/launcher/retro-agos-pn-shot-2.webp",
@@ -994,8 +1148,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Personal%20Nightmare.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-agos-pn-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Personal%20Nightmare.png",
+            "sha256": "90d3ffa7fb0af4c76377df47d7a964e3fae60a5e82dce7f1af1deffe5eb5116b",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -1045,7 +1210,7 @@
     "aliases": [
       "Simon the Sorcerer 1 (CD Windows)"
     ],
-    "posterImage": "/launcher/retro-agos-simon1-poster.webp",
+    "posterImage": "/launcher/simon1-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-agos-simon1-shot.webp",
       "/launcher/retro-agos-simon1-shot-2.webp",
@@ -1053,8 +1218,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Simon%20the%20Sorcerer.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-agos-simon1-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Simon%20the%20Sorcerer.png",
+            "sha256": "d2204c6c783bd347ade573f1b147fbf2e2a82d04e573c51ea347bdf5bddcdb19",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -1103,7 +1279,7 @@
       "Simon the Sorcerer 2 (Amiga CD32)",
       "Simon the Sorcerer 2 (CD Windows)"
     ],
-    "posterImage": "/launcher/retro-agos-simon2-poster.webp",
+    "posterImage": "/launcher/simon2-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-agos-simon2-shot.webp",
       "/launcher/retro-agos-simon2-shot-2.webp",
@@ -1111,8 +1287,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Simon%20the%20Sorcerer%202.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-agos-simon2-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Simon%20the%20Sorcerer%202.png",
+            "sha256": "1115ef95fa3a0a7487d82698f4eaef9f0d17cd4d875b45a1f5da08d6f0a45c02",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -1159,7 +1346,7 @@
     "aliases": [
       "Waxworks (Amiga)"
     ],
-    "posterImage": "/launcher/retro-agos-waxworks-poster.webp",
+    "posterImage": "/launcher/waxworks-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-agos-waxworks-shot.webp",
       "/launcher/retro-agos-waxworks-shot-2.webp",
@@ -1167,8 +1354,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/WaxWorks.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-agos-waxworks-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/WaxWorks.png",
+            "sha256": "47f561fdba28c0c6b6e8d4b7d0d996ce6b059a129ec91a8fdd1b3902e240d623",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -1215,7 +1413,7 @@
     "aliases": [
       "Beavis and Butt-head in Virtual Stupidity (CD Windows)"
     ],
-    "posterImage": "/launcher/retro-bbvs-bbvs-poster.webp",
+    "posterImage": "/launcher/bbvs-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-bbvs-bbvs-shot.webp",
       "/launcher/retro-bbvs-bbvs-shot-2.webp",
@@ -1223,8 +1421,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Beavis%20and%20Butt-Head%20in%20Virtual%20Stupidity.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-bbvs-bbvs-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Beavis%20and%20Butt-Head%20in%20Virtual%20Stupidity.png",
+            "sha256": "e86fe270770778d11d3300475ca5bf884a18b22393205d2ed618f096b2f84db8",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -1329,7 +1538,7 @@
     "aliases": [
       "Future Wars (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-cine-fw-poster.webp",
+    "posterImage": "/launcher/fw-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-cine-fw-shot.webp",
       "/launcher/retro-cine-fw-shot-2.webp",
@@ -1337,8 +1546,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Future%20Wars_%20Adventures%20in%20Time.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-cine-fw-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Future%20Wars_%20Adventures%20in%20Time.png",
+            "sha256": "ee75cba1b8478315022fc43388b0a72b9f258bc02e268dd4a2a3de3f8730c72a",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -1385,7 +1605,7 @@
     "aliases": [
       "Darby the Dragon (CD Windows)"
     ],
-    "posterImage": "/launcher/retro-composer-darby-poster.webp",
+    "posterImage": "/launcher/darby-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-composer-darby-shot.webp",
       "/launcher/retro-composer-darby-shot-2.webp",
@@ -1393,8 +1613,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Darby%20the%20Dragon.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-composer-darby-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Darby%20the%20Dragon.png",
+            "sha256": "b981bb62d945bfd5b4164be8c1efde24612c47fffb8d62c91697e2ff4f78b375",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -1441,7 +1672,7 @@
     "aliases": [
       "Gregory and the Hot Air Balloon (CD Windows)"
     ],
-    "posterImage": "/launcher/retro-composer-gregory-poster.webp",
+    "posterImage": "/launcher/gregory-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-composer-gregory-shot.webp",
       "/launcher/retro-composer-gregory-shot-2.webp",
@@ -1449,8 +1680,25 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gregory%20and%20the%20Hot%20Air%20Balloon.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "kind": "box-scan",
+            "url": "https://www.macintoshrepository.org/5111-gregory-and-the-hot-air-balloon",
+            "sha256": "7afe441a30c61bc8941110f2ff309b14792b8681c0dfb49ba78356431c34b152",
+            "credit": "Original Broderbund Junior Range game box front, archived by Macintosh Repository; original artwork and trademarks belong to their respective creators and rights holders."
+          },
+          {
+            "asset": "/launcher/retro-composer-gregory-poster.webp",
+            "kind": "manual-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gregory%20and%20the%20Hot%20Air%20Balloon.png",
+            "sha256": "9f949bae0306066131c724dc6c67acc1718afba4602812d57299985a7d35f277",
+            "credit": "US jewel-case User’s Guide cover archived by Libretro, preserved as provenance context only; not the box-front generation input."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -1497,7 +1745,7 @@
     "aliases": [
       "Magic Tales - Liam Finds a Story (CD Windows)"
     ],
-    "posterImage": "/launcher/retro-composer-liam-poster.webp",
+    "posterImage": "/launcher/liam-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-composer-liam-shot.webp",
       "/launcher/retro-composer-liam-shot-2.webp",
@@ -1505,8 +1753,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Magic%20Tales_%20Liam%20Finds%20a%20Story.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-composer-liam-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Magic%20Tales_%20Liam%20Finds%20a%20Story.png",
+            "sha256": "e2bfebb8342b0dbf4d2c7b1d431d14e80f0ca2bc9cf8b4deeaa5d8d0f513d886",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -1553,7 +1812,7 @@
     "aliases": [
       "Magic Tales - The Princess and the Crab (CD Windows)"
     ],
-    "posterImage": "/launcher/retro-composer-princess-poster.webp",
+    "posterImage": "/launcher/princess-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-composer-princess-shot.webp",
       "/launcher/retro-composer-princess-shot-2.webp",
@@ -1561,8 +1820,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Magic%20Tales_%20The%20Princess%20and%20the%20Crab.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-composer-princess-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Magic%20Tales_%20The%20Princess%20and%20the%20Crab.png",
+            "sha256": "7c52d9ea77831e375426c592061df791d32fe7f64aa3638d0a544b001f0b4e58",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -1609,7 +1879,7 @@
     "aliases": [
       "Magic Tales - Sleeping Cub's Test of Courage (CD Windows)"
     ],
-    "posterImage": "/launcher/retro-composer-sleepingcub-poster.webp",
+    "posterImage": "/launcher/sleepingcub-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-composer-sleepingcub-shot.webp",
       "/launcher/retro-composer-sleepingcub-shot-2.webp",
@@ -1617,8 +1887,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Magic%20Tales_%20Sleeping%20Cubs%20Test%20of%20Courage.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-composer-sleepingcub-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Magic%20Tales_%20Sleeping%20Cubs%20Test%20of%20Courage.png",
+            "sha256": "c25a900f8c8ddc3d9af4907bb6ff299d8999c047d00dbe4bb340bb54b67c76b1",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -1666,7 +1947,7 @@
       "Cruise for a Corpse (Atari ST)",
       "Cruise for a Corpse (VGA DOS)"
     ],
-    "posterImage": "/launcher/retro-cruise-cruise-poster.webp",
+    "posterImage": "/launcher/cruise-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-cruise-cruise-shot.webp",
       "/launcher/retro-cruise-cruise-shot-2.webp",
@@ -1674,8 +1955,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Cruise%20for%20a%20Corpse.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-cruise-cruise-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Cruise%20for%20a%20Corpse.png",
+            "sha256": "9797382f1b006521ec01f92a3484ad04b220bda045a6a5cef6a946ea63b7c9d6",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -1722,7 +2014,7 @@
     "aliases": [
       "Dragon History (Floppy DOS)"
     ],
-    "posterImage": "/launcher/retro-draci-draci-poster.webp",
+    "posterImage": "/launcher/draci-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-draci-draci-shot.webp",
       "/launcher/retro-draci-draci-shot-2.webp",
@@ -1730,8 +2022,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Dra%c4%8d%c3%ad%20Historie.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-draci-draci-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Dra%c4%8d%c3%ad%20Historie.png",
+            "sha256": "bbfdeaf34d3f9476b4c77e0e694c295d339178346e8d7513f611bbd567d27789",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -1860,7 +2163,7 @@
     "aliases": [
       "Gnap (CD Windows)"
     ],
-    "posterImage": "/launcher/retro-gnap-gnap-poster.webp",
+    "posterImage": "/launcher/gnap-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-gnap-gnap-shot.webp",
       "/launcher/retro-gnap-gnap-shot-2.webp",
@@ -1868,8 +2171,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/U.F.O.s.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-gnap-gnap-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/U.F.O.s.png",
+            "sha256": "ed3fe918ec4572d2e1f83550a2083aadedc5c52f230890b2b6a9910ced62611c",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -1916,7 +2230,7 @@
     "aliases": [
       "Bargon Attack (Amiga)"
     ],
-    "posterImage": "/launcher/retro-gob-bargon-poster.webp",
+    "posterImage": "/launcher/bargon-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-gob-bargon-shot.webp",
       "/launcher/retro-gob-bargon-shot-2.webp",
@@ -1924,8 +2238,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Bargon%20Attack.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-bargon-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Bargon%20Attack.png",
+            "sha256": "a75e9530464fba91978213e61110ef9c70ec6c76566a39b7f32c8bf02365cae8",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -1978,7 +2303,7 @@
     "aliases": [
       "Fascination (Amiga)"
     ],
-    "posterImage": "/launcher/retro-gob-fascination-poster.webp",
+    "posterImage": "/launcher/fascination-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-gob-fascination-shot.webp",
       "/launcher/retro-gob-fascination-shot-2.webp",
@@ -1986,8 +2311,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Fascination.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-fascination-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Fascination.png",
+            "sha256": "c90f7bc06697e05fc85599185d1627ea3d925e1541b3c7b9fa73113f5a51a881",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -2034,7 +2370,7 @@
     "aliases": [
       "Geisha (Amiga)"
     ],
-    "posterImage": "/launcher/retro-gob-geisha-poster.webp",
+    "posterImage": "/launcher/geisha-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-gob-geisha-shot.webp",
       "/launcher/retro-gob-geisha-shot-2.webp",
@@ -2042,8 +2378,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Geisha.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration-with-screenshot-removal",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-geisha-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Geisha.png",
+            "sha256": "2a95691373083e46e3852f2b4df716f710f84ceb9b4905257f1067e43405e67d",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -2090,7 +2437,7 @@
     "aliases": [
       "Gobliiins 1 (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-gob-gob1-poster.webp",
+    "posterImage": "/launcher/gob1-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-gob-gob1-shot.webp",
       "/launcher/retro-gob-gob1-shot-2.webp",
@@ -2098,8 +2445,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gobliiins.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-gob1-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gobliiins.png",
+            "sha256": "fae46ee4446bdf3156e93d8d978ed534c9d51ae6a5e300d62fe84c25e8f8217e",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -2146,7 +2504,7 @@
     "aliases": [
       "Gobliins 2 (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-gob-gob2-poster.webp",
+    "posterImage": "/launcher/gob2-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-gob-gob2-shot.webp",
       "/launcher/retro-gob-gob2-shot-2.webp",
@@ -2154,8 +2512,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gobliins%202.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-gob2-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Gobliins%202.png",
+            "sha256": "16466e349adf955f6b54f2a148b7d95cdc07a5c04ea941a2c0f7f76e363b88e2",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -2202,7 +2571,7 @@
     "aliases": [
       "Goblins 3 (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-gob-gob3-poster.webp",
+    "posterImage": "/launcher/gob3-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-gob-gob3-shot.webp",
       "/launcher/retro-gob-gob3-shot-2.webp",
@@ -2210,8 +2579,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Goblins%20Quest%203.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-gob3-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Goblins%20Quest%203.png",
+            "sha256": "ee36075859dbe40bf2149ca034d7950f41deb51d6bb53af71c43a0ed7ee77022",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -2258,7 +2638,7 @@
     "aliases": [
       "Lost in Time (CD DOS, Multilanguage)"
     ],
-    "posterImage": "/launcher/retro-gob-lit-poster.webp",
+    "posterImage": "/launcher/lit-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-gob-lit-shot.webp",
       "/launcher/retro-gob-lit-shot-2.webp",
@@ -2266,8 +2646,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Lost%20in%20Time.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-lit-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Lost%20in%20Time.png",
+            "sha256": "fb32c4e7437bb2743ad5e1e771cf75becd7a3b36a939217b932e5fa9dc7670ab",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -2314,7 +2705,7 @@
     "aliases": [
       "Once Upon A Time - Little Red Riding Hood (Floppy DOS)"
     ],
-    "posterImage": "/launcher/retro-gob-littlered-poster.webp",
+    "posterImage": "/launcher/littlered-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-gob-littlered-shot.webp",
       "/launcher/retro-gob-littlered-shot-2.webp",
@@ -2322,8 +2713,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Once%20Upon%20a%20Time_%20Little%20Red%20Riding%20Hood.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-littlered-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Once%20Upon%20a%20Time_%20Little%20Red%20Riding%20Hood.png",
+            "sha256": "2f1a79c6d3a90c168b7ab423621e80b1147505f4ed0f24215a1fa16a707eba36",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -2370,7 +2772,7 @@
     "aliases": [
       "Urban Runner (Windows, CD)"
     ],
-    "posterImage": "/launcher/retro-gob-urban-poster.webp",
+    "posterImage": "/launcher/urban-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-gob-urban-shot.webp",
       "/launcher/retro-gob-urban-shot-2.webp",
@@ -2378,8 +2780,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Urban%20Runner.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-urban-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Urban%20Runner.png",
+            "sha256": "93248cc983991424f2e7c4a580b851d2cf874e4aa76758826d79520dc2d0b751",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -2427,7 +2840,7 @@
     "aliases": [
       "Ween The Prophecy (Amiga)"
     ],
-    "posterImage": "/launcher/retro-gob-ween-poster.webp",
+    "posterImage": "/launcher/ween-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-gob-ween-shot.webp",
       "/launcher/retro-gob-ween-shot-2.webp",
@@ -2435,8 +2848,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Ween_%20The%20Prophecy.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-ween-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Ween_%20The%20Prophecy.png",
+            "sha256": "f7922dad3facf57eb002d911a389586233524b832c0601b97e618d3523eb67d7",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -2485,7 +2909,7 @@
     "aliases": [
       "The Bizarre Adventures of Woodruff and the Schnibble of Azimuth (CD DOS, Multilanguage)"
     ],
-    "posterImage": "/launcher/retro-gob-woodruff-poster.webp",
+    "posterImage": "/launcher/woodruff-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-gob-woodruff-shot.webp",
       "/launcher/retro-gob-woodruff-shot-2.webp",
@@ -2493,8 +2917,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Bizarre%20Adventures%20of%20Woodruff%20and%20the%20Schnibble.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-gob-woodruff-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Bizarre%20Adventures%20of%20Woodruff%20and%20the%20Schnibble.png",
+            "sha256": "6cb2161dd29e6debcc3a6202625a2e7a4ea04bebaf91d0b856cb813c77a29bc1",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -2541,7 +2976,7 @@
     "aliases": [
       "The 7th Guest (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-groovie-t7g-poster.webp",
+    "posterImage": "/launcher/t7g-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-groovie-t7g-shot.webp",
       "/launcher/retro-groovie-t7g-shot-2.webp",
@@ -2549,8 +2984,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%207th%20Guest.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-groovie-t7g-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%207th%20Guest.png",
+            "sha256": "1c07b2f488102e6856ce968ac7e52042a0f89898a157e7fb5c268a4c97062837",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -2597,7 +3043,7 @@
     "aliases": [
       "Hopkins FBI (CD Windows)"
     ],
-    "posterImage": "/launcher/retro-hopkins-hopkins-poster.webp",
+    "posterImage": "/launcher/hopkins-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-hopkins-hopkins-shot.webp",
       "/launcher/retro-hopkins-hopkins-shot-2.webp",
@@ -2605,8 +3051,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hopkins%20FBI.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-hopkins-hopkins-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hopkins%20FBI.png",
+            "sha256": "a42cf1200ab1a7a2c626a3c2d36fda81bd9373947ddd1b82574458416f4c0a57",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -2720,7 +3177,7 @@
     "aliases": [
       "Hugo 2 - Whodunit (Floppy DOS)"
     ],
-    "posterImage": "/launcher/retro-hugo-hugo2-poster.webp",
+    "posterImage": "/launcher/hugo2-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-hugo-hugo2-shot.webp",
       "/launcher/retro-hugo-hugo2-shot-2.webp",
@@ -2728,9 +3185,20 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://images.launchbox-app.com/0864bc8c-f83a-49b7-a2a0-5e46edc6ccab.jpg",
-        "page": "https://gamesdb.launchbox-app.com/games/images/24616-hugo-ii-whodunit"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration-with-screenshot-removal",
+        "references": [
+          {
+            "asset": "/launcher/retro-hugo-hugo2-poster.webp",
+            "kind": "box-scan",
+            "url": "https://images.launchbox-app.com/0864bc8c-f83a-49b7-a2a0-5e46edc6ccab.jpg",
+            "page": "https://gamesdb.launchbox-app.com/games/images/24616-hugo-ii-whodunit",
+            "sha256": "47b4bddd05b2513c9c8bf67f2d4236be8ddabfe9177f6860d63d4fb7270aabfe",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -2843,7 +3311,7 @@
     "aliases": [
       "Eye of the Beholder (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-kyra-eob-poster.webp",
+    "posterImage": "/launcher/eob-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-kyra-eob-shot.webp",
       "/launcher/retro-kyra-eob-shot-2.webp",
@@ -2851,8 +3319,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Eye%20of%20the%20Beholder.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-kyra-eob-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Eye%20of%20the%20Beholder.png",
+            "sha256": "ed72695b59efa2f152833991d4e96020ac2fad6651333f3923614e84e0f3d49e",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -2899,7 +3378,7 @@
     "aliases": [
       "Eye of the Beholder II - The Legend of Darkmoon (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-kyra-eob2-poster.webp",
+    "posterImage": "/launcher/eob2-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-kyra-eob2-shot.webp",
       "/launcher/retro-kyra-eob2-shot-2.webp",
@@ -2907,8 +3386,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Eye%20of%20the%20Beholder%20II%20-%20The%20Legend%20of%20Darkmoon.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-kyra-eob2-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Eye%20of%20the%20Beholder%20II%20-%20The%20Legend%20of%20Darkmoon.png",
+            "sha256": "7fcd2e8a3d85d2e3d2688c64195027097000c45266ffa32a6d150ab5c431421f",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -2956,7 +3446,7 @@
       "The Legend of Kyrandia 1 (Amiga)",
       "The Legend of Kyrandia 1 (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-kyra-kyra1-poster.webp",
+    "posterImage": "/launcher/kyra1-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-kyra-kyra1-shot.webp",
       "/launcher/retro-kyra-kyra1-shot-2.webp",
@@ -2964,8 +3454,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Legend%20of%20Kyrandia,%20The.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-kyra-kyra1-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Legend%20of%20Kyrandia,%20The.png",
+            "sha256": "c2199b5b2a9a4dd05e6df1ea923ac513b7f393bfd5222416630b2152136b6eab",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -3018,7 +3519,7 @@
     "aliases": [
       "The Legend of Kyrandia 2 The Hand of Fate (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-kyra-kyra2-poster.webp",
+    "posterImage": "/launcher/kyra2-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-kyra-kyra2-shot.webp",
       "/launcher/retro-kyra-kyra2-shot-2.webp",
@@ -3026,8 +3527,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Legend%20of%20Kyrandia,%20The_%20The%20Hand%20of%20Fate.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-kyra-kyra2-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Legend%20of%20Kyrandia,%20The_%20The%20Hand%20of%20Fate.png",
+            "sha256": "0da0c240e1ca1cce0674e3cff280496ab319bc9b791c92835d5787f053b57d7c",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -3081,7 +3593,7 @@
     "aliases": [
       "The Legend of Kyrandia 3 Malcolm's Revenge (CD DOS, Multilanguage)"
     ],
-    "posterImage": "/launcher/retro-kyra-kyra3-poster.webp",
+    "posterImage": "/launcher/kyra3-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-kyra-kyra3-shot.webp",
       "/launcher/retro-kyra-kyra3-shot-2.webp",
@@ -3089,8 +3601,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Legend%20of%20Kyrandia,%20The_%20Malcolm's%20Revenge.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-kyra-kyra3-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Legend%20of%20Kyrandia,%20The_%20Malcolm's%20Revenge.png",
+            "sha256": "88c912f42872672d12d35545b426ed995154d29892b1917a334f96c29b5e3dd3",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -3137,7 +3660,7 @@
     "aliases": [
       "Lands of Lore - The Throne of Chaos (CD DOS, Multilanguage)"
     ],
-    "posterImage": "/launcher/retro-kyra-lol-poster.webp",
+    "posterImage": "/launcher/lol-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-kyra-lol-shot.webp",
       "/launcher/retro-kyra-lol-shot-2.webp",
@@ -3145,8 +3668,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Lands%20of%20Lore_%20The%20Throne%20of%20Chaos.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-kyra-lol-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Lands%20of%20Lore_%20The%20Throne%20of%20Chaos.png",
+            "sha256": "39050b8b17d0c55ede0f08d52b45b48a4c81112fa6b271a1b894a69119a1d892",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -3194,7 +3728,7 @@
       "Labyrinth of Time (CD DOS)",
       "The Labyrinth of Time (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-lab-lab-poster.webp",
+    "posterImage": "/launcher/lab-scummweb-generated-2026-11-06-r2-cover.webp",
     "screenshots": [
       "/launcher/retro-lab-lab-shot.webp",
       "/launcher/retro-lab-lab-shot-2.webp",
@@ -3202,8 +3736,23 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Labyrinth%20of%20Time.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-lab-lab-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Labyrinth%20of%20Time.png",
+            "sha256": "64e167198059f31394145d52e09764bbbfb8afd1dca8a2c268e6ec3c226ffd31",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          },
+          {
+            "asset": "/launcher/lab-scummweb-generated-2026-11-06-r1-cover.webp",
+            "kind": "generated-correction-target"
+          }
+        ]
       },
       "screenshots": [
         {
@@ -3335,7 +3884,7 @@
     "aliases": [
       "Leather Goddesses of Phobos 2 (Floppy DOS)"
     ],
-    "posterImage": "/launcher/retro-made-lgop2-poster.webp",
+    "posterImage": "/launcher/lgop2-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-made-lgop2-shot.webp",
       "/launcher/retro-made-lgop2-shot-2.webp",
@@ -3343,8 +3892,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leather%20Goddesses%20of%20Phobos%202.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-made-lgop2-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leather%20Goddesses%20of%20Phobos%202.png",
+            "sha256": "c81aa29019609f8c7f3a64ea5b8e6cd59c2283905ac0850687faab28373d48cc",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -3394,7 +3954,7 @@
     "aliases": [
       "Rodney's Fun Screen (Windows)"
     ],
-    "posterImage": "/launcher/retro-made-rodney-poster.webp",
+    "posterImage": "/launcher/rodney-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-made-rodney-shot.webp",
       "/launcher/retro-made-rodney-shot-2.webp",
@@ -3402,8 +3962,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Rodneys%20Funscreen.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-made-rodney-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Rodneys%20Funscreen.png",
+            "sha256": "4b67bc6984b8bf16c78a0c0fc4d381f28fefa421caa941f226f6d0fe98055384",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -3450,7 +4021,7 @@
     "aliases": [
       "Return to Zork (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-made-rtz-poster.webp",
+    "posterImage": "/launcher/rtz-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-made-rtz-shot.webp",
       "/launcher/retro-made-rtz-shot-2.webp",
@@ -3458,8 +4029,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Return%20to%20Zork.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-made-rtz-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Return%20to%20Zork.png",
+            "sha256": "ea809a84d5945b725a4f9bbd2cf08f60c8cb421cec27aa7f026068b2de5ecc9f",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -3506,7 +4088,7 @@
     "aliases": [
       "Rex Nebular And The Cosmic Gender Bender (Floppy DOS)"
     ],
-    "posterImage": "/launcher/retro-mads-nebular-poster.webp",
+    "posterImage": "/launcher/nebular-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-mads-nebular-shot.webp",
       "/launcher/retro-mads-nebular-shot-2.webp",
@@ -3514,8 +4096,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Rex%20Nebular%20and%20the%20Cosmic%20Gender%20Bender.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-mads-nebular-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Rex%20Nebular%20and%20the%20Cosmic%20Gender%20Bender.png",
+            "sha256": "07a487353b7ae05471ca090977e8815984d1c9690e20f294eb00ae3cb52f9014",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -3563,7 +4156,7 @@
       "Myst (CD Windows)",
       "Myst Masterpiece (DVD Windows)"
     ],
-    "posterImage": "/launcher/retro-mohawk-myst-poster.webp",
+    "posterImage": "/launcher/myst-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-mohawk-myst-shot.webp",
       "/launcher/retro-mohawk-myst-shot-2.webp",
@@ -3571,8 +4164,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Myst.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-mohawk-myst-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Myst.png",
+            "sha256": "da8c76a4e8d0debc2dfe1acdb590fd803bcdc24fedf2d7cf6db528ea9ee0d35b",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -3619,7 +4223,7 @@
     "aliases": [
       "Riven (DVD Windows)"
     ],
-    "posterImage": "/launcher/retro-mohawk-riven-poster.webp",
+    "posterImage": "/launcher/riven-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-mohawk-riven-shot.webp",
       "/launcher/retro-mohawk-riven-shot-2.webp",
@@ -3627,8 +4231,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Riven_%20The%20Sequel%20to%20Myst.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-mohawk-riven-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Riven_%20The%20Sequel%20to%20Myst.png",
+            "sha256": "a631d80310e8906acdf17430f8610769eb39624f3d647810bfc0e58a363afedc",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -3675,7 +4290,7 @@
     "aliases": [
       "The Neverhood (CD, Windows)"
     ],
-    "posterImage": "/launcher/retro-neverhood-neverhood-poster.webp",
+    "posterImage": "/launcher/neverhood-scummweb-generated-2026-11-06-r2-cover.webp",
     "screenshots": [
       "/launcher/retro-neverhood-neverhood-shot.webp",
       "/launcher/retro-neverhood-neverhood-shot-2.webp",
@@ -3683,8 +4298,23 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Neverhood.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-neverhood-neverhood-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Neverhood.png",
+            "sha256": "9932a396aff5449562d0c6c577e092af321e301b86edcfa96fa6d69c385fbe6e",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          },
+          {
+            "asset": "/launcher/neverhood-scummweb-generated-2026-11-06-r1-cover.webp",
+            "kind": "generated-correction-target"
+          }
+        ]
       },
       "screenshots": [
         {
@@ -3731,7 +4361,7 @@
     "aliases": [
       "Full Pipe (CD, Windows)"
     ],
-    "posterImage": "/launcher/retro-ngi-fullpipe-poster.webp",
+    "posterImage": "/launcher/fullpipe-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-ngi-fullpipe-shot.webp",
       "/launcher/retro-ngi-fullpipe-shot-2.webp",
@@ -3739,8 +4369,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Full%20Pipe.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-ngi-fullpipe-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Full%20Pipe.png",
+            "sha256": "b30691b9241aacaa9bacb7e99180713f1bb4e0f566b44b41f4e3621129e54c31",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -3787,7 +4428,7 @@
     "aliases": [
       "The Big Red Adventure (DOS, Multilanguage)"
     ],
-    "posterImage": "/launcher/retro-parallaction-bra-poster.webp",
+    "posterImage": "/launcher/bra-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-parallaction-bra-shot.webp",
       "/launcher/retro-parallaction-bra-shot-2.webp",
@@ -3795,8 +4436,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Big%20Red%20Adventure.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-parallaction-bra-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Big%20Red%20Adventure.png",
+            "sha256": "304e97561c7813cf8a4383d910892547041b399729d0271a4b93f4741c558f75",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -3890,7 +4542,7 @@
     "aliases": [
       "The Journeyman Project - Pegasus Prime (CD Mac)"
     ],
-    "posterImage": "/launcher/retro-pegasus-pegasus-poster.webp",
+    "posterImage": "/launcher/pegasus-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-pegasus-pegasus-shot.webp",
       "/launcher/retro-pegasus-pegasus-shot-2.webp",
@@ -3898,8 +4550,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Journeyman%20Project_%20Pegasus%20Prime.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-pegasus-pegasus-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Journeyman%20Project_%20Pegasus%20Prime.png",
+            "sha256": "556f5f714ed15a555527d9dd5e7013e522741b8f011bde352a81ceccc506f915",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -4044,7 +4707,7 @@
     "aliases": [
       "I Have No Mouth and I Must Scream (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-saga-ihnm-poster.webp",
+    "posterImage": "/launcher/ihnm-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-saga-ihnm-shot.webp",
       "/launcher/retro-saga-ihnm-shot-2.webp",
@@ -4052,8 +4715,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/I%20Have%20No%20Mouth,%20and%20I%20Must%20Scream.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-saga-ihnm-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/I%20Have%20No%20Mouth,%20and%20I%20Must%20Scream.png",
+            "sha256": "9d06c33874db507b5420a51974bef3b8a6b80f465cb86b9a0f5c147a57c3b176",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -4100,7 +4774,7 @@
     "aliases": [
       "Inherit the Earth - Quest for the Orb (CD Windows-Linux-DOS)"
     ],
-    "posterImage": "/launcher/retro-saga-ite-poster.webp",
+    "posterImage": "/launcher/ite-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-saga-ite-shot.webp",
       "/launcher/retro-saga-ite-shot-2.webp",
@@ -4108,8 +4782,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Inherit%20the%20Earth_%20Quest%20for%20the%20Orb.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-saga-ite-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Inherit%20the%20Earth_%20Quest%20for%20the%20Orb.png",
+            "sha256": "211bed784ca3d409ae881a99bdaec32bb75bf5fc139e8782be225b0099fa7547",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -4156,7 +4841,7 @@
     "aliases": [
       "Conquests of Camelot (Amiga)"
     ],
-    "posterImage": "/launcher/retro-sci-camelot-poster.webp",
+    "posterImage": "/launcher/camelot-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-camelot-shot.webp",
       "/launcher/retro-sci-camelot-shot-2.webp",
@@ -4164,8 +4849,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Conquests%20of%20Camelot.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-camelot-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Conquests%20of%20Camelot.png",
+            "sha256": "4e71666d539aad9dc39407dd4f5837cd3e5583edd47717c174c2a6f8572df064",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -4213,7 +4909,7 @@
       "Castle of Dr",
       "Castle of Dr. Brain"
     ],
-    "posterImage": "/launcher/retro-sci-castlebrain-poster.webp",
+    "posterImage": "/launcher/castlebrain-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-castlebrain-shot.webp",
       "/launcher/retro-sci-castlebrain-shot-2.webp",
@@ -4221,8 +4917,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Castle%20of%20Dr.%20Brain.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-castlebrain-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Castle%20of%20Dr.%20Brain.png",
+            "sha256": "388b0fa64bba3f34f54935631cc26e2dbd0d94fd4bd75da0fd7ca1b646164464",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -4270,7 +4977,7 @@
       "EcoQuest 1 - The Search for Cetus (CD DOS)",
       "EcoQuest 1 - The Search for Cetus (Floppy DOS)"
     ],
-    "posterImage": "/launcher/retro-sci-ecoquest-poster.webp",
+    "posterImage": "/launcher/ecoquest-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-ecoquest-shot.webp",
       "/launcher/retro-sci-ecoquest-shot-2.webp",
@@ -4278,8 +4985,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/EcoQuest_%20The%20Search%20for%20Cetus.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-ecoquest-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/EcoQuest_%20The%20Search%20for%20Cetus.png",
+            "sha256": "86408b31521887cd400c5540c637b35a7f72dcccdb2f506dad27a5adfc403a31",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -4326,7 +5044,7 @@
     "aliases": [
       "EcoQuest 2 - Lost Secret of the Rainforest (Floppy DOS)"
     ],
-    "posterImage": "/launcher/retro-sci-ecoquest2-poster.webp",
+    "posterImage": "/launcher/ecoquest2-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-ecoquest2-shot.webp",
       "/launcher/retro-sci-ecoquest2-shot-2.webp",
@@ -4334,8 +5052,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/EcoQuest%202_%20Lost%20Secret%20of%20the%20Rainforest.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-ecoquest2-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/EcoQuest%202_%20Lost%20Secret%20of%20the%20Rainforest.png",
+            "sha256": "32456b43bd3224363007a6b75fa7afe4f2d8163583ee96375091928e8d2425fb",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -4382,7 +5111,7 @@
     "aliases": [
       "Freddy Pharkas - Frontier Pharmacist (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-sci-freddypharkas-poster.webp",
+    "posterImage": "/launcher/freddypharkas-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-freddypharkas-shot.webp",
       "/launcher/retro-sci-freddypharkas-shot-2.webp",
@@ -4390,8 +5119,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Freddy%20Pharkas_%20Frontier%20Pharmacist.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-freddypharkas-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Freddy%20Pharkas_%20Frontier%20Pharmacist.png",
+            "sha256": "835786f035db8ee17fe2b131cd8fa5281392626252be7b898d63efbae3b8cb4e",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -4551,7 +5291,7 @@
     "aliases": [
       "Gabriel Knight 2 The Beast Within (CD, DOS)"
     ],
-    "posterImage": "/launcher/retro-sci-gk2-poster.webp",
+    "posterImage": "/launcher/gk2-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-gk2-shot.webp",
       "/launcher/retro-sci-gk2-shot-2.webp",
@@ -4559,8 +5299,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Beast%20Within_%20A%20Gabriel%20Knight%20Mystery.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-gk2-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Beast%20Within_%20A%20Gabriel%20Knight%20Mystery.png",
+            "sha256": "6e942213ee6b2ba289cfa84bc2b2c48a811194a8f867652d606bd4aa1448319d",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -4607,7 +5358,7 @@
     "aliases": [
       "Codename Iceman (Amiga)"
     ],
-    "posterImage": "/launcher/retro-sci-iceman-poster.webp",
+    "posterImage": "/launcher/iceman-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-iceman-shot.webp",
       "/launcher/retro-sci-iceman-shot-2.webp",
@@ -4615,8 +5366,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Codename_%20ICEMAN.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-iceman-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Codename_%20ICEMAN.png",
+            "sha256": "82f0b3a264ea802b36d1275d2508a1173e17126497daaa333e85e38effd9a7f5",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -4664,7 +5426,7 @@
       "Island of Dr",
       "The Island of Dr. Brain"
     ],
-    "posterImage": "/launcher/retro-sci-islandbrain-poster.webp",
+    "posterImage": "/launcher/islandbrain-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-islandbrain-shot.webp",
       "/launcher/retro-sci-islandbrain-shot-2.webp",
@@ -4672,8 +5434,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Island%20of%20Dr.%20Brain.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-islandbrain-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Island%20of%20Dr.%20Brain.png",
+            "sha256": "4b9b4e20539fa4a44dfa42ceb469d34e871e8a33d48ff9c27eaf648441627509",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -4726,7 +5499,7 @@
     "aliases": [
       "Jones In The Fast Lane (CD Dos)"
     ],
-    "posterImage": "/launcher/retro-sci-jones-poster.webp",
+    "posterImage": "/launcher/jones-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-jones-shot.webp",
       "/launcher/retro-sci-jones-shot-2.webp",
@@ -4734,8 +5507,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Jones%20in%20the%20Fast%20Lane.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-jones-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Jones%20in%20the%20Fast%20Lane.png",
+            "sha256": "de998c16abcab5badd45ab21ddec14b88be46842ec9046544fa0c44a881b7cd6",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -4782,7 +5566,7 @@
     "aliases": [
       "King's Quest 1 - Quest for the Crown (Floppy DOS VGA Remake)"
     ],
-    "posterImage": "/launcher/retro-sci-kq1sci-poster.webp",
+    "posterImage": "/launcher/kq1sci-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-kq1sci-shot.webp",
       "/launcher/retro-sci-kq1sci-shot-2.webp",
@@ -4790,8 +5574,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20I_%20Quest%20for%20the%20Crown%20(SCI_DOS_English).png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-kq1sci-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20I_%20Quest%20for%20the%20Crown%20(SCI_DOS_English).png",
+            "sha256": "0d0424cf26fefab482c301e98d2eca6055a745feda6334fa3b1ee8c0a4bcc0a2",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -4839,7 +5634,7 @@
     "aliases": [
       "King's Quest 4 - The Perils of Rosella (Amiga)"
     ],
-    "posterImage": "/launcher/retro-sci-kq4sci-poster.webp",
+    "posterImage": "/launcher/kq4sci-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-kq4sci-shot.webp",
       "/launcher/retro-sci-kq4sci-shot-2.webp",
@@ -4847,8 +5642,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20IV_%20The%20Perils%20of%20Rosella.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-kq4sci-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20IV_%20The%20Perils%20of%20Rosella.png",
+            "sha256": "1a65a758109f1fb1bad48ca070dc2018b160d60d5ba848bb346f625c1a130b68",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -4896,7 +5702,7 @@
     "aliases": [
       "King's Quest 5 - Absence Makes the Heart go Yonder (Amiga)"
     ],
-    "posterImage": "/launcher/retro-sci-kq5-poster.webp",
+    "posterImage": "/launcher/kq5-scummweb-generated-2026-11-06-r2-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-kq5-shot.webp",
       "/launcher/retro-sci-kq5-shot-2.webp",
@@ -4904,8 +5710,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20V_%20Absence%20Makes%20the%20Heart%20Go%20Yonder!.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-kq5-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20V_%20Absence%20Makes%20the%20Heart%20Go%20Yonder!.png",
+            "sha256": "1275a8828a1fc876ffd20ad09befcaa3aa531d21204a333a764b9cd05834509f",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -4952,7 +5769,7 @@
     "aliases": [
       "King's Quest 6 - Heir Today, Gone Tomorrow (CD DOS, Windows)"
     ],
-    "posterImage": "/launcher/retro-sci-kq6-poster.webp",
+    "posterImage": "/launcher/kq6-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-kq6-shot.webp",
       "/launcher/retro-sci-kq6-shot-2.webp",
@@ -4960,8 +5777,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20VI_%20Heir%20Today,%20Gone%20Tomorrow.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-kq6-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20VI_%20Heir%20Today,%20Gone%20Tomorrow.png",
+            "sha256": "e99e1bbe201eb9b8bb506442015607cf9b430a51cae03fd75ea923f12c03f12a",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -5008,7 +5836,7 @@
     "aliases": [
       "King's Quest 7 - The Princeless Bride (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-sci-kq7-poster.webp",
+    "posterImage": "/launcher/kq7-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-kq7-shot.webp",
       "/launcher/retro-sci-kq7-shot-2.webp",
@@ -5016,8 +5844,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20VII_%20The%20Princeless%20Bride.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-kq7-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest%20VII_%20The%20Princeless%20Bride.png",
+            "sha256": "bb67b5133db739be0d5325f01192cecd82ae3276e551de55fce4fe5f02e1103c",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -5064,7 +5903,7 @@
     "aliases": [
       "Laura Bow 1 - The Colonels Bequest (Amiga)"
     ],
-    "posterImage": "/launcher/retro-sci-laurabow-poster.webp",
+    "posterImage": "/launcher/laurabow-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-laurabow-shot.webp",
       "/launcher/retro-sci-laurabow-shot-2.webp",
@@ -5072,8 +5911,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Laura%20Bow_%20The%20Colonel's%20Bequest.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-laurabow-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Laura%20Bow_%20The%20Colonel's%20Bequest.png",
+            "sha256": "c174ae141a5d9b3ea8c670b173ae0169407a48d106f0a8346bd95db6900c4abf",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -5120,7 +5970,7 @@
     "aliases": [
       "Laura Bow 2 - The Dagger of Amon-Ra (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-sci-laurabow2-poster.webp",
+    "posterImage": "/launcher/laurabow2-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-laurabow2-shot.webp",
       "/launcher/retro-sci-laurabow2-shot-2.webp",
@@ -5128,8 +5978,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Laura%20Bow%202_%20The%20Dagger%20of%20Amon%20Ra.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-laurabow2-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Laura%20Bow%202_%20The%20Dagger%20of%20Amon%20Ra.png",
+            "sha256": "7f6f6ed09b721bd9894df46dfaa5ecb97577eec3ac57b03458792d0ba76e7ad8",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -5176,7 +6037,7 @@
     "aliases": [
       "Lighthouse (CD Windows)"
     ],
-    "posterImage": "/launcher/retro-sci-lighthouse-poster.webp",
+    "posterImage": "/launcher/lighthouse-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-lighthouse-shot.webp",
       "/launcher/retro-sci-lighthouse-shot-2.webp",
@@ -5184,8 +6045,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Lighthouse_%20The%20Dark%20Being.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-lighthouse-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Lighthouse_%20The%20Dark%20Being.png",
+            "sha256": "fa50df01ab2e5c6d0cf4b801ce808fdc5ed4f04882cb592b58ee7de537f2898d",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -5233,7 +6105,7 @@
     "aliases": [
       "Conquests of the Longbow - The Legend of Robin Hood (Amiga)"
     ],
-    "posterImage": "/launcher/retro-sci-longbow-poster.webp",
+    "posterImage": "/launcher/longbow-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-longbow-shot.webp",
       "/launcher/retro-sci-longbow-shot-2.webp",
@@ -5241,8 +6113,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Conquests%20of%20the%20Longbow_%20The%20Legend%20of%20Robin%20Hood.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-longbow-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Conquests%20of%20the%20Longbow_%20The%20Legend%20of%20Robin%20Hood.png",
+            "sha256": "3637149c569b19abeee7d50bdea97476494abb9d93fa6a1058d27691136f9ec6",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -5290,7 +6173,7 @@
     "aliases": [
       "Leisure Suit Larry in the Land of the Lounge Lizards (Amiga VGA Remake)"
     ],
-    "posterImage": "/launcher/retro-sci-lsl1sci-remake-poster.webp",
+    "posterImage": "/launcher/lsl1sci-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-lsl1sci-shot.webp",
       "/launcher/retro-sci-lsl1sci-shot-2.webp",
@@ -5298,8 +6181,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%20in%20the%20Land%20of%20the%20Lounge%20Lizards%20(SCI_DOS_English).png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-lsl1sci-remake-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%20in%20the%20Land%20of%20the%20Lounge%20Lizards%20(SCI_DOS_English).png",
+            "sha256": "cdc8c801ed3b992829888d641bbdf9c2b0d410fef3a4ace4707c45659bd36819",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -5348,7 +6242,7 @@
     "aliases": [
       "Leisure Suit Larry 2 - Goes looking for Love (In Several Wrong Places) (Amiga)"
     ],
-    "posterImage": "/launcher/retro-sci-lsl2-poster.webp",
+    "posterImage": "/launcher/lsl2-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-lsl2-shot.webp",
       "/launcher/retro-sci-lsl2-shot-2.webp",
@@ -5356,8 +6250,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%202_%20Goes%20Looking%20for%20Love%20(in%20Several%20Wrong%20Places)%20(DOS_English).png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-lsl2-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%202_%20Goes%20Looking%20for%20Love%20(in%20Several%20Wrong%20Places)%20(DOS_English).png",
+            "sha256": "c0901a817be9d4f5cad2d3f70601e14c6ee36bf1cbb8730bb5fc7c64a3457e94",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -5405,7 +6310,7 @@
     "aliases": [
       "Leisure Suit Larry 3 - Passionate Patti in Pursuit of the Pulsating Pectorals (Amiga)"
     ],
-    "posterImage": "/launcher/retro-sci-lsl3-poster.webp",
+    "posterImage": "/launcher/lsl3-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-lsl3-shot.webp",
       "/launcher/retro-sci-lsl3-shot-2.webp",
@@ -5413,8 +6318,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%203_%20Passionate%20Patti%20in%20Pursuit%20of%20the%20Pulsating%20Pectorals.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-lsl3-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%203_%20Passionate%20Patti%20in%20Pursuit%20of%20the%20Pulsating%20Pectorals.png",
+            "sha256": "2f0d852ab71ad76a5f87993951724255bf51d77ee8d0cc82e0f4d3ceff831bc2",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -5462,7 +6378,7 @@
     "aliases": [
       "Leisure Suit Larry 5 - Passionate Patty Does a Little Undercover Work (Amiga)"
     ],
-    "posterImage": "/launcher/retro-sci-lsl5-poster.webp",
+    "posterImage": "/launcher/lsl5-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-lsl5-shot.webp",
       "/launcher/retro-sci-lsl5-shot-2.webp",
@@ -5470,8 +6386,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%205_%20Passionate%20Patty%20Does%20a%20Little%20Undercover%20Work.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-lsl5-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%205_%20Passionate%20Patty%20Does%20a%20Little%20Undercover%20Work.png",
+            "sha256": "863df7795bc222e0bce6340e2bea071f4d4258fe713dcac130d06085577013b6",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -5524,7 +6451,7 @@
     "aliases": [
       "Leisure Suit Larry 6 - Shape Up or Slip Out (CD DOS High Res)"
     ],
-    "posterImage": "/launcher/retro-sci-lsl6hires-poster.webp",
+    "posterImage": "/launcher/lsl6hires-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-lsl6hires-shot.webp",
       "/launcher/retro-sci-lsl6hires-shot-2.webp",
@@ -5532,8 +6459,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%206_%20Shape%20Up%20or%20Slip%20Out!.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-lsl6hires-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%206_%20Shape%20Up%20or%20Slip%20Out!.png",
+            "sha256": "ff99fd6acbad1bf7260d1f2b228cec5d54c3f5c896302c1cd3dfb59a8d7d9d26",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -5580,7 +6518,7 @@
     "aliases": [
       "Leisure Suit Larry 7 - Love for Sail (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-sci-lsl7-poster.webp",
+    "posterImage": "/launcher/lsl7-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-lsl7-shot.webp",
       "/launcher/retro-sci-lsl7-shot-2.webp",
@@ -5588,8 +6526,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%207_%20Love%20for%20Sail!%20(DOS_English).png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-lsl7-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Leisure%20Suit%20Larry%207_%20Love%20for%20Sail!%20(DOS_English).png",
+            "sha256": "0e5a2dcce58f52cdaa6e05d1afdaf69e26766bc23b005519f82276fafd821c17",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -5693,7 +6642,7 @@
     "aliases": [
       "Peppers Adventures In Time (Floppy DOS)"
     ],
-    "posterImage": "/launcher/retro-sci-pepper-poster.webp",
+    "posterImage": "/launcher/pepper-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-pepper-shot.webp",
       "/launcher/retro-sci-pepper-shot-2.webp",
@@ -5701,8 +6650,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Peppers%20Adventures%20in%20Time.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-pepper-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Peppers%20Adventures%20in%20Time.png",
+            "sha256": "cd3dc5a4b947ba1160c4a0596bf2019a7a652185f83c7a27d86dd2d24a3efa30",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -5749,7 +6709,7 @@
     "aliases": [
       "Phantasmagoria (CD, Windows)"
     ],
-    "posterImage": "/launcher/retro-sci-phantasmagoria-poster.webp",
+    "posterImage": "/launcher/phantasmagoria-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-phantasmagoria-shot.webp",
       "/launcher/retro-sci-phantasmagoria-shot-2.webp",
@@ -5757,8 +6717,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Phantasmagoria.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-phantasmagoria-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Phantasmagoria.png",
+            "sha256": "c88faed37e47722484cc5bc507db1d94125db94a633daf2d4c8b0759bdba95ba",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -5805,7 +6776,7 @@
     "aliases": [
       "Phantasmagoria 2 (CD, Windows)"
     ],
-    "posterImage": "/launcher/retro-sci-phantasmagoria2-poster.webp",
+    "posterImage": "/launcher/phantasmagoria2-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-phantasmagoria2-shot.webp",
       "/launcher/retro-sci-phantasmagoria2-shot-2.webp",
@@ -5813,8 +6784,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Phantasmagoria%202_%20A%20Puzzle%20of%20Flesh%20(Windows_English).png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-phantasmagoria2-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Phantasmagoria%202_%20A%20Puzzle%20of%20Flesh%20(Windows_English).png",
+            "sha256": "4ddea5dc714630a37620f860bdae67df49ffbe05ccd008e4aa7d3e55cb6d55a3",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -5865,7 +6847,7 @@
     "aliases": [
       "Police Quest 1 - In Pursuit of the Death Angel (Floppy DOS VGA Remake)"
     ],
-    "posterImage": "/launcher/retro-sci-pq1sci-poster.webp",
+    "posterImage": "/launcher/pq1sci-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-pq1sci-shot.webp",
       "/launcher/retro-sci-pq1sci-shot-2.webp",
@@ -5896,8 +6878,19 @@
         }
       ],
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest_%20In%20Pursuit%20of%20the%20Death%20Angel%20(SCI_DOS_English).png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-pq1sci-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest_%20In%20Pursuit%20of%20the%20Death%20Angel%20(SCI_DOS_English).png",
+            "sha256": "077306e5db9fb0c36080caf46c7b3889c851ac079648a4ffad866c0fb8f1ac5e",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "hero": {
         "kind": "generated-hero",
@@ -5922,7 +6915,7 @@
     "aliases": [
       "Police Quest 2 - The Vengeance (Amiga)"
     ],
-    "posterImage": "/launcher/retro-sci-pq2-poster.webp",
+    "posterImage": "/launcher/pq2-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-pq2-shot.webp",
       "/launcher/retro-sci-pq2-shot-2.webp",
@@ -5930,8 +6923,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest%20II_%20The%20Vengeance.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-pq2-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest%20II_%20The%20Vengeance.png",
+            "sha256": "a338f318052d2c4d77b33dac8f58240a238310aaf444c39118a6cc8990c2bcf9",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -5978,7 +6982,7 @@
     "aliases": [
       "Police Quest 3 - The Kindred (Amiga)"
     ],
-    "posterImage": "/launcher/retro-sci-pq3-poster.webp",
+    "posterImage": "/launcher/pq3-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-pq3-shot.webp",
       "/launcher/retro-sci-pq3-shot-2.webp",
@@ -5986,8 +6990,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest%20III_%20The%20Kindred.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-pq3-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest%20III_%20The%20Kindred.png",
+            "sha256": "306df0b58c0ee98552465067040a1bf5889388ba5e0d1b3941228d85bc28353b",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -6034,7 +7049,7 @@
     "aliases": [
       "Police Quest 4 - Open Season (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-sci-pq4-poster.webp",
+    "posterImage": "/launcher/pq4-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-pq4-shot.webp",
       "/launcher/retro-sci-pq4-shot-2.webp",
@@ -6042,8 +7057,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest%204_%20Open%20Season.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-pq4-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Police%20Quest%204_%20Open%20Season.png",
+            "sha256": "24146b5f484abef687e2273466275607eb0ff3a1c51c52e10e1a4c87c8da1239",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -6099,7 +7125,7 @@
       "Hero Quest So You Want To Be A Hero (Amiga)",
       "Hero Quest So You Want To Be A Hero (Floppy DOS)"
     ],
-    "posterImage": "/launcher/retro-sci-qfg1-original-poster.webp",
+    "posterImage": "/launcher/qfg1-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-qfg1-shot.webp",
       "/launcher/retro-sci-qfg1-shot-2.webp",
@@ -6107,8 +7133,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Quest%20for%20Glory%201.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-qfg1-original-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Quest%20for%20Glory%201.png",
+            "sha256": "82ea218c23d547474f9b1814fe6dd2aea4dd21d51c5d984f5d89cc32d9ccb6ca",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -6156,7 +7193,7 @@
     "aliases": [
       "Quest for Glory 1 - So You Want to be a Hero (Floppy DOS VGA Remake)"
     ],
-    "posterImage": "/launcher/retro-sci-qfg1vga-poster.webp",
+    "posterImage": "/launcher/qfg1vga-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-qfg1vga-shot.webp",
       "/launcher/retro-sci-qfg1vga-shot-2.webp",
@@ -6187,9 +7224,20 @@
         }
       ],
       "poster": {
-        "kind": "box-scan",
-        "url": "https://images.launchbox-app.com/a91f59a9-d9cc-4de2-a1ce-247563859cfd.jpg",
-        "page": "https://gamesdb.launchbox-app.com/games/images/93222-quest-for-glory-i-so-you-want-to-be-a-hero-vga-remake"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-qfg1vga-poster.webp",
+            "kind": "box-scan",
+            "url": "https://images.launchbox-app.com/a91f59a9-d9cc-4de2-a1ce-247563859cfd.jpg",
+            "page": "https://gamesdb.launchbox-app.com/games/images/93222-quest-for-glory-i-so-you-want-to-be-a-hero-vga-remake",
+            "sha256": "2051bc2604152442dd7be146a6e9c6a31a89f5cc74d0b14c5071f9ef2f011f79",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "hero": {
         "kind": "generated-hero",
@@ -6214,7 +7262,7 @@
     "aliases": [
       "Quest for Glory 2 - Trial by Fire (Amiga)"
     ],
-    "posterImage": "/launcher/retro-sci-qfg2-poster.webp",
+    "posterImage": "/launcher/qfg2-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-qfg2-shot.webp",
       "/launcher/retro-sci-qfg2-shot-2.webp",
@@ -6222,8 +7270,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Quest%20for%20Glory%20II_%20Trial%20by%20Fire%20(DOS_English).png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-qfg2-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Quest%20for%20Glory%20II_%20Trial%20by%20Fire%20(DOS_English).png",
+            "sha256": "9f87d082cf78372a3bdd35e5946b50c36b63ab48b882fd3d02dd127868f02c48",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -6270,7 +7329,7 @@
     "aliases": [
       "Quest for Glory 3 - The Wages of War (Floppy DOS)"
     ],
-    "posterImage": "/launcher/retro-sci-qfg3-poster.webp",
+    "posterImage": "/launcher/qfg3-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-qfg3-shot.webp",
       "/launcher/retro-sci-qfg3-shot-2.webp",
@@ -6278,8 +7337,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Quest%20for%20Glory%20III_%20Wages%20of%20War.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-qfg3-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Quest%20for%20Glory%20III_%20Wages%20of%20War.png",
+            "sha256": "276e21afa0e194705fde8ab47846444e8bd53f30801824c5fa39adfe4d7b4769",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -6326,7 +7396,7 @@
     "aliases": [
       "RAMA (CD Windows)"
     ],
-    "posterImage": "/launcher/retro-sci-rama-poster.webp",
+    "posterImage": "/launcher/rama-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-rama-shot.webp",
       "/launcher/retro-sci-rama-shot-2.webp",
@@ -6334,8 +7404,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Rama.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-rama-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Rama.png",
+            "sha256": "40f6f2604184c45608a7df7b06d81a9e26be47f658cc392a0970f2732ff55799",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -6382,7 +7463,7 @@
     "aliases": [
       "Shivers (CD, Windows)"
     ],
-    "posterImage": "/launcher/retro-sci-shivers-poster.webp",
+    "posterImage": "/launcher/shivers-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-shivers-shot.webp",
       "/launcher/retro-sci-shivers-shot-2.webp",
@@ -6390,8 +7471,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Shivers.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-shivers-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Shivers.png",
+            "sha256": "a93ecfb090ee429f8f946e79ff9a735d74bc5bae8805fb1d6501043467c5375c",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -6436,7 +7528,7 @@
     "aliases": [
       "Space Quest 1 - The Sarien Encounter (Floppy DOS VGA Remake)"
     ],
-    "posterImage": "/launcher/retro-sci-sq1sci-poster.webp",
+    "posterImage": "/launcher/sq1sci-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-sq1sci-shot.webp",
       "/launcher/retro-sci-sq1sci-shot-2.webp",
@@ -6467,8 +7559,19 @@
         }
       ],
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20I_%20Roger%20Wilco%20in%20the%20Sarien%20Encounter%20(SCI_DOS_English).png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-sq1sci-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20I_%20Roger%20Wilco%20in%20the%20Sarien%20Encounter%20(SCI_DOS_English).png",
+            "sha256": "f99f914fd03c799aacb6b2f0c29ec7eedebfa770515b3ced682607b9846ec34b",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "hero": {
         "kind": "generated-hero",
@@ -6493,7 +7596,7 @@
     "aliases": [
       "Space Quest 3 - The Pirates of Pestulon (Amiga)"
     ],
-    "posterImage": "/launcher/retro-sci-sq3-poster.webp",
+    "posterImage": "/launcher/sq3-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-sq3-shot.webp",
       "/launcher/retro-sci-sq3-shot-2.webp",
@@ -6501,8 +7604,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20III_%20The%20Pirates%20of%20Pestulon.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-sq3-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20III_%20The%20Pirates%20of%20Pestulon.png",
+            "sha256": "aa0c8c7824e51b056f1b0293a992b92bcf1a77b7ca98344ae920ac798b4bc3a7",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -6549,7 +7663,7 @@
     "aliases": [
       "Space Quest 4 - Roger Wilco and the Time Rippers (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-sci-sq4-poster.webp",
+    "posterImage": "/launcher/sq4-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-sq4-shot.webp",
       "/launcher/retro-sci-sq4-shot-2.webp",
@@ -6557,8 +7671,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20IV_%20Roger%20Wilco%20and%20the%20Time%20Rippers.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-sq4-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20IV_%20Roger%20Wilco%20and%20the%20Time%20Rippers.png",
+            "sha256": "d73ff6a3f55e76a3c04b7560d352b51cf96535e81adcd1c11394a226e4ccb92c",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -6605,7 +7730,7 @@
     "aliases": [
       "Space Quest 5 - The Next Mutation (Floppy DOS)"
     ],
-    "posterImage": "/launcher/retro-sci-sq5-poster.webp",
+    "posterImage": "/launcher/sq5-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-sq5-shot.webp",
       "/launcher/retro-sci-sq5-shot-2.webp",
@@ -6613,8 +7738,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20V_%20The%20Next%20Mutation.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-sq5-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%20V_%20The%20Next%20Mutation.png",
+            "sha256": "f959b21d28c26a5dbcc0f69fe8fdb5e742c7c652166a8a15958cb9a7f97798e1",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -6661,7 +7797,7 @@
     "aliases": [
       "Space Quest 6 - The Spinal Frontier (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-sci-sq6-poster.webp",
+    "posterImage": "/launcher/sq6-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-sq6-shot.webp",
       "/launcher/retro-sci-sq6-shot-2.webp",
@@ -6669,8 +7805,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%206_%20The%20Spinal%20Frontier.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-sq6-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Space%20Quest%206_%20The%20Spinal%20Frontier.png",
+            "sha256": "ce7be4a4ab2a352c98ac17a54dcf33dae06798f18b7bda9e7661c86839d69225",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -6723,7 +7870,7 @@
     "aliases": [
       "Torins Passage (CD Windows)"
     ],
-    "posterImage": "/launcher/retro-sci-torin-poster.webp",
+    "posterImage": "/launcher/torin-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sci-torin-shot.webp",
       "/launcher/retro-sci-torin-shot-2.webp",
@@ -6731,8 +7878,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Torin's%20Passage.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sci-torin-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Torin's%20Passage.png",
+            "sha256": "5252f3e8a8724cce7a3a67823bd1936f92b98ab4d51a6bcd7950319d29b1d185",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -6779,7 +7937,7 @@
     "aliases": [
       "Indiana Jones and the Fate of Atlantis (CD DOS)"
     ],
-    "posterImage": "/launcher/atlantis-cover.webp",
+    "posterImage": "/launcher/atlantis-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/atlantis-shot.webp",
       "/launcher/atlantis-shot-2.webp",
@@ -6817,6 +7975,20 @@
             "sha256": "f293965042d7fcfc713511d434b9227d1b2cbc02e0726dc2c610a58495746bf9"
           }
         ]
+      },
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/atlantis-cover.webp",
+            "kind": "box-scan",
+            "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+            "sha256": "f293965042d7fcfc713511d434b9227d1b2cbc02e0726dc2c610a58495746bf9"
+          }
+        ]
       }
     },
     "heroImage": "/launcher/atlantis-scummweb-generated-2026-11-05-r1-hero.webp",
@@ -6827,7 +7999,7 @@
     "aliases": [
       "Blues Treasure Hunt (CD Windows)"
     ],
-    "posterImage": "/launcher/retro-scumm-bluestreasurehunt-poster.webp",
+    "posterImage": "/launcher/bluestreasurehunt-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-scumm-bluestreasurehunt-shot.webp",
       "/launcher/retro-scumm-bluestreasurehunt-shot-2.webp",
@@ -6835,8 +8007,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue's%20Treasure%20Hunt.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-scumm-bluestreasurehunt-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue's%20Treasure%20Hunt.png",
+            "sha256": "d54d4b07d92f724d84ba5a582e5ad802cd08073aac54fdb3271eff73eed6f24f",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -6997,7 +8180,7 @@
     "aliases": [
       "The Dig (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-scumm-dig-poster.webp",
+    "posterImage": "/launcher/dig-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-scumm-dig-shot.webp",
       "/launcher/retro-scumm-dig-shot-2.webp",
@@ -7005,8 +8188,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Dig.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-scumm-dig-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Dig.png",
+            "sha256": "091fc7b86f2cc9a8a35e14d3bb87dcdf2c4bdebdf18b3b79b3827a2e7b382acc",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -7053,7 +8247,7 @@
     "aliases": [
       "Full Throttle (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-scumm-ft-poster.webp",
+    "posterImage": "/launcher/ft-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-scumm-ft-shot.webp",
       "/launcher/retro-scumm-ft-shot-2.webp",
@@ -7061,8 +8255,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Full%20Throttle.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-scumm-ft-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Full%20Throttle.png",
+            "sha256": "eca67ebfd4a8c3ea6c63ed964fac4f25d7b8c090c7c0ad14807956d7bb674a83",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -7109,7 +8314,7 @@
     "aliases": [
       "Indiana Jones and the Last Crusade (Amiga)"
     ],
-    "posterImage": "/launcher/indy3-cover.webp",
+    "posterImage": "/launcher/indy3-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/indy3-shot.webp",
       "/launcher/indy3-shot-2.webp",
@@ -7147,6 +8352,20 @@
             "sha256": "aa55500051a34d1fa8c42b69523883414ba28af69e165d4e16c2a86ccab47a50"
           }
         ]
+      },
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/indy3-cover.webp",
+            "kind": "box-scan",
+            "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+            "sha256": "aa55500051a34d1fa8c42b69523883414ba28af69e165d4e16c2a86ccab47a50"
+          }
+        ]
       }
     },
     "heroImage": "/launcher/indy3-scummweb-generated-2026-11-05-r1-hero.webp",
@@ -7158,7 +8377,7 @@
       "Loom (Amiga)",
       "Loom (CD DOS VGA)"
     ],
-    "posterImage": "/launcher/loom-cover.webp",
+    "posterImage": "/launcher/loom-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/loom-shot.webp",
       "/launcher/loom-shot-2.webp",
@@ -7196,6 +8415,20 @@
             "sha256": "aef9c8e01d47c1bb9f9a3d540f47600a9e74e257522a130314055640bfb4ae45"
           }
         ]
+      },
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/loom-cover.webp",
+            "kind": "box-scan",
+            "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+            "sha256": "aef9c8e01d47c1bb9f9a3d540f47600a9e74e257522a130314055640bfb4ae45"
+          }
+        ]
       }
     },
     "heroImage": "/launcher/loom-scummweb-generated-2026-11-05-r1-hero.webp",
@@ -7206,7 +8439,7 @@
     "aliases": [
       "Maniac Mansion (Amiga)"
     ],
-    "posterImage": "/launcher/maniac-cover.webp",
+    "posterImage": "/launcher/maniac-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/maniac-shot.webp",
       "/launcher/maniac-shot-2.webp",
@@ -7240,6 +8473,20 @@
         "references": [
           {
             "asset": "/launcher/maniac-cover.webp",
+            "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+            "sha256": "d3b7e560082de491e4ceb2d32385690f5a5529efef86f41f2b17ef0f1c6a0af7"
+          }
+        ]
+      },
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/maniac-cover.webp",
+            "kind": "box-scan",
             "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
             "sha256": "d3b7e560082de491e4ceb2d32385690f5a5529efef86f41f2b17ef0f1c6a0af7"
           }
@@ -7313,7 +8560,7 @@
       "Monkey Island 2 - LeChuck's Revenge (Amiga)",
       "Monkey Island 2 LeChuck's Revenge (Amiga)"
     ],
-    "posterImage": "/launcher/monkey2-cover.webp",
+    "posterImage": "/launcher/monkey2-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/monkey2-shot.webp",
       "/launcher/monkey2-shot-2.webp",
@@ -7351,6 +8598,20 @@
             "sha256": "1df7edad4566f5cca5127f89ed08304d417745855f6d57fbac6b6c755428ea37"
           }
         ]
+      },
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/monkey2-cover.webp",
+            "kind": "box-scan",
+            "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+            "sha256": "1df7edad4566f5cca5127f89ed08304d417745855f6d57fbac6b6c755428ea37"
+          }
+        ]
       }
     },
     "heroImage": "/launcher/monkey2-scummweb-generated-2026-11-05-r1-hero.webp",
@@ -7361,7 +8622,7 @@
     "aliases": [
       "Passport to Adventure (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-scumm-pass-poster.webp",
+    "posterImage": "/launcher/pass-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-scumm-pass-shot.webp",
       "/launcher/retro-scumm-pass-shot-2.webp",
@@ -7369,8 +8630,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Passport%20to%20Adventure.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-scumm-pass-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Passport%20to%20Adventure.png",
+            "sha256": "5209270ed5df91331533df1cd1e24736973d2543587813ae2a97f2ef92a236ca",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -7423,7 +8695,7 @@
       "Sam & Max Hit the Road (CD DOS)",
       "Sam and Max Hit the Road (CD DOS)"
     ],
-    "posterImage": "/launcher/samnmax-cover.webp",
+    "posterImage": "/launcher/samnmax-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/samnmax-shot.webp",
       "/launcher/samnmax-shot-2.webp",
@@ -7461,6 +8733,20 @@
             "sha256": "0fe3b0613d65ea1c2bf8f3c7179b9c31276cc1af0c42b58d5726b5c0aee14a7e"
           }
         ]
+      },
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/samnmax-cover.webp",
+            "kind": "box-scan",
+            "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+            "sha256": "0fe3b0613d65ea1c2bf8f3c7179b9c31276cc1af0c42b58d5726b5c0aee14a7e"
+          }
+        ]
       }
     },
     "heroImage": "/launcher/samnmax-scummweb-generated-2026-11-05-r1-hero.webp",
@@ -7472,7 +8758,7 @@
       "Day Of The Tentacle (CD Dos)",
       "Day of the Tentacle (CD DOS)"
     ],
-    "posterImage": "/launcher/tentacle-cover.webp",
+    "posterImage": "/launcher/tentacle-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/tentacle-shot.webp",
       "/launcher/tentacle-shot-2.webp",
@@ -7510,6 +8796,20 @@
             "sha256": "30250cc96149a2c77f58b76dd289cf04e5ce301d0aafba498a59793b2ce5e1ee"
           }
         ]
+      },
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/tentacle-cover.webp",
+            "kind": "box-scan",
+            "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+            "sha256": "30250cc96149a2c77f58b76dd289cf04e5ce301d0aafba498a59793b2ce5e1ee"
+          }
+        ]
       }
     },
     "heroImage": "/launcher/tentacle-scummweb-generated-2026-11-05-r1-hero.webp",
@@ -7520,7 +8820,7 @@
     "aliases": [
       "Big Thinkers 1st Grade (Windows)"
     ],
-    "posterImage": "/launcher/retro-scumm-thinker1-poster.webp",
+    "posterImage": "/launcher/thinker1-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-scumm-thinker1-shot.webp",
       "/launcher/retro-scumm-thinker1-shot-2.webp",
@@ -7528,8 +8828,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Big%20Thinkers%201st%20Grade.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-scumm-thinker1-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Big%20Thinkers%201st%20Grade.png",
+            "sha256": "5c5cd24d90c8e60fe4f059c126019a852e6acd051a439ccdd07cdd84a828b3b0",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -7576,7 +8887,7 @@
     "aliases": [
       "Big Thinkers Kindergarten (Windows)"
     ],
-    "posterImage": "/launcher/retro-scumm-thinkerk-poster.webp",
+    "posterImage": "/launcher/thinkerk-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-scumm-thinkerk-shot.webp",
       "/launcher/retro-scumm-thinkerk-shot-2.webp",
@@ -7584,8 +8895,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Big%20Thinkers%20Kindergarten.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-scumm-thinkerk-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Big%20Thinkers%20Kindergarten.png",
+            "sha256": "8639fdc36536ba38ab1ee48c31b41f44f144eba800cfb0012e95b2e7a93715b3",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -7632,7 +8954,7 @@
     "aliases": [
       "Zak McKracken and the Alien Mindbenders (Amiga)"
     ],
-    "posterImage": "/launcher/zak-cover.webp",
+    "posterImage": "/launcher/zak-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/zak-shot.webp",
       "/launcher/zak-shot-2.webp",
@@ -7670,6 +8992,20 @@
             "sha256": "446f79638df8e4566a9bee18fc5143be4b4d20192a2efeac5d63f8d196e18b65"
           }
         ]
+      },
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/zak-cover.webp",
+            "kind": "box-scan",
+            "credit": "Original game box-front artwork, retained from the existing ScummWEB source artwork; designs belong to their respective creators and rights holders.",
+            "sha256": "446f79638df8e4566a9bee18fc5143be4b4d20192a2efeac5d63f8d196e18b65"
+          }
+        ]
       }
     },
     "heroImage": "/launcher/zak-scummweb-generated-2026-11-05-r1-hero.webp",
@@ -7681,7 +9017,7 @@
     "aliases": [
       "The Lost Files of Sherlock Holmes - The Case of the Rose Tattoo (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-sherlock-rosetattoo-poster.webp",
+    "posterImage": "/launcher/rosetattoo-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sherlock-rosetattoo-shot.webp",
       "/launcher/retro-sherlock-rosetattoo-shot-2.webp",
@@ -7689,8 +9025,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Lost%20Files%20of%20Sherlock%20Holmes_%20The%20Case%20of%20the%20Rose%20Tattoo.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sherlock-rosetattoo-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Lost%20Files%20of%20Sherlock%20Holmes_%20The%20Case%20of%20the%20Rose%20Tattoo.png",
+            "sha256": "a5cc44f483aac0d057eab6c231b44b3072630f9f7323f2d90ff0e2b22a1eca5e",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -7738,7 +9085,7 @@
     "aliases": [
       "The Lost Files of Sherlock Holmes - The Case of the Serrated Scalpel (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-sherlock-scalpel-poster.webp",
+    "posterImage": "/launcher/scalpel-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sherlock-scalpel-shot.webp",
       "/launcher/retro-sherlock-scalpel-shot-2.webp",
@@ -7746,8 +9093,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Lost%20Files%20of%20Sherlock%20Holmes_%20The%20Case%20of%20the%20Serrated%20Scalpel.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sherlock-scalpel-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Lost%20Files%20of%20Sherlock%20Holmes_%20The%20Case%20of%20the%20Serrated%20Scalpel.png",
+            "sha256": "1d7e7afcfbb1d63b8567defb0a2a28b41c115722a7c7445a6a4576099cc41c67",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -7835,7 +9193,7 @@
     "aliases": [
       "Broken Sword 1 The Shadow of the Templar (CD Windows)"
     ],
-    "posterImage": "/launcher/retro-sword1-sword1-poster.webp",
+    "posterImage": "/launcher/sword1-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sword1-sword1-shot.webp",
       "/launcher/retro-sword1-sword1-shot-2.webp",
@@ -7843,8 +9201,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Broken%20Sword_%20The%20Shadow%20of%20the%20Templars.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sword1-sword1-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Broken%20Sword_%20The%20Shadow%20of%20the%20Templars.png",
+            "sha256": "2524764fb5a39aef4c36b9add81968d8f0350ee0f945ad991556489bc8cacbbe",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -7932,7 +9301,7 @@
     "aliases": [
       "Broken Sword 2 The Smoking Mirror (CD Windows)"
     ],
-    "posterImage": "/launcher/retro-sword2-sword2-poster.webp",
+    "posterImage": "/launcher/sword2-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sword2-sword2-shot.webp",
       "/launcher/retro-sword2-sword2-shot-2.webp",
@@ -7940,8 +9309,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Broken%20Sword%20II_%20The%20Smoking%20Mirror.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-sword2-sword2-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Broken%20Sword%20II_%20The%20Smoking%20Mirror.png",
+            "sha256": "916d8351026ed8a9168c2ac9d4fb6a59405f43e6dc2c15d5119dbadef5a4d490",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -7994,7 +9374,7 @@
     "aliases": [
       "TeenAgent (Floppy DOS)"
     ],
-    "posterImage": "/launcher/retro-teenagent-teenagent-poster.webp",
+    "posterImage": "/launcher/teenagent-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-teenagent-teenagent-shot.webp",
       "/launcher/retro-teenagent-teenagent-shot-2.webp",
@@ -8002,8 +9382,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Teen%20Agent.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-teenagent-teenagent-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Teen%20Agent.png",
+            "sha256": "200cae15bf0466f6c77cbb33241716681dd4fcb6d8796f86f347edd23ea9a8a4",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -8051,7 +9442,7 @@
       "Discworld 1 (CD DOS v2)",
       "Discworld 1 (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-tinsel-dw-poster.webp",
+    "posterImage": "/launcher/dw-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-tinsel-dw-shot.webp",
       "/launcher/retro-tinsel-dw-shot-2.webp",
@@ -8059,8 +9450,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Discworld.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-tinsel-dw-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Discworld.png",
+            "sha256": "2530d1afa3d0025cbb189f969ab16bedbe2bff60dcca4bdc59824c5a83a42621",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -8107,7 +9509,7 @@
     "aliases": [
       "Discworld 2 (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-tinsel-dw2-poster.webp",
+    "posterImage": "/launcher/dw2-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-tinsel-dw2-shot.webp",
       "/launcher/retro-tinsel-dw2-shot-2.webp",
@@ -8115,8 +9517,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Discworld%202.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-tinsel-dw2-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Discworld%202.png",
+            "sha256": "72843a3f14db5c38397f9b29095ea45b9a0d8905e1461ec6ebc949aad62cea86",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -8163,7 +9576,7 @@
     "aliases": [
       "Starship Titanic (CD, Windows)"
     ],
-    "posterImage": "/launcher/retro-titanic-titanic-poster.webp",
+    "posterImage": "/launcher/titanic-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-titanic-titanic-shot.webp",
       "/launcher/retro-titanic-titanic-shot-2.webp",
@@ -8171,8 +9584,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Starship%20Titanic.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-titanic-titanic-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Starship%20Titanic.png",
+            "sha256": "c0dbb62edb9539b18624fcc8d276d8193f4ef16b381a69cd88bc98b811b0ccca",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -8219,7 +9643,7 @@
     "aliases": [
       "3 Skulls of the Toltecs (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-toltecs-toltecs-poster.webp",
+    "posterImage": "/launcher/toltecs-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-toltecs-toltecs-shot.webp",
       "/launcher/retro-toltecs-toltecs-shot-2.webp",
@@ -8227,8 +9651,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/3%20Skulls%20of%20the%20Toltecs.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-toltecs-toltecs-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/3%20Skulls%20of%20the%20Toltecs.png",
+            "sha256": "7e2fc9b6a5eed277c33f0d6acc75978c82f888216ccf7df8307abebc747ee406",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -8275,7 +9710,7 @@
     "aliases": [
       "Tony Tough and the Night of the Roasted Moths (CD Windows)"
     ],
-    "posterImage": "/launcher/retro-tony-tony-poster.webp",
+    "posterImage": "/launcher/tony-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-tony-tony-shot.webp",
       "/launcher/retro-tony-tony-shot-2.webp",
@@ -8283,8 +9718,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Tony%20Tough%20and%20the%20Night%20of%20the%20Roasted%20Moths.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-tony-tony-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Tony%20Tough%20and%20the%20Night%20of%20the%20Roasted%20Moths.png",
+            "sha256": "b5df691bfa6030887308aed38993c0d521c73a4a922e2328f043fb5863852d48",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -8331,7 +9777,7 @@
     "aliases": [
       "Toonstruck (CD Windows)"
     ],
-    "posterImage": "/launcher/retro-toon-toon-poster.webp",
+    "posterImage": "/launcher/toon-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-toon-toon-shot.webp",
       "/launcher/retro-toon-toon-shot-2.webp",
@@ -8339,8 +9785,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Toonstruck.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-toon-toon-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Toonstruck.png",
+            "sha256": "49ad5f1182dc7d4a9cc2f8eac742d7cdd26a06d8685e2758e7676e17cf6d4ab4",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -8387,7 +9844,7 @@
     "aliases": [
       "Touche - The Adventures of the Fifth Musketeer (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-touche-touche-poster.webp",
+    "posterImage": "/launcher/touche-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-touche-touche-shot.webp",
       "/launcher/retro-touche-touche-shot-2.webp",
@@ -8395,8 +9852,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Touche_%20The%20Adventures%20of%20the%20Fifth%20Musketeer.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-touche-touche-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Touche_%20The%20Adventures%20of%20the%20Fifth%20Musketeer.png",
+            "sha256": "a3d805bf46a33f58e48db84480cd52d05b4f05c75c6d853d9fcb926567a60e5b",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -8443,7 +9911,7 @@
     "aliases": [
       "Blue Force (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-tsage-blueforce-poster.webp",
+    "posterImage": "/launcher/blueforce-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-tsage-blueforce-shot.webp",
       "/launcher/retro-tsage-blueforce-shot-2.webp",
@@ -8451,8 +9919,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue%20Force.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-tsage-blueforce-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue%20Force.png",
+            "sha256": "1769557f670004b6de5e307dcce3dadb7889eb02e4ed15a3bc6fd22c73d405e8",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -8499,7 +9978,7 @@
     "aliases": [
       "Ringworld - Revenge of the Patriarch (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-tsage-ringworld-poster.webp",
+    "posterImage": "/launcher/ringworld-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-tsage-ringworld-shot.webp",
       "/launcher/retro-tsage-ringworld-shot-2.webp",
@@ -8507,8 +9986,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Ringworld_%20Revenge%20of%20the%20Patriarch.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-tsage-ringworld-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Ringworld_%20Revenge%20of%20the%20Patriarch.png",
+            "sha256": "db357fd213d01b4b71efb0cdc8a3cb252ccb0b05a978f8414f608f0ab184eb1a",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -8555,7 +10045,7 @@
     "aliases": [
       "Return to Ringworld (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-tsage-ringworld2-poster.webp",
+    "posterImage": "/launcher/ringworld2-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-tsage-ringworld2-shot.webp",
       "/launcher/retro-tsage-ringworld2-shot-2.webp",
@@ -8563,8 +10053,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Return%20to%20Ringworld.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-tsage-ringworld2-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Return%20to%20Ringworld.png",
+            "sha256": "562b6f82dd5683693f98b50f6bb130d600a50af1db1e879bf7416261b3cfa6eb",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -8611,7 +10112,7 @@
     "aliases": [
       "Bud Tucker in Double Trouble (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-tucker-tucker-poster.webp",
+    "posterImage": "/launcher/tucker-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-tucker-tucker-shot.webp",
       "/launcher/retro-tucker-tucker-shot-2.webp",
@@ -8619,8 +10120,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Bud%20Tucker%20in%20Double%20Trouble.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-tucker-tucker-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Bud%20Tucker%20in%20Double%20Trouble.png",
+            "sha256": "0427557498c7d8ec273e612a19d9434b692915b70fd29fa7c334aa0252d7c4fb",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -8667,7 +10179,7 @@
     "aliases": [
       "Voyeur (CD DOS)"
     ],
-    "posterImage": "/launcher/retro-voyeur-voyeur-poster.webp",
+    "posterImage": "/launcher/voyeur-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-voyeur-voyeur-shot.webp",
       "/launcher/retro-voyeur-voyeur-shot-2.webp",
@@ -8675,8 +10187,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Voyeur.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/retro-voyeur-voyeur-poster.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Voyeur.png",
+            "sha256": "9bd1ca2d7e4ab58b296b97a117974489b5bb53f2f20d4f55dfb3b18ef389aa46",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
@@ -8843,7 +10366,7 @@
       "God of Thunder (DOS)",
       "gotfree"
     ],
-    "posterImage": "/launcher/classic-got-cover.webp",
+    "posterImage": "/launcher/got-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/classic-got-shot-1.webp",
       "/launcher/classic-got-shot-2.webp",
@@ -8851,8 +10374,19 @@
     ],
     "sources": {
       "poster": {
-        "kind": "box-scan",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/God%20of%20Thunder.png"
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-06",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "asset": "/launcher/classic-got-cover.webp",
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/God%20of%20Thunder.png",
+            "sha256": "06bb59136f93d4ea92e38b4fdac7b909c8635703cf75f5f0a36f6fbd8f51c72b",
+            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          }
+        ]
       },
       "screenshots": [
         {
