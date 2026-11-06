@@ -162,6 +162,8 @@ test("every recognized game advertises a static asset, with static rewrites for 
 test("the card projection strips deployment query strings and retains all displayed copy", () => {
   const card = getSocialCardData(game);
   assert.equal(card.artwork, "/launcher/cover.webp");
+  assert.equal(getSocialCardData({ ...game, heroImage: "/launcher/hero.webp?v=deployment-one" }).artwork,
+    "/launcher/hero.webp");
   for (const [field, source] of [["title", "displayTitle"], ["summary", "summary"], ["eyebrow", "eyebrow"],
     ["year", "year"], ["badge", "badge"], ["genre", "genre"], ["studio", "studio"]]) {
     assert.equal(getSocialCardData({ ...game, [source]: "changed" })[field], "changed");

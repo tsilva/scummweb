@@ -465,6 +465,8 @@
   },
   "agi:pq1": {
     "title": "Police Quest: In Pursuit of the Death Angel",
+    "shortTitle": "Police Quest 1",
+    "editionLabel": "Original",
     "aliases": [
       "Police Quest 1 - In Pursuit of the Death Angel (Amiga)"
     ],
@@ -521,6 +523,8 @@
   },
   "agi:sq1": {
     "title": "Space Quest: The Sarien Encounter",
+    "shortTitle": "Space Quest I",
+    "editionLabel": "Original",
     "aliases": [
       "Space Quest 1 - The Sarien Encounter (Amiga)"
     ],
@@ -1094,6 +1098,7 @@
   },
   "agos:simon2": {
     "title": "Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe",
+    "shortTitle": "Simon the Sorcerer II",
     "aliases": [
       "Simon the Sorcerer 2 (Amiga CD32)",
       "Simon the Sorcerer 2 (CD Windows)"
@@ -2476,6 +2481,7 @@
   },
   "gob:woodruff": {
     "title": "The Bizarre Adventures of Woodruff and the Schnibble",
+    "shortTitle": "Woodruff and the Schnibble",
     "aliases": [
       "The Bizarre Adventures of Woodruff and the Schnibble of Azimuth (CD DOS, Multilanguage)"
     ],
@@ -3071,6 +3077,7 @@
   },
   "kyra:kyra3": {
     "title": "The Legend of Kyrandia: Book 3 - Malcolm's Revenge",
+    "shortTitle": "Kyrandia 3: Malcolm's Revenge",
     "aliases": [
       "The Legend of Kyrandia 3 Malcolm's Revenge (CD DOS, Multilanguage)"
     ],
@@ -3324,6 +3331,7 @@
   },
   "made:lgop2": {
     "title": "Leather Goddesses of Phobos! 2: Gas Pump Girls Meet the Pulsating Inconvenience from Planet X",
+    "shortTitle": "Leather Goddesses of Phobos! 2",
     "aliases": [
       "Leather Goddesses of Phobos 2 (Floppy DOS)"
     ],
@@ -4032,6 +4040,7 @@
   },
   "saga:ihnm": {
     "title": "Harlan Ellison: I Have No Mouth, and I Must Scream",
+    "shortTitle": "I Have No Mouth, and I Must Scream",
     "aliases": [
       "I Have No Mouth and I Must Scream (CD DOS)"
     ],
@@ -4883,6 +4892,7 @@
   },
   "sci:kq5": {
     "title": "King's Quest V: Absence Makes the Heart Go Yonder!",
+    "shortTitle": "King's Quest V",
     "aliases": [
       "King's Quest 5 - Absence Makes the Heart go Yonder (Amiga)"
     ],
@@ -5219,6 +5229,7 @@
   },
   "sci:longbow": {
     "title": "Conquests of the Longbow: The Legend of Robin Hood",
+    "shortTitle": "Conquests of the Longbow",
     "aliases": [
       "Conquests of the Longbow - The Legend of Robin Hood (Amiga)"
     ],
@@ -5275,6 +5286,7 @@
   },
   "sci:lsl1sci": {
     "title": "Leisure Suit Larry in the Land of the Lounge Lizards",
+    "shortTitle": "Leisure Suit Larry 1",
     "aliases": [
       "Leisure Suit Larry in the Land of the Lounge Lizards (Amiga VGA Remake)"
     ],
@@ -5332,6 +5344,7 @@
   },
   "sci:lsl2": {
     "title": "Leisure Suit Larry 2: Goes Looking for Love (in Several Wrong Places)",
+    "shortTitle": "Leisure Suit Larry 2",
     "aliases": [
       "Leisure Suit Larry 2 - Goes looking for Love (In Several Wrong Places) (Amiga)"
     ],
@@ -5388,6 +5401,7 @@
   },
   "sci:lsl3": {
     "title": "Leisure Suit Larry 3: Passionate Patti in Pursuit of the Pulsating Pectorals",
+    "shortTitle": "Leisure Suit Larry 3",
     "aliases": [
       "Leisure Suit Larry 3 - Passionate Patti in Pursuit of the Pulsating Pectorals (Amiga)"
     ],
@@ -5444,6 +5458,7 @@
   },
   "sci:lsl5": {
     "title": "Leisure Suit Larry 5: Passionate Patti Does a Little Undercover Work",
+    "shortTitle": "Leisure Suit Larry 5",
     "aliases": [
       "Leisure Suit Larry 5 - Passionate Patty Does a Little Undercover Work (Amiga)"
     ],
@@ -5846,6 +5861,7 @@
   },
   "sci:pq1sci": {
     "title": "Police Quest: In Pursuit of the Death Angel",
+    "shortTitle": "Police Quest 1",
     "aliases": [
       "Police Quest 1 - In Pursuit of the Death Angel (Floppy DOS VGA Remake)"
     ],
@@ -6077,6 +6093,8 @@
   },
   "sci:qfg1": {
     "title": "Quest for Glory I: So You Want To Be A Hero",
+    "shortTitle": "Quest for Glory I",
+    "editionLabel": "Original",
     "aliases": [
       "Hero Quest So You Want To Be A Hero (Amiga)",
       "Hero Quest So You Want To Be A Hero (Floppy DOS)"
@@ -6134,6 +6152,7 @@
   },
   "sci:qfg1vga": {
     "title": "Quest for Glory I: So You Want To Be A Hero",
+    "shortTitle": "Quest for Glory I",
     "aliases": [
       "Quest for Glory 1 - So You Want to be a Hero (Floppy DOS VGA Remake)"
     ],
@@ -6413,6 +6432,7 @@
   },
   "sci:sq1sci": {
     "title": "Space Quest: The Sarien Encounter",
+    "shortTitle": "Space Quest I",
     "aliases": [
       "Space Quest 1 - The Sarien Encounter (Floppy DOS VGA Remake)"
     ],
@@ -7657,6 +7677,7 @@
   },
   "sherlock:rosetattoo": {
     "title": "The Lost Files of Sherlock Holmes: Case of the Rose Tattoo",
+    "shortTitle": "Sherlock Holmes: The Rose Tattoo",
     "aliases": [
       "The Lost Files of Sherlock Holmes - The Case of the Rose Tattoo (CD DOS)"
     ],
@@ -7713,6 +7734,7 @@
   },
   "sherlock:scalpel": {
     "title": "The Lost Files of Sherlock Holmes: The Case of the Serrated Scalpel",
+    "shortTitle": "Sherlock Holmes: The Serrated Scalpel",
     "aliases": [
       "The Lost Files of Sherlock Holmes - The Case of the Serrated Scalpel (CD DOS)"
     ],
