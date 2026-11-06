@@ -93,6 +93,13 @@ test("a removed preference can immediately use its last verified catalog fallbac
   assert.equal(f.container.dataset.prepared, "true");
 });
 
+test("legacy links to another game never show the featured game's cached action", t => {
+  const f = fixture(t);
+  window.location.hash = "#slide=source%3Acustom";
+  prepareInitialActions(f.container, () => assert.fail("must restore the selected game first"));
+  assert.equal(f.container.dataset.prepared, undefined);
+});
+
 test("changed native identity in an unrecognized import requires reconciliation", t => {
   const f = fixture(t);
   const cached = { ...descriptor(), version: "source:unknown", source: true,

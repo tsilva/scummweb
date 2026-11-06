@@ -40,6 +40,8 @@ export function prepareInitialActions(container, readSave) {
   try {
     const storage = window.localStorage;
     let state = JSON.parse(container.dataset.initialActions);
+    const hash = window.location.hash || "";
+    if (hash.startsWith("#slide=") && decodeURIComponent(hash.slice(7)) !== state.group) return;
     const remembered = storage.getItem(`scummweb.version:${state.group}`);
     if (remembered && remembered !== state.version) {
       const cached = JSON.parse(storage.getItem(`scummweb.hero-actions.v1:${state.group}`));
