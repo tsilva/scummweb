@@ -56,7 +56,7 @@ const artByTarget = {
     studio,
     year,
     summary,
-    posterImage: `/launcher/${target}-cover.webp`,
+    posterImage: retroGameArtwork[`scumm:${target}`].posterImage,
     screenshots: retroGameArtwork[`scumm:${target}`].screenshots,
   }])),
   atlantis: {
@@ -65,7 +65,7 @@ const artByTarget = {
     genre: retroGameArtwork["scumm:atlantis"].genre,
     studio: "LucasArts",
     year: "1992",
-    posterImage: "/launcher/atlantis-cover.webp",
+    posterImage: retroGameArtwork["scumm:atlantis"].posterImage,
     screenshots: retroGameArtwork["scumm:atlantis"].screenshots,
   },
   indy3: {
@@ -74,7 +74,7 @@ const artByTarget = {
     genre: retroGameArtwork["scumm:indy3"].genre,
     studio: "Lucasfilm Games",
     year: "1989",
-    posterImage: "/launcher/indy3-cover.webp",
+    posterImage: retroGameArtwork["scumm:indy3"].posterImage,
     screenshots: retroGameArtwork["scumm:indy3"].screenshots,
   },
   sfinx: {
