@@ -17,7 +17,7 @@ function fixture(t, state = descriptor()) {
       removeAttribute(key) { delete this.attributes[key]; if (key === "href") delete this.href; } };
   }
   const primary = node(), restart = node(), browse = node(), license = node(), options = [];
-  const chooser = { removeAttribute() {}, querySelector: () => ({ append: option => options.push(option) }) };
+  const chooser = { ...node(), querySelector: () => ({ append: option => options.push(option) }) };
   const container = { dataset: { initialActions: JSON.stringify(state), entryPoint: "game_detail" },
     parentElement: { querySelector: () => ({ innerHTML: "server controls", nextElementSibling: {} }) },
     querySelector: selector => ({ ".launch-button": primary, ".start-fresh-button": restart,
@@ -30,7 +30,7 @@ function fixture(t, state = descriptor()) {
   });
   globalThis.window = { localStorage: storage, location: { origin: "https://example.test" } };
   globalThis.document = { createElement: node };
-  return { values, storage, container, primary, restart, browse, license, options };
+  return { values, storage, container, primary, restart, browse, license, chooser, options };
 }
 
 test("first-paint catalog actions use the validated browser index, including slot zero", t => {
@@ -55,6 +55,9 @@ test("no indexed save shows Play immediately with no restart link", t => {
   assert.equal(f.restart.hidden, true);
   assert.equal(f.browse.hidden, false);
   assert.equal(f.browse.href, "#library");
+  assert.equal(f.chooser.attributes["data-reserved"], "true");
+  assert.equal(f.chooser.attributes["aria-hidden"], "true");
+  assert.equal(f.chooser.innerHTML, "");
 });
 
 test("first-paint actions reserve the license row for editions without a safe readme link", t => {
@@ -94,6 +97,8 @@ test("remembered imports use their own cached identity and wait for access valid
   assert.equal(f.primary.attributes["aria-disabled"], "true");
   assert.equal(f.options.length, 2);
   assert.equal(f.options[1].selected, true);
+  assert.equal(f.chooser.attributes["data-reserved"], undefined);
+  assert.equal(f.chooser.attributes["aria-hidden"], undefined);
 });
 
 test("unknown or stale remembered editions never expose the catalog's Continue state", t => {

@@ -10,6 +10,8 @@ a copy. The buttons share the first row; **Browse Games** links to the library
 when **Start from beginning** is absent. The borderless selector sits below them
 and spans the combined width of both buttons on desktop and mobile. Games
 with one version show an edition badge beside their metadata instead of a selector.
+The empty selector row retains its height for single-version games, keeping the
+hero and launch controls aligned when switching games.
 The Readme / License row retains its space when an edition has no link, keeping
 the hero and launch controls in place when switching editions.
 The badge is hidden when multiple versions are available. Both positions reserve
