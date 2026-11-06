@@ -257,6 +257,9 @@ and filters for checked editions, warnings, failures, and untested games. See
 
 Select the **Add a game** card in the library to choose ZIPs, or drop one or
 more ZIP files containing ScummVM games onto the homepage or a game's page.
+You can also drop a folder to import all ZIPs inside it and its subfolders.
+Other files inside dropped folders are ignored; unreadable folders are reported
+without stopping the remaining imports.
 The add card is first in the grid and remains available when filtering or sorting
 the library. Mobile headers hide the Library, Compatibility, and ScummVM links
 and align the brand and action buttons in one row, respecting the top safe area.
@@ -265,8 +268,8 @@ navigation background, including on the compatibility page.
 Mobile library-to-footer spacing uses reduced bottom and top padding.
 Mobile layouts and devices with a coarse primary pointer show tap-to-choose
 instructions; desktop layouts retain the drag-and-drop hint.
-Put one game in each ZIP. Folders, loose game files, and other
-archive formats are not supported.
+Put one game in each ZIP. Loose game files and other archive formats are not
+supported; folders are scanned for ZIPs rather than imported as game data.
 The import dialog shows progress, added games, and errors; its final summary
 also counts skipped games. Reimported games count as skipped with refreshed
 file access. Scroll to review large batches, then select **Confirm** to close

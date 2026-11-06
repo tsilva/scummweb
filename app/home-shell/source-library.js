@@ -9,7 +9,7 @@ import { checkGameSource, isLocalZipSource, localGame, readGameSources, removeGa
 import { findLocalGameSource } from "../local-game-matching.mjs";
 import { findBundledGame } from "../bundled-game-matching.mjs";
 import { maxLocalGameSize, openLocalGameZip, selectGameArchive, validateGameZip } from "../local-game-archive.mjs";
-import { fileNode, handleNode, inspectLocalSourceFiles, prepareLocalZip } from "../local-game-import.mjs";
+import { collectGameImportNodes, fileNode, handleNode, inspectLocalSourceFiles, prepareLocalZip } from "../local-game-import.mjs";
 import LibraryView from "./library-view";
 import { libraryItems } from "./library-query.mjs";
 import { getGameFamilyKey, getVersionSaveNamespace, rememberGameVersion } from "../game-versions.mjs";
@@ -227,8 +227,10 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
 
   function importRoots(selection, replacing) {
     return run(async () => {
-      const roots = typeof selection === "function" ? await selection() : selection;
-      if (!roots.length) return;
+      const selectionRoots = typeof selection === "function" ? await selection() : selection;
+      if (!selectionRoots.length) return;
+      setPending([{ index: 0, label: "Finding game ZIPs…", message: "Checking dropped files and folders…" }]);
+      const roots = await collectGameImportNodes(selectionRoots);
       const known = new Map(entries.map(({ source }) => [source.id, source]));
       const items = [];
       const savedIds = new Set();
