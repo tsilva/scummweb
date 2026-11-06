@@ -984,7 +984,7 @@
   }
 
   .hero-stage-library .hero-backdrop-image {
-    object-position: 75% top !important;
+    object-position: var(--hero-image-mobile-position, 75% top) !important;
   }
 
   .hero-stage.hero-stage-library .hero-backdrop::after {

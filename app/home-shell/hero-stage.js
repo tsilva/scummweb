@@ -36,7 +36,7 @@ export default function HeroStage({
           <DecorativeImage className="hero-backdrop-image"
             decoding={isInitialSlide ? "sync" : "async"}
             fetchPriority={isInitialSlide ? "high" : undefined} loading="eager"
-            {...getHeroImageProps(featuredGame)} style={getHeroImageStyle(featuredGame.heroImagePosition)} />
+            {...getHeroImageProps(featuredGame)} style={getHeroImageStyle(featuredGame.heroImagePosition, featuredGame.heroImageMobilePosition)} />
         </div>
         <div className="hero-gradient" />
         <div className="hero-inner">

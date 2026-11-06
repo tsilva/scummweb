@@ -24,6 +24,8 @@ and studio credits. Game details show three screenshots where matching captures
 are available.
 Originals and remakes keep separate cards, with remake labels and artwork that
 matches each game. Platform and language variants share artwork within that edition.
+Generated hero banners based on original game artwork cover 146 recognized
+titles, including imports. Box art and original gameplay captures remain separate.
 
 Every recognized title has its own searchable game page with artwork and details.
 Games outside the public library show **Game not included** and explain that
