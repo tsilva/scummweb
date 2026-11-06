@@ -89,7 +89,6 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
             <div className="poster-entry" key={key} data-library-source-ids={JSON.stringify(versions.flatMap(({ source }) => source ? [source.id] : []))}>
               <GameSelectionLink game={game} aria-current={key === selectedKey ? "page" : undefined} className={`poster-card ${game.tone}`} data-game-target={game.target}>
                 <GamePoster title={title} image={game.posterImage} editionLabel={game.editionLabel} count={visible.length + 1} />
-                {versions.length > 1 && <span className="game-version-count">{versions.length} versions</span>}
                 {needsFiles && <span className="source-poster-hint">{fileStatus}</span>}
               </GameSelectionLink>
             </div>

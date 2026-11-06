@@ -2467,5 +2467,53 @@
       480,
       640
     ]
+  },
+  "/launcher/bluestreasurehunt-scummweb-generated-2026-11-06-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/brstorm-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/chivalry-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/hugo1-scummweb-generated-2026-11-06-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/hugo3-scummweb-generated-2026-11-06-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/road-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
   }
 }
