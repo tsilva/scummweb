@@ -888,6 +888,14 @@
 
 /* Static mobile showcase; desktop keeps the carousel and reserved text areas. */
 @media (max-width: 48rem) {
+  .hero-desktop-copy {
+    display: none;
+  }
+
+  .hero-mobile-copy {
+    display: inline;
+  }
+
   html {
     scrollbar-width: none;
   }
@@ -973,6 +981,7 @@
   }
 
   .hero-stage-library .hero-copy h1 {
+    --hero-title-fit: none;
     display: block;
     height: auto;
     margin-top: 0.85rem;

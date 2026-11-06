@@ -25722,6 +25722,230 @@
       "contentType": "image/webp",
       "width": 480,
       "height": 640
+    },
+    "/launcher/bluestreasurehunt-scummweb-generated-2026-11-06-r2-cover.webp": {
+      "key": "artwork/0e55dcecd9f0d231081fc63d0ed46846e5560a7e8dfbfa3eca35a00bc28372f5/bluestreasurehunt-scummweb-generated-2026-11-06-r2-cover.webp",
+      "sha256": "0e55dcecd9f0d231081fc63d0ed46846e5560a7e8dfbfa3eca35a00bc28372f5",
+      "bytes": 218442,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/brstorm-scummweb-generated-2026-11-06-r1-cover.webp": {
+      "key": "artwork/6a73dfe294c3d3247bc91f471ae4b637e439b74fb76e72b2a0698997891a559b/brstorm-scummweb-generated-2026-11-06-r1-cover.webp",
+      "sha256": "6a73dfe294c3d3247bc91f471ae4b637e439b74fb76e72b2a0698997891a559b",
+      "bytes": 99358,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/chivalry-scummweb-generated-2026-11-06-r1-cover.webp": {
+      "key": "artwork/5a1d7d92c0c378b847ace26f2a2768607d4d7508100055d5c66297f477a3495f/chivalry-scummweb-generated-2026-11-06-r1-cover.webp",
+      "sha256": "5a1d7d92c0c378b847ace26f2a2768607d4d7508100055d5c66297f477a3495f",
+      "bytes": 93276,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/hugo1-scummweb-generated-2026-11-06-r2-cover.webp": {
+      "key": "artwork/d658a55c340ade83abb012afe696b07dd2ea73e703d15caaded1047123693ba5/hugo1-scummweb-generated-2026-11-06-r2-cover.webp",
+      "sha256": "d658a55c340ade83abb012afe696b07dd2ea73e703d15caaded1047123693ba5",
+      "bytes": 251238,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/hugo3-scummweb-generated-2026-11-06-r2-cover.webp": {
+      "key": "artwork/afbfc1d5592c1b0bacfafb3ac8df90e643520fef46860b1e421a13ffb3ca42a7/hugo3-scummweb-generated-2026-11-06-r2-cover.webp",
+      "sha256": "afbfc1d5592c1b0bacfafb3ac8df90e643520fef46860b1e421a13ffb3ca42a7",
+      "bytes": 285470,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/responsive/bluestreasurehunt-scummweb-generated-2026-11-06-r2-cover-320.webp": {
+      "key": "artwork/49afd973f04e8b49fe5a8b5e628074c6f7203a9924f51f75f7c97339296a3de6/bluestreasurehunt-scummweb-generated-2026-11-06-r2-cover-320.webp",
+      "sha256": "49afd973f04e8b49fe5a8b5e628074c6f7203a9924f51f75f7c97339296a3de6",
+      "bytes": 33144,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/bluestreasurehunt-scummweb-generated-2026-11-06-r2-cover-640.webp": {
+      "key": "artwork/6e5ac68daf00af8e51b8f15dba510c7095678b4d195290acb116af9510020e82/bluestreasurehunt-scummweb-generated-2026-11-06-r2-cover-640.webp",
+      "sha256": "6e5ac68daf00af8e51b8f15dba510c7095678b4d195290acb116af9510020e82",
+      "bytes": 99470,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/brstorm-scummweb-generated-2026-11-06-r1-cover-320.webp": {
+      "key": "artwork/30613e355f6797e4833703d8b75ec28cef82fb648592e86dc885aa1de269d729/brstorm-scummweb-generated-2026-11-06-r1-cover-320.webp",
+      "sha256": "30613e355f6797e4833703d8b75ec28cef82fb648592e86dc885aa1de269d729",
+      "bytes": 26898,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/brstorm-scummweb-generated-2026-11-06-r1-cover-640.webp": {
+      "key": "artwork/fc18f373b54e7ba01d8b57ebd55979d4eb4f7c18981d3dcdb08ed9123c933f2c/brstorm-scummweb-generated-2026-11-06-r1-cover-640.webp",
+      "sha256": "fc18f373b54e7ba01d8b57ebd55979d4eb4f7c18981d3dcdb08ed9123c933f2c",
+      "bytes": 59566,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/chivalry-scummweb-generated-2026-11-06-r1-cover-320.webp": {
+      "key": "artwork/19bd939c333183bfd0fea99bf276470894c76028866f9e0e7961559f46c19103/chivalry-scummweb-generated-2026-11-06-r1-cover-320.webp",
+      "sha256": "19bd939c333183bfd0fea99bf276470894c76028866f9e0e7961559f46c19103",
+      "bytes": 26482,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/chivalry-scummweb-generated-2026-11-06-r1-cover-640.webp": {
+      "key": "artwork/6489421e04cf5b79eacb29b9657cc947158796d8fc008081302a17eb75c57967/chivalry-scummweb-generated-2026-11-06-r1-cover-640.webp",
+      "sha256": "6489421e04cf5b79eacb29b9657cc947158796d8fc008081302a17eb75c57967",
+      "bytes": 58526,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/hugo1-scummweb-generated-2026-11-06-r2-cover-320.webp": {
+      "key": "artwork/679098b5dfee44c313fdad7677897befac6f91bea5652cddda883a7398107998/hugo1-scummweb-generated-2026-11-06-r2-cover-320.webp",
+      "sha256": "679098b5dfee44c313fdad7677897befac6f91bea5652cddda883a7398107998",
+      "bytes": 43642,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/hugo1-scummweb-generated-2026-11-06-r2-cover-640.webp": {
+      "key": "artwork/7f0a3ad00c3b9af2f327c8dc295eb8683db9a4cbf4d68d2a08b0891d43efcd7a/hugo1-scummweb-generated-2026-11-06-r2-cover-640.webp",
+      "sha256": "7f0a3ad00c3b9af2f327c8dc295eb8683db9a4cbf4d68d2a08b0891d43efcd7a",
+      "bytes": 125878,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/hugo3-scummweb-generated-2026-11-06-r2-cover-320.webp": {
+      "key": "artwork/8cd888a593f333f22676804a80a0b30717e22298dee82b252188f3ed8609cc26/hugo3-scummweb-generated-2026-11-06-r2-cover-320.webp",
+      "sha256": "8cd888a593f333f22676804a80a0b30717e22298dee82b252188f3ed8609cc26",
+      "bytes": 48898,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/hugo3-scummweb-generated-2026-11-06-r2-cover-640.webp": {
+      "key": "artwork/ffaa21b35d178915e70b73af54ba952e13e431a8f395e10503e33ff808eb6cce/hugo3-scummweb-generated-2026-11-06-r2-cover-640.webp",
+      "sha256": "ffaa21b35d178915e70b73af54ba952e13e431a8f395e10503e33ff808eb6cce",
+      "bytes": 145228,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/road-scummweb-generated-2026-11-06-r1-cover-320.webp": {
+      "key": "artwork/5ef8c2ebb0a53dcb89012efb1e3c25c810ab272c66be955035fcb649c83cfdd4/road-scummweb-generated-2026-11-06-r1-cover-320.webp",
+      "sha256": "5ef8c2ebb0a53dcb89012efb1e3c25c810ab272c66be955035fcb649c83cfdd4",
+      "bytes": 53956,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/road-scummweb-generated-2026-11-06-r1-cover-640.webp": {
+      "key": "artwork/c2037ea7775983d33f39204deb8976b03f0dbfbf829b2935e87854dc56dfbff1/road-scummweb-generated-2026-11-06-r1-cover-640.webp",
+      "sha256": "c2037ea7775983d33f39204deb8976b03f0dbfbf829b2935e87854dc56dfbff1",
+      "bytes": 170844,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/road-scummweb-generated-2026-11-06-r1-cover.webp": {
+      "key": "artwork/542799412903297fe61b828091792286839603efb8efabbccfd09790587676eb/road-scummweb-generated-2026-11-06-r1-cover.webp",
+      "sha256": "542799412903297fe61b828091792286839603efb8efabbccfd09790587676eb",
+      "bytes": 328698,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/optimized/chivalry-scummweb-generated-2026-11-06-r1-cover.avif": {
+      "key": "artwork/3deb08d9b078b17a717987df3207bb4ffa223517efad254afb7c269eb6bc2900/chivalry-scummweb-generated-2026-11-06-r1-cover.avif",
+      "sha256": "3deb08d9b078b17a717987df3207bb4ffa223517efad254afb7c269eb6bc2900",
+      "bytes": 63550,
+      "contentType": "image/avif",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/responsive/bluestreasurehunt-scummweb-generated-2026-11-06-r2-cover-480.webp": {
+      "key": "artwork/ac4c9e7314528c0294e330c7620361673d0b3bd91740c1f3dbf533d00c5ea60c/bluestreasurehunt-scummweb-generated-2026-11-06-r2-cover-480.webp",
+      "sha256": "ac4c9e7314528c0294e330c7620361673d0b3bd91740c1f3dbf533d00c5ea60c",
+      "bytes": 62676,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/brstorm-scummweb-generated-2026-11-06-r1-cover-480.webp": {
+      "key": "artwork/70808d75b45fd884c21d0e46a44ae4f4b392b18b056bac5d323986ae6183b9a1/brstorm-scummweb-generated-2026-11-06-r1-cover-480.webp",
+      "sha256": "70808d75b45fd884c21d0e46a44ae4f4b392b18b056bac5d323986ae6183b9a1",
+      "bytes": 43046,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/chivalry-scummweb-generated-2026-11-06-r1-cover-320.avif": {
+      "key": "artwork/647372c9c84bf6343355ad51a1f1398446ac052fcc81a27a45f1033d107f3215/chivalry-scummweb-generated-2026-11-06-r1-cover-320.avif",
+      "sha256": "647372c9c84bf6343355ad51a1f1398446ac052fcc81a27a45f1033d107f3215",
+      "bytes": 23479,
+      "contentType": "image/avif",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/chivalry-scummweb-generated-2026-11-06-r1-cover-480.avif": {
+      "key": "artwork/aed0f829b1613104d3893e47f976d8e9a18c7ed60a739cf99c89021bbeb93017/chivalry-scummweb-generated-2026-11-06-r1-cover-480.avif",
+      "sha256": "aed0f829b1613104d3893e47f976d8e9a18c7ed60a739cf99c89021bbeb93017",
+      "bytes": 38293,
+      "contentType": "image/avif",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/chivalry-scummweb-generated-2026-11-06-r1-cover-480.webp": {
+      "key": "artwork/12c0d5e2d8cc90d0da86280936076af2af331175cf23699ce0d16d5dc0519fb8/chivalry-scummweb-generated-2026-11-06-r1-cover-480.webp",
+      "sha256": "12c0d5e2d8cc90d0da86280936076af2af331175cf23699ce0d16d5dc0519fb8",
+      "bytes": 43256,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/chivalry-scummweb-generated-2026-11-06-r1-cover-640.avif": {
+      "key": "artwork/8d1a4611dfc01d0737a49bed163599a8cfa3fe8c1cade7ee771dc32a9cdd80e1/chivalry-scummweb-generated-2026-11-06-r1-cover-640.avif",
+      "sha256": "8d1a4611dfc01d0737a49bed163599a8cfa3fe8c1cade7ee771dc32a9cdd80e1",
+      "bytes": 40478,
+      "contentType": "image/avif",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/hugo1-scummweb-generated-2026-11-06-r2-cover-480.webp": {
+      "key": "artwork/c7aadd8ab1ffc16fbde809cc792ae96ea8d0331f9e0ed08ce19c0e760cc7569c/hugo1-scummweb-generated-2026-11-06-r2-cover-480.webp",
+      "sha256": "c7aadd8ab1ffc16fbde809cc792ae96ea8d0331f9e0ed08ce19c0e760cc7569c",
+      "bytes": 82536,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/hugo3-scummweb-generated-2026-11-06-r2-cover-480.webp": {
+      "key": "artwork/a2357bb382afe11295fb20608fa89551a5c124b029a6d2a8e25d964b89a41113/hugo3-scummweb-generated-2026-11-06-r2-cover-480.webp",
+      "sha256": "a2357bb382afe11295fb20608fa89551a5c124b029a6d2a8e25d964b89a41113",
+      "bytes": 95298,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/road-scummweb-generated-2026-11-06-r1-cover-480.webp": {
+      "key": "artwork/b74fb914814cc610ee010b6122dcb87fb9513260f3263d01356eede8ff39ff0f/road-scummweb-generated-2026-11-06-r1-cover-480.webp",
+      "sha256": "b74fb914814cc610ee010b6122dcb87fb9513260f3263d01356eede8ff39ff0f",
+      "bytes": 108708,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
     }
   },
   "images": {
@@ -25958,6 +26182,18 @@
       ],
       "avif": []
     },
+    "/launcher/bluestreasurehunt-scummweb-generated-2026-11-06-r2-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/bluestreasurehunt-scummweb-generated-2026-11-06-r2-cover.webp",
+      "webp": [
+        "/launcher/responsive/bluestreasurehunt-scummweb-generated-2026-11-06-r2-cover-320.webp",
+        "/launcher/responsive/bluestreasurehunt-scummweb-generated-2026-11-06-r2-cover-480.webp",
+        "/launcher/responsive/bluestreasurehunt-scummweb-generated-2026-11-06-r2-cover-640.webp",
+        "/launcher/bluestreasurehunt-scummweb-generated-2026-11-06-r2-cover.webp"
+      ],
+      "avif": []
+    },
     "/launcher/bra-scummweb-generated-2026-11-05-r2-hero.webp": {
       "width": 1600,
       "height": 960,
@@ -25979,6 +26215,18 @@
         "/launcher/responsive/bra-scummweb-generated-2026-11-06-r1-cover-480.webp",
         "/launcher/responsive/bra-scummweb-generated-2026-11-06-r1-cover-640.webp",
         "/launcher/bra-scummweb-generated-2026-11-06-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/brstorm-scummweb-generated-2026-11-06-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/brstorm-scummweb-generated-2026-11-06-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/brstorm-scummweb-generated-2026-11-06-r1-cover-320.webp",
+        "/launcher/responsive/brstorm-scummweb-generated-2026-11-06-r1-cover-480.webp",
+        "/launcher/responsive/brstorm-scummweb-generated-2026-11-06-r1-cover-640.webp",
+        "/launcher/brstorm-scummweb-generated-2026-11-06-r1-cover.webp"
       ],
       "avif": []
     },
@@ -26046,6 +26294,23 @@
         "/launcher/castlebrain-scummweb-generated-2026-11-06-r1-cover.webp"
       ],
       "avif": []
+    },
+    "/launcher/chivalry-scummweb-generated-2026-11-06-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/chivalry-scummweb-generated-2026-11-06-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/chivalry-scummweb-generated-2026-11-06-r1-cover-320.webp",
+        "/launcher/responsive/chivalry-scummweb-generated-2026-11-06-r1-cover-480.webp",
+        "/launcher/responsive/chivalry-scummweb-generated-2026-11-06-r1-cover-640.webp",
+        "/launcher/chivalry-scummweb-generated-2026-11-06-r1-cover.webp"
+      ],
+      "avif": [
+        "/launcher/responsive/chivalry-scummweb-generated-2026-11-06-r1-cover-320.avif",
+        "/launcher/responsive/chivalry-scummweb-generated-2026-11-06-r1-cover-480.avif",
+        "/launcher/responsive/chivalry-scummweb-generated-2026-11-06-r1-cover-640.avif",
+        "/launcher/optimized/chivalry-scummweb-generated-2026-11-06-r1-cover.avif"
+      ]
     },
     "/launcher/chivalry-scummweb-generated-2026-11-06-r1-hero.webp": {
       "width": 1600,
@@ -27111,6 +27376,18 @@
       ],
       "avif": []
     },
+    "/launcher/hugo1-scummweb-generated-2026-11-06-r2-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/hugo1-scummweb-generated-2026-11-06-r2-cover.webp",
+      "webp": [
+        "/launcher/responsive/hugo1-scummweb-generated-2026-11-06-r2-cover-320.webp",
+        "/launcher/responsive/hugo1-scummweb-generated-2026-11-06-r2-cover-480.webp",
+        "/launcher/responsive/hugo1-scummweb-generated-2026-11-06-r2-cover-640.webp",
+        "/launcher/hugo1-scummweb-generated-2026-11-06-r2-cover.webp"
+      ],
+      "avif": []
+    },
     "/launcher/hugo1-scummweb-generated-2026-11-06-r2-hero.webp": {
       "width": 1600,
       "height": 960,
@@ -27151,6 +27428,18 @@
         "/launcher/responsive/hugo2-scummweb-generated-2026-11-06-r1-cover-640.avif",
         "/launcher/optimized/hugo2-scummweb-generated-2026-11-06-r1-cover.avif"
       ]
+    },
+    "/launcher/hugo3-scummweb-generated-2026-11-06-r2-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/hugo3-scummweb-generated-2026-11-06-r2-cover.webp",
+      "webp": [
+        "/launcher/responsive/hugo3-scummweb-generated-2026-11-06-r2-cover-320.webp",
+        "/launcher/responsive/hugo3-scummweb-generated-2026-11-06-r2-cover-480.webp",
+        "/launcher/responsive/hugo3-scummweb-generated-2026-11-06-r2-cover-640.webp",
+        "/launcher/hugo3-scummweb-generated-2026-11-06-r2-cover.webp"
+      ],
+      "avif": []
     },
     "/launcher/hugo3-scummweb-generated-2026-11-06-r2-hero.webp": {
       "width": 1600,
@@ -35371,6 +35660,18 @@
         "/launcher/responsive/riven-scummweb-generated-2026-11-06-r1-cover-480.webp",
         "/launcher/responsive/riven-scummweb-generated-2026-11-06-r1-cover-640.webp",
         "/launcher/riven-scummweb-generated-2026-11-06-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/road-scummweb-generated-2026-11-06-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/road-scummweb-generated-2026-11-06-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/road-scummweb-generated-2026-11-06-r1-cover-320.webp",
+        "/launcher/responsive/road-scummweb-generated-2026-11-06-r1-cover-480.webp",
+        "/launcher/responsive/road-scummweb-generated-2026-11-06-r1-cover-640.webp",
+        "/launcher/road-scummweb-generated-2026-11-06-r1-cover.webp"
       ],
       "avif": []
     },

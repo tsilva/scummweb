@@ -103,9 +103,11 @@ changing either. The native owner test uses a local C++ compiler when available.
 ### Player controls
 
 Desktop top controls appear for three seconds once the boot presentation
-finishes. Moving into the top 80 CSS pixels reveals them; leaving that area
-starts a one-second delay followed by a short fade. Continued movement below
-the reveal area does not restart the delay. Hidden buttons do not intercept
+finishes. Moving into the top 80 CSS pixels or outside the game canvas reveals
+them. They stay visible while the pointer is outside the canvas, including its
+letterbox margins or outside the browser viewport. Returning to gameplay below
+the top reveal area starts a one-second delay followed by a short fade. Continued
+movement within gameplay does not restart the delay. Hidden buttons do not intercept
 pointer input and remain available through keyboard navigation. Focus within
 the controls prevents idle hiding. Cursor capture clears toolbar focus so the
 buttons can hide. Reduced-motion preferences disable the fade.
@@ -428,7 +430,11 @@ records actual dimensions in `data/artwork-renditions.json`. Browser selection
 preserves the existing cover crop and falls back to the full original for
 larger displays or unknown/remote artwork. Derivatives inherit their original's
 artwork provenance. Desktop hero titles fit within a reserved responsive heading
-slot. Desktop heroes fill at least the first viewport, with a fixed action row
+slot. A small document-head script fits the streamed heading before its first
+paint; React maintains the fit during navigation and resizing. Mobile title fitting
+is disabled by CSS from the initial render. Fonts use `display: optional`, and
+font-download completion does not trigger another title resize. Desktop heroes
+fill at least the first viewport, with a fixed action row
 containing Play, version details or a selector, Browse Games and the license link
 when available. Title, description and launch positions stay stable across
 slideshow changes and saved-progress checks. A scroll link leads to the screenshot
@@ -489,6 +495,24 @@ The managed `audio-start-control.mjs` is installed before SDL input handlers.
 It offers **Start audio** while the browser's audio context is suspended and
 consumes the button gesture so movies do not interpret it as a skip command.
 Maintain it in `web-shell/`; the staging script copies it into the managed bundle.
+
+## Evaluator-only Queen telemetry
+
+Native patch `16-report-queen-evaluation-variables.patch` provides a read-only
+room provider for an external AgentSCUMM evaluator. It is inactive unless the
+host sets `__scummwebEvaluationEnabled` before the engine starts. After display
+updates it publishes `__scummwebEvaluationState` with protocol version,
+`engine_id`, `room_id`, `room_name`, `room_ready`, and native monotonic time.
+`room_ready` requires no pending room change and no running cutaway; it does not
+assert that dialogue has finished. Room 71 is the hotel downstairs/laundry room
+in the pinned Queen source; confirm its real arrival semantics before scoring a
+new benchmark.
+
+Room/ready transitions are retained in `__scummwebEvaluationEvents` until the
+host consumes them. The queue holds at most 256 events and sets an explicit
+overflow flag rather than silently losing arrivals. Keep all evaluator state
+out of ordinary player observations. This provider is Queen-specific and needs
+a native rebuild; regenerating browser shell templates alone cannot add it.
 
 ## Rebuilding and upgrading ScummVM
 
@@ -785,14 +809,25 @@ dates and prompts. Original artwork, lettering and brands remain the property
 of their respective creators and rights holders. These revisions use verified immutable R2 objects and responsive delivery
 variants.
 
-Restored box fronts also cover 136 additional recognized games. Together with the
-eleven bundled covers, 147 of the 160 recognized games use generated restorations.
-The remaining thirteen retain their original images where a verified box-front
-reference or an acceptable faithful restoration was unavailable. Revised covers
+Restored box fronts also cover 135 additional recognized games. Together with the
+eleven bundled covers, 146 of the 160 recognized games use generated restorations.
+Eight retain their original images where a verified box-front reference or an
+acceptable faithful restoration was unavailable. Restored covers
 preserve original title lettering, artwork and branding; selected printed screenshot
 insets are removed where a clean version preserves the cover's identity. Gameplay
 galleries remain original captures. Source references, prompts and every generated
 revision remain in the registry.
+
+Six explicitly approved illustrated redesigns cover Road, Bear Stormin', Blue's
+Treasure Hunt, Chivalry is Not Dead, Hugo's House of Horrors and Hugo III: Jungle
+of Doom. These are new promotional compositions inspired by the games' visual
+styles and characters, rather than restorations of official packaging. Their
+registry entries use `creativeBasis: "original-illustrated-cover"` and retain
+the original box-art or gameplay references, exact prompts and source hashes.
+Gameplay references guide style and setting only; the original captures remain
+unchanged. These covers use the same 900×1200 export and verified R2 delivery
+pipeline as restored covers. This approved set is an exception to the default
+box-front restoration requirement above.
 
 `data/generated-artwork.json` records each generated revision's date, role,
 reference sources, prompt or historical prompt summary, source/export hashes,
@@ -1017,9 +1052,10 @@ or request-time rendering.
   share identical artwork, and retain image references only for the current
   window. A failed preload does not prevent slideshow navigation.
   At widths up to 48rem, the hero is static with no slideshow controls or animation.
-  Each homepage load randomly picks an included catalog group, excluding the previous
-  pick stored in session storage when alternatives exist. Storage failures fall back
-  to a random pick without persistence. Direct routes and `#slide=` selections take
+  The homepage keeps its server-rendered featured game on mobile, avoiding a
+  post-load random replacement of the artwork, text and screenshot gallery.
+  Responsive desktop and mobile copy is present in the initial HTML; CSS selects
+  the visible version before hydration. Direct routes and `#slide=` selections take
   precedence. The selected game stays stable while local sources restore, and mobile
   only preloads its current backdrop. Desktop retains its normal slideshow behavior.
   Mobile uses full-width artwork, natural-height mixed-case titles, compact summaries

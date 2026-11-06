@@ -12160,12 +12160,12 @@
       "generatedOn": "2026-11-06",
       "generator": "image_gen (built-in)",
       "creativeBasis": "original-illustrated-cover",
-      "stage": "preview",
+      "stage": "ready",
       "targetSize": {
         "width": 900,
         "height": 1200
       },
-      "deliveryOptimized": false,
+      "deliveryOptimized": true,
       "master": {
         "sha256": "4985388744a1e0fdb9afe5d699062a016149bd239769c2756d8d199499d7de9b",
         "width": 1086,
@@ -12197,12 +12197,12 @@
       "generatedOn": "2026-11-06",
       "generator": "image_gen (built-in)",
       "creativeBasis": "original-illustrated-cover",
-      "stage": "preview",
+      "stage": "ready",
       "targetSize": {
         "width": 900,
         "height": 1200
       },
-      "deliveryOptimized": false,
+      "deliveryOptimized": true,
       "master": {
         "sha256": "9540c585fdcea90d6ff1750759af537841c8594e0c7cb0db7521b1d495b6b4c8",
         "width": 1086,
@@ -12234,12 +12234,12 @@
       "generatedOn": "2026-11-06",
       "generator": "image_gen (built-in)",
       "creativeBasis": "original-illustrated-cover",
-      "stage": "preview",
+      "stage": "ready",
       "targetSize": {
         "width": 900,
         "height": 1200
       },
-      "deliveryOptimized": false,
+      "deliveryOptimized": true,
       "master": {
         "sha256": "24c29f2d0821d5d412643e28f914ac3afba4aff408048535eec5403bda81ad62",
         "width": 1086,
@@ -12271,12 +12271,12 @@
       "generatedOn": "2026-11-06",
       "generator": "image_gen (built-in)",
       "creativeBasis": "original-illustrated-cover",
-      "stage": "preview",
+      "stage": "ready",
       "targetSize": {
         "width": 900,
         "height": 1200
       },
-      "deliveryOptimized": false,
+      "deliveryOptimized": true,
       "master": {
         "sha256": "6fc6aa44dba72ed81643b9f8f76c4d2f9fa07d935e66e3fcc28d395d2842996d",
         "width": 1086,
@@ -12308,12 +12308,12 @@
       "generatedOn": "2026-11-06",
       "generator": "image_gen (built-in)",
       "creativeBasis": "original-illustrated-cover",
-      "stage": "preview",
+      "stage": "ready",
       "targetSize": {
         "width": 900,
         "height": 1200
       },
-      "deliveryOptimized": false,
+      "deliveryOptimized": true,
       "master": {
         "sha256": "2c03c0f968b830c203314e8980b860f7722316b08ad8fb94bf14df956f92726f",
         "width": 1086,
@@ -12345,12 +12345,12 @@
       "generatedOn": "2026-11-06",
       "generator": "image_gen (built-in)",
       "creativeBasis": "original-illustrated-cover",
-      "stage": "preview",
+      "stage": "ready",
       "targetSize": {
         "width": 900,
         "height": 1200
       },
-      "deliveryOptimized": false,
+      "deliveryOptimized": true,
       "master": {
         "sha256": "5d052ab18079cb5cf39189aaaf5bba57914f3641fcbe59f63796f419c0c7ab71",
         "width": 1086,

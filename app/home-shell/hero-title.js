@@ -24,7 +24,6 @@ export default function HeroTitle({ title, children, fit = true }) {
     fitHeading();
     const observer = new ResizeObserver(fitHeading);
     observer.observe(heading);
-    void document.fonts.ready.then(fitHeading);
     return () => {
       active = false;
       observer.disconnect();

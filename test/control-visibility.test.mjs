@@ -6,6 +6,10 @@ function player(menuShortcut, { initiallyCaptured = false } = {}) {
   const host = new EventTarget();
   host.documentElement = new EventTarget();
   const game = new EventTarget();
+  game.documentElement = new EventTarget();
+  const canvas = new EventTarget();
+  canvas.getBoundingClientRect = () => ({ left: 200, top: 0, right: 1000, bottom: 700 });
+  game.getElementById = (id) => id === "canvas" ? canvas : null;
   if (initiallyCaptured) game.pointerLockElement = {};
   const controls = new EventTarget();
   controls.ownerDocument = host;
@@ -29,9 +33,9 @@ function player(menuShortcut, { initiallyCaptured = false } = {}) {
     target.dispatchEvent(event);
   };
   return {
-    host, game, controls, frame, observer, timers, fire,
+    host, game, canvas, controls, frame, observer, timers, fire,
     get visible() { return visible; },
-    move(y, target = game) { fire(target, "pointermove", { pointerType: "mouse", clientY: y, view: target === host ? hostWindow : frame.contentWindow }); },
+    move(y, target = game, x = 500) { fire(target, "pointermove", { pointerType: "mouse", clientX: x, clientY: y, view: target === host ? hostWindow : frame.contentWindow }); },
     advance(ms) {
       const until = now + ms;
       for (;;) {
@@ -64,6 +68,9 @@ test("controls start visible, reveal across both documents, and hide despite con
   assert.equal(client.visible, true);
   client.fire(client.host.documentElement, "pointerleave");
   client.advance(1000);
+  assert.equal(client.visible, true);
+  client.move(400);
+  client.advance(1000);
   assert.equal(client.visible, false);
   client.observer.dispose();
 });
@@ -81,6 +88,55 @@ test("Tab reveals hidden controls and focused controls cannot time out", () => {
   client.fire(client.controls, "focusout");
   client.host.activeElement = null;
   client.advance(1000);
+  assert.equal(client.visible, false);
+  client.observer.dispose();
+});
+
+test("leaving any canvas edge reveals controls and keeps them visible until gameplay resumes", () => {
+  const client = player();
+  client.canvas.getBoundingClientRect = () => ({ left: 200, top: 100, right: 1000, bottom: 700 });
+  for (const [x, y] of [[199, 400], [1000, 400], [500, 99], [500, 700]]) {
+    client.move(400);
+    client.advance(3000);
+    assert.equal(client.visible, false);
+    client.move(y, client.game, x);
+    assert.equal(client.visible, true);
+    client.advance(5000);
+    assert.equal(client.visible, true, "stationary pointer outside the canvas keeps controls visible");
+  }
+  client.move(400);
+  client.advance(1000);
+  assert.equal(client.visible, false);
+  client.move(400, client.host);
+  assert.equal(client.visible, true, "leaving the iframe also reveals controls away from the top edge");
+  client.observer.dispose();
+});
+
+test("canvas and document pointer exits reveal controls without a subsequent move", () => {
+  const client = player();
+  for (const target of [client.canvas, client.game.documentElement, client.host.documentElement]) {
+    client.move(400);
+    client.advance(3000);
+    const event = new Event("pointerleave");
+    Object.defineProperty(event, "target", { value: target });
+    client.game.dispatchEvent(event);
+    assert.equal(client.visible, true);
+    client.advance(5000);
+    assert.equal(client.visible, true);
+  }
+  client.observer.dispose();
+});
+
+test("touch and captured pointer exits do not reveal controls", () => {
+  const client = player();
+  client.advance(3000);
+  client.fire(client.game, "pointermove", { pointerType: "touch", clientX: 0, clientY: 400, view: client.frame.contentWindow });
+  client.fire(client.host.documentElement, "pointerleave", { pointerType: "touch" });
+  assert.equal(client.visible, false);
+  client.game.pointerLockElement = client.canvas;
+  client.fire(client.game, "pointerlockchange");
+  client.move(400, client.game, 0);
+  client.fire(client.host.documentElement, "pointerleave");
   assert.equal(client.visible, false);
   client.observer.dispose();
 });
@@ -136,6 +192,7 @@ test("cursor capture clears toolbar focus so it cannot keep buttons visible", ()
 test("frame navigation immediately honors an already captured cursor", () => {
   const client = player();
   const replacement = new EventTarget();
+  replacement.getElementById = () => null;
   replacement.pointerLockElement = {};
   client.frame.contentDocument = replacement;
   client.fire(client.frame, "load");
@@ -175,6 +232,7 @@ test("the game's configured menu shortcut also keeps controls visible", () => {
 test("frame navigation replaces listeners and disposal cancels pending work", () => {
   const client = player();
   const replacement = new EventTarget();
+  replacement.getElementById = () => null;
   client.frame.contentDocument = replacement;
   client.fire(client.frame, "load");
   client.advance(3000);

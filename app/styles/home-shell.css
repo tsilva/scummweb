@@ -369,6 +369,10 @@ button.nav-icon-link {
   overflow-wrap: anywhere;
 }
 
+.hero-mobile-copy {
+  display: none;
+}
+
 .hero-summary,
 .spotlight-copy p,
 .footer-copy p {
