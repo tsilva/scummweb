@@ -11,22 +11,16 @@
       "evidence": "Codex native ImageGen output exec-454f4e96-d931-485c-ab6d-f4f9445e1fb1.png. Exact model was not disclosed."
     },
     {
-      "path": "image-assets/sources/icon-source.png",
-      "sha256": "13cbcf25e654f6a03c4bf8682f95447e3105bdceb403f6c5c1472408e4874347",
-      "generatedAt": "2026-11-03T16:15:03Z",
-      "evidence": "Codex native ImageGen output exec-7d2559f6-1e1f-44e0-b5ec-aac9a8ec246e.png. Exact model was not disclosed."
-    },
-    {
       "path": "image-assets/sources/social-source.png",
       "sha256": "811f81b9ab3022244136f5db8f9cd1f662be026d42c0d1ad8831034f04223df5",
       "generatedAt": "2026-11-03T16:15:41Z",
       "evidence": "Codex native ImageGen output exec-d49cce0a-2d9e-4898-9a89-85a3d0031820.png. Exact model was not disclosed."
     },
     {
-      "path": "image-assets/sources/favicon-source.svg",
-      "sha256": "96b1348deb1883b7302baea5e71bb53a67434d2535cc979d23cf5dedd2cd391a",
-      "createdAt": "2026-11-04",
-      "evidence": "Hand-authored SVG SW monogram inspired by the green lettering and charcoal outline of https://www.scummvm.org/favicon-32x32.png; rendered by scripts/generate-favicon-assets.mjs."
+      "path": "image-assets/sources/icon-source.png",
+      "sha256": "8f7fb49aa9baed0d236aca52435a0c668a513affe0c64b8b732f13285bd66032",
+      "generatedAt": "2026-11-06",
+      "evidence": "Codex native ImageGen output exec-157f6e05-5c1a-44ed-9d43-84736a4ad944.png; untouched Emerald Cartridge source selected from the green-S/grey-W app-icon concept. Exact model was not disclosed."
     }
   ],
   "exports": [
@@ -37,34 +31,124 @@
       "source": "image-assets/sources/logo-source.png"
     },
     {
-      "role": "favicon",
-      "path": "scummvm-shell/favicon.ico",
-      "sha256": "659f5d7692c02a87d82c9f96bbd000db7be7b088d032c18b0ec66c15e8686cd5",
-      "source": "image-assets/sources/favicon-source.svg"
-    },
-    {
       "role": "social-preview",
       "path": "public/brand/web-seo/og-image-1200x630.png",
       "sha256": "e4667827845aabf3751ad3c5f8d5327541a06a07dbd8a2126777469e36230c13",
       "source": "image-assets/sources/social-source.png"
     },
     {
+      "role": "favicon",
+      "path": "public/brand/web-seo/favicon/favicon-16.png",
+      "sha256": "f4203c3cf01ea4ddbe05de07789ffb5c8bf09ef000fbfbef2e90783a53d8b62c",
+      "source": "image-assets/sources/icon-source.png"
+    },
+    {
+      "role": "favicon",
+      "path": "public/brand/web-seo/favicon/favicon-32.png",
+      "sha256": "8b28b53d49e6aa978fec83c098e9544b4ab96ac81b81813acb9cff87cd649cea",
+      "source": "image-assets/sources/icon-source.png"
+    },
+    {
+      "role": "favicon",
+      "path": "public/brand/web-seo/favicon/favicon-48.png",
+      "sha256": "eca3a9e2419ed53b4999f7ab5721d513485fec65a89c48605bf0b91f8fb587c8",
+      "source": "image-assets/sources/icon-source.png"
+    },
+    {
+      "role": "favicon-svg",
+      "path": "image-assets/sources/favicon-source.svg",
+      "sha256": "cf96a060a8bd8919d7ca17f254c3ad965e1dff9f7340f4b39d15f9528e631b7a",
+      "source": "image-assets/sources/icon-source.png"
+    },
+    {
+      "role": "favicon",
+      "path": "public/brand/web-seo/favicon/favicon.ico",
+      "sha256": "84b25f57295ef7abbe14023c5d07696f211bee435d8014db7898c0ca70b94622",
+      "source": "image-assets/sources/icon-source.png"
+    },
+    {
+      "role": "favicon-svg",
+      "path": "public/brand/web-seo/favicon/favicon.svg",
+      "sha256": "cf96a060a8bd8919d7ca17f254c3ad965e1dff9f7340f4b39d15f9528e631b7a",
+      "source": "image-assets/sources/icon-source.png"
+    },
+    {
+      "role": "favicon",
+      "path": "scummvm-shell/favicon.ico",
+      "sha256": "84b25f57295ef7abbe14023c5d07696f211bee435d8014db7898c0ca70b94622",
+      "source": "image-assets/sources/icon-source.png"
+    },
+    {
+      "role": "favicon-svg",
+      "path": "scummvm-shell/favicon.svg",
+      "sha256": "cf96a060a8bd8919d7ca17f254c3ad965e1dff9f7340f4b39d15f9528e631b7a",
+      "source": "image-assets/sources/icon-source.png"
+    },
+    {
+      "role": "favicon",
+      "path": "public/favicon.ico",
+      "sha256": "84b25f57295ef7abbe14023c5d07696f211bee435d8014db7898c0ca70b94622",
+      "source": "image-assets/sources/icon-source.png"
+    },
+    {
+      "role": "favicon-svg",
+      "path": "public/favicon.svg",
+      "sha256": "cf96a060a8bd8919d7ca17f254c3ad965e1dff9f7340f4b39d15f9528e631b7a",
+      "source": "image-assets/sources/icon-source.png"
+    },
+    {
+      "role": "app-icon",
+      "path": "public/brand/icon/icon-1024.png",
+      "sha256": "0f6ad17f9f88465c08996717bbb6f0eed2beacfee9f443b01ed6ec352bd2d2f7",
+      "source": "image-assets/sources/icon-source.png"
+    },
+    {
       "role": "apple-touch-icon",
       "path": "public/brand/web-seo/apple-touch-icon.png",
-      "sha256": "15acc54945ff4aee8d07787cd56589cbf46b3e06cd733f88490f7cdb83422907",
-      "source": "image-assets/sources/favicon-source.svg"
+      "sha256": "d9b378ca73186740e23efa866487ae02f1586a9366c275d947dddbd18684eab8",
+      "source": "image-assets/sources/icon-source.png"
     },
     {
       "role": "install-icon",
       "path": "public/brand/web-seo/android-chrome-192.png",
-      "sha256": "5e9eb73a97c453234bb9a1978ac24281477ee313b3e005d630749f5e3a128041",
-      "source": "image-assets/sources/favicon-source.svg"
+      "sha256": "e2338ef7c68e022ddacf215b3588d55f0e32ddfd734e88134ef14a84d83ddb2c",
+      "source": "image-assets/sources/icon-source.png"
+    },
+    {
+      "role": "install-icon",
+      "path": "scummvm-shell/scummvm-192.png",
+      "sha256": "e2338ef7c68e022ddacf215b3588d55f0e32ddfd734e88134ef14a84d83ddb2c",
+      "source": "image-assets/sources/icon-source.png"
+    },
+    {
+      "role": "install-icon",
+      "path": "public/scummvm-192.png",
+      "sha256": "e2338ef7c68e022ddacf215b3588d55f0e32ddfd734e88134ef14a84d83ddb2c",
+      "source": "image-assets/sources/icon-source.png"
     },
     {
       "role": "install-icon",
       "path": "public/brand/web-seo/android-chrome-512.png",
-      "sha256": "d1093accfb9d92c43c972152b44dd1bb5f31960b1fea76b57ee7d9037006e3be",
-      "source": "image-assets/sources/favicon-source.svg"
+      "sha256": "e946120f8c297e0bae5fa827dfbbe9a24990b7c0e36462994a66519c19c155e9",
+      "source": "image-assets/sources/icon-source.png"
+    },
+    {
+      "role": "install-icon",
+      "path": "scummvm-shell/scummvm-512.png",
+      "sha256": "e946120f8c297e0bae5fa827dfbbe9a24990b7c0e36462994a66519c19c155e9",
+      "source": "image-assets/sources/icon-source.png"
+    },
+    {
+      "role": "install-icon",
+      "path": "public/scummvm-512.png",
+      "sha256": "e946120f8c297e0bae5fa827dfbbe9a24990b7c0e36462994a66519c19c155e9",
+      "source": "image-assets/sources/icon-source.png"
+    },
+    {
+      "role": "web-manifest",
+      "path": "public/brand/web-seo/site.webmanifest",
+      "sha256": "022d53cce66d593c63c3373c90fcc9f6b1e6e67af13ab6706975d2a01a59fad9",
+      "source": "image-assets/sources/icon-source.png"
     }
   ]
 }

@@ -232,6 +232,10 @@ disappear from the strip. The strip stays hidden until there is play history.
 The sliders icon beside **Game Library** opens sorting by name, release year,
 genre, or studio and genre filtering for both public and imported games. Select
 **All genres** to remove the filter or **Name: A–Z** to restore alphabetical order.
+Name order keeps numbered series in installment order, treating Roman and Arabic
+numerals alike. Sort-only aliases in `lib/game-title-sort.mjs` place unnumbered
+first games and irregularly named sequels with their series. These aliases also
+apply to imported games and name tie-breaks, preserving displayed titles and URLs.
 The **Compatibility** navigation link opens the compatibility page, with search
 and filters for checked editions, warnings, failures, and untested games. See
 [game testing](game-testing.md) for the same results and their limitations.
@@ -827,16 +831,22 @@ Game pages use their individual social cards. The shell finalizer copies the
 browser and install icons from [`public/brand/web-seo/`](../public/brand/web-seo/)
 into the managed shell during ScummVM rebuilds.
 
-The browser favicon is a green **SW** monogram with a charcoal outline, inspired
-by the [ScummVM favicon](https://www.scummvm.org/favicon-32x32.png). Its editable
-source is [`image-assets/sources/favicon-source.svg`](../image-assets/sources/favicon-source.svg).
-Run `node scripts/generate-favicon-assets.mjs` after editing it to regenerate the
-SVG, 16/32/48px PNGs, and ICO in the branding, managed shell, and staged public
-directories. Browser tabs and installed apps use this same monogram. The command
-also renders 192/512px install icons directly from the vector source and an opaque
-180px Apple touch icon, updates install-icon URLs in the shell and public manifests,
-and records the install exports in the provenance file. Install icons use the
-standard `any` purpose; the monogram is not designed for maskable cropping.
+Browser tabs and installed apps use the Emerald Cartridge icon: a green **S** and
+silver-grey **W** on a beveled emerald tile with a recessed cartridge groove.
+The untouched generated source is
+[`image-assets/sources/icon-source.png`](../image-assets/sources/icon-source.png).
+Run `node scripts/generate-favicon-assets.mjs` after replacing it and updating its
+generation evidence in the provenance record. The command derives 16/32/48px
+PNGs, an ICO, a compact SVG embedding the 64px rendition, 192/512px install icons,
+an opaque 180px Apple touch icon, and the 1024px branding icon. The SVG at
+`image-assets/sources/favicon-source.svg` is a generated compatibility export,
+not an editable vector source. The command updates the branding, managed shell,
+staged public files, both web manifests, export fingerprints and
+`image-assets/icon-versions.json`. App metadata uses these content versions to
+refresh favicon, manifest and Apple touch icon URLs when artwork changes.
+Install icons use the standard `any` purpose; they are not designed for maskable
+cropping. Existing installations may refresh their icons on the platform's own
+schedule or require reinstalling after deployment.
 
 ### Social preview assets
 
@@ -1033,8 +1043,9 @@ or request-time rendering.
   fragment. Library cards and slideshow entries group recognized versions using
   engine/game identity, with demos separated from full releases. Unrecognized
   sources stay separate. Version counts remain on cards; the hero contains a
-  Version dropdown showing platform, language, edition, and source type; unknown
-  metadata stays explicitly unknown. Remember the last selected available version,
+  Version dropdown showing known platform, language, and edition details, omitting
+  storage types and missing metadata. Use a numbered version label when no details
+  are available; never infer a language from the game title alone. Remember the last selected available version,
   otherwise prefer an available copy matching the browser language. File access
   and launch always apply to that selection. Missing sources use the primary
   file-location action. The hero omits filenames, auxiliary file-management

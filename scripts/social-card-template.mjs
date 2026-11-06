@@ -31,7 +31,7 @@ export async function renderSocialCard(card, artwork) {
     h("div", { style: { display: "flex", flexDirection: "column", gap: "22px", width: "72%" } },
     h("div", { style: { display: "flex", gap: "14px", alignItems: "center", flexWrap: "wrap",
       fontSize: "26px", color: "#e1eade",
-    } }, h("span", null, card.eyebrow), h("span", null, card.year), h("span", null, card.badge)),
+    } }, h("span", null, card.eyebrow), h("span", null, card.year), card.badge ? h("span", null, card.badge) : null),
     h("div", { style: { display: "flex", flexDirection: "column", gap: "18px" } },
     h("div", { style: { fontSize: "68px", lineHeight: 1.02, fontWeight: 800 } }, card.title),
     h("div", { style: { fontSize: "29px", lineHeight: 1.35, color: "#f5f6ef" } }, card.summary))),

@@ -1,4 +1,5 @@
 import { addGameRoutes } from "../lib/catalog.mjs";
+import { compareGameTitles } from "../lib/game-title-sort.mjs";
 import { getGamePresentation, getRecognizedGamePresentations } from "./game-presentation.js";
 import { getGameFamilyKey } from "./game-versions.mjs";
 
@@ -15,5 +16,5 @@ export function getRecognizedGames(bundledGames) {
   return addGameRoutes(games).map((game) => ({
     ...game,
     playHref: game.importRequired ? null : game.playHref,
-  })).sort((a, b) => a.displayTitle.localeCompare(b.displayTitle, "en", { sensitivity: "base", numeric: true }));
+  })).sort((a, b) => compareGameTitles(a.displayTitle, b.displayTitle));
 }

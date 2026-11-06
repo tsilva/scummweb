@@ -38,7 +38,7 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
-  const [notice, setNotice] = useState("");
+  const [notice, setNotice] = useState(null);
   const recognizedGames = useMemo(() => getRecognizedGames(catalog), [catalog]);
   const isHomePage = pathname === "/" || (!pathname && initiallyHome);
   const featuredGame = recognizedGames.find((game) => game.href === pathname) ?? initialFeaturedGame;
@@ -52,6 +52,10 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
   const fileInput = useRef(null);
   const replacingSource = useRef(null);
   const entriesRef = useRef([]);
+
+  function showNotice(message, tone = "error") {
+    setNotice({ message, tone });
+  }
 
   useEffect(() => {
     const sync = () => setSelection(readHeroSelection(window.location.hash));
@@ -111,7 +115,7 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
       try {
         saved = await readGameSources(catalog, officialUrl);
       } catch {
-        if (active) setNotice("Could not load saved games from this browser.");
+        if (active) showNotice("Could not load saved games from this browser.");
       }
       if (!active) return;
       const sourcesById = new Map(saved.map((source) => [source.id, source]));
@@ -183,11 +187,11 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
     setEntries((current) => current.filter(({ source }) => !ids.has(source.id)));
   }
 
-  async function run(action, reportError = setNotice) {
+  async function run(action, reportError = showNotice) {
     if (loading || working.current) return;
     working.current = true;
     setBusy(true);
-    setNotice("");
+    setNotice(null);
     try {
       await action();
     } catch (error) {
@@ -332,7 +336,7 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
         const data = sessionGames.get(source.id);
         if (!data && !source.handle) {
           updateStatus(source, "locate");
-          setNotice("Locate the game ZIP to play again.");
+          showNotice("Locate the game ZIP to play again.");
           return;
         }
         try {
@@ -342,7 +346,7 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
         } catch (error) {
           const permission = ["NotAllowedError", "SecurityError"].includes(error?.name);
           updateStatus(source, permission ? "permission" : "missing");
-          setNotice(permission ? "Allow file access to play this game."
+          showNotice(permission ? "Allow file access to play this game."
             : "Could not open the ZIP. Locate the file to reconnect it.");
           return;
         }
@@ -362,9 +366,9 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
         const archiveFiles = await inspectLocalSourceFiles(source, new WeakMap()).catch(() => []);
         setEntries((current) => current.map((entry) => entry.source === source ? { ...entry, archiveFiles } : entry));
       }
-      setNotice(status === "available" ? "File access allowed. You can now play."
+      showNotice(status === "available" ? "File access allowed. You can now play."
         : status === "permission" ? "File access was not allowed. Try again and allow access in your browser to play."
-        : "Could not open the ZIP. Locate the file to reconnect it.");
+        : "Could not open the ZIP. Locate the file to reconnect it.", status === "available" ? "success" : "error");
     });
   }
 

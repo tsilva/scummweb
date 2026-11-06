@@ -1,5 +1,6 @@
 import sourceInfo from "../scummvm-shell/source-info.json" with { type: "json" };
 import runtimeAssets from "../scummvm-shell/runtime-version.json" with { type: "json" };
+import iconVersions from "../image-assets/icon-versions.json" with { type: "json" };
 import { artworkUrl } from "../lib/artwork-storage.mjs";
 
 function sanitizeAssetVersion(rawVersion) {
@@ -23,7 +24,7 @@ export const scummvmAssetVersion = sanitizeAssetVersion(
 );
 
 export function getAssetVersion(assetPath) {
-  return runtimeAssets.files[assetPath] || scummvmAssetVersion;
+  return iconVersions[assetPath] || runtimeAssets.files[assetPath] || scummvmAssetVersion;
 }
 
 function appendAssetVersion(url) {
