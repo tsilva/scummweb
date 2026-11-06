@@ -9,6 +9,7 @@ import GameScreenshots from "./game-screenshots";
 import { getHeroImageProps } from "./hero-images.mjs";
 import { getDialogLinkProps, getHeroImageStyle } from "./shared";
 import { initialActionsMarkup } from "./initial-actions.mjs";
+import { formatVersionLabel } from "../game-versions.mjs";
 
 export default function HeroStage({
   carouselProps,
@@ -33,6 +34,8 @@ export default function HeroStage({
   const metadata = [featuredGame.studio, featuredGame.year, featuredGame.genre].filter(Boolean);
   const selectedVersion = versions.find(({ key }) => key === selectedVersionKey) || versions[0];
   const versionLabel = selectedVersion?.label || featuredGame.badge || "Included version";
+  const editionLabel = formatVersionLabel(featuredGame, { showRevision: false })
+    || (featuredGame.importRequired && featuredGame.badge) || "Included version";
   const hasMultipleVersions = versions.length > 1;
 
   return (
@@ -57,8 +60,7 @@ export default function HeroStage({
             </> : heroTitle}</HeroTitle>
             <p className="hero-mobile-facts">
               <span>{[featuredGame.studio, featuredGame.year].filter(Boolean).join(" · ")}</span>
-              <span className="hero-edition" data-reserved={hasMultipleVersions || undefined}
-                aria-hidden={hasMultipleVersions || undefined} title={versionLabel}>{versionLabel}</span>
+              <span className="hero-edition" title={editionLabel}>{editionLabel}</span>
             </p>
             <p className="hero-summary">
               <span className="hero-desktop-copy">{heroSummary}</span>
@@ -66,8 +68,7 @@ export default function HeroStage({
             </p>
             <ul className="hero-facts" aria-label="Game information">
               {metadata.map((value, index) => <li key={`${index}:${value}`}>{value}</li>)}
-              <li className="hero-edition" data-reserved={hasMultipleVersions || undefined}
-                aria-hidden={hasMultipleVersions || undefined} title={versionLabel}>{versionLabel}</li>
+              <li className="hero-edition" title={editionLabel}>{editionLabel}</li>
             </ul>
           </div>
           <div className="hero-launch">

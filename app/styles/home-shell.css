@@ -1641,11 +1641,6 @@ button.nav-icon-link {
   max-width: 100%;
 }
 
-/* Keep both edition slots aligned across games with different version counts. */
-.hero-edition[data-reserved] {
-  visibility: hidden;
-}
-
 .hero-version-control[data-reserved] {
   visibility: hidden;
 }

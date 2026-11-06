@@ -9,14 +9,17 @@ use the version selector below **Play** and **Browse Games** in the hero to sele
 a copy. The buttons share the first row; **Browse Games** links to the library
 when **Start from beginning** is absent. The borderless selector sits below them
 and spans the combined width of both buttons on desktop and mobile. Games
-with one version show an edition badge beside their metadata instead of a selector.
+with one version show an edition badge beside their metadata without a selector.
 The empty selector row retains its height for single-version games, keeping the
 hero and launch controls aligned when switching games.
 The Readme / License row retains its space when an edition has no link, keeping
 the hero and launch controls in place when switching editions.
-The badge is hidden when multiple versions are available. Both positions reserve
-their layout space so restoring versions does not move nearby controls or resize
-the hero. ScummWEB remembers your available selection; otherwise it selects the
+The edition badge remains visible when multiple versions are available and shows
+language, platform and media, omitting revision numbers. Revision numbers remain
+in the version selector. Genre labels use sentence capitalization and the game's
+shared category, so restoring an imported edition does not change its category.
+The selector reserves its layout space so restoring versions does not move nearby
+controls or resize the hero. ScummWEB remembers your available selection; otherwise it selects the
 latest known revision, preferring the included copy or browser language when
 revisions match or are unknown. Demos stay separate from full games. Each imported version has
 separate browser saves. Supported engines offer **Continue** and **Start from
@@ -1091,9 +1094,9 @@ or request-time rendering.
   Adventures, both included in the collection.
   The homepage uses a game's landscape artwork or gameplay capture as its
   slideshow backdrop. Heroes share save-aware Play, Continue, Start from beginning
-  and reconnect actions. One known edition shows a metadata badge; multiple
-  editions show an inline Version selector instead. Both slots retain their space
-  while hidden, so restoring local editions does not move the action row or
+  and reconnect actions. The metadata badge stays visible for all edition counts;
+  multiple editions also show an inline Version selector. The selector retains its
+  space while hidden, so restoring local editions does not move the action row or
   change the hero's height. Hidden slots contain no focusable controls.
   Continue refreshes after browser saves change or the page is restored.
   Launch options read the browser save index before first paint. A local summary
@@ -1194,8 +1197,9 @@ or request-time rendering.
   all games, omitting unknown fields. Normalize platform and language names,
   preserve disc counts such as `2CD`, and retain revision precision. Graphics
   appear only when multiple known modes distinguish editions on the same platform;
-  one edition or identical modes omit graphics. Hero edition badges use the same
-  formatted metadata. Identical labels receive `Copy 1`, `Copy 2` suffixes without
+  one edition or identical modes omit graphics. Hero edition badges show language,
+  platform and media without graphics, revisions or copy suffixes.
+  Identical selector labels receive `Copy 1`, `Copy 2` suffixes without
   exposing filenames; source IDs, launch actions and saves remain unchanged.
   Beneath a Steel Sky CD imports identify
   revisions v0.0368 and v0.0372 from the inspected `sky.dnr` and `sky.dsk` sizes

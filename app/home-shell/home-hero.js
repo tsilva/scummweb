@@ -189,7 +189,7 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
           </button>
         </div>
       ) : null}
-      featuredGame={version.game}
+      featuredGame={{ ...version.game, genre: currentSlide.game.genre ?? version.game.genre }}
       actionsReady={actionsReady}
       initialActions={initialActions}
       sourceAction={version.source ? undefined : version.action}

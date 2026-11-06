@@ -77,8 +77,8 @@ export function getVersionMetadata(game, name = "", archiveFiles = []) {
   };
 }
 
-export function formatVersionLabel(game, { showGraphics = false } = {}) {
-  return [game.language, game.platform, game.media, showGraphics && game.graphics, game.revision]
+export function formatVersionLabel(game, { showGraphics = false, showRevision = true } = {}) {
+  return [game.language, game.platform, game.media, showGraphics && game.graphics, showRevision && game.revision]
     .map(knownValue).filter(Boolean).join(" · ");
 }
 
