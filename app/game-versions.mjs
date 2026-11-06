@@ -1,23 +1,85 @@
-const platformNames = { pc: "DOS", dos: "DOS", amiga: "Amiga", windows: "Windows", macintosh: "Macintosh", atarist: "Atari ST" };
+const platformNames = { pc: "DOS", dos: "DOS", amiga: "Amiga", windows: "Windows", win: "Windows",
+  mac: "Macintosh", macintosh: "Macintosh", atarist: "Atari ST", apple2: "Apple II", linux: "Linux" };
+const languageNames = { en: "English", de: "German", fr: "French", es: "Spanish", it: "Italian",
+  pt: "Portuguese", pl: "Polish", ru: "Russian", nl: "Dutch", ja: "Japanese" };
 
-export function getVersionMetadata(game, name = "") {
+function knownValue(value) {
+  if (typeof value !== "string") return;
+  const text = value.trim();
+  return text && !/^(?:unknown|unspecified|undefined|n\/?a|none|und|unk|-|latest(?: version)?)$/i.test(text) ? text : undefined;
+}
+
+function readPlatform(text) {
+  return [["Atari ST", /\batari\s*st\b/i], ["Apple II", /\bapple\s*(?:ii|2)\b/i],
+    ["Amiga", /\bamiga\b/i], ["Windows", /\bwindows?\b/i], ["Linux", /\blinux\b/i],
+    ["Macintosh", /\bmac(?:intosh)?\b/i], ["DOS", /\bdos\b/i]]
+    .filter(([, pattern]) => pattern.test(text)).map(([name]) => name).join(" / ") || undefined;
+}
+
+function readLanguage(text) {
+  if (/multi[ -]?(?:language|lingual)/i.test(text)) return "Multilingual";
+  return Object.entries(languageNames).find(([code, name]) =>
+    new RegExp(`\\b(?:${name}|${code})\\b`, "i").test(text))?.[1];
+}
+
+function readMedia(text) {
+  const media = text.match(/(?:^|[^.\w])(?:(\d+)\s*)?(CD|DVD|Floppy|Blu-ray)\b/i);
+  if (!media) return;
+  const name = { cd: "CD", dvd: "DVD", floppy: "Floppy", "blu-ray": "Blu-ray" }[media[2].toLowerCase()];
+  return `${media[1] || ""}${name}`;
+}
+
+function readGraphics(text) {
+  return ["SVGA", "VGA", "EGA", "CGA", "Hercules", "High Res", "Low Res"]
+    .find((value) => new RegExp(`\\b${value.replace(" ", "[ -]?")}\\b`, "i").test(text));
+}
+
+function readRevision(text) {
+  return text.match(/\bv\d+(?:\.\d+)*[a-z]?(?:[-+][a-z0-9.]+)?\b/i)?.[0].replace(/^v/i, "v");
+}
+
+function getSkyCdRevision(game, files) {
+  if ((game.familyId || `${game.engineId}:${game.gameId || game.target}`) !== "sky:sky") return;
+  // ScummVM's engines/sky/detection.cpp identifies these CD revisions by
+  // index entry count and data size. sky.dnr has a 4-byte header + 8 bytes/entry.
+  const signatures = [
+    [5099 * 8 + 4, 72429382, "v0.0368"],
+    [5097 * 8 + 4, 72395713, "v0.0372"],
+    [5097 * 8 + 4, 73123264, "v0.0372"],
+  ];
+  const entries = new Map(files.map(([path, size]) => [path.replaceAll("\\", "/").toLowerCase(), size]));
+  const indexes = [...entries].filter(([path]) => /(?:^|\/)sky\.dnr$/.test(path));
+  if (indexes.length !== 1) return;
+  const [indexPath, indexSize] = indexes[0];
+  const dataSize = entries.get(indexPath.replace(/sky\.dnr$/, "sky.dsk"));
+  return signatures.find(([dnr, dsk]) => dnr === indexSize && dsk === dataSize)?.[2];
+}
+
+export function getVersionMetadata(game, name = "", archiveFiles = []) {
+  // Only parenthesized title/filename metadata is parsed: title words are not
+  // evidence of a language or edition. Legacy edition/extra fields are fallbacks.
   const labels = [...(name || game.title || "").matchAll(/\(([^()]*)\)/g)].map(([, label]) => label).join(" ");
-  const platform = [
-    ["Atari ST", /\batari\s*st\b/i], ["Amiga", /\bamiga\b/i],
-    ["Windows", /\bwindows?\b/i], ["Macintosh", /\bmac(?:intosh)?\b/i], ["DOS", /\bdos\b/i],
-  ].find(([, pattern]) => pattern.test(labels))?.[0]
-    || platformNames[game.platform?.toLowerCase()] || game.platform;
-  const language = /multi[ -]?(?:language|lingual)/i.test(labels) ? "Multilingual"
-    : [["English", /\b(?:english|en)\b/i], ["German", /\b(?:german|de)\b/i],
-      ["French", /\b(?:french|fr)\b/i], ["Spanish", /\b(?:spanish|es)\b/i],
-      ["Italian", /\b(?:italian|it)\b/i], ["Portuguese", /\b(?:portuguese|pt)\b/i],
-      ["Polish", /\b(?:polish|pl)\b/i], ["Russian", /\b(?:russian|ru)\b/i],
-      ["Dutch", /\b(?:dutch|nl)\b/i], ["Japanese", /\b(?:japanese|ja)\b/i]]
-      .find(([, pattern]) => pattern.test(labels))?.[0] || game.language;
-  const editions = ["CD", "Floppy", "VGA", "EGA", "Talkie", "Remastered"]
-    .filter((edition) => new RegExp(`\\b${edition}\\b`, "i").test(labels));
-  editions.push(...labels.match(/\bv\d+(?:\.\d+)*\b/gi) || []);
-  return { platform, language, edition: editions.join(" / ") || game.edition || game.extra || undefined };
+  const fallback = [knownValue(game.edition), knownValue(game.extra)].filter(Boolean).join(" ");
+  const rawPlatform = knownValue(game.platform);
+  const rawLanguage = knownValue(game.language);
+  const rawRevision = knownValue(game.revision);
+  const revision = getSkyCdRevision(game, archiveFiles || []);
+  return {
+    language: readLanguage(labels) || (rawLanguage && (languageNames[rawLanguage.toLowerCase()]
+      || readLanguage(rawLanguage) || rawLanguage)) || readLanguage(fallback),
+    platform: revision ? "DOS" : readPlatform(labels)
+      || (rawPlatform && (platformNames[rawPlatform.toLowerCase()] || readPlatform(rawPlatform) || rawPlatform))
+      || readPlatform(fallback),
+    media: revision ? "CD" : readMedia(knownValue(game.media) || "") || readMedia(labels) || readMedia(fallback),
+    graphics: readGraphics(knownValue(game.graphics) || "") || readGraphics(labels) || readGraphics(fallback),
+    revision: revision || (rawRevision && readRevision(/^\d/.test(rawRevision) ? `v${rawRevision}` : rawRevision))
+      || readRevision(labels) || readRevision(fallback),
+  };
+}
+
+export function formatVersionLabel(game, { showGraphics = false } = {}) {
+  return [game.language, game.platform, game.media, showGraphics && game.graphics, game.revision]
+    .map(knownValue).filter(Boolean).join(" · ");
 }
 
 export function getGameFamilyKey(game) {
@@ -32,7 +94,7 @@ export function groupGameVersions(items) {
   const groups = new Map();
   for (const item of items) {
     const key = getGameFamilyKey(item.game) || item.key;
-    const metadata = getVersionMetadata(item.game, item.source?.name);
+    const metadata = getVersionMetadata(item.game, item.source?.name, item.archiveFiles ?? item.source?.archiveFiles);
     const version = { ...item, game: { ...item.game, ...metadata } };
     let group = groups.get(key);
     if (!group) {
@@ -43,13 +105,27 @@ export function groupGameVersions(items) {
     group.versions.push(version);
   }
   for (const group of groups.values()) {
-    const labels = group.versions.map(({ game }, index) => [
-      game.platform, game.language, game.edition,
-    ].filter(Boolean).join(" · ") || `Version ${index + 1}`);
-    group.versions = group.versions.map((version, index) => ({ ...version,
-      label: labels.filter((label) => label === labels[index]).length > 1
-        ? `${labels[index]} · ${version.source?.name || index + 1} (${index + 1})` : labels[index],
+    // Compare graphics within a platform; an Amiga/DOS choice needs no VGA tag.
+    const graphicsByPlatform = new Map();
+    for (const { game } of group.versions) {
+      if (!game.graphics) continue;
+      if (!graphicsByPlatform.has(game.platform)) graphicsByPlatform.set(game.platform, new Set());
+      graphicsByPlatform.get(game.platform).add(game.graphics);
+    }
+    const labels = group.versions.map(({ game }) => formatVersionLabel(game, {
+      showGraphics: graphicsByPlatform.get(game.platform)?.size > 1,
     }));
+    group.versions = group.versions.map((version, index) => {
+      const label = labels[index];
+      const copy = labels.slice(0, index + 1).filter((value) => value === label).length;
+      return { ...version,
+        game: { ...version.game, ...(!version.game.importRequired && {
+          badge: label || null, mobileBadge: label || null,
+        }) },
+        label: !label ? `Version ${index + 1}` : labels.filter((value) => value === label).length > 1
+          ? `${label} · Copy ${copy}` : label,
+      };
+    });
   }
   return [...groups.values()];
 }
