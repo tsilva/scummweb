@@ -1037,18 +1037,16 @@
 
   .hero-actions > .start-fresh-button {
     position: static;
+    grid-column: 1 / -1;
   }
 
   .hero-version-control {
-    flex: none;
     width: 100%;
     border: 0;
-    padding: 0;
+    padding-inline: 0.75rem;
   }
 
   .hero-stage-library .hero-actions {
-    display: flex;
-    flex-direction: column;
     height: auto;
     gap: 0.6rem;
   }
@@ -1059,8 +1057,8 @@
     width: 100%;
     min-height: 3rem;
     height: auto;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
+    padding: 0.75rem 0.5rem;
+    font-size: 0.9rem;
   }
 
   .hero-stage-library .hero-browse {
