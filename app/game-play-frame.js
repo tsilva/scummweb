@@ -1,0 +1,80 @@
+"use client";
+
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import dynamic from "next/dynamic";
+import { ArchivePlayer, RemoteArchivePlayer } from "./archive-play-frame";
+import { checkGameSource, readGameSources } from "./game-sources.mjs";
+import { getMatchingGameSources, getSourceGamePresentation, prepareGameSourcePlayer } from "./game-play-source.mjs";
+import { chooseGameVersion, getGameFamilyKey, readChosenVersion } from "./game-versions.mjs";
+import { getSelectedGamePresentation, openSelectedGameArchive } from "./local-game-archive.mjs";
+import { getRecognizedGames } from "./recognized-games.mjs";
+
+const SourceLibrary = dynamic(() => import("./home-shell/source-library"));
+
+function subscribeToHash(onChange) {
+  window.addEventListener("hashchange", onChange);
+  return () => window.removeEventListener("hashchange", onChange);
+}
+function readGameZip() {
+  return new URLSearchParams(window.location.hash.slice(1)).get("zip");
+}
+const serverGameZip = () => undefined;
+
+export default function GamePlayFrame({ game, catalog, officialUrl, children }) {
+  const recognizedGames = useMemo(() => getRecognizedGames(catalog), [catalog]);
+  const [selection, setSelection] = useState(null);
+  const zip = useSyncExternalStore(subscribeToHash, readGameZip, serverGameZip);
+
+  useEffect(() => {
+    if (zip === undefined) return;
+    const controller = new AbortController();
+    const select = (value) => setSelection({ ...value, zip });
+    const pending = getSelectedGamePresentation();
+    if (pending && getGameFamilyKey(pending) === getGameFamilyKey(game)) {
+      select({ game: pending, loadArchive: openSelectedGameArchive });
+      return () => controller.abort();
+    }
+    if (zip !== null) {
+      select({ remote: true });
+      return () => controller.abort();
+    }
+
+    async function restore() {
+      const remembered = readChosenVersion(getGameFamilyKey(game));
+      if (!game.importRequired && !remembered?.startsWith("source:")) return select({ bundled: true });
+      const sources = getMatchingGameSources(game, await readGameSources(catalog, officialUrl), catalog);
+      const versions = await Promise.all(sources.map(async (source) => ({
+        key: `source:${source.id}`, source, status: await checkGameSource(source),
+        game: getSourceGamePresentation(source, catalog, recognizedGames),
+      })));
+      if (!game.importRequired) versions.unshift({ key: `catalog:${game.target}`, game });
+      const version = chooseGameVersion(versions, remembered);
+      if (controller.signal.aborted) return;
+      if (!version?.source) return select(game.importRequired ? { missing: true } : { bundled: true });
+      if (version.status !== "available") return select({ missing: true });
+      const archive = await prepareGameSourcePlayer(version.source, version.game);
+      if (!controller.signal.aborted) select(archive);
+    }
+    restore().catch(() => {
+      if (!controller.signal.aborted) select(game.importRequired ? { missing: true } : { bundled: true });
+    });
+    return () => controller.abort();
+  }, [game, catalog, recognizedGames, officialUrl, zip]);
+
+  function playArchive(selectedGame, resume) {
+    if (getGameFamilyKey(selectedGame) !== getGameFamilyKey(game)) return false;
+    window.history.replaceState(null, "", `${game.playHref}${resume ? "#continue" : ""}`);
+    setSelection({ game: selectedGame, loadArchive: openSelectedGameArchive, zip: null });
+    return true;
+  }
+
+  if (!selection || selection.zip !== zip) return <p role="status" className="page-shell">Opening {game.displayTitle}…</p>;
+  if (selection.remote) return <RemoteArchivePlayer key={zip} zip={zip} recognizedGames={recognizedGames} />;
+  if (selection.bundled) return children;
+  if (selection.missing) return <div className="page-shell">
+    <a href={game.href}>Return to {game.displayTitle}</a>
+    <SourceLibrary catalog={catalog} featuredGame={game} isHomePage={false} officialUrl={officialUrl}
+      libraryHeading="Game Library" onPlayArchive={playArchive} playerRoute />
+  </div>;
+  return <ArchivePlayer game={selection.game} loadArchive={selection.loadArchive} />;
+}

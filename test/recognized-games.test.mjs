@@ -19,7 +19,7 @@ test("classic freeware has public launch routes while God of Thunder remains imp
   }
   const got = games.find((entry) => entry.familyId === "got:got");
   assert.equal(got.importRequired, true);
-  assert.equal(got.playHref, null);
+  assert.equal(got.playHref, `${got.href}/play`);
 });
 
 test("every recognized family has one landing page, including separate full games and demos", () => {
@@ -34,7 +34,7 @@ test("every recognized family has one landing page, including separate full game
   assert.equal(games.find(({ slug }) => slug === "the-secret-of-monkey-island-demo").importRequired, false);
 });
 
-test("bundled URLs and launch data are preserved and import-only games have no public launch URL", () => {
+test("bundled URLs and launch data are preserved and imported games share the same play routes", () => {
   for (const game of bundled) {
     const page = games.find(({ slug }) => slug === game.slug);
     assert.equal(page.href, game.href);
@@ -44,7 +44,7 @@ test("bundled URLs and launch data are preserved and import-only games have no p
     assert.equal(page.importRequired, false);
   }
   for (const game of games.filter(({ importRequired }) => importRequired)) {
-    assert.equal(game.playHref, null, game.displayTitle);
+    assert.equal(game.playHref, `${game.href}/play`, game.displayTitle);
     assert.equal(game.badge, "Import your copy");
   }
 });

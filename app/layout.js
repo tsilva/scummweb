@@ -75,8 +75,7 @@ export default function RootLayout({ children }) {
             window.dataLayer = window.dataLayer || [];
             window.gtag = function(){window.dataLayer.push(arguments);};
             window.gtag('js', new Date());
-            const isDirectGameLink = location.pathname === '/local/play'
-              && new URLSearchParams(location.hash.slice(1)).has('zip');
+            const isDirectGameLink = new URLSearchParams(location.hash.slice(1)).has('zip');
             window.gtag('config', '${GOOGLE_ANALYTICS_ID}', isDirectGameLink
               ? { page_location: location.origin + location.pathname + location.search }
               : {});

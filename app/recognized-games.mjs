@@ -13,8 +13,5 @@ export function getRecognizedGames(bundledGames) {
     families.add(family);
     games.push({ ...game, importRequired: true, badge: "Import your copy", tag: "Bring your own game" });
   }
-  return addGameRoutes(games).map((game) => ({
-    ...game,
-    playHref: game.importRequired ? null : game.playHref,
-  })).sort((a, b) => compareGameTitles(a.displayTitle, b.displayTitle));
+  return addGameRoutes(games).sort((a, b) => compareGameTitles(a.displayTitle, b.displayTitle));
 }

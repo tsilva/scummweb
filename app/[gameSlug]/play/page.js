@@ -8,20 +8,22 @@ import {
   getPresentedGameBySlug,
 } from "../../game-page-data";
 import GameRouteFrame from "../../game-route-frame";
+import GamePlayFrame from "../../game-play-frame";
+import { getGameLibrary } from "../../game-library";
 import { buildGameExitHref } from "../../home-shell/hero-selection.mjs";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return getGameStaticParams({ playableOnly: true });
+  return getGameStaticParams();
 }
 
 export async function generateMetadata({ params }) {
   const { gameSlug } = await params;
   const game = getPresentedGameBySlug(gameSlug);
 
-  if (!game || game.importRequired) {
+  if (!game) {
     return {
       title: "Game Not Found | ScummWEB",
       robots: {
@@ -38,7 +40,7 @@ export default async function GamePlayRoutePage({ params }) {
   const { gameSlug } = await params;
   const game = getPresentedGameBySlug(gameSlug);
 
-  if (!game || game.importRequired) {
+  if (!game) {
     notFound();
   }
 
@@ -49,15 +51,18 @@ export default async function GamePlayRoutePage({ params }) {
 
   return (
     <main className="game-route-page">
-      <GameRouteFrame
-        key={game.slug}
-        game={game}
-        catalogArchiveUrl={bucketZipUrl(getGamesOrigin(), game.gameId)}
-        skipIntro={game.skipIntro}
-        src={launchHref}
-        target={game.target}
-        title={`${game.displayTitle} playable ScummVM frame`}
-      />
+      <GamePlayFrame key={game.slug} game={game} catalog={getGameLibrary().games}
+        officialUrl={getGamesOrigin()}>
+        {!game.importRequired && <GameRouteFrame
+          key={game.slug}
+          game={game}
+          catalogArchiveUrl={bucketZipUrl(getGamesOrigin(), game.gameId)}
+          skipIntro={game.skipIntro}
+          src={launchHref}
+          target={game.target}
+          title={`${game.displayTitle} playable ScummVM frame`}
+        />}
+      </GamePlayFrame>
     </main>
   );
 }
