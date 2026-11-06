@@ -905,6 +905,7 @@
   }
 
   .hero-stage.hero-stage-library {
+    --hero-action-height: 3.5rem;
     flex: none;
     height: auto;
     min-height: 100svh;
@@ -1007,11 +1008,12 @@
   .hero-stage-library .hero-launch {
     min-height: 0;
     margin-top: 1.1rem;
+    margin-bottom: 6rem;
   }
 
   .hero-launch > .file-access-help {
-    position: static;
-    margin-top: 0.75rem;
+    position: absolute;
+    margin-top: 0;
   }
 
   .hero-version-control {
@@ -1022,13 +1024,12 @@
 
   .hero-stage-library .hero-actions {
     height: auto;
-    grid-template-rows: 3rem;
     gap: 0.6rem;
   }
 
   .hero-actions-placeholder {
     width: 100%;
-    height: 3rem;
+    height: var(--hero-action-height);
     gap: 0.6rem;
   }
 
@@ -1036,10 +1037,12 @@
   .hero-stage-library .hero-actions > .secondary-button {
     flex: none;
     width: 100%;
-    min-height: 3rem;
-    height: auto;
+    min-height: var(--hero-action-height);
+    height: var(--hero-action-height);
     padding: 0.75rem 0.5rem;
     font-size: 0.9rem;
+    line-height: 1.1;
+    text-align: center;
   }
 
   .hero-stage-library .launch-button:not(.game-unavailable):not(.launch-button-pending) {
