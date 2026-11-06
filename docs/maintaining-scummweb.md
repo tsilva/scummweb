@@ -91,6 +91,11 @@ action. A small local summary identifies the last restored edition without
 waiting for IndexedDB. Imported actions remain inactive until file access is
 checked; unknown or stale edition summaries retain reserved placeholders until
 restoration completes. Server HTML retains Play for browsers without JavaScript.
+Loading, cached and restored hero controls share fixed button, version and
+license rows. Cached actions overlay the reserved controls until restoration
+finishes; mobile buttons reserve enough height for two-line labels.
+Mobile file-access and import guidance uses reserved space below those rows,
+so background file checks do not push the scroll cue or screenshots downward.
 Imported versions use their existing isolated save directory even when their
 ZIP name is unrecognized. Individual indexed files are checked for existence,
 size and modification time, so deleting the newest save can expose an older
