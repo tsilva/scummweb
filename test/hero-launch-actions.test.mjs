@@ -5,7 +5,7 @@ import { runInNewContext } from "node:vm";
 import test from "node:test";
 import { renderToStaticMarkup } from "react-dom/server";
 import swc from "next/dist/build/swc/index.js";
-import { chooseGameVersion, readChosenVersion, rememberGameVersion } from "../app/game-versions.mjs";
+import { chooseGameVersion, formatVersionLabel, readChosenVersion, rememberGameVersion } from "../app/game-versions.mjs";
 import * as initialActions from "../app/home-shell/initial-actions.mjs";
 
 await swc.loadBindings();
@@ -50,6 +50,7 @@ const SourceLaunchActions = await loadComponent("../app/home-shell/source-launch
   "../use-browser-save": useBrowserSave, "../browser-saves.mjs": { cancelBrowserSaveQueries() {} },
 });
 const HeroStage = await loadComponent("../app/home-shell/hero-stage.js", {
+  "../game-versions.mjs": { formatVersionLabel },
   "./initial-actions.mjs": { initialActionsMarkup: "" },
   "../launch-button": LaunchButton,
   "../launch-pending": LaunchPending,
@@ -161,7 +162,8 @@ test("multiple versions expose an inline chooser and launch the selected catalog
   assert.equal(slide.props.sourceVersion, undefined);
   const html = renderToStaticMarkup(slide);
   assert.match(html, /<select/);
-  assert.match(html, /class="hero-edition" data-reserved="true" aria-hidden="true"/);
+  assert.match(html, /class="hero-edition" title="Included version">Included version/);
+  assert.doesNotMatch(html, /class="hero-edition" (?:data-reserved|aria-hidden)/);
   assert.doesNotMatch(html, /class="hero-version-control" data-reserved/);
   assert.match(html, />Continue<\/a>/);
   assert.doesNotMatch(html, /aria-haspopup="dialog"/);
@@ -170,10 +172,32 @@ test("multiple versions expose an inline chooser and launch the selected catalog
 
 test("one version shows an edition badge with an empty, non-focusable chooser slot", () => {
   const label = "DOS · CD · v0.0372";
-  const html = renderToStaticMarkup(slideFor([{ key: "catalog:sky", game, label }]));
-  assert.match(html, /<li class="hero-edition" title="DOS · CD · v0.0372">DOS · CD · v0.0372<\/li>/);
+  const html = renderToStaticMarkup(slideFor([{ key: "catalog:sky",
+    game: { ...game, platform: "DOS", media: "CD", revision: "v0.0372" }, label }]));
+  assert.match(html, /<li class="hero-edition" title="DOS · CD">DOS · CD<\/li>/);
   assert.match(html, /<div class="hero-version-control" data-reserved="true" aria-hidden="true"><\/div>/);
   assert.doesNotMatch(html, /<select|hero-version-value/);
+});
+
+test("restoring an imported edition keeps the category and revision-free badge stable", () => {
+  const included = { key: "catalog:sky", label: "DOS · CD · v0.0372",
+    game: { ...game, genre: "Cyberpunk adventure", platform: "DOS", media: "CD", revision: "v0.0372" } };
+  const imported = { key: "source:zip", source: { id: "zip" }, status: "available", label: "DOS · CD · v0.0368",
+    game: { ...included.game, genre: "Adventure", revision: "v0.0368" }, action: { onClick() {} } };
+  const options = { isHomePage: false, groups: [{ key: game.target, game: included.game,
+    versions: [included, imported] }] };
+  for (const key of [null, imported.key]) {
+    preferredVersion = key ? { group: game.target, key } : null;
+    const html = renderToStaticMarkup(slideFor([included], false, key ? options : {
+      ...options, groups: [{ ...options.groups[0], versions: [included] }],
+    }));
+    assert.match(html, /<li>Cyberpunk adventure<\/li>/);
+    assert.match(html, /<li class="hero-edition" title="DOS · CD">DOS · CD<\/li>/);
+    assert.match(html, /<span class="hero-edition" title="DOS · CD">DOS · CD<\/span>/);
+    assert.doesNotMatch(html, /hero-edition[^>]*(?:data-reserved|aria-hidden)/);
+    if (key) assert.match(html, /<option value="source:zip" selected="">DOS · CD · v0.0368/);
+  }
+  preferredVersion = null;
 });
 
 test("hero stays actionable while unrelated sources and version preferences restore", () => {

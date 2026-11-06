@@ -24,6 +24,13 @@ function imported(id, name, status = "available") {
     action: { onClick() {} } };
 }
 
+test("bundled and imported game genres share sentence capitalization", () => {
+  const catalog = getGamePresentation({ target: "sky", engineId: "sky", gameId: "sky" });
+  const local = getImportedGamePresentation("Beneath a Steel Sky (CD DOS).zip");
+  assert.equal(catalog.genre, "Cyberpunk adventure");
+  assert.equal(local.genre, catalog.genre);
+});
+
 test("platform editions share one recognized game card with distinct launch sources", () => {
   const editions = [imported("atari", "Cruise for a Corpse (Atari ST).zip"), imported("dos", "Cruise for a Corpse (VGA DOS).zip")];
   const groups = libraryItems([], editions);

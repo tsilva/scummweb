@@ -119,7 +119,7 @@ const artByTarget = {
     mobileSummary: "Escape a towering dystopian city in this classic cyberpunk adventure.",
     summary:
       "Beneath a Steel Sky opens with a broken hovercar, a towering dystopian city, and the kind of dry wit that only 90s cyberpunk adventures could get away with.",
-    genre: "Cyberpunk Adventure",
+    genre: "Cyberpunk adventure",
     studio: "Revolution Software",
     year: "1994",
     badge: "CD Release",
@@ -160,7 +160,7 @@ const artByTarget = {
     mobileSummary: "Uncover a sinister cult in a rain-soaked city of the future.",
     summary:
       "DreamWeb trades bright heroics for rain, cult dread, and a killer drifting through a diseased future city. It is still one of the strangest things you can boot from ScummVM.",
-    genre: "Noir Thriller",
+    genre: "Noir thriller",
     studio: "Empire Interactive",
     year: "1994",
     badge: "CD Edition",
@@ -182,7 +182,7 @@ const artByTarget = {
     mobileSummary: "Join a pulp pilot on a comic adventure through the Amazon.",
     summary:
       "Flight of the Amazon Queen throws a pulp pilot, a film star, and a lost-city conspiracy into a bright comic-book trek across the Amazon. It is breezier than DreamWeb and a lot better dressed for danger.",
-    genre: "Comic Adventure",
+    genre: "Comic adventure",
     studio: "Interactive Binary Illusions",
     year: "1995",
     badge: "Talkie CD",
@@ -204,7 +204,7 @@ const artByTarget = {
     mobileSummary: "Explore a troubled kingdom and outwit the forces threatening its people.",
     summary:
       "Lure of the Temptress drops you into a plague-struck kingdom full of shifting loyalties, suspicious guards, and the early Revolution Software menace that already points toward Beneath a Steel Sky.",
-    genre: "Fantasy Adventure",
+    genre: "Fantasy adventure",
     studio: "Revolution Software",
     year: "1992",
     badge: "Freeware VGA",
@@ -226,7 +226,7 @@ const artByTarget = {
     mobileSummary: "Take on a cartoon vampire in a point-and-click comedy full of B-movie antics.",
     summary:
       "Drascula throws a dimwitted hero, cartoon vampire melodrama, and rapid-fire gag writing into a point-and-click comedy that never lets its B-movie premise sit still.",
-    genre: "Comedy Horror Adventure",
+    genre: "Comedy horror adventure",
     studio: "Alcachofa Soft",
     year: "1996",
     badge: "English Freeware",
@@ -248,7 +248,7 @@ const artByTarget = {
     mobileSummary: "Follow three unlikely crooks through a colorful caper full of bad luck.",
     summary:
       "Nippon Safes, Inc. turns a three-way caper into a neon cartoon of crooks, bad luck, and sharply drawn Amiga absurdity. It feels like a pulp comic strip that got lost in a cyberpunk fever dream.",
-    genre: "Comedy Caper Adventure",
+    genre: "Comedy caper adventure",
     studio: "Dynabyte",
     year: "1992",
     badge: "Amiga Freeware",
@@ -271,7 +271,7 @@ const artByTarget = {
     mobileBadge: "Fan game",
     summary:
       "Broken Sword 2.5 sends George and Nico back into a hand-painted conspiracy full of autumn streets, Templar fallout, and the lavish fan-made craft that made it a ScummVM showcase.",
-    genre: "Conspiracy Adventure",
+    genre: "Conspiracy adventure",
     studio: "mindFactory",
     year: "2008",
     badge: "Freeware Fan Game",
@@ -291,7 +291,7 @@ const artByTarget = {
 };
 
 const defaultArt = {
-  genre: "ScummVM Adventure",
+  genre: "ScummVM adventure",
   studio: "ScummVM Runtime",
   year: null,
   badge: null,
