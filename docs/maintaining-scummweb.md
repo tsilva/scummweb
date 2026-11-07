@@ -892,6 +892,12 @@ reference; never substitute reimagined hero art. Remove scan damage and extraneo
 stickers without redesigning the cover. Report missing original box references.
 Screenshots always remain original gameplay captures; never generate or repaint them.
 
+Recognized personal imports can have a hero and a restored box front. Keep the
+original reference URLs and credits in the artwork mapping and the prompts and
+checksums in the generation registry. A hero can be published on its own when
+an original standalone box front is unavailable or the restoration fails review.
+Add gameplay galleries only when original captures are available.
+
 The eleven bundled card covers use ImageGen restorations of their original box
 fronts: Beneath a Steel Sky, Broken Sword 2.5, Drascula, DreamWeb, Flight of the
 Amazon Queen, Mystery House, Lure of the Temptress, Nippon Safes, Inc., Sfinx,
