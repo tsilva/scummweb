@@ -185,7 +185,7 @@ test("mobile hero keeps its initial game through hydration and honors explicit s
           return [hooks[index], (value) => { hooks[index] = value; }];
         },
         useEffect: (effect) => effects.push(effect),
-        useLayoutEffect: (effect) => effects.push(effect),
+        useLayoutEffect() {},
         useRef(current) { return refs[refCursor++] ??= { current }; },
       },
       "next/navigation": { useRouter: () => ({ push() { assert.fail("initial selection must not navigate"); } }) },
@@ -202,9 +202,9 @@ test("mobile hero keeps its initial game through hydration and honors explicit s
       return Hero({ groups, featuredGame, isHomePage, selection: selected });
     }
     const initial = render();
-    const cleanup = effects[2]();
+    const cleanup = effects[0]();
     // Strict Mode replay must not change the initial selection either.
-    cleanup(); effects[2]();
+    cleanup(); effects[0]();
     return { initial, render, get result() { return render(); } };
   }
   const first = await mount();

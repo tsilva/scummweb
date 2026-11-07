@@ -10,6 +10,7 @@ import { chooseGameVersion, getGameFamilyKey, readChosenVersion, rememberGameVer
 import { buildGameExitHref } from "./hero-selection.mjs";
 import { useGameNavigation } from "./game-navigation";
 import { initialActionState, rememberInitialActions } from "./initial-actions.mjs";
+import { focusHeroAction } from "./directional-navigation";
 
 const SLIDE_DURATION_MS = 8000;
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
@@ -46,6 +47,10 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
   useLayoutEffect(() => {
     if (actionsReady) rememberInitialActions(JSON.parse(initialActionsKey));
   }, [actionsReady, initialActionsKey]);
+  useLayoutEffect(() => {
+    if (actionsReady && navigationId && document.documentElement.hasAttribute("data-dpad-navigation") &&
+      document.activeElement?.matches(".poster-card, .landscape-card")) focusHeroAction();
+  }, [actionsReady, navigationId]);
   const preloadedImages = useRef(new Map());
   // Wait for the media query before warming desktop slides. The visible image
   // already loads eagerly, and mobile has no slideshow controls.
