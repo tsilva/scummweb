@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { ChevronDown, Plus, SlidersHorizontal } from "lucide-react";
 import { GamePoster } from "./library-cards";
 import GameSelectionLink from "./game-selection-link";
@@ -13,7 +13,8 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
   const [open, setOpen] = useState(() => browsing.open);
   const [query, setQuery] = useState(() => browsing.query);
   const toggle = useRef(null);
-  const visible = queryLibrary(items, query);
+  const visible = useMemo(() => queryLibrary(items, query), [items, query]);
+  const genres = useMemo(() => libraryFacet(items, "genre"), [items]);
   const changed = Boolean(query.genre) || query.sort !== defaultLibraryQuery.sort;
   const update = (field) => (event) => {
     browsing.query = { ...query, [field]: event.target.value };
@@ -60,7 +61,7 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
           <span className="library-select">
             <select value={query.genre} onChange={update("genre")}>
               <option value="">All genres</option>
-              {libraryFacet(items, "genre").map((genre) => <option key={genre}>{genre}</option>)}
+              {genres.map((genre) => <option key={genre}>{genre}</option>)}
             </select>
             <ChevronDown size={16} aria-hidden="true" />
           </span>

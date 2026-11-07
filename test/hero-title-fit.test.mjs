@@ -4,10 +4,10 @@ import test from "node:test";
 import { initialHeroTitleFit } from "../app/home-shell/hero-title-fit.mjs";
 
 function initialRender(mobile = false) {
-  let mutation, onReady, disconnected = false, measurements = 0;
+  let mutation, onReady, disconnected = false, measurements = 0, styleReads = 0;
   const text = {
     textContent: "A long adventure title",
-    style: { fontSize: "80px", removeProperty() { delete this.fontSize; } },
+    style: { removeProperty() { delete this.fontSize; } },
     get scrollHeight() { measurements++; return parseFloat(this.style.fontSize) * 2; },
     get scrollWidth() { return 300; },
   };
@@ -19,18 +19,23 @@ function initialRender(mobile = false) {
   };
   runInNewContext(initialHeroTitleFit, {
     document,
+    matchMedia: (query) => {
+      assert.equal(query, "(max-width: 48rem)");
+      return { matches: mobile };
+    },
     MutationObserver: class {
       constructor(callback) { mutation = callback; }
       observe() {}
       disconnect() { disconnected = true; }
     },
-    getComputedStyle: () => ({
-      fontSize: "80px", fontStyle: "normal", fontWeight: "800", fontFamily: "Inter",
-      letterSpacing: "-4px", getPropertyValue: () => mobile ? "none" : "",
-    }),
+    getComputedStyle: () => {
+      styleReads++;
+      return { fontSize: "80px", fontStyle: "normal", fontWeight: "800", fontFamily: "Inter",
+        letterSpacing: "-4px", getPropertyValue: () => "" };
+    },
   });
   return { heading, text, mutation, onReady, disconnected: () => disconnected,
-    measurements: () => measurements };
+    measurements: () => measurements, styleReads: () => styleReads };
 }
 
 test("streamed desktop titles fit before hydration, waiting for their text", () => {
@@ -47,13 +52,11 @@ test("streamed desktop titles fit before hydration, waiting for their text", () 
   assert.equal(page.measurements(), measurements, "hydration must reuse the first fit");
 });
 
-test("CSS disables title fitting on mobile before hydration", () => {
+test("mobile uses CSS title sizing without an observer or style reads before hydration", () => {
   const page = initialRender(true);
-  page.heading.firstElementChild = page.text;
-  page.mutation();
+  assert.equal(page.mutation, undefined);
+  assert.equal(page.styleReads(), 0);
   assert.equal(page.text.style.fontSize, undefined);
-  assert.equal(page.measurements(), 0);
-  assert.equal(page.disconnected(), true);
 });
 
 test("pages without a hero release the initial observer after parsing", () => {

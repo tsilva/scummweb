@@ -398,7 +398,8 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
       },
     };
   });
-  const groups = libraryItems(catalog, library);
+  const catalogGroups = useMemo(() => libraryItems(catalog, []), [catalog]);
+  const groups = library.length ? libraryItems(catalog, library) : catalogGroups;
   const featuredGroup = featuredGame && groups.find(({ game }) => getGameFamilyKey(game) === getGameFamilyKey(featuredGame));
   const featuredKey = getGameFamilyKey(featuredGame) || `catalog:${featuredGame?.target}`;
   const heroGroups = featuredGroup || isHomePage ? groups : [...groups, {
