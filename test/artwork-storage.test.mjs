@@ -8,7 +8,6 @@ import test from "node:test";
 import sharp from "sharp";
 import { activateArtwork, planArtwork, retireArtwork, validateManifest, verifyArtwork } from "../scripts/artwork-storage.mjs";
 import { artworkPath, artworkUrl } from "../lib/artwork-storage.mjs";
-import artworkBrowserLoader from "../scripts/artwork-browser-loader.js";
 import { readArtworkFile } from "../scripts/artwork-files.mjs";
 
 const bytes = await sharp({ create: { width: 8, height: 12, channels: 3, background: "#aabbcc" } }).webp().toBuffer();
@@ -49,10 +48,14 @@ test("browser artwork metadata preserves delivery records without verification f
   const name = "/launcher/sample-cover.webp";
   const images = { [name]: { width: 8, height: 12, fallback: name, webp: [name], avif: [] } };
   const published = { ...sample, published: true, images };
-  const inventory = path.join(root, manifestFile);
+  const inventory = await fs.realpath(path.join(root, manifestFile));
   await fs.writeFile(inventory, JSON.stringify(published));
+  const loaderPath = path.join(root, "scripts/artwork-browser-loader.js");
+  await fs.mkdir(path.dirname(loaderPath));
+  await fs.copyFile(new URL("../scripts/artwork-browser-loader.js", import.meta.url), loaderPath);
+  const { default: artworkBrowserLoader } = await import(pathToFileURL(loaderPath));
   const code = artworkBrowserLoader.call({
-    resourcePath: path.join(root, "lib/artwork-data.mjs"),
+    resourcePath: path.join(root, "artwork-data.mjs"),
     addDependency: (dependency) => assert.equal(dependency, inventory),
   });
   const module = await import(`data:text/javascript,${encodeURIComponent(code)}`);
