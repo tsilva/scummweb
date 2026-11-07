@@ -62,7 +62,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <head>
         <meta content={APP_THEME_COLOR} name="theme-color" />
         <script dangerouslySetInnerHTML={{ __html: initialHeroTitleFit }} />

@@ -15,13 +15,12 @@ export default function LaunchButton({ game, entryPoint, label = "Play", continu
   const href = entryPoint ? `${game.playHref}?launch_from=${entryPoint}` : game.playHref;
   const launch = (event) => {
     if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
     launchFeedback.show(game);
     cancelBrowserSaveQueries();
     onLaunch?.();
-    if (beginMobileGameLaunch()) {
-      event.preventDefault();
-      router.push(event.currentTarget.getAttribute("href"));
-    }
+    beginMobileGameLaunch();
+    router.push(event.currentTarget.getAttribute("href"));
   };
 
   if (game.importRequired) {

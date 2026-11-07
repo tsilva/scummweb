@@ -81,6 +81,7 @@ async function player({ game = tentacle, sources = [], remembered = null, pendin
   function Archive() {}
   function Remote() {}
   function Library() {}
+  function BootOverlay() {}
   const loadPending = () => {};
   runInNewContext(code, { module, exports: module.exports, window, URLSearchParams, AbortController,
     require(name) {
@@ -95,6 +96,7 @@ async function player({ game = tentacle, sources = [], remembered = null, pendin
       };
       if (name === "next/dynamic") return () => Library;
       if (name === "./archive-play-frame") return { ArchivePlayer: Archive, RemoteArchivePlayer: Remote };
+      if (name === "./game-player/GameBootOverlay") return BootOverlay;
       if (name === "./game-play-source.mjs") return playSources;
       if (name === "./game-player/telemetry.mjs") return telemetry;
       if (name === "./recognized-games.mjs") return { getRecognizedGames };
@@ -119,7 +121,7 @@ async function player({ game = tentacle, sources = [], remembered = null, pendin
   render();
   const cleanup = effects.shift()();
   if (!delayRead) await settled.promise;
-  return { render, cleanup, releaseRead: sourceRead.resolve, Archive, Remote, Library, window, loadPending, reads: () => reads,
+  return { render, cleanup, releaseRead: sourceRead.resolve, Archive, Remote, Library, BootOverlay, window, loadPending, reads: () => reads,
     changeHash(value) {
       window.location.hash = value;
       render();
@@ -188,7 +190,12 @@ test("leaving a route cancels pending source restoration", async () => {
   app.cleanup();
   app.releaseRead();
   await new Promise(setImmediate);
-  assert.equal(app.render().type, "p", "an abandoned route stays unmounted while restoration finishes");
+  const pending = app.render();
+  assert.equal(pending.props.role, "status");
+  assert.equal(pending.props.children.type, app.BootOverlay, "an abandoned route never mounts a player");
+  assert.equal(pending.props.children.props.game, tentacle);
+  assert.equal(pending.props.children.props.bootStatusText, "Loading game…");
+  assert.equal(pending.props.children.props.showBootOverlay, true);
 });
 
 async function remotePlayer(pathname, identifiedGame, search = "") {

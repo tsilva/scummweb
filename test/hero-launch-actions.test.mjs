@@ -290,21 +290,25 @@ test("save hook reads cached slots synchronously with a hydration-safe Play fall
 });
 
 
-test("mobile Play preserves the gesture and navigates in the fullscreen document", async () => {
+test("catalog launches keep the document and request mobile fullscreen within the gesture", async () => {
   const calls = [];
-  const MobileLaunch = await loadComponent("../app/launch-button.js", {
+  let mobile = false;
+  const CatalogLaunch = await loadComponent("../app/launch-button.js", {
     "./game-player/useLaunchFeedback": () => ({ show() { calls.push("loading screen"); }, overlay: null }),
     "./use-browser-save": () => 0,
     "./browser-saves.mjs": { cancelBrowserSaveQueries() { calls.push("cancel saves"); } },
     "next/navigation": { useRouter: () => ({ push(href) { calls.push(href); } }) },
-    "./game-player/immersive-mode.mjs": { beginMobileGameLaunch() { calls.push("fullscreen"); return true; } },
+    "./game-player/immersive-mode.mjs": { beginMobileGameLaunch() { if (mobile) calls.push("fullscreen"); return mobile; } },
   });
-  const links = MobileLaunch({ game, entryPoint: "hero" }).props.children;
-  for (const link of links.filter(Boolean)) {
-    calls.length = 0;
-    link.props.onClick({ button: 0, currentTarget: { getAttribute: () => link.props.href },
-      preventDefault() { calls.push("prevent navigation"); } });
-    assert.deepEqual(calls, ["loading screen", "cancel saves", "fullscreen", "prevent navigation", link.props.href]);
+  const links = CatalogLaunch({ game, entryPoint: "hero" }).props.children;
+  for (mobile of [false, true]) {
+    for (const link of links.filter(Boolean)) {
+      calls.length = 0;
+      link.props.onClick({ button: 0, currentTarget: { getAttribute: () => link.props.href },
+        preventDefault() { calls.push("prevent navigation"); } });
+      assert.deepEqual(calls, ["prevent navigation", "loading screen", "cancel saves",
+        ...(mobile ? ["fullscreen"] : []), link.props.href]);
+    }
   }
   calls.length = 0;
   links[0].props.onClick({ button: 0, ctrlKey: true });

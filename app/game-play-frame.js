@@ -3,6 +3,7 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
 import dynamic from "next/dynamic";
 import { ArchivePlayer, RemoteArchivePlayer } from "./archive-play-frame";
+import GameBootOverlay from "./game-player/GameBootOverlay";
 import { checkGameSource, readGameSources } from "./game-sources.mjs";
 import { getMatchingGameSources, getSourceGamePresentation, prepareGameSourcePlayer } from "./game-play-source.mjs";
 import { chooseGameVersion, getGameFamilyKey, readChosenVersion } from "./game-versions.mjs";
@@ -73,7 +74,13 @@ export default function GamePlayFrame({ game, catalog, artwork, officialUrl, chi
     return true;
   }
 
-  if (!selection || selection.zip !== zip) return <p role="status" className="page-shell">Opening {game.displayTitle}…</p>;
+  if (!selection || selection.zip !== zip) {
+    return (
+      <div className="game-route-shell" role="status" aria-busy="true">
+        <GameBootOverlay game={game} bootStatusText="Loading game…" showBootOverlay />
+      </div>
+    );
+  }
   if (selection.remote) return <RemoteArchivePlayer key={zip} zip={zip} catalog={catalog} />;
   if (selection.bundled) return children;
   if (selection.missing) return <div className="page-shell">

@@ -157,13 +157,15 @@ mode after frame navigation and when the mobile viewport classification changes.
 **Play**, **Continue** and **Start from beginning** show the game's loading screen
 from the launch gesture, before route loading or ZIP preparation. The launcher
 uses the same boot presentation as the player and keeps it visible until the
-player mounts. Failed ZIP preparation dismisses it so recovery actions remain
-available; file-access and locate prompts do not show the loading screen.
+play route takes over. The route shows the same artwork and loading status while
+it resolves the selected game version. Failed ZIP preparation dismisses the launch
+feedback so recovery actions remain available. File-access and locate prompts
+do not show the loading screen.
 
 These actions request fullscreen directly
-from the launch gesture, then request landscape. Mobile catalog launches use
-client navigation with the persistent document root in fullscreen. The fullscreen
-toolbar button is available only in desktop mode. The player
+from the launch gesture on mobile, then request landscape. Catalog launches use
+client navigation on desktop and mobile, preserving the document root in fullscreen.
+The fullscreen toolbar button is available only in desktop mode. The player
 shows no fullscreen or rotation modal; unsupported or refused requests leave
 play and touch controls available in the current orientation. Exit requests
 portrait while fullscreen is still active, then exits fullscreen and releases
