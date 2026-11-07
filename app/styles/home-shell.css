@@ -53,6 +53,16 @@
   font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: -0.04em;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-brand:focus {
+  outline: none;
+}
+
+.nav-brand:focus-visible {
+  outline: 2px solid transparent;
+  box-shadow: 0 4px 0 -2px var(--accent-strong);
 }
 
 .nav-brand-logo {
