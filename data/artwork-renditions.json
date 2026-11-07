@@ -3187,5 +3187,96 @@
       320,
       640
     ]
+  },
+  "/launcher/astro-chicken-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/christmas-card-1986-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/christmas-card-1988-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/christmas-card-1992-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/donald-ducks-playground-original-cover.webp": {
+    "width": 379,
+    "height": 532,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/dr-seusss-abc-original-cover.webp": {
+    "width": 410,
+    "height": 500,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/green-eggs-and-ham-original-cover.webp": {
+    "width": 375,
+    "height": 460,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/kings-questions-scummweb-generated-2026-11-07-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/open-quest-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/the-cat-in-the-hat-original-cover.webp": {
+    "width": 432,
+    "height": 498,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/the-dark-crystal-original-cover.webp": {
+    "width": 512,
+    "height": 662,
+    "widths": [
+      320
+    ]
   }
 }

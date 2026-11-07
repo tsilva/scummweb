@@ -944,6 +944,18 @@ unchanged. These covers use the same 900×1200 export and verified R2 delivery
 pipeline as restored covers. This approved set is an exception to the default
 box-front restoration requirement above.
 
+The original box scans are used for Donald Duck's Playground, Dr. Seuss's ABC,
+Green Eggs and Ham, The Cat in the Hat, and The Dark Crystal. The full-size
+WebP copies preserve the decoded pixels and the catalog retains the original
+scan URLs, credits, and checksums.
+
+King's Questions, Open Quest, Astro Chicken (Demo), and the four Sierra
+Christmas Card demos use custom illustrations because no standalone box
+front was verified. These seven covers are also recorded as
+`original-illustrated-cover` in the generation registry. Each uses the game's
+visual identity as a reference for a new composition, with its own source
+credit, generation prompt, and export checksum.
+
 `data/generated-artwork.json` records each generated revision's date, role,
 reference sources, prompt or historical prompt summary, source/export hashes,
 decoded dimensions and readiness. Resizing/encoding alone does not make an

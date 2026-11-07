@@ -32866,6 +32866,350 @@
       "contentType": "image/webp",
       "width": 480,
       "height": 640
+    },
+    "/launcher/donald-ducks-playground-original-cover.webp": {
+      "key": "artwork/a390e4d2f46d15c73c612d3114d414e1453fc42ac8d105f3ca1f0ca41742b6ad/donald-ducks-playground-original-cover.webp",
+      "sha256": "a390e4d2f46d15c73c612d3114d414e1453fc42ac8d105f3ca1f0ca41742b6ad",
+      "bytes": 184752,
+      "contentType": "image/webp",
+      "width": 379,
+      "height": 532
+    },
+    "/launcher/dr-seusss-abc-original-cover.webp": {
+      "key": "artwork/4447e5a76ce1437e0a9b75ab151e9f9215071c8c1d8f4c90f23c053fc4425ad9/dr-seusss-abc-original-cover.webp",
+      "sha256": "4447e5a76ce1437e0a9b75ab151e9f9215071c8c1d8f4c90f23c053fc4425ad9",
+      "bytes": 262508,
+      "contentType": "image/webp",
+      "width": 410,
+      "height": 500
+    },
+    "/launcher/green-eggs-and-ham-original-cover.webp": {
+      "key": "artwork/9b70cecafe27971721df1977f0ab8a55901af3f0e2e55b703dc62d87e1241fcd/green-eggs-and-ham-original-cover.webp",
+      "sha256": "9b70cecafe27971721df1977f0ab8a55901af3f0e2e55b703dc62d87e1241fcd",
+      "bytes": 151106,
+      "contentType": "image/webp",
+      "width": 375,
+      "height": 460
+    },
+    "/launcher/responsive/donald-ducks-playground-original-cover-320.webp": {
+      "key": "artwork/7394404a04da918855fcdff714d50426767fa48e4b7e097af3a0122876921808/donald-ducks-playground-original-cover-320.webp",
+      "sha256": "7394404a04da918855fcdff714d50426767fa48e4b7e097af3a0122876921808",
+      "bytes": 22622,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 449
+    },
+    "/launcher/responsive/dr-seusss-abc-original-cover-320.webp": {
+      "key": "artwork/5536bca9670400b73caa24be1bdccdb2857a9ba1581746bc6164459ba33b3568/dr-seusss-abc-original-cover-320.webp",
+      "sha256": "5536bca9670400b73caa24be1bdccdb2857a9ba1581746bc6164459ba33b3568",
+      "bytes": 18564,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 390
+    },
+    "/launcher/responsive/green-eggs-and-ham-original-cover-320.webp": {
+      "key": "artwork/bf44230bbfdd2004c68f367d61ea826f5236fd228f38edc9d6fb072a4758d20a/green-eggs-and-ham-original-cover-320.webp",
+      "sha256": "bf44230bbfdd2004c68f367d61ea826f5236fd228f38edc9d6fb072a4758d20a",
+      "bytes": 16066,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 393
+    },
+    "/launcher/responsive/the-cat-in-the-hat-original-cover-320.webp": {
+      "key": "artwork/bb153caeae14fd1a5d58a21a35b4a79bd253bf8fe5343131a8d085c42dc20c3f/the-cat-in-the-hat-original-cover-320.webp",
+      "sha256": "bb153caeae14fd1a5d58a21a35b4a79bd253bf8fe5343131a8d085c42dc20c3f",
+      "bytes": 21008,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 369
+    },
+    "/launcher/responsive/the-dark-crystal-original-cover-320.webp": {
+      "key": "artwork/f0585813e0f817d9ae2176f2a4471e9e2eb03d864cd51cee34128bf9a6128466/the-dark-crystal-original-cover-320.webp",
+      "sha256": "f0585813e0f817d9ae2176f2a4471e9e2eb03d864cd51cee34128bf9a6128466",
+      "bytes": 22122,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 414
+    },
+    "/launcher/the-cat-in-the-hat-original-cover.webp": {
+      "key": "artwork/541ec71cbc8e5dad221f57bfea57db327132dbeb94c1cf88d4d55cc7a0b72bb1/the-cat-in-the-hat-original-cover.webp",
+      "sha256": "541ec71cbc8e5dad221f57bfea57db327132dbeb94c1cf88d4d55cc7a0b72bb1",
+      "bytes": 210736,
+      "contentType": "image/webp",
+      "width": 432,
+      "height": 498
+    },
+    "/launcher/the-dark-crystal-original-cover.webp": {
+      "key": "artwork/1cb8c832929fcef8b3121f7f505dfd7e8a99c650dfff3beaaa426774aaae28f5/the-dark-crystal-original-cover.webp",
+      "sha256": "1cb8c832929fcef8b3121f7f505dfd7e8a99c650dfff3beaaa426774aaae28f5",
+      "bytes": 383776,
+      "contentType": "image/webp",
+      "width": 512,
+      "height": 662
+    },
+    "/launcher/christmas-card-1986-scummweb-generated-2026-11-07-r1-cover.webp": {
+      "key": "artwork/6d904f4ba740b96eb5b466b21c811ef4640919f187f6da23cc1157b06dbfd5bb/christmas-card-1986-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "6d904f4ba740b96eb5b466b21c811ef4640919f187f6da23cc1157b06dbfd5bb",
+      "bytes": 128216,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/christmas-card-1988-scummweb-generated-2026-11-07-r1-cover.webp": {
+      "key": "artwork/b3a062a67b285b0a9c1553cba09ee1c78800bba31edfdb2674359d99d999b514/christmas-card-1988-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "b3a062a67b285b0a9c1553cba09ee1c78800bba31edfdb2674359d99d999b514",
+      "bytes": 211692,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-cover.webp": {
+      "key": "artwork/bdf33ad45ab1c846f16baf2a8a9e8ebfb1a1bab70d9122049e236e75866a57e9/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "bdf33ad45ab1c846f16baf2a8a9e8ebfb1a1bab70d9122049e236e75866a57e9",
+      "bytes": 329266,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/christmas-card-1992-scummweb-generated-2026-11-07-r1-cover.webp": {
+      "key": "artwork/6f2887698e9b4bf5d06f46ece9bc7a7e16837c067d993a3efbbff1cdc8da1dd7/christmas-card-1992-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "6f2887698e9b4bf5d06f46ece9bc7a7e16837c067d993a3efbbff1cdc8da1dd7",
+      "bytes": 184958,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/kings-questions-scummweb-generated-2026-11-07-r2-cover.webp": {
+      "key": "artwork/5ac62030d05b374d90ae8bf621b46458c7e91674ae94da43d816d0fa516a83a0/kings-questions-scummweb-generated-2026-11-07-r2-cover.webp",
+      "sha256": "5ac62030d05b374d90ae8bf621b46458c7e91674ae94da43d816d0fa516a83a0",
+      "bytes": 144592,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/responsive/christmas-card-1986-scummweb-generated-2026-11-07-r1-cover-320.webp": {
+      "key": "artwork/8cfbebe970c4b6758563033c612dda04f5761ed7002f72545c32e9b1480ef397/christmas-card-1986-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "8cfbebe970c4b6758563033c612dda04f5761ed7002f72545c32e9b1480ef397",
+      "bytes": 34156,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/christmas-card-1986-scummweb-generated-2026-11-07-r1-cover-640.webp": {
+      "key": "artwork/d28ed7c37ad14a54a372bae94e87c887eb512b1a15b515c96811064a869d7f20/christmas-card-1986-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "d28ed7c37ad14a54a372bae94e87c887eb512b1a15b515c96811064a869d7f20",
+      "bytes": 79188,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/christmas-card-1988-scummweb-generated-2026-11-07-r1-cover-320.webp": {
+      "key": "artwork/f4d2fda3e1947f5e435cce4f1a6f48a0ecf1d79bc7dc8f354530c0f7ef6c8b61/christmas-card-1988-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "f4d2fda3e1947f5e435cce4f1a6f48a0ecf1d79bc7dc8f354530c0f7ef6c8b61",
+      "bytes": 41458,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/christmas-card-1988-scummweb-generated-2026-11-07-r1-cover-640.webp": {
+      "key": "artwork/19494f9dbad9a4a60dffa4193110c06df1496a5a465e3a4ad1476b43a74fe46c/christmas-card-1988-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "19494f9dbad9a4a60dffa4193110c06df1496a5a465e3a4ad1476b43a74fe46c",
+      "bytes": 117170,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-cover-320.webp": {
+      "key": "artwork/abe12445602cba77ab8caac25f2fea982f16b79c8c8bdaf36b962e2743aa6eb6/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "abe12445602cba77ab8caac25f2fea982f16b79c8c8bdaf36b962e2743aa6eb6",
+      "bytes": 52320,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-cover-640.webp": {
+      "key": "artwork/aa52328d323f7724bd54854e84245ea60dfc096bfbb2dc0b929954eced98be99/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "aa52328d323f7724bd54854e84245ea60dfc096bfbb2dc0b929954eced98be99",
+      "bytes": 163390,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/christmas-card-1992-scummweb-generated-2026-11-07-r1-cover-320.webp": {
+      "key": "artwork/7fbfeb0b9d09bdb2f2edbc607fe3eca7d120d614b30b44995eec0dc1e408e88a/christmas-card-1992-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "7fbfeb0b9d09bdb2f2edbc607fe3eca7d120d614b30b44995eec0dc1e408e88a",
+      "bytes": 32624,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/christmas-card-1992-scummweb-generated-2026-11-07-r1-cover-640.webp": {
+      "key": "artwork/6e40a5180989a2829ec82977fb8a5db54edf458b75ada07c6ece905bfee06ca4/christmas-card-1992-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "6e40a5180989a2829ec82977fb8a5db54edf458b75ada07c6ece905bfee06ca4",
+      "bytes": 93420,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/kings-questions-scummweb-generated-2026-11-07-r2-cover-320.webp": {
+      "key": "artwork/1138472a95609ebedc5ec0c817f4e36e1c4138f997104eef7774798996cbc2dd/kings-questions-scummweb-generated-2026-11-07-r2-cover-320.webp",
+      "sha256": "1138472a95609ebedc5ec0c817f4e36e1c4138f997104eef7774798996cbc2dd",
+      "bytes": 23862,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/kings-questions-scummweb-generated-2026-11-07-r2-cover-640.webp": {
+      "key": "artwork/24e580c64b15c5a35ff15878792bef522a875d87cb390c15fa4c7e9291ffaedf/kings-questions-scummweb-generated-2026-11-07-r2-cover-640.webp",
+      "sha256": "24e580c64b15c5a35ff15878792bef522a875d87cb390c15fa4c7e9291ffaedf",
+      "bytes": 66940,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/astro-chicken-scummweb-generated-2026-11-07-r1-cover.webp": {
+      "key": "artwork/bf03dab8d976371c4d2215f55a333f25d59595b7a7b30cada4f59ed21448f488/astro-chicken-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "bf03dab8d976371c4d2215f55a333f25d59595b7a7b30cada4f59ed21448f488",
+      "bytes": 108478,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/open-quest-scummweb-generated-2026-11-07-r1-cover.webp": {
+      "key": "artwork/fd4b8d5d8e1a27c2de539c4b9eade33b59ec014ae776b34be1f351aa51c20167/open-quest-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "fd4b8d5d8e1a27c2de539c4b9eade33b59ec014ae776b34be1f351aa51c20167",
+      "bytes": 99592,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/responsive/astro-chicken-scummweb-generated-2026-11-07-r1-cover-320.webp": {
+      "key": "artwork/52fa1125567076f0009fb987709147e1acec23be10cb302448bb547cc2c2eb91/astro-chicken-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "52fa1125567076f0009fb987709147e1acec23be10cb302448bb547cc2c2eb91",
+      "bytes": 28134,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/astro-chicken-scummweb-generated-2026-11-07-r1-cover-640.webp": {
+      "key": "artwork/0ae6cbea3978f35507cae42fbfe4173bff3c0b66875d1c87de9ee08689c89837/astro-chicken-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "0ae6cbea3978f35507cae42fbfe4173bff3c0b66875d1c87de9ee08689c89837",
+      "bytes": 67126,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/open-quest-scummweb-generated-2026-11-07-r1-cover-320.webp": {
+      "key": "artwork/5482769fba020cf564a68517c767ed64441adec811b53c399a550a6674cf675e/open-quest-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "5482769fba020cf564a68517c767ed64441adec811b53c399a550a6674cf675e",
+      "bytes": 25936,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/open-quest-scummweb-generated-2026-11-07-r1-cover-640.webp": {
+      "key": "artwork/87116bbed285f85f937a05ce02a69f323b25a0e4bea07ca4b8a2bc0b28fb9219/open-quest-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "87116bbed285f85f937a05ce02a69f323b25a0e4bea07ca4b8a2bc0b28fb9219",
+      "bytes": 61168,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/optimized/green-eggs-and-ham-original-cover.avif": {
+      "key": "artwork/8de3b8b8b535898f2a8f9211fc1db6e6b4ae750190bfaecd8a6eddf76a88bdfc/green-eggs-and-ham-original-cover.avif",
+      "sha256": "8de3b8b8b535898f2a8f9211fc1db6e6b4ae750190bfaecd8a6eddf76a88bdfc",
+      "bytes": 23087,
+      "contentType": "image/avif",
+      "width": 375,
+      "height": 460
+    },
+    "/launcher/optimized/the-cat-in-the-hat-original-cover.avif": {
+      "key": "artwork/2b498ff19cb0c49f35702d564b2e4c6b1a64d8f5bf66e8916df6f485f2c45bae/the-cat-in-the-hat-original-cover.avif",
+      "sha256": "2b498ff19cb0c49f35702d564b2e4c6b1a64d8f5bf66e8916df6f485f2c45bae",
+      "bytes": 33844,
+      "contentType": "image/avif",
+      "width": 432,
+      "height": 498
+    },
+    "/launcher/responsive/astro-chicken-scummweb-generated-2026-11-07-r1-cover-480.webp": {
+      "key": "artwork/d4251226356e4ec2e3303705502b7e0cd17dfae0a684c35e5b6ef2310f132e9a/astro-chicken-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "d4251226356e4ec2e3303705502b7e0cd17dfae0a684c35e5b6ef2310f132e9a",
+      "bytes": 46624,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/christmas-card-1986-scummweb-generated-2026-11-07-r1-cover-480.webp": {
+      "key": "artwork/b0993b929796de757537f1cf10d8989e49e9c7e592dc73cff54906e9d5dfb1c8/christmas-card-1986-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "b0993b929796de757537f1cf10d8989e49e9c7e592dc73cff54906e9d5dfb1c8",
+      "bytes": 57546,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/christmas-card-1988-scummweb-generated-2026-11-07-r1-cover-480.webp": {
+      "key": "artwork/3b0936a74a912d24c4e9a04124765a7e6166edeae4517eb8f2269e08c5bc1db7/christmas-card-1988-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "3b0936a74a912d24c4e9a04124765a7e6166edeae4517eb8f2269e08c5bc1db7",
+      "bytes": 77710,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-cover-480.webp": {
+      "key": "artwork/cc398d9bc9b2155594fe216c1de63469adf21c87a78be8869c16886c6f3310d0/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "cc398d9bc9b2155594fe216c1de63469adf21c87a78be8869c16886c6f3310d0",
+      "bytes": 106082,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/christmas-card-1992-scummweb-generated-2026-11-07-r1-cover-480.webp": {
+      "key": "artwork/b59c3407b4b842a5b91c8ff7bb7cdb04e438a781a4519048fdb62e389fc6b408/christmas-card-1992-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "b59c3407b4b842a5b91c8ff7bb7cdb04e438a781a4519048fdb62e389fc6b408",
+      "bytes": 60860,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/green-eggs-and-ham-original-cover-320.avif": {
+      "key": "artwork/a42a37c4039977dff134dd9b13d235391c3fe9fff81ee50243f050cf22481767/green-eggs-and-ham-original-cover-320.avif",
+      "sha256": "a42a37c4039977dff134dd9b13d235391c3fe9fff81ee50243f050cf22481767",
+      "bytes": 12743,
+      "contentType": "image/avif",
+      "width": 320,
+      "height": 393
+    },
+    "/launcher/responsive/kings-questions-scummweb-generated-2026-11-07-r2-cover-480.webp": {
+      "key": "artwork/a2819d46bf64dbb693dedf15cbc1ee5058e4f64ce0f2b6938320cd8c283ab2c8/kings-questions-scummweb-generated-2026-11-07-r2-cover-480.webp",
+      "sha256": "a2819d46bf64dbb693dedf15cbc1ee5058e4f64ce0f2b6938320cd8c283ab2c8",
+      "bytes": 44066,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/open-quest-scummweb-generated-2026-11-07-r1-cover-480.webp": {
+      "key": "artwork/61c8e384d9fc234360efac5c061e1d31364014e8d4aecde24cc7933376582c38/open-quest-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "61c8e384d9fc234360efac5c061e1d31364014e8d4aecde24cc7933376582c38",
+      "bytes": 43406,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/the-cat-in-the-hat-original-cover-320.avif": {
+      "key": "artwork/0f8b1c8409003a94d054fa58d914ae2bdadbbb649c1cfaf48951dc0127d7fb05/the-cat-in-the-hat-original-cover-320.avif",
+      "sha256": "0f8b1c8409003a94d054fa58d914ae2bdadbbb649c1cfaf48951dc0127d7fb05",
+      "bytes": 15628,
+      "contentType": "image/avif",
+      "width": 320,
+      "height": 369
+    },
+    "/launcher/responsive/the-dark-crystal-original-cover-480.webp": {
+      "key": "artwork/160d266269c0b64a04a0f48c2cb3fb09be8183d6f3fcbc0040079354f98c7407/the-dark-crystal-original-cover-480.webp",
+      "sha256": "160d266269c0b64a04a0f48c2cb3fb09be8183d6f3fcbc0040079354f98c7407",
+      "bytes": 38984,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 621
     }
   },
   "images": {
@@ -32991,6 +33335,18 @@
         "/launcher/responsive/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-hero-960.webp",
         "/launcher/responsive/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-hero-1280.webp",
         "/launcher/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-hero.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/astro-chicken-scummweb-generated-2026-11-07-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/astro-chicken-scummweb-generated-2026-11-07-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/astro-chicken-scummweb-generated-2026-11-07-r1-cover-320.webp",
+        "/launcher/responsive/astro-chicken-scummweb-generated-2026-11-07-r1-cover-480.webp",
+        "/launcher/responsive/astro-chicken-scummweb-generated-2026-11-07-r1-cover-640.webp",
+        "/launcher/astro-chicken-scummweb-generated-2026-11-07-r1-cover.webp"
       ],
       "avif": []
     },
@@ -33715,6 +34071,18 @@
         "/launcher/optimized/chivalry-scummweb-generated-2026-11-06-r1-hero.avif"
       ]
     },
+    "/launcher/christmas-card-1986-scummweb-generated-2026-11-07-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/christmas-card-1986-scummweb-generated-2026-11-07-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/christmas-card-1986-scummweb-generated-2026-11-07-r1-cover-320.webp",
+        "/launcher/responsive/christmas-card-1986-scummweb-generated-2026-11-07-r1-cover-480.webp",
+        "/launcher/responsive/christmas-card-1986-scummweb-generated-2026-11-07-r1-cover-640.webp",
+        "/launcher/christmas-card-1986-scummweb-generated-2026-11-07-r1-cover.webp"
+      ],
+      "avif": []
+    },
     "/launcher/christmas-card-1986-scummweb-generated-2026-11-07-r1-hero.webp": {
       "width": 1600,
       "height": 960,
@@ -33732,6 +34100,18 @@
         "/launcher/optimized/christmas-card-1986-scummweb-generated-2026-11-07-r1-hero.avif"
       ]
     },
+    "/launcher/christmas-card-1988-scummweb-generated-2026-11-07-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/christmas-card-1988-scummweb-generated-2026-11-07-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/christmas-card-1988-scummweb-generated-2026-11-07-r1-cover-320.webp",
+        "/launcher/responsive/christmas-card-1988-scummweb-generated-2026-11-07-r1-cover-480.webp",
+        "/launcher/responsive/christmas-card-1988-scummweb-generated-2026-11-07-r1-cover-640.webp",
+        "/launcher/christmas-card-1988-scummweb-generated-2026-11-07-r1-cover.webp"
+      ],
+      "avif": []
+    },
     "/launcher/christmas-card-1988-scummweb-generated-2026-11-07-r1-hero.webp": {
       "width": 1600,
       "height": 960,
@@ -33744,6 +34124,18 @@
       ],
       "avif": []
     },
+    "/launcher/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-cover-320.webp",
+        "/launcher/responsive/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-cover-480.webp",
+        "/launcher/responsive/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-cover-640.webp",
+        "/launcher/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-cover.webp"
+      ],
+      "avif": []
+    },
     "/launcher/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-hero.webp": {
       "width": 1600,
       "height": 960,
@@ -33753,6 +34145,18 @@
         "/launcher/responsive/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-hero-960.webp",
         "/launcher/responsive/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-hero-1280.webp",
         "/launcher/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-hero.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/christmas-card-1992-scummweb-generated-2026-11-07-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/christmas-card-1992-scummweb-generated-2026-11-07-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/christmas-card-1992-scummweb-generated-2026-11-07-r1-cover-320.webp",
+        "/launcher/responsive/christmas-card-1992-scummweb-generated-2026-11-07-r1-cover-480.webp",
+        "/launcher/responsive/christmas-card-1992-scummweb-generated-2026-11-07-r1-cover-640.webp",
+        "/launcher/christmas-card-1992-scummweb-generated-2026-11-07-r1-cover.webp"
       ],
       "avif": []
     },
@@ -33932,6 +34336,26 @@
         "/launcher/responsive/dig-scummweb-generated-2026-11-06-r1-cover-480.webp",
         "/launcher/responsive/dig-scummweb-generated-2026-11-06-r1-cover-640.webp",
         "/launcher/dig-scummweb-generated-2026-11-06-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/donald-ducks-playground-original-cover.webp": {
+      "width": 379,
+      "height": 532,
+      "fallback": "/launcher/donald-ducks-playground-original-cover.webp",
+      "webp": [
+        "/launcher/responsive/donald-ducks-playground-original-cover-320.webp",
+        "/launcher/donald-ducks-playground-original-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/dr-seusss-abc-original-cover.webp": {
+      "width": 410,
+      "height": 500,
+      "fallback": "/launcher/dr-seusss-abc-original-cover.webp",
+      "webp": [
+        "/launcher/responsive/dr-seusss-abc-original-cover-320.webp",
+        "/launcher/dr-seusss-abc-original-cover.webp"
       ],
       "avif": []
     },
@@ -34986,6 +35410,19 @@
       ],
       "avif": []
     },
+    "/launcher/green-eggs-and-ham-original-cover.webp": {
+      "width": 375,
+      "height": 460,
+      "fallback": "/launcher/green-eggs-and-ham-original-cover.webp",
+      "webp": [
+        "/launcher/responsive/green-eggs-and-ham-original-cover-320.webp",
+        "/launcher/green-eggs-and-ham-original-cover.webp"
+      ],
+      "avif": [
+        "/launcher/responsive/green-eggs-and-ham-original-cover-320.avif",
+        "/launcher/optimized/green-eggs-and-ham-original-cover.avif"
+      ]
+    },
     "/launcher/green-eggs-and-ham-scummweb-generated-2026-11-07-r1-hero.webp": {
       "width": 1600,
       "height": 960,
@@ -35569,6 +36006,18 @@
         "/launcher/responsive/kings-questions-scummweb-generated-2026-11-07-r1-hero-1280.avif",
         "/launcher/optimized/kings-questions-scummweb-generated-2026-11-07-r1-hero.avif"
       ]
+    },
+    "/launcher/kings-questions-scummweb-generated-2026-11-07-r2-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/kings-questions-scummweb-generated-2026-11-07-r2-cover.webp",
+      "webp": [
+        "/launcher/responsive/kings-questions-scummweb-generated-2026-11-07-r2-cover-320.webp",
+        "/launcher/responsive/kings-questions-scummweb-generated-2026-11-07-r2-cover-480.webp",
+        "/launcher/responsive/kings-questions-scummweb-generated-2026-11-07-r2-cover-640.webp",
+        "/launcher/kings-questions-scummweb-generated-2026-11-07-r2-cover.webp"
+      ],
+      "avif": []
     },
     "/launcher/kq1sci-scummweb-generated-2026-11-05-r1-hero.webp": {
       "width": 1600,
@@ -37110,6 +37559,18 @@
       "fallback": "/launcher/optimized/nippon-shot-3.webp",
       "webp": [
         "/launcher/optimized/nippon-shot-3.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/open-quest-scummweb-generated-2026-11-07-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/open-quest-scummweb-generated-2026-11-07-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/open-quest-scummweb-generated-2026-11-07-r1-cover-320.webp",
+        "/launcher/responsive/open-quest-scummweb-generated-2026-11-07-r1-cover-480.webp",
+        "/launcher/responsive/open-quest-scummweb-generated-2026-11-07-r1-cover-640.webp",
+        "/launcher/open-quest-scummweb-generated-2026-11-07-r1-cover.webp"
       ],
       "avif": []
     },
@@ -45657,6 +46118,19 @@
         "/launcher/optimized/the-berenstain-bears-in-the-dark-scummweb-generated-2026-11-07-r1-hero.avif"
       ]
     },
+    "/launcher/the-cat-in-the-hat-original-cover.webp": {
+      "width": 432,
+      "height": 498,
+      "fallback": "/launcher/the-cat-in-the-hat-original-cover.webp",
+      "webp": [
+        "/launcher/responsive/the-cat-in-the-hat-original-cover-320.webp",
+        "/launcher/the-cat-in-the-hat-original-cover.webp"
+      ],
+      "avif": [
+        "/launcher/responsive/the-cat-in-the-hat-original-cover-320.avif",
+        "/launcher/optimized/the-cat-in-the-hat-original-cover.avif"
+      ]
+    },
     "/launcher/the-cat-in-the-hat-scummweb-generated-2026-11-07-r1-hero.webp": {
       "width": 1600,
       "height": 960,
@@ -45673,6 +46147,17 @@
         "/launcher/responsive/the-cat-in-the-hat-scummweb-generated-2026-11-07-r1-hero-1280.avif",
         "/launcher/optimized/the-cat-in-the-hat-scummweb-generated-2026-11-07-r1-hero.avif"
       ]
+    },
+    "/launcher/the-dark-crystal-original-cover.webp": {
+      "width": 512,
+      "height": 662,
+      "fallback": "/launcher/the-dark-crystal-original-cover.webp",
+      "webp": [
+        "/launcher/responsive/the-dark-crystal-original-cover-320.webp",
+        "/launcher/responsive/the-dark-crystal-original-cover-480.webp",
+        "/launcher/the-dark-crystal-original-cover.webp"
+      ],
+      "avif": []
     },
     "/launcher/the-dark-crystal-scummweb-generated-2026-11-07-r1-hero.webp": {
       "width": 1600,

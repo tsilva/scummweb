@@ -19270,6 +19270,303 @@
         }
       ],
       "prompt": "Conservatively restore the provided archival DOS retail box front for the game INCA II. This scan is the edit target and only visual reference. Clean paper wear and scan noise and improve legibility, retaining the full printed front, the original deep coral background, gold-framed original portrait and spacecraft illustration, INCA II title, exact tagline and original Sierra footer. Preserve every edge, every line of existing print and all layout and proportions. Place the flat, straight front on an at least 900 by 1200 pixel 3:4 portrait canvas, with only the minimal color-matched margins needed. No new illustration, graphics, text or frames."
+    },
+    {
+      "target": "xmascard",
+      "role": "cover",
+      "asset": "/launcher/christmas-card-1986-scummweb-generated-2026-11-07-r1-cover.webp",
+      "generatedOn": "2026-11-07",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-illustrated-cover",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "8ddebea8892d9ce0eca595f149b2fd4d25eb1492672336bbadc883b6a792c9cb",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "6d904f4ba740b96eb5b466b21c811ef4640919f187f6da23cc1157b06dbfd5bb",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://cdn.t3n.de/news/wp-content/uploads/2024/12/a-computer-christmas.png?class=default",
+          "kind": "official-promo-art",
+          "credit": "Original Sierra On-Line 1986 holiday demo artwork, capture archived by t3n",
+          "sha256": "1805d7a9994e57992dbfa0350f52e30c1200e5464ddbbfa22deed0d26c210faf",
+          "usage": "Visual identity, era, and palette reference only. The custom illustration is a new composition."
+        }
+      ],
+      "prompt": "Create one new illustrated 3:4 portrait ScummWEB library cover, ideally 1080 × 1440 or larger, with artwork to all four edges. The attachment is a palette, era, and visual identity reference only. Compose a fresh scene from scratch. Do not edit, trace, extend, or reproduce the reference or any gameplay. Use this exact cover title: \"Christmas Card 1986 (Demo)\". Keep \"(Demo)\" as a small subtitle where specified. Retro 16-color computer illustration with visible deliberate pixel clusters, evergreen silhouette and stars framing a warmly lit snowy cottage at dusk. Indigo, evergreen, bright red and soft ivory. Decorative 1980s holiday card composition. Set the title prominently in the upper quarter with 10% margins and enough contrast to remain readable on a small library card. Reserve the bottom 15% for a subtle background so the app's title overlay stays readable. This is a custom illustration for a title without standalone packaging. No fake publisher marks, commercial badges, mockup, spine, interface, screenshot frame, or other lettering. Return one flat cover."
+    },
+    {
+      "target": "christmas1988",
+      "role": "cover",
+      "asset": "/launcher/christmas-card-1988-scummweb-generated-2026-11-07-r1-cover.webp",
+      "generatedOn": "2026-11-07",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-illustrated-cover",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "a72fecfd96b9072e22e88eae20c3094f668bb207afb5245641634255341c153b",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "b3a062a67b285b0a9c1553cba09ee1c78800bba31edfdb2674359d99d999b514",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Christmas%20Card%201988.png",
+          "kind": "official-promo-art",
+          "credit": "Original Sierra On-Line 1988 holiday demo artwork, capture archived by Libretro",
+          "sha256": "34c7f6b77203420d4756b015b8e54eb11bfbfaa517372c6dccd7b9c2109ccb7f",
+          "usage": "Visual identity, era, and palette reference only. The custom illustration is a new composition."
+        }
+      ],
+      "prompt": "Create one new illustrated 3:4 portrait ScummWEB library cover, ideally 1080 × 1440 or larger, with artwork to all four edges. The attachment is a palette, era, and visual identity reference only. Compose a fresh scene from scratch. Do not edit, trace, extend, or reproduce the reference or any gameplay. Use this exact cover title: \"Christmas Card 1988 (Demo)\". Keep \"(Demo)\" as a small subtitle where specified. Retro EGA-inspired pixel illustration of a snowman in a red scarf and a fir tree beside a curving lane leading to a village with lit windows. Plum twilight, icy lilac, white and red. Cozy 1980s postcard distinct from the 1986 cottage. Set the title prominently in the upper quarter with 10% margins and enough contrast to remain readable on a small library card. Reserve the bottom 15% for a subtle background so the app's title overlay stays readable. This is a custom illustration for a title without standalone packaging. No fake publisher marks, commercial badges, mockup, spine, interface, screenshot frame, or other lettering. Return one flat cover."
+    },
+    {
+      "target": "christmas1990",
+      "role": "cover",
+      "asset": "/launcher/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-cover.webp",
+      "generatedOn": "2026-11-07",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-illustrated-cover",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "f4936442c6befe85ade7a783e2ae6a2ad6b7d60597f6e45431430b486c517b7a",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "bdf33ad45ab1c846f16baf2a8a9e8ebfb1a1bab70d9122049e236e75866a57e9",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Christmas%20Card%201990_%20The%20Seasoned%20Professional.png",
+          "kind": "official-promo-art",
+          "credit": "Original Sierra On-Line 1990 holiday demo artwork, capture archived by Libretro",
+          "sha256": "e2305a3e1f4600b77f1484caaec31fee082dc5bf46b09aa5a83e633e257da7af",
+          "usage": "Visual identity, era, and palette reference only. The custom illustration is a new composition."
+        }
+      ],
+      "prompt": "Create one new illustrated 3:4 portrait ScummWEB library cover, ideally 1080 × 1440 or larger, with artwork to all four edges. The attachment is a palette, era, and visual identity reference only. Compose a fresh scene from scratch. Do not edit, trace, extend, or reproduce the reference or any gameplay. Use this exact cover title: \"Christmas Card 1990: The Seasoned Professional (Demo)\". Keep \"(Demo)\" as a small subtitle where specified. Early-1990s hand-painted VGA adventure aesthetic. Backstage view of a snowy holiday audition, a theatrical red curtain, golden footlights and an empty microphone with comically mismatched holiday props, including a pumpkin and painted egg. Warm red, forest green and dark blue. Letter the exact title across several lines, with The Seasoned Professional as the subtitle. Set the title prominently in the upper quarter with 10% margins and enough contrast to remain readable on a small library card. Reserve the bottom 15% for a subtle background so the app's title overlay stays readable. This is a custom illustration for a title without standalone packaging. No fake publisher marks, commercial badges, mockup, spine, interface, screenshot frame, or other lettering. Return one flat cover."
+    },
+    {
+      "target": "christmas1992",
+      "role": "cover",
+      "asset": "/launcher/christmas-card-1992-scummweb-generated-2026-11-07-r1-cover.webp",
+      "generatedOn": "2026-11-07",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-illustrated-cover",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "da04180f578f7899121745c26539c5009b247ab11d8ca3d1f6975bd531a7ef36",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "6f2887698e9b4bf5d06f46ece9bc7a7e16837c067d993a3efbbff1cdc8da1dd7",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Christmas%20Card%201992.png",
+          "kind": "official-promo-art",
+          "credit": "Original Sierra On-Line 1992 holiday demo card artwork, capture archived by Libretro",
+          "sha256": "69fc76a8323a4f1895964c8891384cb1b261a5f36c21df45fc6812b57f78c860",
+          "usage": "Visual identity, era, and palette reference only. The custom illustration is a new composition."
+        }
+      ],
+      "prompt": "Create one new illustrated 3:4 portrait ScummWEB library cover, ideally 1080 × 1440 or larger, with artwork to all four edges. The attachment is a palette, era, and visual identity reference only. Compose a fresh scene from scratch. Do not edit, trace, extend, or reproduce the reference or any gameplay. Use this exact cover title: \"Christmas Card 1992 (Demo)\". Keep \"(Demo)\" as a small subtitle where specified. Early-1990s VGA holiday illustration. Fresh composition of a small horse-drawn sleigh along a snowy stream below a fir grove and a starry moonlit sky. Icy cyan and midnight blue with a small warm glow in the sleigh. Crisp painted pixel details and elegant ivory lettering. Set the title prominently in the upper quarter with 10% margins and enough contrast to remain readable on a small library card. Reserve the bottom 15% for a subtle background so the app's title overlay stays readable. This is a custom illustration for a title without standalone packaging. No fake publisher marks, commercial badges, mockup, spine, interface, screenshot frame, or other lettering. Return one flat cover."
+    },
+    {
+      "target": "kquestions",
+      "role": "cover",
+      "asset": "/launcher/kings-questions-scummweb-generated-2026-11-07-r1-cover.webp",
+      "generatedOn": "2026-11-07",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-illustrated-cover",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "cb7e2932aea8e03389662ca48b90a5600198aa5a49e42e010a9295a5646824a9",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "015db99ae031e05af29475a9104abbad66e639d5b3141b9eefdfcefd23b6b638",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest_%20King's%20Questions.png",
+          "kind": "box-scan",
+          "credit": "Original Sierra King’s Quest Collector’s Edition cover for the compilation that included King’s Questions, Libretro",
+          "sha256": "ebd39df20042df2791914068dfa1ec21f40b099fa857893ac9f0c7188212dc45",
+          "usage": "Visual identity, era, and palette reference only. The custom illustration is a new composition."
+        }
+      ],
+      "prompt": "Create one new illustrated 3:4 portrait ScummWEB library cover, ideally 1080 × 1440 or larger, with artwork to all four edges. The attachment is a palette, era, and visual identity reference only. Compose a fresh scene from scratch. Do not edit, trace, extend, or reproduce the reference or any gameplay. Use this exact cover title: \"King's Questions\". Keep \"(Demo)\" as a small subtitle where specified. Painted early-1990s illustrated fantasy cover. A small wooden sailing ship follows a curling current toward Daventry's castle above a rocky coast. In the foreground a small unfolded parchment and a brass compass hint at the trivia voyage. Golden sky, purple shadows and dark teal sea. Hand-lettered storybook serif. Draw a new scene and use only this title, with no King's Quest collection branding. Set the title prominently in the upper quarter with 10% margins and enough contrast to remain readable on a small library card. Reserve the bottom 15% for a subtle background so the app's title overlay stays readable. This is a custom illustration for a title without standalone packaging. No fake publisher marks, commercial badges, mockup, spine, interface, screenshot frame, or other lettering. Return one flat cover.",
+      "reviewNote": "The generated lettering incorrectly adds a Demo subtitle."
+    },
+    {
+      "target": "openquest",
+      "role": "cover",
+      "asset": "/launcher/open-quest-scummweb-generated-2026-11-07-r1-cover.webp",
+      "generatedOn": "2026-11-07",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-illustrated-cover",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "fb88f0c5200b35f065cf8de8b50a7af20b932be811d1f92d7218eb84c5c32bb4",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "fd4b8d5d8e1a27c2de539c4b9eade33b59ec014ae776b34be1f351aa51c20167",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://img.itch.zone/aW1hZ2UvODIwMTIvMzg2MDkzLnBuZw==/original/snss04.png",
+          "kind": "official-promo-art",
+          "credit": "Official OpenQuest promotional title art by Michael Sheail and Jenni McMurray, itch.io",
+          "sha256": "742da9fa231fa1701ffd479bcb9786359e251423916820046481dad9118ee4b2",
+          "usage": "Visual identity, era, and palette reference only. The custom illustration is a new composition."
+        }
+      ],
+      "prompt": "Create one original illustrated ScummWEB library cover in flat full-bleed 3:4 portrait, ideally at least 1080 × 1440. The attachment guides palette and era only. Create a completely new composition. Original playful point-and-click pixel-art illustration. A small young traveler in bright warm colors pauses at an open timber door in a crooked stone-and-wood room. A winding trail and rolling green hills are visible in the light through the door. Expressive outlines, large readable pixel clusters, dark blue shadow and gold light. Two large title words at top. The only lettering allowed anywhere in the image is the exact title \"OPEN QUEST\". The title stands alone. No subtitle, edition label, or badges. Put all lettering at least 10% inside the edges, readable at thumbnail size. Keep the bottom 15% visually quiet. Do not recreate, edit, or extend the supplied image or game footage. No screenshots, borders, fake publisher marks, packaging mockup, or interface."
+    },
+    {
+      "target": "astrochicken",
+      "role": "cover",
+      "asset": "/launcher/astro-chicken-scummweb-generated-2026-11-07-r1-cover.webp",
+      "generatedOn": "2026-11-07",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-illustrated-cover",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "0ea4a258e8944263869ef6aff71a0fc517423a8af1976833a57428c75c5bb7c7",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "bf03dab8d976371c4d2215f55a333f25d59595b7a7b30cada4f59ed21448f488",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Astro%20Chicken.png",
+          "kind": "official-promo-art",
+          "credit": "Original Sierra On-Line Astro Chicken title artwork, capture archived by Libretro",
+          "sha256": "81caf4ac3c737ef766d116d4003b2c5b44a32bb445d999fc529e92038eafc197",
+          "usage": "Visual identity, era, and palette reference only. The custom illustration is a new composition."
+        }
+      ],
+      "prompt": "Create one original illustrated ScummWEB library cover in flat full-bleed 3:4 portrait, ideally at least 1080 × 1440. The attachment guides palette and era only. Create a completely new composition. Original humorous late-1980s arcade poster with deliberate EGA pixel art and a compact rocket-powered cartoon chicken wearing a tiny space helmet descending toward a geometric landing pad on a purple moon. A zigzag plume, yellow stars and an azure planet add motion. Bright purple, cobalt, white and golden yellow. Upper title chunky and easy to read. The only lettering allowed anywhere in the image is the exact title \"ASTRO CHICKEN (Demo)\". Set the parenthetical word in small type immediately below the title. Put all lettering at least 10% inside the edges, readable at thumbnail size. Keep the bottom 15% visually quiet. Do not recreate, edit, or extend the supplied image or game footage. No screenshots, borders, fake publisher marks, packaging mockup, or interface."
+    },
+    {
+      "target": "kquestions",
+      "role": "cover",
+      "asset": "/launcher/kings-questions-scummweb-generated-2026-11-07-r2-cover.webp",
+      "generatedOn": "2026-11-07",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-illustrated-cover",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "9e712776a966d58847f75c0f4af2bd4d9b0c5ab86603ca069617d24ba9b09491",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "5ac62030d05b374d90ae8bf621b46458c7e91674ae94da43d816d0fa516a83a0",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest_%20King's%20Questions.png",
+          "kind": "box-scan",
+          "credit": "Original Sierra King’s Quest Collector’s Edition cover for the compilation that included King’s Questions, Libretro",
+          "sha256": "ebd39df20042df2791914068dfa1ec21f40b099fa857893ac9f0c7188212dc45",
+          "usage": "Visual identity, era, and palette reference only. The custom illustration is a new composition."
+        }
+      ],
+      "prompt": "Create one original illustrated ScummWEB library cover in flat full-bleed 3:4 portrait, ideally at least 1080 × 1440. The attachment guides palette and era only. Create a completely new composition. Painted early-1990s illustrated fantasy cover. A small wooden sailing ship follows a curling current toward Daventry's castle above a rocky coast. In the foreground a small unfolded parchment and a brass compass hint at the trivia voyage. Golden sky, purple shadows and dark teal sea. Hand-lettered storybook serif. Draw a new scene and use only this title, with no King's Quest collection branding. The only lettering allowed anywhere in the image is the exact title \"KING’S QUESTIONS\". The title stands alone. No subtitle, edition label, or badges. Put all lettering at least 10% inside the edges, readable at thumbnail size. Keep the bottom 15% visually quiet. Do not recreate, edit, or extend the supplied image or game footage. No screenshots, borders, fake publisher marks, packaging mockup, or interface."
     }
   ]
 }
