@@ -68,7 +68,7 @@ export async function collectGameImportNodes(roots) {
         if (!nested && nodes.length === start) {
           throw new Error("No ZIP files found in this folder or its subfolders. Put each game in a ZIP, then drop the folder again.");
         }
-      } else if (!nested || /\.zip$/i.test(node.name)) {
+      } else if (!node.name.startsWith(".") && (!nested || /\.zip$/i.test(node.name))) {
         nodes.push(node);
       }
     } catch (error) {
