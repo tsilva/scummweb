@@ -1019,6 +1019,8 @@ export hashes, and the [web asset manifest](../public/brand/manifest.json)
 lists the exports and their dimensions.
 
 The homepage serves the Adventure Terminal social card at `/opengraph-image`.
+When the card changes, update the image URL in `lib/seo.mjs` with `v=sw-`
+followed by the first 16 characters of the exported PNG's SHA-256.
 Game pages use their individual social cards. The shell finalizer copies the
 browser and install icons from [`public/brand/web-seo/`](../public/brand/web-seo/)
 into the managed shell during ScummVM rebuilds.

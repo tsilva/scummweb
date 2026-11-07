@@ -45,16 +45,12 @@ test("homepage metadata uses ScummWEB branding and aligned social copy", () => {
     assert.equal(metadata.alternates.canonical, "https://example.com/");
     assert.equal(metadata.openGraph.url, "https://example.com/");
     assert.equal(metadata.openGraph.siteName, SITE_NAME);
-    assert.equal(
-      metadata.openGraph.images[0].alt,
-      "ScummWEB classic point-and-click adventures logo with a retro monitor and a glowing green doorway",
-    );
-    assert.deepEqual(metadata.twitter.images, [
-      {
-        url: "https://example.com/opengraph-image",
-        alt: "ScummWEB classic point-and-click adventures logo with a retro monitor and a glowing green doorway",
-      },
-    ]);
+    const image = {
+      url: "https://example.com/opengraph-image?v=sw-44e946bde0859664",
+      alt: "ScummWEB. Play classic adventures in your browser. A retro monitor frames a glowing green doorway.",
+    };
+    assert.deepEqual(metadata.openGraph.images, [{ ...image, width: 1200, height: 630 }]);
+    assert.deepEqual(metadata.twitter.images, [image]);
   } finally {
     if (previousSiteUrl === undefined) delete process.env.NEXT_PUBLIC_SITE_URL;
     else process.env.NEXT_PUBLIC_SITE_URL = previousSiteUrl;
