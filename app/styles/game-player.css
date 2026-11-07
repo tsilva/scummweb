@@ -28,8 +28,18 @@
   position: fixed;
   inset: 0;
   z-index: 1000;
-  height: 100dvh;
-  background: #000;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .game-launch-feedback {
+    transition: opacity 180ms ease-out;
+  }
+
+  @starting-style {
+    .game-launch-feedback {
+      opacity: 0;
+    }
+  }
 }
 
 .game-route-frame:focus,
@@ -99,8 +109,8 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   background:
-    radial-gradient(circle at 20% 0%, rgba(85, 170, 85, 0.18), transparent 24%),
-    #050505;
+    radial-gradient(ellipse at 65% 0%, #46583f, transparent 70%),
+    linear-gradient(145deg, #233a30, #101a16);
   opacity: 1;
   pointer-events: auto;
   transition:
@@ -630,7 +640,8 @@
     inset: calc(3.75rem + env(safe-area-inset-top)) 0 0;
   }
 
-  .hero-stage-library .hero-backdrop-image {
+  .hero-stage-library .hero-backdrop-image,
+  .game-route-boot-backdrop {
     object-position: var(--hero-image-mobile-position, 75% top) !important;
   }
 

@@ -155,9 +155,9 @@ desktop canvases fit within both dimensions so the game’s own prompts stay vis
 The toolbar has no aspect-ratio toggle. The parent reapplies the viewport’s sizing
 mode after frame navigation and when the mobile viewport classification changes.
 **Play**, **Continue** and **Start from beginning** show the game's loading screen
-from the launch gesture, before route loading or ZIP preparation. The launcher
-uses the same boot presentation as the player and keeps it visible until the
-play route takes over. The route shows the same artwork and loading status while
+from the launch gesture, before route loading or ZIP preparation. The loading
+screen fades in over the launcher and reuses the hero's responsive artwork
+through the handoff to the player. The route shows the loading status while
 it resolves the selected game version. Failed ZIP preparation dismisses the launch
 feedback so recovery actions remain available. File-access and locate prompts
 do not show the loading screen.
@@ -189,7 +189,8 @@ coverage; desktop viewport checks do not emulate mobile browser APIs or touch.
 ### Backing up and transferring saved progress
 
 Open the **Settings** gear icon to the right of GitHub in the header, then **Saved games**.
-Active and preserved saves appear here alongside the backup actions.
+Export and import actions appear above the list of active and preserved saves.
+Unmatched imports share one row showing the total number of save files.
 The drawer slides from the right, uses compact typography and prevents text selection.
 It opens and closes immediately when reduced motion is enabled.
 **Export all saves**

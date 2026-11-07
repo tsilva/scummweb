@@ -11,6 +11,7 @@ import {
 import GameRouteFrame from "../../game-route-frame";
 import GamePlayFrame from "../../game-play-frame";
 import { getGameLibrary } from "../../game-library";
+import { ArtworkDelivery } from "../../home-shell/artwork-delivery";
 import { buildGameExitHref } from "../../home-shell/hero-selection.mjs";
 
 export const dynamic = "force-static";
@@ -49,21 +50,24 @@ export default async function GamePlayRoutePage({ params }) {
     searchParams: { exitTo: buildGameExitHref(game), localGame: "1", catalogGame: game.gameId, engine: game.engineId },
     hash: game.target,
   });
+  const artwork = artworkDelivery([game]);
 
   return (
     <main className="game-route-page">
-      <GamePlayFrame key={game.slug} game={game} catalog={getGameLibrary().games} artwork={artworkDelivery([game])}
-        officialUrl={getGamesOrigin()}>
-        {!game.importRequired && <GameRouteFrame
-          key={game.slug}
-          game={game}
-          catalogArchiveUrl={bucketZipUrl(getGamesOrigin(), game.gameId)}
-          skipIntro={game.skipIntro}
-          src={launchHref}
-          target={game.target}
-          title={`${game.displayTitle} playable ScummVM frame`}
-        />}
-      </GamePlayFrame>
+      <ArtworkDelivery value={artwork}>
+        <GamePlayFrame key={game.slug} game={game} catalog={getGameLibrary().games} artwork={artwork}
+          officialUrl={getGamesOrigin()}>
+          {!game.importRequired && <GameRouteFrame
+            key={game.slug}
+            game={game}
+            catalogArchiveUrl={bucketZipUrl(getGamesOrigin(), game.gameId)}
+            skipIntro={game.skipIntro}
+            src={launchHref}
+            target={game.target}
+            title={`${game.displayTitle} playable ScummVM frame`}
+          />}
+        </GamePlayFrame>
+      </ArtworkDelivery>
     </main>
   );
 }
