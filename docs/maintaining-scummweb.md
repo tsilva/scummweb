@@ -485,7 +485,8 @@ Google Analytics remains enabled on other hosts.
 
 Lighthouse CI audits the production homepage with the Google tag script blocked
 by [its collection configuration](../.lighthouserc.json), so CI runs stay out of
-GA4 traffic reports.
+GA4 traffic reports. The GitHub Actions run summary shows the representative
+scores and a link to the temporary public report.
 
 For local artwork, `prepare` generates 320px and 640px WebP poster variants under
 `scummvm-shell/launcher/responsive/` before staging the managed shell. The
