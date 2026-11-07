@@ -17,6 +17,7 @@ export default function HomeShell({
   children,
 }) {
   const isHomePage = pageMode === "home";
+  const BrandLink = isHomePage ? "a" : Link;
   const libraryHeading = "Game Library";
 
   return (
@@ -26,7 +27,7 @@ export default function HomeShell({
         <div className="nav-cluster nav-cluster-left">
           <div className="nav-brand-group">
             <div className="nav-brand-stack">
-              <Link className="nav-brand" href={pageMode === "compatibility" ? "/" : "#browse"} aria-label="ScummWEB">
+              <BrandLink className="nav-brand" href={isHomePage ? "#top" : "/"} aria-label="ScummWEB home">
                 <img
                   alt=""
                   aria-hidden="true"
@@ -38,7 +39,7 @@ export default function HomeShell({
                   src={logoSrc}
                   width="273"
                 />
-              </Link>
+              </BrandLink>
               <p className="nav-brand-tagline">Classic adventures in your browser</p>
             </div>
           </div>
