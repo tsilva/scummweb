@@ -83,5 +83,9 @@ configured public hosts.
 - The bundled ScummVM engine and patches to ScummVM are covered by the
   [ScummVM GPL license](scummvm-shell/doc/COPYING). Bundled third-party
   components carry their own notices in the [ScummVM documentation](scummvm-shell/doc/).
+  The [ScummVM source page](https://scummweb.tsilva.eu/doc/scummvm-source.html)
+  offers the corresponding source for the live browser build. For this checkout,
+  see the [pinned upstream source details](scummvm-shell/source-info.json) and
+  the [ScummWEB build-source ZIP](scummvm-shell/doc/scummvm-source.zip).
 - Each game and its associated artwork have their own terms. See the
   game-specific notices in the [ScummWEB catalog](https://scummweb.tsilva.eu#library).

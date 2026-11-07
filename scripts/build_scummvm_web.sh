@@ -548,12 +548,14 @@ finalize_dist_workspace() {
     "$SCUMMVM_DIR" \
     "$DIST_DIR" \
     "$SHELL_DIR" \
-    "$EMSDK_NODE"
+    "$EMSDK_NODE" \
+    "$EMSDK_DIR" \
+    "$VENDOR_DIR/flac-$FLAC_VERSION.tar.xz"
 }
 
 main() {
-  if [[ "$#" != 0 && ( "$#" != 1 || ( "$1" != --prepare-source && "$1" != --shell-only ) ) ]]; then
-    echo "Usage: $0 [--prepare-source|--shell-only]" >&2
+  if [[ "$#" != 0 && ( "$#" != 1 || ( "$1" != --prepare-source && "$1" != --compile-only && "$1" != --shell-only ) ) ]]; then
+    echo "Usage: $0 [--prepare-source|--compile-only|--shell-only]" >&2
     exit 1
   fi
 
@@ -563,9 +565,15 @@ main() {
     node "$ROOT_DIR/scripts/manage_scummvm_assets.mjs" sync "$SHELL_DIR" "$DIST_DIR"
     python3 "$ROOT_DIR/scripts/stage_scummvm_web_shell.py" "$DIST_DIR"
     node "$ROOT_DIR/scripts/generate-runtime-assets.mjs" "$DIST_DIR"
+    node "$ROOT_DIR/scripts/manage_scummvm_assets.mjs" validate "$DIST_DIR"
     node "$ROOT_DIR/scripts/manage_scummvm_assets.mjs" sync "$DIST_DIR" "$SHELL_DIR"
     echo "Regenerated browser shell in $DIST_DIR and $SHELL_DIR; compiled engine unchanged"
     return
+  fi
+
+  if [[ "$#" == 0 ]]; then
+    SCUMMVM_BUILD_SOURCE_SHA256="$(python3 "$ROOT_DIR/scripts/write_source_info.py" --fingerprint)"
+    export SCUMMVM_BUILD_SOURCE_SHA256
   fi
 
   log_stage "Prepare ScummVM $SCUMMVM_TAG and apply source patches"
@@ -575,7 +583,7 @@ main() {
     return
   fi
 
-  if [[ "${SCUMMVM_REUSE_CATALOG:-0}" != 1 ]]; then
+  if [[ "${1:-}" != --compile-only && "${SCUMMVM_REUSE_CATALOG:-0}" != 1 ]]; then
     log_stage "Discover game archives"
     discover_game_archives
   fi
@@ -591,12 +599,18 @@ main() {
 
   log_stage "Stage ScummWEB shell and filesystem index"
   python3 "$ROOT_DIR/scripts/stage_scummvm_web_shell.py" "$SCUMMVM_DIR/build-emscripten"
+  python3 "$ROOT_DIR/scripts/patch_scummvm_audio.py" "$SCUMMVM_DIR/build-emscripten/scummvm.js"
   cp "$FLAC_PREFIX/COPYING.Xiph" "$SCUMMVM_DIR/build-emscripten/doc/COPYING.FLAC"
   cp "$SCUMMVM_DIR/dists/emscripten/libs/libmad-0.15.1b/COPYRIGHT" \
     "$SCUMMVM_DIR/build-emscripten/doc/COPYRIGHT.MAD"
   cp "$SCUMMVM_DIR/dists/emscripten/libs/libmad-0.15.1b/COPYING" \
     "$SCUMMVM_DIR/build-emscripten/doc/COPYING.MAD"
   python3 "$ROOT_DIR/scripts/write_scummvm_http_index.py" "$SCUMMVM_DIR/build-emscripten/data"
+
+  if [[ "${1:-}" == --compile-only ]]; then
+    echo "Built the ScummVM browser runtime in $SCUMMVM_DIR/build-emscripten"
+    return
+  fi
 
   if [[ "${SCUMMVM_REUSE_CATALOG:-0}" == 1 ]]; then
     log_stage "Reuse tracked game config"
