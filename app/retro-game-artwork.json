@@ -10483,5 +10483,4380 @@
     "genre": "Action puzzle adventure",
     "heroImage": "/launcher/got-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
+  },
+  "mohawk:arthurbday": {
+    "title": "Arthur's Birthday",
+    "aliases": [
+      "Living Books - Arthur's Birthday (CD Windows)"
+    ],
+    "posterImage": "/launcher/arthurs-birthday-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://images.igdb.com/igdb/image/upload/t_720p/co6oqd.jpg",
+            "kind": "box-scan",
+            "credit": "Original Living Books CD-ROM retail box front, IGDB",
+            "sha256": "f1ec9e2b2fde3bd248d76150b3d4db93ce7d4bd8b497610538658de8b6b95a59"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.mobygames.com/company/2353/living-books/games/"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://images.igdb.com/igdb/image/upload/t_720p/co6oqd.jpg",
+            "kind": "box-scan",
+            "credit": "Original Living Books CD-ROM retail box front, IGDB",
+            "sha256": "f1ec9e2b2fde3bd248d76150b3d4db93ce7d4bd8b497610538658de8b6b95a59"
+          }
+        ]
+      }
+    },
+    "summary": "Help Arthur and his friends figure out what to do when two birthday parties land on the same day.",
+    "studio": "Living Books",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/arthurs-birthday-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "69% 40%"
+  },
+  "mohawk:arthurcomp": {
+    "title": "Arthur's Computer Adventure",
+    "aliases": [
+      "Living Books - Arthur's Computer Adventure (CD Windows)"
+    ],
+    "posterImage": "/launcher/arthurs-computer-adventure-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Arthur%27s%20Computer%20Adventure.png",
+            "kind": "box-scan",
+            "credit": "Original Brøderbund retail box front, Libretro",
+            "sha256": "712db1eda2a632eabe6e2bfa0ef91cebcd0cf5eae2a3b53ca6c71c286e1a64a0"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.mobygames.com/game/79724/arthurs-computer-adventure/"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Arthur%27s%20Computer%20Adventure.png",
+            "kind": "box-scan",
+            "credit": "Original Brøderbund retail box front, Libretro",
+            "sha256": "712db1eda2a632eabe6e2bfa0ef91cebcd0cf5eae2a3b53ca6c71c286e1a64a0"
+          }
+        ]
+      }
+    },
+    "summary": "Join Arthur and his friends as a computer game turns an afternoon indoors into an underwater adventure.",
+    "studio": "Living Books",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/arthurs-computer-adventure-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "69% 40%"
+  },
+  "mohawk:arthurrace": {
+    "title": "Arthur's Reading Race",
+    "aliases": [
+      "Living Books - Arthur's Reading Race (CD Windows)"
+    ],
+    "posterImage": "/launcher/arthurs-reading-race-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Arthur%27s%20Reading%20Race.png",
+            "kind": "box-scan",
+            "credit": "Original Living Books CD jewel-case front insert, Libretro",
+            "sha256": "1545117c10df7012d90ed3b1c30d5c571ea73afd4f735ed2a15899cf6817e0fa"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.mobygames.com/game/44963/arthurs-reading-race/"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Arthur%27s%20Reading%20Race.png",
+            "kind": "box-scan",
+            "credit": "Original Living Books CD jewel-case front insert, Libretro",
+            "sha256": "1545117c10df7012d90ed3b1c30d5c571ea73afd4f735ed2a15899cf6817e0fa"
+          }
+        ]
+      }
+    },
+    "summary": "Tag along as D.W. tries to read ten words to win a challenge from her older brother Arthur.",
+    "studio": "Living Books",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/arthurs-reading-race-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "69% 40%"
+  },
+  "mohawk:tortoise": {
+    "title": "Aesop's Fables: The Tortoise and the Hare",
+    "aliases": [
+      "Living Books - Aesop's Fables - The Tortoise And The Hare (CD Windows)"
+    ],
+    "posterImage": "/launcher/the-tortoise-and-the-hare-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://elisoftware.org/w/images/2/26/84578-49104.jpg",
+            "kind": "box-scan",
+            "credit": "Original Brøderbund Living Books retail box front, Eli’s Software Encyclopedia",
+            "sha256": "67c375dadf1f0a4acd03da3510ae8ab4c29d5620c1575e1ccd7fc113d3d0e8e7"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://elisoftware.org/w/index.php?title=Aesop%27s_Fable_The_Tortoise_And_The_Hare_%28PC_and_Mac%2C_CD-ROM%29_Broderbund_Software_-_1993_USA%2C_Canada_Release"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://elisoftware.org/w/images/2/26/84578-49104.jpg",
+            "kind": "box-scan",
+            "credit": "Original Brøderbund Living Books retail box front, Eli’s Software Encyclopedia",
+            "sha256": "67c375dadf1f0a4acd03da3510ae8ab4c29d5620c1575e1ccd7fc113d3d0e8e7"
+          }
+        ]
+      }
+    },
+    "summary": "Follow the steady Tortoise and the speedy Hare as they race through an interactive retelling of Aesop’s fable.",
+    "studio": "Living Books",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/the-tortoise-and-the-hare-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "71% 46%"
+  },
+  "mortevielle:mortevielle": {
+    "title": "Mortville Manor",
+    "aliases": [
+      "Mortville Manor (Floppy DOS)",
+      "Le Manoir de Mortevielle",
+      "Der Landsitz von Mortville"
+    ],
+    "posterImage": "/launcher/mortville-manor-scummweb-generated-2026-11-07-r2-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://www.atarilegend.com/games/release/10244/boxscan-3071.webp",
+            "kind": "box-scan",
+            "credit": "Kyilkhor Creation and B&JL Langlois Atari ST retail box-front scan, hosted by Atari Legend.",
+            "sha256": "ccf417fb8b0303e68503c03be3a83232edd757f85ca63ed8fa02ad3de8f618c3"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.lankhor.net/jeux.php?jeu=15&menu=presentation",
+        "https://www.atarilegend.com/games/mortville-manor"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://www.atarilegend.com/games/release/10244/boxscan-3071.webp",
+            "kind": "box-scan",
+            "credit": "Kyilkhor Creation and B&JL Langlois Atari ST retail box-front scan, hosted by Atari Legend.",
+            "sha256": "ccf417fb8b0303e68503c03be3a83232edd757f85ca63ed8fa02ad3de8f618c3"
+          }
+        ]
+      }
+    },
+    "summary": "Detective Jérôme Lange investigates a death at a snowbound manor, questioning the guests and following clues as time passes.",
+    "studio": "Lankhor",
+    "genre": "Detective mystery",
+    "heroImage": "/launcher/mortville-manor-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "67% 39%"
+  },
+  "scumm:baseball": {
+    "title": "Backyard Baseball",
+    "aliases": [
+      "Backyard Baseball (CD Windows)"
+    ],
+    "posterImage": "/launcher/backyard-baseball-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Baseball.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment CD case front, Libretro",
+            "sha256": "5e7f4f92b535a1913381837db3ddcdee89edd6d809ea89c8d93e8da08dc220a1"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Baseball.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Baseball.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment CD case front, Libretro",
+            "sha256": "5e7f4f92b535a1913381837db3ddcdee89edd6d809ea89c8d93e8da08dc220a1"
+          }
+        ]
+      }
+    },
+    "summary": "Pick a team of neighborhood kids and play a season of sandlot baseball.",
+    "studio": "Humongous Entertainment",
+    "genre": "Baseball",
+    "heroImage": "/launcher/backyard-baseball-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "68% 39%"
+  },
+  "scumm:baseball2001": {
+    "title": "Backyard Baseball 2001",
+    "aliases": [
+      "Backyard Baseball 2001 (CD Windows)"
+    ],
+    "posterImage": "/launcher/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Baseball%202001.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "5576332291cf3c96a653c680a1c8e976793fce09c703ee53edf9005278a08ae1"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Baseball%202001.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Baseball%202001.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "5576332291cf3c96a653c680a1c8e976793fce09c703ee53edf9005278a08ae1"
+          }
+        ]
+      }
+    },
+    "summary": "Build a team from the Backyard Kids and kid versions of Major League stars for a season on the sandlot.",
+    "studio": "Humongous Entertainment",
+    "genre": "Baseball",
+    "heroImage": "/launcher/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:baseball2003": {
+    "title": "Backyard Baseball 2003",
+    "aliases": [
+      "Backyard Baseball 2003 (CD Windows)"
+    ],
+    "posterImage": "/launcher/backyard-baseball-2003-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Baseball%202003.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "36b9b4ac3ecce569ce53971bdcec6b9821fc9a75f6d773236af8fe09e8e0558c"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Baseball%202003.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Baseball%202003.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "36b9b4ac3ecce569ce53971bdcec6b9821fc9a75f6d773236af8fe09e8e0558c"
+          }
+        ]
+      }
+    },
+    "summary": "Draft your own sandlot lineup and take on backyard teams with kid versions of professional ballplayers.",
+    "studio": "Humongous Entertainment",
+    "genre": "Baseball",
+    "heroImage": "/launcher/backyard-baseball-2003-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:basketball": {
+    "title": "Backyard Basketball",
+    "aliases": [
+      "Backyard Basketball (CD Windows)"
+    ],
+    "posterImage": "/launcher/backyard-basketball-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Basketball.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "c60753cb5a9999e49023c1d08cb3bdee1783bd6e2ff5b550eede3a339621d804"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Basketball.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Basketball.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "c60753cb5a9999e49023c1d08cb3bdee1783bd6e2ff5b550eede3a339621d804"
+          }
+        ]
+      }
+    },
+    "summary": "Put together a team of neighborhood players and take them to the court for a season of basketball.",
+    "studio": "Humongous Entertainment",
+    "genre": "Basketball",
+    "heroImage": "/launcher/backyard-basketball-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 40%"
+  },
+  "scumm:football": {
+    "title": "Backyard Football",
+    "aliases": [
+      "Backyard Football (CD Windows)"
+    ],
+    "posterImage": "/launcher/backyard-football-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Football.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "33aaef6dadaf6db775aa2aadeebe203ba01d3550392d5cdd4fa823b61e99bee5"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Football.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Football.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "33aaef6dadaf6db775aa2aadeebe203ba01d3550392d5cdd4fa823b61e99bee5"
+          }
+        ]
+      }
+    },
+    "summary": "Choose the kids for your backyard football team, call the plays and take the field.",
+    "studio": "Humongous Entertainment",
+    "genre": "American football",
+    "heroImage": "/launcher/backyard-football-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:football2002": {
+    "title": "Backyard Football 2002",
+    "aliases": [
+      "Backyard Football 2002 (CD Windows)"
+    ],
+    "posterImage": "/launcher/backyard-football-2002-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Football%202002.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "fb82dbaf76d115a752edc18425c2f130d4c30a0df069acf4c0f263f6c1ed4a63"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Football%202002.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Football%202002.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "fb82dbaf76d115a752edc18425c2f130d4c30a0df069acf4c0f263f6c1ed4a63"
+          }
+        ]
+      }
+    },
+    "summary": "Take the field with a team of Backyard Kids and kid versions of NFL players.",
+    "studio": "Humongous Entertainment",
+    "genre": "American football",
+    "heroImage": "/launcher/backyard-football-2002-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:freddi": {
+    "title": "Freddi Fish and the Case of the Missing Kelp Seeds",
+    "aliases": [
+      "Freddi Fish 1 The Case of the Missing Kelp Seeds (CD Windows)"
+    ],
+    "posterImage": "/launcher/freddi-fish-1-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Freddi%20Fish%20and%20the%20Case%20of%20the%20Missing%20Kelp%20Seeds.png",
+            "kind": "box-scan",
+            "credit": "Humongous Entertainment original retail box-front scan, hosted by Libretro.",
+            "sha256": "15010f422441a9a2601142346f17109efb555387d17278df8b141c84e0acbbe2"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://store.steampowered.com/app/283940/"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Freddi%20Fish%20and%20the%20Case%20of%20the%20Missing%20Kelp%20Seeds.png",
+            "kind": "box-scan",
+            "credit": "Humongous Entertainment original retail box-front scan, hosted by Libretro.",
+            "sha256": "15010f422441a9a2601142346f17109efb555387d17278df8b141c84e0acbbe2"
+          }
+        ]
+      }
+    },
+    "summary": "Swim with Freddi and Luther to recover Grandma Grouper’s missing kelp seeds before the reef runs out of food.",
+    "studio": "Humongous Entertainment",
+    "genre": "Undersea mystery",
+    "heroImage": "/launcher/freddi-fish-1-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%",
+    "shortTitle": "Freddi Fish 1"
+  },
+  "scumm:freddi2": {
+    "title": "Freddi Fish 2: The Case of the Haunted Schoolhouse",
+    "aliases": [
+      "Freddi Fish 2 The Case of the Haunted Schoolhouse (CD Windows)"
+    ],
+    "posterImage": "/launcher/freddi-fish-2-scummweb-generated-2026-11-07-r2-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://elisoftware.org/w/images/thumb/2/29/42725-11667.jpg/800px-42725-11667.jpg",
+            "kind": "box-scan",
+            "credit": "Humongous Entertainment original US retail box-front scan, hosted by Eli’s Software Encyclopedia.",
+            "sha256": "8ff1b3191bb75f0ecf0c208ad8b8b2d293f179f6a679cdcb66aeb6495d95c6dd"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://store.steampowered.com/sub/42720?l=english",
+        "https://www.macintoshrepository.org/4643-freddi-fish-2-the-case-of-the-haunted-schoolhouse"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Freddi%20Fish%202_%20The%20Case%20of%20the%20Haunted%20Schoolhouse.png",
+            "kind": "box-scan",
+            "credit": "Humongous Entertainment original retail jewel-case front scan, hosted by Libretro.",
+            "sha256": "508757cf469d85b65e6da0142fd324ee69e48f8341017582f4e8b28ecd560435"
+          }
+        ]
+      }
+    },
+    "summary": "Help Freddi and Luther build a trap for the ghost stealing toys from their underwater school.",
+    "studio": "Humongous Entertainment",
+    "genre": "Undersea mystery",
+    "heroImage": "/launcher/freddi-fish-2-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 43%",
+    "shortTitle": "Freddi Fish 2"
+  },
+  "scumm:freddi3": {
+    "title": "Freddi Fish 3: The Case of the Stolen Conch Shell",
+    "aliases": [
+      "Freddi Fish 3 The Case of the Stolen Conch Shell (CD DOS)"
+    ],
+    "posterImage": "/launcher/freddi-fish-3-scummweb-generated-2026-11-07-r2-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://www.mocagh.org/miscgame/freddifish3.jpg",
+            "kind": "box-scan",
+            "credit": "Humongous Entertainment and Infogrames original retail box-front scan, hosted by the Museum of Computer Adventure Game History.",
+            "sha256": "e178cd488b7f315eb0eebdecb020f0e7eb26afc3a992698e67994b24c38930d7"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://store.steampowered.com/app/294540/"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://www.mocagh.org/miscgame/freddifish3.jpg",
+            "kind": "box-scan",
+            "credit": "Humongous Entertainment and Infogrames original retail box-front scan, hosted by the Museum of Computer Adventure Game History.",
+            "sha256": "e178cd488b7f315eb0eebdecb020f0e7eb26afc3a992698e67994b24c38930d7"
+          }
+        ]
+      }
+    },
+    "summary": "Search a tropical reef with Freddi and Luther for the missing Great Conch Shell before the Founder's Day festival.",
+    "studio": "Humongous Entertainment",
+    "genre": "Undersea mystery",
+    "heroImage": "/launcher/freddi-fish-3-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:freddi4": {
+    "title": "Freddi Fish 4: The Case of the Hogfish Rustlers of Briny Gulch",
+    "aliases": [
+      "Freddi Fish 4 The Case of the Hogfish Rustlers of Briny Gulch (CD DOS)"
+    ],
+    "posterImage": "/launcher/freddi-fish-4-scummweb-generated-2026-11-07-r2-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Freddi%20Fish%204_%20The%20Case%20of%20the%20Hogfish%20Rustlers%20of%20Briny%20Gulch.png",
+            "kind": "box-scan",
+            "credit": "Humongous Entertainment and Infogrames original retail case-front scan, hosted by Libretro.",
+            "sha256": "a98fedf50975247777ba251a66a31e73f878cf7b98e4d5f24700d1626eb532ec"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://store.steampowered.com/app/294550/"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Freddi%20Fish%204_%20The%20Case%20of%20the%20Hogfish%20Rustlers%20of%20Briny%20Gulch.png",
+            "kind": "box-scan",
+            "credit": "Humongous Entertainment and Infogrames original retail case-front scan, hosted by Libretro.",
+            "sha256": "a98fedf50975247777ba251a66a31e73f878cf7b98e4d5f24700d1626eb532ec"
+          }
+        ]
+      }
+    },
+    "summary": "Ride into Briny Gulch with Freddi and Luther to find Calico’s missing hogfish and expose the rustlers.",
+    "studio": "Humongous Entertainment",
+    "genre": "Undersea Western",
+    "heroImage": "/launcher/freddi-fish-4-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "69% 43%",
+    "shortTitle": "Freddi Fish 4"
+  },
+  "scumm:freddicove": {
+    "title": "Freddi Fish 5: The Case of the Creature of Coral Cove",
+    "aliases": [
+      "Freddi Fish 5 The Case of the Creature of Coral Cave (CD DOS)"
+    ],
+    "posterImage": "/launcher/freddi-fish-5-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Freddi%20Fish%205_%20The%20Case%20of%20the%20Creature%20of%20Coral%20Cove.png",
+            "kind": "box-scan",
+            "credit": "Humongous Entertainment and Infogrames original retail case-front scan, hosted by Libretro.",
+            "sha256": "d74038599b4dbdc3ab4095014c482b01c850ff884bb850802ef5523e74e33f8c"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://store.steampowered.com/app/294570/"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Freddi%20Fish%205_%20The%20Case%20of%20the%20Creature%20of%20Coral%20Cove.png",
+            "kind": "box-scan",
+            "credit": "Humongous Entertainment and Infogrames original retail case-front scan, hosted by Libretro.",
+            "sha256": "d74038599b4dbdc3ab4095014c482b01c850ff884bb850802ef5523e74e33f8c"
+          }
+        ]
+      }
+    },
+    "summary": "Explore Coral Cove with Freddi and Luther and find out what is behind reports of a sea creature at the park.",
+    "studio": "Humongous Entertainment",
+    "genre": "Undersea mystery",
+    "heroImage": "/launcher/freddi-fish-5-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "69% 40%",
+    "shortTitle": "Freddi Fish 5"
+  },
+  "scumm:pajama": {
+    "title": "Pajama Sam: No Need to Hide When It's Dark Outside",
+    "aliases": [
+      "Pajama Sam 1 - No Need to Hide When it's Dark Outside (CD Windows)"
+    ],
+    "posterImage": "/launcher/pajama-sam-scummweb-generated-2026-11-07-r3-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Pajama%20Sam%20in%20No%20Need%20to%20Hide%20When%20It%27s%20Dark%20Outside.png",
+            "kind": "box-scan",
+            "credit": "Humongous Entertainment retail box-front scan, hosted by Libretro.",
+            "sha256": "4ed507b9e2eb4304b3130f873a1aca86c7d2124ae1c3dda08fc10e5f95324c49"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://store.steampowered.com/app/283960/Pajama_Sam_No_Need_to_Hide_When_Its_Dark_Outside/"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Pajama%20Sam%20in%20No%20Need%20to%20Hide%20When%20It%27s%20Dark%20Outside.png",
+            "kind": "box-scan",
+            "credit": "Humongous Entertainment retail box-front scan, hosted by Libretro.",
+            "sha256": "4ed507b9e2eb4304b3130f873a1aca86c7d2124ae1c3dda08fc10e5f95324c49"
+          }
+        ]
+      }
+    },
+    "summary": "Put on a red cape and join Sam in the Land of Darkness, where the creatures in his closet help him face his fear of the dark.",
+    "studio": "Humongous Entertainment",
+    "genre": "Junior adventure",
+    "heroImage": "/launcher/pajama-sam-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "68% 32%",
+    "shortTitle": "Pajama Sam"
+  },
+  "scumm:spyfox2": {
+    "title": "Spy Fox 2: \"Some Assembly Required\"",
+    "aliases": [
+      "Spy Fox 2 Some Assembly Required (CD Windows)"
+    ],
+    "posterImage": "/launcher/spy-fox-2-scummweb-generated-2026-11-07-r2-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/SPY%20Fox%202%20-%20Some%20Assembly%20Required.png",
+            "kind": "box-scan",
+            "credit": "Humongous Entertainment retail box-front scan, hosted by Libretro.",
+            "sha256": "4585dfaf93451cc6355821c3ff95679c247efd5d28b624b084365210c9ed3025"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://store.steampowered.com/app/292240/Spy_Fox_2_Some_Assembly_Required/"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/SPY%20Fox%202%20-%20Some%20Assembly%20Required.png",
+            "kind": "box-scan",
+            "credit": "Humongous Entertainment retail box-front scan, hosted by Libretro.",
+            "sha256": "4585dfaf93451cc6355821c3ff95679c247efd5d28b624b084365210c9ed3025"
+          }
+        ]
+      }
+    },
+    "summary": "Help Spy Fox track down a hidden switch at the World's Fair and stop a giant robot dog before it can hatch a world takeover.",
+    "studio": "Humongous Entertainment",
+    "genre": "Spy adventure",
+    "heroImage": "/launcher/spy-fox-2-scummweb-generated-2026-11-07-r2-hero.webp",
+    "heroImagePosition": "69% 39%"
+  },
+  "zvision:zgi": {
+    "title": "Zork: Grand Inquisitor",
+    "aliases": [
+      "Zork - Grand Inquisitor (DVD Windows)"
+    ],
+    "posterImage": "/launcher/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://www.mocagh.org/activision/zorkgi.jpg",
+            "kind": "box-scan",
+            "credit": "Activision Windows retail box-front scan, hosted by the Museum of Computer Adventure Game History.",
+            "sha256": "548147d0ef903a132ce92260a84e85c457b21b0f2131e1f50b3250d09cd6b303"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.gog.com/en/game/zork_grand_inquisitor",
+        "https://www.mocagh.org/loadpage.php?getgame=zorkgi"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://www.mocagh.org/activision/zorkgi.jpg",
+            "kind": "box-scan",
+            "credit": "Activision Windows retail box-front scan, hosted by the Museum of Computer Adventure Game History.",
+            "sha256": "548147d0ef903a132ce92260a84e85c457b21b0f2131e1f50b3250d09cd6b303"
+          }
+        ]
+      }
+    },
+    "summary": "Carry a talkative lantern through the Great Underground Empire and uncover the magic its Grand Inquisitor has banned.",
+    "studio": "Activision",
+    "genre": "Fantasy comedy",
+    "heroImage": "/launcher/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "69% 25%"
+  },
+  "zvision:znemesis": {
+    "title": "Zork Nemesis: The Forbidden Lands",
+    "aliases": [
+      "Zork Nemesis - The Forbidden Lands (DVD DOS)"
+    ],
+    "posterImage": "/launcher/zork-nemesis-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Zork%20Nemesis%20-%20The%20Forbidden%20Lands.png",
+            "kind": "box-scan",
+            "credit": "Activision DOS and Windows retail box-front scan, hosted by Libretro.",
+            "sha256": "45eb852292866affd0c16e5a06747ccba52338a731b96fab90f760ed8475f00a"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.mobygames.com/game/560/zork-nemesis-the-forbidden-lands/"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Zork%20Nemesis%20-%20The%20Forbidden%20Lands.png",
+            "kind": "box-scan",
+            "credit": "Activision DOS and Windows retail box-front scan, hosted by Libretro.",
+            "sha256": "45eb852292866affd0c16e5a06747ccba52338a731b96fab90f760ed8475f00a"
+          }
+        ]
+      }
+    },
+    "summary": "Explore the Forbidden Lands and follow the trail of four vanished alchemists through the ruined Temple of Agrippa.",
+    "studio": "Zombie Studios",
+    "genre": "Dark fantasy mystery",
+    "heroImage": "/launcher/zork-nemesis-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:blues123time": {
+    "title": "Blue's 123 Time Activities",
+    "aliases": [
+      "Blue's 123 Time Activities (CD Windows)"
+    ],
+    "posterImage": "/launcher/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue's%20123%20Time%20Activities.png",
+            "kind": "box-scan",
+            "credit": "Original Blue’s Clues Humongous Entertainment retail front, Libretro",
+            "sha256": "819f97bd6be63871187d227b270ecf08f66be236743509e58d9927901f2f95c2"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue%27s%20123%20Time%20Activities.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue's%20123%20Time%20Activities.png",
+            "kind": "box-scan",
+            "credit": "Original Blue’s Clues Humongous Entertainment retail front, Libretro",
+            "sha256": "819f97bd6be63871187d227b270ecf08f66be236743509e58d9927901f2f95c2"
+          }
+        ]
+      }
+    },
+    "summary": "Play counting, matching and simple math games with Blue and her friends.",
+    "studio": "Humongous Entertainment",
+    "genre": "Preschool activities",
+    "heroImage": "/launcher/blues-123-time-activities-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 43%"
+  },
+  "scumm:bluesabctime": {
+    "title": "Blue's ABC Time Activities",
+    "aliases": [
+      "Blue's ABC Time (Windows)"
+    ],
+    "posterImage": "/launcher/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue's%20ABC%20Time%20Activities.png",
+            "kind": "box-scan",
+            "credit": "Original Blue’s Clues Humongous Entertainment retail front, Libretro",
+            "sha256": "35f32de85cfbc1a939b9f50768b754a14caeddf63de27ec6dd4bec78471b1d06"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue%27s%20ABC%20Time%20Activities.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue's%20ABC%20Time%20Activities.png",
+            "kind": "box-scan",
+            "credit": "Original Blue’s Clues Humongous Entertainment retail front, Libretro",
+            "sha256": "35f32de85cfbc1a939b9f50768b754a14caeddf63de27ec6dd4bec78471b1d06"
+          }
+        ]
+      }
+    },
+    "summary": "Practice letters and sounds with Blue through games and stories around the house.",
+    "studio": "Humongous Entertainment",
+    "genre": "Preschool activities",
+    "heroImage": "/launcher/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 43%"
+  },
+  "scumm:arttime": {
+    "title": "Blue's Clues: Blue's Art Time Activities",
+    "aliases": [
+      "Blue's Art Time Activities (CD Windows)"
+    ],
+    "posterImage": "/launcher/blues-art-time-activities-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue's%20Art%20Time%20Activities.png",
+            "kind": "box-scan",
+            "credit": "Original Blue’s Clues Humongous Entertainment retail front, Libretro",
+            "sha256": "f569f42985f4a70dca583653d7fdab7951a77b3c32000daef62139a040ffe5ae"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue%27s%20Art%20Time%20Activities.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue's%20Art%20Time%20Activities.png",
+            "kind": "box-scan",
+            "credit": "Original Blue’s Clues Humongous Entertainment retail front, Libretro",
+            "sha256": "f569f42985f4a70dca583653d7fdab7951a77b3c32000daef62139a040ffe5ae"
+          }
+        ]
+      }
+    },
+    "summary": "Help Blue and her friends with art projects using drawing, color and everyday craft supplies.",
+    "studio": "Humongous Entertainment",
+    "genre": "Preschool activities",
+    "heroImage": "/launcher/blues-art-time-activities-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 43%"
+  },
+  "scumm:bluesbirthday": {
+    "title": "Blue's Clues: Blue's Birthday Adventure",
+    "aliases": [
+      "Blue's Birthday Adventure Red (Windows)",
+      "Blue's Birthday Adventure Yellow (Windows)"
+    ],
+    "posterImage": "/launcher/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue's%20Birthday%20Adventure.png",
+            "kind": "box-scan",
+            "credit": "Original Blue’s Clues Humongous Entertainment retail front, Libretro",
+            "sha256": "e5aa88cca1b671f1239b9ef70c8ac307ecd573caefb0daf55a04698a6307693b"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue%27s%20Birthday%20Adventure.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue's%20Birthday%20Adventure.png",
+            "kind": "box-scan",
+            "credit": "Original Blue’s Clues Humongous Entertainment retail front, Libretro",
+            "sha256": "e5aa88cca1b671f1239b9ef70c8ac307ecd573caefb0daf55a04698a6307693b"
+          }
+        ]
+      }
+    },
+    "summary": "Follow clues and help Blue’s friends get ready for her birthday party.",
+    "studio": "Humongous Entertainment",
+    "genre": "Preschool adventure",
+    "heroImage": "/launcher/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 43%"
+  },
+  "scumm:readtime": {
+    "title": "Blue's Reading Time Activities",
+    "aliases": [
+      "Blue's Reading Time Activities (CD Windows)"
+    ],
+    "posterImage": "/launcher/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue's%20Reading%20Time%20Activities.png",
+            "kind": "box-scan",
+            "credit": "Original Blue’s Clues Humongous Entertainment retail front, Libretro",
+            "sha256": "a8f2a9e1f16e5270e93b5dfdebebf2842ccb798cb9abc09688177b603acf0695"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue%27s%20Reading%20Time%20Activities.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue's%20Reading%20Time%20Activities.png",
+            "kind": "box-scan",
+            "credit": "Original Blue’s Clues Humongous Entertainment retail front, Libretro",
+            "sha256": "a8f2a9e1f16e5270e93b5dfdebebf2842ccb798cb9abc09688177b603acf0695"
+          }
+        ]
+      }
+    },
+    "summary": "Read along with Blue and play with letters, sounds and words.",
+    "studio": "Humongous Entertainment",
+    "genre": "Preschool activities",
+    "heroImage": "/launcher/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 43%"
+  },
+  "sci:cnick-kq": {
+    "title": "Crazy Nick's Software Picks: King Graham's Board Game Challenge",
+    "shortTitle": "King Graham's Board Game Challenge",
+    "aliases": [
+      "Crazy Nicks Picks King Graham's Board Game Challenge (DOS)"
+    ],
+    "posterImage": "/launcher/king-grahams-board-game-challenge-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Crazy%20Nick's%20Software%20Picks_%20King%20Graham's%20Board%20Game%20Challenge.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra On-Line Crazy Nick’s Software Picks blister front, Libretro",
+            "sha256": "6a9a20f1bc7f1782c1a36ff24de18facb2a47fbb709f15152c546ca3ebaab657"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.sierragamers.com/crazy-nicks/"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Crazy%20Nick's%20Software%20Picks_%20King%20Graham's%20Board%20Game%20Challenge.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra On-Line Crazy Nick’s Software Picks blister front, Libretro",
+            "sha256": "6a9a20f1bc7f1782c1a36ff24de18facb2a47fbb709f15152c546ca3ebaab657"
+          }
+        ]
+      }
+    },
+    "summary": "Sit down with King Graham for checkers and backgammon in this Sierra board-game collection.",
+    "studio": "Sierra On-Line",
+    "genre": "Board games",
+    "heroImage": "/launcher/king-grahams-board-game-challenge-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "sci:cnick-lsl": {
+    "title": "Crazy Nick's Software Picks: Leisure Suit Larry's Casino",
+    "shortTitle": "Leisure Suit Larry's Casino",
+    "aliases": [
+      "Crazy Nicks Picks Leisure Suit Larrys Casino (DOS)"
+    ],
+    "posterImage": "/launcher/leisure-suit-larrys-casino-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Crazy%20Nick's%20Picks_%20Leisure%20Suit%20Larry's%20Casino.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra On-Line Crazy Nick’s Software Picks blister front, Libretro",
+            "sha256": "50e3a86de59205d70e701318b1c88a72d15b1258593ca74fbab3686a5e57126e"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.sierragamers.com/crazy-nicks/"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Crazy%20Nick's%20Picks_%20Leisure%20Suit%20Larry's%20Casino.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra On-Line Crazy Nick’s Software Picks blister front, Libretro",
+            "sha256": "50e3a86de59205d70e701318b1c88a72d15b1258593ca74fbab3686a5e57126e"
+          }
+        ]
+      }
+    },
+    "summary": "Join Larry Laffer for slots, blackjack and poker in a collection of Sierra casino games.",
+    "studio": "Sierra On-Line",
+    "genre": "Casino games",
+    "heroImage": "/launcher/leisure-suit-larrys-casino-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "sci:cnick-laurabow": {
+    "title": "Crazy Nick's Software Picks: Parlor Games with Laura Bow",
+    "shortTitle": "Parlor Games with Laura Bow",
+    "aliases": [
+      "Crazy Nicks Picks Parlor Games with Laura Bow (DOS)"
+    ],
+    "posterImage": "/launcher/parlor-games-with-laura-bow-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Crazy%20Nicks%20Software%20Picks_%20Parlor%20Games%20with%20Laura%20Bow.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra On-Line Crazy Nick’s Software Picks blister front, Libretro",
+            "sha256": "0d494a9633c59d064d3855a43c49399d94293c729801f29186956fd2acc3f9f3"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.sierragamers.com/crazy-nicks/"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Crazy%20Nicks%20Software%20Picks_%20Parlor%20Games%20with%20Laura%20Bow.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra On-Line Crazy Nick’s Software Picks blister front, Libretro",
+            "sha256": "0d494a9633c59d064d3855a43c49399d94293c729801f29186956fd2acc3f9f3"
+          }
+        ]
+      }
+    },
+    "summary": "Play dominoes and the dice game Yacht against Laura Bow in her parlor.",
+    "studio": "Sierra On-Line",
+    "genre": "Board games",
+    "heroImage": "/launcher/parlor-games-with-laura-bow-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "sci:cnick-longbow": {
+    "title": "Crazy Nick's Software Picks: Robin Hood's Game of Skill and Chance",
+    "shortTitle": "Robin Hood's Game of Skill and Chance",
+    "aliases": [
+      "Crazy Nicks Picks Robin Hoods Game Of Skill And Chance (DOS)"
+    ],
+    "posterImage": "/launcher/robin-hoods-games-of-skill-and-chance-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Crazy%20Nick's%20Software%20Picks_%20Robin%20Hood's%20Games%20of%20Skill%20and%20Chance.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra On-Line Crazy Nick’s Software Picks blister front, Libretro",
+            "sha256": "89bf77b8780aed66f6e40ffd4b9a408e1781193ee5dbc1617be08af8d2b6e88e"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.sierragamers.com/crazy-nicks/"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Crazy%20Nick's%20Software%20Picks_%20Robin%20Hood's%20Games%20of%20Skill%20and%20Chance.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra On-Line Crazy Nick’s Software Picks blister front, Libretro",
+            "sha256": "89bf77b8780aed66f6e40ffd4b9a408e1781193ee5dbc1617be08af8d2b6e88e"
+          }
+        ]
+      }
+    },
+    "summary": "Try archery, Nine Men’s Morris and Sticks with Robin Hood in a trio of Sierra minigames.",
+    "studio": "Sierra On-Line",
+    "genre": "Minigame collection",
+    "heroImage": "/launcher/robin-hoods-games-of-skill-and-chance-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "sci:cnick-sq": {
+    "title": "Crazy Nick's Software Picks: Roger Wilco's Spaced Out Game Pack",
+    "shortTitle": "Roger Wilco's Spaced Out Game Pack",
+    "aliases": [
+      "Crazy Nicks Picks Roger Wilcos Spaced Out Game Pack (DOS)"
+    ],
+    "posterImage": "/launcher/roger-wilcos-spaced-out-game-pack-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Crazy%20Nicks%20Software%20Picks_%20Roger%20Wilco's%20Spaced%20Out%20Game%20Pack.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra On-Line Crazy Nick’s Software Picks blister front, Libretro",
+            "sha256": "5e7255140869fb99c5c639b309ae0ba32206882acb181910037421fef3ce6283"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.sierragamers.com/crazy-nicks/",
+        "https://gamefaqs.gamespot.com/pc/355306-crazy-nicks-software-picks-roger-wilcos-spaced-out-game-pack/boxes/866050"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Crazy%20Nicks%20Software%20Picks_%20Roger%20Wilco's%20Spaced%20Out%20Game%20Pack.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra On-Line Crazy Nick’s Software Picks blister front, Libretro",
+            "sha256": "5e7255140869fb99c5c639b309ae0ba32206882acb181910037421fef3ce6283"
+          }
+        ]
+      }
+    },
+    "summary": "Join Roger Wilco for Ms. Astro Chicken, Monolith Burger Building and Sand Skimmer.",
+    "studio": "Sierra On-Line",
+    "genre": "Arcade collection",
+    "heroImage": "/launcher/roger-wilcos-spaced-out-game-pack-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "mohawk:seussabc": {
+    "title": "Dr. Seuss's ABC",
+    "aliases": [
+      "Living Books - Dr. Seuss ABC (CD Windows)"
+    ],
+    "screenshots": [],
+    "sources": {
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://gamesdb.launchbox-app.com/games/images/32554-living-books-abc-by-dr-seuss"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://images.launchbox-app.com/152f9368-4f32-4b3a-a1d2-2a5d101e002f.jpg",
+            "kind": "box-scan",
+            "credit": "Original Brøderbund Living Books retail front, LaunchBox Games Database",
+            "sha256": "2b67560163fda1541c5bd0c4d495b5225b74a060ea3400dcf6566c08d4f01d88"
+          }
+        ]
+      }
+    },
+    "summary": "Meet Dr. Seuss’s curious creatures and follow an animated journey through the alphabet.",
+    "studio": "Living Books",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/dr-seusss-abc-scummweb-generated-2026-11-07-r2-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:fbear": {
+    "title": "Fatty Bear's Birthday Surprise",
+    "aliases": [
+      "Fatty Bear's Birthday Surprise (CD Windows)"
+    ],
+    "posterImage": "/launcher/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r2-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Fatty%20Bear's%20Birthday%20Surprise.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "45aa7830434eb708de2a7e6728c282ff5a77150604ee31b92834699a294f494a"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://store.steampowered.com/app/317030/"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Fatty%20Bear's%20Birthday%20Surprise.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "45aa7830434eb708de2a7e6728c282ff5a77150604ee31b92834699a294f494a"
+          }
+        ]
+      }
+    },
+    "summary": "Help Fatty Bear and the other toys set up a surprise party for Kayla before she wakes up.",
+    "studio": "Humongous Entertainment",
+    "genre": "Point-and-click adventure",
+    "heroImage": "/launcher/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:fbpack": {
+    "title": "Fatty Bear's FunPack",
+    "aliases": [
+      "Fatty Bear's Funpack (CD DOS)"
+    ],
+    "posterImage": "/launcher/fatty-bears-funpack-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co9qm6.jpg",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment IBM PC CD-ROM front, IGDB",
+            "sha256": "3f502142b23f7c469d212b256eee2114abde131bb0710d5e77ba492fcf17031e"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://artsandculture.google.com/asset/video-game-fatty-bear-s-fun-pack/KAFEOzkGW8J02Q?hl=en"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co9qm6.jpg",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment IBM PC CD-ROM front, IGDB",
+            "sha256": "3f502142b23f7c469d212b256eee2114abde131bb0710d5e77ba492fcf17031e"
+          }
+        ]
+      }
+    },
+    "summary": "Play Go Fish, Reversi, tangrams and other activities with Fatty Bear.",
+    "studio": "Humongous Entertainment",
+    "genre": "Activity collection",
+    "heroImage": "/launcher/fatty-bears-funpack-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:maze": {
+    "title": "Freddi Fish and Luther's Maze Madness",
+    "aliases": [
+      "Freddi Fish & Luther's Maze Madness (CD Windows)"
+    ],
+    "posterImage": "/launcher/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r2-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Freddi%20Fish%20and%20Luthers%20Maze%20Madness.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "edf587dd69f28325109cf0fed99ab550acb7b4b5a0e8adbd6d23715c09ac34fd"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Freddi%20Fish%20and%20Luthers%20Maze%20Madness.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Freddi%20Fish%20and%20Luthers%20Maze%20Madness.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "edf587dd69f28325109cf0fed99ab550acb7b4b5a0e8adbd6d23715c09ac34fd"
+          }
+        ]
+      }
+    },
+    "summary": "Help Freddi and Luther find their way through a series of winding underwater mazes.",
+    "studio": "Humongous Entertainment",
+    "genre": "Undersea arcade game",
+    "heroImage": "/launcher/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:water": {
+    "title": "Freddi Fish and Luther's Water Worries",
+    "aliases": [
+      "Freddi Fish & Luther's Water Worries (CD Windows)"
+    ],
+    "posterImage": "/launcher/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r2-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Freddi%20Fish%20and%20Luthers%20Water%20Worries.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "454e043185d40a94afc4a3b0f0bd4fc98dae0d35bc149a1fd63d286ba1694a73"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Freddi%20Fish%20and%20Luthers%20Water%20Worries.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Freddi%20Fish%20and%20Luthers%20Water%20Worries.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "454e043185d40a94afc4a3b0f0bd4fc98dae0d35bc149a1fd63d286ba1694a73"
+          }
+        ]
+      }
+    },
+    "summary": "Guide Freddi and Luther through underwater arcade levels filled with obstacles.",
+    "studio": "Humongous Entertainment",
+    "genre": "Undersea arcade game",
+    "heroImage": "/launcher/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "mohawk:greeneggs": {
+    "title": "Green Eggs and Ham",
+    "aliases": [
+      "Living Books - Green Eggs and Ham (CD Windows)"
+    ],
+    "screenshots": [],
+    "sources": {
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Green%20Eggs%20and%20Ham.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Green%20Eggs%20and%20Ham.png",
+            "kind": "box-scan",
+            "credit": "Original Living Books retail front, Libretro",
+            "sha256": "64eabd218cf74c92633fcd1239691e2135c9482c01fb6a4ab04be1e9ee491050"
+          }
+        ]
+      }
+    },
+    "summary": "Follow Sam-I-Am and his reluctant friend in an animated adaptation of Dr. Seuss’s rhyming story.",
+    "studio": "Living Books",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/green-eggs-and-ham-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "mohawk:harryhh": {
+    "title": "Harry and the Haunted House",
+    "aliases": [
+      "Living Books - Harry and the Haunted House (CD Windows)"
+    ],
+    "posterImage": "/launcher/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r2-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Harry%20and%20the%20Haunted%20House.png",
+            "kind": "box-scan",
+            "credit": "Original Living Books retail front, Libretro",
+            "sha256": "205feb9748d2a678bebd6151eca5249b0ec6ae14667e9c45f084ee28c368b701"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Harry%20and%20the%20Haunted%20House.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Harry%20and%20the%20Haunted%20House.png",
+            "kind": "box-scan",
+            "credit": "Original Living Books retail front, Libretro",
+            "sha256": "205feb9748d2a678bebd6151eca5249b0ec6ae14667e9c45f084ee28c368b701"
+          }
+        ]
+      }
+    },
+    "summary": "Join Harry and his friends as they venture inside a spooky house to find their baseball.",
+    "studio": "Living Books",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "adl:hires0": {
+    "title": "Hi-Res Adventure #0: Mission Asteroid",
+    "aliases": [
+      "Hi-Res Adventure #0 - Mission Asteroid (Apple II)"
+    ],
+    "posterImage": "/launcher/mission-asteroid-scummweb-generated-2026-11-07-r2-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%230_%20Mission%20Asteroid.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra retail front, Libretro",
+            "sha256": "69567295d2a6565680e44ace2b7149564642384260cca5972a60d26010c59551"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%230_%20Mission%20Asteroid.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%230_%20Mission%20Asteroid.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra retail front, Libretro",
+            "sha256": "69567295d2a6565680e44ace2b7149564642384260cca5972a60d26010c59551"
+          }
+        ]
+      }
+    },
+    "summary": "Race to reach an asteroid and destroy it before it collides with Earth.",
+    "studio": "On-Line Systems",
+    "genre": "Illustrated text adventure",
+    "heroImage": "/launcher/mission-asteroid-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "71% 42%"
+  },
+  "adl:hires2": {
+    "title": "Hi-Res Adventure #2: The Wizard and the Princess",
+    "aliases": [
+      "Hi-Res Adventure #2 - Wizard and the Princess (Apple II)"
+    ],
+    "posterImage": "/launcher/the-wizard-and-the-princess-scummweb-generated-2026-11-07-r2-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%232_%20Wizard%20and%20the%20Princess.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra retail front, Libretro",
+            "sha256": "d8858156b35df0c23c9b853b0ac4e5693779efeb26132fc62301b39de5c0ff79"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%232_%20Wizard%20and%20the%20Princess.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%232_%20Wizard%20and%20the%20Princess.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra retail front, Libretro",
+            "sha256": "d8858156b35df0c23c9b853b0ac4e5693779efeb26132fc62301b39de5c0ff79"
+          }
+        ]
+      }
+    },
+    "summary": "Travel through the kingdom of Serenia to rescue a princess from the wizard who imprisoned her.",
+    "studio": "On-Line Systems",
+    "genre": "Illustrated text adventure",
+    "heroImage": "/launcher/the-wizard-and-the-princess-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "71% 42%"
+  },
+  "adl:hires5": {
+    "title": "Hi-Res Adventure #5: Time Zone",
+    "aliases": [
+      "Hi-Res Adventure #5 - Time Zone (Apple II)"
+    ],
+    "posterImage": "/launcher/time-zone-scummweb-generated-2026-11-07-r2-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%235_%20Time%20Zone.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra retail front, Libretro",
+            "sha256": "0bce2620dcc62eed2d385948491dd2c2e0e7729d3a3bb155d351a425cffefdbd"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%235_%20Time%20Zone.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%235_%20Time%20Zone.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra retail front, Libretro",
+            "sha256": "0bce2620dcc62eed2d385948491dd2c2e0e7729d3a3bb155d351a425cffefdbd"
+          }
+        ]
+      }
+    },
+    "summary": "Use a time machine to travel through history and stop a threat from the distant future.",
+    "studio": "On-Line Systems",
+    "genre": "Illustrated text adventure",
+    "heroImage": "/launcher/time-zone-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "71% 42%"
+  },
+  "adl:hires6": {
+    "title": "Hi-Res Adventure #6: The Dark Crystal",
+    "aliases": [
+      "Hi-Res Adventure #6 - The Dark Crystal (Apple II)"
+    ],
+    "screenshots": [],
+    "sources": {
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%236_%20The%20Dark%20Crystal.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%236_%20The%20Dark%20Crystal.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra retail front, Libretro",
+            "sha256": "5313b0d24584471e97ca0a87d3240cb8e0d058df7073d6844b0ce6335c02f0c9"
+          }
+        ]
+      }
+    },
+    "summary": "Guide Jen across Thra to restore the Dark Crystal in Sierra’s adaptation of the fantasy film.",
+    "studio": "Sierra On-Line",
+    "genre": "Illustrated text adventure",
+    "heroImage": "/launcher/the-dark-crystal-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "sci:hoyle1": {
+    "title": "Hoyle's Official Book of Games: Volume 1",
+    "aliases": [
+      "Hoyle Official Book Of Games Volume 1 (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/hoyles-official-book-of-games-volume-1-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hoyle%20Official%20Book%20of%20Games_%20Volume%201.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra retail front, Libretro",
+            "sha256": "252d16a73b51f254d8188af9ce73a96970eaf249fa69667d6eccf70a578279a9"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.wiki.sierrahelp.com/index.php/Hoyle_Series"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hoyle%20Official%20Book%20of%20Games_%20Volume%201.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra retail front, Libretro",
+            "sha256": "252d16a73b51f254d8188af9ce73a96970eaf249fa69667d6eccf70a578279a9"
+          }
+        ]
+      }
+    },
+    "summary": "Play six familiar card games including gin rummy, crazy eights, cribbage and hearts.",
+    "studio": "Sierra On-Line",
+    "genre": "Card games",
+    "heroImage": "/launcher/hoyles-official-book-of-games-volume-1-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "sci:hoyle2": {
+    "title": "Hoyle's Official Book of Games: Volume 2",
+    "aliases": [
+      "Hoyle Official Book Of Games Volume 2 (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/hoyles-official-book-of-games-volume-2-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://www.webmulator.com/img/roms/hoyles-official-book-of-games-volume-2-solitaire-cover.jpg",
+            "kind": "box-scan",
+            "credit": "Original Sierra On-Line DOS retail front, Webmulator scan archive",
+            "sha256": "83ea7f2c4b6b19987c3a01dc22a84930eada62e29a3ab77f9d0bd5e78c9aae4b"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.mobygames.com/game/760/hoyle-official-book-of-games-volume-2-solitaire/"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://www.webmulator.com/img/roms/hoyles-official-book-of-games-volume-2-solitaire-cover.jpg",
+            "kind": "box-scan",
+            "credit": "Original Sierra On-Line DOS retail front, Webmulator scan archive",
+            "sha256": "83ea7f2c4b6b19987c3a01dc22a84930eada62e29a3ab77f9d0bd5e78c9aae4b"
+          }
+        ]
+      }
+    },
+    "summary": "Try 28 forms of solitaire, including Klondike, Pyramid and Yukon.",
+    "studio": "Sierra On-Line",
+    "genre": "Solitaire",
+    "heroImage": "/launcher/hoyles-official-book-of-games-volume-2-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "sci:hoyle3": {
+    "title": "Hoyle's Official Book of Games: Volume 3",
+    "aliases": [
+      "Hoyle Official Book Of Games Volume 3 (Floppy DOS)"
+    ],
+    "posterImage": "/launcher/hoyles-official-book-of-games-volume-3-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hoyle%20Official%20Book%20of%20Games_%20Volume%203.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra retail front, Libretro",
+            "sha256": "775933a0b7f8b5214240966251df2669b0469f906700b3a98e1fc9d020691d8e"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.wiki.sierrahelp.com/index.php/Hoyle_Series"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hoyle%20Official%20Book%20of%20Games_%20Volume%203.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra retail front, Libretro",
+            "sha256": "775933a0b7f8b5214240966251df2669b0469f906700b3a98e1fc9d020691d8e"
+          }
+        ]
+      }
+    },
+    "summary": "Play classic board games such as checkers, backgammon and dominoes.",
+    "studio": "Sierra On-Line",
+    "genre": "Board games",
+    "heroImage": "/launcher/hoyles-official-book-of-games-volume-3-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "mohawk:grandma": {
+    "title": "Just Grandma and Me",
+    "aliases": [
+      "Living Books - Just Grandma and Me (CD Windows)"
+    ],
+    "posterImage": "/launcher/just-grandma-and-me-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Just%20Grandma%20and%20Me.png",
+            "kind": "box-scan",
+            "credit": "Original Living Books retail front, Libretro",
+            "sha256": "9367fb9cd1da8e4f332440fe43ca77bf11ba250cd9b7827732eb2ad025aabb30"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Just%20Grandma%20and%20Me.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Just%20Grandma%20and%20Me.png",
+            "kind": "box-scan",
+            "credit": "Original Living Books retail front, Libretro",
+            "sha256": "9367fb9cd1da8e4f332440fe43ca77bf11ba250cd9b7827732eb2ad025aabb30"
+          }
+        ]
+      }
+    },
+    "summary": "Spend a day at the beach with Little Critter and his grandma in Mercer Mayer’s interactive storybook.",
+    "studio": "Living Books",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/just-grandma-and-me-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "sci:kquestions": {
+    "title": "King's Questions",
+    "aliases": [
+      "King's Questions (CD, DOS)"
+    ],
+    "screenshots": [],
+    "sources": {
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.sierrachest.com/index.php?a=games&fld=walkthrough&id=283&title=kings-quest-collection-1"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest_%20King's%20Questions.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra King’s Quest Collector’s Edition cover for the compilation that included King’s Questions, Libretro",
+            "sha256": "ebd39df20042df2791914068dfa1ec21f40b099fa857893ac9f0c7188212dc45"
+          }
+        ]
+      }
+    },
+    "summary": "Test what you remember about the King’s Quest adventures in this trivia game from the Collector’s Edition.",
+    "studio": "Sierra On-Line",
+    "genre": "Trivia",
+    "heroImage": "/launcher/kings-questions-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:airport": {
+    "title": "Let's Explore the Airport",
+    "aliases": [
+      "Let's Explore the Airport with Buzzy (CD Windows)"
+    ],
+    "posterImage": "/launcher/lets-explore-the-airport-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Let's%20Explore%20the%20Airport%20with%20Buzzy.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "73f3e4a73796a251f8ff7271e0a6c4ad7a5ff3b4f32800e243907bea663c643f"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Let%27s%20Explore%20the%20Airport%20with%20Buzzy.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Let's%20Explore%20the%20Airport%20with%20Buzzy.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "73f3e4a73796a251f8ff7271e0a6c4ad7a5ff3b4f32800e243907bea663c643f"
+          }
+        ]
+      }
+    },
+    "summary": "Follow Buzzy the Knowledge Bug through a working airport and learn what goes on before and after a flight.",
+    "studio": "Humongous Entertainment",
+    "genre": "Interactive field trip",
+    "heroImage": "/launcher/lets-explore-the-airport-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:farm": {
+    "title": "Let's Explore the Farm",
+    "aliases": [
+      "Let's Explore the Farm with Buzzy (CD Windows)"
+    ],
+    "posterImage": "/launcher/lets-explore-the-farm-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Lets%20Explore%20the%20Farm%20with%20Buzzy.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "44ce4e7b4c7b24b38328b7259612dfe17d30a6ccc48d765a0cfc163851a6eba5"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Lets%20Explore%20the%20Farm%20with%20Buzzy.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Lets%20Explore%20the%20Farm%20with%20Buzzy.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "44ce4e7b4c7b24b38328b7259612dfe17d30a6ccc48d765a0cfc163851a6eba5"
+          }
+        ]
+      }
+    },
+    "summary": "Take a field trip with Buzzy to learn about crops, farm animals and the machines that keep a farm running.",
+    "studio": "Humongous Entertainment",
+    "genre": "Interactive field trip",
+    "heroImage": "/launcher/lets-explore-the-farm-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:jungle": {
+    "title": "Let's Explore the Jungle",
+    "aliases": [
+      "Let's Explore the Jungle with Buzzy (CD Windows)"
+    ],
+    "posterImage": "/launcher/lets-explore-the-jungle-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Let's%20Explore%20the%20Jungle%20with%20Buzzy.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "dc5e911dec9e226452303fe86647f84f8f58f06cc33c45fd22bacfff4181083e"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Let%27s%20Explore%20the%20Jungle%20with%20Buzzy.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Let's%20Explore%20the%20Jungle%20with%20Buzzy.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "dc5e911dec9e226452303fe86647f84f8f58f06cc33c45fd22bacfff4181083e"
+          }
+        ]
+      }
+    },
+    "summary": "Explore jungle habitats with Buzzy and learn about the plants and animals that live there.",
+    "studio": "Humongous Entertainment",
+    "genre": "Interactive field trip",
+    "heroImage": "/launcher/lets-explore-the-jungle-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "mohawk:lilmonster": {
+    "title": "Little Monster at School",
+    "aliases": [
+      "Living Books - Little Monster at School (CD Windows)"
+    ],
+    "posterImage": "/launcher/little-monster-at-school-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Little%20Monster%20at%20School.png",
+            "kind": "box-scan",
+            "credit": "Original Living Books retail front, Libretro",
+            "sha256": "eabbd75b3537e25c893053d1bc1c2e9517b2b191e703bba066bacc2ac6580481"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Little%20Monster%20at%20School.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Little%20Monster%20at%20School.png",
+            "kind": "box-scan",
+            "credit": "Original Living Books retail front, Libretro",
+            "sha256": "eabbd75b3537e25c893053d1bc1c2e9517b2b191e703bba066bacc2ac6580481"
+          }
+        ]
+      }
+    },
+    "summary": "Spend a school day with Little Monster and his classmates in Mercer Mayer’s interactive storybook.",
+    "studio": "Living Books",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/little-monster-at-school-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "mohawk:arthur": {
+    "title": "Marc Brown's Arthur's Teacher Trouble",
+    "aliases": [
+      "Living Books - Arthur's Teacher Trouble (CD Windows)"
+    ],
+    "posterImage": "/launcher/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Arthurs%20Teacher%20Trouble.png",
+            "kind": "box-scan",
+            "credit": "Original Living Books retail front, Libretro",
+            "sha256": "e16681d393aecafcded2fde817d2fb317e5eea9ae9a9fda98f4a31a9294effc4"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.mobygames.com/company/2353/living-books/games/"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Arthurs%20Teacher%20Trouble.png",
+            "kind": "box-scan",
+            "credit": "Original Living Books retail front, Libretro",
+            "sha256": "e16681d393aecafcded2fde817d2fb317e5eea9ae9a9fda98f4a31a9294effc4"
+          }
+        ]
+      }
+    },
+    "summary": "Follow Arthur as he practices for the school spelling bee in Marc Brown’s interactive storybook.",
+    "studio": "Living Books",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "sci:fairytales": {
+    "title": "Mixed Up Fairy Tales",
+    "aliases": [
+      "Mixed Up Fairy Tales (Floppy EGA DOS)"
+    ],
+    "posterImage": "/launcher/mixed-up-fairy-tales-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Mixed-Up%20Fairy%20Tales.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra retail front, Libretro",
+            "sha256": "d3e125e736db8fcb75caabdb5b1c2eb4daf842fe778a5d9173d0b700878da071"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Mixed-Up%20Fairy%20Tales.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Mixed-Up%20Fairy%20Tales.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra retail front, Libretro",
+            "sha256": "d3e125e736db8fcb75caabdb5b1c2eb4daf842fe778a5d9173d0b700878da071"
+          }
+        ]
+      }
+    },
+    "summary": "Help return familiar fairy-tale characters and objects to the stories they came from.",
+    "studio": "Sierra On-Line",
+    "genre": "Children’s adventure",
+    "heroImage": "/launcher/mixed-up-fairy-tales-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "agi:mixedup": {
+    "title": "Mixed-Up Mother Goose",
+    "aliases": [
+      "Mixed Up Mother Goose (Floppy DOS, 1987)"
+    ],
+    "posterImage": "/launcher/mixed-up-mother-goose-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Mixed-Up%20Mother%20Goose%20(1987-11-10_DOS_English).png",
+            "kind": "box-scan",
+            "credit": "Original Sierra retail front, Libretro",
+            "sha256": "24ba79a31a4549781f76285adebb648c425bae3439b18f706a23e5adaae0efb2"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Mixed-Up%20Mother%20Goose%20(1987-11-10_DOS_English).png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Mixed-Up%20Mother%20Goose%20(1987-11-10_DOS_English).png",
+            "kind": "box-scan",
+            "credit": "Original Sierra retail front, Libretro",
+            "sha256": "24ba79a31a4549781f76285adebb648c425bae3439b18f706a23e5adaae0efb2"
+          }
+        ]
+      }
+    },
+    "summary": "Explore Mother Goose Land and return missing items to the nursery rhyme characters who need them.",
+    "studio": "Sierra On-Line",
+    "genre": "Children’s adventure",
+    "heroImage": "/launcher/mixed-up-mother-goose-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "sci:mothergoosehires": {
+    "title": "Mixed-Up Mother Goose Deluxe",
+    "aliases": [
+      "Mixed Up Mother Goose Deluxe (CD DOS)"
+    ],
+    "posterImage": "/launcher/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Mixed-Up%20Mother%20Goose%20Deluxe.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra retail front, Libretro",
+            "sha256": "36c08c47ceae266ff27874e06c6ab89011c6636fb159a83cf4a0a426ae7d251b"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Mixed-Up%20Mother%20Goose%20Deluxe.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Mixed-Up%20Mother%20Goose%20Deluxe.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra retail front, Libretro",
+            "sha256": "36c08c47ceae266ff27874e06c6ab89011c6636fb159a83cf4a0a426ae7d251b"
+          }
+        ]
+      }
+    },
+    "summary": "Help Mother Goose put the nursery rhymes back together in Sierra’s illustrated Deluxe edition.",
+    "studio": "Sierra On-Line",
+    "genre": "Children’s adventure",
+    "heroImage": "/launcher/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "local:openquest": {
+    "title": "Open Quest",
+    "aliases": [
+      "Open Quest (FanMade - Get's Detected as DOTT)"
+    ],
+    "screenshots": [],
+    "sources": {
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://github.com/JenniBee/openquest",
+        "https://jennibee.itch.io/openquest-wintermute"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "official-promo-art-recomposition",
+        "references": [
+          {
+            "url": "https://img.itch.zone/aW1hZ2UvODIwMTIvMzg2MDkzLnBuZw==/original/snss04.png",
+            "kind": "official-promo-art",
+            "credit": "Official OpenQuest promotional title art by Michael Sheail and Jenni McMurray, itch.io",
+            "sha256": "742da9fa231fa1701ffd479bcb9786359e251423916820046481dad9118ee4b2"
+          }
+        ]
+      }
+    },
+    "summary": "Explore Michael Sheail’s short two-room adventure in its ScummC adaptation.",
+    "studio": "Michael Sheail",
+    "genre": "Point-and-click adventure",
+    "heroImage": "/launcher/open-quest-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:pajama2": {
+    "title": "Pajama Sam 2: Thunder and Lightning Aren't so Frightening",
+    "shortTitle": "Pajama Sam 2",
+    "aliases": [
+      "Pajama Sam 2 - Thunder and Lightning Aren't so Frightening (CD Windows)"
+    ],
+    "posterImage": "/launcher/pajama-sam-2-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Pajama%20Sam%202_%20Thunder%20and%20Lightning%20Aren't%20so%20Frightening.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "2ee2dfededd61384d7f9a3b1cc106cfb5bb64b24ae6567c1a9345d83aad47bbb"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://store.steampowered.com/app/292780/"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Pajama%20Sam%202_%20Thunder%20and%20Lightning%20Aren't%20so%20Frightening.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "2ee2dfededd61384d7f9a3b1cc106cfb5bb64b24ae6567c1a9345d83aad47bbb"
+          }
+        ]
+      }
+    },
+    "summary": "Help Pajama Sam get the weather machines working again before World Wide Weather loses control of the skies.",
+    "studio": "Humongous Entertainment",
+    "genre": "Point-and-click adventure",
+    "heroImage": "/launcher/pajama-sam-2-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:pajama3": {
+    "title": "Pajama Sam 3: You Are What You Eat From Your Head To Your Feet",
+    "shortTitle": "Pajama Sam 3",
+    "aliases": [
+      "Pajama Sam 3 - You Are What You Eat From Your Head to Your Feet (CD Windows)"
+    ],
+    "posterImage": "/launcher/pajama-sam-3-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Pajama%20Sam%203_%20You%20Are%20What%20You%20Eat%20from%20Your%20Head%20to%20Your%20Feet.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "2f6f7ea2e86d7a4fecf531335be9b769093d525204d5327468dc887f66258e00"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://store.steampowered.com/app/292800/"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Pajama%20Sam%203_%20You%20Are%20What%20You%20Eat%20from%20Your%20Head%20to%20Your%20Feet.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "2f6f7ea2e86d7a4fecf531335be9b769093d525204d5327468dc887f66258e00"
+          }
+        ]
+      }
+    },
+    "summary": "Help Pajama Sam find the missing delegates and bring peace to the food groups before dinner.",
+    "studio": "Humongous Entertainment",
+    "genre": "Point-and-click adventure",
+    "heroImage": "/launcher/pajama-sam-3-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:pjgames": {
+    "title": "Pajama Sam: Games to Play on Any Day",
+    "aliases": [
+      "Pajama Sam - Games to Play on Any Day (CD Windows)"
+    ],
+    "posterImage": "/launcher/pajama-sam-games-to-play-on-any-day-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Pajama%20Sam_%20Games%20to%20Play%20on%20Any%20Day.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "a111f9aad235f0a65d1b514234eeb81b7a839f40dd081f9b60b431e749460588"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Pajama%20Sam_%20Games%20to%20Play%20on%20Any%20Day.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Pajama%20Sam_%20Games%20to%20Play%20on%20Any%20Day.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "a111f9aad235f0a65d1b514234eeb81b7a839f40dd081f9b60b431e749460588"
+          }
+        ]
+      }
+    },
+    "summary": "Play a collection of board games and puzzles with Pajama Sam and his friends.",
+    "studio": "Humongous Entertainment",
+    "genre": "Minigame collection",
+    "heroImage": "/launcher/pajama-sam-games-to-play-on-any-day-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:lost": {
+    "title": "Pajama Sam's Lost & Found",
+    "aliases": [
+      "Pajama Sam's Lost And Found (CD Windows)"
+    ],
+    "posterImage": "/launcher/pajama-sams-lost-and-found-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Pajama%20Sams%20Lost%20_%20Found.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "2cbed48844f13ed70ea940daeaaf54fe802e0825bff0413d168f6b3d9061c110"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Pajama%20Sams%20Lost%20_%20Found.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Pajama%20Sams%20Lost%20_%20Found.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "2cbed48844f13ed70ea940daeaaf54fe802e0825bff0413d168f6b3d9061c110"
+          }
+        ]
+      }
+    },
+    "summary": "Travel with Pajama Sam to collect lost objects while navigating a series of arcade courses.",
+    "studio": "Humongous Entertainment",
+    "genre": "Arcade game",
+    "heroImage": "/launcher/pajama-sams-lost-and-found-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:socks": {
+    "title": "Pajama Sam's Sock Works",
+    "aliases": [
+      "Pajama Sam's Sock Works (CD Windows)"
+    ],
+    "posterImage": "/launcher/pajama-sams-sock-works-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Pajama%20Sams%20Sock%20Works.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "1e562b8c362f74ecd20b2d7cf15f17755c6a04ff509e6f0f2db172a6a970e0ff"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Pajama%20Sams%20Sock%20Works.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Pajama%20Sams%20Sock%20Works.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "1e562b8c362f74ecd20b2d7cf15f17755c6a04ff509e6f0f2db172a6a970e0ff"
+          }
+        ]
+      }
+    },
+    "summary": "Sort pairs of socks with Pajama Sam as the sock machine gets faster and trickier.",
+    "studio": "Humongous Entertainment",
+    "genre": "Arcade puzzle",
+    "heroImage": "/launcher/pajama-sams-sock-works-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "gob:playtoons1": {
+    "title": "Playtoons 1: Uncle Archibald",
+    "aliases": [
+      "Playtoons 1 - Uncle Archibald (CD, Windows)"
+    ],
+    "posterImage": "/launcher/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r2-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Playtoons%201_%20Uncle%20Archibald.png",
+            "kind": "box-scan",
+            "credit": "Original Coktel/Sierra Playtoons CD-ROM front, Libretro",
+            "sha256": "a5d01407a626e45d6676a7acccac5da75c6045dede5e50cb8669ac6cace7958e"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.wiki.sierrahelp.com/index.php/GOB"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Playtoons%201_%20Uncle%20Archibald.png",
+            "kind": "box-scan",
+            "credit": "Original Coktel/Sierra Playtoons CD-ROM front, Libretro",
+            "sha256": "a5d01407a626e45d6676a7acccac5da75c6045dede5e50cb8669ac6cace7958e"
+          }
+        ]
+      }
+    },
+    "summary": "Read Uncle Archibald’s animated story or arrange characters and scenery to tell a story of your own.",
+    "studio": "Coktel Vision",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "gob:playtoons2": {
+    "title": "Playtoons 2: The Case of the Counterfeit Collaborator",
+    "shortTitle": "Playtoons 2: The Counterfeit Collaborator",
+    "aliases": [
+      "Playtoons 2 - Case of the Counterfeit Collaborator (CD, Windows)"
+    ],
+    "posterImage": "/launcher/playtoons-2-the-case-of-the-counterfeit-collaborator-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Playtoons%202_%20The%20Case%20of%20the%20Counterfeit%20Collaborator.png",
+            "kind": "box-scan",
+            "credit": "Original Coktel/Sierra Playtoons CD-ROM front, Libretro",
+            "sha256": "9cb8ecc2583832df568aa4db6e8bf5f0455cfa97d05f39ab4735c4b163ebf76c"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.wiki.sierrahelp.com/index.php/GOB"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Playtoons%202_%20The%20Case%20of%20the%20Counterfeit%20Collaborator.png",
+            "kind": "box-scan",
+            "credit": "Original Coktel/Sierra Playtoons CD-ROM front, Libretro",
+            "sha256": "9cb8ecc2583832df568aa4db6e8bf5f0455cfa97d05f39ab4735c4b163ebf76c"
+          }
+        ]
+      }
+    },
+    "summary": "Follow an animated mystery and build scenes of your own with the Playtoons story tools.",
+    "studio": "Coktel Vision",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/playtoons-2-the-case-of-the-counterfeit-collaborator-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "gob:playtoons3": {
+    "title": "Playtoons 3: The Secret of the Castle",
+    "aliases": [
+      "Playtoons 3 - Secret of the Castle (CD, Windows)"
+    ],
+    "posterImage": "/launcher/playtoons-3-the-secret-of-the-castle-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Playtoons%203_%20Secret%20of%20the%20Castle.png",
+            "kind": "box-scan",
+            "credit": "Original Coktel/Sierra Playtoons CD-ROM front, Libretro",
+            "sha256": "7efd6186c7b206e673bf74d69bde4ff1fe3bf01d31995eb5f68ad3c589b2d285"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.wiki.sierrahelp.com/index.php/GOB"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Playtoons%203_%20Secret%20of%20the%20Castle.png",
+            "kind": "box-scan",
+            "credit": "Original Coktel/Sierra Playtoons CD-ROM front, Libretro",
+            "sha256": "7efd6186c7b206e673bf74d69bde4ff1fe3bf01d31995eb5f68ad3c589b2d285"
+          }
+        ]
+      }
+    },
+    "summary": "Explore the castle in an animated story, then use the characters and scenery to create a new adventure.",
+    "studio": "Coktel Vision",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/playtoons-3-the-secret-of-the-castle-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "gob:playtoons4": {
+    "title": "Playtoons 4: The Mandarine Prince",
+    "aliases": [
+      "Playtoons 4 - The Mandarine Prince (CD, Windows)"
+    ],
+    "posterImage": "/launcher/playtoons-4-the-mandarine-prince-scummweb-generated-2026-11-07-r2-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Playtoons%204_%20The%20Mandarine%20Prince.png",
+            "kind": "box-scan",
+            "credit": "Original Coktel/Sierra Playtoons CD-ROM front, Libretro",
+            "sha256": "5ff40266c32219b16421028342d978520eaafdd5f389928d0f3846d551b66550"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.wiki.sierrahelp.com/index.php/GOB"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Playtoons%204_%20The%20Mandarine%20Prince.png",
+            "kind": "box-scan",
+            "credit": "Original Coktel/Sierra Playtoons CD-ROM front, Libretro",
+            "sha256": "5ff40266c32219b16421028342d978520eaafdd5f389928d0f3846d551b66550"
+          }
+        ]
+      }
+    },
+    "summary": "Follow the Mandarine Prince through his animated story and use the Playtoons editor to create your own scenes.",
+    "studio": "Coktel Vision",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/playtoons-4-the-mandarine-prince-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "gob:bambou": {
+    "title": "Playtoons Limited Edition - Bambou le sauveur de la jungle",
+    "shortTitle": "Bambou, le sauveur de la jungle",
+    "aliases": [
+      "Playtoons Bambou le Sauveur de la Jungle (CD DOS, French)"
+    ],
+    "posterImage": "/launcher/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r2-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://media.senscritique.com/media/000017038928/0/Bambou_le_sauveur_de_la_jungle.jpg",
+            "kind": "box-scan",
+            "credit": "Original Coktel limited-edition French CD-ROM front, SensCritique archive",
+            "sha256": "e554bd2890d8ce4ccac3dfddd8d9040116b45487f89a2c4788f72411cd96132b"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.senscritique.com/jeuvideo/Bambou_le_sauveur_de_la_jungle/25441241"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://media.senscritique.com/media/000017038928/0/Bambou_le_sauveur_de_la_jungle.jpg",
+            "kind": "box-scan",
+            "credit": "Original Coktel limited-edition French CD-ROM front, SensCritique archive",
+            "sha256": "e554bd2890d8ce4ccac3dfddd8d9040116b45487f89a2c4788f72411cd96132b"
+          }
+        ]
+      }
+    },
+    "summary": "Follow Bambou, the smallest warrior in his village, as he takes on a giant boa in this French interactive story.",
+    "studio": "Coktel Vision",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:activity": {
+    "title": "Putt-Putt and Fatty Bear's Activity Pack",
+    "aliases": [
+      "Putt-Putt and Fatty Bear's Activity Pack (CD Windows)"
+    ],
+    "posterImage": "/launcher/putt-putt-and-fatty-bears-activity-pack-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20_%20Fatty%20Bear's%20Activity%20Pack.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "58eb29fdb84023091f39259f85bc33d9f0900dd09fc4b667c652e8114782e098"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20_%20Fatty%20Bear's%20Activity%20Pack.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20_%20Fatty%20Bear's%20Activity%20Pack.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "58eb29fdb84023091f39259f85bc33d9f0900dd09fc4b667c652e8114782e098"
+          }
+        ]
+      }
+    },
+    "summary": "Join Putt-Putt and Fatty Bear for a collection of classic puzzles, coloring and board games.",
+    "studio": "Humongous Entertainment",
+    "genre": "Activity collection",
+    "heroImage": "/launcher/putt-putt-and-fatty-bears-activity-pack-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:balloon": {
+    "title": "Putt-Putt and Pep's Balloon-O-Rama",
+    "aliases": [
+      "Putt-Putt and Pep's Balloon-O-Rama (CD Windows)"
+    ],
+    "posterImage": "/launcher/putt-putt-and-peps-balloon-o-rama-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20and%20Pep's%20Balloon-o-Rama.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "c51f6eef1fc50e2e28111f2953fd8883ac7b9f355ec210de25ba4657d1129d1c"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20and%20Pep's%20Balloon-o-Rama.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20and%20Pep's%20Balloon-o-Rama.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "c51f6eef1fc50e2e28111f2953fd8883ac7b9f355ec210de25ba4657d1129d1c"
+          }
+        ]
+      }
+    },
+    "summary": "Bounce through arcade levels with Putt-Putt and Pep to pop balloons and collect bonuses.",
+    "studio": "Humongous Entertainment",
+    "genre": "Arcade game",
+    "heroImage": "/launcher/putt-putt-and-peps-balloon-o-rama-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:dog": {
+    "title": "Putt-Putt and Pep's Dog on a Stick",
+    "aliases": [
+      "Putt-Putt and Pep's Dog on a Stick (CD Windows)"
+    ],
+    "posterImage": "/launcher/putt-putt-and-peps-dog-on-a-stick-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20and%20Pep's%20Dog%20on%20a%20Stick.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "69e9774737fcc4f4ee16781002126fbc6e127945c969bbf2eff21ba01399861a"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20and%20Pep's%20Dog%20on%20a%20Stick.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20and%20Pep's%20Dog%20on%20a%20Stick.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "69e9774737fcc4f4ee16781002126fbc6e127945c969bbf2eff21ba01399861a"
+          }
+        ]
+      }
+    },
+    "summary": "Help Pep hop through courses on his pogo stick and collect treats.",
+    "studio": "Humongous Entertainment",
+    "genre": "Arcade game",
+    "heroImage": "/launcher/putt-putt-and-peps-dog-on-a-stick-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:puttrace": {
+    "title": "Putt-Putt Enters the Race",
+    "aliases": [
+      "Putt-Putt Enters the Race (CD Windows)"
+    ],
+    "posterImage": "/launcher/putt-putt-enters-the-race-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Enters%20the%20Race.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "f6a6ead6f94e3f49af7d88f793765e88d905b63ac4557b36429e64affa44f42f"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Enters%20the%20Race.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Enters%20the%20Race.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "f6a6ead6f94e3f49af7d88f793765e88d905b63ac4557b36429e64affa44f42f"
+          }
+        ]
+      }
+    },
+    "summary": "Help Putt-Putt and Pep find the equipment they need to enter the Cartown race.",
+    "studio": "Humongous Entertainment",
+    "genre": "Point-and-click adventure",
+    "heroImage": "/launcher/putt-putt-enters-the-race-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:puttmoon": {
+    "title": "Putt-Putt Goes to the Moon",
+    "aliases": [
+      "Putt-Putt Goes to the Moon (CD Windows)"
+    ],
+    "posterImage": "/launcher/putt-putt-goes-to-the-moon-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Goes%20to%20the%20Moon.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "c88b41f5bf1383d2ee002dafe99d9f2363e4eaffd045e61881ccbaee730534b8"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Goes%20to%20the%20Moon.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Goes%20to%20the%20Moon.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "c88b41f5bf1383d2ee002dafe99d9f2363e4eaffd045e61881ccbaee730534b8"
+          }
+        ]
+      }
+    },
+    "summary": "Help Putt-Putt find a way back to Earth after a trip to the Moon.",
+    "studio": "Humongous Entertainment",
+    "genre": "Point-and-click adventure",
+    "heroImage": "/launcher/putt-putt-goes-to-the-moon-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:puttcircus": {
+    "title": "Putt-Putt Joins the Circus",
+    "aliases": [
+      "Putt-Putt Joins the Circus (CD Windows)"
+    ],
+    "posterImage": "/launcher/putt-putt-joins-the-circus-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Joins%20the%20Circus.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "43da258e861db5d729a9abc83c0fde6af238ba0e2418fb30cd3fd8d8668a33b8"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Joins%20the%20Circus.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Joins%20the%20Circus.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "43da258e861db5d729a9abc83c0fde6af238ba0e2418fb30cd3fd8d8668a33b8"
+          }
+        ]
+      }
+    },
+    "summary": "Follow Putt-Putt and Pep as they help the performers get ready for the Cartown circus.",
+    "studio": "Humongous Entertainment",
+    "genre": "Point-and-click adventure",
+    "heroImage": "/launcher/putt-putt-joins-the-circus-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:puttputt": {
+    "title": "Putt-Putt Joins the Parade",
+    "aliases": [
+      "Putt-Putt Joins the Parade (CD Windows)"
+    ],
+    "posterImage": "/launcher/putt-putt-joins-the-parade-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Joins%20the%20Parade.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "582ee5f873d45e82cd8a1778f7bdfc0bd77be4148fd67dbbd037c67f05ec7d80"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Joins%20the%20Parade.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Joins%20the%20Parade.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "582ee5f873d45e82cd8a1778f7bdfc0bd77be4148fd67dbbd037c67f05ec7d80"
+          }
+        ]
+      }
+    },
+    "summary": "Help Putt-Putt get ready to join the annual Cartown parade.",
+    "studio": "Humongous Entertainment",
+    "genre": "Point-and-click adventure",
+    "heroImage": "/launcher/putt-putt-joins-the-parade-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:puttzoo": {
+    "title": "Putt-Putt Saves the Zoo",
+    "aliases": [
+      "Putt-Putt Saves the Zoo (CD Windows)"
+    ],
+    "posterImage": "/launcher/putt-putt-saves-the-zoo-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Saves%20the%20Zoo.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "72b6fb6f4cdf0141690817e0df16daff1613aa77b76f359eb473a64e298a4916"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Saves%20the%20Zoo.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Saves%20the%20Zoo.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "72b6fb6f4cdf0141690817e0df16daff1613aa77b76f359eb473a64e298a4916"
+          }
+        ]
+      }
+    },
+    "summary": "Find the missing baby animals before the Cartown Zoo opens.",
+    "studio": "Humongous Entertainment",
+    "genre": "Point-and-click adventure",
+    "heroImage": "/launcher/putt-putt-saves-the-zoo-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:putttime": {
+    "title": "Putt-Putt Travels Through Time",
+    "aliases": [
+      "Putt-Putt Travels Through Time (CD DOS)"
+    ],
+    "posterImage": "/launcher/putt-putt-travels-through-time-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Travels%20Through%20Time.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "286ddb8216b924601973678f5953aef2a8d9f8367451d78bcd8701771298115a"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Travels%20Through%20Time.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Travels%20Through%20Time.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "286ddb8216b924601973678f5953aef2a8d9f8367451d78bcd8701771298115a"
+          }
+        ]
+      }
+    },
+    "summary": "Travel through different eras to find Pep and recover the things that slipped through the time portal.",
+    "studio": "Humongous Entertainment",
+    "genre": "Point-and-click adventure",
+    "heroImage": "/launcher/putt-putt-travels-through-time-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:funpack": {
+    "title": "Putt-Putt's Fun Pack",
+    "aliases": [
+      "Putt-Putt's Fun Pack (3DO)"
+    ],
+    "posterImage": "/launcher/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt's%20Fun%20Pack.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "8283563b0a2074f95169d27afebea47c19ff8f3d41b7f84575face2602914448"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt's%20Fun%20Pack.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt's%20Fun%20Pack.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "8283563b0a2074f95169d27afebea47c19ff8f3d41b7f84575face2602914448"
+          }
+        ]
+      }
+    },
+    "summary": "Play a collection of puzzles, board games and coloring activities with Putt-Putt.",
+    "studio": "Humongous Entertainment",
+    "genre": "Activity collection",
+    "heroImage": "/launcher/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:puttsfunshop": {
+    "title": "Putt-Putt's One-Stop Fun Shop",
+    "aliases": [
+      "Putt-Putt's One-Stop Fun Shop (CD Windows)"
+    ],
+    "posterImage": "/launcher/putt-putts-one-stop-fun-shop-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt's%20One-Stop%20Fun%20Shop.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "38b33644d30b3a9ab201f4925a7217034ea4346acf384102f02212aeacc7cfef"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt's%20One-Stop%20Fun%20Shop.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt's%20One-Stop%20Fun%20Shop.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "38b33644d30b3a9ab201f4925a7217034ea4346acf384102f02212aeacc7cfef"
+          }
+        ]
+      }
+    },
+    "summary": "Make cards, posters and other printable projects with Putt-Putt and Pep.",
+    "studio": "Humongous Entertainment",
+    "genre": "Creative activities",
+    "heroImage": "/launcher/putt-putts-one-stop-fun-shop-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "mohawk:ruff": {
+    "title": "Ruff's Bone",
+    "aliases": [
+      "Living Books - Ruff's Bone (CD Windows)"
+    ],
+    "posterImage": "/launcher/ruffs-bone-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Ruffs%20Bone.png",
+            "kind": "box-scan",
+            "credit": "Original Brøderbund Living Books retail front, Libretro",
+            "sha256": "3dfe93a8ebde9e9218a0f7e371b1d6dafe3bd37cef8f5eb360d86a4a8d8fde07"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Ruffs%20Bone.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Ruffs%20Bone.png",
+            "kind": "box-scan",
+            "credit": "Original Brøderbund Living Books retail front, Libretro",
+            "sha256": "3dfe93a8ebde9e9218a0f7e371b1d6dafe3bd37cef8f5eb360d86a4a8d8fde07"
+          }
+        ]
+      }
+    },
+    "summary": "Follow Ruff as his quest for a bone takes him through a series of surprising places.",
+    "studio": "Living Books",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/ruffs-bone-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "mohawk:sheila": {
+    "title": "Sheila Rae, the Brave",
+    "aliases": [
+      "Living Books - Sheila Rae, The Brave (CD Windows)"
+    ],
+    "posterImage": "/launcher/sheila-rae-the-brave-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Sheila%20Rae%2C%20the%20Brave.png",
+            "kind": "box-scan",
+            "credit": "Original Brøderbund Living Books retail front, Libretro",
+            "sha256": "e387cd5ee131aab7e5ba27dba9feb72ac2470ae269ff2af0d5385c1995d76e66"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Sheila%20Rae%2C%20the%20Brave.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Sheila%20Rae%2C%20the%20Brave.png",
+            "kind": "box-scan",
+            "credit": "Original Brøderbund Living Books retail front, Libretro",
+            "sha256": "e387cd5ee131aab7e5ba27dba9feb72ac2470ae269ff2af0d5385c1995d76e66"
+          }
+        ]
+      }
+    },
+    "summary": "Follow Sheila Rae and her sister Louise when an unfamiliar route home puts Sheila Rae’s courage to the test.",
+    "studio": "Living Books",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/sheila-rae-the-brave-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "sci:slater": {
+    "title": "Slater & Charlie Go Camping",
+    "aliases": [
+      "Slater & Charlie Go Camping (CD DOS)"
+    ],
+    "posterImage": "/launcher/slater-and-charlie-go-camping-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Slater%20_%20Charlie%20Go%20Camping.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra On-Line retail front, Libretro",
+            "sha256": "ce7ee4a41e896d5871fec09abd0ce684332024bee366f8d6c6e1b10909884428"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Slater%20_%20Charlie%20Go%20Camping.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Slater%20_%20Charlie%20Go%20Camping.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra On-Line retail front, Libretro",
+            "sha256": "ce7ee4a41e896d5871fec09abd0ce684332024bee366f8d6c6e1b10909884428"
+          }
+        ]
+      }
+    },
+    "summary": "Join Slater and Charlie on a camping trip in Sierra’s interactive storybook.",
+    "studio": "Sierra On-Line",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/slater-and-charlie-go-camping-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:chase": {
+    "title": "SPY Fox in \"Cheese Chase\"",
+    "aliases": [
+      "Spy Fox In Cheese Chase (CD Windows)"
+    ],
+    "posterImage": "/launcher/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Spy%20Fox%20in%20Cheese%20Chase.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "d110e98f72e08c033af9e71c9aacae8cdc4be5a4ef3125af8f2f9e94c3b262be"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Spy%20Fox%20in%20Cheese%20Chase.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Spy%20Fox%20in%20Cheese%20Chase.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "d110e98f72e08c033af9e71c9aacae8cdc4be5a4ef3125af8f2f9e94c3b262be"
+          }
+        ]
+      }
+    },
+    "summary": "Help Spy Fox pursue stolen cheese through a series of arcade levels.",
+    "studio": "Humongous Entertainment",
+    "genre": "Arcade game",
+    "heroImage": "/launcher/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:spyfox": {
+    "title": "Spy Fox in \"Dry Cereal\"",
+    "aliases": [
+      "Spy Fox 1 Dry Cereal (CD Windows, US)"
+    ],
+    "posterImage": "/launcher/spy-fox-in-dry-cereal-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Spy%20Fox%20in%20Dry%20Cereal.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "cd4d3448b905b7d5ffb03f6906e9facc787236abed40a1e4ed5c9f6d848393f6"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Spy%20Fox%20in%20Dry%20Cereal.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Spy%20Fox%20in%20Dry%20Cereal.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "cd4d3448b905b7d5ffb03f6906e9facc787236abed40a1e4ed5c9f6d848393f6"
+          }
+        ]
+      }
+    },
+    "summary": "Track down the missing dairy cows and foil William the Kid’s plan to control the milk supply.",
+    "studio": "Humongous Entertainment",
+    "genre": "Point-and-click adventure",
+    "heroImage": "/launcher/spy-fox-in-dry-cereal-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:mustard": {
+    "title": "Spy Fox in \"Hold the Mustard\"",
+    "aliases": [
+      "Spy Fox In Hold The Mustard (CD Windows)"
+    ],
+    "posterImage": "/launcher/spy-fox-in-hold-the-mustard-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Spy%20Fox%20in%20Hold%20the%20Mustard.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "ef4420b75c406301685918e8255ebd1ed07761cca66b1b86046a8a5e1389a79d"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Spy%20Fox%20in%20Hold%20the%20Mustard.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Spy%20Fox%20in%20Hold%20the%20Mustard.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "ef4420b75c406301685918e8255ebd1ed07761cca66b1b86046a8a5e1389a79d"
+          }
+        ]
+      }
+    },
+    "summary": "Pilot Spy Fox’s craft through arcade courses and collect the supplies needed to stop the mustard operation.",
+    "studio": "Humongous Entertainment",
+    "genre": "Arcade game",
+    "heroImage": "/launcher/spy-fox-in-hold-the-mustard-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "scumm:spyozon": {
+    "title": "Spy Fox: \"Operation Ozone\"",
+    "aliases": [
+      "Spy Fox 3 Operation Ozone (CD Windows)"
+    ],
+    "posterImage": "/launcher/spy-fox-operation-ozone-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Spy%20Fox%203_%20Operation%20Ozone.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "8713717495011028a33284a3c4cbacb8f652d6b5101519f54834f8077dd03d27"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Spy%20Fox%203_%20Operation%20Ozone.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Spy%20Fox%203_%20Operation%20Ozone.png",
+            "kind": "box-scan",
+            "credit": "Original Humongous Entertainment retail front, Libretro",
+            "sha256": "8713717495011028a33284a3c4cbacb8f652d6b5101519f54834f8077dd03d27"
+          }
+        ]
+      }
+    },
+    "summary": "Help Spy Fox stop Poodles Galore’s aerosol scheme before it damages the ozone layer.",
+    "studio": "Humongous Entertainment",
+    "genre": "Point-and-click adventure",
+    "heroImage": "/launcher/spy-fox-operation-ozone-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "mohawk:stellaluna": {
+    "title": "Stellaluna",
+    "aliases": [
+      "Living Books - Stellaluna (CD Windows)"
+    ],
+    "posterImage": "/launcher/stellaluna-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Stellaluna.png",
+            "kind": "box-scan",
+            "credit": "Original Living Books jewel-case front insert, Libretro",
+            "sha256": "06b4fb675e55871566aa60aa6b388400e32f835f1b711acf765c1b3280fdf1f9"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Stellaluna.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Stellaluna.png",
+            "kind": "box-scan",
+            "credit": "Original Living Books jewel-case front insert, Libretro",
+            "sha256": "06b4fb675e55871566aa60aa6b388400e32f835f1b711acf765c1b3280fdf1f9"
+          }
+        ]
+      }
+    },
+    "summary": "Read along as a young fruit bat learns how to fit in with the birds who take her in.",
+    "studio": "Living Books",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/stellaluna-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "mohawk:bearfight": {
+    "title": "The Berenstain Bears Get in a Fight",
+    "aliases": [
+      "Living Books - The Berenstein Bears Get In The Fight (CD Windows)"
+    ],
+    "posterImage": "/launcher/the-berenstain-bears-get-in-a-fight-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20The%20Berenstain%20Bears%20Get%20In%20a%20Fight.png",
+            "kind": "box-scan",
+            "credit": "Original Brøderbund Living Books retail front, Libretro",
+            "sha256": "9ae8e24bf4ee44b5685f0136291b99fb5a03f2244045f5c760c0021868b6cbce"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20The%20Berenstain%20Bears%20Get%20In%20a%20Fight.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20The%20Berenstain%20Bears%20Get%20In%20a%20Fight.png",
+            "kind": "box-scan",
+            "credit": "Original Brøderbund Living Books retail front, Libretro",
+            "sha256": "9ae8e24bf4ee44b5685f0136291b99fb5a03f2244045f5c760c0021868b6cbce"
+          }
+        ]
+      }
+    },
+    "summary": "See what happens when Brother and Sister Bear have a quarrel and try to make things right.",
+    "studio": "Living Books",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/the-berenstain-bears-get-in-a-fight-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "mohawk:beardark": {
+    "title": "The Berenstain Bears In The Dark",
+    "aliases": [
+      "Living Books - The Berenstain Bears in the Dark (CD Windows)"
+    ],
+    "posterImage": "/launcher/the-berenstain-bears-in-the-dark-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20The%20Berenstain%20Bears%20in%20the%20Dark.png",
+            "kind": "box-scan",
+            "credit": "Original Brøderbund Living Books retail front, Libretro",
+            "sha256": "9e2718b3cb236d6adb374eb27c70a0f28d427cc60afd21fa320114788dd3e62d"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20The%20Berenstain%20Bears%20in%20the%20Dark.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20The%20Berenstain%20Bears%20in%20the%20Dark.png",
+            "kind": "box-scan",
+            "credit": "Original Brøderbund Living Books retail front, Libretro",
+            "sha256": "9e2718b3cb236d6adb374eb27c70a0f28d427cc60afd21fa320114788dd3e62d"
+          }
+        ]
+      }
+    },
+    "summary": "Follow the Bear family as Sister Bear learns how ordinary shadows can seem scary at night.",
+    "studio": "Living Books",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/the-berenstain-bears-in-the-dark-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "mohawk:catinthehat": {
+    "title": "The Cat in the Hat",
+    "aliases": [
+      "Living Books - Cat in the Hat (CD Windows)"
+    ],
+    "screenshots": [],
+    "sources": {
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20The%20Cat%20in%20the%20Hat.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20The%20Cat%20in%20the%20Hat.png",
+            "kind": "box-scan",
+            "credit": "Original Brøderbund Living Books retail front, Libretro",
+            "sha256": "65ab5a268da4c05868ae47ae945f32f81a9120062f857c7d80a6c72047f66a9c"
+          }
+        ]
+      }
+    },
+    "summary": "Read along as the Cat in the Hat brings chaos to a quiet, rainy afternoon.",
+    "studio": "Living Books",
+    "genre": "Interactive storybook",
+    "heroImage": "/launcher/the-cat-in-the-hat-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "made:manhole": {
+    "title": "The Manhole",
+    "aliases": [
+      "The Manhole Enhanced (CD Windows)"
+    ],
+    "posterImage": "/launcher/the-manhole-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://cdn.mobygames.com/covers/4080444-the-manhole-new-and-enhanced-front-cover.jpg",
+            "kind": "box-scan",
+            "credit": "Original Activision DOS/Windows New and Enhanced retail front, MobyGames",
+            "sha256": "1ce775f08461221a11e4b8e7c1b39e0fbdf2804010b07b7e375dea7320bf31c3"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://cdn.mobygames.com/covers/4080444-the-manhole-new-and-enhanced-front-cover.jpg"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://cdn.mobygames.com/covers/4080444-the-manhole-new-and-enhanced-front-cover.jpg",
+            "kind": "box-scan",
+            "credit": "Original Activision DOS/Windows New and Enhanced retail front, MobyGames",
+            "sha256": "1ce775f08461221a11e4b8e7c1b39e0fbdf2804010b07b7e375dea7320bf31c3"
+          }
+        ]
+      }
+    },
+    "summary": "Climb down a manhole and explore a playful world full of unusual creatures and hidden paths.",
+    "studio": "Cyan",
+    "genre": "Exploration adventure",
+    "heroImage": "/launcher/the-manhole-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "mohawk:newkid": {
+    "title": "The New Kid on the Block",
+    "aliases": [
+      "Living Books - The New Kid on the Block (CD Windows)"
+    ],
+    "posterImage": "/launcher/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-cover.webp",
+    "screenshots": [],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20The%20New%20Kid%20On%20the%20Block.png",
+            "kind": "box-scan",
+            "credit": "Original Brøderbund Living Books retail front, Libretro",
+            "sha256": "eb0803146cbcc5a17658adf951bd396083abc9b6747e3947bccd2bca128ac061"
+          }
+        ]
+      },
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20The%20New%20Kid%20On%20the%20Block.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-box-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20The%20New%20Kid%20On%20the%20Block.png",
+            "kind": "box-scan",
+            "credit": "Original Brøderbund Living Books retail front, Libretro",
+            "sha256": "eb0803146cbcc5a17658adf951bd396083abc9b6747e3947bccd2bca128ac061"
+          }
+        ]
+      }
+    },
+    "summary": "Explore a selection of Jack Prelutsky’s poems with animated characters and read-along narration.",
+    "studio": "Living Books",
+    "genre": "Interactive poetry",
+    "heroImage": "/launcher/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "agi:xmascard": {
+    "title": "Christmas Card 1986 (Demo)",
+    "aliases": [
+      "Christmas Card 1986 (AGI)"
+    ],
+    "screenshots": [],
+    "sources": {
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://retro365.blog/2022/12/18/bits-from-my-personal-collection-a-merry-sierra-christmas/",
+        "https://cdn.t3n.de/news/wp-content/uploads/2024/12/a-computer-christmas.png?class=default"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "official-promo-art-recomposition",
+        "references": [
+          {
+            "url": "https://cdn.t3n.de/news/wp-content/uploads/2024/12/a-computer-christmas.png?class=default",
+            "kind": "official-promo-art",
+            "credit": "Original Sierra On-Line 1986 holiday demo artwork, capture archived by t3n",
+            "sha256": "1805d7a9994e57992dbfa0350f52e30c1200e5464ddbbfa22deed0d26c210faf"
+          }
+        ]
+      }
+    },
+    "summary": "Watch Sierra’s first animated holiday greeting, with Christmas scenes and seasonal music.",
+    "studio": "Sierra On-Line",
+    "genre": "Holiday animation",
+    "heroImage": "/launcher/christmas-card-1986-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "sci:christmas1988": {
+    "title": "Christmas Card 1988 (Demo)",
+    "aliases": [
+      "Christmas Card 1988 (SCI)"
+    ],
+    "screenshots": [],
+    "sources": {
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://retro365.blog/2022/12/18/bits-from-my-personal-collection-a-merry-sierra-christmas/",
+        "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Christmas%20Card%201988.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "official-promo-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Christmas%20Card%201988.png",
+            "kind": "official-promo-art",
+            "credit": "Original Sierra On-Line 1988 holiday demo artwork, capture archived by Libretro",
+            "sha256": "34c7f6b77203420d4756b015b8e54eb11bfbfaa517372c6dccd7b9c2109ccb7f"
+          }
+        ]
+      }
+    },
+    "summary": "Listen to seasonal music and watch an animated Christmas greeting from Sierra On-Line.",
+    "studio": "Sierra On-Line",
+    "genre": "Holiday animation",
+    "heroImage": "/launcher/christmas-card-1988-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "sci:christmas1990": {
+    "title": "Christmas Card 1990: The Seasoned Professional (Demo)",
+    "shortTitle": "The Seasoned Professional (Demo)",
+    "aliases": [
+      "Christmas Card 1990 - The Seasoned Professional (SCI)"
+    ],
+    "screenshots": [],
+    "sources": {
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://retro365.blog/2022/12/18/bits-from-my-personal-collection-a-merry-sierra-christmas/",
+        "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Christmas%20Card%201990_%20The%20Seasoned%20Professional.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "official-promo-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Christmas%20Card%201990_%20The%20Seasoned%20Professional.png",
+            "kind": "official-promo-art",
+            "credit": "Original Sierra On-Line 1990 holiday demo artwork, capture archived by Libretro",
+            "sha256": "e2305a3e1f4600b77f1484caaec31fee082dc5bf46b09aa5a83e633e257da7af"
+          }
+        ]
+      }
+    },
+    "summary": "Watch an audition for Christmas characters go awry in Sierra’s animated holiday short.",
+    "studio": "Sierra On-Line",
+    "genre": "Holiday animation",
+    "heroImage": "/launcher/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "sci:christmas1992": {
+    "title": "Christmas Card 1992 (Demo)",
+    "aliases": [
+      "Christmas Card 1992 (SCI)"
+    ],
+    "screenshots": [],
+    "sources": {
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://retro365.blog/2022/12/18/bits-from-my-personal-collection-a-merry-sierra-christmas/",
+        "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Christmas%20Card%201992.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "official-promo-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Christmas%20Card%201992.png",
+            "kind": "official-promo-art",
+            "credit": "Original Sierra On-Line 1992 holiday demo card artwork, capture archived by Libretro",
+            "sha256": "69fc76a8323a4f1895964c8891384cb1b261a5f36c21df45fc6812b57f78c860"
+          }
+        ]
+      }
+    },
+    "summary": "Enjoy a Sierra holiday greeting with snowy landscapes and seasonal music.",
+    "studio": "Sierra On-Line",
+    "genre": "Holiday animation",
+    "heroImage": "/launcher/christmas-card-1992-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
+  },
+  "sci:astrochicken": {
+    "title": "Astro Chicken (Demo)",
+    "aliases": [
+      "Astro Chicken (Floppy DOS)"
+    ],
+    "screenshots": [],
+    "sources": {
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.spacequest.net/sq3/demo/",
+        "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Astro%20Chicken.png"
+      ],
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "official-promo-art-recomposition",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Astro%20Chicken.png",
+            "kind": "official-promo-art",
+            "credit": "Original Sierra On-Line Astro Chicken title artwork, capture archived by Libretro",
+            "sha256": "81caf4ac3c737ef766d116d4003b2c5b44a32bb445d999fc529e92038eafc197"
+          }
+        ]
+      }
+    },
+    "summary": "Land the arcade chicken safely on a series of pads in Sierra’s playable Space Quest III demo.",
+    "studio": "Sierra On-Line",
+    "genre": "Arcade game",
+    "heroImage": "/launcher/astro-chicken-scummweb-generated-2026-11-07-r1-hero.webp",
+    "heroImagePosition": "70% 42%"
   }
 }
