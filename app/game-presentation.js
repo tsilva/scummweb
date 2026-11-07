@@ -430,10 +430,15 @@ export function getImportedGamePresentation(filename) {
   }
 
   const sfinx = /^sfinx(?:-(en|pl|de))?(?:-v(\d+(?:\.\d+)*))?\.zip$/i.exec(filename);
-  if (!sfinx) return null;
+  const labeledSfinx = /^sfinx v(\d+(?:\.\d+)*) \(DOS, (English|Polish|German)\)\.zip$/i.exec(filename);
+  if (!sfinx && !labeledSfinx) return null;
 
-  const language = { en: "English", pl: "Polish", de: "German" }[sfinx[1]?.toLowerCase()];
-  const edition = sfinx[2] ? `v${sfinx[2]}` : null;
+  const languages = { en: "English", pl: "Polish", de: "German" };
+  const language = labeledSfinx
+    ? Object.values(languages).find((name) => name.toLowerCase() === labeledSfinx[2].toLowerCase())
+    : languages[sfinx[1]?.toLowerCase()];
+  const version = sfinx?.[2] ?? labeledSfinx?.[1];
+  const edition = version ? `v${version}` : null;
   return {
     ...getGamePresentation({ target: "sfinx", displayTitle: "Sfinx", engineId: "cge2" }),
     platform: "DOS",

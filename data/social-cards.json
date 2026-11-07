@@ -241,6 +241,11 @@
       "inputHash": "a1642ca6b8c6907bd3d0f2c4d08057a2a4bb6a60c8aae5b4f6a828b00c25e90f",
       "imageHash": "c115d4cb50a87b38a1546abd14172c5b2ac5e06072f6d8995f4124a506c297c4"
     },
+    "donald-duck-s-playground": {
+      "file": "donald-duck-s-playground-b1afbab09fd442de6fddbf16ab85c88771d8f748ffbac35ce636c98520b271e7.png",
+      "inputHash": "b1afbab09fd442de6fddbf16ab85c88771d8f748ffbac35ce636c98520b271e7",
+      "imageHash": "51b001ffa522e841293ad194556708c220d04f2080929b1dcd17f78853ae5da4"
+    },
     "dr-seuss-s-abc": {
       "file": "dr-seuss-s-abc-c92ea3d97148654c57c65481a25c4203a99214004b351b173adf09b6df7dc3b8.png",
       "inputHash": "c92ea3d97148654c57c65481a25c4203a99214004b351b173adf09b6df7dc3b8",
@@ -490,6 +495,11 @@
       "file": "hugo-s-house-of-horrors-5bffc33b1f7bc90d3907aa8c9139963b05634a35a6332bd81b01866f7b7fa57d.png",
       "inputHash": "5bffc33b1f7bc90d3907aa8c9139963b05634a35a6332bd81b01866f7b7fa57d",
       "imageHash": "20894bc49769e0b108215342c25baa64aa1c278b22339534a85198922108abc3"
+    },
+    "inca-ii-wiracocha": {
+      "file": "inca-ii-wiracocha-785f87ce517a5913d1d161b5234f048c4da0ca16ee791d785f6abf5efd32544b.png",
+      "inputHash": "785f87ce517a5913d1d161b5234f048c4da0ca16ee791d785f6abf5efd32544b",
+      "imageHash": "a126eaf29ceb5e86879aa6b24a1f010057d742cd0d8ebb73e26fdb059bc07e8f"
     },
     "indiana-jones-and-the-fate-of-atlantis": {
       "file": "indiana-jones-and-the-fate-of-atlantis-62b33f62d54ab2e5bbb3320e57ee35decc59cb1f9628e26cb79ba0b8d3d52a8e.png",

@@ -14825,6 +14825,57 @@
     "heroImage": "/launcher/christmas-card-1992-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
+  "agi:ddp": {
+    "title": "Donald Duck's Playground",
+    "aliases": [
+      "Donald Duck's Playground (Floppy DOS)",
+      "Donald Duck’s Playground"
+    ],
+    "screenshots": [],
+    "sources": {
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.wiki.sierrahelp.com/index.php/DDPG"
+      ]
+    },
+    "summary": "Help Donald earn change through four jobs and buy equipment for his nephews’ playground.",
+    "studio": "Sierra On-Line",
+    "genre": "Educational game"
+  },
+  "gob:inca2": {
+    "title": "Inca II: Wiracocha",
+    "aliases": [
+      "Inca II - Wiracocha (Floppy DOS)",
+      "Inca II: Nations of Immortality"
+    ],
+    "screenshots": [],
+    "sources": {
+      "screenshots": [],
+      "galleryNote": "Gameplay capture references are pending.",
+      "metadata": [
+        "https://www.oldgamesitalia.net/museo/168-Inca_II%3A_Wiracocha"
+      ],
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Inca%20II_%20Wiracocha%20%28DOS_English%20%28US%29%29.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra DOS retail box front, archived by Libretro",
+            "sha256": "f7920f930c47ad657e9ad3d700645372ee0e9710548084641894b70ad37a7da0"
+          }
+        ]
+      }
+    },
+    "summary": "Investigate a mysterious asteroid threatening the Inca empire in this space adventure.",
+    "studio": "Coktel Vision",
+    "genre": "Space adventure",
+    "posterImage": "/launcher/inca-ii-wiracocha-scummweb-generated-2026-11-07-r1-cover.webp"
+  },
   "sci:astrochicken": {
     "title": "Astro Chicken (Demo)",
     "aliases": [
