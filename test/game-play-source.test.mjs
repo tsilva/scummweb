@@ -7,6 +7,7 @@ import swc from "next/dist/build/swc/index.js";
 import library from "../scummvm-shell/games.json" with { type: "json" };
 import { getBundledGameLibrary } from "../lib/catalog.mjs";
 import { getRecognizedGames } from "../app/recognized-games.mjs";
+import * as telemetry from "../app/game-player/telemetry.mjs";
 import * as playSources from "../app/game-play-source.mjs";
 import * as versions from "../app/game-versions.mjs";
 import { checkGameSource } from "../app/game-sources.mjs";
@@ -95,6 +96,7 @@ async function player({ game = tentacle, sources = [], remembered = null, pendin
       if (name === "next/dynamic") return () => Library;
       if (name === "./archive-play-frame") return { ArchivePlayer: Archive, RemoteArchivePlayer: Remote };
       if (name === "./game-play-source.mjs") return playSources;
+      if (name === "./game-player/telemetry.mjs") return telemetry;
       if (name === "./recognized-games.mjs") return { getRecognizedGames };
       if (name === "./game-versions.mjs") return { ...versions, readChosenVersion: () => remembered };
       if (name === "./game-sources.mjs") return { checkGameSource, readGameSources: async () => {
@@ -188,7 +190,7 @@ test("leaving a route cancels pending source restoration", async () => {
   assert.equal(app.render().type, "p", "an abandoned route stays unmounted while restoration finishes");
 });
 
-async function remotePlayer(pathname, identifiedGame) {
+async function remotePlayer(pathname, identifiedGame, search = "") {
   const url = new URL("../app/archive-play-frame.js", import.meta.url);
   const { code } = await swc.transform(await readFile(url, "utf8"), {
     filename: url.pathname, swcrc: false, configFile: false, module: { type: "commonjs" },
@@ -198,7 +200,7 @@ async function remotePlayer(pathname, identifiedGame) {
   const hash = "#zip=https%3A%2F%2Fexample.test%2Fgame.zip";
   const loadArchive = () => {};
   let cursor = 0, preparations = 0;
-  runInNewContext(code, { module, exports: module.exports, AbortController, window: { location: { pathname, hash } },
+  runInNewContext(code, { module, exports: module.exports, AbortController, window: { location: new URL(`https://example.test${pathname}${search}${hash}`) },
     require(name) {
       if (name === "react/jsx-runtime") return createRequire(url)(name);
       if (name === "react") return {
@@ -215,6 +217,7 @@ async function remotePlayer(pathname, identifiedGame) {
         return { game: identifiedGame, loadArchive };
       } };
       if (name === "./game-play-source.mjs") return playSources;
+      if (name === "./game-player/telemetry.mjs") return telemetry;
       if (name === "./local-game-archive.mjs") return { selectGameArchive: (...args) => selections.push(args) };
       return {};
     },
@@ -240,6 +243,13 @@ test("recognized direct ZIP links preserve their fragment and prepared loader wh
     assert.equal(app.preparations(), 1);
     app.cleanup();
   }
+});
+
+test("a direct ZIP keeps telemetry enabled across the game route redirect", async () => {
+  const app = await remotePlayer("/local/play", { target: "monkey-demo", engineId: "scumm", gameId: "monkey",
+    displayTitle: "The Secret of Monkey Island (Demo)" }, "?telemetry=1");
+  assert.deepEqual(app.redirects, [`/the-secret-of-monkey-island-demo/play?telemetry=1${app.hash}`]);
+  app.cleanup();
 });
 
 test("canonical direct links keep their game presentation and unidentified ZIPs retain the generic player", async () => {

@@ -13,6 +13,17 @@ scummwebBrowserFsReady.catch(()=>{});
 </script><script>
 const scummwebInlineFrame = window.location.pathname === "srcdoc";
 const scummwebLaunchUrl = new URL(scummwebInlineFrame ? document.baseURI : window.location.href);
+if (scummwebLaunchUrl.searchParams.get("telemetry") === "1") {
+  globalThis.__scummwebTelemetryQueryEnabled = true;
+  globalThis.scummwebTelemetry = Object.freeze({
+    read() {
+      return structuredClone({
+        identity: globalThis.__scummwebEvaluationGame ?? null,
+        snapshot: globalThis.__scummwebGameTelemetry ?? null
+      });
+    }
+  });
+}
 function buildVersionedAssetUrl(assetPath) {
   const resolvedUrl = new URL(assetPath, scummwebLaunchUrl.href);
   const contentVersion = resolvedUrl.origin === scummwebLaunchUrl.origin &&

@@ -1,0 +1,1210 @@
+diff --git a/engines/adl/adl.cpp b/engines/adl/adl.cpp
+index 53ca0776..6056bb65 100644
+--- a/engines/adl/adl.cpp
++++ b/engines/adl/adl.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/scummsys.h"
+ #include "common/config-manager.h"
+ #include "common/debug.h"
+@@ -806,8 +808,15 @@ Common::Error AdlEngine::run() {
+ 
+ 	_display->setMode(Display::kModeMixed);
+ 
+-	while (!(_isQuitting || shouldQuit()))
++	while (!(_isQuitting || shouldQuit())) {
++#ifdef __EMSCRIPTEN__
++		{
++			ScummWebTelemetry::Sample sample(_state.room);
++			sample.bank("vars", _state.vars.data(), _state.vars.size());
++		}
++#endif
+ 		gameLoop();
++	}
+ 
+ 	g_system->setFeatureState(OSystem::kFeatureVirtualKeyboard, false);
+ 
+diff --git a/engines/cge/cge_main.cpp b/engines/cge/cge_main.cpp
+index 3c169827..209b9aa9 100644
+--- a/engines/cge/cge_main.cpp
++++ b/engines/cge/cge_main.cpp
+@@ -24,6 +24,8 @@
+  * Copyright (c) 1994-1995 Janusz B. Wisniewski and L.K. Avalon
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/scummsys.h"
+ #include "common/endian.h"
+ #include "common/memstream.h"
+@@ -1420,6 +1422,12 @@ void CGEEngine::runGame() {
+ 	_keyboard->setClient(_sys);
+ 	// main loop
+ 	while (!_endGame && !_quitFlag) {
++#ifdef __EMSCRIPTEN__
++		{
++			ScummWebTelemetry::Sample sample(_now);
++			sample.bank("flags", _flag, ARRAYSIZE(_flag));
++		}
++#endif
+ 		if (_flag[3]) // Flag FINIS
+ 			_commandHandler->addCallback(kCmdExec,  -1, 0, kQGame);
+ 		mainLoop();
+diff --git a/engines/cge2/cge2_main.cpp b/engines/cge2/cge2_main.cpp
+index 339fbeba..eaa0ca6e 100644
+--- a/engines/cge2/cge2_main.cpp
++++ b/engines/cge2/cge2_main.cpp
+@@ -24,6 +24,8 @@
+  * Copyright (c) 1994-1997 Janusz B. Wisniewski and L.K. Avalon
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "sound.h"
+ #include "cge2/cge2_main.h"
+ #include "cge2/cge2.h"
+@@ -518,6 +520,11 @@ void CGE2Engine::showBak(int ref) {
+ }
+ 
+ void CGE2Engine::mainLoop() {
++#ifdef __EMSCRIPTEN__
++	if (_gamePhase == kPhaseInGame) {
++		ScummWebTelemetry::Sample sample(_now);
++	}
++#endif
+ 	if (_gamePhase == kPhaseInGame)
+ 		checkSounds();
+ 
+diff --git a/engines/composer/composer.cpp b/engines/composer/composer.cpp
+index 4942c34e..5174b842 100644
+--- a/engines/composer/composer.cpp
++++ b/engines/composer/composer.cpp
+@@ -18,6 +18,8 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  *
+  */
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/scummsys.h"
+ 
+ #include "common/config-manager.h"
+@@ -149,6 +151,13 @@ Common::Error ComposerEngine::run() {
+ 			lastDrawTime = 0;
+ 		}
+ 		_pendingPageChanges.clear();
++#ifdef __EMSCRIPTEN__
++		{
++			// Several active pages can be layered. A single loaded page has an unambiguous ID.
++			ScummWebTelemetry::Sample sample(_libraries.size() == 1 ? int(_libraries.front()._id) : -1);
++			sample.bank("vars", _vars.data(), _vars.size());
++		}
++#endif
+ 
+ 		uint32 thisTime = _system->getMillis();
+ 		// maintain our own internal timing, since otherwise we get
+diff --git a/engines/dreamweb/stubs.cpp b/engines/dreamweb/stubs.cpp
+index 97527170..d8391c83 100644
+--- a/engines/dreamweb/stubs.cpp
++++ b/engines/dreamweb/stubs.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "dreamweb/sound.h"
+ #include "dreamweb/dreamweb.h"
+ #include "engines/util.h"
+@@ -749,6 +751,35 @@ void DreamWebEngine::loadTextFile(TextFile &file, const char *suffix) {
+ void DreamWebEngine::screenUpdate() {
+ 	newPlace();
+ 	mainScreen();
++#ifdef __EMSCRIPTEN__
++	{
++		ScummWebTelemetry::Sample sample(_realLocation);
++		if (sample) {
++#define REPORT(name) sample.variable("game_vars", #name, _vars._##name)
++			REPORT(startVars); REPORT(progressPoints); REPORT(watchOn);
++			REPORT(shadesOn); REPORT(secondCount); REPORT(minuteCount);
++			REPORT(hourCount); REPORT(zoomOn); REPORT(location);
++			REPORT(exPos); REPORT(exFramePos); REPORT(exTextPos);
++			REPORT(card1Money); REPORT(listPos); REPORT(ryanPage);
++			REPORT(watchingTime); REPORT(reelToWatch); REPORT(endWatchReel);
++			REPORT(speedCount); REPORT(watchSpeed); REPORT(reelToHold);
++			REPORT(endOfHoldReel); REPORT(watchMode); REPORT(destAfterHold);
++			REPORT(newsItem); REPORT(liftFlag); REPORT(liftPath);
++			REPORT(lockStatus); REPORT(doorPath); REPORT(countToOpen);
++			REPORT(countToClose); REPORT(rockstarDead); REPORT(generalDead);
++			REPORT(sartainDead); REPORT(aideDead); REPORT(beenMugged);
++			REPORT(gunPassFlag); REPORT(canMoveAltar); REPORT(talkedToAttendant);
++			REPORT(talkedToSparky); REPORT(talkedToBoss); REPORT(talkedToRecep);
++			REPORT(cardPassFlag); REPORT(madmanFlag); REPORT(keeperFlag);
++			REPORT(lastTrigger); REPORT(manDead); REPORT(seed1);
++			REPORT(seed2); REPORT(seed3); REPORT(needToTravel);
++			REPORT(throughDoor); REPORT(newObs); REPORT(ryanOn);
++			REPORT(combatCount); REPORT(lastWeapon); REPORT(dreamNumber);
++			REPORT(roomAfterDream); REPORT(shakeCounter);
++#undef REPORT
++		}
++	}
++#endif
+ 	if (_quitRequested)
+ 		return;
+ 	animPointer();
+diff --git a/engines/gnap/gnap.cpp b/engines/gnap/gnap.cpp
+index 8a6ed175..b840b960 100644
+--- a/engines/gnap/gnap.cpp
++++ b/engines/gnap/gnap.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "graphics/cursorman.h"
+ #include "gnap/gnap.h"
+ #include "gnap/datarchive.h"
+@@ -713,6 +715,12 @@ void GnapEngine::setSoundVolume(int resourceId, int volume) {
+ }
+ 
+ void GnapEngine::updateTimers() {
++#ifdef __EMSCRIPTEN__
++	{
++		ScummWebTelemetry::Sample sample(_currentSceneNum);
++		sample.bank("flag_word", &_gameFlags, 1);
++	}
++#endif
+ 	for (int i = 0; i < kMaxTimers; ++i)
+ 		if (_timers[i] > 0)
+ 			--_timers[i];
+diff --git a/engines/gob/inter.cpp b/engines/gob/inter.cpp
+index b7498135..2825c78b 100644
+--- a/engines/gob/inter.cpp
++++ b/engines/gob/inter.cpp
+@@ -25,6 +25,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/endian.h"
+ 
+ #include "gob/gob.h"
+@@ -230,6 +232,18 @@ void Inter::writeVar(uint32 offset, uint16 type, uint32 value) {
+ }
+ 
+ void Inter::funcBlock(int16 retFlag) {
++#ifdef __EMSCRIPTEN__
++	if (_variables) {
++		ScummWebTelemetry::Sample sample(-1, _vm->_game->_curTotFile.c_str());
++		if (sample) {
++			const uint count = ScummWebTelemetry::boundedCount(_variables->getSize() / 4);
++			uint32 vars[ScummWebTelemetry::kMaxBankSize];
++			for (uint i = 0; i < count; ++i)
++				vars[i] = _variables->readVar32(i);
++			sample.bank("vars", vars, count);
++		}
++	}
++#endif
+ 	OpFuncParams params;
+ 	byte cmd;
+ 	byte cmd2;
+diff --git a/engines/got/events.cpp b/engines/got/events.cpp
+index 0645288d..b67fe9ca 100644
+--- a/engines/got/events.cpp
++++ b/engines/got/events.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "got/events.h"
+ #include "common/config-manager.h"
+ #include "got/gfx/palette.h"
+@@ -120,6 +122,12 @@ void Events::nextFrame() {
+ 
+ 	// Check if any script needs resuming
+ 	_G(scripts).runIfResuming();
++#ifdef __EMSCRIPTEN__
++	if (focusedView() && focusedView()->getName() == "Game") {
++		ScummWebTelemetry::Sample sample(_G(currentLevel));
++		sample.bank("flags", _G(setup)._flags, ARRAYSIZE(_G(setup)._flags));
++	}
++#endif
+ 
+ 	// Do tick action to the views to handle gameplay logic
+ 	tick();
+diff --git a/engines/hopkins/events.cpp b/engines/hopkins/events.cpp
+index 2be8615a..64d120ec 100644
+--- a/engines/hopkins/events.cpp
++++ b/engines/hopkins/events.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "hopkins/events.h"
+ 
+ #include "hopkins/files.h"
+@@ -353,6 +355,13 @@ int EventsManager::waitKeyPress() {
+ }
+ 
+ void EventsManager::refreshScreenAndEvents() {
++#ifdef __EMSCRIPTEN__
++	if (_vm->_globals->_curRoomNum > 0 && _vm->_globals->_saveData) {
++		ScummWebTelemetry::Sample sample(_vm->_globals->_curRoomNum);
++		const auto &data = _vm->_globals->_saveData->_data;
++		sample.bank("state_bytes", data, ARRAYSIZE(data));
++	}
++#endif
+ 	int bottom = 0;
+ 	int right = 0;
+ 	int height = 0;
+diff --git a/engines/hugo/hugo.cpp b/engines/hugo/hugo.cpp
+index b7a29644..ae27e320 100644
+--- a/engines/hugo/hugo.cpp
++++ b/engines/hugo/hugo.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/system.h"
+ #include "common/random.h"
+ #include "common/error.h"
+@@ -418,6 +420,12 @@ void HugoEngine::runMachine() {
+ 		}
+ 		break;
+ 	case kViewPlay:                                 // Playing game
++#ifdef __EMSCRIPTEN__
++		{
++			ScummWebTelemetry::Sample sample(*_screenPtr);
++			sample.bank("screen_states", _screenStates, _numStates);
++		}
++#endif
+ 		if (useWindowsInterface()) {
+ 			_screen->showCursor();
+ 		}
+diff --git a/engines/kyra/engine/kyra_hof.cpp b/engines/kyra/engine/kyra_hof.cpp
+index 7ab1bde6..baaf736a 100644
+--- a/engines/kyra/engine/kyra_hof.cpp
++++ b/engines/kyra/engine/kyra_hof.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "kyra/engine/kyra_hof.h"
+ #include "kyra/resource/resource.h"
+ #include "kyra/text/text_hof.h"
+@@ -619,6 +621,12 @@ bool KyraEngine_HoF::handleInputUnkSub(int x, int y) {
+ }
+ 
+ void KyraEngine_HoF::update() {
++#ifdef __EMSCRIPTEN__
++	{
++		ScummWebTelemetry::Sample sample(_currentScene);
++		sample.bank("flag_bytes", _flagsTable, ARRAYSIZE(_flagsTable));
++	}
++#endif
+ 	updateInput();
+ 
+ 	refreshAnimObjectsIfNeed();
+diff --git a/engines/kyra/engine/kyra_lok.cpp b/engines/kyra/engine/kyra_lok.cpp
+index b1d54702..9999adfc 100644
+--- a/engines/kyra/engine/kyra_lok.cpp
++++ b/engines/kyra/engine/kyra_lok.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "kyra/engine/kyra_lok.h"
+ #include "kyra/resource/resource.h"
+ #include "kyra/sequence/seqplayer_lok.h"
+@@ -482,6 +484,12 @@ void KyraEngine_LoK::mainLoop() {
+ 
+ 	while (!shouldQuit()) {
+ 		int32 frameTime = (int32)_system->getMillis();
++#ifdef __EMSCRIPTEN__
++		{
++			ScummWebTelemetry::Sample sample(_currentRoom);
++			sample.bank("flag_bytes", _flagsTable, ARRAYSIZE(_flagsTable));
++		}
++#endif
+ 
+ 		if (_currentCharacter->sceneId == 210) {
+ 			updateKyragemFading();
+diff --git a/engines/kyra/engine/kyra_mr.cpp b/engines/kyra/engine/kyra_mr.cpp
+index c5b0120e..8280ab0b 100644
+--- a/engines/kyra/engine/kyra_mr.cpp
++++ b/engines/kyra/engine/kyra_mr.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "kyra/engine/kyra_mr.h"
+ #include "kyra/graphics/wsamovie.h"
+ #include "kyra/text/text_mr.h"
+@@ -1077,6 +1079,12 @@ int KyraEngine_MR::inputSceneChange(int x, int y, int unk1, int unk2) {
+ }
+ 
+ void KyraEngine_MR::update() {
++#ifdef __EMSCRIPTEN__
++	{
++		ScummWebTelemetry::Sample sample(_currentScene);
++		sample.bank("flag_bytes", _flagsTable, ARRAYSIZE(_flagsTable));
++	}
++#endif
+ 	updateInput();
+ 
+ 	refreshAnimObjectsIfNeed();
+diff --git a/engines/kyra/engine/lol.cpp b/engines/kyra/engine/lol.cpp
+index 9094a563..ebfa9907 100644
+--- a/engines/kyra/engine/lol.cpp
++++ b/engines/kyra/engine/lol.cpp
+@@ -21,6 +21,8 @@
+ 
+ #ifdef ENABLE_LOL
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "kyra/engine/lol.h"
+ #include "kyra/graphics/screen_lol.h"
+ #include "kyra/resource/resource.h"
+@@ -1031,6 +1033,13 @@ void LoLEngine::readSettings() {
+ }
+ 
+ void LoLEngine::update() {
++#ifdef __EMSCRIPTEN__
++	{
++		ScummWebTelemetry::Sample sample(_currentBlock);
++		sample.bank("flag_bytes", _flagsTable, ARRAYSIZE(_flagsTable));
++		sample.variable("location", "level", _currentLevel);
++	}
++#endif
+ 	updateSequenceBackgroundAnimations();
+ 
+ 	if (_updateCharNum != -1 && _system->getMillis() > _updatePortraitNext)
+diff --git a/engines/lab/lab.cpp b/engines/lab/lab.cpp
+index 053d94a8..32ca52a8 100644
+--- a/engines/lab/lab.cpp
++++ b/engines/lab/lab.cpp
+@@ -27,6 +27,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/config-manager.h"
+ #include "common/debug-channels.h"
+ #include "common/error.h"
+@@ -199,6 +201,12 @@ void LabEngine::waitTOF() {
+ }
+ 
+ void LabEngine::updateEvents() {
++#ifdef __EMSCRIPTEN__
++	if (_conditions) {
++		ScummWebTelemetry::Sample sample(_roomNum);
++		sample.bank("condition_words", _conditions->_array, _conditions->_lastElement / 16);
++	}
++#endif
+ 	_event->processInput();
+ 	_interface->handlePressedButton();
+ }
+diff --git a/engines/made/database.h b/engines/made/database.h
+index bf343cc7..a462da0a 100644
+--- a/engines/made/database.h
++++ b/engines/made/database.h
+@@ -143,6 +143,9 @@ public:
+ 	int16 getMainCodeObjectIndex() const { return _mainCodeObjectIndex; }
+ 
+ 	int16 getVar(int16 index);
++#ifdef __EMSCRIPTEN__
++	uint telemetryVarCount() const { return _gameState ? _gameStateSize / 2 : 0; }
++#endif
+ 	void setVar(int16 index, int16 value);
+ 
+ 	const char *getObjectString(int16 index);
+diff --git a/engines/made/script.cpp b/engines/made/script.cpp
+index 0827ffdd..5473b32c 100644
+--- a/engines/made/script.cpp
++++ b/engines/made/script.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "made/script.h"
+ #include "made/scriptfuncs.h"
+ #include "made/made.h"
+@@ -168,6 +170,18 @@ int16 ScriptInterpreter::runScript(int16 scriptObjectIndex, int16 argc, int16 *a
+ 		/* We sleep a little after 500 opcodes to reduce the CPU load.
+ 		*/
+ 		if (++opcodeSleepCounter > 500) {
++#ifdef __EMSCRIPTEN__
++			{
++				ScummWebTelemetry::Sample sample;
++				if (sample) {
++					const uint count = ScummWebTelemetry::boundedCount(_vm->_dat->telemetryVarCount());
++					int16 vars[ScummWebTelemetry::kMaxBankSize];
++					for (uint i = 0; i < count; ++i)
++						vars[i] = _vm->_dat->getVar(i);
++					sample.bank("vars", vars, count);
++				}
++			}
++#endif
+ 			_vm->_screen->updateScreenAndWait(5);
+ 			opcodeSleepCounter = 0;
+ 		}
+diff --git a/engines/mads/core/game.cpp b/engines/mads/core/game.cpp
+index 928f51e7..285812bd 100644
+--- a/engines/mads/core/game.cpp
++++ b/engines/mads/core/game.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/debug.h"
+ #include "mads/mads.h"
+ #include "mads/core/game.h"
+@@ -1896,6 +1898,12 @@ static void game_control_loop() {
+ 
+ 	while ((new_room == room_id) && game.going && !kernel.force_restart) {
+ 		game_main_loop();
++#ifdef __EMSCRIPTEN__
++		{
++			ScummWebTelemetry::Sample sample(room_id);
++			sample.bank("globals", global, GLOBAL_LIST_SIZE);
++		}
++#endif
+ 
+ 		if (kernel.activate_menu) {
+ 			if (!kernel.trigger && player.commands_allowed) {
+diff --git a/engines/mohawk/livingbooks.cpp b/engines/mohawk/livingbooks.cpp
+index 8aa6688e..da4019ed 100644
+--- a/engines/mohawk/livingbooks.cpp
++++ b/engines/mohawk/livingbooks.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "mohawk/livingbooks.h"
+ #include "mohawk/resource.h"
+ #include "mohawk/cursors.h"
+@@ -394,6 +396,15 @@ bool MohawkEngine_LivingBooks::loadPage(LBMode mode, uint page, uint subpage) {
+ }
+ 
+ void MohawkEngine_LivingBooks::updatePage() {
++#ifdef __EMSCRIPTEN__
++	if (_page) {
++		ScummWebTelemetry::Sample sample(_curPage);
++		if (sample)
++			for (const auto &var : _variables)
++				if (var._value.type == kLBValueInteger)
++					sample.variable("vars", var._key.c_str(), var._value.integer);
++	}
++#endif
+ 	switch (_phase) {
+ 	case kLBPhaseInit:
+ 		for (uint32 i = 0; i < _items.size(); i++)
+diff --git a/engines/mohawk/myst.cpp b/engines/mohawk/myst.cpp
+index f3cdf5ef..02906b3b 100644
+--- a/engines/mohawk/myst.cpp
++++ b/engines/mohawk/myst.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "backends/keymapper/action.h"
+ #include "backends/keymapper/keymap.h"
+ #include "backends/keymapper/standard-actions.h"
+@@ -613,6 +615,17 @@ Common::KeymapArray MohawkEngine_Myst::initKeymaps(const char *target) {
+ }
+ 
+ void MohawkEngine_Myst::doFrame() {
++#ifdef __EMSCRIPTEN__
++	if (_card && _gameState) {
++		ScummWebTelemetry::Sample sample(_card->getId());
++		const auto &vars = _gameState->_globals;
++		sample.variable("globals", "currentAge", vars.currentAge);
++		sample.variable("globals", "heldPage", vars.heldPage);
++		sample.variable("globals", "redPagesInBook", vars.redPagesInBook);
++		sample.variable("globals", "bluePagesInBook", vars.bluePagesInBook);
++		sample.variable("globals", "ending", vars.ending);
++	}
++#endif
+ 	// Update any background videos
+ 	_video->updateMovies();
+ 	if (isInteractive()) {
+diff --git a/engines/mohawk/riven.cpp b/engines/mohawk/riven.cpp
+index 8cf4d625..fcf95c2a 100644
+--- a/engines/mohawk/riven.cpp
++++ b/engines/mohawk/riven.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/config-manager.h"
+ #include "common/debug-channels.h"
+ #include "common/events.h"
+@@ -204,6 +206,14 @@ Common::Error MohawkEngine_Riven::run() {
+ }
+ 
+ void MohawkEngine_Riven::doFrame() {
++#ifdef __EMSCRIPTEN__
++	if (_card) {
++		ScummWebTelemetry::Sample sample(_card->getId());
++		if (sample)
++			for (const auto &var : _vars)
++				sample.variable("vars", var._key.c_str(), var._value);
++	}
++#endif
+ 	// Update background running things
+ 	uint32 loopStart = _system->getMillis();
+ 	_sound->updateSLST();
+diff --git a/engines/mortevielle/mortevielle.cpp b/engines/mortevielle/mortevielle.cpp
+index eba59b77..69388b5b 100644
+--- a/engines/mortevielle/mortevielle.cpp
++++ b/engines/mortevielle/mortevielle.cpp
+@@ -24,6 +24,8 @@
+  * Copyright (c) 1987-1989 Lankhor
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "mortevielle/mortevielle.h"
+ 
+ #include "mortevielle/dialogs.h"
+@@ -497,6 +499,15 @@ void MortevielleEngine::playGame() {
+ 	// Loop handling actions until the game has to be quit, or show the lose or end sequence
+ 	do {
+ 		handleAction();
++#ifdef __EMSCRIPTEN__
++		{
++			ScummWebTelemetry::Sample sample(_saveStruct._currPlace);
++			sample.bank("available_questions", _saveStruct._availableQuestion, ARRAYSIZE(_saveStruct._availableQuestion));
++			sample.bank("hints_found", _saveStruct._pctHintFound, ARRAYSIZE(_saveStruct._pctHintFound));
++			sample.variable("game_vars", "faithScore", _saveStruct._faithScore);
++			sample.variable("game_vars", "fullHour", _saveStruct._fullHour);
++		}
++#endif
+ 		if (shouldQuit())
+ 			return;
+ 	} while (!((_quitGame) || (_endGame) || (_loseGame)));
+diff --git a/engines/neverhood/gamevars.h b/engines/neverhood/gamevars.h
+index bdc44f14..f5c91d61 100644
+--- a/engines/neverhood/gamevars.h
++++ b/engines/neverhood/gamevars.h
+@@ -181,6 +181,9 @@ public:
+ 	uint32 getSubVar(uint32 nameHash, uint32 subNameHash);
+ 	void setSubVar(uint32 nameHash, uint32 subNameHash, uint32 value);
+ 	void dumpVars(Console *con);
++#ifdef __EMSCRIPTEN__
++	const Common::Array<GameVar> &telemetryVars() const { return _vars; }
++#endif
+ protected:
+ 	Common::Array<GameVar> _vars;
+ 	int16 addVar(uint32 nameHash, uint32 value);
+diff --git a/engines/neverhood/neverhood.cpp b/engines/neverhood/neverhood.cpp
+index 787e50e3..dde308a9 100644
+--- a/engines/neverhood/neverhood.cpp
++++ b/engines/neverhood/neverhood.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/file.h"
+ #include "common/config-manager.h"
+ #include "common/textconsole.h"
+@@ -228,6 +230,19 @@ void NeverhoodEngine::mainLoop() {
+ 		if (_system->getMillis() >= nextFrameTime) {
+ 			_gameModule->checkRequests();
+ 			_gameModule->handleUpdate();
++#ifdef __EMSCRIPTEN__
++			{
++				ScummWebTelemetry::Sample sample(_gameState.sceneNum);
++				if (sample) {
++					const auto &vars = _gameVars->telemetryVars();
++					for (uint i = 0; i < vars.size() && i < ScummWebTelemetry::kMaxBankSize; ++i) {
++						const auto &var = vars[i];
++						const auto key = Common::String::format("%u:%08x", i, var.nameHash);
++						sample.variable("vars", key.c_str(), var.value);
++					}
++				}
++			}
++#endif
+ 			_gameModule->draw();
+ 			_screen->update();
+ 			if (_updateSound)
+diff --git a/engines/ngi/ngi.cpp b/engines/ngi/ngi.cpp
+index adb6d5ad..9055743a 100644
+--- a/engines/ngi/ngi.cpp
++++ b/engines/ngi/ngi.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "base/plugins.h"
+ 
+ #include "common/archive.h"
+@@ -510,6 +512,17 @@ void NGIEngine::updateScreen() {
+ 		}
+ 	} else if (_currentScene) {
+ 		_currentScene->draw();
++#ifdef __EMSCRIPTEN__
++		{
++			ScummWebTelemetry::Sample sample(_currentScene->_sceneId);
++			if (sample) {
++				const auto *root = getGameLoaderGameVar();
++				for (const auto *var = root ? root->_subVars : nullptr; var; var = var->_nextVarObj)
++					if (var->_varType == 0)
++						sample.variable("globals", var->_varName.c_str(), var->_value.intValue);
++			}
++		}
++#endif
+ 
+ 		if (_inventoryScene)
+ 			_inventory->draw();
+diff --git a/engines/parallaction/parallaction.cpp b/engines/parallaction/parallaction.cpp
+index 9d8a504d..3be1b961 100644
+--- a/engines/parallaction/parallaction.cpp
++++ b/engines/parallaction/parallaction.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/config-manager.h"
+ #include "common/debug-channels.h"
+ #include "common/system.h"
+@@ -332,6 +334,13 @@ void Parallaction::runGame() {
+ 
+ 	// change this to endFrame?
+ 	updateView();
++#ifdef __EMSCRIPTEN__
++	{
++		ScummWebTelemetry::Sample sample(_currentLocationIndex);
++		sample.bank("global_flag_word", &g_globalFlags, 1);
++		sample.bank("location_flag_words", _localFlags, ARRAYSIZE(_localFlags));
++	}
++#endif
+ }
+ 
+ //	displays transition before a new location
+diff --git a/engines/pegasus/gamestate.h b/engines/pegasus/gamestate.h
+index 83f93e97..4ff61ebc 100644
+--- a/engines/pegasus/gamestate.h
++++ b/engines/pegasus/gamestate.h
+@@ -305,6 +305,10 @@ public:
+ 	NeighborhoodID getCurrentNeighborhood();
+ 	void setCurrentNeighborhood(const NeighborhoodID neighborhood);
+ 	RoomID getCurrentRoom();
++#ifdef __EMSCRIPTEN__
++	bool telemetryGlobalFlag(uint32 flag) { return _globalFlags.getFlag(flag); }
++	bool telemetryScoringFlag(uint32 flag) { return _scoringFlags.getFlag(flag); }
++#endif
+ 	void setCurrentRoom(const RoomID room);
+ 	DirectionConstant getCurrentDirection();
+ 	void setCurrentDirection(const DirectionConstant direction);
+diff --git a/engines/pegasus/pegasus.cpp b/engines/pegasus/pegasus.cpp
+index e62c7a46..ccc32b10 100644
+--- a/engines/pegasus/pegasus.cpp
++++ b/engines/pegasus/pegasus.cpp
+@@ -22,6 +22,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/config-manager.h"
+ #include "common/error.h"
+ #include "common/events.h"
+@@ -206,6 +208,22 @@ Common::Error PegasusEngine::run() {
+ 	while (!shouldQuit()) {
+ 		processShell();
+ 		_system->delayMillis(10); // Ease off the CPU
++#ifdef __EMSCRIPTEN__
++		{
++			const auto room = GameState.getCurrentRoom();
++			ScummWebTelemetry::Sample sample(room == kNoRoomID ? -1 : int(room));
++			if (sample) {
++				bool globals[kNumGlobalFlags], scoring[kNumScoringFlags];
++				for (uint i = 0; i < kNumGlobalFlags; ++i)
++					globals[i] = GameState.telemetryGlobalFlag(i);
++				for (uint i = 0; i < kNumScoringFlags; ++i)
++					scoring[i] = GameState.telemetryScoringFlag(i);
++				sample.bank("global_flags", globals, kNumGlobalFlags);
++				sample.bank("scoring_flags", scoring, kNumScoringFlags);
++				sample.variable("location", "neighborhood", GameState.getCurrentNeighborhood());
++			}
++		}
++#endif
+ 	}
+ 
+ 	return Common::kNoError;
+diff --git a/engines/plumbers/plumbers.cpp b/engines/plumbers/plumbers.cpp
+index fe53b69f..f6b491f8 100644
+--- a/engines/plumbers/plumbers.cpp
++++ b/engines/plumbers/plumbers.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "plumbers/plumbers.h"
+ #include "plumbers/console.h"
+ 
+@@ -168,6 +170,12 @@ Common::Error PlumbersGame::run() {
+ 		}
+ 
+ 		preActions();
++#ifdef __EMSCRIPTEN__
++		{
++			ScummWebTelemetry::Sample sample(_curSceneIdx, _scenes[_curSceneIdx]._sceneName.c_str());
++			sample.variable("game_vars", "score", _totScore);
++		}
++#endif
+ 
+ 		while (!_actions.empty()) {
+ 			switch (_actions.pop()) {
+diff --git a/engines/saga/saga.cpp b/engines/saga/saga.cpp
+index eab4e042..2ee56b0e 100644
+--- a/engines/saga/saga.cpp
++++ b/engines/saga/saga.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/file.h"
+ #include "common/fs.h"
+ #include "common/config-manager.h"
+@@ -538,6 +540,14 @@ Common::Error SagaEngine::run() {
+ 		}
+ 		// Per frame processing
+ 		_render->drawScene();
++#ifdef __EMSCRIPTEN__
++		{
++			ScummWebTelemetry::Sample sample(_scene->currentSceneNumber());
++			const auto &vars = _script->_commonBuffer;
++			sample.bank("script_common_bytes", vars.data(), vars.size());
++			sample.bank("global_flag_word", &_globalFlags, 1);
++		}
++#endif
+ 		_system->delayMillis(10);
+ 	}
+ 
+diff --git a/engines/sword25/kernel/kernel_script.cpp b/engines/sword25/kernel/kernel_script.cpp
+index 071b691e..d5b8bed5 100644
+--- a/engines/sword25/kernel/kernel_script.cpp
++++ b/engines/sword25/kernel/kernel_script.cpp
+@@ -28,6 +28,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "sword25/kernel/common.h"
+ #include "sword25/kernel/kernel.h"
+ #include "sword25/kernel/filesystemutil.h"
+@@ -246,6 +248,28 @@ static int setTitle(lua_State *L) {
+ }
+ 
+ static int processMessages(lua_State *L) {
++#ifdef __EMSCRIPTEN__
++	{
++		ScummWebTelemetry::Sample sample;
++		if (sample) {
++			lua_pushvalue(L, LUA_GLOBALSINDEX);
++			lua_pushnil(L);
++			for (uint i = 0; i < ScummWebTelemetry::kMaxBankSize && lua_next(L, -2); ++i) {
++				if (lua_type(L, -2) == LUA_TSTRING) {
++					const char *key = lua_tostring(L, -2);
++					switch (lua_type(L, -1)) {
++					case LUA_TNUMBER: sample.variable("lua_globals", key, lua_tonumber(L, -1)); break;
++					case LUA_TBOOLEAN: sample.variable("lua_globals", key, lua_toboolean(L, -1)); break;
++					}
++				}
++				lua_pop(L, 1);
++				if (i + 1 == ScummWebTelemetry::kMaxBankSize)
++					lua_pop(L, 1);
++			}
++			lua_pop(L, 1);
++		}
++	}
++#endif
+ 	// This is called by the main loop in system/boot.lua,
+ 	// and the game keeps running as true is returned here.
+ 	// It terminates if we return false.
+diff --git a/engines/teenagent/teenagent.cpp b/engines/teenagent/teenagent.cpp
+index 2b782ea9..85e4f71d 100644
+--- a/engines/teenagent/teenagent.cpp
++++ b/engines/teenagent/teenagent.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/config-manager.h"
+ #include "common/debug.h"
+ #include "common/debug-channels.h"
+@@ -732,6 +734,13 @@ Common::Error TeenAgentEngine::run() {
+ 			_sceneBusy = b;
+ 		}
+ 		CursorMan.showMouse(scene->getMessage().empty() && !_sceneBusy);
++#ifdef __EMSCRIPTEN__
++		{
++			ScummWebTelemetry::Sample sample(scene->getId());
++			// The first 22 bytes are the save description, not script state.
++			sample.bank("save_state_bytes", res->dseg.ptr(dsAddr_saveState + 22), saveStateSize - 22);
++		}
++#endif
+ 
+ 		bool busy = inventory->active() || _sceneBusy;
+ 
+diff --git a/engines/tinsel/tinsel.cpp b/engines/tinsel/tinsel.cpp
+index 77626df1..b1e57ec6 100644
+--- a/engines/tinsel/tinsel.cpp
++++ b/engines/tinsel/tinsel.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/debug-channels.h"
+ #include "common/endian.h"
+ #include "common/error.h"
+@@ -1196,6 +1198,20 @@ void TinselEngine::NextGameCycle() {
+ 
+ 	// schedule process
+ 	CoroScheduler.schedule();
++#ifdef __EMSCRIPTEN__
++	{
++		const auto handle = GetSceneHandle();
++		// Scene handles are unsigned resource IDs and can use the high bit.
++		ScummWebTelemetry::Sample sample(handle ? int64(handle) : -1);
++		if (sample) {
++			const uint count = ScummWebTelemetry::boundedCount(GetGlobalCount());
++			int32 vars[ScummWebTelemetry::kMaxBankSize];
++			for (uint i = 0; i < count; ++i)
++				vars[i] = GetGlobal(i);
++			sample.bank("globals", vars, count);
++		}
++	}
++#endif
+ 
+ 	if (_bmv->MoviePlaying())
+ 		_bmv->CopyMovieToScreen();
+diff --git a/engines/titanic/main_game_window.cpp b/engines/titanic/main_game_window.cpp
+index fd5254e9..0bf4dd5d 100644
+--- a/engines/titanic/main_game_window.cpp
++++ b/engines/titanic/main_game_window.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "titanic/main_game_window.h"
+ #include "titanic/continue_save_dialog.h"
+ #include "titanic/debugger.h"
+@@ -262,6 +264,11 @@ void CMainGameWindow::onIdle() {
+ 
+ 	// Let the game manager perform any game updates
+ 	gameManager->update();
++#ifdef __EMSCRIPTEN__
++	if (const auto *room = gameManager->getRoom()) {
++		ScummWebTelemetry::Sample sample(room->_roomNumber);
++	}
++#endif
+ 
+ 	if (gameManager->_gameState._quitGame) {
+ 		// Game needs to shut down
+diff --git a/engines/toltecs/toltecs.cpp b/engines/toltecs/toltecs.cpp
+index c324cc34..bebc3b16 100644
+--- a/engines/toltecs/toltecs.cpp
++++ b/engines/toltecs/toltecs.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/config-manager.h"
+ #include "common/events.h"
+ #include "common/random.h"
+@@ -300,6 +302,17 @@ void ToltecsEngine::loadScene(uint resIndex) {
+ }
+ 
+ void ToltecsEngine::updateScreen() {
++#ifdef __EMSCRIPTEN__
++	{
++		ScummWebTelemetry::Sample sample(_sceneResIndex);
++		if (sample) {
++			int16 vars[22];
++			for (uint i = 0; i < ARRAYSIZE(vars); ++i)
++				vars[i] = _script->getGameVar(i);
++			sample.bank("engine_vars", vars, ARRAYSIZE(vars));
++		}
++	}
++#endif
+ 	_sound->updateSpeech();
+ 	_screen->updateShakeScreen();
+ 
+diff --git a/engines/tony/mpal/mpal.cpp b/engines/tony/mpal/mpal.cpp
+index 599764f0..684402ef 100644
+--- a/engines/tony/mpal/mpal.cpp
++++ b/engines/tony/mpal/mpal.cpp
+@@ -24,6 +24,8 @@
+  * Copyright (c) 1997-2003 Nayma Software
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/scummsys.h"
+ #include "common/file.h"
+ #include "common/savefile.h"
+@@ -36,6 +38,19 @@
+ namespace Tony {
+ 
+ namespace MPAL {
++#ifdef __EMSCRIPTEN__
++void publishTelemetry(int location) {
++	ScummWebTelemetry::Sample sample(location);
++	if (!sample || !GLOBALS._hVars)
++		return;
++	lockVar();
++	for (int i = 0; i < GLOBALS._nVars && i < int(ScummWebTelemetry::kMaxBankSize); ++i) {
++		const auto &var = GLOBALS._lpmvVars[i];
++		sample.variable("mpal_vars", var._lpszVarName, var._dwVal);
++	}
++	unlockVar();
++}
++#endif
+ 
+ /****************************************************************************\
+ *       Internal functions
+diff --git a/engines/tony/mpal/mpal.h b/engines/tony/mpal/mpal.h
+index 50c300d2..d42f5d5e 100644
+--- a/engines/tony/mpal/mpal.h
++++ b/engines/tony/mpal/mpal.h
+@@ -487,6 +487,9 @@ int mpalGetSaveStateSize();
+  * Locks the variables for access
+  */
+ void lockVar();
++#ifdef __EMSCRIPTEN__
++void publishTelemetry(int location);
++#endif
+ 
+ /**
+  * Unlocks variables after use
+diff --git a/engines/tony/tony.cpp b/engines/tony/tony.cpp
+index d27a624c..be9d7c67 100644
+--- a/engines/tony/tony.cpp
++++ b/engines/tony/tony.cpp
+@@ -701,6 +701,9 @@ void TonyEngine::play() {
+ 
+ 	// Loop through calling the scheduler until it's time for the game to quit
+ 	while (!shouldQuit() && !_bQuitNow) {
++#ifdef __EMSCRIPTEN__
++		MPAL::publishTelemetry(_theEngine.getCurrentLocation());
++#endif
+ 		// Delay for a brief amount
+ 		g_system->delayMillis(10);
+ 
+diff --git a/engines/tsage/scenes.cpp b/engines/tsage/scenes.cpp
+index 17fcb162..20560352 100644
+--- a/engines/tsage/scenes.cpp
++++ b/engines/tsage/scenes.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/config-manager.h"
+ #include "gui/saveload.h"
+ #include "tsage/dialogs.h"
+@@ -647,6 +649,12 @@ void Game::execute() {
+ 	bool activeFlag = false;
+ 	do {
+ 		// Process all currently atcive game handlers
++#ifdef __EMSCRIPTEN__
++		{
++			ScummWebTelemetry::Sample sample(g_globals->_sceneManager._sceneNumber);
++			sample.bank("flags", g_globals->_flags, ARRAYSIZE(g_globals->_flags));
++		}
++#endif
+ 		activeFlag = false;
+ 		for (SynchronizedList<GameHandler *>::iterator i = _handlers.begin(); i != _handlers.end(); ++i) {
+ 			GameHandler *gh = *i;
+diff --git a/engines/tucker/tucker.cpp b/engines/tucker/tucker.cpp
+index e13228c9..0b091bc2 100644
+--- a/engines/tucker/tucker.cpp
++++ b/engines/tucker/tucker.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/config-manager.h"
+ #include "common/events.h"
+ #include "common/system.h"
+@@ -640,6 +642,12 @@ void TuckerEngine::waitForTimer(int ticksCount) {
+ }
+ 
+ void TuckerEngine::parseEvents() {
++#ifdef __EMSCRIPTEN__
++	{
++		ScummWebTelemetry::Sample sample(_location);
++		sample.bank("flags", _flagsTable, ARRAYSIZE(_flagsTable));
++	}
++#endif
+ 	Common::Event ev;
+ 	while (_eventMan->pollEvent(ev)) {
+ 		switch (ev.type) {
+diff --git a/engines/voyeur/events.cpp b/engines/voyeur/events.cpp
+index c4863a36..c83f77b1 100644
+--- a/engines/voyeur/events.cpp
++++ b/engines/voyeur/events.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "voyeur/events.h"
+ #include "voyeur/voyeur.h"
+ #include "voyeur/staticres.h"
+@@ -236,6 +238,12 @@ void EventsManager::delayClick(int cycles) {
+ }
+ 
+ void EventsManager::pollEvents() {
++#ifdef __EMSCRIPTEN__
++	if (_vm->_voy) {
++		ScummWebTelemetry::Sample sample;
++		sample.variable("game_vars", "eventFlags", _vm->_voy->_eventFlags);
++	}
++#endif
+ 	checkForNextFrameCounter();
+ 
+ 	Common::Event event;
+diff --git a/engines/wintermute/wintermute.cpp b/engines/wintermute/wintermute.cpp
+index 403bd1c1..495b93dd 100644
+--- a/engines/wintermute/wintermute.cpp
++++ b/engines/wintermute/wintermute.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/scummsys.h"
+ 
+ #include "common/config-manager.h"
+@@ -33,6 +35,7 @@
+ #include "graphics/framelimiter.h"
+ 
+ #include "engines/wintermute/ad/ad_game.h"
++#include "engines/wintermute/ad/ad_scene.h"
+ #include "engines/wintermute/wintermute.h"
+ #include "engines/wintermute/debugger.h"
+ #include "engines/wintermute/platform_osystem.h"
+@@ -43,6 +46,7 @@
+ #include "engines/wintermute/base/base_file_manager.h"
+ #include "engines/wintermute/base/gfx/base_renderer.h"
+ #include "engines/wintermute/base/scriptables/script_engine.h"
++#include "engines/wintermute/base/scriptables/script_value.h"
+ #include "engines/wintermute/debugger/debugger_controller.h"
+ 
+ #include "gui/message.h"
+@@ -289,6 +293,26 @@ int WintermuteEngine::messageLoop() {
+ 
+ 		if (_game && _game->_renderer->_active && _game->_renderer->isReady()) {
+ 			_game->displayContent();
++#ifdef __EMSCRIPTEN__
++			{
++				const auto *scene = static_cast<AdGame *>(_game)->_scene;
++				ScummWebTelemetry::Sample sample(-1, scene ? scene->_filename : nullptr);
++				const auto *globals = _game->_scEngine->_globals;
++				if (sample && globals) {
++					for (const auto &var : globals->_valObject) {
++						const auto *value = var._value;
++						if (!value)
++							continue;
++						if (value->_type == VAL_INT)
++							sample.variable("globals", var._key.c_str(), value->_valInt);
++						else if (value->_type == VAL_BOOL)
++							sample.variable("globals", var._key.c_str(), value->_valBool);
++						else if (value->_type == VAL_FLOAT)
++							sample.variable("globals", var._key.c_str(), value->_valFloat);
++					}
++				}
++			}
++#endif
+ 			_game->displayQuickMsg();
+ 
+ 			_game->displayDebugInfo();
+diff --git a/engines/zvision/scripting/script_manager.cpp b/engines/zvision/scripting/script_manager.cpp
+index a173bfa3..fab62a79 100644
+--- a/engines/zvision/scripting/script_manager.cpp
++++ b/engines/zvision/scripting/script_manager.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/algorithm.h"
+ #include "common/config-manager.h"
+ #include "common/debug.h"
+@@ -119,6 +121,18 @@ void ScriptManager::process(uint deltaTimeMillis) {
+ 	updateControls(deltaTimeMillis);
+ 	if (changingLocation())
+ 		ChangeLocationReal(false);
++#ifdef __EMSCRIPTEN__
++	{
++		const char name[] = {_currentLocation.world, _currentLocation.room, _currentLocation.node, _currentLocation.view, 0};
++		ScummWebTelemetry::Sample sample(-1, name);
++		if (sample) {
++			for (const auto &var : _globalState)
++				sample.variable("state", Common::String::format("%u", var._key).c_str(), var._value);
++			for (const auto &var : _globalStateFlags)
++				sample.variable("flags", Common::String::format("%u", var._key).c_str(), var._value);
++		}
++	}
++#endif
+ }
+ 
+ bool ScriptManager::execScope(ScriptScope &scope) {

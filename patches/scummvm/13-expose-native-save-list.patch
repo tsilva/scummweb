@@ -95,7 +95,7 @@ diff --git a/base/main.cpp b/base/main.cpp
  		err = metaEngine.createInstance(&system, &engine, game, meDescriptor);
  	}
  
-@@ -325,7 +396,17 @@
+@@ -325,7 +396,24 @@
  	system.getEventManager()->purgeMouseEvents();
  
  	// Run the engine
@@ -104,6 +104,13 @@ diff --git a/base/main.cpp b/base/main.cpp
 +	scummwebEngineId = game.engineId;
 +	scummwebGameId = game.gameId;
 +	scummwebTarget = target;
++	EM_ASM({
++		if (!globalThis.__scummwebEvaluationEnabled && !globalThis.__scummwebTelemetryQueryEnabled) return;
++		globalThis.__scummwebGameTelemetry = null;
++		globalThis.__scummwebEvaluationGame = ({
++			engine_id: UTF8ToString($0), game_id: UTF8ToString($1)
++		});
++	}, game.engineId.c_str(), game.gameId.c_str());
 +#endif
  	Common::Error result = engine->run();
 +#ifdef __EMSCRIPTEN__

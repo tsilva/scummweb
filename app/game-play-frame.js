@@ -8,6 +8,7 @@ import { getMatchingGameSources, getSourceGamePresentation, prepareGameSourcePla
 import { chooseGameVersion, getGameFamilyKey, readChosenVersion } from "./game-versions.mjs";
 import { getSelectedGamePresentation, openSelectedGameArchive } from "./local-game-archive.mjs";
 import { getRecognizedGames } from "./recognized-games.mjs";
+import { withGameTelemetry } from "./game-player/telemetry.mjs";
 
 const SourceLibrary = dynamic(() => import("./home-shell/source-library"));
 
@@ -63,7 +64,8 @@ export default function GamePlayFrame({ game, catalog, officialUrl, children }) 
 
   function playArchive(selectedGame, resume) {
     if (getGameFamilyKey(selectedGame) !== getGameFamilyKey(game)) return false;
-    window.history.replaceState(null, "", `${game.playHref}${resume ? "#continue" : ""}`);
+    const destination = `${game.playHref}${resume ? "#continue" : ""}`;
+    window.history.replaceState(null, "", withGameTelemetry(destination, window.location.href));
     setSelection({ game: selectedGame, loadArchive: openSelectedGameArchive, zip: null });
     return true;
   }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { withGameTelemetry } from "../game-player/telemetry.mjs";
 
 export default function LegacyLaunch({ routes, primaryTarget }) {
   useEffect(() => {
@@ -23,7 +24,7 @@ export default function LegacyLaunch({ routes, primaryTarget }) {
       const key = params.get("skipIntroTarget") === target ? "seed" : "slot";
       playUrl.hash = `${key}=${slot}`;
     }
-    window.location.replace(playUrl);
+    window.location.replace(withGameTelemetry(playUrl.href, window.location.href));
   }, [primaryTarget, routes]);
 
   return <main className="game-route-page"><a href="/#library">Open the game library</a></main>;
