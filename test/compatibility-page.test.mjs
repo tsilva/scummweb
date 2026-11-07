@@ -52,7 +52,11 @@ const { code } = await swc.transform(await readFile(componentUrl, "utf8"), {
   jsc: { parser: { syntax: "ecmascript", jsx: true }, transform: { react: { runtime: "automatic" } } },
 });
 const compiled = { exports: {} };
-runInNewContext(code, { module: compiled, exports: compiled.exports, require: createRequire(componentUrl) });
+const requireView = createRequire(componentUrl);
+runInNewContext(code, { module: compiled, exports: compiled.exports, require(name) {
+  if (name === "../styles/compatibility.css") return {};
+  return requireView(name);
+} });
 
 test("initial compatibility HTML contains every game link before any interaction", () => {
   const html = renderToStaticMarkup(createElement(compiled.exports.default, {

@@ -19,6 +19,7 @@ import { useTouchClickActions } from "./game-player/useTouchClickMode";
 import { useTouchCursorPad } from "./game-player/useTouchCursorPad";
 import { sendZipGameFiles } from "./home-shell/zip-game-player";
 import { recordRecentGameTarget } from "./recent-games";
+import "./styles/game-controls.css";
 
 const SCUMMWEB_FRAME_MESSAGE_SOURCE = "scummweb";
 const SCUMMWEB_ASPECT_RATIO_MESSAGE_TYPE = "scummweb-aspect-ratio";
