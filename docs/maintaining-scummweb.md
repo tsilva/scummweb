@@ -26,6 +26,16 @@ separate browser saves. Supported engines offer **Continue** and **Start from
 beginning**; others load progress through their in-game menu. Older shared saves
 remain stored in the browser.
 
+On TVs that identify themselves to the browser, the homepage starts with
+**Play** focused, or **Continue** when available. Use the remote's D-pad to move
+the focus ring between browsing controls and game cards, and press **OK** to
+activate the focused item. Standard browser-mapped gamepads use the D-pad and
+the primary face button for the same actions. When **Skip intro** appears, it
+gets focus so it can be activated with **OK**.
+During mouse-driven gameplay on a TV, the remote's D-pad moves the cursor and
+tapping **OK** left-clicks. Hold **OK** for a right-click or hold a direction
+to move faster.
+
 The hero's **Scroll for screenshots & more games** link appears on desktop and
 mobile when screenshots are available and stays visible after browsing the library.
 On mobile it follows the launch controls.

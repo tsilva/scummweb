@@ -2,6 +2,15 @@
   position: relative;
 }
 
+html[data-dpad-navigation] {
+  scroll-padding-block: 5rem 0.75rem;
+}
+
+html[data-dpad-navigation] :is(.dashboard-nav, .page-shell, .site-footer, .game-route-shell) :focus {
+  outline: 3px solid #fff;
+  outline-offset: 4px;
+}
+
 .dashboard-nav {
   position: fixed;
   inset: 0 0 auto;

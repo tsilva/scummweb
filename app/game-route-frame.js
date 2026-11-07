@@ -6,6 +6,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { buildSkipIntroLaunchSrc } from "./skip-intro-config.mjs";
 import { readCatalogGameArchive } from "./game-bucket.mjs";
 import { gameLoadingStatus } from "./game-loading-status.mjs";
+import { isTvBrowser } from "./controller-device.mjs";
 import GameBootOverlay from "./game-player/GameBootOverlay";
 import GamePlayerControls from "./game-player/GamePlayerControls";
 import GameTouchCursorPad from "./game-player/GameTouchCursorPad";
@@ -14,6 +15,7 @@ import { observeStartupDiagnostics } from "./game-player/startup-diagnostics.mjs
 import { withGameTelemetry } from "./game-player/telemetry.mjs";
 import { dispatchGameCommand, dispatchSyntheticKeypressSequence } from "./game-player/keyboard";
 import { getGameMenuShortcut } from "./game-player/game-menu.mjs";
+import { observeRemoteMouse } from "./game-player/game-mouse.mjs";
 import { useBootState } from "./game-player/useBootState";
 import { useImmersiveMode } from "./game-player/useImmersiveMode";
 import { useTouchClickActions } from "./game-player/useTouchClickMode";
@@ -552,6 +554,10 @@ export default function GameRouteFrame({
         attempts += 1;
         focusTimer = 0;
 
+        const owner = iframe.ownerDocument;
+        if (owner?.documentElement.hasAttribute("data-dpad-navigation") &&
+          owner.activeElement?.closest(".game-route-controls, .game-route-bottom-actions")) return;
+
         if (focusGameCanvas(frameRef.current) || attempts >= 40) {
           return;
         }
@@ -681,6 +687,18 @@ export default function GameRouteFrame({
 
   const showSkipIntroAction = bootState.showSkipIntroButton && skipIntro && !bootState.hasBootFailed;
   const showSkipIntroBottomAction = showSkipIntroAction && !showBootOverlay;
+  const remoteMouseReady = !showBootOverlay && !showSkipIntroBottomAction && !usesCommandInput;
+  useEffect(() => {
+    const iframe = frameRef.current;
+    if (!remoteMouseReady || !iframe) return;
+    let active = true;
+    let stop;
+    void isTvBrowser(navigator).then((isTv) => {
+      if (active && isTv) stop = observeRemoteMouse(window, iframe);
+    });
+    return () => { active = false; stop?.(); };
+  }, [remoteMouseReady, frameSrc]);
+
   const showExitControl = true;
   const showFullscreenControl =
     !immersiveMode.isMobileViewport && immersiveMode.canFullscreen && bootState.hasBootPresentationCompleted;

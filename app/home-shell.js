@@ -2,6 +2,7 @@ import Link from "next/link";
 import Icon from "./home-shell/shell-icon";
 import SourceLibrary from "./home-shell/source-library";
 import SettingsPanel from "./home-shell/settings-panel";
+import DirectionalNavigation from "./home-shell/directional-navigation";
 import { getGamesOrigin } from "../lib/site-config.mjs";
 import { artworkDelivery, artworkStorage } from "../lib/artwork-storage.mjs";
 import assetConfig from "../lib/scummvm-shell-assets";
@@ -22,6 +23,7 @@ export default function HomeShell({
 
   return (
     <>
+      <DirectionalNavigation initialFocus={isHomePage ? "play" : undefined} />
       {artworkStorage.published && <link rel="preconnect" href={artworkStorage.origin} />}
       <nav className={pageMode === "compatibility" ? "dashboard-nav" : "dashboard-nav dashboard-nav-home"}>
         <div className="nav-cluster nav-cluster-left">

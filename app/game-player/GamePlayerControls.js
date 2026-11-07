@@ -1,5 +1,6 @@
 import { LogOut, Maximize, Menu, Minimize } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import DirectionalNavigation from "../home-shell/directional-navigation";
 import { observeControlVisibility } from "./control-visibility.mjs";
 
 export default function GamePlayerControls({
@@ -47,6 +48,7 @@ export default function GamePlayerControls({
 
   return (
     <>
+      {showSkipIntroAction && <DirectionalNavigation initialFocus="skip-intro" />}
       <div className={`game-route-controls${autoHide && !visible ? " is-idle" : ""}`} ref={controlsRef}>
         {showExitControl ? (
           <div className="game-route-control-group is-left">

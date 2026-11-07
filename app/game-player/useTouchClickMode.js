@@ -1,32 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-const TOUCH_CLICK_MESSAGE_TYPE = "scummweb-touch-click";
-
-export function normalizeTouchClickButton(value) {
-  return value === "right" ? "right" : "left";
-}
+import { clickGameMouse } from "./game-mouse.mjs";
 
 export function useTouchClickActions({ frameRef, skipIntro, skipIntroConsumed }) {
   const [touchControlsUnlocked, setTouchControlsUnlocked] = useState(() => !skipIntro);
 
   function sendTouchClick(button) {
-    const frameWindow = frameRef.current?.contentWindow;
-
-    if (!frameWindow) {
-      return;
-    }
-
-    try {
-      frameWindow.postMessage(
-        {
-          type: TOUCH_CLICK_MESSAGE_TYPE,
-          button: normalizeTouchClickButton(button),
-        },
-        window.location.origin,
-      );
-    } catch {}
+    clickGameMouse(frameRef.current, window.location.origin, button);
   }
 
   useEffect(() => {
