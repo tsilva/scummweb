@@ -30,8 +30,7 @@ jobs:
         uses: treosh/lighthouse-ci-action@3e7e23fb74242897f95c0ba9cabad3d0227b9b18 # v12
         with:
           configPath: ./.lighthouserc.json
-          uploadArtifacts: true
-          artifactName: lighthouse-results
+          uploadArtifacts: false
           temporaryPublicStorage: true
 
       - name: Summarize Lighthouse results
@@ -39,7 +38,6 @@ jobs:
         env:
           LIGHTHOUSE_LINKS: ${{ steps.lighthouse.outputs.links }}
           LIGHTHOUSE_MANIFEST: ${{ steps.lighthouse.outputs.manifest }}
-          LIGHTHOUSE_RESULTS_PATH: ${{ steps.lighthouse.outputs.resultsPath }}
           LIGHTHOUSE_TARGET_URL: https://scummweb.tsilva.eu/
         run: |
           python3 - <<'PY'
@@ -51,12 +49,7 @@ jobs:
               "## Lighthouse CI",
               "",
               f"- Target: `{os.environ['LIGHTHOUSE_TARGET_URL']}`",
-              "- Workflow artifact: `lighthouse-results`",
           ]
-
-          results_path = os.environ.get("LIGHTHOUSE_RESULTS_PATH", "").strip()
-          if results_path:
-              summary.append(f"- Results path: `{results_path}`")
 
           links_raw = os.environ.get("LIGHTHOUSE_LINKS", "").strip()
           if links_raw:
