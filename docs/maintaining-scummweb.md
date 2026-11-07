@@ -187,6 +187,7 @@ coverage; desktop viewport checks do not emulate mobile browser APIs or touch.
 ### Backing up and transferring saved progress
 
 Open the **Settings** gear icon to the right of GitHub in the header, then **Saved games**.
+Active and preserved saves appear here alongside the backup actions.
 The drawer slides from the right, uses compact typography and prevents text selection.
 It opens and closes immediately when reduced motion is enabled.
 **Export all saves**
@@ -196,7 +197,7 @@ Save destinations are matched automatically by game identity, using the game-fil
 fingerprint for local imports when possible; there is no manual destination selector.
 The import review groups unmatched save sets into one entry with a count. Importing
 preserves them without changing active saves. After adding the matching game edition,
-connect them through **Save sets → Review and activate**.
+choose **Review and activate** next to the preserved saves in **Saved games**.
 
 Different games are added without deleting existing progress. Identical files
 are skipped. For conflicting progress in one game, the default keeps the current

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Check, ChevronDown, ChevronRight, Download, Info, Layers, Save, Settings, Upload, X } from "lucide-react";
+import { Check, ChevronDown, Download, Info, Save, Settings, Upload, X } from "lucide-react";
 import { readGameSources } from "../game-sources.mjs";
 
 const countFiles = (set) => `${set.files.length} save ${set.files.length === 1 ? "file" : "files"}`;
@@ -13,7 +13,6 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
   const working = useRef(false);
   const [open, setOpen] = useState(false);
   const [section, setSection] = useState("saves");
-  const [view, setView] = useState("home");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
@@ -66,7 +65,6 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
   function close() {
     if (working.current) return;
     setOpen(false);
-    setView("home");
     setReview(null);
   }
 
@@ -81,7 +79,6 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
       return { set, destinationKey, choice };
     });
     setReview({ rows, revision: current.revision, activating });
-    setView("review");
   }
 
   function updateChoice(index, choice) {
@@ -135,9 +132,8 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
         await refresh();
       });
       window.dispatchEvent(new Event("scummweb:saves-changed"));
-      setNotice(review.activating ? "Save set activated. Your other progress is still available in Save sets." : "Backup imported. Both sides of any conflict are available in Save sets.");
+      setNotice(review.activating ? "Saves activated. Your previous progress is still available here." : "Backup imported. Any conflicting saves are also available here.");
       setReview(null);
-      setView("home");
     });
   }
 
@@ -164,7 +160,17 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
           <Save size={24} /><span>Saved games</span><ChevronDown size={20} />
         </button>
         <section id="settings-saves" hidden={section !== "saves"}>
-          {view === "home" && <>
+          {!review && <>
+            <div className="settings-save-list">
+              {storedOnly.length > 0 && <p>Only active saves are used when you play. Switching keeps your previous saves.</p>}
+              {!busy && !savedCount && !storedOnly.length && <p>No saved progress on this browser yet.</p>}
+              {data.sets.map((set) => <div className="settings-set" key={set.destination.key}><strong>{set.destination.title}</strong><small>{countFiles(set)}{storedOnly.length > 0 && " · Active"}</small></div>)}
+              {storedOnly.map((set) => <div className="settings-set" key={set.id}><strong>{set.destination.title}</strong><small>{countFiles(set)} · Preserved {new Date(set.preservedAt).toLocaleDateString()}</small>
+                <button type="button" className="secondary-button" disabled={busy} onClick={() => run(async () => {
+                  const { withSaveLock } = await import("../save-backups/backups.mjs");
+                  await prepareReview([set], await withSaveLock(refresh), true);
+                })}>Review and activate</button></div>)}
+            </div>
             <div className="settings-action-block"><Download size={25} aria-hidden="true" />
               <div><h3>Export saves</h3><p>Download all saved progress as a ZIP.</p></div>
               <button type="button" className="secondary-button settings-wide" disabled={busy || (!savedCount && !data.stored.length)} onClick={download}>
@@ -173,26 +179,14 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
               <p className="settings-status" role="status">{downloadReady && <>
                 Backup ready. <a className="settings-download" href={downloadReady.href} download={downloadReady.name}>Download ZIP</a>
               </>}</p>
-              {!busy && !savedCount && !data.stored.length && <p className="settings-empty">No saved progress on this browser yet.</p>}
             </div>
             <div className="settings-action-block"><Upload size={25} aria-hidden="true" />
               <div><h3>Import saves</h3><p>Review a backup before restoring it.</p></div>
               <button type="button" className="launch-button settings-wide" disabled={busy} onClick={() => picker.current.click()}><Upload size={20} />Import backup</button>
             </div>
-            <button type="button" className="settings-manage" disabled={busy} onClick={() => { setNotice(""); setView("sets"); }}>
-              <Layers size={25} /><span><strong>Save sets</strong><small>Keep separate playthroughs and choose which one is active.</small></span><ChevronRight size={20} />
-            </button>
+            <p className="settings-footnote">Game files are not included in backups.</p>
           </>}
-          {view === "sets" && <div className="settings-sets"><h3>Save sets</h3><p>Only the active set is used when you play. Switching preserves both sets.</p>
-            {data.sets.length === 0 && storedOnly.length === 0 && <p>No saved progress on this browser yet.</p>}
-            {data.sets.map((set) => <div className="settings-set" key={set.destination.key}><strong>{set.destination.title}</strong><small>{countFiles(set)}</small></div>)}
-            {storedOnly.map((set) => <div className="settings-set" key={set.id}><strong>{set.destination.title}</strong><small>{countFiles(set)} · Preserved {new Date(set.preservedAt).toLocaleDateString()}</small>
-              <button type="button" className="secondary-button" disabled={busy} onClick={() => run(async () => {
-                const { withSaveLock } = await import("../save-backups/backups.mjs");
-                await prepareReview([set], await withSaveLock(refresh), true);
-              })}>Review and activate</button></div>)}
-          </div>}
-          {view === "review" && review && <div className="settings-review"><h3>{review.activating ? "Activate save set" : "Review import"}</h3>
+          {review && <div className="settings-review"><h3>{review.activating ? "Activate saves" : "Review import"}</h3>
             <p>Saves are matched to their games automatically. Games missing from this backup stay unchanged.</p>
             {review.rows.map((row, index) => {
               if (!row.destinationKey) return null;
@@ -203,7 +197,7 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
                   {active && <p>Different saves exist on this device.</p>}
                   <label className="settings-choice"><input type="radio" name={`save-choice-${index}`} checked={row.choice !== "imported"}
                     onChange={() => updateChoice(index, active ? "current" : "stored")} />
-                    <span><strong>{active ? "Keep current saves active" : "Preserve without activating"}</strong><small>{active ? `This device · ${countFiles(active)}` : "Activate later from Save sets"}</small></span></label>
+                    <span><strong>{active ? "Keep current saves active" : "Preserve without activating"}</strong><small>{active ? `This device · ${countFiles(active)}` : "Activate later from Saved games"}</small></span></label>
                   <label className="settings-choice"><input type="radio" name={`save-choice-${index}`} checked={row.choice === "imported"}
                     onChange={() => updateChoice(index, "imported")} /><span><strong>Use imported saves</strong><small>Backup · {countFiles(row.set)}</small></span></label>
                 </>}
@@ -211,10 +205,10 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
             })}
             {unmatchedCount > 0 && <fieldset className="settings-review-game">
               <legend>{unmatchedCount} unmatched save {unmatchedCount === 1 ? "set" : "sets"}</legend>
-              <p>These saves will be preserved. To activate a set, add its matching game, then open Save sets.</p>
+              <p>These saves will be preserved. To activate them, add the matching game, then open Saved games.</p>
             </fieldset>}
-            {unmatchedCount < review.rows.length && <p className="settings-reassurance">If you switch to imported saves, your current saves are kept in Save sets.</p>}
-            <div className="settings-review-actions"><button type="button" className="secondary-button" disabled={busy} onClick={() => { setReview(null); setView("home"); }}>Cancel</button>
+            {unmatchedCount < review.rows.length && <p className="settings-reassurance">If you switch to imported saves, your current saves stay available in Saved games.</p>}
+            <div className="settings-review-actions"><button type="button" className="secondary-button" disabled={busy} onClick={() => setReview(null)}>Cancel</button>
               <button type="button" className="launch-button" disabled={busy} onClick={confirmImport}>{review.activating ? "Activate saves" : "Import backup"}</button></div>
           </div>}
         </section>
@@ -229,7 +223,6 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
           <p>ScummVM {scummvmVersion}<br />Bundle built {sourceInfoDate}.</p>
           <a href="https://www.scummvm.org/" target="_blank" rel="noreferrer">Visit ScummVM</a>
         </section>
-        <p className="settings-footnote">Game files are not included in backups.</p>
         <input ref={picker} type="file" accept=".zip,application/zip" aria-label="Choose save backup ZIP" hidden onChange={chooseBackup} />
       </div>
     </dialog>
