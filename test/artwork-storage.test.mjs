@@ -6,6 +6,7 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 import test from "node:test";
 import sharp from "sharp";
+import { getArtworkImageProps } from "../app/home-shell/artwork-image-props.mjs";
 import { activateArtwork, planArtwork, retireArtwork, validateManifest, verifyArtwork } from "../scripts/artwork-storage.mjs";
 import { artworkPath, artworkUrl } from "../lib/artwork-storage.mjs";
 import { readArtworkFile } from "../scripts/artwork-files.mjs";
@@ -46,8 +47,10 @@ test("only published registered images resolve to immutable R2 URLs; source mapp
 test("browser artwork metadata preserves delivery records without verification fields", async (t) => {
   const root = await fixture(t);
   const name = "/launcher/sample-cover.webp";
-  const images = { [name]: { width: 8, height: 12, fallback: name, webp: [name], avif: [] } };
-  const published = { ...sample, published: true, images };
+  const variant = "/launcher/responsive/sample-cover-4.webp";
+  const alternate = { ...file, width: 4, key: `artwork/${sha256}/different-name.webp` };
+  const images = { [name]: { width: 8, height: 12, fallback: name, webp: [variant, name], avif: [] } };
+  const published = { ...sample, published: true, files: { ...sample.files, [variant]: alternate }, images };
   const inventory = await fs.realpath(path.join(root, manifestFile));
   await fs.writeFile(inventory, JSON.stringify(published));
   const loaderPath = path.join(root, "scripts/artwork-browser-loader.js");
@@ -61,10 +64,13 @@ test("browser artwork metadata preserves delivery records without verification f
   const module = await import(`data:text/javascript,${encodeURIComponent(code)}`);
   const browser = module.default;
   assert.deepEqual(browser.images, images);
-  assert.deepEqual(browser.files[name], { key: file.key, width: file.width });
+  assert.deepEqual(browser.files[name], { hash: file.sha256, width: file.width });
+  assert.deepEqual(browser.files[variant], { key: alternate.key, width: alternate.width });
   const url = artworkUrl(name, published);
   assert.equal(artworkUrl(name, browser), url);
   assert.equal(artworkPath(url, browser), name);
+  assert.equal(artworkPath(artworkUrl(variant, browser), browser), variant);
+  assert.deepEqual(getArtworkImageProps(url, "hero", browser), getArtworkImageProps(url, "hero", published));
 });
 
 test("plans preserve live mappings and retain exact original bytes outside Git", async (t) => {

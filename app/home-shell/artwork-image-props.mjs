@@ -1,4 +1,4 @@
-import { artworkPath, artworkStorage, artworkUrl } from "../../lib/artwork-storage.mjs";
+import { artworkObjectUrl, artworkPath, artworkStorage, artworkUrl } from "../../lib/artwork-storage.mjs";
 
 // Match the auto-fit 10rem columns, 1rem gaps, 100rem container and mobile padding.
 // Include object-fit:cover's vertical crop and the poster's 1.04 zoom.
@@ -29,10 +29,7 @@ export function getArtworkImageProps(src, role = "gallery", manifest = artworkSt
     : role === "poster" ? getPosterSizes(aspect)
     : role === "landscape" ? "min(21.25rem, 84vw)"
     : "(max-width: 640px) calc((100vw - 5.5rem) / 2), (max-width: 900px) calc((100vw - 7rem) / 3), calc((min(100vw, 85rem) - 10rem) / 3)";
-  const candidates = (paths) => paths.map((name) => {
-    const file = manifest.files[name];
-    return `${manifest.origin}/${file.key} ${file.width}w`;
-  }).join(", ");
+  const candidates = (paths) => paths.map((name) => `${artworkObjectUrl(name, manifest)} ${manifest.files[name].width}w`).join(", ");
   // A format source must cover every resolution. Otherwise the browser can
   // select a small AVIF even when a sharper WebP fallback is available.
   const avifWidths = new Set(image.avif.map((name) => manifest.files[name].width));

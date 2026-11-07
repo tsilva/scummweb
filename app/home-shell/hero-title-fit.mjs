@@ -38,6 +38,7 @@ export function fitHeroTitle(heading) {
 // the first paint, even when the React bundle is slow or unavailable. Disconnect
 // after finding the heading; subsequent navigation is handled by HeroTitle.
 export const initialHeroTitleFit = `(() => {
+  if (matchMedia('(max-width: 48rem)').matches) return;
   const fit = ${fitHeroTitle.toString()};
   const observer = new MutationObserver(() => {
     const heading = document.querySelector('.hero-copy h1');
