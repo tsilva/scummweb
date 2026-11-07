@@ -1436,13 +1436,12 @@ button.nav-icon-link {
   display: flex;
   flex-direction: column;
   flex: none;
-  height: max(100svh, 46rem);
-  min-height: 0;
+  min-height: max(100svh, 46rem);
 }
 
 .hero-stage-library .hero-inner {
   display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-rows: minmax(min-content, 1fr) auto;
   flex: 1;
   min-height: 0;
   width: 100%;
@@ -1492,6 +1491,27 @@ button.nav-icon-link {
   position: relative;
   min-height: 3.4rem;
   margin-top: 2rem;
+}
+
+/* Keep the hero copy below the fixed header on short landscape viewports. */
+@media (min-width: 48.001rem) and (max-height: 50rem) {
+  .hero-stage-library .hero-inner {
+    padding-top: 5.5rem;
+  }
+
+  .hero-stage-library .hero-copy {
+    transform: none;
+  }
+
+  .hero-stage-library .hero-launch {
+    margin-top: 1rem;
+  }
+}
+
+@media (min-width: 48.001rem) and (max-width: 900px) and (max-height: 50rem) {
+  .hero-stage-library .hero-inner {
+    padding-top: 7rem;
+  }
 }
 
 .hero-mobile-facts {
