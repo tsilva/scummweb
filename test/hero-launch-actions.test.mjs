@@ -11,8 +11,14 @@ import * as initialActions from "../app/home-shell/initial-actions.mjs";
 await swc.loadBindings();
 let savedIdentity = null;
 const saveHooks = { useState: () => [savedIdentity, () => {}], useEffect() {} };
-let stateIndex = 0, preferredVersion = null;
-const staticHooks = { useState: (value) => [stateIndex++ === 2 ? preferredVersion : value, () => {}], useRef: (value) => ({ current: value }), useEffect() {}, useLayoutEffect() {} };
+let stateIndex = 0, preferredVersion = null, heroMedia = null, preloadCalls = 0;
+const staticHooks = {
+  useState(value) {
+    const index = stateIndex++;
+    return [[value, heroMedia, preferredVersion][index] ?? value, () => {}];
+  },
+  useRef: (value) => ({ current: value }), useEffect() {}, useLayoutEffect() {},
+};
 
 async function loadComponent(path, imports = {}, hooks = saveHooks, globals = {}) {
   const url = new URL(path, import.meta.url);
@@ -67,7 +73,7 @@ const HomeHero = await loadComponent("../app/home-shell/home-hero.js", {
   "./game-navigation": { useGameNavigation: () => null },
   "next/navigation": { useRouter: () => ({ push() {} }) },
   "./hero-stage": HeroStage,
-  "./hero-images.mjs": { getHeroPreloadImages: () => [] },
+  "./hero-images.mjs": { getHeroPreloadImages: () => { preloadCalls += 1; return []; } },
   "../game-versions.mjs": { getGameFamilyKey: (game) => game.target, chooseGameVersion, readChosenVersion, rememberGameVersion },
 }, staticHooks);
 const game = { target: "sky", displayTitle: "Beneath a Steel Sky", playHref: "/beneath-a-steel-sky/play" };
@@ -97,6 +103,22 @@ test("homepage ships desktop and mobile copy together before hydration", () => {
   const html = renderToStaticMarkup(slideFor([{ key: "catalog:sky", game }], false, { isHomePage: true }));
   assert.match(html, /class="hero-desktop-copy"/);
   assert.match(html, /class="hero-mobile-copy">Beneath a Steel Sky<\/span>/);
+});
+
+test("slideshow preloads wait until the viewport is known to be desktop", () => {
+  const versions = [{ key: "catalog:sky", game }];
+  preloadCalls = 0;
+  try {
+    slideFor(versions);
+    heroMedia = { matches: true };
+    slideFor(versions);
+    assert.equal(preloadCalls, 0);
+    heroMedia = { matches: false };
+    slideFor(versions);
+    assert.equal(preloadCalls, 1);
+  } finally {
+    heroMedia = null;
+  }
 });
 
 test("the license row stays present without an active link when an edition has no readme", () => {

@@ -8,6 +8,7 @@ import test from "node:test";
 import sharp from "sharp";
 import { activateArtwork, planArtwork, retireArtwork, validateManifest, verifyArtwork } from "../scripts/artwork-storage.mjs";
 import { artworkPath, artworkUrl } from "../lib/artwork-storage.mjs";
+import artworkBrowserLoader from "../scripts/artwork-browser-loader.js";
 import { readArtworkFile } from "../scripts/artwork-files.mjs";
 
 const bytes = await sharp({ create: { width: 8, height: 12, channels: 3, background: "#aabbcc" } }).webp().toBuffer();
@@ -41,6 +42,26 @@ test("only published registered images resolve to immutable R2 URLs; source mapp
   for (const value of ["/launcher/notices/sky.txt", "/launcher/skip-intro/sky/SKY-VM.000", "https://untrusted.test/image.webp", "blob:test"]) {
     assert.equal(artworkUrl(value, published), value);
   }
+});
+
+test("browser artwork metadata preserves delivery records without verification fields", async (t) => {
+  const root = await fixture(t);
+  const name = "/launcher/sample-cover.webp";
+  const images = { [name]: { width: 8, height: 12, fallback: name, webp: [name], avif: [] } };
+  const published = { ...sample, published: true, images };
+  const inventory = path.join(root, manifestFile);
+  await fs.writeFile(inventory, JSON.stringify(published));
+  const code = artworkBrowserLoader.call({
+    resourcePath: path.join(root, "lib/artwork-data.mjs"),
+    addDependency: (dependency) => assert.equal(dependency, inventory),
+  });
+  const module = await import(`data:text/javascript,${encodeURIComponent(code)}`);
+  const browser = module.default;
+  assert.deepEqual(browser.images, images);
+  assert.deepEqual(browser.files[name], { key: file.key, width: file.width });
+  const url = artworkUrl(name, published);
+  assert.equal(artworkUrl(name, browser), url);
+  assert.equal(artworkPath(url, browser), name);
 });
 
 test("plans preserve live mappings and retain exact original bytes outside Git", async (t) => {
@@ -114,7 +135,7 @@ test("published poster variants and social-card projections use the same logical
   } };
   await fs.writeFile(path.join(root, manifestFile), JSON.stringify(manifest));
   await fs.writeFile(path.join(root, "data/artwork-renditions.json"), JSON.stringify({ "/launcher/sample-cover.webp": { width: 540, height: 720, widths: [320] } }));
-  for (const filename of ["lib/artwork-storage.mjs", "lib/social-card-data.mjs", "app/home-shell/poster-images.mjs", "app/home-shell/artwork-image-props.mjs"]) {
+  for (const filename of ["lib/artwork-data.mjs", "lib/artwork-storage.mjs", "lib/social-card-data.mjs", "app/home-shell/poster-images.mjs", "app/home-shell/artwork-image-props.mjs"]) {
     await fs.mkdir(path.dirname(path.join(root, filename)), { recursive: true });
     await fs.copyFile(new URL(`../${filename}`, import.meta.url), path.join(root, filename));
   }

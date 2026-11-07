@@ -3,6 +3,7 @@ import Icon from "./home-shell/shell-icon";
 import SourceLibrary from "./home-shell/source-library";
 import SettingsPanel from "./home-shell/settings-panel";
 import { getGamesOrigin } from "../lib/site-config.mjs";
+import { artworkStorage } from "../lib/artwork-storage.mjs";
 import assetConfig from "../lib/scummvm-shell-assets";
 
 export default function HomeShell({
@@ -20,6 +21,7 @@ export default function HomeShell({
 
   return (
     <>
+      {artworkStorage.published && <link rel="preconnect" href={artworkStorage.origin} />}
       <nav className={pageMode === "compatibility" ? "dashboard-nav" : "dashboard-nav dashboard-nav-home"}>
         <div className="nav-cluster nav-cluster-left">
           <div className="nav-brand-group">

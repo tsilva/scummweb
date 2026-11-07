@@ -45,8 +45,10 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
     if (actionsReady) rememberInitialActions(JSON.parse(initialActionsKey));
   }, [actionsReady, initialActionsKey]);
   const preloadedImages = useRef(new Map());
-  const preloadKey = JSON.stringify(isMobile
-    ? getHeroPreloadImages([currentSlide], 0) : getHeroPreloadImages(slides, slideIndex));
+  // Wait for the media query before warming desktop slides. The visible image
+  // already loads eagerly, and mobile has no slideshow controls.
+  const preloadKey = JSON.stringify(mobileHero?.matches === false
+    ? getHeroPreloadImages(slides, slideIndex) : []);
   const [rotation, setRotation] = useState(null);
   const rotationPaused = rotation?.routeKey === routeKey ? rotation.paused : null;
   function setRotationPaused(paused) { setRotation({ routeKey, paused }); }
