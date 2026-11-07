@@ -1,4 +1,5 @@
 import { ChevronDown } from "lucide-react";
+import { preload } from "react-dom";
 import LaunchButton from "../launch-button";
 import SourceLaunchActions from "./source-launch-actions";
 import { HOME_HERO_KICKER, HOME_HERO_SUMMARY, HOME_HERO_TITLE } from "../seo";
@@ -37,6 +38,14 @@ export default function HeroStage({
   const editionLabel = formatVersionLabel(featuredGame, { showRevision: false })
     || (featuredGame.importRequired && featuredGame.badge) || "Included version";
   const hasMultipleVersions = versions.length > 1;
+  const backdrop = getHeroImageProps(featuredGame);
+  // React automatically preloads the eager WebP <img>, but skips images in <picture>.
+  if (isInitialSlide && backdrop.avifSrcSet) {
+    preload(backdrop.avifSrcSet.split(" ", 1)[0], {
+      as: "image", type: "image/avif", fetchPriority: "high",
+      imageSrcSet: backdrop.avifSrcSet, imageSizes: backdrop.sizes,
+    });
+  }
 
   return (
     <div className="game-showcase">
@@ -45,7 +54,7 @@ export default function HeroStage({
           <DecorativeImage className="hero-backdrop-image"
             decoding={isInitialSlide ? "sync" : "async"}
             fetchPriority={isInitialSlide ? "high" : undefined} loading="eager"
-            {...getHeroImageProps(featuredGame)} style={getHeroImageStyle(featuredGame.heroImagePosition, featuredGame.heroImageMobilePosition)} />
+            {...backdrop} style={getHeroImageStyle(featuredGame.heroImagePosition, featuredGame.heroImageMobilePosition)} />
         </div>
         <div className="hero-gradient" />
         <div className="hero-inner">

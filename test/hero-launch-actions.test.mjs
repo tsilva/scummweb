@@ -12,6 +12,8 @@ await swc.loadBindings();
 let savedIdentity = null;
 const saveHooks = { useState: () => [savedIdentity, () => {}], useEffect() {} };
 let stateIndex = 0, preferredVersion = null, heroMedia = null, preloadCalls = 0;
+let heroImageProps = {};
+const imagePreloads = [];
 const staticHooks = {
   useState(value) {
     const index = stateIndex++;
@@ -56,6 +58,7 @@ const SourceLaunchActions = await loadComponent("../app/home-shell/source-launch
   "../use-browser-save": useBrowserSave, "../browser-saves.mjs": { cancelBrowserSaveQueries() {} },
 });
 const HeroStage = await loadComponent("../app/home-shell/hero-stage.js", {
+  "react-dom": { preload: (url, options) => imagePreloads.push({ url, ...options }) },
   "../game-versions.mjs": { formatVersionLabel },
   "./initial-actions.mjs": { initialActionsMarkup: "" },
   "../launch-button": LaunchButton,
@@ -65,7 +68,7 @@ const HeroStage = await loadComponent("../app/home-shell/hero-stage.js", {
   "./shell-icon": () => null,
   "./hero-title": ({ children }) => children,
   "./game-screenshots": () => null,
-  "./hero-images.mjs": { getHeroImageProps: () => ({}) },
+  "./hero-images.mjs": { getHeroImageProps: () => heroImageProps },
   "./hero-title-fit.mjs": { fitHeroTitle() {} },
   "./shared": { getGameDialogId: () => "game-test", getHeroImageStyle: () => ({}), getDialogLinkProps: () => ({}) },
 });
@@ -118,6 +121,21 @@ test("slideshow preloads wait until the viewport is known to be desktop", () => 
     assert.equal(preloadCalls, 1);
   } finally {
     heroMedia = null;
+  }
+});
+
+test("the initial AVIF hero preloads the same responsive source used by the picture", () => {
+  heroImageProps = { avifSrcSet: "/hero-640.avif 640w, /hero.avif 1600w", sizes: "100vw" };
+  try {
+    HeroStage({ featuredGame: game });
+    HeroStage({ featuredGame: game, isInitialSlide: false });
+    assert.deepEqual(imagePreloads, [{
+      url: "/hero-640.avif", as: "image", type: "image/avif", fetchPriority: "high",
+      imageSrcSet: heroImageProps.avifSrcSet, imageSizes: heroImageProps.sizes,
+    }]);
+  } finally {
+    heroImageProps = {};
+    imagePreloads.length = 0;
   }
 });
 
