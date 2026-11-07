@@ -35,7 +35,7 @@ export default function GameScreenshots({ game }) {
             viewer.current?.focus({ preventScroll: true });
           });
         }}>
-        <DecorativeImage {...getArtworkImageProps(shot)} sizes="(max-width: 48rem) 85vw, calc((min(100vw, 100rem) - 8.5rem) / 3)" alt={`${game.displayTitle} screenshot ${index + 1}`}
+        <DecorativeImage {...getArtworkImageProps(shot)} sizes="(max-width: 48rem) 9rem, calc((min(100vw, 100rem) - 8.5rem) / 3)" alt={`${game.displayTitle} screenshot ${index + 1}`}
           loading="lazy" decoding="async" />
       </button>)}
     </div>

@@ -46,7 +46,7 @@ test("homepage metadata uses ScummWEB branding and aligned social copy", () => {
     assert.equal(metadata.openGraph.url, "https://example.com/");
     assert.equal(metadata.openGraph.siteName, SITE_NAME);
     const image = {
-      url: "https://example.com/opengraph-image?v=sw-44e946bde0859664",
+      url: "https://example.com/opengraph-image?v=sw-64d093a31605192c",
       alt: "ScummWEB. Play classic adventures in your browser. A retro monitor frames a glowing green doorway.",
     };
     assert.deepEqual(metadata.openGraph.images, [{ ...image, width: 1200, height: 630 }]);

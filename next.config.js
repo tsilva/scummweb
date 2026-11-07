@@ -48,7 +48,7 @@ const nextConfig = {
     return [
       {
         source: "/opengraph-image",
-        destination: "/brand/web-seo/og-image-1200x630.png",
+        destination: "/brand/web-seo/og-image-1200x630.jpg",
       },
       ...Object.entries(socialCards.cards).flatMap(([slug, card]) => [
         { source: `/${slug}/social-card.png`, destination: `/social-cards/${card.file}` },

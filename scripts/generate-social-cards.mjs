@@ -13,7 +13,8 @@ import { getRecognizedGames } from "../app/recognized-games.mjs";
 import { readArtworkFile } from "./artwork-files.mjs";
 
 const rootDir = fileURLToPath(new URL("../", import.meta.url));
-const generatedName = /^[a-z0-9]+(?:-[a-z0-9]+)*-[a-f0-9]{64}\.png$/;
+const generatedName = /^[a-z0-9]+(?:-[a-z0-9]+)*-[a-f0-9]{64}\.(?:jpg|png)$/;
+const maxImageBytes = 600_000;
 const hash = (value) => createHash("sha256").update(value).digest("hex");
 
 async function readOptional(filename) {
@@ -77,7 +78,7 @@ export async function generateSocialCards({
           ? await readArtworkFile(root, card.artwork) : await fs.readFile(assetPath);
       }
       const inputHash = hash(JSON.stringify({ rendererVersion, card, artworkHash: artwork ? hash(artwork) : null }));
-      const file = `${game.slug}-${inputHash}.png`;
+      const file = `${game.slug}-${inputHash}.jpg`;
       const existingPath = path.join(outputDir, file);
       const stat = await fs.lstat(existingPath).catch((error) => {
         if (error.code === "ENOENT") return null;
@@ -93,9 +94,10 @@ export async function generateSocialCards({
     for (const job of jobs) {
       render ??= (await import("./social-card-template.mjs")).renderSocialCard;
       const image = await render(job.card, job.artwork);
-      if (!Buffer.isBuffer(image) || image.length < 24 || image.subarray(0, 8).toString("hex") !== "89504e470d0a1a0a"
-        || image.readUInt32BE(16) !== 1200 || image.readUInt32BE(20) !== 630) {
-        throw new Error(`Invalid 1200x630 PNG for ${job.slug}`);
+      const metadata = Buffer.isBuffer(image) && await sharp(image).metadata().catch(() => null);
+      if (metadata?.format !== "jpeg" || metadata.width !== 1200 || metadata.height !== 630
+        || image.length >= maxImageBytes) {
+        throw new Error(`Invalid 1200x630 JPEG under ${maxImageBytes} bytes for ${job.slug}`);
       }
       await writeAtomic(path.join(outputDir, job.file), image);
       cards[job.slug].imageHash = hash(image);
