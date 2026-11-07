@@ -108,6 +108,11 @@ Retired entries retain the lesson and identify the upstream fix; they must not
 leave an active file behind. Update this file for cross-cutting SDK, build or
 browser-integration lessons. Store verified conclusions, not guesses or raw QA.
 
+## Mortevielle and Z-Vision
+
+- Keep Mortevielle's `mort.dat` and Z-Vision's font data in the browser filesystem index. Z-Vision requires the Emscripten FreeType port. Its DVD movie option requires MPEG-2 and A52 together, so the browser build uses the standard video tracks.
+- Keep both engines in the browser's Continue capability list. The pinned native engines support save listing and loading during startup.
+
 ## Evaluator-only room telemetry
 
 - Patch 16 reports Queen room variables after display update only when an external evaluator opts in. Keep pending transitions and cutaways distinct from a ready room. Preserve the bounded transition queue and explicit overflow failure so a polling consumer cannot silently miss an endpoint. This telemetry is evaluator data, not player observations.

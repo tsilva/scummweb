@@ -344,7 +344,7 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
         try {
           const file = data ?? await source.handle.getFile();
           validateGameZip(file, maxLocalGameSize);
-          selectGameArchive((signal) => openLocalGameZip(file, signal), game);
+          selectGameArchive((signal, onProgress) => openLocalGameZip(file, signal, onProgress), game);
         } catch (error) {
           const permission = ["NotAllowedError", "SecurityError"].includes(error?.name);
           updateStatus(source, permission ? "permission" : "missing");

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 4,
-  "recordedOn": "2026-11-05",
+  "recordedOn": "2026-11-07",
   "scope": "Startup verification by edition; warnings and failures describe ScummVM or ScummWEB limitations, excluding problems specific to supplied game files. Not full-game compatibility.",
   "upstreamReference": {
     "version": "2026.4.0",
@@ -9,8 +9,8 @@
   },
   "notes": [
     "Each checked edition has its own entry. Platform and edition variants are listed separately.",
-    "Road is a fan game detected as Day of the Tentacle; its identity is not an official ScummVM game ID. Passport to Adventure is a demo compilation.",
-    "The untested list includes Excellent, Good, and Bugged upstream ratings. It excludes Broken and Untested ratings, engine groups, and alternate versions. Games with a tested edition are omitted; sequels, annual releases, and episodic parts remain separate. The upstream chart groups some supported games instead of listing each title individually."
+    "Road and the ScummC edition of Open Quest are fan games that launch under the Day of the Tentacle target. Passport to Adventure is a demo compilation.",
+    "The untested list includes Excellent, Good, and Bugged upstream ratings for game IDs without a checked edition. Ports and remakes with separate game IDs retain separate results, as do sequels, annual releases, and episodic parts. The upstream chart groups some supported games instead of listing each title individually."
   ],
   "entries": [
     {
@@ -1239,6 +1239,722 @@
       "observation": "English freeware intro and title screen render."
     },
     {
+      "title": "Aesop's Fables: The Tortoise and the Hare",
+      "status": "startup-verified",
+      "gameId": "mohawk:tortoise",
+      "edition": "Living Books - Aesop's Fables - The Tortoise And The Hare (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Arthur's Birthday",
+      "status": "startup-warning",
+      "gameId": "mohawk:arthurbday",
+      "edition": "Living Books - Arthur's Birthday (CD Windows).zip",
+      "observation": "The Living Books intro renders after selecting Start anyway. ScummVM warns of incomplete support and possible save incompatibility.",
+      "issueScope": "scummvm"
+    },
+    {
+      "title": "Arthur's Computer Adventure",
+      "status": "startup-warning",
+      "gameId": "mohawk:arthurcomp",
+      "edition": "Living Books - Arthur's Computer Adventure (CD Windows).zip",
+      "observation": "The Living Books intro renders after selecting Start anyway. ScummVM warns of incomplete support and possible save incompatibility.",
+      "issueScope": "scummvm"
+    },
+    {
+      "title": "Arthur's Reading Race",
+      "status": "startup-warning",
+      "gameId": "mohawk:arthurrace",
+      "edition": "Living Books - Arthur's Reading Race (CD Windows).zip",
+      "observation": "The Living Books intro renders after selecting Start anyway. ScummVM warns of incomplete support and possible save incompatibility.",
+      "issueScope": "scummvm"
+    },
+    {
+      "title": "Astro Chicken",
+      "status": "startup-verified",
+      "gameId": "sci:astrochicken",
+      "edition": "Astro Chicken (Floppy DOS).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Backyard Baseball",
+      "status": "startup-verified",
+      "gameId": "scumm:baseball",
+      "edition": "Backyard Baseball (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Backyard Baseball 2001",
+      "status": "startup-verified",
+      "gameId": "scumm:baseball2001",
+      "edition": "Backyard Baseball 2001 (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Backyard Baseball 2003",
+      "status": "startup-verified",
+      "gameId": "scumm:baseball2003",
+      "edition": "Backyard Baseball 2003 (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Backyard Basketball",
+      "status": "startup-verified",
+      "gameId": "scumm:basketball",
+      "edition": "Backyard Basketball (CD Windows).zip",
+      "observation": "The opening sequence renders."
+    },
+    {
+      "title": "Backyard Football",
+      "status": "startup-verified",
+      "gameId": "scumm:football",
+      "edition": "Backyard Football (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Backyard Football 2002",
+      "status": "startup-verified",
+      "gameId": "scumm:football2002",
+      "edition": "Backyard Football 2002 (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Blue's 123 Time Activities",
+      "status": "startup-verified",
+      "gameId": "scumm:blues123time",
+      "edition": "Blue's 123 Time Activities (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Blue's ABC Time Activities",
+      "status": "startup-verified",
+      "gameId": "scumm:bluesabctime",
+      "edition": "Blue's ABC Time (Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Blue's Clues: Blue's Art Time Activities",
+      "status": "startup-verified",
+      "gameId": "scumm:arttime",
+      "edition": "Blue's Art Time Activities (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Blue's Clues: Blue's Birthday Adventure",
+      "status": "startup-verified",
+      "gameId": "scumm:bluesbirthday",
+      "edition": "Blue's Birthday Adventure Red (Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Blue's Clues: Blue's Birthday Adventure",
+      "status": "startup-verified",
+      "gameId": "scumm:bluesbirthday",
+      "edition": "Blue's Birthday Adventure Yellow (Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Blue's Reading Time Activities",
+      "status": "startup-verified",
+      "gameId": "scumm:readtime",
+      "edition": "Blue's Reading Time Activities (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Christmas Card 1986",
+      "status": "startup-verified",
+      "gameId": "agi:xmascard",
+      "edition": "Christmas Card 1986 (AGI).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Christmas Card 1988",
+      "status": "startup-verified",
+      "gameId": "sci:christmas1988",
+      "edition": "Christmas Card 1988 (SCI).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Christmas Card 1990: The Seasoned Professional",
+      "status": "startup-verified",
+      "gameId": "sci:christmas1990",
+      "edition": "Christmas Card 1990 - The Seasoned Professional (SCI).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Christmas Card 1992",
+      "status": "startup-verified",
+      "gameId": "sci:christmas1992",
+      "edition": "Christmas Card 1992 (SCI).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Crazy Nick's Software Picks: King Graham's Board Game Challenge",
+      "status": "startup-verified",
+      "gameId": "sci:cnick-kq",
+      "edition": "Crazy Nicks Picks King Graham's Board Game Challenge (DOS).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Crazy Nick's Software Picks: Leisure Suit Larry's Casino",
+      "status": "startup-verified",
+      "gameId": "sci:cnick-lsl",
+      "edition": "Crazy Nicks Picks Leisure Suit Larrys Casino (DOS).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Crazy Nick's Software Picks: Parlor Games with Laura Bow",
+      "status": "startup-verified",
+      "gameId": "sci:cnick-laurabow",
+      "edition": "Crazy Nicks Picks Parlor Games with Laura Bow (DOS).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Crazy Nick's Software Picks: Robin Hood's Game of Skill and Chance",
+      "status": "startup-verified",
+      "gameId": "sci:cnick-longbow",
+      "edition": "Crazy Nicks Picks Robin Hoods Game Of Skill And Chance (DOS).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Crazy Nick's Software Picks: Roger Wilco's Spaced Out Game Pack",
+      "status": "startup-verified",
+      "gameId": "sci:cnick-sq",
+      "edition": "Crazy Nicks Picks Roger Wilcos Spaced Out Game Pack (DOS).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Dr. Seuss's ABC",
+      "status": "startup-verified",
+      "gameId": "mohawk:seussabc",
+      "edition": "Living Books - Dr. Seuss ABC (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Fatty Bear's Birthday Surprise",
+      "status": "startup-verified",
+      "gameId": "scumm:fbear",
+      "edition": "Fatty Bear's Birthday Surprise (CD Windows).zip",
+      "observation": "The title screen renders."
+    },
+    {
+      "title": "Fatty Bear's FunPack",
+      "status": "startup-verified",
+      "gameId": "scumm:fbpack",
+      "edition": "Fatty Bear's Funpack (CD DOS).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Freddi Fish 2: The Case of the Haunted Schoolhouse",
+      "status": "startup-verified",
+      "gameId": "scumm:freddi2",
+      "edition": "Freddi Fish 2 The Case of the Haunted Schoolhouse (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Freddi Fish 3: The Case of the Stolen Conch Shell",
+      "status": "startup-verified",
+      "gameId": "scumm:freddi3",
+      "edition": "Freddi Fish 3 The Case of the Stolen Conch Shell (CD DOS).zip",
+      "observation": "ScummVM detects the Windows edition and renders a game frame."
+    },
+    {
+      "title": "Freddi Fish 4: The Case of the Hogfish Rustlers of Briny Gulch",
+      "status": "startup-verified",
+      "gameId": "scumm:freddi4",
+      "edition": "Freddi Fish 4 The Case of the Hogfish Rustlers of Briny Gulch (CD DOS).zip",
+      "observation": "ScummVM detects the Windows edition and renders a game frame."
+    },
+    {
+      "title": "Freddi Fish 5: The Case of the Creature of Coral Cove",
+      "status": "startup-verified",
+      "gameId": "scumm:freddicove",
+      "edition": "Freddi Fish 5 The Case of the Creature of Coral Cave (CD DOS).zip",
+      "observation": "ScummVM detects the Windows edition and renders a game frame."
+    },
+    {
+      "title": "Freddi Fish and Luther's Maze Madness",
+      "status": "startup-verified",
+      "gameId": "scumm:maze",
+      "edition": "Freddi Fish & Luther's Maze Madness (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Freddi Fish and Luther's Water Worries",
+      "status": "startup-verified",
+      "gameId": "scumm:water",
+      "edition": "Freddi Fish & Luther's Water Worries (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Freddi Fish and the Case of the Missing Kelp Seeds",
+      "status": "startup-verified",
+      "gameId": "scumm:freddi",
+      "edition": "Freddi Fish 1 The Case of the Missing Kelp Seeds (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Green Eggs and Ham",
+      "status": "startup-verified",
+      "gameId": "mohawk:greeneggs",
+      "edition": "Living Books - Green Eggs and Ham (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Harry and the Haunted House",
+      "status": "startup-verified",
+      "gameId": "mohawk:harryhh",
+      "edition": "Living Books - Harry and the Haunted House (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Hi-Res Adventure #0: Mission Asteroid",
+      "status": "startup-verified",
+      "gameId": "adl:hires0",
+      "edition": "Hi-Res Adventure #0 - Mission Asteroid (Apple II).zip",
+      "observation": "The opening scene and command prompt render."
+    },
+    {
+      "title": "Hi-Res Adventure #2: The Wizard and the Princess",
+      "status": "startup-verified",
+      "gameId": "adl:hires2",
+      "edition": "Hi-Res Adventure #2 - Wizard and the Princess (Apple II).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Hi-Res Adventure #5: Time Zone",
+      "status": "startup-verified",
+      "gameId": "adl:hires5",
+      "edition": "Hi-Res Adventure #5 - Time Zone (Apple II).zip",
+      "observation": "The title screen renders."
+    },
+    {
+      "title": "Hi-Res Adventure #6: The Dark Crystal",
+      "status": "startup-verified",
+      "gameId": "adl:hires6",
+      "edition": "Hi-Res Adventure #6 - The Dark Crystal (Apple II).zip",
+      "observation": "The SierraVenture intro renders."
+    },
+    {
+      "title": "Hoyle's Official Book of Games: Volume 1",
+      "status": "startup-verified",
+      "gameId": "sci:hoyle1",
+      "edition": "Hoyle Official Book Of Games Volume 1 (Floppy DOS).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Hoyle's Official Book of Games: Volume 2",
+      "status": "startup-verified",
+      "gameId": "sci:hoyle2",
+      "edition": "Hoyle Official Book Of Games Volume 2 (Floppy DOS).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Hoyle's Official Book of Games: Volume 3",
+      "status": "startup-verified",
+      "gameId": "sci:hoyle3",
+      "edition": "Hoyle Official Book Of Games Volume 3 (Floppy DOS).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Just Grandma and Me",
+      "status": "startup-verified",
+      "gameId": "mohawk:grandma",
+      "edition": "Living Books - Just Grandma and Me (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "King's Questions",
+      "status": "startup-verified",
+      "gameId": "sci:kquestions",
+      "edition": "King's Questions (CD, DOS).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Let's Explore the Airport",
+      "status": "startup-verified",
+      "gameId": "scumm:airport",
+      "edition": "Let's Explore the Airport with Buzzy (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Let's Explore the Farm",
+      "status": "startup-verified",
+      "gameId": "scumm:farm",
+      "edition": "Let's Explore the Farm with Buzzy (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Let's Explore the Jungle",
+      "status": "startup-verified",
+      "gameId": "scumm:jungle",
+      "edition": "Let's Explore the Jungle with Buzzy (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Little Monster at School",
+      "status": "startup-verified",
+      "gameId": "mohawk:lilmonster",
+      "edition": "Living Books - Little Monster at School (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Marc Brown's Arthur's Teacher Trouble",
+      "status": "startup-verified",
+      "gameId": "mohawk:arthur",
+      "edition": "Living Books - Arthur's Teacher Trouble (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Mixed Up Fairy Tales",
+      "status": "startup-verified",
+      "gameId": "sci:fairytales",
+      "edition": "Mixed Up Fairy Tales (Floppy EGA DOS).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Mixed-Up Mother Goose",
+      "status": "startup-verified",
+      "gameId": "agi:mixedup",
+      "edition": "Mixed Up Mother Goose (Floppy DOS, 1987).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Mixed-Up Mother Goose Deluxe",
+      "status": "startup-verified",
+      "gameId": "sci:mothergoosehires",
+      "edition": "Mixed Up Mother Goose Deluxe (CD DOS).zip",
+      "observation": "The Sierra intro renders. ScummVM detects the Windows edition."
+    },
+    {
+      "title": "Mortville Manor",
+      "status": "startup-verified",
+      "gameId": "mortevielle:mortevielle",
+      "edition": "Mortville Manor (Floppy DOS).zip",
+      "observation": "The French DOS opening credits render.",
+      "history": [
+        {
+          "recordedOn": "2026-11-07",
+          "status": "startup-failed",
+          "observation": "Detection stopped because the browser build lacked the Mortevielle plugin.",
+          "issueScope": "scummweb"
+        },
+        {
+          "recordedOn": "2026-11-07",
+          "status": "startup-verified",
+          "observation": "The French DOS opening credits render."
+        }
+      ]
+    },
+    {
+      "title": "Open Quest",
+      "status": "startup-verified",
+      "gameId": "local:openquest",
+      "edition": "Open Quest (FanMade - Get's Detected as DOTT).zip",
+      "observation": "The Open Quest title screen renders. ScummVM launches this ScummC port under the Day of the Tentacle target."
+    },
+    {
+      "title": "Pajama Sam 2: Thunder and Lightning Aren't so Frightening",
+      "status": "startup-verified",
+      "gameId": "scumm:pajama2",
+      "edition": "Pajama Sam 2 - Thunder and Lightning Aren't so Frightening (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Pajama Sam 3: You Are What You Eat From Your Head To Your Feet",
+      "status": "startup-verified",
+      "gameId": "scumm:pajama3",
+      "edition": "Pajama Sam 3 - You Are What You Eat From Your Head to Your Feet (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Pajama Sam: Games to Play on Any Day",
+      "status": "startup-verified",
+      "gameId": "scumm:pjgames",
+      "edition": "Pajama Sam - Games to Play on Any Day (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Pajama Sam: No Need to Hide When It's Dark Outside",
+      "status": "startup-verified",
+      "gameId": "scumm:pajama",
+      "edition": "Pajama Sam 1 - No Need to Hide When it's Dark Outside (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Pajama Sam's Lost & Found",
+      "status": "startup-verified",
+      "gameId": "scumm:lost",
+      "edition": "Pajama Sam's Lost And Found (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Pajama Sam's Sock Works",
+      "status": "startup-verified",
+      "gameId": "scumm:socks",
+      "edition": "Pajama Sam's Sock Works (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Playtoons 1: Uncle Archibald",
+      "status": "startup-verified",
+      "gameId": "gob:playtoons1",
+      "edition": "Playtoons 1 - Uncle Archibald (CD, Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Playtoons 2: The Case of the Counterfeit Collaborator",
+      "status": "startup-verified",
+      "gameId": "gob:playtoons2",
+      "edition": "Playtoons 2 - Case of the Counterfeit Collaborator (CD, Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Playtoons 3: The Secret of the Castle",
+      "status": "startup-verified",
+      "gameId": "gob:playtoons3",
+      "edition": "Playtoons 3 - Secret of the Castle (CD, Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Playtoons 4: The Mandarine Prince",
+      "status": "startup-verified",
+      "gameId": "gob:playtoons4",
+      "edition": "Playtoons 4 - The Mandarine Prince (CD, Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Playtoons Limited Edition - Bambou le sauveur de la jungle",
+      "status": "startup-verified",
+      "gameId": "gob:bambou",
+      "edition": "Playtoons Bambou le Sauveur de la Jungle (CD DOS, French).zip",
+      "observation": "The French Windows edition renders a game frame."
+    },
+    {
+      "title": "Putt-Putt and Fatty Bear's Activity Pack",
+      "status": "startup-verified",
+      "gameId": "scumm:activity",
+      "edition": "Putt-Putt and Fatty Bear's Activity Pack (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Putt-Putt and Pep's Balloon-O-Rama",
+      "status": "startup-verified",
+      "gameId": "scumm:balloon",
+      "edition": "Putt-Putt and Pep's Balloon-O-Rama (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Putt-Putt and Pep's Dog on a Stick",
+      "status": "startup-verified",
+      "gameId": "scumm:dog",
+      "edition": "Putt-Putt and Pep's Dog on a Stick (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Putt-Putt Enters the Race",
+      "status": "startup-verified",
+      "gameId": "scumm:puttrace",
+      "edition": "Putt-Putt Enters the Race (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Putt-Putt Goes to the Moon",
+      "status": "startup-verified",
+      "gameId": "scumm:puttmoon",
+      "edition": "Putt-Putt Goes to the Moon (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Putt-Putt Joins the Circus",
+      "status": "startup-verified",
+      "gameId": "scumm:puttcircus",
+      "edition": "Putt-Putt Joins the Circus (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Putt-Putt Joins the Parade",
+      "status": "startup-verified",
+      "gameId": "scumm:puttputt",
+      "edition": "Putt-Putt Joins the Parade (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Putt-Putt Saves the Zoo",
+      "status": "startup-verified",
+      "gameId": "scumm:puttzoo",
+      "edition": "Putt-Putt Saves the Zoo (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Putt-Putt Travels Through Time",
+      "status": "startup-verified",
+      "gameId": "scumm:putttime",
+      "edition": "Putt-Putt Travels Through Time (CD DOS).zip",
+      "observation": "ScummVM detects the Windows edition and renders a game frame."
+    },
+    {
+      "title": "Putt-Putt's Fun Pack",
+      "status": "startup-verified",
+      "gameId": "scumm:funpack",
+      "edition": "Putt-Putt's Fun Pack (3DO).zip",
+      "observation": "The 3DO title screen renders."
+    },
+    {
+      "title": "Putt-Putt's One-Stop Fun Shop",
+      "status": "startup-verified",
+      "gameId": "scumm:puttsfunshop",
+      "edition": "Putt-Putt's One-Stop Fun Shop (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Ruff's Bone",
+      "status": "startup-verified",
+      "gameId": "mohawk:ruff",
+      "edition": "Living Books - Ruff's Bone (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Sheila Rae, the Brave",
+      "status": "startup-verified",
+      "gameId": "mohawk:sheila",
+      "edition": "Living Books - Sheila Rae, The Brave (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Slater & Charlie Go Camping",
+      "status": "startup-verified",
+      "gameId": "sci:slater",
+      "edition": "Slater & Charlie Go Camping (CD DOS).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Spy Fox 2: \"Some Assembly Required\"",
+      "status": "startup-verified",
+      "gameId": "scumm:spyfox2",
+      "edition": "Spy Fox 2 Some Assembly Required (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "SPY Fox in \"Cheese Chase\"",
+      "status": "startup-verified",
+      "gameId": "scumm:chase",
+      "edition": "Spy Fox In Cheese Chase (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Spy Fox in \"Dry Cereal\"",
+      "status": "startup-verified",
+      "gameId": "scumm:spyfox",
+      "edition": "Spy Fox 1 Dry Cereal (CD Windows, US).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Spy Fox in \"Hold the Mustard\"",
+      "status": "startup-verified",
+      "gameId": "scumm:mustard",
+      "edition": "Spy Fox In Hold The Mustard (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Spy Fox: \"Operation Ozone\"",
+      "status": "startup-verified",
+      "gameId": "scumm:spyozon",
+      "edition": "Spy Fox 3 Operation Ozone (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Stellaluna",
+      "status": "startup-verified",
+      "gameId": "mohawk:stellaluna",
+      "edition": "Living Books - Stellaluna (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "The Berenstain Bears Get in a Fight",
+      "status": "startup-verified",
+      "gameId": "mohawk:bearfight",
+      "edition": "Living Books - The Berenstein Bears Get In The Fight (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "The Berenstain Bears In The Dark",
+      "status": "startup-verified",
+      "gameId": "mohawk:beardark",
+      "edition": "Living Books - The Berenstain Bears in the Dark (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "The Cat in the Hat",
+      "status": "startup-warning",
+      "gameId": "mohawk:catinthehat",
+      "edition": "Living Books - Cat in the Hat (CD Windows).zip",
+      "observation": "The Living Books intro renders after selecting Start anyway. ScummVM warns of incomplete support and possible save incompatibility.",
+      "issueScope": "scummvm"
+    },
+    {
+      "title": "The Manhole",
+      "status": "startup-verified",
+      "gameId": "made:manhole",
+      "edition": "The Manhole Enhanced (CD Windows).zip",
+      "observation": "The title screen identifies The Manhole: New and Enhanced."
+    },
+    {
+      "title": "The New Kid on the Block",
+      "status": "startup-verified",
+      "gameId": "mohawk:newkid",
+      "edition": "Living Books - The New Kid on the Block (CD Windows).zip",
+      "observation": "A game frame renders at startup."
+    },
+    {
+      "title": "Zork Nemesis: The Forbidden Lands",
+      "status": "startup-verified",
+      "gameId": "zvision:znemesis",
+      "edition": "Zork Nemesis - The Forbidden Lands (DVD DOS).zip",
+      "observation": "The English DOS edition starts and the runtime reports a rendered game frame.",
+      "history": [
+        {
+          "recordedOn": "2026-11-07",
+          "status": "startup-failed",
+          "observation": "Detection stopped because the browser build lacked the Z-Vision plugin.",
+          "issueScope": "scummweb"
+        },
+        {
+          "recordedOn": "2026-11-07",
+          "status": "startup-verified",
+          "observation": "The English DOS edition starts and the runtime reports a rendered game frame."
+        }
+      ]
+    },
+    {
+      "title": "Zork: Grand Inquisitor",
+      "status": "startup-warning",
+      "gameId": "zvision:zgi",
+      "edition": "Zork - Grand Inquisitor (DVD Windows).zip",
+      "observation": "The English Windows DVD edition opens and plays its opening video. The browser build uses the standard-resolution video tracks.",
+      "issueScope": "scummweb",
+      "history": [
+        {
+          "recordedOn": "2026-11-07",
+          "status": "startup-failed",
+          "observation": "Detection stopped because the browser build lacked the Z-Vision plugin.",
+          "issueScope": "scummweb"
+        },
+        {
+          "recordedOn": "2026-11-07",
+          "status": "startup-failed",
+          "observation": "Browser Blob storage stopped extraction before the engine started.",
+          "issueScope": "scummweb"
+        },
+        {
+          "recordedOn": "2026-11-07",
+          "status": "startup-warning",
+          "observation": "The English Windows DVD edition opens and plays its opening video. The browser build uses the standard-resolution video tracks.",
+          "issueScope": "scummweb"
+        }
+      ]
+    },
+    {
       "title": "007: James Bond - The Stealth Affair",
       "gameId": "cine:os",
       "status": "not-tested",
@@ -1283,12 +1999,6 @@
     {
       "title": "Adibou 2",
       "gameId": "gob:adibou2",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
-      "title": "Aesop's Fables: The Tortoise and the Hare",
-      "gameId": "mohawk:tortoise",
       "status": "not-tested",
       "upstreamRating": "Good"
     },
@@ -1341,58 +2051,10 @@
       "upstreamRating": "Good"
     },
     {
-      "title": "Arthur's Birthday",
-      "gameId": "mohawk:arthurbday",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
       "title": "Ashina: The Red Witch",
       "gameId": "ags:ashinaredwitch",
       "status": "not-tested",
       "upstreamRating": "Good"
-    },
-    {
-      "title": "Astro Chicken",
-      "gameId": "sci:astrochicken",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Backyard Baseball",
-      "gameId": "scumm:baseball",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Backyard Baseball 2001",
-      "gameId": "scumm:baseball2001",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Backyard Baseball 2003",
-      "gameId": "scumm:baseball2003",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Backyard Basketball",
-      "gameId": "scumm:basketball",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Backyard Football",
-      "gameId": "scumm:football",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Backyard Football 2002",
-      "gameId": "scumm:football2002",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
     },
     {
       "title": "Backyard Soccer",
@@ -1451,36 +2113,6 @@
     {
       "title": "Blazing Dragons",
       "gameId": "dragons:dragons",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
-      "title": "Blue's 123 Time Activities",
-      "gameId": "scumm:blues123time",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
-      "title": "Blue's ABC Time Activities",
-      "gameId": "scumm:bluesabctime",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
-      "title": "Blue's Clues: Blue's Art Time Activities",
-      "gameId": "scumm:arttime",
-      "status": "not-tested",
-      "upstreamRating": "Bugged"
-    },
-    {
-      "title": "Blue's Clues: Blue's Birthday Adventure",
-      "gameId": "scumm:bluesbirthday",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
-      "title": "Blue's Reading Time Activities",
-      "gameId": "scumm:readtime",
       "status": "not-tested",
       "upstreamRating": "Good"
     },
@@ -1755,12 +2387,6 @@
       "upstreamRating": "Good"
     },
     {
-      "title": "Dr. Seuss's ABC",
-      "gameId": "mohawk:seussabc",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
       "title": "Dracula 2: The Last Sanctuary",
       "gameId": "phoenixvr:dracula2",
       "status": "not-tested",
@@ -1881,18 +2507,6 @@
       "upstreamRating": "Good"
     },
     {
-      "title": "Fatty Bear's Birthday Surprise",
-      "gameId": "scumm:fbear",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Fatty Bear's FunPack",
-      "gameId": "scumm:fbpack",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
       "title": "Features of national fishing",
       "gameId": "qdengine:rybalka",
       "status": "not-tested",
@@ -1965,48 +2579,6 @@
       "upstreamRating": "Excellent"
     },
     {
-      "title": "Freddi Fish 2: The Case of the Haunted Schoolhouse",
-      "gameId": "scumm:freddi2",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Freddi Fish 3: The Case of the Stolen Conch Shell",
-      "gameId": "scumm:freddi3",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Freddi Fish 4: The Case of the Hogfish Rustlers of Briny Gulch",
-      "gameId": "scumm:freddi4",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Freddi Fish 5: The Case of the Creature of Coral Cove",
-      "gameId": "scumm:freddicove",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Freddi Fish and Luther's Maze Madness",
-      "gameId": "scumm:maze",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Freddi Fish and Luther's Water Worries",
-      "gameId": "scumm:water",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Freddi Fish and the Case of the Missing Kelp Seeds",
-      "gameId": "scumm:freddi",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
       "title": "Freddi Fish's One-Stop Fun Shop",
       "gameId": "scumm:freddisfunshop",
       "status": "not-tested",
@@ -2073,12 +2645,6 @@
       "upstreamRating": "Excellent"
     },
     {
-      "title": "Green Eggs and Ham",
-      "gameId": "mohawk:greeneggs",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
       "title": "Grim Fandango",
       "gameId": "grim:grim",
       "status": "not-tested",
@@ -2099,12 +2665,6 @@
     {
       "title": "Hamlet or the last game without MMORPG features, shaders and product placement",
       "gameId": "wintermute:hamlet",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
-      "title": "Harry and the Haunted House",
-      "gameId": "mohawk:harryhh",
       "status": "not-tested",
       "upstreamRating": "Good"
     },
@@ -2151,18 +2711,6 @@
       "upstreamRating": "Good"
     },
     {
-      "title": "Hi-Res Adventure #0: Mission Asteroid",
-      "gameId": "adl:hires0",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
-      "title": "Hi-Res Adventure #2: The Wizard and the Princess",
-      "gameId": "adl:hires2",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
       "title": "Hi-Res Adventure #3: Cranston Manor",
       "gameId": "adl:hires3",
       "status": "not-tested",
@@ -2171,18 +2719,6 @@
     {
       "title": "Hi-Res Adventure #4: Ulysses and the Golden Fleece",
       "gameId": "adl:hires4",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
-      "title": "Hi-Res Adventure #5: Time Zone",
-      "gameId": "adl:hires5",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
-      "title": "Hi-Res Adventure #6: The Dark Crystal",
-      "gameId": "adl:hires6",
       "status": "not-tested",
       "upstreamRating": "Good"
     },
@@ -2213,24 +2749,6 @@
     {
       "title": "Hoyle Solitaire",
       "gameId": "sci:hoyle5solitaire",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Hoyle's Official Book of Games: Volume 1",
-      "gameId": "sci:hoyle1",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Hoyle's Official Book of Games: Volume 2",
-      "gameId": "sci:hoyle2",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Hoyle's Official Book of Games: Volume 3",
-      "gameId": "sci:hoyle3",
       "status": "not-tested",
       "upstreamRating": "Excellent"
     },
@@ -2289,12 +2807,6 @@
       "upstreamRating": "Good"
     },
     {
-      "title": "Just Grandma and Me",
-      "gameId": "mohawk:grandma",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
       "title": "Just Ignore Them",
       "gameId": "ags:justignorethem",
       "status": "not-tested",
@@ -2317,12 +2829,6 @@
       "gameId": "wintermute:keshaskazok",
       "status": "not-tested",
       "upstreamRating": "Good"
-    },
-    {
-      "title": "King's Questions",
-      "gameId": "sci:kquestions",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
     },
     {
       "title": "Klaymen Episodes",
@@ -2355,24 +2861,6 @@
       "upstreamRating": "Excellent"
     },
     {
-      "title": "Let's Explore the Airport",
-      "gameId": "scumm:airport",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Let's Explore the Farm",
-      "gameId": "scumm:farm",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Let's Explore the Jungle",
-      "gameId": "scumm:jungle",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
       "title": "Life Flashes By",
       "gameId": "sludge:life",
       "status": "not-tested",
@@ -2395,12 +2883,6 @@
       "gameId": "qdengine:karliknos",
       "status": "not-tested",
       "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Little Monster at School",
-      "gameId": "mohawk:lilmonster",
-      "status": "not-tested",
-      "upstreamRating": "Good"
     },
     {
       "title": "Looky",
@@ -2449,12 +2931,6 @@
       "gameId": "sludge:mandy",
       "status": "not-tested",
       "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Marc Brown's Arthur's Teacher Trouble",
-      "gameId": "mohawk:arthur",
-      "status": "not-tested",
-      "upstreamRating": "Good"
     },
     {
       "title": "Martian Memorandum",
@@ -2547,12 +3023,6 @@
       "upstreamRating": "Good"
     },
     {
-      "title": "Mixed Up Fairy Tales",
-      "gameId": "sci:fairytales",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
       "title": "Mixed-Up Mother Goose",
       "gameId": "sci:mothergoose",
       "status": "not-tested",
@@ -2621,12 +3091,6 @@
     {
       "title": "Mortadelo y Filemón: Terror, Espanto y Pavor",
       "gameId": "alcachofa:terror",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
-      "title": "Mortville Manor",
-      "gameId": "mortevielle:mortevielle",
       "status": "not-tested",
       "upstreamRating": "Good"
     },
@@ -2925,46 +3389,10 @@
       "upstreamRating": "Good"
     },
     {
-      "title": "Pajama Sam 2: Thunder and Lightning Aren't so Frightening",
-      "gameId": "scumm:pajama2",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Pajama Sam 3: You Are What You Eat From Your Head To Your Feet",
-      "gameId": "scumm:pajama3",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Pajama Sam's Lost & Found",
-      "gameId": "scumm:lost",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
       "title": "Pajama Sam's One Stop Fun Shop",
       "gameId": "scumm:samsfunshop",
       "status": "not-tested",
       "upstreamRating": "Bugged"
-    },
-    {
-      "title": "Pajama Sam's Sock Works",
-      "gameId": "scumm:socks",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Pajama Sam: Games to Play on Any Day",
-      "gameId": "scumm:pjgames",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Pajama Sam: No Need to Hide When It's Dark Outside",
-      "gameId": "scumm:pajama",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
     },
     {
       "title": "Palladion",
@@ -3039,12 +3467,6 @@
       "upstreamRating": "Good"
     },
     {
-      "title": "Playtoons Limited Edition - Bambou le sauveur de la jungle",
-      "gameId": "gob:bambou",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
       "title": "Pole Chudes",
       "gameId": "wintermute:polechudes",
       "status": "not-tested",
@@ -3091,72 +3513,6 @@
       "gameId": "wintermute:projectdoom",
       "status": "not-tested",
       "upstreamRating": "Good"
-    },
-    {
-      "title": "Putt-Putt and Fatty Bear's Activity Pack",
-      "gameId": "scumm:activity",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Putt-Putt and Pep's Balloon-O-Rama",
-      "gameId": "scumm:balloon",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Putt-Putt and Pep's Dog on a Stick",
-      "gameId": "scumm:dog",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Putt-Putt Enters the Race",
-      "gameId": "scumm:puttrace",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Putt-Putt Goes to the Moon",
-      "gameId": "scumm:puttmoon",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Putt-Putt Joins the Circus",
-      "gameId": "scumm:puttcircus",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Putt-Putt Joins the Parade",
-      "gameId": "scumm:puttputt",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Putt-Putt Saves the Zoo",
-      "gameId": "scumm:puttzoo",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Putt-Putt Travels Through Time",
-      "gameId": "scumm:putttime",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Putt-Putt's Fun Pack",
-      "gameId": "scumm:funpack",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Putt-Putt's One-Stop Fun Shop",
-      "gameId": "scumm:puttsfunshop",
-      "status": "not-tested",
-      "upstreamRating": "Bugged"
     },
     {
       "title": "Qajary Cat",
@@ -3273,12 +3629,6 @@
       "upstreamRating": "Good"
     },
     {
-      "title": "Ruff's Bone",
-      "gameId": "mohawk:ruff",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
       "title": "Sanitarium",
       "gameId": "asylum:asylum",
       "status": "not-tested",
@@ -3333,12 +3683,6 @@
       "upstreamRating": "Good"
     },
     {
-      "title": "Sheila Rae, the Brave",
-      "gameId": "mohawk:sheila",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
       "title": "Shelter",
       "gameId": "wintermute:shelter",
       "status": "not-tested",
@@ -3355,12 +3699,6 @@
       "gameId": "agos:swampy",
       "status": "not-tested",
       "upstreamRating": "Good"
-    },
-    {
-      "title": "Slater & Charlie Go Camping",
-      "gameId": "sci:slater",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
     },
     {
       "title": "Soldier Boyz",
@@ -3417,36 +3755,6 @@
       "upstreamRating": "Good"
     },
     {
-      "title": "Spy Fox 2: \"Some Assembly Required\"",
-      "gameId": "scumm:spyfox2",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "SPY Fox in \"Cheese Chase\"",
-      "gameId": "scumm:chase",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Spy Fox in \"Dry Cereal\"",
-      "gameId": "scumm:spyfox",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Spy Fox in \"Hold the Mustard\"",
-      "gameId": "scumm:mustard",
-      "status": "not-tested",
-      "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Spy Fox: \"Operation Ozone\"",
-      "gameId": "scumm:spyozon",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
       "title": "Star Wars: Rebel Assault",
       "gameId": "scumm:rebel1",
       "status": "not-tested",
@@ -3455,12 +3763,6 @@
     {
       "title": "Star Wars: Rebel Assault II - The Hidden Empire",
       "gameId": "scumm:rebel2",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
-      "title": "Stellaluna",
-      "gameId": "mohawk:stellaluna",
       "status": "not-tested",
       "upstreamRating": "Good"
     },
@@ -3551,18 +3853,6 @@
     {
       "title": "The Ancient Mark - Episode 1",
       "gameId": "wintermute:theancientmark1",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
-      "title": "The Berenstain Bears Get in a Fight",
-      "gameId": "mohawk:bearfight",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
-      "title": "The Berenstain Bears In The Dark",
-      "gameId": "mohawk:beardark",
       "status": "not-tested",
       "upstreamRating": "Good"
     },
@@ -3723,22 +4013,10 @@
       "upstreamRating": "Good"
     },
     {
-      "title": "The Manhole",
-      "gameId": "made:manhole",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
       "title": "The Messenger/Louvre: The Final Curse",
       "gameId": "phoenixvr:messenger",
       "status": "not-tested",
       "upstreamRating": "Excellent"
-    },
-    {
-      "title": "The New Kid on the Block",
-      "gameId": "mohawk:newkid",
-      "status": "not-tested",
-      "upstreamRating": "Good"
     },
     {
       "title": "The Pawn",
@@ -3989,18 +4267,6 @@
     {
       "title": "Zilm: A Game of Reflex",
       "gameId": "wintermute:zilm",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
-      "title": "Zork Nemesis: The Forbidden Lands",
-      "gameId": "zvision:znemesis",
-      "status": "not-tested",
-      "upstreamRating": "Good"
-    },
-    {
-      "title": "Zork: Grand Inquisitor",
-      "gameId": "zvision:zgi",
       "status": "not-tested",
       "upstreamRating": "Good"
     }

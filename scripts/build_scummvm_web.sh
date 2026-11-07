@@ -10,9 +10,9 @@ SCUMMVM_REPO_URL="https://github.com/scummvm/scummvm.git"
 SCUMMVM_DIR="$VENDOR_DIR/scummvm-$SCUMMVM_TAG"
 SCUMMVM_ENGINES=(
   access adl agi agos bbvs cge cge2 cine composer cruise draci drascula dreamweb
-  gnap gob got groovie hopkins hugo kyra lab lure made mads mohawk neverhood ngi
+  gnap gob got groovie hopkins hugo kyra lab lure made mads mohawk mortevielle neverhood ngi
   parallaction pegasus plumbers queen saga sci scumm sherlock sky sword1 sword2
-  sword25 teenagent tinsel titanic toltecs tony toon touche tsage tucker voyeur wintermute
+  sword25 teenagent tinsel titanic toltecs tony toon touche tsage tucker voyeur wintermute zvision
 )
 # configure disables subengines separately from their parent plugins.
 SCUMMVM_SUBENGINES=(agos2 blueforce eob he ihnm lol myst mystme ringworld ringworld2 riven sci32 scumm_7_8)
@@ -386,6 +386,7 @@ build_scummvm_web_target() {
     --enable-mad
     --enable-png
     --enable-theoradec
+    --enable-freetype2
     --with-ogg-prefix="$EMSCRIPTEN_LIBS_BUILD_DIR"
     --with-vorbis-prefix="$EMSCRIPTEN_LIBS_BUILD_DIR"
     --with-zlib-prefix="$EMSCRIPTEN_LIBS_BUILD_DIR"

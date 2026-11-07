@@ -89,7 +89,15 @@ test("normal original game prompts do not create compatibility warnings", () => 
   assert.equal(prompts.length, 5);
   assert.ok(prompts.every((entry) => entry.status === "startup-verified"));
   assert.ok(prompts.every((entry) => /gameplay beyond it was not verified/.test(entry.observation)));
-  assert.deepEqual(filterCompatibilityEntries(data.entries, { status: "startup-warning" }).map((entry) => entry.gameId).sort(), ["mads:nebular", "parallaction:bra"]);
+  assert.deepEqual(filterCompatibilityEntries(data.entries, { status: "startup-warning" }).map((entry) => entry.gameId).sort(), [
+    "mads:nebular",
+    "mohawk:arthurbday",
+    "mohawk:arthurcomp",
+    "mohawk:arthurrace",
+    "mohawk:catinthehat",
+    "parallaction:bra",
+    "zvision:zgi",
+  ]);
 });
 
 test("a repaired edition keeps its prior failure alongside its current verified result", () => {
