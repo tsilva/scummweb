@@ -54,7 +54,7 @@ test("legacy folder drops read every directory batch and nested folder", async (
 });
 
 test("folders without ZIPs produce a useful error", async () => {
-  for (const children of [[], [{ kind: "file", name: "notes.txt" }]]) {
+  for (const children of [[], [{ kind: "file", name: "notes.txt" }], [{ kind: "file", name: ".hidden.zip" }]]) {
     const nodes = await collectGameImportNodes([handleNode({ kind: "directory", name: "Empty", async *values() {
       yield* children;
     } })]);
@@ -62,6 +62,21 @@ test("folders without ZIPs produce a useful error", async () => {
     assert.equal(nodes[0].name, "Empty");
     await assert.rejects(prepareLocalZip(nodes[0]), /No ZIP files found/);
   }
+});
+
+test("import scans skip dotfiles selected directly or found in folders", async () => {
+  const file = await gameZip();
+  const sidecar = new File(["AppleDouble"], `._${file.name}`);
+  const hiddenZip = new File([file], ".hidden.ZIP");
+  const folder = handleNode({ kind: "directory", name: "Collection", async *values() {
+    for (const child of [sidecar, file, hiddenZip]) {
+      yield { kind: "file", name: child.name, getFile: async () => child };
+    }
+  } });
+
+  const nodes = await collectGameImportNodes([fileNode(sidecar), fileNode(hiddenZip), folder]);
+  assert.deepEqual(nodes.map(({ name }) => name), [file.name]);
+  assert.equal((await prepareLocalZip(nodes[0])).data, file);
 });
 
 test("unreadable subfolders preserve readable siblings and report the failing folder", async () => {

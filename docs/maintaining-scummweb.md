@@ -323,6 +323,8 @@ Mobile layouts and devices with a coarse primary pointer show tap-to-choose
 instructions; desktop layouts retain the drag-and-drop hint.
 Put one game in each ZIP. Loose game files and other archive formats are not
 supported; folders are scanned for ZIPs rather than imported as game data.
+The scanner skips files whose names begin with a dot, including macOS metadata
+files such as `._game.zip`.
 The import dialog shows progress, added games, and errors; its final summary
 also counts skipped games. Reimported games count as skipped with refreshed
 file access. Scroll to review large batches, then select **Confirm** to close
