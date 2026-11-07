@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { createRequire } from "node:module";
 import os from "node:os";
 import path from "node:path";
 import { runInNewContext } from "node:vm";
@@ -35,15 +36,17 @@ test("runtime URLs remain stable across app changes and invalidate only changed 
 test("only the exact content version receives immutable caching headers", async () => {
   const module = { exports: {} };
   const runtime = { version: "sha-shell", files: { "/scummvm.wasm": "sha-wasm", "/scummvm.html": "sha-shell" } };
-  runInNewContext(await readFile(new URL("../next.config.js", import.meta.url), "utf8"), {
-    module, process: { env: { VERCEL_DEPLOYMENT_ID: "dpl-another-app-deployment" } },
-    require(name) {
-      if (name === "@sentry/nextjs") return { withSentryConfig: (config) => config };
-      if (name.includes("social-cards")) return { cards: {} };
-      if (name.includes("runtime-assets")) return runtime;
-      if (name.includes("scummvm-shell-assets")) return assetConfig;
-      throw new Error(name);
-    },
+  const configUrl = new URL("../next.config.js", import.meta.url);
+  function require(name) {
+    if (name === "@sentry/nextjs") return { withSentryConfig: (config) => config };
+    if (name.includes("social-cards")) return { cards: {} };
+    if (name.includes("runtime-assets")) return runtime;
+    if (name.includes("scummvm-shell-assets")) return assetConfig;
+    throw new Error(name);
+  }
+  require.resolve = createRequire(configUrl).resolve;
+  runInNewContext(await readFile(configUrl, "utf8"), {
+    module, require, process: { env: { VERCEL_DEPLOYMENT_ID: "dpl-another-app-deployment" } },
   });
   assert.equal(module.exports.env.NEXT_PUBLIC_SCUMMVM_ASSET_VERSION, "dpl-another-app-deployment");
   const wasm = module.exports.headers().find(({ source }) => source === "/scummvm.wasm");
