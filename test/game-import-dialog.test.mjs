@@ -68,7 +68,7 @@ test("reimporting a library reports scanned and skipped counts", () => {
   const html = renderToStaticMarkup(createElement(GameImportDialog, { pending: [], result }));
   assert.ok(html.includes('<h2 id="game-import-title">168 games scanned</h2>'));
   assert.ok(html.includes('0 games added · 168 games skipped · 0 errors'));
-  assert.ok(!html.includes("<li"));
+  assert.ok(!html.includes('aria-label="Import details"'));
   assert.ok(html.includes('class="game-import-confirm"'));
 });
 

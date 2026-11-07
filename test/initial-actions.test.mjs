@@ -17,11 +17,12 @@ function fixture(t, state = descriptor()) {
       removeAttribute(key) { delete this.attributes[key]; if (key === "href") delete this.href; } };
   }
   const primary = node(), restart = node(), browse = node(), license = node(), options = [];
+  const importHelp = state.unavailable ? node() : undefined;
   const chooser = { ...node(), querySelector: () => ({ append: option => options.push(option) }) };
   const container = { dataset: { initialActions: JSON.stringify(state), entryPoint: "game_detail" },
     parentElement: { querySelector: () => ({ innerHTML: "server controls", nextElementSibling: {} }) },
     querySelector: selector => ({ ".launch-button": primary, ".start-fresh-button": restart,
-      ".browse-games-button": browse,
+      ".browse-games-button": browse, ".hero-import-help": importHelp,
       ".hero-license": license, ".hero-version-control": chooser })[selector] };
   const priorWindow = globalThis.window, priorDocument = globalThis.document;
   t.after(() => {
@@ -30,7 +31,7 @@ function fixture(t, state = descriptor()) {
   });
   globalThis.window = { localStorage: storage, location: { origin: "https://example.test" } };
   globalThis.document = { createElement: node };
-  return { values, storage, container, primary, restart, browse, license, chooser, options };
+  return { values, storage, container, primary, restart, browse, license, chooser, options, importHelp };
 }
 
 test("first-paint catalog actions use the validated browser index, including slot zero", t => {
@@ -99,6 +100,20 @@ test("remembered imports use their own cached identity and wait for access valid
   assert.equal(f.options[1].selected, true);
   assert.equal(f.chooser.attributes["data-reserved"], undefined);
   assert.equal(f.chooser.attributes["aria-hidden"], undefined);
+});
+
+test("first-paint import instructions follow the selected copy's availability", t => {
+  const f = fixture(t, { ...descriptor(), unavailable: true });
+  prepareInitialActions(f.container, () => null);
+  assert.equal(f.primary.textContent, "Game not included");
+  assert.equal(f.importHelp.hidden, false);
+
+  const imported = { ...descriptor(), version: "source:floppy", source: true, access: true };
+  f.values.set("scummweb.version:sky:sky:full", imported.version);
+  f.values.set("scummweb.hero-actions.v1:sky:sky:full", JSON.stringify(imported));
+  prepareInitialActions(f.container, () => null);
+  assert.equal(f.primary.textContent, "Allow file access");
+  assert.equal(f.importHelp.hidden, true);
 });
 
 test("unknown or stale remembered editions never expose the catalog's Continue state", t => {

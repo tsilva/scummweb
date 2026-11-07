@@ -232,18 +232,19 @@
     {
       "path": "patches/scummvm/16-report-queen-evaluation-variables.patch",
       "status": "active",
-      "sha256": "5fafb060ac5753e72cfd30e74627f2ee73c628f95319ef5c0abab04db82e7f22",
-      "purpose": "Provide opt-in read-only Queen room telemetry for an external benchmark evaluator.",
+      "sha256": "c184ddd3a201638b5b17818717a4000c318f8db2b95193226732a144b3c7187c",
+      "purpose": "Provide opt-in read-only Queen room and indexed game variable telemetry for an external evaluator.",
       "invariants": [
-        "No telemetry unless the evaluator enables it before launch; no gameplay mutation or MCP observation fields.",
-        "Report current room after display update; room_ready requires no pending room transition and no running cutaway.",
-        "Retain ordered room/ready transitions until consumed; overflow is explicit, never silently discard a possible endpoint."
+        "No telemetry unless the evaluator enables it before launch. Keep the existing room protocol readable by older consumers.",
+        "Report current room after display update. room_ready requires no pending room transition and no running cutaway.",
+        "Publish a complete game variable baseline at first presentation and replace it after a save restore. Queue every subsequent changed value in native write order.",
+        "Retain room transitions and game variable records in bounded queues with explicit overflow, outside gameplay MCP observations."
       ],
       "verification": [
-        "Run test/queen-evaluation.test.mjs; build the native Queen plugin.",
-        "Through AgentSCUMM, start a fresh Queen game and verify room 70 does not stop it, room 71 stops with success, and later inputs are not delivered."
+        "Run test/queen-evaluation.test.mjs and rebuild the native Queen plugin.",
+        "Through AgentSCUMM, verify a ready room arrival and a known game variable transition independently. Confirm a restored value is a new baseline."
       ],
-      "retire_when": "Upstream supplies equivalent opt-in room/presentation telemetry with verified transition semantics."
+      "retire_when": "Upstream provides equivalent opt-in room telemetry and game variable snapshots and changes, including save restore semantics."
     },
     {
       "path": "scripts/patch_scummvm_keyboard.py",

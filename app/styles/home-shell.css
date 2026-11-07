@@ -1218,6 +1218,10 @@ button.nav-icon-link {
   gap: 1rem;
 }
 
+.game-import-dialog:not(:has(> .game-import-details)) {
+  height: auto;
+}
+
 .game-import-dialog::backdrop {
   background: rgba(0, 0, 0, 0.75);
 }
@@ -1590,13 +1594,6 @@ button.nav-icon-link {
 
 .hero-actions > .file-access-help {
   grid-column: 1 / -1;
-}
-
-.hero-launch > .file-access-help {
-  position: absolute;
-  inset: calc(100% + 0.5rem) auto auto 0;
-  max-width: 40rem;
-  margin: 0;
 }
 
 .hero-license {
