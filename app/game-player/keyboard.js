@@ -1,3 +1,15 @@
+// SDL looks up the physical key by KeyboardEvent.code, even for punctuation.
+const commandCharacterCodes = {
+  " ": "Space",
+  "!": "Digit1", "@": "Digit2", "#": "Digit3", "$": "Digit4", "%": "Digit5",
+  "^": "Digit6", "&": "Digit7", "*": "Digit8", "(": "Digit9", ")": "Digit0",
+  "-": "Minus", _: "Minus", "=": "Equal", "+": "Equal",
+  "[": "BracketLeft", "{": "BracketLeft", "]": "BracketRight", "}": "BracketRight",
+  "\\": "Backslash", "|": "Backslash", ";": "Semicolon", ":": "Semicolon",
+  "'": "Quote", '"': "Quote", ",": "Comma", "<": "Comma", ".": "Period", ">": "Period",
+  "/": "Slash", "?": "Slash", "`": "Backquote", "~": "Backquote",
+};
+
 function getKeyboardDescriptor(input) {
   const options =
     typeof input === "string"
@@ -5,8 +17,8 @@ function getKeyboardDescriptor(input) {
       : input && typeof input === "object"
         ? input
         : {};
-  const normalizedKey =
-    typeof options.key === "string" && options.key.trim() ? options.key.trim() : "Escape";
+  const key = typeof options.key === "string" ? options.key : "";
+  const normalizedKey = key === " " ? key : key.trim() || "Escape";
 
   if (/^esc(?:ape)?$/i.test(normalizedKey)) {
     return {
@@ -197,4 +209,11 @@ export async function dispatchSyntheticKeypressSequence(frame, keypressConfig) {
       });
     }
   }
+}
+
+export function dispatchGameCommand(frame, command) {
+  for (const key of command) {
+    if (!dispatchSyntheticKeypress(frame, { key, code: commandCharacterCodes[key] })) return false;
+  }
+  return dispatchSyntheticKeypress(frame, { key: "Enter", keyCode: 13 });
 }

@@ -294,9 +294,11 @@ test("leaving a pending launch cancels its handoff", async () => {
   assert.equal(player.deliveries.length, 0);
 });
 
-function menuPlayer(game, { ready = true, failed = false } = {}) {
+function readyPlayer(game, { ready = true, failed = false, mobile = false } = {}) {
   function Controls() {}
+  function CursorPad() {}
   const keypresses = [];
+  const commands = [];
   const frame = { contentWindow: {} };
   let refIndex = 0;
   const module = { exports: {} };
@@ -314,13 +316,17 @@ function menuPlayer(game, { ready = true, failed = false } = {}) {
       if (name === "./skip-intro-config.mjs") return skipIntroConfig;
       if (name === "next/navigation") return { useRouter: () => ({}) };
       if (name.endsWith("/game-menu.mjs")) return gameMenu;
-      if (name.endsWith("/keyboard")) return { dispatchSyntheticKeypressSequence: async (frame, shortcut) => keypresses.push({ frame, shortcut }) };
+      if (name.endsWith("/keyboard")) return {
+        dispatchSyntheticKeypressSequence: async (frame, shortcut) => keypresses.push({ frame, shortcut }),
+        dispatchGameCommand: (frame, command) => commands.push({ frame, command }),
+      };
       if (name.endsWith("/GamePlayerControls")) return Controls;
+      if (name.endsWith("/GameTouchCursorPad")) return CursorPad;
       if (name.endsWith("/useBootState")) return { useBootState: () => ({
         hasBootCompleted: ready, hasBootPresentationCompleted: ready,
         showGameMenuButton: ready, hasBootFailed: failed,
       }) };
-      if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({}) };
+      if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({ isMobileViewport: mobile }) };
       if (name.endsWith("/useTouchClickMode")) return { useTouchClickActions: () => ({}) };
       if (name.endsWith("/useTouchCursorPad")) return { useTouchCursorPad: () => ({}) };
       if (name.endsWith("/game-launch-analytics.mjs")) return { createGameLaunchAnalytics: () => ({}) };
@@ -328,7 +334,12 @@ function menuPlayer(game, { ready = true, failed = false } = {}) {
     },
   });
   const children = module.exports.default({ game, target: game.target, src: "/scummvm.html#game" }).props.children.filter(Boolean);
-  return { controls: children.find(({ type }) => type === Controls).props, frame, keypresses };
+  return {
+    controls: children.find(({ type }) => type === Controls).props,
+    cursorPad: children.find(({ type }) => type === CursorPad).props,
+    form: children.find(({ type }) => type === "form"),
+    frame, keypresses, commands,
+  };
 }
 
 for (const [game, expectedKey] of [
@@ -339,7 +350,7 @@ for (const [game, expectedKey] of [
   [{ target: "unknown-import" }, null],
 ]) {
   test(`menu control uses only a supported native action for ${game.target}`, async () => {
-    const player = menuPlayer(game);
+    const player = readyPlayer(game);
     assert.equal(player.controls.showGameMenuButton, Boolean(expectedKey));
     await player.controls.onOpenMenu();
     assert.equal(player.keypresses.length, expectedKey ? 1 : 0);
@@ -354,6 +365,32 @@ for (const [game, expectedKey] of [
 test("native menu stays hidden while loading and after a boot failure", () => {
   const game = { engineId: "sky", gameId: "sky", target: "sky" };
   for (const state of [{ ready: false }, { failed: true }]) {
-    assert.equal(menuPlayer(game, state).controls.showGameMenuButton, false);
+    assert.equal(readyPlayer(game, state).controls.showGameMenuButton, false);
   }
+});
+
+test("ready Apple II adventures replace mobile mouse controls with a command form", () => {
+  const game = { engineId: "adl", gameId: "hires1", target: "hires1" };
+  const player = readyPlayer(game, { mobile: true });
+  assert.equal(player.controls.showTouchClickButtons, false);
+  assert.equal(player.cursorPad.showTouchCursorPad, false);
+  let blurred = false;
+  let prevented = false;
+  const input = { value: "go east", blur: () => { blurred = true; } };
+  player.form.props.onSubmit({
+    preventDefault: () => { prevented = true; },
+    currentTarget: { elements: { namedItem: (name) => name === "command" ? input : null } },
+  });
+  assert.equal(prevented, true);
+  assert.equal(blurred, true);
+  assert.equal(input.value, "");
+  assert.deepEqual(player.commands, [{ frame: player.frame, command: "go east" }]);
+
+  assert.equal(readyPlayer(game).form, undefined);
+  assert.equal(readyPlayer(game, { mobile: true, ready: false }).form, undefined);
+  assert.equal(readyPlayer(game, { mobile: true, failed: true }).form, undefined);
+  const mousePlayer = readyPlayer({ engineId: "sky", target: "sky" }, { mobile: true });
+  assert.equal(mousePlayer.form, undefined);
+  assert.equal(mousePlayer.controls.showTouchClickButtons, true);
+  assert.equal(mousePlayer.cursorPad.showTouchCursorPad, true);
 });

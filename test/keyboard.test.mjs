@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { dispatchSyntheticKeypress, dispatchSyntheticKeypressSequence } from "../app/game-player/keyboard.js";
+import { dispatchGameCommand, dispatchSyntheticKeypress, dispatchSyntheticKeypressSequence } from "../app/game-player/keyboard.js";
 
 function fixture({ canvas = true } = {}) {
   class KeyboardEvent extends Event {
@@ -62,4 +62,19 @@ test("explicit repeated shortcuts send the configured number of presses", async 
   assert.deepEqual(frame.contentWindow.received.map(({ type }) => type),
     ["keydown", "keypress", "keyup", "keydown", "keypress", "keyup"]);
   assert.equal(dispatchSyntheticKeypress(null, "Escape"), false);
+});
+
+test("game commands send each key to SDL in order, including spaces and Enter", () => {
+  const frame = fixture();
+  assert.equal(dispatchGameCommand(frame, "go east!"), true);
+  assert.deepEqual(frame.contentWindow.received
+    .filter(({ type }) => type === "keydown").map(({ key, code }) => [key, code]), [
+    ["G", "KeyG"], ["O", "KeyO"], [" ", "Space"], ["E", "KeyE"], ["A", "KeyA"],
+    ["S", "KeyS"], ["T", "KeyT"], ["!", "Digit1"], ["Enter", "Enter"],
+  ]);
+  assert.equal(frame.contentWindow.received.at(-1).keyCode, 13);
+
+  const empty = fixture();
+  assert.equal(dispatchGameCommand(empty, ""), true);
+  assert.deepEqual(empty.contentWindow.received.map(({ key }) => key), ["Enter", "Enter", "Enter"]);
 });

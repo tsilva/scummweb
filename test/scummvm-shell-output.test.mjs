@@ -113,13 +113,13 @@ test("managed ScummVM audio glue primes and sanitizes WebAudio output", () => {
   );
 });
 
-test("mobile route defaults to fit-height and has no aspect toggle", () => {
+test("mobile mouse play defaults to fit-height and the route has no aspect toggle", () => {
   const routeFrameSource = fs.readFileSync(gameRouteFramePath, "utf8");
   const controlsSource = fs.readFileSync(gamePlayerControlsPath, "utf8");
 
   assert.match(routeFrameSource, /SCUMMWEB_ASPECT_RATIO_MESSAGE_TYPE = "scummweb-aspect-ratio"/);
-  assert.match(routeFrameSource, /mode: immersiveMode\.isMobileViewport \? "fit-height" : "preserve"/);
-  assert.match(routeFrameSource, /\[frameSrc, immersiveMode\.isMobileViewport\]/);
+  assert.match(routeFrameSource, /mode: immersiveMode\.isMobileViewport && !usesCommandInput \? "fit-height" : "preserve"/);
+  assert.match(routeFrameSource, /\[frameSrc, immersiveMode\.isMobileViewport, usesCommandInput\]/);
   assert.doesNotMatch(routeFrameSource, /showAspectRatioControl|handleAspectRatioToggle|isFillScreenAspect/);
   assert.doesNotMatch(controlsSource, /is-aspect|AspectRatio|FillScreenAspect/);
   const shellHtml = fs.readFileSync(shellHtmlPath, "utf8");
