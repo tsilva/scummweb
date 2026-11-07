@@ -44,6 +44,15 @@ function getSentryEnvironment() {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   distDir: getDistDir(),
+  turbopack: {
+    rules: {
+      "**/lib/artwork-data.mjs": {
+        condition: "browser",
+        loaders: [require.resolve("./scripts/artwork-browser-loader.js")],
+        as: "*.js",
+      },
+    },
+  },
   rewrites() {
     return [
       {

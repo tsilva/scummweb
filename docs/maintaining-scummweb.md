@@ -1103,7 +1103,9 @@ gallery images preserve their original proportions. Mobile screenshot thumbnails
 advertise their 9rem display width. The expanded viewer uses the full image.
 Variant width descriptors come from the decoded image dimensions. Hero
 preloading uses the same picture sources as visible images to avoid downloading
-both format alternatives.
+both format alternatives. The browsing pages preconnect to the artwork bucket,
+and the Turbopack browser build includes only URL and dimension data from the
+artwork manifest. Publishing and verification tools use the full manifest.
 
 ## Branding
 
@@ -1291,8 +1293,9 @@ or request-time rendering.
   imported-game selections open paused until resumed. Hover and focus pause rotation over hero content,
   while the slideshow controls let it continue. Hidden tabs suspend rotation,
   and reduced-motion preferences disable automatic rotation until resumed.
-  The hero preloads and decodes the next three backdrops and one previous
-  backdrop, wrapping around at either end. `HERO_PRELOAD_AHEAD` in
+  After detecting a desktop viewport, the hero preloads and decodes the next
+  three backdrops and one previous backdrop, wrapping around at either end.
+  `HERO_PRELOAD_AHEAD` in
   `app/home-shell/hero-images.mjs` controls the forward window. Preloads use
   the visible hero's responsive sources and sizes with low fetch priority,
   share identical artwork, and retain image references only for the current
@@ -1302,8 +1305,8 @@ or request-time rendering.
   post-load random replacement of the artwork, text and screenshot gallery.
   Responsive desktop and mobile copy is present in the initial HTML; CSS selects
   the visible version before hydration. Direct routes and `#slide=` selections take
-  precedence. The selected game stays stable while local sources restore, and mobile
-  only preloads its current backdrop. Desktop retains its normal slideshow behavior.
+  precedence. The selected game stays stable while local sources restore. On
+  mobile, the visible backdrop loads eagerly without slideshow prefetching.
   Mobile uses full-width artwork, natural-height mixed-case titles, compact summaries
   and metadata, stacked full-width action buttons, and an unlabeled screenshot strip.
   Artwork starts at the compact header's bottom edge, including its safe-area inset;
