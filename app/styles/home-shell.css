@@ -1648,6 +1648,10 @@ button.nav-icon-link {
   visibility: hidden;
 }
 
+.hero-version-control:not([data-reserved]) {
+  grid-row: 2;
+}
+
 .hero-stage-library .hero-carousel-controls {
   inset-block: auto 2rem;
   inset-inline-end: max(3.25rem, calc((100vw - 93.5rem) / 2));
