@@ -92,12 +92,13 @@ for (const message of ["This ZIP link returned HTTP 404.", "Could not download t
   });
 }
 
-function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = false, downloadDetails = { loaded: 12_400_000, total: 85_200_000 } } = {}) {
+function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = false, catalog = true, downloadDetails = { loaded: 12_400_000, total: 85_200_000 } } = {}) {
   const archive = Promise.withResolvers();
   const hooks = [];
   const messages = new Set();
   const timers = new Map();
   const deliveries = [];
+  const reports = [];
   let cursor = 0;
   let dirty = false;
   let children = [];
@@ -105,6 +106,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   let effects = [];
   let loadCount = 0;
   let confirmations = 0;
+  let eventProcessor;
   const frame = {
     contentDocument: { URL: "about:blank", getElementById: () => null },
     contentWindow: { focus() {}, postMessage() {}, location: { replace(href) { if (!stalledNavigation) frame.contentDocument.URL = href; } } },
@@ -155,6 +157,16 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
         useLayoutEffect: (callback, deps) => effect(callback, deps, layouts),
       };
       if (name === "react/jsx-runtime") return nativeRequire(name);
+      if (name === "@sentry/nextjs") return {
+        withScope(callback) {
+          try { callback({ addEventProcessor: (processor) => { eventProcessor = processor; } }); }
+          finally { eventProcessor = undefined; }
+        },
+        captureMessage(message, context) {
+          const event = { message, request: { url: "https://example.test/play#zip=private" }, breadcrumbs: [{}], transaction: "/play", ...context };
+          reports.push({ message, context: eventProcessor ? eventProcessor(event) : event });
+        },
+      };
       if (name === "./skip-intro-config.mjs") return skipIntroConfig;
       if (name.endsWith("/game-menu.mjs")) return gameMenu;
       if (name.endsWith("/telemetry.mjs")) return telemetry;
@@ -178,7 +190,10 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       return {};
     },
   });
-  const props = { game: { target: "sky", slug: "sky" }, target: "sky", src: "/scummvm.html?localGame=1#sky", catalogArchiveUrl: "https://example.test/sky.zip" };
+  const props = {
+    game: { target: "sky", slug: "sky", engineId: "sky" }, target: "sky", src: "/scummvm.html?localGame=1#sky",
+    ...(catalog ? { catalogArchiveUrl: "https://example.test/sky.zip" } : { loadArchive: () => archive.promise }),
+  };
   function render() {
     let attempts = 0;
     do {
@@ -193,7 +208,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     } while (dirty);
   }
   return {
-    archive, frame, deliveries, timers, render,
+    archive, frame, deliveries, reports, timers, render,
     get children() { return children; },
     get loadCount() { return loadCount; },
     get confirmations() { return confirmations; },
@@ -205,6 +220,12 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       for (const handler of [...messages]) handler({ origin: window.location.origin, source: frame.contentWindow,
         data: { type: "scummvm-ready", source: "scummweb", target: "sky", href, reason: "rendered-frame-detected" } });
     },
+    bootError({ origin = window.location.origin, source = frame.contentWindow, ...data } = {}) {
+      for (const handler of [...messages]) handler({ origin, source, data: {
+        type: "scummvm-boot-error", href: frame.contentDocument.URL, stage: "script-error",
+        name: "SyntaxError", message: "Unexpected token", ...data,
+      } });
+    },
     saveSessionBusy(origin = window.location.origin, source = frame.contentWindow) {
       for (const handler of [...messages]) handler({ origin, source, data: { type: "scummweb:save-session-busy" } });
     },
@@ -215,6 +236,50 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     unmount() { for (const hook of hooks) hook?.cleanup?.(); },
   };
 }
+
+test("only reports the first recognized startup error from the current player frame", () => {
+  const player = pendingArchivePlayer();
+  player.render();
+  player.bootError({ origin: "https://untrusted.test" });
+  player.bootError({ source: {} });
+  player.bootError({ href: "/scummvm.html?old=1#sky" });
+  player.bootError({ stage: "unknown" });
+  assert.equal(player.reports.length, 0);
+  player.bootError({ message: "Failed to load https://example.test/scummvm.js?token=secret" });
+  player.bootError({ stage: "runtime-abort" });
+  assert.equal(player.reports.length, 1);
+  const [{ message, context }] = player.reports;
+  assert.match(message, /Player JavaScript error/);
+  assert.equal(context.tags.startup_stage, "script-error");
+  assert.equal(context.tags.game_slug, "sky");
+  assert.equal(context.contexts.scummvm.error_name, "SyntaxError");
+  assert.equal(context.contexts.scummvm.detail, "Failed to load [url]");
+  player.unmount();
+});
+
+test("an imported game's startup report omits its identity and error text", () => {
+  const player = pendingArchivePlayer({ catalog: false });
+  player.render();
+  player.bootError({ message: "Failed to open private-file.zip" });
+  const [{ context }] = player.reports;
+  assert.equal(context.tags.game_source, "local");
+  assert.equal(context.tags.game_slug, undefined);
+  assert.equal(context.contexts.scummvm.engine, undefined);
+  assert.equal(context.contexts.scummvm.detail, undefined);
+  assert.equal(context.request, undefined);
+  assert.equal(context.breadcrumbs, undefined);
+  assert.equal(context.transaction, undefined);
+  player.unmount();
+});
+
+test("a runtime failure after the first game frame is not a startup error", () => {
+  const player = pendingArchivePlayer();
+  player.render();
+  player.gameReady(player.frame.contentDocument.URL);
+  player.bootError();
+  assert.equal(player.reports.length, 0);
+  player.unmount();
+});
 
 test("the play route forwards telemetry only for the opted-in game frame", () => {
   for (const telemetry of [false, true]) {

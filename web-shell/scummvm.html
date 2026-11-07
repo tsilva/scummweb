@@ -1,4 +1,56 @@
 <!doctypehtml><html lang=en-us><head><meta charset=utf-8><meta content="text/html; charset=utf-8"http-equiv=Content-Type><meta content="width=device-width,initial-scale=1,viewport-fit=cover"name=viewport><link href=manifest.json?v=__SCUMMWEB_ASSET_VERSION__ rel=manifest><link href=scummvm-192.png?v=__SCUMMWEB_ASSET_VERSION__ rel=apple-touch-icon><!-- Revalidate the shell document; fingerprint runtime code and data. --><title>ScummWEB</title><link id=scummweb-js-preload rel=preload as=script href=scummvm.js><link id=scummweb-wasm-preload rel=preload as=fetch crossorigin=anonymous href=scummvm.wasm><style>body{margin:0;padding:none;background-color:#000}.emscripten{padding-right:0;margin-left:auto;margin-right:auto;display:block}textarea.emscripten{font-family:monospace;width:80%}#output{position:fixed;left:-10000px;top:0;width:1px!important;height:1px!important;padding:0;border:0;opacity:0;pointer-events:none;overflow:hidden;white-space:pre;z-index:-1}div.emscripten{text-align:center}div.emscripten_border{border:1px solid #000;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}canvas.emscripten{border:0 none;outline:none;box-shadow:none;background:#000;position:absolute;top:calc((100% + env(safe-area-inset-top) - env(safe-area-inset-bottom)) / 2);left:calc((100% + env(safe-area-inset-left) - env(safe-area-inset-right)) / 2);margin:0;width:min(100vw,calc(100vh * var(--scummweb-canvas-ratio,1.333333)));width:min(calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right)),calc((100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) * var(--scummweb-canvas-ratio,1.333333)));height:auto;aspect-ratio:var(--scummweb-canvas-ratio,1.333333);overflow:hidden;display:block;transform:translate(-50%,-50%)}body:has(canvas.scummweb-fit-height){overflow:hidden}canvas.emscripten.scummweb-fit-height{width:calc(100vh * var(--scummweb-canvas-ratio,1.333333));width:calc((100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) * var(--scummweb-canvas-ratio,1.333333));height:auto}canvas.emscripten.scummweb-fill-screen{width:100%;height:100%}#progress{top:0;left:0;height:10px;width:100%;overflow:hidden;display:block;position:absolute;z-index:2;border:0;background:#c60}#progress[hidden]{display:none!important}progress::-moz-progress-bar{background:#f6e08a}progress::-webkit-progress-value{background:#f6e08a}progress{color:#f6e08a}#status{position:absolute;bottom:5em;right:0;padding:5px;text-align:right;border-top-left-radius:1em;border-bottom-left-radius:1em;padding-left:1em;padding-right:1em;z-index:3;border:3px solid #000;border-right:none;background:#f6e08a;font:bold large/1.4 "Trebuchet MS",Verdana,Tahoma,Sans-Serif}#status.error{background:red}</style></head><body><div class=emscripten><progress hidden id=progress max=100 value=0></progress></div><div class=emscripten id=status>Downloading ScummVM...</div><div class=emscripten_border><canvas class=emscripten id=canvas oncontextmenu=event.preventDefault() tabindex=-1></canvas></div><textarea class=emscripten id=output rows=8></textarea><script id=scummweb-runtime-assets>globalThis.SCUMMWEB_RUNTIME_ASSETS={};</script><script>
+// Emscripten throws ExitStatus to stop execution even after a successful quit.
+// The generated beforeunload hook also raises SIGINT, which exits with 128 + 2.
+var scummwebPageUnloading = false;
+window.addEventListener("beforeunload", function () { scummwebPageUnloading = true; }, true);
+function isExpectedRuntimeExit(error) {
+  return error && error.name === "ExitStatus" &&
+    (error.status === 0 || (scummwebPageUnloading && error.status === 130));
+}
+
+// Install before the other shell scripts so parse and asset-load failures are visible.
+var reportScummvmBootError = (function () {
+  var reported = false;
+
+  function report(stage, error, message) {
+    if (reported || window.parent === window ||
+        (window.__scummwebReadyState && window.__scummwebReadyState.state === "ready")) return;
+    if (isExpectedRuntimeExit(error) || (scummwebPageUnloading && error && error.name === "AbortError")) return;
+
+    var href = window.location.pathname === "srcdoc" ? document.baseURI : window.location.href;
+    var details = typeof message === "string" && message ? message :
+      typeof error === "string" ? error : error && error.message;
+    try {
+      window.parent.postMessage({
+        type: "scummvm-boot-error",
+        href: href,
+        stage: stage,
+        name: error && typeof error.name === "string" ? error.name.slice(0, 48) : "",
+        message: typeof details === "string" ? details.slice(0, 512) : ""
+      }, new URL(href).origin);
+      reported = true;
+    } catch {}
+  }
+
+  if (window.parent !== window) {
+    window.addEventListener("error", function (event) {
+      if (typeof event.message === "string") {
+        report("script-error", event.error, event.message);
+      } else if (event.target && event.target.tagName === "SCRIPT") {
+        var asset = /\/(browserfs\.min\.js|scummvm\.js)(?:[?#]|$)/.exec(event.target.src);
+        report("script-load", null, asset ? asset[1] : "");
+      }
+    }, true);
+    window.addEventListener("unhandledrejection", function (event) {
+      report("promise-rejection", event.reason);
+    });
+    document.getElementById("canvas").addEventListener("webglcontextlost", function () {
+      report("webgl-context-lost");
+    });
+  }
+  return report;
+})();
+</script><script>
 const scummwebBrowserFsReady=new Promise((resolve,reject)=>{
   const script=document.createElement("script");
   script.src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js";
@@ -370,20 +422,15 @@ function setupFilesystem() {
         }
         if (error.name === "SaveSessionBusyError") {
           window.parent.postMessage({ type: "scummweb:save-session-busy" }, scummwebLaunchUrl.origin);
-        } else if (isLocalGame) reportLocalGameStatus("error");
+        } else {
+          if (!scummwebLaunchUrl.searchParams.has("saveQuery")) reportScummvmBootError("filesystem", error);
+          if (isLocalGame) reportLocalGameStatus("error");
+        }
         Module.printErr(`abort(${error.message})`);
         throw error;
       }
     );
 }var Module={preRun:[setupFilesystem],postRun:[],print:function(){var e=document.getElementById("output");return e&&(e.value=""),function(t){arguments.length>1&&(t=Array.prototype.slice.call(arguments).join(" ")),console.log(t),e&&(e.value+=t+"\n",e.scrollTop=e.scrollHeight)}}(),printErr:function(e){arguments.length>1&&(e=Array.prototype.slice.call(arguments).join(" ")),console.error(e)},canvas:function(){var e=document.getElementById("canvas");return e.addEventListener("webglcontextlost",(function(e){alert("WebGL context lost. You will need to reload the page."),e.preventDefault()}),!1),e}(),setStatus:function(e){if(console.log((new Date).toLocaleTimeString()+" "+e),Module.setStatus.last||(Module.setStatus.last={time:Date.now(),text:""}),e!==Module.setStatus.last.text){var t=e.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/),n=Date.now();t&&n-Module.setStatus.last.time<30||(Module.setStatus.last.time=n,Module.setStatus.last.text=e,t?(e=t[1],progressElement.value=100*parseInt(t[2]),progressElement.max=100*parseInt(t[4]),progressElement.hidden=!1):(progressElement.value=null,progressElement.max=null,progressElement.hidden=!0),e&&e.length>0?(e+="⚡️",statusElement.style.display="block"):statusElement.style.display="none",statusElement.innerHTML=e)}},totalDependencies:0,monitorRunDependencies:function(e){this.totalDependencies=Math.max(this.totalDependencies,e),Module.setStatus(e?"Preparing... ("+(this.totalDependencies-e)+"/"+this.totalDependencies+")":loadingDoneMessage())}};Module.setStatus("Downloading ScummVM...");
-// Emscripten throws ExitStatus to stop execution even after a successful quit.
-// The generated beforeunload hook also raises SIGINT, which exits with 128 + 2.
-let scummwebPageUnloading = false;
-window.addEventListener("beforeunload", () => { scummwebPageUnloading = true; }, { capture: true });
-function isExpectedRuntimeExit(error) {
-  return error?.name === "ExitStatus" &&
-    (error.status === 0 || (scummwebPageUnloading && error.status === 130));
-}
 window.onerror = function (message, source, line, column, error) {
   if (isExpectedRuntimeExit(error)) return true;
   statusElement.classList.add("error");
@@ -549,19 +596,29 @@ window.Module=window.Module||{};
 const originalQuit=window.Module.quit;
 window.Module.quit=function(status,toThrow){requestExit(status);if(typeof originalQuit==="function"){return originalQuit(status,toThrow)}throw toThrow||new Error(`ScummVM exited (${status})`)}
 })();</script><script>
-if (isLocalGame) {
-  const print = Module.print;
-  Module.print = function (...args) {
+for (const method of ["print", "printErr"]) {
+  const print = Module[method];
+  Module[method] = function (...args) {
     print.apply(this, args);
     const line = String(args[0]);
-    if (line.startsWith("WARNING: ScummVM could not find any game")) reportLocalGameStatus("undetected");
+    if (/Game data path does not exist|Couldn't identify game|No game data was found|ScummVM could not find any game/i.test(line)) {
+      reportScummvmBootError("game-detection");
+      if (isLocalGame && method === "print" && line.startsWith("WARNING: ScummVM could not find any game")) {
+        reportLocalGameStatus("undetected");
+      }
+    }
   };
+}
+Module.onAbort = (reason) => {
+  reportScummvmBootError("runtime-abort", reason);
+  if (isLocalGame) reportLocalGameStatus("error");
+};
+if (isLocalGame) {
   function reportRuntimeError(error) {
     if (!isExpectedRuntimeExit(error)) reportLocalGameStatus("error");
   }
   window.addEventListener("error", (event) => reportRuntimeError(event.error));
   window.addEventListener("unhandledrejection", (event) => reportRuntimeError(event.reason));
-  Module.onAbort = () => reportLocalGameStatus("error");
   Module.quit = (status, error) => {
     if (!status && localGameStatus === "running") window.__scummvmRequestExit(0);
     else reportLocalGameStatus("error");

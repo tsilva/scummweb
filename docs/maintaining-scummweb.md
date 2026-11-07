@@ -489,6 +489,13 @@ uploads. Runtime capture uses `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_DSN`,
 `NEXT_PUBLIC_SENTRY_ENABLED`, and the project settings in
 [`next.config.js`](../next.config.js).
 
+The play route forwards startup errors from its ScummVM iframe through the
+page's Sentry client. Filter errors by `component:scummvm-player` and use
+`startup_stage`, `game_source`, and `game_slug` to narrow the results. The
+player reports at most one failure per launch and excludes expected runtime
+exits. Reports for imported games omit game identity, raw error text, and
+navigation details that can contain private ZIP links.
+
 Set `SCUMMWEB_DIST_DIR` to a separate project-relative directory when building
 and serving an isolated production audit. Use the same value for both commands;
 for example, `SCUMMWEB_DIST_DIR=.next-dev-audit pnpm build` followed by
