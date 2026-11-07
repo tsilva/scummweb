@@ -120,7 +120,7 @@ export function GameImportDialog({ pending, result, onConfirm }) {
   return (
     <dialog
       ref={dialog}
-      className="game-import-dialog"
+      className={complete ? "game-import-dialog" : "game-import-dialog game-import-dialog--scanning"}
       aria-labelledby="game-import-title"
       aria-describedby={complete ? "game-import-summary" : undefined}
       onCancel={(event) => {

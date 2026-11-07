@@ -5,6 +5,7 @@ import { runInNewContext } from "node:vm";
 import test from "node:test";
 import { renderToStaticMarkup } from "react-dom/server";
 import swc from "next/dist/build/swc/index.js";
+import { getHeroImageProps } from "../app/home-shell/hero-images.mjs";
 import { chooseGameVersion, formatVersionLabel, readChosenVersion, rememberGameVersion } from "../app/game-versions.mjs";
 import * as initialActions from "../app/home-shell/initial-actions.mjs";
 
@@ -390,4 +391,28 @@ test("launch feedback commits synchronously and portals the existing boot screen
   assert.equal(overlay.props.children.props.bootStatusText, "Loading game…");
   useFeedback().dismiss();
   assert.equal(useFeedback().overlay, null);
+});
+
+test("the loading screen reuses the hero's responsive artwork and requests synchronous decoding", async () => {
+  const hero = "/sky.webp";
+  const avif = "/sky.avif";
+  const artwork = {
+    published: true,
+    origin: "https://artwork.example",
+    files: {
+      [hero]: { key: "artwork/sky.webp", width: 960 },
+      [avif]: { key: "artwork/sky.avif", width: 960 },
+    },
+    images: { [hero]: { width: 960, height: 540, fallback: hero, webp: [hero], avif: [avif] } },
+  };
+  const DecorativeImage = await loadComponent("../app/home-shell/decorative-image.js");
+  const GameBootOverlay = await loadComponent("../app/game-player/GameBootOverlay.js", {
+    "../home-shell/artwork-delivery": { useArtworkDelivery: () => artwork },
+    "../home-shell/decorative-image": DecorativeImage,
+    "../home-shell/hero-images.mjs": { getHeroImageProps },
+    "../home-shell/shared": { getHeroImageStyle: () => undefined },
+  });
+  const html = renderToStaticMarkup(GameBootOverlay({ game: { ...game, heroImage: hero }, showBootOverlay: true }));
+  assert.match(html, /<source type="image\/avif" srcSet="https:\/\/artwork.example\/artwork\/sky.avif 960w"/);
+  assert.match(html, /<img[^>]*decoding="sync"[^>]*srcSet="https:\/\/artwork.example\/artwork\/sky.webp 960w"/);
 });

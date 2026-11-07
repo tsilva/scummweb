@@ -1195,7 +1195,7 @@ button.nav-icon-link {
 
 .game-import-dialog {
   width: min(34rem, calc(100% - 2rem));
-  height: min(30rem, calc(100dvh - 2rem));
+  max-height: min(30rem, calc(100dvh - 2rem));
   padding: clamp(1rem, 4vw, 1.75rem);
   border: 1px solid var(--surface-highest);
   border-radius: 0.75rem;
@@ -1211,8 +1211,8 @@ button.nav-icon-link {
   gap: 1rem;
 }
 
-.game-import-dialog:not(:has(> .game-import-details)) {
-  height: auto;
+.game-import-dialog--scanning {
+  height: 30rem;
 }
 
 .game-import-dialog::backdrop {
@@ -1268,7 +1268,7 @@ button.nav-icon-link {
 }
 
 .game-import-details {
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 0;
   overflow: auto;
   overscroll-behavior: contain;

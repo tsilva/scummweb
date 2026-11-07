@@ -1,3 +1,6 @@
+import { useArtworkDelivery } from "../home-shell/artwork-delivery";
+import DecorativeImage from "../home-shell/decorative-image";
+import { getHeroImageProps } from "../home-shell/hero-images.mjs";
 import { getHeroImageStyle } from "../home-shell/shared";
 
 export default function GameBootOverlay({
@@ -7,6 +10,9 @@ export default function GameBootOverlay({
   showBootOverlay,
   title,
 }) {
+  const artwork = useArtworkDelivery();
+  const backdrop = game ? getHeroImageProps(game, artwork) : null;
+
   return (
     <div
       aria-hidden={showBootOverlay ? undefined : "true"}
@@ -16,15 +22,14 @@ export default function GameBootOverlay({
       data-launch-overlay="true"
       data-launch-overlay-state={hasBootFailed ? "error" : showBootOverlay ? "visible" : "hidden"}
     >
-      {game?.heroImage ? (
-        <img
-          alt=""
+      {backdrop?.src ? (
+        <DecorativeImage
+          {...backdrop}
           className="game-route-boot-backdrop"
-          decoding="async"
+          decoding="sync"
           fetchPriority="high"
           loading="eager"
-          src={game.heroImage}
-          style={getHeroImageStyle(game.heroImagePosition)}
+          style={getHeroImageStyle(game.heroImagePosition, game.heroImageMobilePosition)}
         />
       ) : null}
       <div className="game-route-boot-scrim" />
