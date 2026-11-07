@@ -8,7 +8,7 @@ export default function useLaunchFeedback() {
   const [game, setGame] = useState(null);
 
   useEffect(() => {
-    // A full-page desktop launch can return through the back/forward cache.
+    // A document restored from the back/forward cache can retain a pending launch.
     const reset = (event) => { if (event.persisted) setGame(null); };
     window.addEventListener("pageshow", reset);
     return () => window.removeEventListener("pageshow", reset);
