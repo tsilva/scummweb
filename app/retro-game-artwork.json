@@ -11966,13 +11966,20 @@
             "sha256": "2b67560163fda1541c5bd0c4d495b5225b74a060ea3400dcf6566c08d4f01d88"
           }
         ]
+      },
+      "poster": {
+        "url": "https://images.launchbox-app.com/152f9368-4f32-4b3a-a1d2-2a5d101e002f.jpg",
+        "kind": "box-scan",
+        "credit": "Original Brøderbund Living Books retail front, LaunchBox Games Database",
+        "sha256": "2b67560163fda1541c5bd0c4d495b5225b74a060ea3400dcf6566c08d4f01d88"
       }
     },
     "summary": "Meet Dr. Seuss’s curious creatures and follow an animated journey through the alphabet.",
     "studio": "Living Books",
     "genre": "Interactive storybook",
     "heroImage": "/launcher/dr-seusss-abc-scummweb-generated-2026-11-07-r2-hero.webp",
-    "heroImagePosition": "70% 42%"
+    "heroImagePosition": "70% 42%",
+    "posterImage": "/launcher/dr-seusss-abc-original-cover.webp"
   },
   "scumm:fbear": {
     "title": "Fatty Bear's Birthday Surprise",
@@ -12191,13 +12198,20 @@
             "sha256": "64eabd218cf74c92633fcd1239691e2135c9482c01fb6a4ab04be1e9ee491050"
           }
         ]
+      },
+      "poster": {
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Green%20Eggs%20and%20Ham.png",
+        "kind": "box-scan",
+        "credit": "Original Living Books retail front, Libretro",
+        "sha256": "64eabd218cf74c92633fcd1239691e2135c9482c01fb6a4ab04be1e9ee491050"
       }
     },
     "summary": "Follow Sam-I-Am and his reluctant friend in an animated adaptation of Dr. Seuss’s rhyming story.",
     "studio": "Living Books",
     "genre": "Interactive storybook",
     "heroImage": "/launcher/green-eggs-and-ham-scummweb-generated-2026-11-07-r1-hero.webp",
-    "heroImagePosition": "70% 42%"
+    "heroImagePosition": "70% 42%",
+    "posterImage": "/launcher/green-eggs-and-ham-original-cover.webp"
   },
   "mohawk:harryhh": {
     "title": "Harry and the Haunted House",
@@ -12416,13 +12430,20 @@
             "sha256": "5313b0d24584471e97ca0a87d3240cb8e0d058df7073d6844b0ce6335c02f0c9"
           }
         ]
+      },
+      "poster": {
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%236_%20The%20Dark%20Crystal.png",
+        "kind": "box-scan",
+        "credit": "Original Sierra retail front, Libretro",
+        "sha256": "5313b0d24584471e97ca0a87d3240cb8e0d058df7073d6844b0ce6335c02f0c9"
       }
     },
     "summary": "Guide Jen across Thra to restore the Dark Crystal in Sierra’s adaptation of the fantasy film.",
     "studio": "Sierra On-Line",
     "genre": "Illustrated text adventure",
     "heroImage": "/launcher/the-dark-crystal-scummweb-generated-2026-11-07-r1-hero.webp",
-    "heroImagePosition": "70% 42%"
+    "heroImagePosition": "70% 42%",
+    "posterImage": "/launcher/the-dark-crystal-original-cover.webp"
   },
   "sci:hoyle1": {
     "title": "Hoyle's Official Book of Games: Volume 1",
@@ -12641,13 +12662,29 @@
             "sha256": "ebd39df20042df2791914068dfa1ec21f40b099fa857893ac9f0c7188212dc45"
           }
         ]
+      },
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-illustrated-cover",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/King's%20Quest_%20King's%20Questions.png",
+            "kind": "box-scan",
+            "credit": "Original Sierra King’s Quest Collector’s Edition cover for the compilation that included King’s Questions, Libretro",
+            "sha256": "ebd39df20042df2791914068dfa1ec21f40b099fa857893ac9f0c7188212dc45",
+            "usage": "Visual identity, era, and palette reference only. The custom illustration is a new composition."
+          }
+        ]
       }
     },
     "summary": "Test what you remember about the King’s Quest adventures in this trivia game from the Collector’s Edition.",
     "studio": "Sierra On-Line",
     "genre": "Trivia",
     "heroImage": "/launcher/kings-questions-scummweb-generated-2026-11-07-r1-hero.webp",
-    "heroImagePosition": "70% 42%"
+    "heroImagePosition": "70% 42%",
+    "posterImage": "/launcher/kings-questions-scummweb-generated-2026-11-07-r2-cover.webp"
   },
   "scumm:airport": {
     "title": "Let's Explore the Airport",
@@ -13059,13 +13096,29 @@
             "sha256": "742da9fa231fa1701ffd479bcb9786359e251423916820046481dad9118ee4b2"
           }
         ]
+      },
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-illustrated-cover",
+        "references": [
+          {
+            "url": "https://img.itch.zone/aW1hZ2UvODIwMTIvMzg2MDkzLnBuZw==/original/snss04.png",
+            "kind": "official-promo-art",
+            "credit": "Official OpenQuest promotional title art by Michael Sheail and Jenni McMurray, itch.io",
+            "sha256": "742da9fa231fa1701ffd479bcb9786359e251423916820046481dad9118ee4b2",
+            "usage": "Visual identity, era, and palette reference only. The custom illustration is a new composition."
+          }
+        ]
       }
     },
     "summary": "Explore Michael Sheail’s short two-room adventure in its ScummC adaptation.",
     "studio": "Michael Sheail",
     "genre": "Point-and-click adventure",
     "heroImage": "/launcher/open-quest-scummweb-generated-2026-11-07-r1-hero.webp",
-    "heroImagePosition": "70% 42%"
+    "heroImagePosition": "70% 42%",
+    "posterImage": "/launcher/open-quest-scummweb-generated-2026-11-07-r1-cover.webp"
   },
   "scumm:pajama2": {
     "title": "Pajama Sam 2: Thunder and Lightning Aren't so Frightening",
@@ -14584,13 +14637,20 @@
             "sha256": "65ab5a268da4c05868ae47ae945f32f81a9120062f857c7d80a6c72047f66a9c"
           }
         ]
+      },
+      "poster": {
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20The%20Cat%20in%20the%20Hat.png",
+        "kind": "box-scan",
+        "credit": "Original Brøderbund Living Books retail front, Libretro",
+        "sha256": "65ab5a268da4c05868ae47ae945f32f81a9120062f857c7d80a6c72047f66a9c"
       }
     },
     "summary": "Read along as the Cat in the Hat brings chaos to a quiet, rainy afternoon.",
     "studio": "Living Books",
     "genre": "Interactive storybook",
     "heroImage": "/launcher/the-cat-in-the-hat-scummweb-generated-2026-11-07-r1-hero.webp",
-    "heroImagePosition": "70% 42%"
+    "heroImagePosition": "70% 42%",
+    "posterImage": "/launcher/the-cat-in-the-hat-original-cover.webp"
   },
   "made:manhole": {
     "title": "The Manhole",
@@ -14714,13 +14774,29 @@
             "sha256": "1805d7a9994e57992dbfa0350f52e30c1200e5464ddbbfa22deed0d26c210faf"
           }
         ]
+      },
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-illustrated-cover",
+        "references": [
+          {
+            "url": "https://cdn.t3n.de/news/wp-content/uploads/2024/12/a-computer-christmas.png?class=default",
+            "kind": "official-promo-art",
+            "credit": "Original Sierra On-Line 1986 holiday demo artwork, capture archived by t3n",
+            "sha256": "1805d7a9994e57992dbfa0350f52e30c1200e5464ddbbfa22deed0d26c210faf",
+            "usage": "Visual identity, era, and palette reference only. The custom illustration is a new composition."
+          }
+        ]
       }
     },
     "summary": "Watch Sierra’s first animated holiday greeting, with Christmas scenes and seasonal music.",
     "studio": "Sierra On-Line",
     "genre": "Holiday animation",
     "heroImage": "/launcher/christmas-card-1986-scummweb-generated-2026-11-07-r1-hero.webp",
-    "heroImagePosition": "70% 42%"
+    "heroImagePosition": "70% 42%",
+    "posterImage": "/launcher/christmas-card-1986-scummweb-generated-2026-11-07-r1-cover.webp"
   },
   "sci:christmas1988": {
     "title": "Christmas Card 1988 (Demo)",
@@ -14748,13 +14824,29 @@
             "sha256": "34c7f6b77203420d4756b015b8e54eb11bfbfaa517372c6dccd7b9c2109ccb7f"
           }
         ]
+      },
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-illustrated-cover",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Christmas%20Card%201988.png",
+            "kind": "official-promo-art",
+            "credit": "Original Sierra On-Line 1988 holiday demo artwork, capture archived by Libretro",
+            "sha256": "34c7f6b77203420d4756b015b8e54eb11bfbfaa517372c6dccd7b9c2109ccb7f",
+            "usage": "Visual identity, era, and palette reference only. The custom illustration is a new composition."
+          }
+        ]
       }
     },
     "summary": "Listen to seasonal music and watch an animated Christmas greeting from Sierra On-Line.",
     "studio": "Sierra On-Line",
     "genre": "Holiday animation",
     "heroImage": "/launcher/christmas-card-1988-scummweb-generated-2026-11-07-r1-hero.webp",
-    "heroImagePosition": "70% 42%"
+    "heroImagePosition": "70% 42%",
+    "posterImage": "/launcher/christmas-card-1988-scummweb-generated-2026-11-07-r1-cover.webp"
   },
   "sci:christmas1990": {
     "title": "Christmas Card 1990: The Seasoned Professional (Demo)",
@@ -14783,13 +14875,29 @@
             "sha256": "e2305a3e1f4600b77f1484caaec31fee082dc5bf46b09aa5a83e633e257da7af"
           }
         ]
+      },
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-illustrated-cover",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Christmas%20Card%201990_%20The%20Seasoned%20Professional.png",
+            "kind": "official-promo-art",
+            "credit": "Original Sierra On-Line 1990 holiday demo artwork, capture archived by Libretro",
+            "sha256": "e2305a3e1f4600b77f1484caaec31fee082dc5bf46b09aa5a83e633e257da7af",
+            "usage": "Visual identity, era, and palette reference only. The custom illustration is a new composition."
+          }
+        ]
       }
     },
     "summary": "Watch an audition for Christmas characters go awry in Sierra’s animated holiday short.",
     "studio": "Sierra On-Line",
     "genre": "Holiday animation",
     "heroImage": "/launcher/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-hero.webp",
-    "heroImagePosition": "70% 42%"
+    "heroImagePosition": "70% 42%",
+    "posterImage": "/launcher/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-cover.webp"
   },
   "sci:christmas1992": {
     "title": "Christmas Card 1992 (Demo)",
@@ -14817,13 +14925,29 @@
             "sha256": "69fc76a8323a4f1895964c8891384cb1b261a5f36c21df45fc6812b57f78c860"
           }
         ]
+      },
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-illustrated-cover",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Christmas%20Card%201992.png",
+            "kind": "official-promo-art",
+            "credit": "Original Sierra On-Line 1992 holiday demo card artwork, capture archived by Libretro",
+            "sha256": "69fc76a8323a4f1895964c8891384cb1b261a5f36c21df45fc6812b57f78c860",
+            "usage": "Visual identity, era, and palette reference only. The custom illustration is a new composition."
+          }
+        ]
       }
     },
     "summary": "Enjoy a Sierra holiday greeting with snowy landscapes and seasonal music.",
     "studio": "Sierra On-Line",
     "genre": "Holiday animation",
     "heroImage": "/launcher/christmas-card-1992-scummweb-generated-2026-11-07-r1-hero.webp",
-    "heroImagePosition": "70% 42%"
+    "heroImagePosition": "70% 42%",
+    "posterImage": "/launcher/christmas-card-1992-scummweb-generated-2026-11-07-r1-cover.webp"
   },
   "agi:ddp": {
     "title": "Donald Duck's Playground",
@@ -14837,11 +14961,18 @@
       "galleryNote": "Gameplay capture references are pending.",
       "metadata": [
         "https://www.wiki.sierrahelp.com/index.php/DDPG"
-      ]
+      ],
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://images.launchbox-app.com/5255245c-b404-4950-961e-79909872cb4c.jpg",
+        "credit": "Original Sierra and Walt Disney retail box front, archived by LaunchBox Games Database",
+        "sha256": "0c3dcccbe1b684735f0d74f5ff1477174ef88722013a2941ec694be53c356a3c"
+      }
     },
     "summary": "Help Donald earn change through four jobs and buy equipment for his nephews’ playground.",
     "studio": "Sierra On-Line",
-    "genre": "Educational game"
+    "genre": "Educational game",
+    "posterImage": "/launcher/donald-ducks-playground-original-cover.webp"
   },
   "gob:inca2": {
     "title": "Inca II: Wiracocha",
@@ -14902,12 +15033,28 @@
             "sha256": "81caf4ac3c737ef766d116d4003b2c5b44a32bb445d999fc529e92038eafc197"
           }
         ]
+      },
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-07",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "original-illustrated-cover",
+        "references": [
+          {
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Astro%20Chicken.png",
+            "kind": "official-promo-art",
+            "credit": "Original Sierra On-Line Astro Chicken title artwork, capture archived by Libretro",
+            "sha256": "81caf4ac3c737ef766d116d4003b2c5b44a32bb445d999fc529e92038eafc197",
+            "usage": "Visual identity, era, and palette reference only. The custom illustration is a new composition."
+          }
+        ]
       }
     },
     "summary": "Land the arcade chicken safely on a series of pads in Sierra’s playable Space Quest III demo.",
     "studio": "Sierra On-Line",
     "genre": "Arcade game",
     "heroImage": "/launcher/astro-chicken-scummweb-generated-2026-11-07-r1-hero.webp",
-    "heroImagePosition": "70% 42%"
+    "heroImagePosition": "70% 42%",
+    "posterImage": "/launcher/astro-chicken-scummweb-generated-2026-11-07-r1-cover.webp"
   }
 }
