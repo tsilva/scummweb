@@ -32834,6 +32834,38 @@
       "contentType": "image/webp",
       "width": 960,
       "height": 576
+    },
+    "/launcher/inca-ii-wiracocha-scummweb-generated-2026-11-07-r1-cover.webp": {
+      "key": "artwork/e2e54477147a4f9132b69807a52015f2917ff5ae6c3fc9ea7e8e596e3eae84c7/inca-ii-wiracocha-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "e2e54477147a4f9132b69807a52015f2917ff5ae6c3fc9ea7e8e596e3eae84c7",
+      "bytes": 93848,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/responsive/inca-ii-wiracocha-scummweb-generated-2026-11-07-r1-cover-320.webp": {
+      "key": "artwork/ba7e636c16744ab8c13d9dbdc16b5a7232df3999d3d5f2439de7492b88bd9af0/inca-ii-wiracocha-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "ba7e636c16744ab8c13d9dbdc16b5a7232df3999d3d5f2439de7492b88bd9af0",
+      "bytes": 18782,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/inca-ii-wiracocha-scummweb-generated-2026-11-07-r1-cover-640.webp": {
+      "key": "artwork/f07e594062d11440b78caf58aa787d62b90de7ee4ae9c003f2bc93e8b4b18429/inca-ii-wiracocha-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "f07e594062d11440b78caf58aa787d62b90de7ee4ae9c003f2bc93e8b4b18429",
+      "bytes": 48712,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/inca-ii-wiracocha-scummweb-generated-2026-11-07-r1-cover-480.webp": {
+      "key": "artwork/7eb4126d154ca8ecbc1676406cb3abdfe251a53087d3baa4001479062a259681/inca-ii-wiracocha-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "7eb4126d154ca8ecbc1676406cb3abdfe251a53087d3baa4001479062a259681",
+      "bytes": 33038,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
     }
   },
   "images": {
@@ -35286,6 +35318,18 @@
         "/launcher/responsive/ihnm-scummweb-generated-2026-11-06-r1-cover-480.webp",
         "/launcher/responsive/ihnm-scummweb-generated-2026-11-06-r1-cover-640.webp",
         "/launcher/ihnm-scummweb-generated-2026-11-06-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/inca-ii-wiracocha-scummweb-generated-2026-11-07-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/inca-ii-wiracocha-scummweb-generated-2026-11-07-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/inca-ii-wiracocha-scummweb-generated-2026-11-07-r1-cover-320.webp",
+        "/launcher/responsive/inca-ii-wiracocha-scummweb-generated-2026-11-07-r1-cover-480.webp",
+        "/launcher/responsive/inca-ii-wiracocha-scummweb-generated-2026-11-07-r1-cover-640.webp",
+        "/launcher/inca-ii-wiracocha-scummweb-generated-2026-11-07-r1-cover.webp"
       ],
       "avif": []
     },

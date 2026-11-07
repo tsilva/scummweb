@@ -3,6 +3,8 @@ import fs from "node:fs";
 import { createHash } from "node:crypto";
 import test from "node:test";
 import { getImportedGamePresentation } from "../app/game-presentation.js";
+import { getRecognizedGames } from "../app/recognized-games.mjs";
+import { getSourceGamePresentation } from "../app/game-play-source.mjs";
 import { getVersionedSiteAssetPath } from "../app/asset-paths.js";
 import storage from "../data/artwork-storage.json" with { type: "json" };
 
@@ -16,6 +18,29 @@ test("recognized imports retain their shared hero artwork and focal position", (
     assert.equal(imported.heroImagePosition, game.heroImagePosition, id);
     assert.equal(imported.heroImageMobilePosition, game.heroImageMobilePosition, id);
   }
+});
+
+test("previously imported DOS archives resolve to their game pages by stored ZIP name", () => {
+  const recognized = getRecognizedGames([]);
+  const cases = [
+    ["Donald Duck's Playground (Floppy DOS).zip", "agi:ddp", "Donald Duck's Playground"],
+    ["Inca II - Wiracocha (Floppy DOS).zip", "gob:inca2", "Inca II: Wiracocha"],
+    ["Sfinx v1.1 (DOS, English).zip", "cge2:sfinx", "Sfinx"],
+  ];
+  for (const [name, familyId, title] of cases) {
+    const game = getSourceGamePresentation({ name }, [], recognized);
+    assert.equal(game.familyId, familyId, name);
+    assert.equal(game.displayTitle, title, name);
+    assert.ok(game.href, name);
+  }
+
+  const sfinx = getImportedGamePresentation(cases[2][0]);
+  const officialSfinx = getImportedGamePresentation("sfinx-en-v1.1.zip");
+  for (const field of ["posterImage", "heroImage", "platform", "language", "edition"]) {
+    assert.ok(sfinx[field], field);
+    assert.equal(sfinx[field], officialSfinx[field], field);
+  }
+  assert.equal(getImportedGamePresentation("Inca (Floppy DOS).zip"), null);
 });
 
 test("remakes retain separate identities, labels and edition-matched artwork", () => {

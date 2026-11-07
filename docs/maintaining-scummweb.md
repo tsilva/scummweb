@@ -1070,9 +1070,14 @@ or request-time rendering.
 - The Secret of Monkey Island (Demo) uses
   [Steve Purcell's DOS box art](https://gamesdb.launchbox-app.com/games/images/139-the-secret-of-monkey-island)
   and [DOS EGA demo screenshots](https://www.dosgamesarchive.com/download/the-secret-of-monkey-island).
-- Sfinx ZIPs use the CGE2 engine. Artwork comes from the
+- Sfinx ZIPs use the CGE2 engine. Both `sfinx-en-v1.1.zip` and
+  `Sfinx v1.1 (DOS, English).zip` resolve to the same game, edition and artwork.
+  Artwork comes from the
   [original box front scan](https://gamesdb.launchbox-app.com/games/images/86024-sfinx)
   and [ScummVM gameplay captures](https://www.scummvm.org/screenshots/lkavalon/).
+- The DOS ZIP names for Donald Duck's Playground and Inca II: Wiracocha resolve
+  to their dedicated import pages. These names select library metadata only.
+  ScummVM still detects the actual game files on launch.
 - Imported Indiana Jones games use the SCUMM engine. The importer recognizes
   the full titles in ZIP names and shares art across platform,
   language, and edition labels in parentheses. Their posters come from the

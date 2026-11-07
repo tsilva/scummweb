@@ -19235,6 +19235,41 @@
         }
       ],
       "prompt": "Create an illustrated wide 5:3 ScummWEB hero for The New Kid on the Block. Use the attached original artwork only as the source for exact characters, costumes, palette, and period drawing style. Scene: the original small child in red running along a sidewalk past the neighbors peeking out from a whimsical row of dark ochre homes, in the original warm hand-drawn pen and watercolor. Place the subjects safely inset on the right around 70% width, with a naturally dark and quiet left 42% for white interface text and breathing room near top and bottom. Full-bleed illustration, no title text, package frames, logos, credits, lettering, or watermarks. Native at least 1600×960 at 5:3."
+    },
+    {
+      "target": "inca2",
+      "role": "cover",
+      "asset": "/launcher/inca-ii-wiracocha-scummweb-generated-2026-11-07-r1-cover.webp",
+      "generatedOn": "2026-11-07",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "6c0279ab32bc806df3c542fdad685b6a4e9ba53131681a851a2ff0df0ca2b498",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "e2e54477147a4f9132b69807a52015f2917ff5ae6c3fc9ea7e8e596e3eae84c7",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Inca%20II_%20Wiracocha%20%28DOS_English%20%28US%29%29.png",
+          "kind": "box-scan",
+          "credit": "Original Sierra DOS retail box front, archived by Libretro",
+          "sha256": "f7920f930c47ad657e9ad3d700645372ee0e9710548084641894b70ad37a7da0"
+        }
+      ],
+      "prompt": "Conservatively restore the provided archival DOS retail box front for the game INCA II. This scan is the edit target and only visual reference. Clean paper wear and scan noise and improve legibility, retaining the full printed front, the original deep coral background, gold-framed original portrait and spacecraft illustration, INCA II title, exact tagline and original Sierra footer. Preserve every edge, every line of existing print and all layout and proportions. Place the flat, straight front on an at least 900 by 1200 pixel 3:4 portrait canvas, with only the minimal color-matched margins needed. No new illustration, graphics, text or frames."
     }
   ]
 }
