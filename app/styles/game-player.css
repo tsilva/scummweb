@@ -45,6 +45,53 @@
   }
 }
 
+.game-route-shell.has-command-input {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+}
+
+.game-route-shell.has-command-input .game-route-frame {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  height: auto;
+}
+
+.game-route-command {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 36rem;
+  padding: max(1rem, env(safe-area-inset-top)) max(0.75rem, env(safe-area-inset-right))
+    0.5rem calc(max(0.5rem, env(safe-area-inset-left)) + 3.25rem);
+}
+
+.game-route-command input,
+.game-route-command button {
+  min-height: 2.75rem;
+  padding: 0 0.75rem;
+  border: 1px solid #5a605a;
+  border-radius: 0.5rem;
+  background: #171a17;
+  color: #fff;
+  font: inherit;
+  font-size: 1rem;
+}
+
+.game-route-command input {
+  flex: 1;
+  min-width: 0;
+}
+
+.game-route-command input::placeholder {
+  color: #b7bdb7;
+}
+
+.game-route-command button {
+  cursor: pointer;
+}
+
 .game-route-boot-overlay {
   position: absolute;
   inset: 0;

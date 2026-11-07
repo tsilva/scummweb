@@ -10,7 +10,7 @@ import GamePlayerControls from "./game-player/GamePlayerControls";
 import GameTouchCursorPad from "./game-player/GameTouchCursorPad";
 import { createGameLaunchAnalytics } from "./game-player/game-launch-analytics.mjs";
 import { observeStartupDiagnostics } from "./game-player/startup-diagnostics.mjs";
-import { dispatchSyntheticKeypressSequence } from "./game-player/keyboard";
+import { dispatchGameCommand, dispatchSyntheticKeypressSequence } from "./game-player/keyboard";
 import { getGameMenuShortcut } from "./game-player/game-menu.mjs";
 import { useBootState } from "./game-player/useBootState";
 import { useImmersiveMode } from "./game-player/useImmersiveMode";
@@ -167,8 +167,11 @@ export default function GameRouteFrame({
   const showBootOverlay = !bootState.hasBootCompleted || hasBootFailed;
   const mobileControlsReady =
     immersiveMode.isMobileViewport && bootState.hasBootCompleted && !hasBootFailed;
+  const usesCommandInput = game?.engineId === "adl";
+  const showCommandInput = mobileControlsReady && usesCommandInput;
+  const showTouchMouse = mobileControlsReady && !usesCommandInput;
   const touchCursorPad = useTouchCursorPad({
-    enabled: mobileControlsReady,
+    enabled: showTouchMouse,
     frameRef,
   });
 
@@ -435,7 +438,7 @@ export default function GameRouteFrame({
         iframe.contentWindow?.postMessage(
           {
             type: SCUMMWEB_ASPECT_RATIO_MESSAGE_TYPE,
-            mode: immersiveMode.isMobileViewport ? "fit-height" : "preserve",
+            mode: immersiveMode.isMobileViewport && !usesCommandInput ? "fit-height" : "preserve",
           },
           window.location.origin,
         );
@@ -448,7 +451,7 @@ export default function GameRouteFrame({
     return () => {
       iframe.removeEventListener("load", postAspectRatioMode);
     };
-  }, [frameSrc, immersiveMode.isMobileViewport]);
+  }, [frameSrc, immersiveMode.isMobileViewport, usesCommandInput]);
 
   useEffect(() => {
     setExitHref(getExitHrefFromSrc(frameSrc || src));
@@ -576,6 +579,15 @@ export default function GameRouteFrame({
     await dispatchSyntheticKeypressSequence(frameRef.current, gameMenuShortcut);
   }
 
+  function handleCommandSubmit(event) {
+    event.preventDefault();
+    const input = event.currentTarget.elements.namedItem("command");
+    if (dispatchGameCommand(frameRef.current, input.value)) {
+      input.value = "";
+      input.blur();
+    }
+  }
+
   function handleSkipIntroClick() {
     dismissSkipIntroButton();
 
@@ -601,12 +613,10 @@ export default function GameRouteFrame({
     !immersiveMode.isMobileViewport && immersiveMode.canFullscreen && bootState.hasBootPresentationCompleted;
   const showGameMenuButton =
     Boolean(gameMenuShortcut) && bootState.showGameMenuButton && !hasBootFailed;
-  const showTouchClickButtons = mobileControlsReady;
-  const showTouchCursorPad = mobileControlsReady;
-  const showBottomActions = showSkipIntroBottomAction || showTouchClickButtons;
+  const showBottomActions = showSkipIntroBottomAction || showTouchMouse;
 
   return (
-    <div className="game-route-shell" ref={shellRef}>
+    <div className={`game-route-shell${showCommandInput ? " has-command-input" : ""}`} ref={shellRef}>
       <GameBootOverlay
         bootStatusText={archiveError || (loadArchive && !archivePrepared
           ? archiveCached ? "Opening cached game…" : archiveProgress === null ? archiveLoadingText : gameLoadingStatus(archiveProgress)
@@ -633,7 +643,7 @@ export default function GameRouteFrame({
         showFullscreenControl={showFullscreenControl}
         showGameMenuButton={showGameMenuButton}
         showSkipIntroAction={showSkipIntroBottomAction}
-        showTouchClickButtons={showTouchClickButtons}
+        showTouchClickButtons={showTouchMouse}
       />
       <GameTouchCursorPad
         indicatorOffset={touchCursorPad.indicatorOffset}
@@ -641,8 +651,27 @@ export default function GameRouteFrame({
         onPointerDown={touchCursorPad.handlePointerDown}
         onPointerMove={touchCursorPad.handlePointerMove}
         onPointerUp={touchCursorPad.handlePointerUp}
-        showTouchCursorPad={showTouchCursorPad}
+        showTouchCursorPad={showTouchMouse}
       />
+      {showCommandInput ? (
+        <form className="game-route-command" onSubmit={handleCommandSubmit}>
+          <input
+            aria-label="Game command"
+            autoCapitalize="off"
+            autoComplete="off"
+            autoCorrect="off"
+            enterKeyHint="send"
+            maxLength={255}
+            name="command"
+            pattern="[ -~]*"
+            placeholder="Type a command"
+            spellCheck={false}
+            title="Use letters, numbers, spaces, or basic punctuation."
+            type="text"
+          />
+          <button type="submit">Send</button>
+        </form>
+      ) : null}
       {frameSrc && !archiveError ? <iframe
         key={loadArchive ? frameSrc : undefined}
         allow="autoplay; fullscreen"
