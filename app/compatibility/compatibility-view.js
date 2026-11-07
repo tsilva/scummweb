@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { Search, X } from "lucide-react";
 import { compatibilityStatusLabels, filterCompatibilityEntries, getCompatibilitySummary } from "../../lib/game-compatibility.mjs";
+import "../styles/compatibility.css";
 
 export default function CompatibilityView({ entries: allEntries, recordedOn, upstreamReference, standalone = false, active = true, onClose }) {
   const results = useRef(null);
