@@ -60,11 +60,6 @@
   outline: none;
 }
 
-.nav-brand:focus-visible {
-  outline: 2px solid transparent;
-  box-shadow: 0 4px 0 -2px var(--accent-strong);
-}
-
 .nav-brand-logo {
   width: auto;
   height: 1.35rem;
