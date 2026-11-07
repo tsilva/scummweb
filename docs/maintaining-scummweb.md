@@ -571,11 +571,12 @@ It offers **Start audio** while the browser's audio context is suspended and
 consumes the button gesture so movies do not interpret it as a skip command.
 Maintain it in `web-shell/`; the staging script copies it into the managed bundle.
 
-## Evaluator-only Queen telemetry
+## Evaluator telemetry
 
-Native patch `16-report-queen-evaluation-variables.patch` provides a read-only
-room and game variable provider for an external AgentSCUMM evaluator. It is inactive unless the
-host sets `__scummwebEvaluationEnabled` before the engine starts. After display
+The host opts in by setting `__scummwebEvaluationEnabled` before launch. Every
+engine publishes its native IDs in `__scummwebEvaluationGame`. Room and game
+variable support depends on the engine. Native patch
+`16-report-queen-evaluation-variables.patch` provides both for Queen. After display
 updates it publishes `__scummwebEvaluationState` with protocol version,
 `engine_id`, `room_id`, `room_name`, `room_ready`, and native monotonic time.
 `room_ready` requires no pending room change and no running cutaway; it does not
@@ -597,11 +598,103 @@ because it writes the state array directly. The variable queue holds at most
 drain the queues in place. A consumer can read the existing room protocol
 independently of the variable stream.
 
-Keep evaluator state out of ordinary player observations. Additional engines
+Native patch `18-report-scumm-evaluation-variables.patch` supports SCUMM titles
+through the same queues. It reports physical room resource IDs and compares
+native banks at engine ticks. Its banks are `scumm_vars`, `object_state`, and,
+where present, `scumm_bit_bytes` and `room_vars`. A change describes a difference
+between samples. Values written and reverted within one tick may be absent.
+Successful loads and restarts start a new baseline. SCUMM also publishes the
+detected index MD5 so consumers can gate rules on the correct edition.
+
+Keep raw evaluator state out of ordinary player observations. Additional engines
 can publish their own indexed banks through the same record format. An engine
 without room telemetry sets `__scummwebEvaluationGameVariableEngine` to its
 engine ID when it creates the variable queue. Queen supplies its engine ID in
 the room feed, and its provider is compiled into the native Queen plugin.
+
+### Querying game state
+
+Launch a game with `?telemetry=1` on its ScummWEB play URL. The route forwards
+the opt-in to the game frame. In the frame, or from its same-origin parent,
+`window.scummwebTelemetry.read()` returns a detached `{ identity, snapshot }`
+object. Each field starts as `null` until its provider publishes. The default
+launch leaves the API and sampling disabled. The snapshot stays in the frame
+and ScummWEB does not send it over the network.
+
+A snapshot has `schema_version: 1`, `room_id` (an engine room or scene ID,
+or `null`), optional `room_name` and `room_ready`, `sample_time_ms` (the
+shell's monotonic clock), and `banks` (indexed arrays or objects keyed by
+the native variable name or ID). The engine publishes a whole snapshot at
+an update boundary, typically every 250 ms and sooner on room changes.
+Querying is independent of progress maps and the Queen and SCUMM evaluator
+queues. A sample can miss transient writes.
+
+| Engine | Room | Variable banks |
+| --- | --- | --- |
+| Access | Player room | `flags` |
+| ADL | Room | `vars` |
+| AGI | Current room in the AGI VM | `vars`, packed `flag_bytes` |
+| AGOS | Waxworks room where known | `vars`, `vars_secondary` where enabled |
+| BBVS | Game scene | `game_vars` |
+| CGE | Scene | `flags` |
+| CGE2 | Scene | — |
+| Cine | — | `global_vars` |
+| Composer | Page when unambiguous | `vars` |
+| Cruise | — | `global_vars` |
+| Draci | Current room | `vars` |
+| Drascula | Current room | `flags` |
+| DreamWeb | Location | `game_vars` |
+| Gnap | Scene | `flag_word` |
+| Gob | TOT script filename | `vars` |
+| GOT | Level | `flags` |
+| Groovie | — | `script_vars` |
+| Hopkins | Room | `state_bytes` |
+| Hugo | Screen | `screen_states` |
+| Kyra | Scene or dungeon block | `flag_bytes`, `location` where provided |
+| Lab | Room | `condition_words` |
+| Lure | Displayed room | `value_fields` |
+| MADE | — | `vars` |
+| MADS | Room | `globals` |
+| Mohawk | Myst or Riven card, Living Books page | Myst `globals`, Riven and Living Books `vars` |
+| Mortevielle | Place | `available_questions`, `hints_found`, `game_vars` |
+| Neverhood | Scene | `vars` keyed by slot and native hash |
+| NGI | Scene | `globals` |
+| Parallaction | Location | `global_flag_word`, `location_flag_words` |
+| Pegasus | Room | `global_flags`, `scoring_flags`, `location` |
+| Plumbers | Scene | `game_vars` |
+| Queen | Room, name and readiness | `game_state` |
+| SAGA | Scene | `script_common_bytes`, `global_flag_word` |
+| SCI | Script's current room global | `globals` |
+| SCUMM | Physical room and readiness | `scumm_vars`, `object_state`, `scumm_bit_bytes` and `room_vars` where present |
+| Sherlock | Current scene | `flags` |
+| Sky | Script screen | `script_vars` |
+| Sword1 | Script screen | `script_vars` |
+| Sword2 | Script location | `script_vars` |
+| Sword25 | — | Numeric and Boolean `lua_globals` |
+| TeenAgent | Scene | `save_state_bytes` |
+| Tinsel | Scene resource handle | `globals` |
+| Titanic | Room | — |
+| Toltecs | Scene resource | `engine_vars` |
+| Tony | Location | `mpal_vars` |
+| Toon | Current scene | `game_globals` |
+| Touche | Current room | `flags` |
+| TSAGE | Scene | `flags` |
+| Tucker | Location | `flags` |
+| Voyeur | — | `game_vars` |
+| Wintermute | Scene filename | Numeric `globals` |
+| ZVision | World, room, node and view code | `state`, `flags` |
+
+SCI exposes numeric globals as signed values and uses `null` for references
+and uninitialized registers. Banks are bounded to 4,096 indexed or named
+values. The IDs and keys retain their engine-specific meaning. The table
+lists the engine hooks in the managed build. Some editions use another
+interpreter path or have no current room or variables before gameplay.
+When there is no sample, the engine and game identity can still be queried.
+
+For a new adapter, use an engine update boundary and copy game-owned values
+with `ScummWebTelemetry::Sample`. Expose a room only when the engine stores
+a meaningful room or scene identifier. Verify an initial sample and a state
+change in a real title without relying on a game-specific progress map.
 
 ## Rebuilding and upgrading ScummVM
 

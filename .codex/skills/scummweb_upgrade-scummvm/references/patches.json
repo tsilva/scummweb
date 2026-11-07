@@ -183,13 +183,15 @@
     {
       "path": "patches/scummvm/13-expose-native-save-list.patch",
       "status": "active",
-      "sha256": "11ccbfd6c9f70d54450db38017df1d27d3072d97d7a92a9327e36050448fa1d1",
+      "sha256": "96b4f979a810efb1809369d6d3636fc6ef9309e96e25ae53383adeabba9b593d",
       "purpose": "Expose native save listing and startup loading to ScummWEB, including isolated personal imports.",
       "invariants": [
         "Respect both native capability flags and PreAGI/Mohawk exclusions; never force unsupported startup loading.",
         "List real nonempty files; exclude nonexistent autosave placeholders, Kyrandia restart saves and Groovie slot 0 reserved/Open House state. Resolve fixed prefixes for Lure, Queen, Tony, Cruise and Draci through the native filename API.",
         "Choose the latest player save again before engine construction; retain the selected version savepath and actual detected target.",
-        "Query mode follows normal web plugin initialization and force-exits after save reporting, before engine creation; CLI listing is not a web query path."
+        "Query mode follows normal web plugin initialization and force-exits after save reporting, before engine creation; CLI listing is not a web query path.",
+        "Publish the native engine and game IDs on opt-in evaluation launches for every engine.",
+        "Publish game identity when either native evaluation or snapshot queries are explicitly enabled."
       ],
       "verification": [
         "Run browser save and native bridge tests; rebuild the managed runtime.",
@@ -232,13 +234,14 @@
     {
       "path": "patches/scummvm/16-report-queen-evaluation-variables.patch",
       "status": "active",
-      "sha256": "c184ddd3a201638b5b17818717a4000c318f8db2b95193226732a144b3c7187c",
+      "sha256": "dbce8c6d65dcbba7d827d4261b62278db98f9df7934c9cea6bbcc3f59fb15ff5",
       "purpose": "Provide opt-in read-only Queen room and indexed game variable telemetry for an external evaluator.",
       "invariants": [
         "No telemetry unless the evaluator enables it before launch. Keep the existing room protocol readable by older consumers.",
         "Report current room after display update. room_ready requires no pending room transition and no running cutaway.",
         "Publish a complete game variable baseline at first presentation and replace it after a save restore. Queue every subsequent changed value in native write order.",
-        "Retain room transitions and game variable records in bounded queues with explicit overflow, outside gameplay MCP observations."
+        "Retain room transitions and game variable records in bounded queues with explicit overflow, outside gameplay MCP observations.",
+        "Keep opt-in state snapshots independent of the ordered evaluator queues."
       ],
       "verification": [
         "Run test/queen-evaluation.test.mjs and rebuild the native Queen plugin.",
@@ -279,6 +282,52 @@
         "Reject out-of-range Sword25 slots and changed startup scripts explicitly."
       ],
       "retire_when": "Upstream provides equivalent Nippon Safes intro skipping with original choices and Sword25 startup loads at safe Lua persistence timing."
+    },
+    {
+      "path": "patches/scummvm/18-report-scumm-evaluation-variables.patch",
+      "status": "active",
+      "sha256": "7323ef1421762a6985292a90a702b31e4dbb2e5c87b7526468a8cb26f7121576",
+      "purpose": "Publish opt-in game identity for all engines and room and indexed variable samples for all SCUMM titles.",
+      "invariants": [
+        "Keep gameplay unchanged when evaluation is disabled. Use one engine-neutral game identity and the same bounded room and variable queues as Queen.",
+        "Publish SCUMM physical room IDs and sampled global variables, object states, packed bit variables, and room variables where available.",
+        "Reset the baseline on a successful restore or engine restart. Include the detected data MD5 for edition-specific maps.",
+        "Keep opt-in state snapshots independent of the ordered evaluator queues."
+      ],
+      "verification": [
+        "Rebuild the managed runtime and verify opt-in identity and SCUMM variable sampling.",
+        "Check Last Crusade surviving and fatal outcomes in the same credits room and verify a baseline after save restore."
+      ],
+      "retire_when": "Upstream provides equivalent opt-in engine identity, SCUMM variable sampling and save restore semantics."
+    },
+    {
+      "path": "patches/scummvm/19-query-engine-game-state.patch",
+      "status": "active",
+      "sha256": "8841e54e4497d460ce270e5399cd4b308c1208813b36f6af35c1d19f5bb5261e",
+      "purpose": "Publish opt-in room and VM variable snapshots for additional engines without a progress map.",
+      "invariants": [
+        "Sample at engine update boundaries. Preserve native variable indices and signedness, and omit room IDs that have no stable engine meaning.",
+        "Copy bounded banks only on opt-in and publish each sample atomically. SCI object references are omitted. Keep snapshots separate from evaluator transition queues.",
+        "Support numeric banks, named numeric variables, and named rooms without exposing VM references."
+      ],
+      "verification": [
+        "Rebuild the managed runtime, query a Sky title and Sierra titles without progress maps, and check that a title without an adapter reports unavailable fields."
+      ],
+      "retire_when": "Upstream exposes comparable, read-only room and variable snapshots for these engines."
+    },
+    {
+      "path": "patches/scummvm/20-extend-native-game-telemetry.patch",
+      "status": "active",
+      "sha256": "8e96c019327f3c8e2d2e90218dfc1e258ea5d821eb7bffd9ea8b475d33f57b43",
+      "purpose": "Expose room identifiers and script or game state across the remaining shipped engines.",
+      "invariants": [
+        "Read only engine-owned state after explicit launch opt-in. Preserve native names, numeric indices, and packed flag layout. Use null when there is no reliable room ID.",
+        "Never walk native pointers, invoke script callbacks, serialize saves, or mutate interpreter state to read telemetry. Omit nonnumeric VM objects."
+      ],
+      "verification": [
+        "Verify the pinned Wasm build, test direct ScummWEB and MCP opt-in, and spot-check room and named state in additional real engines."
+      ],
+      "retire_when": "Upstream provides equivalent opt-in per-engine room and state queries."
     }
   ]
 }

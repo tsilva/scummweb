@@ -10,6 +10,7 @@ import GamePlayerControls from "./game-player/GamePlayerControls";
 import GameTouchCursorPad from "./game-player/GameTouchCursorPad";
 import { createGameLaunchAnalytics } from "./game-player/game-launch-analytics.mjs";
 import { observeStartupDiagnostics } from "./game-player/startup-diagnostics.mjs";
+import { withGameTelemetry } from "./game-player/telemetry.mjs";
 import { dispatchGameCommand, dispatchSyntheticKeypressSequence } from "./game-player/keyboard";
 import { getGameMenuShortcut } from "./game-player/game-menu.mjs";
 import { useBootState } from "./game-player/useBootState";
@@ -387,6 +388,7 @@ export default function GameRouteFrame({
             launchSrc = `${shellUrl.pathname}${shellUrl.search}${shellUrl.hash}`;
           }
         }
+        launchSrc = withGameTelemetry(launchSrc, window.location.href);
         if (loadArchive) {
           // Load/compile ScummVM while the archive downloads or opens. The
           // handoff below supports either side becoming ready first.

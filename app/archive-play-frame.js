@@ -7,6 +7,7 @@ import { prepareRemoteGameArchive } from "./remote-game-archive.mjs";
 import { gameLoadingStatus } from "./game-loading-status.mjs";
 import GameRouteFrame from "./game-route-frame";
 import GameBootOverlay from "./game-player/GameBootOverlay";
+import { withGameTelemetry } from "./game-player/telemetry.mjs";
 import { buildZipGamePlayerUrl } from "./home-shell/zip-game-player";
 import { buildGameExitHref } from "./home-shell/hero-selection.mjs";
 import { getGamePlayHref } from "./game-play-source.mjs";
@@ -50,7 +51,7 @@ export function RemoteArchivePlayer({ zip, recognizedGames = noRecognizedGames }
       const resolved = { ...result, game: result.game ? { ...result.game, ...route, skipIntro: null } : null };
       if (window.location.pathname !== href) {
         if (resolved.game) selectGameArchive(resolved.loadArchive, resolved.game);
-        router.replace(`${href}${window.location.hash}`);
+        router.replace(withGameTelemetry(`${href}${window.location.hash}`, window.location.href));
       } else {
         setArchive(resolved);
       }

@@ -65,39 +65,49 @@ index 1b43a20e..d5747601 100644
  
  void Logic::setupRestoredGame() {
 diff --git a/engines/queen/logic.h b/engines/queen/logic.h
-index 4aa42ce5..2567765e 100644
+index 4aa42ce5..40127c8e 100644
 --- a/engines/queen/logic.h
 +++ b/engines/queen/logic.h
-@@ -119,6 +119,9 @@ public:
+@@ -119,6 +119,11 @@ public:
  
  	int16 gameState(int index) const;
  	void gameState(int index, int16 newValue);
 +#ifdef __EMSCRIPTEN__
 +	void publishEvaluationGameVariables(bool initial) const;
++	const int16 *telemetryState() const { return _gameState; }
++	uint telemetryStateSize() const { return GAME_STATE_COUNT; }
 +#endif
  
  	TalkSelected *talkSelected(int index) { return &_talkSelected[index]; }
  
 diff --git a/engines/queen/queen.cpp b/engines/queen/queen.cpp
-index 1b5d2a8d..c6137ee2 100644
+index 1b5d2a8d..a0139ca9 100644
 --- a/engines/queen/queen.cpp
 +++ b/engines/queen/queen.cpp
-@@ -19,6 +19,10 @@
+@@ -19,6 +19,12 @@
   *
   */
  
 +#ifdef __EMSCRIPTEN__
++#include "engines/scummweb-telemetry.h"
++
 +#include <emscripten.h>
 +#endif
 +
  #include "base/plugins.h"
  
  #include "common/config-manager.h"
-@@ -142,6 +146,28 @@ void QueenEngine::update(bool checkPlayerInput) {
+@@ -142,6 +148,34 @@ void QueenEngine::update(bool checkPlayerInput) {
  	BobSlot *joe = _graphics->bob(0);
  	_display->update(joe->active, joe->x, joe->y);
  
 +#ifdef __EMSCRIPTEN__
++	{
++		const auto room = _logic->currentRoom();
++		ScummWebTelemetry::Sample sample(room, _logic->roomName(room), _logic->newRoom() == 0 && !_input->cutawayRunning());
++		sample.bank("game_state", _logic->telemetryState(), _logic->telemetryStateSize());
++	}
++
 +	// Evaluation only: opt-in, read-only state after an engine presentation.
 +	// newRoom remains set throughout changeRoom; cutaways are not arrivals.
 +	const bool firstEvaluationFrame = EM_ASM_INT({

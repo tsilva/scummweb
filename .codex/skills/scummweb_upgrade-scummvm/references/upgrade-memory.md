@@ -118,3 +118,11 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
 - Patch 16 reports Queen room variables after display update only when an external evaluator opts in. Keep pending transitions and cutaways distinct from a ready room. Preserve the bounded transition queue and explicit overflow failure so a polling consumer cannot silently miss an endpoint. This telemetry is evaluator data, not player observations.
 - Keep indexed game variables in a separate queue so existing room consumers remain compatible. Take a baseline at first presentation, queue changed writes at the setter to catch values that revert between polls, and replace the baseline on restore because Queen's deserializer writes the array directly. Verify both queues after rebuilding the native plugin.
 - Include Emscripten headers before ScummVM headers that define forbidden C-library symbols. Parenthesize JavaScript object literals containing commas inside `EM_ASM`, since the C preprocessor does not group macro arguments by JavaScript braces.
+- Keep opt-in engine and game identity available for every engine. SCUMM banks
+  are sampled at engine ticks because the VM can write directly to its arrays.
+  Publish a fresh baseline after native restore or restart. Use the physical
+  room resource and detected index MD5 for edition-specific progress rules.
+
+- Patch 19 adds opt-in, read-only snapshots for engines with known room and variable storage. Keep native bank indices, omit unavailable room IDs, and publish a whole sample at once. These samples are independent of the Queen and SCUMM evaluation queues.
+
+- Patch 20 samples engine-owned room and game state in the remaining shipped plugins. Keep the browser query flag separate from evaluator queues. Preserve sparse keys, treat native room names and IDs as engine-specific, and keep ordinary browser launches off by default.

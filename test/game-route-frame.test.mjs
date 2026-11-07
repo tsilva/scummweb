@@ -5,6 +5,7 @@ import { runInNewContext } from "node:vm";
 import test from "node:test";
 import swc from "next/dist/build/swc/index.js";
 import * as skipIntroConfig from "../app/skip-intro-config.mjs";
+import * as telemetry from "../app/game-player/telemetry.mjs";
 import * as gameMenu from "../app/game-player/game-menu.mjs";
 import { gameLoadingStatus } from "../app/game-loading-status.mjs";
 
@@ -46,6 +47,7 @@ for (const message of ["This ZIP link returned HTTP 404.", "Could not download t
         if (name === "react/jsx-runtime") return nativeRequire(name);
         if (name === "./skip-intro-config.mjs") return skipIntroConfig;
         if (name.endsWith("/game-menu.mjs")) return gameMenu;
+        if (name.endsWith("/telemetry.mjs")) return telemetry;
         if (name === "next/navigation") return { useRouter: () => ({}) };
         if (name === "./game-loading-status.mjs") return { gameLoadingStatus };
         if (name === "./game-bucket.mjs") return { readCatalogGameArchive: async () => {
@@ -90,7 +92,7 @@ for (const message of ["This ZIP link returned HTTP 404.", "Could not download t
   });
 }
 
-function pendingArchivePlayer({ stalledNavigation = false, downloadDetails = { loaded: 12_400_000, total: 85_200_000 } } = {}) {
+function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = false, downloadDetails = { loaded: 12_400_000, total: 85_200_000 } } = {}) {
   const archive = Promise.withResolvers();
   const hooks = [];
   const messages = new Set();
@@ -109,7 +111,7 @@ function pendingArchivePlayer({ stalledNavigation = false, downloadDetails = { l
     addEventListener() {}, removeEventListener() {}, focus() {},
   };
   const window = {
-    location: { href: "https://example.test/sky/play", origin: "https://example.test", hash: "", search: "" },
+    location: new URL(`https://example.test/sky/play${queryTelemetry ? "?telemetry=1" : ""}`),
     setTimeout(callback, delay) { const id = Symbol(); timers.set(id, { callback, delay }); return id; },
     clearTimeout(id) { timers.delete(id); },
     addEventListener(name, handler) { if (name === "message") messages.add(handler); },
@@ -155,6 +157,7 @@ function pendingArchivePlayer({ stalledNavigation = false, downloadDetails = { l
       if (name === "react/jsx-runtime") return nativeRequire(name);
       if (name === "./skip-intro-config.mjs") return skipIntroConfig;
       if (name.endsWith("/game-menu.mjs")) return gameMenu;
+      if (name.endsWith("/telemetry.mjs")) return telemetry;
       if (name === "next/navigation") return { useRouter: () => ({}) };
       if (name === "./game-loading-status.mjs") return { gameLoadingStatus };
       if (name === "./game-bucket.mjs") return { readCatalogGameArchive: (_url, { onProgress }) => {
@@ -212,6 +215,18 @@ function pendingArchivePlayer({ stalledNavigation = false, downloadDetails = { l
     unmount() { for (const hook of hooks) hook?.cleanup?.(); },
   };
 }
+
+test("the play route forwards telemetry only for the opted-in game frame", () => {
+  for (const telemetry of [false, true]) {
+    const player = pendingArchivePlayer({ queryTelemetry: telemetry });
+    player.render();
+    const frame = new URL(player.frame.contentDocument.URL);
+    assert.equal(frame.searchParams.get("telemetry"), telemetry ? "1" : null);
+    assert.equal(frame.searchParams.get("localGame"), "1");
+    assert.equal(frame.hash, "#sky");
+    player.unmount();
+  }
+});
 
 test("save-lock contention explains recovery and rejects messages from unrelated frames", () => {
   const player = pendingArchivePlayer();
@@ -316,6 +331,7 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false } = {}
       if (name === "./skip-intro-config.mjs") return skipIntroConfig;
       if (name === "next/navigation") return { useRouter: () => ({}) };
       if (name.endsWith("/game-menu.mjs")) return gameMenu;
+      if (name.endsWith("/telemetry.mjs")) return telemetry;
       if (name.endsWith("/keyboard")) return {
         dispatchSyntheticKeypressSequence: async (frame, shortcut) => keypresses.push({ frame, shortcut }),
         dispatchGameCommand: (frame, command) => commands.push({ frame, command }),

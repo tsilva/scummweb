@@ -1,0 +1,136 @@
+diff --git a/engines/scumm/scumm.h b/engines/scumm/scumm.h
+--- a/engines/scumm/scumm.h
++++ b/engines/scumm/scumm.h
+@@ -640,6 +640,9 @@
+ 
+ 	// Scumm main loop & helper functions.
+ 	virtual void scummLoop(int delta);
++#ifdef __EMSCRIPTEN__
++	void publishEvaluationState(bool reset = false);
++#endif
+ 	virtual void scummLoop_updateScummVars();
+ 	virtual void scummLoop_handleSaveLoad();
+ 	virtual void scummLoop_handleDrawing();
+diff --git a/engines/scumm/scumm.cpp b/engines/scumm/scumm.cpp
+index d1baa70b..dbbbcdcc 100644
+--- a/engines/scumm/scumm.cpp
++++ b/engines/scumm/scumm.cpp
+@@ -19,6 +19,10 @@
+  *
+  */
+ 
++#ifdef __EMSCRIPTEN__
++#include <emscripten.h>
++#endif
++
+ #include "common/config-manager.h"
+ #include "common/compression/clickteam.h"
+ #include "common/debug-channels.h"
+@@ -2930,6 +2934,9 @@ Common::Error ScummEngine::go() {
+ 		// Run the main loop
+ 		if (!isPaused()) {
+ 			scummLoop(delta);
++#ifdef __EMSCRIPTEN__
++			publishEvaluationState();
++#endif
+ 
+ 			// The Mac GUI is updated after the engine has had a
+ 			// chance to update the screen. That way, it can draw
+@@ -4255,6 +4262,74 @@ void ScummEngine::pauseGame() {
+ 	pauseDialog();
+ }
+ 
++#ifdef __EMSCRIPTEN__
++void ScummEngine::publishEvaluationState(bool reset) {
++	EM_ASM({
++		const evaluate = globalThis.__scummwebEvaluationEnabled;
++		const query = globalThis.__scummwebTelemetryQueryEnabled;
++		if (!evaluate && !query) return;
++		const identity = globalThis.__scummwebEvaluationGame;
++		if (!identity) return;
++		const native_time_ms = performance.now();
++		const snapshot = globalThis.__scummwebGameTelemetry;
++		const ready = Boolean($1);
++		const sample = query && ($10 || !snapshot || snapshot.room_id !== $0 || snapshot.room_ready !== ready ||
++			native_time_ms - snapshot.sample_time_ms >= 250);
++		if (!evaluate && !sample) return;
++		if (!identity.index_md5 || $10)
++			identity.index_md5 = Array.from(HEAPU8.subarray($11, $11 + 16), b => b.toString(16).padStart(2, "0")).join("");
++		const views = ({
++			scumm_vars: HEAP32.subarray($2 >>> 2, ($2 >>> 2) + Math.min($3, 4096)),
++			object_state: HEAPU8.subarray($4, $4 + Math.min($5, 4096))
++		});
++		if ($6 && $7) views.scumm_bit_bytes = HEAPU8.subarray($6, $6 + Math.min($7, 4096));
++		if ($8 && $9) views.room_vars = HEAP32.subarray($8 >>> 2, ($8 >>> 2) + Math.min($9, 4096));
++		if (sample) {
++			const banks = Object.create(null);
++			for (const [bank, view] of Object.entries(views)) if (view.length) banks[bank] = Array.from(view);
++			globalThis.__scummwebGameTelemetry = ({
++				schema_version: 1, room_id: $0, room_ready: ready, sample_time_ms: native_time_ms, banks
++			});
++		}
++		if (!evaluate) return;
++		const events = globalThis.__scummwebEvaluationGameVariableEvents ||= [];
++		let previous = globalThis.__scummwebScummVariableSample;
++		const push = (event) => {
++			if (events.length >= 256) globalThis.__scummwebEvaluationGameVariableOverflow = true;
++			else events.push(event);
++		};
++		if (!previous || $10) {
++			globalThis.__scummwebEvaluationGameVariableEngine = "scumm";
++			previous = {};
++			for (const [bank, view] of Object.entries(views)) previous[bank] = Array.from(view);
++			globalThis.__scummwebScummVariableSample = previous;
++			push(({event: "game_variables_baseline", native_time_ms, banks: structuredClone(previous)}));
++		} else {
++			for (const [bank, view] of Object.entries(views)) {
++				const values = previous[bank];
++				for (let index = 0; index < view.length; index++) {
++					const value = view[index];
++					if (values[index] === value) continue;
++					push(({event: "game_variables_change", native_time_ms, bank, index, previous: values[index], value}));
++					values[index] = value;
++				}
++			}
++		}
++		const previousRoom = globalThis.__scummwebEvaluationState;
++		const state = ({schema_version: 1, engine_id: "scumm", room_id: $0,
++			room_name: "", room_ready: Boolean($1), native_time_ms});
++		globalThis.__scummwebEvaluationState = state;
++		if ($10 || !previousRoom || previousRoom.room_id !== state.room_id || previousRoom.room_ready !== state.room_ready) {
++			const rooms = globalThis.__scummwebEvaluationEvents ||= [];
++			if (rooms.length >= 256) globalThis.__scummwebEvaluationOverflow = true;
++			else rooms.push(state);
++		}
++	}, _roomResource, _roomResource != 0 && _userPut > 0, _scummVars, _numVariables,
++		_objectStateTable, _numGlobalObjects, _bitVars, _numBitVariables >> 3, _roomVars,
++		_numRoomVariables, reset, _gameMD5);
++}
++#endif
++
+ void ScummEngine::restart() {
+ 	// FIXME: This function *leaks memory*, and quite a lot so. For example,
+ 	// we re-init the resource manager, which causes readMAXS() to be called
+@@ -4304,6 +4379,9 @@ void ScummEngine::restart() {
+ 
+ 	// Re-run bootscript
+ 	runBootscript();
++#ifdef __EMSCRIPTEN__
++	publishEvaluationState(true);
++#endif
+ }
+ 
+ bool ScummEngine::isUsingOriginalGUI() const {
+diff --git a/engines/scumm/saveload.cpp b/engines/scumm/saveload.cpp
+--- a/engines/scumm/saveload.cpp
++++ b/engines/scumm/saveload.cpp
+@@ -974,6 +974,9 @@
+ 
+ 	_sound->restoreAfterLoad();
+ 
++#ifdef __EMSCRIPTEN__
++	publishEvaluationState(true);
++#endif
+ 	return true;
+ }
+ 
