@@ -1436,7 +1436,6 @@ button.nav-icon-link {
 .hero-stage.hero-stage-library {
   --hero-action-height: 3.4rem;
   --hero-version-height: 2.75rem;
-  --hero-license-height: 2.25rem;
   display: flex;
   flex-direction: column;
   flex: none;
@@ -1506,8 +1505,7 @@ button.nav-icon-link {
   position: relative;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: var(--hero-action-height) var(--hero-version-height) var(--hero-license-height);
-  grid-auto-rows: auto;
+  grid-template-rows: var(--hero-action-height);
   width: 26rem;
   max-width: 100%;
   height: auto;
@@ -1590,6 +1588,10 @@ button.nav-icon-link {
   padding: 0.5rem 0.75rem;
 }
 
+.hero-actions > .file-access-help {
+  grid-column: 1 / -1;
+}
+
 .hero-launch > .file-access-help {
   position: absolute;
   inset: calc(100% + 0.5rem) auto auto 0;
@@ -1599,7 +1601,6 @@ button.nav-icon-link {
 
 .hero-license {
   grid-column: 1 / -1;
-  grid-row: 3;
   justify-self: start;
   padding: 0.5rem 0;
   font-size: 0.85rem;
@@ -1657,7 +1658,6 @@ button.nav-icon-link {
 
 .hero-version-control {
   grid-column: 1 / -1;
-  grid-row: 2;
   display: flex;
   align-items: center;
   width: 100%;
