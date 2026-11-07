@@ -4,7 +4,8 @@
       "url": ["https://scummweb.tsilva.eu/"],
       "numberOfRuns": 3,
       "settings": {
-        "preset": "desktop"
+        "preset": "desktop",
+        "blockedUrlPatterns": ["https://www.googletagmanager.com/gtag/js*"]
       }
     },
     "upload": {
