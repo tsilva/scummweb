@@ -103,7 +103,6 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
       document.body.appendChild(link);
       link.click();
       link.remove();
-      setNotice("Backup ready. Keep the ZIP somewhere safe.");
     });
   }
 
@@ -138,6 +137,7 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
 
   const savedCount = data.sets.reduce((total, set) => total + set.files.length, 0);
   const storedOnly = data.stored.filter((set) => !data.sets.some((active) => active.destination.key === set.destination.key && active.hash === set.hash));
+  const unmatchedCount = review?.rows.filter((row) => !row.destinationKey).length ?? 0;
 
   return <>
     <button ref={trigger} type="button" className="nav-icon-link settings-trigger" aria-label="Settings" title="Settings" aria-haspopup="dialog" aria-expanded={open}
@@ -151,9 +151,7 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
           <button type="button" className="settings-close" aria-label="Close settings" disabled={busy} onClick={close}><X size={24} /></button>
         </header>
         {error && <p className="settings-error" role="alert">{error}</p>}
-        <p className="settings-status" role="status">{busy ? "Working with saved games…" : notice}
-          {downloadReady && <a className="settings-download" href={downloadReady.href} download={downloadReady.name}>Download ZIP</a>}
-        </p>
+        <p className="settings-status" role="status">{busy ? "Working with saved games…" : notice}</p>
         <button type="button" className={`settings-section-heading ${section === "saves" ? "is-active" : ""}`}
           aria-expanded={section === "saves"} aria-controls="settings-saves" disabled={busy}
           onClick={() => setSection(section === "saves" ? "" : "saves")}>
@@ -161,17 +159,18 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
         </button>
         <section id="settings-saves" hidden={section !== "saves"}>
           {view === "home" && <>
-            <h3 className="settings-intro-title">Your progress, wherever you play.</h3>
-            <p>Export a backup here, then import it on another device.</p>
             <div className="settings-action-block"><Download size={25} aria-hidden="true" />
-              <div><h4>Export saves</h4><p>Download all saved progress as a ZIP.</p></div>
+              <div><h3>Export saves</h3><p>Download all saved progress as a ZIP.</p></div>
               <button type="button" className="secondary-button settings-wide" disabled={busy || (!savedCount && !data.stored.length)} onClick={download}>
                 <Download size={20} />Export all saves
               </button>
+              <p className="settings-status" role="status">{downloadReady && <>
+                Backup ready. <a className="settings-download" href={downloadReady.href} download={downloadReady.name}>Download ZIP</a>
+              </>}</p>
               {!busy && !savedCount && !data.stored.length && <p className="settings-empty">No saved progress on this browser yet.</p>}
             </div>
             <div className="settings-action-block"><Upload size={25} aria-hidden="true" />
-              <div><h4>Import saves</h4><p>Review a backup before restoring it.</p></div>
+              <div><h3>Import saves</h3><p>Review a backup before restoring it.</p></div>
               <button type="button" className="launch-button settings-wide" disabled={busy} onClick={() => picker.current.click()}><Upload size={20} />Import backup</button>
             </div>
             <button type="button" className="settings-manage" disabled={busy} onClick={() => { setNotice(""); setView("sets"); }}>
@@ -187,10 +186,11 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
           {view === "review" && review && <div className="settings-review"><h3>{review.activating ? "Activate save set" : "Review import"}</h3>
             <p>Saves are matched to their games automatically. Games missing from this backup stay unchanged.</p>
             {review.rows.map((row, index) => {
+              if (!row.destinationKey) return null;
               const active = data.sets.find((set) => set.destination.key === row.destinationKey);
               const identical = active?.hash === row.set.hash;
               return <fieldset key={index} className="settings-review-game" disabled={busy}><legend>{row.set.destination.title}</legend>
-                {identical ? <p className="settings-active"><Check size={17} />Identical saves — nothing to change.</p> : !row.destinationKey ? <p>This set will be preserved. Add the game, then activate it from Save sets.</p> : <>
+                {identical ? <p className="settings-active"><Check size={17} />Identical saves — nothing to change.</p> : <>
                   {active && <p>Different saves exist on this device.</p>}
                   <label className="settings-choice"><input type="radio" name={`save-choice-${index}`} checked={row.choice !== "imported"}
                     onChange={() => updateChoice(index, active ? "current" : "stored")} />
@@ -200,7 +200,11 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
                 </>}
               </fieldset>;
             })}
-            <p className="settings-reassurance">Both save sets will be kept. You can switch later.</p>
+            {unmatchedCount > 0 && <fieldset className="settings-review-game">
+              <legend>{unmatchedCount} unmatched save {unmatchedCount === 1 ? "set" : "sets"}</legend>
+              <p>These saves will be preserved. To activate a set, add its matching game, then open Save sets.</p>
+            </fieldset>}
+            {unmatchedCount < review.rows.length && <p className="settings-reassurance">If you switch to imported saves, your current saves are kept in Save sets.</p>}
             <div className="settings-review-actions"><button type="button" className="secondary-button" disabled={busy} onClick={() => { setReview(null); setView("home"); }}>Cancel</button>
               <button type="button" className="launch-button" disabled={busy} onClick={confirmImport}>{review.activating ? "Activate saves" : "Import backup"}</button></div>
           </div>}

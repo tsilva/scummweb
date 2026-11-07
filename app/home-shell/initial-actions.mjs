@@ -89,6 +89,8 @@ export function prepareInitialActions(container, readSave) {
     }
     browse.href = "#library";
     browse.hidden = Boolean(save);
+    const importHelp = container.querySelector(".hero-import-help");
+    if (importHelp) importHelp.hidden = !state.unavailable;
     const license = container.querySelector(".hero-license");
     const licenseUrl = state.infoHref && new URL(state.infoHref, window.location.origin);
     if (license) {

@@ -1,3 +1,85 @@
+diff --git a/engines/queen/logic.cpp b/engines/queen/logic.cpp
+index 1b43a20e..d5747601 100644
+--- a/engines/queen/logic.cpp
++++ b/engines/queen/logic.cpp
+@@ -20,6 +20,10 @@
+  */
+ 
+ 
++#ifdef __EMSCRIPTEN__
++#include <emscripten.h>
++#endif
++
+ #include "common/config-manager.h"
+ #include "common/textconsole.h"
+ 
+@@ -389,8 +393,39 @@ int16 Logic::gameState(int index) const {
+ void Logic::gameState(int index, int16 newValue) {
+ 	assert(index >= 0 && index < GAME_STATE_COUNT);
+ 	debug(8, "Logic::gameState() [%d] = %d", index, newValue);
++#ifdef __EMSCRIPTEN__
++	const int16 previous = _gameState[index];
++#endif
+ 	_gameState[index] = newValue;
++#ifdef __EMSCRIPTEN__
++	if (previous != newValue) {
++		EM_ASM({
++			const events = globalThis.__scummwebEvaluationGameVariableEvents;
++			if (!events) return;
++			if (events.length >= 256) globalThis.__scummwebEvaluationGameVariableOverflow = true;
++			else events.push({event: "game_variables_change", bank: "game_state",
++				index: $0, previous: $1, value: $2, native_time_ms: performance.now()});
++		}, index, previous, newValue);
++	}
++#endif
++}
++
++#ifdef __EMSCRIPTEN__
++void Logic::publishEvaluationGameVariables(bool initial) const {
++	EM_ASM({
++		if (!globalThis.__scummwebEvaluationEnabled) return;
++		if (!$2 && !globalThis.__scummwebEvaluationGameVariableEvents) return;
++		const events = globalThis.__scummwebEvaluationGameVariableEvents ||= [];
++		if (events.length >= 256) {
++			globalThis.__scummwebEvaluationGameVariableOverflow = true;
++			return;
++		}
++		const start = $0 >>> 1;
++		events.push({event: "game_variables_baseline", native_time_ms: performance.now(),
++			banks: {game_state: Array.from(HEAP16.subarray(start, start + $1))}});
++	}, _gameState, GAME_STATE_COUNT, initial);
+ }
++#endif
+ 
+ const char *Logic::roomName(uint16 roomNum) const {
+ 	assert(roomNum >= 1 && roomNum <= _numRooms);
+@@ -1355,6 +1390,10 @@ void Logic::loadState(uint32 ver, byte *&ptr) {
+ 		for (i = 1; i <= _numObjDesc; i++)
+ 			_objectDescription[i].readFromBE(ptr);
+ 	}
++#ifdef __EMSCRIPTEN__
++	// Restoring replaces the baseline, even though it bypasses gameState().
++	publishEvaluationGameVariables(false);
++#endif
+ }
+ 
+ void Logic::setupRestoredGame() {
+diff --git a/engines/queen/logic.h b/engines/queen/logic.h
+index 4aa42ce5..2567765e 100644
+--- a/engines/queen/logic.h
++++ b/engines/queen/logic.h
+@@ -119,6 +119,9 @@ public:
+ 
+ 	int16 gameState(int index) const;
+ 	void gameState(int index, int16 newValue);
++#ifdef __EMSCRIPTEN__
++	void publishEvaluationGameVariables(bool initial) const;
++#endif
+ 
+ 	TalkSelected *talkSelected(int index) { return &_talkSelected[index]; }
+ 
+diff --git a/engines/queen/queen.cpp b/engines/queen/queen.cpp
+index 1b5d2a8d..c6137ee2 100644
 --- a/engines/queen/queen.cpp
 +++ b/engines/queen/queen.cpp
 @@ -19,6 +19,10 @@
@@ -11,16 +93,15 @@
  #include "base/plugins.h"
  
  #include "common/config-manager.h"
-@@ -141,6 +145,25 @@
- 	}
+@@ -142,6 +146,28 @@ void QueenEngine::update(bool checkPlayerInput) {
  	BobSlot *joe = _graphics->bob(0);
  	_display->update(joe->active, joe->x, joe->y);
-+
+ 
 +#ifdef __EMSCRIPTEN__
 +	// Evaluation only: opt-in, read-only state after an engine presentation.
 +	// newRoom remains set throughout changeRoom; cutaways are not arrivals.
-+	EM_ASM({
-+		if (!globalThis.__scummwebEvaluationEnabled) return;
++	const bool firstEvaluationFrame = EM_ASM_INT({
++		if (!globalThis.__scummwebEvaluationEnabled) return 0;
 +		const previous = globalThis.__scummwebEvaluationState;
 +		const state = ({schema_version: 1, engine_id: "queen", room_id: $0,
 +			room_name: UTF8ToString($1), room_ready: Boolean($2),
@@ -31,9 +112,13 @@
 +			if (events.length >= 256) globalThis.__scummwebEvaluationOverflow = true;
 +			else events.push(state);
 +		}
++		return previous ? 0 : 1;
 +	}, _logic->currentRoom(), _logic->roomName(_logic->currentRoom()),
 +		_logic->newRoom() == 0 && !_input->cutawayRunning());
++	if (firstEvaluationFrame)
++		_logic->publishEvaluationGameVariables(true);
 +#endif
- 
++
  	_input->checkKeys();
  
+ 	if (canLoadOrSave()) {

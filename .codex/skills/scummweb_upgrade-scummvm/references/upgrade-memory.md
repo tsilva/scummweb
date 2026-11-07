@@ -113,7 +113,8 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
 - Keep Mortevielle's `mort.dat` and Z-Vision's font data in the browser filesystem index. Z-Vision requires the Emscripten FreeType port. Its DVD movie option requires MPEG-2 and A52 together, so the browser build uses the standard video tracks.
 - Keep both engines in the browser's Continue capability list. The pinned native engines support save listing and loading during startup.
 
-## Evaluator-only room telemetry
+## Evaluator-only telemetry
 
 - Patch 16 reports Queen room variables after display update only when an external evaluator opts in. Keep pending transitions and cutaways distinct from a ready room. Preserve the bounded transition queue and explicit overflow failure so a polling consumer cannot silently miss an endpoint. This telemetry is evaluator data, not player observations.
+- Keep indexed game variables in a separate queue so existing room consumers remain compatible. Take a baseline at first presentation, queue changed writes at the setter to catch values that revert between polls, and replace the baseline on restore because Queen's deserializer writes the array directly. Verify both queues after rebuilding the native plugin.
 - Include Emscripten headers before ScummVM headers that define forbidden C-library symbols. Parenthesize JavaScript object literals containing commas inside `EM_ASM`, since the C preprocessor does not group macro arguments by JavaScript braces.

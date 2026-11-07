@@ -109,6 +109,7 @@ export function GameImportDialog({ pending, result, onConfirm }) {
   const added = result?.items.filter((item) => item.status === "added").length ?? 0;
   const skipped = result?.items.filter((item) => item.status === "skipped").length ?? 0;
   const errors = result?.items.filter((item) => item.status === "error").length ?? 0;
+  const showDetails = !result || skipped < result.items.length || result.temporary > 0;
   const title = result ? `${gameCount(result.items.length)} scanned` : "Importing games…";
   const summary = result
     ? `${gameCount(added)} added · ${gameCount(skipped)} skipped · ${errors} ${errors === 1 ? "error" : "errors"}`
@@ -136,17 +137,19 @@ export function GameImportDialog({ pending, result, onConfirm }) {
           )}
         </div>
       </div>
-      <div ref={details} className="game-import-details" key={complete ? "result" : "progress"}
-        role="region" aria-label="Import details" tabIndex={0}>
-        {result ? (
-          <>
-            <GameImportItems items={result.items} complete />
-            {result.temporary > 0 && <p>Some games are only available in this tab.</p>}
-          </>
-        ) : (
-          <GameImportItems items={pending} showProgress />
-        )}
-      </div>
+      {showDetails && (
+        <div ref={details} className="game-import-details" key={complete ? "result" : "progress"}
+          role="region" aria-label="Import details" tabIndex={0}>
+          {result ? (
+            <>
+              <GameImportItems items={result.items} complete />
+              {result.temporary > 0 && <p>Some games are only available in this tab.</p>}
+            </>
+          ) : (
+            <GameImportItems items={pending} showProgress />
+          )}
+        </div>
+      )}
       {complete && <button ref={confirm} className="game-import-confirm" type="button" onClick={onConfirm}>Confirm</button>}
     </dialog>
   );

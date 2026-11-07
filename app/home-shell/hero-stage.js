@@ -99,6 +99,9 @@ export default function HeroStage({
                 Allow access in the browser prompt so ScummWEB can read this game’s ZIP.
                 Your game files stay on your device.
               </p>}
+              {!notice && featuredGame.importRequired && !sourceVersion && !sourceAction && <p className="file-access-help hero-import-help">
+                This game is not included due to copyright restrictions. If you own a copy, drop its ZIP onto this page to add it to your library.
+              </p>}
               <div className="hero-version-control" data-reserved={!hasMultipleVersions || undefined}
                 aria-hidden={!hasMultipleVersions || undefined}>
                 {hasMultipleVersions && <label className="library-select">
@@ -119,9 +122,6 @@ export default function HeroStage({
             </div>
             <noscript><style>{`.hero-actions[data-ready="false"] { visibility: visible; }
               .hero-actions-placeholder { display: none; }`}</style></noscript>
-            {!notice && featuredGame.importRequired && !sourceVersion && !sourceAction && <p className="file-access-help">
-              This game is not included due to copyright restrictions. If you own a copy, drop its ZIP onto this page to add it to your library.
-            </p>}
           </div>
         </div>
         {featuredGame.screenshots?.length > 0 && <HeroScrollCue />}

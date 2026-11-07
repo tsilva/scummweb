@@ -194,8 +194,9 @@ downloads a ScummWEB ZIP containing active progress and preserved save sets.
 On another device, add the matching game edition and choose **Import backup**.
 Save destinations are matched automatically by game identity, using the game-file
 fingerprint for local imports when possible; there is no manual destination selector.
-Unmatched sets are preserved without changing active saves. After adding the matching
-game edition, connect them through **Save sets → Review and activate**.
+The import review groups unmatched save sets into one entry with a count. Importing
+preserves them without changing active saves. After adding the matching game edition,
+connect them through **Save sets → Review and activate**.
 
 Different games are added without deleting existing progress. Identical files
 are skipped. For conflicting progress in one game, the default keeps the current
@@ -573,7 +574,7 @@ Maintain it in `web-shell/`; the staging script copies it into the managed bundl
 ## Evaluator-only Queen telemetry
 
 Native patch `16-report-queen-evaluation-variables.patch` provides a read-only
-room provider for an external AgentSCUMM evaluator. It is inactive unless the
+room and game variable provider for an external AgentSCUMM evaluator. It is inactive unless the
 host sets `__scummwebEvaluationEnabled` before the engine starts. After display
 updates it publishes `__scummwebEvaluationState` with protocol version,
 `engine_id`, `room_id`, `room_name`, `room_ready`, and native monotonic time.
@@ -584,9 +585,23 @@ new benchmark.
 
 Room/ready transitions are retained in `__scummwebEvaluationEvents` until the
 host consumes them. The queue holds at most 256 events and sets an explicit
-overflow flag rather than silently losing arrivals. Keep all evaluator state
-out of ordinary player observations. This provider is Queen-specific and needs
-a native rebuild; regenerating browser shell templates alone cannot add it.
+overflow flag rather than silently losing arrivals.
+
+The separate `__scummwebEvaluationGameVariableEvents` queue starts with a
+`game_variables_baseline` record containing `banks.game_state`, an array of
+211 signed values copied from Queen's native game state. Each changed write
+adds a `game_variables_change` record with bank, slot index, previous value,
+new value, and monotonic native time. Loading a save replaces the baseline
+because it writes the state array directly. The variable queue holds at most
+256 records and signals overflow separately from room telemetry. Consumers
+drain the queues in place. A consumer can read the existing room protocol
+independently of the variable stream.
+
+Keep evaluator state out of ordinary player observations. Additional engines
+can publish their own indexed banks through the same record format. An engine
+without room telemetry sets `__scummwebEvaluationGameVariableEngine` to its
+engine ID when it creates the variable queue. Queen supplies its engine ID in
+the room feed, and its provider is compiled into the native Queen plugin.
 
 ## Rebuilding and upgrading ScummVM
 
