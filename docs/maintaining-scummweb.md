@@ -483,6 +483,10 @@ server or build from replacing the audit's runtime chunks. Vercel Web Analytics
 loads only in Vercel builds, where its platform-provided endpoint exists;
 Google Analytics remains enabled on other hosts.
 
+Lighthouse CI audits the production homepage with the Google tag script blocked
+by [its collection configuration](../.lighthouserc.json), so CI runs stay out of
+GA4 traffic reports.
+
 For local artwork, `prepare` generates 320px and 640px WebP poster variants under
 `scummvm-shell/launcher/responsive/` before staging the managed shell. The
 generator retains each original, skips upscaling and larger encodings, and
