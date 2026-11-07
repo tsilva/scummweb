@@ -1,5 +1,6 @@
 "use client";
 
+import { captureMessage, withScope } from "@sentry/nextjs";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { buildSkipIntroLaunchSrc } from "./skip-intro-config.mjs";
@@ -25,6 +26,17 @@ const SCUMMWEB_FRAME_MESSAGE_SOURCE = "scummweb";
 const SCUMMWEB_ASPECT_RATIO_MESSAGE_TYPE = "scummweb-aspect-ratio";
 const ARCHIVE_FRAME_NAVIGATION_TIMEOUT_MS = 8000;
 const ARCHIVE_BOOT_IDLE_TIMEOUT_MS = 120_000;
+const BOOT_ERROR_MESSAGES = new Map([
+  ["script-load", "Could not load a player script"],
+  ["script-error", "Player JavaScript error"],
+  ["promise-rejection", "Unhandled player promise rejection"],
+  ["filesystem", "Could not prepare the game filesystem"],
+  ["runtime-abort", "ScummVM runtime aborted"],
+  ["game-detection", "ScummVM could not identify the game data"],
+  ["webgl-context-lost", "Player WebGL context lost"],
+  ["runtime-exit", "ScummVM exited with an error"],
+  ["startup-timeout", "ScummVM took too long to start"],
+]);
 const MIB = 1024 * 1024;
 const catalogArchiveLimits = {
   "dreamweb-cd": { archiveLimit: 300 * MIB, expandedLimit: 300 * MIB, timeoutMs: 600_000 },
@@ -74,6 +86,14 @@ function getNormalizedFrameHref(href) {
   } catch {
     return null;
   }
+}
+
+function getCatalogBootErrorDetail(message) {
+  if (typeof message !== "string") return undefined;
+  return message.slice(0, 512)
+    .replace(/\b(?:[a-z][a-z\d+.-]*:\/\/|data:|blob:)[^\s"'<>]+/gi, "[url]")
+    .replace(/(?:[a-z]:\\|\/)[^\s"'<>]+/gi, "[path]")
+    .trim() || undefined;
 }
 
 function buildSaveSlotSrc(src, target, slot, { seedIntro = false } = {}) {
@@ -130,6 +150,7 @@ export default function GameRouteFrame({
   const router = useRouter();
   const shellRef = useRef(null);
   const frameRef = useRef(null);
+  const frameBootRef = useRef(null);
   const archiveFiles = useRef(null);
   const archiveReceiver = useRef(null);
   const [archivePrepared, setArchivePrepared] = useState(false);
@@ -181,6 +202,43 @@ export default function GameRouteFrame({
 
   useLayoutEffect(() => {
     const navigationController = new AbortController();
+    if (frameBootRef.current?.src !== frameSrc) {
+      frameBootRef.current = { src: frameSrc, reported: false, ready: false };
+    }
+    const frameBoot = frameBootRef.current;
+
+    function reportBootError(stage, { name, message, status } = {}) {
+      const description = BOOT_ERROR_MESSAGES.get(stage);
+      if (!frameSrc || !description || frameBoot.ready || frameBoot.reported) return;
+      frameBoot.reported = true;
+      withScope((scope) => {
+        if (!catalogLaunch) {
+          // The page URL or navigation breadcrumbs can contain a private ZIP link.
+          scope.addEventProcessor(({ request, breadcrumbs, transaction, contexts, ...event }) => {
+            const { trace, ...safeContexts } = contexts ?? {};
+            return { ...event, contexts: safeContexts };
+          });
+        }
+        captureMessage(`ScummVM startup failed: ${description}`, {
+          level: "error",
+          tags: {
+            component: "scummvm-player",
+            startup_stage: stage,
+            game_source: catalogLaunch ? "catalog" : "local",
+            game_slug: catalogLaunch ? game?.slug : undefined,
+          },
+          contexts: {
+            scummvm: {
+              engine: catalogLaunch ? game?.engineId : undefined,
+              error_name: typeof name === "string" && /^(?:[A-Za-z0-9]{0,40}Error|ExitStatus)$/.test(name) ? name : undefined,
+              detail: catalogLaunch ? getCatalogBootErrorDetail(message) : undefined,
+              exit_status: Number.isInteger(status) ? status : undefined,
+            },
+          },
+        });
+      });
+    }
+
     const navigationTimer = loadArchive && frameSrc && !archiveFrameDocument ? window.setTimeout(async () => {
       const iframe = frameRef.current;
       function needsRetry() {
@@ -215,6 +273,7 @@ export default function GameRouteFrame({
       window.clearTimeout(archiveBootTimer);
       archiveBootTimer = window.setTimeout(() => {
         archiveFiles.current = null;
+        reportBootError("startup-timeout");
         setArchiveError("ScummVM took too long to start. Exit the player and try again.");
       }, ARCHIVE_BOOT_IDLE_TIMEOUT_MS);
     }
@@ -248,6 +307,13 @@ export default function GameRouteFrame({
       if (event.origin !== window.location.origin) {
         return;
       }
+      if (event.data?.type === "scummvm-boot-error") {
+        if (event.source && event.source === frameRef.current?.contentWindow &&
+            typeof event.data.href === "string" && getNormalizedFrameHref(event.data.href) === frameSrc) {
+          reportBootError(event.data.stage, event.data);
+        }
+        return;
+      }
       if (event.data?.type === "scummweb:saves-listed" && event.source === frameRef.current?.contentWindow) {
         if (new URL(frameSrc, window.location.href).searchParams.get("continue") === "1") {
           setIsResuming(Number.isInteger(event.data.latestSlot));
@@ -273,8 +339,10 @@ export default function GameRouteFrame({
         if (event.data?.type === "scummweb:local-game-status") {
           stopArchiveBootTimer();
           if (event.data.status === "running") {
+            frameBoot.ready = true;
             if (!catalogLaunch) setReadySignal({ reason: "archive-running" });
           } else {
+            if (event.data.status === "undetected") reportBootError("game-detection");
             archiveFiles.current = null;
             setArchiveError((current) => current || (event.data.status === "undetected"
               ? "ScummVM could not detect a supported game. Check that you selected the game files."
@@ -301,6 +369,7 @@ export default function GameRouteFrame({
           return;
         }
 
+        frameBoot.ready = true;
         setReadySignal({
           href: messageFrameHref,
           reason: event.data?.reason || null,
@@ -324,6 +393,7 @@ export default function GameRouteFrame({
         event.source === frameRef.current?.contentWindow &&
         Number.isFinite(event.data.status) && event.data.status !== 0
       ) {
+        reportBootError("runtime-exit", { status: event.data.status });
         launchAnalytics.fail("startup_error");
       }
       navigateHome(event.data.href || "/");
@@ -344,7 +414,7 @@ export default function GameRouteFrame({
       stopArchiveBootTimer();
       window.removeEventListener("message", handleMessage);
     };
-  }, [archiveFrameDocument, archivePrepared, catalogLaunch, frameSrc, game?.saveNamespace, launchAnalytics, loadArchive, navigateHome, target]);
+  }, [archiveFrameDocument, archivePrepared, catalogLaunch, frameSrc, game?.engineId, game?.saveNamespace, game?.slug, launchAnalytics, loadArchive, navigateHome, target]);
 
   useEffect(() => {
     const controller = new AbortController();
