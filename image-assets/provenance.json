@@ -32,122 +32,122 @@
     },
     {
       "role": "social-preview",
-      "path": "public/brand/web-seo/og-image-1200x630.png",
-      "sha256": "44e946bde0859664f6a76fe47afc6634d389a860549f8418b7e286cfcd604961",
+      "path": "public/brand/web-seo/og-image-1200x630.jpg",
+      "sha256": "64d093a31605192c5dc322bbd9e6ce98e0c65a89e84bb3d68ba24b1e1d1897de",
       "source": "image-assets/sources/social-source.png"
     },
     {
       "role": "favicon",
       "path": "public/brand/web-seo/favicon/favicon-16.png",
-      "sha256": "f4203c3cf01ea4ddbe05de07789ffb5c8bf09ef000fbfbef2e90783a53d8b62c",
+      "sha256": "89f6e0ffcdc2ee902d61a42c721650227cd469b3c83a98268c9cdb7d5df15242",
       "source": "image-assets/sources/icon-source.png"
     },
     {
       "role": "favicon",
       "path": "public/brand/web-seo/favicon/favicon-32.png",
-      "sha256": "8b28b53d49e6aa978fec83c098e9544b4ab96ac81b81813acb9cff87cd649cea",
+      "sha256": "7de7646f0cafd178e5b38e7410d816a6e8510a950b93e892f29d4edad486084f",
       "source": "image-assets/sources/icon-source.png"
     },
     {
       "role": "favicon",
       "path": "public/brand/web-seo/favicon/favicon-48.png",
-      "sha256": "eca3a9e2419ed53b4999f7ab5721d513485fec65a89c48605bf0b91f8fb587c8",
+      "sha256": "275fe5dfe36f933702c5305dbdfe026958c97733c71963e77cd60c6e92014409",
       "source": "image-assets/sources/icon-source.png"
     },
     {
       "role": "favicon-svg",
       "path": "image-assets/sources/favicon-source.svg",
-      "sha256": "cf96a060a8bd8919d7ca17f254c3ad965e1dff9f7340f4b39d15f9528e631b7a",
+      "sha256": "74cffbae1a4ea69f5504af5a6f818eb70fcaa9a6e2702a33deeac0b9e725c4e7",
       "source": "image-assets/sources/icon-source.png"
     },
     {
       "role": "favicon",
       "path": "public/brand/web-seo/favicon/favicon.ico",
-      "sha256": "84b25f57295ef7abbe14023c5d07696f211bee435d8014db7898c0ca70b94622",
+      "sha256": "66d02624ff87816f5068f771f04212df61ddd4dd624dfdc6805bae9c61d0520c",
       "source": "image-assets/sources/icon-source.png"
     },
     {
       "role": "favicon-svg",
       "path": "public/brand/web-seo/favicon/favicon.svg",
-      "sha256": "cf96a060a8bd8919d7ca17f254c3ad965e1dff9f7340f4b39d15f9528e631b7a",
+      "sha256": "74cffbae1a4ea69f5504af5a6f818eb70fcaa9a6e2702a33deeac0b9e725c4e7",
       "source": "image-assets/sources/icon-source.png"
     },
     {
       "role": "favicon",
       "path": "scummvm-shell/favicon.ico",
-      "sha256": "84b25f57295ef7abbe14023c5d07696f211bee435d8014db7898c0ca70b94622",
+      "sha256": "66d02624ff87816f5068f771f04212df61ddd4dd624dfdc6805bae9c61d0520c",
       "source": "image-assets/sources/icon-source.png"
     },
     {
       "role": "favicon-svg",
       "path": "scummvm-shell/favicon.svg",
-      "sha256": "cf96a060a8bd8919d7ca17f254c3ad965e1dff9f7340f4b39d15f9528e631b7a",
+      "sha256": "74cffbae1a4ea69f5504af5a6f818eb70fcaa9a6e2702a33deeac0b9e725c4e7",
       "source": "image-assets/sources/icon-source.png"
     },
     {
       "role": "favicon",
       "path": "public/favicon.ico",
-      "sha256": "84b25f57295ef7abbe14023c5d07696f211bee435d8014db7898c0ca70b94622",
+      "sha256": "66d02624ff87816f5068f771f04212df61ddd4dd624dfdc6805bae9c61d0520c",
       "source": "image-assets/sources/icon-source.png"
     },
     {
       "role": "favicon-svg",
       "path": "public/favicon.svg",
-      "sha256": "cf96a060a8bd8919d7ca17f254c3ad965e1dff9f7340f4b39d15f9528e631b7a",
+      "sha256": "74cffbae1a4ea69f5504af5a6f818eb70fcaa9a6e2702a33deeac0b9e725c4e7",
       "source": "image-assets/sources/icon-source.png"
     },
     {
       "role": "app-icon",
       "path": "public/brand/icon/icon-1024.png",
-      "sha256": "0f6ad17f9f88465c08996717bbb6f0eed2beacfee9f443b01ed6ec352bd2d2f7",
+      "sha256": "9786ce3894ac93eff118135d8a8d2adc7cf0cc3ff3ac7d1b892e3adfbcb2c28d",
       "source": "image-assets/sources/icon-source.png"
     },
     {
       "role": "apple-touch-icon",
       "path": "public/brand/web-seo/apple-touch-icon.png",
-      "sha256": "d9b378ca73186740e23efa866487ae02f1586a9366c275d947dddbd18684eab8",
+      "sha256": "831dffd05339040fb4cf15dc6bff35f5c6c0267c86db9e1a6065deeae5ccdadf",
       "source": "image-assets/sources/icon-source.png"
     },
     {
       "role": "install-icon",
       "path": "public/brand/web-seo/android-chrome-192.png",
-      "sha256": "e2338ef7c68e022ddacf215b3588d55f0e32ddfd734e88134ef14a84d83ddb2c",
+      "sha256": "695d272e819f2fa73ad3f931578d59c10e702dcbe84de20124bd6c3454f406d4",
       "source": "image-assets/sources/icon-source.png"
     },
     {
       "role": "install-icon",
       "path": "scummvm-shell/scummvm-192.png",
-      "sha256": "e2338ef7c68e022ddacf215b3588d55f0e32ddfd734e88134ef14a84d83ddb2c",
+      "sha256": "695d272e819f2fa73ad3f931578d59c10e702dcbe84de20124bd6c3454f406d4",
       "source": "image-assets/sources/icon-source.png"
     },
     {
       "role": "install-icon",
       "path": "public/scummvm-192.png",
-      "sha256": "e2338ef7c68e022ddacf215b3588d55f0e32ddfd734e88134ef14a84d83ddb2c",
+      "sha256": "695d272e819f2fa73ad3f931578d59c10e702dcbe84de20124bd6c3454f406d4",
       "source": "image-assets/sources/icon-source.png"
     },
     {
       "role": "install-icon",
       "path": "public/brand/web-seo/android-chrome-512.png",
-      "sha256": "e946120f8c297e0bae5fa827dfbbe9a24990b7c0e36462994a66519c19c155e9",
+      "sha256": "fbddf2edfd16e69b50136c775b49ce97d3eb20e6267a0651dff9319a3b653653",
       "source": "image-assets/sources/icon-source.png"
     },
     {
       "role": "install-icon",
       "path": "scummvm-shell/scummvm-512.png",
-      "sha256": "e946120f8c297e0bae5fa827dfbbe9a24990b7c0e36462994a66519c19c155e9",
+      "sha256": "fbddf2edfd16e69b50136c775b49ce97d3eb20e6267a0651dff9319a3b653653",
       "source": "image-assets/sources/icon-source.png"
     },
     {
       "role": "install-icon",
       "path": "public/scummvm-512.png",
-      "sha256": "e946120f8c297e0bae5fa827dfbbe9a24990b7c0e36462994a66519c19c155e9",
+      "sha256": "fbddf2edfd16e69b50136c775b49ce97d3eb20e6267a0651dff9319a3b653653",
       "source": "image-assets/sources/icon-source.png"
     },
     {
       "role": "web-manifest",
       "path": "public/brand/web-seo/site.webmanifest",
-      "sha256": "022d53cce66d593c63c3373c90fcc9f6b1e6e67af13ab6706975d2a01a59fad9",
+      "sha256": "ac3791a1fb79b0be078b3c01d13b059385c3106dcee775af70563e37c5a575c6",
       "source": "image-assets/sources/icon-source.png"
     }
   ]

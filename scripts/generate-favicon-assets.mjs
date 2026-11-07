@@ -11,6 +11,7 @@ const sourcePath = "image-assets/sources/icon-source.png";
 const source = await fs.readFile(path.join(root, sourcePath));
 const brandDir = path.join(root, "public/brand/web-seo/favicon");
 const sizes = [16, 32, 48];
+const pngOptions = { compressionLevel: 9, adaptiveFiltering: true };
 const frames = [];
 const exports = [];
 const versions = {};
@@ -26,7 +27,7 @@ async function writeExport(outputPath, bytes, role) {
 
 await fs.mkdir(brandDir, { recursive: true });
 for (const size of sizes) {
-  const png = await sharp(source).resize(size, size).png().toBuffer();
+  const png = await sharp(source).resize(size, size).png(pngOptions).toBuffer();
   await writeExport(`public/brand/web-seo/favicon/favicon-${size}.png`, png, "favicon");
   frames.push(png);
 }
@@ -50,7 +51,7 @@ for (const [index, size] of sizes.entries()) {
 const ico = Buffer.concat([directory, ...frames]);
 // Embed a small raster rendition, keeping the SVG favicon compact and faithful
 // to the selected artwork rather than approximating its shading with vectors.
-const svgPng = await sharp(source).resize(64, 64).png().toBuffer();
+const svgPng = await sharp(source).resize(64, 64).png(pngOptions).toBuffer();
 const svg = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><title>ScummWEB</title><image width="64" height="64" href="data:image/png;base64,${svgPng.toString("base64")}"/></svg>\n`);
 await writeExport("image-assets/sources/favicon-source.svg", svg, "favicon-svg");
 for (const outputDir of ["public/brand/web-seo/favicon", "scummvm-shell", "public"]) {
@@ -58,14 +59,14 @@ for (const outputDir of ["public/brand/web-seo/favicon", "scummvm-shell", "publi
   await writeExport(`${outputDir}/favicon.svg`, svg, "favicon-svg");
 }
 
-await writeExport("public/brand/icon/icon-1024.png", await sharp(source).resize(1024, 1024).png().toBuffer(), "app-icon");
+await writeExport("public/brand/icon/icon-1024.png", await sharp(source).resize(1024, 1024).png(pngOptions).toBuffer(), "app-icon");
 
 // Derive every install size from the untouched generated source.
 const installIcons = [];
 for (const size of [180, 192, 512]) {
   let image = sharp(source).resize(size, size);
   if (size === 180) image = image.flatten({ background: "#06451b" });
-  const png = await image.png().toBuffer();
+  const png = await image.png(pngOptions).toBuffer();
   const name = size === 180 ? "apple-touch-icon.png" : `android-chrome-${size}.png`;
   const outputPath = `public/brand/web-seo/${name}`;
   await writeExport(outputPath, png, size === 180 ? "apple-touch-icon" : "install-icon");

@@ -39,5 +39,7 @@ export async function renderSocialCard(card, artwork) {
       fontSize: "24px", color: "#e1eade",
     } }, h("span", null, card.genre), h("span", null, card.studio)))), size,
   );
-  return Buffer.from(await response.arrayBuffer());
+  return sharp(Buffer.from(await response.arrayBuffer()))
+    .jpeg({ quality: 88, chromaSubsampling: "4:4:4", mozjpeg: true })
+    .toBuffer();
 }

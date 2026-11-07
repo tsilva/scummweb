@@ -19,7 +19,7 @@ import { runInNewContext } from "node:vm";
 
 const { unstable_doesMiddlewareMatch } = proxyTesting;
 
-const png = await sharp({ create: { width: 1200, height: 630, channels: 3, background: "#123456" } }).png().toBuffer();
+const jpeg = await sharp({ create: { width: 1200, height: 630, channels: 3, background: "#123456" } }).jpeg().toBuffer();
 const game = { slug: "sample", displayTitle: "Sample", summary: "A game", spotlightImage: "/launcher/cover.webp?v=deployment-one" };
 
 async function fixture(t) {
@@ -29,13 +29,13 @@ async function fixture(t) {
   await fs.writeFile(path.join(root, "scummvm-shell/launcher/cover.webp"), "original artwork");
   let calls = 0;
   const run = (games = [game], extra = {}) => generateSocialCards({
-    root, games, rendererVersion: "template-one", render: async () => { calls += 1; return png; }, ...extra,
+    root, games, rendererVersion: "template-one", render: async () => { calls += 1; return jpeg; }, ...extra,
   });
   const readManifest = async () => JSON.parse(await fs.readFile(path.join(root, "data/social-cards.json"), "utf8"));
   return { root, run, readManifest, calls: () => calls };
 }
 
-test("unchanged copy and artwork reuse PNGs across builds and deployment versions without rewriting files", async (t) => {
+test("unchanged copy and artwork reuse cards across builds and deployment versions without rewriting files", async (t) => {
   const f = await fixture(t);
   assert.deepEqual(await f.run(), { generated: 1, reused: 0, removed: 0 });
   const before = await f.readManifest();
@@ -84,13 +84,13 @@ test("new games get cards and obsolete games and earlier revisions are pruned on
   assert.deepEqual(await f.run([]), { generated: 0, reused: 0, removed: 1 });
 });
 
-test("deleted and corrupted PNGs are repaired even when their inputs have not changed", async (t) => {
+test("deleted and corrupted cards are repaired even when their inputs have not changed", async (t) => {
   const f = await fixture(t);
   await f.run();
   const filename = path.join(f.root, "public/social-cards", (await f.readManifest()).cards.sample.file);
   await fs.writeFile(filename, "corrupted");
   assert.deepEqual(await f.run(), { generated: 1, reused: 0, removed: 0 });
-  assert.deepEqual(await fs.readFile(filename), png);
+  assert.deepEqual(await fs.readFile(filename), jpeg);
   await fs.unlink(filename);
   assert.deepEqual(await f.run(), { generated: 1, reused: 0, removed: 0 });
 });
@@ -101,7 +101,7 @@ test("failed inputs and failed renders preserve the last valid manifest and card
   const before = await f.readManifest();
   await assert.rejects(f.run([{ ...game, spotlightImage: "/launcher/missing.webp" }]), { code: "ENOENT" });
   await assert.rejects(f.run([{ ...game, summary: "New copy" }], { render: async () => { throw new Error("render failed"); } }), /render failed/);
-  await assert.rejects(f.run([{ ...game, summary: "New copy" }], { render: async () => Buffer.from("bad PNG") }), /Invalid 1200x630 PNG/);
+  await assert.rejects(f.run([{ ...game, summary: "New copy" }], { render: async () => Buffer.from("bad JPEG") }), /Invalid 1200x630 JPEG/);
   assert.deepEqual(await f.readManifest(), before);
   await fs.access(path.join(f.root, "public/social-cards", before.cards.sample.file));
   assert.deepEqual(await f.run(), { generated: 0, reused: 1, removed: 0 });
@@ -122,7 +122,7 @@ test("invalid slugs, nonlocal artwork and symlink outputs fail without writing t
   assert.equal(await fs.readFile(outside, "utf8"), "do not change");
 });
 
-test("the real renderer produces a complete PNG offline from local WebP artwork", async (t) => {
+test("the real renderer produces a complete JPEG offline from local WebP artwork", async (t) => {
   const f = await fixture(t);
   const artwork = await sharp({ create: { width: 32, height: 32, channels: 3, background: "#336699" } }).webp().toBuffer();
   await fs.writeFile(path.join(f.root, "scummvm-shell/launcher/cover.webp"), artwork);
@@ -133,7 +133,7 @@ test("the real renderer produces a complete PNG offline from local WebP artwork"
   } finally { globalThis.fetch = originalFetch; }
   const filename = path.join(f.root, "public/social-cards", (await f.readManifest()).cards.sample.file);
   const metadata = await sharp(await fs.readFile(filename)).metadata();
-  assert.equal(metadata.format, "png");
+  assert.equal(metadata.format, "jpeg");
   assert.equal(metadata.width, 1200);
   assert.equal(metadata.height, 630);
 });
@@ -147,8 +147,9 @@ test("every recognized game advertises a static asset, with static rewrites for 
   const rewrites = await config.rewrites();
   for (const game of games) {
     const imagePath = getGameSocialCardPath(game);
-    assert.match(imagePath, /^\/social-cards\/[a-z0-9-]+-[a-f0-9]{64}\.png$/);
-    await fs.access(new URL(`../public${imagePath}`, import.meta.url));
+    assert.match(imagePath, /^\/social-cards\/[a-z0-9-]+-[a-f0-9]{64}\.jpg$/);
+    const { size } = await fs.stat(new URL(`../public${imagePath}`, import.meta.url));
+    assert.ok(size < 600_000, imagePath);
     for (const suffix of ["social-card.png", "opengraph-image"]) {
       assert.equal(rewrites.find((rewrite) => rewrite.source === `/${game.slug}/${suffix}`)?.destination, imagePath);
     }
@@ -181,7 +182,7 @@ test("social cards, game pages and assets bypass Proxy while the runtime entry k
   const compiled = { exports: {} };
   runInNewContext(code, { module: compiled, exports: compiled.exports, require: createRequire(moduleUrl) });
   const matches = (url) => unstable_doesMiddlewareMatch({ config: compiled.exports.config, nextConfig: {}, url });
-  assert.equal(matches("/social-cards/sample-abc.png"), false);
+  assert.equal(matches("/social-cards/sample-abc.jpg"), false);
   assert.equal(matches("/beneath-a-steel-sky/social-card.png?v=old-deployment"), false);
   assert.equal(matches("/beneath-a-steel-sky/opengraph-image?oldhash"), false);
   for (const url of ["/", "/beneath-a-steel-sky", "/beneath-a-steel-sky/play", "/launcher/sky-cover.webp?v=1", "/data/plugins/libsky.so?v=1", "/_next/static/chunks/app.js"]) {

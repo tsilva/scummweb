@@ -1099,9 +1099,11 @@ AVIF encoding runs only in the explicit optimizer, outside normal builds.
 Posters advertise source sizes from the auto-fit 10rem grid, 1rem gaps, capped
 100rem container, current result count, crop and zoom. Keep this calculation in
 sync with the grid CSS. Hero sizes account for viewport height and cover cropping;
-gallery images preserve their original proportions. Variant width descriptors
-come from the decoded image dimensions. Hero preloading uses the same picture
-sources as visible images to avoid downloading both format alternatives.
+gallery images preserve their original proportions. Mobile screenshot thumbnails
+advertise their 9rem display width. The expanded viewer uses the full image.
+Variant width descriptors come from the decoded image dimensions. Hero
+preloading uses the same picture sources as visible images to avoid downloading
+both format alternatives.
 
 ## Branding
 
@@ -1113,7 +1115,7 @@ lists the exports and their dimensions.
 
 The homepage serves the Adventure Terminal social card at `/opengraph-image`.
 When the card changes, update the image URL in `lib/seo.mjs` with `v=sw-`
-followed by the first 16 characters of the exported PNG's SHA-256.
+followed by the first 16 characters of the exported JPEG's SHA-256.
 Game pages use their individual social cards. The shell finalizer copies the
 browser and install icons from [`public/brand/web-seo/`](../public/brand/web-seo/)
 into the managed shell during ScummVM rebuilds.
@@ -1124,7 +1126,7 @@ The untouched generated source is
 [`image-assets/sources/icon-source.png`](../image-assets/sources/icon-source.png).
 Run `node scripts/generate-favicon-assets.mjs` after replacing it and updating its
 generation evidence in the provenance record. The command derives 16/32/48px
-PNGs, an ICO, a compact SVG embedding the 64px rendition, 192/512px install icons,
+losslessly compressed PNGs, an ICO, a compact SVG embedding the 64px rendition, 192/512px install icons,
 an opaque 180px Apple touch icon, and the 1024px branding icon. The SVG at
 `image-assets/sources/favicon-source.svg` is a generated compatibility export,
 not an editable vector source. The command updates the branding, managed shell,
@@ -1140,31 +1142,32 @@ schedule or require reinstalling after deployment.
 Game cards are rendered by `pnpm generate:social-cards`, also run by
 `prepare` before development, production builds, and start. The generator uses
 the same bundled catalog and presentation copy as game pages, embeds verified artwork bytes,
-and writes 1200×630 PNGs under `public/social-cards/`. Cards prefer hero artwork,
+and writes 1200×630 JPEGs under `public/social-cards/`. Cards prefer hero artwork,
 falling back to spotlight or poster art when no hero is configured. The artwork
 uses 50% opacity beneath the dark gradient; brighter text and dark text shadows
 keep the title, description, and credits readable. It never requests a deployed
 site or an image rendering service. Published source images are downloaded from R2
-when absent from the local build cache. The homepage continues using its existing branding PNG.
+when absent from the local build cache. The homepage uses a separate branding JPEG.
 
 `data/social-cards.json` records each card's rendered inputs and artwork hash,
-output filename, and PNG checksum. Unchanged inputs reuse the existing file
+output filename, and image checksum. Unchanged inputs reuse the existing file
 without rewriting it. Changes to displayed copy, selected artwork bytes, the
 template, or rendering dependency versions regenerate affected cards. Deployment
 IDs, asset query versions, and unrelated catalog fields do not invalidate them.
 New games receive cards; removed games and earlier revisions are pruned from the
-generated directory. Missing or corrupted PNGs are repaired. Missing source
+generated directory. Missing or corrupted images are repaired. Missing source
 artwork or a failed render fails the command, preserving the last valid manifest.
 
 After editing catalog copy or artwork, run the generator and commit the resulting
-manifest with the source changes. PNG outputs are ignored build artifacts;
+manifest with the source changes. JPEG outputs are ignored build artifacts;
 clean CI and Vercel builds regenerate missing cards from their verified sources.
 Builds reconcile again to catch missed changes. Rendering uses the
-pinned Next.js image renderer and Sharp; it needs no service credentials.
+pinned Next.js image renderer and Sharp. The export uses JPEG quality 88 with
+4:4:4 chroma and a 600,000-byte ceiling. It needs no service credentials.
 
-Metadata points directly to content-versioned PNG URLs with immutable caching.
+Metadata points directly to content-versioned JPEG URLs with immutable caching.
 Both `/<game-slug>/social-card.png` and `/<game-slug>/opengraph-image` remain static
-rewrites to the corresponding PNG. Unknown and removed slugs have no image
+rewrites to the corresponding JPEG. Unknown and removed slugs have no image
 rewrite. Image requests also bypass Proxy. There are no per-game image Functions
 or request-time rendering.
 
