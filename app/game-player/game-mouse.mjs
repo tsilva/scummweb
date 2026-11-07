@@ -19,6 +19,7 @@ export function clickGameMouse(frame, origin, button) {
 
 export function observeRemoteMouse(host, frame) {
   const inputEvents = ["keydown", "keypress", "keyup"];
+  const listenerOptions = { capture: true };
   let frameDocument;
   let clickPress = null;
   const heldDirections = new Set();
@@ -51,7 +52,7 @@ export function observeRemoteMouse(host, frame) {
   }
 
   function detachFrame() {
-    for (const type of inputEvents) frameDocument?.removeEventListener(type, onKey, true);
+    for (const type of inputEvents) frameDocument?.removeEventListener(type, onKey, listenerOptions);
   }
 
   function attachFrame() {
@@ -59,14 +60,14 @@ export function observeRemoteMouse(host, frame) {
     clickPress = null;
     heldDirections.clear();
     frameDocument = frame.contentDocument;
-    for (const type of inputEvents) frameDocument?.addEventListener(type, onKey, true);
+    for (const type of inputEvents) frameDocument?.addEventListener(type, onKey, listenerOptions);
   }
 
-  for (const type of inputEvents) host.addEventListener(type, onKey, true);
+  for (const type of inputEvents) host.addEventListener(type, onKey, listenerOptions);
   frame.addEventListener("load", attachFrame);
   attachFrame();
   return () => {
-    for (const type of inputEvents) host.removeEventListener(type, onKey, true);
+    for (const type of inputEvents) host.removeEventListener(type, onKey, listenerOptions);
     frame.removeEventListener("load", attachFrame);
     detachFrame();
   };
