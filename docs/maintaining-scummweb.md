@@ -633,6 +633,16 @@ its engine plugins, and syncs the deployable bundle from `dist/` into
 `scummvm-shell/`. The build checks that it produced a plugin for every enabled
 engine before syncing the bundle.
 
+The full build also stages the [ScummVM source offer](https://scummweb.tsilva.eu/doc/scummvm-source.html)
+alongside the runtime. It links to the pinned upstream ScummVM archive and
+ships a ZIP with ScummWEB's patches, browser build scripts, library sources,
+license notices, and checksums for the generated JavaScript, WebAssembly and
+engine plugins. The app validates the ZIP and binary checksums when staging
+the runtime. Run a full build whenever a generated-code change alters
+`scummvm.js` or a native binary. Ordinary shell template changes can still
+use `--shell-only`. The source archive's `--compile-only` command rebuilds the
+runtime without game archives or the web application.
+
 Use the repository skill
 [`scummweb_upgrade-scummvm`](../.codex/skills/scummweb_upgrade-scummvm/SKILL.md)
 to check the official stable release and perform an upgrade. Its checker has a

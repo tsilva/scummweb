@@ -15,6 +15,11 @@ tests when porting; do not treat an old implementation shape as the requirement.
 - Preserve Ogg/Vorbis, FLAC, MAD/MP3, PNG, JPEG, zlib and Theora configuration and
   the intentional disabled external MIDI/synth paths. Rebuild codec libraries
   when SDK/ABI compatibility requires it. Keep upstream license notices.
+- Full builds publish the source inputs alongside the browser binaries. Keep
+  the pinned upstream archive, ScummWEB patch and build-source ZIP, library
+  source inputs and checksums in sync. Update the source packager when linked
+  libraries change. A project commit from a local worktree can be absent from
+  the public remote and cannot stand in for the build-source ZIP.
 - `SCUMMVM_REUSE_CATALOG=1` preserves tracked game configuration/catalog and the
   launcher assets while rebuilding code. Do not redetect every game, download
   replacement packages, or migrate artwork as a side effect of an engine upgrade.

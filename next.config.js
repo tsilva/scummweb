@@ -58,6 +58,10 @@ const nextConfig = {
   },
   headers() {
     const appVersion = getScummvmAssetVersion().replaceAll(".", "\\.");
+    const sourceOfferHeader = {
+      key: "Link",
+      value: `<${assetConfig.sourceOfferPage}>; rel="describedby", </doc/COPYING>; rel="license"`,
+    };
     return [
       ...assetConfig.versionedAssetMatchers.filter((source) =>
         !runtimeAssets.files[source] && source !== "/data/:path*" && source !== "/scummvm.html"
@@ -77,11 +81,12 @@ const nextConfig = {
       },
       {
         source: "/scummvm.html",
-        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }, sourceOfferHeader],
       },
+      ...["/scummvm.js", "/scummvm.wasm"].map((source) => ({ source, headers: [sourceOfferHeader] })),
       {
         source: "/data/plugins/:engine.so",
-        headers: [{ key: "Content-Type", value: "application/wasm" }],
+        headers: [{ key: "Content-Type", value: "application/wasm" }, sourceOfferHeader],
       },
     ];
   },

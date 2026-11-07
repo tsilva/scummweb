@@ -1075,6 +1075,11 @@ button.nav-icon-link {
   line-height: 1.6;
 }
 
+.footer-copy a {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
 .footer-links {
   display: flex;
   align-items: center;

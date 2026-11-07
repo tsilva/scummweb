@@ -4,30 +4,6 @@ set -euo pipefail
 
 HELPERS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-normalize_git_url() {
-  local url="$1"
-
-  if [[ -z "$url" ]]; then
-    echo ""
-    return
-  fi
-
-  case "$url" in
-    git@github.com:*)
-      echo "https://github.com/${url#git@github.com:}" | sed 's/\.git$//'
-      ;;
-    ssh://git@github.com/*)
-      echo "https://github.com/${url#ssh://git@github.com/}" | sed 's/\.git$//'
-      ;;
-    https://github.com/*)
-      echo "${url%.git}"
-      ;;
-    *)
-      echo "$url"
-      ;;
-  esac
-}
-
 find_optional_archive() {
   local downloads_dir="$1"
   shift

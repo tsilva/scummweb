@@ -3,6 +3,7 @@ import Icon from "./home-shell/shell-icon";
 import SourceLibrary from "./home-shell/source-library";
 import SettingsPanel from "./home-shell/settings-panel";
 import { getGamesOrigin } from "../lib/site-config.mjs";
+import assetConfig from "../lib/scummvm-shell-assets";
 
 export default function HomeShell({
   catalog,
@@ -80,7 +81,8 @@ export default function HomeShell({
             ScummWEB is an independent browser frontend for ScummVM. It is not affiliated with, endorsed by, or sponsored by the ScummVM project.
           </p>
           <p>
-            Bundle built {sourceInfoDate}. ScummVM version {scummvmVersion}.
+            Bundle built {sourceInfoDate}. ScummVM version {scummvmVersion}.{" "}
+            <a href={assetConfig.sourceOfferPage}>ScummVM source and licenses</a>
           </p>
         </div>
       </footer>

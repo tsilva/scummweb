@@ -12,7 +12,10 @@ test("required shell asset paths are managed and versioned matchers cover expect
   } = assetConfig;
 
   for (const requiredPath of requiredPaths) {
-    assert.ok(managedPaths.includes(requiredPath), `${requiredPath} should stay in managedPaths`);
+    assert.ok(
+      managedPaths.some((managedPath) => requiredPath === managedPath || requiredPath.startsWith(`${managedPath}/`)),
+      `${requiredPath} should be covered by managedPaths`
+    );
   }
 
   assert.ok(versionedAssetMatchers.includes("/launcher/:path*"));
