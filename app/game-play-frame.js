@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import dynamic from "next/dynamic";
 import { ArchivePlayer, RemoteArchivePlayer } from "./archive-play-frame";
 import { checkGameSource, readGameSources } from "./game-sources.mjs";
@@ -9,6 +9,7 @@ import { chooseGameVersion, getGameFamilyKey, readChosenVersion } from "./game-v
 import { getSelectedGamePresentation, openSelectedGameArchive } from "./local-game-archive.mjs";
 import { getRecognizedGames } from "./recognized-games.mjs";
 import { withGameTelemetry } from "./game-player/telemetry.mjs";
+import { loadArtworkStorage } from "../lib/artwork-storage.mjs";
 
 const SourceLibrary = dynamic(() => import("./home-shell/source-library"));
 
@@ -21,8 +22,7 @@ function readGameZip() {
 }
 const serverGameZip = () => undefined;
 
-export default function GamePlayFrame({ game, catalog, officialUrl, children }) {
-  const recognizedGames = useMemo(() => getRecognizedGames(catalog), [catalog]);
+export default function GamePlayFrame({ game, catalog, artwork, officialUrl, children }) {
   const [selection, setSelection] = useState(null);
   const zip = useSyncExternalStore(subscribeToHash, readGameZip, serverGameZip);
 
@@ -44,6 +44,9 @@ export default function GamePlayFrame({ game, catalog, officialUrl, children }) 
       const remembered = readChosenVersion(getGameFamilyKey(game));
       if (!game.importRequired && !remembered?.startsWith("source:")) return select({ bundled: true });
       const sources = getMatchingGameSources(game, await readGameSources(catalog, officialUrl), catalog);
+      if (sources.length) await loadArtworkStorage().catch(() => {});
+      if (controller.signal.aborted) return;
+      const recognizedGames = sources.length ? getRecognizedGames(catalog) : catalog;
       const versions = await Promise.all(sources.map(async (source) => ({
         key: `source:${source.id}`, source, status: await checkGameSource(source),
         game: getSourceGamePresentation(source, catalog, recognizedGames),
@@ -60,7 +63,7 @@ export default function GamePlayFrame({ game, catalog, officialUrl, children }) 
       if (!controller.signal.aborted) select(game.importRequired ? { missing: true } : { bundled: true });
     });
     return () => controller.abort();
-  }, [game, catalog, recognizedGames, officialUrl, zip]);
+  }, [game, catalog, officialUrl, zip]);
 
   function playArchive(selectedGame, resume) {
     if (getGameFamilyKey(selectedGame) !== getGameFamilyKey(game)) return false;
@@ -71,11 +74,11 @@ export default function GamePlayFrame({ game, catalog, officialUrl, children }) 
   }
 
   if (!selection || selection.zip !== zip) return <p role="status" className="page-shell">Opening {game.displayTitle}…</p>;
-  if (selection.remote) return <RemoteArchivePlayer key={zip} zip={zip} recognizedGames={recognizedGames} />;
+  if (selection.remote) return <RemoteArchivePlayer key={zip} zip={zip} catalog={catalog} />;
   if (selection.bundled) return children;
   if (selection.missing) return <div className="page-shell">
     <a href={game.href}>Return to {game.displayTitle}</a>
-    <SourceLibrary catalog={catalog} featuredGame={game} isHomePage={false} officialUrl={officialUrl}
+    <SourceLibrary catalog={catalog} artwork={artwork} featuredGame={game} isHomePage={false} officialUrl={officialUrl}
       libraryHeading="Game Library" onPlayArchive={playArchive} playerRoute />
   </div>;
   return <ArchivePlayer game={selection.game} loadArchive={selection.loadArchive} />;

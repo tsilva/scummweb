@@ -3,7 +3,7 @@ import Icon from "./home-shell/shell-icon";
 import SourceLibrary from "./home-shell/source-library";
 import SettingsPanel from "./home-shell/settings-panel";
 import { getGamesOrigin } from "../lib/site-config.mjs";
-import { artworkStorage } from "../lib/artwork-storage.mjs";
+import { artworkDelivery, artworkStorage } from "../lib/artwork-storage.mjs";
 import assetConfig from "../lib/scummvm-shell-assets";
 
 export default function HomeShell({
@@ -67,6 +67,7 @@ export default function HomeShell({
 
       <main className="page-shell">
         {children ?? <SourceLibrary
+          artwork={artworkDelivery(featuredGame ? [...catalog, featuredGame] : catalog)}
           catalog={catalog}
           featuredGame={featuredGame}
           isHomePage={isHomePage}

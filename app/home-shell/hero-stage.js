@@ -8,6 +8,7 @@ import HeroTitle from "./hero-title";
 import HeroScrollCue from "./hero-scroll-cue";
 import GameScreenshots from "./game-screenshots";
 import { getHeroImageProps } from "./hero-images.mjs";
+import { useArtworkDelivery } from "./artwork-delivery";
 import { getDialogLinkProps, getHeroImageStyle } from "./shared";
 import { initialActionsMarkup } from "./initial-actions.mjs";
 import { formatVersionLabel } from "../game-versions.mjs";
@@ -38,7 +39,7 @@ export default function HeroStage({
   const editionLabel = formatVersionLabel(featuredGame, { showRevision: false })
     || (featuredGame.importRequired && featuredGame.badge) || "Included version";
   const hasMultipleVersions = versions.length > 1;
-  const backdrop = getHeroImageProps(featuredGame);
+  const backdrop = getHeroImageProps(featuredGame, useArtworkDelivery());
   // React automatically preloads the eager WebP <img>, but skips images in <picture>.
   if (isInitialSlide && backdrop.avifSrcSet) {
     preload(backdrop.avifSrcSet.split(" ", 1)[0], {

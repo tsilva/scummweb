@@ -3,8 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Check, ChevronDown, ChevronRight, Download, Info, Layers, Save, Settings, Upload, X } from "lucide-react";
 import { readGameSources } from "../game-sources.mjs";
-import { applyImport, exportBackup, getActiveSaveSets, getSaveDestinations, matchDestination, readBackup, readStoredSets, withSaveLock } from "../save-backups/backups.mjs";
-import { captureFilesystem } from "../save-backups/filesystem.mjs";
 
 const countFiles = (set) => `${set.files.length} save ${set.files.length === 1 ? "file" : "files"}`;
 
@@ -26,7 +24,9 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
   useEffect(() => () => { if (downloadReady) URL.revokeObjectURL(downloadReady.href); }, [downloadReady]);
 
   async function refresh() {
-    const sources = await readGameSources(catalog, officialUrl);
+    const [{ getActiveSaveSets, getSaveDestinations, readStoredSets }, sources] = await Promise.all([
+      import("../save-backups/backups.mjs"), readGameSources(catalog, officialUrl),
+    ]);
     const destinations = await getSaveDestinations(catalog, sources);
     const [active, stored] = await Promise.all([getActiveSaveSets(window.localStorage, destinations), readStoredSets()]);
     const result = { ...active, stored, destinations };
@@ -70,7 +70,8 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
     setReview(null);
   }
 
-  function prepareReview(sets, current, activating = false) {
+  async function prepareReview(sets, current, activating = false) {
+    const { matchDestination } = await import("../save-backups/backups.mjs");
     const used = new Set();
     const rows = sets.map((set) => {
       const destinationKey = matchDestination(set, current.destinations);
@@ -90,6 +91,7 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
 
   async function download() {
     await run(async () => {
+      const { exportBackup, withSaveLock } = await import("../save-backups/backups.mjs");
       const blob = await withSaveLock(async () => {
         const current = await refresh();
         const unique = new Map([...current.sets, ...current.stored].map((set) => [`${set.destination.key}:${set.hash}`, set]));
@@ -111,13 +113,17 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
     event.target.value = "";
     if (!file) return;
     await run(async () => {
+      const { readBackup, withSaveLock } = await import("../save-backups/backups.mjs");
       const sets = await readBackup(file);
-      prepareReview(sets, await withSaveLock(refresh));
+      await prepareReview(sets, await withSaveLock(refresh));
     });
   }
 
   async function confirmImport() {
     await run(async () => {
+      const [{ applyImport, withSaveLock }, { captureFilesystem }] = await Promise.all([
+        import("../save-backups/backups.mjs"), import("../save-backups/filesystem.mjs"),
+      ]);
       await withSaveLock(async () => {
         let initialConfig;
         if (!captureFilesystem(localStorage).root.key) {
@@ -181,7 +187,10 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
             {data.sets.length === 0 && storedOnly.length === 0 && <p>No saved progress on this browser yet.</p>}
             {data.sets.map((set) => <div className="settings-set" key={set.destination.key}><strong>{set.destination.title}</strong><small>{countFiles(set)}</small></div>)}
             {storedOnly.map((set) => <div className="settings-set" key={set.id}><strong>{set.destination.title}</strong><small>{countFiles(set)} · Preserved {new Date(set.preservedAt).toLocaleDateString()}</small>
-              <button type="button" className="secondary-button" disabled={busy} onClick={() => run(async () => prepareReview([set], await withSaveLock(refresh), true))}>Review and activate</button></div>)}
+              <button type="button" className="secondary-button" disabled={busy} onClick={() => run(async () => {
+                const { withSaveLock } = await import("../save-backups/backups.mjs");
+                await prepareReview([set], await withSaveLock(refresh), true);
+              })}>Review and activate</button></div>)}
           </div>}
           {view === "review" && review && <div className="settings-review"><h3>{review.activating ? "Activate save set" : "Review import"}</h3>
             <p>Saves are matched to their games automatically. Games missing from this backup stay unchanged.</p>

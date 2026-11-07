@@ -861,6 +861,9 @@ as part of the page request. Google Analytics and Vercel Analytics page
 locations omit that fragment. The client downloads the archive directly with
 credentials omitted.
 
+The Google Analytics event queue is available immediately. The Google tag and
+Vercel Analytics start after the initial page loads and has a chance to paint.
+
 The catalog player downloads and unpacks the game ZIP before starting
 WebAssembly. ZIP launches fetch only the engine data index.
 To diagnose a launch locally, inspect the iframe's User Timing marks in the
@@ -1104,9 +1107,10 @@ gallery images preserve their original proportions. Mobile screenshot thumbnails
 advertise their 9rem display width. The expanded viewer uses the full image.
 Variant width descriptors come from the decoded image dimensions. Hero
 preloading uses the same picture sources as visible images to avoid downloading
-both format alternatives. The browsing pages preconnect to the artwork bucket,
-and the Turbopack browser build includes only URL and dimension data from the
-artwork manifest. Publishing and verification tools use the full manifest.
+both format alternatives. Browsing pages preconnect to the artwork bucket and
+send URL and dimension records for the bundled games and the current game.
+The browser loads the full delivery inventory when it restores or adds imported
+games. Publishing and verification tools use the full manifest.
 
 ## Branding
 
@@ -1396,8 +1400,8 @@ or request-time rendering.
   across the screen, with horizontal overflow and uncropped original images.
   Library covers retain a 3:4 portrait box-art shape. At widths of 64rem and up,
   the library uses exactly five columns; narrower layouts keep their responsive grid.
-  The screenshot strip renders
-  without deferred content sizing so changing games does not move later sections.
+  The screenshot strip reserves its full height so changing games does not move
+  later sections. Thumbnail requests start as the strip approaches the viewport.
   Selecting a thumbnail expands a viewer inline. Previous/next and arrow keys
   browse the screenshots; Close screenshot or Escape collapses the viewer and
   restores focus to the thumbnail. Game changes reset the expanded image.

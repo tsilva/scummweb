@@ -1,15 +1,36 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Minimize2 } from "lucide-react";
 import { getArtworkImageProps } from "./artwork-image-props.mjs";
 import DecorativeImage from "./decorative-image";
+import { useArtworkDelivery } from "./artwork-delivery";
 
 export default function GameScreenshots({ game }) {
+  const artwork = useArtworkDelivery();
   const [selected, setSelected] = useState(null);
+  const [showThumbnails, setShowThumbnails] = useState(false);
+  const strip = useRef(null);
   const thumbnails = useRef([]);
   const viewer = useRef(null);
   const shots = game.screenshots || [];
+
+  useEffect(() => {
+    if (!strip.current || showThumbnails) return;
+    if (typeof IntersectionObserver !== "function") {
+      setShowThumbnails(true);
+      return;
+    }
+    // Native lazy loading can fetch the entire strip while the hero is painting.
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setShowThumbnails(true);
+      observer.disconnect();
+    }, { rootMargin: "0px 0px 32px" });
+    observer.observe(strip.current);
+    return () => observer.disconnect();
+  }, [shots.length, showThumbnails]);
+
   if (!shots.length) return null;
 
   function close() {
@@ -23,21 +44,25 @@ export default function GameScreenshots({ game }) {
       <h2 id="game-screenshots-heading"><span className="section-mark" />Screenshots</h2>
       <span className="game-screenshot-hint">Click to enlarge</span>
     </div>
-    <div className="game-screenshot-strip">
-      {shots.map((shot, index) => <button key={shot} type="button" className="game-screenshot-thumb"
-        ref={(element) => { thumbnails.current[index] = element; }}
-        aria-label={`View ${game.displayTitle} screenshot ${index + 1}`}
-        aria-expanded={selected === index} aria-controls="game-screenshot-viewer"
-        onClick={() => {
-          setSelected(index);
-          requestAnimationFrame(() => {
-            viewer.current?.scrollIntoView({ behavior: "instant", block: "start" });
-            viewer.current?.focus({ preventScroll: true });
-          });
-        }}>
-        <DecorativeImage {...getArtworkImageProps(shot)} sizes="(max-width: 48rem) 9rem, calc((min(100vw, 100rem) - 8.5rem) / 3)" alt={`${game.displayTitle} screenshot ${index + 1}`}
-          loading="lazy" decoding="async" />
-      </button>)}
+    <div className="game-screenshot-strip" ref={strip}>
+      {shots.map((shot, index) => {
+        const thumbnail = <DecorativeImage {...getArtworkImageProps(shot, "gallery", artwork)}
+          sizes="(max-width: 48rem) 9rem, calc((min(100vw, 100rem) - 8.5rem) / 3)"
+          alt={`${game.displayTitle} screenshot ${index + 1}`} loading="lazy" decoding="async" />;
+        return <button key={shot} type="button" className="game-screenshot-thumb"
+          ref={(element) => { thumbnails.current[index] = element; }}
+          aria-label={`View ${game.displayTitle} screenshot ${index + 1}`}
+          aria-expanded={selected === index} aria-controls="game-screenshot-viewer"
+          onClick={() => {
+            setSelected(index);
+            requestAnimationFrame(() => {
+              viewer.current?.scrollIntoView({ behavior: "instant", block: "start" });
+              viewer.current?.focus({ preventScroll: true });
+            });
+          }}>
+          {showThumbnails ? thumbnail : <noscript>{thumbnail}</noscript>}
+        </button>;
+      })}
     </div>
     {selected !== null && <div ref={viewer} id="game-screenshot-viewer" className="game-screenshot-viewer"
       role="region" aria-label={`${game.displayTitle} screenshot viewer`} tabIndex={-1}

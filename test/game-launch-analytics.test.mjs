@@ -1,7 +1,34 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { runInNewContext } from "node:vm";
+import { analyticsStartupScript } from "../app/analytics-startup.mjs";
 import { createGameLaunchAnalytics } from "../app/game-player/game-launch-analytics.mjs";
 import { DEFAULT_SITE_URL, GOOGLE_ANALYTICS_ID } from "../lib/site-config.mjs";
+
+test("analytics queues early events and redacts the direct ZIP link before the tag loads", () => {
+  const frames = [];
+  const scripts = [];
+  let idle;
+  const window = Object.assign(new EventTarget(), {
+    location: new URL(`${DEFAULT_SITE_URL}/local/play?example=1#zip=https://example.com/private.zip`),
+    requestAnimationFrame: (callback) => frames.push(callback),
+    requestIdleCallback: (callback) => { idle = callback; },
+  });
+  const document = { readyState: "loading", createElement: () => ({}), head: { appendChild: (script) => scripts.push(script) } };
+  runInNewContext(analyticsStartupScript, { window, document, URLSearchParams, Event });
+  window.gtag("event", "game_launch_attempt");
+  const config = window.dataLayer[1];
+  assert.equal(config[2].page_location, `${DEFAULT_SITE_URL}/local/play?example=1`);
+  assert.equal(window.dataLayer[2][1], "game_launch_attempt");
+  assert.equal(scripts.length, 0);
+  window.dispatchEvent(new Event("load"));
+  frames.shift()();
+  frames.shift()();
+  assert.equal(scripts.length, 0);
+  idle();
+  assert.equal(window.scummwebAnalyticsReady, true);
+  assert.equal(scripts[0].src, `https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`);
+});
 
 test("catalog analytics shares one attempt and counts only visible, ready play time", (t) => {
   t.mock.timers.enable({ apis: ["Date", "setTimeout"] });

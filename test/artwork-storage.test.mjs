@@ -8,7 +8,7 @@ import test from "node:test";
 import sharp from "sharp";
 import { getArtworkImageProps } from "../app/home-shell/artwork-image-props.mjs";
 import { activateArtwork, planArtwork, retireArtwork, validateManifest, verifyArtwork } from "../scripts/artwork-storage.mjs";
-import { artworkPath, artworkUrl } from "../lib/artwork-storage.mjs";
+import { artworkDelivery, artworkPath, artworkUrl } from "../lib/artwork-storage.mjs";
 import { readArtworkFile } from "../scripts/artwork-files.mjs";
 
 const bytes = await sharp({ create: { width: 8, height: 12, channels: 3, background: "#aabbcc" } }).webp().toBuffer();
@@ -71,6 +71,17 @@ test("browser artwork metadata preserves delivery records without verification f
   assert.equal(artworkPath(url, browser), name);
   assert.equal(artworkPath(artworkUrl(variant, browser), browser), variant);
   assert.deepEqual(getArtworkImageProps(url, "hero", browser), getArtworkImageProps(url, "hero", published));
+
+  const unrelated = "/launcher/another-game.webp";
+  const scoped = artworkDelivery([{ heroImage: url }], {
+    ...published, files: { ...published.files, [unrelated]: file },
+  });
+  assert.deepEqual(Object.keys(scoped.files).sort(), [name, variant].sort());
+  assert.deepEqual(getArtworkImageProps(url, "hero", scoped), getArtworkImageProps(url, "hero", published));
+  const entry = await import(`data:text/javascript,${encodeURIComponent(artworkBrowserLoader.call({
+    addDependency() {}, getOptions: () => ({ defer: true }),
+  }))}`);
+  assert.deepEqual(entry.default, { published: true, origin: published.origin, files: {}, deferred: true });
 });
 
 test("plans preserve live mappings and retain exact original bytes outside Git", async (t) => {
