@@ -336,7 +336,10 @@ Existing folder entries require a replacement ZIP through **Locate ZIP**;
 reconnecting preserves their source ID and browser saves.
 
 Local ZIP imports support up to 4 GiB, including their unpacked contents.
-For large games, use ZIPs with compression disabled; see
+Large compressed ZIPs unpack into browser-managed storage before launch and
+need space for the expanded game. The temporary file is removed when the
+player closes. A later launch clears any file left behind by a closed tab.
+Large stored ZIPs can be read directly from disk. See
 [packaging a local collection](#package-a-local-scummvm-collection).
 Extracted CD audio accepts physical track names such as `Track  2.flac` as well
 as ScummVM's conventional `track1.flac` naming.
@@ -632,6 +635,10 @@ read time without recording filenames.
 its engine plugins, and syncs the deployable bundle from `dist/` into
 `scummvm-shell/`. The build checks that it produced a plugin for every enabled
 engine before syncing the bundle.
+
+The browser build includes Mortevielle and Z-Vision for personal ZIPs.
+Z-Vision uses the built-in Emscripten FreeType port and plays the standard
+video tracks in Zork: Grand Inquisitor's DVD edition.
 
 The full build also stages the [ScummVM source offer](https://scummweb.tsilva.eu/doc/scummvm-source.html)
 alongside the runtime. It links to the pinned upstream ScummVM archive and
@@ -1284,7 +1291,7 @@ package and verify the archives. Existing matching archives are reused, and
 conflicting files are preserved. The script keeps the original game folders
 intact. Select the output ZIP files and drop them into the ScummWEB library.
 
-The packager stores the members of large ZIPs without compression. ScummWEB
-reads those ZIPs directly from disk in small blocks instead of loading every
-file into memory. Local imports support up to 4 GiB; ZIPs over 128 MiB or over 256 MiB unpacked must use the store method.
-Hosted ZIPs retain the separate download and unpacking limits.
+The packager uses Deflate compression. For local ZIPs over 128 MiB or over
+256 MiB unpacked, ScummWEB mounts seekable slices of the game data and
+streams decompression into browser-managed storage when needed. Local
+imports support up to 4 GiB. Hosted ZIPs retain their separate limits.

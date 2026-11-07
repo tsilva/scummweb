@@ -21,6 +21,7 @@ SKILL = ".codex/skills/scummweb_upgrade-scummvm"
 SOURCE_ARCHIVE = "scummvm-source.zip"
 SOURCE_PAGE = "scummvm-source.html"
 PORTS = {
+    "freetype": "freetype.zip",
     "libjpeg": "libjpeg.*.tar.gz",
     "libpng": "libpng.*.tar.gz",
     "ogg": "ogg.zip",

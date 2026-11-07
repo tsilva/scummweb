@@ -45,7 +45,7 @@ export async function prepareGameSourcePlayer(source, game, { legacySaves = fals
       }
       const file = await source.handle.getFile();
       validateGameZip(file, maxLocalGameSize);
-      return openLocalGameZip(file, signal);
+      return openLocalGameZip(file, signal, onProgress);
     },
   };
 }

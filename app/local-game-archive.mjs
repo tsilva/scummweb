@@ -39,10 +39,10 @@ export function validateGameZip(file, archiveLimit = maxArchiveSize) {
   }
 }
 
-async function withZipEntries(file, useEntries, { archiveLimit = maxArchiveSize, expandedLimit = maxExpandedSize } = {}) {
+async function withZipEntries(file, useEntries, { archiveLimit = maxArchiveSize, expandedLimit = maxExpandedSize, signal } = {}) {
   validateGameZip(file, archiveLimit);
   const { BlobReader } = await import("@zip.js/zip.js");
-  return withGameZipEntries(new BlobReader(file), useEntries, { expandedLimit });
+  return withGameZipEntries(new BlobReader(file), useEntries, { expandedLimit, signal });
 }
 
 async function withGameZipEntries(source, useEntries, { expandedLimit = maxExpandedSize, signal } = {}) {
@@ -132,10 +132,8 @@ function gameEntries(entries) {
 }
 
 export function scanLocalGameArchive(file) {
-  return withZipEntries(file, (entries, totalSize) => {
-    if (requiresFileBackedZip(file, totalSize)) validateStoredEntries(entries);
-    return entries.map(({ path, entry }) => [path, entry.uncompressedSize, entry.signature]);
-  }, localZipLimits);
+  return withZipEntries(file, (entries) => entries.map(({ path, entry }) =>
+    [path, entry.uncompressedSize, entry.signature]), localZipLimits);
 }
 
 export function readLocalGameArchive(file, { signal, onEntries, ...limits } = {}) {
@@ -143,7 +141,7 @@ export function readLocalGameArchive(file, { signal, onEntries, ...limits } = {}
     signal?.throwIfAborted();
     onEntries?.(entries.map(({ path, entry }) => [path, entry.uncompressedSize, entry.signature]));
     return unpackGameEntries(entries, signal);
-  }, limits);
+  }, { ...limits, signal });
 }
 
 // The manifest describes already-verified bytes, not executable paths or ZIP
@@ -189,17 +187,13 @@ function requiresFileBackedZip(file, totalSize) {
   return file.size > maxArchiveSize || totalSize > maxExpandedSize;
 }
 
-function validateStoredEntries(entries) {
-  if (entries.some(({ entry }) => entry.compressionMethod !== 0 ||
-      entry.compressedSize !== entry.uncompressedSize)) {
-    throw new ArchiveError("For a large game, use a ZIP created without compression.");
-  }
-}
-
-export function openLocalGameZip(file, signal) {
+export function openLocalGameZip(file, signal, onProgress) {
   return withZipEntries(file, async (entries, totalSize) => {
     if (!requiresFileBackedZip(file, totalSize)) return unpackGameEntries(entries, signal);
-    validateStoredEntries(entries);
+    if (entries.some(({ entry }) => entry.compressionMethod !== 0 ||
+        entry.compressedSize !== entry.uncompressedSize)) {
+      return unpackGameEntriesToBlob(entries, totalSize, signal, onProgress);
+    }
     const files = [];
     for (const { entry, path } of entries) {
       signal?.throwIfAborted();
@@ -226,7 +220,7 @@ export function openLocalGameZip(file, signal) {
       files.push({ path, blob: file.slice(start, end) });
     }
     return files;
-  }, localZipLimits);
+  }, { ...localZipLimits, signal });
 }
 
 async function unpackGameEntries(entries, signal) {
@@ -235,20 +229,125 @@ async function unpackGameEntries(entries, signal) {
     signal?.throwIfAborted();
     const data = new Uint8Array(entry.uncompressedSize);
     let offset = 0;
-    try {
-      await entry.getData(new WritableStream({
-        write(chunk) {
-          signal?.throwIfAborted();
-          data.set(chunk, offset);
-          offset += chunk.length;
-        },
-      }), { checkSignature: true, useWebWorkers: false });
-      if (offset !== data.length) throw new Error("Unexpected file size");
-    } catch {
-      signal?.throwIfAborted();
-      throw new ArchiveError("A game file could not be unpacked. Check that the ZIP is intact.");
-    }
+    await writeGameEntry(entry, signal, (chunk) => {
+      data.set(chunk, offset);
+      offset += chunk.length;
+    });
     files.push({ path, data });
   }
   return files;
+}
+
+
+async function writeGameEntry(entry, signal, write) {
+  let size = 0;
+  try {
+    signal?.throwIfAborted();
+    await entry.getData(new WritableStream({
+      write(chunk) {
+        signal?.throwIfAborted();
+        size += chunk.length;
+        if (size > entry.uncompressedSize) throw new Error("Unexpected file size");
+        return write(chunk);
+      },
+    }), { signal, checkSignature: true, useWebWorkers: false });
+    if (size !== entry.uncompressedSize) throw new Error("Unexpected file size");
+  } catch (error) {
+    signal?.throwIfAborted();
+    if (error instanceof ArchiveError) throw error;
+    throw new ArchiveError("A game file could not be unpacked. Check that the ZIP is intact.", { cause: error });
+  }
+}
+
+async function writeGameBundle(entries, totalSize, signal, onProgress, writable) {
+  const writer = writable.getWriter();
+  let loaded = 0;
+  let percent = 0;
+  try {
+    onProgress?.(0, { loaded, total: totalSize });
+    for (const { entry } of entries) {
+      await writeGameEntry(entry, signal, async (chunk) => {
+        try {
+          await writer.write(chunk);
+        } catch (error) {
+          throw new ArchiveError("Could not prepare the game ZIP in browser storage.", { cause: error });
+        }
+        loaded += chunk.length;
+        const next = totalSize ? Math.floor(loaded / totalSize * 100) : 100;
+        if (next === percent) return;
+        percent = next;
+        onProgress?.(percent, { loaded, total: totalSize });
+      });
+    }
+    await writer.close();
+  } catch (error) {
+    await writer.abort(error).catch(() => {});
+    throw error;
+  }
+}
+
+function prepareGameBundleOnDisk(entries, totalSize, signal, onProgress) {
+  const { locks, storage } = globalThis.navigator ?? {};
+  if (!signal || !locks?.request || !storage?.getDirectory ||
+      !globalThis.FileSystemFileHandle?.prototype?.createWritable) return null;
+  const filename = "unpacked.bin";
+  return new Promise((resolve, reject) => {
+    // The lock spans the game session, because the iframe reads these file
+    // slices lazily. A closed page releases the lock, so the next launch
+    // can remove an orphan before creating a new file.
+    locks.request("scummweb-local-game-archive", { ifAvailable: true }, async (lock) => {
+      if (!lock) throw new ArchiveError("Another large game is open. Close it before starting this game.");
+      signal.throwIfAborted();
+      const root = await storage.getDirectory();
+      const directory = await root.getDirectoryHandle("scummweb-local-game", { create: true });
+      try {
+        await directory.removeEntry(filename);
+      } catch (error) {
+        if (error.name !== "NotFoundError") throw error;
+      }
+      signal.throwIfAborted();
+      try {
+        const handle = await directory.getFileHandle(filename, { create: true });
+        await writeGameBundle(entries, totalSize, signal, onProgress, await handle.createWritable());
+        signal.throwIfAborted();
+        resolve(await handle.getFile());
+        if (!signal.aborted) {
+          await new Promise((finished) => signal.addEventListener("abort", finished, { once: true }));
+        }
+      } finally {
+        await directory.removeEntry(filename).catch(() => {});
+      }
+    }).catch((error) => {
+      if (signal.aborted) return reject(signal.reason);
+      reject(error instanceof ArchiveError ? error :
+        new ArchiveError("Could not prepare the game ZIP in browser storage.", { cause: error }));
+    });
+  });
+}
+
+async function prepareGameBundleInBlob(entries, totalSize, signal, onProgress) {
+  const { readable, writable } = new TransformStream();
+  const [prepared, written] = await Promise.allSettled([
+    new Response(readable).blob(),
+    writeGameBundle(entries, totalSize, signal, onProgress, writable),
+  ]);
+  signal?.throwIfAborted();
+  if (written.status === "rejected") throw written.reason;
+  if (prepared.status === "rejected") {
+    throw new ArchiveError("Could not prepare the game ZIP in browser storage.", { cause: prepared.reason });
+  }
+  return prepared.value;
+}
+
+async function unpackGameEntriesToBlob(entries, totalSize, signal, onProgress) {
+  const bundle = await (prepareGameBundleOnDisk(entries, totalSize, signal, onProgress)
+    ?? prepareGameBundleInBlob(entries, totalSize, signal, onProgress));
+  signal?.throwIfAborted();
+  if (bundle.size !== totalSize) throw new ArchiveError("The unpacked game ZIP is incomplete.");
+  let offset = 0;
+  return entries.map(({ path, entry }) => {
+    const start = offset;
+    offset += entry.uncompressedSize;
+    return { path, blob: bundle.slice(start, offset) };
+  });
 }
