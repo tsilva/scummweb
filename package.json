@@ -33,10 +33,10 @@
     "@vercel/analytics": "2.0.1",
     "@zip.js/zip.js": "2.24.0",
     "lucide-react": "1.55.0",
-    "next": "16.4.1",
+    "next": "16.4.3",
     "playwright-core": "1.62.1",
-    "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   },
   "devDependencies": {
     "lighthouse": "13.6.0",
