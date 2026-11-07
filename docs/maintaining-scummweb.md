@@ -305,7 +305,7 @@ Name order keeps numbered series in installment order, treating Roman and Arabic
 numerals alike. Sort-only aliases in `lib/game-title-sort.mjs` place unnumbered
 first games and irregularly named sequels with their series. These aliases also
 apply to imported games and name tie-breaks, preserving displayed titles and URLs.
-Select the **ScummWEB** logo in the header to return to the homepage.
+Select the **ScummWEB** logo or its tagline in the header to return to the homepage.
 The **Compatibility** navigation link opens the compatibility page, with search
 and filters for checked editions, warnings, failures, and untested games. See
 [game testing](game-testing.md) for the same results and their limitations.

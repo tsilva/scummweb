@@ -26,22 +26,20 @@ export default function HomeShell({
       <nav className={pageMode === "compatibility" ? "dashboard-nav" : "dashboard-nav dashboard-nav-home"}>
         <div className="nav-cluster nav-cluster-left">
           <div className="nav-brand-group">
-            <div className="nav-brand-stack">
-              <BrandLink className="nav-brand" href={isHomePage ? "#top" : "/"} aria-label="ScummWEB home">
-                <img
-                  alt=""
-                  aria-hidden="true"
-                  className="nav-brand-logo"
-                  decoding="async"
-                  fetchPriority="low"
-                  height="54"
-                  loading="eager"
-                  src={logoSrc}
-                  width="273"
-                />
-              </BrandLink>
+            <BrandLink className="nav-brand" href={isHomePage ? "#top" : "/"} aria-label="ScummWEB home">
+              <img
+                alt=""
+                aria-hidden="true"
+                className="nav-brand-logo"
+                decoding="async"
+                fetchPriority="low"
+                height="54"
+                loading="eager"
+                src={logoSrc}
+                width="273"
+              />
               <p className="nav-brand-tagline">Classic adventures in your browser</p>
-            </div>
+            </BrandLink>
           </div>
 
           <div className="nav-links" aria-label="Main">
