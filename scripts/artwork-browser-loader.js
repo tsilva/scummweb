@@ -8,6 +8,9 @@ module.exports = function artworkBrowserLoader() {
   const manifest = resolve(__dirname, "../data/artwork-storage.json");
   this.addDependency(manifest);
   const { published, origin, files, images } = JSON.parse(readFileSync(manifest, "utf8"));
+  if (this.getOptions?.().defer) {
+    return `export default ${JSON.stringify({ published, origin, files: {}, deferred: true })};`;
+  }
   const deliveryFiles = Object.fromEntries(Object.entries(files).map(([name, { key, width, sha256 }]) => {
     const filename = name.slice(name.lastIndexOf("/") + 1);
     const address = key === `artwork/${sha256}/${filename}` ? { hash: sha256 } : { key };

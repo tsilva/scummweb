@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getGamesOrigin } from "../../../lib/site-config.mjs";
+import { artworkDelivery } from "../../../lib/artwork-storage.mjs";
 import { buildVersionedAssetPath } from "../../asset-paths";
 import { bucketZipUrl } from "../../game-bucket.mjs";
 import {
@@ -51,7 +52,7 @@ export default async function GamePlayRoutePage({ params }) {
 
   return (
     <main className="game-route-page">
-      <GamePlayFrame key={game.slug} game={game} catalog={getGameLibrary().games}
+      <GamePlayFrame key={game.slug} game={game} catalog={getGameLibrary().games} artwork={artworkDelivery([game])}
         officialUrl={getGamesOrigin()}>
         {!game.importRequired && <GameRouteFrame
           key={game.slug}

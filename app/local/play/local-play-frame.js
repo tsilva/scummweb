@@ -32,5 +32,5 @@ export default function LocalPlayFrame({ catalog }) {
   if (hash === null) return null;
   const zip = new URLSearchParams(hash.slice(1)).get("zip");
   return zip === null ? <SelectedArchivePlayer key={hash} recognizedGames={recognizedGames} />
-    : <RemoteArchivePlayer key={hash} zip={zip} recognizedGames={recognizedGames} />;
+    : <RemoteArchivePlayer key={hash} zip={zip} catalog={catalog} />;
 }

@@ -1,7 +1,6 @@
 import { Inter, Space_Grotesk } from "next/font/google";
-import Script from "next/script";
-import { GOOGLE_ANALYTICS_ID } from "../lib/site-config.mjs";
 import { getVersionedSiteAssetPath } from "./asset-paths";
+import { analyticsStartupScript } from "./analytics-startup.mjs";
 import { APP_THEME_COLOR, HOME_DESCRIPTION, HOME_TITLE, SITE_NAME } from "./seo";
 import { getMetadataBase } from "./site-config";
 import SiteAnalytics from "./site-analytics";
@@ -68,23 +67,9 @@ export default function RootLayout({ children }) {
         <meta content={APP_THEME_COLOR} name="theme-color" />
         <script dangerouslySetInnerHTML={{ __html: initialHeroTitleFit }} />
         <script dangerouslySetInnerHTML={{ __html: initialActionsScript }} />
+        <script dangerouslySetInnerHTML={{ __html: analyticsStartupScript }} />
       </head>
       <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`}
-          strategy="lazyOnload"
-        />
-        <Script id="google-analytics" strategy="beforeInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            window.gtag = function(){window.dataLayer.push(arguments);};
-            window.gtag('js', new Date());
-            const isDirectGameLink = new URLSearchParams(location.hash.slice(1)).has('zip');
-            window.gtag('config', '${GOOGLE_ANALYTICS_ID}', isDirectGameLink
-              ? { page_location: location.origin + location.pathname + location.search }
-              : {});
-          `}
-        </Script>
         {children}
         <SiteAnalytics />
       </body>

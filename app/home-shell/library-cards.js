@@ -1,13 +1,15 @@
 import DecorativeImage from "./decorative-image";
 import GameSelectionLink from "./game-selection-link";
 import { getPosterImageProps } from "./poster-images.mjs";
+import { useArtworkDelivery } from "./artwork-delivery";
 
 export function GamePoster({ title, image, editionLabel, singleColumn = false, count = 8 }) {
+  const artwork = useArtworkDelivery();
   return (
     <>
       <span className="poster-media">
         {image ? (
-          <DecorativeImage className="poster-media-image" {...getPosterImageProps(image, singleColumn, count)} />
+          <DecorativeImage className="poster-media-image" {...getPosterImageProps(image, singleColumn, count, artwork)} />
         ) : (
           <span className="bucket-poster-placeholder" aria-hidden="true">☠</span>
         )}

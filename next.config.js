@@ -48,6 +48,11 @@ const nextConfig = {
     rules: {
       "**/lib/artwork-data.mjs": {
         condition: "browser",
+        loaders: [{ loader: require.resolve("./scripts/artwork-browser-loader.js"), options: { defer: true } }],
+        as: "*.js",
+      },
+      "**/lib/artwork-full-data.mjs": {
+        condition: "browser",
         loaders: [require.resolve("./scripts/artwork-browser-loader.js")],
         as: "*.js",
       },

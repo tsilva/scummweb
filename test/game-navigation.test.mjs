@@ -24,6 +24,7 @@ async function component(file, imports, globals = {}) {
     require(name) {
       if (name === "react/jsx-runtime") return createRequire(url)(name);
       if (name === "./initial-actions.mjs") return initialActions;
+      if (name === "./artwork-delivery") return imports[name] ?? { useArtworkDelivery: () => undefined };
       return imports[name] ?? {};
     },
   });
@@ -52,10 +53,8 @@ async function library() {
   function Hero() {}
   function View() {}
   const SourceLibrary = await component("source-library", {
-    "../game-play-source.mjs": playSources,
     react: { useState: state, useRef: (current) => state({ current })[0], useMemo: (fn) => fn(), useEffect: (fn) => effects.push(fn) },
     "next/navigation": { usePathname: () => window.location.pathname, useRouter: () => ({ push() { assert.fail("selection must not fetch a Next.js route"); } }) },
-    "../recognized-games.mjs": { getRecognizedGames: () => catalog },
     "../game-presentation": { getImportedGamePresentation: () => imported.game, getGamePresentation: (game) => game },
     "../game-sources.mjs": { isLocalZipSource: () => true },
     "../game-versions.mjs": versions,
@@ -64,12 +63,14 @@ async function library() {
     "./home-hero": Hero,
     "./library-view": View,
     "./game-navigation": { GameNavigationContext: "provider" },
+    "./artwork-delivery": { ArtworkDelivery: "artwork-provider" },
   }, { window });
   // Preserve an already-restored imported source in the mounted library.
   hooks[0] = [imported];
+  hooks[1] = { ...playSources, getRecognizedGames: () => catalog };
   function render() {
     cursor = 0;
-    const tree = SourceLibrary({ catalog, featuredGame: sky, isHomePage: true });
+    const tree = SourceLibrary({ catalog, featuredGame: sky, isHomePage: true }).props.children;
     const children = tree.props.children.filter(Boolean);
     return {
       select: tree.props.value,

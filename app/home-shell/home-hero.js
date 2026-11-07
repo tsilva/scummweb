@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import HeroStage from "./hero-stage";
 import { getHeroPreloadImages } from "./hero-images.mjs";
+import { useArtworkDelivery } from "./artwork-delivery";
 import { chooseGameVersion, getGameFamilyKey, readChosenVersion, rememberGameVersion } from "../game-versions.mjs";
 import { buildGameExitHref } from "./hero-selection.mjs";
 import { useGameNavigation } from "./game-navigation";
@@ -16,6 +17,7 @@ const MOBILE_QUERY = "(max-width: 48rem)";
 
 export default function HomeHero({ groups, featuredGame, isHomePage = true, selection = null, navigationId = 0,
   loadingSources = false, pendingSourceGroups = [], notice }) {
+  const artwork = useArtworkDelivery();
   const router = useRouter();
   const selectGame = useGameNavigation();
   const featuredKey = getGameFamilyKey(featuredGame) || `catalog:${featuredGame.target}`;
@@ -48,7 +50,7 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
   // Wait for the media query before warming desktop slides. The visible image
   // already loads eagerly, and mobile has no slideshow controls.
   const preloadKey = JSON.stringify(mobileHero?.matches === false
-    ? getHeroPreloadImages(slides, slideIndex) : []);
+    ? getHeroPreloadImages(slides, slideIndex, undefined, artwork) : []);
   const [rotation, setRotation] = useState(null);
   const rotationPaused = rotation?.routeKey === routeKey ? rotation.paused : null;
   function setRotationPaused(paused) { setRotation({ routeKey, paused }); }

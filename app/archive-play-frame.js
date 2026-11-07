@@ -12,6 +12,8 @@ import { buildZipGamePlayerUrl } from "./home-shell/zip-game-player";
 import { buildGameExitHref } from "./home-shell/hero-selection.mjs";
 import { getGamePlayHref } from "./game-play-source.mjs";
 import { selectGameArchive } from "./local-game-archive.mjs";
+import { getRecognizedGames } from "./recognized-games.mjs";
+import { loadArtworkStorage } from "../lib/artwork-storage.mjs";
 
 const noRecognizedGames = [];
 
@@ -28,7 +30,7 @@ export function ArchivePlayer({ game, loadArchive, remote = false }) {
   );
 }
 
-export function RemoteArchivePlayer({ zip, recognizedGames = noRecognizedGames }) {
+export function RemoteArchivePlayer({ zip, catalog = noRecognizedGames }) {
   const router = useRouter();
   const [archive, setArchive] = useState(null);
   const [status, setStatus] = useState("Identifying game…");
@@ -36,16 +38,22 @@ export function RemoteArchivePlayer({ zip, recognizedGames = noRecognizedGames }
 
   useEffect(() => {
     const controller = new AbortController();
-    prepareRemoteGameArchive(zip, {
-      signal: controller.signal,
-      onDownloading: () => setStatus("Loading game…"),
-      onProgress: (_progress, details) => {
-        if (!controller.signal.aborted) {
-          setStatus(gameLoadingStatus(details));
-        }
-      },
-    }).then((result) => {
+    async function prepare() {
+      await loadArtworkStorage().catch(() => {});
+      controller.signal.throwIfAborted();
+      return prepareRemoteGameArchive(zip, {
+        signal: controller.signal,
+        onDownloading: () => setStatus("Loading game…"),
+        onProgress: (_progress, details) => {
+          if (!controller.signal.aborted) {
+            setStatus(gameLoadingStatus(details));
+          }
+        },
+      });
+    }
+    prepare().then((result) => {
       if (controller.signal.aborted) return;
+      const recognizedGames = getRecognizedGames(catalog);
       const href = getGamePlayHref(result.game, recognizedGames);
       const route = recognizedGames.find((game) => game.playHref === href);
       const resolved = { ...result, game: result.game ? { ...result.game, ...route, skipIntro: null } : null };
@@ -59,7 +67,7 @@ export function RemoteArchivePlayer({ zip, recognizedGames = noRecognizedGames }
       if (!controller.signal.aborted) setError(failure.message);
     });
     return () => controller.abort();
-  }, [zip, recognizedGames, router]);
+  }, [zip, catalog, router]);
 
   if (archive) return <ArchivePlayer {...archive} remote />;
   return (

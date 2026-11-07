@@ -98,6 +98,7 @@ async function player({ game = tentacle, sources = [], remembered = null, pendin
       if (name === "./game-play-source.mjs") return playSources;
       if (name === "./game-player/telemetry.mjs") return telemetry;
       if (name === "./recognized-games.mjs") return { getRecognizedGames };
+      if (name === "../lib/artwork-storage.mjs") return { loadArtworkStorage: async () => {} };
       if (name === "./game-versions.mjs") return { ...versions, readChosenVersion: () => remembered };
       if (name === "./game-sources.mjs") return { checkGameSource, readGameSources: async () => {
         reads++;
@@ -219,12 +220,14 @@ async function remotePlayer(pathname, identifiedGame, search = "") {
       if (name === "./game-play-source.mjs") return playSources;
       if (name === "./game-player/telemetry.mjs") return telemetry;
       if (name === "./local-game-archive.mjs") return { selectGameArchive: (...args) => selections.push(args) };
+      if (name === "./recognized-games.mjs") return { getRecognizedGames };
+      if (name === "../lib/artwork-storage.mjs") return { loadArtworkStorage: async () => {} };
       return {};
     },
   });
   function render() {
     cursor = 0;
-    return module.exports.RemoteArchivePlayer({ zip: "https://example.test/game.zip", recognizedGames });
+    return module.exports.RemoteArchivePlayer({ zip: "https://example.test/game.zip", catalog });
   }
   render();
   const cleanup = effects.shift()();

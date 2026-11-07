@@ -4,7 +4,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { exitImmersiveMode } from "../game-player/immersive-mode.mjs";
 import { readRemoteGameArchive } from "../game-bucket.mjs";
-import { getGamePlayHref, getSourceGamePresentation } from "../game-play-source.mjs";
 import { checkGameSource, isLocalZipSource, localGame, readGameSources, removeGameSources, requestGameSourceAccess, saveGameSources } from "../game-sources.mjs";
 import { findLocalGameSource } from "../local-game-matching.mjs";
 import { findBundledGame } from "../bundled-game-matching.mjs";
@@ -13,13 +12,14 @@ import { collectGameImportNodes, fileNode, handleNode, inspectLocalSourceFiles, 
 import LibraryView from "./library-view";
 import { libraryItems } from "./library-query.mjs";
 import { getGameFamilyKey, getVersionSaveNamespace, rememberGameVersion } from "../game-versions.mjs";
-import { getRecognizedGames } from "../recognized-games.mjs";
 import { buildGameExitHref, readHeroSelection } from "./hero-selection.mjs";
 import HomeHero from "./home-hero";
 import GameDropOverlay, { chooseZipHandles } from "./local-game";
 import RecentGamesRail from "../recent-games-rail";
 import { GameNavigationContext } from "./game-navigation";
 import BrowseMetadata from "./browse-metadata";
+import { ArtworkDelivery } from "./artwork-delivery";
+import { loadArtworkStorage } from "../../lib/artwork-storage.mjs";
 
 const sessionGames = new Map();
 const sessionSources = new Map();
@@ -32,14 +32,26 @@ function scrollToLibraryItem(item, block) {
 
 const reconnectStatuses = new Set(["locate", "missing", "permission"]);
 
-export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGame, isHomePage: initiallyHome = true, libraryHeading, officialUrl, onPlayArchive, playerRoute = false }) {
+async function loadSourcePresentation() {
+  const [play, { getRecognizedGames }, artwork] = await Promise.all([
+    import("../game-play-source.mjs"),
+    import("../recognized-games.mjs"),
+    loadArtworkStorage().catch(() => null),
+  ]);
+  return { ...play, getRecognizedGames, artwork };
+}
+
+export default function SourceLibrary({ catalog, artwork, featuredGame: initialFeaturedGame, isHomePage: initiallyHome = true, libraryHeading, officialUrl, onPlayArchive, playerRoute = false }) {
   const router = useRouter();
   const pathname = usePathname();
   const [entries, setEntries] = useState([]);
+  const [sourcePresentation, setSourcePresentation] = useState(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState(null);
-  const recognizedGames = useMemo(() => getRecognizedGames(catalog), [catalog]);
+  const hasSources = entries.length > 0;
+  const recognizedGames = useMemo(() => hasSources && sourcePresentation ? sourcePresentation.getRecognizedGames(catalog) : catalog,
+    [catalog, hasSources, sourcePresentation]);
   const isHomePage = pathname === "/" || (!pathname && initiallyHome);
   const featuredGame = recognizedGames.find((game) => game.href === pathname) ?? initialFeaturedGame;
   const [selection, setSelection] = useState(null);
@@ -121,6 +133,21 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
       const sourcesById = new Map(saved.map((source) => [source.id, source]));
       for (const [id, source] of sessionSources) sourcesById.set(id, source);
       const sources = [...sourcesById.values()];
+      if (sources.length) {
+        try {
+          const presentation = await loadSourcePresentation();
+          if (!active) return;
+          setSourcePresentation(presentation);
+          if (!presentation.artwork) showNotice("Could not load artwork for saved games.");
+        } catch {
+          if (active) {
+            showNotice("Could not load saved games. Reload to try again.");
+            setLoading(false);
+          }
+          return;
+        }
+      }
+      if (!active) return;
       setEntries(sources.map((source) => ({ source, status: "checking" })));
       setLoading(false);
 
@@ -203,6 +230,7 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
   }
 
   async function saveLocal(game, known, existing) {
+    if (!sourcePresentation?.artwork) setSourcePresentation(await loadSourcePresentation());
     const source = { ...existing, ...localGame(game.handle, game, existing?.id) };
     // A fallback picker must replace a stale saved handle with its fresh in-memory files.
     if (!game.handle) delete source.handle;
@@ -355,7 +383,7 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
       }
       rememberGameVersion(getGameFamilyKey(game) || `source:${source.id}`, `source:${source.id}`);
       if (!onPlayArchive?.(game, resume)) {
-        router.push(`${getGamePlayHref(game)}${resume ? "#continue" : ""}`);
+        router.push(`${sourcePresentation.getGamePlayHref(game)}${resume ? "#continue" : ""}`);
       }
       navigated = true;
     }).finally(() => { if (!navigated) void exitImmersiveMode(); }).then(() => navigated);
@@ -378,7 +406,7 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
 
   const disabled = loading || busy || Boolean(importResult);
   const library = entries.map(({ source, status, archiveFiles }) => {
-    const game = getSourceGamePresentation(source, catalog, recognizedGames);
+    const game = sourcePresentation.getSourceGamePresentation(source, catalog, recognizedGames);
     const title = game.displayTitle;
     const locate = !source.url && (!isLocalZipSource(source) || ["missing", "locate"].includes(status));
     const locateLabel = "Locate ZIP";
@@ -422,26 +450,28 @@ export default function SourceLibrary({ catalog, featuredGame: initialFeaturedGa
   }
 
   return (
-    <GameNavigationContext value={selectGame}>
-      {!playerRoute && <BrowseMetadata game={featuredGame} catalog={catalog} isHomePage={isHomePage} />}
-      <input ref={fileInput} type="file" accept=".zip,application/zip" multiple hidden
-        onChange={(event) => {
-          const files = [...event.target.files];
-          if (files.length) importRoots(files.map(fileNode), replacingSource.current);
-          event.target.value = "";
-        }} />
-      <GameDropOverlay importRoots={importRoots} disabled={disabled} pending={pending}
-        result={importResult} onConfirm={confirmImport} />
-      {featuredGame && <HomeHero groups={heroGroups} featuredGame={featuredGame}
-        loadingSources={loading}
-        pendingSourceGroups={library.filter(({ status }) => status === "checking")
-          .map(({ game, source }) => getGameFamilyKey(game) || `source:${source.id}`)}
-        isHomePage={isHomePage} selection={selection} navigationId={navigationId} notice={notice} />}
-      <div className="section-stack">
-        <RecentGamesRail groups={groups} />
-        <LibraryView items={groups} heading={libraryHeading} notice={notice}
-          onAddGame={() => chooseZip()} importDisabled={disabled} selectedKey={selection || (!isHomePage ? featuredKey : null)} />
-      </div>
-    </GameNavigationContext>
+    <ArtworkDelivery value={(hasSources && sourcePresentation?.artwork) || artwork}>
+      <GameNavigationContext value={selectGame}>
+        {!playerRoute && <BrowseMetadata game={featuredGame} catalog={catalog} isHomePage={isHomePage} />}
+        <input ref={fileInput} type="file" accept=".zip,application/zip" multiple hidden
+          onChange={(event) => {
+            const files = [...event.target.files];
+            if (files.length) importRoots(files.map(fileNode), replacingSource.current);
+            event.target.value = "";
+          }} />
+        <GameDropOverlay importRoots={importRoots} disabled={disabled} pending={pending}
+          result={importResult} onConfirm={confirmImport} />
+        {featuredGame && <HomeHero groups={heroGroups} featuredGame={featuredGame}
+          loadingSources={loading}
+          pendingSourceGroups={library.filter(({ status }) => status === "checking")
+            .map(({ game, source }) => getGameFamilyKey(game) || `source:${source.id}`)}
+          isHomePage={isHomePage} selection={selection} navigationId={navigationId} notice={notice} />}
+        <div className="section-stack">
+          <RecentGamesRail groups={groups} />
+          <LibraryView items={groups} heading={libraryHeading} notice={notice}
+            onAddGame={() => chooseZip()} importDisabled={disabled} selectedKey={selection || (!isHomePage ? featuredKey : null)} />
+        </div>
+      </GameNavigationContext>
+    </ArtworkDelivery>
   );
 }

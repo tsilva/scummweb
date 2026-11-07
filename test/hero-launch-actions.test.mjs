@@ -58,6 +58,7 @@ const SourceLaunchActions = await loadComponent("../app/home-shell/source-launch
   "../use-browser-save": useBrowserSave, "../browser-saves.mjs": { cancelBrowserSaveQueries() {} },
 });
 const HeroStage = await loadComponent("../app/home-shell/hero-stage.js", {
+  "./artwork-delivery": { useArtworkDelivery: () => undefined },
   "react-dom": { preload: (url, options) => imagePreloads.push({ url, ...options }) },
   "../game-versions.mjs": { formatVersionLabel },
   "./initial-actions.mjs": { initialActionsMarkup: "" },
@@ -73,6 +74,7 @@ const HeroStage = await loadComponent("../app/home-shell/hero-stage.js", {
   "./shared": { getGameDialogId: () => "game-test", getHeroImageStyle: () => ({}), getDialogLinkProps: () => ({}) },
 });
 const HomeHero = await loadComponent("../app/home-shell/home-hero.js", {
+  "./artwork-delivery": { useArtworkDelivery: () => undefined },
   "./game-navigation": { useGameNavigation: () => null },
   "next/navigation": { useRouter: () => ({ push() {} }) },
   "./hero-stage": HeroStage,
