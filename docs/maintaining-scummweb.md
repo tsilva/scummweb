@@ -896,8 +896,8 @@ reinterpretation of the original game's promotional artwork, whose characters
 and designs belong to Revolution Software and their respective creators. It
 retains the inked comic composition and orange/blue palette, with a quieter
 left side for the page title. The original `/launcher/sky-hero.webp` remains
-available. The revised hero uses verified immutable R2 objects and responsive delivery
-variants.
+available. The revised hero uses verified immutable R2 objects with responsive
+AVIF and WebP variants at 640, 960, 1280, and 1600 pixels wide.
 
 Flight of the Amazon Queen uses
 `/launcher/queen-scummweb-generated-2026-11-05-r1-hero.webp`, an ImageGen

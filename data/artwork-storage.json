@@ -33210,6 +33210,38 @@
       "contentType": "image/webp",
       "width": 480,
       "height": 621
+    },
+    "/launcher/optimized/sky-scummweb-generated-2026-11-05-r1-hero.avif": {
+      "key": "artwork/5eb944564beb13a3c18f33121dd27cf2aee1b307c7f32298c66aa81c87fdd8e0/sky-scummweb-generated-2026-11-05-r1-hero.avif",
+      "sha256": "5eb944564beb13a3c18f33121dd27cf2aee1b307c7f32298c66aa81c87fdd8e0",
+      "bytes": 128014,
+      "contentType": "image/avif",
+      "width": 1600,
+      "height": 960
+    },
+    "/launcher/responsive/sky-scummweb-generated-2026-11-05-r1-hero-1280.avif": {
+      "key": "artwork/4436803289250fb037a9b5877d297c42243f5ba033b7500e17664f872eefd2aa/sky-scummweb-generated-2026-11-05-r1-hero-1280.avif",
+      "sha256": "4436803289250fb037a9b5877d297c42243f5ba033b7500e17664f872eefd2aa",
+      "bytes": 85212,
+      "contentType": "image/avif",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/sky-scummweb-generated-2026-11-05-r1-hero-640.avif": {
+      "key": "artwork/05d39e783efd3e9be7ab73c160a1d4f31709d014bc0f53a69e2af405dc64e7fb/sky-scummweb-generated-2026-11-05-r1-hero-640.avif",
+      "sha256": "05d39e783efd3e9be7ab73c160a1d4f31709d014bc0f53a69e2af405dc64e7fb",
+      "bytes": 35787,
+      "contentType": "image/avif",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/sky-scummweb-generated-2026-11-05-r1-hero-960.avif": {
+      "key": "artwork/89c76b19098b2c95a021640d411924bb3117ab03b2e80f1c11f93af946755512/sky-scummweb-generated-2026-11-05-r1-hero-960.avif",
+      "sha256": "89c76b19098b2c95a021640d411924bb3117ab03b2e80f1c11f93af946755512",
+      "bytes": 64881,
+      "contentType": "image/avif",
+      "width": 960,
+      "height": 576
     }
   },
   "images": {
@@ -45358,7 +45390,12 @@
         "/launcher/responsive/sky-scummweb-generated-2026-11-05-r1-hero-1280.webp",
         "/launcher/sky-scummweb-generated-2026-11-05-r1-hero.webp"
       ],
-      "avif": []
+      "avif": [
+        "/launcher/responsive/sky-scummweb-generated-2026-11-05-r1-hero-640.avif",
+        "/launcher/responsive/sky-scummweb-generated-2026-11-05-r1-hero-960.avif",
+        "/launcher/responsive/sky-scummweb-generated-2026-11-05-r1-hero-1280.avif",
+        "/launcher/optimized/sky-scummweb-generated-2026-11-05-r1-hero.avif"
+      ]
     },
     "/launcher/sky-scummweb-generated-2026-11-05-r2-cover.webp": {
       "width": 900,
