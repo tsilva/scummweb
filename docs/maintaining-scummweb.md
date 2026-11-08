@@ -1345,7 +1345,8 @@ or request-time rendering.
   while the slideshow controls let it continue. Hidden tabs suspend rotation,
   and reduced-motion preferences disable automatic rotation until resumed.
   After detecting a desktop viewport, the hero preloads and decodes the next
-  three backdrops and one previous backdrop, wrapping around at either end.
+  and previous backdrops, wrapping around at either end. After 1.5 seconds,
+  it expands the forward window to three backdrops.
   `HERO_PRELOAD_AHEAD` in
   `app/home-shell/hero-images.mjs` controls the forward window. Preloads use
   the visible hero's responsive sources and sizes with low fetch priority,
