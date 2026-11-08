@@ -15,8 +15,9 @@ import { observeStartupDiagnostics } from "./game-player/startup-diagnostics.mjs
 import { withGameTelemetry } from "./game-player/telemetry.mjs";
 import { dispatchGameCommand, dispatchSyntheticKeypressSequence } from "./game-player/keyboard";
 import { getGameMenuShortcut } from "./game-player/game-menu.mjs";
-import { observeRemoteMouse } from "./game-player/game-mouse.mjs";
-import { isTouchMobileClient } from "./game-player/immersive-mode.mjs";
+import { observeRemotePlayerInput } from "./game-player/game-mouse.mjs";
+import { enterImmersiveMode, isGameFullscreen, isTouchMobileClient } from "./game-player/immersive-mode.mjs";
+import { observeRemoteBack } from "./game-player/remote-back.mjs";
 import { useBootState } from "./game-player/useBootState";
 import { useImmersiveMode } from "./game-player/useImmersiveMode";
 import { useTouchClickActions } from "./game-player/useTouchClickMode";
@@ -169,10 +170,24 @@ export default function GameRouteFrame({
   const [skipIntroConsumed, setSkipIntroConsumed] = useState(false);
   const [catalogIntroLaunch, setCatalogIntroLaunch] = useState(null);
   const [remoteToolbarOpen, setRemoteToolbarOpen] = useState(false);
-  const resumeRemoteGame = useCallback(() => {
-    setRemoteToolbarOpen(false);
-    focusGameCanvas(frameRef.current);
+  const restoreFullscreenOnResume = useRef(false);
+  const fullscreenExitExpected = useRef(false);
+  const restoreRemoteFullscreen = useCallback(() => {
+    if (!restoreFullscreenOnResume.current) return;
+    restoreFullscreenOnResume.current = false;
+    void enterImmersiveMode(document.documentElement);
   }, []);
+  const resumeRemoteGame = useCallback(() => {
+    restoreRemoteFullscreen();
+    setRemoteToolbarOpen(false);
+    // Restore focus after React removes inert from the game frame.
+    window.requestAnimationFrame(() => {
+      const skipButton = shellRef.current?.querySelector(".game-route-skip-intro-button");
+      if (skipButton) skipButton.focus({ preventScroll: true });
+      else if (frameRef.current) focusGameCanvas(frameRef.current);
+      else document.activeElement?.blur();
+    });
+  }, [restoreRemoteFullscreen]);
   const skipIntro = isResuming ? null : intro;
   const bootState = useBootState({
     displayTitle: game?.displayTitle || title,
@@ -184,6 +199,7 @@ export default function GameRouteFrame({
   });
   const immersiveMode = useImmersiveMode({ shellRef });
   const navigateHome = useCallback(async (href) => {
+    fullscreenExitExpected.current = true;
     await immersiveMode.exitImmersiveMode?.({ silenceErrors: true });
     const destination = getSafeHref(href);
     if (catalogLaunch) window.location.replace(destination);
@@ -661,7 +677,18 @@ export default function GameRouteFrame({
 
   async function handleGameMenuClick() {
     if (!gameMenuShortcut) return;
+    if (remoteToolbarOpen) {
+      restoreRemoteFullscreen();
+      setRemoteToolbarOpen(false);
+      await new Promise((resolve) => window.requestAnimationFrame(resolve));
+    }
     await dispatchSyntheticKeypressSequence(frameRef.current, gameMenuShortcut);
+  }
+
+  function handleFullscreenToggle() {
+    fullscreenExitExpected.current = isGameFullscreen(shellRef.current);
+    restoreFullscreenOnResume.current = false;
+    return immersiveMode.handleFullscreenToggle();
   }
 
   function handleCommandSubmit(event) {
@@ -693,17 +720,38 @@ export default function GameRouteFrame({
 
   const showSkipIntroAction = bootState.showSkipIntroButton && skipIntro && !bootState.hasBootFailed;
   const showSkipIntroBottomAction = showSkipIntroAction && !showBootOverlay;
-  const remoteMouseReady = !showBootOverlay && !showSkipIntroBottomAction && !usesCommandInput && !remoteToolbarOpen;
+  const remoteMouseReady = !showBootOverlay && !showSkipIntroBottomAction && !usesCommandInput;
   useEffect(() => {
-    const iframe = frameRef.current;
-    if (!remoteMouseReady || !iframe) return;
+    if (!remoteMouseReady || remoteToolbarOpen) return;
     let active = true;
     let stop;
     void isTvBrowser(navigator).then((isTv) => {
-      if (active && isTv) stop = observeRemoteMouse(window, iframe, () => setRemoteToolbarOpen(true));
+      if (active && isTv) stop = observeRemotePlayerInput(window, frameRef.current);
     });
     return () => { active = false; stop?.(); };
-  }, [remoteMouseReady, frameSrc]);
+  }, [remoteMouseReady, remoteToolbarOpen, frameSrc]);
+
+  useEffect(() => {
+    let active = true;
+    let stop;
+    void isTvBrowser(navigator).then((isTv) => {
+      if (!active || !isTv) return;
+      stop = observeRemoteBack(window, {
+        onBack() {
+          if (remoteToolbarOpen) resumeRemoteGame();
+          else setRemoteToolbarOpen(true);
+        },
+        onFullscreenExit() {
+          const expected = fullscreenExitExpected.current;
+          fullscreenExitExpected.current = false;
+          if (expected || remoteToolbarOpen) return;
+          restoreFullscreenOnResume.current = true;
+          setRemoteToolbarOpen(true);
+        },
+      });
+    });
+    return () => { active = false; stop?.(); };
+  }, [remoteToolbarOpen, resumeRemoteGame]);
 
   const showExitControl = true;
   const showFullscreenControl =
@@ -735,7 +783,7 @@ export default function GameRouteFrame({
         onSkipIntro={handleSkipIntroClick}
         onTouchLeftClick={() => touchClick.sendTouchClick("left")}
         onTouchRightClick={() => touchClick.sendTouchClick("right")}
-        onToggleFullscreen={immersiveMode.handleFullscreenToggle}
+        onToggleFullscreen={handleFullscreenToggle}
         showBottomActions={showBottomActions}
         showExitControl={showExitControl}
         showFullscreenControl={showFullscreenControl}
@@ -777,6 +825,7 @@ export default function GameRouteFrame({
         className="game-route-frame"
         data-scummvm-route-frame="true"
         data-scummvm-target={target}
+        inert={remoteToolbarOpen}
         ref={frameRef}
         loading="eager"
         src={loadArchive ? "about:blank" : frameSrc}

@@ -48,11 +48,26 @@ export default function GamePlayerControls({
   const fullscreenLabel = isFullscreen ? "Exit fullscreen" : "Enter fullscreen";
   const gameMenuLabel = "Open game menu";
 
+  function keepToolbarFocus({ target }) {
+    if (!toolbarFocused) return;
+    // A cursor move already queued in the iframe can still focus its canvas.
+    requestAnimationFrame(() => {
+      const frame = frameRef.current;
+      if (frame?.inert && document.activeElement === frame) {
+        target.focus({ preventScroll: true });
+      }
+    });
+  }
+
   return (
     <>
       {toolbarFocused ? <DirectionalNavigation initialFocus="toolbar" onResumeGame={onResumeGame} />
         : showSkipIntroAction && <DirectionalNavigation initialFocus="skip-intro" />}
-      <div className={`game-route-controls${autoHide && !visible ? " is-idle" : ""}`} ref={controlsRef}>
+      <div
+        className={`game-route-controls${autoHide && !visible ? " is-idle" : ""}`}
+        onBlur={keepToolbarFocus}
+        ref={controlsRef}
+      >
         {showExitControl ? (
           <div className="game-route-control-group is-left">
             <button

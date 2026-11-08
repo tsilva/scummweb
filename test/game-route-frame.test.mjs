@@ -7,11 +7,13 @@ import swc from "next/dist/build/swc/index.js";
 import * as skipIntroConfig from "../app/skip-intro-config.mjs";
 import * as telemetry from "../app/game-player/telemetry.mjs";
 import * as gameMenu from "../app/game-player/game-menu.mjs";
+import * as controllerDevice from "../app/controller-device.mjs";
 import { gameLoadingStatus } from "../app/game-loading-status.mjs";
 
 const componentUrl = new URL("../app/game-route-frame.js", import.meta.url);
 const nativeRequire = createRequire(componentUrl);
 await swc.loadBindings();
+const navigator = { userAgent: "Desktop" };
 const { code } = await swc.transform(await readFile(componentUrl, "utf8"), {
   filename: componentUrl.pathname, swcrc: false, configFile: false,
   module: { type: "commonjs" },
@@ -29,7 +31,7 @@ for (const message of ["This ZIP link returned HTTP 404.", "Could not download t
     function Overlay() {}
     const compiled = { exports: {} };
     runInNewContext(code, {
-      module: compiled, exports: compiled.exports, URL, URLSearchParams, AbortController,
+      module: compiled, exports: compiled.exports, URL, URLSearchParams, AbortController, navigator,
       window: { location: {
         href: "https://example.test/beneath-a-steel-sky/play", origin: "https://example.test",
         hash: "", search: "", replace: (href) => navigations.push(href),
@@ -46,6 +48,7 @@ for (const message of ["This ZIP link returned HTTP 404.", "Could not download t
         };
         if (name === "react/jsx-runtime") return nativeRequire(name);
         if (name === "./skip-intro-config.mjs") return skipIntroConfig;
+        if (name === "./controller-device.mjs") return controllerDevice;
         if (name.endsWith("/game-menu.mjs")) return gameMenu;
         if (name.endsWith("/telemetry.mjs")) return telemetry;
         if (name === "next/navigation") return { useRouter: () => ({}) };
@@ -139,7 +142,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   function Overlay() {}
   const module = { exports: {} };
   runInNewContext(code, {
-    module, exports: module.exports, window, URL, URLSearchParams, AbortController, HTMLElement: class {},
+    module, exports: module.exports, window, URL, URLSearchParams, AbortController, navigator, HTMLElement: class {},
     fetch: async () => ({ ok: true, text: async () => "<html><head></head><body></body></html>" }),
     require(name) {
       if (name === "react") return {
@@ -168,6 +171,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
         },
       };
       if (name === "./skip-intro-config.mjs") return skipIntroConfig;
+      if (name === "./controller-device.mjs") return controllerDevice;
       if (name.endsWith("/game-menu.mjs")) return gameMenu;
       if (name.endsWith("/telemetry.mjs")) return telemetry;
       if (name === "next/navigation") return { useRouter: () => ({}) };
