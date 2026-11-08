@@ -342,6 +342,8 @@ numerals alike. Sort-only aliases in `lib/game-title-sort.mjs` place unnumbered
 first games and irregularly named sequels with their series. These aliases also
 apply to imported games and name tie-breaks, preserving displayed titles and URLs.
 Select the **ScummWEB** logo or its tagline in the header to return to the homepage.
+On mobile, select **Library** next to **Settings** to jump to the **Game Library**
+heading. The GitHub link is in the mobile footer.
 The **Compatibility** navigation link opens the compatibility page, with search
 and filters for checked editions, warnings, failures, and untested games. See
 [game testing](game-testing.md) for the same results and their limitations.
@@ -856,15 +858,16 @@ catalog detection step and generates an index for deployed engine data.
 
 ### Classic freeware additions
 
-[`data/classic-freeware.json`](../data/classic-freeware.json) pins the official
-English Sołtys v1.0, Sfinx v1.1 and Mystery House archives, source URLs and SHA-256
-checksums. Download those exact files into `downloads/` before rebuilding with
+[`data/classic-freeware.json`](../data/classic-freeware.json) pins the English
+freeware, demo and source-built game packages by URL and SHA-256. Download the
+exact archives and any listed `sourceFiles` into `downloads/` before rebuilding with
 `SCUMMVM_REUSE_CATALOG=1 pnpm run build:scummvm`. The build installs available
 packages, retains their licenses, registers their targets and regenerates launcher
 metadata without redetecting or removing existing catalog games. A mismatched
-archive fails the build. Missing optional archives leave the existing catalog
-unchanged. Publish and verify the resulting game ZIPs before deploying new targets.
-The normalized ZIPs are written to `dist/games/<gameId>.zip`. Use a file-only
+archive or required source file fails the build. Missing optional game archives
+leave the existing catalog unchanged. Publish and verify the resulting game ZIPs
+before deploying new targets. The release ZIPs are written to
+`dist/games/<gameId>.zip`. Use a file-only
 scoped upload (`--game soltys.zip`, `--game sfinx.zip`, `--game hires1.zip`)
 so an additive catalog rebuild never replaces the remote root filesystem index
 with an incomplete directory inventory. Prepare matching fingerprints before
@@ -872,6 +875,8 @@ publication with `node scripts/generate-bundled-game-files.mjs --local-dir dist/
 it reads available local ZIPs and uses bounded public directory reads for the
 remaining catalog games. Re-run without the option after publication to verify
 the actual hosted ZIPs.
+For an additive build, append the new catalog targets after the local directory
+to update only those entries and require their local ZIPs.
 
 The ADL plugin supports the original Apple II Mystery House disk image; its
 keyboard text commands remain part of gameplay. The GOT plugin supports personal
@@ -880,6 +885,28 @@ public bundling because its included `LICENSE.TXT` prohibits redistribution,
 despite the download page describing it as freeware. Clarify the applicable
 redistribution permission before adding a public game package. Keep the original
 notice intact.
+
+Dragon History uses the original English-subtitled DOS release. Its package
+includes the developer's corresponding sources and the GPLv2 notice. The
+three LucasArts demos use the first English DOS Fate of Atlantis demo, the
+small English Windows Grim Fandango demo and the English Windows Escape from
+Monkey Island web demo. The release ZIPs retain the exact upstream bytes and
+publisher notices. Grim and Escape use the Grim plugin, with the `monkey4`
+subengine enabled for Escape.
+
+Zork I–III use Glk and the original MIT-licensed Infocom sources. Obtain the
+[ZILF 1.9 toolchain](https://github.com/taradinoc/zilf/releases/tag/1.9), then run
+`python3 scripts/build_zork_packages.py /path/to/zilf/bin` to create the three
+checksum-pinned ZIPs in `downloads/`. The builder restores one misplaced
+conditional clause in Zork II so it compiles. Each ZIP contains the compiled
+Z-machine story and its license and source information. Players type commands
+to interact with the story.
+
+To preview newly staged packages before R2 delivery, run
+`python3 -m http.server 0 --bind 127.0.0.1 --directory dist/games`.
+In a separate terminal, set `SCUMMVM_GAMES_ORIGIN` to the printed local games
+origin and run `pnpm run dev:app --port auto`. This preview serves the local
+packages present in `dist/games`; other catalog entries require their ZIPs too.
 
 ## Game launch analytics
 

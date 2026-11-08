@@ -583,26 +583,46 @@
   }
 
   html {
+    --mobile-nav-height: calc(3.75rem + env(safe-area-inset-top));
     scrollbar-width: none;
   }
 
   .dashboard-nav {
     flex-wrap: nowrap;
-    min-height: calc(3.75rem + env(safe-area-inset-top));
+    gap: 0.5rem;
+    min-height: var(--mobile-nav-height);
     padding-top: calc(0.5rem + env(safe-area-inset-top));
     padding-bottom: 0.5rem;
+    background: var(--surface);
   }
 
   .dashboard-nav .nav-cluster-left {
     display: flex;
     flex: 1;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
     min-width: 0;
     width: auto;
     padding-right: 0;
   }
 
   .dashboard-nav .nav-links {
+    width: auto;
+    margin-inline-start: auto;
+  }
+
+  .dashboard-nav .nav-links a:not(.nav-library-link),
+  .dashboard-nav .nav-github-link {
     display: none;
+  }
+
+  .dashboard-nav .nav-library-link {
+    padding-inline: 0.25rem;
+    color: var(--ink);
+    font-size: 0.875rem;
+    letter-spacing: normal;
+    text-transform: none;
   }
 
   .dashboard-nav .nav-actions,
@@ -614,6 +634,14 @@
 
   .site-footer {
     padding-top: 1.5rem;
+  }
+
+  .footer-github {
+    display: block;
+  }
+
+  #library {
+    scroll-margin-top: calc(var(--mobile-nav-height) + 1rem);
   }
 
   .game-showcase {
@@ -637,7 +665,7 @@
   }
 
   .hero-stage-library .hero-backdrop {
-    inset: calc(3.75rem + env(safe-area-inset-top)) 0 0;
+    inset: var(--mobile-nav-height) 0 0;
   }
 
   .hero-stage-library .hero-backdrop-image,

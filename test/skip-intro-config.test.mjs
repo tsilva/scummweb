@@ -67,8 +67,13 @@ test("catalog intro checkpoints match their rebuild overrides and ship intact", 
   const library = JSON.parse(await readFile(new URL("games.json", shell), "utf8"));
   const overrides = JSON.parse(await readFile(new URL("../launcher-game-overrides.json", import.meta.url), "utf8"));
   const manifest = JSON.parse(await readFile(new URL("runtime-assets.json", shell), "utf8"));
-  assert.ok(library.games.every((game) => normalizeSkipIntroConfig(game.skipIntro)),
-    "every bundled edition must offer a verified intro-skip strategy");
+  // The Zork games begin at the prompt. The new graphical editions use
+  // their original intros and have no separately verified checkpoints.
+  const withoutCheckpoints = new Set([
+    "draci", "atlantis-demo", "grim-demo", "monkey4-demo", "zork1", "zork2", "zork3",
+  ]);
+  assert.ok(library.games.every((game) => withoutCheckpoints.has(game.target) || normalizeSkipIntroConfig(game.skipIntro)),
+    "bundled editions with checkpoints must retain a verified intro-skip strategy");
   const configuredTargets = new Set();
   for (const game of library.games) {
     if (!game.skipIntro) continue;

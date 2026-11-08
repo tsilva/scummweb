@@ -252,9 +252,9 @@
       "imageHash": "a376dc5024d9228592ccf5d03f6efb508b952cd56af43f3160280856512e4020"
     },
     "dragon-history": {
-      "file": "dragon-history-0e23925483b549590643f4778a8fe911a5cb44b211d69241f2f834e2f64f38aa.jpg",
-      "inputHash": "0e23925483b549590643f4778a8fe911a5cb44b211d69241f2f834e2f64f38aa",
-      "imageHash": "b596555455ca7eb2e033a80734f65de7b8fa6b8f4f34679a73900c6b2a878207"
+      "file": "dragon-history-57debde2d64575e6bce496a1570785b52e053ce8f9462eeb1a22d2fdeb5f229c.jpg",
+      "inputHash": "57debde2d64575e6bce496a1570785b52e053ce8f9462eeb1a22d2fdeb5f229c",
+      "imageHash": "cf708685879641eab7e8e0b18a2e07e08b6531254568062be20ce08f182907ae"
     },
     "drascula-the-vampire-strikes-back": {
       "file": "drascula-the-vampire-strikes-back-7bcc15302e8602a3aa8c7a370faf075be43f438f83217c8e797470ccdb544314.jpg",
@@ -285,6 +285,11 @@
       "file": "elvira-mistress-of-the-dark-eb890a33f1f6daabac076457fe62519dcf6525dc57885ff0a0cc59410f595388.jpg",
       "inputHash": "eb890a33f1f6daabac076457fe62519dcf6525dc57885ff0a0cc59410f595388",
       "imageHash": "1f119add938c4e61562523ba1d7969f8a79794894965986e5eaefdf87a7bff93"
+    },
+    "escape-from-monkey-island-demo": {
+      "file": "escape-from-monkey-island-demo-5ed5991f883f021a9bc5864a5cc85580d80ba34e90e73e43254f1efc17ac1685.jpg",
+      "inputHash": "5ed5991f883f021a9bc5864a5cc85580d80ba34e90e73e43254f1efc17ac1685",
+      "imageHash": "9a4ef13a6689042d7390a23d1441c4aefc1e3300ed0ae0d9b804f0d3be4d7f88"
     },
     "eye-of-the-beholder": {
       "file": "eye-of-the-beholder-5aaebfdc618634332fe546d4116375af87b93cbc32e36eca87effb89b36f0510.jpg",
@@ -426,6 +431,11 @@
       "inputHash": "6a2d9d515e3a772e732dfaffeecc492eb5f680aa212bee70384ebdff932a80c2",
       "imageHash": "b0217cf3879c18d3af2aa5ad84310968cc09784f05d9bff88e35fd8615448184"
     },
+    "grim-fandango-demo": {
+      "file": "grim-fandango-demo-2455f668a0cf8cae947189f61fb9b6093a80370faf7bc79960905ec9958ab74c.jpg",
+      "inputHash": "2455f668a0cf8cae947189f61fb9b6093a80370faf7bc79960905ec9958ab74c",
+      "imageHash": "8370d65e2900b5b4e5cc98b75f771bf9404bb93a3efd8620cbedf3ad5d18f006"
+    },
     "harlan-ellison-i-have-no-mouth-and-i-must-scream": {
       "file": "harlan-ellison-i-have-no-mouth-and-i-must-scream-5097c2ee06d7cbffca6093b749760494e30d57a9ef83cc1e9b50ee08a5888d4b.jpg",
       "inputHash": "5097c2ee06d7cbffca6093b749760494e30d57a9ef83cc1e9b50ee08a5888d4b",
@@ -505,6 +515,11 @@
       "file": "indiana-jones-and-the-fate-of-atlantis-429fc09f5dac3b5ac7e1c904051e8f50fed8ff776a1e679ae84a41c2c3a1738a.jpg",
       "inputHash": "429fc09f5dac3b5ac7e1c904051e8f50fed8ff776a1e679ae84a41c2c3a1738a",
       "imageHash": "0594667d47843ea1d3413285e5eb881c76e4fb3a60b8d4e1913cf4c601f4a7fe"
+    },
+    "indiana-jones-and-the-fate-of-atlantis-demo": {
+      "file": "indiana-jones-and-the-fate-of-atlantis-demo-eaff738c005c1b7158be6e27ba29d36dea49771560e2c018eb23cedb7acccadb.jpg",
+      "inputHash": "eaff738c005c1b7158be6e27ba29d36dea49771560e2c018eb23cedb7acccadb",
+      "imageHash": "1f8b697eea1728802f7f33c499cb6d6b0d88dee4d252b3bec2b0eb8ec7be2122"
     },
     "indiana-jones-and-the-last-crusade": {
       "file": "indiana-jones-and-the-last-crusade-e36f0c91228057a92c53d0771472c03b7c6e891a270d013f0559d8492085e8b5.jpg",
@@ -1280,6 +1295,21 @@
       "file": "zork-grand-inquisitor-27341ac60152a593d7ad9464a3bb608031b4e1d58542832e2cbacb86c1857c8b.jpg",
       "inputHash": "27341ac60152a593d7ad9464a3bb608031b4e1d58542832e2cbacb86c1857c8b",
       "imageHash": "27bbdb8482f2dcb7226ea0b2753699e23e360bf5bec5e763902e2e441fc034b5"
+    },
+    "zork-i-the-great-underground-empire": {
+      "file": "zork-i-the-great-underground-empire-93916a33cb5aaeb40cebe01a57274d707c2c2d85ab45de877152a560f1bfc044.jpg",
+      "inputHash": "93916a33cb5aaeb40cebe01a57274d707c2c2d85ab45de877152a560f1bfc044",
+      "imageHash": "55567dba18c780114f15a3d96e47944b99f6f6f7fdc81ceeaeafce1bcd82d0c0"
+    },
+    "zork-ii-the-wizard-of-frobozz": {
+      "file": "zork-ii-the-wizard-of-frobozz-5a8cb14301699dbcd30d43bd73a98f567bb23e06b62bf49824955507148bf887.jpg",
+      "inputHash": "5a8cb14301699dbcd30d43bd73a98f567bb23e06b62bf49824955507148bf887",
+      "imageHash": "7e55139ececde48e0f122c44b36c70268c5ebebc15b1ec5921a64bfb4f428bcd"
+    },
+    "zork-iii-the-dungeon-master": {
+      "file": "zork-iii-the-dungeon-master-e1b847e0de96dbbd0b62551961cf9d58fd90810a2ee8574fc80060db8ee0c9f8.jpg",
+      "inputHash": "e1b847e0de96dbbd0b62551961cf9d58fd90810a2ee8574fc80060db8ee0c9f8",
+      "imageHash": "878286ee08eca7f16b34f05a6ef2bd51658da09f838ca624c898541659640146"
     },
     "zork-nemesis-the-forbidden-lands": {
       "file": "zork-nemesis-the-forbidden-lands-1b33f57695624e51eaf461eadfe2f729b04878c7617231f7bebf185af1853199.jpg",

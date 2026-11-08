@@ -6,19 +6,26 @@ import { gameFileFingerprint } from "../app/local-game-matching.mjs";
 
 const root = new URL("../", import.meta.url);
 const args = process.argv.slice(2);
-if (args.length && (args.length !== 2 || args[0] !== "--local-dir")) {
-  throw new Error("Usage: node scripts/generate-bundled-game-files.mjs [--local-dir DIRECTORY]");
+if (args.length && (args.length < 2 || args[0] !== "--local-dir")) {
+  throw new Error("Usage: node scripts/generate-bundled-game-files.mjs [--local-dir DIRECTORY [TARGET ...]]");
 }
 const localDir = args[1];
+const targets = new Set(args.slice(2));
 const catalog = JSON.parse(await fs.readFile(new URL("scummvm-shell/games.json", root))).games;
-const games = {};
+const manifestUrl = new URL("data/bundled-game-files.json", root);
+const games = targets.size
+  ? JSON.parse(await fs.readFile(manifestUrl, "utf8")).games : {};
+for (const target of targets) {
+  if (!catalog.some((game) => game.target === target)) throw new Error(`Unknown game target: ${target}`);
+}
 for (const game of catalog) {
+  if (targets.size && !targets.has(game.target)) continue;
   const url = `https://scummvm-games.tsilva.eu/${game.gameId}.zip`;
   const signal = AbortSignal.timeout(30_000);
   let remaining = 2 * 1024 * 1024;
   const localPath = localDir && path.join(localDir, `${game.gameId}.zip`);
   const localBytes = localPath && await fs.readFile(localPath).catch((error) => {
-    if (error.code !== "ENOENT") throw error;
+    if (error.code !== "ENOENT" || targets.size) throw error;
     return null;
   });
   const reader = localBytes ? new Uint8ArrayReader(localBytes) : new HttpRangeReader(url, { forceRangeRequests: true, combineSizeEocd: true,
@@ -46,4 +53,4 @@ for (const game of catalog) {
   games[game.target] = { url, fingerprint: await gameFileFingerprint("zip", files), files };
   console.log(`${game.target}: ${files.length} ZIP entries`);
 }
-await fs.writeFile(new URL("data/bundled-game-files.json", root), `${JSON.stringify({ version: 1, games }, null, 2)}\n`);
+await fs.writeFile(manifestUrl, `${JSON.stringify({ version: 1, games }, null, 2)}\n`);

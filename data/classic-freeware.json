@@ -32,6 +32,129 @@
       "archive": "MYSTHOUS.zip",
       "url": "https://downloads.scummvm.org/frs/extras/Mystery%20House/MYSTHOUS.zip",
       "sha256": "ada412228a149394489b28c6c7f9ebab0722b52e04732fd0aa22949673cfa3a0"
+    },
+    {
+      "target": "draci",
+      "title": "Dragon History (DOS/English)",
+      "engineId": "draci",
+      "gameId": "draci",
+      "platform": "pc",
+      "extra": "",
+      "archive": "dh-en-2012.zip",
+      "url": "https://www.ucw.cz/draci-historie/binary/dh-en-2012.zip",
+      "sha256": "807c625902051639a35871da2c5138615ae2c327c5f12eebb8dd22628874ae23",
+      "noticeFile": "source/draci-copying.txt",
+      "sourceFiles": [
+        {
+          "archive": "draci-copying.txt",
+          "url": "https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt",
+          "sha256": "edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6"
+        },
+        {
+          "archive": "draci-old-sources.zip",
+          "url": "https://www.ucw.cz/draci-historie/source/old-sources.zip",
+          "sha256": "a1bfe3e21d2664d99066b0f8be3c048dd290bc4e323879c27c25adc001b6022e"
+        },
+        {
+          "archive": "draci-new-sources.zip",
+          "url": "https://www.ucw.cz/draci-historie/source/new-sources.zip",
+          "sha256": "0bf2f083459e1d84372140451f09ce1c1f32184cec0f940bda07d6bf5eecf8a8"
+        },
+        {
+          "archive": "draci-new-gfx.zip",
+          "url": "https://www.ucw.cz/draci-historie/source/new-gfx.zip",
+          "sha256": "fe9a6209c919fbd8f74f9b526e9d1c6c83e57ac8f8564aa23eedeed06e9ce727"
+        },
+        {
+          "archive": "draci-old-midi.zip",
+          "url": "https://www.ucw.cz/draci-historie/source/old-midi.zip",
+          "sha256": "5351da04ed5a8e38fa01d6e09f8a8057e05bd6117223cb85c51c8caaef2483fe"
+        }
+      ]
+    },
+    {
+      "target": "atlantis-demo",
+      "title": "Indiana Jones and the Fate of Atlantis (Demo)",
+      "engineId": "scumm",
+      "gameId": "atlantis",
+      "platform": "pc",
+      "extra": "Demo",
+      "archive": "atlantis-dos-demo1-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/scumm/atlantis-dos-demo1-en.zip",
+      "sha256": "a7e66c4b10f83b2ac25cdbbccb7790b4c022e6df006548c381f2b9ef09ee6361",
+      "preserveArchive": true,
+      "noticeFile": "READ.ME"
+    },
+    {
+      "target": "grim-demo",
+      "title": "Grim Fandango (Demo)",
+      "engineId": "grim",
+      "gameId": "grim",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "grim-win-demo1-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/grim/grim-win-demo1-en.zip",
+      "sha256": "c2e3412f46fadabd23e851ae96f0a39a767ebbb016d9d8265bb37d029ebfe52b",
+      "preserveArchive": true,
+      "noticeFile": "license.txt"
+    },
+    {
+      "target": "monkey4-demo",
+      "title": "Escape from Monkey Island (Demo)",
+      "engineId": "grim",
+      "gameId": "monkey4",
+      "platform": "windows",
+      "extra": "Web Demo",
+      "archive": "emi-win-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/grim/emi-win-demo-en.zip",
+      "sha256": "a6c5c7b60728d59c7c336e80b08fe99b04e42826001d84098d5ab982367be4b3",
+      "preserveArchive": true,
+      "noticeFile": "Install/license.txt"
+    },
+    {
+      "target": "zork1",
+      "title": "Zork I: The Great Underground Empire",
+      "engineId": "glk",
+      "gameId": "zork1",
+      "platform": "",
+      "extra": "Z-machine v3",
+      "archive": "zork1-mit.zip",
+      "url": "https://github.com/historicalsource/zork1/tree/97b7b3d68c075dd9af7da499c3e9690ada3471fd",
+      "sha256": "89523b6e29ae76b48180e47d9b27b8623a09b07310033d99e6dd30e78605d751",
+      "config": {
+        "filename": "zork1.z3"
+      },
+      "preserveArchive": true
+    },
+    {
+      "target": "zork2",
+      "title": "Zork II: The Wizard of Frobozz",
+      "engineId": "glk",
+      "gameId": "zork2",
+      "platform": "",
+      "extra": "Z-machine v3",
+      "archive": "zork2-mit.zip",
+      "url": "https://github.com/historicalsource/zork2/tree/3da9661098809788a99cef00f00c865c6c204f96",
+      "sha256": "1b24e7c69c27f33ea494e1e48f171e2a547c9a69bfc4452c019539e624f1729d",
+      "config": {
+        "filename": "zork2.z3"
+      },
+      "preserveArchive": true
+    },
+    {
+      "target": "zork3",
+      "title": "Zork III: The Dungeon Master",
+      "engineId": "glk",
+      "gameId": "zork3",
+      "platform": "",
+      "extra": "Z-machine v3",
+      "archive": "zork3-mit.zip",
+      "url": "https://github.com/historicalsource/zork3/tree/3ec9ed412b5f3cafe65d83c727d07db1fe4a86a8",
+      "sha256": "e86a125738b9ae659339f64a03a09cb4d257dbb4dca8c03f4d6bc8c250d477ab",
+      "config": {
+        "filename": "zork3.z3"
+      },
+      "preserveArchive": true
     }
   ]
 }

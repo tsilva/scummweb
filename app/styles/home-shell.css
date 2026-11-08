@@ -1087,6 +1087,10 @@ button.nav-icon-link {
   text-underline-offset: 0.15em;
 }
 
+.footer-github {
+  display: none;
+}
+
 .footer-links {
   display: flex;
   align-items: center;

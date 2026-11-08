@@ -115,7 +115,10 @@ test("all shipped engines agree with the pinned native capability declarations",
     const method = clean.match(/bool\s+(?:\w+::)?hasFeature\(MetaEngineFeature\s+f\)\s+const(?:\s+override)?\s*\{([\s\S]*?)(?:\n\}|\n\t\})/)[1];
     const listing = method.includes("kSupportsListSaves") || method.includes("checkExtendedSaves");
     const loading = method.includes("kSupportsLoadingDuringStartup");
-    assert.equal(supportsContinue(engine, engine === "mohawk" ? "myst" : "normal"), listing && loading, engine);
+    // The catalog ships Grim demos, and the native engine lists no saves for
+    // demos. Retail Grim also uses filename patterns outside the save bridge.
+    assert.equal(supportsContinue(engine, engine === "mohawk" ? "myst" : "normal"),
+      listing && loading && engine !== "grim", engine);
   }
 });
 

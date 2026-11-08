@@ -14,7 +14,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-0BSD-blue" alt="License: 0BSD (original ScummWEB code)" /></a>
 </p>
 
-ScummWEB lets you play classic point-and-click adventures in your browser,
+ScummWEB lets you play classic graphical and text adventures in your browser,
 powered by [ScummVM](https://www.scummvm.org/). Choose freeware and demos from
 the public library, or import compatible games from your own collection.
 Game pages bring together artwork, original gameplay screenshots, descriptions,

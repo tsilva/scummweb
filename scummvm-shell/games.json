@@ -195,6 +195,76 @@
           "hires1.s00"
         ]
       }
+    },
+    {
+      "target": "draci",
+      "title": "Dragon History (DOS/English)",
+      "path": "/games/draci",
+      "engineId": "draci",
+      "gameId": "draci",
+      "platform": "pc",
+      "extra": "",
+      "readmeHref": "/launcher/notices/draci.txt"
+    },
+    {
+      "target": "atlantis-demo",
+      "title": "Indiana Jones and the Fate of Atlantis (Demo)",
+      "path": "/games/atlantis",
+      "engineId": "scumm",
+      "gameId": "atlantis",
+      "platform": "pc",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/atlantis.txt"
+    },
+    {
+      "target": "grim-demo",
+      "title": "Grim Fandango (Demo)",
+      "path": "/games/grim",
+      "engineId": "grim",
+      "gameId": "grim",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/grim.txt"
+    },
+    {
+      "target": "monkey4-demo",
+      "title": "Escape from Monkey Island (Demo)",
+      "path": "/games/monkey4",
+      "engineId": "grim",
+      "gameId": "monkey4",
+      "platform": "windows",
+      "extra": "Web Demo",
+      "readmeHref": "/launcher/notices/monkey4.txt"
+    },
+    {
+      "target": "zork1",
+      "title": "Zork I: The Great Underground Empire",
+      "path": "/games/zork1",
+      "engineId": "glk",
+      "gameId": "zork1",
+      "platform": "",
+      "extra": "Z-machine v3",
+      "readmeHref": "/launcher/notices/zork1.txt"
+    },
+    {
+      "target": "zork2",
+      "title": "Zork II: The Wizard of Frobozz",
+      "path": "/games/zork2",
+      "engineId": "glk",
+      "gameId": "zork2",
+      "platform": "",
+      "extra": "Z-machine v3",
+      "readmeHref": "/launcher/notices/zork2.txt"
+    },
+    {
+      "target": "zork3",
+      "title": "Zork III: The Dungeon Master",
+      "path": "/games/zork3",
+      "engineId": "glk",
+      "gameId": "zork3",
+      "platform": "",
+      "extra": "Z-machine v3",
+      "readmeHref": "/launcher/notices/zork3.txt"
     }
   ]
 }

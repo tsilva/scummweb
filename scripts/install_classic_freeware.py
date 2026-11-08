@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Install checksum-pinned English freeware without redetecting the existing catalog."""
+"""Install checksum-pinned games without redetecting the existing catalog."""
 
 import argparse
 import hashlib
 import json
 from pathlib import Path
 import re
+import shutil
 import subprocess
 import tempfile
 import zipfile
@@ -22,14 +23,21 @@ def install(dist, downloads):
         if not archive.is_file():
             print(f"Optional archive absent: {game['archive']}")
             continue
-        if hashlib.sha256(archive.read_bytes()).hexdigest() != game["sha256"]:
-            raise ValueError(f"Archive checksum mismatch: {archive.name}")
-        available.append((game, archive))
+        sources = [(downloads / source["archive"], source["sha256"])
+                   for source in game.get("sourceFiles", [])]
+        for file, checksum in [(archive, game["sha256"]), *sources]:
+            digest = hashlib.sha256()
+            with file.open("rb") as stream:
+                for block in iter(lambda: stream.read(1024 * 1024), b""):
+                    digest.update(block)
+            if digest.hexdigest() != checksum:
+                raise ValueError(f"Archive checksum mismatch: {file.name}")
+        available.append((game, archive, sources))
 
     ini_path = dist / "scummvm.ini"
     ini_text = ini_path.read_text()
     (dist / "games").mkdir(parents=True, exist_ok=True)
-    for game, archive in available:
+    for game, archive, sources in available:
         destination = dist / "games" / game["gameId"]
         with tempfile.TemporaryDirectory(prefix="scummweb-freeware-") as temporary:
             with zipfile.ZipFile(archive) as package:
@@ -38,10 +46,18 @@ def install(dist, downloads):
                     if member_path.is_absolute() or ".." in member_path.parts:
                         raise ValueError(f"Unsafe archive member in {archive.name}")
                 package.extractall(temporary)
+            if destination.is_dir():
+                shutil.rmtree(destination)
             subprocess.run([
                 "python3", str(ROOT / "scripts/normalize_game_archive.py"),
                 temporary, str(destination),
             ], check=True)
+
+        if sources:
+            source_dir = destination / "source"
+            source_dir.mkdir()
+            for file, _ in sources:
+                shutil.copyfile(file, source_dir / file.name)
 
         if game["gameId"] == "hires1":
             (destination / "readme.txt").write_text(
@@ -58,20 +74,25 @@ def install(dist, downloads):
             f"[{target}]", f"description={game['title']}",
             f"path=/games/{game['gameId']}", f"engineid={game['engineId']}",
             f"gameid={game['gameId']}", f"platform={game['platform']}",
-            f"extra={game['extra']}", "language=en", "subtitles=true", "",
+            f"extra={game['extra']}", "language=en", "subtitles=true",
+            *(f"{key}={value}" for key, value in game.get("config", {}).items()),
+            "",
         ])
         pattern = rf"(?ms)^\[{re.escape(target)}\]\n.*?(?=^\[|\Z)"
         if re.search(pattern, ini_text):
             ini_text = re.sub(pattern, lambda _: section + "\n", ini_text, count=1)
         else:
             ini_text = ini_text.rstrip() + "\n\n" + section
-        # The play route consumes a ZIP directly from the bucket. Keep the
-        # normalized package beside the directory for a scoped file-only upload.
-        with zipfile.ZipFile(dist / "games" / f"{game['gameId']}.zip", "w",
-                             compression=zipfile.ZIP_DEFLATED) as package:
-            for file in sorted(destination.rglob("*")):
-                if file.is_file() and file.name != "index.json":
-                    package.write(file, file.relative_to(destination).as_posix())
+        # The browser unwraps a common directory at load time. Preserve the
+        # exact ZIP for licensed demos and reproducibly built story packages.
+        output = dist / "games" / f"{game['gameId']}.zip"
+        if game.get("preserveArchive"):
+            shutil.copyfile(archive, output)
+        else:
+            with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED) as package:
+                for file in sorted(destination.rglob("*")):
+                    if file.is_file() and file.name != "index.json":
+                        package.write(file, file.relative_to(destination).as_posix())
         print(f"Installed {game['title']}")
     ini_path.write_text(ini_text.rstrip() + "\n")
 
