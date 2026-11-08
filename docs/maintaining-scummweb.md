@@ -513,7 +513,8 @@ Production serves game data directly from `SCUMMVM_GAMES_ORIGIN`. Local
 verification can use `/games-proxy/*`. `NEXT_PUBLIC_SITE_URL` controls
 metadata URLs, the sitemap, and robots. The sitemap includes the homepage and
 catalog game pages. Player routes and the standalone emulator are excluded
-from indexing.
+from indexing. The legacy `/games/queen` URL permanently redirects to
+`/flight-of-the-amazon-queen`.
 
 Local builds skip Sentry source-map uploads. Hosted Vercel builds handle
 uploads. Runtime capture uses `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_DSN`,

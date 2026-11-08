@@ -58,6 +58,15 @@ const nextConfig = {
       },
     },
   },
+  redirects() {
+    return [
+      {
+        source: "/games/queen",
+        destination: "/flight-of-the-amazon-queen",
+        permanent: true,
+      },
+    ];
+  },
   rewrites() {
     return [
       {
