@@ -5,7 +5,7 @@ import { runInNewContext } from "node:vm";
 import test from "node:test";
 import swc from "next/dist/build/swc/index.js";
 import { chooseGameVersion, formatVersionLabel, getVersionMetadata, getVersionSaveNamespace } from "../app/game-versions.mjs";
-import { libraryItems } from "../app/home-shell/library-query.mjs";
+import { libraryItems } from "../app/home-shell/library-items.mjs";
 
 const presentationUrl = new URL("../app/game-presentation.js", import.meta.url);
 await swc.loadBindings();

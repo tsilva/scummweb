@@ -90,6 +90,10 @@ export function getGameFamilyKey(game) {
   return `${identity}:${demo ? "demo" : "full"}`;
 }
 
+export function catalogGameEntries(catalog) {
+  return catalog.map((game) => ({ key: `catalog:${game.target}`, game, title: game.displayTitle }));
+}
+
 export function groupGameVersions(items) {
   const groups = new Map();
   for (const item of items) {
