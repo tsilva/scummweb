@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   audit:
-    uses: tsilva/.github/.github/workflows/lighthouse-ci.yml@cc4063539653becaf4493e6ece6c95784e3d6c81
+    uses: tsilva/.github/.github/workflows/lighthouse-ci.yml@1eb40277dd97b1c617d4ae53aef7bf21f5dd1dd3
     with:
       url: "https://scummweb.tsilva.eu/"
       sample_timings: true
