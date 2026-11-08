@@ -1286,22 +1286,22 @@ or request-time rendering.
   Canonical titles shared by originals and remakes remain ambiguous; only a
   unique title or recognized edition alias selects a game family. An ambiguous
   ZIP name keeps generic metadata until it can be identified.
-  Galleries contain three distinct captures for catalog games, Sfinx, and most
-  recognized personal imports. Road retains one verified capture and Fun Seeker's
-  Guide to Eastern Madera County has two until additional matching screenshots
-  are available. Keep those gaps explicit; do not duplicate
-  images or substitute captures from another game.
-  Added captures retain their original framing and use lossless WebP encoding.
-  Per-image source URLs are recorded in the artwork JSON. Most come from the
-  [ScummVM screenshot gallery](https://www.scummvm.org/screenshots/); supplementary
-  captures come from the original Myst Masterpiece and Big Thinkers Steam store
-  galleries, [OldGames](https://www.oldgames.sk/en/game/big-red-adventure-the/screenshots),
+  Each bundled and recognized import gallery contains three distinct captures
+  from the original game. Most come from the
+  [ScummVM screenshot gallery](https://www.scummvm.org/screenshots/).
+  The artwork JSON records source URLs, available edition details, and credits
+  for supplemental captures, including original frames captured directly in ScummVM.
+  Existing supplemental sources include the Myst Masterpiece and Big Thinkers
+  Steam store galleries, [OldGames](https://www.oldgames.sk/en/game/big-red-adventure-the/screenshots),
   [Old-Games.RU](https://www.old-games.ru/game/7755.html),
   [Planète Aventure](https://www.planete-aventure.net/jeux.php?cat=screenshots&num_jeu=1822),
   and the [DOSBox Staging Passport to Adventure guide](https://www.dosbox-staging.org/0.83/getting-started/passport-to-adventure/).
   Ms. Astro Chicken uses its [GamersCreed gallery](https://www.gamerscreed.com/resources/ms-astro-chicken-flight-of-the-pullet.151/).
+  Some galleries include authentic title screens or scenes from another language
+  edition or port of the same game. The lossless WebP delivery pipeline preserves
+  the capture framing and downscales larger inputs to the gallery size.
   Fun Seeker's Guide includes its original introduction screen from Libretro's
-  ScummVM title-screen collection.
+  ScummVM title-screen collection and an additional guide page captured in ScummVM.
   Sfinx's three captures are English DOS images 2–4 from its ScummVM gallery.
   The Simon the Sorcerer's Puzzle Pack gallery includes Jumble and Swampy
   Adventures, both included in the collection.
