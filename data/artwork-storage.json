@@ -36282,6 +36282,22 @@
       "contentType": "image/webp",
       "width": 640,
       "height": 480
+    },
+    "/launcher/retro-local-road-shot-axe.webp": {
+      "key": "artwork/2a5b12f6122ed8f8255378a6ac0166f22737d7d282cd7d9b0f18051b0783eb21/retro-local-road-shot-axe.webp",
+      "sha256": "2a5b12f6122ed8f8255378a6ac0166f22737d7d282cd7d9b0f18051b0783eb21",
+      "bytes": 584746,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 720
+    },
+    "/launcher/retro-scumm-brstorm-shot-finish.webp": {
+      "key": "artwork/11eba71b6aa818f75c017664a148735346ce6d90091682e917806800e1cbf8bf/retro-scumm-brstorm-shot-finish.webp",
+      "sha256": "11eba71b6aa818f75c017664a148735346ce6d90091682e917806800e1cbf8bf",
+      "bytes": 36736,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 720
     }
   },
   "images": {
