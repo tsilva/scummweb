@@ -136,10 +136,12 @@ still be cleared or evicted, and metadata does not make save-file writes atomic.
 
 AgentSCUMM can launch a game with its own save scope. ScummWEB then gives that
 run a separate native save path and index, including for Continue. These saves
-live outside the normal ScummWEB library and backup directories. Beneath a Steel
-Sky also supports agent pause, exact game ticks, and native save and load at
-the game loop boundary. These actions are available only in scoped runs that
-advertise the native bridge.
+live outside the normal ScummWEB library and backup directories. Scoped runs
+of Beneath a Steel Sky and the full Flight of the Amazon Queen support native
+pause, resume, exact tick stepping, save, and load. Queen steps rendered game
+updates, including updates during walks and cutaways. Queen saves and loads
+between commands and room transitions and exposes manual slots 1–98. A paused
+load presents the restored scene and keeps the game paused.
 
 For a scoped Sky Continue launch, AgentSCUMM can explicitly request a single
 legacy manual slot from the same browser profile. The shell copies the slot
