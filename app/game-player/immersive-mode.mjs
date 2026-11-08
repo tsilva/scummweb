@@ -1,11 +1,21 @@
-let mobileLaunch = null;
+import { isKnownTvBrowser } from "../controller-device.mjs";
+
+let launchEntry = null;
 let pendingEntry = null;
 let revision = 0;
 
 export function isMobileClient() {
   if (typeof window === "undefined") return false;
+  if (isKnownTvBrowser(navigator)) return false;
   return window.matchMedia?.("(pointer: coarse)").matches ||
     window.matchMedia?.("(max-width: 900px)").matches || navigator.maxTouchPoints > 0;
+}
+
+export function isTouchMobileClient() {
+  if (typeof window === "undefined" || isKnownTvBrowser(navigator)) return false;
+  return navigator.maxTouchPoints > 0 &&
+    (/android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent) ||
+      (navigator.maxTouchPoints > 1 && /macintosh/i.test(navigator.userAgent)));
 }
 
 export function isGameFullscreen(shell) {
@@ -39,31 +49,31 @@ export function enterImmersiveMode(shell) {
       // Fullscreen refusal must never block the game or open another prompt.
     }
     if (requestRevision !== revision) return false;
-    if (isMobileClient()) await lockOrientation("landscape");
+    if (isTouchMobileClient()) await lockOrientation("landscape");
     return isGameFullscreen(shell);
   })();
   return pendingEntry;
 }
 
-export function beginMobileGameLaunch() {
-  if (!isMobileClient()) return false;
+export function beginGameLaunch() {
+  if (typeof window === "undefined" || (!isKnownTvBrowser(navigator) && !isTouchMobileClient())) return false;
   // The root survives client navigation; a launcher element would be removed.
-  mobileLaunch = enterImmersiveMode(document.documentElement);
+  launchEntry = enterImmersiveMode(document.documentElement);
   return true;
 }
 
 export function resumeMobileGameLaunch(shell) {
-  return mobileLaunch || enterImmersiveMode(shell);
+  return launchEntry || enterImmersiveMode(shell);
 }
 
 export async function exitImmersiveMode() {
   ++revision;
   const entry = pendingEntry;
-  mobileLaunch = null;
+  launchEntry = null;
   pendingEntry = null;
   // Finish an outstanding fullscreen request before restoring orientation.
   await entry;
-  if (isMobileClient()) await lockOrientation("portrait");
+  if (isTouchMobileClient()) await lockOrientation("portrait");
   try {
     if (document.fullscreenElement || document.webkitFullscreenElement) {
       const exit = document.exitFullscreen || document.webkitExitFullscreen;

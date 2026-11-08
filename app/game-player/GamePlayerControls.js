@@ -11,6 +11,7 @@ export default function GamePlayerControls({
   isFullscreen,
   onExit,
   onOpenMenu,
+  onResumeGame,
   onSkipIntro,
   onTouchLeftClick,
   onTouchRightClick,
@@ -21,6 +22,7 @@ export default function GamePlayerControls({
   showGameMenuButton,
   showSkipIntroAction,
   showTouchClickButtons,
+  toolbarFocused,
 }) {
   const controlsRef = useRef(null);
   const visibilityRef = useRef(null);
@@ -48,7 +50,8 @@ export default function GamePlayerControls({
 
   return (
     <>
-      {showSkipIntroAction && <DirectionalNavigation initialFocus="skip-intro" />}
+      {toolbarFocused ? <DirectionalNavigation initialFocus="toolbar" onResumeGame={onResumeGame} />
+        : showSkipIntroAction && <DirectionalNavigation initialFocus="skip-intro" />}
       <div className={`game-route-controls${autoHide && !visible ? " is-idle" : ""}`} ref={controlsRef}>
         {showExitControl ? (
           <div className="game-route-control-group is-left">

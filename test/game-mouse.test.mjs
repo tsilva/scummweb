@@ -37,3 +37,19 @@ test("the TV remote moves and clicks once across game iframe reloads", () => {
     { type: "scummweb-touch-click", button: "right", origin: host.location.origin },
   ]);
 });
+
+test("only a fresh Up press at the canvas edge opens the toolbar", () => {
+  const host = Object.assign(new EventTarget(), { location: new URL("https://scummweb.example/") });
+  const canvas = Object.assign(new EventTarget(), { id: "canvas", getBoundingClientRect: () => ({ top: 20 }) });
+  const frame = Object.assign(new EventTarget(), { contentDocument: canvas, contentWindow: { postMessage() {} } });
+  let opened = 0;
+  const dispose = observeRemoteMouse(host, frame, () => opened++);
+  sendKey(canvas, "keydown", "ArrowUp");
+  canvas.dispatchEvent(Object.assign(new Event("mousemove"), { clientY: 20 }));
+  sendKey(canvas, "keydown", "ArrowUp");
+  assert.equal(opened, 0, "holding Up reaches the edge without opening the toolbar");
+  sendKey(canvas, "keyup", "ArrowUp");
+  sendKey(canvas, "keydown", "ArrowUp");
+  assert.equal(opened, 1);
+  dispose();
+});

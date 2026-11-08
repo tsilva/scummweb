@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { enterImmersiveMode, exitImmersiveMode, isGameFullscreen, isMobileClient, resumeMobileGameLaunch, unlockOrientation } from "./immersive-mode.mjs";
+import { enterImmersiveMode, exitImmersiveMode, isGameFullscreen, isMobileClient, isTouchMobileClient, resumeMobileGameLaunch, unlockOrientation } from "./immersive-mode.mjs";
 
 const MOBILE_BREAKPOINT_QUERY = "(max-width: 900px)";
 const MOBILE_POINTER_QUERY = "(pointer: coarse)";
@@ -115,7 +115,7 @@ export function useImmersiveMode({ shellRef }) {
   }, [shellRef]);
 
   useEffect(() => {
-    if (!isMobileViewport || !canFullscreen || autoImmersiveAttemptedRef.current) {
+    if (!isTouchMobileClient() || !canFullscreen || autoImmersiveAttemptedRef.current) {
       return;
     }
 
@@ -147,7 +147,7 @@ export function useImmersiveMode({ shellRef }) {
         return;
       }
 
-      await enterImmersiveMode(isMobileClient() ? document.documentElement : shell);
+      await enterImmersiveMode(isTouchMobileClient() ? document.documentElement : shell);
     } catch (error) {
       console.error("Failed to toggle fullscreen mode.", error);
     }

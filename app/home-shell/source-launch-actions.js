@@ -1,6 +1,6 @@
 "use client";
 
-import { beginMobileGameLaunch } from "../game-player/immersive-mode.mjs";
+import { beginGameLaunch } from "../game-player/immersive-mode.mjs";
 import useLaunchFeedback from "../game-player/useLaunchFeedback";
 import useBrowserSave from "../use-browser-save";
 import { cancelBrowserSaveQueries } from "../browser-saves.mjs";
@@ -15,7 +15,7 @@ export default function SourceLaunchActions({ version, onLaunch, helpId = "game-
     if (isPlay) launchFeedback.show(version.game);
     cancelBrowserSaveQueries();
     onLaunch?.();
-    if (isPlay) beginMobileGameLaunch();
+    if (isPlay) beginGameLaunch();
     try {
       return Promise.resolve(action()).then((navigated) => {
         if (isPlay && !navigated) launchFeedback.dismiss();

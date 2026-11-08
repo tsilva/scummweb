@@ -4,13 +4,15 @@ import { runInNewContext } from "node:vm";
 import test from "node:test";
 
 const immersiveSource = (await readFile(new URL("../app/game-player/immersive-mode.mjs", import.meta.url), "utf8"))
+  .replace(/^import .*controller-device.mjs.*$/m, "")
   .replaceAll("export ", "");
 const source = (await readFile(new URL("../app/game-player/useImmersiveMode.js", import.meta.url), "utf8"))
   .replace('import { useEffect, useRef, useState } from "react";', "")
   .replace(/^import .*immersive-mode.mjs.*$/m, "")
   .replace("export function useImmersiveMode", "function useImmersiveMode");
 
-function player({ fullscreen = false, landscape = false, mobile = true, denied = false, deferred = false, unsupportedOrientation = false } = {}) {
+function player({ fullscreen = false, landscape = false, mobile = true, tv = false, narrow = mobile,
+  denied = false, deferred = false, unsupportedOrientation = false } = {}) {
   const hooks = [];
   const listeners = new Set();
   let cursor = 0;
@@ -38,13 +40,14 @@ function player({ fullscreen = false, landscape = false, mobile = true, denied =
   const window = {
     innerWidth: 390, innerHeight: 844,
     matchMedia: (query) => ({
-      matches: query.includes("landscape") ? landscape : mobile,
+      matches: query.includes("landscape") ? landscape : query.includes("max-width") ? narrow : mobile,
       addEventListener() {}, removeEventListener() {},
     }),
     addEventListener: (name) => listeners.add(name), removeEventListener() {},
   };
   const context = {
-    window, navigator: { maxTouchPoints: mobile ? 1 : 0 }, console, queueMicrotask,
+    window, navigator: { maxTouchPoints: mobile ? 1 : 0, userAgent: mobile ? "iPhone" : "Desktop" },
+    isKnownTvBrowser: () => tv, console, queueMicrotask,
     // Physical screen orientation may disagree with the browser viewport.
     screen: { orientation: {
       type: landscape ? "portrait-primary" : "landscape-primary",
@@ -69,7 +72,7 @@ function player({ fullscreen = false, landscape = false, mobile = true, denied =
       }
     },
   };
-  runInNewContext(`${immersiveSource}\n${source}\nthis.useImmersiveMode = useImmersiveMode; this.begin = beginMobileGameLaunch; this.exit = exitImmersiveMode; this.resume = resumeMobileGameLaunch;`, context);
+  runInNewContext(`${immersiveSource}\n${source}\nthis.useImmersiveMode = useImmersiveMode; this.begin = beginGameLaunch; this.exit = exitImmersiveMode; this.resume = resumeMobileGameLaunch;`, context);
   let state;
   async function settle() {
     for (let attempt = 0; attempt < 10; attempt++) {
@@ -153,4 +156,21 @@ test("desktop launches keep the normal browser orientation", async () => {
   await state.handleFullscreenToggle();
   await state.handleFullscreenToggle();
   assert.deepEqual(client.actions.filter((action) => action !== "unlock"), ["fullscreen", "exit"]);
+});
+
+test("a narrow desktop viewport does not automatically enter fullscreen", async () => {
+  const client = player({ fullscreen: true, mobile: false, narrow: true });
+  assert.equal(client.begin(), false);
+  await client.settle();
+  assert.equal(client.requests(), 0);
+});
+
+test("TV Play enters fullscreen from the launch gesture without rotating the display", async () => {
+  const client = player({ fullscreen: true, mobile: false, tv: true });
+  assert.equal(client.begin(), true);
+  assert.deepEqual(client.actions, ["fullscreen"]);
+  assert.equal((await client.settle()).isFullscreen, true);
+  assert.equal(client.requests(), 1);
+  await client.exit();
+  assert.deepEqual(client.actions, ["fullscreen", "exit", "unlock"]);
 });

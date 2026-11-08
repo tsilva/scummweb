@@ -23,7 +23,7 @@ export default function HomeShell({
 
   return (
     <>
-      <DirectionalNavigation initialFocus={isHomePage ? "play" : undefined} />
+      <DirectionalNavigation initialFocus={pageMode === "compatibility" ? undefined : "play"} />
       {artworkStorage.published && <link rel="preconnect" href={artworkStorage.origin} />}
       <nav className={pageMode === "compatibility" ? "dashboard-nav" : "dashboard-nav dashboard-nav-home"}>
         <div className="nav-cluster nav-cluster-left">

@@ -16,6 +16,7 @@ import { withGameTelemetry } from "./game-player/telemetry.mjs";
 import { dispatchGameCommand, dispatchSyntheticKeypressSequence } from "./game-player/keyboard";
 import { getGameMenuShortcut } from "./game-player/game-menu.mjs";
 import { observeRemoteMouse } from "./game-player/game-mouse.mjs";
+import { isTouchMobileClient } from "./game-player/immersive-mode.mjs";
 import { useBootState } from "./game-player/useBootState";
 import { useImmersiveMode } from "./game-player/useImmersiveMode";
 import { useTouchClickActions } from "./game-player/useTouchClickMode";
@@ -123,7 +124,7 @@ function focusGameCanvas(frame) {
   try {
     const canvas = frame.contentDocument?.getElementById("canvas");
 
-    if (!(canvas instanceof HTMLElement)) {
+    if (!canvas) {
       return false;
     }
 
@@ -167,6 +168,11 @@ export default function GameRouteFrame({
   const [readySignal, setReadySignal] = useState(null);
   const [skipIntroConsumed, setSkipIntroConsumed] = useState(false);
   const [catalogIntroLaunch, setCatalogIntroLaunch] = useState(null);
+  const [remoteToolbarOpen, setRemoteToolbarOpen] = useState(false);
+  const resumeRemoteGame = useCallback(() => {
+    setRemoteToolbarOpen(false);
+    focusGameCanvas(frameRef.current);
+  }, []);
   const skipIntro = isResuming ? null : intro;
   const bootState = useBootState({
     displayTitle: game?.displayTitle || title,
@@ -687,21 +693,21 @@ export default function GameRouteFrame({
 
   const showSkipIntroAction = bootState.showSkipIntroButton && skipIntro && !bootState.hasBootFailed;
   const showSkipIntroBottomAction = showSkipIntroAction && !showBootOverlay;
-  const remoteMouseReady = !showBootOverlay && !showSkipIntroBottomAction && !usesCommandInput;
+  const remoteMouseReady = !showBootOverlay && !showSkipIntroBottomAction && !usesCommandInput && !remoteToolbarOpen;
   useEffect(() => {
     const iframe = frameRef.current;
     if (!remoteMouseReady || !iframe) return;
     let active = true;
     let stop;
     void isTvBrowser(navigator).then((isTv) => {
-      if (active && isTv) stop = observeRemoteMouse(window, iframe);
+      if (active && isTv) stop = observeRemoteMouse(window, iframe, () => setRemoteToolbarOpen(true));
     });
     return () => { active = false; stop?.(); };
   }, [remoteMouseReady, frameSrc]);
 
   const showExitControl = true;
   const showFullscreenControl =
-    !immersiveMode.isMobileViewport && immersiveMode.canFullscreen && bootState.hasBootPresentationCompleted;
+    immersiveMode.canFullscreen && !isTouchMobileClient() && bootState.hasBootPresentationCompleted;
   const showGameMenuButton =
     Boolean(gameMenuShortcut) && bootState.showGameMenuButton && !hasBootFailed;
   const showBottomActions = showSkipIntroBottomAction || showTouchMouse;
@@ -718,13 +724,14 @@ export default function GameRouteFrame({
         title={title}
       />
       <GamePlayerControls
-        autoHide={bootState.hasBootPresentationCompleted && !showBootOverlay && !immersiveMode.isMobileViewport}
+        autoHide={bootState.hasBootPresentationCompleted && !showBootOverlay && !immersiveMode.isMobileViewport && !remoteToolbarOpen}
         frameRef={frameRef}
         menuShortcut={gameMenuShortcut}
         handleControlMouseDown={handleControlMouseDown}
         isFullscreen={immersiveMode.isFullscreen}
         onExit={handleExitClick}
         onOpenMenu={handleGameMenuClick}
+        onResumeGame={resumeRemoteGame}
         onSkipIntro={handleSkipIntroClick}
         onTouchLeftClick={() => touchClick.sendTouchClick("left")}
         onTouchRightClick={() => touchClick.sendTouchClick("right")}
@@ -735,6 +742,7 @@ export default function GameRouteFrame({
         showGameMenuButton={showGameMenuButton}
         showSkipIntroAction={showSkipIntroBottomAction}
         showTouchClickButtons={showTouchMouse}
+        toolbarFocused={remoteToolbarOpen}
       />
       <GameTouchCursorPad
         indicatorOffset={touchCursorPad.indicatorOffset}

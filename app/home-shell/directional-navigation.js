@@ -34,7 +34,7 @@ function position(element) {
   return { left, right, top: top - offset, bottom: bottom - offset };
 }
 
-export default function DirectionalNavigation({ initialFocus }) {
+export default function DirectionalNavigation({ initialFocus, onResumeGame }) {
   useEffect(() => {
     const root = document.documentElement;
     let active = true;
@@ -51,6 +51,11 @@ export default function DirectionalNavigation({ initialFocus }) {
     function startNavigation() {
       if (!active) return;
       activate();
+      if (initialFocus === "toolbar") {
+        const exit = document.querySelector(".game-route-control-button.is-exit");
+        if (exit && isAvailable(exit)) focusDirectionalControl(exit);
+        return;
+      }
       if (initialFocus === "skip-intro") {
         const button = document.querySelector(".game-route-skip-intro-button");
         const player = button?.closest(".game-route-shell");
@@ -74,7 +79,13 @@ export default function DirectionalNavigation({ initialFocus }) {
     }
 
     function move(direction) {
-      const scope = document.querySelector("dialog:modal") ?? document;
+      if (initialFocus === "toolbar" && (direction === "ArrowDown" || direction === "Escape")) {
+        onResumeGame();
+        return;
+      }
+      const scope = initialFocus === "toolbar" ? document.querySelector(".game-route-controls") :
+        document.querySelector("dialog:modal") ?? document;
+      if (!scope) return;
       const current = document.activeElement;
       if (!scope.contains(current) || current === document.body) {
         if (scope === document && focusHeroAction()) return;
@@ -90,7 +101,8 @@ export default function DirectionalNavigation({ initialFocus }) {
 
     function onKeyDown(event) {
       if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey ||
-        !directions.includes(event.key) || event.target.isContentEditable || event.target.closest?.("input, textarea, select")) return;
+        (!directions.includes(event.key) && !(initialFocus === "toolbar" && event.key === "Escape")) ||
+        event.target.isContentEditable || event.target.closest?.("input, textarea, select")) return;
       if (!root.hasAttribute("data-dpad-navigation") && !event.target.matches?.(controls)) return;
       event.preventDefault();
       activate();
@@ -155,7 +167,7 @@ export default function DirectionalNavigation({ initialFocus }) {
       document.removeEventListener("visibilitychange", onGamepad);
       document.removeEventListener("click", onLibraryLink);
     };
-  }, [initialFocus]);
+  }, [initialFocus, onResumeGame]);
 
   return null;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { beginMobileGameLaunch } from "./game-player/immersive-mode.mjs";
+import { beginGameLaunch } from "./game-player/immersive-mode.mjs";
 import useLaunchFeedback from "./game-player/useLaunchFeedback";
 import useBrowserSave from "./use-browser-save";
 import { cancelBrowserSaveQueries } from "./browser-saves.mjs";
@@ -19,7 +19,7 @@ export default function LaunchButton({ game, entryPoint, label = "Play", continu
     launchFeedback.show(game);
     cancelBrowserSaveQueries();
     onLaunch?.();
-    beginMobileGameLaunch();
+    beginGameLaunch();
     router.push(event.currentTarget.getAttribute("href"));
   };
 

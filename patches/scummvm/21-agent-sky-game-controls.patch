@@ -1,0 +1,64 @@
+diff --git a/engines/sky/sky.cpp b/engines/sky/sky.cpp
+--- a/engines/sky/sky.cpp
++++ b/engines/sky/sky.cpp
+@@ -244,8 +244,50 @@
+ 		}
+ 	}
+ 
++#ifdef __EMSCRIPTEN__
++	bool agentHeld = false, agentCompletedTick = false;
++#endif
+ 	uint32 delayCount = _system->getMillis();
+ 	while (!shouldQuit()) {
++#ifdef __EMSCRIPTEN__
++		// Only this outer game loop advances game logic. While held, yield
++		// to the browser without polling and consuming queued player input.
++		const int control = EM_ASM_INT({
++			return globalThis.__scummwebAgentBoundary?.($0, $1) ?? 0;
++		}, agentCompletedTick, MAX_SAVE_GAMES);
++		agentCompletedTick = false;
++		if (control < 0) {
++			agentHeld = true;
++			_system->delayMillis(10);
++			continue;
++		}
++		if (control > 0) {
++			const bool loading = control > MAX_SAVE_GAMES;
++			const int slot = loading ? control - MAX_SAVE_GAMES : control;
++			Common::String failure;
++			if (loading ? !canLoadGameStateCurrently() : !canSaveGameStateCurrently(nullptr)) {
++				failure = loading ? "Cannot load in the current scene" : "Cannot save in the current scene";
++			} else {
++				const Common::Error saveResult = loading ? loadGameState(slot)
++					: saveGameState(slot, Common::String::format("AgentSCUMM %d", slot));
++				if (saveResult.getCode() != Common::kNoError) {
++					failure = saveResult.getDesc();
++				} else if (loading) {
++					_skyScreen->recreate();
++					_skyScreen->spriteEngine();
++					_skyScreen->flip();
++					_system->updateScreen();
++				}
++			}
++			EM_ASM({ globalThis.__scummwebAgentSaveResult?.(UTF8ToString($0)); }, failure.c_str());
++			continue;
++		}
++		if (agentHeld) {
++			delayCount = _system->getMillis();
++			delay(0); // Collect input queued before resuming the engine.
++			agentHeld = false;
++		}
++#endif
+ 		_skySound->checkFxQueue();
+ 		if (SkyEngine::isIbass()) {
+ 			if (_curScreen != Logic::_scriptVariables[SCREEN]) {
+@@ -298,6 +340,9 @@
+ 			}
+ 			delay(needDelay);
+ 		}
++#ifdef __EMSCRIPTEN__
++		agentCompletedTick = true;
++#endif
+ 	}
+ 
+ 	_skyControl->showGameQuitMsg();

@@ -65,6 +65,9 @@ scummwebBrowserFsReady.catch(()=>{});
 </script><script>
 const scummwebInlineFrame = window.location.pathname === "srcdoc";
 const scummwebLaunchUrl = new URL(scummwebInlineFrame ? document.baseURI : window.location.href);
+const agentSaveScope = scummwebLaunchUrl.searchParams.get("agentSaveScope");
+/*__SCUMMWEB_AGENT_CONTROLS__*/
+if (agentSaveScope && /^[a-f0-9]{64}$/.test(agentSaveScope)) installAgentControls(window, agentSaveScope);
 if (scummwebLaunchUrl.searchParams.get("telemetry") === "1") {
   globalThis.__scummwebTelemetryQueryEnabled = true;
   globalThis.scummwebTelemetry = Object.freeze({
@@ -223,6 +226,7 @@ async function installMissingCatalogTarget() {
 const defaultSavePath = "/home/web_user/.local/share/scummvm/saves";
 
 function getConfiguredSavePath() {
+  if (agentSaveScope) return `${defaultSavePath}-agent/${agentSaveScope}`;
   try {
     const iniText = FS.readFile("/home/web_user/scummvm.ini", { encoding: "utf8" });
 
@@ -397,6 +401,17 @@ function setupFilesystem() {
   const localFilesReady = setupLocalFilesystem()
     // The native save manager can create the last directory only.
     .then(() => ensureDirectory(defaultSavePath))
+    .then(() => {
+      if (agentSaveScope === null) return;
+      if (!/^[a-f0-9]{64}$/.test(agentSaveScope) || scummwebLaunchUrl.searchParams.has("saveQuery")) {
+        throw new Error("Invalid AgentSCUMM save scope");
+      }
+      const savePath = getConfiguredSavePath();
+      ensureDirectory(savePath);
+      importLegacySkySave(FS, scummwebLaunchUrl.searchParams, defaultSavePath, savePath);
+      const args = Module.arguments.filter(arg => !arg.startsWith("--savepath="));
+      Module.arguments.splice(0, Module.arguments.length, `--savepath=${savePath}`, ...args);
+    })
     .then(() => isLocalGame ? setupLocalGame() : undefined)
     .then(() => !scummwebLaunchUrl.searchParams.has("saveQuery") && (!isLocalGame || isCatalogArchive)
       ? installMissingCatalogTarget().then(setupSkipIntroSaves)
