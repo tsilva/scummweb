@@ -17,12 +17,19 @@ export function clickGameMouse(frame, origin, button) {
   sendMouseInput(frame, origin, { type: "scummweb-touch-click", button: button === "right" ? "right" : "left" });
 }
 
-export function observeRemoteMouse(host, frame) {
+export function observeRemoteMouse(host, frame, onOpenToolbar) {
   const inputEvents = ["keydown", "keypress", "keyup"];
   const listenerOptions = { capture: true };
   let frameDocument;
   let clickPress = null;
+  let cursorAtTop = false;
   const heldDirections = new Set();
+
+  function onMouseMove(event) {
+    if (event.target?.id === "canvas") {
+      cursorAtTop = event.clientY <= event.target.getBoundingClientRect().top + 1;
+    }
+  }
 
   function onKey(event) {
     if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey ||
@@ -34,8 +41,13 @@ export function observeRemoteMouse(host, frame) {
     event.stopImmediatePropagation();
     if (direction) {
       if (event.type === "keydown") {
-        const step = event.repeat || heldDirections.has(event.key) ? 18 : 7;
+        const held = event.repeat || heldDirections.has(event.key);
         heldDirections.add(event.key);
+        if (onOpenToolbar && cursorAtTop && event.key === "ArrowUp" && !held) {
+          onOpenToolbar();
+          return;
+        }
+        const step = held ? 18 : 7;
         moveGameMouse(frame, host.location.origin, direction[0] * step, direction[1] * step);
       } else if (event.type === "keyup") {
         heldDirections.delete(event.key);
@@ -53,14 +65,17 @@ export function observeRemoteMouse(host, frame) {
 
   function detachFrame() {
     for (const type of inputEvents) frameDocument?.removeEventListener(type, onKey, listenerOptions);
+    frameDocument?.removeEventListener("mousemove", onMouseMove, listenerOptions);
   }
 
   function attachFrame() {
     detachFrame();
     clickPress = null;
+    cursorAtTop = false;
     heldDirections.clear();
     frameDocument = frame.contentDocument;
     for (const type of inputEvents) frameDocument?.addEventListener(type, onKey, listenerOptions);
+    frameDocument?.addEventListener("mousemove", onMouseMove, listenerOptions);
   }
 
   for (const type of inputEvents) host.addEventListener(type, onKey, listenerOptions);

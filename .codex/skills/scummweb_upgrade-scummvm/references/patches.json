@@ -328,6 +328,21 @@
         "Verify the pinned Wasm build, test direct ScummWEB and MCP opt-in, and spot-check room and named state in additional real engines."
       ],
       "retire_when": "Upstream provides equivalent opt-in per-engine room and state queries."
+    },
+    {
+      "path": "patches/scummvm/21-agent-sky-game-controls.patch",
+      "status": "active",
+      "sha256": "62e8bf8a2d079fb50304dcf6ea787e93f593fcce1d7b1b32661088a657d9a852",
+      "purpose": "Expose opt-in AgentSCUMM tick control and native runtime saves at the Sky game loop boundary.",
+      "invariants": [
+        "Count completed Sky gameplay updates and hold the next update before acknowledging a tick wait.",
+        "Yield the paused engine to the browser, and collect queued input before the first resumed update.",
+        "Honor native save/load availability and keep runtime saves within the explicitly scoped save directory."
+      ],
+      "verification": [
+        "Replay a bounded tick wait and verify the paused frame and exact tick delta. Save a slot, change rooms, load it and check the restored scene. Launch another run in the same profile and verify the slot is absent."
+      ],
+      "retire_when": "ScummVM exposes equivalent web-safe tick boundaries, pause/resume, and native runtime save/load."
     }
   ]
 }

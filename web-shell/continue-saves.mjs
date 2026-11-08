@@ -37,7 +37,11 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
   const params = launchUrl.searchParams;
   const namespace = params.get("saveNamespace") || "";
   if (namespace && !/^version-[a-f0-9]{64}$/.test(namespace)) throw new Error("Invalid save namespace");
-  const savePath = defaultSavePath + (namespace ? `/${namespace}` : "");
+  const agentSaveScope = params.get("agentSaveScope");
+  if (agentSaveScope !== null && !/^[a-f0-9]{64}$/.test(agentSaveScope)) throw new Error("Invalid AgentSCUMM save scope");
+  const storageNamespace = agentSaveScope ? `agent-${agentSaveScope}` : namespace;
+  const savePath = agentSaveScope ? `${defaultSavePath}-agent/${agentSaveScope}`
+    : defaultSavePath + (namespace ? `/${namespace}` : "");
   let snapshot;
   let lastRevision;
   let timer;
@@ -60,7 +64,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
   }
 
   const validName = (name) => typeof name === "string" && name.length > 0 && !/[\\/\x00-\x1f]/.test(name);
-  const indexKey = () => saveIndexKey(namespace, params.get("catalogGame") || snapshot?.target);
+  const indexKey = () => saveIndexKey(storageNamespace, params.get("catalogGame") || snapshot?.target);
   function persist() {
     if (!snapshot) return false;
     snapshot.pending = [...pending];
@@ -144,8 +148,10 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
       resumeReported = true;
     }
     scope.__scummwebSaveStatus = { ...snapshot, latestSlot: save?.slot ?? null };
-    scope.parent.postMessage({ type: "scummweb:saves-listed", query: params.get("saveQuery"),
-      ...snapshot, persisted, latestSlot: save?.slot ?? null }, launchUrl.origin);
+    if (!agentSaveScope) {
+      scope.parent.postMessage({ type: "scummweb:saves-listed", query: params.get("saveQuery"),
+        ...snapshot, persisted, latestSlot: save?.slot ?? null }, launchUrl.origin);
+    }
     return params.get("continue") === "1" ? save?.slot ?? -1 : -1;
   };
 

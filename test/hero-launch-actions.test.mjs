@@ -51,11 +51,11 @@ const useBrowserSave = (game) => savedIdentity === undefined ? undefined
   : savedIdentity === (game.saveVersionId || game.target) ? 0 : null;
 const LaunchButton = await loadComponent("../app/launch-button.js", {
   "next/navigation": { useRouter: () => ({ push() {} }) },
-  "./game-player/immersive-mode.mjs": { beginMobileGameLaunch: () => false },
+  "./game-player/immersive-mode.mjs": { beginGameLaunch: () => false },
   "./use-browser-save": useBrowserSave, "./browser-saves.mjs": { cancelBrowserSaveQueries() {} },
 });
 const SourceLaunchActions = await loadComponent("../app/home-shell/source-launch-actions.js", {
-  "../game-player/immersive-mode.mjs": { beginMobileGameLaunch: () => false },
+  "../game-player/immersive-mode.mjs": { beginGameLaunch: () => false },
   "../use-browser-save": useBrowserSave, "../browser-saves.mjs": { cancelBrowserSaveQueries() {} },
 });
 const HeroStage = await loadComponent("../app/home-shell/hero-stage.js", {
@@ -299,7 +299,7 @@ test("catalog launches keep the document and request mobile fullscreen within th
     "./use-browser-save": () => 0,
     "./browser-saves.mjs": { cancelBrowserSaveQueries() { calls.push("cancel saves"); } },
     "next/navigation": { useRouter: () => ({ push(href) { calls.push(href); } }) },
-    "./game-player/immersive-mode.mjs": { beginMobileGameLaunch() { if (mobile) calls.push("fullscreen"); return mobile; } },
+    "./game-player/immersive-mode.mjs": { beginGameLaunch() { if (mobile) calls.push("fullscreen"); return mobile; } },
   });
   const links = CatalogLaunch({ game, entryPoint: "hero" }).props.children;
   for (mobile of [false, true]) {
@@ -321,7 +321,7 @@ test("source file-access and locate actions do not request fullscreen", async ()
   const SourceActions = await loadComponent("../app/home-shell/source-launch-actions.js", {
     "../use-browser-save": () => null,
     "../browser-saves.mjs": { cancelBrowserSaveQueries() {} },
-    "../game-player/immersive-mode.mjs": { beginMobileGameLaunch() { calls.push("fullscreen"); } },
+    "../game-player/immersive-mode.mjs": { beginGameLaunch() { calls.push("fullscreen"); } },
   });
   for (const status of [{}, { locate: true }, { needsAccess: true }]) {
     calls.length = 0;
@@ -342,7 +342,7 @@ test("source launch feedback appears before asynchronous preparation and clears 
       show(value) { assert.equal(value, game); calls.push("loading screen"); },
       dismiss() { calls.push("dismiss"); }, overlay: null,
     }),
-    "../game-player/immersive-mode.mjs": { beginMobileGameLaunch() { calls.push("fullscreen"); } },
+    "../game-player/immersive-mode.mjs": { beginGameLaunch() { calls.push("fullscreen"); } },
   });
   for (const navigated of [true, false]) {
     calls.length = 0;

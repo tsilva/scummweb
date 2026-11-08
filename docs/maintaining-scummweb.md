@@ -34,7 +34,10 @@ the primary face button for the same actions. When **Skip intro** appears, it
 gets focus so it can be activated with **OK**.
 During mouse-driven gameplay on a TV, the remote's D-pad moves the cursor and
 tapping **OK** left-clicks. Hold **OK** for a right-click or hold a direction
-to move faster.
+to move faster. At the top edge of the game, release **Up** and press it again
+to focus **Exit game** in the player toolbar. Use **Left** or **Right** to pick
+a toolbar button, **OK** to activate it, or **Down** to return to the cursor.
+On recognized TVs, **Play** requests fullscreen from the remote's launch press.
 
 The hero's **Scroll for screenshots & more games** link appears on desktop and
 mobile when screenshots are available and stays visible after browsing the library.
@@ -127,6 +130,17 @@ successful overwrite or restored save set can replace them. Metadata-write
 failures retry during play. Intro checkpoints are compared by their bytes after
 changes. No final save scan depends on tab-close handlers. Browser storage can
 still be cleared or evicted, and metadata does not make save-file writes atomic.
+
+AgentSCUMM can launch a game with its own save scope. ScummWEB then gives that
+run a separate native save path and index, including for Continue. These saves
+live outside the normal ScummWEB library and backup directories. Beneath a Steel
+Sky also supports agent pause, exact game ticks, and native save and load at
+the game loop boundary. These actions are available only in scoped runs that
+advertise the native bridge.
+
+For a scoped Sky Continue launch, AgentSCUMM can explicitly request a single
+legacy manual slot from the same browser profile. The shell copies the slot
+before ScummVM starts. It preserves the original and any existing scoped slot.
 
 Run `node --test test/browser-saves.test.mjs test/continue-saves.test.mjs test/native-save-completion.test.mjs test/hero-launch-actions.test.mjs test/save-backups.test.mjs` for
 latest-save ordering, checkpoint exclusion, missing files, native query scope,

@@ -126,3 +126,13 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
 - Patch 19 adds opt-in, read-only snapshots for engines with known room and variable storage. Keep native bank indices, omit unavailable room IDs, and publish a whole sample at once. These samples are independent of the Queen and SCUMM evaluation queues.
 
 - Patch 20 samples engine-owned room and game state in the remaining shipped plugins. Keep the browser query flag separate from evaluator queues. Preserve sparse keys, treat native room names and IDs as engine-specific, and keep ordinary browser launches off by default.
+
+## Agent game controls
+
+- Exact ticks belong to a supported engine update boundary. The Sky hook
+  acknowledges pause only after the completed tick renders, yields while held,
+  and lets queued browser input reach the first resumed update. Keep native
+  save/load on that same boundary and honor engine availability checks.
+- The shell scopes both native save paths and save indexes by the AgentSCUMM
+  run. Scoped listings do not update the ordinary browser library. Preserve
+  startup checkpoint handling and the normal save stream completion callbacks.

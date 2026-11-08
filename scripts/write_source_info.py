@@ -36,6 +36,7 @@ BUILD_FILES = (
     "scripts/scummvm-version.sh",
     "scripts/stage_scummvm_web_shell.py",
     "scripts/write_scummvm_http_index.py",
+    "web-shell/agent-controls.mjs",
     "web-shell/audio-start-control.mjs",
     "web-shell/canvas-fit.mjs",
     "web-shell/continue-saves.mjs",

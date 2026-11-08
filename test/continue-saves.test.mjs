@@ -3,13 +3,15 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { installContinueSaves, latestPlayerSave, saveIndexKey, saveRevision, supportsContinue } from "../web-shell/continue-saves.mjs";
 
-function shell({ namespace = "", resume = false, seed = false, query = false, storage = new Map() } = {}) {
-  const files = new Map();
-  const base = "/home/web_user/.local/share/scummvm/saves" + (namespace ? `/${namespace}` : "");
+function shell({ namespace = "", agentSaveScope, resume = false, seed = false, query = false,
+  storage = new Map(), files = new Map() } = {}) {
+  const normal = "/home/web_user/.local/share/scummvm/saves";
+  const base = agentSaveScope ? `${normal}-agent/${agentSaveScope}` : normal + (namespace ? `/${namespace}` : "");
   function put(name, contents, modifiedAt) { files.set(`${base}/${name}`, { bytes: new TextEncoder().encode(contents), modifiedAt }); }
   if (seed) put("SKY-VM.000", "checkpoint", 100);
   const FS = {
-    readdir: () => [".", "..", ...[...files.keys()].filter((p) => p.startsWith(base + "/")).map((p) => p.slice(base.length + 1))],
+    readdir: (directory) => [".", "..", ...[...files.keys()].filter((p) => p.startsWith(directory + "/"))
+      .map((p) => p.slice(directory.length + 1)).filter((p) => !p.includes("/"))],
     stat: (path) => { const file = files.get(path); if (!file) throw new Error("missing"); return { mode: 0x8000, size: file.bytes.length, mtime: new Date(file.modifiedAt) }; },
     isFile: (mode) => mode === 0x8000,
     readFile: (path) => { const file = files.get(path); if (!file) throw new Error("missing"); return file.bytes; },
@@ -27,6 +29,7 @@ function shell({ namespace = "", resume = false, seed = false, query = false, st
   };
   const launchUrl = new URL("https://example.test/scummvm.html#sky");
   if (namespace) launchUrl.searchParams.set("saveNamespace", namespace);
+  if (agentSaveScope) launchUrl.searchParams.set("agentSaveScope", agentSaveScope);
   if (resume) launchUrl.searchParams.set("continue", "1");
   if (query) for (const [key, value] of Object.entries({ saveQuery: "nonce", saveEngine: "sky", saveGameId: "sky", saveTarget: "sky" })) launchUrl.searchParams.set(key, value);
   const start = () => installContinueSaves({ scope, FS, Module, launchUrl, assetUrl: (path) => path });
@@ -37,6 +40,24 @@ function shell({ namespace = "", resume = false, seed = false, query = false, st
   }
   return { scope, FS, files, put, Module, storage, messages, start, scan, poll: () => poll() };
 }
+
+test("agent Continue sees only its own native files and never publishes a library listing", async () => {
+  const agentSaveScope = "a".repeat(64), slot = [[7, "SKY-VM.007"]];
+  const original = shell({ agentSaveScope, resume: true });
+  const shared = { storage: original.storage, files: original.files, resume: true };
+  original.put("SKY-VM.007", "player", 200);
+  await original.start();
+  assert.equal(original.scan(slot), 7);
+  assert.equal(original.messages.length, 0);
+  assert.ok(original.storage.has(saveIndexKey(`agent-${agentSaveScope}`)));
+  assert.equal(original.storage.has(saveIndexKey("", "sky")), false);
+
+  for (const scope of ["b".repeat(64), undefined, agentSaveScope]) {
+    const reopened = shell({ ...shared, agentSaveScope: scope });
+    await reopened.start();
+    assert.equal(reopened.scan(slot), scope === agentSaveScope ? 7 : -1);
+  }
+});
 
 test("native-listed checkpoint is excluded, but overwriting it with player progress is resumable", async () => {
   const f = shell({ seed: true, resume: true }); await f.start();
