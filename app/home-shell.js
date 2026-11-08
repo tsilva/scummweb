@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getVersionedSiteAssetPath } from "./asset-paths";
 import Icon from "./home-shell/shell-icon";
 import SourceLibrary from "./home-shell/source-library";
 import SettingsPanel from "./home-shell/settings-panel";
@@ -38,6 +39,7 @@ export default function HomeShell({
                 height="54"
                 loading="eager"
                 src={logoSrc}
+                srcSet={`${getVersionedSiteAssetPath("/brand/logo/logo-nav-142.png")} 1x, ${logoSrc} 2x`}
                 width="273"
               />
               <p className="nav-brand-tagline">Classic adventures in your browser</p>

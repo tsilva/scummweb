@@ -24,7 +24,8 @@ export function fitHeroTitle(heading) {
     heading.__scummwebTitleFit = signature;
     return;
   }
-  for (let step = 0; step < 12; step++) {
+  // Finer precision adds synchronous layouts without a visible size change.
+  for (let step = 0; step < 12 && high - low > 0.25; step++) {
     const size = (low + high) / 2;
     text.style.fontSize = `${size}px`;
     if (text.scrollHeight <= heading.clientHeight && text.scrollWidth <= heading.clientWidth) low = size;

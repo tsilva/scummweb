@@ -46,8 +46,9 @@ test("streamed desktop titles fit before hydration, waiting for their text", () 
   page.mutation();
   assert.equal(page.disconnected(), true);
   assert.ok(parseFloat(page.text.style.fontSize) <= 50);
-  assert.ok(parseFloat(page.text.style.fontSize) > 49);
+  assert.ok(parseFloat(page.text.style.fontSize) > 49.75);
   const measurements = page.measurements();
+  assert.ok(measurements <= 10, "the fit should stop once the title is within a quarter pixel");
   page.mutation();
   assert.equal(page.measurements(), measurements, "hydration must reuse the first fit");
 });
