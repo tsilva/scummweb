@@ -1287,7 +1287,10 @@ or request-time rendering.
   unique title or recognized edition alias selects a game family. An ambiguous
   ZIP name keeps generic metadata until it can be identified.
   Each bundled and recognized import gallery contains three distinct captures
-  from the original game. Most come from the
+  from the original game. Prefer different playable locations, puzzles, actions,
+  or stages. Skip title screens, credits, intro cinematics, and repeated views
+  when distinct gameplay is available. For noninteractive titles, show the
+  program’s original content. Most captures come from the
   [ScummVM screenshot gallery](https://www.scummvm.org/screenshots/).
   The artwork JSON records source URLs, available edition details, and credits
   for supplemental captures, including original frames captured directly in ScummVM.
@@ -1300,11 +1303,10 @@ or request-time rendering.
   Some galleries include authentic title screens or scenes from another language
   edition or port of the same game. The lossless WebP delivery pipeline preserves
   the capture framing and downscales larger inputs to the gallery size.
-  Fun Seeker's Guide includes its original introduction screen from Libretro's
-  ScummVM title-screen collection and an additional guide page captured in ScummVM.
+  Fun Seeker's Guide shows three guide entries, two captured directly in ScummVM.
   Sfinx's three captures are English DOS images 2–4 from its ScummVM gallery.
-  The Simon the Sorcerer's Puzzle Pack gallery includes Jumble and Swampy
-  Adventures, both included in the collection.
+  The Simon the Sorcerer's Puzzle Pack gallery shows Jumble, NoPatience,
+  and Swampy Adventures.
   The homepage uses a game's landscape artwork or gameplay capture as its
   slideshow backdrop. Heroes share save-aware Play, Continue, Start from beginning
   and reconnect actions. The metadata badge stays visible for all edition counts;
