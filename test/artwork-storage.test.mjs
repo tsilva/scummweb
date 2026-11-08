@@ -77,6 +77,8 @@ test("browser artwork metadata preserves delivery records without verification f
     ...published, files: { ...published.files, [unrelated]: file },
   });
   assert.deepEqual(Object.keys(scoped.files).sort(), [name, variant].sort());
+  assert.deepEqual(scoped.files[name], browser.files[name]);
+  assert.deepEqual(scoped.files[variant], browser.files[variant]);
   assert.deepEqual(getArtworkImageProps(url, "hero", scoped), getArtworkImageProps(url, "hero", published));
   const entry = await import(`data:text/javascript,${encodeURIComponent(artworkBrowserLoader.call({
     addDependency() {}, getOptions: () => ({ defer: true }),
