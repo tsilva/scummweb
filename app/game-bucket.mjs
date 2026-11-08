@@ -1,4 +1,4 @@
-import { ArchiveError, maxArchiveSize, openPreparedGameArchive, readLocalGameArchive } from "./local-game-archive.mjs";
+import { ArchiveError, maxArchiveSize, openPreparedGameArchive, readGameArchiveBytes, readLocalGameArchive } from "./local-game-archive.mjs";
 import { cachePreparedGame, deleteCachedGameZip, readCachedGameData } from "./game-zip-cache.mjs";
 
 export const bucketStorageKey = "scummweb.game-bucket.v1";
@@ -154,12 +154,19 @@ async function downloadGameArchive(zipUrl, { signal, onEntries, onProgress, arch
       controller.enqueue(chunk);
     },
   }));
-  const archive = await new Response(limitedBody).blob();
-  onProgress?.(100, { loaded: archive.size, total: archive.size });
+  const download = new Response(limitedBody);
+  // A streamed Blob can require temporary disk space in Chromium. Use memory
+  // for ordinary ZIPs and retain Blob backing for the larger catalog titles.
+  const useBlob = (hasTotal ? total : archiveLimit) > maxArchiveSize;
+  const archive = useBlob ? await download.blob() : new Uint8Array(await download.arrayBuffer());
+  onProgress?.(100, { loaded: size, total: size });
   let entries;
-  const files = await readLocalGameArchive(new File([archive], "game.zip"), {
+  const options = {
     archiveLimit, expandedLimit, signal, onEntries: (value) => { entries = value; onEntries?.(value); },
-  });
+  };
+  const files = useBlob
+    ? await readLocalGameArchive(new File([archive], "game.zip"), options)
+    : await readGameArchiveBytes(archive, options);
   signal?.throwIfAborted();
   cachePreparedGame(zipUrl, archive, files, entries);
   return files;

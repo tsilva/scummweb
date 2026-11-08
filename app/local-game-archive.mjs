@@ -136,12 +136,24 @@ export function scanLocalGameArchive(file) {
     [path, entry.uncompressedSize, entry.signature]), localZipLimits);
 }
 
-export function readLocalGameArchive(file, { signal, onEntries, ...limits } = {}) {
-  return withZipEntries(file, (entries) => {
+export function readLocalGameArchive(file, options = {}) {
+  return withZipEntries(file, extractGameFiles(options), options);
+}
+
+export async function readGameArchiveBytes(bytes, { archiveLimit = maxArchiveSize, ...options } = {}) {
+  if (bytes.byteLength > archiveLimit) {
+    throw new ArchiveError(`This ZIP exceeds ${archiveLimit / (1024 * 1024)} MiB download limit.`);
+  }
+  const { Uint8ArrayReader } = await import("@zip.js/zip.js");
+  return withGameZipEntries(new Uint8ArrayReader(bytes), extractGameFiles(options), options);
+}
+
+function extractGameFiles({ signal, onEntries }) {
+  return (entries) => {
     signal?.throwIfAborted();
     onEntries?.(entries.map(({ path, entry }) => [path, entry.uncompressedSize, entry.signature]));
     return unpackGameEntries(entries, signal);
-  }, { ...limits, signal });
+  };
 }
 
 // The manifest describes already-verified bytes, not executable paths or ZIP
