@@ -4,7 +4,7 @@ import bundled from "../data/bundled-game-files.json" with { type: "json" };
 import catalog from "../scummvm-shell/games.json" with { type: "json" };
 import { findBundledGame, gameDataFiles } from "../app/bundled-game-matching.mjs";
 import { gameFileFingerprint } from "../app/local-game-matching.mjs";
-import { libraryItems } from "../app/home-shell/library-query.mjs";
+import { libraryItems } from "../app/home-shell/library-items.mjs";
 import { chooseGameVersion } from "../app/game-versions.mjs";
 
 test("published signatures cover the current included catalog and retain legacy fingerprints", async () => {

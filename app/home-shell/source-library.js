@@ -6,12 +6,10 @@ import { exitImmersiveMode } from "../game-player/immersive-mode.mjs";
 import { readRemoteGameArchive } from "../game-bucket.mjs";
 import { checkGameSource, isLocalZipSource, localGame, readGameSources, removeGameSources, requestGameSourceAccess, saveGameSources } from "../game-sources.mjs";
 import { findLocalGameSource } from "../local-game-matching.mjs";
-import { findBundledGame } from "../bundled-game-matching.mjs";
 import { maxLocalGameSize, openLocalGameZip, selectGameArchive, validateGameZip } from "../local-game-archive.mjs";
 import { collectGameImportNodes, fileNode, handleNode, inspectLocalSourceFiles, prepareLocalZip } from "../local-game-import.mjs";
 import LibraryView from "./library-view";
-import { libraryItems } from "./library-query.mjs";
-import { getGameFamilyKey, getVersionSaveNamespace, rememberGameVersion } from "../game-versions.mjs";
+import { catalogGameEntries, getGameFamilyKey, getVersionSaveNamespace, groupGameVersions, rememberGameVersion } from "../game-versions.mjs";
 import { buildGameExitHref, readHeroSelection } from "./hero-selection.mjs";
 import HomeHero from "./home-hero";
 import GameDropOverlay, { chooseZipHandles } from "./local-game";
@@ -33,12 +31,13 @@ function scrollToLibraryItem(item, block) {
 const reconnectStatuses = new Set(["locate", "missing", "permission"]);
 
 async function loadSourcePresentation() {
-  const [play, { getRecognizedGames }, artwork] = await Promise.all([
+  const [play, { getRecognizedGames }, { libraryItems }, artwork] = await Promise.all([
     import("../game-play-source.mjs"),
     import("../recognized-games.mjs"),
+    import("./library-items.mjs"),
     loadArtworkStorage().catch(() => null),
   ]);
-  return { ...play, getRecognizedGames, artwork };
+  return { ...play, getRecognizedGames, libraryItems, artwork };
 }
 
 export default function SourceLibrary({ catalog, artwork, featuredGame: initialFeaturedGame, isHomePage: initiallyHome = true, libraryHeading, officialUrl, onPlayArchive, playerRoute = false }) {
@@ -257,6 +256,7 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
     return run(async () => {
       const selectionRoots = typeof selection === "function" ? await selection() : selection;
       if (!selectionRoots.length) return;
+      const { findBundledGame } = await import("./library-items.mjs");
       setPending([{ index: 0, label: "Finding game ZIPs…", message: "Checking dropped files and folders…" }]);
       const roots = await collectGameImportNodes(selectionRoots);
       const known = new Map(entries.map(({ source }) => [source.id, source]));
@@ -426,8 +426,8 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
       },
     };
   });
-  const catalogGroups = useMemo(() => libraryItems(catalog, []), [catalog]);
-  const groups = library.length ? libraryItems(catalog, library) : catalogGroups;
+  const catalogGroups = useMemo(() => groupGameVersions(catalogGameEntries(catalog)), [catalog]);
+  const groups = library.length ? sourcePresentation.libraryItems(catalog, library) : catalogGroups;
   const featuredGroup = featuredGame && groups.find(({ game }) => getGameFamilyKey(game) === getGameFamilyKey(featuredGame));
   const featuredKey = getGameFamilyKey(featuredGame) || `catalog:${featuredGame?.target}`;
   const heroGroups = featuredGroup || isHomePage ? groups : [...groups, {

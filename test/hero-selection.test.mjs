@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { buildGameExitHref, readHeroSelection } from "../app/home-shell/hero-selection.mjs";
-import { libraryItems } from "../app/home-shell/library-query.mjs";
+import { libraryItems } from "../app/home-shell/library-items.mjs";
 
 const catalogGame = { target: "sky", engineId: "sky", gameId: "sky", displayTitle: "Beneath a Steel Sky" };
 

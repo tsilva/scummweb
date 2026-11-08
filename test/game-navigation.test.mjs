@@ -7,7 +7,7 @@ import swc from "next/dist/build/swc/index.js";
 import * as selection from "../app/home-shell/hero-selection.mjs";
 import * as versions from "../app/game-versions.mjs";
 import * as playSources from "../app/game-play-source.mjs";
-import { libraryItems } from "../app/home-shell/library-query.mjs";
+import { libraryItems } from "../app/home-shell/library-items.mjs";
 import * as seo from "../lib/seo.mjs";
 import * as initialActions from "../app/home-shell/initial-actions.mjs";
 
@@ -59,7 +59,6 @@ async function library() {
     "../game-sources.mjs": { isLocalZipSource: () => true },
     "../game-versions.mjs": versions,
     "./hero-selection.mjs": selection,
-    "./library-query.mjs": { libraryItems },
     "./home-hero": Hero,
     "./library-view": View,
     "./game-navigation": { GameNavigationContext: "provider" },
@@ -67,7 +66,7 @@ async function library() {
   }, { window });
   // Preserve an already-restored imported source in the mounted library.
   hooks[0] = [imported];
-  hooks[1] = { ...playSources, getRecognizedGames: () => catalog };
+  hooks[1] = { ...playSources, getRecognizedGames: () => catalog, libraryItems };
   function render() {
     cursor = 0;
     const tree = SourceLibrary({ catalog, featuredGame: sky, isHomePage: true }).props.children;
