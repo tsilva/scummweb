@@ -8,6 +8,8 @@ import { getGamesOrigin } from "../lib/site-config.mjs";
 import { artworkDelivery, artworkStorage } from "../lib/artwork-storage.mjs";
 import assetConfig from "../lib/scummvm-shell-assets";
 
+const repositoryUrl = "https://github.com/tsilva/scummweb";
+
 export default function HomeShell({
   catalog,
   featuredGame,
@@ -20,6 +22,7 @@ export default function HomeShell({
 }) {
   const isHomePage = pageMode === "home";
   const BrandLink = isHomePage ? "a" : Link;
+  const LibraryLink = pageMode === "compatibility" ? Link : "a";
   const libraryHeading = "Game Library";
 
   return (
@@ -47,7 +50,7 @@ export default function HomeShell({
           </div>
 
           <div className="nav-links" aria-label="Main">
-            <Link href={pageMode === "compatibility" ? "/#library" : "#library"}>Library</Link>
+            <LibraryLink className="nav-library-link" href={pageMode === "compatibility" ? "/#library" : "#library"}>Library</LibraryLink>
             <Link href="/compatibility" aria-current={pageMode === "compatibility" ? "page" : undefined}>Compatibility</Link>
             <a href={scummvmOfficialSite} rel="noreferrer" target="_blank">
               ScummVM
@@ -58,8 +61,8 @@ export default function HomeShell({
         <div className="nav-actions">
           <a
             aria-label="View scummweb on GitHub"
-            className="nav-icon-link"
-            href="https://github.com/tsilva/scummweb"
+            className="nav-icon-link nav-github-link"
+            href={repositoryUrl}
             rel="noreferrer"
             target="_blank"
           >
@@ -89,6 +92,9 @@ export default function HomeShell({
           <p>
             Bundle built {sourceInfoDate}. ScummVM version {scummvmVersion}.{" "}
             <a href={assetConfig.sourceOfferPage}>ScummVM source and licenses</a>
+          </p>
+          <p className="footer-github">
+            <a href={repositoryUrl} rel="noreferrer" target="_blank">ScummWEB on GitHub</a>
           </p>
         </div>
       </footer>

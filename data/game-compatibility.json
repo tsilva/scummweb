@@ -1,6 +1,6 @@
 {
   "schemaVersion": 4,
-  "recordedOn": "2026-11-07",
+  "recordedOn": "2026-11-08",
   "scope": "Startup verification by edition; warnings and failures describe ScummVM or ScummWEB limitations, excluding problems specific to supplied game files. Not full-game compatibility.",
   "upstreamReference": {
     "version": "2026.4.0",
@@ -1955,6 +1955,56 @@
       ]
     },
     {
+      "title": "Dragon History",
+      "status": "startup-verified",
+      "gameId": "draci:draci",
+      "edition": "dh-en-2012.zip",
+      "observation": "The official full DOS release rendered the opening sequence with English subtitles."
+    },
+    {
+      "title": "Escape from Monkey Island (Demo)",
+      "status": "startup-warning",
+      "gameId": "grim:monkey4",
+      "edition": "emi-win-demo-en.zip",
+      "observation": "The English Windows web demo rendered its opening scene after accepting ScummVM’s unsupported-game warning.",
+      "issueScope": "scummvm"
+    },
+    {
+      "title": "Grim Fandango (Demo)",
+      "status": "startup-verified",
+      "gameId": "grim:grim",
+      "edition": "grim-win-demo1-en.zip",
+      "observation": "The small English Windows demo rendered its opening scene."
+    },
+    {
+      "title": "Indiana Jones and the Fate of Atlantis (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:atlantis",
+      "edition": "atlantis-dos-demo1-en.zip",
+      "observation": "The original English interactive DOS demo rendered its title screen."
+    },
+    {
+      "title": "Zork I: The Great Underground Empire",
+      "status": "startup-verified",
+      "gameId": "glk:zork1",
+      "edition": "zork1-mit.zip",
+      "observation": "The source-built English story reached West of House and responded to a typed command."
+    },
+    {
+      "title": "Zork II: The Wizard of Frobozz",
+      "status": "startup-verified",
+      "gameId": "glk:zork2",
+      "edition": "zork2-mit.zip",
+      "observation": "The source-built English story reached the Inside the Barrow prompt."
+    },
+    {
+      "title": "Zork III: The Dungeon Master",
+      "status": "startup-verified",
+      "gameId": "glk:zork3",
+      "edition": "zork3-mit.zip",
+      "observation": "The source-built English story reached the Endless Stair prompt."
+    },
+    {
       "title": "007: James Bond - The Stealth Affair",
       "gameId": "cine:os",
       "status": "not-tested",
@@ -2477,12 +2527,6 @@
       "upstreamRating": "Good"
     },
     {
-      "title": "Escape From Monkey Island",
-      "gameId": "grim:monkey4",
-      "status": "not-tested",
-      "upstreamRating": "Bugged"
-    },
-    {
       "title": "Escape from the Mansion",
       "gameId": "wintermute:escapemansion",
       "status": "not-tested",
@@ -2643,12 +2687,6 @@
       "gameId": "ags:gobliiins5-4",
       "status": "not-tested",
       "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Grim Fandango",
-      "gameId": "grim:grim",
-      "status": "not-tested",
-      "upstreamRating": "Good"
     },
     {
       "title": "Hades Challenge",

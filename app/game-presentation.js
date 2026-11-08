@@ -47,6 +47,47 @@ const importedScummGames = [
 ];
 
 const artByTarget = {
+  draci: {
+    ...retroGameArtwork["draci:draci"],
+    studio: "NoSense",
+    year: "1995",
+    language: "en",
+    summary: "Guide Bert, a young dragon, as he searches for his father and puts right the mischief caused by an enchanted wand.",
+  },
+  "atlantis-demo": {
+    genre: "Point-and-click adventure",
+    studio: "LucasArts",
+    year: "1992",
+    language: "en",
+    summary: "Play LucasArts’ original DOS demonstration of Indiana Jones’s search for Atlantis.",
+    posterImage: retroGameArtwork["scumm:atlantis"].posterImage,
+    heroImage: retroGameArtwork["scumm:atlantis"].heroImage,
+  },
+  "grim-demo": {
+    genre: "Graphic adventure",
+    studio: "LucasArts",
+    year: "1998",
+    language: "en",
+    summary: "Meet Manny Calavera in LucasArts’ original Windows demo set in the Land of the Dead.",
+  },
+  "monkey4-demo": {
+    genre: "Graphic adventure",
+    studio: "LucasArts",
+    year: "2000",
+    language: "en",
+    summary: "Join Guybrush Threepwood in the original Windows web demo of the fourth Monkey Island adventure.",
+  },
+  ...Object.fromEntries([
+    ["zork1", "1980", "Explore the Great Underground Empire, starting outside a white house."],
+    ["zork2", "1981", "Explore the wizard’s domain and unravel the puzzles of Frobozz."],
+    ["zork3", "1982", "Face the final trials of the Great Underground Empire and seek the Dungeon Master."],
+  ].map(([target, year, summary]) => [target, {
+    genre: "Text adventure",
+    studio: "Infocom",
+    language: "en",
+    year,
+    summary: `${summary} Type commands to play.`,
+  }])),
   soltys: { ...retroGameArtwork["cge:soltys"], year: "1995" },
   hires1: { ...retroGameArtwork["adl:hires1"], year: "1980" },
   got: { ...retroGameArtwork["got:got"], year: "1993" },

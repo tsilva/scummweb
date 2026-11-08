@@ -26,9 +26,9 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
   }
 
   return (
-    <section className="content-band" id="library">
+    <section className="content-band" id="library" aria-labelledby="game-library-heading" tabIndex={-1}>
       <div className="section-header library-header">
-        <h2 tabIndex={-1}><span className="section-mark" />{heading}</h2>
+        <h2 id="game-library-heading" tabIndex={-1}><span className="section-mark" />{heading}</h2>
         <button ref={toggle} type="button" className="secondary-button library-toggle"
           aria-label="Sort and filter games" title="Sort and filter games" data-filtered={Boolean(query.genre)}
           aria-expanded={open} aria-controls="library-controls" onClick={() => showControls(!open)}>

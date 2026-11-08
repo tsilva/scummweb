@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import catalogPackages from "../data/classic-freeware.json" with { type: "json" };
 
 const [iniPath, libraryOutPath] = process.argv.slice(2);
 
@@ -73,6 +74,7 @@ async function stageNotice(gamePath, gameId) {
     [/license/i, 4],
     [/copying/i, 5],
   ];
+  const configuredNotice = catalogPackages.games.find((game) => game.gameId === gameId)?.noticeFile;
   const noticeEntry = entries
     .filter((entry) => entry.isFile() && noticePatterns.some((pattern) => pattern.test(entry.name)))
     .sort((left, right) => {
@@ -88,9 +90,10 @@ async function stageNotice(gamePath, gameId) {
       return left.name.localeCompare(right.name);
     })[0];
 
-  if (noticeEntry) {
+  const noticeFile = configuredNotice ?? noticeEntry?.name;
+  if (noticeFile && entries.length) {
     await fs.mkdir(path.dirname(noticeDestination), { recursive: true });
-    const text = await fs.readFile(path.join(absoluteGamePath, noticeEntry.name), "latin1");
+    const text = await fs.readFile(path.join(absoluteGamePath, noticeFile), "latin1");
     const normalized = text.replaceAll("\r\n", "\n").replace(/\x1a+$/, "").replace(/[ \t]+$/gm, "").trimEnd();
     await fs.writeFile(noticeDestination, `${normalized}\n`, "latin1");
   }

@@ -10,12 +10,12 @@ SCUMMVM_REPO_URL="https://github.com/scummvm/scummvm.git"
 SCUMMVM_DIR="$VENDOR_DIR/scummvm-$SCUMMVM_TAG"
 SCUMMVM_ENGINES=(
   access adl agi agos bbvs cge cge2 cine composer cruise draci drascula dreamweb
-  gnap gob got groovie hopkins hugo kyra lab lure made mads mohawk mortevielle neverhood ngi
+  glk gnap gob got grim groovie hopkins hugo kyra lab lure made mads mohawk mortevielle neverhood ngi
   parallaction pegasus plumbers queen saga sci scumm sherlock sky sword1 sword2
   sword25 teenagent tinsel titanic toltecs tony toon touche tsage tucker voyeur wintermute zvision
 )
 # configure disables subengines separately from their parent plugins.
-SCUMMVM_SUBENGINES=(agos2 blueforce eob he ihnm lol myst mystme ringworld ringworld2 riven sci32 scumm_7_8)
+SCUMMVM_SUBENGINES=(agos2 blueforce eob he ihnm lol monkey4 myst mystme ringworld ringworld2 riven sci32 scumm_7_8)
 DIST_DIR="$ROOT_DIR/dist"
 SHELL_DIR="$ROOT_DIR/scummvm-shell"
 DOWNLOADS_DIR="$ROOT_DIR/downloads"
