@@ -1523,6 +1523,18 @@ button.nav-icon-link {
   }
 }
 
+@media (min-width: 48.001rem) and (max-height: 36rem) {
+  html[data-dpad-navigation] .hero-stage-library .hero-summary {
+    height: 3.1em;
+    margin-top: 0.5rem;
+    -webkit-line-clamp: 2;
+  }
+
+  html[data-dpad-navigation] .hero-stage-library .hero-launch {
+    margin-top: 0.5rem;
+  }
+}
+
 .hero-mobile-facts {
   display: none;
 }

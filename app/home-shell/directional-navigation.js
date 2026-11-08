@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { isTvBrowser } from "../controller-device.mjs";
+import { isKnownTvBrowser, isTvBrowser } from "../controller-device.mjs";
+import { enterImmersiveMode } from "../game-player/immersive-mode.mjs";
 import { directionalNeighbor } from "./directional-neighbor.mjs";
 
 const controls = "a[href], button, summary";
@@ -43,6 +44,7 @@ export default function DirectionalNavigation({ initialFocus, onResumeGame }) {
     let frame = 0;
     let previous = [];
     let repeatAt = 0;
+    let landingFullscreenAttempted = false;
 
     function activate() {
       root.dataset.dpadNavigation = "";
@@ -101,8 +103,15 @@ export default function DirectionalNavigation({ initialFocus, onResumeGame }) {
 
     function onKeyDown(event) {
       if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey ||
-        (!directions.includes(event.key) && !(initialFocus === "toolbar" && event.key === "Escape")) ||
         event.target.isContentEditable || event.target.closest?.("input, textarea, select")) return;
+      const directionalKey = directions.includes(event.key);
+      if (initialFocus === "play" && !landingFullscreenAttempted && event.isTrusted &&
+        isKnownTvBrowser(navigator) && (directionalKey ||
+          (event.key === "Enter" && !event.target.closest?.(".launch-button, .start-fresh-button")))) {
+        landingFullscreenAttempted = true;
+        void enterImmersiveMode(root);
+      }
+      if (!directionalKey && !(initialFocus === "toolbar" && event.key === "Escape")) return;
       if (!root.hasAttribute("data-dpad-navigation") && !event.target.matches?.(controls)) return;
       event.preventDefault();
       activate();
@@ -115,6 +124,16 @@ export default function DirectionalNavigation({ initialFocus, onResumeGame }) {
       requestAnimationFrame(() => {
         const card = [...document.querySelectorAll("#library a.poster-card")].find(isAvailable);
         if (active && card) focusDirectionalControl(card);
+      });
+    }
+
+    function onFullscreenChange() {
+      if (initialFocus !== "play" || !isKnownTvBrowser(navigator)) return;
+      requestAnimationFrame(() => {
+        if (!active || !document.activeElement?.closest(".hero-launch")) return;
+        // Chrome can scroll to retain the focused button when its address bar moves.
+        const bottom = document.activeElement.getBoundingClientRect().bottom + window.scrollY;
+        if (bottom <= window.innerHeight - 8) window.scrollTo({ top: 0, behavior: "instant" });
       });
     }
 
@@ -152,6 +171,7 @@ export default function DirectionalNavigation({ initialFocus, onResumeGame }) {
     window.addEventListener("keydown", onKeyDown);
     window.addEventListener("gamepadconnected", onGamepad);
     document.addEventListener("visibilitychange", onGamepad);
+    document.addEventListener("fullscreenchange", onFullscreenChange);
     document.addEventListener("click", onLibraryLink);
     onGamepad();
     return () => {
@@ -165,6 +185,7 @@ export default function DirectionalNavigation({ initialFocus, onResumeGame }) {
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("gamepadconnected", onGamepad);
       document.removeEventListener("visibilitychange", onGamepad);
+      document.removeEventListener("fullscreenchange", onFullscreenChange);
       document.removeEventListener("click", onLibraryLink);
     };
   }, [initialFocus, onResumeGame]);

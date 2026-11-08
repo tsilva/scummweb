@@ -32,12 +32,15 @@ the focus ring between browsing controls and game cards, and press **OK** to
 activate the focused item. Standard browser-mapped gamepads use the D-pad and
 the primary face button for the same actions. When **Skip intro** appears, it
 gets focus so it can be activated with **OK**.
-During mouse-driven gameplay on a TV, the remote's D-pad moves the cursor and
-tapping **OK** left-clicks. Hold **OK** for a right-click or hold a direction
-to move faster. At the top edge of the game, release **Up** and press it again
-to focus **Exit game** in the player toolbar. Use **Left** or **Right** to pick
-a toolbar button, **OK** to activate it, or **Down** to return to the cursor.
-On recognized TVs, **Play** requests fullscreen from the remote's launch press.
+On supported TVs, press **Back** during gameplay or an intro to focus **Exit game**
+in the player toolbar. Use **Left** or **Right** to choose a toolbar button,
+**OK** to activate it, or **Down** to return to the game. If the browser leaves
+fullscreen when you press **Back**, returning with **Down** requests fullscreen
+again. During mouse-driven gameplay, tap a direction for a small cursor move or
+hold it to keep moving. Tap **OK** to left-click, or hold **OK** and release to
+right-click.
+On recognized TVs, the landing page requests fullscreen on the first remote
+interaction. **Play** also requests fullscreen when launching a game.
 
 The hero's **Scroll for screenshots & more games** link appears on desktop and
 mobile when screenshots are available and stays visible after browsing the library.
