@@ -51,7 +51,7 @@ export default function HomeShell({
 
           <div className="nav-links" aria-label="Main">
             <LibraryLink className="nav-library-link" href={pageMode === "compatibility" ? "/#library" : "#library"}>Library</LibraryLink>
-            <Link href="/compatibility" aria-current={pageMode === "compatibility" ? "page" : undefined}>Compatibility</Link>
+            <Link href="/compatibility" prefetch={isHomePage ? false : undefined} aria-current={pageMode === "compatibility" ? "page" : undefined}>Compatibility</Link>
             <a href={scummvmOfficialSite} rel="noreferrer" target="_blank">
               ScummVM
             </a>
