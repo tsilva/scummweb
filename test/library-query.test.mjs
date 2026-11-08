@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { readFile } from "node:fs/promises";
-import { defaultLibraryQuery, libraryFacet, libraryGenre, libraryItems, queryLibrary } from "../app/home-shell/library-query.mjs";
+import { libraryItems } from "../app/home-shell/library-items.mjs";
+import { defaultLibraryQuery, libraryFacet, libraryGenre, queryLibrary } from "../app/home-shell/library-query.mjs";
 import { getRecognizedGames } from "../app/recognized-games.mjs";
 
 const catalog = [
