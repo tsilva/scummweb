@@ -139,6 +139,20 @@ test("ZIP downloads report streamed byte counts and handle unknown totals", asyn
   }
 });
 
+test("a cold catalog launch can extract a ZIP when response Blob storage fails", async (t) => {
+  const zip = new ZipWriter(new BlobWriter());
+  await zip.add("sky.dnr", new Uint8ArrayReader(Uint8Array.of(1, 2, 3)));
+  const bytes = await (await zip.close()).arrayBuffer();
+  const previous = Object.getOwnPropertyDescriptor(globalThis, "window");
+  Object.defineProperty(globalThis, "window", { configurable: true, value: { location: { hostname: "scummweb.tsilva.eu" } } });
+  t.after(() => previous ? Object.defineProperty(globalThis, "window", previous) : delete globalThis.window);
+  t.mock.method(globalThis, "fetch", async () => new Response(bytes));
+  t.mock.method(Response.prototype, "blob", async () => { throw new TypeError("Failed to fetch"); });
+
+  const files = await readCatalogGameArchive(`${customUrl}/sky.zip`);
+  assert.deepEqual(files, [{ path: "sky.dnr", data: Uint8Array.of(1, 2, 3) }]);
+});
+
 test("repeat launches reuse a persisted ZIP and preserve URL query identity", async (t) => {
   const { entries } = installGameZipCache(t);
   const writer = new ZipWriter(new BlobWriter());

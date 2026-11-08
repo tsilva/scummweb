@@ -59,7 +59,7 @@ export async function cacheGameZip(url, archive) {
     const cache = await openCache(gameZipCacheName);
     if (!cache) return false;
     await cache.put(url, new Response(archive, {
-      headers: { "content-type": "application/zip", "content-length": String(archive.size) },
+      headers: { "content-type": "application/zip", "content-length": String(archive.size ?? archive.byteLength) },
     }));
     await (await openCache(preparedGameCacheName))?.delete(url);
     await prune();
@@ -74,7 +74,7 @@ export function cachePreparedGame(url, archive, files, entries) {
   let bundle;
   let ready;
   try {
-    const manifest = { version: 1, archiveSize: archive.size, entries: entries.map((entry) => [...entry]) };
+    const manifest = { version: 1, archiveSize: archive.size ?? archive.byteLength, entries: entries.map((entry) => [...entry]) };
     const metadata = new TextEncoder().encode(JSON.stringify(manifest));
     if (metadata.length > maxManifestBytes) return;
     const header = new Uint8Array(4);

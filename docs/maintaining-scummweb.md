@@ -262,6 +262,9 @@ During ZIP downloads, the launch status shows `Loading game (12.4 / 85.2 MB)…`
 when the host provides a valid `Content-Length`; otherwise it shows the downloaded
 megabytes, such as `Loading game (12.4 MB)…`. Sizes use decimal megabytes
 (1 MB = 1,000,000 bytes), rounded to one decimal place.
+Standard-size ZIP downloads are validated and unpacked from bounded memory so
+startup works even when the browser cannot allocate temporary Blob storage.
+Larger archives retain disk-backed Blob handling to limit memory use.
 After successful verification, catalog and remote games are saved as one atomic
 record containing a file manifest and verified bytes. Repeat launches of the exact same
 URL (including its query parameters) mount Blob slices without downloading,
