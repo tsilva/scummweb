@@ -81,11 +81,12 @@ test("shared original and remake titles stay unidentified without an edition", (
   assert.equal(getImportedGamePresentation("The Dig.zip")?.familyId, "scumm:dig");
 });
 
-test("recognized galleries have three distinct managed images with explicit source gaps", () => {
-  const limited = new Map([["local:road", 1], ["sci:funseeker", 2]]);
+test("recognized galleries have three distinct managed images with source credits", () => {
   for (const [id, game] of Object.entries(artwork)) {
-    const expected = game.sources.galleryNote ? 0 : (limited.get(id) ?? 3);
-    assert.equal(game.screenshots.length, expected, id);
+    assert.equal(game.screenshots.length, 3, id);
+    if (game.sources.screenshots) {
+      assert.equal(game.sources.screenshots.length, game.screenshots.length, id);
+    }
     const hashes = game.screenshots.map((path) => {
       if (storage.published) {
         assert.ok(storage.files[path], `${id} needs a published image mapping`);

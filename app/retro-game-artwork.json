@@ -3823,7 +3823,9 @@
     ],
     "posterImage": "/launcher/road-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
-      "/launcher/retro-local-road-shot.webp"
+      "/launcher/retro-local-road-shot.webp",
+      "/launcher/retro-local-road-shot-2.webp",
+      "/launcher/retro-local-road-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -3845,6 +3847,20 @@
         {
           "kind": "gameplay",
           "path": "image-assets/sources/road-gameplay.jpg"
+        },
+        {
+          "credit": "ScummWEB capture from the original game",
+          "edition": "ScummC adaptation",
+          "sha256": "e53cd9ef2f9dde427f322f8b3046cc1ffdeaefe4b0a0beeb8ab2e2bcf9fd9998",
+          "kind": "gameplay",
+          "source": "Direct capture from ScummVM"
+        },
+        {
+          "credit": "ScummWEB capture from the original game",
+          "edition": "ScummC adaptation",
+          "sha256": "de3b93c0295bb3206376d38b5d06b35788c11d1010a455ad31da7d8a44b5a9db",
+          "kind": "gameplay",
+          "source": "Direct capture from ScummVM"
         }
       ],
       "metadata": [],
@@ -5221,7 +5237,8 @@
     "posterImage": "/launcher/retro-sci-funseeker-poster.webp",
     "screenshots": [
       "/launcher/retro-sci-funseeker-shot.webp",
-      "/launcher/retro-sci-funseeker-shot-2.webp"
+      "/launcher/retro-sci-funseeker-shot-2.webp",
+      "/launcher/retro-sci-funseeker-shot-3.webp"
     ],
     "sources": {
       "poster": {
@@ -5236,6 +5253,13 @@
         {
           "kind": "title-screen",
           "url": "https://thumbnails.libretro.com/ScummVM/Named_Titles/Fun%20Seeker's%20Guide%20to%20Eastern%20Madera%20County.png"
+        },
+        {
+          "credit": "ScummWEB capture from the original game",
+          "edition": "DOS/English",
+          "sha256": "5dd6bb8e3e2f0e5c76d810fa99c0c2e57b268a8594e80a9f51f67e9e85e3185e",
+          "kind": "gameplay",
+          "source": "Direct capture from ScummVM"
         }
       ],
       "metadata": [
@@ -10490,7 +10514,11 @@
       "Living Books - Arthur's Birthday (CD Windows)"
     ],
     "posterImage": "/launcher/arthurs-birthday-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-mohawk-arthurbday-shot-1.webp",
+      "/launcher/retro-mohawk-arthurbday-shot-2.webp",
+      "/launcher/retro-mohawk-arthurbday-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -10506,8 +10534,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/arthurbday/arthurbday_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Arthur's Birthday (Windows/English)",
+          "sha256": "e789707d0cb85d5c0272d3faa7e4e194272a162052c1ea1739f9239558813359",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/arthurbday/arthurbday_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Arthur's Birthday (Windows/English)",
+          "sha256": "8fd51f8019679ddb4e079f97f85363886c05cb0ad042249f3ff6ce2cd00c1c06",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/arthurbday/arthurbday_win_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Arthur's Birthday (Windows/English)",
+          "sha256": "88b8e37b560aa6df4ca0f662d54bd01b96a86a162e292618af1683d67ffd1ffc",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://www.mobygames.com/company/2353/living-books/games/"
       ],
@@ -10538,7 +10590,11 @@
       "Living Books - Arthur's Computer Adventure (CD Windows)"
     ],
     "posterImage": "/launcher/arthurs-computer-adventure-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-mohawk-arthurcomp-shot-1.webp",
+      "/launcher/retro-mohawk-arthurcomp-shot-2.webp",
+      "/launcher/retro-mohawk-arthurcomp-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -10554,8 +10610,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.myabandonware.com/media/screenshots/a/arthur-s-computer-adventure-l8f/arthur-s-computer-adventure_3.png",
+          "page": "https://www.myabandonware.com/game/arthur-s-computer-adventure-dgp",
+          "credit": "My Abandonware screenshot archive",
+          "edition": "Windows",
+          "sha256": "f3504d2b33316387ba29f9ab488ba206824b446bb120db043b2c14421ef85386",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.myabandonware.com/media/screenshots/a/arthur-s-computer-adventure-l8f/arthur-s-computer-adventure_4.png",
+          "page": "https://www.myabandonware.com/game/arthur-s-computer-adventure-dgp",
+          "credit": "My Abandonware screenshot archive",
+          "edition": "Windows",
+          "sha256": "6743a1265377914e88a2194311817c2f4a3e19521e97e57e69df963f3b0492f1",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.myabandonware.com/media/screenshots/a/arthur-s-computer-adventure-l8f/arthur-s-computer-adventure_5.png",
+          "page": "https://www.myabandonware.com/game/arthur-s-computer-adventure-dgp",
+          "credit": "My Abandonware screenshot archive",
+          "edition": "Windows",
+          "sha256": "1fcc8dbfbfb47ed66fb9fc4951df9222810a58bab0fef251b58b26b3addfc783",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://www.mobygames.com/game/79724/arthurs-computer-adventure/"
       ],
@@ -10586,7 +10666,11 @@
       "Living Books - Arthur's Reading Race (CD Windows)"
     ],
     "posterImage": "/launcher/arthurs-reading-race-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-mohawk-arthurrace-shot-1.webp",
+      "/launcher/retro-mohawk-arthurrace-shot-2.webp",
+      "/launcher/retro-mohawk-arthurrace-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -10602,8 +10686,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Living%20Books_%20Arthur%27s%20Reading%20Race.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "168677e84aff5ee1bca564a8f8066666d20759225e400141d18882782f2a0974",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.myabandonware.com/media/screenshots/a/arthur-s-reading-race-l7m/arthur-s-reading-race_4.jpg",
+          "page": "https://www.myabandonware.com/game/arthur-s-reading-race-dg0",
+          "credit": "My Abandonware screenshot archive",
+          "edition": "Windows",
+          "sha256": "64c80e15fcb9d28ded74f92583670322d483f40cf7100dff16c782a9b4b1b629",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.myabandonware.com/media/screenshots/a/arthur-s-reading-race-l7m/arthur-s-reading-race_5.jpg",
+          "page": "https://www.myabandonware.com/game/arthur-s-reading-race-dg0",
+          "credit": "My Abandonware screenshot archive",
+          "edition": "Windows",
+          "sha256": "a0fd6ea3207938575c3e102a4d518829e302b35585187d6f5b1eb5219f3e5f3a",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://www.mobygames.com/game/44963/arthurs-reading-race/"
       ],
@@ -10634,7 +10741,11 @@
       "Living Books - Aesop's Fables - The Tortoise And The Hare (CD Windows)"
     ],
     "posterImage": "/launcher/the-tortoise-and-the-hare-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-mohawk-tortoise-shot-1.webp",
+      "/launcher/retro-mohawk-tortoise-shot-2.webp",
+      "/launcher/retro-mohawk-tortoise-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -10650,8 +10761,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/tortoise/tortoise_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Aesop's Fables: The Tortoise and the Hare (Windows/English)",
+          "sha256": "f4310c90f369c24c1db3a14b956ef8d8c21c3b0417b0f4249d875b88a17e3271",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/tortoise/tortoise_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Aesop's Fables: The Tortoise and the Hare (Windows/English)",
+          "sha256": "1df473ecc19be7345652eec130198779367570661488a13d4ac7c8c62b7bf183",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/tortoise/tortoise_win_en_1_6_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Aesop's Fables: The Tortoise and the Hare (Windows/English)",
+          "sha256": "f9e1c44d8968b2d3a2f6b23a99ed6ad894398ed9b6eed66a88b7dd03a4557e8c",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://elisoftware.org/w/index.php?title=Aesop%27s_Fable_The_Tortoise_And_The_Hare_%28PC_and_Mac%2C_CD-ROM%29_Broderbund_Software_-_1993_USA%2C_Canada_Release"
       ],
@@ -10684,7 +10819,11 @@
       "Der Landsitz von Mortville"
     ],
     "posterImage": "/launcher/mortville-manor-scummweb-generated-2026-11-07-r2-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-mortevielle-mortevielle-shot-1.webp",
+      "/launcher/retro-mortevielle-mortevielle-shot-2.webp",
+      "/launcher/retro-mortevielle-mortevielle-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -10700,8 +10839,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mortevielle/mortevielle/mortevielle_dos_de_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/mortevielle:mortevielle/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Mortville Manor (DOS/German)",
+          "sha256": "d3d359e4ee20fcbbbb2ca76ab5d8f81c728fc47fe7fd3efe29ec5b41325625bb",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mortevielle/mortevielle/mortevielle_dos_de_1_11_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/mortevielle:mortevielle/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Mortville Manor (DOS/German)",
+          "sha256": "9bd8f102abe0bf5c54e48012f3e9f3a213d425715a509b0fe991de96058ac450",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mortevielle/mortevielle/mortevielle_dos_de_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/mortevielle:mortevielle/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Mortville Manor (DOS/German)",
+          "sha256": "8caa28b19727d419117d053ba56e7ddd8b81f63a408ff948a917639dadfe36f8",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://www.lankhor.net/jeux.php?jeu=15&menu=presentation",
         "https://www.atarilegend.com/games/mortville-manor"
@@ -10733,7 +10896,11 @@
       "Backyard Baseball (CD Windows)"
     ],
     "posterImage": "/launcher/backyard-baseball-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-baseball-shot-1.webp",
+      "/launcher/retro-scumm-baseball-shot-2.webp",
+      "/launcher/retro-scumm-baseball-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -10749,8 +10916,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/baseball/baseball_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/juniorsports/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Backyard Baseball (Windows/English)",
+          "sha256": "5e73a6a8689ef708feb1f11fc7f09869c9931dd3c5a19c95b0e642183f4e92d1",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/baseball/baseball_win_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/juniorsports/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Backyard Baseball (Windows/English)",
+          "sha256": "c23f68729ec5eb1ab42d9cff846bc56ffc4b564cfabc7a7f6192e0d6c4671796",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/baseball/baseball_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/juniorsports/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Backyard Baseball (Windows/English)",
+          "sha256": "607ac5a2f5a02a828a27e65e1dc569e00077be3c7125ff835c6acd448dceb7ff",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Baseball.png"
       ],
@@ -10781,7 +10972,11 @@
       "Backyard Baseball 2001 (CD Windows)"
     ],
     "posterImage": "/launcher/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-baseball2001-shot-1.webp",
+      "/launcher/retro-scumm-baseball2001-shot-2.webp",
+      "/launcher/retro-scumm-baseball2001-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -10797,8 +10992,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/baseball2001/baseball2001_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/juniorsports/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Backyard Baseball 2001 (Windows/English)",
+          "sha256": "a6c441e1b7833a6f49aaae1c6116a6f09dec2020b31750fcb1e8f85dffb279d6",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/baseball2001/baseball2001_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/juniorsports/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Backyard Baseball 2001 (Windows/English)",
+          "sha256": "2121c3f00a760c7916b177111fd35abd774c55ca75584c70b79dffb3a5d5f158",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Backyard%20Baseball%202001.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "be5e4b0c4e92e97990828389b0c86c9700353dbb9c1d7b0850eb3dfae186f07f",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Baseball%202001.png"
       ],
@@ -10829,7 +11047,11 @@
       "Backyard Baseball 2003 (CD Windows)"
     ],
     "posterImage": "/launcher/backyard-baseball-2003-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-baseball2003-shot-1.webp",
+      "/launcher/retro-scumm-baseball2003-shot-2.webp",
+      "/launcher/retro-scumm-baseball2003-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -10845,8 +11067,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/baseball2003/baseball2003_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/juniorsports/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Backyard Baseball 2003 (Windows/English)",
+          "sha256": "f491a2f9075cef6cb1b512e05844ee250dbb6cd38838a3c4f82e86dc53d2a36c",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/baseball2003/baseball2003_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/juniorsports/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Backyard Baseball 2003 (Windows/English)",
+          "sha256": "ccae3dc2b2aeab4e639d6d90df123babf63754f91b50130cb8acfa5f9d5e8cc1",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/baseball2003/baseball2003_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/juniorsports/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Backyard Baseball 2003 (Windows/English)",
+          "sha256": "8cfb40623ab35f6880a193db64de1ae34ba37d254769634377ff1468417bb1e1",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Baseball%202003.png"
       ],
@@ -10877,7 +11123,11 @@
       "Backyard Basketball (CD Windows)"
     ],
     "posterImage": "/launcher/backyard-basketball-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-basketball-shot-1.webp",
+      "/launcher/retro-scumm-basketball-shot-2.webp",
+      "/launcher/retro-scumm-basketball-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -10893,8 +11143,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/basketball/basketball_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/juniorsports/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Backyard Basketball (Windows/English)",
+          "sha256": "daa381b3a0c6e04f0c668d91577e6f9329df5466d78bce6dd4b7656bac48dbb3",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/basketball/basketball_win_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/juniorsports/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Backyard Basketball (Windows/English)",
+          "sha256": "123e83367c0dd7ed890237eeb89915b1dcea7921ae9bca3df64564e27f31af5f",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/basketball/basketball_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/juniorsports/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Backyard Basketball (Windows/English)",
+          "sha256": "1aa1c3d9569b94ea386c4c523454d47a5976b7eda39668c45f03e9cd179ac76b",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Basketball.png"
       ],
@@ -10925,7 +11199,11 @@
       "Backyard Football (CD Windows)"
     ],
     "posterImage": "/launcher/backyard-football-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-football-shot-1.webp",
+      "/launcher/retro-scumm-football-shot-2.webp",
+      "/launcher/retro-scumm-football-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -10941,8 +11219,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/football/football_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/juniorsports/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Backyard Football (Windows/English)",
+          "sha256": "24917fdf55dc59bc867dfbb7ddecf03188b2d2e451c75bd095f716b83ca67782",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Backyard%20Football.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "fc7ea401bc443feeca5e416613f006708098b0bb842a598c95ca12e196a7a078",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://images.launchbox-app.com/fea60980-8dd1-41cb-b1e0-c864211b6f5b.png",
+          "page": "https://gamesdb.launchbox-app.com/games/images/24227-backyard-football",
+          "credit": "LaunchBox Games Database",
+          "edition": "Windows",
+          "sha256": "23a4094f56c1577ba074e903bf16400cecce08d60298dc7c3b34141c29168364",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Football.png"
       ],
@@ -10973,7 +11274,11 @@
       "Backyard Football 2002 (CD Windows)"
     ],
     "posterImage": "/launcher/backyard-football-2002-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-football2002-shot-1.webp",
+      "/launcher/retro-scumm-football2002-shot-2.webp",
+      "/launcher/retro-scumm-football2002-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -10989,8 +11294,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Backyard%20Football%202002.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "ee341c1d0438d971c749b1b3994f35ee91d73fc124fb438982e98ee3fda30224",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/football2002/football2002_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/juniorsports/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Backyard Football 2002 (Windows/English)",
+          "sha256": "7541296bc22732f3037838b6f99b7ac7f7bf26d8db30627bb680aad6a5fb11bc",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/football2002/football2002_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/juniorsports/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Backyard Football 2002 (Windows/English)",
+          "sha256": "1008272a391c18fec8272913fe13a3378bd8a7b4442727b34071bba3acd41eb6",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Football%202002.png"
       ],
@@ -11021,7 +11349,11 @@
       "Freddi Fish 1 The Case of the Missing Kelp Seeds (CD Windows)"
     ],
     "posterImage": "/launcher/freddi-fish-1-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-freddi-shot-1.webp",
+      "/launcher/retro-scumm-freddi-shot-2.webp",
+      "/launcher/retro-scumm-freddi-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -11037,8 +11369,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/freddi/freddi_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/freddi/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Freddi Fish and the Case of the Missing Kelp Seeds (Windows/English)",
+          "sha256": "bf6a898f4b41714f00c1ff6c1dbc3c43216db4d091911c117d03981b04b26786",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/freddi/freddi_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/freddi/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Freddi Fish and the Case of the Missing Kelp Seeds (Windows/English)",
+          "sha256": "06ab77f30706eb823d82a9ed36b3679d830b9058d5ab0041e3153b87f315f4cd",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/freddi/freddi_win_en_1_6_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/freddi/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Freddi Fish and the Case of the Missing Kelp Seeds (Windows/English)",
+          "sha256": "d83210f3376df6f18619bb1592e8a7d1dc06037e151eeeb7916f516c6d3a126c",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://store.steampowered.com/app/283940/"
       ],
@@ -11070,7 +11426,11 @@
       "Freddi Fish 2 The Case of the Haunted Schoolhouse (CD Windows)"
     ],
     "posterImage": "/launcher/freddi-fish-2-scummweb-generated-2026-11-07-r2-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-freddi2-shot-1.webp",
+      "/launcher/retro-scumm-freddi2-shot-2.webp",
+      "/launcher/retro-scumm-freddi2-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -11086,8 +11446,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/freddi2/freddi2_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/freddi/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Freddi Fish 2: The Case of the Haunted Schoolhouse (Windows/English)",
+          "sha256": "9949fa73c78fbe739e53b91a070e5c60ac0339db3e077a9e6acd269847e61b2c",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/freddi2/freddi2_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/freddi/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Freddi Fish 2: The Case of the Haunted Schoolhouse (Windows/English)",
+          "sha256": "f58a57904d290e2968bbdffad63cc09b7b59ff826faa05a1ec477a645f96d30d",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/freddi2/freddi2_win_en_1_6_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/freddi/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Freddi Fish 2: The Case of the Haunted Schoolhouse (Windows/English)",
+          "sha256": "0b3fac3bc4f9b15cfc4766520476c254acb1abc66ce283ee6daa2e9945348d8f",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://store.steampowered.com/sub/42720?l=english",
         "https://www.macintoshrepository.org/4643-freddi-fish-2-the-case-of-the-haunted-schoolhouse"
@@ -11120,7 +11504,11 @@
       "Freddi Fish 3 The Case of the Stolen Conch Shell (CD DOS)"
     ],
     "posterImage": "/launcher/freddi-fish-3-scummweb-generated-2026-11-07-r2-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-freddi3-shot-1.webp",
+      "/launcher/retro-scumm-freddi3-shot-2.webp",
+      "/launcher/retro-scumm-freddi3-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -11136,8 +11524,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/freddi3/freddi3_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/freddi/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Freddi Fish 3: The Case of the Stolen Conch Shell (Windows/English)",
+          "sha256": "ee1ae6da1f77c6f26007711fb93cd07d44df86798007de60281cdd26bd6c7c64",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/freddi3/freddi3_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/freddi/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Freddi Fish 3: The Case of the Stolen Conch Shell (Windows/English)",
+          "sha256": "cb72a2b5a88beb7c374462d796d4747d2bdab09b074d4f2b5a8211fdbad877ea",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/freddi3/freddi3_win_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/freddi/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Freddi Fish 3: The Case of the Stolen Conch Shell (Windows/English)",
+          "sha256": "4555274b7655bbae7f7168adde6a2f829856a418e8d956c210b78ffc6ad8123d",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://store.steampowered.com/app/294540/"
       ],
@@ -11168,7 +11580,11 @@
       "Freddi Fish 4 The Case of the Hogfish Rustlers of Briny Gulch (CD DOS)"
     ],
     "posterImage": "/launcher/freddi-fish-4-scummweb-generated-2026-11-07-r2-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-freddi4-shot-1.webp",
+      "/launcher/retro-scumm-freddi4-shot-2.webp",
+      "/launcher/retro-scumm-freddi4-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -11184,8 +11600,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/freddi4/freddi4_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/freddi/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Freddi Fish 4: The Case of the Hogfish Rustlers of Briny Gulch (Windows/English)",
+          "sha256": "0ef30aab62586deedc38511408244c3e0bcfc817db707877e9af23584f92cf13",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/freddi4/freddi4_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/freddi/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Freddi Fish 4: The Case of the Hogfish Rustlers of Briny Gulch (Windows/English)",
+          "sha256": "ea5651a1d590ebe8de1c5d0bce562b98ef7e68a9d79e635dc44952fd9a7bffdc",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/freddi4/freddi4_win_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/freddi/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Freddi Fish 4: The Case of the Hogfish Rustlers of Briny Gulch (Windows/English)",
+          "sha256": "f519d60dd8a260d4854757e1ddb548664d4690fc0221d7ea3ad3d947014918dc",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://store.steampowered.com/app/294550/"
       ],
@@ -11217,7 +11657,11 @@
       "Freddi Fish 5 The Case of the Creature of Coral Cave (CD DOS)"
     ],
     "posterImage": "/launcher/freddi-fish-5-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-freddicove-shot-1.webp",
+      "/launcher/retro-scumm-freddicove-shot-2.webp",
+      "/launcher/retro-scumm-freddicove-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -11233,8 +11677,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/freddicove/freddicove_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/freddi/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Freddi Fish 5: The Case of the Creature of Coral Cove (Windows/English)",
+          "sha256": "c6c634ffa1d98bf421d6fd9b34170e02fab8f33be90969e9c207e434f2df966d",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/freddicove/freddicove_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/freddi/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Freddi Fish 5: The Case of the Creature of Coral Cove (Windows/English)",
+          "sha256": "016c94f82b45f71b46c5843cd9b5065b3089124c0b29f08e39313d66bfc93cb4",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/freddicove/freddicove_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/freddi/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Freddi Fish 5: The Case of the Creature of Coral Cove (Windows/English)",
+          "sha256": "fa4f239cad6f56d06e45e30ed34f757a5bb0dae34079ec5a160ddccaa07b6563",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://store.steampowered.com/app/294570/"
       ],
@@ -11266,7 +11734,11 @@
       "Pajama Sam 1 - No Need to Hide When it's Dark Outside (CD Windows)"
     ],
     "posterImage": "/launcher/pajama-sam-scummweb-generated-2026-11-07-r3-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-pajama-shot-1.webp",
+      "/launcher/retro-scumm-pajama-shot-2.webp",
+      "/launcher/retro-scumm-pajama-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -11282,8 +11754,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/pajama/pajama_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/pajama/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Pajama Sam: No Need to Hide When It's Dark Outside (Windows/English)",
+          "sha256": "66298ca41e6dc69403fb84e390a9655e80eba858006a5bdbdcb8ea53b50f7431",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/pajama/pajama_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/pajama/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Pajama Sam: No Need to Hide When It's Dark Outside (Windows/English)",
+          "sha256": "2fcdff13a2587b38430f550d49cb3d3164678cdfb867af0fa8b1f55c1d3acf38",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/pajama/pajama_win_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/pajama/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Pajama Sam: No Need to Hide When It's Dark Outside (Windows/English)",
+          "sha256": "732ed49faf9d0a5cd83947ca6fd40b59a27d0a118e35c521e683941a494cf294",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://store.steampowered.com/app/283960/Pajama_Sam_No_Need_to_Hide_When_Its_Dark_Outside/"
       ],
@@ -11315,7 +11811,11 @@
       "Spy Fox 2 Some Assembly Required (CD Windows)"
     ],
     "posterImage": "/launcher/spy-fox-2-scummweb-generated-2026-11-07-r2-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-spyfox2-shot-1.webp",
+      "/launcher/retro-scumm-spyfox2-shot-2.webp",
+      "/launcher/retro-scumm-spyfox2-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -11331,8 +11831,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/spyfox2/spyfox2_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/spyfox/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Spy Fox 2: \"Some Assembly Required\" (Windows/English)",
+          "sha256": "9e03d16851a45061d64887cb6cae87ed8035f9bd6f4936bcc41df87371a83df7",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/spyfox2/spyfox2_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/spyfox/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Spy Fox 2: \"Some Assembly Required\" (Windows/English)",
+          "sha256": "d0e78ecd88957161dc822efa8c2929dc4dc4c8646b4b52b79574ddd38f78978f",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/spyfox2/spyfox2_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/spyfox/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Spy Fox 2: \"Some Assembly Required\" (Windows/English)",
+          "sha256": "9862f18f274e2cc64baf435814b0b1e7b551141b6afe72dc27dc3e85933bc7cc",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://store.steampowered.com/app/292240/Spy_Fox_2_Some_Assembly_Required/"
       ],
@@ -11363,7 +11887,11 @@
       "Zork - Grand Inquisitor (DVD Windows)"
     ],
     "posterImage": "/launcher/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-zvision-zgi-shot-1.webp",
+      "/launcher/retro-zvision-zgi-shot-2.webp",
+      "/launcher/retro-zvision-zgi-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -11379,8 +11907,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/zvision/zgi/zgi_win_de_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/activision/zork/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Zork: Grand Inquisitor (CD/Windows/German)",
+          "sha256": "5d502976a2c99c92a4b3f0fb25a11f8f059f4f7e782c3606130bb786022860e3",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/zvision/zgi/zgi_win_de_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/activision/zork/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Zork: Grand Inquisitor (CD/Windows/German)",
+          "sha256": "f1a68ef128f8cdbf860d943c2e0c2a08b111dc19d7cdde48315f56045e71cfe3",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/zvision/zgi/zgi_win_de_1_6_full.png",
+          "page": "https://www.scummvm.org/screenshots/activision/zork/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Zork: Grand Inquisitor (CD/Windows/German)",
+          "sha256": "89a7d06cfc35b4e1fa98b4da3b7ffafba95761010a7e4d0becd61fec68698a12",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://www.gog.com/en/game/zork_grand_inquisitor",
         "https://www.mocagh.org/loadpage.php?getgame=zorkgi"
@@ -11412,7 +11964,11 @@
       "Zork Nemesis - The Forbidden Lands (DVD DOS)"
     ],
     "posterImage": "/launcher/zork-nemesis-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-zvision-znemesis-shot-1.webp",
+      "/launcher/retro-zvision-znemesis-shot-2.webp",
+      "/launcher/retro-zvision-znemesis-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -11428,8 +11984,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/zvision/znemesis/znemesis_dos_de_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/activision/zork/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Zork Nemesis: The Forbidden Lands (DOS/German)",
+          "sha256": "07611cceb6771f8e62ac5fb9b843e8ef8fa20af4b5cadc8055419a500ea05694",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/zvision/znemesis/znemesis_dos_de_1_11_full.png",
+          "page": "https://www.scummvm.org/screenshots/activision/zork/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Zork Nemesis: The Forbidden Lands (DOS/German)",
+          "sha256": "ee7da0c28cfa8c688343ddb55e25d34c6e13c2eb2e91db2fbad31df4a77cfa75",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/zvision/znemesis/znemesis_dos_de_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/activision/zork/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Zork Nemesis: The Forbidden Lands (DOS/German)",
+          "sha256": "c7d419ab7f8a73b26f4a82e0a41ca1ff3d89eede7e496acc1a5460ec7dc6852e",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://www.mobygames.com/game/560/zork-nemesis-the-forbidden-lands/"
       ],
@@ -11460,7 +12040,11 @@
       "Blue's 123 Time Activities (CD Windows)"
     ],
     "posterImage": "/launcher/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-blues123time-shot-1.webp",
+      "/launcher/retro-scumm-blues123time-shot-2.webp",
+      "/launcher/retro-scumm-blues123time-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -11476,8 +12060,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/blues123time/blues123time_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/blue/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Blue's 123 Time Activities (Windows/English)",
+          "sha256": "8448db3e66f2bf5ddc12b28e2f81fd1f3f5741523dcb2614d12dbd4bae5e7aae",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/blues123time/blues123time_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/blue/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Blue's 123 Time Activities (Windows/English)",
+          "sha256": "c05080dc7890b0f31c699b1be5fb3f44e9ae088501d02bc7af5c5400d23b8133",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/blues123time/blues123time_win_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/blue/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Blue's 123 Time Activities (Windows/English)",
+          "sha256": "c7a4049f554182953bd7b00a95fe9553f608062df97e535fa2fa35e38866b640",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue%27s%20123%20Time%20Activities.png"
       ],
@@ -11508,7 +12116,11 @@
       "Blue's ABC Time (Windows)"
     ],
     "posterImage": "/launcher/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-bluesabctime-shot-1.webp",
+      "/launcher/retro-scumm-bluesabctime-shot-2.webp",
+      "/launcher/retro-scumm-bluesabctime-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -11524,8 +12136,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/bluesabctime/bluesabctime_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/blue/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Blue's ABC Time Activities (Windows/English)",
+          "sha256": "59529c1da4e11bf1e2f183aa712d4044ca31ad832b2f49925aeca9e83d942b52",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/bluesabctime/bluesabctime_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/blue/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Blue's ABC Time Activities (Windows/English)",
+          "sha256": "0370a402114302e818cbb323977f8d1ee0b68c8e88265c45764ac6fe89af4359",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/bluesabctime/bluesabctime_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/blue/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Blue's ABC Time Activities (Windows/English)",
+          "sha256": "a6cb2a3a9024654e9f3cbe731c64349581946ae640abe7a6b02d51137b98b98f",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue%27s%20ABC%20Time%20Activities.png"
       ],
@@ -11556,7 +12192,11 @@
       "Blue's Art Time Activities (CD Windows)"
     ],
     "posterImage": "/launcher/blues-art-time-activities-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-arttime-shot-1.webp",
+      "/launcher/retro-scumm-arttime-shot-2.webp",
+      "/launcher/retro-scumm-arttime-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -11572,8 +12212,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/arttime/arttime_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/blue/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Blue's Clues: Blue's Art Time Activities (Windows/English)",
+          "sha256": "6338cebb77d15637de40e6f3689343bfe6634570c72d13edb4875156a01b3cd7",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/arttime/arttime_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/blue/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Blue's Clues: Blue's Art Time Activities (Windows/English)",
+          "sha256": "3dd24978a53df62c6924777ff5ebde193dd88c53e4600c7fd7cf18a5ec8f0afa",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/arttime/arttime_win_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/blue/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Blue's Clues: Blue's Art Time Activities (Windows/English)",
+          "sha256": "0ece02fb44202d16bacd383cf5d82e8869dab9a8304ce8c43be8d02582e514cd",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue%27s%20Art%20Time%20Activities.png"
       ],
@@ -11605,7 +12269,11 @@
       "Blue's Birthday Adventure Yellow (Windows)"
     ],
     "posterImage": "/launcher/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-bluesbirthday-shot-1.webp",
+      "/launcher/retro-scumm-bluesbirthday-shot-2.webp",
+      "/launcher/retro-scumm-bluesbirthday-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -11621,8 +12289,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/bluesbirthday/bluesbirthday_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/blue/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Blue's Clues: Blue's Birthday Adventure (Windows/English)",
+          "sha256": "ac8511796ba7e58f9228d52bb29103f4bd3c151c23d24805259209a78cb05d26",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/bluesbirthday/bluesbirthday_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/blue/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Blue's Clues: Blue's Birthday Adventure (Windows/English)",
+          "sha256": "523841d8ee88b92204c3a0277bf78b5f537de97459ddee71946fec94c25d5825",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/bluesbirthday/bluesbirthday_win_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/blue/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Blue's Clues: Blue's Birthday Adventure (Windows/English)",
+          "sha256": "a87133be8322318c0699251e003192371f70d636a460220881df49aa05eec343",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue%27s%20Birthday%20Adventure.png"
       ],
@@ -11653,7 +12345,11 @@
       "Blue's Reading Time Activities (CD Windows)"
     ],
     "posterImage": "/launcher/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-readtime-shot-1.webp",
+      "/launcher/retro-scumm-readtime-shot-2.webp",
+      "/launcher/retro-scumm-readtime-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -11669,8 +12365,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/readtime/readtime_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/blue/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Blue's Reading Time Activities (Windows/English)",
+          "sha256": "28a930a46ac3b67f816313f353830ed0502548d7d9d181e3636ac51b3cd39b6a",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/readtime/readtime_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/blue/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Blue's Reading Time Activities (Windows/English)",
+          "sha256": "86cb300111fc96dd3c3e3752a25ed458b4e1190bed26101dc43b97561a339e93",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/readtime/readtime_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/blue/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Blue's Reading Time Activities (Windows/English)",
+          "sha256": "16d4ebe712a176301b5d092a49f2bf79593e542ec499dd4146c7e65e2df68c1c",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue%27s%20Reading%20Time%20Activities.png"
       ],
@@ -11702,7 +12422,11 @@
       "Crazy Nicks Picks King Graham's Board Game Challenge (DOS)"
     ],
     "posterImage": "/launcher/king-grahams-board-game-challenge-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-sci-cnick-kq-shot-1.webp",
+      "/launcher/retro-sci-cnick-kq-shot-2.webp",
+      "/launcher/retro-sci-cnick-kq-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -11718,8 +12442,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Crazy%20Nick%27s%20Software%20Picks_%20King%20Graham%27s%20Board%20Game%20Challenge.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "82f10a9add2d34162350e33caf9b94d02016f1745881cafbf6644ad48681e672",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://images.launchbox-app.com/b4b7e4d5-c594-427d-8dbd-82f9115271f2.png",
+          "page": "https://gamesdb.launchbox-app.com/games/details/86005",
+          "credit": "LaunchBox Games Database",
+          "edition": "ScummVM",
+          "sha256": "bd1828904cf29fc515b4fb5e91594b3e959b883e271319ccd60dee1e81051983",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.mrdictionary.net/users/mecha-neko/saigimages/CrazyNick_KingGraham/CrazyNick_KingGraham_DOS_title.png",
+          "page": "https://superadventuresingaming.blogspot.com/2011/03/crazy-nicks-software-picks-king-grahams.html",
+          "credit": "Mecha-neko, Super Adventures in Gaming",
+          "edition": "DOS",
+          "sha256": "d900cf44343b06ae7d1a0b4fa689f1539e8605d8c17db76366ecbaf48a68cf18",
+          "kind": "title-screen"
+        }
+      ],
       "metadata": [
         "https://www.sierragamers.com/crazy-nicks/"
       ],
@@ -11751,7 +12498,11 @@
       "Crazy Nicks Picks Leisure Suit Larrys Casino (DOS)"
     ],
     "posterImage": "/launcher/leisure-suit-larrys-casino-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-sci-cnick-lsl-shot-1.webp",
+      "/launcher/retro-sci-cnick-lsl-shot-2.webp",
+      "/launcher/retro-sci-cnick-lsl-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -11767,8 +12518,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Crazy%20Nick%27s%20Picks_%20Leisure%20Suit%20Larry%27s%20Casino.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "480de184ccaeedde1e6f44ff2d9a4311c5f67a741d2960a7230e3fc17acbe840",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.abandonwaredos.com/public/aban_img_screens/leisure-suit-larry-casino-2.jpg",
+          "page": "https://www.abandonwaredos.com/abandonware-game.php?abandonware=Crazy+Nick%27s+Leisure+Suit+Larry+Casino&gid=1915",
+          "credit": "Abandonware DOS screenshot gallery",
+          "edition": "DOS",
+          "sha256": "24d28b42891b83a8181ba1b6253f04b57a1aa53d20792d4ca8d83468d65cca11",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.abandonwaredos.com/public/aban_img_screens/leisure-suit-larry-casino-4.jpg",
+          "page": "https://www.abandonwaredos.com/abandonware-game.php?abandonware=Crazy+Nick%27s+Leisure+Suit+Larry+Casino&gid=1915",
+          "credit": "Abandonware DOS screenshot gallery",
+          "edition": "DOS",
+          "sha256": "68d7f574d97c7c1573ee8d893c243b3e92b0d08610b56afb4f0fde101c152225",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://www.sierragamers.com/crazy-nicks/"
       ],
@@ -11800,7 +12574,11 @@
       "Crazy Nicks Picks Parlor Games with Laura Bow (DOS)"
     ],
     "posterImage": "/launcher/parlor-games-with-laura-bow-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-sci-cnick-laurabow-shot-1.webp",
+      "/launcher/retro-sci-cnick-laurabow-shot-2.webp",
+      "/launcher/retro-sci-cnick-laurabow-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -11816,8 +12594,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.mrdictionary.net/users/mecha-neko/saigimages/CrazyNick_LauraBow/CrazyNick_LauraBow_DOS_1.png",
+          "page": "https://superadventuresingaming.blogspot.com/2011/04/crazy-nicks-software-picks-parlor-games.html",
+          "credit": "Mecha-neko, Super Adventures in Gaming",
+          "edition": "DOS",
+          "sha256": "1da6a300a2ab90d98f632620cfd4ab45c16942958bb4d50277bbad909640efd5",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.mrdictionary.net/users/mecha-neko/saigimages/CrazyNick_LauraBow/CrazyNick_LauraBow_DOS_d1.png",
+          "page": "https://superadventuresingaming.blogspot.com/2011/04/crazy-nicks-software-picks-parlor-games.html",
+          "credit": "Mecha-neko, Super Adventures in Gaming",
+          "edition": "DOS",
+          "sha256": "b0f262980fbdb6ca5fec112d9d05674fb11e9eb2d6583b19c41a3b6e8b671969",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.mrdictionary.net/users/mecha-neko/saigimages/CrazyNick_LauraBow/CrazyNick_LauraBow_DOS_title.png",
+          "page": "https://superadventuresingaming.blogspot.com/2011/04/crazy-nicks-software-picks-parlor-games.html",
+          "credit": "Mecha-neko, Super Adventures in Gaming",
+          "edition": "DOS",
+          "sha256": "8ea777074df6025e5065a5eafee1ce8fa09e81e00bae64e66aac1811f0b402bd",
+          "kind": "title-screen"
+        }
+      ],
       "metadata": [
         "https://www.sierragamers.com/crazy-nicks/"
       ],
@@ -11849,7 +12651,11 @@
       "Crazy Nicks Picks Robin Hoods Game Of Skill And Chance (DOS)"
     ],
     "posterImage": "/launcher/robin-hoods-games-of-skill-and-chance-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-sci-cnick-longbow-shot-1.webp",
+      "/launcher/retro-sci-cnick-longbow-shot-2.webp",
+      "/launcher/retro-sci-cnick-longbow-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -11865,8 +12671,30 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://images.launchbox-app.com/05ae5f62-d68a-4ce1-9cc8-83f6d983bed0.png",
+          "page": "https://gamesdb.launchbox-app.com/games/details/108482",
+          "credit": "LaunchBox Games Database",
+          "edition": "ScummVM",
+          "sha256": "1fd9933491615d52ffa492245c7f4da3e97cb7114286a8060e4ce39df1dd5d8a",
+          "kind": "gameplay"
+        },
+        {
+          "credit": "ScummWEB capture from the original game",
+          "edition": "DOS/English",
+          "sha256": "532960499ad8f84ca8623bb963c470eac3d5ec4bc6496569b83cedb04902de88",
+          "kind": "gameplay",
+          "source": "Direct capture from ScummVM"
+        },
+        {
+          "credit": "ScummWEB capture from the original game",
+          "edition": "DOS/English",
+          "sha256": "a295b4d12ac9069e2c2e00192cee0fa4c92103fa5c2db79ce49ee3f9abbdad0b",
+          "kind": "title-screen",
+          "source": "Direct capture from ScummVM"
+        }
+      ],
       "metadata": [
         "https://www.sierragamers.com/crazy-nicks/"
       ],
@@ -11898,7 +12726,11 @@
       "Crazy Nicks Picks Roger Wilcos Spaced Out Game Pack (DOS)"
     ],
     "posterImage": "/launcher/roger-wilcos-spaced-out-game-pack-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-sci-cnick-sq-shot-1.webp",
+      "/launcher/retro-sci-cnick-sq-shot-2.webp",
+      "/launcher/retro-sci-cnick-sq-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -11914,8 +12746,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Crazy%20Nicks%20Software%20Picks_%20Roger%20Wilco%27s%20Spaced%20Out%20Game%20Pack.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "2c910aad42a2e56e6802911554c7f04182ee6c29bb5ece221175112fd31d04a6",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://images.launchbox-app.com/r2_b4b2abd3-7f48-4100-9637-bc8ff755ed27.png",
+          "page": "https://gamesdb.launchbox-app.com/games/details/86021",
+          "credit": "LaunchBox Games Database",
+          "edition": "ScummVM",
+          "sha256": "9017dd829b0520ee8a8f15f3e0e43ba55f3a82049fff643cdaf32e2e0b6186e9",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://images.launchbox-app.com/r2_1d5e4560-5dec-4ef2-a252-7aeeddce4dc4.png",
+          "page": "https://gamesdb.launchbox-app.com/games/details/86021",
+          "credit": "LaunchBox Games Database",
+          "edition": "ScummVM",
+          "sha256": "41f6eb59885ba0461564a072b771d8827c8aa46d01b17f8605314e9d1bb41c92",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://www.sierragamers.com/crazy-nicks/",
         "https://gamefaqs.gamespot.com/pc/355306-crazy-nicks-software-picks-roger-wilcos-spaced-out-game-pack/boxes/866050"
@@ -11946,10 +12801,38 @@
     "aliases": [
       "Living Books - Dr. Seuss ABC (CD Windows)"
     ],
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-mohawk-seussabc-shot-1.webp",
+      "/launcher/retro-mohawk-seussabc-shot-2.webp",
+      "/launcher/retro-mohawk-seussabc-shot-3.webp"
+    ],
     "sources": {
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/seussabc/seussabc_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Dr. Seuss's ABC (Windows/English)",
+          "sha256": "a3633694ba9b33d37db1e7c6312c9f9be242278dcb736bc76754a19930e734e8",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/seussabc/seussabc_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Dr. Seuss's ABC (Windows/English)",
+          "sha256": "67f366f9b2cddad61b7d7280c9add00c4d3d866b83182f39c3243c3de5a48dd3",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/seussabc/seussabc_win_en_1_6_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Dr. Seuss's ABC (Windows/English)",
+          "sha256": "758761e0f27e7547cb6f1a432518f4a86e7ddab1ce81692fcc1115d3cf475a68",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://gamesdb.launchbox-app.com/games/images/32554-living-books-abc-by-dr-seuss"
       ],
@@ -11987,7 +12870,11 @@
       "Fatty Bear's Birthday Surprise (CD Windows)"
     ],
     "posterImage": "/launcher/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r2-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-fbear-shot-1.webp",
+      "/launcher/retro-scumm-fbear-shot-2.webp",
+      "/launcher/retro-scumm-fbear-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -12003,8 +12890,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/fbear/fbear_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/fbear/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Fatty Bear's Birthday Surprise (DOS/English)",
+          "sha256": "e7cf67dfd9fed1c8cbac8124220c52d239d791e95dfa2d2b62eff337bb311cdd",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/fbear/fbear_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/fbear/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Fatty Bear's Birthday Surprise (DOS/English)",
+          "sha256": "ebb97b2a0b5bf6f466b90c9eee09e921ddb13234491a0faca63fc5ac72795dda",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/fbear/fbear_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/fbear/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Fatty Bear's Birthday Surprise (Windows/English)",
+          "sha256": "73f37a0651db5ace4508953143f31799902e1446e10a19d43394bfb1a6b16d5a",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://store.steampowered.com/app/317030/"
       ],
@@ -12035,7 +12946,11 @@
       "Fatty Bear's Funpack (CD DOS)"
     ],
     "posterImage": "/launcher/fatty-bears-funpack-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-fbpack-shot-1.webp",
+      "/launcher/retro-scumm-fbpack-shot-2.webp",
+      "/launcher/retro-scumm-fbpack-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -12051,8 +12966,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/fbpack/fbpack_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/fbear/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Fatty Bear's FunPack (DOS/English)",
+          "sha256": "b9213c7ed630836e85ae0d295ec39134ae5f8dbc330a325c12d939594f5168d4",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Fatty%20Bear%27s%20Fun%20Pack.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "6f350448124b3cce953187d652e9ed856fccbe322b7eb69098d30eddbc769dd7",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://images.launchbox-app.com/2b9a3a09-383e-4c7d-92d1-da7d7e49227c.jpg",
+          "page": "https://gamesdb.launchbox-app.com/games/details/77160",
+          "credit": "LaunchBox Games Database",
+          "edition": "3DO Interactive Multiplayer",
+          "sha256": "13cbe230034a9af9491b476f94b099dc10d39a737ed01634f827170aa2730717",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://artsandculture.google.com/asset/video-game-fatty-bear-s-fun-pack/KAFEOzkGW8J02Q?hl=en"
       ],
@@ -12083,7 +13021,11 @@
       "Freddi Fish & Luther's Maze Madness (CD Windows)"
     ],
     "posterImage": "/launcher/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r2-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-maze-shot-1.webp",
+      "/launcher/retro-scumm-maze-shot-2.webp",
+      "/launcher/retro-scumm-maze-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -12099,8 +13041,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/maze/maze_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/freddi/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Freddi Fish and Luther's Maze Madness (Windows/English)",
+          "sha256": "e6f053222ff47f300491d47ac354377872d3efc7333a9e865e912d55ec2ed00a",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/maze/maze_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/freddi/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Freddi Fish and Luther's Maze Madness (Windows/English)",
+          "sha256": "2973b8aa311276f06ba545ace8ac0b15bae3040d3cc2525cabfdd22d92b5c661",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Freddi%20Fish%20and%20Luther%27s%20Maze%20Madness.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "1286d29d809d3a78041c4c38846b8ef9602ef0b2acc632ff9444e7f5b8bba824",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Freddi%20Fish%20and%20Luthers%20Maze%20Madness.png"
       ],
@@ -12131,7 +13096,11 @@
       "Freddi Fish & Luther's Water Worries (CD Windows)"
     ],
     "posterImage": "/launcher/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r2-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-water-shot-1.webp",
+      "/launcher/retro-scumm-water-shot-2.webp",
+      "/launcher/retro-scumm-water-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -12147,8 +13116,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/water/water_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/freddi/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Freddi Fish and Luther's Water Worries (Windows/English)",
+          "sha256": "b8e8d6816b60715fb0dfd0fcd2018fdadff73e6db140e0b56947a992143c68f3",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/water/water_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/freddi/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Freddi Fish and Luther's Water Worries (Windows/English)",
+          "sha256": "5fa344f114a401dd4635c515d2b1acc278ce6a18c75e9d6770620f000a0ab2b3",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/294580/ss_9d4724cf59d240eb68e701ed84825dcaf53339a7.1920x1080.jpg?t=1578015915",
+          "page": "https://store.steampowered.com/app/294580/",
+          "credit": "Humongous Entertainment and Nightdive Studios, Steam",
+          "sha256": "685d84f321d004effcae3815b9414794acfa110115ff8f4e11bff483df9d926f",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Freddi%20Fish%20and%20Luthers%20Water%20Worries.png"
       ],
@@ -12178,10 +13170,38 @@
     "aliases": [
       "Living Books - Green Eggs and Ham (CD Windows)"
     ],
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-mohawk-greeneggs-shot-1.webp",
+      "/launcher/retro-mohawk-greeneggs-shot-2.webp",
+      "/launcher/retro-mohawk-greeneggs-shot-3.webp"
+    ],
     "sources": {
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/greeneggs/greeneggs_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Green Eggs and Ham (Windows/English)",
+          "sha256": "8c161e4c3e6da7f2763e65e9d9fd0c172cd21fea61639b562c544f983f233ede",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/greeneggs/greeneggs_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Green Eggs and Ham (Windows/English)",
+          "sha256": "41685da94ee63933f67a6ed9c53fbea40c1f356783ab3f32266167b851921a82",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/greeneggs/greeneggs_win_en_1_6_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Green Eggs and Ham (Windows/English)",
+          "sha256": "904e8eb1eda914529d552b23217b9a69519bbceea66e330a75278784858696fc",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Green%20Eggs%20and%20Ham.png"
       ],
@@ -12219,7 +13239,11 @@
       "Living Books - Harry and the Haunted House (CD Windows)"
     ],
     "posterImage": "/launcher/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r2-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-mohawk-harryhh-shot-1.webp",
+      "/launcher/retro-mohawk-harryhh-shot-2.webp",
+      "/launcher/retro-mohawk-harryhh-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -12235,8 +13259,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/harryhh/harryhh_win_es_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Harry and the Haunted House (Windows/Spanish)",
+          "sha256": "6863cf877c2e4cc295b4f4905913af504fc7ee7d762866057242e65b47f60816",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/harryhh/harryhh_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Harry and the Haunted House (Windows/English)",
+          "sha256": "a89427ce77ab914adc45da49fef96f9df9e3d67ff15c8ad76c28b1ede4275bff",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/harryhh/harryhh_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Harry and the Haunted House (Windows/English)",
+          "sha256": "bd53615c0052736e473dac972efbc8bf138df2cadd9192718dea5fdab870ad71",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Harry%20and%20the%20Haunted%20House.png"
       ],
@@ -12267,7 +13315,11 @@
       "Hi-Res Adventure #0 - Mission Asteroid (Apple II)"
     ],
     "posterImage": "/launcher/mission-asteroid-scummweb-generated-2026-11-07-r2-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-adl-hires0-shot-1.webp",
+      "/launcher/retro-adl-hires0-shot-2.webp",
+      "/launcher/retro-adl-hires0-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -12283,8 +13335,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/adl/hires0/hires0_apple2_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hires/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Hi-Res Adventure #0: Mission Asteroid (Apple II/English)",
+          "sha256": "796183ee1d150a76687be22b576f652499706d8613bcc0ad95297fd8fb57bd62",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/adl/hires0/hires0_apple2_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hires/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Hi-Res Adventure #0: Mission Asteroid (Apple II/English)",
+          "sha256": "7dbc605da7fb3d5b1db6980868a6c43bef964930852f4d629ecb53bae174ec6d",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/adl/hires0/hires0_apple2_en_2_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hires/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Hi-Res Adventure #0: Mission Asteroid (TV Emulation/Apple II/English)",
+          "sha256": "7f03897f9267d05f176cb89ffbba99203daf2c0f8772d0ed9d1f640a3ed9b22d",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%230_%20Mission%20Asteroid.png"
       ],
@@ -12315,7 +13391,11 @@
       "Hi-Res Adventure #2 - Wizard and the Princess (Apple II)"
     ],
     "posterImage": "/launcher/the-wizard-and-the-princess-scummweb-generated-2026-11-07-r2-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-adl-hires2-shot-1.webp",
+      "/launcher/retro-adl-hires2-shot-2.webp",
+      "/launcher/retro-adl-hires2-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -12331,8 +13411,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/adl/hires2/hires2_apple2_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hires/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Hi-Res Adventure #2: The Wizard and the Princess (Apple II/English)",
+          "sha256": "483f054a3f7bdec26e5770eddb712b6168f9602cb5ee804f71faa528aca532a3",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/adl/hires2/hires2_apple2_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hires/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Hi-Res Adventure #2: The Wizard and the Princess (Apple II/English)",
+          "sha256": "89adf3529d368ba1ebb1c78118dd65e14601083df00377186f44f1335e5aab28",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/adl/hires2/hires2_apple2_en_2_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hires/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Hi-Res Adventure #2: The Wizard and the Princess (TV Emulation/Apple II/English)",
+          "sha256": "b40f7f6dd21ff14c35abcdf29315704cc7dc9c25773de3dcc7307e41a98c776f",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%232_%20Wizard%20and%20the%20Princess.png"
       ],
@@ -12363,7 +13467,11 @@
       "Hi-Res Adventure #5 - Time Zone (Apple II)"
     ],
     "posterImage": "/launcher/time-zone-scummweb-generated-2026-11-07-r2-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-adl-hires5-shot-1.webp",
+      "/launcher/retro-adl-hires5-shot-2.webp",
+      "/launcher/retro-adl-hires5-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -12379,8 +13487,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/adl/hires5/hires5_apple2_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hires/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Hi-Res Adventure #5: Time Zone (Apple II/English)",
+          "sha256": "c9cacc7abcd6a79e6cf87816c2f436a39404b855740626668a895816b8c04db0",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/adl/hires5/hires5_apple2_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hires/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Hi-Res Adventure #5: Time Zone (Apple II/English)",
+          "sha256": "c99e17ba130798e36a3001d1cbd19063621a9a380c41a3f1fcd54d263aef37ef",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/adl/hires5/hires5_apple2_en_2_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hires/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Hi-Res Adventure #5: Time Zone (TV Emulation/Apple II/English)",
+          "sha256": "57861bed3587df3fd1ccd385565a8270d01957de7a7027c298bd89c292eaee3c",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%235_%20Time%20Zone.png"
       ],
@@ -12410,10 +13542,38 @@
     "aliases": [
       "Hi-Res Adventure #6 - The Dark Crystal (Apple II)"
     ],
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-adl-hires6-shot-1.webp",
+      "/launcher/retro-adl-hires6-shot-2.webp",
+      "/launcher/retro-adl-hires6-shot-3.webp"
+    ],
     "sources": {
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/adl/hires6/hires6_apple2_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hires/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Hi-Res Adventure #6: The Dark Crystal (Apple II/English)",
+          "sha256": "e0fa51bebbf607699fb4506dd687b879735bd90c500f873e38d5f4e3f855842d",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/adl/hires6/hires6_apple2_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hires/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Hi-Res Adventure #6: The Dark Crystal (Apple II/English)",
+          "sha256": "101bbebf4b858c42cb4ada821744a190bb09091d15efbc184fb5464616b895d9",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/adl/hires6/hires6_apple2_en_2_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hires/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Hi-Res Adventure #6: The Dark Crystal (TV Emulation/Apple II/English)",
+          "sha256": "c0843492839b13754be4cbf3c0b173a1f6bfe2e3538cf80278a06c7e08fb339c",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Hi-Res%20Adventure%20%236_%20The%20Dark%20Crystal.png"
       ],
@@ -12451,7 +13611,11 @@
       "Hoyle Official Book Of Games Volume 1 (Floppy DOS)"
     ],
     "posterImage": "/launcher/hoyles-official-book-of-games-volume-1-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-sci-hoyle1-shot-1.webp",
+      "/launcher/retro-sci-hoyle1-shot-2.webp",
+      "/launcher/retro-sci-hoyle1-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -12467,8 +13631,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/hoyle1/hoyle1_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hoyle/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Hoyle's Official Book of Games: Volume 1 (DOS/English)",
+          "sha256": "d213447649f8c1c9e7ef6921de7bbfffe6d7d60059314565d6fe8ed8cef8d192",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/hoyle1/hoyle1_dos_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hoyle/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Hoyle's Official Book of Games: Volume 1 (DOS/English)",
+          "sha256": "dc4b7c0627d78711f42138b08a7407efbfaf88fbd911bd9b3dbfa7a581888bd3",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/hoyle1/hoyle1_dos_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hoyle/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Hoyle's Official Book of Games: Volume 1 (DOS/English)",
+          "sha256": "c60faf48469940468285bdc433a8026921431d7572b478a39b96d64e9db64ea9",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://www.wiki.sierrahelp.com/index.php/Hoyle_Series"
       ],
@@ -12499,7 +13687,11 @@
       "Hoyle Official Book Of Games Volume 2 (Floppy DOS)"
     ],
     "posterImage": "/launcher/hoyles-official-book-of-games-volume-2-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-sci-hoyle2-shot-1.webp",
+      "/launcher/retro-sci-hoyle2-shot-2.webp",
+      "/launcher/retro-sci-hoyle2-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -12515,8 +13707,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/hoyle2/hoyle2_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hoyle/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Hoyle's Official Book of Games: Volume 2 (DOS/English)",
+          "sha256": "f5374cbd9df859ab461b2407db3fefdee9444edb9c0070e564f326ea5e18c775",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/hoyle2/hoyle2_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hoyle/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Hoyle's Official Book of Games: Volume 2 (DOS/English)",
+          "sha256": "09a8e600e177aa6b2b6797bd6f72afac28457fbd36c26cc186d8d3c2b68fd5a3",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/hoyle2/hoyle2_amiga_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hoyle/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Hoyle's Official Book of Games: Volume 2 (Amiga/English)",
+          "sha256": "7de6022fbc0aadadf7a2eabde67f3fb4506e9411b1061e1fbbeedba9c8985dd8",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://www.mobygames.com/game/760/hoyle-official-book-of-games-volume-2-solitaire/"
       ],
@@ -12547,7 +13763,11 @@
       "Hoyle Official Book Of Games Volume 3 (Floppy DOS)"
     ],
     "posterImage": "/launcher/hoyles-official-book-of-games-volume-3-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-sci-hoyle3-shot-1.webp",
+      "/launcher/retro-sci-hoyle3-shot-2.webp",
+      "/launcher/retro-sci-hoyle3-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -12563,8 +13783,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/hoyle3/hoyle3_amiga_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hoyle/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Hoyle's Official Book of Games: Volume 3 (Amiga/English)",
+          "sha256": "3c46ad0bcc77596b458fbf3426bf62f9b4029c9945e0bf055bfc48a601987ee7",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/hoyle3/hoyle3_amiga_en_1_6_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hoyle/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Hoyle's Official Book of Games: Volume 3 (Amiga/English)",
+          "sha256": "a321020f70770d231cf71f4bbb8fe0fa86789863647a321218db331034ce8b7f",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/hoyle3/hoyle3_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/hoyle/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Hoyle's Official Book of Games: Volume 3 (EGA/DOS/English)",
+          "sha256": "9ff1ed67030241a5b6263c54bf60a447ec6c11bd8c5b4502fad5b0a6edbc754b",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://www.wiki.sierrahelp.com/index.php/Hoyle_Series"
       ],
@@ -12595,7 +13839,11 @@
       "Living Books - Just Grandma and Me (CD Windows)"
     ],
     "posterImage": "/launcher/just-grandma-and-me-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-mohawk-grandma-shot-1.webp",
+      "/launcher/retro-mohawk-grandma-shot-2.webp",
+      "/launcher/retro-mohawk-grandma-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -12611,8 +13859,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/grandma/grandma_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Just Grandma and Me (Windows/English)",
+          "sha256": "26110194e5f84006baa150d7b3f40153e617b00db8c32907e06ef329bfb73b6e",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/grandma/grandma_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Just Grandma and Me (Windows/English)",
+          "sha256": "c5186a42e37eae7d513eab10ac9d8053a9dbf959a999700b3026b6d7fcfdc0ed",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/grandma/grandma_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Just Grandma and Me (Windows/English)",
+          "sha256": "7008cb0eaa37bcaeda848d540087ff3549388165487eb747931e2e8781b9b28e",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Just%20Grandma%20and%20Me.png"
       ],
@@ -12642,10 +13914,36 @@
     "aliases": [
       "King's Questions (CD, DOS)"
     ],
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-sci-kquestions-shot-1.webp",
+      "/launcher/retro-sci-kquestions-shot-2.webp",
+      "/launcher/retro-sci-kquestions-shot-3.webp"
+    ],
     "sources": {
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/kquestions/kquestions_dos_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/kq/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "King's Questions (DOS/English)",
+          "sha256": "167d113e0340440ecd85b7cfe091cd6c951aebf9ab44fdfceb4dcda25552f1e3",
+          "kind": "gameplay"
+        },
+        {
+          "credit": "ScummWEB capture from the original game",
+          "edition": "DOS/English",
+          "sha256": "7add0f20115ddb6370b3ef905eed4f31b8103e405cecfbd3b28d5e3b570e88ca",
+          "kind": "gameplay",
+          "source": "Direct capture from ScummVM"
+        },
+        {
+          "credit": "ScummWEB capture from the original game",
+          "edition": "DOS/English",
+          "sha256": "c584cee49b0d0ad2e0a37d3554e39a00797e073e4bd5bf66fef9c3bc6ab42e21",
+          "kind": "gameplay",
+          "source": "Direct capture from ScummVM"
+        }
+      ],
       "metadata": [
         "https://www.sierrachest.com/index.php?a=games&fld=walkthrough&id=283&title=kings-quest-collection-1"
       ],
@@ -12692,7 +13990,11 @@
       "Let's Explore the Airport with Buzzy (CD Windows)"
     ],
     "posterImage": "/launcher/lets-explore-the-airport-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-airport-shot-1.webp",
+      "/launcher/retro-scumm-airport-shot-2.webp",
+      "/launcher/retro-scumm-airport-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -12708,8 +14010,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/airport/airport_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/juniorfield/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Let's Explore the Airport (Windows/English)",
+          "sha256": "93d25673783e4e072dc91aa368ff8298adb1b53393a3addd92f4490518ee689e",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/airport/airport_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/juniorfield/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Let's Explore the Airport (Windows/English)",
+          "sha256": "f3f9ed672a2b0ef432a5b321aa43b680431ae34b2bb28deafaa574655474781d",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Let%27s%20Explore%20the%20Airport%20with%20Buzzy.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "329b88fec5819a76032f22bfc24022930fc6c629e126c4c9425894bca100db97",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Let%27s%20Explore%20the%20Airport%20with%20Buzzy.png"
       ],
@@ -12740,7 +14065,11 @@
       "Let's Explore the Farm with Buzzy (CD Windows)"
     ],
     "posterImage": "/launcher/lets-explore-the-farm-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-farm-shot-1.webp",
+      "/launcher/retro-scumm-farm-shot-2.webp",
+      "/launcher/retro-scumm-farm-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -12756,8 +14085,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/farm/farm_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/juniorfield/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Let's Explore the Farm (Windows/English)",
+          "sha256": "26f3e29a698eb09b81f8c5ac38ebccd86977ce0df357af95680692c89fa79974",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/farm/farm_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/juniorfield/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Let's Explore the Farm (Windows/English)",
+          "sha256": "6fa306be7fb1fce201268b6063cb15987c8b07a351c67e9daba3327ddc0d4f82",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Let%27s%20Explore%20the%20Farm%20with%20Buzzy.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "7aff2010ec8883f7e3c9eeaf902927ebe761210513bee4dffdc455625d78ec81",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Lets%20Explore%20the%20Farm%20with%20Buzzy.png"
       ],
@@ -12788,7 +14140,11 @@
       "Let's Explore the Jungle with Buzzy (CD Windows)"
     ],
     "posterImage": "/launcher/lets-explore-the-jungle-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-jungle-shot-1.webp",
+      "/launcher/retro-scumm-jungle-shot-2.webp",
+      "/launcher/retro-scumm-jungle-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -12804,8 +14160,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/jungle/jungle_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/juniorfield/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Let's Explore the Jungle (Windows/English)",
+          "sha256": "bce0b285a744735ebb9c1dd349a1261cac383e69a268b7aa39e75d9261619d3c",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/jungle/jungle_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/juniorfield/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Let's Explore the Jungle (Windows/English)",
+          "sha256": "e3fde8b60da16c814d77d61527936c2991ee01a493aa8ca9282d7c0273bd344a",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Let%27s%20Explore%20the%20Jungle%20with%20Buzzy.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "7c04533c0470d38350461aee4f8557b596316f249fea834b24e9527cc3e2b163",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Let%27s%20Explore%20the%20Jungle%20with%20Buzzy.png"
       ],
@@ -12836,7 +14215,11 @@
       "Living Books - Little Monster at School (CD Windows)"
     ],
     "posterImage": "/launcher/little-monster-at-school-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-mohawk-lilmonster-shot-1.webp",
+      "/launcher/retro-mohawk-lilmonster-shot-2.webp",
+      "/launcher/retro-mohawk-lilmonster-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -12852,8 +14235,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/lilmonster/lilmonster_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Little Monster at School (Windows/English)",
+          "sha256": "989f9c3aa2a1ec92fa693086e1f0d2a1323ac5ba59916a3f0c22a1ddbe5a6b5a",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/lilmonster/lilmonster_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Little Monster at School (Windows/English)",
+          "sha256": "b998035b4aa1ddfd084958af47a0781f974b76831662efae0fff35ea4a0ef3b6",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/lilmonster/lilmonster_win_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Little Monster at School (Windows/English)",
+          "sha256": "f3563591d3929d0eca7158f00af9c192841eb242627c97686f8eb80f22909951",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Little%20Monster%20at%20School.png"
       ],
@@ -12884,7 +14291,11 @@
       "Living Books - Arthur's Teacher Trouble (CD Windows)"
     ],
     "posterImage": "/launcher/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-mohawk-arthur-shot-1.webp",
+      "/launcher/retro-mohawk-arthur-shot-2.webp",
+      "/launcher/retro-mohawk-arthur-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -12900,8 +14311,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/arthur/arthur_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Marc Brown's Arthur's Teacher Trouble (Windows/English)",
+          "sha256": "adc5689399b74372df3a27b4d311a72c74f9b5d351f6aa3832fb689fcc60b8cf",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/arthur/arthur_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Marc Brown's Arthur's Teacher Trouble (Windows/English)",
+          "sha256": "af8ba0497d259b556ee9fbccb038666d511b8b7221a65825f6aea0962951b1d8",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/arthur/arthur_win_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Marc Brown's Arthur's Teacher Trouble (Windows/English)",
+          "sha256": "998a4585a759243d8a66b2bb476c00c283309ac9c397c68b0de76c899c820dcf",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://www.mobygames.com/company/2353/living-books/games/"
       ],
@@ -12932,7 +14367,11 @@
       "Mixed Up Fairy Tales (Floppy EGA DOS)"
     ],
     "posterImage": "/launcher/mixed-up-fairy-tales-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-sci-fairytales-shot-1.webp",
+      "/launcher/retro-sci-fairytales-shot-2.webp",
+      "/launcher/retro-sci-fairytales-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -12948,8 +14387,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/fairytales/fairytales_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/mixedup/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Mixed Up Fairy Tales (DOS/English)",
+          "sha256": "8a667787404ed5a54a14bc0a5f920b3e376ae73c7fb1cef776928184d8a25ec8",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/fairytales/fairytales_dos_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/mixedup/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Mixed Up Fairy Tales (DOS/English)",
+          "sha256": "b583bf70ac6cb146ccf8ae0577bfe635179fdf3b329705932ebc8bfa21706a63",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/fairytales/fairytales_dos_en_1_6_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/mixedup/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Mixed Up Fairy Tales (DOS/English)",
+          "sha256": "2f40767932c4404da7949b7cdde4abe247ebd6fcb8e56c7133c5c5915842ffdb",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Mixed-Up%20Fairy%20Tales.png"
       ],
@@ -12980,7 +14443,11 @@
       "Mixed Up Mother Goose (Floppy DOS, 1987)"
     ],
     "posterImage": "/launcher/mixed-up-mother-goose-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-agi-mixedup-shot-1.webp",
+      "/launcher/retro-agi-mixedup-shot-2.webp",
+      "/launcher/retro-agi-mixedup-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -12996,8 +14463,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/agi/mixedup/mixedup_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/mixedup/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Mixed-Up Mother Goose (DOS/English)",
+          "sha256": "b780bedc07b50682bcadcb422e3fbce577329e3b96964d3af12809230a6c53da",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/agi/mixedup/mixedup_dos_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/mixedup/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Mixed-Up Mother Goose (DOS/English)",
+          "sha256": "73a7f0600dfdc67943005e52fc89e583df64b1493dca7aa430dea066be01e956",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/agi/mixedup/mixedup_dos_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/mixedup/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Mixed-Up Mother Goose (DOS/English)",
+          "sha256": "7a5c67128108b47e16491cca5450b23682654b4dae7ddbe87fe2adc434815a86",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Mixed-Up%20Mother%20Goose%20(1987-11-10_DOS_English).png"
       ],
@@ -13028,7 +14519,11 @@
       "Mixed Up Mother Goose Deluxe (CD DOS)"
     ],
     "posterImage": "/launcher/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-sci-mothergoosehires-shot-1.webp",
+      "/launcher/retro-sci-mothergoosehires-shot-2.webp",
+      "/launcher/retro-sci-mothergoosehires-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -13044,8 +14539,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/mothergoosehires/mothergoosehires_win_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/mixedup/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Mixed-Up Mother Goose Deluxe (Windows/English)",
+          "sha256": "4c57c67ee8c6b9c23f84f1888ce57f0e0d4e1112bb3ea89541fce6ae3cbfd5bb",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/mothergoosehires/mothergoosehires_win_en_1_6_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/mixedup/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Mixed-Up Mother Goose Deluxe (Windows/English)",
+          "sha256": "a41178608b7c22467893abeb8c4f79ef55c48aaf12120080777a267f7766e4d8",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/mothergoosehires/mothergoosehires_win_en_1_8_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/mixedup/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Mixed-Up Mother Goose Deluxe (Windows/English)",
+          "sha256": "517c047f350b46a571b51afe1744bdcb98bbeec44d118fd1a37d2d1e04ba0b43",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Mixed-Up%20Mother%20Goose%20Deluxe.png"
       ],
@@ -13075,10 +14594,36 @@
     "aliases": [
       "Open Quest (FanMade - Get's Detected as DOTT)"
     ],
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-local-openquest-shot-1.webp",
+      "/launcher/retro-local-openquest-shot-2.webp",
+      "/launcher/retro-local-openquest-shot-3.webp"
+    ],
     "sources": {
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Open%20Quest.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "3c0a2aff5d3c41b1bb147f9e83e713d90aaba838208db5b8eae16e8a37344ac6",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://img.itch.zone/aW1hZ2UvODIwMTIvMzg2MDk2LnBuZw==/original/PzZeba.png",
+          "page": "https://jennibee.itch.io/openquest-wintermute",
+          "credit": "Jenni McMurray, OpenQuest project",
+          "edition": "Wintermute port",
+          "sha256": "3f5b2de1d83c80b8ef825a93b59c850c66c6f36f75462613fdd182cfc32d13a0",
+          "kind": "gameplay"
+        },
+        {
+          "credit": "ScummWEB capture from the original game",
+          "edition": "ScummC adaptation",
+          "sha256": "9dfb1acfd7ca4909abda27745aafcec13147d366c7388348f796380dfff6421a",
+          "kind": "title-screen",
+          "source": "Direct capture from ScummVM"
+        }
+      ],
       "metadata": [
         "https://github.com/JenniBee/openquest",
         "https://jennibee.itch.io/openquest-wintermute"
@@ -13127,7 +14672,11 @@
       "Pajama Sam 2 - Thunder and Lightning Aren't so Frightening (CD Windows)"
     ],
     "posterImage": "/launcher/pajama-sam-2-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-pajama2-shot-1.webp",
+      "/launcher/retro-scumm-pajama2-shot-2.webp",
+      "/launcher/retro-scumm-pajama2-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -13143,8 +14692,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/pajama2/pajama2_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/pajama/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Pajama Sam 2: Thunder and Lightning Aren't so Frightening (Windows/English)",
+          "sha256": "455d0b80f0c0fc50b56ea7316a1e0609b1aa2405fa2b31e2c2f7f97bfd7212b2",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/pajama2/pajama2_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/pajama/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Pajama Sam 2: Thunder and Lightning Aren't so Frightening (Windows/English)",
+          "sha256": "c28bdc2d0c00b60c797810a915adfa0766bd71173d5c9185270cd07de5410c48",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/pajama2/pajama2_win_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/pajama/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Pajama Sam 2: Thunder and Lightning Aren't so Frightening (Windows/English)",
+          "sha256": "7e00d497de7cc2b05eeb192be16d311d050dbbaaa0e553e8f585e2be16cb178b",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://store.steampowered.com/app/292780/"
       ],
@@ -13176,7 +14749,11 @@
       "Pajama Sam 3 - You Are What You Eat From Your Head to Your Feet (CD Windows)"
     ],
     "posterImage": "/launcher/pajama-sam-3-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-pajama3-shot-1.webp",
+      "/launcher/retro-scumm-pajama3-shot-2.webp",
+      "/launcher/retro-scumm-pajama3-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -13192,8 +14769,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/pajama3/pajama3_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/pajama/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Pajama Sam 3: You Are What You Eat From Your Head To Your Feet (Windows/English)",
+          "sha256": "9525fab960ce7575b7caa007fea700c95b32cc9eba366cc3c925ea38f97adad3",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/pajama3/pajama3_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/pajama/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Pajama Sam 3: You Are What You Eat From Your Head To Your Feet (Windows/English)",
+          "sha256": "467bf121f0af35908670b1526959de2e8ddd22acdde7d5e390f0f524844a918c",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/pajama3/pajama3_win_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/pajama/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Pajama Sam 3: You Are What You Eat From Your Head To Your Feet (Windows/English)",
+          "sha256": "4acc1a4d0b1e3156d07c9a8eea6e45aa53dd127b61525e180604f2cedbab5c05",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://store.steampowered.com/app/292800/"
       ],
@@ -13224,7 +14825,11 @@
       "Pajama Sam - Games to Play on Any Day (CD Windows)"
     ],
     "posterImage": "/launcher/pajama-sam-games-to-play-on-any-day-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-pjgames-shot-1.webp",
+      "/launcher/retro-scumm-pjgames-shot-2.webp",
+      "/launcher/retro-scumm-pjgames-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -13240,8 +14845,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/pjgames/pjgames_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/pajama/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Pajama Sam: Games to Play on Any Day (Windows/English)",
+          "sha256": "e7ead6066540c91b78e5030cc9506be1c3c7979264d56c64b5b6de54310c4711",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/pjgames/pjgames_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/pajama/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Pajama Sam: Games to Play on Any Day (Windows/English)",
+          "sha256": "52d9b2bf36ec9444c284a915c737048d5c02afaf15969af2f887a36bb704a7e8",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/pjgames/pjgames_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/pajama/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Pajama Sam: Games to Play on Any Day (Windows/English)",
+          "sha256": "6985ea0dfd6713a7407e2a21aee68c37140157c4176ca93d11fd676b8b46200e",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Pajama%20Sam_%20Games%20to%20Play%20on%20Any%20Day.png"
       ],
@@ -13272,7 +14901,11 @@
       "Pajama Sam's Lost And Found (CD Windows)"
     ],
     "posterImage": "/launcher/pajama-sams-lost-and-found-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-lost-shot-1.webp",
+      "/launcher/retro-scumm-lost-shot-2.webp",
+      "/launcher/retro-scumm-lost-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -13288,8 +14921,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/lost/lost_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/pajama/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Pajama Sam's Lost & Found (Windows/English)",
+          "sha256": "924a7d9fe9e60b9e6471bd54f2b64ff4223258477b21a90cfe1c6092cd407b49",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/lost/lost_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/pajama/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Pajama Sam's Lost & Found (Windows/English)",
+          "sha256": "4ca737894fc05df02d8048d88d341a4ed32ec17e6e5756e09186f8daaf528571",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/lost/lost_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/pajama/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Pajama Sam's Lost & Found (Windows/English)",
+          "sha256": "7d2c1fa223394a0930842e9b72c7c6eb49875439008c40cb2de4a127039d34fc",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Pajama%20Sams%20Lost%20_%20Found.png"
       ],
@@ -13320,7 +14977,11 @@
       "Pajama Sam's Sock Works (CD Windows)"
     ],
     "posterImage": "/launcher/pajama-sams-sock-works-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-socks-shot-1.webp",
+      "/launcher/retro-scumm-socks-shot-2.webp",
+      "/launcher/retro-scumm-socks-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -13336,8 +14997,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/socks/socks_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/pajama/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Pajama Sam's Sock Works (Windows/English)",
+          "sha256": "34a4d762231dd99f0c4b312ae073b85bf30a80c10c121efba4aee15d904fc2e7",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/socks/socks_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/pajama/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Pajama Sam's Sock Works (Windows/English)",
+          "sha256": "865e447e07c0b96dc3c8dea23b556a580cbd339244342438b95980488c7bd8d1",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Pajama%20Sam%27s%20Sock%20Works.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "b7250d6038354c6e7cde2a6b7509004009efa74eee417bdd5edd9c4ee5a304be",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Pajama%20Sams%20Sock%20Works.png"
       ],
@@ -13368,7 +15052,11 @@
       "Playtoons 1 - Uncle Archibald (CD, Windows)"
     ],
     "posterImage": "/launcher/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r2-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-gob-playtoons1-shot-1.webp",
+      "/launcher/retro-gob-playtoons1-shot-2.webp",
+      "/launcher/retro-gob-playtoons1-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -13384,8 +15072,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Playtoons%201%20-%20Uncle%20Archibald.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "484bce6fd645c319d20ce8f24f8122835423dac52b8b3407fcd184a0720194f5",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.abandonware-france.org/images_abandonware/jeux/12957Snap15.png",
+          "page": "https://www.abandonware-france.org/ltf_abandon/ltf_galeries.php?id=988",
+          "credit": "Abandonware France screenshot gallery",
+          "edition": "French release",
+          "sha256": "286b48c3ac29bc764247b5bd2314fd4e1aac0e7424b6565461375f35464703d9",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.abandonware-france.org/images_abandonware/jeux/12969Snap42.png",
+          "page": "https://www.abandonware-france.org/ltf_abandon/ltf_galeries.php?id=988",
+          "credit": "Abandonware France screenshot gallery",
+          "edition": "French release",
+          "sha256": "f55c5701ed19b4ac055e1b19d6015f4336f04d67b1da598dfbb2af03748f7569",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://www.wiki.sierrahelp.com/index.php/GOB"
       ],
@@ -13417,7 +15128,11 @@
       "Playtoons 2 - Case of the Counterfeit Collaborator (CD, Windows)"
     ],
     "posterImage": "/launcher/playtoons-2-the-case-of-the-counterfeit-collaborator-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-gob-playtoons2-shot-1.webp",
+      "/launcher/retro-gob-playtoons2-shot-2.webp",
+      "/launcher/retro-gob-playtoons2-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -13433,8 +15148,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Playtoons%202%20-%20The%20Case%20of%20the%20Counterfeit%20Collaborator.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "dd2b313755381ce2accbb8d8fa1c75a845746a16a5163f6244e0cc3613637b78",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.abandonware-france.org/images_abandonware/jeux/12993Snap24.png",
+          "page": "https://www.abandonware-france.org/ltf_abandon/ltf_galeries.php?id=990",
+          "credit": "Abandonware France screenshot gallery",
+          "edition": "French release",
+          "sha256": "8602ecf443cc78ce494f0ca88d0685a6b0d0bf7f5321e8ccdaa6bd57d5502b1c",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.abandonware-france.org/images_abandonware/jeux/13005Snap39.png",
+          "page": "https://www.abandonware-france.org/ltf_abandon/ltf_galeries.php?id=990",
+          "credit": "Abandonware France screenshot gallery",
+          "edition": "French release",
+          "sha256": "d9a2edbf030bb1d2228d4d7ee3424037252dd983e1caec799c39407ec5735d3a",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://www.wiki.sierrahelp.com/index.php/GOB"
       ],
@@ -13465,7 +15203,11 @@
       "Playtoons 3 - Secret of the Castle (CD, Windows)"
     ],
     "posterImage": "/launcher/playtoons-3-the-secret-of-the-castle-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-gob-playtoons3-shot-1.webp",
+      "/launcher/retro-gob-playtoons3-shot-2.webp",
+      "/launcher/retro-gob-playtoons3-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -13481,8 +15223,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Playtoons%203%20-%20The%20Secret%20of%20the%20Castle.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "351fa80585f1cc185b15e0b799c117fc43032c66d54d0329443c35c14f9c259e",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.abandonware-france.org/images_abandonware/jeux/209928.png",
+          "page": "https://www.abandonware-france.org/ltf_abandon/ltf_galeries.php?id=1225",
+          "credit": "Abandonware France screenshot gallery",
+          "edition": "French release",
+          "sha256": "3694ffb2f7eb1912940ee764a3fcb07c4bf6e6df9e04080f25e3f2b48b157685",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.abandonware-france.org/images_abandonware/jeux/209939.png",
+          "page": "https://www.abandonware-france.org/ltf_abandon/ltf_galeries.php?id=1225",
+          "credit": "Abandonware France screenshot gallery",
+          "edition": "French release",
+          "sha256": "07aa634b89f63f6bb91500e917adfe7683d87b5683bd29a23a0d9d760792d869",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://www.wiki.sierrahelp.com/index.php/GOB"
       ],
@@ -13513,7 +15278,11 @@
       "Playtoons 4 - The Mandarine Prince (CD, Windows)"
     ],
     "posterImage": "/launcher/playtoons-4-the-mandarine-prince-scummweb-generated-2026-11-07-r2-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-gob-playtoons4-shot-1.webp",
+      "/launcher/retro-gob-playtoons4-shot-2.webp",
+      "/launcher/retro-gob-playtoons4-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -13529,8 +15298,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Playtoons%204%20-%20The%20Mandarine%20Prince.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "5475a9f80c1af4292d47687681bbcffbbb4e4fe08f1a53b05c1b30e2a5b24c8a",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.abandonware-france.org/images_abandonware/jeux/53682playmandarine013.png",
+          "page": "https://www.abandonware-france.org/ltf_abandon/ltf_galeries.php?id=2717",
+          "credit": "Abandonware France screenshot gallery",
+          "edition": "French release",
+          "sha256": "f535252a622897ba8839163110d7c2868d53b6ca8f13674ffddaf1d3c0918624",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.abandonware-france.org/images_abandonware/jeux/53691playmandarine022.png",
+          "page": "https://www.abandonware-france.org/ltf_abandon/ltf_galeries.php?id=2717",
+          "credit": "Abandonware France screenshot gallery",
+          "edition": "French release",
+          "sha256": "e1f79ccb90ed807752b5a307f71e16ecf28e56d87cb91e6ce3f549ce20033d1e",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://www.wiki.sierrahelp.com/index.php/GOB"
       ],
@@ -13562,7 +15354,11 @@
       "Playtoons Bambou le Sauveur de la Jungle (CD DOS, French)"
     ],
     "posterImage": "/launcher/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r2-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-gob-bambou-shot-1.webp",
+      "/launcher/retro-gob-bambou-shot-2.webp",
+      "/launcher/retro-gob-bambou-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -13578,8 +15374,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/gob/bambou/bambou_dos_fr_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/playtoons/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Playtoons Limited Edition - Bambou le sauveur de la jungle (DOS/French)",
+          "sha256": "7e8977b7a540aea532246f3e2c717d5aa037c49b37aeddcc83d6b07642529e0c",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/gob/bambou/bambou_dos_fr_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/playtoons/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Playtoons Limited Edition - Bambou le sauveur de la jungle (DOS/French)",
+          "sha256": "f6db2ff8d78dc1e774b70c5867dd76a06c9aeb20ffbf02f810ba236f9a759095",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/gob/bambou/bambou_dos_fr_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/coktel/playtoons/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Playtoons Limited Edition - Bambou le sauveur de la jungle (DOS/French)",
+          "sha256": "2f950fe1c38e273f204cbdb1642ca59db3b272b8b904db4e36c451f43f68f695",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://www.senscritique.com/jeuvideo/Bambou_le_sauveur_de_la_jungle/25441241"
       ],
@@ -13610,7 +15430,11 @@
       "Putt-Putt and Fatty Bear's Activity Pack (CD Windows)"
     ],
     "posterImage": "/launcher/putt-putt-and-fatty-bears-activity-pack-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-activity-shot-1.webp",
+      "/launcher/retro-scumm-activity-shot-2.webp",
+      "/launcher/retro-scumm-activity-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -13626,8 +15450,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/activity/activity_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/fbear/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt and Fatty Bear's Activity Pack (DOS/English)",
+          "sha256": "cb5ac6495cbf1053c54d0a257fdb1db2036a939ae1a32dbcd86beb00dc362864",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Putt-Putt%20_%20Fatty%20Bear%27s%20Activity%20Pack.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "08cd8b7286b672e7e7253a54a0ab652768a03ebaf48b80afe7207ae4ffc3c840",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/activity/activity_dos_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/fbear/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt and Fatty Bear's Activity Pack (DOS/English)",
+          "sha256": "fdffc7cae3a2e52a4e2a557dbd9e25180f1500907b8b0313734010dde1ad67da",
+          "kind": "title-screen"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20_%20Fatty%20Bear's%20Activity%20Pack.png"
       ],
@@ -13658,7 +15505,11 @@
       "Putt-Putt and Pep's Balloon-O-Rama (CD Windows)"
     ],
     "posterImage": "/launcher/putt-putt-and-peps-balloon-o-rama-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-balloon-shot-1.webp",
+      "/launcher/retro-scumm-balloon-shot-2.webp",
+      "/launcher/retro-scumm-balloon-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -13674,8 +15525,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/balloon/balloon_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt and Pep's Balloon-O-Rama (Windows/English)",
+          "sha256": "b382a49e333f30af6ad55293c74f553bab7ba707adf74670438ae66fe2d03094",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/balloon/balloon_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt and Pep's Balloon-O-Rama (Windows/English)",
+          "sha256": "92584a1223dc511bb72d0ce3204bd28d3d8d61dc6d8fb32983ff197ef1a148bc",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/284000/ss_76c2d5af77245a6d046255ac0be70258285ff135.1920x1080.jpg?t=1578529192",
+          "page": "https://store.steampowered.com/app/284000/",
+          "credit": "Humongous Entertainment and Nightdive Studios, Steam",
+          "sha256": "6b21aaf31d2fea93a815cc451da103146ab1c57c1302afa0d6bff1af51da7862",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20and%20Pep's%20Balloon-o-Rama.png"
       ],
@@ -13706,7 +15580,11 @@
       "Putt-Putt and Pep's Dog on a Stick (CD Windows)"
     ],
     "posterImage": "/launcher/putt-putt-and-peps-dog-on-a-stick-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-dog-shot-1.webp",
+      "/launcher/retro-scumm-dog-shot-2.webp",
+      "/launcher/retro-scumm-dog-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -13722,8 +15600,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/dog/dog_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt and Pep's Dog on a Stick (Windows/English)",
+          "sha256": "ee102cefd6161822db82abe1f0ef8a22730539e0d0c5d352f40e23858057f064",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/dog/dog_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt and Pep's Dog on a Stick (Windows/English)",
+          "sha256": "532af6fdd06205e1fadf50ff315518691dae3a286c1515531dd64ed34e007aed",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Putt-Putt%20and%20Pep%27s%20Dog%20on%20a%20Stick.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "bbd0b845142d70e3c832b03a67bff95d2560204c11a7c38dfbf19cb9f44f0a97",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20and%20Pep's%20Dog%20on%20a%20Stick.png"
       ],
@@ -13754,7 +15655,11 @@
       "Putt-Putt Enters the Race (CD Windows)"
     ],
     "posterImage": "/launcher/putt-putt-enters-the-race-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-puttrace-shot-1.webp",
+      "/launcher/retro-scumm-puttrace-shot-2.webp",
+      "/launcher/retro-scumm-puttrace-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -13770,8 +15675,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/puttrace/puttrace_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt Enters the Race (Windows/English)",
+          "sha256": "6dd642ea339deefa2a47b30d6f3d8d907ebc2feb280b5f15075180907dadcf8f",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/puttrace/puttrace_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt Enters the Race (Windows/English)",
+          "sha256": "2a72b5f9ecbc448cf93d963b413ac5341bd4b70f3b7fe8c39f2d804a6cdd7948",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/puttrace/puttrace_win_en_1_6_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt Enters the Race (Windows/English)",
+          "sha256": "2ae145dd415d86c19e497c64071f470cb64848a9c13cdd692d3c335248ae5da5",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Enters%20the%20Race.png"
       ],
@@ -13802,7 +15731,11 @@
       "Putt-Putt Goes to the Moon (CD Windows)"
     ],
     "posterImage": "/launcher/putt-putt-goes-to-the-moon-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-puttmoon-shot-1.webp",
+      "/launcher/retro-scumm-puttmoon-shot-2.webp",
+      "/launcher/retro-scumm-puttmoon-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -13818,8 +15751,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/puttmoon/puttmoon_3do_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt Goes to the Moon (3DO/English)",
+          "sha256": "5396dd88b4d05ebc8393e7e76ed14c95332119583bffe38d89895c393afd0d3e",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/puttmoon/puttmoon_3do_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt Goes to the Moon (3DO/English)",
+          "sha256": "ef113582d67311ef0c58751e022ddfdb13454ef040dfc63297e11bad8dc94233",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/puttmoon/puttmoon_3do_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt Goes to the Moon (3DO/English)",
+          "sha256": "a34bb6aa8eb84f7df2b7da8c55dab766519d03717d849512ad867563320e6506",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Goes%20to%20the%20Moon.png"
       ],
@@ -13850,7 +15807,11 @@
       "Putt-Putt Joins the Circus (CD Windows)"
     ],
     "posterImage": "/launcher/putt-putt-joins-the-circus-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-puttcircus-shot-1.webp",
+      "/launcher/retro-scumm-puttcircus-shot-2.webp",
+      "/launcher/retro-scumm-puttcircus-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -13866,8 +15827,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/puttcircus/puttcircus_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt Joins the Circus (Windows/English)",
+          "sha256": "30c3025582b0d6cfef23beaf9dd82d0b9b9a7966647c83574eec20466b867fd3",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/puttcircus/puttcircus_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt Joins the Circus (Windows/English)",
+          "sha256": "150e95adee90bb4b12bb9ca7f6636437f749fc99bb9d994dd11f636fb79498bd",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/puttcircus/puttcircus_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt Joins the Circus (Windows/English)",
+          "sha256": "91c4de75c83b23a210ea3d749444bf14f544615fb5f05c7245b5184bd56dc079",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Joins%20the%20Circus.png"
       ],
@@ -13898,7 +15883,11 @@
       "Putt-Putt Joins the Parade (CD Windows)"
     ],
     "posterImage": "/launcher/putt-putt-joins-the-parade-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-puttputt-shot-1.webp",
+      "/launcher/retro-scumm-puttputt-shot-2.webp",
+      "/launcher/retro-scumm-puttputt-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -13914,8 +15903,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/puttputt/puttputt_3do_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt Joins the Parade (3DO/English)",
+          "sha256": "54dd737fa6c39e59438b2b4fe4c462e4654e8435ce592175392d3a6a5a9361a6",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/puttputt/puttputt_3do_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt Joins the Parade (3DO/English)",
+          "sha256": "3457567559b1aff8d1f04d2d175dd3b51b8e52a6fac6ec17261a10dd2c2c3731",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/puttputt/puttputt_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt Joins the Parade (DOS/English)",
+          "sha256": "9d3cf5088d4619d83a91dea7a3eceaf2d1585308557da78eb224572e39112dfa",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Joins%20the%20Parade.png"
       ],
@@ -13946,7 +15959,11 @@
       "Putt-Putt Saves the Zoo (CD Windows)"
     ],
     "posterImage": "/launcher/putt-putt-saves-the-zoo-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-puttzoo-shot-1.webp",
+      "/launcher/retro-scumm-puttzoo-shot-2.webp",
+      "/launcher/retro-scumm-puttzoo-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -13962,8 +15979,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/puttzoo/puttzoo_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt Saves the Zoo (Windows/English)",
+          "sha256": "dd6636b34eb3cd316aaf7826aea0b51b048d1651563beef24b69a85e77298ea5",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/puttzoo/puttzoo_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt Saves the Zoo (Windows/English)",
+          "sha256": "f71ab3a4512a5052b3c3c32dacb168e7497177c513aa5b6e03ca432cc6423c75",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/puttzoo/puttzoo_win_en_1_6_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt Saves the Zoo (Windows/English)",
+          "sha256": "dd421473b5302d9d8b258acc28aff935b975c4deec284805d2e5cae391c7627e",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Saves%20the%20Zoo.png"
       ],
@@ -13994,7 +16035,11 @@
       "Putt-Putt Travels Through Time (CD DOS)"
     ],
     "posterImage": "/launcher/putt-putt-travels-through-time-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-putttime-shot-1.webp",
+      "/launcher/retro-scumm-putttime-shot-2.webp",
+      "/launcher/retro-scumm-putttime-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -14010,8 +16055,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/putttime/putttime_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt Travels Through Time (Windows/English)",
+          "sha256": "2f6c6273ce7ff0a85d29896d01f9521a2bf2f85850ddbfadc8bbef26237f335a",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/putttime/putttime_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt Travels Through Time (Windows/English)",
+          "sha256": "bef7ac39672ee15d68bdb459681185ad62cb7f1eac5e1c90a80a392b201ccc59",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/putttime/putttime_win_en_1_6_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt Travels Through Time (Windows/English)",
+          "sha256": "6ab60fc2ffac17be139974e4e272b53cb8f9d7028fc61272ab70e7a2eaf114f0",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Travels%20Through%20Time.png"
       ],
@@ -14042,7 +16111,11 @@
       "Putt-Putt's Fun Pack (3DO)"
     ],
     "posterImage": "/launcher/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-funpack-shot-1.webp",
+      "/launcher/retro-scumm-funpack-shot-2.webp",
+      "/launcher/retro-scumm-funpack-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -14058,8 +16131,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/funpack/funpack_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/puttputt/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Putt-Putt's Fun Pack (DOS/English)",
+          "sha256": "9f3fd7816bba7aa80a70ef31187367357aafc107a64a4513db2e11fbd307e7a7",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Putt-Putt%27s%20Fun%20Pack.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "34d55935d45a384dcae1060582d6683ccb27bc937415c5e3d1aece57e9dcf6ec",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://images.launchbox-app.com/ad9b1c5a-5b6c-4ca8-964a-e84c8bd6eb4b.png",
+          "page": "https://gamesdb.launchbox-app.com/games/details/93212",
+          "credit": "LaunchBox Games Database",
+          "edition": "ScummVM",
+          "sha256": "02973553d3d0b99dd6b62ccfbbd2f9610070cbe382948fa3583e65926b3f3d18",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt's%20Fun%20Pack.png"
       ],
@@ -14090,7 +16186,11 @@
       "Putt-Putt's One-Stop Fun Shop (CD Windows)"
     ],
     "posterImage": "/launcher/putt-putts-one-stop-fun-shop-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-puttsfunshop-shot-1.webp",
+      "/launcher/retro-scumm-puttsfunshop-shot-2.webp",
+      "/launcher/retro-scumm-puttsfunshop-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -14106,8 +16206,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Putt-Putt%27s%20One-Stop%20Fun%20Shop.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "931378107c4ea728ca7436d6a3c34623a4096bb9f40c20336a29c79c37934488",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://oldgamesdownload.com/wp-content/uploads/images/screenshot/p/putt-putts-one-stop-fun-shop_win_screenshot-02_9we.webp",
+          "page": "https://oldgamesdownload.com/game/putt-putts-one-stop-fun-shop-9we/",
+          "credit": "Old Games Download screenshot gallery",
+          "edition": "Windows",
+          "sha256": "8d6fcde0970b793dce640b81b73a5cf8b50e6a470946a1ff86840a69a8252e8a",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://oldgamesdownload.com/wp-content/uploads/images/screenshot/p/putt-putts-one-stop-fun-shop_win_screenshot-03_9we.webp",
+          "page": "https://oldgamesdownload.com/game/putt-putts-one-stop-fun-shop-9we/",
+          "credit": "Old Games Download screenshot gallery",
+          "edition": "Windows",
+          "sha256": "605bdca3a7d1ded9ca89138c533c6a197b4da8730fe0c4b5a0ae5a92688ea307",
+          "kind": "title-screen"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt's%20One-Stop%20Fun%20Shop.png"
       ],
@@ -14138,7 +16261,11 @@
       "Living Books - Ruff's Bone (CD Windows)"
     ],
     "posterImage": "/launcher/ruffs-bone-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-mohawk-ruff-shot-1.webp",
+      "/launcher/retro-mohawk-ruff-shot-2.webp",
+      "/launcher/retro-mohawk-ruff-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -14154,8 +16281,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/ruff/ruff_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Ruff's Bone (Windows/English)",
+          "sha256": "301472fab86661ff19f9ec0e43cc94acfe8ad5b3f1dbdb0e4620f35cb3ba59e0",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/ruff/ruff_win_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Ruff's Bone (Windows/English)",
+          "sha256": "5e96984b9972ba9427edfd348d96b972817249c4a5cf89a05abcb8f97b86edd3",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/ruff/ruff_win_es_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Ruff's Bone (Windows/Spanish)",
+          "sha256": "348f16f13497581f3eef6d35f0f8099e1678b152c848e6c2135f4448435a876b",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Ruffs%20Bone.png"
       ],
@@ -14186,7 +16337,11 @@
       "Living Books - Sheila Rae, The Brave (CD Windows)"
     ],
     "posterImage": "/launcher/sheila-rae-the-brave-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-mohawk-sheila-shot-1.webp",
+      "/launcher/retro-mohawk-sheila-shot-2.webp",
+      "/launcher/retro-mohawk-sheila-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -14202,8 +16357,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/sheila/sheila_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Sheila Rae, the Brave (Windows/English)",
+          "sha256": "08632970e9d3a95ea014edc14861ee19d8e83acefff20cd9752b19becd62b17d",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/sheila/sheila_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Sheila Rae, the Brave (Windows/English)",
+          "sha256": "79088aed9ff619e6bf731367043b16a6ce7c11cecead44a6fdbd3bef1e9a8859",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/sheila/sheila_win_en_1_6_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Sheila Rae, the Brave (Windows/English)",
+          "sha256": "a36d5d241dcceb43b4804a83380d928054829673dee5144f6686eeb947f1afe5",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Sheila%20Rae%2C%20the%20Brave.png"
       ],
@@ -14234,7 +16413,11 @@
       "Slater & Charlie Go Camping (CD DOS)"
     ],
     "posterImage": "/launcher/slater-and-charlie-go-camping-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-sci-slater-shot-1.webp",
+      "/launcher/retro-sci-slater-shot-2.webp",
+      "/launcher/retro-sci-slater-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -14250,8 +16433,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/slater/slater_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:slater/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Slater & Charlie Go Camping (DOS/English)",
+          "sha256": "42a12a891a0d612eb17e666fc4144417a6cd9ddd8aadeb4efed4057977e8ca1a",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/slater/slater_dos_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:slater/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Slater & Charlie Go Camping (DOS/English)",
+          "sha256": "3acf424adfc3cc4d078b9a19846a25b662b24d1c863d4bcde1e334017fff0e25",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/slater/slater_dos_en_1_7_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sci:slater/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Slater & Charlie Go Camping (DOS/English)",
+          "sha256": "41de771153a44d78a703213213c790aaabeed1e4f3555d5e736d0f7180e51cf6",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Slater%20_%20Charlie%20Go%20Camping.png"
       ],
@@ -14282,7 +16489,11 @@
       "Spy Fox In Cheese Chase (CD Windows)"
     ],
     "posterImage": "/launcher/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-chase-shot-1.webp",
+      "/launcher/retro-scumm-chase-shot-2.webp",
+      "/launcher/retro-scumm-chase-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -14298,8 +16509,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/chase/chase_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/spyfox/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "SPY Fox in \"Cheese Chase\" (Windows/English)",
+          "sha256": "8cdc95b42ff112a5886022c1840c903365493cb83b3fd5172918f07b9266ec27",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/chase/chase_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/spyfox/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "SPY Fox in \"Cheese Chase\" (Windows/English)",
+          "sha256": "ef94bef98a260eb73d2ae8fc29b4954e2d7fd3c45f3ad58563acb9dba02e91c2",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Spy%20Fox%20in%20Cheese%20Chase.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "aa5597b9f0dee6a93b0b0c92dc6348bce995f11381eedcc4033ae1b133ed5445",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Spy%20Fox%20in%20Cheese%20Chase.png"
       ],
@@ -14330,7 +16564,11 @@
       "Spy Fox 1 Dry Cereal (CD Windows, US)"
     ],
     "posterImage": "/launcher/spy-fox-in-dry-cereal-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-spyfox-shot-1.webp",
+      "/launcher/retro-scumm-spyfox-shot-2.webp",
+      "/launcher/retro-scumm-spyfox-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -14346,8 +16584,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/spyfox/spyfox_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/spyfox/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Spy Fox in \"Dry Cereal\" (Windows/English)",
+          "sha256": "b1789af77146c624725aaac64c5dd6e1bb69d7ec2e9e414a42dbb96ae35d3358",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/spyfox/spyfox_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/spyfox/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Spy Fox in \"Dry Cereal\" (Windows/English)",
+          "sha256": "3c7e07ff8cd864a50b6711c1e4142274ca995a16c67d4a89a1266aa3205919ef",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/spyfox/spyfox_win_en_1_6_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/spyfox/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Spy Fox in \"Dry Cereal\" (Windows/English)",
+          "sha256": "8f30b5cea8f2021506e1bb59eea3318a6aff5214ac32dbee00751728d6188a7b",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Spy%20Fox%20in%20Dry%20Cereal.png"
       ],
@@ -14378,7 +16640,11 @@
       "Spy Fox In Hold The Mustard (CD Windows)"
     ],
     "posterImage": "/launcher/spy-fox-in-hold-the-mustard-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-mustard-shot-1.webp",
+      "/launcher/retro-scumm-mustard-shot-2.webp",
+      "/launcher/retro-scumm-mustard-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -14394,8 +16660,31 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/mustard/mustard_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/spyfox/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Spy Fox in \"Hold the Mustard\" (Windows/English)",
+          "sha256": "3db967189b2a90928ecbd7599460b3ec8e5e4a6c56dbea059c4504a627c41506",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/mustard/mustard_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/spyfox/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Spy Fox in \"Hold the Mustard\" (Windows/English)",
+          "sha256": "bba34197ea054174300015be52b21cebe19db46c6bdbb91f912ddcaab4c92d34",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Spy%20Fox%20in%20Hold%20the%20Mustard.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "699f8384e18815c282e5f5767cba5df7ff66a876541dabbeb65d852dc7a9d07b",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Spy%20Fox%20in%20Hold%20the%20Mustard.png"
       ],
@@ -14426,7 +16715,11 @@
       "Spy Fox 3 Operation Ozone (CD Windows)"
     ],
     "posterImage": "/launcher/spy-fox-operation-ozone-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-scumm-spyozon-shot-1.webp",
+      "/launcher/retro-scumm-spyozon-shot-2.webp",
+      "/launcher/retro-scumm-spyozon-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -14442,8 +16735,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/spyozon/spyozon_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/spyfox/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Spy Fox: \"Operation Ozone\" (Windows/English)",
+          "sha256": "0fd578bb3851b754b0239fcdfdf95a3fdad9796269f99311316ab930d1d7e986",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/spyozon/spyozon_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/spyfox/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Spy Fox: \"Operation Ozone\" (Windows/English)",
+          "sha256": "dc0b86e3d3d93ce840d23224cc22233b9b515faa1986baf7c36ae6c11b36ed8f",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/scumm/spyozon/spyozon_win_en_1_6_full.png",
+          "page": "https://www.scummvm.org/screenshots/he/spyfox/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Spy Fox: \"Operation Ozone\" (Windows/English)",
+          "sha256": "004b4865cd748dd139ee41e391b8878547c08e54f1dc9a84abd000c961464f7d",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Spy%20Fox%203_%20Operation%20Ozone.png"
       ],
@@ -14474,7 +16791,11 @@
       "Living Books - Stellaluna (CD Windows)"
     ],
     "posterImage": "/launcher/stellaluna-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-mohawk-stellaluna-shot-1.webp",
+      "/launcher/retro-mohawk-stellaluna-shot-2.webp",
+      "/launcher/retro-mohawk-stellaluna-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -14490,8 +16811,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/stellaluna/stellaluna_win_en_1_11_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Stellaluna (Windows/English)",
+          "sha256": "9e446106a37f4ebceff33222262244e02c40ec98bc20552e56bf0d9412b8611d",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/stellaluna/stellaluna_win_en_1_14_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Stellaluna (Windows/English)",
+          "sha256": "943baced078bfa807259c4f43325373d4a4df944ca7de71738159b04ee914e5d",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/stellaluna/stellaluna_win_en_1_15_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Stellaluna (Windows/English)",
+          "sha256": "a907eb96ebf3fc3a403ecebc6ca06a30c7e3dddbd8a85b519fb61832f10ebac0",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Stellaluna.png"
       ],
@@ -14522,7 +16867,11 @@
       "Living Books - The Berenstein Bears Get In The Fight (CD Windows)"
     ],
     "posterImage": "/launcher/the-berenstain-bears-get-in-a-fight-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-mohawk-bearfight-shot-1.webp",
+      "/launcher/retro-mohawk-bearfight-shot-2.webp",
+      "/launcher/retro-mohawk-bearfight-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -14538,8 +16887,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/bearfight/bearfight_win_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "The Berenstain Bears Get in a Fight (Windows/English)",
+          "sha256": "20380e2256e619c99525187af36a0c76fd151126b0c567861ce3a33f4608abb4",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/bearfight/bearfight_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "The Berenstain Bears Get in a Fight (Windows/English)",
+          "sha256": "c14471654e9ddad30efee1ad43f673b9e23cf93ff2bda26a5b6465ec71022fc2",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/bearfight/bearfight_win_es_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "The Berenstain Bears Get in a Fight (Windows/Spanish)",
+          "sha256": "7e17a1169e68e0c71bde945fdbd0939476149061faccf254760fb240321a1283",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20The%20Berenstain%20Bears%20Get%20In%20a%20Fight.png"
       ],
@@ -14570,7 +16943,11 @@
       "Living Books - The Berenstain Bears in the Dark (CD Windows)"
     ],
     "posterImage": "/launcher/the-berenstain-bears-in-the-dark-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-mohawk-beardark-shot-1.webp",
+      "/launcher/retro-mohawk-beardark-shot-2.webp",
+      "/launcher/retro-mohawk-beardark-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -14586,8 +16963,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/beardark/beardark_win_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "The Berenstain Bears In The Dark (Windows/English)",
+          "sha256": "99ddf5de0974da38e09aee4afb021d67b06dd0a6022784410a301a1b49cbfad1",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/beardark/beardark_win_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "The Berenstain Bears In The Dark (Windows/English)",
+          "sha256": "e028ff403ee269ee6b7038ea623353d38ba0025a5473fe438482b0f1431cc436",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/beardark/beardark_win_en_1_5_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "The Berenstain Bears In The Dark (Windows/English)",
+          "sha256": "a2ab04dae0b44d7d780b8361e936d9d79b394f4f0864c897c3342e429f2bbfa3",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20The%20Berenstain%20Bears%20in%20the%20Dark.png"
       ],
@@ -14617,10 +17018,38 @@
     "aliases": [
       "Living Books - Cat in the Hat (CD Windows)"
     ],
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-mohawk-catinthehat-shot-1.webp",
+      "/launcher/retro-mohawk-catinthehat-shot-2.webp",
+      "/launcher/retro-mohawk-catinthehat-shot-3.webp"
+    ],
     "sources": {
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.myabandonware.com/media/screenshots/t/the-cat-in-the-hat-lcn/the-cat-in-the-hat_4.png",
+          "page": "https://www.myabandonware.com/game/the-cat-in-the-hat-dkd",
+          "credit": "My Abandonware screenshot archive",
+          "edition": "Windows",
+          "sha256": "69fe463fc631dff15cf5e0eac30c3e29cc32c2185c737dde4d0f7c0d44dfdab2",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.myabandonware.com/media/screenshots/t/the-cat-in-the-hat-lcn/the-cat-in-the-hat_5.png",
+          "page": "https://www.myabandonware.com/game/the-cat-in-the-hat-dkd",
+          "credit": "My Abandonware screenshot archive",
+          "edition": "Windows",
+          "sha256": "e0e94c2cda0ead03c9f5992cc8b7bf39e9e97a11f9cc2bff1be1348f0949c8cc",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.myabandonware.com/media/screenshots/t/the-cat-in-the-hat-lcn/the-cat-in-the-hat_6.png",
+          "page": "https://www.myabandonware.com/game/the-cat-in-the-hat-dkd",
+          "credit": "My Abandonware screenshot archive",
+          "edition": "Windows",
+          "sha256": "c2dcf660a3bdc5f82636a6fe59a01eaecd041706336ce440fb063e6395d2384c",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20The%20Cat%20in%20the%20Hat.png"
       ],
@@ -14658,7 +17087,11 @@
       "The Manhole Enhanced (CD Windows)"
     ],
     "posterImage": "/launcher/the-manhole-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-made-manhole-shot-1.webp",
+      "/launcher/retro-made-manhole-shot-2.webp",
+      "/launcher/retro-made-manhole-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -14674,8 +17107,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/made/manhole/manhole_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/cyan/made:manhole/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "The Manhole (DOS/English)",
+          "sha256": "dacf1c34e1625adf482c5cbabba6d7cbfb64425c02c6bf0da4aa38b334cb8b43",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/made/manhole/manhole_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/cyan/made:manhole/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "The Manhole (DOS/English)",
+          "sha256": "b66657dcd725e4bc31e294d0915528565a981118077c52e23c794ed8f750ce15",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/made/manhole/manhole_dos_ja_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/cyan/made:manhole/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "The Manhole (DOS/Japanese)",
+          "sha256": "d6492c6b2c61e38818167b25dcfec9f0d776cd5406b95c06856c68bcb96830a5",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://cdn.mobygames.com/covers/4080444-the-manhole-new-and-enhanced-front-cover.jpg"
       ],
@@ -14706,7 +17163,11 @@
       "Living Books - The New Kid on the Block (CD Windows)"
     ],
     "posterImage": "/launcher/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-cover.webp",
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-mohawk-newkid-shot-1.webp",
+      "/launcher/retro-mohawk-newkid-shot-2.webp",
+      "/launcher/retro-mohawk-newkid-shot-3.webp"
+    ],
     "sources": {
       "poster": {
         "kind": "generated-cover",
@@ -14722,8 +17183,32 @@
           }
         ]
       },
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/newkid/newkid_win_en_1_10_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "The New Kid on the Block (Windows/English)",
+          "sha256": "356adbf595632871e68d31001504af7d4aed6f89019155a0c60c360034dca6e6",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/newkid/newkid_win_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "The New Kid on the Block (Windows/English)",
+          "sha256": "46668770e581081bf7b173990c02067159ca49c9cc9a0bbb616c19ec60218d9a",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/mohawk/newkid/newkid_win_en_1_6_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/livingbooks/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "The New Kid on the Block (Windows/English)",
+          "sha256": "17e44768fab7be93b8bc62a97a45cff8288c6f8c280c65c0cfc1b8b05984d22b",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20The%20New%20Kid%20On%20the%20Block.png"
       ],
@@ -14753,10 +17238,35 @@
     "aliases": [
       "Christmas Card 1986 (AGI)"
     ],
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-agi-xmascard-shot-1.webp",
+      "/launcher/retro-agi-xmascard-shot-2.webp",
+      "/launcher/retro-agi-xmascard-shot-3.webp"
+    ],
     "sources": {
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "credit": "ScummWEB capture from the original game",
+          "edition": "DOS/English",
+          "sha256": "ddffb5a71f45bc42df692dbdd7f7ae6726e9cbdac3edcdedbcb2b3c1eb362827",
+          "kind": "cutscene",
+          "source": "Direct capture from ScummVM"
+        },
+        {
+          "credit": "ScummWEB capture from the original game",
+          "edition": "DOS/English",
+          "sha256": "2dd67f69d36baf5b365fc3365b53df71b2ab335aaf0bf0026984ea4eb76ab392",
+          "kind": "cutscene",
+          "source": "Direct capture from ScummVM"
+        },
+        {
+          "credit": "ScummWEB capture from the original game",
+          "edition": "DOS/English",
+          "sha256": "0d0ca6c77977eabedf309788b1ea4370bd7cddccfc433b6ccdca463bf4132442",
+          "kind": "cutscene",
+          "source": "Direct capture from ScummVM"
+        }
+      ],
       "metadata": [
         "https://retro365.blog/2022/12/18/bits-from-my-personal-collection-a-merry-sierra-christmas/",
         "https://cdn.t3n.de/news/wp-content/uploads/2024/12/a-computer-christmas.png?class=default"
@@ -14803,10 +17313,35 @@
     "aliases": [
       "Christmas Card 1988 (SCI)"
     ],
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-sci-christmas1988-shot-1.webp",
+      "/launcher/retro-sci-christmas1988-shot-2.webp",
+      "/launcher/retro-sci-christmas1988-shot-3.webp"
+    ],
     "sources": {
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Christmas%20Card%201988.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "34c7f6b77203420d4756b015b8e54eb11bfbfaa517372c6dccd7b9c2109ccb7f",
+          "kind": "gameplay"
+        },
+        {
+          "credit": "ScummWEB capture from the original game",
+          "edition": "DOS/English",
+          "sha256": "2badd803f646cf202fe1dfc92dfc51ed7796821f9f91ccf65eeb405d32e675c5",
+          "kind": "cutscene",
+          "source": "Direct capture from ScummVM"
+        },
+        {
+          "credit": "ScummWEB capture from the original game",
+          "edition": "DOS/English",
+          "sha256": "1c5048f28ba88985b4d36feaf4830b6b755e18ffddd9847b96c95a37ed86dea9",
+          "kind": "cutscene",
+          "source": "Direct capture from ScummVM"
+        }
+      ],
       "metadata": [
         "https://retro365.blog/2022/12/18/bits-from-my-personal-collection-a-merry-sierra-christmas/",
         "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Christmas%20Card%201988.png"
@@ -14854,10 +17389,35 @@
     "aliases": [
       "Christmas Card 1990 - The Seasoned Professional (SCI)"
     ],
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-sci-christmas1990-shot-1.webp",
+      "/launcher/retro-sci-christmas1990-shot-2.webp",
+      "/launcher/retro-sci-christmas1990-shot-3.webp"
+    ],
     "sources": {
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Christmas%20Card%201990_%20The%20Seasoned%20Professional.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "e2305a3e1f4600b77f1484caaec31fee082dc5bf46b09aa5a83e633e257da7af",
+          "kind": "gameplay"
+        },
+        {
+          "credit": "ScummWEB capture from the original game",
+          "edition": "DOS/English",
+          "sha256": "d28f8165ad0b5ad65a2b9261e9e10517472df9be91b9a74f6510cb990b3452c2",
+          "kind": "cutscene",
+          "source": "Direct capture from ScummVM"
+        },
+        {
+          "credit": "ScummWEB capture from the original game",
+          "edition": "DOS/English",
+          "sha256": "ca1ee8742eed5113063fc7553ab4d3a7b760f500407881b4d4d20d6f4f248eea",
+          "kind": "cutscene",
+          "source": "Direct capture from ScummVM"
+        }
+      ],
       "metadata": [
         "https://retro365.blog/2022/12/18/bits-from-my-personal-collection-a-merry-sierra-christmas/",
         "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Christmas%20Card%201990_%20The%20Seasoned%20Professional.png"
@@ -14904,10 +17464,35 @@
     "aliases": [
       "Christmas Card 1992 (SCI)"
     ],
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-sci-christmas1992-shot-1.webp",
+      "/launcher/retro-sci-christmas1992-shot-2.webp",
+      "/launcher/retro-sci-christmas1992-shot-3.webp"
+    ],
     "sources": {
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Christmas%20Card%201992.png",
+          "page": "https://thumbnails.libretro.com/ScummVM/Named_Snaps/",
+          "credit": "Libretro ScummVM thumbnails",
+          "sha256": "69fc76a8323a4f1895964c8891384cb1b261a5f36c21df45fc6812b57f78c860",
+          "kind": "gameplay"
+        },
+        {
+          "credit": "ScummWEB capture from the original game",
+          "edition": "DOS/English",
+          "sha256": "5e6cb204f14968692e89a6e5967a0005fa6f706c41cdc57bf8e0d90343b0b914",
+          "kind": "cutscene",
+          "source": "Direct capture from ScummVM"
+        },
+        {
+          "credit": "ScummWEB capture from the original game",
+          "edition": "DOS/English",
+          "sha256": "96790641d6ff5fc0534e417590f0708c45563da430e018b63876b4e17ec316f1",
+          "kind": "cutscene",
+          "source": "Direct capture from ScummVM"
+        }
+      ],
       "metadata": [
         "https://retro365.blog/2022/12/18/bits-from-my-personal-collection-a-merry-sierra-christmas/",
         "https://thumbnails.libretro.com/ScummVM/Named_Snaps/Christmas%20Card%201992.png"
@@ -14955,10 +17540,38 @@
       "Donald Duck's Playground (Floppy DOS)",
       "Donald Duck’s Playground"
     ],
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-agi-ddp-shot-1.webp",
+      "/launcher/retro-agi-ddp-shot-2.webp",
+      "/launcher/retro-agi-ddp-shot-3.webp"
+    ],
     "sources": {
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/agi/ddp/ddp_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/disney/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Donald Duck's Playground (DOS/English)",
+          "sha256": "1cb5c0c26804809d928bcea3e2d5584f9a7bed502c3fc3a80c46562cd63d56cb",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/agi/ddp/ddp_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/disney/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Donald Duck's Playground (DOS/English)",
+          "sha256": "f1dbd7f9038a17b690f3166651fad384993ea12461ce4d278f70947374cb86b0",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/agi/ddp/ddp_dos_en_2_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/disney/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Donald Duck's Playground (CGA/DOS/English)",
+          "sha256": "18fdfa92cf3ae49681f8886b547677cdcfb3b9556133eaab0f771fa7ed6cdbdb",
+          "kind": "gameplay"
+        }
+      ],
       "metadata": [
         "https://www.wiki.sierrahelp.com/index.php/DDPG"
       ],
@@ -14980,10 +17593,38 @@
       "Inca II - Wiracocha (Floppy DOS)",
       "Inca II: Nations of Immortality"
     ],
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-gob-inca2-shot-1.webp",
+      "/launcher/retro-gob-inca2-shot-2.webp",
+      "/launcher/retro-gob-inca2-shot-3.webp"
+    ],
     "sources": {
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.abandonware-france.org/images_abandonware/jeux/80351-inca2_005.png",
+          "page": "https://www.abandonware-france.org/ltf_abandon/ltf_galeries.php?id=550",
+          "credit": "Abandonware France screenshot gallery",
+          "edition": "French release",
+          "sha256": "42d553b8bafe2739233d37db321670f842c252810cdf06b273eea901a08b89d3",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.myabandonware.com/media/screenshots/i/inca-ii-nations-of-immortality-1zg/inca-ii-nations-of-immortality_7.gif",
+          "page": "https://www.myabandonware.com/game/inca-ii-nations-of-immortality-1zg",
+          "credit": "My Abandonware DOS screenshot archive",
+          "edition": "DOS",
+          "sha256": "45ba15dd0717b12e3a70ee642a07ddcb6e6724ba701930781e4620fafb374b5c",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.myabandonware.com/media/screenshots/i/inca-ii-nations-of-immortality-1zg/inca-ii-nations-of-immortality_13.gif",
+          "page": "https://www.myabandonware.com/game/inca-ii-nations-of-immortality-1zg",
+          "credit": "My Abandonware DOS screenshot archive",
+          "edition": "DOS",
+          "sha256": "da20a59a7448a66bbb7987fea3c2f7ea517b8c7fa13ba38b6f4ede2c6d884c55",
+          "kind": "cutscene"
+        }
+      ],
       "metadata": [
         "https://www.oldgamesitalia.net/museo/168-Inca_II%3A_Wiracocha"
       ],
@@ -15012,10 +17653,38 @@
     "aliases": [
       "Astro Chicken (Floppy DOS)"
     ],
-    "screenshots": [],
+    "screenshots": [
+      "/launcher/retro-sci-astrochicken-shot-1.webp",
+      "/launcher/retro-sci-astrochicken-shot-2.webp",
+      "/launcher/retro-sci-astrochicken-shot-3.webp"
+    ],
     "sources": {
-      "screenshots": [],
-      "galleryNote": "Gameplay capture references are pending.",
+      "screenshots": [
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/astrochicken/astrochicken_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Astro Chicken (DOS/English)",
+          "sha256": "c8854a3376e0c95db438b6a8aab6ade5b95b7e999dbe757134c75fc6d13938c2",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/astrochicken/astrochicken_dos_en_1_4_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Astro Chicken (DOS/English)",
+          "sha256": "421055656c8cdaebe1f71e28936cc0e5d08f6027e44437790c0553287f2e15d9",
+          "kind": "gameplay"
+        },
+        {
+          "url": "https://www.scummvm.org/data/screenshots/sci/astrochicken/astrochicken_dos_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/sierra/sq/",
+          "credit": "ScummVM screenshot gallery",
+          "edition": "Astro Chicken (DOS/English)",
+          "sha256": "611749a72f9297fdb93e682ea38fa332171b440a984bb179ad17f7922f646660",
+          "kind": "title-screen"
+        }
+      ],
       "metadata": [
         "https://www.spacequest.net/sq3/demo/",
         "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Astro%20Chicken.png"
