@@ -35570,6 +35570,718 @@
       "contentType": "image/webp",
       "width": 640,
       "height": 480
+    },
+    "/launcher/retro-adl-hires1-shot-play-1.webp": {
+      "key": "artwork/e1c002c22b05f6e72b22309bc332de5be320d010585c608a55893bdb3f689419/retro-adl-hires1-shot-play-1.webp",
+      "sha256": "e1c002c22b05f6e72b22309bc332de5be320d010585c608a55893bdb3f689419",
+      "bytes": 105152,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 658
+    },
+    "/launcher/retro-agi-kq3-shot-play-3.webp": {
+      "key": "artwork/a08a5755dccf75b6ee2ea7aaeb90b0ac4f97649051f9eb325fdb9a29b8d8e2e8/retro-agi-kq3-shot-play-3.webp",
+      "sha256": "a08a5755dccf75b6ee2ea7aaeb90b0ac4f97649051f9eb325fdb9a29b8d8e2e8",
+      "bytes": 22558,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-agi-mh1-shot-play-3.webp": {
+      "key": "artwork/a7182373682d419b013b05dc98a92aa905dc51ad8b77610565ee36480e84fd7e/retro-agi-mh1-shot-play-3.webp",
+      "sha256": "a7182373682d419b013b05dc98a92aa905dc51ad8b77610565ee36480e84fd7e",
+      "bytes": 9114,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-agi-mh2-shot-play-3.webp": {
+      "key": "artwork/562c4c075c320185d4ba67b9b41d39134919cd4453283f162e543c207e43d041/retro-agi-mh2-shot-play-3.webp",
+      "sha256": "562c4c075c320185d4ba67b9b41d39134919cd4453283f162e543c207e43d041",
+      "bytes": 29070,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-agi-pq1-shot-play-2.webp": {
+      "key": "artwork/0628797278cddc62f7166247b8ee8978c724dac6174b368cab2563b2542527e6/retro-agi-pq1-shot-play-2.webp",
+      "sha256": "0628797278cddc62f7166247b8ee8978c724dac6174b368cab2563b2542527e6",
+      "bytes": 18574,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-agi-sq2-shot-play-2.webp": {
+      "key": "artwork/086f367526dfcfc6c9309038d0a2b011e8e77f86bb419b50183233e7033f981e/retro-agi-sq2-shot-play-2.webp",
+      "sha256": "086f367526dfcfc6c9309038d0a2b011e8e77f86bb419b50183233e7033f981e",
+      "bytes": 10648,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-agos-jumble-shot-play-2.webp": {
+      "key": "artwork/b3e9e3e9de86f4b3c46664202253758e6cb0b73f2bdff5922be7cde484b6c7ef/retro-agos-jumble-shot-play-2.webp",
+      "sha256": "b3e9e3e9de86f4b3c46664202253758e6cb0b73f2bdff5922be7cde484b6c7ef",
+      "bytes": 124818,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-agos-waxworks-shot-play-1.webp": {
+      "key": "artwork/144253cddb3858abb71247cb60413de5e584fa735c96816bb738993a2ab43f2d/retro-agos-waxworks-shot-play-1.webp",
+      "sha256": "144253cddb3858abb71247cb60413de5e584fa735c96816bb738993a2ab43f2d",
+      "bytes": 16210,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 200
+    },
+    "/launcher/retro-cine-fw-shot-play-2.webp": {
+      "key": "artwork/e049aa93703258bb3d1100fa528b56679c21127c3e61916287714e739ed4347c/retro-cine-fw-shot-play-2.webp",
+      "sha256": "e049aa93703258bb3d1100fa528b56679c21127c3e61916287714e739ed4347c",
+      "bytes": 106492,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-drascula-drascula-shot-play-1.webp": {
+      "key": "artwork/f4c64bcd152c9ff00aabfc713d6d1455ea2336ca7598afeb7f49b9e3f2597c72/retro-drascula-drascula-shot-play-1.webp",
+      "sha256": "f4c64bcd152c9ff00aabfc713d6d1455ea2336ca7598afeb7f49b9e3f2597c72",
+      "bytes": 97228,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-drascula-drascula-shot-play-3.webp": {
+      "key": "artwork/f88b623c8c1ceac6cb707c067cacf8e9e1b012e92a15e053d00e80dcfabd6f3a/retro-drascula-drascula-shot-play-3.webp",
+      "sha256": "f88b623c8c1ceac6cb707c067cacf8e9e1b012e92a15e053d00e80dcfabd6f3a",
+      "bytes": 115466,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-gnap-gnap-shot-play-1.webp": {
+      "key": "artwork/0a707e0d959974971f638adce5017c783d9a9398361243b2e36253a2b5077471/retro-gnap-gnap-shot-play-1.webp",
+      "sha256": "0a707e0d959974971f638adce5017c783d9a9398361243b2e36253a2b5077471",
+      "bytes": 312356,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/retro-gob-bargon-shot-play-2.webp": {
+      "key": "artwork/6f284e8cba7f79dc67b465f76c34541861a39a3fd6c2bb0c6b6f547a2ac9e92b/retro-gob-bargon-shot-play-2.webp",
+      "sha256": "6f284e8cba7f79dc67b465f76c34541861a39a3fd6c2bb0c6b6f547a2ac9e92b",
+      "bytes": 89736,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-gob-gob2-shot-play-3.webp": {
+      "key": "artwork/d85f1a0db28bf45ff83d386d995bfa466eab5e53af4f9a2660c9c3ad5cbbd7a2/retro-gob-gob2-shot-play-3.webp",
+      "sha256": "d85f1a0db28bf45ff83d386d995bfa466eab5e53af4f9a2660c9c3ad5cbbd7a2",
+      "bytes": 110722,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-gob-inca2-shot-play-2.webp": {
+      "key": "artwork/1c5c62333a278b00922854b79302203c573e0b8172e35b169be19b6b40e8221c/retro-gob-inca2-shot-play-2.webp",
+      "sha256": "1c5c62333a278b00922854b79302203c573e0b8172e35b169be19b6b40e8221c",
+      "bytes": 37200,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 400
+    },
+    "/launcher/retro-gob-inca2-shot-play-3.webp": {
+      "key": "artwork/ac6483725fdd12c60b802c30c3b73028d5a8638d97800e93b10ca02b92b1aa6e/retro-gob-inca2-shot-play-3.webp",
+      "sha256": "ac6483725fdd12c60b802c30c3b73028d5a8638d97800e93b10ca02b92b1aa6e",
+      "bytes": 111676,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 400
+    },
+    "/launcher/retro-gob-lit-shot-play-3.webp": {
+      "key": "artwork/0ea4d175280d562ab37328d88aefba69b3a46207858ff31493289351ef25da98/retro-gob-lit-shot-play-3.webp",
+      "sha256": "0ea4d175280d562ab37328d88aefba69b3a46207858ff31493289351ef25da98",
+      "bytes": 107928,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-got-got-shot-play-1.webp": {
+      "key": "artwork/47008faf99b7409092098464a0b9fed362c7b5e0bca6c039869e9b64671baddc/retro-got-got-shot-play-1.webp",
+      "sha256": "47008faf99b7409092098464a0b9fed362c7b5e0bca6c039869e9b64671baddc",
+      "bytes": 46572,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-groovie-t7g-shot-play-3.webp": {
+      "key": "artwork/86adc035736f12679d130a71c1f7972e9ea3a387d89ee0ec6b25bbe14c87d7d3/retro-groovie-t7g-shot-play-3.webp",
+      "sha256": "86adc035736f12679d130a71c1f7972e9ea3a387d89ee0ec6b25bbe14c87d7d3",
+      "bytes": 53430,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-kyra-eob-shot-play-1.webp": {
+      "key": "artwork/bea472a709cb447b997845904705e43e9f9461e0606d273ffc88b757fa4c3591/retro-kyra-eob-shot-play-1.webp",
+      "sha256": "bea472a709cb447b997845904705e43e9f9461e0606d273ffc88b757fa4c3591",
+      "bytes": 117752,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-kyra-eob-shot-play-2.webp": {
+      "key": "artwork/b650d2ea5470bbd5b1d49205abd5f8132750c814db0bb9874876280436ce8140/retro-kyra-eob-shot-play-2.webp",
+      "sha256": "b650d2ea5470bbd5b1d49205abd5f8132750c814db0bb9874876280436ce8140",
+      "bytes": 91338,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-kyra-eob-shot-play-3.webp": {
+      "key": "artwork/c38dcbb991ef3c3385dd83bb7860d0751cb9105aa2528da0eb3f9a21e78f986b/retro-kyra-eob-shot-play-3.webp",
+      "sha256": "c38dcbb991ef3c3385dd83bb7860d0751cb9105aa2528da0eb3f9a21e78f986b",
+      "bytes": 124302,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-kyra-eob2-shot-play-3.webp": {
+      "key": "artwork/7f11266add2bf34cb52271ec9ebcd45fb00f1980b6b73e8a7c264c65b5dbd71a/retro-kyra-eob2-shot-play-3.webp",
+      "sha256": "7f11266add2bf34cb52271ec9ebcd45fb00f1980b6b73e8a7c264c65b5dbd71a",
+      "bytes": 120396,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-kyra-kyra1-shot-play-3.webp": {
+      "key": "artwork/34269e9ce74f223dac2b39b3b2c58f7858422b9941f20a43959968413e086e6b/retro-kyra-kyra1-shot-play-3.webp",
+      "sha256": "34269e9ce74f223dac2b39b3b2c58f7858422b9941f20a43959968413e086e6b",
+      "bytes": 23508,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 400
+    },
+    "/launcher/retro-kyra-kyra3-shot-play-2.webp": {
+      "key": "artwork/365ecb53a036f706b28e64b7cd17fea5809c2a8b3decf396c79058e2276312f5/retro-kyra-kyra3-shot-play-2.webp",
+      "sha256": "365ecb53a036f706b28e64b7cd17fea5809c2a8b3decf396c79058e2276312f5",
+      "bytes": 101580,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-kyra-lol-shot-play-2.webp": {
+      "key": "artwork/757a75531a51d24f7d596f04a09066f52a6750988a1123f59176c387e840e173/retro-kyra-lol-shot-play-2.webp",
+      "sha256": "757a75531a51d24f7d596f04a09066f52a6750988a1123f59176c387e840e173",
+      "bytes": 141978,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-kyra-lol-shot-play-3.webp": {
+      "key": "artwork/6055b8cfe1896481fd62a427b6c734dac95a8940b7b225e46fd8c7735baad640/retro-kyra-lol-shot-play-3.webp",
+      "sha256": "6055b8cfe1896481fd62a427b6c734dac95a8940b7b225e46fd8c7735baad640",
+      "bytes": 99072,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-local-openquest-shot-play-3.webp": {
+      "key": "artwork/a99e56f53fbf8ddd84dd6b77017c70f7f658a0991ab06d10937cb0b920b3ffeb/retro-local-openquest-shot-play-3.webp",
+      "sha256": "a99e56f53fbf8ddd84dd6b77017c70f7f658a0991ab06d10937cb0b920b3ffeb",
+      "bytes": 1296,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 200
+    },
+    "/launcher/retro-lure-lure-shot-play-1.webp": {
+      "key": "artwork/9b45eedc01aca684b364caa418c915ff81887fc166899329cf18c039d84e6435/retro-lure-lure-shot-play-1.webp",
+      "sha256": "9b45eedc01aca684b364caa418c915ff81887fc166899329cf18c039d84e6435",
+      "bytes": 91526,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-made-lgop2-shot-play-1.webp": {
+      "key": "artwork/6b7f8457a35e40eb366cc85d9f8d7726825872fadbebf89fadc4cac37564a303/retro-made-lgop2-shot-play-1.webp",
+      "sha256": "6b7f8457a35e40eb366cc85d9f8d7726825872fadbebf89fadc4cac37564a303",
+      "bytes": 147776,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-mohawk-arthurrace-shot-play-2.webp": {
+      "key": "artwork/97837b42f841b8848d44b51aa7a542c887636457aa5b3c85434a332ef897aefb/retro-mohawk-arthurrace-shot-play-2.webp",
+      "sha256": "97837b42f841b8848d44b51aa7a542c887636457aa5b3c85434a332ef897aefb",
+      "bytes": 497214,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-mohawk-arthurrace-shot-play-3.webp": {
+      "key": "artwork/1df45c615126e719d06989dd5bb2291d2f21423a4c997c03ecac2ef52572e10f/retro-mohawk-arthurrace-shot-play-3.webp",
+      "sha256": "1df45c615126e719d06989dd5bb2291d2f21423a4c997c03ecac2ef52572e10f",
+      "bytes": 397068,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-mohawk-myst-shot-play-1.webp": {
+      "key": "artwork/511ff310f2c999c332d4fa1306157e4d54637cc0512f2686c82bb0a518ee7542/retro-mohawk-myst-shot-play-1.webp",
+      "sha256": "511ff310f2c999c332d4fa1306157e4d54637cc0512f2686c82bb0a518ee7542",
+      "bytes": 114410,
+      "contentType": "image/webp",
+      "width": 544,
+      "height": 332
+    },
+    "/launcher/retro-mohawk-myst-shot-play-2.webp": {
+      "key": "artwork/d53b0698872c5580985ff4ec68d6f969f3ce36c307b8f4b5dabafd290cb345ad/retro-mohawk-myst-shot-play-2.webp",
+      "sha256": "d53b0698872c5580985ff4ec68d6f969f3ce36c307b8f4b5dabafd290cb345ad",
+      "bytes": 129638,
+      "contentType": "image/webp",
+      "width": 544,
+      "height": 332
+    },
+    "/launcher/retro-parallaction-bra-shot-play-2.webp": {
+      "key": "artwork/e2496cf810c14aeefdb6fb394b9b582698baf5fd9aed9a77b776a9f2718dad45/retro-parallaction-bra-shot-play-2.webp",
+      "sha256": "e2496cf810c14aeefdb6fb394b9b582698baf5fd9aed9a77b776a9f2718dad45",
+      "bytes": 113660,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 400
+    },
+    "/launcher/retro-sci-astrochicken-shot-play-3.webp": {
+      "key": "artwork/b9f92cc5a64d4fc3bf162cced7b3cd72624b59276d607d94d918cd52bedac6f6/retro-sci-astrochicken-shot-play-3.webp",
+      "sha256": "b9f92cc5a64d4fc3bf162cced7b3cd72624b59276d607d94d918cd52bedac6f6",
+      "bytes": 28082,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 720
+    },
+    "/launcher/retro-sci-camelot-shot-play-1.webp": {
+      "key": "artwork/4ff0c2ef27c63834feabd6db29a8c0d5bfd22bf2107a46d2e4d7bcea4fe9c41d/retro-sci-camelot-shot-play-1.webp",
+      "sha256": "4ff0c2ef27c63834feabd6db29a8c0d5bfd22bf2107a46d2e4d7bcea4fe9c41d",
+      "bytes": 71124,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-cnick-kq-shot-play-3.webp": {
+      "key": "artwork/42ace0d63c1a49da5e3862f68290b8abb5087b9ffacb9a1d05be2a20bf17d91e/retro-sci-cnick-kq-shot-play-3.webp",
+      "sha256": "42ace0d63c1a49da5e3862f68290b8abb5087b9ffacb9a1d05be2a20bf17d91e",
+      "bytes": 52902,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 380
+    },
+    "/launcher/retro-sci-cnick-laurabow-shot-play-3.webp": {
+      "key": "artwork/de5b30e8c86fb356fa1979b771519821cd45ac1b0af2de765b270c5d1ab1e6b2/retro-sci-cnick-laurabow-shot-play-3.webp",
+      "sha256": "de5b30e8c86fb356fa1979b771519821cd45ac1b0af2de765b270c5d1ab1e6b2",
+      "bytes": 45092,
+      "contentType": "image/webp",
+      "width": 512,
+      "height": 386
+    },
+    "/launcher/retro-sci-cnick-longbow-shot-play-3.webp": {
+      "key": "artwork/9da64ceea59b5d06856aba9ff705623597853bd5510b02c3eaac30f0e48b75d7/retro-sci-cnick-longbow-shot-play-3.webp",
+      "sha256": "9da64ceea59b5d06856aba9ff705623597853bd5510b02c3eaac30f0e48b75d7",
+      "bytes": 50416,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 380
+    },
+    "/launcher/retro-sci-ecoquest2-shot-play-3.webp": {
+      "key": "artwork/3d3db1f3c644e308968434be3e3ebd21ecec8aa67bdd2aab362960fb4e1064e8/retro-sci-ecoquest2-shot-play-3.webp",
+      "sha256": "3d3db1f3c644e308968434be3e3ebd21ecec8aa67bdd2aab362960fb4e1064e8",
+      "bytes": 65266,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 200
+    },
+    "/launcher/retro-sci-funseeker-shot-play-2.webp": {
+      "key": "artwork/8eca00b7badb7c0556d2e4d57b689e808ce5b7205c6fb059111b4a4418381cae/retro-sci-funseeker-shot-play-2.webp",
+      "sha256": "8eca00b7badb7c0556d2e4d57b689e808ce5b7205c6fb059111b4a4418381cae",
+      "bytes": 33366,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 720
+    },
+    "/launcher/retro-sci-funseeker-shot-play-3.webp": {
+      "key": "artwork/989b854ad7f7b053b937afa5a987c46815281cf27c3aea679c560c48e95864f5/retro-sci-funseeker-shot-play-3.webp",
+      "sha256": "989b854ad7f7b053b937afa5a987c46815281cf27c3aea679c560c48e95864f5",
+      "bytes": 32356,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 720
+    },
+    "/launcher/retro-sci-gk1-shot-play-1.webp": {
+      "key": "artwork/48658eab8f6a402e5314fa02b9badf928f659e393de2ffac2307d3d0a03c933a/retro-sci-gk1-shot-play-1.webp",
+      "sha256": "48658eab8f6a402e5314fa02b9badf928f659e393de2ffac2307d3d0a03c933a",
+      "bytes": 20822,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-gk1-shot-play-3.webp": {
+      "key": "artwork/c07fdf56e88aeeed327025d7979ff73ec18dd84a9b7c70127f60d52f02b6d4a2/retro-sci-gk1-shot-play-3.webp",
+      "sha256": "c07fdf56e88aeeed327025d7979ff73ec18dd84a9b7c70127f60d52f02b6d4a2",
+      "bytes": 34896,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-iceman-shot-play-2.webp": {
+      "key": "artwork/7a6ccc7f09e303a1b0736091394d8344a1acbc3a9543702bba0a296e58171efd/retro-sci-iceman-shot-play-2.webp",
+      "sha256": "7a6ccc7f09e303a1b0736091394d8344a1acbc3a9543702bba0a296e58171efd",
+      "bytes": 3558,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 200
+    },
+    "/launcher/retro-sci-iceman-shot-play-3.webp": {
+      "key": "artwork/f02c60cc8aeb523e0c97d32be37e9e60603145f9ba40b8b2075f9d596dd4fee4/retro-sci-iceman-shot-play-3.webp",
+      "sha256": "f02c60cc8aeb523e0c97d32be37e9e60603145f9ba40b8b2075f9d596dd4fee4",
+      "bytes": 5654,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 200
+    },
+    "/launcher/retro-sci-jones-shot-play-1.webp": {
+      "key": "artwork/b8d633ba37135bf17874596b6e7cbe827a0daf8898296bc9a0b94e5074dacb7c/retro-sci-jones-shot-play-1.webp",
+      "sha256": "b8d633ba37135bf17874596b6e7cbe827a0daf8898296bc9a0b94e5074dacb7c",
+      "bytes": 42720,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 437
+    },
+    "/launcher/retro-sci-jones-shot-play-2.webp": {
+      "key": "artwork/144e281b80d189648443819d76a20d907e030f0d2c7219170baa765b1744c52b/retro-sci-jones-shot-play-2.webp",
+      "sha256": "144e281b80d189648443819d76a20d907e030f0d2c7219170baa765b1744c52b",
+      "bytes": 129520,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-kq7-shot-play-2.webp": {
+      "key": "artwork/499aa388f5716126df8ac27239a2f149a6d58051e776cbdf589c2c0378942c12/retro-sci-kq7-shot-play-2.webp",
+      "sha256": "499aa388f5716126df8ac27239a2f149a6d58051e776cbdf589c2c0378942c12",
+      "bytes": 97392,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-kquestions-shot-play-1.webp": {
+      "key": "artwork/056e490926f11e7bddd8ecf04fed95b8485dd1f76af6ade075d27878e417dd53/retro-sci-kquestions-shot-play-1.webp",
+      "sha256": "056e490926f11e7bddd8ecf04fed95b8485dd1f76af6ade075d27878e417dd53",
+      "bytes": 351722,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 720
+    },
+    "/launcher/retro-sci-laurabow-shot-play-2.webp": {
+      "key": "artwork/e7d8bcd345f77de501a0ca9a97d2b08731e23a0e658f1013782ca611ee208480/retro-sci-laurabow-shot-play-2.webp",
+      "sha256": "e7d8bcd345f77de501a0ca9a97d2b08731e23a0e658f1013782ca611ee208480",
+      "bytes": 7894,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 200
+    },
+    "/launcher/retro-sci-laurabow-shot-play-3.webp": {
+      "key": "artwork/7194678474b88d38cd864822f011b5875d46e1644a8b5f20b4f5bed8a6b35fcb/retro-sci-laurabow-shot-play-3.webp",
+      "sha256": "7194678474b88d38cd864822f011b5875d46e1644a8b5f20b4f5bed8a6b35fcb",
+      "bytes": 6616,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 200
+    },
+    "/launcher/retro-sci-lsl7-shot-play-1.webp": {
+      "key": "artwork/33af2aeb9fe61232ec383da7b31019d11f745616c37d7625836af456b48bea59/retro-sci-lsl7-shot-play-1.webp",
+      "sha256": "33af2aeb9fe61232ec383da7b31019d11f745616c37d7625836af456b48bea59",
+      "bytes": 82328,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-pq3-shot-play-3.webp": {
+      "key": "artwork/56dda3b36a23a51ed2b09fcf53611f5b3a466af70b7ae0ead761f87dde32cce6/retro-sci-pq3-shot-play-3.webp",
+      "sha256": "56dda3b36a23a51ed2b09fcf53611f5b3a466af70b7ae0ead761f87dde32cce6",
+      "bytes": 82676,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-qfg1-shot-play-2.webp": {
+      "key": "artwork/8c7c5b646c52ce6cb0d3be633ffbd95feacb0659e71fd69df2f8b964bec8a4eb/retro-sci-qfg1-shot-play-2.webp",
+      "sha256": "8c7c5b646c52ce6cb0d3be633ffbd95feacb0659e71fd69df2f8b964bec8a4eb",
+      "bytes": 82762,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-qfg1-shot-play-3.webp": {
+      "key": "artwork/1f3830e4c6565ce357e15ec51d70a3adf4c88b11460cd36fddd9ba8eaffa29fc/retro-sci-qfg1-shot-play-3.webp",
+      "sha256": "1f3830e4c6565ce357e15ec51d70a3adf4c88b11460cd36fddd9ba8eaffa29fc",
+      "bytes": 41174,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-qfg3-shot-play-1.webp": {
+      "key": "artwork/6c82bc44442d3cba5799b97b13f16bb72a1fe27ee30f0ea05a8cf4d0ee7e77e5/retro-sci-qfg3-shot-play-1.webp",
+      "sha256": "6c82bc44442d3cba5799b97b13f16bb72a1fe27ee30f0ea05a8cf4d0ee7e77e5",
+      "bytes": 126118,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-qfg3-shot-play-2.webp": {
+      "key": "artwork/e48a00ee9d480527735a99fc691386bccd348582f3c0f1ad5a63eb67e3c0c4db/retro-sci-qfg3-shot-play-2.webp",
+      "sha256": "e48a00ee9d480527735a99fc691386bccd348582f3c0f1ad5a63eb67e3c0c4db",
+      "bytes": 132574,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-shivers-shot-play-3.webp": {
+      "key": "artwork/9f21421d1f758074c1d77bde9ee7baef96e6cf77b13e5dca6734f386ab7282fd/retro-sci-shivers-shot-play-3.webp",
+      "sha256": "9f21421d1f758074c1d77bde9ee7baef96e6cf77b13e5dca6734f386ab7282fd",
+      "bytes": 50264,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-sq1sci-shot-play-1.webp": {
+      "key": "artwork/56036bec148d45e641e62790baed3b889daa73a17e867fce63a20e39514ea345/retro-sci-sq1sci-shot-play-1.webp",
+      "sha256": "56036bec148d45e641e62790baed3b889daa73a17e867fce63a20e39514ea345",
+      "bytes": 121558,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-sq4-shot-play-1.webp": {
+      "key": "artwork/35bbb4d818584b33df0336a5204fde91f007da0e6df78adeb923a9ce3d1fd223/retro-sci-sq4-shot-play-1.webp",
+      "sha256": "35bbb4d818584b33df0336a5204fde91f007da0e6df78adeb923a9ce3d1fd223",
+      "bytes": 162138,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sci-sq5-shot-play-1.webp": {
+      "key": "artwork/1c54685f69c48d7ff6aaf4771a26ffedc3a55f157eefcfc3a14d83a1ed3b2d0b/retro-sci-sq5-shot-play-1.webp",
+      "sha256": "1c54685f69c48d7ff6aaf4771a26ffedc3a55f157eefcfc3a14d83a1ed3b2d0b",
+      "bytes": 141646,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-scumm-activity-shot-play-3.webp": {
+      "key": "artwork/04f4207cf250d791a9ad099ea75bc50d0c7cb2e9fe75628789390d44c08f0d1e/retro-scumm-activity-shot-play-3.webp",
+      "sha256": "04f4207cf250d791a9ad099ea75bc50d0c7cb2e9fe75628789390d44c08f0d1e",
+      "bytes": 110328,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 400
+    },
+    "/launcher/retro-scumm-arttime-shot-play-1.webp": {
+      "key": "artwork/c55702ce050cd6a0dc906c6e011adb8a3fac9715cf7d18ef96d25d1f502d4dbe/retro-scumm-arttime-shot-play-1.webp",
+      "sha256": "c55702ce050cd6a0dc906c6e011adb8a3fac9715cf7d18ef96d25d1f502d4dbe",
+      "bytes": 188330,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-scumm-atlantis-shot-play-2.webp": {
+      "key": "artwork/a511295f3163197cba919293a4b3993a00754d5e5934b14d8ee70e46a3e69637/retro-scumm-atlantis-shot-play-2.webp",
+      "sha256": "a511295f3163197cba919293a4b3993a00754d5e5934b14d8ee70e46a3e69637",
+      "bytes": 53162,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-scumm-baseball2003-shot-play-2.webp": {
+      "key": "artwork/d6970fc6495693164962ccb5ed38629df436414d18be1c9e4fd2e845c85fff87/retro-scumm-baseball2003-shot-play-2.webp",
+      "sha256": "d6970fc6495693164962ccb5ed38629df436414d18be1c9e4fd2e845c85fff87",
+      "bytes": 146402,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-scumm-baseball2003-shot-play-3.webp": {
+      "key": "artwork/004dcfb8d5916c86aee1740ac7b530f8b2d9afde9d3a28c4556bebc6ea802ff0/retro-scumm-baseball2003-shot-play-3.webp",
+      "sha256": "004dcfb8d5916c86aee1740ac7b530f8b2d9afde9d3a28c4556bebc6ea802ff0",
+      "bytes": 341422,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-scumm-basketball-shot-play-3.webp": {
+      "key": "artwork/4b752b39f77621c6c32145a047e334e438dbb743a471b807cf479f5c47a3cc64/retro-scumm-basketball-shot-play-3.webp",
+      "sha256": "4b752b39f77621c6c32145a047e334e438dbb743a471b807cf479f5c47a3cc64",
+      "bytes": 304332,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 540
+    },
+    "/launcher/retro-scumm-dig-shot-play-2.webp": {
+      "key": "artwork/46636aece30dbe9fa0341672e2e309a6ac1ca1b02c7a979cd1675ff32f6f2c59/retro-scumm-dig-shot-play-2.webp",
+      "sha256": "46636aece30dbe9fa0341672e2e309a6ac1ca1b02c7a979cd1675ff32f6f2c59",
+      "bytes": 145536,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-scumm-dig-shot-play-3.webp": {
+      "key": "artwork/9b0bbedeb91eb1113d2ac8cfbf44fab6e9d4c9b72c5e04bfcb5ac81133570453/retro-scumm-dig-shot-play-3.webp",
+      "sha256": "9b0bbedeb91eb1113d2ac8cfbf44fab6e9d4c9b72c5e04bfcb5ac81133570453",
+      "bytes": 146438,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-scumm-football-shot-play-3.webp": {
+      "key": "artwork/88ea285f53bbfce13d60bdf05dcfcdc0ccd49657f6a6e45179ff6980e0c1a2ca/retro-scumm-football-shot-play-3.webp",
+      "sha256": "88ea285f53bbfce13d60bdf05dcfcdc0ccd49657f6a6e45179ff6980e0c1a2ca",
+      "bytes": 156672,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-scumm-football2002-shot-play-2.webp": {
+      "key": "artwork/9e0af583ca84065d80e68e251207914ae0ceb19310f81948aea643c9401af2d0/retro-scumm-football2002-shot-play-2.webp",
+      "sha256": "9e0af583ca84065d80e68e251207914ae0ceb19310f81948aea643c9401af2d0",
+      "bytes": 189038,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-scumm-football2002-shot-play-3.webp": {
+      "key": "artwork/d5d79ac443d0b745648cc6838db70a40f90121c978814e44490df89ef05a5b1d/retro-scumm-football2002-shot-play-3.webp",
+      "sha256": "d5d79ac443d0b745648cc6838db70a40f90121c978814e44490df89ef05a5b1d",
+      "bytes": 52330,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-scumm-ft-shot-play-2.webp": {
+      "key": "artwork/34e1bc91cdce2d9770d2133eaa361e664b722ab55e22e98a761e4bcec4b974af/retro-scumm-ft-shot-play-2.webp",
+      "sha256": "34e1bc91cdce2d9770d2133eaa361e664b722ab55e22e98a761e4bcec4b974af",
+      "bytes": 102066,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-scumm-ft-shot-play-3.webp": {
+      "key": "artwork/cce1ebc05640541f2f1a8340fcfd1b76c592610021a5b0ab690e3018514328c3/retro-scumm-ft-shot-play-3.webp",
+      "sha256": "cce1ebc05640541f2f1a8340fcfd1b76c592610021a5b0ab690e3018514328c3",
+      "bytes": 129668,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-scumm-loom-shot-play-3.webp": {
+      "key": "artwork/75dabc378695ecd02db0f23a8587e438996f8eae33ba5504c1aa6cde6e7142c9/retro-scumm-loom-shot-play-3.webp",
+      "sha256": "75dabc378695ecd02db0f23a8587e438996f8eae33ba5504c1aa6cde6e7142c9",
+      "bytes": 54420,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-scumm-monkey-shot-play-2.webp": {
+      "key": "artwork/5cad42e49d0675c95b008c9539e1512f80688b3bf0df42ca8ab536e1170c4c38/retro-scumm-monkey-shot-play-2.webp",
+      "sha256": "5cad42e49d0675c95b008c9539e1512f80688b3bf0df42ca8ab536e1170c4c38",
+      "bytes": 57060,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-scumm-monkey-shot-play-3.webp": {
+      "key": "artwork/7164d61c73351492bea0379b0e9366086ff9500239ede11d0e71b0899189c8ec/retro-scumm-monkey-shot-play-3.webp",
+      "sha256": "7164d61c73351492bea0379b0e9366086ff9500239ede11d0e71b0899189c8ec",
+      "bytes": 68526,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-scumm-pass-shot-play-1.webp": {
+      "key": "artwork/a8785f39fe995b6954e912712262638f32bf83448791a7093beb192f84e923a1/retro-scumm-pass-shot-play-1.webp",
+      "sha256": "a8785f39fe995b6954e912712262638f32bf83448791a7093beb192f84e923a1",
+      "bytes": 108942,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 720
+    },
+    "/launcher/retro-scumm-puttsfunshop-shot-play-3.webp": {
+      "key": "artwork/e6de37c251703caa8100354b768254ff91566f507bd387930b0227d324575c48/retro-scumm-puttsfunshop-shot-play-3.webp",
+      "sha256": "e6de37c251703caa8100354b768254ff91566f507bd387930b0227d324575c48",
+      "bytes": 228592,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-scumm-tentacle-shot-play-2.webp": {
+      "key": "artwork/c7180a5957e1761582726d0dfcd97568452a11470dff9a78637916efc74d08fc/retro-scumm-tentacle-shot-play-2.webp",
+      "sha256": "c7180a5957e1761582726d0dfcd97568452a11470dff9a78637916efc74d08fc",
+      "bytes": 95452,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-scumm-tentacle-shot-play-3.webp": {
+      "key": "artwork/d999a4b814e533a29d8e9a781fdd408ba1c1e8e34be576c0a92a1ddcc9cda491/retro-scumm-tentacle-shot-play-3.webp",
+      "sha256": "d999a4b814e533a29d8e9a781fdd408ba1c1e8e34be576c0a92a1ddcc9cda491",
+      "bytes": 92244,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-scumm-thinkerk-shot-play-3.webp": {
+      "key": "artwork/cad7351788da828cb26635594a9d2f0dacc75f3d3ffeb50816d84af51e7d09c5/retro-scumm-thinkerk-shot-play-3.webp",
+      "sha256": "cad7351788da828cb26635594a9d2f0dacc75f3d3ffeb50816d84af51e7d09c5",
+      "bytes": 202104,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 540
+    },
+    "/launcher/retro-sword1-sword1-shot-play-1.webp": {
+      "key": "artwork/9fc4ed57da2f31f4067b55c4824c1524aab80a4c65f06ff716c6ec25f24e9ca1/retro-sword1-sword1-shot-play-1.webp",
+      "sha256": "9fc4ed57da2f31f4067b55c4824c1524aab80a4c65f06ff716c6ec25f24e9ca1",
+      "bytes": 83868,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-sword2-sword2-shot-play-2.webp": {
+      "key": "artwork/a9fb4e2e67fd86afd92aab6c27943254f205a1734a92b44a04703060a49a5e3d/retro-sword2-sword2-shot-play-2.webp",
+      "sha256": "a9fb4e2e67fd86afd92aab6c27943254f205a1734a92b44a04703060a49a5e3d",
+      "bytes": 54370,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-tinsel-dw2-shot-play-1.webp": {
+      "key": "artwork/e421cffe8091d1aa58b883cfb278688014e55b6fe10a21724d5bf8f4083b6450/retro-tinsel-dw2-shot-play-1.webp",
+      "sha256": "e421cffe8091d1aa58b883cfb278688014e55b6fe10a21724d5bf8f4083b6450",
+      "bytes": 132826,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-tinsel-dw2-shot-play-3.webp": {
+      "key": "artwork/fd8842b68c07621ba38cac5cd4a9f241a83aec3b4dc079071ef5cdae7ef69eaa/retro-tinsel-dw2-shot-play-3.webp",
+      "sha256": "fd8842b68c07621ba38cac5cd4a9f241a83aec3b4dc079071ef5cdae7ef69eaa",
+      "bytes": 123018,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/retro-tucker-tucker-shot-play-1.webp": {
+      "key": "artwork/a200d30ab199b46fe7318fbaade8a6467cd480c8a60df6b876599e0e5f5f0bba/retro-tucker-tucker-shot-play-1.webp",
+      "sha256": "a200d30ab199b46fe7318fbaade8a6467cd480c8a60df6b876599e0e5f5f0bba",
+      "bytes": 97744,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
     }
   },
   "images": {

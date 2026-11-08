@@ -214,11 +214,7 @@ const artByTarget = {
     landscapeImage: "/launcher/lure-cover.webp",
     posterImage: "/launcher/lure-scummweb-generated-2026-11-05-r1-cover.webp",
     spotlightImage: "/launcher/lure-scummweb-generated-2026-11-05-r1-cover.webp",
-    screenshots: [
-      "/launcher/lure-shot-1.png",
-      "/launcher/lure-shot-2.png",
-      "/launcher/lure-shot-3.png",
-    ],
+    screenshots: retroGameArtwork["lure:lure"].screenshots,
     tone: "tone-default",
   },
   drascula: {
@@ -236,11 +232,7 @@ const artByTarget = {
     landscapeImage: "/launcher/drascula-cover.webp",
     posterImage: "/launcher/drascula-scummweb-generated-2026-11-05-r1-cover.webp",
     spotlightImage: "/launcher/drascula-scummweb-generated-2026-11-05-r1-cover.webp",
-    screenshots: [
-      "/launcher/drascula-shot-1.png",
-      "/launcher/drascula-shot-2.png",
-      "/launcher/drascula-shot-3.png",
-    ],
+    screenshots: retroGameArtwork["drascula:drascula"].screenshots,
     tone: "tone-default",
   },
   "nippon-amiga": {
