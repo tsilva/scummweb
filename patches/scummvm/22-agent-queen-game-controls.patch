@@ -1,0 +1,151 @@
+diff --git a/engines/queen/queen.h b/engines/queen/queen.h
+--- a/engines/queen/queen.h
++++ b/engines/queen/queen.h
+@@ -116,6 +116,9 @@
+ 	void subtitles(bool enable) { _subtitles = enable; }
+ 
+ 	void update(bool checkPlayerInput = false);
++#ifdef __EMSCRIPTEN__
++	void finishAgentRestore();
++#endif
+ 
+ 	bool canLoadOrSave() const;
+ 	bool canLoadGameStateCurrently(Common::U32String *msg = nullptr) override;
+@@ -155,6 +158,13 @@
+ 	uint32 _lastUpdateTime;
+ 	bool _gameStarted;
+ 
++#ifdef __EMSCRIPTEN__
++	void serviceAgentControls(bool canChangeState);
++	bool _agentEnabled = false;
++	bool _agentCompletedTick = false;
++	bool _agentRestoring = false;
++#endif
++
+ 	BamScene *_bam;
+ 	BankManager *_bankMan;
+ 	Command *_command;
+diff --git a/engines/queen/queen.cpp b/engines/queen/queen.cpp
+--- a/engines/queen/queen.cpp
++++ b/engines/queen/queen.cpp
+@@ -131,7 +131,68 @@
+ 	ConfMan.flushToDisk();
+ }
+ 
++#ifdef __EMSCRIPTEN__
++void QueenEngine::serviceAgentControls(bool canChangeState) {
++	if (!_agentEnabled || _agentRestoring)
++		return;
++
++	const int maxManualSlot = getAutosaveSlot() - 1;
++	bool held = false;
++	while (!shouldQuit()) {
++		const int control = EM_ASM_INT({
++			return globalThis.__scummwebAgentBoundary($0, $1);
++		}, _agentCompletedTick, maxManualSlot);
++		_agentCompletedTick = false;
++		if (control < 0) {
++			held = true;
++			_system->delayMillis(10);
++			continue;
++		}
++		if (control == 0) {
++			if (held)
++				_lastUpdateTime = _system->getMillis();
++			return;
++		}
++
++		const bool loading = control > maxManualSlot;
++		const int slot = loading ? control - maxManualSlot : control;
++		Common::String failure;
++		if (!canChangeState || (loading ? !canLoadGameStateCurrently() : !canSaveGameStateCurrently())) {
++			failure = loading ? "Cannot load in the current scene" : "Cannot save in the current scene";
++		} else {
++			const Common::Error result = loading ? loadGameState(slot)
++				: saveGameState(slot, Common::String::format("AgentSCUMM %d", slot));
++			if (result.getCode() != Common::kNoError) {
++				failure = result.getDesc();
++			} else if (loading) {
++				// Let the normal room-entry path rebuild the restored scene.
++				// Its internal updates belong to the load, not a tick wait.
++				_agentRestoring = true;
++				_logic->joeWalk(JWM_NORMAL);
++				_command->clear(true);
++				_input->clearKeyVerb();
++				_input->clearMouseButton();
++				return;
++			}
++		}
++		EM_ASM({ globalThis.__scummwebAgentSaveResult(UTF8ToString($0)); }, failure.c_str());
++	}
++}
++
++void QueenEngine::finishAgentRestore() {
++	if (!_agentRestoring)
++		return;
++	_agentRestoring = false;
++	_system->updateScreen();
++	EM_ASM({ globalThis.__scummwebAgentSaveResult(""); });
++}
++#endif
++
+ void QueenEngine::update(bool checkPlayerInput) {
++#ifdef __EMSCRIPTEN__
++	// Walk, dialogue and cutaway loops also render through update().
++	serviceAgentControls(false);
++#endif
+ 	_graphics->update(_logic->currentRoom());
+ 	_logic->update();
+ 
+@@ -188,6 +249,10 @@
+ 			loadGameState(SLOT_QUICKSAVE);
+ 		}
+ 	}
++#ifdef __EMSCRIPTEN__
++	// Count the rendered frame before player commands can re-enter update().
++	_agentCompletedTick = _agentEnabled && !_agentRestoring;
++#endif
+ 	if (!_input->cutawayRunning()) {
+ 		if (checkPlayerInput) {
+ 			_command->updatePlayer();
+@@ -391,7 +456,16 @@
+ 	}
+ 	_lastUpdateTime = _system->getMillis();
+ 
++#ifdef __EMSCRIPTEN__
++	_agentEnabled = !_resource->isDemo() && !_resource->isInterview() && EM_ASM_INT({
++		return typeof globalThis.__scummwebAgentBoundary === "function";
++	});
++#endif
+ 	while (!shouldQuit()) {
++#ifdef __EMSCRIPTEN__
++		// Save and load only when no nested command or room entry is active.
++		serviceAgentControls(_logic->newRoom() == 0 && _logic->joeWalk() != JWM_EXECUTE);
++#endif
+ 		if (_logic->newRoom() > 0) {
+ 			_logic->update();
+ 			_logic->oldRoom(_logic->currentRoom());
+@@ -401,6 +475,9 @@
+ 			if (_logic->currentRoom() == _logic->newRoom()) {
+ 				_logic->newRoom(0);
+ 			}
++#ifdef __EMSCRIPTEN__
++			finishAgentRestore();
++#endif
+ 		} else if (_logic->joeWalk() == JWM_EXECUTE) {
+ 			_logic->joeWalk(JWM_NORMAL);
+ 			_command->executeCurrentAction();
+diff --git a/engines/queen/logic.cpp b/engines/queen/logic.cpp
+--- a/engines/queen/logic.cpp
++++ b/engines/queen/logic.cpp
+@@ -1236,6 +1236,10 @@
+ 
+ 	_vm->update();
+ 	_vm->display()->palFadeIn(ROOM_JUNGLE_PINNACLE, joe->active, joe->x, joe->y);
++#ifdef __EMSCRIPTEN__
++	// The map waits here for a destination before returning to the main loop.
++	_vm->finishAgentRestore();
++#endif
+ 
+ 	_entryObj = 0;
+ 	uint16 prevObj = 0;

@@ -343,6 +343,22 @@
         "Replay a bounded tick wait and verify the paused frame and exact tick delta. Save a slot, change rooms, load it and check the restored scene. Launch another run in the same profile and verify the slot is absent."
       ],
       "retire_when": "ScummVM exposes equivalent web-safe tick boundaries, pause/resume, and native runtime save/load."
+    },
+    {
+      "path": "patches/scummvm/22-agent-queen-game-controls.patch",
+      "status": "active",
+      "sha256": "3f80a8ef012414fa07a32887b475363e2784f86d6d25b8d72fd36cb6537f324f",
+      "purpose": "Expose the Queen engine's rendered updates and native runtime saves to AgentSCUMM.",
+      "invariants": [
+        "Count each rendered gameplay update once, including nested walks and scripted scenes. Yield to the browser without consuming input while held.",
+        "Allow save and load only between commands and room transitions. Preserve native slot numbering and exclude quicksave and autosave slots.",
+        "Present the restored room before acknowledging load. Exclude its setup frames from the tick budget and preserve the requested pause state.",
+        "Enable the bridge only in scoped runs of the full game."
+      ],
+      "verification": [
+        "Through AgentSCUMM, verify pause across a wall-clock delay, exact short and 120-tick waits, resume, native save and a paused load that restores a changed room."
+      ],
+      "retire_when": "ScummVM exposes equivalent web-safe Queen update boundaries, pause and resume, and native runtime save and load."
     }
   ]
 }

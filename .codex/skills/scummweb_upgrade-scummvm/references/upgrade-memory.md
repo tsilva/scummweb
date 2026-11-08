@@ -136,3 +136,9 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
 - The shell scopes both native save paths and save indexes by the AgentSCUMM
   run. Scoped listings do not update the ordinary browser library. Preserve
   startup checkpoint handling and the normal save stream completion callbacks.
+- Queen renders frames from nested walk, dialogue, and cutaway loops. Count
+  these updates as well as updates from the main loop. Keep save and load
+  between commands. Queen restores a room through its normal entry path, so
+  finish the load after presentation and exclude setup frames from the tick
+  count. The Pinnacle map waits for input after its fade and must acknowledge
+  the load there. Queen's normal tick interval is 100 milliseconds.
