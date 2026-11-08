@@ -3910,7 +3910,7 @@
     "posterImage": "/launcher/road-scummweb-generated-2026-11-06-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-local-road-shot.webp",
-      "/launcher/retro-local-road-shot-2.webp",
+      "/launcher/retro-local-road-shot-axe.webp",
       "/launcher/retro-local-road-shot-3.webp"
     ],
     "sources": {
@@ -3937,7 +3937,7 @@
         {
           "credit": "ScummWEB capture from the original game",
           "edition": "ScummC adaptation",
-          "sha256": "e53cd9ef2f9dde427f322f8b3046cc1ffdeaefe4b0a0beeb8ab2e2bcf9fd9998",
+          "sha256": "79149bd5c262466e231c74535f247a52528caaabd4885ae6ed20b3ea52128e9c",
           "kind": "gameplay",
           "source": "Direct capture from ScummVM"
         },
@@ -8319,7 +8319,7 @@
     "screenshots": [
       "/launcher/retro-scumm-brstorm-shot.webp",
       "/launcher/retro-scumm-brstorm-shot-2.webp",
-      "/launcher/retro-scumm-brstorm-shot-3.webp"
+      "/launcher/retro-scumm-brstorm-shot-finish.webp"
     ],
     "sources": {
       "poster": {
@@ -8348,9 +8348,11 @@
           "page": "https://www.old-games.ru/game/7755.html"
         },
         {
+          "credit": "ScummWEB capture from the original game",
+          "edition": "DOS",
+          "sha256": "6907cd73618c4bf76c99121f8e335d4b0dd7e323f14513a4c967f1d1aba0a031",
           "kind": "gameplay",
-          "url": "https://www.old-games.ru/games/pc/bear_stormin/screenshots/7755_5b4db3df543ae.png",
-          "page": "https://www.old-games.ru/game/7755.html"
+          "source": "Direct capture from ScummVM"
         }
       ],
       "metadata": [
