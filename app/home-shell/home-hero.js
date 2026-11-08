@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import HeroStage from "./hero-stage";
-import { getHeroPreloadImages } from "./hero-images.mjs";
+import { getHeroPreloadImages, HERO_PRELOAD_AHEAD } from "./hero-images.mjs";
 import { useArtworkDelivery } from "./artwork-delivery";
 import { chooseGameVersion, getGameFamilyKey, readChosenVersion, rememberGameVersion } from "../game-versions.mjs";
 import { buildGameExitHref } from "./hero-selection.mjs";
@@ -13,6 +13,7 @@ import { initialActionState, rememberInitialActions } from "./initial-actions.mj
 import { focusHeroAction } from "./directional-navigation";
 
 const SLIDE_DURATION_MS = 8000;
+const EXPAND_PRELOAD_WINDOW_MS = 1500;
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const MOBILE_QUERY = "(max-width: 48rem)";
 
@@ -52,10 +53,6 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
       document.activeElement?.matches(".poster-card, .landscape-card")) focusHeroAction();
   }, [actionsReady, navigationId]);
   const preloadedImages = useRef(new Map());
-  // Wait for the media query before warming desktop slides. The visible image
-  // already loads eagerly, and mobile has no slideshow controls.
-  const preloadKey = JSON.stringify(mobileHero?.matches === false
-    ? getHeroPreloadImages(slides, slideIndex, undefined, artwork) : []);
   const [rotation, setRotation] = useState(null);
   const rotationPaused = rotation?.routeKey === routeKey ? rotation.paused : null;
   function setRotationPaused(paused) { setRotation({ routeKey, paused }); }
@@ -63,6 +60,10 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
   const [isPageVisible, setIsPageVisible] = useState(false);
   const [hasPointer, setHasPointer] = useState(false);
   const [hasFocus, setHasFocus] = useState(false);
+  const [warmDistantSlides, setWarmDistantSlides] = useState(false);
+  const isDesktop = mobileHero?.matches === false;
+  const preloadKey = JSON.stringify(isDesktop
+    ? getHeroPreloadImages(slides, slideIndex, warmDistantSlides ? HERO_PRELOAD_AHEAD : 1, artwork) : []);
   const isPaused = rotationPaused ?? (!isHomePage || Boolean(requestedId) || prefersReducedMotion);
   const isCountingDown = !isMobile && isPageVisible && !isPaused && !hasPointer && !hasFocus;
 
@@ -73,6 +74,13 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
     query.addEventListener("change", update);
     return () => query.removeEventListener("change", update);
   }, []);
+
+  useEffect(() => {
+    if (!isDesktop || warmDistantSlides) return;
+    // Keep adjacent navigation ready and give the initial backdrop a head start.
+    const timeout = window.setTimeout(() => setWarmDistantSlides(true), EXPAND_PRELOAD_WINDOW_MS);
+    return () => window.clearTimeout(timeout);
+  }, [isDesktop, warmDistantSlides]);
 
   useEffect(() => {
     const nextImages = new Map();
