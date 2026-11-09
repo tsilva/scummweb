@@ -14,7 +14,7 @@ const { code } = await swc.transform(await readFile(componentUrl, "utf8"), {
   jsc: { parser: { syntax: "ecmascript", jsx: true }, transform: { react: { runtime: "automatic" } } },
 });
 
-test("Grim's two sticks hold separate axes and release keys on reversal and cancellation", () => {
+test("Grim's stick holds both keys on a diagonal and releases each axis independently", () => {
   const events = [];
   let cursor = 0;
   let hooks = [];
@@ -42,18 +42,12 @@ test("Grim's two sticks hold separate axes and release keys on reversal and canc
     },
   });
 
-  const { children: [walkStick, rightControls] } =
+  const { children: [movementStick, actions] } =
     module.exports.GrimTouchGamepad({ frameRef: { current: {} } }).props;
-  const [, turnStick] = rightControls.props.children;
-
-  function mountStick(element) {
-    cursor = 0;
-    hooks = [];
-    return element.type(element.props).props.children[0].props;
-  }
-
-  const walk = mountStick(walkStick);
-  const turn = mountStick(turnStick);
+  assert.equal(actions.props.children[0].props.children, "Actions");
+  cursor = 0;
+  hooks = [];
+  const stick = movementStick.type(movementStick.props).props.children[0].props;
   const pointer = (pointerId, clientX, clientY) => ({
     pointerId, clientX, clientY, button: 0, preventDefault() {},
     currentTarget: {
@@ -62,16 +56,25 @@ test("Grim's two sticks hold separate axes and release keys on reversal and canc
     },
   });
 
-  walk.onPointerDown(pointer(1, 99, 50)); // Horizontal drag is outside the walk axis.
+  stick.onPointerDown(pointer(1, 54, 46));
   assert.deepEqual(events, []);
-  walk.onPointerMove(pointer(1, 99, 20));
-  turn.onPointerDown(pointer(2, 80, 0));
-  walk.onPointerMove(pointer(1, 40, 80));
-  turn.onPointerCancel(pointer(2, 80, 0));
-  walk.onLostPointerCapture(pointer(1, 40, 80));
+  stick.onPointerMove(pointer(1, 60, 0)); // A shallow diagonal still walks straight.
+  assert.deepEqual(events, ["press ArrowUp"]);
+  stick.onPointerMove(pointer(1, 80, 20));
+  assert.deepEqual(events, ["press ArrowUp", "press ArrowRight"]);
+  stick.onPointerMove(pointer(2, 50, 50)); // A second pointer cannot interrupt the grip.
+  stick.onPointerMove(pointer(1, 20, 20));
+  stick.onPointerMove(pointer(1, 50, 50));
 
   assert.deepEqual(events, [
-    "press ArrowUp", "press ArrowRight", "release ArrowUp", "press ArrowDown",
-    "release ArrowRight", "release ArrowDown",
+    "press ArrowUp", "press ArrowRight", "release ArrowRight", "press ArrowLeft",
+    "release ArrowUp", "release ArrowLeft",
+  ]);
+
+  stick.onPointerMove(pointer(1, 80, 80));
+  stick.onPointerCancel(pointer(1, 80, 80));
+  stick.onLostPointerCapture(pointer(1, 80, 80));
+  assert.deepEqual(events.slice(6), [
+    "press ArrowDown", "press ArrowRight", "release ArrowDown", "release ArrowRight",
   ]);
 });
