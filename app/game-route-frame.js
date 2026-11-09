@@ -276,27 +276,39 @@ export default function GameRouteFrame({
 
   useLayoutEffect(() => {
     const viewport = window.visualViewport;
+    const keyboard = navigator.virtualKeyboard;
     const shell = shellRef.current;
-    if (!showCommandForm || !viewport || !shell) return;
+    if (!showCommandForm || !shell || (!viewport && !keyboard)) return;
 
-    const initialInset = window.innerHeight - viewport.height;
+    // Chromium can report the keyboard directly, even when it overlays the
+    // fullscreen player. Other browsers expose the space it leaves visible.
+    const previousOverlaysContent = keyboard?.overlaysContent;
+    if (keyboard) keyboard.overlaysContent = true;
+    const initialHeight = viewport?.height ?? window.innerHeight;
     let keyboardWasVisible = false;
     function positionCommandField() {
-      if (viewport.scale !== 1 || viewport.height <= 0) return;
-      const inset = window.innerHeight - viewport.height;
-      shell.style.setProperty("--game-command-inset", `${Math.max(0, inset - viewport.offsetTop)}px`);
+      if (viewport && (viewport.scale !== 1 || viewport.height <= 0)) return;
+      const visibleHeight = viewport?.height ?? window.innerHeight;
+      const visibleBottom = (viewport?.offsetTop ?? 0) + visibleHeight;
+      const keyboardRect = keyboard?.boundingRect;
+      const keyboardTop = keyboardRect?.height > 0 ? keyboardRect.top : visibleBottom;
+      const inset = shell.getBoundingClientRect().bottom - Math.min(visibleBottom, keyboardTop);
+      shell.style.setProperty("--game-command-inset", `${Math.max(0, inset)}px`);
       // Android Back can hide the IME without blurring the input. Ignore small
       // viewport changes from browser chrome when detecting that dismissal.
-      const keyboardVisible = inset - initialInset > 48;
+      const keyboardVisible = keyboardRect?.height > 0 || initialHeight - visibleHeight > 48;
       if (!keyboardVisible && keyboardWasVisible) closeCommand();
       keyboardWasVisible = keyboardVisible;
     }
     positionCommandField();
-    viewport.addEventListener("resize", positionCommandField);
-    viewport.addEventListener("scroll", positionCommandField);
+    keyboard?.addEventListener("geometrychange", positionCommandField);
+    viewport?.addEventListener("resize", positionCommandField);
+    viewport?.addEventListener("scroll", positionCommandField);
     return () => {
-      viewport.removeEventListener("resize", positionCommandField);
-      viewport.removeEventListener("scroll", positionCommandField);
+      keyboard?.removeEventListener("geometrychange", positionCommandField);
+      if (keyboard) keyboard.overlaysContent = previousOverlaysContent;
+      viewport?.removeEventListener("resize", positionCommandField);
+      viewport?.removeEventListener("scroll", positionCommandField);
       shell.style.removeProperty("--game-command-inset");
     };
   }, [closeCommand, showCommandForm]);
