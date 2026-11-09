@@ -19,7 +19,7 @@ export function getHeroImageStyle(position, mobilePosition) {
   }
 
   return {
-    ...(position ? { objectPosition: position } : {}),
+    ...(position ? { "--hero-image-position": position } : {}),
     ...(mobilePosition ? { "--hero-image-mobile-position": mobilePosition } : {}),
   };
 }
