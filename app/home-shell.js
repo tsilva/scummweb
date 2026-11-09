@@ -27,6 +27,12 @@ export default function HomeShell({
   const LibraryLink = pageMode === "compatibility" ? Link : "a";
   const libraryHeading = "Game Library";
   const Shell = pageMode === "compatibility" ? Fragment : GalleryOrientation;
+  const galleryUrl = isHomePage && artworkStorage.published
+    ? getVersionedSiteAssetPath("/gallery-artwork.json") : null;
+  const artworkGames = featuredGame ? [...catalog, featuredGame] : catalog;
+  const artwork = children == null ? artworkDelivery(galleryUrl
+    ? artworkGames.map((game) => game === featuredGame ? game : { ...game, screenshots: [] })
+    : artworkGames) : null;
 
   return (
     <Shell>
@@ -77,7 +83,7 @@ export default function HomeShell({
 
       <main className="page-shell">
         {children ?? <SourceLibrary
-          artwork={artworkDelivery(featuredGame ? [...catalog, featuredGame] : catalog)}
+          artwork={galleryUrl ? { ...artwork, galleryUrl } : artwork}
           catalog={catalog}
           featuredGame={featuredGame}
           isHomePage={isHomePage}
