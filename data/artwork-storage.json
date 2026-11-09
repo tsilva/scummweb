@@ -36298,6 +36298,422 @@
       "contentType": "image/webp",
       "width": 960,
       "height": 720
+    },
+    "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover.webp": {
+      "key": "artwork/22f9d58737d43e76eb24ef83f47a5149fc29d04183f4fd62e9a7becafa357167/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover.webp",
+      "sha256": "22f9d58737d43e76eb24ef83f47a5149fc29d04183f4fd62e9a7becafa357167",
+      "bytes": 220022,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero.webp": {
+      "key": "artwork/c15759a8a2b9a8b9e5bb17b73407b15d2599c590ebad139ac1428b2116e650f1/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero.webp",
+      "sha256": "c15759a8a2b9a8b9e5bb17b73407b15d2599c590ebad139ac1428b2116e650f1",
+      "bytes": 162010,
+      "contentType": "image/webp",
+      "width": 1600,
+      "height": 960
+    },
+    "/launcher/grim-fandango-scummweb-generated-2026-11-08-r1-cover.webp": {
+      "key": "artwork/1cc54c74ea0cddffac8db3efb69c7acb92f689b67d6c9620c998b380e2022596/grim-fandango-scummweb-generated-2026-11-08-r1-cover.webp",
+      "sha256": "1cc54c74ea0cddffac8db3efb69c7acb92f689b67d6c9620c998b380e2022596",
+      "bytes": 113470,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/grim-fandango-scummweb-generated-2026-11-09-r2-hero.webp": {
+      "key": "artwork/ac54b60ac96e81371425c4b89cdeb706b7ce3feb36a5c4614cfd4e634e4399a3/grim-fandango-scummweb-generated-2026-11-09-r2-hero.webp",
+      "sha256": "ac54b60ac96e81371425c4b89cdeb706b7ce3feb36a5c4614cfd4e634e4399a3",
+      "bytes": 86800,
+      "contentType": "image/webp",
+      "width": 1600,
+      "height": 960
+    },
+    "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover-320.webp": {
+      "key": "artwork/46657d9b10f6b273a0a67d9778c3d78bd109ed494d5d9800b7522befeaf2dae3/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover-320.webp",
+      "sha256": "46657d9b10f6b273a0a67d9778c3d78bd109ed494d5d9800b7522befeaf2dae3",
+      "bytes": 41724,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover-640.webp": {
+      "key": "artwork/6dd543f2cd928cf25824b163a5bd9488aa1ec5059fc90843e6291d5f10d7ff7f/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover-640.webp",
+      "sha256": "6dd543f2cd928cf25824b163a5bd9488aa1ec5059fc90843e6291d5f10d7ff7f",
+      "bytes": 114382,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-08-r1-cover-320.webp": {
+      "key": "artwork/78e89ae0e171218e235af9e5f5b3bb53476c30e4705d816b7a12d586225b3dd7/grim-fandango-scummweb-generated-2026-11-08-r1-cover-320.webp",
+      "sha256": "78e89ae0e171218e235af9e5f5b3bb53476c30e4705d816b7a12d586225b3dd7",
+      "bytes": 28364,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-08-r1-cover-640.webp": {
+      "key": "artwork/ae094a151306d8492b310912343b4414fab6191c941ec788847817584e728b87/grim-fandango-scummweb-generated-2026-11-08-r1-cover-640.webp",
+      "sha256": "ae094a151306d8492b310912343b4414fab6191c941ec788847817584e728b87",
+      "bytes": 67002,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/zork-1-scummweb-generated-2026-11-08-r1-cover-320.webp": {
+      "key": "artwork/23331ba0ba7bf5f7bad81716db710a626c0f953278e5da6eaf8374e790560ea8/zork-1-scummweb-generated-2026-11-08-r1-cover-320.webp",
+      "sha256": "23331ba0ba7bf5f7bad81716db710a626c0f953278e5da6eaf8374e790560ea8",
+      "bytes": 22724,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/zork-1-scummweb-generated-2026-11-08-r1-cover-640.webp": {
+      "key": "artwork/8882149cd9f49c3e2971cc7684536fb505fa9968fb20c937924f6e587b921bbc/zork-1-scummweb-generated-2026-11-08-r1-cover-640.webp",
+      "sha256": "8882149cd9f49c3e2971cc7684536fb505fa9968fb20c937924f6e587b921bbc",
+      "bytes": 74110,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/zork-2-scummweb-generated-2026-11-08-r1-cover-320.webp": {
+      "key": "artwork/aad691a633ab737abc95c0df3eed5c092d8f6c0ae7205436b917f727332c13b1/zork-2-scummweb-generated-2026-11-08-r1-cover-320.webp",
+      "sha256": "aad691a633ab737abc95c0df3eed5c092d8f6c0ae7205436b917f727332c13b1",
+      "bytes": 23968,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/zork-2-scummweb-generated-2026-11-08-r1-cover-640.webp": {
+      "key": "artwork/d4d0f6feac84681afd4c81b89ab4d086285a602821a4a931cd0a8f90861ea9d5/zork-2-scummweb-generated-2026-11-08-r1-cover-640.webp",
+      "sha256": "d4d0f6feac84681afd4c81b89ab4d086285a602821a4a931cd0a8f90861ea9d5",
+      "bytes": 81624,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/zork-3-scummweb-generated-2026-11-08-r1-cover-320.webp": {
+      "key": "artwork/0edfd0ca712fc65759d496eecfb19b798dda8e3273ca5ab8090bb6c08da7e354/zork-3-scummweb-generated-2026-11-08-r1-cover-320.webp",
+      "sha256": "0edfd0ca712fc65759d496eecfb19b798dda8e3273ca5ab8090bb6c08da7e354",
+      "bytes": 25856,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/zork-3-scummweb-generated-2026-11-08-r1-cover-640.webp": {
+      "key": "artwork/5b8a0d9342380298a5d9d1a0ccb690f6debcea8e79dd46ea0cfeb363ae974bd2/zork-3-scummweb-generated-2026-11-08-r1-cover-640.webp",
+      "sha256": "5b8a0d9342380298a5d9d1a0ccb690f6debcea8e79dd46ea0cfeb363ae974bd2",
+      "bytes": 89734,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/zork-1-scummweb-generated-2026-11-08-r1-cover.webp": {
+      "key": "artwork/ac0ef47b997f4e6d27af91c4d3671540da547ed574158b94bc3d0ddba02c2b4f/zork-1-scummweb-generated-2026-11-08-r1-cover.webp",
+      "sha256": "ac0ef47b997f4e6d27af91c4d3671540da547ed574158b94bc3d0ddba02c2b4f",
+      "bytes": 145888,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/zork-1-scummweb-generated-2026-11-08-r2-hero.webp": {
+      "key": "artwork/7dc88f7043ce75756bfc57ecd28f49b633cb842f7ceac0da3c56f59cad77d59f/zork-1-scummweb-generated-2026-11-08-r2-hero.webp",
+      "sha256": "7dc88f7043ce75756bfc57ecd28f49b633cb842f7ceac0da3c56f59cad77d59f",
+      "bytes": 279408,
+      "contentType": "image/webp",
+      "width": 1600,
+      "height": 960
+    },
+    "/launcher/zork-2-scummweb-generated-2026-11-08-r1-cover.webp": {
+      "key": "artwork/04c0207175efce4d30dcb5d6031cae5505ae75308698bf64ce17196cb0a91f0d/zork-2-scummweb-generated-2026-11-08-r1-cover.webp",
+      "sha256": "04c0207175efce4d30dcb5d6031cae5505ae75308698bf64ce17196cb0a91f0d",
+      "bytes": 162378,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/zork-2-scummweb-generated-2026-11-08-r2-hero.webp": {
+      "key": "artwork/3b8fd24bd6953de65b7925f0dfbac4c8983575e47cd383dd81201541153f0a1f/zork-2-scummweb-generated-2026-11-08-r2-hero.webp",
+      "sha256": "3b8fd24bd6953de65b7925f0dfbac4c8983575e47cd383dd81201541153f0a1f",
+      "bytes": 322168,
+      "contentType": "image/webp",
+      "width": 1600,
+      "height": 960
+    },
+    "/launcher/zork-3-scummweb-generated-2026-11-08-r1-cover.webp": {
+      "key": "artwork/b83a6205a3b3acbb0721c375c70a1fc852e7e84168310a005590d074880f4347/zork-3-scummweb-generated-2026-11-08-r1-cover.webp",
+      "sha256": "b83a6205a3b3acbb0721c375c70a1fc852e7e84168310a005590d074880f4347",
+      "bytes": 182784,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/zork-3-scummweb-generated-2026-11-08-r1-hero.webp": {
+      "key": "artwork/9cc08ce8a28a22d9405fa0b085da736ffebe00bea9402b006444388c30c0a441/zork-3-scummweb-generated-2026-11-08-r1-hero.webp",
+      "sha256": "9cc08ce8a28a22d9405fa0b085da736ffebe00bea9402b006444388c30c0a441",
+      "bytes": 288920,
+      "contentType": "image/webp",
+      "width": 1600,
+      "height": 960
+    },
+    "/launcher/optimized/grim-fandango-scummweb-generated-2026-11-09-r2-hero.avif": {
+      "key": "artwork/a36c9aaf805031ab047d98909d4fb11b4bbd73b9ae1050e36e835c7bf0518b4d/grim-fandango-scummweb-generated-2026-11-09-r2-hero.avif",
+      "sha256": "a36c9aaf805031ab047d98909d4fb11b4bbd73b9ae1050e36e835c7bf0518b4d",
+      "bytes": 67839,
+      "contentType": "image/avif",
+      "width": 1600,
+      "height": 960
+    },
+    "/launcher/optimized/zork-1-scummweb-generated-2026-11-08-r1-cover.avif": {
+      "key": "artwork/dbc58a8b294ef8a12002d315ad03baee903850edfd0e74ada1c59f1ff417b80b/zork-1-scummweb-generated-2026-11-08-r1-cover.avif",
+      "sha256": "dbc58a8b294ef8a12002d315ad03baee903850edfd0e74ada1c59f1ff417b80b",
+      "bytes": 108106,
+      "contentType": "image/avif",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/optimized/zork-2-scummweb-generated-2026-11-08-r1-cover.avif": {
+      "key": "artwork/0136b7972e8f64d68dc125782c95808f7ef7c5f98c4b5053c921db65c0c4e2bb/zork-2-scummweb-generated-2026-11-08-r1-cover.avif",
+      "sha256": "0136b7972e8f64d68dc125782c95808f7ef7c5f98c4b5053c921db65c0c4e2bb",
+      "bytes": 120523,
+      "contentType": "image/avif",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover-480.webp": {
+      "key": "artwork/6e5c72a7c55ce31c0d75a3a95f5a526c06195bc3e7d30505bca14abb87092155/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover-480.webp",
+      "sha256": "6e5c72a7c55ce31c0d75a3a95f5a526c06195bc3e7d30505bca14abb87092155",
+      "bytes": 76124,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero-1280.webp": {
+      "key": "artwork/0b56e641868aca3eccfcf168bb9f7b0af713b2cfa04c12b09a3c1148a94400de/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero-1280.webp",
+      "sha256": "0b56e641868aca3eccfcf168bb9f7b0af713b2cfa04c12b09a3c1148a94400de",
+      "bytes": 99774,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero-640.webp": {
+      "key": "artwork/60d600ac6f17796f0e99729958b69fcb3c4b9b66a4249029adbf172452bbd566/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero-640.webp",
+      "sha256": "60d600ac6f17796f0e99729958b69fcb3c4b9b66a4249029adbf172452bbd566",
+      "bytes": 38488,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero-960.webp": {
+      "key": "artwork/fffd619130a29ad3ec7681bffc771e4370866cf7bf5d5d6af5ba16d463b1e133/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero-960.webp",
+      "sha256": "fffd619130a29ad3ec7681bffc771e4370866cf7bf5d5d6af5ba16d463b1e133",
+      "bytes": 70038,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-08-r1-cover-480.webp": {
+      "key": "artwork/82f6f25152fdf03ca1b8be840540f2885667ecbec0f058babfd5b7dcc948afc5/grim-fandango-scummweb-generated-2026-11-08-r1-cover-480.webp",
+      "sha256": "82f6f25152fdf03ca1b8be840540f2885667ecbec0f058babfd5b7dcc948afc5",
+      "bytes": 48176,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-1280.avif": {
+      "key": "artwork/ccb9e27b7a206a79a15b21eac56d2bf5eb67433da04f0e86237b522b9c745aa7/grim-fandango-scummweb-generated-2026-11-09-r2-hero-1280.avif",
+      "sha256": "ccb9e27b7a206a79a15b21eac56d2bf5eb67433da04f0e86237b522b9c745aa7",
+      "bytes": 47256,
+      "contentType": "image/avif",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-1280.webp": {
+      "key": "artwork/97de04621444a344175428e3f08f6d8dec43d964113ef4ac362ec4a9549ccfdd/grim-fandango-scummweb-generated-2026-11-09-r2-hero-1280.webp",
+      "sha256": "97de04621444a344175428e3f08f6d8dec43d964113ef4ac362ec4a9549ccfdd",
+      "bytes": 56624,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-640.avif": {
+      "key": "artwork/114c348fe8c5ceaa00b393b85bc3dd457c7bbe8a5f76b7f8babae24ea587d758/grim-fandango-scummweb-generated-2026-11-09-r2-hero-640.avif",
+      "sha256": "114c348fe8c5ceaa00b393b85bc3dd457c7bbe8a5f76b7f8babae24ea587d758",
+      "bytes": 19356,
+      "contentType": "image/avif",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-640.webp": {
+      "key": "artwork/9ebb93597df83864f41a5b04290e33c47f792b509701c4307f04cb4c701d8917/grim-fandango-scummweb-generated-2026-11-09-r2-hero-640.webp",
+      "sha256": "9ebb93597df83864f41a5b04290e33c47f792b509701c4307f04cb4c701d8917",
+      "bytes": 24728,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-960.avif": {
+      "key": "artwork/7dc946d154e7f9bbcf564211e7c303df97526d323fce941524d6752daa680c66/grim-fandango-scummweb-generated-2026-11-09-r2-hero-960.avif",
+      "sha256": "7dc946d154e7f9bbcf564211e7c303df97526d323fce941524d6752daa680c66",
+      "bytes": 34100,
+      "contentType": "image/avif",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-960.webp": {
+      "key": "artwork/0e82bc973810e6c817c1246662a1d79b9e18e90ace698c9a9d2e41410c4fd87f/grim-fandango-scummweb-generated-2026-11-09-r2-hero-960.webp",
+      "sha256": "0e82bc973810e6c817c1246662a1d79b9e18e90ace698c9a9d2e41410c4fd87f",
+      "bytes": 40908,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/zork-1-scummweb-generated-2026-11-08-r1-cover-320.avif": {
+      "key": "artwork/191ccb4f491aef008f5ce5aca7989486a976fc2fe478898abe48e296e957d84e/zork-1-scummweb-generated-2026-11-08-r1-cover-320.avif",
+      "sha256": "191ccb4f491aef008f5ce5aca7989486a976fc2fe478898abe48e296e957d84e",
+      "bytes": 18801,
+      "contentType": "image/avif",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/zork-1-scummweb-generated-2026-11-08-r1-cover-480.avif": {
+      "key": "artwork/8113cd7b21b451b76a6ead83b273f5434487a67f85d8cb44f79a3b05458a73df/zork-1-scummweb-generated-2026-11-08-r1-cover-480.avif",
+      "sha256": "8113cd7b21b451b76a6ead83b273f5434487a67f85d8cb44f79a3b05458a73df",
+      "bytes": 36580,
+      "contentType": "image/avif",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/zork-1-scummweb-generated-2026-11-08-r1-cover-480.webp": {
+      "key": "artwork/86911ef39580711e11f772a11d99ed911c27b6a60a9226872b9ae6355cc66911/zork-1-scummweb-generated-2026-11-08-r1-cover-480.webp",
+      "sha256": "86911ef39580711e11f772a11d99ed911c27b6a60a9226872b9ae6355cc66911",
+      "bytes": 46058,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/zork-1-scummweb-generated-2026-11-08-r1-cover-640.avif": {
+      "key": "artwork/60265396a429f54532ca405a8abec7fd2beb56c81908295fd8d99dc5a2acedf4/zork-1-scummweb-generated-2026-11-08-r1-cover-640.avif",
+      "sha256": "60265396a429f54532ca405a8abec7fd2beb56c81908295fd8d99dc5a2acedf4",
+      "bytes": 58369,
+      "contentType": "image/avif",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/zork-1-scummweb-generated-2026-11-08-r2-hero-1280.webp": {
+      "key": "artwork/aa55b20ffb1c8e8998dabebdab9fa900051aa3446a01dfe1da0c97ce86c02633/zork-1-scummweb-generated-2026-11-08-r2-hero-1280.webp",
+      "sha256": "aa55b20ffb1c8e8998dabebdab9fa900051aa3446a01dfe1da0c97ce86c02633",
+      "bytes": 162782,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/zork-1-scummweb-generated-2026-11-08-r2-hero-640.webp": {
+      "key": "artwork/fb10d2238aacc55483dc20a2dbe8a6c608094a3d832fe6b1f38f6ff97177a5f1/zork-1-scummweb-generated-2026-11-08-r2-hero-640.webp",
+      "sha256": "fb10d2238aacc55483dc20a2dbe8a6c608094a3d832fe6b1f38f6ff97177a5f1",
+      "bytes": 46480,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/zork-1-scummweb-generated-2026-11-08-r2-hero-960.webp": {
+      "key": "artwork/7b154c9443ae258fffc2f6ff3b96df2279e6c4211d38f84068092494f10fb82e/zork-1-scummweb-generated-2026-11-08-r2-hero-960.webp",
+      "sha256": "7b154c9443ae258fffc2f6ff3b96df2279e6c4211d38f84068092494f10fb82e",
+      "bytes": 101616,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/zork-2-scummweb-generated-2026-11-08-r1-cover-320.avif": {
+      "key": "artwork/8f20125b39e190f12bad8426dcb6335b31c0a3a1bbe0916b5a172cc2d3fda85a/zork-2-scummweb-generated-2026-11-08-r1-cover-320.avif",
+      "sha256": "8f20125b39e190f12bad8426dcb6335b31c0a3a1bbe0916b5a172cc2d3fda85a",
+      "bytes": 19013,
+      "contentType": "image/avif",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/zork-2-scummweb-generated-2026-11-08-r1-cover-480.avif": {
+      "key": "artwork/9cdb983faad7293809dab728a27a853f03477fa54a8ab01ef5d668a80d9bae71/zork-2-scummweb-generated-2026-11-08-r1-cover-480.avif",
+      "sha256": "9cdb983faad7293809dab728a27a853f03477fa54a8ab01ef5d668a80d9bae71",
+      "bytes": 39733,
+      "contentType": "image/avif",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/zork-2-scummweb-generated-2026-11-08-r1-cover-480.webp": {
+      "key": "artwork/d56a2a97e1f6f060e10221a03d62a8cf88f101316124c85df0befa4935db7d19/zork-2-scummweb-generated-2026-11-08-r1-cover-480.webp",
+      "sha256": "d56a2a97e1f6f060e10221a03d62a8cf88f101316124c85df0befa4935db7d19",
+      "bytes": 49344,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/zork-2-scummweb-generated-2026-11-08-r1-cover-640.avif": {
+      "key": "artwork/00cc974d29f8418e8d05e7b034eb152b6f88fff2a1e2cb4d8f914e1a8d319cfb/zork-2-scummweb-generated-2026-11-08-r1-cover-640.avif",
+      "sha256": "00cc974d29f8418e8d05e7b034eb152b6f88fff2a1e2cb4d8f914e1a8d319cfb",
+      "bytes": 63929,
+      "contentType": "image/avif",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/zork-2-scummweb-generated-2026-11-08-r2-hero-1280.webp": {
+      "key": "artwork/bff248cd704a5caf0dfc592ea26f8033c7c7ce84218656ac5888047b9499e177/zork-2-scummweb-generated-2026-11-08-r2-hero-1280.webp",
+      "sha256": "bff248cd704a5caf0dfc592ea26f8033c7c7ce84218656ac5888047b9499e177",
+      "bytes": 189234,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/zork-2-scummweb-generated-2026-11-08-r2-hero-640.webp": {
+      "key": "artwork/6a4c6ccd4a6e515441aa9de1dad1de820c5baf29eaaf2cc348eb5ec1298971b6/zork-2-scummweb-generated-2026-11-08-r2-hero-640.webp",
+      "sha256": "6a4c6ccd4a6e515441aa9de1dad1de820c5baf29eaaf2cc348eb5ec1298971b6",
+      "bytes": 52128,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/zork-2-scummweb-generated-2026-11-08-r2-hero-960.webp": {
+      "key": "artwork/371c962b3964e08216e350a9d57436923835f06a93fa366885d86d8c069de316/zork-2-scummweb-generated-2026-11-08-r2-hero-960.webp",
+      "sha256": "371c962b3964e08216e350a9d57436923835f06a93fa366885d86d8c069de316",
+      "bytes": 115942,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/zork-3-scummweb-generated-2026-11-08-r1-cover-480.webp": {
+      "key": "artwork/0e2060424c0d460b31ea0d530a4a3ea31bb0ce5ad7f21d03f0ac830944a06ec0/zork-3-scummweb-generated-2026-11-08-r1-cover-480.webp",
+      "sha256": "0e2060424c0d460b31ea0d530a4a3ea31bb0ce5ad7f21d03f0ac830944a06ec0",
+      "bytes": 53710,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/zork-3-scummweb-generated-2026-11-08-r1-hero-1280.webp": {
+      "key": "artwork/888d1557b75b8f74a326a5a12793191647e47510ec2ed9157521dae98a82ca9f/zork-3-scummweb-generated-2026-11-08-r1-hero-1280.webp",
+      "sha256": "888d1557b75b8f74a326a5a12793191647e47510ec2ed9157521dae98a82ca9f",
+      "bytes": 166808,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/zork-3-scummweb-generated-2026-11-08-r1-hero-640.webp": {
+      "key": "artwork/110e69929a2adfab98a583190ec0b996ea908113085366b68eeac42fee8429cb/zork-3-scummweb-generated-2026-11-08-r1-hero-640.webp",
+      "sha256": "110e69929a2adfab98a583190ec0b996ea908113085366b68eeac42fee8429cb",
+      "bytes": 44414,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/zork-3-scummweb-generated-2026-11-08-r1-hero-960.webp": {
+      "key": "artwork/3e92e6193545774fa5dcb91bc53acf870f40f304cc10192053f33f5e19ff30c1/zork-3-scummweb-generated-2026-11-08-r1-hero-960.webp",
+      "sha256": "3e92e6193545774fa5dcb91bc53acf870f40f304cc10192053f33f5e19ff30c1",
+      "bytes": 101192,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
     }
   },
   "images": {
@@ -49927,6 +50343,141 @@
         "/launcher/responsive/zork-nemesis-scummweb-generated-2026-11-07-r1-hero-960.webp",
         "/launcher/responsive/zork-nemesis-scummweb-generated-2026-11-07-r1-hero-1280.webp",
         "/launcher/zork-nemesis-scummweb-generated-2026-11-07-r1-hero.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover.webp",
+      "webp": [
+        "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover-320.webp",
+        "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover-480.webp",
+        "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover-640.webp",
+        "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero.webp": {
+      "width": 1600,
+      "height": 960,
+      "fallback": "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero.webp",
+      "webp": [
+        "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero-640.webp",
+        "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero-960.webp",
+        "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero-1280.webp",
+        "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/grim-fandango-scummweb-generated-2026-11-08-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/grim-fandango-scummweb-generated-2026-11-08-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-08-r1-cover-320.webp",
+        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-08-r1-cover-480.webp",
+        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-08-r1-cover-640.webp",
+        "/launcher/grim-fandango-scummweb-generated-2026-11-08-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/grim-fandango-scummweb-generated-2026-11-09-r2-hero.webp": {
+      "width": 1600,
+      "height": 960,
+      "fallback": "/launcher/grim-fandango-scummweb-generated-2026-11-09-r2-hero.webp",
+      "webp": [
+        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-640.webp",
+        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-960.webp",
+        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-1280.webp",
+        "/launcher/grim-fandango-scummweb-generated-2026-11-09-r2-hero.webp"
+      ],
+      "avif": [
+        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-640.avif",
+        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-960.avif",
+        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-1280.avif",
+        "/launcher/optimized/grim-fandango-scummweb-generated-2026-11-09-r2-hero.avif"
+      ]
+    },
+    "/launcher/zork-1-scummweb-generated-2026-11-08-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/zork-1-scummweb-generated-2026-11-08-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/zork-1-scummweb-generated-2026-11-08-r1-cover-320.webp",
+        "/launcher/responsive/zork-1-scummweb-generated-2026-11-08-r1-cover-480.webp",
+        "/launcher/responsive/zork-1-scummweb-generated-2026-11-08-r1-cover-640.webp",
+        "/launcher/zork-1-scummweb-generated-2026-11-08-r1-cover.webp"
+      ],
+      "avif": [
+        "/launcher/responsive/zork-1-scummweb-generated-2026-11-08-r1-cover-320.avif",
+        "/launcher/responsive/zork-1-scummweb-generated-2026-11-08-r1-cover-480.avif",
+        "/launcher/responsive/zork-1-scummweb-generated-2026-11-08-r1-cover-640.avif",
+        "/launcher/optimized/zork-1-scummweb-generated-2026-11-08-r1-cover.avif"
+      ]
+    },
+    "/launcher/zork-1-scummweb-generated-2026-11-08-r2-hero.webp": {
+      "width": 1600,
+      "height": 960,
+      "fallback": "/launcher/zork-1-scummweb-generated-2026-11-08-r2-hero.webp",
+      "webp": [
+        "/launcher/responsive/zork-1-scummweb-generated-2026-11-08-r2-hero-640.webp",
+        "/launcher/responsive/zork-1-scummweb-generated-2026-11-08-r2-hero-960.webp",
+        "/launcher/responsive/zork-1-scummweb-generated-2026-11-08-r2-hero-1280.webp",
+        "/launcher/zork-1-scummweb-generated-2026-11-08-r2-hero.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/zork-2-scummweb-generated-2026-11-08-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/zork-2-scummweb-generated-2026-11-08-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/zork-2-scummweb-generated-2026-11-08-r1-cover-320.webp",
+        "/launcher/responsive/zork-2-scummweb-generated-2026-11-08-r1-cover-480.webp",
+        "/launcher/responsive/zork-2-scummweb-generated-2026-11-08-r1-cover-640.webp",
+        "/launcher/zork-2-scummweb-generated-2026-11-08-r1-cover.webp"
+      ],
+      "avif": [
+        "/launcher/responsive/zork-2-scummweb-generated-2026-11-08-r1-cover-320.avif",
+        "/launcher/responsive/zork-2-scummweb-generated-2026-11-08-r1-cover-480.avif",
+        "/launcher/responsive/zork-2-scummweb-generated-2026-11-08-r1-cover-640.avif",
+        "/launcher/optimized/zork-2-scummweb-generated-2026-11-08-r1-cover.avif"
+      ]
+    },
+    "/launcher/zork-2-scummweb-generated-2026-11-08-r2-hero.webp": {
+      "width": 1600,
+      "height": 960,
+      "fallback": "/launcher/zork-2-scummweb-generated-2026-11-08-r2-hero.webp",
+      "webp": [
+        "/launcher/responsive/zork-2-scummweb-generated-2026-11-08-r2-hero-640.webp",
+        "/launcher/responsive/zork-2-scummweb-generated-2026-11-08-r2-hero-960.webp",
+        "/launcher/responsive/zork-2-scummweb-generated-2026-11-08-r2-hero-1280.webp",
+        "/launcher/zork-2-scummweb-generated-2026-11-08-r2-hero.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/zork-3-scummweb-generated-2026-11-08-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/zork-3-scummweb-generated-2026-11-08-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/zork-3-scummweb-generated-2026-11-08-r1-cover-320.webp",
+        "/launcher/responsive/zork-3-scummweb-generated-2026-11-08-r1-cover-480.webp",
+        "/launcher/responsive/zork-3-scummweb-generated-2026-11-08-r1-cover-640.webp",
+        "/launcher/zork-3-scummweb-generated-2026-11-08-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/zork-3-scummweb-generated-2026-11-08-r1-hero.webp": {
+      "width": 1600,
+      "height": 960,
+      "fallback": "/launcher/zork-3-scummweb-generated-2026-11-08-r1-hero.webp",
+      "webp": [
+        "/launcher/responsive/zork-3-scummweb-generated-2026-11-08-r1-hero-640.webp",
+        "/launcher/responsive/zork-3-scummweb-generated-2026-11-08-r1-hero-960.webp",
+        "/launcher/responsive/zork-3-scummweb-generated-2026-11-08-r1-hero-1280.webp",
+        "/launcher/zork-3-scummweb-generated-2026-11-08-r1-hero.webp"
       ],
       "avif": []
     }

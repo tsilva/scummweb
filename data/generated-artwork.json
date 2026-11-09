@@ -19567,6 +19567,566 @@
         }
       ],
       "prompt": "Create one original illustrated ScummWEB library cover in flat full-bleed 3:4 portrait, ideally at least 1080 × 1440. The attachment guides palette and era only. Create a completely new composition. Painted early-1990s illustrated fantasy cover. A small wooden sailing ship follows a curling current toward Daventry's castle above a rocky coast. In the foreground a small unfolded parchment and a brass compass hint at the trivia voyage. Golden sky, purple shadows and dark teal sea. Hand-lettered storybook serif. Draw a new scene and use only this title, with no King's Quest collection branding. The only lettering allowed anywhere in the image is the exact title \"KING’S QUESTIONS\". The title stands alone. No subtitle, edition label, or badges. Put all lettering at least 10% inside the edges, readable at thumbnail size. Keep the bottom 15% visually quiet. Do not recreate, edit, or extend the supplied image or game footage. No screenshots, borders, fake publisher marks, packaging mockup, or interface."
+    },
+    {
+      "target": "grim-demo",
+      "role": "hero",
+      "asset": "/launcher/grim-fandango-scummweb-generated-2026-11-08-r1-hero.webp",
+      "generatedOn": "2026-11-08",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-art-recomposition",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "daace9374980da4726e3d0d81f8034f1a09003b760f2d771d5f2d52e3098879d",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "7d980192bc780f230a784e0b53c8e1075c0d1cddd7378df41e49ab0827a4667b",
+        "width": 1619,
+        "height": 971,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "kind": "box-scan",
+          "url": "https://mocagh.org/lucasfilm/grimfandango.jpg",
+          "credit": "LucasArts original US PC box front, photographed by the Museum of Computer Adventure Game History",
+          "sha256": "d1d242a1ee877e6d7d5dab74548b2bcb832d5d82ed55803abab1ebd795c7e186"
+        }
+      ],
+      "prompt": "Create one ScummWEB website hero illustration for Grim Fandango from the attached original retail box art, used as the primary visual reference for identity and medium. Output a full-bleed 5:3 landscape of at least 1600 × 960 pixels, ideally 1620 × 972. The site overlays white title, summary and a green Play button on the left. The left 42% must be consistently dark with few details, top 9% and bottom 12% quiet, and all important subjects inset on the right so a narrow responsive crop can still show them. Use the original LucasArts game's low-poly late-1990s look and Mexican Art Deco noir. In the right half show recognizable Manny Calavera in his white tuxedo with his tall rectangular ivory skull, black eyes, little bow tie and a cigarette, framed in the moonlit Land of the Dead. Recompose the purple and cobalt windows and gold accents from the reference into a single cinematic setting. Keep the entire face in the middle-right safe area, with the left side in dark blue unlit architecture. No embedded typography, logos, framing, scan edges, UI, signatures, or watermarks. This is promotional illustration.",
+      "reviewNote": "Rejected because the image includes page text and a Play button."
+    },
+    {
+      "target": "grim-demo",
+      "role": "cover",
+      "asset": "/launcher/grim-fandango-scummweb-generated-2026-11-08-r1-cover.webp",
+      "generatedOn": "2026-11-08",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "f0b6ec5c93ab576c571aa0be386f8e44f1e9a175a41449959e74e4bc10413a38",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "1cc54c74ea0cddffac8db3efb69c7acb92f689b67d6c9620c998b380e2022596",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "kind": "box-scan",
+          "url": "https://mocagh.org/lucasfilm/grimfandango.jpg",
+          "credit": "LucasArts original US PC box front, photographed by the Museum of Computer Adventure Game History",
+          "sha256": "d1d242a1ee877e6d7d5dab74548b2bcb832d5d82ed55803abab1ebd795c7e186"
+        }
+      ],
+      "prompt": "Faithfully restore the attached photograph of the actual original English retail box front for Grim Fandango. The attachment is the primary restoration target. Reproduce the original publisher's cover, with its artwork, layout, text, typography, logos and colors intact. Output a flat 3:4 portrait of at least 900 × 1200 pixels, ideally 1080 × 1440. Keep all printed elements within safe margins. Preserve the whole art and original composition with minimal matching neutral top and bottom margin if needed to fit the ratio. No stretch, 3D perspective, cropping, spine, extra decorations, or redesign. Improve sharpness, clean physical scratches, yellowing and glare, and square the image. Keep the monumental angled cream and coral GRIM FANDANGO title, gold outlines and purple night windows, Manny in the white tuxedo holding his cigarette and card, the cast on their original sides, and the original LucasArts and ESRB marks in their original corners. Retain the right-hand copy and all printed front credits exactly, including the quoted review and publisher line, without adding a demo banner."
+    },
+    {
+      "target": "monkey4-demo",
+      "role": "hero",
+      "asset": "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-08-r1-hero.webp",
+      "generatedOn": "2026-11-08",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-art-recomposition",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "0642d7f71a1b4e315935c5aaa002c4134c27284f58bb1d1a45ad934899ce0575",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "ea24069b13104e2378820e7a5758b460048a90d55191f9549d8dea13192f6e04",
+        "width": 1619,
+        "height": 971,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "kind": "box-scan",
+          "url": "https://mocagh.org/lucasfilm/mi4.jpg",
+          "credit": "LucasArts original US PC box front, photographed by the Museum of Computer Adventure Game History",
+          "sha256": "3c13041d528670d23f379150650a1c9d302209e4d32ec08ebfbc34009b62a550"
+        }
+      ],
+      "prompt": "Create one ScummWEB website hero illustration for Escape from Monkey Island from the attached original retail box art, used as the primary visual reference for identity and medium. Output a full-bleed 5:3 landscape of at least 1600 × 960 pixels, ideally 1620 × 972. The site overlays white title, summary and a green Play button on the left. The left 42% must be consistently dark with few details, top 9% and bottom 12% quiet, and all important subjects inset on the right so a narrow responsive crop can still show them. Recompose the original cover's hand-painted caricature and orange, pale blue and parchment palette into one wide harbor scene at dusk. Keep recognizably young auburn-haired Guybrush in his white jacket over a navy-and-white striped shirt and the small white duck from the reference. Keep Elaine's red pirate outfit and original character look if showing her. Group characters on the right. Use the left side for deep blue ocean and silhouettes of timber docks in calm shadow. No torn parchment border. No embedded typography, logos, framing, scan edges, UI, signatures, or watermarks. This is promotional illustration.",
+      "reviewNote": "Rejected because the image includes page text and a Play button."
+    },
+    {
+      "target": "monkey4-demo",
+      "role": "hero",
+      "asset": "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero.webp",
+      "generatedOn": "2026-11-09",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-art-recomposition",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "ac034c7ba5d1fdd6da71001625c02ce0287a2a5355dfed14e33d3a300ffe298b",
+        "width": 1620,
+        "height": 971
+      },
+      "output": {
+        "sha256": "c15759a8a2b9a8b9e5bb17b73407b15d2599c590ebad139ac1428b2116e650f1",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "kind": "box-scan",
+          "url": "https://mocagh.org/lucasfilm/mi4.jpg",
+          "credit": "LucasArts original US PC box front, photographed by the Museum of Computer Adventure Game History",
+          "sha256": "3c13041d528670d23f379150650a1c9d302209e4d32ec08ebfbc34009b62a550"
+        }
+      ],
+      "prompt": "Create one ScummWEB website hero illustration for Escape from Monkey Island from the attached original retail box art, used as the primary visual reference for identity and medium. Output a full-bleed 5:3 landscape of at least 1600 × 960 pixels, ideally 1620 × 972. The site overlays white title, summary and a green Play button on the left. The left 42% must be consistently dark with few details, top 9% and bottom 12% quiet, and all important subjects inset on the right so a narrow responsive crop can still show them. Recompose the original cover's hand-painted caricature and orange, pale blue and parchment palette into one wide harbor scene at dusk. Keep recognizably young auburn-haired Guybrush in his white jacket over a navy-and-white striped shirt and the small white duck from the reference. Keep Elaine's red pirate outfit and original character look if showing her. Group characters on the right. Use the left side for deep blue ocean and silhouettes of timber docks in calm shadow. No torn parchment border. No embedded typography, logos, framing, scan edges, UI, signatures, or watermarks. This is promotional illustration.",
+      "revisionPrompts": [
+        "Return one pure full-bleed textless illustration of exactly the same 5:3 composition and dimensions as the attached image. The attached image is the edit target. Erase all lettering, typography, symbols, the green rectangle, and every graphic overlay on the entire left half. Inpaint those areas continuously with deep blue dusk, ocean and silhouettes of the harbor, blending the gradients and textures naturally and leaving the left half entirely free of glyphs and graphics. Preserve the original character identities, palette, visual medium, and the characters and scenic composition on the right. One unlettered borderless artwork with no letters, logos, marks, buttons, rectangles, UI, captions, words, or interface elements anywhere."
+      ]
+    },
+    {
+      "target": "monkey4-demo",
+      "role": "cover",
+      "asset": "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-08-r1-cover.webp",
+      "generatedOn": "2026-11-08",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "484fd7cebb1aeab19f751be690101300c32c3a7d0ff07397a63edda27b359a60",
+        "width": 1138,
+        "height": 1382
+      },
+      "output": {
+        "sha256": "7e66e13ca073db70e641aa5ff0b808f1ef6c61ea047831413a2b8c9a14bfdcb6",
+        "width": 1138,
+        "height": 1382,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "kind": "box-scan",
+          "url": "https://mocagh.org/lucasfilm/mi4.jpg",
+          "credit": "LucasArts original US PC box front, photographed by the Museum of Computer Adventure Game History",
+          "sha256": "3c13041d528670d23f379150650a1c9d302209e4d32ec08ebfbc34009b62a550"
+        }
+      ],
+      "prompt": "Faithfully restore the attached photograph of the actual original English retail box front for Escape from Monkey Island. The attachment is the primary restoration target. Reproduce the original publisher's cover, with its artwork, layout, text, typography, logos and colors intact. Output a flat 3:4 portrait of at least 900 × 1200 pixels, ideally 1080 × 1440. Keep all printed elements within safe margins. Preserve the whole art and original composition with minimal matching neutral top and bottom margin if needed to fit the ratio. No stretch, 3D perspective, cropping, spine, extra decorations, or redesign. Improve sharpness, clean physical scratches, yellowing and glare, and square the image. Keep the warm parchment borders, original giant black-outlined gold ESCAPE FROM MONKEY ISLAND logo and exact letter shapes, Guybrush in his striped shirt with his quizzical expression and duck, Elaine with pistol and sword, and the supporting figures in their original places. Retain the LucasArts and ESRB marks, original hardware badge, and original bottom tagline in place. Do not add a demo banner.",
+      "reviewNote": "Rejected because the source ratio is wider than the portrait card."
+    },
+    {
+      "target": "monkey4-demo",
+      "role": "cover",
+      "asset": "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover.webp",
+      "generatedOn": "2026-11-08",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "04d08f62549b2c277e2bf67b84f0f70fb5370b5d42ca5fa04327289fb4e07f3b",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "22f9d58737d43e76eb24ef83f47a5149fc29d04183f4fd62e9a7becafa357167",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "kind": "box-scan",
+          "url": "https://mocagh.org/lucasfilm/mi4.jpg",
+          "credit": "LucasArts original US PC box front, photographed by the Museum of Computer Adventure Game History",
+          "sha256": "3c13041d528670d23f379150650a1c9d302209e4d32ec08ebfbc34009b62a550"
+        }
+      ],
+      "prompt": "Faithfully restore the attached photograph of the actual original English retail box front for Escape from Monkey Island. The attachment is the primary restoration target. Reproduce the original publisher's cover, with its artwork, layout, text, typography, logos and colors intact. Output a flat 3:4 portrait of at least 900 × 1200 pixels, ideally 1080 × 1440. Keep all printed elements within safe margins. Preserve the whole art and original composition with minimal matching neutral top and bottom margin if needed to fit the ratio. No stretch, 3D perspective, cropping, spine, extra decorations, or redesign. Improve sharpness, clean physical scratches, yellowing and glare, and square the image. Keep the warm parchment borders, original giant black-outlined gold ESCAPE FROM MONKEY ISLAND logo and exact letter shapes, Guybrush in his striped shirt with his quizzical expression and duck, Elaine with pistol and sword, and the supporting figures in their original places. Retain the LucasArts and ESRB marks, original hardware badge, and original bottom tagline in place. Do not add a demo banner.",
+      "revisionPrompts": [
+        "Correct only the aspect ratio of this restored original PC box front. Output one exact 3:4 portrait, at least 900 × 1200, preferably 1086 × 1448. Fit all existing printed image elements inside the original design without cropping, moving or stretching them, by extending the original parchment edge in narrow bands at top and bottom. Preserve the existing title lettering, logos, hardware badge, all printed copy and character art verbatim. Do not change the artwork itself or add any new wording. The source is the full front, shown flat."
+      ]
+    },
+    {
+      "target": "zork1",
+      "role": "hero",
+      "asset": "/launcher/zork-1-scummweb-generated-2026-11-08-r1-hero.webp",
+      "generatedOn": "2026-11-08",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-art-recomposition",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "f2c69171363fb9dfc72efee498336c2ad8447db659a6195eb79cd4462c2a70b2",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "0548299ed2c41440482da99f70bd7ceb01c22c0f7a36eb0932deda87809e0a23",
+        "width": 1619,
+        "height": 971,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "kind": "box-scan",
+          "url": "https://mocagh.org/infocom/zork.jpg",
+          "credit": "Infocom original English grey-box front, photographed by the Museum of Computer Adventure Game History",
+          "sha256": "2a200a824729ed453d895dde0173a74e6c9b9bababb8232ab6bccd75a66cdef3"
+        }
+      ],
+      "prompt": "Create one ScummWEB website hero illustration for Zork I from the attached original retail box art, used as the primary visual reference for identity and medium. Output a full-bleed 5:3 landscape of at least 1600 × 960 pixels, ideally 1620 × 972. The site overlays white title, summary and a green Play button on the left. The left 42% must be consistently dark with few details, top 9% and bottom 12% quiet, and all important subjects inset on the right so a narrow responsive crop can still show them. Use the original Infocom cover's hand-engraved black-ink hatching, parchment highlights, deep near-black void and restrained brass and wood accents. On the right, recompose the open brass-hinged wooden doorway from the cover as the boarded white house's threshold and the little mailbox from the opening of the story. Suggest an invitation down into the Great Underground Empire in the composition. Keep the left shadowed and unlettered, using restrained green-black dusk. No alphabetic masonry or Roman numerals. No embedded typography, logos, framing, scan edges, UI, signatures, or watermarks. This is promotional illustration.",
+      "reviewNote": "Rejected because the image includes page text and a Play button."
+    },
+    {
+      "target": "zork1",
+      "role": "hero",
+      "asset": "/launcher/zork-1-scummweb-generated-2026-11-08-r2-hero.webp",
+      "generatedOn": "2026-11-08",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-art-recomposition",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "87a305cd132f8176406ce68c8cc24f5e832316583628fe8addea68732ed92a4c",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "7dc88f7043ce75756bfc57ecd28f49b633cb842f7ceac0da3c56f59cad77d59f",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "kind": "box-scan",
+          "url": "https://mocagh.org/infocom/zork.jpg",
+          "credit": "Infocom original English grey-box front, photographed by the Museum of Computer Adventure Game History",
+          "sha256": "2a200a824729ed453d895dde0173a74e6c9b9bababb8232ab6bccd75a66cdef3"
+        }
+      ],
+      "prompt": "Create one ScummWEB website hero illustration for Zork I from the attached original retail box art, used as the primary visual reference for identity and medium. Output a full-bleed 5:3 landscape of at least 1600 × 960 pixels, ideally 1620 × 972. The site overlays white title, summary and a green Play button on the left. The left 42% must be consistently dark with few details, top 9% and bottom 12% quiet, and all important subjects inset on the right so a narrow responsive crop can still show them. Use the original Infocom cover's hand-engraved black-ink hatching, parchment highlights, deep near-black void and restrained brass and wood accents. On the right, recompose the open brass-hinged wooden doorway from the cover as the boarded white house's threshold and the little mailbox from the opening of the story. Suggest an invitation down into the Great Underground Empire in the composition. Keep the left shadowed and unlettered, using restrained green-black dusk. No alphabetic masonry or Roman numerals. No embedded typography, logos, framing, scan edges, UI, signatures, or watermarks. This is promotional illustration.",
+      "revisionPrompts": [
+        "Return one pure full-bleed landscape illustration, exactly the existing 5:3 dimensions. In the entire left half of the attached image, remove every letter, title, line of copy, symbol, and the complete green and white rectangle. Repaint those regions as smooth continuation of the surrounding near-black dusk and original hand-engraved texture. Preserve the entire right-hand picture of the house, wooden doorway and mailbox, with its black ink lines, cream hatching and muted brass. No visible glyphs, graphic overlays, lettering, borders, UI, logos or labels anywhere. Leave the left 42 percent naturally dark and quiet."
+      ]
+    },
+    {
+      "target": "zork1",
+      "role": "cover",
+      "asset": "/launcher/zork-1-scummweb-generated-2026-11-08-r1-cover.webp",
+      "generatedOn": "2026-11-08",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "041d548b706f615242f6f4b526a150612104ef62579cd9e13e4fbda25783ea69",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "ac0ef47b997f4e6d27af91c4d3671540da547ed574158b94bc3d0ddba02c2b4f",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "kind": "box-scan",
+          "url": "https://mocagh.org/infocom/zork.jpg",
+          "credit": "Infocom original English grey-box front, photographed by the Museum of Computer Adventure Game History",
+          "sha256": "2a200a824729ed453d895dde0173a74e6c9b9bababb8232ab6bccd75a66cdef3"
+        }
+      ],
+      "prompt": "Faithfully restore the attached photograph of the actual original English retail box front for Zork I. The attachment is the primary restoration target. Reproduce the original publisher's cover, with its artwork, layout, text, typography, logos and colors intact. Output a flat 3:4 portrait of at least 900 × 1200 pixels, ideally 1080 × 1440. Keep all printed elements within safe margins. Preserve the whole art and original composition with minimal matching neutral top and bottom margin if needed to fit the ratio. No stretch, 3D perspective, cropping, spine, extra decorations, or redesign. Improve sharpness, clean physical scratches, yellowing and glare, and square the image. Keep the olive grey box rules, black central field, monochrome hand-engraved masonry logo with the single Roman I and the open brown door with brass hinges. Preserve the original headline “Your greatest challenge lies ahead—and downwards.”, bottom INFOCOM logo, “INTERACTIVE FICTION”, “FANTASY” and “STANDARD LEVEL”. Remove only physical scan glare, dirt and the applied Kaypro platform sticker, restoring the original grey background and rules underneath. Keep the whole printed front visible."
+    },
+    {
+      "target": "zork2",
+      "role": "hero",
+      "asset": "/launcher/zork-2-scummweb-generated-2026-11-08-r1-hero.webp",
+      "generatedOn": "2026-11-08",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-art-recomposition",
+      "stage": "preview",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "a13e33484ffb16797412ece5e9772e413d9da405e90e88bc15fcbbc5121c81ed",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "b710ada40507c48dd90d8aa2436c46bbd194ea6ac75eab6035fc941ab0512e30",
+        "width": 1619,
+        "height": 971,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "kind": "box-scan",
+          "url": "https://mocagh.org/infocom/zork2.jpg",
+          "credit": "Infocom original English grey-box front, photographed by the Museum of Computer Adventure Game History",
+          "sha256": "52f0c7863b25498514557cd6158e4afe60c573b524a612786ff90432757141e3"
+        }
+      ],
+      "prompt": "Create one ScummWEB website hero illustration for Zork II from the attached original retail box art, used as the primary visual reference for identity and medium. Output a full-bleed 5:3 landscape of at least 1600 × 960 pixels, ideally 1620 × 972. The site overlays white title, summary and a green Play button on the left. The left 42% must be consistently dark with few details, top 9% and bottom 12% quiet, and all important subjects inset on the right so a narrow responsive crop can still show them. Carry the original Infocom cover's sharp hand-engraved black ink, cream highlights, subdued brass hardware and darkness into a scene inspired by the game. On the right a brass lantern lights a carved stone passage descending from a barrow into Frobozz, with the opened old wooden doorway from the original illustration and a distant subtle wizard's silhouette. A faint purple-blue accent distinguishes it from the first game. Do not use the Zork letters or numeral as art. Keep the whole left side almost black and low detail. No embedded typography, logos, framing, scan edges, UI, signatures, or watermarks. This is promotional illustration.",
+      "reviewNote": "Rejected because the image includes page text and a Play button."
+    },
+    {
+      "target": "zork2",
+      "role": "hero",
+      "asset": "/launcher/zork-2-scummweb-generated-2026-11-08-r2-hero.webp",
+      "generatedOn": "2026-11-08",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-art-recomposition",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "584b17e34b688cff49bbd3d6052c55a65f5d5a41414cbb7fe3fd52aff857ccd8",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "3b8fd24bd6953de65b7925f0dfbac4c8983575e47cd383dd81201541153f0a1f",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "kind": "box-scan",
+          "url": "https://mocagh.org/infocom/zork2.jpg",
+          "credit": "Infocom original English grey-box front, photographed by the Museum of Computer Adventure Game History",
+          "sha256": "52f0c7863b25498514557cd6158e4afe60c573b524a612786ff90432757141e3"
+        }
+      ],
+      "prompt": "Create one ScummWEB website hero illustration for Zork II from the attached original retail box art, used as the primary visual reference for identity and medium. Output a full-bleed 5:3 landscape of at least 1600 × 960 pixels, ideally 1620 × 972. The site overlays white title, summary and a green Play button on the left. The left 42% must be consistently dark with few details, top 9% and bottom 12% quiet, and all important subjects inset on the right so a narrow responsive crop can still show them. Carry the original Infocom cover's sharp hand-engraved black ink, cream highlights, subdued brass hardware and darkness into a scene inspired by the game. On the right a brass lantern lights a carved stone passage descending from a barrow into Frobozz, with the opened old wooden doorway from the original illustration and a distant subtle wizard's silhouette. A faint purple-blue accent distinguishes it from the first game. Do not use the Zork letters or numeral as art. Keep the whole left side almost black and low detail. No embedded typography, logos, framing, scan edges, UI, signatures, or watermarks. This is promotional illustration.",
+      "revisionPrompts": [
+        "Return one pure full-bleed landscape illustration, exactly the existing 5:3 dimensions. In the entire left half of the attached image, remove every letter, title, line of copy, symbol, and the complete green and white rectangle. Repaint those regions as smooth continuation of surrounding near-black shadow and subtle hatching. Preserve the right-hand view of the wooden door, purple cavern, brass lantern and wizard silhouette unchanged, with the original black-ink engraving and warm cream highlights. No visible glyphs, graphic overlays, lettering, borders, UI, logos or labels anywhere. Leave the left 42 percent naturally dark and quiet."
+      ]
+    },
+    {
+      "target": "zork2",
+      "role": "cover",
+      "asset": "/launcher/zork-2-scummweb-generated-2026-11-08-r1-cover.webp",
+      "generatedOn": "2026-11-08",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "773072f2e6d22a54caecc5195e1c033f00dfc755a22a3de011a69fbb09e595fa",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "04c0207175efce4d30dcb5d6031cae5505ae75308698bf64ce17196cb0a91f0d",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "kind": "box-scan",
+          "url": "https://mocagh.org/infocom/zork2.jpg",
+          "credit": "Infocom original English grey-box front, photographed by the Museum of Computer Adventure Game History",
+          "sha256": "52f0c7863b25498514557cd6158e4afe60c573b524a612786ff90432757141e3"
+        }
+      ],
+      "prompt": "Faithfully restore the attached photograph of the actual original English retail box front for Zork II. The attachment is the primary restoration target. Reproduce the original publisher's cover, with its artwork, layout, text, typography, logos and colors intact. Output a flat 3:4 portrait of at least 900 × 1200 pixels, ideally 1080 × 1440. Keep all printed elements within safe margins. Preserve the whole art and original composition with minimal matching neutral top and bottom margin if needed to fit the ratio. No stretch, 3D perspective, cropping, spine, extra decorations, or redesign. Improve sharpness, clean physical scratches, yellowing and glare, and square the image. Keep the olive grey box rules, black central field, monochrome hand-engraved masonry logo with exactly two stone pillars making Roman II, and the open brown door with brass hinges. Preserve “The next step downward to danger.”, the bottom INFOCOM logo, “INTERACTIVE FICTION”, “FANTASY” and “ADVANCED LEVEL”. Remove only physical scan glare, dirt and the applied Kaypro platform sticker, restoring the original grey rules. Keep the whole printed front visible."
+    },
+    {
+      "target": "zork3",
+      "role": "hero",
+      "asset": "/launcher/zork-3-scummweb-generated-2026-11-08-r1-hero.webp",
+      "generatedOn": "2026-11-08",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-art-recomposition",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "7057c572b12ea68e331696542e3e50b71c89af224910d813e164e193ce3f3c1a",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "9cc08ce8a28a22d9405fa0b085da736ffebe00bea9402b006444388c30c0a441",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "kind": "box-scan",
+          "url": "https://mocagh.org/infocom/zork3.jpg",
+          "credit": "Infocom original English grey-box front, photographed by the Museum of Computer Adventure Game History",
+          "sha256": "c44bbe612141e1a2ea873a3ee9a5ccc8fe5062c21e1a5fbaa8c487f44ee28e24"
+        }
+      ],
+      "prompt": "Create one ScummWEB website hero illustration for Zork III from the attached original retail box art, used as the primary visual reference for identity and medium. Output a full-bleed 5:3 landscape of at least 1600 × 960 pixels, ideally 1620 × 972. The site overlays white title, summary and a green Play button on the left. The left 42% must be consistently dark with few details, top 9% and bottom 12% quiet, and all important subjects inset on the right so a narrow responsive crop can still show them. Use the original Infocom grey-box cover's hand-engraved cream masonry, pitch-black shadows, brown wood and fine gold-colored brass details. Recompose its masonry and doorway into the Endless Stair from the game, a curving underground stair opening to a distant right-hand pool of amber light, and a slight suggestion of the hooded Dungeon Master near the threshold. Keep the left around 42 percent nearly black and low detail. Do not depict the Zork logo or any alphabetic masonry. No embedded typography, logos, framing, scan edges, UI, signatures, or watermarks. This is promotional illustration."
+    },
+    {
+      "target": "zork3",
+      "role": "cover",
+      "asset": "/launcher/zork-3-scummweb-generated-2026-11-08-r1-cover.webp",
+      "generatedOn": "2026-11-08",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "box-front-restoration",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "0c33946838869dd35ea320078ab46c567f0824d5be27ccdfe0c70182ea860644",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "b83a6205a3b3acbb0721c375c70a1fc852e7e84168310a005590d074880f4347",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "kind": "box-scan",
+          "url": "https://mocagh.org/infocom/zork3.jpg",
+          "credit": "Infocom original English grey-box front, photographed by the Museum of Computer Adventure Game History",
+          "sha256": "c44bbe612141e1a2ea873a3ee9a5ccc8fe5062c21e1a5fbaa8c487f44ee28e24"
+        }
+      ],
+      "prompt": "Faithfully restore the attached photograph of the actual original English retail box front for Zork III. The attachment is the primary restoration target. Reproduce the original publisher's cover, with its artwork, layout, text, typography, logos and colors intact. Output a flat 3:4 portrait of at least 900 × 1200 pixels, ideally 1080 × 1440. Keep all printed elements within safe margins. Preserve the whole art and original composition with minimal matching neutral top and bottom margin if needed to fit the ratio. No stretch, 3D perspective, cropping, spine, extra decorations, or redesign. Improve sharpness, clean physical scratches, yellowing and glare, and square the image. Keep the olive grey box rules, black central field, monochrome hand-engraved masonry logo with exactly three stone pillars making Roman III, and the open brown door with brass hinges. Preserve “It all comes down to this.”, the bottom INFOCOM logo, “INTERACTIVE FICTION”, “FANTASY” and “ADVANCED LEVEL”. Remove the scan's real scratches and glare, without removing original engraved texture. Keep the whole printed front visible."
+    },
+    {
+      "target": "grim-demo",
+      "role": "hero",
+      "asset": "/launcher/grim-fandango-scummweb-generated-2026-11-09-r2-hero.webp",
+      "generatedOn": "2026-11-09",
+      "generator": "image_gen (built-in)",
+      "creativeBasis": "original-art-recomposition",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "d80b6799105ae8fdc1cdf6fd362a6b4edbfe57d0e0853fc42f64cb6e00db53ec",
+        "width": 1620,
+        "height": 971
+      },
+      "output": {
+        "sha256": "ac54b60ac96e81371425c4b89cdeb706b7ce3feb36a5c4614cfd4e634e4399a3",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "kind": "box-scan",
+          "url": "https://mocagh.org/lucasfilm/grimfandango.jpg",
+          "credit": "LucasArts original US PC box front, photographed by the Museum of Computer Adventure Game History",
+          "sha256": "d1d242a1ee877e6d7d5dab74548b2bcb832d5d82ed55803abab1ebd795c7e186"
+        }
+      ],
+      "prompt": "Create one ScummWEB website hero illustration for Grim Fandango from the attached original retail box art, used as the primary visual reference for identity and medium. Output a full-bleed 5:3 landscape of at least 1600 × 960 pixels, ideally 1620 × 972. The site overlays white title, summary and a green Play button on the left. The left 42% must be consistently dark with few details, top 9% and bottom 12% quiet, and all important subjects inset on the right so a narrow responsive crop can still show them. Use the original LucasArts game's low-poly late-1990s look and Mexican Art Deco noir. In the right half show recognizable Manny Calavera in his white tuxedo with his tall rectangular ivory skull, black eyes, little bow tie and a cigarette, framed in the moonlit Land of the Dead. Recompose the purple and cobalt windows and gold accents from the reference into a single cinematic setting. Keep the entire face in the middle-right safe area, with the left side in dark blue unlit architecture. No embedded typography, logos, framing, scan edges, UI, signatures, or watermarks. This is promotional illustration.",
+      "revisionPrompts": [
+        "Return one pure full-bleed textless illustration of exactly the same 5:3 composition and dimensions as the attached image. The attached image is the edit target. Erase all lettering, typography, symbols, the green rectangle, and every graphic overlay on the entire left half. Inpaint those areas continuously with deep blue shadowed wall and night architecture, blending the gradients and textures naturally and leaving the left half entirely free of glyphs and graphics. Preserve the original character identities, palette, visual medium, and the characters and scenic composition on the right. One unlettered borderless artwork with no letters, logos, marks, buttons, rectangles, UI, captions, words, or interface elements anywhere."
+      ]
     }
   ]
 }

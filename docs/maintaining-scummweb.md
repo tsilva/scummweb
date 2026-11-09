@@ -1075,6 +1075,12 @@ reference; never substitute reimagined hero art. Remove scan damage and extraneo
 stickers without redesigning the cover. Report missing original box references.
 Screenshots always remain original gameplay captures; never generate or repaint them.
 
+The Grim Fandango and Escape from Monkey Island demos use their games’ original
+English PC box fronts as references. Zork I–III use Infocom’s English grey-box
+fronts. The Museum of Computer Adventure Game History provides the reference
+photographs. The per-game records link to the exact photographs and identify the
+new heroes as illustrated recompositions and the covers as restorations.
+
 Recognized personal imports can have a hero and a restored box front. Keep the
 original reference URLs and credits in the artwork mapping and the prompts and
 checksums in the generation registry. A hero can be published on its own when
