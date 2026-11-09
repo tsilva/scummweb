@@ -2,9 +2,9 @@ import { getArtworkImageProps } from "./artwork-image-props.mjs";
 
 export const HERO_PRELOAD_AHEAD = 3;
 
-export function getHeroImageProps(game, artwork) {
+export function getHeroImageProps(game, artwork, role = "library-hero") {
   const src = game.heroImage || game.landscapeImage || game.posterImage;
-  const optimized = getArtworkImageProps(src, "hero", artwork);
+  const optimized = getArtworkImageProps(src, role, artwork);
   if (optimized.srcSet) return optimized;
   return {
     src,
