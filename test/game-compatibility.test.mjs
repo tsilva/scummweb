@@ -89,7 +89,16 @@ test("normal original game prompts do not create compatibility warnings", () => 
   assert.equal(prompts.length, 5);
   assert.ok(prompts.every((entry) => entry.status === "startup-verified"));
   assert.ok(prompts.every((entry) => /gameplay beyond it was not verified/.test(entry.observation)));
-  assert.deepEqual(filterCompatibilityEntries(data.entries, { status: "startup-warning" }).map((entry) => entry.gameId).sort(), ["mads:nebular", "parallaction:bra"]);
+  assert.deepEqual(filterCompatibilityEntries(data.entries, { status: "startup-warning" }).map((entry) => entry.gameId).sort(), [
+    "grim:monkey4",
+    "mads:nebular",
+    "mohawk:arthurbday",
+    "mohawk:arthurcomp",
+    "mohawk:arthurrace",
+    "mohawk:catinthehat",
+    "parallaction:bra",
+    "zvision:zgi",
+  ]);
 });
 
 test("a repaired edition keeps its prior failure alongside its current verified result", () => {
@@ -111,7 +120,7 @@ test("search handles title accents, engine IDs, edition names, and combined stat
   assert.deepEqual(search("sky:sky").map((game) => game.title), ["Beneath a Steel Sky"]);
   assert.ok(search("Beneath CD VGA").some((game) => game.title === "Beneath a Steel Sky"));
   assert.equal(search("sky:sky", "not-tested").length, 0);
-  assert.ok(search("grim", "not-tested").some((game) => game.title === "Grim Fandango"));
+  assert.ok(search("grim", "startup-verified").some((game) => game.title === "Grim Fandango (Demo)"));
   assert.equal(search("no-such-game-12345").length, 0);
   assert.equal(search("   ").length, data.entries.length);
   assert.equal(filterCompatibilityEntries(data.entries, { status: "startup-verified" }).length, getCompatibilitySummary(data.entries).verified);

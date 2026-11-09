@@ -1,0 +1,3338 @@
+{
+  "/launcher/atlantis-cover.webp": {
+    "width": 800,
+    "height": 1017,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/drascula-cover.webp": {
+    "width": 840,
+    "height": 630,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/dreamweb-cover.webp": {
+    "width": 840,
+    "height": 968,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/indy3-cover.webp": {
+    "width": 800,
+    "height": 1011,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/loom-cover.webp": {
+    "width": 800,
+    "height": 1023,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/lure-cover.webp": {
+    "width": 640,
+    "height": 480,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/maniac-cover.webp": {
+    "width": 720,
+    "height": 916,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/monkey-demo-cover.webp": {
+    "width": 951,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/monkey2-cover.webp": {
+    "width": 760,
+    "height": 1073,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/nippon-cover.webp": {
+    "width": 1600,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/queen-cover.webp": {
+    "width": 800,
+    "height": 1032,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/retro-access-amazon-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-bc-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-goldrush-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-kq2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-kq3-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-mh1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-mh2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-mickey-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-pq1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-sq1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-sq2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-troll-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agi-winnie-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agos-elvira1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agos-elvira2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agos-feeble-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agos-jumble-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agos-pn-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agos-simon1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agos-simon2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-agos-waxworks-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-bbvs-bbvs-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-cge-soltys-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-cine-fw-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-composer-darby-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-composer-gregory-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-composer-liam-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-composer-princess-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-composer-sleepingcub-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-cruise-cruise-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-draci-draci-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gnap-gnap-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-bargon-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-fascination-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-geisha-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-gob1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-gob2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-gob3-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-lit-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-littlered-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-urban-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-ween-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-gob-woodruff-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-groovie-t7g-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-hopkins-hopkins-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-hugo-hugo1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-hugo-hugo2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-hugo-hugo3-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-kyra-eob-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-kyra-eob2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-kyra-kyra1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-kyra-kyra2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-kyra-kyra3-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-kyra-lol-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-lab-lab-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-local-road-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-made-lgop2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-made-rodney-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-made-rtz-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-mads-nebular-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-mohawk-myst-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-mohawk-riven-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-neverhood-neverhood-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-ngi-fullpipe-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-parallaction-bra-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-pegasus-pegasus-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-plumbers-plumbers-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-saga-ihnm-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-saga-ite-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-camelot-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-castlebrain-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-ecoquest-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-ecoquest2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-freddypharkas-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-funseeker-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-gk1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-gk2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-iceman-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-islandbrain-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-jones-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-kq1sci-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-kq4sci-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-kq5-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-kq6-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-kq7-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-laurabow-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-laurabow2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-lighthouse-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-longbow-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-lsl1sci-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-lsl2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-lsl3-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-lsl5-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-lsl6hires-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-lsl7-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-msastrochicken-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-pepper-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-phantasmagoria-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-phantasmagoria2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-pq2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-pq3-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-pq4-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-qfg1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-qfg2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-qfg3-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-rama-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-shivers-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-sq3-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-sq4-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-sq5-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-sq6-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-torin-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-scumm-bluestreasurehunt-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-scumm-brstorm-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-scumm-comi-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-scumm-dig-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-scumm-ft-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-scumm-monkey-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-scumm-pass-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-scumm-thinker1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-scumm-thinkerk-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sherlock-rosetattoo-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sherlock-scalpel-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sword1-sword1-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sword2-sword2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-teenagent-teenagent-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-tinsel-dw-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-tinsel-dw2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-titanic-titanic-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-toltecs-toltecs-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-tony-tony-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-toon-toon-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-touche-touche-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-tsage-blueforce-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-tsage-ringworld-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-tsage-ringworld2-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-tucker-tucker-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-voyeur-voyeur-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-wintermute-chivalry-poster.webp": {
+    "width": 540,
+    "height": 720,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/samnmax-cover.webp": {
+    "width": 800,
+    "height": 1010,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/sfinx-cover.webp": {
+    "width": 800,
+    "height": 1069,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/sky-cover.webp": {
+    "width": 840,
+    "height": 1073,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/sword25-cover.webp": {
+    "width": 840,
+    "height": 630,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/tentacle-cover.webp": {
+    "width": 800,
+    "height": 1016,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/zak-cover.webp": {
+    "width": 719,
+    "height": 920,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/retro-sci-lsl1sci-remake-poster.webp": {
+    "width": 512,
+    "height": 625,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-pq1sci-poster.webp": {
+    "width": 512,
+    "height": 636,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-qfg1-original-poster.webp": {
+    "width": 512,
+    "height": 645,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/retro-sci-qfg1vga-poster.webp": {
+    "width": 701,
+    "height": 865,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/retro-sci-sq1sci-poster.webp": {
+    "width": 512,
+    "height": 640,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/classic-got-cover.webp": {
+    "width": 512,
+    "height": 509,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/classic-hires1-cover.webp": {
+    "width": 512,
+    "height": 674,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/drascula-scummweb-generated-2026-11-05-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/dreamweb-scummweb-generated-2026-11-05-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/hires1-scummweb-generated-2026-11-05-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/lure-scummweb-generated-2026-11-05-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/monkey-demo-scummweb-generated-2026-11-05-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/nippon-scummweb-generated-2026-11-05-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/queen-scummweb-generated-2026-11-05-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/sfinx-scummweb-generated-2026-11-05-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/sky-scummweb-generated-2026-11-05-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/soltys-scummweb-generated-2026-11-05-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/sword25-scummweb-generated-2026-11-05-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/amazon-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/mh1-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/goldrush-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/kq2-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/mh2-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/kq3-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/pq1-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/sq1-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/sq2-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/troll-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/atlantis-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/indy3-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/loom-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/maniac-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/monkey2-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/feeble-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/jumble-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/samnmax-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/simon2-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/pn-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/tentacle-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/waxworks-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/bbvs-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/simon1-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/zak-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/darby-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/elvira1-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/sleepingcub-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/fw-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/elvira2-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/liam-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/cruise-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/gnap-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/draci-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/princess-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/bargon-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/fascination-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/ite-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/camelot-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/castlebrain-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/ecoquest-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/geisha-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/gob1-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/gob2-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/gob3-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/qfg1vga-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/qfg2-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/qfg3-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/rama-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/gregory-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/ecoquest2-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/freddypharkas-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/gk2-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/littlered-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/lit-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/urban-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/ween-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/sq1sci-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/sq4-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/sq3-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/shivers-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/t7g-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/woodruff-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/hugo2-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/hopkins-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/torin-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/sq5-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/bluestreasurehunt-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/sq6-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/iceman-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/islandbrain-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/jones-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/kq1sci-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/dig-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/ft-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/kyra1-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/eob-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/kyra2-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/eob2-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/kq4sci-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/kq5-scummweb-generated-2026-11-06-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/kq6-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/kq7-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/pass-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/thinker1-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/rosetattoo-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/thinkerk-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/lgop2-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/kyra3-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/lab-scummweb-generated-2026-11-06-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/lol-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/laurabow-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/laurabow2-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/lighthouse-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/longbow-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/nebular-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/rtz-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/myst-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/rodney-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/sword2-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/teenagent-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/scalpel-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/sword1-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/lsl1sci-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/lsl2-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/lsl3-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/lsl5-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/neverhood-scummweb-generated-2026-11-06-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/bra-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/riven-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/fullpipe-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/dw2-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/dw-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/titanic-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/toltecs-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/lsl6hires-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/lsl7-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/pepper-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/phantasmagoria-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/ihnm-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/pegasus-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/phantasmagoria2-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/pq1sci-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/pq2-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/pq3-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/tony-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/toon-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/blueforce-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/touche-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/pq4-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/qfg1-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/ringworld2-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/ringworld-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/voyeur-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/tucker-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/got-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/bluestreasurehunt-scummweb-generated-2026-11-06-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/brstorm-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/chivalry-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/hugo1-scummweb-generated-2026-11-06-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/hugo3-scummweb-generated-2026-11-06-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/road-scummweb-generated-2026-11-06-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/mortville-manor-scummweb-generated-2026-11-07-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/pajama-sam-scummweb-generated-2026-11-07-r3-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/spy-fox-2-scummweb-generated-2026-11-07-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/zork-nemesis-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/freddi-fish-1-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/freddi-fish-2-scummweb-generated-2026-11-07-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/freddi-fish-3-scummweb-generated-2026-11-07-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/freddi-fish-4-scummweb-generated-2026-11-07-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/freddi-fish-5-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/arthurs-birthday-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/arthurs-computer-adventure-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/arthurs-reading-race-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/backyard-baseball-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/the-tortoise-and-the-hare-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/backyard-baseball-2003-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/backyard-basketball-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/backyard-football-2002-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/backyard-football-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/blues-art-time-activities-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/king-grahams-board-game-challenge-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/leisure-suit-larrys-casino-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/parlor-games-with-laura-bow-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/robin-hoods-games-of-skill-and-chance-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/roger-wilcos-spaced-out-game-pack-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/fatty-bears-funpack-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/mission-asteroid-scummweb-generated-2026-11-07-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/the-wizard-and-the-princess-scummweb-generated-2026-11-07-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/time-zone-scummweb-generated-2026-11-07-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/hoyles-official-book-of-games-volume-1-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/hoyles-official-book-of-games-volume-2-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/hoyles-official-book-of-games-volume-3-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/just-grandma-and-me-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/lets-explore-the-airport-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/lets-explore-the-farm-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/lets-explore-the-jungle-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/little-monster-at-school-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/mixed-up-fairy-tales-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/mixed-up-mother-goose-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/pajama-sam-2-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/pajama-sam-3-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/pajama-sam-games-to-play-on-any-day-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/pajama-sams-lost-and-found-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/pajama-sams-sock-works-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/playtoons-2-the-case-of-the-counterfeit-collaborator-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/playtoons-3-the-secret-of-the-castle-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/playtoons-4-the-mandarine-prince-scummweb-generated-2026-11-07-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/putt-putt-and-fatty-bears-activity-pack-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/putt-putt-and-peps-balloon-o-rama-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/putt-putt-and-peps-dog-on-a-stick-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/putt-putt-enters-the-race-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/putt-putt-goes-to-the-moon-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/putt-putt-joins-the-circus-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/putt-putt-joins-the-parade-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/putt-putt-saves-the-zoo-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/putt-putt-travels-through-time-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/putt-putts-one-stop-fun-shop-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/ruffs-bone-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/sheila-rae-the-brave-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/slater-and-charlie-go-camping-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/spy-fox-in-dry-cereal-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/spy-fox-in-hold-the-mustard-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/spy-fox-operation-ozone-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/stellaluna-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/the-berenstain-bears-get-in-a-fight-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/the-berenstain-bears-in-the-dark-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/the-manhole-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/inca-ii-wiracocha-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/astro-chicken-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/christmas-card-1986-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/christmas-card-1988-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/christmas-card-1992-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/donald-ducks-playground-original-cover.webp": {
+    "width": 379,
+    "height": 532,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/dr-seusss-abc-original-cover.webp": {
+    "width": 410,
+    "height": 500,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/green-eggs-and-ham-original-cover.webp": {
+    "width": 375,
+    "height": 460,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/kings-questions-scummweb-generated-2026-11-07-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/open-quest-scummweb-generated-2026-11-07-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/the-cat-in-the-hat-original-cover.webp": {
+    "width": 432,
+    "height": 498,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/the-dark-crystal-original-cover.webp": {
+    "width": 512,
+    "height": 662,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/grim-fandango-scummweb-generated-2026-11-08-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/zork-1-scummweb-generated-2026-11-08-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/zork-2-scummweb-generated-2026-11-08-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/zork-3-scummweb-generated-2026-11-08-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/castle-master-scummweb-generated-2026-11-09-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/quest-for-infamy-scummweb-generated-2026-11-09-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  }
+}

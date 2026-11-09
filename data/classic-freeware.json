@@ -1,0 +1,266 @@
+{
+  "games": [
+    {
+      "target": "soltys",
+      "title": "Sołtys (Freeware v1.0/DOS/English)",
+      "engineId": "cge",
+      "gameId": "soltys",
+      "platform": "pc",
+      "extra": "Freeware v1.0",
+      "archive": "soltys-en-v1.0.zip",
+      "url": "https://downloads.scummvm.org/frs/extras/Soltys/soltys-en-v1.0.zip",
+      "sha256": "87b89e654b8a5b8ebe342cb4c5c6049ab9a43a5efb474d9c49bafb77dcce48f6"
+    },
+    {
+      "target": "sfinx",
+      "title": "Sfinx (Freeware v1.1/DOS/English)",
+      "engineId": "cge2",
+      "gameId": "sfinx",
+      "platform": "pc",
+      "extra": "Freeware v1.1",
+      "archive": "sfinx-en-v1.1.zip",
+      "url": "https://downloads.scummvm.org/frs/extras/Sfinx/sfinx-en-v1.1.zip",
+      "sha256": "f516b30a046526f78cbc923d8f907d267ab964ccd9b770afc72350e8d467ec4d"
+    },
+    {
+      "target": "hires1",
+      "title": "Hi-Res Adventure #1: Mystery House (Public Domain/Apple II/English)",
+      "engineId": "adl",
+      "gameId": "hires1",
+      "platform": "apple2",
+      "extra": "Public Domain",
+      "archive": "MYSTHOUS.zip",
+      "url": "https://downloads.scummvm.org/frs/extras/Mystery%20House/MYSTHOUS.zip",
+      "sha256": "ada412228a149394489b28c6c7f9ebab0722b52e04732fd0aa22949673cfa3a0"
+    },
+    {
+      "target": "draci",
+      "title": "Dragon History (DOS/English)",
+      "engineId": "draci",
+      "gameId": "draci",
+      "platform": "pc",
+      "extra": "",
+      "archive": "dh-en-2012.zip",
+      "url": "https://www.ucw.cz/draci-historie/binary/dh-en-2012.zip",
+      "sha256": "807c625902051639a35871da2c5138615ae2c327c5f12eebb8dd22628874ae23",
+      "noticeFile": "source/draci-copying.txt",
+      "sourceFiles": [
+        {
+          "archive": "draci-copying.txt",
+          "url": "https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt",
+          "sha256": "edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6"
+        },
+        {
+          "archive": "draci-old-sources.zip",
+          "url": "https://www.ucw.cz/draci-historie/source/old-sources.zip",
+          "sha256": "a1bfe3e21d2664d99066b0f8be3c048dd290bc4e323879c27c25adc001b6022e"
+        },
+        {
+          "archive": "draci-new-sources.zip",
+          "url": "https://www.ucw.cz/draci-historie/source/new-sources.zip",
+          "sha256": "0bf2f083459e1d84372140451f09ce1c1f32184cec0f940bda07d6bf5eecf8a8"
+        },
+        {
+          "archive": "draci-new-gfx.zip",
+          "url": "https://www.ucw.cz/draci-historie/source/new-gfx.zip",
+          "sha256": "fe9a6209c919fbd8f74f9b526e9d1c6c83e57ac8f8564aa23eedeed06e9ce727"
+        },
+        {
+          "archive": "draci-old-midi.zip",
+          "url": "https://www.ucw.cz/draci-historie/source/old-midi.zip",
+          "sha256": "5351da04ed5a8e38fa01d6e09f8a8057e05bd6117223cb85c51c8caaef2483fe"
+        }
+      ]
+    },
+    {
+      "target": "atlantis-demo",
+      "title": "Indiana Jones and the Fate of Atlantis (Demo)",
+      "engineId": "scumm",
+      "gameId": "atlantis",
+      "platform": "pc",
+      "extra": "Demo",
+      "archive": "atlantis-dos-demo1-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/scumm/atlantis-dos-demo1-en.zip",
+      "sha256": "a7e66c4b10f83b2ac25cdbbccb7790b4c022e6df006548c381f2b9ef09ee6361",
+      "preserveArchive": true,
+      "noticeFile": "READ.ME"
+    },
+    {
+      "target": "grim-demo",
+      "title": "Grim Fandango (Demo)",
+      "engineId": "grim",
+      "gameId": "grim",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "grim-win-demo1-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/grim/grim-win-demo1-en.zip",
+      "sha256": "c2e3412f46fadabd23e851ae96f0a39a767ebbb016d9d8265bb37d029ebfe52b",
+      "preserveArchive": true,
+      "noticeFile": "license.txt"
+    },
+    {
+      "target": "monkey4-demo",
+      "title": "Escape from Monkey Island (Demo)",
+      "engineId": "grim",
+      "gameId": "monkey4",
+      "platform": "windows",
+      "extra": "Web Demo",
+      "archive": "emi-win-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/grim/emi-win-demo-en.zip",
+      "sha256": "a6c5c7b60728d59c7c336e80b08fe99b04e42826001d84098d5ab982367be4b3",
+      "preserveArchive": true,
+      "noticeFile": "Install/license.txt"
+    },
+    {
+      "target": "comi-demo",
+      "title": "The Curse of Monkey Island (Demo)",
+      "engineId": "scumm",
+      "gameId": "comi",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "comi-win-small-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/scumm/comi-win-small-demo-en.zip",
+      "sha256": "d944e2e6b00bd180466c1aa7bc236e763f23b4733f996b943e0976ef3078a7fa",
+      "preserveArchive": true,
+      "noticeFile": "README.TXT"
+    },
+    {
+      "target": "teenagent-demo",
+      "title": "Teen Agent (Demo)",
+      "engineId": "teenagent",
+      "gameId": "teenagent",
+      "platform": "pc",
+      "extra": "Union shareware demo",
+      "archive": "teen-dos-union-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/teen/teen-dos-union-demo-en.zip",
+      "sha256": "300573bfdd7d9b965e1fb6bdc7397c137b245606dd03b5f09b66fcc577f0e0cc",
+      "preserveArchive": true,
+      "noticeFile": "LICENSE.DOC"
+    },
+    {
+      "target": "hugo1-demo",
+      "title": "Hugo's House of Horrors (Demo)",
+      "engineId": "hugo",
+      "gameId": "hugo1",
+      "platform": "pc",
+      "extra": "Shareware v2.1",
+      "archive": "hugo1-dos-2.1-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/hugo/hugo1-dos-2.1-demo-en.zip",
+      "sha256": "e74321d719ba20cdc6a8b195a9651ed5daa818dbe675ccaa98ef7e7ddf8cd303",
+      "preserveArchive": true,
+      "noticeFile": "MANUAL.DOC"
+    },
+    {
+      "target": "hugo2-demo",
+      "title": "Hugo II: Whodunit? (Demo)",
+      "engineId": "hugo",
+      "gameId": "hugo2",
+      "platform": "pc",
+      "extra": "Shareware v2.1",
+      "archive": "hugo2-dos-2.1-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/hugo/hugo2-dos-2.1-demo-en.zip",
+      "sha256": "0696ae091b1254fc5df6de02ee00eec579724f686a6b84b0ee4ad52a52de2cbf",
+      "preserveArchive": true,
+      "noticeFile": "MANUAL.DOC"
+    },
+    {
+      "target": "hugo3-demo",
+      "title": "Hugo III: Jungle of Doom (Demo)",
+      "engineId": "hugo",
+      "gameId": "hugo3",
+      "platform": "pc",
+      "extra": "Shareware v2.1",
+      "archive": "hugo3-dos-2.1-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/hugo/hugo3-dos-2.1-demo-en.zip",
+      "sha256": "0d5e5890ce91a5be0cfc2e06d9f32634e6eb1a8580ec4d62ff6f79490972b9f9",
+      "preserveArchive": true,
+      "noticeFile": "MANUAL.DOC"
+    },
+    {
+      "target": "pegasus-demo",
+      "title": "The Journeyman Project: Pegasus Prime (Demo)",
+      "engineId": "pegasus",
+      "gameId": "pegasus",
+      "platform": "macintosh",
+      "extra": "Demo",
+      "archive": "pegasus-mac-demo-en-nonmac-format.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/pegasus/pegasus-mac-demo-en-nonmac-format.zip",
+      "sha256": "d51fff370207f611d2223a0c9a08c4a8e163483cfb4cee9a2522116b4fd6c9f8",
+      "preserveArchive": true,
+      "config": {
+        "path": "/games/pegasus/PP Data"
+      }
+    },
+    {
+      "target": "castlemaster-demo",
+      "title": "Castle Master (Demo)",
+      "engineId": "freescape",
+      "gameId": "castlemaster",
+      "platform": "pc",
+      "extra": "Demo",
+      "archive": "castle-dos-demo.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/freescape/castle-dos-demo.zip",
+      "sha256": "9369a971d26b6afd9cde27503f161114afa692054dd5a4a2e990daab24c80532",
+      "preserveArchive": true,
+      "noticeFile": "READ.ME"
+    },
+    {
+      "target": "qfi-demo",
+      "title": "Quest for Infamy (Demo)",
+      "engineId": "ags",
+      "gameId": "qfi",
+      "platform": "windows",
+      "extra": "Demo 2.0",
+      "archive": "quest_for_infamy-demo.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/ags/quest_for_infamy-demo.zip",
+      "sha256": "3166c978a32af0a410d543438d7606b9844a870e3e261aa08e1bd90a5d381996",
+      "preserveArchive": true,
+      "noticeFile": "QFI-EULA.txt"
+    },
+    {
+      "target": "zork1",
+      "title": "Zork I: The Great Underground Empire",
+      "engineId": "glk",
+      "gameId": "zork1",
+      "platform": "",
+      "extra": "Z-machine v3",
+      "archive": "zork1-mit.zip",
+      "url": "https://github.com/historicalsource/zork1/tree/97b7b3d68c075dd9af7da499c3e9690ada3471fd",
+      "sha256": "89523b6e29ae76b48180e47d9b27b8623a09b07310033d99e6dd30e78605d751",
+      "config": {
+        "filename": "zork1.z3"
+      },
+      "preserveArchive": true
+    },
+    {
+      "target": "zork2",
+      "title": "Zork II: The Wizard of Frobozz",
+      "engineId": "glk",
+      "gameId": "zork2",
+      "platform": "",
+      "extra": "Z-machine v3",
+      "archive": "zork2-mit.zip",
+      "url": "https://github.com/historicalsource/zork2/tree/3da9661098809788a99cef00f00c865c6c204f96",
+      "sha256": "1b24e7c69c27f33ea494e1e48f171e2a547c9a69bfc4452c019539e624f1729d",
+      "config": {
+        "filename": "zork2.z3"
+      },
+      "preserveArchive": true
+    },
+    {
+      "target": "zork3",
+      "title": "Zork III: The Dungeon Master",
+      "engineId": "glk",
+      "gameId": "zork3",
+      "platform": "",
+      "extra": "Z-machine v3",
+      "archive": "zork3-mit.zip",
+      "url": "https://github.com/historicalsource/zork3/tree/3ec9ed412b5f3cafe65d83c727d07db1fe4a86a8",
+      "sha256": "e86a125738b9ae659339f64a03a09cb4d257dbb4dca8c03f4d6bc8c250d477ab",
+      "config": {
+        "filename": "zork3.z3"
+      },
+      "preserveArchive": true
+    }
+  ]
+}

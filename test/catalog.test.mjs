@@ -43,7 +43,6 @@ test("getBundledGameLibrary normalizes skip-intro configs and keeps primary targ
           target: "sky",
           title: "Beneath a Steel Sky (CD)",
           skipIntro: {
-            durationMinutes: 2,
             slot: 0,
             saveFiles: ["SKY-VM.000", "SKY-VM.000"],
           },
@@ -56,7 +55,6 @@ test("getBundledGameLibrary normalizes skip-intro configs and keeps primary targ
   assert.equal(library.primaryTarget, "sky");
   assert.deepEqual(library.games[0].skipIntro, {
     strategy: "save-slot",
-    durationMinutes: 2,
     slot: 0,
     saveFiles: ["SKY-VM.000"],
   });
@@ -83,4 +81,18 @@ test("getBundledGameLibrary sorts display titles alphabetically while preserving
   assert.deepEqual(library.games.find((game) => game.target === "queen-cd"),
     addGameRoutes(games).find((game) => game.target === "queen-cd"));
   assert.equal(games[0].target, "queen");
+});
+
+test("bundled series use installment order without changing titles or routes", () => {
+  const source = [
+    { target: "sq6", title: "Space Quest 6: Roger Wilco in the Spinal Frontier" },
+    { target: "sq2", title: "Space Quest II: Chapter II - Vohaul's Revenge" },
+    { target: "sq1", title: "Space Quest: The Sarien Encounter" },
+  ];
+  const library = getBundledGameLibrary({ primaryTarget: "sq6", games: source });
+  assert.deepEqual(library.games.map(({ target }) => target), ["sq1", "sq2", "sq6"]);
+  assert.equal(library.primaryTarget, "sq6");
+  for (const game of addGameRoutes(source)) {
+    assert.deepEqual(library.games.find(({ target }) => target === game.target), game);
+  }
 });

@@ -1,16 +1,19 @@
+import { useArtworkDelivery } from "../home-shell/artwork-delivery";
+import DecorativeImage from "../home-shell/decorative-image";
+import { getHeroImageProps } from "../home-shell/hero-images.mjs";
 import { getHeroImageStyle } from "../home-shell/shared";
 
 export default function GameBootOverlay({
-  bootProgressPercent,
+  archiveBytes,
   bootStatusText,
   game,
   hasBootFailed,
-  onSkipIntro,
-  showSkipIntroAction,
   showBootOverlay,
-  showBootProgress,
   title,
 }) {
+  const artwork = useArtworkDelivery();
+  const backdrop = game ? getHeroImageProps(game, artwork, "hero") : null;
+
   return (
     <div
       aria-hidden={showBootOverlay ? undefined : "true"}
@@ -19,16 +22,16 @@ export default function GameBootOverlay({
       } ${game?.tone || "tone-default"}`}
       data-launch-overlay="true"
       data-launch-overlay-state={hasBootFailed ? "error" : showBootOverlay ? "visible" : "hidden"}
+      data-launch-archive-bytes={archiveBytes}
     >
-      {game?.heroImage ? (
-        <img
-          alt=""
+      {backdrop?.src ? (
+        <DecorativeImage
+          {...backdrop}
           className="game-route-boot-backdrop"
-          decoding="async"
+          decoding="sync"
           fetchPriority="high"
           loading="eager"
-          src={game.heroImage}
-          style={getHeroImageStyle(game.heroImagePosition)}
+          style={getHeroImageStyle(game.heroImagePosition, game.heroImageMobilePosition)}
         />
       ) : null}
       <div className="game-route-boot-scrim" />
@@ -53,28 +56,6 @@ export default function GameBootOverlay({
             <p className="game-route-boot-status-text" data-launch-status="true">
               {bootStatusText}
             </p>
-            {showBootProgress ? (
-              <div className="game-route-boot-progress-shell">
-                <div className="game-route-boot-progress-track" aria-hidden="true">
-                  <div
-                    className="game-route-boot-progress-fill"
-                    style={{ width: `${bootProgressPercent}%` }}
-                  />
-                </div>
-                <span className="game-route-boot-progress-value">{bootProgressPercent}%</span>
-              </div>
-            ) : null}
-            {showSkipIntroAction ? (
-              <div className="game-route-boot-actions">
-                <button
-                  className="game-route-skip-intro-button"
-                  onClick={onSkipIntro}
-                  type="button"
-                >
-                  Skip intro
-                </button>
-              </div>
-            ) : null}
           </div>
         </div>
       </div>

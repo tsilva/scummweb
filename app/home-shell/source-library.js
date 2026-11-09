@@ -1,21 +1,22 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { readRemoteGameArchive } from "../game-bucket.mjs";
-import { getGamePresentation, getImportedGamePresentation } from "../game-presentation";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { exitImmersiveMode } from "../game-player/immersive-mode.mjs";
 import { checkGameSource, isLocalZipSource, localGame, readGameSources, removeGameSources, requestGameSourceAccess, saveGameSources } from "../game-sources.mjs";
 import { findLocalGameSource } from "../local-game-matching.mjs";
-import { maxLocalGameSize, openLocalGameZip, selectGameArchive, validateGameZip } from "../local-game-archive.mjs";
-import { fileNode, handleNode, prepareLocalZip } from "../local-game-import.mjs";
+import { maxLocalGameSize, selectGameArchive, validateGameZip } from "../local-game-selection.mjs";
+import { collectGameImportNodes, fileNode, handleNode, inspectLocalSourceFiles, prepareLocalZip } from "../local-game-import.mjs";
 import LibraryView from "./library-view";
-import { libraryItems } from "./library-query.mjs";
-import { getGameFamilyKey, getVersionSaveNamespace, rememberGameVersion } from "../game-versions.mjs";
-import { getGameDialogId } from "./shared";
+import { catalogGameEntries, getGameFamilyKey, getVersionSaveNamespace, groupGameVersions, rememberGameVersion } from "../game-versions.mjs";
+import { buildGameExitHref, readHeroSelection } from "./hero-selection.mjs";
 import HomeHero from "./home-hero";
-import VersionedGameDetails from "./versioned-game-details";
 import GameDropOverlay, { chooseZipHandles } from "./local-game";
 import RecentGamesRail from "../recent-games-rail";
+import { GameNavigationContext } from "./game-navigation";
+import BrowseMetadata from "./browse-metadata";
+import { ArtworkDelivery } from "./artwork-delivery";
+import { loadArtworkStorage } from "../../lib/artwork-storage.mjs";
 
 const sessionGames = new Map();
 const sessionSources = new Map();
@@ -28,18 +29,31 @@ function scrollToLibraryItem(item, block) {
 
 const reconnectStatuses = new Set(["locate", "missing", "permission"]);
 
-export default function SourceLibrary({ catalog, featuredGame, libraryHeading, officialUrl }) {
+async function loadSourcePresentation() {
+  const [play, { getRecognizedGames }, { libraryItems }, artwork] = await Promise.all([
+    import("../game-play-source.mjs"),
+    import("../recognized-games.mjs"),
+    import("./library-items.mjs"),
+    loadArtworkStorage().catch(() => null),
+  ]);
+  return { ...play, getRecognizedGames, libraryItems, artwork };
+}
+
+export default function SourceLibrary({ catalog, artwork, featuredGame: initialFeaturedGame, isHomePage: initiallyHome = true, libraryHeading, officialUrl, onPlayArchive, playerRoute = false }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [entries, setEntries] = useState([]);
+  const [sourcePresentation, setSourcePresentation] = useState(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
-  const [notice, setNotice] = useState("");
-  const [detailHash, setDetailHash] = useState("");
-  const closeDetails = useCallback(() => {
-    window.history.replaceState(window.history.state, "", `${window.location.pathname}${window.location.search}#library`);
-    setDetailHash("");
-    setNotice("");
-  }, []);
+  const [notice, setNotice] = useState(null);
+  const hasSources = entries.length > 0;
+  const recognizedGames = useMemo(() => hasSources && sourcePresentation ? sourcePresentation.getRecognizedGames(catalog) : catalog,
+    [catalog, hasSources, sourcePresentation]);
+  const isHomePage = pathname === "/" || (!pathname && initiallyHome);
+  const featuredGame = recognizedGames.find((game) => game.href === pathname) ?? initialFeaturedGame;
+  const [selection, setSelection] = useState(null);
+  const [navigationId, setNavigationId] = useState(0);
   const [addedIds, setAddedIds] = useState(null);
   const revealObserver = useRef(null);
   const working = useRef(false);
@@ -48,20 +62,19 @@ export default function SourceLibrary({ catalog, featuredGame, libraryHeading, o
   const fileInput = useRef(null);
   const replacingSource = useRef(null);
   const entriesRef = useRef([]);
-  const detailsOpener = useRef(null);
+
+  function showNotice(message, tone = "error") {
+    setNotice({ message, tone });
+  }
 
   useEffect(() => {
-    const sync = () => { setDetailHash(window.location.hash); setNotice(""); };
-    const rememberOpener = (event) => {
-      const link = event.target.closest?.('a[aria-haspopup="dialog"], button[aria-haspopup="dialog"]');
-      if (link) detailsOpener.current = link;
-    };
+    const sync = () => setSelection(readHeroSelection(window.location.hash));
     sync();
-    document.addEventListener("click", rememberOpener, true);
     window.addEventListener("hashchange", sync);
+    window.addEventListener("popstate", sync);
     return () => {
-      document.removeEventListener("click", rememberOpener, true);
       window.removeEventListener("hashchange", sync);
+      window.removeEventListener("popstate", sync);
     };
   }, []);
 
@@ -72,6 +85,7 @@ export default function SourceLibrary({ catalog, featuredGame, libraryHeading, o
   useEffect(() => {
     let active = true;
     const checking = new Set();
+    const inspected = new WeakMap();
 
     function checkSources(sources) {
       for (const source of sources) {
@@ -80,10 +94,16 @@ export default function SourceLibrary({ catalog, featuredGame, libraryHeading, o
         // Only imports without a persistent handle rely on their in-memory copy.
         const check = isLocalZipSource(source) && !source.handle && sessionGames.has(source.id)
           ? Promise.resolve("session") : checkGameSource(source);
-        void check.then((status) => {
+        void check.then(async (status) => {
+          let archiveFiles = source.archiveFiles;
+          // Recheck legacy imports and changed ZIPs using existing read access.
+          // Never delete source records or request permission in the background.
+          if (status === "available" && !source.url && source.handle) {
+            archiveFiles = await inspectLocalSourceFiles(source, inspected).catch(() => []);
+          }
           if (active) {
             setEntries((current) => current.map((entry) =>
-              entry.source === source ? { source, status } : entry
+              entry.source === source ? { ...entry, status, archiveFiles } : entry
             ));
           }
         }).finally(() => checking.delete(source));
@@ -105,12 +125,27 @@ export default function SourceLibrary({ catalog, featuredGame, libraryHeading, o
       try {
         saved = await readGameSources(catalog, officialUrl);
       } catch {
-        if (active) setNotice("Could not load saved games from this browser.");
+        if (active) showNotice("Could not load saved games from this browser.");
       }
       if (!active) return;
       const sourcesById = new Map(saved.map((source) => [source.id, source]));
       for (const [id, source] of sessionSources) sourcesById.set(id, source);
       const sources = [...sourcesById.values()];
+      if (sources.length) {
+        try {
+          const presentation = await loadSourcePresentation();
+          if (!active) return;
+          setSourcePresentation(presentation);
+          if (!presentation.artwork) showNotice("Could not load artwork for saved games.");
+        } catch {
+          if (active) {
+            showNotice("Could not load saved games. Reload to try again.");
+            setLoading(false);
+          }
+          return;
+        }
+      }
+      if (!active) return;
       setEntries(sources.map((source) => ({ source, status: "checking" })));
       setLoading(false);
 
@@ -177,11 +212,11 @@ export default function SourceLibrary({ catalog, featuredGame, libraryHeading, o
     setEntries((current) => current.filter(({ source }) => !ids.has(source.id)));
   }
 
-  async function run(action, reportError = setNotice) {
+  async function run(action, reportError = showNotice) {
     if (loading || working.current) return;
     working.current = true;
     setBusy(true);
-    setNotice("");
+    setNotice(null);
     try {
       await action();
     } catch (error) {
@@ -193,6 +228,7 @@ export default function SourceLibrary({ catalog, featuredGame, libraryHeading, o
   }
 
   async function saveLocal(game, known, existing) {
+    if (!sourcePresentation?.artwork) setSourcePresentation(await loadSourcePresentation());
     const source = { ...existing, ...localGame(game.handle, game, existing?.id) };
     // A fallback picker must replace a stale saved handle with its fresh in-memory files.
     if (!game.handle) delete source.handle;
@@ -217,8 +253,11 @@ export default function SourceLibrary({ catalog, featuredGame, libraryHeading, o
 
   function importRoots(selection, replacing) {
     return run(async () => {
-      const roots = typeof selection === "function" ? await selection() : selection;
-      if (!roots.length) return;
+      const selectionRoots = typeof selection === "function" ? await selection() : selection;
+      if (!selectionRoots.length) return;
+      const { findBundledGame } = await import("./library-items.mjs");
+      setPending([{ index: 0, label: "Finding game ZIPs…", message: "Checking dropped files and folders…" }]);
+      const roots = await collectGameImportNodes(selectionRoots);
       const known = new Map(entries.map(({ source }) => [source.id, source]));
       const items = [];
       const savedIds = new Set();
@@ -235,6 +274,12 @@ export default function SourceLibrary({ catalog, featuredGame, libraryHeading, o
 
       async function save(game, label = game.name) {
         const reconnect = replacing ?? await findLocalGameSource(game, known.values(), reconnectable);
+        const included = findBundledGame(game, catalog);
+        if (included && !reconnect) {
+          const item = { label, status: "skipped", message: "Already included. Using the bundled copy." };
+          items.push(item);
+          return item;
+        }
         const result = await saveLocal(game, known, reconnect);
         const firstSave = !savedIds.has(result.id);
         savedIds.add(result.id);
@@ -242,7 +287,8 @@ export default function SourceLibrary({ catalog, featuredGame, libraryHeading, o
         const item = {
           label,
           status: reconnect ? "skipped" : "added",
-          message: reconnect ? "Already in your library. Files refreshed." : "Added to your library",
+          message: included ? "Already included. Using the bundled copy. Existing saves are preserved."
+            : reconnect ? "Already in your library. Files refreshed." : "Added to your library",
         };
         items.push(item);
         if (firstSave && result.temporary) temporary++;
@@ -296,46 +342,56 @@ export default function SourceLibrary({ catalog, featuredGame, libraryHeading, o
 
   function updateStatus(source, status) {
     setEntries((current) => current.map((entry) =>
-      entry.source === source ? { source, status } : entry
+      entry.source === source ? { ...entry, status } : entry
     ));
   }
 
   function play(source, game, resume = false, legacySaves = false) {
     if (!source.url && !isLocalZipSource(source)) return chooseZip(source);
+    let navigated = false;
     return run(async () => {
       if (!source.url && source.handle && !sessionGames.has(source.id)
         && await source.handle.queryPermission({ mode: "read" }) !== "granted") {
         updateStatus(source, "permission");
         const group = groups.find(({ versions }) => versions.some((version) => version.source?.id === source.id));
-        if (group) window.location.hash = group.dialogId;
+        if (group) selectGame(group.game);
         return;
       }
       game = { ...game, recentGameId: `source:${source.id}`, saveVersionId: legacySaves ? undefined : source.id,
         saveNamespace: legacySaves ? undefined : await getVersionSaveNamespace(source.id), skipIntro: null };
       if (source.url) {
-        selectGameArchive((signal) => readRemoteGameArchive(source.url, { signal }), game);
+        selectGameArchive(async (signal, onProgress) => {
+          const { readRemoteGameArchive } = await import("../game-bucket.mjs");
+          return readRemoteGameArchive(source.url, { signal, onProgress });
+        }, game);
       } else {
         const data = sessionGames.get(source.id);
         if (!data && !source.handle) {
           updateStatus(source, "locate");
-          setNotice("Locate the game ZIP to play again.");
+          showNotice("Locate the game ZIP to play again.");
           return;
         }
         try {
           const file = data ?? await source.handle.getFile();
           validateGameZip(file, maxLocalGameSize);
-          selectGameArchive((signal) => openLocalGameZip(file, signal), game);
+          selectGameArchive(async (signal, onProgress) => {
+            const { openLocalGameZip } = await import("../local-game-archive.mjs");
+            return openLocalGameZip(file, signal, onProgress);
+          }, game);
         } catch (error) {
           const permission = ["NotAllowedError", "SecurityError"].includes(error?.name);
           updateStatus(source, permission ? "permission" : "missing");
-          setNotice(permission ? "Allow file access to play this game."
+          showNotice(permission ? "Allow file access to play this game."
             : "Could not open the ZIP. Locate the file to reconnect it.");
           return;
         }
       }
       rememberGameVersion(getGameFamilyKey(game) || `source:${source.id}`, `source:${source.id}`);
-      router.push(`/local/play${resume ? "#continue" : ""}`);
-    });
+      if (!onPlayArchive?.(game, resume)) {
+        router.push(`${sourcePresentation.getGamePlayHref(game)}${resume ? "#continue" : ""}`);
+      }
+      navigated = true;
+    }).finally(() => { if (!navigated) void exitImmersiveMode(); }).then(() => navigated);
   }
 
   function allowAccess(source) {
@@ -343,27 +399,25 @@ export default function SourceLibrary({ catalog, featuredGame, libraryHeading, o
       // Request directly from the click, before any storage work can consume user activation.
       const status = await requestGameSourceAccess(source);
       updateStatus(source, status);
-      setNotice(status === "available" ? "File access allowed. You can now play."
+      if (status === "available") {
+        const archiveFiles = await inspectLocalSourceFiles(source, new WeakMap()).catch(() => []);
+        setEntries((current) => current.map((entry) => entry.source === source ? { ...entry, archiveFiles } : entry));
+      }
+      showNotice(status === "available" ? "File access allowed. You can now play."
         : status === "permission" ? "File access was not allowed. Try again and allow access in your browser to play."
-        : "Could not open the ZIP. Locate the file to reconnect it.");
+        : "Could not open the ZIP. Locate the file to reconnect it.", status === "available" ? "success" : "error");
     });
   }
 
   const disabled = loading || busy || Boolean(importResult);
-  const library = entries.map(({ source, status }) => {
-    const knownGame = catalog.find(({ target }) => target === source.target)
-      ?? getImportedGamePresentation(/\.zip$/i.test(source.name) ? source.name : source.name + ".zip");
-    const title = knownGame?.displayTitle ?? source.name.replace(/\.zip$/i, "");
-    const presentation = knownGame ?? getGamePresentation({ displayTitle: title }, {
-      summary: "Play this game from your library.",
-      badge: "Library game",
-    });
-    const game = { ...presentation, saveVersionId: source.id, skipIntro: null };
+  const library = entries.map(({ source, status, archiveFiles }) => {
+    const game = sourcePresentation.getSourceGamePresentation(source, catalog, recognizedGames);
+    const title = game.displayTitle;
     const locate = !source.url && (!isLocalZipSource(source) || ["missing", "locate"].includes(status));
     const locateLabel = "Locate ZIP";
     const needsAccess = status === "permission";
     return {
-      source, status, game, title, locate, locateLabel,
+      source, status, archiveFiles, game, title, locate, locateLabel,
       action: {
         label: locate ? `${locateLabel} for ${title}` : needsAccess ? `Allow file access for ${title}` : `Play ${title}`,
         buttonLabel: locate ? locateLabel : needsAccess ? "Allow file access" : "Play",
@@ -377,26 +431,52 @@ export default function SourceLibrary({ catalog, featuredGame, libraryHeading, o
       },
     };
   });
-  const groups = libraryItems(catalog, library);
-  const detail = groups.find((group) => detailHash === `#${group.dialogId}` || group.versions.some(({ source, game }) =>
-    !source && detailHash === `#${getGameDialogId(game)}`));
+  const catalogGroups = useMemo(() => groupGameVersions(catalogGameEntries(catalog)), [catalog]);
+  const groups = library.length ? sourcePresentation.libraryItems(catalog, library) : catalogGroups;
+  const featuredGroup = featuredGame && groups.find(({ game }) => getGameFamilyKey(game) === getGameFamilyKey(featuredGame));
+  const featuredKey = getGameFamilyKey(featuredGame) || `catalog:${featuredGame?.target}`;
+  const heroGroups = featuredGroup || isHomePage ? groups : [...groups, {
+    key: featuredKey, game: featuredGame, title: featuredGame.displayTitle,
+    versions: [{ key: `catalog:${featuredGame.target}`, game: featuredGame }],
+  }];
+
+  function selectGame(game) {
+    if (playerRoute) return false;
+    const href = buildGameExitHref(game);
+    // Only handle selections this mounted library can render. Other links keep
+    // normal Next.js navigation, including direct links from compatibility.
+    if (!groups.some((group) => buildGameExitHref(group.game) === href)) return false;
+    if (`${window.location.pathname}${window.location.search}${window.location.hash}` !== href) {
+      window.history.pushState(null, "", href);
+    }
+    setSelection(readHeroSelection(new URL(href, window.location.origin).hash));
+    setNavigationId((value) => value + 1);
+    return true;
+  }
 
   return (
-    <>
-      <input ref={fileInput} type="file" accept=".zip,application/zip" multiple hidden
-        onChange={(event) => {
-          const files = [...event.target.files];
-          if (files.length) importRoots(files.map(fileNode), replacingSource.current);
-          event.target.value = "";
-        }} />
-      <GameDropOverlay importRoots={importRoots} disabled={disabled} pending={pending}
-        result={importResult} onConfirm={confirmImport} />
-      {featuredGame && <HomeHero groups={groups} featuredGame={featuredGame} />}
-      <div className="section-stack">
-        <RecentGamesRail groups={groups} />
-        <LibraryView items={groups} heading={libraryHeading} notice={notice} />
-      </div>
-      {detail && <VersionedGameDetails key={detail.key} group={detail} notice={notice} onClose={closeDetails} openerElement={detailsOpener.current} />}
-    </>
+    <ArtworkDelivery value={(hasSources && sourcePresentation?.artwork) || artwork}>
+      <GameNavigationContext value={selectGame}>
+        {!playerRoute && <BrowseMetadata game={featuredGame} catalog={catalog} isHomePage={isHomePage} />}
+        <input ref={fileInput} type="file" accept=".zip,application/zip" multiple hidden
+          onChange={(event) => {
+            const files = [...event.target.files];
+            if (files.length) importRoots(files.map(fileNode), replacingSource.current);
+            event.target.value = "";
+          }} />
+        <GameDropOverlay importRoots={importRoots} disabled={disabled} pending={pending}
+          result={importResult} onConfirm={confirmImport} />
+        {featuredGame && <HomeHero groups={heroGroups} featuredGame={featuredGame}
+          loadingSources={loading}
+          pendingSourceGroups={library.filter(({ status }) => status === "checking")
+            .map(({ game, source }) => getGameFamilyKey(game) || `source:${source.id}`)}
+          isHomePage={isHomePage} selection={selection} navigationId={navigationId} notice={notice} />}
+        <div className="section-stack">
+          <RecentGamesRail groups={groups} />
+          <LibraryView items={groups} heading={libraryHeading} notice={notice}
+            onAddGame={() => chooseZip()} importDisabled={disabled} selectedKey={selection || (!isHomePage ? featuredKey : null)} />
+        </div>
+      </GameNavigationContext>
+    </ArtworkDelivery>
   );
 }

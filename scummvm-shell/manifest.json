@@ -3,14 +3,22 @@
     "name": "ScummWEB - classic adventure games online",
     "icons": [
         {
-            "src": "scummvm-192.png?v=dev",
+            "src": "scummvm-192.png?v=sw-826ab7ec87964ade",
             "type": "image/png",
-            "sizes": "192x192"
+            "sizes": "192x192",
+            "purpose": "any"
         },
         {
-            "src": "scummvm-512.png?v=dev",
+            "src": "scummvm-512.png?v=sw-f1ac9294ed02cc73",
             "type": "image/png",
-            "sizes": "512x512"
+            "sizes": "512x512",
+            "purpose": "any"
+        },
+        {
+            "src": "scummvm-maskable-512.png?v=sw-76b3a42d6bb0beed",
+            "type": "image/png",
+            "sizes": "512x512",
+            "purpose": "maskable"
         }
     ],
     "start_url": "/",

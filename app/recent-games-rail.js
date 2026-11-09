@@ -2,9 +2,13 @@
 
 import { useEffect, useState } from "react";
 import DecorativeImage from "./home-shell/decorative-image";
+import { getArtworkImageProps } from "./home-shell/artwork-image-props.mjs";
+import { useArtworkDelivery } from "./home-shell/artwork-delivery";
 import { getRecentGameTargets, getRecentlyPlayedGames, recentGamesUpdatedEvent } from "./recent-games";
+import GameSelectionLink from "./home-shell/game-selection-link";
 
 export default function RecentGamesRail({ groups }) {
+  const artwork = useArtworkDelivery();
   const [recentTargets, setRecentTargets] = useState([]);
 
   useEffect(() => {
@@ -31,24 +35,18 @@ export default function RecentGamesRail({ groups }) {
         <h2 id="recently-played-heading"><span className="section-mark" />Recently Played</h2>
       </div>
       <div className="landscape-rail">
-        {recentGames.map(({ key, game, dialogId }) => (
-          <a
+        {recentGames.map(({ key, game }) => (
+          <GameSelectionLink
             key={key}
-            aria-haspopup="dialog"
-            aria-controls={dialogId}
+            game={game}
             className={`landscape-card ${game.tone}`}
             data-game-target={game.target}
-            href={`#${dialogId}`}
           >
-            <DecorativeImage className="landscape-card-image" src={game.landscapeImage} />
+            <DecorativeImage className="landscape-card-image" {...getArtworkImageProps(game.landscapeImage, "landscape", artwork)} />
             <div className="landscape-overlay">
               <h3>{game.displayTitle}</h3>
-              <div className="landscape-meta">
-                <span>{game.genre}</span>
-                <span>{game.studio}</span>
-              </div>
             </div>
-          </a>
+          </GameSelectionLink>
         ))}
       </div>
     </section>

@@ -1,0 +1,697 @@
+diff --git a/engines/access/room.cpp b/engines/access/room.cpp
+index 15b0a3e8..6018fbc9 100644
+--- a/engines/access/room.cpp
++++ b/engines/access/room.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/scummsys.h"
+ #include "common/memstream.h"
+ #include "access/access.h"
+@@ -229,6 +231,12 @@ void Room::doRoom() {
+ 				// The code after this point is:
+ 				// DOROOMFLASHBACK jump point in Amazon
+ 				// NoctRoomEngine::afterDoCommandsTick in Noctropolis
++#ifdef __EMSCRIPTEN__
++				{
++					ScummWebTelemetry::Sample sample(_vm->_player->_roomNumber);
++					sample.bank("flags", _vm->_flags, ARRAYSIZE(_vm->_flags));
++				}
++#endif
+ 
+ 				if (_vm->getGameID() == kGameNoctropolis) {
+ 					// TODO: Need to check the
+diff --git a/engines/agi/cycle.cpp b/engines/agi/cycle.cpp
+index 81421b47..9c5c6186 100644
+--- a/engines/agi/cycle.cpp
++++ b/engines/agi/cycle.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/config-manager.h"
+ 
+ #include "agi/agi.h"
+@@ -433,6 +435,11 @@ void AgiEngine::playGame() {
+ 			setFlag(VM_FLAG_SAID_ACCEPTED_INPUT, false);
+ 			setVar(VM_VAR_WORD_NOT_FOUND, 0);
+ 			setVar(VM_VAR_KEY, 0);
++#ifdef __EMSCRIPTEN__
++			ScummWebTelemetry::Sample sample(getVar(VM_VAR_CURRENT_ROOM));
++			sample.bank("vars", _game.vars, sizeof(_game.vars));
++			sample.bank("flag_bytes", _game.flags, sizeof(_game.flags));
++#endif
+ 		}
+ 
+ 	} while (!(shouldQuit() || _restartGame));
+diff --git a/engines/agos/event.cpp b/engines/agos/event.cpp
+index 785c692e..3f73af16 100644
+--- a/engines/agos/event.cpp
++++ b/engines/agos/event.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "agos/agos.h"
+ #include "agos/animation.h"
+ #include "agos/debugger.h"
+@@ -613,6 +615,18 @@ void AGOSEngine::delay(uint amount) {
+ 			break;
+ 
+ 		this_delay = _fastMode ? 1 : 20;
++#ifdef __EMSCRIPTEN__
++		{
++			// Only Waxworks tracks its physical room in _currentRoom.
++			ScummWebTelemetry::Sample sample(getGameType() == GType_WW && _currentRoom ? _currentRoom : -1);
++			sample.bank("vars", _variableArray, _numVars);
++			if (_scummWebElvira2Edition)
++				sample.variable("elvira2_outcome", "ritual", static_cast<byte>(_scummWebElvira2RitualOutcome));
++#ifdef ENABLE_AGOS2
++			sample.bank("vars_secondary", _variableArray2, _numVars);
++#endif
++		}
++#endif
+ 		if (this_delay > amount)
+ 			this_delay = amount;
+ 		_system->delayMillis(this_delay);
+diff --git a/engines/agos/agos.h b/engines/agos/agos.h
+--- a/engines/agos/agos.h
++++ b/engines/agos/agos.h
+@@ -575,6 +575,12 @@
+ 	int16 *_variableArray;
+ 	int16 *_variableArray2;
+ 	int16 *_variableArrayPtr;
++
++#ifdef __EMSCRIPTEN__
++	enum class Elvira2RitualOutcome : byte { None, Won, Failed };
++	bool _scummWebElvira2Edition = false;
++	Elvira2RitualOutcome _scummWebElvira2RitualOutcome = Elvira2RitualOutcome::None;
++#endif
+ 
+ 	WindowBlock *_dummyWindow;
+ 	WindowBlock *_windowArray[80];
+diff --git a/engines/agos/res.cpp b/engines/agos/res.cpp
+--- a/engines/agos/res.cpp
++++ b/engines/agos/res.cpp
+@@ -22,6 +22,10 @@
+ // Resource file routines for Simon1/Simon2
+ 
+ 
++#ifdef __EMSCRIPTEN__
++#include <emscripten/emscripten.h>
++#include "common/md5.h"
++#endif
+ #include "common/archive.h"
+ #include "common/file.h"
+ #include "common/memstream.h"
+@@ -190,6 +194,19 @@
+ 			error("loadGamePcFile: Can't load gamexx file '%s'", getFileName(GAME_BASEFILE));
+ 		}
+ 
++#ifdef __EMSCRIPTEN__
++		if (getGameType() == GType_ELVIRA2 && getPlatform() == Common::kPlatformAmiga &&
++				EM_ASM_INT({ return Boolean(globalThis.__scummwebTelemetryQueryEnabled); })) {
++			const Common::String indexMd5 = Common::computeStreamMD5AsString(in);
++			in.seek(0);
++			// The outcome subroutine IDs are traced to this English floppy database.
++			_scummWebElvira2Edition = indexMd5 == "a144d2467e1addee1f705647dacd33df";
++			EM_ASM({
++				const identity = globalThis.__scummwebEvaluationGame;
++				if (identity) identity.index_md5 = UTF8ToString($0);
++			}, indexMd5.c_str());
++		}
++#endif
+ 		if (getFeatures() & GF_CRUNCHED_GAMEPC) {
+ 			uint srcSize = in.size();
+ 			byte *srcBuf = (byte *)malloc(srcSize);
+diff --git a/engines/agos/saveload.cpp b/engines/agos/saveload.cpp
+--- a/engines/agos/saveload.cpp
++++ b/engines/agos/saveload.cpp
+@@ -1457,6 +1457,12 @@
+ 		setBitFlag(135, 1);
+ 	}
+ 
++#ifdef __EMSCRIPTEN__
++	// A user restore starts a new timeline. Scripted Start loads can be part
++	// of the winning sequence and must preserve its already selected outcome.
++	if (!restartMode)
++		_scummWebElvira2RitualOutcome = Elvira2RitualOutcome::None;
++#endif
+ 	return true;
+ }
+ 
+diff --git a/engines/agos/subroutine.cpp b/engines/agos/subroutine.cpp
+--- a/engines/agos/subroutine.cpp
++++ b/engines/agos/subroutine.cpp
+@@ -562,6 +562,19 @@
+ 	if (shouldQuit())
+ 		return result;
+ 
++#ifdef __EMSCRIPTEN__
++	if (_scummWebElvira2Edition) {
++		// The same late ritual value and Play Again prompt occur on both paths.
++		// Track the selected branch through the cutscene and its internal restart.
++		if (sub->id == 1882)
++			_scummWebElvira2RitualOutcome = Elvira2RitualOutcome::Won;
++		else if (sub->id == 1865)
++			_scummWebElvira2RitualOutcome = Elvira2RitualOutcome::Failed;
++		else if (sub->id == 106)
++			_scummWebElvira2RitualOutcome = Elvira2RitualOutcome::None;
++	}
++#endif
++
+ 	while ((byte *)sl != (byte *)sub) {
+ 		_currentLine = sl;
+ 		if (checkIfToRunSubroutineLine(sl, sub)) {
+diff --git a/engines/bbvs/bbvs.cpp b/engines/bbvs/bbvs.cpp
+index 714ca34c..6afe75f3 100644
+--- a/engines/bbvs/bbvs.cpp
++++ b/engines/bbvs/bbvs.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "bbvs/bbvs.h"
+ #include "bbvs/dialogs.h"
+ #include "bbvs/gamemodule.h"
+@@ -212,6 +214,12 @@ Common::Error BbvsEngine::run() {
+ 			_mouseButtons &= ~kAnyButtonClicked;
+ 			_newSceneNum = kMainMenu;
+ 		}
++#ifdef __EMSCRIPTEN__
++		{
++			ScummWebTelemetry::Sample sample(_currSceneNum < kMainMenu ? _currSceneNum : -1);
++			sample.bank("game_vars", _gameVars, kGameVarsCount);
++		}
++#endif
+ 		if (_playVideoNumber > 0) {
+ 			playVideo(_playVideoNumber);
+ 			_playVideoNumber = 0;
+diff --git a/engines/cine/main_loop.cpp b/engines/cine/main_loop.cpp
+index 7d80821a..50690e03 100644
+--- a/engines/cine/main_loop.cpp
++++ b/engines/cine/main_loop.cpp
+@@ -20,6 +20,8 @@
+  */
+ 
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/scummsys.h"
+ #include "common/events.h"
+ #include "common/system.h"
+@@ -506,6 +508,26 @@ void CineEngine::mainLoop(int bootScriptIdx) {
+ 		}
+ 		executeObjectScripts();
+ 		executeGlobalScripts();
++#ifdef __EMSCRIPTEN__
++		{
++			ScummWebTelemetry::Sample sample(-1, renderer->getBgName());
++			if (sample) {
++				sample.bank("global_vars", _globalVars.telemetryData(), _globalVars.telemetrySize());
++				sample.variable("scene", "playerInput", allowPlayerInput);
++				sample.variable("scene", "systemMenuDisabled", disableSystemMenu);
++				sample.variable("scene", "waitingForClick", waitForPlayerClick);
++				int16 objectX[ScummWebTelemetry::kMaxBankSize];
++				int16 objectY[ScummWebTelemetry::kMaxBankSize];
++				const uint count = ScummWebTelemetry::boundedCount(_objectTable.size());
++				for (uint i = 0; i < count; ++i) {
++					objectX[i] = _objectTable[i].x;
++					objectY[i] = _objectTable[i].y;
++				}
++				sample.bank("object_x", objectX, count);
++				sample.bank("object_y", objectY, count);
++			}
++		}
++#endif
+ 
+ 		purgeObjectScripts();
+ 		purgeGlobalScripts();
+diff --git a/engines/cine/script.h b/engines/cine/script.h
+index c0089650..69f07a40 100644
+--- a/engines/cine/script.h
++++ b/engines/cine/script.h
+@@ -67,6 +67,10 @@ public:
+ 	ScriptVars &operator=(const ScriptVars &src);
+ 	int16 &operator[](unsigned int idx);
+ 	int16 operator[](unsigned int idx) const;
++#ifdef __EMSCRIPTEN__
++	const int16 *telemetryData() const { return _vars; }
++	unsigned int telemetrySize() const { return _size; }
++#endif
+ 
+ 	void save(Common::OutSaveFile &fHandle) const;
+ 	void save(Common::OutSaveFile &fHandle, unsigned int len) const;
+diff --git a/engines/cruise/cruise_main.cpp b/engines/cruise/cruise_main.cpp
+index 78d0523b..1464fcc4 100644
+--- a/engines/cruise/cruise_main.cpp
++++ b/engines/cruise/cruise_main.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/config-manager.h"
+ #include "common/endian.h"
+ #include "common/events.h"
+@@ -1938,6 +1940,12 @@ void CruiseEngine::mainLoop() {
+ 		}
+ 
+ 		processAnimation();
++#ifdef __EMSCRIPTEN__
++		{
++			ScummWebTelemetry::Sample sample;
++			sample.bank("global_vars", globalVars, ARRAYSIZE(globalVars));
++		}
++#endif
+ 
+ 		if (remdo) {
+ 			// assert(0);
+diff --git a/engines/draci/game.cpp b/engines/draci/game.cpp
+index 65ee3709..a25b2fff 100644
+--- a/engines/draci/game.cpp
++++ b/engines/draci/game.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/keyboard.h"
+ #include "common/serializer.h"
+ #include "common/memstream.h"
+@@ -633,6 +635,12 @@ void Game::loop(LoopSubstatus substatus, bool shouldExit) {
+ 		}
+ 
+ 		advanceAnimationsAndTestLoopExit();
++#ifdef __EMSCRIPTEN__
++		{
++			ScummWebTelemetry::Sample sample(getRoomNum());
++			sample.bank("vars", _variables, _info._numVariables);
++		}
++#endif
+ 
+ 		if (_vm->_mouse->isCursorOn()) {
+ 			// Find animation under cursor and the game object
+diff --git a/engines/drascula/drascula.cpp b/engines/drascula/drascula.cpp
+index aeccc822..d558350b 100644
+--- a/engines/drascula/drascula.cpp
++++ b/engines/drascula/drascula.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/events.h"
+ #include "common/keyboard.h"
+ #include "common/file.h"
+@@ -581,6 +583,12 @@ bool DrasculaEngine::runCurrentChapter() {
+ 
+ 		moveCursor();
+ 		updateScreen();
++#ifdef __EMSCRIPTEN__
++		{
++			ScummWebTelemetry::Sample sample(_roomNumber);
++			sample.bank("flags", flags, NUM_FLAGS);
++		}
++#endif
+ 
+ 		if (currentChapter == 2) {
+ 			if (musicStatus() == 0 && roomMusic != 0)
+diff --git a/engines/groovie/script.cpp b/engines/groovie/script.cpp
+index 602879cf..5f5c6790 100644
+--- a/engines/groovie/script.cpp
++++ b/engines/groovie/script.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "audio/mididrv.h"
+ 
+ #include "groovie/script.h"
+@@ -388,6 +390,10 @@ void Script::step() {
+ 	// Execute the current opcode
+ 	OpcodeFunc op = _opcodes[opcode];
+ 	(this->*op)();
++#ifdef __EMSCRIPTEN__
++	ScummWebTelemetry::Sample sample;
++	sample.bank("script_vars", _variables, sizeof(_variables));
++#endif
+ }
+ 
+ void Script::setMouseClick(uint8 button) {
+diff --git a/engines/lure/game.cpp b/engines/lure/game.cpp
+index cb85286e..c4d6a706 100644
+--- a/engines/lure/game.cpp
++++ b/engines/lure/game.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "lure/game.h"
+ #include "lure/animseq.h"
+ #include "lure/fights.h"
+@@ -278,6 +280,12 @@ void Game::execute() {
+ 			}
+ 
+ 			system.updateScreen();
++#ifdef __EMSCRIPTEN__
++			{
++				ScummWebTelemetry::Sample sample(room.roomNumber());
++				sample.bank("value_fields", fields.telemetryData(), fields.size());
++			}
++#endif
+ 			system.delayMillis(10);
+ 		}
+ 
+diff --git a/engines/lure/res_struct.h b/engines/lure/res_struct.h
+index b6fcb863..26c43306 100644
+--- a/engines/lure/res_struct.h
++++ b/engines/lure/res_struct.h
+@@ -913,6 +913,9 @@ public:
+ 	void setField(uint16 fieldIndex, uint16 value);
+ 	void setField(FieldName fieldName, uint16 value);
+ 	int size() { return NUM_VALUE_FIELDS; }
++#ifdef __EMSCRIPTEN__
++	const uint16 *telemetryData() const { return _fieldList; }
++#endif
+ 
+ 	uint16 &numGroats() { return _numGroats; }
+ 	uint8 &textCtr1() { return _textCtr1; }
+diff --git a/engines/sci/engine/kevent.cpp b/engines/sci/engine/kevent.cpp
+index 7c5dd193..b21bb3c2 100644
+--- a/engines/sci/engine/kevent.cpp
++++ b/engines/sci/engine/kevent.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/system.h"
+ 
+ #include "sci/sci.h"
+@@ -42,6 +44,20 @@
+ namespace Sci {
+ 
+ reg_t kGetEvent(EngineState *s, int argc, reg_t *argv) {
++#ifdef __EMSCRIPTEN__
++	const auto *globals = s->variables[VAR_GLOBAL];
++	const int size = s->variablesMax[VAR_GLOBAL];
++	if (globals && size > kGlobalVarNewRoomNo) {
++		ScummWebTelemetry::Sample sample(globals[kGlobalVarNewRoomNo].isNumber() ? s->currentRoomNumber() : -1);
++		if (sample) {
++			const uint count = ScummWebTelemetry::boundedCount(size);
++			int32 values[ScummWebTelemetry::kMaxBankSize];
++			for (uint i = 0; i < count; ++i)
++				values[i] = globals[i].isNumber() ? globals[i].toSint16() : ScummWebTelemetry::kMissingValue;
++			sample.bank("globals", values, count, true);
++		}
++	}
++#endif
+ 	SciEventType mask = (SciEventType)argv[0].toUint16();
+ 	reg_t obj = argv[1];
+ 	SciEvent curEvent;
+diff --git a/engines/scummweb-telemetry.h b/engines/scummweb-telemetry.h
+new file mode 100644
+index 00000000..debd9869
+--- /dev/null
++++ b/engines/scummweb-telemetry.h
+@@ -0,0 +1,95 @@
++/* ScummWEB opt-in snapshots of engine-owned game state. */
++#ifndef ENGINES_SCUMMWEB_TELEMETRY_H
++#define ENGINES_SCUMMWEB_TELEMETRY_H
++
++#ifdef __EMSCRIPTEN__
++#include <emscripten/emscripten.h>
++#include "common/scummsys.h"
++
++namespace ScummWebTelemetry {
++
++constexpr uint kMaxBankSize = 4096;
++constexpr int32 kMissingValue = INT32_MIN;
++
++inline uint boundedCount(uint count) {
++	return count > kMaxBankSize ? kMaxBankSize : count;
++}
++
++// An adapter captures all banks at a single engine tick, before yielding
++// back to the browser. No pointers into WebAssembly memory escape the tick.
++class Sample {
++	bool _enabled;
++	uint _namedValues = 0;
++
++public:
++	explicit Sample(double room = -1, const char *name = nullptr, int ready = -1) {
++		_enabled = EM_ASM_INT({
++			if (!globalThis.__scummwebTelemetryQueryEnabled || !globalThis.__scummwebEvaluationGame) return 0;
++			const now = performance.now();
++			const previous = globalThis.__scummwebGameTelemetry;
++			const name = $1 ? UTF8ToString($1) : undefined;
++			const ready = $2 < 0 ? undefined : Boolean($2);
++			if (previous && previous.room_id === ($0 < 0 ? null : $0) && previous.room_name === name &&
++				previous.room_ready === ready && now - previous.sample_time_ms < 250) return 0;
++			globalThis.__scummwebTelemetrySample = ({
++				schema_version: 1,
++				room_id: $0 < 0 ? null : $0,
++				room_name: name,
++				room_ready: ready,
++				sample_time_ms: now,
++				banks: Object.create(null)
++			});
++			return 1;
++		}, room, name, ready);
++	}
++
++	Sample(const Sample &) = delete;
++	Sample &operator=(const Sample &) = delete;
++
++	explicit operator bool() const { return _enabled; }
++
++	~Sample() {
++		if (_enabled) {
++			EM_ASM({
++				globalThis.__scummwebGameTelemetry = globalThis.__scummwebTelemetrySample;
++				globalThis.__scummwebTelemetrySample = null;
++			});
++		}
++	}
++
++	// For engines with named or sparse variables. Keep source keys intact.
++	void variable(const char *bank, const char *key, double value) {
++		if (!_enabled || _namedValues == kMaxBankSize)
++			return;
++		++_namedValues;
++		EM_ASM({
++			const bank = UTF8ToString($0);
++			const staging = globalThis.__scummwebTelemetrySample;
++			const values = staging.banks[bank] ||= Object.create(null);
++			if (Number.isFinite($2)) values[UTF8ToString($1)] = $2;
++		}, bank, key, value);
++	}
++
++	template<typename T>
++	void bank(const char *name, const T *values, uint count, bool nullable = false) const {
++		if (!_enabled || !values || !count)
++			return;
++		constexpr bool signedValues = static_cast<T>(-1) < static_cast<T>(0);
++		EM_ASM({
++			const heap = $3 === 4 ? ($4 ? HEAP32 : HEAPU32)
++				: $3 === 2 ? ($4 ? HEAP16 : HEAPU16) : ($4 ? HEAP8 : HEAPU8);
++			const start = $1 / $3;
++			const values = Array.from(heap.subarray(start, start + $2));
++			if ($5) {
++				for (let i = 0; i < values.length; ++i) {
++					if (values[i] === -2147483648) values[i] = null;
++				}
++			}
++			globalThis.__scummwebTelemetrySample.banks[UTF8ToString($0)] = values;
++		}, name, values, boundedCount(count), sizeof(T), signedValues, nullable);
++	}
++};
++
++} // namespace ScummWebTelemetry
++#endif
++#endif
+diff --git a/engines/sherlock/sherlock.cpp b/engines/sherlock/sherlock.cpp
+index 3ad58525..734e655d 100644
+--- a/engines/sherlock/sherlock.cpp
++++ b/engines/sherlock/sherlock.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "sherlock/sherlock.h"
+ #include "sherlock/surface.h"
+ #include "common/scummsys.h"
+@@ -181,6 +183,18 @@ Common::Error SherlockEngine::run() {
+ 
+ void SherlockEngine::sceneLoop() {
+ 	while (!shouldQuit() && _scene->_goToScene == -1) {
++#ifdef __EMSCRIPTEN__
++		{
++			ScummWebTelemetry::Sample sample(_scene->_currentScene);
++			if (sample) {
++				const uint count = ScummWebTelemetry::boundedCount(_flags.size());
++				byte flags[ScummWebTelemetry::kMaxBankSize];
++				for (uint i = 0; i < count; ++i)
++					flags[i] = _flags[i];
++				sample.bank("flags", flags, count);
++			}
++		}
++#endif
+ 		// See if a script needs to be completed from either a goto room code,
+ 		// or a script that was interrupted by another script
+ 		if (_talk->_scriptMoreFlag == 1 || _talk->_scriptMoreFlag == 3)
+diff --git a/engines/sky/sky.cpp b/engines/sky/sky.cpp
+index 81baee63..f7e18e6f 100644
+--- a/engines/sky/sky.cpp
++++ b/engines/sky/sky.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "backends/keymapper/keymapper.h"
+ 
+ #include "common/config-manager.h"
+@@ -265,6 +267,12 @@ Common::Error SkyEngine::go() {
+ 		}
+ 
+ 		_skyLogic->engine();
++#ifdef __EMSCRIPTEN__
++		{
++			ScummWebTelemetry::Sample sample(Logic::_scriptVariables[SCREEN]);
++			sample.bank("script_vars", Logic::_scriptVariables, NUM_SKY_SCRIPTVARS);
++		}
++#endif
+ 		_skyScreen->processSequence();
+ 		_skyScreen->recreate();
+ 		_skyScreen->spriteEngine();
+diff --git a/engines/sword1/sword1.cpp b/engines/sword1/sword1.cpp
+index 5e550016..0d7ed7fa 100644
+--- a/engines/sword1/sword1.cpp
++++ b/engines/sword1/sword1.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "sword1/sword1.h"
+ 
+ #include "sword1/resman.h"
+@@ -1021,6 +1023,12 @@ uint8 SwordEngine::mainLoop() {
+ 			_systemVars.gameCycle++;
+ 
+ 			_logic->engine();
++#ifdef __EMSCRIPTEN__
++			{
++				ScummWebTelemetry::Sample sample(Logic::_scriptVars[SCREEN]);
++				sample.bank("script_vars", Logic::_scriptVars, NUM_SCRIPT_VARS);
++			}
++#endif
+ 			_sound->setCrossFadeIncrement();
+ 			_logic->updateScreenParams(); // sets scrolling
+ 
+diff --git a/engines/sword2/sword2.cpp b/engines/sword2/sword2.cpp
+index 39d8a2d7..0f7a5d92 100644
+--- a/engines/sword2/sword2.cpp
++++ b/engines/sword2/sword2.cpp
+@@ -21,6 +21,8 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "base/plugins.h"
+ 
+ #include "common/config-manager.h"
+@@ -505,6 +507,17 @@ void Sword2Engine::gameCycle() {
+ 			// Keep going as long as new lists keep getting put in
+ 			// - i.e. screen changes.
+ 		} while (_logic->processSession());
++#ifdef __EMSCRIPTEN__
++		ScummWebTelemetry::Sample sample(_logic->getLocationNum());
++		if (sample) {
++			const uint32 size = _resman->fetchLen(1);
++			const uint count = size >= ResHeader::size() ? ScummWebTelemetry::boundedCount((size - ResHeader::size()) / 4) : 0;
++			uint32 vars[ScummWebTelemetry::kMaxBankSize];
++			for (uint i = 0; i < count; ++i)
++				vars[i] = _logic->readVar(i);
++			sample.bank("script_vars", vars, count);
++		}
++#endif
+ 	} else {
+ 		// Start the console and print the start options perhaps?
+ 		_debugger->attach("AWAITING START COMMAND: (Enter 's 1' then 'q' to start from beginning)");
+diff --git a/engines/toon/toon.cpp b/engines/toon/toon.cpp
+index 5a27ec5b..d5c02789 100644
+--- a/engines/toon/toon.cpp
++++ b/engines/toon/toon.cpp
+@@ -26,6 +26,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/system.h"
+ #include "common/events.h"
+ #include "common/debug-channels.h"
+@@ -600,6 +602,12 @@ void ToonEngine::copyToVirtualScreen(bool updateScreen) {
+ }
+ 
+ void ToonEngine::doFrame() {
++#ifdef __EMSCRIPTEN__
++	{
++		ScummWebTelemetry::Sample sample(_gameState->_currentScene);
++		sample.bank("game_globals", _gameState->_gameGlobalData, ARRAYSIZE(_gameState->_gameGlobalData));
++	}
++#endif
+ 
+ 	if (_gameState->_inInventory) {
+ 		renderInventory();
+diff --git a/engines/touche/touche.cpp b/engines/touche/touche.cpp
+index 62ee0b42..c803400e 100644
+--- a/engines/touche/touche.cpp
++++ b/engines/touche/touche.cpp
+@@ -20,6 +20,8 @@
+  */
+ 
+ 
++#include "engines/scummweb-telemetry.h"
++
+ #include "common/config-manager.h"
+ #include "common/debug-channels.h"
+ #include "common/events.h"
+@@ -521,6 +523,12 @@ void ToucheEngine::runCycle() {
+ 	updateDirtyScreenAreas();
+ 	drawHotspots();
+ 	++_flagsTable[295];
++#ifdef __EMSCRIPTEN__
++	{
++		ScummWebTelemetry::Sample sample(_currentRoomNum);
++		sample.bank("flags", _flagsTable, ARRAYSIZE(_flagsTable));
++	}
++#endif
+ 	++_flagsTable[296];
+ 	++_flagsTable[297];
+ 	if (_flagsTable[298]) {

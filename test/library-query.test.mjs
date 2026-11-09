@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { readFile } from "node:fs/promises";
-import { defaultLibraryQuery, libraryFacet, libraryGenre, libraryItems, queryLibrary } from "../app/home-shell/library-query.mjs";
+import { libraryItems } from "../app/home-shell/library-items.mjs";
+import { defaultLibraryQuery, libraryFacet, libraryGenre, queryLibrary } from "../app/home-shell/library-query.mjs";
+import { getRecognizedGames } from "../app/recognized-games.mjs";
 
 const catalog = [
   { target: "z", displayTitle: "Zulu", genre: "Mystery", year: "1994", studio: "Studio B" },
@@ -11,6 +13,48 @@ const local = { source: { id: "a", name: "Beta.zip" }, title: "Beta", game: { ge
 const remote = { source: { id: "link", url: "https://example.com/game.zip" }, title: "Unidentified", game: { year: "Archive" } };
 const items = libraryItems(catalog, [local, remote]);
 const titles = (query = {}) => queryLibrary(items, { ...defaultLibraryQuery, ...query }).map(({ title }) => title);
+
+test("catalog and imported Space Quest installments sort together in both directions", () => {
+  const series = libraryItems([
+    { target: "sq6", displayTitle: "Space Quest 6: Roger Wilco in the Spinal Frontier", year: "1995" },
+    { target: "sq2", displayTitle: "Space Quest II: Chapter II - Vohaul's Revenge", year: "1995" },
+    { target: "sq1", displayTitle: "Space Quest: The Sarien Encounter", year: "1995" },
+  ], [{
+    source: { id: "sq3" }, title: "Space Quest III: The Pirates of Pestulon", game: { year: "1995" },
+  }]);
+  const ordered = ["sq1", "sq2", "sq3", "sq6"];
+  const ids = (sort) => queryLibrary(series, { ...defaultLibraryQuery, sort }).map((item) => item.source?.id || item.game.target);
+  assert.deepEqual(ids("name-asc"), ordered);
+  assert.deepEqual(ids("name-desc"), ordered.toReversed());
+  assert.deepEqual(ids("year-desc"), ordered, "equal years use series order");
+  assert.equal(series[0].game.target, "sq6", "sorting preserves the source order");
+});
+
+test("the real catalog keeps numbered and irregularly named series in sequence", () => {
+  const games = getRecognizedGames([]);
+  const sorted = queryLibrary(libraryItems(games, []), defaultLibraryQuery);
+  const series = [
+    ["agi:sq1", "sci:sq1sci", "agi:sq2", "sci:sq3", "sci:sq4", "sci:sq5", "sci:sq6"],
+    ["sci:kq1sci", "agi:kq2", "agi:kq3", "sci:kq4sci", "sci:kq5", "sci:kq6", "sci:kq7"],
+    ["agi:pq1", "sci:pq1sci", "sci:pq2", "sci:pq3", "sci:pq4"],
+    ["sci:lsl1sci", "sci:lsl2", "sci:lsl3", "sci:lsl5", "sci:lsl6hires", "sci:lsl7"],
+    ["sword1:sword1", "sword2:sword2", "sword25:sword25"],
+    ["scumm:monkey", "scumm:monkey2", "scumm:comi"],
+    ["kyra:kyra1", "kyra:kyra2", "kyra:kyra3"],
+    ["gob:gob1", "gob:gob2", "gob:gob3"],
+    ["sci:gk1", "sci:gk2"],
+    ["hugo:hugo1", "hugo:hugo2", "hugo:hugo3"],
+  ];
+  for (const families of series) {
+    const expected = families.filter((id) => games.some((game) => game.familyId === id));
+    assert.equal(expected.length, families.length, "fixtures must exist in the catalog");
+    assert.deepEqual(sorted.filter(({ game }) => families.includes(game.familyId)).map(({ game }) => game.familyId), expected);
+    assert.deepEqual(games.filter((game) => families.includes(game.familyId)).map((game) => game.familyId), expected);
+  }
+  const first = games.find((game) => game.familyId === "agi:sq1");
+  assert.equal(first.displayTitle, "Space Quest: The Sarien Encounter");
+  assert.equal(first.slug, "space-quest-the-sarien-encounter");
+});
 
 test("name sorting interleaves catalog and imported games while preserving actions", () => {
   assert.deepEqual(titles(), ["Alpha", "Beta", "Unidentified", "Zulu"]);

@@ -4,17 +4,18 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 VENDOR_DIR="$ROOT_DIR/vendor"
+python3 "$ROOT_DIR/.codex/skills/scummweb_upgrade-scummvm/scripts/upgrade_check.py" --repo-path "$ROOT_DIR" --offline >/dev/null
 source "$ROOT_DIR/scripts/scummvm-version.sh"
 SCUMMVM_REPO_URL="https://github.com/scummvm/scummvm.git"
 SCUMMVM_DIR="$VENDOR_DIR/scummvm-$SCUMMVM_TAG"
 SCUMMVM_ENGINES=(
-  access agi agos bbvs cge cge2 cine composer cruise draci drascula dreamweb
-  gnap gob groovie hopkins hugo kyra lab lure made mads mohawk neverhood ngi
+  access adl agi agos ags bbvs cge cge2 cine composer cruise draci drascula dreamweb freescape
+  glk gnap gob got grim groovie hopkins hugo kyra lab lure made mads mohawk mortevielle neverhood ngi
   parallaction pegasus plumbers queen saga sci scumm sherlock sky sword1 sword2
-  sword25 teenagent tinsel titanic toltecs tony toon touche tsage tucker voyeur wintermute
+  sword25 teenagent tinsel titanic toltecs tony toon touche tsage tucker voyeur wintermute zvision
 )
 # configure disables subengines separately from their parent plugins.
-SCUMMVM_SUBENGINES=(agos2 blueforce eob he ihnm lol myst mystme ringworld ringworld2 riven sci32 scumm_7_8)
+SCUMMVM_SUBENGINES=(agos2 blueforce eob he ihnm lol monkey4 myst mystme ringworld ringworld2 riven sci32 scumm_7_8)
 DIST_DIR="$ROOT_DIR/dist"
 SHELL_DIR="$ROOT_DIR/scummvm-shell"
 DOWNLOADS_DIR="$ROOT_DIR/downloads"
@@ -385,6 +386,7 @@ build_scummvm_web_target() {
     --enable-mad
     --enable-png
     --enable-theoradec
+    --enable-freetype2
     --with-ogg-prefix="$EMSCRIPTEN_LIBS_BUILD_DIR"
     --with-vorbis-prefix="$EMSCRIPTEN_LIBS_BUILD_DIR"
     --with-zlib-prefix="$EMSCRIPTEN_LIBS_BUILD_DIR"
@@ -547,13 +549,32 @@ finalize_dist_workspace() {
     "$SCUMMVM_DIR" \
     "$DIST_DIR" \
     "$SHELL_DIR" \
-    "$EMSDK_NODE"
+    "$EMSDK_NODE" \
+    "$EMSDK_DIR" \
+    "$VENDOR_DIR/flac-$FLAC_VERSION.tar.xz"
 }
 
 main() {
-  if [[ "$#" != 0 && ( "$#" != 1 || "$1" != --prepare-source ) ]]; then
-    echo "Usage: $0 [--prepare-source]" >&2
+  if [[ "$#" != 0 && ( "$#" != 1 || ( "$1" != --prepare-source && "$1" != --compile-only && "$1" != --shell-only ) ) ]]; then
+    echo "Usage: $0 [--prepare-source|--compile-only|--shell-only]" >&2
     exit 1
+  fi
+
+  if [[ "${1:-}" == --shell-only ]]; then
+    # Reuse the compiled engine and regenerate only browser-shell assets.
+    node "$ROOT_DIR/scripts/manage_scummvm_assets.mjs" validate "$SHELL_DIR"
+    node "$ROOT_DIR/scripts/manage_scummvm_assets.mjs" sync "$SHELL_DIR" "$DIST_DIR"
+    python3 "$ROOT_DIR/scripts/stage_scummvm_web_shell.py" "$DIST_DIR"
+    node "$ROOT_DIR/scripts/generate-runtime-assets.mjs" "$DIST_DIR"
+    node "$ROOT_DIR/scripts/manage_scummvm_assets.mjs" validate "$DIST_DIR"
+    node "$ROOT_DIR/scripts/manage_scummvm_assets.mjs" sync "$DIST_DIR" "$SHELL_DIR"
+    echo "Regenerated browser shell in $DIST_DIR and $SHELL_DIR; compiled engine unchanged"
+    return
+  fi
+
+  if [[ "$#" == 0 ]]; then
+    SCUMMVM_BUILD_SOURCE_SHA256="$(python3 "$ROOT_DIR/scripts/write_source_info.py" --fingerprint)"
+    export SCUMMVM_BUILD_SOURCE_SHA256
   fi
 
   log_stage "Prepare ScummVM $SCUMMVM_TAG and apply source patches"
@@ -563,7 +584,7 @@ main() {
     return
   fi
 
-  if [[ "${SCUMMVM_REUSE_CATALOG:-0}" != 1 ]]; then
+  if [[ "${1:-}" != --compile-only && "${SCUMMVM_REUSE_CATALOG:-0}" != 1 ]]; then
     log_stage "Discover game archives"
     discover_game_archives
   fi
@@ -579,12 +600,18 @@ main() {
 
   log_stage "Stage ScummWEB shell and filesystem index"
   python3 "$ROOT_DIR/scripts/stage_scummvm_web_shell.py" "$SCUMMVM_DIR/build-emscripten"
+  python3 "$ROOT_DIR/scripts/patch_scummvm_audio.py" "$SCUMMVM_DIR/build-emscripten/scummvm.js"
   cp "$FLAC_PREFIX/COPYING.Xiph" "$SCUMMVM_DIR/build-emscripten/doc/COPYING.FLAC"
   cp "$SCUMMVM_DIR/dists/emscripten/libs/libmad-0.15.1b/COPYRIGHT" \
     "$SCUMMVM_DIR/build-emscripten/doc/COPYRIGHT.MAD"
   cp "$SCUMMVM_DIR/dists/emscripten/libs/libmad-0.15.1b/COPYING" \
     "$SCUMMVM_DIR/build-emscripten/doc/COPYING.MAD"
   python3 "$ROOT_DIR/scripts/write_scummvm_http_index.py" "$SCUMMVM_DIR/build-emscripten/data"
+
+  if [[ "${1:-}" == --compile-only ]]; then
+    echo "Built the ScummVM browser runtime in $SCUMMVM_DIR/build-emscripten"
+    return
+  fi
 
   if [[ "${SCUMMVM_REUSE_CATALOG:-0}" == 1 ]]; then
     log_stage "Reuse tracked game config"
@@ -604,6 +631,10 @@ main() {
   if [[ "${SCUMMVM_REUSE_CATALOG:-0}" == 1 ]]; then
     rm -rf "$DIST_DIR/games"
   fi
+
+  log_stage "Install verified classic freeware additions"
+  python3 "$ROOT_DIR/scripts/install_classic_freeware.py" "$DIST_DIR"
+  python3 "$ROOT_DIR/scripts/write_scummvm_http_index.py" "$DIST_DIR/games"
 
   log_stage "Finalize dist shell"
   finalize_dist_workspace

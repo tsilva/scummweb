@@ -1,6 +1,6 @@
 .DS_Store
 .next/
-.next-dev-*/
+.next-*/
 artifacts/
 bundle/*
 !bundle/scummvm-public.zip
@@ -10,6 +10,8 @@ node_modules/
 public/*
 !public/brand/
 !public/social-cards/
+public/social-cards/*.png
+public/social-cards/*.jpg
 !public/.gitignore
 tools/
 vendor/
@@ -25,3 +27,12 @@ tmp/
 /INBOX.md
 /.internal/
 /data/.social-cards.lock/
+/data/artwork-storage.json.*.tmp
+/.cache/artwork/
+# Game artwork is published to R2; temporary originals are upload inputs.
+/scummvm-shell/launcher/*.webp
+/scummvm-shell/launcher/*.png
+/scummvm-shell/launcher/responsive/
+/scummvm-shell/launcher/optimized/
+/scummvm-shell/launcher/*.avif
+/image-assets/sources/road-gameplay.jpg

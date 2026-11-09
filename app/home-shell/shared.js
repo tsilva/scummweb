@@ -13,12 +13,13 @@ export function getDialogLinkProps(href) {
   };
 }
 
-export function getHeroImageStyle(position) {
-  if (!position) {
+export function getHeroImageStyle(position, mobilePosition) {
+  if (!position && !mobilePosition) {
     return undefined;
   }
 
   return {
-    objectPosition: position,
+    ...(position ? { "--hero-image-position": position } : {}),
+    ...(mobilePosition ? { "--hero-image-mobile-position": mobilePosition } : {}),
   };
 }

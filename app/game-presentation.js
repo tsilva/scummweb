@@ -46,42 +46,232 @@ const importedScummGames = [
   },
 ];
 
+function bundledGameplayGallery(slug, edition, scenes, extension = "png") {
+  return {
+    screenshots: scenes.map((_, index) => `/launcher/${slug}-shot-${index + 1}.${extension}`),
+    sources: {
+      screenshots: scenes.map((scene) => ({
+        kind: "gameplay",
+        page: `https://scummweb.tsilva.eu/${slug}/play`,
+        edition,
+        scene,
+        credit: "Original gameplay captured in ScummWEB",
+      })),
+    },
+  };
+}
+
+const bundledArtworkByTarget = {
+  "grim-demo": {
+    heroImage: "/launcher/grim-fandango-scummweb-generated-2026-11-09-r2-hero.webp",
+    posterImage: "/launcher/grim-fandango-scummweb-generated-2026-11-08-r1-cover.webp",
+    ...bundledGameplayGallery("grim-fandango-demo", "English Windows small demo", [
+      "Lost Souls' Alliance headquarters", "Alley outside the headquarters", "Street festival",
+    ]),
+  },
+  "monkey4-demo": {
+    heroImage: "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero.webp",
+    posterImage: "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover.webp",
+    ...bundledGameplayGallery("escape-from-monkey-island-demo", "English Windows web demo", [
+      "Governor's mansion grounds", "Encounter with the catapult operator", "Path to the gate",
+    ]),
+  },
+  zork1: {
+    heroImage: "/launcher/zork-1-scummweb-generated-2026-11-08-r2-hero.webp",
+    posterImage: "/launcher/zork-1-scummweb-generated-2026-11-08-r1-cover.webp",
+    ...bundledGameplayGallery("zork-i-the-great-underground-empire", "English Z-machine v3", [
+      "Mailbox west of the house", "Kitchen", "Living room",
+    ]),
+  },
+  zork2: {
+    heroImage: "/launcher/zork-2-scummweb-generated-2026-11-08-r2-hero.webp",
+    posterImage: "/launcher/zork-2-scummweb-generated-2026-11-08-r1-cover.webp",
+    ...bundledGameplayGallery("zork-ii-the-wizard-of-frobozz", "English Z-machine v3", [
+      "Inside the Barrow", "Narrow Tunnel", "Foot Bridge",
+    ]),
+  },
+  zork3: {
+    heroImage: "/launcher/zork-3-scummweb-generated-2026-11-08-r1-hero.webp",
+    posterImage: "/launcher/zork-3-scummweb-generated-2026-11-08-r1-cover.webp",
+    ...bundledGameplayGallery("zork-iii-the-dungeon-master", "English Z-machine v3", [
+      "Endless Stair", "Junction", "Creepy Crawl",
+    ]),
+  },
+};
+
 const artByTarget = {
+  draci: {
+    ...retroGameArtwork["draci:draci"],
+    studio: "NoSense",
+    year: "1995",
+    language: "en",
+    summary: "Guide Bert, a young dragon, as he searches for his father and puts right the mischief caused by an enchanted wand.",
+  },
+  "atlantis-demo": {
+    genre: "Point-and-click adventure",
+    studio: "LucasArts",
+    year: "1992",
+    language: "en",
+    summary: "Play LucasArts’ original DOS demonstration of Indiana Jones’s search for Atlantis.",
+    posterImage: retroGameArtwork["scumm:atlantis"].posterImage,
+    heroImage: retroGameArtwork["scumm:atlantis"].heroImage,
+    ...bundledGameplayGallery("indiana-jones-and-the-fate-of-atlantis-demo", "English DOS interactive demo", [
+      "Thera harbor", "Hillside village", "Thera mountains",
+    ]),
+  },
+  "comi-demo": {
+    genre: retroGameArtwork["scumm:comi"].genre,
+    studio: "LucasArts",
+    year: "1997",
+    language: "en",
+    summary: "Help Guybrush Threepwood escape a pirate ship in LucasArts’ original Windows web demo. This edition includes voice acting.",
+    posterImage: retroGameArtwork["scumm:comi"].posterImage,
+    heroImage: retroGameArtwork["scumm:comi"].heroImage,
+    heroImagePosition: retroGameArtwork["scumm:comi"].heroImagePosition,
+    ...bundledGameplayGallery("the-curse-of-monkey-island-demo", "English Windows small demo", [
+      "Opening scene in the ship’s hold", "Cannon verb coin", "Guybrush’s inventory",
+    ], "webp"),
+  },
+  ...Object.fromEntries([
+    ["teenagent:teenagent", "1995"],
+    ["hugo:hugo1", "1990"],
+    ["hugo:hugo2", "1991"],
+    ["hugo:hugo3", "1992"],
+  ].map(([familyId, year]) => {
+    const { title, ...artwork } = retroGameArtwork[familyId];
+    return [`${familyId.split(":")[1]}-demo`, {
+      ...artwork,
+      year,
+      language: "en",
+      badge: "Shareware",
+    }];
+  })),
+  "pegasus-demo": {
+    ...retroGameArtwork["pegasus:pegasus"],
+    title: "The Journeyman Project: Pegasus Prime (Demo)",
+    year: "1997",
+    language: "en",
+  },
+  "castlemaster-demo": {
+    genre: "First-person fantasy adventure",
+    studio: "Incentive Software",
+    year: "1990",
+    language: "en",
+    summary: "Explore the first level of Castle Eternity and search for your captive twin.",
+    heroImage: "/launcher/castle-master-scummweb-generated-2026-11-09-r1-hero.webp",
+    posterImage: "/launcher/castle-master-scummweb-generated-2026-11-09-r1-cover.webp",
+    screenshots: ["/launcher/castle-master-dos-shot-1.webp", "/launcher/castle-master-dos-shot-2.webp"],
+    sources: {
+      screenshots: [
+        {
+          kind: "gameplay",
+          page: "https://www.scummvm.org/screenshots/incentive/freescape:castlemaster/",
+          url: "https://www.scummvm.org/data/screenshots/freescape/castlemaster/castlemaster_dos_en_1_1_full.png",
+          credit: "ScummVM screenshot gallery",
+        },
+        {
+          kind: "gameplay",
+          page: "https://scummweb.tsilva.eu/castle-master-demo/play",
+          edition: "English DOS playable demo",
+          scene: "Outside Castle Eternity",
+          credit: "Original gameplay captured in ScummWEB",
+        },
+      ],
+    },
+  },
+  "qfi-demo": {
+    genre: "Adventure RPG",
+    studio: "Infamous Quests",
+    year: "2014",
+    language: "en",
+    summary: "Explore the Valley of Krasna as Mr. Roehm, an adventurer with a checkered past.",
+    heroImage: "/launcher/quest-for-infamy-scummweb-generated-2026-11-09-r1-hero.webp",
+    posterImage: "/launcher/quest-for-infamy-scummweb-generated-2026-11-09-r1-cover.webp",
+    screenshots: [
+      "/launcher/quest-for-infamy-shot-1.webp",
+      "/launcher/quest-for-infamy-shot-2.webp",
+      "/launcher/quest-for-infamy-shot-3.webp",
+    ],
+    sources: {
+      screenshots: [
+        "https://images.launchbox-app.com/480c8da8-2a29-4728-a325-577afdf0cbff.jpg",
+        "https://images.launchbox-app.com/f7c743e8-5933-442c-8f73-c88efdc7095c.jpg",
+        "https://images.launchbox-app.com/319816ea-dd26-479e-b58a-b70d741fd728.jpg",
+      ].map((url) => ({
+        kind: "gameplay",
+        url,
+        page: "https://gamesdb.launchbox-app.com/games/images/79875-quest-for-infamy",
+        credit: "LaunchBox Games Database",
+      })),
+    },
+  },
+  "grim-demo": {
+    genre: "Graphic adventure",
+    studio: "LucasArts",
+    year: "1998",
+    language: "en",
+    summary: "Meet Manny Calavera in LucasArts’ original Windows demo set in the Land of the Dead.",
+    ...bundledArtworkByTarget["grim-demo"],
+  },
+  "monkey4-demo": {
+    genre: "Graphic adventure",
+    studio: "LucasArts",
+    year: "2000",
+    language: "en",
+    summary: "Join Guybrush Threepwood in the original Windows web demo of the fourth Monkey Island adventure.",
+    ...bundledArtworkByTarget["monkey4-demo"],
+  },
+  ...Object.fromEntries([
+    ["zork1", "1980", "Explore the Great Underground Empire, starting outside a white house."],
+    ["zork2", "1981", "Explore the wizard’s domain and unravel the puzzles of Frobozz."],
+    ["zork3", "1982", "Face the final trials of the Great Underground Empire and seek the Dungeon Master."],
+  ].map(([target, year, summary]) => [target, {
+    genre: "Text adventure",
+    studio: "Infocom",
+    language: "en",
+    year,
+    summary: `${summary} Type commands to play.`,
+    ...bundledArtworkByTarget[target],
+  }])),
+  soltys: { ...retroGameArtwork["cge:soltys"], year: "1995" },
+  hires1: { ...retroGameArtwork["adl:hires1"], year: "1980" },
+  got: { ...retroGameArtwork["got:got"], year: "1993" },
   ...Object.fromEntries(importedScummGames.map(({ target, studio, year, summary }) => [target, {
     eyebrow: `${studio} Adventure`,
-    genre: "Point-and-click adventure",
+    genre: retroGameArtwork[`scumm:${target}`].genre,
     studio,
     year,
     summary,
-    posterImage: `/launcher/${target}-cover.webp`,
+    posterImage: retroGameArtwork[`scumm:${target}`].posterImage,
     screenshots: retroGameArtwork[`scumm:${target}`].screenshots,
   }])),
   atlantis: {
     eyebrow: "LucasArts Adventure",
     summary: "Indy and Sophia Hapgood race to find Atlantis in an original globetrotting adventure.",
-    genre: "Point-and-click adventure",
+    genre: retroGameArtwork["scumm:atlantis"].genre,
     studio: "LucasArts",
     year: "1992",
-    posterImage: "/launcher/atlantis-cover.webp",
+    posterImage: retroGameArtwork["scumm:atlantis"].posterImage,
     screenshots: retroGameArtwork["scumm:atlantis"].screenshots,
   },
   indy3: {
     eyebrow: "Lucasfilm Games Adventure",
     summary: "Follow Indy and his father on the search for the Holy Grail in the graphic adventure based on the film.",
-    genre: "Point-and-click adventure",
+    genre: retroGameArtwork["scumm:indy3"].genre,
     studio: "Lucasfilm Games",
     year: "1989",
-    posterImage: "/launcher/indy3-cover.webp",
+    posterImage: retroGameArtwork["scumm:indy3"].posterImage,
     screenshots: retroGameArtwork["scumm:indy3"].screenshots,
   },
   sfinx: {
     eyebrow: "L.K. Avalon",
     summary: "Switch between two young adventurers and solve puzzles in this colorful Polish point-and-click comedy.",
-    genre: "Point-and-click adventure",
+    genre: "Comedy adventure",
     studio: "L.K. Avalon",
     year: "1997",
-    heroImage: "/launcher/sfinx-hero.webp",
-    posterImage: "/launcher/sfinx-cover.webp",
+    heroImage: "/launcher/sfinx-scummweb-generated-2026-11-05-r1-hero.webp",
+    heroImagePosition: "80% 38%",
+    posterImage: "/launcher/sfinx-scummweb-generated-2026-11-05-r1-cover.webp",
     screenshots: [
       "/launcher/sfinx-shot-1.webp",
       "/launcher/sfinx-shot-2.webp",
@@ -90,18 +280,19 @@ const artByTarget = {
   },
   "monkey-demo": {
     eyebrow: "Lucasfilm Games Demo",
+    mobileSummary: "Explore Mêlée Island as aspiring pirate Guybrush Threepwood in this playable demo.",
     summary:
       "As aspiring pirate Guybrush Threepwood, explore Mêlée Island, question the locals, and find the magic phrase that will get you past a troll. This playable EGA demo remixes scenes and characters from the full adventure into a short story of its own.",
-    genre: "Point-and-click adventure",
+    genre: retroGameArtwork["scumm:monkey"].genre,
     studio: "Lucasfilm Games",
     year: "1990",
     badge: "English DOS EGA demo",
     tag: "Playable Demo",
-    heroImage: "/launcher/monkey-demo-hero.webp",
-    heroImagePosition: "center 64%",
-    landscapeImage: "/launcher/monkey-demo-hero.webp",
-    posterImage: "/launcher/monkey-demo-cover.webp",
-    spotlightImage: "/launcher/monkey-demo-cover.webp",
+    heroImage: "/launcher/monkey-demo-scummweb-generated-2026-11-05-r1-hero.webp",
+    heroImagePosition: "80% 38%",
+    landscapeImage: "/launcher/monkey-demo-scummweb-generated-2026-11-05-r1-hero.webp",
+    posterImage: "/launcher/monkey-demo-scummweb-generated-2026-11-05-r1-cover.webp",
+    spotlightImage: "/launcher/monkey-demo-scummweb-generated-2026-11-05-r1-cover.webp",
     screenshots: [
       "/launcher/monkey-demo-shot-1.png",
       "/launcher/monkey-demo-shot-2.png",
@@ -111,38 +302,60 @@ const artByTarget = {
   },
   sky: {
     eyebrow: "Featured Classic",
+    mobileSummary: "Escape a towering dystopian city in this classic cyberpunk adventure.",
     summary:
       "Beneath a Steel Sky opens with a broken hovercar, a towering dystopian city, and the kind of dry wit that only 90s cyberpunk adventures could get away with.",
-    genre: "Cyberpunk Adventure",
+    genre: "Cyberpunk adventure",
     studio: "Revolution Software",
     year: "1994",
     badge: "CD Release",
     tag: "Industrial noir",
-    heroImage: "/launcher/sky-hero.webp",
-    heroImageMobile: "/launcher/sky-hero-mobile.webp",
+    heroImage: "/launcher/sky-scummweb-generated-2026-11-05-r1-hero.webp",
+    heroImagePosition: "80% 38%",
     screenshots: [
-      "/launcher/bass-shot-1.png",
-      "/launcher/bass-shot-2.png",
-      "/launcher/bass-shot-3.png",
+      "/launcher/bass-gameplay-shot-walkway.png",
+      "/launcher/bass-gameplay-shot-travelco.png",
+      "/launcher/bass-gameplay-shot-garden.png",
     ],
+    sources: {
+      screenshots: [
+        {
+          kind: "gameplay",
+          url: "https://www.scummvm.org/data/screenshots/sky/sky/sky_dos_en_1_2_full.png",
+          page: "https://www.scummvm.org/screenshots/revolution/sky:sky/",
+        },
+        {
+          kind: "gameplay",
+          url: "https://www.scummvm.org/data/screenshots/sky/sky/sky_dos_en_1_4_full.png",
+          page: "https://www.scummvm.org/screenshots/revolution/sky:sky/",
+        },
+        {
+          kind: "gameplay",
+          url: "https://www.scummvm.org/data/screenshots/sky/sky/sky_dos_en_1_5_full.png",
+          page: "https://www.scummvm.org/screenshots/revolution/sky:sky/",
+        },
+      ],
+    },
     landscapeImage: "/launcher/sky-cover.webp",
-    posterImage: "/launcher/sky-cover.webp",
-    spotlightImage: "/launcher/sky-cover.webp",
+    posterImage: "/launcher/sky-scummweb-generated-2026-11-05-r2-cover.webp",
+    spotlightImage: "/launcher/sky-scummweb-generated-2026-11-05-r2-cover.webp",
     tone: "tone-sky",
   },
   "dreamweb-cd": {
     eyebrow: "Night Shift Pick",
+    mobileSummary: "Uncover a sinister cult in a rain-soaked city of the future.",
     summary:
       "DreamWeb trades bright heroics for rain, cult dread, and a killer drifting through a diseased future city. It is still one of the strangest things you can boot from ScummVM.",
-    genre: "Noir Thriller",
+    genre: "Noir thriller",
     studio: "Empire Interactive",
     year: "1994",
     badge: "CD Edition",
     tag: "Rain-soaked dystopia",
-    heroImage: "/launcher/dreamweb-hero.webp",
+    heroImage: "/launcher/dreamweb-scummweb-generated-2026-11-05-r1-hero.webp",
+    heroImagePosition: "80% 38%",
     landscapeImage: "/launcher/dreamweb-cover.webp",
-    posterImage: "/launcher/dreamweb-cover.webp",
-    spotlightImage: "/launcher/dreamweb-cover.webp",
+    posterImage: "/launcher/dreamweb-scummweb-generated-2026-11-05-r1-cover.webp",
+    spotlightImage: "/launcher/dreamweb-scummweb-generated-2026-11-05-r1-cover.webp",
     screenshots: [
       "/launcher/dreamweb-shot-1.png",
       "/launcher/dreamweb-shot-2.png",
@@ -152,18 +365,19 @@ const artByTarget = {
   },
   queen: {
     eyebrow: "Jungle Matinee",
+    mobileSummary: "Join a pulp pilot on a comic adventure through the Amazon.",
     summary:
       "Flight of the Amazon Queen throws a pulp pilot, a film star, and a lost-city conspiracy into a bright comic-book trek across the Amazon. It is breezier than DreamWeb and a lot better dressed for danger.",
-    genre: "Comic Adventure",
+    genre: "Comic adventure",
     studio: "Interactive Binary Illusions",
     year: "1995",
     badge: "Talkie CD",
     tag: "Pulp expedition",
-    heroImage: "/launcher/queen-hero.webp",
-    heroImagePosition: "74% 30%",
+    heroImage: "/launcher/queen-scummweb-generated-2026-11-05-r1-hero.webp",
+    heroImagePosition: "80% 38%",
     landscapeImage: "/launcher/queen-cover.webp",
-    posterImage: "/launcher/queen-cover.webp",
-    spotlightImage: "/launcher/queen-cover.webp",
+    posterImage: "/launcher/queen-scummweb-generated-2026-11-05-r1-cover.webp",
+    spotlightImage: "/launcher/queen-scummweb-generated-2026-11-05-r1-cover.webp",
     screenshots: [
       "/launcher/queen-shot-1.png",
       "/launcher/queen-shot-2.png",
@@ -173,57 +387,55 @@ const artByTarget = {
   },
   lure: {
     eyebrow: "Castle Intrigue",
+    mobileSummary: "Explore a troubled kingdom and outwit the forces threatening its people.",
     summary:
       "Lure of the Temptress drops you into a plague-struck kingdom full of shifting loyalties, suspicious guards, and the early Revolution Software menace that already points toward Beneath a Steel Sky.",
-    genre: "Fantasy Adventure",
+    genre: "Fantasy adventure",
     studio: "Revolution Software",
     year: "1992",
     badge: "Freeware VGA",
     tag: "Castle conspiracy",
-    heroImage: "/launcher/lure-hero.webp",
+    heroImage: "/launcher/lure-scummweb-generated-2026-11-05-r1-hero.webp",
+    heroImagePosition: "80% 38%",
     landscapeImage: "/launcher/lure-cover.webp",
-    posterImage: "/launcher/lure-cover.webp",
-    spotlightImage: "/launcher/lure-cover.webp",
-    screenshots: [
-      "/launcher/lure-shot-1.png",
-      "/launcher/lure-shot-2.png",
-      "/launcher/lure-shot-3.png",
-    ],
+    posterImage: "/launcher/lure-scummweb-generated-2026-11-05-r1-cover.webp",
+    spotlightImage: "/launcher/lure-scummweb-generated-2026-11-05-r1-cover.webp",
+    screenshots: retroGameArtwork["lure:lure"].screenshots,
     tone: "tone-default",
   },
   drascula: {
     eyebrow: "Vampire Farce",
+    mobileSummary: "Take on a cartoon vampire in a point-and-click comedy full of B-movie antics.",
     summary:
       "Drascula throws a dimwitted hero, cartoon vampire melodrama, and rapid-fire gag writing into a point-and-click comedy that never lets its B-movie premise sit still.",
-    genre: "Comedy Horror Adventure",
+    genre: "Comedy horror adventure",
     studio: "Alcachofa Soft",
     year: "1996",
     badge: "English Freeware",
     tag: "Spanish cult comedy",
-    heroImage: "/launcher/drascula-hero.webp",
+    heroImage: "/launcher/drascula-scummweb-generated-2026-11-05-r1-hero.webp",
+    heroImagePosition: "80% 38%",
     landscapeImage: "/launcher/drascula-cover.webp",
-    posterImage: "/launcher/drascula-cover.webp",
-    spotlightImage: "/launcher/drascula-cover.webp",
-    screenshots: [
-      "/launcher/drascula-shot-1.png",
-      "/launcher/drascula-shot-2.png",
-      "/launcher/drascula-shot-3.png",
-    ],
+    posterImage: "/launcher/drascula-scummweb-generated-2026-11-05-r1-cover.webp",
+    spotlightImage: "/launcher/drascula-scummweb-generated-2026-11-05-r1-cover.webp",
+    screenshots: retroGameArtwork["drascula:drascula"].screenshots,
     tone: "tone-default",
   },
   "nippon-amiga": {
     eyebrow: "Heist Fever Dream",
+    mobileSummary: "Follow three unlikely crooks through a colorful caper full of bad luck.",
     summary:
       "Nippon Safes, Inc. turns a three-way caper into a neon cartoon of crooks, bad luck, and sharply drawn Amiga absurdity. It feels like a pulp comic strip that got lost in a cyberpunk fever dream.",
-    genre: "Comedy Caper Adventure",
+    genre: "Comedy caper adventure",
     studio: "Dynabyte",
     year: "1992",
     badge: "Amiga Freeware",
     tag: "Multi-hero heist",
-    heroImage: "/launcher/nippon-hero.webp",
+    heroImage: "/launcher/nippon-scummweb-generated-2026-11-05-r1-hero.webp",
+    heroImagePosition: "80% 38%",
     landscapeImage: "/launcher/nippon-cover.webp",
-    posterImage: "/launcher/nippon-cover.webp",
-    spotlightImage: "/launcher/nippon-cover.webp",
+    posterImage: "/launcher/nippon-scummweb-generated-2026-11-05-r1-cover.webp",
+    spotlightImage: "/launcher/nippon-scummweb-generated-2026-11-05-r1-cover.webp",
     screenshots: [
       "/launcher/nippon-shot-1.png",
       "/launcher/nippon-shot-2.png",
@@ -233,17 +445,20 @@ const artByTarget = {
   },
   sword25: {
     eyebrow: "Fan Sequel Spotlight",
+    mobileSummary: "Join George and Nico in a hand-painted Templar conspiracy.",
+    mobileBadge: "Fan game",
     summary:
       "Broken Sword 2.5 sends George and Nico back into a hand-painted conspiracy full of autumn streets, Templar fallout, and the lavish fan-made craft that made it a ScummVM showcase.",
-    genre: "Conspiracy Adventure",
+    genre: "Conspiracy adventure",
     studio: "mindFactory",
     year: "2008",
     badge: "Freeware Fan Game",
     tag: "Templar return",
-    heroImage: "/launcher/sword25-hero.webp",
+    heroImage: "/launcher/sword25-scummweb-generated-2026-11-05-r1-hero.webp",
+    heroImagePosition: "80% 38%",
     landscapeImage: "/launcher/sword25-cover.webp",
-    posterImage: "/launcher/sword25-cover.webp",
-    spotlightImage: "/launcher/sword25-cover.webp",
+    posterImage: "/launcher/sword25-scummweb-generated-2026-11-05-r1-cover.webp",
+    spotlightImage: "/launcher/sword25-scummweb-generated-2026-11-05-r1-cover.webp",
     screenshots: [
       "/launcher/sword25-shot-1.png",
       "/launcher/sword25-shot-2.png",
@@ -254,10 +469,10 @@ const artByTarget = {
 };
 
 const defaultArt = {
-  genre: "ScummVM Adventure",
+  genre: "ScummVM adventure",
   studio: "ScummVM Runtime",
   year: null,
-  badge: "Playable Now",
+  badge: null,
   tag: "Ready to launch",
   screenshots: [],
   tone: "tone-default",
@@ -303,6 +518,9 @@ function getImportedScummPresentation(target, title, variant) {
   const labels = [...variant.matchAll(/\(([^()]+)\)/g)].map(([, label]) => label);
   return {
     ...getGamePresentation({ target, displayTitle: title + demo, engineId: "scumm" }, metadata && {
+      heroImage: metadata.heroImage,
+      heroImagePosition: metadata.heroImagePosition,
+      heroImageMobilePosition: metadata.heroImageMobilePosition,
       summary: metadata.summary,
       studio: metadata.studio,
       genre: metadata.genre,
@@ -314,13 +532,29 @@ function getImportedScummPresentation(target, title, variant) {
 }
 
 const normalizeImportedTitle = (title) => title.toLowerCase().replace(/[:\s-]+/g, " ").trim();
+
+export function getRecognizedGamePresentations() {
+  return [
+    ...Object.entries(retroGameArtwork).map(([familyId, record]) => {
+      const [engineId, target] = familyId.split(":");
+      return getGamePresentation({
+        familyId, target, engineId: engineId === "local" ? "scumm" : engineId,
+        displayTitle: record.title,
+      }, record);
+    }),
+    getGamePresentation({ target: "sfinx", engineId: "cge2", displayTitle: "Sfinx" }),
+  ];
+}
 const splitImportedEdition = (name) => /^(.+?)((?:\s+\([^()]+\))*)$/.exec(name);
 const retroByEdition = new Map();
 const retroByTitle = new Map();
 for (const [id, record] of Object.entries(retroGameArtwork)) {
   const game = { id, ...record };
   for (const alias of [record.title, ...record.aliases]) {
-    retroByEdition.set(normalizeImportedTitle(alias), game);
+    const edition = normalizeImportedTitle(alias);
+    const existingEdition = retroByEdition.get(edition);
+    // A shared canonical title is ambiguous even in the exact-alias index.
+    retroByEdition.set(edition, existingEdition === undefined || existingEdition === game ? game : null);
     const title = normalizeImportedTitle(splitImportedEdition(alias)[1]);
     const existing = retroByTitle.get(title);
     retroByTitle.set(title, existing === undefined || existing === game ? game : null);
@@ -358,11 +592,15 @@ export function getImportedGamePresentation(filename) {
           engineId: engineId === "local" ? "scumm" : engineId,
           displayTitle: retro.title + (demo ? " (Demo)" : ""),
         }, {
+          heroImage: retro.heroImage,
+          heroImagePosition: retro.heroImagePosition,
+          heroImageMobilePosition: retro.heroImageMobilePosition,
           posterImage: retro.posterImage,
           screenshots: retro.screenshots,
           summary: retro.summary,
           studio: retro.studio,
           genre: retro.genre,
+          editionLabel: retro.editionLabel,
         }),
         badge: labels.join(" · ") || "Local game",
       };
@@ -370,10 +608,15 @@ export function getImportedGamePresentation(filename) {
   }
 
   const sfinx = /^sfinx(?:-(en|pl|de))?(?:-v(\d+(?:\.\d+)*))?\.zip$/i.exec(filename);
-  if (!sfinx) return null;
+  const labeledSfinx = /^sfinx v(\d+(?:\.\d+)*) \(DOS, (English|Polish|German)\)\.zip$/i.exec(filename);
+  if (!sfinx && !labeledSfinx) return null;
 
-  const language = { en: "English", pl: "Polish", de: "German" }[sfinx[1]?.toLowerCase()];
-  const edition = sfinx[2] ? `v${sfinx[2]}` : null;
+  const languages = { en: "English", pl: "Polish", de: "German" };
+  const language = labeledSfinx
+    ? Object.values(languages).find((name) => name.toLowerCase() === labeledSfinx[2].toLowerCase())
+    : languages[sfinx[1]?.toLowerCase()];
+  const version = sfinx?.[2] ?? labeledSfinx?.[1];
+  const edition = version ? `v${version}` : null;
   return {
     ...getGamePresentation({ target: "sfinx", displayTitle: "Sfinx", engineId: "cge2" }),
     platform: "DOS",

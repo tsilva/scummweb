@@ -14,58 +14,51 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-0BSD-blue" alt="License: 0BSD (original ScummWEB code)" /></a>
 </p>
 
-ScummWEB brings classic point-and-click adventures to your browser, powered by
-ScummVM. Play freeware and demos from the public library, or import compatible
-games from your own collection. Recognized games include artwork, descriptions,
-and studio credits. Game details show three screenshots where matching captures
-are available.
+ScummWEB lets you play classic graphical and text adventures in your browser,
+powered by [ScummVM](https://www.scummvm.org/). Choose freeware and demos from
+the public library, or import compatible games from your own collection.
+Game pages bring together artwork, original gameplay screenshots, descriptions,
+and launch options.
+
+ScummWEB is an independent frontend, not affiliated with, endorsed by, or
+sponsored by the ScummVM project.
 
 ## Play online
 
 [Browse the library](https://scummweb.tsilva.eu), or start with
-[Beneath a Steel Sky](https://scummweb.tsilva.eu/beneath-a-steel-sky/play),
-a freeware cyberpunk adventure. The game downloads and unpacks in your browser;
-when the opening scene appears, you’re ready to play.
+[Beneath a Steel Sky](https://scummweb.tsilva.eu/beneath-a-steel-sky/play), a
+freeware cyberpunk adventure. The game downloads and unpacks in your browser;
+when the opening scene appears, you’re ready to play. If sound or an intro is
+paused, select **Start audio** inside the game.
 
-Select a game card for details and **Play**. If sound or an intro is paused,
-select **Start audio** inside the game. Compatible saves offer **Continue**;
-other games load progress through their in-game menu.
+Select a game card and **Play** to launch another adventure. Supported games
+offer **Continue** when saved progress exists; other games load saves through
+their in-game menu. Phones and tablets have touch controls.
 
-The Recently Played strip shows games you have launched, newest first, including
-your imported ZIPs. It appears after your first launch.
-
-Use the library’s sliders icon to sort and filter games. Choose **Version** in
-a game’s details to switch platform, language, or edition. Open **Game
-compatibility** from the top-bar checklist icon, or read the
-[compatibility results](docs/game-testing.md), for tested editions and known
-ScummVM or ScummWEB limitations. Problems specific to missing or mismatched
-game files are excluded. Startup checks do not establish full-game compatibility.
-
-The homepage slideshow advances every eight seconds. Previous and next restart
-the countdown; use the pause button to stop automatic rotation.
-Exiting a game returns to the homepage with that game selected in the slideshow.
+Progress stays in your browser, with no automatic cloud sync. Before clearing
+site data or moving devices, export a backup through **Settings → Saved games**.
+See [save backups and transfers](docs/maintaining-scummweb.md#backing-up-and-transferring-saved-progress).
 
 ## Add your games
 
-Drop ScummVM game ZIPs onto the homepage or a game’s page, then select a
-poster to play. Local game files stay on your device. Put one game in each
-ZIP, with its data files at the root or in one enclosing folder.
+Select **Add a game** in the library to choose ZIPs. On desktop, you can also
+drop them onto the homepage or a game’s page. Put one game in each ZIP, with
+its data files at the root or in one enclosing folder. Local game files stay
+on your device.
 
-Only ZIP files are supported. Local games can be up to 4 GiB. For large games,
-use a ZIP with compression disabled. If the browser needs file access again,
-select the poster and **Allow file access**, then approve the browser prompt.
-The button becomes **Play** or **Continue** once access is granted. Use **Locate ZIP**
-for missing files, or drop the same ZIPs again to refresh entries without duplicates.
+Only ZIP imports are supported, up to 4 GiB including unpacked contents.
+For large games, use a ZIP with compression disabled. You must supply your
+own files for games marked **Game not included**; recognition and artwork do
+not mean the game is bundled or verified compatible.
 
 See [playing and importing games](docs/maintaining-scummweb.md#playing-and-importing-games)
-for direct ZIP links, download limits, saves, and file-access help.
-Direct ZIP links inspect the game files to show matching metadata and hero
-artwork, including when the archive has been renamed. Recognition covers a
-limited set of file signatures; other games retain the generic loading screen.
+for controls, editions, file-access help, and direct ZIP links. Check the
+[compatibility results](https://scummweb.tsilva.eu/compatibility) for tested
+editions and known limitations; startup checks do not establish full-game compatibility.
 
 ## Run locally
 
-Use Node.js 22 and pnpm 10.27.0.
+Use Node.js 22 (the CI-tested version) and pnpm 10.27.0.
 
 ```bash
 git clone https://github.com/tsilva/scummweb.git
@@ -74,12 +67,14 @@ pnpm install --frozen-lockfile
 pnpm run dev:app --port auto
 ```
 
-Open the URL printed by the server and select **Play Beneath a Steel Sky**.
-This setup needs no Infisical login.
+Open the URL printed by the server, select **Beneath a Steel Sky**, then **Play**.
+This setup needs no Infisical login; game downloads and artwork use their
+configured public hosts.
 
 ## Further reading
 
 - [Development, ScummVM rebuilds, and analytics](docs/maintaining-scummweb.md)
+- [Artwork sources, generated artwork, and publishing](docs/maintaining-scummweb.md#artwork-storage-and-publishing)
 - [Production delivery and game publishing](docs/production-delivery.md)
 
 ## License
@@ -88,5 +83,9 @@ This setup needs no Infisical login.
 - The bundled ScummVM engine and patches to ScummVM are covered by the
   [ScummVM GPL license](scummvm-shell/doc/COPYING). Bundled third-party
   components carry their own notices in the [ScummVM documentation](scummvm-shell/doc/).
+  The [ScummVM source page](https://scummweb.tsilva.eu/doc/scummvm-source.html)
+  offers the corresponding source for the live browser build. For this checkout,
+  see the [pinned upstream source details](scummvm-shell/source-info.json) and
+  the [ScummWEB build-source ZIP](scummvm-shell/doc/scummvm-source.zip).
 - Each game and its associated artwork have their own terms. See the
   game-specific notices in the [ScummWEB catalog](https://scummweb.tsilva.eu#library).

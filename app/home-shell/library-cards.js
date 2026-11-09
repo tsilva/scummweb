@@ -1,17 +1,22 @@
 import DecorativeImage from "./decorative-image";
-import { getGameDialogId } from "./shared";
+import GameSelectionLink from "./game-selection-link";
+import { getPosterImageProps } from "./poster-images.mjs";
+import { useArtworkDelivery } from "./artwork-delivery";
 
-export function GamePoster({ title, image }) {
+export function GamePoster({ title, image, editionLabel, singleColumn = false, count = 8 }) {
+  const artwork = useArtworkDelivery();
   return (
     <>
       <span className="poster-media">
         {image ? (
-          <DecorativeImage className="poster-media-image" src={image} />
+          <DecorativeImage className="poster-media-image" {...getPosterImageProps(image, singleColumn, count, artwork)} />
         ) : (
           <span className="bucket-poster-placeholder" aria-hidden="true">☠</span>
         )}
       </span>
-      <span className="poster-overlay"><span className="poster-title">{title}</span></span>
+      <span className="poster-overlay"><span className="poster-title">{title}</span>
+        {editionLabel && <span className="poster-edition">{editionLabel}</span>}
+      </span>
     </>
   );
 }
@@ -22,9 +27,9 @@ export default function LibraryCards({ games, children }) {
       {children}
       {games.map((game) => (
         <div className="poster-entry" key={game.target}>
-          <a aria-haspopup="dialog" aria-controls={getGameDialogId(game)} className={`poster-card ${game.tone}`} data-game-target={game.target} href={`#${getGameDialogId(game)}`}>
-            <GamePoster title={game.displayTitle} image={game.posterImage} />
-          </a>
+          <GameSelectionLink game={game} className={`poster-card ${game.tone}`} data-game-target={game.target}>
+            <GamePoster title={game.displayTitle} image={game.posterImage} editionLabel={game.editionLabel} singleColumn={games.length === 1} count={games.length + (children ? 1 : 0)} />
+          </GameSelectionLink>
         </div>
       ))}
     </div>

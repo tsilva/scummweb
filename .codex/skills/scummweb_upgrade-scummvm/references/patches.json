@@ -1,0 +1,662 @@
+{
+  "schema_version": 1,
+  "adaptations": [
+    {
+      "path": "patches/scummvm/01-load-only-the-requested-engine.patch",
+      "status": "active",
+      "sha256": "ead19ef017503488fffed1ac6ec5c5f8998ebd975159b3ae1ac42b074186cd00",
+      "purpose": "Avoid scanning/loading every dynamic engine when a requested web engine is not found.",
+      "invariants": [
+        "Emscripten dynamic builds load only the selected engine; non-web fallback behavior remains intact."
+      ],
+      "verification": [
+        "Inspect cold and warm Brave network requests for at least two engines; no unrelated plugin downloads, including an unavailable target."
+      ],
+      "retire_when": "Upstream web plugin lookup provides equivalent selective loading without a fallback scan."
+    },
+    {
+      "path": "patches/scummvm/02-lure-menu-mouse-input.patch",
+      "status": "active",
+      "sha256": "ca5724cfef40310089539a3c7a8623f4706f0236b69d748b0b117d85b35559c1",
+      "purpose": "Make Lure popup actions click-selectable in the web build.",
+      "invariants": [
+        "Web mouse/touch can select an explicit menu item; keep native touchscreen-dependent behavior elsewhere.",
+        "The current diff contains redundant nested EMSCRIPTEN guards. Preserve the behavior when porting, not that accidental nesting."
+      ],
+      "verification": [
+        "In Brave, open a Lure popup with a mouse and touch controls; choose distinct actions and dismiss the popup."
+      ],
+      "retire_when": "Upstream web popup interaction supports these inputs without the override."
+    },
+    {
+      "path": "patches/scummvm/03-queen-dialogue-touch-debounce.patch",
+      "status": "active",
+      "sha256": "59d0528cf5e4eb709b88cae64eabf17719ac0f5b1a57669f715f96eeec32669d",
+      "purpose": "Prevent a trailing tap that dismisses speech from selecting a new Queen dialogue option.",
+      "invariants": [
+        "A new dialogue list requires deliberate input after the 180 ms debounce; options remain reachable."
+      ],
+      "verification": [
+        "In Brave Queen dialogue, dismiss a spoken line and confirm the newly drawn choices are not auto-selected; then select a choice normally."
+      ],
+      "retire_when": "Upstream input handling consumes the trailing release/tap or implements equivalent deliberate selection."
+    },
+    {
+      "path": "patches/scummvm/04-detect-sword25-freeware.patch",
+      "status": "active",
+      "sha256": "9de1b4c76b981e4cbaa043c19323440f056295a7fdc2a18df919cc4ab55dde3b",
+      "purpose": "Recognize the supported 827397764-byte freeware data.b25c package.",
+      "invariants": [
+        "Preserve unknown-language metadata so changing the game language does not break detection.",
+        "The existing series contains a size-only entry and a checksum entry (1f89a63e3509aa64626cc90cd2561032). Review collision/order behavior when porting; do not broaden detection further."
+      ],
+      "verification": [
+        "Detect and launch the supported package, change language, and relaunch; check unrelated variants are not mislabeled."
+      ],
+      "retire_when": "Upstream recognizes the exact supported package with suitable language handling; prefer its verified fingerprint over a redundant size-only fallback."
+    },
+    {
+      "path": "patches/scummvm/05-use-scummweb-filesystem-mounts.patch",
+      "status": "active",
+      "sha256": "97336316a867e8dfd4ab8e062a68c0ca8774bd7dcf135f62ed2e530ae44a3653",
+      "purpose": "Use the shell-mounted game/data/save filesystems through the POSIX backend.",
+      "invariants": [
+        "Keep OSystem_POSIX initialization and access to /data, /games and existing BrowserFS saves.",
+        "Do not restore the upstream HTTP filesystem factory over the shell mounts."
+      ],
+      "verification": [
+        "Run test/runtime-bootstrap.test.mjs and test/scummvm-filesystem.test.mjs; launch catalog and imported games and save/resume in Brave."
+      ],
+      "retire_when": "Upstream initialization natively supports these mounted filesystems without replacement or incompatible operations."
+    },
+    {
+      "path": "patches/scummvm/06-avoid-midi-permission-on-startup.patch",
+      "status": "active",
+      "sha256": "5e8e159f9b06c68c7b0d723194bdb2bbc464d9f8d2cbb8b12ecb7d380dc32b65",
+      "purpose": "Avoid requesting access to physical MIDI devices during web startup.",
+      "invariants": [
+        "No requestMIDIAccess permission prompt; midiOutputMap remains a valid empty Map for internal-driver fallback."
+      ],
+      "verification": [
+        "Check a fresh Brave launch does not prompt for MIDI permissions; verify built-in music still works on a supported title."
+      ],
+      "retire_when": "Upstream makes external MIDI access opt-in and preserves the same built-in music behavior."
+    },
+    {
+      "path": "patches/scummvm/07-detect-phantasmagoria-combined-dos.patch",
+      "status": "active",
+      "sha256": "5e04ee0180e5d0e1b46e318b6ec68342c3d039bc0542fb8da2adf39639815f87",
+      "purpose": "Recognize the supported English seven-CD combined DOS install.",
+      "invariants": [
+        "Preserve the Combined DOS install entry: ressci.000 cd5967f9b9586e3380645961c0765be3/116822037 and resmap.000 9a479f0ab586359b424e35165dd7559e/16468.",
+        "Keep English DOS metadata and Phantasmagoria GUI options; do not conflate other language editions."
+      ],
+      "verification": [
+        "Using an owned matching package, verify native detection, startup and access to combined-disc resources in Brave."
+      ],
+      "retire_when": "Upstream has an equivalent combined-DOS detection entry and the matching package passes regression checks."
+    },
+    {
+      "path": "patches/scummvm/08-bound-titanic-wasm-registry-compilation.patch",
+      "status": "active",
+      "sha256": "9fd37557492916efd8225b6b8978da5fb94692412827f956a4f3aa3b2a8ced20",
+      "purpose": "Keep Titanic class registrations from becoming one expensive browser compilation unit.",
+      "invariants": [
+        "The Emscripten registration helper stays out of line; class names, inheritance and factories remain identical."
+      ],
+      "verification": [
+        "Measure Titanic launch in Brave and verify a scene plus save/load class reconstruction; compare startup compilation behavior."
+      ],
+      "retire_when": "Upstream or the selected compiler bounds compilation cost while preserving the class registry and save compatibility."
+    },
+    {
+      "path": "patches/scummvm/09-initialize-access-detected-language.patch",
+      "status": "active",
+      "sha256": "69aead3f081490adedee7218ecf1b0d9479438a91ba7d68ff7715498d7ef8f28",
+      "purpose": "Initialize the Access engine language from the detected game description.",
+      "invariants": [
+        "Use detected language rather than unknown-language initialization, preserving per-edition behavior."
+      ],
+      "verification": [
+        "Launch an owned supported Access edition in Brave; confirm correct language/resource handling and no startup assertion."
+      ],
+      "retire_when": "Upstream initializes the same language correctly and the edition passes the check."
+    },
+    {
+      "path": "patches/scummvm/10-fallback-toltecs-adlib-instruments.patch",
+      "status": "active",
+      "sha256": "990a7b2d0759ee1ec1a00da1cbe014d171c48a86023328ad2449c8e1979cd5a2",
+      "purpose": "Allow Toltecs releases lacking both custom AdLib instrument tables to use built-in instruments.",
+      "invariants": [
+        "Keep the Miles path when custom SAMPLE.AD or SAMPLE.OPL data is present.",
+        "If both tables are absent, show the sound-difference warning and keep music through the standard driver.",
+        "An opted-in browser host can present the warning asynchronously. Other launches retain the original dialog."
+      ],
+      "verification": [
+        "Check an owned Toltecs release with absent tables: dismiss the warning and verify music; retain the custom-table path when available.",
+        "Launch the English DOS edition without optional banks and verify it reaches gameplay while the opted-in host receives the warning."
+      ],
+      "retire_when": "Upstream provides the same missing-table fallback and honest user notice."
+    },
+    {
+      "path": "patches/scummvm/11-accept-spaced-cd-track-names.patch",
+      "status": "active",
+      "sha256": "3c614b09bc545b113f7450be1019f11ddddccf6959b165a9e7172722c3386cfc",
+      "purpose": "Recognize spaced CD-ripper filenames while retaining conventional ScummVM names.",
+      "invariants": [
+        "Preserve existing trackN, trackNN, track_N and track_NN candidates.",
+        "Spaced names use physical one-based track numbers; the playback API uses zero-based numbers. Preserve plain, zero-padded and space-padded spaced names."
+      ],
+      "verification": [
+        "Verify first and later extracted CD tracks play correctly with both conventional and spaced naming; avoid an off-by-one track shift."
+      ],
+      "retire_when": "Upstream candidate generation covers the same formats and numbering semantics."
+    },
+    {
+      "path": "patches/scummvm/12-report-native-game-frames.patch",
+      "status": "active",
+      "sha256": "82f1473bdab2613f315b68fb300cbdfae593fcef4e771e8343f74cb9a9d5f06f",
+      "purpose": "Report a real native game presentation to the browser shell instead of relying on WebGL brightness polling.",
+      "invariants": [
+        "Announce __scummwebNativeFrames and call __scummwebOnGameFrame after refresh, with g_engine, no overlay, and splash completed or GUI already launched.",
+        "Only an accepted callback ends reporting; support intentionally dark frames and exclude splash/GUI setup draws.",
+        "Keep the change web-only and preserve game intro timing. Treat a skipped browser splash as completed."
+      ],
+      "verification": [
+        "Run first-frame, runtime-bootstrap and game-route-frame tests. In Brave, verify DreamWeb and another engine reach native readiness, preserve intro/skip, and compare warm launch timings; inspect the callback contract on an SDK change."
+      ],
+      "retire_when": "Upstream exposes an equivalent reliable game-presentation lifecycle signal that ScummWEB consumes and verifies."
+    },
+    {
+      "path": "patches/scummvm/41-report-playable-intro-boundaries.patch",
+      "status": "active",
+      "sha256": "fc9f9668b6dad2c664a5be6b08b2614f03dc0eb739203d473bfdd97b5d8dd007",
+      "purpose": "Report the native transition out of the bundled intro to the browser player.",
+      "invariants": [
+        "Only report once per shell document at the engine's first playable transition, independently of the first rendered frame.",
+        "Keep native startup, menus, scripts, save behavior, and optional telemetry unchanged."
+      ],
+      "verification": [
+        "In Brave, check a natural launch through the first interactive scene and a Skip Intro launch for both checkpoint and boot-parameter strategies.",
+        "Recheck first playable room identifiers against the pinned Grim, Escape, Quest for Infamy, and Sword25 bundled checkpoints."
+      ],
+      "retire_when": "Upstream engines expose equivalent intro completion signals for the bundled editions."
+    },
+    {
+      "path": "scripts/patch_scummvm_audio.py",
+      "status": "active",
+      "sha256": "4a2dbaefaa42d68d58d7bceb5e33749cdf8eaa18fce6bd712df5fe8f34b30148",
+      "purpose": "Adapt generated SDL3 playback glue to clear output buffers and contain invalid samples.",
+      "invariants": [
+        "Prime every output channel with silence before the mixer callback.",
+        "Handle non-finite samples, clamp to [-1,1], silence excessively abnormal buffers, and leave recording behavior untouched.",
+        "Exact-pattern replacement is idempotent and fails on unsupported generated glue rather than silently skipping the adaptation."
+      ],
+      "verification": [
+        "Run test/scummvm-shell-output.test.mjs and test/audio-start-control.test.mjs; listen in Brave for startup/silence artifacts, sound playback and correct gesture handling."
+      ],
+      "retire_when": "The selected upstream SDL/Emscripten output path already provides equivalent initialization and sample containment, demonstrated by output tests and audible checks."
+    },
+    {
+      "path": "patches/scummvm/13-expose-native-save-list.patch",
+      "status": "active",
+      "sha256": "f9b6d9c029e56631813b3b103cc7d18a3d4b4132e3eb914911481ef1abecb769",
+      "purpose": "Expose native save listing and startup loading to ScummWEB, including isolated personal imports.",
+      "invariants": [
+        "Respect both native capability flags and PreAGI/Mohawk exclusions; never force unsupported startup loading.",
+        "List real nonempty files; exclude nonexistent autosave placeholders, Kyrandia restart saves and Groovie slot 0 reserved/Open House state. Resolve fixed prefixes for Lure, Queen, Tony, Cruise and Draci through the native filename API.",
+        "Choose the latest player save again before engine construction; retain the selected version savepath and actual detected target.",
+        "Query mode initializes the backend and graphics overlay for native metadata and thumbnail readers, opens only the configured metadata plugin, and returns through normal cleanup before detecting or starting a game.",
+        "Publish the native engine and game IDs on opt-in evaluation launches for every engine.",
+        "Publish game identity when either native evaluation or snapshot queries are explicitly enabled."
+      ],
+      "verification": [
+        "Run browser save and native bridge tests; rebuild the managed runtime. Check Quest for Infamy (AGS) with a real save, cold plugin loading, and no game archive mounted in the query.",
+        "In Brave verify Play with no player saves, supported catalog and imported save/resume, latest-write ordering, checkpoint exclusion, and unsupported engines retaining Play."
+      ],
+      "retire_when": "Upstream exposes equivalent browser-callable save metadata and startup resume with the same eligibility and save isolation guarantees."
+    },
+    {
+      "path": "patches/scummvm/14-exit-to-scummweb-before-launcher.patch",
+      "status": "active",
+      "sha256": "8617d75c060bcb16810deacd3acaccda1de3897967508c81b8d2cf8f304a9cda",
+      "purpose": "Return hosted game sessions to ScummWEB before the native launcher can be constructed, and explicitly signal ordinary engine exits.",
+      "invariants": [
+        "When __scummvmRequestExit is installed, launcherDialog signals the host and returns before creating any native launcher UI, for both initial fallback and return-to-launcher.",
+        "Successful main teardown explicitly signals the host; do not depend on Module.quit/onExit because the generated keepalive runtime can bypass both.",
+        "Keep non-web and bridge-free command-line tooling behavior; preserve native error dialogs, save cleanup, and same-origin host navigation. The shell hides the canvas synchronously and sends one exit notification regardless of prior input."
+      ],
+      "verification": [
+        "Run test/game-exit.test.mjs and rebuild the managed runtime.",
+        "In Brave verify a game-native quit, ScummVM Return to Launcher, app Exit game, and a relaunch. The native launcher must never appear; verify Escape still works as ordinary game/menu input."
+      ],
+      "retire_when": "Upstream provides a host-controlled single-session lifecycle that prevents native launcher presentation and reliably reports engine termination with runtime keepalive enabled."
+    },
+    {
+      "path": "patches/scummvm/15-publish-completed-browser-saves.patch",
+      "status": "active",
+      "sha256": "7f2e49de429d81357dcded998c17f480bac64fbcb964789f887830a8e0077c88",
+      "purpose": "Publish browser save metadata after completed native output streams, including original engine save dialogs and autosaves.",
+      "invariants": [
+        "Invalidate the cached filename before opening or truncating its output; refuse the write if invalidation cannot persist.",
+        "Finalize compression, close the underlying descriptor, then refresh native save listing outside FS.close; cover destructor-only saves and propagate finalization and BrowserFS close failures.",
+        "Track pending or failed filenames across reloads; failed or interrupted writes cannot become Continue candidates. Successful deletions refresh metadata. Keep non-web behavior unchanged."
+      ],
+      "verification": [
+        "Run browser-saves, continue-saves, native-save-completion and hero-launch-actions tests; rebuild the managed runtime.",
+        "In Brave verify Lure original-menu saving and Sky manual/autosaves, immediate tab-close persistence, failed-write exclusion, restore conflicts and single-writer gameplay locking."
+      ],
+      "retire_when": "Upstream provides equivalent browser save completion and failure callbacks after persistent stream closure, consumed with the same pending-write and validation guarantees."
+    },
+    {
+      "path": "patches/scummvm/16-report-queen-evaluation-variables.patch",
+      "status": "active",
+      "sha256": "dbce8c6d65dcbba7d827d4261b62278db98f9df7934c9cea6bbcc3f59fb15ff5",
+      "purpose": "Provide opt-in read-only Queen room and indexed game variable telemetry for an external evaluator.",
+      "invariants": [
+        "No telemetry unless the evaluator enables it before launch. Keep the existing room protocol readable by older consumers.",
+        "Report current room after display update. room_ready requires no pending room transition and no running cutaway.",
+        "Publish a complete game variable baseline at first presentation and replace it after a save restore. Queue every subsequent changed value in native write order.",
+        "Retain room transitions and game variable records in bounded queues with explicit overflow, outside gameplay MCP observations.",
+        "Keep opt-in state snapshots independent of the ordered evaluator queues."
+      ],
+      "verification": [
+        "Run test/queen-evaluation.test.mjs and rebuild the native Queen plugin.",
+        "Through AgentSCUMM, verify a ready room arrival and a known game variable transition independently. Confirm a restored value is a new baseline."
+      ],
+      "retire_when": "Upstream provides equivalent opt-in room telemetry and game variable snapshots and changes, including save restore semantics."
+    },
+    {
+      "path": "scripts/patch_scummvm_keyboard.py",
+      "status": "active",
+      "sha256": "e22eb70f6ebb08061ed5ce16d55e471d83853ce5d34c7b1cdde0893e8fe8e95c",
+      "purpose": "Replace stale native keyboard callbacks retained across SDL window recreation, preventing one browser press from producing multiple game characters.",
+      "invariants": [
+        "Keep one registration per target, event type, native callback and capture phase; replace stale userData with the newest registration.",
+        "Preserve independent native callbacks, ordinary DOM listeners, separate targets, key releases, modifiers and genuine held-key repeat.",
+        "Apply idempotently on full builds and shell-only refreshes; fail on changed generated glue instead of skipping the adapter."
+      ],
+      "verification": [
+        "Run test/keyboard-runtime.test.mjs and test/keyboard.test.mjs; regenerate the managed shell.",
+        "In Brave Mystery House, verify a single G, Return, typed commands and Backspace after display initialization; verify a native game menu shortcut."
+      ],
+      "retire_when": "The selected SDL/Emscripten combination reliably unregisters keyboard callbacks when recreating a window, with one callback per browser event verified after Mystery House startup and display changes."
+    },
+    {
+      "path": "patches/scummvm/17-startup-intro-checkpoints.patch",
+      "status": "active",
+      "sha256": "a3cd24cec337897506378e85791de6eb2ba48942c022ae3681b0fdbc405433e1",
+      "purpose": "Skip Nippon Safes intro while preserving language/character choices, and load Sword25 intro checkpoints through native Lua persistence.",
+      "invariants": [
+        "Ordinary launches retain their original intros and menus.",
+        "Nippon Safes boot parameter 1 skips logos/story and preserves language and character selection; no character is selected by a checkpoint.",
+        "Sword25 queues the native Lua persistence load after resources and interface initialization; its startup marker must occur exactly once and the slot must be in range.",
+        "Changes apply only to Emscripten; save serializers and original game data remain unchanged."
+      ],
+      "verification": [
+        "In Brave launch both titles normally, then click Skip intro. Nippon Safes must retain language and character selection; Sword25 must restore its untouched first playable scene.",
+        "Verify native saving and loading from the original game interfaces.",
+        "Reject out-of-range Sword25 slots and changed startup scripts explicitly."
+      ],
+      "retire_when": "Upstream provides equivalent Nippon Safes intro skipping with original choices and Sword25 startup loads at safe Lua persistence timing."
+    },
+    {
+      "path": "patches/scummvm/18-report-scumm-evaluation-variables.patch",
+      "status": "active",
+      "sha256": "7323ef1421762a6985292a90a702b31e4dbb2e5c87b7526468a8cb26f7121576",
+      "purpose": "Publish opt-in game identity for all engines and room and indexed variable samples for all SCUMM titles.",
+      "invariants": [
+        "Keep gameplay unchanged when evaluation is disabled. Use one engine-neutral game identity and the same bounded room and variable queues as Queen.",
+        "Publish SCUMM physical room IDs and sampled global variables, object states, packed bit variables, and room variables where available.",
+        "Reset the baseline on a successful restore or engine restart. Include the detected data MD5 for edition-specific maps.",
+        "Keep opt-in state snapshots independent of the ordered evaluator queues."
+      ],
+      "verification": [
+        "Rebuild the managed runtime and verify opt-in identity and SCUMM variable sampling.",
+        "Check Last Crusade surviving and fatal outcomes in the same credits room and verify a baseline after save restore."
+      ],
+      "retire_when": "Upstream provides equivalent opt-in engine identity, SCUMM variable sampling and save restore semantics."
+    },
+    {
+      "path": "patches/scummvm/19-query-engine-game-state.patch",
+      "status": "active",
+      "sha256": "7f70758603be4bad27fb83582aefc4ce145a0e7e22877833b4ca0b1c3dcc8d06",
+      "purpose": "Publish opt-in room and VM variable snapshots for additional engines, including the Elvira II finale outcome.",
+      "invariants": [
+        "Sample at engine update boundaries. Preserve native variable indices and signedness, and omit room IDs that have no stable engine meaning.",
+        "Copy bounded banks only on opt-in and publish each sample atomically. SCI object references are omitted. Keep snapshots separate from evaluator transition queues.",
+        "Support numeric banks, named numeric variables, and named rooms without exposing VM references.",
+        "Fingerprint the entire Amiga gameamiga database and limit Elvira II outcome subroutines to the traced English floppy edition. Retain the outcome through the scripted ending and clear it on a new attempt or successful user restore."
+      ],
+      "verification": [
+        "Rebuild the managed runtime, query a Sky title and Sierra titles without progress maps, and check that a title without an adapter reports unavailable fields.",
+        "Probe fresh Elvira II play, late ritual failure and the winning subroutine against matching Amiga data. Check that the same late ritual variable can produce distinct outcomes and that the internal Start load preserves the win.",
+        "Check AgentSCUMM scoring against the emitted edition and outcome bank, including an older runtime without the bank and a different edition."
+      ],
+      "retire_when": "Upstream exposes comparable read-only room and variable snapshots, including an edition-specific Elvira II finale outcome."
+    },
+    {
+      "path": "patches/scummvm/20-extend-native-game-telemetry.patch",
+      "status": "active",
+      "sha256": "9528ff6a395cf0d13a551d661f091634a505526f85308361dedbfe000009c6ad",
+      "purpose": "Expose room identifiers and script or game state across the remaining shipped engines.",
+      "invariants": [
+        "Read only engine-owned state after explicit launch opt-in. Preserve native names, numeric indices, and packed flag layout. Use null when there is no reliable room ID.",
+        "Never walk native pointers, invoke script callbacks, serialize saves, or mutate interpreter state to read telemetry. Omit nonnumeric VM objects.",
+        "Report the detected AGI index fingerprint and the full SCI resource.map fingerprint when present. Keep interpreter-specific story state out of the common GLK event bank."
+      ],
+      "verification": [
+        "Verify the pinned Wasm build, test direct ScummWEB and MCP opt-in, and spot-check room and named state in additional real engines.",
+        "Verify a playable AGS title, a Freescape title, a GLK story and both Grim adventure runtimes. Compare the Sierra fingerprints against the mapped local editions."
+      ],
+      "retire_when": "Upstream provides equivalent opt-in per-engine room and state queries."
+    },
+    {
+      "path": "patches/scummvm/21-agent-sky-game-controls.patch",
+      "status": "active",
+      "sha256": "62e8bf8a2d079fb50304dcf6ea787e93f593fcce1d7b1b32661088a657d9a852",
+      "purpose": "Expose opt-in AgentSCUMM tick control and native runtime saves at the Sky game loop boundary.",
+      "invariants": [
+        "Count completed Sky gameplay updates and hold the next update before acknowledging a tick wait.",
+        "Yield the paused engine to the browser, and collect queued input before the first resumed update.",
+        "Honor native save/load availability and keep runtime saves within the explicitly scoped save directory."
+      ],
+      "verification": [
+        "Replay a bounded tick wait and verify the paused frame and exact tick delta. Save a slot, change rooms, load it and check the restored scene. Launch another run in the same profile and verify the slot is absent."
+      ],
+      "retire_when": "ScummVM exposes equivalent web-safe tick boundaries, pause/resume, and native runtime save/load."
+    },
+    {
+      "path": "patches/scummvm/22-agent-queen-game-controls.patch",
+      "status": "active",
+      "sha256": "3f80a8ef012414fa07a32887b475363e2784f86d6d25b8d72fd36cb6537f324f",
+      "purpose": "Expose the Queen engine's rendered updates and native runtime saves to AgentSCUMM.",
+      "invariants": [
+        "Count each rendered gameplay update once, including nested walks and scripted scenes. Yield to the browser without consuming input while held.",
+        "Allow save and load only between commands and room transitions. Preserve native slot numbering and exclude quicksave and autosave slots.",
+        "Present the restored room before acknowledging load. Exclude its setup frames from the tick budget and preserve the requested pause state.",
+        "Enable the bridge only in scoped runs of the full game."
+      ],
+      "verification": [
+        "Through AgentSCUMM, verify pause across a wall-clock delay, exact short and 120-tick waits, resume, native save and a paused load that restores a changed room."
+      ],
+      "retire_when": "ScummVM exposes equivalent web-safe Queen update boundaries, pause and resume, and native runtime save and load."
+    },
+    {
+      "path": "patches/scummvm/23-defer-browser-startup-warnings.patch",
+      "status": "active",
+      "sha256": "816e984c3fb8f6eff7a6c79edd872d38354dc6d7f154eb047814b62e66941a56",
+      "purpose": "Skip the ScummVM splash for browser games and forward nonfatal startup compatibility warnings to the ScummWEB player.",
+      "invariants": [
+        "Mark splash handling complete for active browser game targets so native OpenGL readiness still works. Preserve the game-owned intros and non-web splash.",
+        "Forward the original translated warning for unstable or testing games, add-ons, and the SCUMM and Wintermute engine-specific compatibility prompts.",
+        "Require an opted-in host before dismissing a warning. Preserve native dialogs for other hosts and leave fatal compatibility errors in place."
+      ],
+      "verification": [
+        "Launch a stable catalog game and a catalog game with a warning. Check first-frame readiness, the toolbar warning text and direct startup.",
+        "Launch an imported game with a testing or unstable warning and verify it reaches gameplay without dismissing a native dialog.",
+        "Launch without the opted-in host and verify the original native warning remains available."
+      ],
+      "retire_when": "ScummVM supports forwarding startup compatibility warnings to a web host and skipping the browser game splash while preserving frame readiness."
+    },
+    {
+      "path": "patches/scummvm/24-agent-backend-controls.patch",
+      "status": "active",
+      "sha256": "2e701f1b5dd17e1558d479526f4a5992c5d9d853c16bea3068f2e50fed14285c",
+      "purpose": "Provide the agent control bridge at the shared browser frame boundary for engines without a dedicated provider.",
+      "invariants": [
+        "Service only explicitly scoped browser runs. Preserve Sky and Queen's engine-specific boundaries.",
+        "Hold the engine and pause audio between frames. Advertise runtime save and load independently, honor engine safety checks and reserve autosave and locked slots.",
+        "Suppress reentrant control servicing during native save and restore. Acknowledge a successful load after the next presented frame."
+      ],
+      "verification": [
+        "Exercise frame waits and pause or resume in representative engines, including a title without a save API. Verify that AgentSCUMM rejects unsupported actions before sending earlier inputs in a batch.",
+        "Save and load in each engine that provides native runtime operations. Check a changed scene restores, scoped saves stay isolated and an unsupported scene fails without a dialog."
+      ],
+      "retire_when": "Upstream exposes an equivalent scoped browser frame gate and runtime save control API."
+    },
+    {
+      "path": "patches/scummvm/24-skip-bundled-demo-intros.patch",
+      "status": "active",
+      "sha256": "9ea3dab0aff7c383443b32591010acb31a31f96752e60ba521121c39dbccda7e",
+      "purpose": "Expose native Skip intro startup for bundled Dragon History, Teen Agent, Hugo, Pegasus Prime and Castle Master editions.",
+      "invariants": [
+        "Require an explicit browser boot parameter and the matching bundled target. Preserve original fresh starts, saves and imports.",
+        "Reuse Dragon History's data-defined escape destination, the Teen Agent engine's native intro abort, and Hugo's first-scene scheduler.",
+        "Preserve the Pegasus Prime demo menu and Castle Master's character and input choices."
+      ],
+      "verification": [
+        "In Brave use normal Play and Skip intro for all seven target entries. Verify the first scene or original required choice.",
+        "Verify the generated catalog preserves native boot parameters and does not seed a save for these targets."
+      ],
+      "retire_when": "The pinned engines offer equivalent scoped boot options that bypass the same presentation and preserve the same game choices."
+    },
+    {
+      "path": "patches/scummvm/25-agent-native-save-adapters.patch",
+      "status": "active",
+      "purpose": "Expose scoped AGOS quick saves and Plumbers decision checkpoints, and finalize Composer saves before reporting completion.",
+      "invariants": [
+        "AGOS uses the existing save format and quick-load redraw scripts, only from idle input in supported releases.",
+        "Composer closes the output stream and reports write errors.",
+        "Plumbers restores a validated decision scene, prior scene and score through the standard ScummVM save container."
+      ],
+      "verification": [
+        "Save and load an Elvira II checkpoint from a playable scene. Verify that a Composer save is visible to its native loader. Save and restore a Plumbers decision after changing the scene or score."
+      ],
+      "retire_when": "Upstream supplies equivalent scoped runtime save support and closes Composer save streams.",
+      "sha256": "f0796e77654cd7349355996babd26c248f048f10fa1f64a521508c22221b3a20"
+    },
+    {
+      "path": "patches/scummvm/26-service-agent-controls-from-game-loops.patch",
+      "status": "active",
+      "sha256": "e58e37b05f33e80438103d7b8998343f133821ddbeee443c481be4da479a0f43",
+      "purpose": "Service native save and load at complete game updates in DreamWeb.",
+      "invariants": [
+        "Native controls run once at the selected engine boundary and never reenter the renderer or count presentation callbacks from nested dialogs.",
+        "DreamWeb reuses its existing save format and redraw path. Browser runtime saves honor playable-scene restrictions."
+      ],
+      "verification": [
+        "Exercise pause and an exact wait at the game-loop boundary. Move or interact, load, and compare the restored native state in each affected engine."
+      ],
+      "retire_when": "Upstream exposes equivalent safe game-loop boundaries and native runtime save APIs."
+    },
+    {
+      "path": "patches/scummvm/27-agent-nippon-safes-checkpoints.patch",
+      "status": "active",
+      "sha256": "b7597bc22cd19b269026921b45de7a4c9de278053610ece331ad6c1477feb6d6",
+      "purpose": "Expose Nippon Safes save and load through its original native serializer.",
+      "invariants": [
+        "Operate at an idle game boundary and preserve the original scene, format, filenames and reserved progress slot.",
+        "Leave The Big Red Adventure separate because its native save routines are unimplemented."
+      ],
+      "verification": [
+        "Move to a different location or player position after saving in Nippon Safes and verify load restores the earlier state."
+      ],
+      "retire_when": "Upstream implements safe native save and load from the Nippon Safes gameplay loop."
+    },
+    {
+      "path": "patches/scummvm/28-agent-tinsel-runtime-saves.patch",
+      "status": "active",
+      "sha256": "efa16d5d2f6354369f6e6bbc7256752fc38b5a7e723f5572a6ca24a6b2799fbd",
+      "purpose": "Expose scoped Tinsel saves using the existing scene and interpreter serializer.",
+      "invariants": [
+        "Use the physical slot without remapping.",
+        "Service agent controls after completed game cycles and wait for scene reconstruction before acknowledging restores."
+      ],
+      "verification": [
+        "Save in a controllable Discworld scene, move, and verify the earlier scene or player position after restoring."
+      ],
+      "retire_when": "Upstream supports equivalent runtime saves at a completed Tinsel game cycle."
+    },
+    {
+      "path": "patches/scummvm/29-agent-grim-runtime-saves.patch",
+      "status": "active",
+      "sha256": "8609ebfe0860a29e24826b71e711a66608109a168c8cf9e948508d0d77f544de",
+      "purpose": "Expose Grim-family checkpoints directly from a playable set.",
+      "invariants": [
+        "Use the original pool, renderer, audio and Lua serialization.",
+        "Keep native slot filenames and provide the normal description section without invoking save menu Lua.",
+        "Service scoped controls outside Lua callbacks and renderer operations."
+      ],
+      "verification": [
+        "Move Guybrush to a different position or camera setup in Escape from Monkey Island and verify the native checkpoint restores it."
+      ],
+      "retire_when": "Upstream exposes equivalent native save and load for a playable Grim-family set."
+    },
+    {
+      "path": "patches/scummvm/31-agent-sword25-persistence.patch",
+      "status": "active",
+      "sha256": "1029b018d42b0e1523034403f9d07a76bf978a3e96ba3b7d2bb2f12af11fe426",
+      "purpose": "Expose Broken Sword 2.5 native checkpoints at the original Lua frame boundary.",
+      "invariants": [
+        "Keep the existing persistence format and never unpersist from a coroutine.",
+        "Queue loads before the original persistence dispatch to preserve its post-load handlers.",
+        "Use zero-based native slot IDs and reserve the startup slot."
+      ],
+      "verification": [
+        "Reach a controllable room in Broken Sword 2.5, save and change scene or position, then verify native restore."
+      ],
+      "retire_when": "Upstream exposes runtime persistence at the original Sword25 frame boundary."
+    },
+    {
+      "path": "patches/scummvm/30-agent-composer-restore-boundary.patch",
+      "status": "active",
+      "sha256": "07785b9e4ec46c09c05b63ece282e72f7b19f26bba76e0b890a4e1a7102a6bda",
+      "purpose": "Service Composer checkpoints outside sprite drawing and retain restore redraws.",
+      "invariants": [
+        "Restore after the renderer has cleared its previous dirty rectangles.",
+        "Preserve the native Composer save format."
+      ],
+      "verification": [
+        "Save in a playable Darby the Dragon page, change page or state, and verify a scoped load restores it."
+      ],
+      "retire_when": "Upstream services external checkpoint requests after a complete Composer update."
+    },
+    {
+      "path": "patches/scummvm/32-agent-sci16-event-boundary.patch",
+      "status": "active",
+      "sha256": "2890814ddcd1ad6922a74dd633cbf23e2bb6dc0855167d6c0051f21ecffaaed9",
+      "purpose": "Service scoped SCI16 checkpoints at the script event boundary.",
+      "invariants": [
+        "Keep the native title, VM stack and user-control restrictions.",
+        "Let the original delayed restore finish before holding a paused interpreter.",
+        "Keep the ordinary menu configuration and SCI32 behavior."
+      ],
+      "verification": [
+        "In the Space Quest III junk freighter, verify a save while player control is active and restore the earlier position after moving."
+      ],
+      "retire_when": "Upstream exposes a safe SCI16 runtime save and load boundary outside the renderer."
+    },
+    {
+      "path": "patches/scummvm/33-agent-scumm-native-save-completion.patch",
+      "status": "active",
+      "sha256": "b41a2bdbcc5dda868f084eb2ae2cd190ece3b6f6dc30f17946cbbc225a52d821",
+      "purpose": "Complete scoped SCUMM checkpoints through its version-specific native save and load handler.",
+      "invariants": [
+        "Use a completed VM update, preserve title-specific save scripts, and report the actual serialization result.",
+        "Leave the stock queued operations and dialogs for ordinary launches."
+      ],
+      "verification": [
+        "Save in a controllable Fate of Atlantis scene, move, and load. Repeat an overwrite and verify the newer state restores."
+      ],
+      "retire_when": "Upstream exposes synchronous save completion to external callers at a SCUMM frame boundary."
+    },
+    {
+      "path": "patches/scummvm/34-agent-pegasus-indexed-saves.patch",
+      "status": "active",
+      "sha256": "9d1aa3591555cb120c318c044e6d9f021f862e6a6dc226346e21f479dcb70f6c",
+      "purpose": "Map scoped checkpoint IDs to stable files in the native Pegasus Prime save format.",
+      "invariants": [
+        "Service checkpoints after shell input, notifications and drawing return.",
+        "Keep native list order and filename handling for the ordinary game UI."
+      ],
+      "verification": [
+        "Save from a playable room in the full game, turn or move, and restore the earlier view. Verify two nonconsecutive IDs."
+      ],
+      "retire_when": "Upstream exposes stable numbered checkpoints at a completed shell update."
+    },
+    {
+      "path": "patches/scummvm/35-defer-saga-adlib-warning.patch",
+      "status": "active",
+      "sha256": "8c6e7d93b7d7286b49acc3960c6ca5da54fe1638a611ec77a065aa0a7bc29baf",
+      "purpose": "Deliver the SAGA optional AdLib instruments notice through the opted-in browser host.",
+      "invariants": [
+        "Use the stock AdLib fallback and retain the modal for ordinary launchers."
+      ],
+      "verification": [
+        "Start Inherit the Earth without INSTR.AD and INSTR.OPL under the opted-in browser host. Confirm the game reaches an interactive scene."
+      ],
+      "retire_when": "Upstream delivers optional MIDI fallback notices without blocking browser startup."
+    },
+    {
+      "path": "patches/scummvm/36-agent-kyra-main-loop-checkpoints.patch",
+      "status": "active",
+      "sha256": "5f8a48a26308d7c76b9c1aff5369bd561f3b746d671b562435f5a501ee0aedfb",
+      "purpose": "Service Kyrandia checkpoints during the original input routine’s save window.",
+      "invariants": [
+        "Keep the engine’s native save restrictions and serializer."
+      ],
+      "verification": [
+        "Save at Brandon’s home, walk to a new position, and load the original position."
+      ],
+      "retire_when": "Upstream exposes a safe manual save boundary for browser callers."
+    },
+    {
+      "path": "patches/scummvm/37-agent-gnap-runtime-saves.patch",
+      "status": "active",
+      "sha256": "7e9a359b613a46fc0692908336d4a91f6834c3924cb469dcfb576d6f464458ca",
+      "purpose": "Expose Gnap’s native in-game save and restore at a completed scene update.",
+      "invariants": [
+        "Preserve native checkpoint files and the normal scene-reconstruction path.",
+        "Reject external checkpoints while the scene is leaving or an in-game menu is open."
+      ],
+      "verification": [
+        "Save and load from a playable Gnap scene after changing scenes or a persisted flag."
+      ],
+      "retire_when": "Upstream exposes its native scene checkpoint flow to external callers."
+    },
+    {
+      "path": "patches/scummvm/38-agent-made-native-script-restore.patch",
+      "status": "active",
+      "sha256": "fc7da2d46f0fa90936b7bb6391d59c7b34cf9f80e58a8608603a786f0c26e931",
+      "purpose": "Expose Return to Zork’s native database save and script-driven room restore through MCP.",
+      "invariants": [
+        "Recognize the supported CD script layout before advertising runtime saves.",
+        "Use the original save format and room-entry script from a main interpreter input boundary."
+      ],
+      "verification": [
+        "Save at the Valley of Vultures, travel to the lighthouse, and verify a scoped load returns to the valley."
+      ],
+      "retire_when": "Upstream exposes native MADE runtime saving and its script-level restore callback."
+    },
+    {
+      "path": "patches/scummvm/39-agent-woodruff-script-checkpoints.patch",
+      "status": "active",
+      "sha256": "800f0c718ded55d1e8b53c6c153315559192ce1f6683421b6db460914fdbab5f",
+      "purpose": "Expose Woodruff’s original save and restore callbacks from playable Gob scenes.",
+      "invariants": [
+        "Match the native menu script before enabling checkpoints.",
+        "Keep native slot files and the scene data and reconstruction used by the original menu."
+      ],
+      "verification": [
+        "Save Woodruff in the first playable street, walk or change a scene, and restore the previous gameplay state."
+      ],
+      "retire_when": "Upstream exposes Woodruff’s script callbacks as native runtime checkpoints."
+    },
+    {
+      "path": "patches/scummvm/40-preserve-nippon-location-keys.patch",
+      "status": "active",
+      "sha256": "18a114017c780b70b2c33f417cf20a1b4450a60c993dcc7731d71724cfc6b61c",
+      "purpose": "Keep Nippon Safes visited-room keys intact so a prison restore does not replay its first-visit prompt.",
+      "invariants": [
+        "Keep the original save layout and migrate the legacy estcarcer key while reading it.",
+        "Preserve the first-visit prompt in new games and leave The Big Red Adventure's location keys unchanged."
+      ],
+      "verification": [
+        "At Tyoko Prison, save, walk away and load while paused. The load must return without a click and restore the original position.",
+        "Load a save with the old truncated prison key and verify the same behavior."
+      ],
+      "retire_when": "Upstream stores full Nippon location keys and reads existing truncated prison keys."
+    }
+  ]
+}

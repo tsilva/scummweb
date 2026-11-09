@@ -1,0 +1,95 @@
+diff --git a/backends/saves/default/default-saves.cpp b/backends/saves/default/default-saves.cpp
+--- a/backends/saves/default/default-saves.cpp
++++ b/backends/saves/default/default-saves.cpp
+@@ -19,6 +19,10 @@
+  *
+  */
+ 
++#ifdef __EMSCRIPTEN__
++#include <emscripten.h>
++#endif
++
+ #include "common/scummsys.h"
+ 
+ #ifdef USE_CLOUD
+@@ -40,6 +44,36 @@
+ 
+ #include <errno.h>	// for removeSavefile()
+ 
++#ifdef __EMSCRIPTEN__
++extern "C" void scummweb_refresh_saves();
++
++static void scummwebFinishSave(const Common::String &name, bool success) {
++	const bool refresh = EM_ASM_INT({
++		return globalThis.__scummwebEndSaveWrite ? globalThis.__scummwebEndSaveWrite(UTF8ToString($0), !!$1) : 0;
++	}, name.c_str(), success);
++	if (refresh)
++		scummweb_refresh_saves();
++}
++
++// Covers original engine dialogs and autosaves, including engines that delete
++// their stream without finalize(). Report only after compressed output AND the
++// underlying BrowserFS descriptor have closed, never from inside FS.close.
++class ScummwebSaveFile : public Common::OutSaveFile {
++	Common::String _name;
++public:
++	ScummwebSaveFile(Common::WriteStream *stream, const Common::String &name)
++		: Common::OutSaveFile(stream), _name(name) {}
++	~ScummwebSaveFile() override {
++		bool success = !_wrapped->err();
++		_wrapped->finalize();
++		success = success && !_wrapped->err();
++		delete _wrapped;
++		_wrapped = nullptr;
++		scummwebFinishSave(_name, success);
++	}
++};
++#endif
++
+ #ifdef USE_CLOUD
+ const char *const DefaultSaveFileManager::TIMESTAMPS_FILENAME = "timestamps";
+ #endif
+@@ -163,11 +197,26 @@
+ 		fileNode = file->_value;
+ 	}
+ 
++#ifdef __EMSCRIPTEN__
++	// Invalidating cached progress must succeed before an overwrite can start.
++	if (!EM_ASM_INT({ return globalThis.__scummwebBeginSaveWrite ? globalThis.__scummwebBeginSaveWrite(UTF8ToString($0)) : 1; }, filename.c_str())) {
++		setError(Common::kWritingFailed, "Could not prepare browser save metadata");
++		return nullptr;
++	}
++#endif
+ 	// Open the file for saving.
+ 	Common::SeekableWriteStream *const sf = fileNode.createWriteStream(false);
+-	if (!sf)
+-		return nullptr;
++	if (!sf) {
++#ifdef __EMSCRIPTEN__
++		scummwebFinishSave(filename, false);
++#endif
++		return nullptr;
++	}
++#ifdef __EMSCRIPTEN__
++	Common::OutSaveFile *const result = new ScummwebSaveFile(compress ? Common::wrapCompressedWriteStream(sf) : sf, filename);
++#else
+ 	Common::OutSaveFile *const result = new Common::OutSaveFile(compress ? Common::wrapCompressedWriteStream(sf) : sf);
++#endif
+ 
+ 	// Add file to cache now that it exists.
+ 	_saveFileCache[filename] = Common::FSNode(fileNode.getPath());
+@@ -202,8 +251,13 @@
+ 		file = _saveFileCache.end();
+ 
+ 		Common::ErrorCode result = removeFile(fileNode);
+-		if (result == Common::kNoError)
++		if (result == Common::kNoError) {
++#ifdef __EMSCRIPTEN__
++			if (EM_ASM_INT({ return globalThis.__scummwebSaveDeleted ? globalThis.__scummwebSaveDeleted(UTF8ToString($0)) : 0; }, filename.c_str()))
++				scummweb_refresh_saves();
++#endif
+ 			return true;
++		}
+ 		Common::Error error(result);
+ 		setError(error, "Failed to remove savefile '" + fileNode.getName() + "': " + error.getDesc());
+ 		return false;

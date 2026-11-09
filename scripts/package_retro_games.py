@@ -72,20 +72,14 @@ class Edition:
     def expanded_bytes(self):
         return sum(member.size for member in self.members)
 
-    @property
-    def compression(self):
-        # Large local archives must support seeking directly to a stored member.
-        return zipfile.ZIP_STORED if self.zip_bound(zipfile.ZIP_DEFLATED) > 128 * MIB else zipfile.ZIP_DEFLATED
-
-    def zip_bound(self, method):
+    def zip_bound(self):
         # Local and central headers, ZIP64 extras, and the end-of-directory records.
         size = 128
         for member in self.members:
             n = member.size
             size += n + 128 + 2 * len(member.name.encode("utf-8"))
-            if method == zipfile.ZIP_DEFLATED:
-                # zlib's compressBound for the default window and memory settings.
-                size += (n >> 12) + (n >> 14) + (n >> 25) + 13
+            # zlib's compressBound for the default window and memory settings.
+            size += (n >> 12) + (n >> 14) + (n >> 25) + 13
         return size
 
 
@@ -292,7 +286,6 @@ def collection(source):
 
 def output_entry(edition, output, selected):
     destination = output / edition.archive_name
-    method = edition.compression
     exists = os.path.lexists(destination)
     return {
         "sourceName": edition.source_name,
@@ -301,8 +294,8 @@ def output_entry(edition, output, selected):
         "target": edition.target,
         "entries": len(edition.members),
         "expandedBytes": edition.expanded_bytes,
-        "archiveBoundBytes": edition.zip_bound(method),
-        "method": "stored" if method == zipfile.ZIP_STORED else "deflate",
+        "archiveBoundBytes": edition.zip_bound(),
+        "method": "deflate",
         "selected": selected,
         "status": ("present" if exists else "planned") if selected else "unselected",
     }
@@ -328,7 +321,6 @@ def source_checksum(member, output=None):
 def verify_archive(path, edition, expected_checksums=None):
     if path.is_symlink() or not path.is_file():
         raise ValueError(f"Expected a regular ZIP file at {path}.")
-    needs_stored = path.stat().st_size > 128 * MIB
     with zipfile.ZipFile(path) as archive:
         contents = {info.filename: info for info in archive.infolist()}
         if len(archive.infolist()) != len(edition.members) or len(contents) != len(edition.members):
@@ -337,8 +329,6 @@ def verify_archive(path, edition, expected_checksums=None):
             info = contents.get(member.name)
             if info is None or info.file_size != member.size:
                 raise ValueError(f"ZIP member is missing or has a different size: {member.name}")
-            if needs_stored and info.compress_type != zipfile.ZIP_STORED:
-                raise ValueError(f"Large ZIP member must be stored for direct access: {member.name}")
             expected = (
                 expected_checksums[member.name]
                 if expected_checksums is not None
@@ -390,13 +380,12 @@ def write_archive(path, edition):
     descriptor, filename = tempfile.mkstemp(prefix=".scummweb-", suffix=".tmp", dir=path.parent)
     os.close(descriptor)
     stage = Path(filename)
-    method = edition.compression
     try:
         checksums = {}
-        with zipfile.ZipFile(stage, "w", compression=method, allowZip64=True) as archive:
+        with zipfile.ZipFile(stage, "w", compression=zipfile.ZIP_DEFLATED, allowZip64=True) as archive:
             for member in edition.members:
                 info = zipfile.ZipInfo.from_file(member.path, member.name, strict_timestamps=False)
-                info.compress_type = method
+                info.compress_type = zipfile.ZIP_DEFLATED
                 info.file_size = member.size
                 with archive.open(info, "w") as entry:
                     checksums[member.name] = source_checksum(member, entry)

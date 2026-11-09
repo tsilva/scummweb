@@ -15,28 +15,31 @@ export async function renderSocialCard(card, artwork) {
       overflow: "hidden", background: "#060f0c", color: "#f5f3e8", fontFamily: "Arial, sans-serif",
     } },
     background ? h("img", { alt: "", width: 1200, height: 630, src: background, style: {
-      position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.4,
+      position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.5,
     } }) : null,
     h("div", { style: { position: "absolute", inset: 0,
       background: "linear-gradient(90deg, rgba(4, 8, 7, 0.96) 0%, rgba(4, 8, 7, 0.9) 46%, rgba(4, 8, 7, 0.58) 100%)",
     } }),
     h("div", { style: { display: "flex", flexDirection: "column", justifyContent: "space-between",
       position: "relative", width: "100%", padding: "54px 62px",
+      textShadow: "0 2px 3px rgba(0,0,0,1), 0 0 8px rgba(0,0,0,0.95)",
     } },
     h("div", { style: { display: "flex", alignItems: "center", gap: "16px", fontSize: "28px",
       fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase",
     } }, h("span", { style: { color: "#9dd7a4" } }, "ScummWEB"),
-    h("span", { style: { opacity: 0.78 } }, "Play in your browser")),
+    h("span", { style: { opacity: 0.95 } }, "Play in your browser")),
     h("div", { style: { display: "flex", flexDirection: "column", gap: "22px", width: "72%" } },
     h("div", { style: { display: "flex", gap: "14px", alignItems: "center", flexWrap: "wrap",
-      fontSize: "26px", color: "#b7c9b6",
-    } }, h("span", null, card.eyebrow), h("span", null, card.year), h("span", null, card.badge)),
+      fontSize: "26px", color: "#e1eade",
+    } }, h("span", null, card.eyebrow), h("span", null, card.year), card.badge ? h("span", null, card.badge) : null),
     h("div", { style: { display: "flex", flexDirection: "column", gap: "18px" } },
     h("div", { style: { fontSize: "68px", lineHeight: 1.02, fontWeight: 800 } }, card.title),
-    h("div", { style: { fontSize: "29px", lineHeight: 1.35, color: "#e3e7da" } }, card.summary))),
+    h("div", { style: { fontSize: "29px", lineHeight: 1.35, color: "#f5f6ef" } }, card.summary))),
     h("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between",
-      fontSize: "24px", color: "#c8d8c7",
+      fontSize: "24px", color: "#e1eade",
     } }, h("span", null, card.genre), h("span", null, card.studio)))), size,
   );
-  return Buffer.from(await response.arrayBuffer());
+  return sharp(Buffer.from(await response.arrayBuffer()))
+    .jpeg({ quality: 88, chromaSubsampling: "4:4:4", mozjpeg: true })
+    .toBuffer();
 }

@@ -6,7 +6,7 @@ import test from "node:test";
 import { renderToStaticMarkup } from "react-dom/server";
 import swc from "next/dist/build/swc/index.js";
 
-const componentUrl = new URL("../app/home-shell/versioned-game-details.js", import.meta.url);
+const componentUrl = new URL("../app/home-shell/source-launch-actions.js", import.meta.url);
 await swc.loadBindings();
 const { code } = await swc.transform(await readFile(componentUrl, "utf8"), {
   filename: componentUrl.pathname, swcrc: false, configFile: false,
@@ -19,12 +19,15 @@ const compiled = { exports: {} };
 runInNewContext(code, {
   module: compiled, exports: compiled.exports,
   require(name) {
-    if (name === "react") return { useState: () => [savedVersion, () => {}], useEffect: () => {} };
+    if (name === "../use-browser-save") return () => savedVersion === null ? null : 0;
+    if (name === "../game-player/useLaunchFeedback") return () => ({ show() {}, dismiss() {}, overlay: null });
+    if (name === "../game-player/immersive-mode.mjs") return { beginGameLaunch: () => false };
+    if (name === "../browser-saves.mjs") return { cancelBrowserSaveQueries() {} };
     if (name === "react/jsx-runtime" || name === "lucide-react") return nativeRequire(name);
     return {};
   },
 });
-const { SourceLaunchActions } = compiled.exports;
+const SourceLaunchActions = compiled.exports.default;
 
 test("access approval replaces both Play and Continue until granted", () => {
   const clicks = [];

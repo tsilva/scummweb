@@ -1,0 +1,191 @@
+diff --git a/engines/engine.cpp b/engines/engine.cpp
+--- a/engines/engine.cpp
++++ b/engines/engine.cpp
+@@ -18,6 +18,8 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  *
+  */
++
++#include "engines/scummweb-startup.h"
+ 
+ #include "engines/engine.h"
+ #include "engines/dialogs.h"
+@@ -289,6 +291,13 @@
+ #include "logo_data.h"
+ 
+ void splashScreen() {
++#ifdef __EMSCRIPTEN__
++	if (!ConfMan.getActiveDomainName().empty()) {
++		// The browser's native first-frame signal requires startup splash handling to finish.
++		splash = true;
++		return;
++	}
++#endif
+ 	Common::MemoryReadStream stream(logo_data, ARRAYSIZE(logo_data));
+ 
+ 	Image::BitmapDecoder bitmap;
+@@ -861,17 +870,21 @@
+ 
+ bool Engine::warnUserAboutUnsupportedGame(Common::String msg) {
+ 	if (ConfMan.getBool("enable_unsupported_game_warning")) {
++		const Common::U32String message = !msg.empty() ? _("WARNING: ") + Common::U32String(msg) + _(" Shall we still run the game?") :
++				 _("WARNING: The game you are about to start is"
++			" not yet fully supported by ScummVM. As such, it is likely to be"
++			" unstable, and any saved game you make might not work in future"
++			" versions of ScummVM.");
++		if (ScummWebStartup::deferCompatibilityWarning(message))
++			return true;
++
+ 		Common::TextToSpeechManager *ttsMan = g_system->getTextToSpeechManager();
+ 		if (ttsMan != nullptr) {
+ 			ttsMan->pushState();
+ 			g_gui.initTextToSpeech();
+ 		}
+ 
+-		GUI::MessageDialog alert(!msg.empty() ? _("WARNING: ") + Common::U32String(msg) + _(" Shall we still run the game?") :
+-				 _("WARNING: The game you are about to start is"
+-			" not yet fully supported by ScummVM. As such, it is likely to be"
+-			" unstable, and any saved game you make might not work in future"
+-			" versions of ScummVM."), _("Start anyway"), _("Cancel"));
++		GUI::MessageDialog alert(message, _("Start anyway"), _("Cancel"));
+ 		int status = alert.runModal();
+ 
+ 		if (ttsMan != nullptr)
+@@ -884,18 +897,21 @@
+ 
+ bool Engine::warnUserAboutUnsupportedAddOn(Common::String addOnName) {
+ 	if (ConfMan.getBool("enable_unsupported_game_warning")) {
++		Common::U32String messageFormat = _("WARNING: the game you are about to start contains the add-on \"%s\""
++			" which is not yet fully supported by ScummVM. As such, it is likely to be unstable, and any saved"
++			" game you make might not work in future versions of ScummVM.");
++
++		Common::U32String message = Common::U32String::format(messageFormat, addOnName.c_str());
++
++		if (ScummWebStartup::deferCompatibilityWarning(message))
++			return true;
++
+ 		Common::TextToSpeechManager *ttsMan = g_system->getTextToSpeechManager();
+ 		if (ttsMan != nullptr) {
+ 			ttsMan->pushState();
+ 			g_gui.initTextToSpeech();
+ 		}
+ 
+-		Common::U32String messageFormat = _("WARNING: the game you are about to start contains the add-on \"%s\""
+-			" which is not yet fully supported by ScummVM. As such, it is likely to be unstable, and any saved"
+-			" game you make might not work in future versions of ScummVM.");
+-
+-		Common::U32String message = Common::U32String::format(messageFormat, addOnName.c_str());
+-
+ 		GUI::MessageDialog alert(message, _("Start anyway"), _("Cancel"));
+ 		int status = alert.runModal();
+ 
+@@ -910,14 +926,19 @@
+ 
+ void Engine::warnUserAboutTestingMode() {
+ 	if (ConfMan.getBool("enable_unsupported_game_warning")) {
++		const Common::U32String message = _("WARNING: The game you are about to start is newly supported and is in testing mode.\n"
++						"If you encounter any bugs or oddities, please report them to our bugtracker.");
++
++		if (ScummWebStartup::deferCompatibilityWarning(message))
++			return;
++
+ 		Common::TextToSpeechManager *ttsMan = g_system->getTextToSpeechManager();
+ 		if (ttsMan != nullptr) {
+ 			ttsMan->pushState();
+ 			g_gui.initTextToSpeech();
+ 		}
+ 
+-		GUI::MessageDialog alert(_("WARNING: The game you are about to start is newly supported and is in testing mode.\n"
+-						"If you encounter any bugs or oddities, please report them to our bugtracker."), _("OK"));
++		GUI::MessageDialog alert(message, _("OK"));
+ 		alert.runModal();
+ 
+ 		if (ttsMan != nullptr)
+diff --git a/engines/scumm/metaengine.cpp b/engines/scumm/metaengine.cpp
+--- a/engines/scumm/metaengine.cpp
++++ b/engines/scumm/metaengine.cpp
+@@ -18,6 +18,8 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  *
+  */
++
++#include "engines/scummweb-startup.h"
+ 
+ #include "engines/obsolete.h"
+ 
+@@ -421,9 +423,10 @@
+ 			!strcmp(res.game.gameid, "baseball2001") ||
+ 			!strcmp(res.game.gameid, "basketball") ||
+ 			!strcmp(res.game.gameid, "football")) {
+-			GUI::MessageDialog dialog(_("Warning: this re-release version contains patched game scripts,\n"
+-										"and therefore it might crash or not work properly for the time being."));
+-			dialog.runModal();
++			const Common::U32String message = _("Warning: this re-release version contains patched game scripts,\n"
++				"and therefore it might crash or not work properly for the time being.");
++			if (!ScummWebStartup::deferCompatibilityWarning(message))
++				GUI::MessageDialog(message).runModal();
+ 		}
+ 	}
+ 
+diff --git a/engines/wintermute/wintermute.cpp b/engines/wintermute/wintermute.cpp
+--- a/engines/wintermute/wintermute.cpp
++++ b/engines/wintermute/wintermute.cpp
+@@ -32,6 +32,7 @@
+ #include "common/tokenizer.h"
+ #include "common/translation.h"
+ 
++#include "engines/scummweb-startup.h"
+ #include "graphics/framelimiter.h"
+ 
+ #include "engines/wintermute/ad/ad_game.h"
+@@ -174,10 +175,12 @@
+ 	#ifndef ENABLE_WME3D
+ 	// check if game require 3D capabilities
+ 	if (instance.getFlags() & GF_3D) {
+-		GUI::MessageDialog dialog(_("This game requires 3D capabilities, which is not compiled in. As such, it"
+-			" is likely to be unplayable totally or partially."), _("Start anyway"), _("Cancel"));
+-		if (dialog.runModal() != GUI::kMessageOK) {
+-			return 1;
++		const Common::U32String message = _("This game requires 3D capabilities, which is not compiled in. As such, it"
++			" is likely to be unplayable totally or partially.");
++		if (!ScummWebStartup::deferCompatibilityWarning(message)) {
++			GUI::MessageDialog dialog(message, _("Start anyway"), _("Cancel"));
++			if (dialog.runModal() != GUI::kMessageOK)
++				return 1;
+ 		}
+ 	}
+ 	#endif
+diff --git a/engines/scummweb-startup.h b/engines/scummweb-startup.h
+new file mode 100644
+--- /dev/null
++++ b/engines/scummweb-startup.h
+@@ -0,0 +1,29 @@
++#ifndef ENGINES_SCUMMWEB_STARTUP_H
++#define ENGINES_SCUMMWEB_STARTUP_H
++
++#ifdef __EMSCRIPTEN__
++#include <emscripten/emscripten.h>
++#endif
++
++#include "common/str.h"
++#include "common/ustr.h"
++
++namespace ScummWebStartup {
++
++inline bool deferCompatibilityWarning(const Common::U32String &message) {
++#ifdef __EMSCRIPTEN__
++	const Common::String text = message.encode(Common::kUtf8);
++	return EM_ASM_INT({
++		if (typeof globalThis.__scummwebPostCompatibilityWarning !== 'function')
++			return 0;
++		globalThis.__scummwebPostCompatibilityWarning(UTF8ToString($0));
++		return 1;
++	}, text.c_str());
++#else
++	return false;
++#endif
++}
++
++} // End of namespace ScummWebStartup
++
++#endif

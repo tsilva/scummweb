@@ -14,8 +14,44 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "God of Thunder",
+    files: [["gotres.dat", 739710, 34139293]],
+  },
+  {
+    title: "Hi-Res Adventure #1: Mystery House",
+    files: [["mysthous.dsk", 143360, 1258297292]],
+  },
+  {
+    title: "Sołtys",
+    files: [["vol.cat", 50176, 623096146], ["vol.dat", 8430868, 1606659223]],
+  },
+  {
+    title: "Sfinx",
+    files: [["vol.cat", 129024, 950468179], ["vol.dat", 34182773, 4051689322]],
+  },
+  {
+    title: "Drascula: The Vampire Strikes Back",
+    files: [["packet.001", 32847563, 1048178371]],
+  },
+  {
+    title: "Lure of the Temptress",
+    files: [["disk1.vga", 618944, 893859565], ["disk2.vga", 659616, 4000140536]],
+  },
+  {
+    title: "Flight of the Amazon Queen",
+    files: [["queen.1", 190787021, 501481959]],
+  },
+  {
+    title: "Nippon Safes, Inc.",
+    files: [["disk0", 208437, 4075295742], ["disk1", 901120, 3732423185]],
+  },
+  {
     title: "The Secret of Monkey Island (Demo)", target: "monkey-demo", engineId: "scumm", gameId: "monkey",
     files: [["000.lfl", 7607, 0x719585d5], ["disk01.lec", 266281, 0x2afb1b41]],
+  },
+  {
+    title: "The Curse of Monkey Island (Demo)", target: "comi-demo", engineId: "scumm", gameId: "comi",
+    files: [["comi.la0", 18041, 0x2f43bb49], ["comi.la1", 10579949, 0x1ea49b19]],
   },
   {
     title: "Indiana Jones and the Last Crusade",

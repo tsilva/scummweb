@@ -1,5 +1,8 @@
 const { withSentryConfig } = require("@sentry/nextjs");
+const artworkStorage = require("./data/artwork-storage.json");
 const socialCards = require("./data/social-cards.json");
+const runtimeAssets = require("./scummvm-shell/runtime-assets.json");
+const assetConfig = require("./lib/scummvm-shell-assets.js");
 
 function getScummvmAssetVersion() {
   const rawVersion =
@@ -7,12 +10,16 @@ function getScummvmAssetVersion() {
     process.env.VERCEL_DEPLOYMENT_ID ||
     process.env.VERCEL_URL ||
     process.env.VERCEL_GIT_COMMIT_SHA ||
-    "dev";
+    runtimeAssets.version;
 
   return rawVersion.replace(/[^a-zA-Z0-9._-]+/g, "-");
 }
 
 function getDistDir() {
+  if (process.env.SCUMMWEB_DIST_DIR) {
+    return process.env.SCUMMWEB_DIST_DIR;
+  }
+
   if (process.env.NODE_ENV !== "development") {
     return ".next";
   }
@@ -38,11 +45,34 @@ function getSentryEnvironment() {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   distDir: getDistDir(),
+  turbopack: {
+    rules: {
+      "**/lib/artwork-data.mjs": {
+        condition: "browser",
+        loaders: [{ loader: require.resolve("./scripts/artwork-browser-loader.js"), options: { defer: true } }],
+        as: "*.js",
+      },
+      "**/lib/artwork-full-data.mjs": {
+        condition: "browser",
+        loaders: [require.resolve("./scripts/artwork-browser-loader.js")],
+        as: "*.js",
+      },
+    },
+  },
+  redirects() {
+    return [
+      {
+        source: "/games/queen",
+        destination: "/flight-of-the-amazon-queen",
+        permanent: true,
+      },
+    ];
+  },
   rewrites() {
     return [
       {
         source: "/opengraph-image",
-        destination: "/brand/web-seo/og-image-1200x630.png",
+        destination: "/brand/web-seo/og-image-1200x630.jpg",
       },
       ...Object.entries(socialCards.cards).flatMap(([slug, card]) => [
         { source: `/${slug}/social-card.png`, destination: `/social-cards/${card.file}` },
@@ -51,22 +81,45 @@ const nextConfig = {
     ];
   },
   headers() {
+    const appVersion = getScummvmAssetVersion().replaceAll(".", "\\.");
+    const sourceOfferHeader = {
+      key: "Link",
+      value: `<${assetConfig.sourceOfferPage}>; rel="describedby", </doc/COPYING>; rel="license"`,
+    };
     return [
+      ...(artworkStorage.published ? [{
+        source: "/",
+        headers: [{ key: "Link", value: `<${artworkStorage.origin}>; rel=preconnect` }],
+      }] : []),
+      ...assetConfig.versionedAssetMatchers.filter((source) =>
+        !runtimeAssets.files[source] && source !== "/data/:path*" && source !== "/scummvm.html"
+      ).map((source) => ({
+        source,
+        has: [{ type: "query", key: "v", value: appVersion }],
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      })),
+      ...Object.entries(runtimeAssets.files).filter(([source]) => source !== "/scummvm.html").map(([source, version]) => ({
+        source,
+        has: [{ type: "query", key: "v", value: version }],
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      })),
       {
         source: "/social-cards/:file",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
       {
         source: "/scummvm.html",
-        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }, sourceOfferHeader],
       },
+      ...["/scummvm.js", "/scummvm.wasm"].map((source) => ({ source, headers: [sourceOfferHeader] })),
       {
         source: "/data/plugins/:engine.so",
-        headers: [{ key: "Content-Type", value: "application/wasm" }],
+        headers: [{ key: "Content-Type", value: "application/wasm" }, sourceOfferHeader],
       },
     ];
   },
   env: {
+    NEXT_PUBLIC_VERCEL_ANALYTICS_ENABLED: process.env.VERCEL === "1" ? "true" : "false",
     NEXT_PUBLIC_SENTRY_ENABLED_DEFAULT: getSentryEnabledDefault(),
     NEXT_PUBLIC_SENTRY_ENVIRONMENT: getSentryEnvironment(),
     NEXT_PUBLIC_SCUMMVM_ASSET_VERSION: getScummvmAssetVersion(),

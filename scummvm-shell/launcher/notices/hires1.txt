@@ -1,0 +1,6 @@
+Hi-Res Adventure #1: Mystery House
+Original Apple II game by On-Line Systems (1980).
+Sierra On-Line released Mystery House into the public domain in 1987.
+The original disk image is preserved unchanged.
+Release history: https://www.scummvm.org/en/news/20160915/
+Download: https://downloads.scummvm.org/frs/extras/Mystery%20House/MYSTHOUS.zip

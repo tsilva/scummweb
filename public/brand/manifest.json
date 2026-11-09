@@ -62,8 +62,14 @@
       "height": 512
     },
     {
+      "key": "android-chrome-maskable-512",
+      "path": "web-seo/android-chrome-maskable-512.png",
+      "width": 512,
+      "height": 512
+    },
+    {
       "key": "og-image",
-      "path": "web-seo/og-image-1200x630.png",
+      "path": "web-seo/og-image-1200x630.jpg",
       "width": 1200,
       "height": 630
     },
@@ -76,8 +82,8 @@
     {
       "key": "favicon-svg",
       "path": "web-seo/favicon/favicon.svg",
-      "width": 102,
-      "height": 102
+      "width": 64,
+      "height": 64
     }
   ]
 }

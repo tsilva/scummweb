@@ -5,7 +5,7 @@ import {
   getScummvmVersionLabel,
   getSourceInfoDate,
 } from "../lib/catalog.mjs";
-import { getGameLibrary, getSourceInfo } from "./game-library";
+import { getGameLibrary, getRecognizedGameLibrary, getSourceInfo } from "./game-library";
 import { getGamePresentation } from "./game-presentation";
 import {
   buildGameMetadata,
@@ -20,20 +20,20 @@ function pickFeaturedGame(catalog) {
   return catalog[Math.floor(Math.random() * catalog.length)];
 }
 
-export function getGameStaticParams() {
-  const { games } = getGameLibrary();
+export function getGameStaticParams({ playableOnly = false } = {}) {
+  const games = playableOnly ? getGameLibrary().games : getRecognizedGameLibrary();
   return buildStaticParams(games);
 }
 
 export function getPresentedGameBySlug(gameSlug) {
-  const { games } = getGameLibrary();
+  const games = getRecognizedGameLibrary();
   const game = findGameBySlug(games, gameSlug);
 
   if (!game) {
     return null;
   }
 
-  return getGamePresentation(game);
+  return game;
 }
 
 export function getPresentedGameByTarget(target) {
@@ -62,7 +62,7 @@ export function getHomeShellData(options = {}) {
 
   const catalog = games.map((game) => getGamePresentation(game));
   const featuredGame = featuredGameSlug
-    ? catalog.find((game) => game.slug === featuredGameSlug) || null
+    ? getPresentedGameBySlug(featuredGameSlug)
     : featuredGameTarget
       ? catalog.find((game) => game.target === featuredGameTarget) || null
     : randomize

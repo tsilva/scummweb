@@ -2,40 +2,33 @@
 
 import { useLayoutEffect, useRef } from "react";
 
-export default function HeroTitle({ title, children }) {
+import { fitHeroTitle } from "./hero-title-fit.mjs";
+
+export default function HeroTitle({ title, children, fit = true }) {
   const headingRef = useRef(null);
-  const textRef = useRef(null);
 
   useLayoutEffect(() => {
     const heading = headingRef.current;
-    const text = textRef.current;
+    if (!fit) {
+      heading?.firstElementChild?.style.removeProperty("font-size");
+      if (heading) delete heading.__scummwebTitleFit;
+      return;
+    }
     let active = true;
 
-    function fit() {
+    function fitHeading() {
       if (!active) return;
-      const maximum = parseFloat(getComputedStyle(heading).fontSize);
-      let low = 1;
-      let high = maximum;
-      text.style.fontSize = `${maximum}px`;
-      if (text.scrollHeight <= heading.clientHeight && text.scrollWidth <= heading.clientWidth) return;
-      for (let step = 0; step < 12; step++) {
-        const size = (low + high) / 2;
-        text.style.fontSize = `${size}px`;
-        if (text.scrollHeight <= heading.clientHeight && text.scrollWidth <= heading.clientWidth) low = size;
-        else high = size;
-      }
-      text.style.fontSize = `${low}px`;
+      fitHeroTitle(heading);
     }
 
-    fit();
-    const observer = new ResizeObserver(fit);
+    fitHeading();
+    const observer = new ResizeObserver(fitHeading);
     observer.observe(heading);
-    void document.fonts.ready.then(fit);
     return () => {
       active = false;
       observer.disconnect();
     };
-  }, [title]);
+  }, [title, fit]);
 
-  return <h1 ref={headingRef}><span className="hero-title-text" ref={textRef}>{children}</span></h1>;
+  return <h1 ref={headingRef}><span className="hero-title-text" suppressHydrationWarning>{children}</span></h1>;
 }

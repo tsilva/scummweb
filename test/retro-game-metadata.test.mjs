@@ -3,14 +3,95 @@ import fs from "node:fs";
 import { createHash } from "node:crypto";
 import test from "node:test";
 import { getImportedGamePresentation } from "../app/game-presentation.js";
+import { getRecognizedGames } from "../app/recognized-games.mjs";
+import { getSourceGamePresentation } from "../app/game-play-source.mjs";
+import { getVersionedSiteAssetPath } from "../app/asset-paths.js";
+import storage from "../data/artwork-storage.json" with { type: "json" };
 
 const artwork = JSON.parse(fs.readFileSync(new URL("../app/retro-game-artwork.json", import.meta.url)));
 
-test("recognized galleries have three distinct managed images with explicit source gaps", () => {
-  const limited = new Map([["local:road", 1], ["sci:funseeker", 2]]);
+test("recognized imports retain their shared hero artwork and focal position", () => {
   for (const [id, game] of Object.entries(artwork)) {
-    assert.equal(game.screenshots.length, limited.get(id) || 3, id);
+    if (!game.heroImage) continue;
+    const imported = getImportedGamePresentation(`${game.aliases[0]}.zip`);
+    assert.equal(imported?.heroImage, getVersionedSiteAssetPath(game.heroImage), id);
+    assert.equal(imported.heroImagePosition, game.heroImagePosition, id);
+    assert.equal(imported.heroImageMobilePosition, game.heroImageMobilePosition, id);
+  }
+});
+
+test("previously imported DOS archives resolve to their game pages by stored ZIP name", () => {
+  const recognized = getRecognizedGames([]);
+  const cases = [
+    ["Donald Duck's Playground (Floppy DOS).zip", "agi:ddp", "Donald Duck's Playground"],
+    ["Inca II - Wiracocha (Floppy DOS).zip", "gob:inca2", "Inca II: Wiracocha"],
+    ["Sfinx v1.1 (DOS, English).zip", "cge2:sfinx", "Sfinx"],
+  ];
+  for (const [name, familyId, title] of cases) {
+    const game = getSourceGamePresentation({ name }, [], recognized);
+    assert.equal(game.familyId, familyId, name);
+    assert.equal(game.displayTitle, title, name);
+    assert.ok(game.href, name);
+  }
+
+  const sfinx = getImportedGamePresentation(cases[2][0]);
+  const officialSfinx = getImportedGamePresentation("sfinx-en-v1.1.zip");
+  for (const field of ["posterImage", "heroImage", "platform", "language", "edition"]) {
+    assert.ok(sfinx[field], field);
+    assert.equal(sfinx[field], officialSfinx[field], field);
+  }
+  assert.equal(getImportedGamePresentation("Inca (Floppy DOS).zip"), null);
+});
+
+test("remakes retain separate identities, labels and edition-matched artwork", () => {
+  const originals = { "sci:pq1sci": "agi:pq1", "sci:qfg1vga": "sci:qfg1", "sci:sq1sci": "agi:sq1" };
+  for (const [id, game] of Object.entries(artwork).filter(([, game]) => /remake/i.test(game.summary))) {
+    assert.equal(game.editionLabel, id === "sci:kq1sci" ? "SCI Remake" : "VGA Remake", id);
+    assert.equal(game.artworkFrom, undefined, id);
+    for (const source of game.sources.screenshots) {
+      assert.ok(source.url.includes(`/sci/${id.split(":")[1]}/`), `${id} borrows another game's capture`);
+    }
+    const original = artwork[originals[id]];
+    if (original) {
+      assert.notEqual(game.posterImage, original.posterImage, id);
+      assert.ok(game.screenshots.every((image) => !original.screenshots.includes(image)), id);
+    }
+    const imported = getImportedGamePresentation(`${game.aliases[0]}.zip`);
+    assert.equal(imported.familyId, id);
+    assert.equal(imported.displayTitle, game.title);
+    assert.equal(imported.editionLabel, game.editionLabel);
+  }
+});
+
+test("shared original and remake titles stay unidentified without an edition", () => {
+  for (const [originalId, remakeId] of [
+    ["agi:pq1", "sci:pq1sci"],
+    ["agi:sq1", "sci:sq1sci"],
+    ["sci:qfg1", "sci:qfg1vga"],
+  ]) {
+    const title = artwork[originalId].title;
+    assert.equal(getImportedGamePresentation(`${title}.zip`), null, title);
+    assert.equal(getImportedGamePresentation(`${title} (German).zip`), null, title);
+    for (const id of [originalId, remakeId]) {
+      for (const alias of artwork[id].aliases) {
+        assert.equal(getImportedGamePresentation(`${alias}.zip`)?.familyId, id, alias);
+      }
+    }
+  }
+  assert.equal(getImportedGamePresentation("The Dig.zip")?.familyId, "scumm:dig");
+});
+
+test("recognized galleries have three distinct managed images with source credits", () => {
+  for (const [id, game] of Object.entries(artwork)) {
+    assert.equal(game.screenshots.length, 3, id);
+    if (game.sources.screenshots) {
+      assert.equal(game.sources.screenshots.length, game.screenshots.length, id);
+    }
     const hashes = game.screenshots.map((path) => {
+      if (storage.published) {
+        assert.ok(storage.files[path], `${id} needs a published image mapping`);
+        return storage.files[path].sha256;
+      }
       const bytes = fs.readFileSync(new URL(`../scummvm-shell${path}`, import.meta.url));
       return createHash("sha256").update(bytes).digest("hex");
     });

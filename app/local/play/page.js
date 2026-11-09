@@ -1,4 +1,5 @@
 import LocalPlayFrame from "./local-play-frame";
+import { getGameLibrary } from "../../game-library";
 
 export const metadata = {
   title: "Play a game | ScummWEB",
@@ -8,7 +9,7 @@ export const metadata = {
 export default function LocalPlayPage() {
   return (
     <main className="game-route-page">
-      <LocalPlayFrame />
+      <LocalPlayFrame catalog={getGameLibrary().games} />
     </main>
   );
 }

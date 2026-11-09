@@ -130,7 +130,40 @@
 .compatibility-reference a { color: var(--accent-strong); text-decoration: underline; text-underline-offset: 0.2em; }
 .compatibility-panel > :not(.compatibility-results) { flex-shrink: 0; }
 
+.compatibility-page {
+  width: min(68rem, calc(100% - 2rem));
+  margin: 7rem auto 3rem;
+  border: 1px solid var(--ghost-border);
+  background: var(--surface-lowest);
+}
+
+.compatibility-page .compatibility-page-panel {
+  max-height: none;
+}
+
+.compatibility-page .compatibility-results {
+  max-height: none;
+  overflow: visible;
+}
+
+.compatibility-page .compatibility-heading h1 {
+  margin: 0;
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  letter-spacing: -0.04em;
+}
+
+.compatibility-game a {
+  color: var(--accent-strong);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.compatibility-game a:hover,
+.compatibility-game a:focus-visible { color: var(--ink); }
+
 @media (max-width: 600px) {
+  .compatibility-search input { font-size: 1rem; }
+  .compatibility-filters button { min-height: 2.75rem; }
   .compatibility-modal { width: calc(100% - 1rem); max-height: calc(100dvh - 1rem); }
   .compatibility-panel { padding: 1rem; max-height: calc(100dvh - 1rem - 2px); }
   .compatibility-results > ul > li { flex-direction: column; gap: 0.6rem; }

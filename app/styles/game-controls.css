@@ -1,0 +1,483 @@
+.game-route-controls {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.game-route-controls.is-idle:not(:focus-within) {
+  opacity: 0;
+}
+
+.game-route-controls.is-idle:not(:focus-within) .game-route-control-button {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-route-controls {
+    transition: none;
+  }
+}
+
+.game-route-control-group {
+  position: fixed;
+  top: max(1rem, env(safe-area-inset-top));
+  display: flex;
+  gap: 0.625rem;
+  pointer-events: none;
+}
+
+.game-route-control-group.is-left {
+  left: max(0.5rem, env(safe-area-inset-left));
+}
+
+.game-route-control-group.is-right {
+  right: max(0.5rem, env(safe-area-inset-right));
+}
+
+.game-route-control-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0;
+  touch-action: manipulation;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 0.45rem 1.4rem rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.game-route-control-button:active,
+.game-route-control-button:focus-visible {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #fff;
+  box-shadow: 0 0.7rem 1.8rem rgba(0, 0, 0, 0.26);
+  transform: translateY(-1px);
+}
+
+.game-route-control-button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.72);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .game-route-control-button:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #fff;
+    box-shadow: 0 0.7rem 1.8rem rgba(0, 0, 0, 0.26);
+    transform: translateY(-1px);
+  }
+}
+
+.game-route-control-button.is-exit svg {
+  transform: scaleX(-1);
+}
+
+.game-route-warning {
+  width: min(28rem, calc(100% - 2rem));
+  max-height: calc(100% - 2rem);
+  padding: 1.5rem;
+  border: 1px solid var(--ghost-border);
+  border-radius: 0.75rem;
+  background: var(--surface-lowest);
+  color: var(--ink);
+  box-shadow: 0 1.5rem 4rem #0008;
+}
+
+.game-route-warning::backdrop {
+  background: #000b;
+}
+
+.game-route-warning h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.game-route-warning p {
+  margin: 0.75rem 0 1.25rem;
+  color: var(--ink-muted);
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+.game-route-warning form {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.game-route-warning button {
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  border: 1px solid var(--accent-strong);
+  border-radius: 0.5rem;
+  background: var(--accent-strong);
+  color: var(--surface-lowest);
+  font: inherit;
+  cursor: pointer;
+}
+
+.game-route-warning button:focus-visible {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 3px;
+}
+
+.game-route-bottom-actions {
+  position: fixed;
+  right: max(0.75rem, env(safe-area-inset-right));
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
+  z-index: 7;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.game-route-touch-click-buttons {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  width: auto;
+  gap: 0.25rem;
+  pointer-events: none;
+}
+
+.game-route-control-button.is-exit,
+.game-route-control-button.is-touch-click,
+.game-route-control-button.is-gamepad,
+.game-route-touch-cursor-pad {
+  background: rgba(24, 28, 25, 0.28);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.58);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.game-route-control-button.is-touch-click {
+  width: 4rem;
+  height: 4.75rem;
+  padding: 0.75rem 0 0;
+  appearance: none;
+  -webkit-appearance: none;
+  user-select: none;
+  -webkit-user-select: none;
+  font:
+    600
+    0.95rem/1
+    "Trebuchet MS",
+    Verdana,
+    Tahoma,
+    sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.game-route-control-button.is-touch-click[data-button="left"] {
+  border-radius: 3.25rem 0.55rem 0.55rem 1.4rem;
+}
+
+.game-route-control-button.is-touch-click[data-button="right"] {
+  border-radius: 0.55rem 3.25rem 1.4rem 0.55rem;
+}
+
+.game-route-control-button.is-exit:active,
+.game-route-control-button.is-exit:focus-visible,
+.game-route-control-button.is-touch-click:active,
+.game-route-control-button.is-touch-click:focus-visible,
+.game-route-control-button.is-gamepad:active,
+.game-route-control-button.is-gamepad:focus-visible,
+.game-route-touch-cursor-pad:active,
+.game-route-touch-cursor-pad:focus-visible {
+  background: rgba(48, 54, 50, 0.72);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #fff;
+}
+
+.game-route-control-button.is-touch-click:active {
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+  transform: translateY(2px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .game-route-control-button.is-exit:hover,
+  .game-route-control-button.is-touch-click:hover {
+    background: rgba(48, 54, 50, 0.72);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #fff;
+  }
+}
+
+.game-route-touch-click-label {
+  pointer-events: none;
+}
+
+.game-route-direction-pad {
+  position: fixed;
+  left: max(2rem, env(safe-area-inset-left));
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
+  z-index: 7;
+  display: grid;
+  grid-template-areas:
+    ". up ."
+    "left . right"
+    ". down .";
+  pointer-events: none;
+}
+
+.game-route-direction-pad [data-direction="up"] { grid-area: up; }
+.game-route-direction-pad [data-direction="left"] { grid-area: left; }
+.game-route-direction-pad [data-direction="right"] { grid-area: right; }
+.game-route-direction-pad [data-direction="down"] { grid-area: down; }
+
+.game-route-control-button.is-gamepad {
+  -webkit-tap-highlight-color: transparent;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.game-route-direction-pad button {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.game-route-grim-gamepad {
+  position: fixed;
+  left: max(2rem, env(safe-area-inset-left));
+  right: max(2rem, env(safe-area-inset-right));
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
+  z-index: 7;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.game-route-grim-right,
+.game-route-stick {
+  display: grid;
+  justify-items: center;
+  gap: 0.25rem;
+}
+
+.game-route-stick {
+  color: #fff;
+  font: 600 0.75rem/1.1 system-ui, sans-serif;
+  text-shadow: 0 1px 3px #000;
+}
+
+.game-route-stick-base {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(4.75rem, 23vh, 6rem);
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 50%;
+  background: rgba(24, 28, 25, 0.45);
+  cursor: grab;
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+}
+
+.game-route-stick-base > svg {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.65);
+  pointer-events: none;
+}
+
+.game-route-stick-base[data-axis="y"] .game-route-stick-negative { top: 0.3rem; }
+.game-route-stick-base[data-axis="y"] .game-route-stick-positive { bottom: 0.3rem; }
+.game-route-stick-base[data-axis="x"] .game-route-stick-negative { left: 0.3rem; }
+.game-route-stick-base[data-axis="x"] .game-route-stick-positive { right: 0.3rem; }
+
+.game-route-stick-knob {
+  width: 39%;
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.54);
+  border-radius: 50%;
+  background: rgba(101, 113, 105, 0.82);
+  pointer-events: none;
+}
+
+.game-route-grim-actions {
+  position: relative;
+}
+
+.game-route-grim-action-choices:not([hidden]) {
+  position: absolute;
+  right: calc(100% + 0.375rem);
+  bottom: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 4.625rem);
+  gap: 0.25rem;
+}
+
+.game-route-grim-actions .game-route-control-button {
+  width: 4.625rem;
+  padding: 0 0.3rem;
+  font: 600 0.75rem/1.1 system-ui, sans-serif;
+  text-align: center;
+  background: rgba(24, 28, 25, 0.84);
+  border-color: rgba(255, 255, 255, 0.36);
+}
+
+.game-route-grim-actions .game-route-control-button:is(:active, :focus-visible, [aria-expanded="true"]) {
+  background: rgba(59, 68, 62, 0.9);
+}
+
+.game-route-touch-cursor-pad-shell {
+  position: fixed;
+  left: max(2rem, env(safe-area-inset-left));
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
+  z-index: 7;
+  pointer-events: none;
+}
+
+.game-route-touch-cursor-pad {
+  position: relative;
+  display: block;
+  width: 6rem;
+  height: 6rem;
+  padding: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 1.05rem;
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.game-route-touch-cursor-pad:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.72);
+  outline-offset: 2px;
+}
+
+.game-route-touch-cursor-pad-grid,
+.game-route-touch-cursor-pad-crosshair {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.game-route-touch-cursor-pad-grid {
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      90deg,
+      transparent calc(50% - 0.5px),
+      rgba(255, 255, 255, 0.08) calc(50% - 0.5px),
+      rgba(255, 255, 255, 0.08) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    ),
+    linear-gradient(
+      180deg,
+      transparent calc(50% - 0.5px),
+      rgba(255, 255, 255, 0.08) calc(50% - 0.5px),
+      rgba(255, 255, 255, 0.08) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    );
+}
+
+.game-route-touch-cursor-pad-crosshair::before,
+.game-route-touch-cursor-pad-crosshair::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+}
+
+.game-route-touch-cursor-pad-crosshair::before {
+  width: 1rem;
+  height: 1px;
+}
+
+.game-route-touch-cursor-pad-crosshair::after {
+  width: 1px;
+  height: 1rem;
+}
+
+.game-route-touch-cursor-pad-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-top: -0.375rem;
+  margin-left: -0.375rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+  transition: transform 40ms linear;
+}
+
+.game-route-skip-intro-button {
+  min-width: 8rem;
+  min-height: 2.75rem;
+  padding: 0.75rem 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 0.85rem 2.2rem rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font:
+    700
+    0.92rem/1
+    "Trebuchet MS",
+    Verdana,
+    Tahoma,
+    sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    background-color 160ms ease;
+}
+
+.game-route-skip-intro-button:hover,
+.game-route-skip-intro-button:focus-visible {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #fff;
+  box-shadow: 0 1rem 2.4rem rgba(0, 0, 0, 0.38);
+  transform: translateY(-1px);
+}
+
+.game-route-skip-intro-button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 2px;
+}

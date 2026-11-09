@@ -1,5 +1,5 @@
-import { bucketStorageKey, bucketZipUrl, checkGameZip, readSavedBucket } from "./game-bucket.mjs";
-import { maxLocalGameSize, validateGameZip } from "./local-game-archive.mjs";
+import { bucketStorageKey, bucketZipUrl, checkGameZip, readSavedBucket } from "./game-bucket-sources.mjs";
+import { maxLocalGameSize, validateGameZip } from "./local-game-selection.mjs";
 
 export function remoteGame(url, game) {
   const name = decodeURIComponent(new URL(url).pathname.split("/").at(-1));
@@ -11,7 +11,8 @@ export function localGame(handle, file, id = crypto.randomUUID()) {
   if (!isLocalZipSource({ name: file.name, kind: file.kind, handle })) throw new Error("Choose a ZIP containing one ScummVM game.");
   validateGameZip(file, maxLocalGameSize);
   return { id, name: file.name, ...(handle && { handle }),
-    ...(file.fingerprint && { fingerprint: file.fingerprint }) };
+    ...(file.fingerprint && { fingerprint: file.fingerprint }),
+    ...(file.archiveFiles && { archiveFiles: file.archiveFiles }) };
 }
 
 export function isLocalZipSource(source) {

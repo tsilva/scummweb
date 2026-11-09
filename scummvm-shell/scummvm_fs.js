@@ -34,12 +34,11 @@ function getScummvmAssetVersion() {
 }
 
 function withCacheKey(url, cacheKey) {
-    if (!cacheKey) {
-        return url;
-    }
-
     const resolved = new URL(url, document.baseURI);
-    resolved.searchParams.set("v", cacheKey);
+    const contentVersion = resolved.origin === new URL(document.baseURI).origin &&
+        globalThis.SCUMMWEB_RUNTIME_ASSETS?.[resolved.pathname];
+    const version = contentVersion || cacheKey;
+    if (version) resolved.searchParams.set("v", version);
     return resolved.toString();
 }
 
@@ -198,6 +197,31 @@ export class ScummvmFS {
         return { ok: true, data: this.fs_index[path].data };
     }
 
+    // Fetch the selected engine while the main Wasm module loads. This fills
+    // the same block cache used by normal reads, avoiding a synchronous XHR
+    // and binary-string conversion on the engine startup path.
+    async prefetch(path, { maxBytes = Infinity } = {}) {
+        const file = this.get({ path });
+        if (!file.ok || !Number.isInteger(file.size) || file.size <= 0 || file.size > 16 * 1024 * 1024) return false;
+        if (!(maxBytes > 0)) return false;
+        const length = Math.min(file.size, Math.ceil(maxBytes / RANGE_REQUEST_BLOCK_SIZE) * RANGE_REQUEST_BLOCK_SIZE);
+        const headers = length < file.size ? { Range: `bytes=0-${length - 1}` } : undefined;
+        try {
+            const response = await fetch(buildRemoteUrl(this.url, path), { headers, signal: AbortSignal.timeout(10_000) });
+            if (!response.ok) return false;
+            if (response.status === 206 && response.headers.get("content-range") !== `bytes 0-${length - 1}/${file.size}`) return false;
+            const bytes = new Uint8Array(await response.arrayBuffer());
+            if (bytes.length !== (response.status === 206 ? length : file.size)) return false;
+            for (let offset = 0, block = 0; offset < bytes.length; offset += RANGE_REQUEST_BLOCK_SIZE, block++) {
+                file.data[block] = bytes.subarray(offset, offset + RANGE_REQUEST_BLOCK_SIZE);
+            }
+            return true;
+        } catch {
+            // Keep the ordinary filesystem path available after a failed hint.
+            return false;
+        }
+    }
+
     read(args) {
         const path = args.path;
         logger(path, "read, args:" + JSON.stringify(args))
@@ -207,7 +231,7 @@ export class ScummvmFS {
             throw new FS.ErrnoError(ERRNO_CODES.EPERM);
         }
         const start = args.start;
-        const end = (args.end > (this.fs_index[path].size)) ? (this.fs_index[path].size) : args.end // sometimes we get requests beyond the end of the file (????)
+        const end = Math.min(args.end, this.fs_index[path].size - 1);
         var first_block = Math.floor(start / RANGE_REQUEST_BLOCK_SIZE)
         var last_block = Math.floor(end / RANGE_REQUEST_BLOCK_SIZE)
         if (start > end) {
@@ -230,12 +254,11 @@ export class ScummvmFS {
         if (alreadyLoaded) {
             data = new Uint8Array(end - start + 1);
             for (var block = first_block; block <= last_block; block++) {
-                // TODO: we should start at start at the request start and not block start (same for end)
-                for (var idx = Math.max(start, block * RANGE_REQUEST_BLOCK_SIZE); idx <= Math.min(end, block * RANGE_REQUEST_BLOCK_SIZE + this.fs_index[path].data[block].length - 1); idx++) {
-                    if (idx >= start && idx <= end) {
-                        data[idx - start] = this.fs_index[path].data[block][idx - block * RANGE_REQUEST_BLOCK_SIZE]
-                    }
-                }
+                const blockStart = block * RANGE_REQUEST_BLOCK_SIZE;
+                const bytes = this.fs_index[path].data[block];
+                const from = Math.max(start, blockStart);
+                const to = Math.min(end + 1, blockStart + bytes.length);
+                data.set(bytes.subarray(from - blockStart, to - blockStart), from - start);
             }
             logger(path, "cache loaded ")
         } else {
@@ -245,7 +268,7 @@ export class ScummvmFS {
         return { ok: true, data: data };
     }
     download(path, _url, first_block, last_block, start, end) {
-        self = this;
+        const self = this;
         let data = null;
         const req = new XMLHttpRequest();
         const url = buildRemoteUrl(_url, path);
@@ -267,73 +290,30 @@ export class ScummvmFS {
         if (this.fs_index[path].data === null) {
             this.fs_index[path].data = new Array(Math.ceil(this.fs_index[path].size / RANGE_REQUEST_BLOCK_SIZE));
         }
-        req.onreadystatechange = function (e) {
-            if (req.readyState === 4) {
-                var text = req.responseText;
-                logger(path, "Downloaded " + text.length + " bytes");
-                data = new Uint8Array(end - start + 1);
-                if (req.status === 200) { // range request wasn't respected or requested
-                    for (let i = 0; i < text.length; i++) {
-                        if (i >= start && i <= end) {
-                            // This will automatically throw away the upper bit of each
-                            // character for us.
-                            data[i - start] = text.charCodeAt(i);
-                        }
-                        var block = Math.floor(i / RANGE_REQUEST_BLOCK_SIZE)
-                        if (self.fs_index[path].data[block] === undefined) {
-                            self.fs_index[path].data[block] = new Uint8Array(RANGE_REQUEST_BLOCK_SIZE)
-                        }
-                        self.fs_index[path].data[block][i - block * RANGE_REQUEST_BLOCK_SIZE] = text.charCodeAt(i)
-                    }
-                    logger(path, "Downloaded [full download]");
-                } else if (req.status === 206) { // partial response to range request
-                    var start_offset = start - range_start
-                    var end_offset = range_end - end
-
-                    logger(path, "First block: " + first_block + " last block: " + last_block + "Text length: " + text.length)
-                    var char_length = Math.round((range_end - range_start + 1) / text.length);
-                    if (char_length == 2 && text.length == (range_end - range_start + 1) / 2 - 1) {
-                        // The above hack to get binary data as text breaks if the first two bytes of the range are U+FEFF which is a BOM 
-                        // for UTF16 and the browsers convert the data into a UTF16 string. I initially tied to fix this by breaking up 
-                        // the UTF16 characters into 2 bytes and prepend the stripped BOM again,  but it turned out that there were other 
-                        // issues how browsers handle UTF16 (e.g. 0xDFC3, 0xDFAD, 0xDFFB, 0xDF5B all somehow getting converted to 0xFFFD 
-                        // - i.e. "REPLACEMENT CHARACTER") so this now just reruns shifts the start of the download. 
-                        // That's wasting some data, but it's a rare enough occurrence
-                        //
-                        // TODO: The only proper fix for this is to implement a asynchronous filesystem for emscripten. Something which currently
-                        // isn't possible
-                        data = self.download(path, _url, first_block - 1, last_block, start, end)
-                    } else if (char_length == 1) {
-
-                        for (let i = 0; i < (range_end - range_start + 1); i++) {
-                            var block = Math.floor((range_start + i) / RANGE_REQUEST_BLOCK_SIZE)
-                            if (self.fs_index[path].data[block] === undefined) {
-                                self.fs_index[path].data[block] = new Uint8Array(RANGE_REQUEST_BLOCK_SIZE)
-                            }
-                            var block_pos = (range_start + i) - (block * RANGE_REQUEST_BLOCK_SIZE)
-                            // This will automatically throw away the upper bit of each
-                            // character for us.
-                            self.fs_index[path].data[block][block_pos] = text.charCodeAt(i)
-
-
-
-                        }
-                        logger(path, "First block length: " + self.fs_index[path].data[block] + " last block length: " + self.fs_index[path].data[block] + "Text length: " + text.length)
-                        for (var block = first_block; block <= last_block; block++) {
-                            // TODO: we should start at start at the request start and not block start (same for end)
-                            for (var idx = Math.max(start, block * RANGE_REQUEST_BLOCK_SIZE); idx <= Math.min(end, block * RANGE_REQUEST_BLOCK_SIZE + self.fs_index[path].data[block].length - 1); idx++) {
-                                if (idx >= start && idx <= end) {
-                                    data[idx - start] = self.fs_index[path].data[block][idx - block * RANGE_REQUEST_BLOCK_SIZE]
-                                }
-                            }
-                        }
-                        logger(path, "Downloaded [range request]");
-                    }
-                } else {
-                    console.error(req);
-                    throw new FS.ErrnoError(ERRNO_CODES.EINVAL);
-                }
+        req.onreadystatechange = function () {
+            if (req.readyState !== 4) return;
+            const text = req.responseText;
+            const expected = req.status === 200 ? self.fs_index[path].size : range_end - range_start + 1;
+            if (req.status === 206 && first_block > 0 && text.length === expected / 2 - 1) {
+                // A range beginning with a UTF-16 BOM can override the binary
+                // MIME hint. Include the preceding block to preserve the bytes.
+                try { data = self.download(path, _url, first_block - 1, last_block, start, end); }
+                catch (error) { err = error; }
+                return;
             }
+            if ((req.status !== 200 && req.status !== 206) || text.length !== expected) {
+                err = new self.FS.ErrnoError(ERRNO_CODES.EINVAL);
+                return;
+            }
+            // Decode once, then cache block views. Avoid per-byte block lookup,
+            // allocation checks, and accidental stringification of whole blocks.
+            const bytes = new Uint8Array(text.length);
+            for (let i = 0; i < text.length; i++) bytes[i] = text.charCodeAt(i);
+            const offset = req.status === 200 ? 0 : range_start;
+            for (let i = 0; i < bytes.length; i += RANGE_REQUEST_BLOCK_SIZE) {
+                self.fs_index[path].data[(offset + i) / RANGE_REQUEST_BLOCK_SIZE] = bytes.subarray(i, i + RANGE_REQUEST_BLOCK_SIZE);
+            }
+            data = bytes.slice(start - offset, end - offset + 1);
         };
         req.send();
         if (err) {
@@ -506,15 +486,12 @@ export class ScummvmFS {
 
             var size = length
             if (typeof stream.fileData === 'object' && stream.fileSize < position + length) {
-                size = stream.fileSize - position
+                size = Math.max(0, stream.fileSize - position)
             }
 
             // logger(stream.path, "Length, Position " + length + "," + position)
             // logger(stream.path, "Size " + size)
             // logger(stream.path, "stream.fileSize " + stream.fileSize)
-            if (size < 0) {
-                throw new FS.ErrnoError(ERRNO_CODES.EINVAL);
-            }
             if (size > 0) {
                 var fileData = this.convertResult(this.read({ path: path, start: position, end: position + size - 1 }));
                 logger(stream.path, "fileData (start: " + (position) + " end: " + (position + size - 1).toString() + " (length: " + fileData.length + ")")
@@ -559,10 +536,10 @@ export class ScummvmFS {
 
 }
 
-// Keep large local games on disk. Cache a small number of fixed-size reads
-// across all files so video, speech and CD audio cannot fill the JS heap.
+// Keep large local games on disk. Bound cached bytes across all files so
+// video, speech and CD audio cannot fill the JS heap.
 const LOCAL_BLOCK_SIZE = 256 * 1024;
-const LOCAL_CACHE_BLOCKS = 32;
+const LOCAL_CACHE_BYTES = 8 * 1024 * 1024;
 
 export class LocalGameFS extends ScummvmFS {
     constructor(fs, files) {
@@ -583,6 +560,54 @@ export class LocalGameFS extends ScummvmFS {
         for (const [path, blob] of blobs) this.fs_index[path] = blob.size;
         this.blobs = blobs;
         this.cache = new Map();
+        this.cachedBytes = 0;
+        try {
+            if (new URL(globalThis.parent.location.href).searchParams.get("startupTrace") === "1") {
+                this.ioStats = globalThis.__scummwebLocalGameIO = { reads: 0, bytes: 0, ms: 0 };
+            }
+        } catch { /* Local diagnostics require a same-origin parent. */ }
+    }
+
+    cacheBlock(key, bytes) {
+        this.cachedBytes -= this.cache.get(key)?.length || 0;
+        this.cache.delete(key);
+        this.cache.set(key, bytes);
+        this.cachedBytes += bytes.length;
+        while (this.cachedBytes > LOCAL_CACHE_BYTES) {
+            const oldest = this.cache.keys().next().value;
+            this.cachedBytes -= this.cache.get(oldest).length;
+            this.cache.delete(oldest);
+        }
+    }
+
+    async prefetchSmallFiles() {
+        const started = this.ioStats ? performance.now() : 0;
+        const candidates = [...this.blobs].filter(([, blob]) => blob.size > 0 && blob.size <= 1024 * 1024)
+            .sort(([a, left], [b, right]) => a.split("/").length - b.split("/").length || left.size - right.size);
+        let remaining = LOCAL_CACHE_BYTES;
+        const selected = [];
+        for (const [path, blob] of candidates) {
+            if (selected.length === 128) break;
+            if (blob.size > remaining) continue;
+            remaining -= blob.size;
+            selected.push([path, blob]);
+        }
+        // Bound simultaneous disk reads and transient buffers as well as cache
+        // memory. A failed optional read retains the synchronous fallback.
+        for (let i = 0; i < selected.length; i += 8) {
+            await Promise.all(selected.slice(i, i + 8).map(async ([path, blob]) => {
+                try {
+                    const bytes = new Uint8Array(await blob.arrayBuffer());
+                    if (bytes.length !== blob.size) return;
+                    for (let offset = 0, block = 0; offset < bytes.length; offset += LOCAL_BLOCK_SIZE, block++) {
+                        // Own each block so eviction cannot retain a larger file.
+                        this.cacheBlock(`${path}\0${block}`, bytes.length <= LOCAL_BLOCK_SIZE
+                            ? bytes : bytes.slice(offset, offset + LOCAL_BLOCK_SIZE));
+                    }
+                } catch { /* Best effort. */ }
+            }));
+        }
+        if (this.ioStats) this.ioStats.prefetchMs = performance.now() - started;
     }
 
     read({ path, start, end }) {
@@ -597,13 +622,10 @@ export class LocalGameFS extends ScummvmFS {
             const blockStart = block * LOCAL_BLOCK_SIZE;
             const key = `${path}\0${block}`;
             let bytes = this.cache.get(key);
-            if (bytes) {
-                this.cache.delete(key);
-            } else {
+            if (!bytes) {
                 bytes = this.readBlock(blob.slice(blockStart, blockStart + LOCAL_BLOCK_SIZE));
             }
-            this.cache.set(key, bytes);
-            if (this.cache.size > LOCAL_CACHE_BLOCKS) this.cache.delete(this.cache.keys().next().value);
+            this.cacheBlock(key, bytes);
             const offset = position - blockStart;
             const chunk = bytes.subarray(offset, offset + size - copied);
             result.set(chunk, copied);
@@ -613,6 +635,7 @@ export class LocalGameFS extends ScummvmFS {
     }
 
     readBlock(blob) {
+        const started = this.ioStats ? performance.now() : 0;
         // Synchronous Emscripten reads run on the browser thread. A local
         // object URL serves only the requested slice. Prefix one byte so a
         // binary block starting with a BOM is never decoded as UTF-16.
@@ -631,6 +654,11 @@ export class LocalGameFS extends ScummvmFS {
             return bytes;
         } finally {
             URL.revokeObjectURL(url);
+            if (this.ioStats) {
+                this.ioStats.reads++;
+                this.ioStats.bytes += blob.size;
+                this.ioStats.ms += performance.now() - started;
+            }
         }
     }
 }

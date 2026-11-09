@@ -12,7 +12,6 @@
       "readmeHref": "/launcher/notices/drascula.txt",
       "skipIntro": {
         "strategy": "save-slot",
-        "durationMinutes": 2,
         "slot": 0,
         "saveFiles": [
           "drascula.000"
@@ -30,7 +29,6 @@
       "readmeHref": "/launcher/notices/dreamweb.txt",
       "skipIntro": {
         "strategy": "save-slot",
-        "durationMinutes": 2,
         "slot": 0,
         "saveFiles": [
           "DREAMWEB.D00"
@@ -48,7 +46,6 @@
       "readmeHref": "/launcher/notices/lure.txt",
       "skipIntro": {
         "strategy": "save-slot",
-        "durationMinutes": 2,
         "slot": 0,
         "saveFiles": [
           "lure.000"
@@ -63,7 +60,14 @@
       "gameId": "monkey",
       "platform": "pc",
       "extra": "EGA Demo",
-      "readmeHref": "/launcher/notices/monkey.txt"
+      "readmeHref": "/launcher/notices/monkey.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "slot": 1,
+        "saveFiles": [
+          "monkey-demo.s01"
+        ]
+      }
     },
     {
       "target": "nippon-amiga",
@@ -73,7 +77,11 @@
       "gameId": "nippon",
       "platform": "amiga",
       "extra": "Multi-lingual",
-      "readmeHref": "/launcher/notices/nippon.txt"
+      "readmeHref": "/launcher/notices/nippon.txt",
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1
+      }
     },
     {
       "target": "queen",
@@ -86,7 +94,6 @@
       "readmeHref": "/launcher/notices/queen.txt",
       "skipIntro": {
         "strategy": "save-slot",
-        "durationMinutes": 2,
         "slot": 0,
         "saveFiles": [
           "queen.s00"
@@ -104,7 +111,6 @@
       "readmeHref": "/launcher/notices/sky.txt",
       "skipIntro": {
         "strategy": "save-slot",
-        "durationMinutes": 2,
         "slot": 0,
         "saveFiles": [
           "SKY-VM.000"
@@ -119,7 +125,279 @@
       "gameId": "sword25",
       "platform": "",
       "extra": "Latest version",
-      "readmeHref": "/launcher/notices/sword25.txt"
+      "readmeHref": "/launcher/notices/sword25.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "slot": 0,
+        "saveFiles": [
+          "sword25.000"
+        ]
+      }
+    },
+    {
+      "target": "soltys",
+      "title": "Sołtys (Freeware v1.0/DOS/English)",
+      "path": "/games/soltys",
+      "engineId": "cge",
+      "gameId": "soltys",
+      "platform": "pc",
+      "extra": "Freeware v1.0",
+      "readmeHref": "/launcher/notices/soltys.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "slot": 1,
+        "saveFiles": [
+          "soltys.001"
+        ]
+      }
+    },
+    {
+      "target": "sfinx",
+      "title": "Sfinx (Freeware v1.1/DOS/English)",
+      "path": "/games/sfinx",
+      "engineId": "cge2",
+      "gameId": "sfinx",
+      "platform": "pc",
+      "extra": "Freeware v1.1",
+      "readmeHref": "/launcher/notices/sfinx.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "slot": 1,
+        "saveFiles": [
+          "sfinx.001"
+        ]
+      }
+    },
+    {
+      "target": "hires1",
+      "title": "Hi-Res Adventure #1: Mystery House (Public Domain/Apple II/English)",
+      "path": "/games/hires1",
+      "engineId": "adl",
+      "gameId": "hires1",
+      "platform": "apple2",
+      "extra": "Public Domain",
+      "readmeHref": "/launcher/notices/hires1.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "slot": 0,
+        "saveFiles": [
+          "hires1.s00"
+        ]
+      }
+    },
+    {
+      "target": "draci",
+      "title": "Dragon History (DOS/English)",
+      "path": "/games/draci",
+      "engineId": "draci",
+      "gameId": "draci",
+      "platform": "pc",
+      "extra": "",
+      "readmeHref": "/launcher/notices/draci.txt",
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1
+      }
+    },
+    {
+      "target": "atlantis-demo",
+      "title": "Indiana Jones and the Fate of Atlantis (Demo)",
+      "path": "/games/atlantis",
+      "engineId": "scumm",
+      "gameId": "atlantis",
+      "platform": "pc",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/atlantis.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "slot": 90,
+        "saveFiles": [
+          "atlantis-demo.s90"
+        ]
+      }
+    },
+    {
+      "target": "grim-demo",
+      "title": "Grim Fandango (Demo)",
+      "path": "/games/grim",
+      "engineId": "grim",
+      "gameId": "grim",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/grim.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "slot": 90,
+        "saveFiles": [
+          "grim90.gsv"
+        ]
+      }
+    },
+    {
+      "target": "monkey4-demo",
+      "title": "Escape from Monkey Island (Demo)",
+      "path": "/games/monkey4",
+      "engineId": "grim",
+      "gameId": "monkey4",
+      "platform": "windows",
+      "extra": "Web Demo",
+      "readmeHref": "/launcher/notices/monkey4.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "slot": 90,
+        "saveFiles": [
+          "efmi090.gsv"
+        ]
+      }
+    },
+    {
+      "target": "zork1",
+      "title": "Zork I: The Great Underground Empire",
+      "path": "/games/zork1",
+      "engineId": "glk",
+      "gameId": "zork1",
+      "platform": "",
+      "extra": "Z-machine v3",
+      "readmeHref": "/launcher/notices/zork1.txt"
+    },
+    {
+      "target": "zork2",
+      "title": "Zork II: The Wizard of Frobozz",
+      "path": "/games/zork2",
+      "engineId": "glk",
+      "gameId": "zork2",
+      "platform": "",
+      "extra": "Z-machine v3",
+      "readmeHref": "/launcher/notices/zork2.txt"
+    },
+    {
+      "target": "zork3",
+      "title": "Zork III: The Dungeon Master",
+      "path": "/games/zork3",
+      "engineId": "glk",
+      "gameId": "zork3",
+      "platform": "",
+      "extra": "Z-machine v3",
+      "readmeHref": "/launcher/notices/zork3.txt"
+    },
+    {
+      "target": "comi-demo",
+      "title": "The Curse of Monkey Island (Demo)",
+      "path": "/games/comi",
+      "engineId": "scumm",
+      "gameId": "comi",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/comi.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "checkpointOnly": true,
+        "slot": 90,
+        "saveFiles": [
+          "comi-demo.s90"
+        ]
+      }
+    },
+    {
+      "target": "teenagent-demo",
+      "title": "Teen Agent (Demo)",
+      "path": "/games/teenagent",
+      "engineId": "teenagent",
+      "gameId": "teenagent",
+      "platform": "pc",
+      "extra": "Union shareware demo",
+      "readmeHref": "/launcher/notices/teenagent.txt",
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1
+      }
+    },
+    {
+      "target": "hugo1-demo",
+      "title": "Hugo's House of Horrors (Demo)",
+      "path": "/games/hugo1",
+      "engineId": "hugo",
+      "gameId": "hugo1",
+      "platform": "pc",
+      "extra": "Shareware v2.1",
+      "readmeHref": "/launcher/notices/hugo1.txt",
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1
+      }
+    },
+    {
+      "target": "hugo2-demo",
+      "title": "Hugo II: Whodunit? (Demo)",
+      "path": "/games/hugo2",
+      "engineId": "hugo",
+      "gameId": "hugo2",
+      "platform": "pc",
+      "extra": "Shareware v2.1",
+      "readmeHref": "/launcher/notices/hugo2.txt",
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1
+      }
+    },
+    {
+      "target": "hugo3-demo",
+      "title": "Hugo III: Jungle of Doom (Demo)",
+      "path": "/games/hugo3",
+      "engineId": "hugo",
+      "gameId": "hugo3",
+      "platform": "pc",
+      "extra": "Shareware v2.1",
+      "readmeHref": "/launcher/notices/hugo3.txt",
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1
+      }
+    },
+    {
+      "target": "pegasus-demo",
+      "title": "The Journeyman Project: Pegasus Prime (Demo)",
+      "path": "/games/pegasus",
+      "engineId": "pegasus",
+      "gameId": "pegasus",
+      "platform": "macintosh",
+      "extra": "Demo",
+      "readmeHref": "",
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1
+      }
+    },
+    {
+      "target": "castlemaster-demo",
+      "title": "Castle Master (Demo)",
+      "path": "/games/castlemaster",
+      "engineId": "freescape",
+      "gameId": "castlemaster",
+      "platform": "pc",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/castlemaster.txt",
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1
+      }
+    },
+    {
+      "target": "qfi-demo",
+      "title": "Quest for Infamy (Demo)",
+      "path": "/games/qfi",
+      "engineId": "ags",
+      "gameId": "qfi",
+      "platform": "windows",
+      "extra": "Demo 2.0",
+      "readmeHref": "/launcher/notices/qfi.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "slot": 98,
+        "saveFiles": [
+          "qfi-demo.098"
+        ]
+      }
     }
   ]
 }

@@ -1,16 +1,19 @@
 import { Inter, Space_Grotesk } from "next/font/google";
-import Script from "next/script";
-import { GOOGLE_ANALYTICS_ID } from "../lib/site-config.mjs";
 import { getVersionedSiteAssetPath } from "./asset-paths";
+import { analyticsStartupScript } from "./analytics-startup.mjs";
 import { APP_THEME_COLOR, HOME_DESCRIPTION, HOME_TITLE, SITE_NAME } from "./seo";
 import { getMetadataBase } from "./site-config";
 import SiteAnalytics from "./site-analytics";
+import { initialHeroTitleFit } from "./home-shell/hero-title-fit.mjs";
+import { initialActionsScript } from "./home-shell/initial-actions.mjs";
 import "./globals.css";
 import "./styles/home-shell.css";
+import "./styles/settings.css";
 import "./styles/game-player.css";
 
 const inter = Inter({
   display: "optional",
+  preload: false,
   subsets: ["latin"],
   variable: "--font-body",
 });
@@ -41,7 +44,7 @@ export const metadata = {
         type: "image/svg+xml",
       },
     ],
-    apple: [{ url: getVersionedSiteAssetPath("/scummvm-192.png") }],
+    apple: [{ url: getVersionedSiteAssetPath("/brand/web-seo/apple-touch-icon.png"), sizes: "180x180", type: "image/png" }],
     shortcut: [getVersionedSiteAssetPath("/favicon.ico")],
   },
   other: {
@@ -51,33 +54,23 @@ export const metadata = {
 };
 
 export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
   colorScheme: "dark",
   themeColor: APP_THEME_COLOR,
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <head>
         <meta content={APP_THEME_COLOR} name="theme-color" />
+        <script dangerouslySetInnerHTML={{ __html: initialHeroTitleFit }} />
+        <script dangerouslySetInnerHTML={{ __html: initialActionsScript }} />
+        <script dangerouslySetInnerHTML={{ __html: analyticsStartupScript }} />
       </head>
       <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`}
-          strategy="lazyOnload"
-        />
-        <Script id="google-analytics" strategy="beforeInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            window.gtag = function(){window.dataLayer.push(arguments);};
-            window.gtag('js', new Date());
-            const isDirectGameLink = location.pathname === '/local/play'
-              && new URLSearchParams(location.hash.slice(1)).has('zip');
-            window.gtag('config', '${GOOGLE_ANALYTICS_ID}', isDirectGameLink
-              ? { page_location: location.origin + location.pathname + location.search }
-              : {});
-          `}
-        </Script>
         {children}
         <SiteAnalytics />
       </body>

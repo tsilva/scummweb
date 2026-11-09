@@ -38,6 +38,21 @@ gameid=drascula
 engineid=drascula
 subtitles=false
 
+[soltys]
+gameid=soltys
+engineid=cge
+path=/games/soltys
+
+[sfinx]
+gameid=sfinx
+engineid=cge2
+path=/games/sfinx
+
+[hires1]
+gameid=hires1
+engineid=adl
+path=/games/hires1
+
 [agi-fan]
 gameid=agi-fan
 engineid=agi
@@ -58,4 +73,7 @@ path=/games/agi-fan
   assert.match(normalizedIni, /\[drascula\][\s\S]*?subtitles=true/);
   assert.doesNotMatch(normalizedIni, /\[agi-fan\]/);
   assert.match(normalizedIni, /\[sword25\][\s\S]*?subtitles=true/);
+  for (const target of ["soltys", "sfinx", "hires1"]) {
+    assert.ok(normalizedIni.includes(`[${target}]`), `${target} survives catalog normalization`);
+  }
 });

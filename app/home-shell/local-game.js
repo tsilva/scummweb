@@ -75,7 +75,7 @@ export default function GameDropOverlay({ importRoots, disabled, pending, result
       <div className="game-drop-message">
         <Download aria-hidden="true" size={32} />
         <strong>Drop to add games to your library</strong>
-        <span>Drop ScummVM game ZIPs. Files stay on this device.</span>
+        <span>Drop ScummVM game ZIPs or folders containing them. Files stay on this device.</span>
       </div>
     </div>,
     document.body,
@@ -109,6 +109,7 @@ export function GameImportDialog({ pending, result, onConfirm }) {
   const added = result?.items.filter((item) => item.status === "added").length ?? 0;
   const skipped = result?.items.filter((item) => item.status === "skipped").length ?? 0;
   const errors = result?.items.filter((item) => item.status === "error").length ?? 0;
+  const showDetails = !result || skipped < result.items.length || result.temporary > 0;
   const title = result ? `${gameCount(result.items.length)} scanned` : "Importing games…";
   const summary = result
     ? `${gameCount(added)} added · ${gameCount(skipped)} skipped · ${errors} ${errors === 1 ? "error" : "errors"}`
@@ -119,7 +120,7 @@ export function GameImportDialog({ pending, result, onConfirm }) {
   return (
     <dialog
       ref={dialog}
-      className="game-import-dialog"
+      className={complete ? "game-import-dialog" : "game-import-dialog game-import-dialog--scanning"}
       aria-labelledby="game-import-title"
       aria-describedby={complete ? "game-import-summary" : undefined}
       onCancel={(event) => {
@@ -136,17 +137,19 @@ export function GameImportDialog({ pending, result, onConfirm }) {
           )}
         </div>
       </div>
-      <div ref={details} className="game-import-details" key={complete ? "result" : "progress"}
-        role="region" aria-label="Import details" tabIndex={0}>
-        {result ? (
-          <>
-            <GameImportItems items={result.items} complete />
-            {result.temporary > 0 && <p>Some games are only available in this tab.</p>}
-          </>
-        ) : (
-          <GameImportItems items={pending} showProgress />
-        )}
-      </div>
+      {showDetails && (
+        <div ref={details} className="game-import-details" key={complete ? "result" : "progress"}
+          role="region" aria-label="Import details" tabIndex={0}>
+          {result ? (
+            <>
+              <GameImportItems items={result.items} complete />
+              {result.temporary > 0 && <p>Some games are only available in this tab.</p>}
+            </>
+          ) : (
+            <GameImportItems items={pending} showProgress />
+          )}
+        </div>
+      )}
       {complete && <button ref={confirm} className="game-import-confirm" type="button" onClick={onConfirm}>Confirm</button>}
     </dialog>
   );

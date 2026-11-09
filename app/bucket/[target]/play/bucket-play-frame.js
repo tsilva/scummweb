@@ -1,35 +1,29 @@
 "use client";
 
-import { useCallback } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { readRemoteGameArchive } from "../../../game-bucket.mjs";
 import { readGameSources } from "../../../game-sources.mjs";
-import GameRouteFrame from "../../../game-route-frame";
-import { buildZipGamePlayerUrl } from "../../../home-shell/zip-game-player";
-import { buildGameExitHref } from "../../../home-shell/hero-selection.mjs";
+import { selectGameArchive } from "../../../local-game-archive.mjs";
 
 export default function BucketPlayFrame({ game, officialUrl, catalog }) {
-  const { target, displayTitle } = game;
-  const loadArchive = useCallback(async (signal) => {
-    let sources = [];
-    try {
-      sources = await readGameSources(catalog, officialUrl);
-    } catch {
-      // An unavailable or invalid saved selection can be replaced in the Library.
-    }
-    const source = sources.find((source) => source.url && source.target === target);
-    if (!source) {
-      throw new Error("Add a bucket or ZIP containing this game to your library.");
-    }
-    return readRemoteGameArchive(source.url, { signal });
-  }, [catalog, officialUrl, target]);
-
-  return (
-    <GameRouteFrame
-      game={game}
-      loadArchive={loadArchive}
-      src={buildZipGamePlayerUrl(buildGameExitHref(game))}
-      target={target}
-      title={`${displayTitle} playable ScummVM frame`}
-    />
-  );
+  const router = useRouter();
+  const [error, setError] = useState("");
+  useEffect(() => {
+    let active = true;
+    readGameSources(catalog, officialUrl).then((sources) => {
+      if (!active) return;
+      const source = sources.find((source) => source.url && source.target === game.target);
+      if (source) {
+        // Old bucket bookmarks used the default save folder. Keep it for this launch.
+        selectGameArchive((signal, onProgress) => readRemoteGameArchive(source.url, { signal, onProgress }),
+          { ...game, skipIntro: null });
+      }
+      router.replace(`${game.playHref}${window.location.hash}`);
+    }).catch(() => { if (active) setError("Could not load saved games from this browser."); });
+    return () => { active = false; };
+  }, [game, catalog, officialUrl, router]);
+  return <p className="page-shell" role="status">{error || `Opening ${game.displayTitle}…`}
+    {error && <> <a href={game.href}>Return to game</a></>}
+  </p>;
 }

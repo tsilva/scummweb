@@ -1,33 +1,77 @@
-import { LogOut, Maximize, Menu, Minimize, Ratio, StretchHorizontal } from "lucide-react";
+import { LogOut, Maximize, Menu, Minimize, TriangleAlert } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import DirectionalNavigation from "../home-shell/directional-navigation";
+import { observeControlVisibility } from "./control-visibility.mjs";
 
 export default function GamePlayerControls({
+  autoHide = false,
+  compatibilityWarnings,
+  frameRef,
+  menuShortcut,
   handleControlMouseDown,
-  isFillScreenAspect,
   isFullscreen,
   onExit,
   onOpenMenu,
+  onResumeGame,
   onSkipIntro,
-  onToggleAspectRatio,
   onTouchLeftClick,
   onTouchRightClick,
   onToggleFullscreen,
   showBottomActions,
-  showAspectRatioControl,
   showExitControl,
   showFullscreenControl,
-  showScummvmMenuButton,
+  showGameMenuButton,
   showSkipIntroAction,
   showTouchClickButtons,
+  toolbarFocused,
+  touchActions,
 }) {
+  const controlsRef = useRef(null);
+  const visibilityRef = useRef(null);
+  const warningButtonRef = useRef(null);
+  const warningDialogRef = useRef(null);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    if (!autoHide) return;
+    const visibility = observeControlVisibility({
+      controls: controlsRef.current,
+      frame: frameRef.current,
+      hostWindow: window,
+      menuShortcut,
+      onVisible: setVisible,
+    });
+    visibilityRef.current = visibility;
+    return () => {
+      visibility.dispose();
+      visibilityRef.current = null;
+    };
+  }, [autoHide, frameRef, menuShortcut]);
+
   const FullscreenIcon = isFullscreen ? Minimize : Maximize;
-  const AspectRatioIcon = isFillScreenAspect ? StretchHorizontal : Ratio;
   const fullscreenLabel = isFullscreen ? "Exit fullscreen" : "Enter fullscreen";
-  const aspectRatioLabel = isFillScreenAspect ? "Preserve aspect ratio" : "Fill screen";
-  const scummvmMenuLabel = "Open ScummVM menu";
+  const gameMenuLabel = "Open game menu";
+
+  function keepToolbarFocus({ target }) {
+    if (!toolbarFocused) return;
+    // A cursor move already queued in the iframe can still focus its canvas.
+    requestAnimationFrame(() => {
+      const frame = frameRef.current;
+      if (frame?.inert && document.activeElement === frame) {
+        target.focus({ preventScroll: true });
+      }
+    });
+  }
 
   return (
     <>
-      <div className="game-route-controls">
+      {toolbarFocused ? <DirectionalNavigation initialFocus="toolbar" onResumeGame={onResumeGame} />
+        : showSkipIntroAction && <DirectionalNavigation initialFocus="skip-intro" />}
+      <div
+        className={`game-route-controls${autoHide && !visible ? " is-idle" : ""}`}
+        onBlur={keepToolbarFocus}
+        ref={controlsRef}
+      >
         {showExitControl ? (
           <div className="game-route-control-group is-left">
             <button
@@ -43,17 +87,18 @@ export default function GamePlayerControls({
           </div>
         ) : null}
         <div className="game-route-control-group is-right">
-          {showAspectRatioControl ? (
+          {compatibilityWarnings.length > 0 ? (
             <button
-              aria-label={aspectRatioLabel}
-              aria-pressed={isFillScreenAspect}
-              className={`game-route-control-button is-aspect${isFillScreenAspect ? " is-active" : ""}`}
-              onClick={onToggleAspectRatio}
-              onMouseDown={handleControlMouseDown}
-              title={aspectRatioLabel}
+              aria-controls="game-compatibility-warning"
+              aria-haspopup="dialog"
+              aria-label="Compatibility warning"
+              className="game-route-control-button"
+              onClick={() => warningDialogRef.current.showModal()}
+              ref={warningButtonRef}
+              title="Compatibility warning"
               type="button"
             >
-              <AspectRatioIcon aria-hidden="true" size={18} strokeWidth={2} />
+              <TriangleAlert aria-hidden="true" size={18} strokeWidth={2} />
             </button>
           ) : null}
           {showFullscreenControl ? (
@@ -68,13 +113,16 @@ export default function GamePlayerControls({
               <FullscreenIcon aria-hidden="true" size={18} strokeWidth={2} />
             </button>
           ) : null}
-          {showScummvmMenuButton ? (
+          {showGameMenuButton ? (
             <button
-              aria-label={scummvmMenuLabel}
+              aria-label={gameMenuLabel}
               className="game-route-control-button is-menu"
-              onClick={onOpenMenu}
+              onClick={() => {
+                visibilityRef.current?.holdForMenu();
+                onOpenMenu();
+              }}
               onMouseDown={handleControlMouseDown}
-              title={scummvmMenuLabel}
+              title={gameMenuLabel}
               type="button"
             >
               <Menu aria-hidden="true" size={18} strokeWidth={2} />
@@ -82,6 +130,24 @@ export default function GamePlayerControls({
           ) : null}
         </div>
       </div>
+      {compatibilityWarnings.length > 0 ? (
+        <dialog
+          aria-describedby="game-compatibility-warning-text"
+          aria-labelledby="game-compatibility-warning-title"
+          className="game-route-warning"
+          id="game-compatibility-warning"
+          onClose={() => warningButtonRef.current?.focus({ preventScroll: true })}
+          ref={warningDialogRef}
+        >
+          <h2 id="game-compatibility-warning-title">Compatibility warning</h2>
+          <div id="game-compatibility-warning-text">
+            {compatibilityWarnings.map((message) => <p key={message}>{message}</p>)}
+          </div>
+          <form method="dialog">
+            <button type="submit">Close</button>
+          </form>
+        </dialog>
+      ) : null}
       {showBottomActions ? (
         <div className="game-route-bottom-actions">
           {showSkipIntroAction ? (
@@ -127,6 +193,7 @@ export default function GamePlayerControls({
               </button>
             </div>
           ) : null}
+          {touchActions}
         </div>
       ) : null}
     </>

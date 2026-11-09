@@ -1,15 +1,8 @@
-import { groupGameVersions } from "../game-versions.mjs";
+import { compareGameTitles } from "../../lib/game-title-sort.mjs";
 
 const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
 
 export const defaultLibraryQuery = { sort: "name-asc", genre: "" };
-
-export function libraryItems(catalog, library) {
-  return groupGameVersions([
-    ...catalog.map((game) => ({ key: `catalog:${game.target}`, game, title: game.displayTitle })),
-    ...library.map((entry) => ({ ...entry, key: `source:${entry.source.id}` })),
-  ]);
-}
 
 export function libraryYear(game) {
   return /^\d{4}$/.test(String(game.year)) ? String(game.year) : "Unknown";
@@ -63,6 +56,6 @@ export function queryLibrary(items, query) {
       );
       if (comparison) return comparison * sign;
     }
-    return collator.compare(a.title, b.title) * (field === "name" ? sign : 1) || collator.compare(a.key, b.key);
+    return compareGameTitles(a.title, b.title) * (field === "name" ? sign : 1) || collator.compare(a.key, b.key);
   });
 }

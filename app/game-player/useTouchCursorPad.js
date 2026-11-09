@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { moveGameMouse } from "./game-mouse.mjs";
 
-const TOUCH_CURSOR_PAD_MESSAGE_TYPE = "scummweb-touch-cursor-pad";
 const CURSOR_PAD_TRAVEL_RADIUS_PX = 22;
 const CURSOR_PAD_MOVEMENT_SCALE = 0.55;
 const CURSOR_PAD_MAX_DELTA_PX = 12;
@@ -40,25 +40,6 @@ export function useTouchCursorPad({ enabled, frameRef }) {
   const activePointerIdRef = useRef(null);
   const gestureOriginPointRef = useRef(null);
   const lastPointerPointRef = useRef(null);
-
-  function sendCursorPadDelta(deltaX, deltaY) {
-    const frameWindow = frameRef.current?.contentWindow;
-
-    if (!frameWindow) {
-      return;
-    }
-
-    try {
-      frameWindow.postMessage(
-        {
-          type: TOUCH_CURSOR_PAD_MESSAGE_TYPE,
-          deltaX,
-          deltaY,
-        },
-        window.location.origin,
-      );
-    } catch {}
-  }
 
   function resetCursorPad(target = null) {
     if (
@@ -123,7 +104,7 @@ export function useTouchCursorPad({ enabled, frameRef }) {
       const deltaY = clamp(rawDeltaY, -CURSOR_PAD_MAX_DELTA_PX, CURSOR_PAD_MAX_DELTA_PX);
 
       if (deltaX !== 0 || deltaY !== 0) {
-        sendCursorPadDelta(deltaX, deltaY);
+        moveGameMouse(frameRef.current, window.location.origin, deltaX, deltaY);
       }
 
       lastPointerPointRef.current = pointerPoint;

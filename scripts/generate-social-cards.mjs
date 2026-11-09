@@ -9,10 +9,12 @@ import reactPackage from "react/package.json" with { type: "json" };
 import sharp from "sharp";
 import { getBundledGameLibrary } from "../lib/catalog.mjs";
 import { getSocialCardData } from "../lib/social-card-data.mjs";
-import { getGamePresentation } from "../app/game-presentation.js";
+import { getRecognizedGames } from "../app/recognized-games.mjs";
+import { readArtworkFile } from "./artwork-files.mjs";
 
 const rootDir = fileURLToPath(new URL("../", import.meta.url));
-const generatedName = /^[a-z0-9]+(?:-[a-z0-9]+)*-[a-f0-9]{64}\.png$/;
+const generatedName = /^[a-z0-9]+(?:-[a-z0-9]+)*-[a-f0-9]{64}\.(?:jpg|png)$/;
+const maxImageBytes = 600_000;
 const hash = (value) => createHash("sha256").update(value).digest("hex");
 
 async function readOptional(filename) {
@@ -48,7 +50,7 @@ export async function generateSocialCards({
     await assertDirectory(outputDir);
     if (!games) {
       const library = JSON.parse(await fs.readFile(path.join(root, "scummvm-shell/games.json"), "utf8"));
-      games = getBundledGameLibrary(library).games.map((game) => getGamePresentation(game));
+      games = getRecognizedGames(getBundledGameLibrary(library).games);
     }
     const template = await fs.readFile(new URL("./social-card-template.mjs", import.meta.url));
     rendererVersion ??= hash(Buffer.concat([template, Buffer.from(JSON.stringify({
@@ -72,10 +74,11 @@ export async function generateSocialCards({
         const assetRoot = path.join(root, card.artwork.startsWith("/launcher/") ? "scummvm-shell" : "public");
         const assetPath = path.resolve(assetRoot, `.${decodeURIComponent(card.artwork)}`);
         if (!assetPath.startsWith(`${assetRoot}${path.sep}`)) throw new Error("Artwork escapes asset root");
-        artwork = await fs.readFile(assetPath);
+        artwork = card.artwork.startsWith("/launcher/")
+          ? await readArtworkFile(root, card.artwork) : await fs.readFile(assetPath);
       }
       const inputHash = hash(JSON.stringify({ rendererVersion, card, artworkHash: artwork ? hash(artwork) : null }));
-      const file = `${game.slug}-${inputHash}.png`;
+      const file = `${game.slug}-${inputHash}.jpg`;
       const existingPath = path.join(outputDir, file);
       const stat = await fs.lstat(existingPath).catch((error) => {
         if (error.code === "ENOENT") return null;
@@ -91,9 +94,10 @@ export async function generateSocialCards({
     for (const job of jobs) {
       render ??= (await import("./social-card-template.mjs")).renderSocialCard;
       const image = await render(job.card, job.artwork);
-      if (!Buffer.isBuffer(image) || image.length < 24 || image.subarray(0, 8).toString("hex") !== "89504e470d0a1a0a"
-        || image.readUInt32BE(16) !== 1200 || image.readUInt32BE(20) !== 630) {
-        throw new Error(`Invalid 1200x630 PNG for ${job.slug}`);
+      const metadata = Buffer.isBuffer(image) && await sharp(image).metadata().catch(() => null);
+      if (metadata?.format !== "jpeg" || metadata.width !== 1200 || metadata.height !== 630
+        || image.length >= maxImageBytes) {
+        throw new Error(`Invalid 1200x630 JPEG under ${maxImageBytes} bytes for ${job.slug}`);
       }
       await writeAtomic(path.join(outputDir, job.file), image);
       cards[job.slug].imageHash = hash(image);

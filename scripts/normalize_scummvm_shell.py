@@ -22,6 +22,9 @@ guioptions=sndNoMIDI noAspect gameOption1
         ini_path.write_text(ini_text.rstrip() + "\n" + section.lstrip())
 
 allowed_engine_ids = {
+    "adl",
+    "cge",
+    "cge2",
     "dreamweb",
     "sky",
     "queen",

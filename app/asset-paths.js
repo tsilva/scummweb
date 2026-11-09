@@ -1,4 +1,7 @@
 import sourceInfo from "../scummvm-shell/source-info.json" with { type: "json" };
+import runtimeAssets from "../scummvm-shell/runtime-version.json" with { type: "json" };
+import iconVersions from "../image-assets/icon-versions.json" with { type: "json" };
+import { artworkUrl } from "../lib/artwork-storage.mjs";
 
 function sanitizeAssetVersion(rawVersion) {
   return rawVersion.replace(/[^a-zA-Z0-9._-]+/g, "-");
@@ -11,7 +14,7 @@ function getRawAssetVersion() {
     process.env.VERCEL_DEPLOYMENT_ID ||
     process.env.VERCEL_URL ||
     process.env.VERCEL_GIT_COMMIT_SHA ||
-    "dev"
+    runtimeAssets.version
   );
 }
 
@@ -20,13 +23,19 @@ export const scummvmAssetVersion = sanitizeAssetVersion(
   rawAssetVersion === "dev" ? `dev-${sourceInfo.generated_at_utc}` : rawAssetVersion
 );
 
+export function getAssetVersion(assetPath) {
+  return iconVersions[assetPath] || runtimeAssets.files[assetPath] || scummvmAssetVersion;
+}
+
 function appendAssetVersion(url) {
   url.searchParams.delete("v");
-  url.searchParams.append("v", scummvmAssetVersion);
+  url.searchParams.append("v", getAssetVersion(url.pathname));
   return url;
 }
 
 export function buildVersionedAssetPath(assetPath, options = {}) {
+  const artwork = artworkUrl(assetPath);
+  if (artwork !== assetPath) return artwork;
   if (!assetPath || !assetPath.startsWith("/")) {
     return assetPath;
   }

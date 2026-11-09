@@ -1,0 +1,90 @@
+diff --git a/engines/pegasus/pegasus.cpp b/engines/pegasus/pegasus.cpp
+--- a/engines/pegasus/pegasus.cpp
++++ b/engines/pegasus/pegasus.cpp
+@@ -737,7 +744,26 @@
+ }
+ 
++#ifdef __EMSCRIPTEN__
++Common::String PegasusEngine::getSaveStateName(int slot) const {
++	if (_agentControlBoundary)
++		return Common::String::format("pegasus-AgentSCUMM %d.sav", slot);
++	return Engine::getSaveStateName(slot);
++}
++#endif
++
+ Common::Error PegasusEngine::loadGameState(int slot) {
+-	Common::StringArray fileNames = listSaveFiles();
+-	Common::InSaveFile *loadFile = _saveFileMan->openForLoading(fileNames[slot]);
++	Common::String filename;
++#ifdef __EMSCRIPTEN__
++	if (_agentControlBoundary) {
++		filename = getSaveStateName(slot);
++	} else
++#endif
++	{
++		const Common::StringArray fileNames = listSaveFiles();
++		if (slot < 0 || slot >= int(fileNames.size()))
++			return Common::kReadingFailed;
++		filename = fileNames[slot];
++	}
++	Common::InSaveFile *loadFile = _saveFileMan->openForLoading(filename);
+ 	if (!loadFile)
+ 		return Common::kUnknownError;
+@@ -768,4 +794,8 @@
+ 
+ 	Common::String output = Common::String::format("pegasus-%s.sav", saveName.c_str());
++#ifdef __EMSCRIPTEN__
++	if (_agentControlBoundary)
++		output = getSaveStateName(slot);
++#endif
+ 	Common::OutSaveFile *saveFile = _saveFileMan->openForSaving(output, false);
+ 	if (!saveFile)
+@@ -773,7 +803,9 @@
+ 
+ 	bool valid = writeToStream(saveFile, kNormalSave);
++	saveFile->finalize();
++	valid = valid && !saveFile->err();
+ 	delete saveFile;
+ 
+-	return valid ? Common::kNoError : Common::kUnknownError;
++	return valid ? Common::kNoError : Common::kWritingFailed;
+ }
+ 
+diff --git a/engines/pegasus/pegasus.h b/engines/pegasus/pegasus.h
+--- a/engines/pegasus/pegasus.h
++++ b/engines/pegasus/pegasus.h
+@@ -80,4 +80,7 @@
+ 	bool canLoadGameStateCurrently(Common::U32String *msg = nullptr) override;
+ 	bool canSaveGameStateCurrently(Common::U32String *msg = nullptr) override;
++#ifdef __EMSCRIPTEN__
++	Common::String getSaveStateName(int slot) const override;
++#endif
+ 	Common::Error loadGameState(int slot) override;
+ 	Common::Error saveGameState(int slot, const Common::String &desc, bool isAutosave = false) override;
+@@ -266,4 +269,7 @@
+ 	void showSaveFailedDialog(const Common::Error &status);
+ 	bool _saveRequested, _loadRequested;
++#ifdef __EMSCRIPTEN__
++	bool _agentControlBoundary = false;
++#endif
+ 
+ 	// Misc.
+diff --git a/engines/pegasus/interface.cpp b/engines/pegasus/interface.cpp
+--- a/engines/pegasus/interface.cpp
++++ b/engines/pegasus/interface.cpp
+@@ -636,4 +636,7 @@
+ 
+ void Interface::lowerInventoryDrawerSync() {
++	if (!_inventoryUp)
++		return;
++
+ 	lowerInventoryDrawer(false);
+ 
+@@ -684,4 +687,7 @@
+ 
+ void Interface::lowerBiochipDrawerSync() {
++	if (!_biochipUp)
++		return;
++
+ 	lowerBiochipDrawer(false);
+ 

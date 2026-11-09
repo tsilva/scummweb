@@ -1,58 +1,106 @@
 "use client";
 
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import HeroStage from "./hero-stage";
-import { getHeroPreloadImages } from "./hero-images.mjs";
-import { getGameFamilyKey } from "../game-versions.mjs";
-import { readHeroSelection } from "./hero-selection.mjs";
+import { getHeroPreloadImages, HERO_PRELOAD_AHEAD } from "./hero-images.mjs";
+import { useArtworkDelivery } from "./artwork-delivery";
+import { chooseGameVersion, getGameFamilyKey, readChosenVersion, rememberGameVersion } from "../game-versions.mjs";
+import { orderHeroGroups } from "./hero-order.mjs";
+import { buildGameExitHref } from "./hero-selection.mjs";
+import { useGameNavigation } from "./game-navigation";
+import { initialActionState, rememberInitialActions } from "./initial-actions.mjs";
+import { focusHeroAction } from "./directional-navigation";
 
 const SLIDE_DURATION_MS = 8000;
+const EXPAND_PRELOAD_WINDOW_MS = 1500;
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+const MOBILE_QUERY = "(max-width: 48rem)";
 
-export default function HomeHero({ groups, featuredGame }) {
+export default function HomeHero({ groups, featuredGame, isHomePage = true, selection = null, navigationId = 0,
+  loadingSources = false, pendingSourceGroups = [], notice }) {
+  const artwork = useArtworkDelivery();
+  const router = useRouter();
+  const selectGame = useGameNavigation();
   const featuredKey = getGameFamilyKey(featuredGame) || `catalog:${featuredGame.target}`;
-  const ordered = [...groups.filter(({ key }) => key === featuredKey), ...groups.filter(({ key }) => key !== featuredKey)];
-  const slides = ordered.map((group) => ({ id: group.key, game: group.game,
-    action: group.versions.length > 1 ? {
-      dialogId: group.dialogId,
-      label: `Choose a version of ${group.title}`,
-      onClick: () => { window.location.hash = group.dialogId; },
-    } : group.versions[0].action,
-  }));
+  const slides = orderHeroGroups(groups).map((group) => ({ ...group, id: group.key }));
   const slideCount = slides.length;
-  const [selectedId, setSelectedId] = useState(null);
-  const [requestedId, setRequestedId] = useState(null);
-  const slideIndex = Math.max(0, slides.findIndex(({ id }) => id === (selectedId ?? requestedId)));
+  const routeKey = `${isHomePage}:${featuredKey}:${selection}:${navigationId}`;
+  const [selectedSlide, setSelectedSlide] = useState(null);
+  const [mobileHero, setMobileHero] = useState(null);
+  const isMobile = mobileHero?.matches ?? false;
+  const selectedId = selectedSlide?.routeKey === routeKey ? selectedSlide.id : null;
+  const requestedId = selection;
+  const slideIndex = Math.max(0, slides.findIndex(({ id }) => id === (selectedId ?? requestedId ?? featuredKey)));
+  const currentSlide = slides[slideIndex];
+  const [chosen, setChosen] = useState(null);
+  const versionKeys = JSON.stringify(currentSlide.versions.map(({ key, status }) => [key, status]));
+  const version = chooseGameVersion(currentSlide.versions, chosen?.group === currentSlide.id ? chosen.key : null);
+  useLayoutEffect(() => {
+    const language = new Intl.DisplayNames(["en"], { type: "language" }).of(navigator.language.split("-")[0]);
+    const preferred = chooseGameVersion(currentSlide.versions, readChosenVersion(currentSlide.id), language);
+    setChosen({ group: currentSlide.id, key: preferred.key, versionKeys });
+  }, [currentSlide.id, versionKeys]);
+  const actionsReady = !loadingSources && !pendingSourceGroups.includes(currentSlide.id)
+    && chosen?.group === currentSlide.id && chosen.versionKeys === versionKeys;
+  const initialActions = initialActionState(currentSlide.id, version, currentSlide.versions);
+  const initialActionsKey = JSON.stringify(initialActions);
+  useLayoutEffect(() => {
+    if (actionsReady) rememberInitialActions(JSON.parse(initialActionsKey));
+  }, [actionsReady, initialActionsKey]);
+  useLayoutEffect(() => {
+    if (actionsReady && navigationId && document.documentElement.hasAttribute("data-dpad-navigation") &&
+      document.activeElement?.matches(".poster-card, .landscape-card")) focusHeroAction();
+  }, [actionsReady, navigationId]);
   const preloadedImages = useRef(new Map());
-  const preloadKey = JSON.stringify(getHeroPreloadImages(slides, slideIndex));
-  const [rotationPaused, setRotationPaused] = useState(null);
+  const [rotation, setRotation] = useState(null);
+  const rotationPaused = rotation?.routeKey === routeKey ? rotation.paused : null;
+  function setRotationPaused(paused) { setRotation({ routeKey, paused }); }
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [isPageVisible, setIsPageVisible] = useState(false);
   const [hasPointer, setHasPointer] = useState(false);
   const [hasFocus, setHasFocus] = useState(false);
-  const isPaused = rotationPaused ?? prefersReducedMotion;
-  const isCountingDown = isPageVisible && !isPaused && !hasPointer && !hasFocus;
+  const [warmDistantSlides, setWarmDistantSlides] = useState(false);
+  const isDesktop = mobileHero?.matches === false;
+  const preloadKey = JSON.stringify(isDesktop
+    ? getHeroPreloadImages(slides, slideIndex, warmDistantSlides ? HERO_PRELOAD_AHEAD : 1, artwork) : []);
+  const isPaused = rotationPaused ?? (!isHomePage || Boolean(requestedId) || prefersReducedMotion);
+  const isCountingDown = !isMobile && isPageVisible && !isPaused && !hasPointer && !hasFocus;
 
   useEffect(() => {
-    const syncSelection = () => {
-      const requested = readHeroSelection(window.location.hash);
-      if (!requested) return;
-      setRequestedId(requested);
-      setSelectedId(null);
-    };
-    syncSelection();
-    window.addEventListener("hashchange", syncSelection);
-    return () => window.removeEventListener("hashchange", syncSelection);
+    const query = window.matchMedia(MOBILE_QUERY);
+    const update = () => setMobileHero({ matches: query.matches });
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
   }, []);
+
+  useEffect(() => {
+    if (!isDesktop || warmDistantSlides) return;
+    // Keep adjacent navigation ready and give the initial backdrop a head start.
+    const timeout = window.setTimeout(() => setWarmDistantSlides(true), EXPAND_PRELOAD_WINDOW_MS);
+    return () => window.clearTimeout(timeout);
+  }, [isDesktop, warmDistantSlides]);
 
   useEffect(() => {
     const nextImages = new Map();
     for (const props of JSON.parse(preloadKey)) {
       const key = JSON.stringify(props);
-      let image = preloadedImages.current.get(key);
-      if (!image) {
-        image = new Image();
+      let picture = preloadedImages.current.get(key);
+      if (!picture) {
+        picture = document.createElement("picture");
+        picture.hidden = true;
+        if (props.avifSrcSet) {
+          const source = document.createElement("source");
+          source.type = "image/avif";
+          source.sizes = props.sizes;
+          source.srcset = props.avifSrcSet;
+          picture.append(source);
+        }
+        const image = new Image();
+        picture.append(image);
+        document.body.append(picture);
         image.decoding = "async";
         image.fetchPriority = "low";
         image.sizes = props.sizes;
@@ -61,12 +109,18 @@ export default function HomeHero({ groups, featuredGame }) {
         // Decode offscreen, keeping these images alive until they leave the window.
         void image.decode().catch(() => {});
       }
-      nextImages.set(key, image);
+      nextImages.set(key, picture);
+    }
+    for (const [key, picture] of preloadedImages.current) {
+      if (!nextImages.has(key)) picture.remove();
     }
     preloadedImages.current = nextImages;
   }, [preloadKey]);
 
-  useEffect(() => () => preloadedImages.current.clear(), []);
+  useEffect(() => () => {
+    for (const picture of preloadedImages.current.values()) picture.remove();
+    preloadedImages.current.clear();
+  }, []);
 
   useEffect(() => {
     const query = window.matchMedia(REDUCED_MOTION_QUERY);
@@ -85,16 +139,21 @@ export default function HomeHero({ groups, featuredGame }) {
     return () => document.removeEventListener("visibilitychange", updateVisibility);
   }, []);
 
-  function advanceSlide(direction) {
-    setSelectedId(slides[(slideIndex + direction + slideCount) % slideCount].id);
+  function advanceSlide(direction, navigate = true) {
+    const next = slides[(slideIndex + direction + slideCount) % slideCount];
+    setSelectedSlide({ routeKey, id: next.id });
+    if (navigate) {
+      setRotationPaused(true);
+      if (!selectGame?.(next.game)) router.push(buildGameExitHref(next.game), { scroll: false });
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
   }
 
-  const currentSlide = slides[slideIndex];
   const RotationIcon = isPaused ? Play : Pause;
 
   return (
     <HeroStage
-      carouselProps={slideCount > 1 ? {
+      carouselProps={!isMobile && slideCount > 1 ? {
         "aria-label": "Game slideshow",
         "aria-roledescription": "carousel",
         onPointerOver: (event) => setHasPointer(
@@ -108,7 +167,7 @@ export default function HomeHero({ groups, featuredGame }) {
           }
         },
       } : undefined}
-      controls={slideCount > 1 ? (
+      controls={!isMobile && slideCount > 1 ? (
         <div className="hero-carousel-controls" role="group" aria-label="Slideshow controls">
           <button type="button" aria-label="Previous game" onClick={() => advanceSlide(-1)}>
             <ChevronLeft size={18} aria-hidden="true" />
@@ -141,17 +200,29 @@ export default function HomeHero({ groups, featuredGame }) {
                   animationDuration: `${SLIDE_DURATION_MS}ms`,
                   animationPlayState: isCountingDown ? "running" : "paused",
                 }}
-                onAnimationEnd={() => advanceSlide(1)}
+                onAnimationEnd={() => advanceSlide(1, false)}
               />
             </svg>
             <RotationIcon size={15} fill="currentColor" aria-hidden="true" />
           </button>
         </div>
       ) : null}
-      featuredGame={currentSlide.game}
-      sourceAction={currentSlide.action}
-      isHomePage
-      isInitialSlide={slideIndex === 0 && requestedId !== currentSlide.id}
+      featuredGame={{ ...version.game, genre: currentSlide.game.genre ?? version.game.genre }}
+      actionsReady={actionsReady}
+      initialActions={initialActions}
+      sourceAction={version.source ? undefined : version.action}
+      sourceVersion={version.source ? version : undefined}
+      versions={currentSlide.versions}
+      selectedVersionKey={version.key}
+      onVersionChange={(key) => {
+        setChosen({ group: currentSlide.id, key, versionKeys });
+        rememberGameVersion(currentSlide.id, key);
+        setRotationPaused(true);
+      }}
+      onLaunch={() => rememberGameVersion(currentSlide.id, version.key)}
+      notice={notice}
+      isHomePage={isHomePage}
+      isInitialSlide={!selectedId && !requestedId}
     />
   );
 }
