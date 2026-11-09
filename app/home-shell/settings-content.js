@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Check, ChevronDown, Download, Info, Save, Upload } from "lucide-react";
 import { readGameSources } from "../game-sources.mjs";
+import "../styles/settings-details.css";
 
 const formatSaveCount = (count) => `${count} save ${count === 1 ? "file" : "files"}`;
 
