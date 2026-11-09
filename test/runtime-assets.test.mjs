@@ -39,7 +39,7 @@ test("hosting headers hint published artwork and cache exact runtime versions", 
   const artworkStorage = { published: true, origin: "https://artwork.example.test" };
   const configUrl = new URL("../next.config.js", import.meta.url);
   function require(name) {
-    if (name === "@sentry/nextjs") return { withSentryConfig: (config) => config };
+    if (name === "@sentry/nextjs/config") return { withSentryConfig: (config) => config };
     if (name.includes("artwork-storage")) return artworkStorage;
     if (name.includes("social-cards")) return { cards: {} };
     if (name.includes("runtime-assets")) return runtime;

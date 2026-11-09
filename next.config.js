@@ -1,4 +1,4 @@
-const { withSentryConfig } = require("@sentry/nextjs");
+const { withSentryConfig } = require("@sentry/nextjs/config");
 const artworkStorage = require("./data/artwork-storage.json");
 const socialCards = require("./data/social-cards.json");
 const runtimeAssets = require("./scummvm-shell/runtime-assets.json");
