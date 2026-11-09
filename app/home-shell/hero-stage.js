@@ -53,7 +53,7 @@ export default function HeroStage({
       <section className={`hero-stage hero-stage-library ${featuredGame.tone}`} id="browse" {...carouselProps}>
         <div className="hero-backdrop">
           <DecorativeImage className="hero-backdrop-image"
-            decoding={isInitialSlide ? "sync" : "async"}
+            decoding={isInitialSlide && !isHomePage ? "sync" : "async"}
             fetchPriority={isInitialSlide ? "high" : undefined} loading="eager"
             {...backdrop} style={getHeroImageStyle(featuredGame.heroImagePosition, featuredGame.heroImageMobilePosition)} />
         </div>
