@@ -275,6 +275,17 @@ export default function GameRouteFrame({
   }, [immersiveMode.isMobileViewport, usesCommandInput]);
 
   useLayoutEffect(() => {
+    const keyboard = navigator.virtualKeyboard;
+    if (!usesCommandInput || !immersiveMode.isMobileViewport || !keyboard) return;
+
+    // Android may still be applying the keyboard inset after the form closes.
+    // Keep the viewport policy stable for the player, including during dismissal.
+    const previousOverlaysContent = keyboard.overlaysContent;
+    keyboard.overlaysContent = true;
+    return () => { keyboard.overlaysContent = previousOverlaysContent; };
+  }, [immersiveMode.isMobileViewport, usesCommandInput]);
+
+  useLayoutEffect(() => {
     const viewport = window.visualViewport;
     const keyboard = navigator.virtualKeyboard;
     const shell = shellRef.current;
@@ -282,8 +293,6 @@ export default function GameRouteFrame({
 
     // Chromium can report the keyboard directly, even when it overlays the
     // fullscreen player. Other browsers expose the space it leaves visible.
-    const previousOverlaysContent = keyboard?.overlaysContent;
-    if (keyboard) keyboard.overlaysContent = true;
     const initialHeight = viewport?.height ?? window.innerHeight;
     let keyboardWasVisible = false;
     function positionCommandField() {
@@ -306,7 +315,6 @@ export default function GameRouteFrame({
     viewport?.addEventListener("scroll", positionCommandField);
     return () => {
       keyboard?.removeEventListener("geometrychange", positionCommandField);
-      if (keyboard) keyboard.overlaysContent = previousOverlaysContent;
       viewport?.removeEventListener("resize", positionCommandField);
       viewport?.removeEventListener("scroll", positionCommandField);
       shell.style.removeProperty("--game-command-inset");
