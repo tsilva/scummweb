@@ -1,4 +1,3 @@
-import { scanLocalGameArchive } from "./local-game-archive.mjs";
 import { gameFileFingerprint } from "./local-game-matching.mjs";
 
 export function fileNode(file) {
@@ -84,6 +83,7 @@ export async function prepareLocalZip(node) {
   if (node.kind === "error") throw node.error;
   if (node.kind !== "file") throw new Error("Only ZIP files containing ScummVM games are supported. Choose a game ZIP.");
   const file = await node.getFile();
+  const { scanLocalGameArchive } = await import("./local-game-archive.mjs");
   const files = await scanLocalGameArchive(file);
   const fingerprint = await gameFileFingerprint("zip", files);
   return { name: file.name, handle: node.handle, data: file, kind: "zip", fingerprint, archiveFiles: files };
@@ -95,7 +95,7 @@ export async function inspectLocalSourceFiles(source, cache) {
   const file = await source.handle.getFile();
   const previous = cache.get(source);
   if (previous?.size === file.size && previous.modified === file.lastModified) return previous.files;
-  const files = scanLocalGameArchive(file);
+  const files = import("./local-game-archive.mjs").then(({ scanLocalGameArchive }) => scanLocalGameArchive(file));
   cache.set(source, { size: file.size, modified: file.lastModified, files });
   return files;
 }
