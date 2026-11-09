@@ -36714,6 +36714,14 @@
       "contentType": "image/webp",
       "width": 960,
       "height": 576
+    },
+    "/launcher/responsive/sky-scummweb-generated-2026-11-05-r1-hero-1440.avif": {
+      "key": "artwork/427b75d3f4dd1a919244e36a7836637f61341b324e081cc7ccb946f19e7e136a/sky-scummweb-generated-2026-11-05-r1-hero-1440.avif",
+      "sha256": "427b75d3f4dd1a919244e36a7836637f61341b324e081cc7ccb946f19e7e136a",
+      "bytes": 82793,
+      "contentType": "image/avif",
+      "width": 1440,
+      "height": 864
     }
   },
   "images": {
@@ -48866,6 +48874,7 @@
         "/launcher/responsive/sky-scummweb-generated-2026-11-05-r1-hero-640.avif",
         "/launcher/responsive/sky-scummweb-generated-2026-11-05-r1-hero-960.avif",
         "/launcher/responsive/sky-scummweb-generated-2026-11-05-r1-hero-1280.avif",
+        "/launcher/responsive/sky-scummweb-generated-2026-11-05-r1-hero-1440.avif",
         "/launcher/optimized/sky-scummweb-generated-2026-11-05-r1-hero.avif"
       ]
     },

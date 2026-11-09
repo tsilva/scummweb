@@ -24,7 +24,11 @@ export function getArtworkImageProps(src, role = "gallery", manifest = artworkSt
   const image = manifest.images?.[logical];
   if (!image) return { src };
   const aspect = image.width / image.height;
-  const sizes = role === "hero" ? `max(103vw, ${Math.ceil(103 * aspect)}svh)`
+  const heroSizes = `max(103vw, ${Math.ceil(103 * aspect)}svh)`;
+  // The wide library layout has a 5rem inset above its unscaled cover image.
+  const sizes = role === "library-hero"
+    ? `(min-width: 64.001rem) and (min-height: 50.001rem) max(100vw, calc((100svh - 5rem) * ${aspect})), ${heroSizes}`
+    : role === "hero" ? heroSizes
     : role === "detail" ? `max(min(100vw, 82rem), ${Math.ceil(62 * aspect)}vh)`
     : role === "poster" ? getPosterSizes(aspect)
     : role === "landscape" ? "min(21.25rem, 84vw)"
