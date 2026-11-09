@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-09T12:48:18.624086Z",
+  "generated_at_utc": "2026-11-09T13:44:27.894351Z",
   "scummvm": {
     "version": "v2026.4.0",
     "commit": "7d2709da5136866589f7602f5f5a7b17de03420e",
@@ -8,10 +8,10 @@
   "corresponding_source": {
     "page": "/doc/scummvm-source.html",
     "archive": "/doc/scummvm-source.zip",
-    "archive_sha256": "c9b3a6bd217e6334df48157528ff0369ed72d955b449e009a6e6268e9334eaab",
+    "archive_sha256": "16ce851615dd0013290f1c0a13fd5300721cfb7f5cf066355ac2cfd51f0e48cf",
     "runtime_sha256": {
-      "scummvm.wasm": "13abd7fd7b4eb826599ef5bcc21fde8708c3eb53f91838e5cea68ad198b04dfb",
-      "scummvm.js": "656fa072c116ede763c0cd3a25e3f36eacdabfdbc3925c34bdab53b13ca6dd39",
+      "scummvm.wasm": "a38f08e83d38b0275d7fcbf5132c22930933662722c40301d59191b9fa0888a3",
+      "scummvm.js": "6263c607188d367b91a44e3636e1fdb295b95cb30e10483f773ed80ed7a1c389",
       "data/plugins/libaccess.so": "334420deade17bc5db702ecfe4ba6102dfe2475139fc3cdc7536e7b2a6895d70",
       "data/plugins/libadl.so": "49f7fe02c75c539bf9ac472b4b93d81754ec7bc0db38a4a4ba5c72cdf9672cb2",
       "data/plugins/libagi.so": "a46cb31189c3cbe7139a73b7612eb26c46c2d3156556270cf41c19a133d5f002",

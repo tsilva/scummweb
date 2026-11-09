@@ -123,8 +123,10 @@ ZIP name is unrecognized. Individual indexed files are checked for existence,
 size and modification time, so deleting the newest save can expose an older
 valid one. Changed or previously unindexed games use a serialized background
 native query. A launch cancels pending queries. An unrecognized import gains its
-detected identity on launch. Queries use temporary configuration, never rewrite
-player targets, and never start a game. Imported file access remains required;
+detected identity on launch. Queries use the target's engine metadata plugin
+after initializing the web backend. The temporary configuration lets the query
+read saves without mounting game files, detecting an edition, or rewriting
+player targets. Imported file access remains required;
 checks on unrelated sources do not block the hero's selected launch action.
 
 The native output owner records pending filenames before opening a save and
