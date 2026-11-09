@@ -627,6 +627,21 @@
         "Save Woodruff in the first playable street, walk or change a scene, and restore the previous gameplay state."
       ],
       "retire_when": "Upstream exposes Woodruff’s script callbacks as native runtime checkpoints."
+    },
+    {
+      "path": "patches/scummvm/40-preserve-nippon-location-keys.patch",
+      "status": "active",
+      "sha256": "18a114017c780b70b2c33f417cf20a1b4450a60c993dcc7731d71724cfc6b61c",
+      "purpose": "Keep Nippon Safes visited-room keys intact so a prison restore does not replay its first-visit prompt.",
+      "invariants": [
+        "Keep the original save layout and migrate the legacy estcarcer key while reading it.",
+        "Preserve the first-visit prompt in new games and leave The Big Red Adventure's location keys unchanged."
+      ],
+      "verification": [
+        "At Tyoko Prison, save, walk away and load while paused. The load must return without a click and restore the original position.",
+        "Load a save with the old truncated prison key and verify the same behavior."
+      ],
+      "retire_when": "Upstream stores full Nippon location keys and reads existing truncated prison keys."
     }
   ]
 }

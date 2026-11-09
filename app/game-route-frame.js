@@ -779,6 +779,7 @@ export default function GameRouteFrame({
   return (
     <div className={`game-route-shell${showCommandInput ? " has-command-input" : ""}`} ref={shellRef}>
       <GameBootOverlay
+        archiveBytes={loadArchive && !archivePrepared && !archiveCached ? archiveProgress?.loaded : undefined}
         bootStatusText={archiveError || (loadArchive && !archivePrepared
           ? archiveCached ? "Opening cached game…" : archiveProgress === null ? archiveLoadingText : gameLoadingStatus(archiveProgress)
           : bootState.bootStatusText)}
