@@ -63,6 +63,7 @@ test("rejects incomplete save-slot configs", () => {
 test("catalog intro checkpoints match their rebuild overrides and ship intact", async () => {
   const { readFile, readdir } = await import("node:fs/promises");
   const { createHash } = await import("node:crypto");
+  const { gunzipSync } = await import("node:zlib");
   const shell = new URL("../scummvm-shell/", import.meta.url);
   const library = JSON.parse(await readFile(new URL("games.json", shell), "utf8"));
   const overrides = JSON.parse(await readFile(new URL("../launcher-game-overrides.json", import.meta.url), "utf8"));
@@ -83,6 +84,14 @@ test("catalog intro checkpoints match their rebuild overrides and ship intact", 
       const assetPath = `/launcher/skip-intro/${game.target}/${file}`;
       const bytes = await readFile(new URL(assetPath.slice(1), shell));
       assert.ok(bytes.length > 0, `${assetPath}: checkpoint must not be empty`);
+      if (file.endsWith(".gsv")) assert.doesNotThrow(() => gunzipSync(bytes), `${assetPath}: complete compressed save`);
+      if (game.target === "qfi-demo") {
+        assert.equal(bytes.toString("ascii", 0, 4), "RGMH");
+        const thumbnailStart = bytes.readUInt32LE(8) + Number(bytes.readBigUInt64LE(12));
+        const thumbnailSize = bytes.readUInt32LE(20);
+        assert.equal(bytes.toString("ascii", thumbnailStart, thumbnailStart + 2), "BM");
+        assert.equal(thumbnailStart + thumbnailSize, bytes.length, `${assetPath}: complete AGS save and thumbnail`);
+      }
       assert.equal(manifest.files[assetPath],
         `sha-${createHash("sha256").update(bytes).digest("hex").slice(0, 24)}`,
         `${assetPath}: served bytes must match their immutable asset fingerprint`);
@@ -131,6 +140,7 @@ test("intro checkpoint staging reuses equal bytes and protects an existing playe
     ["qfi-demo.098", Uint8Array.of(2, 3)],
     ["companion.098", Uint8Array.of(5)],
   ];
+  const retired = Uint8Array.of(1);
   async function stage(existing) {
     const files = new Map(existing);
     const writes = [];
@@ -140,6 +150,8 @@ test("intro checkpoint staging reuses equal bytes and protects an existing playe
       getConfiguredSavePath: () => "/saves",
       ensureDirectory() {},
       buildVersionedAssetUrl: (url) => url,
+      __scummwebIsRetiredIntroCheckpoint: async (target, name, bytes) =>
+        target === "qfi-demo" && name === "qfi-demo.098" && bytes === retired,
       console: { error() {} },
       FS: {
         analyzePath: (name) => ({ exists: files.has(name) }),
@@ -163,4 +175,9 @@ test("intro checkpoint staging reuses equal bytes and protects an existing playe
   await existing.result;
   assert.deepEqual(existing.writes, ["/saves/companion.098"]);
   assert.equal(existing.files.get("/saves/qfi-demo.098"), seeds[0][1]);
+
+  const repair = await stage([["/saves/qfi-demo.098", retired]]);
+  await repair.result;
+  assert.deepEqual(repair.writes, ["/saves/qfi-demo.098", "/saves/companion.098"]);
+  assert.notEqual(repair.files.get("/saves/qfi-demo.098"), retired);
 });

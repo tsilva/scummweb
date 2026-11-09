@@ -3,6 +3,18 @@
 export const saveIndexPrefix = "scummweb.continue.v1:";
 export const defaultSavePath = "/home/web_user/.local/share/scummvm/saves";
 const supportedEngines = new Set("access adl agi ags bbvs cge cge2 cine cruise draci drascula dreamweb freescape glk gnap got groovie hopkins hugo kyra lab lure mads mohawk mortevielle neverhood ngi pegasus queen saga sci scumm sherlock sky sword1 sword2 teenagent tinsel titanic toltecs tony toon touche tsage tucker voyeur wintermute zvision".split(" "));
+const retiredIntroCheckpoints = new Map([
+  ["monkey4-demo/efmi090.gsv", "bd8aa04ec9ebe0745830124ddd6cc50c67aa7c2dd18166c0e6cdee7c3a958dad"],
+  ["qfi-demo/qfi-demo.098", "3dbd22f47c355795c96fcef11b2bb2aab5a84841b7b3b8f601715162d67c0b9c"],
+]);
+
+// Only the exact incomplete checkpoints from the original release may be replaced.
+export async function isRetiredIntroCheckpoint(target, name, bytes) {
+  const expected = retiredIntroCheckpoints.get(`${target}/${name}`);
+  if (!expected || bytes.length !== 150006 || !globalThis.crypto?.subtle) return false;
+  const digest = new Uint8Array(await globalThis.crypto.subtle.digest("SHA-256", bytes));
+  return Array.from(digest, (byte) => byte.toString(16).padStart(2, "0")).join("") === expected;
+}
 
 export function supportsContinue(engineId, gameId, extra = "") {
   return supportedEngines.has(engineId)
@@ -199,7 +211,14 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
         try {
           const response = await scope.fetch(assetUrl(`launcher/skip-intro/${encodeURIComponent(target)}/${encodeURIComponent(name)}`));
           if (!response.ok) throw new Error("Checkpoint unavailable");
-          checkpoints.set(name, new Uint8Array(await response.arrayBuffer()));
+          let checkpoint = new Uint8Array(await response.arrayBuffer());
+          if (retiredIntroCheckpoints.has(`${target}/${name}`)) {
+            try {
+              const existing = FS.readFile(`${savePath}/${name}`);
+              if (await isRetiredIntroCheckpoint(target, name, existing)) checkpoint = existing;
+            } catch { /* Missing saved file or unavailable digest. */ }
+          }
+          checkpoints.set(name, checkpoint);
         } catch {
           // Fail closed for a checkpoint slot when its provenance is unknown.
           checkpoints.set(name, null);

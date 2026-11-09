@@ -106,12 +106,12 @@ window.ScummvmFSReady = (async () => {
   const moduleUrl = new URL(buildVersionedAssetUrl("./scummvm_fs.js"));
   const { LocalGameFS, ScummvmFS, loadFilesystemIndex } = await import(moduleUrl);
   const isLocalGame = window.parent !== window && params.get("localGame") === "1";
-  const mounts = isLocalGame ? ["data"] : ["games", "data"];
+  const mounts = isLocalGame || params.has("saveQuery") ? ["data"] : ["games", "data"];
   const filesystems = await Promise.all(mounts.map(async (name) => {
     const index = await loadFilesystemIndex(name);
     performance.mark(`scummweb:index:${name}`);
     const filesystem = new ScummvmFS(null, index);
-    const engine = params.get("engine");
+    const engine = params.get("saveEngine") || params.get("engine");
     if (name === "data") {
       // These headers/themes are read by the native GUI before any game frame.
       // Fetch only the translation prefix that startup consumes.
@@ -320,18 +320,25 @@ function setupSkipIntroSaves() {
               return { fileName: trimmedFileName, bytes: new Uint8Array(buffer) };
             });
         })
-      ).then((seededFiles) => {
+      ).then(async (seededFiles) => {
         const seeds = seededFiles.filter(Boolean);
-        const missing = seeds.filter(({ fileName, bytes }) => {
+        const writes = [];
+        for (const seed of seeds) {
+          const { fileName, bytes } = seed;
           const filePath = `${savePath}/${fileName}`;
-          if (!FS.analyzePath(filePath).exists) return true;
-          const existing = FS.readFile(filePath);
-          if (existing.length !== bytes.length || !existing.every((byte, index) => byte === bytes[index])) {
-            throw new Error(`Intro checkpoint conflicts with an existing save: ${fileName}`);
+          if (!FS.analyzePath(filePath).exists) {
+            writes.push(seed);
+            continue;
           }
-          return false;
-        });
-        for (const { fileName, bytes } of missing) FS.writeFile(`${savePath}/${fileName}`, bytes);
+          const existing = FS.readFile(filePath);
+          if (existing.length === bytes.length && existing.every((byte, index) => byte === bytes[index])) continue;
+          if (await globalThis.__scummwebIsRetiredIntroCheckpoint(skipIntroTarget, fileName, existing)) {
+            writes.push(seed);
+            continue;
+          }
+          throw new Error(`Intro checkpoint conflicts with an existing save: ${fileName}`);
+        }
+        for (const { fileName, bytes } of writes) FS.writeFile(`${savePath}/${fileName}`, bytes);
         globalThis.__scummwebSkipIntroSeedStatus = {
           state: "ready",
           target: skipIntroTarget,

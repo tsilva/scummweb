@@ -123,10 +123,10 @@ ZIP name is unrecognized. Individual indexed files are checked for existence,
 size and modification time, so deleting the newest save can expose an older
 valid one. Changed or previously unindexed games use a serialized background
 native query. A launch cancels pending queries. An unrecognized import gains its
-detected identity on launch. Queries use the target's engine metadata plugin
-after initializing the web backend. The temporary configuration lets the query
-read saves without mounting game files, detecting an edition, or rewriting
-player targets. The player and query index bundled saves by the native target,
+detected identity on launch. The query uses the target's metadata plugin after
+initializing the backend and graphics overlay. The temporary configuration lets it read
+saves without mounting game files, detecting an edition, or rewriting player
+targets. The player and query index bundled saves by the native target,
 including when a demo's archive has a different name. The current runtime
 rechecks empty AGS indexes from older runtimes once, even when the save files
 have the same revision. Imported file access remains required. Checks on
@@ -345,8 +345,9 @@ selection. The three Zork games start at the command prompt.
 The Atlantis, Curse of Monkey Island, Grim Fandango, and Escape from Monkey
 Island demos use native debugger checkpoints captured before the first player
 decision. Quest for Infamy resumes at the Volksville entrance from an original
-in-game save. The launcher checks checkpoint bytes before writing so an occupied
-slot can never replace a player save.
+in-game save. The launcher checks checkpoint bytes before writing. It can
+replace the exact incomplete checkpoints from the original release and
+protects a slot containing player progress.
 
 Nippon Safes uses the native `boot-param` strategy (`bootParam: 1`) through
 patch 17 to skip the story while retaining its language and character choices.
