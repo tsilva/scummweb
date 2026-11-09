@@ -57,3 +57,5 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 ## Secrets
 
 Local builds skip Sentry source-map uploads. Default dev uses Infisical scummweb Development / for the Sentry smoke test. Storage and OpenRouter values remain isolated from the web process. Production uses scummweb-production Production / and an explicit pinned manual sync command followed by redeployment. Never print or upload private values; retain Keychain originals until verified rotation.
+
+For a single immutable artwork object, use the [sandboxed R2 publisher](docs/maintaining-scummweb.md#single-object-publishing-through-agent-vault). Its trusted signing step uses the existing ScummWEB Development `/` binding for `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`, pinned to `https://app.infisical.com` and the `scummvm-games` bucket. Its temporary Agent Vault bundle receives only a random loopback relay capability. The sandboxed publisher receives a placeholder and can reach only the local proxy. The existing bulk publishing workflow retains its separate credential requirements.
