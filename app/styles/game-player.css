@@ -77,6 +77,10 @@
     0.5rem calc(max(0.5rem, env(safe-area-inset-left)) + 3.25rem);
 }
 
+.game-route-command[hidden] {
+  display: none;
+}
+
 .game-route-command input,
 .game-route-command button {
   min-height: 2.75rem;
@@ -99,6 +103,8 @@
 }
 
 .game-route-command button {
+  display: grid;
+  place-items: center;
   cursor: pointer;
 }
 

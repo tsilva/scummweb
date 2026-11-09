@@ -162,6 +162,7 @@
 
 .game-route-control-button.is-exit,
 .game-route-control-button.is-touch-click,
+.game-route-control-button.is-gamepad,
 .game-route-touch-cursor-pad {
   background: rgba(24, 28, 25, 0.28);
   border-color: rgba(255, 255, 255, 0.16);
@@ -202,6 +203,9 @@
 .game-route-control-button.is-exit:focus-visible,
 .game-route-control-button.is-touch-click:active,
 .game-route-control-button.is-touch-click:focus-visible,
+.game-route-control-button.is-gamepad:active,
+.game-route-control-button.is-gamepad:focus-visible,
+.game-route-control-button.is-gamepad[data-held],
 .game-route-touch-cursor-pad:active,
 .game-route-touch-cursor-pad:focus-visible {
   background: rgba(48, 54, 50, 0.72);
@@ -225,6 +229,55 @@
 
 .game-route-touch-click-label {
   pointer-events: none;
+}
+
+.game-route-direction-pad {
+  position: fixed;
+  left: max(2rem, env(safe-area-inset-left));
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
+  z-index: 10;
+  display: grid;
+  grid-template-areas:
+    ". up ."
+    "left . right"
+    ". down .";
+  pointer-events: none;
+}
+
+.game-route-direction-pad [data-direction="up"] { grid-area: up; }
+.game-route-direction-pad [data-direction="left"] { grid-area: left; }
+.game-route-direction-pad [data-direction="right"] { grid-area: right; }
+.game-route-direction-pad [data-direction="down"] { grid-area: down; }
+
+.game-route-control-button.is-gamepad {
+  -webkit-tap-highlight-color: transparent;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.game-route-direction-pad button {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.game-route-grim-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 4rem);
+  gap: 0.25rem;
+}
+
+.game-route-grim-actions button {
+  width: 100%;
+  padding: 0 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.game-route-grim-actions button:first-child {
+  background: rgba(48, 54, 50, 0.72);
+  border-color: rgba(255, 255, 255, 0.36);
 }
 
 .game-route-touch-cursor-pad-shell {

@@ -1,8 +1,10 @@
 "use client";
 
 import { captureMessage, withScope } from "@sentry/nextjs";
+import { Keyboard, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import { buildSkipIntroLaunchSrc } from "./skip-intro-config.mjs";
 import { readCatalogGameArchive } from "./game-bucket.mjs";
 import { gameLoadingStatus } from "./game-loading-status.mjs";
@@ -10,10 +12,12 @@ import { isTvBrowser } from "./controller-device.mjs";
 import GameBootOverlay from "./game-player/GameBootOverlay";
 import GamePlayerControls from "./game-player/GamePlayerControls";
 import GameTouchCursorPad from "./game-player/GameTouchCursorPad";
+import { GameDirectionPad, GrimTouchActions } from "./game-player/GameTouchGamepad";
 import { createGameLaunchAnalytics } from "./game-player/game-launch-analytics.mjs";
 import { observeStartupDiagnostics } from "./game-player/startup-diagnostics.mjs";
 import { withGameTelemetry } from "./game-player/telemetry.mjs";
-import { dispatchGameCommand, dispatchSyntheticKeypressSequence } from "./game-player/keyboard";
+import { dispatchGameCommand, dispatchHugoCommand, dispatchSyntheticKeypressSequence } from "./game-player/keyboard";
+import { getMobileControlMode } from "./game-player/mobile-controls.mjs";
 import { getGameMenuShortcut } from "./game-player/game-menu.mjs";
 import { observeRemotePlayerInput } from "./game-player/game-mouse.mjs";
 import { enterImmersiveMode, isGameFullscreen, isTouchMobileClient } from "./game-player/immersive-mode.mjs";
@@ -158,6 +162,8 @@ export default function GameRouteFrame({
   const frameBootRef = useRef(null);
   const archiveFiles = useRef(null);
   const archiveReceiver = useRef(null);
+  const commandInputRef = useRef(null);
+  const commandDispatchRef = useRef(null);
   const [archivePrepared, setArchivePrepared] = useState(false);
   const [archiveError, setArchiveError] = useState("");
   const [archiveProgress, setArchiveProgress] = useState(null);
@@ -172,6 +178,8 @@ export default function GameRouteFrame({
   const [skipIntroConsumed, setSkipIntroConsumed] = useState(false);
   const [catalogIntroLaunch, setCatalogIntroLaunch] = useState(null);
   const [remoteToolbarOpen, setRemoteToolbarOpen] = useState(false);
+  const [commandOpen, setCommandOpen] = useState(false);
+  const [commandSending, setCommandSending] = useState(false);
   const restoreFullscreenOnResume = useRef(false);
   const fullscreenExitExpected = useRef(false);
   const restoreRemoteFullscreen = useCallback(() => {
@@ -217,9 +225,13 @@ export default function GameRouteFrame({
   const showSkipIntroBottomAction = Boolean(skipIntro) && bootState.showSkipIntroButton && !showBootOverlay;
   const mobileControlsReady =
     immersiveMode.isMobileViewport && bootState.hasBootCompleted && !hasBootFailed;
-  const usesCommandInput = game?.engineId === "adl";
-  const showCommandInput = mobileControlsReady && usesCommandInput;
-  const showTouchMouse = mobileControlsReady && !usesCommandInput;
+  const mobileControlMode = getMobileControlMode(readySignal?.detectedGame ?? game ?? undefined);
+  const showCommandInput = mobileControlsReady && (mobileControlMode === "command" || mobileControlMode === "hugo");
+  const showCommandForm = showCommandInput && commandOpen;
+  const showDirectionPad = mobileControlsReady && !showCommandForm &&
+    (mobileControlMode === "grim" || mobileControlMode === "hugo");
+  const showGrimActions = mobileControlsReady && mobileControlMode === "grim";
+  const showTouchMouse = mobileControlsReady && mobileControlMode === "mouse";
   const touchCursorPad = useTouchCursorPad({
     enabled: showTouchMouse,
     frameRef,
@@ -427,7 +439,11 @@ export default function GameRouteFrame({
         }
 
         frameBoot.ready = true;
+        const detectedGame = iframeWindow.__scummwebSaveStatus;
         setReadySignal({
+          detectedGame: detectedGame?.engineId && detectedGame?.gameId
+            ? { engineId: detectedGame.engineId, gameId: detectedGame.gameId }
+            : null,
           href: messageFrameHref,
           reason: event.data?.reason || null,
           reportedAt: event.data?.emittedAt || null,
@@ -571,7 +587,7 @@ export default function GameRouteFrame({
         iframe.contentWindow?.postMessage(
           {
             type: SCUMMWEB_ASPECT_RATIO_MESSAGE_TYPE,
-            mode: immersiveMode.isMobileViewport && !usesCommandInput ? "fit-height" : "preserve",
+            mode: immersiveMode.isMobileViewport && mobileControlMode === "mouse" ? "fit-height" : "preserve",
           },
           window.location.origin,
         );
@@ -584,7 +600,20 @@ export default function GameRouteFrame({
     return () => {
       iframe.removeEventListener("load", postAspectRatioMode);
     };
-  }, [frameSrc, immersiveMode.isMobileViewport, usesCommandInput]);
+  }, [frameSrc, immersiveMode.isMobileViewport, mobileControlMode]);
+
+  useEffect(() => {
+    setCommandOpen(false);
+    setCommandSending(false);
+    return () => {
+      commandDispatchRef.current?.abort();
+      commandDispatchRef.current = null;
+    };
+  }, [frameSrc]);
+
+  useEffect(() => {
+    if (!showCommandInput) setCommandOpen(false);
+  }, [showCommandInput]);
 
   useEffect(() => {
     setExitHref(getExitHrefFromSrc(frameSrc || src));
@@ -613,6 +642,7 @@ export default function GameRouteFrame({
         focusTimer = 0;
 
         const owner = iframe.ownerDocument;
+        if (commandInputRef.current && owner?.activeElement === commandInputRef.current) return;
         if (owner?.documentElement.hasAttribute("data-dpad-navigation") &&
           owner.activeElement?.closest(".game-route-controls, .game-route-bottom-actions")) return;
 
@@ -727,12 +757,43 @@ export default function GameRouteFrame({
     return immersiveMode.handleFullscreenToggle();
   }
 
-  function handleCommandSubmit(event) {
+  function openCommand() {
+    // Mobile browsers require focus during the tap that opens the field.
+    flushSync(() => setCommandOpen(true));
+    commandInputRef.current?.focus({ preventScroll: true });
+  }
+
+  function closeCommand() {
+    commandInputRef.current?.blur();
+    setCommandOpen(false);
+    focusGameCanvas(frameRef.current);
+  }
+
+  async function handleCommandSubmit(event) {
     event.preventDefault();
+    if (commandDispatchRef.current) return;
     const input = event.currentTarget.elements.namedItem("command");
-    if (dispatchGameCommand(frameRef.current, input.value)) {
+    let sent;
+    if (mobileControlMode === "hugo" && input.value.length > 16) {
+      const controller = new AbortController();
+      commandDispatchRef.current = controller;
+      setCommandSending(true);
+      try {
+        sent = await dispatchHugoCommand(frameRef.current, input.value, controller.signal);
+      } finally {
+        if (commandDispatchRef.current === controller) {
+          commandDispatchRef.current = null;
+          setCommandSending(false);
+        }
+      }
+      if (controller.signal.aborted) return;
+    } else {
+      sent = dispatchGameCommand(frameRef.current, input.value);
+    }
+    if (sent) {
       input.value = "";
       input.blur();
+      setCommandOpen(false);
     }
   }
 
@@ -755,7 +816,7 @@ export default function GameRouteFrame({
     setFrameSrc((currentSrc) => buildSkipIntroLaunchSrc(currentSrc, target, skipIntro, window.location.href));
   }
 
-  const remoteMouseReady = !showBootOverlay && !showSkipIntroBottomAction && !usesCommandInput;
+  const remoteMouseReady = !showBootOverlay && !showSkipIntroBottomAction && game?.engineId !== "adl";
   useEffect(() => {
     if (!remoteMouseReady || remoteToolbarOpen) return;
     let active = true;
@@ -795,10 +856,22 @@ export default function GameRouteFrame({
     immersiveMode.canFullscreen && !isTouchMobileClient() && bootState.hasBootPresentationCompleted;
   const showGameMenuButton =
     Boolean(gameMenuShortcut) && bootState.showGameMenuButton && !hasBootFailed;
-  const showBottomActions = showSkipIntroBottomAction || showTouchMouse;
+  const touchActions = showGrimActions ? <GrimTouchActions frameRef={frameRef} /> : showCommandInput && !showCommandForm ? (
+    <button
+      aria-controls="game-route-command"
+      aria-label="Open keyboard"
+      className="game-route-control-button is-gamepad"
+      onClick={openCommand}
+      title="Open keyboard"
+      type="button"
+    >
+      <Keyboard aria-hidden="true" size={20} />
+    </button>
+  ) : null;
+  const showBottomActions = showSkipIntroBottomAction || showTouchMouse || Boolean(touchActions);
 
   return (
-    <div className={`game-route-shell${showCommandInput ? " has-command-input" : ""}`} ref={shellRef}>
+    <div className={`game-route-shell${showCommandForm ? " has-command-input" : ""}`} ref={shellRef}>
       <GameBootOverlay
         archiveBytes={loadArchive && !archivePrepared && !archiveCached ? archiveProgress?.loaded : undefined}
         bootStatusText={archiveError || (loadArchive && !archivePrepared
@@ -830,6 +903,7 @@ export default function GameRouteFrame({
         showSkipIntroAction={showSkipIntroBottomAction}
         showTouchClickButtons={showTouchMouse}
         toolbarFocused={remoteToolbarOpen}
+        touchActions={touchActions}
       />
       <GameTouchCursorPad
         indicatorOffset={touchCursorPad.indicatorOffset}
@@ -839,23 +913,35 @@ export default function GameRouteFrame({
         onPointerUp={touchCursorPad.handlePointerUp}
         showTouchCursorPad={showTouchMouse}
       />
+      {showDirectionPad ? (
+        <GameDirectionPad
+          frameRef={frameRef}
+          hold={mobileControlMode === "grim"}
+          key={frameSrc}
+        />
+      ) : null}
       {showCommandInput ? (
-        <form className="game-route-command" onSubmit={handleCommandSubmit}>
+        <form className="game-route-command" hidden={!showCommandForm} id="game-route-command" onSubmit={handleCommandSubmit}>
           <input
             aria-label="Game command"
             autoCapitalize="off"
             autoComplete="off"
             autoCorrect="off"
             enterKeyHint="send"
-            maxLength={255}
+            maxLength={mobileControlMode === "hugo" ? 38 : 255}
             name="command"
             pattern="[ -~]*"
             placeholder="Type a command"
+            readOnly={commandSending}
+            ref={commandInputRef}
             spellCheck={false}
             title="Use letters, numbers, spaces, or basic punctuation."
             type="text"
           />
-          <button type="submit">Send</button>
+          <button disabled={commandSending} type="submit">Send</button>
+          <button aria-label="Close keyboard" disabled={commandSending} onClick={closeCommand} type="button">
+            <X aria-hidden="true" size={18} />
+          </button>
         </form>
       ) : null}
       {frameSrc && !archiveError ? <iframe

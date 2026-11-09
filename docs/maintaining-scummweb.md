@@ -189,11 +189,17 @@ The mobile player resizes the game frame to the browser's visible height as
 browser chrome or the keyboard changes the available space. It also respects
 display safe areas.
 Mobile mouse-controlled games fit that height while preserving the game’s aspect
-ratio; narrower viewports can crop the sides. Apple II Hi-Res Adventures such as
-Mystery House use a **Game command** field in place of the mouse controls on mobile.
-Tap the field to open the device keyboard, then tap **Send** or press Enter to send
-the command. **Send** with an empty field presses Enter by itself. These games and
-desktop canvases fit within both dimensions so the game’s own prompts stay visible.
+ratio; narrower viewports can crop the sides. Grim Fandango uses a directional
+pad and buttons for **Use / Talk**, **Examine**, **Pick up / Put away**, and
+**Inventory**. Hold a direction to move or turn. The Hugo games use the same
+pad with their native movement behavior. Tap a direction to start walking and
+tap it again to stop.
+
+In Hugo, Apple II Hi-Res Adventures such as Mystery House, and Zork I–III, tap
+the keyboard icon to open the device keyboard and the **Game command** field.
+Tap **Send** or press Enter to submit the command and return to the game. Sending
+an empty field presses Enter by itself. These games and desktop canvases fit
+within both dimensions so the game’s prompts stay visible while typing.
 The toolbar has no aspect-ratio toggle. The parent reapplies the viewport’s sizing
 mode after frame navigation and when the mobile viewport classification changes.
 **Play**, **Continue** and **Start from beginning** show the game's loading screen
