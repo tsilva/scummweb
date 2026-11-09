@@ -215,6 +215,7 @@ export default function GameRouteFrame({
   });
   const hasBootFailed = Boolean(archiveError) || bootState.hasBootFailed;
   const showBootOverlay = !bootState.hasBootCompleted || hasBootFailed;
+  const showSkipIntroBottomAction = Boolean(skipIntro) && bootState.showSkipIntroButton && !showBootOverlay;
   const mobileControlsReady =
     immersiveMode.isMobileViewport && bootState.hasBootCompleted && !hasBootFailed;
   const usesCommandInput = game?.engineId === "adl";
@@ -626,7 +627,7 @@ export default function GameRouteFrame({
   }
 
   useEffect(() => {
-    if (!skipIntro || !bootState.showSkipIntroButton) {
+    if (!showSkipIntroBottomAction) {
       return;
     }
 
@@ -637,7 +638,7 @@ export default function GameRouteFrame({
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [bootState.showSkipIntroButton, frameSrc, skipIntro]);
+  }, [showSkipIntroBottomAction, frameSrc, skipIntro]);
 
   useEffect(() => {
     if (!skipIntro || !bootState.showSkipIntroButton) {
@@ -736,8 +737,6 @@ export default function GameRouteFrame({
     setFrameSrc((currentSrc) => buildSkipIntroLaunchSrc(currentSrc, target, skipIntro, window.location.href));
   }
 
-  const showSkipIntroAction = bootState.showSkipIntroButton && skipIntro && !bootState.hasBootFailed;
-  const showSkipIntroBottomAction = showSkipIntroAction && !showBootOverlay;
   const remoteMouseReady = !showBootOverlay && !showSkipIntroBottomAction && !usesCommandInput;
   useEffect(() => {
     if (!remoteMouseReady || remoteToolbarOpen) return;
