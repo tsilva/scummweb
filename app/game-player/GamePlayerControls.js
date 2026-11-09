@@ -5,7 +5,7 @@ import { observeControlVisibility } from "./control-visibility.mjs";
 
 export default function GamePlayerControls({
   autoHide = false,
-  compatibilityWarning,
+  compatibilityWarnings,
   frameRef,
   menuShortcut,
   handleControlMouseDown,
@@ -86,7 +86,7 @@ export default function GamePlayerControls({
           </div>
         ) : null}
         <div className="game-route-control-group is-right">
-          {compatibilityWarning ? (
+          {compatibilityWarnings.length > 0 ? (
             <button
               aria-controls="game-compatibility-warning"
               aria-haspopup="dialog"
@@ -129,7 +129,7 @@ export default function GamePlayerControls({
           ) : null}
         </div>
       </div>
-      {compatibilityWarning ? (
+      {compatibilityWarnings.length > 0 ? (
         <dialog
           aria-describedby="game-compatibility-warning-text"
           aria-labelledby="game-compatibility-warning-title"
@@ -139,7 +139,9 @@ export default function GamePlayerControls({
           ref={warningDialogRef}
         >
           <h2 id="game-compatibility-warning-title">Compatibility warning</h2>
-          <p id="game-compatibility-warning-text">{compatibilityWarning}</p>
+          <div id="game-compatibility-warning-text">
+            {compatibilityWarnings.map((message) => <p key={message}>{message}</p>)}
+          </div>
           <form method="dialog">
             <button type="submit">Close</button>
           </form>

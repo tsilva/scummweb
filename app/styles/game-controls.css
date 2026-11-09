@@ -114,6 +114,7 @@
   margin: 0.75rem 0 1.25rem;
   color: var(--ink-muted);
   line-height: 1.5;
+  white-space: pre-line;
 }
 
 .game-route-warning form {

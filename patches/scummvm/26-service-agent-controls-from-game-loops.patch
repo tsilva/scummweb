@@ -1,0 +1,217 @@
+diff --git a/engines/dreamweb/dreamweb.cpp b/engines/dreamweb/dreamweb.cpp
+--- a/engines/dreamweb/dreamweb.cpp
++++ b/engines/dreamweb/dreamweb.cpp
+@@ -37,6 +37,7 @@
+ #include "dreamweb/detection.h"
+ #include "dreamweb/sound.h"
+ #include "dreamweb/dreamweb.h"
++#include "engines/scummweb-agent-loop.h"
+ #include "dreamweb/rnca_archive.h"
+ 
+ #include "common/text-to-speech.h"
+@@ -399,6 +400,9 @@
+ }
+ 
+ Common::Error DreamWebEngine::run() {
++#ifdef __EMSCRIPTEN__
++	ScummWebAgentLoop agentLoop;
++#endif
+ 	if (_gameDescription->desc.flags & GF_INSTALLER) {
+ 		Common::Array<Common::SharedPtr<Common::SeekableReadStream>> volumes;
+ 		for (uint i = 0; _gameDescription->desc.filesDescriptions[i].fileName; i++) {
+diff --git a/engines/dreamweb/dreamweb.h b/engines/dreamweb/dreamweb.h
+--- a/engines/dreamweb/dreamweb.h
++++ b/engines/dreamweb/dreamweb.h
+@@ -116,6 +116,12 @@
+ 
+ 	void waitForVSync();
+ 
++#ifdef __EMSCRIPTEN__
++	bool canSaveGameStateCurrently(Common::U32String *msg = nullptr) override;
++	bool canLoadGameStateCurrently(Common::U32String *msg = nullptr) override;
++	bool canSaveAutosaveCurrently() override { return false; }
++	Common::String getSaveStateName(int slot) const override { return getSavegameFilename(slot); }
++#endif
+ 	Common::Error loadGameState(int slot) override;
+ 	Common::Error saveGameState(int slot, const Common::String &desc, bool isAutosave = false) override;
+ 
+@@ -669,7 +675,7 @@
+ 	void actualSave();
+ 	void actualLoad();
+ 	void loadPosition(unsigned int slot);
+-	void savePosition(unsigned int slot, const char *descbuf);
++	bool savePosition(unsigned int slot, const char *descbuf, bool reportOpenFailure = true);
+ 	uint scanForNames();
+ 	void loadOld();
+ 	void showDecisions();
+diff --git a/engines/dreamweb/metaengine.cpp b/engines/dreamweb/metaengine.cpp
+--- a/engines/dreamweb/metaengine.cpp
++++ b/engines/dreamweb/metaengine.cpp
+@@ -19,12 +19,14 @@
+  *
+  */
+ 
++#include "common/config-manager.h"
+ #include "common/savefile.h"
+ #include "common/translation.h"
+ 
+ #include "graphics/thumbnail.h"
+ 
+ #include "engines/advancedDetector.h"
++#include "engines/scummweb-agent-loop.h"
+ 
+ #include "dreamweb/dreamweb.h"
+ #include "dreamweb/detection.h"
+@@ -140,6 +142,11 @@
+ 	switch(f) {
+ 	case kSupportsReturnToLauncher:
+ 		return true;
++#ifdef __EMSCRIPTEN__
++	case kSupportsLoadingDuringRuntime:
++	case kSupportsSavingDuringRuntime:
++		return scummweb_agent_game_loop_enabled();
++#endif
+ 	case kSupportsSubtitleOptions:
+ 		return _gameDescription->desc.flags & ADGF_CD;
+ 	default:
+@@ -256,12 +263,43 @@
+ namespace DreamWeb {
+ 
+ Common::Error DreamWebEngine::loadGameState(int slot) {
++#ifdef __EMSCRIPTEN__
++	if (!canLoadGameStateCurrently() || !_saveFileMan->exists(getSavegameFilename(slot)))
++		return Common::kReadingFailed;
++	doLoad(slot);
++#endif
+ 	return Common::kNoError;
+ }
+ 
+ Common::Error DreamWebEngine::saveGameState(int slot, const Common::String &desc, bool isAutosave) {
++#ifdef __EMSCRIPTEN__
++	if (isAutosave || !canSaveGameStateCurrently())
++		return Common::kWritingFailed;
++
++	// The native format prefixes the description with a marker and pads it
++	// to 17 bytes. Use the same format as the game's own save dialog.
++	char description[17];
++	memset(description, 1, sizeof(description));
++	description[0] = 2;
++	Common::strlcpy(description + 1, desc.c_str(), sizeof(description) - 1);
++	if (ConfMan.getBool("originalsaveload"))
++		createThumbnail(_thumbnail);
++	return savePosition(slot, description, false) ? Common::kNoError : Common::kWritingFailed;
++#else
+ 	return Common::kNoError;
+-}
++#endif
++}
++
++#ifdef __EMSCRIPTEN__
++bool DreamWebEngine::canSaveGameStateCurrently(Common::U32String *) {
++	return !_quitRequested && !_wonGame && !_manIsOffScreen && !_vars._manDead &&
++		!_vars._watchingTime && _pointerMode != 2 && _newLocation == 255 && _vars._location != 255;
++}
++
++bool DreamWebEngine::canLoadGameStateCurrently(Common::U32String *msg) {
++	return canSaveGameStateCurrently(msg);
++}
++#endif
+ 
+ Common::Language DreamWebEngine::getLanguage() const {
+ 	return _gameDescription->desc.language;
+diff --git a/engines/dreamweb/saveload.cpp b/engines/dreamweb/saveload.cpp
+--- a/engines/dreamweb/saveload.cpp
++++ b/engines/dreamweb/saveload.cpp
+@@ -488,7 +488,7 @@
+ 	_getBack = 1;
+ }
+ 
+-void DreamWebEngine::savePosition(unsigned int slot, const char *descbuf) {
++bool DreamWebEngine::savePosition(unsigned int slot, const char *descbuf, bool reportOpenFailure) {
+ 
+ 	const Room &currentRoom = g_roomData[_vars._location];
+ 
+@@ -504,8 +504,11 @@
+ 	Common::String filename = getSavegameFilename(slot);
+ 	debug(1, "savePosition: slot %d filename %s", slot, filename.c_str());
+ 	Common::OutSaveFile *outSaveFile = getSaveFileManager()->openForSaving(filename);
+-	if (!outSaveFile)	// TODO: Do proper error handling!
+-		error("save could not be opened for writing");
++	if (!outSaveFile) {
++		if (reportOpenFailure)
++			error("save could not be opened for writing");
++		return false;
++	}
+ 
+ 	// Initialize new header
+ 	FileHeader header;
+@@ -571,12 +574,12 @@
+ 		Graphics::saveThumbnail(*outSaveFile);
+ 
+ 	outSaveFile->finalize();
+-	if (outSaveFile->err()) {
+-		// TODO: Do proper error handling
++	const bool failed = outSaveFile->err();
++	if (failed)
+ 		warning("an error occurred while writing the savegame");
+-	}
+ 
+ 	delete outSaveFile;
++	return !failed;
+ }
+ 
+ 
+diff --git a/engines/dreamweb/stubs.cpp b/engines/dreamweb/stubs.cpp
+--- a/engines/dreamweb/stubs.cpp
++++ b/engines/dreamweb/stubs.cpp
+@@ -28,6 +28,8 @@
+ #include "common/file.h"
+ #include "common/text-to-speech.h"
+ 
++#include "engines/scummweb-agent-loop.h"
++
+ namespace DreamWeb {
+ 
+ const Room g_roomData[] = {
+@@ -680,6 +682,9 @@
+ 				return;
+ 
+ 			screenUpdate();
++#ifdef __EMSCRIPTEN__
++			scummweb_agent_game_loop();
++#endif
+ 
+ 			if (_quitRequested)
+ 				return;
+diff --git a/engines/scummweb-agent-loop.h b/engines/scummweb-agent-loop.h
+new file mode 100644
+--- /dev/null
++++ b/engines/scummweb-agent-loop.h
+@@ -0,0 +1,27 @@
++#ifndef ENGINES_SCUMMWEB_AGENT_LOOP_H
++#define ENGINES_SCUMMWEB_AGENT_LOOP_H
++
++#ifdef __EMSCRIPTEN__
++extern "C" bool scummweb_agent_game_loop_enabled();
++extern "C" void scummweb_agent_use_game_loop(bool enable);
++extern "C" void scummweb_agent_game_loop();
++
++// Use a top-level update after the engine has unlocked and presented its
++// buffers. Native serializers can redraw or rebuild the scene from here.
++class ScummWebAgentLoop {
++	bool _enabled = false;
++public:
++	explicit ScummWebAgentLoop(bool enabled = true) { setEnabled(enabled); }
++	~ScummWebAgentLoop() { setEnabled(false); }
++	void setEnabled(bool enabled) {
++		if (_enabled != enabled) {
++			scummweb_agent_use_game_loop(enabled);
++			_enabled = enabled;
++		}
++	}
++	ScummWebAgentLoop(const ScummWebAgentLoop &) = delete;
++	ScummWebAgentLoop &operator=(const ScummWebAgentLoop &) = delete;
++};
++#endif
++
++#endif

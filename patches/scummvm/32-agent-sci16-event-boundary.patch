@@ -1,0 +1,110 @@
+diff --git a/engines/sci/sci.cpp b/engines/sci/sci.cpp
+--- a/engines/sci/sci.cpp
++++ b/engines/sci/sci.cpp
+@@ -32,6 +32,7 @@
+ 
+ #include "engines/advancedDetector.h"
+ #include "engines/util.h"
++#include "engines/scummweb-agent-loop.h"
+ 
+ #include "sci/sci.h"
+ #include "sci/debug.h"
+@@ -664,6 +665,9 @@
+ }
+ 
+ void SciEngine::runGame() {
++#ifdef __EMSCRIPTEN__
++	ScummWebAgentLoop agentLoop(getSciVersion() < SCI_VERSION_2);
++#endif
+ 	setTotalPlayTime(17);
+ 
+ 	initStackBaseWithSelector(SELECTOR(play)); // Call the play selector
+diff --git a/engines/sci/engine/kevent.cpp b/engines/sci/engine/kevent.cpp
+--- a/engines/sci/engine/kevent.cpp
++++ b/engines/sci/engine/kevent.cpp
+@@ -25,6 +25,7 @@
+ 
+ #include "sci/sci.h"
+ #include "sci/engine/features.h"
++#include "engines/scummweb-agent-loop.h"
+ #include "sci/engine/guest_additions.h"
+ #include "sci/engine/kernel.h"
+ #include "sci/engine/savegame.h"
+@@ -102,6 +103,12 @@
+ 		}
+ 	}
+ 
++#ifdef __EMSCRIPTEN__
++	// Let the original guest restore handler finish before holding the
++	// interpreter again. A renderer callback may be inside a kernel call.
++	if (getSciVersion() < SCI_VERSION_2 && s->_delayedRestoreGameId == -1)
++		scummweb_agent_game_loop();
++#endif
+ 	if (g_sci->_guestAdditions->kGetEventHook()) {
+ 		return NULL_REG;
+ 	}
+diff --git a/engines/sci/engine/features.h b/engines/sci/engine/features.h
+--- a/engines/sci/engine/features.h
++++ b/engines/sci/engine/features.h
+@@ -289,7 +289,7 @@
+ 	 * Saving via the GMM doesn't work as expected in
+ 	 * games which don't follow the normal saving scheme.
+ 	*/
+-	bool canSaveFromGMM() const;
++	bool canSaveFromGMM(bool requireMenuOption = true) const;
+ 	
+ 	/**
+ 	 * Returns the global variable index to the start of the game's
+diff --git a/engines/sci/engine/features.cpp b/engines/sci/engine/features.cpp
+--- a/engines/sci/engine/features.cpp
++++ b/engines/sci/engine/features.cpp
+@@ -864,8 +864,8 @@
+ 	}
+ }
+ 
+-bool GameFeatures::canSaveFromGMM() const {
+-	if (!ConfMan.getBool("gmm_save_enabled"))
++bool GameFeatures::canSaveFromGMM(bool requireMenuOption) const {
++	if (requireMenuOption && !ConfMan.getBool("gmm_save_enabled"))
+ 		return false;
+ 
+ 	switch (g_sci->getGameId()) {
+diff --git a/engines/sci/metaengine.cpp b/engines/sci/metaengine.cpp
+--- a/engines/sci/metaengine.cpp
++++ b/engines/sci/metaengine.cpp
+@@ -20,6 +20,7 @@
+  */
+ 
+ #include "engines/advancedDetector.h"
++#include "engines/scummweb-agent-loop.h"
+ #include "base/plugins.h"
+ #include "common/config-manager.h"
+ #include "common/file.h"
+@@ -365,7 +366,10 @@
+ 	const char *version = "";
+ 	_soundCmd->pauseAll(false); // unpause music (we can't have it paused during save)
+ 	const bool res = gamestate_save(_gamestate, slot, desc, version);
+-	_soundCmd->pauseAll(true); // pause music
++#ifdef __EMSCRIPTEN__
++	if (!scummweb_agent_game_loop_enabled())
++#endif
++		_soundCmd->pauseAll(true); // the native menu owns the pause
+ 	return res ? Common::kNoError : Common::kWritingFailed;
+ }
+ 
+@@ -385,8 +389,14 @@
+ }
+ 
+ bool SciEngine::canSaveGameStateCurrently(Common::U32String *msg) {
++	bool requireMenuOption = true;
++#ifdef __EMSCRIPTEN__
++	// The scoped SCI16 provider calls at an event boundary. Keep the
++	// engine's game exclusions, stack checks and user-control restrictions.
++	requireMenuOption = getSciVersion() >= SCI_VERSION_2 || !scummweb_agent_game_loop_enabled();
++#endif
+ 	return
+-		_features->canSaveFromGMM() &&
++		_features->canSaveFromGMM(requireMenuOption) &&
+ 		!_gamestate->executionStackBase &&
+ 		_guestAdditions->userHasControl();
+ }

@@ -45,11 +45,14 @@ tests when porting; do not treat an old implementation shape as the requirement.
   GUI through the same renderer. Patch 12 signals after actual refresh with an
   engine, no visible overlay, and a completed splash or prior GUI launch. Its
   `splash`, `_launched`, `_overlayVisible` and refresh lifecycle references are
-  explicit porting points. For the opted-in Escape from Monkey Island demo,
-  patch 23 skips the native splash but still marks it complete. Preserve the
-  original splash on other launches and preserve game-owned intros. Dark game
+  explicit porting points. Patch 23 skips the native splash for browser games
+  and still marks it complete. Preserve game-owned intros. Dark game
   frames are valid; brightness polling alone can miss them or cleared WebGL
   backbuffers. Keep the shell/native callback contract and software fallbacks.
+- Defer only nonfatal compatibility prompts when the player iframe opts in.
+  Keep the translated native text and show every distinct warning for that
+  launch. Fatal startup errors and dialogs requiring a game or file choice
+  must retain their native behavior.
 - A hosted game can request Return to Launcher without terminating the runtime.
   Patch 14 guards native launcher construction and explicitly signals successful
   main teardown. Emscripten's keepalive runtime can bypass both `Module.quit` and
@@ -128,10 +131,24 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
   room resource and detected index MD5 for edition-specific progress rules.
 
 - Patch 19 adds opt-in, read-only snapshots for engines with known room and variable storage. Keep native bank indices, omit unavailable room IDs, and publish a whole sample at once. These samples are independent of the Queen and SCUMM evaluation queues.
+- The AGOS adapter records the Elvira II finale at script dispatch because the losing and winning branches share a late ritual variable and replay prompt. Gate branch IDs on the full database fingerprint and preserve the outcome across scripted loads within the ending. A successful user restore or a new attempt clears it.
 
 - Patch 20 samples engine-owned room and game state in the remaining shipped plugins. Keep the browser query flag separate from evaluator queues. Preserve sparse keys, treat native room names and IDs as engine-specific, and keep ordinary browser launches off by default.
+- AGI uses the edition fingerprint already used by its save compatibility check. SCI fingerprints the complete resource map when present. GLK's common event state is shared across interpreters, while each story's room and variables belong to its own VM.
 
 ## Agent game controls
+
+- The shared browser fallback counts presented frames. Preserve dedicated
+  engine update boundaries where they exist. Saving and loading are separate
+  capabilities and the engine's current-scene checks still apply. Verify
+  deferred restores after the next presented frame.
+- Some save APIs use fixed filenames even when the launch target has another
+  name. Keep the engine filename check alongside the native save list, and
+  verify the save exists before acknowledging success. Composer must close its
+  output stream so BrowserFS can publish the completed file.
+- AGOS quick saves use the idle input path and the original redraw scripts.
+  Plumbers checkpoints use the decision scene, its prior scene and the score.
+  Keep either adapter away from unfinished transitions and cinematic frames.
 
 - Exact ticks belong to a supported engine update boundary. The Sky hook
   acknowledges pause only after the completed tick renders, yields while held,
@@ -146,3 +163,22 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
   finish the load after presentation and exclude setup frames from the tick
   count. The Pinnacle map waits for input after its fade and must acknowledge
   the load there. Queen's normal tick interval is 100 milliseconds.
+- Some serializers change the active scene or rebuild graphics. Use a completed
+  engine update outside renderer calls and script callbacks for these operations.
+  DreamWeb redraws through its original native load path. Nippon Safes uses its
+  existing location switch and keeps the progress slot reserved. Tinsel
+  reconstructs scenes over several updates, so hold the restore acknowledgment
+  until that reconstruction finishes.
+- Composer saves contain one palette index per sprite pixel. Set the format
+  when rebuilding surfaces and retain the restore's dirty rectangles until the
+  next draw. Sword25 uses its original persistence dispatch for load handlers.
+  Temporary save listing objects must not destroy the live persistence service.
+
+- Gnap captures a thumbnail from the live scene for an external save. Its
+  native writer normally receives a thumbnail prepared by the in-game menu.
+- Pegasus Prime assigns scoped saves stable filenames. Exercise a second load
+  in the same session. Closing an already closed drawer could restore an
+  input handler from the neighborhood destroyed by the first load.
+- Return to Zork and Woodruff delegate restoration to their original scripts.
+  Match the callback bytes before offering runtime checkpoints. Check the
+  rendered scene and restored native variables after the script returns.

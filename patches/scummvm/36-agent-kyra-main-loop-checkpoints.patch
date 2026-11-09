@@ -1,0 +1,35 @@
+diff --git a/engines/kyra/engine/kyra_lok.cpp b/engines/kyra/engine/kyra_lok.cpp
+--- a/engines/kyra/engine/kyra_lok.cpp
++++ b/engines/kyra/engine/kyra_lok.cpp
+@@ -25,4 +25,5 @@
+ #include "kyra/resource/resource.h"
+ #include "kyra/sequence/seqplayer_lok.h"
++#include "engines/scummweb-agent-loop.h"
+ #include "kyra/engine/sprites.h"
+ #include "kyra/graphics/animator_lok.h"
+@@ -477,4 +478,7 @@
+ 
+ void KyraEngine_LoK::mainLoop() {
++#ifdef __EMSCRIPTEN__
++	ScummWebAgentLoop agentLoop;
++#endif
+ 	// Initialize debugger since how it should be fully usable
+ 	static_cast<Debugger_LoK *>(getDebugger())->initialize();
+diff --git a/engines/kyra/engine/kyra_v1.cpp b/engines/kyra/engine/kyra_v1.cpp
+--- a/engines/kyra/engine/kyra_v1.cpp
++++ b/engines/kyra/engine/kyra_v1.cpp
+@@ -25,4 +25,5 @@
+ #include "kyra/engine/timer.h"
+ #include "kyra/gui/debugger.h"
++#include "engines/scummweb-agent-loop.h"
+ 
+ #include "common/error.h"
+@@ -242,4 +243,8 @@
+ int KyraEngine_v1::checkInput(Button *buttonList, bool mainLoop, int eventFlag) {
+ 	_isSaveAllowed = mainLoop;
++#ifdef __EMSCRIPTEN__
++	// Preserve the same eligibility window as the native event manager.
++	scummweb_agent_game_loop();
++#endif
+ 	updateInput();
+ 	_isSaveAllowed = false;

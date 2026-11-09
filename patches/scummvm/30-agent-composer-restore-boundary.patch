@@ -1,0 +1,91 @@
+diff --git a/engines/composer/composer.cpp b/engines/composer/composer.cpp
+--- a/engines/composer/composer.cpp
++++ b/engines/composer/composer.cpp
+@@ -33,6 +33,7 @@
+ #include "graphics/wincursor.h"
+ 
+ #include "engines/util.h"
++#include "engines/scummweb-agent-loop.h"
+ 
+ #include "composer/composer.h"
+ #include "composer/graphics.h"
+@@ -140,6 +141,9 @@
+ 	uint32 lastDrawTime = 0;
+ 
+ 	bool loadFromLauncher = ConfMan.hasKey("save_slot");
++#ifdef __EMSCRIPTEN__
++	ScummWebAgentLoop agentLoop;
++#endif
+ 
+ 	while (!shouldQuit()) {
+ 		for (uint i = 0; i < _pendingPageChanges.size(); i++) {
+@@ -201,6 +205,9 @@
+ 			loadFromLauncher = false;
+ 		}
+ 
++#ifdef __EMSCRIPTEN__
++		scummweb_agent_game_loop();
++#endif
+ 		while (_eventMan->pollEvent(event)) {
+ 			switch (event.type) {
+ 			case Common::EVENT_LBUTTONDOWN:
+diff --git a/engines/composer/saveload.cpp b/engines/composer/saveload.cpp
+--- a/engines/composer/saveload.cpp
++++ b/engines/composer/saveload.cpp
+@@ -256,8 +256,11 @@
+ 		ser.syncAsUint16LE(data._surface.h);
+ 		ser.syncAsUint16LE(data._surface.pitch);
+ 		ser.syncAsUint16LE(data._zorder);
+-		if (ser.isLoading())
++		if (ser.isLoading()) {
++			// Composer saves store one palette index per pixel.
++			data._surface.format = Graphics::PixelFormat::createFormatCLUT8();
+ 			data._surface.setPixels(malloc(data._surface.h * data._surface.pitch));
++		}
+ 		byte *pix = static_cast<byte *>(data._surface.getPixels());
+ 		for (uint16 y = 0; y < data._surface.h; y++) {
+ 			for (uint16 x = 0; x < data._surface.w; x++) {
+@@ -281,8 +284,10 @@
+ 	Common::Serializer ser(in, nullptr);
+ 	byte magic[4];
+ 	ser.syncBytes(magic, 4);
+-	if (magic[0] != 'C' || magic[1] != 'M' || magic[2] != 'P' || magic[3] != 'S')
+-		return Common::kUnknownError;
++	if (magic[0] != 'C' || magic[1] != 'M' || magic[2] != 'P' || magic[3] != 'S') {
++		delete in;
++		return Common::kReadingFailed;
++	}
+ 
+ 	ser.syncVersion(0);
+ 	Common::String desc;
+@@ -347,7 +352,7 @@
+ 	_dirtyRects.clear();
+ 
+ 	// Redraw the whole screen
+-	_dirtyRects.push_back(Common::Rect(0, 0, 640, 480));
++	_dirtyRects.push_back(Common::Rect(0, 0, _screen.w, _screen.h));
+ 	byte palbuf[256 * 3];
+ 	ser.syncBytes(palbuf, 256 * 3);
+ 	_system->getPaletteManager()->setPalette(palbuf, 0, 256);
+@@ -368,7 +373,9 @@
+ 	if (!_mixer->isSoundHandleActive(_soundHandle))
+ 		_mixer->playStream(Audio::Mixer::kSFXSoundType, &_soundHandle, _audioStream);
+ 
+-	return Common::kNoError;
++	const bool failed = in->err();
++	delete in;
++	return failed ? Common::kReadingFailed : Common::kNoError;
+ }
+ 
+ Common::Error ComposerEngine::saveGameState(int slot, const Common::String &desc, bool isAutosave) {
+@@ -413,8 +420,8 @@
+ 
+ 	ser.syncAsSint16LE(_currSoundPriority);
+ 	int16 audioBuffer[22050];
+-	int32 numSamples = _audioStream->readBuffer(audioBuffer, 22050);
+-	if (numSamples  == -1) numSamples = 0;
++	int32 numSamples = _audioStream ? _audioStream->readBuffer(audioBuffer, ARRAYSIZE(audioBuffer)) : 0;
++	numSamples = MAX<int32>(0, numSamples);
+ 	ser.syncAsSint32LE(numSamples);
+ 	for (int32 i = 0; i < numSamples; i++)
+ 		ser.syncAsSint16LE(audioBuffer[i]);

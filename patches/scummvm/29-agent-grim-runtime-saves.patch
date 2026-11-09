@@ -1,0 +1,245 @@
+diff --git a/engines/grim/grim.h b/engines/grim/grim.h
+--- a/engines/grim/grim.h
++++ b/engines/grim/grim.h
+@@ -85,7 +85,13 @@
+ 	Common::Language getGameLanguage() { return _gameLanguage; }
+ 	Common::Platform getGamePlatform() { return _gamePlatform; }
+ 	virtual const char *getUpdateFilename();
+-	bool canLoadGameStateCurrently(Common::U32String *msg = nullptr) override { return true; }
++	bool canLoadGameStateCurrently(Common::U32String *msg = nullptr) override;
++#ifdef __EMSCRIPTEN__
++	bool canSaveGameStateCurrently(Common::U32String *msg = nullptr) override;
++	bool canSaveAutosaveCurrently() override { return false; }
++	Common::Error saveGameState(int slot, const Common::String &desc, bool isAutosave = false) override;
++#endif
++	Common::String getSaveStateName(int slot) const override;
+ 	Common::Error loadGameState(int slot) override;
+ 	bool isRemastered() const { return !!(_gameFlags & ADGF_REMASTERED); }
+ 
+@@ -220,10 +226,10 @@
+ 	virtual void updateDrawMode();
+ 	virtual void drawNormalMode();
+ 
+-	void savegameSave();
++	bool savegameSave(const Common::String *agentDescription = nullptr);
+ 	void saveGRIM();
+ 
+-	void savegameRestore();
++	bool savegameRestore();
+ 	void restoreGRIM();
+ 
+ 	virtual void storeSaveGameMetadata(SaveGame *state);
+diff --git a/engines/grim/metaengine.cpp b/engines/grim/metaengine.cpp
+--- a/engines/grim/metaengine.cpp
++++ b/engines/grim/metaengine.cpp
+@@ -20,6 +20,7 @@
+  */
+ 
+ #include "engines/grim/grim.h"
++#include "engines/scummweb-agent-loop.h"
+ #include "engines/grim/savegame.h"
+ #include "engines/grim/emi/emi.h"
+ 
+@@ -74,6 +75,9 @@
+ 	Common::KeymapArray initKeymaps(const char *target) const override;
+ 
+ 	SaveStateList listSaves(const char *target) const override;
++#ifdef __EMSCRIPTEN__
++	int getMaximumSaveSlot() const override { return scummweb_agent_game_loop_enabled() ? 99 : 0; }
++#endif
+ 
+ };
+ 
+@@ -136,8 +140,13 @@
+ 	if (platform == Common::kPlatformPS2)
+ 		pattern = "efmi###.ps2";
+ 
+-	if (isDemo)
+-		return saveList; // Demos do not support saving
++#ifdef __EMSCRIPTEN__
++	const bool scopedEmi = scummweb_agent_game_loop_enabled() && gameId == "monkey4" && platform == Common::kPlatformWindows;
++#else
++	const bool scopedEmi = false;
++#endif
++	if (isDemo && !scopedEmi)
++		return saveList;
+ 
+ 	filenames = saveFileMan->listSavefiles(pattern);
+ 
+diff --git a/engines/grim/grim.cpp b/engines/grim/grim.cpp
+--- a/engines/grim/grim.cpp
++++ b/engines/grim/grim.cpp
+@@ -52,6 +52,7 @@
+ #include "image/png.h"
+ 
+ #include "engines/engine.h"
++#include "engines/scummweb-agent-loop.h"
+ #include "engines/util.h"
+ 
+ #include "engines/grim/md5check.h"
+@@ -696,20 +697,44 @@
+ 	g_movie = defaultPlayer;
+ }
+ 
++Common::String GrimEngine::getSaveStateName(int slot) const {
++	if (_gameType == GType_MONKEY4)
++		return Common::String::format(_gamePlatform == Common::kPlatformPS2 ? "efmi%03d.ps2" : "efmi%03d.gsv", slot);
++	return Common::String::format("grim%02d.gsv", slot);
++}
++
++bool GrimEngine::canLoadGameStateCurrently(Common::U32String *) {
++#ifdef __EMSCRIPTEN__
++	if (scummweb_agent_game_loop_enabled())
++		return canSaveGameStateCurrently();
++#endif
++	return true;
++}
++
+ Common::Error GrimEngine::loadGameState(int slot) {
+ 	assert(slot >= 0);
+-	if (getGameType() == GType_MONKEY4) {
+-		if (getGamePlatform() == Common::kPlatformPS2) {
+-			_savegameFileName = Common::String::format("efmi%03d.ps2", slot);
+-		} else {
+-			_savegameFileName = Common::String::format("efmi%03d.gsv", slot);
+-		}
+-	} else {
+-		_savegameFileName = Common::String::format("grim%02d.gsv", slot);
+-	}
++	_savegameFileName = getSaveStateName(slot);
++#ifdef __EMSCRIPTEN__
++	if (scummweb_agent_game_loop_enabled() && canLoadGameStateCurrently())
++		return savegameRestore() ? Common::kNoError : Common::kReadingFailed;
++#endif
+ 	_savegameLoadRequest = true;
+ 	return Common::kNoError;
+ }
++
++#ifdef __EMSCRIPTEN__
++bool GrimEngine::canSaveGameStateCurrently(Common::U32String *) {
++	return scummweb_agent_game_loop_enabled() && _currSet && _mode == NormalMode && !g_movie->isPlaying()
++		&& !_savegameLoadRequest && !_savegameSaveRequest && !_changeHardwareState;
++}
++
++Common::Error GrimEngine::saveGameState(int slot, const Common::String &desc, bool isAutosave) {
++	if (isAutosave || slot < 1 || slot > 99 || !canSaveGameStateCurrently())
++		return Common::kWritingFailed;
++	_savegameFileName = getSaveStateName(slot);
++	return savegameSave(&desc) ? Common::kNoError : Common::kWritingFailed;
++}
++#endif
+ 
+ void GrimEngine::handlePause() {
+ 	if (!LuaBase::instance()->callback("pauseHandler")) {
+@@ -996,6 +1021,9 @@
+ }
+ 
+ void GrimEngine::mainLoop() {
++#ifdef __EMSCRIPTEN__
++	ScummWebAgentLoop agentLoop;
++#endif
+ 	_movieTime = 0;
+ 	_frameTime = 0;
+ 	_frameStart = g_system->getMillis();
+@@ -1167,6 +1195,9 @@
+ 			g_imuseState = -1;
+ 		}
+ 
++#ifdef __EMSCRIPTEN__
++		scummweb_agent_game_loop();
++#endif
+ 		uint32 endTime = g_system->getMillis();
+ 		if (startTime > endTime)
+ 			continue;
+@@ -1192,7 +1223,7 @@
+ 	_savegameLoadRequest = true;
+ }
+ 
+-void GrimEngine::savegameRestore() {
++bool GrimEngine::savegameRestore() {
+ 	debug(2, "GrimEngine::savegameRestore() started.");
+ 	_savegameLoadRequest = false;
+ 	Common::String filename;
+@@ -1202,8 +1233,11 @@
+ 		filename = _savegameFileName;
+ 	}
+ 	_savedState = SaveGame::openForLoading(filename);
+-	if (!_savedState || !_savedState->isCompatible())
+-		return;
++	if (!_savedState || !_savedState->isCompatible()) {
++		delete _savedState;
++		_savedState = nullptr;
++		return false;
++	}
+ 	if (g_imuse) {
+ 		g_imuse->stopAllSounds();
+ 		g_imuse->resetState();
+@@ -1303,6 +1337,7 @@
+ 
+ 	_currSet->setupCamera();
+ 	g_driver->set3DMode();
++	return true;
+ }
+ 
+ void GrimEngine::restoreGRIM() {
+@@ -1377,7 +1412,7 @@
+ 	debug(2, "GrimEngine::StoreSaveGameImage() finished.");
+ }
+ 
+-void GrimEngine::savegameSave() {
++bool GrimEngine::savegameSave(const Common::String *agentDescription) {
+ 	debug(2, "GrimEngine::savegameSave() started.");
+ 	_savegameSaveRequest = false;
+ 	Common::String filename;
+@@ -1391,9 +1426,9 @@
+ 	}
+ 	_savedState = SaveGame::openForSaving(filename);
+ 	if (!_savedState) {
+-		//TODO: Translate this!
+-		GUI::displayErrorDialog(_("Error: the game could not be saved."));
+-		return;
++		if (!agentDescription)
++			GUI::displayErrorDialog(_("Error: the game could not be saved."));
++		return false;
+ 	}
+ 	storeSaveGameMetadata(_savedState);
+ 
+@@ -1403,7 +1438,17 @@
+ 		g_imuse->pause(true);
+ 	g_movie->pause(true);
+ 
+-	savegameCallback();
++	if (agentDescription) {
++		// The native Lua callback reads the game's save menu. MCP saves
++		// are made directly from the current set without opening that menu.
++		_savedState->beginSection(MKTAG('S', 'U', 'B', 'S'));
++		const uint size = agentDescription->size() + 1;
++		_savedState->writeLESint32(size);
++		_savedState->write(agentDescription->c_str(), size);
++		_savedState->endSection();
++	} else {
++		savegameCallback();
++	}
+ 
+ 	Bitmap::getPool().saveObjects(_savedState);
+ 	Debug::debug(Debug::Engine, "Bitmaps saved successfully.");
+@@ -1461,6 +1506,7 @@
+ 
+ 	_shortFrame = true;
+ 	clearEventQueue();
++	return true;
+ }
+ 
+ void GrimEngine::saveGRIM() {
+@@ -1673,6 +1719,11 @@
+ }
+ 
+ bool GrimEngine::hasFeature(EngineFeature f) const {
++#ifdef __EMSCRIPTEN__
++	if (f == kSupportsSavingDuringRuntime)
++		return scummweb_agent_game_loop_enabled() && _gamePlatform != Common::kPlatformPS2
++			&& (!(_gameFlags & ADGF_DEMO) || _gameType == GType_MONKEY4);
++#endif
+ 	return
+ 		(f == kSupportsReturnToLauncher) ||
+ 		(f == kSupportsLoadingDuringRuntime);

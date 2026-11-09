@@ -1,0 +1,240 @@
+diff --git a/engines/made/made.h b/engines/made/made.h
+--- a/engines/made/made.h
++++ b/engines/made/made.h
+@@ -79,4 +79,13 @@
+ 	bool hasFeature(EngineFeature f) const override;
+ 	void syncSoundSettings() override;
++#ifdef __EMSCRIPTEN__
++	// Enable runtime checkpoints after recognizing the CD script layout.
++	int16 _agentRestoreScript = 0;
++	bool _agentControlBoundary = false;
++	bool canSaveGameStateCurrently(Common::U32String *msg = nullptr) override;
++	bool canLoadGameStateCurrently(Common::U32String *msg = nullptr) override;
++	Common::Error saveGameState(int slot, const Common::String &desc, bool isAutosave = false) override;
++	Common::Error loadGameState(int slot) override;
++#endif
+ 
+ 	Common::RandomSource *_rnd;
+diff --git a/engines/made/made.cpp b/engines/made/made.cpp
+--- a/engines/made/made.cpp
++++ b/engines/made/made.cpp
+@@ -290,4 +290,42 @@
+ }
+ 
++#ifdef __EMSCRIPTEN__
++static constexpr int16 kRtzRoom = 7;
++
++bool MadeEngine::canSaveGameStateCurrently(Common::U32String *msg) {
++	return _agentRestoreScript && _agentControlBoundary && _dat->getVar(kRtzRoom) > 0;
++}
++
++bool MadeEngine::canLoadGameStateCurrently(Common::U32String *msg) {
++	return canSaveGameStateCurrently(msg);
++}
++
++Common::Error MadeEngine::saveGameState(int slot, const Common::String &desc, bool isAutosave) {
++	if (!canSaveGameStateCurrently() || slot < 0 || slot > 999)
++		return Common::kWritingFailed;
++
++	const Common::String filename = getSavegameFilename(slot);
++	return _dat->savegame(filename.c_str(), desc.c_str(), kRtzSaveVersion) == 0
++		? Common::kNoError : Common::kWritingFailed;
++}
++
++Common::Error MadeEngine::loadGameState(int slot) {
++	if (!canLoadGameStateCurrently() || slot < 0 || slot > 999)
++		return Common::kReadingFailed;
++
++	const Common::String filename = getSavegameFilename(slot);
++	if (_dat->loadgame(filename.c_str(), kRtzSaveVersion) != 0)
++		return Common::kReadingFailed;
++
++	// Use the same room-entry script as the original restore menu. Its
++	// interpreter has a separate stack from the suspended event poll.
++	int16 room = _dat->getVar(kRtzRoom);
++	ScriptInterpreter restore(this);
++	restore.runScript(_agentRestoreScript, 1, &room);
++	_eventNum = _eventKey = 0;
++	return Common::kNoError;
++}
++#endif
++
+ void MadeEngine::handleEvents() {
+ 
+@@ -495,4 +533,19 @@
+ 	_eventNum = _eventKey = _eventMouseX = _eventMouseY = 0;
+ 
++#ifdef __EMSCRIPTEN__
++	// This CD edition invokes the room-entry function after its native load.
++	// Match the entry signature before calling it through the host.
++	if (getGameID() == GID_RTZ && getVersion() == 3 && _dat->getMainCodeObjectIndex() == 0x01cb) {
++		static constexpr int16 kRoomEntry = 0x01c3;
++		static const byte kEntrySignature[] = {44, 1, 6, 40, 0, 23, 85, 0};
++		if (_dat->getObjectCount() >= kRoomEntry) {
++			Object *entry = _dat->getObject(kRoomEntry);
++			if (entry && entry->getClass() == 0x7fff && entry->getSize() >= sizeof(kEntrySignature) &&
++					memcmp(entry->getData(), kEntrySignature, sizeof(kEntrySignature)) == 0)
++				_agentRestoreScript = kRoomEntry;
++		}
++	}
++#endif
++
+ #ifdef DUMP_SCRIPTS
+ 	_script->dumpAllScripts();
+diff --git a/engines/made/metaengine.cpp b/engines/made/metaengine.cpp
+--- a/engines/made/metaengine.cpp
++++ b/engines/made/metaengine.cpp
+@@ -22,6 +22,10 @@
+ #include "engines/advancedDetector.h"
+ #include "common/translation.h"
++#include "common/savefile.h"
++#include "common/system.h"
+ #include "made/made.h"
++#include "engines/scummweb-agent-loop.h"
+ #include "made/detection.h"
++#include "made/database.h"
+ 
+ #include "backends/keymapper/action.h"
+@@ -112,13 +116,44 @@
+ 	Common::Error createInstance(OSystem *syst, Engine **engine, const Made::MadeGameDescription *desc) const override;
+ 
++#ifdef __EMSCRIPTEN__
++	int getMaximumSaveSlot() const override { return 999; }
++	SaveStateList listSaves(const char *target) const override;
++#endif
++
+ 	Common::KeymapArray initKeymaps(const char *target) const override;
+ };
+ 
+ bool MadeMetaEngine::hasFeature(MetaEngineFeature f) const {
+-	return
+-		false;
+-}
++#ifdef __EMSCRIPTEN__
++	return scummweb_agent_game_loop_enabled() &&
++		(f == kSupportsListSaves || f == kSimpleSavesNames);
++#else
++	return false;
++#endif
++}
++
++#ifdef __EMSCRIPTEN__
++SaveStateList MadeMetaEngine::listSaves(const char *target) const {
++	SaveStateList saves;
++	if (!target || !hasFeature(kSupportsListSaves))
++		return saves;
++
++	for (const auto &filename : g_system->getSavefileManager()->listSavefiles(getSavegameFilePattern(target))) {
++		const int slot = atoi(filename.c_str() + filename.size() - 3);
++		Common::String description;
++		if (Made::GameDatabaseV3::readSavegameDescription(filename.c_str(), description, Made::kRtzSaveVersion))
++			saves.push_back(SaveStateDescriptor(this, slot, description));
++	}
++	Common::sort(saves.begin(), saves.end(), SaveStateDescriptorSlotComparator());
++	return saves;
++}
++#endif
+ 
+ bool Made::MadeEngine::hasFeature(EngineFeature f) const {
++#ifdef __EMSCRIPTEN__
++	if (_agentRestoreScript && scummweb_agent_game_loop_enabled() &&
++			(f == kSupportsSavingDuringRuntime || f == kSupportsLoadingDuringRuntime))
++		return true;
++#endif
+ 	return
+ 		(f == kSupportsReturnToLauncher);
+diff --git a/engines/made/script.cpp b/engines/made/script.cpp
+--- a/engines/made/script.cpp
++++ b/engines/made/script.cpp
+@@ -28,4 +28,5 @@
+ #include "made/database.h"
+ #include "made/screen.h"
++#include "engines/scummweb-agent-loop.h"
+ 
+ #include "common/util.h"
+@@ -158,6 +159,22 @@
+ 	_running = true;
+ 
++#ifdef __EMSCRIPTEN__
++	ScummWebAgentLoop agentLoop(false);
++	const bool mainInterpreter = _vm->_script == this && _vm->_agentRestoreScript;
++	static constexpr byte kExtendOpcode = 52;
++	static constexpr byte kPollEventExternal = 6;
++#endif
+ 	while (_running && !_vm->shouldQuit()) {
+ 		byte opcode = readByte();
++#ifdef __EMSCRIPTEN__
++		if (mainInterpreter && opcode == kExtendOpcode && *_codeIp == kPollEventExternal) {
++			const bool mainInput = _runningScriptObjectIndex == _vm->_dat->getMainCodeObjectIndex();
++			if (mainInput)
++				agentLoop.setEnabled(true);
++			_vm->_agentControlBoundary = mainInput;
++			scummweb_agent_game_loop();
++			_vm->_agentControlBoundary = false;
++		}
++#endif
+ 
+ 		if (opcode >= 1 && opcode <= _commandsMax) {
+diff --git a/engines/made/database.cpp b/engines/made/database.cpp
+--- a/engines/made/database.cpp
++++ b/engines/made/database.cpp
+@@ -716,6 +716,10 @@
+ 
+ bool GameDatabaseV3::getSavegameDescription(const char *filename, Common::String &description, int16 version) {
++	return readSavegameDescription(filename, description, version);
++}
++
++bool GameDatabaseV3::readSavegameDescription(const char *filename, Common::String &description, int16 version) {
+ 	Common::InSaveFile *in;
+-	char desc[64];
++	char desc[65] = {};
+ 
+ 	if (!(in = g_system->getSavefileManager()->openForLoading(filename))) {
+@@ -745,5 +749,8 @@
+ 	}
+ 
+-	in->read(desc, 64);
++	if (in->read(desc, 64) != 64) {
++		delete in;
++		return false;
++	}
+ 	description = desc;
+ 
+@@ -754,5 +761,5 @@
+ int16 GameDatabaseV3::savegame(const char *filename, const char *description, int16 version) {
+ 	Common::OutSaveFile *out;
+-	char desc[64];
++	char desc[64] = {};
+ 	int16 result = 0;
+ 	uint32 size = 4 + 4 + 2 + _gameStateSize;
+@@ -768,4 +775,6 @@
+ 	out->write(_gameState, _gameStateSize);
+ 	out->finalize();
++	if (out->err())
++		result = 6;
+ 	delete out;
+ 	return result;
+@@ -797,5 +806,5 @@
+ 	}
+ 
+-	if (size != expectedSize) {
++	if (size != expectedSize || in->size() != int64(size) + 64) {
+ 		warning("Unexpected save game size. Expected %d, size is %d", expectedSize, size);
+ 		delete in;
+diff --git a/engines/made/database.h b/engines/made/database.h
+--- a/engines/made/database.h
++++ b/engines/made/database.h
+@@ -190,6 +190,13 @@
+ };
+ 
++#ifdef __EMSCRIPTEN__
++// The Return to Zork CD menu passes this version to the native serializer.
++constexpr int16 kRtzSaveVersion = 623;
++#endif
++
+ class GameDatabaseV3 : public GameDatabase {
+ public:
++	static bool readSavegameDescription(const char *filename, Common::String &description, int16 version);
++
+ 	GameDatabaseV3(MadeEngine *vm);
+ 	virtual int16 *findObjectProperty(int16 objectIndex, int16 propertyId, int16 &propertyFlag) override;

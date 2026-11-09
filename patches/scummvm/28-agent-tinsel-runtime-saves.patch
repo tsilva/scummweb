@@ -1,0 +1,266 @@
+diff --git a/engines/tinsel/tinsel.h b/engines/tinsel/tinsel.h
+--- a/engines/tinsel/tinsel.h
++++ b/engines/tinsel/tinsel.h
+@@ -165,13 +165,12 @@
+ 	Common::Error run() override;
+ 	bool hasFeature(EngineFeature f) const override;
+ 	Common::Error loadGameState(int slot) override;
+-#if 0
+-	Common::Error saveGameState(int slot, const Common::String &desc, bool isAutosave = false);
++#ifdef __EMSCRIPTEN__
++	Common::Error saveGameState(int slot, const Common::String &desc, bool isAutosave = false) override;
++	bool canSaveGameStateCurrently(Common::U32String *msg = nullptr) override;
++	bool canSaveAutosaveCurrently() override { return false; }
+ #endif
+ 	bool canLoadGameStateCurrently(Common::U32String *msg = nullptr) override;
+-#if 0
+-	bool canSaveGameStateCurrently();
+-#endif
+ 
+ public:
+ 	TinselEngine(OSystem *syst, const TinselGameDescription *gameDesc);
+diff --git a/engines/tinsel/metaengine.cpp b/engines/tinsel/metaengine.cpp
+--- a/engines/tinsel/metaengine.cpp
++++ b/engines/tinsel/metaengine.cpp
+@@ -24,9 +24,12 @@
+ #include "common/translation.h"
+ 
+ #include "engines/advancedDetector.h"
++#include "engines/scummweb-agent-loop.h"
+ 
+ #include "tinsel/bmv.h"
+ #include "tinsel/cursor.h"
++#include "tinsel/dialogs.h"
++#include "tinsel/events.h"
+ #include "tinsel/tinsel.h"
+ #include "tinsel/savescn.h"	// needed by TinselMetaEngine::
+ 
+@@ -117,6 +120,10 @@
+ }
+ 
+ bool Tinsel::TinselEngine::hasFeature(EngineFeature f) const {
++#ifdef __EMSCRIPTEN__
++	if (f == kSupportsSavingDuringRuntime)
++		return !getIsADGFDemo() && scummweb_agent_game_loop_enabled();
++#endif
+ 	return
+ 		(f == kSupportsReturnToLauncher) ||
+ 		(f == kSupportsLoadingDuringRuntime);
+@@ -420,21 +427,23 @@
+ 	return Common::kNoError;	// TODO: return success/failure
+ }
+ 
+-#if 0
++#ifdef __EMSCRIPTEN__
+ Common::Error TinselEngine::saveGameState(int slot, const Common::String &desc, bool isAutosave) {
+-	Common::String saveName = _vm->getSavegameFilename((int16)(slot + 1));
+-	char saveDesc[SG_DESC_LEN];
+-	Common::strlcpy(saveDesc, desc, SG_DESC_LEN);
+-	SaveGame((char *)saveName.c_str(), saveDesc);
+-	ProcessSRQueue();			// This shouldn't be needed, but for some reason it is...
+-	return Common::kNoError;	// TODO: return success/failure
++	if (isAutosave || slot < 1 || slot > 99 || !canSaveGameStateCurrently())
++		return Common::kWritingFailed;
++
++	const Common::String saveName = getSavegameFilename(slot);
++	SaveGame(saveName.c_str(), desc.c_str());
++	return ProcessAgentSave() ? Common::kNoError : Common::kWritingFailed;
++}
++
++bool TinselEngine::canSaveGameStateCurrently(Common::U32String *) {
++	return scummweb_agent_game_loop_enabled() && !getIsADGFDemo() && !_bmv->MoviePlaying()
++		&& ControlIsOn() && _cursor->isCursorShown() && !_dialogs->inventoryOrNotebookActive()
++		&& !IsSceneRestorePending();
+ }
+ #endif
+ 
+ bool TinselEngine::canLoadGameStateCurrently(Common::U32String *msg) { return !_bmv->MoviePlaying(); }
+ 
+-#if 0
+-bool TinselEngine::canSaveGameStateCurrently(Common::U32String *msg) { return isCursorShown(); }
+-#endif
+-
+ } // End of namespace Tinsel
+diff --git a/engines/tinsel/savescn.h b/engines/tinsel/savescn.h
+--- a/engines/tinsel/savescn.h
++++ b/engines/tinsel/savescn.h
+@@ -86,11 +86,15 @@
+ void setNeedLoad();
+ 
+ void RestoreGame(int num);
+-void SaveGame(char *name, char *desc);
++void SaveGame(const char *name, const char *desc);
+ 
+ void ProcessSRQueue();
++#ifdef __EMSCRIPTEN__
++bool ProcessAgentSave();
++bool IsSceneRestorePending();
++#endif
+ 
+-void RequestSaveGame(char *name, char *desc, SAVED_DATA *sd, int *ssCount, SAVED_DATA *ssData);
++void RequestSaveGame(const char *name, const char *desc, SAVED_DATA *sd, int *ssCount, SAVED_DATA *ssData);
+ void RequestRestoreGame(int num, SAVED_DATA *sd, int *ssCount, SAVED_DATA *ssData);
+ 
+ void InitializeSaveScenes();
+diff --git a/engines/tinsel/savescn.cpp b/engines/tinsel/savescn.cpp
+--- a/engines/tinsel/savescn.cpp
++++ b/engines/tinsel/savescn.cpp
+@@ -425,7 +425,7 @@
+  * @param name			Name of savegame
+  * @param desc			Description of savegame
+  */
+-void SaveGame(char *name, char *desc) {
++void SaveGame(const char *name, const char *desc) {
+ 	// Get current scene data
+ 	DoSaveScene(&g_sgData);
+ 
+@@ -436,6 +436,12 @@
+ 
+ 
+ //---------------------------------------------------------------------------------
++
++#ifdef __EMSCRIPTEN__
++bool IsSceneRestorePending() {
++	return g_RestoreSceneCount != 0;
++}
++#endif
+ 
+ bool IsRestoringScene() {
+ 	if (g_RestoreSceneCount) {
+diff --git a/engines/tinsel/saveload.cpp b/engines/tinsel/saveload.cpp
+--- a/engines/tinsel/saveload.cpp
++++ b/engines/tinsel/saveload.cpp
+@@ -120,7 +120,7 @@
+ 
+ static SAVED_DATA *g_srsd = nullptr;
+ static int g_RestoreGameNumber = 0;
+-static char *g_SaveSceneName = nullptr;
++static const char *g_SaveSceneName = nullptr;
+ static const char *g_SaveSceneDesc = nullptr;
+ static int *g_SaveSceneSsCount = 0;
+ static SAVED_DATA *g_SaveSceneSsData = nullptr;	// points to 'SAVED_DATA ssdata[MAX_NEST]'
+@@ -592,20 +592,22 @@
+ 	return !failed;
+ }
+ 
+-static void SaveFailure(Common::OutSaveFile *f) {
++static void SaveFailure(Common::OutSaveFile *f, bool showError) {
+ 	if (f) {
+ 		delete f;
+ 		_vm->getSaveFileMan()->removeSavefile(g_SaveSceneName);
+ 	}
+-	g_SaveSceneName= nullptr;	// Invalidate save name
+-	GUI::MessageDialog dialog(_("Failed to save game to file."));
+-	dialog.runModal();
++	g_SaveSceneName = nullptr;
++	if (showError) {
++		GUI::MessageDialog dialog(_("Failed to save game to file."));
++		dialog.runModal();
++	}
+ }
+ 
+ /**
+  * DoSave
+  */
+-static void DoSave() {
++static bool DoSave(bool showError = true) {
+ 	Common::OutSaveFile *f;
+ 	char tmpName[FNAMELEN];
+ 
+@@ -641,8 +643,8 @@
+ 	Common::Serializer s(0, f);
+ 
+ 	if (f == NULL) {
+-		SaveFailure(f);
+-		return;
++		SaveFailure(f, showError);
++		return false;
+ 	}
+ 
+ 	// Write out a savegame header
+@@ -658,8 +660,8 @@
+ 	hdr.language = _vm->_config->_language;
+ 
+ 	if (!syncSaveGameHeader(s, hdr) || f->err()) {
+-		SaveFailure(f);
+-		return;
++		SaveFailure(f, showError);
++		return false;
+ 	}
+ 
+ 	s.setVersion(hdr.ver);
+@@ -667,15 +669,26 @@
+ 
+ 	// Write out the special Id for Discworld savegames
+ 	f->writeUint32LE(0xFEEDFACE);
++	if (!f->err())
++		f->finalize();
+ 	if (f->err()) {
+-		SaveFailure(f);
+-		return;
+-	}
+-
+-	f->finalize();
++		SaveFailure(f, showError);
++		return false;
++	}
++
+ 	delete f;
+-	g_SaveSceneName= nullptr;	// Invalidate save name
+-}
++	g_SaveSceneName = nullptr;
++	return true;
++}
++
++#ifdef __EMSCRIPTEN__
++bool ProcessAgentSave() {
++	assert(g_SRstate == SR_DOSAVE);
++	const bool success = DoSave(false);
++	g_SRstate = SR_IDLE;
++	return success;
++}
++#endif
+ 
+ /**
+  * ProcessSRQueue
+@@ -703,7 +716,7 @@
+ }
+ 
+ 
+-void RequestSaveGame(char *name, char *desc, SAVED_DATA *sd, int *pSsCount, SAVED_DATA *pSsData) {
++void RequestSaveGame(const char *name, const char *desc, SAVED_DATA *sd, int *pSsCount, SAVED_DATA *pSsData) {
+ 	assert(g_SRstate == SR_IDLE);
+ 
+ 	g_SaveSceneName = name;
+diff --git a/engines/tinsel/tinsel.cpp b/engines/tinsel/tinsel.cpp
+--- a/engines/tinsel/tinsel.cpp
++++ b/engines/tinsel/tinsel.cpp
+@@ -35,6 +35,7 @@
+ #include "backends/audiocd/audiocd.h"
+ 
+ #include "engines/util.h"
++#include "engines/scummweb-agent-loop.h"
+ 
+ #if defined(USE_TINYGL)
+ #include "graphics/tinygl/tinygl.h"
+@@ -1137,6 +1138,9 @@
+ 	}
+ 
+ 	// Foreground loop
++#ifdef __EMSCRIPTEN__
++	ScummWebAgentLoop agentLoop;
++#endif
+ 	uint32 timerVal = 0;
+ 	while (!shouldQuit()) {
+ 		// Check for time to do next game cycle
+@@ -1144,6 +1148,10 @@
+ 			timerVal = g_system->getMillis();
+ 			_system->getAudioCDManager()->update();
+ 			NextGameCycle();
++#ifdef __EMSCRIPTEN__
++			if (!IsSceneRestorePending())
++				scummweb_agent_game_loop();
++#endif
+ 		}
+ 
+ 		if (g_bRestart) {

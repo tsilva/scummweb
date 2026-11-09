@@ -143,12 +143,14 @@ still be cleared or evicted, and metadata does not make save-file writes atomic.
 
 AgentSCUMM can launch a game with its own save scope. ScummWEB then gives that
 run a separate native save path and index, including for Continue. These saves
-live outside the normal ScummWEB library and backup directories. Scoped runs
-of Beneath a Steel Sky and the full Flight of the Amazon Queen support native
-pause, resume, exact tick stepping, save, and load. Queen steps rendered game
-updates, including updates during walks and cutaways. Queen saves and loads
-between commands and room transitions and exposes manual slots 1–98. A paused
-load presents the restored scene and keeps the game paused.
+live outside the normal ScummWEB library and backup directories. The shared
+runtime can pause, resume, and step at ScummVM frame presentations. It reports
+save and load capabilities separately from timing controls and respects native
+scene and slot restrictions. Some engines service controls at a complete game
+update and report that clock separately from the shared presentation clock.
+Queen counts rendered updates during walks and cutaways, and exposes manual
+slots 1–98 between commands and room transitions. DreamWeb, Nippon Safes and
+Discworld use their existing game serializers from their game-update boundary.
 
 For a scoped Sky Continue launch, AgentSCUMM can explicitly request a single
 legacy manual slot from the same browser profile. The shell copies the slot
@@ -306,9 +308,10 @@ OpenGL signal excludes ScummVM's splash and GUI overlays; canvas draw observers
 and the pixel detector remain fallbacks for other renderers. Intro skipping
 remains an explicit action shown in the player controls after the loading screen
 closes; the download and startup panel does not offer **Skip intro**.
-The bundled Escape from Monkey Island demo skips ScummVM's startup splash and
-continues past the compatibility prompt. Its **Compatibility warning** toolbar
-button opens the original warning text in the player.
+Browser games skip ScummVM's startup splash. For both catalog and imported
+games, the player continues past nonfatal startup compatibility prompts and
+shows the original messages under **Compatibility warning** in the toolbar.
+Fatal compatibility errors still stop launch.
 The native GUI's startup themes and translation prefix also prefetch in parallel;
 later reads reuse their binary buffers. Range responses must match the requested
 prefix and indexed file size, and failed hints retain the ordinary read path.
@@ -709,19 +712,23 @@ queues. A sample can miss transient writes.
 | Access | Player room | `flags` |
 | ADL | Room | `vars` |
 | AGI | Current room in the AGI VM | `vars`, packed `flag_bytes` |
-| AGOS | Waxworks room where known | `vars`, `vars_secondary` where enabled |
+| AGOS | Waxworks room where known | `vars`, `vars_secondary` where enabled, `elvira2_outcome` for the English Amiga floppy edition |
+| AGS | Displayed room | `game_state` score and maximum score |
 | BBVS | Game scene | `game_vars` |
 | CGE | Scene | `flags` |
 | CGE2 | Scene | — |
-| Cine | — | `global_vars` |
+| Cine | Background resource filename | `global_vars`, `object_x`, `object_y`, `scene` |
 | Composer | Page when unambiguous | `vars` |
 | Cruise | — | `global_vars` |
 | Draci | Current room | `vars` |
 | Drascula | Current room | `flags` |
 | DreamWeb | Location | `game_vars` |
+| Freescape | Current area | `game_vars` keyed by native variable number |
+| GLK | — | `event_state` frame counter and timer interval |
 | Gnap | Scene | `flag_word` |
 | Gob | TOT script filename | `vars` |
 | GOT | Level | `flags` |
+| Grim | Set name | `scene_state` camera setup |
 | Groovie | — | `script_vars` |
 | Hopkins | Room | `state_bytes` |
 | Hugo | Screen | `screen_states` |
@@ -755,7 +762,7 @@ queues. A sample can miss transient writes.
 | Touche | Current room | `flags` |
 | TSAGE | Scene | `flags` |
 | Tucker | Location | `flags` |
-| Voyeur | — | `game_vars` |
+| Voyeur | Current area | `game_vars` with event count, event flags, time index, and transition ID |
 | Wintermute | Scene filename | Numeric `globals` |
 | ZVision | World, room, node and view code | `state`, `flags` |
 
@@ -765,6 +772,16 @@ values. The IDs and keys retain their engine-specific meaning. The table
 lists the engine hooks in the managed build. Some editions use another
 interpreter path or have no current room or variables before gameplay.
 When there is no sample, the engine and game identity can still be queried.
+
+For edition matching, AGI reports its detection checksum in `identity.index_md5`
+when available. SCI uses the complete `resource.map` MD5 for editions with
+that file.
+
+For Elvira II on Amiga, `identity.index_md5` is the MD5 of the complete
+`gameamiga` database. The supported English floppy edition publishes
+`elvira2_outcome.ritual` as 0 before an outcome, 1 on the winning branch,
+or 2 on ritual failure. The value survives the ending's scripted reload
+and clears on a new attempt or successful player-initiated restore.
 
 For a new adapter, use an engine update boundary and copy game-owned values
 with `ScummWebTelemetry::Sample`. Expose a room only when the engine stores

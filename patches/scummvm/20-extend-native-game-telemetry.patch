@@ -583,10 +583,10 @@ index 8cf4d625..fcf95c2a 100644
  	// Update background running things
  	uint32 loopStart = _system->getMillis();
  	_sound->updateSLST();
-diff --git a/engines/mortevielle/mortevielle.cpp b/engines/mortevielle/mortevielle.cpp
-index eba59b77..69388b5b 100644
---- a/engines/mortevielle/mortevielle.cpp
-+++ b/engines/mortevielle/mortevielle.cpp
+diff --git a/engines/mortevielle/utils.cpp b/engines/mortevielle/utils.cpp
+index 8048ea40..7a197772 100644
+--- a/engines/mortevielle/utils.cpp
++++ b/engines/mortevielle/utils.cpp
 @@ -24,6 +24,8 @@
   * Copyright (c) 1987-1989 Lankhor
   */
@@ -596,22 +596,22 @@ index eba59b77..69388b5b 100644
  #include "mortevielle/mortevielle.h"
  
  #include "mortevielle/dialogs.h"
-@@ -497,6 +499,15 @@ void MortevielleEngine::playGame() {
- 	// Loop handling actions until the game has to be quit, or show the lose or end sequence
- 	do {
- 		handleAction();
+@@ -263,6 +265,15 @@ void MortevielleEngine::handleAction() {
+ 		do {
+ 			_menu->updateMenu();
+ 			prepareRoom();
 +#ifdef __EMSCRIPTEN__
-+		{
-+			ScummWebTelemetry::Sample sample(_saveStruct._currPlace);
-+			sample.bank("available_questions", _saveStruct._availableQuestion, ARRAYSIZE(_saveStruct._availableQuestion));
-+			sample.bank("hints_found", _saveStruct._pctHintFound, ARRAYSIZE(_saveStruct._pctHintFound));
-+			sample.variable("game_vars", "faithScore", _saveStruct._faithScore);
-+			sample.variable("game_vars", "fullHour", _saveStruct._fullHour);
-+		}
++			{
++				ScummWebTelemetry::Sample sample(_coreVar._currPlace);
++				sample.bank("available_questions", _coreVar._availableQuestion, ARRAYSIZE(_coreVar._availableQuestion));
++				sample.bank("hints_found", _coreVar._pctHintFound, ARRAYSIZE(_coreVar._pctHintFound));
++				sample.variable("game_vars", "faithScore", _coreVar._faithScore);
++				sample.variable("game_vars", "fullHour", _coreVar._fullHour);
++			}
 +#endif
- 		if (shouldQuit())
- 			return;
- 	} while (!((_quitGame) || (_endGame) || (_loseGame)));
+ 			_mouse->moveMouse(funct, inkey);
+ 			if (shouldQuit())
+ 				return;
 diff --git a/engines/neverhood/gamevars.h b/engines/neverhood/gamevars.h
 index bdc44f14..f5c91d61 100644
 --- a/engines/neverhood/gamevars.h
@@ -733,7 +733,6 @@ index 83f93e97..4ff61ebc 100644
  	DirectionConstant getCurrentDirection();
  	void setCurrentDirection(const DirectionConstant direction);
 diff --git a/engines/pegasus/pegasus.cpp b/engines/pegasus/pegasus.cpp
-index e62c7a46..ccc32b10 100644
 --- a/engines/pegasus/pegasus.cpp
 +++ b/engines/pegasus/pegasus.cpp
 @@ -22,6 +22,8 @@
@@ -745,7 +744,21 @@ index e62c7a46..ccc32b10 100644
  #include "common/config-manager.h"
  #include "common/error.h"
  #include "common/events.h"
-@@ -206,6 +208,22 @@ Common::Error PegasusEngine::run() {
+@@ -37,6 +39,7 @@
+ #include "backends/keymapper/standard-actions.h"
+ #include "base/plugins.h"
+ #include "base/version.h"
++#include "engines/scummweb-agent-loop.h"
+ #include "gui/message.h"
+ #include "gui/saveload.h"
+ #include "video/theora_decoder.h"
+@@ -203,9 +206,35 @@
+ 		_introTimer->setFunctor(new Common::Functor0Mem<void, PegasusEngine>(this, &PegasusEngine::introTimerExpired));
+ 	}
+ 
++#ifdef __EMSCRIPTEN__
++	ScummWebAgentLoop agentLoop(false);
++#endif
  	while (!shouldQuit()) {
  		processShell();
  		_system->delayMillis(10); // Ease off the CPU
@@ -763,6 +776,13 @@ index e62c7a46..ccc32b10 100644
 +				sample.bank("scoring_flags", scoring, kNumScoringFlags);
 +				sample.variable("location", "neighborhood", GameState.getCurrentNeighborhood());
 +			}
++		}
++		const bool inGameplay = g_neighborhood && !_gameMenu;
++		agentLoop.setEnabled(inGameplay);
++		if (inGameplay) {
++			_agentControlBoundary = true;
++			scummweb_agent_game_loop();
++			_agentControlBoundary = false;
 +		}
 +#endif
  	}
@@ -1107,14 +1127,17 @@ index c4863a36..c83f77b1 100644
  #include "voyeur/events.h"
  #include "voyeur/voyeur.h"
  #include "voyeur/staticres.h"
-@@ -236,6 +238,12 @@ void EventsManager::delayClick(int cycles) {
+@@ -236,6 +238,15 @@ void EventsManager::delayClick(int cycles) {
  }
  
  void EventsManager::pollEvents() {
 +#ifdef __EMSCRIPTEN__
 +	if (_vm->_voy) {
-+		ScummWebTelemetry::Sample sample;
++		ScummWebTelemetry::Sample sample(int(_vm->_voyeurArea));
 +		sample.variable("game_vars", "eventFlags", _vm->_voy->_eventFlags);
++		sample.variable("game_vars", "eventCount", _vm->_voy->_eventCount);
++		sample.variable("game_vars", "transitionId", _vm->_voy->_transitionId);
++		sample.variable("game_vars", "timeIndex", _vm->_voy->_RTVNum);
 +	}
 +#endif
  	checkForNextFrameCounter();
@@ -1208,3 +1231,177 @@ index a173bfa3..fab62a79 100644
  }
  
  bool ScriptManager::execScope(ScriptScope &scope) {
+diff --git a/engines/agi/agi.cpp b/engines/agi/agi.cpp
+--- a/engines/agi/agi.cpp
++++ b/engines/agi/agi.cpp
+@@ -18,6 +18,8 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  *
+  */
++
++#include "engines/scummweb-telemetry.h"
+ 
+ #include "common/md5.h"
+ #include "common/file.h"
+@@ -621,6 +623,16 @@
+ }
+ 
+ Common::Error AgiEngine::go() {
++#ifdef __EMSCRIPTEN__
++	if (const char *digest = getGameMD5()) {
++		EM_ASM({
++			const identity = globalThis.__scummwebEvaluationGame;
++			if (!globalThis.__scummwebTelemetryQueryEnabled || !identity) return;
++			const digest = UTF8ToString($0);
++			if (/^[a-f0-9]{32}$/.test(digest)) identity.index_md5 = digest;
++		}, digest);
++	}
++#endif
+ 	if (_game.mouseEnabled) {
+ 		CursorMan.showMouse(true);
+ 	}
+diff --git a/engines/ags/engine/main/game_run.cpp b/engines/ags/engine/main/game_run.cpp
+--- a/engines/ags/engine/main/game_run.cpp
++++ b/engines/ags/engine/main/game_run.cpp
+@@ -22,6 +22,8 @@
+ //
+ // Game loop
+ //
++
++#include "engines/scummweb-telemetry.h"
+ 
+ #include "common/std/limits.h"
+ #include "ags/engine/ac/button.h"
+@@ -884,6 +886,14 @@
+ 	if (_GP(play).fast_forward)
+ 		return;
+ 
++#ifdef __EMSCRIPTEN__
++	{
++		ScummWebTelemetry::Sample sample(_G(displayed_room));
++		sample.variable("game_state", "score", _GP(play).score);
++		sample.variable("game_state", "max_score", _GP(play).totalscore);
++	}
++#endif
++
+ 	set_our_eip(72);
+ 
+ 	game_loop_update_fps();
+diff --git a/engines/freescape/freescape.cpp b/engines/freescape/freescape.cpp
+--- a/engines/freescape/freescape.cpp
++++ b/engines/freescape/freescape.cpp
+@@ -18,6 +18,8 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  *
+  */
++
++#include "engines/scummweb-telemetry.h"
+ 
+ #include "common/config-manager.h"
+ #include "common/events.h"
+@@ -1255,6 +1257,17 @@
+ 		_gfx->flipBuffer();
+ 		_frameLimiter->delayBeforeSwap();
+ 		g_system->updateScreen();
++#ifdef __EMSCRIPTEN__
++		{
++			ScummWebTelemetry::Sample sample(_currentArea ? _currentArea->getAreaID() : -1);
++			if (sample) {
++				for (const auto &entry : _gameStateVars) {
++					const Common::String key = Common::String::format("%u", (uint)entry._key);
++					sample.variable("game_vars", key.c_str(), entry._value);
++				}
++			}
++		}
++#endif
+ 		_frameLimiter->startFrame();
+ 		if (_vsyncEnabled) // if vsync is enabled, the framelimiter will not work
+ 			g_system->delayMillis(15); // try to target ~60 FPS
+diff --git a/engines/glk/events.cpp b/engines/glk/events.cpp
+--- a/engines/glk/events.cpp
++++ b/engines/glk/events.cpp
+@@ -18,6 +18,8 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  *
+  */
++
++#include "engines/scummweb-telemetry.h"
+ 
+ #include "glk/events.h"
+ #include "glk/conf.h"
+@@ -109,6 +111,14 @@
+ 			g_vm->_windows->redraw();
+ 		_redraw = false;
+ 		g_vm->_screen->update();
++#ifdef __EMSCRIPTEN__
++		{
++			// Glk interpreters do not share a story room or variable layout.
++			ScummWebTelemetry::Sample sample;
++			sample.variable("event_state", "frame_counter", _frameCounter);
++			sample.variable("event_state", "timer_interval_ms", _timerMilli);
++		}
++#endif
+ 
+ 		// Poll for any finished sounds
+ 		g_vm->_sounds->poll();
+diff --git a/engines/grim/grim.cpp b/engines/grim/grim.cpp
+--- a/engines/grim/grim.cpp
++++ b/engines/grim/grim.cpp
+@@ -24,6 +24,8 @@
+ #define FORBIDDEN_SYMBOL_EXCEPTION_stderr
+ #define FORBIDDEN_SYMBOL_EXCEPTION_stdin
+ #define FORBIDDEN_SYMBOL_EXCEPTION_FILE
++
++#include "engines/scummweb-telemetry.h"
+ 
+ #include "common/archive.h"
+ #include "common/debug-channels.h"
+@@ -1153,6 +1155,13 @@
+ 			luaUpdate();
+ 		}
+ 
++#ifdef __EMSCRIPTEN__
++		if (_currSet) {
++			ScummWebTelemetry::Sample sample(-1, _currSet->getName().c_str());
++			sample.variable("scene_state", "camera_setup", _currSet->getSetup());
++		}
++#endif
++
+ 		if (g_imuseState != -1) {
+ 			g_sound->setMusicState(g_imuseState);
+ 			g_imuseState = -1;
+diff --git a/engines/sci/sci.cpp b/engines/sci/sci.cpp
+--- a/engines/sci/sci.cpp
++++ b/engines/sci/sci.cpp
+@@ -18,6 +18,12 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  *
+  */
++
++#include "engines/scummweb-telemetry.h"
++#ifdef __EMSCRIPTEN__
++#include "common/file.h"
++#include "common/md5.h"
++#endif
+ 
+ #include "common/system.h"
+ #include "common/config-manager.h"
+@@ -274,6 +280,18 @@
+ extern int showScummVMDialog(const Common::U32String &message, const Common::U32String &altButton = Common::U32String(), bool alignCenter = true);
+ 
+ Common::Error SciEngine::run() {
++#ifdef __EMSCRIPTEN__
++	if (EM_ASM_INT({ return Boolean(globalThis.__scummwebTelemetryQueryEnabled); })) {
++		Common::File index;
++		if (index.open("resource.map")) {
++			const Common::String digest = Common::computeStreamMD5AsString(index);
++			EM_ASM({
++				const identity = globalThis.__scummwebEvaluationGame;
++				if (identity) identity.index_md5 = UTF8ToString($0);
++			}, digest.c_str());
++		}
++	}
++#endif
+ 	_tts = new SciTTS();
+ 
+ 	_resMan = new ResourceManager();

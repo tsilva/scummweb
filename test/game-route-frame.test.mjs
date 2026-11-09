@@ -221,8 +221,8 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     get children() { return children; },
     get loadCount() { return loadCount; },
     get confirmations() { return confirmations; },
-    get overlay() { return children.find(({ type }) => type === Overlay).props; },
     get controls() { return children.find(({ type }) => type === Controls).props; },
+    get overlay() { return children.find(({ type }) => type === Overlay).props; },
     setBootCompleted() { bootCompleted = true; render(); },
     ready(origin = window.location.origin, source = frame.contentWindow) {
       for (const handler of [...messages]) handler({ origin, source, data: { type: "scummweb:local-game-ready" } });
@@ -230,6 +230,10 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     gameReady(href) {
       for (const handler of [...messages]) handler({ origin: window.location.origin, source: frame.contentWindow,
         data: { type: "scummvm-ready", source: "scummweb", target: "sky", href, reason: "rendered-frame-detected" } });
+    },
+    compatibilityWarning(message, { origin = window.location.origin, source = frame.contentWindow, href = frame.contentDocument.URL } = {}) {
+      for (const handler of [...messages]) handler({ origin, source,
+        data: { type: "scummweb:compatibility-warning", href, message } });
     },
     bootError({ origin = window.location.origin, source = frame.contentWindow, ...data } = {}) {
       for (const handler of [...messages]) handler({ origin, source, data: {
@@ -317,6 +321,27 @@ test("the play route forwards telemetry only for the opted-in game frame", () =>
   }
 });
 
+test("catalog and imported launches retain distinct compatibility warnings from the active frame", () => {
+  for (const catalog of [true, false]) {
+    const player = pendingArchivePlayer({ catalog });
+    player.render();
+    assert.equal(new URL(player.frame.contentDocument.URL).searchParams.get("hostCompatibilityWarning"), "1");
+    assert.equal(player.controls.compatibilityWarnings.length, 0);
+    player.compatibilityWarning("Other origin", { origin: "https://untrusted.test" });
+    player.compatibilityWarning("Other frame", { source: {} });
+    player.compatibilityWarning("Previous launch", { href: "/scummvm.html#old" });
+    player.compatibilityWarning(" ");
+    player.compatibilityWarning("Testing edition");
+    player.compatibilityWarning("Testing edition");
+    player.compatibilityWarning("Experimental add-on");
+    player.render();
+    assert.deepEqual([...player.controls.compatibilityWarnings], ["Testing edition", "Experimental add-on"]);
+    assert.equal(player.overlay.hasBootFailed, false);
+    assert.equal(player.reports.length, 0);
+    player.unmount();
+  }
+});
+
 test("save-lock contention explains recovery and rejects messages from unrelated frames", () => {
   const player = pendingArchivePlayer();
   player.render();
@@ -342,7 +367,7 @@ test("a slow archive keeps the fallback frame identity through the first-frame m
   await new Promise(setImmediate);
   player.render();
   assert.equal(player.deliveries.length, 1);
-  player.gameReady("/scummvm.html?localGame=1&launchRetry=inline#sky");
+  player.gameReady("/scummvm.html?localGame=1&hostCompatibilityWarning=1&launchRetry=inline#sky");
   assert.equal(player.confirmations, 1, "the parent accepts the actual fallback frame's ready message");
   player.unmount();
 });
