@@ -3278,5 +3278,45 @@
     "widths": [
       320
     ]
+  },
+  "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/grim-fandango-scummweb-generated-2026-11-08-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/zork-1-scummweb-generated-2026-11-08-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/zork-2-scummweb-generated-2026-11-08-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/zork-3-scummweb-generated-2026-11-08-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
   }
 }

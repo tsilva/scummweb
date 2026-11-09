@@ -46,6 +46,29 @@ const importedScummGames = [
   },
 ];
 
+const bundledArtworkByTarget = {
+  "grim-demo": {
+    heroImage: "/launcher/grim-fandango-scummweb-generated-2026-11-09-r2-hero.webp",
+    posterImage: "/launcher/grim-fandango-scummweb-generated-2026-11-08-r1-cover.webp",
+  },
+  "monkey4-demo": {
+    heroImage: "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero.webp",
+    posterImage: "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover.webp",
+  },
+  zork1: {
+    heroImage: "/launcher/zork-1-scummweb-generated-2026-11-08-r2-hero.webp",
+    posterImage: "/launcher/zork-1-scummweb-generated-2026-11-08-r1-cover.webp",
+  },
+  zork2: {
+    heroImage: "/launcher/zork-2-scummweb-generated-2026-11-08-r2-hero.webp",
+    posterImage: "/launcher/zork-2-scummweb-generated-2026-11-08-r1-cover.webp",
+  },
+  zork3: {
+    heroImage: "/launcher/zork-3-scummweb-generated-2026-11-08-r1-hero.webp",
+    posterImage: "/launcher/zork-3-scummweb-generated-2026-11-08-r1-cover.webp",
+  },
+};
+
 const artByTarget = {
   draci: {
     ...retroGameArtwork["draci:draci"],
@@ -69,6 +92,7 @@ const artByTarget = {
     year: "1998",
     language: "en",
     summary: "Meet Manny Calavera in LucasArts’ original Windows demo set in the Land of the Dead.",
+    ...bundledArtworkByTarget["grim-demo"],
   },
   "monkey4-demo": {
     genre: "Graphic adventure",
@@ -76,6 +100,7 @@ const artByTarget = {
     year: "2000",
     language: "en",
     summary: "Join Guybrush Threepwood in the original Windows web demo of the fourth Monkey Island adventure.",
+    ...bundledArtworkByTarget["monkey4-demo"],
   },
   ...Object.fromEntries([
     ["zork1", "1980", "Explore the Great Underground Empire, starting outside a white house."],
@@ -87,6 +112,7 @@ const artByTarget = {
     language: "en",
     year,
     summary: `${summary} Type commands to play.`,
+    ...bundledArtworkByTarget[target],
   }])),
   soltys: { ...retroGameArtwork["cge:soltys"], year: "1995" },
   hires1: { ...retroGameArtwork["adl:hires1"], year: "1980" },
