@@ -95,7 +95,8 @@ for (const message of ["This ZIP link returned HTTP 404.", "Could not download t
   });
 }
 
-function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = false, catalog = true, downloadDetails = { loaded: 12_400_000, total: 85_200_000 } } = {}) {
+function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = false, catalog = true,
+  skipIntro, downloadDetails = { loaded: 12_400_000, total: 85_200_000 } } = {}) {
   const archive = Promise.withResolvers();
   const hooks = [];
   const messages = new Set();
@@ -109,6 +110,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   let effects = [];
   let loadCount = 0;
   let confirmations = 0;
+  let bootCompleted = false;
   let eventProcessor;
   const frame = {
     contentDocument: { URL: "about:blank", getElementById: () => null },
@@ -183,7 +185,9 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       } };
       if (name.endsWith("/GamePlayerControls")) return Controls;
       if (name.endsWith("/GameBootOverlay")) return Overlay;
-      if (name.endsWith("/useBootState")) return { useBootState: () => ({ hasBootCompleted: false, hasBootFailed: false }) };
+      if (name.endsWith("/useBootState")) return { useBootState: () => ({
+        hasBootCompleted: bootCompleted, hasBootFailed: false, showSkipIntroButton: Boolean(skipIntro),
+      }) };
       if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({}) };
       if (name.endsWith("/useTouchClickMode")) return { useTouchClickActions: () => ({}) };
       if (name.endsWith("/useTouchCursorPad")) return { useTouchCursorPad: () => ({}) };
@@ -196,6 +200,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   });
   const props = {
     game: { target: "sky", slug: "sky", engineId: "sky" }, target: "sky", src: "/scummvm.html?localGame=1#sky",
+    skipIntro,
     ...(catalog ? { catalogArchiveUrl: "https://example.test/sky.zip" } : { loadArchive: () => archive.promise }),
   };
   function render() {
@@ -217,6 +222,8 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     get loadCount() { return loadCount; },
     get confirmations() { return confirmations; },
     get overlay() { return children.find(({ type }) => type === Overlay).props; },
+    get controls() { return children.find(({ type }) => type === Controls).props; },
+    setBootCompleted() { bootCompleted = true; render(); },
     ready(origin = window.location.origin, source = frame.contentWindow) {
       for (const handler of [...messages]) handler({ origin, source, data: { type: "scummweb:local-game-ready" } });
     },
@@ -240,6 +247,19 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     unmount() { for (const hook of hooks) hook?.cleanup?.(); },
   };
 }
+
+test("the intro countdown starts only when the skip button can be seen", () => {
+  const player = pendingArchivePlayer({ skipIntro: { strategy: "boot-param", bootParam: 1, durationMinutes: 0.5 } });
+  const countdowns = () => [...player.timers.values()].filter(({ delay }) => delay === 30_000);
+  player.render();
+  assert.equal(player.controls.showSkipIntroAction, false);
+  assert.equal(countdowns().length, 0);
+  player.setBootCompleted();
+  assert.equal(player.controls.showSkipIntroAction, true);
+  assert.equal(countdowns().length, 1);
+  player.unmount();
+  assert.equal(countdowns().length, 0);
+});
 
 test("only reports the first recognized startup error from the current player frame", () => {
   const player = pendingArchivePlayer();

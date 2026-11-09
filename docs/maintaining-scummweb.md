@@ -320,8 +320,9 @@ within the same 8 MiB memory cache. Larger files remain backed by Blob slices.
 The bundled library's **Skip intro** action restarts the matching edition with
 a native startup option or an original save taken at the first playable scene,
 before puzzle actions.
-It is offered for a fresh launch; Continue and personal ZIP editions keep their
-own save behavior. Checkpoints live in `scummvm-shell/launcher/skip-intro/` and
+On a fresh bundled launch, the action's display timer starts after the player
+reveals the game. Continue and personal ZIP editions keep their own save
+behavior. Checkpoints live in `scummvm-shell/launcher/skip-intro/` and
 must remain in Git. `launcher-game-overrides.json` is the rebuild source for each
 entry's `skipIntro` metadata; regenerate `games.json` with
 `node scripts/create_launcher_metadata.mjs scummvm-shell/scummvm.ini scummvm-shell/games.json`,
