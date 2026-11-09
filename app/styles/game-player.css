@@ -6,36 +6,6 @@
     #050505;
 }
 
-.game-route-shell {
-  position: relative;
-  width: 100vw;
-  height: var(--game-visible-height, 100dvh);
-  overflow: hidden;
-  background: #000;
-}
-
-@media (orientation: portrait) {
-  [data-mobile-orientation="landscape"] > .mobile-orientation-message {
-    display: grid;
-  }
-
-  [data-mobile-orientation="landscape"] > :not(.mobile-orientation-message, .game-route-controls),
-  [data-mobile-orientation="landscape"] > .game-route-controls > .is-right {
-    visibility: hidden;
-  }
-}
-
-.game-route-frame {
-  display: block;
-  width: 100%;
-  height: 100%;
-  max-height: var(--game-visible-height, none);
-  border: 0;
-  background: #000;
-  outline: none;
-  box-shadow: none;
-}
-
 .game-launch-feedback {
   position: fixed;
   inset: 0;
@@ -52,44 +22,6 @@
       opacity: 0;
     }
   }
-}
-
-.game-route-frame:focus,
-.game-route-frame:focus-visible {
-  outline: none;
-  box-shadow: none;
-}
-
-@supports not (height: 100dvh) {
-  .game-route-shell {
-    height: var(--game-visible-height, 100vh);
-  }
-}
-
-.game-route-command {
-  position: absolute;
-  z-index: 11;
-  left: env(safe-area-inset-left, 0px);
-  right: env(safe-area-inset-right, 0px);
-  bottom: max(var(--game-command-inset, 0px), env(safe-area-inset-bottom));
-  padding-block: 0.25rem;
-}
-
-.game-route-command input {
-  display: block;
-  width: 100%;
-  min-height: 2.75rem;
-  padding: 0 0.75rem;
-  border: 1px solid #5a605a;
-  border-radius: 0.5rem;
-  background: #171a17;
-  color: #fff;
-  font: inherit;
-  font-size: 1rem;
-}
-
-.game-route-command input::placeholder {
-  color: #b7bdb7;
 }
 
 .game-route-boot-overlay {
@@ -265,16 +197,6 @@
   display: flex;
   justify-content: flex-start;
   margin-top: 1rem;
-}
-
-.game-route-shell:fullscreen {
-  width: 100%;
-  height: 100%;
-}
-
-.game-route-shell:-webkit-full-screen {
-  width: 100%;
-  height: 100%;
 }
 
 @media (max-width: 900px) {
