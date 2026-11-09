@@ -1052,6 +1052,25 @@ credential scope. The default remains `artwork-migration`.
 6. Run `pnpm run prepare`, `pnpm run lint`, `pnpm test`, and a production build.
    Check covers, heroes and galleries in the browser before publishing the change.
 
+### Single-object publishing through Agent Vault
+
+For one planned artwork object up to 2 MiB, use the sandboxed macOS publisher
+with the configured local Infisical Agent Vault proxy and Python with `boto3`.
+Pass the workspace used by `artwork:plan` and the exact logical path to publish.
+
+```sh
+python3 scripts/infisical/publish_immutable_artwork.py WORKSPACE /launcher/optimized/ARTWORK.avif --publish
+```
+
+Omit `--publish` to test the route against a synthetic relay. A publish also
+runs that check first, then performs a read-only R2 check. The trusted step
+signs a five-minute PUT for the planned key, cache policy, type, and checksum.
+R2 accepts the PUT only when that key is absent. The separate sandboxed process
+receives a placeholder and can send the planned bytes only through the loopback
+relay behind Agent Vault. The relay closes and the temporary bundle is deleted
+after the command. The publisher checks the public bytes and cache policy before
+returning. Run `artwork:activate` to verify the complete plan and switch delivery.
+
 Normal builds need no storage credentials. Social-card generation uses verified
 local or cached image bytes, downloading checksum-verified originals from the
 public bucket when necessary. A fresh checkout therefore needs network access
