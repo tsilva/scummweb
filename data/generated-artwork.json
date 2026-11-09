@@ -20127,6 +20127,150 @@
       "revisionPrompts": [
         "Return one pure full-bleed textless illustration of exactly the same 5:3 composition and dimensions as the attached image. The attached image is the edit target. Erase all lettering, typography, symbols, the green rectangle, and every graphic overlay on the entire left half. Inpaint those areas continuously with deep blue shadowed wall and night architecture, blending the gradients and textures naturally and leaving the left half entirely free of glyphs and graphics. Preserve the original character identities, palette, visual medium, and the characters and scenic composition on the right. One unlettered borderless artwork with no letters, logos, marks, buttons, rectangles, UI, captions, words, or interface elements anywhere."
       ]
+    },
+    {
+      "target": "castlemaster-demo",
+      "role": "cover",
+      "asset": "/launcher/castle-master-scummweb-generated-2026-11-09-r1-cover.webp",
+      "generatedOn": "2026-11-09",
+      "generator": "Built-in ImageGen",
+      "master": {
+        "sha256": "b447eb976668fa738aea0ec3956022a0d75d3430e0be8733b462b0cf031da45f",
+        "width": 1086,
+        "height": 1448
+      },
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "output": {
+        "sha256": "ab37cce43e62b6c5eefc1f01c8d88b8123487c8f09fa9829d8a020d8db4be7c8",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "stage": "ready",
+      "references": [
+        {
+          "kind": "box front",
+          "url": "https://bigboxcollection.com/images/textures/front/CastleMaster.webp",
+          "page": "https://bigboxcollection.com/CastleMaster.3DBox",
+          "credit": "David Wyatt / Domark; scan by Big Box Collection",
+          "sha256": "c1b24df4c64a585e6c9157710d97aeaee5274ac3924fd80b0ac6c9b4c1b6be11"
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Asset: Castle Master (1990) portrait video game cover for an archival catalog. Use the supplied scan of the original European Domark box front as the edit target. Faithfully restore this exact front: preserve the original two-line gold Castle Master title with its distinctive flourishes, heraldic crest and helmet, David Wyatt's stormy castle illustration with the blue stone keep and rust-red sky, black frame with delicate red corner ornament, and the original small Incentive and Domark marks in their same positions. Preserve original print palette and layout. Repair paper scuffs, worn corners and scan noise, and restore clean lettering and sharp detail. Flat box front only, no mockup or new text. Target 3:4 portrait and at least 900 x 1200. Extend only plain black border very slightly as necessary to fit the frame."
+    },
+    {
+      "target": "castlemaster-demo",
+      "role": "hero",
+      "asset": "/launcher/castle-master-scummweb-generated-2026-11-09-r1-hero.webp",
+      "generatedOn": "2026-11-09",
+      "generator": "Built-in ImageGen",
+      "master": {
+        "sha256": "aad71dbbc468cca0095c4188d761671a98f036a2f50637ef46f2c5e82270d40c",
+        "width": 1619,
+        "height": 971
+      },
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "output": {
+        "sha256": "71189566e6caeca83afe35070bb041f4f7cfed0b1ebd04b33d92941c4fa11892",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "stage": "ready",
+      "references": [
+        {
+          "kind": "box front",
+          "url": "https://bigboxcollection.com/images/textures/front/CastleMaster.webp",
+          "page": "https://bigboxcollection.com/CastleMaster.3DBox",
+          "credit": "David Wyatt / Domark; scan by Big Box Collection",
+          "sha256": "c1b24df4c64a585e6c9157710d97aeaee5274ac3924fd80b0ac6c9b4c1b6be11"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Asset: landscape website hero for Castle Master (1990). Use the attached original Domark box scan as the primary visual reference and recompose only its David Wyatt illustration. Preserve the towering blue-grey keep with round foreground turrets, dark central arched entrance, red-orange storm, jagged pale blue lightning, bats and wind-whipped mist in the original moody painted fantasy medium. Put the recognizable keep and main lightning on the right side, safely inset. The left 42 percent should be quiet dark blue-charcoal storm and mist so white UI text can sit over it. Leave the top 9 percent and bottom 12 percent low in detail. Full bleed, no box frame, text, logos, signs or watermarks. Target 5:3 landscape, at least 1600 x 960."
+    },
+    {
+      "target": "qfi-demo",
+      "role": "cover",
+      "asset": "/launcher/quest-for-infamy-scummweb-generated-2026-11-09-r1-cover.webp",
+      "generatedOn": "2026-11-09",
+      "generator": "Built-in ImageGen",
+      "master": {
+        "sha256": "d5ff86de2de657be2e2770aa778c48b306e6afb6704eba7718242a23e7d9a2a6",
+        "width": 1086,
+        "height": 1448
+      },
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "output": {
+        "sha256": "3d16264969b2584d6ddd435e25604ba0db24675ecf7eef280181cb9b314e5956",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "stage": "ready",
+      "references": [
+        {
+          "kind": "box front",
+          "url": "https://images.launchbox-app.com/6af1cfcb-8cca-487b-8692-f48256ef2b35.jpg",
+          "page": "https://gamesdb.launchbox-app.com/games/images/79875-quest-for-infamy",
+          "credit": "Infamous Quests; archived by LaunchBox Games Database",
+          "sha256": "3a5aa80209841fa7cb2f1de13171f4dfbbf2ae6f2d0eec2ff18cb51f1872eae3"
+        }
+      ],
+      "prompt": "Use case: identity-preserve. Restore the supplied original 2014 Infamous Quests front box art for Quest for Infamy as a flat, clean, sharp archival cover. Preserve the original rich burgundy and gold ornamental frame, top tagline, painted trio in their original positions and costumes, wooden logo sign with the original silver-to-fire Quest for Infamy lettering and Infamous Quests mark at lower right. Keep the original painterly medium, text, spacing and proportions. Preserve the artist signature. Clean scanner artifacts and remove the system requirements sticker at bottom left. No new text, box mockup or invented graphics. Fit a 3:4 portrait at least 900 by 1200 with minimal burgundy edge padding so no artwork or lettering is cropped."
+    },
+    {
+      "target": "qfi-demo",
+      "role": "hero",
+      "asset": "/launcher/quest-for-infamy-scummweb-generated-2026-11-09-r1-hero.webp",
+      "generatedOn": "2026-11-09",
+      "generator": "Built-in ImageGen",
+      "master": {
+        "sha256": "ebc63e97212aace8bc0e95282ba59dad398cd97ce16be375ff9da9fe3b065166",
+        "width": 1619,
+        "height": 971
+      },
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "output": {
+        "sha256": "655d309b098da0b7ba980add5f07b531ac05da43c726c3e9cd7badffe127c46e",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "stage": "ready",
+      "references": [
+        {
+          "kind": "promotional banner",
+          "url": "https://images.launchbox-app.com/f78662f5-ecbd-4de2-9c9c-9f088390146b.png",
+          "page": "https://gamesdb.launchbox-app.com/games/images/79875-quest-for-infamy",
+          "credit": "Infamous Quests; archived by LaunchBox Games Database",
+          "sha256": "1765c6d977afd68b54795055b05b4ca8c35d1d40608f099049f851d428e42a93"
+        }
+      ],
+      "prompt": "Use case: illustration-story. Recompose the supplied original Quest for Infamy promotional banner into a 5:3 full-bleed landscape game-page hero, at least 1600 by 960. Use the three adventurers, cave ledge, vines, dark blue cliffside castle, distant green fog and painted early-2010s fantasy illustration style from the original banner. Preserve the characters’ visual identities, costumes, props and expressive poses. Remove the large logo, all lettering, signatures, borders and watermarks. Put the three adventurers on the right, inset safely from the edges. Bring the left 42 percent into quiet dark blue-grey mist and distant castle silhouettes for the real page title. Keep quiet margins at the top and bottom. No new characters or objects."
     }
   ]
 }

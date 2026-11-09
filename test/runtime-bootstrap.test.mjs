@@ -3,6 +3,25 @@ import { readFile } from "node:fs/promises";
 import { createContext, Script } from "node:vm";
 import test from "node:test";
 
+test("a declined pointer lock request stays optional for the native canvas", async () => {
+  const html = await readFile(new URL("../scummvm-shell/scummvm.html", import.meta.url), "utf8");
+  const wrapper = html.match(/const requestPointerLock = canvas\.requestPointerLock;[\s\S]*?\n\}/)?.[0];
+  assert.ok(wrapper);
+  const error = new DOMException("The root document is not valid for pointer lock.", "WrongDocumentError");
+  const request = Promise.reject(error);
+  const options = { unadjustedMovement: true };
+  const canvas = {
+    requestPointerLock(argument) {
+      assert.equal(this, canvas);
+      assert.equal(argument, options);
+      return request;
+    },
+  };
+  new Script(wrapper).runInContext(createContext({ canvas }));
+  assert.equal(canvas.requestPointerLock(options), request);
+  await new Promise(setImmediate);
+});
+
 test("generated shell overlaps engine, storage and runtime loading and mounts only after all inputs are ready", async () => {
   const html = await readFile(new URL("../scummvm-shell/scummvm.html", import.meta.url), "utf8");
   const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)].map((match) => match[1]);

@@ -909,6 +909,25 @@ uses the first English DOS demo. Grim Fandango and
 Escape from Monkey Island use their English Windows demos with the Grim
 plugin, with the `monkey4` subengine enabled for Escape.
 
+Teen Agent (Demo) uses the English DOS Union shareware package. Its
+`LICENSE.DOC` permits electronic distribution with every file intact. The
+three English DOS Hugo demos use the v2.1 shareware releases. Their
+`MANUAL.DOC` terms require complete, unmodified distribution without
+compensation. The Macintosh Pegasus Prime demo uses the non-Mac-format
+download with its original resource forks and starts in `PP Data`. The archive
+includes Presto Studios' terms for complete, unmodified, non-profit distribution.
+Each demo keeps the upstream ZIP bytes. The catalog shares the games'
+generated covers and heroes and credits the source of each gameplay gallery.
+
+Castle Master (Demo) adds the Freescape engine. Incentive Software's DOS demo
+includes the first level and permits distribution without charge or changes.
+Quest for Infamy (Demo) adds the AGS engine and uses the English Windows
+[Demo 2.0 release](https://www.kickstarter.com/projects/1992695780/quest-for-infamy-an-adventure-game-by-infamous-que/posts/401982).
+Its EULA permits redistribution of the publisher's evaluation version. This
+catalog target has a 300 MiB download and unpacked limit for its original ZIP.
+Both packages retain their publisher notices, and their galleries credit
+ScummVM, ScummWEB, and LaunchBox gameplay captures where used.
+
 Zork I–III use Glk and the original MIT-licensed Infocom sources. Obtain the
 [ZILF 1.9 toolchain](https://github.com/taradinoc/zilf/releases/tag/1.9), then run
 `python3 scripts/build_zork_packages.py /path/to/zilf/bin` to create the three

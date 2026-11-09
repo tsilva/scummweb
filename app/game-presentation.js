@@ -132,6 +132,79 @@ const artByTarget = {
       "Opening scene in the ship’s hold", "Cannon verb coin", "Guybrush’s inventory",
     ], "webp"),
   },
+  ...Object.fromEntries([
+    ["teenagent:teenagent", "1995"],
+    ["hugo:hugo1", "1990"],
+    ["hugo:hugo2", "1991"],
+    ["hugo:hugo3", "1992"],
+  ].map(([familyId, year]) => {
+    const { title, ...artwork } = retroGameArtwork[familyId];
+    return [`${familyId.split(":")[1]}-demo`, {
+      ...artwork,
+      year,
+      language: "en",
+      badge: "Shareware",
+    }];
+  })),
+  "pegasus-demo": {
+    ...retroGameArtwork["pegasus:pegasus"],
+    title: "The Journeyman Project: Pegasus Prime (Demo)",
+    year: "1997",
+    language: "en",
+  },
+  "castlemaster-demo": {
+    genre: "First-person fantasy adventure",
+    studio: "Incentive Software",
+    year: "1990",
+    language: "en",
+    summary: "Explore the first level of Castle Eternity and search for your captive twin.",
+    heroImage: "/launcher/castle-master-scummweb-generated-2026-11-09-r1-hero.webp",
+    posterImage: "/launcher/castle-master-scummweb-generated-2026-11-09-r1-cover.webp",
+    screenshots: ["/launcher/castle-master-dos-shot-1.webp", "/launcher/castle-master-dos-shot-2.webp"],
+    sources: {
+      screenshots: [
+        {
+          kind: "gameplay",
+          page: "https://www.scummvm.org/screenshots/incentive/freescape:castlemaster/",
+          url: "https://www.scummvm.org/data/screenshots/freescape/castlemaster/castlemaster_dos_en_1_1_full.png",
+          credit: "ScummVM screenshot gallery",
+        },
+        {
+          kind: "gameplay",
+          page: "https://scummweb.tsilva.eu/castle-master-demo/play",
+          edition: "English DOS playable demo",
+          scene: "Outside Castle Eternity",
+          credit: "Original gameplay captured in ScummWEB",
+        },
+      ],
+    },
+  },
+  "qfi-demo": {
+    genre: "Adventure RPG",
+    studio: "Infamous Quests",
+    year: "2014",
+    language: "en",
+    summary: "Explore the Valley of Krasna as Mr. Roehm, an adventurer with a checkered past.",
+    heroImage: "/launcher/quest-for-infamy-scummweb-generated-2026-11-09-r1-hero.webp",
+    posterImage: "/launcher/quest-for-infamy-scummweb-generated-2026-11-09-r1-cover.webp",
+    screenshots: [
+      "/launcher/quest-for-infamy-shot-1.webp",
+      "/launcher/quest-for-infamy-shot-2.webp",
+      "/launcher/quest-for-infamy-shot-3.webp",
+    ],
+    sources: {
+      screenshots: [
+        "https://images.launchbox-app.com/480c8da8-2a29-4728-a325-577afdf0cbff.jpg",
+        "https://images.launchbox-app.com/f7c743e8-5933-442c-8f73-c88efdc7095c.jpg",
+        "https://images.launchbox-app.com/319816ea-dd26-479e-b58a-b70d741fd728.jpg",
+      ].map((url) => ({
+        kind: "gameplay",
+        url,
+        page: "https://gamesdb.launchbox-app.com/games/images/79875-quest-for-infamy",
+        credit: "LaunchBox Games Database",
+      })),
+    },
+  },
   "grim-demo": {
     genre: "Graphic adventure",
     studio: "LucasArts",

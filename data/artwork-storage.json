@@ -37522,6 +37522,238 @@
       "contentType": "image/webp",
       "width": 640,
       "height": 480
+    },
+    "/launcher/castle-master-dos-shot-1.webp": {
+      "key": "artwork/d7005132823fe2fd5065876181390c1220520dd054564d2f36dcd39220b376b2/castle-master-dos-shot-1.webp",
+      "sha256": "d7005132823fe2fd5065876181390c1220520dd054564d2f36dcd39220b376b2",
+      "bytes": 25554,
+      "contentType": "image/webp",
+      "width": 3840,
+      "height": 2160
+    },
+    "/launcher/castle-master-dos-shot-2.webp": {
+      "key": "artwork/af72a97c4d598da1d111c70af5f9534867cf442c14fbb527728bf9defe186ac3/castle-master-dos-shot-2.webp",
+      "sha256": "af72a97c4d598da1d111c70af5f9534867cf442c14fbb527728bf9defe186ac3",
+      "bytes": 245296,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/castle-master-scummweb-generated-2026-11-09-r1-cover.webp": {
+      "key": "artwork/ab37cce43e62b6c5eefc1f01c8d88b8123487c8f09fa9829d8a020d8db4be7c8/castle-master-scummweb-generated-2026-11-09-r1-cover.webp",
+      "sha256": "ab37cce43e62b6c5eefc1f01c8d88b8123487c8f09fa9829d8a020d8db4be7c8",
+      "bytes": 168204,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/castle-master-scummweb-generated-2026-11-09-r1-hero.webp": {
+      "key": "artwork/71189566e6caeca83afe35070bb041f4f7cfed0b1ebd04b33d92941c4fa11892/castle-master-scummweb-generated-2026-11-09-r1-hero.webp",
+      "sha256": "71189566e6caeca83afe35070bb041f4f7cfed0b1ebd04b33d92941c4fa11892",
+      "bytes": 115464,
+      "contentType": "image/webp",
+      "width": 1600,
+      "height": 960
+    },
+    "/launcher/quest-for-infamy-scummweb-generated-2026-11-09-r1-cover.webp": {
+      "key": "artwork/3d16264969b2584d6ddd435e25604ba0db24675ecf7eef280181cb9b314e5956/quest-for-infamy-scummweb-generated-2026-11-09-r1-cover.webp",
+      "sha256": "3d16264969b2584d6ddd435e25604ba0db24675ecf7eef280181cb9b314e5956",
+      "bytes": 178130,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200
+    },
+    "/launcher/quest-for-infamy-scummweb-generated-2026-11-09-r1-hero.webp": {
+      "key": "artwork/655d309b098da0b7ba980add5f07b531ac05da43c726c3e9cd7badffe127c46e/quest-for-infamy-scummweb-generated-2026-11-09-r1-hero.webp",
+      "sha256": "655d309b098da0b7ba980add5f07b531ac05da43c726c3e9cd7badffe127c46e",
+      "bytes": 82398,
+      "contentType": "image/webp",
+      "width": 1600,
+      "height": 960
+    },
+    "/launcher/quest-for-infamy-shot-1.webp": {
+      "key": "artwork/4a01e520141a604de5e0f047d1163d3e0dc88c86a3b58b089b30ebaa21f77e8d/quest-for-infamy-shot-1.webp",
+      "sha256": "4a01e520141a604de5e0f047d1163d3e0dc88c86a3b58b089b30ebaa21f77e8d",
+      "bytes": 218800,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/quest-for-infamy-shot-2.webp": {
+      "key": "artwork/13f7bae36472c300ee21b43a1c321923b9f9d7e9455d7446318def2d2eca0c82/quest-for-infamy-shot-2.webp",
+      "sha256": "13f7bae36472c300ee21b43a1c321923b9f9d7e9455d7446318def2d2eca0c82",
+      "bytes": 194450,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/quest-for-infamy-shot-3.webp": {
+      "key": "artwork/845897c5967fac0b6a3b143385bfcfa9147e340598c4d2c56df411d521a9e0c5/quest-for-infamy-shot-3.webp",
+      "sha256": "845897c5967fac0b6a3b143385bfcfa9147e340598c4d2c56df411d521a9e0c5",
+      "bytes": 97302,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/castle-master-scummweb-generated-2026-11-09-r1-cover-320.webp": {
+      "key": "artwork/ad2a96dbc33b3caccfa394151914a36d348b8bdc0aa3f6e645af87b52896f09c/castle-master-scummweb-generated-2026-11-09-r1-cover-320.webp",
+      "sha256": "ad2a96dbc33b3caccfa394151914a36d348b8bdc0aa3f6e645af87b52896f09c",
+      "bytes": 29020,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/castle-master-scummweb-generated-2026-11-09-r1-cover-640.webp": {
+      "key": "artwork/ced10f5a827b9d2ee9b57c64b0567477a4bc2aa011cb3ec4cf2ec784ccc998a3/castle-master-scummweb-generated-2026-11-09-r1-cover-640.webp",
+      "sha256": "ced10f5a827b9d2ee9b57c64b0567477a4bc2aa011cb3ec4cf2ec784ccc998a3",
+      "bytes": 81970,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/quest-for-infamy-scummweb-generated-2026-11-09-r1-cover-320.webp": {
+      "key": "artwork/ecd81986997178aac8f68b76d11caee0774ad0e91bb409f93215dc81dbe603d0/quest-for-infamy-scummweb-generated-2026-11-09-r1-cover-320.webp",
+      "sha256": "ecd81986997178aac8f68b76d11caee0774ad0e91bb409f93215dc81dbe603d0",
+      "bytes": 27940,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/quest-for-infamy-scummweb-generated-2026-11-09-r1-cover-640.webp": {
+      "key": "artwork/a811b0312adff6152810ba5f04014bd11f5f78731f6870557583c119f2a639a9/quest-for-infamy-scummweb-generated-2026-11-09-r1-cover-640.webp",
+      "sha256": "a811b0312adff6152810ba5f04014bd11f5f78731f6870557583c119f2a639a9",
+      "bytes": 84636,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/castle-master-dos-shot-1-1280.webp": {
+      "key": "artwork/c06f3c63aba44399d44210ff583ededb028e51efb1962675ac49a3e0abba1246/castle-master-dos-shot-1-1280.webp",
+      "sha256": "c06f3c63aba44399d44210ff583ededb028e51efb1962675ac49a3e0abba1246",
+      "bytes": 25176,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 720
+    },
+    "/launcher/responsive/castle-master-dos-shot-1-320.webp": {
+      "key": "artwork/ae3c2de4e21be9b39d21380c6c5cfc2b5dfb26503a9bc0230096d4df6b19961b/castle-master-dos-shot-1-320.webp",
+      "sha256": "ae3c2de4e21be9b39d21380c6c5cfc2b5dfb26503a9bc0230096d4df6b19961b",
+      "bytes": 17548,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 180
+    },
+    "/launcher/responsive/castle-master-dos-shot-1-640.webp": {
+      "key": "artwork/74c1fbe91c1a6198cd1fa0fea8cf89a991d40d486a443a4b2a84e330212f94a1/castle-master-dos-shot-1-640.webp",
+      "sha256": "74c1fbe91c1a6198cd1fa0fea8cf89a991d40d486a443a4b2a84e330212f94a1",
+      "bytes": 22906,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 360
+    },
+    "/launcher/responsive/castle-master-dos-shot-2-320.webp": {
+      "key": "artwork/342dedf2861258627662970ebd02e5293ca40f12b2c752bd3b962e9d16c565f4/castle-master-dos-shot-2-320.webp",
+      "sha256": "342dedf2861258627662970ebd02e5293ca40f12b2c752bd3b962e9d16c565f4",
+      "bytes": 56840,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/castle-master-dos-shot-2-480.webp": {
+      "key": "artwork/2eb20d9c34cbf3eee1df3c7ab5dde61f6ec121ff5ad2da65c7afe06e29fb59ca/castle-master-dos-shot-2-480.webp",
+      "sha256": "2eb20d9c34cbf3eee1df3c7ab5dde61f6ec121ff5ad2da65c7afe06e29fb59ca",
+      "bytes": 116142,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/responsive/castle-master-dos-shot-2-640.webp": {
+      "key": "artwork/8dc57c067871b74aef9f3179aab4d7bd764aa61ac16ab2345b3e875ff490016e/castle-master-dos-shot-2-640.webp",
+      "sha256": "8dc57c067871b74aef9f3179aab4d7bd764aa61ac16ab2345b3e875ff490016e",
+      "bytes": 197480,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/castle-master-scummweb-generated-2026-11-09-r1-cover-480.webp": {
+      "key": "artwork/314ea5a5e30774a7e63e6d28163868a011e65420a16180a6aba1bb800cc24163/castle-master-scummweb-generated-2026-11-09-r1-cover-480.webp",
+      "sha256": "314ea5a5e30774a7e63e6d28163868a011e65420a16180a6aba1bb800cc24163",
+      "bytes": 53400,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/castle-master-scummweb-generated-2026-11-09-r1-hero-1280.webp": {
+      "key": "artwork/53ebbbbcc8554b104c09e7e047e3eefdb55de16c37152a1ca83d7349268722d5/castle-master-scummweb-generated-2026-11-09-r1-hero-1280.webp",
+      "sha256": "53ebbbbcc8554b104c09e7e047e3eefdb55de16c37152a1ca83d7349268722d5",
+      "bytes": 62070,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/castle-master-scummweb-generated-2026-11-09-r1-hero-640.webp": {
+      "key": "artwork/35152d88e1d02ee0bfc90e0d41b816cecd15b9dfec87176c6a29b5f6ef279f61/castle-master-scummweb-generated-2026-11-09-r1-hero-640.webp",
+      "sha256": "35152d88e1d02ee0bfc90e0d41b816cecd15b9dfec87176c6a29b5f6ef279f61",
+      "bytes": 22756,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/castle-master-scummweb-generated-2026-11-09-r1-hero-960.webp": {
+      "key": "artwork/b96496bf05215be3ff0c1462b5e510230673835fa5483943aecd44d40c6f7fb6/castle-master-scummweb-generated-2026-11-09-r1-hero-960.webp",
+      "sha256": "b96496bf05215be3ff0c1462b5e510230673835fa5483943aecd44d40c6f7fb6",
+      "bytes": 41890,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/quest-for-infamy-scummweb-generated-2026-11-09-r1-cover-480.webp": {
+      "key": "artwork/154557a9de8c34453db18ea068513185a3354bcab7ef82e2f244bddbfd47b258/quest-for-infamy-scummweb-generated-2026-11-09-r1-cover-480.webp",
+      "sha256": "154557a9de8c34453db18ea068513185a3354bcab7ef82e2f244bddbfd47b258",
+      "bytes": 54372,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/quest-for-infamy-scummweb-generated-2026-11-09-r1-hero-1280.webp": {
+      "key": "artwork/c0e66dafc7ca1fdd0586a6191af0b156979e19a3b7c3ede57728fb7ca57830ff/quest-for-infamy-scummweb-generated-2026-11-09-r1-hero-1280.webp",
+      "sha256": "c0e66dafc7ca1fdd0586a6191af0b156979e19a3b7c3ede57728fb7ca57830ff",
+      "bytes": 47866,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/quest-for-infamy-scummweb-generated-2026-11-09-r1-hero-640.webp": {
+      "key": "artwork/8ffa7abe404337426e653298fb07f8246080507267973ddfed042b3f015ac6ce/quest-for-infamy-scummweb-generated-2026-11-09-r1-hero-640.webp",
+      "sha256": "8ffa7abe404337426e653298fb07f8246080507267973ddfed042b3f015ac6ce",
+      "bytes": 19016,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/quest-for-infamy-scummweb-generated-2026-11-09-r1-hero-960.webp": {
+      "key": "artwork/15abc429998581203662aa12269a14cd2e2275b645f46b0292376a9e18b214b3/quest-for-infamy-scummweb-generated-2026-11-09-r1-hero-960.webp",
+      "sha256": "15abc429998581203662aa12269a14cd2e2275b645f46b0292376a9e18b214b3",
+      "bytes": 34654,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/quest-for-infamy-shot-1-320.webp": {
+      "key": "artwork/09f8df2877048ec7676756ea37b8c554046a1d4af7bd715f91a91a3b21ed3fac/quest-for-infamy-shot-1-320.webp",
+      "sha256": "09f8df2877048ec7676756ea37b8c554046a1d4af7bd715f91a91a3b21ed3fac",
+      "bytes": 101972,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/quest-for-infamy-shot-2-320.webp": {
+      "key": "artwork/1c0ee793c52df3f8f59bef68dfa73c11c93dbdff449b3e43d994175cac3d6a2a/quest-for-infamy-shot-2-320.webp",
+      "sha256": "1c0ee793c52df3f8f59bef68dfa73c11c93dbdff449b3e43d994175cac3d6a2a",
+      "bytes": 95956,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
     }
   },
   "images": {
@@ -38320,6 +38552,54 @@
       ],
       "avif": []
     },
+    "/launcher/castle-master-dos-shot-1.webp": {
+      "width": 3840,
+      "height": 2160,
+      "fallback": "/launcher/castle-master-dos-shot-1.webp",
+      "webp": [
+        "/launcher/responsive/castle-master-dos-shot-1-320.webp",
+        "/launcher/responsive/castle-master-dos-shot-1-640.webp",
+        "/launcher/responsive/castle-master-dos-shot-1-1280.webp",
+        "/launcher/castle-master-dos-shot-1.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/castle-master-dos-shot-2.webp": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/castle-master-dos-shot-2.webp",
+      "webp": [
+        "/launcher/responsive/castle-master-dos-shot-2-320.webp",
+        "/launcher/responsive/castle-master-dos-shot-2-480.webp",
+        "/launcher/responsive/castle-master-dos-shot-2-640.webp",
+        "/launcher/castle-master-dos-shot-2.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/castle-master-scummweb-generated-2026-11-09-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/castle-master-scummweb-generated-2026-11-09-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/castle-master-scummweb-generated-2026-11-09-r1-cover-320.webp",
+        "/launcher/responsive/castle-master-scummweb-generated-2026-11-09-r1-cover-480.webp",
+        "/launcher/responsive/castle-master-scummweb-generated-2026-11-09-r1-cover-640.webp",
+        "/launcher/castle-master-scummweb-generated-2026-11-09-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/castle-master-scummweb-generated-2026-11-09-r1-hero.webp": {
+      "width": 1600,
+      "height": 960,
+      "fallback": "/launcher/castle-master-scummweb-generated-2026-11-09-r1-hero.webp",
+      "webp": [
+        "/launcher/responsive/castle-master-scummweb-generated-2026-11-09-r1-hero-640.webp",
+        "/launcher/responsive/castle-master-scummweb-generated-2026-11-09-r1-hero-960.webp",
+        "/launcher/responsive/castle-master-scummweb-generated-2026-11-09-r1-hero-1280.webp",
+        "/launcher/castle-master-scummweb-generated-2026-11-09-r1-hero.webp"
+      ],
+      "avif": []
+    },
     "/launcher/castlebrain-scummweb-generated-2026-11-05-r1-hero.webp": {
       "width": 1600,
       "height": 960,
@@ -39096,6 +39376,66 @@
       ],
       "avif": []
     },
+    "/launcher/escape-from-monkey-island-demo-shot-1.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/escape-from-monkey-island-demo-shot-1.webp",
+      "webp": [
+        "/launcher/responsive/escape-from-monkey-island-demo-shot-1-320.webp",
+        "/launcher/responsive/escape-from-monkey-island-demo-shot-1-480.webp",
+        "/launcher/responsive/escape-from-monkey-island-demo-shot-1-640.webp",
+        "/launcher/optimized/escape-from-monkey-island-demo-shot-1.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/escape-from-monkey-island-demo-shot-2.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/escape-from-monkey-island-demo-shot-2.webp",
+      "webp": [
+        "/launcher/responsive/escape-from-monkey-island-demo-shot-2-320.webp",
+        "/launcher/responsive/escape-from-monkey-island-demo-shot-2-480.webp",
+        "/launcher/responsive/escape-from-monkey-island-demo-shot-2-640.webp",
+        "/launcher/optimized/escape-from-monkey-island-demo-shot-2.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/escape-from-monkey-island-demo-shot-3.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/escape-from-monkey-island-demo-shot-3.webp",
+      "webp": [
+        "/launcher/responsive/escape-from-monkey-island-demo-shot-3-320.webp",
+        "/launcher/responsive/escape-from-monkey-island-demo-shot-3-480.webp",
+        "/launcher/responsive/escape-from-monkey-island-demo-shot-3-640.webp",
+        "/launcher/optimized/escape-from-monkey-island-demo-shot-3.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover.webp",
+      "webp": [
+        "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover-320.webp",
+        "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover-480.webp",
+        "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover-640.webp",
+        "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero.webp": {
+      "width": 1600,
+      "height": 960,
+      "fallback": "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero.webp",
+      "webp": [
+        "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero-640.webp",
+        "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero-960.webp",
+        "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero-1280.webp",
+        "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero.webp"
+      ],
+      "avif": []
+    },
     "/launcher/fascination-scummweb-generated-2026-11-05-r1-hero.webp": {
       "width": 1600,
       "height": 960,
@@ -39776,6 +40116,71 @@
       ],
       "avif": []
     },
+    "/launcher/grim-fandango-demo-shot-1.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/grim-fandango-demo-shot-1.webp",
+      "webp": [
+        "/launcher/responsive/grim-fandango-demo-shot-1-320.webp",
+        "/launcher/responsive/grim-fandango-demo-shot-1-480.webp",
+        "/launcher/responsive/grim-fandango-demo-shot-1-640.webp",
+        "/launcher/optimized/grim-fandango-demo-shot-1.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/grim-fandango-demo-shot-2.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/grim-fandango-demo-shot-2.webp",
+      "webp": [
+        "/launcher/responsive/grim-fandango-demo-shot-2-320.webp",
+        "/launcher/responsive/grim-fandango-demo-shot-2-480.webp",
+        "/launcher/responsive/grim-fandango-demo-shot-2-640.webp",
+        "/launcher/optimized/grim-fandango-demo-shot-2.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/grim-fandango-demo-shot-3.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/grim-fandango-demo-shot-3.webp",
+      "webp": [
+        "/launcher/responsive/grim-fandango-demo-shot-3-320.webp",
+        "/launcher/responsive/grim-fandango-demo-shot-3-480.webp",
+        "/launcher/responsive/grim-fandango-demo-shot-3-640.webp",
+        "/launcher/optimized/grim-fandango-demo-shot-3.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/grim-fandango-scummweb-generated-2026-11-08-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/grim-fandango-scummweb-generated-2026-11-08-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-08-r1-cover-320.webp",
+        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-08-r1-cover-480.webp",
+        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-08-r1-cover-640.webp",
+        "/launcher/grim-fandango-scummweb-generated-2026-11-08-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/grim-fandango-scummweb-generated-2026-11-09-r2-hero.webp": {
+      "width": 1600,
+      "height": 960,
+      "fallback": "/launcher/grim-fandango-scummweb-generated-2026-11-09-r2-hero.webp",
+      "webp": [
+        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-640.webp",
+        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-960.webp",
+        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-1280.webp",
+        "/launcher/grim-fandango-scummweb-generated-2026-11-09-r2-hero.webp"
+      ],
+      "avif": [
+        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-640.avif",
+        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-960.avif",
+        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-1280.avif",
+        "/launcher/optimized/grim-fandango-scummweb-generated-2026-11-09-r2-hero.avif"
+      ]
+    },
     "/launcher/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r1-hero.webp": {
       "width": 1600,
       "height": 960,
@@ -40079,6 +40484,42 @@
         "/launcher/responsive/inca-ii-wiracocha-scummweb-generated-2026-11-07-r1-cover-480.webp",
         "/launcher/responsive/inca-ii-wiracocha-scummweb-generated-2026-11-07-r1-cover-640.webp",
         "/launcher/inca-ii-wiracocha-scummweb-generated-2026-11-07-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/indiana-jones-and-the-fate-of-atlantis-demo-shot-1.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/indiana-jones-and-the-fate-of-atlantis-demo-shot-1.webp",
+      "webp": [
+        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-1-320.webp",
+        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-1-480.webp",
+        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-1-640.webp",
+        "/launcher/optimized/indiana-jones-and-the-fate-of-atlantis-demo-shot-1.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/indiana-jones-and-the-fate-of-atlantis-demo-shot-2.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/indiana-jones-and-the-fate-of-atlantis-demo-shot-2.webp",
+      "webp": [
+        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-2-320.webp",
+        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-2-480.webp",
+        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-2-640.webp",
+        "/launcher/optimized/indiana-jones-and-the-fate-of-atlantis-demo-shot-2.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/indiana-jones-and-the-fate-of-atlantis-demo-shot-3.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/indiana-jones-and-the-fate-of-atlantis-demo-shot-3.webp",
+      "webp": [
+        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-3-320.webp",
+        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-3-480.webp",
+        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-3-640.webp",
+        "/launcher/optimized/indiana-jones-and-the-fate-of-atlantis-demo-shot-3.webp"
       ],
       "avif": []
     },
@@ -42969,6 +43410,59 @@
       "webp": [
         "/launcher/responsive/queen-shot-3-320.webp",
         "/launcher/optimized/queen-shot-3.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/quest-for-infamy-scummweb-generated-2026-11-09-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/quest-for-infamy-scummweb-generated-2026-11-09-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/quest-for-infamy-scummweb-generated-2026-11-09-r1-cover-320.webp",
+        "/launcher/responsive/quest-for-infamy-scummweb-generated-2026-11-09-r1-cover-480.webp",
+        "/launcher/responsive/quest-for-infamy-scummweb-generated-2026-11-09-r1-cover-640.webp",
+        "/launcher/quest-for-infamy-scummweb-generated-2026-11-09-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/quest-for-infamy-scummweb-generated-2026-11-09-r1-hero.webp": {
+      "width": 1600,
+      "height": 960,
+      "fallback": "/launcher/quest-for-infamy-scummweb-generated-2026-11-09-r1-hero.webp",
+      "webp": [
+        "/launcher/responsive/quest-for-infamy-scummweb-generated-2026-11-09-r1-hero-640.webp",
+        "/launcher/responsive/quest-for-infamy-scummweb-generated-2026-11-09-r1-hero-960.webp",
+        "/launcher/responsive/quest-for-infamy-scummweb-generated-2026-11-09-r1-hero-1280.webp",
+        "/launcher/quest-for-infamy-scummweb-generated-2026-11-09-r1-hero.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/quest-for-infamy-shot-1.webp": {
+      "width": 480,
+      "height": 360,
+      "fallback": "/launcher/quest-for-infamy-shot-1.webp",
+      "webp": [
+        "/launcher/responsive/quest-for-infamy-shot-1-320.webp",
+        "/launcher/quest-for-infamy-shot-1.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/quest-for-infamy-shot-2.webp": {
+      "width": 480,
+      "height": 360,
+      "fallback": "/launcher/quest-for-infamy-shot-2.webp",
+      "webp": [
+        "/launcher/responsive/quest-for-infamy-shot-2-320.webp",
+        "/launcher/quest-for-infamy-shot-2.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/quest-for-infamy-shot-3.webp": {
+      "width": 320,
+      "height": 240,
+      "fallback": "/launcher/quest-for-infamy-shot-3.webp",
+      "webp": [
+        "/launcher/quest-for-infamy-shot-3.webp"
       ],
       "avif": []
     },
@@ -50466,6 +50960,40 @@
         "/launcher/optimized/the-cat-in-the-hat-scummweb-generated-2026-11-07-r1-hero.avif"
       ]
     },
+    "/launcher/the-curse-of-monkey-island-demo-shot-1.webp": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/the-curse-of-monkey-island-demo-shot-1.webp",
+      "webp": [
+        "/launcher/responsive/the-curse-of-monkey-island-demo-shot-1-320.webp",
+        "/launcher/responsive/the-curse-of-monkey-island-demo-shot-1-480.webp",
+        "/launcher/responsive/the-curse-of-monkey-island-demo-shot-1-640.webp",
+        "/launcher/the-curse-of-monkey-island-demo-shot-1.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/the-curse-of-monkey-island-demo-shot-2.webp": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/the-curse-of-monkey-island-demo-shot-2.webp",
+      "webp": [
+        "/launcher/responsive/the-curse-of-monkey-island-demo-shot-2-320.webp",
+        "/launcher/responsive/the-curse-of-monkey-island-demo-shot-2-640.webp",
+        "/launcher/the-curse-of-monkey-island-demo-shot-2.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/the-curse-of-monkey-island-demo-shot-3.webp": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/the-curse-of-monkey-island-demo-shot-3.webp",
+      "webp": [
+        "/launcher/responsive/the-curse-of-monkey-island-demo-shot-3-320.webp",
+        "/launcher/responsive/the-curse-of-monkey-island-demo-shot-3-480.webp",
+        "/launcher/the-curse-of-monkey-island-demo-shot-3.webp"
+      ],
+      "avif": []
+    },
     "/launcher/the-dark-crystal-original-cover.webp": {
       "width": 512,
       "height": 662,
@@ -51102,112 +51630,6 @@
       ],
       "avif": []
     },
-    "/launcher/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover.webp": {
-      "width": 900,
-      "height": 1200,
-      "fallback": "/launcher/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover.webp",
-      "webp": [
-        "/launcher/responsive/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover-320.webp",
-        "/launcher/responsive/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover-480.webp",
-        "/launcher/responsive/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover-640.webp",
-        "/launcher/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover.webp"
-      ],
-      "avif": [
-        "/launcher/responsive/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover-320.avif",
-        "/launcher/responsive/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover-480.avif",
-        "/launcher/responsive/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover-640.avif",
-        "/launcher/optimized/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover.avif"
-      ]
-    },
-    "/launcher/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-hero.webp": {
-      "width": 1600,
-      "height": 960,
-      "fallback": "/launcher/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-hero.webp",
-      "webp": [
-        "/launcher/responsive/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-hero-640.webp",
-        "/launcher/responsive/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-hero-960.webp",
-        "/launcher/responsive/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-hero-1280.webp",
-        "/launcher/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-hero.webp"
-      ],
-      "avif": []
-    },
-    "/launcher/zork-nemesis-scummweb-generated-2026-11-07-r1-cover.webp": {
-      "width": 900,
-      "height": 1200,
-      "fallback": "/launcher/zork-nemesis-scummweb-generated-2026-11-07-r1-cover.webp",
-      "webp": [
-        "/launcher/responsive/zork-nemesis-scummweb-generated-2026-11-07-r1-cover-320.webp",
-        "/launcher/responsive/zork-nemesis-scummweb-generated-2026-11-07-r1-cover-480.webp",
-        "/launcher/responsive/zork-nemesis-scummweb-generated-2026-11-07-r1-cover-640.webp",
-        "/launcher/zork-nemesis-scummweb-generated-2026-11-07-r1-cover.webp"
-      ],
-      "avif": []
-    },
-    "/launcher/zork-nemesis-scummweb-generated-2026-11-07-r1-hero.webp": {
-      "width": 1600,
-      "height": 960,
-      "fallback": "/launcher/zork-nemesis-scummweb-generated-2026-11-07-r1-hero.webp",
-      "webp": [
-        "/launcher/responsive/zork-nemesis-scummweb-generated-2026-11-07-r1-hero-640.webp",
-        "/launcher/responsive/zork-nemesis-scummweb-generated-2026-11-07-r1-hero-960.webp",
-        "/launcher/responsive/zork-nemesis-scummweb-generated-2026-11-07-r1-hero-1280.webp",
-        "/launcher/zork-nemesis-scummweb-generated-2026-11-07-r1-hero.webp"
-      ],
-      "avif": []
-    },
-    "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover.webp": {
-      "width": 900,
-      "height": 1200,
-      "fallback": "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover.webp",
-      "webp": [
-        "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover-320.webp",
-        "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover-480.webp",
-        "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover-640.webp",
-        "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover.webp"
-      ],
-      "avif": []
-    },
-    "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero.webp": {
-      "width": 1600,
-      "height": 960,
-      "fallback": "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero.webp",
-      "webp": [
-        "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero-640.webp",
-        "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero-960.webp",
-        "/launcher/responsive/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero-1280.webp",
-        "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero.webp"
-      ],
-      "avif": []
-    },
-    "/launcher/grim-fandango-scummweb-generated-2026-11-08-r1-cover.webp": {
-      "width": 900,
-      "height": 1200,
-      "fallback": "/launcher/grim-fandango-scummweb-generated-2026-11-08-r1-cover.webp",
-      "webp": [
-        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-08-r1-cover-320.webp",
-        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-08-r1-cover-480.webp",
-        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-08-r1-cover-640.webp",
-        "/launcher/grim-fandango-scummweb-generated-2026-11-08-r1-cover.webp"
-      ],
-      "avif": []
-    },
-    "/launcher/grim-fandango-scummweb-generated-2026-11-09-r2-hero.webp": {
-      "width": 1600,
-      "height": 960,
-      "fallback": "/launcher/grim-fandango-scummweb-generated-2026-11-09-r2-hero.webp",
-      "webp": [
-        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-640.webp",
-        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-960.webp",
-        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-1280.webp",
-        "/launcher/grim-fandango-scummweb-generated-2026-11-09-r2-hero.webp"
-      ],
-      "avif": [
-        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-640.avif",
-        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-960.avif",
-        "/launcher/responsive/grim-fandango-scummweb-generated-2026-11-09-r2-hero-1280.avif",
-        "/launcher/optimized/grim-fandango-scummweb-generated-2026-11-09-r2-hero.avif"
-      ]
-    },
     "/launcher/zork-1-scummweb-generated-2026-11-08-r1-cover.webp": {
       "width": 900,
       "height": 1200,
@@ -51290,145 +51712,32 @@
       ],
       "avif": []
     },
-    "/launcher/the-curse-of-monkey-island-demo-shot-1.webp": {
-      "width": 800,
-      "height": 600,
-      "fallback": "/launcher/the-curse-of-monkey-island-demo-shot-1.webp",
+    "/launcher/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover.webp",
       "webp": [
-        "/launcher/responsive/the-curse-of-monkey-island-demo-shot-1-320.webp",
-        "/launcher/responsive/the-curse-of-monkey-island-demo-shot-1-480.webp",
-        "/launcher/responsive/the-curse-of-monkey-island-demo-shot-1-640.webp",
-        "/launcher/the-curse-of-monkey-island-demo-shot-1.webp"
+        "/launcher/responsive/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover-320.webp",
+        "/launcher/responsive/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover-480.webp",
+        "/launcher/responsive/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover-640.webp",
+        "/launcher/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover.webp"
       ],
-      "avif": []
+      "avif": [
+        "/launcher/responsive/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover-320.avif",
+        "/launcher/responsive/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover-480.avif",
+        "/launcher/responsive/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover-640.avif",
+        "/launcher/optimized/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-cover.avif"
+      ]
     },
-    "/launcher/the-curse-of-monkey-island-demo-shot-2.webp": {
-      "width": 800,
-      "height": 600,
-      "fallback": "/launcher/the-curse-of-monkey-island-demo-shot-2.webp",
+    "/launcher/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-hero.webp": {
+      "width": 1600,
+      "height": 960,
+      "fallback": "/launcher/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-hero.webp",
       "webp": [
-        "/launcher/responsive/the-curse-of-monkey-island-demo-shot-2-320.webp",
-        "/launcher/responsive/the-curse-of-monkey-island-demo-shot-2-640.webp",
-        "/launcher/the-curse-of-monkey-island-demo-shot-2.webp"
-      ],
-      "avif": []
-    },
-    "/launcher/the-curse-of-monkey-island-demo-shot-3.webp": {
-      "width": 800,
-      "height": 600,
-      "fallback": "/launcher/the-curse-of-monkey-island-demo-shot-3.webp",
-      "webp": [
-        "/launcher/responsive/the-curse-of-monkey-island-demo-shot-3-320.webp",
-        "/launcher/responsive/the-curse-of-monkey-island-demo-shot-3-480.webp",
-        "/launcher/the-curse-of-monkey-island-demo-shot-3.webp"
-      ],
-      "avif": []
-    },
-    "/launcher/escape-from-monkey-island-demo-shot-1.png": {
-      "width": 800,
-      "height": 600,
-      "fallback": "/launcher/optimized/escape-from-monkey-island-demo-shot-1.webp",
-      "webp": [
-        "/launcher/responsive/escape-from-monkey-island-demo-shot-1-320.webp",
-        "/launcher/responsive/escape-from-monkey-island-demo-shot-1-480.webp",
-        "/launcher/responsive/escape-from-monkey-island-demo-shot-1-640.webp",
-        "/launcher/optimized/escape-from-monkey-island-demo-shot-1.webp"
-      ],
-      "avif": []
-    },
-    "/launcher/escape-from-monkey-island-demo-shot-2.png": {
-      "width": 800,
-      "height": 600,
-      "fallback": "/launcher/optimized/escape-from-monkey-island-demo-shot-2.webp",
-      "webp": [
-        "/launcher/responsive/escape-from-monkey-island-demo-shot-2-320.webp",
-        "/launcher/responsive/escape-from-monkey-island-demo-shot-2-480.webp",
-        "/launcher/responsive/escape-from-monkey-island-demo-shot-2-640.webp",
-        "/launcher/optimized/escape-from-monkey-island-demo-shot-2.webp"
-      ],
-      "avif": []
-    },
-    "/launcher/escape-from-monkey-island-demo-shot-3.png": {
-      "width": 800,
-      "height": 600,
-      "fallback": "/launcher/optimized/escape-from-monkey-island-demo-shot-3.webp",
-      "webp": [
-        "/launcher/responsive/escape-from-monkey-island-demo-shot-3-320.webp",
-        "/launcher/responsive/escape-from-monkey-island-demo-shot-3-480.webp",
-        "/launcher/responsive/escape-from-monkey-island-demo-shot-3-640.webp",
-        "/launcher/optimized/escape-from-monkey-island-demo-shot-3.webp"
-      ],
-      "avif": []
-    },
-    "/launcher/grim-fandango-demo-shot-1.png": {
-      "width": 800,
-      "height": 600,
-      "fallback": "/launcher/optimized/grim-fandango-demo-shot-1.webp",
-      "webp": [
-        "/launcher/responsive/grim-fandango-demo-shot-1-320.webp",
-        "/launcher/responsive/grim-fandango-demo-shot-1-480.webp",
-        "/launcher/responsive/grim-fandango-demo-shot-1-640.webp",
-        "/launcher/optimized/grim-fandango-demo-shot-1.webp"
-      ],
-      "avif": []
-    },
-    "/launcher/grim-fandango-demo-shot-2.png": {
-      "width": 800,
-      "height": 600,
-      "fallback": "/launcher/optimized/grim-fandango-demo-shot-2.webp",
-      "webp": [
-        "/launcher/responsive/grim-fandango-demo-shot-2-320.webp",
-        "/launcher/responsive/grim-fandango-demo-shot-2-480.webp",
-        "/launcher/responsive/grim-fandango-demo-shot-2-640.webp",
-        "/launcher/optimized/grim-fandango-demo-shot-2.webp"
-      ],
-      "avif": []
-    },
-    "/launcher/grim-fandango-demo-shot-3.png": {
-      "width": 800,
-      "height": 600,
-      "fallback": "/launcher/optimized/grim-fandango-demo-shot-3.webp",
-      "webp": [
-        "/launcher/responsive/grim-fandango-demo-shot-3-320.webp",
-        "/launcher/responsive/grim-fandango-demo-shot-3-480.webp",
-        "/launcher/responsive/grim-fandango-demo-shot-3-640.webp",
-        "/launcher/optimized/grim-fandango-demo-shot-3.webp"
-      ],
-      "avif": []
-    },
-    "/launcher/indiana-jones-and-the-fate-of-atlantis-demo-shot-1.png": {
-      "width": 800,
-      "height": 600,
-      "fallback": "/launcher/optimized/indiana-jones-and-the-fate-of-atlantis-demo-shot-1.webp",
-      "webp": [
-        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-1-320.webp",
-        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-1-480.webp",
-        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-1-640.webp",
-        "/launcher/optimized/indiana-jones-and-the-fate-of-atlantis-demo-shot-1.webp"
-      ],
-      "avif": []
-    },
-    "/launcher/indiana-jones-and-the-fate-of-atlantis-demo-shot-2.png": {
-      "width": 800,
-      "height": 600,
-      "fallback": "/launcher/optimized/indiana-jones-and-the-fate-of-atlantis-demo-shot-2.webp",
-      "webp": [
-        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-2-320.webp",
-        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-2-480.webp",
-        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-2-640.webp",
-        "/launcher/optimized/indiana-jones-and-the-fate-of-atlantis-demo-shot-2.webp"
-      ],
-      "avif": []
-    },
-    "/launcher/indiana-jones-and-the-fate-of-atlantis-demo-shot-3.png": {
-      "width": 800,
-      "height": 600,
-      "fallback": "/launcher/optimized/indiana-jones-and-the-fate-of-atlantis-demo-shot-3.webp",
-      "webp": [
-        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-3-320.webp",
-        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-3-480.webp",
-        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-3-640.webp",
-        "/launcher/optimized/indiana-jones-and-the-fate-of-atlantis-demo-shot-3.webp"
+        "/launcher/responsive/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-hero-640.webp",
+        "/launcher/responsive/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-hero-960.webp",
+        "/launcher/responsive/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-hero-1280.webp",
+        "/launcher/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-hero.webp"
       ],
       "avif": []
     },
@@ -51537,6 +51846,30 @@
         "/launcher/responsive/zork-iii-the-dungeon-master-shot-3-480.webp",
         "/launcher/responsive/zork-iii-the-dungeon-master-shot-3-640.webp",
         "/launcher/optimized/zork-iii-the-dungeon-master-shot-3.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/zork-nemesis-scummweb-generated-2026-11-07-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/zork-nemesis-scummweb-generated-2026-11-07-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/zork-nemesis-scummweb-generated-2026-11-07-r1-cover-320.webp",
+        "/launcher/responsive/zork-nemesis-scummweb-generated-2026-11-07-r1-cover-480.webp",
+        "/launcher/responsive/zork-nemesis-scummweb-generated-2026-11-07-r1-cover-640.webp",
+        "/launcher/zork-nemesis-scummweb-generated-2026-11-07-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/zork-nemesis-scummweb-generated-2026-11-07-r1-hero.webp": {
+      "width": 1600,
+      "height": 960,
+      "fallback": "/launcher/zork-nemesis-scummweb-generated-2026-11-07-r1-hero.webp",
+      "webp": [
+        "/launcher/responsive/zork-nemesis-scummweb-generated-2026-11-07-r1-hero-640.webp",
+        "/launcher/responsive/zork-nemesis-scummweb-generated-2026-11-07-r1-hero-960.webp",
+        "/launcher/responsive/zork-nemesis-scummweb-generated-2026-11-07-r1-hero-1280.webp",
+        "/launcher/zork-nemesis-scummweb-generated-2026-11-07-r1-hero.webp"
       ],
       "avif": []
     }

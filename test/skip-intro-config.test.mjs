@@ -71,6 +71,7 @@ test("catalog intro checkpoints match their rebuild overrides and ship intact", 
   // their original intros and have no separately verified checkpoints.
   const withoutCheckpoints = new Set([
     "draci", "atlantis-demo", "grim-demo", "monkey4-demo", "comi-demo", "zork1", "zork2", "zork3",
+    "teenagent-demo", "hugo1-demo", "hugo2-demo", "hugo3-demo", "pegasus-demo", "castlemaster-demo", "qfi-demo",
   ]);
   assert.ok(library.games.every((game) => withoutCheckpoints.has(game.target) || normalizeSkipIntroConfig(game.skipIntro)),
     "bundled editions with checkpoints must retain a verified intro-skip strategy");

@@ -513,6 +513,15 @@ if(globalThis.__scummwebPendingReadyStatePhase?.state){setReadyStatePhase(global
 const canvas=document.getElementById("canvas");
 const output=document.getElementById("output");
 if(canvas){
+// SDL requests pointer lock without awaiting the browser's optional grant.
+const requestPointerLock = canvas.requestPointerLock;
+if (typeof requestPointerLock === "function") {
+  canvas.requestPointerLock = function (...args) {
+    const request = requestPointerLock.apply(this, args);
+    request?.catch(() => {});
+    return request;
+  };
+}
 /*__SCUMMWEB_CANVAS_FIT__*/
 installCanvasFit(canvas,MutationObserver);
 const visibleCursorClass="scummvm-browser-cursor-visible";

@@ -45,6 +45,7 @@ const MIB = 1024 * 1024;
 const catalogArchiveLimits = {
   "dreamweb-cd": { archiveLimit: 300 * MIB, expandedLimit: 300 * MIB, timeoutMs: 600_000 },
   queen: { timeoutMs: 600_000 },
+  "qfi-demo": { archiveLimit: 300 * MIB, expandedLimit: 300 * MIB, timeoutMs: 600_000 },
   sword25: { archiveLimit: 900 * MIB, expandedLimit: 900 * MIB, timeoutMs: 900_000 },
 };
 
