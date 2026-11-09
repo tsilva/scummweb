@@ -7,6 +7,7 @@ import swc from "next/dist/build/swc/index.js";
 import * as skipIntroConfig from "../app/skip-intro-config.mjs";
 import * as telemetry from "../app/game-player/telemetry.mjs";
 import * as gameMenu from "../app/game-player/game-menu.mjs";
+import * as mobileControls from "../app/game-player/mobile-controls.mjs";
 import * as controllerDevice from "../app/controller-device.mjs";
 import { gameLoadingStatus } from "../app/game-loading-status.mjs";
 
@@ -47,6 +48,7 @@ for (const message of ["This ZIP link returned HTTP 404.", "Could not download t
           useEffect: (effect) => effects.push(effect), useLayoutEffect() {},
         };
         if (name === "react/jsx-runtime") return nativeRequire(name);
+        if (name.endsWith("/mobile-controls.mjs")) return mobileControls;
         if (name === "./skip-intro-config.mjs") return skipIntroConfig;
         if (name === "./controller-device.mjs") return controllerDevice;
         if (name.endsWith("/game-menu.mjs")) return gameMenu;
@@ -168,6 +170,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
         useLayoutEffect: (callback, deps) => effect(callback, deps, layouts),
       };
       if (name === "react/jsx-runtime") return nativeRequire(name);
+      if (name.endsWith("/mobile-controls.mjs")) return mobileControls;
       if (name === "@sentry/nextjs") return {
         withScope(callback) {
           try { callback({ addEventProcessor: (processor) => { eventProcessor = processor; } }); }
@@ -459,6 +462,8 @@ test("leaving a pending launch cancels its handoff", async () => {
 function readyPlayer(game, { ready = true, failed = false, mobile = false } = {}) {
   function Controls() {}
   function CursorPad() {}
+  function DirectionPad() {}
+  function GrimActions() {}
   const keypresses = [];
   const commands = [];
   const frame = { contentWindow: {} };
@@ -475,6 +480,8 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false } = {}
         useEffect() {}, useLayoutEffect() {},
       };
       if (name === "react/jsx-runtime") return nativeRequire(name);
+      if (name === "react-dom") return { flushSync: (callback) => callback() };
+      if (name.endsWith("/mobile-controls.mjs")) return mobileControls;
       if (name === "./skip-intro-config.mjs") return skipIntroConfig;
       if (name === "next/navigation") return { useRouter: () => ({}) };
       if (name.endsWith("/game-menu.mjs")) return gameMenu;
@@ -485,6 +492,7 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false } = {}
       };
       if (name.endsWith("/GamePlayerControls")) return Controls;
       if (name.endsWith("/GameTouchCursorPad")) return CursorPad;
+      if (name.endsWith("/GameTouchGamepad")) return { GameDirectionPad: DirectionPad, GrimTouchActions: GrimActions };
       if (name.endsWith("/useBootState")) return { useBootState: () => ({
         hasBootCompleted: ready, hasBootPresentationCompleted: ready,
         showGameMenuButton: ready, hasBootFailed: failed,
@@ -500,6 +508,8 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false } = {}
   return {
     controls: children.find(({ type }) => type === Controls).props,
     cursorPad: children.find(({ type }) => type === CursorPad).props,
+    directionPad: children.find(({ type }) => type === DirectionPad)?.props,
+    GrimActions,
     form: children.find(({ type }) => type === "form"),
     frame, keypresses, commands,
   };
@@ -532,11 +542,18 @@ test("native menu stays hidden while loading and after a boot failure", () => {
   }
 });
 
-test("ready Apple II adventures replace mobile mouse controls with a command form", () => {
+test("Mystery House opens a command field from the keyboard control on mobile", () => {
   const game = { engineId: "adl", gameId: "hires1", target: "hires1" };
   const player = readyPlayer(game, { mobile: true });
   assert.equal(player.controls.showTouchClickButtons, false);
   assert.equal(player.cursorPad.showTouchCursorPad, false);
+  assert.equal(player.form.props.hidden, true);
+  assert.equal(player.controls.touchActions.props["aria-label"], "Open keyboard");
+  let focused = false;
+  const inputElement = player.form.props.children[0];
+  inputElement.props.ref.current = { focus: () => { focused = true; } };
+  player.controls.touchActions.props.onClick();
+  assert.equal(focused, true);
   let blurred = false;
   let prevented = false;
   const input = { value: "go east", blur: () => { blurred = true; } };
@@ -556,4 +573,29 @@ test("ready Apple II adventures replace mobile mouse controls with a command for
   assert.equal(mousePlayer.form, undefined);
   assert.equal(mousePlayer.controls.showTouchClickButtons, true);
   assert.equal(mousePlayer.cursorPad.showTouchCursorPad, true);
+});
+
+test("mobile control modes cover Grim, Hugo, and the three Zork stories", () => {
+  const mobile = { mobile: true };
+  const grim = readyPlayer({ engineId: "grim", gameId: "grim", target: "grim-demo" }, mobile);
+  assert.equal(grim.directionPad.hold, true);
+  assert.equal(grim.controls.touchActions.type, grim.GrimActions);
+  assert.equal(grim.form, undefined);
+  assert.equal(grim.cursorPad.showTouchCursorPad, false);
+
+  for (const gameId of ["hugo1", "hugo2", "hugo3"]) {
+    const hugo = readyPlayer({ engineId: "hugo", gameId, target: gameId }, mobile);
+    assert.equal(hugo.directionPad.hold, false);
+    assert.equal(hugo.controls.touchActions.props["aria-label"], "Open keyboard");
+    assert.equal(hugo.cursorPad.showTouchCursorPad, false);
+  }
+  for (const gameId of ["zork1", "zork2", "zork3"]) {
+    const zork = readyPlayer({ engineId: "glk", gameId, target: gameId }, mobile);
+    assert.equal(zork.directionPad, undefined);
+    assert.equal(zork.controls.touchActions.props["aria-label"], "Open keyboard");
+    assert.equal(zork.cursorPad.showTouchCursorPad, false);
+  }
+  const graphical = readyPlayer({ engineId: "zvision", gameId: "zgi", target: "zgi" }, mobile);
+  assert.equal(graphical.cursorPad.showTouchCursorPad, true);
+  assert.equal(graphical.form, undefined);
 });

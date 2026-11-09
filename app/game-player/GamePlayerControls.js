@@ -24,6 +24,7 @@ export default function GamePlayerControls({
   showSkipIntroAction,
   showTouchClickButtons,
   toolbarFocused,
+  touchActions,
 }) {
   const controlsRef = useRef(null);
   const visibilityRef = useRef(null);
@@ -192,6 +193,7 @@ export default function GamePlayerControls({
               </button>
             </div>
           ) : null}
+          {touchActions}
         </div>
       ) : null}
     </>

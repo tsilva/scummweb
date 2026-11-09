@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { dispatchGameCommand, dispatchSyntheticKeypress, dispatchSyntheticKeypressSequence } from "../app/game-player/keyboard.js";
+import { dispatchGameCommand, dispatchHugoCommand, dispatchSyntheticKeypress, dispatchSyntheticKeypressSequence, holdGameKey } from "../app/game-player/keyboard.js";
 
 function fixture({ canvas = true } = {}) {
   class KeyboardEvent extends Event {
@@ -77,4 +77,25 @@ test("game commands send each key to SDL in order, including spaces and Enter", 
   const empty = fixture();
   assert.equal(dispatchGameCommand(empty, ""), true);
   assert.deepEqual(empty.contentWindow.received.map(({ key }) => key), ["Enter", "Enter", "Enter"]);
+});
+
+test("held movement keeps the key down and releases it on the original canvas", () => {
+  const frame = fixture();
+  const canvas = frame.contentDocument.canvas;
+  const release = holdGameKey(frame, { key: "ArrowUp", keyCode: 38 });
+  assert.deepEqual(canvas.received.map(({ type }) => type), ["keydown"]);
+  frame.contentDocument.canvas = null;
+  release();
+  assert.deepEqual(canvas.received.map(({ type, code }) => [type, code]),
+    [["keydown", "ArrowUp"], ["keyup", "ArrowUp"]]);
+});
+
+test("long Hugo commands arrive in batches with Enter at the end", async () => {
+  const frame = fixture();
+  const command = "use the long wooden ladder";
+  const sending = dispatchHugoCommand(frame, command, new AbortController().signal);
+  const sentKeys = () => frame.contentWindow.received.filter(({ type }) => type === "keydown").map(({ key }) => key);
+  assert.equal(sentKeys().join(""), command.slice(0, 16).toUpperCase());
+  assert.equal(await sending, true);
+  assert.deepEqual(sentKeys(), [...command.toUpperCase(), "Enter"]);
 });
