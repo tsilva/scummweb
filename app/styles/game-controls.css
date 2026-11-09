@@ -248,6 +248,7 @@
   cursor: pointer;
   pointer-events: auto;
   touch-action: none;
+  -webkit-tap-highlight-color: transparent;
   user-select: none;
   -webkit-user-select: none;
 }
