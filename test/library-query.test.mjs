@@ -43,6 +43,7 @@ test("the real catalog keeps numbered and irregularly named series in sequence",
     ["kyra:kyra1", "kyra:kyra2", "kyra:kyra3"],
     ["gob:gob1", "gob:gob2", "gob:gob3"],
     ["sci:gk1", "sci:gk2"],
+    ["hugo:hugo1", "hugo:hugo2", "hugo:hugo3"],
   ];
   for (const families of series) {
     const expected = families.filter((id) => games.some((game) => game.familyId === id));

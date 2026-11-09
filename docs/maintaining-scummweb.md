@@ -372,7 +372,8 @@ genre, or studio and genre filtering for both public and imported games. Select
 **All genres** to remove the filter or **Name: A–Z** to restore alphabetical order.
 Name order keeps numbered series in installment order, treating Roman and Arabic
 numerals alike. Sort-only aliases in `lib/game-title-sort.mjs` place unnumbered
-first games and irregularly named sequels with their series. These aliases also
+first games and irregularly named sequels with their series. For example,
+Hugo's House of Horrors appears before Hugo II and Hugo III. These aliases also
 apply to imported games and name tie-breaks, preserving displayed titles and URLs.
 Select the **ScummWEB** logo or its tagline in the header to return to the homepage.
 On mobile, select **Library** next to **Settings** to jump to the **Game Library**
