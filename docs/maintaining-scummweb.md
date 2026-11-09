@@ -262,6 +262,11 @@ cross-device game matching, conflicts, legacy isolation, quota failures and
 archive validation.
 
 ### Library and game files
+
+The library checks existing sources during startup. It loads archive extraction
+when an import needs inspection or a selected game launches. The ZIP download and
+installation cache code loads with the player or when a linked game launches.
+
 The launch overlay uses status text without a progress bar.
 During ZIP downloads, the launch status shows `Loading game (12.4 / 85.2 MB)…`
 when the host provides a valid `Content-Length`; otherwise it shows the downloaded
