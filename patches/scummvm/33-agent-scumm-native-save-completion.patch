@@ -1,0 +1,90 @@
+diff --git a/engines/scumm/scumm.h b/engines/scumm/scumm.h
+--- a/engines/scumm/scumm.h
++++ b/engines/scumm/scumm.h
+@@ -1013,6 +1013,10 @@
+ 	bool _videoModeChanged = false;
+ 	Common::String _saveLoadFileName;
+ 	Common::String _saveLoadDescription;
++#ifdef __EMSCRIPTEN__
++	bool _agentControlBoundary = false;
++	bool _agentSaveLoadSucceeded = false;
++#endif
+ 
+ 	bool saveState(Common::SeekableWriteStream *out, bool writeHeader = true);
+ 	bool saveState(int slot, bool compat, Common::String &fileName);
+diff --git a/engines/scumm/scumm.cpp b/engines/scumm/scumm.cpp
+--- a/engines/scumm/scumm.cpp
++++ b/engines/scumm/scumm.cpp
+@@ -37,6 +37,7 @@
+ #include "backends/keymapper/keymapper.h"
+ 
+ #include "engines/util.h"
++#include "engines/scummweb-agent-loop.h"
+ 
+ #include "gui/message.h"
+ 
+@@ -2768,6 +2769,9 @@
+ #pragma mark -
+ 
+ Common::Error ScummEngine::go() {
++#ifdef __EMSCRIPTEN__
++	ScummWebAgentLoop agentLoop;
++#endif
+ #ifdef ENABLE_SCUMM_7_8
+ 	if (_game.id == GID_REBEL1) {
+ 		ScummEngine_v7 *vm7 = (ScummEngine_v7 *)this;
+@@ -2953,6 +2957,11 @@
+ 				VAR(VAR_LAST_FRAME_SCUMM_TIME) = _system->getMillis() - _lastWaitTime;
+ 		}
+ 
++#ifdef __EMSCRIPTEN__
++		_agentControlBoundary = true;
++		scummweb_agent_game_loop();
++		_agentControlBoundary = false;
++#endif
+ 		if (shouldQuit()) {
+ 			// TODO: Maybe perform an autosave on exit?
+ 			runQuitScript();
+@@ -3494,6 +3503,11 @@
+ 		if (_game.version == 6 && VAR_POST_SAVELOAD_SCRIPT != 0xFF && _currentRoom != 0)
+ 			runScript(VAR(VAR_POST_SAVELOAD_SCRIPT), 0, 0, nullptr);
+ 
++#ifdef __EMSCRIPTEN__
++		if (_agentControlBoundary) {
++			_agentSaveLoadSucceeded = success;
++		} else
++#endif
+ 		if (!success) {
+ 			Common::U32String buf = Common::U32String::format(errMsg, filename.c_str());
+ 
+diff --git a/engines/scumm/saveload.cpp b/engines/scumm/saveload.cpp
+--- a/engines/scumm/saveload.cpp
++++ b/engines/scumm/saveload.cpp
+@@ -96,6 +96,13 @@
+ #endif
+ 
+ 	requestLoad(slot);
++#ifdef __EMSCRIPTEN__
++	if (_agentControlBoundary) {
++		_agentSaveLoadSucceeded = false;
++		scummLoop_handleSaveLoad();
++		return _agentSaveLoadSucceeded ? Common::kNoError : Common::kReadingFailed;
++	}
++#endif
+ 	return Common::kNoError;
+ }
+ 
+@@ -182,6 +189,13 @@
+ #endif
+ 
+ 	requestSave(slot, desc);
++#ifdef __EMSCRIPTEN__
++	if (_agentControlBoundary) {
++		_agentSaveLoadSucceeded = false;
++		scummLoop_handleSaveLoad();
++		return _agentSaveLoadSucceeded ? Common::kNoError : Common::kWritingFailed;
++	}
++#endif
+ 	return Common::kNoError;
+ }
+ 

@@ -1,0 +1,156 @@
+diff --git a/backends/modular-backend.cpp b/backends/modular-backend.cpp
+index 838ea16c..213c7df4 100644
+--- a/backends/modular-backend.cpp
++++ b/backends/modular-backend.cpp
+@@ -19,6 +19,9 @@
+  *
+  */
+ 
++#ifdef __EMSCRIPTEN__
++#include <emscripten/emscripten.h>
++#endif
+ #include "backends/modular-backend.h"
+ 
+ #include "backends/audiocd/audiocd.h"
+@@ -29,6 +32,124 @@
+ #include "common/timer.h"
+ #include "graphics/pixelformat.h"
+ 
++#ifdef __EMSCRIPTEN__
++#include "common/config-manager.h"
++#include "common/savefile.h"
++#include "engines/engine.h"
++#include "engines/metaengine.h"
++
++extern "C" void scummweb_refresh_saves();
++
++static Engine *agentLoopOwner = nullptr;
++
++static void scummwebServicePresentedFrame(bool gameLoop = false) {
++	static bool servicing = false;
++	static Engine *awaitingRestoreFrame = nullptr;
++	Engine *engine = g_engine;
++	if (servicing || !engine || !engine->getMetaEngine() ||
++			gameLoop != (agentLoopOwner == engine) ||
++			!EM_ASM_INT({ return Boolean(globalThis.__scummwebAgentFrameBoundary); }))
++		return;
++
++	const Common::String engineId = ConfMan.get("engineid");
++	// The dedicated providers count game updates and service restores at
++	// the exact points chosen by those engines.
++	if (engineId == "sky" || engineId == "queen")
++		return;
++
++	const MetaEngine &meta = *engine->getMetaEngine();
++	const int maxSlot = MIN(999, meta.getMaximumSaveSlot());
++	const int autoSlot = meta.getAutosaveSlot();
++	const bool listSaves = maxSlot > 0 && meta.hasFeature(MetaEngine::kSupportsListSaves);
++	const bool canSave = listSaves && engine->hasFeature(Engine::kSupportsSavingDuringRuntime);
++	const bool canLoad = listSaves && engine->hasFeature(Engine::kSupportsLoadingDuringRuntime);
++	bool completedFrame = true;
++	if (awaitingRestoreFrame == engine) {
++		// The native loader can defer work to its own loop. Let it redraw
++		// before acknowledging the restore and holding a paused engine again.
++		EM_ASM({ globalThis.__scummwebAgentSaveResult(null); });
++		completedFrame = false;
++	}
++	awaitingRestoreFrame = nullptr;
++
++	servicing = true;
++	PauseToken pause;
++	while (!engine->shouldQuit()) {
++		const int control = EM_ASM_INT({
++			return globalThis.__scummwebAgentFrameBoundary($0, $1, $2, $3, $4, $5);
++		}, completedFrame, maxSlot, autoSlot, canSave, canLoad, gameLoop);
++		completedFrame = false;
++		if (control < 0) {
++			if (!pause.isActive())
++				pause = engine->pauseEngine();
++			emscripten_sleep(10);
++			continue;
++		}
++		if (pause.isActive())
++			pause.clear();
++		if (control == 0)
++			break;
++
++		const bool loading = control > maxSlot;
++		const int slot = loading ? control - maxSlot : control;
++		Common::String failure;
++		if (slot < 1 || slot > maxSlot || slot == autoSlot) {
++			failure = "Invalid manual save slot";
++		} else if (loading ? !canLoad || !engine->canLoadGameStateCurrently()
++				: !canSave || !engine->canSaveGameStateCurrently()) {
++			failure = loading ? "Cannot load in the current scene" : "Cannot save in the current scene";
++		} else {
++			bool found = false;
++			bool locked = false;
++			const Common::String target = ConfMan.getActiveDomainName();
++			for (const auto &save : meta.listSaves(target.c_str())) {
++				if (save.getSaveSlot() == slot) {
++					found = true;
++					locked = save.getLocked() || (!loading && save.getWriteProtectedFlag());
++					break;
++				}
++			}
++			if (locked || (loading && !found &&
++					!g_system->getSavefileManager()->exists(engine->getSaveStateName(slot)))) {
++				failure = "Save ID is unavailable in this run";
++			} else {
++				const Common::Error result = loading ? engine->loadGameState(slot)
++					: engine->saveGameState(slot, Common::String::format("AgentSCUMM %d", slot));
++				if (result.getCode() != Common::kNoError) {
++					failure = result.getDesc();
++				} else if (loading) {
++					awaitingRestoreFrame = engine;
++					break;
++				} else {
++					scummweb_refresh_saves();
++					if (!g_system->getSavefileManager()->exists(engine->getSaveStateName(slot))) {
++						bool saved = false;
++						for (const auto &save : meta.listSaves(target.c_str()))
++							saved |= save.getSaveSlot() == slot;
++						if (!saved)
++							failure = "ScummVM did not confirm the saved slot";
++					}
++				}
++			}
++		}
++		EM_ASM({ globalThis.__scummwebAgentSaveResult($0 ? UTF8ToString($0) : null); }, failure.empty() ? nullptr : failure.c_str());
++	}
++	servicing = false;
++}
++
++extern "C" EMSCRIPTEN_KEEPALIVE void scummweb_agent_use_game_loop(bool enable) {
++	agentLoopOwner = enable ? g_engine : nullptr;
++}
++
++extern "C" EMSCRIPTEN_KEEPALIVE bool scummweb_agent_game_loop_enabled() {
++	return EM_ASM_INT({ return Boolean(globalThis.__scummwebAgentFrameBoundary); });
++}
++
++extern "C" EMSCRIPTEN_KEEPALIVE void scummweb_agent_game_loop() {
++	scummwebServicePresentedFrame(true);
++}
++#endif
++
+ ModularGraphicsBackend::ModularGraphicsBackend()
+ 	:
+ 	_graphicsManager(nullptr) {
+@@ -200,10 +321,16 @@ void ModularGraphicsBackend::updateScreen() {
+ #ifdef ENABLE_EVENTRECORDER
+ 	g_eventRec.postDrawOverlayGui();
+ #endif
++#ifdef __EMSCRIPTEN__
++	scummwebServicePresentedFrame();
++#endif
+ }
+ 
+ void ModularGraphicsBackend::presentBuffer() {
+ 	_graphicsManager->presentBuffer();
++#ifdef __EMSCRIPTEN__
++	scummwebServicePresentedFrame();
++#endif
+ }
+ 
+ void ModularGraphicsBackend::setShakePos(int shakeXOffset, int shakeYOffset) {

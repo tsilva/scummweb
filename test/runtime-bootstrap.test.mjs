@@ -22,6 +22,37 @@ test("a declined pointer lock request stays optional for the native canvas", asy
   await new Promise(setImmediate);
 });
 
+test("only opted-in game frames forward native compatibility warnings to the player", async () => {
+  const html = await readFile(new URL("../scummvm-shell/scummvm.html", import.meta.url), "utf8");
+  const bridge = new Script(html.slice(html.indexOf("const scummwebInlineFrame"), html.indexOf("const agentSaveScope")));
+  const launchUrl = "https://example.test/scummvm.html?hostCompatibilityWarning=1#game";
+
+  for (const { href, embedded, expected } of [
+    { href: launchUrl, embedded: true, expected: true },
+    { href: "about:srcdoc", embedded: true, expected: true },
+    { href: launchUrl, embedded: false, expected: false },
+    { href: "https://example.test/scummvm.html#game", embedded: true, expected: false },
+    { href: launchUrl.replace("#game", "&saveQuery=1#game"), embedded: true, expected: false },
+  ]) {
+    const messages = [];
+    const context = createContext({ URL, location: new URL(href), document: { baseURI: launchUrl } });
+    context.window = context;
+    context.parent = embedded ? { postMessage: (data, origin) => messages.push({ ...data, origin }) } : context;
+    bridge.runInContext(context);
+    if (expected) {
+      context.__scummwebPostCompatibilityWarning("Édition en cours de test.\nDeuxième ligne.");
+      assert.deepEqual(messages, [{
+        type: "scummweb:compatibility-warning",
+        href: launchUrl,
+        message: "Édition en cours de test.\nDeuxième ligne.",
+        origin: "https://example.test",
+      }]);
+    } else {
+      assert.equal(context.__scummwebPostCompatibilityWarning, undefined);
+    }
+  }
+});
+
 test("generated shell overlaps engine, storage and runtime loading and mounts only after all inputs are ready", async () => {
   const html = await readFile(new URL("../scummvm-shell/scummvm.html", import.meta.url), "utf8");
   const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)].map((match) => match[1]);

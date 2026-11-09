@@ -65,7 +65,8 @@ scummwebBrowserFsReady.catch(()=>{});
 </script><script>
 const scummwebInlineFrame = window.location.pathname === "srcdoc";
 const scummwebLaunchUrl = new URL(scummwebInlineFrame ? document.baseURI : window.location.href);
-if (window.parent !== window && scummwebLaunchUrl.searchParams.get("hostCompatibilityWarning") === "1") {
+if (window.parent !== window && scummwebLaunchUrl.searchParams.get("hostCompatibilityWarning") === "1" &&
+    !scummwebLaunchUrl.searchParams.has("saveQuery")) {
   globalThis.__scummwebPostCompatibilityWarning = (message) => {
     window.parent.postMessage({
       type: "scummweb:compatibility-warning",

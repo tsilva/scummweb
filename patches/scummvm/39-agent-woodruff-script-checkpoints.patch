@@ -1,0 +1,284 @@
+diff --git a/engines/gob/gob.h b/engines/gob/gob.h
+--- a/engines/gob/gob.h
++++ b/engines/gob/gob.h
+@@ -264,4 +264,12 @@
+ 
+ 	bool isCurrentTot(const Common::String &tot) const;
++
++#ifdef __EMSCRIPTEN__
++	Common::String getSaveStateName(int slot) const override;
++	bool canSaveGameStateCurrently(Common::U32String *msg = nullptr) override;
++	bool canLoadGameStateCurrently(Common::U32String *msg = nullptr) override;
++	Common::Error saveGameState(int slot, const Common::String &desc, bool isAutosave = false) override;
++	Common::Error loadGameState(int slot) override;
++#endif
+ 	void setTrueColor(bool trueColor, bool convertAllSurfaces, Graphics::PixelFormat *format = nullptr);
+ 
+diff --git a/engines/gob/game.h b/engines/gob/game.h
+--- a/engines/gob/game.h
++++ b/engines/gob/game.h
+@@ -42,4 +42,8 @@
+ class Variables;
+ class Hotspots;
++
++#ifdef __EMSCRIPTEN__
++constexpr uint32 kWoodruffSaveVarBytes = 7106 * 4;
++#endif
+ 
+ enum FuncCallType {
+@@ -75,4 +79,8 @@
+ 	const Common::String &getTotFile(uint8 env) const;
+ 
++#ifdef __EMSCRIPTEN__
++	const Script *getScript(uint8 env) const;
++#endif
++
+ 	bool has(Variables *variables, uint8 startEnv = 0, int16 except = -1) const;
+ 	bool has(Script    *script   , uint8 startEnv = 0, int16 except = -1) const;
+@@ -201,5 +209,5 @@
+ 
+ 	void totSub(int8 flags, const Common::String &totFile);
+-	void switchTotSub(int16 index, int16 function);
++	void switchTotSub(int16 index, int32 function);
+ 
+ 	void deletedVars(Variables *variables);
+@@ -208,4 +216,12 @@
+ 	bool callFunction(const Common::String &tot, const Common::String &function, int16 param);
+ 	Common::String getFunctionName(const Common::String &tot, uint16 offset);
++
++#ifdef __EMSCRIPTEN__
++	bool hasAgentCheckpointScript() const;
++	bool canAgentCheckpoint() const;
++	bool saveAgentCheckpoint(int slot, const Common::String &desc);
++	bool loadAgentCheckpoint(int slot);
++	bool noteAgentSaveFailure();
++#endif
+ 
+ 	Common::String getGobStack();
+@@ -235,4 +251,10 @@
+ 	TotFunctions _totFunctions;
+ 
++#ifdef __EMSCRIPTEN__
++	bool _agentControlBoundary = false;
++	bool _agentSaving = false;
++	bool _agentSaveFailed = false;
++#endif
++
+ 	void clearUnusedEnvironment();
+ 
+diff --git a/engines/gob/game.cpp b/engines/gob/game.cpp
+--- a/engines/gob/game.cpp
++++ b/engines/gob/game.cpp
+@@ -31,4 +31,5 @@
+ #include "gob/gob.h"
+ #include "gob/game.h"
++#include "engines/scummweb-agent-loop.h"
+ #include "gob/global.h"
+ #include "gob/dataio.h"
+@@ -131,4 +132,10 @@
+ }
+ 
++#ifdef __EMSCRIPTEN__
++const Script *Environments::getScript(uint8 env) const {
++	return _environments[env].script;
++}
++#endif
++
+ const Common::String &Environments::getTotFile(uint8 env) const {
+ 	assert(env < kEnvironmentCount);
+@@ -865,4 +872,11 @@
+ 		MouseButtons *pButtons, char handleMouse) {
+ 
++#ifdef __EMSCRIPTEN__
++	if (!_agentControlBoundary && hasAgentCheckpointScript()) {
++		_agentControlBoundary = true;
++		scummweb_agent_game_loop();
++		_agentControlBoundary = false;
++	}
++#endif
+ 	if (_vm->getGameType() == kGameTypeAdibou2 || _vm->getGameType() == kGameTypeAdi4)
+ 		_vm->_vidPlayer->updateVideos();
+@@ -1030,4 +1044,7 @@
+ 			_hotspots->push(0, true);
+ 
++#ifdef __EMSCRIPTEN__
++		ScummWebAgentLoop agentLoop(hasAgentCheckpointScript());
++#endif
+ 		if ((flags == 18) || (flags & 0x06))
+ 			playTot(-1);
+@@ -1067,5 +1084,71 @@
+ }
+ 
+-void Game::switchTotSub(int16 index, int16 function) {
++#ifdef __EMSCRIPTEN__
++// Callbacks in the original Woodruff MENU.TOT. The first writes CAT.INF and
++// copies the scene properties. The second asks the parent script to restore.
++static constexpr int kWoodruffSaveCallback = 39193;
++static constexpr int kWoodruffLoadCallback = 39155;
++static constexpr uint kWoodruffFileName = 248;
++static constexpr uint kWoodruffSaveLabel = 356;
++static constexpr uint kWoodruffSelectedSlot = 3462;
++static constexpr uint kWoodruffLeavingScene = 3466;
++
++bool Game::hasAgentCheckpointScript() const {
++	if (_vm->getGameType() != kGameTypeWoodruff || _curEnvironment < 1 ||
++			!_curTotFile.hasPrefixIgnoreCase("emap") ||
++			!_environments.getTotFile(_curEnvironment - 1).equalsIgnoreCase("menu.tot"))
++		return false;
++
++	const Script *menu = _environments.getScript(_curEnvironment - 1);
++	if (!menu || menu->getVariablesCount() * 4 != kWoodruffSaveVarBytes)
++		return false;
++
++	static const byte saveSignature[] = {0x01, 0x04, 0x26, 0x00, 0x90, 0x1c, 0x1d, 0x02};
++	static const byte loadSignature[] = {0x01, 0x04, 0x20, 0x00, 0x90, 0x12, 0x8a, 0x0d};
++	const byte *save = menu->getData(kWoodruffSaveCallback + sizeof(saveSignature) - 1);
++	const byte *load = menu->getData(kWoodruffLoadCallback + sizeof(loadSignature) - 1);
++	return save && load &&
++		!memcmp(menu->getData(kWoodruffSaveCallback), saveSignature, sizeof(saveSignature)) &&
++		!memcmp(menu->getData(kWoodruffLoadCallback), loadSignature, sizeof(loadSignature));
++}
++
++bool Game::canAgentCheckpoint() const {
++	const Variables *vars = _vm->_inter->_variables;
++	return _agentControlBoundary && vars && vars->getSize() == kWoodruffSaveVarBytes &&
++		!vars->readOff8(kWoodruffLeavingScene) && !_vm->_inter->_terminate;
++}
++
++bool Game::saveAgentCheckpoint(int slot, const Common::String &desc) {
++	if (!canAgentCheckpoint())
++		return false;
++
++	Variables *vars = _vm->_inter->_variables;
++	vars->writeOffString(kWoodruffFileName, "SAVE\\CAT.INF");
++	vars->writeOffString(kWoodruffSaveLabel, desc.substr(0, 29).c_str());
++	vars->writeOff16(kWoodruffSelectedSlot, slot);
++	_agentSaving = true;
++	_agentSaveFailed = false;
++	switchTotSub(0, kWoodruffSaveCallback);
++	_agentSaving = false;
++	return !_agentSaveFailed;
++}
++
++bool Game::loadAgentCheckpoint(int slot) {
++	if (!canAgentCheckpoint())
++		return false;
++
++	_vm->_inter->_variables->writeOff16(kWoodruffSelectedSlot, slot);
++	switchTotSub(0, kWoodruffLoadCallback);
++	return true;
++}
++
++bool Game::noteAgentSaveFailure() {
++	if (_agentSaving)
++		_agentSaveFailed = true;
++	return _agentSaving;
++}
++#endif
++
++void Game::switchTotSub(int16 index, int32 function) {
+ 	int16 backupedCount;
+ 	int16 curBackupPos;
+diff --git a/engines/gob/inter_v2.cpp b/engines/gob/inter_v2.cpp
+--- a/engines/gob/inter_v2.cpp
++++ b/engines/gob/inter_v2.cpp
+@@ -1599,5 +1599,8 @@
+ 
+ 		if (!_vm->_saveLoad->save(file, dataVar, size, offset)) {
+-
++#ifdef __EMSCRIPTEN__
++			if (_vm->_game->noteAgentSaveFailure())
++				return;
++#endif
+ 			GUI::MessageDialog dialog(_("Failed to save game to file."));
+ 			dialog.runModal();
+diff --git a/engines/gob/metaengine.cpp b/engines/gob/metaengine.cpp
+--- a/engines/gob/metaengine.cpp
++++ b/engines/gob/metaengine.cpp
+@@ -35,4 +35,9 @@
+ #include "gob/gameidtotype.h"
+ #include "gob/gob.h"
++#ifdef __EMSCRIPTEN__
++#include "engines/scummweb-agent-loop.h"
++#include "gob/game.h"
++#include "gob/save/saveload.h"
++#endif
+ 
+ // For struct GOBGameDescription.
+@@ -75,4 +80,8 @@
+ 
+ 	bool hasFeature(MetaEngineFeature f) const override;
++#ifdef __EMSCRIPTEN__
++	int getMaximumSaveSlot() const override { return Gob::SaveLoad_v4::kSlotCount - 1; }
++	SaveStateList listSaves(const char *target) const override;
++#endif
+ 
+ 	Common::Error createInstance(OSystem *syst, Engine **engine, const Gob::GOBGameDescription *desc) const override;
+@@ -84,10 +93,65 @@
+ 
+ bool GobMetaEngine::hasFeature(MetaEngineFeature f) const {
++#ifdef __EMSCRIPTEN__
++	if (scummweb_agent_game_loop_enabled() && f == kSupportsListSaves)
++		return true;
++#endif
+ 	return false;
+ }
+ 
++#ifdef __EMSCRIPTEN__
++SaveStateList GobMetaEngine::listSaves(const char *target) const {
++	SaveStateList saves;
++	if (!target || !hasFeature(kSupportsListSaves))
++		return saves;
++
++	for (int slot = 0; slot <= getMaximumSaveSlot(); ++slot) {
++		Gob::SavePartInfo info(Gob::SaveLoad_v4::kSlotNameLength, Gob::kGameTypeWoodruff, 0,
++			Gob::kEndiannessLE, Gob::kWoodruffSaveVarBytes);
++		if (Gob::SaveReader::getInfo(getSavegameFile(slot, target), info))
++			saves.push_back(SaveStateDescriptor(this, slot, info.getDesc()));
++	}
++	return saves;
++}
++
++Common::String Gob::GobEngine::getSaveStateName(int slot) const {
++	return getMetaEngine()->getSavegameFile(slot, _targetName.c_str());
++}
++
++bool Gob::GobEngine::canSaveGameStateCurrently(Common::U32String *msg) {
++	return _game && _game->canAgentCheckpoint();
++}
++
++bool Gob::GobEngine::canLoadGameStateCurrently(Common::U32String *msg) {
++	return canSaveGameStateCurrently(msg);
++}
++
++Common::Error Gob::GobEngine::saveGameState(int slot, const Common::String &desc, bool isAutosave) {
++	if (slot < 0 || slot >= int(SaveLoad_v4::kSlotCount) || !canSaveGameStateCurrently())
++		return Common::kWritingFailed;
++
++	return _game->saveAgentCheckpoint(slot, desc) ? Common::kNoError : Common::kWritingFailed;
++}
++
++Common::Error Gob::GobEngine::loadGameState(int slot) {
++	if (slot < 0 || slot >= int(SaveLoad_v4::kSlotCount) || !canLoadGameStateCurrently())
++		return Common::kReadingFailed;
++
++	SaveReader reader(3, slot, getSaveStateName(slot));
++	SavePartInfo info(SaveLoad_v4::kSlotNameLength, getGameType(), 0, getEndianness(), kWoodruffSaveVarBytes);
++	if (!reader.load() || !reader.readPart(0, &info))
++		return Common::kReadingFailed;
++
++	return _game->loadAgentCheckpoint(slot) ? Common::kNoError : Common::kReadingFailed;
++}
++#endif
++
+ bool Gob::GobEngine::hasFeature(EngineFeature f) const {
+-	return
+-		(f == kSupportsReturnToLauncher);
++#ifdef __EMSCRIPTEN__
++	if ((f == kSupportsSavingDuringRuntime || f == kSupportsLoadingDuringRuntime) &&
++			scummweb_agent_game_loop_enabled() && _game && _game->hasAgentCheckpointScript())
++		return true;
++#endif
++	return f == kSupportsReturnToLauncher;
+ }
+ 
