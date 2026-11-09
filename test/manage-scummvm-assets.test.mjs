@@ -20,6 +20,7 @@ function createManagedTree(directory) {
   writeFile(path.join(directory, "scummvm.js"), "console.log('boot');");
   writeFile(path.join(directory, "scummvm.wasm"), "wasm");
   writeFile(path.join(directory, "scummvm_fs.js"), "fs");
+  writeFile(path.join(directory, "scummvm-maskable-512.png"), "icon");
   writeFile(path.join(directory, "games.json"), '{"primaryTarget":"sky","games":[]}');
   writeFile(path.join(directory, "launcher", "hero.jpg"), "hero");
   writeFile(path.join(directory, "data", "asset.dat"), "asset");

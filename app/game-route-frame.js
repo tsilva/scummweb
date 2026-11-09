@@ -174,6 +174,7 @@ export default function GameRouteFrame({
   const [isResuming, setIsResuming] = useState(false);
   const [exitHref, setExitHref] = useState("/");
   const [readySignal, setReadySignal] = useState(null);
+  const [gameplayFrameHref, setGameplayFrameHref] = useState(null);
   const [compatibilityWarnings, setCompatibilityWarnings] = useState([]);
   const [skipIntroConsumed, setSkipIntroConsumed] = useState(false);
   const [catalogIntroLaunch, setCatalogIntroLaunch] = useState(null);
@@ -198,7 +199,8 @@ export default function GameRouteFrame({
       else document.activeElement?.blur();
     });
   }, [restoreRemoteFullscreen]);
-  const skipIntro = isResuming ? null : intro;
+  const skipIntro = isResuming || intro?.checkpointOnly ? null : intro;
+  const gameplayStarted = frameSrc !== null && gameplayFrameHref === frameSrc;
   const currentReadySignal = readySignal?.href === frameSrc ? readySignal : null;
   const bootState = useBootState({
     displayTitle: game?.displayTitle || title,
@@ -220,12 +222,12 @@ export default function GameRouteFrame({
   const touchClick = useTouchClickActions({
     frameRef,
     skipIntro,
-    skipIntroConsumed,
+    skipIntroConsumed: skipIntroConsumed || gameplayStarted,
   });
   const hasBootFailed = Boolean(archiveError) || bootState.hasBootFailed;
   const waitingForLandscape = immersiveMode.isTouchMobile && !immersiveMode.isLandscapeViewport;
   const showBootOverlay = !bootState.hasBootCompleted || hasBootFailed;
-  const showSkipIntroBottomAction = Boolean(skipIntro) && bootState.showSkipIntroButton && !showBootOverlay && !waitingForLandscape;
+  const showSkipIntroBottomAction = Boolean(skipIntro) && bootState.showSkipIntroButton && !gameplayStarted && !showBootOverlay && !waitingForLandscape;
   const mobileControlsReady =
     immersiveMode.isMobileViewport && !waitingForLandscape && bootState.hasBootCompleted && !hasBootFailed;
   const mobileControlMode = getMobileControlMode(currentReadySignal?.detectedGame ?? game ?? undefined);
@@ -461,7 +463,7 @@ export default function GameRouteFrame({
         }
       }
 
-      if (event.data?.type === "scummvm-ready") {
+      if (event.data?.type === "scummvm-ready" || event.data?.type === "scummvm-gameplay-started") {
         const iframeWindow = frameRef.current?.contentWindow;
         const expectedFrameHref = getNormalizedFrameHref(loadArchive ? frameSrc : frameRef.current?.src || frameSrc);
         const messageFrameHref = getNormalizedFrameHref(event.data?.href);
@@ -475,6 +477,11 @@ export default function GameRouteFrame({
           !messageFrameHref ||
           messageFrameHref !== expectedFrameHref
         ) {
+          return;
+        }
+
+        if (event.data.type === "scummvm-gameplay-started") {
+          setGameplayFrameHref(messageFrameHref);
           return;
         }
 
@@ -532,6 +539,7 @@ export default function GameRouteFrame({
   useEffect(() => {
     const controller = new AbortController();
     setReadySignal(null);
+    setGameplayFrameHref(null);
     setCompatibilityWarnings([]);
     setArchiveProgress(null);
     setArchiveCached(false);
@@ -712,64 +720,6 @@ export default function GameRouteFrame({
     bootState.dismissSkipIntroButton();
     touchClick.unlockTouchControls();
   }
-
-  useEffect(() => {
-    if (!showSkipIntroBottomAction) {
-      return;
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      dismissSkipIntroButton();
-    }, skipIntro.durationMinutes * 60 * 1000);
-
-    return () => {
-      window.clearTimeout(timeoutId);
-    };
-  }, [showSkipIntroBottomAction, frameSrc, skipIntro]);
-
-  useEffect(() => {
-    if (!skipIntro || !bootState.showSkipIntroButton) {
-      return;
-    }
-
-    const iframe = frameRef.current;
-
-    function handleEscapeKeydown(event) {
-      if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) {
-        return;
-      }
-
-      if (!/^esc(?:ape)?$/i.test(event.key || "")) {
-        return;
-      }
-
-      dismissSkipIntroButton();
-    }
-
-    function addFrameListeners() {
-      try {
-        iframe?.contentWindow?.addEventListener("keydown", handleEscapeKeydown, true);
-        iframe?.contentDocument?.addEventListener("keydown", handleEscapeKeydown, true);
-      } catch {}
-    }
-
-    function removeFrameListeners() {
-      try {
-        iframe?.contentWindow?.removeEventListener("keydown", handleEscapeKeydown, true);
-        iframe?.contentDocument?.removeEventListener("keydown", handleEscapeKeydown, true);
-      } catch {}
-    }
-
-    window.addEventListener("keydown", handleEscapeKeydown, true);
-    addFrameListeners();
-    iframe?.addEventListener("load", addFrameListeners);
-
-    return () => {
-      window.removeEventListener("keydown", handleEscapeKeydown, true);
-      iframe?.removeEventListener("load", addFrameListeners);
-      removeFrameListeners();
-    };
-  }, [bootState.showSkipIntroButton, frameSrc, skipIntro]);
 
   function handleExitClick() {
     return navigateHome(exitHref);

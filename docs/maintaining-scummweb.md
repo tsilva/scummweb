@@ -338,9 +338,10 @@ within the same 8 MiB memory cache. Larger files remain backed by Blob slices.
 The bundled library's **Skip intro** action restarts the matching edition with
 a native startup option or an original save taken at the first playable scene,
 before puzzle actions.
-On a fresh bundled launch, the action's display timer starts after the player
-reveals the game. Continue and personal ZIP editions keep their own save
-behavior. Checkpoints live in `scummvm-shell/launcher/skip-intro/` and
+On a fresh bundled launch, the action appears after the first game frame and
+disappears when the engine reaches the first playable scene or the selection
+screen that the skip itself preserves. Continue and personal ZIP editions
+keep their own save behavior. Checkpoints live in `scummvm-shell/launcher/skip-intro/` and
 must remain in Git. `launcher-game-overrides.json` is the rebuild source for each
 entry's `skipIntro` metadata; regenerate `games.json` with
 `node scripts/create_launcher_metadata.mjs scummvm-shell/scummvm.ini scummvm-shell/games.json`,
@@ -360,12 +361,15 @@ its native intro abort and the Hugo demos enter their normal first scenes.
 Pegasus Prime keeps the demo menu and Castle Master keeps character and control
 selection. The three Zork games start at the command prompt.
 
-The Atlantis, Curse of Monkey Island, Grim Fandango, and Escape from Monkey
-Island demos use native debugger checkpoints captured before the first player
-decision. Quest for Infamy resumes at the Volksville entrance from an original
-in-game save. The launcher checks checkpoint bytes before writing. It can
-replace the exact incomplete checkpoints from the original release and
-protects a slot containing player progress.
+The Atlantis, Grim Fandango, and Escape from Monkey Island demos use native
+debugger checkpoints captured before the first player decision. The bundled
+Curse of Monkey Island demo omits the intro video and opens in the ship's hold.
+Its `checkpointOnly` metadata keeps the seeded launch available without showing
+**Skip intro** over the opening scene. Quest for Infamy resumes at the
+Volksville entrance from an original in-game save. The launcher checks
+checkpoint bytes before writing. It can replace the exact incomplete
+checkpoints from the original release and protects a slot containing player
+progress.
 
 Nippon Safes uses the native `boot-param` strategy (`bootParam: 1`) through
 patch 17 to skip the story while retaining its language and character choices.

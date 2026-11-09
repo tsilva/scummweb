@@ -1,0 +1,500 @@
+diff --git a/engines/adl/adl.cpp b/engines/adl/adl.cpp
+index 6056bb65..e28df9a8 100644
+--- a/engines/adl/adl.cpp
++++ b/engines/adl/adl.cpp
+@@ -41,6 +41,8 @@
+ #include "adl/graphics.h"
+ #include "adl/sound.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Adl {
+ 
+ class ScriptEnv_6502 : public ScriptEnv {
+@@ -734,6 +736,9 @@ void AdlEngine::gameLoop() {
+ 		if (_isRestarting)
+ 			return;
+ 
++#ifdef __EMSCRIPTEN__
++		ScummWebIntro::gameplayStarted();
++#endif
+ 		_canSaveNow = _canRestoreNow = true;
+ 		getInput(verb, noun);
+ 		_canSaveNow = _canRestoreNow = false;
+diff --git a/engines/ags/engine/main/game_run.cpp b/engines/ags/engine/main/game_run.cpp
+index 0e0f831e..190ceed4 100644
+--- a/engines/ags/engine/main/game_run.cpp
++++ b/engines/ags/engine/main/game_run.cpp
+@@ -75,6 +75,8 @@
+ #include "ags/events.h"
+ #include "ags/globals.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace AGS3 {
+ 
+ using namespace AGS::Shared;
+@@ -582,6 +584,10 @@ static void game_loop_check_controls(bool checkControls) {
+ 	if ((_G(in_new_room) == 0) && (checkControls)) {
+ 		int inRoom = _G(displayed_room);
+ 		size_t numevents_was = _GP(events).size();
++#ifdef __EMSCRIPTEN__
++		if (_G(displayed_room) == 2 && !_GP(play).in_cutscene && !_GP(play).disabled_user_interface)
++			ScummWebIntro::gameplayStarted();
++#endif
+ 		check_controls();
+ 		check_room_edges(numevents_was);
+ 
+diff --git a/engines/cge/cge_main.cpp b/engines/cge/cge_main.cpp
+index 209b9aa9..8f638edf 100644
+--- a/engines/cge/cge_main.cpp
++++ b/engines/cge/cge_main.cpp
+@@ -49,6 +49,8 @@
+ #include "cge/walk.h"
+ #include "cge/sound.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace CGE {
+ 
+ const char *savegameStr = "SCUMMVM_CGE";
+@@ -1412,6 +1414,9 @@ void CGEEngine::runGame() {
+ 	if (_mouse->_busy)
+ 		expandSprite(_mouse->_busy);
+ 
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::gameplayStarted();
++#endif
+ 	_startupMode = 0;
+ 
+ 	_commandHandler->addCommand(kCmdLevel, -1, _oldLev, &_sceneLight);
+diff --git a/engines/cge2/cge2_main.cpp b/engines/cge2/cge2_main.cpp
+index eaa0ca6e..9c1dc651 100644
+--- a/engines/cge2/cge2_main.cpp
++++ b/engines/cge2/cge2_main.cpp
+@@ -36,6 +36,8 @@
+ #include "cge2/spare.h"
+ #include "cge2/map.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace CGE2 {
+ 
+ System::System(CGE2Engine *vm) : Sprite(vm), _vm(vm) {
+@@ -632,6 +634,9 @@ void CGE2Engine::runGame() {
+ 	loadUser();
+ 	sceneUp(_now);
+ 	initToolbar();
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::gameplayStarted();
++#endif
+ 
+ 	// main loop
+ 	while (!_endGame && !_quitFlag)
+diff --git a/engines/draci/game.cpp b/engines/draci/game.cpp
+index 5a1a13ba..e0f418e0 100644
+--- a/engines/draci/game.cpp
++++ b/engines/draci/game.cpp
+@@ -40,6 +40,8 @@
+ #include "draci/sound.h"
+ #include "draci/surface.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Draci {
+ 
+ static const char *const dialoguePath = "ROZH";
+@@ -227,6 +229,10 @@ void Game::start() {
+ 			continue;
+ 		}
+ 
++#ifdef __EMSCRIPTEN__
++		if (getRoomNum() != _info._startRoom && getLoopStatus() == kStatusOrdinary)
++			ScummWebIntro::gameplayStarted();
++#endif
+ 		// Call the outer loop doing all the hard job.
+ 		loop(kOuterLoop, false);
+ 
+diff --git a/engines/drascula/drascula.cpp b/engines/drascula/drascula.cpp
+index d558350b..8583c154 100644
+--- a/engines/drascula/drascula.cpp
++++ b/engines/drascula/drascula.cpp
+@@ -36,6 +36,8 @@
+ #include "drascula/drascula.h"
+ #include "drascula/console.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Drascula {
+ 
+ DrasculaEngine::DrasculaEngine(OSystem *syst, const DrasculaGameDescription *gameDesc) : Engine(syst), _gameDescription(gameDesc) {
+@@ -550,6 +552,9 @@ bool DrasculaEngine::runCurrentChapter() {
+ 		}
+ 	}
+ 
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::gameplayStarted();
++#endif
+ 	showCursor();
+ 
+ 	while (!shouldQuit()) {
+diff --git a/engines/dreamweb/stubs.cpp b/engines/dreamweb/stubs.cpp
+index 77c77219..39e15428 100644
+--- a/engines/dreamweb/stubs.cpp
++++ b/engines/dreamweb/stubs.cpp
+@@ -24,6 +24,7 @@
+ #include "dreamweb/sound.h"
+ #include "dreamweb/dreamweb.h"
+ #include "engines/util.h"
++#include "engines/scummweb-intro.h"
+ #include "common/config-manager.h"
+ #include "common/file.h"
+ #include "common/text-to-speech.h"
+@@ -689,6 +690,10 @@ void DreamWebEngine::dreamweb() {
+ 			if (_quitRequested)
+ 				return;
+ 
++#ifdef __EMSCRIPTEN__
++			if (canSaveGameStateCurrently(nullptr))
++				ScummWebIntro::gameplayStarted();
++#endif
+ 			if (_wonGame) {
+ 				// "endofgame"
+ 				clearBeforeLoad();
+diff --git a/engines/freescape/freescape.cpp b/engines/freescape/freescape.cpp
+index 8ce8549f..811781cb 100644
+--- a/engines/freescape/freescape.cpp
++++ b/engines/freescape/freescape.cpp
+@@ -37,6 +37,8 @@
+ #include "freescape/doodle.h"
+ #include "freescape/debugger.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Freescape {
+ 
+ FreescapeEngine *g_freescape;
+@@ -1236,6 +1238,10 @@ Common::Error FreescapeEngine::run() {
+ 		} else if (_gameStateControl == kFreescapeGameStateEnd)
+ 			endGame();
+ 
++#ifdef __EMSCRIPTEN__
++		if (_gameStateControl == kFreescapeGameStatePlaying)
++			ScummWebIntro::gameplayStarted();
++#endif
+ 		updateTimeVariables();
+ 		processInput();
+ 		updatePlayerMovement(deltaTime);
+diff --git a/engines/grim/grim.cpp b/engines/grim/grim.cpp
+index 715bef0d..0ebe2481 100644
+--- a/engines/grim/grim.cpp
++++ b/engines/grim/grim.cpp
+@@ -84,6 +84,8 @@
+ #include "engines/grim/emi/sound/emisound.h"
+ #include "engines/grim/lua/lua.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Grim {
+ 
+ GrimEngine *g_grim = nullptr;
+@@ -1202,6 +1204,12 @@ void GrimEngine::mainLoop() {
+ 		if (startTime > endTime)
+ 			continue;
+ 		uint32 diffTime = endTime - startTime;
++#ifdef __EMSCRIPTEN__
++		// Match the first player-controlled sets in the bundled demos.
++		if (_currSet && _selectedActor && _mode == NormalMode && !g_movie->isPlaying() &&
++			(_currSet->getName() == "hq.set" || _currSet->getName() == "gme.set"))
++			ScummWebIntro::gameplayStarted();
++#endif
+ 		if (diffTime < _speedLimitMs) {
+ 			uint32 delayTime = _speedLimitMs - diffTime;
+ 			g_system->delayMillis(delayTime);
+diff --git a/engines/hugo/hugo.cpp b/engines/hugo/hugo.cpp
+index 5f0fb2a5..f0bb141c 100644
+--- a/engines/hugo/hugo.cpp
++++ b/engines/hugo/hugo.cpp
+@@ -49,6 +49,8 @@
+ 
+ #include "engines/util.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Hugo {
+ 
+ HugoEngine *HugoEngine::s_Engine = nullptr;
+@@ -437,6 +439,9 @@ void HugoEngine::runMachine() {
+ 		if (useWindowsInterface()) {
+ 			_screen->showCursor();
+ 		}
++#ifdef __EMSCRIPTEN__
++		ScummWebIntro::gameplayStarted();
++#endif
+ 		_parser->charHandler();                     // Process user cmd input
+ 		if (!gameStatus._gameOverFl) {
+ 			_object->moveObjects();                 // Process object movement
+diff --git a/engines/lure/game.cpp b/engines/lure/game.cpp
+index c4d6a706..bcbcc289 100644
+--- a/engines/lure/game.cpp
++++ b/engines/lure/game.cpp
+@@ -36,6 +36,8 @@
+ #include "common/config-manager.h"
+ #include "common/system.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Lure {
+ 
+ static Game *int_game = nullptr;
+@@ -170,6 +172,9 @@ void Game::execute() {
+ 		mouse.setCursorNum(CURSOR_ARROW);
+ 		mouse.cursorOn();
+ 
++#ifdef __EMSCRIPTEN__
++		ScummWebIntro::gameplayStarted();
++#endif
+ 		// Main game loop
+ 		while (!engine.shouldQuit() && ((_state & GS_RESTART) == 0)) {
+ 			// If time for next frame, allow everything to update
+diff --git a/engines/parallaction/gui_ns.cpp b/engines/parallaction/gui_ns.cpp
+index 93b37201..1ee5e8f7 100644
+--- a/engines/parallaction/gui_ns.cpp
++++ b/engines/parallaction/gui_ns.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-intro.h"
++
+ #include "common/config-manager.h"
+ #include "common/system.h"
+ #include "common/hashmap.h"
+@@ -940,6 +942,9 @@ public:
+ 
+ 		destroyLabels();
+ 		g_engineFlags &= ~kEngineBlockInput;
++#ifdef __EMSCRIPTEN__
++		ScummWebIntro::gameplayStarted();
++#endif
+ 		return _helper->getState("selectcharacter");
+ 	}
+ 
+diff --git a/engines/pegasus/pegasus.cpp b/engines/pegasus/pegasus.cpp
+index 01c020f4..867fca4b 100644
+--- a/engines/pegasus/pegasus.cpp
++++ b/engines/pegasus/pegasus.cpp
+@@ -79,6 +79,8 @@
+ #include "pegasus/neighborhood/tsa/tinytsa.h"
+ #include "pegasus/neighborhood/wsc/wsc.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Pegasus {
+ 
+ PegasusEngine *g_vm;
+@@ -842,6 +844,9 @@ void PegasusEngine::receiveNotification(Notification *notification, const Notifi
+ 				_gfx->doFadeOutSync();
+ 				_gfx->updateDisplay();
+ 				_gfx->doFadeInSync();
++#ifdef __EMSCRIPTEN__
++				ScummWebIntro::gameplayStarted();
++#endif
+ 			} else {
+ 				// Display the intro
+ 				runIntro();
+diff --git a/engines/queen/queen.cpp b/engines/queen/queen.cpp
+index 3df3b729..b312e8fb 100644
+--- a/engines/queen/queen.cpp
++++ b/engines/queen/queen.cpp
+@@ -52,6 +52,8 @@
+ #include "queen/talk.h"
+ #include "queen/walk.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Queen {
+ 
+ QueenEngine::QueenEngine(OSystem *syst)
+@@ -482,6 +484,10 @@ Common::Error QueenEngine::run() {
+ 			_logic->joeWalk(JWM_NORMAL);
+ 			_command->executeCurrentAction();
+ 		} else {
++#ifdef __EMSCRIPTEN__
++			if (!_input->cutawayRunning())
++				ScummWebIntro::gameplayStarted();
++#endif
+ 			_logic->joeWalk(JWM_NORMAL);
+ 			update(true);
+ 		}
+diff --git a/engines/scumm/scumm.cpp b/engines/scumm/scumm.cpp
+index ab155814..1ffe22b1 100644
+--- a/engines/scumm/scumm.cpp
++++ b/engines/scumm/scumm.cpp
+@@ -101,6 +101,8 @@
+ #include "scumm/imuse/drivers/pcspk.h"
+ #include "scumm/imuse/drivers/amiga.h"
+ #include "scumm/imuse/drivers/fmtowns.h"
++
++#include "engines/scummweb-intro.h"
+ #include "scumm/imuse/drivers/macintosh.h"
+ #include "scumm/imuse/drivers/midi.h"
+ #include "scumm/detection_steam.h"
+@@ -2953,6 +2955,10 @@ Common::Error ScummEngine::go() {
+ 				((SoundHE *)_sound)->feedMixer();
+ 			}
+ 
++#ifdef __EMSCRIPTEN__
++			if (_roomResource != 0 && _userPut > 0 && vm.cutSceneStackPointer == 0)
++				ScummWebIntro::gameplayStarted();
++#endif
+ 			if (VAR_LAST_FRAME_SCUMM_TIME != 0xFF)
+ 				VAR(VAR_LAST_FRAME_SCUMM_TIME) = _system->getMillis() - _lastWaitTime;
+ 		}
+diff --git a/engines/scummweb-intro.h b/engines/scummweb-intro.h
+new file mode 100644
+index 00000000..5a005fca
+--- /dev/null
++++ b/engines/scummweb-intro.h
+@@ -0,0 +1,25 @@
++/* ScummVM - Graphic Adventure Engine
++ *
++ * Distributed under the GNU General Public License, version 3 or later.
++ */
++#ifndef ENGINES_SCUMMWEB_INTRO_H
++#define ENGINES_SCUMMWEB_INTRO_H
++
++#ifdef __EMSCRIPTEN__
++#include <emscripten.h>
++
++namespace ScummWebIntro {
++
++// One transition per game frame document. The shell owns the player UI.
++inline void gameplayStarted() {
++	static bool reported = false;
++	if (reported)
++		return;
++	reported = true;
++	EM_ASM({ globalThis.__scummwebReportGameplayStarted?.(); });
++}
++
++} // namespace ScummWebIntro
++#endif
++
++#endif
+diff --git a/engines/sky/sky.cpp b/engines/sky/sky.cpp
+index 2897ba70..84d98d55 100644
+--- a/engines/sky/sky.cpp
++++ b/engines/sky/sky.cpp
+@@ -69,6 +69,8 @@
+  With apologies to the CD32 SteelSky file.
+ */
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Sky {
+ 
+ void *SkyEngine::_itemList[300];
+@@ -326,6 +328,10 @@ Common::Error SkyEngine::go() {
+ 			}
+ 		}
+ 		_skyScreen->flip();
++#ifdef __EMSCRIPTEN__
++		if (_systemVars->pastIntro)
++			ScummWebIntro::gameplayStarted();
++#endif
+ 
+ 		if (_fastMode & 2)
+ 			delay(0);
+diff --git a/engines/sword25/kernel/kernel_script.cpp b/engines/sword25/kernel/kernel_script.cpp
+index 6381d052..ade541c6 100644
+--- a/engines/sword25/kernel/kernel_script.cpp
++++ b/engines/sword25/kernel/kernel_script.cpp
+@@ -39,6 +39,8 @@
+ #include "sword25/script/script.h"
+ #include "sword25/script/luabindhelper.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Sword25 {
+ 
+ // Marks a function that should never be used
+@@ -237,6 +239,40 @@ static int setWidth(lua_State *L) {
+ 	return 0;
+ }
+ 
++#ifdef __EMSCRIPTEN__
++static bool introHasEnded(lua_State *L) {
++	const int top = lua_gettop(L);
++	// Aps is Nico's landing. The preceding apartment conversation can render
++	// ordinary game frames while the script keeps the interface disabled.
++	lua_getglobal(L, "CurrentRoom");
++	lua_getglobal(L, "Rooms");
++	if (!lua_istable(L, -1) || !lua_istable(L, -2)) {
++		lua_settop(L, top);
++		return false;
++	}
++	lua_getfield(L, -1, "Aps");
++	const bool onLanding = lua_rawequal(L, -1, -3);
++	lua_settop(L, top);
++	if (!onLanding)
++		return false;
++
++	// GetMode simply returns its sole upvalue in the bundled interface.lua.
++	// Read it directly so observing the transition never runs game scripts.
++	lua_getglobal(L, "Interface");
++	bool acceptsInput = false;
++	if (lua_istable(L, -1)) {
++		lua_getfield(L, -1, "GetMode");
++		if (lua_isfunction(L, -1)) {
++			const char *upvalue = lua_getupvalue(L, -1, 1);
++			const char *mode = upvalue ? lua_tostring(L, -1) : nullptr;
++			acceptsInput = mode && !strcmp(mode, "default");
++		}
++	}
++	lua_settop(L, top);
++	return acceptsInput;
++}
++#endif
++
+ static int setHeight(lua_State *L) {
+ 	// This is called by system/boot.lua with 600 as value.
+ //	pWindow->setHeight(static_cast<int>(luaL_checknumber(L, 1)));
+@@ -292,6 +328,13 @@ static int processMessages(lua_State *L) {
+ 	// TODO: We could always return true here, and leave quit handling
+ 	// to the closeWanted() opcode; see also the TODO comment in there.
+ 
++#ifdef __EMSCRIPTEN__
++	static bool introReported = false;
++	if (!introReported && introHasEnded(L)) {
++		introReported = true;
++		ScummWebIntro::gameplayStarted();
++	}
++#endif
+ 	lua_pushbooleancpp(L, !Engine::shouldQuit());
+ 	g_system->delayMillis(10);
+ 
+diff --git a/engines/teenagent/teenagent.cpp b/engines/teenagent/teenagent.cpp
+index 4f810be9..406523c7 100644
+--- a/engines/teenagent/teenagent.cpp
++++ b/engines/teenagent/teenagent.cpp
+@@ -52,6 +52,8 @@
+ #include "teenagent/scene.h"
+ #include "teenagent/teenagent.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace TeenAgent {
+ 
+ #ifdef USE_TTS
+@@ -778,6 +780,10 @@ Common::Error TeenAgentEngine::run() {
+ 			}
+ 		}
+ 
++#ifdef __EMSCRIPTEN__
++		if (scene->getId() == 10 && scene->getMessage().empty() && !_sceneBusy)
++			ScummWebIntro::gameplayStarted();
++#endif
+ 		inventory->render(surface, tickGame ? 1 : 0);
+ 
+ 		_system->unlockScreen();

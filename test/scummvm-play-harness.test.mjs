@@ -42,7 +42,6 @@ test("play harness normalizes library metadata and finds games by target", () =>
         target: "queen",
         title: "Flight of the Amazon Queen",
         skipIntro: {
-          durationMinutes: 2,
           slot: 0,
           saveFiles: ["queen.s00", "queen.s00"],
         },
@@ -54,7 +53,6 @@ test("play harness normalizes library metadata and finds games by target", () =>
   assert.equal(library.games[0].slug, "flight-of-the-amazon-queen");
   assert.deepEqual(library.games[0].skipIntro, {
     strategy: "save-slot",
-    durationMinutes: 2,
     slot: 0,
     saveFiles: ["queen.s00"],
   });
@@ -67,7 +65,6 @@ test("play harness builds seeded and unseeded launch paths", () => {
     playHref: "/beneath-a-steel-sky/play",
     skipIntro: {
       strategy: "save-slot",
-      durationMinutes: 2,
       slot: 0,
       saveFiles: ["SKY-VM.000"],
     },
@@ -341,7 +338,7 @@ test("play harness saves and loads room hotspot maps", () => {
 
 test("play harness preserves native intro choices without inventing a save seed", () => {
   const game = { target: "nippon-amiga", playHref: "/nippon-safes-inc/play",
-    skipIntro: { strategy: "boot-param", durationMinutes: 5, bootParam: 1 } };
+    skipIntro: { strategy: "boot-param", bootParam: 1 } };
   assert.equal(buildGameLaunchPath({ game }), "/nippon-safes-inc/play#skip-intro");
   assert.equal(buildGameLaunchPath({ game, seeded: false }), "/nippon-safes-inc/play");
 });

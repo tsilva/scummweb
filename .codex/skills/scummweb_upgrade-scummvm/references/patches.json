@@ -168,6 +168,21 @@
       "retire_when": "Upstream exposes an equivalent reliable game-presentation lifecycle signal that ScummWEB consumes and verifies."
     },
     {
+      "path": "patches/scummvm/41-report-playable-intro-boundaries.patch",
+      "status": "active",
+      "sha256": "fc9f9668b6dad2c664a5be6b08b2614f03dc0eb739203d473bfdd97b5d8dd007",
+      "purpose": "Report the native transition out of the bundled intro to the browser player.",
+      "invariants": [
+        "Only report once per shell document at the engine's first playable transition, independently of the first rendered frame.",
+        "Keep native startup, menus, scripts, save behavior, and optional telemetry unchanged."
+      ],
+      "verification": [
+        "In Brave, check a natural launch through the first interactive scene and a Skip Intro launch for both checkpoint and boot-parameter strategies.",
+        "Recheck first playable room identifiers against the pinned Grim, Escape, Quest for Infamy, and Sword25 bundled checkpoints."
+      ],
+      "retire_when": "Upstream engines expose equivalent intro completion signals for the bundled editions."
+    },
+    {
       "path": "scripts/patch_scummvm_audio.py",
       "status": "active",
       "sha256": "4a2dbaefaa42d68d58d7bceb5e33749cdf8eaa18fce6bd712df5fe8f34b30148",
