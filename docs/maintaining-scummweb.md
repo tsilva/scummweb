@@ -151,6 +151,8 @@ update and report that clock separately from the shared presentation clock.
 Queen counts rendered updates during walks and cutaways, and exposes manual
 slots 1–98 between commands and room transitions. DreamWeb, Nippon Safes and
 Discworld use their existing game serializers from their game-update boundary.
+Nippon Safes reads old prison saves with a truncated visited-room key and
+restores the scene without replaying its first-visit prompt.
 
 For a scoped Sky Continue launch, AgentSCUMM can explicitly request a single
 legacy manual slot from the same browser profile. The shell copies the slot

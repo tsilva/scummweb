@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-09T16:34:17.605921Z",
+  "generated_at_utc": "2026-11-09T18:28:40.912072Z",
   "scummvm": {
     "version": "v2026.4.0",
     "commit": "7d2709da5136866589f7602f5f5a7b17de03420e",
@@ -8,9 +8,9 @@
   "corresponding_source": {
     "page": "/doc/scummvm-source.html",
     "archive": "/doc/scummvm-source.zip",
-    "archive_sha256": "8f657aa194ce1fd36f9ecf01594f33e928867ad92c8d9b2a9f55193fe5e38801",
+    "archive_sha256": "6a8d093320c75e2f20b337d03f0dde598a7ee38763ba28f8a3cd86e2720f59de",
     "runtime_sha256": {
-      "scummvm.wasm": "0281ebcfa9ed0a9fdfd4735a01e6e8afda01ac35d08666a35e6105cc14e9017e",
+      "scummvm.wasm": "8fcdfb0183001df0a0a0ccea0e42f5476f124c7b4e1960911d291bc84420e765",
       "scummvm.js": "022df7b6699b64157a6e800fe503c55b606fbdf7137817b64664ad1639df830a",
       "data/plugins/libaccess.so": "334420deade17bc5db702ecfe4ba6102dfe2475139fc3cdc7536e7b2a6895d70",
       "data/plugins/libadl.so": "49f7fe02c75c539bf9ac472b4b93d81754ec7bc0db38a4a4ba5c72cdf9672cb2",
@@ -44,7 +44,7 @@
       "data/plugins/libmortevielle.so": "44f77543259f507d9e37438ac60b745ebc5db2b45e663202e9116aa411dacca4",
       "data/plugins/libneverhood.so": "36c71db18439f2dfeaddd15f71ee7b56a5ce45063f466af390183f24c34078b5",
       "data/plugins/libngi.so": "25292c25b42ac2415baaa03871c2cc41266aa953f7402480211ea7eb8e745db6",
-      "data/plugins/libparallaction.so": "f1952b3c36350f6807858a703af7e88732e2c5570343d37c69da32ca9cbd65a5",
+      "data/plugins/libparallaction.so": "cc41c3b9f13e1a25609199db8c215cb63d8cdaa895d729ebdf7ce2a0d4efddae",
       "data/plugins/libpegasus.so": "0d4b5985a91d667e2b9c3f296c6fb6e3abd9a3663f5d51e7b361445e5eb3251b",
       "data/plugins/libplumbers.so": "9803824dd73e590a11e106c006462ef030ef5d1713da27956d86db1881a56bed",
       "data/plugins/libqueen.so": "013a60dfe157fcbe91d370a99840d2d1d3d4324cce6fe546ce35a9474e2d496e",

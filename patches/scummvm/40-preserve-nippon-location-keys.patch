@@ -1,0 +1,26 @@
+diff --git a/engines/parallaction/parallaction.cpp b/engines/parallaction/parallaction.cpp
+--- a/engines/parallaction/parallaction.cpp
++++ b/engines/parallaction/parallaction.cpp
+@@ -212,7 +212,8 @@
+ 		error("No more location slots available. Please report this immediately to ScummVM team");
+ 
+ 	if (_currentLocationIndex  == -1) {
+-		Common::strlcpy(_locationNames[_numLocations], name, 10);
++		const size_t nameSize = getGameType() == GType_Nippon ? sizeof(_locationNames[_numLocations]) : 10;
++		Common::strlcpy(_locationNames[_numLocations], name, nameSize);
+ 		_currentLocationIndex = _numLocations;
+ 
+ 		_numLocations++;
+diff --git a/engines/parallaction/saveload.cpp b/engines/parallaction/saveload.cpp
+--- a/engines/parallaction/saveload.cpp
++++ b/engines/parallaction/saveload.cpp
+@@ -93,6 +93,9 @@
+ 	uint16 _si;
+ 	for (_si = 0; _si < _vm->_numLocations; _si++) {
+ 		s = f->readLine();
++		// Older saves stored the prison's visited key in a nine-character field.
++		if (!scumm_stricmp(s.c_str(), "estcarcer"))
++			s = "estcarcere";
+ 		Common::strlcpy(_vm->_locationNames[_si], s.c_str(), 32);
+ 
+ 		s = f->readLine();

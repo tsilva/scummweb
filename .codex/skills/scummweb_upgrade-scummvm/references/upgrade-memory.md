@@ -166,7 +166,10 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
 - Some serializers change the active scene or rebuild graphics. Use a completed
   engine update outside renderer calls and script callbacks for these operations.
   DreamWeb redraws through its original native load path. Nippon Safes uses its
-  existing location switch and keeps the progress slot reserved. Tinsel
+  existing location switch and keeps the progress slot reserved. The prison's
+  ten-character `estcarcere` key must match the visited-room table on restore.
+  Migrate older `estcarcer` entries while reading the same save layout. A
+  newly visited prison still shows its native introduction. Tinsel
   reconstructs scenes over several updates, so hold the restore acknowledgment
   until that reconstruction finishes.
 - Composer saves contain one palette index per sprite pixel. Set the format
