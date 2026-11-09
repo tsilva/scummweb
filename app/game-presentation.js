@@ -46,6 +46,21 @@ const importedScummGames = [
   },
 ];
 
+function bundledGameplayGallery(slug, edition, scenes, extension = "png") {
+  return {
+    screenshots: scenes.map((_, index) => `/launcher/${slug}-shot-${index + 1}.${extension}`),
+    sources: {
+      screenshots: scenes.map((scene) => ({
+        kind: "gameplay",
+        page: `https://scummweb.tsilva.eu/${slug}/play`,
+        edition,
+        scene,
+        credit: "Original gameplay captured in ScummWEB",
+      })),
+    },
+  };
+}
+
 const bundledArtworkByTarget = {
   "grim-demo": {
     heroImage: "/launcher/grim-fandango-scummweb-generated-2026-11-09-r2-hero.webp",
@@ -85,6 +100,19 @@ const artByTarget = {
     summary: "Play LucasArts’ original DOS demonstration of Indiana Jones’s search for Atlantis.",
     posterImage: retroGameArtwork["scumm:atlantis"].posterImage,
     heroImage: retroGameArtwork["scumm:atlantis"].heroImage,
+  },
+  "comi-demo": {
+    genre: retroGameArtwork["scumm:comi"].genre,
+    studio: "LucasArts",
+    year: "1997",
+    language: "en",
+    summary: "Help Guybrush Threepwood escape a pirate ship in LucasArts’ original Windows web demo. This edition includes voice acting.",
+    posterImage: retroGameArtwork["scumm:comi"].posterImage,
+    heroImage: retroGameArtwork["scumm:comi"].heroImage,
+    heroImagePosition: retroGameArtwork["scumm:comi"].heroImagePosition,
+    ...bundledGameplayGallery("the-curse-of-monkey-island-demo", "English Windows small demo", [
+      "Opening scene in the ship’s hold", "Cannon verb coin", "Guybrush’s inventory",
+    ], "webp"),
   },
   "grim-demo": {
     genre: "Graphic adventure",

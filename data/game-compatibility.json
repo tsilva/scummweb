@@ -1,6 +1,6 @@
 {
   "schemaVersion": 4,
-  "recordedOn": "2026-11-08",
+  "recordedOn": "2026-11-09",
   "scope": "Startup verification by edition; warnings and failures describe ScummVM or ScummWEB limitations, excluding problems specific to supplied game files. Not full-game compatibility.",
   "upstreamReference": {
     "version": "2026.4.0",
@@ -1034,6 +1034,13 @@
       "gameId": "scumm:comi",
       "edition": "The Curse Of Monkey Island (CD Windows).zip",
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
+    },
+    {
+      "title": "The Curse of Monkey Island (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:comi",
+      "edition": "comi-win-small-demo-en.zip",
+      "observation": "The small English Windows demo renders the ship’s hold on both first and cached launches. The original web archive omits the intro video and music."
     },
     {
       "title": "The Dig",

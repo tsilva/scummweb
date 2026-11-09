@@ -36722,6 +36722,86 @@
       "contentType": "image/avif",
       "width": 1440,
       "height": 864
+    },
+    "/launcher/responsive/the-curse-of-monkey-island-demo-shot-1-320.webp": {
+      "key": "artwork/9f613028052be5b472db9a17107ec6d6086e7d1345f7004e2b6a60fb620ce3b0/the-curse-of-monkey-island-demo-shot-1-320.webp",
+      "sha256": "9f613028052be5b472db9a17107ec6d6086e7d1345f7004e2b6a60fb620ce3b0",
+      "bytes": 107506,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/the-curse-of-monkey-island-demo-shot-1-480.webp": {
+      "key": "artwork/f1a18f1ee565232297669cca15655bc6b4f1979e85afa0ad4730793ddf4c6850/the-curse-of-monkey-island-demo-shot-1-480.webp",
+      "sha256": "f1a18f1ee565232297669cca15655bc6b4f1979e85afa0ad4730793ddf4c6850",
+      "bytes": 218630,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/responsive/the-curse-of-monkey-island-demo-shot-1-640.webp": {
+      "key": "artwork/4a586aba200b9958e2ab7e8318c9fc1ff7ea0523b7ed9a01c6fce35896d0c927/the-curse-of-monkey-island-demo-shot-1-640.webp",
+      "sha256": "4a586aba200b9958e2ab7e8318c9fc1ff7ea0523b7ed9a01c6fce35896d0c927",
+      "bytes": 358526,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/the-curse-of-monkey-island-demo-shot-2-320.webp": {
+      "key": "artwork/10e196074a90da06887947de35c7e137e38d90f7eb2dcc5d11e90dfe41d33819/the-curse-of-monkey-island-demo-shot-2-320.webp",
+      "sha256": "10e196074a90da06887947de35c7e137e38d90f7eb2dcc5d11e90dfe41d33819",
+      "bytes": 109030,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/the-curse-of-monkey-island-demo-shot-2-640.webp": {
+      "key": "artwork/db3c7291d60be0c8079878297fdc44e29fb42942bf21a07aa071656bff6f5a58/the-curse-of-monkey-island-demo-shot-2-640.webp",
+      "sha256": "db3c7291d60be0c8079878297fdc44e29fb42942bf21a07aa071656bff6f5a58",
+      "bytes": 365060,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/the-curse-of-monkey-island-demo-shot-3-320.webp": {
+      "key": "artwork/3ba74e99b5f164b74709239b7d3057b3298e218b77a74db931973fb0e0a92ea4/the-curse-of-monkey-island-demo-shot-3-320.webp",
+      "sha256": "3ba74e99b5f164b74709239b7d3057b3298e218b77a74db931973fb0e0a92ea4",
+      "bytes": 104778,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/the-curse-of-monkey-island-demo-shot-3-480.webp": {
+      "key": "artwork/2d48a93da05f71b2505f4dcabe1444584af7ae33aa2e571b1638bf921c1c3791/the-curse-of-monkey-island-demo-shot-3-480.webp",
+      "sha256": "2d48a93da05f71b2505f4dcabe1444584af7ae33aa2e571b1638bf921c1c3791",
+      "bytes": 218950,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/the-curse-of-monkey-island-demo-shot-1.webp": {
+      "key": "artwork/6f2470c1f7d59214dedc729bc589a5a41ba454bbfbe0360a94211fb3f9e365e2/the-curse-of-monkey-island-demo-shot-1.webp",
+      "sha256": "6f2470c1f7d59214dedc729bc589a5a41ba454bbfbe0360a94211fb3f9e365e2",
+      "bytes": 551268,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/the-curse-of-monkey-island-demo-shot-2.webp": {
+      "key": "artwork/74a1f1bcdd10088e7da4d5d35f2cfc012630f6f44645e68f0e98ca26124173ab/the-curse-of-monkey-island-demo-shot-2.webp",
+      "sha256": "74a1f1bcdd10088e7da4d5d35f2cfc012630f6f44645e68f0e98ca26124173ab",
+      "bytes": 563606,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/the-curse-of-monkey-island-demo-shot-3.webp": {
+      "key": "artwork/1b59bb29b1f182935a72ebc9b30632ac3ef680586b0c2a6b41af1fe4b6ab348e/the-curse-of-monkey-island-demo-shot-3.webp",
+      "sha256": "1b59bb29b1f182935a72ebc9b30632ac3ef680586b0c2a6b41af1fe4b6ab348e",
+      "bytes": 558946,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
     }
   },
   "images": {
@@ -50487,6 +50567,40 @@
         "/launcher/responsive/zork-3-scummweb-generated-2026-11-08-r1-hero-960.webp",
         "/launcher/responsive/zork-3-scummweb-generated-2026-11-08-r1-hero-1280.webp",
         "/launcher/zork-3-scummweb-generated-2026-11-08-r1-hero.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/the-curse-of-monkey-island-demo-shot-1.webp": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/the-curse-of-monkey-island-demo-shot-1.webp",
+      "webp": [
+        "/launcher/responsive/the-curse-of-monkey-island-demo-shot-1-320.webp",
+        "/launcher/responsive/the-curse-of-monkey-island-demo-shot-1-480.webp",
+        "/launcher/responsive/the-curse-of-monkey-island-demo-shot-1-640.webp",
+        "/launcher/the-curse-of-monkey-island-demo-shot-1.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/the-curse-of-monkey-island-demo-shot-2.webp": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/the-curse-of-monkey-island-demo-shot-2.webp",
+      "webp": [
+        "/launcher/responsive/the-curse-of-monkey-island-demo-shot-2-320.webp",
+        "/launcher/responsive/the-curse-of-monkey-island-demo-shot-2-640.webp",
+        "/launcher/the-curse-of-monkey-island-demo-shot-2.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/the-curse-of-monkey-island-demo-shot-3.webp": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/the-curse-of-monkey-island-demo-shot-3.webp",
+      "webp": [
+        "/launcher/responsive/the-curse-of-monkey-island-demo-shot-3-320.webp",
+        "/launcher/responsive/the-curse-of-monkey-island-demo-shot-3-480.webp",
+        "/launcher/the-curse-of-monkey-island-demo-shot-3.webp"
       ],
       "avif": []
     }
