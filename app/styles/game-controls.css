@@ -229,7 +229,7 @@
 
 .game-route-touch-cursor-pad-shell {
   position: fixed;
-  left: max(0.75rem, env(safe-area-inset-left));
+  left: max(2rem, env(safe-area-inset-left));
   bottom: max(0.75rem, env(safe-area-inset-bottom));
   z-index: 10;
   pointer-events: none;
