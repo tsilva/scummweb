@@ -79,23 +79,19 @@ diff --git a/base/main.cpp b/base/main.cpp
  static Common::Error runGame(const Plugin *enginePlugin, OSystem &system, const DetectedGame &game, const void *meDescriptor) {
  	assert(enginePlugin);
  
-@@ -223,6 +285,15 @@
+@@ -223,6 +285,11 @@
  		// Apparently some engines query them in their constructor, thus we
  		// need to set this up before instance creation.
  		metaEngine.registerDefaultSettings(target);
 +#ifdef __EMSCRIPTEN__
 +		const int resumeSlot = scummwebReportSaves(metaEngine, game.engineId, game.gameId, target);
-+		// Query frames use the same initialized plugin path as a launch, but
-+		// must never instantiate an engine or fall through to the launcher.
-+		if (EM_ASM_INT({ return new URL(globalThis.document.baseURI).searchParams.has('saveQuery') ? 1 : 0; }))
-+			emscripten_force_exit(0);
 +		if (resumeSlot >= 0)
 +			ConfMan.setInt("save_slot", resumeSlot, Common::ConfigManager::kTransientDomain);
 +#endif
  		err = metaEngine.createInstance(&system, &engine, game, meDescriptor);
  	}
  
-@@ -325,7 +396,24 @@
+@@ -325,7 +392,24 @@
  	system.getEventManager()->purgeMouseEvents();
  
  	// Run the engine
@@ -120,6 +116,36 @@ diff --git a/base/main.cpp b/base/main.cpp
  
  	// Make sure we do not return to the launcher if this is not possible.
  	if (!engine->hasFeature(Engine::kSupportsReturnToLauncher))
+@@ -578,6 +662,29 @@ int scummvm_main(int argc, const char * const argv[]) {
+ 	// the command line params) was read.
+ 	system.initBackend();
+ 
++#ifdef __EMSCRIPTEN__
++	// The query config identifies the save target but contains no game path.
++	// Use the initialized backend and the metadata plugin without game detection.
++	if (EM_ASM_INT({ return new URL(globalThis.document.baseURI).searchParams.has('saveQuery') ? 1 : 0; })) {
++		const Common::String engineId = ConfMan.get("engineid");
++		const Plugin *plugin = ConfMan.getActiveDomain() && !engineId.empty()
++			? PluginMan.findEnginePlugin(engineId) : nullptr;
++		if (plugin) {
++			const MetaEngine &meta = plugin->get<MetaEngine>();
++			meta.registerDefaultSettings(ConfMan.getActiveDomainName());
++			scummwebReportSaves(meta, engineId, ConfMan.get("gameid"), ConfMan.getActiveDomainName());
++		} else {
++			EM_ASM({
++				const url = new URL(globalThis.document.baseURI);
++				globalThis.parent.postMessage({
++					type: 'scummweb:saves-query-error', query: url.searchParams.get('saveQuery')
++				}, url.origin);
++			});
++		}
++		emscripten_force_exit(0);
++	}
++#endif
++
+ 	// If we received an invalid graphics mode parameter via command line
+ 	// we check this here. We can't do it until after the backend is inited,
+ 	// or there won't be a graphics manager to ask for the supported modes.
 diff --git a/base/commandLine.cpp b/base/commandLine.cpp
 --- a/base/commandLine.cpp
 +++ b/base/commandLine.cpp
