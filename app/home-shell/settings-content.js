@@ -126,13 +126,13 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
 
   return <>
     {error && <p className="settings-error" role="alert">{error}</p>}
-    <p className="settings-status" role="status">{busy ? "Working with saved games…" : notice}</p>
+    <p className="settings-status" role="status">{notice}</p>
     <button type="button" className={`settings-section-heading ${section === "saves" ? "is-active" : ""}`}
       aria-expanded={section === "saves"} aria-controls="settings-saves" disabled={busy}
       onClick={() => setSection(section === "saves" ? "" : "saves")}>
       <Save size={24} /><span>Saved games</span><ChevronDown size={20} />
     </button>
-    <section id="settings-saves" hidden={section !== "saves"}>
+    <section id="settings-saves" hidden={section !== "saves"} aria-busy={busy}>
       {!review && <>
         <div className="settings-action-block"><Download size={25} aria-hidden="true" />
           <div><h3>Export saves</h3><p>Download all saved progress as a ZIP.</p></div>

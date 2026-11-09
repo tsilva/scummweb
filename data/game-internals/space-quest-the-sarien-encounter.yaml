@@ -1,0 +1,44 @@
+# English Amiga 1.2.
+# Traced against the original AGI logic resources for this edition.
+# Logic 64 begins the victory ceremony whether or not Roger kept the data cartridge.
+schema_version: 1
+game: space-quest-the-sarien-encounter
+engine_id: agi
+edition:
+  game_id: sq1
+  index_md5: 0b216d931e95750f1f4837d6a4b821e5
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  kerona-crash-site: 12
+  deltaur-approach: 43
+  xenon-awards: 64
+  arcada-escape-pod: 10 # Logic 10 contains the Arcada escape-pod controls.
+  ulence-flats: 35 # Logic 35 handles the skimmer sale and ship purchases.
+  deltaur-sighting: 41 # Logic 41 confirms the Deltaur before transitioning to room 43.
+  deltaur-escape: 63 # Logic 63 shows the destruction of the Deltaur before the ceremony.
+variables:
+  score: { bank: vars, index: 3 }
+  max-score: { bank: vars, index: 7 }
+milestones:
+  - id: arcada-escape-pod
+    label: "Entered the Arcada’s escape pod"
+    when: { room: arcada-escape-pod }
+  - id: reached-kerona
+    label: Reached Kerona
+    when: { room: kerona-crash-site }
+  - id: ulence-flats
+    label: "Reached Ulence Flats"
+    when: { room: ulence-flats }
+  - id: deltaur-sighting
+    label: "Sighted the Deltaur"
+    when: { room: deltaur-sighting }
+  - id: reached-deltaur
+    label: Reached the Deltaur
+    when: { room: deltaur-approach }
+  - id: deltaur-escape
+    label: "Escaped the Deltaur"
+    when: { room: deltaur-escape }
+  - id: winning-ending
+    label: Reached the Xenon awards ceremony
+    when: { room: xenon-awards }

@@ -1,0 +1,35 @@
+# English Amiga 1.008.000.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/camelot-amiga-1.008.000/src
+schema_version: 1
+game: conquests-of-camelot-the-search-for-the-grail
+engine_id: sci
+edition:
+  game_id: camelot
+  index_md5: 1c48034c50d35cf5088460c300baa94d
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  flower-room: 31 # Script 30 gotoFlowerRoom enters 31.
+  sea-voyage: 34 # Script 197 board enters the voyage in room 34.
+  temple: 76 # Script 72 opens the way and enters 76.
+  grail-chamber: 80 # Script 80 contains the Grail, thief and final confrontation.
+  ending: 92 # Script 80 takeOffHoser concludes the encounter and enters the ending.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 } # SCI previous room global.
+milestones:
+  - id: flower-room
+    label: "Reached the Ice Palace’s flower room"
+    when: { room: flower-room }
+  - id: sea-voyage
+    label: "Set sail on the Grail quest"
+    when: { room: sea-voyage }
+  - id: temple
+    label: "Reached the temple passage"
+    when: { room: temple }
+  - id: grail-chamber
+    label: "Reached the Grail chamber"
+    when: { room: grail-chamber }
+  - id: winning-ending
+    label: "Returned with the Grail"
+    when: { all: [{ room: ending }, { variable: previous-room, equals: 80 }] }

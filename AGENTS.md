@@ -13,6 +13,7 @@ Repo notes for coding agents working in `scummweb`.
 - For agent browser interactions and rendered checks, follow the global Browser Use and Testing policy through its documented runtime.
 - `./scripts/verify_scummvm_web.sh` is the existing Chrome/Chromium verification harness. Use that browser path only when the user explicitly requests that browser; it is not a fallback when the preferred browser is unavailable.
 - Keep agent gameplay procedures and experiments in the sibling `agentscumm` repository. This repository owns the browser game runtime.
+- Keep native game maps and story milestones in `data/game-internals/`. Follow [the map and tracker guide](docs/game-progress.md) when changing them.
 - Avoid deleting unrelated worktree changes. This repo often has large generated-asset diffs in `public/` and `scummvm-shell/`.
 
 ## Game artwork generation

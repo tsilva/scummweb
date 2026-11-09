@@ -1,0 +1,33 @@
+# English DOS CD 1.100.000.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/pq4-cd-dos-1.100.000/src
+# Only neutralizing the assailant in room 755 reaches the score summary in room 778, then the ending credits.
+schema_version: 1
+game: police-quest-iv-open-season
+engine_id: sci
+edition:
+  game_id: pq4
+  index_md5: 069123b257f9e7655f13eb768397c345
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  final-confrontation: 755
+  final-score: 778
+  ending-credits: 779
+  day-four-montage: 290 # Script 240 day4Confront sends Carey to room 290.
+  press-event: 395 # Script 385 showIntScript enters the scene with the mayor and press crowd.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 }
+milestones:
+  - id: day-four-montage
+    label: "Reached the day-four investigation sequence"
+    when: { room: day-four-montage }
+  - id: press-event
+    label: "Reached the press event"
+    when: { room: press-event }
+  - id: reached-confrontation
+    label: Reached the final confrontation
+    when: { room: final-confrontation }
+  - id: winning-ending
+    label: Neutralized the assailant and reached the ending
+    when: { any: [{ all: [{ room: final-score }, { variable: previous-room, equals: 755 }] }, { all: [{ room: ending-credits }, { variable: previous-room, equals: 778 }] }] }

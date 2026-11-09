@@ -1,0 +1,35 @@
+# English DOS CD 1.1.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/gk1-cd-dos-1.1/src
+schema_version: 1
+game: gabriel-knight-sins-of-the-fathers
+engine_id: sci
+edition:
+  game_id: gk1
+  index_md5: 0bc1ce4063f6cf8daf3e14f36475451c
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  lecture: 331 # Script 330 attendLecture enters room 331.
+  germany: 510 # Script 500 arriveInGermany enters room 510.
+  voodoo-ceremony: 720 # Script 710 goToCeremony enters room 720.
+  hounfour-finale: 899 # The Hounfour region enters the EndGame room 899.
+  ending: 680 # The alternate aftermath branches in room 670 lead to 680.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 } # SCI previous room global.
+milestones:
+  - id: lecture
+    label: "Attended the Tulane lecture"
+    when: { room: lecture }
+  - id: germany
+    label: "Arrived in Germany"
+    when: { room: germany }
+  - id: voodoo-ceremony
+    label: "Reached the ceremony"
+    when: { room: voodoo-ceremony }
+  - id: hounfour-finale
+    label: "Reached the Hounfour finale"
+    when: { room: hounfour-finale }
+  - id: winning-ending
+    label: "Reached the ending credits"
+    when: { all: [{ room: ending }, { variable: previous-room, equals: 670 }] }

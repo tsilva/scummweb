@@ -18,7 +18,7 @@ export default function SettingsPanel(props) {
     const overflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     panel.showModal();
-    panel.querySelector(".settings-close")?.focus();
+    panel.querySelector(".settings-close")?.focus({ preventScroll: true });
     return () => {
       panel.close();
       document.body.style.overflow = overflow;
@@ -47,9 +47,10 @@ export default function SettingsPanel(props) {
     </button>
     <dialog ref={dialog} id="site-settings" className="settings-drawer" aria-labelledby="settings-title"
       onCancel={(event) => { event.preventDefault(); close(); }} onClick={(event) => { if (event.target === dialog.current) close(); }}>
-      <div className="settings-content" aria-busy={busy}>
+      <div className="settings-content">
         <header className="settings-heading"><h2 id="settings-title">Settings</h2>
-          <button type="button" className="settings-close" aria-label="Close settings" aria-disabled={busy} onClick={close}><X size={24} /></button>
+          <span className="settings-progress" role="status">{busy ? "Working…" : ""}</span>
+          <button type="button" className="settings-close" aria-label="Close settings" aria-disabled={busy || undefined} onClick={close}><X size={24} /></button>
         </header>
         {open && (SettingsContent
           ? <SettingsContent {...props} working={working} busy={busy} setBusy={setBusy} />

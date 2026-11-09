@@ -1,0 +1,31 @@
+# English DOS CD 1.0.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/fpfp-cd-dos-1.0/src
+schema_version: 1
+game: freddy-pharkas-frontier-pharmacist
+engine_id: sci
+edition:
+  game_id: freddypharkas
+  index_md5: c421287532ed6192f4a55918ee2650a0
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  second-act: 250 # The act-break script sends act 2 to room 250.
+  third-act: 630 # Script 26 starts act 3 in room 630.
+  showdown: 740 # Script 730 cutAndRun enters room 740, which runs the fight.
+  ending: 790 # Script 26 only sends act 5 to the epilogue; 170 then enters the credits.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 } # SCI previous room global.
+milestones:
+  - id: second-act
+    label: "Reached the next act in Coarsegold"
+    when: { room: second-act }
+  - id: third-act
+    label: "Reached the third act"
+    when: { room: third-act }
+  - id: showdown
+    label: "Reached the final showdown"
+    when: { room: showdown }
+  - id: winning-ending
+    label: "Reached the ending credits"
+    when: { all: [{ room: ending }, { variable: previous-room, equals: 170 }] }

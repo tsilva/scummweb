@@ -1,0 +1,39 @@
+# English Amiga 1.000.000.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/kq5-amiga-1.000.000/src
+# Script 120 leads to the story credits. The separate cartoon also reaches room 123.
+schema_version: 1
+game: king-s-quest-v-absence-makes-the-heart-go-yonder
+engine_id: sci
+edition:
+  game_id: kq5
+  index_md5: a8a854af430e25c70e2b986f02239710
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  finale: 120
+  credits: 123
+  escaped-harpies: 44 # The rescue script in room 43 transitions to room 44.
+  mordack-island: 89 # Room 89 contains the boat landing after the hermit’s scenes.
+  magic-battle: 124 # Script 124 contains the magical transformations and leads to room 120.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 }
+milestones:
+  - id: escaped-harpies
+    label: "Escaped the harpies"
+    when: { room: escaped-harpies }
+  - id: mordack-island
+    label: "Reached Mordack’s island"
+    when: { room: mordack-island }
+  - id: magic-battle
+    label: "Began the battle with Mordack"
+    when: { room: magic-battle }
+  - id: started-ending
+    label: Reached the story finale
+    when: { room: finale }
+  - id: winning-ending
+    label: Reached the story credits
+    when:
+      all:
+        - { room: credits }
+        - { variable: previous-room, equals: 120 }

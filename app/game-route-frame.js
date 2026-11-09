@@ -227,7 +227,8 @@ export default function GameRouteFrame({
   const hasBootFailed = Boolean(archiveError) || bootState.hasBootFailed;
   const waitingForLandscape = immersiveMode.isTouchMobile && !immersiveMode.isLandscapeViewport;
   const showBootOverlay = !bootState.hasBootCompleted || hasBootFailed;
-  const showSkipIntroBottomAction = Boolean(skipIntro) && bootState.showSkipIntroButton && !gameplayStarted && !showBootOverlay && !waitingForLandscape;
+  const showSkipIntroBottomAction =
+    Boolean(skipIntro) && bootState.showSkipIntroButton && !gameplayStarted && !showBootOverlay && !waitingForLandscape;
   const mobileControlsReady =
     immersiveMode.isMobileViewport && !waitingForLandscape && bootState.hasBootCompleted && !hasBootFailed;
   const mobileControlMode = getMobileControlMode(currentReadySignal?.detectedGame ?? game ?? undefined);
