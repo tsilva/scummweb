@@ -126,7 +126,8 @@ native query. A launch cancels pending queries. An unrecognized import gains its
 detected identity on launch. Queries use the target's engine metadata plugin
 after initializing the web backend. The temporary configuration lets the query
 read saves without mounting game files, detecting an edition, or rewriting
-player targets. Imported file access remains required;
+player targets. The current runtime rechecks empty AGS indexes from older
+runtimes once, even when the save files have the same revision. Imported file access remains required;
 checks on unrelated sources do not block the hero's selected launch action.
 
 The native output owner records pending filenames before opening a save and
@@ -332,6 +333,17 @@ apartment after the scripted opening conversation, before any puzzle action. So≈
 slot 0 for autosave; the demo also uses slot 1. The demo's
 checkpoint is captured through the native debugger because it disables its save
 menu; this does not change the demo's original save restrictions.
+
+Dragon History follows its original escape-room destination. Teen Agent uses
+its native intro abort and the Hugo demos enter their normal first scenes.
+Pegasus Prime keeps the demo menu and Castle Master keeps character and control
+selection. The three Zork games start at the command prompt.
+
+The Atlantis, Curse of Monkey Island, Grim Fandango, and Escape from Monkey
+Island demos use native debugger checkpoints captured before the first player
+decision. Quest for Infamy resumes at the Volksville entrance from an original
+in-game save. The launcher checks checkpoint bytes before writing so an occupied
+slot can never replace a player save.
 
 Nippon Safes uses the native `boot-param` strategy (`bootParam: 1`) through
 patch 17 to skip the story while retaining its language and character choices.

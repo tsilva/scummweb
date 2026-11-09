@@ -106,6 +106,105 @@
           "sword25.000"
         ]
       }
+    },
+    "draci": {
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1,
+        "durationMinutes": 2
+      }
+    },
+    "teenagent-demo": {
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1,
+        "durationMinutes": 3
+      }
+    },
+    "hugo1-demo": {
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1,
+        "durationMinutes": 0.5
+      }
+    },
+    "hugo2-demo": {
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1,
+        "durationMinutes": 0.5
+      }
+    },
+    "hugo3-demo": {
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1,
+        "durationMinutes": 1
+      }
+    },
+    "pegasus-demo": {
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1,
+        "durationMinutes": 0.5
+      }
+    },
+    "castlemaster-demo": {
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1,
+        "durationMinutes": 0.5
+      }
+    },
+    "atlantis-demo": {
+      "skipIntro": {
+        "strategy": "save-slot",
+        "durationMinutes": 1,
+        "slot": 90,
+        "saveFiles": [
+          "atlantis-demo.s90"
+        ]
+      }
+    },
+    "comi-demo": {
+      "skipIntro": {
+        "strategy": "save-slot",
+        "durationMinutes": 1,
+        "slot": 90,
+        "saveFiles": [
+          "comi-demo.s90"
+        ]
+      }
+    },
+    "grim-demo": {
+      "skipIntro": {
+        "strategy": "save-slot",
+        "durationMinutes": 1,
+        "slot": 90,
+        "saveFiles": [
+          "grim90.gsv"
+        ]
+      }
+    },
+    "qfi-demo": {
+      "skipIntro": {
+        "strategy": "save-slot",
+        "durationMinutes": 3,
+        "slot": 98,
+        "saveFiles": [
+          "qfi-demo.098"
+        ]
+      }
+    },
+    "monkey4-demo": {
+      "skipIntro": {
+        "strategy": "save-slot",
+        "durationMinutes": 2,
+        "slot": 90,
+        "saveFiles": [
+          "efmi090.gsv"
+        ]
+      }
     }
   }
 }

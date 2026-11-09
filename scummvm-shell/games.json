@@ -204,7 +204,12 @@
       "gameId": "draci",
       "platform": "pc",
       "extra": "",
-      "readmeHref": "/launcher/notices/draci.txt"
+      "readmeHref": "/launcher/notices/draci.txt",
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1,
+        "durationMinutes": 2
+      }
     },
     {
       "target": "atlantis-demo",
@@ -214,7 +219,15 @@
       "gameId": "atlantis",
       "platform": "pc",
       "extra": "Demo",
-      "readmeHref": "/launcher/notices/atlantis.txt"
+      "readmeHref": "/launcher/notices/atlantis.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "durationMinutes": 1,
+        "slot": 90,
+        "saveFiles": [
+          "atlantis-demo.s90"
+        ]
+      }
     },
     {
       "target": "grim-demo",
@@ -224,7 +237,15 @@
       "gameId": "grim",
       "platform": "windows",
       "extra": "Demo",
-      "readmeHref": "/launcher/notices/grim.txt"
+      "readmeHref": "/launcher/notices/grim.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "durationMinutes": 1,
+        "slot": 90,
+        "saveFiles": [
+          "grim90.gsv"
+        ]
+      }
     },
     {
       "target": "monkey4-demo",
@@ -234,7 +255,15 @@
       "gameId": "monkey4",
       "platform": "windows",
       "extra": "Web Demo",
-      "readmeHref": "/launcher/notices/monkey4.txt"
+      "readmeHref": "/launcher/notices/monkey4.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "durationMinutes": 2,
+        "slot": 90,
+        "saveFiles": [
+          "efmi090.gsv"
+        ]
+      }
     },
     {
       "target": "zork1",
@@ -274,7 +303,15 @@
       "gameId": "comi",
       "platform": "windows",
       "extra": "Demo",
-      "readmeHref": "/launcher/notices/comi.txt"
+      "readmeHref": "/launcher/notices/comi.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "durationMinutes": 1,
+        "slot": 90,
+        "saveFiles": [
+          "comi-demo.s90"
+        ]
+      }
     },
     {
       "target": "teenagent-demo",
@@ -284,7 +321,12 @@
       "gameId": "teenagent",
       "platform": "pc",
       "extra": "Union shareware demo",
-      "readmeHref": "/launcher/notices/teenagent.txt"
+      "readmeHref": "/launcher/notices/teenagent.txt",
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1,
+        "durationMinutes": 3
+      }
     },
     {
       "target": "hugo1-demo",
@@ -294,7 +336,12 @@
       "gameId": "hugo1",
       "platform": "pc",
       "extra": "Shareware v2.1",
-      "readmeHref": "/launcher/notices/hugo1.txt"
+      "readmeHref": "/launcher/notices/hugo1.txt",
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1,
+        "durationMinutes": 0.5
+      }
     },
     {
       "target": "hugo2-demo",
@@ -304,7 +351,12 @@
       "gameId": "hugo2",
       "platform": "pc",
       "extra": "Shareware v2.1",
-      "readmeHref": "/launcher/notices/hugo2.txt"
+      "readmeHref": "/launcher/notices/hugo2.txt",
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1,
+        "durationMinutes": 0.5
+      }
     },
     {
       "target": "hugo3-demo",
@@ -314,7 +366,12 @@
       "gameId": "hugo3",
       "platform": "pc",
       "extra": "Shareware v2.1",
-      "readmeHref": "/launcher/notices/hugo3.txt"
+      "readmeHref": "/launcher/notices/hugo3.txt",
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1,
+        "durationMinutes": 1
+      }
     },
     {
       "target": "pegasus-demo",
@@ -324,7 +381,12 @@
       "gameId": "pegasus",
       "platform": "macintosh",
       "extra": "Demo",
-      "readmeHref": ""
+      "readmeHref": "",
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1,
+        "durationMinutes": 0.5
+      }
     },
     {
       "target": "castlemaster-demo",
@@ -334,7 +396,12 @@
       "gameId": "castlemaster",
       "platform": "pc",
       "extra": "Demo",
-      "readmeHref": "/launcher/notices/castlemaster.txt"
+      "readmeHref": "/launcher/notices/castlemaster.txt",
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1,
+        "durationMinutes": 0.5
+      }
     },
     {
       "target": "qfi-demo",
@@ -344,7 +411,15 @@
       "gameId": "qfi",
       "platform": "windows",
       "extra": "Demo 2.0",
-      "readmeHref": "/launcher/notices/qfi.txt"
+      "readmeHref": "/launcher/notices/qfi.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "durationMinutes": 3,
+        "slot": 98,
+        "saveFiles": [
+          "qfi-demo.098"
+        ]
+      }
     }
   ]
 }

@@ -375,6 +375,22 @@
         "Launch the same target outside the opted-in player and check that the native warning remains available."
       ],
       "retire_when": "ScummVM supports forwarding the unstable-game warning to a web host and bypassing the splash per launch while preserving frame readiness."
+    },
+    {
+      "path": "patches/scummvm/24-skip-bundled-demo-intros.patch",
+      "status": "active",
+      "sha256": "9ea3dab0aff7c383443b32591010acb31a31f96752e60ba521121c39dbccda7e",
+      "purpose": "Expose native Skip intro startup for bundled Dragon History, Teen Agent, Hugo, Pegasus Prime and Castle Master editions.",
+      "invariants": [
+        "Require an explicit browser boot parameter and the matching bundled target. Preserve original fresh starts, saves and imports.",
+        "Reuse Dragon History's data-defined escape destination, the Teen Agent engine's native intro abort, and Hugo's first-scene scheduler.",
+        "Preserve the Pegasus Prime demo menu and Castle Master's character and input choices."
+      ],
+      "verification": [
+        "In Brave use normal Play and Skip intro for all seven target entries. Verify the first scene or original required choice.",
+        "Verify the generated catalog preserves native boot parameters and does not seed a save for these targets."
+      ],
+      "retire_when": "The pinned engines offer equivalent scoped boot options that bypass the same presentation and preserve the same game choices."
     }
   ]
 }

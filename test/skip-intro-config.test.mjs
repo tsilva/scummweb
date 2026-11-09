@@ -67,14 +67,9 @@ test("catalog intro checkpoints match their rebuild overrides and ship intact", 
   const library = JSON.parse(await readFile(new URL("games.json", shell), "utf8"));
   const overrides = JSON.parse(await readFile(new URL("../launcher-game-overrides.json", import.meta.url), "utf8"));
   const manifest = JSON.parse(await readFile(new URL("runtime-assets.json", shell), "utf8"));
-  // The Zork games begin at the prompt. The new graphical editions use
-  // their original intros and have no separately verified checkpoints.
-  const withoutCheckpoints = new Set([
-    "draci", "atlantis-demo", "grim-demo", "monkey4-demo", "comi-demo", "zork1", "zork2", "zork3",
-    "teenagent-demo", "hugo1-demo", "hugo2-demo", "hugo3-demo", "pegasus-demo", "castlemaster-demo", "qfi-demo",
-  ]);
-  assert.ok(library.games.every((game) => withoutCheckpoints.has(game.target) || normalizeSkipIntroConfig(game.skipIntro)),
-    "bundled editions with checkpoints must retain a verified intro-skip strategy");
+  const directPrompt = new Set(["zork1", "zork2", "zork3"]);
+  assert.deepEqual(new Set(library.games.filter((game) => !game.skipIntro).map((game) => game.target)),
+    directPrompt, "only editions that start directly at a prompt need no skip action");
   const configuredTargets = new Set();
   for (const game of library.games) {
     if (!game.skipIntro) continue;
@@ -124,4 +119,48 @@ test("save checkpoint launches keep their native slot and seed target", () => {
   assert.equal(result.searchParams.get("skipIntroTarget"), "soltys");
   assert.equal(result.searchParams.get("localGame"), "1");
   assert.equal(decodeURIComponent(result.hash), "#-x 1 soltys");
+});
+
+test("intro checkpoint staging reuses equal bytes and protects an existing player save", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const { runInNewContext } = await import("node:vm");
+  const template = await readFile(new URL("../web-shell/scummvm.html", import.meta.url), "utf8");
+  const start = template.indexOf("function setupSkipIntroSaves()");
+  const end = template.indexOf("let localGameStatus", start);
+  const seeds = [
+    ["qfi-demo.098", Uint8Array.of(2, 3)],
+    ["companion.098", Uint8Array.of(5)],
+  ];
+  async function stage(existing) {
+    const files = new Map(existing);
+    const writes = [];
+    const config = { strategy: "save-slot", slot: 98, saveFiles: seeds.map(([name]) => name) };
+    const scope = {
+      skipIntroTarget: "qfi-demo",
+      getConfiguredSavePath: () => "/saves",
+      ensureDirectory() {},
+      buildVersionedAssetUrl: (url) => url,
+      console: { error() {} },
+      FS: {
+        analyzePath: (name) => ({ exists: files.has(name) }),
+        readFile: (name) => files.get(name),
+        writeFile(name, bytes) { writes.push(name); files.set(name, bytes); },
+      },
+      fetch: async (url) => url === "games.json"
+        ? { ok: true, json: async () => ({ games: [{ target: "qfi-demo", skipIntro: config }] }) }
+        : { ok: true, arrayBuffer: async () => new Map(seeds).get(url.split("/").at(-1)).buffer },
+    };
+    const result = runInNewContext(template.slice(start, end) + "\nsetupSkipIntroSaves();", scope);
+    return { files, writes, result };
+  }
+  const original = Uint8Array.of(6);
+  const conflict = await stage([["/saves/companion.098", original]]);
+  await assert.rejects(conflict.result, /conflicts with an existing save/);
+  assert.deepEqual(conflict.writes, []);
+  assert.equal(conflict.files.get("/saves/companion.098"), original);
+
+  const existing = await stage([["/saves/qfi-demo.098", seeds[0][1]]]);
+  await existing.result;
+  assert.deepEqual(existing.writes, ["/saves/companion.098"]);
+  assert.equal(existing.files.get("/saves/qfi-demo.098"), seeds[0][1]);
 });
