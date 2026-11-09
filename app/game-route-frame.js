@@ -45,6 +45,7 @@ const MIB = 1024 * 1024;
 const catalogArchiveLimits = {
   "dreamweb-cd": { archiveLimit: 300 * MIB, expandedLimit: 300 * MIB, timeoutMs: 600_000 },
   queen: { timeoutMs: 600_000 },
+  "qfi-demo": { archiveLimit: 300 * MIB, expandedLimit: 300 * MIB, timeoutMs: 600_000 },
   sword25: { archiveLimit: 900 * MIB, expandedLimit: 900 * MIB, timeoutMs: 900_000 },
 };
 
@@ -167,6 +168,7 @@ export default function GameRouteFrame({
   const [isResuming, setIsResuming] = useState(false);
   const [exitHref, setExitHref] = useState("/");
   const [readySignal, setReadySignal] = useState(null);
+  const [compatibilityWarnings, setCompatibilityWarnings] = useState([]);
   const [skipIntroConsumed, setSkipIntroConsumed] = useState(false);
   const [catalogIntroLaunch, setCatalogIntroLaunch] = useState(null);
   const [remoteToolbarOpen, setRemoteToolbarOpen] = useState(false);
@@ -212,6 +214,7 @@ export default function GameRouteFrame({
   });
   const hasBootFailed = Boolean(archiveError) || bootState.hasBootFailed;
   const showBootOverlay = !bootState.hasBootCompleted || hasBootFailed;
+  const showSkipIntroBottomAction = Boolean(skipIntro) && bootState.showSkipIntroButton && !showBootOverlay;
   const mobileControlsReady =
     immersiveMode.isMobileViewport && bootState.hasBootCompleted && !hasBootFailed;
   const usesCommandInput = game?.engineId === "adl";
@@ -331,6 +334,15 @@ export default function GameRouteFrame({
       if (event.origin !== window.location.origin) {
         return;
       }
+      if (event.data?.type === "scummweb:compatibility-warning") {
+        const { href, message } = event.data;
+        if (frameSrc && event.source === frameRef.current?.contentWindow &&
+            typeof href === "string" && getNormalizedFrameHref(href) === frameSrc &&
+            typeof message === "string" && message.trim()) {
+          setCompatibilityWarnings((current) => current.includes(message) ? current : [...current, message]);
+        }
+        return;
+      }
       if (event.data?.type === "scummvm-boot-error") {
         if (event.source && event.source === frameRef.current?.contentWindow &&
             typeof event.data.href === "string" && getNormalizedFrameHref(event.data.href) === frameSrc) {
@@ -443,6 +455,7 @@ export default function GameRouteFrame({
   useEffect(() => {
     const controller = new AbortController();
     setReadySignal(null);
+    setCompatibilityWarnings([]);
     setArchiveProgress(null);
     setArchiveCached(false);
     setArchivePrepared(false);
@@ -483,7 +496,9 @@ export default function GameRouteFrame({
             launchSrc = `${shellUrl.pathname}${shellUrl.search}${shellUrl.hash}`;
           }
         }
-        launchSrc = withGameTelemetry(launchSrc, window.location.href);
+        const shellUrl = new URL(launchSrc, window.location.origin);
+        shellUrl.searchParams.set("hostCompatibilityWarning", "1");
+        launchSrc = withGameTelemetry(`${shellUrl.pathname}${shellUrl.search}${shellUrl.hash}`, window.location.href);
         if (loadArchive) {
           // Load/compile ScummVM while the archive downloads or opens. The
           // handoff below supports either side becoming ready first.
@@ -608,7 +623,7 @@ export default function GameRouteFrame({
   }
 
   useEffect(() => {
-    if (!skipIntro || !bootState.showSkipIntroButton) {
+    if (!showSkipIntroBottomAction) {
       return;
     }
 
@@ -619,7 +634,7 @@ export default function GameRouteFrame({
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [bootState.showSkipIntroButton, frameSrc, skipIntro]);
+  }, [showSkipIntroBottomAction, frameSrc, skipIntro]);
 
   useEffect(() => {
     if (!skipIntro || !bootState.showSkipIntroButton) {
@@ -708,6 +723,7 @@ export default function GameRouteFrame({
     }
 
     setReadySignal(null);
+    setCompatibilityWarnings([]);
     setSkipIntroConsumed(true);
     if (catalogArchiveUrl) {
       setFrameSrc(null);
@@ -718,8 +734,6 @@ export default function GameRouteFrame({
     setFrameSrc((currentSrc) => buildSkipIntroLaunchSrc(currentSrc, target, skipIntro, window.location.href));
   }
 
-  const showSkipIntroAction = bootState.showSkipIntroButton && skipIntro && !bootState.hasBootFailed;
-  const showSkipIntroBottomAction = showSkipIntroAction && !showBootOverlay;
   const remoteMouseReady = !showBootOverlay && !showSkipIntroBottomAction && !usesCommandInput;
   useEffect(() => {
     if (!remoteMouseReady || remoteToolbarOpen) return;
@@ -738,7 +752,9 @@ export default function GameRouteFrame({
       if (!active || !isTv) return;
       stop = observeRemoteBack(window, {
         onBack() {
-          if (remoteToolbarOpen) resumeRemoteGame();
+          const dialog = shellRef.current?.querySelector("dialog:modal");
+          if (dialog) dialog.close();
+          else if (remoteToolbarOpen) resumeRemoteGame();
           else setRemoteToolbarOpen(true);
         },
         onFullscreenExit() {
@@ -773,6 +789,7 @@ export default function GameRouteFrame({
       />
       <GamePlayerControls
         autoHide={bootState.hasBootPresentationCompleted && !showBootOverlay && !immersiveMode.isMobileViewport && !remoteToolbarOpen}
+        compatibilityWarnings={compatibilityWarnings}
         frameRef={frameRef}
         menuShortcut={gameMenuShortcut}
         handleControlMouseDown={handleControlMouseDown}

@@ -23,11 +23,15 @@ export default function HomePage() {
     throw new Error("Unable to resolve homepage shell data");
   }
 
+  // Artwork credits and import aliases are kept in the source catalog.
+  const catalog = shellData.catalog.map(({ sources, aliases, ...game }) => game);
+  const featuredGame = catalog.find((game) => game.target === shellData.featuredGame.target);
+
   return (
     <>
       <HomeShell
-        catalog={shellData.catalog}
-        featuredGame={shellData.featuredGame}
+        catalog={catalog}
+        featuredGame={featuredGame}
         logoSrc={getVersionedSiteAssetPath("/logo-nav.png")}
         pageMode="home"
         scummvmVersion={shellData.scummvmVersion}

@@ -101,7 +101,16 @@ async function queryNativeSaves(game, namespace, assetVersion, generation) {
     function receive(event) {
       if (event.origin !== window.location.origin || event.source !== frame.contentWindow
         || !["scummweb:saves-listed", "scummweb:saves-query-error"].includes(event.data?.type) || event.data.query !== query) return;
-      finish(event.data.type === "scummweb:saves-listed" ? event.data : null);
+      const result = event.data.type === "scummweb:saves-listed" ? event.data : null;
+      if (result?.persisted && game.engineId === "ags") {
+        try {
+          const index = readIndex(namespace, game);
+          if (index?.revision === result.revision) {
+            window.localStorage.setItem(saveIndexKey(namespace, game.target), JSON.stringify({ ...index, checkedByRuntime: assetVersion }));
+          }
+        } catch { /* A save query still succeeds if the browser cannot update its cache. */ }
+      }
+      finish(result);
     }
     const cancel = () => finish(null);
     const timer = window.setTimeout(() => finish(null), 45000);
@@ -119,7 +128,11 @@ export async function getLatestBrowserSave(game, assetVersion) {
     const key = saveIndexKey(namespace, game.target);
     let index = readIndex(namespace, game);
     const revision = saveRevision(files);
-    if (index?.schemaVersion !== 1 || index.revision !== revision) {
+    // Older AGS queries could fail before inspecting save files. Reconcile an
+    // empty index once with the current runtime even when the files match it.
+    const uncheckedAgs = index?.engineId === "ags" && index.checkedByRuntime !== assetVersion
+      && !latestPlayerSave(index, files);
+    if (index?.schemaVersion !== 1 || index.revision !== revision || uncheckedAgs) {
       const queryKey = `${key}:${revision}`;
       if (!queries.has(queryKey) && Date.now() - (attempts.get(key) || 0) >= 30000) {
         const generation = queryGeneration;

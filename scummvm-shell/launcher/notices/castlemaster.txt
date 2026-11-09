@@ -1,0 +1,100 @@
+        CASTLE MASTER PLAYABLE DEMO FOR IBM PC AND COMPATIBLES
+        ------------------------------------------------------
+
+The first complete level of Incentive's CASTLE MASTER has been placed in
+the public domain. The full game is published by Domark and is available
+from all good dealers.
+
+
+INTRODUCTION
+------------
+
+  High in one tower of Castle Eternity, time seeps away for your captive
+twin. If rescue fails, you are both doomed to become spirit slaves of
+Magister the Castle Master, who waits to steal your souls!
+  Decipher the clues, open the drawbridge, maintain your strength against
+each and every guardian spirit. Three potions, ten keys and a plague of
+hazards may be encountered as you trespass behind locked doors, explore
+secret tunnels, descend into caverns or stumble upon treasure and terror.
+But should you fail... fear is forever!
+
+
+
+LOADING INSTRUCTIONS AND KEYBOARD CONTROLS
+------------------------------------------
+
+Boot up from DOS ( v2.0 or later ), then insert disk in drive A.
+Type CASTLE, then press return.
+Select which graphics adapter you have ( CGA or EGA ) from the menu.
+
+
+MOUSE CONTROLS
+--------------
+
+To use a mouse you must have a Microsoft compatible mouse driver installed
+before you start the game. Instructions for doing this will be included
+with your mouse.
+
+
+KEYBOARD CONTROLS
+-----------------
+
+                           MOVEMENT
+                           --------
+
+ or O - Move Forward       0 or Keypad 5 - Throw rock
+ or K - Move Backwards
+ or Z - Turn Left                      A - Action ( will eat, drink, read,
+ or X - Turn Right                         push, move, collect, examine, open
+     U - U Turn                             unlock or use as appropriate )
+
+               Pressing shift with  or  - Turn left or right 90 degrees.
+
+     SPACE BAR - toggles between movement and pointer modes...
+     ---------
+
+ or O - Move pointer up            or Z - Move pointer left
+ or K - Move pointer down          or X - Move pointer right
+
+
+                        OTHER CONTROLS
+                        --------------
+
+P - Look up           R - Run           + - Centre sights on/off
+L - Look down         W - Walk          S - Score, Spirit, Key and
+F - Face forward      C - Crawl              Strength information
+I - Info screen                  CTRL ESC - Escape from game
+
+        Pressing shift with P or L - Look straight up or down.
+
+
+                        INFORMATION SCREEN ( I )
+                        ------------------------
+
+Your score, strength, number of keys collected and number of spirits
+                destroyed are all displayed here.
+
+S - Save position       R - Run         1 to 0 - Show key descriptions
+L - Load position       W - Walk             F - Sound effects on/off
+Q - Quit game           C - Crawl
+
+                Any other key to return to game.
+
+
+JOYSTICK - simulates     keys, fire throws a rock.
+--------
+
+
+----------------------------------------------------------------------------
+
+To order your copy of CASTLE MASTER contact Domark Ltd ( tel. 081-780-2222 )
+
+
+                        - PUBLIC DOMAIN -
+    This disc may be duplicated and freely distributed provided
+    no charge is made and the software is not altered in any way.
+
+                   (C) 1990 Incentive Software
+                           a division of
+                  New Dimension International Ltd
+                         Tel. (0734) 817288

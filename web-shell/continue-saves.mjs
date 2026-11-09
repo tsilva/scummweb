@@ -2,7 +2,19 @@
 // files enter this index; an index never substitutes for the files themselves.
 export const saveIndexPrefix = "scummweb.continue.v1:";
 export const defaultSavePath = "/home/web_user/.local/share/scummvm/saves";
-const supportedEngines = new Set("access adl agi bbvs cge cge2 cine cruise draci drascula dreamweb glk gnap got groovie hopkins hugo kyra lab lure mads mohawk mortevielle neverhood ngi pegasus queen saga sci scumm sherlock sky sword1 sword2 teenagent tinsel titanic toltecs tony toon touche tsage tucker voyeur wintermute zvision".split(" "));
+const supportedEngines = new Set("access adl agi ags bbvs cge cge2 cine cruise draci drascula dreamweb freescape glk gnap got groovie hopkins hugo kyra lab lure mads mohawk mortevielle neverhood ngi pegasus queen saga sci scumm sherlock sky sword1 sword2 teenagent tinsel titanic toltecs tony toon touche tsage tucker voyeur wintermute zvision".split(" "));
+const retiredIntroCheckpoints = new Map([
+  ["monkey4-demo/efmi090.gsv", "bd8aa04ec9ebe0745830124ddd6cc50c67aa7c2dd18166c0e6cdee7c3a958dad"],
+  ["qfi-demo/qfi-demo.098", "3dbd22f47c355795c96fcef11b2bb2aab5a84841b7b3b8f601715162d67c0b9c"],
+]);
+
+// Only the exact incomplete checkpoints from the original release may be replaced.
+export async function isRetiredIntroCheckpoint(target, name, bytes) {
+  const expected = retiredIntroCheckpoints.get(`${target}/${name}`);
+  if (!expected || bytes.length !== 150006 || !globalThis.crypto?.subtle) return false;
+  const digest = new Uint8Array(await globalThis.crypto.subtle.digest("SHA-256", bytes));
+  return Array.from(digest, (byte) => byte.toString(16).padStart(2, "0")).join("") === expected;
+}
 
 export function supportsContinue(engineId, gameId, extra = "") {
   return supportedEngines.has(engineId)
@@ -53,6 +65,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
   let needsPublish = false;
   let scannedFiles;
   let resumeReported = false;
+  let legacyIndexKey;
 
   function files() {
     try {
@@ -64,7 +77,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
   }
 
   const validName = (name) => typeof name === "string" && name.length > 0 && !/[\\/\x00-\x1f]/.test(name);
-  const indexKey = () => saveIndexKey(storageNamespace, params.get("catalogGame") || snapshot?.target);
+  const indexKey = () => saveIndexKey(storageNamespace, snapshot?.target);
   function persist() {
     if (!snapshot) return false;
     snapshot.pending = [...pending];
@@ -73,11 +86,17 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
       scope.localStorage.setItem(indexKey(), JSON.stringify(snapshot));
       lastRevision = snapshot.revision;
       needsPublish = false;
-      return true;
     } catch {
       needsPublish = true;
       return false;
     }
+    if (legacyIndexKey) {
+      try {
+        scope.localStorage.removeItem(legacyIndexKey);
+        legacyIndexKey = undefined;
+      } catch { /* The canonical index was already published. */ }
+    }
+    return true;
   }
   function isCheckpoint(name) {
     if (!checkpoints.has(name)) return false;
@@ -131,6 +150,18 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
         const previous = JSON.parse(scope.localStorage.getItem(indexKey()));
         for (const name of previous?.pending || []) if (validName(name)) pending.add(name);
       } catch { /* Missing or invalid cache. */ }
+      const archiveId = params.get("catalogGame") || params.get("saveGameId");
+      if (!storageNamespace && archiveId && archiveId !== target) {
+        const key = saveIndexKey("", archiveId);
+        try {
+          const previous = JSON.parse(scope.localStorage.getItem(key));
+          if (previous?.target === target && previous.engineId === engineId
+            && previous.gameId === gameId && previous.extra?.toLowerCase() === extra.toLowerCase()) {
+            for (const name of previous.pending || []) if (validName(name)) pending.add(name);
+            legacyIndexKey = key;
+          }
+        } catch { /* Missing or invalid legacy cache. */ }
+      }
     }
   };
   scope.__scummwebAddSave = (slot, name) => {
@@ -173,14 +204,21 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     // as the player overwrites it; never exclude a slot just by its number.
     if (!namespace) {
       const library = await (await scope.fetch(assetUrl("games.json"))).json();
-      const target = params.get("catalogGame") || params.get("saveTarget")
+      const target = params.get("saveTarget")
         || decodeURIComponent(launchUrl.hash.slice(1)).trim().split(/\s+/).at(-1);
       const intro = library.games?.find((game) => game.target === target)?.skipIntro;
       await Promise.all((intro?.saveFiles || []).map(async (name) => {
         try {
           const response = await scope.fetch(assetUrl(`launcher/skip-intro/${encodeURIComponent(target)}/${encodeURIComponent(name)}`));
           if (!response.ok) throw new Error("Checkpoint unavailable");
-          checkpoints.set(name, new Uint8Array(await response.arrayBuffer()));
+          let checkpoint = new Uint8Array(await response.arrayBuffer());
+          if (retiredIntroCheckpoints.has(`${target}/${name}`)) {
+            try {
+              const existing = FS.readFile(`${savePath}/${name}`);
+              if (await isRetiredIntroCheckpoint(target, name, existing)) checkpoint = existing;
+            } catch { /* Missing saved file or unavailable digest. */ }
+          }
+          checkpoints.set(name, checkpoint);
         } catch {
           // Fail closed for a checkpoint slot when its provenance is unknown.
           checkpoints.set(name, null);

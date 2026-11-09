@@ -6,6 +6,8 @@ import test from "node:test";
 import { renderToStaticMarkup } from "react-dom/server";
 import swc from "next/dist/build/swc/index.js";
 import { getHeroImageProps } from "../app/home-shell/hero-images.mjs";
+import { getArtworkPlaceholderStyle } from "../app/home-shell/artwork-image-props.mjs";
+import * as heroOrder from "../app/home-shell/hero-order.mjs";
 import { chooseGameVersion, formatVersionLabel, readChosenVersion, rememberGameVersion } from "../app/game-versions.mjs";
 import * as initialActions from "../app/home-shell/initial-actions.mjs";
 
@@ -79,6 +81,7 @@ const HomeHero = await loadComponent("../app/home-shell/home-hero.js", {
   "./game-navigation": { useGameNavigation: () => null },
   "next/navigation": { useRouter: () => ({ push() {} }) },
   "./hero-stage": HeroStage,
+  "./hero-order.mjs": heroOrder,
   "./hero-images.mjs": { getHeroPreloadImages: () => { preloadCalls += 1; return []; } },
   "../game-versions.mjs": { getGameFamilyKey: (game) => game.target, chooseGameVersion, readChosenVersion, rememberGameVersion },
 }, staticHooks);
@@ -400,12 +403,14 @@ test("the loading screen reuses the hero's responsive artwork and requests synch
     published: true,
     origin: "https://artwork.example",
     files: {
-      [hero]: { key: "artwork/sky.webp", width: 960 },
+      [hero]: { key: "artwork/sky.webp", width: 960, height: 540, placeholder: "UklGRi4AAABXRUJQVlA4ICIAAABwAQCdASoIAAwAAsBIJYwCdAFAAAD+7o54JpsgCMM6wAAA" },
       [avif]: { key: "artwork/sky.avif", width: 960 },
     },
     images: { [hero]: { width: 960, height: 540, fallback: hero, webp: [hero], avif: [avif] } },
   };
-  const DecorativeImage = await loadComponent("../app/home-shell/decorative-image.js");
+  const DecorativeImage = await loadComponent("../app/home-shell/decorative-image.js", {
+    "./artwork-image-props.mjs": { getArtworkPlaceholderStyle },
+  });
   const GameBootOverlay = await loadComponent("../app/game-player/GameBootOverlay.js", {
     "../home-shell/artwork-delivery": { useArtworkDelivery: () => artwork },
     "../home-shell/decorative-image": DecorativeImage,
@@ -415,4 +420,5 @@ test("the loading screen reuses the hero's responsive artwork and requests synch
   const html = renderToStaticMarkup(GameBootOverlay({ game: { ...game, heroImage: hero }, showBootOverlay: true }));
   assert.match(html, /<source type="image\/avif" srcSet="https:\/\/artwork.example\/artwork\/sky.avif 960w"/);
   assert.match(html, /<img[^>]*decoding="sync"[^>]*srcSet="https:\/\/artwork.example\/artwork\/sky.webp 960w"/);
+  assert.match(html, /<img[^>]*style="[^"]*--artwork-placeholder:url\(&quot;data:image\/svg\+xml,/);
 });

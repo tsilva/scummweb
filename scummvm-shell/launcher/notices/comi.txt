@@ -1,0 +1,190 @@
+#######################################################################
+LucasArts Entertainment Co.
+THE CURSE OF MONKEY ISLAND DEMO
+Net Version 1.0
+
+The music for this demo has been removed to reduce download time.
+
+Thank you for playing The Curse of Monkey Island Demo. We recommend
+that you read this file to get the most up to date information
+about installing, running and playing The Curse of Monkey Island Demo.
+
+1)      INSTRUCTIONS FOR RUNNING THE CURSE OF MONKEY ISLAND DEMO
+	    a) General
+2)	PLAYING THE DEMO
+	    a) Interacting with objects
+	    b) Using inventory
+	    c) Using exits
+	    d) Using the dialog interface
+	    e) Save games (disabled for demo)
+	    f) Text for voice
+	    g) Adjusting volume
+	    h) Quitting the demo
+
+#######################################################################
+
+1)      INSTRUCTIONS FOR RUNNING THE CURSE OF MONKEY ISLAND DEMO
+    a)	General
+
+	CURSE OF MONKEY ISLAND DEMO requires a Pentium computer 16MB
+	RAM, a mouse input device and Windows95.
+
+	Close all other applications before running the demo.
+
+2)	PLAYING THE DEMO
+    a)	Interacting with objects
+
+	Use the mouse to move the cursor over the desired object until
+	it goes "hot" (the cursor will turn red). Click and hold the
+	left mouse button. The "verb coin" will appear. There are
+	three icons on the "verb coin" They are a HAND, a SKULL and
+	a PARROT.
+
+	The HAND represents the verbs "pick-up" "push" or "use."
+	The SKULL represents the verb "examine."
+	The PARROT represents the verbs "talk-to" "taste" "blow"
+	or "bite."
+
+	Still holding down the left mouse button, select the
+	appropriate "verb coin" icon by moving the cursor over it.
+
+	If the HAND is selected it will close. If the SKULL is
+	selected its eyes will bug-out. If the PARROT is selected,
+	it will open its mouth.
+
+	Once the appropriate "verb coin" icon is selected, release
+	the left mouse button.  This will trigger the interaction.
+	For example, "examine door" or "pick-up cannon balls."
+
+    b)	Using inventory
+
+	To bring up the "inventory box" click the right mouse button.
+
+	You can manipulate the items in your "inventory box" with the
+	"verb coin" just as you would an object in a room.
+
+	Objects in your inventory can be placed on your cursor. To
+	place an object on your cursor, left-click on the desired
+	object in your "inventory box" then quickly release the
+	mouse button. Your cursor will become that object.
+
+	When an object is on your cursor, left-clicking on another
+	object in your "inventory box" will use those two objects
+	together.
+
+	Objects in your "inventory box" can also be used on objects
+	in a room. Place an object from your "inventory box" on your
+	cursor,	then move the cursor to the edge of the screen.
+	The "inventory box" will disappear.  Now, left-click on an
+	object in the room to use your inventory object with it.
+
+	To remove an object from your cursor, right-click the mouse.
+	If you have no objects on your cursor, right-clicking the
+	mouse will put away the "inventory box."
+
+    c)	Using exits
+
+	When your cursor passes over an exit it will become an arrow.
+	Clicking on the exit will move you to a new room. Double
+	clicking on an exit will cause the room to change immediately.
+
+    d)	Using the dialog interface
+
+	To talk to a character, left click on the character and use
+	the "verb coin" to select the "talk-to" (parrot) icon.
+	If talking to the character is an option, a list of
+	"dialog choices" will appear at the bottom of the screen.
+	Choose a dialog line by moving your cursor over the text for
+	that line. The selected text will change to a
+	"highlight" color. Left click to activate that line.
+
+    e)	Save Games
+
+	For this demo, save games have been disabled.
+
+    f)	Text for voice
+
+	Press (Alt-t) to turn on text for spoken dialog.
+
+    g)	Adjusting volume
+
+	The volume of the voices in the interactive segments can
+	be adjusted with the (;) key and the (') key.  The
+	(;) key will make the voices softer. The (') key
+	will make the voices louder.
+
+    h)	Quitting the demo
+
+	To quit the demo, press (Alt-x), then press (Y) to exit.
+
+
+            Hint Line
+            1-900-740-JEDI (Callers must be 18+ or have parent's
+            permission.  Each call costs 75 cents/minute)
+
+            TO ORDER LUCASARTS MERCHANDISE PLEASE CALL
+            1-800-98-LUCAS (1-800-985-8227)
+
+The Curse of Monkey Island game and demonstration product
+(c) 1997 LucasArts Entertainment Company.
+All Rights Reserved.  The Curse of Monkey Island is a trademark,
+and Monkey Island is a registered trademark
+of LucasArts Entertainment Company.
+The LucasArts logo is a registered trademark of
+Lucasfilm Ltd., used under authorization..
+iMUSE is a trademark of LucasArts Entertainment Company.
+iMUSE U.S. Patent No. 5,315,057.
+
+     DOWNLOADING, COPYING AND USE OF THE DEMO ARE SUBJECT
+     TO THE FOLLOWING LICENSE AGREEMENT TERMS. PLEASE
+     READ THIS LICENSE CAREFULLY BEFORE DOWNLOADING,
+     COPYING OR USING THE DEMO. BY USING THE DEMO, YOU ARE
+     AGREEING TO BE BOUND BY THE TERMS OF THIS LICENSE. IF
+     YOU DO NOT AGREE TO THE TERMS OF THIS LICENSE, DO NOT
+     DOWNLOAD, COPY OR USE THE DEMO, AND DELETE THE DEMO
+     AND ALL RELATED FILES FROM YOUR COMPUTER.
+
+     The software, artwork, music, and other components included in this
+     demonstration program (the "Demo") are the copyrighted property of
+     LucasArts Entertainment Company ("LEC"). The Demo is licensed (not
+     sold) to you, and LEC owns all copyright, trade secret, patent and other
+     proprietary rights in the Demo. LEC hereby gives you permission to make
+     copies of the Demo (only in its original form as provided by LEC) to give to
+     other persons and to distribute the Demo to others electronically, provided
+     that in all such cases you may not charge or receive money or other
+     consideration from any person or entity for the receipt or use of the Demo or
+     any disc or materials containing the Demo. Except as may be permitted by
+     applicable law, you may not decompile, reverse engineer, disassemble or
+     otherwise reduce the Demo or its components to a human-perceivable form.
+     You may not rent, modify, add or delete components or files, or create
+     derivative works based upon the Demo in whole or in part.
+
+     You expressly acknowledge and agree that use of the Demo is at your sole
+     risk. The Demo and any related documentation or materials are provided
+     "AS IS" and without warranty of any kind. LEC EXPRESSLY DISCLAIMS
+     ALL WARRANTIES, EXPRESS AND IMPLIED, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+     LEC DOES NOT WARRANT THAT THE FUNCTIONS CONTAINED IN
+     THE DEMO WILL MEET YOUR REQUIREMENTS, OR THAT THE
+     OPERATION OF THE DEMO WILL BE UNINTERRUPTED OR
+     ERROR-FREE, OR THAT DEFECTS IN THE DEMO WILL BE
+     CORRECTED. THE ENTIRE RISK AS TO THE RESULTS AND
+     PERFORMANCE OF THE DEMO IS ASSUMED BY YOU. SOME
+     JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF IMPLIED
+     WARRANTIES, SO THE ABOVE EXCLUSION MAY NOT APPLY TO
+     YOU.
+
+     UNDER NO CIRCUMSTANCES INCLUDING NEGLIGENCE, SHALL
+     LEC, OR ITS DIRECTORS, OFFICERS, EMPLOYEES OR AGENTS, BE
+     LIABLE TO YOU FOR ANY INCIDENTAL, INDIRECT, SPECIAL OR
+     CONSEQUENTIAL DAMAGES (INCLUDING DAMAGES FOR LOSS
+     OF BUSINESS PROFITS, BUSINESS INTERRUPTION, LOSS OF
+     BUSINESS INFORMATION, AND THE LIKE) ARISING OUT OF THE
+     DOWNLOADING, COPYING OR USE OF THE DEMO OR RELATED
+     FILES AND MATERIALS, EVEN IF LEC OR AN LEC AUTHORIZED
+     REPRESENTATIVE HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGES. SOME JURISDICTIONS DO NOT ALLOW THE
+     LIMITATION OR EXCLUSION OF LIABILITY FOR INCIDENTAL OR
+     CONSEQUENTIAL DAMAGES, SO THE ABOVE LIMITATION OR
+     EXCLUSION MAY NOT APPLY TO YOU.

@@ -11,7 +11,7 @@ export default function GameBootOverlay({
   title,
 }) {
   const artwork = useArtworkDelivery();
-  const backdrop = game ? getHeroImageProps(game, artwork) : null;
+  const backdrop = game ? getHeroImageProps(game, artwork, "hero") : null;
 
   return (
     <div

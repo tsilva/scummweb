@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Minimize2 } from "lucide-react";
-import { getArtworkImageProps } from "./artwork-image-props.mjs";
+import { getArtworkImageProps, getArtworkPlaceholderStyle } from "./artwork-image-props.mjs";
 import DecorativeImage from "./decorative-image";
 import { useArtworkDelivery } from "./artwork-delivery";
 
@@ -14,6 +14,7 @@ export default function GameScreenshots({ game }) {
   const thumbnails = useRef([]);
   const viewer = useRef(null);
   const shots = game.screenshots || [];
+  const fullImage = selected === null ? null : getArtworkImageProps(shots[selected], "gallery", artwork);
 
   useEffect(() => {
     if (!strip.current || showThumbnails) return;
@@ -46,10 +47,12 @@ export default function GameScreenshots({ game }) {
     </div>
     <div className="game-screenshot-strip" ref={strip}>
       {shots.map((shot, index) => {
-        const thumbnail = <DecorativeImage {...getArtworkImageProps(shot, "gallery", artwork)}
+        const image = getArtworkImageProps(shot, "gallery", artwork);
+        const thumbnail = <DecorativeImage {...image}
           sizes="(max-width: 48rem) 9rem, calc((min(100vw, 100rem) - 8.5rem) / 3)"
           alt={`${game.displayTitle} screenshot ${index + 1}`} loading="lazy" decoding="async" />;
-        return <button key={shot} type="button" className="game-screenshot-thumb"
+        return <button key={shot} type="button" className="game-screenshot-thumb artwork-placeholder"
+          style={showThumbnails ? undefined : getArtworkPlaceholderStyle(image)}
           ref={(element) => { thumbnails.current[index] = element; }}
           aria-label={`View ${game.displayTitle} screenshot ${index + 1}`}
           aria-expanded={selected === index} aria-controls="game-screenshot-viewer"
@@ -73,7 +76,8 @@ export default function GameScreenshots({ game }) {
           setSelected((selected + (event.key === "ArrowLeft" ? -1 : 1) + shots.length) % shots.length);
         }
       }}>
-      <img src={shots[selected]} alt={`${game.displayTitle} screenshot ${selected + 1}`} />
+      <DecorativeImage src={fullImage.src} width={fullImage.width} height={fullImage.height} placeholder={fullImage.placeholder}
+        alt={`${game.displayTitle} screenshot ${selected + 1}`} loading="eager" />
       <div className="game-screenshot-toolbar">
         <button type="button" aria-label="Previous screenshot" onClick={() => setSelected((selected + shots.length - 1) % shots.length)}><ChevronLeft size={20} /></button>
         <span aria-live="polite">{selected + 1} / {shots.length}</span>

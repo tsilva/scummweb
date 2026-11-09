@@ -65,6 +65,16 @@ scummwebBrowserFsReady.catch(()=>{});
 </script><script>
 const scummwebInlineFrame = window.location.pathname === "srcdoc";
 const scummwebLaunchUrl = new URL(scummwebInlineFrame ? document.baseURI : window.location.href);
+if (window.parent !== window && scummwebLaunchUrl.searchParams.get("hostCompatibilityWarning") === "1" &&
+    !scummwebLaunchUrl.searchParams.has("saveQuery")) {
+  globalThis.__scummwebPostCompatibilityWarning = (message) => {
+    window.parent.postMessage({
+      type: "scummweb:compatibility-warning",
+      href: scummwebLaunchUrl.href,
+      message,
+    }, scummwebLaunchUrl.origin);
+  };
+}
 const agentSaveScope = scummwebLaunchUrl.searchParams.get("agentSaveScope");
 /*__SCUMMWEB_AGENT_CONTROLS__*/
 if (agentSaveScope && /^[a-f0-9]{64}$/.test(agentSaveScope)) installAgentControls(window, agentSaveScope);
@@ -97,12 +107,12 @@ window.ScummvmFSReady = (async () => {
   const moduleUrl = new URL(buildVersionedAssetUrl("./scummvm_fs.js"));
   const { LocalGameFS, ScummvmFS, loadFilesystemIndex } = await import(moduleUrl);
   const isLocalGame = window.parent !== window && params.get("localGame") === "1";
-  const mounts = isLocalGame ? ["data"] : ["games", "data"];
+  const mounts = isLocalGame || params.has("saveQuery") ? ["data"] : ["games", "data"];
   const filesystems = await Promise.all(mounts.map(async (name) => {
     const index = await loadFilesystemIndex(name);
     performance.mark(`scummweb:index:${name}`);
     const filesystem = new ScummvmFS(null, index);
-    const engine = params.get("engine");
+    const engine = params.get("saveEngine") || params.get("engine");
     if (name === "data") {
       // These headers/themes are read by the native GUI before any game frame.
       // Fetch only the translation prefix that startup consumes.
@@ -308,15 +318,32 @@ function setupSkipIntroSaves() {
               return assetResponse.arrayBuffer();
             })
             .then((buffer) => {
-              FS.writeFile(`${savePath}/${trimmedFileName}`, new Uint8Array(buffer));
-              return trimmedFileName;
+              return { fileName: trimmedFileName, bytes: new Uint8Array(buffer) };
             });
         })
-      ).then((seededFiles) => {
+      ).then(async (seededFiles) => {
+        const seeds = seededFiles.filter(Boolean);
+        const writes = [];
+        for (const seed of seeds) {
+          const { fileName, bytes } = seed;
+          const filePath = `${savePath}/${fileName}`;
+          if (!FS.analyzePath(filePath).exists) {
+            writes.push(seed);
+            continue;
+          }
+          const existing = FS.readFile(filePath);
+          if (existing.length === bytes.length && existing.every((byte, index) => byte === bytes[index])) continue;
+          if (await globalThis.__scummwebIsRetiredIntroCheckpoint(skipIntroTarget, fileName, existing)) {
+            writes.push(seed);
+            continue;
+          }
+          throw new Error(`Intro checkpoint conflicts with an existing save: ${fileName}`);
+        }
+        for (const { fileName, bytes } of writes) FS.writeFile(`${savePath}/${fileName}`, bytes);
         globalThis.__scummwebSkipIntroSeedStatus = {
           state: "ready",
           target: skipIntroTarget,
-          files: seededFiles.filter(Boolean),
+          files: seeds.map(({ fileName }) => fileName),
           savePath,
           slot: skipIntroConfig.slot,
         };
@@ -330,6 +357,7 @@ function setupSkipIntroSaves() {
         files: [],
         message: error instanceof Error ? error.message : String(error),
       };
+      throw error;
     });
 }
 
@@ -504,6 +532,15 @@ if(globalThis.__scummwebPendingReadyStatePhase?.state){setReadyStatePhase(global
 const canvas=document.getElementById("canvas");
 const output=document.getElementById("output");
 if(canvas){
+// SDL requests pointer lock without awaiting the browser's optional grant.
+const requestPointerLock = canvas.requestPointerLock;
+if (typeof requestPointerLock === "function") {
+  canvas.requestPointerLock = function (...args) {
+    const request = requestPointerLock.apply(this, args);
+    request?.catch(() => {});
+    return request;
+  };
+}
 /*__SCUMMWEB_CANVAS_FIT__*/
 installCanvasFit(canvas,MutationObserver);
 const visibleCursorClass="scummvm-browser-cursor-visible";

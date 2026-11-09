@@ -3,10 +3,9 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { exitImmersiveMode } from "../game-player/immersive-mode.mjs";
-import { readRemoteGameArchive } from "../game-bucket.mjs";
 import { checkGameSource, isLocalZipSource, localGame, readGameSources, removeGameSources, requestGameSourceAccess, saveGameSources } from "../game-sources.mjs";
 import { findLocalGameSource } from "../local-game-matching.mjs";
-import { maxLocalGameSize, openLocalGameZip, selectGameArchive, validateGameZip } from "../local-game-archive.mjs";
+import { maxLocalGameSize, selectGameArchive, validateGameZip } from "../local-game-selection.mjs";
 import { collectGameImportNodes, fileNode, handleNode, inspectLocalSourceFiles, prepareLocalZip } from "../local-game-import.mjs";
 import LibraryView from "./library-view";
 import { catalogGameEntries, getGameFamilyKey, getVersionSaveNamespace, groupGameVersions, rememberGameVersion } from "../game-versions.mjs";
@@ -361,7 +360,10 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
       game = { ...game, recentGameId: `source:${source.id}`, saveVersionId: legacySaves ? undefined : source.id,
         saveNamespace: legacySaves ? undefined : await getVersionSaveNamespace(source.id), skipIntro: null };
       if (source.url) {
-        selectGameArchive((signal, onProgress) => readRemoteGameArchive(source.url, { signal, onProgress }), game);
+        selectGameArchive(async (signal, onProgress) => {
+          const { readRemoteGameArchive } = await import("../game-bucket.mjs");
+          return readRemoteGameArchive(source.url, { signal, onProgress });
+        }, game);
       } else {
         const data = sessionGames.get(source.id);
         if (!data && !source.handle) {
@@ -372,7 +374,10 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
         try {
           const file = data ?? await source.handle.getFile();
           validateGameZip(file, maxLocalGameSize);
-          selectGameArchive((signal, onProgress) => openLocalGameZip(file, signal, onProgress), game);
+          selectGameArchive(async (signal, onProgress) => {
+            const { openLocalGameZip } = await import("../local-game-archive.mjs");
+            return openLocalGameZip(file, signal, onProgress);
+          }, game);
         } catch (error) {
           const permission = ["NotAllowedError", "SecurityError"].includes(error?.name);
           updateStatus(source, permission ? "permission" : "missing");

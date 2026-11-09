@@ -1,6 +1,6 @@
 {
   "schemaVersion": 4,
-  "recordedOn": "2026-11-08",
+  "recordedOn": "2026-11-09",
   "scope": "Startup verification by edition; warnings and failures describe ScummVM or ScummWEB limitations, excluding problems specific to supplied game files. Not full-game compatibility.",
   "upstreamReference": {
     "version": "2026.4.0",
@@ -129,6 +129,13 @@
       "gameId": "tucker:tucker",
       "edition": "Bud Tucker in Double Trouble (CD DOS).zip",
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
+    },
+    {
+      "title": "Castle Master (Demo)",
+      "status": "startup-verified",
+      "gameId": "freescape:castlemaster",
+      "edition": "castle-dos-demo.zip",
+      "observation": "The DOS demo starts and accepts keyboard input through character selection into the first 3D level."
     },
     {
       "title": "Castle of Dr. Brain",
@@ -411,6 +418,13 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Hugo II: Whodunit? (Demo)",
+      "status": "startup-verified",
+      "gameId": "hugo:hugo2",
+      "edition": "hugo2-dos-2.1-demo-en.zip",
+      "observation": "The English DOS v2.1 shareware release renders its opening screen."
+    },
+    {
       "title": "Hugo III: Jungle of Doom",
       "status": "startup-verified",
       "gameId": "hugo:hugo3",
@@ -418,11 +432,25 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Hugo III: Jungle of Doom (Demo)",
+      "status": "startup-verified",
+      "gameId": "hugo:hugo3",
+      "edition": "hugo3-dos-2.1-demo-en.zip",
+      "observation": "The English DOS v2.1 shareware release renders its opening sequence."
+    },
+    {
       "title": "Hugo's House of Horrors",
       "status": "startup-verified",
       "gameId": "hugo:hugo1",
       "edition": "Hugo's House of Horrors (Floppy DOS).zip",
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
+    },
+    {
+      "title": "Hugo's House of Horrors (Demo)",
+      "status": "startup-verified",
+      "gameId": "hugo:hugo1",
+      "edition": "hugo1-dos-2.1-demo-en.zip",
+      "observation": "The English DOS v2.1 shareware release renders its opening screen."
     },
     {
       "title": "Indiana Jones and the Fate of Atlantis",
@@ -817,6 +845,13 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Quest for Infamy (Demo)",
+      "status": "startup-verified",
+      "gameId": "ags:qfi",
+      "edition": "quest_for_infamy-demo.zip",
+      "observation": "The English Windows Demo 2.0 renders its main menu."
+    },
+    {
       "title": "RAMA",
       "status": "startup-verified",
       "gameId": "sci:rama",
@@ -993,6 +1028,13 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Teen Agent (Demo)",
+      "status": "startup-verified",
+      "gameId": "teenagent:teenagent",
+      "edition": "teen-dos-union-demo-en.zip",
+      "observation": "The English DOS Union shareware demo renders the Metropolis startup screen."
+    },
+    {
       "title": "The 7th Guest",
       "status": "startup-verified",
       "gameId": "groovie:t7g",
@@ -1036,6 +1078,13 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "The Curse of Monkey Island (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:comi",
+      "edition": "comi-win-small-demo-en.zip",
+      "observation": "The small English Windows demo renders the ship’s hold on both first and cached launches. The original web archive omits the intro video and music."
+    },
+    {
       "title": "The Dig",
       "status": "startup-verified",
       "gameId": "scumm:dig",
@@ -1069,6 +1118,13 @@
       "gameId": "pegasus:pegasus",
       "edition": "The Journeyman Project - Pegasus Prime (CD Mac).zip",
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
+    },
+    {
+      "title": "The Journeyman Project: Pegasus Prime (Demo)",
+      "status": "startup-verified",
+      "gameId": "pegasus:pegasus",
+      "edition": "pegasus-mac-demo-en-nonmac-format.zip",
+      "observation": "The Macintosh interactive demo renders its opening screen from the archive’s PP Data folder."
     },
     {
       "title": "The Labyrinth of Time",

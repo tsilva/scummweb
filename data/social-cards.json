@@ -146,6 +146,11 @@
       "inputHash": "e9131502c4f6478daf68e13502ea271c5965be1751051026fda07a58e8522869",
       "imageHash": "849a85bfe4626310bb961101a67ca6675c1c6570ec0662f9dcb662111cbd3ce8"
     },
+    "castle-master-demo": {
+      "file": "castle-master-demo-a86769520fff4f4b4c14f03e255828e6117193ea54e9cf3dcb3e03bb4994ad33.jpg",
+      "inputHash": "a86769520fff4f4b4c14f03e255828e6117193ea54e9cf3dcb3e03bb4994ad33",
+      "imageHash": "7b566049069c5e4ae641442dbc5cb62cf521955abf80c3817af4fcba577a7f99"
+    },
     "castle-of-dr-brain": {
       "file": "castle-of-dr-brain-c375bc0c05179fa36d10ae68ecdced6adaf7b01f6075902ee24d25c05f6e91bc.jpg",
       "inputHash": "c375bc0c05179fa36d10ae68ecdced6adaf7b01f6075902ee24d25c05f6e91bc",
@@ -287,9 +292,9 @@
       "imageHash": "1f119add938c4e61562523ba1d7969f8a79794894965986e5eaefdf87a7bff93"
     },
     "escape-from-monkey-island-demo": {
-      "file": "escape-from-monkey-island-demo-5ed5991f883f021a9bc5864a5cc85580d80ba34e90e73e43254f1efc17ac1685.jpg",
-      "inputHash": "5ed5991f883f021a9bc5864a5cc85580d80ba34e90e73e43254f1efc17ac1685",
-      "imageHash": "9a4ef13a6689042d7390a23d1441c4aefc1e3300ed0ae0d9b804f0d3be4d7f88"
+      "file": "escape-from-monkey-island-demo-e88e7212b730ff3abcd3cd970df67402d366a170ed49405433346abfe42e2f2b.jpg",
+      "inputHash": "e88e7212b730ff3abcd3cd970df67402d366a170ed49405433346abfe42e2f2b",
+      "imageHash": "9e615966ee1e16aadcb1b9689e60be97a97db472b61b75bdded43c2ac6b861f3"
     },
     "eye-of-the-beholder": {
       "file": "eye-of-the-beholder-5aaebfdc618634332fe546d4116375af87b93cbc32e36eca87effb89b36f0510.jpg",
@@ -432,9 +437,9 @@
       "imageHash": "b0217cf3879c18d3af2aa5ad84310968cc09784f05d9bff88e35fd8615448184"
     },
     "grim-fandango-demo": {
-      "file": "grim-fandango-demo-2455f668a0cf8cae947189f61fb9b6093a80370faf7bc79960905ec9958ab74c.jpg",
-      "inputHash": "2455f668a0cf8cae947189f61fb9b6093a80370faf7bc79960905ec9958ab74c",
-      "imageHash": "8370d65e2900b5b4e5cc98b75f771bf9404bb93a3efd8620cbedf3ad5d18f006"
+      "file": "grim-fandango-demo-ddb60a337d56f287f28248a9d0dbf32e30d06c033a1ce6dac6cf013e397f8ff3.jpg",
+      "inputHash": "ddb60a337d56f287f28248a9d0dbf32e30d06c033a1ce6dac6cf013e397f8ff3",
+      "imageHash": "aeebdb86a681702f535dcfd5cb1ac9839bf49d624df2104e725f1be274930688"
     },
     "harlan-ellison-i-have-no-mouth-and-i-must-scream": {
       "file": "harlan-ellison-i-have-no-mouth-and-i-must-scream-5097c2ee06d7cbffca6093b749760494e30d57a9ef83cc1e9b50ee08a5888d4b.jpg",
@@ -496,15 +501,30 @@
       "inputHash": "afbdb7e192adc6e606576f7bcf046f14898366b23e62448327303b9bbdaaf8a7",
       "imageHash": "7328658524e21b4b92a6fa4c964926281d84ee19610cff54f0abf760d2cffbb1"
     },
+    "hugo-ii-whodunit-demo": {
+      "file": "hugo-ii-whodunit-demo-b02933fb6a7dfe8b45d326fb7f3884677180c62290c165b7c2c5230f861051a7.jpg",
+      "inputHash": "b02933fb6a7dfe8b45d326fb7f3884677180c62290c165b7c2c5230f861051a7",
+      "imageHash": "d80786d9bea1cc9366acdf941f1481065460e8d4341fe6410f2e24bc90715af1"
+    },
     "hugo-iii-jungle-of-doom": {
       "file": "hugo-iii-jungle-of-doom-5bf0a3d1d4dfa08970e04d5a8ca1fd2b50fbc75b981e1e49cf738b1806384370.jpg",
       "inputHash": "5bf0a3d1d4dfa08970e04d5a8ca1fd2b50fbc75b981e1e49cf738b1806384370",
       "imageHash": "5bc9ec06b5678621369c871eda1800fd614ede800550da4f5e2757d57e920c5e"
     },
+    "hugo-iii-jungle-of-doom-demo": {
+      "file": "hugo-iii-jungle-of-doom-demo-76d2513e28ad9c435869231a106b2382b52dfe874a98f5fe5d2bfe6e10931ae0.jpg",
+      "inputHash": "76d2513e28ad9c435869231a106b2382b52dfe874a98f5fe5d2bfe6e10931ae0",
+      "imageHash": "11db8633312c6e41bda779df3323f0cbea31d494be9c973b6a6d24d92fdf1ba3"
+    },
     "hugo-s-house-of-horrors": {
       "file": "hugo-s-house-of-horrors-55f8db05b9b68553b246885bf688e80b97914cb264a6fcb6d0fa72210d267882.jpg",
       "inputHash": "55f8db05b9b68553b246885bf688e80b97914cb264a6fcb6d0fa72210d267882",
       "imageHash": "45f6d02cfa0a38846702102f468c6278a8faadeb50a8d06ed0632909ea8493af"
+    },
+    "hugo-s-house-of-horrors-demo": {
+      "file": "hugo-s-house-of-horrors-demo-de282d32a74f83ffdae2a6f515a12a43513507cea181c07081c6d40eff8c287e.jpg",
+      "inputHash": "de282d32a74f83ffdae2a6f515a12a43513507cea181c07081c6d40eff8c287e",
+      "imageHash": "a070328fa08a2fe621e3fb179dc7df98ccb4b45f4f1bfa6c526a4d8e7a3bf23e"
     },
     "inca-ii-wiracocha": {
       "file": "inca-ii-wiracocha-dbf18f84e10182ab4fdab448753699d94bbb15e8115a20b85785ada1e1c13d32.jpg",
@@ -951,6 +971,11 @@
       "inputHash": "4964c1df6faac4a560a27b4702b7977620f79985a4c630cd30554688014d4d3d",
       "imageHash": "3cb61df5752bd62dc4ee3460a32131706fbd21b89a37e50dfb3c249c13ca6c03"
     },
+    "quest-for-infamy-demo": {
+      "file": "quest-for-infamy-demo-469c9d64683de22d944c844bcc25b8bb03345500d61d6aaf6c90e79851b3cc99.jpg",
+      "inputHash": "469c9d64683de22d944c844bcc25b8bb03345500d61d6aaf6c90e79851b3cc99",
+      "imageHash": "b27d81e9436c4ebf35cfdaaf2954534ceffe06e318dd301edf71dc690fe21950"
+    },
     "rama": {
       "file": "rama-7ace1e850c3a829854a780b3b55932a11dd535e6d1fb6b2ebe298efbe7b7294d.jpg",
       "inputHash": "7ace1e850c3a829854a780b3b55932a11dd535e6d1fb6b2ebe298efbe7b7294d",
@@ -1116,6 +1141,11 @@
       "inputHash": "a76b56f60780b68176993b6890ec92b63a1d8614f26b0bf0770ed6dc63ad9377",
       "imageHash": "5941b950e1e23e0f126883fa6490d96b036c4133a882c0ee12cc255448d80f56"
     },
+    "teen-agent-demo": {
+      "file": "teen-agent-demo-74bc3f437e8c48b9ff718258dcb0d324bcb346ab28ccac3fb0650ad88757fab5.jpg",
+      "inputHash": "74bc3f437e8c48b9ff718258dcb0d324bcb346ab28ccac3fb0650ad88757fab5",
+      "imageHash": "95390cde4c709ed171eea193e6b9fdc489558f6345f14bbfa67a65cc3e68d71f"
+    },
     "the-7th-guest": {
       "file": "the-7th-guest-c43b9aab83c71d513334b37563cb92bd86eb5070692f53682183740c90686595.jpg",
       "inputHash": "c43b9aab83c71d513334b37563cb92bd86eb5070692f53682183740c90686595",
@@ -1161,6 +1191,11 @@
       "inputHash": "819151ece0d596be2f67b1893c6c7bca5e299a7dee3132814b2b2fb551eaefe9",
       "imageHash": "e2b9fefe4240ad32f7173c061b957be9a4de3e33900f8917593bc114d3fb8879"
     },
+    "the-curse-of-monkey-island-demo": {
+      "file": "the-curse-of-monkey-island-demo-ae76f8ef39f09b25eac45648dce8496ee5b455cf4559d45174d7c33c37a0ee8b.jpg",
+      "inputHash": "ae76f8ef39f09b25eac45648dce8496ee5b455cf4559d45174d7c33c37a0ee8b",
+      "imageHash": "c7facb810580c92398035b86b943ed4e5cdf73d5162a1931f91ac6dc7ddfa54b"
+    },
     "the-dig": {
       "file": "the-dig-57cd496f311655626035d991192e5c3a23df5b64e6e29dce4e35fcb16ef9b0f5.jpg",
       "inputHash": "57cd496f311655626035d991192e5c3a23df5b64e6e29dce4e35fcb16ef9b0f5",
@@ -1180,6 +1215,11 @@
       "file": "the-journeyman-project-pegasus-prime-5e822ce0bf42ca83ce6e716422333c0334211045c8184113993e91a754ee2c6e.jpg",
       "inputHash": "5e822ce0bf42ca83ce6e716422333c0334211045c8184113993e91a754ee2c6e",
       "imageHash": "59d4180c50b1cc97dd64d8e17fa8a26b66fca61cd767511c6009a652de96a65e"
+    },
+    "the-journeyman-project-pegasus-prime-demo": {
+      "file": "the-journeyman-project-pegasus-prime-demo-3e8cd971f5b96c096aeabdb1f9bfbdba6c7a83b0c3ce6affb8fe78fcb2e19804.jpg",
+      "inputHash": "3e8cd971f5b96c096aeabdb1f9bfbdba6c7a83b0c3ce6affb8fe78fcb2e19804",
+      "imageHash": "932996f9d2072bc2780b164bedcce670658dd6aa6c5ab9bb105ed4eb2f0edee9"
     },
     "the-labyrinth-of-time": {
       "file": "the-labyrinth-of-time-178361be59633388f10f23aa7011fcefb6fba3fc292cbee3f90a36544de4f960.jpg",
@@ -1297,19 +1337,19 @@
       "imageHash": "27bbdb8482f2dcb7226ea0b2753699e23e360bf5bec5e763902e2e441fc034b5"
     },
     "zork-i-the-great-underground-empire": {
-      "file": "zork-i-the-great-underground-empire-93916a33cb5aaeb40cebe01a57274d707c2c2d85ab45de877152a560f1bfc044.jpg",
-      "inputHash": "93916a33cb5aaeb40cebe01a57274d707c2c2d85ab45de877152a560f1bfc044",
-      "imageHash": "55567dba18c780114f15a3d96e47944b99f6f6f7fdc81ceeaeafce1bcd82d0c0"
+      "file": "zork-i-the-great-underground-empire-9163c531ae5fc0837e9ca8c15e8ad932473e62c6821c61b2008d8ee8c92cca91.jpg",
+      "inputHash": "9163c531ae5fc0837e9ca8c15e8ad932473e62c6821c61b2008d8ee8c92cca91",
+      "imageHash": "062dfa93580b885e1055655f44eb447c5318f496464922f0ebf7caee916eaf43"
     },
     "zork-ii-the-wizard-of-frobozz": {
-      "file": "zork-ii-the-wizard-of-frobozz-5a8cb14301699dbcd30d43bd73a98f567bb23e06b62bf49824955507148bf887.jpg",
-      "inputHash": "5a8cb14301699dbcd30d43bd73a98f567bb23e06b62bf49824955507148bf887",
-      "imageHash": "7e55139ececde48e0f122c44b36c70268c5ebebc15b1ec5921a64bfb4f428bcd"
+      "file": "zork-ii-the-wizard-of-frobozz-d45e3f41bf53cc928bd33c6947e7e1c35d56b09e929139b238cc65ad12220ff2.jpg",
+      "inputHash": "d45e3f41bf53cc928bd33c6947e7e1c35d56b09e929139b238cc65ad12220ff2",
+      "imageHash": "fa960faefcd3a6eeec29f5006d1744e1cf991aea8b443870c787961f6bcef8aa"
     },
     "zork-iii-the-dungeon-master": {
-      "file": "zork-iii-the-dungeon-master-e1b847e0de96dbbd0b62551961cf9d58fd90810a2ee8574fc80060db8ee0c9f8.jpg",
-      "inputHash": "e1b847e0de96dbbd0b62551961cf9d58fd90810a2ee8574fc80060db8ee0c9f8",
-      "imageHash": "878286ee08eca7f16b34f05a6ef2bd51658da09f838ca624c898541659640146"
+      "file": "zork-iii-the-dungeon-master-f9c31e0477417f9575c53ca52e8747a5dd44f672c64aee712e8104a79b1a45f4.jpg",
+      "inputHash": "f9c31e0477417f9575c53ca52e8747a5dd44f672c64aee712e8104a79b1a45f4",
+      "imageHash": "6a78f2ba1fdf15330a95d2f374db52fb4b6fdbd3b64bfbf196be54e8b4602854"
     },
     "zork-nemesis-the-forbidden-lands": {
       "file": "zork-nemesis-the-forbidden-lands-1b33f57695624e51eaf461eadfe2f729b04878c7617231f7bebf185af1853199.jpg",

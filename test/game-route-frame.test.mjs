@@ -95,7 +95,8 @@ for (const message of ["This ZIP link returned HTTP 404.", "Could not download t
   });
 }
 
-function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = false, catalog = true, downloadDetails = { loaded: 12_400_000, total: 85_200_000 } } = {}) {
+function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = false, catalog = true,
+  skipIntro, downloadDetails = { loaded: 12_400_000, total: 85_200_000 } } = {}) {
   const archive = Promise.withResolvers();
   const hooks = [];
   const messages = new Set();
@@ -109,6 +110,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   let effects = [];
   let loadCount = 0;
   let confirmations = 0;
+  let bootCompleted = false;
   let eventProcessor;
   const frame = {
     contentDocument: { URL: "about:blank", getElementById: () => null },
@@ -183,7 +185,9 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       } };
       if (name.endsWith("/GamePlayerControls")) return Controls;
       if (name.endsWith("/GameBootOverlay")) return Overlay;
-      if (name.endsWith("/useBootState")) return { useBootState: () => ({ hasBootCompleted: false, hasBootFailed: false }) };
+      if (name.endsWith("/useBootState")) return { useBootState: () => ({
+        hasBootCompleted: bootCompleted, hasBootFailed: false, showSkipIntroButton: Boolean(skipIntro),
+      }) };
       if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({}) };
       if (name.endsWith("/useTouchClickMode")) return { useTouchClickActions: () => ({}) };
       if (name.endsWith("/useTouchCursorPad")) return { useTouchCursorPad: () => ({}) };
@@ -196,6 +200,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   });
   const props = {
     game: { target: "sky", slug: "sky", engineId: "sky" }, target: "sky", src: "/scummvm.html?localGame=1#sky",
+    skipIntro,
     ...(catalog ? { catalogArchiveUrl: "https://example.test/sky.zip" } : { loadArchive: () => archive.promise }),
   };
   function render() {
@@ -216,13 +221,19 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     get children() { return children; },
     get loadCount() { return loadCount; },
     get confirmations() { return confirmations; },
+    get controls() { return children.find(({ type }) => type === Controls).props; },
     get overlay() { return children.find(({ type }) => type === Overlay).props; },
+    setBootCompleted() { bootCompleted = true; render(); },
     ready(origin = window.location.origin, source = frame.contentWindow) {
       for (const handler of [...messages]) handler({ origin, source, data: { type: "scummweb:local-game-ready" } });
     },
     gameReady(href) {
       for (const handler of [...messages]) handler({ origin: window.location.origin, source: frame.contentWindow,
         data: { type: "scummvm-ready", source: "scummweb", target: "sky", href, reason: "rendered-frame-detected" } });
+    },
+    compatibilityWarning(message, { origin = window.location.origin, source = frame.contentWindow, href = frame.contentDocument.URL } = {}) {
+      for (const handler of [...messages]) handler({ origin, source,
+        data: { type: "scummweb:compatibility-warning", href, message } });
     },
     bootError({ origin = window.location.origin, source = frame.contentWindow, ...data } = {}) {
       for (const handler of [...messages]) handler({ origin, source, data: {
@@ -240,6 +251,19 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     unmount() { for (const hook of hooks) hook?.cleanup?.(); },
   };
 }
+
+test("the intro countdown starts only when the skip button can be seen", () => {
+  const player = pendingArchivePlayer({ skipIntro: { strategy: "boot-param", bootParam: 1, durationMinutes: 0.5 } });
+  const countdowns = () => [...player.timers.values()].filter(({ delay }) => delay === 30_000);
+  player.render();
+  assert.equal(player.controls.showSkipIntroAction, false);
+  assert.equal(countdowns().length, 0);
+  player.setBootCompleted();
+  assert.equal(player.controls.showSkipIntroAction, true);
+  assert.equal(countdowns().length, 1);
+  player.unmount();
+  assert.equal(countdowns().length, 0);
+});
 
 test("only reports the first recognized startup error from the current player frame", () => {
   const player = pendingArchivePlayer();
@@ -297,6 +321,27 @@ test("the play route forwards telemetry only for the opted-in game frame", () =>
   }
 });
 
+test("catalog and imported launches retain distinct compatibility warnings from the active frame", () => {
+  for (const catalog of [true, false]) {
+    const player = pendingArchivePlayer({ catalog });
+    player.render();
+    assert.equal(new URL(player.frame.contentDocument.URL).searchParams.get("hostCompatibilityWarning"), "1");
+    assert.equal(player.controls.compatibilityWarnings.length, 0);
+    player.compatibilityWarning("Other origin", { origin: "https://untrusted.test" });
+    player.compatibilityWarning("Other frame", { source: {} });
+    player.compatibilityWarning("Previous launch", { href: "/scummvm.html#old" });
+    player.compatibilityWarning(" ");
+    player.compatibilityWarning("Testing edition");
+    player.compatibilityWarning("Testing edition");
+    player.compatibilityWarning("Experimental add-on");
+    player.render();
+    assert.deepEqual([...player.controls.compatibilityWarnings], ["Testing edition", "Experimental add-on"]);
+    assert.equal(player.overlay.hasBootFailed, false);
+    assert.equal(player.reports.length, 0);
+    player.unmount();
+  }
+});
+
 test("save-lock contention explains recovery and rejects messages from unrelated frames", () => {
   const player = pendingArchivePlayer();
   player.render();
@@ -322,7 +367,7 @@ test("a slow archive keeps the fallback frame identity through the first-frame m
   await new Promise(setImmediate);
   player.render();
   assert.equal(player.deliveries.length, 1);
-  player.gameReady("/scummvm.html?localGame=1&launchRetry=inline#sky");
+  player.gameReady("/scummvm.html?localGame=1&hostCompatibilityWarning=1&launchRetry=inline#sky");
   assert.equal(player.confirmations, 1, "the parent accepts the actual fallback frame's ready message");
   player.unmount();
 });

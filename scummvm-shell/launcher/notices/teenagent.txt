@@ -1,0 +1,176 @@
+
+		ีออออออออออออออออออออออออออออออออออออออออธ
+		ณ       Metropolis Software House        ณ
+		ณ          LICENSING AGREEMENT           ณ
+		ิออออออออออออออออออออออออออออออออออออออออพ
+
+
+This file, LICENSE.DOC, describes the only terms by which Metropolis Software
+House ("Metropolis") permits other parties to distribute this program, the
+shareware version of TEENAGENT (the "Software"), throughout the world.
+
+Contents:
+	I. GENERAL TERMS.
+		1. Distribution by electronic means;
+		2. Distribution of single programs by floppy disk;
+		3. CD-Roms and multi-disk packs;
+		4. Any distribution in a retail environment;
+		5. Bundling with hardware;
+		6. Other distribution opportunities;
+		7. Violation of the agreement;
+	II. OTHER TERMS AND CONDITIONS.
+	III. THANKS.
+
+
+
+ีอออออออออออออออออออธ
+ณ I. GENERAL TERMS. ณ
+ิอออออออออออออออออออพ
+
+ณ 1. Distribution by electronic means: ณ
+ิออออออออออออออออออออออออออออออออออออออพ
+
+
+Metropolis grants you the right to distribute the Software by electronic means
+(BBS, FTP, etc.) as long as no files are altered or removed. If a distribution
+fee is charged for the Software, you must additionally ensure that:
+
+a) Metropolis Software House is credited as the publisher of the Software;
+b) The Software is identified as shareware;
+c) The shareware concept is explained adequately elsewhere online;
+d) You charge less than $10 for downloading the Software.
+
+
+ณ 2. Distribution of single programs by floppy disk: ณ
+ิออออออออออออออออออออออออออออออออออออออออออออออออออออพ
+
+Shareware vendors may distribute the Software alone on a floppy disk if the
+following conditions are met:
+
+a) You explain the shareware concept and describe the Software as shareware.
+   (Shareware is "try-before-you-buy" software, and the price paid by users
+   for shareware is a distribution charge only);
+b) You credit Metropolis Software House as the publisher of the Software in
+   all catalogue descriptions and any other written descriptions;
+c) You sell the Software for less that $10, and only sell the most current
+   version of it;
+d) If you want, you may include your own installation routines with the
+   Software;
+e) Other than installation routines, no other programs may be included on
+   the floppy disk that contains the Software, i.e. no bundling or multi-
+   program diskettes;
+f) No files are modified or deleted.
+
+
+ณ 3. CD-Roms and multi-disk packs: ณ
+ิออออออออออออออออออออออออออออออออออพ
+
+You may commercially distribute the Software on a CD-Rom or a pack of several
+disks (through mail-order, wholesale, retail, or any other channels), as long
+as following conditions are met:
+
+a) You explain the shareware concept and describe the Software as shareware;
+b) You credit Metropolis Software House as the publisher of the Software in
+   all catalogues and the Software descriptions;
+c) The entire CD-Rom or collection may contain no more than a total of 20
+   programs (not including installation routines and support utilities);
+d) The front-cover packaging must contain the word "Shareware" in large type;
+e) The name "Metropolis", as well as the name of the Software must appear on
+   the front-cover packaging in large type;
+f) No files may be modified or deleted;
+g) You must send us a copy of the CD-Rom or the multi-disk package as soon as
+   it has been manufactured.
+
+Reasons for these conditions are that we do not think 10,000-program CD is
+neither good for Metropolis nor users. You can achieve good sales manufacturing
+small, high-quality CD-Rom; it will also help assure that our Software receives
+the exposure it deserves.
+
+
+ณ 4. Any distribution in a retail environment: ณ
+ิออออออออออออออออออออออออออออออออออออออออออออออพ
+
+Any party wishing to sell Epic MegaGames products in a retail environment must
+meet all of the above conditions that apply, in addition to the following:
+
+a) The following must be included in large type on the front cover of all
+   packaging:  The name "Metropolis Software House", the name of the Software,
+   and the word "Shareware";
+b) You must send us a copy of your packaging as soon as the packaging has been
+   manufactured.
+
+
+ณ 5. Bundling with hardware: ณ
+ิออออออออออออออออออออออออออออพ
+
+You may bundle the Software with new hardware (computers, sound cards, etc.)
+as long as you do not modify or delete any Software files, and as long as you
+provide the shareware programs free of charge (i.e. at no additional cost) to
+the user when the hardware is purchased.
+
+If you'd like more information about OEM and hardware bundling opportunities,
+please contact us. We would welcome the opportunity to work with hardware
+manufacturers and resellers.
+
+
+ณ 6. Other distribution opportunities: ณ
+ิออออออออออออออออออออออออออออออออออออออพ
+
+Please contact us if you would like to distribute Metropolis software in a new
+and unique way.  We are open to suggestions, and we appreciate new and unique
+forms of distribution as a way of reaching new customers.
+
+
+ณ 7. Violation of the agreement: ณ
+ิออออออออออออออออออออออออออออออออพ
+
+You may distribute the Software in other ways than those described in this
+agreement only with express, written permissiom given by Metropolis.
+
+If you distribute the Software in violation of the terms of this agreement,
+you are liable to Metropolis for damages of not less than $1 per copy
+distributed or the registration fee, whichever is greater.
+
+
+
+ีอออออออออออออออออออออออออออออออออธ
+ณ II. OTHER TERMS AND CONDITIONS: ณ
+ิอออออออออออออออออออออออออออออออออพ
+
+a) Ownership: Metropolis has and reserve the exclusive copyright and all other
+   rights, title and interest to distribute the Software;
+b) Current version: All previous versions of the Software have been withdrawn
+   from shareware. This version replaces any previous versions;
+c) Your right to distribute under this license is personal, and does not
+   include any right to sublicense the Software;
+d) THE SOFTWARE IS PROVIDED "AS-IS". NO WARRANTIES OF ANY KIND, EXPRESS OR
+   IMPLIED, ARE MADE AS TO IT OR ANY MEDIUM IT MAY BE ON. WE WILL PROVIDE NO
+   REMEDY FOR INDIRECT, CONSEQUENTIAL, PUNITIVE OR INCIDENTAL DAMAGES ARISING
+   FROM IT, INCLUDING SUCH FROM NEGLIGENCE, STRICT LIABILITY, OR BREACH OF
+   WARRANTY OR CONTRACT, EVEN AFTER NOTICE OF THE POSSIBILITY OF SUCH DAMAGES;
+e) Term: This License may be terminated by Metropolis by giving a 30 day
+   advance written notice;
+f) With respect to every matter arising under this License, you consent to the
+   exclusive jurisdiction and venue of Polish courts, and to service by
+   certified mail, return receipt requested, or as otherwise permitted by law.
+
+
+ีออออออออออออออธ
+ณ III. THANKS: ณ
+ิออออออออออออออพ
+   We thank you for distributing the Software in accordance with the terms of
+   this agreement.
+
+
+Metropolis Software House can be contacted at:
+
+			      ีออออออออออออออออออออออออออออออออธ
+			      ณ	Metropolis Software House s.c. ณ
+			      ณ	ul.M.Sklodowskiej-Curie 92     ณ
+			      ณ	59-300 Lubin                   ณ
+			      ณ	POLAND                         ณ
+			      ณ                                ณ
+			      ณ	tel: +48 76 478-581            ณ
+			      ณ	fax: +48 76 478-582            ณ
+			      ณ	e-mail: mpolis@maloka.waw.pl   ณ
+			      ิออออออออออออออออออออออออออออออออพ

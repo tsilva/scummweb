@@ -1,0 +1,35 @@
+diff --git a/engines/saga/music.cpp b/engines/saga/music.cpp
+--- a/engines/saga/music.cpp
++++ b/engines/saga/music.cpp
+@@ -20,6 +20,8 @@
+  */
+ 
+ // MIDI and digital music class
++
++#include "engines/scummweb-startup.h"
+ 
+ #include "saga/saga.h"
+ 
+@@ -93,13 +95,15 @@
+ 					// case where the user has a physical version of the game,
+ 					// but has forgotten to copy the instrument definition
+ 					// files. So we show a warning that these files are missing.
+-					GUI::MessageDialog dialog(
+-						Common::U32String::format(
+-							_("Could not find AdLib instrument definition files\n"
+-							  "%s and %s. Without these files,\n"
+-							  "the music will not sound the same as the original game."),
+-							opl2InstDefFilename, opl3InstDefFilename));
+-					dialog.runModal();
++					const Common::U32String message = Common::U32String::format(
++						_("Could not find AdLib instrument definition files\n"
++						  "%s and %s. Without these files,\n"
++						  "the music will not sound the same as the original game."),
++						opl2InstDefFilename, opl3InstDefFilename);
++					if (!ScummWebStartup::deferCompatibilityWarning(message)) {
++						GUI::MessageDialog dialog(message);
++						dialog.runModal();
++					}
+ 
+ 					OPL::Config::OplType oplType =
+ 						MidiDriver_ADLIB_Multisource::detectOplType(OPL::Config::kOpl3) ? OPL::Config::kOpl3 : OPL::Config::kOpl2;

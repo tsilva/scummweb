@@ -74,7 +74,8 @@ test('engine launch reports identity and the SCUMM provider replaces its baselin
 
 test('the shared query sampler publishes whole snapshots with bounded typed banks', () => {
   const patch = readFileSync(new URL('../patches/scummvm/19-query-engine-game-state.patch', import.meta.url), 'utf8');
-  const [begin, commit, variable, bank] = [...patch.matchAll(/^\+(\t+).*?EM_ASM(?:_INT)?\(\{\n((?:^\+.*\n)+?)^\+\1\}[,)];?/gm)]
+  const sampler = patch.split('+++ b/engines/scummweb-telemetry.h\n')[1].split('\ndiff --git ')[0];
+  const [begin, commit, variable, bank] = [...sampler.matchAll(/^\+(\t+).*?EM_ASM(?:_INT)?\(\{\n((?:^\+.*\n)+?)^\+\1\}[,)];?/gm)]
     .map(([, , body]) => new vm.Script(`(function(){${body.replace(/^\+/gm, '')}})()`));
   const heap = new ArrayBuffer(20_000);
   let tick = 0;

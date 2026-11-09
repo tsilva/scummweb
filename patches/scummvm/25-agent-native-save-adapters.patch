@@ -1,0 +1,323 @@
+diff --git a/engines/composer/saveload.cpp b/engines/composer/saveload.cpp
+--- a/engines/composer/saveload.cpp
++++ b/engines/composer/saveload.cpp
+@@ -420,6 +420,8 @@
+ 		ser.syncAsSint16LE(audioBuffer[i]);
+ 
+ 	out->finalize();
+-	return Common::kNoError;
++	const bool failed = out->err();
++	delete out;
++	return failed ? Common::kWritingFailed : Common::kNoError;
+ }
+ } // End of namespace Composer
+diff --git a/engines/agos/agos.h b/engines/agos/agos.h
+--- a/engines/agos/agos.h
++++ b/engines/agos/agos.h
+@@ -262,6 +262,14 @@
+ 	}
+ 
+ 	bool hasFeature(EngineFeature f) const override;
++#ifdef __EMSCRIPTEN__
++	bool canSaveGameStateCurrently(Common::U32String *msg = nullptr) override;
++	bool canLoadGameStateCurrently(Common::U32String *msg = nullptr) override;
++	Common::Error saveGameState(int slot, const Common::String &desc, bool isAutosave = false) override;
++	Common::Error loadGameState(int slot) override;
++	Common::String getSaveStateName(int slot) const override { return genSaveName(slot); }
++	bool _scummWebAgentIdle = false;
++#endif
+ 	void syncSoundSettings() override;
+ 	// Applies AGOS engine internal sound settings to ConfigManager, digital
+ 	// sound channels and MIDI.
+@@ -1411,6 +1419,7 @@
+ 	void clsCheck(WindowBlock *window);
+ 
+ 	virtual void quickLoadOrSave();
++	bool quickRestoreGame(int slot);
+ 
+ 	byte *vc10_uncompressFlip(const byte *src, uint16 w, uint16 h);
+ 	byte *vc10_flip(const byte *src, uint16 w, uint16 h);
+diff --git a/engines/agos/metaengine.cpp b/engines/agos/metaengine.cpp
+--- a/engines/agos/metaengine.cpp
++++ b/engines/agos/metaengine.cpp
+@@ -19,6 +19,9 @@
+  *
+  */
+ 
++#ifdef __EMSCRIPTEN__
++#include <emscripten/emscripten.h>
++#endif
+ #include "common/config-manager.h"
+ #include "common/savefile.h"
+ #include "common/system.h"
+@@ -62,6 +65,13 @@
+ }
+ 
+ bool AGOS::AGOSEngine::hasFeature(EngineFeature f) const {
++#ifdef __EMSCRIPTEN__
++	if (f == kSupportsLoadingDuringRuntime || f == kSupportsSavingDuringRuntime) {
++		const bool quickSaves = getGameType() >= GType_ELVIRA1 && getGameType() <= GType_SIMON2;
++		return quickSaves && !(getFeatures() & GF_DEMO) &&
++			EM_ASM_INT({ return Boolean(globalThis.__scummwebAgentFrameBoundary); });
++	}
++#endif
+ 	return
+ 		(f == kSupportsReturnToLauncher);
+ }
+diff --git a/engines/agos/input.cpp b/engines/agos/input.cpp
+--- a/engines/agos/input.cpp
++++ b/engines/agos/input.cpp
+@@ -222,7 +222,13 @@
+ 				if (_lastHitArea3 || _dragMode)
+ 					break;
+ 				hitarea_stuff_helper();
++#ifdef __EMSCRIPTEN__
++				_scummWebAgentIdle = true;
++#endif
+ 				delay(100);
++#ifdef __EMSCRIPTEN__
++				_scummWebAgentIdle = false;
++#endif
+ 			}
+ 		}
+ 
+diff --git a/engines/agos/saveload.cpp b/engines/agos/saveload.cpp
+--- a/engines/agos/saveload.cpp
++++ b/engines/agos/saveload.cpp
+@@ -154,41 +154,9 @@
+ 
+ 	Common::String filename = genSaveName(_saveLoadSlot);
+ 	if (_saveLoadType == 2) {
+-		Subroutine *sub;
+-		success = loadGame(genSaveName(_saveLoadSlot));
+-		if (!success) {
++		success = quickRestoreGame(_saveLoadSlot);
++		if (!success)
+ 			buf = Common::U32String::format(_("Failed to load saved game from file:\n\n%s"), filename.c_str());
+-		} else if (getGameType() == GType_SIMON1 || getGameType() == GType_SIMON2) {
+-			drawIconArray(2, me(), 0, 0);
+-			setBitFlag(97, true);
+-			sub = getSubroutineByID(100);
+-			startSubroutine(sub);
+-		} else if (getGameType() == GType_WW) {
+-			sub = getSubroutineByID(66);
+-			startSubroutine(sub);
+-		} else if (getGameType() == GType_ELVIRA2) {
+-			sub = getSubroutineByID(87);
+-			startSubroutine(sub);
+-			setBitFlag(7, false);
+-			sub = getSubroutineByID(19);
+-			startSubroutine(sub);
+-			printStats();
+-			sub = getSubroutineByID(28);
+-			startSubroutine(sub);
+-			setBitFlag(17, false);
+-			sub = getSubroutineByID(207);
+-			startSubroutine(sub);
+-			sub = getSubroutineByID(71);
+-			startSubroutine(sub);
+-		} else if (getGameType() == GType_ELVIRA1) {
+-			drawIconArray(2, me(), 0, 0);
+-			sub = getSubroutineByID(265);
+-			startSubroutine(sub);
+-			sub = getSubroutineByID(129);
+-			startSubroutine(sub);
+-			sub = getSubroutineByID(131);
+-			startSubroutine(sub);
+-		}
+ 	} else {
+ 		success = saveGame(_saveLoadSlot, _saveLoadName);
+ 		if (!success)
+@@ -208,6 +176,70 @@
+ 
+ 	_saveLoadType = 0;
+ }
++
++bool AGOSEngine::quickRestoreGame(int slot) {
++	if (!loadGame(genSaveName(slot)))
++		return false;
++	Subroutine *sub;
++	if (getGameType() == GType_SIMON1 || getGameType() == GType_SIMON2) {
++		drawIconArray(2, me(), 0, 0);
++		setBitFlag(97, true);
++		sub = getSubroutineByID(100);
++		startSubroutine(sub);
++	} else if (getGameType() == GType_WW) {
++		sub = getSubroutineByID(66);
++		startSubroutine(sub);
++	} else if (getGameType() == GType_ELVIRA2) {
++		sub = getSubroutineByID(87);
++		startSubroutine(sub);
++		setBitFlag(7, false);
++		sub = getSubroutineByID(19);
++		startSubroutine(sub);
++		printStats();
++		sub = getSubroutineByID(28);
++		startSubroutine(sub);
++		setBitFlag(17, false);
++		sub = getSubroutineByID(207);
++		startSubroutine(sub);
++		sub = getSubroutineByID(71);
++		startSubroutine(sub);
++	} else if (getGameType() == GType_ELVIRA1) {
++		drawIconArray(2, me(), 0, 0);
++		sub = getSubroutineByID(265);
++		startSubroutine(sub);
++		sub = getSubroutineByID(129);
++		startSubroutine(sub);
++		sub = getSubroutineByID(131);
++		startSubroutine(sub);
++	}
++	return true;
++}
++
++#ifdef __EMSCRIPTEN__
++bool AGOSEngine::canSaveGameStateCurrently(Common::U32String *) {
++	const bool simon = getGameType() == GType_SIMON1 || getGameType() == GType_SIMON2;
++	return _scummWebAgentIdle && !_videoLockOut && !_mouseHideCount && !_showPreposition && !_dragMode &&
++		!(getGameType() == GType_SIMON2 && _boxStarHeight == 200) && !(simon && getBitFlag(11));
++}
++
++bool AGOSEngine::canLoadGameStateCurrently(Common::U32String *msg) {
++	return canSaveGameStateCurrently(msg);
++}
++
++Common::Error AGOSEngine::saveGameState(int slot, const Common::String &desc, bool isAutosave) {
++	if (isAutosave || !hasFeature(kSupportsSavingDuringRuntime) || !canSaveGameStateCurrently())
++		return Common::kWritingFailed;
++	char caption[108] = {};
++	Common::strlcpy(caption, desc.c_str(), sizeof(caption));
++	return saveGame(slot, caption) ? Common::kNoError : Common::kWritingFailed;
++}
++
++Common::Error AGOSEngine::loadGameState(int slot) {
++	if (!hasFeature(kSupportsLoadingDuringRuntime) || !canLoadGameStateCurrently())
++		return Common::kReadingFailed;
++	return quickRestoreGame(slot) ? Common::kNoError : Common::kReadingFailed;
++}
++#endif
+ 
+ bool AGOSEngine_Waxworks::confirmOverWrite(WindowBlock *window) {
+ 	Subroutine *sub = getSubroutineByID(80);
+diff --git a/engines/plumbers/plumbers.h b/engines/plumbers/plumbers.h
+--- a/engines/plumbers/plumbers.h
++++ b/engines/plumbers/plumbers.h
+@@ -81,6 +81,15 @@
+ 
+ 	Common::Error run() override;
+ 
++#ifdef __EMSCRIPTEN__
++	bool hasFeature(EngineFeature feature) const override;
++	bool canSaveGameStateCurrently(Common::U32String *msg = nullptr) override;
++	bool canLoadGameStateCurrently(Common::U32String *msg = nullptr) override;
++	bool canSaveAutosaveCurrently() override { return false; }
++	Common::Error saveGameStream(Common::WriteStream *stream, bool isAutosave = false) override;
++	Common::Error loadGameStream(Common::SeekableReadStream *stream) override;
++#endif
++
+ 	// Detection related functions
+ 	const ADGameDescription *_gameDescription;
+ 	const char *getGameId() const;
+@@ -123,6 +132,9 @@
+ 	bool _leftButtonDownFl;
+ 	bool _endGameFl;
+ 	bool _timerInstalled;
++#ifdef __EMSCRIPTEN__
++	bool _scummWebDecisionBoundary = false;
++#endif
+ 	int	 _curSceneIdx, _prvSceneIdx;
+ 	int	 _curBitmapIdx;
+ 	int	 _curChoice;
+diff --git a/engines/plumbers/plumbers.cpp b/engines/plumbers/plumbers.cpp
+--- a/engines/plumbers/plumbers.cpp
++++ b/engines/plumbers/plumbers.cpp
+@@ -45,6 +45,8 @@
+ #include "graphics/scaler/downscaler.h"
+ #include "graphics/surface.h"
+ 
++#include "common/stream.h"
++
+ namespace Plumbers {
+ 
+ PlumbersGame::PlumbersGame(OSystem *syst, const ADGameDescription *gameDesc) :
+@@ -210,7 +212,13 @@
+ 			}
+ 		}
+ 
++#ifdef __EMSCRIPTEN__
++		_scummWebDecisionBoundary = _leftButtonDownFl && !_videoDecoder && !_timerInstalled && _actions.empty();
++#endif
+ 		g_system->updateScreen();
++#ifdef __EMSCRIPTEN__
++		_scummWebDecisionBoundary = false;
++#endif
+ 		g_system->delayMillis(_videoDecoder ? (1000 / 60) : 10);
+ 	}
+ 
+@@ -219,6 +227,51 @@
+ 
+ 	return Common::kNoError;
+ }
++
++#ifdef __EMSCRIPTEN__
++bool PlumbersGame::hasFeature(EngineFeature feature) const {
++	return feature == kSupportsLoadingDuringRuntime || feature == kSupportsSavingDuringRuntime;
++}
++
++bool PlumbersGame::canSaveGameStateCurrently(Common::U32String *) {
++	return _scummWebDecisionBoundary;
++}
++
++bool PlumbersGame::canLoadGameStateCurrently(Common::U32String *) {
++	return _scummWebDecisionBoundary;
++}
++
++Common::Error PlumbersGame::saveGameStream(Common::WriteStream *stream, bool isAutosave) {
++	if (isAutosave || !canSaveGameStateCurrently())
++		return Common::kWritingFailed;
++	stream->writeUint32BE(MKTAG('P', 'L', 'M', '1'));
++	stream->writeUint16LE(_curSceneIdx);
++	stream->writeUint16LE(_prvSceneIdx);
++	stream->writeSint32LE(_totScore);
++	return stream->err() ? Common::kWritingFailed : Common::kNoError;
++}
++
++Common::Error PlumbersGame::loadGameStream(Common::SeekableReadStream *stream) {
++	if (!canLoadGameStateCurrently() || stream->size() < 12 || stream->readUint32BE() != MKTAG('P', 'L', 'M', '1'))
++		return Common::kReadingFailed;
++	const int scene = stream->readUint16LE();
++	const int previous = stream->readUint16LE();
++	const int32 score = stream->readSint32LE();
++	if (stream->err() || scene >= _totScene || previous >= _totScene ||
++			_scenes[scene]._decisionChoices <= 1 || _scenes[scene]._style == Scene::STYLE_VIDEO)
++		return Common::kReadingFailed;
++
++	stopSound();
++	_curSceneIdx = scene;
++	_prvSceneIdx = previous;
++	_totScore = score;
++	_curChoice = 0;
++	_curBitmapIdx = _scenes[scene]._startBitmap + _scenes[scene]._bitmapNum;
++	postSceneBitmaps();
++	_actions.push(Redraw);
++	return Common::kNoError;
++}
++#endif
+ 
+ void PlumbersGame::loadImage(const Common::String &name) {
+ 	debugC(1, kDebugGeneral, "%s : %s", __FUNCTION__, name.c_str());
+diff --git a/engines/plumbers/metaengine.cpp b/engines/plumbers/metaengine.cpp
+--- a/engines/plumbers/metaengine.cpp
++++ b/engines/plumbers/metaengine.cpp
+@@ -51,7 +51,11 @@
+ }
+ 
+ bool PlumbersMetaEngine::hasFeature(MetaEngineFeature f) const {
++#ifdef __EMSCRIPTEN__
++	return f == kSupportsListSaves || f == kSimpleSavesNames || f == kSavesUseExtendedFormat;
++#else
+ 	return false;
++#endif
+ }
+ 
+ #if PLUGIN_ENABLED_DYNAMIC(PLUMBERS)

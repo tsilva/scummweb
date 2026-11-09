@@ -144,6 +144,39 @@ test("unindexed imported saves use one native query with origin, source and nonc
   assert.equal(queryUrl.searchParams.get("saveEngine"), "scumm");
 });
 
+test("an old empty AGS index is reconciled even when the save files have not changed", async (t) => {
+  const game = { target: "qfi-demo", gameId: "qfi", engineId: "ags", extra: "Demo 2.0" };
+  useStorage(t, makeBrowserStorage([["qfi-demo.001", "player", 123]]));
+  const { files } = await readBrowserSaveFiles(game);
+  const key = saveIndexKey("", game.target);
+  const old = { schemaVersion: 1, ...game, supported: true, saves: [], revision: saveRevision(files) };
+  window.localStorage.setItem(key, JSON.stringify(old));
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, "document");
+  t.after(() => { if (descriptor) Object.defineProperty(globalThis, "document", descriptor); else delete globalThis.document; });
+  const listeners = new Set();
+  Object.assign(window, { location: { href: "https://example.test/", origin: "https://example.test" },
+    setTimeout, clearTimeout, addEventListener: (_, fn) => listeners.add(fn), removeEventListener: (_, fn) => listeners.delete(fn) });
+  let appended = 0;
+  const frame = { contentWindow: {}, setAttribute() {}, remove() {} };
+  globalThis.document = {
+    createElement: () => frame,
+    body: { appendChild() {
+      appended++;
+      const index = { ...old, saves: [{ ...files[0], slot: 1 }] };
+      window.localStorage.setItem(key, JSON.stringify(index));
+      const data = { ...index, type: "scummweb:saves-listed", persisted: true,
+        query: new URL(frame.src).searchParams.get("saveQuery") };
+      queueMicrotask(() => {
+        for (const receive of [...listeners]) receive({ origin: window.location.origin, source: frame.contentWindow, data });
+      });
+    } },
+  };
+  assert.equal(await getLatestBrowserSave(game, "new-runtime"), 1);
+  assert.equal(JSON.parse(window.localStorage.getItem(key)).checkedByRuntime, "new-runtime");
+  assert.equal(await getLatestBrowserSave(game, "new-runtime"), 1);
+  assert.equal(appended, 1);
+});
+
 test("cache reads are synchronous and never create a runtime, including missing/corrupt storage", async (t) => {
   const game = { target: "sky", engineId: "sky", gameId: "sky" };
   useStorage(t, makeBrowserStorage([["SKY-VM.001", "player", 20]]));

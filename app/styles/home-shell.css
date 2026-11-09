@@ -171,12 +171,9 @@ button.nav-icon-link {
 }
 
 .hero-carousel-controls {
-  position: absolute;
-  inset-inline-end: max(1.5rem, env(safe-area-inset-right));
-  inset-block-end: 1.5rem;
-  z-index: 2;
   display: flex;
   align-items: center;
+  margin-inline-start: auto;
   gap: 0.5rem;
   color: var(--ink);
 }
@@ -280,13 +277,24 @@ button.nav-icon-link {
   background: linear-gradient(180deg, rgba(7, 12, 10, 0.08), rgba(7, 12, 10, 0.42));
 }
 
+.artwork-placeholder:not([data-artwork-loaded]) {
+  background-image: var(--artwork-placeholder);
+  background-size: var(--artwork-fit, contain);
+  background-position: var(--artwork-position, center);
+  background-repeat: no-repeat;
+  background-origin: content-box;
+  background-clip: content-box;
+}
+
 .hero-backdrop-image {
+  --artwork-fit: cover;
+  --artwork-position: var(--hero-image-position, center 38%);
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center 38%;
+  object-fit: var(--artwork-fit);
+  object-position: var(--artwork-position);
   filter: brightness(1.28) contrast(1.06) saturate(1.08);
   transform: scale(1.03);
   pointer-events: none;
@@ -740,11 +748,12 @@ button.nav-icon-link {
 }
 
 .landscape-card-image {
+  --artwork-fit: cover;
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: var(--artwork-fit);
   filter: grayscale(1) brightness(0.94) contrast(1.02) saturate(0.82);
   transition:
     filter 320ms ease,
@@ -912,11 +921,12 @@ button.nav-icon-link {
 }
 
 .poster-media-image {
+  --artwork-fit: cover;
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: var(--artwork-fit);
   transform: scale(1.04);
   transform-origin: center;
   filter: grayscale(1) brightness(0.94) contrast(1.02) saturate(0.82);
@@ -1436,7 +1446,7 @@ button.nav-icon-link {
   }
 }
 
-/* The game always fills the first viewport; screenshots begin after it. */
+/* Fill the first viewport, growing only when the content needs more room. */
 .game-showcase {
   display: flex;
   flex-direction: column;
@@ -1446,28 +1456,50 @@ button.nav-icon-link {
 .hero-stage.hero-stage-library {
   --hero-action-height: 3.4rem;
   --hero-version-height: 2.75rem;
+  --hero-gutter: 3.25rem;
   display: flex;
   flex-direction: column;
   flex: none;
-  min-height: max(100svh, 46rem);
+  min-height: 100svh;
+}
+
+.hero-stage-library :is(.hero-inner, .hero-footer) {
+  width: 100%;
+  max-width: 100rem;
+  margin-inline: auto;
+  padding-inline: max(var(--hero-gutter), env(safe-area-inset-left))
+    max(var(--hero-gutter), env(safe-area-inset-right));
 }
 
 .hero-stage-library .hero-inner {
-  display: grid;
-  grid-template-rows: minmax(min-content, 1fr) auto;
-  flex: 1;
-  min-height: 0;
-  width: 100%;
-  max-width: 100rem;
-  padding: 7rem 3.25rem clamp(9rem, 16svh, 11rem);
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  padding-block: 5.5rem 0;
+}
+
+/* Give the artwork some of the spare height, after the content has fit. */
+.hero-stage-library .hero-inner::after {
+  content: "";
+  flex: 0.25 0 0.75rem;
+  max-height: 5rem;
+}
+
+.hero-footer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  padding-bottom: max(clamp(0.75rem, 3svh, 2rem), env(safe-area-inset-bottom));
 }
 
 .hero-stage-library .hero-copy {
   min-height: 0;
   width: min(43vw, 40rem);
   max-width: 100%;
-  align-self: center;
-  transform: translateY(-1.5rem);
+  margin-block: auto;
 }
 
 .hero-stage-library .hero-copy h1 {
@@ -1475,7 +1507,7 @@ button.nav-icon-link {
   align-items: center;
   height: 1.5em;
   margin-top: 0.75rem;
-  font-size: clamp(3.5rem, 8.4vw, 6rem);
+  font-size: clamp(3.5rem, min(8.4vw, 12svh), 6rem);
   font-family: var(--font-body), sans-serif;
   font-weight: 800;
 }
@@ -1506,24 +1538,33 @@ button.nav-icon-link {
   margin-top: 2rem;
 }
 
-/* Keep the hero copy below the fixed header on short landscape viewports. */
+/* On short screens, give the space reserved for copy and actions back to the hero. */
 @media (min-width: 48.001rem) and (max-height: 50rem) {
-  .hero-stage-library .hero-inner {
-    padding-top: 5.5rem;
-  }
-
-  .hero-stage-library .hero-copy {
-    transform: none;
-  }
-
   .hero-stage-library .hero-launch {
-    margin-top: 1rem;
+    margin-top: clamp(0.5rem, 2svh, 1rem);
+  }
+
+  .hero-stage-library .hero-summary {
+    height: auto;
+    margin-top: 0.75rem;
+  }
+
+  .hero-stage-library .hero-facts {
+    height: auto;
+    max-height: 3.75rem;
+    margin-top: 0.75rem;
   }
 }
 
-@media (min-width: 48.001rem) and (max-width: 900px) and (max-height: 50rem) {
+@media (min-width: 48.001rem) and (max-width: 900px) {
   .hero-stage-library .hero-inner {
     padding-top: 7rem;
+  }
+}
+
+@media (max-height: 50rem) {
+  .hero-actions > :is(.hero-version-control, .hero-license)[data-reserved] {
+    display: none;
   }
 }
 
@@ -1552,7 +1593,7 @@ button.nav-icon-link {
   max-width: 100%;
   height: auto;
   margin-top: 0;
-  gap: 1rem;
+  gap: clamp(0.6rem, 1.5svh, 1rem) 1rem;
 }
 
 .hero-stage-library .hero-actions > .launch-button {
@@ -1690,11 +1731,6 @@ button.nav-icon-link {
   grid-row: 2;
 }
 
-.hero-stage-library .hero-carousel-controls {
-  inset-block: auto 2rem;
-  inset-inline-end: max(3.25rem, calc((100vw - 93.5rem) / 2));
-}
-
 .hero-version-control {
   grid-column: 1 / -1;
   display: flex;
@@ -1771,12 +1807,9 @@ button.nav-icon-link {
 }
 
 .hero-scroll-cue {
-  position: absolute;
-  inset-block-end: 2.5rem;
-  inset-inline-start: max(3.25rem, calc((100vw - 93.5rem) / 2));
-  z-index: 2;
   display: inline-flex;
   align-items: center;
+  min-height: 2.75rem;
   gap: 0.75rem;
   font-size: 0.8rem;
   color: var(--ink);
@@ -1859,6 +1892,7 @@ button.nav-icon-link {
 
 .game-screenshot-viewer > img {
   width: 100%;
+  height: auto;
   max-height: 75svh;
   object-fit: contain;
 }
@@ -1918,10 +1952,6 @@ button.nav-icon-link {
 }
 
 @media (max-width: 48rem) {
-  .hero-stage-library .hero-inner {
-    padding: 9rem 1.25rem 5rem;
-  }
-
   .hero-stage-library .hero-copy h1 {
     height: 2.7em;
     font-size: clamp(2.5rem, 9vw, 3.75rem);
@@ -2022,7 +2052,7 @@ button.nav-icon-link {
 
   .hero-stage-library .hero-actions {
     width: 18.75rem;
-    gap: 0.75rem;
+    column-gap: 0.75rem;
   }
 }
 

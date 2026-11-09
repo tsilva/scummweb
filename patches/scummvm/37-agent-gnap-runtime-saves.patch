@@ -1,0 +1,144 @@
+diff --git a/engines/gnap/gnap.cpp b/engines/gnap/gnap.cpp
+--- a/engines/gnap/gnap.cpp
++++ b/engines/gnap/gnap.cpp
+@@ -25,4 +25,5 @@
+ #include "gnap/gnap.h"
+ #include "gnap/datarchive.h"
++#include "engines/scummweb-agent-loop.h"
+ #include "gnap/gamesys.h"
+ #include "gnap/resource.h"
+@@ -332,4 +333,9 @@
+ 	_soundMan->update();
+ 	_system->updateScreen();
++#ifdef __EMSCRIPTEN__
++	_agentControlBoundary = true;
++	scummweb_agent_game_loop();
++	_agentControlBoundary = false;
++#endif
+ 	_system->delayMillis(5);
+ }
+@@ -811,5 +817,12 @@
+ 		initScene();
+ 
++#ifdef __EMSCRIPTEN__
++		{
++			ScummWebAgentLoop agentLoop(_currentSceneNum > 0 && _currentSceneNum < 55);
++			runSceneLogic();
++		}
++#else
+ 		runSceneLogic();
++#endif
+ 		afterScene();
+ 
+diff --git a/engines/gnap/gnap.h b/engines/gnap/gnap.h
+--- a/engines/gnap/gnap.h
++++ b/engines/gnap/gnap.h
+@@ -313,4 +313,10 @@
+ 	int getRandom(int max);
+ 
++#ifdef __EMSCRIPTEN__
++	bool _agentControlBoundary = false;
++	bool canSaveGameStateCurrently(Common::U32String *msg = nullptr) override;
++	bool canLoadGameStateCurrently(Common::U32String *msg = nullptr) override;
++#endif
++
+ 	int readSavegameDescription(int savegameNum, Common::String &description);
+ 	int loadSavegame(int savegameNum);
+@@ -318,5 +324,6 @@
+ 	Common::Error loadGameState(int slot) override;
+ 	void synchronize(Common::Serializer &s);
+-	void writeSavegameHeader(Common::OutSaveFile *out, GnapSavegameHeader &header);
++	void writeSavegameHeader(Common::OutSaveFile *out, const GnapSavegameHeader &header,
++		Common::MemoryWriteStreamDynamic &thumbnail);
+ 	WARN_UNUSED_RESULT static bool readSavegameHeader(Common::InSaveFile *in, GnapSavegameHeader &header, bool skipThumbnail = true);
+ 
+diff --git a/engines/gnap/menu.cpp b/engines/gnap/menu.cpp
+--- a/engines/gnap/menu.cpp
++++ b/engines/gnap/menu.cpp
+@@ -526,5 +526,28 @@
+ }
+ 
++#ifdef __EMSCRIPTEN__
++bool GnapEngine::canSaveGameStateCurrently(Common::U32String *msg) {
++	return _agentControlBoundary && _currentSceneNum > 0 && _currentSceneNum < 55 &&
++		!_sceneDone && !_isLeavingScene && !_isPaused && !_menuBackgroundSurface;
++}
++
++bool GnapEngine::canLoadGameStateCurrently(Common::U32String *msg) {
++	return canSaveGameStateCurrently(msg);
++}
++#endif
++
+ Common::Error GnapEngine::saveGameState(int slot, const Common::String &desc, bool isAutosave) {
++	Common::MemoryWriteStreamDynamic *thumbnail = _tempThumbnail;
++#ifdef __EMSCRIPTEN__
++	Common::MemoryWriteStreamDynamic liveThumbnail(DisposeAfterUse::YES);
++	if (_agentControlBoundary) {
++		if (!Graphics::saveThumbnail(liveThumbnail))
++			return Common::kWritingFailed;
++		thumbnail = &liveThumbnail;
++	}
++#endif
++	if (!thumbnail)
++		return Common::kWritingFailed;
++
+ 	Common::OutSaveFile *out = g_system->getSavefileManager()->openForSaving(
+ 		getSaveStateName(slot));
+@@ -534,5 +557,5 @@
+ 	GnapSavegameHeader header;
+ 	header._saveName = desc;
+-	writeSavegameHeader(out, header);
++	writeSavegameHeader(out, header, *thumbnail);
+ 
+ 	Common::Serializer s(nullptr, out);
+@@ -540,7 +563,8 @@
+ 
+ 	out->finalize();
++	const bool saved = !out->err();
+ 	delete out;
+ 
+-	return Common::kNoError;
++	return saved ? Common::kNoError : Common::kWritingFailed;
+ }
+ 
+@@ -566,5 +590,6 @@
+ const char *const SAVEGAME_STR = "GNAP";
+ #define SAVEGAME_STR_SIZE 4
+-void GnapEngine::writeSavegameHeader(Common::OutSaveFile *out, GnapSavegameHeader &header) {
++void GnapEngine::writeSavegameHeader(Common::OutSaveFile *out, const GnapSavegameHeader &header,
++		Common::MemoryWriteStreamDynamic &thumbnail) {
+ 	// Write out a savegame header
+ 	out->write(SAVEGAME_STR, SAVEGAME_STR_SIZE + 1);
+@@ -576,7 +601,5 @@
+ 	out->writeByte('\0');
+ 
+-	// This implies the menu is used
+-	// If we want to save/load at any time, then a check should be added
+-	out->write(_tempThumbnail->getData(), _tempThumbnail->size());
++	out->write(thumbnail.getData(), thumbnail.size());
+ 
+ 	// Write out the save date/time
+@@ -637,6 +660,8 @@
+ 	// Load the savegame header
+ 	GnapSavegameHeader header;
+-	if (!readSavegameHeader(saveFile, header))
+-		error("Invalid savegame");
++	if (!readSavegameHeader(saveFile, header)) {
++		delete saveFile;
++		return Common::kReadingFailed;
++	}
+ 
+ 	if (header._thumbnail) {
+@@ -648,5 +673,11 @@
+ 	delete saveFile;
+ 
+-	_loadGameSlot = slot;
++#ifdef __EMSCRIPTEN__
++	if (_agentControlBoundary) {
++		_wasSavegameLoaded = true;
++		_sceneDone = true;
++	} else
++#endif
++		_loadGameSlot = slot;
+ 	return Common::kNoError;
+ }
