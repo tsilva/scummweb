@@ -30,9 +30,6 @@ export default function GameTouchCursorPad({
             transform: `translate(${indicatorOffset.x}px, ${indicatorOffset.y}px)`,
           }}
         />
-        <span aria-hidden="true" className="game-route-touch-cursor-pad-label">
-          Adjust
-        </span>
       </button>
     </div>
   );
