@@ -108,7 +108,8 @@ for (const [message, mobile] of [
 }
 
 function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = false, catalog = true,
-  skipIntro, visualViewport, realBoot = false, game = { target: "sky", slug: "sky", engineId: "sky" },
+  skipIntro, visualViewport, virtualKeyboard, shellBottom = visualViewport?.height,
+  realBoot = false, game = { target: "sky", slug: "sky", engineId: "sky" },
   downloadDetails = { loaded: 12_400_000, total: 85_200_000 } } = {}) {
   const archive = Promise.withResolvers();
   const hooks = [];
@@ -131,10 +132,13 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     addEventListener() {}, removeEventListener() {}, focus() {},
   };
   const shellProperties = new Map();
-  const shell = { style: {
-    setProperty: (name, value) => shellProperties.set(name, value),
-    removeProperty: (name) => shellProperties.delete(name),
-  } };
+  const shell = {
+    getBoundingClientRect: () => ({ bottom: shellBottom }),
+    style: {
+      setProperty: (name, value) => shellProperties.set(name, value),
+      removeProperty: (name) => shellProperties.delete(name),
+    },
+  };
   const window = {
     visualViewport,
     innerHeight: visualViewport?.height,
@@ -165,7 +169,8 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   const module = { exports: {} };
   const bootModule = { exports: {} };
   runInNewContext(code, {
-    module, exports: module.exports, window, URL, URLSearchParams, AbortController, navigator, HTMLElement: class {},
+    module, exports: module.exports, window, URL, URLSearchParams, AbortController,
+    navigator: { virtualKeyboard }, HTMLElement: class {},
     fetch: async () => ({ ok: true, text: async () => "<html><head></head><body></body></html>" }),
     require: function require(name) {
       if (name === "react") return {
@@ -318,7 +323,7 @@ test("mobile mouse play tracks the visible height and releases it during zoom", 
 test("Zork overlays its command field without resizing the game and follows native keyboard dismissal", () => {
   const viewport = Object.assign(new EventTarget(), { height: 390, offsetTop: 0, scale: 1 });
   const game = { engineId: "glk", gameId: "zork1", target: "zork1" };
-  const player = pendingArchivePlayer({ game, visualViewport: viewport });
+  const player = pendingArchivePlayer({ game, visualViewport: viewport, shellBottom: 420 });
   const form = () => player.children.find(({ type }) => type === "form");
   const inset = () => player.shellProperties.get("--game-command-inset");
   player.render();
@@ -327,16 +332,16 @@ test("Zork overlays its command field without resizing the game and follows nati
   form().props.children.props.ref.current = { focus() {}, blur() { blurred = true; } };
   player.controls.touchActions.props.onClick();
   assert.equal(form().props.hidden, false);
-  assert.equal(inset(), "0px");
+  assert.equal(inset(), "30px");
 
   viewport.height = 185;
   viewport.dispatchEvent(new Event("resize"));
-  assert.equal(inset(), "205px");
+  assert.equal(inset(), "235px");
   assert.equal(player.shellProperties.has("--game-visible-height"), false);
 
   viewport.offsetTop = 25;
   viewport.dispatchEvent(new Event("scroll"));
-  assert.equal(inset(), "180px");
+  assert.equal(inset(), "210px");
 
   Object.assign(viewport, { height: 390, offsetTop: 0 });
   viewport.dispatchEvent(new Event("resize"));
@@ -345,6 +350,30 @@ test("Zork overlays its command field without resizing the game and follows nati
   assert.equal(form().props.hidden, true);
   assert.equal(inset(), undefined);
   assert.ok(player.controls.touchActions);
+  player.unmount();
+});
+
+test("a fullscreen command field follows keyboard geometry when the viewport stays the same size", () => {
+  const viewport = Object.assign(new EventTarget(), { height: 390, offsetTop: 0, scale: 1 });
+  const keyboard = Object.assign(new EventTarget(), { overlaysContent: false, boundingRect: { top: 0, height: 0 } });
+  const game = { engineId: "glk", gameId: "zork1", target: "zork1" };
+  const player = pendingArchivePlayer({ game, visualViewport: viewport, virtualKeyboard: keyboard });
+  const form = () => player.children.find(({ type }) => type === "form");
+  player.render();
+  player.setBootCompleted();
+  player.controls.touchActions.props.onClick();
+  assert.equal(keyboard.overlaysContent, true);
+
+  keyboard.boundingRect = { top: 145, height: 245 };
+  keyboard.dispatchEvent(new Event("geometrychange"));
+  assert.equal(player.shellProperties.get("--game-command-inset"), "245px");
+
+  keyboard.boundingRect = { top: 0, height: 0 };
+  keyboard.dispatchEvent(new Event("geometrychange"));
+  player.render();
+  assert.equal(form().props.hidden, true);
+  assert.equal(keyboard.overlaysContent, false);
+  assert.equal(player.shellProperties.has("--game-command-inset"), false);
   player.unmount();
 });
 

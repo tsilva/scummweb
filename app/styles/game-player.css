@@ -67,13 +67,11 @@
 }
 
 .game-route-command {
-  position: fixed;
+  position: absolute;
   z-index: 11;
-  left: max(0.5rem, env(safe-area-inset-left));
-  right: max(0.5rem, env(safe-area-inset-right));
+  left: env(safe-area-inset-left, 0px);
+  right: env(safe-area-inset-right, 0px);
   bottom: max(var(--game-command-inset, 0px), env(safe-area-inset-bottom));
-  max-width: 36rem;
-  margin-inline: auto;
   padding-block: 0.25rem;
 }
 

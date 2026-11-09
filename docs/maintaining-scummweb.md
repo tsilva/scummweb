@@ -198,7 +198,8 @@ Gameplay controls stay behind the loading screen, including when **Skip intro**
 reloads the game.
 
 In Hugo, Apple II Hi-Res Adventures such as Mystery House, and Zork I–III, tap
-the keyboard icon to open a **Game command** field just above the device keyboard.
+the keyboard icon to open a **Game command** field across the available width,
+just above the device keyboard.
 The keyboard covers part of the game at its original size. Press the keyboard’s
 Enter key to submit the command and return to the game. An empty field sends
 Enter by itself. You can also dismiss the keyboard with your device’s controls.
