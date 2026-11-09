@@ -12,7 +12,7 @@ import { isTvBrowser } from "./controller-device.mjs";
 import GameBootOverlay from "./game-player/GameBootOverlay";
 import GamePlayerControls from "./game-player/GamePlayerControls";
 import GameTouchCursorPad from "./game-player/GameTouchCursorPad";
-import { GameDirectionPad, GrimTouchActions } from "./game-player/GameTouchGamepad";
+import { GameDirectionPad, GrimTouchGamepad } from "./game-player/GameTouchGamepad";
 import { createGameLaunchAnalytics } from "./game-player/game-launch-analytics.mjs";
 import { observeStartupDiagnostics } from "./game-player/startup-diagnostics.mjs";
 import { withGameTelemetry } from "./game-player/telemetry.mjs";
@@ -199,11 +199,12 @@ export default function GameRouteFrame({
     });
   }, [restoreRemoteFullscreen]);
   const skipIntro = isResuming ? null : intro;
+  const currentReadySignal = readySignal?.href === frameSrc ? readySignal : null;
   const bootState = useBootState({
     displayTitle: game?.displayTitle || title,
     frameRef,
     frameSrc,
-    readySignal,
+    readySignal: currentReadySignal,
     skipIntro,
     skipIntroConsumed,
   });
@@ -227,12 +228,11 @@ export default function GameRouteFrame({
   const showSkipIntroBottomAction = Boolean(skipIntro) && bootState.showSkipIntroButton && !showBootOverlay && !waitingForLandscape;
   const mobileControlsReady =
     immersiveMode.isMobileViewport && !waitingForLandscape && bootState.hasBootCompleted && !hasBootFailed;
-  const mobileControlMode = getMobileControlMode(readySignal?.detectedGame ?? game ?? undefined);
+  const mobileControlMode = getMobileControlMode(currentReadySignal?.detectedGame ?? game ?? undefined);
   const showCommandInput = mobileControlsReady && (mobileControlMode === "command" || mobileControlMode === "hugo");
   const showCommandForm = showCommandInput && commandOpen;
-  const showDirectionPad = mobileControlsReady && !showCommandForm &&
-    (mobileControlMode === "grim" || mobileControlMode === "hugo");
-  const showGrimActions = mobileControlsReady && mobileControlMode === "grim";
+  const showDirectionPad = mobileControlsReady && !showCommandForm && mobileControlMode === "hugo";
+  const showGrimGamepad = mobileControlsReady && mobileControlMode === "grim";
   const showTouchMouse = mobileControlsReady && mobileControlMode === "mouse";
   const touchCursorPad = useTouchCursorPad({
     enabled: showTouchMouse,
@@ -411,7 +411,9 @@ export default function GameRouteFrame({
           stopArchiveBootTimer();
           if (event.data.status === "running") {
             frameBoot.ready = true;
-            if (!catalogLaunch) setReadySignal({ reason: "archive-running" });
+            if (!catalogLaunch) {
+              setReadySignal((current) => current ?? { href: frameSrc, reason: "archive-running" });
+            }
           } else {
             if (event.data.status === "undetected") reportBootError("game-detection");
             archiveFiles.current = null;
@@ -571,7 +573,7 @@ export default function GameRouteFrame({
   }, [bootState.hasBootFailed, launchAnalytics]);
 
   const canCountPlayTime =
-    readySignal?.reason === "rendered-frame-detected" && !showBootOverlay && !waitingForLandscape;
+    currentReadySignal?.reason === "rendered-frame-detected" && !showBootOverlay && !waitingForLandscape;
 
   useEffect(() => {
     if (canCountPlayTime) return launchAnalytics.watchPlayTime();
@@ -858,7 +860,7 @@ export default function GameRouteFrame({
     immersiveMode.canFullscreen && !immersiveMode.isTouchMobile && bootState.hasBootPresentationCompleted;
   const showGameMenuButton =
     Boolean(gameMenuShortcut) && bootState.showGameMenuButton && !hasBootFailed && !waitingForLandscape;
-  const touchActions = showGrimActions ? <GrimTouchActions frameRef={frameRef} /> : showCommandInput && !showCommandForm ? (
+  const touchActions = showCommandInput && !showCommandForm ? (
     <button
       aria-controls="game-route-command"
       aria-label="Open keyboard"
@@ -928,11 +930,10 @@ export default function GameRouteFrame({
         showTouchCursorPad={showTouchMouse}
       />
       {showDirectionPad ? (
-        <GameDirectionPad
-          frameRef={frameRef}
-          hold={mobileControlMode === "grim"}
-          key={frameSrc}
-        />
+        <GameDirectionPad frameRef={frameRef} key={`hugo:${frameSrc}`} />
+      ) : null}
+      {showGrimGamepad ? (
+        <GrimTouchGamepad frameRef={frameRef} key={`grim:${frameSrc}`} />
       ) : null}
       {showCommandInput ? (
         <form className="game-route-command" hidden={!showCommandForm} id="game-route-command" onSubmit={handleCommandSubmit}>

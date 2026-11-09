@@ -84,7 +84,7 @@ export function useBootState({
     getInitialBootStatusText(isSkippingIntro)
   );
   const [bootPhase, setBootPhase] = useState("pending");
-  const [hasBootCompleted, setHasBootCompleted] = useState(false);
+  const hasBootCompleted = Boolean(readySignal);
   const [hasBootPresentationCompleted, setHasBootPresentationCompleted] = useState(false);
   const [hasBootFailed, setHasBootFailed] = useState(false);
   const [hasSkipIntroBeenDismissed, setHasSkipIntroBeenDismissed] = useState(false);
@@ -119,7 +119,6 @@ export function useBootState({
     if (readySignal) {
       bootPhaseRef.current = "ready";
       setBootPhase("ready");
-      setHasBootCompleted(true);
       setHasBootFailed(false);
     }
   }, [frameSrc, readySignal]);
@@ -139,7 +138,6 @@ export function useBootState({
     lastNonEmptyShellStatusRef.current = initialBootStatusText;
     setBootPhase("pending");
     setBootStatusText(initialBootStatusText);
-    setHasBootCompleted(false);
     setHasBootFailed(false);
 
     function syncBootState() {
@@ -220,10 +218,6 @@ export function useBootState({
       }
     };
   }, [displayTitle, frameRef, frameSrc, isSkippingIntro, readySignal]);
-
-  useEffect(() => {
-    setHasBootCompleted(false);
-  }, [frameSrc]);
 
   function dismissSkipIntroButton() {
     setHasSkipIntroBeenDismissed(true);
