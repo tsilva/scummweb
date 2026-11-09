@@ -116,13 +116,13 @@ diff --git a/base/main.cpp b/base/main.cpp
  
  	// Make sure we do not return to the launcher if this is not possible.
  	if (!engine->hasFeature(Engine::kSupportsReturnToLauncher))
-@@ -578,6 +662,29 @@ int scummvm_main(int argc, const char * const argv[]) {
- 	// the command line params) was read.
- 	system.initBackend();
+@@ -608,6 +692,30 @@ int scummvm_main(int argc, const char * const argv[]) {
+ #endif
+ 	setupGraphics(system);
  
 +#ifdef __EMSCRIPTEN__
 +	// The query config identifies the save target but contains no game path.
-+	// Use the initialized backend and the metadata plugin without game detection.
++	// The graphics overlay is ready for engines that decode save thumbnails.
 +	if (EM_ASM_INT({ return new URL(globalThis.document.baseURI).searchParams.has('saveQuery') ? 1 : 0; })) {
 +		const Common::String engineId = ConfMan.get("engineid");
 +		const Plugin *plugin = ConfMan.getActiveDomain() && !engineId.empty()
@@ -139,13 +139,14 @@ diff --git a/base/main.cpp b/base/main.cpp
 +				}, url.origin);
 +			});
 +		}
-+		emscripten_force_exit(0);
++		PluginManager::destroy();
++		return 0;
 +	}
 +#endif
 +
- 	// If we received an invalid graphics mode parameter via command line
- 	// we check this here. We can't do it until after the backend is inited,
- 	// or there won't be a graphics manager to ask for the supported modes.
+ 	if (!configLoadStatus) {
+ 		GUI::MessageDialog alert(_("Bad config file format. overwrite?"), _("Yes"), _("Cancel"));
+ 		if (alert.runModal() != GUI::kMessageOK)
 diff --git a/base/commandLine.cpp b/base/commandLine.cpp
 --- a/base/commandLine.cpp
 +++ b/base/commandLine.cpp

@@ -20,7 +20,7 @@ html = html.replace("/*__SCUMMWEB_FRAME_OBSERVER__*/", (source / "first-frame.mj
 html = html.replace("/*__SCUMMWEB_CANVAS_FIT__*/", (source / "canvas-fit.mjs").read_text().replace("export ", "", 1))
 html = html.replace("/*__SCUMMWEB_GAME_DEFAULTS__*/", (source / "game-defaults.mjs").read_text().replace("export ", "", 1))
 html = html.replace("/*__SCUMMWEB_AGENT_CONTROLS__*/", (source / "agent-controls.mjs").read_text().replace("export ", ""))
-html = html.replace("/*__SCUMMWEB_SAVE_BRIDGE__*/", "(function(){\n" + (source / "continue-saves.mjs").read_text().replace("export ", "") + "\nglobalThis.__scummwebInstallContinueSaves = installContinueSaves;\n})();")
+html = html.replace("/*__SCUMMWEB_SAVE_BRIDGE__*/", "(function(){\n" + (source / "continue-saves.mjs").read_text().replace("export ", "") + "\nglobalThis.__scummwebInstallContinueSaves = installContinueSaves;\nglobalThis.__scummwebIsRetiredIntroCheckpoint = isRetiredIntroCheckpoint;\n})();")
 filesystem = (source / "scummvm_fs.js").read_text().replace("__SCUMMWEB_GAMES_ORIGIN__", json.dumps(games_origin))
 
 (target / "scummvm.html").write_text(html)

@@ -183,18 +183,18 @@
     {
       "path": "patches/scummvm/13-expose-native-save-list.patch",
       "status": "active",
-      "sha256": "98e42beb32d5dea45367cb7cc08560fc63b2c197f591ac1a969f745ecda6bccb",
+      "sha256": "f9b6d9c029e56631813b3b103cc7d18a3d4b4132e3eb914911481ef1abecb769",
       "purpose": "Expose native save listing and startup loading to ScummWEB, including isolated personal imports.",
       "invariants": [
         "Respect both native capability flags and PreAGI/Mohawk exclusions; never force unsupported startup loading.",
         "List real nonempty files; exclude nonexistent autosave placeholders, Kyrandia restart saves and Groovie slot 0 reserved/Open House state. Resolve fixed prefixes for Lure, Queen, Tony, Cruise and Draci through the native filename API.",
         "Choose the latest player save again before engine construction; retain the selected version savepath and actual detected target.",
-        "Query mode opens only the configured engine metadata plugin after backend initialization and exits before detecting or starting a game; CLI listing is not a web query path.",
+        "Query mode initializes the backend and graphics overlay for native metadata and thumbnail readers, opens only the configured metadata plugin, and returns through normal cleanup before detecting or starting a game.",
         "Publish the native engine and game IDs on opt-in evaluation launches for every engine.",
         "Publish game identity when either native evaluation or snapshot queries are explicitly enabled."
       ],
       "verification": [
-        "Run browser save and native bridge tests; rebuild the managed runtime. Check Quest for Infamy (AGS) with a real save and no game archive mounted in the query.",
+        "Run browser save and native bridge tests; rebuild the managed runtime. Check Quest for Infamy (AGS) with a real save, cold plugin loading, and no game archive mounted in the query.",
         "In Brave verify Play with no player saves, supported catalog and imported save/resume, latest-write ordering, checkpoint exclusion, and unsupported engines retaining Play."
       ],
       "retire_when": "Upstream exposes equivalent browser-callable save metadata and startup resume with the same eligibility and save isolation guarantees."
