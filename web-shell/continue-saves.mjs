@@ -53,6 +53,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
   let needsPublish = false;
   let scannedFiles;
   let resumeReported = false;
+  let legacyIndexKey;
 
   function files() {
     try {
@@ -64,7 +65,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
   }
 
   const validName = (name) => typeof name === "string" && name.length > 0 && !/[\\/\x00-\x1f]/.test(name);
-  const indexKey = () => saveIndexKey(storageNamespace, params.get("catalogGame") || snapshot?.target);
+  const indexKey = () => saveIndexKey(storageNamespace, snapshot?.target);
   function persist() {
     if (!snapshot) return false;
     snapshot.pending = [...pending];
@@ -73,11 +74,17 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
       scope.localStorage.setItem(indexKey(), JSON.stringify(snapshot));
       lastRevision = snapshot.revision;
       needsPublish = false;
-      return true;
     } catch {
       needsPublish = true;
       return false;
     }
+    if (legacyIndexKey) {
+      try {
+        scope.localStorage.removeItem(legacyIndexKey);
+        legacyIndexKey = undefined;
+      } catch { /* The canonical index was already published. */ }
+    }
+    return true;
   }
   function isCheckpoint(name) {
     if (!checkpoints.has(name)) return false;
@@ -131,6 +138,18 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
         const previous = JSON.parse(scope.localStorage.getItem(indexKey()));
         for (const name of previous?.pending || []) if (validName(name)) pending.add(name);
       } catch { /* Missing or invalid cache. */ }
+      const archiveId = params.get("catalogGame") || params.get("saveGameId");
+      if (!storageNamespace && archiveId && archiveId !== target) {
+        const key = saveIndexKey("", archiveId);
+        try {
+          const previous = JSON.parse(scope.localStorage.getItem(key));
+          if (previous?.target === target && previous.engineId === engineId
+            && previous.gameId === gameId && previous.extra?.toLowerCase() === extra.toLowerCase()) {
+            for (const name of previous.pending || []) if (validName(name)) pending.add(name);
+            legacyIndexKey = key;
+          }
+        } catch { /* Missing or invalid legacy cache. */ }
+      }
     }
   };
   scope.__scummwebAddSave = (slot, name) => {
@@ -173,7 +192,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     // as the player overwrites it; never exclude a slot just by its number.
     if (!namespace) {
       const library = await (await scope.fetch(assetUrl("games.json"))).json();
-      const target = params.get("catalogGame") || params.get("saveTarget")
+      const target = params.get("saveTarget")
         || decodeURIComponent(launchUrl.hash.slice(1)).trim().split(/\s+/).at(-1);
       const intro = library.games?.find((game) => game.target === target)?.skipIntro;
       await Promise.all((intro?.saveFiles || []).map(async (name) => {

@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-09T13:50:27.219143Z",
+  "generated_at_utc": "2026-11-09T14:19:36.519631Z",
   "scummvm": {
     "version": "v2026.4.0",
     "commit": "7d2709da5136866589f7602f5f5a7b17de03420e",
@@ -8,7 +8,7 @@
   "corresponding_source": {
     "page": "/doc/scummvm-source.html",
     "archive": "/doc/scummvm-source.zip",
-    "archive_sha256": "55f839cc54766478fcc992e2340117427642abdbfaa9f568710eb80df256c4dc",
+    "archive_sha256": "72374721429855cf6e4fc81e179774d6a6f38975704cba83ad9a79e71ac606df",
     "runtime_sha256": {
       "scummvm.wasm": "8fa36e73f544a0026347fdee2ea51f3ec370b41b560493b84ba998f200183ae9",
       "scummvm.js": "6263c607188d367b91a44e3636e1fdb295b95cb30e10483f773ed80ed7a1c389",

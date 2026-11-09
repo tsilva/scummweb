@@ -4,7 +4,7 @@ import test from "node:test";
 import { installContinueSaves, latestPlayerSave, saveIndexKey, saveRevision, supportsContinue } from "../web-shell/continue-saves.mjs";
 
 function shell({ namespace = "", agentSaveScope, resume = false, seed = false, query = false,
-  storage = new Map(), files = new Map() } = {}) {
+  target = "sky", catalogGame, storage = new Map(), files = new Map() } = {}) {
   const normal = "/home/web_user/.local/share/scummvm/saves";
   const base = agentSaveScope ? `${normal}-agent/${agentSaveScope}` : normal + (namespace ? `/${namespace}` : "");
   function put(name, contents, modifiedAt) { files.set(`${base}/${name}`, { bytes: new TextEncoder().encode(contents), modifiedAt }); }
@@ -17,24 +17,26 @@ function shell({ namespace = "", agentSaveScope, resume = false, seed = false, q
     readFile: (path) => { const file = files.get(path); if (!file) throw new Error("missing"); return file.bytes; },
     writeFile: (path, text) => files.set(path, { bytes: new TextEncoder().encode(text), modifiedAt: 1 }),
   };
-  const messages = [], Module = { arguments: ["sky"] };
+  const messages = [], Module = { arguments: [target] };
   let poll;
   const scope = {
-    localStorage: { getItem: (key) => storage.get(key) ?? null, setItem: (key, value) => storage.set(key, value) },
+    localStorage: { getItem: (key) => storage.get(key) ?? null, setItem: (key, value) => storage.set(key, value),
+      removeItem: (key) => storage.delete(key) },
     parent: { postMessage: (message) => messages.push(message) },
     fetch: async (url) => url.endsWith("games.json")
-      ? new Response(JSON.stringify({ games: [{ target: "sky", skipIntro: { saveFiles: ["SKY-VM.000"] } }] }))
+      ? new Response(JSON.stringify({ games: [{ target, skipIntro: { saveFiles: ["SKY-VM.000"] } }] }))
       : new Response("checkpoint"),
     setInterval: (callback) => { poll = callback; return 1; }, clearInterval() {}, addEventListener() {},
   };
-  const launchUrl = new URL("https://example.test/scummvm.html#sky");
+  const launchUrl = new URL(`https://example.test/scummvm.html#${target}`);
+  if (catalogGame) launchUrl.searchParams.set("catalogGame", catalogGame);
   if (namespace) launchUrl.searchParams.set("saveNamespace", namespace);
   if (agentSaveScope) launchUrl.searchParams.set("agentSaveScope", agentSaveScope);
   if (resume) launchUrl.searchParams.set("continue", "1");
-  if (query) for (const [key, value] of Object.entries({ saveQuery: "nonce", saveEngine: "sky", saveGameId: "sky", saveTarget: "sky" })) launchUrl.searchParams.set(key, value);
+  if (query) for (const [key, value] of Object.entries({ saveQuery: "nonce", saveEngine: "sky", saveGameId: "sky", saveTarget: target })) launchUrl.searchParams.set(key, value);
   const start = () => installContinueSaves({ scope, FS, Module, launchUrl, assetUrl: (path) => path });
   function scan(saves, supported = true) {
-    scope.__scummwebBeginSaveScan("sky", "sky", "sky", supported);
+    scope.__scummwebBeginSaveScan("sky", "sky", target, supported);
     for (const [slot, name] of saves) scope.__scummwebAddSave(slot, name);
     return scope.__scummwebEndSaveScan();
   }
@@ -66,6 +68,24 @@ test("native-listed checkpoint is excluded, but overwriting it with player progr
   f.Module._scummweb_refresh_saves = () => f.scan([[0, "SKY-VM.000"]]);
   f.poll();
   assert.equal(f.scope.__scummwebSaveStatus.latestSlot, 0);
+});
+
+test("catalog play and background queries agree on the native target and migrate interrupted writes", async () => {
+  const target = "sky-cd", legacyKey = saveIndexKey("", "sky"), key = saveIndexKey("", target);
+  for (const source of [{ catalogGame: "sky" }, { query: true }]) {
+    const f = shell({ target, seed: true, ...source });
+    f.storage.set(legacyKey, JSON.stringify({
+      target, engineId: "sky", gameId: "sky", extra: "", pending: ["SKY-VM.002"],
+    }));
+    f.put("SKY-VM.001", "player", 200);
+    f.put("SKY-VM.002", "interrupted write", 300);
+    await f.start();
+    f.scan([[0, "SKY-VM.000"], [1, "SKY-VM.001"], [2, "SKY-VM.002"]]);
+    const index = JSON.parse(f.storage.get(key));
+    assert.deepEqual(index.pending, ["SKY-VM.002"]);
+    assert.deepEqual(index.saves.map(({ slot }) => slot), [1]);
+    assert.equal(f.storage.has(legacyKey), false);
+  }
 });
 
 test("empty placeholders, missing files and unsupported native snapshots never enable Continue", async () => {
