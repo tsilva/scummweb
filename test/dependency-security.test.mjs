@@ -37,8 +37,9 @@ test("the complete locked dependency graph has no known advisory", () => {
 test("all formerly vulnerable runtime families resolve only to fixed versions", () => {
   const lockfile = fs.readFileSync(path.join(rootDir, "pnpm-lock.yaml"), "utf8");
   const expected = new Map([
-    ["@babel/core", new Set(["7.29.7"])],
-    ["@opentelemetry/core", new Set(["2.10.0"])],
+    ["@babel/core", new Set()],
+    ["@opentelemetry/core", new Set()],
+    ["uuid", new Set()],
     ["brace-expansion", new Set(["5.0.12"])],
     ["fast-uri", new Set(["3.1.9"])],
     ["nanoid", new Set(["3.3.19"])],
@@ -47,11 +48,6 @@ test("all formerly vulnerable runtime families resolve only to fixed versions", 
   for (const [name, safeVersions] of expected) {
     assert.deepEqual(lockedVersions(lockfile, name), safeVersions, name);
   }
-  assert.deepEqual(
-    lockedVersions(lockfile, "uuid"),
-    new Set(),
-    "the vulnerable UUID branch was removed",
-  );
 });
 
 test("the lockfile contains only registry dependencies", () => {

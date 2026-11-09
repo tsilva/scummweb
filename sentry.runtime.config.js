@@ -65,7 +65,6 @@ export function getSentryOptions(target = "server") {
     enabled: Boolean(dsn) && isSentryEnabled(target),
     enableLogs: true,
     environment: getSentryEnvironment(),
-    sendDefaultPii: true,
     tracesSampleRate: getTracesSampleRate(),
   };
 }
