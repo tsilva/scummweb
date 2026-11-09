@@ -999,6 +999,10 @@ dimensions. Changed bytes get a new URL; retain older objects for older deployme
 The optional `images` map selects a WebP fallback and ordered WebP/AVIF variants
 for each logical source path. Activation publishes this delivery map and the
 object records together, so the app cannot reference unpublished variants.
+The original records also carry tiny inline WebP previews for banners, covers,
+and gameplay captures. Each preview keeps the source's aspect ratio when
+displayed and uses the full image's crop and focal position. The browser paints
+it while the full image loads directly from R2.
 
 The Beneath a Steel Sky hero at
 `/launcher/sky-scummweb-generated-2026-11-05-r1-hero.webp` is an ImageGen
@@ -1071,6 +1075,10 @@ credential scope. The default remains `artwork-migration`.
    responsive images plus a private delivery map for the next upload plan.
 2. Run `pnpm run artwork:plan`. This retains the active manifest, creates a private
    upload plan, and preserves content-addressed copies of every local image.
+   The plan derives a preview up to 12 pixels per side from each new or changed
+   original. For previously published originals missing previews, run
+   `node scripts/artwork-storage.mjs placeholders` before planning. It checks the
+   source bytes and updates only the preview metadata in the tracked manifest.
    Published mappings without local originals are retained for subsequent updates.
    Plans record the current storage fingerprint; activation rejects a stale plan
    so concurrent artwork updates must be merged before switching delivery.

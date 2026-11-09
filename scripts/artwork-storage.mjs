@@ -4,6 +4,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import sharp from "sharp";
+import { readArtworkFile } from "./artwork-files.mjs";
 import { resolveArtworkWorkspace } from "./artwork-workspace.mjs";
 
 const rootDir = fileURLToPath(new URL("../", import.meta.url));
@@ -14,6 +15,12 @@ const manifestFile = "data/artwork-storage.json";
 const workspace = resolveArtworkWorkspace();
 const backupDir = `${workspace}/objects`;
 const pendingFile = `${workspace}/manifest.json`;
+const isArtworkSource = (name) => /^\/launcher\/[a-z0-9-]+\.(?:webp|png|avif)$/.test(name);
+
+async function encodePlaceholder(bytes) {
+  return sharp(bytes).resize(12, 12, { fit: "inside", withoutEnlargement: true })
+    .webp({ quality: 55 }).toBuffer().then((preview) => preview.toString("base64"));
+}
 
 async function writeManifest(filename, manifest) {
   const temporary = `${filename}.${randomUUID()}.tmp`;
@@ -35,6 +42,11 @@ export function validateManifest(manifest) {
       || !Number.isSafeInteger(file.bytes) || file.bytes < 1 || file.contentType !== types[path.extname(name)]
       || !Number.isSafeInteger(file.width) || file.width < 1 || !Number.isSafeInteger(file.height) || file.height < 1) {
       throw new Error(`Invalid artwork record: ${name}`);
+    }
+    if (file.placeholder !== undefined && (!isArtworkSource(name) || typeof file.placeholder !== "string"
+      || !/^UklGR[A-Za-z0-9+/]+={0,2}$/.test(file.placeholder)
+      || file.placeholder.length % 4 || file.placeholder.length > 1024)) {
+      throw new Error(`Invalid artwork placeholder: ${name}`);
     }
   }
   for (const [source, image] of Object.entries(manifest.images || {})) {
@@ -87,7 +99,10 @@ export async function planArtwork(root = rootDir) {
     const destination = path.join(root, backupDir, key);
     await fs.mkdir(path.dirname(destination), { recursive: true });
     await fs.writeFile(destination, bytes);
-    files[name] = { key, sha256, bytes: bytes.length, contentType: types[path.extname(filename)], width, height };
+    const placeholder = isArtworkSource(name)
+      ? (previous.files[name]?.sha256 === sha256 && previous.files[name].placeholder) || await encodePlaceholder(bytes)
+      : undefined;
+    files[name] = { key, sha256, bytes: bytes.length, contentType: types[path.extname(filename)], width, height, ...(placeholder ? { placeholder } : {}) };
   }
   const delivery = await fs.readFile(path.join(root, workspace, "delivery.json"), "utf8")
     .then(JSON.parse).catch((error) => { if (error.code !== "ENOENT") throw error; return null; });
@@ -104,6 +119,25 @@ export async function planArtwork(root = rootDir) {
   await fs.mkdir(path.dirname(path.join(root, pendingFile)), { recursive: true });
   await writeManifest(path.join(root, pendingFile), manifest);
   return manifest;
+}
+
+export async function backfillArtworkPlaceholders(root = rootDir, request = fetch) {
+  const filename = path.join(root, manifestFile);
+  const before = await fs.readFile(filename);
+  const manifest = validateManifest(JSON.parse(before));
+  if (!manifest.published) throw new Error("Plan local artwork or activate published artwork before backfilling placeholders");
+  const pending = Object.entries(manifest.files).filter(([name, file]) => isArtworkSource(name) && !file.placeholder);
+  const count = pending.length;
+  await Promise.all(Array.from({ length: Math.min(8, count) }, async () => {
+    while (pending.length) {
+      const [name, file] = pending.pop();
+      const bytes = await readArtworkFile(root, name, request, { manifest, cacheDownload: false });
+      file.placeholder = await encodePlaceholder(bytes);
+    }
+  }));
+  if (!before.equals(await fs.readFile(filename))) throw new Error("Artwork storage changed during placeholder generation");
+  if (count) await writeManifest(filename, validateManifest(manifest));
+  return count;
 }
 
 export async function verifyArtwork(manifest, request = fetch, cacheRoot) {
@@ -192,12 +226,13 @@ export async function retireArtwork(root = rootDir, request = fetch) {
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
   try {
     const command = process.argv[2];
-    if (process.argv.length !== 3 || !["plan", "verify", "activate", "retire-local"].includes(command)) {
-      throw new Error("Usage: node scripts/artwork-storage.mjs <plan|verify|activate|retire-local>");
+    if (process.argv.length !== 3 || !["plan", "verify", "activate", "retire-local", "placeholders"].includes(command)) {
+      throw new Error("Usage: node scripts/artwork-storage.mjs <plan|verify|activate|retire-local|placeholders>");
     }
     const result = command === "plan" ? await planArtwork()
       : command === "activate" ? await activateArtwork()
       : command === "retire-local" ? await retireArtwork()
+      : command === "placeholders" ? await backfillArtworkPlaceholders()
       : await verifyArtwork(JSON.parse(await fs.readFile(path.join(rootDir, pendingFile))));
     console.log(`Artwork ${command}: ${typeof result === "number" ? result : Object.keys(result.files).length} files`);
   } catch (error) { console.error(error.message); process.exitCode = 1; }

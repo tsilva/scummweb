@@ -131,9 +131,12 @@
 }
 
 .game-route-boot-backdrop {
+  --artwork-fit: cover;
+  --artwork-position: var(--hero-image-position, center);
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: var(--artwork-fit);
+  object-position: var(--artwork-position);
 }
 
 .game-route-boot-scrim {
@@ -673,7 +676,7 @@
 
   .hero-stage-library .hero-backdrop-image,
   .game-route-boot-backdrop {
-    object-position: var(--hero-image-mobile-position, 75% top) !important;
+    --artwork-position: var(--hero-image-mobile-position, 75% top);
   }
 
   .hero-stage.hero-stage-library .hero-backdrop::after {

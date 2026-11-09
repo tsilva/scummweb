@@ -277,13 +277,24 @@ button.nav-icon-link {
   background: linear-gradient(180deg, rgba(7, 12, 10, 0.08), rgba(7, 12, 10, 0.42));
 }
 
+.artwork-placeholder:not([data-artwork-loaded]) {
+  background-image: var(--artwork-placeholder);
+  background-size: var(--artwork-fit, contain);
+  background-position: var(--artwork-position, center);
+  background-repeat: no-repeat;
+  background-origin: content-box;
+  background-clip: content-box;
+}
+
 .hero-backdrop-image {
+  --artwork-fit: cover;
+  --artwork-position: var(--hero-image-position, center 38%);
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center 38%;
+  object-fit: var(--artwork-fit);
+  object-position: var(--artwork-position);
   filter: brightness(1.28) contrast(1.06) saturate(1.08);
   transform: scale(1.03);
   pointer-events: none;
@@ -737,11 +748,12 @@ button.nav-icon-link {
 }
 
 .landscape-card-image {
+  --artwork-fit: cover;
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: var(--artwork-fit);
   filter: grayscale(1) brightness(0.94) contrast(1.02) saturate(0.82);
   transition:
     filter 320ms ease,
@@ -909,11 +921,12 @@ button.nav-icon-link {
 }
 
 .poster-media-image {
+  --artwork-fit: cover;
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: var(--artwork-fit);
   transform: scale(1.04);
   transform-origin: center;
   filter: grayscale(1) brightness(0.94) contrast(1.02) saturate(0.82);
@@ -1879,6 +1892,7 @@ button.nav-icon-link {
 
 .game-screenshot-viewer > img {
   width: 100%;
+  height: auto;
   max-height: 75svh;
   object-fit: contain;
 }

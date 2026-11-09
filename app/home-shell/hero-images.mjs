@@ -7,7 +7,7 @@ export function getHeroImageProps(game, artwork, role = "library-hero") {
   const optimized = getArtworkImageProps(src, role, artwork);
   if (optimized.srcSet) return optimized;
   return {
-    src,
+    ...optimized,
     srcSet: game.heroImageMobile
       ? `${game.heroImageMobile} 960w, ${src} 1832w`
       : undefined,

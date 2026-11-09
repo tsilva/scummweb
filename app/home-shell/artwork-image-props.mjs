@@ -21,8 +21,10 @@ export function getPosterSizes(aspect, count = 8) {
 
 export function getArtworkImageProps(src, role = "gallery", manifest = artworkStorage) {
   const logical = artworkPath(src, manifest);
+  const file = manifest.files[logical?.split(/[?#]/, 1)[0]];
+  const placeholder = file?.placeholder;
   const image = manifest.images?.[logical];
-  if (!image) return { src };
+  if (!image) return placeholder ? { src, width: file.width, height: file.height, placeholder } : { src };
   const aspect = image.width / image.height;
   const heroSizes = `max(103vw, ${Math.ceil(103 * aspect)}svh)`;
   // The wide library layout has a 5rem inset above its unscaled cover image.
@@ -45,5 +47,14 @@ export function getArtworkImageProps(src, role = "gallery", manifest = artworkSt
     srcSet: candidates(image.webp),
     avifSrcSet: completeAvif ? candidates(image.avif) : undefined,
     sizes,
+    ...(placeholder ? { placeholder } : {}),
   };
+}
+
+export function getArtworkPlaceholderStyle({ placeholder, width, height }) {
+  if (!placeholder) return undefined;
+  // The encoded preview rounds to whole pixels. Restore the source's exact
+  // aspect ratio so background-size and object-fit calculate the same crop.
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"><image width="100%" height="100%" preserveAspectRatio="none" href="data:image/webp;base64,${placeholder}"/></svg>`;
+  return { "--artwork-placeholder": `url("data:image/svg+xml,${encodeURIComponent(svg)}")` };
 }

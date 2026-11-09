@@ -29,6 +29,10 @@ remain distinct actions within the user's requested scope.
   original box front as the primary reference. If unavailable, report the gap.
 - Verify actual decoded dimensions; prompt dimensions are not proof. Check the
   rendered crop and text readability before calling an asset ready.
+- For every new or revised hero and box cover, run `pnpm run artwork:plan` as
+  part of preparing delivery. Confirm that its original record has an inline
+  `placeholder` and that the preview and final image use the same crop. Check
+  heroes at desktop and mobile sizes, including any mobile focal point.
 - Record every generated candidate, including previews, in
   `data/generated-artwork.json`. Use dated generated filenames for new assets;
   retain existing names when registering earlier work. This registry tracks
@@ -53,7 +57,7 @@ remain distinct actions within the user's requested scope.
    sequence in the generation reference; do not claim a one-off WebP export is
    fully optimized. Generated filenames must end in `-hero`, `-cover` or `-poster`
    before the extension so the existing rendition and AVIF selectors recognize them.
-2. Run `pnpm run artwork:plan`. It preserves the active storage mapping, retains previously published records without local originals, and prepares a private upload plan and exact image copies. Keep this evidence under the repository's ignored `.internal/` directory.
+2. Run `pnpm run artwork:plan`. It preserves the active storage mapping, retains previously published records without local originals, and prepares a private upload plan and exact image copies. It generates a WebP preview up to 12 pixels per side from each new or changed original. Keep this evidence under the repository's ignored `.internal/` directory.
 3. Use an authorized credential route to run `pnpm run publish:artwork`. The publisher targets the existing bucket's reserved `artwork/` namespace, creates content-addressed objects conditionally, and checks every object's bytes and metadata by readback. It does not overwrite or prune existing objects or change bucket settings.
 4. Run `pnpm run artwork:activate`. This verifies every public image's checksum, length, MIME type, and immutable cache metadata before atomically switching the tracked storage manifest.
 5. After activation, run `pnpm run artwork:retire-local`. It verifies public delivery again, preserves exact private copies, and removes registered image files from local source and staging directories. It rejects changed originals and preserves notices and skip-intro saves. Keep older R2 objects available for older deployments.

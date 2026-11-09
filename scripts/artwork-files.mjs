@@ -5,11 +5,11 @@ import path from "node:path";
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
 
 // Build-time only. Browsers always request published artwork directly from R2.
-export async function readArtworkFile(root, name, request = fetch) {
+export async function readArtworkFile(root, name, request = fetch, { manifest, cacheDownload = true } = {}) {
   if (!/^\/launcher\/(?:(?:responsive|optimized)\/)?[a-z0-9-]+\.(?:webp|png|avif)$/.test(name)) {
     throw new Error(`Invalid artwork path: ${name}`);
   }
-  const manifest = await fs.readFile(path.join(root, "data/artwork-storage.json"), "utf8")
+  manifest ??= await fs.readFile(path.join(root, "data/artwork-storage.json"), "utf8")
     .then(JSON.parse).catch((error) => { if (error.code !== "ENOENT") throw error; return null; });
   const entry = manifest?.published && manifest.files[name];
   if (entry && (!/^[a-f0-9]{64}$/.test(entry.sha256) || !Number.isSafeInteger(entry.bytes) || entry.bytes < 1)) {
@@ -39,7 +39,9 @@ export async function readArtworkFile(root, name, request = fetch) {
   }
   const bytes = Buffer.concat(chunks);
   if (!valid(bytes)) throw new Error(`Artwork checksum mismatch: ${name}`);
-  await fs.mkdir(path.dirname(cache), { recursive: true });
-  await fs.writeFile(cache, bytes);
+  if (cacheDownload) {
+    await fs.mkdir(path.dirname(cache), { recursive: true });
+    await fs.writeFile(cache, bytes);
+  }
   return bytes;
 }
