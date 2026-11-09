@@ -359,6 +359,22 @@
         "Through AgentSCUMM, verify pause across a wall-clock delay, exact short and 120-tick waits, resume, native save and a paused load that restores a changed room."
       ],
       "retire_when": "ScummVM exposes equivalent web-safe Queen update boundaries, pause and resume, and native runtime save and load."
+    },
+    {
+      "path": "patches/scummvm/23-defer-monkey4-startup-warning.patch",
+      "status": "active",
+      "sha256": "9fc5ef152dd69b53143cf85d45ac7fe0434d447e2a37af086b75fdc156278a08",
+      "purpose": "Launch the bundled Escape from Monkey Island demo directly and pass its native compatibility warning to the ScummWEB player.",
+      "invariants": [
+        "Require the bundled target and an opted-in web player. Preserve standalone, imported, and other game startup behavior.",
+        "Forward the translated unstable-game warning. Keep custom warnings, fatal detection errors, and game-owned intros intact.",
+        "Mark splash handling complete so the existing OpenGL readiness gate still works."
+      ],
+      "verification": [
+        "Launch the bundled demo without dismissing any native UI. Confirm native frame readiness and open the original warning from the toolbar.",
+        "Launch the same target outside the opted-in player and check that the native warning remains available."
+      ],
+      "retire_when": "ScummVM supports forwarding the unstable-game warning to a web host and bypassing the splash per launch while preserving frame readiness."
     }
   ]
 }

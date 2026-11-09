@@ -65,6 +65,15 @@ scummwebBrowserFsReady.catch(()=>{});
 </script><script>
 const scummwebInlineFrame = window.location.pathname === "srcdoc";
 const scummwebLaunchUrl = new URL(scummwebInlineFrame ? document.baseURI : window.location.href);
+if (window.parent !== window && scummwebLaunchUrl.searchParams.get("hostCompatibilityWarning") === "1") {
+  globalThis.__scummwebPostCompatibilityWarning = (message) => {
+    window.parent.postMessage({
+      type: "scummweb:compatibility-warning",
+      href: scummwebLaunchUrl.href,
+      message,
+    }, scummwebLaunchUrl.origin);
+  };
+}
 const agentSaveScope = scummwebLaunchUrl.searchParams.get("agentSaveScope");
 /*__SCUMMWEB_AGENT_CONTROLS__*/
 if (agentSaveScope && /^[a-f0-9]{64}$/.test(agentSaveScope)) installAgentControls(window, agentSaveScope);

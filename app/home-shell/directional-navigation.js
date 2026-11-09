@@ -81,12 +81,12 @@ export default function DirectionalNavigation({ initialFocus, onResumeGame }) {
     }
 
     function move(direction) {
-      if (initialFocus === "toolbar" && (direction === "ArrowDown" || direction === "Escape")) {
+      const modal = document.querySelector("dialog:modal");
+      if (!modal && initialFocus === "toolbar" && (direction === "ArrowDown" || direction === "Escape")) {
         onResumeGame();
         return;
       }
-      const scope = initialFocus === "toolbar" ? document.querySelector(".game-route-controls") :
-        document.querySelector("dialog:modal") ?? document;
+      const scope = modal ?? (initialFocus === "toolbar" ? document.querySelector(".game-route-controls") : document);
       if (!scope) return;
       const current = document.activeElement;
       if (!scope.contains(current) || current === document.body) {
@@ -111,7 +111,8 @@ export default function DirectionalNavigation({ initialFocus, onResumeGame }) {
         landingFullscreenAttempted = true;
         void enterImmersiveMode(root);
       }
-      if (!directionalKey && !(initialFocus === "toolbar" && event.key === "Escape")) return;
+      if (!directionalKey && !(initialFocus === "toolbar" && event.key === "Escape" &&
+          !event.target.closest?.("dialog:modal"))) return;
       if (!root.hasAttribute("data-dpad-navigation") && !event.target.matches?.(controls)) return;
       event.preventDefault();
       activate();

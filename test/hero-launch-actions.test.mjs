@@ -6,6 +6,7 @@ import test from "node:test";
 import { renderToStaticMarkup } from "react-dom/server";
 import swc from "next/dist/build/swc/index.js";
 import { getHeroImageProps } from "../app/home-shell/hero-images.mjs";
+import * as heroOrder from "../app/home-shell/hero-order.mjs";
 import { chooseGameVersion, formatVersionLabel, readChosenVersion, rememberGameVersion } from "../app/game-versions.mjs";
 import * as initialActions from "../app/home-shell/initial-actions.mjs";
 
@@ -79,6 +80,7 @@ const HomeHero = await loadComponent("../app/home-shell/home-hero.js", {
   "./game-navigation": { useGameNavigation: () => null },
   "next/navigation": { useRouter: () => ({ push() {} }) },
   "./hero-stage": HeroStage,
+  "./hero-order.mjs": heroOrder,
   "./hero-images.mjs": { getHeroPreloadImages: () => { preloadCalls += 1; return []; } },
   "../game-versions.mjs": { getGameFamilyKey: (game) => game.target, chooseGameVersion, readChosenVersion, rememberGameVersion },
 }, staticHooks);

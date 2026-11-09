@@ -90,6 +90,53 @@
   transform: scaleX(-1);
 }
 
+.game-route-warning {
+  width: min(28rem, calc(100% - 2rem));
+  max-height: calc(100% - 2rem);
+  padding: 1.5rem;
+  border: 1px solid var(--ghost-border);
+  border-radius: 0.75rem;
+  background: var(--surface-lowest);
+  color: var(--ink);
+  box-shadow: 0 1.5rem 4rem #0008;
+}
+
+.game-route-warning::backdrop {
+  background: #000b;
+}
+
+.game-route-warning h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.game-route-warning p {
+  margin: 0.75rem 0 1.25rem;
+  color: var(--ink-muted);
+  line-height: 1.5;
+}
+
+.game-route-warning form {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.game-route-warning button {
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  border: 1px solid var(--accent-strong);
+  border-radius: 0.5rem;
+  background: var(--accent-strong);
+  color: var(--surface-lowest);
+  font: inherit;
+  cursor: pointer;
+}
+
+.game-route-warning button:focus-visible {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 3px;
+}
+
 .game-route-bottom-actions {
   position: fixed;
   right: max(0.75rem, env(safe-area-inset-right));

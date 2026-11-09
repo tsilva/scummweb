@@ -45,7 +45,9 @@ tests when porting; do not treat an old implementation shape as the requirement.
   GUI through the same renderer. Patch 12 signals after actual refresh with an
   engine, no visible overlay, and a completed splash or prior GUI launch. Its
   `splash`, `_launched`, `_overlayVisible` and refresh lifecycle references are
-  explicit porting points. Preserve original splash/intro behavior. Dark game
+  explicit porting points. For the opted-in Escape from Monkey Island demo,
+  patch 23 skips the native splash but still marks it complete. Preserve the
+  original splash on other launches and preserve game-owned intros. Dark game
   frames are valid; brightness polling alone can miss them or cleared WebGL
   backbuffers. Keep the shell/native callback contract and software fallbacks.
 - A hosted game can request Return to Launcher without terminating the runtime.

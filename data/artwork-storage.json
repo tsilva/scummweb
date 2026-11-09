@@ -36802,6 +36802,726 @@
       "contentType": "image/webp",
       "width": 800,
       "height": 600
+    },
+    "/launcher/escape-from-monkey-island-demo-shot-1.png": {
+      "key": "artwork/410a6c6922f1ce4b201c83930f063026642e75612715bc59b7ac6545fdb49e33/escape-from-monkey-island-demo-shot-1.png",
+      "sha256": "410a6c6922f1ce4b201c83930f063026642e75612715bc59b7ac6545fdb49e33",
+      "bytes": 671481,
+      "contentType": "image/png",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/escape-from-monkey-island-demo-shot-2.png": {
+      "key": "artwork/02d4159da968effd15c2c7acfd9f1365126988e262b954a289e43ddcf12e0d73/escape-from-monkey-island-demo-shot-2.png",
+      "sha256": "02d4159da968effd15c2c7acfd9f1365126988e262b954a289e43ddcf12e0d73",
+      "bytes": 505281,
+      "contentType": "image/png",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/escape-from-monkey-island-demo-shot-3.png": {
+      "key": "artwork/277b2007734b876936c27032a2ff00dafa2daa61520700c1d86651ecdf1a8edb/escape-from-monkey-island-demo-shot-3.png",
+      "sha256": "277b2007734b876936c27032a2ff00dafa2daa61520700c1d86651ecdf1a8edb",
+      "bytes": 647380,
+      "contentType": "image/png",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/grim-fandango-demo-shot-1.png": {
+      "key": "artwork/cc62864ef7413f4be16be8759775579e5994547428209b240c5766064425e4f4/grim-fandango-demo-shot-1.png",
+      "sha256": "cc62864ef7413f4be16be8759775579e5994547428209b240c5766064425e4f4",
+      "bytes": 504226,
+      "contentType": "image/png",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/grim-fandango-demo-shot-2.png": {
+      "key": "artwork/ce58b168c21808102a2409a35ccb8ebe0998177782aab9c78b3daf597fdaa025/grim-fandango-demo-shot-2.png",
+      "sha256": "ce58b168c21808102a2409a35ccb8ebe0998177782aab9c78b3daf597fdaa025",
+      "bytes": 855252,
+      "contentType": "image/png",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/grim-fandango-demo-shot-3.png": {
+      "key": "artwork/d16a269108da16ee2c952bfa9cbbd00c2aaae7a843fa7f31ecdf16b6971281fa/grim-fandango-demo-shot-3.png",
+      "sha256": "d16a269108da16ee2c952bfa9cbbd00c2aaae7a843fa7f31ecdf16b6971281fa",
+      "bytes": 869802,
+      "contentType": "image/png",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/indiana-jones-and-the-fate-of-atlantis-demo-shot-1.png": {
+      "key": "artwork/55b12413cb56f5cfe9d802a420a06023e502823b4cc6c335474b7f8f4079293d/indiana-jones-and-the-fate-of-atlantis-demo-shot-1.png",
+      "sha256": "55b12413cb56f5cfe9d802a420a06023e502823b4cc6c335474b7f8f4079293d",
+      "bytes": 691906,
+      "contentType": "image/png",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/indiana-jones-and-the-fate-of-atlantis-demo-shot-2.png": {
+      "key": "artwork/d6b47edc18e250604a080fadb74bafe433053ab4ebf9b1caba772d41a9db1eb4/indiana-jones-and-the-fate-of-atlantis-demo-shot-2.png",
+      "sha256": "d6b47edc18e250604a080fadb74bafe433053ab4ebf9b1caba772d41a9db1eb4",
+      "bytes": 826600,
+      "contentType": "image/png",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/indiana-jones-and-the-fate-of-atlantis-demo-shot-3.png": {
+      "key": "artwork/b5d8b86b74e13417432061a0d59b08e1dd616a55efd27c11808a7452f7149362/indiana-jones-and-the-fate-of-atlantis-demo-shot-3.png",
+      "sha256": "b5d8b86b74e13417432061a0d59b08e1dd616a55efd27c11808a7452f7149362",
+      "bytes": 927133,
+      "contentType": "image/png",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/zork-i-the-great-underground-empire-shot-1.png": {
+      "key": "artwork/353c440ceefb55e47f2fe96179509d5abf089f6fd5bcdd46b76462b4c08168cf/zork-i-the-great-underground-empire-shot-1.png",
+      "sha256": "353c440ceefb55e47f2fe96179509d5abf089f6fd5bcdd46b76462b4c08168cf",
+      "bytes": 269307,
+      "contentType": "image/png",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/zork-i-the-great-underground-empire-shot-2.png": {
+      "key": "artwork/efc95a631721ad84991ee3f919c763025dd715040f115b470ac6ca0f7e7c4087/zork-i-the-great-underground-empire-shot-2.png",
+      "sha256": "efc95a631721ad84991ee3f919c763025dd715040f115b470ac6ca0f7e7c4087",
+      "bytes": 260748,
+      "contentType": "image/png",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/zork-i-the-great-underground-empire-shot-3.png": {
+      "key": "artwork/77a876345e51d1f12f920eb628d68bddb862e2a09e11c51f6ddee75ea8858730/zork-i-the-great-underground-empire-shot-3.png",
+      "sha256": "77a876345e51d1f12f920eb628d68bddb862e2a09e11c51f6ddee75ea8858730",
+      "bytes": 330569,
+      "contentType": "image/png",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/zork-ii-the-wizard-of-frobozz-shot-1.png": {
+      "key": "artwork/02d418e1cc3ad0e47b7934fabf0d9e99fb49b47f7d226d306a844c93172ed04f/zork-ii-the-wizard-of-frobozz-shot-1.png",
+      "sha256": "02d418e1cc3ad0e47b7934fabf0d9e99fb49b47f7d226d306a844c93172ed04f",
+      "bytes": 269381,
+      "contentType": "image/png",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/zork-ii-the-wizard-of-frobozz-shot-2.png": {
+      "key": "artwork/f97bf93ba1ee3b0cba1646a182976d7123e69eadc2381aa3afe3fe36ab8c6d28/zork-ii-the-wizard-of-frobozz-shot-2.png",
+      "sha256": "f97bf93ba1ee3b0cba1646a182976d7123e69eadc2381aa3afe3fe36ab8c6d28",
+      "bytes": 306172,
+      "contentType": "image/png",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/zork-ii-the-wizard-of-frobozz-shot-3.png": {
+      "key": "artwork/6cb15db79cdc3e5af79106ac1e41dbee47795b2f4958eeb7d1c83ad5d306b8c8/zork-ii-the-wizard-of-frobozz-shot-3.png",
+      "sha256": "6cb15db79cdc3e5af79106ac1e41dbee47795b2f4958eeb7d1c83ad5d306b8c8",
+      "bytes": 258587,
+      "contentType": "image/png",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/zork-iii-the-dungeon-master-shot-1.png": {
+      "key": "artwork/00ddebf8c74e9ecaab2b22090bcb7d185fc375f2399c428f09dc1376f2fcd388/zork-iii-the-dungeon-master-shot-1.png",
+      "sha256": "00ddebf8c74e9ecaab2b22090bcb7d185fc375f2399c428f09dc1376f2fcd388",
+      "bytes": 248738,
+      "contentType": "image/png",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/zork-iii-the-dungeon-master-shot-2.png": {
+      "key": "artwork/5dd733702592631c89c3b90c5ce5d8a799fdf91476ff93a34417d5922f69e7f9/zork-iii-the-dungeon-master-shot-2.png",
+      "sha256": "5dd733702592631c89c3b90c5ce5d8a799fdf91476ff93a34417d5922f69e7f9",
+      "bytes": 265055,
+      "contentType": "image/png",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/zork-iii-the-dungeon-master-shot-3.png": {
+      "key": "artwork/0343fcea11a7f3fe0cb46311d989a64cbeb05b0d9a28a7d606a02a87a9a66a84/zork-iii-the-dungeon-master-shot-3.png",
+      "sha256": "0343fcea11a7f3fe0cb46311d989a64cbeb05b0d9a28a7d606a02a87a9a66a84",
+      "bytes": 240641,
+      "contentType": "image/png",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/optimized/escape-from-monkey-island-demo-shot-1.webp": {
+      "key": "artwork/e227f9eb69e0f3e99a8457f9eb83ae1166c4c701d5db1e78a9a54908d7a220e8/escape-from-monkey-island-demo-shot-1.webp",
+      "sha256": "e227f9eb69e0f3e99a8457f9eb83ae1166c4c701d5db1e78a9a54908d7a220e8",
+      "bytes": 295576,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/optimized/escape-from-monkey-island-demo-shot-2.webp": {
+      "key": "artwork/89b9961bc17308593db6183887aab89d6f012622089bf8dfd6c904e4014ee7a5/escape-from-monkey-island-demo-shot-2.webp",
+      "sha256": "89b9961bc17308593db6183887aab89d6f012622089bf8dfd6c904e4014ee7a5",
+      "bytes": 247476,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/optimized/escape-from-monkey-island-demo-shot-3.webp": {
+      "key": "artwork/eb5a44290e64c45787c0bc6846ca009dfb4549c84a0655b6f844e7f2dfbffa0a/escape-from-monkey-island-demo-shot-3.webp",
+      "sha256": "eb5a44290e64c45787c0bc6846ca009dfb4549c84a0655b6f844e7f2dfbffa0a",
+      "bytes": 274216,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/optimized/grim-fandango-demo-shot-1.webp": {
+      "key": "artwork/4a8d5633d466d0962f62406413691d1dbaa4719392392f8c72c0c4c895a7f4b9/grim-fandango-demo-shot-1.webp",
+      "sha256": "4a8d5633d466d0962f62406413691d1dbaa4719392392f8c72c0c4c895a7f4b9",
+      "bytes": 237718,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/optimized/grim-fandango-demo-shot-2.webp": {
+      "key": "artwork/007db70ac310ad8da7ae9029be3fd9d8b7e995bea8b90f5adee860d14fcdf5d4/grim-fandango-demo-shot-2.webp",
+      "sha256": "007db70ac310ad8da7ae9029be3fd9d8b7e995bea8b90f5adee860d14fcdf5d4",
+      "bytes": 374328,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/optimized/grim-fandango-demo-shot-3.webp": {
+      "key": "artwork/3ce1f7b445b25ca7a55789129b273cce4debbac02ca902d954371e367d6a9b0c/grim-fandango-demo-shot-3.webp",
+      "sha256": "3ce1f7b445b25ca7a55789129b273cce4debbac02ca902d954371e367d6a9b0c",
+      "bytes": 370564,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/optimized/indiana-jones-and-the-fate-of-atlantis-demo-shot-1.webp": {
+      "key": "artwork/2e2e3b1f9ad264355b37a3a2f358134f8647c7027ea69f91ab44995e2bf2b47d/indiana-jones-and-the-fate-of-atlantis-demo-shot-1.webp",
+      "sha256": "2e2e3b1f9ad264355b37a3a2f358134f8647c7027ea69f91ab44995e2bf2b47d",
+      "bytes": 358224,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/optimized/indiana-jones-and-the-fate-of-atlantis-demo-shot-2.webp": {
+      "key": "artwork/7cd17583a7dae44f94136b72fad647648ccc04f6d70091958e158e165db5a19e/indiana-jones-and-the-fate-of-atlantis-demo-shot-2.webp",
+      "sha256": "7cd17583a7dae44f94136b72fad647648ccc04f6d70091958e158e165db5a19e",
+      "bytes": 404258,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/optimized/indiana-jones-and-the-fate-of-atlantis-demo-shot-3.webp": {
+      "key": "artwork/4897950eb033ed04abcd6799077f6890b87c56b4238b9a21379a9c85912b8c79/indiana-jones-and-the-fate-of-atlantis-demo-shot-3.webp",
+      "sha256": "4897950eb033ed04abcd6799077f6890b87c56b4238b9a21379a9c85912b8c79",
+      "bytes": 494906,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/optimized/zork-i-the-great-underground-empire-shot-1.webp": {
+      "key": "artwork/cae801fdf2c7b3038fe93e1d00333c8389e16ce5e0a4b92e865faa3f3938e1d6/zork-i-the-great-underground-empire-shot-1.webp",
+      "sha256": "cae801fdf2c7b3038fe93e1d00333c8389e16ce5e0a4b92e865faa3f3938e1d6",
+      "bytes": 201100,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/optimized/zork-i-the-great-underground-empire-shot-2.webp": {
+      "key": "artwork/769215e7676a0ff0450214d4b62577f169f0dff2649b92ef3c855008fff22011/zork-i-the-great-underground-empire-shot-2.webp",
+      "sha256": "769215e7676a0ff0450214d4b62577f169f0dff2649b92ef3c855008fff22011",
+      "bytes": 193458,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/optimized/zork-i-the-great-underground-empire-shot-3.webp": {
+      "key": "artwork/c729b62d0e467a2482c631fc62d13c8b18f080f920287a1aa3a1b6a14a823eeb/zork-i-the-great-underground-empire-shot-3.webp",
+      "sha256": "c729b62d0e467a2482c631fc62d13c8b18f080f920287a1aa3a1b6a14a823eeb",
+      "bytes": 246676,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/optimized/zork-ii-the-wizard-of-frobozz-shot-1.webp": {
+      "key": "artwork/191be5c0b4fed746b6a45d3efcabf4858aee988e281b49bfe8fc75de2dfe9420/zork-ii-the-wizard-of-frobozz-shot-1.webp",
+      "sha256": "191be5c0b4fed746b6a45d3efcabf4858aee988e281b49bfe8fc75de2dfe9420",
+      "bytes": 200424,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/optimized/zork-ii-the-wizard-of-frobozz-shot-2.webp": {
+      "key": "artwork/b4051bc34061eb1c48006cccca6b63a37bf932ba26c9eda7e10afaf2333bb2ff/zork-ii-the-wizard-of-frobozz-shot-2.webp",
+      "sha256": "b4051bc34061eb1c48006cccca6b63a37bf932ba26c9eda7e10afaf2333bb2ff",
+      "bytes": 230690,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/optimized/zork-ii-the-wizard-of-frobozz-shot-3.webp": {
+      "key": "artwork/77597edcd69e9d76d77ed54f8187900add856bb33061ba5bd11ecf46b8388244/zork-ii-the-wizard-of-frobozz-shot-3.webp",
+      "sha256": "77597edcd69e9d76d77ed54f8187900add856bb33061ba5bd11ecf46b8388244",
+      "bytes": 197414,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/optimized/zork-iii-the-dungeon-master-shot-1.webp": {
+      "key": "artwork/e78d675d64792119b98e111b3888e52770b765b329065ad33c735437f0982d81/zork-iii-the-dungeon-master-shot-1.webp",
+      "sha256": "e78d675d64792119b98e111b3888e52770b765b329065ad33c735437f0982d81",
+      "bytes": 185776,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/optimized/zork-iii-the-dungeon-master-shot-2.webp": {
+      "key": "artwork/25cb25b0823ddfc7f8546005551d242a9f549e8dc69a7d4c8c30eec352226d5d/zork-iii-the-dungeon-master-shot-2.webp",
+      "sha256": "25cb25b0823ddfc7f8546005551d242a9f549e8dc69a7d4c8c30eec352226d5d",
+      "bytes": 197730,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/optimized/zork-iii-the-dungeon-master-shot-3.webp": {
+      "key": "artwork/20ef8f6207d41e30a376f2a06637e1851c79acc1c81e9aa17f48d70f25b20180/zork-iii-the-dungeon-master-shot-3.webp",
+      "sha256": "20ef8f6207d41e30a376f2a06637e1851c79acc1c81e9aa17f48d70f25b20180",
+      "bytes": 181416,
+      "contentType": "image/webp",
+      "width": 800,
+      "height": 600
+    },
+    "/launcher/responsive/escape-from-monkey-island-demo-shot-1-320.webp": {
+      "key": "artwork/17e1241a23b9e5e30b9f63f7f617b36096c1d72a8083a28c2cea8962a974c496/escape-from-monkey-island-demo-shot-1-320.webp",
+      "sha256": "17e1241a23b9e5e30b9f63f7f617b36096c1d72a8083a28c2cea8962a974c496",
+      "bytes": 80046,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/escape-from-monkey-island-demo-shot-1-480.webp": {
+      "key": "artwork/00e9c090008ac6622dc8b57ad88b3c4b5e1573746c6b62fbae32a78b2edefa20/escape-from-monkey-island-demo-shot-1-480.webp",
+      "sha256": "00e9c090008ac6622dc8b57ad88b3c4b5e1573746c6b62fbae32a78b2edefa20",
+      "bytes": 154292,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/responsive/escape-from-monkey-island-demo-shot-1-640.webp": {
+      "key": "artwork/95d22ab488416b89ed99c3f21c759d42ccd465a172349e4f1ef33a3684718f0a/escape-from-monkey-island-demo-shot-1-640.webp",
+      "sha256": "95d22ab488416b89ed99c3f21c759d42ccd465a172349e4f1ef33a3684718f0a",
+      "bytes": 247584,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/escape-from-monkey-island-demo-shot-2-320.webp": {
+      "key": "artwork/266d46fefcc264bbb75829e7f33acd17141c7687fcf4eef7afcfd2b8a28e917d/escape-from-monkey-island-demo-shot-2-320.webp",
+      "sha256": "266d46fefcc264bbb75829e7f33acd17141c7687fcf4eef7afcfd2b8a28e917d",
+      "bytes": 69342,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/escape-from-monkey-island-demo-shot-2-480.webp": {
+      "key": "artwork/2033d8785b7af27eff4aaea1d60910f7932f66625b7de3e0ce6e22f5cf122e93/escape-from-monkey-island-demo-shot-2-480.webp",
+      "sha256": "2033d8785b7af27eff4aaea1d60910f7932f66625b7de3e0ce6e22f5cf122e93",
+      "bytes": 130720,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/responsive/escape-from-monkey-island-demo-shot-2-640.webp": {
+      "key": "artwork/57edb212c797538e1799653bfff5bd2560b13fb35d83524166e7dfc1d891f53a/escape-from-monkey-island-demo-shot-2-640.webp",
+      "sha256": "57edb212c797538e1799653bfff5bd2560b13fb35d83524166e7dfc1d891f53a",
+      "bytes": 206428,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/escape-from-monkey-island-demo-shot-3-320.webp": {
+      "key": "artwork/efd6ee888918161c1136c9c0fc8982b66a5b41e61d16f95cf3eff7a8a513ba79/escape-from-monkey-island-demo-shot-3-320.webp",
+      "sha256": "efd6ee888918161c1136c9c0fc8982b66a5b41e61d16f95cf3eff7a8a513ba79",
+      "bytes": 79496,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/escape-from-monkey-island-demo-shot-3-480.webp": {
+      "key": "artwork/51549c94a0dcad839aecca33c7d59e5e1ac3b8f2e425ac5148d907d089982672/escape-from-monkey-island-demo-shot-3-480.webp",
+      "sha256": "51549c94a0dcad839aecca33c7d59e5e1ac3b8f2e425ac5148d907d089982672",
+      "bytes": 151884,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/responsive/escape-from-monkey-island-demo-shot-3-640.webp": {
+      "key": "artwork/f25c62a3b6c95d87bbaf82f5ce46edc6c97e394a13c035e7f2c99e9ad19d75ee/escape-from-monkey-island-demo-shot-3-640.webp",
+      "sha256": "f25c62a3b6c95d87bbaf82f5ce46edc6c97e394a13c035e7f2c99e9ad19d75ee",
+      "bytes": 248328,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/grim-fandango-demo-shot-1-320.webp": {
+      "key": "artwork/64902f917270c9e54b7595342d07c3dc71fb3241abe8164b3cd7a214bd9e1c8b/grim-fandango-demo-shot-1-320.webp",
+      "sha256": "64902f917270c9e54b7595342d07c3dc71fb3241abe8164b3cd7a214bd9e1c8b",
+      "bytes": 66976,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/grim-fandango-demo-shot-1-480.webp": {
+      "key": "artwork/16202bb17ea1e2f0ab622d5a44992536904f4790f0aa8e3a00b2bebe7c0b133d/grim-fandango-demo-shot-1-480.webp",
+      "sha256": "16202bb17ea1e2f0ab622d5a44992536904f4790f0aa8e3a00b2bebe7c0b133d",
+      "bytes": 130338,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/responsive/grim-fandango-demo-shot-1-640.webp": {
+      "key": "artwork/14fca940cb5e22cbc31fd29cf32c9b6ba8b3545ff9b358cf48b2b39b3db8e556/grim-fandango-demo-shot-1-640.webp",
+      "sha256": "14fca940cb5e22cbc31fd29cf32c9b6ba8b3545ff9b358cf48b2b39b3db8e556",
+      "bytes": 206168,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/grim-fandango-demo-shot-2-320.webp": {
+      "key": "artwork/20a6073dfdd8bd1eacab37a973a1617adf447e706dbf33c5c60f12a623f344e7/grim-fandango-demo-shot-2-320.webp",
+      "sha256": "20a6073dfdd8bd1eacab37a973a1617adf447e706dbf33c5c60f12a623f344e7",
+      "bytes": 84618,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/grim-fandango-demo-shot-2-480.webp": {
+      "key": "artwork/f2060da4711c24ebbf81a74db4f7f1816eaeaa42759015e6d9a3bf048e768f3c/grim-fandango-demo-shot-2-480.webp",
+      "sha256": "f2060da4711c24ebbf81a74db4f7f1816eaeaa42759015e6d9a3bf048e768f3c",
+      "bytes": 170422,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/responsive/grim-fandango-demo-shot-2-640.webp": {
+      "key": "artwork/b7d3d27536eb85a54c7f0ca9aaac710371fe8ede7599fb27ba24c068778491e7/grim-fandango-demo-shot-2-640.webp",
+      "sha256": "b7d3d27536eb85a54c7f0ca9aaac710371fe8ede7599fb27ba24c068778491e7",
+      "bytes": 279940,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/grim-fandango-demo-shot-3-320.webp": {
+      "key": "artwork/bb56d8b2ca1c598dbeca4cfaad827782b2ff6d790b41148de34084696ff8db36/grim-fandango-demo-shot-3-320.webp",
+      "sha256": "bb56d8b2ca1c598dbeca4cfaad827782b2ff6d790b41148de34084696ff8db36",
+      "bytes": 91592,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/grim-fandango-demo-shot-3-480.webp": {
+      "key": "artwork/a127d748deddf7d2a7645056bf1632c2f75aafbafc97488ce676379e4f346aef/grim-fandango-demo-shot-3-480.webp",
+      "sha256": "a127d748deddf7d2a7645056bf1632c2f75aafbafc97488ce676379e4f346aef",
+      "bytes": 179938,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/responsive/grim-fandango-demo-shot-3-640.webp": {
+      "key": "artwork/5b4c34bd692e59ed14884d652196cb4cb22da2696c274cdc2ac8779b4d022dda/grim-fandango-demo-shot-3-640.webp",
+      "sha256": "5b4c34bd692e59ed14884d652196cb4cb22da2696c274cdc2ac8779b4d022dda",
+      "bytes": 289596,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-1-320.webp": {
+      "key": "artwork/6c2aff56846db39131a83ddf2778e5e92ab303e678aa894b76d83549f9a112fa/indiana-jones-and-the-fate-of-atlantis-demo-shot-1-320.webp",
+      "sha256": "6c2aff56846db39131a83ddf2778e5e92ab303e678aa894b76d83549f9a112fa",
+      "bytes": 82264,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-1-480.webp": {
+      "key": "artwork/9df7fe4388ec06308e81b94b6bca46de39031d624da3fbfc0676842b3f5b86e8/indiana-jones-and-the-fate-of-atlantis-demo-shot-1-480.webp",
+      "sha256": "9df7fe4388ec06308e81b94b6bca46de39031d624da3fbfc0676842b3f5b86e8",
+      "bytes": 164268,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-1-640.webp": {
+      "key": "artwork/e6e6a490a140895727033cccc90f27df0f025f6c31354293bd87d1fc7ab5df25/indiana-jones-and-the-fate-of-atlantis-demo-shot-1-640.webp",
+      "sha256": "e6e6a490a140895727033cccc90f27df0f025f6c31354293bd87d1fc7ab5df25",
+      "bytes": 267104,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-2-320.webp": {
+      "key": "artwork/997c58639453ca5275df9c3d52e452b22881d1d4b56c1f9bbe361d483977bd0b/indiana-jones-and-the-fate-of-atlantis-demo-shot-2-320.webp",
+      "sha256": "997c58639453ca5275df9c3d52e452b22881d1d4b56c1f9bbe361d483977bd0b",
+      "bytes": 90046,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-2-480.webp": {
+      "key": "artwork/7c151a6267bc009b9e1acfc3d43d422b1b9fc6e7612fe24cb4805d36afd81250/indiana-jones-and-the-fate-of-atlantis-demo-shot-2-480.webp",
+      "sha256": "7c151a6267bc009b9e1acfc3d43d422b1b9fc6e7612fe24cb4805d36afd81250",
+      "bytes": 179744,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-2-640.webp": {
+      "key": "artwork/3a50423975784d84c7584866fafcf9a404573dfd4c7a6dd1a3959d4c35ae3e61/indiana-jones-and-the-fate-of-atlantis-demo-shot-2-640.webp",
+      "sha256": "3a50423975784d84c7584866fafcf9a404573dfd4c7a6dd1a3959d4c35ae3e61",
+      "bytes": 292418,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-3-320.webp": {
+      "key": "artwork/706bb8dd8adb15abd8de8ff1a6b49474022f66bb92435f77af4d11a59749d401/indiana-jones-and-the-fate-of-atlantis-demo-shot-3-320.webp",
+      "sha256": "706bb8dd8adb15abd8de8ff1a6b49474022f66bb92435f77af4d11a59749d401",
+      "bytes": 110244,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-3-480.webp": {
+      "key": "artwork/ab840f7b349fde41fcf8f2c814b8696eb03f1ba99f07bcf064d584a521c28482/indiana-jones-and-the-fate-of-atlantis-demo-shot-3-480.webp",
+      "sha256": "ab840f7b349fde41fcf8f2c814b8696eb03f1ba99f07bcf064d584a521c28482",
+      "bytes": 216648,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-3-640.webp": {
+      "key": "artwork/b1e6a38822886ed9b01abd198343d171675a9db1604ca86bdc7de350edaa73ea/indiana-jones-and-the-fate-of-atlantis-demo-shot-3-640.webp",
+      "sha256": "b1e6a38822886ed9b01abd198343d171675a9db1604ca86bdc7de350edaa73ea",
+      "bytes": 349410,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/zork-i-the-great-underground-empire-shot-1-320.webp": {
+      "key": "artwork/9ab68d79eaf90fa530bbf3b7393cedf985dffdbb5099a6925febd8e06728ff8e/zork-i-the-great-underground-empire-shot-1-320.webp",
+      "sha256": "9ab68d79eaf90fa530bbf3b7393cedf985dffdbb5099a6925febd8e06728ff8e",
+      "bytes": 41288,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/zork-i-the-great-underground-empire-shot-1-480.webp": {
+      "key": "artwork/44adeedb2872fedecdcdde3ebb51db4dedd8404847be6545c63accf10e4976ca/zork-i-the-great-underground-empire-shot-1-480.webp",
+      "sha256": "44adeedb2872fedecdcdde3ebb51db4dedd8404847be6545c63accf10e4976ca",
+      "bytes": 86868,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/responsive/zork-i-the-great-underground-empire-shot-1-640.webp": {
+      "key": "artwork/dda8391a3a028e7b7fd096dfa7de070f99beb67cadc96ab750d44314ac6f0049/zork-i-the-great-underground-empire-shot-1-640.webp",
+      "sha256": "dda8391a3a028e7b7fd096dfa7de070f99beb67cadc96ab750d44314ac6f0049",
+      "bytes": 150008,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/zork-i-the-great-underground-empire-shot-2-320.webp": {
+      "key": "artwork/bcaa795344004f947bda4f0cfb6407ae2c3158ad427e520dd4b2a5ee8a5319d4/zork-i-the-great-underground-empire-shot-2-320.webp",
+      "sha256": "bcaa795344004f947bda4f0cfb6407ae2c3158ad427e520dd4b2a5ee8a5319d4",
+      "bytes": 38998,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/zork-i-the-great-underground-empire-shot-2-480.webp": {
+      "key": "artwork/148f4738d7262e8a5e65804c78571f61754a33d6093b46abb819707761b24d5b/zork-i-the-great-underground-empire-shot-2-480.webp",
+      "sha256": "148f4738d7262e8a5e65804c78571f61754a33d6093b46abb819707761b24d5b",
+      "bytes": 82774,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/responsive/zork-i-the-great-underground-empire-shot-2-640.webp": {
+      "key": "artwork/4d7c9cc462b595a04af2c8a8b2ba11a5b9ffc59cb57b56b0c302e028f26dd79b/zork-i-the-great-underground-empire-shot-2-640.webp",
+      "sha256": "4d7c9cc462b595a04af2c8a8b2ba11a5b9ffc59cb57b56b0c302e028f26dd79b",
+      "bytes": 136538,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/zork-i-the-great-underground-empire-shot-3-320.webp": {
+      "key": "artwork/1f9d71980b82523e697db539598e45d20130067a374b41f6c67c27aeb13134b0/zork-i-the-great-underground-empire-shot-3-320.webp",
+      "sha256": "1f9d71980b82523e697db539598e45d20130067a374b41f6c67c27aeb13134b0",
+      "bytes": 49356,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/zork-i-the-great-underground-empire-shot-3-480.webp": {
+      "key": "artwork/32fc4b0fd1cfbe1eb8651aad63b72e6871292dbce7431aed4008bf9d8038739d/zork-i-the-great-underground-empire-shot-3-480.webp",
+      "sha256": "32fc4b0fd1cfbe1eb8651aad63b72e6871292dbce7431aed4008bf9d8038739d",
+      "bytes": 106258,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/responsive/zork-i-the-great-underground-empire-shot-3-640.webp": {
+      "key": "artwork/2fba678bf3bb840a97e07ad54bed96beefb834a76b851587b1479f6db06c0ed5/zork-i-the-great-underground-empire-shot-3-640.webp",
+      "sha256": "2fba678bf3bb840a97e07ad54bed96beefb834a76b851587b1479f6db06c0ed5",
+      "bytes": 182190,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/zork-ii-the-wizard-of-frobozz-shot-1-320.webp": {
+      "key": "artwork/0bd46e886dc0000507da704c05cb9f3aae66145f83145f15db57691fb04a5883/zork-ii-the-wizard-of-frobozz-shot-1-320.webp",
+      "sha256": "0bd46e886dc0000507da704c05cb9f3aae66145f83145f15db57691fb04a5883",
+      "bytes": 40422,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/zork-ii-the-wizard-of-frobozz-shot-1-480.webp": {
+      "key": "artwork/7ba56a95f6fd463295e014bf6814a146d8f1936ace800a2a4b5020bcec825726/zork-ii-the-wizard-of-frobozz-shot-1-480.webp",
+      "sha256": "7ba56a95f6fd463295e014bf6814a146d8f1936ace800a2a4b5020bcec825726",
+      "bytes": 86908,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/responsive/zork-ii-the-wizard-of-frobozz-shot-1-640.webp": {
+      "key": "artwork/3f2ef765d2b05e9af52bbd221170d7e376aad53bf0b92994d9dd064b93405bfd/zork-ii-the-wizard-of-frobozz-shot-1-640.webp",
+      "sha256": "3f2ef765d2b05e9af52bbd221170d7e376aad53bf0b92994d9dd064b93405bfd",
+      "bytes": 141022,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/zork-ii-the-wizard-of-frobozz-shot-2-320.webp": {
+      "key": "artwork/927d656e45bb50aee198e8a29f89bddb02c3220ffd284d70f37bfdc945e9283c/zork-ii-the-wizard-of-frobozz-shot-2-320.webp",
+      "sha256": "927d656e45bb50aee198e8a29f89bddb02c3220ffd284d70f37bfdc945e9283c",
+      "bytes": 46674,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/zork-ii-the-wizard-of-frobozz-shot-2-480.webp": {
+      "key": "artwork/9542263a46f4140019eea58fff36b4ef7bb2a1bd9f13255725d7ddf93e7fb87f/zork-ii-the-wizard-of-frobozz-shot-2-480.webp",
+      "sha256": "9542263a46f4140019eea58fff36b4ef7bb2a1bd9f13255725d7ddf93e7fb87f",
+      "bytes": 99794,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/responsive/zork-ii-the-wizard-of-frobozz-shot-2-640.webp": {
+      "key": "artwork/2a2b6e201ee688bb37315294c99783121a647a384e022b4c267d78c5e55a3fff/zork-ii-the-wizard-of-frobozz-shot-2-640.webp",
+      "sha256": "2a2b6e201ee688bb37315294c99783121a647a384e022b4c267d78c5e55a3fff",
+      "bytes": 171464,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/zork-ii-the-wizard-of-frobozz-shot-3-320.webp": {
+      "key": "artwork/57de3086705e92beaaf77aaa875b9e54e5ed2b05b368391a335e8446bc4983d7/zork-ii-the-wizard-of-frobozz-shot-3-320.webp",
+      "sha256": "57de3086705e92beaaf77aaa875b9e54e5ed2b05b368391a335e8446bc4983d7",
+      "bytes": 39738,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/zork-ii-the-wizard-of-frobozz-shot-3-480.webp": {
+      "key": "artwork/a12a3ee89ea73bd90bcb1f2eca12c082e0357895c54dcdba28e4457bcbc62779/zork-ii-the-wizard-of-frobozz-shot-3-480.webp",
+      "sha256": "a12a3ee89ea73bd90bcb1f2eca12c082e0357895c54dcdba28e4457bcbc62779",
+      "bytes": 85004,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/responsive/zork-ii-the-wizard-of-frobozz-shot-3-640.webp": {
+      "key": "artwork/cd6ceb1e1bb3b03ea61761525810b731292cfd47651d2344cf025e3ce6abdb6a/zork-ii-the-wizard-of-frobozz-shot-3-640.webp",
+      "sha256": "cd6ceb1e1bb3b03ea61761525810b731292cfd47651d2344cf025e3ce6abdb6a",
+      "bytes": 138474,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/zork-iii-the-dungeon-master-shot-1-320.webp": {
+      "key": "artwork/592b655623181129023a29d71f0a174ff4657988f3a4792a3a68ea569f505b2f/zork-iii-the-dungeon-master-shot-1-320.webp",
+      "sha256": "592b655623181129023a29d71f0a174ff4657988f3a4792a3a68ea569f505b2f",
+      "bytes": 38008,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/zork-iii-the-dungeon-master-shot-1-480.webp": {
+      "key": "artwork/0654625a63318eef230ff51997b65320234985f8a1b3e3b0304c438bbe5dfb6b/zork-iii-the-dungeon-master-shot-1-480.webp",
+      "sha256": "0654625a63318eef230ff51997b65320234985f8a1b3e3b0304c438bbe5dfb6b",
+      "bytes": 79624,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/responsive/zork-iii-the-dungeon-master-shot-1-640.webp": {
+      "key": "artwork/1136313c6aab1332701698e9445d1ffaf4764892424fea5eda9ad11b34a29cb9/zork-iii-the-dungeon-master-shot-1-640.webp",
+      "sha256": "1136313c6aab1332701698e9445d1ffaf4764892424fea5eda9ad11b34a29cb9",
+      "bytes": 130990,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/zork-iii-the-dungeon-master-shot-2-320.webp": {
+      "key": "artwork/1f0974a747295e2cbccf78d7e29ede30c7bf50624f681ce1a0254815d6a4d9d3/zork-iii-the-dungeon-master-shot-2-320.webp",
+      "sha256": "1f0974a747295e2cbccf78d7e29ede30c7bf50624f681ce1a0254815d6a4d9d3",
+      "bytes": 40960,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/zork-iii-the-dungeon-master-shot-2-480.webp": {
+      "key": "artwork/c9e89a630a07de3dafff7dde4248d08e616a704bb0bacb6949a747d2a0eca550/zork-iii-the-dungeon-master-shot-2-480.webp",
+      "sha256": "c9e89a630a07de3dafff7dde4248d08e616a704bb0bacb6949a747d2a0eca550",
+      "bytes": 86328,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/responsive/zork-iii-the-dungeon-master-shot-2-640.webp": {
+      "key": "artwork/0c8554ae20692d7ae62cdb9b6a265e0022b3298273e1fdc8af97cb79e7872f1e/zork-iii-the-dungeon-master-shot-2-640.webp",
+      "sha256": "0c8554ae20692d7ae62cdb9b6a265e0022b3298273e1fdc8af97cb79e7872f1e",
+      "bytes": 147524,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/zork-iii-the-dungeon-master-shot-3-320.webp": {
+      "key": "artwork/48d4dd208fe00a351f563db72778e0fe98a0920675e20669a2d3fee4605bedfa/zork-iii-the-dungeon-master-shot-3-320.webp",
+      "sha256": "48d4dd208fe00a351f563db72778e0fe98a0920675e20669a2d3fee4605bedfa",
+      "bytes": 37420,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 240
+    },
+    "/launcher/responsive/zork-iii-the-dungeon-master-shot-3-480.webp": {
+      "key": "artwork/a4213fb3685c71fde39370672802559996ebf3b86e87d1041b95538a95f0bdde/zork-iii-the-dungeon-master-shot-3-480.webp",
+      "sha256": "a4213fb3685c71fde39370672802559996ebf3b86e87d1041b95538a95f0bdde",
+      "bytes": 77694,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 360
+    },
+    "/launcher/responsive/zork-iii-the-dungeon-master-shot-3-640.webp": {
+      "key": "artwork/5bbdf762cda56bd187a9c3701e22ea4ebfbf5637acc4a0711ed6ecbf48065545/zork-iii-the-dungeon-master-shot-3-640.webp",
+      "sha256": "5bbdf762cda56bd187a9c3701e22ea4ebfbf5637acc4a0711ed6ecbf48065545",
+      "bytes": 127944,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
     }
   },
   "images": {
@@ -50601,6 +51321,222 @@
         "/launcher/responsive/the-curse-of-monkey-island-demo-shot-3-320.webp",
         "/launcher/responsive/the-curse-of-monkey-island-demo-shot-3-480.webp",
         "/launcher/the-curse-of-monkey-island-demo-shot-3.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/escape-from-monkey-island-demo-shot-1.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/escape-from-monkey-island-demo-shot-1.webp",
+      "webp": [
+        "/launcher/responsive/escape-from-monkey-island-demo-shot-1-320.webp",
+        "/launcher/responsive/escape-from-monkey-island-demo-shot-1-480.webp",
+        "/launcher/responsive/escape-from-monkey-island-demo-shot-1-640.webp",
+        "/launcher/optimized/escape-from-monkey-island-demo-shot-1.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/escape-from-monkey-island-demo-shot-2.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/escape-from-monkey-island-demo-shot-2.webp",
+      "webp": [
+        "/launcher/responsive/escape-from-monkey-island-demo-shot-2-320.webp",
+        "/launcher/responsive/escape-from-monkey-island-demo-shot-2-480.webp",
+        "/launcher/responsive/escape-from-monkey-island-demo-shot-2-640.webp",
+        "/launcher/optimized/escape-from-monkey-island-demo-shot-2.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/escape-from-monkey-island-demo-shot-3.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/escape-from-monkey-island-demo-shot-3.webp",
+      "webp": [
+        "/launcher/responsive/escape-from-monkey-island-demo-shot-3-320.webp",
+        "/launcher/responsive/escape-from-monkey-island-demo-shot-3-480.webp",
+        "/launcher/responsive/escape-from-monkey-island-demo-shot-3-640.webp",
+        "/launcher/optimized/escape-from-monkey-island-demo-shot-3.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/grim-fandango-demo-shot-1.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/grim-fandango-demo-shot-1.webp",
+      "webp": [
+        "/launcher/responsive/grim-fandango-demo-shot-1-320.webp",
+        "/launcher/responsive/grim-fandango-demo-shot-1-480.webp",
+        "/launcher/responsive/grim-fandango-demo-shot-1-640.webp",
+        "/launcher/optimized/grim-fandango-demo-shot-1.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/grim-fandango-demo-shot-2.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/grim-fandango-demo-shot-2.webp",
+      "webp": [
+        "/launcher/responsive/grim-fandango-demo-shot-2-320.webp",
+        "/launcher/responsive/grim-fandango-demo-shot-2-480.webp",
+        "/launcher/responsive/grim-fandango-demo-shot-2-640.webp",
+        "/launcher/optimized/grim-fandango-demo-shot-2.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/grim-fandango-demo-shot-3.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/grim-fandango-demo-shot-3.webp",
+      "webp": [
+        "/launcher/responsive/grim-fandango-demo-shot-3-320.webp",
+        "/launcher/responsive/grim-fandango-demo-shot-3-480.webp",
+        "/launcher/responsive/grim-fandango-demo-shot-3-640.webp",
+        "/launcher/optimized/grim-fandango-demo-shot-3.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/indiana-jones-and-the-fate-of-atlantis-demo-shot-1.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/indiana-jones-and-the-fate-of-atlantis-demo-shot-1.webp",
+      "webp": [
+        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-1-320.webp",
+        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-1-480.webp",
+        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-1-640.webp",
+        "/launcher/optimized/indiana-jones-and-the-fate-of-atlantis-demo-shot-1.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/indiana-jones-and-the-fate-of-atlantis-demo-shot-2.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/indiana-jones-and-the-fate-of-atlantis-demo-shot-2.webp",
+      "webp": [
+        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-2-320.webp",
+        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-2-480.webp",
+        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-2-640.webp",
+        "/launcher/optimized/indiana-jones-and-the-fate-of-atlantis-demo-shot-2.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/indiana-jones-and-the-fate-of-atlantis-demo-shot-3.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/indiana-jones-and-the-fate-of-atlantis-demo-shot-3.webp",
+      "webp": [
+        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-3-320.webp",
+        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-3-480.webp",
+        "/launcher/responsive/indiana-jones-and-the-fate-of-atlantis-demo-shot-3-640.webp",
+        "/launcher/optimized/indiana-jones-and-the-fate-of-atlantis-demo-shot-3.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/zork-i-the-great-underground-empire-shot-1.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/zork-i-the-great-underground-empire-shot-1.webp",
+      "webp": [
+        "/launcher/responsive/zork-i-the-great-underground-empire-shot-1-320.webp",
+        "/launcher/responsive/zork-i-the-great-underground-empire-shot-1-480.webp",
+        "/launcher/responsive/zork-i-the-great-underground-empire-shot-1-640.webp",
+        "/launcher/optimized/zork-i-the-great-underground-empire-shot-1.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/zork-i-the-great-underground-empire-shot-2.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/zork-i-the-great-underground-empire-shot-2.webp",
+      "webp": [
+        "/launcher/responsive/zork-i-the-great-underground-empire-shot-2-320.webp",
+        "/launcher/responsive/zork-i-the-great-underground-empire-shot-2-480.webp",
+        "/launcher/responsive/zork-i-the-great-underground-empire-shot-2-640.webp",
+        "/launcher/optimized/zork-i-the-great-underground-empire-shot-2.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/zork-i-the-great-underground-empire-shot-3.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/zork-i-the-great-underground-empire-shot-3.webp",
+      "webp": [
+        "/launcher/responsive/zork-i-the-great-underground-empire-shot-3-320.webp",
+        "/launcher/responsive/zork-i-the-great-underground-empire-shot-3-480.webp",
+        "/launcher/responsive/zork-i-the-great-underground-empire-shot-3-640.webp",
+        "/launcher/optimized/zork-i-the-great-underground-empire-shot-3.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/zork-ii-the-wizard-of-frobozz-shot-1.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/zork-ii-the-wizard-of-frobozz-shot-1.webp",
+      "webp": [
+        "/launcher/responsive/zork-ii-the-wizard-of-frobozz-shot-1-320.webp",
+        "/launcher/responsive/zork-ii-the-wizard-of-frobozz-shot-1-480.webp",
+        "/launcher/responsive/zork-ii-the-wizard-of-frobozz-shot-1-640.webp",
+        "/launcher/optimized/zork-ii-the-wizard-of-frobozz-shot-1.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/zork-ii-the-wizard-of-frobozz-shot-2.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/zork-ii-the-wizard-of-frobozz-shot-2.webp",
+      "webp": [
+        "/launcher/responsive/zork-ii-the-wizard-of-frobozz-shot-2-320.webp",
+        "/launcher/responsive/zork-ii-the-wizard-of-frobozz-shot-2-480.webp",
+        "/launcher/responsive/zork-ii-the-wizard-of-frobozz-shot-2-640.webp",
+        "/launcher/optimized/zork-ii-the-wizard-of-frobozz-shot-2.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/zork-ii-the-wizard-of-frobozz-shot-3.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/zork-ii-the-wizard-of-frobozz-shot-3.webp",
+      "webp": [
+        "/launcher/responsive/zork-ii-the-wizard-of-frobozz-shot-3-320.webp",
+        "/launcher/responsive/zork-ii-the-wizard-of-frobozz-shot-3-480.webp",
+        "/launcher/responsive/zork-ii-the-wizard-of-frobozz-shot-3-640.webp",
+        "/launcher/optimized/zork-ii-the-wizard-of-frobozz-shot-3.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/zork-iii-the-dungeon-master-shot-1.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/zork-iii-the-dungeon-master-shot-1.webp",
+      "webp": [
+        "/launcher/responsive/zork-iii-the-dungeon-master-shot-1-320.webp",
+        "/launcher/responsive/zork-iii-the-dungeon-master-shot-1-480.webp",
+        "/launcher/responsive/zork-iii-the-dungeon-master-shot-1-640.webp",
+        "/launcher/optimized/zork-iii-the-dungeon-master-shot-1.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/zork-iii-the-dungeon-master-shot-2.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/zork-iii-the-dungeon-master-shot-2.webp",
+      "webp": [
+        "/launcher/responsive/zork-iii-the-dungeon-master-shot-2-320.webp",
+        "/launcher/responsive/zork-iii-the-dungeon-master-shot-2-480.webp",
+        "/launcher/responsive/zork-iii-the-dungeon-master-shot-2-640.webp",
+        "/launcher/optimized/zork-iii-the-dungeon-master-shot-2.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/zork-iii-the-dungeon-master-shot-3.png": {
+      "width": 800,
+      "height": 600,
+      "fallback": "/launcher/optimized/zork-iii-the-dungeon-master-shot-3.webp",
+      "webp": [
+        "/launcher/responsive/zork-iii-the-dungeon-master-shot-3-320.webp",
+        "/launcher/responsive/zork-iii-the-dungeon-master-shot-3-480.webp",
+        "/launcher/responsive/zork-iii-the-dungeon-master-shot-3-640.webp",
+        "/launcher/optimized/zork-iii-the-dungeon-master-shot-3.webp"
       ],
       "avif": []
     }

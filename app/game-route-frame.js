@@ -151,6 +151,7 @@ export default function GameRouteFrame({
   }), [catalogArchiveUrl, target]);
   const loadArchive = catalogArchiveUrl ? loadCatalogArchive : loadPersonalArchive;
   const catalogLaunch = !loadArchive || Boolean(catalogArchiveUrl);
+  const hostsCompatibilityWarning = catalogLaunch && target === "monkey4-demo";
   const router = useRouter();
   const shellRef = useRef(null);
   const frameRef = useRef(null);
@@ -167,6 +168,7 @@ export default function GameRouteFrame({
   const [isResuming, setIsResuming] = useState(false);
   const [exitHref, setExitHref] = useState("/");
   const [readySignal, setReadySignal] = useState(null);
+  const [compatibilityWarning, setCompatibilityWarning] = useState(null);
   const [skipIntroConsumed, setSkipIntroConsumed] = useState(false);
   const [catalogIntroLaunch, setCatalogIntroLaunch] = useState(null);
   const [remoteToolbarOpen, setRemoteToolbarOpen] = useState(false);
@@ -331,6 +333,15 @@ export default function GameRouteFrame({
       if (event.origin !== window.location.origin) {
         return;
       }
+      if (event.data?.type === "scummweb:compatibility-warning") {
+        const { href, message } = event.data;
+        if (hostsCompatibilityWarning && event.source === frameRef.current?.contentWindow &&
+            typeof href === "string" && getNormalizedFrameHref(href) === frameSrc &&
+            typeof message === "string" && message.trim()) {
+          setCompatibilityWarning(message);
+        }
+        return;
+      }
       if (event.data?.type === "scummvm-boot-error") {
         if (event.source && event.source === frameRef.current?.contentWindow &&
             typeof event.data.href === "string" && getNormalizedFrameHref(event.data.href) === frameSrc) {
@@ -438,11 +449,12 @@ export default function GameRouteFrame({
       stopArchiveBootTimer();
       window.removeEventListener("message", handleMessage);
     };
-  }, [archiveFrameDocument, archivePrepared, catalogLaunch, frameSrc, game?.engineId, game?.saveNamespace, game?.slug, launchAnalytics, loadArchive, navigateHome, target]);
+  }, [archiveFrameDocument, archivePrepared, catalogLaunch, frameSrc, game?.engineId, game?.saveNamespace, game?.slug, hostsCompatibilityWarning, launchAnalytics, loadArchive, navigateHome, target]);
 
   useEffect(() => {
     const controller = new AbortController();
     setReadySignal(null);
+    setCompatibilityWarning(null);
     setArchiveProgress(null);
     setArchiveCached(false);
     setArchivePrepared(false);
@@ -483,6 +495,11 @@ export default function GameRouteFrame({
             launchSrc = `${shellUrl.pathname}${shellUrl.search}${shellUrl.hash}`;
           }
         }
+        if (hostsCompatibilityWarning) {
+          const shellUrl = new URL(launchSrc, window.location.origin);
+          shellUrl.searchParams.set("hostCompatibilityWarning", "1");
+          launchSrc = `${shellUrl.pathname}${shellUrl.search}${shellUrl.hash}`;
+        }
         launchSrc = withGameTelemetry(launchSrc, window.location.href);
         if (loadArchive) {
           // Load/compile ScummVM while the archive downloads or opens. The
@@ -510,7 +527,7 @@ export default function GameRouteFrame({
 
     void openGame();
     return () => { controller.abort(); };
-  }, [catalogIntroLaunch, catalogLaunch, game, intro, launchAnalytics, loadArchive, src, target]);
+  }, [catalogIntroLaunch, catalogLaunch, game, hostsCompatibilityWarning, intro, launchAnalytics, loadArchive, src, target]);
 
   useEffect(() => {
     if (bootState.hasBootFailed) launchAnalytics.fail("startup_error");
@@ -738,7 +755,9 @@ export default function GameRouteFrame({
       if (!active || !isTv) return;
       stop = observeRemoteBack(window, {
         onBack() {
-          if (remoteToolbarOpen) resumeRemoteGame();
+          const dialog = shellRef.current?.querySelector("dialog:modal");
+          if (dialog) dialog.close();
+          else if (remoteToolbarOpen) resumeRemoteGame();
           else setRemoteToolbarOpen(true);
         },
         onFullscreenExit() {
@@ -773,6 +792,7 @@ export default function GameRouteFrame({
       />
       <GamePlayerControls
         autoHide={bootState.hasBootPresentationCompleted && !showBootOverlay && !immersiveMode.isMobileViewport && !remoteToolbarOpen}
+        compatibilityWarning={compatibilityWarning}
         frameRef={frameRef}
         menuShortcut={gameMenuShortcut}
         handleControlMouseDown={handleControlMouseDown}

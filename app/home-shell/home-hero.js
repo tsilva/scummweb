@@ -7,6 +7,7 @@ import HeroStage from "./hero-stage";
 import { getHeroPreloadImages, HERO_PRELOAD_AHEAD } from "./hero-images.mjs";
 import { useArtworkDelivery } from "./artwork-delivery";
 import { chooseGameVersion, getGameFamilyKey, readChosenVersion, rememberGameVersion } from "../game-versions.mjs";
+import { orderHeroGroups } from "./hero-order.mjs";
 import { buildGameExitHref } from "./hero-selection.mjs";
 import { useGameNavigation } from "./game-navigation";
 import { initialActionState, rememberInitialActions } from "./initial-actions.mjs";
@@ -23,7 +24,7 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
   const router = useRouter();
   const selectGame = useGameNavigation();
   const featuredKey = getGameFamilyKey(featuredGame) || `catalog:${featuredGame.target}`;
-  const slides = groups.map((group) => ({ ...group, id: group.key }));
+  const slides = orderHeroGroups(groups).map((group) => ({ ...group, id: group.key }));
   const slideCount = slides.length;
   const routeKey = `${isHomePage}:${featuredKey}:${selection}:${navigationId}`;
   const [selectedSlide, setSelectedSlide] = useState(null);

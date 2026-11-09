@@ -299,6 +299,9 @@ OpenGL signal excludes ScummVM's splash and GUI overlays; canvas draw observers
 and the pixel detector remain fallbacks for other renderers. Intro skipping
 remains an explicit action shown in the player controls after the loading screen
 closes; the download and startup panel does not offer **Skip intro**.
+The bundled Escape from Monkey Island demo skips ScummVM's startup splash and
+continues past the compatibility prompt. Its **Compatibility warning** toolbar
+button opens the original warning text in the player.
 The native GUI's startup themes and translation prefix also prefetch in parallel;
 later reads reuse their binary buffers. Range responses must match the requested
 prefix and indexed file size, and failed hints retain the ordinary read path.
@@ -1307,6 +1310,9 @@ or request-time rendering.
   temporarily use `scummvm-shell/launcher/` as described in the publishing procedure.
   The banners use ImageGen-restored promotional art. Screenshot galleries retain
   the original captures.
+- The Grim Fandango, Escape from Monkey Island, and Fate of Atlantis demo
+  galleries and the Zork I–III galleries show original ScummWEB gameplay captures
+  of the bundled editions. The Zork galleries show the in-game text interface.
 - The Secret of Monkey Island (Demo) uses
   [Steve Purcell's DOS box art](https://gamesdb.launchbox-app.com/games/images/139-the-secret-of-monkey-island)
   and [DOS EGA demo screenshots](https://www.dosgamesarchive.com/download/the-secret-of-monkey-island).
@@ -1375,7 +1381,10 @@ or request-time rendering.
   The Simon the Sorcerer's Puzzle Pack gallery shows Jumble, NoPatience,
   and Swampy Adventures.
   The homepage uses a game's landscape artwork or gameplay capture as its
-  slideshow backdrop. Heroes share save-aware Play, Continue, Start from beginning
+  slideshow backdrop. The slideshow opens with Beneath a Steel Sky, then shows
+  full games in descending order of MobyGames player-rating counts at the time
+  of curation. Unranked full games follow, then Zork I–III in series order and
+  finally the demos. Heroes share save-aware Play, Continue, Start from beginning
   and reconnect actions. The metadata badge stays visible for all edition counts;
   multiple editions also show an inline Version selector. The selector retains its
   space while hidden, so restoring local editions does not move the action row or

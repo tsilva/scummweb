@@ -65,22 +65,37 @@ const bundledArtworkByTarget = {
   "grim-demo": {
     heroImage: "/launcher/grim-fandango-scummweb-generated-2026-11-09-r2-hero.webp",
     posterImage: "/launcher/grim-fandango-scummweb-generated-2026-11-08-r1-cover.webp",
+    ...bundledGameplayGallery("grim-fandango-demo", "English Windows small demo", [
+      "Lost Souls' Alliance headquarters", "Alley outside the headquarters", "Street festival",
+    ]),
   },
   "monkey4-demo": {
     heroImage: "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero.webp",
     posterImage: "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover.webp",
+    ...bundledGameplayGallery("escape-from-monkey-island-demo", "English Windows web demo", [
+      "Governor's mansion grounds", "Encounter with the catapult operator", "Path to the gate",
+    ]),
   },
   zork1: {
     heroImage: "/launcher/zork-1-scummweb-generated-2026-11-08-r2-hero.webp",
     posterImage: "/launcher/zork-1-scummweb-generated-2026-11-08-r1-cover.webp",
+    ...bundledGameplayGallery("zork-i-the-great-underground-empire", "English Z-machine v3", [
+      "Mailbox west of the house", "Kitchen", "Living room",
+    ]),
   },
   zork2: {
     heroImage: "/launcher/zork-2-scummweb-generated-2026-11-08-r2-hero.webp",
     posterImage: "/launcher/zork-2-scummweb-generated-2026-11-08-r1-cover.webp",
+    ...bundledGameplayGallery("zork-ii-the-wizard-of-frobozz", "English Z-machine v3", [
+      "Inside the Barrow", "Narrow Tunnel", "Foot Bridge",
+    ]),
   },
   zork3: {
     heroImage: "/launcher/zork-3-scummweb-generated-2026-11-08-r1-hero.webp",
     posterImage: "/launcher/zork-3-scummweb-generated-2026-11-08-r1-cover.webp",
+    ...bundledGameplayGallery("zork-iii-the-dungeon-master", "English Z-machine v3", [
+      "Endless Stair", "Junction", "Creepy Crawl",
+    ]),
   },
 };
 
@@ -100,6 +115,9 @@ const artByTarget = {
     summary: "Play LucasArts’ original DOS demonstration of Indiana Jones’s search for Atlantis.",
     posterImage: retroGameArtwork["scumm:atlantis"].posterImage,
     heroImage: retroGameArtwork["scumm:atlantis"].heroImage,
+    ...bundledGameplayGallery("indiana-jones-and-the-fate-of-atlantis-demo", "English DOS interactive demo", [
+      "Thera harbor", "Hillside village", "Thera mountains",
+    ]),
   },
   "comi-demo": {
     genre: retroGameArtwork["scumm:comi"].genre,
