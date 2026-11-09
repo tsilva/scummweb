@@ -126,9 +126,11 @@ native query. A launch cancels pending queries. An unrecognized import gains its
 detected identity on launch. Queries use the target's engine metadata plugin
 after initializing the web backend. The temporary configuration lets the query
 read saves without mounting game files, detecting an edition, or rewriting
-player targets. The current runtime rechecks empty AGS indexes from older
-runtimes once, even when the save files have the same revision. Imported file access remains required;
-checks on unrelated sources do not block the hero's selected launch action.
+player targets. The player and query index bundled saves by the native target,
+including when a demo's archive has a different name. The current runtime
+rechecks empty AGS indexes from older runtimes once, even when the save files
+have the same revision. Imported file access remains required. Checks on
+unrelated sources do not block the hero's selected launch action.
 
 The native output owner records pending filenames before opening a save and
 refreshes metadata after compression and filesystem close complete. This covers

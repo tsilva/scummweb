@@ -1,5 +1,5 @@
 {
-  "version": "sha-58221938ee5b2cd5cce0498a",
+  "version": "sha-212189928291503815cbef3b",
   "files": {
     "/scummvm.js": "sha-6263c607188d367b91a44e36",
     "/scummvm.wasm": "sha-8fa36e73f544a0026347fdee",
@@ -175,6 +175,6 @@
     "/launcher/skip-intro/sky/SKY-VM.000": "sha-4a980c9a92fb713cf4e4f990",
     "/launcher/skip-intro/soltys/soltys.001": "sha-a228224141169a9874a5f13a",
     "/launcher/skip-intro/sword25/sword25.000": "sha-182cf3396ee26d6ea6d3d567",
-    "/scummvm.html": "sha-58221938ee5b2cd5cce0498a"
+    "/scummvm.html": "sha-212189928291503815cbef3b"
   }
 }
