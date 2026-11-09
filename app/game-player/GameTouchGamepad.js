@@ -1,4 +1,6 @@
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from "lucide-react";
+import {
+  ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Backpack, Ellipsis, Eye, HandGrab, MessageCircle,
+} from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 import { dispatchSyntheticKeypress, holdGameKey } from "./keyboard";
 
@@ -11,6 +13,13 @@ const directions = [up, left, right, down];
 function releaseStick(grip) {
   for (const release of grip.current?.held.values() ?? []) release();
   grip.current = null;
+}
+
+function isAxisEngaged(value, crossAxis, travel, wasHeld) {
+  // Keep a straight drag straight and let a held direction tolerate small thumb shifts.
+  const deadZone = travel * (wasHeld ? 0.24 : 0.36);
+  const diagonalThreshold = Math.abs(crossAxis) * (wasHeld ? 0.46 : 0.64);
+  return Math.abs(value) > Math.max(deadZone, diagonalThreshold);
 }
 
 export function GameDirectionPad({ frameRef }) {
@@ -65,18 +74,18 @@ function GrimMovementStick({ frameRef }) {
   function move(event) {
     const active = grip.current;
     if (!active || event.pointerId !== active.pointerId) return;
-    const dx = event.clientX - active.centerX;
-    const dy = event.clientY - active.centerY;
+    const dx = event.clientX - active.originX;
+    const dy = event.clientY - active.originY;
     const scale = active.travel / Math.max(active.travel, Math.hypot(dx, dy));
     const x = dx * scale;
     const y = dy * scale;
     setOffset({ x, y });
 
-    // Clamp to a circle so shallow diagonal drags can still count as straight.
-    const threshold = active.travel * 0.3;
+    const vertical = y < 0 ? up : down;
+    const horizontal = x < 0 ? left : right;
     const wanted = [];
-    if (Math.abs(y) > threshold) wanted.push(y < 0 ? up : down);
-    if (Math.abs(x) > threshold) wanted.push(x < 0 ? left : right);
+    if (isAxisEngaged(y, x, active.travel, active.held.has(vertical))) wanted.push(vertical);
+    if (isAxisEngaged(x, y, active.travel, active.held.has(horizontal))) wanted.push(horizontal);
 
     for (const [direction, release] of active.held) {
       if (wanted.includes(direction)) continue;
@@ -99,12 +108,11 @@ function GrimMovementStick({ frameRef }) {
     event.currentTarget.setPointerCapture(event.pointerId);
     grip.current = {
       pointerId: event.pointerId,
-      centerX: bounds.left + bounds.width / 2,
-      centerY: bounds.top + bounds.height / 2,
+      originX: event.clientX,
+      originY: event.clientY,
       travel,
       held: new Map(),
     };
-    move(event);
   }
 
   function stop(event) {
@@ -137,10 +145,10 @@ function GrimMovementStick({ frameRef }) {
 }
 
 const grimActions = [
-  { key: { key: "Enter", keyCode: 13 }, label: "Use / Talk" },
-  { key: "e", label: "Examine" },
-  { key: "p", label: "Pick up / Put away" },
-  { key: "i", label: "Inventory" },
+  { key: { key: "Enter", keyCode: 13 }, label: "Use / Talk", Icon: MessageCircle },
+  { key: "e", label: "Examine", Icon: Eye },
+  { key: "p", label: "Pick up / Put away", Icon: HandGrab },
+  { key: "i", label: "Inventory", Icon: Backpack },
 ];
 
 export function GrimTouchGamepad({ frameRef }) {
@@ -164,17 +172,20 @@ export function GrimTouchGamepad({ frameRef }) {
         <button
           aria-controls={actionsId}
           aria-expanded={actionsOpen}
+          aria-label="Actions"
           className="game-route-control-button is-gamepad"
           onClick={() => setActionsOpen(!actionsOpen)}
           onMouseDown={(event) => event.preventDefault()}
           ref={actionsButton}
+          title="Actions"
           type="button"
         >
-          Actions
+          <Ellipsis aria-hidden="true" size={20} />
         </button>
         <div aria-label="Game actions" className="game-route-grim-action-choices" hidden={!actionsOpen} id={actionsId} role="group">
-          {grimActions.map(({ key, label }) => (
+          {grimActions.map(({ key, label, Icon }) => (
             <button
+              aria-label={label}
               className="game-route-control-button is-gamepad"
               key={label}
               onClick={() => {
@@ -182,9 +193,10 @@ export function GrimTouchGamepad({ frameRef }) {
                 dispatchSyntheticKeypress(frameRef.current, key);
               }}
               onMouseDown={(event) => event.preventDefault()}
+              title={label}
               type="button"
             >
-              {label}
+              <Icon aria-hidden="true" size={20} />
             </button>
           ))}
         </div>

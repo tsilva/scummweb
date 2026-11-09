@@ -14,7 +14,7 @@ const { code } = await swc.transform(await readFile(componentUrl, "utf8"), {
   jsc: { parser: { syntax: "ecmascript", jsx: true }, transform: { react: { runtime: "automatic" } } },
 });
 
-test("Grim's stick holds both keys on a diagonal and releases each axis independently", () => {
+test("Grim's stick ignores thumb drift and holds both keys on a deliberate diagonal", () => {
   const events = [];
   let cursor = 0;
   let hooks = [];
@@ -44,7 +44,14 @@ test("Grim's stick holds both keys on a diagonal and releases each axis independ
 
   const { children: [movementStick, actions] } =
     module.exports.GrimTouchGamepad({ frameRef: { current: {} } }).props;
-  assert.equal(actions.props.children[0].props.children, "Actions");
+  const [toggle, choices] = actions.props.children;
+  const buttons = [toggle, ...choices.props.children];
+  assert.deepEqual(Array.from(buttons, ({ props }) => props["aria-label"]), [
+    "Actions", "Use / Talk", "Examine", "Pick up / Put away", "Inventory",
+  ]);
+  for (const { props } of buttons) {
+    assert.equal(props.children.props["aria-hidden"], "true");
+  }
   cursor = 0;
   hooks = [];
   const stick = movementStick.type(movementStick.props).props.children[0].props;
@@ -52,29 +59,34 @@ test("Grim's stick holds both keys on a diagonal and releases each axis independ
     pointerId, clientX, clientY, button: 0, preventDefault() {},
     currentTarget: {
       setPointerCapture() {},
-      getBoundingClientRect: () => ({ left: 0, top: 0, width: 100, height: 100 }),
+      getBoundingClientRect: () => ({ width: 100, height: 100 }),
     },
   });
 
-  stick.onPointerDown(pointer(1, 54, 46));
+  stick.onPointerDown(pointer(1, 70, 60)); // An off-center touch starts neutral.
   assert.deepEqual(events, []);
-  stick.onPointerMove(pointer(1, 60, 0)); // A shallow diagonal still walks straight.
+  stick.onPointerMove(pointer(1, 86, 30)); // A shallow diagonal walks straight.
   assert.deepEqual(events, ["press ArrowUp"]);
-  stick.onPointerMove(pointer(1, 80, 20));
+  stick.onPointerMove(pointer(1, 95, 30));
   assert.deepEqual(events, ["press ArrowUp", "press ArrowRight"]);
-  stick.onPointerMove(pointer(2, 50, 50)); // A second pointer cannot interrupt the grip.
-  stick.onPointerMove(pointer(1, 20, 20));
-  stick.onPointerMove(pointer(1, 50, 50));
+  stick.onPointerMove(pointer(1, 86, 30)); // Drift toward vertical keeps the held turn stable.
+  stick.onPointerMove(pointer(2, 70, 60)); // A second pointer cannot interrupt the grip.
+  assert.deepEqual(events, ["press ArrowUp", "press ArrowRight"]);
+  stick.onPointerMove(pointer(1, 80, 30));
+  assert.deepEqual(events, ["press ArrowUp", "press ArrowRight", "release ArrowRight"]);
+  stick.onPointerMove(pointer(1, 95, 30));
+  stick.onPointerMove(pointer(1, 45, 30));
+  stick.onPointerMove(pointer(1, 70, 60));
 
   assert.deepEqual(events, [
-    "press ArrowUp", "press ArrowRight", "release ArrowRight", "press ArrowLeft",
-    "release ArrowUp", "release ArrowLeft",
+    "press ArrowUp", "press ArrowRight", "release ArrowRight", "press ArrowRight",
+    "release ArrowRight", "press ArrowLeft", "release ArrowUp", "release ArrowLeft",
   ]);
 
-  stick.onPointerMove(pointer(1, 80, 80));
-  stick.onPointerCancel(pointer(1, 80, 80));
-  stick.onLostPointerCapture(pointer(1, 80, 80));
-  assert.deepEqual(events.slice(6), [
+  stick.onPointerMove(pointer(1, 95, 85));
+  stick.onPointerCancel(pointer(1, 95, 85));
+  stick.onLostPointerCapture(pointer(1, 95, 85));
+  assert.deepEqual(events.slice(8), [
     "press ArrowDown", "press ArrowRight", "release ArrowDown", "release ArrowRight",
   ]);
 });
