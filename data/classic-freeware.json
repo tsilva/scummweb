@@ -112,6 +112,19 @@
       "noticeFile": "Install/license.txt"
     },
     {
+      "target": "comi-demo",
+      "title": "The Curse of Monkey Island (Demo)",
+      "engineId": "scumm",
+      "gameId": "comi",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "comi-win-small-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/scumm/comi-win-small-demo-en.zip",
+      "sha256": "d944e2e6b00bd180466c1aa7bc236e763f23b4733f996b943e0976ef3078a7fa",
+      "preserveArchive": true,
+      "noticeFile": "README.TXT"
+    },
+    {
       "target": "zork1",
       "title": "Zork I: The Great Underground Empire",
       "engineId": "glk",

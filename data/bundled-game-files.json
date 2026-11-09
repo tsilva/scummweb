@@ -4363,6 +4363,72 @@
           2558908456
         ]
       ]
+    },
+    "comi-demo": {
+      "url": "https://scummvm-games.tsilva.eu/comi.zip",
+      "fingerprint": "bbb625bb2c4b20a06e25c1be81edd5eb1c7ec8ad8559d0b2127555181cc59980",
+      "files": [
+        [
+          "RESOURCE/FONT0.NUT",
+          74740,
+          464066021
+        ],
+        [
+          "RESOURCE/FONT1.NUT",
+          74740,
+          464066021
+        ],
+        [
+          "RESOURCE/FONT2.NUT",
+          74740,
+          464066021
+        ],
+        [
+          "RESOURCE/FONT3.NUT",
+          74740,
+          464066021
+        ],
+        [
+          "RESOURCE/VOICE.BUN",
+          14412203,
+          408183264
+        ],
+        [
+          "COMI.EXE",
+          476672,
+          1163361348
+        ],
+        [
+          "COMI.LA0",
+          18041,
+          792968009
+        ],
+        [
+          "COMI.LA1",
+          10579949,
+          514104089
+        ],
+        [
+          "MONKEYTG.DOC",
+          48640,
+          399629648
+        ],
+        [
+          "MONKEYTG.TXT",
+          20960,
+          793972767
+        ],
+        [
+          "README.TXT",
+          8050,
+          2844163320
+        ],
+        [
+          "WebCurse.exe",
+          604672,
+          2451532142
+        ]
+      ]
     }
   }
 }

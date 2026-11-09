@@ -29,6 +29,7 @@ test("official classic archives are recognized by contents without relying on fi
     ["hires1", [["MYSTHOUS.DSK", 143360, 1258297292]]],
     ["soltys", [["vol.cat", 50176, 623096146], ["vol.dat", 8430868, 1606659223]]],
     ["sfinx", [["sfinx-en-v1.1/vol.cat", 129024, 950468179], ["sfinx-en-v1.1/vol.dat", 34182773, 4051689322]]],
+    ["comi-demo", [["COMI.LA0", 18041, 0x2f43bb49], ["COMI.LA1", 10579949, 0x1ea49b19]]],
   ]) {
     assert.equal(getArchiveGamePresentation(files)?.target, target);
     assert.equal(getArchiveGamePresentation(files.map(([name, size]) => [name, size, 0])), null);

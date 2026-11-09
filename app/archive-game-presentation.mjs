@@ -50,6 +50,10 @@ const signatures = [
     files: [["000.lfl", 7607, 0x719585d5], ["disk01.lec", 266281, 0x2afb1b41]],
   },
   {
+    title: "The Curse of Monkey Island (Demo)", target: "comi-demo", engineId: "scumm", gameId: "comi",
+    files: [["comi.la0", 18041, 0x2f43bb49], ["comi.la1", 10579949, 0x1ea49b19]],
+  },
+  {
     title: "Indiana Jones and the Last Crusade",
     files: [["00.lfl", 5361, 0x1145ddda], ["01.lfl", 43865, 0x373099bb]],
   },

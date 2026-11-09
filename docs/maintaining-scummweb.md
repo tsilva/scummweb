@@ -893,11 +893,16 @@ notice intact.
 
 Dragon History uses the original English-subtitled DOS release. Its package
 includes the developer's corresponding sources and the GPLv2 notice. The
-three LucasArts demos use the first English DOS Fate of Atlantis demo, the
-small English Windows Grim Fandango demo and the English Windows Escape from
-Monkey Island web demo. The release ZIPs retain the exact upstream bytes and
-publisher notices. Grim and Escape use the Grim plugin, with the `monkey4`
-subengine enabled for Escape.
+LucasArts demo ZIPs retain the exact upstream bytes and publisher notices.
+The Curse of Monkey Island (Demo) uses the small English Windows web demo
+(`comi-win-small-demo-en.zip`), which includes speech and omits the intro video
+and music. Its original `README.TXT` contains the redistribution terms. It uses
+the SCUMM plugin with the `scumm_7_8` subengine and shares the full game's hero.
+Its gallery shows the opening scene in the hold, the cannon verb coin, and
+Guybrush’s inventory, all captured from the bundled edition. Fate of Atlantis
+uses the first English DOS demo. Grim Fandango and
+Escape from Monkey Island use their English Windows demos with the Grim
+plugin, with the `monkey4` subengine enabled for Escape.
 
 Zork I–III use Glk and the original MIT-licensed Infocom sources. Obtain the
 [ZILF 1.9 toolchain](https://github.com/taradinoc/zilf/releases/tag/1.9), then run

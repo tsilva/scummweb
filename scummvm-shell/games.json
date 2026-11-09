@@ -265,6 +265,16 @@
       "platform": "",
       "extra": "Z-machine v3",
       "readmeHref": "/launcher/notices/zork3.txt"
+    },
+    {
+      "target": "comi-demo",
+      "title": "The Curse of Monkey Island (Demo)",
+      "path": "/games/comi",
+      "engineId": "scumm",
+      "gameId": "comi",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/comi.txt"
     }
   ]
 }
