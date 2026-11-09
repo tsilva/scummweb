@@ -1,10 +1,11 @@
-import { LogOut, Maximize, Menu, Minimize } from "lucide-react";
+import { LogOut, Maximize, Menu, Minimize, TriangleAlert } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import DirectionalNavigation from "../home-shell/directional-navigation";
 import { observeControlVisibility } from "./control-visibility.mjs";
 
 export default function GamePlayerControls({
   autoHide = false,
+  compatibilityWarning,
   frameRef,
   menuShortcut,
   handleControlMouseDown,
@@ -26,6 +27,8 @@ export default function GamePlayerControls({
 }) {
   const controlsRef = useRef(null);
   const visibilityRef = useRef(null);
+  const warningButtonRef = useRef(null);
+  const warningDialogRef = useRef(null);
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
@@ -83,6 +86,20 @@ export default function GamePlayerControls({
           </div>
         ) : null}
         <div className="game-route-control-group is-right">
+          {compatibilityWarning ? (
+            <button
+              aria-controls="game-compatibility-warning"
+              aria-haspopup="dialog"
+              aria-label="Compatibility warning"
+              className="game-route-control-button"
+              onClick={() => warningDialogRef.current.showModal()}
+              ref={warningButtonRef}
+              title="Compatibility warning"
+              type="button"
+            >
+              <TriangleAlert aria-hidden="true" size={18} strokeWidth={2} />
+            </button>
+          ) : null}
           {showFullscreenControl ? (
             <button
               aria-label={fullscreenLabel}
@@ -112,6 +129,22 @@ export default function GamePlayerControls({
           ) : null}
         </div>
       </div>
+      {compatibilityWarning ? (
+        <dialog
+          aria-describedby="game-compatibility-warning-text"
+          aria-labelledby="game-compatibility-warning-title"
+          className="game-route-warning"
+          id="game-compatibility-warning"
+          onClose={() => warningButtonRef.current?.focus({ preventScroll: true })}
+          ref={warningDialogRef}
+        >
+          <h2 id="game-compatibility-warning-title">Compatibility warning</h2>
+          <p id="game-compatibility-warning-text">{compatibilityWarning}</p>
+          <form method="dialog">
+            <button type="submit">Close</button>
+          </form>
+        </dialog>
+      ) : null}
       {showBottomActions ? (
         <div className="game-route-bottom-actions">
           {showSkipIntroAction ? (
