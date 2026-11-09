@@ -79,7 +79,7 @@ save is available for the selected edition, the card has no progress bar.
 
 ## Map coverage
 
-| Game | Verified edition | Milestones |
+| Game | Mapped edition | Milestones |
 | --- | --- | ---: |
 | Flight of the Amazon Queen | English DOS talkie | 24 |
 | Indiana Jones and the Last Crusade | English Amiga | 20 |
@@ -93,7 +93,7 @@ save is available for the selected edition, the card has no progress bar.
 | King's Quest IV: The Perils of Rosella | English Amiga SCI 1.023 | 4 |
 | King's Quest V: Absence Makes the Heart Go Yonder! | English Amiga 1.000.000 | 5 |
 | King's Quest VI: Heir Today, Gone Tomorrow | English DOS CD 1.000.00G | 6 |
-| King's Quest VII: The Princeless Bride | English DOS CD 2.00b | 4 |
+| King's Quest VII: The Princeless Bride | English DOS CD 2.00b | 7 |
 | Police Quest: In Pursuit of the Death Angel | English Amiga AGI 2.0B | 4 |
 | Police Quest: In Pursuit of the Death Angel | English DOS SCI remake 2.000 | 4 |
 | Police Quest 2: The Vengeance | English Amiga 1.024 | 5 |
@@ -106,6 +106,34 @@ save is available for the selected edition, the card has no progress bar.
 | Space Quest IV: Roger Wilco and the Time Rippers | English DOS CD 1.0 | 5 |
 | Space Quest V: The Next Mutation | English DOS 1.04 | 5 |
 | Space Quest 6: Roger Wilco in the Spinal Frontier | English DOS CD 1.0 | 6 |
+| Castle of Dr. Brain | English DOS 1.1 | 4 |
+| Code-Name: Iceman | English Amiga 1.036 | 5 |
+| Conquests of Camelot: The Search for the Grail | English Amiga 1.008.000 | 5 |
+| Conquests of the Longbow: The Legend of Robin Hood | English Amiga 1.000 | 4 |
+| EcoQuest II: Lost Secret of the Rainforest | English DOS 1.000.000 | 4 |
+| EcoQuest: The Search for Cetus | English DOS CD 1.1 | 4 |
+| Freddy Pharkas: Frontier Pharmacist | English DOS CD 1.0 | 4 |
+| Gabriel Knight: Sins of the Fathers | English DOS CD 1.1 | 5 |
+| Gold Rush! | English Amiga 1.01 | 3 |
+| Laura Bow 2: The Dagger of Amon Ra | English DOS CD 1.1 | 3 |
+| Laura Bow: The Colonel's Bequest | English Amiga 1.000.059 | 8 |
+| Leisure Suit Larry 2: Goes Looking for Love (in Several Wrong Places) | English Amiga 1.003 | 3 |
+| Leisure Suit Larry 3: Passionate Patti in Pursuit of the Pulsating Pectorals | English Amiga 1.027 | 3 |
+| Leisure Suit Larry 5: Passionate Patti Does a Little Undercover Work | English Amiga 1.000 | 3 |
+| Leisure Suit Larry 6: Shape Up or Slip Out! | English DOS CD high resolution 1.000.000 | 3 |
+| Leisure Suit Larry in the Land of the Lounge Lizards | English Amiga VGA remake 1.000 | 3 |
+| Manhunter 2: San Francisco | English Amiga 3.06 | 4 |
+| Manhunter: New York | English Amiga 1.06 | 5 |
+| Mixed Up Fairy Tales | English DOS EGA 1.000 | 2 |
+| Mixed-Up Mother Goose | English DOS AGI | 3 |
+| Mixed-Up Mother Goose Deluxe | English/Spanish Windows CD | 3 |
+| Pepper's Adventures in Time | English DOS 1.000 | 3 |
+| Quest for Glory I: So You Want To Be A Hero | English Amiga 1.134 | 3 |
+| Quest for Glory I: So You Want To Be A Hero | English DOS VGA remake 2.000 | 3 |
+| Quest for Glory II: Trial by Fire | English Amiga 1.109 | 4 |
+| Quest for Glory III: Wages of War | English DOS 1.1 | 4 |
+| The Black Cauldron | English DOS AGI 2.10 | 3 |
+| The Island of Dr. Brain | English DOS 1.0 | 3 |
 
 These maps count milestones up to the furthest confirmed stage, including when
 a route bypasses an earlier checkpoint. Fate of Atlantis uses the same scale
@@ -117,4 +145,16 @@ and the full `gameamiga` database MD5. A ritual failure after using the lance
 keeps that checkpoint but does not count as a win.
 
 The Sierra maps cover major checkpoints and endings for the listed editions.
-They require a ScummWEB build that reports the AGI or SCI edition fingerprint.
+The new rules are traced to game scripts and checked with synthetic snapshots.
+They require a ScummWEB build that reports the matching AGI or SCI edition
+fingerprint. Other editions, including alternate ports and floppy releases,
+may need their own rules.
+
+The current SCI fingerprint provider reads `resource.map`. The checked editions
+of *The Beast Within*, *Leisure Suit Larry 7*, *Lighthouse*, both
+*Phantasmagoria* games, *RAMA*, *Shivers*, and *Torin’s Passage* use
+`resmap.*` and still need edition detection before a map can be enabled.
+*Mickey’s Space Adventure*, *Troll’s Tale*, and *Winnie the Pooh in the
+Hundred Acre Wood* use separate early AGI interpreters and need native
+story-state telemetry. Card games, demos, and interactive storybooks without
+tracked story objectives are outside this map set.

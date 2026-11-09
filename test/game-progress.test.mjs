@@ -301,6 +301,72 @@ test('Sierra maps match their edition and distinguish the winning branches', asy
   }
 });
 
+test('Sierra progress uses saved state and rejects credits reached on a losing route', async t => {
+  const cases = [
+    {
+      slug: 'king-s-quest-quest-for-the-crown', engine: 'sci', game: 'kq1sci', md5: 'fcf6a00f2ff4715bf8ea65388458179d',
+      steps: [
+        [1, {}, []],
+        [58, { 155: 256 }, ['found-first-treasure']],
+        [77, { 154: 256, 155: 256 }, ['found-first-treasure', 'found-second-treasure']],
+        [51, { 154: 256, 155: 2304 }, ['found-first-treasure', 'found-second-treasure', 'found-all-treasures']],
+        [85, { 12: 53, 154: 256, 155: 2304 }, ['found-first-treasure', 'found-second-treasure', 'found-all-treasures', 'winning-ending']],
+        [1, {}, []],
+      ],
+    },
+    {
+      slug: 'king-s-quest-vii-the-princeless-bride', engine: 'sci', game: 'kq7', md5: 'a000858d91155b948bf3b23fa71ff79a',
+      steps: [
+        [1000, { 122: 0 }, []],
+        [3000, { 122: 2 }, ['reached-chapter-2', 'reached-chapter-3']],
+        [1000, { 122: 0 }, []],
+      ],
+    },
+    {
+      slug: 'laura-bow-2-the-dagger-of-amon-ra', engine: 'sci', game: 'laurabow2', md5: 'eb41961ba4446d6f484edb9de91224b3',
+      steps: [
+        [750, {}, ['reached-inquest']],
+        [780, { 12: 790, 126: 2 }, []],
+        [780, { 12: 785, 126: 3 }, []],
+        [780, { 12: 785, 126: 1 }, ['reached-inquest', 'solved-murders', 'winning-ending']],
+        [780, { 12: 785, 126: 4 }, ['reached-inquest', 'solved-murders', 'winning-ending']],
+      ],
+    },
+    {
+      slug: 'conquests-of-the-longbow-the-legend-of-robin-hood', engine: 'sci', game: 'longbow', md5: '52944b462328558070bf02fb371618e2',
+      steps: [
+        [420, {}, ['tunnels', 'fulk-rescue', 'judgement']],
+        [97, { 12: 801 }, []],
+        [97, { 12: 421, 151: 20 }, []],
+        [97, { 12: 421, 151: 10 }, ['tunnels', 'fulk-rescue', 'judgement', 'winning-ending']],
+      ],
+    },
+    {
+      slug: 'mixed-up-mother-goose', engine: 'agi', game: 'mixedup', md5: 'e524655abf9b96a3b179ffcd1d0f79af',
+      steps: [
+        [32, { 3: 0 }, []],
+        [13, { 3: 7 }, ['restored-six-rhymes']],
+        [15, { 3: 16 }, ['restored-six-rhymes', 'restored-twelve-rhymes']],
+        [37, { 3: 18 }, ['restored-six-rhymes', 'restored-twelve-rhymes', 'winning-ending']],
+        [32, { 3: 0 }, []],
+      ],
+    },
+  ];
+  for (const { slug, engine, game, md5, steps } of cases) {
+    await t.test(slug, () => {
+      const tracker = trackerFor(slug);
+      const identity = { engine_id: engine, game_id: game, index_md5: md5 };
+      let time = 0;
+      for (const [room, values, expected] of steps) {
+        const bank = Object.assign(Array(256).fill(0), values);
+        const banks = engine === 'agi' ? { vars: bank, flag_bytes: Array(32).fill(0) } : { globals: bank };
+        tracker.acceptSnapshot(identity, { room_id: room, sample_time_ms: ++time, banks });
+        assert.deepEqual(tracker.report().reached, expected);
+      }
+    });
+  }
+});
+
 test('Beneath a Steel Sky scores saved script variables and the winning credits room', () => {
   const tracker = trackerFor('beneath-a-steel-sky');
   const identity = { engine_id: 'sky', game_id: 'sky' };

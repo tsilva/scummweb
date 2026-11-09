@@ -15,15 +15,25 @@ rooms:
   flying-horse: 6200 # Script 13 takes the flying-horse route to room 6200.
   etheria-gate: 5400 # Scripts 3300 and 5400 handle entry and the gate opening.
 variables:
+  chapter: { bank: globals, index: 122 } # Main.sc gChapter is zero-based.
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 }
 milestones:
-  - id: flying-horse
-    label: "Mounted the flying horse"
-    when: { room: flying-horse }
-  - id: etheria-gate
-    label: "Reached the Etheria gate"
-    when: { room: etheria-gate }
+  - id: reached-chapter-2
+    label: Reached chapter 2
+    when: { variable: chapter, equals: 1 }
+  - id: reached-chapter-3
+    label: Reached chapter 3
+    when: { variable: chapter, equals: 2 }
+  - id: reached-chapter-4
+    label: Reached chapter 4
+    when: { variable: chapter, equals: 3 }
+  - id: reached-chapter-5
+    label: Reached chapter 5
+    when: { variable: chapter, equals: 4 }
+  - id: reached-chapter-6
+    label: Reached chapter 6
+    when: { variable: chapter, equals: 5 }
   - id: reached-grand-finale
     label: Reached the grand finale
     when: { room: grand-finale }

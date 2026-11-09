@@ -1,0 +1,31 @@
+# English DOS 1.1.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/qfg3-dos-1.1/src
+schema_version: 1
+game: quest-for-glory-iii-wages-of-war
+engine_id: sci
+edition:
+  game_id: qfg3
+  index_md5: 70f7ae052f2a06ae7e94c6943ab59fc0
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  simbani-village: 420 # Script 410 goToVillage enters room 420.
+  waterfall: 740 # Script 180 toWaterFall sends the hero to 740, which contains Manu’s bridge puzzle.
+  ending-scene: 880 # Script 880 runs the final scripted scene before export.
+  ending: 52 # The final cartoon in 880 opens the character export screen with the victory message.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 } # SCI previous room global.
+milestones:
+  - id: simbani-village
+    label: "Reached the Simbani village"
+    when: { room: simbani-village }
+  - id: waterfall
+    label: "Reached the waterfall crossing"
+    when: { room: waterfall }
+  - id: ending-scene
+    label: "Reached the final cartoon"
+    when: { room: ending-scene }
+  - id: winning-ending
+    label: "Completed Wages of War"
+    when: { all: [{ room: ending }, { variable: previous-room, equals: 880 }] }

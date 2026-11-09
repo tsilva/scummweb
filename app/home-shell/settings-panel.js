@@ -52,7 +52,7 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
     const overflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     panel.showModal();
-    panel.querySelector(".settings-close")?.focus();
+    panel.querySelector(".settings-close")?.focus({ preventScroll: true });
     void run(refresh);
     return () => {
       panel.close();
@@ -153,18 +153,19 @@ export default function SettingsPanel({ catalog, officialUrl, scummvmVersion, so
     </button>
     <dialog ref={dialog} id="site-settings" className="settings-drawer" aria-labelledby="settings-title"
       onCancel={(event) => { event.preventDefault(); close(); }} onClick={(event) => { if (event.target === dialog.current) close(); }}>
-      <div className="settings-content" aria-busy={busy}>
+      <div className="settings-content">
         <header className="settings-heading"><h2 id="settings-title">Settings</h2>
-          <button type="button" className="settings-close" aria-label="Close settings" disabled={busy} onClick={close}><X size={24} /></button>
+          <span className="settings-progress" role="status">{busy ? "Working…" : ""}</span>
+          <button type="button" className="settings-close" aria-label="Close settings" aria-disabled={busy || undefined} onClick={close}><X size={24} /></button>
         </header>
         {error && <p className="settings-error" role="alert">{error}</p>}
-        <p className="settings-status" role="status">{busy ? "Working with saved games…" : notice}</p>
+        <p className="settings-status" role="status">{notice}</p>
         <button type="button" className={`settings-section-heading ${section === "saves" ? "is-active" : ""}`}
           aria-expanded={section === "saves"} aria-controls="settings-saves" disabled={busy}
           onClick={() => setSection(section === "saves" ? "" : "saves")}>
           <Save size={24} /><span>Saved games</span><ChevronDown size={20} />
         </button>
-        <section id="settings-saves" hidden={section !== "saves"}>
+        <section id="settings-saves" hidden={section !== "saves"} aria-busy={busy}>
           {!review && <>
             <div className="settings-action-block"><Download size={25} aria-hidden="true" />
               <div><h3>Export saves</h3><p>Download all saved progress as a ZIP.</p></div>

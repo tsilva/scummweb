@@ -115,9 +115,10 @@ Loading, cached and restored hero controls share fixed button, version and
 license rows. Cached actions overlay the reserved controls until restoration
 finishes; mobile buttons reserve enough height for two-line labels.
 The scroll cue and desktop slideshow controls share a row below the launch
-area. File-access and import guidance uses the hero's flexible space; shorter
-viewports reduce decorative spacing and release unused action slots. If the
-content still needs more room, the hero grows so every action remains reachable.
+area. The desktop hero reserves room for version and license links across slides.
+On mobile, spare space above the copy absorbs title wrapping, and an unused
+version row collapses. If the content still needs more room, the hero grows so
+every action remains reachable.
 Imported versions use their existing isolated save directory even when their
 ZIP name is unrecognized. Individual indexed files are checked for existence,
 size and modification time, so deleting the newest save can expose an older
@@ -235,6 +236,8 @@ the cursor. Loading screens scroll on short landscape viewports.
 
 Check the launcher, game landing hero, screenshot viewer, compatibility search, settings and player at
 320px and 390px portrait widths, a short landscape viewport and tablet widths.
+Compare the Play button across short and long hero titles, the screenshot toolbar
+across mixed image sizes, and the Settings controls before and after saves load.
 Verify rotation, exit, menu, left/right clicks, cursor dragging, Start audio and
 fullscreen refusal on physical Android and iOS devices before claiming device
 coverage; desktop viewport checks do not emulate mobile browser APIs or touch.
@@ -244,7 +247,8 @@ coverage; desktop viewport checks do not emulate mobile browser APIs or touch.
 Open the **Settings** gear icon to the right of GitHub in the header, then **Saved games**.
 Export and import actions appear above the list of active and preserved saves.
 Unmatched imports share one row showing the total number of save files.
-The drawer slides from the right, uses compact typography and prevents text selection.
+The drawer slides from the right and shows loading progress in its header so the
+saved-game actions stay in place.
 It opens and closes immediately when reduced motion is enabled.
 **Export all saves**
 downloads a ScummWEB ZIP containing active progress and preserved save sets.
@@ -1560,8 +1564,8 @@ or request-time rendering.
   library for explicit replacement with a ZIP, preserving their save identity;
   they are never opened as directories.
   Desktop hero titles fit their full text into a fixed three-line title area, resizing
-  after viewport or font changes. Summary and metadata reserve space on taller
-  viewports and use their content height on shorter ones.
+  after viewport or font changes. Summary and metadata reserve space across slides,
+  including on shorter desktop viewports.
   The desktop hero's primary action reserves a fixed button width. All layouts
   retain save-aware Play/Continue and file-access actions; mobile buttons span
   the available width with a minimum 3rem height.
@@ -1616,9 +1620,11 @@ or request-time rendering.
   the library uses exactly five columns; narrower layouts keep their responsive grid.
   The screenshot strip reserves its full height so changing games does not move
   later sections. Thumbnail requests start as the strip approaches the viewport.
-  Selecting a thumbnail expands a viewer inline. Previous/next and arrow keys
-  browse the screenshots; Close screenshot or Escape collapses the viewer and
-  restores focus to the thumbnail. Game changes reset the expanded image.
+  Selecting a thumbnail expands a viewer inline. The first screenshot sets the
+  viewer's aspect ratio, so switching between images keeps the toolbar in place
+  and displays every screenshot uncropped. Previous/next and arrow keys browse
+  the screenshots; Close screenshot or Escape collapses the viewer and restores
+  focus to the thumbnail. Game changes reset the expanded image.
   Game details do not open a modal or lock background scrolling.
   The library's sliders icon opens the sorting and genre controls. The button
   has an accessible label and no visible text. It sorts the
