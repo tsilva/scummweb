@@ -151,6 +151,8 @@ update and report that clock separately from the shared presentation clock.
 Queen counts rendered updates during walks and cutaways, and exposes manual
 slots 1–98 between commands and room transitions. DreamWeb, Nippon Safes and
 Discworld use their existing game serializers from their game-update boundary.
+Nippon Safes reads old prison saves with a truncated visited-room key and
+restores the scene without replaying its first-visit prompt.
 
 For a scoped Sky Continue launch, AgentSCUMM can explicitly request a single
 legacy manual slot from the same browser profile. The shell copies the slot
@@ -183,7 +185,9 @@ cursor capture. Touch/mobile controls and bottom actions do not auto-hide.
 
 ### Mobile play
 
-The player uses the visible viewport height and respects display safe areas.
+The mobile player resizes the game frame to the browser's visible height as
+browser chrome or the keyboard changes the available space. It also respects
+display safe areas.
 Mobile mouse-controlled games fit that height while preserving the game’s aspect
 ratio; narrower viewports can crop the sides. Apple II Hi-Res Adventures such as
 Mystery House use a **Game command** field in place of the mouse controls on mobile.
@@ -212,11 +216,13 @@ policy after fullscreen; physical rotation cannot be guaranteed on those devices
 File-access and locate actions keep their normal prompts without entering fullscreen.
 Orientation follows the viewport rather than the physical screen, so split-screen
 windows and tablets use the available space. Dragging moves the cursor; the
-large square **Adjust** cursor pad offers smaller movements, and the compact
-mouse-shaped **L**/**R** buttons send clicks. The pad, click buttons and exit
-control share a translucent fill, muted labels and subtle outlines to keep the
-game prominent; pressing or keyboard-focusing a control highlights it. Double-tapping
-the game sends a left click. Loading screens scroll on short landscape viewports.
+large square cursor pad offers smaller movements, and the compact
+mouse-shaped **L**/**R** buttons send clicks. The cursor pad sits at least
+2 rem from the left edge to reduce accidental Android Back swipes. The pad,
+click buttons and exit control share a translucent fill and subtle outlines to keep the
+game prominent; pressing or keyboard-focusing a control highlights it. The cursor
+pad suppresses the browser’s tap highlight. Double-tapping the game sends a left
+click. Loading screens scroll on short landscape viewports.
 
 Check the launcher, game landing hero, screenshot viewer, compatibility search, settings and player at
 320px and 390px portrait widths, a short landscape viewport and tablet widths.
@@ -370,7 +376,8 @@ genre, or studio and genre filtering for both public and imported games. Select
 **All genres** to remove the filter or **Name: A–Z** to restore alphabetical order.
 Name order keeps numbered series in installment order, treating Roman and Arabic
 numerals alike. Sort-only aliases in `lib/game-title-sort.mjs` place unnumbered
-first games and irregularly named sequels with their series. These aliases also
+first games and irregularly named sequels with their series. For example,
+Hugo's House of Horrors appears before Hugo II and Hugo III. These aliases also
 apply to imported games and name tie-breaks, preserving displayed titles and URLs.
 Select the **ScummWEB** logo or its tagline in the header to return to the homepage.
 On mobile, select **Library** next to **Settings** to jump to the **Game Library**

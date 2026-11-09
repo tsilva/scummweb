@@ -229,7 +229,7 @@
 
 .game-route-touch-cursor-pad-shell {
   position: fixed;
-  left: max(0.75rem, env(safe-area-inset-left));
+  left: max(2rem, env(safe-area-inset-left));
   bottom: max(0.75rem, env(safe-area-inset-bottom));
   z-index: 10;
   pointer-events: none;
@@ -248,6 +248,7 @@
   cursor: pointer;
   pointer-events: auto;
   touch-action: none;
+  -webkit-tap-highlight-color: transparent;
   user-select: none;
   -webkit-user-select: none;
 }
@@ -316,23 +317,6 @@
   background: rgba(255, 255, 255, 0.08);
   pointer-events: none;
   transition: transform 40ms linear;
-}
-
-.game-route-touch-cursor-pad-label {
-  position: absolute;
-  right: 0.42rem;
-  bottom: 0.34rem;
-  color: inherit;
-  font:
-    700
-    0.5rem/1
-    "Trebuchet MS",
-    Verdana,
-    Tahoma,
-    sans-serif;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  pointer-events: none;
 }
 
 .game-route-skip-intro-button {
