@@ -239,7 +239,7 @@ test("launch options stay hidden until the remembered copy and its save identity
     "lucide-react": { Play: "play", Pause: "pause" },
     "./hero-images.mjs": { getHeroPreloadImages: () => [] },
     "../game-versions.mjs": { ...versions,
-      readChosenVersion: group => remembered.get(group),
+      readPreferredGameVersion: (copies, group) => versions.chooseGameVersion(copies, remembered.get(group), "English"),
       rememberGameVersion: (group, key) => remembered.set(group, key),
     },
     "./game-navigation": { useGameNavigation: () => null },

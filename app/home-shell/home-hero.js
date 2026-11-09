@@ -6,7 +6,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import HeroStage from "./hero-stage";
 import { getHeroPreloadImages, HERO_PRELOAD_AHEAD } from "./hero-images.mjs";
 import { useArtworkDelivery } from "./artwork-delivery";
-import { chooseGameVersion, getGameFamilyKey, readChosenVersion, rememberGameVersion } from "../game-versions.mjs";
+import { chooseGameVersion, getGameFamilyKey, readPreferredGameVersion, rememberGameVersion } from "../game-versions.mjs";
 import { orderHeroGroups } from "./hero-order.mjs";
 import { buildGameExitHref } from "./hero-selection.mjs";
 import { useGameNavigation } from "./game-navigation";
@@ -38,10 +38,9 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
   const versionKeys = JSON.stringify(currentSlide.versions.map(({ key, status }) => [key, status]));
   const version = chooseGameVersion(currentSlide.versions, chosen?.group === currentSlide.id ? chosen.key : null);
   useLayoutEffect(() => {
-    const language = new Intl.DisplayNames(["en"], { type: "language" }).of(navigator.language.split("-")[0]);
-    const preferred = chooseGameVersion(currentSlide.versions, readChosenVersion(currentSlide.id), language);
+    const preferred = readPreferredGameVersion(currentSlide.versions, currentSlide.id);
     setChosen({ group: currentSlide.id, key: preferred.key, versionKeys });
-  }, [currentSlide.id, versionKeys]);
+  }, [currentSlide.id, versionKeys, navigationId]);
   const actionsReady = !loadingSources && !pendingSourceGroups.includes(currentSlide.id)
     && chosen?.group === currentSlide.id && chosen.versionKeys === versionKeys;
   const initialActions = initialActionState(currentSlide.id, version, currentSlide.versions);

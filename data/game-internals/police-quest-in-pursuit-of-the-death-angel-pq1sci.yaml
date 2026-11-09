@@ -1,0 +1,36 @@
+# English DOS SCI remake 2.000.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/pq1-dos-2.000/src
+# Room 200 is the shared death handler. Room 60 is the award ceremony after defeating Bains in room 58.
+schema_version: 1
+game: police-quest-in-pursuit-of-the-death-angel-pq1sci
+engine_id: sci
+edition:
+  game_id: pq1sci
+  index_md5: 1bddd987b230086a13da172f85908d2c
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  bains-confrontation: 58
+  award-ceremony: 60
+  game-over: 200
+  felony-stop: 43 # Script 43 runs the stop, contact, and rights sequences.
+  hotel-delphoria: 50 # Script 50 sets up the hotel doors and driveway.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 }
+milestones:
+  - id: felony-stop
+    label: "Reached the felony stop"
+    when: { room: felony-stop }
+  - id: hotel-delphoria
+    label: "Reached the Hotel Delphoria"
+    when: { room: hotel-delphoria }
+  - id: confronted-bains
+    label: Reached the confrontation with Bains
+    when: { room: bains-confrontation }
+  - id: winning-ending
+    label: Defeated Bains and received the award
+    when:
+      all:
+        - { room: award-ceremony }
+        - { variable: previous-room, equals: 58 }

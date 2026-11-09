@@ -1,0 +1,138 @@
+schema_version: 1
+game: beneath-a-steel-sky
+engine_id: sky
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  # FOSTER_ENTER_NEW_BOARDROOM switches to this room for END_SEQUENCE.
+  ending-credits: 85
+variables:
+  reich-searched: { bank: script_vars, index: 420 }
+  id-clearance-upgraded: { bank: script_vars, index: 480 }
+  subway-grille-state: { bank: script_vars, index: 813 }
+  virus-taken: { bank: script_vars, index: 642 }
+  joey-android-active: { bank: script_vars, index: 714 }
+  tissue-infection-state: { bank: script_vars, index: 707 }
+  joey-reactivated: { bank: script_vars, index: 125 }
+  welding-robot-state: { bank: script_vars, index: 440 }
+  cut-cable-state: { bank: script_vars, index: 268 }
+  factory-tour-completed: { bank: script_vars, index: 451 }
+  jammer-state: { bank: script_vars, index: 258 }
+  port-state: { bank: script_vars, index: 256 }
+  linc-orders-document: { bank: script_vars, index: 515 }
+  linc-report-document: { bank: script_vars, index: 519 }
+  linc-adjustment-document: { bank: script_vars, index: 523 }
+  ground-level-reached: { bank: script_vars, index: 348 }
+  fingerprint-state: { bank: script_vars, index: 787 }
+  anita-found: { bank: script_vars, index: 822 }
+  ruptured-vein-repaired: { bank: script_vars, index: 681 }
+  nutrient-tank-drained: { bank: script_vars, index: 698 }
+  red-card-recovered: { bank: script_vars, index: 703 }
+  security-door-state: { bank: script_vars, index: 719 }
+  lamb-assets-frozen: { bank: script_vars, index: 335 }
+  braced-box: { bank: script_vars, index: 810 }
+  circuit-board-recovered: { bank: script_vars, index: 702 }
+  linc-guardian-present: { bank: script_vars, index: 640 }
+  linc-crystal-shattered: { bank: script_vars, index: 641 }
+  android-program-loaded: { bank: script_vars, index: 713 }
+milestones:
+  - id: joey-reactivated
+    label: Reactivated Joey in the recycling plant
+    when: { variable: joey-reactivated, equals: 42 }
+  - id: reich-id
+    label: Recovered Reich's ID card
+    when: { variable: reich-searched, equals: 42 }
+  - id: joey-welding-robot
+    label: Transferred Joey into the welding robot
+    when: { variable: welding-robot-state, equals: 42 }
+  - id: cut-cable
+    label: Had Joey cut the cable
+    when: { variable: cut-cable-state, one_of: [42, 69] }
+  - id: recovered-cable
+    label: Recovered the cut cable on the middle level
+    when: { variable: cut-cable-state, equals: 69 }
+  - id: factory-tour
+    label: Completed Lamb's factory tour
+    when: { variable: factory-tour-completed, equals: 42 }
+  - id: anita-jammer
+    label: Got the jammer from Anita
+    when: { variable: jammer-state, equals: 42 }
+  - id: froze-lambs-assets
+    label: Froze Lamb's assets at the LINC terminal
+    when:
+      all:
+        - { variable: lamb-assets-frozen, equals: 42 }
+        - { milestone: anita-jammer }
+  - id: installed-port
+    label: Had Burke install the Schriebmann port
+    when: { variable: port-state, equals: 42 }
+  - id: decrypted-documents
+    label: Decrypted the three LINC documents
+    # The saved inventory slots hold the decrypted icons.
+    when:
+      all:
+        - { variable: linc-orders-document, equals: 24828 }
+        - { variable: linc-report-document, equals: 24829 }
+        - { variable: linc-adjustment-document, equals: 24830 }
+  - id: id-clearance
+    label: Upgraded the ID card's clearance
+    when: { variable: id-clearance-upgraded, equals: 1 }
+  - id: ground-level
+    label: Reached ground level
+    when: { variable: ground-level-reached, equals: 1 }
+  - id: changed-fingerprints
+    label: Had Burke change Foster's fingerprints
+    when: { variable: fingerprint-state, equals: 42 }
+  - id: found-anita
+    label: Discovered Anita's body
+    when: { variable: anita-found, equals: 1 }
+  - id: braced-box
+    label: Braced the box to reach the subway grille
+    when: { variable: braced-box, equals: 1 }
+  - id: subway-passage
+    label: Opened the subway passage
+    # The crowbar loosens the grille (1). Cutting it opens the passage (2).
+    when: { variable: subway-grille-state, equals: 2 }
+  - id: diverted-repair-robot
+    label: Drew the repair robot to the ruptured vein
+    when: { variable: ruptured-vein-repaired, equals: 1 }
+  - id: drained-nutrient-tank
+    label: Had Joey drain the nutrient tank
+    when: { variable: nutrient-tank-drained, equals: 1 }
+  - id: red-linc-card
+    label: Recovered the red LINC card
+    when: { variable: red-card-recovered, equals: 1 }
+  - id: recovered-circuit-board
+    label: Retrieved Joey's board from the wrecked robot
+    when:
+      all:
+        - { variable: circuit-board-recovered, equals: 1 }
+        - { milestone: red-linc-card }
+  - id: cleared-linc-guardian
+    label: Defeated the LINC-Space guardian
+    when:
+      all:
+        - { variable: linc-guardian-present, equals: 0 }
+        - { milestone: red-linc-card }
+  - id: shattered-linc-crystal
+    label: Shattered the crystal protecting the virus
+    when: { variable: linc-crystal-shattered, equals: 1 }
+  - id: linc-virus
+    label: Retrieved the virus in LINC-Space
+    when: { variable: virus-taken, equals: 1 }
+  - id: downloaded-android-data
+    label: Downloaded character data into the middle android
+    when: { variable: android-program-loaded, equals: 1 }
+  - id: joey-android
+    label: Transferred Joey into Ken's android
+    when: { variable: joey-android-active, equals: 1 }
+  - id: opened-security-door
+    label: Opened the underground security door with Joey
+    when: { variable: security-door-state, equals: 2 }
+  - id: infected-linc
+    label: Infected LINC with the virus
+    # The sample is infected at 1 and applied to LINC at 2.
+    when: { variable: tissue-infection-state, equals: 2 }
+  - id: winning-ending
+    label: Reached the ending credits
+    when: { room: ending-credits }

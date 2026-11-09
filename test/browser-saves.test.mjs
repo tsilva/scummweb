@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { cancelBrowserSaveQueries, getCachedBrowserSave, getLatestBrowserSave, readBrowserSaveFiles, subscribeBrowserSaves } from "../app/browser-saves.mjs";
+import { cancelBrowserSaveQueries, getCachedBrowserSave, getCachedBrowserSaveContents, getLatestBrowserSave, readBrowserSaveFiles, subscribeBrowserSaves } from "../app/browser-saves.mjs";
 import { saveIndexKey, saveRevision } from "../web-shell/continue-saves.mjs";
 import { getVersionSaveNamespace } from "../app/game-versions.mjs";
 
@@ -60,11 +60,18 @@ test("Continue chooses the newest native-listed player save, not the highest slo
   ]));
   await indexSaves(game, [["SKY-VM.007", 7], ["SKY-VM.002", 2]]);
   assert.equal(await getLatestBrowserSave(game, "test"), 2);
+  assert.equal(getCachedBrowserSaveContents(game), Buffer.from("newer save").toString("base64"));
+  const key = saveIndexKey("", game.target);
+  const index = JSON.parse(window.localStorage.getItem(key));
+  window.localStorage.setItem(key, JSON.stringify({ ...index, pending: ["SKY-VM.002"] }));
+  assert.equal(getCachedBrowserSave(game), 7);
+  assert.equal(getCachedBrowserSaveContents(game), Buffer.from("older save").toString("base64"));
   window.localStorage = makeBrowserStorage([["SKY-VM.000", "actual player save", 70]]);
   await indexSaves(game, [["SKY-VM.000", 0]]);
   assert.equal(await getLatestBrowserSave(game, "test"), 0);
   await indexSaves(game, []);
   assert.equal(await getLatestBrowserSave(game, "test"), null);
+  assert.equal(getCachedBrowserSaveContents(game), null);
 });
 
 test("Continue is isolated to the imported version, including an unknown ZIP title", async (t) => {

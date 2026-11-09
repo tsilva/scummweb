@@ -1,0 +1,159 @@
+schema_version: 1
+game: indiana-jones-and-the-fate-of-atlantis
+engine_id: scumm
+edition:
+  game_id: atlantis
+  # English DOS CD index (ATLANTIS.000).
+  index_md5: 182344899c2e2998fca0bebcd82aa81a
+scoring: highest_stage
+rooms:
+  atlantis-canal: 46
+  atlantis-middle-ring: 94
+  god-machine-entrance: 22
+  colossus-chamber: 23
+  god-machine-overlook: 30
+  atlantis-airlock: 48
+  labyrinth: 50
+  labyrinth-catacombs: 51
+  labyrinth-waterfall: 52
+  labyrinth-subway: 53
+  labyrinth-boulder-room: 54
+  inner-ring-lava-maze: 55
+  labyrinth-elevator: 56
+  labyrinth-three-statues: 57
+  labyrinth-map-room: 59
+  labyrinth-gold-box: 60
+  labyrinth-minotaur-room: 61
+  submarine-underwater: 66
+  salvage-dive: 82
+  outer-ring-northwest: 85
+  outer-ring-northeast: 86
+  outer-ring-southwest: 87
+  outer-ring-southeast: 88
+  ending-scene: 96
+variables:
+  chosen-story-path: { bank: scumm_vars, index: 238 }
+flags:
+  # Global script 172 sets bit 36 on the surviving branch.
+  escaped-atlantis: { bank: scumm_bit_bytes, index: 4, mask: 0x10 }
+  # The theater entry script records the first arrival in bit 79.
+  visited-new-york-theater: { bank: scumm_bit_bytes, index: 9, mask: 0x80 }
+  saw-sophias-lecture: { bank: scumm_bit_bytes, index: 8, mask: 0x80 }
+  iceland-eel-thawed: { bank: scumm_bit_bytes, index: 23, mask: 0x04 }
+  tikal-tomb-opened: { bank: scumm_bit_bytes, index: 22, mask: 0x04 }
+  # The office's local script 209 marks the reading scene with bit 212.
+  lost-dialogue-read: { bank: scumm_bit_bytes, index: 26, mask: 0x10 }
+  costa-first-collection: { bank: scumm_bit_bytes, index: 27, mask: 0x02 }
+  costa-second-collection: { bank: scumm_bit_bytes, index: 27, mask: 0x04 }
+  costa-third-collection: { bank: scumm_bit_bytes, index: 27, mask: 0x08 }
+  # Bit 647 records the first approach from the lava maze.
+  approached-colossus: { bank: scumm_bit_bytes, index: 80, mask: 0x80 }
+objects:
+  sunstone: 934
+  moonstone: 935
+  worldstone: 936
+  # The airlock's local script 216 opens this exit.
+  airlock-exit: 582
+  orichalcum-factory-wheel: 412
+  god-machine-spindle: 264
+milestones:
+  - id: new-york-theater
+    label: Reached Sophia's theater in New York
+    when: { flag: visited-new-york-theater }
+  - id: sophias-lecture
+    label: Saw Sophia's lecture on Atlantis
+    when: { flag: saw-sophias-lecture }
+  - id: thawed-iceland-eel
+    label: Thawed the eel figurine in Iceland
+    when: { flag: iceland-eel-thawed }
+  - id: opened-tikal-tomb
+    label: Opened the tomb at Tikal
+    when: { flag: tikal-tomb-opened }
+  - id: costa-clue
+    label: Learned the collection name from Costa
+    when:
+      any:
+        - { flag: costa-first-collection }
+        - { flag: costa-second-collection }
+        - { flag: costa-third-collection }
+  - id: lost-dialogue
+    label: Read Plato's Lost Dialogue
+    when: { flag: lost-dialogue-read }
+  - id: chose-story-path
+    label: Chose a path for the search
+    when:
+      all:
+        - { flag: lost-dialogue-read }
+        - { variable: chosen-story-path, one_of: [1, 2, 3] }
+  - id: found-sunstone
+    label: Acquired the Sunstone
+    when: { object: sunstone, equals: 1 }
+  - id: found-moonstone
+    label: Acquired the Moonstone
+    when: { object: moonstone, equals: 1 }
+  - id: crete-labyrinth
+    label: Entered the Crete Labyrinth
+    when:
+      any:
+        - { room: labyrinth }
+        - { room: labyrinth-catacombs }
+        - { room: labyrinth-waterfall }
+        - { room: labyrinth-subway }
+        - { room: labyrinth-boulder-room }
+        - { room: labyrinth-elevator }
+        - { room: labyrinth-three-statues }
+        - { room: labyrinth-map-room }
+        - { room: labyrinth-gold-box }
+        - { room: labyrinth-minotaur-room }
+  - id: found-worldstone
+    label: Acquired the Worldstone
+    when: { object: worldstone, equals: 1 }
+  - id: dived-toward-atlantis
+    label: Descended underwater toward Atlantis
+    when:
+      any:
+        - { room: submarine-underwater }
+        - { room: salvage-dive }
+  - id: atlantis
+    label: Reached Atlantis
+    when: { room: atlantis-airlock }
+  - id: opened-airlock
+    label: Opened the Atlantis airlock exit
+    when: { object: airlock-exit, equals: 1 }
+  - id: outer-ring
+    label: Entered the Atlantis outer ring
+    when:
+      any:
+        - { room: outer-ring-northwest }
+        - { room: outer-ring-northeast }
+        - { room: outer-ring-southwest }
+        - { room: outer-ring-southeast }
+  - id: restored-orichalcum-factory
+    label: Installed the orichalcum factory wheel
+    when: { object: orichalcum-factory-wheel, equals: 1 }
+  - id: canal
+    label: Reached the Atlantis canal
+    when: { room: atlantis-canal }
+  - id: middle-ring
+    label: Reached the Atlantis middle ring
+    when: { room: atlantis-middle-ring }
+  - id: inner-ring
+    label: Reached the inner ring's lava maze
+    when: { room: inner-ring-lava-maze }
+  - id: colossus
+    label: Reached the Colossus chamber
+    when:
+      any:
+        - { room: god-machine-entrance }
+        - { room: colossus-chamber }
+        - { room: god-machine-overlook }
+        - { flag: approached-colossus }
+  - id: loaded-god-machine-disks
+    label: Mounted all three disks on the god machine
+    when: { object: god-machine-spindle, equals: 3 }
+  - id: escaped-atlantis
+    label: Escaped Atlantis and reached the ending
+    when:
+      all:
+        - { room: ending-scene }
+        - { flag: escaped-atlantis }
