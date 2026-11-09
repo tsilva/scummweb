@@ -152,8 +152,19 @@ export function readChosenVersion(groupKey) {
   try { return window.localStorage.getItem(`scummweb.version:${groupKey}`); } catch { return null; }
 }
 
+export function readPreferredGameVersion(versions, groupKey) {
+  const language = new Intl.DisplayNames(["en"], { type: "language" }).of(navigator.language.split("-")[0]);
+  return chooseGameVersion(versions, readChosenVersion(groupKey), language);
+}
+
+export const chosenGameVersionUpdatedEvent = "scummweb:game-version-updated";
+
 export function rememberGameVersion(groupKey, versionKey) {
-  try { window.localStorage.setItem(`scummweb.version:${groupKey}`, versionKey); } catch { /* Play works without preferences. */ }
+  try {
+    if (readChosenVersion(groupKey) === versionKey) return;
+    window.localStorage.setItem(`scummweb.version:${groupKey}`, versionKey);
+    window.dispatchEvent(new Event(chosenGameVersionUpdatedEvent));
+  } catch { /* Play works without preferences. */ }
 }
 
 const saveNamespaces = new Map();

@@ -1,0 +1,103 @@
+schema_version: 1
+game: flight-of-the-amazon-queen
+engine_id: queen
+scoring: highest_stage
+rooms:
+  ending-credits: 110
+variables:
+  sheet-rope-secured: { bank: game_state, index: 91 }
+  lola-helping: { bank: game_state, index: 94 }
+  hotel-escape-stage: { bank: game_state, index: 3 }
+  piranhas-distracted: { bank: game_state, index: 5 }
+  jungle-crossing-open: { bank: game_state, index: 101 }
+  jungle-bridge-repaired: { bank: game_state, index: 7 }
+  gorilla-departure-stage: { bank: game_state, index: 115 }
+  naomi-perfume-stage: { bank: game_state, index: 25 }
+  witch-doctor-ingredients: { bank: game_state, index: 56 }
+  floda-letter-delivered: { bank: game_state, index: 128 }
+  floda-dog-distracted: { bank: game_state, index: 69 }
+  floda-safe-emptied: { bank: game_state, index: 74 }
+  floda-prison-unlocked: { bank: game_state, index: 40 }
+  amazon-rescue-stage: { bank: game_state, index: 123 }
+  sloth-island-access: { bank: game_state, index: 41 }
+  temple-pulley-stage: { bank: game_state, index: 170 }
+  makeshift-torch-lit: { bank: game_state, index: 57 }
+  temple-death-ray-disabled: { bank: game_state, index: 165 }
+  temple-jewels-stage: { bank: game_state, index: 44 }
+  temple-panels-stage: { bank: game_state, index: 100 }
+  temple-stage: { bank: game_state, index: 67 }
+  valley-dinosaur-bypassed: { bank: game_state, index: 104 }
+  valley-obstacle-cleared: { bank: game_state, index: 105 }
+milestones:
+  - id: secured-sheet-rope
+    label: Secured the sheet rope to the radiator
+    when: { variable: sheet-rope-secured, equals: 1 }
+  - id: lola-help
+    label: Got Lola's help escaping the hotel
+    when: { variable: lola-helping, equals: 1 }
+  - id: hotel-escape
+    label: Reached the crash site
+    when: { variable: hotel-escape-stage, equals: 1 }
+  - id: distracted-piranhas
+    label: Distracted the piranhas
+    when: { variable: piranhas-distracted, equals: 1 }
+  - id: jungle-crossing
+    label: Opened the jungle river crossing
+    when: { variable: jungle-crossing-open, equals: 1 }
+  - id: repaired-jungle-bridge
+    label: Repaired the jungle bridge
+    when: { variable: jungle-bridge-repaired, equals: 1 }
+  - id: cleared-gorilla
+    label: Persuaded the gorilla to leave
+    when: { variable: gorilla-departure-stage, equals: 2 }
+  - id: delivered-perfume
+    label: Gave Naomi the perfume
+    when: { variable: naomi-perfume-stage, equals: 2 }
+  - id: witch-doctor-ingredients
+    label: Delivered all three ingredients to the witch doctor
+    when: { variable: witch-doctor-ingredients, equals: 3 }
+  - id: delivered-floda-letter
+    label: Delivered the letter to John at Floda
+    when: { variable: floda-letter-delivered, equals: 1 }
+  - id: distracted-floda-dog
+    label: Distracted the Floda guard dog
+    when: { variable: floda-dog-distracted, equals: 1 }
+  - id: emptied-floda-safe
+    label: Retrieved the contents of the Floda safe
+    when: { variable: floda-safe-emptied, equals: 1 }
+  - id: opened-floda-prison
+    label: Unlocked the Floda prison door
+    when: { variable: floda-prison-unlocked, equals: 1 }
+  - id: amazon-rescue
+    label: Reached the Amazon jail rescue scene
+    when: { variable: amazon-rescue-stage, equals: 2 }
+  - id: sloth-island
+    label: Unlocked passage to Sloth Island
+    when: { variable: sloth-island-access, equals: 2 }
+  - id: restored-temple-pulley
+    label: Restored the temple pulley
+    when: { variable: temple-pulley-stage, equals: 3 }
+  - id: lit-temple-torch
+    label: Lit the makeshift torch
+    when: { variable: makeshift-torch-lit, equals: 1 }
+  - id: disabled-temple-death-ray
+    label: Disabled the temple death ray
+    when: { variable: temple-death-ray-disabled, equals: 1 }
+  - id: placed-temple-jewels
+    label: Placed both jewels in the temple eyes
+    when: { variable: temple-jewels-stage, equals: 2 }
+  - id: activated-temple-panels
+    label: Activated both temple wall panels
+    when: { variable: temple-panels-stage, equals: 3 }
+  - id: temple
+    label: Finished the temple sequence
+    when: { variable: temple-stage, equals: 2 }
+  - id: bypassed-valley-dinosaur
+    label: Got past the large dinosaur in the valley
+    when: { variable: valley-dinosaur-bypassed, equals: 1 }
+  - id: valley
+    label: Cleared the last Valley of Mists obstacle
+    when: { variable: valley-obstacle-cleared, equals: 1 }
+  - id: credits
+    label: Reached the ending credits
+    when: { room: ending-credits }

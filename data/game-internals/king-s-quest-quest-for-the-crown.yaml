@@ -1,0 +1,37 @@
+# English DOS SCI remake 1.000.051.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/kq1-dos-1.000.051/src
+# Only the throne room’s treasure-return sequence leads to the closing credits.
+schema_version: 1
+game: king-s-quest-quest-for-the-crown
+engine_id: sci
+edition:
+  game_id: kq1sci
+  index_md5: fcf6a00f2ff4715bf8ea65388458179d
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  throne-room: 53
+  closing-credits: 85
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 }
+flags:
+  magic-mirror: { bank: globals, index: 155, mask: 2048 } # Flag 84. Script 51 awards this flag when the mirror enters inventory.
+  magic-chest: { bank: globals, index: 155, mask: 256 } # Flag 87. Script 58 awards this flag on taking the giant’s chest.
+  magic-shield: { bank: globals, index: 154, mask: 256 } # Flag 71. Script 77 awards this flag on taking the shield.
+milestones:
+  - id: found-first-treasure
+    label: "Recovered a royal treasure"
+    when: { any: [{ flag: magic-mirror }, { flag: magic-chest }, { flag: magic-shield }] }
+  - id: found-second-treasure
+    label: "Recovered two royal treasures"
+    when: { any: [{ all: [{ flag: magic-mirror }, { flag: magic-chest }] }, { all: [{ flag: magic-mirror }, { flag: magic-shield }] }, { all: [{ flag: magic-chest }, { flag: magic-shield }] }] }
+  - id: found-all-treasures
+    label: "Recovered all three royal treasures"
+    when: { all: [{ flag: magic-mirror }, { flag: magic-chest }, { flag: magic-shield }] }
+  - id: winning-ending
+    label: Returned the three treasures and became king
+    when:
+      all:
+        - { room: closing-credits }
+        - { variable: previous-room, equals: 53 }

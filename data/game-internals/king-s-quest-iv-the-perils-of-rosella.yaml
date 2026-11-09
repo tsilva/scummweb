@@ -1,0 +1,35 @@
+# English Amiga SCI 1.023.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/kq4-amiga-1.023/src
+# Room 694 also plays the ending where Graham dies. Only its healing-fruit
+# branch resets the in-game hour to 0, at state 111 after Graham recovers.
+schema_version: 1
+game: king-s-quest-iv-the-perils-of-rosella
+engine_id: sci
+edition:
+  game_id: kq4sci
+  index_md5: 53cceea993dc02611cc3cfb3f1c548bb
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  castle-ending: 694
+  cottage-kitchen: 54 # Script 22 opens the cottage door; script 54 runs the cleaning sequence.
+  lolotte-castle-hall: 86 # Script 86 handles the dungeon and throne-room doors.
+variables:
+  score: { bank: globals, index: 15 }
+  game-hour: { bank: globals, index: 160 }
+milestones:
+  - id: cottage-kitchen
+    label: "Entered the dwarfs’ cottage"
+    when: { room: cottage-kitchen }
+  - id: lolotte-castle-hall
+    label: "Reached Lolotte’s castle hall"
+    when: { room: lolotte-castle-hall }
+  - id: returned-to-daventry
+    label: Returned to Daventry
+    when: { room: castle-ending }
+  - id: winning-ending
+    label: Healed King Graham
+    when:
+      all:
+        - { room: castle-ending }
+        - { variable: game-hour, equals: 0 }

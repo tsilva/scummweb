@@ -1,0 +1,42 @@
+# English DOS CD 1.0.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/sq4-cd-dos-1.0/src
+# Room 556 also hosts the opening hologram. Entry from 555 selects the reunion, which proceeds to 540.
+schema_version: 1
+game: space-quest-iv-roger-wilco-and-the-time-rippers
+engine_id: sci
+edition:
+  game_id: sq4
+  index_md5: bd29d3fb8ea4a8ee638edaf40aa5f5ed
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  hologram-and-reunion: 556
+  final-return: 540
+  xenon-landing: 45 # Script 72 xenonLanding transitions to room 45.
+  sequel-police-ship: 119 # Script 119 handles the ship’s arrival and departure.
+  time-pod: 531 # Scripts 305, 376 and 530 enter room 531 after boarding.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 }
+milestones:
+  - id: xenon-landing
+    label: "Reached future Xenon"
+    when: { room: xenon-landing }
+  - id: sequel-police-ship
+    label: "Reached the Sequel Police ship"
+    when: { room: sequel-police-ship }
+  - id: time-pod
+    label: "Entered the time pod"
+    when: { room: time-pod }
+  - id: reunited-with-son
+    label: Reunited with Roger Jr.
+    when:
+      all:
+        - { room: hologram-and-reunion }
+        - { variable: previous-room, equals: 555 }
+  - id: winning-ending
+    label: Returned from the winning reunion sequence
+    when:
+      all:
+        - { room: final-return }
+        - { variable: previous-room, equals: 556 }

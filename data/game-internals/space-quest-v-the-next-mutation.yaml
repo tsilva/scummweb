@@ -1,0 +1,39 @@
+# English DOS 1.04.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/sq5-dos-1.04/src
+# Script 1060 leads from the final sequence to the farewell in room 1041.
+schema_version: 1
+game: space-quest-v-the-next-mutation
+engine_id: sci
+edition:
+  game_id: sq5
+  index_md5: ea937aae231c4acdaeb249dea8f71060
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  final-sequence: 1060
+  farewell: 1041
+  starcon-departure: 214 # Script 214 opens the dock and transitions to space.
+  wd40-ship: 325 # Script 320 handles the landing and enters room 325.
+  greeble-security: 1000 # Script 800 cuts the access hole and enters room 1000.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 }
+milestones:
+  - id: starcon-departure
+    label: "Departed StarCon"
+    when: { room: starcon-departure }
+  - id: wd40-ship
+    label: "Found WD-40’s ship"
+    when: { room: wd40-ship }
+  - id: greeble-security
+    label: "Reached the guarded area of the Goliath"
+    when: { room: greeble-security }
+  - id: reached-final-sequence
+    label: Reached the final sequence
+    when: { room: final-sequence }
+  - id: winning-ending
+    label: Reached the farewell ending
+    when:
+      all:
+        - { room: farewell }
+        - { variable: previous-room, equals: 1060 }

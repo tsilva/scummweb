@@ -1,0 +1,78 @@
+# English Amiga floppy, ScummVM detector target agos:elvira2.
+# ScummWEB hashes the entire gameamiga database for telemetry identity.
+# ScummWEB publishes vars (255 signed slots) for this edition. Room and object
+# entries below are AGOS database item IDs, with two reserved IDs accounted for.
+# AGOS telemetry does not publish Elvira II room IDs, object states, or bit arrays.
+schema_version: 1
+game: elvira-ii-the-jaws-of-cerberus
+engine_id: agos
+edition:
+  game_id: elvira2
+  index_md5: a144d2467e1addee1f705647dacd33df
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  studio-drive-entrance: 854
+  studio-foyer: 836
+  ritual-car-park: 822
+  crypt: 769
+  spider-maze: 744 # Superroom container, not an individual cell.
+  tunnels: 760 # Superroom container, not an individual cell.
+objects:
+  elvira: 11
+  magic-bag: 14
+  tomahawk: 15
+  lance: 593
+  bind-demon-spell: 638
+  golden-cross: 771
+  spellbook: 833
+variables:
+  # AGOSEngine_Elvira2::printStats reads these four slots directly.
+  level: { bank: vars, index: 20 }
+  experience: { bank: vars, index: 21 }
+  power-points: { bank: vars, index: 22 }
+  hit-points: { bank: vars, index: 23 }
+  # Subroutines 105 and 106 select Stuntman (0), Private Eye (1),
+  # Computer Programmer (2), or Knife Thrower (3). The restore prompt uses 4.
+  character-class: { bank: vars, index: 102 }
+  # Subroutines 1859, 1291 and 1329 count the first two studio outcomes.
+  # The rescue branches in 1150, 1230 and 1380 set 3 and place Elvira with the player.
+  studio-outcomes: { bank: vars, index: 180 }
+  # Subroutines 1864 and 339 set 1 (summoned) and 2 (bound). The lance
+  # action in subroutine 0 sets 3. Subroutines 1862 and 1865 use 10 and 20.
+  ritual-stage: { bank: vars, index: 186 }
+  # ScummWEB records entry into the winning script (1) or ritual failure (2).
+  # The result survives the scripted Start load and resets on a new attempt.
+  ritual-outcome: { bank: elvira2_outcome, key: ritual }
+milestones:
+  - id: first-studio-outcome
+    label: Reached the first studio outcome
+    when: { variable: studio-outcomes, one_of: [1, 2, 3] }
+  - id: second-studio-outcome
+    label: Reached the second studio outcome
+    when: { variable: studio-outcomes, one_of: [2, 3] }
+  - id: rescued-elvira
+    label: Rescued Elvira
+    when: { variable: studio-outcomes, equals: 3 }
+  - id: summoned-cerberus
+    label: Summoned Cerberus at the car park
+    when:
+      all:
+        - { milestone: rescued-elvira }
+        - { variable: ritual-stage, one_of: [1, 2, 3] }
+  - id: bound-cerberus
+    label: Bound Cerberus
+    when:
+      all:
+        - { milestone: summoned-cerberus }
+        - { variable: ritual-stage, one_of: [2, 3] }
+  - id: used-lance
+    label: Used the lance on Cerberus
+    when:
+      all:
+        - { milestone: bound-cerberus }
+        - { variable: ritual-stage, equals: 3 }
+  - id: winning-ending
+    label: Triggered the winning ending
+    # 1882 reloads Start. The outcome remains valid after vars are reset.
+    when: { variable: ritual-outcome, equals: 1 }

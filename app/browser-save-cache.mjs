@@ -1,6 +1,6 @@
 // Self-contained for the small pre-paint reader as well as React's save hook.
 // Only indexed, complete files in the selected edition can offer Continue.
-export function readCachedSave(game, storage, namespace = "") {
+export function readCachedSave(game, storage, namespace = "", includeContents = false) {
   try {
     if (namespace === null) return null;
     function inode(key) {
@@ -35,6 +35,10 @@ export function readCachedSave(game, storage, namespace = "") {
       return file?.type === 0x8000 && file.size > 0 && Number.isFinite(file.modifiedAt)
         && file.size === save.size && file.modifiedAt === save.modifiedAt && Boolean(storage.getItem(file.key));
     }).sort((a, b) => b.modifiedAt - a.modifiedAt || a.slot - b.slot);
-    return valid.length ? { ...valid[0], engineId: index.engineId, gameId: index.gameId, extra: index.extra } : null;
+    const latest = valid[0];
+    if (!latest) return null;
+    const contents = includeContents ? storage.getItem(inode(files[latest.name]).key) : undefined;
+    return { ...latest, engineId: index.engineId, gameId: index.gameId, extra: index.extra,
+      ...(includeContents && { contents }) };
   } catch { return null; }
 }

@@ -1,0 +1,43 @@
+# English Amiga 1.0v.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/sq3-amiga-1.0v/src
+# The visit to Sierra after the rescue ends with the transition from room 116 to 117.
+schema_version: 1
+game: space-quest-iii-the-pirates-of-pestulon
+engine_id: sci
+edition:
+  game_id: sq3
+  index_md5: cc1a975fa0f80941b9485866ee6ff634
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  sierra-office: 116
+  finale: 117
+  aluminum-mallard: 14 # Script 14 implements the Mallard cockpit and reactor controls.
+  left-junk-freighter: 17 # Script 14 arrivalScript sends the ship to room 17.
+  monolith-burger: 28 # Script 27 arrivalScript enters room 28 and runs the docking scene.
+  nukem-dukem-arena: 96 # Script 121 opens the door to room 96 and Elmo’s introduction.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 }
+milestones:
+  - id: aluminum-mallard
+    label: "Reached the Aluminum Mallard cockpit"
+    when: { room: aluminum-mallard }
+  - id: left-junk-freighter
+    label: "Launched from the junk freighter"
+    when: { room: left-junk-freighter }
+  - id: monolith-burger
+    label: "Reached Monolith Burger"
+    when: { room: monolith-burger }
+  - id: nukem-dukem-arena
+    label: "Reached the Nukem Dukem arena"
+    when: { room: nukem-dukem-arena }
+  - id: reached-sierra
+    label: Reached Sierra with the Two Guys
+    when: { room: sierra-office }
+  - id: winning-ending
+    label: Completed the Sierra ending
+    when:
+      all:
+        - { room: finale }
+        - { variable: previous-room, equals: 116 }

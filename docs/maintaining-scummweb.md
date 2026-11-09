@@ -383,6 +383,8 @@ The **Recently Played** strip shows only games you have launched, newest first,
 including imported ZIPs. Different editions of a title share one card, and
 selecting it opens the same version chooser as the library. Removed imports
 disappear from the strip. The strip stays hidden until there is play history.
+The included Flight of the Amazon Queen card can show story progress for the
+save that Continue will load. See [Recently Played progress](game-progress.md#recently-played).
 
 The sliders icon beside **Game Library** opens sorting by name, release year,
 genre, or studio and genre filtering for both public and imported games. Select
@@ -670,6 +672,9 @@ consumes the button gesture so movies do not interpret it as a skip command.
 Maintain it in `web-shell/`; the staging script copies it into the managed bundle.
 
 ## Evaluator telemetry
+
+For the maps and browser tracker that turn this telemetry into story progress,
+see [Game internals and story progress](game-progress.md).
 
 The host opts in by setting `__scummwebEvaluationEnabled` before launch. Every
 engine publishes its native IDs in `__scummwebEvaluationGame`. Room and game

@@ -1,0 +1,35 @@
+# English Amiga 1.000.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/pq3-amiga-1.000/src
+# Room 57 can end in death. The successful branch returns to room 33 after Hooks intervenes.
+schema_version: 1
+game: police-quest-3-the-kindred
+engine_id: sci
+edition:
+  game_id: pq3
+  index_md5: 5bd82ed17c41e596df61782f850c6ade
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  final-confrontation: 57
+  police-station: 33
+  hospital: 32 # Script 30 goToMarie transitions to room 32.
+  army-records: 54 # Script 31 goToArmy enters room 54 with the photo and record scripts.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 }
+milestones:
+  - id: hospital
+    label: "Reached Marie at the hospital"
+    when: { room: hospital }
+  - id: army-records
+    label: "Reached the Army records office"
+    when: { room: army-records }
+  - id: reached-confrontation
+    label: Reached the final confrontation
+    when: { room: final-confrontation }
+  - id: winning-ending
+    label: Solved the murder case and returned to the station
+    when:
+      all:
+        - { room: police-station }
+        - { variable: previous-room, equals: 57 }

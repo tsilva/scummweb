@@ -1,0 +1,33 @@
+# English Amiga 2.0B.
+# Traced against AGI v3 logic resources 79, 103 and 104 in the original release.
+# The courthouse award ceremony follows Bains's conviction.
+schema_version: 1
+game: police-quest-in-pursuit-of-the-death-angel
+engine_id: agi
+edition:
+  game_id: pq1
+  index_md5: cfa93e5f2aa7378bddd10ad6746a2ffb
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  bains-trial: 103
+  award-ceremony: 104
+variables:
+  score: { bank: vars, index: 3 }
+  max-score: { bank: vars, index: 7 }
+flags:
+  found-trunk-evidence: { bank: flag_bytes, index: 12, mask: 64 } # Flag 102. Logic 9 opens the trunk and reveals the bag.
+  found-school-evidence: { bank: flag_bytes, index: 9, mask: 4 } # Flag 74. Logic 56 sets this when the search reveals the bag and identification card.
+milestones:
+  - id: found-trunk-evidence
+    label: "Discovered evidence in the trunk"
+    when: { flag: found-trunk-evidence }
+  - id: found-school-evidence
+    label: "Found evidence on the school suspect"
+    when: { flag: found-school-evidence }
+  - id: reached-bains-trial
+    label: Reached the trial of Jessie Bains
+    when: { room: bains-trial }
+  - id: winning-ending
+    label: Received the key to the city
+    when: { room: award-ceremony }

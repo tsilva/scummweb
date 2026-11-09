@@ -1,0 +1,35 @@
+# English DOS CD 2.00b.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/kq7-dos-2.00b/src
+# The grand finale advances from room 2208 to room 2210. Volcano and Malicia failures can occur earlier.
+schema_version: 1
+game: king-s-quest-vii-the-princeless-bride
+engine_id: sci
+edition:
+  game_id: kq7
+  index_md5: a000858d91155b948bf3b23fa71ff79a
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  grand-finale: 2208
+  royal-ending: 2210
+  flying-horse: 6200 # Script 13 takes the flying-horse route to room 6200.
+  etheria-gate: 5400 # Scripts 3300 and 5400 handle entry and the gate opening.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 }
+milestones:
+  - id: flying-horse
+    label: "Mounted the flying horse"
+    when: { room: flying-horse }
+  - id: etheria-gate
+    label: "Reached the Etheria gate"
+    when: { room: etheria-gate }
+  - id: reached-grand-finale
+    label: Reached the grand finale
+    when: { room: grand-finale }
+  - id: winning-ending
+    label: Reached the royal ending
+    when:
+      all:
+        - { room: royal-ending }
+        - { variable: previous-room, equals: 2208 }

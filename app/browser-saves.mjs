@@ -64,13 +64,21 @@ function readIndex(namespace, game) {
   } catch { return null; }
 }
 
-export function getCachedBrowserSave(game) {
+function getCachedSave(game, includeContents) {
   try {
     if (game.engineId && !supportsContinue(game.engineId, game.gameId || game.target, game.extra)) return null;
     const namespace = game.saveVersionId ? game.saveNamespace || readVersionSaveNamespace(game.saveVersionId) : "";
-    const save = readCachedSave(game, window.localStorage, namespace);
-    return save && supportsContinue(save.engineId, save.gameId, save.extra) ? save.slot : null;
+    const save = readCachedSave(game, window.localStorage, namespace, includeContents);
+    return save && supportsContinue(save.engineId, save.gameId, save.extra) ? save : null;
   } catch { return null; }
+}
+
+export function getCachedBrowserSave(game) {
+  return getCachedSave(game)?.slot ?? null;
+}
+
+export function getCachedBrowserSaveContents(game) {
+  return getCachedSave(game, true)?.contents ?? null;
 }
 
 async function queryNativeSaves(game, namespace, assetVersion, generation) {
