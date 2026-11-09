@@ -1,0 +1,169 @@
+diff --git a/engines/hugo/hugo.cpp b/engines/hugo/hugo.cpp
+--- a/engines/hugo/hugo.cpp
++++ b/engines/hugo/hugo.cpp
+@@ -326,6 +326,14 @@
+ 			_file->restoreGame(loadSlot);
+ 		} else {
+ 			_file->saveGame(99, "New Game [reserved]");
++#ifdef __EMSCRIPTEN__
++			const Common::String &target = ConfMan.getActiveDomainName();
++			if (ConfMan.getInt("boot_param") == 1 &&
++				(target == "hugo1-demo" || target == "hugo2-demo" || target == "hugo3-demo")) {
++				_scheduler->newScreen(0);
++				_status._viewState = kViewPlay;
++			}
++#endif
+ 		}
+ 	}
+ 
+diff --git a/engines/freescape/freescape.cpp b/engines/freescape/freescape.cpp
+--- a/engines/freescape/freescape.cpp
++++ b/engines/freescape/freescape.cpp
+@@ -1197,7 +1197,12 @@
+ 
+ 	// Simple main event loop
+ 	int saveSlot = ConfMan.getInt("save_slot");
+-	if (saveSlot == -1)
++	bool showTitle = saveSlot == -1;
++#ifdef __EMSCRIPTEN__
++	if (ConfMan.getActiveDomainName() == "castlemaster-demo" && ConfMan.getInt("boot_param") == 1)
++		showTitle = false;
++#endif
++	if (showTitle)
+ 		titleScreen();
+ 	loadBorder(); // Border is load unmodified
+ 	if (saveSlot == -1)
+diff --git a/engines/freescape/games/castle/castle.cpp b/engines/freescape/games/castle/castle.cpp
+--- a/engines/freescape/games/castle/castle.cpp
++++ b/engines/freescape/games/castle/castle.cpp
+@@ -2250,6 +2250,12 @@
+ }
+ 
+ void CastleEngine::borderScreen() {
++#ifdef __EMSCRIPTEN__
++	if (isDOS() && ConfMan.getActiveDomainName() == "castlemaster-demo" && ConfMan.getInt("boot_param") == 1) {
++		selectCharacterScreen();
++		return;
++	}
++#endif
+ 	if (isAmiga() && isDemo())
+ 		return; // Skip character selection
+ 	// The Crypt has no intro of its own, so it drops through to the plain
+diff --git a/engines/pegasus/pegasus.cpp b/engines/pegasus/pegasus.cpp
+--- a/engines/pegasus/pegasus.cpp
++++ b/engines/pegasus/pegasus.cpp
+@@ -768,6 +768,13 @@
+ 			if (isDemo()) {
+ 				// Start playing the music earlier here
+ 				((MainMenu *)_gameMenu)->startMainMenuLoop();
++#ifdef __EMSCRIPTEN__
++				if (ConfMan.getActiveDomainName() == "pegasus-demo" && ConfMan.getInt("boot_param") == 1) {
++					_gfx->invalRect(Common::Rect(0, 0, 640, 480));
++					_gfx->updateDisplay();
++					break;
++				}
++#endif
+ 
+ 				// Show the intro splash screen
+ 				showTempScreen("Images/Demo/NGsplashScrn.pict");
+diff --git a/engines/draci/game.cpp b/engines/draci/game.cpp
+--- a/engines/draci/game.cpp
++++ b/engines/draci/game.cpp
+@@ -314,7 +314,16 @@
+ 	// Make sure we enter the right room in start().
+ 	setRoomNum(-1);
+ 	rememberRoomNumAsPrevious();
+-	scheduleEnteringRoomUsingGate(_info._startRoom, 0);
++	int startRoom = _info._startRoom;
++#ifdef __EMSCRIPTEN__
++	if (ConfMan.getActiveDomainName() == "draci" && ConfMan.getInt("boot_param") == 1) {
++		Room intro;
++		intro.load(startRoom, _vm->_roomsArchive);
++		if (intro._escRoom >= 0)
++			startRoom = intro._escRoom;
++	}
++#endif
++	scheduleEnteringRoomUsingGate(startRoom, 0);
+ 	_pushedNewRoom = _pushedNewGate = -1;
+ 	_mouseChangeTick = kMouseDoNotSwitch;
+ }
+diff --git a/engines/teenagent/scene.h b/engines/teenagent/scene.h
+--- a/engines/teenagent/scene.h
++++ b/engines/teenagent/scene.h
+@@ -149,6 +149,7 @@
+ 	SceneEvent::Type last_event_type() const { return !events.empty() ? events.back().type : SceneEvent::kNone; }
+ 
+ 	bool processEvent(const Common::Event &event);
++	bool skipIntro();
+ 
+ 	void clear();
+ 
+diff --git a/engines/teenagent/scene.cpp b/engines/teenagent/scene.cpp
+--- a/engines/teenagent/scene.cpp
++++ b/engines/teenagent/scene.cpp
+@@ -491,28 +491,32 @@
+ 	events.push_back(event);
+ }
+ 
++bool Scene::skipIntro() {
++	if (!intro)
++		return false;
++
++	intro = false;
++	clearMessage();
++	events.clear();
++	sounds.clear();
++	currentEvent.clear();
++	_messageColor = textColorMark;
++	for (int i = 0; i < 4; ++i)
++		customAnimation[i].free();
++	_vm->playMusic(4);
++	_vm->loadScene(10, Common::Point(136, 153));
++	_vm->stopTextToSpeech();
++	_vm->stopVoice();
++	_vm->setTTSVoice(kMark);
++	return true;
++}
++
+ bool Scene::processEvent(const Common::Event &event) {
+ 	switch (event.type) {
+ 	case Common::EVENT_CUSTOM_ENGINE_ACTION_START:
+ 		switch (event.customType) {
+ 		case kActionSkipIntro:
+-			if (intro) {
+-				intro = false;
+-				clearMessage();
+-				events.clear();
+-				sounds.clear();
+-				currentEvent.clear();
+-				_messageColor = textColorMark;
+-				for (int i = 0; i < 4; ++i)
+-					customAnimation[i].free();
+-				_vm->playMusic(4);
+-				_vm->loadScene(10, Common::Point(136, 153));
+-				_vm->stopTextToSpeech();
+-				_vm->stopVoice();
+-				_vm->setTTSVoice(kMark);
+-				return true;
+-			}
+-			break;
++			return skipIntro();
+ 		case kActionSkipDialog:
+ 			if (!message.empty() && messageFirstFrame == 0) {
+ 				_vm->stopTextToSpeech();
+diff --git a/engines/teenagent/teenagent.cpp b/engines/teenagent/teenagent.cpp
+--- a/engines/teenagent/teenagent.cpp
++++ b/engines/teenagent/teenagent.cpp
+@@ -632,6 +632,12 @@
+ 	int loadSlot = ConfMan.getInt("save_slot");
+ 	if (loadSlot >= 0) {
+ 		loadGameState(loadSlot);
++#ifdef __EMSCRIPTEN__
++	} else if (ConfMan.getActiveDomainName() == "teenagent-demo" && ConfMan.getInt("boot_param") == 1) {
++		scene->intro = true;
++		_sceneBusy = true;
++		scene->skipIntro();
++#endif
+ 	} else {
+ 		if (!showCDLogo())
+ 			return Common::kNoError;

@@ -80,6 +80,8 @@ tests when porting; do not treat an old implementation shape as the requirement.
   before truncation, retryable metadata persistence and exclusive save-session
   lock. Metadata does not make multi-key filesystem writes crash-atomic.
 
+- Intro skip is edition-specific. Patch 24 uses the engine's normal first-scene transition or native intro abort and keeps original character, input and menu choices. Exercise both paths and keep the original Play path for fresh launches.
+
 ## Keyboard callback lifetime
 
 - SDL 3.2.4's Emscripten unregister path dereferences the numeric window target

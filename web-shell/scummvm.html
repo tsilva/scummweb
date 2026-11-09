@@ -317,15 +317,25 @@ function setupSkipIntroSaves() {
               return assetResponse.arrayBuffer();
             })
             .then((buffer) => {
-              FS.writeFile(`${savePath}/${trimmedFileName}`, new Uint8Array(buffer));
-              return trimmedFileName;
+              return { fileName: trimmedFileName, bytes: new Uint8Array(buffer) };
             });
         })
       ).then((seededFiles) => {
+        const seeds = seededFiles.filter(Boolean);
+        const missing = seeds.filter(({ fileName, bytes }) => {
+          const filePath = `${savePath}/${fileName}`;
+          if (!FS.analyzePath(filePath).exists) return true;
+          const existing = FS.readFile(filePath);
+          if (existing.length !== bytes.length || !existing.every((byte, index) => byte === bytes[index])) {
+            throw new Error(`Intro checkpoint conflicts with an existing save: ${fileName}`);
+          }
+          return false;
+        });
+        for (const { fileName, bytes } of missing) FS.writeFile(`${savePath}/${fileName}`, bytes);
         globalThis.__scummwebSkipIntroSeedStatus = {
           state: "ready",
           target: skipIntroTarget,
-          files: seededFiles.filter(Boolean),
+          files: seeds.map(({ fileName }) => fileName),
           savePath,
           slot: skipIntroConfig.slot,
         };
@@ -339,6 +349,7 @@ function setupSkipIntroSaves() {
         files: [],
         message: error instanceof Error ? error.message : String(error),
       };
+      throw error;
     });
 }
 
