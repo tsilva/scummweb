@@ -13,6 +13,7 @@ import "./styles/game-player.css";
 
 const inter = Inter({
   display: "optional",
+  preload: false,
   subsets: ["latin"],
   variable: "--font-body",
 });
