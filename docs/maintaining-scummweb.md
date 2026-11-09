@@ -1085,6 +1085,12 @@ and gameplay captures. Each preview keeps the source's aspect ratio when
 displayed and uses the full image's crop and focal position. The browser paints
 it while the full image loads directly from R2.
 
+The homepage includes responsive artwork for the opening game and library.
+Other games' screenshot variants come from the static `/gallery-artwork.json`
+manifest when their screenshot strip approaches the viewport or a screenshot is
+opened. Direct game pages include their artwork metadata in the page response.
+If the manifest request fails, the screenshot gallery uses the original image URLs.
+
 The Beneath a Steel Sky hero at
 `/launcher/sky-scummweb-generated-2026-11-05-r1-hero.webp` is an ImageGen
 reinterpretation of the original game's promotional artwork, whose characters
