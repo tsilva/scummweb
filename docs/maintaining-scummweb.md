@@ -185,7 +185,9 @@ cursor capture. Touch/mobile controls and bottom actions do not auto-hide.
 
 ### Mobile play
 
-The player uses the visible viewport height and respects display safe areas.
+The mobile player resizes the game frame to the browser's visible height as
+browser chrome or the keyboard changes the available space. It also respects
+display safe areas.
 Mobile mouse-controlled games fit that height while preserving the game’s aspect
 ratio; narrower viewports can crop the sides. Apple II Hi-Res Adventures such as
 Mystery House use a **Game command** field in place of the mouse controls on mobile.

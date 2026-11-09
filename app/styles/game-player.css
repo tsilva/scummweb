@@ -9,15 +9,16 @@
 .game-route-shell {
   position: relative;
   width: 100vw;
-  height: 100dvh;
+  height: var(--game-visible-height, 100dvh);
   overflow: hidden;
   background: #000;
 }
 
 .game-route-frame {
   display: block;
-  width: 100vw;
-  height: 100dvh;
+  width: 100%;
+  height: 100%;
+  max-height: var(--game-visible-height, none);
   border: 0;
   background: #000;
   outline: none;
@@ -49,9 +50,8 @@
 }
 
 @supports not (height: 100dvh) {
-  .game-route-shell,
-  .game-route-frame {
-    height: 100vh;
+  .game-route-shell {
+    height: var(--game-visible-height, 100vh);
   }
 }
 
@@ -275,12 +275,6 @@
 }
 
 .game-route-shell:-webkit-full-screen {
-  width: 100%;
-  height: 100%;
-}
-
-.game-route-shell:fullscreen .game-route-frame,
-.game-route-shell:-webkit-full-screen .game-route-frame {
   width: 100%;
   height: 100%;
 }

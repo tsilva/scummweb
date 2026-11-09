@@ -96,7 +96,7 @@ for (const message of ["This ZIP link returned HTTP 404.", "Could not download t
 }
 
 function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = false, catalog = true,
-  skipIntro, downloadDetails = { loaded: 12_400_000, total: 85_200_000 } } = {}) {
+  skipIntro, visualViewport, downloadDetails = { loaded: 12_400_000, total: 85_200_000 } } = {}) {
   const archive = Promise.withResolvers();
   const hooks = [];
   const messages = new Set();
@@ -117,7 +117,13 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     contentWindow: { focus() {}, postMessage() {}, location: { replace(href) { if (!stalledNavigation) frame.contentDocument.URL = href; } } },
     addEventListener() {}, removeEventListener() {}, focus() {},
   };
+  const shellProperties = new Map();
+  const shell = { style: {
+    setProperty: (name, value) => shellProperties.set(name, value),
+    removeProperty: (name) => shellProperties.delete(name),
+  } };
   const window = {
+    visualViewport,
     location: new URL(`https://example.test/sky/play${queryTelemetry ? "?telemetry=1" : ""}`),
     setTimeout(callback, delay) { const id = Symbol(); timers.set(id, { callback, delay }); return id; },
     clearTimeout(id) { timers.delete(id); },
@@ -188,7 +194,9 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       if (name.endsWith("/useBootState")) return { useBootState: () => ({
         hasBootCompleted: bootCompleted, hasBootFailed: false, showSkipIntroButton: Boolean(skipIntro),
       }) };
-      if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({}) };
+      if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({
+        isMobileViewport: Boolean(visualViewport),
+      }) };
       if (name.endsWith("/useTouchClickMode")) return { useTouchClickActions: () => ({}) };
       if (name.endsWith("/useTouchCursorPad")) return { useTouchCursorPad: () => ({}) };
       if (name.endsWith("/game-launch-analytics.mjs")) return { createGameLaunchAnalytics: () => ({ start() {}, fail() {}, confirm() { confirmations++; } }) };
@@ -209,7 +217,9 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       assert.ok(attempts++ < 20, "component should settle");
       dirty = false;
       cursor = 0;
-      children = module.exports.default(props).props.children.filter(Boolean);
+      const player = module.exports.default(props);
+      player.props.ref.current = shell;
+      children = player.props.children.filter(Boolean);
       const iframe = children.find(({ type }) => type === "iframe");
       if (iframe) iframe.props.ref.current = frame;
       for (const run of layouts.splice(0)) run();
@@ -217,7 +227,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     } while (dirty);
   }
   return {
-    archive, frame, deliveries, reports, timers, render,
+    archive, frame, deliveries, reports, timers, render, shellProperties,
     get children() { return children; },
     get loadCount() { return loadCount; },
     get confirmations() { return confirmations; },
@@ -251,6 +261,29 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     unmount() { for (const hook of hooks) hook?.cleanup?.(); },
   };
 }
+
+test("mobile mouse play tracks the visible height and releases it during zoom", () => {
+  const viewport = Object.assign(new EventTarget(), { height: 390, scale: 1 });
+  const player = pendingArchivePlayer({ visualViewport: viewport });
+  const visibleHeight = () => player.shellProperties.get("--game-visible-height");
+  player.render();
+  assert.equal(visibleHeight(), "390px");
+
+  viewport.height = 320;
+  viewport.dispatchEvent(new Event("resize"));
+  assert.equal(visibleHeight(), "320px");
+
+  viewport.scale = 2;
+  viewport.dispatchEvent(new Event("resize"));
+  assert.equal(visibleHeight(), undefined);
+
+  viewport.scale = 1;
+  viewport.dispatchEvent(new Event("resize"));
+  assert.equal(visibleHeight(), "320px");
+  player.unmount();
+  viewport.dispatchEvent(new Event("resize"));
+  assert.equal(visibleHeight(), undefined);
+});
 
 test("the intro countdown starts only when the skip button can be seen", () => {
   const player = pendingArchivePlayer({ skipIntro: { strategy: "boot-param", bootParam: 1, durationMinutes: 0.5 } });
