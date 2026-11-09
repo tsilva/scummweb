@@ -70,13 +70,19 @@ def install(dist, downloads):
             )
 
         target = game["target"]
+        settings = {
+            "description": game["title"],
+            "path": f"/games/{game['gameId']}",
+            "engineid": game["engineId"],
+            "gameid": game["gameId"],
+            "platform": game["platform"],
+            "extra": game["extra"],
+            "language": "en",
+            "subtitles": "true",
+            **game.get("config", {}),
+        }
         section = "\n".join([
-            f"[{target}]", f"description={game['title']}",
-            f"path=/games/{game['gameId']}", f"engineid={game['engineId']}",
-            f"gameid={game['gameId']}", f"platform={game['platform']}",
-            f"extra={game['extra']}", "language=en", "subtitles=true",
-            *(f"{key}={value}" for key, value in game.get("config", {}).items()),
-            "",
+            f"[{target}]", *(f"{key}={value}" for key, value in settings.items()), "",
         ])
         pattern = rf"(?ms)^\[{re.escape(target)}\]\n.*?(?=^\[|\Z)"
         if re.search(pattern, ini_text):

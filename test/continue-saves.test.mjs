@@ -112,7 +112,14 @@ test("all shipped engines agree with the pinned native capability declarations",
     const source = await readFile(new URL(`../vendor/scummvm-v2026.4.0/engines/${engine}/metaengine.cpp`, import.meta.url), "utf8").catch(() => null);
     if (source === null) { /* Vendor sources are optional on CI; the compiled runtime is tracked. */ continue; }
     const clean = source.replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, "");
-    const method = clean.match(/bool\s+(?:\w+::)?hasFeature\(MetaEngineFeature\s+f\)\s+const(?:\s+override)?\s*\{([\s\S]*?)(?:\n\}|\n\t\})/)[1];
+    const featureMethod = /bool\s+(?:\w+::)?hasFeature\(MetaEngineFeature\s+f\)\s+const(?:\s+override)?\s*\{([\s\S]*?)(?:\n\}|\n\t\})/;
+    let method = clean.match(featureMethod)?.[1];
+    if (!method && engine === "freescape") {
+      assert.match(clean, /class FreescapeMetaEngine : public AdvancedMetaEngine</);
+      const base = await readFile(new URL("../vendor/scummvm-v2026.4.0/engines/metaengine.cpp", import.meta.url), "utf8");
+      method = base.match(featureMethod)?.[1];
+    }
+    assert.ok(method, `${engine}: native save capability declarations`);
     const listing = method.includes("kSupportsListSaves") || method.includes("checkExtendedSaves");
     const loading = method.includes("kSupportsLoadingDuringStartup");
     // The catalog ships Grim demos, and the native engine lists no saves for

@@ -275,6 +275,76 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": "/launcher/notices/comi.txt"
+    },
+    {
+      "target": "teenagent-demo",
+      "title": "Teen Agent (Demo)",
+      "path": "/games/teenagent",
+      "engineId": "teenagent",
+      "gameId": "teenagent",
+      "platform": "pc",
+      "extra": "Union shareware demo",
+      "readmeHref": "/launcher/notices/teenagent.txt"
+    },
+    {
+      "target": "hugo1-demo",
+      "title": "Hugo's House of Horrors (Demo)",
+      "path": "/games/hugo1",
+      "engineId": "hugo",
+      "gameId": "hugo1",
+      "platform": "pc",
+      "extra": "Shareware v2.1",
+      "readmeHref": "/launcher/notices/hugo1.txt"
+    },
+    {
+      "target": "hugo2-demo",
+      "title": "Hugo II: Whodunit? (Demo)",
+      "path": "/games/hugo2",
+      "engineId": "hugo",
+      "gameId": "hugo2",
+      "platform": "pc",
+      "extra": "Shareware v2.1",
+      "readmeHref": "/launcher/notices/hugo2.txt"
+    },
+    {
+      "target": "hugo3-demo",
+      "title": "Hugo III: Jungle of Doom (Demo)",
+      "path": "/games/hugo3",
+      "engineId": "hugo",
+      "gameId": "hugo3",
+      "platform": "pc",
+      "extra": "Shareware v2.1",
+      "readmeHref": "/launcher/notices/hugo3.txt"
+    },
+    {
+      "target": "pegasus-demo",
+      "title": "The Journeyman Project: Pegasus Prime (Demo)",
+      "path": "/games/pegasus",
+      "engineId": "pegasus",
+      "gameId": "pegasus",
+      "platform": "macintosh",
+      "extra": "Demo",
+      "readmeHref": ""
+    },
+    {
+      "target": "castlemaster-demo",
+      "title": "Castle Master (Demo)",
+      "path": "/games/castlemaster",
+      "engineId": "freescape",
+      "gameId": "castlemaster",
+      "platform": "pc",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/castlemaster.txt"
+    },
+    {
+      "target": "qfi-demo",
+      "title": "Quest for Infamy (Demo)",
+      "path": "/games/qfi",
+      "engineId": "ags",
+      "gameId": "qfi",
+      "platform": "windows",
+      "extra": "Demo 2.0",
+      "readmeHref": "/launcher/notices/qfi.txt"
     }
   ]
 }

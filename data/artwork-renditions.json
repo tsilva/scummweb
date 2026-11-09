@@ -3318,5 +3318,21 @@
       320,
       640
     ]
+  },
+  "/launcher/castle-master-scummweb-generated-2026-11-09-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/quest-for-infamy-scummweb-generated-2026-11-09-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
   }
 }

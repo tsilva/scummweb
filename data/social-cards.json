@@ -146,6 +146,11 @@
       "inputHash": "e9131502c4f6478daf68e13502ea271c5965be1751051026fda07a58e8522869",
       "imageHash": "849a85bfe4626310bb961101a67ca6675c1c6570ec0662f9dcb662111cbd3ce8"
     },
+    "castle-master-demo": {
+      "file": "castle-master-demo-a86769520fff4f4b4c14f03e255828e6117193ea54e9cf3dcb3e03bb4994ad33.jpg",
+      "inputHash": "a86769520fff4f4b4c14f03e255828e6117193ea54e9cf3dcb3e03bb4994ad33",
+      "imageHash": "7b566049069c5e4ae641442dbc5cb62cf521955abf80c3817af4fcba577a7f99"
+    },
     "castle-of-dr-brain": {
       "file": "castle-of-dr-brain-c375bc0c05179fa36d10ae68ecdced6adaf7b01f6075902ee24d25c05f6e91bc.jpg",
       "inputHash": "c375bc0c05179fa36d10ae68ecdced6adaf7b01f6075902ee24d25c05f6e91bc",
@@ -496,15 +501,30 @@
       "inputHash": "afbdb7e192adc6e606576f7bcf046f14898366b23e62448327303b9bbdaaf8a7",
       "imageHash": "7328658524e21b4b92a6fa4c964926281d84ee19610cff54f0abf760d2cffbb1"
     },
+    "hugo-ii-whodunit-demo": {
+      "file": "hugo-ii-whodunit-demo-b02933fb6a7dfe8b45d326fb7f3884677180c62290c165b7c2c5230f861051a7.jpg",
+      "inputHash": "b02933fb6a7dfe8b45d326fb7f3884677180c62290c165b7c2c5230f861051a7",
+      "imageHash": "d80786d9bea1cc9366acdf941f1481065460e8d4341fe6410f2e24bc90715af1"
+    },
     "hugo-iii-jungle-of-doom": {
       "file": "hugo-iii-jungle-of-doom-5bf0a3d1d4dfa08970e04d5a8ca1fd2b50fbc75b981e1e49cf738b1806384370.jpg",
       "inputHash": "5bf0a3d1d4dfa08970e04d5a8ca1fd2b50fbc75b981e1e49cf738b1806384370",
       "imageHash": "5bc9ec06b5678621369c871eda1800fd614ede800550da4f5e2757d57e920c5e"
     },
+    "hugo-iii-jungle-of-doom-demo": {
+      "file": "hugo-iii-jungle-of-doom-demo-76d2513e28ad9c435869231a106b2382b52dfe874a98f5fe5d2bfe6e10931ae0.jpg",
+      "inputHash": "76d2513e28ad9c435869231a106b2382b52dfe874a98f5fe5d2bfe6e10931ae0",
+      "imageHash": "11db8633312c6e41bda779df3323f0cbea31d494be9c973b6a6d24d92fdf1ba3"
+    },
     "hugo-s-house-of-horrors": {
       "file": "hugo-s-house-of-horrors-55f8db05b9b68553b246885bf688e80b97914cb264a6fcb6d0fa72210d267882.jpg",
       "inputHash": "55f8db05b9b68553b246885bf688e80b97914cb264a6fcb6d0fa72210d267882",
       "imageHash": "45f6d02cfa0a38846702102f468c6278a8faadeb50a8d06ed0632909ea8493af"
+    },
+    "hugo-s-house-of-horrors-demo": {
+      "file": "hugo-s-house-of-horrors-demo-de282d32a74f83ffdae2a6f515a12a43513507cea181c07081c6d40eff8c287e.jpg",
+      "inputHash": "de282d32a74f83ffdae2a6f515a12a43513507cea181c07081c6d40eff8c287e",
+      "imageHash": "a070328fa08a2fe621e3fb179dc7df98ccb4b45f4f1bfa6c526a4d8e7a3bf23e"
     },
     "inca-ii-wiracocha": {
       "file": "inca-ii-wiracocha-dbf18f84e10182ab4fdab448753699d94bbb15e8115a20b85785ada1e1c13d32.jpg",
@@ -951,6 +971,11 @@
       "inputHash": "4964c1df6faac4a560a27b4702b7977620f79985a4c630cd30554688014d4d3d",
       "imageHash": "3cb61df5752bd62dc4ee3460a32131706fbd21b89a37e50dfb3c249c13ca6c03"
     },
+    "quest-for-infamy-demo": {
+      "file": "quest-for-infamy-demo-469c9d64683de22d944c844bcc25b8bb03345500d61d6aaf6c90e79851b3cc99.jpg",
+      "inputHash": "469c9d64683de22d944c844bcc25b8bb03345500d61d6aaf6c90e79851b3cc99",
+      "imageHash": "b27d81e9436c4ebf35cfdaaf2954534ceffe06e318dd301edf71dc690fe21950"
+    },
     "rama": {
       "file": "rama-7ace1e850c3a829854a780b3b55932a11dd535e6d1fb6b2ebe298efbe7b7294d.jpg",
       "inputHash": "7ace1e850c3a829854a780b3b55932a11dd535e6d1fb6b2ebe298efbe7b7294d",
@@ -1116,6 +1141,11 @@
       "inputHash": "a76b56f60780b68176993b6890ec92b63a1d8614f26b0bf0770ed6dc63ad9377",
       "imageHash": "5941b950e1e23e0f126883fa6490d96b036c4133a882c0ee12cc255448d80f56"
     },
+    "teen-agent-demo": {
+      "file": "teen-agent-demo-74bc3f437e8c48b9ff718258dcb0d324bcb346ab28ccac3fb0650ad88757fab5.jpg",
+      "inputHash": "74bc3f437e8c48b9ff718258dcb0d324bcb346ab28ccac3fb0650ad88757fab5",
+      "imageHash": "95390cde4c709ed171eea193e6b9fdc489558f6345f14bbfa67a65cc3e68d71f"
+    },
     "the-7th-guest": {
       "file": "the-7th-guest-c43b9aab83c71d513334b37563cb92bd86eb5070692f53682183740c90686595.jpg",
       "inputHash": "c43b9aab83c71d513334b37563cb92bd86eb5070692f53682183740c90686595",
@@ -1185,6 +1215,11 @@
       "file": "the-journeyman-project-pegasus-prime-5e822ce0bf42ca83ce6e716422333c0334211045c8184113993e91a754ee2c6e.jpg",
       "inputHash": "5e822ce0bf42ca83ce6e716422333c0334211045c8184113993e91a754ee2c6e",
       "imageHash": "59d4180c50b1cc97dd64d8e17fa8a26b66fca61cd767511c6009a652de96a65e"
+    },
+    "the-journeyman-project-pegasus-prime-demo": {
+      "file": "the-journeyman-project-pegasus-prime-demo-3e8cd971f5b96c096aeabdb1f9bfbdba6c7a83b0c3ce6affb8fe78fcb2e19804.jpg",
+      "inputHash": "3e8cd971f5b96c096aeabdb1f9bfbdba6c7a83b0c3ce6affb8fe78fcb2e19804",
+      "imageHash": "932996f9d2072bc2780b164bedcce670658dd6aa6c5ab9bb105ed4eb2f0edee9"
     },
     "the-labyrinth-of-time": {
       "file": "the-labyrinth-of-time-178361be59633388f10f23aa7011fcefb6fba3fc292cbee3f90a36544de4f960.jpg",
