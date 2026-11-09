@@ -1319,22 +1319,26 @@ Game pages use their individual social cards. The shell finalizer copies the
 browser and install icons from [`public/brand/web-seo/`](../public/brand/web-seo/)
 into the managed shell during ScummVM rebuilds.
 
-Browser tabs and installed apps use the Emerald Cartridge icon: a green **S** and
-silver-grey **W** on a beveled emerald tile with a recessed cartridge groove.
-The untouched generated source is
-[`image-assets/sources/icon-source.png`](../image-assets/sources/icon-source.png).
-Run `node scripts/generate-favicon-assets.mjs` after replacing it and updating its
-generation evidence in the provenance record. The command derives 16/32/48px
-losslessly compressed PNGs, an ICO, a compact SVG embedding the 64px rendition, 192/512px install icons,
+Browser tabs and standard install icons use the Emerald Cartridge badge with a
+green **S** and silver-grey **W** on a beveled emerald tile. The
+[badge source](../image-assets/sources/icon-badge-source.png) removes the groove
+from the [original](../image-assets/sources/icon-source.png). Android launchers
+can use the separate [maskable source](../image-assets/sources/icon-maskable-source.png),
+whose opaque green background fills the launcher shape. Its lettering fits inside
+the central circle with a radius of 40% of the image width.
+
+Run `node scripts/generate-favicon-assets.mjs` after replacing either source and
+updating its generation evidence in the provenance record. The command derives
+16/32/48px losslessly compressed PNGs, an ICO, a compact SVG embedding the 64px
+rendition, standard 192/512px install icons, a 512px maskable install icon,
 an opaque 180px Apple touch icon, and the 1024px branding icon. The SVG at
 `image-assets/sources/favicon-source.svg` is a generated compatibility export,
 not an editable vector source. The command updates the branding, managed shell,
 staged public files, both web manifests, export fingerprints and
 `image-assets/icon-versions.json`. App metadata uses these content versions to
 refresh favicon, manifest and Apple touch icon URLs when artwork changes.
-Install icons use the standard `any` purpose; they are not designed for maskable
-cropping. Existing installations may refresh their icons on the platform's own
-schedule or require reinstalling after deployment.
+Existing Android installations can refresh their icons after deployment on the
+browser's update schedule.
 
 ### Social preview assets
 
