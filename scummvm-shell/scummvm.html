@@ -1077,8 +1077,7 @@ const handleTouchEnd=event=>{
 
   const isDoubleTap=lastCompletedTap&&endedAt-lastCompletedTap.endedAt<=touchDoubleTapWindowMs&&
     measureDistance(lastCompletedTap.point,point)<=touchDoubleTapThresholdPx;
-  // The native save scan identifies both the bundled demo and imported editions.
-  if(globalThis.__scummwebSaveStatus?.engineId==="teenagent"||isDoubleTap){
+  if(isDoubleTap){
     dispatchSyntheticClick(point,0);
     lastCompletedTap=null;
     return;
