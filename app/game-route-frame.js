@@ -210,7 +210,8 @@ export default function GameRouteFrame({
   const immersiveMode = useImmersiveMode({ shellRef });
   const navigateHome = useCallback(async (href) => {
     fullscreenExitExpected.current = true;
-    await immersiveMode.exitImmersiveMode?.({ silenceErrors: true });
+    // Keep the landscape lock until the mobile player has left the screen.
+    if (!isTouchMobileClient()) await immersiveMode.exitImmersiveMode();
     const destination = getSafeHref(href);
     if (catalogLaunch) window.location.replace(destination);
     else router.replace(destination);
@@ -221,10 +222,11 @@ export default function GameRouteFrame({
     skipIntroConsumed,
   });
   const hasBootFailed = Boolean(archiveError) || bootState.hasBootFailed;
+  const waitingForLandscape = immersiveMode.isTouchMobile && !immersiveMode.isLandscapeViewport;
   const showBootOverlay = !bootState.hasBootCompleted || hasBootFailed;
-  const showSkipIntroBottomAction = Boolean(skipIntro) && bootState.showSkipIntroButton && !showBootOverlay;
+  const showSkipIntroBottomAction = Boolean(skipIntro) && bootState.showSkipIntroButton && !showBootOverlay && !waitingForLandscape;
   const mobileControlsReady =
-    immersiveMode.isMobileViewport && bootState.hasBootCompleted && !hasBootFailed;
+    immersiveMode.isMobileViewport && !waitingForLandscape && bootState.hasBootCompleted && !hasBootFailed;
   const mobileControlMode = getMobileControlMode(readySignal?.detectedGame ?? game ?? undefined);
   const showCommandInput = mobileControlsReady && (mobileControlMode === "command" || mobileControlMode === "hugo");
   const showCommandForm = showCommandInput && commandOpen;
@@ -569,7 +571,7 @@ export default function GameRouteFrame({
   }, [bootState.hasBootFailed, launchAnalytics]);
 
   const canCountPlayTime =
-    readySignal?.reason === "rendered-frame-detected" && !showBootOverlay;
+    readySignal?.reason === "rendered-frame-detected" && !showBootOverlay && !waitingForLandscape;
 
   useEffect(() => {
     if (canCountPlayTime) return launchAnalytics.watchPlayTime();
@@ -628,7 +630,7 @@ export default function GameRouteFrame({
     let attempts = 0;
     const iframe = frameRef.current;
 
-    if (!iframe) {
+    if (!iframe || waitingForLandscape) {
       return;
     }
 
@@ -666,7 +668,7 @@ export default function GameRouteFrame({
         window.clearTimeout(focusTimer);
       }
     };
-  }, [frameSrc]);
+  }, [frameSrc, waitingForLandscape]);
 
   function dismissSkipIntroButton() {
     bootState.dismissSkipIntroButton();
@@ -853,9 +855,9 @@ export default function GameRouteFrame({
 
   const showExitControl = true;
   const showFullscreenControl =
-    immersiveMode.canFullscreen && !isTouchMobileClient() && bootState.hasBootPresentationCompleted;
+    immersiveMode.canFullscreen && !immersiveMode.isTouchMobile && bootState.hasBootPresentationCompleted;
   const showGameMenuButton =
-    Boolean(gameMenuShortcut) && bootState.showGameMenuButton && !hasBootFailed;
+    Boolean(gameMenuShortcut) && bootState.showGameMenuButton && !hasBootFailed && !waitingForLandscape;
   const touchActions = showGrimActions ? <GrimTouchActions frameRef={frameRef} /> : showCommandInput && !showCommandForm ? (
     <button
       aria-controls="game-route-command"
@@ -871,7 +873,19 @@ export default function GameRouteFrame({
   const showBottomActions = showSkipIntroBottomAction || showTouchMouse || Boolean(touchActions);
 
   return (
-    <div className={`game-route-shell${showCommandForm ? " has-command-input" : ""}`} ref={shellRef}>
+    <div
+      className={`game-route-shell${showCommandForm ? " has-command-input" : ""}`}
+      data-mobile-orientation={immersiveMode.isTouchMobile ? "landscape" : undefined}
+      ref={shellRef}
+    >
+      <div className="mobile-orientation-message">
+        <p role="status">Rotate your device to landscape to play.</p>
+        {immersiveMode.canFullscreen && !immersiveMode.isFullscreen && (
+          <button className="secondary-button" type="button" onClick={() => void enterImmersiveMode(document.documentElement)}>
+            Enter fullscreen
+          </button>
+        )}
+      </div>
       <GameBootOverlay
         archiveBytes={loadArchive && !archivePrepared && !archiveCached ? archiveProgress?.loaded : undefined}
         bootStatusText={archiveError || (loadArchive && !archivePrepared
@@ -884,7 +898,7 @@ export default function GameRouteFrame({
       />
       <GamePlayerControls
         autoHide={bootState.hasBootPresentationCompleted && !showBootOverlay && !immersiveMode.isMobileViewport && !remoteToolbarOpen}
-        compatibilityWarnings={compatibilityWarnings}
+        compatibilityWarnings={waitingForLandscape ? [] : compatibilityWarnings}
         frameRef={frameRef}
         menuShortcut={gameMenuShortcut}
         handleControlMouseDown={handleControlMouseDown}
@@ -950,7 +964,7 @@ export default function GameRouteFrame({
         className="game-route-frame"
         data-scummvm-route-frame="true"
         data-scummvm-target={target}
-        inert={remoteToolbarOpen}
+        inert={remoteToolbarOpen || waitingForLandscape}
         ref={frameRef}
         loading="eager"
         src={loadArchive ? "about:blank" : frameSrc}

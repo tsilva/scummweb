@@ -14,6 +14,17 @@
   background: #000;
 }
 
+@media (orientation: portrait) {
+  [data-mobile-orientation="landscape"] > .mobile-orientation-message {
+    display: grid;
+  }
+
+  [data-mobile-orientation="landscape"] > :not(.mobile-orientation-message, .game-route-controls),
+  [data-mobile-orientation="landscape"] > .game-route-controls > .is-right {
+    visibility: hidden;
+  }
+}
+
 .game-route-frame {
   display: block;
   width: 100%;

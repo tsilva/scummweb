@@ -210,18 +210,18 @@ it resolves the selected game version. Failed ZIP preparation dismisses the laun
 feedback so recovery actions remain available. File-access and locate prompts
 do not show the loading screen.
 
-These actions request fullscreen directly
-from the launch gesture on mobile, then request landscape. Catalog launches use
-client navigation on desktop and mobile, preserving the document root in fullscreen.
-The fullscreen toolbar button is available only in desktop mode. The player
-shows no fullscreen or rotation modal; unsupported or refused requests leave
-play and touch controls available in the current orientation. Exit requests
-portrait while fullscreen is still active, then exits fullscreen and releases
-the orientation lock. Browsers may reject locking or restore their own rotation
-policy after fullscreen; physical rotation cannot be guaranteed on those devices.
-File-access and locate actions keep their normal prompts without entering fullscreen.
-Orientation follows the viewport rather than the physical screen, so split-screen
-windows and tablets use the available space. Dragging moves the cursor; the
+On phones and tablets, the gallery and game detail pages request portrait.
+**Play**, **Continue**, and **Start from beginning** request fullscreen from the
+launch gesture, then request landscape. Catalog launches preserve the document
+root in fullscreen. The mobile player keeps landscape through navigation away
+from the game, and the gallery requests portrait on return.
+
+When a browser refuses to rotate, the gallery shows a rotate prompt in landscape
+and the player hides gameplay and touch controls in portrait. The player keeps
+**Exit game** available and offers **Enter fullscreen** when supported.
+Returning to landscape reveals the same running game. The orientation checks
+use the viewport, including in split-screen windows. File-access and locate
+actions keep their normal prompts. Dragging moves the cursor. The
 large square cursor pad offers smaller movements, and the compact
 mouse-shaped **L**/**R** buttons send clicks. The cursor pad sits at least
 2 rem from the left edge to reduce accidental Android Back swipes. The pad,

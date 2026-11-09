@@ -21,11 +21,14 @@ function player({ fullscreen = false, landscape = false, mobile = true, tv = fal
   let requests = 0;
   const actions = [];
   const pending = Promise.withResolvers();
-  const document = {
+  const document = Object.assign(new EventTarget(), {
     fullscreenElement: null,
-    async exitFullscreen() { actions.push("exit"); this.fullscreenElement = null; },
-    addEventListener() {}, removeEventListener() {},
-  };
+    async exitFullscreen() {
+      actions.push("exit");
+      this.fullscreenElement = null;
+      this.dispatchEvent(new Event("fullscreenchange"));
+    },
+  });
   const root = fullscreen ? {
     async requestFullscreen() {
       requests++;
@@ -33,6 +36,7 @@ function player({ fullscreen = false, landscape = false, mobile = true, tv = fal
       if (denied) throw new Error("Fullscreen denied");
       if (deferred) await pending.promise;
       document.fullscreenElement = root;
+      document.dispatchEvent(new Event("fullscreenchange"));
     },
   } : {};
   document.documentElement = root;
@@ -52,7 +56,6 @@ function player({ fullscreen = false, landscape = false, mobile = true, tv = fal
     screen: { orientation: {
       type: landscape ? "portrait-primary" : "landscape-primary",
       lock: unsupportedOrientation ? undefined : async (orientation) => { actions.push(orientation); },
-      unlock() { actions.push("unlock"); },
     } },
     document,
     useState(initial) {
@@ -94,14 +97,14 @@ function player({ fullscreen = false, landscape = false, mobile = true, tv = fal
   };
 }
 
-test("unsupported fullscreen leaves mobile play available without a modal", async () => {
+test("unsupported fullscreen still identifies a portrait mobile player", async () => {
   const client = player({ unsupportedOrientation: true });
   assert.equal(client.begin(), true);
   const state = await client.settle();
   assert.equal(state.canFullscreen, false);
+  assert.equal(state.isTouchMobile, true);
   assert.equal(state.isMobileViewport, true);
   assert.equal(state.isLandscapeViewport, false);
-  assert.equal(state.needsImmersiveRetry, undefined);
   await client.exit();
 });
 
@@ -113,16 +116,14 @@ test("Play requests fullscreen synchronously and the mounted player reuses it", 
   assert.equal(state.isFullscreen, true);
   assert.equal(client.requests(), 1);
   assert.deepEqual(client.actions, ["fullscreen", "landscape"]);
-  await state.exitImmersiveMode();
-  assert.deepEqual(client.actions, ["fullscreen", "landscape", "portrait", "exit", "unlock"]);
 });
 
-test("a refused request never causes a modal or retries on later game input", async () => {
+test("a refused request does not retry fullscreen on later game input", async () => {
   const client = player({ fullscreen: true, denied: true });
   client.begin();
   const state = await client.settle();
   assert.equal(state.isMobileViewport, true);
-  assert.equal(state.needsImmersiveRetry, undefined);
+  assert.equal(state.isLandscapeViewport, false);
   assert.equal(client.requests(), 1);
   for (const event of ["pointerup", "touchend", "keydown"]) assert.equal(client.listeners.has(event), false);
   await client.exit();
@@ -134,17 +135,34 @@ test("exiting during a pending fullscreen request prevents a late landscape lock
   const exiting = client.exit();
   client.resolveFullscreen();
   await exiting;
-  assert.deepEqual(client.actions, ["fullscreen", "portrait", "exit", "unlock"]);
+  assert.deepEqual(client.actions, ["fullscreen", "exit", "portrait"]);
   assert.equal(client.document.fullscreenElement, null);
 });
 
-test("leaving the route restores portrait and releases fullscreen", async () => {
+test("leaving the route releases fullscreen before requesting portrait", async () => {
   const client = player({ fullscreen: true });
   client.begin();
   await client.settle();
   client.unmount();
   await new Promise(setImmediate);
-  assert.deepEqual(client.actions, ["fullscreen", "landscape", "portrait", "exit", "unlock"]);
+  assert.deepEqual(client.actions, ["fullscreen", "landscape", "exit", "portrait"]);
+});
+
+test("browser fullscreen exit while playing keeps requesting landscape", async () => {
+  const client = player({ fullscreen: true });
+  client.begin();
+  assert.equal((await client.settle()).isFullscreen, true);
+  await client.document.exitFullscreen();
+  assert.equal((await client.settle()).isFullscreen, false);
+  assert.deepEqual(client.actions, ["fullscreen", "landscape", "exit", "landscape"]);
+});
+
+test("a direct mobile launch requests landscape even without fullscreen support", async () => {
+  const client = player({ landscape: true });
+  const state = await client.settle();
+  assert.equal(state.isTouchMobile, true);
+  assert.equal(state.isLandscapeViewport, true);
+  assert.deepEqual(client.actions, ["landscape"]);
 });
 
 test("desktop launches keep the normal browser orientation", async () => {
@@ -155,13 +173,13 @@ test("desktop launches keep the normal browser orientation", async () => {
   assert.equal(client.requests(), 0);
   await state.handleFullscreenToggle();
   await state.handleFullscreenToggle();
-  assert.deepEqual(client.actions.filter((action) => action !== "unlock"), ["fullscreen", "exit"]);
+  assert.deepEqual(client.actions, ["fullscreen", "exit"]);
 });
 
 test("a narrow desktop viewport does not automatically enter fullscreen", async () => {
   const client = player({ fullscreen: true, mobile: false, narrow: true });
   assert.equal(client.begin(), false);
-  await client.settle();
+  assert.equal((await client.settle()).isTouchMobile, false);
   assert.equal(client.requests(), 0);
 });
 
@@ -172,5 +190,5 @@ test("TV Play enters fullscreen from the launch gesture without rotating the dis
   assert.equal((await client.settle()).isFullscreen, true);
   assert.equal(client.requests(), 1);
   await client.exit();
-  assert.deepEqual(client.actions, ["fullscreen", "exit", "unlock"]);
+  assert.deepEqual(client.actions, ["fullscreen", "exit"]);
 });

@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { Fragment } from "react";
 import { getVersionedSiteAssetPath } from "./asset-paths";
 import Icon from "./home-shell/shell-icon";
 import SourceLibrary from "./home-shell/source-library";
 import SettingsPanel from "./home-shell/settings-panel";
 import DirectionalNavigation from "./home-shell/directional-navigation";
+import GalleryOrientation from "./home-shell/GalleryOrientation";
 import { getGamesOrigin } from "../lib/site-config.mjs";
 import { artworkDelivery, artworkStorage } from "../lib/artwork-storage.mjs";
 import assetConfig from "../lib/scummvm-shell-assets";
@@ -24,9 +26,10 @@ export default function HomeShell({
   const BrandLink = isHomePage ? "a" : Link;
   const LibraryLink = pageMode === "compatibility" ? Link : "a";
   const libraryHeading = "Game Library";
+  const Shell = pageMode === "compatibility" ? Fragment : GalleryOrientation;
 
   return (
-    <>
+    <Shell>
       <DirectionalNavigation initialFocus={pageMode === "compatibility" ? undefined : "play"} />
       {artworkStorage.published && <link rel="preconnect" href={artworkStorage.origin} />}
       <nav className={pageMode === "compatibility" ? "dashboard-nav" : "dashboard-nav dashboard-nav-home"}>
@@ -99,6 +102,6 @@ export default function HomeShell({
         </div>
       </footer>
 
-    </>
+    </Shell>
   );
 }

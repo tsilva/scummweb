@@ -23,16 +23,13 @@ export function isGameFullscreen(shell) {
   return Boolean(element && (element === shell || element === document.documentElement));
 }
 
-async function lockOrientation(orientation) {
+export async function lockOrientation(orientation) {
+  if (!isTouchMobileClient()) return;
   try {
     await screen.orientation?.lock?.(orientation);
   } catch {
     // Some mobile browsers do not support locking, or require fullscreen.
   }
-}
-
-export function unlockOrientation() {
-  try { screen.orientation?.unlock?.(); } catch {}
 }
 
 export function enterImmersiveMode(shell) {
@@ -49,7 +46,7 @@ export function enterImmersiveMode(shell) {
       // Fullscreen refusal must never block the game or open another prompt.
     }
     if (requestRevision !== revision) return false;
-    if (isTouchMobileClient()) await lockOrientation("landscape");
+    await lockOrientation("landscape");
     return isGameFullscreen(shell);
   })();
   return pendingEntry;
@@ -67,13 +64,13 @@ export function resumeMobileGameLaunch(shell) {
 }
 
 export async function exitImmersiveMode() {
-  ++revision;
+  const exitRevision = ++revision;
   const entry = pendingEntry;
   launchEntry = null;
   pendingEntry = null;
-  // Finish an outstanding fullscreen request before restoring orientation.
+  // Finish an outstanding fullscreen request before leaving fullscreen.
   await entry;
-  if (isTouchMobileClient()) await lockOrientation("portrait");
+  if (exitRevision !== revision) return;
   try {
     if (document.fullscreenElement || document.webkitFullscreenElement) {
       const exit = document.exitFullscreen || document.webkitExitFullscreen;
@@ -81,7 +78,6 @@ export async function exitImmersiveMode() {
     }
   } catch {
     // Navigation remains available if the browser has already left fullscreen.
-  } finally {
-    unlockOrientation();
   }
+  if (exitRevision === revision) await lockOrientation("portrait");
 }

@@ -41,6 +41,21 @@ a {
   text-decoration: none;
 }
 
+.mobile-orientation-message {
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-content: center;
+  justify-items: center;
+  gap: 0.75rem;
+  padding: 4rem 1.5rem;
+  text-align: center;
+}
+
+.mobile-orientation-message p {
+  margin: 0;
+}
+
 img,
 svg {
   display: block;
