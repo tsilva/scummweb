@@ -87,25 +87,25 @@ save is available for the selected edition, the card has no progress bar.
 | DreamWeb | English DOS CD | 15 |
 | Beneath a Steel Sky | English DOS CD | 28 |
 | Elvira II: The Jaws of Cerberus | English Amiga floppy | 7 |
-| King's Quest: Quest for the Crown | English DOS SCI remake 1.000.051 | 1 |
-| King's Quest II: Romancing the Throne | English Amiga 2.0J | 2 |
-| King's Quest III: To Heir Is Human | English Amiga 1.01 | 3 |
-| King's Quest IV: The Perils of Rosella | English Amiga SCI 1.023 | 2 |
-| King's Quest V: Absence Makes the Heart Go Yonder! | English Amiga 1.000.000 | 2 |
-| King's Quest VI: Heir Today, Gone Tomorrow | English DOS CD 1.000.00G | 2 |
-| King's Quest VII: The Princeless Bride | English DOS CD 2.00b | 2 |
-| Police Quest: In Pursuit of the Death Angel | English Amiga AGI 2.0B | 2 |
-| Police Quest: In Pursuit of the Death Angel | English DOS SCI remake 2.000 | 2 |
-| Police Quest 2: The Vengeance | English Amiga 1.024 | 2 |
-| Police Quest 3: The Kindred | English Amiga 1.000 | 2 |
-| Police Quest IV: Open Season | English DOS CD 1.100.000 | 2 |
-| Space Quest: The Sarien Encounter | English Amiga 1.2 | 3 |
-| Space Quest: The Sarien Encounter | English DOS SCI remake 2.000 | 2 |
-| Space Quest II: Chapter II - Vohaul's Revenge | English DOS 2.0F | 3 |
-| Space Quest III: The Pirates of Pestulon | English Amiga 1.0v | 2 |
-| Space Quest IV: Roger Wilco and the Time Rippers | English DOS CD 1.0 | 2 |
-| Space Quest V: The Next Mutation | English DOS 1.04 | 2 |
-| Space Quest 6: Roger Wilco in the Spinal Frontier | English DOS CD 1.0 | 2 |
+| King's Quest: Quest for the Crown | English DOS SCI remake 1.000.051 | 4 |
+| King's Quest II: Romancing the Throne | English Amiga 2.0J | 8 |
+| King's Quest III: To Heir Is Human | English Amiga 1.01 | 6 |
+| King's Quest IV: The Perils of Rosella | English Amiga SCI 1.023 | 4 |
+| King's Quest V: Absence Makes the Heart Go Yonder! | English Amiga 1.000.000 | 5 |
+| King's Quest VI: Heir Today, Gone Tomorrow | English DOS CD 1.000.00G | 6 |
+| King's Quest VII: The Princeless Bride | English DOS CD 2.00b | 4 |
+| Police Quest: In Pursuit of the Death Angel | English Amiga AGI 2.0B | 4 |
+| Police Quest: In Pursuit of the Death Angel | English DOS SCI remake 2.000 | 4 |
+| Police Quest 2: The Vengeance | English Amiga 1.024 | 5 |
+| Police Quest 3: The Kindred | English Amiga 1.000 | 4 |
+| Police Quest IV: Open Season | English DOS CD 1.100.000 | 4 |
+| Space Quest: The Sarien Encounter | English Amiga 1.2 | 7 |
+| Space Quest: The Sarien Encounter | English DOS SCI remake 2.000 | 6 |
+| Space Quest II: Chapter II - Vohaul's Revenge | English DOS 2.0F | 7 |
+| Space Quest III: The Pirates of Pestulon | English Amiga 1.0v | 6 |
+| Space Quest IV: Roger Wilco and the Time Rippers | English DOS CD 1.0 | 5 |
+| Space Quest V: The Next Mutation | English DOS 1.04 | 5 |
+| Space Quest 6: Roger Wilco in the Spinal Frontier | English DOS CD 1.0 | 6 |
 
 These maps count milestones up to the furthest confirmed stage, including when
 a route bypasses an earlier checkpoint. Fate of Atlantis uses the same scale
