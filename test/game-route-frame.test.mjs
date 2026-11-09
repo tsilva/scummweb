@@ -108,7 +108,8 @@ for (const [message, mobile] of [
 }
 
 function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = false, catalog = true,
-  skipIntro, visualViewport, realBoot = false, downloadDetails = { loaded: 12_400_000, total: 85_200_000 } } = {}) {
+  skipIntro, visualViewport, realBoot = false, game = { target: "sky", slug: "sky", engineId: "sky" },
+  downloadDetails = { loaded: 12_400_000, total: 85_200_000 } } = {}) {
   const archive = Promise.withResolvers();
   const hooks = [];
   const messages = new Set();
@@ -136,6 +137,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   } };
   const window = {
     visualViewport,
+    innerHeight: visualViewport?.height,
     location: new URL(`https://example.test/sky/play${queryTelemetry ? "?telemetry=1" : ""}`),
     setTimeout(callback, delay) { const id = Symbol(); timers.set(id, { callback, delay }); return id; },
     clearTimeout(id) { timers.delete(id); },
@@ -181,6 +183,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
         useLayoutEffect: (callback, deps) => effect(callback, deps, layouts),
       };
       if (name === "react/jsx-runtime") return nativeRequire(name);
+      if (name === "react-dom") return { flushSync(callback) { callback(); render(); } };
       if (name.endsWith("/mobile-controls.mjs")) return mobileControls;
       if (name === "@sentry/nextjs") return {
         withScope(callback) {
@@ -227,7 +230,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     },
   });
   const props = {
-    game: { target: "sky", slug: "sky", engineId: "sky" }, target: "sky", src: "/scummvm.html?localGame=1#sky",
+    game, target: game.target, src: `/scummvm.html?localGame=1#${game.target}`,
     skipIntro,
     ...(catalog ? { catalogArchiveUrl: "https://example.test/sky.zip" } : { loadArchive: () => archive.promise }),
   };
@@ -304,6 +307,39 @@ test("mobile mouse play tracks the visible height and releases it during zoom", 
   player.unmount();
   viewport.dispatchEvent(new Event("resize"));
   assert.equal(visibleHeight(), undefined);
+});
+
+test("Zork overlays its command field without resizing the game and follows native keyboard dismissal", () => {
+  const viewport = Object.assign(new EventTarget(), { height: 390, offsetTop: 0, scale: 1 });
+  const game = { engineId: "glk", gameId: "zork1", target: "zork1" };
+  const player = pendingArchivePlayer({ game, visualViewport: viewport });
+  const form = () => player.children.find(({ type }) => type === "form");
+  const inset = () => player.shellProperties.get("--game-command-inset");
+  player.render();
+  player.setBootCompleted();
+  let blurred = false;
+  form().props.children.props.ref.current = { focus() {}, blur() { blurred = true; } };
+  player.controls.touchActions.props.onClick();
+  assert.equal(form().props.hidden, false);
+  assert.equal(inset(), "0px");
+
+  viewport.height = 185;
+  viewport.dispatchEvent(new Event("resize"));
+  assert.equal(inset(), "205px");
+  assert.equal(player.shellProperties.has("--game-visible-height"), false);
+
+  viewport.offsetTop = 25;
+  viewport.dispatchEvent(new Event("scroll"));
+  assert.equal(inset(), "180px");
+
+  Object.assign(viewport, { height: 390, offsetTop: 0 });
+  viewport.dispatchEvent(new Event("resize"));
+  player.render();
+  assert.equal(blurred, true);
+  assert.equal(form().props.hidden, true);
+  assert.equal(inset(), undefined);
+  assert.ok(player.controls.touchActions);
+  player.unmount();
 });
 
 test("the intro countdown starts only when the skip button can be seen", () => {
@@ -607,7 +643,9 @@ test("Mystery House opens a command field from the keyboard control on mobile", 
   assert.equal(player.form.props.hidden, true);
   assert.equal(player.controls.touchActions.props["aria-label"], "Open keyboard");
   let focused = false;
-  const inputElement = player.form.props.children[0];
+  const inputElement = player.form.props.children;
+  assert.equal(inputElement.type, "input");
+  assert.equal(inputElement.props.enterKeyHint, "enter");
   inputElement.props.ref.current = { focus: () => { focused = true; } };
   player.controls.touchActions.props.onClick();
   assert.equal(focused, true);

@@ -1,7 +1,7 @@
 "use client";
 
 import { captureMessage, withScope } from "@sentry/nextjs";
-import { Keyboard, X } from "lucide-react";
+import { Keyboard } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
@@ -229,7 +229,8 @@ export default function GameRouteFrame({
   const mobileControlsReady =
     immersiveMode.isMobileViewport && !waitingForLandscape && bootState.hasBootCompleted && !hasBootFailed;
   const mobileControlMode = getMobileControlMode(currentReadySignal?.detectedGame ?? game ?? undefined);
-  const showCommandInput = mobileControlsReady && (mobileControlMode === "command" || mobileControlMode === "hugo");
+  const usesCommandInput = mobileControlMode === "command" || mobileControlMode === "hugo";
+  const showCommandInput = mobileControlsReady && usesCommandInput;
   const showCommandForm = showCommandInput && commandOpen;
   const showDirectionPad = mobileControlsReady && !showCommandForm && mobileControlMode === "hugo";
   const showGrimGamepad = mobileControlsReady && mobileControlMode === "grim";
@@ -241,10 +242,18 @@ export default function GameRouteFrame({
 
   useEffect(() => observeStartupDiagnostics(window, frameRef), []);
 
+  const closeCommand = useCallback(() => {
+    commandInputRef.current?.blur();
+    setCommandOpen(false);
+    focusGameCanvas(frameRef.current);
+  }, []);
+
   useEffect(() => {
     const viewport = window.visualViewport;
     const shell = shellRef.current;
-    if (!immersiveMode.isMobileViewport || !viewport || !shell) return;
+    // Command games keep the layout viewport so the keyboard can cover the
+    // game without resizing it. Other mobile games fit the visible viewport.
+    if (usesCommandInput || !immersiveMode.isMobileViewport || !viewport || !shell) return;
     function fitVisibleHeight() {
       // Browser chrome and the keyboard can make the visible area shorter than
       // the layout viewport. Leave pinch zoom under the player's control.
@@ -260,7 +269,34 @@ export default function GameRouteFrame({
       viewport.removeEventListener("resize", fitVisibleHeight);
       shell.style.removeProperty("--game-visible-height");
     };
-  }, [immersiveMode.isMobileViewport]);
+  }, [immersiveMode.isMobileViewport, usesCommandInput]);
+
+  useLayoutEffect(() => {
+    const viewport = window.visualViewport;
+    const shell = shellRef.current;
+    if (!showCommandForm || !viewport || !shell) return;
+
+    const initialInset = window.innerHeight - viewport.height;
+    let keyboardWasVisible = false;
+    function positionCommandField() {
+      if (viewport.scale !== 1 || viewport.height <= 0) return;
+      const inset = window.innerHeight - viewport.height;
+      shell.style.setProperty("--game-command-inset", `${Math.max(0, inset - viewport.offsetTop)}px`);
+      // Android Back can hide the IME without blurring the input. Ignore small
+      // viewport changes from browser chrome when detecting that dismissal.
+      const keyboardVisible = inset - initialInset > 48;
+      if (!keyboardVisible && keyboardWasVisible) closeCommand();
+      keyboardWasVisible = keyboardVisible;
+    }
+    positionCommandField();
+    viewport.addEventListener("resize", positionCommandField);
+    viewport.addEventListener("scroll", positionCommandField);
+    return () => {
+      viewport.removeEventListener("resize", positionCommandField);
+      viewport.removeEventListener("scroll", positionCommandField);
+      shell.style.removeProperty("--game-command-inset");
+    };
+  }, [closeCommand, showCommandForm]);
 
   useLayoutEffect(() => {
     const navigationController = new AbortController();
@@ -767,10 +803,11 @@ export default function GameRouteFrame({
     commandInputRef.current?.focus({ preventScroll: true });
   }
 
-  function closeCommand() {
-    commandInputRef.current?.blur();
-    setCommandOpen(false);
-    focusGameCanvas(frameRef.current);
+  function handleCommandKeyDown(event) {
+    if (event.key === "Escape" && !event.nativeEvent.isComposing) {
+      event.preventDefault();
+      closeCommand();
+    }
   }
 
   async function handleCommandSubmit(event) {
@@ -876,7 +913,7 @@ export default function GameRouteFrame({
 
   return (
     <div
-      className={`game-route-shell${showCommandForm ? " has-command-input" : ""}`}
+      className="game-route-shell"
       data-mobile-orientation={immersiveMode.isTouchMobile ? "landscape" : undefined}
       ref={shellRef}
     >
@@ -942,9 +979,12 @@ export default function GameRouteFrame({
             autoCapitalize="off"
             autoComplete="off"
             autoCorrect="off"
-            enterKeyHint="send"
+            enterKeyHint="enter"
+            inputMode="text"
             maxLength={mobileControlMode === "hugo" ? 38 : 255}
             name="command"
+            onBlur={() => setCommandOpen(false)}
+            onKeyDown={handleCommandKeyDown}
             pattern="[ -~]*"
             placeholder="Type a command"
             readOnly={commandSending}
@@ -953,10 +993,6 @@ export default function GameRouteFrame({
             title="Use letters, numbers, spaces, or basic punctuation."
             type="text"
           />
-          <button disabled={commandSending} type="submit">Send</button>
-          <button aria-label="Close keyboard" disabled={commandSending} onClick={closeCommand} type="button">
-            <X aria-hidden="true" size={18} />
-          </button>
         </form>
       ) : null}
       {frameSrc && !archiveError ? <iframe

@@ -185,11 +185,9 @@ cursor capture. Touch/mobile controls and bottom actions do not auto-hide.
 
 ### Mobile play
 
-The mobile player resizes the game frame to the browser's visible height as
-browser chrome or the keyboard changes the available space. It also respects
-display safe areas.
-Mobile mouse-controlled games fit that height while preserving the game’s aspect
-ratio; narrower viewports can crop the sides. In Grim Fandango's default
+The mobile player respects display safe areas. Mobile mouse-controlled games
+fit the browser's visible height while preserving the game’s aspect ratio;
+narrower viewports can crop the sides. In Grim Fandango's default
 character-relative movement mode, drag the left stick up or down to walk and
 the right stick left or right to turn. Both sticks can be held at once. Tap
 **Actions** to reveal **Use / Talk**, **Examine**, **Pick up / Put away**, and
@@ -199,10 +197,10 @@ Gameplay controls stay behind the loading screen, including when **Skip intro**
 reloads the game.
 
 In Hugo, Apple II Hi-Res Adventures such as Mystery House, and Zork I–III, tap
-the keyboard icon to open the device keyboard and the **Game command** field.
-Tap **Send** or press Enter to submit the command and return to the game. Sending
-an empty field presses Enter by itself. These games and desktop canvases fit
-within both dimensions so the game’s prompts stay visible while typing.
+the keyboard icon to open a **Game command** field just above the device keyboard.
+The keyboard covers part of the game at its original size. Press the keyboard’s
+Enter key to submit the command and return to the game. An empty field sends
+Enter by itself. You can also dismiss the keyboard with your device’s controls.
 The toolbar has no aspect-ratio toggle. The parent reapplies the viewport’s sizing
 mode after frame navigation and when the mobile viewport classification changes.
 **Play**, **Continue** and **Start from beginning** show the game's loading screen
