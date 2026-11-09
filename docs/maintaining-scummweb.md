@@ -219,8 +219,9 @@ mouse-shaped **L**/**R** buttons send clicks. The cursor pad sits at least
 2 rem from the left edge to reduce accidental Android Back swipes. The pad,
 click buttons and exit control share a translucent fill, muted labels and
 subtle outlines to keep the
-game prominent; pressing or keyboard-focusing a control highlights it. Double-tapping
-the game sends a left click. Loading screens scroll on short landscape viewports.
+game prominent; pressing or keyboard-focusing a control highlights it. The cursor
+pad suppresses the browser’s tap highlight. Double-tapping the game sends a left
+click. Loading screens scroll on short landscape viewports.
 
 Check the launcher, game landing hero, screenshot viewer, compatibility search, settings and player at
 320px and 390px portrait widths, a short landscape viewport and tablet widths.
