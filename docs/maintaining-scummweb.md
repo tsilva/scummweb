@@ -189,9 +189,9 @@ cursor capture. Touch/mobile controls and bottom actions do not auto-hide.
 The mobile player respects display safe areas. Mobile mouse-controlled games
 fit the browser's visible height while preserving the game’s aspect ratio;
 narrower viewports can crop the sides. In Grim Fandango's default
-character-relative movement mode, drag the left stick up or down to walk and
-the right stick left or right to turn. Both sticks can be held at once. Tap
-**Actions** to reveal **Use / Talk**, **Examine**, **Pick up / Put away**, and
+character-relative movement mode, drag the left stick up or down to walk,
+left or right to turn, or diagonally to do both at once. Tap **Actions** on the
+right to reveal **Use / Talk**, **Examine**, **Pick up / Put away**, and
 **Inventory**. The choices collapse after you select one. The Hugo games use a
 directional pad. Tap a direction to start walking and tap it again to stop.
 Gameplay controls stay behind the loading screen, including when **Skip intro**
