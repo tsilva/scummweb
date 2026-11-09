@@ -114,8 +114,10 @@ restoration completes. Server HTML retains Play for browsers without JavaScript.
 Loading, cached and restored hero controls share fixed button, version and
 license rows. Cached actions overlay the reserved controls until restoration
 finishes; mobile buttons reserve enough height for two-line labels.
-Mobile file-access and import guidance uses reserved space below those rows,
-so background file checks do not push the scroll cue or screenshots downward.
+The scroll cue and desktop slideshow controls share a row below the launch
+area. File-access and import guidance uses the hero's flexible space; shorter
+viewports reduce decorative spacing and release unused action slots. If the
+content still needs more room, the hero grows so every action remains reachable.
 Imported versions use their existing isolated save directory even when their
 ZIP name is unrecognized. Individual indexed files are checked for existence,
 size and modification time, so deleting the newest save can expose an older
@@ -1467,9 +1469,8 @@ or request-time rendering.
   library for explicit replacement with a ZIP, preserving their save identity;
   they are never opened as directories.
   Desktop hero titles fit their full text into a fixed three-line title area, resizing
-  after viewport or font changes. Summary and metadata slots have fixed heights,
-  with their full text available in tooltips. Keep action rows stable across
-  slides so long titles and labels do not move the controls or the library.
+  after viewport or font changes. Summary and metadata reserve space on taller
+  viewports and use their content height on shorter ones.
   The desktop hero's primary action reserves a fixed button width. All layouts
   retain save-aware Play/Continue and file-access actions; mobile buttons span
   the available width with a minimum 3rem height.

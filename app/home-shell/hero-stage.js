@@ -39,6 +39,7 @@ export default function HeroStage({
   const editionLabel = formatVersionLabel(featuredGame, { showRevision: false })
     || (featuredGame.importRequired && featuredGame.badge) || "Included version";
   const hasMultipleVersions = versions.length > 1;
+  const hasScreenshots = featuredGame.screenshots?.length > 0;
   const backdrop = getHeroImageProps(featuredGame, useArtworkDelivery());
   // React automatically preloads the eager WebP <img>, but skips images in <picture>.
   if (isInitialSlide && backdrop.avifSrcSet) {
@@ -134,8 +135,10 @@ export default function HeroStage({
               .hero-actions-placeholder { display: none; }`}</style></noscript>
           </div>
         </div>
-        {featuredGame.screenshots?.length > 0 && <HeroScrollCue />}
-        {controls}
+        {(hasScreenshots || controls) && <div className="hero-footer">
+          {hasScreenshots && <HeroScrollCue />}
+          {controls}
+        </div>}
       </section>
       <GameScreenshots key={featuredGame.screenshots?.join("|") || featuredGame.displayTitle} game={featuredGame} />
     </div>
