@@ -1220,6 +1220,8 @@ Variant width descriptors come from the decoded image dimensions. Hero
 preloading uses the same picture sources as visible images to avoid downloading
 both format alternatives. Browsing pages preconnect to the artwork bucket and
 send URL and dimension records for the bundled games and the current game.
+The homepage also sends the preconnect hint in a `Link` response header so the
+CDN can advertise it before the HTML arrives.
 The browser loads the full delivery inventory when it restores or adds imported
 games. Publishing and verification tools use the full manifest.
 
