@@ -319,23 +319,6 @@
   transition: transform 40ms linear;
 }
 
-.game-route-touch-cursor-pad-label {
-  position: absolute;
-  right: 0.42rem;
-  bottom: 0.34rem;
-  color: inherit;
-  font:
-    700
-    0.5rem/1
-    "Trebuchet MS",
-    Verdana,
-    Tahoma,
-    sans-serif;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  pointer-events: none;
-}
-
 .game-route-skip-intro-button {
   min-width: 8rem;
   min-height: 2.75rem;
