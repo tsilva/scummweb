@@ -1,0 +1,40 @@
+# English DOS CD 1.1.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/gk2-dos-1.1/src
+# endChapter advances gChapter. The final furnace scene has its own losing branches.
+# endGameRm reaches room 92 after the successful furnace sequence. endChapter can also reach 92 after chapter six.
+schema_version: 1
+game: the-beast-within-a-gabriel-knight-mystery
+engine_id: sci
+edition:
+  game_id: gk2
+  index_md5: b527742646e358218b5861ac392a604d
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  furnace: 1300
+  ending: 92
+variables:
+  chapter: { bank: globals, index: 115 }
+  previous-room: { bank: globals, index: 12 }
+milestones:
+  - id: reached-chapter-2
+    label: Reached chapter 2
+    when: { variable: chapter, equals: 2 }
+  - id: reached-chapter-3
+    label: Reached chapter 3
+    when: { variable: chapter, equals: 3 }
+  - id: reached-chapter-4
+    label: Reached chapter 4
+    when: { variable: chapter, equals: 4 }
+  - id: reached-chapter-5
+    label: Reached chapter 5
+    when: { variable: chapter, equals: 5 }
+  - id: reached-chapter-6
+    label: Reached chapter 6
+    when: { variable: chapter, equals: 6 }
+  - id: reached-furnace
+    label: Reached the theater furnace room
+    when: { room: furnace }
+  - id: winning-ending
+    label: Defeated Von Glower
+    when: { all: [{ room: ending }, { any: [{ variable: previous-room, equals: 1300 }, { variable: chapter, equals: 7 }] }] }

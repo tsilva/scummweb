@@ -1,0 +1,44 @@
+# English Windows CD 1.0.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/torin-win-1.0/src
+# roPickAChapter can open the credits directly. Only roEnd advances there after the family reunion.
+# The first playable scene of each chapter follows its corresponding roChapter scene.
+schema_version: 1
+game: torin-s-passage
+engine_id: sci
+edition:
+  game_id: torin
+  index_md5: 1e28b9e1a0f897d9d31980fc347c427b
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  chapter-two: 20100
+  chapter-three: 30100
+  chapter-four: 40100
+  chapter-five: 50100
+  lycentias-horrors: 51300
+  reunion: 51400
+  credits: 51500
+variables:
+  previous-room: { bank: globals, index: 12 }
+milestones:
+  - id: reached-chapter-2
+    label: Reached the cliff in chapter 2
+    when: { room: chapter-two }
+  - id: reached-chapter-3
+    label: Reached the pergola in chapter 3
+    when: { room: chapter-three }
+  - id: reached-chapter-4
+    label: Reached Asthenia in chapter 4
+    when: { room: chapter-four }
+  - id: reached-chapter-5
+    label: Reached the storeroom in chapter 5
+    when: { room: chapter-five }
+  - id: reached-lycentia
+    label: Reached Lycentia’s final trials
+    when: { room: lycentias-horrors }
+  - id: reunited-family
+    label: Reached the family reunion
+    when: { room: reunion }
+  - id: winning-ending
+    label: Reunited Torin’s family
+    when: { all: [{ room: credits }, { variable: previous-room, equals: -14136 }] }

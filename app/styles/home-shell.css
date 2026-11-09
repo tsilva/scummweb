@@ -813,7 +813,7 @@ button.nav-icon-link {
   line-height: 1.05;
 }
 
-.recent-save-progress {
+.recent-story-progress {
   appearance: none;
   position: absolute;
   inset: auto 0 0;
@@ -826,9 +826,9 @@ button.nav-icon-link {
   color: var(--accent-strong);
 }
 
-.recent-save-progress::-webkit-progress-bar { background: transparent; }
-.recent-save-progress::-webkit-progress-value { background: var(--accent-strong); }
-.recent-save-progress::-moz-progress-bar { background: var(--accent-strong); }
+.recent-story-progress::-webkit-progress-bar { background: transparent; }
+.recent-story-progress::-webkit-progress-value { background: var(--accent-strong); }
+.recent-story-progress::-moz-progress-bar { background: var(--accent-strong); }
 
 .spotlight-badge span {
   font-size: 0.68rem;

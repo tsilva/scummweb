@@ -10,26 +10,39 @@ import { chosenGameVersionUpdatedEvent, readPreferredGameVersion } from "./game-
 import { getCachedBrowserSaveContents } from "./browser-saves.mjs";
 import useBrowserSave from "./use-browser-save";
 import { getQueenSaveProgress } from "./game-player/queen-save-progress.mjs";
+import { getStoryProgressRevision, readStoryProgress } from "./game-player/story-progress.mjs";
+import storyProgressIndex from "../public/game-progress/index.json";
 
-function RecentSaveProgress({ versions, groupKey }) {
+function RecentStoryProgress({ versions, groupKey }) {
   const version = readPreferredGameVersion(versions, groupKey);
-  if (version.key !== "catalog:queen" || version.game.importRequired) return null;
-  return <QueenSaveProgress game={version.game} />;
+  const { slug, importRequired } = version.game;
+  const revision = getStoryProgressRevision(storyProgressIndex, slug, !version.source && !importRequired);
+  if (!revision) return null;
+  const percent = readStoryProgress(window, version.key, slug, revision);
+  if (version.key === "catalog:queen" && !importRequired) {
+    return <QueenSaveProgress game={version.game} revision={revision} fallback={percent} />;
+  }
+  return <StoryProgressBar percent={percent} />;
 }
 
-function QueenSaveProgress({ game }) {
+function QueenSaveProgress({ game, revision, fallback }) {
   const contents = useBrowserSave(game, true, getCachedBrowserSaveContents);
   const [result, setResult] = useState(null);
   useEffect(() => {
     if (contents === null) return;
     let current = true;
-    void getQueenSaveProgress(contents).then((percent) => {
-      if (current) setResult({ contents, percent });
+    void getQueenSaveProgress(contents, revision).then((percent) => {
+      if (current) setResult({ contents, revision, percent });
     });
     return () => { current = false; };
-  }, [contents]);
-  const percent = result?.contents === contents ? result.percent : null;
-  return percent !== null && <progress className="recent-save-progress" aria-label="Saved story progress"
+  }, [contents, revision]);
+  const saved = result?.contents === contents && result.revision === revision ? result.percent : null;
+  return <StoryProgressBar percent={saved ?? fallback} saved={saved !== null} />;
+}
+
+function StoryProgressBar({ percent, saved }) {
+  return percent !== null && <progress className="recent-story-progress"
+    aria-label={saved ? "Saved story progress" : "Story progress reached"}
     title={`${percent}% story progress`} max={100} value={percent} />;
 }
 
@@ -75,7 +88,7 @@ export default function RecentGamesRail({ groups }) {
             <div className="landscape-overlay">
               <h3>{game.displayTitle}</h3>
             </div>
-            {versions.some(({ key }) => key === "catalog:queen") && <RecentSaveProgress versions={versions} groupKey={key} />}
+            <RecentStoryProgress versions={versions} groupKey={key} />
           </GameSelectionLink>
         ))}
       </div>

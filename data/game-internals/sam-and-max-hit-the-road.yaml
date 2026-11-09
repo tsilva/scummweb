@@ -1,0 +1,33 @@
+# English DOS CD.
+# Native evidence: scripts and room directory from the detected edition.
+# Room 77 holds the opening credits. The final scene in room 86 precedes script 73 and the end credits in room 90.
+schema_version: 1
+game: sam-and-max-hit-the-road
+engine_id: scumm
+edition:
+  game_id: samnmax
+  index_md5: d917f311a448e3cc7239c31bddb00dd2
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  carnival: 16
+  bumpusville: 47
+  bigfoot-convention: 55
+  forest-ending: 86
+  end-credits: 90
+milestones:
+  - id: carnival
+    label: Reached the Kushman carnival
+    when: { room: carnival }
+  - id: bumpusville
+    label: Reached Bumpusville
+    when: { room: bumpusville }
+  - id: bigfoot-convention
+    label: Reached the Bigfoot convention
+    when: { room: bigfoot-convention }
+  - id: forest-ending
+    label: Helped the Bigfoots restore their forest
+    when: { room: forest-ending }
+  - id: end-credits
+    label: Closed the Bigfoot case
+    when: { room: end-credits }

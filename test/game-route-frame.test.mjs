@@ -6,6 +6,7 @@ import test from "node:test";
 import swc from "next/dist/build/swc/index.js";
 import * as skipIntroConfig from "../app/skip-intro-config.mjs";
 import * as telemetry from "../app/game-player/telemetry.mjs";
+import { getStoryProgressRevision } from "../app/game-player/story-progress.mjs";
 import * as gameMenu from "../app/game-player/game-menu.mjs";
 import * as mobileControls from "../app/game-player/mobile-controls.mjs";
 import * as controllerDevice from "../app/controller-device.mjs";
@@ -60,6 +61,8 @@ for (const [message, mobile] of [
         if (name === "./controller-device.mjs") return controllerDevice;
         if (name.endsWith("/game-menu.mjs")) return gameMenu;
         if (name.endsWith("/telemetry.mjs")) return telemetry;
+        if (name.endsWith("/story-progress.mjs")) return { getStoryProgressRevision };
+        if (name.endsWith("/game-progress/index.json")) return { games: {} };
         if (name === "next/navigation") return { useRouter: () => ({}) };
         if (name === "./game-loading-status.mjs") return { gameLoadingStatus };
         if (name === "./game-bucket.mjs") return { readCatalogGameArchive: async () => {
@@ -108,6 +111,7 @@ for (const [message, mobile] of [
 }
 
 function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = false, catalog = true,
+  agentSaveScope, storyMaps = {},
   skipIntro, visualViewport, virtualKeyboard, shellBottom = visualViewport?.height,
   realBoot = false, game = { target: "sky", slug: "sky", engineId: "sky" },
   downloadDetails = { loaded: 12_400_000, total: 85_200_000 } } = {}) {
@@ -117,6 +121,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   const timers = new Map();
   const deliveries = [];
   const reports = [];
+  const storyObservers = [];
   let cursor = 0;
   let dirty = false;
   let children = [];
@@ -148,6 +153,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     addEventListener(name, handler) { if (name === "message") messages.add(handler); },
     removeEventListener(name, handler) { if (name === "message") messages.delete(handler); },
   };
+  if (agentSaveScope) window.location.searchParams.set("agentSaveScope", agentSaveScope);
   function memo(factory, deps) {
     const index = cursor++;
     if (!hooks[index] || deps.some((dep, n) => !Object.is(dep, hooks[index].deps[n]))) {
@@ -204,6 +210,12 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       if (name === "./controller-device.mjs") return controllerDevice;
       if (name.endsWith("/game-menu.mjs")) return gameMenu;
       if (name.endsWith("/telemetry.mjs")) return telemetry;
+      if (name.endsWith("/story-progress.mjs")) return { getStoryProgressRevision, observeStoryProgress: (_scope, frame, game) => {
+        const observer = { frame, game, stopped: false };
+        storyObservers.push(observer);
+        return () => { observer.stopped = true; };
+      } };
+      if (name.endsWith("/game-progress/index.json")) return { games: storyMaps };
       if (name === "next/navigation") return { useRouter: () => ({}) };
       if (name === "./game-loading-status.mjs") return { gameLoadingStatus };
       if (name === "./game-bucket.mjs") return { readCatalogGameArchive: (_url, { onProgress }) => {
@@ -256,7 +268,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     } while (dirty);
   }
   return {
-    archive, frame, deliveries, reports, timers, render, shellProperties,
+    archive, frame, deliveries, reports, timers, render, shellProperties, storyObservers,
     get children() { return children; },
     get loadCount() { return loadCount; },
     get confirmations() { return confirmations; },
@@ -508,6 +520,30 @@ test("the play route forwards telemetry only for the opted-in game frame", () =>
   }
 });
 
+test("ordinary mapped games record story progress after readiness, separately from agent play", () => {
+  for (const [catalog, agentSaveScope] of [[true], [false], [true, "a".repeat(64)]]) {
+    const player = pendingArchivePlayer({
+      catalog, agentSaveScope,
+      game: { target: "sky", slug: "sky", recentGameId: "source:copy" },
+      storyMaps: { sky: { revision: "map-revision", edition_specific: true } },
+    });
+    player.render();
+    const frame = new URL(player.frame.contentDocument.URL);
+    assert.equal(frame.searchParams.get("telemetry"), agentSaveScope ? null : "1");
+    assert.equal(player.storyObservers.length, 0);
+    player.gameReady(frame.href);
+    player.render();
+    if (agentSaveScope) assert.equal(player.storyObservers.length, 0);
+    else {
+      assert.equal(player.storyObservers.length, 1);
+      assert.equal(player.storyObservers[0].frame, player.frame);
+      assert.equal(player.storyObservers[0].game.version, catalog ? "catalog:sky" : "source:copy");
+    }
+    player.unmount();
+    if (!agentSaveScope) assert.equal(player.storyObservers[0].stopped, true);
+  }
+});
+
 test("catalog and imported launches retain distinct compatibility warnings from the active frame", () => {
   for (const catalog of [true, false]) {
     const player = pendingArchivePlayer({ catalog });
@@ -637,6 +673,8 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
       if (name === "next/navigation") return { useRouter: () => ({}) };
       if (name.endsWith("/game-menu.mjs")) return gameMenu;
       if (name.endsWith("/telemetry.mjs")) return telemetry;
+      if (name.endsWith("/story-progress.mjs")) return { getStoryProgressRevision };
+      if (name.endsWith("/game-progress/index.json")) return { games: {} };
       if (name.endsWith("/keyboard")) return {
         dispatchSyntheticKeypressSequence: async (frame, shortcut) => keypresses.push({ frame, shortcut }),
         dispatchGameCommand: (frame, command) => commands.push({ frame, command }),

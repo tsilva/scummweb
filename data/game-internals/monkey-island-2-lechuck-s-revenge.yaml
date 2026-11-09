@@ -1,0 +1,36 @@
+# English Amiga.
+# Native evidence: scripts and room directory from the detected edition.
+# The room index identifies the chapter cards and Dinky Island. Scripts 101, 50 and 82 enter the later chapters.
+# The confrontation script 160 opens the Big Whoop epilogue in room 110.
+schema_version: 1
+game: monkey-island-2-lechuck-s-revenge
+engine_id: scumm
+edition:
+  game_id: monkey2
+  index_md5: 132bff65e6367c09cc69318ce1b59333
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  map-pieces: 25
+  fortress: 67
+  dinky-island: 85
+  tunnels: 93
+  big-whoop: 110
+variables:
+  ending-script: { bank: running_scripts, index: 160 }
+milestones:
+  - id: map-pieces
+    label: Finished the Largo Embargo
+    when: { room: map-pieces }
+  - id: fortress
+    label: Reached LeChuck’s fortress chapter
+    when: { room: fortress }
+  - id: dinky-island
+    label: Reached Dinky Island
+    when: { room: dinky-island }
+  - id: tunnels
+    label: Reached the tunnels below Big Whoop
+    when: { room: tunnels }
+  - id: winning-ending
+    label: Reached the Big Whoop epilogue
+    when: { all: [{ room: big-whoop }, { variable: ending-script, equals: 1 }] }

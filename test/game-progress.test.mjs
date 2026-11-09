@@ -7,6 +7,7 @@ import { pathToFileURL } from 'node:url';
 import { deflateSync, gzipSync, gunzipSync } from 'node:zlib';
 import { generateGameProgress } from '../scripts/generate-game-progress.mjs';
 import { readQueenSaveSnapshot } from '../lib/game-progress/queen-save.mjs';
+import { getStoryProgressRevision, observeStoryProgress, readStoryProgress } from '../app/game-player/story-progress.mjs';
 
 const directory = await mkdtemp(path.join(tmpdir(), 'scummweb-game-progress-'));
 after(() => rm(directory, { recursive: true, force: true }));
@@ -24,6 +25,50 @@ test('publishes a revision checked browser tracker for each mapped game', () => 
     assert.throws(() => createTracker(game, '0'.repeat(64)), /revision is unavailable/);
   }
   assert.throws(() => createTracker('unknown-game', '0'.repeat(64)), /revision is unavailable/);
+});
+
+test('home story progress retains a verified milestone per copy and revision', async () => {
+  const slug = 'maniac-mansion';
+  const version = 'source:amiga-copy';
+  const revision = getStoryProgressRevision(index, slug, false);
+  assert.equal(revision, index.games[slug].revision);
+  assert.equal(getStoryProgressRevision(index, 'flight-of-the-amazon-queen', false), undefined);
+  const identity = { engine_id: 'scumm', game_id: 'maniac', index_md5: 'e781230da44a44e2f0770edb2b3b3633' };
+  const snapshot = { schema_version: 1, room_id: 30, room_ready: true, sample_time_ms: 1,
+    banks: { scumm_vars: Array(109).fill(0), running_scripts: Array(64).fill(0) } };
+  const stored = new Map();
+  const events = new Map();
+  let tick;
+  const scope = {
+    localStorage: { getItem: key => stored.get(key) ?? null,
+      setItem: (key, value) => stored.set(key, value), removeItem: key => stored.delete(key) },
+    setInterval(callback) { tick = callback; return 1; },
+    clearInterval() { tick = undefined; },
+    addEventListener: (type, callback) => events.set(type, callback),
+    removeEventListener: type => events.delete(type),
+  };
+  const frame = { contentWindow: { scummwebTelemetry: { read: () => ({ identity, snapshot }) } } };
+  const progress = (copy = version, mapRevision = revision) => readStoryProgress(scope, copy, slug, mapRevision);
+  const stop = observeStoryProgress(scope, frame, { version, slug, revision }, async (...args) => createTracker(...args));
+  await Promise.resolve();
+  assert.equal(progress(), 50);
+  assert.equal(progress('source:other-copy'), null);
+  assert.equal(progress(version, 'old-revision'), null);
+  snapshot.room_id = 2;
+  snapshot.sample_time_ms++;
+  tick();
+  assert.equal(progress(), 50, 'room-only milestones survive leaving the room');
+  snapshot.banks.running_scripts[63] = 1;
+  snapshot.sample_time_ms++;
+  events.get('pagehide')();
+  assert.equal(progress(), 100);
+  identity.index_md5 = 'f'.repeat(32);
+  snapshot.sample_time_ms++;
+  tick();
+  assert.equal(progress(), null, 'a reconnected copy with another edition clears stale progress');
+  stop();
+  assert.equal(tick, undefined);
+  assert.equal(events.size, 0);
 });
 
 test('Queen scores transient writes, restores and the credits cutaway', () => {
@@ -363,6 +408,100 @@ test('Sierra progress uses saved state and rejects credits reached on a losing r
         tracker.acceptSnapshot(identity, { room_id: room, sample_time_ms: ++time, banks });
         assert.deepEqual(tracker.report().reached, expected);
       }
+    });
+  }
+});
+
+test('SCI32 endings require the numbered-map identity and the winning route', async t => {
+  const editions = [
+    ['the-beast-within-a-gabriel-knight-mystery', 'gk2', 'b527742646e358218b5861ac392a604d', 92, { 12: 1300 }],
+    ['leisure-suit-larry-7-love-for-sail', 'lsl7', '63fe61e2fa7b019d5e202045e6a29d24', 152, { 12: 150 }],
+    ['lighthouse-the-dark-being', 'lighthouse', '9a02b315bbbacdf03f77ee64d233f573', 380, { 137: 7 }],
+    ['phantasmagoria', 'phantasmagoria', 'abeb9a32ad6dcf9e4371d4f9897f8694', 92, { 12: -18056 }],
+    ['phantasmagoria-2-a-puzzle-of-flesh', 'phantasmagoria2', 'b200596c2dc7277d0510dee44bac9ee0', 9401, { 12: -23504 }],
+    ['rama', 'rama', 'a60b844ff796efb2a1afac2893104fab', 1300, { 12: 5209 }],
+    ['shivers', 'shivers', '5dc3653b80fee5c69f7c850c990cbbcc', 923, { 12: 935, 547: 10 }],
+    ['torin-s-passage', 'torin', '1e28b9e1a0f897d9d31980fc347c427b', 51500, { 12: -14136 }],
+  ];
+  for (const [slug, game_id, index_md5, room_id, values] of editions) {
+    await t.test(slug, () => {
+      const tracker = trackerFor(slug);
+      const identity = { engine_id: 'sci', game_id, index_md5 };
+      const globals = Array(550).fill(0);
+      const sample = { room_id, sample_time_ms: 1, banks: { globals } };
+      tracker.acceptSnapshot(identity, sample);
+      assert.notEqual(tracker.report().percent, 100);
+      Object.assign(globals, values);
+      tracker.acceptSnapshot({ ...identity, index_md5: '0'.repeat(32) }, sample);
+      assert.equal(tracker.report().reason, 'edition_mismatch');
+      tracker.acceptSnapshot(identity, sample);
+      assert.equal(tracker.report().percent, 100);
+      globals.fill(0);
+      tracker.acceptSnapshot(identity, { ...sample, room_id: 1 });
+      assert.equal(tracker.report().percent, 0);
+    });
+  }
+});
+
+test('PreAGI distinguishes a full collection from returning it and restores progress', async t => {
+  const editions = [
+    ['mickey-s-space-adventure', 'mickey', 'b6ec04c91a05df374792872c4d4ce66d',
+      26, { crystals: 9, completed: 0 }, 26, { completed: 1 }, { crystals: 0, completed: 0 }],
+    ['troll-s-tale', 'troll', '62903f264b3d849be4214b3a5c42a2fa',
+      6, { treasures: 16, completed: 0 }, 6, { completed: 1 }, { treasures: 0, completed: 0 }],
+    ['winnie-the-pooh-in-the-hundred-acre-wood', 'winnie', '2e7900c1ccaa7671d65405f6d1efed30',
+      2, { returned_objects: 10, missing_objects: 0 }, 58, {}, { returned_objects: 0, missing_objects: 10 }],
+  ];
+  for (const [slug, game_id, index_md5, beforeRoom, before, finalRoom, ending, reset] of editions) {
+    await t.test(slug, () => {
+      const tracker = trackerFor(slug);
+      const identity = { engine_id: 'agi', game_id, index_md5 };
+      function accept(room_id, preagi) {
+        tracker.acceptSnapshot(identity, { room_id, sample_time_ms: 1, banks: { preagi } });
+        return tracker.report();
+      }
+      const pending = accept(beforeRoom, before);
+      assert.equal(pending.completed, pending.total - 1);
+      assert.equal(accept(finalRoom, { ...before, ...ending }).percent, 100);
+      assert.equal(accept(beforeRoom, reset).percent, 0);
+    });
+  }
+});
+
+test('LucasArts snapshot maps recognize the documented endings', async t => {
+  const cases = [
+    ['maniac-mansion', 'maniac', 'e781230da44a44e2f0770edb2b3b3633', 0, { scumm_vars: { 108: 2 }, running_scripts: { 63: 1 } }],
+    ['zak-mckracken-and-the-alien-mindbenders', 'zak', 'e94c7cc3686fce406d3c91b5eae5a72d', 25,
+      { object_state: { 55: 4 }, running_scripts: { 66: 0, 149: 1 } }],
+    ['loom', 'loom', '5d88b9d6a88e6f8e90cded9d01b7f082', 51, { scumm_bit_bytes: { 14: 2 } }],
+    ['the-secret-of-monkey-island', 'monkey', '2d1e891fe52df707c30185e52c50cd92', 89,
+      { scumm_bit_bytes: { 49: 64, 56: 32 }, running_scripts: { 138: 1 } }],
+    ['monkey-island-2-lechuck-s-revenge', 'monkey2', '132bff65e6367c09cc69318ce1b59333', 110, { running_scripts: { 160: 1 } }],
+    ['day-of-the-tentacle', 'tentacle', '4167a92a1d46baa4f4127d918d561f88', 88, { scumm_bit_bytes: { 1: 6, 32: 16 } }],
+    ['sam-and-max-hit-the-road', 'samnmax', 'd917f311a448e3cc7239c31bddb00dd2', 90, {}],
+    ['full-throttle', 'ft', '09820417db26687bb7fe0c83cc4c553b', 153,
+      { scumm_bit_bytes: { 34: 8 }, running_scripts: { 439: 1 } }],
+    ['the-dig', 'dig', 'd8323015ecb8b10bf53474f6e6b0ae33', 110, { scumm_bit_bytes: { 29: 16 } }],
+    ['the-curse-of-monkey-island', 'comi', 'fe60d6b5ff51b0553ac59963123b5777', 86, { scumm_bit_bytes: { 84: 1 } }],
+    ['grim-fandango', 'grim', '444f05f2af689c1bffd179b8b6a632bd', null,
+      { puzzle_flags: { 9: 0, 29: 0, 35: 0, 45: 0, 46: 0, 53: 0, 55: 1 }, story_state: { final_cutscene_unlocked: 1 } }, 'grim'],
+    ['escape-from-monkey-island', 'monkey4', '61959da91d864bf5f4588daa4a5a3019', null,
+      { story_state: { broke_catapult: 1, guybrush_read_marley_letter: 1, caught_pegnose: 1,
+        curr_act: 3, been_in_lua_bar: 1, rock_beach: 1, rock_canyon: 1, rock_lava: 1, credits_end_game: 2 } }, 'grim'],
+  ];
+  for (const [slug, game_id, index_md5, room_id, banks, engine_id = 'scumm'] of cases) {
+    await t.test(slug, () => {
+      const tracker = trackerFor(slug);
+      const identity = { engine_id, game_id, index_md5 };
+      const empty = Object.fromEntries(Object.entries(banks).map(([bank, values]) =>
+        [bank, Object.fromEntries(Object.keys(values).map(key => [key, 0]))]));
+      tracker.acceptSnapshot(identity, { room_id: 1, sample_time_ms: 1, banks: empty });
+      assert.equal(tracker.report().percent, 0);
+      const ending = { room_id, sample_time_ms: 2, banks };
+      tracker.acceptSnapshot({ ...identity, index_md5: '0'.repeat(32) }, ending);
+      assert.equal(tracker.report().reason, 'edition_mismatch');
+      tracker.acceptSnapshot(identity, ending);
+      assert.equal(tracker.report().percent, 100);
     });
   }
 });

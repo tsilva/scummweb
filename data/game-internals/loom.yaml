@@ -1,0 +1,35 @@
+# English DOS VGA CD.
+# Native evidence: scripts and room directory from the detected edition.
+# The room scripts identify Crystalgard (56), the shepherds (25), and the Forge (34).
+# The closing script in room 51 sets bit 113 after the Loom is unmade and the weavers are reunited.
+schema_version: 1
+game: loom
+engine_id: scumm
+edition:
+  game_id: loom
+  index_md5: 5d88b9d6a88e6f8e90cded9d01b7f082
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  crystalgard: 56
+  shepherds: 25
+  forge: 34
+  bishop: 43
+flags:
+  ending: { bank: scumm_bit_bytes, index: 14, mask: 0x2 }
+milestones:
+  - id: crystalgard
+    label: Reached Crystalgard
+    when: { room: crystalgard }
+  - id: shepherds
+    label: Reached the shepherds
+    when: { room: shepherds }
+  - id: forge
+    label: Reached the Forge
+    when: { room: forge }
+  - id: bishop
+    label: Reached Bishop Mandible
+    when: { room: bishop }
+  - id: winning-ending
+    label: Unmade the Loom and rejoined the weavers
+    when: { flag: ending }

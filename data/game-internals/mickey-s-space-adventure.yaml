@@ -1,0 +1,46 @@
+# English DOS floppy.
+# Engine reference: https://github.com/scummvm/scummvm/blob/7d2709da5136866589f7602f5f5a7b17de03420e/engines/agi/preagi/mickey.cpp
+# The saved nXtals counter advances as crystals are collected. The ninth does not finish the game.
+# The victory branch runs when Mickey selects the landing action on Earth with all nine crystals.
+schema_version: 1
+game: mickey-s-space-adventure
+engine_id: agi
+edition:
+  game_id: mickey
+  index_md5: b6ec04c91a05df374792872c4d4ce66d
+telemetry: snapshot
+scoring: highest_stage
+variables:
+  crystals: { bank: preagi, key: crystals }
+  completed: { bank: preagi, key: completed }
+milestones:
+  - id: crystals-1
+    label: Collected the first crystal
+    when: { variable: crystals, equals: 1 }
+  - id: crystals-2
+    label: Collected 2 crystals
+    when: { variable: crystals, equals: 2 }
+  - id: crystals-3
+    label: Collected 3 crystals
+    when: { variable: crystals, equals: 3 }
+  - id: crystals-4
+    label: Collected 4 crystals
+    when: { variable: crystals, equals: 4 }
+  - id: crystals-5
+    label: Collected 5 crystals
+    when: { variable: crystals, equals: 5 }
+  - id: crystals-6
+    label: Collected 6 crystals
+    when: { variable: crystals, equals: 6 }
+  - id: crystals-7
+    label: Collected 7 crystals
+    when: { variable: crystals, equals: 7 }
+  - id: crystals-8
+    label: Collected 8 crystals
+    when: { variable: crystals, equals: 8 }
+  - id: crystals-9
+    label: Collected 9 crystals
+    when: { variable: crystals, equals: 9 }
+  - id: winning-ending
+    label: Returned the crystals to Earth
+    when: { variable: completed, equals: 1 }

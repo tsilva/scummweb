@@ -1,0 +1,67 @@
+# English PC-booter floppy.
+# Engine reference: https://github.com/scummvm/scummvm/blob/7d2709da5136866589f7602f5f5a7b17de03420e/engines/agi/preagi/troll.cpp
+# The interpreter counts down from 16 treasures. It unlocks the return route at zero.
+# The final action ends the game loop. Quitting the game does not pass through the ending.
+schema_version: 1
+game: troll-s-tale
+engine_id: agi
+edition:
+  game_id: troll
+  index_md5: 62903f264b3d849be4214b3a5c42a2fa
+telemetry: snapshot
+scoring: highest_stage
+variables:
+  treasures: { bank: preagi, key: treasures }
+  completed: { bank: preagi, key: completed }
+milestones:
+  - id: treasures-1
+    label: Recovered the first treasure
+    when: { variable: treasures, equals: 1 }
+  - id: treasures-2
+    label: Recovered 2 treasures
+    when: { variable: treasures, equals: 2 }
+  - id: treasures-3
+    label: Recovered 3 treasures
+    when: { variable: treasures, equals: 3 }
+  - id: treasures-4
+    label: Recovered 4 treasures
+    when: { variable: treasures, equals: 4 }
+  - id: treasures-5
+    label: Recovered 5 treasures
+    when: { variable: treasures, equals: 5 }
+  - id: treasures-6
+    label: Recovered 6 treasures
+    when: { variable: treasures, equals: 6 }
+  - id: treasures-7
+    label: Recovered 7 treasures
+    when: { variable: treasures, equals: 7 }
+  - id: treasures-8
+    label: Recovered 8 treasures
+    when: { variable: treasures, equals: 8 }
+  - id: treasures-9
+    label: Recovered 9 treasures
+    when: { variable: treasures, equals: 9 }
+  - id: treasures-10
+    label: Recovered 10 treasures
+    when: { variable: treasures, equals: 10 }
+  - id: treasures-11
+    label: Recovered 11 treasures
+    when: { variable: treasures, equals: 11 }
+  - id: treasures-12
+    label: Recovered 12 treasures
+    when: { variable: treasures, equals: 12 }
+  - id: treasures-13
+    label: Recovered 13 treasures
+    when: { variable: treasures, equals: 13 }
+  - id: treasures-14
+    label: Recovered 14 treasures
+    when: { variable: treasures, equals: 14 }
+  - id: treasures-15
+    label: Recovered 15 treasures
+    when: { variable: treasures, equals: 15 }
+  - id: treasures-16
+    label: Recovered 16 treasures
+    when: { variable: treasures, equals: 16 }
+  - id: winning-ending
+    label: Returned the treasures
+    when: { variable: completed, equals: 1 }
