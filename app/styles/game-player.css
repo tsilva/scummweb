@@ -186,9 +186,7 @@
   padding: 1.35rem 1.35rem 1.25rem;
   border: 1px solid rgba(246, 224, 138, 0.26);
   border-radius: 1.5rem;
-  background:
-    linear-gradient(180deg, rgba(17, 21, 18, 0.92), rgba(7, 9, 8, 0.96)),
-    #0b0d0c;
+  background: linear-gradient(180deg, rgba(17, 21, 18, 0.8), rgba(7, 9, 8, 0.86));
   color: #f8f2d8;
   box-shadow: 0 1.3rem 3.6rem rgba(0, 0, 0, 0.42);
   backdrop-filter: blur(14px);
