@@ -505,6 +505,17 @@ globalThis.__scummvmRequestExit=requestExit;
 const scummwebMessageSource="scummweb";
 const postParentMessage=message=>{if(!(window.parent&&window.parent!==window))return false;try{window.parent.postMessage(message,scummwebLaunchUrl.origin);return true}catch{return false}};
 const buildCurrentFrameHref=()=>`${scummwebLaunchUrl.pathname}${scummwebLaunchUrl.search}${scummwebLaunchUrl.hash}`;
+if (isCatalogArchive) {
+  globalThis.__scummwebReportGameplayStarted = () => {
+    delete globalThis.__scummwebReportGameplayStarted;
+    postParentMessage({
+      type: "scummvm-gameplay-started",
+      source: scummwebMessageSource,
+      target,
+      href: buildCurrentFrameHref(),
+    });
+  };
+}
 const readyStatePriority={idle:-1,pending:0,"runtime-ready":1,"launch-detected":2,"awaiting-frame":3,ready:4};
 const getReadyStatePriority=state=>Object.prototype.hasOwnProperty.call(readyStatePriority,state)?readyStatePriority[state]:-1;
 let readyState={state:target?"pending":"idle",target:target||null,href:buildCurrentFrameHref(),reason:target?"awaiting-launch":"no-target",source:scummwebMessageSource,emittedAt:null};

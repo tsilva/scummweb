@@ -6,13 +6,11 @@ test("normalizes save-slot skip-intro configs", () => {
   assert.deepEqual(
     normalizeSkipIntroConfig({
       strategy: "save-slot",
-      durationMinutes: 2,
       slot: 0,
       saveFiles: ["SKY-VM.000", "SKY-VM.000"],
     }),
     {
       strategy: "save-slot",
-      durationMinutes: 2,
       slot: 0,
       saveFiles: ["SKY-VM.000"],
     }
@@ -22,13 +20,11 @@ test("normalizes save-slot skip-intro configs", () => {
 test("infers save-slot configs when slot metadata is present", () => {
   assert.deepEqual(
     normalizeSkipIntroConfig({
-      durationMinutes: 2,
       slot: 0,
       saveFiles: ["queen.s00"],
     }),
     {
       strategy: "save-slot",
-      durationMinutes: 2,
       slot: 0,
       saveFiles: ["queen.s00"],
     }
@@ -39,7 +35,6 @@ test("rejects legacy keypress skip-intro configs", () => {
   assert.equal(
     normalizeSkipIntroConfig({
       strategy: "keypress",
-      durationMinutes: 2,
       key: "Escape",
       pressCount: 5,
       pressIntervalMs: 1000,
@@ -52,7 +47,6 @@ test("rejects incomplete save-slot configs", () => {
   assert.equal(
     normalizeSkipIntroConfig({
       strategy: "save-slot",
-      durationMinutes: 2,
       slot: 2,
       saveFiles: [],
     }),
@@ -103,18 +97,30 @@ test("catalog intro checkpoints match their rebuild overrides and ship intact", 
   }
 });
 
+test("each bundled engine offering Skip intro ships the native gameplay signal", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const shell = new URL("../scummvm-shell/", import.meta.url);
+  const { games } = JSON.parse(await readFile(new URL("games.json", shell), "utf8"));
+  const engines = new Set(games.filter((game) => game.skipIntro && !game.skipIntro.checkpointOnly)
+    .map((game) => game.engineId));
+  for (const engine of engines) {
+    const plugin = await readFile(new URL(`data/plugins/lib${engine}.so`, shell));
+    assert.ok(plugin.includes("__scummwebReportGameplayStarted"), `${engine} must report when gameplay begins`);
+  }
+});
+
 test("normalizes a native intro skip without requiring or inventing a save slot", () => {
-  assert.deepEqual(normalizeSkipIntroConfig({ strategy: "boot-param", bootParam: 1, durationMinutes: 5 }),
-    { strategy: "boot-param", bootParam: 1, durationMinutes: 5 });
+  assert.deepEqual(normalizeSkipIntroConfig({ strategy: "boot-param", bootParam: 1 }),
+    { strategy: "boot-param", bootParam: 1 });
   for (const bootParam of [0, -1, 1.5, "invalid", Infinity]) {
-    assert.equal(normalizeSkipIntroConfig({ strategy: "boot-param", bootParam, durationMinutes: 5 }), null);
+    assert.equal(normalizeSkipIntroConfig({ strategy: "boot-param", bootParam }), null);
   }
 });
 
 test("native intro launches preserve file handoff and exit routes without seeding saves", () => {
   const result = new URL(buildSkipIntroLaunchSrc(
     "/scummvm.html?localGame=1&catalogGame=nippon&exitTo=%2Fnippon-safes-inc&skipIntroTarget=nippon-amiga#nippon-amiga",
-    "nippon-amiga", { strategy: "boot-param", bootParam: 1, durationMinutes: 5 }, "https://example.test"), "https://example.test");
+    "nippon-amiga", { strategy: "boot-param", bootParam: 1 }, "https://example.test"), "https://example.test");
   assert.equal(result.searchParams.get("localGame"), "1");
   assert.equal(result.searchParams.get("catalogGame"), "nippon");
   assert.equal(result.searchParams.get("exitTo"), "/nippon-safes-inc");
@@ -124,7 +130,7 @@ test("native intro launches preserve file handoff and exit routes without seedin
 
 test("save checkpoint launches keep their native slot and seed target", () => {
   const result = new URL(buildSkipIntroLaunchSrc("/scummvm.html?localGame=1#soltys", "soltys",
-    { strategy: "save-slot", slot: 1, saveFiles: ["soltys.001"], durationMinutes: 2 }, "https://example.test"), "https://example.test");
+    { strategy: "save-slot", slot: 1, saveFiles: ["soltys.001"] }, "https://example.test"), "https://example.test");
   assert.equal(result.searchParams.get("skipIntroTarget"), "soltys");
   assert.equal(result.searchParams.get("localGame"), "1");
   assert.equal(decodeURIComponent(result.hash), "#-x 1 soltys");

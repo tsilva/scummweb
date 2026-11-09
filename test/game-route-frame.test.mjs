@@ -265,6 +265,12 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       for (const handler of [...messages]) handler({ origin: window.location.origin, source: frame.contentWindow,
         data: { type: "scummvm-ready", source: "scummweb", target: "sky", href, reason: "rendered-frame-detected" } });
     },
+    gameplayStarted({ origin = window.location.origin, source = frame.contentWindow,
+      href = frame.contentDocument.URL, target = "sky" } = {}) {
+      for (const handler of [...messages]) handler({ origin, source,
+        data: { type: "scummvm-gameplay-started", source: "scummweb", target, href } });
+      render();
+    },
     compatibilityWarning(message, { origin = window.location.origin, source = frame.contentWindow, href = frame.contentDocument.URL } = {}) {
       for (const handler of [...messages]) handler({ origin, source,
         data: { type: "scummweb:compatibility-warning", href, message } });
@@ -342,17 +348,21 @@ test("Zork overlays its command field without resizing the game and follows nati
   player.unmount();
 });
 
-test("the intro countdown starts only when the skip button can be seen", () => {
+test("Skip intro stays available through the intro and ends on the active game's native signal", () => {
   const player = pendingArchivePlayer({ skipIntro: { strategy: "boot-param", bootParam: 1, durationMinutes: 0.5 } });
-  const countdowns = () => [...player.timers.values()].filter(({ delay }) => delay === 30_000);
   player.render();
   assert.equal(player.controls.showSkipIntroAction, false);
-  assert.equal(countdowns().length, 0);
   player.setBootCompleted();
   assert.equal(player.controls.showSkipIntroAction, true);
-  assert.equal(countdowns().length, 1);
+  assert.equal([...player.timers.values()].some(({ delay }) => delay === 30_000), false);
+  player.gameplayStarted({ source: {} });
+  player.gameplayStarted({ origin: "https://elsewhere.test" });
+  player.gameplayStarted({ target: "other" });
+  player.gameplayStarted({ href: "/scummvm.html?old=1#sky" });
+  assert.equal(player.controls.showSkipIntroAction, true);
+  player.gameplayStarted();
+  assert.equal(player.controls.showSkipIntroAction, false);
   player.unmount();
-  assert.equal(countdowns().length, 0);
 });
 
 test("Skip intro hides gameplay controls in the first render of the restart", async () => {
@@ -380,6 +390,19 @@ test("Skip intro hides gameplay controls in the first render of the restart", as
   player.gameReady(firstFrame);
   player.render();
   assert.equal(player.controls.showTouchClickButtons, false);
+  player.unmount();
+});
+
+test("the Curse demo opens without offering Skip intro over its playable scene", async () => {
+  const library = JSON.parse(await readFile(new URL("../scummvm-shell/games.json", import.meta.url), "utf8"));
+  const game = library.games.find(({ target }) => target === "comi-demo");
+  const skipIntro = skipIntroConfig.normalizeSkipIntroConfig(game.skipIntro);
+  assert.equal(skipIntro.strategy, "save-slot", "the explicit seed remains available");
+
+  const player = pendingArchivePlayer({ skipIntro });
+  player.render();
+  player.setBootCompleted();
+  assert.equal(player.controls.showSkipIntroAction, false);
   player.unmount();
 });
 

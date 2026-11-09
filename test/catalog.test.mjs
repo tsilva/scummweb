@@ -43,7 +43,6 @@ test("getBundledGameLibrary normalizes skip-intro configs and keeps primary targ
           target: "sky",
           title: "Beneath a Steel Sky (CD)",
           skipIntro: {
-            durationMinutes: 2,
             slot: 0,
             saveFiles: ["SKY-VM.000", "SKY-VM.000"],
           },
@@ -56,7 +55,6 @@ test("getBundledGameLibrary normalizes skip-intro configs and keeps primary targ
   assert.equal(library.primaryTarget, "sky");
   assert.deepEqual(library.games[0].skipIntro, {
     strategy: "save-slot",
-    durationMinutes: 2,
     slot: 0,
     saveFiles: ["SKY-VM.000"],
   });

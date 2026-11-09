@@ -84,6 +84,7 @@ tests when porting; do not treat an old implementation shape as the requirement.
   lock. Metadata does not make multi-key filesystem writes crash-atomic.
 
 - Intro skip is edition-specific. Patch 24 uses the engine's normal first-scene transition or native intro abort and keeps original character, input and menu choices. Exercise both paths and keep the original Play path for fresh launches.
+- Patch 41 separates intro completion from first-frame readiness. Report at the native transition to player input or a preserved selection screen. Recheck the exact first playable states when a bundled edition changes. A rendered frame, cursor alone, or elapsed time cannot establish that the intro ended.
 
 ## Keyboard callback lifetime
 

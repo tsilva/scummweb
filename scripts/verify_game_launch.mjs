@@ -396,7 +396,11 @@ async function waitForSkipIntroRelaunch(page, target, slot) {
 }
 
 async function verifySkipIntroButton(page, frame, game, routeUrl) {
-  if (!game.skipIntro) {
+  if (!game.skipIntro || game.skipIntro.checkpointOnly) {
+    const button = page.locator(".game-route-skip-intro-button");
+    if (await button.isVisible()) {
+      throw new Error(`Unexpected Skip intro button for ${game.target}.`);
+    }
     return;
   }
 
@@ -980,7 +984,7 @@ async function verifyMobileTouchClickToggle(browser, baseUrl, game) {
       throw new Error(`Legacy touch joystick still rendered for ${game.target}.`);
     }
 
-    if (game.skipIntro) {
+    if (game.skipIntro && !game.skipIntro.checkpointOnly) {
       const skipIntroButton = page.locator(".game-route-skip-intro-button");
       await skipIntroButton.waitFor({ state: "visible", timeout: 15000 });
     }
@@ -1454,7 +1458,7 @@ await featuredDialog.locator(".game-detail-close").click();
 await featuredDialog.waitFor({ state: "hidden", timeout: 10000 });
 await rootPage.close();
 
-const saveSlotGame = library.games.find((game) => game.skipIntro?.strategy === "save-slot");
+const saveSlotGame = library.games.find((game) => game.skipIntro?.strategy === "save-slot" && !game.skipIntro.checkpointOnly);
 
 if (saveSlotGame) {
   const freshSkipIntroContext = await browser.newContext({
