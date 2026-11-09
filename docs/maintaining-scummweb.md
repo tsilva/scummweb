@@ -189,11 +189,14 @@ The mobile player resizes the game frame to the browser's visible height as
 browser chrome or the keyboard changes the available space. It also respects
 display safe areas.
 Mobile mouse-controlled games fit that height while preserving the game’s aspect
-ratio; narrower viewports can crop the sides. Grim Fandango uses a directional
-pad and buttons for **Use / Talk**, **Examine**, **Pick up / Put away**, and
-**Inventory**. Hold a direction to move or turn. The Hugo games use the same
-pad with their native movement behavior. Tap a direction to start walking and
-tap it again to stop.
+ratio; narrower viewports can crop the sides. In Grim Fandango's default
+character-relative movement mode, drag the left stick up or down to walk and
+the right stick left or right to turn. Both sticks can be held at once. Tap
+**Actions** to reveal **Use / Talk**, **Examine**, **Pick up / Put away**, and
+**Inventory**. The choices collapse after you select one. The Hugo games use a
+directional pad. Tap a direction to start walking and tap it again to stop.
+Gameplay controls stay behind the loading screen, including when **Skip intro**
+reloads the game.
 
 In Hugo, Apple II Hi-Res Adventures such as Mystery House, and Zork I–III, tap
 the keyboard icon to open the device keyboard and the **Game command** field.

@@ -20,6 +20,10 @@ const { code } = await swc.transform(await readFile(componentUrl, "utf8"), {
   module: { type: "commonjs" },
   jsc: { parser: { syntax: "ecmascript", jsx: true }, transform: { react: { runtime: "automatic" } } },
 });
+const bootUrl = new URL("../app/game-player/useBootState.js", import.meta.url);
+const { code: bootCode } = await swc.transform(await readFile(bootUrl, "utf8"), {
+  filename: bootUrl.pathname, swcrc: false, configFile: false, module: { type: "commonjs" },
+});
 
 for (const [message, mobile] of [
   ["This ZIP link returned HTTP 404.", false],
@@ -104,7 +108,7 @@ for (const [message, mobile] of [
 }
 
 function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = false, catalog = true,
-  skipIntro, visualViewport, downloadDetails = { loaded: 12_400_000, total: 85_200_000 } } = {}) {
+  skipIntro, visualViewport, realBoot = false, downloadDetails = { loaded: 12_400_000, total: 85_200_000 } } = {}) {
   const archive = Promise.withResolvers();
   const hooks = [];
   const messages = new Set();
@@ -157,10 +161,11 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   function Controls() {}
   function Overlay() {}
   const module = { exports: {} };
+  const bootModule = { exports: {} };
   runInNewContext(code, {
     module, exports: module.exports, window, URL, URLSearchParams, AbortController, navigator, HTMLElement: class {},
     fetch: async () => ({ ok: true, text: async () => "<html><head></head><body></body></html>" }),
-    require(name) {
+    require: function require(name) {
       if (name === "react") return {
         useState(initial) {
           const index = cursor++;
@@ -200,15 +205,21 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       } };
       if (name.endsWith("/GamePlayerControls")) return Controls;
       if (name.endsWith("/GameBootOverlay")) return Overlay;
-      if (name.endsWith("/useBootState")) return { useBootState: () => ({
-        hasBootCompleted: bootCompleted, hasBootFailed: false, showSkipIntroButton: Boolean(skipIntro),
-      }) };
+      if (name.endsWith("/useBootState")) {
+        if (!realBoot) return { useBootState: () => ({
+          hasBootCompleted: bootCompleted, hasBootFailed: false, showSkipIntroButton: Boolean(skipIntro),
+        }) };
+        runInNewContext(bootCode, { module: bootModule, exports: bootModule.exports, require, window });
+        return bootModule.exports;
+      }
       if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({
         isMobileViewport: Boolean(visualViewport),
       }) };
-      if (name.endsWith("/useTouchClickMode")) return { useTouchClickActions: () => ({}) };
+      if (name.endsWith("/useTouchClickMode")) return { useTouchClickActions: () => ({ unlockTouchControls() {} }) };
       if (name.endsWith("/useTouchCursorPad")) return { useTouchCursorPad: () => ({}) };
-      if (name.endsWith("/game-launch-analytics.mjs")) return { createGameLaunchAnalytics: () => ({ start() {}, fail() {}, confirm() { confirmations++; } }) };
+      if (name.endsWith("/game-launch-analytics.mjs")) return { createGameLaunchAnalytics: () => ({
+        start() {}, fail() {}, confirm() { confirmations++; }, watchPlayTime() {},
+      }) };
       if (name.endsWith("/startup-diagnostics.mjs")) return { observeStartupDiagnostics() {} };
       if (name === "./recent-games") return { recordRecentGameTarget() {} };
       if (name.endsWith("/zip-game-player")) return { sendZipGameFiles: (receiver, files) => deliveries.push({ receiver, files }) };
@@ -220,7 +231,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     skipIntro,
     ...(catalog ? { catalogArchiveUrl: "https://example.test/sky.zip" } : { loadArchive: () => archive.promise }),
   };
-  function render() {
+  function render(beforeEffects) {
     let attempts = 0;
     do {
       assert.ok(attempts++ < 20, "component should settle");
@@ -231,6 +242,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       children = player.props.children.filter(Boolean);
       const iframe = children.find(({ type }) => type === "iframe");
       if (iframe) iframe.props.ref.current = frame;
+      if (attempts === 1) beforeEffects?.();
       for (const run of layouts.splice(0)) run();
       for (const run of effects.splice(0)) run();
     } while (dirty);
@@ -305,6 +317,34 @@ test("the intro countdown starts only when the skip button can be seen", () => {
   assert.equal(countdowns().length, 1);
   player.unmount();
   assert.equal(countdowns().length, 0);
+});
+
+test("Skip intro hides gameplay controls in the first render of the restart", async () => {
+  const player = pendingArchivePlayer({
+    realBoot: true,
+    visualViewport: Object.assign(new EventTarget(), { height: 390, scale: 1 }),
+    skipIntro: { strategy: "boot-param", bootParam: 1, durationMinutes: 0.5 },
+  });
+  player.render();
+  player.archive.resolve([{ path: "sky.dnr", data: Uint8Array.of(1) }]);
+  await new Promise(setImmediate);
+  player.render();
+  const firstFrame = player.frame.contentDocument.URL;
+  player.gameReady(firstFrame);
+  player.render();
+  assert.equal(player.overlay.showBootOverlay, false);
+  assert.equal(player.controls.showSkipIntroAction, true);
+  assert.equal(player.controls.showTouchClickButtons, true);
+
+  player.controls.onSkipIntro();
+  player.render(() => {
+    assert.equal(player.overlay.showBootOverlay, true);
+    assert.equal(player.controls.showTouchClickButtons, false);
+  });
+  player.gameReady(firstFrame);
+  player.render();
+  assert.equal(player.controls.showTouchClickButtons, false);
+  player.unmount();
 });
 
 test("only reports the first recognized startup error from the current player frame", () => {
@@ -469,7 +509,7 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
   function Controls() {}
   function CursorPad() {}
   function DirectionPad() {}
-  function GrimActions() {}
+  function GrimGamepad() {}
   const keypresses = [];
   const commands = [];
   const frame = { contentWindow: {} };
@@ -498,7 +538,7 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
       };
       if (name.endsWith("/GamePlayerControls")) return Controls;
       if (name.endsWith("/GameTouchCursorPad")) return CursorPad;
-      if (name.endsWith("/GameTouchGamepad")) return { GameDirectionPad: DirectionPad, GrimTouchActions: GrimActions };
+      if (name.endsWith("/GameTouchGamepad")) return { GameDirectionPad: DirectionPad, GrimTouchGamepad: GrimGamepad };
       if (name.endsWith("/useBootState")) return { useBootState: () => ({
         hasBootCompleted: ready, hasBootPresentationCompleted: ready,
         showGameMenuButton: ready, hasBootFailed: failed,
@@ -517,7 +557,7 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
     controls: children.find(({ type }) => type === Controls).props,
     cursorPad: children.find(({ type }) => type === CursorPad).props,
     directionPad: children.find(({ type }) => type === DirectionPad)?.props,
-    GrimActions,
+    grimGamepad: children.find(({ type }) => type === GrimGamepad),
     form: children.find(({ type }) => type === "form"),
     frame, keypresses, commands,
   };
@@ -595,14 +635,14 @@ test("Mystery House opens a command field from the keyboard control on mobile", 
 test("mobile control modes cover Grim, Hugo, and the three Zork stories", () => {
   const mobile = { mobile: true };
   const grim = readyPlayer({ engineId: "grim", gameId: "grim", target: "grim-demo" }, mobile);
-  assert.equal(grim.directionPad.hold, true);
-  assert.equal(grim.controls.touchActions.type, grim.GrimActions);
+  assert.equal(grim.directionPad, undefined);
+  assert.ok(grim.grimGamepad);
   assert.equal(grim.form, undefined);
   assert.equal(grim.cursorPad.showTouchCursorPad, false);
 
   for (const gameId of ["hugo1", "hugo2", "hugo3"]) {
     const hugo = readyPlayer({ engineId: "hugo", gameId, target: gameId }, mobile);
-    assert.equal(hugo.directionPad.hold, false);
+    assert.ok(hugo.directionPad);
     assert.equal(hugo.controls.touchActions.props["aria-label"], "Open keyboard");
     assert.equal(hugo.cursorPad.showTouchCursorPad, false);
   }
