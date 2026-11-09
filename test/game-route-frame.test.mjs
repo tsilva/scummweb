@@ -353,28 +353,45 @@ test("Zork overlays its command field without resizing the game and follows nati
   player.unmount();
 });
 
-test("a fullscreen command field follows keyboard geometry when the viewport stays the same size", () => {
+test("a fullscreen command field follows keyboard geometry without switching viewport modes during dismissal", () => {
   const viewport = Object.assign(new EventTarget(), { height: 390, offsetTop: 0, scale: 1 });
   const keyboard = Object.assign(new EventTarget(), { overlaysContent: false, boundingRect: { top: 0, height: 0 } });
   const game = { engineId: "glk", gameId: "zork1", target: "zork1" };
   const player = pendingArchivePlayer({ game, visualViewport: viewport, virtualKeyboard: keyboard });
   const form = () => player.children.find(({ type }) => type === "form");
+  const showKeyboard = () => {
+    keyboard.boundingRect = { top: 145, height: 245 };
+    keyboard.dispatchEvent(new Event("geometrychange"));
+  };
+  const hideKeyboard = () => {
+    keyboard.boundingRect = { top: 0, height: 0 };
+    keyboard.dispatchEvent(new Event("geometrychange"));
+  };
   player.render();
+  assert.equal(keyboard.overlaysContent, true);
   player.setBootCompleted();
   player.controls.touchActions.props.onClick();
-  assert.equal(keyboard.overlaysContent, true);
 
-  keyboard.boundingRect = { top: 145, height: 245 };
-  keyboard.dispatchEvent(new Event("geometrychange"));
+  showKeyboard();
   assert.equal(player.shellProperties.get("--game-command-inset"), "245px");
 
-  keyboard.boundingRect = { top: 0, height: 0 };
-  keyboard.dispatchEvent(new Event("geometrychange"));
+  hideKeyboard();
   player.render();
   assert.equal(form().props.hidden, true);
-  assert.equal(keyboard.overlaysContent, false);
+  assert.equal(keyboard.overlaysContent, true);
+  assert.equal(player.shellProperties.has("--game-command-inset"), false);
+
+  player.controls.touchActions.props.onClick();
+  showKeyboard();
+  // Submitting a command can blur the field before Android hides the keyboard.
+  form().props.children.props.onBlur();
+  player.render();
+  assert.equal(form().props.hidden, true);
+  assert.equal(keyboard.overlaysContent, true);
+  hideKeyboard();
   assert.equal(player.shellProperties.has("--game-command-inset"), false);
   player.unmount();
+  assert.equal(keyboard.overlaysContent, false);
 });
 
 test("Skip intro stays available through the intro and ends on the active game's native signal", () => {
