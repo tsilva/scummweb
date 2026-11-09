@@ -21,7 +21,10 @@ const { code } = await swc.transform(await readFile(componentUrl, "utf8"), {
   jsc: { parser: { syntax: "ecmascript", jsx: true }, transform: { react: { runtime: "automatic" } } },
 });
 
-for (const message of ["This ZIP link returned HTTP 404.", "Could not download the ZIP."]) {
+for (const [message, mobile] of [
+  ["This ZIP link returned HTTP 404.", false],
+  ["Could not download the ZIP.", true],
+]) {
   test(`Exit remains usable after an intro-enabled game's archive fails: ${message}`, async () => {
     const states = [];
     const effects = [];
@@ -64,7 +67,10 @@ for (const message of ["This ZIP link returned HTTP 404.", "Could not download t
         if (name.endsWith("/useBootState")) return { useBootState: () => ({
           hasBootCompleted: false, hasBootFailed: false, showSkipIntroButton: false,
         }) };
-        if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({}) };
+        if (name.endsWith("/immersive-mode.mjs")) return { isTouchMobileClient: () => mobile };
+        if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({
+          exitImmersiveMode() { navigations.push("exit immersive mode"); },
+        }) };
         if (name.endsWith("/useTouchClickMode")) return { useTouchClickActions: () => ({ touchControlsUnlocked: false }) };
         if (name.endsWith("/useTouchCursorPad")) return { useTouchCursorPad: () => ({}) };
         if (name.endsWith("/game-launch-analytics.mjs")) return { createGameLaunchAnalytics: () => ({ start() {}, fail() {} }) };
@@ -93,7 +99,7 @@ for (const message of ["This ZIP link returned HTTP 404.", "Could not download t
     const controls = children.find(({ type }) => type === Controls);
     assert.equal(controls.props.showExitControl, true);
     await controls.props.onExit();
-    assert.deepEqual(navigations, ["/#library"]);
+    assert.deepEqual(navigations, mobile ? ["/#library"] : ["exit immersive mode", "/#library"]);
   });
 }
 
@@ -459,7 +465,7 @@ test("leaving a pending launch cancels its handoff", async () => {
   assert.equal(player.deliveries.length, 0);
 });
 
-function readyPlayer(game, { ready = true, failed = false, mobile = false } = {}) {
+function readyPlayer(game, { ready = true, failed = false, mobile = false, landscape = true } = {}) {
   function Controls() {}
   function CursorPad() {}
   function DirectionPad() {}
@@ -497,7 +503,9 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false } = {}
         hasBootCompleted: ready, hasBootPresentationCompleted: ready,
         showGameMenuButton: ready, hasBootFailed: failed,
       }) };
-      if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({ isMobileViewport: mobile }) };
+      if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({
+        isMobileViewport: mobile, isTouchMobile: mobile, isLandscapeViewport: landscape,
+      }) };
       if (name.endsWith("/useTouchClickMode")) return { useTouchClickActions: () => ({}) };
       if (name.endsWith("/useTouchCursorPad")) return { useTouchCursorPad: () => ({}) };
       if (name.endsWith("/game-launch-analytics.mjs")) return { createGameLaunchAnalytics: () => ({}) };
@@ -540,6 +548,15 @@ test("native menu stays hidden while loading and after a boot failure", () => {
   for (const state of [{ ready: false }, { failed: true }]) {
     assert.equal(readyPlayer(game, state).controls.showGameMenuButton, false);
   }
+});
+
+test("portrait mobile play keeps Exit available and removes gameplay controls", () => {
+  const game = { engineId: "sky", gameId: "sky", target: "sky" };
+  const player = readyPlayer(game, { mobile: true, landscape: false });
+  assert.equal(player.controls.showExitControl, true);
+  assert.equal(player.controls.showGameMenuButton, false);
+  assert.equal(player.controls.showTouchClickButtons, false);
+  assert.equal(player.cursorPad.showTouchCursorPad, false);
 });
 
 test("Mystery House opens a command field from the keyboard control on mobile", () => {
