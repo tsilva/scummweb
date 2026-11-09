@@ -1,0 +1,31 @@
+# English DOS CD 1.1.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/eco1-cd-dos-1.1/src
+schema_version: 1
+game: ecoquest-the-search-for-cetus
+engine_id: sci
+edition:
+  game_id: ecoquest
+  index_md5: a4b73d5d2b55bdb6e44345e99c8fbdd0
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  council: 160 # Script 200 goToCouncilChambers enters room 160.
+  whale: 660 # Script 640 goToWhaleScript enters 660.
+  final-fight: 580 # Script 580 contains endOfFight.
+  ending: 101 # Script 580 endOfFight enters the congratulatory scene in room 101.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 } # SCI previous room global.
+milestones:
+  - id: council
+    label: "Reached the underwater council"
+    when: { room: council }
+  - id: whale
+    label: "Reached the whale"
+    when: { room: whale }
+  - id: final-fight
+    label: "Reached the final confrontation"
+    when: { room: final-fight }
+  - id: winning-ending
+    label: "Returned after saving Cetus"
+    when: { all: [{ room: ending }, { variable: previous-room, equals: 580 }] }

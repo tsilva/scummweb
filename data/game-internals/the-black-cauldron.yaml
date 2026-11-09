@@ -1,0 +1,26 @@
+# English DOS AGI 2.10.
+# Traced against the original AGI logic resources for this edition.
+schema_version: 1
+game: the-black-cauldron
+engine_id: agi
+edition:
+  game_id: bc
+  index_md5: 0c5a9acbcc7e51127c34818e75806df6
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  hen-wen-refuge: 66 # Logic 66 has the dialogue for safely delivering Hen Wen.
+  horned-king-castle: 29 # Logic 29 describes the castle interior and the search for the cauldron.
+  ending: 71 # Logic 0 enters 71 from the success branch; 71 shows the Prydain epilogue.
+variables:
+  score: { bank: vars, index: 3 }
+milestones:
+  - id: hen-wen-refuge
+    label: "Reached Hen Wen’s refuge"
+    when: { room: hen-wen-refuge }
+  - id: horned-king-castle
+    label: "Reached the Horned King’s castle"
+    when: { room: horned-king-castle }
+  - id: winning-ending
+    label: "Reached the success epilogue"
+    when: { room: ending }

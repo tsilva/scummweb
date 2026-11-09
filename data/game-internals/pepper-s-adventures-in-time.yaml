@@ -1,0 +1,27 @@
+# English DOS 1.000.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/pepper-dos-1.000/src
+schema_version: 1
+game: pepper-s-adventures-in-time
+engine_id: sci
+edition:
+  game_id: pepper
+  index_md5: 57de1ece1b3544d974a7df6c61e9bd4a
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  franklin-workshop: 320 # Script 310 leads to the workshop and Deborah sequence.
+  kite-journey: 360 # Script 350 sRideKiteDownRiver leads to room 360.
+  ending: 381 # Script 600 goes to 381 only at act 6; the credits menu takes a separate route.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 } # SCI previous room global.
+milestones:
+  - id: franklin-workshop
+    label: "Reached Franklin’s workshop"
+    when: { room: franklin-workshop }
+  - id: kite-journey
+    label: "Took the kite downriver"
+    when: { room: kite-journey }
+  - id: winning-ending
+    label: "Completed the final act"
+    when: { all: [{ room: ending }, { variable: previous-room, equals: 600 }] }

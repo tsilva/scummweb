@@ -1,0 +1,26 @@
+# English Amiga 1.134.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/qfg1-amiga-1.134/src
+schema_version: 1
+game: quest-for-glory-i-so-you-want-to-be-a-hero
+engine_id: sci
+edition:
+  game_id: qfg1
+  index_md5: b7e0bea010b7e9f635ba940858590a59
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  brigand-fortress: 94 # Script 94 runs the bandit fortress sequence.
+  elsa: 97 # Script 97 sends the hero to the final ceremony if the mirror has been used.
+  ending: 600 # Room 600 awards points and runs awardScript after the climax.
+variables:
+  score: { bank: globals, index: 15 }
+milestones:
+  - id: brigand-fortress
+    label: "Reached the brigand fortress"
+    when: { room: brigand-fortress }
+  - id: elsa
+    label: "Reached the Elsa rescue sequence"
+    when: { room: elsa }
+  - id: winning-ending
+    label: "Received the hero’s award"
+    when: { room: ending }

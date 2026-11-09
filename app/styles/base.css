@@ -26,6 +26,17 @@ html {
   scrollbar-width: thin;
 }
 
+/* Keep the browsing layout the same when a dialog locks page scrolling. */
+html:has(.dashboard-nav) {
+  scrollbar-gutter: stable;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   min-height: 100%;
   margin: 0;

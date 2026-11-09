@@ -1,0 +1,42 @@
+# English Amiga 1.000.059.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/cb-amiga-1.000.059/src
+schema_version: 1
+game: laura-bow-the-colonel-s-bequest
+engine_id: sci
+edition:
+  game_id: laurabow
+  index_md5: 5812747f683e098ce33ec787cd237c65
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  departure-after-case: 784 # Script 784 plays the police ending; script 785 is the unresolved-case ending.
+  ending: 786 # Scripts 784 and 785 share the Sleuth-O-Meter, so require entry from 784.
+variables:
+  score: { bank: globals, index: 15 }
+  investigation-act: { bank: globals, index: 165 } # Main.sc advances gAct between acts.
+  previous-room: { bank: globals, index: 12 } # SCI previous room global.
+milestones:
+  - id: reached-act-3
+    label: Reached act 3
+    when: { variable: investigation-act, equals: 2 }
+  - id: reached-act-4
+    label: Reached act 4
+    when: { variable: investigation-act, equals: 3 }
+  - id: reached-act-5
+    label: Reached act 5
+    when: { variable: investigation-act, equals: 4 }
+  - id: reached-act-6
+    label: Reached act 6
+    when: { variable: investigation-act, equals: 5 }
+  - id: reached-act-7
+    label: Reached act 7
+    when: { variable: investigation-act, equals: 6 }
+  - id: reached-act-8
+    label: Reached act 8
+    when: { variable: investigation-act, equals: 7 }
+  - id: departure-after-case
+    label: "Reached the resolved-case epilogue"
+    when: { room: departure-after-case }
+  - id: winning-ending
+    label: "Reached the Sleuth-O-Meter after resolving the case"
+    when: { all: [{ room: ending }, { variable: previous-room, equals: 784 }] }

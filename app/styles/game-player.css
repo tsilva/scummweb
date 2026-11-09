@@ -116,6 +116,12 @@
   visibility: hidden;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .game-route-boot-overlay {
+    transition: none;
+  }
+}
+
 .game-route-boot-backdrop,
 .game-route-boot-scrim {
   position: absolute;
@@ -253,6 +259,8 @@
   color: #fff;
   font-size: 1rem;
   line-height: 1.45;
+  min-height: 2.9em;
+  font-variant-numeric: tabular-nums;
 }
 
 .game-route-boot-actions {
@@ -647,11 +655,11 @@
   .hero-stage-library .hero-inner::before {
     content: "";
     flex: 1 0 clamp(3rem, 10svh, 5rem);
-    max-height: 16rem;
   }
 
+  /* Keep the actions anchored while the title wraps to its natural height. */
   .hero-stage-library .hero-inner::after {
-    flex-grow: 0;
+    flex: 0 0 clamp(0.75rem, 7svh, 3.25rem);
   }
 
   .hero-stage-library .hero-backdrop {
@@ -754,6 +762,14 @@
   .hero-stage-library .hero-actions {
     height: auto;
     gap: 0.6rem;
+  }
+
+  .hero-actions > .hero-version-control[data-reserved] {
+    display: none;
+  }
+
+  .hero-actions:has(> .hero-version-control[data-reserved]) > .hero-license {
+    grid-row: 2;
   }
 
   .hero-actions-placeholder {

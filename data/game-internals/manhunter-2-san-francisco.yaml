@@ -1,0 +1,30 @@
+# English Amiga 3.06.
+# Traced against the original AGI logic resources for this edition.
+schema_version: 1
+game: manhunter-2-san-francisco
+engine_id: agi
+edition:
+  game_id: mh2
+  index_md5: b412e8a126368b76696696f7632d4c16
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  underground-control: 178 # Logic 178 controls the underground systems and branches to 185.
+  lava-maze: 185 # Logic 185 handles the lava paths and their switches.
+  ferry-building: 183 # Logic 183 handles the final pursuit; the ship must reach stage 4 and the target position.
+  ending: 187 # Logic 183 enters 187 at the successful ship position; room 187 ends with the sequel notice.
+variables:
+  score: { bank: vars, index: 3 }
+milestones:
+  - id: underground-control
+    label: "Reached the underground control station"
+    when: { room: underground-control }
+  - id: lava-maze
+    label: "Entered the underground lava maze"
+    when: { room: lava-maze }
+  - id: ferry-building
+    label: "Reached the Ferry Building pursuit"
+    when: { room: ferry-building }
+  - id: winning-ending
+    label: "Caught up with Phil’s departing ship"
+    when: { room: ending }

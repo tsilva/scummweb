@@ -1,0 +1,34 @@
+# English DOS CD 1.1.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/ra-cd-dos-1.1/src
+schema_version: 1
+game: laura-bow-2-the-dagger-of-amon-ra
+engine_id: sci
+edition:
+  game_id: laurabow2
+  index_md5: eb41961ba4446d6f484edb9de91224b3
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  inquest: 750 # The evidence and testimony determine global126.
+  departure: 770 # The departure cartoon branches on the inquest outcome.
+  closing-cartoon: 785 # Direct credits only for outcomes 1 and 4.
+  credits: 780
+  losing-cartoon: 790 # Also reaches the credits, after the losing scene.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 }
+  inquest-outcome: { bank: globals, index: 126 }
+milestones:
+  - id: reached-inquest
+    label: Reached the inquest
+    when: { room: inquest }
+  - id: solved-murders
+    label: Established the case against O’Riley
+    when: { variable: inquest-outcome, one_of: [1, 4] }
+  - id: winning-ending
+    label: Reached the successful ending
+    when:
+      all:
+        - { room: credits }
+        - { variable: previous-room, equals: 785 }
+        - { variable: inquest-outcome, one_of: [1, 4] }

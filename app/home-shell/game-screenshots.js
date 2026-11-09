@@ -33,6 +33,8 @@ export default function GameScreenshots({ game }) {
   }, [shots.length, showThumbnails]);
 
   if (!shots.length) return null;
+  const { width, height } = getArtworkImageProps(shots[0], "gallery", artwork);
+  const viewerStyle = width > 0 && height > 0 ? { "--gallery-aspect": `${width} / ${height}` } : undefined;
 
   function close() {
     const index = selected;
@@ -76,8 +78,10 @@ export default function GameScreenshots({ game }) {
           setSelected((selected + (event.key === "ArrowLeft" ? -1 : 1) + shots.length) % shots.length);
         }
       }}>
-      <DecorativeImage src={fullImage.src} width={fullImage.width} height={fullImage.height} placeholder={fullImage.placeholder}
-        alt={`${game.displayTitle} screenshot ${selected + 1}`} loading="eager" />
+      <div className="game-screenshot-viewer-image" style={viewerStyle}>
+        <DecorativeImage src={fullImage.src} width={fullImage.width} height={fullImage.height} placeholder={fullImage.placeholder}
+          alt={`${game.displayTitle} screenshot ${selected + 1}`} loading="eager" />
+      </div>
       <div className="game-screenshot-toolbar">
         <button type="button" aria-label="Previous screenshot" onClick={() => setSelected((selected + shots.length - 1) % shots.length)}><ChevronLeft size={20} /></button>
         <span aria-live="polite">{selected + 1} / {shots.length}</span>

@@ -1,0 +1,24 @@
+# English DOS EGA 1.000.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/fairytales-dos-1.000-ega/src
+schema_version: 1
+game: mixed-up-fairy-tales
+engine_id: sci
+edition:
+  game_id: fairytales
+  index_md5: daa94e9f327be6657eb97a51b490dbb1
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  storybook: 355 # Script 355 runs the final return to the book.
+  ending: 500 # Room 360 selects its ending sequence for stage 2, then enters 500.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 } # SCI previous room global.
+  book-stage: { bank: globals, index: 140 } # Room 360 distinguishes the opening (0) from the ending (2).
+milestones:
+  - id: storybook
+    label: "Returned to the storybook"
+    when: { all: [{ room: storybook }, { variable: book-stage, equals: 2 }] }
+  - id: winning-ending
+    label: "Completed the fairy tales"
+    when: { all: [{ room: ending }, { all: [{ variable: previous-room, equals: 360 }, { variable: book-stage, equals: 2 }] }] }

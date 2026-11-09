@@ -1,0 +1,27 @@
+# English Amiga 1.01.
+# Traced against the original AGI logic resources for this edition.
+schema_version: 1
+game: gold-rush
+engine_id: agi
+edition:
+  game_id: goldrush
+  index_md5: a1d4de3e75c2688c1e2ca2634ffc3bd8
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  sacramento: 72 # Logics 106 and 107 lead to Sacramento on arrival.
+  mine: 118 # Logic 108 enters 118, whose scripted sequence leads to 119.
+  ending: 119 # Logic 119 reaches stage 33 before its congratulations message.
+variables:
+  score: { bank: vars, index: 3 }
+  reunion-stage: { bank: vars, index: 106 } # Logic 119 increments this variable during the final sequence.
+milestones:
+  - id: sacramento
+    label: "Arrived in Sacramento"
+    when: { room: sacramento }
+  - id: mine
+    label: "Reached the mine"
+    when: { room: mine }
+  - id: winning-ending
+    label: "Completed the mine reunion"
+    when: { all: [{ room: ending }, { variable: reunion-stage, equals: 33 }] }

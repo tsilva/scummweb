@@ -1,0 +1,26 @@
+# English DOS 1.0.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/brain2-dos-1.0/src
+schema_version: 1
+game: the-island-of-dr-brain
+engine_id: sci
+edition:
+  game_id: islandbrain
+  index_md5: 2388efef8430b041b0f3b00b9050e4a2
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  microscope: 160 # Script 160 contains the microscope and transitions to 180.
+  final-monitor: 420 # Script 400 goes to 420, where the score is assessed.
+  ending: 420 # Script 420 recognizes the full score of 390.
+variables:
+  score: { bank: globals, index: 15 }
+milestones:
+  - id: microscope
+    label: "Reached the laboratory puzzles"
+    when: { room: microscope }
+  - id: final-monitor
+    label: "Reached the final monitor"
+    when: { room: final-monitor }
+  - id: winning-ending
+    label: "Reached the maximum puzzle score"
+    when: { all: [{ room: ending }, { variable: score, equals: 390 }] }

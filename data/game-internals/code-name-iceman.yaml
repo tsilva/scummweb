@@ -1,0 +1,35 @@
+# English Amiga 1.036.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/iceman-amiga-1.036/src
+schema_version: 1
+game: code-name-iceman
+engine_id: sci
+edition:
+  game_id: iceman
+  index_md5: f9e0580f1e8f59befd2641a6ba1182de
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  pentagon: 18 # Script 18 contains the Pentagon arrival and departure.
+  submarine: 31 # Script 23 comeAboardScript leads to room 31.
+  outside-compound: 81 # Script 80 driveAwayScript enters room 81.
+  carrier-debriefing: 90 # Script 90 begins on board USS Saratoga.
+  ending: 89 # Script 90 concludes the debriefing and enters room 89.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 } # SCI previous room global.
+milestones:
+  - id: pentagon
+    label: "Reached the Pentagon"
+    when: { room: pentagon }
+  - id: submarine
+    label: "Boarded the submarine"
+    when: { room: submarine }
+  - id: outside-compound
+    label: "Reached the compound"
+    when: { room: outside-compound }
+  - id: carrier-debriefing
+    label: "Reached the carrier debriefing"
+    when: { room: carrier-debriefing }
+  - id: winning-ending
+    label: "Earned the promotion to captain"
+    when: { all: [{ room: ending }, { variable: previous-room, equals: 90 }] }

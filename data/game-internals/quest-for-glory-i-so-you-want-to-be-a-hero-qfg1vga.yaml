@@ -1,0 +1,26 @@
+# English DOS VGA remake 2.000.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/qfg1vga-dos-2.000/src
+schema_version: 1
+game: quest-for-glory-i-so-you-want-to-be-a-hero-qfg1vga
+engine_id: sci
+edition:
+  game_id: qfg1vga
+  index_md5: a5a29ff0038a27e4f791fc918f5dc18d
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  brigand-fortress: 94 # Script 94 runs the bandit fortress sequence.
+  elsa: 97 # Script 97 sends the hero to room 600 after the rescue.
+  ending: 600 # Room 600 awards points and begins awardScript.
+variables:
+  score: { bank: globals, index: 15 }
+milestones:
+  - id: brigand-fortress
+    label: "Reached the brigand fortress"
+    when: { room: brigand-fortress }
+  - id: elsa
+    label: "Reached the Elsa rescue sequence"
+    when: { room: elsa }
+  - id: winning-ending
+    label: "Received the hero’s award"
+    when: { room: ending }

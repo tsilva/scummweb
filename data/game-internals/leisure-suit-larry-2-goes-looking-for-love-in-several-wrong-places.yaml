@@ -1,0 +1,27 @@
+# English Amiga 1.003.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/lsl2-amiga-1.003/src
+schema_version: 1
+game: leisure-suit-larry-2-goes-looking-for-love-in-several-wrong-places
+engine_id: sci
+edition:
+  game_id: lsl2
+  index_md5: eef5fd18b71b353b18947e07d9f1645e
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  airport-gate: 56 # Room 56 describes the waiting room for gate one.
+  adrift: 42 # Room 42 opens with the message about surviving weeks at sea.
+  ending: 91 # Script 90 runs the final approach into the reunion in room 91.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 } # SCI previous room global.
+milestones:
+  - id: adrift
+    label: "Reached the island"
+    when: { room: adrift }
+  - id: airport-gate
+    label: "Reached the airport gate"
+    when: { room: airport-gate }
+  - id: winning-ending
+    label: "Reached the reunion with Eve"
+    when: { all: [{ room: ending }, { variable: previous-room, equals: 90 }] }

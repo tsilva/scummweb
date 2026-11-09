@@ -1,0 +1,27 @@
+# English DOS CD high resolution 1.000.000.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/lsl6-hires-dos-1.000.000/src
+schema_version: 1
+game: leisure-suit-larry-6-shape-up-or-slip-out
+engine_id: sci
+edition:
+  game_id: lsl6hires
+  index_md5: 278d4b7b548a805ba5fbfaea04d61d63
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  flowers: 620 # Script 380 ends its cartoon in 620, which contains the flower and carpet sequence.
+  shamara: 720 # Room 720 contains itemOnShamScr and endOfGameScr.
+  ending: 740 # Script 720 endOfGameScr advances to the fireworks and end message.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 } # SCI previous room global.
+milestones:
+  - id: flowers
+    label: "Reached the bungee platform"
+    when: { room: flowers }
+  - id: shamara
+    label: "Reached Shamara’s final sequence"
+    when: { room: shamara }
+  - id: winning-ending
+    label: "Reached the finale"
+    when: { all: [{ room: ending }, { variable: previous-room, equals: 720 }] }

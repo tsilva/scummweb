@@ -1,0 +1,31 @@
+# English Amiga 1.109.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/qfg2-amiga-1.109/src
+schema_version: 1
+game: quest-for-glory-ii-trial-by-fire
+engine_id: sci
+edition:
+  game_id: qfg2
+  index_md5: c51b24526747dedc29f3841f9b3ab816
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  raseir: 703 # Script 440 escape sequences lead into the Raseir alley.
+  shapeir-celebration: 820 # Script 820 begins the ending celebration.
+  sultan: 822 # Script 821 moves the celebration into room 822.
+  ending: 840 # Script 822 ends at the character export screen, which confirms completion.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 } # SCI previous room global.
+milestones:
+  - id: raseir
+    label: "Reached the alley in Raseir"
+    when: { room: raseir }
+  - id: shapeir-celebration
+    label: "Reached the return to Shapeir"
+    when: { room: shapeir-celebration }
+  - id: sultan
+    label: "Reached the sultan’s audience"
+    when: { room: sultan }
+  - id: winning-ending
+    label: "Completed Trial by Fire"
+    when: { all: [{ room: ending }, { variable: previous-room, equals: 822 }] }

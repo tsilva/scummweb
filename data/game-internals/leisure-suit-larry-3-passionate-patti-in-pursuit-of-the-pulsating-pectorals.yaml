@@ -1,0 +1,27 @@
+# English Amiga 1.027.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/lsl3-amiga-1.027/src
+schema_version: 1
+game: leisure-suit-larry-3-passionate-patti-in-pursuit-of-the-pulsating-pectorals
+engine_id: sci
+edition:
+  game_id: lsl3
+  index_md5: 7e83b1e9ed446cae20bdd743bee457e2
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  patti-departure: 482 # Room 482 contains the sequence where Patti falls asleep.
+  studio: 640 # Room 640 has Roberta and the scene involving both characters.
+  ending: 650 # Script 640 sends Patti and Larry to 650, whose script prints the victory message.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 } # SCI previous room global.
+milestones:
+  - id: patti-departure
+    label: "Reached the scene where Larry and Patti part"
+    when: { room: patti-departure }
+  - id: studio
+    label: "Reached the Sierra film set"
+    when: { room: studio }
+  - id: winning-ending
+    label: "Reached the victory scene"
+    when: { all: [{ room: ending }, { variable: previous-room, equals: 640 }] }

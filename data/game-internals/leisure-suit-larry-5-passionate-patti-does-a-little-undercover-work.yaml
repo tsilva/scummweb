@@ -1,0 +1,27 @@
+# English Amiga 1.000.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/lsl5-amiga-1.000/src
+schema_version: 1
+game: leisure-suit-larry-5-passionate-patti-does-a-little-undercover-work
+engine_id: sci
+edition:
+  game_id: lsl5
+  index_md5: 65da8763be0ed02d6357f3df37ae7771
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  travel: 290 # Script 310 sLand enters room 290.
+  vice-president-rescue: 460 # Script 460 has Inspector Desmond’s congratulations after the rescue.
+  ending: 480 # Room 460 concludes the rescue and enters 480, which declares the win.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 } # SCI previous room global.
+milestones:
+  - id: travel
+    label: "Arrived at the next assignment"
+    when: { room: travel }
+  - id: vice-president-rescue
+    label: "Reached the vice president’s rescue"
+    when: { room: vice-president-rescue }
+  - id: winning-ending
+    label: "Reached the victory scene"
+    when: { all: [{ room: ending }, { variable: previous-room, equals: 460 }] }

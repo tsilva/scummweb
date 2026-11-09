@@ -1,0 +1,27 @@
+# English Amiga VGA remake 1.000.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/lsl1-amiga-1.000/src
+schema_version: 1
+game: leisure-suit-larry-in-the-land-of-the-lounge-lizards
+engine_id: sci
+edition:
+  game_id: lsl1sci
+  index_md5: 7d115a9e27dc8ac71e8d5ef33d589bd5
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  wedding: 410 # Room 410 describes the ceremony with Fawn.
+  penthouse: 380 # The flying-doll scene in room 360 goes to room 380.
+  ending: 370 # Room 370 runs sKenSpeaks and the victory message only on entry from 375.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 } # SCI previous room global.
+milestones:
+  - id: wedding
+    label: "Reached the wedding scene"
+    when: { room: wedding }
+  - id: penthouse
+    label: "Reached the penthouse"
+    when: { room: penthouse }
+  - id: winning-ending
+    label: "Reached the victory scene"
+    when: { all: [{ room: ending }, { variable: previous-room, equals: 375 }] }
