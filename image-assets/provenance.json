@@ -21,6 +21,20 @@
       "sha256": "8f7fb49aa9baed0d236aca52435a0c668a513affe0c64b8b732f13285bd66032",
       "generatedAt": "2026-11-06",
       "evidence": "Codex native ImageGen output exec-157f6e05-5c1a-44ed-9d43-84736a4ad944.png; untouched Emerald Cartridge source selected from the green-S/grey-W app-icon concept. Exact model was not disclosed."
+    },
+    {
+      "path": "image-assets/sources/icon-badge-source.png",
+      "sha256": "ff3629478164a7fd0485b130b6eff0e96eb8f2e361278ed9dd979ff7d3908e66",
+      "generatedAt": "2026-11-09",
+      "evidence": "Codex native ImageGen output exec-01a9a2a6-4de3-4288-9b5c-1951c88b6d21.png. Removing the groove from the Emerald Cartridge badge.",
+      "prompt": "Use case: precise-object-edit. Edit the attached transparent ScummWEB app icon PNG. Erase only the recessed horizontal green groove/underline below the SW letters, filling that narrow strip seamlessly with the surrounding dark emerald tile texture and lighting. Preserve the exact shape, weight, highlights and position of the lime-green S and silver W, the dark stroke, the rounded outer bevel, the tile size, and the existing transparent margins and corners. Keep true alpha. Return one square app icon, with no other added details or marks."
+    },
+    {
+      "path": "image-assets/sources/icon-maskable-source.png",
+      "sha256": "cd1893390ce22f782632f99cf1a7ce1a682ef084b618ad6f6b9983b8cd6a76ff",
+      "generatedAt": "2026-11-09",
+      "evidence": "Codex native ImageGen output exec-9964aa52-794f-466a-91bc-542375c348da.png. Full-bleed Android adaptation of the Emerald Cartridge badge.",
+      "prompt": "Use case: identity-preserve. Using this ScummWEB app icon as the edit target, make its Android maskable launcher variant as a square fully opaque icon. Preserve the distinctive bold green italic S and silver italic W with their dark connected outline and subtle 3D finish. Replace the rounded emerald tile and its surrounding margins with a continuous rich emerald green background that reaches all four edges and corners. Soft emerald gradients are fine. Remove the recessed horizontal groove/underline completely. Put the center of the lettering at the center of the square. Keep ALL lettering and its outline inside the central circular safe zone (a circle centered on the canvas with 40% radius). To do so, make the monogram about 62% of canvas width, leaving room at the top and bottom corners. The background will be cropped by Android. Output a single square 1:1 image with green pixels in every corner, no transparency, no round or square frame, no outer rim, no white edge, no shadow outside the canvas, no added objects. The only text is SW."
     }
   ],
   "exports": [
@@ -39,116 +53,134 @@
     {
       "role": "favicon",
       "path": "public/brand/web-seo/favicon/favicon-16.png",
-      "sha256": "89f6e0ffcdc2ee902d61a42c721650227cd469b3c83a98268c9cdb7d5df15242",
-      "source": "image-assets/sources/icon-source.png"
+      "sha256": "c5a6f7b363ee8987946e538c8e2b1a8a91e702e3842e8e8b2b49855365aaa82d",
+      "source": "image-assets/sources/icon-badge-source.png"
     },
     {
       "role": "favicon",
       "path": "public/brand/web-seo/favicon/favicon-32.png",
-      "sha256": "7de7646f0cafd178e5b38e7410d816a6e8510a950b93e892f29d4edad486084f",
-      "source": "image-assets/sources/icon-source.png"
+      "sha256": "09992d78b5ce1c68f69fddbe523863795fc8cf896c91f119c1e59425061d12fd",
+      "source": "image-assets/sources/icon-badge-source.png"
     },
     {
       "role": "favicon",
       "path": "public/brand/web-seo/favicon/favicon-48.png",
-      "sha256": "275fe5dfe36f933702c5305dbdfe026958c97733c71963e77cd60c6e92014409",
-      "source": "image-assets/sources/icon-source.png"
+      "sha256": "33070205771df249b8f892ba8da29e399720a60e8cf2c7413fa3954380b36e66",
+      "source": "image-assets/sources/icon-badge-source.png"
     },
     {
       "role": "favicon-svg",
       "path": "image-assets/sources/favicon-source.svg",
-      "sha256": "74cffbae1a4ea69f5504af5a6f818eb70fcaa9a6e2702a33deeac0b9e725c4e7",
-      "source": "image-assets/sources/icon-source.png"
+      "sha256": "77b03c48c76db5a87689918067718f5456ab30edd5c5969ad56ac0e933082251",
+      "source": "image-assets/sources/icon-badge-source.png"
     },
     {
       "role": "favicon",
       "path": "public/brand/web-seo/favicon/favicon.ico",
-      "sha256": "66d02624ff87816f5068f771f04212df61ddd4dd624dfdc6805bae9c61d0520c",
-      "source": "image-assets/sources/icon-source.png"
+      "sha256": "ae212e3402f77f0155569eaed9f5b4b790003e72d52aa1f773b845ac44a9f6d9",
+      "source": "image-assets/sources/icon-badge-source.png"
     },
     {
       "role": "favicon-svg",
       "path": "public/brand/web-seo/favicon/favicon.svg",
-      "sha256": "74cffbae1a4ea69f5504af5a6f818eb70fcaa9a6e2702a33deeac0b9e725c4e7",
-      "source": "image-assets/sources/icon-source.png"
+      "sha256": "77b03c48c76db5a87689918067718f5456ab30edd5c5969ad56ac0e933082251",
+      "source": "image-assets/sources/icon-badge-source.png"
     },
     {
       "role": "favicon",
       "path": "scummvm-shell/favicon.ico",
-      "sha256": "66d02624ff87816f5068f771f04212df61ddd4dd624dfdc6805bae9c61d0520c",
-      "source": "image-assets/sources/icon-source.png"
+      "sha256": "ae212e3402f77f0155569eaed9f5b4b790003e72d52aa1f773b845ac44a9f6d9",
+      "source": "image-assets/sources/icon-badge-source.png"
     },
     {
       "role": "favicon-svg",
       "path": "scummvm-shell/favicon.svg",
-      "sha256": "74cffbae1a4ea69f5504af5a6f818eb70fcaa9a6e2702a33deeac0b9e725c4e7",
-      "source": "image-assets/sources/icon-source.png"
+      "sha256": "77b03c48c76db5a87689918067718f5456ab30edd5c5969ad56ac0e933082251",
+      "source": "image-assets/sources/icon-badge-source.png"
     },
     {
       "role": "favicon",
       "path": "public/favicon.ico",
-      "sha256": "66d02624ff87816f5068f771f04212df61ddd4dd624dfdc6805bae9c61d0520c",
-      "source": "image-assets/sources/icon-source.png"
+      "sha256": "ae212e3402f77f0155569eaed9f5b4b790003e72d52aa1f773b845ac44a9f6d9",
+      "source": "image-assets/sources/icon-badge-source.png"
     },
     {
       "role": "favicon-svg",
       "path": "public/favicon.svg",
-      "sha256": "74cffbae1a4ea69f5504af5a6f818eb70fcaa9a6e2702a33deeac0b9e725c4e7",
-      "source": "image-assets/sources/icon-source.png"
+      "sha256": "77b03c48c76db5a87689918067718f5456ab30edd5c5969ad56ac0e933082251",
+      "source": "image-assets/sources/icon-badge-source.png"
     },
     {
       "role": "app-icon",
       "path": "public/brand/icon/icon-1024.png",
-      "sha256": "9786ce3894ac93eff118135d8a8d2adc7cf0cc3ff3ac7d1b892e3adfbcb2c28d",
-      "source": "image-assets/sources/icon-source.png"
+      "sha256": "846516b154884039c673367c31937e44cb6ae22d93a12291ae6e1811fe9fc649",
+      "source": "image-assets/sources/icon-badge-source.png"
     },
     {
       "role": "apple-touch-icon",
       "path": "public/brand/web-seo/apple-touch-icon.png",
-      "sha256": "831dffd05339040fb4cf15dc6bff35f5c6c0267c86db9e1a6065deeae5ccdadf",
-      "source": "image-assets/sources/icon-source.png"
+      "sha256": "5196a50469a21b51fe553680c75a274485574021c77a2f7fcf6d8906d1b2d564",
+      "source": "image-assets/sources/icon-badge-source.png"
     },
     {
       "role": "install-icon",
       "path": "public/brand/web-seo/android-chrome-192.png",
-      "sha256": "695d272e819f2fa73ad3f931578d59c10e702dcbe84de20124bd6c3454f406d4",
-      "source": "image-assets/sources/icon-source.png"
+      "sha256": "826ab7ec87964ade683a2ce34c71afa3a6f61fbb0bedcf2299fcf28713af584a",
+      "source": "image-assets/sources/icon-badge-source.png"
     },
     {
       "role": "install-icon",
       "path": "scummvm-shell/scummvm-192.png",
-      "sha256": "695d272e819f2fa73ad3f931578d59c10e702dcbe84de20124bd6c3454f406d4",
-      "source": "image-assets/sources/icon-source.png"
+      "sha256": "826ab7ec87964ade683a2ce34c71afa3a6f61fbb0bedcf2299fcf28713af584a",
+      "source": "image-assets/sources/icon-badge-source.png"
     },
     {
       "role": "install-icon",
       "path": "public/scummvm-192.png",
-      "sha256": "695d272e819f2fa73ad3f931578d59c10e702dcbe84de20124bd6c3454f406d4",
-      "source": "image-assets/sources/icon-source.png"
+      "sha256": "826ab7ec87964ade683a2ce34c71afa3a6f61fbb0bedcf2299fcf28713af584a",
+      "source": "image-assets/sources/icon-badge-source.png"
     },
     {
       "role": "install-icon",
       "path": "public/brand/web-seo/android-chrome-512.png",
-      "sha256": "fbddf2edfd16e69b50136c775b49ce97d3eb20e6267a0651dff9319a3b653653",
-      "source": "image-assets/sources/icon-source.png"
+      "sha256": "f1ac9294ed02cc73190b4cd720a33b7ed851f01a2d96e8db3313ba8b0356f957",
+      "source": "image-assets/sources/icon-badge-source.png"
     },
     {
       "role": "install-icon",
       "path": "scummvm-shell/scummvm-512.png",
-      "sha256": "fbddf2edfd16e69b50136c775b49ce97d3eb20e6267a0651dff9319a3b653653",
-      "source": "image-assets/sources/icon-source.png"
+      "sha256": "f1ac9294ed02cc73190b4cd720a33b7ed851f01a2d96e8db3313ba8b0356f957",
+      "source": "image-assets/sources/icon-badge-source.png"
     },
     {
       "role": "install-icon",
       "path": "public/scummvm-512.png",
-      "sha256": "fbddf2edfd16e69b50136c775b49ce97d3eb20e6267a0651dff9319a3b653653",
-      "source": "image-assets/sources/icon-source.png"
+      "sha256": "f1ac9294ed02cc73190b4cd720a33b7ed851f01a2d96e8db3313ba8b0356f957",
+      "source": "image-assets/sources/icon-badge-source.png"
+    },
+    {
+      "role": "maskable-install-icon",
+      "path": "public/brand/web-seo/android-chrome-maskable-512.png",
+      "sha256": "76b3a42d6bb0beedefddbe64a0a6c992d4d2e8d4fdd268258ae6890ab151dfe8",
+      "source": "image-assets/sources/icon-maskable-source.png"
+    },
+    {
+      "role": "maskable-install-icon",
+      "path": "scummvm-shell/scummvm-maskable-512.png",
+      "sha256": "76b3a42d6bb0beedefddbe64a0a6c992d4d2e8d4fdd268258ae6890ab151dfe8",
+      "source": "image-assets/sources/icon-maskable-source.png"
+    },
+    {
+      "role": "maskable-install-icon",
+      "path": "public/scummvm-maskable-512.png",
+      "sha256": "76b3a42d6bb0beedefddbe64a0a6c992d4d2e8d4fdd268258ae6890ab151dfe8",
+      "source": "image-assets/sources/icon-maskable-source.png"
     },
     {
       "role": "web-manifest",
       "path": "public/brand/web-seo/site.webmanifest",
-      "sha256": "ac3791a1fb79b0be078b3c01d13b059385c3106dcee775af70563e37c5a575c6",
-      "source": "image-assets/sources/icon-source.png"
+      "sha256": "8cd7199d3ef2c17225db032c5688ec013316df8e19c557cf49319a58483cb67f",
+      "source": "image-assets/sources/icon-badge-source.png"
     }
   ]
 }

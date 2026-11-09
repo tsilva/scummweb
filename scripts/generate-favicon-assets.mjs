@@ -7,8 +7,10 @@ import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const sourcePath = "image-assets/sources/icon-source.png";
+const sourcePath = "image-assets/sources/icon-badge-source.png";
+const maskableSourcePath = "image-assets/sources/icon-maskable-source.png";
 const source = await fs.readFile(path.join(root, sourcePath));
+const maskableSource = await fs.readFile(path.join(root, maskableSourcePath));
 const brandDir = path.join(root, "public/brand/web-seo/favicon");
 const sizes = [16, 32, 48];
 const pngOptions = { compressionLevel: 9, adaptiveFiltering: true };
@@ -17,12 +19,13 @@ const exports = [];
 const versions = {};
 const fingerprint = (bytes) => createHash("sha256").update(bytes).digest("hex");
 
-async function writeExport(outputPath, bytes, role) {
+async function writeExport(outputPath, bytes, role, origin = sourcePath) {
   await fs.writeFile(path.join(root, outputPath), bytes);
   const sha256 = fingerprint(bytes);
-  exports.push({ role, path: outputPath, sha256, source: sourcePath });
+  exports.push({ role, path: outputPath, sha256, source: origin });
   if (outputPath.startsWith("public/")) versions[outputPath.slice(6)] = `sha-${sha256.slice(0, 24)}`;
   else if (outputPath.startsWith("scummvm-shell/")) versions[outputPath.slice(13)] = `sha-${sha256.slice(0, 24)}`;
+  return sha256;
 }
 
 await fs.mkdir(brandDir, { recursive: true });
@@ -61,51 +64,46 @@ for (const outputDir of ["public/brand/web-seo/favicon", "scummvm-shell", "publi
 
 await writeExport("public/brand/icon/icon-1024.png", await sharp(source).resize(1024, 1024).png(pngOptions).toBuffer(), "app-icon");
 
-// Derive every install size from the untouched generated source.
+const appleTouchIcon = await sharp(source).resize(180, 180).flatten({ background: "#06451b" }).png(pngOptions).toBuffer();
+await writeExport("public/brand/web-seo/apple-touch-icon.png", appleTouchIcon, "apple-touch-icon");
+
 const installIcons = [];
-for (const size of [180, 192, 512]) {
-  let image = sharp(source).resize(size, size);
-  if (size === 180) image = image.flatten({ background: "#06451b" });
-  const png = await image.png(pngOptions).toBuffer();
-  const name = size === 180 ? "apple-touch-icon.png" : `android-chrome-${size}.png`;
-  const outputPath = `public/brand/web-seo/${name}`;
-  await writeExport(outputPath, png, size === 180 ? "apple-touch-icon" : "install-icon");
-  installIcons.push({
-    role: size === 180 ? "apple-touch-icon" : "install-icon",
-    path: outputPath,
-    sha256: fingerprint(png),
-    source: sourcePath,
-  });
-  if (size !== 180) {
-    for (const directory of ["scummvm-shell", "public"]) {
-      await writeExport(`${directory}/scummvm-${size}.png`, png, "install-icon");
-    }
+for (const { size, suffix, purpose, input, origin } of [
+  { size: 192, suffix: "192", purpose: "any", input: source, origin: sourcePath },
+  { size: 512, suffix: "512", purpose: "any", input: source, origin: sourcePath },
+  { size: 512, suffix: "maskable-512", purpose: "maskable", input: maskableSource, origin: maskableSourcePath },
+]) {
+  const png = await sharp(input).resize(size, size).png(pngOptions).toBuffer();
+  const role = purpose === "maskable" ? "maskable-install-icon" : "install-icon";
+  const sha256 = await writeExport(`public/brand/web-seo/android-chrome-${suffix}.png`, png, role, origin);
+  for (const directory of ["scummvm-shell", "public"]) {
+    await writeExport(`${directory}/scummvm-${suffix}.png`, png, role, origin);
   }
+  installIcons.push({ size, suffix, purpose, sha256 });
 }
 
 // Changed icon URLs let existing installs discover the new artwork.
-for (const directory of ["scummvm-shell", "public"]) {
-  const manifestPath = path.join(root, directory, "manifest.json");
-  const manifest = JSON.parse(await fs.readFile(manifestPath, "utf8"));
-  for (const size of [192, 512]) {
-    const icon = manifest.icons.find((entry) => entry.sizes === `${size}x${size}`);
-    const hash = installIcons.find((entry) => entry.path.endsWith(`-${size}.png`)).sha256;
-    icon.src = `scummvm-${size}.png?v=sw-${hash.slice(0, 16)}`;
-    icon.purpose = "any";
-  }
-  const bytes = JSON.stringify(manifest, null, 4) + "\n";
-  await fs.writeFile(manifestPath, bytes);
-  versions["/manifest.json"] = `sha-${fingerprint(bytes).slice(0, 24)}`;
+function manifestIcons(prefix) {
+  return installIcons.map(({ size, suffix, purpose, sha256 }) => ({
+    src: `${prefix}-${suffix}.png?v=sw-${sha256.slice(0, 16)}`,
+    type: "image/png",
+    sizes: `${size}x${size}`,
+    purpose,
+  }));
 }
 
-const webManifestPath = path.join(root, "public/brand/web-seo/site.webmanifest");
-const webManifest = JSON.parse(await fs.readFile(webManifestPath, "utf8"));
-for (const icon of webManifest.icons) {
-  const size = Number.parseInt(icon.sizes, 10);
-  const hash = installIcons.find((entry) => entry.path.endsWith(`-${size}.png`)).sha256;
-  icon.src = `android-chrome-${size}.png?v=sw-${hash.slice(0, 16)}`;
+const shellManifest = JSON.parse(await fs.readFile(path.join(root, "scummvm-shell/manifest.json"), "utf8"));
+shellManifest.icons = manifestIcons("scummvm");
+const shellManifestBytes = JSON.stringify(shellManifest, null, 4) + "\n";
+for (const directory of ["scummvm-shell", "public"]) {
+  await fs.writeFile(path.join(root, directory, "manifest.json"), shellManifestBytes);
 }
-await writeExport("public/brand/web-seo/site.webmanifest", Buffer.from(JSON.stringify(webManifest, null, 2) + "\n"), "web-manifest");
+versions["/manifest.json"] = `sha-${fingerprint(shellManifestBytes).slice(0, 24)}`;
+
+const webManifestPath = "public/brand/web-seo/site.webmanifest";
+const webManifest = JSON.parse(await fs.readFile(path.join(root, webManifestPath), "utf8"));
+webManifest.icons = manifestIcons("android-chrome");
+await writeExport(webManifestPath, Buffer.from(JSON.stringify(webManifest, null, 2) + "\n"), "web-manifest");
 await fs.writeFile(path.join(root, "image-assets/icon-versions.json"), JSON.stringify(versions, null, 2) + "\n");
 
 const provenancePath = path.join(root, "image-assets/provenance.json");
@@ -113,6 +111,7 @@ const provenance = JSON.parse(await fs.readFile(provenancePath, "utf8"));
 // The old vector source is now a generated compatibility export.
 provenance.sources = provenance.sources.filter((entry) => entry.path !== "image-assets/sources/favicon-source.svg");
 provenance.sources.find((entry) => entry.path === sourcePath).sha256 = fingerprint(source);
+provenance.sources.find((entry) => entry.path === maskableSourcePath).sha256 = fingerprint(maskableSource);
 for (const icon of exports) {
   provenance.exports = provenance.exports.filter((entry) => entry.path !== icon.path);
   provenance.exports.push(icon);
@@ -123,4 +122,4 @@ const brandManifest = JSON.parse(await fs.readFile(brandManifestPath, "utf8"));
 const svgAsset = brandManifest.assets.find((entry) => entry.key === "favicon-svg");
 svgAsset.width = svgAsset.height = 64;
 await fs.writeFile(brandManifestPath, JSON.stringify(brandManifest, null, 2) + "\n");
-console.log("Generated Emerald Cartridge favicons and 180/192/512/1024px app icons.");
+console.log("Generated ScummWEB favicons, app icons, and a maskable Android icon.");
