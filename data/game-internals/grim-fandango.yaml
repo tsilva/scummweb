@@ -1,0 +1,46 @@
+# English Windows CD, patched edition. The fingerprint matches the ScummVM retail detector.
+# Native evidence: https://downloads.scummvm.org/frs/extras/patches/gfupd101.exe
+# The patched rf, year_2, year_3, at and th scripts set the numbered puzzle states.
+# The cutscene menu exposes the finale byebye as entry 39. Require a late story puzzle as well.
+schema_version: 1
+game: grim-fandango
+engine_id: grim
+edition:
+  game_id: grim
+  index_md5: 444f05f2af689c1bffd179b8b6a632bd
+telemetry: snapshot
+scoring: highest_stage
+variables:
+  pigeons: { bank: puzzle_flags, index: 9 }
+  lighthouse: { bank: puzzle_flags, index: 29 }
+  submarine: { bank: puzzle_flags, index: 35 }
+  exodus: { bank: puzzle_flags, index: 45 }
+  domino: { bank: puzzle_flags, index: 46 }
+  zod: { bank: puzzle_flags, index: 53 }
+  thunder-boys: { bank: puzzle_flags, index: 55 }
+  farewell: { bank: story_state, key: final_cutscene_unlocked }
+milestones:
+  - id: cleared-rooftop
+    label: Distracted the rooftop pigeons
+    when: { variable: pigeons, equals: 1 }
+  - id: reached-lighthouse
+    label: Reached Lola at the lighthouse
+    when: { variable: lighthouse, equals: 1 }
+  - id: stole-submarine
+    label: Took the submarine
+    when: { variable: submarine, equals: 1 }
+  - id: freed-workers
+    label: Helped the workers escape
+    when: { variable: exodus, equals: 1 }
+  - id: defeated-domino
+    label: Defeated Domino
+    when: { variable: domino, equals: 1 }
+  - id: pinned-zod
+    label: Pinned the alligator with the Bone Wagon
+    when: { variable: zod, equals: 1 }
+  - id: joined-thunder-boys
+    label: Took the Thunder Boys disguise
+    when: { variable: thunder-boys, equals: 1 }
+  - id: winning-ending
+    label: Reached Manny and Meche’s farewell
+    when: { all: [{ variable: thunder-boys, equals: 1 }, { variable: farewell, equals: 1 }] }

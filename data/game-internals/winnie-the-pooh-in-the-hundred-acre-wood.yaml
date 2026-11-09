@@ -1,0 +1,50 @@
+# English DOS floppy.
+# Engine reference: https://github.com/scummvm/scummvm/blob/7d2709da5136866589f7602f5f5a7b17de03420e/engines/agi/preagi/winnie.cpp
+# dropObj counts objects returned to their owners. The picnic becomes the party once none are missing.
+schema_version: 1
+game: winnie-the-pooh-in-the-hundred-acre-wood
+engine_id: agi
+edition:
+  game_id: winnie
+  index_md5: 2e7900c1ccaa7671d65405f6d1efed30
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  party: 58
+variables:
+  returned: { bank: preagi, key: returned_objects }
+  missing: { bank: preagi, key: missing_objects }
+milestones:
+  - id: returned-1
+    label: Returned the first object
+    when: { variable: returned, equals: 1 }
+  - id: returned-2
+    label: Returned 2 objects
+    when: { variable: returned, equals: 2 }
+  - id: returned-3
+    label: Returned 3 objects
+    when: { variable: returned, equals: 3 }
+  - id: returned-4
+    label: Returned 4 objects
+    when: { variable: returned, equals: 4 }
+  - id: returned-5
+    label: Returned 5 objects
+    when: { variable: returned, equals: 5 }
+  - id: returned-6
+    label: Returned 6 objects
+    when: { variable: returned, equals: 6 }
+  - id: returned-7
+    label: Returned 7 objects
+    when: { variable: returned, equals: 7 }
+  - id: returned-8
+    label: Returned 8 objects
+    when: { variable: returned, equals: 8 }
+  - id: returned-9
+    label: Returned 9 objects
+    when: { variable: returned, equals: 9 }
+  - id: returned-10
+    label: Returned 10 objects
+    when: { variable: returned, equals: 10 }
+  - id: winning-ending
+    label: Reached the party
+    when: { all: [{ room: party }, { variable: missing, equals: 0 }] }

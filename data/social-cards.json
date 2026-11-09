@@ -291,6 +291,11 @@
       "inputHash": "27fbdf9d5ffc78498fe54880d301858d80526033a361ed3b88727f3dc6978435",
       "imageHash": "1f119add938c4e61562523ba1d7969f8a79794894965986e5eaefdf87a7bff93"
     },
+    "escape-from-monkey-island": {
+      "file": "escape-from-monkey-island-42b1a97bbc97770564daa84333e83773d9b9db4ee776c1f8c1dbe45182d62501.jpg",
+      "inputHash": "42b1a97bbc97770564daa84333e83773d9b9db4ee776c1f8c1dbe45182d62501",
+      "imageHash": "cc063b21c33ea5d0556deab7fc5c2fd087223f1f37c729b9514c041126805f5a"
+    },
     "escape-from-monkey-island-demo": {
       "file": "escape-from-monkey-island-demo-45e9ecce94229c0af3463504abc71b157d705ebcbbbaac8167d0e2a79ded8ce1.jpg",
       "inputHash": "45e9ecce94229c0af3463504abc71b157d705ebcbbbaac8167d0e2a79ded8ce1",
@@ -435,6 +440,11 @@
       "file": "gregory-and-the-hot-air-balloon-026db184e79b087bea09e7769970d1683d8393f52f541bb9d5f844aacb62a9e7.jpg",
       "inputHash": "026db184e79b087bea09e7769970d1683d8393f52f541bb9d5f844aacb62a9e7",
       "imageHash": "b0217cf3879c18d3af2aa5ad84310968cc09784f05d9bff88e35fd8615448184"
+    },
+    "grim-fandango": {
+      "file": "grim-fandango-d04ba0050781723fef9ebb2ce8da65499ccff5c7581132e98119f4f2418e17eb.jpg",
+      "inputHash": "d04ba0050781723fef9ebb2ce8da65499ccff5c7581132e98119f4f2418e17eb",
+      "imageHash": "48fb05f531f6c2295072250f6b856eab76e9d51d2c3c6ab8f32a0d120bccd0ab"
     },
     "grim-fandango-demo": {
       "file": "grim-fandango-demo-0c7a19cacdb3faa1cf804c482598e4b5ce00be5ac8e85b2bfa3e956ef8b214ac.jpg",

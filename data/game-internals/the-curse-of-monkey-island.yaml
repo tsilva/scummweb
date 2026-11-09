@@ -1,0 +1,38 @@
+# English Windows CD.
+# Native evidence: scripts and room directory from the detected edition.
+# The chapter title script labels rooms 5, 6, 7, 8 and 88. The final script in room 82 sets bit 672 before the finale movie.
+schema_version: 1
+game: the-curse-of-monkey-island
+engine_id: scumm
+edition:
+  game_id: comi
+  index_md5: fe60d6b5ff51b0553ac59963123b5777
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  part-2: 5
+  part-3: 6
+  part-4: 7
+  part-5: 8
+  part-6: 88
+flags:
+  lechuck-defeated: { bank: scumm_bit_bytes, index: 84, mask: 0x1 }
+milestones:
+  - id: part-2
+    label: Reached Plunder Island
+    when: { room: part-2 }
+  - id: part-3
+    label: Sailed into the pirate blockade
+    when: { room: part-3 }
+  - id: part-4
+    label: Reached Blood Island
+    when: { room: part-4 }
+  - id: part-5
+    label: Reached the Carnival of the Damned
+    when: { room: part-5 }
+  - id: part-6
+    label: Reached the final showdown
+    when: { room: part-6 }
+  - id: winning-ending
+    label: Defeated LeChuck and lifted the curse
+    when: { flag: lechuck-defeated }

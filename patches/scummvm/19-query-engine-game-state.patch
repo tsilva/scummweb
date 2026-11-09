@@ -457,14 +457,14 @@ index 00000000..debd9869
 +	uint _namedValues = 0;
 +
 +public:
-+	explicit Sample(double room = -1, const char *name = nullptr, int ready = -1) {
++	explicit Sample(double room = -1, const char *name = nullptr, int ready = -1, bool force = false) {
 +		_enabled = EM_ASM_INT({
 +			if (!globalThis.__scummwebTelemetryQueryEnabled || !globalThis.__scummwebEvaluationGame) return 0;
 +			const now = performance.now();
 +			const previous = globalThis.__scummwebGameTelemetry;
 +			const name = $1 ? UTF8ToString($1) : undefined;
 +			const ready = $2 < 0 ? undefined : Boolean($2);
-+			if (previous && previous.room_id === ($0 < 0 ? null : $0) && previous.room_name === name &&
++			if (!$3 && previous && previous.room_id === ($0 < 0 ? null : $0) && previous.room_name === name &&
 +				previous.room_ready === ready && now - previous.sample_time_ms < 250) return 0;
 +			globalThis.__scummwebTelemetrySample = ({
 +				schema_version: 1,
@@ -475,7 +475,7 @@ index 00000000..debd9869
 +				banks: Object.create(null)
 +			});
 +			return 1;
-+		}, room, name, ready);
++		}, room, name, ready, force);
 +	}
 +
 +	Sample(const Sample &) = delete;

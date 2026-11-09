@@ -48,6 +48,21 @@ test("restored routes match game families and keep demos separate", () => {
   assert.deepEqual(playSources.getMatchingGameSources(demo, sources, catalog).map(({ id }) => id), ["demo"]);
 });
 
+test("full GrimE imports use their own play routes and leave the bundled demos available", () => {
+  for (const [name, slug] of [
+    ["Grim Fandango", "grim-fandango"],
+    ["Escape from Monkey Island", "escape-from-monkey-island"],
+  ]) {
+    const full = recognizedGames.find(game => game.slug === slug);
+    const demo = recognizedGames.find(game => game.slug === `${slug}-demo`);
+    assert.equal(full?.importRequired, true);
+    assert.equal(demo?.importRequired, false);
+    const imported = playSources.getSourceGamePresentation({ id: slug, name: `${name} (CD Windows).zip` }, catalog, recognizedGames);
+    assert.equal(imported.playHref, full.playHref);
+    assert.equal(imported.engineId, "grim");
+  }
+});
+
 test("reopened copies retain their save namespace and legacy saves remain explicit", async () => {
   const game = playSources.getSourceGamePresentation(imported, catalog, recognizedGames);
   const first = await playSources.prepareGameSourcePlayer(source(), game);

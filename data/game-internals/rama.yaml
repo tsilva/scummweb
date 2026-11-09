@@ -1,0 +1,44 @@
+# English CD 001.000.000.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/rama-dos-001.000.000/src
+# The finale in humanPlazaRm9 runs after HumanBombCloseUp sets flag 157.
+# easyPickins also opens the credits. Only the transition from the human plaza completes the story.
+schema_version: 1
+game: rama
+engine_id: sci
+edition:
+  game_id: rama
+  index_md5: a60b844ff796efb2a1afac2893104fab
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  hub-camp: 1000
+  museum-entry: 4004
+  museum: 4112
+  octospider-plaza: 5301
+  human-lair: 8000
+  bomb: 8115
+  credits: 1300
+variables:
+  previous-room: { bank: globals, index: 12 }
+milestones:
+  - id: reached-hub-camp
+    label: Reached the hub camp
+    when: { room: hub-camp }
+  - id: reached-museum-entry
+    label: Reached the museum entry
+    when: { room: museum-entry }
+  - id: entered-museum
+    label: Entered the museum
+    when: { room: museum }
+  - id: entered-octospider-plaza
+    label: Reached the Octospider plaza
+    when: { room: octospider-plaza }
+  - id: entered-human-lair
+    label: Entered the human lair
+    when: { room: human-lair }
+  - id: found-bomb
+    label: Reached the bomb controls
+    when: { room: bomb }
+  - id: winning-ending
+    label: Defused the bomb and reached the finale
+    when: { all: [{ room: credits }, { variable: previous-room, equals: 5209 }] }

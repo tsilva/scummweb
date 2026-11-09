@@ -1,0 +1,52 @@
+# English Windows CD 1.02.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/shivers-win-1.02/src
+# Script n951 increments global547 after a successful Ixupi capture.
+# rm39v260 enters closingMovie when all ten are captured. Its normal route enters room 923.
+schema_version: 1
+game: shivers
+engine_id: sci
+edition:
+  game_id: shivers
+  index_md5: 5dc3653b80fee5c69f7c850c990cbbcc
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  closing-movie: 935
+  ending: 923
+variables:
+  captured: { bank: globals, index: 547 }
+  previous-room: { bank: globals, index: 12 }
+milestones:
+  - id: captured-1
+    label: Captured 1 Ixupi
+    when: { variable: captured, equals: 1 }
+  - id: captured-2
+    label: Captured 2 Ixupi
+    when: { variable: captured, equals: 2 }
+  - id: captured-3
+    label: Captured 3 Ixupi
+    when: { variable: captured, equals: 3 }
+  - id: captured-4
+    label: Captured 4 Ixupi
+    when: { variable: captured, equals: 4 }
+  - id: captured-5
+    label: Captured 5 Ixupi
+    when: { variable: captured, equals: 5 }
+  - id: captured-6
+    label: Captured 6 Ixupi
+    when: { variable: captured, equals: 6 }
+  - id: captured-7
+    label: Captured 7 Ixupi
+    when: { variable: captured, equals: 7 }
+  - id: captured-8
+    label: Captured 8 Ixupi
+    when: { variable: captured, equals: 8 }
+  - id: captured-9
+    label: Captured 9 Ixupi
+    when: { variable: captured, equals: 9 }
+  - id: captured-10
+    label: Captured 10 Ixupi
+    when: { variable: captured, equals: 10 }
+  - id: winning-ending
+    label: Finished the museum challenge
+    when: { all: [{ room: ending }, { variable: previous-room, equals: 935 }, { variable: captured, equals: 10 }] }

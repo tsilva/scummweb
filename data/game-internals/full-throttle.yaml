@@ -1,0 +1,41 @@
+# English DOS CD.
+# Native evidence: scripts and room directory from the detected edition.
+# The native debug jump table identifies the ranch, Corley’s will and the truck finale. Room 170 contains the turret controls.
+# The final successful control path sets bit 275. The funeral and subsequent credits run scripts 244, 289 and 439.
+schema_version: 1
+game: full-throttle
+engine_id: scumm
+edition:
+  game_id: ft
+  index_md5: 09820417db26687bb7fe0c83cc4c553b
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  mink-ranch: 43
+  corleys-will: 65
+  truck-finale: 70
+  turret-controls: 170
+  end-credits: 153
+variables:
+  ending-script: { bank: running_scripts, index: 439 }
+flags:
+  ripburger-defeated: { bank: scumm_bit_bytes, index: 34, mask: 0x8 }
+milestones:
+  - id: mink-ranch
+    label: Reached the mink ranch
+    when: { room: mink-ranch }
+  - id: corleys-will
+    label: Reached Corley’s will
+    when: { room: corleys-will }
+  - id: truck-finale
+    label: Reached Ripburger’s truck
+    when: { room: truck-finale }
+  - id: turret-controls
+    label: Reached the turret controls
+    when: { room: turret-controls }
+  - id: defeated-ripburger
+    label: Defeated Ripburger
+    when: { flag: ripburger-defeated }
+  - id: winning-ending
+    label: Reached the end credits
+    when: { all: [{ room: end-credits }, { variable: ending-script, equals: 1 }] }

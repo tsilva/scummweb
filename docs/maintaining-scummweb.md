@@ -742,7 +742,7 @@ queues. A sample can miss transient writes.
 | --- | --- | --- |
 | Access | Player room | `flags` |
 | ADL | Room | `vars` |
-| AGI | Current room in the AGI VM | `vars`, packed `flag_bytes` |
+| AGI | Current room in the AGI VM or PreAGI interpreter | AGI `vars` and `flag_bytes`, or PreAGI `preagi` counters and victory markers |
 | AGOS | Waxworks room where known | `vars`, `vars_secondary` where enabled, `elvira2_outcome` for the English Amiga floppy edition |
 | AGS | Displayed room | `game_state` score and maximum score |
 | BBVS | Game scene | `game_vars` |
@@ -759,7 +759,7 @@ queues. A sample can miss transient writes.
 | Gnap | Scene | `flag_word` |
 | Gob | TOT script filename | `vars` |
 | GOT | Level | `flags` |
-| Grim | Set name | `scene_state` camera setup |
+| Grim | Set name | `scene_state`, original Grim Fandango `puzzle_flags` and `story_state`, or Escape from Monkey Island `story_state` |
 | Groovie | — | `script_vars` |
 | Hopkins | Room | `state_bytes` |
 | Hugo | Screen | `screen_states` |
@@ -778,7 +778,7 @@ queues. A sample can miss transient writes.
 | Queen | Room, name and readiness | `game_state` |
 | SAGA | Scene | `script_common_bytes`, `global_flag_word` |
 | SCI | Script's current room global | `globals` |
-| SCUMM | Physical room and readiness | `scumm_vars`, `object_state`, `scumm_bit_bytes` and `room_vars` where present |
+| SCUMM | Physical room and readiness | `scumm_vars`, `object_state`, `scumm_bit_bytes`, `room_vars` and active global `running_scripts` where present |
 | Sherlock | Current scene | `flags` |
 | Sky | Script screen | `script_vars` |
 | Sword1 | Script screen | `script_vars` |
@@ -806,7 +806,24 @@ When there is no sample, the engine and game identity can still be queried.
 
 For edition matching, AGI reports its detection checksum in `identity.index_md5`
 when available. SCI uses the complete `resource.map` MD5 for editions with
-that file.
+that file. For SCI32 editions with numbered resource files, include each
+`resmap.000` through `resmap.099` with a matching `ressci.*` volume. Sort by
+volume number and append a line containing the lowercase map filename, a
+colon, the complete map's lowercase MD5 and a line feed. The MD5 of the
+resulting ASCII manifest is the edition fingerprint.
+
+PreAGI samples at native room and menu boundaries, including the victory
+sequences. The `preagi` bank includes Mickey's `crystals`, `planet` and
+`completed` values, Troll's `treasures` and `completed` values, or Winnie's
+`returned_objects` and `missing_objects` values. SCUMM's snapshot-only
+`running_scripts` bank uses global script numbers as indices. A value of 1
+means the script is active at the sampled tick.
+
+The original English Windows GrimE games report the detector's first 5,000
+bytes of `vox0001.lab` or `artall.m4b` as an MD5. Grim Fandango's original
+Lua VM exposes saved puzzle flags and finale unlock state. Escape from Monkey
+Island exposes selected Lua story flags, the current act and the story credits
+argument.
 
 For Elvira II on Amiga, `identity.index_md5` is the MD5 of the complete
 `gameamiga` database. The supported English floppy edition publishes

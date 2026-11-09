@@ -16,6 +16,8 @@ import { GameDirectionPad, GrimTouchGamepad } from "./game-player/GameTouchGamep
 import { createGameLaunchAnalytics } from "./game-player/game-launch-analytics.mjs";
 import { observeStartupDiagnostics } from "./game-player/startup-diagnostics.mjs";
 import { withGameTelemetry } from "./game-player/telemetry.mjs";
+import { getStoryProgressRevision, observeStoryProgress } from "./game-player/story-progress.mjs";
+import storyProgressIndex from "../public/game-progress/index.json";
 import { dispatchGameCommand, dispatchHugoCommand, dispatchSyntheticKeypressSequence } from "./game-player/keyboard";
 import { getMobileControlMode } from "./game-player/mobile-controls.mjs";
 import { getGameMenuShortcut } from "./game-player/game-menu.mjs";
@@ -157,6 +159,9 @@ export default function GameRouteFrame({
   }), [catalogArchiveUrl, target]);
   const loadArchive = catalogArchiveUrl ? loadCatalogArchive : loadPersonalArchive;
   const catalogLaunch = !loadArchive || Boolean(catalogArchiveUrl);
+  const progressVersion = catalogLaunch ? `catalog:${target}` : game?.recentGameId;
+  const progressSlug = game?.slug;
+  const progressRevision = getStoryProgressRevision(storyProgressIndex, progressSlug, catalogLaunch);
   const router = useRouter();
   const shellRef = useRef(null);
   const frameRef = useRef(null);
@@ -605,6 +610,9 @@ export default function GameRouteFrame({
         }
         const shellUrl = new URL(launchSrc, window.location.origin);
         shellUrl.searchParams.set("hostCompatibilityWarning", "1");
+        if (progressVersion && progressRevision && !new URL(window.location.href).searchParams.has("agentSaveScope")) {
+          shellUrl.searchParams.set("telemetry", "1");
+        }
         launchSrc = withGameTelemetry(`${shellUrl.pathname}${shellUrl.search}${shellUrl.hash}`, window.location.href);
         if (loadArchive) {
           // Load/compile ScummVM while the archive downloads or opens. The
@@ -632,7 +640,15 @@ export default function GameRouteFrame({
 
     void openGame();
     return () => { controller.abort(); };
-  }, [catalogIntroLaunch, catalogLaunch, game, intro, launchAnalytics, loadArchive, src, target]);
+  }, [catalogIntroLaunch, catalogLaunch, game, intro, launchAnalytics, loadArchive, progressRevision, progressVersion, src, target]);
+
+  useEffect(() => {
+    if (!currentReadySignal || !frameRef.current || !progressVersion || !progressRevision ||
+        new URL(window.location.href).searchParams.has("agentSaveScope")) return;
+    return observeStoryProgress(window, frameRef.current, {
+      version: progressVersion, slug: progressSlug, revision: progressRevision,
+    });
+  }, [currentReadySignal, progressRevision, progressSlug, progressVersion]);
 
   useEffect(() => {
     if (bootState.hasBootFailed) launchAnalytics.fail("startup_error");

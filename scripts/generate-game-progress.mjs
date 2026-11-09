@@ -16,7 +16,7 @@ export async function generateGameProgress(outputDir) {
     const game = file.slice(0, -5);
     const map = compileGameProgress(game, await readFile(new URL(file, mapsDir), 'utf8'));
     const revision = createHash('sha256').update(tracker).update(JSON.stringify(map)).digest('hex');
-    games[game] = { revision, telemetry: map.telemetry ?? 'events' };
+    games[game] = { revision, telemetry: map.telemetry ?? 'events', edition_specific: Boolean(map.edition) };
     maps[game] = { revision, map };
   }
   const module = `${tracker}

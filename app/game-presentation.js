@@ -1,7 +1,7 @@
 import { getVersionedSiteAssetPath } from "./asset-paths.js";
 import retroGameArtwork from "./retro-game-artwork.json" with { type: "json" };
 
-const importedScummGames = [
+const importedAdventureGames = [
   {
     target: "tentacle",
     titles: ["Day of the Tentacle", "Maniac Mansion: Day of the Tentacle"],
@@ -43,6 +43,22 @@ const importedScummGames = [
     studio: "Lucasfilm Games",
     year: "1988",
     summary: "Follow tabloid reporter Zak McKracken as he uncovers an alien plot to make Earth stupid.",
+  },
+  {
+    target: "grim",
+    engineId: "grim",
+    titles: ["Grim Fandango"],
+    studio: "LucasArts",
+    year: "1998",
+    summary: "Follow Manny Calavera as he searches for Meche across the Land of the Dead.",
+  },
+  {
+    target: "monkey4",
+    engineId: "grim",
+    titles: ["Escape from Monkey Island"],
+    studio: "LucasArts",
+    year: "2000",
+    summary: "Help Guybrush and Elaine stop a plot to take over the Caribbean.",
   },
 ];
 
@@ -236,14 +252,14 @@ const artByTarget = {
   soltys: { ...retroGameArtwork["cge:soltys"], year: "1995" },
   hires1: { ...retroGameArtwork["adl:hires1"], year: "1980" },
   got: { ...retroGameArtwork["got:got"], year: "1993" },
-  ...Object.fromEntries(importedScummGames.map(({ target, studio, year, summary }) => [target, {
+  ...Object.fromEntries(importedAdventureGames.map(({ target, engineId = "scumm", studio, year, summary }) => [target, {
     eyebrow: `${studio} Adventure`,
-    genre: retroGameArtwork[`scumm:${target}`].genre,
+    genre: retroGameArtwork[`${engineId}:${target}`]?.genre || "Graphic adventure",
     studio,
     year,
     summary,
-    posterImage: retroGameArtwork[`scumm:${target}`].posterImage,
-    screenshots: retroGameArtwork[`scumm:${target}`].screenshots,
+    posterImage: retroGameArtwork[`${engineId}:${target}`]?.posterImage ?? bundledArtworkByTarget[`${target}-demo`]?.posterImage,
+    screenshots: retroGameArtwork[`${engineId}:${target}`]?.screenshots ?? [],
   }])),
   atlantis: {
     eyebrow: "LucasArts Adventure",
@@ -510,14 +526,15 @@ export function getGamePresentation(game, importedArt) {
   };
 }
 
-function getImportedScummPresentation(target, title, variant) {
-  const metadata = retroGameArtwork[`scumm:${target}`];
-  const platform = /\bamiga\b/i.test(variant) ? "Amiga" : /\bdos\b/i.test(variant) ? "DOS" : undefined;
+function getImportedAdventurePresentation(target, title, variant, engineId = "scumm") {
+  const metadata = retroGameArtwork[`${engineId}:${target}`];
+  const platform = /\bamiga\b/i.test(variant) ? "Amiga" : /\bdos\b/i.test(variant) ? "DOS"
+    : /\bwindows\b/i.test(variant) ? "Windows" : undefined;
   const edition = /\bcd\b/i.test(variant) ? "CD" : undefined;
   const demo = /\bdemo\b/i.test(variant) ? " (Demo)" : "";
   const labels = [...variant.matchAll(/\(([^()]+)\)/g)].map(([, label]) => label);
   return {
-    ...getGamePresentation({ target, displayTitle: title + demo, engineId: "scumm" }, metadata && {
+    ...getGamePresentation({ target, displayTitle: title + demo, engineId }, metadata && {
       heroImage: metadata.heroImage,
       heroImagePosition: metadata.heroImagePosition,
       heroImageMobilePosition: metadata.heroImageMobilePosition,
@@ -542,6 +559,8 @@ export function getRecognizedGamePresentations() {
         displayTitle: record.title,
       }, record);
     }),
+    ...importedAdventureGames.filter(({ engineId }) => engineId === "grim")
+      .map(({ target, engineId, titles }) => getGamePresentation({ target, engineId, displayTitle: titles[0] })),
     getGamePresentation({ target: "sfinx", engineId: "cge2", displayTitle: "Sfinx" }),
   ];
 }
@@ -566,7 +585,7 @@ export function getImportedGamePresentation(filename) {
   const indy = archive && /^indiana jones and the (fate of atlantis|last crusade)(?:[: -]+the graphic adventure)?$/i.exec(archive[1]);
   if (indy && !/\baction game\b/i.test(archive[2])) {
     const atlantis = indy[1].toLowerCase() === "fate of atlantis";
-    return getImportedScummPresentation(
+    return getImportedAdventurePresentation(
       atlantis ? "atlantis" : "indy3",
       `Indiana Jones and the ${atlantis ? "Fate of Atlantis" : "Last Crusade"}`,
       archive[2]
@@ -575,10 +594,10 @@ export function getImportedGamePresentation(filename) {
 
   if (archive) {
     const title = normalizeImportedTitle(archive[1]);
-    const game = importedScummGames.find(({ titles }) =>
+    const game = importedAdventureGames.find(({ titles }) =>
       titles.some((alias) => normalizeImportedTitle(alias) === title)
     );
-    if (game) return getImportedScummPresentation(game.target, game.titles[0], archive[2]);
+    if (game) return getImportedAdventurePresentation(game.target, game.titles[0], archive[2], game.engineId);
 
     const retro = retroByEdition.get(normalizeImportedTitle(archive[1] + archive[2])) ?? retroByTitle.get(title);
     if (retro) {

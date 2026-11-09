@@ -186,3 +186,14 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
 - Return to Zork and Woodruff delegate restoration to their original scripts.
   Match the callback bytes before offering runtime checkpoints. Check the
   rendered scene and restored native variables after the script returns.
+
+- Late SCI uses numbered maps. Preserve the full legacy `resource.map` digest
+  and hash the ordered map manifest for numbered volumes. Include only maps
+  paired with a volume. Keep room IDs unsigned and numeric globals signed.
+- PreAGI owns its room and story state outside the usual AGI loop. Publish
+  samples at the choice and victory boundaries. Retain opt-in checks and the
+  normal throttle for continuous engine loops.
+- SCUMM active global scripts belong in detached snapshots. Keep them out of
+  the evaluator change queue so the baseline and event budget stay stable.
+  GrimE progress reads raw Lua fields inside a balanced stack block.
+  Preserve the distinction between story credits and the menu credits.

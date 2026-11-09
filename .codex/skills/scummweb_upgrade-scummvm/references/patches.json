@@ -303,13 +303,14 @@
     {
       "path": "patches/scummvm/18-report-scumm-evaluation-variables.patch",
       "status": "active",
-      "sha256": "7323ef1421762a6985292a90a702b31e4dbb2e5c87b7526468a8cb26f7121576",
+      "sha256": "d0819db412b932c942cefd4a8d7e951b86346f502e5f8d581a3601c9ee8ea3a5",
       "purpose": "Publish opt-in game identity for all engines and room and indexed variable samples for all SCUMM titles.",
       "invariants": [
         "Keep gameplay unchanged when evaluation is disabled. Use one engine-neutral game identity and the same bounded room and variable queues as Queen.",
         "Publish SCUMM physical room IDs and sampled global variables, object states, packed bit variables, and room variables where available.",
         "Reset the baseline on a successful restore or engine restart. Include the detected data MD5 for edition-specific maps.",
-        "Keep opt-in state snapshots independent of the ordered evaluator queues."
+        "Keep opt-in state snapshots independent of the ordered evaluator queues.",
+        "Sample active global scripts in the snapshot only. Keep the evaluator variable queues and saved VM state unchanged."
       ],
       "verification": [
         "Rebuild the managed runtime and verify opt-in identity and SCUMM variable sampling.",
@@ -320,7 +321,7 @@
     {
       "path": "patches/scummvm/19-query-engine-game-state.patch",
       "status": "active",
-      "sha256": "7f70758603be4bad27fb83582aefc4ce145a0e7e22877833b4ca0b1c3dcc8d06",
+      "sha256": "60cf13a75a04cddf621cb53bcaf2ab7588ce56159fcf0362fa9b18d897dd0a33",
       "purpose": "Publish opt-in room and VM variable snapshots for additional engines, including the Elvira II finale outcome.",
       "invariants": [
         "Sample at engine update boundaries. Preserve native variable indices and signedness, and omit room IDs that have no stable engine meaning.",
@@ -338,16 +339,20 @@
     {
       "path": "patches/scummvm/20-extend-native-game-telemetry.patch",
       "status": "active",
-      "sha256": "9528ff6a395cf0d13a551d661f091634a505526f85308361dedbfe000009c6ad",
+      "sha256": "ecacb6a2799790c155a2b8f5fd2c34e7e2a1ab60f6012ac950a6bf6235def5a5",
       "purpose": "Expose room identifiers and script or game state across the remaining shipped engines.",
       "invariants": [
         "Read only engine-owned state after explicit launch opt-in. Preserve native names, numeric indices, and packed flag layout. Use null when there is no reliable room ID.",
         "Never walk native pointers, invoke script callbacks, serialize saves, or mutate interpreter state to read telemetry. Omit nonnumeric VM objects.",
-        "Report the detected AGI index fingerprint and the full SCI resource.map fingerprint when present. Keep interpreter-specific story state out of the common GLK event bank."
+        "Report the detected AGI index fingerprint and the full SCI resource.map fingerprint when present. Keep interpreter-specific story state out of the common GLK event bank.",
+        "Keep the full resource.map MD5 for older SCI editions. For SCI32, include every numbered map with a matching volume in numerical order.",
+        "Read GrimE story flags through raw Lua table access after a VM update. Exclude demos and remasters and preserve the Lua stack."
       ],
       "verification": [
         "Verify the pinned Wasm build, test direct ScummWEB and MCP opt-in, and spot-check room and named state in additional real engines.",
-        "Verify a playable AGS title, a Freescape title, a GLK story and both Grim adventure runtimes. Compare the Sierra fingerprints against the mapped local editions."
+        "Verify a playable AGS title, a Freescape title, a GLK story and both Grim adventure runtimes. Compare the Sierra fingerprints against the mapped local editions.",
+        "Match a single-volume and multi-volume SCI32 edition against the documented index fingerprint.",
+        "Distinguish the Grim Fandango finale and Escape from Monkey Island story credits from opening or menu credits."
       ],
       "retire_when": "Upstream provides equivalent opt-in per-engine room and state queries."
     },
@@ -657,6 +662,19 @@
         "Load a save with the old truncated prison key and verify the same behavior."
       ],
       "retire_when": "Upstream stores full Nippon location keys and reads existing truncated prison keys."
+    },
+    {
+      "path": "patches/scummvm/42-report-preagi-story-state.patch",
+      "status": "active",
+      "sha256": "ec4cbc67198c9bc2020b92ce0a908bd2f8757062f9212b0f42ca031b5ccc0026",
+      "purpose": "Publish PreAGI story state to opt-in telemetry.",
+      "invariants": [
+        "Publish PreAGI state at room and choice boundaries, including the native victory transition. Keep normal telemetry throttling for other engines."
+      ],
+      "verification": [
+        "Inspect PreAGI collection counters after a choice and check the victory predicate against the actual ending and quit paths."
+      ],
+      "retire_when": "Upstream exposes PreAGI native story counters and identity through an equivalent telemetry interface."
     }
   ]
 }

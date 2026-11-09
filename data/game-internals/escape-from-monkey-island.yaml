@@ -1,0 +1,50 @@
+# English Windows CD with the official update. The fingerprint matches the ScummVM retail detector.
+# Native evidence: https://downloads.scummvm.org/frs/extras/patches/MonkeyUpdate.exe
+# The updated gme, _props1, pph, lua and pac scripts expose these story flags and act checks.
+# The normal menu starts credits with no end-game argument. Story credits pass 1 or 2.
+schema_version: 1
+game: escape-from-monkey-island
+engine_id: grim
+edition:
+  game_id: monkey4
+  index_md5: 61959da91d864bf5f4588daa4a5a3019
+telemetry: snapshot
+scoring: highest_stage
+variables:
+  catapult: { bank: story_state, key: broke_catapult }
+  marley-letter: { bank: story_state, key: guybrush_read_marley_letter }
+  pegnose: { bank: story_state, key: caught_pegnose }
+  act: { bank: story_state, key: curr_act }
+  lua-bar: { bank: story_state, key: been_in_lua_bar }
+  rock-beach: { bank: story_state, key: rock_beach }
+  rock-canyon: { bank: story_state, key: rock_canyon }
+  rock-lava: { bank: story_state, key: rock_lava }
+  story-credits: { bank: story_state, key: credits_end_game }
+milestones:
+  - id: stopped-catapult
+    label: Stopped the governor’s mansion catapult
+    when: { variable: catapult, equals: 1 }
+  - id: read-marley-letter
+    label: Read Marley’s letter
+    when: { variable: marley-letter, equals: 1 }
+  - id: caught-pegnose
+    label: Caught Pegnose Pete
+    when: { variable: pegnose, equals: 1 }
+  - id: reached-act-2
+    label: Reached act 2
+    when: { variable: act, equals: 2 }
+  - id: entered-lua-bar
+    label: Entered the Lua Bar
+    when: { variable: lua-bar, equals: 1 }
+  - id: reached-act-3
+    label: Reached act 3
+    when: { variable: act, equals: 3 }
+  - id: started-pachinko
+    label: Sent a boulder down Pachinko Rock
+    when: { any: [{ variable: rock-beach, equals: 1 }, { variable: rock-canyon, equals: 1 }, { variable: rock-lava, equals: 1 }] }
+  - id: reached-lava
+    label: Sent a boulder into the lava
+    when: { variable: rock-lava, equals: 1 }
+  - id: winning-ending
+    label: Reached the story credits
+    when: { variable: story-credits, one_of: [1, 2] }
