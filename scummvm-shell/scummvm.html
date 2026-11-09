@@ -1054,7 +1054,38 @@ const setAspectRatioMode=mode=>{canvas.classList.toggle("scummweb-fill-screen",m
 const handleScummwebMessage=event=>{if(event.origin!==scummwebLaunchUrl.origin)return;if(event.data?.type==="scummweb-aspect-ratio"){setAspectRatioMode(event.data?.mode);return}if(event.data?.type==="scummweb-touch-click"){dispatchParentTouchClick(event.data.button);return}if(event.data?.type!=="scummweb-touch-cursor-pad")return;applyCursorPadDelta(event.data?.deltaX,event.data?.deltaY)};
 const handleTouchStart=event=>{if(event.touches.length===0)return;consumeTouchEvent(event);const point=getGesturePoint(event.touches);activeTouchGesture={startedAt:Date.now(),startPoint:point,lastPoint:point,moved:false}};
 const handleTouchMove=event=>{if(!activeTouchGesture||event.touches.length===0)return;consumeTouchEvent(event);const point=getGesturePoint(event.touches);if(!point)return;const previousPoint=activeTouchGesture.lastPoint;if(measureDistance(activeTouchGesture.startPoint,point)>touchTapMoveThresholdPx){activeTouchGesture.moved=true}if(activeTouchGesture.moved){applyRelativeTouchDelta(previousPoint,point)}activeTouchGesture.lastPoint=point};
-const handleTouchEnd=event=>{consumeTouchEvent(event);if(!activeTouchGesture){return}const point=getGesturePoint(event.changedTouches)||getGesturePoint(event.touches)||activeTouchGesture.lastPoint||null;if(point&&measureDistance(activeTouchGesture.startPoint,point)>touchTapMoveThresholdPx){activeTouchGesture.moved=true}if(activeTouchGesture.moved&&point){applyRelativeTouchDelta(activeTouchGesture.lastPoint,point)}if(event.touches.length>0){activeTouchGesture.lastPoint=point||activeTouchGesture.lastPoint;return}const completedGesture={...activeTouchGesture,endedAt:Date.now(),endPoint:point||activeTouchGesture.lastPoint};activeTouchGesture=null;const gestureDuration=completedGesture.endedAt-completedGesture.startedAt;const isTap=!completedGesture.moved&&gestureDuration<=touchTapDurationMs&&completedGesture.endPoint;if(!isTap){lastCompletedTap=null;return}dispatchSyntheticMove(completedGesture.endPoint);const isDoubleTap=Boolean(lastCompletedTap&&completedGesture.endedAt-lastCompletedTap.endedAt<=touchDoubleTapWindowMs&&measureDistance(lastCompletedTap.point,completedGesture.endPoint)<=touchDoubleTapThresholdPx);if(isDoubleTap){dispatchSyntheticClick(completedGesture.endPoint,0);lastCompletedTap=null;return}lastCompletedTap={endedAt:completedGesture.endedAt,point:{...completedGesture.endPoint}}};
+const handleTouchEnd=event=>{
+  consumeTouchEvent(event);
+  if(!activeTouchGesture)return;
+  const point=getGesturePoint(event.changedTouches)||getGesturePoint(event.touches)||activeTouchGesture.lastPoint;
+  if(point&&measureDistance(activeTouchGesture.startPoint,point)>touchTapMoveThresholdPx){
+    activeTouchGesture.moved=true;
+  }
+  if(activeTouchGesture.moved&&point){applyRelativeTouchDelta(activeTouchGesture.lastPoint,point)}
+  if(event.touches.length>0){
+    activeTouchGesture.lastPoint=point;
+    return;
+  }
+
+  const {startedAt,moved}=activeTouchGesture;
+  activeTouchGesture=null;
+  const endedAt=Date.now();
+  if(moved||endedAt-startedAt>touchTapDurationMs||!point){
+    lastCompletedTap=null;
+    return;
+  }
+
+  const isDoubleTap=lastCompletedTap&&endedAt-lastCompletedTap.endedAt<=touchDoubleTapWindowMs&&
+    measureDistance(lastCompletedTap.point,point)<=touchDoubleTapThresholdPx;
+  // The native save scan identifies both the bundled demo and imported editions.
+  if(globalThis.__scummwebSaveStatus?.engineId==="teenagent"||isDoubleTap){
+    dispatchSyntheticClick(point,0);
+    lastCompletedTap=null;
+    return;
+  }
+  dispatchSyntheticMove(point);
+  lastCompletedTap={endedAt,point};
+};
 const handleTouchCancel=event=>{consumeTouchEvent(event);activeTouchGesture=null;lastCompletedTap=null};
 window.addEventListener("message",handleScummwebMessage);
 canvas.addEventListener("mouseenter",promptCursorGrab,{passive:true});
