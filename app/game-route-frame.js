@@ -227,6 +227,27 @@ export default function GameRouteFrame({
 
   useEffect(() => observeStartupDiagnostics(window, frameRef), []);
 
+  useEffect(() => {
+    const viewport = window.visualViewport;
+    const shell = shellRef.current;
+    if (!immersiveMode.isMobileViewport || !viewport || !shell) return;
+    function fitVisibleHeight() {
+      // Browser chrome and the keyboard can make the visible area shorter than
+      // the layout viewport. Leave pinch zoom under the player's control.
+      if (viewport.scale === 1 && viewport.height > 0) {
+        shell.style.setProperty("--game-visible-height", `${viewport.height}px`);
+      } else {
+        shell.style.removeProperty("--game-visible-height");
+      }
+    }
+    fitVisibleHeight();
+    viewport.addEventListener("resize", fitVisibleHeight);
+    return () => {
+      viewport.removeEventListener("resize", fitVisibleHeight);
+      shell.style.removeProperty("--game-visible-height");
+    };
+  }, [immersiveMode.isMobileViewport]);
+
   useLayoutEffect(() => {
     const navigationController = new AbortController();
     if (frameBootRef.current?.src !== frameSrc) {
