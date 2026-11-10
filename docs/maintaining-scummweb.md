@@ -427,12 +427,12 @@ The sliders icon beside **Game Library** opens sorting and genre filtering for
 both public and imported games. **Featured** is the default sort. It puts
 Beneath a Steel Sky, Flight of the Amazon Queen, Lure of the Temptress, DreamWeb,
 and Broken Sword 2.5 first, then lists other full games and demos in separate
-A–Z groups. Hugo's House of Horrors appears before Hugo II in each group.
+A–Z groups, with each series in installment order.
 Hi-Res Adventure #1: Mystery House follows the Zork games at the end of the
 full-game group. Select **All genres** to remove the genre filter, or sort the
 whole list by name, release year, genre, or studio.
-The **Name** options keep numbered series in installment order, treating Roman and Arabic
-numerals alike. Sort-only aliases in `lib/game-title-sort.mjs` place unnumbered
+**Featured** and **Name** treat Roman and Arabic numerals alike. Sort-only
+aliases in `lib/game-title-sort.mjs` place unnumbered
 first games and irregularly named sequels with their series. For example,
 Hugo's House of Horrors appears before Hugo II and Hugo III. These aliases also
 apply to imported games and name tie-breaks, preserving displayed titles and URLs.
@@ -1700,8 +1700,8 @@ or request-time rendering.
   Game details do not open a modal or lock background scrolling.
   The library's sliders icon opens the sorting and genre controls. The button
   has an accessible label and no visible text. It sorts the
-  combined catalog and saved-source cards by name, release year, genre, or
-  studio, with name order as the default. Release years come from presentation
+  combined catalog and saved-source cards by featured picks, name, release year,
+  genre, or studio, with Featured as the default. Release years come from presentation
   metadata; unknown years sort last. Genre selection updates immediately and
   remains active when the controls are collapsed or a game card changes the route
   within the same tab. Sort, genre and panel visibility reset on a full reload.
