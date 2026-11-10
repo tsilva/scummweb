@@ -47,6 +47,7 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
         <label>Sort by
           <span className="library-select">
             <select value={query.sort} onChange={update("sort")}>
+              <option value="featured">Featured</option>
               <option value="name-asc">Name: A–Z</option>
               <option value="name-desc">Name: Z–A</option>
               <option value="year-desc">Release year: newest first</option>
