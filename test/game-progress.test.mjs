@@ -327,9 +327,10 @@ test('Elvira II counts early puzzles and studios in either order without credit 
   const tracker = trackerFor('elvira-ii-the-jaws-of-cerberus');
   const identity = { engine_id: 'agos', game_id: 'elvira2', index_md5: 'a144d2467e1addee1f705647dacd33df' };
   let sampleTime = 0;
-  const accept = ({ studios = 0, stage = 0, outcome = 0, flags = [], secondary = [], items = {},
+  const accept = ({ studios = 0, stage = 0, outcome = 0, monsterPosition = 0, flags = [], secondary = [], items = {},
     detected = identity, olderRuntime = false } = {}) => {
     const vars = Array(255).fill(0);
+    vars[166] = monsterPosition;
     vars[180] = studios;
     vars[186] = stage;
     const words = (count, bits) => {
@@ -348,8 +349,35 @@ test('Elvira II counts early puzzles and studios in either order without credit 
   };
 
   assert.deepEqual(accept().reached, []);
+  assert.deepEqual(accept({ flags: [0, 2, 11, 13, 17, 22, 56, 127, 188, 211], secondary: [75] }).reached,
+    [], 'The original Amiga Start save sets opening and interface flags');
+  assert.deepEqual(accept({ items: { 802: 1 } }).reached, ['inserted-security-key']);
+  assert.deepEqual(accept({ items: { 802: 2 } }).reached, ['inserted-security-key', 'opened-main-gate']);
+  assert.deepEqual(accept({ secondary: [7] }).reached, ['entered-catacombs-studio']);
+  assert.deepEqual(accept({ secondary: [7, 5] }).reached, ['entered-spider-studio', 'entered-catacombs-studio']);
+  assert.deepEqual(accept({ secondary: [6] }).reached, ['entered-haunted-studio']);
   assert.deepEqual(accept({ items: { 367: 1, 823: 1 }, secondary: [66] }).reached,
     ['thawed-boiler-room', 'opened-attic-skylight', 'recovered-fish-tank-key']);
+  assert.deepEqual(accept({ items: { 367: 1 }, flags: [209] }).reached,
+    ['opened-attic-skylight', 'defeated-attic-vampire']);
+  assert.deepEqual(accept({ items: { 436: 2 } }).reached, ['opened-locker-exit']);
+  assert.deepEqual(accept({ items: { 436: 1 } }).reached, ['opened-locker-exit', 'defeated-locker-ghoul']);
+  assert.deepEqual(accept({ flags: [199], secondary: [85] }).reached, ['animated-monster']);
+  assert.deepEqual(accept({ flags: [198, 199], secondary: [85], monsterPosition: 5 }).reached,
+    ['animated-monster'], 'The monster still blocks the door when the wires are cut too early');
+  assert.deepEqual(accept({ flags: [198, 199], secondary: [85], monsterPosition: 6 }).reached,
+    ['animated-monster', 'stopped-lab-monster']);
+  assert.deepEqual(accept({ flags: [54, 86], secondary: [65, 9] }).reached,
+    ['reached-spider-lift', 'defeated-second-banshee', 'opened-crypt-slab', 'passed-catacomb-sorcerer']);
+  const tripwires = [
+    [139, '37-57'], [119, '111-112'], [140, '198-199'], [149, '593-613'], [148, '622-642'],
+    [154, '874-894'], [153, '1041-1061'], [158, '1530-1550'], [159, '1686-1687'],
+    [160, '1725-1745'], [161, '1895-1896'], [171, '2126-2127'], [172, '2174-2175'],
+  ];
+  for (const [bit, cells] of tripwires.toReversed()) {
+    assert.deepEqual(accept({ flags: [bit] }).reached, [`cut-catacomb-wire-${cells}`],
+      'Restoring a different catacomb snapshot replaces the checked tripwires');
+  }
   assert.deepEqual(accept({ studios: 1, flags: [103] }).reached, ['resolved-catacombs-studio']);
   assert.deepEqual(accept({ studios: 2, flags: [103, 113] }).reached,
     ['resolved-spider-studio', 'resolved-catacombs-studio']);
@@ -360,11 +388,15 @@ test('Elvira II counts early puzzles and studios in either order without credit 
   assert.equal(tracker.nextMilestone, null);
   assert.deepEqual(accept({ flags: [217], items: { 176: 2 } }).reached,
     ['revived-priest', 'prepared-pentacle', 'blessed-implements']);
+  assert.deepEqual(accept({ flags: [226], items: { 176: 2 } }).reached,
+    ['revived-priest', 'prepared-pentacle', 'lit-ritual-candles']);
   assert.deepEqual(accept({ stage: 3 }).reached, [], 'The ritual also requires a verified rescue');
 
   const rescued = { studios: 3, flags: [103, 113, 222] };
   assert.equal(accept(rescued).reached.at(-1), 'rescued-elvira');
   assert.equal(accept({ ...rescued, stage: 1 }).reached.at(-1), 'summoned-cerberus');
+  assert.ok(tracker.report().reached.includes('lit-ritual-candles'),
+    'Summoning proves the candles were lit even after the flag clears');
   assert.equal(accept({ ...rescued, stage: 2 }).reached.at(-1), 'bound-cerberus');
   assert.equal(accept({ ...rescued, stage: 3 }).reached.at(-1), 'used-lance');
   assert.equal(accept({ ...rescued, stage: 3, outcome: 2 }).reached.at(-1), 'used-lance');
