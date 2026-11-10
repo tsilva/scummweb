@@ -15,20 +15,17 @@ const remote = { source: { id: "link", url: "https://example.com/game.zip" }, ti
 const items = libraryItems(catalog, [local, remote]);
 const titles = (query = {}) => queryLibrary(items, { ...defaultLibraryQuery, ...query }).map(({ title }) => title);
 
-test("Featured keeps the five picks first, Mystery House after Zork, and Hugo installments in order", async () => {
+test("Featured keeps the five picks first, then sorts full games and demos by series", async () => {
   const { games } = JSON.parse(await readFile(new URL("../scummvm-shell/games.json", import.meta.url), "utf8"));
   const catalog = libraryItems(getRecognizedGames(getBundledGameLibrary({ games }).games), [
     { source: { id: "full" }, title: "A Local Game", game: { displayTitle: "A Local Game" } },
     { source: { id: "demo" }, title: "A Local Demo", game: { extra: "DOS Demo" } },
   ]);
   const featured = queryLibrary(catalog, defaultLibraryQuery);
-  const alphabetical = catalog.toSorted((a, b) =>
-    a.title.localeCompare(b.title, "en", { numeric: true, sensitivity: "base" }));
+  const alphabetical = queryLibrary(catalog, { ...defaultLibraryQuery, sort: "name-asc" });
   const first = ["sky", "queen", "lure", "dreamweb-cd", "sword25"];
   const isDemo = ({ source, title }) => source?.id === "demo" || title.endsWith(" (Demo)");
   const targets = featured.map(({ game }) => game.target);
-  const customOrder = ["hires1", "hugo1", "hugo1-demo"];
-  const isCustom = ({ game }) => customOrder.includes(game.target);
 
   assert.deepEqual(targets.slice(0, first.length), first);
   assert.deepEqual(targets.filter((target) => /^hugo[123](-demo)?$/.test(target)), [
@@ -36,10 +33,11 @@ test("Featured keeps the five picks first, Mystery House after Zork, and Hugo in
   ]);
   assert.deepEqual(targets.filter((target) => /^zork[123]$/.test(target)), ["zork1", "zork2", "zork3"]);
   assert.equal(featured.findLast((item) => !isDemo(item)).game.target, "hires1");
-  assert.deepEqual(featured.slice(first.length).filter((item) => !isCustom(item)), [
-    ...alphabetical.filter((item) => !isCustom(item) && !isDemo(item) && !first.includes(item.game.target)),
-    ...alphabetical.filter((item) => !isCustom(item) && isDemo(item)),
-  ]);
+  assert.deepEqual(featured.slice(first.length).map(({ key }) => key), [
+    ...alphabetical.filter((item) => !isDemo(item) && item.game.target !== "hires1" && !first.includes(item.game.target)),
+    catalog.find(({ game }) => game.target === "hires1"),
+    ...alphabetical.filter(isDemo),
+  ].map(({ key }) => key));
 });
 
 test("catalog and imported Space Quest installments sort together in both directions", () => {
@@ -52,6 +50,7 @@ test("catalog and imported Space Quest installments sort together in both direct
   }]);
   const ordered = ["sq1", "sq2", "sq3", "sq6"];
   const ids = (sort) => queryLibrary(series, { ...defaultLibraryQuery, sort }).map((item) => item.source?.id || item.game.target);
+  assert.deepEqual(ids("featured"), ordered);
   assert.deepEqual(ids("name-asc"), ordered);
   assert.deepEqual(ids("name-desc"), ordered.toReversed());
   assert.deepEqual(ids("year-desc"), ordered, "equal years use series order");
@@ -60,24 +59,35 @@ test("catalog and imported Space Quest installments sort together in both direct
 
 test("the real catalog keeps numbered and irregularly named series in sequence", () => {
   const games = getRecognizedGames([]);
-  const sorted = queryLibrary(libraryItems(games, []), { ...defaultLibraryQuery, sort: "name-asc" });
+  const items = libraryItems(games, []);
+  const sorted = queryLibrary(items, { ...defaultLibraryQuery, sort: "name-asc" });
+  const featured = queryLibrary(items, defaultLibraryQuery);
   const series = [
     ["agi:sq1", "sci:sq1sci", "agi:sq2", "sci:sq3", "sci:sq4", "sci:sq5", "sci:sq6"],
     ["sci:kq1sci", "agi:kq2", "agi:kq3", "sci:kq4sci", "sci:kq5", "sci:kq6", "sci:kq7"],
     ["agi:pq1", "sci:pq1sci", "sci:pq2", "sci:pq3", "sci:pq4"],
     ["sci:lsl1sci", "sci:lsl2", "sci:lsl3", "sci:lsl5", "sci:lsl6hires", "sci:lsl7"],
     ["sword1:sword1", "sword2:sword2", "sword25:sword25"],
-    ["scumm:monkey", "scumm:monkey2", "scumm:comi"],
+    ["scumm:monkey", "scumm:monkey2", "scumm:comi", "grim:monkey4"],
     ["kyra:kyra1", "kyra:kyra2", "kyra:kyra3"],
     ["gob:gob1", "gob:gob2", "gob:gob3"],
     ["sci:gk1", "sci:gk2"],
     ["hugo:hugo1", "hugo:hugo2", "hugo:hugo3"],
+    ["sci:qfg1", "sci:qfg1vga", "sci:qfg2", "sci:qfg3"],
+    ["sci:laurabow", "sci:laurabow2"],
+    ["agi:mh1", "agi:mh2"],
+    ["scumm:freddi", "scumm:freddi2", "scumm:freddi3", "scumm:freddi4", "scumm:freddicove"],
+    ["scumm:pajama", "scumm:pajama2", "scumm:pajama3"],
+    ["scumm:spyfox", "scumm:spyfox2", "scumm:spyozon"],
   ];
   for (const families of series) {
     const expected = families.filter((id) => games.some((game) => game.familyId === id));
     assert.equal(expected.length, families.length, "fixtures must exist in the catalog");
     assert.deepEqual(sorted.filter(({ game }) => families.includes(game.familyId)).map(({ game }) => game.familyId), expected);
     assert.deepEqual(games.filter((game) => families.includes(game.familyId)).map((game) => game.familyId), expected);
+    // Broken Sword 2.5 is intentionally pinned before the first two games.
+    const featuredOrder = families.includes("sword25:sword25") ? [families.at(-1), ...families.slice(0, -1)] : families;
+    assert.deepEqual(featured.filter(({ game }) => families.includes(game.familyId)).map(({ game }) => game.familyId), featuredOrder);
   }
   const first = games.find((game) => game.familyId === "agi:sq1");
   assert.equal(first.displayTitle, "Space Quest: The Sarien Encounter");
