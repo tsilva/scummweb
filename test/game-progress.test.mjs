@@ -272,34 +272,82 @@ test('DreamWeb scores keyed snapshots and rebuilds progress after a restore', ()
   assert.equal(tracker.report().completed, 0);
 });
 
-test('Elvira II scores the winning branch separately from a late ritual failure', () => {
+test('Elvira I counts the six saved key pickups independently and only a win completes the checklist', () => {
+  const tracker = trackerFor('elvira-mistress-of-the-dark');
+  const identity = { engine_id: 'agos', game_id: 'elvira1', index_md5: '773f0004d21f095c7a4c25d4cd22a1a1' };
+  let sampleTime = 0;
+  const accept = (slots = {}, won = 0, detected = identity) => {
+    const vars = Object.assign(Array(512).fill(0), slots);
+    tracker.acceptSnapshot(detected, { room_id: null, sample_time_ms: ++sampleTime,
+      banks: { vars, elvira1_outcome: { emelda_defeated: won } } });
+    return tracker.report();
+  };
+
+  assert.deepEqual(accept().reached, []);
+  assert.deepEqual(accept({ 449: 32 }).reached, ['sextus-key']);
+  assert.deepEqual(accept({ 449: 33 }).reached, ['primus-key', 'sextus-key']);
+  assert.deepEqual(accept({ 449: 1 }).reached, ['primus-key'], 'An earlier save drops the other key');
+  assert.deepEqual(accept({ 449: 2 }).reached, ['secundus-key']);
+  assert.equal(tracker.nextMilestone, null);
+  assert.deepEqual(accept({ 449: 63, 139: 6 }).reached,
+    ['primus-key', 'secundus-key', 'tertius-key', 'quartus-key', 'quintus-key', 'sextus-key', 'unlocked-chest']);
+  assert.equal(accept({ 496: 1, 499: 1 }).percent, 0, 'A death can also reach the replay prompt');
+  assert.deepEqual(accept({ 436: 31 }).reached, ['cast-ceremonial-scroll'], 'Ready to use the dagger is not a win');
+  assert.equal(accept({}, 1).percent, 100);
+  assert.equal(accept().percent, 0, 'A fresh or restored attempt clears the winning outcome');
+  assert.equal(accept({}, 1, { ...identity, index_md5: undefined }).reason, 'edition_mismatch');
+});
+
+test('Elvira II counts early puzzles and studios in either order without credit for skipped milestones', () => {
   const tracker = trackerFor('elvira-ii-the-jaws-of-cerberus');
   const identity = { engine_id: 'agos', game_id: 'elvira2', index_md5: 'a144d2467e1addee1f705647dacd33df' };
   let sampleTime = 0;
-  const accept = (studios, stage, outcome, detected = identity) => {
+  const accept = ({ studios = 0, stage = 0, outcome = 0, flags = [], secondary = [], items = {},
+    detected = identity, olderRuntime = false } = {}) => {
     const vars = Array(255).fill(0);
     vars[180] = studios;
     vars[186] = stage;
-    const banks = outcome === undefined ? { vars } : { vars, elvira2_outcome: { ritual: outcome } };
+    const words = (count, bits) => {
+      const bank = Array(count).fill(0);
+      for (const bit of bits) bank[bit >> 4] |= 1 << (bit % 16);
+      return bank;
+    };
+    const banks = { vars, elvira2_outcome: { ritual: outcome } };
+    if (!olderRuntime) Object.assign(banks, {
+      flag_words: words(16, flags),
+      flag_words_secondary: words(15, secondary),
+      item_states: Object.assign(Array(855).fill(0), items),
+    });
     tracker.acceptSnapshot(detected, { room_id: null, sample_time_ms: ++sampleTime, banks });
     return tracker.report();
   };
 
-  assert.equal(accept(0, 0, 0).completed, 0);
-  assert.equal(accept(1, 0, 0).completed, 1);
-  assert.equal(accept(2, 0, 0).completed, 2);
-  assert.equal(accept(3, 0, 0).reached.at(-1), 'rescued-elvira');
-  assert.equal(accept(3, 1, 0).reached.at(-1), 'summoned-cerberus');
-  assert.equal(accept(3, 2, 0).reached.at(-1), 'bound-cerberus');
-  assert.equal(accept(3, 3, 0).completed, 6, 'Lance use precedes the winning script');
-  assert.equal(accept(3, 3, 2).completed, 6, 'Late failure shares the same ritual stage');
-  assert.equal(accept(3, 20, 2).completed, 3, 'Early failure clears the ritual stage');
-  assert.equal(accept(3, 3, 1).reached.at(-1), 'winning-ending');
-  assert.equal(accept(0, 0, 1).percent, 100, 'The scripted Start load resets vars during the winning sequence');
-  assert.equal(accept(2, 0, 0).completed, 2, 'A restore uses the current save timeline');
-  assert.equal(accept(3, 3).reason, 'missing_game_variables');
-  assert.equal(accept(3, 3, 1, { ...identity, index_md5: undefined }).reason, 'edition_mismatch');
-  assert.equal(accept(3, 3, 1, { ...identity, index_md5: '0'.repeat(32) }).reason, 'edition_mismatch');
+  assert.deepEqual(accept().reached, []);
+  assert.deepEqual(accept({ items: { 367: 1, 823: 1 }, secondary: [66] }).reached,
+    ['thawed-boiler-room', 'opened-attic-skylight', 'recovered-fish-tank-key']);
+  assert.deepEqual(accept({ studios: 1, flags: [103] }).reached, ['resolved-catacombs-studio']);
+  assert.deepEqual(accept({ studios: 2, flags: [103, 113] }).reached,
+    ['resolved-spider-studio', 'resolved-catacombs-studio']);
+  assert.deepEqual(accept({ studios: 1, flags: [222] }).reached, ['resolved-haunted-studio'],
+    'Restoring a different route replaces the checked studios');
+  assert.deepEqual(accept({ studios: 2, flags: [222, 113] }).reached,
+    ['resolved-spider-studio', 'resolved-haunted-studio']);
+  assert.equal(tracker.nextMilestone, null);
+  assert.deepEqual(accept({ flags: [217], items: { 176: 2 } }).reached,
+    ['revived-priest', 'prepared-pentacle', 'blessed-implements']);
+  assert.deepEqual(accept({ stage: 3 }).reached, [], 'The ritual also requires a verified rescue');
+
+  const rescued = { studios: 3, flags: [103, 113, 222] };
+  assert.equal(accept(rescued).reached.at(-1), 'rescued-elvira');
+  assert.equal(accept({ ...rescued, stage: 1 }).reached.at(-1), 'summoned-cerberus');
+  assert.equal(accept({ ...rescued, stage: 2 }).reached.at(-1), 'bound-cerberus');
+  assert.equal(accept({ ...rescued, stage: 3 }).reached.at(-1), 'used-lance');
+  assert.equal(accept({ ...rescued, stage: 3, outcome: 2 }).reached.at(-1), 'used-lance');
+  assert.equal(accept({ ...rescued, stage: 20, outcome: 2 }).reached.at(-1), 'rescued-elvira');
+  assert.equal(accept({ outcome: 1 }).percent, 100, 'The scripted Start load resets vars during the winning sequence');
+  assert.deepEqual(accept({ studios: 1, flags: [113] }).reached, ['resolved-spider-studio']);
+  assert.equal(accept({ olderRuntime: true }).reason, 'missing_game_variables');
+  assert.equal(accept({ detected: { ...identity, index_md5: '0'.repeat(32) } }).reason, 'edition_mismatch');
 });
 
 test('Sierra maps match their edition and distinguish the winning branches', async t => {

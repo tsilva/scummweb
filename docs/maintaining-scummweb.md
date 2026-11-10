@@ -30,8 +30,10 @@ On TVs that identify themselves to the browser, the homepage starts with
 **Play** focused, or **Continue** when available. Use the remote's D-pad to move
 the focus ring between browsing controls and game cards, and press **OK** to
 activate the focused item. Standard browser-mapped gamepads use the D-pad and
-the primary face button for the same actions. When **Skip intro** appears, it
-gets focus so it can be activated with **OK**.
+the primary face button for the same actions. Moving focus from the screenshots
+or library back to the hero, or into the top navigation, scrolls the page all the
+way to the top. When **Skip intro** appears, it gets focus so it can be activated
+with **OK**.
 On supported TVs, press **Back** during gameplay or an intro to focus **Exit game**
 in the player toolbar. Use **Left** or **Right** to choose a toolbar button,
 **OK** to activate it, or **Down** to return to the game. If the browser leaves
@@ -777,7 +779,7 @@ queues. A sample can miss transient writes.
 | Access | Player room | `flags` |
 | ADL | Room | `vars` |
 | AGI | Current room in the AGI VM or PreAGI interpreter | AGI `vars` and `flag_bytes`, or PreAGI `preagi` counters and victory markers |
-| AGOS | Waxworks room where known | `vars`, `vars_secondary` where enabled, `elvira2_outcome` for the English Amiga floppy edition |
+| AGOS | Waxworks room where known | `vars`, `vars_secondary` where enabled, and additional Elvira banks for the supported editions |
 | AGS | Displayed room | `game_state` score and maximum score |
 | BBVS | Game scene | `game_vars` |
 | CGE | Scene | `flags` |
@@ -859,11 +861,14 @@ Lua VM exposes saved puzzle flags and finale unlock state. Escape from Monkey
 Island exposes selected Lua story flags, the current act and the story credits
 argument.
 
-For Elvira II on Amiga, `identity.index_md5` is the MD5 of the complete
-`gameamiga` database. The supported English floppy edition publishes
-`elvira2_outcome.ritual` as 0 before an outcome, 1 on the winning branch,
-or 2 on ritual failure. The value survives the ending's scripted reload
-and clears on a new attempt or successful player-initiated restore.
+For both Elvira games on Amiga, `identity.index_md5` is the MD5 of the
+complete `gameamiga` database. The English floppy edition of Elvira I reports
+`elvira1_outcome.emelda_defeated` as 1 on the successful dagger branch and
+0 otherwise. Elvira II reports `flag_words` and `flag_words_secondary` in
+native 16-bit word order, `item_states` indexed by AGOS item ID, and
+`elvira2_outcome.ritual` as 0 before an outcome, 1 on the winning branch, or
+2 on ritual failure. The latter survives the ending's scripted reload.
+Outcomes clear on a new attempt or a successful player-initiated restore.
 
 For a new adapter, use an engine update boundary and copy game-owned values
 with `ScummWebTelemetry::Sample`. Expose a room only when the engine stores

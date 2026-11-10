@@ -321,16 +321,17 @@
     {
       "path": "patches/scummvm/19-query-engine-game-state.patch",
       "status": "active",
-      "sha256": "60cf13a75a04cddf621cb53bcaf2ab7588ce56159fcf0362fa9b18d897dd0a33",
-      "purpose": "Publish opt-in room and VM variable snapshots for additional engines, including the Elvira II finale outcome.",
+      "sha256": "bf9909cea95fb01858bcdd6d198080b7cf8192326df659e776871f8e377c0e6b",
+      "purpose": "Publish opt-in room and VM variable snapshots for additional engines, including saved Elvira II puzzle state and both Elvira finale outcomes.",
       "invariants": [
         "Sample at engine update boundaries. Preserve native variable indices and signedness, and omit room IDs that have no stable engine meaning.",
         "Copy bounded banks only on opt-in and publish each sample atomically. SCI object references are omitted. Keep snapshots separate from evaluator transition queues.",
         "Support numeric banks, named numeric variables, and named rooms without exposing VM references.",
-        "Fingerprint the entire Amiga gameamiga database and limit Elvira II outcome subroutines to the traced English floppy edition. Retain the outcome through the scripted ending and clear it on a new attempt or successful user restore."
+        "Fingerprint each full Amiga gameamiga database and gate each Elvira finale on its traced English floppy edition. A premature attack on Emelda cannot win. Elvira II exposes saved flag words and item states; retain its ritual outcome through the scripted Start load and clear it on a new attempt or successful user restore."
       ],
       "verification": [
         "Rebuild the managed runtime, query a Sky title and Sierra titles without progress maps, and check that a title without an adapter reports unavailable fields.",
+        "Verify Elvira I key flags across restores and distinguish the successful dagger branch from premature use or a death prompt.",
         "Probe fresh Elvira II play, late ritual failure and the winning subroutine against matching Amiga data. Check that the same late ritual variable can produce distinct outcomes and that the internal Start load preserves the win.",
         "Check AgentSCUMM scoring against the emitted edition and outcome bank, including an older runtime without the bank and a different edition."
       ],

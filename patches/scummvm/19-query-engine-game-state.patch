@@ -49,8 +49,27 @@ index 81421b47..9c5c6186 100644
  		}
  
  	} while (!(shouldQuit() || _restartGame));
+diff --git a/engines/agos/agos.h b/engines/agos/agos.h
+index f0eb250..3646b65 100644
+--- a/engines/agos/agos.h
++++ b/engines/agos/agos.h
+@@ -576,6 +576,14 @@ protected:
+ 	int16 *_variableArray2;
+ 	int16 *_variableArrayPtr;
+ 
++#ifdef __EMSCRIPTEN__
++	enum class Elvira2RitualOutcome : byte { None, Won, Failed };
++	bool _scummWebElvira1Edition = false;
++	bool _scummWebElvira1Won = false;
++	bool _scummWebElvira2Edition = false;
++	Elvira2RitualOutcome _scummWebElvira2RitualOutcome = Elvira2RitualOutcome::None;
++#endif
++
+ 	WindowBlock *_dummyWindow;
+ 	WindowBlock *_windowArray[80];
+ 	Graphics::AmigaFont *_pnAmigaFont;
 diff --git a/engines/agos/event.cpp b/engines/agos/event.cpp
-index 785c692e..3f73af16 100644
+index 785c692..b8c3be1 100644
 --- a/engines/agos/event.cpp
 +++ b/engines/agos/event.cpp
 @@ -19,6 +19,8 @@
@@ -62,7 +81,7 @@ index 785c692e..3f73af16 100644
  #include "agos/agos.h"
  #include "agos/animation.h"
  #include "agos/debugger.h"
-@@ -613,6 +615,18 @@ void AGOSEngine::delay(uint amount) {
+@@ -613,6 +615,31 @@ void AGOSEngine::delay(uint amount) {
  			break;
  
  		this_delay = _fastMode ? 1 : 20;
@@ -71,8 +90,21 @@ index 785c692e..3f73af16 100644
 +			// Only Waxworks tracks its physical room in _currentRoom.
 +			ScummWebTelemetry::Sample sample(getGameType() == GType_WW && _currentRoom ? _currentRoom : -1);
 +			sample.bank("vars", _variableArray, _numVars);
-+			if (_scummWebElvira2Edition)
++			if (_scummWebElvira1Edition)
++				sample.variable("elvira1_outcome", "emelda_defeated", _scummWebElvira1Won);
++			if (sample && _scummWebElvira2Edition) {
 +				sample.variable("elvira2_outcome", "ritual", static_cast<byte>(_scummWebElvira2RitualOutcome));
++				sample.bank("flag_words", _bitArray, _numBitArray1);
++				sample.bank("flag_words_secondary", _bitArrayTwo, _numBitArray2);
++				int16 states[1024] = {};
++				const uint count = MIN<uint>(_itemArrayInited, ARRAYSIZE(states));
++				for (uint id = 1; id < count; ++id) {
++					const Item *item = derefItem(id);
++					if (item)
++						states[id] = item->state;
++				}
++				sample.bank("item_states", states, count);
++			}
 +#ifdef ENABLE_AGOS2
 +			sample.bank("vars_secondary", _variableArray2, _numVars);
 +#endif
@@ -81,23 +113,8 @@ index 785c692e..3f73af16 100644
  		if (this_delay > amount)
  			this_delay = amount;
  		_system->delayMillis(this_delay);
-diff --git a/engines/agos/agos.h b/engines/agos/agos.h
---- a/engines/agos/agos.h
-+++ b/engines/agos/agos.h
-@@ -575,6 +575,12 @@
- 	int16 *_variableArray;
- 	int16 *_variableArray2;
- 	int16 *_variableArrayPtr;
-+
-+#ifdef __EMSCRIPTEN__
-+	enum class Elvira2RitualOutcome : byte { None, Won, Failed };
-+	bool _scummWebElvira2Edition = false;
-+	Elvira2RitualOutcome _scummWebElvira2RitualOutcome = Elvira2RitualOutcome::None;
-+#endif
- 
- 	WindowBlock *_dummyWindow;
- 	WindowBlock *_windowArray[80];
 diff --git a/engines/agos/res.cpp b/engines/agos/res.cpp
+index 1ef1d3c..f1dd405 100644
 --- a/engines/agos/res.cpp
 +++ b/engines/agos/res.cpp
 @@ -22,6 +22,10 @@
@@ -111,17 +128,19 @@ diff --git a/engines/agos/res.cpp b/engines/agos/res.cpp
  #include "common/archive.h"
  #include "common/file.h"
  #include "common/memstream.h"
-@@ -190,6 +194,19 @@
+@@ -190,6 +194,21 @@ void AGOSEngine::loadGamePcFile() {
  			error("loadGamePcFile: Can't load gamexx file '%s'", getFileName(GAME_BASEFILE));
  		}
  
 +#ifdef __EMSCRIPTEN__
-+		if (getGameType() == GType_ELVIRA2 && getPlatform() == Common::kPlatformAmiga &&
++		if ((getGameType() == GType_ELVIRA1 || getGameType() == GType_ELVIRA2) &&
++				getPlatform() == Common::kPlatformAmiga &&
 +				EM_ASM_INT({ return Boolean(globalThis.__scummwebTelemetryQueryEnabled); })) {
 +			const Common::String indexMd5 = Common::computeStreamMD5AsString(in);
 +			in.seek(0);
-+			// The outcome subroutine IDs are traced to this English floppy database.
-+			_scummWebElvira2Edition = indexMd5 == "a144d2467e1addee1f705647dacd33df";
++			// The progress rules and outcome subroutines use these English floppy databases.
++			_scummWebElvira1Edition = getGameType() == GType_ELVIRA1 && indexMd5 == "773f0004d21f095c7a4c25d4cd22a1a1";
++			_scummWebElvira2Edition = getGameType() == GType_ELVIRA2 && indexMd5 == "a144d2467e1addee1f705647dacd33df";
 +			EM_ASM({
 +				const identity = globalThis.__scummwebEvaluationGame;
 +				if (identity) identity.index_md5 = UTF8ToString($0);
@@ -132,9 +151,21 @@ diff --git a/engines/agos/res.cpp b/engines/agos/res.cpp
  			uint srcSize = in.size();
  			byte *srcBuf = (byte *)malloc(srcSize);
 diff --git a/engines/agos/saveload.cpp b/engines/agos/saveload.cpp
+index 9161fc5..f441375 100644
 --- a/engines/agos/saveload.cpp
 +++ b/engines/agos/saveload.cpp
-@@ -1457,6 +1457,12 @@
+@@ -1146,6 +1146,10 @@ bool AGOSEngine::loadGame(const Common::String &filename, bool restartMode) {
+ 
+ 	_videoLockOut &= ~0x100;
+ 
++#ifdef __EMSCRIPTEN__
++	// Elvira I only loads Start after the player chooses to play again.
++	_scummWebElvira1Won = false;
++#endif
+ 	return true;
+ }
+ 
+@@ -1457,6 +1461,12 @@ bool AGOSEngine_Elvira2::loadGame(const Common::String &filename, bool restartMo
  		setBitFlag(135, 1);
  	}
  
@@ -148,13 +179,17 @@ diff --git a/engines/agos/saveload.cpp b/engines/agos/saveload.cpp
  }
  
 diff --git a/engines/agos/subroutine.cpp b/engines/agos/subroutine.cpp
+index eee53c3..9920ed5 100644
 --- a/engines/agos/subroutine.cpp
 +++ b/engines/agos/subroutine.cpp
-@@ -562,6 +562,19 @@
+@@ -562,6 +562,22 @@ restart:
  	if (shouldQuit())
  		return result;
  
 +#ifdef __EMSCRIPTEN__
++	// Script 231 also handles a premature dagger attack. Bit 4 selects its winning line.
++	if (_scummWebElvira1Edition && sub->id == 231 && (readVariable(436) & 16))
++		_scummWebElvira1Won = true;
 +	if (_scummWebElvira2Edition) {
 +		// The same late ritual value and Play Again prompt occur on both paths.
 +		// Track the selected branch through the cutscene and its internal restart.
