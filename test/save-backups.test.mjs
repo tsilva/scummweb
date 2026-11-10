@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { applyImport, destinationMatches, exportBackup, getActiveSaveSets, getSaveDestinations, identifySet, matchDestination, readBackup } from "../app/save-backups/backups.mjs";
-import { captureFilesystem, restoreSaveGroups, safePath } from "../app/save-backups/filesystem.mjs";
-import { getLatestBrowserSave, readBrowserSaveFiles } from "../app/browser-saves.mjs";
+import { captureFilesystem, initializeSaveEdition, restoreSaveGroups, safePath } from "../app/save-backups/filesystem.mjs";
+import { getCachedBrowserSave, getLatestBrowserSave, readBrowserSaveFiles } from "../app/browser-saves.mjs";
 import { saveIndexKey, saveRevision } from "../web-shell/continue-saves.mjs";
+import { acquireEditionSession, editionKey, editionLockName, readSaveTree } from "../web-shell/save-editions.mjs";
 
 const bytes = (text) => new TextEncoder().encode(text);
 const config = "[scummvm]\nsavepath=/home/web_user/.local/share/scummvm/saves\n";
@@ -208,30 +209,104 @@ test("multiple histories can be preserved while only one set is activated", asyn
   assert.deepEqual(captureFilesystem(storage).files.map((item) => item.path), ["SKY-VM.001"]);
 });
 
-test("backup operations refuse a held game lock and runtime locks before mounting", async (t) => {
+test("edition locks admit different games, reject duplicates, and exclude backups", async (t) => {
   const { withSaveLock, saveLockName } = await import("../app/save-backups/backups.mjs");
+  const held = [];
+  const locks = { async request(name, { mode, ifAvailable }, use) {
+    assert.equal(ifAvailable, true);
+    if (held.some(lock => lock.name === name && (lock.mode === "exclusive" || mode === "exclusive"))) return use(null);
+    const lock = { name, mode };
+    held.push(lock);
+    try { return await use(lock); }
+    finally { held.splice(held.indexOf(lock), 1); }
+  } };
   const descriptor = Object.getOwnPropertyDescriptor(globalThis, "navigator");
   t.after(() => { if (descriptor) Object.defineProperty(globalThis, "navigator", descriptor); else delete globalThis.navigator; });
-  Object.defineProperty(globalThis, "navigator", { configurable: true, value: { locks: {
-    request: async (name, options, use) => {
-      assert.equal(name, saveLockName);
-      assert.equal(options.mode, "exclusive");
-      assert.equal(options.ifAvailable, true);
-      return use(null);
-    },
-  } } });
+  Object.defineProperty(globalThis, "navigator", { configurable: true, value: { locks } });
+  const skyEdition = editionKey("", "sky");
+  const queenEdition = editionKey("", "queen");
+  await acquireEditionSession(locks, skyEdition);
+  await acquireEditionSession(locks, queenEdition);
+  assert.deepEqual(held.map(lock => lock.name), [
+    saveLockName, editionLockName(skyEdition), saveLockName, editionLockName(queenEdition),
+  ]);
+  await assert.rejects(acquireEditionSession(locks, skyEdition), { name: "SaveSessionBusyError", busyReason: "edition" });
+  await assert.rejects(acquireEditionSession(locks, ""), { name: "SaveSessionBusyError", busyReason: "storage" });
   await assert.rejects(withSaveLock(() => assert.fail("must not run while a game holds the lock")), /Close games/);
-  const { readFile } = await import("node:fs/promises");
-  const { runInNewContext } = await import("node:vm");
-  const shell = await readFile(new URL("../scummvm-shell/scummvm.html", import.meta.url), "utf8");
-  const source = shell.slice(shell.indexOf("function acquireSaveSession()"), shell.indexOf("function setupLocalFilesystem()"));
-  let mode;
-  const navigator = { locks: { request: (_name, options, use) => { mode = options.mode; return use({}); } } };
-  await runInNewContext(source + "\nacquireSaveSession()", { navigator, Promise });
-  assert.equal(mode, "exclusive");
-  const blocked = { locks: { request: (_name, options, use) => use(null) } };
-  await assert.rejects(runInNewContext(source + "\nacquireSaveSession()", { navigator: blocked, Promise }), /Another game or save operation/);
-  assert.match(shell, /acquireSaveSession\(\)\.then\(/);
+});
+
+test("legacy edition migration preserves Continue, timestamps, companion files, and unclaimed saves", async (t) => {
+  const namespace = "version-" + "a".repeat(64);
+  const storage = storageFixture({
+    "SKY-VM.007": bytes("progress"), "SKY-VM.SAV": bytes("descriptions"), "queen.s01": bytes("queen"),
+    "custom.012": bytes("indexed save"), "unknown.001": bytes("unclaimed"),
+    [namespace]: { "game.001": bytes("personal") },
+  });
+  const previous = globalThis.window;
+  t.after(() => { if (previous === undefined) delete globalThis.window; else globalThis.window = previous; });
+  globalThis.window = { localStorage: storage };
+  const game = { target: "sky", gameId: "sky", engineId: "sky" };
+  const { files } = await readBrowserSaveFiles(game);
+  storage.setItem(saveIndexKey("", "sky"), JSON.stringify({ schemaVersion: 1, supported: true,
+    engineId: "sky", gameId: "sky", target: "sky", revision: saveRevision(files),
+    saves: [{ ...files.find(({ name }) => name === "SKY-VM.007"), slot: 7 },
+      { ...files.find(({ name }) => name === "custom.012"), slot: 12 }] }));
+  assert.equal(getCachedBrowserSave(game), 7);
+  const skyRoot = initializeSaveEdition(storage, "catalog-sky");
+  initializeSaveEdition(storage, "catalog-queen");
+  initializeSaveEdition(storage, namespace);
+  assert.equal(initializeSaveEdition(storage, "catalog-sky"), skyRoot);
+  assert.equal(getCachedBrowserSave(game), 7);
+  assert.equal(await getLatestBrowserSave(game), 7);
+  const active = captureFilesystem(storage);
+  assert.deepEqual(active.editions.get("catalog-sky"), [
+    file("SKY-VM.007", "progress"), file("SKY-VM.SAV", "descriptions"), file("custom.012", "indexed save"),
+  ]);
+  assert.deepEqual(active.editions.get("catalog-queen"), [file("queen.s01", "queen")]);
+  assert.deepEqual(active.editions.get(namespace), [file("game.001", "personal")]);
+  assert.deepEqual(active.files, [file("unknown.001", "unclaimed")]);
+});
+
+test("scoped backup round trips nonstandard filenames into the right edition", async () => {
+  const storage = storageFixture({ "SKY-VM.007": bytes("old"), "queen.s01": bytes("queen") });
+  initializeSaveEdition(storage, "catalog-sky");
+  initializeSaveEdition(storage, "catalog-queen");
+  const imported = await set({ ...sky, isolated: true }, [file("companion.dat", "metadata")]);
+  await restore(storage, await readBackup(await exportBackup([imported])));
+  const active = await getActiveSaveSets(storage, destinations);
+  assert.deepEqual(active.sets.find(({ destination }) => destination.key === sky.key).files, imported.files);
+  assert.deepEqual(active.sets.find(({ destination }) => destination.key === queen.key).files, [file("queen.s01", "queen")]);
+
+  const newStorage = storageFixture();
+  await restore(newStorage, await readBackup(await exportBackup(active.sets)));
+  assert.deepEqual(captureFilesystem(newStorage).editions.get("catalog-sky"), imported.files);
+  const legacyBackup = await set(sky, [file("SKY-VM.002", "old backup format")]);
+  await restore(newStorage, await readBackup(await exportBackup([legacyBackup])));
+  assert.deepEqual(captureFilesystem(newStorage).editions.get("catalog-sky"), legacyBackup.files);
+});
+
+test("new edition initialization leaves other edition blocks unread and rolls back a failed migration", () => {
+  const storage = storageFixture({ "SKY-VM.007": bytes("old"), "queen.s01": bytes("queen") });
+  const skyRoot = initializeSaveEdition(storage, "catalog-sky");
+  const before = new Map(storage.values);
+  const { files, inode } = readSaveTree(storage, "catalog-sky");
+  const liveKeys = [skyRoot, files["SKY-VM.007"], inode(files["SKY-VM.007"]).dataKey];
+  const get = storage.getItem;
+  storage.getItem = (key) => {
+    assert.ok(!liveKeys.includes(key), "migration must not inspect files from a running edition");
+    return get(key);
+  };
+  const put = storage.setItem;
+  storage.setItem = (key, value) => {
+    if (key === "/") throw new DOMException("full", "QuotaExceededError");
+    put(key, value);
+  };
+  assert.throws(() => initializeSaveEdition(storage, "catalog-queen"), /current saves are unchanged/);
+  assert.deepEqual(storage.values, before);
+  storage.setItem = put;
+  assert.ok(initializeSaveEdition(storage, "catalog-queen"));
+  storage.getItem = get;
+  assert.deepEqual(captureFilesystem(storage).editions.get("catalog-sky"), [file("SKY-VM.007", "old")]);
 });
 
 test("unsafe directory depth and prototype-like names cannot enter the save tree", () => {

@@ -274,17 +274,26 @@ files and timestamps, stay together; individual save slots are not combined.
 Older shared saves with an unknown filename convention are backed up together
 as **Other shared saves** to avoid splitting dependent files.
 
-Close games in every tab before exporting, importing or switching sets. The
-runtime holds an exclusive Web Lock while it uses the save filesystem; a second
-game or backup operation must wait until it closes. Library tabs remain usable.
-Browsers without Web Locks can play without cross-tab coordination, but cannot use
-the backup actions. Current saves remain in BrowserFS localStorage; preserved
-sets use IndexedDB. Both remain local to this site and browser profile until
-exported, and clearing site data removes them. There is no automatic cloud sync.
+Different game editions can run in separate tabs. Each edition has its own
+writable filesystem and holds an exclusive lock for that edition until the
+player closes. Opening the edition or checking its saves for the first time
+moves matching legacy saves into its filesystem with their original timestamps.
+Continue reads the old location until the move. Unmatched files stay available
+in **Other shared saves**.
+Launches without an edition identity still use the shared filesystem.
+
+Close games in every tab before exporting, importing or switching sets. Those
+operations take an exclusive site-wide lock. Browsers without Web Locks can
+play without cross-tab coordination and cannot use backup actions. Current
+saves remain in BrowserFS localStorage. Preserved sets use IndexedDB. Both
+remain local to this site and browser profile until exported, and clearing
+site data removes them. There is no automatic cloud sync.
 
 Backups use format `scummweb-save-backup`, version `1`: `manifest.json` identifies
 game destinations and lists logical filenames, timestamps, ZIP entry names and
-SHA-256 checksums. Save bytes are stored separately under `saves/`. Imports are
+SHA-256 checksums. Catalog sets from isolated storage include an `isolated`
+marker so their files restore to the same edition. Save bytes are stored
+separately under `saves/`. Imports are
 limited to 64 MiB expanded and compressed, 4,096 save files and 1,000 sets, and
 reject unsafe paths, unsupported versions, unexpected entries and failed
 checksums. Export reserves space for the manifest within that limit. Restores
@@ -1680,9 +1689,9 @@ or request-time rendering.
   later sections. Thumbnail requests start as the strip approaches the viewport.
   Selecting a thumbnail expands a viewer inline. The first screenshot sets the
   viewer's aspect ratio, so switching between images keeps the toolbar in place
-  and displays every screenshot uncropped. Previous/next and arrow keys browse
-  the screenshots; Close screenshot or Escape collapses the viewer and restores
-  focus to the thumbnail. Game changes reset the expanded image.
+  and displays every screenshot centered and uncropped. Previous/next and arrow
+  keys browse the screenshots; Close screenshot or Escape collapses the viewer
+  and restores focus to the thumbnail. Game changes reset the expanded image.
   Game details do not open a modal or lock background scrolling.
   The library's sliders icon opens the sorting and genre controls. The button
   has an accessible label and no visible text. It sorts the

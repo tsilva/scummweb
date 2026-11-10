@@ -1,8 +1,9 @@
 import { captureFilesystem, restoreSaveGroups, safePath } from "./filesystem.mjs";
 import { getVersionSaveNamespace } from "../game-versions.mjs";
 import { saveIndexPrefix } from "../../web-shell/continue-saves.mjs";
+import { editionKey, saveLockName } from "../../web-shell/save-editions.mjs";
 
-export const saveLockName = "scummweb-saves";
+export { saveLockName };
 const maxBytes = 64 * 1024 * 1024;
 const maxFiles = 4096;
 const rootFamilies = [
@@ -24,9 +25,9 @@ export async function identifySet(set) {
 }
 
 export async function getSaveDestinations(catalog, sources) {
-  const included = rootFamilies.flatMap(([family]) => {
-    const game = catalog.find(({ target }) => target === family || (family === "dreamweb-cd" && target === "dreamweb"));
-    return game ? [{ key: `catalog:${family}`, title: game.displayTitle, family, namespace: "" }] : [];
+  const included = catalog.flatMap((game) => {
+    const family = game.target === "dreamweb" ? "dreamweb-cd" : game.target;
+    return editionKey("", family) ? [{ key: `catalog:${family}`, title: game.displayTitle, family, namespace: "" }] : [];
   });
   const imported = await Promise.all(sources.map(async (source) => ({
     key: await getVersionSaveNamespace(source.id), namespace: await getVersionSaveNamespace(source.id),
@@ -47,8 +48,18 @@ export async function getActiveSaveSets(storage, destinations) {
     if (!groups.has(destination.key)) groups.set(destination.key, { destination, files: [] });
     groups.get(destination.key).files.push({ ...file, path: namespace ? rest.join("/") : file.path });
   }
-  const sets = await Promise.all([...groups.values()].map(async (set) => ({ ...set, hash: await identifySet(set) })));
-  return { sets, revision: snapshot.revision };
+  const isolatedSets = [];
+  for (const [edition, files] of snapshot.editions) {
+    if (!files.length) continue;
+    const catalog = edition.startsWith("catalog-");
+    const family = catalog ? edition.slice("catalog-".length) : null;
+    const key = catalog ? `catalog:${family}` : edition;
+    const destination = destinations.find((item) => item.key === key)
+      || { key, family, namespace: catalog ? "" : edition, title: family || "Unmatched imported game" };
+    isolatedSets.push({ destination: catalog ? { ...destination, isolated: true } : destination, files });
+  }
+  const sets = await Promise.all([...isolatedSets, ...groups.values()].map(async (set) => ({ ...set, hash: await identifySet(set) })));
+  return { sets, editionKeys: new Set(snapshot.editions.keys()), revision: snapshot.revision };
 }
 
 export async function exportBackup(sets) {
@@ -78,13 +89,15 @@ function validateDestination(value) {
     || value.title.length > 200 || /[\x00-\x1f]/.test(value.title)) throw new Error("Invalid game information in backup.");
   if (value.namespace) {
     if (!/^version-[a-f0-9]{64}$/.test(value.namespace) || value.key !== value.namespace) throw new Error("Invalid imported-game identity.");
+  } else if (value.isolated === true) {
+    if (!editionKey("", value.family) || value.key !== `catalog:${value.family}`) throw new Error("Invalid catalog edition.");
   } else if (!(value.key === "shared" && value.family === "shared")
     && !rootFamilies.some(([family]) => value.key === `catalog:${family}` && value.family === family)) {
     throw new Error("Invalid shared-save identity.");
   }
   if (value.fingerprint != null && !/^[a-f0-9]{64}$/.test(value.fingerprint)) throw new Error("Invalid game fingerprint.");
   return { key: value.key, title: value.title, namespace: value.namespace || "", family: value.family || null,
-    fingerprint: value.fingerprint || null };
+    fingerprint: value.fingerprint || null, ...(!value.namespace && value.isolated === true && { isolated: true }) };
 }
 
 export async function readBackup(file) {
@@ -130,7 +143,9 @@ export async function readBackup(file) {
           throw new Error("Invalid or duplicate save filename in backup.");
         }
         // A shared bundle must never overwrite another game's files or a namespace.
-        if (!destination.namespace && !destinationMatches(destination, path.split("/")[0])) throw new Error("A save file does not belong to its game.");
+        if (!destination.namespace && !destination.isolated && !destinationMatches(destination, path.split("/")[0])) {
+          throw new Error("A save file does not belong to its game.");
+        }
         names.add(path.toLowerCase());
         referenced.add(fileInfo.entry);
         const data = await read(entry);
@@ -196,20 +211,24 @@ export async function applyImport({ storage, rows, destinations, revision, initi
   const updated = new Set();
   for (const row of rows) {
     const destination = destinations.find(({ key }) => key === row.destinationKey);
-    const imported = { ...row.set, destination: destination || row.set.destination };
+    const isolated = row.set.destination.isolated === true;
+    const imported = { ...row.set, destination: destination ? { ...destination, ...(isolated && { isolated }) } : row.set.destination };
     if (!destination) { archived.push(imported); continue; }
-    const active = current.sets.find((set) => set.destination.key === destination.key);
+    const activeSets = current.sets.filter((set) => set.destination.key === destination.key);
+    const [active] = activeSets;
     if (active?.hash === imported.hash) continue;
     archived.push(imported);
-    if (active) archived.push(active);
+    archived.push(...activeSets);
     if (row.choice === "stored") continue;
     if (active && row.choice !== "imported") continue;
     if (updated.has(destination.key)) throw new Error("Activate only one save set per game. Keep the others as separate sets.");
     updated.add(destination.key);
-    if (!destination.namespace && imported.files.some(({ path }) => !destinationMatches(destination, path.split("/")[0]))) {
+    if (!destination.namespace && !isolated && imported.files.some(({ path }) => !destinationMatches(destination, path.split("/")[0]))) {
       throw new Error("These files cannot be restored to that shared game. Choose the matching imported version instead.");
     }
-    updates.push({ namespace: destination.namespace, matches: (name) => destinationMatches(destination, name), files: imported.files });
+    const edition = destination.key === "shared" ? "" : editionKey(destination.namespace, destination.family);
+    updates.push({ edition: isolated || current.editionKeys.has(edition) ? edition : "",
+      namespace: destination.namespace, matches: (name) => destinationMatches(destination, name), files: imported.files });
   }
   // Preserve both sides durably before any active files change.
   await preserve(archived);

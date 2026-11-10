@@ -1,8 +1,8 @@
 import { getVersionSaveNamespace, readVersionSaveNamespace } from "./game-versions.mjs";
 import { latestPlayerSave, saveIndexKey, saveIndexPrefix, saveRevision, supportsContinue } from "../web-shell/continue-saves.mjs";
 import { readCachedSave } from "./browser-save-cache.mjs";
+import { editionKey, editionLockName, readSaveTree, saveLockName } from "../web-shell/save-editions.mjs";
 
-const saveDirectory = [".local", "share", "scummvm", "saves"];
 const queries = new Map();
 const attempts = new Map();
 const cancellations = new Set();
@@ -14,40 +14,19 @@ export function cancelBrowserSaveQueries() {
   for (const cancel of [...cancellations]) cancel();
 }
 
-function readInode(storage, key) {
-  if (!key) return null;
-  const value = storage.getItem(key);
-  if (!value) return null;
-  const binary = atob(value);
-  if (binary.length <= 30) return null;
-  const metadata = new DataView(Uint8Array.from(binary.slice(0, 30), (byte) => byte.charCodeAt(0)).buffer);
-  return { dataKey: binary.slice(30), size: metadata.getUint32(0, true),
-    type: metadata.getUint16(4, true) & 0xf000, modifiedAt: metadata.getFloat64(14, true) };
-}
-
-function readDirectory(storage, key) {
-  const inode = readInode(storage, key);
-  if (inode?.type !== 0x4000) return {};
-  const bytes = Uint8Array.from(atob(storage.getItem(inode.dataKey) || ""), (byte) => byte.charCodeAt(0));
-  return JSON.parse(new TextDecoder().decode(bytes));
-}
-
 export async function readBrowserSaveFiles(game) {
   const namespace = game.saveVersionId ? game.saveNamespace || await getVersionSaveNamespace(game.saveVersionId) : "";
-  return readSaveFiles(namespace);
+  return readSaveFiles(namespace, game.target);
 }
 
-function readSaveFiles(namespace) {
+function readSaveFiles(namespace, target) {
   const storage = window.localStorage;
-  let listing = readDirectory(storage, "/");
-  for (const folder of namespace ? [...saveDirectory, namespace] : saveDirectory) {
-    listing = readDirectory(storage, listing[folder]);
-  }
+  const { files: listing, inode } = readSaveTree(storage, editionKey(namespace, target), namespace);
   const files = Object.entries(listing).flatMap(([name, key]) => {
-    const inode = readInode(storage, key);
-    if (inode?.type !== 0x8000 || !Number.isFinite(inode.modifiedAt) || inode.size <= 0) return [];
-    if (!storage.getItem(inode.dataKey)) return [];
-    return [{ name, size: inode.size, modifiedAt: inode.modifiedAt }];
+    const file = inode(key);
+    if (file?.type !== 0x8000 || !Number.isFinite(file.modifiedAt) || file.size <= 0) return [];
+    if (!storage.getItem(file.dataKey)) return [];
+    return [{ name, size: file.size, modifiedAt: file.modifiedAt }];
   });
   return { namespace, files };
 }
@@ -85,7 +64,9 @@ async function queryNativeSaves(game, namespace, assetVersion, generation) {
   const gameId = game.gameId || game.target;
   if (!supportsContinue(game.engineId, gameId, game.extra) || !gameId || typeof document === "undefined") return Promise.resolve(null);
   const locks = await window.navigator?.locks?.query();
-  if (generation !== queryGeneration || locks?.held.some(({ name }) => name === "scummweb-saves")) return null;
+  const edition = editionKey(namespace, game.target);
+  if (generation !== queryGeneration || locks?.held.some(({ name, mode }) =>
+    name === editionLockName(edition) || name === saveLockName && (!edition || mode !== "shared"))) return null;
   return new Promise((resolve) => {
     const query = crypto.randomUUID();
     const frame = document.createElement("iframe");
@@ -95,7 +76,8 @@ async function queryNativeSaves(game, namespace, assetVersion, generation) {
     const url = new URL("/scummvm.html", window.location.href);
     const target = game.nativeTarget || game.target || game.gameId;
     for (const [key, value] of Object.entries({ saveQuery: query, saveEngine: game.engineId,
-      saveGameId: gameId, saveTarget: target, saveExtra: game.extra, saveNamespace: namespace, v: assetVersion })) {
+      saveGameId: gameId, saveTarget: target, saveExtra: game.extra, saveNamespace: namespace,
+      catalogSaveTarget: namespace ? null : game.target, v: assetVersion })) {
       if (value) url.searchParams.set(key, value);
     }
     url.hash = target;
@@ -146,7 +128,7 @@ export async function getLatestBrowserSave(game, assetVersion) {
         const generation = queryGeneration;
         // Engine modules are large: never boot several save-query runtimes at once.
         const request = queryQueue.then(() => {
-          if (generation !== queryGeneration || saveRevision(readSaveFiles(namespace).files) !== revision) return null;
+          if (generation !== queryGeneration || saveRevision(readSaveFiles(namespace, game.target).files) !== revision) return null;
           attempts.set(key, Date.now());
           return queryNativeSaves({ ...game,
           engineId: index?.engineId || game.engineId, gameId: index?.gameId || game.gameId,
