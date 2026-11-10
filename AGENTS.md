@@ -1,32 +1,29 @@
-# agents.md
+# ScummWEB agent instructions
 
-Repo notes for coding agents working in `scummweb`.
-
-- Treat `scummvm-shell/` as the source of truth for managed scummweb shell assets. `npm run dev`, `npm run build`, and `npm run start` validate that tracked shell, then stage it into `public/` before starting Next.js.
-- Edit browser shell templates in `web-shell/` and upstream source patches in `patches/scummvm/`. Rebuild with `./scripts/build_scummvm_web.sh` so `dist/` is regenerated and synced back into `scummvm-shell/`. See the [ScummVM upgrade procedure](docs/maintaining-scummweb.md#rebuilding-and-upgrading-scummvm).
-- The playable entry is Beneath a Steel Sky from `downloads/bass-cd-1.2.zip`, launched through `/scummvm.html#sky`.
-- End every user-facing game demo title with `(Demo)`, for example `The Secret of Monkey Island (Demo)`. Put platform, language, and edition details in separate metadata fields.
-- Game assets should be accessed directly through the bucket origin, not proxied through the app server.
-- Game artwork storage is controlled by `data/artwork-storage.json`. Published images use immutable R2 object URLs; keep logical game mappings and source credits in Git. Until `published` is true, artwork remains local. Follow the artwork publishing procedure in `docs/maintaining-scummweb.md`; upload and verify all objects before activation or removal of originals. `launcher/notices/` and `launcher/skip-intro/` remain runtime assets in Git.
-- Keep user-facing documentation and test-status pages free of personal machine paths, storage-device names, browser-profile details, and agent tool logs. Describe game compatibility results and limitations in product terms.
-- In this repo, when the user says `deploy`, treat it as a production deploy by default unless they explicitly ask for preview.
-- For agent browser interactions and rendered checks, follow the global Browser Use and Testing policy through its documented runtime.
-- `./scripts/verify_scummvm_web.sh` is the existing Chrome/Chromium verification harness. Use that browser path only when the user explicitly requests that browser; it is not a fallback when the preferred browser is unavailable.
-- Keep agent gameplay procedures and experiments in the sibling `agentscumm` repository. This repository owns the browser game runtime.
-- Keep native game maps and story milestones in `data/game-internals/`. Follow [the map and tracker guide](docs/game-progress.md) when changing them.
-- Avoid deleting unrelated worktree changes. This repo often has large generated-asset diffs in `public/` and `scummvm-shell/`.
+- Edit runtime templates in `web-shell/` and native patches in `patches/scummvm/`.
+  Rebuild the tracked `scummvm-shell/` using the [runtime build guide](docs/maintaining-scummweb.md#rebuilding-and-upgrading-scummvm).
+  App commands validate and stage that bundle into `public/`.
+- Use Beneath a Steel Sky from `downloads/bass-cd-1.2.zip` via
+  `/scummvm.html#sky` as the baseline. Keep unrelated generated-asset changes.
+- End demo titles with `(Demo)`. Store platform, language, and edition separately.
+  Serve game assets directly from the bucket.
+- Keep story maps in `data/game-internals/`. Follow the [map and tracker guide](docs/game-progress.md).
+  Keep gameplay procedures and experiments in the sibling `agentscumm` repo.
+- Follow the global browser policy. Use `./scripts/verify_scummvm_web.sh`
+  only when the user explicitly selects Chrome or Chromium.
+- Keep public docs and test results free of personal machine paths, storage
+  device names, browser-profile details, and agent logs. Describe compatibility
+  in product terms.
+- Treat `deploy` as Production unless the user asks for Preview.
 
 ## Game artwork generation
 
 Use [$scummweb_game-assets](.codex/skills/scummweb_game-assets/SKILL.md) for
-hero banners, card box art, generated-artwork inventories and R2 artwork delivery.
-Record generated candidates and dates in `data/generated-artwork.json`; retain
-original reference credits. Card box art must faithfully regenerate the original
-box front to improve quality, preserving its artwork, title typography, branding
-and layout. Do not use reimagined hero art as a replacement box cover.
-Gameplay screenshots must remain original captures,
-never generated or repainted. Resizing and lossless delivery encoding do not
-change their original-capture provenance.
+generation, provenance and [R2 delivery](docs/maintaining-scummweb.md#artwork-storage-and-publishing).
+Keep card covers faithful to the original box front and screenshots as original
+captures. Verify public objects before activation or retiring originals.
+Keep logical mappings, source credits, `launcher/notices/`, and
+`launcher/skip-intro/` in Git.
 
 ## ScummVM upgrades and patch memory
 
@@ -57,6 +54,15 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Secrets
 
-Local builds skip Sentry source-map uploads. Default dev uses Infisical scummweb Development / for the Sentry smoke test. Storage and OpenRouter values remain isolated from the web process. Production uses scummweb-production Production / and an explicit pinned manual sync command followed by redeployment. Never print or upload private values; retain Keychain originals until verified rotation.
+Local builds skip Sentry source-map uploads. Managed dev uses Infisical
+ScummWEB Development `/` for Sentry. Keep storage and OpenRouter credentials
+out of the web process. [Production delivery](docs/production-delivery.md)
+uses scummweb-production Production `/`. Keep private values out of logs and
+retain Keychain originals until verified rotation.
 
-For a single immutable artwork object, use the [sandboxed R2 publisher](docs/maintaining-scummweb.md#single-object-publishing-through-agent-vault). Its trusted signing step uses the existing ScummWEB Development `/` binding for `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`, pinned to `https://app.infisical.com` and the `scummvm-games` bucket. Its temporary Agent Vault bundle receives only a random loopback relay capability. The sandboxed publisher receives a placeholder and can reach only the local proxy. The existing bulk publishing workflow retains its separate credential requirements.
+The [sandboxed R2 publisher](docs/maintaining-scummweb.md#single-object-publishing-through-agent-vault)
+signs single-object uploads with the ScummWEB Development `/` R2 pair, pinned
+to `https://app.infisical.com` and `scummvm-games`. Only the loopback relay
+capability enters the temporary Agent Vault bundle. The sandboxed process
+gets a placeholder and can reach only the local proxy. Bulk publishing has
+separate credential requirements.
