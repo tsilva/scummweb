@@ -12,7 +12,7 @@ const source = (await readFile(new URL("../app/game-player/useImmersiveMode.js",
   .replace("export function useImmersiveMode", "function useImmersiveMode");
 
 function player({ fullscreen = false, landscape = false, mobile = true, tv = false, narrow = mobile,
-  denied = false, deferred = false, unsupportedOrientation = false, installed = false, nativeFullscreen = false } = {}) {
+  denied = false, deferred = false, unsupportedOrientation = false, installed = false } = {}) {
   const hooks = [];
   const listeners = new Map();
   let cursor = 0;
@@ -49,16 +49,15 @@ function player({ fullscreen = false, landscape = false, mobile = true, tv = fal
         "(max-width: 900px)": narrow,
         "(pointer: coarse)": mobile,
         "(display-mode: standalone), (display-mode: minimal-ui)": installed && !document.fullscreenElement,
-        "(display-mode: fullscreen)": nativeFullscreen || Boolean(document.fullscreenElement),
+        "(display-mode: fullscreen)": Boolean(document.fullscreenElement),
       }[query],
       addEventListener() {}, removeEventListener() {},
     }),
     addEventListener: (name, listener) => listeners.set(name, listener),
     removeEventListener: (name) => listeners.delete(name),
   };
-  const userActivation = { isActive: true };
   const context = {
-    window, navigator: { userActivation, maxTouchPoints: mobile ? 1 : 0, userAgent: mobile ? "iPhone" : "Desktop" },
+    window, navigator: { maxTouchPoints: mobile ? 1 : 0, userAgent: mobile ? "iPhone" : "Desktop" },
     isKnownTvBrowser: () => tv, console, queueMicrotask,
     // Physical screen orientation may disagree with the browser viewport.
     screen: { orientation: {
@@ -83,7 +82,7 @@ function player({ fullscreen = false, landscape = false, mobile = true, tv = fal
       }
     },
   };
-  runInNewContext(`${immersiveSource}\n${source}\nthis.useImmersiveMode = useImmersiveMode; this.begin = beginGameLaunch; this.exit = exitImmersiveMode; this.resume = resumeMobileGameLaunch; this.observe = observeInstalledFullscreenGestures;`, context);
+  runInNewContext(`${immersiveSource}\n${source}\nthis.useImmersiveMode = useImmersiveMode; this.begin = beginGameLaunch; this.exit = exitImmersiveMode;`, context);
   let state;
   async function settle() {
     for (let attempt = 0; attempt < 10; attempt++) {
@@ -97,9 +96,8 @@ function player({ fullscreen = false, landscape = false, mobile = true, tv = fal
     throw new Error("Mobile player did not settle");
   }
   return {
-    settle, listeners, actions, document, shellRef,
-    begin: context.begin, exit: context.exit, resume: context.resume,
-    observe: () => context.observe(window), userActivation,
+    settle, listeners, actions, document,
+    begin: context.begin, exit: context.exit,
     resolveFullscreen: pending.resolve,
     unmount: () => { for (const hook of hooks) hook?.cleanup?.(); },
     requests: () => requests,
@@ -174,59 +172,22 @@ test("a direct mobile launch requests landscape even without fullscreen support"
   assert.deepEqual(client.actions, ["landscape"]);
 });
 
-test("desktop launches keep the normal browser orientation", async () => {
-  const client = player({ fullscreen: true, mobile: false });
-  assert.equal(client.begin(), false);
-  const state = await client.settle();
-  assert.equal(state.isMobileViewport, false);
-  assert.equal(client.requests(), 0);
-  await state.handleFullscreenToggle();
-  await state.handleFullscreenToggle();
-  assert.deepEqual(client.actions, ["fullscreen", "exit"]);
-});
-
-test("installed windows reenter fullscreen after a browser exit and retain it on game exit", async () => {
-  const client = player({ fullscreen: true, mobile: false, installed: true, deferred: true });
-  const stop = client.observe();
-  const click = client.listeners.get("click");
-  const keydown = client.listeners.get("keydown");
-  click({ isTrusted: false });
-  keydown({ isTrusted: true, key: "Escape" });
-  client.userActivation.isActive = false;
-  click({ isTrusted: true });
-  assert.equal(client.requests(), 0);
-
-  client.userActivation.isActive = true;
-  click({ isTrusted: true });
-  keydown({ isTrusted: true, key: "Enter" });
-  client.resolveFullscreen();
-  const state = await client.settle();
-  assert.equal(client.requests(), 1);
-  assert.equal(state.isFullscreen, true);
-  assert.equal(state.canFullscreen, false);
-
-  client.unmount();
-  await new Promise(setImmediate);
-  assert.equal(client.document.fullscreenElement, client.document.documentElement);
-  await client.document.exitFullscreen();
-  keydown({ isTrusted: true, key: "Enter" });
-  await new Promise(setImmediate);
-  assert.equal(client.requests(), 2);
-  assert.equal(client.document.fullscreenElement, client.document.documentElement);
-
-  stop();
-  assert.equal(client.listeners.has("click"), false);
-  assert.equal(client.listeners.has("keydown"), false);
-});
-
-test("normal tabs and browsers already using native fullscreen do not add fullscreen requests", () => {
-  for (const nativeFullscreen of [false, true]) {
-    const client = player({ fullscreen: true, mobile: false, nativeFullscreen });
-    assert.equal(client.observe(), undefined);
-    assert.equal(client.listeners.has("click"), false);
+for (const installed of [false, true]) {
+  test(`desktop play allows toggling fullscreen in ${installed ? "an installed window" : "a browser tab"}`, async () => {
+    const client = player({ fullscreen: true, mobile: false, installed });
+    assert.equal(client.begin(), false);
+    const state = await client.settle();
+    assert.equal(state.isMobileViewport, false);
     assert.equal(client.requests(), 0);
-  }
-});
+    await state.handleFullscreenToggle();
+    const fullscreenState = await client.settle();
+    assert.equal(fullscreenState.isFullscreen, true);
+    assert.equal(fullscreenState.canFullscreen, true);
+    await fullscreenState.handleFullscreenToggle();
+    assert.equal((await client.settle()).isFullscreen, false);
+    assert.deepEqual(client.actions, ["fullscreen", "exit"]);
+  });
+}
 
 test("a narrow desktop viewport does not automatically enter fullscreen", async () => {
   const client = player({ fullscreen: true, mobile: false, narrow: true });

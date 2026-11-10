@@ -3,7 +3,6 @@ import { getVersionedSiteAssetPath } from "./asset-paths";
 import { analyticsStartupScript } from "./analytics-startup.mjs";
 import { APP_THEME_COLOR, HOME_DESCRIPTION, HOME_TITLE, SITE_NAME } from "./seo";
 import { getMetadataBase } from "./site-config";
-import InstalledAppFullscreen from "./installed-app-fullscreen";
 import SiteAnalytics from "./site-analytics";
 import { initialHeroTitleFit } from "./home-shell/hero-title-fit.mjs";
 import { initialActionsScript } from "./home-shell/initial-actions.mjs";
@@ -75,7 +74,6 @@ export default function RootLayout({ children }) {
       </head>
       <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
         {children}
-        <InstalledAppFullscreen />
         <SiteAnalytics />
       </body>
     </html>

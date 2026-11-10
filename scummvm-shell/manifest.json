@@ -23,7 +23,7 @@
     ],
     "start_url": "/",
     "background_color": "#1a4d1a",
-    "display": "fullscreen",
+    "display": "standalone",
     "theme_color": "#1a4d1a",
     "shortcuts": [],
     "description": "Play classic freeware point-and-click adventure games in your browser with ScummWEB.",

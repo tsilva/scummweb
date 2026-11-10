@@ -123,6 +123,7 @@ manifest["short_name"] = brand_manifest["short_name"]
 manifest["name"] = brand_manifest["name"]
 manifest["description"] = "Unofficial browser-targeted WebAssembly build forked from ScummVM."
 manifest["start_url"] = "/"
+manifest["display"] = brand_manifest["display"]
 manifest["background_color"] = "#1a4d1a"
 manifest["theme_color"] = "#1a4d1a"
 

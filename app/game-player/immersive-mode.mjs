@@ -3,52 +3,6 @@ import { isKnownTvBrowser } from "../controller-device.mjs";
 let launchEntry = null;
 let pendingEntry = null;
 let revision = 0;
-let installedAppWindow = false;
-let installedFullscreenRequest = null;
-
-export function usesInstalledFullscreenFallback() {
-  if (typeof window === "undefined") return false;
-  // The display mode can change to fullscreen after the request succeeds.
-  installedAppWindow ||= navigator.standalone === true ||
-    Boolean(window.matchMedia?.("(display-mode: standalone), (display-mode: minimal-ui)").matches);
-  return installedAppWindow;
-}
-
-function requestInstalledAppFullscreen() {
-  if (installedFullscreenRequest) return installedFullscreenRequest;
-  if (document.fullscreenElement || document.webkitFullscreenElement ||
-      window.matchMedia?.("(display-mode: fullscreen)").matches ||
-      navigator.userActivation?.isActive === false) return;
-
-  const root = document.documentElement;
-  const request = root.requestFullscreen || root.webkitRequestFullscreen;
-  if (!request) return;
-
-  installedFullscreenRequest = (async () => {
-    try {
-      await request.call(root);
-    } catch {
-      // The browser can refuse fullscreen. A later gesture can retry.
-    }
-  })().finally(() => { installedFullscreenRequest = null; });
-  return installedFullscreenRequest;
-}
-
-export function observeInstalledFullscreenGestures(target) {
-  if (!usesInstalledFullscreenFallback()) return;
-
-  function onGesture(event) {
-    if (event.isTrusted && event.key !== "Escape") void requestInstalledAppFullscreen();
-  }
-
-  // Let the app's controls use the gesture first, for example to open a file picker.
-  target.addEventListener("click", onGesture);
-  target.addEventListener("keydown", onGesture);
-  return () => {
-    target.removeEventListener("click", onGesture);
-    target.removeEventListener("keydown", onGesture);
-  };
-}
 
 export function isMobileClient() {
   if (typeof window === "undefined") return false;
@@ -83,9 +37,7 @@ export function enterImmersiveMode(shell) {
   pendingEntry = (async () => {
     if (!shell) return false;
     try {
-      if (usesInstalledFullscreenFallback()) {
-        await requestInstalledAppFullscreen();
-      } else if (!isGameFullscreen(shell)) {
+      if (!isGameFullscreen(shell)) {
         const request = shell.requestFullscreen || shell.webkitRequestFullscreen;
         // Invoke before the first await to preserve the Play button's activation.
         if (request) await request.call(shell);
@@ -120,7 +72,7 @@ export async function exitImmersiveMode() {
   await entry;
   if (exitRevision !== revision) return;
   try {
-    if (!usesInstalledFullscreenFallback() && (document.fullscreenElement || document.webkitFullscreenElement)) {
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
       const exit = document.exitFullscreen || document.webkitExitFullscreen;
       await exit?.call(document);
     }

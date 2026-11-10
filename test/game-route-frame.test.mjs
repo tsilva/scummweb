@@ -42,7 +42,7 @@ for (const [message, mobile, installed] of [
     const compiled = { exports: {} };
     runInNewContext(code, {
       module: compiled, exports: compiled.exports, URL, URLSearchParams, AbortController, navigator,
-      window: { location: {
+      window: { matchMedia: (query) => ({ matches: installed && query.includes("display-mode: standalone") }), location: {
         href: "https://example.test/beneath-a-steel-sky/play", origin: "https://example.test",
         hash: "", search: "", replace: (href) => navigations.push(href),
       } },
@@ -75,7 +75,7 @@ for (const [message, mobile, installed] of [
         if (name.endsWith("/useBootState")) return { useBootState: () => ({
           hasBootCompleted: false, hasBootFailed: false, showSkipIntroButton: false,
         }) };
-        if (name.endsWith("/immersive-mode.mjs")) return { isTouchMobileClient: () => mobile, usesInstalledFullscreenFallback: () => installed };
+        if (name.endsWith("/immersive-mode.mjs")) return { isTouchMobileClient: () => mobile };
         if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({
           exitImmersiveMode() { navigations.push("exit immersive mode"); },
         }) };
@@ -107,8 +107,7 @@ for (const [message, mobile, installed] of [
     const controls = children.find(({ type }) => type === Controls);
     assert.equal(controls.props.showExitControl, true);
     await controls.props.onExit();
-    const destination = installed ? "route /#library" : "/#library";
-    assert.deepEqual(navigations, mobile ? [destination] : ["exit immersive mode", destination]);
+    assert.deepEqual(navigations, mobile ? ["/#library"] : ["exit immersive mode", "/#library"]);
   });
 }
 
@@ -227,7 +226,6 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       } };
       if (name.endsWith("/GamePlayerControls")) return Controls;
       if (name.endsWith("/GameBootOverlay")) return Overlay;
-      if (name.endsWith("/immersive-mode.mjs")) return { usesInstalledFullscreenFallback: () => false };
       if (name.endsWith("/useBootState")) {
         if (!realBoot) return { useBootState: () => ({
           hasBootCompleted: bootCompleted, hasBootFailed: false, showSkipIntroButton: Boolean(skipIntro),
