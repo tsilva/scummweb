@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { createPortal, flushSync } from "react-dom";
 import GameBootOverlay from "./GameBootOverlay";
 
-export default function useLaunchFeedback() {
+export default function useLaunchFeedback({ showBundledTags = true } = {}) {
   const [game, setGame] = useState(null);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function useLaunchFeedback() {
     dismiss() { setGame(null); },
     overlay: game ? createPortal(
       <div className="game-launch-feedback" role="status" aria-live="polite" aria-busy="true">
-        <GameBootOverlay game={game} bootStatusText="Loading game…" showBootOverlay />
+        <GameBootOverlay game={game} bootStatusText="Loading game…" showBootOverlay showBundledTags={showBundledTags} />
       </div>,
       document.body,
     ) : null,

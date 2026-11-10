@@ -6,7 +6,7 @@ import useBrowserSave from "../use-browser-save";
 import { cancelBrowserSaveQueries } from "../browser-saves.mjs";
 
 export default function SourceLaunchActions({ version, onLaunch, helpId = "game-file-access-help", showAccessHelp = true, browseHref }) {
-  const launchFeedback = useLaunchFeedback();
+  const launchFeedback = useLaunchFeedback({ showBundledTags: false });
   const slot = useBrowserSave(version.game);
   const needsAccess = version.action.needsAccess;
   const canContinue = slot !== undefined && slot !== null && !version.locate && !needsAccess;

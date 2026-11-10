@@ -2,6 +2,7 @@ import { useArtworkDelivery } from "../home-shell/artwork-delivery";
 import DecorativeImage from "../home-shell/decorative-image";
 import { getHeroImageProps } from "../home-shell/hero-images.mjs";
 import { getHeroImageStyle } from "../home-shell/shared";
+import { getBundledLaunchTags } from "./launch-tags.mjs";
 
 export default function GameBootOverlay({
   archiveBytes,
@@ -9,10 +10,12 @@ export default function GameBootOverlay({
   game,
   hasBootFailed,
   showBootOverlay,
+  showBundledTags = true,
   title,
 }) {
   const artwork = useArtworkDelivery();
   const backdrop = game ? getHeroImageProps(game, artwork, "hero") : null;
+  const tags = showBundledTags ? getBundledLaunchTags(game) : null;
 
   return (
     <div
@@ -42,9 +45,11 @@ export default function GameBootOverlay({
           ) : null}
           <h1 className="game-route-boot-title">{game?.displayTitle || title}</h1>
           <div className="game-route-boot-meta">
-            {game?.target ? <span>{game.target}</span> : null}
-            {game?.year ? <span>{game.year}</span> : null}
-            {game?.badge ? <span>{game.badge}</span> : null}
+            {tags ? tags.map((tag) => <span key={tag}>{tag}</span>) : <>
+              {game?.target ? <span>{game.target}</span> : null}
+              {game?.year ? <span>{game.year}</span> : null}
+              {game?.badge ? <span>{game.badge}</span> : null}
+            </>}
           </div>
           {game?.summary ? (
             <p className="game-route-boot-summary">{game.summary}</p>
