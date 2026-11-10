@@ -1,22 +1,20 @@
 import { artworkObjectUrl, artworkPath, artworkStorage, artworkUrl } from "../../lib/artwork-storage.mjs";
 
-// Match the auto-fit 10rem columns, 1rem gaps, 100rem container and mobile padding.
-// Include object-fit:cover's vertical crop and the poster's 1.04 zoom.
+// Match the 3:4 poster cards and the grid breakpoints in home-shell.css.
 export function getPosterSizes(aspect, count = 8) {
-  const crop = Math.ceil(16.5 * aspect * 1.04 * 1000) / 1000;
+  const scale = Math.ceil(Math.min(1, aspect / 0.75) * 1.04 * 1000) / 1000;
   const entries = [];
-  for (const [start, end, padding] of [[0, 40, 2], [40, 100, 4]]) {
-    const breaks = [start, ...Array.from({ length: 7 }, (_, i) => padding + (i + 2) * 10 + (i + 1))
+  for (const [start, end, padding] of [[0, 48.001, 2.5], [48.001, 64, 6.5]]) {
+    const breaks = [start, ...Array.from({ length: 4 }, (_, i) => padding + (i + 2) * 10 + (i + 1))
       .filter((width) => width > start && width < end), end];
     for (let i = 0; i < breaks.length - 1; i += 1) {
       const middle = (breaks[i] + breaks[i + 1]) / 2;
       const columns = Math.min(Math.max(1, count), Math.max(1, Math.floor((middle - padding + 1) / 11)));
-      const size = `max(calc((min(100vw, 100rem) - ${padding + columns - 1}rem) / ${columns} * 1.04), ${crop}rem)`;
+      const size = `calc((100vw - ${padding + columns - 1}rem) / ${columns} * ${scale})`;
       entries.push(`(max-width: ${breaks[i + 1] - 0.001}rem) ${size}`);
     }
   }
-  const columns = Math.min(8, Math.max(1, count));
-  return [...entries, `max(calc((100rem - ${4 + columns - 1}rem) / ${columns} * 1.04), ${crop}rem)`].join(", ");
+  return [...entries, `calc((min(100vw, 94rem) - 10.5rem) / 5 * ${scale})`].join(", ");
 }
 
 export function getArtworkImageProps(src, role = "gallery", manifest = artworkStorage) {

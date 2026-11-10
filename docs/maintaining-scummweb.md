@@ -643,8 +643,8 @@ report link in the GitHub Actions run summary.
 For local artwork, `prepare` generates 320px and 640px WebP poster variants under
 `scummvm-shell/launcher/responsive/` before staging the managed shell. The
 generator retains each original, skips upscaling and larger encodings, and
-records actual dimensions in `data/artwork-renditions.json`. Browser selection
-preserves the existing cover crop and falls back to the full original for
+records actual dimensions in `data/artwork-renditions.json`. Library cards show
+the complete cover at rest. Browser selection falls back to the full original for
 larger displays or unknown/remote artwork. Derivatives inherit their original's
 artwork provenance. Desktop hero titles fit within a reserved responsive heading
 slot. A small document-head script fits the streamed heading before its first
@@ -1368,8 +1368,9 @@ publication. Offer an AVIF picture source only when it covers every WebP width;
 otherwise retain WebP delivery so a browser cannot select an undersized AVIF.
 AVIF encoding runs only in the explicit optimizer, outside normal builds.
 
-Posters advertise source sizes from the auto-fit 10rem grid, 1rem gaps, capped
-100rem container, current result count, crop and zoom. Keep this calculation in
+Posters advertise source sizes based on the contained artwork inside each 3:4
+card, including the 4% hover and keyboard-focus zoom. The grid uses auto-fit 10rem
+columns below 64rem and five columns at larger widths. Keep this calculation in
 sync with the grid CSS. Hero sizes account for viewport height and cover cropping;
 gallery images preserve their original proportions. Mobile screenshot thumbnails
 advertise their 9rem display width. The expanded viewer uses the full image.

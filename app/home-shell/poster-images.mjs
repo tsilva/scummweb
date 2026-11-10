@@ -12,7 +12,6 @@ export function getPosterImageProps(src, singleColumn = false, count = 8, artwor
   if (!image) return optimized;
   const suffix = logical.slice(pathname.length);
   const filename = pathname.slice("/launcher/".length, -5);
-  // Preserve enough pixels for the existing object-fit: cover crop, including zoom.
   return {
     ...optimized,
     width: image.width,
