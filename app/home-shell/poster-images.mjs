@@ -6,15 +6,15 @@ export function getPosterImageProps(src, singleColumn = false, count = 8, artwor
   const optimized = getArtworkImageProps(src, "poster", artwork);
   if (optimized.srcSet) return { ...optimized, sizes: getPosterSizes(optimized.width / optimized.height, singleColumn ? 1 : count) };
   const logical = artworkPath(src, artwork);
-  if (!logical?.startsWith("/launcher/")) return { src };
+  if (!logical?.startsWith("/launcher/")) return optimized;
   const [pathname] = logical.split(/[?#]/, 1);
   const image = renditions[pathname];
-  if (!image) return { src };
+  if (!image) return optimized;
   const suffix = logical.slice(pathname.length);
   const filename = pathname.slice("/launcher/".length, -5);
   // Preserve enough pixels for the existing object-fit: cover crop, including zoom.
   return {
-    src,
+    ...optimized,
     width: image.width,
     height: image.height,
     srcSet: [

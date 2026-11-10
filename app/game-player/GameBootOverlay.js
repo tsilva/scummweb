@@ -4,6 +4,7 @@ import { getHeroImageProps } from "../home-shell/hero-images.mjs";
 import { getHeroImageStyle } from "../home-shell/shared";
 
 export default function GameBootOverlay({
+  archiveBytes,
   bootStatusText,
   game,
   hasBootFailed,
@@ -11,7 +12,7 @@ export default function GameBootOverlay({
   title,
 }) {
   const artwork = useArtworkDelivery();
-  const backdrop = game ? getHeroImageProps(game, artwork) : null;
+  const backdrop = game ? getHeroImageProps(game, artwork, "hero") : null;
 
   return (
     <div
@@ -21,6 +22,7 @@ export default function GameBootOverlay({
       } ${game?.tone || "tone-default"}`}
       data-launch-overlay="true"
       data-launch-overlay-state={hasBootFailed ? "error" : showBootOverlay ? "visible" : "hidden"}
+      data-launch-archive-bytes={archiveBytes}
     >
       {backdrop?.src ? (
         <DecorativeImage

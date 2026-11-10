@@ -6,7 +6,9 @@ import test from "node:test";
 import swc from "next/dist/build/swc/index.js";
 import * as skipIntroConfig from "../app/skip-intro-config.mjs";
 import * as telemetry from "../app/game-player/telemetry.mjs";
+import { getStoryProgressRevision } from "../app/game-player/story-progress.mjs";
 import * as gameMenu from "../app/game-player/game-menu.mjs";
+import * as mobileControls from "../app/game-player/mobile-controls.mjs";
 import * as controllerDevice from "../app/controller-device.mjs";
 import { gameLoadingStatus } from "../app/game-loading-status.mjs";
 
@@ -19,9 +21,17 @@ const { code } = await swc.transform(await readFile(componentUrl, "utf8"), {
   module: { type: "commonjs" },
   jsc: { parser: { syntax: "ecmascript", jsx: true }, transform: { react: { runtime: "automatic" } } },
 });
+const bootUrl = new URL("../app/game-player/useBootState.js", import.meta.url);
+const { code: bootCode } = await swc.transform(await readFile(bootUrl, "utf8"), {
+  filename: bootUrl.pathname, swcrc: false, configFile: false, module: { type: "commonjs" },
+});
 
-for (const message of ["This ZIP link returned HTTP 404.", "Could not download the ZIP."]) {
-  test(`Exit remains usable after an intro-enabled game's archive fails: ${message}`, async () => {
+for (const [message, mobile, installed] of [
+  ["This ZIP link returned HTTP 404.", false, false],
+  ["Could not download the ZIP.", true, false],
+  ["This ZIP link returned HTTP 404.", false, true],
+]) {
+  test(`Exit remains usable after an intro-enabled game's archive fails in ${installed ? "installed" : mobile ? "mobile" : "desktop browser"} mode`, async () => {
     const states = [];
     const effects = [];
     const navigations = [];
@@ -47,11 +57,14 @@ for (const message of ["This ZIP link returned HTTP 404.", "Could not download t
           useEffect: (effect) => effects.push(effect), useLayoutEffect() {},
         };
         if (name === "react/jsx-runtime") return nativeRequire(name);
+        if (name.endsWith("/mobile-controls.mjs")) return mobileControls;
         if (name === "./skip-intro-config.mjs") return skipIntroConfig;
         if (name === "./controller-device.mjs") return controllerDevice;
         if (name.endsWith("/game-menu.mjs")) return gameMenu;
         if (name.endsWith("/telemetry.mjs")) return telemetry;
-        if (name === "next/navigation") return { useRouter: () => ({}) };
+        if (name.endsWith("/story-progress.mjs")) return { getStoryProgressRevision };
+        if (name.endsWith("/game-progress/index.json")) return { games: {} };
+        if (name === "next/navigation") return { useRouter: () => ({ replace: (href) => navigations.push(`route ${href}`) }) };
         if (name === "./game-loading-status.mjs") return { gameLoadingStatus };
         if (name === "./game-bucket.mjs") return { readCatalogGameArchive: async () => {
           downloads++;
@@ -62,7 +75,10 @@ for (const message of ["This ZIP link returned HTTP 404.", "Could not download t
         if (name.endsWith("/useBootState")) return { useBootState: () => ({
           hasBootCompleted: false, hasBootFailed: false, showSkipIntroButton: false,
         }) };
-        if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({}) };
+        if (name.endsWith("/immersive-mode.mjs")) return { isTouchMobileClient: () => mobile, usesInstalledFullscreenFallback: () => installed };
+        if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({
+          exitImmersiveMode() { navigations.push("exit immersive mode"); },
+        }) };
         if (name.endsWith("/useTouchClickMode")) return { useTouchClickActions: () => ({ touchControlsUnlocked: false }) };
         if (name.endsWith("/useTouchCursorPad")) return { useTouchCursorPad: () => ({}) };
         if (name.endsWith("/game-launch-analytics.mjs")) return { createGameLaunchAnalytics: () => ({ start() {}, fail() {} }) };
@@ -91,17 +107,23 @@ for (const message of ["This ZIP link returned HTTP 404.", "Could not download t
     const controls = children.find(({ type }) => type === Controls);
     assert.equal(controls.props.showExitControl, true);
     await controls.props.onExit();
-    assert.deepEqual(navigations, ["/#library"]);
+    const destination = installed ? "route /#library" : "/#library";
+    assert.deepEqual(navigations, mobile ? [destination] : ["exit immersive mode", destination]);
   });
 }
 
-function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = false, catalog = true, downloadDetails = { loaded: 12_400_000, total: 85_200_000 } } = {}) {
+function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = false, catalog = true,
+  agentSaveScope, storyMaps = {},
+  skipIntro, visualViewport, virtualKeyboard, shellBottom = visualViewport?.height,
+  realBoot = false, game = { target: "sky", slug: "sky", engineId: "sky" },
+  downloadDetails = { loaded: 12_400_000, total: 85_200_000 } } = {}) {
   const archive = Promise.withResolvers();
   const hooks = [];
   const messages = new Set();
   const timers = new Map();
   const deliveries = [];
   const reports = [];
+  const storyObservers = [];
   let cursor = 0;
   let dirty = false;
   let children = [];
@@ -109,19 +131,31 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   let effects = [];
   let loadCount = 0;
   let confirmations = 0;
+  let bootCompleted = false;
   let eventProcessor;
   const frame = {
     contentDocument: { URL: "about:blank", getElementById: () => null },
     contentWindow: { focus() {}, postMessage() {}, location: { replace(href) { if (!stalledNavigation) frame.contentDocument.URL = href; } } },
     addEventListener() {}, removeEventListener() {}, focus() {},
   };
+  const shellProperties = new Map();
+  const shell = {
+    getBoundingClientRect: () => ({ bottom: shellBottom }),
+    style: {
+      setProperty: (name, value) => shellProperties.set(name, value),
+      removeProperty: (name) => shellProperties.delete(name),
+    },
+  };
   const window = {
+    visualViewport,
+    innerHeight: visualViewport?.height,
     location: new URL(`https://example.test/sky/play${queryTelemetry ? "?telemetry=1" : ""}`),
     setTimeout(callback, delay) { const id = Symbol(); timers.set(id, { callback, delay }); return id; },
     clearTimeout(id) { timers.delete(id); },
     addEventListener(name, handler) { if (name === "message") messages.add(handler); },
     removeEventListener(name, handler) { if (name === "message") messages.delete(handler); },
   };
+  if (agentSaveScope) window.location.searchParams.set("agentSaveScope", agentSaveScope);
   function memo(factory, deps) {
     const index = cursor++;
     if (!hooks[index] || deps.some((dep, n) => !Object.is(dep, hooks[index].deps[n]))) {
@@ -141,10 +175,12 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   function Controls() {}
   function Overlay() {}
   const module = { exports: {} };
+  const bootModule = { exports: {} };
   runInNewContext(code, {
-    module, exports: module.exports, window, URL, URLSearchParams, AbortController, navigator, HTMLElement: class {},
+    module, exports: module.exports, window, URL, URLSearchParams, AbortController,
+    navigator: { virtualKeyboard }, HTMLElement: class {},
     fetch: async () => ({ ok: true, text: async () => "<html><head></head><body></body></html>" }),
-    require(name) {
+    require: function require(name) {
       if (name === "react") return {
         useState(initial) {
           const index = cursor++;
@@ -160,6 +196,8 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
         useLayoutEffect: (callback, deps) => effect(callback, deps, layouts),
       };
       if (name === "react/jsx-runtime") return nativeRequire(name);
+      if (name === "react-dom") return { flushSync(callback) { callback(); render(); } };
+      if (name.endsWith("/mobile-controls.mjs")) return mobileControls;
       if (name === "@sentry/nextjs") return {
         withScope(callback) {
           try { callback({ addEventProcessor: (processor) => { eventProcessor = processor; } }); }
@@ -174,6 +212,12 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       if (name === "./controller-device.mjs") return controllerDevice;
       if (name.endsWith("/game-menu.mjs")) return gameMenu;
       if (name.endsWith("/telemetry.mjs")) return telemetry;
+      if (name.endsWith("/story-progress.mjs")) return { getStoryProgressRevision, observeStoryProgress: (_scope, frame, game) => {
+        const observer = { frame, game, stopped: false };
+        storyObservers.push(observer);
+        return () => { observer.stopped = true; };
+      } };
+      if (name.endsWith("/game-progress/index.json")) return { games: storyMaps };
       if (name === "next/navigation") return { useRouter: () => ({}) };
       if (name === "./game-loading-status.mjs") return { gameLoadingStatus };
       if (name === "./game-bucket.mjs") return { readCatalogGameArchive: (_url, { onProgress }) => {
@@ -183,11 +227,22 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       } };
       if (name.endsWith("/GamePlayerControls")) return Controls;
       if (name.endsWith("/GameBootOverlay")) return Overlay;
-      if (name.endsWith("/useBootState")) return { useBootState: () => ({ hasBootCompleted: false, hasBootFailed: false }) };
-      if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({}) };
-      if (name.endsWith("/useTouchClickMode")) return { useTouchClickActions: () => ({}) };
+      if (name.endsWith("/immersive-mode.mjs")) return { usesInstalledFullscreenFallback: () => false };
+      if (name.endsWith("/useBootState")) {
+        if (!realBoot) return { useBootState: () => ({
+          hasBootCompleted: bootCompleted, hasBootFailed: false, showSkipIntroButton: Boolean(skipIntro),
+        }) };
+        runInNewContext(bootCode, { module: bootModule, exports: bootModule.exports, require, window });
+        return bootModule.exports;
+      }
+      if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({
+        isMobileViewport: Boolean(visualViewport),
+      }) };
+      if (name.endsWith("/useTouchClickMode")) return { useTouchClickActions: () => ({ unlockTouchControls() {} }) };
       if (name.endsWith("/useTouchCursorPad")) return { useTouchCursorPad: () => ({}) };
-      if (name.endsWith("/game-launch-analytics.mjs")) return { createGameLaunchAnalytics: () => ({ start() {}, fail() {}, confirm() { confirmations++; } }) };
+      if (name.endsWith("/game-launch-analytics.mjs")) return { createGameLaunchAnalytics: () => ({
+        start() {}, fail() {}, confirm() { confirmations++; }, watchPlayTime() {},
+      }) };
       if (name.endsWith("/startup-diagnostics.mjs")) return { observeStartupDiagnostics() {} };
       if (name === "./recent-games") return { recordRecentGameTarget() {} };
       if (name.endsWith("/zip-game-player")) return { sendZipGameFiles: (receiver, files) => deliveries.push({ receiver, files }) };
@@ -195,28 +250,34 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     },
   });
   const props = {
-    game: { target: "sky", slug: "sky", engineId: "sky" }, target: "sky", src: "/scummvm.html?localGame=1#sky",
+    game, target: game.target, src: `/scummvm.html?localGame=1#${game.target}`,
+    skipIntro,
     ...(catalog ? { catalogArchiveUrl: "https://example.test/sky.zip" } : { loadArchive: () => archive.promise }),
   };
-  function render() {
+  function render(beforeEffects) {
     let attempts = 0;
     do {
       assert.ok(attempts++ < 20, "component should settle");
       dirty = false;
       cursor = 0;
-      children = module.exports.default(props).props.children.filter(Boolean);
+      const player = module.exports.default(props);
+      player.props.ref.current = shell;
+      children = player.props.children.filter(Boolean);
       const iframe = children.find(({ type }) => type === "iframe");
       if (iframe) iframe.props.ref.current = frame;
+      if (attempts === 1) beforeEffects?.();
       for (const run of layouts.splice(0)) run();
       for (const run of effects.splice(0)) run();
     } while (dirty);
   }
   return {
-    archive, frame, deliveries, reports, timers, render,
+    archive, frame, deliveries, reports, timers, render, shellProperties, storyObservers,
     get children() { return children; },
     get loadCount() { return loadCount; },
     get confirmations() { return confirmations; },
+    get controls() { return children.find(({ type }) => type === Controls).props; },
     get overlay() { return children.find(({ type }) => type === Overlay).props; },
+    setBootCompleted() { bootCompleted = true; render(); },
     ready(origin = window.location.origin, source = frame.contentWindow) {
       for (const handler of [...messages]) handler({ origin, source, data: { type: "scummweb:local-game-ready" } });
     },
@@ -224,14 +285,30 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       for (const handler of [...messages]) handler({ origin: window.location.origin, source: frame.contentWindow,
         data: { type: "scummvm-ready", source: "scummweb", target: "sky", href, reason: "rendered-frame-detected" } });
     },
+    gameplayStarted({ origin = window.location.origin, source = frame.contentWindow,
+      href = frame.contentDocument.URL, target = "sky" } = {}) {
+      for (const handler of [...messages]) handler({ origin, source,
+        data: { type: "scummvm-gameplay-started", source: "scummweb", target, href } });
+      render();
+    },
+    nativeIntro(available, { origin = window.location.origin, source = frame.contentWindow,
+      href = frame.contentDocument.URL } = {}) {
+      for (const handler of [...messages]) handler({ origin, source,
+        data: { type: "scummvm-intro-availability", source: "scummweb", href, available } });
+      render();
+    },
+    compatibilityWarning(message, { origin = window.location.origin, source = frame.contentWindow, href = frame.contentDocument.URL } = {}) {
+      for (const handler of [...messages]) handler({ origin, source,
+        data: { type: "scummweb:compatibility-warning", href, message } });
+    },
     bootError({ origin = window.location.origin, source = frame.contentWindow, ...data } = {}) {
       for (const handler of [...messages]) handler({ origin, source, data: {
         type: "scummvm-boot-error", href: frame.contentDocument.URL, stage: "script-error",
         name: "SyntaxError", message: "Unexpected token", ...data,
       } });
     },
-    saveSessionBusy(origin = window.location.origin, source = frame.contentWindow) {
-      for (const handler of [...messages]) handler({ origin, source, data: { type: "scummweb:save-session-busy" } });
+    saveSessionBusy(origin = window.location.origin, source = frame.contentWindow, reason = "edition") {
+      for (const handler of [...messages]) handler({ origin, source, data: { type: "scummweb:save-session-busy", reason } });
     },
     genericError() {
       for (const handler of [...messages]) handler({ origin: window.location.origin, source: frame.contentWindow,
@@ -240,6 +317,186 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     unmount() { for (const hook of hooks) hook?.cleanup?.(); },
   };
 }
+
+test("mobile mouse play tracks the visible height and releases it during zoom", () => {
+  const viewport = Object.assign(new EventTarget(), { height: 390, scale: 1 });
+  const player = pendingArchivePlayer({ visualViewport: viewport });
+  const visibleHeight = () => player.shellProperties.get("--game-visible-height");
+  player.render();
+  assert.equal(visibleHeight(), "390px");
+
+  viewport.height = 320;
+  viewport.dispatchEvent(new Event("resize"));
+  assert.equal(visibleHeight(), "320px");
+
+  viewport.scale = 2;
+  viewport.dispatchEvent(new Event("resize"));
+  assert.equal(visibleHeight(), undefined);
+
+  viewport.scale = 1;
+  viewport.dispatchEvent(new Event("resize"));
+  assert.equal(visibleHeight(), "320px");
+  player.unmount();
+  viewport.dispatchEvent(new Event("resize"));
+  assert.equal(visibleHeight(), undefined);
+});
+
+test("Zork overlays its command field without resizing the game and follows native keyboard dismissal", () => {
+  const viewport = Object.assign(new EventTarget(), { height: 390, offsetTop: 0, scale: 1 });
+  const game = { engineId: "glk", gameId: "zork1", target: "zork1" };
+  const player = pendingArchivePlayer({ game, visualViewport: viewport, shellBottom: 420 });
+  const form = () => player.children.find(({ type }) => type === "form");
+  const inset = () => player.shellProperties.get("--game-command-inset");
+  player.render();
+  player.setBootCompleted();
+  let blurred = false;
+  form().props.children.props.ref.current = { focus() {}, blur() { blurred = true; } };
+  player.controls.touchActions.props.onClick();
+  assert.equal(form().props.hidden, false);
+  assert.equal(inset(), "30px");
+
+  viewport.height = 185;
+  viewport.dispatchEvent(new Event("resize"));
+  assert.equal(inset(), "235px");
+  assert.equal(player.shellProperties.has("--game-visible-height"), false);
+
+  viewport.offsetTop = 25;
+  viewport.dispatchEvent(new Event("scroll"));
+  assert.equal(inset(), "210px");
+
+  Object.assign(viewport, { height: 390, offsetTop: 0 });
+  viewport.dispatchEvent(new Event("resize"));
+  player.render();
+  assert.equal(blurred, true);
+  assert.equal(form().props.hidden, true);
+  assert.equal(inset(), undefined);
+  assert.ok(player.controls.touchActions);
+  player.unmount();
+});
+
+test("a fullscreen command field follows keyboard geometry without switching viewport modes during dismissal", () => {
+  const viewport = Object.assign(new EventTarget(), { height: 390, offsetTop: 0, scale: 1 });
+  const keyboard = Object.assign(new EventTarget(), { overlaysContent: false, boundingRect: { top: 0, height: 0 } });
+  const game = { engineId: "glk", gameId: "zork1", target: "zork1" };
+  const player = pendingArchivePlayer({ game, visualViewport: viewport, virtualKeyboard: keyboard });
+  const form = () => player.children.find(({ type }) => type === "form");
+  const showKeyboard = () => {
+    keyboard.boundingRect = { top: 145, height: 245 };
+    keyboard.dispatchEvent(new Event("geometrychange"));
+  };
+  const hideKeyboard = () => {
+    keyboard.boundingRect = { top: 0, height: 0 };
+    keyboard.dispatchEvent(new Event("geometrychange"));
+  };
+  player.render();
+  assert.equal(keyboard.overlaysContent, true);
+  player.setBootCompleted();
+  player.controls.touchActions.props.onClick();
+
+  showKeyboard();
+  assert.equal(player.shellProperties.get("--game-command-inset"), "245px");
+
+  hideKeyboard();
+  player.render();
+  assert.equal(form().props.hidden, true);
+  assert.equal(keyboard.overlaysContent, true);
+  assert.equal(player.shellProperties.has("--game-command-inset"), false);
+
+  player.controls.touchActions.props.onClick();
+  showKeyboard();
+  // Submitting a command can blur the field before Android hides the keyboard.
+  form().props.children.props.onBlur();
+  player.render();
+  assert.equal(form().props.hidden, true);
+  assert.equal(keyboard.overlaysContent, true);
+  hideKeyboard();
+  assert.equal(player.shellProperties.has("--game-command-inset"), false);
+  player.unmount();
+  assert.equal(keyboard.overlaysContent, false);
+});
+
+test("Skip intro stays available through the intro and ends on the active game's native signal", () => {
+  const player = pendingArchivePlayer({ skipIntro: { strategy: "boot-param", bootParam: 1, durationMinutes: 0.5 } });
+  player.render();
+  assert.equal(player.controls.showSkipIntroAction, false);
+  player.setBootCompleted();
+  assert.equal(player.controls.showSkipIntroAction, true);
+  assert.equal([...player.timers.values()].some(({ delay }) => delay === 30_000), false);
+  player.gameplayStarted({ source: {} });
+  player.gameplayStarted({ origin: "https://elsewhere.test" });
+  player.gameplayStarted({ target: "other" });
+  player.gameplayStarted({ href: "/scummvm.html?old=1#sky" });
+  assert.equal(player.controls.showSkipIntroAction, true);
+  player.gameplayStarted();
+  assert.equal(player.controls.showSkipIntroAction, false);
+  player.unmount();
+});
+
+test("Imported games skip in place only while the active native frame offers the action", () => {
+  const player = pendingArchivePlayer({ catalog: false });
+  player.render();
+  player.nativeIntro(true);
+  assert.equal(player.controls.showSkipIntroAction, false);
+  player.setBootCompleted();
+  assert.equal(player.controls.showSkipIntroAction, true);
+
+  const href = player.frame.contentDocument.URL;
+  let requests = 0;
+  player.frame.contentWindow.__scummwebRequestIntroSkip = () => { requests++; return true; };
+  player.controls.onSkipIntro();
+  player.render();
+  assert.equal(requests, 1);
+  assert.equal(player.frame.contentDocument.URL, href);
+
+  player.nativeIntro(false, { source: {} });
+  player.nativeIntro(false, { origin: "https://elsewhere.test" });
+  player.nativeIntro(false, { href: "/scummvm.html?old=1#sky" });
+  assert.equal(player.controls.showSkipIntroAction, true);
+  player.nativeIntro(false);
+  assert.equal(player.controls.showSkipIntroAction, false);
+  player.unmount();
+});
+
+test("Skip intro hides gameplay controls in the first render of the restart", async () => {
+  const player = pendingArchivePlayer({
+    realBoot: true,
+    visualViewport: Object.assign(new EventTarget(), { height: 390, scale: 1 }),
+    skipIntro: { strategy: "boot-param", bootParam: 1, durationMinutes: 0.5 },
+  });
+  player.render();
+  player.archive.resolve([{ path: "sky.dnr", data: Uint8Array.of(1) }]);
+  await new Promise(setImmediate);
+  player.render();
+  const firstFrame = player.frame.contentDocument.URL;
+  player.gameReady(firstFrame);
+  player.render();
+  assert.equal(player.overlay.showBootOverlay, false);
+  assert.equal(player.controls.showSkipIntroAction, true);
+  assert.equal(player.controls.showTouchClickButtons, true);
+
+  player.controls.onSkipIntro();
+  player.render(() => {
+    assert.equal(player.overlay.showBootOverlay, true);
+    assert.equal(player.controls.showTouchClickButtons, false);
+  });
+  player.gameReady(firstFrame);
+  player.render();
+  assert.equal(player.controls.showTouchClickButtons, false);
+  player.unmount();
+});
+
+test("the Curse demo opens without offering Skip intro over its playable scene", async () => {
+  const library = JSON.parse(await readFile(new URL("../scummvm-shell/games.json", import.meta.url), "utf8"));
+  const game = library.games.find(({ target }) => target === "comi-demo");
+  const skipIntro = skipIntroConfig.normalizeSkipIntroConfig(game.skipIntro);
+  assert.equal(skipIntro.strategy, "save-slot", "the explicit seed remains available");
+
+  const player = pendingArchivePlayer({ skipIntro });
+  player.render();
+  player.setBootCompleted();
+  assert.equal(player.controls.showSkipIntroAction, false);
+  player.unmount();
+});
 
 test("only reports the first recognized startup error from the current player frame", () => {
   const player = pendingArchivePlayer();
@@ -297,6 +554,51 @@ test("the play route forwards telemetry only for the opted-in game frame", () =>
   }
 });
 
+test("ordinary mapped games record story progress after readiness, separately from agent play", () => {
+  for (const [catalog, agentSaveScope] of [[true], [false], [true, "a".repeat(64)]]) {
+    const player = pendingArchivePlayer({
+      catalog, agentSaveScope,
+      game: { target: "sky", slug: "sky", recentGameId: "source:copy" },
+      storyMaps: { sky: { revision: "map-revision", edition_specific: true } },
+    });
+    player.render();
+    const frame = new URL(player.frame.contentDocument.URL);
+    assert.equal(frame.searchParams.get("telemetry"), agentSaveScope ? null : "1");
+    assert.equal(player.storyObservers.length, 0);
+    player.gameReady(frame.href);
+    player.render();
+    if (agentSaveScope) assert.equal(player.storyObservers.length, 0);
+    else {
+      assert.equal(player.storyObservers.length, 1);
+      assert.equal(player.storyObservers[0].frame, player.frame);
+      assert.equal(player.storyObservers[0].game.version, catalog ? "catalog:sky" : "source:copy");
+    }
+    player.unmount();
+    if (!agentSaveScope) assert.equal(player.storyObservers[0].stopped, true);
+  }
+});
+
+test("catalog and imported launches retain distinct compatibility warnings from the active frame", () => {
+  for (const catalog of [true, false]) {
+    const player = pendingArchivePlayer({ catalog });
+    player.render();
+    assert.equal(new URL(player.frame.contentDocument.URL).searchParams.get("hostCompatibilityWarning"), "1");
+    assert.equal(player.controls.compatibilityWarnings.length, 0);
+    player.compatibilityWarning("Other origin", { origin: "https://untrusted.test" });
+    player.compatibilityWarning("Other frame", { source: {} });
+    player.compatibilityWarning("Previous launch", { href: "/scummvm.html#old" });
+    player.compatibilityWarning(" ");
+    player.compatibilityWarning("Testing edition");
+    player.compatibilityWarning("Testing edition");
+    player.compatibilityWarning("Experimental add-on");
+    player.render();
+    assert.deepEqual([...player.controls.compatibilityWarnings], ["Testing edition", "Experimental add-on"]);
+    assert.equal(player.overlay.hasBootFailed, false);
+    assert.equal(player.reports.length, 0);
+    player.unmount();
+  }
+});
+
 test("save-lock contention explains recovery and rejects messages from unrelated frames", () => {
   const player = pendingArchivePlayer();
   player.render();
@@ -308,7 +610,7 @@ test("save-lock contention explains recovery and rejects messages from unrelated
   player.genericError();
   player.render();
   assert.equal(player.overlay.hasBootFailed, true);
-  assert.match(player.overlay.bootStatusText, /Close it in the other tab/);
+  assert.match(player.overlay.bootStatusText, /This game edition is already open/);
   player.unmount();
 });
 
@@ -322,7 +624,7 @@ test("a slow archive keeps the fallback frame identity through the first-frame m
   await new Promise(setImmediate);
   player.render();
   assert.equal(player.deliveries.length, 1);
-  player.gameReady("/scummvm.html?localGame=1&launchRetry=inline#sky");
+  player.gameReady("/scummvm.html?localGame=1&catalogSaveTarget=sky&hostCompatibilityWarning=1&launchRetry=inline#sky");
   assert.equal(player.confirmations, 1, "the parent accepts the actual fallback frame's ready message");
   player.unmount();
 });
@@ -378,9 +680,11 @@ test("leaving a pending launch cancels its handoff", async () => {
   assert.equal(player.deliveries.length, 0);
 });
 
-function readyPlayer(game, { ready = true, failed = false, mobile = false } = {}) {
+function readyPlayer(game, { ready = true, failed = false, mobile = false, landscape = true } = {}) {
   function Controls() {}
   function CursorPad() {}
+  function MovementStick() {}
+  function GrimGamepad() {}
   const keypresses = [];
   const commands = [];
   const frame = { contentWindow: {} };
@@ -397,21 +701,28 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false } = {}
         useEffect() {}, useLayoutEffect() {},
       };
       if (name === "react/jsx-runtime") return nativeRequire(name);
+      if (name === "react-dom") return { flushSync: (callback) => callback() };
+      if (name.endsWith("/mobile-controls.mjs")) return mobileControls;
       if (name === "./skip-intro-config.mjs") return skipIntroConfig;
       if (name === "next/navigation") return { useRouter: () => ({}) };
       if (name.endsWith("/game-menu.mjs")) return gameMenu;
       if (name.endsWith("/telemetry.mjs")) return telemetry;
+      if (name.endsWith("/story-progress.mjs")) return { getStoryProgressRevision };
+      if (name.endsWith("/game-progress/index.json")) return { games: {} };
       if (name.endsWith("/keyboard")) return {
         dispatchSyntheticKeypressSequence: async (frame, shortcut) => keypresses.push({ frame, shortcut }),
         dispatchGameCommand: (frame, command) => commands.push({ frame, command }),
       };
       if (name.endsWith("/GamePlayerControls")) return Controls;
       if (name.endsWith("/GameTouchCursorPad")) return CursorPad;
+      if (name.endsWith("/GameTouchGamepad")) return { GameMovementStick: MovementStick, GrimTouchGamepad: GrimGamepad };
       if (name.endsWith("/useBootState")) return { useBootState: () => ({
         hasBootCompleted: ready, hasBootPresentationCompleted: ready,
         showGameMenuButton: ready, hasBootFailed: failed,
       }) };
-      if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({ isMobileViewport: mobile }) };
+      if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({
+        isMobileViewport: mobile, isTouchMobile: mobile, isLandscapeViewport: landscape,
+      }) };
       if (name.endsWith("/useTouchClickMode")) return { useTouchClickActions: () => ({}) };
       if (name.endsWith("/useTouchCursorPad")) return { useTouchCursorPad: () => ({}) };
       if (name.endsWith("/game-launch-analytics.mjs")) return { createGameLaunchAnalytics: () => ({}) };
@@ -422,6 +733,8 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false } = {}
   return {
     controls: children.find(({ type }) => type === Controls).props,
     cursorPad: children.find(({ type }) => type === CursorPad).props,
+    hugoStick: children.find(({ props }) => props.children?.type === MovementStick)?.props.children,
+    grimGamepad: children.find(({ type }) => type === GrimGamepad),
     form: children.find(({ type }) => type === "form"),
     frame, keypresses, commands,
   };
@@ -454,11 +767,29 @@ test("native menu stays hidden while loading and after a boot failure", () => {
   }
 });
 
-test("ready Apple II adventures replace mobile mouse controls with a command form", () => {
+test("portrait mobile play keeps Exit available and removes gameplay controls", () => {
+  const game = { engineId: "sky", gameId: "sky", target: "sky" };
+  const player = readyPlayer(game, { mobile: true, landscape: false });
+  assert.equal(player.controls.showExitControl, true);
+  assert.equal(player.controls.showGameMenuButton, false);
+  assert.equal(player.controls.showTouchClickButtons, false);
+  assert.equal(player.cursorPad.showTouchCursorPad, false);
+});
+
+test("Mystery House opens a command field from the keyboard control on mobile", () => {
   const game = { engineId: "adl", gameId: "hires1", target: "hires1" };
   const player = readyPlayer(game, { mobile: true });
   assert.equal(player.controls.showTouchClickButtons, false);
   assert.equal(player.cursorPad.showTouchCursorPad, false);
+  assert.equal(player.form.props.hidden, true);
+  assert.equal(player.controls.touchActions.props["aria-label"], "Open keyboard");
+  let focused = false;
+  const inputElement = player.form.props.children;
+  assert.equal(inputElement.type, "input");
+  assert.equal(inputElement.props.enterKeyHint, "enter");
+  inputElement.props.ref.current = { focus: () => { focused = true; } };
+  player.controls.touchActions.props.onClick();
+  assert.equal(focused, true);
   let blurred = false;
   let prevented = false;
   const input = { value: "go east", blur: () => { blurred = true; } };
@@ -478,4 +809,30 @@ test("ready Apple II adventures replace mobile mouse controls with a command for
   assert.equal(mousePlayer.form, undefined);
   assert.equal(mousePlayer.controls.showTouchClickButtons, true);
   assert.equal(mousePlayer.cursorPad.showTouchCursorPad, true);
+});
+
+test("mobile control modes cover Grim, Hugo, and the three Zork stories", () => {
+  const mobile = { mobile: true };
+  const grim = readyPlayer({ engineId: "grim", gameId: "grim", target: "grim-demo" }, mobile);
+  assert.equal(grim.hugoStick, undefined);
+  assert.ok(grim.grimGamepad);
+  assert.equal(grim.form, undefined);
+  assert.equal(grim.cursorPad.showTouchCursorPad, false);
+
+  for (const gameId of ["hugo1", "hugo2", "hugo3"]) {
+    const hugo = readyPlayer({ engineId: "hugo", gameId, target: gameId }, mobile);
+    assert.equal(hugo.hugoStick.props.hugo, true);
+    assert.equal(hugo.hugoStick.props.frameRef.current, hugo.frame);
+    assert.equal(hugo.controls.touchActions.props["aria-label"], "Open keyboard");
+    assert.equal(hugo.cursorPad.showTouchCursorPad, false);
+  }
+  for (const gameId of ["zork1", "zork2", "zork3"]) {
+    const zork = readyPlayer({ engineId: "glk", gameId, target: gameId }, mobile);
+    assert.equal(zork.hugoStick, undefined);
+    assert.equal(zork.controls.touchActions.props["aria-label"], "Open keyboard");
+    assert.equal(zork.cursorPad.showTouchCursorPad, false);
+  }
+  const graphical = readyPlayer({ engineId: "zvision", gameId: "zgi", target: "zgi" }, mobile);
+  assert.equal(graphical.cursorPad.showTouchCursorPad, true);
+  assert.equal(graphical.form, undefined);
 });

@@ -1,4 +1,5 @@
-const { withSentryConfig } = require("@sentry/nextjs");
+const { withSentryConfig } = require("@sentry/nextjs/config");
+const artworkStorage = require("./data/artwork-storage.json");
 const socialCards = require("./data/social-cards.json");
 const runtimeAssets = require("./scummvm-shell/runtime-assets.json");
 const assetConfig = require("./lib/scummvm-shell-assets.js");
@@ -86,6 +87,10 @@ const nextConfig = {
       value: `<${assetConfig.sourceOfferPage}>; rel="describedby", </doc/COPYING>; rel="license"`,
     };
     return [
+      ...(artworkStorage.published ? [{
+        source: "/",
+        headers: [{ key: "Link", value: `<${artworkStorage.origin}>; rel=preconnect` }],
+      }] : []),
       ...assetConfig.versionedAssetMatchers.filter((source) =>
         !runtimeAssets.files[source] && source !== "/data/:path*" && source !== "/scummvm.html"
       ).map((source) => ({

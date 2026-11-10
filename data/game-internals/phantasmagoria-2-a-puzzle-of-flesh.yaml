@@ -1,0 +1,41 @@
+# English CD 001.0.06.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/phant2-dos-001.0.06-gog/src
+# endChapter advances gChapter. The wrong panel buttons lead to the death room.
+# The alien console puzzle in rm2032 (42032) alone enters room 9401, where both choices play an epilogue.
+schema_version: 1
+game: phantasmagoria-2-a-puzzle-of-flesh
+engine_id: sci
+edition:
+  game_id: phantasmagoria2
+  index_md5: b200596c2dc7277d0510dee44bac9ee0
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  access-panel: 9021
+  threshold: 9400
+  epilogue-choice: 9401
+variables:
+  chapter: { bank: globals, index: 205 }
+  previous-room: { bank: globals, index: 12 }
+milestones:
+  - id: reached-chapter-2
+    label: Reached chapter 2
+    when: { variable: chapter, equals: 2 }
+  - id: reached-chapter-3
+    label: Reached chapter 3
+    when: { variable: chapter, equals: 3 }
+  - id: reached-chapter-4
+    label: Reached chapter 4
+    when: { variable: chapter, equals: 4 }
+  - id: reached-chapter-5
+    label: Reached chapter 5
+    when: { variable: chapter, equals: 5 }
+  - id: reached-access-panel
+    label: Reached the Threshold access panel
+    when: { room: access-panel }
+  - id: opened-threshold
+    label: Opened the Threshold
+    when: { room: threshold }
+  - id: resolved-threshold
+    label: Solved the alien console and reached the final choice
+    when: { all: [{ room: epilogue-choice }, { variable: previous-room, equals: -23504 }] }

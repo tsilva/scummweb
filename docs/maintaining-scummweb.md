@@ -114,16 +114,24 @@ restoration completes. Server HTML retains Play for browsers without JavaScript.
 Loading, cached and restored hero controls share fixed button, version and
 license rows. Cached actions overlay the reserved controls until restoration
 finishes; mobile buttons reserve enough height for two-line labels.
-Mobile file-access and import guidance uses reserved space below those rows,
-so background file checks do not push the scroll cue or screenshots downward.
+The scroll cue and desktop slideshow controls share a row below the launch
+area. The desktop hero reserves room for version and license links across slides.
+On mobile, spare space above the copy absorbs title wrapping, and an unused
+version row collapses. If the content still needs more room, the hero grows so
+every action remains reachable.
 Imported versions use their existing isolated save directory even when their
 ZIP name is unrecognized. Individual indexed files are checked for existence,
 size and modification time, so deleting the newest save can expose an older
 valid one. Changed or previously unindexed games use a serialized background
 native query. A launch cancels pending queries. An unrecognized import gains its
-detected identity on launch. Queries use temporary configuration, never rewrite
-player targets, and never start a game. Imported file access remains required;
-checks on unrelated sources do not block the hero's selected launch action.
+detected identity on launch. The query uses the target's metadata plugin after
+initializing the backend and graphics overlay. The temporary configuration lets it read
+saves without mounting game files, detecting an edition, or rewriting player
+targets. The player and query index bundled saves by the native target,
+including when a demo's archive has a different name. The current runtime
+rechecks empty AGS indexes from older runtimes once, even when the save files
+have the same revision. Imported file access remains required. Checks on
+unrelated sources do not block the hero's selected launch action.
 
 The native output owner records pending filenames before opening a save and
 refreshes metadata after compression and filesystem close complete. This covers
@@ -136,12 +144,16 @@ still be cleared or evicted, and metadata does not make save-file writes atomic.
 
 AgentSCUMM can launch a game with its own save scope. ScummWEB then gives that
 run a separate native save path and index, including for Continue. These saves
-live outside the normal ScummWEB library and backup directories. Scoped runs
-of Beneath a Steel Sky and the full Flight of the Amazon Queen support native
-pause, resume, exact tick stepping, save, and load. Queen steps rendered game
-updates, including updates during walks and cutaways. Queen saves and loads
-between commands and room transitions and exposes manual slots 1–98. A paused
-load presents the restored scene and keeps the game paused.
+live outside the normal ScummWEB library and backup directories. The shared
+runtime can pause, resume, and step at ScummVM frame presentations. It reports
+save and load capabilities separately from timing controls and respects native
+scene and slot restrictions. Some engines service controls at a complete game
+update and report that clock separately from the shared presentation clock.
+Queen counts rendered updates during walks and cutaways, and exposes manual
+slots 1–98 between commands and room transitions. DreamWeb, Nippon Safes and
+Discworld use their existing game serializers from their game-update boundary.
+Nippon Safes reads old prison saves with a truncated visited-room key and
+restores the scene without replaying its first-visit prompt.
 
 For a scoped Sky Continue launch, AgentSCUMM can explicitly request a single
 legacy manual slot from the same browser profile. The shell copies the slot
@@ -174,13 +186,24 @@ cursor capture. Touch/mobile controls and bottom actions do not auto-hide.
 
 ### Mobile play
 
-The player uses the visible viewport height and respects display safe areas.
-Mobile mouse-controlled games fit that height while preserving the game’s aspect
-ratio; narrower viewports can crop the sides. Apple II Hi-Res Adventures such as
-Mystery House use a **Game command** field in place of the mouse controls on mobile.
-Tap the field to open the device keyboard, then tap **Send** or press Enter to send
-the command. **Send** with an empty field presses Enter by itself. These games and
-desktop canvases fit within both dimensions so the game’s own prompts stay visible.
+The mobile player respects display safe areas. Mobile mouse-controlled games
+fit the browser's visible height while preserving the game’s aspect ratio;
+narrower viewports can crop the sides. In Grim Fandango's default
+character-relative movement mode, drag from where your thumb lands on the left
+stick. Drag up or down to walk, left or right to turn, or aim diagonally to do
+both at once. Tap the lightning-bolt Actions button on the right to reveal icons for
+**Use / Talk**, **Examine**, **Pick up / Put away**, and **Inventory**. The choices
+collapse after you select one. In the Hugo games, drag the stick in the direction
+you want to walk. Release it or return it to the center to stop.
+Gameplay controls stay behind the loading screen, including when **Skip intro**
+reloads the game.
+
+In Hugo, Apple II Hi-Res Adventures such as Mystery House, and Zork I–III, tap
+the keyboard icon to open a **Game command** field across the available width,
+just above the device keyboard.
+The keyboard covers part of the game at its original size. Press the keyboard’s
+Enter key to submit the command and return to the game. An empty field sends
+Enter by itself. You can also dismiss the keyboard with your device’s controls.
 The toolbar has no aspect-ratio toggle. The parent reapplies the viewport’s sizing
 mode after frame navigation and when the mobile viewport classification changes.
 **Play**, **Continue** and **Start from beginning** show the game's loading screen
@@ -191,26 +214,37 @@ it resolves the selected game version. Failed ZIP preparation dismisses the laun
 feedback so recovery actions remain available. File-access and locate prompts
 do not show the loading screen.
 
-These actions request fullscreen directly
-from the launch gesture on mobile, then request landscape. Catalog launches use
-client navigation on desktop and mobile, preserving the document root in fullscreen.
-The fullscreen toolbar button is available only in desktop mode. The player
-shows no fullscreen or rotation modal; unsupported or refused requests leave
-play and touch controls available in the current orientation. Exit requests
-portrait while fullscreen is still active, then exits fullscreen and releases
-the orientation lock. Browsers may reject locking or restore their own rotation
-policy after fullscreen; physical rotation cannot be guaranteed on those devices.
-File-access and locate actions keep their normal prompts without entering fullscreen.
-Orientation follows the viewport rather than the physical screen, so split-screen
-windows and tablets use the available space. Dragging moves the cursor; the
-large square **Adjust** cursor pad offers smaller movements, and the compact
-mouse-shaped **L**/**R** buttons send clicks. The pad, click buttons and exit
-control share a translucent fill, muted labels and subtle outlines to keep the
-game prominent; pressing or keyboard-focusing a control highlights it. Double-tapping
-the game sends a left click. Loading screens scroll on short landscape viewports.
+On phones and tablets, the gallery and game detail pages request portrait.
+**Play**, **Continue**, and **Start from beginning** request fullscreen from the
+launch gesture, then request landscape. Catalog launches preserve the document
+root in fullscreen. The mobile player keeps landscape through navigation away
+from the game, and the gallery requests portrait on return.
+
+When a browser refuses to rotate, the gallery shows a rotate prompt in landscape
+and the player hides gameplay and touch controls in portrait. The player keeps
+**Exit game** available and offers **Enter fullscreen** when supported.
+Returning to landscape reveals the same running game. The orientation checks
+use the viewport, including in split-screen windows. File-access and locate
+actions keep their normal prompts. Dragging moves the cursor. The
+large square cursor pad offers smaller movements, and the compact
+mouse-shaped **L**/**R** buttons hold the corresponding mouse button until
+released. Move the cursor with the pad while holding either button. The cursor pad sits at least
+2 rem from the left edge to reduce accidental Android Back swipes. The pad,
+click buttons and exit control share a translucent fill and subtle outlines to keep the
+game prominent; pressing or keyboard-focusing a control highlights it. The cursor
+pad suppresses the browser’s tap highlight. Tap the game once to position the
+cursor. Double-tap or press **L** to left-click. Touch and hold a spot on the
+game screen to hold the left mouse button, then drag and lift to release. In
+The Curse of Monkey Island, hold over an interactive object until the action
+menu appears, then move to an action and release. In Teen Agent, left-clicking
+walkable ground moves Mark, and pressing **R** interacts with the object under
+the cursor. On short landscape viewports, swipe up on the loading screen to
+reveal any content below the fold.
 
 Check the launcher, game landing hero, screenshot viewer, compatibility search, settings and player at
 320px and 390px portrait widths, a short landscape viewport and tablet widths.
+Compare the Play button across short and long hero titles, the screenshot toolbar
+across mixed image sizes, and the Settings controls before and after saves load.
 Verify rotation, exit, menu, left/right clicks, cursor dragging, Start audio and
 fullscreen refusal on physical Android and iOS devices before claiming device
 coverage; desktop viewport checks do not emulate mobile browser APIs or touch.
@@ -220,7 +254,8 @@ coverage; desktop viewport checks do not emulate mobile browser APIs or touch.
 Open the **Settings** gear icon to the right of GitHub in the header, then **Saved games**.
 Export and import actions appear above the list of active and preserved saves.
 Unmatched imports share one row showing the total number of save files.
-The drawer slides from the right, uses compact typography and prevents text selection.
+The drawer slides from the right and shows loading progress in its header so the
+saved-game actions stay in place.
 It opens and closes immediately when reduced motion is enabled.
 **Export all saves**
 downloads a ScummWEB ZIP containing active progress and preserved save sets.
@@ -239,17 +274,26 @@ files and timestamps, stay together; individual save slots are not combined.
 Older shared saves with an unknown filename convention are backed up together
 as **Other shared saves** to avoid splitting dependent files.
 
-Close games in every tab before exporting, importing or switching sets. The
-runtime holds an exclusive Web Lock while it uses the save filesystem; a second
-game or backup operation must wait until it closes. Library tabs remain usable.
-Browsers without Web Locks can play without cross-tab coordination, but cannot use
-the backup actions. Current saves remain in BrowserFS localStorage; preserved
-sets use IndexedDB. Both remain local to this site and browser profile until
-exported, and clearing site data removes them. There is no automatic cloud sync.
+Different game editions can run in separate tabs. Each edition has its own
+writable filesystem and holds an exclusive lock for that edition until the
+player closes. Opening the edition or checking its saves for the first time
+moves matching legacy saves into its filesystem with their original timestamps.
+Continue reads the old location until the move. Unmatched files stay available
+in **Other shared saves**.
+Launches without an edition identity still use the shared filesystem.
+
+Close games in every tab before exporting, importing or switching sets. Those
+operations take an exclusive site-wide lock. Browsers without Web Locks can
+play without cross-tab coordination and cannot use backup actions. Current
+saves remain in BrowserFS localStorage. Preserved sets use IndexedDB. Both
+remain local to this site and browser profile until exported, and clearing
+site data removes them. There is no automatic cloud sync.
 
 Backups use format `scummweb-save-backup`, version `1`: `manifest.json` identifies
 game destinations and lists logical filenames, timestamps, ZIP entry names and
-SHA-256 checksums. Save bytes are stored separately under `saves/`. Imports are
+SHA-256 checksums. Catalog sets from isolated storage include an `isolated`
+marker so their files restore to the same edition. Save bytes are stored
+separately under `saves/`. Imports are
 limited to 64 MiB expanded and compressed, 4,096 save files and 1,000 sets, and
 reject unsafe paths, unsupported versions, unexpected entries and failed
 checksums. Export reserves space for the manifest within that limit. Restores
@@ -261,7 +305,20 @@ Run `node --test test/save-backups.test.mjs` to check backup round-trips,
 cross-device game matching, conflicts, legacy isolation, quota failures and
 archive validation.
 
+### Installing the web app
+
+The home page offers installation when the browser makes its install dialog
+available. Select **Install app** to open that dialog. In Safari, use **Add to
+Home Screen** on iPhone or iPad, or **Add to Dock** on macOS Sonoma and later.
+Closing the invitation remembers the dismissal in the current browser profile.
+The browser's own installation controls remain available.
+
 ### Library and game files
+
+The library checks existing sources during startup. It loads archive extraction
+when an import needs inspection or a selected game launches. The ZIP download and
+installation cache code loads with the player or when a linked game launches.
+
 The launch overlay uses status text without a progress bar.
 During ZIP downloads, the launch status shows `Loading game (12.4 / 85.2 MB)…`
 when the host provides a valid `Content-Length`; otherwise it shows the downloaded
@@ -294,6 +351,10 @@ OpenGL signal excludes ScummVM's splash and GUI overlays; canvas draw observers
 and the pixel detector remain fallbacks for other renderers. Intro skipping
 remains an explicit action shown in the player controls after the loading screen
 closes; the download and startup panel does not offer **Skip intro**.
+Browser games skip ScummVM's startup splash. For both catalog and imported
+games, the player continues past nonfatal startup compatibility prompts and
+shows the original messages under **Compatibility warning** in the toolbar.
+Fatal compatibility errors still stop launch.
 The native GUI's startup themes and translation prefix also prefetch in parallel;
 later reads reuse their binary buffers. Range responses must match the requested
 prefix and indexed file size, and failed hints retain the ordinary read path.
@@ -305,12 +366,21 @@ within the same 8 MiB memory cache. Larger files remain backed by Blob slices.
 The bundled library's **Skip intro** action restarts the matching edition with
 a native startup option or an original save taken at the first playable scene,
 before puzzle actions.
-It is offered for a fresh launch; Continue and personal ZIP editions keep their
-own save behavior. Checkpoints live in `scummvm-shell/launcher/skip-intro/` and
+On a fresh bundled launch, the action appears after the first game frame and
+disappears when the engine reaches the first playable scene or the selection
+screen that the skip itself preserves. Checkpoints live in `scummvm-shell/launcher/skip-intro/` and
 must remain in Git. `launcher-game-overrides.json` is the rebuild source for each
 entry's `skipIntro` metadata; regenerate `games.json` with
 `node scripts/create_launcher_metadata.mjs scummvm-shell/scummvm.ini scummvm-shell/games.json`,
 then regenerate the runtime asset fingerprints and stage the managed shell.
+
+Imported editions can offer **Skip intro** at native opening skip points in
+SCUMM, GrimE, AGI, SCI, and the Hi-Res Adventure interpreter. The action skips
+the current opening segment in place. If the game exposes another skippable
+segment, the action can appear again. Native menus and player choices stay in
+the game. Continue omits the action, and imported editions keep their own
+saves. Openings that lack an interpreter-level skip point need an
+edition-specific implementation.
 
 The additional checkpoints use the pinned ScummVM runtime and the bundled game
 fingerprints in `data/bundled-game-files.json`. Sołtys starts in its yard, Sfinx
@@ -320,6 +390,21 @@ apartment after the scripted opening conversation, before any puzzle action. So�
 slot 0 for autosave; the demo also uses slot 1. The demo's
 checkpoint is captured through the native debugger because it disables its save
 menu; this does not change the demo's original save restrictions.
+
+Dragon History follows its original escape-room destination. Teen Agent uses
+its native intro abort and the Hugo demos enter their normal first scenes.
+Pegasus Prime keeps the demo menu and Castle Master keeps character and control
+selection. The three Zork games start at the command prompt.
+
+The Atlantis, Grim Fandango, and Escape from Monkey Island demos use native
+debugger checkpoints captured before the first player decision. The bundled
+Curse of Monkey Island demo omits the intro video and opens in the ship's hold.
+Its `checkpointOnly` metadata keeps the seeded launch available without showing
+**Skip intro** over the opening scene. Quest for Infamy resumes at the
+Volksville entrance from an original in-game save. The launcher checks
+checkpoint bytes before writing. It can replace the exact incomplete
+checkpoints from the original release and protects a slot containing player
+progress.
 
 Nippon Safes uses the native `boot-param` strategy (`bootParam: 1`) through
 patch 17 to skip the story while retaining its language and character choices.
@@ -333,13 +418,21 @@ The **Recently Played** strip shows only games you have launched, newest first,
 including imported ZIPs. Different editions of a title share one card, and
 selecting it opens the same version chooser as the library. Removed imports
 disappear from the strip. The strip stays hidden until there is play history.
+The included Flight of the Amazon Queen card can show story progress for the
+save that Continue will load. See [Recently Played progress](game-progress.md#recently-played).
 
-The sliders icon beside **Game Library** opens sorting by name, release year,
-genre, or studio and genre filtering for both public and imported games. Select
-**All genres** to remove the filter or **Name: A–Z** to restore alphabetical order.
-Name order keeps numbered series in installment order, treating Roman and Arabic
+The sliders icon beside **Game Library** opens sorting and genre filtering for
+both public and imported games. **Featured** is the default sort. It puts
+Beneath a Steel Sky, Flight of the Amazon Queen, Lure of the Temptress, DreamWeb,
+and Broken Sword 2.5 first, then lists other full games and demos in separate
+A–Z groups. Hugo's House of Horrors appears before Hugo II in each group.
+Hi-Res Adventure #1: Mystery House follows the Zork games at the end of the
+full-game group. Select **All genres** to remove the genre filter, or sort the
+whole list by name, release year, genre, or studio.
+The **Name** options keep numbered series in installment order, treating Roman and Arabic
 numerals alike. Sort-only aliases in `lib/game-title-sort.mjs` place unnumbered
-first games and irregularly named sequels with their series. These aliases also
+first games and irregularly named sequels with their series. For example,
+Hugo's House of Horrors appears before Hugo II and Hugo III. These aliases also
 apply to imported games and name tie-breaks, preserving displayed titles and URLs.
 Select the **ScummWEB** logo or its tagline in the header to return to the homepage.
 On mobile, select **Library** next to **Settings** to jump to the **Game Library**
@@ -620,6 +713,9 @@ Maintain it in `web-shell/`; the staging script copies it into the managed bundl
 
 ## Evaluator telemetry
 
+For the maps and browser tracker that turn this telemetry into story progress,
+see [Game internals and story progress](game-progress.md).
+
 The host opts in by setting `__scummwebEvaluationEnabled` before launch. Every
 engine publishes its native IDs in `__scummwebEvaluationGame`. Room and game
 variable support depends on the engine. Native patch
@@ -680,20 +776,24 @@ queues. A sample can miss transient writes.
 | --- | --- | --- |
 | Access | Player room | `flags` |
 | ADL | Room | `vars` |
-| AGI | Current room in the AGI VM | `vars`, packed `flag_bytes` |
-| AGOS | Waxworks room where known | `vars`, `vars_secondary` where enabled |
+| AGI | Current room in the AGI VM or PreAGI interpreter | AGI `vars` and `flag_bytes`, or PreAGI `preagi` counters and victory markers |
+| AGOS | Waxworks room where known | `vars`, `vars_secondary` where enabled, `elvira2_outcome` for the English Amiga floppy edition |
+| AGS | Displayed room | `game_state` score and maximum score |
 | BBVS | Game scene | `game_vars` |
 | CGE | Scene | `flags` |
 | CGE2 | Scene | — |
-| Cine | — | `global_vars` |
+| Cine | Background resource filename | `global_vars`, `object_x`, `object_y`, `scene` |
 | Composer | Page when unambiguous | `vars` |
 | Cruise | — | `global_vars` |
 | Draci | Current room | `vars` |
 | Drascula | Current room | `flags` |
 | DreamWeb | Location | `game_vars` |
+| Freescape | Current area | `game_vars` keyed by native variable number |
+| GLK | — | `event_state` frame counter and timer interval |
 | Gnap | Scene | `flag_word` |
 | Gob | TOT script filename | `vars` |
 | GOT | Level | `flags` |
+| Grim | Set name | `scene_state`, original Grim Fandango `puzzle_flags` and `story_state`, or Escape from Monkey Island `story_state` |
 | Groovie | — | `script_vars` |
 | Hopkins | Room | `state_bytes` |
 | Hugo | Screen | `screen_states` |
@@ -712,7 +812,7 @@ queues. A sample can miss transient writes.
 | Queen | Room, name and readiness | `game_state` |
 | SAGA | Scene | `script_common_bytes`, `global_flag_word` |
 | SCI | Script's current room global | `globals` |
-| SCUMM | Physical room and readiness | `scumm_vars`, `object_state`, `scumm_bit_bytes` and `room_vars` where present |
+| SCUMM | Physical room and readiness | `scumm_vars`, `object_state`, `scumm_bit_bytes`, `room_vars` and active global `running_scripts` where present |
 | Sherlock | Current scene | `flags` |
 | Sky | Script screen | `script_vars` |
 | Sword1 | Script screen | `script_vars` |
@@ -727,7 +827,7 @@ queues. A sample can miss transient writes.
 | Touche | Current room | `flags` |
 | TSAGE | Scene | `flags` |
 | Tucker | Location | `flags` |
-| Voyeur | — | `game_vars` |
+| Voyeur | Current area | `game_vars` with event count, event flags, time index, and transition ID |
 | Wintermute | Scene filename | Numeric `globals` |
 | ZVision | World, room, node and view code | `state`, `flags` |
 
@@ -737,6 +837,33 @@ values. The IDs and keys retain their engine-specific meaning. The table
 lists the engine hooks in the managed build. Some editions use another
 interpreter path or have no current room or variables before gameplay.
 When there is no sample, the engine and game identity can still be queried.
+
+For edition matching, AGI reports its detection checksum in `identity.index_md5`
+when available. SCI uses the complete `resource.map` MD5 for editions with
+that file. For SCI32 editions with numbered resource files, include each
+`resmap.000` through `resmap.099` with a matching `ressci.*` volume. Sort by
+volume number and append a line containing the lowercase map filename, a
+colon, the complete map's lowercase MD5 and a line feed. The MD5 of the
+resulting ASCII manifest is the edition fingerprint.
+
+PreAGI samples at native room and menu boundaries, including the victory
+sequences. The `preagi` bank includes Mickey's `crystals`, `planet` and
+`completed` values, Troll's `treasures` and `completed` values, or Winnie's
+`returned_objects` and `missing_objects` values. SCUMM's snapshot-only
+`running_scripts` bank uses global script numbers as indices. A value of 1
+means the script is active at the sampled tick.
+
+The original English Windows GrimE games report the detector's first 5,000
+bytes of `vox0001.lab` or `artall.m4b` as an MD5. Grim Fandango's original
+Lua VM exposes saved puzzle flags and finale unlock state. Escape from Monkey
+Island exposes selected Lua story flags, the current act and the story credits
+argument.
+
+For Elvira II on Amiga, `identity.index_md5` is the MD5 of the complete
+`gameamiga` database. The supported English floppy edition publishes
+`elvira2_outcome.ritual` as 0 before an outcome, 1 on the winning branch,
+or 2 on ritual failure. The value survives the ending's scripted reload
+and clears on a new attempt or successful player-initiated restore.
 
 For a new adapter, use an engine update boundary and copy game-owned values
 with `ScummWebTelemetry::Sample`. Expose a room only when the engine stores
@@ -888,11 +1015,35 @@ notice intact.
 
 Dragon History uses the original English-subtitled DOS release. Its package
 includes the developer's corresponding sources and the GPLv2 notice. The
-three LucasArts demos use the first English DOS Fate of Atlantis demo, the
-small English Windows Grim Fandango demo and the English Windows Escape from
-Monkey Island web demo. The release ZIPs retain the exact upstream bytes and
-publisher notices. Grim and Escape use the Grim plugin, with the `monkey4`
-subengine enabled for Escape.
+LucasArts demo ZIPs retain the exact upstream bytes and publisher notices.
+The Curse of Monkey Island (Demo) uses the small English Windows web demo
+(`comi-win-small-demo-en.zip`), which includes speech and omits the intro video
+and music. Its original `README.TXT` contains the redistribution terms. It uses
+the SCUMM plugin with the `scumm_7_8` subengine and shares the full game's hero.
+Its gallery shows the opening scene in the hold, the cannon verb coin, and
+Guybrush’s inventory, all captured from the bundled edition. Fate of Atlantis
+uses the first English DOS demo. Grim Fandango and
+Escape from Monkey Island use their English Windows demos with the Grim
+plugin, with the `monkey4` subengine enabled for Escape.
+
+Teen Agent (Demo) uses the English DOS Union shareware package. Its
+`LICENSE.DOC` permits electronic distribution with every file intact. The
+three English DOS Hugo demos use the v2.1 shareware releases. Their
+`MANUAL.DOC` terms require complete, unmodified distribution without
+compensation. The Macintosh Pegasus Prime demo uses the non-Mac-format
+download with its original resource forks and starts in `PP Data`. The archive
+includes Presto Studios' terms for complete, unmodified, non-profit distribution.
+Each demo keeps the upstream ZIP bytes. The catalog shares the games'
+generated covers and heroes and credits the source of each gameplay gallery.
+
+Castle Master (Demo) adds the Freescape engine. Incentive Software's DOS demo
+includes the first level and permits distribution without charge or changes.
+Quest for Infamy (Demo) adds the AGS engine and uses the English Windows
+[Demo 2.0 release](https://www.kickstarter.com/projects/1992695780/quest-for-infamy-an-adventure-game-by-infamous-que/posts/401982).
+Its EULA permits redistribution of the publisher's evaluation version. This
+catalog target has a 300 MiB download and unpacked limit for its original ZIP.
+Both packages retain their publisher notices, and their galleries credit
+ScummVM, ScummWEB, and LaunchBox gameplay captures where used.
 
 Zork I–III use Glk and the original MIT-licensed Infocom sources. Obtain the
 [ZILF 1.9 toolchain](https://github.com/taradinoc/zilf/releases/tag/1.9), then run
@@ -963,6 +1114,16 @@ dimensions. Changed bytes get a new URL; retain older objects for older deployme
 The optional `images` map selects a WebP fallback and ordered WebP/AVIF variants
 for each logical source path. Activation publishes this delivery map and the
 object records together, so the app cannot reference unpublished variants.
+The original records also carry tiny inline WebP previews for banners, covers,
+and gameplay captures. Each preview keeps the source's aspect ratio when
+displayed and uses the full image's crop and focal position. The browser paints
+it while the full image loads directly from R2.
+
+The homepage includes responsive artwork for the opening game and library.
+Other games' screenshot variants come from the static `/gallery-artwork.json`
+manifest when their screenshot strip approaches the viewport or a screenshot is
+opened. Direct game pages include their artwork metadata in the page response.
+If the manifest request fails, the screenshot gallery uses the original image URLs.
 
 The Beneath a Steel Sky hero at
 `/launcher/sky-scummweb-generated-2026-11-05-r1-hero.webp` is an ImageGen
@@ -971,7 +1132,9 @@ and designs belong to Revolution Software and their respective creators. It
 retains the inked comic composition and orange/blue palette, with a quieter
 left side for the page title. The original `/launcher/sky-hero.webp` remains
 available. The revised hero uses verified immutable R2 objects with responsive
-AVIF and WebP variants at 640, 960, 1280, and 1600 pixels wide.
+AVIF and WebP variants at 640, 960, 1280, and 1600 pixels wide. The AVIF set also
+includes a 1440-pixel variant. On wide, tall layouts, the library uses the cover
+crop below the 5rem navigation inset to size both the image and its preload.
 
 Flight of the Amazon Queen uses
 `/launcher/queen-scummweb-generated-2026-11-05-r1-hero.webp`, an ImageGen
@@ -1033,6 +1196,10 @@ credential scope. The default remains `artwork-migration`.
    responsive images plus a private delivery map for the next upload plan.
 2. Run `pnpm run artwork:plan`. This retains the active manifest, creates a private
    upload plan, and preserves content-addressed copies of every local image.
+   The plan derives a preview up to 12 pixels per side from each new or changed
+   original. For previously published originals missing previews, run
+   `node scripts/artwork-storage.mjs placeholders` before planning. It checks the
+   source bytes and updates only the preview metadata in the tracked manifest.
    Published mappings without local originals are retained for subsequent updates.
    Plans record the current storage fingerprint; activation rejects a stale plan
    so concurrent artwork updates must be merged before switching delivery.
@@ -1051,6 +1218,25 @@ credential scope. The default remains `artwork-migration`.
    changed local originals. Notices and skip-intro saves are preserved.
 6. Run `pnpm run prepare`, `pnpm run lint`, `pnpm test`, and a production build.
    Check covers, heroes and galleries in the browser before publishing the change.
+
+### Single-object publishing through Agent Vault
+
+For one planned artwork object up to 2 MiB, use the sandboxed macOS publisher
+with the configured local Infisical Agent Vault proxy and Python with `boto3`.
+Pass the workspace used by `artwork:plan` and the exact logical path to publish.
+
+```sh
+python3 scripts/infisical/publish_immutable_artwork.py WORKSPACE /launcher/optimized/ARTWORK.avif --publish
+```
+
+Omit `--publish` to test the route against a synthetic relay. A publish also
+runs that check first, then performs a read-only R2 check. The trusted step
+signs a five-minute PUT for the planned key, cache policy, type, and checksum.
+R2 accepts the PUT only when that key is absent. The separate sandboxed process
+receives a placeholder and can send the planned bytes only through the loopback
+relay behind Agent Vault. The relay closes and the temporary bundle is deleted
+after the command. The publisher checks the public bytes and cache policy before
+returning. Run `artwork:activate` to verify the complete plan and switch delivery.
 
 Normal builds need no storage credentials. Social-card generation uses verified
 local or cached image bytes, downloading checksum-verified originals from the
@@ -1074,6 +1260,12 @@ branding, layout and palette. Use the actual original box front as the primary
 reference; never substitute reimagined hero art. Remove scan damage and extraneous
 stickers without redesigning the cover. Report missing original box references.
 Screenshots always remain original gameplay captures; never generate or repaint them.
+
+The Grim Fandango and Escape from Monkey Island demos use their games’ original
+English PC box fronts as references. Zork I–III use Infocom’s English grey-box
+fronts. The Museum of Computer Adventure Game History provides the reference
+photographs. The per-game records link to the exact photographs and identify the
+new heroes as illustrated recompositions and the covers as restorations.
 
 Recognized personal imports can have a hero and a restored box front. Keep the
 original reference URLs and credits in the artwork mapping and the prompts and
@@ -1180,6 +1372,8 @@ Variant width descriptors come from the decoded image dimensions. Hero
 preloading uses the same picture sources as visible images to avoid downloading
 both format alternatives. Browsing pages preconnect to the artwork bucket and
 send URL and dimension records for the bundled games and the current game.
+The homepage also sends the preconnect hint in a `Link` response header so the
+CDN can advertise it before the HTML arrives.
 The browser loads the full delivery inventory when it restores or adds imported
 games. Publishing and verification tools use the full manifest.
 
@@ -1198,22 +1392,34 @@ Game pages use their individual social cards. The shell finalizer copies the
 browser and install icons from [`public/brand/web-seo/`](../public/brand/web-seo/)
 into the managed shell during ScummVM rebuilds.
 
-Browser tabs and installed apps use the Emerald Cartridge icon: a green **S** and
-silver-grey **W** on a beveled emerald tile with a recessed cartridge groove.
-The untouched generated source is
-[`image-assets/sources/icon-source.png`](../image-assets/sources/icon-source.png).
-Run `node scripts/generate-favicon-assets.mjs` after replacing it and updating its
-generation evidence in the provenance record. The command derives 16/32/48px
-losslessly compressed PNGs, an ICO, a compact SVG embedding the 64px rendition, 192/512px install icons,
+Browser tabs and standard install icons use the Emerald Cartridge badge with a
+green **S** and silver-grey **W** on a beveled emerald tile. The
+[badge source](../image-assets/sources/icon-badge-source.png) removes the groove
+from the [original](../image-assets/sources/icon-source.png). Android launchers
+can use the separate [maskable source](../image-assets/sources/icon-maskable-source.png),
+whose opaque green background fills the launcher shape. Its lettering fits inside
+the central circle with a radius of 40% of the image width.
+
+Run `node scripts/generate-favicon-assets.mjs` after replacing either source and
+updating its generation evidence in the provenance record. The command derives
+16/32/48px losslessly compressed PNGs, an ICO, a compact SVG embedding the 64px
+rendition, standard 192/512px install icons, a 512px maskable install icon,
 an opaque 180px Apple touch icon, and the 1024px branding icon. The SVG at
 `image-assets/sources/favicon-source.svg` is a generated compatibility export,
 not an editable vector source. The command updates the branding, managed shell,
 staged public files, both web manifests, export fingerprints and
 `image-assets/icon-versions.json`. App metadata uses these content versions to
 refresh favicon, manifest and Apple touch icon URLs when artwork changes.
-Install icons use the standard `any` purpose; they are not designed for maskable
-cropping. Existing installations may refresh their icons on the platform's own
-schedule or require reinstalling after deployment.
+Existing Android installations can refresh their icons after deployment on the
+browser's update schedule.
+
+The app installs as `ScummWEB`.
+
+The app manifest requests fullscreen on launch. If the browser opens the
+installed app in a standalone window, ScummWEB requests fullscreen on the first
+interaction that grants permission and keeps it active between the catalog and
+player. The browser and operating system control fullscreen availability and
+can exit it at any time.
 
 ### Social preview assets
 
@@ -1270,6 +1476,9 @@ or request-time rendering.
   temporarily use `scummvm-shell/launcher/` as described in the publishing procedure.
   The banners use ImageGen-restored promotional art. Screenshot galleries retain
   the original captures.
+- The Grim Fandango, Escape from Monkey Island, and Fate of Atlantis demo
+  galleries and the Zork I–III galleries show original ScummWEB gameplay captures
+  of the bundled editions. The Zork galleries show the in-game text interface.
 - The Secret of Monkey Island (Demo) uses
   [Steve Purcell's DOS box art](https://gamesdb.launchbox-app.com/games/images/139-the-secret-of-monkey-island)
   and [DOS EGA demo screenshots](https://www.dosgamesarchive.com/download/the-secret-of-monkey-island).
@@ -1338,7 +1547,10 @@ or request-time rendering.
   The Simon the Sorcerer's Puzzle Pack gallery shows Jumble, NoPatience,
   and Swampy Adventures.
   The homepage uses a game's landscape artwork or gameplay capture as its
-  slideshow backdrop. Heroes share save-aware Play, Continue, Start from beginning
+  slideshow backdrop. The slideshow opens with Beneath a Steel Sky, then shows
+  full games in descending order of MobyGames player-rating counts at the time
+  of curation. Unranked full games follow, then Zork I–III in series order and
+  finally the demos. Heroes share save-aware Play, Continue, Start from beginning
   and reconnect actions. The metadata badge stays visible for all edition counts;
   multiple editions also show an inline Version selector. The selector retains its
   space while hidden, so restoring local editions does not move the action row or
@@ -1419,9 +1631,8 @@ or request-time rendering.
   library for explicit replacement with a ZIP, preserving their save identity;
   they are never opened as directories.
   Desktop hero titles fit their full text into a fixed three-line title area, resizing
-  after viewport or font changes. Summary and metadata slots have fixed heights,
-  with their full text available in tooltips. Keep action rows stable across
-  slides so long titles and labels do not move the controls or the library.
+  after viewport or font changes. Summary and metadata reserve space across slides,
+  including on shorter desktop viewports.
   The desktop hero's primary action reserves a fixed button width. All layouts
   retain save-aware Play/Continue and file-access actions; mobile buttons span
   the available width with a minimum 3rem height.
@@ -1476,9 +1687,11 @@ or request-time rendering.
   the library uses exactly five columns; narrower layouts keep their responsive grid.
   The screenshot strip reserves its full height so changing games does not move
   later sections. Thumbnail requests start as the strip approaches the viewport.
-  Selecting a thumbnail expands a viewer inline. Previous/next and arrow keys
-  browse the screenshots; Close screenshot or Escape collapses the viewer and
-  restores focus to the thumbnail. Game changes reset the expanded image.
+  Selecting a thumbnail expands a viewer inline. The first screenshot sets the
+  viewer's aspect ratio, so switching between images keeps the toolbar in place
+  and displays every screenshot centered and uncropped. Previous/next and arrow
+  keys browse the screenshots; Close screenshot or Escape collapses the viewer
+  and restores focus to the thumbnail. Game changes reset the expanded image.
   Game details do not open a modal or lock background scrolling.
   The library's sliders icon opens the sorting and genre controls. The button
   has an accessible label and no visible text. It sorts the

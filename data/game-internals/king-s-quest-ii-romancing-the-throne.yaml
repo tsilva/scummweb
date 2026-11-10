@@ -1,0 +1,53 @@
+# English Amiga 2.0J.
+# Traced against the original AGI logic resources for this edition.
+# Logic 107 sets flag 34 after the monk completes the wedding.
+schema_version: 1
+game: king-s-quest-ii-romancing-the-throne
+engine_id: agi
+edition:
+  game_id: kq2
+  index_md5: b866f0fab2fad91433a637a828cfa410
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  neptune-palace: 51
+  wedding: 107
+  tower-entrance: 90 # Logic 90 describes the tower door.
+  valanice-room: 92 # Logic 92 shows Valanice in the room at the top of the tower.
+variables:
+  score: { bank: vars, index: 3 }
+  max-score: { bank: vars, index: 7 }
+flags:
+  wedding-completed: { bank: flag_bytes, index: 4, mask: 4 } # Flag 34.
+  opened-first-door: { bank: flag_bytes, index: 10, mask: 32 } # Flag 85. Logic 42 completes the first opening animation.
+  returned-trident: { bank: flag_bytes, index: 12, mask: 2 } # Flag 97. Logic 51 awards the bottle and opens the clam.
+  opened-second-door: { bank: flag_bytes, index: 10, mask: 64 } # Flag 86. Logic 42 completes the second opening animation.
+  opened-third-door: { bank: flag_bytes, index: 10, mask: 128 } # Flag 87. Logic 42 opens the portal to room 80.
+milestones:
+  - id: opened-first-door
+    label: "Opened the first magic door"
+    when: { flag: opened-first-door }
+  - id: reached-neptune
+    label: Reached Neptune’s palace
+    when: { room: neptune-palace }
+  - id: returned-trident
+    label: "Returned Neptune’s trident"
+    when: { flag: returned-trident }
+  - id: opened-second-door
+    label: "Opened the second magic door"
+    when: { flag: opened-second-door }
+  - id: opened-third-door
+    label: "Opened the third magic door"
+    when: { flag: opened-third-door }
+  - id: tower-entrance
+    label: "Reached Valanice’s tower"
+    when: { room: tower-entrance }
+  - id: valanice-room
+    label: "Reached Valanice"
+    when: { room: valanice-room }
+  - id: winning-ending
+    label: Married Valanice
+    when:
+      all:
+        - { room: wedding }
+        - { flag: wedding-completed }

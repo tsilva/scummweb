@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import test from "node:test";
+import vm from "node:vm";
+import { clickGameMouse, moveGameMouse, setGameMouseButton } from "../app/game-player/game-mouse.mjs";
 
 const rootDir = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
 const shellHtmlPath = path.join(rootDir, "scummvm-shell", "scummvm.html");
@@ -58,35 +60,158 @@ test("boot polling in the app still reads shell output for failures", () => {
   assert.match(bootStateSource, /BOOT_FAILURE_PATTERNS\.some\(\(pattern\) => pattern\.test\(outputValue\)\)/);
 });
 
-test("mobile touch click shim holds button state long enough for polling engines", () => {
-  const shellHtml = fs.readFileSync(shellHtmlPath, "utf8");
+test("the imported intro bridge consumes clicks only at the active native skip point", () => {
+  const shell = fs.readFileSync(shellHtmlPath, "utf8");
+  const bridge = shell.match(/if \(isLocalGame && !isCatalogArchive && !scummwebLaunchUrl\.searchParams\.has\("continue"\)\) \{[\s\S]+?(?=const readyStatePriority=)/)?.[0];
+  assert.ok(bridge, "the generated shell includes the native intro bridge");
+  const messages = [];
+  const install = (query = "", isCatalogArchive = false) => {
+    const scope = {
+      isLocalGame: true, isCatalogArchive, scummwebLaunchUrl: new URL("https://scummweb.example/scummvm.html" + query),
+      scummwebMessageSource: "scummweb", buildCurrentFrameHref: () => "/scummvm.html#--auto-detect",
+      postParentMessage: (message) => messages.push(message.available),
+    };
+    vm.runInNewContext(bridge, scope);
+    return scope;
+  };
+  const { __scummwebRequestIntroSkip: request, __scummwebUpdateIntroSkip: update } = install();
+  assert.equal(request(), false);
+  assert.equal(update(true), false);
+  assert.equal(request(), true);
+  assert.equal(request(), false);
+  assert.equal(update(true), true);
+  assert.equal(update(true), false);
+  assert.equal(request(), true);
+  assert.equal(update(false), false);
+  assert.equal(update(true), false);
+  assert.deepEqual(messages, [true, false, true]);
+  assert.equal(install("?continue=1").__scummwebRequestIntroSkip, undefined);
+  assert.equal(install("", true).__scummwebRequestIntroSkip, undefined);
+});
 
-  assert.match(shellHtml, /const touchSyntheticClickHoldMs=80;/);
-  assert.match(
-    shellHtml,
-    /window\.setTimeout\(\(\(\)=>\{dispatchPointerEvent\("pointerup",point,\{button,buttons:0\}\);dispatchMouseEvent\("mouseup",point,\{button,buttons:0\}\);/
+function createTouchInput() {
+  const shellHtml = fs.readFileSync(shellHtmlPath, "utf8");
+  const constants = shellHtml.match(/const touchTapDurationMs=[\s\S]+?(?=let gameRunning=)/);
+  const handlers = shellHtml.match(/const clamp=[\s\S]+?(?=window\.addEventListener\("message",handleScummwebMessage\))/);
+  assert.ok(constants && handlers, "the generated shell includes the touch input handlers");
+
+  const origin = "https://scummweb.example";
+  const events = [];
+  let now = 0;
+  let nextTimer = 0;
+  const timers = new Map();
+  const parent = {};
+  const input = vm.runInNewContext(
+    `${constants[0]}
+     let activeTouchGesture=null,lastCompletedTap=null,syntheticCursorPoint=null;
+     ${handlers[0]}
+     ({ start:handleTouchStart, move:handleTouchMove, end:handleTouchEnd,
+        cancel:handleTouchCancel, reset:resetSyntheticInput, message:handleScummwebMessage });`,
+    {
+      scummwebLaunchUrl: { origin },
+      Date: { now: () => now },
+      window: {
+        parent, scrollX: 0, scrollY: 0,
+        setTimeout(callback, delay) {
+          timers.set(++nextTimer, { at: now + delay, callback });
+          return nextTimer;
+        },
+        clearTimeout: (id) => timers.delete(id),
+      },
+      canvas: {
+        getBoundingClientRect: () => ({ left: 0, top: 0, right: 320, bottom: 200, width: 320, height: 200 }),
+        focus() {},
+        dispatchEvent(event) { events.push([event.type, event.clientX, event.clientY, event.button, event.buttons]); },
+      },
+      MouseEvent: class {
+        constructor(type, options) { Object.assign(this, { type }, options); }
+      },
+    }
   );
-  assert.match(shellHtml, /dispatchMouseEvent\("click",point,\{button,buttons:0,detail:1\}\)/);
-  assert.match(shellHtml, /dispatchMouseEvent\("contextmenu",point,\{button,buttons,detail:0\}\)/);
+  const frame = { contentWindow: { postMessage: (data, origin) => input.message({ data, origin, source: parent }) } };
+  function advance(ms) {
+    const end = now + ms;
+    for (;;) {
+      const next = [...timers].filter(([, timer]) => timer.at <= end).sort((a, b) => a[1].at - b[1].at)[0];
+      if (!next) break;
+      const [id, { at, callback }] = next;
+      timers.delete(id);
+      now = at;
+      callback();
+    }
+    now = end;
+  }
+  return { input, frame, origin, advance, events };
+}
+
+const point = (clientX, clientY) => ({ identifier: 1, clientX, clientY });
+const touchEvent = (touches, changedTouches = touches) => ({ touches, changedTouches, stopPropagation() {} });
+
+test("mobile taps position the cursor and double-tap sends a short click", () => {
+  const { input, advance, events } = createTouchInput();
+  const tap = (x, y) => {
+    const touch = point(x, y);
+    input.start(touchEvent([touch]));
+    advance(100);
+    input.end(touchEvent([], [touch]));
+  };
+
+  tap(80, 150);
+  assert.deepEqual(events, [["mousemove", 80, 150, 0, 0]]);
+  tap(80, 150);
+  assert.deepEqual(events.at(-1), ["mousedown", 80, 150, 0, 1]);
+  advance(79);
+  assert.deepEqual(events.at(-1), ["mousedown", 80, 150, 0, 1]);
+  advance(1);
+  assert.deepEqual(events.slice(-2), [["mouseup", 80, 150, 0, 0], ["click", 80, 150, 0, 0]]);
+});
+
+test("holding the game canvas presses left before lifting and drags with the button held", () => {
+  const { input, advance, events } = createTouchInput();
+  input.start(touchEvent([point(80, 150)]));
+  advance(1000);
+  assert.deepEqual(events, [["mousemove", 80, 150, 0, 0], ["mousedown", 80, 150, 0, 1]]);
+  input.move(touchEvent([point(104, 133)]));
+  assert.deepEqual(events.at(-1), ["mousemove", 104, 133, 0, 1]);
+  input.end(touchEvent([], [point(106, 132)]));
+  assert.deepEqual(events.slice(-2), [["mouseup", 106, 132, 0, 0], ["click", 106, 132, 0, 0]]);
+
+  input.start(touchEvent([point(80, 150)]));
+  advance(1000);
+  input.cancel(touchEvent([]));
+  assert.deepEqual(events.at(-1), ["mouseup", 80, 150, 0, 0]);
+});
+
+test("L and R hold through cursor movement and release independently", () => {
+  const { input, frame, origin, advance, events } = createTouchInput();
+  setGameMouseButton(frame, origin, "left", true);
+  setGameMouseButton(frame, origin, "right", true);
+  advance(1000);
+  assert.deepEqual(events.filter(([type]) => type === "mousedown" || type === "mouseup"), [
+    ["mousedown", 160, 100, 0, 1], ["mousedown", 160, 100, 2, 3],
+  ]);
+  moveGameMouse(frame, origin, 16, -8);
+  assert.deepEqual(events.at(-1), ["mousemove", 176, 92, 0, 3]);
+  setGameMouseButton(frame, origin, "right", false);
+  assert.deepEqual(events.at(-1), ["mouseup", 176, 92, 2, 1]);
+  setGameMouseButton(frame, origin, "left", false, true);
+  assert.deepEqual(events.at(-1), ["mouseup", 176, 92, 0, 0]);
+
+  // A keyboard activation keeps the click pulse used by the existing remote input.
+  clickGameMouse(frame, origin, "right");
+  assert.deepEqual(events.at(-1), ["contextmenu", 176, 92, 2, 2]);
+  input.reset();
+  advance(1000);
+  assert.deepEqual(events.at(-1), ["mouseup", 176, 92, 2, 0]);
 });
 
 test("mobile canvas swipes move the synthetic cursor relatively", () => {
-  const shellHtml = fs.readFileSync(shellHtmlPath, "utf8");
-
-  assert.match(shellHtml, /const touchRelativeMoveScale=1;/);
-  assert.match(shellHtml, /const touchRelativeMoveMaxDeltaPx=48;/);
-  assert.match(
-    shellHtml,
-    /const applyRelativeTouchDelta=\(previousPoint,nextFingerPoint\)=>\{[^}]*nextFingerPoint\.clientX-previousPoint\.clientX[^}]*applyCursorPadDelta\(deltaX,deltaY\)/
-  );
-  assert.match(
-    shellHtml,
-    /if\(activeTouchGesture\.moved\)\{applyRelativeTouchDelta\(previousPoint,point\)\}activeTouchGesture\.lastPoint=point/
-  );
-  assert.match(
-    shellHtml,
-    /if\(activeTouchGesture\.moved&&point\)\{applyRelativeTouchDelta\(activeTouchGesture\.lastPoint,point\)\}/
-  );
+  const { input, advance, events } = createTouchInput();
+  input.start(touchEvent([point(30, 100)]));
+  input.move(touchEvent([point(64, 100)]));
+  advance(1000);
+  input.end(touchEvent([], [point(70, 103)]));
+  assert.deepEqual(events, [["mousemove", 194, 100, 0, 0], ["mousemove", 200, 103, 0, 0]]);
 });
 
 test("mobile shell supports fill-screen canvas aspect mode", () => {
@@ -118,8 +243,8 @@ test("mobile mouse play defaults to fit-height and the route has no aspect toggl
   const controlsSource = fs.readFileSync(gamePlayerControlsPath, "utf8");
 
   assert.match(routeFrameSource, /SCUMMWEB_ASPECT_RATIO_MESSAGE_TYPE = "scummweb-aspect-ratio"/);
-  assert.match(routeFrameSource, /mode: immersiveMode\.isMobileViewport && !usesCommandInput \? "fit-height" : "preserve"/);
-  assert.match(routeFrameSource, /\[frameSrc, immersiveMode\.isMobileViewport, usesCommandInput\]/);
+  assert.match(routeFrameSource, /mode: immersiveMode\.isMobileViewport && mobileControlMode === "mouse" \? "fit-height" : "preserve"/);
+  assert.match(routeFrameSource, /\[frameSrc, immersiveMode\.isMobileViewport, mobileControlMode\]/);
   assert.doesNotMatch(routeFrameSource, /showAspectRatioControl|handleAspectRatioToggle|isFillScreenAspect/);
   assert.doesNotMatch(controlsSource, /is-aspect|AspectRatio|FillScreenAspect/);
   const shellHtml = fs.readFileSync(shellHtmlPath, "utf8");

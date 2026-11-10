@@ -1,7 +1,7 @@
 import { getVersionedSiteAssetPath } from "./asset-paths.js";
 import retroGameArtwork from "./retro-game-artwork.json" with { type: "json" };
 
-const importedScummGames = [
+const importedAdventureGames = [
   {
     target: "tentacle",
     titles: ["Day of the Tentacle", "Maniac Mansion: Day of the Tentacle"],
@@ -44,7 +44,76 @@ const importedScummGames = [
     year: "1988",
     summary: "Follow tabloid reporter Zak McKracken as he uncovers an alien plot to make Earth stupid.",
   },
+  {
+    target: "grim",
+    engineId: "grim",
+    titles: ["Grim Fandango"],
+    studio: "LucasArts",
+    year: "1998",
+    summary: "Follow Manny Calavera as he searches for Meche across the Land of the Dead.",
+  },
+  {
+    target: "monkey4",
+    engineId: "grim",
+    titles: ["Escape from Monkey Island"],
+    studio: "LucasArts",
+    year: "2000",
+    summary: "Help Guybrush and Elaine stop a plot to take over the Caribbean.",
+  },
 ];
+
+function bundledGameplayGallery(slug, edition, scenes, extension = "png") {
+  return {
+    screenshots: scenes.map((_, index) => `/launcher/${slug}-shot-${index + 1}.${extension}`),
+    sources: {
+      screenshots: scenes.map((scene) => ({
+        kind: "gameplay",
+        page: `https://scummweb.tsilva.eu/${slug}/play`,
+        edition,
+        scene,
+        credit: "Original gameplay captured in ScummWEB",
+      })),
+    },
+  };
+}
+
+const bundledArtworkByTarget = {
+  "grim-demo": {
+    heroImage: "/launcher/grim-fandango-scummweb-generated-2026-11-09-r2-hero.webp",
+    posterImage: "/launcher/grim-fandango-scummweb-generated-2026-11-08-r1-cover.webp",
+    ...bundledGameplayGallery("grim-fandango-demo", "English Windows small demo", [
+      "Lost Souls' Alliance headquarters", "Alley outside the headquarters", "Street festival",
+    ]),
+  },
+  "monkey4-demo": {
+    heroImage: "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-09-r2-hero.webp",
+    posterImage: "/launcher/escape-from-monkey-island-scummweb-generated-2026-11-08-r2-cover.webp",
+    ...bundledGameplayGallery("escape-from-monkey-island-demo", "English Windows web demo", [
+      "Governor's mansion grounds", "Encounter with the catapult operator", "Path to the gate",
+    ]),
+  },
+  zork1: {
+    heroImage: "/launcher/zork-1-scummweb-generated-2026-11-08-r2-hero.webp",
+    posterImage: "/launcher/zork-1-scummweb-generated-2026-11-08-r1-cover.webp",
+    ...bundledGameplayGallery("zork-i-the-great-underground-empire", "English Z-machine v3", [
+      "Mailbox west of the house", "Kitchen", "Living room",
+    ]),
+  },
+  zork2: {
+    heroImage: "/launcher/zork-2-scummweb-generated-2026-11-08-r2-hero.webp",
+    posterImage: "/launcher/zork-2-scummweb-generated-2026-11-08-r1-cover.webp",
+    ...bundledGameplayGallery("zork-ii-the-wizard-of-frobozz", "English Z-machine v3", [
+      "Inside the Barrow", "Narrow Tunnel", "Foot Bridge",
+    ]),
+  },
+  zork3: {
+    heroImage: "/launcher/zork-3-scummweb-generated-2026-11-08-r1-hero.webp",
+    posterImage: "/launcher/zork-3-scummweb-generated-2026-11-08-r1-cover.webp",
+    ...bundledGameplayGallery("zork-iii-the-dungeon-master", "English Z-machine v3", [
+      "Endless Stair", "Junction", "Creepy Crawl",
+    ]),
+  },
+};
 
 const artByTarget = {
   draci: {
@@ -62,6 +131,95 @@ const artByTarget = {
     summary: "Play LucasArts’ original DOS demonstration of Indiana Jones’s search for Atlantis.",
     posterImage: retroGameArtwork["scumm:atlantis"].posterImage,
     heroImage: retroGameArtwork["scumm:atlantis"].heroImage,
+    ...bundledGameplayGallery("indiana-jones-and-the-fate-of-atlantis-demo", "English DOS interactive demo", [
+      "Thera harbor", "Hillside village", "Thera mountains",
+    ]),
+  },
+  "comi-demo": {
+    genre: retroGameArtwork["scumm:comi"].genre,
+    studio: "LucasArts",
+    year: "1997",
+    language: "en",
+    summary: "Help Guybrush Threepwood escape a pirate ship in LucasArts’ original Windows web demo. This edition includes voice acting.",
+    posterImage: retroGameArtwork["scumm:comi"].posterImage,
+    heroImage: retroGameArtwork["scumm:comi"].heroImage,
+    heroImagePosition: retroGameArtwork["scumm:comi"].heroImagePosition,
+    ...bundledGameplayGallery("the-curse-of-monkey-island-demo", "English Windows small demo", [
+      "Opening scene in the ship’s hold", "Cannon verb coin", "Guybrush’s inventory",
+    ], "webp"),
+  },
+  ...Object.fromEntries([
+    ["teenagent:teenagent", "1995"],
+    ["hugo:hugo1", "1990"],
+    ["hugo:hugo2", "1991"],
+    ["hugo:hugo3", "1992"],
+  ].map(([familyId, year]) => {
+    const { title, ...artwork } = retroGameArtwork[familyId];
+    return [`${familyId.split(":")[1]}-demo`, {
+      ...artwork,
+      year,
+      language: "en",
+      badge: "Shareware",
+    }];
+  })),
+  "pegasus-demo": {
+    ...retroGameArtwork["pegasus:pegasus"],
+    title: "The Journeyman Project: Pegasus Prime (Demo)",
+    year: "1997",
+    language: "en",
+  },
+  "castlemaster-demo": {
+    genre: "First-person fantasy adventure",
+    studio: "Incentive Software",
+    year: "1990",
+    language: "en",
+    summary: "Explore the first level of Castle Eternity and search for your captive twin.",
+    heroImage: "/launcher/castle-master-scummweb-generated-2026-11-09-r1-hero.webp",
+    posterImage: "/launcher/castle-master-scummweb-generated-2026-11-09-r1-cover.webp",
+    screenshots: ["/launcher/castle-master-dos-shot-1.webp", "/launcher/castle-master-dos-shot-2.webp"],
+    sources: {
+      screenshots: [
+        {
+          kind: "gameplay",
+          page: "https://www.scummvm.org/screenshots/incentive/freescape:castlemaster/",
+          url: "https://www.scummvm.org/data/screenshots/freescape/castlemaster/castlemaster_dos_en_1_1_full.png",
+          credit: "ScummVM screenshot gallery",
+        },
+        {
+          kind: "gameplay",
+          page: "https://scummweb.tsilva.eu/castle-master-demo/play",
+          edition: "English DOS playable demo",
+          scene: "Outside Castle Eternity",
+          credit: "Original gameplay captured in ScummWEB",
+        },
+      ],
+    },
+  },
+  "qfi-demo": {
+    genre: "Adventure RPG",
+    studio: "Infamous Quests",
+    year: "2014",
+    language: "en",
+    summary: "Explore the Valley of Krasna as Mr. Roehm, an adventurer with a checkered past.",
+    heroImage: "/launcher/quest-for-infamy-scummweb-generated-2026-11-09-r1-hero.webp",
+    posterImage: "/launcher/quest-for-infamy-scummweb-generated-2026-11-09-r1-cover.webp",
+    screenshots: [
+      "/launcher/quest-for-infamy-shot-1.webp",
+      "/launcher/quest-for-infamy-shot-2.webp",
+      "/launcher/quest-for-infamy-shot-3.webp",
+    ],
+    sources: {
+      screenshots: [
+        "https://images.launchbox-app.com/480c8da8-2a29-4728-a325-577afdf0cbff.jpg",
+        "https://images.launchbox-app.com/f7c743e8-5933-442c-8f73-c88efdc7095c.jpg",
+        "https://images.launchbox-app.com/319816ea-dd26-479e-b58a-b70d741fd728.jpg",
+      ].map((url) => ({
+        kind: "gameplay",
+        url,
+        page: "https://gamesdb.launchbox-app.com/games/images/79875-quest-for-infamy",
+        credit: "LaunchBox Games Database",
+      })),
+    },
   },
   "grim-demo": {
     genre: "Graphic adventure",
@@ -69,6 +227,7 @@ const artByTarget = {
     year: "1998",
     language: "en",
     summary: "Meet Manny Calavera in LucasArts’ original Windows demo set in the Land of the Dead.",
+    ...bundledArtworkByTarget["grim-demo"],
   },
   "monkey4-demo": {
     genre: "Graphic adventure",
@@ -76,6 +235,7 @@ const artByTarget = {
     year: "2000",
     language: "en",
     summary: "Join Guybrush Threepwood in the original Windows web demo of the fourth Monkey Island adventure.",
+    ...bundledArtworkByTarget["monkey4-demo"],
   },
   ...Object.fromEntries([
     ["zork1", "1980", "Explore the Great Underground Empire, starting outside a white house."],
@@ -87,18 +247,19 @@ const artByTarget = {
     language: "en",
     year,
     summary: `${summary} Type commands to play.`,
+    ...bundledArtworkByTarget[target],
   }])),
   soltys: { ...retroGameArtwork["cge:soltys"], year: "1995" },
   hires1: { ...retroGameArtwork["adl:hires1"], year: "1980" },
   got: { ...retroGameArtwork["got:got"], year: "1993" },
-  ...Object.fromEntries(importedScummGames.map(({ target, studio, year, summary }) => [target, {
+  ...Object.fromEntries(importedAdventureGames.map(({ target, engineId = "scumm", studio, year, summary }) => [target, {
     eyebrow: `${studio} Adventure`,
-    genre: retroGameArtwork[`scumm:${target}`].genre,
+    genre: retroGameArtwork[`${engineId}:${target}`]?.genre || "Graphic adventure",
     studio,
     year,
     summary,
-    posterImage: retroGameArtwork[`scumm:${target}`].posterImage,
-    screenshots: retroGameArtwork[`scumm:${target}`].screenshots,
+    posterImage: retroGameArtwork[`${engineId}:${target}`]?.posterImage ?? bundledArtworkByTarget[`${target}-demo`]?.posterImage,
+    screenshots: retroGameArtwork[`${engineId}:${target}`]?.screenshots ?? [],
   }])),
   atlantis: {
     eyebrow: "LucasArts Adventure",
@@ -365,14 +526,15 @@ export function getGamePresentation(game, importedArt) {
   };
 }
 
-function getImportedScummPresentation(target, title, variant) {
-  const metadata = retroGameArtwork[`scumm:${target}`];
-  const platform = /\bamiga\b/i.test(variant) ? "Amiga" : /\bdos\b/i.test(variant) ? "DOS" : undefined;
+function getImportedAdventurePresentation(target, title, variant, engineId = "scumm") {
+  const metadata = retroGameArtwork[`${engineId}:${target}`];
+  const platform = /\bamiga\b/i.test(variant) ? "Amiga" : /\bdos\b/i.test(variant) ? "DOS"
+    : /\bwindows\b/i.test(variant) ? "Windows" : undefined;
   const edition = /\bcd\b/i.test(variant) ? "CD" : undefined;
   const demo = /\bdemo\b/i.test(variant) ? " (Demo)" : "";
   const labels = [...variant.matchAll(/\(([^()]+)\)/g)].map(([, label]) => label);
   return {
-    ...getGamePresentation({ target, displayTitle: title + demo, engineId: "scumm" }, metadata && {
+    ...getGamePresentation({ target, displayTitle: title + demo, engineId }, metadata && {
       heroImage: metadata.heroImage,
       heroImagePosition: metadata.heroImagePosition,
       heroImageMobilePosition: metadata.heroImageMobilePosition,
@@ -397,6 +559,8 @@ export function getRecognizedGamePresentations() {
         displayTitle: record.title,
       }, record);
     }),
+    ...importedAdventureGames.filter(({ engineId }) => engineId === "grim")
+      .map(({ target, engineId, titles }) => getGamePresentation({ target, engineId, displayTitle: titles[0] })),
     getGamePresentation({ target: "sfinx", engineId: "cge2", displayTitle: "Sfinx" }),
   ];
 }
@@ -421,7 +585,7 @@ export function getImportedGamePresentation(filename) {
   const indy = archive && /^indiana jones and the (fate of atlantis|last crusade)(?:[: -]+the graphic adventure)?$/i.exec(archive[1]);
   if (indy && !/\baction game\b/i.test(archive[2])) {
     const atlantis = indy[1].toLowerCase() === "fate of atlantis";
-    return getImportedScummPresentation(
+    return getImportedAdventurePresentation(
       atlantis ? "atlantis" : "indy3",
       `Indiana Jones and the ${atlantis ? "Fate of Atlantis" : "Last Crusade"}`,
       archive[2]
@@ -430,10 +594,10 @@ export function getImportedGamePresentation(filename) {
 
   if (archive) {
     const title = normalizeImportedTitle(archive[1]);
-    const game = importedScummGames.find(({ titles }) =>
+    const game = importedAdventureGames.find(({ titles }) =>
       titles.some((alias) => normalizeImportedTitle(alias) === title)
     );
-    if (game) return getImportedScummPresentation(game.target, game.titles[0], archive[2]);
+    if (game) return getImportedAdventurePresentation(game.target, game.titles[0], archive[2], game.engineId);
 
     const retro = retroByEdition.get(normalizeImportedTitle(archive[1] + archive[2])) ?? retroByTitle.get(title);
     if (retro) {

@@ -1,0 +1,246 @@
+diff --git a/engines/parallaction/metaengine.cpp b/engines/parallaction/metaengine.cpp
+--- a/engines/parallaction/metaengine.cpp
++++ b/engines/parallaction/metaengine.cpp
+@@ -23,6 +23,7 @@
+ 
+ #include "common/config-manager.h"
+ #include "engines/advancedDetector.h"
++#include "engines/scummweb-agent-loop.h"
+ #include "common/system.h"
+ #include "common/textconsole.h"
+ #include "common/translation.h"
+@@ -101,6 +102,10 @@
+ }
+ 
+ bool Parallaction::Parallaction::hasFeature(EngineFeature f) const {
++#ifdef __EMSCRIPTEN__
++	if (f == kSupportsLoadingDuringRuntime || f == kSupportsSavingDuringRuntime)
++		return getGameType() == GType_Nippon && scummweb_agent_game_loop_enabled();
++#endif
+ 	return
+ 		(f == kSupportsReturnToLauncher);
+ }
+diff --git a/engines/parallaction/parallaction.cpp b/engines/parallaction/parallaction.cpp
+--- a/engines/parallaction/parallaction.cpp
++++ b/engines/parallaction/parallaction.cpp
+@@ -34,6 +34,7 @@
+ #include "parallaction/saveload.h"
+ #include "parallaction/sound.h"
+ #include "parallaction/walk.h"
++#include "engines/scummweb-agent-loop.h"
+ 
+ namespace Parallaction {
+ Parallaction *g_vm = nullptr;
+@@ -277,6 +278,30 @@
+ 	_balloonMan->setLocationBalloon(text, end);
+ }
+ 
++#ifdef __EMSCRIPTEN__
++bool Parallaction::canLoadGameStateCurrently(Common::U32String *) {
++	return getGameType() == GType_Nippon && _saveLoad && _char._ani &&
++		_input->_inputMode == Input::kInputModeGame &&
++		!(g_engineFlags & (kEngineChangeLocation | kEngineWalking));
++}
++
++bool Parallaction::canSaveGameStateCurrently(Common::U32String *msg) {
++	return canLoadGameStateCurrently(msg) && scumm_stricmp(_location._name, "caveau");
++}
++
++Common::Error Parallaction::saveGameState(int slot, const Common::String &desc, bool isAutosave) {
++	if (isAutosave || !scummweb_agent_game_loop_enabled() || !canSaveGameStateCurrently() || slot < 1 || slot > 99)
++		return Common::kWritingFailed;
++	return _saveLoad->saveAgentSlot(slot, desc.c_str()) ? Common::kNoError : Common::kWritingFailed;
++}
++
++Common::Error Parallaction::loadGameState(int slot) {
++	if (!scummweb_agent_game_loop_enabled() || !canLoadGameStateCurrently() || slot < 1 || slot > 99)
++		return Common::kReadingFailed;
++	return _saveLoad->loadAgentSlot(slot) ? Common::kNoError : Common::kReadingFailed;
++}
++#endif
++
+ void Parallaction::runGameFrame(int event) {
+ 	if (_input->_inputMode != Input::kInputModeGame) {
+ 		return;
+@@ -304,6 +329,10 @@
+ }
+ 
+ void Parallaction::runGame() {
++#ifdef __EMSCRIPTEN__
++	if (getGameType() == GType_Nippon)
++		scummweb_agent_game_loop();
++#endif
+ 	int event = _input->updateInput();
+ 	if (shouldQuit())
+ 		return;
+diff --git a/engines/parallaction/parallaction.h b/engines/parallaction/parallaction.h
+--- a/engines/parallaction/parallaction.h
++++ b/engines/parallaction/parallaction.h
+@@ -349,6 +349,13 @@
+ 	}
+ 
+ 	bool hasFeature(EngineFeature f) const override;
++#ifdef __EMSCRIPTEN__
++	bool canLoadGameStateCurrently(Common::U32String *msg = nullptr) override;
++	bool canSaveGameStateCurrently(Common::U32String *msg = nullptr) override;
++	bool canSaveAutosaveCurrently() override { return false; }
++	Common::Error saveGameState(int slot, const Common::String &desc, bool isAutosave = false) override;
++	Common::Error loadGameState(int slot) override;
++#endif
+ 	void pauseEngineIntern(bool pause) override;
+ 
+ 	// info
+diff --git a/engines/parallaction/parallaction_ns.cpp b/engines/parallaction/parallaction_ns.cpp
+--- a/engines/parallaction/parallaction_ns.cpp
++++ b/engines/parallaction/parallaction_ns.cpp
+@@ -30,6 +30,7 @@
+ #include "parallaction/saveload.h"
+ #include "parallaction/sound.h"
+ #include "parallaction/walk.h"
++#include "engines/scummweb-agent-loop.h"
+ 
+ 
+ namespace Parallaction {
+@@ -326,6 +327,9 @@
+ }
+ 
+ Common::Error Parallaction_ns::go() {
++#ifdef __EMSCRIPTEN__
++	ScummWebAgentLoop agentLoop;
++#endif
+ 	_saveLoad->renameOldSavefiles();
+ 
+ 	_globalFlagsNames = _disk->loadTable("global");
+diff --git a/engines/parallaction/saveload.cpp b/engines/parallaction/saveload.cpp
+--- a/engines/parallaction/saveload.cpp
++++ b/engines/parallaction/saveload.cpp
+@@ -60,11 +60,12 @@
+ 	return _saveFileMan->openForSaving(name);
+ }
+ 
+-void SaveLoad_ns::doLoadGame(uint16 slot) {
++bool SaveLoad_ns::doLoadGame(uint16 slot) {
++	Common::InSaveFile *f = getInSaveFile(slot);
++	if (!f)
++		return false;
++
+ 	_vm->cleanupGame();
+-
+-	Common::InSaveFile *f = getInSaveFile(slot);
+-	if (!f) return;
+ 
+ 	Common::String s, character, location;
+ 
+@@ -121,15 +122,18 @@
+ 	char tmp[PATH_LEN];
+ 	Common::sprintf_s(tmp, "%s.%s" , location.c_str(), character.c_str());
+ 	_vm->scheduleLocationSwitch(tmp);
+-}
+-
+-void SaveLoad_ns::doSaveGame(uint16 slot, const char* name) {
++	return true;
++}
++
++bool SaveLoad_ns::doSaveGame(uint16 slot, const char* name, bool showError) {
+ 	Common::OutSaveFile *f = getOutSaveFile(slot);
+-	if (f == nullptr) {
+-		Common::U32String buf = Common::U32String::format(_("Can't save game in slot %i\n\n"), slot);
+-		GUI::MessageDialog dialog(buf);
+-		dialog.runModal();
+-		return;
++	if (!f) {
++		if (showError) {
++			Common::U32String buf = Common::U32String::format(_("Can't save game in slot %i\n\n"), slot);
++			GUI::MessageDialog dialog(buf);
++			dialog.runModal();
++		}
++		return false;
+ 	}
+ 
+ 	char s[200];
+@@ -172,7 +176,10 @@
+ 		f->writeString(s);
+ 	}
+ 
++	f->finalize();
++	const bool failed = f->err();
+ 	delete f;
++	return !failed;
+ }
+ 
+ int SaveLoad::selectSaveFile(Common::String &selectedName, bool saveMode) {
+@@ -210,7 +217,7 @@
+ 		return false;
+ 	}
+ 
+-	doSaveGame(slot, saveName.c_str());
++	doSaveGame(slot, saveName.c_str(), true);
+ 
+ 	GUI::TimedMessageDialog dialog(_("Saving game..."), 1500);
+ 	dialog.runModal();
+@@ -322,12 +329,14 @@
+ 	dialog1.runModal();
+ }
+ 
+-void SaveLoad_br::doLoadGame(uint16 slot) {
++bool SaveLoad_br::doLoadGame(uint16 slot) {
+ 	// TODO: implement loadgame
+-}
+-
+-void SaveLoad_br::doSaveGame(uint16 slot, const char* name) {
++	return false;
++}
++
++bool SaveLoad_br::doSaveGame(uint16 slot, const char* name, bool showError) {
+ 	// TODO: implement savegame
++	return false;
+ }
+ 
+ void SaveLoad_br::getGamePartProgress(bool *complete, int size) {
+diff --git a/engines/parallaction/saveload.h b/engines/parallaction/saveload.h
+--- a/engines/parallaction/saveload.h
++++ b/engines/parallaction/saveload.h
+@@ -36,8 +36,8 @@
+ 	Common::OutSaveFile *getOutSaveFile(uint slot);
+ 	int selectSaveFile(Common::String &selectedName, bool saveMode);
+ 	int buildSaveFileList(Common::StringArray& l);
+-	virtual void doLoadGame(uint16 slot) = 0;
+-	virtual void doSaveGame(uint16 slot, const char* name) = 0;
++	virtual bool doLoadGame(uint16 slot) = 0;
++	virtual bool doSaveGame(uint16 slot, const char* name, bool showError) = 0;
+ 
+ public:
+ 	SaveLoad(Common::SaveFileManager* saveFileMan, const char *prefix) : _saveFileMan(saveFileMan), _saveFilePrefix(prefix) { }
+@@ -45,6 +45,10 @@
+ 
+ 	virtual bool loadGame();
+ 	virtual bool saveGame();
++#ifdef __EMSCRIPTEN__
++	bool saveAgentSlot(uint16 slot, const char *name) { return doSaveGame(slot, name, false); }
++	bool loadAgentSlot(uint16 slot) { return doLoadGame(slot); }
++#endif
+ 
+ 	virtual void getGamePartProgress(bool *complete, int size) = 0;
+ 	virtual void setPartComplete(const char *part) = 0;
+@@ -57,8 +61,8 @@
+ 
+ protected:
+ 	void renameOldSavefiles() override;
+-	void doLoadGame(uint16 slot) override;
+-	void doSaveGame(uint16 slot, const char* name) override;
++	bool doLoadGame(uint16 slot) override;
++	bool doSaveGame(uint16 slot, const char* name, bool showError) override;
+ 
+ public:
+ 	SaveLoad_ns(Parallaction_ns *vm, Common::SaveFileManager *saveFileMan) : SaveLoad(saveFileMan, "nippon"), _vm(vm) { }
+@@ -71,8 +75,8 @@
+ 
+ class SaveLoad_br : public SaveLoad {
+ //	Parallaction_br *_vm;
+-	void doLoadGame(uint16 slot) override;
+-	void doSaveGame(uint16 slot, const char* name) override;
++	bool doLoadGame(uint16 slot) override;
++	bool doSaveGame(uint16 slot, const char* name, bool showError) override;
+ 
+ public:
+ 	SaveLoad_br(Parallaction_br *vm, Common::SaveFileManager *saveFileMan) : SaveLoad(saveFileMan, "bra") { }

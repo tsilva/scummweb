@@ -128,15 +128,15 @@ function focusFrameContent(frame) {
   return false;
 }
 
-export function dispatchSyntheticKeypress(frame, input) {
+function prepareKeyboardDispatch(frame, input, { focus = true } = {}) {
   if (!frame) {
-    return false;
+    return null;
   }
 
   const descriptor = getKeyboardDescriptor(input);
   const frameWindow = frame.contentWindow;
   const KeyboardEventConstructor = frameWindow?.KeyboardEvent || window.KeyboardEvent;
-  focusFrameContent(frame);
+  if (focus) focusFrameContent(frame);
 
   let target;
 
@@ -148,11 +148,11 @@ export function dispatchSyntheticKeypress(frame, input) {
     target = [canvas, frameDocument?.activeElement, frameDocument?.body, frameDocument, frameWindow]
       .find(canDispatchEvents);
   } catch {
-    return false;
+    return null;
   }
 
   if (!target) {
-    return false;
+    return null;
   }
 
   const eventInit = {
@@ -170,7 +170,7 @@ export function dispatchSyntheticKeypress(frame, input) {
     shiftKey: descriptor.shiftKey,
   };
 
-  for (const eventType of ["keydown", "keypress", "keyup"]) {
+  return function dispatch(eventType) {
     const charCode = eventType === "keypress" && descriptor.key.length === 1
       ? descriptor.key.charCodeAt(0) : 0;
     const keyboardEvent = new KeyboardEventConstructor(eventType, { ...eventInit, charCode });
@@ -187,9 +187,21 @@ export function dispatchSyntheticKeypress(frame, input) {
     } catch {}
 
     target.dispatchEvent(keyboardEvent);
-  }
+  };
+}
 
+export function dispatchSyntheticKeypress(frame, input, options) {
+  const dispatch = prepareKeyboardDispatch(frame, input, options);
+  if (!dispatch) return false;
+  for (const eventType of ["keydown", "keypress", "keyup"]) dispatch(eventType);
   return true;
+}
+
+export function holdGameKey(frame, input) {
+  const dispatch = prepareKeyboardDispatch(frame, input);
+  if (!dispatch) return null;
+  dispatch("keydown");
+  return () => dispatch("keyup");
 }
 
 export async function dispatchSyntheticKeypressSequence(frame, keypressConfig) {
@@ -216,4 +228,19 @@ export function dispatchGameCommand(frame, command) {
     if (!dispatchSyntheticKeypress(frame, { key, code: commandCharacterCodes[key] })) return false;
   }
   return dispatchSyntheticKeypress(frame, { key: "Enter", keyCode: 13 });
+}
+
+export async function dispatchHugoCommand(frame, command, signal) {
+  const frameDocument = frame?.contentDocument;
+  const isCurrent = () => !signal.aborted && frameDocument && frame?.contentDocument === frameDocument;
+  // Hugo buffers 31 keystrokes per tick. Let it consume each batch before sending more.
+  for (let index = 0; index < command.length; index++) {
+    if (index > 0 && index % 16 === 0) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+    if (!isCurrent()) return false;
+    const key = command[index];
+    if (!dispatchSyntheticKeypress(frame, { key, code: commandCharacterCodes[key] })) return false;
+  }
+  return Boolean(isCurrent()) && dispatchSyntheticKeypress(frame, { key: "Enter", keyCode: 13 });
 }

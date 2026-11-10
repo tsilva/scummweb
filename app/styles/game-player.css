@@ -6,24 +6,6 @@
     #050505;
 }
 
-.game-route-shell {
-  position: relative;
-  width: 100vw;
-  height: 100dvh;
-  overflow: hidden;
-  background: #000;
-}
-
-.game-route-frame {
-  display: block;
-  width: 100vw;
-  height: 100dvh;
-  border: 0;
-  background: #000;
-  outline: none;
-  box-shadow: none;
-}
-
 .game-launch-feedback {
   position: fixed;
   inset: 0;
@@ -42,71 +24,12 @@
   }
 }
 
-.game-route-frame:focus,
-.game-route-frame:focus-visible {
-  outline: none;
-  box-shadow: none;
-}
-
-@supports not (height: 100dvh) {
-  .game-route-shell,
-  .game-route-frame {
-    height: 100vh;
-  }
-}
-
-.game-route-shell.has-command-input {
-  display: flex;
-  flex-direction: column;
-  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
-}
-
-.game-route-shell.has-command-input .game-route-frame {
-  flex: 1;
-  min-height: 0;
-  width: 100%;
-  height: auto;
-}
-
-.game-route-command {
-  display: flex;
-  gap: 0.5rem;
-  width: 100%;
-  max-width: 36rem;
-  padding: max(1rem, env(safe-area-inset-top)) max(0.75rem, env(safe-area-inset-right))
-    0.5rem calc(max(0.5rem, env(safe-area-inset-left)) + 3.25rem);
-}
-
-.game-route-command input,
-.game-route-command button {
-  min-height: 2.75rem;
-  padding: 0 0.75rem;
-  border: 1px solid #5a605a;
-  border-radius: 0.5rem;
-  background: #171a17;
-  color: #fff;
-  font: inherit;
-  font-size: 1rem;
-}
-
-.game-route-command input {
-  flex: 1;
-  min-width: 0;
-}
-
-.game-route-command input::placeholder {
-  color: #b7bdb7;
-}
-
-.game-route-command button {
-  cursor: pointer;
-}
-
 .game-route-boot-overlay {
   position: absolute;
   inset: 0;
   z-index: 8;
   overflow-y: auto;
+  scrollbar-width: none;
   overscroll-behavior: contain;
   background:
     radial-gradient(ellipse at 65% 0%, #46583f, transparent 70%),
@@ -124,6 +47,12 @@
   visibility: hidden;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .game-route-boot-overlay {
+    transition: none;
+  }
+}
+
 .game-route-boot-backdrop,
 .game-route-boot-scrim {
   position: absolute;
@@ -131,9 +60,12 @@
 }
 
 .game-route-boot-backdrop {
+  --artwork-fit: cover;
+  --artwork-position: var(--hero-image-position, center);
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: var(--artwork-fit);
+  object-position: var(--artwork-position);
 }
 
 .game-route-boot-scrim {
@@ -183,9 +115,7 @@
   padding: 1.35rem 1.35rem 1.25rem;
   border: 1px solid rgba(246, 224, 138, 0.26);
   border-radius: 1.5rem;
-  background:
-    linear-gradient(180deg, rgba(17, 21, 18, 0.92), rgba(7, 9, 8, 0.96)),
-    #0b0d0c;
+  background: linear-gradient(180deg, rgba(17, 21, 18, 0.8), rgba(7, 9, 8, 0.86));
   color: #f8f2d8;
   box-shadow: 0 1.3rem 3.6rem rgba(0, 0, 0, 0.42);
   backdrop-filter: blur(14px);
@@ -260,28 +190,14 @@
   color: #fff;
   font-size: 1rem;
   line-height: 1.45;
+  min-height: 2.9em;
+  font-variant-numeric: tabular-nums;
 }
 
 .game-route-boot-actions {
   display: flex;
   justify-content: flex-start;
   margin-top: 1rem;
-}
-
-.game-route-shell:fullscreen {
-  width: 100%;
-  height: 100%;
-}
-
-.game-route-shell:-webkit-full-screen {
-  width: 100%;
-  height: 100%;
-}
-
-.game-route-shell:fullscreen .game-route-frame,
-.game-route-shell:-webkit-full-screen .game-route-frame {
-  width: 100%;
-  height: 100%;
 }
 
 @media (max-width: 900px) {
@@ -650,18 +566,21 @@
 
   .hero-stage.hero-stage-library {
     --hero-action-height: 3.5rem;
-    flex: none;
-    height: auto;
-    min-height: 100svh;
+    --hero-gutter: 1rem;
   }
 
   .hero-stage-library .hero-inner {
-    display: block;
-    padding:
-      calc(max(6rem, env(safe-area-inset-top)) + clamp(10rem, 27svh, 14rem))
-      max(1rem, env(safe-area-inset-right))
-      2rem
-      max(1rem, env(safe-area-inset-left));
+    padding-top: var(--mobile-nav-height);
+  }
+
+  .hero-stage-library .hero-inner::before {
+    content: "";
+    flex: 1 0 clamp(3rem, 10svh, 5rem);
+  }
+
+  /* Keep the actions anchored while the title wraps to its natural height. */
+  .hero-stage-library .hero-inner::after {
+    flex: 0 0 clamp(0.75rem, 7svh, 3.25rem);
   }
 
   .hero-stage-library .hero-backdrop {
@@ -670,7 +589,7 @@
 
   .hero-stage-library .hero-backdrop-image,
   .game-route-boot-backdrop {
-    object-position: var(--hero-image-mobile-position, 75% top) !important;
+    --artwork-position: var(--hero-image-mobile-position, 75% top);
   }
 
   .hero-stage.hero-stage-library .hero-backdrop::after {
@@ -687,7 +606,7 @@
     min-height: 0;
     width: 100%;
     max-width: 100%;
-    transform: none;
+    margin-block: 0;
   }
 
   .hero-stage-library .hero-kicker {
@@ -753,7 +672,6 @@
   .hero-stage-library .hero-launch {
     min-height: 0;
     margin-top: 1.1rem;
-    margin-bottom: 6rem;
   }
 
   .hero-version-control {
@@ -765,6 +683,14 @@
   .hero-stage-library .hero-actions {
     height: auto;
     gap: 0.6rem;
+  }
+
+  .hero-actions > .hero-version-control[data-reserved] {
+    display: none;
+  }
+
+  .hero-actions:has(> .hero-version-control[data-reserved]) > .hero-license {
+    grid-row: 2;
   }
 
   .hero-actions-placeholder {
@@ -794,12 +720,8 @@
     display: none;
   }
 
-  .hero-scroll-cue {
-    position: relative;
-    inset: auto;
-    align-self: flex-start;
-    margin: 0 max(1rem, env(safe-area-inset-right)) 1.5rem max(1rem, env(safe-area-inset-left));
-    min-height: 2.75rem;
+  .hero-footer:not(:has(.hero-scroll-cue)) {
+    display: none;
   }
 
   .game-screenshots.content-band {

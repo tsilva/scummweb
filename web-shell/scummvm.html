@@ -65,6 +65,16 @@ scummwebBrowserFsReady.catch(()=>{});
 </script><script>
 const scummwebInlineFrame = window.location.pathname === "srcdoc";
 const scummwebLaunchUrl = new URL(scummwebInlineFrame ? document.baseURI : window.location.href);
+if (window.parent !== window && scummwebLaunchUrl.searchParams.get("hostCompatibilityWarning") === "1" &&
+    !scummwebLaunchUrl.searchParams.has("saveQuery")) {
+  globalThis.__scummwebPostCompatibilityWarning = (message) => {
+    window.parent.postMessage({
+      type: "scummweb:compatibility-warning",
+      href: scummwebLaunchUrl.href,
+      message,
+    }, scummwebLaunchUrl.origin);
+  };
+}
 const agentSaveScope = scummwebLaunchUrl.searchParams.get("agentSaveScope");
 /*__SCUMMWEB_AGENT_CONTROLS__*/
 if (agentSaveScope && /^[a-f0-9]{64}$/.test(agentSaveScope)) installAgentControls(window, agentSaveScope);
@@ -97,12 +107,12 @@ window.ScummvmFSReady = (async () => {
   const moduleUrl = new URL(buildVersionedAssetUrl("./scummvm_fs.js"));
   const { LocalGameFS, ScummvmFS, loadFilesystemIndex } = await import(moduleUrl);
   const isLocalGame = window.parent !== window && params.get("localGame") === "1";
-  const mounts = isLocalGame ? ["data"] : ["games", "data"];
+  const mounts = isLocalGame || params.has("saveQuery") ? ["data"] : ["games", "data"];
   const filesystems = await Promise.all(mounts.map(async (name) => {
     const index = await loadFilesystemIndex(name);
     performance.mark(`scummweb:index:${name}`);
     const filesystem = new ScummvmFS(null, index);
-    const engine = params.get("engine");
+    const engine = params.get("saveEngine") || params.get("engine");
     if (name === "data") {
       // These headers/themes are read by the native GUI before any game frame.
       // Fetch only the translation prefix that startup consumes.
@@ -137,20 +147,32 @@ function bindBrowserFsOperations(filesystem) {
   }
 }
 
-function acquireSaveSession() {
-  if (!globalThis.navigator?.locks) return Promise.resolve();
-  return new Promise((resolve, reject) => {
-    navigator.locks.request("scummweb-saves", { mode: "exclusive", ifAvailable: true }, async (lock) => {
-      if (!lock) {
-        const error = new Error("Another game or save operation is active. Close it before launching a game.");
-        error.name = "SaveSessionBusyError";
-        reject(error);
-        return;
-      }
-      resolve();
-      // The browser releases this lock when the game document closes.
-      await new Promise(() => {});
-    }).catch(reject);
+/*__SCUMMWEB_SAVE_EDITIONS__*/
+async function prepareSaveRoot() {
+  const { editionKey, acquireEditionSession, initializeSaveEdition, readSaveTree, saveLockName } = globalThis.__scummwebSaveEditions;
+  const params = scummwebLaunchUrl.searchParams;
+  const namespace = params.get("saveNamespace");
+  const args = decodeURI(scummwebLaunchUrl.hash.slice(1)).trim().split(/\s+/);
+  const catalogTarget = params.has("catalogGame") ? args.at(-1) : "";
+  const directTarget = !params.has("localGame") && (args.length === 1 || args.length === 3 && args[0] === "-x") ? args.at(-1) : "";
+  const target = params.get("catalogSaveTarget") || params.get("saveTarget") || catalogTarget || directTarget;
+  const edition = agentSaveScope ? "" : editionKey(namespace, target);
+  const locks = globalThis.navigator?.locks;
+  await acquireEditionSession(locks, edition);
+  if (!edition || !locks) {
+    await setupDefaultLocalData();
+    return edition && readSaveTree(localStorage, edition).editionRoot;
+  }
+  return locks.request(saveLockName + ":setup", async () => {
+    const existing = readSaveTree(localStorage, edition).editionRoot;
+    if (existing) return existing;
+    let config;
+    if (localStorage.getItem("/") === null) {
+      const response = await fetch(buildVersionedAssetUrl("scummvm.ini"));
+      if (!response.ok) throw new Error("Could not initialize save storage. Try again when online.");
+      config = await response.text();
+    }
+    return initializeSaveEdition(localStorage, edition, config);
   });
 }
 
@@ -161,9 +183,22 @@ function setupLocalFilesystem() {
     EIO: 29, EISDIR: 31, ENOENT: 44, ENOSPC: 51, ENOTDIR: 54,
     ENOTEMPTY: 55, ENOTSUP: 58, EPERM: 63, EROFS: 69,
   };
-  return acquireSaveSession().then(() => scummwebBrowserFsReady).then(setupDefaultLocalData).then(() => new Promise((resolve, reject) => {
+  return Promise.all([prepareSaveRoot(), scummwebBrowserFsReady]).then(([editionRoot]) => new Promise((resolve, reject) => {
     BrowserFS.FileSystem.LocalStorage.Create((storageError, storage) => {
       if (storageError) return reject(storageError);
+      if (editionRoot) {
+        // BrowserFS 2.0's synchronous store uses "/" as its root inode key.
+        // Pin it to this edition so other tabs can publish their own roots
+        // without changing any directory this runtime resolves or writes.
+        const store = storage.store;
+        const keyFor = (key) => key === "/" ? editionRoot : key;
+        storage.store = Object.assign(Object.create(store), {
+          get: (key) => store.get(keyFor(key)),
+          put: (key, data, overwrite) => store.put(keyFor(key), data, overwrite),
+          del: (key) => store.del(keyFor(key)),
+          clear: () => { throw new Error("Cannot clear shared browser storage"); },
+        });
+      }
       BrowserFS.FileSystem.MountableFileSystem.Create({ "/": storage }, (mountError, mount) => {
         if (mountError) return reject(mountError);
         BrowserFS.initialize(mount);
@@ -216,7 +251,7 @@ async function installMissingCatalogTarget() {
   const section = findIniSection(await response.text(), target);
   if (!section) return;
 
-  // Re-read after the fetch so we keep changes made by another player tab.
+  // Re-read after the fetch before appending the catalog target.
   const currentConfig = FS.readFile(configPath, { encoding: "utf8" });
   if (!findIniSection(currentConfig, target)) {
     FS.writeFile(configPath, `${currentConfig.trimEnd()}\n\n${section.trimEnd()}\n`);
@@ -308,15 +343,32 @@ function setupSkipIntroSaves() {
               return assetResponse.arrayBuffer();
             })
             .then((buffer) => {
-              FS.writeFile(`${savePath}/${trimmedFileName}`, new Uint8Array(buffer));
-              return trimmedFileName;
+              return { fileName: trimmedFileName, bytes: new Uint8Array(buffer) };
             });
         })
-      ).then((seededFiles) => {
+      ).then(async (seededFiles) => {
+        const seeds = seededFiles.filter(Boolean);
+        const writes = [];
+        for (const seed of seeds) {
+          const { fileName, bytes } = seed;
+          const filePath = `${savePath}/${fileName}`;
+          if (!FS.analyzePath(filePath).exists) {
+            writes.push(seed);
+            continue;
+          }
+          const existing = FS.readFile(filePath);
+          if (existing.length === bytes.length && existing.every((byte, index) => byte === bytes[index])) continue;
+          if (await globalThis.__scummwebIsRetiredIntroCheckpoint(skipIntroTarget, fileName, existing)) {
+            writes.push(seed);
+            continue;
+          }
+          throw new Error(`Intro checkpoint conflicts with an existing save: ${fileName}`);
+        }
+        for (const { fileName, bytes } of writes) FS.writeFile(`${savePath}/${fileName}`, bytes);
         globalThis.__scummwebSkipIntroSeedStatus = {
           state: "ready",
           target: skipIntroTarget,
-          files: seededFiles.filter(Boolean),
+          files: seeds.map(({ fileName }) => fileName),
           savePath,
           slot: skipIntroConfig.slot,
         };
@@ -330,6 +382,7 @@ function setupSkipIntroSaves() {
         files: [],
         message: error instanceof Error ? error.message : String(error),
       };
+      throw error;
     });
 }
 
@@ -408,7 +461,11 @@ function setupFilesystem() {
       }
       const savePath = getConfiguredSavePath();
       ensureDirectory(savePath);
-      importLegacySkySave(FS, scummwebLaunchUrl.searchParams, defaultSavePath, savePath);
+      const slot = scummwebLaunchUrl.searchParams.get("agentLegacySkySlot");
+      const scopedSky = "/home/web_user/.scummweb-editions/catalog-sky" + defaultSavePath.slice("/home/web_user".length);
+      const source = /^[1-9][0-9]{0,2}$/.test(slot || "") && FS.analyzePath(`${scopedSky}/SKY-VM.${slot.padStart(3, "0")}`).exists
+        ? scopedSky : defaultSavePath;
+      importLegacySkySave(FS, scummwebLaunchUrl.searchParams, source, savePath);
       const args = Module.arguments.filter(arg => !arg.startsWith("--savepath="));
       Module.arguments.splice(0, Module.arguments.length, `--savepath=${savePath}`, ...args);
     })
@@ -436,7 +493,7 @@ function setupFilesystem() {
             query: scummwebLaunchUrl.searchParams.get("saveQuery") }, scummwebLaunchUrl.origin);
         }
         if (error.name === "SaveSessionBusyError") {
-          window.parent.postMessage({ type: "scummweb:save-session-busy" }, scummwebLaunchUrl.origin);
+          window.parent.postMessage({ type: "scummweb:save-session-busy", reason: error.busyReason }, scummwebLaunchUrl.origin);
         } else {
           if (!scummwebLaunchUrl.searchParams.has("saveQuery")) reportScummvmBootError("filesystem", error);
           if (isLocalGame) reportLocalGameStatus("error");
@@ -477,6 +534,41 @@ globalThis.__scummvmRequestExit=requestExit;
 const scummwebMessageSource="scummweb";
 const postParentMessage=message=>{if(!(window.parent&&window.parent!==window))return false;try{window.parent.postMessage(message,scummwebLaunchUrl.origin);return true}catch{return false}};
 const buildCurrentFrameHref=()=>`${scummwebLaunchUrl.pathname}${scummwebLaunchUrl.search}${scummwebLaunchUrl.hash}`;
+if (isCatalogArchive) {
+  globalThis.__scummwebReportGameplayStarted = () => {
+    delete globalThis.__scummwebReportGameplayStarted;
+    postParentMessage({
+      type: "scummvm-gameplay-started",
+      source: scummwebMessageSource,
+      target,
+      href: buildCurrentFrameHref(),
+    });
+  };
+}
+if (isLocalGame && !isCatalogArchive && !scummwebLaunchUrl.searchParams.has("continue")) {
+  let available = false;
+  let requested = false;
+  globalThis.__scummwebRequestIntroSkip = () => {
+    if (!available || requested) return false;
+    requested = true;
+    return true;
+  };
+  globalThis.__scummwebUpdateIntroSkip = (next) => {
+    if (available !== next) {
+      available = next;
+      requested = false;
+      postParentMessage({
+        type: "scummvm-intro-availability",
+        source: scummwebMessageSource,
+        href: buildCurrentFrameHref(),
+        available,
+      });
+    }
+    if (!available || !requested) return false;
+    requested = false;
+    return true;
+  };
+}
 const readyStatePriority={idle:-1,pending:0,"runtime-ready":1,"launch-detected":2,"awaiting-frame":3,ready:4};
 const getReadyStatePriority=state=>Object.prototype.hasOwnProperty.call(readyStatePriority,state)?readyStatePriority[state]:-1;
 let readyState={state:target?"pending":"idle",target:target||null,href:buildCurrentFrameHref(),reason:target?"awaiting-launch":"no-target",source:scummwebMessageSource,emittedAt:null};
@@ -504,6 +596,15 @@ if(globalThis.__scummwebPendingReadyStatePhase?.state){setReadyStatePhase(global
 const canvas=document.getElementById("canvas");
 const output=document.getElementById("output");
 if(canvas){
+// SDL requests pointer lock without awaiting the browser's optional grant.
+const requestPointerLock = canvas.requestPointerLock;
+if (typeof requestPointerLock === "function") {
+  canvas.requestPointerLock = function (...args) {
+    const request = requestPointerLock.apply(this, args);
+    request?.catch(() => {});
+    return request;
+  };
+}
 /*__SCUMMWEB_CANVAS_FIT__*/
 installCanvasFit(canvas,MutationObserver);
 const visibleCursorClass="scummvm-browser-cursor-visible";
@@ -516,6 +617,7 @@ const readyFrameSampleSize=32;
 const readyFrameTimeoutMs=15000;
 const touchTapDurationMs=260;
 const touchTapMoveThresholdPx=28;
+const touchHoldMoveThresholdPx=12;
 const touchDoubleTapWindowMs=300;
 const touchDoubleTapThresholdPx=32;
 const touchSyntheticClickHoldMs=80;
@@ -573,6 +675,9 @@ const releaseCursorPrompt=()=>{hideGrabHint();allowGameCursor()};
 const clamp=(value,min,max)=>Math.min(Math.max(value,min),max);
 const measureDistance=(pointA,pointB)=>{if(!pointA||!pointB)return Number.POSITIVE_INFINITY;return Math.hypot(pointA.clientX-pointB.clientX,pointA.clientY-pointB.clientY)};
 const resolveTouchClickButtonCode=value=>value==="right"?2:0;
+const syntheticButtonPresses=new Map();
+const parentButtonPresses=new Map();
+const syntheticButtons=()=>(syntheticButtonPresses.has(0)?1:0)|(syntheticButtonPresses.has(2)?2:0);
 const consumeTouchEvent=event=>{if(event.cancelable)event.preventDefault();if(typeof event.stopImmediatePropagation==="function")event.stopImmediatePropagation();event.stopPropagation()};
 const getTouchPoint=touchLike=>{if(!touchLike)return null;const rect=canvas.getBoundingClientRect();const maxX=rect.width>0?rect.right:rect.left;const maxY=rect.height>0?rect.bottom:rect.top;const clientX=clamp(Number.isFinite(touchLike.clientX)?touchLike.clientX:rect.left,rect.left,maxX);const clientY=clamp(Number.isFinite(touchLike.clientY)?touchLike.clientY:rect.top,rect.top,maxY);return{clientX,clientY,screenX:Number.isFinite(touchLike.screenX)?touchLike.screenX:clientX,screenY:Number.isFinite(touchLike.screenY)?touchLike.screenY:clientY,pageX:Number.isFinite(touchLike.pageX)?touchLike.pageX:clientX+window.scrollX,pageY:Number.isFinite(touchLike.pageY)?touchLike.pageY:clientY+window.scrollY}};
 const getGesturePoint=touchList=>{const touches=Array.from(touchList||[]);if(touches.length===0)return null;touches.sort(((leftTouch,rightTouch)=>leftTouch.clientX-rightTouch.clientX));return getTouchPoint(touches[touches.length-1])};
@@ -582,18 +687,154 @@ const getSyntheticCursorPoint=()=>syntheticCursorPoint?{...syntheticCursorPoint}
 const focusCanvas=()=>{try{canvas.focus({preventScroll:true})}catch{}};
 const dispatchPointerEvent=(eventName,point,{button=0,buttons=0}={})=>{if(typeof PointerEvent!=="function"||!point)return;const pointerEvent=new PointerEvent(eventName,{bubbles:true,cancelable:true,composed:true,pointerId:1,pointerType:"mouse",isPrimary:true,clientX:point.clientX,clientY:point.clientY,screenX:point.screenX,screenY:point.screenY,pageX:point.pageX,pageY:point.pageY,button,buttons,pressure:buttons===0?0:.5});canvas.dispatchEvent(pointerEvent)};
 const dispatchMouseEvent=(eventName,point,{button=0,buttons=0,detail=1}={})=>{if(!point)return;const mouseEvent=new MouseEvent(eventName,{bubbles:true,cancelable:true,composed:true,clientX:point.clientX,clientY:point.clientY,screenX:point.screenX,screenY:point.screenY,button,buttons,detail});canvas.dispatchEvent(mouseEvent)};
-const dispatchSyntheticMove=point=>{if(!point)return;const nextPoint=setSyntheticCursorPoint(point);focusCanvas();dispatchPointerEvent("pointermove",nextPoint,{button:0,buttons:0});dispatchMouseEvent("mousemove",nextPoint,{button:0,buttons:0,detail:0})};
-const dispatchSyntheticClick=(point,button)=>{if(!point)return;const buttons=button===2?2:1;focusCanvas();dispatchSyntheticMove(point);dispatchPointerEvent("pointerdown",point,{button,buttons});dispatchMouseEvent("mousedown",point,{button,buttons});if(button===2){dispatchMouseEvent("contextmenu",point,{button,buttons,detail:0})}window.setTimeout((()=>{dispatchPointerEvent("pointerup",point,{button,buttons:0});dispatchMouseEvent("mouseup",point,{button,buttons:0});if(button!==2){dispatchMouseEvent("click",point,{button,buttons:0,detail:1})}}),touchSyntheticClickHoldMs)};
-const dispatchParentTouchClick=button=>{dispatchSyntheticClick(getSyntheticCursorPoint(),resolveTouchClickButtonCode(button))};
+const dispatchSyntheticMove=point=>{if(!point)return;const nextPoint=setSyntheticCursorPoint(point);const buttons=syntheticButtons();focusCanvas();dispatchPointerEvent("pointermove",nextPoint,{button:-1,buttons});dispatchMouseEvent("mousemove",nextPoint,{button:0,buttons,detail:0})};
+const finishSyntheticButton=(press,cancelled)=>{
+  const {button,releaseTimer}=press;
+  if(syntheticButtonPresses.get(button)!==press)return;
+  window.clearTimeout(releaseTimer);
+  syntheticButtonPresses.delete(button);
+  const point=getSyntheticCursorPoint();
+  const buttons=syntheticButtons();
+  dispatchPointerEvent("pointerup",point,{button,buttons});
+  dispatchMouseEvent("mouseup",point,{button,buttons});
+  if(button===0&&!cancelled)dispatchMouseEvent("click",point,{button,buttons,detail:1});
+};
+const pressSyntheticButton=(point,button)=>{
+  if(!point)return null;
+  const previousPress=syntheticButtonPresses.get(button);
+  if(previousPress){
+    if(previousPress.releaseTimer===null)return null;
+    finishSyntheticButton(previousPress,false);
+  }
+  dispatchSyntheticMove(point);
+  const press={button,startedAt:Date.now(),releaseTimer:null};
+  syntheticButtonPresses.set(button,press);
+  const buttons=syntheticButtons();
+  dispatchPointerEvent("pointerdown",point,{button,buttons});
+  dispatchMouseEvent("mousedown",point,{button,buttons});
+  if(button===2)dispatchMouseEvent("contextmenu",point,{button,buttons,detail:0});
+  return press;
+};
+const releaseSyntheticButton=(press,cancelled=false)=>{
+  if(!press||syntheticButtonPresses.get(press.button)!==press)return;
+  // Keep quick taps visible to engines that poll button state once per frame.
+  const remaining=touchSyntheticClickHoldMs-(Date.now()-press.startedAt);
+  if(cancelled||remaining<=0)finishSyntheticButton(press,cancelled);
+  else press.releaseTimer=window.setTimeout(()=>finishSyntheticButton(press,false),remaining);
+};
+const dispatchSyntheticClick=(point,button)=>releaseSyntheticButton(pressSyntheticButton(point,button));
+const handleParentTouchButton=({button,pressed,cancelled})=>{
+  if((button!=="left"&&button!=="right")||typeof pressed!=="boolean")return;
+  if(pressed){
+    if(parentButtonPresses.has(button))return;
+    const press=pressSyntheticButton(getSyntheticCursorPoint(),resolveTouchClickButtonCode(button));
+    if(press)parentButtonPresses.set(button,press);
+  }else{
+    releaseSyntheticButton(parentButtonPresses.get(button),cancelled===true);
+    parentButtonPresses.delete(button);
+  }
+};
 const applyCursorPadDelta=(deltaX,deltaY)=>{if(!Number.isFinite(deltaX)&&!Number.isFinite(deltaY))return;const previousPoint=getSyntheticCursorPoint();const nextPoint=getTouchPoint({clientX:previousPoint.clientX+(Number(deltaX)||0),clientY:previousPoint.clientY+(Number(deltaY)||0)});if(nextPoint){dispatchSyntheticMove(nextPoint)}};
 const applyRelativeTouchDelta=(previousPoint,nextFingerPoint)=>{if(!previousPoint||!nextFingerPoint)return;const rawDeltaX=(nextFingerPoint.clientX-previousPoint.clientX)*touchRelativeMoveScale;const rawDeltaY=(nextFingerPoint.clientY-previousPoint.clientY)*touchRelativeMoveScale;const deltaX=clamp(rawDeltaX,-touchRelativeMoveMaxDeltaPx,touchRelativeMoveMaxDeltaPx);const deltaY=clamp(rawDeltaY,-touchRelativeMoveMaxDeltaPx,touchRelativeMoveMaxDeltaPx);if(deltaX||deltaY){applyCursorPadDelta(deltaX,deltaY)}};
 const setAspectRatioMode=mode=>{canvas.classList.toggle("scummweb-fill-screen",mode==="fill");canvas.classList.toggle("scummweb-fit-height",mode==="fit-height")};
-const handleScummwebMessage=event=>{if(event.origin!==scummwebLaunchUrl.origin)return;if(event.data?.type==="scummweb-aspect-ratio"){setAspectRatioMode(event.data?.mode);return}if(event.data?.type==="scummweb-touch-click"){dispatchParentTouchClick(event.data.button);return}if(event.data?.type!=="scummweb-touch-cursor-pad")return;applyCursorPadDelta(event.data?.deltaX,event.data?.deltaY)};
-const handleTouchStart=event=>{if(event.touches.length===0)return;consumeTouchEvent(event);const point=getGesturePoint(event.touches);activeTouchGesture={startedAt:Date.now(),startPoint:point,lastPoint:point,moved:false}};
-const handleTouchMove=event=>{if(!activeTouchGesture||event.touches.length===0)return;consumeTouchEvent(event);const point=getGesturePoint(event.touches);if(!point)return;const previousPoint=activeTouchGesture.lastPoint;if(measureDistance(activeTouchGesture.startPoint,point)>touchTapMoveThresholdPx){activeTouchGesture.moved=true}if(activeTouchGesture.moved){applyRelativeTouchDelta(previousPoint,point)}activeTouchGesture.lastPoint=point};
-const handleTouchEnd=event=>{consumeTouchEvent(event);if(!activeTouchGesture){return}const point=getGesturePoint(event.changedTouches)||getGesturePoint(event.touches)||activeTouchGesture.lastPoint||null;if(point&&measureDistance(activeTouchGesture.startPoint,point)>touchTapMoveThresholdPx){activeTouchGesture.moved=true}if(activeTouchGesture.moved&&point){applyRelativeTouchDelta(activeTouchGesture.lastPoint,point)}if(event.touches.length>0){activeTouchGesture.lastPoint=point||activeTouchGesture.lastPoint;return}const completedGesture={...activeTouchGesture,endedAt:Date.now(),endPoint:point||activeTouchGesture.lastPoint};activeTouchGesture=null;const gestureDuration=completedGesture.endedAt-completedGesture.startedAt;const isTap=!completedGesture.moved&&gestureDuration<=touchTapDurationMs&&completedGesture.endPoint;if(!isTap){lastCompletedTap=null;return}dispatchSyntheticMove(completedGesture.endPoint);const isDoubleTap=Boolean(lastCompletedTap&&completedGesture.endedAt-lastCompletedTap.endedAt<=touchDoubleTapWindowMs&&measureDistance(lastCompletedTap.point,completedGesture.endPoint)<=touchDoubleTapThresholdPx);if(isDoubleTap){dispatchSyntheticClick(completedGesture.endPoint,0);lastCompletedTap=null;return}lastCompletedTap={endedAt:completedGesture.endedAt,point:{...completedGesture.endPoint}}};
-const handleTouchCancel=event=>{consumeTouchEvent(event);activeTouchGesture=null;lastCompletedTap=null};
+const handleScummwebMessage=event=>{
+  if(event.origin!==scummwebLaunchUrl.origin)return;
+  if(event.data?.type==="scummweb-aspect-ratio")setAspectRatioMode(event.data.mode);
+  if(event.data?.type==="scummweb-touch-click")dispatchSyntheticClick(getSyntheticCursorPoint(),resolveTouchClickButtonCode(event.data.button));
+  if(event.data?.type==="scummweb-touch-button"&&event.source===window.parent)handleParentTouchButton(event.data);
+  if(event.data?.type==="scummweb-touch-cursor-pad")applyCursorPadDelta(event.data.deltaX,event.data.deltaY);
+};
+const handleTouchStart=event=>{
+  if(event.touches.length===0)return;
+  consumeTouchEvent(event);
+  if(activeTouchGesture?.press)return;
+  if(activeTouchGesture)window.clearTimeout(activeTouchGesture.holdTimer);
+  const point=getGesturePoint(event.touches);
+  const gesture={startedAt:Date.now(),startPoint:point,lastPoint:point,moved:false,press:null,holdTimer:null};
+  activeTouchGesture=gesture;
+  if(event.touches.length!==1||syntheticButtons())return;
+  gesture.touchId=event.touches[0].identifier;
+  gesture.holdTimer=window.setTimeout(()=>{
+    if(activeTouchGesture!==gesture||syntheticButtons())return;
+    gesture.press=pressSyntheticButton(gesture.lastPoint,0);
+    lastCompletedTap=null;
+  },touchTapDurationMs);
+};
+const findHeldTouch=(touches,gesture)=>Array.from(touches||[]).find(touch=>touch.identifier===gesture.touchId);
+const handleTouchMove=event=>{
+  const gesture=activeTouchGesture;
+  if(!gesture||event.touches.length===0)return;
+  consumeTouchEvent(event);
+  if(gesture.press){
+    dispatchSyntheticMove(getTouchPoint(findHeldTouch(event.touches,gesture)));
+    return;
+  }
+  const point=getGesturePoint(event.touches);
+  if(!point)return;
+  const distance=measureDistance(gesture.startPoint,point);
+  if(distance>touchHoldMoveThresholdPx)window.clearTimeout(gesture.holdTimer);
+  if(distance>touchTapMoveThresholdPx)gesture.moved=true;
+  if(gesture.moved)applyRelativeTouchDelta(gesture.lastPoint,point);
+  gesture.lastPoint=point;
+};
+const handleTouchEnd=event=>{
+  consumeTouchEvent(event);
+  if(!activeTouchGesture)return;
+  window.clearTimeout(activeTouchGesture.holdTimer);
+  if(activeTouchGesture.press){
+    const touch=findHeldTouch(event.changedTouches,activeTouchGesture);
+    if(!touch)return;
+    dispatchSyntheticMove(getTouchPoint(touch));
+    releaseSyntheticButton(activeTouchGesture.press);
+    activeTouchGesture=null;
+    return;
+  }
+  const point=getGesturePoint(event.changedTouches)||getGesturePoint(event.touches)||activeTouchGesture.lastPoint;
+  if(point&&measureDistance(activeTouchGesture.startPoint,point)>touchTapMoveThresholdPx){
+    activeTouchGesture.moved=true;
+  }
+  if(activeTouchGesture.moved&&point){applyRelativeTouchDelta(activeTouchGesture.lastPoint,point)}
+  if(event.touches.length>0){
+    activeTouchGesture.lastPoint=point;
+    return;
+  }
+
+  const {startedAt,moved}=activeTouchGesture;
+  activeTouchGesture=null;
+  const endedAt=Date.now();
+  if(moved||endedAt-startedAt>touchTapDurationMs||!point){
+    lastCompletedTap=null;
+    return;
+  }
+
+  const isDoubleTap=lastCompletedTap&&endedAt-lastCompletedTap.endedAt<=touchDoubleTapWindowMs&&
+    measureDistance(lastCompletedTap.point,point)<=touchDoubleTapThresholdPx;
+  if(isDoubleTap){
+    dispatchSyntheticClick(point,0);
+    lastCompletedTap=null;
+    return;
+  }
+  dispatchSyntheticMove(point);
+  lastCompletedTap={endedAt,point};
+};
+const resetTouchGesture=()=>{
+  if(activeTouchGesture){
+    window.clearTimeout(activeTouchGesture.holdTimer);
+    releaseSyntheticButton(activeTouchGesture.press,true);
+    activeTouchGesture=null;
+  }
+  lastCompletedTap=null;
+};
+const handleTouchCancel=event=>{consumeTouchEvent(event);resetTouchGesture()};
+const resetSyntheticInput=()=>{
+  resetTouchGesture();
+  for(const press of syntheticButtonPresses.values())finishSyntheticButton(press,true);
+  parentButtonPresses.clear();
+};
 window.addEventListener("message",handleScummwebMessage);
+window.addEventListener("blur",resetSyntheticInput);
+window.addEventListener("pagehide",resetSyntheticInput);
+document.addEventListener("visibilitychange",()=>{if(document.hidden)resetSyntheticInput()});
 canvas.addEventListener("mouseenter",promptCursorGrab,{passive:true});
 canvas.addEventListener("pointerenter",promptCursorGrab,{passive:true});
 canvas.addEventListener("mouseleave",clearCursorPrompt,{passive:true});

@@ -1,0 +1,43 @@
+# English Amiga 1.06.
+# Logic 104 dispatches the four assignments. Logics 131, 114 and 152 advance
+# the assignment variable. Logic 151 checks all four targets before room 162.
+schema_version: 1
+game: manhunter-new-york
+engine_id: agi
+edition:
+  game_id: mh1
+  index_md5: 92c6183042d1c2bb76236236a7d7a847
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  assignment-terminal: 104
+  final-flight: 151
+  ending: 162
+variables:
+  assignment: { bank: vars, index: 60 }
+flags:
+  target-1-destroyed: { bank: flag_bytes, index: 20, mask: 1 } # Flag 160.
+  target-2-destroyed: { bank: flag_bytes, index: 20, mask: 2 } # Flag 161.
+  target-3-destroyed: { bank: flag_bytes, index: 20, mask: 4 } # Flag 162.
+  target-4-destroyed: { bank: flag_bytes, index: 20, mask: 8 } # Flag 163.
+milestones:
+  - id: second-assignment
+    label: Advanced to the second assignment
+    when: { variable: assignment, equals: 2 }
+  - id: third-assignment
+    label: Advanced to the third assignment
+    when: { variable: assignment, equals: 3 }
+  - id: fourth-assignment
+    label: Advanced to the final assignment
+    when: { variable: assignment, equals: 4 }
+  - id: won-final-flight
+    label: Destroyed all four targets
+    when:
+      all:
+        - { flag: target-1-destroyed }
+        - { flag: target-2-destroyed }
+        - { flag: target-3-destroyed }
+        - { flag: target-4-destroyed }
+  - id: winning-ending
+    label: Reached the flight epilogue
+    when: { room: ending }

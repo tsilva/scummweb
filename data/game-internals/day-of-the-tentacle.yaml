@@ -1,0 +1,31 @@
+# English DOS CD.
+# Native evidence: scripts and room directory from the detected edition.
+# Script 9 powers the two Chron-O-Johns using bits 9 and 10. Script 38 sets bit 260 after the final confrontation.
+# Script 57 plays the epilogue and loads the end credits in room 88.
+schema_version: 1
+game: day-of-the-tentacle
+engine_id: scumm
+edition:
+  game_id: tentacle
+  index_md5: 4167a92a1d46baa4f4127d918d561f88
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  end-credits: 88
+flags:
+  hoagies-power: { bank: scumm_bit_bytes, index: 1, mask: 0x2 }
+  lavernes-power: { bank: scumm_bit_bytes, index: 1, mask: 0x4 }
+  tentacle-stopped: { bank: scumm_bit_bytes, index: 32, mask: 0x10 }
+milestones:
+  - id: powered-chron-o-john
+    label: Powered a stranded Chron-O-John
+    when: { any: [{ flag: hoagies-power }, { flag: lavernes-power }] }
+  - id: powered-both
+    label: Powered both stranded Chron-O-Johns
+    when: { all: [{ flag: hoagies-power }, { flag: lavernes-power }] }
+  - id: stopped-tentacle
+    label: Stopped Purple Tentacle
+    when: { flag: tentacle-stopped }
+  - id: winning-ending
+    label: Reached the end credits
+    when: { all: [{ room: end-credits }, { flag: tentacle-stopped }] }

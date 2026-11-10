@@ -1,9 +1,12 @@
 import Link from "next/link";
+import { Fragment } from "react";
 import { getVersionedSiteAssetPath } from "./asset-paths";
 import Icon from "./home-shell/shell-icon";
 import SourceLibrary from "./home-shell/source-library";
 import SettingsPanel from "./home-shell/settings-panel";
+import InstallPrompt from "./home-shell/install-prompt";
 import DirectionalNavigation from "./home-shell/directional-navigation";
+import GalleryOrientation from "./home-shell/GalleryOrientation";
 import { getGamesOrigin } from "../lib/site-config.mjs";
 import { artworkDelivery, artworkStorage } from "../lib/artwork-storage.mjs";
 import assetConfig from "../lib/scummvm-shell-assets";
@@ -24,9 +27,16 @@ export default function HomeShell({
   const BrandLink = isHomePage ? "a" : Link;
   const LibraryLink = pageMode === "compatibility" ? Link : "a";
   const libraryHeading = "Game Library";
+  const Shell = pageMode === "compatibility" ? Fragment : GalleryOrientation;
+  const galleryUrl = isHomePage && artworkStorage.published
+    ? getVersionedSiteAssetPath("/gallery-artwork.json") : null;
+  const artworkGames = featuredGame ? [...catalog, featuredGame] : catalog;
+  const artwork = children == null ? artworkDelivery(galleryUrl
+    ? artworkGames.map((game) => game === featuredGame ? game : { ...game, screenshots: [] })
+    : artworkGames) : null;
 
   return (
-    <>
+    <Shell>
       <DirectionalNavigation initialFocus={pageMode === "compatibility" ? undefined : "play"} />
       {artworkStorage.published && <link rel="preconnect" href={artworkStorage.origin} />}
       <nav className={pageMode === "compatibility" ? "dashboard-nav" : "dashboard-nav dashboard-nav-home"}>
@@ -72,9 +82,11 @@ export default function HomeShell({
         </div>
       </nav>
 
+      {isHomePage && <InstallPrompt />}
+
       <main className="page-shell">
         {children ?? <SourceLibrary
-          artwork={artworkDelivery(featuredGame ? [...catalog, featuredGame] : catalog)}
+          artwork={galleryUrl ? { ...artwork, galleryUrl } : artwork}
           catalog={catalog}
           featuredGame={featuredGame}
           isHomePage={isHomePage}
@@ -99,6 +111,6 @@ export default function HomeShell({
         </div>
       </footer>
 
-    </>
+    </Shell>
   );
 }

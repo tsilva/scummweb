@@ -12,20 +12,23 @@ const source = (await readFile(new URL("../app/game-player/useImmersiveMode.js",
   .replace("export function useImmersiveMode", "function useImmersiveMode");
 
 function player({ fullscreen = false, landscape = false, mobile = true, tv = false, narrow = mobile,
-  denied = false, deferred = false, unsupportedOrientation = false } = {}) {
+  denied = false, deferred = false, unsupportedOrientation = false, installed = false, nativeFullscreen = false } = {}) {
   const hooks = [];
-  const listeners = new Set();
+  const listeners = new Map();
   let cursor = 0;
   let dirty = false;
   let effects = [];
   let requests = 0;
   const actions = [];
   const pending = Promise.withResolvers();
-  const document = {
+  const document = Object.assign(new EventTarget(), {
     fullscreenElement: null,
-    async exitFullscreen() { actions.push("exit"); this.fullscreenElement = null; },
-    addEventListener() {}, removeEventListener() {},
-  };
+    async exitFullscreen() {
+      actions.push("exit");
+      this.fullscreenElement = null;
+      this.dispatchEvent(new Event("fullscreenchange"));
+    },
+  });
   const root = fullscreen ? {
     async requestFullscreen() {
       requests++;
@@ -33,6 +36,7 @@ function player({ fullscreen = false, landscape = false, mobile = true, tv = fal
       if (denied) throw new Error("Fullscreen denied");
       if (deferred) await pending.promise;
       document.fullscreenElement = root;
+      document.dispatchEvent(new Event("fullscreenchange"));
     },
   } : {};
   document.documentElement = root;
@@ -40,19 +44,26 @@ function player({ fullscreen = false, landscape = false, mobile = true, tv = fal
   const window = {
     innerWidth: 390, innerHeight: 844,
     matchMedia: (query) => ({
-      matches: query.includes("landscape") ? landscape : query.includes("max-width") ? narrow : mobile,
+      matches: {
+        "(orientation: landscape)": landscape,
+        "(max-width: 900px)": narrow,
+        "(pointer: coarse)": mobile,
+        "(display-mode: standalone), (display-mode: minimal-ui)": installed && !document.fullscreenElement,
+        "(display-mode: fullscreen)": nativeFullscreen || Boolean(document.fullscreenElement),
+      }[query],
       addEventListener() {}, removeEventListener() {},
     }),
-    addEventListener: (name) => listeners.add(name), removeEventListener() {},
+    addEventListener: (name, listener) => listeners.set(name, listener),
+    removeEventListener: (name) => listeners.delete(name),
   };
+  const userActivation = { isActive: true };
   const context = {
-    window, navigator: { maxTouchPoints: mobile ? 1 : 0, userAgent: mobile ? "iPhone" : "Desktop" },
+    window, navigator: { userActivation, maxTouchPoints: mobile ? 1 : 0, userAgent: mobile ? "iPhone" : "Desktop" },
     isKnownTvBrowser: () => tv, console, queueMicrotask,
     // Physical screen orientation may disagree with the browser viewport.
     screen: { orientation: {
       type: landscape ? "portrait-primary" : "landscape-primary",
       lock: unsupportedOrientation ? undefined : async (orientation) => { actions.push(orientation); },
-      unlock() { actions.push("unlock"); },
     } },
     document,
     useState(initial) {
@@ -72,7 +83,7 @@ function player({ fullscreen = false, landscape = false, mobile = true, tv = fal
       }
     },
   };
-  runInNewContext(`${immersiveSource}\n${source}\nthis.useImmersiveMode = useImmersiveMode; this.begin = beginGameLaunch; this.exit = exitImmersiveMode; this.resume = resumeMobileGameLaunch;`, context);
+  runInNewContext(`${immersiveSource}\n${source}\nthis.useImmersiveMode = useImmersiveMode; this.begin = beginGameLaunch; this.exit = exitImmersiveMode; this.resume = resumeMobileGameLaunch; this.observe = observeInstalledFullscreenGestures;`, context);
   let state;
   async function settle() {
     for (let attempt = 0; attempt < 10; attempt++) {
@@ -88,20 +99,21 @@ function player({ fullscreen = false, landscape = false, mobile = true, tv = fal
   return {
     settle, listeners, actions, document, shellRef,
     begin: context.begin, exit: context.exit, resume: context.resume,
+    observe: () => context.observe(window), userActivation,
     resolveFullscreen: pending.resolve,
     unmount: () => { for (const hook of hooks) hook?.cleanup?.(); },
     requests: () => requests,
   };
 }
 
-test("unsupported fullscreen leaves mobile play available without a modal", async () => {
+test("unsupported fullscreen still identifies a portrait mobile player", async () => {
   const client = player({ unsupportedOrientation: true });
   assert.equal(client.begin(), true);
   const state = await client.settle();
   assert.equal(state.canFullscreen, false);
+  assert.equal(state.isTouchMobile, true);
   assert.equal(state.isMobileViewport, true);
   assert.equal(state.isLandscapeViewport, false);
-  assert.equal(state.needsImmersiveRetry, undefined);
   await client.exit();
 });
 
@@ -113,16 +125,14 @@ test("Play requests fullscreen synchronously and the mounted player reuses it", 
   assert.equal(state.isFullscreen, true);
   assert.equal(client.requests(), 1);
   assert.deepEqual(client.actions, ["fullscreen", "landscape"]);
-  await state.exitImmersiveMode();
-  assert.deepEqual(client.actions, ["fullscreen", "landscape", "portrait", "exit", "unlock"]);
 });
 
-test("a refused request never causes a modal or retries on later game input", async () => {
+test("a refused request does not retry fullscreen on later game input", async () => {
   const client = player({ fullscreen: true, denied: true });
   client.begin();
   const state = await client.settle();
   assert.equal(state.isMobileViewport, true);
-  assert.equal(state.needsImmersiveRetry, undefined);
+  assert.equal(state.isLandscapeViewport, false);
   assert.equal(client.requests(), 1);
   for (const event of ["pointerup", "touchend", "keydown"]) assert.equal(client.listeners.has(event), false);
   await client.exit();
@@ -134,17 +144,34 @@ test("exiting during a pending fullscreen request prevents a late landscape lock
   const exiting = client.exit();
   client.resolveFullscreen();
   await exiting;
-  assert.deepEqual(client.actions, ["fullscreen", "portrait", "exit", "unlock"]);
+  assert.deepEqual(client.actions, ["fullscreen", "exit", "portrait"]);
   assert.equal(client.document.fullscreenElement, null);
 });
 
-test("leaving the route restores portrait and releases fullscreen", async () => {
+test("leaving the route releases fullscreen before requesting portrait", async () => {
   const client = player({ fullscreen: true });
   client.begin();
   await client.settle();
   client.unmount();
   await new Promise(setImmediate);
-  assert.deepEqual(client.actions, ["fullscreen", "landscape", "portrait", "exit", "unlock"]);
+  assert.deepEqual(client.actions, ["fullscreen", "landscape", "exit", "portrait"]);
+});
+
+test("browser fullscreen exit while playing keeps requesting landscape", async () => {
+  const client = player({ fullscreen: true });
+  client.begin();
+  assert.equal((await client.settle()).isFullscreen, true);
+  await client.document.exitFullscreen();
+  assert.equal((await client.settle()).isFullscreen, false);
+  assert.deepEqual(client.actions, ["fullscreen", "landscape", "exit", "landscape"]);
+});
+
+test("a direct mobile launch requests landscape even without fullscreen support", async () => {
+  const client = player({ landscape: true });
+  const state = await client.settle();
+  assert.equal(state.isTouchMobile, true);
+  assert.equal(state.isLandscapeViewport, true);
+  assert.deepEqual(client.actions, ["landscape"]);
 });
 
 test("desktop launches keep the normal browser orientation", async () => {
@@ -155,13 +182,56 @@ test("desktop launches keep the normal browser orientation", async () => {
   assert.equal(client.requests(), 0);
   await state.handleFullscreenToggle();
   await state.handleFullscreenToggle();
-  assert.deepEqual(client.actions.filter((action) => action !== "unlock"), ["fullscreen", "exit"]);
+  assert.deepEqual(client.actions, ["fullscreen", "exit"]);
+});
+
+test("installed windows reenter fullscreen after a browser exit and retain it on game exit", async () => {
+  const client = player({ fullscreen: true, mobile: false, installed: true, deferred: true });
+  const stop = client.observe();
+  const click = client.listeners.get("click");
+  const keydown = client.listeners.get("keydown");
+  click({ isTrusted: false });
+  keydown({ isTrusted: true, key: "Escape" });
+  client.userActivation.isActive = false;
+  click({ isTrusted: true });
+  assert.equal(client.requests(), 0);
+
+  client.userActivation.isActive = true;
+  click({ isTrusted: true });
+  keydown({ isTrusted: true, key: "Enter" });
+  client.resolveFullscreen();
+  const state = await client.settle();
+  assert.equal(client.requests(), 1);
+  assert.equal(state.isFullscreen, true);
+  assert.equal(state.canFullscreen, false);
+
+  client.unmount();
+  await new Promise(setImmediate);
+  assert.equal(client.document.fullscreenElement, client.document.documentElement);
+  await client.document.exitFullscreen();
+  keydown({ isTrusted: true, key: "Enter" });
+  await new Promise(setImmediate);
+  assert.equal(client.requests(), 2);
+  assert.equal(client.document.fullscreenElement, client.document.documentElement);
+
+  stop();
+  assert.equal(client.listeners.has("click"), false);
+  assert.equal(client.listeners.has("keydown"), false);
+});
+
+test("normal tabs and browsers already using native fullscreen do not add fullscreen requests", () => {
+  for (const nativeFullscreen of [false, true]) {
+    const client = player({ fullscreen: true, mobile: false, nativeFullscreen });
+    assert.equal(client.observe(), undefined);
+    assert.equal(client.listeners.has("click"), false);
+    assert.equal(client.requests(), 0);
+  }
 });
 
 test("a narrow desktop viewport does not automatically enter fullscreen", async () => {
   const client = player({ fullscreen: true, mobile: false, narrow: true });
   assert.equal(client.begin(), false);
-  await client.settle();
+  assert.equal((await client.settle()).isTouchMobile, false);
   assert.equal(client.requests(), 0);
 });
 
@@ -172,5 +242,5 @@ test("TV Play enters fullscreen from the launch gesture without rotating the dis
   assert.equal((await client.settle()).isFullscreen, true);
   assert.equal(client.requests(), 1);
   await client.exit();
-  assert.deepEqual(client.actions, ["fullscreen", "exit", "unlock"]);
+  assert.deepEqual(client.actions, ["fullscreen", "exit"]);
 });

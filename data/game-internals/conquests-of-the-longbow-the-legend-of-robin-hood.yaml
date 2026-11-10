@@ -1,0 +1,32 @@
+# English Amiga 1.000.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/longbow-amiga-1.000/src
+schema_version: 1
+game: conquests-of-the-longbow-the-legend-of-robin-hood
+engine_id: sci
+edition:
+  game_id: longbow
+  index_md5: 52944b462328558070bf02fb371618e2
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  tunnels: 562 # Script 561 includes the tunnel transition to 562.
+  fulk-rescue: 600 # Room 600 contains rescueOfFulk.
+  judgement: 420 # The troubadour in room 801 sends Robin to judgement in room 420.
+  ending: 97 # Script 421 runs the wedding branch only for verdict 10 before entering the credits.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 } # SCI previous room global.
+  verdict: { bank: globals, index: 151 } # Script 421 selects the wedding for verdict 10; lesser outcomes share the credits.
+milestones:
+  - id: tunnels
+    label: "Reached the monastery tunnels"
+    when: { room: tunnels }
+  - id: fulk-rescue
+    label: "Reached Fulk’s rescue sequence"
+    when: { room: fulk-rescue }
+  - id: judgement
+    label: "Reached King Richard’s judgement"
+    when: { room: judgement }
+  - id: winning-ending
+    label: "Won the title and married Marian"
+    when: { all: [{ room: ending }, { all: [{ variable: previous-room, equals: 421 }, { variable: verdict, equals: 10 }] }] }

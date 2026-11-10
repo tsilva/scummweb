@@ -10,6 +10,7 @@ test("agent controls stop on the exact game tick and acknowledge native saves", 
   const boundary = (completed = false) => scope.__scummwebAgentBoundary(completed, 99);
   assert.match(controls.run("pause").error, /does not support/);
   assert.equal(boundary(), 0);
+  assert.equal(controls.status().queueInputBeforeResume, true);
   const pause = controls.run("pause");
   assert.equal(boundary(true), -1);
   assert.deepEqual(await pause, { tick: 1, paused: true });
@@ -42,6 +43,53 @@ test("scoped save launch parameters propagate only within the ScummWEB origin", 
   assert.equal(withGameTelemetry("/scummvm.html?continue=1#sky", route),
     `/scummvm.html?continue=1&agentSaveScope=${scope}#sky`);
   assert.equal(withGameTelemetry("https://other.test/scummvm.html", route), "https://other.test/scummvm.html");
+});
+
+test("shared frame control can advertise timing without a save API", async () => {
+  const scope = { setTimeout, clearTimeout };
+  installAgentControls(scope, "b".repeat(64));
+  const controls = scope.scummwebAgentControls;
+  const frame = (completed = true) => scope.__scummwebAgentFrameBoundary(completed, 0, 0, false, false);
+  assert.equal(frame(), 0);
+  assert.deepEqual(controls.status().actions, ["pause", "resume", "wait_ticks"]);
+  assert.equal(controls.status().tickSource, "frame");
+  assert.match(controls.run("load", 1).error, /does not support/);
+
+  const pause = controls.run("pause");
+  assert.equal(frame(), -1);
+  assert.deepEqual(await pause, { tick: 2, paused: true });
+  const wait = controls.run("wait_ticks", 2);
+  assert.equal(frame(false), 0);
+  assert.equal(frame(), 0);
+  assert.equal(frame(), -1);
+  assert.deepEqual(await wait, { tick: 4, paused: true });
+
+  scope.__scummwebAgentFrameBoundary(false, 10, 5, true, false);
+  assert.match(controls.run("save", 5).error, /manual slot/);
+  const save = controls.run("save", 7);
+  assert.equal(scope.__scummwebAgentFrameBoundary(false, 10, 5, true, false), 7);
+  scope.__scummwebAgentSaveResult(null);
+  assert.deepEqual(await save, { tick: 4, paused: true });
+});
+
+test("shared game-loop controls use engine ticks and native slot confirmation", async () => {
+  const scope = { setTimeout, clearTimeout };
+  installAgentControls(scope, "c".repeat(64));
+  const controls = scope.scummwebAgentControls;
+  const loop = (completed = false) => scope.__scummwebAgentFrameBoundary(completed, 9, 0, true, true, true);
+  assert.equal(loop(true), 0);
+  assert.equal(controls.status().tickSource, "engine");
+  assert.equal(controls.status().queueInputBeforeResume, false);
+
+  const save = controls.run("save", 4);
+  assert.equal(loop(), 4);
+  scope.__scummwebAgentSaveResult(null);
+  assert.deepEqual(await save, { tick: 1, paused: false });
+
+  const load = controls.run("load", 4);
+  assert.equal(loop(), 13);
+  scope.__scummwebAgentSaveResult(null);
+  assert.deepEqual(await load, { tick: 1, paused: false });
 });
 
 test("legacy Sky Continue copies only the requested slot without replacing a scoped save", () => {

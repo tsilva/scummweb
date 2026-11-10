@@ -9,7 +9,7 @@ source "$ROOT_DIR/scripts/scummvm-version.sh"
 SCUMMVM_REPO_URL="https://github.com/scummvm/scummvm.git"
 SCUMMVM_DIR="$VENDOR_DIR/scummvm-$SCUMMVM_TAG"
 SCUMMVM_ENGINES=(
-  access adl agi agos bbvs cge cge2 cine composer cruise draci drascula dreamweb
+  access adl agi agos ags bbvs cge cge2 cine composer cruise draci drascula dreamweb freescape
   glk gnap gob got grim groovie hopkins hugo kyra lab lure made mads mohawk mortevielle neverhood ngi
   parallaction pegasus plumbers queen saga sci scumm sherlock sky sword1 sword2
   sword25 teenagent tinsel titanic toltecs tony toon touche tsage tucker voyeur wintermute zvision

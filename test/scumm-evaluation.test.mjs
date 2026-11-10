@@ -21,10 +21,12 @@ test('engine launch reports identity and the SCUMM provider replaces its baselin
   const heap = new ArrayBuffer(128);
   const words = new Int32Array(heap);
   const bytes = new Uint8Array(heap);
+  const scripts = new Uint16Array(heap, 64, 2);
+  scripts.set([3, 7]);
   bytes.fill(0xab, 48, 64);
   let tick = 0;
   const context = vm.createContext({
-    HEAP32: words, HEAPU8: bytes, structuredClone,
+    HEAP32: words, HEAPU8: bytes, HEAPU16: new Uint16Array(heap), structuredClone,
     performance: { now: () => ++tick }, UTF8ToString: value => value,
   });
   const emit = (script, ...values) => {
@@ -38,12 +40,14 @@ test('engine launch reports identity and the SCUMM provider replaces its baselin
   assert.deepEqual(copy(context.__scummwebEvaluationGame), { engine_id: 'sky', game_id: 'sky' });
   emit(launch, 'scumm', 'loom');
 
-  const frame = (room, reset = false) => emit(sample, room, true, 4, 2, 16, 2, 20, 1, 24, 1, reset, 48);
+  const frame = (room, reset = false, runningCount = 2) =>
+    emit(sample, room, true, 4, 2, 16, 2, 20, 1, 24, 1, reset, 48, 64, runningCount, 4);
   words[1] = -3;
   frame(12);
   assert.equal(context.__scummwebEvaluationGameVariableEvents, undefined);
   assert.equal(context.__scummwebEvaluationEvents, undefined);
   assert.deepEqual(copy(context.__scummwebGameTelemetry).banks.scumm_vars, [-3, 0]);
+  assert.deepEqual(copy(context.__scummwebGameTelemetry).banks.running_scripts, [0, 0, 0, 1]);
   context.__scummwebEvaluationEnabled = true;
   frame(12);
   const records = context.__scummwebEvaluationGameVariableEvents;
@@ -60,9 +64,10 @@ test('engine launch reports identity and the SCUMM provider replaces its baselin
   assert.deepEqual(copy(context.__scummwebEvaluationEvents).map(({ room_id }) => room_id), [12, 94]);
 
   words[1] = 0;
-  frame(12, true);
+  frame(12, true, 0);
   assert.equal(records.at(-1).event, 'game_variables_baseline');
   assert.equal(records.at(-1).banks.scumm_vars[0], 0);
+  assert.deepEqual(copy(context.__scummwebGameTelemetry).banks.running_scripts, [0, 0, 0, 0]);
   for (let index = 1; index <= 260; index++) {
     words[1] = index;
     frame(index);
@@ -74,7 +79,8 @@ test('engine launch reports identity and the SCUMM provider replaces its baselin
 
 test('the shared query sampler publishes whole snapshots with bounded typed banks', () => {
   const patch = readFileSync(new URL('../patches/scummvm/19-query-engine-game-state.patch', import.meta.url), 'utf8');
-  const [begin, commit, variable, bank] = [...patch.matchAll(/^\+(\t+).*?EM_ASM(?:_INT)?\(\{\n((?:^\+.*\n)+?)^\+\1\}[,)];?/gm)]
+  const sampler = patch.split('+++ b/engines/scummweb-telemetry.h\n')[1].split('\ndiff --git ')[0];
+  const [begin, commit, variable, bank] = [...sampler.matchAll(/^\+(\t+).*?EM_ASM(?:_INT)?\(\{\n((?:^\+.*\n)+?)^\+\1\}[,)];?/gm)]
     .map(([, , body]) => new vm.Script(`(function(){${body.replace(/^\+/gm, '')}})()`));
   const heap = new ArrayBuffer(20_000);
   let tick = 0;
@@ -87,9 +93,9 @@ test('the shared query sampler publishes whole snapshots with bounded typed bank
     values.forEach((value, index) => { context['$' + index] = value; });
     return script.runInContext(context);
   };
-  assert.equal(emit(begin, 7, 0, -1), 0);
+  assert.equal(emit(begin, 7, 0, -1, true), 0);
   context.__scummwebTelemetryQueryEnabled = true;
-  assert.equal(emit(begin, 7, 0, -1), 1);
+  assert.equal(emit(begin, 7, 0, -1, false), 1);
   context.HEAP32[1] = -2147483648;
   context.HEAP32[2] = -12;
   emit(bank, 'globals', 4, 2, 4, true, true);
@@ -99,8 +105,9 @@ test('the shared query sampler publishes whole snapshots with bounded typed bank
   assert.deepEqual(copy(first), { schema_version: 1, room_id: 7, sample_time_ms: 0,
     banks: { globals: [null, -12] } });
   tick = 249;
-  assert.equal(emit(begin, 7, 0, -1), 0);
-  assert.equal(emit(begin, -1, 'map.tot', -1), 1, 'Room changes bypass the steady-state throttle');
+  assert.equal(emit(begin, 7, 0, -1, false), 0);
+  assert.equal(emit(begin, 7, 0, -1, true), 1, 'A completed PreAGI turn forces a same-room sample');
+  assert.equal(emit(begin, -1, 'map.tot', -1, false), 1, 'Room changes bypass the steady-state throttle');
   context.HEAPU32[1] = 0xffffffff;
   emit(bank, 'other', 4, 4096, 4, false, false);
   emit(variable, 'progress', 'score', 2.5);

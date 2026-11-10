@@ -1,0 +1,31 @@
+# English Amiga V2.
+# Native evidence: scripts and room directory from the detected edition.
+# Script 126 runs Dr. Fred’s restored dialogue in room 30. Scripts 118, 126 and 130 converge on victory script 63.
+# The all-kids-dead branch runs script 62 instead.
+schema_version: 1
+game: maniac-mansion
+engine_id: scumm
+edition:
+  game_id: maniac
+  index_md5: e781230da44a44e2f0770edb2b3b3633
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  entered-mansion: 2
+  reached-lab: 30
+variables:
+  freds-condition: { bank: scumm_vars, index: 108 }
+  victory-script: { bank: running_scripts, index: 63 }
+milestones:
+  - id: entered-mansion
+    label: Entered the mansion
+    when: { room: entered-mansion }
+  - id: reached-lab
+    label: Reached Dr. Fred’s lab
+    when: { room: reached-lab, room_ready: true }
+  - id: freed-dr-fred
+    label: Freed Dr. Fred from the meteor’s control
+    when: { variable: freds-condition, equals: 2 }
+  - id: winning-ending
+    label: Rescued Sandy
+    when: { variable: victory-script, equals: 1 }

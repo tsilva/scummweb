@@ -50,7 +50,7 @@ index 81421b47..9c5c6186 100644
  
  	} while (!(shouldQuit() || _restartGame));
 diff --git a/engines/agos/event.cpp b/engines/agos/event.cpp
-index 785c692e..3832b860 100644
+index 785c692e..3f73af16 100644
 --- a/engines/agos/event.cpp
 +++ b/engines/agos/event.cpp
 @@ -19,6 +19,8 @@
@@ -62,7 +62,7 @@ index 785c692e..3832b860 100644
  #include "agos/agos.h"
  #include "agos/animation.h"
  #include "agos/debugger.h"
-@@ -613,6 +615,16 @@ void AGOSEngine::delay(uint amount) {
+@@ -613,6 +615,18 @@ void AGOSEngine::delay(uint amount) {
  			break;
  
  		this_delay = _fastMode ? 1 : 20;
@@ -71,6 +71,8 @@ index 785c692e..3832b860 100644
 +			// Only Waxworks tracks its physical room in _currentRoom.
 +			ScummWebTelemetry::Sample sample(getGameType() == GType_WW && _currentRoom ? _currentRoom : -1);
 +			sample.bank("vars", _variableArray, _numVars);
++			if (_scummWebElvira2Edition)
++				sample.variable("elvira2_outcome", "ritual", static_cast<byte>(_scummWebElvira2RitualOutcome));
 +#ifdef ENABLE_AGOS2
 +			sample.bank("vars_secondary", _variableArray2, _numVars);
 +#endif
@@ -79,6 +81,95 @@ index 785c692e..3832b860 100644
  		if (this_delay > amount)
  			this_delay = amount;
  		_system->delayMillis(this_delay);
+diff --git a/engines/agos/agos.h b/engines/agos/agos.h
+--- a/engines/agos/agos.h
++++ b/engines/agos/agos.h
+@@ -575,6 +575,12 @@
+ 	int16 *_variableArray;
+ 	int16 *_variableArray2;
+ 	int16 *_variableArrayPtr;
++
++#ifdef __EMSCRIPTEN__
++	enum class Elvira2RitualOutcome : byte { None, Won, Failed };
++	bool _scummWebElvira2Edition = false;
++	Elvira2RitualOutcome _scummWebElvira2RitualOutcome = Elvira2RitualOutcome::None;
++#endif
+ 
+ 	WindowBlock *_dummyWindow;
+ 	WindowBlock *_windowArray[80];
+diff --git a/engines/agos/res.cpp b/engines/agos/res.cpp
+--- a/engines/agos/res.cpp
++++ b/engines/agos/res.cpp
+@@ -22,6 +22,10 @@
+ // Resource file routines for Simon1/Simon2
+ 
+ 
++#ifdef __EMSCRIPTEN__
++#include <emscripten/emscripten.h>
++#include "common/md5.h"
++#endif
+ #include "common/archive.h"
+ #include "common/file.h"
+ #include "common/memstream.h"
+@@ -190,6 +194,19 @@
+ 			error("loadGamePcFile: Can't load gamexx file '%s'", getFileName(GAME_BASEFILE));
+ 		}
+ 
++#ifdef __EMSCRIPTEN__
++		if (getGameType() == GType_ELVIRA2 && getPlatform() == Common::kPlatformAmiga &&
++				EM_ASM_INT({ return Boolean(globalThis.__scummwebTelemetryQueryEnabled); })) {
++			const Common::String indexMd5 = Common::computeStreamMD5AsString(in);
++			in.seek(0);
++			// The outcome subroutine IDs are traced to this English floppy database.
++			_scummWebElvira2Edition = indexMd5 == "a144d2467e1addee1f705647dacd33df";
++			EM_ASM({
++				const identity = globalThis.__scummwebEvaluationGame;
++				if (identity) identity.index_md5 = UTF8ToString($0);
++			}, indexMd5.c_str());
++		}
++#endif
+ 		if (getFeatures() & GF_CRUNCHED_GAMEPC) {
+ 			uint srcSize = in.size();
+ 			byte *srcBuf = (byte *)malloc(srcSize);
+diff --git a/engines/agos/saveload.cpp b/engines/agos/saveload.cpp
+--- a/engines/agos/saveload.cpp
++++ b/engines/agos/saveload.cpp
+@@ -1457,6 +1457,12 @@
+ 		setBitFlag(135, 1);
+ 	}
+ 
++#ifdef __EMSCRIPTEN__
++	// A user restore starts a new timeline. Scripted Start loads can be part
++	// of the winning sequence and must preserve its already selected outcome.
++	if (!restartMode)
++		_scummWebElvira2RitualOutcome = Elvira2RitualOutcome::None;
++#endif
+ 	return true;
+ }
+ 
+diff --git a/engines/agos/subroutine.cpp b/engines/agos/subroutine.cpp
+--- a/engines/agos/subroutine.cpp
++++ b/engines/agos/subroutine.cpp
+@@ -562,6 +562,19 @@
+ 	if (shouldQuit())
+ 		return result;
+ 
++#ifdef __EMSCRIPTEN__
++	if (_scummWebElvira2Edition) {
++		// The same late ritual value and Play Again prompt occur on both paths.
++		// Track the selected branch through the cutscene and its internal restart.
++		if (sub->id == 1882)
++			_scummWebElvira2RitualOutcome = Elvira2RitualOutcome::Won;
++		else if (sub->id == 1865)
++			_scummWebElvira2RitualOutcome = Elvira2RitualOutcome::Failed;
++		else if (sub->id == 106)
++			_scummWebElvira2RitualOutcome = Elvira2RitualOutcome::None;
++	}
++#endif
++
+ 	while ((byte *)sl != (byte *)sub) {
+ 		_currentLine = sl;
+ 		if (checkIfToRunSubroutineLine(sl, sub)) {
 diff --git a/engines/bbvs/bbvs.cpp b/engines/bbvs/bbvs.cpp
 index 714ca34c..6afe75f3 100644
 --- a/engines/bbvs/bbvs.cpp
@@ -118,14 +209,28 @@ index 7d80821a..50690e03 100644
  #include "common/scummsys.h"
  #include "common/events.h"
  #include "common/system.h"
-@@ -506,6 +508,12 @@ void CineEngine::mainLoop(int bootScriptIdx) {
+@@ -506,6 +508,26 @@ void CineEngine::mainLoop(int bootScriptIdx) {
  		}
  		executeObjectScripts();
  		executeGlobalScripts();
 +#ifdef __EMSCRIPTEN__
 +		{
-+			ScummWebTelemetry::Sample sample;
-+			sample.bank("global_vars", _globalVars.telemetryData(), _globalVars.telemetrySize());
++			ScummWebTelemetry::Sample sample(-1, renderer->getBgName());
++			if (sample) {
++				sample.bank("global_vars", _globalVars.telemetryData(), _globalVars.telemetrySize());
++				sample.variable("scene", "playerInput", allowPlayerInput);
++				sample.variable("scene", "systemMenuDisabled", disableSystemMenu);
++				sample.variable("scene", "waitingForClick", waitForPlayerClick);
++				int16 objectX[ScummWebTelemetry::kMaxBankSize];
++				int16 objectY[ScummWebTelemetry::kMaxBankSize];
++				const uint count = ScummWebTelemetry::boundedCount(_objectTable.size());
++				for (uint i = 0; i < count; ++i) {
++					objectX[i] = _objectTable[i].x;
++					objectY[i] = _objectTable[i].y;
++				}
++				sample.bank("object_x", objectX, count);
++				sample.bank("object_y", objectY, count);
++			}
 +		}
 +#endif
  
@@ -352,14 +457,14 @@ index 00000000..debd9869
 +	uint _namedValues = 0;
 +
 +public:
-+	explicit Sample(double room = -1, const char *name = nullptr, int ready = -1) {
++	explicit Sample(double room = -1, const char *name = nullptr, int ready = -1, bool force = false) {
 +		_enabled = EM_ASM_INT({
 +			if (!globalThis.__scummwebTelemetryQueryEnabled || !globalThis.__scummwebEvaluationGame) return 0;
 +			const now = performance.now();
 +			const previous = globalThis.__scummwebGameTelemetry;
 +			const name = $1 ? UTF8ToString($1) : undefined;
 +			const ready = $2 < 0 ? undefined : Boolean($2);
-+			if (previous && previous.room_id === ($0 < 0 ? null : $0) && previous.room_name === name &&
++			if (!$3 && previous && previous.room_id === ($0 < 0 ? null : $0) && previous.room_name === name &&
 +				previous.room_ready === ready && now - previous.sample_time_ms < 250) return 0;
 +			globalThis.__scummwebTelemetrySample = ({
 +				schema_version: 1,
@@ -370,7 +475,7 @@ index 00000000..debd9869
 +				banks: Object.create(null)
 +			});
 +			return 1;
-+		}, room, name, ready);
++		}, room, name, ready, force);
 +	}
 +
 +	Sample(const Sample &) = delete;

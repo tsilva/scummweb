@@ -17,6 +17,17 @@ overrides:
 
 # User-approved security patch exception; all other packages retain the age hold.
 minimumReleaseAgeExclude:
+  # Audited November 2026 Next.js security release. Remove after normal eligibility.
+  - '@next/env@16.4.5'
+  - '@next/swc-darwin-arm64@16.4.5'
+  - '@next/swc-darwin-x64@16.4.5'
+  - '@next/swc-linux-arm64-gnu@16.4.5'
+  - '@next/swc-linux-arm64-musl@16.4.5'
+  - '@next/swc-linux-x64-gnu@16.4.5'
+  - '@next/swc-linux-x64-musl@16.4.5'
+  - '@next/swc-win32-arm64-msvc@16.4.5'
+  - '@next/swc-win32-x64-msvc@16.4.5'
+  - 'next@16.4.5'
   # Exact versions approved for the glob and minimatch security fixes.
   - glob@14.0.2
   - minimatch@11.0.1

@@ -1,0 +1,44 @@
+# English DOS CD 1.0.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/sq6-dos-1.0/src
+# Room 960 is the ending credits from room 540. The menu uses a different credits room, 435.
+schema_version: 1
+game: space-quest-6-roger-wilco-in-the-spinal-frontier
+engine_id: sci
+edition:
+  game_id: sq6
+  index_md5: ed5ad1dfcfcae482072634c9a69c6a53
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  epilogue: 540
+  ending-credits: 960
+  menu-credits: 435
+  poly-escape: 270 # Script 270 runs Roger’s rescue and transitions to room 420.
+  funeral: 410 # Script 500 sEndChapter1 leads to room 410.
+  shuttle-launch: 455 # Script 490 sReadyForLaunch moves to room 455.
+  body-shuttle: 610 # Script 490 sTravelToBrain sends the shuttle to room 610.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 }
+milestones:
+  - id: poly-escape
+    label: "Reached the rescue scene on Polysorbate LX"
+    when: { room: poly-escape }
+  - id: funeral
+    label: "Reached the funeral"
+    when: { room: funeral }
+  - id: shuttle-launch
+    label: "Reached the shuttle launch sequence"
+    when: { room: shuttle-launch }
+  - id: body-shuttle
+    label: "Reached the body’s interior"
+    when: { room: body-shuttle }
+  - id: reached-epilogue
+    label: Reached the epilogue
+    when: { room: epilogue }
+  - id: winning-ending
+    label: Reached the ending credits
+    when:
+      all:
+        - { room: ending-credits }
+        - { variable: previous-room, equals: 540 }

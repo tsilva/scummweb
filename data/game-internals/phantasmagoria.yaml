@@ -1,0 +1,43 @@
+# English CD 1.100.000.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/phant1-dos-1.100.000/src
+# chapEndRm increments gChapter. The final chase begins in room 45950 and the successful route plays the ending in 47480.
+# rm47480 advances to room 92 from sEnding. Its playback failure returns to the chapter menu.
+schema_version: 1
+game: phantasmagoria
+engine_id: sci
+edition:
+  game_id: phantasmagoria
+  index_md5: abeb9a32ad6dcf9e4371d4f9897f8694
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  final-chase: 45950
+  ending: 92
+variables:
+  chapter: { bank: globals, index: 106 }
+  previous-room: { bank: globals, index: 12 }
+milestones:
+  - id: reached-chapter-2
+    label: Reached chapter 2
+    when: { variable: chapter, equals: 2 }
+  - id: reached-chapter-3
+    label: Reached chapter 3
+    when: { variable: chapter, equals: 3 }
+  - id: reached-chapter-4
+    label: Reached chapter 4
+    when: { variable: chapter, equals: 4 }
+  - id: reached-chapter-5
+    label: Reached chapter 5
+    when: { variable: chapter, equals: 5 }
+  - id: reached-chapter-6
+    label: Reached chapter 6
+    when: { variable: chapter, equals: 6 }
+  - id: reached-chapter-7
+    label: Reached chapter 7
+    when: { variable: chapter, equals: 7 }
+  - id: final-chase
+    label: Reached the final chase
+    when: { room: final-chase }
+  - id: winning-ending
+    label: Escaped the final chase
+    when: { all: [{ room: ending }, { variable: previous-room, equals: -18056 }] } # Room 47480 as a signed SCI global.

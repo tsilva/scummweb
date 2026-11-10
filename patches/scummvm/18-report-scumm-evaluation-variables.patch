@@ -36,12 +36,20 @@ index d1baa70b..dbbbcdcc 100644
  
  			// The Mac GUI is updated after the engine has had a
  			// chance to update the screen. That way, it can draw
-@@ -4255,6 +4262,74 @@ void ScummEngine::pauseGame() {
+@@ -4255,6 +4262,87 @@ void ScummEngine::pauseGame() {
  	pauseDialog();
  }
  
 +#ifdef __EMSCRIPTEN__
 +void ScummEngine::publishEvaluationState(bool reset) {
++	uint16 runningScripts[NUM_SCRIPT_SLOT];
++	uint runningCount = 0;
++	if (EM_ASM_INT({ return Boolean(globalThis.__scummwebTelemetryQueryEnabled); })) {
++		for (const auto &slot : vm.slot) {
++			if (slot.where == WIO_GLOBAL && slot.status != ssDead && slot.number < _numScripts)
++				runningScripts[runningCount++] = slot.number;
++		}
++	}
 +	EM_ASM({
 +		const evaluate = globalThis.__scummwebEvaluationEnabled;
 +		const query = globalThis.__scummwebTelemetryQueryEnabled;
@@ -65,6 +73,11 @@ index d1baa70b..dbbbcdcc 100644
 +		if (sample) {
 +			const banks = Object.create(null);
 +			for (const [bank, view] of Object.entries(views)) if (view.length) banks[bank] = Array.from(view);
++			const runningScripts = Array(Math.min($14, 4096)).fill(0);
++			for (const id of HEAPU16.subarray($12 >>> 1, ($12 >>> 1) + $13)) {
++				if (id < runningScripts.length) runningScripts[id] = 1;
++			}
++			if (runningScripts.length) banks.running_scripts = runningScripts;
 +			globalThis.__scummwebGameTelemetry = ({
 +				schema_version: 1, room_id: $0, room_ready: ready, sample_time_ms: native_time_ms, banks
 +			});
@@ -104,14 +117,14 @@ index d1baa70b..dbbbcdcc 100644
 +		}
 +	}, _roomResource, _roomResource != 0 && _userPut > 0, _scummVars, _numVariables,
 +		_objectStateTable, _numGlobalObjects, _bitVars, _numBitVariables >> 3, _roomVars,
-+		_numRoomVariables, reset, _gameMD5);
++		_numRoomVariables, reset, _gameMD5, runningScripts, runningCount, _numScripts);
 +}
 +#endif
 +
  void ScummEngine::restart() {
  	// FIXME: This function *leaks memory*, and quite a lot so. For example,
  	// we re-init the resource manager, which causes readMAXS() to be called
-@@ -4304,6 +4379,9 @@ void ScummEngine::restart() {
+@@ -4304,6 +4392,9 @@ void ScummEngine::restart() {
  
  	// Re-run bootscript
  	runBootscript();

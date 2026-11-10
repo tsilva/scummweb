@@ -1,8 +1,10 @@
 "use client";
 
 import { captureMessage, withScope } from "@sentry/nextjs";
+import { Keyboard } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import { buildSkipIntroLaunchSrc } from "./skip-intro-config.mjs";
 import { readCatalogGameArchive } from "./game-bucket.mjs";
 import { gameLoadingStatus } from "./game-loading-status.mjs";
@@ -10,20 +12,24 @@ import { isTvBrowser } from "./controller-device.mjs";
 import GameBootOverlay from "./game-player/GameBootOverlay";
 import GamePlayerControls from "./game-player/GamePlayerControls";
 import GameTouchCursorPad from "./game-player/GameTouchCursorPad";
+import { GameMovementStick, GrimTouchGamepad } from "./game-player/GameTouchGamepad";
 import { createGameLaunchAnalytics } from "./game-player/game-launch-analytics.mjs";
 import { observeStartupDiagnostics } from "./game-player/startup-diagnostics.mjs";
 import { withGameTelemetry } from "./game-player/telemetry.mjs";
-import { dispatchGameCommand, dispatchSyntheticKeypressSequence } from "./game-player/keyboard";
+import { getStoryProgressRevision, observeStoryProgress } from "./game-player/story-progress.mjs";
+import storyProgressIndex from "../public/game-progress/index.json";
+import { dispatchGameCommand, dispatchHugoCommand, dispatchSyntheticKeypressSequence } from "./game-player/keyboard";
+import { getMobileControlMode } from "./game-player/mobile-controls.mjs";
 import { getGameMenuShortcut } from "./game-player/game-menu.mjs";
 import { observeRemotePlayerInput } from "./game-player/game-mouse.mjs";
-import { enterImmersiveMode, isGameFullscreen, isTouchMobileClient } from "./game-player/immersive-mode.mjs";
+import { enterImmersiveMode, isGameFullscreen, isTouchMobileClient, observeInstalledFullscreenGestures, usesInstalledFullscreenFallback } from "./game-player/immersive-mode.mjs";
 import { observeRemoteBack } from "./game-player/remote-back.mjs";
 import { useBootState } from "./game-player/useBootState";
 import { useImmersiveMode } from "./game-player/useImmersiveMode";
-import { useTouchClickActions } from "./game-player/useTouchClickMode";
 import { useTouchCursorPad } from "./game-player/useTouchCursorPad";
 import { sendZipGameFiles } from "./home-shell/zip-game-player";
 import { recordRecentGameTarget } from "./recent-games";
+import "./styles/game-player-frame.css";
 import "./styles/game-controls.css";
 
 const SCUMMWEB_FRAME_MESSAGE_SOURCE = "scummweb";
@@ -45,6 +51,7 @@ const MIB = 1024 * 1024;
 const catalogArchiveLimits = {
   "dreamweb-cd": { archiveLimit: 300 * MIB, expandedLimit: 300 * MIB, timeoutMs: 600_000 },
   queen: { timeoutMs: 600_000 },
+  "qfi-demo": { archiveLimit: 300 * MIB, expandedLimit: 300 * MIB, timeoutMs: 600_000 },
   sword25: { archiveLimit: 900 * MIB, expandedLimit: 900 * MIB, timeoutMs: 900_000 },
 };
 
@@ -151,12 +158,17 @@ export default function GameRouteFrame({
   }), [catalogArchiveUrl, target]);
   const loadArchive = catalogArchiveUrl ? loadCatalogArchive : loadPersonalArchive;
   const catalogLaunch = !loadArchive || Boolean(catalogArchiveUrl);
+  const progressVersion = catalogLaunch ? `catalog:${target}` : game?.recentGameId;
+  const progressSlug = game?.slug;
+  const progressRevision = getStoryProgressRevision(storyProgressIndex, progressSlug, catalogLaunch);
   const router = useRouter();
   const shellRef = useRef(null);
   const frameRef = useRef(null);
   const frameBootRef = useRef(null);
   const archiveFiles = useRef(null);
   const archiveReceiver = useRef(null);
+  const commandInputRef = useRef(null);
+  const commandDispatchRef = useRef(null);
   const [archivePrepared, setArchivePrepared] = useState(false);
   const [archiveError, setArchiveError] = useState("");
   const [archiveProgress, setArchiveProgress] = useState(null);
@@ -167,9 +179,14 @@ export default function GameRouteFrame({
   const [isResuming, setIsResuming] = useState(false);
   const [exitHref, setExitHref] = useState("/");
   const [readySignal, setReadySignal] = useState(null);
+  const [gameplayFrameHref, setGameplayFrameHref] = useState(null);
+  const [nativeIntroFrameHref, setNativeIntroFrameHref] = useState(null);
+  const [compatibilityWarnings, setCompatibilityWarnings] = useState([]);
   const [skipIntroConsumed, setSkipIntroConsumed] = useState(false);
   const [catalogIntroLaunch, setCatalogIntroLaunch] = useState(null);
   const [remoteToolbarOpen, setRemoteToolbarOpen] = useState(false);
+  const [commandOpen, setCommandOpen] = useState(false);
+  const [commandSending, setCommandSending] = useState(false);
   const restoreFullscreenOnResume = useRef(false);
   const fullscreenExitExpected = useRef(false);
   const restoreRemoteFullscreen = useCallback(() => {
@@ -188,41 +205,125 @@ export default function GameRouteFrame({
       else document.activeElement?.blur();
     });
   }, [restoreRemoteFullscreen]);
-  const skipIntro = isResuming ? null : intro;
+  const skipIntro = isResuming || intro?.checkpointOnly ? null : intro;
+  const canSkipNativeIntro = !catalogLaunch && !isResuming && frameSrc !== null && nativeIntroFrameHref === frameSrc;
+  const gameplayStarted = frameSrc !== null && gameplayFrameHref === frameSrc;
+  const currentReadySignal = readySignal?.href === frameSrc ? readySignal : null;
   const bootState = useBootState({
     displayTitle: game?.displayTitle || title,
     frameRef,
     frameSrc,
-    readySignal,
+    readySignal: currentReadySignal,
     skipIntro,
     skipIntroConsumed,
   });
   const immersiveMode = useImmersiveMode({ shellRef });
   const navigateHome = useCallback(async (href) => {
     fullscreenExitExpected.current = true;
-    await immersiveMode.exitImmersiveMode?.({ silenceErrors: true });
+    // Keep the landscape lock until the mobile player has left the screen.
+    if (!isTouchMobileClient()) await immersiveMode.exitImmersiveMode();
     const destination = getSafeHref(href);
-    if (catalogLaunch) window.location.replace(destination);
+    // A new document would exit the installed app's Fullscreen API session.
+    if (catalogLaunch && !usesInstalledFullscreenFallback()) window.location.replace(destination);
     else router.replace(destination);
   }, [catalogLaunch, router, immersiveMode.exitImmersiveMode]);
-  const touchClick = useTouchClickActions({
-    frameRef,
-    skipIntro,
-    skipIntroConsumed,
-  });
   const hasBootFailed = Boolean(archiveError) || bootState.hasBootFailed;
+  const waitingForLandscape = immersiveMode.isTouchMobile && !immersiveMode.isLandscapeViewport;
   const showBootOverlay = !bootState.hasBootCompleted || hasBootFailed;
+  const showSkipIntroBottomAction =
+    (canSkipNativeIntro || (Boolean(skipIntro) && bootState.showSkipIntroButton)) &&
+    !gameplayStarted && !showBootOverlay && !waitingForLandscape;
   const mobileControlsReady =
-    immersiveMode.isMobileViewport && bootState.hasBootCompleted && !hasBootFailed;
-  const usesCommandInput = game?.engineId === "adl";
+    immersiveMode.isMobileViewport && !waitingForLandscape && bootState.hasBootCompleted && !hasBootFailed;
+  const mobileControlMode = getMobileControlMode(currentReadySignal?.detectedGame ?? game ?? undefined);
+  const usesCommandInput = mobileControlMode === "command" || mobileControlMode === "hugo";
   const showCommandInput = mobileControlsReady && usesCommandInput;
-  const showTouchMouse = mobileControlsReady && !usesCommandInput;
+  const showCommandForm = showCommandInput && commandOpen;
+  const showHugoStick = mobileControlsReady && !showCommandForm && mobileControlMode === "hugo";
+  const showGrimGamepad = mobileControlsReady && mobileControlMode === "grim";
+  const showTouchMouse = mobileControlsReady && mobileControlMode === "mouse";
   const touchCursorPad = useTouchCursorPad({
     enabled: showTouchMouse,
     frameRef,
   });
 
   useEffect(() => observeStartupDiagnostics(window, frameRef), []);
+
+  const closeCommand = useCallback(() => {
+    commandInputRef.current?.blur();
+    setCommandOpen(false);
+    focusGameCanvas(frameRef.current);
+  }, []);
+
+  useEffect(() => {
+    const viewport = window.visualViewport;
+    const shell = shellRef.current;
+    // Command games keep the layout viewport so the keyboard can cover the
+    // game without resizing it. Other mobile games fit the visible viewport.
+    if (usesCommandInput || !immersiveMode.isMobileViewport || !viewport || !shell) return;
+    function fitVisibleHeight() {
+      // Browser chrome and the keyboard can make the visible area shorter than
+      // the layout viewport. Leave pinch zoom under the player's control.
+      if (viewport.scale === 1 && viewport.height > 0) {
+        shell.style.setProperty("--game-visible-height", `${viewport.height}px`);
+      } else {
+        shell.style.removeProperty("--game-visible-height");
+      }
+    }
+    fitVisibleHeight();
+    viewport.addEventListener("resize", fitVisibleHeight);
+    return () => {
+      viewport.removeEventListener("resize", fitVisibleHeight);
+      shell.style.removeProperty("--game-visible-height");
+    };
+  }, [immersiveMode.isMobileViewport, usesCommandInput]);
+
+  useLayoutEffect(() => {
+    const keyboard = navigator.virtualKeyboard;
+    if (!usesCommandInput || !immersiveMode.isMobileViewport || !keyboard) return;
+
+    // Android may still be applying the keyboard inset after the form closes.
+    // Keep the viewport policy stable for the player, including during dismissal.
+    const previousOverlaysContent = keyboard.overlaysContent;
+    keyboard.overlaysContent = true;
+    return () => { keyboard.overlaysContent = previousOverlaysContent; };
+  }, [immersiveMode.isMobileViewport, usesCommandInput]);
+
+  useLayoutEffect(() => {
+    const viewport = window.visualViewport;
+    const keyboard = navigator.virtualKeyboard;
+    const shell = shellRef.current;
+    if (!showCommandForm || !shell || (!viewport && !keyboard)) return;
+
+    // Chromium can report the keyboard directly, even when it overlays the
+    // fullscreen player. Other browsers expose the space it leaves visible.
+    const initialHeight = viewport?.height ?? window.innerHeight;
+    let keyboardWasVisible = false;
+    function positionCommandField() {
+      if (viewport && (viewport.scale !== 1 || viewport.height <= 0)) return;
+      const visibleHeight = viewport?.height ?? window.innerHeight;
+      const visibleBottom = (viewport?.offsetTop ?? 0) + visibleHeight;
+      const keyboardRect = keyboard?.boundingRect;
+      const keyboardTop = keyboardRect?.height > 0 ? keyboardRect.top : visibleBottom;
+      const inset = shell.getBoundingClientRect().bottom - Math.min(visibleBottom, keyboardTop);
+      shell.style.setProperty("--game-command-inset", `${Math.max(0, inset)}px`);
+      // Android Back can hide the IME without blurring the input. Ignore small
+      // viewport changes from browser chrome when detecting that dismissal.
+      const keyboardVisible = keyboardRect?.height > 0 || initialHeight - visibleHeight > 48;
+      if (!keyboardVisible && keyboardWasVisible) closeCommand();
+      keyboardWasVisible = keyboardVisible;
+    }
+    positionCommandField();
+    keyboard?.addEventListener("geometrychange", positionCommandField);
+    viewport?.addEventListener("resize", positionCommandField);
+    viewport?.addEventListener("scroll", positionCommandField);
+    return () => {
+      keyboard?.removeEventListener("geometrychange", positionCommandField);
+      viewport?.removeEventListener("resize", positionCommandField);
+      viewport?.removeEventListener("scroll", positionCommandField);
+      shell.style.removeProperty("--game-command-inset");
+    };
+  }, [closeCommand, showCommandForm]);
 
   useLayoutEffect(() => {
     const navigationController = new AbortController();
@@ -331,6 +432,15 @@ export default function GameRouteFrame({
       if (event.origin !== window.location.origin) {
         return;
       }
+      if (event.data?.type === "scummweb:compatibility-warning") {
+        const { href, message } = event.data;
+        if (frameSrc && event.source === frameRef.current?.contentWindow &&
+            typeof href === "string" && getNormalizedFrameHref(href) === frameSrc &&
+            typeof message === "string" && message.trim()) {
+          setCompatibilityWarnings((current) => current.includes(message) ? current : [...current, message]);
+        }
+        return;
+      }
       if (event.data?.type === "scummvm-boot-error") {
         if (event.source && event.source === frameRef.current?.contentWindow &&
             typeof event.data.href === "string" && getNormalizedFrameHref(event.data.href) === frameSrc) {
@@ -348,7 +458,9 @@ export default function GameRouteFrame({
 
       if (event.data?.type === "scummweb:save-session-busy" && event.source === frameRef.current?.contentWindow) {
         stopArchiveBootTimer();
-        setArchiveError("Another game or save operation is active. Close it in the other tab, then try again.");
+        setArchiveError(event.data.reason === "edition"
+          ? "This game edition is already open or checking saves in another tab. Close it or wait for the check, then try again."
+          : "A game or save operation is using shared storage. Close it or wait for it to finish, then try again.");
         return;
       }
 
@@ -364,7 +476,9 @@ export default function GameRouteFrame({
           stopArchiveBootTimer();
           if (event.data.status === "running") {
             frameBoot.ready = true;
-            if (!catalogLaunch) setReadySignal({ reason: "archive-running" });
+            if (!catalogLaunch) {
+              setReadySignal((current) => current ?? { href: frameSrc, reason: "archive-running" });
+            }
           } else {
             if (event.data.status === "undetected") reportBootError("game-detection");
             archiveFiles.current = null;
@@ -376,7 +490,16 @@ export default function GameRouteFrame({
         }
       }
 
-      if (event.data?.type === "scummvm-ready") {
+      if (event.data?.type === "scummvm-intro-availability") {
+        if (!catalogLaunch && frameSrc && event.source === frameRef.current?.contentWindow &&
+            event.data.source === SCUMMWEB_FRAME_MESSAGE_SOURCE &&
+            getNormalizedFrameHref(event.data.href) === frameSrc) {
+          setNativeIntroFrameHref(event.data.available === true ? frameSrc : null);
+        }
+        return;
+      }
+
+      if (event.data?.type === "scummvm-ready" || event.data?.type === "scummvm-gameplay-started") {
         const iframeWindow = frameRef.current?.contentWindow;
         const expectedFrameHref = getNormalizedFrameHref(loadArchive ? frameSrc : frameRef.current?.src || frameSrc);
         const messageFrameHref = getNormalizedFrameHref(event.data?.href);
@@ -393,8 +516,17 @@ export default function GameRouteFrame({
           return;
         }
 
+        if (event.data.type === "scummvm-gameplay-started") {
+          setGameplayFrameHref(messageFrameHref);
+          return;
+        }
+
         frameBoot.ready = true;
+        const detectedGame = iframeWindow.__scummwebSaveStatus;
         setReadySignal({
+          detectedGame: detectedGame?.engineId && detectedGame?.gameId
+            ? { engineId: detectedGame.engineId, gameId: detectedGame.gameId }
+            : null,
           href: messageFrameHref,
           reason: event.data?.reason || null,
           reportedAt: event.data?.emittedAt || null,
@@ -443,6 +575,9 @@ export default function GameRouteFrame({
   useEffect(() => {
     const controller = new AbortController();
     setReadySignal(null);
+    setGameplayFrameHref(null);
+    setNativeIntroFrameHref(null);
+    setCompatibilityWarnings([]);
     setArchiveProgress(null);
     setArchiveCached(false);
     setArchivePrepared(false);
@@ -483,7 +618,13 @@ export default function GameRouteFrame({
             launchSrc = `${shellUrl.pathname}${shellUrl.search}${shellUrl.hash}`;
           }
         }
-        launchSrc = withGameTelemetry(launchSrc, window.location.href);
+        const shellUrl = new URL(launchSrc, window.location.origin);
+        if (target && !game?.saveNamespace) shellUrl.searchParams.set("catalogSaveTarget", target);
+        shellUrl.searchParams.set("hostCompatibilityWarning", "1");
+        if (progressVersion && progressRevision && !new URL(window.location.href).searchParams.has("agentSaveScope")) {
+          shellUrl.searchParams.set("telemetry", "1");
+        }
+        launchSrc = withGameTelemetry(`${shellUrl.pathname}${shellUrl.search}${shellUrl.hash}`, window.location.href);
         if (loadArchive) {
           // Load/compile ScummVM while the archive downloads or opens. The
           // handoff below supports either side becoming ready first.
@@ -510,14 +651,22 @@ export default function GameRouteFrame({
 
     void openGame();
     return () => { controller.abort(); };
-  }, [catalogIntroLaunch, catalogLaunch, game, intro, launchAnalytics, loadArchive, src, target]);
+  }, [catalogIntroLaunch, catalogLaunch, game, intro, launchAnalytics, loadArchive, progressRevision, progressVersion, src, target]);
+
+  useEffect(() => {
+    if (!currentReadySignal || !frameRef.current || !progressVersion || !progressRevision ||
+        new URL(window.location.href).searchParams.has("agentSaveScope")) return;
+    return observeStoryProgress(window, frameRef.current, {
+      version: progressVersion, slug: progressSlug, revision: progressRevision,
+    });
+  }, [currentReadySignal, progressRevision, progressSlug, progressVersion]);
 
   useEffect(() => {
     if (bootState.hasBootFailed) launchAnalytics.fail("startup_error");
   }, [bootState.hasBootFailed, launchAnalytics]);
 
   const canCountPlayTime =
-    readySignal?.reason === "rendered-frame-detected" && !showBootOverlay;
+    currentReadySignal?.reason === "rendered-frame-detected" && !showBootOverlay && !waitingForLandscape;
 
   useEffect(() => {
     if (canCountPlayTime) return launchAnalytics.watchPlayTime();
@@ -535,7 +684,7 @@ export default function GameRouteFrame({
         iframe.contentWindow?.postMessage(
           {
             type: SCUMMWEB_ASPECT_RATIO_MESSAGE_TYPE,
-            mode: immersiveMode.isMobileViewport && !usesCommandInput ? "fit-height" : "preserve",
+            mode: immersiveMode.isMobileViewport && mobileControlMode === "mouse" ? "fit-height" : "preserve",
           },
           window.location.origin,
         );
@@ -548,7 +697,20 @@ export default function GameRouteFrame({
     return () => {
       iframe.removeEventListener("load", postAspectRatioMode);
     };
-  }, [frameSrc, immersiveMode.isMobileViewport, usesCommandInput]);
+  }, [frameSrc, immersiveMode.isMobileViewport, mobileControlMode]);
+
+  useEffect(() => {
+    setCommandOpen(false);
+    setCommandSending(false);
+    return () => {
+      commandDispatchRef.current?.abort();
+      commandDispatchRef.current = null;
+    };
+  }, [frameSrc]);
+
+  useEffect(() => {
+    if (!showCommandInput) setCommandOpen(false);
+  }, [showCommandInput]);
 
   useEffect(() => {
     setExitHref(getExitHrefFromSrc(frameSrc || src));
@@ -559,11 +721,30 @@ export default function GameRouteFrame({
   }, [catalogLaunch, game?.recentGameId, target]);
 
   useEffect(() => {
+    const iframe = frameRef.current;
+    if (!iframe || !usesInstalledFullscreenFallback()) return;
+
+    let stopObserving;
+    function observeFrame() {
+      stopObserving?.();
+      const frameWindow = iframe.contentDocument?.defaultView;
+      stopObserving = frameWindow && observeInstalledFullscreenGestures(frameWindow);
+    }
+
+    observeFrame();
+    iframe.addEventListener("load", observeFrame);
+    return () => {
+      iframe.removeEventListener("load", observeFrame);
+      stopObserving?.();
+    };
+  }, [frameSrc, archiveError]);
+
+  useEffect(() => {
     let focusTimer = 0;
     let attempts = 0;
     const iframe = frameRef.current;
 
-    if (!iframe) {
+    if (!iframe || waitingForLandscape) {
       return;
     }
 
@@ -577,6 +758,7 @@ export default function GameRouteFrame({
         focusTimer = 0;
 
         const owner = iframe.ownerDocument;
+        if (commandInputRef.current && owner?.activeElement === commandInputRef.current) return;
         if (owner?.documentElement.hasAttribute("data-dpad-navigation") &&
           owner.activeElement?.closest(".game-route-controls, .game-route-bottom-actions")) return;
 
@@ -600,70 +782,7 @@ export default function GameRouteFrame({
         window.clearTimeout(focusTimer);
       }
     };
-  }, [frameSrc]);
-
-  function dismissSkipIntroButton() {
-    bootState.dismissSkipIntroButton();
-    touchClick.unlockTouchControls();
-  }
-
-  useEffect(() => {
-    if (!skipIntro || !bootState.showSkipIntroButton) {
-      return;
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      dismissSkipIntroButton();
-    }, skipIntro.durationMinutes * 60 * 1000);
-
-    return () => {
-      window.clearTimeout(timeoutId);
-    };
-  }, [bootState.showSkipIntroButton, frameSrc, skipIntro]);
-
-  useEffect(() => {
-    if (!skipIntro || !bootState.showSkipIntroButton) {
-      return;
-    }
-
-    const iframe = frameRef.current;
-
-    function handleEscapeKeydown(event) {
-      if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) {
-        return;
-      }
-
-      if (!/^esc(?:ape)?$/i.test(event.key || "")) {
-        return;
-      }
-
-      dismissSkipIntroButton();
-    }
-
-    function addFrameListeners() {
-      try {
-        iframe?.contentWindow?.addEventListener("keydown", handleEscapeKeydown, true);
-        iframe?.contentDocument?.addEventListener("keydown", handleEscapeKeydown, true);
-      } catch {}
-    }
-
-    function removeFrameListeners() {
-      try {
-        iframe?.contentWindow?.removeEventListener("keydown", handleEscapeKeydown, true);
-        iframe?.contentDocument?.removeEventListener("keydown", handleEscapeKeydown, true);
-      } catch {}
-    }
-
-    window.addEventListener("keydown", handleEscapeKeydown, true);
-    addFrameListeners();
-    iframe?.addEventListener("load", addFrameListeners);
-
-    return () => {
-      window.removeEventListener("keydown", handleEscapeKeydown, true);
-      iframe?.removeEventListener("load", addFrameListeners);
-      removeFrameListeners();
-    };
-  }, [bootState.showSkipIntroButton, frameSrc, skipIntro]);
+  }, [frameSrc, waitingForLandscape]);
 
   function handleExitClick() {
     return navigateHome(exitHref);
@@ -691,23 +810,61 @@ export default function GameRouteFrame({
     return immersiveMode.handleFullscreenToggle();
   }
 
-  function handleCommandSubmit(event) {
+  function openCommand() {
+    // Mobile browsers require focus during the tap that opens the field.
+    flushSync(() => setCommandOpen(true));
+    commandInputRef.current?.focus({ preventScroll: true });
+  }
+
+  function handleCommandKeyDown(event) {
+    if (event.key === "Escape" && !event.nativeEvent.isComposing) {
+      event.preventDefault();
+      closeCommand();
+    }
+  }
+
+  async function handleCommandSubmit(event) {
     event.preventDefault();
+    if (commandDispatchRef.current) return;
     const input = event.currentTarget.elements.namedItem("command");
-    if (dispatchGameCommand(frameRef.current, input.value)) {
+    let sent;
+    if (mobileControlMode === "hugo" && input.value.length > 16) {
+      const controller = new AbortController();
+      commandDispatchRef.current = controller;
+      setCommandSending(true);
+      try {
+        sent = await dispatchHugoCommand(frameRef.current, input.value, controller.signal);
+      } finally {
+        if (commandDispatchRef.current === controller) {
+          commandDispatchRef.current = null;
+          setCommandSending(false);
+        }
+      }
+      if (controller.signal.aborted) return;
+    } else {
+      sent = dispatchGameCommand(frameRef.current, input.value);
+    }
+    if (sent) {
       input.value = "";
       input.blur();
+      setCommandOpen(false);
     }
   }
 
   function handleSkipIntroClick() {
-    dismissSkipIntroButton();
+    if (canSkipNativeIntro) {
+      const frame = frameRef.current;
+      if (frame?.contentWindow?.__scummwebRequestIntroSkip?.()) focusGameCanvas(frame);
+      return;
+    }
+    bootState.dismissSkipIntroButton();
 
     if (!skipIntro) {
       return;
     }
 
     setReadySignal(null);
+    setCompatibilityWarnings([]);
     setSkipIntroConsumed(true);
     if (catalogArchiveUrl) {
       setFrameSrc(null);
@@ -718,9 +875,7 @@ export default function GameRouteFrame({
     setFrameSrc((currentSrc) => buildSkipIntroLaunchSrc(currentSrc, target, skipIntro, window.location.href));
   }
 
-  const showSkipIntroAction = bootState.showSkipIntroButton && skipIntro && !bootState.hasBootFailed;
-  const showSkipIntroBottomAction = showSkipIntroAction && !showBootOverlay;
-  const remoteMouseReady = !showBootOverlay && !showSkipIntroBottomAction && !usesCommandInput;
+  const remoteMouseReady = !showBootOverlay && !showSkipIntroBottomAction && game?.engineId !== "adl";
   useEffect(() => {
     if (!remoteMouseReady || remoteToolbarOpen) return;
     let active = true;
@@ -738,7 +893,9 @@ export default function GameRouteFrame({
       if (!active || !isTv) return;
       stop = observeRemoteBack(window, {
         onBack() {
-          if (remoteToolbarOpen) resumeRemoteGame();
+          const dialog = shellRef.current?.querySelector("dialog:modal");
+          if (dialog) dialog.close();
+          else if (remoteToolbarOpen) resumeRemoteGame();
           else setRemoteToolbarOpen(true);
         },
         onFullscreenExit() {
@@ -755,14 +912,39 @@ export default function GameRouteFrame({
 
   const showExitControl = true;
   const showFullscreenControl =
-    immersiveMode.canFullscreen && !isTouchMobileClient() && bootState.hasBootPresentationCompleted;
+    immersiveMode.canFullscreen && !immersiveMode.isTouchMobile && bootState.hasBootPresentationCompleted;
   const showGameMenuButton =
-    Boolean(gameMenuShortcut) && bootState.showGameMenuButton && !hasBootFailed;
-  const showBottomActions = showSkipIntroBottomAction || showTouchMouse;
+    Boolean(gameMenuShortcut) && bootState.showGameMenuButton && !hasBootFailed && !waitingForLandscape;
+  const touchActions = showCommandInput && !showCommandForm ? (
+    <button
+      aria-controls="game-route-command"
+      aria-label="Open keyboard"
+      className="game-route-control-button is-gamepad"
+      onClick={openCommand}
+      title="Open keyboard"
+      type="button"
+    >
+      <Keyboard aria-hidden="true" size={20} />
+    </button>
+  ) : null;
+  const showBottomActions = showSkipIntroBottomAction || showTouchMouse || Boolean(touchActions);
 
   return (
-    <div className={`game-route-shell${showCommandInput ? " has-command-input" : ""}`} ref={shellRef}>
+    <div
+      className="game-route-shell"
+      data-mobile-orientation={immersiveMode.isTouchMobile ? "landscape" : undefined}
+      ref={shellRef}
+    >
+      <div className="mobile-orientation-message">
+        <p role="status">Rotate your device to landscape to play.</p>
+        {immersiveMode.canFullscreen && !immersiveMode.isFullscreen && (
+          <button className="secondary-button" type="button" onClick={() => void enterImmersiveMode(document.documentElement)}>
+            Enter fullscreen
+          </button>
+        )}
+      </div>
       <GameBootOverlay
+        archiveBytes={loadArchive && !archivePrepared && !archiveCached ? archiveProgress?.loaded : undefined}
         bootStatusText={archiveError || (loadArchive && !archivePrepared
           ? archiveCached ? "Opening cached game…" : archiveProgress === null ? archiveLoadingText : gameLoadingStatus(archiveProgress)
           : bootState.bootStatusText)}
@@ -773,6 +955,7 @@ export default function GameRouteFrame({
       />
       <GamePlayerControls
         autoHide={bootState.hasBootPresentationCompleted && !showBootOverlay && !immersiveMode.isMobileViewport && !remoteToolbarOpen}
+        compatibilityWarnings={waitingForLandscape ? [] : compatibilityWarnings}
         frameRef={frameRef}
         menuShortcut={gameMenuShortcut}
         handleControlMouseDown={handleControlMouseDown}
@@ -781,8 +964,6 @@ export default function GameRouteFrame({
         onOpenMenu={handleGameMenuClick}
         onResumeGame={resumeRemoteGame}
         onSkipIntro={handleSkipIntroClick}
-        onTouchLeftClick={() => touchClick.sendTouchClick("left")}
-        onTouchRightClick={() => touchClick.sendTouchClick("right")}
         onToggleFullscreen={handleFullscreenToggle}
         showBottomActions={showBottomActions}
         showExitControl={showExitControl}
@@ -791,6 +972,7 @@ export default function GameRouteFrame({
         showSkipIntroAction={showSkipIntroBottomAction}
         showTouchClickButtons={showTouchMouse}
         toolbarFocused={remoteToolbarOpen}
+        touchActions={touchActions}
       />
       <GameTouchCursorPad
         indicatorOffset={touchCursorPad.indicatorOffset}
@@ -800,23 +982,35 @@ export default function GameRouteFrame({
         onPointerUp={touchCursorPad.handlePointerUp}
         showTouchCursorPad={showTouchMouse}
       />
+      {showHugoStick ? (
+        <div className="game-route-touch-gamepad" key={`hugo:${frameSrc}`}>
+          <GameMovementStick frameRef={frameRef} hugo />
+        </div>
+      ) : null}
+      {showGrimGamepad ? (
+        <GrimTouchGamepad frameRef={frameRef} key={`grim:${frameSrc}`} />
+      ) : null}
       {showCommandInput ? (
-        <form className="game-route-command" onSubmit={handleCommandSubmit}>
+        <form className="game-route-command" hidden={!showCommandForm} id="game-route-command" onSubmit={handleCommandSubmit}>
           <input
             aria-label="Game command"
             autoCapitalize="off"
             autoComplete="off"
             autoCorrect="off"
-            enterKeyHint="send"
-            maxLength={255}
+            enterKeyHint="enter"
+            inputMode="text"
+            maxLength={mobileControlMode === "hugo" ? 38 : 255}
             name="command"
+            onBlur={() => setCommandOpen(false)}
+            onKeyDown={handleCommandKeyDown}
             pattern="[ -~]*"
             placeholder="Type a command"
+            readOnly={commandSending}
+            ref={commandInputRef}
             spellCheck={false}
             title="Use letters, numbers, spaces, or basic punctuation."
             type="text"
           />
-          <button type="submit">Send</button>
         </form>
       ) : null}
       {frameSrc && !archiveError ? <iframe
@@ -825,7 +1019,7 @@ export default function GameRouteFrame({
         className="game-route-frame"
         data-scummvm-route-frame="true"
         data-scummvm-target={target}
-        inert={remoteToolbarOpen}
+        inert={remoteToolbarOpen || waitingForLandscape}
         ref={frameRef}
         loading="eager"
         src={loadArchive ? "about:blank" : frameSrc}

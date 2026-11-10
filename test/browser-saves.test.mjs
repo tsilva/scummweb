@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { cancelBrowserSaveQueries, getCachedBrowserSave, getLatestBrowserSave, readBrowserSaveFiles, subscribeBrowserSaves } from "../app/browser-saves.mjs";
+import { cancelBrowserSaveQueries, getCachedBrowserSave, getCachedBrowserSaveContents, getLatestBrowserSave, readBrowserSaveFiles, subscribeBrowserSaves } from "../app/browser-saves.mjs";
 import { saveIndexKey, saveRevision } from "../web-shell/continue-saves.mjs";
 import { getVersionSaveNamespace } from "../app/game-versions.mjs";
 
@@ -60,11 +60,18 @@ test("Continue chooses the newest native-listed player save, not the highest slo
   ]));
   await indexSaves(game, [["SKY-VM.007", 7], ["SKY-VM.002", 2]]);
   assert.equal(await getLatestBrowserSave(game, "test"), 2);
+  assert.equal(getCachedBrowserSaveContents(game), Buffer.from("newer save").toString("base64"));
+  const key = saveIndexKey("", game.target);
+  const index = JSON.parse(window.localStorage.getItem(key));
+  window.localStorage.setItem(key, JSON.stringify({ ...index, pending: ["SKY-VM.002"] }));
+  assert.equal(getCachedBrowserSave(game), 7);
+  assert.equal(getCachedBrowserSaveContents(game), Buffer.from("older save").toString("base64"));
   window.localStorage = makeBrowserStorage([["SKY-VM.000", "actual player save", 70]]);
   await indexSaves(game, [["SKY-VM.000", 0]]);
   assert.equal(await getLatestBrowserSave(game, "test"), 0);
   await indexSaves(game, []);
   assert.equal(await getLatestBrowserSave(game, "test"), null);
+  assert.equal(getCachedBrowserSaveContents(game), null);
 });
 
 test("Continue is isolated to the imported version, including an unknown ZIP title", async (t) => {
@@ -142,6 +149,39 @@ test("unindexed imported saves use one native query with origin, source and nonc
   assert.equal(appended, 1); assert.equal(removed, 1); assert.equal(listeners.size, 0);
   assert.equal(queryUrl.searchParams.get("saveNamespace"), namespace);
   assert.equal(queryUrl.searchParams.get("saveEngine"), "scumm");
+});
+
+test("an old empty AGS index is reconciled even when the save files have not changed", async (t) => {
+  const game = { target: "qfi-demo", gameId: "qfi", engineId: "ags", extra: "Demo 2.0" };
+  useStorage(t, makeBrowserStorage([["qfi-demo.001", "player", 123]]));
+  const { files } = await readBrowserSaveFiles(game);
+  const key = saveIndexKey("", game.target);
+  const old = { schemaVersion: 1, ...game, supported: true, saves: [], revision: saveRevision(files) };
+  window.localStorage.setItem(key, JSON.stringify(old));
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, "document");
+  t.after(() => { if (descriptor) Object.defineProperty(globalThis, "document", descriptor); else delete globalThis.document; });
+  const listeners = new Set();
+  Object.assign(window, { location: { href: "https://example.test/", origin: "https://example.test" },
+    setTimeout, clearTimeout, addEventListener: (_, fn) => listeners.add(fn), removeEventListener: (_, fn) => listeners.delete(fn) });
+  let appended = 0;
+  const frame = { contentWindow: {}, setAttribute() {}, remove() {} };
+  globalThis.document = {
+    createElement: () => frame,
+    body: { appendChild() {
+      appended++;
+      const index = { ...old, saves: [{ ...files[0], slot: 1 }] };
+      window.localStorage.setItem(key, JSON.stringify(index));
+      const data = { ...index, type: "scummweb:saves-listed", persisted: true,
+        query: new URL(frame.src).searchParams.get("saveQuery") };
+      queueMicrotask(() => {
+        for (const receive of [...listeners]) receive({ origin: window.location.origin, source: frame.contentWindow, data });
+      });
+    } },
+  };
+  assert.equal(await getLatestBrowserSave(game, "new-runtime"), 1);
+  assert.equal(JSON.parse(window.localStorage.getItem(key)).checkedByRuntime, "new-runtime");
+  assert.equal(await getLatestBrowserSave(game, "new-runtime"), 1);
+  assert.equal(appended, 1);
 });
 
 test("cache reads are synchronous and never create a runtime, including missing/corrupt storage", async (t) => {

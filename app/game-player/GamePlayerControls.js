@@ -1,10 +1,61 @@
-import { LogOut, Maximize, Menu, Minimize } from "lucide-react";
+import { LogOut, Maximize, Menu, Minimize, TriangleAlert } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import DirectionalNavigation from "../home-shell/directional-navigation";
 import { observeControlVisibility } from "./control-visibility.mjs";
+import { clickGameMouse, setGameMouseButton } from "./game-mouse.mjs";
+
+function TouchMouseButton({ button, frameRef }) {
+  const pressRef = useRef(null);
+  const label = button === "left" ? "Left click" : "Right click";
+
+  function release(cancelled) {
+    const press = pressRef.current;
+    if (!press) return;
+    pressRef.current = null;
+    setGameMouseButton(press.frame, window.location.origin, button, false, cancelled);
+  }
+
+  useEffect(() => () => release(true), [button]);
+
+  return (
+    <button
+      aria-label={label}
+      className="game-route-control-button is-touch-click"
+      data-button={button}
+      onClick={(event) => {
+        // Keyboard and assistive activations have no matching pointer press.
+        if (event.detail === 0) clickGameMouse(frameRef.current, window.location.origin, button);
+      }}
+      onContextMenu={(event) => event.preventDefault()}
+      onPointerDown={(event) => {
+        if (event.button !== 0 || pressRef.current) return;
+        event.preventDefault();
+        event.currentTarget.setPointerCapture(event.pointerId);
+        pressRef.current = { pointerId: event.pointerId, frame: frameRef.current };
+        setGameMouseButton(frameRef.current, window.location.origin, button, true);
+      }}
+      onPointerUp={(event) => {
+        if (pressRef.current?.pointerId === event.pointerId) release(false);
+      }}
+      onPointerCancel={(event) => {
+        if (pressRef.current?.pointerId === event.pointerId) release(true);
+      }}
+      onLostPointerCapture={(event) => {
+        if (pressRef.current?.pointerId === event.pointerId) release(true);
+      }}
+      title={label}
+      type="button"
+    >
+      <span aria-hidden="true" className="game-route-touch-click-label">
+        {button === "left" ? "L" : "R"}
+      </span>
+    </button>
+  );
+}
 
 export default function GamePlayerControls({
   autoHide = false,
+  compatibilityWarnings,
   frameRef,
   menuShortcut,
   handleControlMouseDown,
@@ -13,8 +64,6 @@ export default function GamePlayerControls({
   onOpenMenu,
   onResumeGame,
   onSkipIntro,
-  onTouchLeftClick,
-  onTouchRightClick,
   onToggleFullscreen,
   showBottomActions,
   showExitControl,
@@ -23,9 +72,12 @@ export default function GamePlayerControls({
   showSkipIntroAction,
   showTouchClickButtons,
   toolbarFocused,
+  touchActions,
 }) {
   const controlsRef = useRef(null);
   const visibilityRef = useRef(null);
+  const warningButtonRef = useRef(null);
+  const warningDialogRef = useRef(null);
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
@@ -83,6 +135,20 @@ export default function GamePlayerControls({
           </div>
         ) : null}
         <div className="game-route-control-group is-right">
+          {compatibilityWarnings.length > 0 ? (
+            <button
+              aria-controls="game-compatibility-warning"
+              aria-haspopup="dialog"
+              aria-label="Compatibility warning"
+              className="game-route-control-button"
+              onClick={() => warningDialogRef.current.showModal()}
+              ref={warningButtonRef}
+              title="Compatibility warning"
+              type="button"
+            >
+              <TriangleAlert aria-hidden="true" size={18} strokeWidth={2} />
+            </button>
+          ) : null}
           {showFullscreenControl ? (
             <button
               aria-label={fullscreenLabel}
@@ -112,6 +178,24 @@ export default function GamePlayerControls({
           ) : null}
         </div>
       </div>
+      {compatibilityWarnings.length > 0 ? (
+        <dialog
+          aria-describedby="game-compatibility-warning-text"
+          aria-labelledby="game-compatibility-warning-title"
+          className="game-route-warning"
+          id="game-compatibility-warning"
+          onClose={() => warningButtonRef.current?.focus({ preventScroll: true })}
+          ref={warningDialogRef}
+        >
+          <h2 id="game-compatibility-warning-title">Compatibility warning</h2>
+          <div id="game-compatibility-warning-text">
+            {compatibilityWarnings.map((message) => <p key={message}>{message}</p>)}
+          </div>
+          <form method="dialog">
+            <button type="submit">Close</button>
+          </form>
+        </dialog>
+      ) : null}
       {showBottomActions ? (
         <div className="game-route-bottom-actions">
           {showSkipIntroAction ? (
@@ -129,34 +213,11 @@ export default function GamePlayerControls({
               className="game-route-touch-click-buttons"
               role="group"
             >
-              <button
-                aria-label="Left click"
-                className="game-route-control-button is-touch-click"
-                data-button="left"
-                onClick={onTouchLeftClick}
-                onMouseDown={handleControlMouseDown}
-                title="Left click"
-                type="button"
-              >
-                <span aria-hidden="true" className="game-route-touch-click-label">
-                  L
-                </span>
-              </button>
-              <button
-                aria-label="Right click"
-                className="game-route-control-button is-touch-click"
-                data-button="right"
-                onClick={onTouchRightClick}
-                onMouseDown={handleControlMouseDown}
-                title="Right click"
-                type="button"
-              >
-                <span aria-hidden="true" className="game-route-touch-click-label">
-                  R
-                </span>
-              </button>
+              <TouchMouseButton button="left" frameRef={frameRef} />
+              <TouchMouseButton button="right" frameRef={frameRef} />
             </div>
           ) : null}
+          {touchActions}
         </div>
       ) : null}
     </>

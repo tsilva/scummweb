@@ -1,0 +1,31 @@
+# English DOS 1.1.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/brain1-dos-1.1/src
+schema_version: 1
+game: castle-of-dr-brain
+engine_id: sci
+edition:
+  game_id: castlebrain
+  index_md5: f77728304c70017c54793eb6ca648174
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  front-hall: 120 # Script 100 awards the memory plaque and enters room 120.
+  clock-room: 180 # Script 120 exitScript leads to 180, which runs the clock puzzle.
+  puzzle-door: 320 # Script 320 opens the Puzzle Room after the tangram.
+  ending: 480 # Script 440 awards the certificate and enters room 480.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 } # SCI previous room global.
+milestones:
+  - id: front-hall
+    label: "Unlocked the front door"
+    when: { room: front-hall }
+  - id: clock-room
+    label: "Reached the clock puzzles"
+    when: { room: clock-room }
+  - id: puzzle-door
+    label: "Reached the tangram door"
+    when: { room: puzzle-door }
+  - id: winning-ending
+    label: "Earned Dr. Brain’s certificate"
+    when: { all: [{ room: ending }, { variable: previous-room, equals: 440 }] }

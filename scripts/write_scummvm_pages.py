@@ -23,24 +23,8 @@ def display_title(value: str) -> str:
     return value
 
 
-def link_href(value: str) -> str:
-    if value.startswith(("http://", "https://")):
-        return value
-    return value.lstrip("/")
-
-
-asset_version = os.environ.get("SCUMMVM_BUNDLE_ASSET_VERSION", "dev")
 site_url = (os.environ.get("NEXT_PUBLIC_SITE_URL") or "https://scummweb.tsilva.eu").rstrip("/")
 play_href = f"{site_url}/legacy-play#{urllib.parse.quote(target, safe='')}"
-
-
-def bundle_href(value: str) -> str:
-    if value.startswith(("http://", "https://")):
-        return value
-
-    normalized = value.lstrip("/")
-    separator = "&" if "?" in normalized else "?"
-    return f"{normalized}{separator}v={urllib.parse.quote(asset_version, safe='')}"
 
 
 index_html = f"""<!doctype html>
@@ -126,15 +110,17 @@ index_html = f"""<!doctype html>
 """
 
 manifest = json.loads((dist / "manifest.json").read_text())
+brand_manifest_path = Path(__file__).resolve().parents[1] / "public/brand/web-seo/site.webmanifest"
+brand_manifest = json.loads(brand_manifest_path.read_text())
 manifest["icons"] = [
     {
         **icon,
-        "src": bundle_href(icon["src"]),
+        "src": icon["src"].replace("android-chrome-", "scummvm-", 1),
     }
-    for icon in manifest.get("icons", [])
+    for icon in brand_manifest["icons"]
 ]
-manifest["short_name"] = "scummweb"
-manifest["name"] = "scummweb"
+manifest["short_name"] = brand_manifest["short_name"]
+manifest["name"] = brand_manifest["name"]
 manifest["description"] = "Unofficial browser-targeted WebAssembly build forked from ScummVM."
 manifest["start_url"] = "/"
 manifest["background_color"] = "#1a4d1a"

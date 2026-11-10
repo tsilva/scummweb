@@ -1,0 +1,36 @@
+# English DOS CD.
+# Native evidence: scripts and room directory from the detected edition.
+# The tomb tram and lab scripts identify rooms 83 and 73. Script 235 advances the cathedral bridge sequence.
+# Script 237 in room 78 plays the final movie and loads room 110.
+schema_version: 1
+game: the-dig
+engine_id: scumm
+edition:
+  game_id: dig
+  index_md5: d8323015ecb8b10bf53474f6e6b0ae33
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  tomb-tram: 83
+  lab: 73
+  cathedral-bridge: 76
+  finale: 78
+  end-credits: 110
+flags:
+  inventor-confronted: { bank: scumm_bit_bytes, index: 29, mask: 0x10 }
+milestones:
+  - id: tomb-tram
+    label: Reached the tomb tram
+    when: { room: tomb-tram }
+  - id: lab
+    label: Reached the life crystal laboratory
+    when: { room: lab }
+  - id: cathedral-bridge
+    label: Reached the cathedral bridge
+    when: { any: [{ room: cathedral-bridge }, { flag: inventor-confronted }] }
+  - id: finale
+    label: Reached the final crossing
+    when: { room: finale }
+  - id: end-credits
+    label: Reached the end credits
+    when: { room: end-credits }

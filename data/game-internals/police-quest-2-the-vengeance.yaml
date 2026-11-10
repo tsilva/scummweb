@@ -1,0 +1,39 @@
+# English Amiga 1.024.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/pq2-amiga-1.024/src
+# The successful rescue in room 133 is the only transition to the finale in room 91.
+schema_version: 1
+game: police-quest-2-the-vengeance
+engine_id: sci
+edition:
+  game_id: pq2
+  index_md5: 499de78ae72b7ce219f944c5e7ef0c5b
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  rescue-confrontation: 133
+  finale: 91
+  flight: 40 # Script 20 enters room 40 after boarding.
+  next-investigation: 105 # Script 30 day2Script sends Sonny to 105.
+  sewer-entrance: 120 # Script 81 exitScript leads to the sewer entrance and its ladder script.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 }
+milestones:
+  - id: flight
+    label: "Boarded the flight"
+    when: { room: flight }
+  - id: next-investigation
+    label: "Reached the next day of the investigation"
+    when: { room: next-investigation }
+  - id: sewer-entrance
+    label: "Entered the sewer"
+    when: { room: sewer-entrance }
+  - id: reached-rescue
+    label: Reached the rescue confrontation
+    when: { room: rescue-confrontation }
+  - id: winning-ending
+    label: Rescued Marie and reached the finale
+    when:
+      all:
+        - { room: finale }
+        - { variable: previous-room, equals: 133 }

@@ -1,5 +1,5 @@
-import { bucketStorageKey, bucketZipUrl, checkGameZip, readSavedBucket } from "./game-bucket.mjs";
-import { maxLocalGameSize, validateGameZip } from "./local-game-archive.mjs";
+import { bucketStorageKey, bucketZipUrl, checkGameZip, readSavedBucket } from "./game-bucket-sources.mjs";
+import { maxLocalGameSize, validateGameZip } from "./local-game-selection.mjs";
 
 export function remoteGame(url, game) {
   const name = decodeURIComponent(new URL(url).pathname.split("/").at(-1));

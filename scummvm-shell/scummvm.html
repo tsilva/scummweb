@@ -1,4 +1,4 @@
-<!doctypehtml><html lang=en-us><head><meta charset=utf-8><meta content="text/html; charset=utf-8"http-equiv=Content-Type><meta content="width=device-width,initial-scale=1,viewport-fit=cover"name=viewport><link href=manifest.json?v=dev rel=manifest><link href=scummvm-192.png?v=dev rel=apple-touch-icon><!-- Revalidate the shell document; fingerprint runtime code and data. --><title>ScummWEB</title><link id=scummweb-js-preload rel=preload as=script href=scummvm.js?v=sha-f94d1cab8b7a573e02e3a2b2><link id=scummweb-wasm-preload rel=preload as=fetch crossorigin=anonymous href=scummvm.wasm?v=sha-200eb20fadedec852cf6258c><style>body{margin:0;padding:none;background-color:#000}.emscripten{padding-right:0;margin-left:auto;margin-right:auto;display:block}textarea.emscripten{font-family:monospace;width:80%}#output{position:fixed;left:-10000px;top:0;width:1px!important;height:1px!important;padding:0;border:0;opacity:0;pointer-events:none;overflow:hidden;white-space:pre;z-index:-1}div.emscripten{text-align:center}div.emscripten_border{border:1px solid #000;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}canvas.emscripten{border:0 none;outline:none;box-shadow:none;background:#000;position:absolute;top:calc((100% + env(safe-area-inset-top) - env(safe-area-inset-bottom)) / 2);left:calc((100% + env(safe-area-inset-left) - env(safe-area-inset-right)) / 2);margin:0;width:min(100vw,calc(100vh * var(--scummweb-canvas-ratio,1.333333)));width:min(calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right)),calc((100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) * var(--scummweb-canvas-ratio,1.333333)));height:auto;aspect-ratio:var(--scummweb-canvas-ratio,1.333333);overflow:hidden;display:block;transform:translate(-50%,-50%)}body:has(canvas.scummweb-fit-height){overflow:hidden}canvas.emscripten.scummweb-fit-height{width:calc(100vh * var(--scummweb-canvas-ratio,1.333333));width:calc((100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) * var(--scummweb-canvas-ratio,1.333333));height:auto}canvas.emscripten.scummweb-fill-screen{width:100%;height:100%}#progress{top:0;left:0;height:10px;width:100%;overflow:hidden;display:block;position:absolute;z-index:2;border:0;background:#c60}#progress[hidden]{display:none!important}progress::-moz-progress-bar{background:#f6e08a}progress::-webkit-progress-value{background:#f6e08a}progress{color:#f6e08a}#status{position:absolute;bottom:5em;right:0;padding:5px;text-align:right;border-top-left-radius:1em;border-bottom-left-radius:1em;padding-left:1em;padding-right:1em;z-index:3;border:3px solid #000;border-right:none;background:#f6e08a;font:bold large/1.4 "Trebuchet MS",Verdana,Tahoma,Sans-Serif}#status.error{background:red}</style></head><body><div class=emscripten><progress hidden id=progress max=100 value=0></progress></div><div class=emscripten id=status>Downloading ScummVM...</div><div class=emscripten_border><canvas class=emscripten id=canvas oncontextmenu=event.preventDefault() tabindex=-1></canvas></div><textarea class=emscripten id=output rows=8></textarea><script id=scummweb-runtime-assets>globalThis.SCUMMWEB_RUNTIME_ASSETS={"/scummvm.js":"sha-f94d1cab8b7a573e02e3a2b2","/scummvm.wasm":"sha-200eb20fadedec852cf6258c","/scummvm_fs.js":"sha-a1070971ba693ed248d9e700","/audio-start-control.mjs":"sha-5be22420debc1de1477fe594","/scummvm.ini":"sha-9e575b4a030567204defdd97","/games.json":"sha-7114e352a1dbaf05ab8db024","/data/access.dat":"sha-c108b691e81f8b9ac54feac3","/data/achievements.dat":"sha-6f5394edee3a2ed9165d1ac0","/data/classicmacfonts.dat":"sha-d33aa56fbbe119a1567a843d","/data/drascula.dat":"sha-6da45e0e6d8eb04f5f826836","/data/encoding.dat":"sha-175689478e2acfe66a106e2d","/data/fonts-imgui.dat":"sha-f38eca5a71b33c267cfd909d","/data/fonts.dat":"sha-b25946aa6ff9c7bbef9d6e5a","/data/games/index.json":"sha-44136fa355b3678a1146ad16","/data/got.aud":"sha-9b253aedf06bd49159e4241b","/data/got.gfx":"sha-83f5d7681e92daaad6337050","/data/grim-patch.lab":"sha-7928ca5d5bd7d27cf4a386c6","/data/gui-icons/index.json":"sha-44136fa355b3678a1146ad16","/data/gui-icons.dat":"sha-e772a8bb64ad3d7a807e859a","/data/helpdialog.zip":"sha-9ff3c7964a63b18ffa0e9cfc","/data/hugo.dat":"sha-228dd029399ce7318a60aebe","/data/index.json":"sha-1a0dfd755a153f1f5f0845c2","/data/kyra.dat":"sha-6b2cc168d3201305039e78bc","/data/lure.dat":"sha-9c17cfb5349c4bd13e56b065","/data/macgui.dat":"sha-5e55c29903809bf5297a28fe","/data/monkey4-patch.m4b":"sha-6d0141a132bf34eb4c81d7db","/data/mort.dat":"sha-ed4f797fd4aff885000ebe58","/data/neverhood.dat":"sha-b86cb788237ace2988f7a8b7","/data/plugins/index.json":"sha-162e00fe65578787aab59f82","/data/plugins/libaccess.so":"sha-334420deade17bc5db702ecf","/data/plugins/libadl.so":"sha-49f7fe02c75c539bf9ac472b","/data/plugins/libagi.so":"sha-a46cb31189c3cbe7139a73b7","/data/plugins/libagos.so":"sha-ab1673225066311d4166ebed","/data/plugins/libbbvs.so":"sha-c417297caa068710119f61ad","/data/plugins/libcge.so":"sha-5d74e1142b7d0052a94dad0e","/data/plugins/libcge2.so":"sha-1816c9ff9d0b391dec8e5809","/data/plugins/libcine.so":"sha-33e49deea3f7401b02a46bfc","/data/plugins/libcomposer.so":"sha-a4e581b8ea705c91b65a8e65","/data/plugins/libcruise.so":"sha-37b0e783228ab10abd6cd897","/data/plugins/libdraci.so":"sha-2bdd8d505c75aebe3b63a37a","/data/plugins/libdrascula.so":"sha-70f24606cefd56bf82869d78","/data/plugins/libdreamweb.so":"sha-8c63d194f7a1472b7c36081e","/data/plugins/libglk.so":"sha-f4dcf2ba495e1b50a24a879c","/data/plugins/libgnap.so":"sha-be5d77c0455d5a1ea2b3e888","/data/plugins/libgob.so":"sha-d23d5a33a4ccb8f419f01094","/data/plugins/libgot.so":"sha-435c8b6ed3d0294a454b2c2e","/data/plugins/libgrim.so":"sha-66a196dda800bdfcdf4d23f4","/data/plugins/libgroovie.so":"sha-b1ab70e63e41e25ee957bb59","/data/plugins/libhopkins.so":"sha-6cebd43bf04435566348b702","/data/plugins/libhugo.so":"sha-b92284c623b0ecd08e4a1903","/data/plugins/libkyra.so":"sha-902670679be37ec471ec96a1","/data/plugins/liblab.so":"sha-309a34ff23e619c722388f37","/data/plugins/liblure.so":"sha-e75b4388c16590a7ea068cad","/data/plugins/libmade.so":"sha-72def5a601946326a307abe7","/data/plugins/libmads.so":"sha-7d6c31bca73be1f7044cc4aa","/data/plugins/libmohawk.so":"sha-2ef05de317ab55bd02c00b6b","/data/plugins/libmortevielle.so":"sha-fd1ad6d1a48563b563a1f05d","/data/plugins/libneverhood.so":"sha-36c71db18439f2dfeaddd15f","/data/plugins/libngi.so":"sha-25292c25b42ac2415baaa038","/data/plugins/libparallaction.so":"sha-c836ca8dd08e7a7dac125b51","/data/plugins/libpegasus.so":"sha-84e65eb6f44f1c8e0adc4aa3","/data/plugins/libplumbers.so":"sha-76513273a2223e7712c5b02c","/data/plugins/libqueen.so":"sha-013a60dfe157fcbe91d370a9","/data/plugins/libsaga.so":"sha-0487f8d24e3381ae088a65ee","/data/plugins/libsci.so":"sha-a78734c7c1275c191cb92db2","/data/plugins/libscumm.so":"sha-cc343ccf32c89b7120cc2533","/data/plugins/libsherlock.so":"sha-e3469ad85f5907e4b339357e","/data/plugins/libsky.so":"sha-8df55db14f5b6780bd3942eb","/data/plugins/libsword1.so":"sha-7ba8fbc3d2b1dc1f6ca8082d","/data/plugins/libsword2.so":"sha-33f949ecef8fd05ebfab3370","/data/plugins/libsword25.so":"sha-822d9a88c7e82e7c2792fff3","/data/plugins/libteenagent.so":"sha-9824cd2ea56d754541171f1e","/data/plugins/libtinsel.so":"sha-8356c3b41d11e83e4f67788d","/data/plugins/libtitanic.so":"sha-d18da3dd21f2dbe868f000a6","/data/plugins/libtoltecs.so":"sha-2fed1a0b7153c37eb4a4883c","/data/plugins/libtony.so":"sha-e11543f0b296a23554ca0b34","/data/plugins/libtoon.so":"sha-e3c73746b21ff63e30d50c18","/data/plugins/libtouche.so":"sha-b7f704e34234feea93b0b2ac","/data/plugins/libtsage.so":"sha-7fe24ed77d7b797dc8efbf19","/data/plugins/libtucker.so":"sha-52c1b0bd6531e3d3946af711","/data/plugins/libvoyeur.so":"sha-fd09bb65d7d33088490cf4ba","/data/plugins/libwintermute.so":"sha-f1f3cfad6b3270d071b9c0dd","/data/plugins/libzvision.so":"sha-85230277735482d726017c7e","/data/pred.dic":"sha-cd367e0ef51fe79dae4b90ce","/data/queen.tbl":"sha-b104d1a01e3ea552b63d98da","/data/residualvm.zip":"sha-fa8530078efef1719566c6d8","/data/scummclassic.zip":"sha-39b823b709213006b00246e2","/data/scummmodern.zip":"sha-1152e03f0bca45724ad6dd5d","/data/scummremastered.zip":"sha-0a3df174f3a271cfa384ce52","/data/shaders/emi_actor.fragment":"sha-7923702b45f559f1af01a30a","/data/shaders/emi_actor.vertex":"sha-0de1ce1278782d912e130d13","/data/shaders/emi_actorlights.fragment":"sha-7923702b45f559f1af01a30a","/data/shaders/emi_actorlights.vertex":"sha-baa7b66c2d4568c78b26d2da","/data/shaders/emi_background.fragment":"sha-630adfe32386d4a1b290699f","/data/shaders/emi_background.vertex":"sha-ccdaf167137c517d4b0663be","/data/shaders/emi_dimplane.fragment":"sha-953ce40d75aad6336d78789b","/data/shaders/emi_dimplane.vertex":"sha-7f69e19c3b6a2f4111cfa5fd","/data/shaders/emi_sprite.fragment":"sha-7923702b45f559f1af01a30a","/data/shaders/emi_sprite.vertex":"sha-0a00c5cb41581875718dbcba","/data/shaders/grim_actor.fragment":"sha-aedf26bbf08bb5a156dab7f6","/data/shaders/grim_actor.vertex":"sha-a3df951a3e4f8acc5ac72a66","/data/shaders/grim_actorlights.fragment":"sha-aedf26bbf08bb5a156dab7f6","/data/shaders/grim_actorlights.vertex":"sha-cf325cec40b248166fe944b6","/data/shaders/grim_background.fragment":"sha-630adfe32386d4a1b290699f","/data/shaders/grim_background.vertex":"sha-5ff8b8b733548147cf7767ab","/data/shaders/grim_dim.fragment":"sha-48922491e1a54bac187df3ed","/data/shaders/grim_dim.vertex":"sha-3ade2647fb1e42a04a63527f","/data/shaders/grim_emerg.fragment":"sha-05b92cddf678d3f3b571aba6","/data/shaders/grim_emerg.vertex":"sha-bed4575abc728c0a7478662b","/data/shaders/grim_primitive.fragment":"sha-59d6853e881201ac24c234f7","/data/shaders/grim_primitive.vertex":"sha-7a952e51921f3d7622d25951","/data/shaders/grim_shadowplane.fragment":"sha-3a7c5169ed2ac0eb6d20232c","/data/shaders/grim_shadowplane.vertex":"sha-84f95c1de725f294c7fdc4c4","/data/shaders/grim_smush.fragment":"sha-89d93f4f59b77e5d308d8f80","/data/shaders/grim_smush.vertex":"sha-04c0edcca5098fc85f5cfccd","/data/shaders/grim_text.fragment":"sha-3403ae5bfd090ed80abeaaaf","/data/shaders/grim_text.vertex":"sha-df600a656853c00c833fbd42","/data/shaders/index.json":"sha-b6dbfbf166b8f04d93215be9","/data/shaders/wme_brightness_julia.fragment":"sha-1c0469d3893c5edff44cb178","/data/shaders/wme_brightness_julia.vertex":"sha-bcddb25c96b8910be26b8482","/data/shaders/wme_brightness_oknytt.fragment":"sha-9e0d56370ca80d41429c8382","/data/shaders/wme_brightness_oknytt.vertex":"sha-bcddb25c96b8910be26b8482","/data/shaders/wme_fade.fragment":"sha-be73e38584a96bbe33b3faff","/data/shaders/wme_fade.vertex":"sha-3289f0de72beb66d16eadc65","/data/shaders/wme_flat_shadow_modelx.fragment":"sha-a8fcc02f3e5fd5458098edf6","/data/shaders/wme_flat_shadow_modelx.vertex":"sha-9465d0408dc3906cc1535017","/data/shaders/wme_geometry.fragment":"sha-be73e38584a96bbe33b3faff","/data/shaders/wme_geometry.vertex":"sha-fc6368d5b97bd6f57a44b9b8","/data/shaders/wme_line.fragment":"sha-741bea21169330b587c2f8eb","/data/shaders/wme_line.vertex":"sha-3289f0de72beb66d16eadc65","/data/shaders/wme_modelx.fragment":"sha-a91b49bb9ec6932ed63e6688","/data/shaders/wme_modelx.vertex":"sha-3fd9cdadd0a6af9996753b17","/data/shaders/wme_postfilter.fragment":"sha-186867fddfdd5dd2917c1fbe","/data/shaders/wme_postfilter.vertex":"sha-bcddb25c96b8910be26b8482","/data/shaders/wme_shadow_mask.fragment":"sha-be73e38584a96bbe33b3faff","/data/shaders/wme_shadow_mask.vertex":"sha-3289f0de72beb66d16eadc65","/data/shaders/wme_shadow_volume.fragment":"sha-e09925e3698ecaf81210ec28","/data/shaders/wme_shadow_volume.vertex":"sha-9465d0408dc3906cc1535017","/data/shaders/wme_simple_shadow.fragment":"sha-6916e6d4e5c7f5e7199d9728","/data/shaders/wme_simple_shadow.vertex":"sha-04bd1ad1c710ddefdebc4220","/data/shaders/wme_sprite.fragment":"sha-68448ba31f04d00ea19d85e1","/data/shaders/wme_sprite.vertex":"sha-c2796419943d17fd95d79e06","/data/shaders.dat":"sha-c263f7279b5d14632f721df7","/data/sky.cpt":"sha-4c457373415325ea039d7a3d","/data/teenagent.dat":"sha-1c60a898b61bc39b38fa4e5e","/data/titanic.dat":"sha-463c1d1460993a1a404f6cec","/data/tony.dat":"sha-5537b209e5243f0a1c5e7f1e","/data/toon.dat":"sha-eb7d5855ea3f69f0d1f618ba","/data/translations.dat":"sha-e4c716eab6d53c864b5f15c5","/data/wintermute.zip":"sha-7559d45435dee4b49c339a89","/launcher/skip-intro/drascula/drascula.000":"sha-aef2ece0d57607b6c2f927fc","/launcher/skip-intro/dreamweb-cd/DREAMWEB.D00":"sha-23d9a9aa37748e18acff5902","/launcher/skip-intro/hires1/hires1.s00":"sha-682ac2e7adcf8e7662dd709e","/launcher/skip-intro/lure/lure.000":"sha-51bd53a4763706b92c357180","/launcher/skip-intro/monkey-demo/monkey-demo.s01":"sha-8a58ecc64d8871047d338aab","/launcher/skip-intro/queen/queen.s00":"sha-a8ba6d91d0b2bfef6a1c61db","/launcher/skip-intro/sfinx/sfinx.001":"sha-27f6fedbfc7f05a8d55099fe","/launcher/skip-intro/sky/SKY-VM.000":"sha-4a980c9a92fb713cf4e4f990","/launcher/skip-intro/soltys/soltys.001":"sha-a228224141169a9874a5f13a","/launcher/skip-intro/sword25/sword25.000":"sha-182cf3396ee26d6ea6d3d567"};</script><script>
+<!doctypehtml><html lang=en-us><head><meta charset=utf-8><meta content="text/html; charset=utf-8"http-equiv=Content-Type><meta content="width=device-width,initial-scale=1,viewport-fit=cover"name=viewport><link href=manifest.json?v=dev rel=manifest><link href=scummvm-192.png?v=dev rel=apple-touch-icon><!-- Revalidate the shell document; fingerprint runtime code and data. --><title>ScummWEB</title><link id=scummweb-js-preload rel=preload as=script href=scummvm.js?v=sha-022df7b6699b64157a6e800f><link id=scummweb-wasm-preload rel=preload as=fetch crossorigin=anonymous href=scummvm.wasm?v=sha-00d358c87f637d14c0673f04><style>body{margin:0;padding:none;background-color:#000}.emscripten{padding-right:0;margin-left:auto;margin-right:auto;display:block}textarea.emscripten{font-family:monospace;width:80%}#output{position:fixed;left:-10000px;top:0;width:1px!important;height:1px!important;padding:0;border:0;opacity:0;pointer-events:none;overflow:hidden;white-space:pre;z-index:-1}div.emscripten{text-align:center}div.emscripten_border{border:1px solid #000;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}canvas.emscripten{border:0 none;outline:none;box-shadow:none;background:#000;position:absolute;top:calc((100% + env(safe-area-inset-top) - env(safe-area-inset-bottom)) / 2);left:calc((100% + env(safe-area-inset-left) - env(safe-area-inset-right)) / 2);margin:0;width:min(100vw,calc(100vh * var(--scummweb-canvas-ratio,1.333333)));width:min(calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right)),calc((100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) * var(--scummweb-canvas-ratio,1.333333)));height:auto;aspect-ratio:var(--scummweb-canvas-ratio,1.333333);overflow:hidden;display:block;transform:translate(-50%,-50%)}body:has(canvas.scummweb-fit-height){overflow:hidden}canvas.emscripten.scummweb-fit-height{width:calc(100vh * var(--scummweb-canvas-ratio,1.333333));width:calc((100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) * var(--scummweb-canvas-ratio,1.333333));height:auto}canvas.emscripten.scummweb-fill-screen{width:100%;height:100%}#progress{top:0;left:0;height:10px;width:100%;overflow:hidden;display:block;position:absolute;z-index:2;border:0;background:#c60}#progress[hidden]{display:none!important}progress::-moz-progress-bar{background:#f6e08a}progress::-webkit-progress-value{background:#f6e08a}progress{color:#f6e08a}#status{position:absolute;bottom:5em;right:0;padding:5px;text-align:right;border-top-left-radius:1em;border-bottom-left-radius:1em;padding-left:1em;padding-right:1em;z-index:3;border:3px solid #000;border-right:none;background:#f6e08a;font:bold large/1.4 "Trebuchet MS",Verdana,Tahoma,Sans-Serif}#status.error{background:red}</style></head><body><div class=emscripten><progress hidden id=progress max=100 value=0></progress></div><div class=emscripten id=status>Downloading ScummVM...</div><div class=emscripten_border><canvas class=emscripten id=canvas oncontextmenu=event.preventDefault() tabindex=-1></canvas></div><textarea class=emscripten id=output rows=8></textarea><script id=scummweb-runtime-assets>globalThis.SCUMMWEB_RUNTIME_ASSETS={"/scummvm.js":"sha-022df7b6699b64157a6e800f","/scummvm.wasm":"sha-00d358c87f637d14c0673f04","/scummvm_fs.js":"sha-a1070971ba693ed248d9e700","/audio-start-control.mjs":"sha-5be22420debc1de1477fe594","/scummvm.ini":"sha-d3626c57c964da146fa04681","/games.json":"sha-fc8a2f51990ee7637833a259","/data/access.dat":"sha-c108b691e81f8b9ac54feac3","/data/achievements.dat":"sha-6f5394edee3a2ed9165d1ac0","/data/classicmacfonts.dat":"sha-d33aa56fbbe119a1567a843d","/data/drascula.dat":"sha-6da45e0e6d8eb04f5f826836","/data/encoding.dat":"sha-175689478e2acfe66a106e2d","/data/fonts-imgui.dat":"sha-f38eca5a71b33c267cfd909d","/data/fonts.dat":"sha-b25946aa6ff9c7bbef9d6e5a","/data/freescape.dat":"sha-5bd36bf848d73be0810f03ad","/data/games/index.json":"sha-44136fa355b3678a1146ad16","/data/got.aud":"sha-9b253aedf06bd49159e4241b","/data/got.gfx":"sha-83f5d7681e92daaad6337050","/data/grim-patch.lab":"sha-7928ca5d5bd7d27cf4a386c6","/data/gui-icons/index.json":"sha-44136fa355b3678a1146ad16","/data/gui-icons.dat":"sha-e772a8bb64ad3d7a807e859a","/data/helpdialog.zip":"sha-9ff3c7964a63b18ffa0e9cfc","/data/hugo.dat":"sha-228dd029399ce7318a60aebe","/data/index.json":"sha-32da963076a52e6d324d1fef","/data/kyra.dat":"sha-6b2cc168d3201305039e78bc","/data/lure.dat":"sha-9c17cfb5349c4bd13e56b065","/data/macgui.dat":"sha-5e55c29903809bf5297a28fe","/data/monkey4-patch.m4b":"sha-6d0141a132bf34eb4c81d7db","/data/mort.dat":"sha-ed4f797fd4aff885000ebe58","/data/neverhood.dat":"sha-b86cb788237ace2988f7a8b7","/data/plugins/index.json":"sha-9ad5c62bbada55a03a6f84f8","/data/plugins/libaccess.so":"sha-ec69feccb201d898c2e7245f","/data/plugins/libadl.so":"sha-25e3cd428ca9c538281bf51d","/data/plugins/libagi.so":"sha-3fb3dba06225922b8106f858","/data/plugins/libagos.so":"sha-5dcd28a097d1aa6645baeca0","/data/plugins/libags.so":"sha-c93a5fb248fd33367c870d27","/data/plugins/libbbvs.so":"sha-b0761e3a22458888f8b4e02a","/data/plugins/libcge.so":"sha-e85e00e2cf254c4a958653f9","/data/plugins/libcge2.so":"sha-022e5b247d40e1aca71ba0bf","/data/plugins/libcine.so":"sha-bdb7eddb537eaf56c58d278e","/data/plugins/libcomposer.so":"sha-3b315d26f03b10f598c34c34","/data/plugins/libcruise.so":"sha-1e84858bcd18d0d53a3febd2","/data/plugins/libdraci.so":"sha-8e9304c3c213bfdfa3d256f6","/data/plugins/libdrascula.so":"sha-cabb9955f80e04a8322b5db0","/data/plugins/libdreamweb.so":"sha-4f4d1747e77222859da1cbc3","/data/plugins/libfreescape.so":"sha-523b816f0a572703c5a6c483","/data/plugins/libglk.so":"sha-4182683d85f72a4d15bdcb90","/data/plugins/libgnap.so":"sha-6a68be4d6b9c66e5a042f988","/data/plugins/libgob.so":"sha-d8ce96893cb7dc0c2b37369f","/data/plugins/libgot.so":"sha-aac6a52b890e3acb0adcff32","/data/plugins/libgrim.so":"sha-ecd7f238df13ad774063466f","/data/plugins/libgroovie.so":"sha-8515cf17a410315287bbdcb0","/data/plugins/libhopkins.so":"sha-af51082e71d5ce408affcce1","/data/plugins/libhugo.so":"sha-155c73ecd6d63d9bfcae7956","/data/plugins/libkyra.so":"sha-eb06df574d1f72941f4779f6","/data/plugins/liblab.so":"sha-48a95e8b63787c286d02723e","/data/plugins/liblure.so":"sha-f994910b394c472a53bd0e94","/data/plugins/libmade.so":"sha-943a92c977963b336f44d3ab","/data/plugins/libmads.so":"sha-7e9830889771b3a376a18171","/data/plugins/libmohawk.so":"sha-40bc67378f356260bf6fec61","/data/plugins/libmortevielle.so":"sha-3dbe603a74007c4ff70e613a","/data/plugins/libneverhood.so":"sha-72e4c9055f8675c090c05757","/data/plugins/libngi.so":"sha-4236f3534e51381e0132202f","/data/plugins/libparallaction.so":"sha-93dcfcf1c25a682d5a0a1b7c","/data/plugins/libpegasus.so":"sha-b03f0df3d7ec7e3eea9f85e7","/data/plugins/libplumbers.so":"sha-3899807740c19a8f751fff6e","/data/plugins/libqueen.so":"sha-1eb79071860489c1e2744cb4","/data/plugins/libsaga.so":"sha-d27bd8c2a236a1f606af69a6","/data/plugins/libsci.so":"sha-9973080631405be5ac3d5525","/data/plugins/libscumm.so":"sha-2d620bcf6e4f9df282d92997","/data/plugins/libsherlock.so":"sha-d7373ec1257c6cf8a8b45b74","/data/plugins/libsky.so":"sha-4ec970c2e34efd184c3ac83d","/data/plugins/libsword1.so":"sha-b81b1d7634330287ad62dafd","/data/plugins/libsword2.so":"sha-97638e72551ca77f98ead3bd","/data/plugins/libsword25.so":"sha-83922934744ec0add2400162","/data/plugins/libteenagent.so":"sha-1f08a0a4c66a9abe2dfa0e54","/data/plugins/libtinsel.so":"sha-be9915267216ca6a9821a12a","/data/plugins/libtitanic.so":"sha-7152e220547e1b56db10f9db","/data/plugins/libtoltecs.so":"sha-5f539133d12a3dc6bdec1573","/data/plugins/libtony.so":"sha-250690187b3628ed1d6b39e5","/data/plugins/libtoon.so":"sha-51d011629ce91ec1c994d520","/data/plugins/libtouche.so":"sha-7481d73e50c3f4ae6d7dc330","/data/plugins/libtsage.so":"sha-ae59633080075263f1ae3aa1","/data/plugins/libtucker.so":"sha-d344fb6c4d38ff97cde9b029","/data/plugins/libvoyeur.so":"sha-f6ac08ca17fa946ea9026250","/data/plugins/libwintermute.so":"sha-5f66e4702f40f909686590f7","/data/plugins/libzvision.so":"sha-c9d021b079ac57ad2635123d","/data/pred.dic":"sha-cd367e0ef51fe79dae4b90ce","/data/queen.tbl":"sha-b104d1a01e3ea552b63d98da","/data/residualvm.zip":"sha-fa8530078efef1719566c6d8","/data/scummclassic.zip":"sha-39b823b709213006b00246e2","/data/scummmodern.zip":"sha-1152e03f0bca45724ad6dd5d","/data/scummremastered.zip":"sha-0a3df174f3a271cfa384ce52","/data/shaders/emi_actor.fragment":"sha-7923702b45f559f1af01a30a","/data/shaders/emi_actor.vertex":"sha-0de1ce1278782d912e130d13","/data/shaders/emi_actorlights.fragment":"sha-7923702b45f559f1af01a30a","/data/shaders/emi_actorlights.vertex":"sha-baa7b66c2d4568c78b26d2da","/data/shaders/emi_background.fragment":"sha-630adfe32386d4a1b290699f","/data/shaders/emi_background.vertex":"sha-ccdaf167137c517d4b0663be","/data/shaders/emi_dimplane.fragment":"sha-953ce40d75aad6336d78789b","/data/shaders/emi_dimplane.vertex":"sha-7f69e19c3b6a2f4111cfa5fd","/data/shaders/emi_sprite.fragment":"sha-7923702b45f559f1af01a30a","/data/shaders/emi_sprite.vertex":"sha-0a00c5cb41581875718dbcba","/data/shaders/freescape_bitmap.fragment":"sha-630adfe32386d4a1b290699f","/data/shaders/freescape_bitmap.vertex":"sha-ede7448155c27694000a956d","/data/shaders/freescape_cubemap.fragment":"sha-4c1d7e8dfa480794e1f22e10","/data/shaders/freescape_cubemap.vertex":"sha-1b5e2a6ef005fc991333ee6d","/data/shaders/freescape_triangle.fragment":"sha-6a6ce7a7c70ae51fa0a0ead9","/data/shaders/freescape_triangle.vertex":"sha-4abeeb84160f0ad29ce94562","/data/shaders/grim_actor.fragment":"sha-aedf26bbf08bb5a156dab7f6","/data/shaders/grim_actor.vertex":"sha-a3df951a3e4f8acc5ac72a66","/data/shaders/grim_actorlights.fragment":"sha-aedf26bbf08bb5a156dab7f6","/data/shaders/grim_actorlights.vertex":"sha-cf325cec40b248166fe944b6","/data/shaders/grim_background.fragment":"sha-630adfe32386d4a1b290699f","/data/shaders/grim_background.vertex":"sha-5ff8b8b733548147cf7767ab","/data/shaders/grim_dim.fragment":"sha-48922491e1a54bac187df3ed","/data/shaders/grim_dim.vertex":"sha-3ade2647fb1e42a04a63527f","/data/shaders/grim_emerg.fragment":"sha-05b92cddf678d3f3b571aba6","/data/shaders/grim_emerg.vertex":"sha-bed4575abc728c0a7478662b","/data/shaders/grim_primitive.fragment":"sha-59d6853e881201ac24c234f7","/data/shaders/grim_primitive.vertex":"sha-7a952e51921f3d7622d25951","/data/shaders/grim_shadowplane.fragment":"sha-3a7c5169ed2ac0eb6d20232c","/data/shaders/grim_shadowplane.vertex":"sha-84f95c1de725f294c7fdc4c4","/data/shaders/grim_smush.fragment":"sha-89d93f4f59b77e5d308d8f80","/data/shaders/grim_smush.vertex":"sha-04c0edcca5098fc85f5cfccd","/data/shaders/grim_text.fragment":"sha-3403ae5bfd090ed80abeaaaf","/data/shaders/grim_text.vertex":"sha-df600a656853c00c833fbd42","/data/shaders/index.json":"sha-7f9355c1b0270e370056cd5c","/data/shaders/wme_brightness_julia.fragment":"sha-1c0469d3893c5edff44cb178","/data/shaders/wme_brightness_julia.vertex":"sha-bcddb25c96b8910be26b8482","/data/shaders/wme_brightness_oknytt.fragment":"sha-9e0d56370ca80d41429c8382","/data/shaders/wme_brightness_oknytt.vertex":"sha-bcddb25c96b8910be26b8482","/data/shaders/wme_fade.fragment":"sha-be73e38584a96bbe33b3faff","/data/shaders/wme_fade.vertex":"sha-3289f0de72beb66d16eadc65","/data/shaders/wme_flat_shadow_modelx.fragment":"sha-a8fcc02f3e5fd5458098edf6","/data/shaders/wme_flat_shadow_modelx.vertex":"sha-9465d0408dc3906cc1535017","/data/shaders/wme_geometry.fragment":"sha-be73e38584a96bbe33b3faff","/data/shaders/wme_geometry.vertex":"sha-fc6368d5b97bd6f57a44b9b8","/data/shaders/wme_line.fragment":"sha-741bea21169330b587c2f8eb","/data/shaders/wme_line.vertex":"sha-3289f0de72beb66d16eadc65","/data/shaders/wme_modelx.fragment":"sha-a91b49bb9ec6932ed63e6688","/data/shaders/wme_modelx.vertex":"sha-3fd9cdadd0a6af9996753b17","/data/shaders/wme_postfilter.fragment":"sha-186867fddfdd5dd2917c1fbe","/data/shaders/wme_postfilter.vertex":"sha-bcddb25c96b8910be26b8482","/data/shaders/wme_shadow_mask.fragment":"sha-be73e38584a96bbe33b3faff","/data/shaders/wme_shadow_mask.vertex":"sha-3289f0de72beb66d16eadc65","/data/shaders/wme_shadow_volume.fragment":"sha-e09925e3698ecaf81210ec28","/data/shaders/wme_shadow_volume.vertex":"sha-9465d0408dc3906cc1535017","/data/shaders/wme_simple_shadow.fragment":"sha-6916e6d4e5c7f5e7199d9728","/data/shaders/wme_simple_shadow.vertex":"sha-04bd1ad1c710ddefdebc4220","/data/shaders/wme_sprite.fragment":"sha-68448ba31f04d00ea19d85e1","/data/shaders/wme_sprite.vertex":"sha-c2796419943d17fd95d79e06","/data/shaders.dat":"sha-c263f7279b5d14632f721df7","/data/sky.cpt":"sha-4c457373415325ea039d7a3d","/data/teenagent.dat":"sha-1c60a898b61bc39b38fa4e5e","/data/titanic.dat":"sha-463c1d1460993a1a404f6cec","/data/tony.dat":"sha-5537b209e5243f0a1c5e7f1e","/data/toon.dat":"sha-eb7d5855ea3f69f0d1f618ba","/data/translations.dat":"sha-e4c716eab6d53c864b5f15c5","/data/wintermute.zip":"sha-7559d45435dee4b49c339a89","/launcher/skip-intro/atlantis-demo/atlantis-demo.s90":"sha-aacfae218c69bf095d90c4ca","/launcher/skip-intro/comi-demo/comi-demo.s90":"sha-23a704b172af9758aaea0b9b","/launcher/skip-intro/drascula/drascula.000":"sha-aef2ece0d57607b6c2f927fc","/launcher/skip-intro/dreamweb-cd/DREAMWEB.D00":"sha-23d9a9aa37748e18acff5902","/launcher/skip-intro/grim-demo/grim90.gsv":"sha-5337e4e0ed4416e1390c964d","/launcher/skip-intro/hires1/hires1.s00":"sha-682ac2e7adcf8e7662dd709e","/launcher/skip-intro/lure/lure.000":"sha-51bd53a4763706b92c357180","/launcher/skip-intro/monkey-demo/monkey-demo.s01":"sha-8a58ecc64d8871047d338aab","/launcher/skip-intro/monkey4-demo/efmi090.gsv":"sha-d18195864ef930896840e4b3","/launcher/skip-intro/qfi-demo/qfi-demo.098":"sha-c182ecd229dd6346c791ea62","/launcher/skip-intro/queen/queen.s00":"sha-a8ba6d91d0b2bfef6a1c61db","/launcher/skip-intro/sfinx/sfinx.001":"sha-27f6fedbfc7f05a8d55099fe","/launcher/skip-intro/sky/SKY-VM.000":"sha-4a980c9a92fb713cf4e4f990","/launcher/skip-intro/soltys/soltys.001":"sha-a228224141169a9874a5f13a","/launcher/skip-intro/sword25/sword25.000":"sha-182cf3396ee26d6ea6d3d567"};</script><script>
 // Emscripten throws ExitStatus to stop execution even after a successful quit.
 // The generated beforeunload hook also raises SIGINT, which exits with 128 + 2.
 var scummwebPageUnloading = false;
@@ -65,6 +65,16 @@ scummwebBrowserFsReady.catch(()=>{});
 </script><script>
 const scummwebInlineFrame = window.location.pathname === "srcdoc";
 const scummwebLaunchUrl = new URL(scummwebInlineFrame ? document.baseURI : window.location.href);
+if (window.parent !== window && scummwebLaunchUrl.searchParams.get("hostCompatibilityWarning") === "1" &&
+    !scummwebLaunchUrl.searchParams.has("saveQuery")) {
+  globalThis.__scummwebPostCompatibilityWarning = (message) => {
+    window.parent.postMessage({
+      type: "scummweb:compatibility-warning",
+      href: scummwebLaunchUrl.href,
+      message,
+    }, scummwebLaunchUrl.origin);
+  };
+}
 const agentSaveScope = scummwebLaunchUrl.searchParams.get("agentSaveScope");
 function importLegacySkySave(FS, params, source, destination) {
   const slot = params.get("agentLegacySkySlot");
@@ -88,8 +98,14 @@ function importLegacySkySave(FS, params, source, destination) {
 }
 
 function installAgentControls(scope, saveScope) {
+  const timeActions = ["pause", "resume", "wait_ticks"];
   let tick = 0;
   let maxSaveSlot = 0;
+  let reservedSlot = 0;
+  let actions = [];
+  let tickSource;
+  let usesIndexedSlots = false;
+  let queueInputBeforeResume = false;
   let paused = false;
   let pending;
 
@@ -101,9 +117,11 @@ function installAgentControls(scope, saveScope) {
   }
 
   scope.scummwebAgentControls = Object.freeze({
-    status: () => ({ version: 1, saveScope, tick, paused, maxSaveSlot }),
+    status: () => ({
+      version: 1, saveScope, tick, paused, maxSaveSlot, actions: [...actions], tickSource, queueInputBeforeResume,
+    }),
     run(operation, value, timeoutMs = 10000) {
-      if (!maxSaveSlot) return { error: "This game does not support native agent controls" };
+      if (!actions.includes(operation)) return { error: "This game does not support the requested native control" };
       if (pending) return { error: "Another agent control is pending" };
       if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 20000)
         return { error: "Invalid agent control timeout" };
@@ -111,12 +129,11 @@ function installAgentControls(scope, saveScope) {
         if (!Number.isInteger(value) || value < 1 || value > 120)
           return { error: "Tick count must be between 1 and 120" };
       } else if (operation === "save" || operation === "load") {
-        if (!Number.isInteger(value) || value < 1 || value > maxSaveSlot)
-          return { error: `Save ID must be between 1 and ${maxSaveSlot}` };
-        if (operation === "load" && !scope.__scummwebSaveStatus?.saves.some(save => save.slot === value))
+        if (!Number.isInteger(value) || value < 1 || value > maxSaveSlot || value === reservedSlot)
+          return { error: `Save ID must be a manual slot between 1 and ${maxSaveSlot}` };
+        if (operation === "load" && usesIndexedSlots &&
+            !scope.__scummwebSaveStatus?.saves.some(save => save.slot === value))
           return { error: "Save ID is unavailable in this run" };
-      } else if (operation !== "pause" && operation !== "resume") {
-        return { error: "Unsupported agent control" };
       }
       return new Promise(resolve => {
         const timer = scope.setTimeout(() => finish("Native agent control timed out"), timeoutMs);
@@ -125,8 +142,7 @@ function installAgentControls(scope, saveScope) {
     }
   });
 
-  scope.__scummwebAgentBoundary = (completedTick, maxSlot) => {
-    maxSaveSlot = maxSlot;
+  function boundary(completedTick) {
     if (completedTick) tick++;
     if (pending?.operation === "wait_ticks") {
       pending.target ??= tick + pending.value;
@@ -141,11 +157,30 @@ function installAgentControls(scope, saveScope) {
       return pending.value + (pending.operation === "load" ? maxSaveSlot : 0);
     }
     return paused ? -1 : 0;
+  }
+
+  scope.__scummwebAgentBoundary = (completedTick, maxSlot) => {
+    maxSaveSlot = maxSlot;
+    actions = [...timeActions, "save", "load"];
+    tickSource = "engine";
+    usesIndexedSlots = true;
+    queueInputBeforeResume = true;
+    return boundary(completedTick);
+  };
+
+  scope.__scummwebAgentFrameBoundary = (completedFrame, maxSlot, autosaveSlot, save, load, gameLoop = false) => {
+    maxSaveSlot = maxSlot;
+    reservedSlot = autosaveSlot;
+    actions = timeActions.concat(save ? ["save"] : [], load ? ["load"] : []);
+    tickSource = gameLoop ? "engine" : "frame";
+    usesIndexedSlots = false;
+    queueInputBeforeResume = false;
+    return boundary(completedFrame);
   };
 
   scope.__scummwebAgentSaveResult = error => {
     if (pending?.operation !== "save" && pending?.operation !== "load") return;
-    if (!error && pending.operation === "save"
+    if (!error && usesIndexedSlots && pending.operation === "save"
       && !scope.__scummwebSaveStatus?.saves.some(save => save.slot === pending.value)) {
       error = "ScummVM did not confirm the saved slot";
     }
@@ -183,12 +218,12 @@ window.ScummvmFSReady = (async () => {
   const moduleUrl = new URL(buildVersionedAssetUrl("./scummvm_fs.js"));
   const { LocalGameFS, ScummvmFS, loadFilesystemIndex } = await import(moduleUrl);
   const isLocalGame = window.parent !== window && params.get("localGame") === "1";
-  const mounts = isLocalGame ? ["data"] : ["games", "data"];
+  const mounts = isLocalGame || params.has("saveQuery") ? ["data"] : ["games", "data"];
   const filesystems = await Promise.all(mounts.map(async (name) => {
     const index = await loadFilesystemIndex(name);
     performance.mark(`scummweb:index:${name}`);
     const filesystem = new ScummvmFS(null, index);
-    const engine = params.get("engine");
+    const engine = params.get("saveEngine") || params.get("engine");
     if (name === "data") {
       // These headers/themes are read by the native GUI before any game frame.
       // Fetch only the translation prefix that startup consumes.
@@ -223,20 +258,339 @@ function bindBrowserFsOperations(filesystem) {
   }
 }
 
-function acquireSaveSession() {
-  if (!globalThis.navigator?.locks) return Promise.resolve();
+(function(){
+const saveLockName = "scummweb-saves";
+const editionDirectory = ".scummweb-editions";
+const saveDirectory = [".local", "share", "scummvm", "saves"];
+
+function editionKey(namespace, target) {
+  if (namespace) return /^version-[a-f0-9]{64}$/.test(namespace) ? namespace : "";
+  return typeof target === "string" && /^[a-z0-9][a-z0-9_-]{0,79}$/.test(target) ? `catalog-${target}` : "";
+}
+
+function editionLockName(edition) {
+  return `${saveLockName}:edition:${edition}`;
+}
+
+// Also used by the inline library reader. Follow only directory pointers;
+// a game in another tab can be writing one of its own data blocks.
+function readSaveTree(storage, edition, namespace = "", layout = { editionDirectory, saveDirectory }) {
+  function inode(key) {
+    const value = key && storage.getItem(key);
+    if (!value) return null;
+    const binary = atob(value);
+    if (binary.length <= 30) return null;
+    const header = new DataView(Uint8Array.from(binary.slice(0, 30), byte => byte.charCodeAt(0)).buffer);
+    return { dataKey: binary.slice(30), size: header.getUint32(0, true),
+      type: header.getUint16(4, true) & 0xf000, modifiedAt: header.getFloat64(14, true) };
+  }
+  function directory(key) {
+    const entry = inode(key);
+    if (entry?.type !== 0x4000) return {};
+    const bytes = Uint8Array.from(atob(storage.getItem(entry.dataKey) || ""), byte => byte.charCodeAt(0));
+    return JSON.parse(new TextDecoder().decode(bytes));
+  }
+  const root = directory("/");
+  const editions = edition ? directory(root[layout.editionDirectory]) : {};
+  const editionRoot = Object.hasOwn(editions, edition) ? editions[edition] : undefined;
+  let files = editionRoot ? directory(editionRoot) : root;
+  for (const part of namespace ? [...layout.saveDirectory, namespace] : layout.saveDirectory) files = directory(files[part]);
+  return { files, inode, editionRoot };
+}
+
+// Save conventions that differ from the native target name. Keep whole
+// families together, including companion files that never appear in Continue.
+const legacyNames = {
+  sky: /^sky-vm\./i,
+  "dreamweb-cd": /^dreamweb\./i,
+  "nippon-amiga": /^(nippon|game)\.\d{3}$/i,
+  "monkey4-demo": /^efmi\d{3}\.(gsv|ps2)$/i,
+  "grim-demo": /^grim\d{2}\.gsv$/i,
+  "pegasus-demo": /^pegasus-.*\.sav$/i,
+};
+
+function matchesLegacySave(target, name, indexed = new Set()) {
+  const lower = name.toLowerCase();
+  if (/^version-[a-f0-9]{64}$/.test(lower)) return false;
+  return indexed.has(lower) || Object.hasOwn(legacyNames, target) && legacyNames[target].test(name)
+    || lower.startsWith(target + ".") || lower.startsWith(target) && /^-\d{2}\.sav$/.test(lower.slice(target.length));
+}
+
+function acquireEditionSession(locks, edition) {
+  if (!locks) return Promise.resolve();
   return new Promise((resolve, reject) => {
-    navigator.locks.request("scummweb-saves", { mode: "exclusive", ifAvailable: true }, async (lock) => {
+    function hold(lock, busyReason) {
       if (!lock) {
         const error = new Error("Another game or save operation is active. Close it before launching a game.");
         error.name = "SaveSessionBusyError";
+        error.busyReason = busyReason;
         reject(error);
         return;
       }
       resolve();
-      // The browser releases this lock when the game document closes.
-      await new Promise(() => {});
+      // Web Locks releases this when the player document goes away.
+      return new Promise(() => {});
+    }
+    locks.request(saveLockName, { mode: edition ? "shared" : "exclusive", ifAvailable: true }, (lock) => {
+      if (!lock || !edition) return hold(lock, "storage");
+      return locks.request(editionLockName(edition), { mode: "exclusive", ifAvailable: true },
+        (editionLock) => hold(editionLock, "edition"));
     }).catch(reject);
+  });
+}
+// BrowserFS 2's LocalStorage format. Publish a changed tree by swapping only
+// the root inode, so quota failures cannot leave half an imported save set.
+
+const encoder = new TextEncoder();
+const decoder = new TextDecoder();
+const directoryNode = () => ({ children: new Map(), mode: 0x41ff, modifiedAt: Date.now() });
+
+function getNode(root, parts) {
+  return parts.reduce((node, part) => node?.children?.get(part), root);
+}
+
+function encodeBytes(bytes) {
+  let binary = "";
+  for (let offset = 0; offset < bytes.length; offset += 8192) {
+    binary += String.fromCharCode(...bytes.subarray(offset, offset + 8192));
+  }
+  return btoa(binary);
+}
+
+function decodeBytes(value) {
+  return Uint8Array.from(atob(value), (byte) => byte.charCodeAt(0));
+}
+
+function safePath(path) {
+  return typeof path === "string" && path.length <= 512 && !/[\\\x00-\x1f\x7f]/.test(path)
+    && path.split("/").length <= 24
+    && path.split("/").every((part) => part && ![".", "..", "__proto__", "constructor", "prototype", "hasOwnProperty"].includes(part) && !part.includes(":"));
+}
+
+function captureFilesystem(storage, skipEditionContents = false) {
+  const values = new Map();
+  const seen = new Set();
+  function value(key) {
+    const data = storage.getItem(key);
+    if (data === null) throw new Error("Browser save storage is incomplete. Export your existing data before repairing it.");
+    values.set(key, data);
+    return data;
+  }
+  function read(key, depth = 0, name = "") {
+    if (depth > 32 || seen.has(key) || seen.size > 20000) throw new Error("Browser save storage contains an invalid directory.");
+    seen.add(key);
+    const bytes = decodeBytes(value(key));
+    if (bytes.length <= 30) throw new Error("Browser save storage contains an invalid file.");
+    const meta = new DataView(bytes.buffer);
+    const mode = meta.getUint16(4, true);
+    const dataKey = decoder.decode(bytes.subarray(30));
+    const data = decodeBytes(value(dataKey));
+    const node = { key, dataKey, mode, modifiedAt: meta.getFloat64(14, true) };
+    if ((mode & 0xf000) === 0x4000) {
+      node.children = new Map();
+      for (const [childName, child] of Object.entries(JSON.parse(decoder.decode(data)))) {
+        if (!safePath(childName) || childName.includes("/")) throw new Error("Browser save storage contains an invalid name.");
+        // Running editions have independent roots. A new edition must never
+        // read or rewrite another edition's inodes while it is saving.
+        node.children.set(childName, skipEditionContents && depth === 1 && name === editionDirectory
+          ? { key: child } : read(child, depth + 1, childName));
+      }
+    } else if ((mode & 0xf000) === 0x8000) node.data = data;
+    else throw new Error("Unsupported file type in browser save storage.");
+    return node;
+  }
+  const rootValue = storage.getItem("/");
+  const root = rootValue === null ? { children: new Map(), mode: 0x41ff } : read("/");
+  values.set("/", rootValue);
+  const revision = JSON.stringify([...values].sort(([a], [b]) => a.localeCompare(b)));
+  function saveFiles(home, namespace) {
+    const files = [];
+    function walk(node, prefix = "") {
+      for (const [name, child] of node?.children || []) {
+        const path = prefix + name;
+        if (child.children) walk(child, path + "/");
+        else files.push({ path, data: child.data, modifiedAt: child.modifiedAt });
+      }
+    }
+    walk(getNode(home, namespace ? [...saveDirectory, namespace] : saveDirectory));
+    return files;
+  }
+  const editions = new Map();
+  if (!skipEditionContents) {
+    for (const [key, edition] of getNode(root, [editionDirectory])?.children || []) {
+      editions.set(key, saveFiles(edition, /^version-[a-f0-9]{64}$/.test(key) ? key : ""));
+    }
+  }
+  return { root, files: skipEditionContents ? [] : saveFiles(root), editions, values, revision };
+}
+
+function editFilesystem(storage, snapshot, initialConfig, edit, skipEditionContents = false) {
+  const { root } = snapshot;
+  const dirty = new Set([root]);
+  function descend(node, parts) {
+    dirty.add(node);
+    for (const part of parts) {
+      let child = node.children.get(part);
+      if (!child) node.children.set(part, child = directoryNode());
+      if (!child.children) throw new Error("A file blocks the save directory.");
+      dirty.add(child);
+      node = child;
+    }
+    return node;
+  }
+  if (!root.key) {
+    if (!initialConfig) throw new Error("Could not initialize save storage. Try again when online.");
+    root.children.set("scummvm.ini", { data: encoder.encode(initialConfig), mode: 0x81b6, modifiedAt: Date.now() });
+  }
+  edit(root, descend);
+  const staged = [];
+  const now = Date.now();
+  let nodeCount = 0;
+  function validateTree(node, depth = 0) {
+    if (++nodeCount > 20000 || depth > 32) throw new Error("This backup would create too many save directories.");
+    for (const child of node.children?.values() || []) validateTree(child, depth + 1);
+  }
+  validateTree(snapshot.root);
+  function put(key, value) {
+    staged.push(key);
+    storage.setItem(key, value);
+  }
+  function persist(node, isRoot = false) {
+    if (node.key && !dirty.has(node)) return node.key;
+    const key = isRoot ? "/" : crypto.randomUUID();
+    const dataKey = crypto.randomUUID();
+    const data = node.children ? encoder.encode(JSON.stringify(Object.fromEntries(
+      [...node.children].map(([name, child]) => [name, persist(child)])
+    ))) : node.data;
+    put(dataKey, encodeBytes(data));
+    const inode = new Uint8Array(30 + dataKey.length);
+    const view = new DataView(inode.buffer);
+    view.setUint32(0, node.children ? 4096 : data.length, true);
+    view.setUint16(4, node.mode, true);
+    view.setFloat64(6, now, true);
+    view.setFloat64(14, Number.isFinite(node.modifiedAt) ? node.modifiedAt : now, true);
+    view.setFloat64(22, now, true);
+    inode.set(encoder.encode(dataKey), 30);
+    if (isRoot) return encodeBytes(inode);
+    put(key, encodeBytes(inode));
+    return key;
+  }
+  try {
+    const rootInode = persist(snapshot.root, true);
+    for (const [key, oldValue] of snapshot.values) {
+      if (storage.getItem(key) !== oldValue) throw new Error("Saves changed during import. Close other games and retry.");
+    }
+    // Every new data block is durable before the only visible pointer changes.
+    storage.setItem("/", rootInode);
+  } catch (error) {
+    for (const key of staged) storage.removeItem(key);
+    if (error.name === "QuotaExceededError") throw new Error("Not enough browser storage to restore safely. Your current saves are unchanged.");
+    throw error;
+  }
+  // Remove only nodes made unreachable by this root swap, never other app data.
+  if (skipEditionContents) {
+    // The new edition reuses the moved file blocks. Only rewritten directory
+    // metadata is unreachable, and other running editions were never read.
+    for (const node of dirty) {
+      if (node.key && node.key !== "/") storage.removeItem(node.key);
+      if (node.dataKey) storage.removeItem(node.dataKey);
+    }
+    return;
+  }
+  const retained = captureFilesystem(storage).values;
+  for (const key of snapshot.values.keys()) if (!retained.has(key)) storage.removeItem(key);
+}
+
+function addEdition(root, descend, edition) {
+  const home = descend(root, [editionDirectory, edition]);
+  if (!home.children.has("scummvm.ini")) {
+    const config = root.children.get("scummvm.ini");
+    if (!config?.data) throw new Error("Could not read the existing ScummVM configuration.");
+    home.children.set("scummvm.ini", { data: config.data, mode: config.mode, modifiedAt: config.modifiedAt });
+  }
+  return home;
+}
+
+function initializeSaveEdition(storage, edition, initialConfig) {
+  const current = readSaveTree(storage, edition).editionRoot;
+  if (current) return current;
+  const namespace = edition.startsWith("version-") ? edition : "";
+  const target = edition.slice("catalog-".length);
+  const indexed = new Set();
+  if (!namespace) {
+    try {
+      const index = JSON.parse(storage.getItem(`scummweb.continue.v1:catalog:${target}`));
+      for (const { name } of index?.saves || []) indexed.add(name.toLowerCase());
+      for (const name of index?.pending || []) indexed.add(name.toLowerCase());
+    } catch { /* Filenames still identify saves when the old index is missing. */ }
+  }
+  editFilesystem(storage, captureFilesystem(storage, true), initialConfig, (root, descend) => {
+    const home = addEdition(root, descend, edition);
+    const source = getNode(root, saveDirectory);
+    if (!source) return;
+    const legacy = descend(root, saveDirectory);
+    const saves = descend(home, saveDirectory);
+    for (const [name, file] of legacy.children) {
+      if (namespace ? name !== namespace : !matchesLegacySave(target, name, indexed)) continue;
+      saves.children.set(name, file);
+      legacy.children.delete(name);
+    }
+  }, true);
+  return readSaveTree(storage, edition).editionRoot;
+}
+
+function restoreSaveGroups(storage, updates, expectedRevision, initialConfig) {
+  const snapshot = captureFilesystem(storage);
+  if (snapshot.revision !== expectedRevision) throw new Error("Saves changed after the review opened. Review the backup again.");
+  if (!updates.length) return;
+  editFilesystem(storage, snapshot, initialConfig, (root, descend) => {
+    for (const { edition, namespace, matches, files } of updates) {
+      if (namespace && !/^version-[a-f0-9]{64}$/.test(namespace)) throw new Error("Invalid save destination.");
+      const home = edition ? addEdition(root, descend, edition) : root;
+      if (edition && getNode(root, saveDirectory)) {
+        const legacy = descend(root, saveDirectory);
+        for (const name of legacy.children.keys()) {
+          if (namespace ? name === namespace : matches(name)) legacy.children.delete(name);
+        }
+      }
+      const target = descend(home, namespace ? [...saveDirectory, namespace] : saveDirectory);
+      for (const name of target.children.keys()) if (edition || namespace || matches(name)) target.children.delete(name);
+      for (const file of files) {
+        if (!safePath(file.path)) throw new Error("Invalid save filename.");
+        const parts = file.path.split("/");
+        const parent = descend(target, parts.slice(0, -1));
+        parent.children.set(parts.at(-1), { data: file.data, mode: 0x81b6, modifiedAt: file.modifiedAt });
+      }
+    }
+  });
+}
+globalThis.__scummwebSaveEditions = { editionKey, acquireEditionSession, initializeSaveEdition, readSaveTree, saveLockName };
+})();
+async function prepareSaveRoot() {
+  const { editionKey, acquireEditionSession, initializeSaveEdition, readSaveTree, saveLockName } = globalThis.__scummwebSaveEditions;
+  const params = scummwebLaunchUrl.searchParams;
+  const namespace = params.get("saveNamespace");
+  const args = decodeURI(scummwebLaunchUrl.hash.slice(1)).trim().split(/\s+/);
+  const catalogTarget = params.has("catalogGame") ? args.at(-1) : "";
+  const directTarget = !params.has("localGame") && (args.length === 1 || args.length === 3 && args[0] === "-x") ? args.at(-1) : "";
+  const target = params.get("catalogSaveTarget") || params.get("saveTarget") || catalogTarget || directTarget;
+  const edition = agentSaveScope ? "" : editionKey(namespace, target);
+  const locks = globalThis.navigator?.locks;
+  await acquireEditionSession(locks, edition);
+  if (!edition || !locks) {
+    await setupDefaultLocalData();
+    return edition && readSaveTree(localStorage, edition).editionRoot;
+  }
+  return locks.request(saveLockName + ":setup", async () => {
+    const existing = readSaveTree(localStorage, edition).editionRoot;
+    if (existing) return existing;
+    let config;
+    if (localStorage.getItem("/") === null) {
+      const response = await fetch(buildVersionedAssetUrl("scummvm.ini"));
+      if (!response.ok) throw new Error("Could not initialize save storage. Try again when online.");
+      config = await response.text();
+    }
+    return initializeSaveEdition(localStorage, edition, config);
   });
 }
 
@@ -247,9 +601,22 @@ function setupLocalFilesystem() {
     EIO: 29, EISDIR: 31, ENOENT: 44, ENOSPC: 51, ENOTDIR: 54,
     ENOTEMPTY: 55, ENOTSUP: 58, EPERM: 63, EROFS: 69,
   };
-  return acquireSaveSession().then(() => scummwebBrowserFsReady).then(setupDefaultLocalData).then(() => new Promise((resolve, reject) => {
+  return Promise.all([prepareSaveRoot(), scummwebBrowserFsReady]).then(([editionRoot]) => new Promise((resolve, reject) => {
     BrowserFS.FileSystem.LocalStorage.Create((storageError, storage) => {
       if (storageError) return reject(storageError);
+      if (editionRoot) {
+        // BrowserFS 2.0's synchronous store uses "/" as its root inode key.
+        // Pin it to this edition so other tabs can publish their own roots
+        // without changing any directory this runtime resolves or writes.
+        const store = storage.store;
+        const keyFor = (key) => key === "/" ? editionRoot : key;
+        storage.store = Object.assign(Object.create(store), {
+          get: (key) => store.get(keyFor(key)),
+          put: (key, data, overwrite) => store.put(keyFor(key), data, overwrite),
+          del: (key) => store.del(keyFor(key)),
+          clear: () => { throw new Error("Cannot clear shared browser storage"); },
+        });
+      }
       BrowserFS.FileSystem.MountableFileSystem.Create({ "/": storage }, (mountError, mount) => {
         if (mountError) return reject(mountError);
         BrowserFS.initialize(mount);
@@ -302,7 +669,7 @@ async function installMissingCatalogTarget() {
   const section = findIniSection(await response.text(), target);
   if (!section) return;
 
-  // Re-read after the fetch so we keep changes made by another player tab.
+  // Re-read after the fetch before appending the catalog target.
   const currentConfig = FS.readFile(configPath, { encoding: "utf8" });
   if (!findIniSection(currentConfig, target)) {
     FS.writeFile(configPath, `${currentConfig.trimEnd()}\n\n${section.trimEnd()}\n`);
@@ -394,15 +761,32 @@ function setupSkipIntroSaves() {
               return assetResponse.arrayBuffer();
             })
             .then((buffer) => {
-              FS.writeFile(`${savePath}/${trimmedFileName}`, new Uint8Array(buffer));
-              return trimmedFileName;
+              return { fileName: trimmedFileName, bytes: new Uint8Array(buffer) };
             });
         })
-      ).then((seededFiles) => {
+      ).then(async (seededFiles) => {
+        const seeds = seededFiles.filter(Boolean);
+        const writes = [];
+        for (const seed of seeds) {
+          const { fileName, bytes } = seed;
+          const filePath = `${savePath}/${fileName}`;
+          if (!FS.analyzePath(filePath).exists) {
+            writes.push(seed);
+            continue;
+          }
+          const existing = FS.readFile(filePath);
+          if (existing.length === bytes.length && existing.every((byte, index) => byte === bytes[index])) continue;
+          if (await globalThis.__scummwebIsRetiredIntroCheckpoint(skipIntroTarget, fileName, existing)) {
+            writes.push(seed);
+            continue;
+          }
+          throw new Error(`Intro checkpoint conflicts with an existing save: ${fileName}`);
+        }
+        for (const { fileName, bytes } of writes) FS.writeFile(`${savePath}/${fileName}`, bytes);
         globalThis.__scummwebSkipIntroSeedStatus = {
           state: "ready",
           target: skipIntroTarget,
-          files: seededFiles.filter(Boolean),
+          files: seeds.map(({ fileName }) => fileName),
           savePath,
           slot: skipIntroConfig.slot,
         };
@@ -416,6 +800,7 @@ function setupSkipIntroSaves() {
         files: [],
         message: error instanceof Error ? error.message : String(error),
       };
+      throw error;
     });
 }
 
@@ -500,7 +885,19 @@ function setupGameDefaults() {
 // files enter this index; an index never substitutes for the files themselves.
 const saveIndexPrefix = "scummweb.continue.v1:";
 const defaultSavePath = "/home/web_user/.local/share/scummvm/saves";
-const supportedEngines = new Set("access adl agi bbvs cge cge2 cine cruise draci drascula dreamweb glk gnap got groovie hopkins hugo kyra lab lure mads mohawk mortevielle neverhood ngi pegasus queen saga sci scumm sherlock sky sword1 sword2 teenagent tinsel titanic toltecs tony toon touche tsage tucker voyeur wintermute zvision".split(" "));
+const supportedEngines = new Set("access adl agi ags bbvs cge cge2 cine cruise draci drascula dreamweb freescape glk gnap got groovie hopkins hugo kyra lab lure mads mohawk mortevielle neverhood ngi pegasus queen saga sci scumm sherlock sky sword1 sword2 teenagent tinsel titanic toltecs tony toon touche tsage tucker voyeur wintermute zvision".split(" "));
+const retiredIntroCheckpoints = new Map([
+  ["monkey4-demo/efmi090.gsv", "bd8aa04ec9ebe0745830124ddd6cc50c67aa7c2dd18166c0e6cdee7c3a958dad"],
+  ["qfi-demo/qfi-demo.098", "3dbd22f47c355795c96fcef11b2bb2aab5a84841b7b3b8f601715162d67c0b9c"],
+]);
+
+// Only the exact incomplete checkpoints from the original release may be replaced.
+async function isRetiredIntroCheckpoint(target, name, bytes) {
+  const expected = retiredIntroCheckpoints.get(`${target}/${name}`);
+  if (!expected || bytes.length !== 150006 || !globalThis.crypto?.subtle) return false;
+  const digest = new Uint8Array(await globalThis.crypto.subtle.digest("SHA-256", bytes));
+  return Array.from(digest, (byte) => byte.toString(16).padStart(2, "0")).join("") === expected;
+}
 
 function supportsContinue(engineId, gameId, extra = "") {
   return supportedEngines.has(engineId)
@@ -551,6 +948,7 @@ function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl }) {
   let needsPublish = false;
   let scannedFiles;
   let resumeReported = false;
+  let legacyIndexKey;
 
   function files() {
     try {
@@ -562,7 +960,7 @@ function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl }) {
   }
 
   const validName = (name) => typeof name === "string" && name.length > 0 && !/[\\/\x00-\x1f]/.test(name);
-  const indexKey = () => saveIndexKey(storageNamespace, params.get("catalogGame") || snapshot?.target);
+  const indexKey = () => saveIndexKey(storageNamespace, snapshot?.target);
   function persist() {
     if (!snapshot) return false;
     snapshot.pending = [...pending];
@@ -571,11 +969,17 @@ function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl }) {
       scope.localStorage.setItem(indexKey(), JSON.stringify(snapshot));
       lastRevision = snapshot.revision;
       needsPublish = false;
-      return true;
     } catch {
       needsPublish = true;
       return false;
     }
+    if (legacyIndexKey) {
+      try {
+        scope.localStorage.removeItem(legacyIndexKey);
+        legacyIndexKey = undefined;
+      } catch { /* The canonical index was already published. */ }
+    }
+    return true;
   }
   function isCheckpoint(name) {
     if (!checkpoints.has(name)) return false;
@@ -629,6 +1033,18 @@ function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl }) {
         const previous = JSON.parse(scope.localStorage.getItem(indexKey()));
         for (const name of previous?.pending || []) if (validName(name)) pending.add(name);
       } catch { /* Missing or invalid cache. */ }
+      const archiveId = params.get("catalogGame") || params.get("saveGameId");
+      if (!storageNamespace && archiveId && archiveId !== target) {
+        const key = saveIndexKey("", archiveId);
+        try {
+          const previous = JSON.parse(scope.localStorage.getItem(key));
+          if (previous?.target === target && previous.engineId === engineId
+            && previous.gameId === gameId && previous.extra?.toLowerCase() === extra.toLowerCase()) {
+            for (const name of previous.pending || []) if (validName(name)) pending.add(name);
+            legacyIndexKey = key;
+          }
+        } catch { /* Missing or invalid legacy cache. */ }
+      }
     }
   };
   scope.__scummwebAddSave = (slot, name) => {
@@ -671,14 +1087,21 @@ function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl }) {
     // as the player overwrites it; never exclude a slot just by its number.
     if (!namespace) {
       const library = await (await scope.fetch(assetUrl("games.json"))).json();
-      const target = params.get("catalogGame") || params.get("saveTarget")
+      const target = params.get("saveTarget")
         || decodeURIComponent(launchUrl.hash.slice(1)).trim().split(/\s+/).at(-1);
       const intro = library.games?.find((game) => game.target === target)?.skipIntro;
       await Promise.all((intro?.saveFiles || []).map(async (name) => {
         try {
           const response = await scope.fetch(assetUrl(`launcher/skip-intro/${encodeURIComponent(target)}/${encodeURIComponent(name)}`));
           if (!response.ok) throw new Error("Checkpoint unavailable");
-          checkpoints.set(name, new Uint8Array(await response.arrayBuffer()));
+          let checkpoint = new Uint8Array(await response.arrayBuffer());
+          if (retiredIntroCheckpoints.has(`${target}/${name}`)) {
+            try {
+              const existing = FS.readFile(`${savePath}/${name}`);
+              if (await isRetiredIntroCheckpoint(target, name, existing)) checkpoint = existing;
+            } catch { /* Missing saved file or unavailable digest. */ }
+          }
+          checkpoints.set(name, checkpoint);
         } catch {
           // Fail closed for a checkpoint slot when its provenance is unknown.
           checkpoints.set(name, null);
@@ -700,6 +1123,7 @@ function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl }) {
 }
 
 globalThis.__scummwebInstallContinueSaves = installContinueSaves;
+globalThis.__scummwebIsRetiredIntroCheckpoint = isRetiredIntroCheckpoint;
 })();
 function setupFilesystem() {
   if (scummwebInlineFrame) {
@@ -719,7 +1143,11 @@ function setupFilesystem() {
       }
       const savePath = getConfiguredSavePath();
       ensureDirectory(savePath);
-      importLegacySkySave(FS, scummwebLaunchUrl.searchParams, defaultSavePath, savePath);
+      const slot = scummwebLaunchUrl.searchParams.get("agentLegacySkySlot");
+      const scopedSky = "/home/web_user/.scummweb-editions/catalog-sky" + defaultSavePath.slice("/home/web_user".length);
+      const source = /^[1-9][0-9]{0,2}$/.test(slot || "") && FS.analyzePath(`${scopedSky}/SKY-VM.${slot.padStart(3, "0")}`).exists
+        ? scopedSky : defaultSavePath;
+      importLegacySkySave(FS, scummwebLaunchUrl.searchParams, source, savePath);
       const args = Module.arguments.filter(arg => !arg.startsWith("--savepath="));
       Module.arguments.splice(0, Module.arguments.length, `--savepath=${savePath}`, ...args);
     })
@@ -747,7 +1175,7 @@ function setupFilesystem() {
             query: scummwebLaunchUrl.searchParams.get("saveQuery") }, scummwebLaunchUrl.origin);
         }
         if (error.name === "SaveSessionBusyError") {
-          window.parent.postMessage({ type: "scummweb:save-session-busy" }, scummwebLaunchUrl.origin);
+          window.parent.postMessage({ type: "scummweb:save-session-busy", reason: error.busyReason }, scummwebLaunchUrl.origin);
         } else {
           if (!scummwebLaunchUrl.searchParams.has("saveQuery")) reportScummvmBootError("filesystem", error);
           if (isLocalGame) reportLocalGameStatus("error");
@@ -788,6 +1216,41 @@ globalThis.__scummvmRequestExit=requestExit;
 const scummwebMessageSource="scummweb";
 const postParentMessage=message=>{if(!(window.parent&&window.parent!==window))return false;try{window.parent.postMessage(message,scummwebLaunchUrl.origin);return true}catch{return false}};
 const buildCurrentFrameHref=()=>`${scummwebLaunchUrl.pathname}${scummwebLaunchUrl.search}${scummwebLaunchUrl.hash}`;
+if (isCatalogArchive) {
+  globalThis.__scummwebReportGameplayStarted = () => {
+    delete globalThis.__scummwebReportGameplayStarted;
+    postParentMessage({
+      type: "scummvm-gameplay-started",
+      source: scummwebMessageSource,
+      target,
+      href: buildCurrentFrameHref(),
+    });
+  };
+}
+if (isLocalGame && !isCatalogArchive && !scummwebLaunchUrl.searchParams.has("continue")) {
+  let available = false;
+  let requested = false;
+  globalThis.__scummwebRequestIntroSkip = () => {
+    if (!available || requested) return false;
+    requested = true;
+    return true;
+  };
+  globalThis.__scummwebUpdateIntroSkip = (next) => {
+    if (available !== next) {
+      available = next;
+      requested = false;
+      postParentMessage({
+        type: "scummvm-intro-availability",
+        source: scummwebMessageSource,
+        href: buildCurrentFrameHref(),
+        available,
+      });
+    }
+    if (!available || !requested) return false;
+    requested = false;
+    return true;
+  };
+}
 const readyStatePriority={idle:-1,pending:0,"runtime-ready":1,"launch-detected":2,"awaiting-frame":3,ready:4};
 const getReadyStatePriority=state=>Object.prototype.hasOwnProperty.call(readyStatePriority,state)?readyStatePriority[state]:-1;
 let readyState={state:target?"pending":"idle",target:target||null,href:buildCurrentFrameHref(),reason:target?"awaiting-launch":"no-target",source:scummwebMessageSource,emittedAt:null};
@@ -815,6 +1278,15 @@ if(globalThis.__scummwebPendingReadyStatePhase?.state){setReadyStatePhase(global
 const canvas=document.getElementById("canvas");
 const output=document.getElementById("output");
 if(canvas){
+// SDL requests pointer lock without awaiting the browser's optional grant.
+const requestPointerLock = canvas.requestPointerLock;
+if (typeof requestPointerLock === "function") {
+  canvas.requestPointerLock = function (...args) {
+    const request = requestPointerLock.apply(this, args);
+    request?.catch(() => {});
+    return request;
+  };
+}
 // Size the actual canvas element, so SDL mouse coordinates match its pixels.
 function installCanvasFit(canvas, Observer) {
   let lastRatio = 0;
@@ -878,6 +1350,7 @@ const readyFrameSampleSize=32;
 const readyFrameTimeoutMs=15000;
 const touchTapDurationMs=260;
 const touchTapMoveThresholdPx=28;
+const touchHoldMoveThresholdPx=12;
 const touchDoubleTapWindowMs=300;
 const touchDoubleTapThresholdPx=32;
 const touchSyntheticClickHoldMs=80;
@@ -935,6 +1408,9 @@ const releaseCursorPrompt=()=>{hideGrabHint();allowGameCursor()};
 const clamp=(value,min,max)=>Math.min(Math.max(value,min),max);
 const measureDistance=(pointA,pointB)=>{if(!pointA||!pointB)return Number.POSITIVE_INFINITY;return Math.hypot(pointA.clientX-pointB.clientX,pointA.clientY-pointB.clientY)};
 const resolveTouchClickButtonCode=value=>value==="right"?2:0;
+const syntheticButtonPresses=new Map();
+const parentButtonPresses=new Map();
+const syntheticButtons=()=>(syntheticButtonPresses.has(0)?1:0)|(syntheticButtonPresses.has(2)?2:0);
 const consumeTouchEvent=event=>{if(event.cancelable)event.preventDefault();if(typeof event.stopImmediatePropagation==="function")event.stopImmediatePropagation();event.stopPropagation()};
 const getTouchPoint=touchLike=>{if(!touchLike)return null;const rect=canvas.getBoundingClientRect();const maxX=rect.width>0?rect.right:rect.left;const maxY=rect.height>0?rect.bottom:rect.top;const clientX=clamp(Number.isFinite(touchLike.clientX)?touchLike.clientX:rect.left,rect.left,maxX);const clientY=clamp(Number.isFinite(touchLike.clientY)?touchLike.clientY:rect.top,rect.top,maxY);return{clientX,clientY,screenX:Number.isFinite(touchLike.screenX)?touchLike.screenX:clientX,screenY:Number.isFinite(touchLike.screenY)?touchLike.screenY:clientY,pageX:Number.isFinite(touchLike.pageX)?touchLike.pageX:clientX+window.scrollX,pageY:Number.isFinite(touchLike.pageY)?touchLike.pageY:clientY+window.scrollY}};
 const getGesturePoint=touchList=>{const touches=Array.from(touchList||[]);if(touches.length===0)return null;touches.sort(((leftTouch,rightTouch)=>leftTouch.clientX-rightTouch.clientX));return getTouchPoint(touches[touches.length-1])};
@@ -944,18 +1420,154 @@ const getSyntheticCursorPoint=()=>syntheticCursorPoint?{...syntheticCursorPoint}
 const focusCanvas=()=>{try{canvas.focus({preventScroll:true})}catch{}};
 const dispatchPointerEvent=(eventName,point,{button=0,buttons=0}={})=>{if(typeof PointerEvent!=="function"||!point)return;const pointerEvent=new PointerEvent(eventName,{bubbles:true,cancelable:true,composed:true,pointerId:1,pointerType:"mouse",isPrimary:true,clientX:point.clientX,clientY:point.clientY,screenX:point.screenX,screenY:point.screenY,pageX:point.pageX,pageY:point.pageY,button,buttons,pressure:buttons===0?0:.5});canvas.dispatchEvent(pointerEvent)};
 const dispatchMouseEvent=(eventName,point,{button=0,buttons=0,detail=1}={})=>{if(!point)return;const mouseEvent=new MouseEvent(eventName,{bubbles:true,cancelable:true,composed:true,clientX:point.clientX,clientY:point.clientY,screenX:point.screenX,screenY:point.screenY,button,buttons,detail});canvas.dispatchEvent(mouseEvent)};
-const dispatchSyntheticMove=point=>{if(!point)return;const nextPoint=setSyntheticCursorPoint(point);focusCanvas();dispatchPointerEvent("pointermove",nextPoint,{button:0,buttons:0});dispatchMouseEvent("mousemove",nextPoint,{button:0,buttons:0,detail:0})};
-const dispatchSyntheticClick=(point,button)=>{if(!point)return;const buttons=button===2?2:1;focusCanvas();dispatchSyntheticMove(point);dispatchPointerEvent("pointerdown",point,{button,buttons});dispatchMouseEvent("mousedown",point,{button,buttons});if(button===2){dispatchMouseEvent("contextmenu",point,{button,buttons,detail:0})}window.setTimeout((()=>{dispatchPointerEvent("pointerup",point,{button,buttons:0});dispatchMouseEvent("mouseup",point,{button,buttons:0});if(button!==2){dispatchMouseEvent("click",point,{button,buttons:0,detail:1})}}),touchSyntheticClickHoldMs)};
-const dispatchParentTouchClick=button=>{dispatchSyntheticClick(getSyntheticCursorPoint(),resolveTouchClickButtonCode(button))};
+const dispatchSyntheticMove=point=>{if(!point)return;const nextPoint=setSyntheticCursorPoint(point);const buttons=syntheticButtons();focusCanvas();dispatchPointerEvent("pointermove",nextPoint,{button:-1,buttons});dispatchMouseEvent("mousemove",nextPoint,{button:0,buttons,detail:0})};
+const finishSyntheticButton=(press,cancelled)=>{
+  const {button,releaseTimer}=press;
+  if(syntheticButtonPresses.get(button)!==press)return;
+  window.clearTimeout(releaseTimer);
+  syntheticButtonPresses.delete(button);
+  const point=getSyntheticCursorPoint();
+  const buttons=syntheticButtons();
+  dispatchPointerEvent("pointerup",point,{button,buttons});
+  dispatchMouseEvent("mouseup",point,{button,buttons});
+  if(button===0&&!cancelled)dispatchMouseEvent("click",point,{button,buttons,detail:1});
+};
+const pressSyntheticButton=(point,button)=>{
+  if(!point)return null;
+  const previousPress=syntheticButtonPresses.get(button);
+  if(previousPress){
+    if(previousPress.releaseTimer===null)return null;
+    finishSyntheticButton(previousPress,false);
+  }
+  dispatchSyntheticMove(point);
+  const press={button,startedAt:Date.now(),releaseTimer:null};
+  syntheticButtonPresses.set(button,press);
+  const buttons=syntheticButtons();
+  dispatchPointerEvent("pointerdown",point,{button,buttons});
+  dispatchMouseEvent("mousedown",point,{button,buttons});
+  if(button===2)dispatchMouseEvent("contextmenu",point,{button,buttons,detail:0});
+  return press;
+};
+const releaseSyntheticButton=(press,cancelled=false)=>{
+  if(!press||syntheticButtonPresses.get(press.button)!==press)return;
+  // Keep quick taps visible to engines that poll button state once per frame.
+  const remaining=touchSyntheticClickHoldMs-(Date.now()-press.startedAt);
+  if(cancelled||remaining<=0)finishSyntheticButton(press,cancelled);
+  else press.releaseTimer=window.setTimeout(()=>finishSyntheticButton(press,false),remaining);
+};
+const dispatchSyntheticClick=(point,button)=>releaseSyntheticButton(pressSyntheticButton(point,button));
+const handleParentTouchButton=({button,pressed,cancelled})=>{
+  if((button!=="left"&&button!=="right")||typeof pressed!=="boolean")return;
+  if(pressed){
+    if(parentButtonPresses.has(button))return;
+    const press=pressSyntheticButton(getSyntheticCursorPoint(),resolveTouchClickButtonCode(button));
+    if(press)parentButtonPresses.set(button,press);
+  }else{
+    releaseSyntheticButton(parentButtonPresses.get(button),cancelled===true);
+    parentButtonPresses.delete(button);
+  }
+};
 const applyCursorPadDelta=(deltaX,deltaY)=>{if(!Number.isFinite(deltaX)&&!Number.isFinite(deltaY))return;const previousPoint=getSyntheticCursorPoint();const nextPoint=getTouchPoint({clientX:previousPoint.clientX+(Number(deltaX)||0),clientY:previousPoint.clientY+(Number(deltaY)||0)});if(nextPoint){dispatchSyntheticMove(nextPoint)}};
 const applyRelativeTouchDelta=(previousPoint,nextFingerPoint)=>{if(!previousPoint||!nextFingerPoint)return;const rawDeltaX=(nextFingerPoint.clientX-previousPoint.clientX)*touchRelativeMoveScale;const rawDeltaY=(nextFingerPoint.clientY-previousPoint.clientY)*touchRelativeMoveScale;const deltaX=clamp(rawDeltaX,-touchRelativeMoveMaxDeltaPx,touchRelativeMoveMaxDeltaPx);const deltaY=clamp(rawDeltaY,-touchRelativeMoveMaxDeltaPx,touchRelativeMoveMaxDeltaPx);if(deltaX||deltaY){applyCursorPadDelta(deltaX,deltaY)}};
 const setAspectRatioMode=mode=>{canvas.classList.toggle("scummweb-fill-screen",mode==="fill");canvas.classList.toggle("scummweb-fit-height",mode==="fit-height")};
-const handleScummwebMessage=event=>{if(event.origin!==scummwebLaunchUrl.origin)return;if(event.data?.type==="scummweb-aspect-ratio"){setAspectRatioMode(event.data?.mode);return}if(event.data?.type==="scummweb-touch-click"){dispatchParentTouchClick(event.data.button);return}if(event.data?.type!=="scummweb-touch-cursor-pad")return;applyCursorPadDelta(event.data?.deltaX,event.data?.deltaY)};
-const handleTouchStart=event=>{if(event.touches.length===0)return;consumeTouchEvent(event);const point=getGesturePoint(event.touches);activeTouchGesture={startedAt:Date.now(),startPoint:point,lastPoint:point,moved:false}};
-const handleTouchMove=event=>{if(!activeTouchGesture||event.touches.length===0)return;consumeTouchEvent(event);const point=getGesturePoint(event.touches);if(!point)return;const previousPoint=activeTouchGesture.lastPoint;if(measureDistance(activeTouchGesture.startPoint,point)>touchTapMoveThresholdPx){activeTouchGesture.moved=true}if(activeTouchGesture.moved){applyRelativeTouchDelta(previousPoint,point)}activeTouchGesture.lastPoint=point};
-const handleTouchEnd=event=>{consumeTouchEvent(event);if(!activeTouchGesture){return}const point=getGesturePoint(event.changedTouches)||getGesturePoint(event.touches)||activeTouchGesture.lastPoint||null;if(point&&measureDistance(activeTouchGesture.startPoint,point)>touchTapMoveThresholdPx){activeTouchGesture.moved=true}if(activeTouchGesture.moved&&point){applyRelativeTouchDelta(activeTouchGesture.lastPoint,point)}if(event.touches.length>0){activeTouchGesture.lastPoint=point||activeTouchGesture.lastPoint;return}const completedGesture={...activeTouchGesture,endedAt:Date.now(),endPoint:point||activeTouchGesture.lastPoint};activeTouchGesture=null;const gestureDuration=completedGesture.endedAt-completedGesture.startedAt;const isTap=!completedGesture.moved&&gestureDuration<=touchTapDurationMs&&completedGesture.endPoint;if(!isTap){lastCompletedTap=null;return}dispatchSyntheticMove(completedGesture.endPoint);const isDoubleTap=Boolean(lastCompletedTap&&completedGesture.endedAt-lastCompletedTap.endedAt<=touchDoubleTapWindowMs&&measureDistance(lastCompletedTap.point,completedGesture.endPoint)<=touchDoubleTapThresholdPx);if(isDoubleTap){dispatchSyntheticClick(completedGesture.endPoint,0);lastCompletedTap=null;return}lastCompletedTap={endedAt:completedGesture.endedAt,point:{...completedGesture.endPoint}}};
-const handleTouchCancel=event=>{consumeTouchEvent(event);activeTouchGesture=null;lastCompletedTap=null};
+const handleScummwebMessage=event=>{
+  if(event.origin!==scummwebLaunchUrl.origin)return;
+  if(event.data?.type==="scummweb-aspect-ratio")setAspectRatioMode(event.data.mode);
+  if(event.data?.type==="scummweb-touch-click")dispatchSyntheticClick(getSyntheticCursorPoint(),resolveTouchClickButtonCode(event.data.button));
+  if(event.data?.type==="scummweb-touch-button"&&event.source===window.parent)handleParentTouchButton(event.data);
+  if(event.data?.type==="scummweb-touch-cursor-pad")applyCursorPadDelta(event.data.deltaX,event.data.deltaY);
+};
+const handleTouchStart=event=>{
+  if(event.touches.length===0)return;
+  consumeTouchEvent(event);
+  if(activeTouchGesture?.press)return;
+  if(activeTouchGesture)window.clearTimeout(activeTouchGesture.holdTimer);
+  const point=getGesturePoint(event.touches);
+  const gesture={startedAt:Date.now(),startPoint:point,lastPoint:point,moved:false,press:null,holdTimer:null};
+  activeTouchGesture=gesture;
+  if(event.touches.length!==1||syntheticButtons())return;
+  gesture.touchId=event.touches[0].identifier;
+  gesture.holdTimer=window.setTimeout(()=>{
+    if(activeTouchGesture!==gesture||syntheticButtons())return;
+    gesture.press=pressSyntheticButton(gesture.lastPoint,0);
+    lastCompletedTap=null;
+  },touchTapDurationMs);
+};
+const findHeldTouch=(touches,gesture)=>Array.from(touches||[]).find(touch=>touch.identifier===gesture.touchId);
+const handleTouchMove=event=>{
+  const gesture=activeTouchGesture;
+  if(!gesture||event.touches.length===0)return;
+  consumeTouchEvent(event);
+  if(gesture.press){
+    dispatchSyntheticMove(getTouchPoint(findHeldTouch(event.touches,gesture)));
+    return;
+  }
+  const point=getGesturePoint(event.touches);
+  if(!point)return;
+  const distance=measureDistance(gesture.startPoint,point);
+  if(distance>touchHoldMoveThresholdPx)window.clearTimeout(gesture.holdTimer);
+  if(distance>touchTapMoveThresholdPx)gesture.moved=true;
+  if(gesture.moved)applyRelativeTouchDelta(gesture.lastPoint,point);
+  gesture.lastPoint=point;
+};
+const handleTouchEnd=event=>{
+  consumeTouchEvent(event);
+  if(!activeTouchGesture)return;
+  window.clearTimeout(activeTouchGesture.holdTimer);
+  if(activeTouchGesture.press){
+    const touch=findHeldTouch(event.changedTouches,activeTouchGesture);
+    if(!touch)return;
+    dispatchSyntheticMove(getTouchPoint(touch));
+    releaseSyntheticButton(activeTouchGesture.press);
+    activeTouchGesture=null;
+    return;
+  }
+  const point=getGesturePoint(event.changedTouches)||getGesturePoint(event.touches)||activeTouchGesture.lastPoint;
+  if(point&&measureDistance(activeTouchGesture.startPoint,point)>touchTapMoveThresholdPx){
+    activeTouchGesture.moved=true;
+  }
+  if(activeTouchGesture.moved&&point){applyRelativeTouchDelta(activeTouchGesture.lastPoint,point)}
+  if(event.touches.length>0){
+    activeTouchGesture.lastPoint=point;
+    return;
+  }
+
+  const {startedAt,moved}=activeTouchGesture;
+  activeTouchGesture=null;
+  const endedAt=Date.now();
+  if(moved||endedAt-startedAt>touchTapDurationMs||!point){
+    lastCompletedTap=null;
+    return;
+  }
+
+  const isDoubleTap=lastCompletedTap&&endedAt-lastCompletedTap.endedAt<=touchDoubleTapWindowMs&&
+    measureDistance(lastCompletedTap.point,point)<=touchDoubleTapThresholdPx;
+  if(isDoubleTap){
+    dispatchSyntheticClick(point,0);
+    lastCompletedTap=null;
+    return;
+  }
+  dispatchSyntheticMove(point);
+  lastCompletedTap={endedAt,point};
+};
+const resetTouchGesture=()=>{
+  if(activeTouchGesture){
+    window.clearTimeout(activeTouchGesture.holdTimer);
+    releaseSyntheticButton(activeTouchGesture.press,true);
+    activeTouchGesture=null;
+  }
+  lastCompletedTap=null;
+};
+const handleTouchCancel=event=>{consumeTouchEvent(event);resetTouchGesture()};
+const resetSyntheticInput=()=>{
+  resetTouchGesture();
+  for(const press of syntheticButtonPresses.values())finishSyntheticButton(press,true);
+  parentButtonPresses.clear();
+};
 window.addEventListener("message",handleScummwebMessage);
+window.addEventListener("blur",resetSyntheticInput);
+window.addEventListener("pagehide",resetSyntheticInput);
+document.addEventListener("visibilitychange",()=>{if(document.hidden)resetSyntheticInput()});
 canvas.addEventListener("mouseenter",promptCursorGrab,{passive:true});
 canvas.addEventListener("pointerenter",promptCursorGrab,{passive:true});
 canvas.addEventListener("mouseleave",clearCursorPrompt,{passive:true});

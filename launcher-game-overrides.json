@@ -3,7 +3,6 @@
     "drascula": {
       "skipIntro": {
         "strategy": "save-slot",
-        "durationMinutes": 2,
         "slot": 0,
         "saveFiles": [
           "drascula.000"
@@ -13,7 +12,6 @@
     "dreamweb-cd": {
       "skipIntro": {
         "strategy": "save-slot",
-        "durationMinutes": 2,
         "slot": 0,
         "saveFiles": [
           "DREAMWEB.D00"
@@ -23,7 +21,6 @@
     "lure": {
       "skipIntro": {
         "strategy": "save-slot",
-        "durationMinutes": 2,
         "slot": 0,
         "saveFiles": [
           "lure.000"
@@ -33,7 +30,6 @@
     "queen": {
       "skipIntro": {
         "strategy": "save-slot",
-        "durationMinutes": 2,
         "slot": 0,
         "saveFiles": [
           "queen.s00"
@@ -43,7 +39,6 @@
     "sky": {
       "skipIntro": {
         "strategy": "save-slot",
-        "durationMinutes": 2,
         "slot": 0,
         "saveFiles": [
           "SKY-VM.000"
@@ -53,7 +48,6 @@
     "soltys": {
       "skipIntro": {
         "strategy": "save-slot",
-        "durationMinutes": 2,
         "slot": 1,
         "saveFiles": [
           "soltys.001"
@@ -63,7 +57,6 @@
     "sfinx": {
       "skipIntro": {
         "strategy": "save-slot",
-        "durationMinutes": 2,
         "slot": 1,
         "saveFiles": [
           "sfinx.001"
@@ -73,7 +66,6 @@
     "monkey-demo": {
       "skipIntro": {
         "strategy": "save-slot",
-        "durationMinutes": 2,
         "slot": 1,
         "saveFiles": [
           "monkey-demo.s01"
@@ -83,7 +75,6 @@
     "hires1": {
       "skipIntro": {
         "strategy": "save-slot",
-        "durationMinutes": 2,
         "slot": 0,
         "saveFiles": [
           "hires1.s00"
@@ -93,17 +84,103 @@
     "nippon-amiga": {
       "skipIntro": {
         "strategy": "boot-param",
-        "durationMinutes": 5,
         "bootParam": 1
       }
     },
     "sword25": {
       "skipIntro": {
         "strategy": "save-slot",
-        "durationMinutes": 6,
         "slot": 0,
         "saveFiles": [
           "sword25.000"
+        ]
+      }
+    },
+    "draci": {
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1
+      }
+    },
+    "teenagent-demo": {
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1
+      }
+    },
+    "hugo1-demo": {
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1
+      }
+    },
+    "hugo2-demo": {
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1
+      }
+    },
+    "hugo3-demo": {
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1
+      }
+    },
+    "pegasus-demo": {
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1
+      }
+    },
+    "castlemaster-demo": {
+      "skipIntro": {
+        "strategy": "boot-param",
+        "bootParam": 1
+      }
+    },
+    "atlantis-demo": {
+      "skipIntro": {
+        "strategy": "save-slot",
+        "slot": 90,
+        "saveFiles": [
+          "atlantis-demo.s90"
+        ]
+      }
+    },
+    "comi-demo": {
+      "skipIntro": {
+        "strategy": "save-slot",
+        "checkpointOnly": true,
+        "slot": 90,
+        "saveFiles": [
+          "comi-demo.s90"
+        ]
+      }
+    },
+    "grim-demo": {
+      "skipIntro": {
+        "strategy": "save-slot",
+        "slot": 90,
+        "saveFiles": [
+          "grim90.gsv"
+        ]
+      }
+    },
+    "qfi-demo": {
+      "skipIntro": {
+        "strategy": "save-slot",
+        "slot": 98,
+        "saveFiles": [
+          "qfi-demo.098"
+        ]
+      }
+    },
+    "monkey4-demo": {
+      "skipIntro": {
+        "strategy": "save-slot",
+        "slot": 90,
+        "saveFiles": [
+          "efmi090.gsv"
         ]
       }
     }

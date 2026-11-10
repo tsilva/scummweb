@@ -1,3 +1,11 @@
+"use client";
+
+import { getArtworkPlaceholderStyle } from "./artwork-image-props.mjs";
+
+function clearPlaceholder(image) {
+  if (image?.complete && image.naturalWidth) image.dataset.artworkLoaded = "true";
+}
+
 export default function DecorativeImage({
   alt = "",
   className,
@@ -9,6 +17,7 @@ export default function DecorativeImage({
   src,
   srcSet,
   avifSrcSet,
+  placeholder,
   style,
   width,
 }) {
@@ -17,11 +26,13 @@ export default function DecorativeImage({
   }
 
   const resolvedFetchPriority = fetchPriority || (loading === "lazy" ? "low" : undefined);
+  const preview = getArtworkPlaceholderStyle({ placeholder, width, height });
 
   const image = (
     <img
+      key={src}
       alt={alt}
-      className={className}
+      className={preview ? ["artwork-placeholder", className].filter(Boolean).join(" ") : className}
       decoding={decoding}
       fetchPriority={resolvedFetchPriority}
       height={height}
@@ -29,8 +40,10 @@ export default function DecorativeImage({
       sizes={sizes}
       src={src}
       srcSet={srcSet}
-      style={style}
+      style={preview ? { ...style, ...preview } : style}
       width={width}
+      ref={preview ? clearPlaceholder : undefined}
+      onLoad={preview ? (event) => clearPlaceholder(event.currentTarget) : undefined}
     />
   );
   return avifSrcSet ? <picture><source type="image/avif" srcSet={avifSrcSet} sizes={sizes} />{image}</picture> : image;

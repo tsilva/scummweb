@@ -6,8 +6,8 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 import test from "node:test";
 import sharp from "sharp";
-import { getArtworkImageProps } from "../app/home-shell/artwork-image-props.mjs";
-import { activateArtwork, planArtwork, retireArtwork, validateManifest, verifyArtwork } from "../scripts/artwork-storage.mjs";
+import { getArtworkImageProps, getArtworkPlaceholderStyle } from "../app/home-shell/artwork-image-props.mjs";
+import { activateArtwork, backfillArtworkPlaceholders, planArtwork, retireArtwork, validateManifest, verifyArtwork } from "../scripts/artwork-storage.mjs";
 import { artworkDelivery, artworkPath, artworkUrl } from "../lib/artwork-storage.mjs";
 import { readArtworkFile } from "../scripts/artwork-files.mjs";
 
@@ -50,7 +50,8 @@ test("browser artwork metadata preserves delivery records without verification f
   const variant = "/launcher/responsive/sample-cover-4.webp";
   const alternate = { ...file, width: 4, key: `artwork/${sha256}/different-name.webp` };
   const images = { [name]: { width: 8, height: 12, fallback: name, webp: [variant, name], avif: [] } };
-  const published = { ...sample, published: true, files: { ...sample.files, [variant]: alternate }, images };
+  const placeholder = bytes.toString("base64");
+  const published = { ...sample, published: true, files: { [name]: { ...file, placeholder }, [variant]: alternate }, images };
   const inventory = await fs.realpath(path.join(root, manifestFile));
   await fs.writeFile(inventory, JSON.stringify(published));
   const loaderPath = path.join(root, "scripts/artwork-browser-loader.js");
@@ -64,7 +65,7 @@ test("browser artwork metadata preserves delivery records without verification f
   const module = await import(`data:text/javascript,${encodeURIComponent(code)}`);
   const browser = module.default;
   assert.deepEqual(browser.images, images);
-  assert.deepEqual(browser.files[name], { hash: file.sha256, width: file.width });
+  assert.deepEqual(browser.files[name], { hash: file.sha256, width: file.width, height: file.height, placeholder });
   assert.deepEqual(browser.files[variant], { key: alternate.key, width: alternate.width });
   const url = artworkUrl(name, published);
   assert.equal(artworkUrl(name, browser), url);
@@ -80,6 +81,9 @@ test("browser artwork metadata preserves delivery records without verification f
   assert.deepEqual(scoped.files[name], browser.files[name]);
   assert.deepEqual(scoped.files[variant], browser.files[variant]);
   assert.deepEqual(getArtworkImageProps(url, "hero", scoped), getArtworkImageProps(url, "hero", published));
+  assert.equal(getArtworkImageProps(url, "hero", scoped).placeholder, placeholder);
+  const svg = decodeURIComponent(getArtworkPlaceholderStyle(getArtworkImageProps(url, "hero", scoped))["--artwork-placeholder"]);
+  assert.match(svg, /<svg[^>]*width="8" height="12"><image[^>]*preserveAspectRatio="none"/);
   const entry = await import(`data:text/javascript,${encodeURIComponent(artworkBrowserLoader.call({
     addDependency() {}, getOptions: () => ({ defer: true }),
   }))}`);
@@ -90,10 +94,34 @@ test("plans preserve live mappings and retain exact original bytes outside Git",
   const root = await fixture(t);
   const before = await fs.readFile(path.join(root, manifestFile), "utf8");
   const plan = await planArtwork(root);
-  assert.deepEqual(plan.files, sample.files);
+  const { placeholder, ...record } = plan.files["/launcher/sample-cover.webp"];
+  assert.deepEqual(record, file);
+  const preview = await sharp(Buffer.from(placeholder, "base64")).metadata();
+  assert.equal(preview.format, "webp");
+  assert.ok(preview.width <= 12 && preview.height <= 12);
   assert.equal(await fs.readFile(path.join(root, manifestFile), "utf8"), before);
   assert.deepEqual(await fs.readFile(path.join(root, ".internal/evidence/artwork-migration/objects", file.key)), bytes);
   assert.deepEqual(await fs.readFile(path.join(root, "scummvm-shell/launcher/sample-cover.webp")), bytes);
+});
+
+test("backfilling verifies retired artwork and replanning refreshes previews when the bytes change", async (t) => {
+  const root = await fixture(t);
+  const original = path.join(root, "scummvm-shell/launcher/sample-cover.webp");
+  const filename = path.join(root, manifestFile);
+  await fs.unlink(original);
+  await fs.writeFile(filename, JSON.stringify({ ...sample, published: true }));
+  const before = await fs.readFile(filename, "utf8");
+  await assert.rejects(backfillArtworkPlaceholders(root, async () => response(Buffer.alloc(bytes.length))), /checksum/);
+  assert.equal(await fs.readFile(filename, "utf8"), before);
+  assert.equal(await backfillArtworkPlaceholders(root, async () => response()), 1);
+  assert.equal(await backfillArtworkPlaceholders(root, async () => assert.fail("Preview already exists")), 0);
+  const { files } = JSON.parse(await fs.readFile(filename, "utf8"));
+  const name = "/launcher/sample-cover.webp";
+  await fs.writeFile(original, await sharp({ create: { width: 240, height: 160, channels: 3, background: "#fc4a00" } }).webp().toBuffer());
+  const plan = await planArtwork(root);
+  assert.notEqual(plan.files[name].placeholder, files[name].placeholder);
+  const { width, height } = await sharp(Buffer.from(plan.files[name].placeholder, "base64")).metadata();
+  assert.deepEqual([width, height], [12, 8]);
 });
 
 test("activation refuses missing, corrupt, redirected, or incorrectly described public images", async (t) => {

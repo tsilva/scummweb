@@ -4,6 +4,7 @@ import { createRequire } from "node:module";
 import { runInNewContext } from "node:vm";
 import test from "node:test";
 import swc from "next/dist/build/swc/index.js";
+import * as heroOrder from "../app/home-shell/hero-order.mjs";
 import * as selection from "../app/home-shell/hero-selection.mjs";
 import * as versions from "../app/game-versions.mjs";
 import * as playSources from "../app/game-play-source.mjs";
@@ -23,6 +24,7 @@ async function component(file, imports, globals = {}) {
     ...globals, module, exports: module.exports, URL,
     require(name) {
       if (name === "react/jsx-runtime") return createRequire(url)(name);
+      if (name === "./hero-order.mjs") return heroOrder;
       if (name === "./initial-actions.mjs") return initialActions;
       if (name === "./artwork-delivery") return imports[name] ?? { useArtworkDelivery: () => undefined };
       return imports[name] ?? {};
@@ -154,12 +156,13 @@ test("a mounted hero resets to the requested game after automatic rotation or re
     "./hero-images.mjs": { getHeroPreloadImages: () => [] },
     "./game-navigation": { useGameNavigation: () => (game) => { selections.push(game); return true; } },
   }, { window: { scrollTo() {} } });
-  const groups = libraryItems([sky, queen], []);
+  const groups = libraryItems([queen, sky], []);
   function render(featuredGame, navigationId) {
     cursor = 0;
     return Hero({ groups, featuredGame, navigationId, isHomePage: false });
   }
   let hero = render(sky, 0);
+  assert.equal(hero.props.controls.props.children[1].props.children[0].props.children.join(""), "1/2");
   hero.props.controls.props.children[2].props.onClick();
   assert.equal(selections[0].target, queen.target);
   hero = render(queen, 1);
@@ -236,7 +239,7 @@ test("launch options stay hidden until the remembered copy and its save identity
     "lucide-react": { Play: "play", Pause: "pause" },
     "./hero-images.mjs": { getHeroPreloadImages: () => [] },
     "../game-versions.mjs": { ...versions,
-      readChosenVersion: group => remembered.get(group),
+      readPreferredGameVersion: (copies, group) => versions.chooseGameVersion(copies, remembered.get(group), "English"),
       rememberGameVersion: (group, key) => remembered.set(group, key),
     },
     "./game-navigation": { useGameNavigation: () => null },

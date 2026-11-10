@@ -1,0 +1,21 @@
+# English DOS AGI. Logic 0 increments v3 on a successful rhyme and starts the victory sequence at 18.
+schema_version: 1
+game: mixed-up-mother-goose
+engine_id: agi
+edition:
+  game_id: mixedup
+  index_md5: e524655abf9b96a3b179ffcd1d0f79af
+telemetry: snapshot
+scoring: highest_stage
+variables:
+  rhymes-solved: { bank: vars, index: 3 }
+milestones:
+  - id: restored-six-rhymes
+    label: Restored at least six nursery rhymes
+    when: { variable: rhymes-solved, one_of: [6, 7, 8, 9, 10, 11] }
+  - id: restored-twelve-rhymes
+    label: Restored at least twelve nursery rhymes
+    when: { variable: rhymes-solved, one_of: [12, 13, 14, 15, 16, 17] }
+  - id: winning-ending
+    label: Restored all eighteen nursery rhymes
+    when: { variable: rhymes-solved, equals: 18 }

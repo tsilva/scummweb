@@ -33,12 +33,14 @@ test("runtime URLs remain stable across app changes and invalidate only changed 
   assert.deepEqual(Object.keys(publicVersions.files).sort(), [...core, "scummvm.html"].map((name) => `/${name}`).sort());
 });
 
-test("only the exact content version receives immutable caching headers", async () => {
+test("hosting headers hint published artwork and cache exact runtime versions", async () => {
   const module = { exports: {} };
   const runtime = { version: "sha-shell", files: { "/scummvm.wasm": "sha-wasm", "/scummvm.html": "sha-shell" } };
+  const artworkStorage = { published: true, origin: "https://artwork.example.test" };
   const configUrl = new URL("../next.config.js", import.meta.url);
   function require(name) {
-    if (name === "@sentry/nextjs") return { withSentryConfig: (config) => config };
+    if (name === "@sentry/nextjs/config") return { withSentryConfig: (config) => config };
+    if (name.includes("artwork-storage")) return artworkStorage;
     if (name.includes("social-cards")) return { cards: {} };
     if (name.includes("runtime-assets")) return runtime;
     if (name.includes("scummvm-shell-assets")) return assetConfig;
@@ -57,6 +59,11 @@ test("only the exact content version receives immutable caching headers", async 
   const artwork = module.exports.headers().find(({ source }) => source === "/launcher/:path*");
   assert.equal(artwork.has[0].value, "dpl-another-app-deployment");
   assert.ok(!module.exports.headers().some(({ source }) => source === "/data/:path*"), "runtime data requires its exact content fingerprint");
+  const homepage = module.exports.headers().find(({ source }) => source === "/");
+  assert.equal(homepage.headers[0].key, "Link");
+  assert.equal(homepage.headers[0].value, "<https://artwork.example.test>; rel=preconnect");
+  artworkStorage.published = false;
+  assert.ok(!module.exports.headers().some(({ source }) => source === "/"));
 });
 
 test("app deployments refresh artwork while retaining content-addressed runtime URLs", async (t) => {

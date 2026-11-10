@@ -1,0 +1,89 @@
+schema_version: 1
+game: dreamweb
+engine_id: dreamweb
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  subway-station: 14
+variables:
+  louis-mugging: { bank: game_vars, key: beenMugged }
+  sparky-contact: { bank: game_vars, key: talkedToSparky }
+  cashcard-balance: { bank: game_vars, key: card1Money }
+  pool-hall-attendant-contact: { bank: game_vars, key: talkedToAttendant }
+  silverman-contact: { bank: game_vars, key: talkedToBoss }
+  gun-purchase-state: { bank: game_vars, key: gunPassFlag }
+  receptionist-contact: { bank: game_vars, key: talkedToRecep }
+  hotel-keycard-state: { bank: game_vars, key: cardPassFlag }
+  crane-dead: { bank: game_vars, key: rockstarDead }
+  sterling-dead: { bank: game_vars, key: generalDead }
+  sartain-dead: { bank: game_vars, key: sartainDead }
+  aide-dead: { bank: game_vars, key: aideDead }
+  altar-unlocked: { bank: game_vars, key: canMoveAltar }
+  ryan-dead: { bank: game_vars, key: manDead }
+  # The final confrontation sets this when it selects the winning reel.
+  winning-reel: { bank: game_vars, key: madmanFlag }
+milestones:
+  - id: louis-mugging
+    label: Survived the mugging at Louis' building
+    when: { variable: louis-mugging, equals: 1 }
+  - id: spoke-to-sparky
+    label: Spoke to Sparky at the bar
+    when:
+      all:
+        - { variable: louis-mugging, equals: 1 }
+        - { variable: sparky-contact, equals: 1 }
+  - id: collected-wages
+    label: Collected Ryan's wages on the cashcard
+    when: { variable: cashcard-balance, one_of: [12432, 10432, 4132, 2132] }
+  - id: pool-hall-contact
+    label: Spoke to the pool hall attendant
+    when:
+      all:
+        - { variable: pool-hall-attendant-contact, equals: 1 }
+        - { milestone: collected-wages }
+  - id: spoke-to-silverman
+    label: Met Silverman at the pool hall
+    when:
+      all:
+        - { variable: silverman-contact, equals: 1 }
+        - { milestone: collected-wages }
+  - id: gun-issued
+    label: Got Silverman to release the gun
+    when: { variable: gun-purchase-state, equals: 2 }
+  - id: spoke-to-receptionist
+    label: Spoke to the Regency receptionist
+    when:
+      all:
+        - { variable: receptionist-contact, equals: 1 }
+        - { milestone: gun-issued }
+  - id: hotel-keycard-issued
+    label: Checked in at the Regency Hotel
+    when:
+      all:
+        - { variable: hotel-keycard-state, equals: 2 }
+        - { milestone: gun-issued }
+  - id: crane
+    label: Defeated Crane
+    when: { variable: crane-dead, equals: 1 }
+  - id: sterling
+    label: Defeated General Sterling
+    when: { variable: sterling-dead, one_of: [1, 2] }
+  - id: sartain
+    label: Stopped Sartain's helicopter
+    when: { variable: sartain-dead, one_of: [1, 2] }
+  - id: aide
+    label: Defeated the aide
+    when: { variable: aide-dead, equals: 1 }
+  - id: church-altar
+    label: Unlocked the church altar
+    when: { variable: altar-unlocked, equals: 1 }
+  - id: subway
+    label: Reached the subway station
+    when: { room: subway-station }
+  - id: winning-ending
+    label: Triggered the winning ending
+    when:
+      all:
+        - { room: subway-station }
+        - { variable: winning-reel, equals: 1 }
+        - { variable: ryan-dead, equals: 0 }

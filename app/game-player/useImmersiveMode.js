@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { enterImmersiveMode, exitImmersiveMode, isGameFullscreen, isMobileClient, isTouchMobileClient, resumeMobileGameLaunch, unlockOrientation } from "./immersive-mode.mjs";
+import { enterImmersiveMode, exitImmersiveMode, isGameFullscreen, isMobileClient, isTouchMobileClient, lockOrientation, resumeMobileGameLaunch, usesInstalledFullscreenFallback } from "./immersive-mode.mjs";
 
 const MOBILE_BREAKPOINT_QUERY = "(max-width: 900px)";
 const MOBILE_POINTER_QUERY = "(pointer: coarse)";
@@ -54,6 +54,7 @@ export function useImmersiveMode({ shellRef }) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [canFullscreen, setCanFullscreen] = useState(false);
   const [isMobileViewport, setIsMobileViewport] = useState(false);
+  const [isTouchMobile, setIsTouchMobile] = useState(false);
   const [isLandscapeViewport, setIsLandscapeViewport] = useState(true);
   const autoImmersiveAttemptedRef = useRef(false);
   const mountedRef = useRef(false);
@@ -61,6 +62,7 @@ export function useImmersiveMode({ shellRef }) {
   useEffect(() => {
     function syncViewportState() {
       setIsMobileViewport(isMobileClient());
+      setIsTouchMobile(isTouchMobileClient());
       setIsLandscapeViewport(isLandscapeClient());
     }
 
@@ -86,23 +88,22 @@ export function useImmersiveMode({ shellRef }) {
   }, []);
 
   useEffect(() => {
-    function syncFullscreenState() {
-      const shell = shellRef.current;
-      const fullscreenActive = isGameFullscreen(shell);
-
-      setIsFullscreen(fullscreenActive);
-
-      if (!fullscreenActive) unlockOrientation();
-    }
-
     const shell = shellRef.current;
     const supportsFullscreen = Boolean(
       shell &&
         (shell.requestFullscreen || shell.webkitRequestFullscreen) &&
         (document.exitFullscreen || document.webkitExitFullscreen),
     );
+    let fullscreenActive = isGameFullscreen(shell);
+    function syncFullscreenState() {
+      const wasFullscreen = fullscreenActive;
+      fullscreenActive = isGameFullscreen(shell);
+      setIsFullscreen(fullscreenActive);
+      setCanFullscreen(supportsFullscreen && !(fullscreenActive && usesInstalledFullscreenFallback()));
 
-    setCanFullscreen(supportsFullscreen);
+      if (wasFullscreen && !fullscreenActive) void lockOrientation("landscape");
+    }
+
     syncFullscreenState();
 
     document.addEventListener("fullscreenchange", syncFullscreenState);
@@ -115,13 +116,13 @@ export function useImmersiveMode({ shellRef }) {
   }, [shellRef]);
 
   useEffect(() => {
-    if (!isTouchMobileClient() || !canFullscreen || autoImmersiveAttemptedRef.current) {
+    if (!isTouchMobile || autoImmersiveAttemptedRef.current) {
       return;
     }
 
     autoImmersiveAttemptedRef.current = true;
     void resumeMobileGameLaunch(shellRef.current);
-  }, [canFullscreen, isMobileViewport, shellRef]);
+  }, [isTouchMobile, shellRef]);
 
   useEffect(() => {
     mountedRef.current = true;
@@ -160,5 +161,6 @@ export function useImmersiveMode({ shellRef }) {
     isFullscreen,
     isLandscapeViewport,
     isMobileViewport,
+    isTouchMobile,
   };
 }

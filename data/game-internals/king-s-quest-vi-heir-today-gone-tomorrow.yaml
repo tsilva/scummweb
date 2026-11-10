@@ -1,0 +1,44 @@
+# English DOS CD 1.000.00G.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/kq6-cd-dos-1.000.00G/src
+# The throne room is visited before and after the confrontation. Entry from room 180 starts Alexander’s wedding.
+schema_version: 1
+game: king-s-quest-vi-heir-today-gone-tomorrow
+engine_id: sci
+edition:
+  game_id: kq6
+  index_md5: 8ac79732f6f759158cda43e0b8b1988e
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  duel: 180
+  castle-throne-room: 740
+  winged-ones: 370 # Script 342 ends Celeste’s rescue and sends Alex to room 370.
+  oracle: 380 # Script 370 flies Alex to the Oracle; script 380 runs her vision.
+  castle-dungeon: 710 # Scripts 230 and 820 route into room 710.
+  beast-castle: 540 # Script 510 clears the brick wall and sends Alex to the Beast’s garden.
+  underworld-crossing: 670 # Script 660 sends Alex here when Charon accepts payment.
+variables:
+  score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 }
+milestones:
+  - id: winged-ones
+    label: "Reached the Winged Ones"
+    when: { room: winged-ones }
+  - id: oracle
+    label: "Met the Oracle"
+    when: { room: oracle }
+  - id: advanced-to-castle
+    label: "Advanced beyond the island trials"
+    when: { any: [{ room: beast-castle }, { room: underworld-crossing }] }
+  - id: castle-dungeon
+    label: "Reached the castle dungeon"
+    when: { room: castle-dungeon }
+  - id: reached-duel
+    label: Reached the duel with Alhazred
+    when: { room: duel }
+  - id: winning-ending
+    label: Reached Alexander and Cassima’s wedding
+    when:
+      all:
+        - { room: castle-throne-room }
+        - { variable: previous-room, equals: 180 }

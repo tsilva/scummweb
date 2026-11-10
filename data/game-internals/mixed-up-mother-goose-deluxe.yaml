@@ -1,0 +1,24 @@
+# English/Spanish Windows CD. Main.sc counts successful rhymes, and n098.sc sets the target to 18.
+# Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/goosedeluxe-dos-dual-lang/src
+schema_version: 1
+game: mixed-up-mother-goose-deluxe
+engine_id: sci
+edition:
+  game_id: mothergoosehires
+  index_md5: 5159a1578c4306bfe070a3e4d8c2e1d3
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  final-rhyme-celebration: 92 # endScene.sc
+variables:
+  rhymes-solved: { bank: globals, index: 15 }
+milestones:
+  - id: restored-six-rhymes
+    label: Restored at least six nursery rhymes
+    when: { variable: rhymes-solved, one_of: [6, 7, 8, 9, 10, 11] }
+  - id: restored-twelve-rhymes
+    label: Restored at least twelve nursery rhymes
+    when: { variable: rhymes-solved, one_of: [12, 13, 14, 15, 16, 17] }
+  - id: winning-ending
+    label: Restored all eighteen nursery rhymes
+    when: { variable: rhymes-solved, equals: 18 }

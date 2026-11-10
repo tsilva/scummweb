@@ -82,12 +82,15 @@ export function formatVersionLabel(game, { showGraphics = false, showRevision = 
     .map(knownValue).filter(Boolean).join(" · ");
 }
 
+export function isDemoGame(game) {
+  return /\(Demo\)$/i.test(game.displayTitle) || /\bdemo\b/i.test(game.extra || "");
+}
+
 export function getGameFamilyKey(game) {
   const identity = game.familyId || (game.engineId && (game.gameId || game.target)
     ? `${game.engineId}:${game.gameId || game.target}` : null);
   if (!identity) return null;
-  const demo = /\(Demo\)$/i.test(game.displayTitle) || /\bdemo\b/i.test(game.extra || "");
-  return `${identity}:${demo ? "demo" : "full"}`;
+  return `${identity}:${isDemoGame(game) ? "demo" : "full"}`;
 }
 
 export function catalogGameEntries(catalog) {
@@ -152,8 +155,19 @@ export function readChosenVersion(groupKey) {
   try { return window.localStorage.getItem(`scummweb.version:${groupKey}`); } catch { return null; }
 }
 
+export function readPreferredGameVersion(versions, groupKey) {
+  const language = new Intl.DisplayNames(["en"], { type: "language" }).of(navigator.language.split("-")[0]);
+  return chooseGameVersion(versions, readChosenVersion(groupKey), language);
+}
+
+export const chosenGameVersionUpdatedEvent = "scummweb:game-version-updated";
+
 export function rememberGameVersion(groupKey, versionKey) {
-  try { window.localStorage.setItem(`scummweb.version:${groupKey}`, versionKey); } catch { /* Play works without preferences. */ }
+  try {
+    if (readChosenVersion(groupKey) === versionKey) return;
+    window.localStorage.setItem(`scummweb.version:${groupKey}`, versionKey);
+    window.dispatchEvent(new Event(chosenGameVersionUpdatedEvent));
+  } catch { /* Play works without preferences. */ }
 }
 
 const saveNamespaces = new Map();

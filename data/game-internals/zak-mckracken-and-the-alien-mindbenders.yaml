@@ -1,0 +1,32 @@
+# English Amiga V2.
+# Native evidence: scripts and room directory from the detected edition.
+# Script 42 marks object 55 after the guru teaches Zak to use the blue crystal.
+# The activated device runs script 66 and chains to the victory epilogue in script 149.
+schema_version: 1
+game: zak-mckracken-and-the-alien-mindbenders
+engine_id: scumm
+edition:
+  game_id: zak
+  index_md5: e94c7cc3686fce406d3c91b5eae5a72d
+telemetry: snapshot
+scoring: highest_stage
+rooms:
+  guru: 19
+variables:
+  device-script: { bank: running_scripts, index: 66 }
+  victory-script: { bank: running_scripts, index: 149 }
+flags:
+  learned-blue-crystal: { bank: object_state, index: 55, mask: 0x04 }
+milestones:
+  - id: guru
+    label: Reached the guru
+    when: { room: guru }
+  - id: learned-blue-crystal
+    label: Learned to use the blue crystal
+    when: { flag: learned-blue-crystal }
+  - id: activated-device
+    label: Activated the Skolarian device
+    when: { variable: device-script, equals: 1 }
+  - id: winning-ending
+    label: Stopped the Caponians
+    when: { variable: victory-script, equals: 1 }
