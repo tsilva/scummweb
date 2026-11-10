@@ -13,7 +13,6 @@ concurrency:
 env:
   VERCEL_ORG_ID: team_eE2Iv7IMqPOx8ZVN2xNfR2f0
   VERCEL_PROJECT_ID: prj_I5MH0YVxKnamBHxfmq46QAVANJkt
-  VERCEL_SCOPE: tsilvas-projects
 
 jobs:
   stage:
@@ -45,7 +44,7 @@ jobs:
           set -euo pipefail
           test -n "$VERCEL_TOKEN"
           mkdir -p .vercel
-          vercel api "/v9/projects/$VERCEL_PROJECT_ID?teamId=$VERCEL_ORG_ID" --scope "$VERCEL_SCOPE" |
+          vercel api "/v9/projects/$VERCEL_PROJECT_ID?teamId=$VERCEL_ORG_ID" |
             jq -e --arg project "$VERCEL_PROJECT_ID" --arg team "$VERCEL_ORG_ID" '
               select(.id == $project and .accountId == $team and .name == "scummweb"
                 and .framework == "nextjs" and .rootDirectory == null and .nodeVersion == "24.x")
@@ -53,11 +52,11 @@ jobs:
                  settings: {framework, nodeVersion, buildCommand, installCommand, outputDirectory,
                             rootDirectory, directoryListing, analyticsId}}
             ' > .vercel/project.json
-          dsn_id=$(vercel api "/v10/projects/$VERCEL_PROJECT_ID/env?teamId=$VERCEL_ORG_ID" --scope "$VERCEL_SCOPE" |
+          dsn_id=$(vercel api "/v10/projects/$VERCEL_PROJECT_ID/env?teamId=$VERCEL_ORG_ID" |
             jq -er '[.envs[] | select(.key == "NEXT_PUBLIC_SENTRY_DSN" and .type == "encrypted"
               and .target == ["production"] and .gitBranch == null)] | select(length == 1)
               | .[0].id | select(test("^[a-zA-Z0-9_-]+$"))')
-          vercel api "/v1/projects/$VERCEL_PROJECT_ID/env/$dsn_id?teamId=$VERCEL_ORG_ID" --scope "$VERCEL_SCOPE" |
+          vercel api "/v1/projects/$VERCEL_PROJECT_ID/env/$dsn_id?teamId=$VERCEL_ORG_ID" |
             jq -er 'select(.key == "NEXT_PUBLIC_SENTRY_DSN") | .value
               | select(test("^https://[a-f0-9]+@[^/[:space:]]+\\.sentry\\.io/[0-9]+$"))
               | "NEXT_PUBLIC_SENTRY_DSN=" + .' >> "$GITHUB_ENV"
@@ -86,7 +85,7 @@ jobs:
         run: |
           set -euo pipefail
           deployment_url=$(vercel deploy --prebuilt --prod --skip-domain --archive=tgz --yes --non-interactive \
-            --scope "$VERCEL_SCOPE" --meta "scummwebBuildCommit=$GITHUB_SHA" \
+            --meta "scummwebBuildCommit=$GITHUB_SHA" \
             --meta "scummwebBuildRun=$GITHUB_RUN_ID")
           [[ "$deployment_url" =~ ^https://scummweb-[a-z0-9-]+-tsilvas-projects\.vercel\.app$ ]]
           printf '%s\n\n%s\n' "Staged prebuilt deployment for $GITHUB_SHA" "$deployment_url" >> "$GITHUB_STEP_SUMMARY"
