@@ -2,6 +2,12 @@ name: Stage prebuilt deployment
 
 on:
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      promote:
+        description: Promote the verified deployment to the production domains
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -16,7 +22,9 @@ env:
 
 jobs:
   stage:
-    if: github.ref == 'refs/heads/main'
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (!inputs.promote || github.workflow_ref == 'tsilva/scummweb/.github/workflows/production-delivery.yml@refs/heads/main')
     runs-on: ubuntu-24.04
     environment: Production
     timeout-minutes: 25
@@ -68,24 +76,68 @@ jobs:
           key: scummweb-social-cards-linux-v1-${{ github.sha }}
           restore-keys: scummweb-social-cards-linux-v1-
 
+      - name: Install application dependencies from the lockfile
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
       - name: Build the Vercel artifact
         env:
           VERCEL_ENV: production
           VERCEL_TARGET_ENV: production
           SCUMMVM_ASSET_VERSION: ${{ github.sha }}
+          SCUMMWEB_DEPLOYMENT_ID: gha-${{ github.run_id }}-${{ github.run_attempt }}
+          REQUIRE_SOURCE_MAPS: ${{ inputs.promote || false }}
+          SENTRY_AUTH_TOKEN: ${{ inputs.promote && secrets.SENTRY_AUTH_TOKEN || '' }}
         run: |
-          pnpm install --frozen-lockfile --ignore-scripts
-          vercel build --prod --non-interactive
+          set -euo pipefail
+          if [[ "$REQUIRE_SOURCE_MAPS" == true ]]; then
+            test -n "$SENTRY_AUTH_TOKEN" || { echo 'Missing Production SENTRY_AUTH_TOKEN' >&2; exit 1; }
+            vercel build --prod --non-interactive 2>&1 | awk '
+              { print }
+              /Successfully uploaded source maps to Sentry/ { uploaded=1 }
+              END { if (!uploaded) { print "Sentry source map upload was not confirmed" > "/dev/stderr"; exit 1 } }
+            '
+          else
+            vercel build --prod --non-interactive
+          fi
           test -s .vercel/output/config.json
+          jq -e --arg id "$SCUMMWEB_DEPLOYMENT_ID" '.deploymentId == $id' .vercel/output/config.json
           test -f .vercel/output/static/scummvm.html
 
       - name: Stage the artifact without assigning production domains
+        id: deploy
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           set -euo pipefail
-          deployment_url=$(vercel deploy --prebuilt --prod --skip-domain --archive=tgz --yes --non-interactive \
+          result=$(vercel deploy --prebuilt --prod --skip-domain --archive=tgz --yes --non-interactive \
             --meta "scummwebBuildCommit=$GITHUB_SHA" \
             --meta "scummwebBuildRun=$GITHUB_RUN_ID")
+          deployment_url=$(jq -er 'select(.status == "ok") | .deployment.url' <<< "$result")
+          deployment_id=$(jq -er 'select(.status == "ok") | .deployment.id' <<< "$result")
           [[ "$deployment_url" =~ ^https://scummweb-[a-z0-9-]+-tsilvas-projects\.vercel\.app$ ]]
+          [[ "$deployment_id" =~ ^dpl_[A-Za-z0-9]+$ ]]
+          printf 'url=%s\n' "$deployment_url" >> "$GITHUB_OUTPUT"
+          printf 'id=%s\n' "$deployment_id" >> "$GITHUB_OUTPUT"
           printf '%s\n\n%s\n' "Staged prebuilt deployment for $GITHUB_SHA" "$deployment_url" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Verify the staged deployment
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
+          DEPLOYMENT_ID: ${{ steps.deploy.outputs.id }}
+        run: python3 scripts/verify-prebuilt-deployment.py "$DEPLOYMENT_URL" "$DEPLOYMENT_ID"
+
+      - name: Promote the verified deployment
+        if: inputs.promote
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          DEPLOYMENT_ID: ${{ steps.deploy.outputs.id }}
+        run: |
+          set -euo pipefail
+          current_main=$(gh api repos/tsilva/scummweb/git/ref/heads/main --jq .object.sha)
+          test "$current_main" = "$GITHUB_SHA" || { echo 'A newer commit is on main' >&2; exit 1; }
+          vercel promote "$DEPLOYMENT_ID" --yes --non-interactive
+          vercel api "/v9/projects/$VERCEL_PROJECT_ID?teamId=$VERCEL_ORG_ID" |
+            jq -e --arg id "$DEPLOYMENT_ID" '.targets.production.id == $id
+              and (.targets.production.alias | index("scummweb.tsilva.eu") != null)'
