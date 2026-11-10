@@ -1461,10 +1461,12 @@ generated directory. Missing or corrupted images are repaired. Missing source
 artwork or a failed render fails the command, preserving the last valid manifest.
 
 After editing catalog copy or artwork, run the generator and commit the resulting
-manifest with the source changes. JPEG outputs are ignored build artifacts;
-clean CI and Vercel builds regenerate missing cards from their verified sources.
-Builds reconcile again to catch missed changes. Rendering uses the
-pinned Next.js image renderer and Sharp. The export uses JPEG quality 88 with
+manifest with the source changes. JPEG outputs are ignored build artifacts.
+Vercel builds reuse verified JPEGs from `.next/cache/scummweb-social-cards/` and
+stage them into `public/social-cards/`. On a cache hit, the published artwork
+checksum identifies the source without a download. Builds render missing,
+changed, or corrupt cards from their verified sources and reconcile the manifest.
+Rendering uses the pinned Next.js image renderer and Sharp. The export uses JPEG quality 88 with
 4:4:4 chroma and a 600,000-byte ceiling. It needs no service credentials.
 
 Metadata points directly to content-versioned JPEG URLs with immutable caching.

@@ -1,0 +1,92 @@
+name: Stage prebuilt deployment
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: scummweb-prebuilt-delivery
+  cancel-in-progress: false
+
+env:
+  VERCEL_ORG_ID: team_eE2Iv7IMqPOx8ZVN2xNfR2f0
+  VERCEL_PROJECT_ID: prj_I5MH0YVxKnamBHxfmq46QAVANJkt
+  VERCEL_SCOPE: tsilvas-projects
+
+jobs:
+  stage:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    environment: Production
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v6.3.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Install the pinned Vercel CLI
+        run: |
+          npm install --prefix "$RUNNER_TEMP/vercel-cli" --no-save --ignore-scripts --min-release-age=7 vercel@65.4.0
+          echo "$RUNNER_TEMP/vercel-cli/node_modules/.bin" >> "$GITHUB_PATH"
+          corepack enable
+          corepack prepare pnpm@10.27.0 --activate
+
+      - name: Read project settings and public build configuration
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "$VERCEL_TOKEN"
+          mkdir -p .vercel
+          vercel api "/v9/projects/$VERCEL_PROJECT_ID?teamId=$VERCEL_ORG_ID" --scope "$VERCEL_SCOPE" |
+            jq -e --arg project "$VERCEL_PROJECT_ID" --arg team "$VERCEL_ORG_ID" '
+              select(.id == $project and .accountId == $team and .name == "scummweb"
+                and .framework == "nextjs" and .rootDirectory == null and .nodeVersion == "24.x")
+              | {projectId: .id, orgId: .accountId, projectName: .name,
+                 settings: {framework, nodeVersion, buildCommand, installCommand, outputDirectory,
+                            rootDirectory, directoryListing, analyticsId}}
+            ' > .vercel/project.json
+          dsn_id=$(vercel api "/v10/projects/$VERCEL_PROJECT_ID/env?teamId=$VERCEL_ORG_ID" --scope "$VERCEL_SCOPE" |
+            jq -er '[.envs[] | select(.key == "NEXT_PUBLIC_SENTRY_DSN" and .type == "encrypted"
+              and .target == ["production"] and .gitBranch == null)] | select(length == 1)
+              | .[0].id | select(test("^[a-zA-Z0-9_-]+$"))')
+          vercel api "/v1/projects/$VERCEL_PROJECT_ID/env/$dsn_id?teamId=$VERCEL_ORG_ID" --scope "$VERCEL_SCOPE" |
+            jq -er 'select(.key == "NEXT_PUBLIC_SENTRY_DSN") | .value
+              | select(test("^https://[a-f0-9]+@[^/[:space:]]+\\.sentry\\.io/[0-9]+$"))
+              | "NEXT_PUBLIC_SENTRY_DSN=" + .' >> "$GITHUB_ENV"
+
+      - name: Restore social cards
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae1 # v5.0.5
+        with:
+          path: .next/cache/scummweb-social-cards
+          key: scummweb-social-cards-linux-v1-${{ github.sha }}
+          restore-keys: scummweb-social-cards-linux-v1-
+
+      - name: Build the Vercel artifact
+        env:
+          VERCEL_ENV: production
+          VERCEL_TARGET_ENV: production
+          SCUMMVM_ASSET_VERSION: ${{ github.sha }}
+        run: |
+          pnpm install --frozen-lockfile --ignore-scripts
+          vercel build --prod --non-interactive
+          test -s .vercel/output/config.json
+          test -f .vercel/output/static/scummvm.html
+
+      - name: Stage the artifact without assigning production domains
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          set -euo pipefail
+          deployment_url=$(vercel deploy --prebuilt --prod --skip-domain --archive=tgz --yes --non-interactive \
+            --scope "$VERCEL_SCOPE" --meta "scummwebBuildCommit=$GITHUB_SHA" \
+            --meta "scummwebBuildRun=$GITHUB_RUN_ID")
+          [[ "$deployment_url" =~ ^https://scummweb-[a-z0-9-]+-tsilvas-projects\.vercel\.app$ ]]
+          printf '%s\n\n%s\n' "Staged prebuilt deployment for $GITHUB_SHA" "$deployment_url" >> "$GITHUB_STEP_SUMMARY"

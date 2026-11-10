@@ -10,7 +10,7 @@ import sharp from "sharp";
 import { getBundledGameLibrary } from "../lib/catalog.mjs";
 import { getSocialCardData } from "../lib/social-card-data.mjs";
 import { getRecognizedGames } from "../app/recognized-games.mjs";
-import { readArtworkFile } from "./artwork-files.mjs";
+import { getPublishedArtworkEntry, readArtworkFile } from "./artwork-files.mjs";
 
 const rootDir = fileURLToPath(new URL("../", import.meta.url));
 const generatedName = /^[a-z0-9]+(?:-[a-z0-9]+)*-[a-f0-9]{64}\.(?:jpg|png)$/;
@@ -35,19 +35,33 @@ async function assertDirectory(directory) {
   if (!(await fs.lstat(directory)).isDirectory()) throw new Error(`Expected directory: ${directory}`);
 }
 
+function parseManifest(bytes) {
+  try {
+    const manifest = JSON.parse(bytes);
+    if (manifest?.version === 1 && manifest.cards && typeof manifest.cards === "object"
+      && !Array.isArray(manifest.cards)) return manifest;
+  } catch (error) {
+    if (!(error instanceof SyntaxError)) throw error;
+  }
+  return null;
+}
+
 export async function generateSocialCards({
   root = rootDir,
   games,
   render,
   rendererVersion,
+  cacheDir = process.env.VERCEL === "1" ? path.join(root, ".next/cache/scummweb-social-cards") : null,
 } = {}) {
-  const outputDir = path.join(root, "public/social-cards");
+  const publicDir = path.join(root, "public/social-cards");
+  const outputDir = cacheDir ?? publicDir;
   const manifestPath = path.join(root, "data/social-cards.json");
   const lockDir = path.join(root, "data/.social-cards.lock");
   await assertDirectory(path.dirname(manifestPath));
   await fs.mkdir(lockDir); // Fail explicitly if another generator is active.
   try {
-    await assertDirectory(outputDir);
+    await assertDirectory(publicDir);
+    if (cacheDir) await assertDirectory(cacheDir);
     if (!games) {
       const library = JSON.parse(await fs.readFile(path.join(root, "scummvm-shell/games.json"), "utf8"));
       games = getRecognizedGames(getBundledGameLibrary(library).games);
@@ -57,10 +71,13 @@ export async function generateSocialCards({
       next: nextPackage.version, react: reactPackage.version, sharp: sharp.versions.sharp,
     }))]));
     const previousBytes = await readOptional(manifestPath);
-    const previous = previousBytes ? JSON.parse(previousBytes) : { version: 1, cards: {} };
-    if (previous.version !== 1 || !previous.cards || typeof previous.cards !== "object" || Array.isArray(previous.cards)) {
-      throw new Error("Unsupported social card manifest");
-    }
+    const previous = previousBytes ? parseManifest(previousBytes) : { cards: {} };
+    if (!previous) throw new Error("Unsupported social card manifest");
+    const cacheManifestPath = cacheDir && path.join(cacheDir, "manifest.json");
+    const cachedBytes = cacheManifestPath && await readOptional(cacheManifestPath);
+    const cached = cachedBytes && parseManifest(cachedBytes);
+    const artworkManifestBytes = cacheDir && await readOptional(path.join(root, "data/artwork-storage.json"));
+    const artworkManifest = artworkManifestBytes && JSON.parse(artworkManifestBytes);
     const cards = {};
     const jobs = [];
     // Resolve every input before rendering or pruning anything.
@@ -69,15 +86,20 @@ export async function generateSocialCards({
         throw new Error(`Invalid or duplicate game slug: ${game.slug}`);
       }
       const card = getSocialCardData(game);
+      const launcherArtwork = card.artwork?.startsWith("/launcher/");
+      const publishedArtwork = launcherArtwork && getPublishedArtworkEntry(artworkManifest, card.artwork);
       let artwork = null;
       if (card.artwork) {
-        const assetRoot = path.join(root, card.artwork.startsWith("/launcher/") ? "scummvm-shell" : "public");
+        const assetRoot = path.join(root, launcherArtwork ? "scummvm-shell" : "public");
         const assetPath = path.resolve(assetRoot, `.${decodeURIComponent(card.artwork)}`);
         if (!assetPath.startsWith(`${assetRoot}${path.sep}`)) throw new Error("Artwork escapes asset root");
-        artwork = card.artwork.startsWith("/launcher/")
-          ? await readArtworkFile(root, card.artwork) : await fs.readFile(assetPath);
+        if (!publishedArtwork) {
+          artwork = launcherArtwork ? await readArtworkFile(root, card.artwork) : await fs.readFile(assetPath);
+        }
       }
-      const inputHash = hash(JSON.stringify({ rendererVersion, card, artworkHash: artwork ? hash(artwork) : null }));
+      // Published artwork is immutable. A verified cached card already used these source bytes.
+      const artworkHash = publishedArtwork?.sha256 ?? (artwork ? hash(artwork) : null);
+      const inputHash = hash(JSON.stringify({ rendererVersion, card, artworkHash }));
       const file = `${game.slug}-${inputHash}.jpg`;
       const existingPath = path.join(outputDir, file);
       const stat = await fs.lstat(existingPath).catch((error) => {
@@ -86,10 +108,13 @@ export async function generateSocialCards({
       });
       if (stat && !stat.isFile()) throw new Error(`Expected regular social card: ${file}`);
       const existing = stat ? await fs.readFile(existingPath) : null;
-      const prior = previous.cards[game.slug];
+      const prior = (cached ?? previous).cards[game.slug];
       const reusable = existing && prior?.inputHash === inputHash && prior.file === file && hash(existing) === prior.imageHash;
       cards[game.slug] = reusable ? prior : { file, inputHash };
-      if (!reusable) jobs.push({ slug: game.slug, card, artwork, file });
+      if (!reusable) {
+        if (publishedArtwork) artwork = await readArtworkFile(root, card.artwork, undefined, { manifest: artworkManifest });
+        jobs.push({ slug: game.slug, card, artwork, file });
+      }
     }
     for (const job of jobs) {
       render ??= (await import("./social-card-template.mjs")).renderSocialCard;
@@ -103,13 +128,21 @@ export async function generateSocialCards({
       cards[job.slug].imageHash = hash(image);
     }
     const manifest = `${JSON.stringify({ version: 1, cards }, null, 2)}\n`;
+    if (cacheDir) {
+      for (const { file } of Object.values(cards)) {
+        await writeAtomic(path.join(publicDir, file), await fs.readFile(path.join(cacheDir, file)));
+      }
+      if (manifest !== cachedBytes?.toString()) await writeAtomic(cacheManifestPath, manifest);
+    }
     if (manifest !== previousBytes?.toString()) await writeAtomic(manifestPath, manifest);
     const wanted = new Set(Object.values(cards).map((card) => card.file));
     let removed = 0;
-    for (const entry of await fs.readdir(outputDir, { withFileTypes: true })) {
-      if (entry.isFile() && generatedName.test(entry.name) && !wanted.has(entry.name)) {
-        await fs.unlink(path.join(outputDir, entry.name));
-        removed += 1;
+    for (const directory of cacheDir ? [publicDir, cacheDir] : [publicDir]) {
+      for (const entry of await fs.readdir(directory, { withFileTypes: true })) {
+        if (entry.isFile() && generatedName.test(entry.name) && !wanted.has(entry.name)) {
+          await fs.unlink(path.join(directory, entry.name));
+          if (directory === publicDir) removed += 1;
+        }
       }
     }
     return { generated: jobs.length, reused: games.length - jobs.length, removed };

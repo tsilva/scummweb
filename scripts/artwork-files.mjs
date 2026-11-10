@@ -4,17 +4,22 @@ import path from "node:path";
 
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
 
-// Build-time only. Browsers always request published artwork directly from R2.
-export async function readArtworkFile(root, name, request = fetch, { manifest, cacheDownload = true } = {}) {
+export function getPublishedArtworkEntry(manifest, name) {
   if (!/^\/launcher\/(?:(?:responsive|optimized)\/)?[a-z0-9-]+\.(?:webp|png|avif)$/.test(name)) {
     throw new Error(`Invalid artwork path: ${name}`);
   }
-  manifest ??= await fs.readFile(path.join(root, "data/artwork-storage.json"), "utf8")
-    .then(JSON.parse).catch((error) => { if (error.code !== "ENOENT") throw error; return null; });
   const entry = manifest?.published && manifest.files[name];
   if (entry && (!/^[a-f0-9]{64}$/.test(entry.sha256) || !Number.isSafeInteger(entry.bytes) || entry.bytes < 1)) {
     throw new Error("Invalid artwork checksum metadata");
   }
+  return entry;
+}
+
+// Build-time only. Browsers always request published artwork directly from R2.
+export async function readArtworkFile(root, name, request = fetch, { manifest, cacheDownload = true } = {}) {
+  manifest ??= await fs.readFile(path.join(root, "data/artwork-storage.json"), "utf8")
+    .then(JSON.parse).catch((error) => { if (error.code !== "ENOENT") throw error; return null; });
+  const entry = getPublishedArtworkEntry(manifest, name);
   const source = path.join(root, "scummvm-shell", name.slice(1));
   const local = await fs.readFile(source).catch((error) => { if (error.code !== "ENOENT") throw error; return null; });
   if (!entry) {
