@@ -38,7 +38,9 @@ The command uses public range reads.
 ### Player controls
 
 - **Esc** or **Open game menu** opens the shared menu. **Esc** returns from a
-  picker or closes the menu. The game pauses at a supported update boundary.
+  picker or closes the menu. Clicking or tapping outside the menu closes it
+  when no save or load is in progress. The game pauses at a supported update
+  boundary.
   Sound Volume starts at 100% and Game Speed at 1.0× each launch. Changes apply
   for the current session. **Resume Game** returns focus to the game, and
   **Quit Game** returns to the game page or library.
