@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "exceptions": {
+    "dependencies.releaseAge": {
+      "npm:@next/env@16.4.5#age": "Audited Next.js 16.4.5 security release (vercel/next.js@4e5335a). Verified registry signatures, source attestations, and package contents. This release family is normally eligible on 2026-11-10 at 18:01:55 UTC.",
+      "npm:@next/swc-darwin-arm64@16.4.5#age": "Audited Next.js 16.4.5 security release (vercel/next.js@4e5335a). Verified registry signatures, source attestations, and package contents. This release family is normally eligible on 2026-11-10 at 18:01:55 UTC.",
+      "npm:@next/swc-darwin-x64@16.4.5#age": "Audited Next.js 16.4.5 security release (vercel/next.js@4e5335a). Verified registry signatures, source attestations, and package contents. This release family is normally eligible on 2026-11-10 at 18:01:55 UTC.",
+      "npm:@next/swc-linux-arm64-gnu@16.4.5#age": "Audited Next.js 16.4.5 security release (vercel/next.js@4e5335a). Verified registry signatures, source attestations, and package contents. This release family is normally eligible on 2026-11-10 at 18:01:55 UTC.",
+      "npm:@next/swc-linux-arm64-musl@16.4.5#age": "Audited Next.js 16.4.5 security release (vercel/next.js@4e5335a). Verified registry signatures, source attestations, and package contents. This release family is normally eligible on 2026-11-10 at 18:01:55 UTC.",
+      "npm:@next/swc-linux-x64-gnu@16.4.5#age": "Audited Next.js 16.4.5 security release (vercel/next.js@4e5335a). Verified registry signatures, source attestations, and package contents. This release family is normally eligible on 2026-11-10 at 18:01:55 UTC.",
+      "npm:@next/swc-linux-x64-musl@16.4.5#age": "Audited Next.js 16.4.5 security release (vercel/next.js@4e5335a). Verified registry signatures, source attestations, and package contents. This release family is normally eligible on 2026-11-10 at 18:01:55 UTC.",
+      "npm:@next/swc-win32-arm64-msvc@16.4.5#age": "Audited Next.js 16.4.5 security release (vercel/next.js@4e5335a). Verified registry signatures, source attestations, and package contents. This release family is normally eligible on 2026-11-10 at 18:01:55 UTC.",
+      "npm:@next/swc-win32-x64-msvc@16.4.5#age": "Audited Next.js 16.4.5 security release (vercel/next.js@4e5335a). Verified registry signatures, source attestations, and package contents. This release family is normally eligible on 2026-11-10 at 18:01:55 UTC.",
+      "npm:next@16.4.5#age": "Audited Next.js 16.4.5 security release (vercel/next.js@4e5335a). Verified registry signatures, source attestations, and package contents. This release family is normally eligible on 2026-11-10 at 18:01:55 UTC."
+    }
+  }
+}
