@@ -1,13 +1,13 @@
 .game-menu-drawer {
   position: fixed;
-  inset: max(5rem, calc(env(safe-area-inset-top) + 4rem)) 0 0 auto;
+  inset: 0 0 0 auto;
   box-sizing: border-box;
   width: min(25rem, 100vw);
   max-width: none;
   height: auto;
   max-height: none;
   margin: 0;
-  padding: 1rem max(1.25rem, env(safe-area-inset-right)) max(1.25rem, env(safe-area-inset-bottom)) 1.25rem;
+  padding: max(1rem, env(safe-area-inset-top)) max(1.25rem, env(safe-area-inset-right)) max(1.25rem, env(safe-area-inset-bottom)) 1.25rem;
   overflow-y: auto;
   overscroll-behavior: contain;
   border: 0;
@@ -62,11 +62,12 @@
 }
 .game-menu-header button:hover:not(:disabled) { color: var(--accent-strong); }
 
-.game-menu-actions, .game-menu-picker {
+.game-menu-actions, .game-menu-picker, .game-menu-session-actions {
   display: grid;
   gap: .75rem;
-  padding-top: 1.25rem;
 }
+
+.game-menu-actions, .game-menu-picker { padding-top: 1.25rem; }
 
 .game-menu-drawer :is(.game-menu-outlined, .game-menu-primary) {
   display: flex;
@@ -165,7 +166,3 @@
 .game-menu-slots small { margin-top: .25rem; }
 .game-menu-note { margin: .5rem 0; }
 .game-menu-note[role="alert"] { color: #ffd7c5; }
-
-@media (max-height: 550px) and (orientation: landscape) {
-  .game-menu-drawer { inset-block-start: 0; padding-top: max(1rem, env(safe-area-inset-top)); }
-}

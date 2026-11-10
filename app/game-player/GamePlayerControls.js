@@ -179,7 +179,13 @@ export default function GamePlayerControls({
         </div>
       </div>
       {gameMenuOpen && (
-        <GameMenuDrawer frameRef={frameRef} onClose={onCloseMenu} onNativeMenu={onNativeMenu} title={title} />
+        <GameMenuDrawer
+          frameRef={frameRef}
+          onClose={onCloseMenu}
+          onExit={onExit}
+          onNativeMenu={onNativeMenu}
+          title={title}
+        />
       )}
       {compatibilityWarnings.length > 0 ? (
         <dialog
