@@ -22,7 +22,7 @@ import { dispatchGameCommand, dispatchHugoCommand, dispatchSyntheticKeypressSequ
 import { getMobileControlMode } from "./game-player/mobile-controls.mjs";
 import { getGameMenuShortcut } from "./game-player/game-menu.mjs";
 import { observeRemotePlayerInput } from "./game-player/game-mouse.mjs";
-import { enterImmersiveMode, isGameFullscreen, isTouchMobileClient } from "./game-player/immersive-mode.mjs";
+import { enterImmersiveMode, isGameFullscreen, isTouchMobileClient, observeInstalledFullscreenGestures, usesInstalledFullscreenFallback } from "./game-player/immersive-mode.mjs";
 import { observeRemoteBack } from "./game-player/remote-back.mjs";
 import { useBootState } from "./game-player/useBootState";
 import { useImmersiveMode } from "./game-player/useImmersiveMode";
@@ -180,6 +180,7 @@ export default function GameRouteFrame({
   const [exitHref, setExitHref] = useState("/");
   const [readySignal, setReadySignal] = useState(null);
   const [gameplayFrameHref, setGameplayFrameHref] = useState(null);
+  const [nativeIntroFrameHref, setNativeIntroFrameHref] = useState(null);
   const [compatibilityWarnings, setCompatibilityWarnings] = useState([]);
   const [skipIntroConsumed, setSkipIntroConsumed] = useState(false);
   const [catalogIntroLaunch, setCatalogIntroLaunch] = useState(null);
@@ -205,6 +206,7 @@ export default function GameRouteFrame({
     });
   }, [restoreRemoteFullscreen]);
   const skipIntro = isResuming || intro?.checkpointOnly ? null : intro;
+  const canSkipNativeIntro = !catalogLaunch && !isResuming && frameSrc !== null && nativeIntroFrameHref === frameSrc;
   const gameplayStarted = frameSrc !== null && gameplayFrameHref === frameSrc;
   const currentReadySignal = readySignal?.href === frameSrc ? readySignal : null;
   const bootState = useBootState({
@@ -221,14 +223,16 @@ export default function GameRouteFrame({
     // Keep the landscape lock until the mobile player has left the screen.
     if (!isTouchMobileClient()) await immersiveMode.exitImmersiveMode();
     const destination = getSafeHref(href);
-    if (catalogLaunch) window.location.replace(destination);
+    // A new document would exit the installed app's Fullscreen API session.
+    if (catalogLaunch && !usesInstalledFullscreenFallback()) window.location.replace(destination);
     else router.replace(destination);
   }, [catalogLaunch, router, immersiveMode.exitImmersiveMode]);
   const hasBootFailed = Boolean(archiveError) || bootState.hasBootFailed;
   const waitingForLandscape = immersiveMode.isTouchMobile && !immersiveMode.isLandscapeViewport;
   const showBootOverlay = !bootState.hasBootCompleted || hasBootFailed;
   const showSkipIntroBottomAction =
-    Boolean(skipIntro) && bootState.showSkipIntroButton && !gameplayStarted && !showBootOverlay && !waitingForLandscape;
+    (canSkipNativeIntro || (Boolean(skipIntro) && bootState.showSkipIntroButton)) &&
+    !gameplayStarted && !showBootOverlay && !waitingForLandscape;
   const mobileControlsReady =
     immersiveMode.isMobileViewport && !waitingForLandscape && bootState.hasBootCompleted && !hasBootFailed;
   const mobileControlMode = getMobileControlMode(currentReadySignal?.detectedGame ?? game ?? undefined);
@@ -484,6 +488,15 @@ export default function GameRouteFrame({
         }
       }
 
+      if (event.data?.type === "scummvm-intro-availability") {
+        if (!catalogLaunch && frameSrc && event.source === frameRef.current?.contentWindow &&
+            event.data.source === SCUMMWEB_FRAME_MESSAGE_SOURCE &&
+            getNormalizedFrameHref(event.data.href) === frameSrc) {
+          setNativeIntroFrameHref(event.data.available === true ? frameSrc : null);
+        }
+        return;
+      }
+
       if (event.data?.type === "scummvm-ready" || event.data?.type === "scummvm-gameplay-started") {
         const iframeWindow = frameRef.current?.contentWindow;
         const expectedFrameHref = getNormalizedFrameHref(loadArchive ? frameSrc : frameRef.current?.src || frameSrc);
@@ -561,6 +574,7 @@ export default function GameRouteFrame({
     const controller = new AbortController();
     setReadySignal(null);
     setGameplayFrameHref(null);
+    setNativeIntroFrameHref(null);
     setCompatibilityWarnings([]);
     setArchiveProgress(null);
     setArchiveCached(false);
@@ -704,6 +718,25 @@ export default function GameRouteFrame({
   }, [catalogLaunch, game?.recentGameId, target]);
 
   useEffect(() => {
+    const iframe = frameRef.current;
+    if (!iframe || !usesInstalledFullscreenFallback()) return;
+
+    let stopObserving;
+    function observeFrame() {
+      stopObserving?.();
+      const frameWindow = iframe.contentDocument?.defaultView;
+      stopObserving = frameWindow && observeInstalledFullscreenGestures(frameWindow);
+    }
+
+    observeFrame();
+    iframe.addEventListener("load", observeFrame);
+    return () => {
+      iframe.removeEventListener("load", observeFrame);
+      stopObserving?.();
+    };
+  }, [frameSrc, archiveError]);
+
+  useEffect(() => {
     let focusTimer = 0;
     let attempts = 0;
     const iframe = frameRef.current;
@@ -816,6 +849,11 @@ export default function GameRouteFrame({
   }
 
   function handleSkipIntroClick() {
+    if (canSkipNativeIntro) {
+      const frame = frameRef.current;
+      if (frame?.contentWindow?.__scummwebRequestIntroSkip?.()) focusGameCanvas(frame);
+      return;
+    }
     bootState.dismissSkipIntroButton();
 
     if (!skipIntro) {

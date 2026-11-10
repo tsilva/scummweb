@@ -1,0 +1,47 @@
+.install-prompt {
+  position: fixed;
+  z-index: 39;
+  inset-block-start: calc(5.75rem + env(safe-area-inset-top));
+  inset-inline-end: max(0.75rem, env(safe-area-inset-right));
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: min(19rem, calc(100% - 1.5rem - env(safe-area-inset-left) - env(safe-area-inset-right)));
+  padding: 0.85rem;
+  border: 1px solid var(--ghost-border);
+  border-radius: 0.5rem;
+  background: var(--surface-low);
+  box-shadow: 0 0.5rem 1.5rem #0007;
+}
+
+.install-prompt strong {
+  font-family: var(--font-display), sans-serif;
+}
+
+.install-prompt p {
+  margin: 0.25rem 0 0;
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.install-prompt .secondary-button {
+  min-height: 2.75rem;
+  margin-top: 0.65rem;
+  padding: 0 1rem;
+  background: var(--accent-strong);
+  color: var(--surface-lowest);
+}
+
+.install-prompt .nav-icon-link {
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-inline-start: auto;
+}
+
+@media (max-width: 720px) {
+  .install-prompt {
+    inset-block-start: calc(5.15rem + env(safe-area-inset-top));
+  }
+}

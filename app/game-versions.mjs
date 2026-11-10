@@ -82,12 +82,15 @@ export function formatVersionLabel(game, { showGraphics = false, showRevision = 
     .map(knownValue).filter(Boolean).join(" · ");
 }
 
+export function isDemoGame(game) {
+  return /\(Demo\)$/i.test(game.displayTitle) || /\bdemo\b/i.test(game.extra || "");
+}
+
 export function getGameFamilyKey(game) {
   const identity = game.familyId || (game.engineId && (game.gameId || game.target)
     ? `${game.engineId}:${game.gameId || game.target}` : null);
   if (!identity) return null;
-  const demo = /\(Demo\)$/i.test(game.displayTitle) || /\bdemo\b/i.test(game.extra || "");
-  return `${identity}:${demo ? "demo" : "full"}`;
+  return `${identity}:${isDemoGame(game) ? "demo" : "full"}`;
 }
 
 export function catalogGameEntries(catalog) {
