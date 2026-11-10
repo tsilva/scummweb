@@ -181,9 +181,10 @@ bootstrap_scummvm_checkout() {
     exit 1
   fi
 
-  # Check the entire series before writing. Reverse-check lets a build reuse
-  # its already patched checkout without resetting files in the vendor cache.
-  if git -C "$SCUMMVM_DIR" apply --reverse --check "${patches[@]}" 2>/dev/null; then
+  # Compare with the full series applied to the pinned tree. Reversing a
+  # multi-patch diff cannot reliably validate overlapping patch contexts.
+  if python3 "$ROOT_DIR/scripts/write_source_info.py" --verify-checkout \
+      "$SCUMMVM_DIR" "$SCUMMVM_COMMIT" 2>/dev/null; then
     return
   fi
   if ! git -C "$SCUMMVM_DIR" diff --quiet HEAD; then

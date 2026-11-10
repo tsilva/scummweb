@@ -201,3 +201,13 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
   skippable opening segment and a gameplay or selection prompt. Never use a
   bundled save against an unverified edition. An intro skip request must
   expire when its native skip point closes.
+
+## Shared game menu
+
+- Hosted players share the native save and restore boundaries with AgentSCUMM
+  but use the ordinary per-edition save path. Preserve the scoped protocol,
+  pause behavior and captions for agent launches. List occupied slots even
+  when their files are protected or hidden from the picker.
+- Keep the hosted speed multiplier on the Emscripten engine clock and delays.
+  Preserve the real audio sample rate. Apply hosted volume after SDL3 sample
+  validation so mute cannot hide invalid-sample detection.

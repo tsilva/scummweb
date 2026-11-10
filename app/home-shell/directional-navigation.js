@@ -98,21 +98,31 @@ export default function DirectionalNavigation({ initialFocus, onResumeGame }) {
       const scope = modal ?? (initialFocus === "toolbar" ? document.querySelector(".game-route-controls") : document);
       if (!scope) return;
       const current = document.activeElement;
+      const gameMenu = modal?.classList.contains("game-menu-drawer");
+      const selectable = gameMenu ? `${controls}, input[type=range]` : controls;
+      if (gameMenu && current?.matches("input[type=range]") && ["ArrowLeft", "ArrowRight"].includes(direction)) {
+        current.stepUp(direction === "ArrowRight" ? 1 : -1);
+        current.dispatchEvent(new Event("input", { bubbles: true }));
+        return;
+      }
       if (!scope.contains(current) || current === document.body) {
         if (scope === document && focusHeroAction()) return;
-        const first = [...scope.querySelectorAll(controls)].find(isAvailable);
+        const first = [...scope.querySelectorAll(selectable)].find(isAvailable);
         if (first) focusDirectionalControl(first);
         return;
       }
-      const candidates = [...scope.querySelectorAll(controls)]
+      const candidates = [...scope.querySelectorAll(selectable)]
         .filter((element) => element !== current && isAvailable(element));
       const index = directionalNeighbor(position(current), candidates.map(position), direction);
       if (index !== -1) focusDirectionalControl(candidates[index]);
     }
 
     function onKeyDown(event) {
+      const moveFromMenuSlider = root.hasAttribute("data-dpad-navigation") &&
+        event.target.matches?.(".game-menu-drawer input[type=range]") &&
+        (event.key === "ArrowUp" || event.key === "ArrowDown");
       if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey ||
-        event.target.isContentEditable || event.target.closest?.("input, textarea, select")) return;
+        event.target.isContentEditable || (!moveFromMenuSlider && event.target.closest?.("input, textarea, select"))) return;
       const directionalKey = directions.includes(event.key);
       if (initialFocus === "play" && !landingFullscreenAttempted && event.isTrusted &&
         isKnownTvBrowser(navigator) && (directionalKey ||

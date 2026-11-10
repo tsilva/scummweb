@@ -1,0 +1,224 @@
+diff --git a/backends/modular-backend.cpp b/backends/modular-backend.cpp
+--- a/backends/modular-backend.cpp
++++ b/backends/modular-backend.cpp
+@@ -37,6 +37,7 @@
+ #include "common/savefile.h"
+ #include "engines/engine.h"
+ #include "engines/metaengine.h"
++#include "engines/scummweb-player.h"
+ 
+ extern "C" void scummweb_refresh_saves();
+ 
+@@ -91,9 +92,12 @@
+ 			break;
+ 
+ 		const bool loading = control > maxSlot;
+-		const int slot = loading ? control - maxSlot : control;
++		const bool player = scummwebIsPlayerControl();
++		const int slot = player && control == 2 * maxSlot + 1 ? 0
++			: loading ? control - maxSlot : control;
+ 		Common::String failure;
+-		if (slot < 1 || slot > maxSlot || slot == autoSlot) {
++		if (slot < (player && loading ? 0 : 1) || slot > maxSlot ||
++				(slot == autoSlot && (!player || !loading))) {
+ 			failure = "Invalid manual save slot";
+ 		} else if (loading ? !canLoad || !engine->canLoadGameStateCurrently()
+ 				: !canSave || !engine->canSaveGameStateCurrently()) {
+@@ -109,12 +113,15 @@
+ 					break;
+ 				}
+ 			}
+-			if (locked || (loading && !found &&
+-					!g_system->getSavefileManager()->exists(engine->getSaveStateName(slot)))) {
++			const bool exists = found || g_system->getSavefileManager()->exists(engine->getSaveStateName(slot));
++			const bool newSave = !loading && player && EM_ASM_INT({
++				return Boolean(globalThis.__scummwebPlayerIsNewSave?.());
++			});
++			if (locked || (loading && !exists) || (newSave && exists)) {
+ 				failure = "Save ID is unavailable in this run";
+ 			} else {
+ 				const Common::Error result = loading ? engine->loadGameState(slot)
+-					: engine->saveGameState(slot, Common::String::format("AgentSCUMM %d", slot));
++					: engine->saveGameState(slot, scummwebSaveCaption(slot));
+ 				if (result.getCode() != Common::kNoError) {
+ 					failure = result.getDesc();
+ 				} else if (loading) {
+diff --git a/backends/platform/sdl/emscripten/emscripten.cpp b/backends/platform/sdl/emscripten/emscripten.cpp
+--- a/backends/platform/sdl/emscripten/emscripten.cpp
++++ b/backends/platform/sdl/emscripten/emscripten.cpp
+@@ -216,6 +216,11 @@
+ 	}
+ }
+ 
++uint32 OSystem_Emscripten::getMillis(bool skipRecord) {
++	const uint32 millis = OSystem_POSIX::getMillis(skipRecord);
++	return EM_ASM_INT({ return globalThis.__scummwebPlayerMillis?.($0 >>> 0) ?? $0; }, millis);
++}
++
+ void OSystem_Emscripten::delayMillis(uint msecs) {
+ 	static uint32 lastSleep = 0;
+ 	if (msecs == 0 && getMillis() - lastSleep < 20) {
+@@ -224,7 +229,7 @@
+ #ifdef ENABLE_EVENTRECORDER
+ 	if (!g_eventRec.processDelayMillis())
+ #endif
+-	SDL_Delay(msecs);
++	SDL_Delay(EM_ASM_INT({ return globalThis.__scummwebPlayerDelay?.($0) ?? $0; }, msecs));
+ 
+ 	((EmscriptenTimerManager *)_timerManager)->checkTimers();
+ 	lastSleep = getMillis();
+diff --git a/backends/platform/sdl/emscripten/emscripten.h b/backends/platform/sdl/emscripten/emscripten.h
+--- a/backends/platform/sdl/emscripten/emscripten.h
++++ b/backends/platform/sdl/emscripten/emscripten.h
+@@ -54,6 +54,7 @@
+ #endif
+ 	Common::MutexInternal *createMutex() override;
+ 	void exportFile(const Common::Path &filename);
++	uint32 getMillis(bool skipRecord = false) override;
+ 	void delayMillis(uint msecs) override;
+ 	void init() override;
+ 	void addSysArchivesToSearchSet(Common::SearchSet &s, int priority) override;
+diff --git a/base/main.cpp b/base/main.cpp
+--- a/base/main.cpp
++++ b/base/main.cpp
+@@ -229,11 +229,17 @@
+ 		supported = false;
+ 	EM_ASM({ if (globalThis.__scummwebBeginSaveScan) globalThis.__scummwebBeginSaveScan(UTF8ToString($0), UTF8ToString($1), UTF8ToString($2), $3, UTF8ToString($4)); },
+ 		engineId.c_str(), gameId.c_str(), target.c_str(), supported, extra.c_str());
+-	if (supported) {
++	const bool playerListing = meta.hasFeature(MetaEngine::kSupportsListSaves) &&
++		EM_ASM_INT({ return Boolean(globalThis.scummwebPlayerControls); });
++	if (supported || playerListing) {
+ 		const SaveStateList saves = meta.listSaves(target.c_str());
+ 		for (const auto &save : saves) {
+ 			const int slot = save.getSaveSlot();
+-			if (slot < 0 || slot > meta.getMaximumSaveSlot() || save.getLocked())
++			if (slot < 0 || slot > meta.getMaximumSaveSlot())
++				continue;
++			if (playerListing)
++				EM_ASM({ globalThis.__scummwebRecordOccupiedSave?.($0); }, slot);
++			if (save.getLocked())
+ 				continue;
+ 			// These are restart checkpoints, not player progress.
+ 			if (engineId == "kyra" && slot == 0 && (gameId == "kyra1" || gameId == "kyra2" || gameId == "kyra3"))
+@@ -252,8 +258,12 @@
+ 			const bool exists = file && file->size() > 0;
+ 			delete file;
+ 			// SCI, Cine and Pegasus can list a nonexistent autosave placeholder.
+-			if (exists)
+-				EM_ASM({ if (globalThis.__scummwebAddSave) globalThis.__scummwebAddSave($0, UTF8ToString($1)); }, slot, filename.c_str());
++			if (exists) {
++				EM_ASM({
++					globalThis.__scummwebAddSave?.($0, UTF8ToString($1), UTF8ToString($2), Boolean($3));
++				}, slot, filename.c_str(), save.getDescription().c_str(),
++					!save.getWriteProtectedFlag() && slot != meta.getAutosaveSlot());
++			}
+ 		}
+ 	}
+ 	return EM_ASM_INT({ return globalThis.__scummwebEndSaveScan ? globalThis.__scummwebEndSaveScan() : -1; });
+diff --git a/engines/queen/queen.cpp b/engines/queen/queen.cpp
+--- a/engines/queen/queen.cpp
++++ b/engines/queen/queen.cpp
+@@ -21,6 +21,7 @@
+ 
+ #ifdef __EMSCRIPTEN__
+ #include "engines/scummweb-telemetry.h"
++#include "engines/scummweb-player.h"
+ 
+ #include <emscripten.h>
+ #endif
+@@ -138,12 +139,15 @@
+ 	if (!_agentEnabled || _agentRestoring)
+ 		return;
+ 
+-	const int maxManualSlot = getAutosaveSlot() - 1;
++	const bool player = scummwebIsPlayerControl();
++	if (player && !canChangeState)
++		return;
++	const int maxSlot = getAutosaveSlot() - (player ? 0 : 1);
+ 	bool held = false;
+ 	while (!shouldQuit()) {
+ 		const int control = EM_ASM_INT({
+-			return globalThis.__scummwebAgentBoundary($0, $1);
+-		}, _agentCompletedTick, maxManualSlot);
++			return globalThis.__scummwebAgentBoundary($0, $1, $2);
++		}, _agentCompletedTick, maxSlot, player ? getAutosaveSlot() : 0);
+ 		_agentCompletedTick = false;
+ 		if (control < 0) {
+ 			held = true;
+@@ -156,14 +160,15 @@
+ 			return;
+ 		}
+ 
+-		const bool loading = control > maxManualSlot;
+-		const int slot = loading ? control - maxManualSlot : control;
++		const bool loading = control > maxSlot;
++		const int slot = player && control == 2 * maxSlot + 1 ? 0
++			: loading ? control - maxSlot : control;
+ 		Common::String failure;
+ 		if (!canChangeState || (loading ? !canLoadGameStateCurrently() : !canSaveGameStateCurrently())) {
+ 			failure = loading ? "Cannot load in the current scene" : "Cannot save in the current scene";
+ 		} else {
+ 			const Common::Error result = loading ? loadGameState(slot)
+-				: saveGameState(slot, Common::String::format("AgentSCUMM %d", slot));
++				: saveGameState(slot, scummwebSaveCaption(slot));
+ 			if (result.getCode() != Common::kNoError) {
+ 				failure = result.getDesc();
+ 			} else if (loading) {
+diff --git a/engines/scummweb-player.h b/engines/scummweb-player.h
+new file mode 100644
+--- /dev/null
++++ b/engines/scummweb-player.h
+@@ -0,0 +1,22 @@
++// ScummWEB's hosted player reuses the native save boundaries without changing
++// the AgentSCUMM protocol or naming.
++#ifndef ENGINES_SCUMMWEB_PLAYER_H
++#define ENGINES_SCUMMWEB_PLAYER_H
++
++#include <emscripten.h>
++#include "common/str.h"
++
++inline bool scummwebIsPlayerControl() {
++	return EM_ASM_INT({ return Boolean(globalThis.scummwebPlayerControls); });
++}
++
++inline Common::String scummwebSaveCaption(int slot) {
++	char caption[128] = {};
++	EM_ASM({
++		const caption = globalThis.__scummwebPlayerSaveCaption?.($0);
++		if (caption) stringToUTF8(caption, $1, $2);
++	}, slot, caption, sizeof(caption));
++	return caption[0] ? Common::String(caption) : Common::String::format("AgentSCUMM %d", slot);
++}
++
++#endif
+diff --git a/engines/sky/sky.cpp b/engines/sky/sky.cpp
+--- a/engines/sky/sky.cpp
++++ b/engines/sky/sky.cpp
+@@ -20,6 +20,9 @@
+  */
+ 
+ #include "engines/scummweb-telemetry.h"
++#ifdef __EMSCRIPTEN__
++#include "engines/scummweb-player.h"
++#endif
+ 
+ #include "backends/keymapper/keymapper.h"
+ 
+@@ -265,13 +268,14 @@
+ 		}
+ 		if (control > 0) {
+ 			const bool loading = control > MAX_SAVE_GAMES;
+-			const int slot = loading ? control - MAX_SAVE_GAMES : control;
++			const int slot = scummwebIsPlayerControl() && control == 2 * MAX_SAVE_GAMES + 1
++				? 0 : loading ? control - MAX_SAVE_GAMES : control;
+ 			Common::String failure;
+ 			if (loading ? !canLoadGameStateCurrently() : !canSaveGameStateCurrently(nullptr)) {
+ 				failure = loading ? "Cannot load in the current scene" : "Cannot save in the current scene";
+ 			} else {
+ 				const Common::Error saveResult = loading ? loadGameState(slot)
+-					: saveGameState(slot, Common::String::format("AgentSCUMM %d", slot));
++					: saveGameState(slot, scummwebSaveCaption(slot));
+ 				if (saveResult.getCode() != Common::kNoError) {
+ 					failure = saveResult.getDesc();
+ 				} else if (loading) {

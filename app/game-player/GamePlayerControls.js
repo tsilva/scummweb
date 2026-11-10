@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import DirectionalNavigation from "../home-shell/directional-navigation";
 import { observeControlVisibility } from "./control-visibility.mjs";
 import { clickGameMouse, setGameMouseButton } from "./game-mouse.mjs";
+import GameMenuDrawer from "./GameMenuDrawer";
 
 function TouchMouseButton({ button, frameRef }) {
   const pressRef = useRef(null);
@@ -57,10 +58,13 @@ export default function GamePlayerControls({
   autoHide = false,
   compatibilityWarnings,
   frameRef,
+  gameMenuOpen,
   menuShortcut,
   handleControlMouseDown,
   isFullscreen,
   onExit,
+  onCloseMenu,
+  onNativeMenu,
   onOpenMenu,
   onResumeGame,
   onSkipIntro,
@@ -72,10 +76,10 @@ export default function GamePlayerControls({
   showSkipIntroAction,
   showTouchClickButtons,
   toolbarFocused,
+  title,
   touchActions,
 }) {
   const controlsRef = useRef(null);
-  const visibilityRef = useRef(null);
   const warningButtonRef = useRef(null);
   const warningDialogRef = useRef(null);
   const [visible, setVisible] = useState(true);
@@ -89,11 +93,7 @@ export default function GamePlayerControls({
       menuShortcut,
       onVisible: setVisible,
     });
-    visibilityRef.current = visibility;
-    return () => {
-      visibility.dispose();
-      visibilityRef.current = null;
-    };
+    return () => visibility.dispose();
   }, [autoHide, frameRef, menuShortcut]);
 
   const FullscreenIcon = isFullscreen ? Minimize : Maximize;
@@ -113,7 +113,7 @@ export default function GamePlayerControls({
 
   return (
     <>
-      {toolbarFocused ? <DirectionalNavigation initialFocus="toolbar" onResumeGame={onResumeGame} />
+      {toolbarFocused || gameMenuOpen ? <DirectionalNavigation initialFocus="toolbar" onResumeGame={onResumeGame} />
         : showSkipIntroAction && <DirectionalNavigation initialFocus="skip-intro" />}
       <div
         className={`game-route-controls${autoHide && !visible ? " is-idle" : ""}`}
@@ -163,12 +163,12 @@ export default function GamePlayerControls({
           ) : null}
           {showGameMenuButton ? (
             <button
+              aria-controls={gameMenuOpen ? "game-menu-drawer" : undefined}
+              aria-expanded={gameMenuOpen}
+              aria-haspopup="dialog"
               aria-label={gameMenuLabel}
               className="game-route-control-button is-menu"
-              onClick={() => {
-                visibilityRef.current?.holdForMenu();
-                onOpenMenu();
-              }}
+              onClick={onOpenMenu}
               onMouseDown={handleControlMouseDown}
               title={gameMenuLabel}
               type="button"
@@ -178,6 +178,9 @@ export default function GamePlayerControls({
           ) : null}
         </div>
       </div>
+      {gameMenuOpen && (
+        <GameMenuDrawer frameRef={frameRef} onClose={onCloseMenu} onNativeMenu={onNativeMenu} title={title} />
+      )}
       {compatibilityWarnings.length > 0 ? (
         <dialog
           aria-describedby="game-compatibility-warning-text"

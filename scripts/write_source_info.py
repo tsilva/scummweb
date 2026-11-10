@@ -35,13 +35,17 @@ BUILD_FILES = (
     "scripts/build_helpers.sh",
     "scripts/scummvm-version.sh",
     "scripts/stage_scummvm_web_shell.py",
+    "scripts/write_source_info.py",
     "scripts/write_scummvm_http_index.py",
+    "app/save-backups/filesystem.mjs",
     "web-shell/agent-controls.mjs",
     "web-shell/audio-start-control.mjs",
     "web-shell/canvas-fit.mjs",
     "web-shell/continue-saves.mjs",
     "web-shell/first-frame.mjs",
     "web-shell/game-defaults.mjs",
+    "web-shell/player-controls.mjs",
+    "web-shell/save-editions.mjs",
     "web-shell/scummvm.html",
     "web-shell/scummvm_fs.js",
     f"{SKILL}/references/patches.json",
@@ -104,6 +108,9 @@ def add_entry(archive, name, data, mode=0o644, compression=ZIP_DEFLATED):
 
 
 def main():
+    if len(sys.argv) == 4 and sys.argv[1] == "--verify-checkout":
+        verify_checkout(sys.argv[2], sys.argv[3], sorted(ROOT.glob("patches/scummvm/*.patch")))
+        return
     sources = build_sources()
     if sys.argv[1:] == ["--fingerprint"]:
         print(source_fingerprint(sources))

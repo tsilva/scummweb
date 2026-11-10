@@ -31,6 +31,7 @@ import { sendZipGameFiles } from "./home-shell/zip-game-player";
 import { recordRecentGameTarget } from "./recent-games";
 import "./styles/game-player-frame.css";
 import "./styles/game-controls.css";
+import "./styles/game-menu.css";
 
 const SCUMMWEB_FRAME_MESSAGE_SOURCE = "scummweb";
 const SCUMMWEB_ASPECT_RATIO_MESSAGE_TYPE = "scummweb-aspect-ratio";
@@ -187,6 +188,7 @@ export default function GameRouteFrame({
   const [remoteToolbarOpen, setRemoteToolbarOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const [commandSending, setCommandSending] = useState(false);
+  const [gameMenuOpen, setGameMenuOpen] = useState(false);
   const restoreFullscreenOnResume = useRef(false);
   const fullscreenExitExpected = useRef(false);
   const restoreRemoteFullscreen = useCallback(() => {
@@ -230,6 +232,9 @@ export default function GameRouteFrame({
   const hasBootFailed = Boolean(archiveError) || bootState.hasBootFailed;
   const waitingForLandscape = immersiveMode.isTouchMobile && !immersiveMode.isLandscapeViewport;
   const showBootOverlay = !bootState.hasBootCompleted || hasBootFailed;
+  useEffect(() => {
+    if (showBootOverlay || waitingForLandscape) setGameMenuOpen(false);
+  }, [frameSrc, showBootOverlay, waitingForLandscape]);
   const showSkipIntroBottomAction =
     (canSkipNativeIntro || (Boolean(skipIntro) && bootState.showSkipIntroButton)) &&
     !gameplayStarted && !showBootOverlay && !waitingForLandscape;
@@ -441,6 +446,10 @@ export default function GameRouteFrame({
         }
         return;
       }
+      if (event.data?.type === "scummvm-open-game-menu") {
+        if (frameBoot.ready && event.source === frameRef.current?.contentWindow) handleGameMenuClick();
+        return;
+      }
       if (event.data?.type === "scummvm-boot-error") {
         if (event.source && event.source === frameRef.current?.contentWindow &&
             typeof event.data.href === "string" && getNormalizedFrameHref(event.data.href) === frameSrc) {
@@ -621,6 +630,7 @@ export default function GameRouteFrame({
         const shellUrl = new URL(launchSrc, window.location.origin);
         if (target && !game?.saveNamespace) shellUrl.searchParams.set("catalogSaveTarget", target);
         shellUrl.searchParams.set("hostCompatibilityWarning", "1");
+        shellUrl.searchParams.set("hostPlayer", "1");
         if (progressVersion && progressRevision && !new URL(window.location.href).searchParams.has("agentSaveScope")) {
           shellUrl.searchParams.set("telemetry", "1");
         }
@@ -794,14 +804,22 @@ export default function GameRouteFrame({
 
   const gameMenuShortcut = getGameMenuShortcut(game);
 
-  async function handleGameMenuClick() {
-    if (!gameMenuShortcut) return;
-    if (remoteToolbarOpen) {
-      restoreRemoteFullscreen();
-      setRemoteToolbarOpen(false);
-      await new Promise((resolve) => window.requestAnimationFrame(resolve));
-    }
-    await dispatchSyntheticKeypressSequence(frameRef.current, gameMenuShortcut);
+  function handleGameMenuClick() {
+    const gameDocument = frameRef.current?.contentDocument;
+    if (gameDocument?.pointerLockElement) gameDocument.exitPointerLock?.();
+    setGameMenuOpen(true);
+  }
+
+  function closeGameMenu() {
+    setGameMenuOpen(false);
+    resumeRemoteGame();
+  }
+
+  async function openNativeMenu() {
+    closeGameMenu();
+    await new Promise((resolve) => window.requestAnimationFrame(resolve));
+    const globalMenu = { key: "F5", code: "F5", keyCode: 116, ctrlKey: true };
+    await dispatchSyntheticKeypressSequence(frameRef.current, gameMenuShortcut ?? globalMenu);
   }
 
   function handleFullscreenToggle() {
@@ -877,14 +895,14 @@ export default function GameRouteFrame({
 
   const remoteMouseReady = !showBootOverlay && !showSkipIntroBottomAction && game?.engineId !== "adl";
   useEffect(() => {
-    if (!remoteMouseReady || remoteToolbarOpen) return;
+    if (!remoteMouseReady || remoteToolbarOpen || gameMenuOpen) return;
     let active = true;
     let stop;
     void isTvBrowser(navigator).then((isTv) => {
       if (active && isTv) stop = observeRemotePlayerInput(window, frameRef.current);
     });
     return () => { active = false; stop?.(); };
-  }, [remoteMouseReady, remoteToolbarOpen, frameSrc]);
+  }, [remoteMouseReady, remoteToolbarOpen, gameMenuOpen, frameSrc]);
 
   useEffect(() => {
     let active = true;
@@ -894,7 +912,10 @@ export default function GameRouteFrame({
       stop = observeRemoteBack(window, {
         onBack() {
           const dialog = shellRef.current?.querySelector("dialog:modal");
-          if (dialog) dialog.close();
+          if (dialog) {
+            if (typeof dialog.requestClose === "function") dialog.requestClose();
+            else dialog.close();
+          }
           else if (remoteToolbarOpen) resumeRemoteGame();
           else setRemoteToolbarOpen(true);
         },
@@ -914,7 +935,7 @@ export default function GameRouteFrame({
   const showFullscreenControl =
     immersiveMode.canFullscreen && !immersiveMode.isTouchMobile && bootState.hasBootPresentationCompleted;
   const showGameMenuButton =
-    Boolean(gameMenuShortcut) && bootState.showGameMenuButton && !hasBootFailed && !waitingForLandscape;
+    bootState.showGameMenuButton && !hasBootFailed && !waitingForLandscape;
   const touchActions = showCommandInput && !showCommandForm ? (
     <button
       aria-controls="game-route-command"
@@ -933,6 +954,9 @@ export default function GameRouteFrame({
     <div
       className="game-route-shell"
       data-mobile-orientation={immersiveMode.isTouchMobile ? "landscape" : undefined}
+      onKeyDownCapture={(event) => {
+        if (gameMenuOpen && event.key === "Escape" && event.repeat) event.preventDefault();
+      }}
       ref={shellRef}
     >
       <div className="mobile-orientation-message">
@@ -954,13 +978,16 @@ export default function GameRouteFrame({
         title={title}
       />
       <GamePlayerControls
-        autoHide={bootState.hasBootPresentationCompleted && !showBootOverlay && !immersiveMode.isMobileViewport && !remoteToolbarOpen}
+        autoHide={bootState.hasBootPresentationCompleted && !showBootOverlay && !immersiveMode.isMobileViewport && !remoteToolbarOpen && !gameMenuOpen}
         compatibilityWarnings={waitingForLandscape ? [] : compatibilityWarnings}
         frameRef={frameRef}
+        gameMenuOpen={gameMenuOpen}
         menuShortcut={gameMenuShortcut}
         handleControlMouseDown={handleControlMouseDown}
         isFullscreen={immersiveMode.isFullscreen}
+        onCloseMenu={closeGameMenu}
         onExit={handleExitClick}
+        onNativeMenu={openNativeMenu}
         onOpenMenu={handleGameMenuClick}
         onResumeGame={resumeRemoteGame}
         onSkipIntro={handleSkipIntroClick}
@@ -972,6 +999,7 @@ export default function GameRouteFrame({
         showSkipIntroAction={showSkipIntroBottomAction}
         showTouchClickButtons={showTouchMouse}
         toolbarFocused={remoteToolbarOpen}
+        title={game?.displayTitle ?? game?.title ?? title}
         touchActions={touchActions}
       />
       <GameTouchCursorPad
@@ -1019,7 +1047,7 @@ export default function GameRouteFrame({
         className="game-route-frame"
         data-scummvm-route-frame="true"
         data-scummvm-target={target}
-        inert={remoteToolbarOpen || waitingForLandscape}
+        inert={gameMenuOpen || remoteToolbarOpen || waitingForLandscape}
         ref={frameRef}
         loading="eager"
         src={loadArchive ? "about:blank" : frameSrc}

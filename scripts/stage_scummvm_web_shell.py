@@ -20,6 +20,7 @@ html = html.replace("/*__SCUMMWEB_FRAME_OBSERVER__*/", (source / "first-frame.mj
 html = html.replace("/*__SCUMMWEB_CANVAS_FIT__*/", (source / "canvas-fit.mjs").read_text().replace("export ", "", 1))
 html = html.replace("/*__SCUMMWEB_GAME_DEFAULTS__*/", (source / "game-defaults.mjs").read_text().replace("export ", "", 1))
 html = html.replace("/*__SCUMMWEB_AGENT_CONTROLS__*/", (source / "agent-controls.mjs").read_text().replace("export ", ""))
+html = html.replace("/*__SCUMMWEB_PLAYER_CONTROLS__*/", (source / "player-controls.mjs").read_text().replace("export ", "", 1))
 save_editions = (source / "save-editions.mjs").read_text().replace("export ", "")
 save_filesystem = (source.parent / "app/save-backups/filesystem.mjs").read_text()
 save_filesystem = "\n".join(line for line in save_filesystem.splitlines() if not line.startswith("import "))

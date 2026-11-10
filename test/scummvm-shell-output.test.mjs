@@ -231,6 +231,8 @@ test("managed ScummVM audio glue primes and sanitizes WebAudio output", () => {
   assert.match(shellJs, /SDL3\.audio_playback\.currentPlaybackBuffer=outputBuffer/);
   assert.match(shellJs, /outputBuffer\["getChannelData"\]\(channel\)\.fill\(0\)/);
   assert.match(shellJs, /if\(!Number\.isFinite\(sample\)\)\{sample=0;\+\+abnormalSamples\}/);
+  assert.match(shellJs, /var volume=globalThis\.__scummwebPlayerVolume\?\?1;/);
+  assert.match(shellJs, /channelData\[j\]=sample\*volume/);
   assert.match(shellJs, /if\(abnormalSamples>\$1\*numChannels\/16\)/);
   assert.doesNotMatch(
     shellJs,
