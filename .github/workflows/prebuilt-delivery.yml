@@ -101,7 +101,10 @@ jobs:
           fi
           test -s .vercel/output/config.json
           jq -e --arg id "$SCUMMWEB_DEPLOYMENT_ID" '.deploymentId == $id' .vercel/output/config.json
-          test -f .vercel/output/static/scummvm.html
+          test -s .vercel/output/static/scummvm.html
+          test -s .vercel/output/static/scummvm.wasm
+          jq -e '.name == "ScummWEB"' .vercel/output/static/manifest.json
+          test -n "$(find .vercel/output/static/social-cards -name 'beneath-a-steel-sky-*.jpg' -print -quit)"
 
       - name: Stage the artifact without assigning production domains
         id: deploy
@@ -125,7 +128,19 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
           DEPLOYMENT_ID: ${{ steps.deploy.outputs.id }}
-        run: python3 scripts/verify-prebuilt-deployment.py "$DEPLOYMENT_URL" "$DEPLOYMENT_ID"
+        run: |
+          set -euo pipefail
+          vercel api "/v13/deployments/$DEPLOYMENT_ID?teamId=$VERCEL_ORG_ID" |
+            jq -e --arg host "${DEPLOYMENT_URL#https://}" --arg project "$VERCEL_PROJECT_ID" \
+              --arg commit "$GITHUB_SHA" --arg run "$GITHUB_RUN_ID" '
+                .url == $host and .projectId == $project and .target == "production"
+                and .readyState == "READY" and .alias == [] and .source == "cli"
+                and .meta.scummwebBuildCommit == $commit and .meta.scummwebBuildRun == $run
+              '
+          vercel api "/v6/deployments/$DEPLOYMENT_ID/files?teamId=$VERCEL_ORG_ID" |
+            jq -e '[.. | objects | select(.type == "lambda") | .name] as $functions
+              | ["index", "beneath-a-steel-sky", "sentry-smoke"]
+              | all(. as $name | $functions | index($name) != null)'
 
       - name: Promote the verified deployment
         if: inputs.promote
