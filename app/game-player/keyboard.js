@@ -128,7 +128,7 @@ function focusFrameContent(frame) {
   return false;
 }
 
-function prepareKeyboardDispatch(frame, input) {
+function prepareKeyboardDispatch(frame, input, { focus = true } = {}) {
   if (!frame) {
     return null;
   }
@@ -136,7 +136,7 @@ function prepareKeyboardDispatch(frame, input) {
   const descriptor = getKeyboardDescriptor(input);
   const frameWindow = frame.contentWindow;
   const KeyboardEventConstructor = frameWindow?.KeyboardEvent || window.KeyboardEvent;
-  focusFrameContent(frame);
+  if (focus) focusFrameContent(frame);
 
   let target;
 
@@ -190,8 +190,8 @@ function prepareKeyboardDispatch(frame, input) {
   };
 }
 
-export function dispatchSyntheticKeypress(frame, input) {
-  const dispatch = prepareKeyboardDispatch(frame, input);
+export function dispatchSyntheticKeypress(frame, input, options) {
+  const dispatch = prepareKeyboardDispatch(frame, input, options);
   if (!dispatch) return false;
   for (const eventType of ["keydown", "keypress", "keyup"]) dispatch(eventType);
   return true;

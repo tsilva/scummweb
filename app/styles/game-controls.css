@@ -180,6 +180,7 @@
   -webkit-appearance: none;
   user-select: none;
   -webkit-user-select: none;
+  touch-action: none;
   font:
     600
     0.95rem/1
@@ -230,54 +231,24 @@
   pointer-events: none;
 }
 
-.game-route-direction-pad {
+.game-route-touch-gamepad {
   position: fixed;
   left: max(2rem, env(safe-area-inset-left));
   bottom: max(0.75rem, env(safe-area-inset-bottom));
   z-index: 7;
-  display: grid;
-  grid-template-areas:
-    ". up ."
-    "left . right"
-    ". down .";
   pointer-events: none;
 }
-
-.game-route-direction-pad [data-direction="up"] { grid-area: up; }
-.game-route-direction-pad [data-direction="left"] { grid-area: left; }
-.game-route-direction-pad [data-direction="right"] { grid-area: right; }
-.game-route-direction-pad [data-direction="down"] { grid-area: down; }
 
 .game-route-control-button.is-gamepad {
   -webkit-tap-highlight-color: transparent;
   color: rgba(255, 255, 255, 0.9);
 }
 
-.game-route-direction-pad button {
-  touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
 .game-route-grim-gamepad {
-  position: fixed;
-  left: max(2rem, env(safe-area-inset-left));
   right: max(2rem, env(safe-area-inset-right));
-  bottom: max(0.75rem, env(safe-area-inset-bottom));
-  z-index: 7;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  pointer-events: none;
-}
-
-.game-route-stick {
-  display: grid;
-  justify-items: center;
-  gap: 0.25rem;
-  color: #fff;
-  font: 600 0.75rem/1.1 system-ui, sans-serif;
-  text-shadow: 0 1px 3px #000;
 }
 
 .game-route-stick-base {

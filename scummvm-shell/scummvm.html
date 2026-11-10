@@ -990,6 +990,7 @@ const readyFrameSampleSize=32;
 const readyFrameTimeoutMs=15000;
 const touchTapDurationMs=260;
 const touchTapMoveThresholdPx=28;
+const touchHoldMoveThresholdPx=12;
 const touchDoubleTapWindowMs=300;
 const touchDoubleTapThresholdPx=32;
 const touchSyntheticClickHoldMs=80;
@@ -1047,6 +1048,9 @@ const releaseCursorPrompt=()=>{hideGrabHint();allowGameCursor()};
 const clamp=(value,min,max)=>Math.min(Math.max(value,min),max);
 const measureDistance=(pointA,pointB)=>{if(!pointA||!pointB)return Number.POSITIVE_INFINITY;return Math.hypot(pointA.clientX-pointB.clientX,pointA.clientY-pointB.clientY)};
 const resolveTouchClickButtonCode=value=>value==="right"?2:0;
+const syntheticButtonPresses=new Map();
+const parentButtonPresses=new Map();
+const syntheticButtons=()=>(syntheticButtonPresses.has(0)?1:0)|(syntheticButtonPresses.has(2)?2:0);
 const consumeTouchEvent=event=>{if(event.cancelable)event.preventDefault();if(typeof event.stopImmediatePropagation==="function")event.stopImmediatePropagation();event.stopPropagation()};
 const getTouchPoint=touchLike=>{if(!touchLike)return null;const rect=canvas.getBoundingClientRect();const maxX=rect.width>0?rect.right:rect.left;const maxY=rect.height>0?rect.bottom:rect.top;const clientX=clamp(Number.isFinite(touchLike.clientX)?touchLike.clientX:rect.left,rect.left,maxX);const clientY=clamp(Number.isFinite(touchLike.clientY)?touchLike.clientY:rect.top,rect.top,maxY);return{clientX,clientY,screenX:Number.isFinite(touchLike.screenX)?touchLike.screenX:clientX,screenY:Number.isFinite(touchLike.screenY)?touchLike.screenY:clientY,pageX:Number.isFinite(touchLike.pageX)?touchLike.pageX:clientX+window.scrollX,pageY:Number.isFinite(touchLike.pageY)?touchLike.pageY:clientY+window.scrollY}};
 const getGesturePoint=touchList=>{const touches=Array.from(touchList||[]);if(touches.length===0)return null;touches.sort(((leftTouch,rightTouch)=>leftTouch.clientX-rightTouch.clientX));return getTouchPoint(touches[touches.length-1])};
@@ -1056,18 +1060,108 @@ const getSyntheticCursorPoint=()=>syntheticCursorPoint?{...syntheticCursorPoint}
 const focusCanvas=()=>{try{canvas.focus({preventScroll:true})}catch{}};
 const dispatchPointerEvent=(eventName,point,{button=0,buttons=0}={})=>{if(typeof PointerEvent!=="function"||!point)return;const pointerEvent=new PointerEvent(eventName,{bubbles:true,cancelable:true,composed:true,pointerId:1,pointerType:"mouse",isPrimary:true,clientX:point.clientX,clientY:point.clientY,screenX:point.screenX,screenY:point.screenY,pageX:point.pageX,pageY:point.pageY,button,buttons,pressure:buttons===0?0:.5});canvas.dispatchEvent(pointerEvent)};
 const dispatchMouseEvent=(eventName,point,{button=0,buttons=0,detail=1}={})=>{if(!point)return;const mouseEvent=new MouseEvent(eventName,{bubbles:true,cancelable:true,composed:true,clientX:point.clientX,clientY:point.clientY,screenX:point.screenX,screenY:point.screenY,button,buttons,detail});canvas.dispatchEvent(mouseEvent)};
-const dispatchSyntheticMove=point=>{if(!point)return;const nextPoint=setSyntheticCursorPoint(point);focusCanvas();dispatchPointerEvent("pointermove",nextPoint,{button:0,buttons:0});dispatchMouseEvent("mousemove",nextPoint,{button:0,buttons:0,detail:0})};
-const dispatchSyntheticClick=(point,button)=>{if(!point)return;const buttons=button===2?2:1;focusCanvas();dispatchSyntheticMove(point);dispatchPointerEvent("pointerdown",point,{button,buttons});dispatchMouseEvent("mousedown",point,{button,buttons});if(button===2){dispatchMouseEvent("contextmenu",point,{button,buttons,detail:0})}window.setTimeout((()=>{dispatchPointerEvent("pointerup",point,{button,buttons:0});dispatchMouseEvent("mouseup",point,{button,buttons:0});if(button!==2){dispatchMouseEvent("click",point,{button,buttons:0,detail:1})}}),touchSyntheticClickHoldMs)};
-const dispatchParentTouchClick=button=>{dispatchSyntheticClick(getSyntheticCursorPoint(),resolveTouchClickButtonCode(button))};
+const dispatchSyntheticMove=point=>{if(!point)return;const nextPoint=setSyntheticCursorPoint(point);const buttons=syntheticButtons();focusCanvas();dispatchPointerEvent("pointermove",nextPoint,{button:-1,buttons});dispatchMouseEvent("mousemove",nextPoint,{button:0,buttons,detail:0})};
+const finishSyntheticButton=(press,cancelled)=>{
+  const {button,releaseTimer}=press;
+  if(syntheticButtonPresses.get(button)!==press)return;
+  window.clearTimeout(releaseTimer);
+  syntheticButtonPresses.delete(button);
+  const point=getSyntheticCursorPoint();
+  const buttons=syntheticButtons();
+  dispatchPointerEvent("pointerup",point,{button,buttons});
+  dispatchMouseEvent("mouseup",point,{button,buttons});
+  if(button===0&&!cancelled)dispatchMouseEvent("click",point,{button,buttons,detail:1});
+};
+const pressSyntheticButton=(point,button)=>{
+  if(!point)return null;
+  const previousPress=syntheticButtonPresses.get(button);
+  if(previousPress){
+    if(previousPress.releaseTimer===null)return null;
+    finishSyntheticButton(previousPress,false);
+  }
+  dispatchSyntheticMove(point);
+  const press={button,startedAt:Date.now(),releaseTimer:null};
+  syntheticButtonPresses.set(button,press);
+  const buttons=syntheticButtons();
+  dispatchPointerEvent("pointerdown",point,{button,buttons});
+  dispatchMouseEvent("mousedown",point,{button,buttons});
+  if(button===2)dispatchMouseEvent("contextmenu",point,{button,buttons,detail:0});
+  return press;
+};
+const releaseSyntheticButton=(press,cancelled=false)=>{
+  if(!press||syntheticButtonPresses.get(press.button)!==press)return;
+  // Keep quick taps visible to engines that poll button state once per frame.
+  const remaining=touchSyntheticClickHoldMs-(Date.now()-press.startedAt);
+  if(cancelled||remaining<=0)finishSyntheticButton(press,cancelled);
+  else press.releaseTimer=window.setTimeout(()=>finishSyntheticButton(press,false),remaining);
+};
+const dispatchSyntheticClick=(point,button)=>releaseSyntheticButton(pressSyntheticButton(point,button));
+const handleParentTouchButton=({button,pressed,cancelled})=>{
+  if((button!=="left"&&button!=="right")||typeof pressed!=="boolean")return;
+  if(pressed){
+    if(parentButtonPresses.has(button))return;
+    const press=pressSyntheticButton(getSyntheticCursorPoint(),resolveTouchClickButtonCode(button));
+    if(press)parentButtonPresses.set(button,press);
+  }else{
+    releaseSyntheticButton(parentButtonPresses.get(button),cancelled===true);
+    parentButtonPresses.delete(button);
+  }
+};
 const applyCursorPadDelta=(deltaX,deltaY)=>{if(!Number.isFinite(deltaX)&&!Number.isFinite(deltaY))return;const previousPoint=getSyntheticCursorPoint();const nextPoint=getTouchPoint({clientX:previousPoint.clientX+(Number(deltaX)||0),clientY:previousPoint.clientY+(Number(deltaY)||0)});if(nextPoint){dispatchSyntheticMove(nextPoint)}};
 const applyRelativeTouchDelta=(previousPoint,nextFingerPoint)=>{if(!previousPoint||!nextFingerPoint)return;const rawDeltaX=(nextFingerPoint.clientX-previousPoint.clientX)*touchRelativeMoveScale;const rawDeltaY=(nextFingerPoint.clientY-previousPoint.clientY)*touchRelativeMoveScale;const deltaX=clamp(rawDeltaX,-touchRelativeMoveMaxDeltaPx,touchRelativeMoveMaxDeltaPx);const deltaY=clamp(rawDeltaY,-touchRelativeMoveMaxDeltaPx,touchRelativeMoveMaxDeltaPx);if(deltaX||deltaY){applyCursorPadDelta(deltaX,deltaY)}};
 const setAspectRatioMode=mode=>{canvas.classList.toggle("scummweb-fill-screen",mode==="fill");canvas.classList.toggle("scummweb-fit-height",mode==="fit-height")};
-const handleScummwebMessage=event=>{if(event.origin!==scummwebLaunchUrl.origin)return;if(event.data?.type==="scummweb-aspect-ratio"){setAspectRatioMode(event.data?.mode);return}if(event.data?.type==="scummweb-touch-click"){dispatchParentTouchClick(event.data.button);return}if(event.data?.type!=="scummweb-touch-cursor-pad")return;applyCursorPadDelta(event.data?.deltaX,event.data?.deltaY)};
-const handleTouchStart=event=>{if(event.touches.length===0)return;consumeTouchEvent(event);const point=getGesturePoint(event.touches);activeTouchGesture={startedAt:Date.now(),startPoint:point,lastPoint:point,moved:false}};
-const handleTouchMove=event=>{if(!activeTouchGesture||event.touches.length===0)return;consumeTouchEvent(event);const point=getGesturePoint(event.touches);if(!point)return;const previousPoint=activeTouchGesture.lastPoint;if(measureDistance(activeTouchGesture.startPoint,point)>touchTapMoveThresholdPx){activeTouchGesture.moved=true}if(activeTouchGesture.moved){applyRelativeTouchDelta(previousPoint,point)}activeTouchGesture.lastPoint=point};
+const handleScummwebMessage=event=>{
+  if(event.origin!==scummwebLaunchUrl.origin)return;
+  if(event.data?.type==="scummweb-aspect-ratio")setAspectRatioMode(event.data.mode);
+  if(event.data?.type==="scummweb-touch-click")dispatchSyntheticClick(getSyntheticCursorPoint(),resolveTouchClickButtonCode(event.data.button));
+  if(event.data?.type==="scummweb-touch-button"&&event.source===window.parent)handleParentTouchButton(event.data);
+  if(event.data?.type==="scummweb-touch-cursor-pad")applyCursorPadDelta(event.data.deltaX,event.data.deltaY);
+};
+const handleTouchStart=event=>{
+  if(event.touches.length===0)return;
+  consumeTouchEvent(event);
+  if(activeTouchGesture?.press)return;
+  if(activeTouchGesture)window.clearTimeout(activeTouchGesture.holdTimer);
+  const point=getGesturePoint(event.touches);
+  const gesture={startedAt:Date.now(),startPoint:point,lastPoint:point,moved:false,press:null,holdTimer:null};
+  activeTouchGesture=gesture;
+  if(event.touches.length!==1||syntheticButtons())return;
+  gesture.touchId=event.touches[0].identifier;
+  gesture.holdTimer=window.setTimeout(()=>{
+    if(activeTouchGesture!==gesture||syntheticButtons())return;
+    gesture.press=pressSyntheticButton(gesture.lastPoint,0);
+    lastCompletedTap=null;
+  },touchTapDurationMs);
+};
+const findHeldTouch=(touches,gesture)=>Array.from(touches||[]).find(touch=>touch.identifier===gesture.touchId);
+const handleTouchMove=event=>{
+  const gesture=activeTouchGesture;
+  if(!gesture||event.touches.length===0)return;
+  consumeTouchEvent(event);
+  if(gesture.press){
+    dispatchSyntheticMove(getTouchPoint(findHeldTouch(event.touches,gesture)));
+    return;
+  }
+  const point=getGesturePoint(event.touches);
+  if(!point)return;
+  const distance=measureDistance(gesture.startPoint,point);
+  if(distance>touchHoldMoveThresholdPx)window.clearTimeout(gesture.holdTimer);
+  if(distance>touchTapMoveThresholdPx)gesture.moved=true;
+  if(gesture.moved)applyRelativeTouchDelta(gesture.lastPoint,point);
+  gesture.lastPoint=point;
+};
 const handleTouchEnd=event=>{
   consumeTouchEvent(event);
   if(!activeTouchGesture)return;
+  window.clearTimeout(activeTouchGesture.holdTimer);
+  if(activeTouchGesture.press){
+    const touch=findHeldTouch(event.changedTouches,activeTouchGesture);
+    if(!touch)return;
+    dispatchSyntheticMove(getTouchPoint(touch));
+    releaseSyntheticButton(activeTouchGesture.press);
+    activeTouchGesture=null;
+    return;
+  }
   const point=getGesturePoint(event.changedTouches)||getGesturePoint(event.touches)||activeTouchGesture.lastPoint;
   if(point&&measureDistance(activeTouchGesture.startPoint,point)>touchTapMoveThresholdPx){
     activeTouchGesture.moved=true;
@@ -1096,8 +1190,24 @@ const handleTouchEnd=event=>{
   dispatchSyntheticMove(point);
   lastCompletedTap={endedAt,point};
 };
-const handleTouchCancel=event=>{consumeTouchEvent(event);activeTouchGesture=null;lastCompletedTap=null};
+const resetTouchGesture=()=>{
+  if(activeTouchGesture){
+    window.clearTimeout(activeTouchGesture.holdTimer);
+    releaseSyntheticButton(activeTouchGesture.press,true);
+    activeTouchGesture=null;
+  }
+  lastCompletedTap=null;
+};
+const handleTouchCancel=event=>{consumeTouchEvent(event);resetTouchGesture()};
+const resetSyntheticInput=()=>{
+  resetTouchGesture();
+  for(const press of syntheticButtonPresses.values())finishSyntheticButton(press,true);
+  parentButtonPresses.clear();
+};
 window.addEventListener("message",handleScummwebMessage);
+window.addEventListener("blur",resetSyntheticInput);
+window.addEventListener("pagehide",resetSyntheticInput);
+document.addEventListener("visibilitychange",()=>{if(document.hidden)resetSyntheticInput()});
 canvas.addEventListener("mouseenter",promptCursorGrab,{passive:true});
 canvas.addEventListener("pointerenter",promptCursorGrab,{passive:true});
 canvas.addEventListener("mouseleave",clearCursorPrompt,{passive:true});

@@ -649,7 +649,7 @@ test("leaving a pending launch cancels its handoff", async () => {
 function readyPlayer(game, { ready = true, failed = false, mobile = false, landscape = true } = {}) {
   function Controls() {}
   function CursorPad() {}
-  function DirectionPad() {}
+  function MovementStick() {}
   function GrimGamepad() {}
   const keypresses = [];
   const commands = [];
@@ -681,7 +681,7 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
       };
       if (name.endsWith("/GamePlayerControls")) return Controls;
       if (name.endsWith("/GameTouchCursorPad")) return CursorPad;
-      if (name.endsWith("/GameTouchGamepad")) return { GameDirectionPad: DirectionPad, GrimTouchGamepad: GrimGamepad };
+      if (name.endsWith("/GameTouchGamepad")) return { GameMovementStick: MovementStick, GrimTouchGamepad: GrimGamepad };
       if (name.endsWith("/useBootState")) return { useBootState: () => ({
         hasBootCompleted: ready, hasBootPresentationCompleted: ready,
         showGameMenuButton: ready, hasBootFailed: failed,
@@ -699,7 +699,7 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
   return {
     controls: children.find(({ type }) => type === Controls).props,
     cursorPad: children.find(({ type }) => type === CursorPad).props,
-    directionPad: children.find(({ type }) => type === DirectionPad)?.props,
+    hugoStick: children.find(({ props }) => props.children?.type === MovementStick)?.props.children,
     grimGamepad: children.find(({ type }) => type === GrimGamepad),
     form: children.find(({ type }) => type === "form"),
     frame, keypresses, commands,
@@ -780,20 +780,21 @@ test("Mystery House opens a command field from the keyboard control on mobile", 
 test("mobile control modes cover Grim, Hugo, and the three Zork stories", () => {
   const mobile = { mobile: true };
   const grim = readyPlayer({ engineId: "grim", gameId: "grim", target: "grim-demo" }, mobile);
-  assert.equal(grim.directionPad, undefined);
+  assert.equal(grim.hugoStick, undefined);
   assert.ok(grim.grimGamepad);
   assert.equal(grim.form, undefined);
   assert.equal(grim.cursorPad.showTouchCursorPad, false);
 
   for (const gameId of ["hugo1", "hugo2", "hugo3"]) {
     const hugo = readyPlayer({ engineId: "hugo", gameId, target: gameId }, mobile);
-    assert.ok(hugo.directionPad);
+    assert.equal(hugo.hugoStick.props.hugo, true);
+    assert.equal(hugo.hugoStick.props.frameRef.current, hugo.frame);
     assert.equal(hugo.controls.touchActions.props["aria-label"], "Open keyboard");
     assert.equal(hugo.cursorPad.showTouchCursorPad, false);
   }
   for (const gameId of ["zork1", "zork2", "zork3"]) {
     const zork = readyPlayer({ engineId: "glk", gameId, target: gameId }, mobile);
-    assert.equal(zork.directionPad, undefined);
+    assert.equal(zork.hugoStick, undefined);
     assert.equal(zork.controls.touchActions.props["aria-label"], "Open keyboard");
     assert.equal(zork.cursorPad.showTouchCursorPad, false);
   }
