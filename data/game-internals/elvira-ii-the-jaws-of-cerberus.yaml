@@ -1,8 +1,7 @@
 # English Amiga floppy, ScummVM detector target agos:elvira2.
 # ScummWEB hashes the entire gameamiga database for telemetry identity.
-# ScummWEB publishes vars (255 signed slots) for this edition. Room and object
-# entries below are AGOS database item IDs, with two reserved IDs accounted for.
-# AGOS telemetry does not publish Elvira II room IDs, object states, or bit arrays.
+# AGOS item IDs include two reserved database entries. Flags and item states
+# are serialized by AGOSEngine_Elvira2::saveGame and restored by loadGame.
 schema_version: 1
 game: elvira-ii-the-jaws-of-cerberus
 engine_id: agos
@@ -10,7 +9,7 @@ edition:
   game_id: elvira2
   index_md5: a144d2467e1addee1f705647dacd33df
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   studio-drive-entrance: 854
   studio-foyer: 836
@@ -26,7 +25,22 @@ objects:
   bind-demon-spell: 638
   golden-cross: 771
   spellbook: 833
+flags:
+  # Each set has the same marker on its false-Elvira and rescue branches.
+  spider-studio-resolved: { bank: flag_words, index: 7, mask: 2 } # Bit 113; 1329, 1380.
+  haunted-studio-resolved: { bank: flag_words, index: 13, mask: 16384 } # Bit 222; 1859, 1150.
+  catacombs-studio-resolved: { bank: flag_words, index: 6, mask: 128 } # Bit 103; 1291, 1230.
+  recovered-fish-tank-key: { bank: flag_words_secondary, index: 4, mask: 4 } # Bit 66; 1827.
+  charged-lab: { bank: flag_words, index: 12, mask: 8 } # Bit 195; 341.
+  animated-monster: { bank: flag_words_secondary, index: 5, mask: 32 } # Bit 85; 2210.
+  blessed-implements: { bank: flag_words, index: 13, mask: 512 } # Bit 217; 1854.
 variables:
+  gatehouse-window: { bank: item_states, index: 851 } # Verb 227 in subroutine 0.
+  gatehouse-security-key: { bank: item_states, index: 802 } # Inserted by verb 500 in subroutine 0.
+  boiler-room: { bank: item_states, index: 823 } # Fire spell subroutines 313 and 317.
+  attic-skylight: { bank: item_states, index: 367 } # Tuning fork in subroutine 0.
+  church-pulpit: { bank: item_states, index: 774 } # Verb 500 in subroutine 0.
+  church-priest: { bank: item_states, index: 176 } # 338 resurrects; 1856 dispatches to the pentacle.
   # AGOSEngine_Elvira2::printStats reads these four slots directly.
   level: { bank: vars, index: 20 }
   experience: { bank: vars, index: 21 }
@@ -45,15 +59,51 @@ variables:
   # The result survives the scripted Start load and resets on a new attempt.
   ritual-outcome: { bank: elvira2_outcome, key: ritual }
 milestones:
-  - id: first-studio-outcome
-    label: Reached the first studio outcome
-    when: { variable: studio-outcomes, one_of: [1, 2, 3] }
-  - id: second-studio-outcome
-    label: Reached the second studio outcome
-    when: { variable: studio-outcomes, one_of: [2, 3] }
+  - id: broke-gatehouse-window
+    label: Broke the gatehouse window
+    when: { variable: gatehouse-window, one_of: [1, 2] }
+  - id: inserted-security-key
+    label: Inserted the gatehouse security key
+    when: { variable: gatehouse-security-key, equals: 1 }
+  - id: thawed-boiler-room
+    label: Thawed the boiler room
+    when: { variable: boiler-room, equals: 1 }
+  - id: opened-attic-skylight
+    label: Opened the attic skylight with the tuning fork
+    when: { variable: attic-skylight, equals: 1 }
+  - id: recovered-fish-tank-key
+    label: Recovered the key from the fish tank
+    when: { flag: recovered-fish-tank-key }
+  - id: charged-lab
+    label: Sent lightning to the laboratory
+    when: { flag: charged-lab }
+  - id: animated-monster
+    label: Brought the laboratory monster to life
+    when: { flag: animated-monster }
+  - id: exposed-church-trapdoor
+    label: Moved the church pulpit to expose the trapdoor
+    when: { variable: church-pulpit, equals: 1 }
+  - id: resolved-spider-studio
+    label: Resolved the spider caves studio
+    when: { flag: spider-studio-resolved }
+  - id: resolved-haunted-studio
+    label: Resolved the haunted house studio
+    when: { flag: haunted-studio-resolved }
+  - id: resolved-catacombs-studio
+    label: Resolved the catacombs studio
+    when: { flag: catacombs-studio-resolved }
   - id: rescued-elvira
     label: Rescued Elvira
     when: { variable: studio-outcomes, equals: 3 }
+  - id: revived-priest
+    label: Revived the priest
+    when: { variable: church-priest, one_of: [1, 2] }
+  - id: prepared-pentacle
+    label: Had the priest prepare the pentacle
+    when: { variable: church-priest, equals: 2 }
+  - id: blessed-implements
+    label: Had the ritual implements blessed
+    when: { flag: blessed-implements }
   - id: summoned-cerberus
     label: Summoned Cerberus at the car park
     when:

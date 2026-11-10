@@ -132,7 +132,7 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
   room resource and detected index MD5 for edition-specific progress rules.
 
 - Patch 19 adds opt-in, read-only snapshots for engines with known room and variable storage. Keep native bank indices, omit unavailable room IDs, and publish a whole sample at once. These samples are independent of the Queen and SCUMM evaluation queues.
-- The AGOS adapter records the Elvira II finale at script dispatch because the losing and winning branches share a late ritual variable and replay prompt. Gate branch IDs on the full database fingerprint and preserve the outcome across scripted loads within the ending. A successful user restore or a new attempt clears it.
+- The AGOS adapter records both Elvira finales at script dispatch. Elvira I checks the successful dagger branch; its replay prompt also appears after losses. Elvira II has losing and winning branches that share a late ritual variable and replay prompt. Gate the branch IDs and saved Elvira II flag and item banks on the full Amiga database fingerprints. Preserve Elvira II’s outcome through its scripted ending load. A successful user restore or a new attempt clears the result.
 
 - Patch 20 samples engine-owned room and game state in the remaining shipped plugins. Keep the browser query flag separate from evaluator queues. Preserve sparse keys, treat native room names and IDs as engine-specific, and keep ordinary browser launches off by default.
 - AGI uses the edition fingerprint already used by its save compatibility check. SCI fingerprints the complete resource map when present. GLK's common event state is shared across interpreters, while each story's room and variables belong to its own VM.

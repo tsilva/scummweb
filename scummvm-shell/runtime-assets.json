@@ -1,8 +1,8 @@
 {
-  "version": "sha-9a52384ba92a880a37f116c7",
+  "version": "sha-0db93fa125b293f638a1c407",
   "files": {
     "/scummvm.js": "sha-022df7b6699b64157a6e800f",
-    "/scummvm.wasm": "sha-00d358c87f637d14c0673f04",
+    "/scummvm.wasm": "sha-1685bb30d70508288de3718b",
     "/scummvm_fs.js": "sha-a1070971ba693ed248d9e700",
     "/audio-start-control.mjs": "sha-5be22420debc1de1477fe594",
     "/scummvm.ini": "sha-d3626c57c964da146fa04681",
@@ -23,18 +23,18 @@
     "/data/gui-icons.dat": "sha-e772a8bb64ad3d7a807e859a",
     "/data/helpdialog.zip": "sha-9ff3c7964a63b18ffa0e9cfc",
     "/data/hugo.dat": "sha-228dd029399ce7318a60aebe",
-    "/data/index.json": "sha-32da963076a52e6d324d1fef",
+    "/data/index.json": "sha-593bcf6590c247affeafaf8c",
     "/data/kyra.dat": "sha-6b2cc168d3201305039e78bc",
     "/data/lure.dat": "sha-9c17cfb5349c4bd13e56b065",
     "/data/macgui.dat": "sha-5e55c29903809bf5297a28fe",
     "/data/monkey4-patch.m4b": "sha-6d0141a132bf34eb4c81d7db",
     "/data/mort.dat": "sha-ed4f797fd4aff885000ebe58",
     "/data/neverhood.dat": "sha-b86cb788237ace2988f7a8b7",
-    "/data/plugins/index.json": "sha-9ad5c62bbada55a03a6f84f8",
+    "/data/plugins/index.json": "sha-adc2934f657394c74823060c",
     "/data/plugins/libaccess.so": "sha-ec69feccb201d898c2e7245f",
     "/data/plugins/libadl.so": "sha-25e3cd428ca9c538281bf51d",
     "/data/plugins/libagi.so": "sha-3fb3dba06225922b8106f858",
-    "/data/plugins/libagos.so": "sha-5dcd28a097d1aa6645baeca0",
+    "/data/plugins/libagos.so": "sha-c0be80cbb2dce5ebbeb691b6",
     "/data/plugins/libags.so": "sha-c93a5fb248fd33367c870d27",
     "/data/plugins/libbbvs.so": "sha-b0761e3a22458888f8b4e02a",
     "/data/plugins/libcge.so": "sha-e85e00e2cf254c4a958653f9",
@@ -175,6 +175,6 @@
     "/launcher/skip-intro/sky/SKY-VM.000": "sha-4a980c9a92fb713cf4e4f990",
     "/launcher/skip-intro/soltys/soltys.001": "sha-a228224141169a9874a5f13a",
     "/launcher/skip-intro/sword25/sword25.000": "sha-182cf3396ee26d6ea6d3d567",
-    "/scummvm.html": "sha-9a52384ba92a880a37f116c7"
+    "/scummvm.html": "sha-0db93fa125b293f638a1c407"
   }
 }

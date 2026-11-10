@@ -1,0 +1,113 @@
+# English Amiga floppy, ScummVM detector target agos:elvira1.
+# ScummWEB fingerprints the complete gameamiga database for telemetry identity.
+schema_version: 1
+game: elvira-mistress-of-the-dark
+engine_id: agos
+edition:
+  game_id: elvira1
+  index_md5: 773f0004d21f095c7a4c25d4cd22a1a1
+telemetry: snapshot
+completion_milestone: winning-ending
+rooms:
+  emeldas-chamber: 45
+  chest-room: 59
+objects:
+  chest: 58
+  primus-key: 62
+  secundus-key: 217
+  tertius-key: 218
+  quartus-key: 219
+  quintus-key: 220
+  sextus-key: 221
+  recovered-spellbook: 695
+  recovered-crossbow: 557
+  recovered-salt: 88
+  recovered-elviras-ring: 647
+  recovered-crusader-sword: 645
+  recovered-fire-tongs: 667
+  recovered-rune-stone: 67
+  recovered-ceremonial-scroll: 57
+  recovered-ceremonial-dagger: 56
+variables:
+  # Subroutine 136 increments this once for each correctly inserted key.
+  chest-keys-inserted: { bank: vars, index: 139 }
+  # True only on the successful branch of dagger subroutine 231.
+  emelda-defeated: { bank: elvira1_outcome, key: emelda_defeated }
+flags:
+  # Subroutine 262 records pickups in the save variables (also used for score).
+  # Credit survives dropping an item or using a key in the chest.
+  primus-key: { bank: vars, index: 449, mask: 1 }
+  secundus-key: { bank: vars, index: 449, mask: 2 }
+  tertius-key: { bank: vars, index: 449, mask: 4 }
+  quartus-key: { bank: vars, index: 449, mask: 8 }
+  quintus-key: { bank: vars, index: 449, mask: 16 }
+  sextus-key: { bank: vars, index: 449, mask: 32 }
+  recovered-spellbook: { bank: vars, index: 450, mask: 2 }
+  recovered-crossbow: { bank: vars, index: 450, mask: 4 }
+  recovered-salt: { bank: vars, index: 449, mask: 2048 }
+  recovered-elviras-ring: { bank: vars, index: 449, mask: 8192 }
+  recovered-crusader-sword: { bank: vars, index: 450, mask: 8 }
+  recovered-fire-tongs: { bank: vars, index: 449, mask: 1024 }
+  recovered-rune-stone: { bank: vars, index: 449, mask: 512 }
+  recovered-ceremonial-scroll: { bank: vars, index: 449, mask: 64 }
+  recovered-ceremonial-dagger: { bank: vars, index: 449, mask: 128 }
+  passage-unsealed: { bank: vars, index: 435, mask: 2 } # Subroutine 172.
+  scroll-cast: { bank: vars, index: 436, mask: 4 } # Successful branch of 230 sets 31.
+milestones:
+  - id: primus-key
+    label: Recovered the Primus key
+    when: { flag: primus-key }
+  - id: secundus-key
+    label: Recovered the Secundus key
+    when: { flag: secundus-key }
+  - id: tertius-key
+    label: Recovered the Tertius key
+    when: { flag: tertius-key }
+  - id: quartus-key
+    label: Recovered the Quartus key
+    when: { flag: quartus-key }
+  - id: quintus-key
+    label: Recovered the Quintus key
+    when: { flag: quintus-key }
+  - id: sextus-key
+    label: Recovered the Sextus key
+    when: { flag: sextus-key }
+  - id: recovered-spellbook
+    label: Recovered the spell recipe book
+    when: { flag: recovered-spellbook }
+  - id: recovered-crossbow
+    label: Recovered the crossbow
+    when: { flag: recovered-crossbow }
+  - id: recovered-salt
+    label: Recovered the salt for the kitchen
+    when: { flag: recovered-salt }
+  - id: recovered-elviras-ring
+    label: Recovered Elvira’s ring
+    when: { flag: recovered-elviras-ring }
+  - id: recovered-crusader-sword
+    label: Recovered the crusader’s sword
+    when: { flag: recovered-crusader-sword }
+  - id: recovered-fire-tongs
+    label: Recovered the fire tongs
+    when: { flag: recovered-fire-tongs }
+  - id: recovered-rune-stone
+    label: Recovered the rune stone
+    when: { flag: recovered-rune-stone }
+  - id: unlocked-chest
+    label: Unlocked the chest with all six keys
+    when: { variable: chest-keys-inserted, equals: 6 }
+  - id: recovered-ceremonial-scroll
+    label: Recovered the ceremonial scroll
+    when: { flag: recovered-ceremonial-scroll }
+  - id: recovered-ceremonial-dagger
+    label: Recovered the ceremonial dagger
+    when: { flag: recovered-ceremonial-dagger }
+  - id: unsealed-emeldas-passage
+    label: Unsealed the passage to Emelda
+    when: { flag: passage-unsealed }
+  - id: cast-ceremonial-scroll
+    label: Cast the ceremonial scroll against Emelda
+    when: { flag: scroll-cast }
+  - id: winning-ending
+    label: Defeated Emelda
+    when: { variable: emelda-defeated, equals: 1 }

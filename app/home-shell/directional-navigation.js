@@ -15,8 +15,17 @@ function isAvailable(element) {
 }
 
 export function focusDirectionalControl(element) {
+  const previous = document.activeElement;
   element.focus({ preventScroll: true });
-  if (document.activeElement === element) {
+  if (document.activeElement !== element) return;
+
+  const topControls = element.closest(".dashboard-nav-home, .install-prompt");
+  const returningToHero = element.closest(".hero-stage") &&
+    previous?.closest(".game-screenshots, .section-stack");
+  // A visible control can still leave most of the hero above the viewport.
+  if (returningToHero || (topControls && !topControls.contains(previous))) {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  } else {
     element.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "instant" });
   }
 }

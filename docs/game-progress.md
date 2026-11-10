@@ -28,9 +28,16 @@ condition. Three other optional mappings name native game state.
 
 The loader rejects undeclared labels. Rules also accept direct bank predicates,
 `all`, `any`, and references to earlier milestones. Edition-specific maps
-require the native game ID and index MD5. For `highest_stage` maps, the
-furthest verified milestone counts the earlier stages even when the player
-took a route that bypassed them.
+require the native game ID and index MD5. Omit `scoring` to count each
+verified milestone independently. A checklist can name its final, verified
+win rule in `completion_milestone`. It reports no prescribed next objective
+and reaches 100% on a win, including when the ending resets puzzle state.
+Use `scoring: highest_stage` for maps that represent a sequence of story
+checkpoints, where the furthest verified stage counts the earlier stages.
+For a mixed route, use a checklist. Add `implies: [earlier-id]` to an
+outcome only when reaching it proves the earlier outcome on every route
+that matches the rule. This restores credit for mandatory steps whose
+evidence is transient. It does not change which native conditions match.
 Maps with `telemetry: snapshot` evaluate the latest native snapshot and can
 bind a variable with `{ bank, key }` for a named telemetry bank entry. Use
 markers that persist in saves to retain credit when a player leaves a room.
@@ -94,7 +101,8 @@ have no bar.
 | Indiana Jones and the Fate of Atlantis | English DOS CD | 22 |
 | DreamWeb | English DOS CD | 15 |
 | Beneath a Steel Sky | English DOS CD | 28 |
-| Elvira II: The Jaws of Cerberus | English Amiga floppy | 7 |
+| Elvira: Mistress of the Dark | English Amiga floppy | 19 |
+| Elvira II: The Jaws of Cerberus | English Amiga floppy | 19 |
 | King's Quest: Quest for the Crown | English DOS SCI remake 1.000.051 | 4 |
 | King's Quest II: Romancing the Throne | English Amiga 2.0J | 8 |
 | King's Quest III: To Heir Is Human | English Amiga 1.01 | 6 |
@@ -166,14 +174,16 @@ have no bar.
 | Troll’s Tale | English PC-booter floppy | 17 |
 | Winnie the Pooh in the Hundred Acre Wood | English DOS floppy | 11 |
 
-These maps count milestones up to the furthest confirmed stage, including when
+Stage maps count milestones up to the furthest confirmed stage, including when
 a route bypasses an earlier checkpoint. Fate of Atlantis uses the same scale
 for the Team, Wits, and Fists routes. Completion checks distinguish the
 winning endings from game-over scenes.
 
-Elvira II requires a ScummWEB build that reports the AGOS finale outcome
-and the full `gameamiga` database MD5. A ritual failure after using the lance
-keeps that checkpoint but does not count as a win.
+Both Elvira games use checklists. Mistress of the Dark counts each of the six
+keys when recovered, including after the player inserts it into the chest.
+The Jaws of Cerberus counts each studio and saved puzzle outcomes independently.
+Using the lance alone does not count as a win. Both checklists require the
+runtime to report the matching full `gameamiga` fingerprint and saved state.
 
 The Sierra maps cover major checkpoints and endings for the listed editions,
 including the late SCI32 and PreAGI interpreters. The LucasArts coverage
