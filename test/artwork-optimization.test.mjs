@@ -73,15 +73,13 @@ test("format switching preserves source identity, provides WebP fallback and lab
   assert.deepEqual(getArtworkImageProps("blob:import", "gallery", manifest), { src: "blob:import" });
 });
 
-test("poster source sizing accounts for the capped grid, sparse results, crop and zoom", () => {
-  const sizes = getPosterSizes(951 / 1200, 9);
-  assert.ok(sizes.endsWith("max(calc((100rem - 11rem) / 8 * 1.04), 13.6rem)"));
-  // At the 100rem container cap this is 218 CSS px for the portrait crop:
-  // a 2x screen can select the existing 640px image instead of the 951px original.
-  const requiredWidth = Math.max((1600 - 64 - 7 * 16) / 8 * 1.04, 264 * 951 / 1200 * 1.04) * 2;
-  assert.ok(requiredWidth < 480);
-  assert.match(getPosterSizes(1, 2), /\/ 2 \* 1\.04/);
-  assert.ok(!sizes.includes("25vw"));
+test("poster source sizing follows the library grid and the contained cover's width", () => {
+  const sizes = getPosterSizes(2 / 3, 9);
+  assert.ok(sizes.includes("(max-width: 48rem) calc((100vw - 5.5rem) / 4 * 0.925)"));
+  assert.ok(sizes.endsWith("calc((min(100vw, 94rem) - 10.5rem) / 5 * 0.925)"));
+  const sparseSizes = getPosterSizes(1, 2);
+  assert.ok(sparseSizes.includes("(max-width: 63.999rem) calc((100vw - 7.5rem) / 2 * 1.04)"));
+  assert.ok(sparseSizes.endsWith("calc((min(100vw, 94rem) - 10.5rem) / 5 * 1.04)"));
 });
 
 test("quality metric distinguishes identical and damaged pixels", () => {
