@@ -452,11 +452,7 @@ const artByTarget = {
     landscapeImage: "/launcher/nippon-cover.webp",
     posterImage: "/launcher/nippon-scummweb-generated-2026-11-05-r1-cover.webp",
     spotlightImage: "/launcher/nippon-scummweb-generated-2026-11-05-r1-cover.webp",
-    screenshots: [
-      "/launcher/nippon-shot-1.png",
-      "/launcher/nippon-shot-2.png",
-      "/launcher/nippon-shot-3.png",
-    ],
+    screenshots: retroGameArtwork["parallaction:nippon"].screenshots,
     tone: "tone-default",
   },
   sword25: {

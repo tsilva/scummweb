@@ -39343,6 +39343,57 @@
       "contentType": "image/webp",
       "width": 320,
       "height": 240
+    },
+    "/launcher/nippon-en-shot-1.png": {
+      "key": "artwork/430fd7006944612e0d5b979f575cc6d364f77bb1d1b045afbffea980c5422d79/nippon-en-shot-1.png",
+      "sha256": "430fd7006944612e0d5b979f575cc6d364f77bb1d1b045afbffea980c5422d79",
+      "bytes": 78146,
+      "contentType": "image/png",
+      "width": 640,
+      "height": 480,
+      "placeholder": "UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoMAAkAAsBIJZgCdAEWzwGW4qXoAP7vmIjm/4o7qS/K8dxP/QcjwvT4XrAattS6D+b28iLi6I3eRxHBoFDuwc/o/XQ9EQg4/+wzW0m4yCBa5LAA"
+    },
+    "/launcher/nippon-en-shot-2.png": {
+      "key": "artwork/52b5525e68e0f8ba40fbaae6c5af2a611b73fc5b787babf6223f0a0655c5df10/nippon-en-shot-2.png",
+      "sha256": "52b5525e68e0f8ba40fbaae6c5af2a611b73fc5b787babf6223f0a0655c5df10",
+      "bytes": 77250,
+      "contentType": "image/png",
+      "width": 640,
+      "height": 480,
+      "placeholder": "UklGRloAAABXRUJQVlA4IE4AAADwAQCdASoMAAkAAsBIJbACdAEQXDgLwgAA/rtDhCzwerLbOgi/j/pB/3RSSbKChllBNxE53HHPkWu+m8uALkUViZUnDOeE/zICvsRgAAA="
+    },
+    "/launcher/nippon-en-shot-3.png": {
+      "key": "artwork/51ed3c4e285f015c6bb1d239bf9499b0da36a991bb9bdb7bd1e9d6ba8b3c55a7/nippon-en-shot-3.png",
+      "sha256": "51ed3c4e285f015c6bb1d239bf9499b0da36a991bb9bdb7bd1e9d6ba8b3c55a7",
+      "bytes": 26487,
+      "contentType": "image/png",
+      "width": 640,
+      "height": 480,
+      "placeholder": "UklGRkYAAABXRUJQVlA4IDoAAADQAQCdASoMAAkAAsBIJZwAAuySB/AZAAD+9+EtZQVqPRMvUBye/30XgBVpaglFNZ5I3lnRJurNWOAA"
+    },
+    "/launcher/optimized/nippon-en-shot-1.webp": {
+      "key": "artwork/f02aabf35d023642fbbd11e45eab541ddaacb13b75344779fb98d4912ef8ac2d/nippon-en-shot-1.webp",
+      "sha256": "f02aabf35d023642fbbd11e45eab541ddaacb13b75344779fb98d4912ef8ac2d",
+      "bytes": 67894,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/optimized/nippon-en-shot-2.webp": {
+      "key": "artwork/f1cb6edaff40fc1a97e9877c883604a6bbe996bac61dbe2d468a6969387123dc/nippon-en-shot-2.webp",
+      "sha256": "f1cb6edaff40fc1a97e9877c883604a6bbe996bac61dbe2d468a6969387123dc",
+      "bytes": 68770,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/optimized/nippon-en-shot-3.webp": {
+      "key": "artwork/ecdbf423d9f731d60bbeb5fcb1191c19787fa776b7fae86f1f895d7222226409/nippon-en-shot-3.webp",
+      "sha256": "ecdbf423d9f731d60bbeb5fcb1191c19787fa776b7fae86f1f895d7222226409",
+      "bytes": 25514,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
     }
   },
   "images": {
@@ -53459,6 +53510,33 @@
         "/launcher/responsive/zork-nemesis-scummweb-generated-2026-11-07-r1-hero-960.webp",
         "/launcher/responsive/zork-nemesis-scummweb-generated-2026-11-07-r1-hero-1280.webp",
         "/launcher/zork-nemesis-scummweb-generated-2026-11-07-r1-hero.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/nippon-en-shot-1.png": {
+      "width": 640,
+      "height": 480,
+      "fallback": "/launcher/optimized/nippon-en-shot-1.webp",
+      "webp": [
+        "/launcher/optimized/nippon-en-shot-1.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/nippon-en-shot-2.png": {
+      "width": 640,
+      "height": 480,
+      "fallback": "/launcher/optimized/nippon-en-shot-2.webp",
+      "webp": [
+        "/launcher/optimized/nippon-en-shot-2.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/nippon-en-shot-3.png": {
+      "width": 640,
+      "height": 480,
+      "fallback": "/launcher/optimized/nippon-en-shot-3.webp",
+      "webp": [
+        "/launcher/optimized/nippon-en-shot-3.webp"
       ],
       "avif": []
     }
