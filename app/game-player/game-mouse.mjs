@@ -19,6 +19,10 @@ export function clickGameMouse(frame, origin, button) {
   sendMouseInput(frame, origin, { type: "scummweb-touch-click", button: button === "right" ? "right" : "left" });
 }
 
+export function setGameMouseButton(frame, origin, button, pressed, cancelled = false) {
+  sendMouseInput(frame, origin, { type: "scummweb-touch-button", button, pressed, cancelled });
+}
+
 export function observeRemotePlayerInput(host, frame) {
   const inputEvents = ["keydown", "keypress", "keyup"];
   const listenerOptions = { capture: true };

@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import test from "node:test";
 import vm from "node:vm";
-import { clickGameMouse } from "../app/game-player/game-mouse.mjs";
+import { clickGameMouse, moveGameMouse, setGameMouseButton } from "../app/game-player/game-mouse.mjs";
 
 const rootDir = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
 const shellHtmlPath = path.join(rootDir, "scummvm-shell", "scummvm.html");
@@ -60,19 +60,7 @@ test("boot polling in the app still reads shell output for failures", () => {
   assert.match(bootStateSource, /BOOT_FAILURE_PATTERNS\.some\(\(pattern\) => pattern\.test\(outputValue\)\)/);
 });
 
-test("mobile touch click shim holds button state long enough for polling engines", () => {
-  const shellHtml = fs.readFileSync(shellHtmlPath, "utf8");
-
-  assert.match(shellHtml, /const touchSyntheticClickHoldMs=80;/);
-  assert.match(
-    shellHtml,
-    /window\.setTimeout\(\(\(\)=>\{dispatchPointerEvent\("pointerup",point,\{button,buttons:0\}\);dispatchMouseEvent\("mouseup",point,\{button,buttons:0\}\);/
-  );
-  assert.match(shellHtml, /dispatchMouseEvent\("click",point,\{button,buttons:0,detail:1\}\)/);
-  assert.match(shellHtml, /dispatchMouseEvent\("contextmenu",point,\{button,buttons,detail:0\}\)/);
-});
-
-test("Teen Agent taps position the cursor and double-tap, L, and R send mouse clicks", () => {
+function createTouchInput() {
   const shellHtml = fs.readFileSync(shellHtmlPath, "utf8");
   const constants = shellHtml.match(/const touchTapDurationMs=[\s\S]+?(?=let gameRunning=)/);
   const handlers = shellHtml.match(/const clamp=[\s\S]+?(?=window\.addEventListener\("message",handleScummwebMessage\))/);
@@ -81,68 +69,120 @@ test("Teen Agent taps position the cursor and double-tap, L, and R send mouse cl
   const origin = "https://scummweb.example";
   const events = [];
   let now = 0;
+  let nextTimer = 0;
+  const timers = new Map();
+  const parent = {};
   const input = vm.runInNewContext(
     `${constants[0]}
      let activeTouchGesture=null,lastCompletedTap=null,syntheticCursorPoint=null;
      ${handlers[0]}
-     ({ start:handleTouchStart, end:handleTouchEnd, message:handleScummwebMessage });`,
+     ({ start:handleTouchStart, move:handleTouchMove, end:handleTouchEnd,
+        cancel:handleTouchCancel, reset:resetSyntheticInput, message:handleScummwebMessage });`,
     {
-      __scummwebSaveStatus: { engineId: "teenagent" },
       scummwebLaunchUrl: { origin },
       Date: { now: () => now },
-      window: { scrollX: 0, scrollY: 0, setTimeout() {} },
+      window: {
+        parent, scrollX: 0, scrollY: 0,
+        setTimeout(callback, delay) {
+          timers.set(++nextTimer, { at: now + delay, callback });
+          return nextTimer;
+        },
+        clearTimeout: (id) => timers.delete(id),
+      },
       canvas: {
         getBoundingClientRect: () => ({ left: 0, top: 0, right: 320, bottom: 200, width: 320, height: 200 }),
         focus() {},
-        dispatchEvent(event) { events.push([event.type, event.clientX, event.clientY, event.button]); },
+        dispatchEvent(event) { events.push([event.type, event.clientX, event.clientY, event.button, event.buttons]); },
       },
       MouseEvent: class {
         constructor(type, options) { Object.assign(this, { type }, options); }
       },
     }
   );
-  const frame = { contentWindow: { postMessage: (data, origin) => input.message({ data, origin }) } };
-  const tap = (clientX, clientY) => {
-    const point = { clientX, clientY };
-    const stopPropagation = () => {};
-    input.start({ touches: [point], stopPropagation });
-    now += 100;
-    input.end({ touches: [], changedTouches: [point], stopPropagation });
+  const frame = { contentWindow: { postMessage: (data, origin) => input.message({ data, origin, source: parent }) } };
+  function advance(ms) {
+    const end = now + ms;
+    for (;;) {
+      const next = [...timers].filter(([, timer]) => timer.at <= end).sort((a, b) => a[1].at - b[1].at)[0];
+      if (!next) break;
+      const [id, { at, callback }] = next;
+      timers.delete(id);
+      now = at;
+      callback();
+    }
+    now = end;
+  }
+  return { input, frame, origin, advance, events };
+}
+
+const point = (clientX, clientY) => ({ identifier: 1, clientX, clientY });
+const touchEvent = (touches, changedTouches = touches) => ({ touches, changedTouches, stopPropagation() {} });
+
+test("mobile taps position the cursor and double-tap sends a short click", () => {
+  const { input, advance, events } = createTouchInput();
+  const tap = (x, y) => {
+    const touch = point(x, y);
+    input.start(touchEvent([touch]));
+    advance(100);
+    input.end(touchEvent([], [touch]));
   };
-  const clicks = () => events.filter(([type]) => type === "mousedown");
 
   tap(80, 150);
-  assert.deepEqual(events, [["mousemove", 80, 150, 0]]);
+  assert.deepEqual(events, [["mousemove", 80, 150, 0, 0]]);
   tap(80, 150);
-  assert.deepEqual(clicks(), [["mousedown", 80, 150, 0]]);
-  tap(180, 160);
-  clickGameMouse(frame, origin, "left");
-  tap(130, 110);
-  clickGameMouse(frame, origin, "right");
-  assert.deepEqual(clicks(), [
-    ["mousedown", 80, 150, 0],
-    ["mousedown", 180, 160, 0],
-    ["mousedown", 130, 110, 2],
+  assert.deepEqual(events.at(-1), ["mousedown", 80, 150, 0, 1]);
+  advance(79);
+  assert.deepEqual(events.at(-1), ["mousedown", 80, 150, 0, 1]);
+  advance(1);
+  assert.deepEqual(events.slice(-2), [["mouseup", 80, 150, 0, 0], ["click", 80, 150, 0, 0]]);
+});
+
+test("holding the game canvas presses left before lifting and drags with the button held", () => {
+  const { input, advance, events } = createTouchInput();
+  input.start(touchEvent([point(80, 150)]));
+  advance(1000);
+  assert.deepEqual(events, [["mousemove", 80, 150, 0, 0], ["mousedown", 80, 150, 0, 1]]);
+  input.move(touchEvent([point(104, 133)]));
+  assert.deepEqual(events.at(-1), ["mousemove", 104, 133, 0, 1]);
+  input.end(touchEvent([], [point(106, 132)]));
+  assert.deepEqual(events.slice(-2), [["mouseup", 106, 132, 0, 0], ["click", 106, 132, 0, 0]]);
+
+  input.start(touchEvent([point(80, 150)]));
+  advance(1000);
+  input.cancel(touchEvent([]));
+  assert.deepEqual(events.at(-1), ["mouseup", 80, 150, 0, 0]);
+});
+
+test("L and R hold through cursor movement and release independently", () => {
+  const { input, frame, origin, advance, events } = createTouchInput();
+  setGameMouseButton(frame, origin, "left", true);
+  setGameMouseButton(frame, origin, "right", true);
+  advance(1000);
+  assert.deepEqual(events.filter(([type]) => type === "mousedown" || type === "mouseup"), [
+    ["mousedown", 160, 100, 0, 1], ["mousedown", 160, 100, 2, 3],
   ]);
+  moveGameMouse(frame, origin, 16, -8);
+  assert.deepEqual(events.at(-1), ["mousemove", 176, 92, 0, 3]);
+  setGameMouseButton(frame, origin, "right", false);
+  assert.deepEqual(events.at(-1), ["mouseup", 176, 92, 2, 1]);
+  setGameMouseButton(frame, origin, "left", false, true);
+  assert.deepEqual(events.at(-1), ["mouseup", 176, 92, 0, 0]);
+
+  // A keyboard activation keeps the click pulse used by the existing remote input.
+  clickGameMouse(frame, origin, "right");
+  assert.deepEqual(events.at(-1), ["contextmenu", 176, 92, 2, 2]);
+  input.reset();
+  advance(1000);
+  assert.deepEqual(events.at(-1), ["mouseup", 176, 92, 2, 0]);
 });
 
 test("mobile canvas swipes move the synthetic cursor relatively", () => {
-  const shellHtml = fs.readFileSync(shellHtmlPath, "utf8");
-
-  assert.match(shellHtml, /const touchRelativeMoveScale=1;/);
-  assert.match(shellHtml, /const touchRelativeMoveMaxDeltaPx=48;/);
-  assert.match(
-    shellHtml,
-    /const applyRelativeTouchDelta=\(previousPoint,nextFingerPoint\)=>\{[^}]*nextFingerPoint\.clientX-previousPoint\.clientX[^}]*applyCursorPadDelta\(deltaX,deltaY\)/
-  );
-  assert.match(
-    shellHtml,
-    /if\(activeTouchGesture\.moved\)\{applyRelativeTouchDelta\(previousPoint,point\)\}activeTouchGesture\.lastPoint=point/
-  );
-  assert.match(
-    shellHtml,
-    /if\(activeTouchGesture\.moved&&point\)\{applyRelativeTouchDelta\(activeTouchGesture\.lastPoint,point\)\}/
-  );
+  const { input, advance, events } = createTouchInput();
+  input.start(touchEvent([point(30, 100)]));
+  input.move(touchEvent([point(64, 100)]));
+  advance(1000);
+  input.end(touchEvent([], [point(70, 103)]));
+  assert.deepEqual(events, [["mousemove", 194, 100, 0, 0], ["mousemove", 200, 103, 0, 0]]);
 });
 
 test("mobile shell supports fill-screen canvas aspect mode", () => {

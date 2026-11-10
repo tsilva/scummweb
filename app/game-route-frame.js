@@ -12,7 +12,7 @@ import { isTvBrowser } from "./controller-device.mjs";
 import GameBootOverlay from "./game-player/GameBootOverlay";
 import GamePlayerControls from "./game-player/GamePlayerControls";
 import GameTouchCursorPad from "./game-player/GameTouchCursorPad";
-import { GameDirectionPad, GrimTouchGamepad } from "./game-player/GameTouchGamepad";
+import { GameMovementStick, GrimTouchGamepad } from "./game-player/GameTouchGamepad";
 import { createGameLaunchAnalytics } from "./game-player/game-launch-analytics.mjs";
 import { observeStartupDiagnostics } from "./game-player/startup-diagnostics.mjs";
 import { withGameTelemetry } from "./game-player/telemetry.mjs";
@@ -26,7 +26,6 @@ import { enterImmersiveMode, isGameFullscreen, isTouchMobileClient } from "./gam
 import { observeRemoteBack } from "./game-player/remote-back.mjs";
 import { useBootState } from "./game-player/useBootState";
 import { useImmersiveMode } from "./game-player/useImmersiveMode";
-import { useTouchClickActions } from "./game-player/useTouchClickMode";
 import { useTouchCursorPad } from "./game-player/useTouchCursorPad";
 import { sendZipGameFiles } from "./home-shell/zip-game-player";
 import { recordRecentGameTarget } from "./recent-games";
@@ -225,11 +224,6 @@ export default function GameRouteFrame({
     if (catalogLaunch) window.location.replace(destination);
     else router.replace(destination);
   }, [catalogLaunch, router, immersiveMode.exitImmersiveMode]);
-  const touchClick = useTouchClickActions({
-    frameRef,
-    skipIntro,
-    skipIntroConsumed: skipIntroConsumed || gameplayStarted,
-  });
   const hasBootFailed = Boolean(archiveError) || bootState.hasBootFailed;
   const waitingForLandscape = immersiveMode.isTouchMobile && !immersiveMode.isLandscapeViewport;
   const showBootOverlay = !bootState.hasBootCompleted || hasBootFailed;
@@ -241,7 +235,7 @@ export default function GameRouteFrame({
   const usesCommandInput = mobileControlMode === "command" || mobileControlMode === "hugo";
   const showCommandInput = mobileControlsReady && usesCommandInput;
   const showCommandForm = showCommandInput && commandOpen;
-  const showDirectionPad = mobileControlsReady && !showCommandForm && mobileControlMode === "hugo";
+  const showHugoStick = mobileControlsReady && !showCommandForm && mobileControlMode === "hugo";
   const showGrimGamepad = mobileControlsReady && mobileControlMode === "grim";
   const showTouchMouse = mobileControlsReady && mobileControlMode === "mouse";
   const touchCursorPad = useTouchCursorPad({
@@ -754,11 +748,6 @@ export default function GameRouteFrame({
     };
   }, [frameSrc, waitingForLandscape]);
 
-  function dismissSkipIntroButton() {
-    bootState.dismissSkipIntroButton();
-    touchClick.unlockTouchControls();
-  }
-
   function handleExitClick() {
     return navigateHome(exitHref);
   }
@@ -827,7 +816,7 @@ export default function GameRouteFrame({
   }
 
   function handleSkipIntroClick() {
-    dismissSkipIntroButton();
+    bootState.dismissSkipIntroButton();
 
     if (!skipIntro) {
       return;
@@ -934,8 +923,6 @@ export default function GameRouteFrame({
         onOpenMenu={handleGameMenuClick}
         onResumeGame={resumeRemoteGame}
         onSkipIntro={handleSkipIntroClick}
-        onTouchLeftClick={() => touchClick.sendTouchClick("left")}
-        onTouchRightClick={() => touchClick.sendTouchClick("right")}
         onToggleFullscreen={handleFullscreenToggle}
         showBottomActions={showBottomActions}
         showExitControl={showExitControl}
@@ -954,8 +941,10 @@ export default function GameRouteFrame({
         onPointerUp={touchCursorPad.handlePointerUp}
         showTouchCursorPad={showTouchMouse}
       />
-      {showDirectionPad ? (
-        <GameDirectionPad frameRef={frameRef} key={`hugo:${frameSrc}`} />
+      {showHugoStick ? (
+        <div className="game-route-touch-gamepad" key={`hugo:${frameSrc}`}>
+          <GameMovementStick frameRef={frameRef} hugo />
+        </div>
       ) : null}
       {showGrimGamepad ? (
         <GrimTouchGamepad frameRef={frameRef} key={`grim:${frameSrc}`} />

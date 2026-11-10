@@ -1,5 +1,5 @@
 import {
-  ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Backpack, Ellipsis, Eye, HandGrab, MessageCircle,
+  ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Backpack, Eye, HandGrab, MessageCircle, Zap,
 } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 import { dispatchSyntheticKeypress, holdGameKey } from "./keyboard";
@@ -9,10 +9,37 @@ const left = { name: "Left", Icon: ArrowLeft, key: { key: "ArrowLeft", keyCode: 
 const right = { name: "Right", Icon: ArrowRight, key: { key: "ArrowRight", keyCode: 39 } };
 const down = { name: "Down", Icon: ArrowDown, key: { key: "ArrowDown", keyCode: 40 } };
 const directions = [up, left, right, down];
+const hugoDiagonals = {
+  Up: {
+    Left: { key: "7", code: "Numpad7", keyCode: 103 },
+    Right: { key: "9", code: "Numpad9", keyCode: 105 },
+  },
+  Down: {
+    Left: { key: "1", code: "Numpad1", keyCode: 97 },
+    Right: { key: "3", code: "Numpad3", keyCode: 99 },
+  },
+};
+
+function stopHugoWalk(active) {
+  const key = active.hugoKey;
+  active.hugoKey = null;
+  active.hugoDirections = [];
+  if (!key || active.frame?.contentDocument !== active.frameDocument) return;
+
+  // Hugo toggles walking on each direction press and can stop on its own at an obstacle.
+  // Switch directions first so the final two presses always start and then stop the same walk.
+  const otherKey = key === up.key ? down.key : up.key;
+  for (const stopKey of [otherKey, key, key]) {
+    dispatchSyntheticKeypress(active.frame, stopKey, { focus: false });
+  }
+}
 
 function releaseStick(grip) {
-  for (const release of grip.current?.held.values() ?? []) release();
+  const active = grip.current;
+  if (!active) return;
   grip.current = null;
+  if (active.hugoKey) stopHugoWalk(active);
+  for (const release of active.held.values()) release();
 }
 
 function isAxisEngaged(value, crossAxis, travel, wasHeld) {
@@ -22,26 +49,7 @@ function isAxisEngaged(value, crossAxis, travel, wasHeld) {
   return Math.abs(value) > Math.max(deadZone, diagonalThreshold);
 }
 
-export function GameDirectionPad({ frameRef }) {
-  return (
-    <div aria-label="Movement" className="game-route-direction-pad" role="group">
-      {directions.map(({ name, Icon, key }) => (
-        <button
-          aria-label={name}
-          className="game-route-control-button is-gamepad"
-          data-direction={name.toLowerCase()}
-          key={name}
-          onClick={() => dispatchSyntheticKeypress(frameRef.current, key)}
-          type="button"
-        >
-          <Icon aria-hidden="true" size={20} />
-        </button>
-      ))}
-    </div>
-  );
-}
-
-function GrimMovementStick({ frameRef }) {
+export function GameMovementStick({ frameRef, hugo = false }) {
   const grip = useRef(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
@@ -84,8 +92,21 @@ function GrimMovementStick({ frameRef }) {
     const vertical = y < 0 ? up : down;
     const horizontal = x < 0 ? left : right;
     const wanted = [];
-    if (isAxisEngaged(y, x, active.travel, active.held.has(vertical))) wanted.push(vertical);
-    if (isAxisEngaged(x, y, active.travel, active.held.has(horizontal))) wanted.push(horizontal);
+    const wasHeld = (direction) => hugo ? active.hugoDirections.includes(direction) : active.held.has(direction);
+    if (isAxisEngaged(y, x, active.travel, wasHeld(vertical))) wanted.push(vertical);
+    if (isAxisEngaged(x, y, active.travel, wasHeld(horizontal))) wanted.push(horizontal);
+
+    if (hugo) {
+      const key = wanted.length === 2 ? hugoDiagonals[vertical.name][horizontal.name] : wanted[0]?.key;
+      if (!key) {
+        stopHugoWalk(active);
+      } else if (key !== active.hugoKey && active.frame?.contentDocument === active.frameDocument &&
+        dispatchSyntheticKeypress(active.frame, key)) {
+        active.hugoKey = key;
+        active.hugoDirections = wanted;
+      }
+      return;
+    }
 
     for (const [direction, release] of active.held) {
       if (wanted.includes(direction)) continue;
@@ -106,12 +127,16 @@ function GrimMovementStick({ frameRef }) {
     const travel = Math.min(bounds.width, bounds.height) * 0.27;
     if (!travel) return;
     event.currentTarget.setPointerCapture(event.pointerId);
+    const frame = frameRef.current;
     grip.current = {
       pointerId: event.pointerId,
       originX: event.clientX,
       originY: event.clientY,
       travel,
       held: new Map(),
+      frame,
+      frameDocument: frame?.contentDocument,
+      hugoDirections: [],
     };
   }
 
@@ -122,24 +147,23 @@ function GrimMovementStick({ frameRef }) {
   }
 
   return (
-    <div className="game-route-stick" role="group" aria-label="Walk and turn">
-      <div
-        className="game-route-stick-base"
-        onLostPointerCapture={stop}
-        onPointerCancel={stop}
-        onPointerDown={start}
-        onPointerMove={move}
-        onPointerUp={stop}
-      >
-        {directions.map(({ name, Icon }) => (
-          <Icon key={name} data-direction={name.toLowerCase()} aria-hidden="true" size={15} />
-        ))}
-        <span
-          className="game-route-stick-knob"
-          style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }}
-        />
-      </div>
-      <span aria-hidden="true">Walk / Turn</span>
+    <div
+      aria-label={hugo ? "Movement" : "Walk and turn"}
+      className="game-route-stick-base"
+      onLostPointerCapture={stop}
+      onPointerCancel={stop}
+      onPointerDown={start}
+      onPointerMove={move}
+      onPointerUp={stop}
+      role="group"
+    >
+      {directions.map(({ name, Icon }) => (
+        <Icon key={name} data-direction={name.toLowerCase()} aria-hidden="true" size={15} />
+      ))}
+      <span
+        className="game-route-stick-knob"
+        style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }}
+      />
     </div>
   );
 }
@@ -157,8 +181,8 @@ export function GrimTouchGamepad({ frameRef }) {
   const actionsButton = useRef(null);
 
   return (
-    <div className="game-route-grim-gamepad">
-      <GrimMovementStick frameRef={frameRef} />
+    <div className="game-route-touch-gamepad game-route-grim-gamepad">
+      <GameMovementStick frameRef={frameRef} />
       <div
         className="game-route-grim-actions"
         onKeyDown={(event) => {
@@ -180,7 +204,7 @@ export function GrimTouchGamepad({ frameRef }) {
           title="Actions"
           type="button"
         >
-          <Ellipsis aria-hidden="true" size={20} />
+          <Zap aria-hidden="true" size={20} />
         </button>
         <div aria-label="Game actions" className="game-route-grim-action-choices" hidden={!actionsOpen} id={actionsId} role="group">
           {grimActions.map(({ key, label, Icon }) => (

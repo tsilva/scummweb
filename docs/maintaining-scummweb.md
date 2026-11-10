@@ -191,10 +191,10 @@ fit the browser's visible height while preserving the game’s aspect ratio;
 narrower viewports can crop the sides. In Grim Fandango's default
 character-relative movement mode, drag from where your thumb lands on the left
 stick. Drag up or down to walk, left or right to turn, or aim diagonally to do
-both at once. Tap the three-dot Actions icon on the right to reveal icons for
+both at once. Tap the lightning-bolt Actions button on the right to reveal icons for
 **Use / Talk**, **Examine**, **Pick up / Put away**, and **Inventory**. The choices
-collapse after you select one. In the Hugo games, tap a direction on the
-directional pad to start walking and tap it again to stop.
+collapse after you select one. In the Hugo games, drag the stick in the direction
+you want to walk. Release it or return it to the center to stop.
 Gameplay controls stay behind the loading screen, including when **Skip intro**
 reloads the game.
 
@@ -227,12 +227,16 @@ Returning to landscape reveals the same running game. The orientation checks
 use the viewport, including in split-screen windows. File-access and locate
 actions keep their normal prompts. Dragging moves the cursor. The
 large square cursor pad offers smaller movements, and the compact
-mouse-shaped **L**/**R** buttons send clicks. The cursor pad sits at least
+mouse-shaped **L**/**R** buttons hold the corresponding mouse button until
+released. Move the cursor with the pad while holding either button. The cursor pad sits at least
 2 rem from the left edge to reduce accidental Android Back swipes. The pad,
 click buttons and exit control share a translucent fill and subtle outlines to keep the
 game prominent; pressing or keyboard-focusing a control highlights it. The cursor
 pad suppresses the browser’s tap highlight. Tap the game once to position the
-cursor. Double-tap or press **L** to left-click. In Teen Agent, left-clicking
+cursor. Double-tap or press **L** to left-click. Touch and hold a spot on the
+game screen to hold the left mouse button, then drag and lift to release. In
+The Curse of Monkey Island, hold over an interactive object until the action
+menu appears, then move to an action and release. In Teen Agent, left-clicking
 walkable ground moves Mark, and pressing **R** interacts with the object under
 the cursor. Loading screens scroll on short landscape viewports.
 

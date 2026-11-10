@@ -14,8 +14,15 @@ const { code } = await swc.transform(await readFile(componentUrl, "utf8"), {
   jsc: { parser: { syntax: "ecmascript", jsx: true }, transform: { react: { runtime: "automatic" } } },
 });
 
-test("Grim's stick ignores thumb drift and holds both keys on a deliberate diagonal", () => {
-  const events = [];
+const pointer = (pointerId, clientX, clientY) => ({
+  pointerId, clientX, clientY, button: 0, preventDefault() {},
+  currentTarget: {
+    setPointerCapture() {},
+    getBoundingClientRect: () => ({ width: 100, height: 100 }),
+  },
+});
+
+function loadGamepad(keyboard) {
   let cursor = 0;
   let hooks = [];
   const module = { exports: {} };
@@ -32,18 +39,30 @@ test("Grim's stick ignores thumb drift and holds both keys on a deliberate diago
           return [hooks[index], (value) => { hooks[index] = value; }];
         },
       };
-      if (name === "./keyboard") return {
-        holdGameKey(_frame, { key }) {
-          events.push(`press ${key}`);
-          return () => events.push(`release ${key}`);
-        },
-      };
+      if (name === "./keyboard") return keyboard;
       return requireNative(name);
     },
   });
 
+  return {
+    ...module.exports,
+    resetHooks() {
+      cursor = 0;
+      hooks = [];
+    },
+  };
+}
+
+test("Grim's stick ignores thumb drift and holds both keys on a deliberate diagonal", () => {
+  const events = [];
+  const gamepad = loadGamepad({
+    holdGameKey(_frame, { key }) {
+      events.push(`press ${key}`);
+      return () => events.push(`release ${key}`);
+    },
+  });
   const { children: [movementStick, actions] } =
-    module.exports.GrimTouchGamepad({ frameRef: { current: {} } }).props;
+    gamepad.GrimTouchGamepad({ frameRef: { current: {} } }).props;
   const [toggle, choices] = actions.props.children;
   const buttons = [toggle, ...choices.props.children];
   assert.deepEqual(Array.from(buttons, ({ props }) => props["aria-label"]), [
@@ -52,16 +71,11 @@ test("Grim's stick ignores thumb drift and holds both keys on a deliberate diago
   for (const { props } of buttons) {
     assert.equal(props.children.props["aria-hidden"], "true");
   }
-  cursor = 0;
-  hooks = [];
-  const stick = movementStick.type(movementStick.props).props.children[0].props;
-  const pointer = (pointerId, clientX, clientY) => ({
-    pointerId, clientX, clientY, button: 0, preventDefault() {},
-    currentTarget: {
-      setPointerCapture() {},
-      getBoundingClientRect: () => ({ width: 100, height: 100 }),
-    },
-  });
+  assert.equal(toggle.props.children.type.displayName, "Zap");
+  gamepad.resetHooks();
+  const stick = movementStick.type(movementStick.props).props;
+  assert.equal(stick["aria-label"], "Walk and turn");
+  assert.ok(stick.children.every((child) => typeof child === "object"));
 
   stick.onPointerDown(pointer(1, 70, 60)); // An off-center touch starts neutral.
   assert.deepEqual(events, []);
@@ -89,4 +103,40 @@ test("Grim's stick ignores thumb drift and holds both keys on a deliberate diago
   assert.deepEqual(events.slice(8), [
     "press ArrowDown", "press ArrowRight", "release ArrowDown", "release ArrowRight",
   ]);
+});
+
+test("Hugo's stick changes direction without toggling on drift and stops after a collision", () => {
+  const presses = [];
+  let walking;
+  const frame = { contentDocument: {} };
+  const gamepad = loadGamepad({
+    dispatchSyntheticKeypress(target, { code, key }, options) {
+      assert.equal(target, frame);
+      const direction = code || key;
+      presses.push([direction, options?.focus]);
+      walking = walking === direction ? undefined : direction;
+      return true;
+    },
+  });
+  const stick = gamepad.GameMovementStick({ frameRef: { current: frame }, hugo: true }).props;
+  stick.onPointerDown(pointer(1, 50, 50));
+  stick.onPointerMove(pointer(1, 50, 25));
+  stick.onPointerMove(pointer(1, 52, 25));
+  stick.onPointerMove(pointer(1, 75, 25));
+  assert.equal(walking, "Numpad9");
+  assert.deepEqual(presses, [["ArrowUp", undefined], ["Numpad9", undefined]]);
+
+  walking = undefined; // A native boundary collision clears velocity while the thumb is down.
+  stick.onPointerUp(pointer(1, 75, 25));
+  assert.equal(walking, undefined);
+  assert.deepEqual(presses.slice(2), [["ArrowUp", false], ["Numpad9", false], ["Numpad9", false]]);
+
+  stick.onPointerDown(pointer(2, 50, 50));
+  stick.onPointerMove(pointer(2, 25, 50));
+  assert.equal(walking, "ArrowLeft");
+  stick.onPointerMove(pointer(2, 50, 50));
+  assert.equal(walking, undefined);
+  const afterCenter = presses.length;
+  stick.onPointerCancel(pointer(2, 50, 50));
+  assert.equal(presses.length, afterCenter);
 });
