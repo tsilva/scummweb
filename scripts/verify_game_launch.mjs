@@ -3,7 +3,6 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright-core";
 import { getBundledGameLibrary } from "../lib/catalog.mjs";
-import { getGameMenuShortcut } from "../app/game-player/game-menu.mjs";
 import { normalizeSkipIntroConfig } from "../app/skip-intro-config.mjs";
 
 const [url, screenshotPath] = process.argv.slice(2);
@@ -334,8 +333,11 @@ async function verifyRouteFrameAutofocus(page) {
 }
 
 async function verifyEscapeStaysInGame(page, frame, routeUrl) {
+  const drawer = page.getByRole("dialog", { name: "Game Menu", exact: true });
+  await frame.locator("#canvas").press("Escape");
+  await drawer.waitFor({ state: "visible", timeout: 4000 });
   await page.keyboard.press("Escape");
-  await page.waitForTimeout(500);
+  await drawer.waitFor({ state: "hidden", timeout: 4000 });
 
   if (normalizeUrl(page.url()) !== normalizeUrl(routeUrl)) {
     throw new Error(`Escape redirected unexpectedly from ${routeUrl} to ${page.url()}`);
@@ -562,24 +564,12 @@ async function verifyLurePopupMenuSelection(page, frame) {
   }
 }
 
-async function verifyGameMenuButton(page, frame, routeUrl, game) {
+async function verifyGameMenuButton(page, routeUrl) {
   const menuButton = page.locator('.game-route-control-button.is-menu[title="Open game menu"]');
   const exitButton = page.locator('.game-route-control-button.is-exit[title="Exit game"]');
   const fullscreenButton = page.locator('.game-route-control-button.is-fullscreen');
 
   await exitButton.waitFor({ state: "visible", timeout: 15000 });
-
-  const shortcut = getGameMenuShortcut(game);
-
-  if (!shortcut) {
-    await page.waitForTimeout(3000);
-
-    if (await menuButton.isVisible().catch(() => false)) {
-      throw new Error(`Game menu button should be hidden for ${game.target}`);
-    }
-
-    return;
-  }
 
   // The menu reveal is delayed, but by the time the exit control appears the menu may have
   // already transitioned into its visible end state. Accept either path.
@@ -647,74 +637,21 @@ async function verifyGameMenuButton(page, frame, routeUrl, game) {
     }
   }
 
-  await frame.locator("#canvas").evaluate((canvas) => {
-    window.__menuButtonVerificationEvents = [];
-    const record = (label) => (event) => {
-      window.__menuButtonVerificationEvents.push({
-        label,
-        key: event.key,
-        code: event.code,
-        which: event.which,
-        keyCode: event.keyCode,
-        ctrlKey: event.ctrlKey,
-        timestamp: performance.now(),
-      });
-    };
-
-    const targets = [
-      ["window", window],
-      ["document", document],
-      ["body", document.body],
-      ["canvas", canvas],
-    ];
-
-    for (const [label, target] of targets) {
-      if (target && typeof target.addEventListener === "function") {
-        target.addEventListener("keydown", record(label), true);
-      }
-    }
-  });
-
+  await menuButton.focus();
   await menuButton.click();
-
-  await frame.locator("#canvas").evaluate(
-    (shortcut) =>
-      new Promise((resolve, reject) => {
-        const startedAt = Date.now();
-
-        function check() {
-          const events = window.__menuButtonVerificationEvents || [];
-          if (events.some((event) => event.key === "F5" && event.ctrlKey)) {
-            reject(new Error("Game menu button dispatched the ScummVM menu shortcut."));
-            return;
-          }
-          const matchingEvent = events.find(
-            (event) => event.key === shortcut.key && event.code === shortcut.code && event.keyCode === shortcut.keyCode && !event.ctrlKey
-          );
-
-          if (matchingEvent) {
-            resolve();
-            return;
-          }
-
-          if (Date.now() - startedAt >= 1500) {
-            reject(
-              new Error(
-                `Game menu button did not dispatch ${shortcut.key}. Recorded events: ${JSON.stringify(events)}`
-              )
-            );
-            return;
-          }
-
-          window.setTimeout(check, 50);
-        }
-
-        check();
-      }),
-    shortcut,
-  );
-
-  await page.waitForTimeout(300);
+  const drawer = page.getByRole("dialog", { name: "Game Menu", exact: true });
+  await drawer.waitFor({ state: "visible", timeout: 4000 });
+  for (const name of ["Sound Volume", "Game Speed"]) {
+    await drawer.getByRole("slider", { name, exact: true }).waitFor({ state: "visible" });
+  }
+  for (const name of ["Save Game", "Load Game"]) {
+    await drawer.getByRole("button", { name, exact: true }).click();
+    const picker = page.getByRole("dialog", { name, exact: true });
+    await picker.waitFor({ state: "visible" });
+    await picker.getByRole("button", { name: "Back to game menu" }).click();
+  }
+  await drawer.getByRole("button", { name: "Resume Game" }).click();
+  await drawer.waitFor({ state: "hidden", timeout: 4000 });
 
   const focusState = await page.evaluate(() => {
     const shell = document.querySelector(".game-route-shell");
@@ -1497,7 +1434,7 @@ for (const game of library.games) {
   await verifyRouteFrameAutofocus(page);
   await verifyEscapeStaysInGame(page, frame, routeUrl);
   await verifySkipIntroButton(page, frame, game, routeUrl);
-  await verifyGameMenuButton(page, frame, routeUrl, game);
+  await verifyGameMenuButton(page, routeUrl);
   await verifyQuitReturnsHome(page, frame, new URL(game.href, url).toString());
 
   if (screenshotPage && screenshotPage !== rootPage && screenshotPage !== page && !screenshotPage.isClosed()) {

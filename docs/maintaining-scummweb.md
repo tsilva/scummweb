@@ -57,20 +57,25 @@ replacing game entries, save paths or other settings. Games without an original
 screen option retain their engine's usual interface. Save queries do not change
 these settings.
 
-The player's **Open game menu** button appears only for explicitly supported
-native menu shortcuts. It never sends Ctrl+F5 or falls back to ScummVM's global
-menu. Current mappings cover the full versions of Beneath a Steel Sky (F5),
-Flight of the Amazon Queen (F1, journal), and Broken Sword: The Shadow of the
-Templars (F5). Demos, interview editions and unrecognized games omit the button;
-their existing in-game controls remain available. Games can restrict menu access
-during intros, cutscenes or scripted sequences.
+After startup, press **Esc** during play or select **Open game menu** to open the
+shared drawer in catalog and imported games. **Esc** goes back from a picker
+and closes the main drawer. It remembers Sound Volume and Game Speed in the
+current browser. The game is held when its engine reaches a supported update
+boundary. **Resume Game** returns focus to the game.
 
-Maintain the allowlist in `app/game-player/game-menu.mjs`, shared with the launch
-verification harness. Match engine and game identity, check edition restrictions,
-and trace the shortcut to the native interface in the pinned engine source before
-adding support. Do not add shortcuts that can open ScummVM's menu depending on
-saved settings or platform; SCUMM's F5 is one such shortcut. Run
-`node --test test/game-menu.test.mjs test/game-route-frame.test.mjs` after changes.
+The **Save Game** and **Load Game** pickers use the current edition’s native save
+slots. **New Save** chooses an unoccupied manual slot and labels it by number.
+Overwriting an existing save requires confirmation and preserves its caption.
+Protected saves can appear in the load picker. Intro checkpoints and incomplete
+writes stay out of both pickers. A game can deny either action during an intro,
+cutscene or scripted sequence. When the runtime lacks a shared save or load
+capability, the picker offers the native menu.
+
+The fallback opens the game-specific interface for allowlisted editions and
+ScummVM’s global menu for other games. Keep verified native shortcuts in
+`app/game-player/game-menu.mjs`. Run
+`node --test test/game-menu.test.mjs test/game-route-frame.test.mjs test/player-controls.test.mjs`
+after changing the drawer or its native bridge.
 
 Imports matching an included game's data use the bundled copy and do not add a
 second version. Other editions default to the latest known revision, with the
@@ -183,8 +188,8 @@ The visibility observer listens in the host and same-origin game documents,
 reattaches after frame navigation, and releases listeners and timers on cleanup.
 Pointer lock hides the controls, including when already active at observer
 startup or frame navigation; releasing it or pressing **Esc** reveals them for
-three seconds. Opening the game menu pins them until **Esc** or
-cursor capture. Touch/mobile controls and bottom actions do not auto-hide.
+three seconds. The toolbar stays visible while the shared game menu is open.
+Touch/mobile controls and bottom actions do not auto-hide.
 
 ### Mobile play
 

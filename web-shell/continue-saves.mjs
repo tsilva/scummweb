@@ -64,6 +64,8 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
   let restoredPending = false;
   let needsPublish = false;
   let scannedFiles;
+  let playerSaves;
+  let occupiedSlots;
   let resumeReported = false;
   let legacyIndexKey;
 
@@ -130,7 +132,10 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
   };
   scope.__scummwebEndSaveWrite = (name, success) => {
     if (!writers.delete(name)) return false;
-    if (success && !ioFailures.has(name)) pending.delete(name);
+    if (success && !ioFailures.has(name)) {
+      pending.delete(name);
+      scope.__scummwebPlayerSaveWritten?.(name);
+    }
     needsPublish = true;
     // Native code calls refresh only after the last output stream has closed.
     return writers.size === 0;
@@ -144,6 +149,10 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
   scope.__scummwebBeginSaveScan = (engineId, gameId, target, supported, extra = "") => {
     scannedFiles = new Map(files().map((file) => [file.name, file]));
     snapshot = { schemaVersion: 1, engineId, gameId, target, extra, supported: Boolean(supported), saves: [] };
+    if (scope.__scummwebPublishPlayerSaves) {
+      playerSaves = [];
+      occupiedSlots = new Set();
+    }
     if (!restoredPending) {
       restoredPending = true;
       try {
@@ -164,15 +173,20 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
       }
     }
   };
-  scope.__scummwebAddSave = (slot, name) => {
+  scope.__scummwebRecordOccupiedSave = (slot) => occupiedSlots?.add(slot);
+  scope.__scummwebAddSave = (slot, name, description, writable) => {
     if (!snapshot || !validName(name) || pending.has(name) || isCheckpoint(name)) return;
     const file = scannedFiles.get(name);
-    if (file?.size > 0) snapshot.saves.push({ ...file, slot });
+    if (file?.size > 0) {
+      if (snapshot.supported) snapshot.saves.push({ ...file, slot });
+      playerSaves?.push({ slot, name, modifiedAt: file.modifiedAt, description, writable });
+    }
   };
   scope.__scummwebEndSaveScan = () => {
     if (!snapshot) return -1;
     const listing = files();
     const persisted = persist();
+    if (playerSaves) scope.__scummwebPublishPlayerSaves(playerSaves, occupiedSlots);
     const save = latestPlayerSave(snapshot, listing);
     if (params.get("continue") === "1" && !resumeReported) {
       scope.console?.info(`ScummWEB Continue: ${snapshot.engineId}:${snapshot.gameId}, slot ${save?.slot ?? "unavailable"}`);

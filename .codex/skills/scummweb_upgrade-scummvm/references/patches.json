@@ -185,11 +185,12 @@
     {
       "path": "scripts/patch_scummvm_audio.py",
       "status": "active",
-      "sha256": "4a2dbaefaa42d68d58d7bceb5e33749cdf8eaa18fce6bd712df5fe8f34b30148",
-      "purpose": "Adapt generated SDL3 playback glue to clear output buffers and contain invalid samples.",
+      "sha256": "4d922a197b7615b53caf650d8a51d96ca1341ea96e2cfa245f301eb5e9b2eb2a",
+      "purpose": "Adapt generated SDL3 playback glue to clear output buffers, contain invalid samples and apply the hosted player's output gain.",
       "invariants": [
         "Prime every output channel with silence before the mixer callback.",
         "Handle non-finite samples, clamp to [-1,1], silence excessively abnormal buffers, and leave recording behavior untouched.",
+        "Apply hosted gain only after sample validation and clipping, including complete mute at zero. Default to unity for direct and AgentSCUMM launches.",
         "Exact-pattern replacement is idempotent and fails on unsupported generated glue rather than silently skipping the adaptation."
       ],
       "verification": [
@@ -691,6 +692,22 @@
         "Confirm the action is absent in gameplay and on Continue, and verify bundled checkpoints still skip correctly."
       ],
       "retire_when": "Upstream reports and accepts edition-aware native startup skip points through a browser interface."
+    },
+    {
+      "path": "patches/scummvm/44-shared-player-menu.patch",
+      "status": "active",
+      "sha256": "dfeca50a2845d5b5c45c268d0c7474a3880a1962c18815476cb00281ad63679d",
+      "purpose": "Use native save listing and runtime save/load boundaries from the hosted game menu and scale the hosted game clock.",
+      "invariants": [
+        "Preserve existing save namespaces, native captions, protected slots, and the AgentSCUMM command and time contract.",
+        "Use the same engine-owned save and restore points. Allow slot zero and reserved autosaves only for hosted loads.",
+        "Scale only the Emscripten engine clock and delays when the hosted player provides settings. Keep the raw SDL clock and native audio sample rate intact."
+      ],
+      "verification": [
+        "In Brave, save, reload and restore Sky, Queen and a game on the shared native boundary. Exercise old saves, autosaves and unavailable scenes.",
+        "Change playback speed while the drawer is open and resume. Verify slower and faster gameplay and the default 1× behavior. Run the AgentSCUMM and Continue regression tests."
+      ],
+      "retire_when": "Upstream exposes a browser player API with equivalent native save metadata, safe runtime control and adjustable game speed."
     }
   ]
 }

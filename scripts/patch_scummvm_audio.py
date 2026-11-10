@@ -38,6 +38,7 @@ source = replace_once(
     'for(var j=0;j<$1;++j){channelData[j]=HEAPF32[buf+(j*numChannels+c)]}}',
     'var outputBuffer=SDL3.audio_playback.currentPlaybackBuffer;'
     'var numChannels=outputBuffer["numberOfChannels"];'
+    'var volume=globalThis.__scummwebPlayerVolume??1;'
     'var abnormalSamples=0;'
     'for(var c=0;c<numChannels;++c){'
     'var channelData=outputBuffer["getChannelData"](c);'
@@ -47,7 +48,7 @@ source = replace_once(
     'if(!Number.isFinite(sample)){sample=0;++abnormalSamples}'
     'else if(sample>1){if(sample>8){++abnormalSamples}sample=1}'
     'else if(sample<-1){if(sample<-8){++abnormalSamples}sample=-1}'
-    'channelData[j]=sample}}'
+    'channelData[j]=sample*volume}}'
     'if(abnormalSamples>$1*numChannels/16){'
     'for(var clearChannel=0;clearChannel<numChannels;++clearChannel){'
     'outputBuffer["getChannelData"](clearChannel).fill(0)}}',

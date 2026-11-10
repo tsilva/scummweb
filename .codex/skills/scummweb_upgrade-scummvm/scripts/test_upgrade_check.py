@@ -145,6 +145,7 @@ class UpgradeChecks(unittest.TestCase):
         shutil.copy2(Path(upgrade.__file__), target / "upgrade_check.py")
         builder = self.root / "scripts/build_scummvm_web.sh"
         shutil.copy2(source / "scripts/build_scummvm_web.sh", builder)
+        shutil.copy2(source / "scripts/build_helpers.sh", builder.with_name("build_helpers.sh"))
         subprocess.run(["git", "init", "--quiet", str(self.root)], check=True, capture_output=True)
         (self.root / "patches/scummvm/02-new.patch").write_text("undocumented fixture")
         result = subprocess.run(["bash", str(builder), "--prepare-source"], cwd=self.root, capture_output=True, text=True)

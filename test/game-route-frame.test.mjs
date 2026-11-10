@@ -624,7 +624,7 @@ test("a slow archive keeps the fallback frame identity through the first-frame m
   await new Promise(setImmediate);
   player.render();
   assert.equal(player.deliveries.length, 1);
-  player.gameReady("/scummvm.html?localGame=1&catalogSaveTarget=sky&hostCompatibilityWarning=1&launchRetry=inline#sky");
+  player.gameReady("/scummvm.html?localGame=1&catalogSaveTarget=sky&hostCompatibilityWarning=1&hostPlayer=1&launchRetry=inline#sky");
   assert.equal(player.confirmations, 1, "the parent accepts the actual fallback frame's ready message");
   player.unmount();
 });
@@ -692,7 +692,10 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
   const module = { exports: {} };
   runInNewContext(code, {
     module, exports: module.exports, URL, URLSearchParams,
-    window: { location: { href: "https://example.test/play", origin: "https://example.test", hash: "", search: "" } },
+    window: {
+      location: { href: "https://example.test/play", origin: "https://example.test", hash: "", search: "" },
+      requestAnimationFrame: (callback) => callback(),
+    },
     require(name) {
       if (name === "react") return {
         useState: (value) => [typeof value === "function" ? value() : value, () => {}],
@@ -712,6 +715,7 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
       if (name.endsWith("/keyboard")) return {
         dispatchSyntheticKeypressSequence: async (frame, shortcut) => keypresses.push({ frame, shortcut }),
         dispatchGameCommand: (frame, command) => commands.push({ frame, command }),
+        focusGameCanvas() {},
       };
       if (name.endsWith("/GamePlayerControls")) return Controls;
       if (name.endsWith("/GameTouchCursorPad")) return CursorPad;
@@ -747,20 +751,20 @@ for (const [game, expectedKey] of [
   [{ engineId: "sci", gameId: "phantasmagoria", target: "phantasmagoria" }, null],
   [{ target: "unknown-import" }, null],
 ]) {
-  test(`menu control uses only a supported native action for ${game.target}`, async () => {
+  test(`shared game menu and native fallback are available for ${game.target}`, async () => {
     const player = readyPlayer(game);
-    assert.equal(player.controls.showGameMenuButton, Boolean(expectedKey));
-    await player.controls.onOpenMenu();
-    assert.equal(player.keypresses.length, expectedKey ? 1 : 0);
-    if (expectedKey) {
-      assert.equal(player.keypresses[0].frame, player.frame);
-      assert.equal(player.keypresses[0].shortcut.key, expectedKey);
-      assert.equal(Boolean(player.keypresses[0].shortcut.ctrlKey), false);
-    }
+    assert.equal(player.controls.showGameMenuButton, true);
+    player.controls.onOpenMenu();
+    assert.equal(player.keypresses.length, 0);
+    await player.controls.onNativeMenu();
+    assert.equal(player.keypresses.length, 1);
+    assert.equal(player.keypresses[0].frame, player.frame);
+    assert.equal(player.keypresses[0].shortcut.key, expectedKey ?? "F5");
+    assert.equal(Boolean(player.keypresses[0].shortcut.ctrlKey), !expectedKey);
   });
 }
 
-test("native menu stays hidden while loading and after a boot failure", () => {
+test("game menu stays hidden while loading and after a boot failure", () => {
   const game = { engineId: "sky", gameId: "sky", target: "sky" };
   for (const state of [{ ready: false }, { failed: true }]) {
     assert.equal(readyPlayer(game, state).controls.showGameMenuButton, false);

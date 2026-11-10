@@ -1,8 +1,8 @@
 {
-  "version": "sha-0db93fa125b293f638a1c407",
+  "version": "sha-4e49ec032da34d2d644ad0d6",
   "files": {
-    "/scummvm.js": "sha-022df7b6699b64157a6e800f",
-    "/scummvm.wasm": "sha-1685bb30d70508288de3718b",
+    "/scummvm.js": "sha-6c0b3b0ef6a4cfdb786952ee",
+    "/scummvm.wasm": "sha-3093f3cf8f5512372ba77476",
     "/scummvm_fs.js": "sha-a1070971ba693ed248d9e700",
     "/audio-start-control.mjs": "sha-5be22420debc1de1477fe594",
     "/scummvm.ini": "sha-d3626c57c964da146fa04681",
@@ -23,14 +23,14 @@
     "/data/gui-icons.dat": "sha-e772a8bb64ad3d7a807e859a",
     "/data/helpdialog.zip": "sha-9ff3c7964a63b18ffa0e9cfc",
     "/data/hugo.dat": "sha-228dd029399ce7318a60aebe",
-    "/data/index.json": "sha-593bcf6590c247affeafaf8c",
+    "/data/index.json": "sha-63aa7deb0f3da0124cd34102",
     "/data/kyra.dat": "sha-6b2cc168d3201305039e78bc",
     "/data/lure.dat": "sha-9c17cfb5349c4bd13e56b065",
     "/data/macgui.dat": "sha-5e55c29903809bf5297a28fe",
     "/data/monkey4-patch.m4b": "sha-6d0141a132bf34eb4c81d7db",
     "/data/mort.dat": "sha-ed4f797fd4aff885000ebe58",
     "/data/neverhood.dat": "sha-b86cb788237ace2988f7a8b7",
-    "/data/plugins/index.json": "sha-adc2934f657394c74823060c",
+    "/data/plugins/index.json": "sha-1a454157d739ec7004fa9c01",
     "/data/plugins/libaccess.so": "sha-ec69feccb201d898c2e7245f",
     "/data/plugins/libadl.so": "sha-25e3cd428ca9c538281bf51d",
     "/data/plugins/libagi.so": "sha-3fb3dba06225922b8106f858",
@@ -66,12 +66,12 @@
     "/data/plugins/libparallaction.so": "sha-93dcfcf1c25a682d5a0a1b7c",
     "/data/plugins/libpegasus.so": "sha-b03f0df3d7ec7e3eea9f85e7",
     "/data/plugins/libplumbers.so": "sha-3899807740c19a8f751fff6e",
-    "/data/plugins/libqueen.so": "sha-1eb79071860489c1e2744cb4",
+    "/data/plugins/libqueen.so": "sha-c165f8886ffbb5f65511ed92",
     "/data/plugins/libsaga.so": "sha-d27bd8c2a236a1f606af69a6",
     "/data/plugins/libsci.so": "sha-9973080631405be5ac3d5525",
     "/data/plugins/libscumm.so": "sha-2d620bcf6e4f9df282d92997",
     "/data/plugins/libsherlock.so": "sha-d7373ec1257c6cf8a8b45b74",
-    "/data/plugins/libsky.so": "sha-4ec970c2e34efd184c3ac83d",
+    "/data/plugins/libsky.so": "sha-042c5233e7f09b22af93d776",
     "/data/plugins/libsword1.so": "sha-b81b1d7634330287ad62dafd",
     "/data/plugins/libsword2.so": "sha-97638e72551ca77f98ead3bd",
     "/data/plugins/libsword25.so": "sha-83922934744ec0add2400162",
@@ -175,6 +175,6 @@
     "/launcher/skip-intro/sky/SKY-VM.000": "sha-4a980c9a92fb713cf4e4f990",
     "/launcher/skip-intro/soltys/soltys.001": "sha-a228224141169a9874a5f13a",
     "/launcher/skip-intro/sword25/sword25.000": "sha-182cf3396ee26d6ea6d3d567",
-    "/scummvm.html": "sha-0db93fa125b293f638a1c407"
+    "/scummvm.html": "sha-4e49ec032da34d2d644ad0d6"
   }
 }
