@@ -28,7 +28,7 @@ function MenuSlider({ label, value, min, max, step, text, onChange, disabled }) 
   );
 }
 
-export default function GameMenuDrawer({ frameRef, onClose, onNativeMenu, title }) {
+export default function GameMenuDrawer({ frameRef, onClose, onExit, onNativeMenu, title }) {
   const dialogRef = useRef(null);
   const controller = useRef(null);
   const [page, setPage] = useState("menu");
@@ -151,7 +151,10 @@ export default function GameMenuDrawer({ frameRef, onClose, onNativeMenu, title 
             <MenuSlider label="Game Speed" value={settings.speed} min={0.5} max={1.5} step={0.1}
               text={`${settings.speed}×`} onChange={(value) => update("speed", value)} disabled={!controller.current} />
           </div>
-          <button className="game-menu-primary" onClick={() => dialogRef.current.close()} type="button">Resume Game</button>
+          <div className="game-menu-session-actions">
+            <button className="game-menu-primary" onClick={() => dialogRef.current.close()} type="button">Resume Game</button>
+            <button className="game-menu-outlined" onClick={onExit} type="button">Quit Game</button>
+          </div>
         </>
       ) : (
         <div aria-busy={busy} className="game-menu-picker">

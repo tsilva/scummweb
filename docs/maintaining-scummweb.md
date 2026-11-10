@@ -58,10 +58,12 @@ screen option retain their engine's usual interface. Save queries do not change
 these settings.
 
 After startup, press **Esc** during play or select **Open game menu** to open the
-shared drawer in catalog and imported games. **Esc** goes back from a picker
-and closes the main drawer. It remembers Sound Volume and Game Speed in the
-current browser. The game is held when its engine reaches a supported update
-boundary. **Resume Game** returns focus to the game.
+shared drawer in catalog and imported games. The drawer extends to the top of
+the screen. **Esc** goes back from a picker and closes the main drawer. It
+remembers Sound Volume and Game Speed in the current browser. The game is held
+when its engine reaches a supported update boundary. **Resume Game** returns
+focus to the game. **Quit Game** leaves the player and returns to the game's
+page or the library.
 
 The **Save Game** and **Load Game** pickers use the current edition’s native save
 slots. **New Save** chooses an unoccupied manual slot and labels it by number.
