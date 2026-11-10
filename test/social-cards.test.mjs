@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -91,6 +92,44 @@ test("deleted and corrupted cards are repaired even when their inputs have not c
   assert.deepEqual(await fs.readFile(filename), jpeg);
   await fs.unlink(filename);
   assert.deepEqual(await f.run(), { generated: 1, reused: 0, removed: 0 });
+});
+
+test("Vercel restores verified social cards into a fresh checkout and repairs corrupt cache entries", async (t) => {
+  const f = await fixture(t);
+  const cacheDir = path.join(f.root, ".next/cache/scummweb-social-cards");
+  const publicDir = path.join(f.root, "public/social-cards");
+  const manifestPath = path.join(f.root, "data/social-cards.json");
+  const artworkPath = path.join(f.root, "scummvm-shell/launcher/cover.webp");
+  const artwork = await fs.readFile(artworkPath);
+  const sha256 = createHash("sha256").update(artwork).digest("hex");
+  await fs.mkdir(path.dirname(manifestPath));
+  await fs.writeFile(path.join(f.root, "data/artwork-storage.json"), JSON.stringify({
+    published: true,
+    origin: "https://scummvm-games.tsilva.eu",
+    files: { "/launcher/cover.webp": { sha256, bytes: artwork.length, key: `artwork/${sha256}/cover.webp` } },
+  }));
+  const request = t.mock.method(globalThis, "fetch", async () => { throw new Error("Unexpected artwork download"); });
+  await f.run([game], { cacheDir });
+  const original = await f.readManifest();
+  const { file } = original.cards.sample;
+
+  await fs.rm(publicDir, { recursive: true });
+  await fs.unlink(artworkPath);
+  await fs.writeFile(manifestPath, JSON.stringify({ version: 1, cards: {} }));
+  assert.deepEqual(await f.run([game], { cacheDir }), { generated: 0, reused: 1, removed: 0 });
+  assert.equal(f.calls(), 1);
+  assert.deepEqual(await fs.readFile(path.join(publicDir, file)), jpeg);
+  assert.deepEqual(await f.readManifest(), original);
+  assert.equal(request.mock.callCount(), 0);
+
+  await fs.writeFile(path.join(cacheDir, file), "corrupt cache entry");
+  await fs.writeFile(artworkPath, artwork);
+  assert.deepEqual(await f.run([game], { cacheDir }), { generated: 1, reused: 0, removed: 0 });
+  assert.deepEqual(await fs.readFile(path.join(publicDir, file)), jpeg);
+  assert.deepEqual(await fs.readFile(path.join(cacheDir, file)), jpeg);
+
+  assert.deepEqual(await f.run([], { cacheDir }), { generated: 0, reused: 0, removed: 1 });
+  await assert.rejects(fs.access(path.join(cacheDir, file)), { code: "ENOENT" });
 });
 
 test("failed inputs and failed renders preserve the last valid manifest and cards", async (t) => {

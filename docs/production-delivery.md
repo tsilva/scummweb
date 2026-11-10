@@ -14,6 +14,12 @@ Use **Actions → Production delivery → Run workflow → main** to recover aft
 
 Native Infisical syncs are disabled after this workflow has successfully replaced them. Updating a deployment credential in GitHub does not replace application keys in Infisical.
 
+**Stage prebuilt deployment** can be run manually from `main`. It builds the
+ScummWEB artifact on a standard GitHub runner and uploads it to Vercel with
+production settings and `--skip-domain`. The run summary identifies the staged
+deployment. The build receives the public browser Sentry DSN. Vercel supplies
+private runtime variables when it creates the deployment.
+
 ## Game-library publishing
 
 Game publishing is a separate manual operation: `pnpm run publish:games`, optionally with `--game <target-or-folder>`, `--force`, or `--prune`. It fetches only the shared `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` entries from ScummWeb Development (`e1c358f8-0678-45d7-a2a8-270c2f29aadd`, `dev`, `/`) through the existing human Infisical login. The publishing subprocess receives that pair instead of inherited or dotenv credentials, plus the pinned `scummvm-games` bucket and Cloudflare account endpoint. Target overrides are rejected. Sentry/OpenRouter and Infisical authentication values are excluded from the publisher's environment.
