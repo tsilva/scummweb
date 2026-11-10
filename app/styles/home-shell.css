@@ -207,7 +207,7 @@ button.nav-icon-link {
 
 .hero-carousel-controls button:focus-visible {
   outline: 2px solid var(--accent-strong);
-  outline-offset: 2px;
+  outline-offset: -1px;
 }
 
 .hero-carousel-rotation {
@@ -748,6 +748,13 @@ button.nav-icon-link {
   display: none;
 }
 
+.landscape-rail {
+  /* Fit the 7px focus ring and 2px lift inside the scrollport. */
+  margin: -9px -7px 0;
+  padding: 9px 7px max(7px, 0.5rem);
+  scroll-padding-inline: 7px;
+}
+
 .landscape-card {
   position: relative;
   flex: 0 0 min(21.25rem, 84vw);
@@ -841,6 +848,8 @@ button.nav-icon-link {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
   gap: 1rem;
+  /* Keep the last row's focus ring inside the paint-contained section. */
+  padding-bottom: 7px;
 }
 
 .poster-entry {
@@ -1912,6 +1921,7 @@ button.nav-icon-link {
 
 .game-screenshot-viewer-image {
   position: relative;
+  width: 100%;
   aspect-ratio: var(--gallery-aspect, 4 / 3);
   max-height: 75svh;
 }

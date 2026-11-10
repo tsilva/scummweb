@@ -147,20 +147,32 @@ function bindBrowserFsOperations(filesystem) {
   }
 }
 
-function acquireSaveSession() {
-  if (!globalThis.navigator?.locks) return Promise.resolve();
-  return new Promise((resolve, reject) => {
-    navigator.locks.request("scummweb-saves", { mode: "exclusive", ifAvailable: true }, async (lock) => {
-      if (!lock) {
-        const error = new Error("Another game or save operation is active. Close it before launching a game.");
-        error.name = "SaveSessionBusyError";
-        reject(error);
-        return;
-      }
-      resolve();
-      // The browser releases this lock when the game document closes.
-      await new Promise(() => {});
-    }).catch(reject);
+/*__SCUMMWEB_SAVE_EDITIONS__*/
+async function prepareSaveRoot() {
+  const { editionKey, acquireEditionSession, initializeSaveEdition, readSaveTree, saveLockName } = globalThis.__scummwebSaveEditions;
+  const params = scummwebLaunchUrl.searchParams;
+  const namespace = params.get("saveNamespace");
+  const args = decodeURI(scummwebLaunchUrl.hash.slice(1)).trim().split(/\s+/);
+  const catalogTarget = params.has("catalogGame") ? args.at(-1) : "";
+  const directTarget = !params.has("localGame") && (args.length === 1 || args.length === 3 && args[0] === "-x") ? args.at(-1) : "";
+  const target = params.get("catalogSaveTarget") || params.get("saveTarget") || catalogTarget || directTarget;
+  const edition = agentSaveScope ? "" : editionKey(namespace, target);
+  const locks = globalThis.navigator?.locks;
+  await acquireEditionSession(locks, edition);
+  if (!edition || !locks) {
+    await setupDefaultLocalData();
+    return edition && readSaveTree(localStorage, edition).editionRoot;
+  }
+  return locks.request(saveLockName + ":setup", async () => {
+    const existing = readSaveTree(localStorage, edition).editionRoot;
+    if (existing) return existing;
+    let config;
+    if (localStorage.getItem("/") === null) {
+      const response = await fetch(buildVersionedAssetUrl("scummvm.ini"));
+      if (!response.ok) throw new Error("Could not initialize save storage. Try again when online.");
+      config = await response.text();
+    }
+    return initializeSaveEdition(localStorage, edition, config);
   });
 }
 
@@ -171,9 +183,22 @@ function setupLocalFilesystem() {
     EIO: 29, EISDIR: 31, ENOENT: 44, ENOSPC: 51, ENOTDIR: 54,
     ENOTEMPTY: 55, ENOTSUP: 58, EPERM: 63, EROFS: 69,
   };
-  return acquireSaveSession().then(() => scummwebBrowserFsReady).then(setupDefaultLocalData).then(() => new Promise((resolve, reject) => {
+  return Promise.all([prepareSaveRoot(), scummwebBrowserFsReady]).then(([editionRoot]) => new Promise((resolve, reject) => {
     BrowserFS.FileSystem.LocalStorage.Create((storageError, storage) => {
       if (storageError) return reject(storageError);
+      if (editionRoot) {
+        // BrowserFS 2.0's synchronous store uses "/" as its root inode key.
+        // Pin it to this edition so other tabs can publish their own roots
+        // without changing any directory this runtime resolves or writes.
+        const store = storage.store;
+        const keyFor = (key) => key === "/" ? editionRoot : key;
+        storage.store = Object.assign(Object.create(store), {
+          get: (key) => store.get(keyFor(key)),
+          put: (key, data, overwrite) => store.put(keyFor(key), data, overwrite),
+          del: (key) => store.del(keyFor(key)),
+          clear: () => { throw new Error("Cannot clear shared browser storage"); },
+        });
+      }
       BrowserFS.FileSystem.MountableFileSystem.Create({ "/": storage }, (mountError, mount) => {
         if (mountError) return reject(mountError);
         BrowserFS.initialize(mount);
@@ -226,7 +251,7 @@ async function installMissingCatalogTarget() {
   const section = findIniSection(await response.text(), target);
   if (!section) return;
 
-  // Re-read after the fetch so we keep changes made by another player tab.
+  // Re-read after the fetch before appending the catalog target.
   const currentConfig = FS.readFile(configPath, { encoding: "utf8" });
   if (!findIniSection(currentConfig, target)) {
     FS.writeFile(configPath, `${currentConfig.trimEnd()}\n\n${section.trimEnd()}\n`);
@@ -436,7 +461,11 @@ function setupFilesystem() {
       }
       const savePath = getConfiguredSavePath();
       ensureDirectory(savePath);
-      importLegacySkySave(FS, scummwebLaunchUrl.searchParams, defaultSavePath, savePath);
+      const slot = scummwebLaunchUrl.searchParams.get("agentLegacySkySlot");
+      const scopedSky = "/home/web_user/.scummweb-editions/catalog-sky" + defaultSavePath.slice("/home/web_user".length);
+      const source = /^[1-9][0-9]{0,2}$/.test(slot || "") && FS.analyzePath(`${scopedSky}/SKY-VM.${slot.padStart(3, "0")}`).exists
+        ? scopedSky : defaultSavePath;
+      importLegacySkySave(FS, scummwebLaunchUrl.searchParams, source, savePath);
       const args = Module.arguments.filter(arg => !arg.startsWith("--savepath="));
       Module.arguments.splice(0, Module.arguments.length, `--savepath=${savePath}`, ...args);
     })
@@ -464,7 +493,7 @@ function setupFilesystem() {
             query: scummwebLaunchUrl.searchParams.get("saveQuery") }, scummwebLaunchUrl.origin);
         }
         if (error.name === "SaveSessionBusyError") {
-          window.parent.postMessage({ type: "scummweb:save-session-busy" }, scummwebLaunchUrl.origin);
+          window.parent.postMessage({ type: "scummweb:save-session-busy", reason: error.busyReason }, scummwebLaunchUrl.origin);
         } else {
           if (!scummwebLaunchUrl.searchParams.has("saveQuery")) reportScummvmBootError("filesystem", error);
           if (isLocalGame) reportLocalGameStatus("error");

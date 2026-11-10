@@ -307,8 +307,8 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
         name: "SyntaxError", message: "Unexpected token", ...data,
       } });
     },
-    saveSessionBusy(origin = window.location.origin, source = frame.contentWindow) {
-      for (const handler of [...messages]) handler({ origin, source, data: { type: "scummweb:save-session-busy" } });
+    saveSessionBusy(origin = window.location.origin, source = frame.contentWindow, reason = "edition") {
+      for (const handler of [...messages]) handler({ origin, source, data: { type: "scummweb:save-session-busy", reason } });
     },
     genericError() {
       for (const handler of [...messages]) handler({ origin: window.location.origin, source: frame.contentWindow,
@@ -610,7 +610,7 @@ test("save-lock contention explains recovery and rejects messages from unrelated
   player.genericError();
   player.render();
   assert.equal(player.overlay.hasBootFailed, true);
-  assert.match(player.overlay.bootStatusText, /Close it in the other tab/);
+  assert.match(player.overlay.bootStatusText, /This game edition is already open/);
   player.unmount();
 });
 
@@ -624,7 +624,7 @@ test("a slow archive keeps the fallback frame identity through the first-frame m
   await new Promise(setImmediate);
   player.render();
   assert.equal(player.deliveries.length, 1);
-  player.gameReady("/scummvm.html?localGame=1&hostCompatibilityWarning=1&launchRetry=inline#sky");
+  player.gameReady("/scummvm.html?localGame=1&catalogSaveTarget=sky&hostCompatibilityWarning=1&launchRetry=inline#sky");
   assert.equal(player.confirmations, 1, "the parent accepts the actual fallback frame's ready message");
   player.unmount();
 });

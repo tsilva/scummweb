@@ -458,7 +458,9 @@ export default function GameRouteFrame({
 
       if (event.data?.type === "scummweb:save-session-busy" && event.source === frameRef.current?.contentWindow) {
         stopArchiveBootTimer();
-        setArchiveError("Another game or save operation is active. Close it in the other tab, then try again.");
+        setArchiveError(event.data.reason === "edition"
+          ? "This game edition is already open or checking saves in another tab. Close it or wait for the check, then try again."
+          : "A game or save operation is using shared storage. Close it or wait for it to finish, then try again.");
         return;
       }
 
@@ -617,6 +619,7 @@ export default function GameRouteFrame({
           }
         }
         const shellUrl = new URL(launchSrc, window.location.origin);
+        if (target && !game?.saveNamespace) shellUrl.searchParams.set("catalogSaveTarget", target);
         shellUrl.searchParams.set("hostCompatibilityWarning", "1");
         if (progressVersion && progressRevision && !new URL(window.location.href).searchParams.has("agentSaveScope")) {
           shellUrl.searchParams.set("telemetry", "1");
