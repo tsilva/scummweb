@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { usePathname } from "next/navigation";
-import "../styles/install-prompt.css";
 
 const dismissalKey = "scummweb.install-prompt-dismissed";
 const appDisplayModes = "(display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui), (display-mode: window-controls-overlay)";
