@@ -8,6 +8,14 @@ function saveTitle(save) {
   return save.description?.trim() || `Save ${save.slot}`;
 }
 
+function isBackdropEvent(event) {
+  const dialog = event.currentTarget;
+  if (event.target !== dialog) return false;
+  // The browser also targets the dialog when the pointer is over its backdrop.
+  const { left, right, top, bottom } = dialog.getBoundingClientRect();
+  return event.clientX < left || event.clientX >= right || event.clientY < top || event.clientY >= bottom;
+}
+
 function MenuSlider({ label, value, min, max, step, text, onChange, disabled }) {
   return (
     <label className="game-menu-slider">
@@ -30,6 +38,7 @@ function MenuSlider({ label, value, min, max, step, text, onChange, disabled }) 
 
 export default function GameMenuDrawer({ frameRef, onClose, onExit, onNativeMenu, title }) {
   const dialogRef = useRef(null);
+  const pressedBackdrop = useRef(false);
   const controller = useRef(null);
   const [page, setPage] = useState("menu");
   const [settings, setSettings] = useState(defaultSettings);
@@ -110,7 +119,13 @@ export default function GameMenuDrawer({ frameRef, onClose, onExit, onNativeMenu
         else if (page !== "menu") go("menu");
         else event.currentTarget.close();
       }}
+      onClick={(event) => {
+        const startedOutside = pressedBackdrop.current;
+        pressedBackdrop.current = false;
+        if (!busy && startedOutside && isBackdropEvent(event)) event.currentTarget.close();
+      }}
       onClose={onClose}
+      onPointerDown={(event) => { pressedBackdrop.current = isBackdropEvent(event); }}
       ref={dialogRef}
     >
       <header className="game-menu-header">

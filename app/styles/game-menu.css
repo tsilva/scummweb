@@ -12,6 +12,9 @@
   overscroll-behavior: contain;
   border: 0;
   border-left: 1px solid #343434;
+  outline: none;
+  -webkit-user-select: none;
+  user-select: none;
   background: #191919;
   color: var(--ink);
   font-size: 1rem;
