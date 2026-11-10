@@ -9,13 +9,28 @@ edition:
   game_id: gk2
   index_md5: b527742646e358218b5861ac392a604d
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   furnace: 1300
   ending: 92
 variables:
   chapter: { bank: globals, index: 115 }
   previous-room: { bank: globals, index: 12 }
+flags:
+  # Saved MSB-first n011 awards. Chapter initialization seeds other flag ranges.
+  read-hubers-note: { bank: globals, index: 201, mask: 0x0040 } # 825, rm2142
+  examined-hunt-trophies: { bank: globals, index: 208, mask: 0x0040 } # 937, rm4612
+  examined-occult-symbols: { bank: globals, index: 208, mask: 0x0020 } # 938, rm4612
+  combined-recorder-and-magazine: { bank: globals, index: 211, mask: 0x8000 } # 976, invInitCode
+  played-tour-stop-910: { bank: globals, index: 211, mask: 0x0008 } # 988, rm910
+  played-tour-stop-920: { bank: globals, index: 211, mask: 0x0004 } # 989, rm920
+  played-tour-stop-940: { bank: globals, index: 211, mask: 0x0002 } # 990, rm940
+  played-tour-stop-950: { bank: globals, index: 211, mask: 0x0001 } # 991, rm950
+  played-tour-stop-960: { bank: globals, index: 212, mask: 0x8000 } # 992, rm960
+  played-tour-stop-930: { bank: globals, index: 212, mask: 0x4000 } # 993, rm930
+  played-tour-stop-970: { bank: globals, index: 212, mask: 0x2000 } # 994, rm970
+  examined-wahnfried-plaque: { bank: globals, index: 213, mask: 0x0008 } # 1020, wahnRPlaque
+  read-diary-translation: { bank: globals, index: 213, mask: 0x0001 } # 1023, invInitCode
 milestones:
   - id: reached-chapter-2
     label: Reached chapter 2
@@ -35,6 +50,45 @@ milestones:
   - id: reached-furnace
     label: Reached the theater furnace room
     when: { room: furnace }
+  - id: read-hubers-note
+    label: Read Huber’s note
+    when: { flag: read-hubers-note }
+  - id: examined-hunt-trophies
+    label: Examined the Hunt Club basement trophies
+    when: { flag: examined-hunt-trophies }
+  - id: examined-occult-symbols
+    label: Examined the occult symbols
+    when: { flag: examined-occult-symbols }
+  - id: combined-recorder-and-magazine
+    label: Combined the tape recorder and magazine
+    when: { flag: combined-recorder-and-magazine }
+  - id: played-tour-stop-910
+    label: Played the tour tape at stop 910
+    when: { flag: played-tour-stop-910 }
+  - id: played-tour-stop-920
+    label: Played the tour tape at stop 920
+    when: { flag: played-tour-stop-920 }
+  - id: played-tour-stop-940
+    label: Played the tour tape at stop 940
+    when: { flag: played-tour-stop-940 }
+  - id: played-tour-stop-950
+    label: Played the tour tape at stop 950
+    when: { flag: played-tour-stop-950 }
+  - id: played-tour-stop-960
+    label: Played the tour tape at stop 960
+    when: { flag: played-tour-stop-960 }
+  - id: played-tour-stop-930
+    label: Played the tour tape at stop 930
+    when: { flag: played-tour-stop-930 }
+  - id: played-tour-stop-970
+    label: Played the tour tape at stop 970
+    when: { flag: played-tour-stop-970 }
+  - id: examined-wahnfried-plaque
+    label: Examined the Wahnfried plaque
+    when: { flag: examined-wahnfried-plaque }
+  - id: read-diary-translation
+    label: Read the diary translation
+    when: { flag: read-diary-translation }
   - id: winning-ending
     label: Defeated Von Glower
-    when: { all: [{ room: ending }, { any: [{ variable: previous-room, equals: 1300 }, { variable: chapter, equals: 7 }] }] }
+    when: { all: [{ room: ending }, { any: [{ variable: previous-room, equals: 1300 }, { all: [{ variable: previous-room, equals: 12 }, { variable: chapter, equals: 7 }] }] }] }

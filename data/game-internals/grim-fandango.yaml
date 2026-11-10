@@ -1,7 +1,8 @@
 # English Windows CD, patched edition. The fingerprint matches the ScummVM retail detector.
 # Native evidence: https://downloads.scummvm.org/frs/extras/patches/gfupd101.exe
 # The patched rf, year_2, year_3, at and th scripts set the numbered puzzle states.
-# The cutscene menu exposes the finale byebye as entry 39. Require a late story puzzle as well.
+# The cutscene menu exposes the finale byebye as entry 39. Its developer-only unlock can also
+# set that field, so the completion rule requires late story evidence as well.
 schema_version: 1
 game: grim-fandango
 engine_id: grim
@@ -9,7 +10,7 @@ edition:
   game_id: grim
   index_md5: 444f05f2af689c1bffd179b8b6a632bd
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 variables:
   pigeons: { bank: puzzle_flags, index: 9 }
   lighthouse: { bank: puzzle_flags, index: 29 }
@@ -19,16 +20,44 @@ variables:
   zod: { bank: puzzle_flags, index: 53 }
   thunder-boys: { bank: puzzle_flags, index: 55 }
   farewell: { bank: story_state, key: final_cutscene_unlocked }
+  baited-beavers: { bank: puzzle_flags, index: 14 } # bd.throw_bone_in_tar
+  defeated-beavers: { bank: puzzle_flags, index: 15 } # bd.shoot_beaver
+  stopped-elevator: { bank: puzzle_flags, index: 21 } # de.forklift_actor.stop_elevator
+  filled-turkey-baster: { bank: puzzle_flags, index: 23 } # bk
+  escaped-rubacava: { bank: puzzle_flags, index: 33 } # year_3.cut_scene.hyrofoil
+  found-stockings: { bank: puzzle_flags, index: 37 } # ar.wastebasket.lookAt
+  raised-la-mancha: { bank: puzzle_flags, index: 42 } # year_3.cut_scene.posidon (also sets flag 44)
 milestones:
   - id: cleared-rooftop
     label: Distracted the rooftop pigeons
     when: { variable: pigeons, equals: 1 }
+  - id: baited-beavers
+    label: Threw a bone into the tar
+    when: { variable: baited-beavers, equals: 1 }
+  - id: defeated-beavers
+    label: Cleared the flaming beavers
+    when: { variable: defeated-beavers, equals: 1 }
+  - id: stopped-elevator
+    label: Stopped the elevator with the forklift
+    when: { variable: stopped-elevator, equals: 1 }
+  - id: filled-turkey-baster
+    label: Filled the turkey baster
+    when: { variable: filled-turkey-baster, equals: 1 }
   - id: reached-lighthouse
     label: Reached Lola at the lighthouse
     when: { variable: lighthouse, equals: 1 }
+  - id: escaped-rubacava
+    label: Escaped Rubacava in the hydrofoil
+    when: { variable: escaped-rubacava, equals: 1 }
   - id: stole-submarine
     label: Took the submarine
     when: { variable: submarine, equals: 1 }
+  - id: found-stockings
+    label: Found the stockings in the wastebasket
+    when: { variable: found-stockings, equals: 1 }
+  - id: raised-la-mancha
+    label: Raised the Limbo’s sister ship, the La Mancha
+    when: { variable: raised-la-mancha, equals: 1 }
   - id: freed-workers
     label: Helped the workers escape
     when: { variable: exodus, equals: 1 }

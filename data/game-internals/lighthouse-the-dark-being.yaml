@@ -1,6 +1,7 @@
 # English CD 1.1.
 # Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/lighthouse-dos-1.1/src
-# rm820 records Amanda’s rescue, and rm800 records Krick’s rescue and the capture of the Dark Being.
+# Main stores flag n in global 116 + floor(n / 16), mask 0x8000 >> (n % 16).
+# rm820 records Amanda’s rescue; rm800 can clear it after the Dark Being steals her back.
 # rm380 serves all endings. Its success branches require Krick and either a safe explosion or the reunion with Amanda.
 # For the reunion route this map requires the captured creature, matching the sGoodJob branch.
 schema_version: 1
@@ -10,11 +11,14 @@ edition:
   game_id: lighthouse
   index_md5: 9a02b315bbbacdf03f77ee64d233f573
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   dark-domain: 800
   ending: 380
 flags:
+  sparrow-wound: { bank: globals, index: 137, mask: 0x20 } # LightInv, flag 346.
+  gate-jammed-with-umbrella: { bank: globals, index: 140, mask: 0x8 } # rm820, flag 396.
+  amandas-cage-opened: { bank: globals, index: 139, mask: 0x40 } # rm820, flag 377.
   krick-rescued: { bank: globals, index: 137, mask: 0x4 }
   amanda-rescued: { bank: globals, index: 137, mask: 0x2 }
   being-captured: { bank: globals, index: 137, mask: 0x1 }
@@ -23,18 +27,29 @@ flags:
   trapped-without-tubes: { bank: globals, index: 129, mask: 0x8 }
   trapped-in-parallel-world: { bank: globals, index: 128, mask: 0x10 }
 milestones:
+  - id: wound-mechanical-sparrow
+    label: Wound the mechanical sparrow
+    when: { flag: sparrow-wound }
   - id: reached-dark-domain
     label: Reached the Dark Domain
     when: { room: dark-domain }
+  - id: jammed-gate-with-umbrella
+    label: Jammed the fortress gate with the umbrella
+    when: { flag: gate-jammed-with-umbrella }
+  - id: opened-amandas-cage
+    label: Opened Amanda’s cage
+    when: { flag: amandas-cage-opened }
   - id: rescued-amanda
     label: Rescued Amanda
     when: { flag: amanda-rescued }
   - id: rescued-krick
     label: Rescued Dr. Krick
     when: { flag: krick-rescued }
+    implies: [reached-dark-domain]
   - id: captured-being
     label: Captured the Dark Being
     when: { flag: being-captured }
+    implies: [reached-dark-domain]
   - id: winning-ending
     label: Rescued Dr. Krick and stopped the Dark Being
     when:
@@ -42,10 +57,10 @@ milestones:
         - { room: ending }
         - { flag: krick-rescued }
         - { flag: player-killed, equals: false }
-        - { flag: trapped-without-tubes, equals: false }
-        - { flag: trapped-in-parallel-world, equals: false }
         - any:
             - { flag: bomb-exploded }
             - all:
+                - { flag: trapped-without-tubes, equals: false }
+                - { flag: trapped-in-parallel-world, equals: false }
                 - { flag: amanda-rescued }
                 - { flag: being-captured }

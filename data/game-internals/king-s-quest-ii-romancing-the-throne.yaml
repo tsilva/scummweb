@@ -8,7 +8,7 @@ edition:
   game_id: kq2
   index_md5: b866f0fab2fad91433a637a828cfa410
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   neptune-palace: 51
   wedding: 107
@@ -20,30 +20,44 @@ variables:
 flags:
   wedding-completed: { bank: flag_bytes, index: 4, mask: 4 } # Flag 34.
   opened-first-door: { bank: flag_bytes, index: 10, mask: 32 } # Flag 85. Logic 42 completes the first opening animation.
-  returned-trident: { bank: flag_bytes, index: 12, mask: 2 } # Flag 97. Logic 51 awards the bottle and opens the clam.
+  # Logic 51 opens the clam by waving or returning the trident. Flag 97 alone
+  # also means Graham wrongly gave the trident to the mermaid in logic 15.
+  opened-neptune-clam: { bank: flag_bytes, index: 11, mask: 0x80 }
+  read-second-riddle: { bank: flag_bytes, index: 8, mask: 0x08 } # Flag 67, logic 42.
+  read-third-riddle: { bank: flag_bytes, index: 16, mask: 0x40 } # Flag 134, logic 42.
   opened-second-door: { bank: flag_bytes, index: 10, mask: 64 } # Flag 86. Logic 42 completes the second opening animation.
   opened-third-door: { bank: flag_bytes, index: 10, mask: 128 } # Flag 87. Logic 42 opens the portal to room 80.
 milestones:
   - id: opened-first-door
     label: "Opened the first magic door"
     when: { flag: opened-first-door }
+  - id: read-second-riddle
+    label: Read the riddle on the second magic door
+    when: { flag: read-second-riddle }
   - id: reached-neptune
     label: Reached Neptune’s palace
     when: { room: neptune-palace }
-  - id: returned-trident
-    label: "Returned Neptune’s trident"
-    when: { flag: returned-trident }
+  - id: opened-neptune-clam
+    label: Opened Neptune’s clam to reveal the golden key
+    implies: [reached-neptune]
+    when: { flag: opened-neptune-clam }
   - id: opened-second-door
     label: "Opened the second magic door"
+    implies: [opened-first-door]
     when: { flag: opened-second-door }
+  - id: read-third-riddle
+    label: Read the riddle on the third magic door
+    when: { flag: read-third-riddle }
   - id: opened-third-door
     label: "Opened the third magic door"
+    implies: [opened-second-door]
     when: { flag: opened-third-door }
   - id: tower-entrance
     label: "Reached Valanice’s tower"
     when: { room: tower-entrance }
   - id: valanice-room
     label: "Reached Valanice"
+    implies: [tower-entrance]
     when: { room: valanice-room }
   - id: winning-ending
     label: Married Valanice

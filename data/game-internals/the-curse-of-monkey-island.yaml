@@ -1,6 +1,6 @@
 # English Windows CD.
 # Native evidence: scripts and room directory from the detected edition.
-# The chapter title script labels rooms 5, 6, 7, 8 and 88. The final script in room 82 sets bit 672 before the finale movie.
+# The chapter title script labels rooms 5, 6, 7, 8 and 88. Global script 433 sets bit 672 before the finale movie.
 schema_version: 1
 game: the-curse-of-monkey-island
 engine_id: scumm
@@ -8,7 +8,7 @@ edition:
   game_id: comi
   index_md5: fe60d6b5ff51b0553ac59963123b5777
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   part-2: 5
   part-3: 6
@@ -16,23 +16,54 @@ rooms:
   part-5: 8
   part-6: 88
 flags:
+  recruited-crew: { bank: scumm_bit_bytes, index: 5, mask: 0x20 } # Bit 45, g180.
+  secured-elaine-aboard: { bank: scumm_bit_bytes, index: 3, mask: 0x10 } # Bit 28, g116.
+  reached-elaine-on-blood-island: { bank: scumm_bit_bytes, index: 59, mask: 0x20 } # Bit 477, r058 local 2005.
+  removed-cursed-ring: { bank: scumm_bit_bytes, index: 19, mask: 0x02 } # Bit 153, r058 local 2007.
+  helped-ferryman-navigate: { bank: scumm_bit_bytes, index: 22, mask: 0x20 } # Bit 181, g401.
+  reached-skull-island: { bank: scumm_bit_bytes, index: 14, mask: 0x40 } # Bit 118, g406.
   lechuck-defeated: { bank: scumm_bit_bytes, index: 84, mask: 0x1 }
+objects:
+  # Room 82 objects 1297 and 1299 bring the keg to state 2 with the fuse.
+  rum-keg: 1299
 milestones:
   - id: part-2
     label: Reached Plunder Island
     when: { room: part-2 }
+  - id: recruited-crew
+    label: Recruited all three barbers
+    when: { flag: recruited-crew }
+  - id: secured-elaine-aboard
+    label: Moved Elaine’s statue to the crow’s nest
+    when: { flag: secured-elaine-aboard }
   - id: part-3
     label: Sailed into the pirate blockade
     when: { room: part-3 }
   - id: part-4
     label: Reached Blood Island
     when: { room: part-4 }
+  - id: reached-elaine-on-blood-island
+    label: Found Elaine’s statue on Blood Island
+    when: { flag: reached-elaine-on-blood-island }
+  - id: removed-cursed-ring
+    label: Removed the cursed ring from Elaine
+    when: { flag: removed-cursed-ring }
+  - id: helped-ferryman-navigate
+    label: Helped the ferryman navigate with a compass
+    when: { flag: helped-ferryman-navigate }
+  - id: reached-skull-island
+    label: Reached Skull Island
+    when: { flag: reached-skull-island }
   - id: part-5
     label: Reached the Carnival of the Damned
     when: { room: part-5 }
   - id: part-6
     label: Reached the final showdown
     when: { room: part-6 }
+  - id: prepared-rum-keg
+    label: Prepared the rum keg to trap LeChuck
+    when: { object: rum-keg, equals: 2 }
   - id: winning-ending
     label: Defeated LeChuck and lifted the curse
+    implies: [part-6, prepared-rum-keg]
     when: { flag: lechuck-defeated }

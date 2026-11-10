@@ -13,12 +13,57 @@ rooms:
 variables:
   rhymes-solved: { bank: globals, index: 15 }
 milestones:
+  - id: restored-1-rhymes
+    label: Restored the first nursery rhyme
+    when: { variable: rhymes-solved, equals: 1 }
+  - id: restored-2-rhymes
+    label: Restored 2 nursery rhymes
+    when: { variable: rhymes-solved, equals: 2 }
+  - id: restored-3-rhymes
+    label: Restored 3 nursery rhymes
+    when: { variable: rhymes-solved, equals: 3 }
+  - id: restored-4-rhymes
+    label: Restored 4 nursery rhymes
+    when: { variable: rhymes-solved, equals: 4 }
+  - id: restored-5-rhymes
+    label: Restored 5 nursery rhymes
+    when: { variable: rhymes-solved, equals: 5 }
   - id: restored-six-rhymes
-    label: Restored at least six nursery rhymes
-    when: { variable: rhymes-solved, one_of: [6, 7, 8, 9, 10, 11] }
+    label: Restored 6 nursery rhymes
+    when: { variable: rhymes-solved, equals: 6 }
+  - id: restored-7-rhymes
+    label: Restored 7 nursery rhymes
+    when: { variable: rhymes-solved, equals: 7 }
+  - id: restored-8-rhymes
+    label: Restored 8 nursery rhymes
+    when: { variable: rhymes-solved, equals: 8 }
+  - id: restored-9-rhymes
+    label: Restored 9 nursery rhymes
+    when: { variable: rhymes-solved, equals: 9 }
+  - id: restored-10-rhymes
+    label: Restored 10 nursery rhymes
+    when: { variable: rhymes-solved, equals: 10 }
+  - id: restored-11-rhymes
+    label: Restored 11 nursery rhymes
+    when: { variable: rhymes-solved, equals: 11 }
   - id: restored-twelve-rhymes
-    label: Restored at least twelve nursery rhymes
-    when: { variable: rhymes-solved, one_of: [12, 13, 14, 15, 16, 17] }
+    label: Restored 12 nursery rhymes
+    when: { variable: rhymes-solved, equals: 12 }
+  - id: restored-13-rhymes
+    label: Restored 13 nursery rhymes
+    when: { variable: rhymes-solved, equals: 13 }
+  - id: restored-14-rhymes
+    label: Restored 14 nursery rhymes
+    when: { variable: rhymes-solved, equals: 14 }
+  - id: restored-15-rhymes
+    label: Restored 15 nursery rhymes
+    when: { variable: rhymes-solved, equals: 15 }
+  - id: restored-16-rhymes
+    label: Restored 16 nursery rhymes
+    when: { variable: rhymes-solved, equals: 16 }
+  - id: restored-17-rhymes
+    label: Restored 17 nursery rhymes
+    when: { variable: rhymes-solved, equals: 17 }
   - id: winning-ending
     label: Restored all eighteen nursery rhymes
     when: { variable: rhymes-solved, equals: 18 }

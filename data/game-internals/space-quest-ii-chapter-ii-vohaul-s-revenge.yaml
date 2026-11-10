@@ -1,6 +1,7 @@
 # English DOS 2.0F.
 # Traced against the original AGI logic resources for this edition.
-# Logic 95 shares the epilogue room with failures and shows the winning message only with flag 68.
+# Logic 95 contains failures and the explicitly labelled cheat ending.
+# Normal success is in logic 93 after stopping the clones and sealing the sleep chamber.
 schema_version: 1
 game: space-quest-ii-chapter-ii-vohaul-s-revenge
 engine_id: agi
@@ -8,24 +9,38 @@ edition:
   game_id: sq2
   index_md5: 28add5125484302d213911df60d2aded
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   asteroid-approach: 46
   clone-launch-controls: 86
-  epilogue: 95
+  escape-pod: 93
   labion-landing: 8 # Logic 8 opens the shuttle hatch and sends Roger to room 46.
   vohaul-jar: 87 # Logic 86 sends Roger to 87 after miniaturizing him.
 variables:
   score: { bank: vars, index: 3 }
   max-score: { bank: vars, index: 7 }
+  clone-launch-state: { bank: vars, index: 144 } # 2 after an abort; 0 or 1 do not win.
+  escape-pod-stage: { bank: vars, index: 96 } # Logic 93 writes 11 when the chamber seals.
 flags:
-  winning-escape: { bank: flag_bytes, index: 8, mask: 16 } # Flag 68.
+  dived-underwater: { bank: flag_bytes, index: 25, mask: 0x01 } # 200, logic 14
+  used-spore: { bank: flag_bytes, index: 11, mask: 0x20 } # 93, logic 19
+  recruited-boulder-help: { bank: flag_bytes, index: 24, mask: 0x40 } # 198, logic 29
+  returned-to-normal-size: { bank: flag_bytes, index: 26, mask: 0x80 } # 215, logic 87
   aborted-clone-launch: { bank: flag_bytes, index: 14, mask: 8 } # Flag 115. Logic 86 awards points, sets the flag and writes variable 144 = 2.
   entered-sleep-chamber: { bank: flag_bytes, index: 24, mask: 32 } # Flag 197. Logic 93 awards points for using the chamber.
 milestones:
   - id: labion-landing
     label: "Reached the shuttle on Labion"
     when: { room: labion-landing }
+  - id: dived-underwater
+    label: Dived beneath the swamp
+    when: { flag: dived-underwater }
+  - id: used-spore
+    label: Used the spore against the hunter
+    when: { flag: used-spore }
+  - id: recruited-boulder-help
+    label: Asked the pink creatures to move the boulder
+    when: { flag: recruited-boulder-help }
   - id: approached-asteroid
     label: Approached Vohaul’s asteroid
     when: { room: asteroid-approach }
@@ -35,8 +50,13 @@ milestones:
   - id: vohaul-jar
     label: "Reached the inside of Vohaul’s jar"
     when: { room: vohaul-jar }
+  - id: returned-to-normal-size
+    label: Returned to normal size after escaping the jar
+    implies: [vohaul-jar]
+    when: { flag: returned-to-normal-size }
   - id: aborted-clone-launch
     label: "Stopped the clone launch"
+    implies: [reached-clone-controls]
     when: { flag: aborted-clone-launch }
   - id: entered-sleep-chamber
     label: "Entered the escape pod’s sleep chamber"
@@ -45,5 +65,8 @@ milestones:
     label: Escaped Vohaul and stopped the clone launch
     when:
       all:
-        - { room: epilogue }
-        - { flag: winning-escape }
+        - { room: escape-pod }
+        - { flag: aborted-clone-launch }
+        - { variable: clone-launch-state, equals: 2 }
+        - { flag: entered-sleep-chamber }
+        - { variable: escape-pod-stage, equals: 11 }

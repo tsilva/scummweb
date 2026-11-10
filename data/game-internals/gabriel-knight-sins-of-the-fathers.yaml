@@ -7,7 +7,7 @@ edition:
   game_id: gk1
   index_md5: 0bc1ce4063f6cf8daf3e14f36475451c
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   lecture: 331 # Script 330 attendLecture enters room 331.
   germany: 510 # Script 500 arriveInGermany enters room 510.
@@ -17,6 +17,19 @@ rooms:
 variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 } # SCI previous room global.
+flags:
+  # Saved MSB-first n013 story flags and GKEgo.getPoints awards.
+  read-malias-note: { bank: globals, index: 151, mask: 0x0400 } # 389, bookstore
+  took-harts-notes: { bank: globals, index: 153, mask: 0x0200 } # 422, rm340
+  opened-register: { bank: globals, index: 134, mask: 0x0020 } # 122, bookstore
+  opened-drawer: { bank: globals, index: 135, mask: 0x0100 } # 135, rm391
+  collected-clay: { bank: globals, index: 135, mask: 0x8000 } # 128, rm470
+  collected-scissors: { bank: globals, index: 138, mask: 0x0800 } # 180, rm530
+  collected-pot: { bank: globals, index: 138, mask: 0x0400 } # 181, rm530
+  collected-scroll: { bank: globals, index: 138, mask: 0x0200 } # 182, rm530
+  opened-initiation-door: { bank: globals, index: 138, mask: 0x0100 } # 183, rm530
+  examined-initiation-panels: { bank: globals, index: 154, mask: 0x0020 } # 442, rm540
+  read-ceremonial-table: { bank: globals, index: 154, mask: 0x0002 } # 446, sCeremonialRoom
 milestones:
   - id: lecture
     label: "Attended the Tulane lecture"
@@ -30,6 +43,39 @@ milestones:
   - id: hounfour-finale
     label: "Reached the Hounfour finale"
     when: { room: hounfour-finale }
+  - id: read-malias-note
+    label: Read Malia’s note
+    when: { flag: read-malias-note }
+  - id: took-harts-notes
+    label: Collected Hart’s notes
+    when: { flag: took-harts-notes }
+  - id: opened-register
+    label: Opened the bookstore register
+    when: { flag: opened-register }
+  - id: opened-drawer
+    label: Opened the drawer
+    when: { flag: opened-drawer }
+  - id: collected-clay
+    label: Collected the clay
+    when: { flag: collected-clay }
+  - id: collected-scissors
+    label: Collected the scissors
+    when: { flag: collected-scissors }
+  - id: collected-pot
+    label: Collected the pot
+    when: { flag: collected-pot }
+  - id: collected-scroll
+    label: Collected the scroll
+    when: { flag: collected-scroll }
+  - id: opened-initiation-door
+    label: Opened the initiation room door
+    when: { flag: opened-initiation-door }
+  - id: examined-initiation-panels
+    label: Examined the initiation panels
+    when: { flag: examined-initiation-panels }
+  - id: read-ceremonial-table
+    label: Read the ceremonial table inscription
+    when: { flag: read-ceremonial-table }
   - id: winning-ending
     label: "Reached the ending credits"
     when: { all: [{ room: ending }, { variable: previous-room, equals: 670 }] }

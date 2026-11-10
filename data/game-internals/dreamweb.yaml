@@ -1,8 +1,9 @@
+# Native evidence: DreamWeb use.cpp, people.cpp and saveload.cpp.
 schema_version: 1
 game: dreamweb
 engine_id: dreamweb
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   subway-station: 14
 variables:
@@ -28,40 +29,37 @@ milestones:
     when: { variable: louis-mugging, equals: 1 }
   - id: spoke-to-sparky
     label: Spoke to Sparky at the bar
-    when:
-      all:
-        - { variable: louis-mugging, equals: 1 }
-        - { variable: sparky-contact, equals: 1 }
+    when: { variable: sparky-contact, equals: 1 }
   - id: collected-wages
     label: Collected Ryan's wages on the cashcard
-    when: { variable: cashcard-balance, one_of: [12432, 10432, 4132, 2132] }
+    implies: [spoke-to-sparky]
+    when:
+      any:
+        - { variable: cashcard-balance, one_of: [12432, 10432, 4132, 2132] }
+        - { variable: gun-purchase-state, one_of: [1, 2] }
   - id: pool-hall-contact
     label: Spoke to the pool hall attendant
-    when:
-      all:
-        - { variable: pool-hall-attendant-contact, equals: 1 }
-        - { milestone: collected-wages }
+    when: { variable: pool-hall-attendant-contact, equals: 1 }
   - id: spoke-to-silverman
     label: Met Silverman at the pool hall
-    when:
-      all:
-        - { variable: silverman-contact, equals: 1 }
-        - { milestone: collected-wages }
+    when: { variable: silverman-contact, equals: 1 }
+  - id: paid-for-gun
+    label: Paid Silverman for the gun
+    implies: [spoke-to-silverman]
+    when: { variable: gun-purchase-state, one_of: [1, 2] }
   - id: gun-issued
     label: Got Silverman to release the gun
     when: { variable: gun-purchase-state, equals: 2 }
   - id: spoke-to-receptionist
     label: Spoke to the Regency receptionist
-    when:
-      all:
-        - { variable: receptionist-contact, equals: 1 }
-        - { milestone: gun-issued }
+    when: { variable: receptionist-contact, equals: 1 }
+  - id: paid-for-hotel-room
+    label: Paid for the room at the Regency Hotel
+    implies: [spoke-to-receptionist]
+    when: { variable: hotel-keycard-state, one_of: [1, 2] }
   - id: hotel-keycard-issued
     label: Checked in at the Regency Hotel
-    when:
-      all:
-        - { variable: hotel-keycard-state, equals: 2 }
-        - { milestone: gun-issued }
+    when: { variable: hotel-keycard-state, equals: 2 }
   - id: crane
     label: Defeated Crane
     when: { variable: crane-dead, equals: 1 }

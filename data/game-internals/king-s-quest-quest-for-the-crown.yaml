@@ -8,7 +8,7 @@ edition:
   game_id: kq1sci
   index_md5: fcf6a00f2ff4715bf8ea65388458179d
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   throne-room: 53
   closing-credits: 85
@@ -16,21 +16,101 @@ variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 }
 flags:
-  magic-mirror: { bank: globals, index: 155, mask: 2048 } # Flag 84. Script 51 awards this flag when the mirror enters inventory.
-  magic-chest: { bank: globals, index: 155, mask: 256 } # Flag 87. Script 58 awards this flag on taking the giant’s chest.
-  magic-shield: { bank: globals, index: 154, mask: 256 } # Flag 71. Script 77 awards this flag on taking the shield.
+  # Main.SetScore sets each saved puzzle flag before awarding points.
+  found-dagger: { bank: globals, index: 155, mask: 0x0020 } # Flag 90, rm3.
+  found-diamond-pouch: { bank: globals, index: 153, mask: 0x0004 } # Flag 61, rm6.
+  discovered-diamonds: { bank: globals, index: 153, mask: 0x0002 } # Flag 62, Main.
+  found-magic-ring: { bank: globals, index: 154, mask: 0x4000 } # Flag 65, rm18.
+  found-four-leaf-clover: { bank: globals, index: 154, mask: 0x0200 } # Flag 70, rm24.
+  discovered-golden-walnut: { bank: globals, index: 154, mask: 0x1000 } # Flag 67, Main.
+  found-gold-key: { bank: globals, index: 155, mask: 0x0008 } # Flag 92, rm40.
+  unlocked-huge-door: { bank: globals, index: 154, mask: 0x0800 } # Flag 68, rm19.
+  took-well-bucket: { bank: globals, index: 155, mask: 0x0001 } # Flag 95, rm12 and rm49.
+  dived-under-well: { bank: globals, index: 156, mask: 0x4000 } # Flag 97, rm49.
+  found-magic-mirror: { bank: globals, index: 155, mask: 0x0800 } # Flag 84, rm51.
+  obtained-magic-beans: { bank: globals, index: 156, mask: 0x0008 } # Flag 108, rm40.
+  planted-magic-beans: { bank: globals, index: 156, mask: 0x0004 } # Flag 109, beanRg.
+  put-giant-to-sleep: { bank: globals, index: 155, mask: 0x0080 } # Flag 88, rm58.
+  found-magic-chest: { bank: globals, index: 155, mask: 0x0100 } # Flag 87, rm58.
+  found-bowl: { bank: globals, index: 155, mask: 0x4000 } # Flag 81, rm31.
+  helped-woodcutter: { bank: globals, index: 157, mask: 0x4000 } # Flag 113, rm79.
+  obtained-fiddle: { bank: globals, index: 157, mask: 0x2000 } # Flag 114, rm79.
+  defeated-witch: { bank: globals, index: 154, mask: 0x0020 } # Flag 74, rm65.
+  fed-rat: { bank: globals, index: 156, mask: 0x0200 } # Flag 102, rm75.
+  found-magic-shield: { bank: globals, index: 154, mask: 0x0100 } # Flag 71, rm77.
+  returned-to-castle: { bank: globals, index: 156, mask: 0x0001 } # Flag 111, rm1.
 milestones:
-  - id: found-first-treasure
-    label: "Recovered a royal treasure"
-    when: { any: [{ flag: magic-mirror }, { flag: magic-chest }, { flag: magic-shield }] }
-  - id: found-second-treasure
-    label: "Recovered two royal treasures"
-    when: { any: [{ all: [{ flag: magic-mirror }, { flag: magic-chest }] }, { all: [{ flag: magic-mirror }, { flag: magic-shield }] }, { all: [{ flag: magic-chest }, { flag: magic-shield }] }] }
-  - id: found-all-treasures
-    label: "Recovered all three royal treasures"
-    when: { all: [{ flag: magic-mirror }, { flag: magic-chest }, { flag: magic-shield }] }
+  - id: found-dagger
+    label: Recovered the dagger
+    when: { flag: found-dagger }
+  - id: found-diamond-pouch
+    label: Took the pouch from the stump
+    when: { flag: found-diamond-pouch }
+  - id: discovered-diamonds
+    label: Discovered diamonds in the pouch
+    when: { flag: discovered-diamonds }
+  - id: found-magic-ring
+    label: Received the magic ring from the elf
+    when: { flag: found-magic-ring }
+  - id: found-four-leaf-clover
+    label: Picked a four-leaf clover
+    when: { flag: found-four-leaf-clover }
+  - id: discovered-golden-walnut
+    label: Opened the walnut and found gold
+    when: { flag: discovered-golden-walnut }
+  - id: found-gold-key
+    label: Recovered the gold key
+    when: { flag: found-gold-key }
+  - id: unlocked-huge-door
+    label: Unlocked the huge door with the gold key
+    when: { flag: unlocked-huge-door }
+  - id: took-well-bucket
+    label: Recovered the well bucket
+    when: { flag: took-well-bucket }
+  - id: dived-under-well
+    label: Dived beneath the well
+    when: { flag: dived-under-well }
+  - id: found-magic-mirror
+    label: Recovered the magic mirror
+    when: { flag: found-magic-mirror }
+  - id: obtained-magic-beans
+    label: Obtained the magic beans
+    when: { flag: obtained-magic-beans }
+  - id: planted-magic-beans
+    label: Planted the magic beans
+    when: { flag: planted-magic-beans }
+  - id: put-giant-to-sleep
+    label: Waited until the giant fell asleep
+    when: { flag: put-giant-to-sleep }
+  - id: found-magic-chest
+    label: Recovered the magic chest
+    when: { flag: found-magic-chest }
+  - id: found-bowl
+    label: Picked up the ceramic bowl
+    when: { flag: found-bowl }
+  - id: helped-woodcutter
+    label: Helped the woodcutter’s family
+    when: { flag: helped-woodcutter }
+  - id: obtained-fiddle
+    label: Received the fiddle
+    when: { flag: obtained-fiddle }
+  - id: defeated-witch
+    label: Defeated the witch in her cottage
+    when: { flag: defeated-witch }
+  - id: fed-rat
+    label: Gave cheese to the rat
+    when: { flag: fed-rat }
+  - id: found-magic-shield
+    label: Recovered the magic shield
+    when: { flag: found-magic-shield }
+  - id: returned-to-castle
+    label: Returned to the castle with the three treasures
+    implies: [found-magic-mirror, found-magic-chest, found-magic-shield]
+    when: { flag: returned-to-castle }
   - id: winning-ending
+
     label: Returned the three treasures and became king
+    implies: [returned-to-castle]
     when:
       all:
         - { room: closing-credits }

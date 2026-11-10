@@ -7,7 +7,7 @@ edition:
   game_id: qfg2
   index_md5: c51b24526747dedc29f3841f9b3ab816
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   raseir: 703 # Script 440 escape sequences lead into the Raseir alley.
   shapeir-celebration: 820 # Script 820 begins the ending celebration.
@@ -16,16 +16,83 @@ rooms:
 variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 } # SCI previous room global.
+flags:
+  # The saved puzzle flags are stored most-significant bit first.
+  exchanged-money: { bank: globals, index: 737, mask: 0x0008 } # 604, rmChanger
+  obtained-dispel-potion: { bank: globals, index: 738, mask: 0x8000 } # 608, rm130
+  captured-fire-elemental: { bank: globals, index: 738, mask: 0x0002 } # 622, rm303
+  captured-air-elemental: { bank: globals, index: 739, mask: 0x2000 } # 626, airElemental
+  obtained-cloth-bag: { bank: globals, index: 739, mask: 0x4000 } # 625, rmSPlazaFightersE
+  captured-earth-elemental: { bank: globals, index: 740, mask: 0x0001 } # 655, alleyRoom
+  captured-water-elemental: { bank: globals, index: 738, mask: 0x0001 } # 623, fountainWater
+  earned-sapphire-pin: { bank: globals, index: 739, mask: 0x1000 } # 627, rmSPlazaPalace
+  collected-dervish-beard: { bank: globals, index: 740, mask: 0x2000 } # 642, rm620
+  dispelled-beast: { bank: globals, index: 740, mask: 0x1000 } # 643, rm630
+  received-fruit-of-compassion: { bank: globals, index: 740, mask: 0x0100 } # 647, rm640
+  collected-griffin-feather: { bank: globals, index: 740, mask: 0x0002 } # 654, rm650
+  met-sharaf: { bank: globals, index: 739, mask: 0x0100 } # 631, rm440
+  raseir: { bank: globals, index: 739, mask: 0x0200 } # 630, rm440
+  used-magic-mirror: { bank: globals, index: 739, mask: 0x0080 } # 632, rm550
+  defeated-ad-avis-667: { bank: globals, index: 741, mask: 0x0010 } # 667, rm500 or rm490
+  defeated-ad-avis-692: { bank: globals, index: 743, mask: 0x0800 } # 692, rm500 or rm490
+  defeated-ad-avis-714: { bank: globals, index: 744, mask: 0x0020 } # 714, rm500 or rm490
+  shapeir-celebration: { bank: globals, index: 741, mask: 0x8000 } # 656, rmEndCartoon
 milestones:
+  - id: exchanged-money
+    label: Exchanged money with Dinarzad
+    when: { flag: exchanged-money }
+  - id: obtained-dispel-potion
+    label: Received the Dispel Potions from Harik
+    when: { flag: obtained-dispel-potion }
+  - id: captured-fire-elemental
+    label: Captured the Fire Elemental in the lamp
+    when: { flag: captured-fire-elemental }
+  - id: captured-air-elemental
+    label: Captured the Air Elemental in the bellows
+    when: { flag: captured-air-elemental }
+  - id: obtained-cloth-bag
+    label: Obtained the cloth bag from Kiram
+    when: { flag: obtained-cloth-bag }
+  - id: captured-earth-elemental
+    label: Defeated the Earth Elemental
+    when: { flag: captured-earth-elemental }
+  - id: captured-water-elemental
+    label: Captured the Water Elemental in the waterskin
+    when: { flag: captured-water-elemental }
+  - id: earned-sapphire-pin
+    label: Received the sapphire pin
+    when: { flag: earned-sapphire-pin }
+  - id: collected-dervish-beard
+    label: Collected a piece of the Dervish’s beard
+    when: { flag: collected-dervish-beard }
+  - id: dispelled-beast
+    label: Broke the spell on the desert beast
+    when: { flag: dispelled-beast }
+  - id: received-fruit-of-compassion
+    label: Received Julanar’s Fruit of Compassion
+    when: { flag: received-fruit-of-compassion }
+  - id: collected-griffin-feather
+    label: Collected a griffin feather
+    when: { flag: collected-griffin-feather }
+  - id: met-sharaf
+    label: Made contact with Sharaf
+    when: { flag: met-sharaf }
   - id: raseir
-    label: "Reached the alley in Raseir"
-    when: { room: raseir }
+    label: Escaped to the streets of Raseir
+    when: { flag: raseir }
+  - id: used-magic-mirror
+    label: Used the magic mirror to reach Ad Avis
+    when: { flag: used-magic-mirror }
+  - id: defeated-ad-avis
+    label: Defeated Ad Avis
+    when: { any: [{ flag: defeated-ad-avis-667 }, { flag: defeated-ad-avis-692 }, { flag: defeated-ad-avis-714 }] }
   - id: shapeir-celebration
-    label: "Reached the return to Shapeir"
-    when: { room: shapeir-celebration }
+    label: Reached the return to Shapeir
+    when: { flag: shapeir-celebration }
   - id: sultan
-    label: "Reached the sultan’s audience"
+    label: Reached the sultan’s audience
     when: { room: sultan }
   - id: winning-ending
-    label: "Completed Trial by Fire"
+    label: Completed Trial by Fire
+    implies: [sultan, shapeir-celebration]
     when: { all: [{ room: ending }, { variable: previous-room, equals: 822 }] }

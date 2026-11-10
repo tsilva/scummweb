@@ -7,7 +7,7 @@ edition:
   game_id: laurabow
   index_md5: 5812747f683e098ce33ec787cd237c65
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   departure-after-case: 784 # Script 784 plays the police ending; script 785 is the unresolved-case ending.
   ending: 786 # Scripts 784 and 785 share the Sleuth-O-Meter, so require entry from 784.
@@ -15,22 +15,74 @@ variables:
   score: { bank: globals, index: 15 }
   investigation-act: { bank: globals, index: 165 } # Main.sc advances gAct between acts.
   previous-room: { bank: globals, index: 12 } # SCI previous room global.
+flags:
+  # Main.sc stores inquiry flags LSB first in globals starting at 440.
+  pried-loose-board: { bank: globals, index: 440, mask: 0x0002 } # Room58
+  opened-vault: { bank: globals, index: 440, mask: 0x0004 } # Room57
+  read-lillians-diary: { bank: globals, index: 440, mask: 0x0008 } # InvSaids
+  examined-bootprint: { bank: globals, index: 440, mask: 0x0010 } # Room25
+  found-hidden-bible: { bank: globals, index: 440, mask: 0x4000 } # Room58
+  # SlthOMtr.sc uses gCorpseFlags (global 123) for these separate discoveries.
+  found-gertie: { bank: globals, index: 123, mask: 0x01 }
+  found-wilbur: { bank: globals, index: 123, mask: 0x02 }
+  found-gloria: { bank: globals, index: 123, mask: 0x04 }
+  found-ethel: { bank: globals, index: 123, mask: 0x08 }
+  found-jeeves-and-fifi: { bank: globals, index: 123, mask: 0x10 }
+  found-clarence: { bank: globals, index: 123, mask: 0x20 }
+  found-lillian: { bank: globals, index: 123, mask: 0x40 }
 milestones:
+  - id: pried-loose-board
+    label: Pried up the loose floorboard
+    when: { flag: pried-loose-board }
+  - id: opened-vault
+    label: Opened a tomb vault
+    when: { flag: opened-vault }
+  - id: read-lillians-diary
+    label: Read Lillian’s diary
+    when: { flag: read-lillians-diary }
+  - id: examined-bootprint
+    label: Identified the eagle insignia in the muddy bootprint
+    when: { flag: examined-bootprint }
+  - id: found-hidden-bible
+    label: Found the Bible beneath the floorboard
+    implies: [pried-loose-board]
+    when: { flag: found-hidden-bible }
+  - id: found-gertie
+    label: Discovered what happened to Gertie
+    when: { flag: found-gertie }
+  - id: found-wilbur
+    label: Discovered what happened to Wilbur
+    when: { flag: found-wilbur }
+  - id: found-gloria
+    label: Discovered what happened to Gloria
+    when: { flag: found-gloria }
+  - id: found-ethel
+    label: Discovered what happened to Ethel
+    when: { flag: found-ethel }
+  - id: found-jeeves-and-fifi
+    label: Discovered what happened to Jeeves and Fifi
+    when: { flag: found-jeeves-and-fifi }
+  - id: found-clarence
+    label: Discovered what happened to Clarence
+    when: { flag: found-clarence }
+  - id: found-lillian
+    label: Discovered what happened to Lillian
+    when: { flag: found-lillian }
   - id: reached-act-3
     label: Reached act 3
-    when: { variable: investigation-act, equals: 2 }
+    when: { variable: investigation-act, one_of: [2, 3, 4, 5, 6, 7] }
   - id: reached-act-4
     label: Reached act 4
-    when: { variable: investigation-act, equals: 3 }
+    when: { variable: investigation-act, one_of: [3, 4, 5, 6, 7] }
   - id: reached-act-5
     label: Reached act 5
-    when: { variable: investigation-act, equals: 4 }
+    when: { variable: investigation-act, one_of: [4, 5, 6, 7] }
   - id: reached-act-6
     label: Reached act 6
-    when: { variable: investigation-act, equals: 5 }
+    when: { variable: investigation-act, one_of: [5, 6, 7] }
   - id: reached-act-7
     label: Reached act 7
-    when: { variable: investigation-act, equals: 6 }
+    when: { variable: investigation-act, one_of: [6, 7] }
   - id: reached-act-8
     label: Reached act 8
     when: { variable: investigation-act, equals: 7 }
@@ -39,4 +91,5 @@ milestones:
     when: { room: departure-after-case }
   - id: winning-ending
     label: "Reached the Sleuth-O-Meter after resolving the case"
+    implies: [departure-after-case]
     when: { all: [{ room: ending }, { variable: previous-room, equals: 784 }] }

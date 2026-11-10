@@ -1,7 +1,7 @@
 # English Windows CD 1.0.
 # Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/torin-win-1.0/src
 # roPickAChapter can open the credits directly. Only roEnd advances there after the family reunion.
-# The first playable scene of each chapter follows its corresponding roChapter scene.
+# The chapter picker opens the same chapter introductions. Use the previous room to distinguish each puzzle exit.
 schema_version: 1
 game: torin-s-passage
 engine_id: sci
@@ -9,12 +9,12 @@ edition:
   game_id: torin
   index_md5: 1e28b9e1a0f897d9d31980fc347c427b
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
-  chapter-two: 20100
-  chapter-three: 30100
-  chapter-four: 40100
-  chapter-five: 50100
+  chapter-two: 20000
+  chapter-three: 30000
+  chapter-four: 40000
+  chapter-five: 50000
   lycentias-horrors: 51300
   reunion: 51400
   credits: 51500
@@ -22,17 +22,17 @@ variables:
   previous-room: { bank: globals, index: 12 }
 milestones:
   - id: reached-chapter-2
-    label: Reached the cliff in chapter 2
-    when: { room: chapter-two }
+    label: Opened the portal to chapter 2
+    when: { all: [{ room: chapter-two }, { variable: previous-room, equals: 15200 }] }
   - id: reached-chapter-3
-    label: Reached the pergola in chapter 3
-    when: { room: chapter-three }
+    label: Activated the transporter to chapter 3
+    when: { all: [{ room: chapter-three }, { variable: previous-room, equals: 20800 }] }
   - id: reached-chapter-4
-    label: Reached Asthenia in chapter 4
-    when: { room: chapter-four }
+    label: Solved the music puzzle to reach chapter 4
+    when: { all: [{ room: chapter-four }, { variable: previous-room, equals: 30500 }] }
   - id: reached-chapter-5
-    label: Reached the storeroom in chapter 5
-    when: { room: chapter-five }
+    label: Exited Asthenia into chapter 5
+    when: { all: [{ room: chapter-five }, { variable: previous-room, equals: -24636 }] }
   - id: reached-lycentia
     label: Reached Lycentia’s final trials
     when: { room: lycentias-horrors }
@@ -41,4 +41,5 @@ milestones:
     when: { room: reunion }
   - id: winning-ending
     label: Reunited Torin’s family
+    implies: [reunited-family, reached-lycentia]
     when: { all: [{ room: credits }, { variable: previous-room, equals: -14136 }] }

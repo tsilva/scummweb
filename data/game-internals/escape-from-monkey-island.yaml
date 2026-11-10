@@ -9,7 +9,7 @@ edition:
   game_id: monkey4
   index_md5: 61959da91d864bf5f4588daa4a5a3019
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 variables:
   catapult: { bank: story_state, key: broke_catapult }
   marley-letter: { bank: story_state, key: guybrush_read_marley_letter }
@@ -32,16 +32,19 @@ milestones:
     when: { variable: pegnose, equals: 1 }
   - id: reached-act-2
     label: Reached act 2
-    when: { variable: act, equals: 2 }
+    when: { variable: act, one_of: [2, 3] }
   - id: entered-lua-bar
     label: Entered the Lua Bar
     when: { variable: lua-bar, equals: 1 }
   - id: reached-act-3
     label: Reached act 3
     when: { variable: act, equals: 3 }
-  - id: started-pachinko
-    label: Sent a boulder down Pachinko Rock
-    when: { any: [{ variable: rock-beach, equals: 1 }, { variable: rock-canyon, equals: 1 }, { variable: rock-lava, equals: 1 }] }
+  - id: reached-beach
+    label: Sent a boulder to the beach
+    when: { variable: rock-beach, equals: 1 }
+  - id: reached-canyon
+    label: Sent a boulder to the canyon
+    when: { variable: rock-canyon, equals: 1 }
   - id: reached-lava
     label: Sent a boulder into the lava
     when: { variable: rock-lava, equals: 1 }

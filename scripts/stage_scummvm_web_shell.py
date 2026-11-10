@@ -27,7 +27,7 @@ save_filesystem = "\n".join(line for line in save_filesystem.splitlines() if not
 html = html.replace("/*__SCUMMWEB_SAVE_EDITIONS__*/", "(function(){\n" + save_editions
                     + save_filesystem.replace("export ", "")
                     + "\nglobalThis.__scummwebSaveEditions = { editionKey, acquireEditionSession, initializeSaveEdition, readSaveTree, saveLockName };\n})();")
-html = html.replace("/*__SCUMMWEB_SAVE_BRIDGE__*/", "(function(){\n" + (source / "continue-saves.mjs").read_text().replace("export ", "") + "\nglobalThis.__scummwebInstallContinueSaves = installContinueSaves;\nglobalThis.__scummwebIsRetiredIntroCheckpoint = isRetiredIntroCheckpoint;\n})();")
+html = html.replace("/*__SCUMMWEB_SAVE_BRIDGE__*/", "(function(){\n" + (source / "continue-saves.mjs").read_text().replace("export ", "") + "\nglobalThis.__scummwebInstallContinueSaves = installContinueSaves;\n})();")
 filesystem = (source / "scummvm_fs.js").read_text().replace("__SCUMMWEB_GAMES_ORIGIN__", json.dumps(games_origin))
 
 (target / "scummvm.html").write_text(html)

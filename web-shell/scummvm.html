@@ -233,6 +233,9 @@ const isLocalGame = window.parent !== window &&
   new URLSearchParams(scummwebLaunchUrl.search).get("localGame") === "1";
 const catalogGame = new URLSearchParams(scummwebLaunchUrl.search).get("catalogGame");
 const isCatalogArchive = isLocalGame && /^[a-z0-9][a-z0-9_-]*$/.test(catalogGame || "");
+const introCheckpointPath = "/tmp/scummweb-intro";
+let finishIntroCheckpoint;
+if (skipIntroTarget) globalThis.__scummwebReportGameplayStarted = () => finishIntroCheckpoint?.();
 globalThis.__scummwebSkipIntroSeedStatus = {
   state: skipIntroTarget ? "pending" : "idle",
   target: skipIntroTarget,
@@ -328,16 +331,16 @@ function setupSkipIntroSaves() {
         return undefined;
       }
 
-      const savePath = getConfiguredSavePath();
-      ensureDirectory(savePath);
+      const [flag, slot, target, ...rest] = decodeURI(scummwebLaunchUrl.hash.slice(1)).trim().split(/\s+/);
+      if (flag !== "-x" || slot !== String(skipIntroConfig.slot) || target !== skipIntroTarget || rest.length) {
+        throw new Error("Invalid intro checkpoint launch");
+      }
 
       return Promise.all(
         skipIntroConfig.saveFiles.map((fileName) => {
           const trimmedFileName = typeof fileName === "string" ? fileName.trim() : "";
 
-          if (!trimmedFileName) {
-            return Promise.resolve(null);
-          }
+          if (!/^[a-z0-9][a-z0-9._-]*$/i.test(trimmedFileName)) throw new Error("Invalid intro checkpoint filename");
 
           const assetPath = `launcher/skip-intro/${encodeURIComponent(skipIntroTarget)}/${encodeURIComponent(trimmedFileName)}`;
 
@@ -353,30 +356,31 @@ function setupSkipIntroSaves() {
               return { fileName: trimmedFileName, bytes: new Uint8Array(buffer) };
             });
         })
-      ).then(async (seededFiles) => {
-        const seeds = seededFiles.filter(Boolean);
-        const writes = [];
-        for (const seed of seeds) {
-          const { fileName, bytes } = seed;
-          const filePath = `${savePath}/${fileName}`;
-          if (!FS.analyzePath(filePath).exists) {
-            writes.push(seed);
-            continue;
-          }
-          const existing = FS.readFile(filePath);
-          if (existing.length === bytes.length && existing.every((byte, index) => byte === bytes[index])) continue;
-          if (await globalThis.__scummwebIsRetiredIntroCheckpoint(skipIntroTarget, fileName, existing)) {
-            writes.push(seed);
-            continue;
-          }
-          throw new Error(`Intro checkpoint conflicts with an existing save: ${fileName}`);
-        }
-        for (const { fileName, bytes } of writes) FS.writeFile(`${savePath}/${fileName}`, bytes);
+      ).then((seeds) => {
+        const names = new Set(seeds.map(({ fileName }) => fileName));
+        ensureDirectory(introCheckpointPath);
+        for (const { fileName, bytes } of seeds) FS.writeFile(`${introCheckpointPath}/${fileName}`, bytes);
+        globalThis.__scummwebBeginIntroCheckpoint = (target) => {
+          delete globalThis.__scummwebBeginIntroCheckpoint;
+          if (target !== skipIntroTarget) return;
+          globalThis.__scummwebHasIntroCheckpoint = (name) => names.has(name) &&
+            !globalThis.__scummwebScanningSaves &&
+            (matchingGame.engineId !== "sword25" || globalThis.__scummwebSword25LoadingIntro);
+        };
+        finishIntroCheckpoint = () => {
+          delete globalThis.__scummwebBeginIntroCheckpoint;
+          delete globalThis.__scummwebHasIntroCheckpoint;
+          delete globalThis.__scummwebFinishIntroCheckpoint;
+          finishIntroCheckpoint = undefined;
+          for (const name of names) FS.unlink(`${introCheckpointPath}/${name}`);
+          globalThis.__scummwebSkipIntroSeedStatus.finished = true;
+        };
+        globalThis.__scummwebFinishIntroCheckpoint = () => finishIntroCheckpoint?.();
         globalThis.__scummwebSkipIntroSeedStatus = {
           state: "ready",
           target: skipIntroTarget,
-          files: seeds.map(({ fileName }) => fileName),
-          savePath,
+          files: [...names],
+          savePath: introCheckpointPath,
           slot: skipIntroConfig.slot,
         };
       });
@@ -544,6 +548,7 @@ const buildCurrentFrameHref=()=>`${scummwebLaunchUrl.pathname}${scummwebLaunchUr
 if (isCatalogArchive) {
   globalThis.__scummwebReportGameplayStarted = () => {
     delete globalThis.__scummwebReportGameplayStarted;
+    finishIntroCheckpoint?.();
     postParentMessage({
       type: "scummvm-gameplay-started",
       source: scummwebMessageSource,

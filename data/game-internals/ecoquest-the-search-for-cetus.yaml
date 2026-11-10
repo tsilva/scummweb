@@ -7,7 +7,7 @@ edition:
   game_id: ecoquest
   index_md5: a4b73d5d2b55bdb6e44345e99c8fbdd0
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   council: 160 # Script 200 goToCouncilChambers enters room 160.
   whale: 660 # Script 640 goToWhaleScript enters 660.
@@ -16,6 +16,35 @@ rooms:
 variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 } # SCI previous room global.
+flags:
+  # Saved MSB-first n819 flag bank, written by SetScore.
+  cleaned-bird: { bank: globals, index: 164, mask: 0x0010 } # 203, lookAtDirtyBirdy
+  cleaned-tank: { bank: globals, index: 165, mask: 0x0800 } # 212, lookAtTank
+  placed-conch: { bank: globals, index: 167, mask: 0x0008 } # 252, NSET
+  recovered-trident: { bank: globals, index: 167, mask: 0x0004 } # 253, NSET
+  answered-first-riddle: { bank: globals, index: 168, mask: 0x1000 } # 259, askRiddles
+  answered-second-riddle: { bank: globals, index: 168, mask: 0x0800 } # 260, askRiddles
+  answered-third-riddle: { bank: globals, index: 168, mask: 0x0400 } # 261, askRiddles
+  recovered-starfish: { bank: globals, index: 169, mask: 0x0200 } # 278, gregComeOut
+  recovered-shell: { bank: globals, index: 169, mask: 0x0002 } # 286, rm222
+  recovered-rings: { bank: globals, index: 170, mask: 0x2000 } # 290, rm223
+  disposed-bleach: { bank: globals, index: 170, mask: 0x0002 } # 302, rm226
+  freed-lobster: { bank: globals, index: 171, mask: 0x0800 } # 308, rm343
+  collected-mirror: { bank: globals, index: 171, mask: 0x4000 } # 305, rm420
+  recovered-key: { bank: globals, index: 171, mask: 0x0200 } # 310, rm440
+  opened-chest: { bank: globals, index: 172, mask: 0x2000 } # 322, rm460
+  recovered-cable: { bank: globals, index: 171, mask: 0x0040 } # 313, rm480
+  pried-off-lid: { bank: globals, index: 171, mask: 0x0002 } # 318, RM500
+  collected-float: { bank: globals, index: 171, mask: 0x0001 } # 319, RM500
+  freed-fish: { bank: globals, index: 172, mask: 0x0800 } # 324, RM540
+  pulled-rock: { bank: globals, index: 172, mask: 0x0400 } # 325, RM540
+  opened-diving-chest: { bank: globals, index: 172, mask: 0x0080 } # 328, RM540
+  wore-diving-suit: { bank: globals, index: 172, mask: 0x0040 } # 329, RM540
+  freed-delphineus: { bank: globals, index: 172, mask: 0x0001 } # 335, RM600
+  pried-open-door: { bank: globals, index: 173, mask: 0x8000 } # 336, rm580
+  stopped-manta: { bank: globals, index: 173, mask: 0x4000 } # 337, rm580
+  removed-harpoon: { bank: globals, index: 173, mask: 0x0400 } # 341, rm660
+  treated-cetus: { bank: globals, index: 173, mask: 0x0200 } # 342, rm660
 milestones:
   - id: council
     label: "Reached the underwater council"
@@ -26,6 +55,87 @@ milestones:
   - id: final-fight
     label: "Reached the final confrontation"
     when: { room: final-fight }
+  - id: cleaned-bird
+    label: Cleaned the bird
+    when: { flag: cleaned-bird }
+  - id: cleaned-tank
+    label: Cleaned the tank
+    when: { flag: cleaned-tank }
+  - id: placed-conch
+    label: Placed the conch in the statue’s hands
+    when: { flag: placed-conch }
+  - id: recovered-trident
+    label: Recovered the trident
+    when: { flag: recovered-trident }
+  - id: answered-first-riddle
+    label: Answered the first council riddle
+    when: { flag: answered-first-riddle }
+  - id: answered-second-riddle
+    label: Answered the second council riddle
+    when: { flag: answered-second-riddle }
+  - id: answered-third-riddle
+    label: Answered the third council riddle
+    when: { flag: answered-third-riddle }
+  - id: recovered-starfish
+    label: Picked up the starfish
+    when: { flag: recovered-starfish }
+  - id: recovered-shell
+    label: Picked up the shell
+    when: { flag: recovered-shell }
+  - id: recovered-rings
+    label: Picked up the discarded rings
+    when: { flag: recovered-rings }
+  - id: disposed-bleach
+    label: Disposed of the bleach
+    when: { flag: disposed-bleach }
+  - id: freed-lobster
+    label: Freed the lobster
+    when: { flag: freed-lobster }
+  - id: collected-mirror
+    label: Collected the mirror
+    when: { flag: collected-mirror }
+  - id: recovered-key
+    label: Recovered the fallen key
+    when: { flag: recovered-key }
+  - id: opened-chest
+    label: Opened the chest
+    when: { flag: opened-chest }
+  - id: recovered-cable
+    label: Recovered the cable
+    when: { flag: recovered-cable }
+  - id: pried-off-lid
+    label: Pried off the lid
+    when: { flag: pried-off-lid }
+  - id: collected-float
+    label: Collected the float
+    when: { flag: collected-float }
+  - id: freed-fish
+    label: Released the fish
+    when: { flag: freed-fish }
+  - id: pulled-rock
+    label: Pulled the rock
+    when: { flag: pulled-rock }
+  - id: opened-diving-chest
+    label: Opened the diving chest
+    when: { flag: opened-diving-chest }
+  - id: wore-diving-suit
+    label: Put on the diving suit
+    when: { flag: wore-diving-suit }
+  - id: freed-delphineus
+    label: Cut Delphineus free
+    when: { flag: freed-delphineus }
+  - id: pried-open-door
+    label: Pried open the ship’s door
+    when: { flag: pried-open-door }
+  - id: stopped-manta
+    label: Stopped the manta ray
+    when: { flag: stopped-manta }
+  - id: removed-harpoon
+    label: Removed the harpoon from Cetus
+    when: { flag: removed-harpoon }
+  - id: treated-cetus
+    label: Treated Cetus’s wound
+    when: { flag: treated-cetus }
   - id: winning-ending
     label: "Returned after saving Cetus"
     when: { all: [{ room: ending }, { variable: previous-room, equals: 580 }] }

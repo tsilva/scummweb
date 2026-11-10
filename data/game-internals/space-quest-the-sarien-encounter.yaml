@@ -8,7 +8,7 @@ edition:
   game_id: sq1
   index_md5: 0b216d931e95750f1f4837d6a4b821e5
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   kerona-crash-site: 12
   deltaur-approach: 43
@@ -20,13 +20,29 @@ rooms:
 variables:
   score: { bank: vars, index: 3 }
   max-score: { bank: vars, index: 7 }
+flags:
+  pod-autopilot: { bank: flag_bytes, index: 10, mask: 0x02 } # 81, logic 10
+  read-cartridge: { bank: flag_bytes, index: 22, mask: 0x08 } # 179, logic 31
+  recovered-cartridge: { bank: flag_bytes, index: 22, mask: 0x10 } # 180, logic 31
+  disabled-force-field: { bank: flag_bytes, index: 26, mask: 0x01 } # 208, logic 50
 milestones:
   - id: arcada-escape-pod
     label: "Entered the Arcada’s escape pod"
     when: { room: arcada-escape-pod }
+  - id: pod-autopilot
+    label: Engaged the escape pod’s autopilot
+    implies: [arcada-escape-pod]
+    when: { flag: pod-autopilot }
   - id: reached-kerona
     label: Reached Kerona
     when: { room: kerona-crash-site }
+  - id: read-cartridge
+    label: Loaded the data cartridge in the Kerona console
+    when: { flag: read-cartridge }
+  - id: recovered-cartridge
+    label: Took the data cartridge back from the Kerona console
+    implies: [read-cartridge]
+    when: { flag: recovered-cartridge }
   - id: ulence-flats
     label: "Reached Ulence Flats"
     when: { room: ulence-flats }
@@ -36,9 +52,13 @@ milestones:
   - id: reached-deltaur
     label: Reached the Deltaur
     when: { room: deltaur-approach }
+  - id: disabled-force-field
+    label: Disabled the Star Generator’s force field
+    when: { flag: disabled-force-field }
   - id: deltaur-escape
     label: "Escaped the Deltaur"
     when: { room: deltaur-escape }
   - id: winning-ending
     label: Reached the Xenon awards ceremony
+    implies: [deltaur-escape, reached-deltaur]
     when: { room: xenon-awards }

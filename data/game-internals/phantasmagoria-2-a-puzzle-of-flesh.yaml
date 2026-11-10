@@ -9,7 +9,7 @@ edition:
   game_id: phantasmagoria2
   index_md5: b200596c2dc7277d0510dee44bac9ee0
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   access-panel: 9021
   threshold: 9400
@@ -17,6 +17,14 @@ rooms:
 variables:
   chapter: { bank: globals, index: 205 }
   previous-room: { bank: globals, index: 12 }
+flags:
+  # Saved MSB-first n63002 flags.
+  solved-workstation: { bank: globals, index: 108, mask: 0x2000 } # 114, curtisCubicleRoomCH1SR8
+  solved-club-code: { bank: globals, index: 135, mask: 0x0010 } # 555, blBackCH4SR3
+  opened-pauls-drawer: { bank: globals, index: 137, mask: 0x4000 } # 577, paulsOfficeRoomCH4SR4
+  unlocked-access-panel: { bank: globals, index: 147, mask: 0x0002 } # 750, humanThresholdKeyEntry
+  solved-access-panel: { bank: globals, index: 147, mask: 0x0010 } # 747, puzRm
+  solved-alien-console: { bank: globals, index: 145, mask: 0x0010 } # 715, rm2032
 milestones:
   - id: reached-chapter-2
     label: Reached chapter 2
@@ -31,11 +39,23 @@ milestones:
     label: Reached chapter 5
     when: { variable: chapter, equals: 5 }
   - id: reached-access-panel
-    label: Reached the Threshold access panel
-    when: { room: access-panel }
+    label: Unlocked the Threshold access panel
+    when: { any: [{ room: access-panel }, { flag: unlocked-access-panel }] }
   - id: opened-threshold
     label: Opened the Threshold
-    when: { room: threshold }
-  - id: resolved-threshold
+    when: { any: [{ room: threshold }, { flag: solved-access-panel }] }
+  - id: solved-workstation
+    label: Solved the workstation puzzle
+    when: { flag: solved-workstation }
+  - id: solved-club-code
+    label: Solved the code at the club
+    when: { flag: solved-club-code }
+  - id: opened-pauls-drawer
+    label: Opened Paul’s drawer with the screwdriver
+    when: { flag: opened-pauls-drawer }
+  - id: solved-alien-console
+    label: Solved the alien console
+    when: { flag: solved-alien-console }
+  - id: winning-ending
     label: Solved the alien console and reached the final choice
-    when: { all: [{ room: epilogue-choice }, { variable: previous-room, equals: -23504 }] }
+    when: { all: [{ room: epilogue-choice }, { variable: previous-room, equals: -23504 }, { flag: solved-alien-console }] }

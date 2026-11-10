@@ -8,38 +8,52 @@ edition:
   game_id: kq7
   index_md5: a000858d91155b948bf3b23fa71ff79a
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
+  chapter-transition: 35
   grand-finale: 2208
   royal-ending: 2210
-  flying-horse: 6200 # Script 13 takes the flying-horse route to room 6200.
-  etheria-gate: 5400 # Scripts 3300 and 5400 handle entry and the gate opening.
+  etheria-gate: 5400
 variables:
-  chapter: { bank: globals, index: 122 } # Main.sc gChapter is zero-based.
-  score: { bank: globals, index: 15 }
+  chapter: { bank: globals, index: 122 } # One-based during play, zero-based in the selection menu.
   previous-room: { bank: globals, index: 12 }
+flags:
+  # ExitButton.sc stores numbered flags most-significant bit first.
+  # These flags are not preloaded by the chapter-selection routine in kqChapCode.sc.
+  gila-comb: { bank: globals, index: 160, mask: 0x0400 } # Flag 533, rm1000.
+  enchanted-rope: { bank: globals, index: 131, mask: 0x0200 } # Flag 70, rm2550.
+  reached-etheria: { bank: globals, index: 139, mask: 0x0010 } # Flag 203, rm6200.
 milestones:
+  # Room 35 also opens from the chapter menu (room 20); require the actual scene.
   - id: reached-chapter-2
-    label: Reached chapter 2
-    when: { variable: chapter, equals: 1 }
+    label: Recovered the golden comb and completed chapter 1
+    when: { flag: gila-comb }
+  - id: used-enchanted-rope
+    label: Used the enchanted rope to reach the bucket
+    when: { flag: enchanted-rope }
   - id: reached-chapter-3
-    label: Reached chapter 3
-    when: { variable: chapter, equals: 2 }
+    label: Completed chapter 2 in play
+    implies: [used-enchanted-rope]
+    when: { all: [{ room: chapter-transition }, { variable: previous-room, equals: 2550 }, { variable: chapter, equals: 2 }] }
   - id: reached-chapter-4
-    label: Reached chapter 4
-    when: { variable: chapter, equals: 3 }
+    label: Completed chapter 3 in play
+    when: { all: [{ room: chapter-transition }, { variable: previous-room, equals: 5300 }, { variable: chapter, equals: 3 }] }
   - id: reached-chapter-5
-    label: Reached chapter 5
-    when: { variable: chapter, equals: 4 }
+    label: Completed chapter 4 in play
+    when: { all: [{ room: chapter-transition }, { variable: previous-room, equals: 2202 }, { variable: chapter, equals: 4 }] }
+  - id: reached-etheria-gate
+    label: Reached the gate to Etheria
+    when: { room: etheria-gate }
+  - id: reached-etheria
+    label: Reached Etheria
+    when: { flag: reached-etheria }
   - id: reached-chapter-6
-    label: Reached chapter 6
-    when: { variable: chapter, equals: 5 }
+    label: Completed chapter 5 in play
+    when: { all: [{ room: chapter-transition }, { variable: previous-room, equals: 6010 }, { variable: chapter, equals: 5 }] }
   - id: reached-grand-finale
     label: Reached the grand finale
     when: { room: grand-finale }
   - id: winning-ending
     label: Reached the royal ending
-    when:
-      all:
-        - { room: royal-ending }
-        - { variable: previous-room, equals: 2208 }
+    implies: [reached-grand-finale]
+    when: { all: [{ room: royal-ending }, { variable: previous-room, equals: 2208 }] }

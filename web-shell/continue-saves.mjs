@@ -7,8 +7,9 @@ const retiredIntroCheckpoints = new Map([
   ["monkey4-demo/efmi090.gsv", "bd8aa04ec9ebe0745830124ddd6cc50c67aa7c2dd18166c0e6cdee7c3a958dad"],
   ["qfi-demo/qfi-demo.098", "3dbd22f47c355795c96fcef11b2bb2aab5a84841b7b3b8f601715162d67c0b9c"],
 ]);
+const equalBytes = (a, b) => a.length === b.length && a.every((byte, i) => byte === b[i]);
 
-// Only the exact incomplete checkpoints from the original release may be replaced.
+// Only the exact incomplete checkpoints from the original release may be removed.
 export async function isRetiredIntroCheckpoint(target, name, bytes) {
   const expected = retiredIntroCheckpoints.get(`${target}/${name}`);
   if (!expected || bytes.length !== 150006 || !globalThis.crypto?.subtle) return false;
@@ -106,7 +107,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     if (!checkpoint) return true; // Unknown provenance stays excluded.
     try {
       const current = FS.readFile(`${savePath}/${name}`);
-      return current.length === checkpoint.length && current.every((byte, i) => byte === checkpoint[i]);
+      return equalBytes(current, checkpoint);
     } catch { return true; }
   }
   // Native save ownership brackets the complete compressed output lifetime.
@@ -147,6 +148,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
   };
 
   scope.__scummwebBeginSaveScan = (engineId, gameId, target, supported, extra = "") => {
+    scope.__scummwebScanningSaves = true;
     scannedFiles = new Map(files().map((file) => [file.name, file]));
     snapshot = { schemaVersion: 1, engineId, gameId, target, extra, supported: Boolean(supported), saves: [] };
     if (scope.__scummwebPublishPlayerSaves) {
@@ -183,6 +185,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     }
   };
   scope.__scummwebEndSaveScan = () => {
+    scope.__scummwebScanningSaves = false;
     if (!snapshot) return -1;
     const listing = files();
     const persisted = persist();
@@ -197,6 +200,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
       scope.parent.postMessage({ type: "scummweb:saves-listed", query: params.get("saveQuery"),
         ...snapshot, persisted, latestSlot: save?.slot ?? null }, launchUrl.origin);
     }
+    scope.__scummwebBeginIntroCheckpoint?.(snapshot.target);
     return params.get("continue") === "1" ? save?.slot ?? -1 : -1;
   };
 
@@ -214,27 +218,29 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
       // before the web backend is ready for dynamic engine modules.
       Module.arguments.splice(0, Module.arguments.length, "--config=/tmp/scummweb-query.ini", target);
     }
-    // Match actual checkpoint bytes. Slot zero becomes a player save as soon
-    // as the player overwrites it; never exclude a slot just by its number.
+    // Remove legacy copies before the native save manager caches the directory.
+    // Match exact bytes, including retired assets; the same slot may hold a
+    // player's save. New checkpoints never enter this directory.
     if (!namespace) {
       const library = await (await scope.fetch(assetUrl("games.json"))).json();
       const target = params.get("saveTarget")
         || decodeURIComponent(launchUrl.hash.slice(1)).trim().split(/\s+/).at(-1);
       const intro = library.games?.find((game) => game.target === target)?.skipIntro;
-      await Promise.all((intro?.saveFiles || []).map(async (name) => {
+      const existingNames = new Set(files().map(({ name }) => name));
+      await Promise.all((intro?.saveFiles || []).filter((name) => existingNames.has(name)).map(async (name) => {
+        const path = `${savePath}/${name}`;
         try {
           const response = await scope.fetch(assetUrl(`launcher/skip-intro/${encodeURIComponent(target)}/${encodeURIComponent(name)}`));
           if (!response.ok) throw new Error("Checkpoint unavailable");
           let checkpoint = new Uint8Array(await response.arrayBuffer());
-          if (retiredIntroCheckpoints.has(`${target}/${name}`)) {
-            try {
-              const existing = FS.readFile(`${savePath}/${name}`);
-              if (await isRetiredIntroCheckpoint(target, name, existing)) checkpoint = existing;
-            } catch { /* Missing saved file or unavailable digest. */ }
-          }
+          const existing = FS.readFile(path);
+          if (await isRetiredIntroCheckpoint(target, name, existing)) checkpoint = existing;
           checkpoints.set(name, checkpoint);
+          if (equalBytes(FS.readFile(path), checkpoint)) {
+            try { FS.unlink(path); } catch { /* Keep it excluded from the web index. */ }
+          }
         } catch {
-          // Fail closed for a checkpoint slot when its provenance is unknown.
+          // Keep an unverified legacy candidate out of Continue.
           checkpoints.set(name, null);
         }
       }));

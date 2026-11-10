@@ -1,12 +1,16 @@
+# Script state verified against the English CD v0.0372 modules.
 schema_version: 1
 game: beneath-a-steel-sky
 engine_id: sky
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   # FOSTER_ENTER_NEW_BOARDROOM switches to this room for END_SEQUENCE.
   ending-credits: 85
 variables:
+  locker-opened: { bank: script_vars, index: 483 } # LOCKER_11_ACTION
+  biscuits-state: { bank: script_vars, index: 814 } # SC38_BISCUITS_ACTION and dog interactions
+  live-tank-crashed: { bank: script_vars, index: 706 } # SC75_LIVE_TANK_LOGIC
   reich-searched: { bank: script_vars, index: 420 }
   id-clearance-upgraded: { bank: script_vars, index: 480 }
   subway-grille-state: { bank: script_vars, index: 813 }
@@ -54,26 +58,28 @@ milestones:
   - id: factory-tour
     label: Completed Lamb's factory tour
     when: { variable: factory-tour-completed, equals: 42 }
+  - id: opened-locker
+    label: Opened the locker in Reich’s room
+    when: { variable: locker-opened, equals: 42 }
   - id: anita-jammer
     label: Got the jammer from Anita
     when: { variable: jammer-state, equals: 42 }
   - id: froze-lambs-assets
     label: Froze Lamb's assets at the LINC terminal
-    when:
-      all:
-        - { variable: lamb-assets-frozen, equals: 42 }
-        - { milestone: anita-jammer }
+    when: { variable: lamb-assets-frozen, equals: 42 }
   - id: installed-port
     label: Had Burke install the Schriebmann port
     when: { variable: port-state, equals: 42 }
-  - id: decrypted-documents
-    label: Decrypted the three LINC documents
-    # The saved inventory slots hold the decrypted icons.
-    when:
-      all:
-        - { variable: linc-orders-document, equals: 24828 }
-        - { variable: linc-report-document, equals: 24829 }
-        - { variable: linc-adjustment-document, equals: 24830 }
+  # These icons can be decrypted separately. Reading some documents consumes the icon.
+  - id: decrypted-orders
+    label: Decrypted the LINC orders
+    when: { variable: linc-orders-document, equals: 24828 }
+  - id: decrypted-report
+    label: Decrypted the LINC report
+    when: { variable: linc-report-document, equals: 24829 }
+  - id: decrypted-adjustment
+    label: Decrypted the LINC adjustment document
+    when: { variable: linc-adjustment-document, equals: 24830 }
   - id: id-clearance
     label: Upgraded the ID card's clearance
     when: { variable: id-clearance-upgraded, equals: 1 }
@@ -86,9 +92,15 @@ milestones:
   - id: found-anita
     label: Discovered Anita's body
     when: { variable: anita-found, equals: 1 }
+  - id: recovered-biscuits
+    label: Recovered the dog biscuits
+    when: { variable: biscuits-state, one_of: [1, 2] }
   - id: braced-box
     label: Braced the box to reach the subway grille
     when: { variable: braced-box, equals: 1 }
+  - id: loosened-subway-grille
+    label: Loosened the subway grille
+    when: { variable: subway-grille-state, one_of: [1, 2] }
   - id: subway-passage
     label: Opened the subway passage
     # The crowbar loosens the grille (1). Cutting it opens the passage (2).
@@ -104,16 +116,10 @@ milestones:
     when: { variable: red-card-recovered, equals: 1 }
   - id: recovered-circuit-board
     label: Retrieved Joey's board from the wrecked robot
-    when:
-      all:
-        - { variable: circuit-board-recovered, equals: 1 }
-        - { milestone: red-linc-card }
+    when: { variable: circuit-board-recovered, equals: 1 }
   - id: cleared-linc-guardian
     label: Defeated the LINC-Space guardian
-    when:
-      all:
-        - { variable: linc-guardian-present, equals: 0 }
-        - { milestone: red-linc-card }
+    when: { variable: linc-guardian-present, equals: 0 }
   - id: shattered-linc-crystal
     label: Shattered the crystal protecting the virus
     when: { variable: linc-crystal-shattered, equals: 1 }
@@ -129,10 +135,16 @@ milestones:
   - id: opened-security-door
     label: Opened the underground security door with Joey
     when: { variable: security-door-state, equals: 2 }
+  - id: crashed-live-tank
+    label: Crashed the live tissue tank
+    when: { variable: live-tank-crashed, equals: 1 }
+  - id: infected-tissue
+    label: Infected the tissue sample
+    when: { variable: tissue-infection-state, one_of: [1, 2] }
   - id: infected-linc
     label: Infected LINC with the virus
     # The sample is infected at 1 and applied to LINC at 2.
     when: { variable: tissue-infection-state, equals: 2 }
   - id: winning-ending
     label: Reached the ending credits
-    when: { room: ending-credits }
+    when: { all: [{ room: ending-credits }, { variable: tissue-infection-state, equals: 2 }] }

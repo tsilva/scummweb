@@ -7,20 +7,92 @@ edition:
   game_id: qfg1vga
   index_md5: a5a29ff0038a27e4f791fc918f5dc18d
 telemetry: snapshot
-scoring: highest_stage
-rooms:
-  brigand-fortress: 94 # Script 94 runs the bandit fortress sequence.
-  elsa: 97 # Script 97 sends the hero to room 600 after the rescue.
-  ending: 600 # Room 600 awards points and begins awardScript.
-variables:
-  score: { bank: globals, index: 15 }
+completion_milestone: winning-ending
+flags:
+  # Main.sc stores the numbered puzzle flags most-significant bit first.
+  # SolvePuzzle sets each flag once before adding its points; optional/class routes can skip outcomes.
+  soothed-cave-bear: { bank: globals, index: 330, mask: 0x0200 } # 646, rm14
+  freed-barnard: { bank: globals, index: 330, mask: 0x0100 } # 647, rm14
+  returned-healers-ring: { bank: globals, index: 331, mask: 0x0004 } # 669, rm55
+  gathered-fairy-dust: { bank: globals, index: 333, mask: 0x4000 } # 689, rm70 or rm170
+  gathered-green-fur: { bank: globals, index: 332, mask: 0x0040 } # 681, rm60
+  gathered-flying-water: { bank: globals, index: 333, mask: 0x0020 } # 698, rm82
+  delivered-fairy-dust: { bank: globals, index: 332, mask: 0x0400 } # 677, rm55
+  delivered-green-fur: { bank: globals, index: 332, mask: 0x0800 } # 676, rm55
+  delivered-flying-water: { bank: globals, index: 332, mask: 0x2000 } # 674, rm55
+  obtained-dispel-potion: { bank: globals, index: 332, mask: 0x0200 } # 678, rm55
+  returned-dryads-seed: { bank: globals, index: 333, mask: 0x0200 } # 694, rm76
+  learned-brigand-password: { bank: globals, index: 333, mask: 0x1000 } # 691, rm73
+  uncovered-cave-passage: { bank: globals, index: 333, mask: 0x0004 } # 701, rm84
+  brigand-fortress: { bank: globals, index: 334, mask: 0x4000 } # 705, rm94
+  brigand-dining-hall: { bank: globals, index: 334, mask: 0x2000 } # 706, rm95
+  reached-yorick: { bank: globals, index: 334, mask: 0x1000 } # 707, rm96
+  elsa: { bank: globals, index: 334, mask: 0x0100 } # 711, rm97
+  rescued-elsa: { bank: globals, index: 334, mask: 0x0040 } # 713, rmBrig or rm97
+  recovered-mirror: { bank: globals, index: 334, mask: 0x0010 } # 715, rm97
+  banished-baba-yaga: { bank: globals, index: 300, mask: 0x0004 } # 173, rm22
+  winning-ending: { bank: globals, index: 335, mask: 0x0002 } # 734, EndGame or EndGame2
 milestones:
+  - id: soothed-cave-bear
+    label: Calmed the bear in the kobold’s cave
+    when: { flag: soothed-cave-bear }
+  - id: freed-barnard
+    label: Freed the baron’s son
+    when: { flag: freed-barnard }
+  - id: returned-healers-ring
+    label: Returned the healer’s ring
+    when: { flag: returned-healers-ring }
+  - id: gathered-fairy-dust
+    label: Collected fairy dust
+    when: { flag: gathered-fairy-dust }
+  - id: gathered-green-fur
+    label: Collected green fur from the Meeps
+    when: { flag: gathered-green-fur }
+  - id: gathered-flying-water
+    label: Collected flying water from the waterfall
+    when: { flag: gathered-flying-water }
+  - id: delivered-fairy-dust
+    label: Gave fairy dust to the healer
+    when: { flag: delivered-fairy-dust }
+  - id: delivered-green-fur
+    label: Gave green fur to the healer
+    when: { flag: delivered-green-fur }
+  - id: delivered-flying-water
+    label: Gave flying water to the healer
+    when: { flag: delivered-flying-water }
+  - id: obtained-dispel-potion
+    label: Received the Potion of Dispel
+    when: { flag: obtained-dispel-potion }
+  - id: returned-dryads-seed
+    label: Returned the seed to the dryad
+    when: { flag: returned-dryads-seed }
+  - id: learned-brigand-password
+    label: Overheard the brigands’ password
+    when: { flag: learned-brigand-password }
+  - id: uncovered-cave-passage
+    label: Moved the rock blocking the cave passage
+    when: { flag: uncovered-cave-passage }
   - id: brigand-fortress
-    label: "Reached the brigand fortress"
-    when: { room: brigand-fortress }
+    label: Reached the brigand fortress
+    when: { flag: brigand-fortress }
+  - id: brigand-dining-hall
+    label: Reached the brigands’ dining hall
+    when: { flag: brigand-dining-hall }
+  - id: reached-yorick
+    label: Reached Yorick’s room
+    when: { flag: reached-yorick }
   - id: elsa
-    label: "Reached the Elsa rescue sequence"
-    when: { room: elsa }
+    label: Reached the Elsa rescue sequence
+    when: { flag: elsa }
+  - id: rescued-elsa
+    label: Broke the spell on Elsa
+    when: { flag: rescued-elsa }
+  - id: recovered-mirror
+    label: Recovered the magic mirror
+    when: { flag: recovered-mirror }
+  - id: banished-baba-yaga
+    label: Drove Baba Yaga away with the magic mirror
+    when: { flag: banished-baba-yaga }
   - id: winning-ending
-    label: "Received the hero’s award"
-    when: { room: ending }
+    label: Received the hero’s award
+    when: { flag: winning-ending }

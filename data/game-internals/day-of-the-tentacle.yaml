@@ -9,20 +9,82 @@ edition:
   game_id: tentacle
   index_md5: 4167a92a1d46baa4f4127d918d561f88
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   end-credits: 88
 flags:
-  hoagies-power: { bank: scumm_bit_bytes, index: 1, mask: 0x2 }
-  lavernes-power: { bank: scumm_bit_bytes, index: 1, mask: 0x4 }
+  # Room 11 object 48 and room 13 object 84 record the wine deposit in bit 350.
+  wine-in-time-capsule: { bank: scumm_bit_bytes, index: 43, mask: 0x40 }
+  # Room 30 script 205 completes the patent letter scene.
+  patent-letter-delivered: { bank: scumm_bit_bytes, index: 5, mask: 0x02 }
+  hoagies-power: { bank: scumm_bit_bytes, index: 1, mask: 0x02 }
+  # Global script 82 records each first place separately after evaluating the entry.
+  harold-disqualified: { bank: scumm_bit_bytes, index: 3, mask: 0x04 }
+  mummy-dentures-fitted: { bank: scumm_bit_bytes, index: 3, mask: 0x08 }
+  won-best-hair: { bank: scumm_bit_bytes, index: 10, mask: 0x02 }
+  won-best-laugh: { bank: scumm_bit_bytes, index: 10, mask: 0x04 }
+  won-best-smile: { bank: scumm_bit_bytes, index: 10, mask: 0x08 }
+  # Room 53 script 201 leaves the hamster running.
+  hamster-running: { bank: scumm_bit_bytes, index: 2, mask: 0x40 }
+  lavernes-power: { bank: scumm_bit_bytes, index: 1, mask: 0x04 }
+  # Room 29 script 202 records signing; global script 7 records the royalty call.
+  signed-contract: { bank: scumm_bit_bytes, index: 4, mask: 0x20 }
+  funded-diamond: { bank: scumm_bit_bytes, index: 4, mask: 0x40 }
   tentacle-stopped: { bank: scumm_bit_bytes, index: 32, mask: 0x10 }
+objects:
+  # Room 53 script 203 and room 57 script 200 connect opposite ends independently.
+  generator-cord: 545
+  chron-o-john-cord: 596
+  installed-diamond: 225
 milestones:
-  - id: powered-chron-o-john
-    label: Powered a stranded Chron-O-John
-    when: { any: [{ flag: hoagies-power }, { flag: lavernes-power }] }
-  - id: powered-both
-    label: Powered both stranded Chron-O-Johns
-    when: { all: [{ flag: hoagies-power }, { flag: lavernes-power }] }
+  - id: stored-wine
+    label: Put the wine in the time capsule
+    when: { flag: wine-in-time-capsule }
+  - id: delivered-patent-letter
+    label: Delivered the patent letter to young Edison
+    when: { flag: patent-letter-delivered }
+  - id: powered-hoagies-chron-o-john
+    label: Powered Hoagie's Chron-O-John
+    when: { flag: hoagies-power }
+  - id: disqualified-harold
+    label: Disqualified Harold from the human show
+    when: { flag: harold-disqualified }
+  - id: fitted-mummys-dentures
+    label: Fitted the mummy with dentures
+    when: { flag: mummy-dentures-fitted }
+  - id: won-best-hair
+    label: Won Best Hair at the human show
+    when: { flag: won-best-hair }
+  - id: won-best-laugh
+    label: Won Best Laugh at the human show
+    when: { flag: won-best-laugh }
+  - id: won-best-smile
+    label: Won Best Smile at the human show
+    when: { flag: won-best-smile }
+  - id: started-hamster-generator
+    label: Got the hamster running in the generator
+    when: { flag: hamster-running }
+  - id: connected-generator-cord
+    label: Connected the generator end of the extension cord
+    when: { object: generator-cord, equals: 1 }
+  - id: connected-chron-o-john-cord
+    label: Connected the Chron-O-John end of the extension cord
+    when: { object: chron-o-john-cord, equals: 1 }
+  - id: powered-lavernes-chron-o-john
+    label: Powered Laverne's Chron-O-John
+    implies: [started-hamster-generator, connected-generator-cord, connected-chron-o-john-cord]
+    when: { flag: lavernes-power }
+  - id: signed-contract
+    label: Got Dr. Fred to sign the contract
+    when: { flag: signed-contract }
+  - id: funded-diamond
+    label: Secured the royalties to buy a real diamond
+    implies: [signed-contract]
+    when: { flag: funded-diamond }
+  - id: replaced-diamond
+    label: Installed the real diamond in the time machine
+    implies: [funded-diamond]
+    when: { object: installed-diamond, equals: 1 }
   - id: stopped-tentacle
     label: Stopped Purple Tentacle
     when: { flag: tentacle-stopped }

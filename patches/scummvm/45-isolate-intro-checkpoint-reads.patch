@@ -1,0 +1,72 @@
+diff --git a/backends/saves/default/default-saves.cpp b/backends/saves/default/default-saves.cpp
+--- a/backends/saves/default/default-saves.cpp
++++ b/backends/saves/default/default-saves.cpp
+@@ -142,6 +142,14 @@
+ }
+ 
+ Common::InSaveFile *DefaultSaveFileManager::openForLoading(const Common::String &filename) {
++#ifdef __EMSCRIPTEN__
++	// The startup checkpoint is deliberately outside the save directory and cache.
++	if (EM_ASM_INT({ return !!globalThis.__scummwebHasIntroCheckpoint?.(UTF8ToString($0)); }, filename.c_str())) {
++		clearError();
++		const Common::FSNode checkpoint(Common::Path("/tmp/scummweb-intro").appendComponent(filename));
++		return Common::wrapCompressedReadStream(checkpoint.createReadStream());
++	}
++#endif
+ 	// Assure the savefile name cache is up-to-date.
+ 	assureCached(getSavePath());
+ 	if (getError().getCode() != Common::kNoError)
+diff --git a/engines/sword25/kernel/persistenceservice.cpp b/engines/sword25/kernel/persistenceservice.cpp
+--- a/engines/sword25/kernel/persistenceservice.cpp
++++ b/engines/sword25/kernel/persistenceservice.cpp
+@@ -27,6 +27,10 @@
+  *
+  */
+ 
++#ifdef __EMSCRIPTEN__
++#include <emscripten/em_asm.h>
++#endif
++
+ #include "common/fs.h"
+ #include "common/savefile.h"
+ #include "common/compression/deflate.h"
+@@ -361,7 +365,20 @@
+ 		return false;
+ 	}
+ 
+-	SavegameInformation &curSavegameInfo = _impl->_savegameInformations[slotID];
++	Common::String filename = generateSavegameFilename(slotID);
++#ifdef __EMSCRIPTEN__
++	// Sword25 caches save headers and uses them to read the payload. Expose the
++	// startup file only for this load, then restore the ordinary slot metadata.
++	const bool introCheckpoint = EM_ASM_INT({
++		globalThis.__scummwebSword25LoadingIntro = true;
++		const available = globalThis.__scummwebHasIntroCheckpoint?.(UTF8ToString($0));
++		if (!available) delete globalThis.__scummwebSword25LoadingIntro;
++		return !!available;
++	}, filename.c_str());
++	if (introCheckpoint)
++		_impl->readSlotSavegameInformation(slotID);
++#endif
++	const SavegameInformation curSavegameInfo = _impl->_savegameInformations[slotID];
+ 
+ 	// Überprüfen, ob der Slot belegt ist.
+ 	if (!curSavegameInfo.isOccupied) {
+@@ -381,8 +398,16 @@
+ 
+ 	byte *compressedDataBuffer = new byte[curSavegameInfo.gamedataLength];
+ 	byte *uncompressedDataBuffer = new byte[curSavegameInfo.gamedataUncompressedLength];
+-	Common::String filename = generateSavegameFilename(slotID);
+ 	file = sfm->openForLoading(filename);
++#ifdef __EMSCRIPTEN__
++	if (introCheckpoint) {
++		EM_ASM({
++			delete globalThis.__scummwebSword25LoadingIntro;
++			globalThis.__scummwebFinishIntroCheckpoint?.();
++		});
++		_impl->readSlotSavegameInformation(slotID);
++	}
++#endif
+ 
+ 	file->seek(curSavegameInfo.gamedataOffset);
+ 	file->read(reinterpret_cast<char *>(&compressedDataBuffer[0]), curSavegameInfo.gamedataLength);

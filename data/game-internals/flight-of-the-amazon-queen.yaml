@@ -1,13 +1,15 @@
+# English DOS CD (CEM10), verified against QUEEN.JAS commands, dialogue, and cutaway tables.
 schema_version: 1
 game: flight-of-the-amazon-queen
 engine_id: queen
-scoring: highest_stage
+completion_milestone: credits
 rooms:
   ending-credits: 110
 variables:
   sheet-rope-secured: { bank: game_state, index: 91 }
   lola-helping: { bank: game_state, index: 94 }
-  hotel-escape-stage: { bank: game_state, index: 3 }
+  # Logic::removeHotelItemsFromInventory marks the crash site; the valley later reuses the set value.
+  hotel-items-removed: { bank: game_state, index: 3 }
   piranhas-distracted: { bank: game_state, index: 5 }
   jungle-crossing-open: { bank: game_state, index: 101 }
   jungle-bridge-repaired: { bank: game_state, index: 7 }
@@ -27,22 +29,36 @@ variables:
   temple-panels-stage: { bank: game_state, index: 100 }
   temple-stage: { bank: game_state, index: 67 }
   valley-dinosaur-bypassed: { bank: game_state, index: 104 }
-  valley-obstacle-cleared: { bank: game_state, index: 105 }
+  tyranno-horn-sounded: { bank: game_state, index: 105 }
+  towel-found: { bank: game_state, index: 92 }
+  lily-stem-cut: { bank: game_state, index: 196 }
+  wasps-captured: { bank: game_state, index: 14 }
+  floda-safe-unlocked: { bank: game_state, index: 73 }
+  lighter-has-flint: { bank: game_state, index: 80 }
+  death-mask-cleaned: { bank: game_state, index: 98 }
+  final-confrontation: { bank: game_state, index: 157 }
 milestones:
   - id: secured-sheet-rope
     label: Secured the sheet rope to the radiator
     when: { variable: sheet-rope-secured, equals: 1 }
+  - id: found-hotel-towel
+    label: Found the towel in the hotel chest
+    when: { variable: towel-found, equals: 1 }
   - id: lola-help
     label: Got Lola's help escaping the hotel
     when: { variable: lola-helping, equals: 1 }
   - id: hotel-escape
     label: Reached the crash site
-    when: { variable: hotel-escape-stage, equals: 1 }
+    when: { variable: hotel-items-removed, equals: 1 }
   - id: distracted-piranhas
     label: Distracted the piranhas
     when: { variable: piranhas-distracted, equals: 1 }
+  - id: cut-lily-stem
+    label: Cut the giant lily pad free
+    when: { variable: lily-stem-cut, equals: 1 }
   - id: jungle-crossing
     label: Opened the jungle river crossing
+    implies: [distracted-piranhas, cut-lily-stem]
     when: { variable: jungle-crossing-open, equals: 1 }
   - id: repaired-jungle-bridge
     label: Repaired the jungle bridge
@@ -53,6 +69,15 @@ milestones:
   - id: delivered-perfume
     label: Gave Naomi the perfume
     when: { variable: naomi-perfume-stage, equals: 2 }
+  - id: captured-wasps
+    label: Captured the wasps for the witch doctor
+    when: { variable: wasps-captured, one_of: [1, 2] }
+  - id: delivered-first-ingredient
+    label: Delivered the first witch doctor ingredient
+    when: { variable: witch-doctor-ingredients, one_of: [1, 2, 3] }
+  - id: delivered-second-ingredient
+    label: Delivered two witch doctor ingredients
+    when: { variable: witch-doctor-ingredients, one_of: [2, 3] }
   - id: witch-doctor-ingredients
     label: Delivered all three ingredients to the witch doctor
     when: { variable: witch-doctor-ingredients, equals: 3 }
@@ -62,6 +87,9 @@ milestones:
   - id: distracted-floda-dog
     label: Distracted the Floda guard dog
     when: { variable: floda-dog-distracted, equals: 1 }
+  - id: unlocked-floda-safe
+    label: Unlocked the Floda safe
+    when: { variable: floda-safe-unlocked, equals: 1 }
   - id: emptied-floda-safe
     label: Retrieved the contents of the Floda safe
     when: { variable: floda-safe-emptied, equals: 1 }
@@ -74,18 +102,38 @@ milestones:
   - id: sloth-island
     label: Unlocked passage to Sloth Island
     when: { variable: sloth-island-access, equals: 2 }
+  - id: fitted-temple-disc
+    label: Fitted the stone disc on the temple spindle
+    when: { variable: temple-pulley-stage, one_of: [1, 2, 3] }
+  - id: fitted-temple-vine
+    label: Fitted the gnarled vine on the temple spindle
+    when: { variable: temple-pulley-stage, one_of: [2, 3] }
   - id: restored-temple-pulley
     label: Restored the temple pulley
     when: { variable: temple-pulley-stage, equals: 3 }
+  - id: fitted-lighter-flint
+    label: Fitted the flint into the lighter
+    when: { variable: lighter-has-flint, equals: 1 }
   - id: lit-temple-torch
     label: Lit the makeshift torch
+    implies: [fitted-lighter-flint]
     when: { variable: makeshift-torch-lit, equals: 1 }
+  - id: cleaned-death-mask
+    label: Polished the death mask to a mirror finish
+    when: { variable: death-mask-cleaned, equals: 1 }
   - id: disabled-temple-death-ray
     label: Disabled the temple death ray
+    implies: [cleaned-death-mask]
     when: { variable: temple-death-ray-disabled, equals: 1 }
+  - id: placed-first-temple-jewel
+    label: Placed a jewel in a temple eye
+    when: { variable: temple-jewels-stage, one_of: [1, 2] }
   - id: placed-temple-jewels
     label: Placed both jewels in the temple eyes
     when: { variable: temple-jewels-stage, equals: 2 }
+  - id: activated-first-temple-panel
+    label: Activated a temple wall panel
+    when: { variable: temple-panels-stage, one_of: [1, 2, 3] }
   - id: activated-temple-panels
     label: Activated both temple wall panels
     when: { variable: temple-panels-stage, equals: 3 }
@@ -96,8 +144,13 @@ milestones:
     label: Got past the large dinosaur in the valley
     when: { variable: valley-dinosaur-bypassed, equals: 1 }
   - id: valley
-    label: Cleared the last Valley of Mists obstacle
-    when: { variable: valley-obstacle-cleared, equals: 1 }
+    label: Sounded the tyranno horn in the Valley of Mists
+    implies: [bypassed-valley-dinosaur]
+    when: { variable: tyranno-horn-sounded, equals: 1 }
+  - id: entered-final-confrontation
+    label: Reached the confrontation with monster Frank
+    when: { variable: final-confrontation, equals: 1 }
   - id: credits
     label: Reached the ending credits
-    when: { room: ending-credits }
+    # Only the successful monster-Frank cutaway C69G enters room 110.
+    when: { all: [{ room: ending-credits }, { variable: final-confrontation, equals: 1 }] }

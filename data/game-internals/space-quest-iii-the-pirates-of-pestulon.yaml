@@ -8,7 +8,7 @@ edition:
   game_id: sq3
   index_md5: cc1a975fa0f80941b9485866ee6ff634
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   sierra-office: 116
   finale: 117
@@ -19,16 +19,33 @@ rooms:
 variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 }
+  boarded-mallard: { bank: globals, index: 231 } # rm008 after the hatch.
+  wearing-thermal-underwear: { bank: globals, index: 182 } # rm014.
+  found-seat-money: { bank: globals, index: 150 } # rm014.
+  left-scumsoft-fortifications: { bank: globals, index: 597 } # Room86.
+  decoded-message: { bank: globals, index: 170 } # rm290 after winning Astro Chicken.
 milestones:
   - id: aluminum-mallard
     label: "Reached the Aluminum Mallard cockpit"
-    when: { room: aluminum-mallard }
+    when: { any: [{ room: aluminum-mallard }, { variable: boarded-mallard, equals: 1 }] }
+  - id: found-seat-money
+    label: Found the buckazoids under the cockpit seat
+    when: { variable: found-seat-money, equals: 1 }
+  - id: wearing-thermal-underwear
+    label: Put on the ThermoWeave underwear
+    when: { variable: wearing-thermal-underwear, equals: 1 }
   - id: left-junk-freighter
     label: "Launched from the junk freighter"
     when: { room: left-junk-freighter }
   - id: monolith-burger
     label: "Reached Monolith Burger"
     when: { room: monolith-burger }
+  - id: decoded-message
+    label: Decoded the Astro Chicken message
+    when: { variable: decoded-message, equals: 1 }
+  - id: left-scumsoft-fortifications
+    label: Left the ScumSoft outer fortifications
+    when: { variable: left-scumsoft-fortifications, equals: 1 }
   - id: nukem-dukem-arena
     label: "Reached the Nukem Dukem arena"
     when: { room: nukem-dukem-arena }
@@ -37,6 +54,7 @@ milestones:
     when: { room: sierra-office }
   - id: winning-ending
     label: Completed the Sierra ending
+    implies: [reached-sierra]
     when:
       all:
         - { room: finale }

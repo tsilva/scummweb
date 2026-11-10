@@ -708,6 +708,22 @@
         "Change playback speed while the drawer is open and resume. Verify slower and faster gameplay and the default 1× behavior. Run the AgentSCUMM and Continue regression tests."
       ],
       "retire_when": "Upstream exposes a browser player API with equivalent native save metadata, safe runtime control and adjustable game speed."
+    },
+    {
+      "path": "patches/scummvm/45-isolate-intro-checkpoint-reads.patch",
+      "status": "active",
+      "sha256": "1cbb62ccb364f3f07728f32bec9d93e5db6c9ef835ff823345e73bc3a2c0a39f",
+      "purpose": "Allow native startup loads from a temporary checkpoint without placing it in the player's save folder.",
+      "invariants": [
+        "Use the staged file only for the selected startup target and never from a native save scan. Leave ordinary listing, save and load paths intact.",
+        "Keep Sword25's real slot metadata outside its startup restore. End the temporary override before gameplay.",
+        "Remove legacy copies only when they match shipped or known retired checkpoint bytes."
+      ],
+      "verification": [
+        "Skip the intro in Queen, then inspect the native journal and shared Load menu. Repeat with a real save in slot zero and confirm it still loads.",
+        "Check a scoped or fresh launch and a launch with legacy checkpoint bytes. Verify startup load and ordinary slot metadata in Sword25."
+      ],
+      "retire_when": "Upstream accepts an ephemeral startup save stream separate from the native save manager's player files."
     }
   ]
 }

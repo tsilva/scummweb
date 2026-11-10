@@ -9,13 +9,20 @@ edition:
   game_id: phantasmagoria
   index_md5: abeb9a32ad6dcf9e4371d4f9897f8694
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   final-chase: 45950
   ending: 92
 variables:
   chapter: { bank: globals, index: 106 }
   previous-room: { bank: globals, index: 12 }
+flags:
+  # Saved MSB-first Main flags. The nameGameRoom chapter selector seeds other flags via n1112.
+  read-diary: { bank: globals, index: 268, mask: 0x0004 } # 301, rm19100
+  read-carnos-text: { bank: globals, index: 270, mask: 0x0020 } # 330, rm22200
+  opened-maries-coffin: { bank: globals, index: 270, mask: 0x0010 } # 331, rm22200
+  completed-rescue: { bank: globals, index: 269, mask: 0x0400 } # 309, rm24000
+  collected-fork: { bank: globals, index: 264, mask: 0x0020 } # 234, rm24100
 milestones:
   - id: reached-chapter-2
     label: Reached chapter 2
@@ -38,6 +45,21 @@ milestones:
   - id: final-chase
     label: Reached the final chase
     when: { room: final-chase }
+  - id: read-diary
+    label: Read the diary
+    when: { flag: read-diary }
+  - id: read-carnos-text
+    label: Read Carno’s text
+    when: { flag: read-carnos-text }
+  - id: opened-maries-coffin
+    label: Opened Marie’s coffin
+    when: { flag: opened-maries-coffin }
+  - id: completed-rescue
+    label: Completed the rescue scene
+    when: { flag: completed-rescue }
+  - id: collected-fork
+    label: Collected the fork
+    when: { flag: collected-fork }
   - id: winning-ending
     label: Escaped the final chase
     when: { all: [{ room: ending }, { variable: previous-room, equals: -18056 }] } # Room 47480 as a signed SCI global.

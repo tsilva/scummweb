@@ -7,18 +7,39 @@ edition:
   game_id: fairytales
   index_md5: daa94e9f327be6657eb97a51b490dbb1
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   storybook: 355 # Script 355 runs the final return to the book.
   ending: 500 # Room 360 selects its ending sequence for stage 2, then enters 500.
 variables:
-  score: { bank: globals, index: 15 }
+  completed-stories: { bank: globals, index: 145 } # Rooms 120, 140, 200, 210 and 290 count the five stories.
   previous-room: { bank: globals, index: 12 } # SCI previous room global.
   book-stage: { bank: globals, index: 140 } # Room 360 distinguishes the opening (0) from the ending (2).
 milestones:
+  - id: finished-stories-1
+    label: Completed 1 fairy tale
+    when: { variable: completed-stories, one_of: [1, 2, 3, 4, 5] }
+  - id: finished-stories-2
+    label: Completed 2 fairy tales
+    when: { variable: completed-stories, one_of: [2, 3, 4, 5] }
+  - id: finished-stories-3
+    label: Completed 3 fairy tales
+    when: { variable: completed-stories, one_of: [3, 4, 5] }
+  - id: finished-stories-4
+    label: Completed 4 fairy tales
+    when: { variable: completed-stories, one_of: [4, 5] }
+  - id: finished-stories-5
+    label: Completed 5 fairy tales
+    when: { variable: completed-stories, equals: 5 }
   - id: storybook
     label: "Returned to the storybook"
     when: { all: [{ room: storybook }, { variable: book-stage, equals: 2 }] }
   - id: winning-ending
     label: "Completed the fairy tales"
-    when: { all: [{ room: ending }, { all: [{ variable: previous-room, equals: 360 }, { variable: book-stage, equals: 2 }] }] }
+    implies: [storybook]
+    when:
+      all:
+        - { room: ending }
+        - { variable: previous-room, equals: 360 }
+        - { variable: book-stage, equals: 2 }
+        - { variable: completed-stories, equals: 5 }

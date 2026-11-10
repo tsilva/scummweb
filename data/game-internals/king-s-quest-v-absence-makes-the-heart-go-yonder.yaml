@@ -8,7 +8,7 @@ edition:
   game_id: kq5
   index_md5: a8a854af430e25c70e2b986f02239710
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   finale: 120
   credits: 123
@@ -18,7 +18,41 @@ rooms:
 variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 }
+flags:
+  # Main.sc stores these flags LSB first in globals starting at 129.
+  saved-hive: { bank: globals, index: 131, mask: 0x0010 } # 36, rm011
+  distracted-dog: { bank: globals, index: 135, mask: 0x0400 } # 106, rm012
+  stopped-forest-witch: { bank: globals, index: 132, mask: 0x0100 } # 56, rm024
+  unlocked-kitchen-door: { bank: globals, index: 133, mask: 0x8000 } # 79, rm028
+  crossed-frozen-waterfall: { bank: globals, index: 133, mask: 0x4000 } # 78, rm031
+  sailed-in-boat: { bank: globals, index: 132, mask: 0x0040 } # 54, rm049
+  broke-rusty-lock: { bank: globals, index: 134, mask: 0x0001 } # 80, rm086
+  used-peas: { bank: globals, index: 132, mask: 0x8000 } # 63, castle
 milestones:
+  - id: saved-hive
+    label: Saved the beehive from the bear
+    when: { flag: saved-hive }
+  - id: distracted-dog
+    label: Distracted the dog with a stick
+    when: { flag: distracted-dog }
+  - id: stopped-forest-witch
+    label: Overcame the forest witch
+    when: { flag: stopped-forest-witch }
+  - id: unlocked-kitchen-door
+    label: Unlocked the kitchen door
+    when: { flag: unlocked-kitchen-door }
+  - id: crossed-frozen-waterfall
+    label: Jumped the washed-out path by the frozen waterfall
+    when: { flag: crossed-frozen-waterfall }
+  - id: sailed-in-boat
+    label: Set off in the boat
+    when: { flag: sailed-in-boat }
+  - id: broke-rusty-lock
+    label: Broke the rusty lock with the cobbler’s hammer
+    when: { flag: broke-rusty-lock }
+  - id: used-peas
+    label: Used the peas against Mordack’s henchman
+    when: { flag: used-peas }
   - id: escaped-harpies
     label: "Escaped the harpies"
     when: { room: escaped-harpies }
@@ -30,9 +64,11 @@ milestones:
     when: { room: magic-battle }
   - id: started-ending
     label: Reached the story finale
+    implies: [magic-battle]
     when: { room: finale }
   - id: winning-ending
     label: Reached the story credits
+    implies: [started-ending]
     when:
       all:
         - { room: credits }

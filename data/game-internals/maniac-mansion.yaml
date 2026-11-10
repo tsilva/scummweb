@@ -1,7 +1,5 @@
-# English Amiga V2.
-# Native evidence: scripts and room directory from the detected edition.
-# Script 126 runs Dr. Fred’s restored dialogue in room 30. Scripts 118, 126 and 130 converge on victory script 63.
-# The all-kids-dead branch runs script 62 instead.
+# English Amiga V2. Native evidence: scripts and room directory from this edition.
+# Scripts 118, 126 and 130 converge on victory script 63. All kids dead runs 62.
 schema_version: 1
 game: maniac-mansion
 engine_id: scumm
@@ -9,23 +7,49 @@ edition:
   game_id: maniac
   index_md5: e781230da44a44e2f0770edb2b3b3633
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
-  entered-mansion: 2
+  entered-mansion: 10 # The front door leads from room 1 to the hall in room 10.
   reached-lab: 30
 variables:
+  first-entrance: { bank: scumm_vars, index: 138 } # Room 1 object 61, when entering the door.
   freds-condition: { bank: scumm_vars, index: 108 }
+  contract-type: { bank: scumm_vars, index: 101 } # g106, g118.
+  meteor-state: { bank: scumm_vars, index: 162 } # r051 object 45, r016 object 151, and g043.
+  rocket-launched: { bank: scumm_vars, index: 152 } # g130.
   victory-script: { bank: running_scripts, index: 63 }
 milestones:
   - id: entered-mansion
     label: Entered the mansion
-    when: { room: entered-mansion }
+    when: { any: [{ room: entered-mansion }, { variable: first-entrance, equals: 1 }] }
+  - id: earned-recording-contract
+    label: Earned a recording contract
+    when: { variable: contract-type, one_of: [2, 3] }
+  - id: earned-meteor-contract
+    label: Earned a publishing contract for the meteor
+    when: { variable: contract-type, one_of: [1, 4] }
   - id: reached-lab
     label: Reached Dr. Fred’s lab
     when: { room: reached-lab, room_ready: true }
   - id: freed-dr-fred
     label: Freed Dr. Fred from the meteor’s control
     when: { variable: freds-condition, equals: 2 }
+  - id: detached-meteor
+    label: Detached the meteor from its equipment
+    when: { variable: meteor-state, one_of: [1, 2] }
+  - id: loaded-meteor-in-trunk
+    label: Put the meteor in the car’s trunk
+    when: { variable: meteor-state, equals: 2 }
+  - id: meteor-police-arrest
+    label: The Meteor Police took the meteor into custody
+    when: { variable: meteor-state, equals: 3 }
+  - id: launched-meteor-in-car
+    label: Launched the car with the meteor in its trunk
+    when: { all: [{ variable: meteor-state, equals: 2 }, { variable: rocket-launched, equals: 1 }] }
+  - id: offered-meteor-contract
+    label: Gave the meteor its publishing contract
+    implies: [earned-meteor-contract]
+    when: { variable: contract-type, equals: 4 }
   - id: winning-ending
     label: Rescued Sandy
     when: { variable: victory-script, equals: 1 }

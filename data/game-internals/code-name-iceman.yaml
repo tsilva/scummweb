@@ -7,23 +7,37 @@ edition:
   game_id: iceman
   index_md5: f9e0580f1e8f59befd2641a6ba1182de
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   pentagon: 18 # Script 18 contains the Pentagon arrival and departure.
   submarine: 31 # Script 23 comeAboardScript leads to room 31.
+  navigation-chart: 40 # chartRm
+  agents-apartment: 84 # agentApartmentRm
   outside-compound: 81 # Script 80 driveAwayScript enters room 81.
   carrier-debriefing: 90 # Script 90 begins on board USS Saratoga.
   ending: 89 # Script 90 concludes the debriefing and enters room 89.
 variables:
-  score: { bank: globals, index: 15 }
+  earring: { bank: globals, index: 143 } # washington and earRingFeat: 1 = opened, 2 = found microfilm.
   previous-room: { bank: globals, index: 12 } # SCI previous room global.
 milestones:
+  - id: opened-earring
+    label: Opened the hollow earring
+    when: { variable: earring, one_of: [1, 2] }
+  - id: found-microfilm
+    label: Discovered the microfilm inside the earring
+    when: { variable: earring, equals: 2 }
   - id: pentagon
     label: "Reached the Pentagon"
     when: { room: pentagon }
   - id: submarine
     label: "Boarded the submarine"
     when: { room: submarine }
+  - id: navigation-chart
+    label: Reached the submarine navigation chart
+    when: { room: navigation-chart }
+  - id: agents-apartment
+    label: Reached the agent’s apartment
+    when: { room: agents-apartment }
   - id: outside-compound
     label: "Reached the compound"
     when: { room: outside-compound }
@@ -32,4 +46,5 @@ milestones:
     when: { room: carrier-debriefing }
   - id: winning-ending
     label: "Earned the promotion to captain"
+    implies: [carrier-debriefing]
     when: { all: [{ room: ending }, { variable: previous-room, equals: 90 }] }

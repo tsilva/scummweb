@@ -8,7 +8,7 @@ edition:
   game_id: pq4
   index_md5: 069123b257f9e7655f13eb768397c345
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   final-confrontation: 755
   final-score: 778
@@ -18,7 +18,20 @@ rooms:
 variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 }
+  day: { bank: globals, index: 120 } # Main.gDay and day transitions.
 milestones:
+  - id: began-day-2
+    label: Reached day two of the investigation
+    when: { variable: day, one_of: [2, 3, 4, 5, 6] }
+  - id: began-day-3
+    label: Reached day three of the investigation
+    when: { variable: day, one_of: [3, 4, 5, 6] }
+  - id: began-day-5
+    label: Reached day five of the investigation
+    when: { variable: day, one_of: [5, 6] }
+  - id: began-day-6
+    label: Reached day six of the investigation
+    when: { variable: day, equals: 6 }
   - id: day-four-montage
     label: "Reached the day-four investigation sequence"
     when: { room: day-four-montage }
@@ -30,4 +43,5 @@ milestones:
     when: { room: final-confrontation }
   - id: winning-ending
     label: Neutralized the assailant and reached the ending
+    implies: [reached-confrontation]
     when: { any: [{ all: [{ room: final-score }, { variable: previous-room, equals: 755 }] }, { all: [{ room: ending-credits }, { variable: previous-room, equals: 778 }] }] }

@@ -7,25 +7,106 @@ edition:
   game_id: castlebrain
   index_md5: f77728304c70017c54793eb6ca648174
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
-  front-hall: 120 # Script 100 awards the memory plaque and enters room 120.
   clock-room: 180 # Script 120 exitScript leads to 180, which runs the clock puzzle.
   puzzle-door: 320 # Script 320 opens the Puzzle Room after the tangram.
   ending: 480 # Script 440 awards the certificate and enters room 480.
 variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 } # SCI previous room global.
+flags:
+  solved-entry-memory: { bank: globals, index: 250, mask: 0x0002 } # 14, rm100
+  solved-word-search: { bank: globals, index: 250, mask: 0x0020 } # 10, word
+  solved-magic-square: { bank: globals, index: 250, mask: 0x0010 } # 11, rm120 barMagic
+  solved-math: { bank: globals, index: 250, mask: 0x0008 } # 12, rm120 mathMarvel
+  solved-sliding-number-puzzle: { bank: globals, index: 250, mask: 0x0004 } # 13, rm120 bar15
+  solved-clock: { bank: globals, index: 250, mask: 0x4000 } # 1, timeClock
+  solved-hourglass: { bank: globals, index: 253, mask: 0x0400 } # 53, rm180
+  solved-cipher: { bank: globals, index: 250, mask: 0x1000 } # 3, cipher
+  opened-safe: { bank: globals, index: 250, mask: 0x0800 } # 4, safe
+  solved-hangman: { bank: globals, index: 250, mask: 0x0200 } # 6, hangman
+  solved-robot-jokes: { bank: globals, index: 252, mask: 0x0040 } # 41, rm220
+  solved-circuit: { bank: globals, index: 251, mask: 0x8000 } # 16, rm240
+  solved-binary-conversion: { bank: globals, index: 251, mask: 0x4000 } # 17, rm240 sequencer
+  solved-password: { bank: globals, index: 250, mask: 0x0001 } # 15, pWord
+  solved-tangram: { bank: globals, index: 250, mask: 0x0040 } # 9, rm320
+  solved-constellation: { bank: globals, index: 251, mask: 0x0001 } # 31, s
+  solved-solar-system: { bank: globals, index: 252, mask: 0x1000 } # 35, solar
+  solved-concentration: { bank: globals, index: 252, mask: 0x0800 } # 36, concentrate
+  solved-maze: { bank: globals, index: 252, mask: 0x0010 } # 43, maze
+  solved-job-puzzle: { bank: globals, index: 252, mask: 0x0200 } # 38, rm440
+  solved-book-puzzle: { bank: globals, index: 252, mask: 0x0100 } # 39, rm440
 milestones:
-  - id: front-hall
-    label: "Unlocked the front door"
-    when: { room: front-hall }
   - id: clock-room
     label: "Reached the clock puzzles"
     when: { room: clock-room }
   - id: puzzle-door
     label: "Reached the tangram door"
     when: { room: puzzle-door }
+  - id: solved-entry-memory
+    label: Solved the front door memory puzzle
+    when: { flag: solved-entry-memory }
+  - id: solved-word-search
+    label: Solved the word search
+    when: { flag: solved-word-search }
+  - id: solved-magic-square
+    label: Solved the magic square
+    when: { flag: solved-magic-square }
+  - id: solved-math
+    label: Solved the Math Marvel puzzle
+    when: { flag: solved-math }
+  - id: solved-sliding-number-puzzle
+    label: Solved the sliding number puzzle
+    when: { flag: solved-sliding-number-puzzle }
+  - id: solved-clock
+    label: Solved the clock puzzle
+    when: { flag: solved-clock }
+  - id: solved-hourglass
+    label: Solved the hourglass puzzle
+    when: { flag: solved-hourglass }
+  - id: solved-cipher
+    label: Solved the cipher
+    when: { flag: solved-cipher }
+  - id: opened-safe
+    label: Solved the safe puzzle
+    when: { flag: opened-safe }
+  - id: solved-hangman
+    label: Solved the hangman puzzle
+    when: { flag: solved-hangman }
+  - id: solved-robot-jokes
+    label: Solved the robot jokes puzzle
+    when: { flag: solved-robot-jokes }
+  - id: solved-circuit
+    label: Solved the circuit puzzle
+    when: { flag: solved-circuit }
+  - id: solved-binary-conversion
+    label: Solved the binary conversion puzzle
+    when: { flag: solved-binary-conversion }
+  - id: solved-password
+    label: Solved the password puzzle
+    when: { flag: solved-password }
+  - id: solved-tangram
+    label: Solved the tangram
+    when: { flag: solved-tangram }
+  - id: solved-constellation
+    label: Solved the constellation puzzle
+    when: { flag: solved-constellation }
+  - id: solved-solar-system
+    label: Solved the solar system puzzle
+    when: { flag: solved-solar-system }
+  - id: solved-concentration
+    label: Solved the concentration puzzle
+    when: { flag: solved-concentration }
+  - id: solved-maze
+    label: Solved the maze
+    when: { flag: solved-maze }
+  - id: solved-job-puzzle
+    label: Solved the job puzzle
+    when: { flag: solved-job-puzzle }
+  - id: solved-book-puzzle
+    label: Solved the book puzzle
+    when: { flag: solved-book-puzzle }
   - id: winning-ending
     label: "Earned Dr. Brain’s certificate"
     when: { all: [{ room: ending }, { variable: previous-room, equals: 440 }] }

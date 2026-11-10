@@ -1,7 +1,9 @@
 # English DOS CD.
 # Native evidence: scripts and room directory from the detected edition.
 # The native debug jump table identifies the ranch, Corley’s will and the truck finale. Room 170 contains the turret controls.
-# The final successful control path sets bit 275. The funeral and subsequent credits run scripts 244, 289 and 439.
+# Room 170 requests the shot with bit 275. Room 174 consumes that request,
+# sets bit 279 after the shot, and the crash failures clear it (g292/g454).
+# The escape (g293) leads to the funeral and g439's end credits.
 schema_version: 1
 game: full-throttle
 engine_id: scumm
@@ -9,7 +11,7 @@ edition:
   game_id: ft
   index_md5: 09820417db26687bb7fe0c83cc4c553b
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   mink-ranch: 43
   corleys-will: 65
@@ -19,14 +21,34 @@ rooms:
 variables:
   ending-script: { bank: running_scripts, index: 439 }
 flags:
-  ripburger-defeated: { bank: scumm_bit_bytes, index: 34, mask: 0x8 }
+  delivered-gas: { bank: scumm_bit_bytes, index: 8, mask: 0x80 } # Bit 71, g086.
+  delivered-forks: { bank: scumm_bit_bytes, index: 9, mask: 0x01 } # Bit 72, g086.
+  delivered-welding-torch: { bank: scumm_bit_bytes, index: 9, mask: 0x02 } # Bit 73, g086.
+  loaded-photographs: { bank: scumm_bit_bytes, index: 38, mask: 0x80 } # Bit 311, r065 local 2001.
+  loaded-will: { bank: scumm_bit_bytes, index: 39, mask: 0x01 } # Bit 312, r065 local 2002.
+  ripburger-defeated: { bank: scumm_bit_bytes, index: 34, mask: 0x80 } # Bit 279, r174 local 2001.
 milestones:
+  - id: delivered-gas
+    label: Delivered gas to Maureen
+    when: { flag: delivered-gas }
+  - id: delivered-forks
+    label: Delivered replacement forks to Maureen
+    when: { flag: delivered-forks }
+  - id: delivered-welding-torch
+    label: Delivered the welding torch to Maureen
+    when: { flag: delivered-welding-torch }
   - id: mink-ranch
     label: Reached the mink ranch
     when: { room: mink-ranch }
   - id: corleys-will
     label: Reached Corley’s will
     when: { room: corleys-will }
+  - id: loaded-photographs
+    label: Put the photographs into the presentation
+    when: { flag: loaded-photographs }
+  - id: loaded-will
+    label: Loaded Corley’s will into the presentation
+    when: { flag: loaded-will }
   - id: truck-finale
     label: Reached Ripburger’s truck
     when: { room: truck-finale }
@@ -38,4 +60,9 @@ milestones:
     when: { flag: ripburger-defeated }
   - id: winning-ending
     label: Reached the end credits
-    when: { all: [{ room: end-credits }, { variable: ending-script, equals: 1 }] }
+    implies: [defeated-ripburger]
+    when:
+      all:
+        - { room: end-credits }
+        - { variable: ending-script, equals: 1 }
+        - { flag: ripburger-defeated }

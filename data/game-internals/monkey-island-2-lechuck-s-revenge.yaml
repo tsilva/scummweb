@@ -9,7 +9,7 @@ edition:
   game_id: monkey2
   index_md5: 132bff65e6367c09cc69318ce1b59333
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   map-pieces: 25
   fortress: 67
@@ -18,10 +18,39 @@ rooms:
   big-whoop: 110
 variables:
   ending-script: { bank: running_scripts, index: 160 }
+flags:
+  # Dread's cabin script 201 sets bit 321 after Guybrush pays him.
+  chartered-dread: { bank: scumm_bit_bytes, index: 40, mask: 0x02 }
+  # Global 98 and room 19 script 203 record the coffin piece (either route).
+  coffin-piece: { bank: scumm_bit_bytes, index: 45, mask: 0x40 }
+  # Room 40 script 201 records the hand and map in the mansion.
+  mansion-piece: { bank: scumm_bit_bytes, index: 8, mask: 0x20 }
+  # Room 62 script 201 or room 53 script 213 completes the dog retrieval.
+  dog-piece: { bank: scumm_bit_bytes, index: 6, mask: 0x80 }
+  # Room 8 script 205 counts the four pieces before handing them over to Wally.
+  delivered-map: { bank: scumm_bit_bytes, index: 42, mask: 0x20 }
+objects:
+  antiques-piece: 519
 milestones:
   - id: map-pieces
-    label: Finished the Largo Embargo
-    when: { room: map-pieces }
+    label: Finished the Largo Embargo and chartered Captain Dread
+    when: { any: [{ room: map-pieces }, { flag: chartered-dread }] }
+  - id: coffin-map-piece
+    label: Retrieved the map piece from the coffin
+    when: { flag: coffin-piece }
+  - id: mansion-map-piece
+    label: Retrieved the map piece from Governor Marley's mansion
+    when: { flag: mansion-piece }
+  - id: antiques-map-piece
+    label: Retrieved the map piece from the Booty Island antique shop
+    when: { object: antiques-piece, equals: 1 }
+  - id: dog-map-piece
+    label: Retrieved the map piece with the dog's help
+    when: { flag: dog-piece }
+  - id: delivered-map-pieces
+    label: Delivered all four map pieces to Wally
+    implies: [map-pieces, coffin-map-piece, mansion-map-piece, antiques-map-piece, dog-map-piece]
+    when: { flag: delivered-map }
   - id: fortress
     label: Reached LeChuck’s fortress chapter
     when: { room: fortress }

@@ -8,7 +8,7 @@ edition:
   game_id: mh1
   index_md5: 92c6183042d1c2bb76236236a7d7a847
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   assignment-terminal: 104
   final-flight: 151
@@ -23,21 +23,44 @@ flags:
 milestones:
   - id: second-assignment
     label: Advanced to the second assignment
-    when: { variable: assignment, equals: 2 }
+    when: { variable: assignment, one_of: [2, 3, 4] }
   - id: third-assignment
     label: Advanced to the third assignment
-    when: { variable: assignment, equals: 3 }
+    when: { variable: assignment, one_of: [3, 4] }
   - id: fourth-assignment
     label: Advanced to the final assignment
     when: { variable: assignment, equals: 4 }
-  - id: won-final-flight
-    label: Destroyed all four targets
+  # Other action sequences use the same flags. Only these rooms prove flight targets.
+  - id: destroyed-flight-target-1
+    label: Destroyed flight target 1
     when:
       all:
+        - { any: [{ room: final-flight }, { room: ending }] }
+        - { flag: target-1-destroyed }
+  - id: destroyed-flight-target-2
+    label: Destroyed flight target 2
+    when:
+      all:
+        - { any: [{ room: final-flight }, { room: ending }] }
+        - { flag: target-2-destroyed }
+  - id: destroyed-flight-target-3
+    label: Destroyed flight target 3
+    when:
+      all:
+        - { any: [{ room: final-flight }, { room: ending }] }
+        - { flag: target-3-destroyed }
+  - id: destroyed-flight-target-4
+    label: Destroyed flight target 4
+    when:
+      all:
+        - { any: [{ room: final-flight }, { room: ending }] }
+        - { flag: target-4-destroyed }
+  - id: winning-ending
+    label: Reached the flight epilogue
+    when:
+      all:
+        - { room: ending }
         - { flag: target-1-destroyed }
         - { flag: target-2-destroyed }
         - { flag: target-3-destroyed }
         - { flag: target-4-destroyed }
-  - id: winning-ending
-    label: Reached the flight epilogue
-    when: { room: ending }

@@ -7,25 +7,114 @@ edition:
   game_id: freddypharkas
   index_md5: c421287532ed6192f4a55918ee2650a0
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
-  second-act: 250 # The act-break script sends act 2 to room 250.
-  third-act: 630 # Script 26 starts act 3 in room 630.
   showdown: 740 # Script 730 cutAndRun enters room 740, which runs the fight.
   ending: 790 # Script 26 only sends act 5 to the epilogue; 170 then enters the credits.
 variables:
   score: { bank: globals, index: 15 }
+  act: { bank: globals, index: 120 } # Main starts at 1; actBreak.sc branches on the current act.
   previous-room: { bank: globals, index: 12 } # SCI previous room global.
+flags:
+  # Main.sc points: sets the MSB-first award bits starting at global 186.
+  collected-droppings: { bank: globals, index: 194, mask: 0x8000 } # 128, rm220/rm230/rm250
+  collected-shovel: { bank: globals, index: 194, mask: 0x4000 } # 129, rm300
+  unlocked-pharmacy: { bank: globals, index: 194, mask: 0x2000 } # 130, rm250
+  dug-grave: { bank: globals, index: 194, mask: 0x1000 } # 131, rm300
+  collected-snails: { bank: globals, index: 194, mask: 0x0800 } # 132, rm200
+  used-gas-mask: { bank: globals, index: 194, mask: 0x0400 } # 133, ego_19
+  sampled-water: { bank: globals, index: 194, mask: 0x0100 } # 135, rm320
+  roped-water-tower: { bank: globals, index: 194, mask: 0x0020 } # 138, rm320
+  sampled-horse-gas: { bank: globals, index: 195, mask: 0x0100 } # 151, rm220/rm235/rm250
+  made-deflatulizer: { bank: globals, index: 195, mask: 0x0020 } # 154, ChemicalObj
+  treated-horses: { bank: globals, index: 195, mask: 0x0080 } # 152, rm220/rm235/rm250
+  studied-spectrum: { bank: globals, index: 195, mask: 0x0010 } # 155, rm620
+  consulted-willie: { bank: globals, index: 195, mask: 0x0008 } # 156, rm650
+  got-coffee: { bank: globals, index: 195, mask: 0x0004 } # 157, rm660
+  gave-sheriff-coffee: { bank: globals, index: 194, mask: 0x0010 } # 139, rm710
+  gave-sheriff-pie: { bank: globals, index: 194, mask: 0x0008 } # 140, rm710
+  retrieved-pistols: { bank: globals, index: 194, mask: 0x0001 } # 143, rm700
+  retrieved-neckerchief: { bank: globals, index: 195, mask: 0x8000 } # 144, rm700
+  shot-canister-valve: { bank: globals, index: 195, mask: 0x2000 } # 146, rm400
+  sharpened-silver-ear: { bank: globals, index: 195, mask: 0x1000 } # 147, rm730
+  cut-ropes: { bank: globals, index: 195, mask: 0x0800 } # 148, rm730
 milestones:
+  - id: collected-droppings
+    label: Collected a sample of horse droppings
+    when: { flag: collected-droppings }
+  - id: collected-shovel
+    label: Picked up the shovel
+    when: { flag: collected-shovel }
+  - id: unlocked-pharmacy
+    label: Unlocked the pharmacy
+    when: { flag: unlocked-pharmacy }
+  - id: dug-grave
+    label: Dug the grave
+    when: { flag: dug-grave }
+  - id: collected-snails
+    label: Collected the snails
+    when: { flag: collected-snails }
+  - id: used-gas-mask
+    label: Put on the gas mask
+    when: { flag: used-gas-mask }
+  - id: sampled-water
+    label: Collected a water sample
+    when: { flag: sampled-water }
+  - id: roped-water-tower
+    label: Secured the rope to the water tower
+    when: { flag: roped-water-tower }
+  - id: sampled-horse-gas
+    label: Collected a sample of the horses’ gas
+    when: { flag: sampled-horse-gas }
+  - id: made-deflatulizer
+    label: Mixed the Deflatulizer
+    when: { flag: made-deflatulizer }
+  - id: treated-horses
+    label: Treated the horses’ water with the Deflatulizer
+    when: { flag: treated-horses }
+  - id: studied-spectrum
+    label: Read the spectroscope results
+    when: { flag: studied-spectrum }
+  - id: consulted-willie
+    label: Consulted Willie about lost-wax casting
+    when: { flag: consulted-willie }
+  - id: got-coffee
+    label: Got a cup of coffee
+    when: { flag: got-coffee }
+  - id: gave-sheriff-coffee
+    label: Gave the sheriff coffee
+    when: { flag: gave-sheriff-coffee }
+  - id: gave-sheriff-pie
+    label: Gave the sheriff pie
+    when: { flag: gave-sheriff-pie }
+  - id: retrieved-pistols
+    label: Retrieved Freddy’s pistols
+    when: { flag: retrieved-pistols }
+  - id: retrieved-neckerchief
+    label: Retrieved Freddy’s lucky neckerchief
+    when: { flag: retrieved-neckerchief }
+  - id: shot-canister-valve
+    label: Shot the valve off the canister
+    when: { flag: shot-canister-valve }
+  - id: sharpened-silver-ear
+    label: Sharpened the silver ear
+    when: { flag: sharpened-silver-ear }
+  - id: cut-ropes
+    label: Cut the ropes with the sharpened ear
+    when: { flag: cut-ropes }
   - id: second-act
     label: "Reached the next act in Coarsegold"
-    when: { room: second-act }
+    when: { variable: act, one_of: [2, 3, 4, 5] }
   - id: third-act
     label: "Reached the third act"
-    when: { room: third-act }
+    when: { variable: act, one_of: [3, 4, 5] }
+  - id: fourth-act
+    label: Reached the fourth act
+    when: { variable: act, one_of: [4, 5] }
   - id: showdown
     label: "Reached the final showdown"
     when: { room: showdown }
   - id: winning-ending
     label: "Reached the ending credits"
-    when: { all: [{ room: ending }, { variable: previous-room, equals: 170 }] }
+    implies: [showdown]
+    when: { all: [{ room: ending }, { variable: previous-room, equals: 170 }, { variable: act, equals: 5 }] }

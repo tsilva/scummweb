@@ -10,7 +10,7 @@ edition:
   game_id: lsl7
   index_md5: 63fe61e2fa7b019d5e202045e6a29d24
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   ship-boarding: 130
   competition-theater: 240
@@ -33,6 +33,10 @@ milestones:
   - id: sailed-away
     label: Sailed away with Captain Thygh
     when: { room: sail-away }
+  - id: unlocked-bonus-finale
+    label: Unlocked the bonus finale
+    when: { all: [{ room: bonus-credits }, { variable: previous-room, equals: 150 }] }
   - id: winning-ending
     label: Completed the Captain’s competition
+    implies: [sailed-away]
     when: { all: [{ any: [{ room: ordinary-credits }, { room: bonus-credits }] }, { variable: previous-room, equals: 150 }] }

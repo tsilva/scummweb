@@ -8,7 +8,7 @@ edition:
   game_id: kq6
   index_md5: 8ac79732f6f759158cda43e0b8b1988e
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   duel: 180
   castle-throne-room: 740
@@ -20,25 +20,66 @@ rooms:
 variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 }
+flags:
+  # n913.sc stores numbered flags most-significant bit first.
+  reached-winged-ones: { bank: globals, index: 137, mask: 0x2000 } # Flag 2, rm370.
+  oracle-water: { bank: globals, index: 137, mask: 0x1000 } # Flag 3, rm380.
+  picked-white-rose: { bank: globals, index: 145, mask: 0x0040 } # Flag 137, rm510.
+  freed-beast: { bank: globals, index: 144, mask: 0x4000 } # Flag 113, rm540.
+  received-beasts-ring: { bank: globals, index: 139, mask: 0x0002 } # Flag 46, rm540.
+  rescued-participle: { bank: globals, index: 139, mask: 0x0004 } # Flag 45, rm500.
+  played-dem-bones: { bank: globals, index: 143, mask: 0x0800 } # Flag 100, rm640.
+  collected-styx-water: { bank: globals, index: 140, mask: 0x0020 } # Flag 58, rm660.
+  painted-castle-door: { bank: globals, index: 138, mask: 0x0100 } # Flag 23, rm230.
+  solidified-castle-door: { bank: globals, index: 138, mask: 0x0080 } # Flag 24, rm230.
 milestones:
   - id: winged-ones
-    label: "Reached the Winged Ones"
-    when: { room: winged-ones }
+    label: Reached the Winged Ones
+    when: { any: [{ room: winged-ones }, { flag: reached-winged-ones }] }
   - id: oracle
-    label: "Met the Oracle"
-    when: { room: oracle }
+    label: Met the Oracle
+    when: { any: [{ room: oracle }, { flag: oracle-water }] }
+  - id: oracle-water
+    label: Received sacred water from the Oracle
+    when: { flag: oracle-water }
+  - id: picked-white-rose
+    label: Picked a white rose
+    when: { flag: picked-white-rose }
   - id: advanced-to-castle
-    label: "Advanced beyond the island trials"
-    when: { any: [{ room: beast-castle }, { room: underworld-crossing }] }
+    label: Reached the Beast’s garden
+    when: { any: [{ room: beast-castle }, { flag: freed-beast }, { flag: received-beasts-ring }] }
+  - id: freed-beast
+    label: Broke the Beast’s enchantment
+    when: { flag: freed-beast }
+  - id: received-beasts-ring
+    label: Received the Beast’s ring
+    when: { flag: received-beasts-ring }
+  - id: rescued-participle
+    label: Freed the participle from its sentence
+    when: { flag: rescued-participle }
+  - id: played-dem-bones
+    label: Played Dem Bones for the skeletons
+    when: { flag: played-dem-bones }
+  - id: collected-styx-water
+    label: Collected water from the River Styx
+    when: { flag: collected-styx-water }
+  - id: crossed-with-charon
+    label: Paid Charon to cross into the Underworld
+    when: { room: underworld-crossing }
+  - id: painted-castle-door
+    label: Painted a door on the castle wall
+    when: { flag: painted-castle-door }
+  - id: solidified-castle-door
+    label: Cast the spell to make the painted door real
+    implies: [painted-castle-door]
+    when: { flag: solidified-castle-door }
   - id: castle-dungeon
-    label: "Reached the castle dungeon"
+    label: Reached the castle dungeon
     when: { room: castle-dungeon }
   - id: reached-duel
-    label: Reached the duel with Alhazred
+    label: Defeated Alhazred in the duel
     when: { room: duel }
   - id: winning-ending
     label: Reached Alexander and Cassima’s wedding
-    when:
-      all:
-        - { room: castle-throne-room }
-        - { variable: previous-room, equals: 180 }
+    implies: [reached-duel]
+    when: { all: [{ room: castle-throne-room }, { variable: previous-room, equals: 180 }] }

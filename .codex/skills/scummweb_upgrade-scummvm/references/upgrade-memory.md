@@ -105,6 +105,11 @@ tests when porting; do not treat an old implementation shape as the requirement.
   interface initialization. Do not call Sword25's native unpersist routine from
   inside a coroutine or before its services exist. Keep the startup-script marker
   strict and retain the original behavior when no slot is requested.
+- Patch 45 lets startup reads use an in-memory checkpoint without adding a
+  file to the save directory or native cache. Keep save scans on ordinary
+  files and end the override at gameplay. Sword25 needs the checkpoint header
+  for its queued load but must restore the real slot metadata afterward.
+  Delete old persisted checkpoints only on an exact byte match.
 
 ## Keeping this memory useful
 
