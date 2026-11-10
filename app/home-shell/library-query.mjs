@@ -1,8 +1,16 @@
 import { compareGameTitles } from "../../lib/game-title-sort.mjs";
+import { isDemoGame } from "../game-versions.mjs";
 
 const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
+const featuredTargets = ["sky", "queen", "lure", "dreamweb-cd", "sword25"];
 
-export const defaultLibraryQuery = { sort: "name-asc", genre: "" };
+export const defaultLibraryQuery = { sort: "featured", genre: "" };
+
+function featuredRank(game) {
+  if (isDemoGame(game)) return featuredTargets.length + 1;
+  const index = featuredTargets.indexOf(game.target);
+  return index >= 0 ? index : featuredTargets.length;
+}
 
 export function libraryYear(game) {
   return /^\d{4}$/.test(String(game.year)) ? String(game.year) : "Unknown";
@@ -41,6 +49,11 @@ export function queryLibrary(items, query) {
   const [field, direction] = query.sort.split("-");
   const sign = direction === "desc" ? -1 : 1;
   return result.sort((a, b) => {
+    if (field === "featured") {
+      return featuredRank(a.game) - featuredRank(b.game)
+        || collator.compare(a.title, b.title)
+        || collator.compare(a.key, b.key);
+    }
     if (field === "year") {
       const aYear = libraryYear(a.game);
       const bYear = libraryYear(b.game);

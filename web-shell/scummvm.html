@@ -516,6 +516,30 @@ if (isCatalogArchive) {
     });
   };
 }
+if (isLocalGame && !isCatalogArchive && !scummwebLaunchUrl.searchParams.has("continue")) {
+  let available = false;
+  let requested = false;
+  globalThis.__scummwebRequestIntroSkip = () => {
+    if (!available || requested) return false;
+    requested = true;
+    return true;
+  };
+  globalThis.__scummwebUpdateIntroSkip = (next) => {
+    if (available !== next) {
+      available = next;
+      requested = false;
+      postParentMessage({
+        type: "scummvm-intro-availability",
+        source: scummwebMessageSource,
+        href: buildCurrentFrameHref(),
+        available,
+      });
+    }
+    if (!available || !requested) return false;
+    requested = false;
+    return true;
+  };
+}
 const readyStatePriority={idle:-1,pending:0,"runtime-ready":1,"launch-detected":2,"awaiting-frame":3,ready:4};
 const getReadyStatePriority=state=>Object.prototype.hasOwnProperty.call(readyStatePriority,state)?readyStatePriority[state]:-1;
 let readyState={state:target?"pending":"idle",target:target||null,href:buildCurrentFrameHref(),reason:target?"awaiting-launch":"no-target",source:scummwebMessageSource,emittedAt:null};

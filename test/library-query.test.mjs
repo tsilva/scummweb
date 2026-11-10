@@ -3,6 +3,7 @@ import test from "node:test";
 import { readFile } from "node:fs/promises";
 import { libraryItems } from "../app/home-shell/library-items.mjs";
 import { defaultLibraryQuery, libraryFacet, libraryGenre, queryLibrary } from "../app/home-shell/library-query.mjs";
+import { getBundledGameLibrary } from "../lib/catalog.mjs";
 import { getRecognizedGames } from "../app/recognized-games.mjs";
 
 const catalog = [
@@ -13,6 +14,25 @@ const local = { source: { id: "a", name: "Beta.zip" }, title: "Beta", game: { ge
 const remote = { source: { id: "link", url: "https://example.com/game.zip" }, title: "Unidentified", game: { year: "Archive" } };
 const items = libraryItems(catalog, [local, remote]);
 const titles = (query = {}) => queryLibrary(items, { ...defaultLibraryQuery, ...query }).map(({ title }) => title);
+
+test("Featured defaults to five featured games, then full games and demos in name order", async () => {
+  const { games } = JSON.parse(await readFile(new URL("../scummvm-shell/games.json", import.meta.url), "utf8"));
+  const catalog = libraryItems(getBundledGameLibrary({ games }).games, [
+    { source: { id: "full" }, title: "A Local Game", game: { displayTitle: "A Local Game" } },
+    { source: { id: "demo" }, title: "A Local Demo", game: { extra: "DOS Demo" } },
+  ]);
+  const featured = queryLibrary(catalog, defaultLibraryQuery);
+  const alphabetical = catalog.toSorted((a, b) =>
+    a.title.localeCompare(b.title, "en", { numeric: true, sensitivity: "base" }));
+  const first = ["sky", "queen", "lure", "dreamweb-cd", "sword25"];
+  const isDemo = ({ source, title }) => source?.id === "demo" || title.endsWith(" (Demo)");
+
+  assert.deepEqual(featured.slice(0, first.length).map(({ game }) => game.target), first);
+  assert.deepEqual(featured.slice(first.length), [
+    ...alphabetical.filter((item) => !isDemo(item) && !first.includes(item.game.target)),
+    ...alphabetical.filter(isDemo),
+  ]);
+});
 
 test("catalog and imported Space Quest installments sort together in both directions", () => {
   const series = libraryItems([
@@ -32,7 +52,7 @@ test("catalog and imported Space Quest installments sort together in both direct
 
 test("the real catalog keeps numbered and irregularly named series in sequence", () => {
   const games = getRecognizedGames([]);
-  const sorted = queryLibrary(libraryItems(games, []), defaultLibraryQuery);
+  const sorted = queryLibrary(libraryItems(games, []), { ...defaultLibraryQuery, sort: "name-asc" });
   const series = [
     ["agi:sq1", "sci:sq1sci", "agi:sq2", "sci:sq3", "sci:sq4", "sci:sq5", "sci:sq6"],
     ["sci:kq1sci", "agi:kq2", "agi:kq3", "sci:kq4sci", "sci:kq5", "sci:kq6", "sci:kq7"],

@@ -238,7 +238,8 @@ game screen to hold the left mouse button, then drag and lift to release. In
 The Curse of Monkey Island, hold over an interactive object until the action
 menu appears, then move to an action and release. In Teen Agent, left-clicking
 walkable ground moves Mark, and pressing **R** interacts with the object under
-the cursor. Loading screens scroll on short landscape viewports.
+the cursor. On short landscape viewports, swipe up on the loading screen to
+reveal any content below the fold.
 
 Check the launcher, game landing hero, screenshot viewer, compatibility search, settings and player at
 320px and 390px portrait widths, a short landscape viewport and tablet widths.
@@ -295,6 +296,14 @@ Run `node --test test/save-backups.test.mjs` to check backup round-trips,
 cross-device game matching, conflicts, legacy isolation, quota failures and
 archive validation.
 
+### Installing the web app
+
+The home page offers installation when the browser makes its install dialog
+available. Select **Install app** to open that dialog. In Safari, use **Add to
+Home Screen** on iPhone or iPad, or **Add to Dock** on macOS Sonoma and later.
+Closing the invitation remembers the dismissal in the current browser profile.
+The browser's own installation controls remain available.
+
 ### Library and game files
 
 The library checks existing sources during startup. It loads archive extraction
@@ -350,12 +359,19 @@ a native startup option or an original save taken at the first playable scene,
 before puzzle actions.
 On a fresh bundled launch, the action appears after the first game frame and
 disappears when the engine reaches the first playable scene or the selection
-screen that the skip itself preserves. Continue and personal ZIP editions
-keep their own save behavior. Checkpoints live in `scummvm-shell/launcher/skip-intro/` and
+screen that the skip itself preserves. Checkpoints live in `scummvm-shell/launcher/skip-intro/` and
 must remain in Git. `launcher-game-overrides.json` is the rebuild source for each
 entry's `skipIntro` metadata; regenerate `games.json` with
 `node scripts/create_launcher_metadata.mjs scummvm-shell/scummvm.ini scummvm-shell/games.json`,
 then regenerate the runtime asset fingerprints and stage the managed shell.
+
+Imported editions can offer **Skip intro** at native opening skip points in
+SCUMM, GrimE, AGI, SCI, and the Hi-Res Adventure interpreter. The action skips
+the current opening segment in place. If the game exposes another skippable
+segment, the action can appear again. Native menus and player choices stay in
+the game. Continue omits the action, and imported editions keep their own
+saves. Openings that lack an interpreter-level skip point need an
+edition-specific implementation.
 
 The additional checkpoints use the pinned ScummVM runtime and the bundled game
 fingerprints in `data/bundled-game-files.json`. Sołtys starts in its yard, Sfinx
@@ -396,10 +412,13 @@ disappear from the strip. The strip stays hidden until there is play history.
 The included Flight of the Amazon Queen card can show story progress for the
 save that Continue will load. See [Recently Played progress](game-progress.md#recently-played).
 
-The sliders icon beside **Game Library** opens sorting by name, release year,
-genre, or studio and genre filtering for both public and imported games. Select
-**All genres** to remove the filter or **Name: A–Z** to restore alphabetical order.
-Name order keeps numbered series in installment order, treating Roman and Arabic
+The sliders icon beside **Game Library** opens sorting and genre filtering for
+both public and imported games. **Featured** is the default sort. It puts
+Beneath a Steel Sky, Flight of the Amazon Queen, Lure of the Temptress, DreamWeb,
+and Broken Sword 2.5 first, then lists other full games and demos in separate
+A–Z groups by displayed title. Select **All genres** to remove the genre filter,
+or sort the whole list by name, release year, genre, or studio.
+The **Name** options keep numbered series in installment order, treating Roman and Arabic
 numerals alike. Sort-only aliases in `lib/game-title-sort.mjs` place unnumbered
 first games and irregularly named sequels with their series. For example,
 Hugo's House of Horrors appears before Hugo II and Hugo III. These aliases also
@@ -1382,6 +1401,12 @@ staged public files, both web manifests, export fingerprints and
 refresh favicon, manifest and Apple touch icon URLs when artwork changes.
 Existing Android installations can refresh their icons after deployment on the
 browser's update schedule.
+
+The app manifest requests fullscreen on launch. If the browser opens the
+installed app in a standalone window, ScummWEB requests fullscreen on the first
+interaction that grants permission and keeps it active between the catalog and
+player. The browser and operating system control fullscreen availability and
+can exit it at any time.
 
 ### Social preview assets
 

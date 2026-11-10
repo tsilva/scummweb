@@ -26,11 +26,12 @@ const { code: bootCode } = await swc.transform(await readFile(bootUrl, "utf8"), 
   filename: bootUrl.pathname, swcrc: false, configFile: false, module: { type: "commonjs" },
 });
 
-for (const [message, mobile] of [
-  ["This ZIP link returned HTTP 404.", false],
-  ["Could not download the ZIP.", true],
+for (const [message, mobile, installed] of [
+  ["This ZIP link returned HTTP 404.", false, false],
+  ["Could not download the ZIP.", true, false],
+  ["This ZIP link returned HTTP 404.", false, true],
 ]) {
-  test(`Exit remains usable after an intro-enabled game's archive fails: ${message}`, async () => {
+  test(`Exit remains usable after an intro-enabled game's archive fails in ${installed ? "installed" : mobile ? "mobile" : "desktop browser"} mode`, async () => {
     const states = [];
     const effects = [];
     const navigations = [];
@@ -63,7 +64,7 @@ for (const [message, mobile] of [
         if (name.endsWith("/telemetry.mjs")) return telemetry;
         if (name.endsWith("/story-progress.mjs")) return { getStoryProgressRevision };
         if (name.endsWith("/game-progress/index.json")) return { games: {} };
-        if (name === "next/navigation") return { useRouter: () => ({}) };
+        if (name === "next/navigation") return { useRouter: () => ({ replace: (href) => navigations.push(`route ${href}`) }) };
         if (name === "./game-loading-status.mjs") return { gameLoadingStatus };
         if (name === "./game-bucket.mjs") return { readCatalogGameArchive: async () => {
           downloads++;
@@ -74,7 +75,7 @@ for (const [message, mobile] of [
         if (name.endsWith("/useBootState")) return { useBootState: () => ({
           hasBootCompleted: false, hasBootFailed: false, showSkipIntroButton: false,
         }) };
-        if (name.endsWith("/immersive-mode.mjs")) return { isTouchMobileClient: () => mobile };
+        if (name.endsWith("/immersive-mode.mjs")) return { isTouchMobileClient: () => mobile, usesInstalledFullscreenFallback: () => installed };
         if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({
           exitImmersiveMode() { navigations.push("exit immersive mode"); },
         }) };
@@ -106,7 +107,8 @@ for (const [message, mobile] of [
     const controls = children.find(({ type }) => type === Controls);
     assert.equal(controls.props.showExitControl, true);
     await controls.props.onExit();
-    assert.deepEqual(navigations, mobile ? ["/#library"] : ["exit immersive mode", "/#library"]);
+    const destination = installed ? "route /#library" : "/#library";
+    assert.deepEqual(navigations, mobile ? [destination] : ["exit immersive mode", destination]);
   });
 }
 
@@ -225,6 +227,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       } };
       if (name.endsWith("/GamePlayerControls")) return Controls;
       if (name.endsWith("/GameBootOverlay")) return Overlay;
+      if (name.endsWith("/immersive-mode.mjs")) return { usesInstalledFullscreenFallback: () => false };
       if (name.endsWith("/useBootState")) {
         if (!realBoot) return { useBootState: () => ({
           hasBootCompleted: bootCompleted, hasBootFailed: false, showSkipIntroButton: Boolean(skipIntro),
@@ -286,6 +289,12 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       href = frame.contentDocument.URL, target = "sky" } = {}) {
       for (const handler of [...messages]) handler({ origin, source,
         data: { type: "scummvm-gameplay-started", source: "scummweb", target, href } });
+      render();
+    },
+    nativeIntro(available, { origin = window.location.origin, source = frame.contentWindow,
+      href = frame.contentDocument.URL } = {}) {
+      for (const handler of [...messages]) handler({ origin, source,
+        data: { type: "scummvm-intro-availability", source: "scummweb", href, available } });
       render();
     },
     compatibilityWarning(message, { origin = window.location.origin, source = frame.contentWindow, href = frame.contentDocument.URL } = {}) {
@@ -419,6 +428,31 @@ test("Skip intro stays available through the intro and ends on the active game's
   player.gameplayStarted({ href: "/scummvm.html?old=1#sky" });
   assert.equal(player.controls.showSkipIntroAction, true);
   player.gameplayStarted();
+  assert.equal(player.controls.showSkipIntroAction, false);
+  player.unmount();
+});
+
+test("Imported games skip in place only while the active native frame offers the action", () => {
+  const player = pendingArchivePlayer({ catalog: false });
+  player.render();
+  player.nativeIntro(true);
+  assert.equal(player.controls.showSkipIntroAction, false);
+  player.setBootCompleted();
+  assert.equal(player.controls.showSkipIntroAction, true);
+
+  const href = player.frame.contentDocument.URL;
+  let requests = 0;
+  player.frame.contentWindow.__scummwebRequestIntroSkip = () => { requests++; return true; };
+  player.controls.onSkipIntro();
+  player.render();
+  assert.equal(requests, 1);
+  assert.equal(player.frame.contentDocument.URL, href);
+
+  player.nativeIntro(false, { source: {} });
+  player.nativeIntro(false, { origin: "https://elsewhere.test" });
+  player.nativeIntro(false, { href: "/scummvm.html?old=1#sky" });
+  assert.equal(player.controls.showSkipIntroAction, true);
+  player.nativeIntro(false);
   assert.equal(player.controls.showSkipIntroAction, false);
   player.unmount();
 });
