@@ -17,13 +17,23 @@ jobs:
     name: Check committed secrets before production delivery
     uses: ./.github/workflows/secret-scanning.yml
 
-  deliver:
+  sync:
     needs: secrets
     if: github.ref == 'refs/heads/main'
     permissions:
       contents: read
       actions: read
       id-token: write
-    uses: tsilva/.github/.github/workflows/production-delivery.yml@e0c6d64d4fc917ea0e108d27ce8d1a5304aeb3c6
+    uses: tsilva/.github/.github/workflows/production-delivery.yml@48a4449de4ac5f4d5e14343f70fe5fc57bc2cd74
+    with:
+      sync_only: true
     secrets:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+  publish:
+    needs: sync
+    permissions:
+      contents: read
+    uses: ./.github/workflows/prebuilt-delivery.yml
+    with:
+      promote: true
