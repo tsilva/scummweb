@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { enterImmersiveMode, exitImmersiveMode, isGameFullscreen, isMobileClient, isTouchMobileClient, lockOrientation, resumeMobileGameLaunch, usesInstalledFullscreenFallback } from "./immersive-mode.mjs";
+import { enterImmersiveMode, exitImmersiveMode, isGameFullscreen, isMobileClient, isTouchMobileClient, lockOrientation, resumeMobileGameLaunch } from "./immersive-mode.mjs";
 
 const MOBILE_BREAKPOINT_QUERY = "(max-width: 900px)";
 const MOBILE_POINTER_QUERY = "(pointer: coarse)";
@@ -99,7 +99,7 @@ export function useImmersiveMode({ shellRef }) {
       const wasFullscreen = fullscreenActive;
       fullscreenActive = isGameFullscreen(shell);
       setIsFullscreen(fullscreenActive);
-      setCanFullscreen(supportsFullscreen && !(fullscreenActive && usesInstalledFullscreenFallback()));
+      setCanFullscreen(supportsFullscreen);
 
       if (wasFullscreen && !fullscreenActive) void lockOrientation("landscape");
     }

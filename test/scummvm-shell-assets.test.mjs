@@ -26,7 +26,7 @@ test("required shell asset paths are managed and versioned matchers cover expect
   assert.equal(isVersionedAsset("/unmanaged.txt"), false);
 });
 
-test("the app installs as ScummWEB with fullscreen and standard and maskable icons", async () => {
+test("the app installs as ScummWEB in standalone mode with standard and maskable icons", async () => {
   const shell = new URL("../scummvm-shell/", import.meta.url);
   const brand = new URL("../public/brand/web-seo/", import.meta.url);
   const shellManifest = JSON.parse(fs.readFileSync(new URL("manifest.json", shell)));
@@ -34,8 +34,8 @@ test("the app installs as ScummWEB with fullscreen and standard and maskable ico
   for (const manifest of [shellManifest, brandManifest]) {
     assert.equal(manifest.name, "ScummWEB");
     assert.equal(manifest.short_name, "ScummWEB");
+    assert.equal(manifest.display, "standalone");
   }
-  assert.equal(shellManifest.display, "fullscreen");
   assert.deepEqual(shellManifest.icons, brandManifest.icons.map((icon) => ({
     ...icon,
     src: icon.src.replace("android-chrome-", "scummvm-"),

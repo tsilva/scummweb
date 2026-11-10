@@ -22,7 +22,7 @@ import { dispatchGameCommand, dispatchHugoCommand, dispatchSyntheticKeypressSequ
 import { getMobileControlMode } from "./game-player/mobile-controls.mjs";
 import { getGameMenuShortcut } from "./game-player/game-menu.mjs";
 import { observeRemotePlayerInput } from "./game-player/game-mouse.mjs";
-import { enterImmersiveMode, isGameFullscreen, isTouchMobileClient, observeInstalledFullscreenGestures, usesInstalledFullscreenFallback } from "./game-player/immersive-mode.mjs";
+import { enterImmersiveMode, isGameFullscreen, isTouchMobileClient } from "./game-player/immersive-mode.mjs";
 import { observeRemoteBack } from "./game-player/remote-back.mjs";
 import { useBootState } from "./game-player/useBootState";
 import { useImmersiveMode } from "./game-player/useImmersiveMode";
@@ -225,8 +225,7 @@ export default function GameRouteFrame({
     // Keep the landscape lock until the mobile player has left the screen.
     if (!isTouchMobileClient()) await immersiveMode.exitImmersiveMode();
     const destination = getSafeHref(href);
-    // A new document would exit the installed app's Fullscreen API session.
-    if (catalogLaunch && !usesInstalledFullscreenFallback()) window.location.replace(destination);
+    if (catalogLaunch) window.location.replace(destination);
     else router.replace(destination);
   }, [catalogLaunch, router, immersiveMode.exitImmersiveMode]);
   const hasBootFailed = Boolean(archiveError) || bootState.hasBootFailed;
@@ -729,25 +728,6 @@ export default function GameRouteFrame({
   useEffect(() => {
     recordRecentGameTarget(catalogLaunch ? target : game?.recentGameId);
   }, [catalogLaunch, game?.recentGameId, target]);
-
-  useEffect(() => {
-    const iframe = frameRef.current;
-    if (!iframe || !usesInstalledFullscreenFallback()) return;
-
-    let stopObserving;
-    function observeFrame() {
-      stopObserving?.();
-      const frameWindow = iframe.contentDocument?.defaultView;
-      stopObserving = frameWindow && observeInstalledFullscreenGestures(frameWindow);
-    }
-
-    observeFrame();
-    iframe.addEventListener("load", observeFrame);
-    return () => {
-      iframe.removeEventListener("load", observeFrame);
-      stopObserving?.();
-    };
-  }, [frameSrc, archiveError]);
 
   useEffect(() => {
     let focusTimer = 0;

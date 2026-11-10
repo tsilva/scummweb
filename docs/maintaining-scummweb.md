@@ -130,6 +130,8 @@ for both save trees. Quota failure preserves the active tree.
 
 Use **Install app** when offered. In Safari use **Add to Home Screen** on
 iPhone or iPad or **Add to Dock** on macOS Sonoma and later.
+ScummWEB opens in its own window after installation. Fullscreen follows the
+same controls and device-specific rules as play in a browser tab.
 
 ### Library and game files
 
