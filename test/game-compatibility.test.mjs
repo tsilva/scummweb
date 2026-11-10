@@ -54,7 +54,7 @@ test("compatibility records retain edition-specific evidence with distinct upstr
   }
 });
 
-test("runtime warning and failure results are counted, searchable, and rendered independently of untested games", () => {
+test("runtime warning and failure results are counted and searchable separately from untested games", () => {
   const entries = [
     { title: "Same game", gameId: "test:game", edition: "DOS.zip", status: "startup-verified", observation: "Menu rendered." },
     { title: "Same game", gameId: "test:game", edition: "Amiga.zip", status: "startup-failed", issueScope: "scummweb", observation: "Engine aborts with valid resources." },
@@ -68,8 +68,10 @@ test("runtime warning and failure results are counted, searchable, and rendered 
   assert.deepEqual(filterCompatibilityEntries(entries, { query: "resource", status: "startup-failed" }), [entries[1]]);
   assert.deepEqual(filterCompatibilityEntries(entries, { query: "audio", status: "startup-warning" }), [entries[2]]);
   const markdown = renderCompatibilityDocs({ ...data, entries });
-  assert.match(markdown, /## Startup failed[\s\S]*Engine aborts with valid resources\./);
-  assert.match(markdown, /## Startup with warnings[\s\S]*Audio codec unsupported by the engine\./);
+  assert.match(markdown, /checked 3 editions across\s+2 games/);
+  assert.match(markdown, /\| With warnings \| 1 \|/);
+  assert.match(markdown, /\| Failed \| 1 \|/);
+  assert.match(markdown, /1 games? without a recorded check/);
 });
 
 test("public results exclude copy-specific faults while retaining observed startup evidence", () => {
@@ -81,7 +83,7 @@ test("public results exclude copy-specific faults while retaining observed start
   const loom = data.entries.filter((entry) => entry.gameId === "scumm:loom");
   assert.ok(loom.some((entry) => entry.status === "startup-verified"));
   assert.ok(!loom.some((entry) => entry.edition === "Loom (Amiga).zip"));
-  assert.doesNotMatch(renderCompatibilityDocs(data), /English resource index|Spanish resources|SAMPLE\.(AD|OPL)|INSTR\.(AD|OPL)|archive lacks/i);
+  assert.doesNotMatch(JSON.stringify(data.entries), /English resource index|Spanish resources|SAMPLE\.(AD|OPL)|INSTR\.(AD|OPL)|archive lacks/i);
 });
 
 test("normal original game prompts do not create compatibility warnings", () => {
@@ -101,7 +103,7 @@ test("normal original game prompts do not create compatibility warnings", () => 
   ]);
 });
 
-test("a repaired edition keeps its prior failure alongside its current verified result", () => {
+test("the compatibility summary counts the current result without duplicating check history", () => {
   const entry = {
     title: "Repaired", gameId: "test:fixed", edition: "DOS.zip", status: "startup-verified", observation: "First scene rendered.",
     history: [
@@ -110,8 +112,9 @@ test("a repaired edition keeps its prior failure alongside its current verified 
     ],
   };
   const markdown = renderCompatibilityDocs({ ...data, entries: [entry] });
-  assert.match(markdown, /First scene rendered\./);
-  assert.match(markdown, /Earlier check \(2026-11-03\): Startup failed — Engine aborted with valid game data\./);
+  assert.match(markdown, /\| Verified \| 1 \|/);
+  assert.match(markdown, /\| Failed \| 0 \|/);
+  assert.doesNotMatch(markdown, /First scene rendered|Engine aborted with valid game data/);
 });
 
 test("search handles title accents, engine IDs, edition names, and combined status filters", () => {

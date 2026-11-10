@@ -1,204 +1,89 @@
 # Game internals and story progress
 
-ScummWEB owns the game internals maps in `data/game-internals/<game-slug>.yaml`.
-Each map records the edition's native rooms, variables, flags and objects
-alongside story milestone rules that interpret those facts. The
-tracker reads [ScummWEB evaluator telemetry](maintaining-scummweb.md#evaluator-telemetry)
-and reports the completed milestones, total, rounded percentage and furthest
-verified milestone in map order. The percentage measures story progress. A save restore rebuilds
-the result from the restored state.
+[`data/game-internals/`](../data/game-internals/) contains the supported
+game maps. Each YAML file is the source for its edition, native identifiers,
+and milestone count. The tracker reads [evaluator telemetry](maintaining-scummweb.md#evaluator-telemetry)
+and reports verified milestones, total, rounded percentage, and the furthest
+verified milestone in map order. Loading a save recomputes progress from the
+restored state.
 
 ## Authoring maps
 
-Define `schema_version: 1`, `game`, `engine_id`,
-and ordered `milestones` with unique IDs and display labels. In the optional
-`rooms` mapping, assign a native room ID to each room label, such as
-`ending-credits: 110`. Use `when: { room: ending-credits }` to reference it.
-Room rules also accept a numeric `room_id` and an optional `room_ready`
-condition. Three other optional mappings name native game state.
+Define `schema_version: 1`, `game`, `engine_id`, and ordered `milestones`
+with stable IDs and display labels. Edition-specific maps require the native
+game ID and index MD5. Name engine state in the optional maps below.
 
-- `variables` maps labels to `{ bank, index }`. Use
-  `{ variable: ending-outcome, one_of: [1, 3, 4] }` or compare with `equals`.
-- `flags` maps labels to `{ bank, index, mask }`, where the mask selects a
-  single bit. Use `{ flag: escaped-atlantis }` to match a set bit, or add
-  `equals: false` to match a clear bit.
-- `objects` maps labels to numeric object IDs. Use
-  `{ object: airlock-exit, equals: 1 }` to compare the object's state, or use
-  `one_of` to accept several states.
+| Mapping | Definition | Example predicate |
+| --- | --- | --- |
+| `rooms` | Native room ID | `{ room: ending-credits }` |
+| `variables` | `{ bank, index }` or snapshot `{ bank, key }` | `{ variable: ending-outcome, one_of: [1, 3, 4] }` |
+| `flags` | `{ bank, index, mask }` with one bit set | `{ flag: escaped-atlantis, equals: false }` |
+| `objects` | Numeric object ID | `{ object: airlock-exit, equals: 1 }` |
 
-The loader rejects undeclared labels. Rules also accept direct bank predicates,
-`all`, `any`, and references to earlier milestones. A snapshot rule can look
-for a value anywhere in a contiguous bank range, for example
+Rules support numeric `room_id`, `room_ready`, direct bank predicates,
+`all`, `any`, and references to earlier milestones. Snapshot rules can scan
+contiguous ranges, for example
 `{ bank: globals, start: 228, length: 35, mask: 0x0fff, includes: 795 }`.
-The optional mask selects the bits to compare in each slot. Edition-specific maps
-require the native game ID and index MD5. Omit `scoring` to count each
-verified milestone independently. A checklist can name its final, verified
-win rule in `completion_milestone`. It reports no prescribed next objective
-and reports `won: true` and 100% on a verified win, including when the ending
-resets puzzle state. The list and count still include only verified milestones.
-Use `scoring: highest_stage` for maps that represent a sequence of story
-checkpoints, where the furthest verified stage counts the earlier stages.
-For a mixed route, use a checklist. Add `implies: [earlier-id]` to an
-outcome only when reaching it proves the earlier outcome on every route
-that matches the rule. This restores credit for mandatory steps whose
-evidence is transient. It does not change which native conditions match.
-Maps with `telemetry: snapshot` evaluate the latest native snapshot and can
-bind a variable with `{ bank, key }` for a named telemetry bank entry. Use
-markers that persist in saves to retain credit when a player leaves a room.
-Cover each chapter as thoroughly as the native state allows. Trace named
-variables, flags, object states, and room IDs to the scripts that change them.
-Add a checkpoint for each distinct puzzle or story outcome the evidence
-supports. Check the starting values, intermediate values, and later writes
-before selecting a predicate. Combine equivalent outcomes for alternate
-routes into one stage.
-Verify rules against the target edition and test restores,
-alternate paths, and the live ending before adding a completion milestone.
-Keep research drafts outside the map directory. Reuse stable milestone IDs when
-extending a map. Run `node --test test/game-progress.test.mjs` to compile the
-maps, exercise the published tracker and check edition and ending behavior.
+
+- Omit `scoring` for independent checklist outcomes. A verified
+  `completion_milestone` reports `won: true` and 100% even if the ending
+  resets state or a route bypasses optional steps. The completed list and count
+  still reflect verified milestones.
+- Use `scoring: highest_stage` for linear checkpoints where the furthest
+  verified stage proves the earlier stages. Use a checklist for mixed routes.
+- Add `implies: [earlier-id]` only when every matching route proves the
+  earlier outcome. Use saved flags or counters where available. Room and
+  running-script evidence may be transient.
+
+Trace predicates to native scripts and check initial values and later writes.
+Cover distinct outcomes across each chapter. Combine equivalent outcomes
+across alternate routes and use native totals when individual items are
+unavailable. Keep research drafts outside the map directory. Test the matching
+edition, alternate routes, restores, and the real ending before adding a win
+rule. Run `node --test test/game-progress.test.mjs`.
 
 ## Browser tracker
 
-`pnpm prepare` validates and publishes the tracker assets. They are also
-generated by `node scripts/generate-game-progress.mjs`.
+`pnpm prepare` publishes the tracker and index. Run
+`node scripts/generate-game-progress.mjs` to regenerate them separately.
 
-- `GET /game-progress/index.json` lists available maps by launch slug.
-  Its `schema_version: 1` descriptors contain `telemetry` (`snapshot` or
-  `events`), an `edition_specific` flag, and a content-derived `revision`
-  for the map and tracker.
-- Import `/game-progress/v1.mjs?v=<revision>` from the same origin and call
-  `createTracker(slug, revision)` once per game session. A revision mismatch
-  fails explicitly. Each tracker instance owns its own session state.
-- For snapshot maps, call `acceptSnapshot(identity, snapshot)` with a
-  validated ScummWEB telemetry snapshot and its native identity. For event
-  maps, call `accept(engineId, rooms, variableEvents, identity)` with the
-  validated room samples and ordered variable events from the evaluator
-  queues. Have a single owner drain each native event queue.
-- Call `report()` to read the current state and `nextMilestone` to get the
-  next label. A consumer can present just the percentage to avoid spoilers.
+1. Read `/game-progress/index.json`. Its schema v1 lists launch slugs with
+   `telemetry`, `edition_specific`, and content-derived `revision`.
+2. Import `/game-progress/v1.mjs?v=<revision>` from the same origin and call
+   `createTracker(slug, revision)` once per session. A mismatched revision fails.
+3. For snapshot maps, call `acceptSnapshot(identity, snapshot)`. For event
+   maps, call `accept(engineId, rooms, variableEvents, identity)` with ordered
+   events. Assign one consumer to drain each native queue.
+4. Call `report()` for current progress and `nextMilestone` for the next
+   label when provided. Show just the percentage to avoid spoilers.
 
-AgentSCUMM uses these assets for its spectator and run logs. Its stop
-conditions consume raw evaluator telemetry and have their own rules.
+AgentSCUMM uses the tracker in its spectator and run logs. Its stop conditions
+use raw evaluator telemetry.
 
 ## Recently Played
 
-Recently Played cards show a spoiler-free story progress bar for the selected
-copy when ScummWEB has observed matching native state. During play, ScummWEB
-keeps the highest verified percentage for that copy and map revision in the
-current browser. This preserves milestones seen in brief scenes and keeps
-each imported copy separate. Continue still opens the latest eligible save.
-
-For the bundled English DOS CD edition of Flight of the Amazon Queen, the
-selected Continue save takes precedence when it can be decoded. The Queen
-decoder uses the native v0 and v1 serialization layout and the room and
-inventory offsets for the bundled CEM10 release. Other existing saves start
-contributing progress when you resume them. Imported games require a
-fingerprint match. Unsupported editions and copies with no verified progress
-have no bar.
+Cards show the highest verified percentage observed for each copy and map
+revision in the current browser. Continue opens the latest eligible save.
+For the bundled English DOS CD edition of Flight of the Amazon Queen, a
+decodable selected Continue save takes precedence. The decoder covers native
+v0 and v1 saves for CEM10. Other existing saves contribute after you resume.
+Imported editions need a matching fingerprint. Copies without verified
+progress have no bar.
 
 ## Map coverage
 
-| Game | Mapped edition | Milestones |
-| --- | --- | ---: |
-| Flight of the Amazon Queen | English DOS talkie | 37 |
-| Indiana Jones and the Last Crusade | English Amiga | 20 |
-| Indiana Jones and the Fate of Atlantis | English DOS CD | 23 |
-| DreamWeb | English DOS CD | 15 |
-| Beneath a Steel Sky | English DOS CD | 28 |
-| Elvira: Mistress of the Dark | English Amiga floppy | 19 |
-| Elvira II: The Jaws of Cerberus | English Amiga floppy | 63 |
-| King's Quest: Quest for the Crown | English DOS SCI remake 1.000.051 | 23 |
-| King's Quest II: Romancing the Throne | English Amiga 2.0J | 10 |
-| King's Quest III: To Heir Is Human | English Amiga 1.01 | 6 |
-| King's Quest IV: The Perils of Rosella | English Amiga SCI 1.023 | 4 |
-| King's Quest V: Absence Makes the Heart Go Yonder! | English Amiga 1.000.000 | 5 |
-| King's Quest VI: Heir Today, Gone Tomorrow | English DOS CD 1.000.00G | 16 |
-| King's Quest VII: The Princeless Bride | English DOS CD 2.00b | 10 |
-| Police Quest: In Pursuit of the Death Angel | English Amiga AGI 2.0B | 4 |
-| Police Quest: In Pursuit of the Death Angel | English DOS SCI remake 2.000 | 4 |
-| Police Quest 2: The Vengeance | English Amiga 1.024 | 5 |
-| Police Quest 3: The Kindred | English Amiga 1.000 | 4 |
-| Police Quest IV: Open Season | English DOS CD 1.100.000 | 4 |
-| Space Quest: The Sarien Encounter | English Amiga 1.2 | 7 |
-| Space Quest: The Sarien Encounter | English DOS SCI remake 2.000 | 6 |
-| Space Quest II: Chapter II - Vohaul's Revenge | English DOS 2.0F | 7 |
-| Space Quest III: The Pirates of Pestulon | English Amiga 1.0v | 6 |
-| Space Quest IV: Roger Wilco and the Time Rippers | English DOS CD 1.0 | 5 |
-| Space Quest V: The Next Mutation | English DOS 1.04 | 5 |
-| Space Quest 6: Roger Wilco in the Spinal Frontier | English DOS CD 1.0 | 6 |
-| Castle of Dr. Brain | English DOS 1.1 | 4 |
-| Code-Name: Iceman | English Amiga 1.036 | 5 |
-| Conquests of Camelot: The Search for the Grail | English Amiga 1.008.000 | 5 |
-| Conquests of the Longbow: The Legend of Robin Hood | English Amiga 1.000 | 4 |
-| EcoQuest II: Lost Secret of the Rainforest | English DOS 1.000.000 | 4 |
-| EcoQuest: The Search for Cetus | English DOS CD 1.1 | 4 |
-| Freddy Pharkas: Frontier Pharmacist | English DOS CD 1.0 | 4 |
-| Gabriel Knight: Sins of the Fathers | English DOS CD 1.1 | 5 |
-| Gold Rush! | English Amiga 1.01 | 3 |
-| Laura Bow 2: The Dagger of Amon Ra | English DOS CD 1.1 | 3 |
-| Laura Bow: The Colonel's Bequest | English Amiga 1.000.059 | 8 |
-| Leisure Suit Larry 2: Goes Looking for Love (in Several Wrong Places) | English Amiga 1.003 | 3 |
-| Leisure Suit Larry 3: Passionate Patti in Pursuit of the Pulsating Pectorals | English Amiga 1.027 | 3 |
-| Leisure Suit Larry 5: Passionate Patti Does a Little Undercover Work | English Amiga 1.000 | 3 |
-| Leisure Suit Larry 6: Shape Up or Slip Out! | English DOS CD high resolution 1.000.000 | 3 |
-| Leisure Suit Larry in the Land of the Lounge Lizards | English Amiga VGA remake 1.000 | 3 |
-| Manhunter 2: San Francisco | English Amiga 3.06 | 4 |
-| Manhunter: New York | English Amiga 1.06 | 8 |
-| Mixed Up Fairy Tales | English DOS EGA 1.000 | 2 |
-| Mixed-Up Mother Goose | English DOS AGI | 18 |
-| Mixed-Up Mother Goose Deluxe | English/Spanish Windows CD | 18 |
-| Pepper's Adventures in Time | English DOS 1.000 | 3 |
-| Quest for Glory I: So You Want To Be A Hero | English Amiga 1.134 | 21 |
-| Quest for Glory I: So You Want To Be A Hero | English DOS VGA remake 2.000 | 21 |
-| Quest for Glory II: Trial by Fire | English Amiga 1.109 | 19 |
-| Quest for Glory III: Wages of War | English DOS 1.1 | 16 |
-| The Black Cauldron | English DOS AGI 2.10 | 6 |
-| The Island of Dr. Brain | English DOS 1.0 | 3 |
-| Maniac Mansion | English Amiga V2 | 4 |
-| Zak McKracken and the Alien Mindbenders | English Amiga V2 | 4 |
-| Loom | English DOS VGA CD | 5 |
-| The Secret of Monkey Island | English DOS VGA CD | 11 |
-| Monkey Island 2: LeChuck’s Revenge | English Amiga | 10 |
-| Day of the Tentacle | English DOS CD | 17 |
-| Sam & Max Hit the Road | English DOS CD | 13 |
-| Full Throttle | English DOS CD | 6 |
-| The Dig | English DOS CD | 12 |
-| The Curse of Monkey Island | English Windows CD | 6 |
-| Grim Fandango | English Windows CD with the original update | 8 |
-| Escape from Monkey Island | English Windows CD with the original update | 9 |
-| The Beast Within: A Gabriel Knight Mystery | English DOS CD 1.1 | 7 |
-| Leisure Suit Larry 7: Love for Sail! | English DOS CD 1.01 | 5 |
-| Lighthouse: The Dark Being | English CD 1.1 | 8 |
-| Phantasmagoria | English CD 1.100.000 | 8 |
-| Phantasmagoria 2: A Puzzle of Flesh | English CD 001.0.06 | 7 |
-| RAMA | English CD 001.000.000 | 7 |
-| Shivers | English Windows CD 1.02 | 11 |
-| Torin’s Passage | English Windows CD 1.0 | 7 |
-| Mickey’s Space Adventure | English DOS floppy | 10 |
-| Troll’s Tale | English PC-booter floppy | 17 |
-| Winnie the Pooh in the Hundred Acre Wood | English DOS floppy | 11 |
+Use the [map directory](../data/game-internals/) for the exact edition and
+rules, or `/game-progress/index.json` for available launch slugs. Fate of
+Atlantis uses one map for the Team, Wits, and Fists routes. The GrimE maps
+cover imported full Windows releases. Elvira I and II use edition-specific
+checklists and require the complete `gameamiga` fingerprint. Elvira II
+requires a successful ritual for a win. Puzzles outside published engine
+state may only be provable through later outcomes.
 
-Stage maps count milestones up to the furthest confirmed stage, including when
-a route bypasses an earlier checkpoint. Fate of Atlantis uses the same scale
-for the Team, Wits, and Fists routes. Completion checks distinguish the
-winning endings from game-over scenes.
-
-Both Elvira games use checklists. Mistress of the Dark counts each of the six
-keys when recovered, including after the player inserts it into the chest.
-The Jaws of Cerberus tracks each studio's entry and resolution separately, plus
-individual puzzle outcomes such as disabling catacomb tripwires and stopping
-the lab monster after it clears the back-room door. Only the successful final ritual
-counts as a win. Both checklists require the runtime to report the matching full
-`gameamiga` fingerprint and saved state.
-
-The Sierra maps cover major checkpoints and endings for the listed editions,
-including the late SCI32 and PreAGI interpreters. The LucasArts coverage
-includes the original SCUMM and GrimE adventure releases supported by
-ScummWEB. The GrimE maps apply to imported full Windows releases. The bundled
-demo pages retain their own routes.
-
-The rules are traced to game scripts or interpreter logic and exercised with
-synthetic snapshots. A milestone based on a room or a running script can
-only be scored while that evidence is present. Saved flags and counters can
-still be read after moving to another room or restoring a save. Other editions
-may need their own fingerprints and rules.
+For edition matching, use the checksum reported in `identity.index_md5`.
+SCI hashes the complete `resource.map` when present. For numbered SCI32
+volumes, hash the ASCII manifest of matching `resmap.000` through
+`resmap.099` files in volume order. Each line is the lowercase filename,
+a colon, its complete lowercase MD5, and a line feed. The original English
+Windows GrimE games hash the first 5,000 bytes of `vox0001.lab` or
+`artall.m4b`, respectively.
