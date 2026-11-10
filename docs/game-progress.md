@@ -106,7 +106,7 @@ have no bar.
 | DreamWeb | English DOS CD | 15 |
 | Beneath a Steel Sky | English DOS CD | 28 |
 | Elvira: Mistress of the Dark | English Amiga floppy | 19 |
-| Elvira II: The Jaws of Cerberus | English Amiga floppy | 19 |
+| Elvira II: The Jaws of Cerberus | English Amiga floppy | 63 |
 | King's Quest: Quest for the Crown | English DOS SCI remake 1.000.051 | 23 |
 | King's Quest II: Romancing the Throne | English Amiga 2.0J | 10 |
 | King's Quest III: To Heir Is Human | English Amiga 1.01 | 6 |
@@ -185,9 +185,11 @@ winning endings from game-over scenes.
 
 Both Elvira games use checklists. Mistress of the Dark counts each of the six
 keys when recovered, including after the player inserts it into the chest.
-The Jaws of Cerberus counts each studio and saved puzzle outcomes independently.
-Using the lance alone does not count as a win. Both checklists require the
-runtime to report the matching full `gameamiga` fingerprint and saved state.
+The Jaws of Cerberus tracks each studio's entry and resolution separately, plus
+individual puzzle outcomes such as disabling catacomb tripwires and stopping
+the lab monster after it clears the back-room door. Only the successful final ritual
+counts as a win. Both checklists require the runtime to report the matching full
+`gameamiga` fingerprint and saved state.
 
 The Sierra maps cover major checkpoints and endings for the listed editions,
 including the late SCI32 and PreAGI interpreters. The LucasArts coverage

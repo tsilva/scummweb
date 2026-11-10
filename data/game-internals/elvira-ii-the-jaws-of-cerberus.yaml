@@ -34,11 +34,57 @@ flags:
   charged-lab: { bank: flag_words, index: 12, mask: 8 } # Bit 195; 341.
   animated-monster: { bank: flag_words_secondary, index: 5, mask: 32 } # Bit 85; 2210.
   blessed-implements: { bank: flag_words, index: 13, mask: 512 } # Bit 217; 1854.
+  opened-car-trunk: { bank: flag_words_secondary, index: 0, mask: 8 } # 1094 awards this the first time the trunk is open.
+  defeated-costume-room-witch: { bank: flag_words, index: 12, mask: 16384 } # 1820.
+  entered-spider-studio: { bank: flag_words_secondary, index: 0, mask: 32 } # 1151, stage room 9.
+  reached-spider-lift: { bank: flag_words_secondary, index: 4, mask: 2 } # 1318.
+  cleared-underwater-chamber: { bank: flag_words, index: 7, mask: 512 } # 1329, animation 6300.
+  crossed-spider-chasm: { bank: flag_words, index: 5, mask: 2048 } # 1312, thread 686 moves the player across.
+  drew-wallet-from-web: { bank: flag_words_secondary, index: 4, mask: 1 } # 327, Telekinesis on item 532.
+  defeated-scroll-guardian: { bank: flag_words, index: 6, mask: 256 } # 1329, animation 7300.
+  entered-haunted-studio: { bank: flag_words_secondary, index: 0, mask: 64 } # 1088, stage room 685 leads to the house.
+  cleared-kitchen-passage: { bank: flag_words, index: 8, mask: 32 } # 335 opens passage 465/466.
+  rang-locker-bell: { bank: flag_words_secondary, index: 4, mask: 512 } # 1839.
+  uncovered-bedroom-script: { bank: flag_words, index: 12, mask: 8192 } # 1810.
+  survived-succubus: { bank: flag_words, index: 13, mask: 32 } # 1139, successful Courage branch.
+  researched-demonology: { bank: flag_words, index: 13, mask: 2048 } # 1606, unlocks pentacle dialogue.
+  poisoned-tank-fish: { bank: flag_words, index: 11, mask: 16384 } # 1829, checks the meat is poisoned.
+  opened-study-safe: { bank: flag_words_secondary, index: 4, mask: 8 } # 1103, grants credit at safe state 0.
+  defeated-attic-vampire: { bank: flag_words, index: 13, mask: 2 } # VGA animation 9101 after the skylight breaks.
+  installed-lightning-rod: { bank: flag_words_secondary, index: 4, mask: 16 } # 1145, rod 87 present on the roof.
+  monster-was-powered: { bank: flag_words, index: 12, mask: 64 } # 1148, set when the monster is animated.
+  cut-monster-wires: { bank: flag_words, index: 12, mask: 128 } # Verb 685 in subroutine 0.
+  entered-catacombs-studio: { bank: flag_words_secondary, index: 0, mask: 128 } # 1201, first church path.
+  defeated-first-banshee: { bank: flag_words, index: 3, mask: 32 } # 1192–1194, combatants at hit boxes 26–29.
+  defeated-second-banshee: { bank: flag_words, index: 3, mask: 64 } # 1192–1193, combatants at hit boxes 30–33.
+  opened-crypt-slab: { bank: flag_words_secondary, index: 0, mask: 512 } # 1221, first successful opening of the descent.
+  passed-catacomb-sorcerer: { bank: flag_words, index: 5, mask: 64 } # 1293 or 1850, combat or disguise.
+  defeated-death-angel: { bank: flag_words, index: 3, mask: 16 } # 1197.
+  lit-ritual-candles: { bank: flag_words, index: 14, mask: 4 } # 1863 sets, 1864 clears on summoning.
+  # Both sides of each tripwire select the same bit in 1250–1255.
+  # Verb 314 sets that bit and 1288 bypasses the corresponding trap.
+  cut-catacomb-wire-37-57: { bank: flag_words, index: 8, mask: 2048 } # Level 1.
+  cut-catacomb-wire-111-112: { bank: flag_words, index: 7, mask: 128 } # Level 1.
+  cut-catacomb-wire-198-199: { bank: flag_words, index: 8, mask: 4096 } # Level 1.
+  cut-catacomb-wire-593-613: { bank: flag_words, index: 9, mask: 32 } # Level 2.
+  cut-catacomb-wire-622-642: { bank: flag_words, index: 9, mask: 16 } # Level 2.
+  cut-catacomb-wire-874-894: { bank: flag_words, index: 9, mask: 1024 } # Level 3.
+  cut-catacomb-wire-1041-1061: { bank: flag_words, index: 9, mask: 512 } # Level 3.
+  cut-catacomb-wire-1530-1550: { bank: flag_words, index: 9, mask: 16384 } # Level 4.
+  cut-catacomb-wire-1686-1687: { bank: flag_words, index: 9, mask: 32768 } # Level 5.
+  cut-catacomb-wire-1725-1745: { bank: flag_words, index: 10, mask: 1 } # Level 5.
+  cut-catacomb-wire-1895-1896: { bank: flag_words, index: 10, mask: 2 } # Level 5.
+  cut-catacomb-wire-2126-2127: { bank: flag_words, index: 10, mask: 2048 } # Level 6.
+  cut-catacomb-wire-2174-2175: { bank: flag_words, index: 10, mask: 4096 } # Level 6.
 variables:
   gatehouse-window: { bank: item_states, index: 851 } # Verb 227 in subroutine 0.
   gatehouse-security-key: { bank: item_states, index: 802 } # Inserted by verb 500 in subroutine 0.
+  gatehouse-guard: { bank: item_states, index: 803 } # 48 reveals the body and key.
   boiler-room: { bank: item_states, index: 823 } # Fire spell subroutines 313 and 317.
+  meat-locker: { bank: item_states, index: 436 } # 1813 opens the exit (2); 1814 defeats the ghoul (1).
+  lavender-bedroom: { bank: item_states, index: 463 } # 1812 defeats the bedroom ghost.
   attic-skylight: { bank: item_states, index: 367 } # Tuning fork in subroutine 0.
+  lab-monster-position: { bank: vars, index: 166 } # VGA 9305 advances this; 1148 exposes the passage above 5.
   church-pulpit: { bank: item_states, index: 774 } # Verb 500 in subroutine 0.
   church-priest: { bank: item_states, index: 176 } # 338 resurrects; 1856 dispatches to the pentacle.
   # AGOSEngine_Elvira2::printStats reads these four slots directly.
@@ -62,27 +108,157 @@ milestones:
   - id: broke-gatehouse-window
     label: Broke the gatehouse window
     when: { variable: gatehouse-window, one_of: [1, 2] }
+  - id: found-dead-guard
+    label: Found the guard and revealed the security key
+    when: { variable: gatehouse-guard, equals: 1 }
   - id: inserted-security-key
     label: Inserted the gatehouse security key
-    when: { variable: gatehouse-security-key, equals: 1 }
+    when: { variable: gatehouse-security-key, one_of: [1, 2] }
+  - id: opened-main-gate
+    label: Opened the main studio gate
+    when: { variable: gatehouse-security-key, equals: 2 }
+  - id: opened-car-trunk
+    label: Opened the car trunk to access the tools
+    when: { flag: opened-car-trunk }
   - id: thawed-boiler-room
     label: Thawed the boiler room
     when: { variable: boiler-room, equals: 1 }
+  - id: defeated-costume-room-witch
+    label: Defeated the witch in the costume room
+    when: { flag: defeated-costume-room-witch }
+  - id: entered-spider-studio
+    label: Entered the spider caves studio
+    when: { flag: entered-spider-studio }
+  - id: reached-spider-lift
+    label: Reached the spider-cave lift
+    when: { flag: reached-spider-lift }
+  - id: cleared-underwater-chamber
+    label: Defeated the creature in the underwater chamber
+    when: { flag: cleared-underwater-chamber }
+  - id: defeated-scroll-guardian
+    label: Defeated the scorpion guarding the Scroll of Binding
+    when: { flag: defeated-scroll-guardian }
+  - id: crossed-spider-chasm
+    label: Swung across the spider-cave chasm
+    when: { flag: crossed-spider-chasm }
+  - id: drew-wallet-from-web
+    label: Retrieved the wallet from the spider web
+    when: { flag: drew-wallet-from-web }
+  - id: entered-haunted-studio
+    label: Entered the haunted house studio
+    when: { flag: entered-haunted-studio }
+  - id: cleared-kitchen-passage
+    label: Cleared the undead blocking the kitchen passage
+    when: { flag: cleared-kitchen-passage }
+  - id: researched-demonology
+    label: Read the demonology book
+    when: { flag: researched-demonology }
+  - id: rang-locker-bell
+    label: Rang the meat locker bell
+    when: { flag: rang-locker-bell }
+  - id: opened-locker-exit
+    label: Opened the meat locker exit
+    when: { variable: meat-locker, one_of: [1, 2] }
+  - id: defeated-locker-ghoul
+    label: Defeated the meat locker ghoul
+    when: { variable: meat-locker, equals: 1 }
+  - id: uncovered-bedroom-script
+    label: Pulled aside the haunted bedroom sheet
+    when: { flag: uncovered-bedroom-script }
+  - id: defeated-bedroom-ghost
+    label: Defeated the ghost in the haunted bedroom
+    when: { variable: lavender-bedroom, equals: 1 }
+  - id: survived-succubus
+    label: Survived the succubus encounter
+    when: { flag: survived-succubus }
   - id: opened-attic-skylight
     label: Opened the attic skylight with the tuning fork
     when: { variable: attic-skylight, equals: 1 }
+  - id: defeated-attic-vampire
+    label: Defeated the attic vampire with sunlight
+    when: { flag: defeated-attic-vampire }
+  - id: poisoned-tank-fish
+    label: Poisoned the fish in the study
+    when: { flag: poisoned-tank-fish }
   - id: recovered-fish-tank-key
     label: Recovered the key from the fish tank
     when: { flag: recovered-fish-tank-key }
+  - id: opened-study-safe
+    label: Opened the study safe
+    when: { flag: opened-study-safe }
+  - id: installed-lightning-rod
+    label: Set the copper rod on the roof
+    when: { flag: installed-lightning-rod }
   - id: charged-lab
     label: Sent lightning to the laboratory
     when: { flag: charged-lab }
   - id: animated-monster
     label: Brought the laboratory monster to life
     when: { flag: animated-monster }
+  - id: stopped-lab-monster
+    label: Cut the monster's wires after it cleared the back-room door
+    when:
+      all:
+        - { flag: monster-was-powered }
+        - { flag: cut-monster-wires }
+        - { variable: lab-monster-position, one_of: [6, 7, 8] }
+  - id: entered-catacombs-studio
+    label: Entered the catacombs studio
+    when: { flag: entered-catacombs-studio }
   - id: exposed-church-trapdoor
     label: Moved the church pulpit to expose the trapdoor
     when: { variable: church-pulpit, equals: 1 }
+  - id: defeated-first-banshee
+    label: Defeated the banshee on the left in the crypt
+    when: { flag: defeated-first-banshee }
+  - id: defeated-second-banshee
+    label: Defeated the banshee on the right in the crypt
+    when: { flag: defeated-second-banshee }
+  - id: opened-crypt-slab
+    label: Opened the slab leading into the catacombs
+    when: { flag: opened-crypt-slab }
+  - id: cut-catacomb-wire-37-57
+    label: Disarmed tripwire 1 on catacombs level 1
+    when: { flag: cut-catacomb-wire-37-57 }
+  - id: cut-catacomb-wire-111-112
+    label: Disarmed tripwire 2 on catacombs level 1
+    when: { flag: cut-catacomb-wire-111-112 }
+  - id: cut-catacomb-wire-198-199
+    label: Disarmed tripwire 3 on catacombs level 1
+    when: { flag: cut-catacomb-wire-198-199 }
+  - id: cut-catacomb-wire-593-613
+    label: Disarmed tripwire 1 on catacombs level 2
+    when: { flag: cut-catacomb-wire-593-613 }
+  - id: cut-catacomb-wire-622-642
+    label: Disarmed tripwire 2 on catacombs level 2
+    when: { flag: cut-catacomb-wire-622-642 }
+  - id: cut-catacomb-wire-874-894
+    label: Disarmed tripwire 1 on catacombs level 3
+    when: { flag: cut-catacomb-wire-874-894 }
+  - id: cut-catacomb-wire-1041-1061
+    label: Disarmed tripwire 2 on catacombs level 3
+    when: { flag: cut-catacomb-wire-1041-1061 }
+  - id: cut-catacomb-wire-1530-1550
+    label: Disarmed tripwire 1 on catacombs level 4
+    when: { flag: cut-catacomb-wire-1530-1550 }
+  - id: cut-catacomb-wire-1686-1687
+    label: Disarmed tripwire 1 on catacombs level 5
+    when: { flag: cut-catacomb-wire-1686-1687 }
+  - id: cut-catacomb-wire-1725-1745
+    label: Disarmed tripwire 2 on catacombs level 5
+    when: { flag: cut-catacomb-wire-1725-1745 }
+  - id: cut-catacomb-wire-1895-1896
+    label: Disarmed tripwire 3 on catacombs level 5
+    when: { flag: cut-catacomb-wire-1895-1896 }
+  - id: cut-catacomb-wire-2126-2127
+    label: Disarmed tripwire 1 on catacombs level 6
+    when: { flag: cut-catacomb-wire-2126-2127 }
+  - id: cut-catacomb-wire-2174-2175
+    label: Disarmed tripwire 2 on catacombs level 6
+    when: { flag: cut-catacomb-wire-2174-2175 }
+  - id: passed-catacomb-sorcerer
+    label: Got past the catacomb sorcerer
+    when: { flag: passed-catacomb-sorcerer }
   - id: resolved-spider-studio
     label: Resolved the spider caves studio
     when: { flag: spider-studio-resolved }
@@ -92,6 +268,9 @@ milestones:
   - id: resolved-catacombs-studio
     label: Resolved the catacombs studio
     when: { flag: catacombs-studio-resolved }
+  - id: defeated-death-angel
+    label: Defeated the Death Angel in the church
+    when: { flag: defeated-death-angel }
   - id: rescued-elvira
     label: Rescued Elvira
     when: { variable: studio-outcomes, equals: 3 }
@@ -102,10 +281,17 @@ milestones:
     label: Had the priest prepare the pentacle
     when: { variable: church-priest, equals: 2 }
   - id: blessed-implements
-    label: Had the ritual implements blessed
+    label: Had the janitor enchant the ritual implements
     when: { flag: blessed-implements }
+  - id: lit-ritual-candles
+    label: Lit the candles on the pentacle
+    when:
+      all:
+        - { milestone: prepared-pentacle }
+        - { flag: lit-ritual-candles }
   - id: summoned-cerberus
     label: Summoned Cerberus at the car park
+    implies: [lit-ritual-candles]
     when:
       all:
         - { milestone: rescued-elvira }
