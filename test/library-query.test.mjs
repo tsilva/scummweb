@@ -15,9 +15,9 @@ const remote = { source: { id: "link", url: "https://example.com/game.zip" }, ti
 const items = libraryItems(catalog, [local, remote]);
 const titles = (query = {}) => queryLibrary(items, { ...defaultLibraryQuery, ...query }).map(({ title }) => title);
 
-test("Featured defaults to five featured games, then full games and demos in name order", async () => {
+test("Featured keeps the five picks first, Mystery House after Zork, and Hugo installments in order", async () => {
   const { games } = JSON.parse(await readFile(new URL("../scummvm-shell/games.json", import.meta.url), "utf8"));
-  const catalog = libraryItems(getBundledGameLibrary({ games }).games, [
+  const catalog = libraryItems(getRecognizedGames(getBundledGameLibrary({ games }).games), [
     { source: { id: "full" }, title: "A Local Game", game: { displayTitle: "A Local Game" } },
     { source: { id: "demo" }, title: "A Local Demo", game: { extra: "DOS Demo" } },
   ]);
@@ -26,11 +26,19 @@ test("Featured defaults to five featured games, then full games and demos in nam
     a.title.localeCompare(b.title, "en", { numeric: true, sensitivity: "base" }));
   const first = ["sky", "queen", "lure", "dreamweb-cd", "sword25"];
   const isDemo = ({ source, title }) => source?.id === "demo" || title.endsWith(" (Demo)");
+  const targets = featured.map(({ game }) => game.target);
+  const customOrder = ["hires1", "hugo1", "hugo1-demo"];
+  const isCustom = ({ game }) => customOrder.includes(game.target);
 
-  assert.deepEqual(featured.slice(0, first.length).map(({ game }) => game.target), first);
-  assert.deepEqual(featured.slice(first.length), [
-    ...alphabetical.filter((item) => !isDemo(item) && !first.includes(item.game.target)),
-    ...alphabetical.filter(isDemo),
+  assert.deepEqual(targets.slice(0, first.length), first);
+  assert.deepEqual(targets.filter((target) => /^hugo[123](-demo)?$/.test(target)), [
+    "hugo1", "hugo2", "hugo3", "hugo1-demo", "hugo2-demo", "hugo3-demo",
+  ]);
+  assert.deepEqual(targets.filter((target) => /^zork[123]$/.test(target)), ["zork1", "zork2", "zork3"]);
+  assert.equal(featured.findLast((item) => !isDemo(item)).game.target, "hires1");
+  assert.deepEqual(featured.slice(first.length).filter((item) => !isCustom(item)), [
+    ...alphabetical.filter((item) => !isCustom(item) && !isDemo(item) && !first.includes(item.game.target)),
+    ...alphabetical.filter((item) => !isCustom(item) && isDemo(item)),
   ]);
 });
 
