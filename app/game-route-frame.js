@@ -975,6 +975,7 @@ export default function GameRouteFrame({
         game={game}
         hasBootFailed={hasBootFailed}
         showBootOverlay={showBootOverlay}
+        showBundledTags={catalogLaunch}
         title={title}
       />
       <GamePlayerControls

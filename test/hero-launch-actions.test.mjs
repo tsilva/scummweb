@@ -10,6 +10,7 @@ import { getArtworkPlaceholderStyle } from "../app/home-shell/artwork-image-prop
 import * as heroOrder from "../app/home-shell/hero-order.mjs";
 import { chooseGameVersion, formatVersionLabel, readChosenVersion, rememberGameVersion } from "../app/game-versions.mjs";
 import * as initialActions from "../app/home-shell/initial-actions.mjs";
+import { getBundledLaunchTags } from "../app/game-player/launch-tags.mjs";
 
 await swc.loadBindings();
 let savedIdentity = null;
@@ -416,6 +417,7 @@ test("the loading screen reuses the hero's responsive artwork and requests synch
     "../home-shell/decorative-image": DecorativeImage,
     "../home-shell/hero-images.mjs": { getHeroImageProps },
     "../home-shell/shared": { getHeroImageStyle: () => undefined },
+    "./launch-tags.mjs": { getBundledLaunchTags },
   });
   const html = renderToStaticMarkup(GameBootOverlay({ game: { ...game, heroImage: hero }, showBootOverlay: true }));
   assert.match(html, /<source type="image\/avif" srcSet="https:\/\/artwork.example\/artwork\/sky.avif 960w"/);

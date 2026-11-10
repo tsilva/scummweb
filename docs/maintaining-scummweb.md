@@ -215,10 +215,11 @@ mode after frame navigation and when the mobile viewport classification changes.
 **Play**, **Continue** and **Start from beginning** show the game's loading screen
 from the launch gesture, before route loading or ZIP preparation. The loading
 screen fades in over the launcher and reuses the hero's responsive artwork
-through the handoff to the player. The route shows the loading status while
-it resolves the selected game version. Failed ZIP preparation dismisses the launch
-feedback so recovery actions remain available. File-access and locate prompts
-do not show the loading screen.
+through the handoff to the player. For bundled games it shows the play style,
+theme, release year, and platform of the included edition. The route shows the
+loading status while it resolves the selected game version. Failed ZIP preparation
+dismisses the launch feedback so recovery actions remain available. File-access and
+locate prompts do not show the loading screen.
 
 On phones and tablets, the gallery and game detail pages request portrait.
 **Play**, **Continue**, and **Start from beginning** request fullscreen from the
