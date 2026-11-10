@@ -63,7 +63,7 @@ jobs:
               | "NEXT_PUBLIC_SENTRY_DSN=" + .' >> "$GITHUB_ENV"
 
       - name: Restore social cards
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae1 # v5.0.5
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: .next/cache/scummweb-social-cards
           key: scummweb-social-cards-linux-v1-${{ github.sha }}
