@@ -39394,6 +39394,33 @@
       "contentType": "image/webp",
       "width": 640,
       "height": 480
+    },
+    "/launcher/castle-master-demo-courtyard.png": {
+      "key": "artwork/72fa5b08452dc8fe517d0284c530d7afc202b23feabe8e619ad5ca589b661c31/castle-master-demo-courtyard.png",
+      "sha256": "72fa5b08452dc8fe517d0284c530d7afc202b23feabe8e619ad5ca589b661c31",
+      "bytes": 220762,
+      "contentType": "image/png",
+      "width": 1246,
+      "height": 935,
+      "placeholder": "UklGRmQAAABXRUJQVlA4IFgAAADQAQCdASoMAAkAAsBIJZgCdADbacsfQAD9oXl3zncTHYXc2f3QAIFxn+Q2gmjvnreb82+O+Kbk5bTg+YtKdKSLgTH1cwG4NelHruiBBI5s51xogVyi2AAA"
+    },
+    "/launcher/castle-master-demo-gatehouse.webp": {
+      "key": "artwork/c08f7f9cf20b14cb114ce00090fda2def79cc91fa5a64b97d78a81290bf0c2e0/castle-master-demo-gatehouse.webp",
+      "sha256": "c08f7f9cf20b14cb114ce00090fda2def79cc91fa5a64b97d78a81290bf0c2e0",
+      "bytes": 452212,
+      "contentType": "image/webp",
+      "width": 1246,
+      "height": 935,
+      "placeholder": "UklGRlwAAABXRUJQVlA4IFAAAADwAQCdASoMAAkAAsBIJZgCdAEQXMS2e7AA/aHidpr2KjE7q6yMVJLyWdKbl9i+YAKmmsB+1Q4tFXkgm0zFvTKStgGhJpbhauOqveX0TrgAAA=="
+    },
+    "/launcher/castle-master-demo-wilderness.webp": {
+      "key": "artwork/ddd60da8eb0fac4a3dbeaefb1f82bf58157459b6868ff9ee8a97ddc336ffb54e/castle-master-demo-wilderness.webp",
+      "sha256": "ddd60da8eb0fac4a3dbeaefb1f82bf58157459b6868ff9ee8a97ddc336ffb54e",
+      "bytes": 478768,
+      "contentType": "image/webp",
+      "width": 1246,
+      "height": 935,
+      "placeholder": "UklGRlwAAABXRUJQVlA4IFAAAADQAQCdASoMAAkAAsBIJZACdADdPOxZIAD+wfoFTIMW010Z5oB531bAycZLBY8mgnhx19z3X2qxcdk8Oftxe0tZG3Zp2fyNBmZzSpfvB+iYAA=="
     }
   },
   "images": {

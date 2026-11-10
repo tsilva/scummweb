@@ -1043,6 +1043,8 @@ generated covers and heroes and credits the source of each gameplay gallery.
 
 Castle Master (Demo) adds the Freescape engine. Incentive Software's DOS demo
 includes the first level and permits distribution without charge or changes.
+Its gallery shows the wilderness, gatehouse, and courtyard as captured in the
+[English DOS demo running in ScummWEB](https://scummweb.tsilva.eu/castle-master-demo/play).
 Quest for Infamy (Demo) adds the AGS engine and uses the English Windows
 [Demo 2.0 release](https://www.kickstarter.com/projects/1992695780/quest-for-infamy-an-adventure-game-by-infamous-que/posts/401982).
 Its EULA permits redistribution of the publisher's evaluation version. This

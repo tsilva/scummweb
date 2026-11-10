@@ -176,23 +176,19 @@ const artByTarget = {
     summary: "Explore the first level of Castle Eternity and search for your captive twin.",
     heroImage: "/launcher/castle-master-scummweb-generated-2026-11-09-r1-hero.webp",
     posterImage: "/launcher/castle-master-scummweb-generated-2026-11-09-r1-cover.webp",
-    screenshots: ["/launcher/castle-master-dos-shot-1.webp", "/launcher/castle-master-dos-shot-2.webp"],
+    screenshots: [
+      "/launcher/castle-master-demo-wilderness.webp",
+      "/launcher/castle-master-demo-gatehouse.webp",
+      "/launcher/castle-master-demo-courtyard.png",
+    ],
     sources: {
-      screenshots: [
-        {
-          kind: "gameplay",
-          page: "https://www.scummvm.org/screenshots/incentive/freescape:castlemaster/",
-          url: "https://www.scummvm.org/data/screenshots/freescape/castlemaster/castlemaster_dos_en_1_1_full.png",
-          credit: "ScummVM screenshot gallery",
-        },
-        {
-          kind: "gameplay",
-          page: "https://scummweb.tsilva.eu/castle-master-demo/play",
-          edition: "English DOS playable demo",
-          scene: "Outside Castle Eternity",
-          credit: "Original gameplay captured in ScummWEB",
-        },
-      ],
+      screenshots: ["Wilderness outside Castle Eternity", "Gatehouse", "Courtyard"].map((scene) => ({
+        kind: "gameplay",
+        page: "https://scummweb.tsilva.eu/castle-master-demo/play",
+        edition: "English DOS playable demo",
+        scene,
+        credit: "Original gameplay captured in ScummWEB",
+      })),
     },
   },
   "qfi-demo": {
