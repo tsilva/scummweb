@@ -9,13 +9,19 @@ edition:
   game_id: loom
   index_md5: 5d88b9d6a88e6f8e90cded9d01b7f082
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   crystalgard: 56
   shepherds: 25
   forge: 34
   bishop: 43
 flags:
+  helped-shepherd: { bank: scumm_bit_bytes, index: 6, mask: 0x08 } # Bit 51, g069.
+  raised-distaff-range: { bank: scumm_bit_bytes, index: 14, mask: 0x20 } # Bit 117, r028 local 200.
+  met-rustys-ghost: { bank: scumm_bit_bytes, index: 12, mask: 0x80 } # Bit 103, g098.
+  found-hetchels-feather: { bank: scumm_bit_bytes, index: 13, mask: 0x08 } # Bit 107, g105 or r009 local 224.
+  mended-rifts: { bank: scumm_bit_bytes, index: 12, mask: 0x20 } # Bit 101, r046 local 204.
+  returned-to-shore: { bank: scumm_bit_bytes, index: 12, mask: 0x40 } # Bit 102, r047 local 205.
   ending: { bank: scumm_bit_bytes, index: 14, mask: 0x2 }
 milestones:
   - id: crystalgard
@@ -24,12 +30,30 @@ milestones:
   - id: shepherds
     label: Reached the shepherds
     when: { room: shepherds }
+  - id: helped-shepherd
+    label: Met the shepherd Fleece
+    when: { flag: helped-shepherd }
+  - id: raised-distaff-range
+    label: Unlocked a new distaff note in the treasury
+    when: { flag: raised-distaff-range }
   - id: forge
     label: Reached the Forge
     when: { room: forge }
+  - id: met-rustys-ghost
+    label: Found Rusty’s ghost in the Forge
+    when: { flag: met-rustys-ghost }
   - id: bishop
     label: Reached Bishop Mandible
     when: { room: bishop }
+  - id: found-hetchels-feather
+    label: Found the feather Hetchel left behind
+    when: { flag: found-hetchels-feather }
+  - id: mended-rifts
+    label: Mended the four rifts in the Pattern
+    when: { flag: mended-rifts }
+  - id: returned-to-shore
+    label: Reported back at the Shore of Wonder after mending the rifts
+    when: { flag: returned-to-shore }
   - id: winning-ending
     label: Unmade the Loom and rejoined the weavers
     when: { flag: ending }

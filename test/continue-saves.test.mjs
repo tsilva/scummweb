@@ -16,6 +16,7 @@ function shell({ namespace = "", agentSaveScope, resume = false, seed = false, q
     isFile: (mode) => mode === 0x8000,
     readFile: (path) => { const file = files.get(path); if (!file) throw new Error("missing"); return file.bytes; },
     writeFile: (path, text) => files.set(path, { bytes: new TextEncoder().encode(text), modifiedAt: 1 }),
+    unlink: (path) => files.delete(path),
   };
   const messages = [], Module = { arguments: [target] };
   let poll;
@@ -61,13 +62,18 @@ test("agent Continue sees only its own native files and never publishes a librar
   }
 });
 
-test("native-listed checkpoint is excluded, but overwriting it with player progress is resumable", async () => {
+test("legacy intro bytes are removed before native listing without reserving the player's slot", async () => {
   const f = shell({ seed: true, resume: true }); await f.start();
+  assert.deepEqual(f.FS.readdir("/home/web_user/.local/share/scummvm/saves"), [".", ".."]);
   assert.equal(f.scan([[0, "SKY-VM.000"]]), -1);
-  f.put("SKY-VM.000", "player progress", 200);
+  f.put("SKY-VM.000", "playerSave", 200);
   f.Module._scummweb_refresh_saves = () => f.scan([[0, "SKY-VM.000"]]);
   f.poll();
   assert.equal(f.scope.__scummwebSaveStatus.latestSlot, 0);
+
+  const reopened = shell({ files: f.files, resume: true });
+  await reopened.start();
+  assert.equal(reopened.scan([[0, "SKY-VM.000"]]), 0);
 });
 
 test("catalog play and background queries agree on the native target and migrate interrupted writes", async () => {

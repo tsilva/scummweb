@@ -8,7 +8,7 @@ edition:
   game_id: sq5
   index_md5: ea937aae231c4acdaeb249dea8f71060
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   final-sequence: 1060
   farewell: 1041
@@ -18,16 +18,90 @@ rooms:
 variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 }
+flags:
+  # Saved MSB-first puzzle awards in Main.sc, starting at global 183.
+  cleaned-academy-floor: { bank: globals, index: 193, mask: 0x0400 } # 165, rm119
+  took-scrubber: { bank: globals, index: 193, mask: 0x0800 } # 164, rm122
+  took-cones: { bank: globals, index: 193, mask: 0x1000 } # 163, rm122
+  collected-garbage-first: { bank: globals, index: 193, mask: 0x0200 } # 166, sTrashPickUp
+  collected-garbage-second: { bank: globals, index: 193, mask: 0x0100 } # 167, sTrashPickUp
+  rescued-spike: { bank: globals, index: 195, mask: 0x0010 } # 203, upFromThrakus
+  got-oxygen-mask: { bank: globals, index: 194, mask: 0x0200 } # 182, rm250
+  got-oxygen-tank: { bank: globals, index: 194, mask: 0x0002 } # 190, rm250
+  disabled-wd40: { bank: globals, index: 196, mask: 0x4000 } # 209, rm305
+  retrieved-wd40-head: { bank: globals, index: 196, mask: 0x2000 } # 210, rm305
+  removed-tracking-device: { bank: globals, index: 196, mask: 0x0800 } # 212, rm335
+  rescued-cliffy: { bank: globals, index: 195, mask: 0x8000 } # 192, rm801
+  returned-from-rescue: { bank: globals, index: 195, mask: 0x4000 } # 193, rm801
+  cured-beatrice: { bank: globals, index: 194, mask: 0x0008 } # 188, upFromThrakus
+  rescued-eureka-crew: { bank: globals, index: 196, mask: 0x0400 } # 213, rm500
+  installed-cap: { bank: globals, index: 198, mask: 0x0400 } # 245, rm1005
+  entered-grate: { bank: globals, index: 198, mask: 0x0200 } # 246, rm1010
+  restored-pukoids: { bank: globals, index: 198, mask: 0x0040 } # 249, rm1050
 milestones:
+  - id: cleaned-academy-floor
+    label: Finished cleaning the Academy floor
+    when: { flag: cleaned-academy-floor }
+  - id: took-scrubber
+    label: Picked up the floor scrubber
+    when: { flag: took-scrubber }
+  - id: took-cones
+    label: Picked up the safety cones
+    when: { flag: took-cones }
   - id: starcon-departure
     label: "Departed StarCon"
     when: { room: starcon-departure }
+  - id: collected-garbage
+    label: Finished the first garbage pickup
+    when: { flag: collected-garbage-first }
+  - id: collected-second-garbage
+    label: Finished the second garbage pickup
+    when: { flag: collected-garbage-second }
+  - id: rescued-spike
+    label: Recovered Spike
+    when: { flag: rescued-spike }
+  - id: got-oxygen-mask
+    label: Collected the oxygen mask
+    when: { flag: got-oxygen-mask }
+  - id: got-oxygen-tank
+    label: Collected the oxygen tank
+    when: { flag: got-oxygen-tank }
   - id: wd40-ship
     label: "Found WD-40’s ship"
     when: { room: wd40-ship }
+  - id: disabled-wd40
+    label: Disabled WD-40 with the fruit
+    when: { flag: disabled-wd40 }
+  - id: retrieved-wd40-head
+    label: Retrieved WD-40’s head
+    when: { flag: retrieved-wd40-head }
+  - id: removed-tracking-device
+    label: Removed the tracking device
+    when: { flag: removed-tracking-device }
+  - id: rescued-cliffy
+    label: Rescued Cliffy
+    when: { flag: rescued-cliffy }
+  - id: returned-from-rescue
+    label: Returned to the Eureka after rescuing Cliffy
+    when: { flag: returned-from-rescue }
   - id: greeble-security
     label: "Reached the guarded area of the Goliath"
     when: { room: greeble-security }
+  - id: cured-beatrice
+    label: Cured Beatrice
+    when: { flag: cured-beatrice }
+  - id: rescued-eureka-crew
+    label: Brought the Eureka crew aboard
+    when: { flag: rescued-eureka-crew }
+  - id: installed-cap
+    label: Installed the cap in the final sequence
+    when: { flag: installed-cap }
+  - id: entered-grate
+    label: Entered the final access grate
+    when: { flag: entered-grate }
+  - id: restored-pukoids
+    label: Transformed the Pukoids back
+    when: { flag: restored-pukoids }
   - id: reached-final-sequence
     label: Reached the final sequence
     when: { room: final-sequence }

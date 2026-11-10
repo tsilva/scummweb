@@ -8,7 +8,7 @@ edition:
   game_id: sq6
   index_md5: ed5ad1dfcfcae482072634c9a69c6a53
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   epilogue: 540
   ending-credits: 960
@@ -20,19 +20,93 @@ rooms:
 variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 }
+flags:
+  # Saved MSB-first puzzle awards in Main.sc, starting at global 250.
+  won-arcade-game: { bank: globals, index: 281, mask: 0x0008 } # 508, rm210
+  paid-hotel-manager: { bank: globals, index: 279, mask: 0x0080 } # 472, rm240
+  escaped-room: { bank: globals, index: 281, mask: 0x0004 } # 509, rm260
+  deactivated-forcefield: { bank: globals, index: 277, mask: 0x0020 } # 442, rm270
+  took-forcefield-belt: { bank: globals, index: 277, mask: 0x0040 } # 441, rm270
+  knocked-out-endroid: { bank: globals, index: 277, mask: 0x0002 } # 446, rm290
+  swept-up-endroid: { bank: globals, index: 277, mask: 0x0001 } # 447, rm290
+  examined-beacon: { bank: globals, index: 275, mask: 0x0100 } # 407, dataCorderInset
+  got-eva-suit: { bank: globals, index: 275, mask: 0x0002 } # 414, rm480
+  got-eva-helmet: { bank: globals, index: 275, mask: 0x0001 } # 415, rm480
+  set-up-manual: { bank: globals, index: 276, mask: 0x2000 } # 418, rm490
+  prepared-shuttle: { bank: globals, index: 275, mask: 0x0080 } # 408, rm490
+  fed-worm: { bank: globals, index: 280, mask: 0x0800 } # 484, rm670
+  rode-worm: { bank: globals, index: 280, mask: 0x0400 } # 485, rm670
+  dislodged-twinkie: { bank: globals, index: 279, mask: 0x0800 } # 468, rm640
+  cut-through: { bank: globals, index: 280, mask: 0x0010 } # 491, rm740
+  fought-nanites: { bank: globals, index: 280, mask: 0x0008 } # 492, rm740
+  offered-fish: { bank: globals, index: 280, mask: 0x0100 } # 487, rm770
 milestones:
+  - id: won-arcade-game
+    label: Won the arcade match
+    when: { flag: won-arcade-game }
+  - id: paid-hotel-manager
+    label: Paid the hotel manager
+    when: { flag: paid-hotel-manager }
+  - id: escaped-room
+    label: Escaped the room after freeing Roger
+    when: { flag: escaped-room }
+  - id: deactivated-forcefield
+    label: Deactivated the force field
+    when: { flag: deactivated-forcefield }
+  - id: took-forcefield-belt
+    label: Took the force field belt
+    when: { flag: took-forcefield-belt }
   - id: poly-escape
     label: "Reached the rescue scene on Polysorbate LX"
     when: { room: poly-escape }
   - id: funeral
     label: "Reached the funeral"
     when: { room: funeral }
+  - id: knocked-out-endroid
+    label: Broke the endroid apart
+    when: { flag: knocked-out-endroid }
+  - id: swept-up-endroid
+    label: Swept up the endroid pieces
+    when: { flag: swept-up-endroid }
+  - id: examined-beacon
+    label: Checked the beacon on the Datacorder
+    when: { flag: examined-beacon }
+  - id: got-eva-suit
+    label: Collected the EVA suit
+    when: { flag: got-eva-suit }
+  - id: got-eva-helmet
+    label: Collected the EVA helmet
+    when: { flag: got-eva-helmet }
+  - id: set-up-manual
+    label: Set up the shuttle manual
+    when: { flag: set-up-manual }
+  - id: prepared-shuttle
+    label: Prepared the shuttle for launch
+    when: { flag: prepared-shuttle }
   - id: shuttle-launch
     label: "Reached the shuttle launch sequence"
     when: { room: shuttle-launch }
   - id: body-shuttle
     label: "Reached the body’s interior"
     when: { room: body-shuttle }
+  - id: fed-worm
+    label: Fed the worm
+    when: { flag: fed-worm }
+  - id: rode-worm
+    label: Rode the worm
+    when: { flag: rode-worm }
+  - id: dislodged-twinkie
+    label: Dislodged the Twinkie
+    when: { flag: dislodged-twinkie }
+  - id: cut-through
+    label: Cut through the obstruction inside Stellar
+    when: { flag: cut-through }
+  - id: fought-nanites
+    label: Won the nanite fight
+    when: { flag: fought-nanites }
+  - id: offered-fish
+    label: Offered the fish
+    when: { flag: offered-fish }
   - id: reached-epilogue
     label: Reached the epilogue
     when: { room: epilogue }

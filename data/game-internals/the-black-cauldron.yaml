@@ -7,20 +7,40 @@ edition:
   game_id: bc
   index_md5: 0c5a9acbcc7e51127c34818e75806df6
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   hen-wen-refuge: 66 # Logic 66 has the dialogue for safely delivering Hen Wen.
   horned-king-castle: 29 # Logic 29 describes the castle interior and the search for the cauldron.
+  cauldron-chamber: 60 # Horned King’s secret chamber.
   ending: 71 # Logic 0 enters 71 from the success branch; 71 shows the Prydain epilogue.
 variables:
   score: { bank: vars, index: 3 }
+  cauldron-outcome: { bank: vars, index: 35 }
+  limited-ending: { bank: vars, index: 102 } # Logic 0 sets 69 for sacrifice endings (logic 103).
+flags:
+  hen-wen-delivered: { bank: flag_bytes, index: 6, mask: 0x04 } # Flag 50, logic 66.
+  gurgi-sacrificed: { bank: flag_bytes, index: 6, mask: 0x40 } # Flag 54, logic 60.
 milestones:
   - id: hen-wen-refuge
     label: "Reached Hen Wen’s refuge"
-    when: { room: hen-wen-refuge }
+    when: { any: [{ room: hen-wen-refuge }, { flag: hen-wen-delivered }] }
+  - id: delivered-hen-wen
+    label: Delivered Hen Wen to safety
+    when: { flag: hen-wen-delivered }
   - id: horned-king-castle
     label: "Reached the Horned King’s castle"
     when: { room: horned-king-castle }
+  - id: reached-cauldron-chamber
+    label: Reached the Horned King’s cauldron chamber
+    when: { room: cauldron-chamber }
+  - id: neutralized-cauldron
+    label: Neutralized the Black Cauldron
+    when:
+      any:
+        - { flag: gurgi-sacrificed }
+        - { variable: cauldron-outcome, one_of: [1, 2] }
+        - { variable: limited-ending, equals: 69 }
+        - { room: ending }
   - id: winning-ending
     label: "Reached the success epilogue"
     when: { room: ending }

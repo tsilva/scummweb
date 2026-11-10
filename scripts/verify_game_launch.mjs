@@ -507,7 +507,11 @@ async function verifySkipIntroButton(page, frame, game, routeUrl) {
   await waitForGameStartup(page, frame, game, { assertOverlayTextHistory: false });
   await verifyLaunchOverlayAfterStartup(page, game);
 
-  const seededFiles = await page.evaluate(() => {
+  await page.waitForFunction(() => {
+    const iframe = document.querySelector('iframe[data-scummvm-route-frame="true"]');
+    return iframe?.contentWindow?.__scummwebSkipIntroSeedStatus?.finished;
+  });
+  const remainingFiles = await page.evaluate(() => {
     const iframe = document.querySelector('iframe[data-scummvm-route-frame="true"]');
     const skipIntroStatus = iframe?.contentWindow?.__scummwebSkipIntroSeedStatus;
     const fsApi = iframe?.contentWindow?.FS;
@@ -516,21 +520,16 @@ async function verifySkipIntroButton(page, frame, game, routeUrl) {
       return null;
     }
 
-    return {
-      savePath: skipIntroStatus.savePath,
-      files: fsApi.readdir(skipIntroStatus.savePath).filter((entry) => entry !== "." && entry !== ".."),
-    };
+    return fsApi.readdir(skipIntroStatus.savePath).filter((entry) => entry !== "." && entry !== "..");
   });
 
-  if (!seededFiles) {
-    throw new Error(`Skip intro relaunch for ${game.target} did not expose seeded save files.`);
+  if (!remainingFiles || remainingFiles.length) {
+    throw new Error(`Skip intro relaunch for ${game.target} did not clear the temporary checkpoint.`);
   }
 
   for (const saveFile of game.skipIntro.saveFiles) {
-    if (!seededFiles.files.includes(saveFile)) {
-      throw new Error(
-        `Skip intro relaunch for ${game.target} did not seed ${saveFile}. Seeded files: ${JSON.stringify(seededFiles)}`
-      );
+    if (!relaunchState.skipIntroStatus.files.includes(saveFile)) {
+      throw new Error(`Skip intro relaunch for ${game.target} did not stage ${saveFile}.`);
     }
   }
 

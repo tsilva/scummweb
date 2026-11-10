@@ -1,4 +1,5 @@
 # English DOS 1.000.
+# Saved Main.points awards record actions; chapter selection can preload separate state flags.
 # Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/pepper-dos-1.000/src
 schema_version: 1
 game: pepper-s-adventures-in-time
@@ -7,21 +8,211 @@ edition:
   game_id: pepper
   index_md5: 57de1ece1b3544d974a7df6c61e9bd4a
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
-  franklin-workshop: 320 # Script 310 leads to the workshop and Deborah sequence.
-  kite-journey: 360 # Script 350 sRideKiteDownRiver leads to room 360.
   ending: 381 # Script 600 goes to 381 only at act 6; the credits menu takes a separate route.
 variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 } # SCI previous room global.
+flags:
+  connected-pipe: { bank: globals, index: 146, mask: 0x0020 } # 197, rm115
+  installed-pipe: { bank: globals, index: 146, mask: 0x0040 } # 198, rm115/rm120
+  chewed-gum: { bank: globals, index: 146, mask: 0x0010 } # 196, rm115
+  finished-pipe-puzzle: { bank: globals, index: 161, mask: 0x0004 } # 434, rm116
+  dug-hole: { bank: globals, index: 146, mask: 0x0080 } # 199, rm120
+  picked-flowers: { bank: globals, index: 146, mask: 0x0400 } # 202, rm120
+  freed-poor-richard: { bank: globals, index: 147, mask: 0x0040 } # 214, rm214
+  gave-water: { bank: globals, index: 147, mask: 0x0020 } # 213, rm214
+  delivered-kings-letter: { bank: globals, index: 147, mask: 0x0400 } # 218, rm210
+  returned-carpet-bag: { bank: globals, index: 149, mask: 0x0080 } # 247, rm240
+  hammered-nails: { bank: globals, index: 148, mask: 0x8000 } # 239, rm240
+  collected-herbs: { bank: globals, index: 149, mask: 0x0002 } # 241, rm240
+  escaped-hiding-place: { bank: globals, index: 162, mask: 0x4000 } # 462, rm240
+  changed-clothes: { bank: globals, index: 149, mask: 0x1000 } # 252, rm250
+  wrapped-lockjaw: { bank: globals, index: 149, mask: 0x2000 } # 253, rm250
+  gave-marbles: { bank: globals, index: 150, mask: 0x0010 } # 260, rm260
+  gave-cabbage: { bank: globals, index: 151, mask: 0x0002 } # 273, rm260
+  gave-nellie-proverb: { bank: globals, index: 151, mask: 0x0008 } # 275, rm270
+  gave-postal-proverb: { bank: globals, index: 151, mask: 0x0800 } # 283, rm280
+  gave-recipe: { bank: globals, index: 151, mask: 0x8000 } # 287, rm290
+  made-bonbons: { bank: globals, index: 152, mask: 0x0010 } # 292, rm290
+  collected-tin: { bank: globals, index: 152, mask: 0x0100 } # 296, rm300
+  collected-matches: { bank: globals, index: 152, mask: 0x2000 } # 301, rm310
+  collected-schematic: { bank: globals, index: 153, mask: 0x0002 } # 305, rm320
+  collected-special-edition: { bank: globals, index: 153, mask: 0x0100 } # 312, rm320
+  found-letter: { bank: globals, index: 153, mask: 0x4000 } # 318, rm321
+  collected-tomato: { bank: globals, index: 154, mask: 0x0004 } # 322, rm330
+  collected-iron-rod: { bank: globals, index: 154, mask: 0x0010 } # 324, rm330
+  collected-backscratcher: { bank: globals, index: 154, mask: 0x0800 } # 331, rm330
+  collected-paddles: { bank: globals, index: 154, mask: 0x1000 } # 332, rm330
+  collected-lever: { bank: globals, index: 154, mask: 0x2000 } # 333, rm330
+  collected-tub-fan: { bank: globals, index: 154, mask: 0x4000 } # 334, rm330
+  collected-step-stool: { bank: globals, index: 154, mask: 0x8000 } # 335, rm330
+  pushed-key-out: { bank: globals, index: 155, mask: 0x0040 } # 342, rm340
+  used-magnet-on-door: { bank: globals, index: 155, mask: 0x0080 } # 343, rm340
+  unlocked-door: { bank: globals, index: 155, mask: 0x0100 } # 344, rm340
+  distracted-with-bonbons: { bank: globals, index: 155, mask: 0x0800 } # 347, rm350
+  kite-journey: { bank: globals, index: 155, mask: 0x1000 } # 348, rm350
+  took-letter: { bank: globals, index: 156, mask: 0x0080 } # 359, rm370
+  opened-generals-safe: { bank: globals, index: 156, mask: 0x0800 } # 363, rm370
+  opened-safe-as-lockjaw: { bank: globals, index: 156, mask: 0x1000 } # 364, rm371
+  collected-money: { bank: globals, index: 156, mask: 0x2000 } # 365, rm371
+  let-ben-in: { bank: globals, index: 157, mask: 0x0200 } # 377, rm382
+  collected-iron: { bank: globals, index: 157, mask: 0x1000 } # 380, rm390
+  ironed-dress: { bank: globals, index: 157, mask: 0x2000 } # 381, rm390
+  wore-outfit: { bank: globals, index: 158, mask: 0x0002 } # 385, rm390
+  opened-passage: { bank: globals, index: 159, mask: 0x0008 } # 403, rm410
+  gave-ben-clothes: { bank: globals, index: 160, mask: 0x0002 } # 417, rm500
+  gave-bifocals: { bank: globals, index: 160, mask: 0x0100 } # 424, rm530
+  gave-ben-herbs: { bank: globals, index: 160, mask: 0x0800 } # 427, rm530
 milestones:
-  - id: franklin-workshop
-    label: "Reached Franklin’s workshop"
-    when: { room: franklin-workshop }
+  - id: connected-pipe
+    label: Connected the pipe
+    when: { flag: connected-pipe }
+  - id: installed-pipe
+    label: Installed the pipe
+    when: { flag: installed-pipe }
+  - id: chewed-gum
+    label: Had Lockjaw chew the gum
+    when: { flag: chewed-gum }
+  - id: finished-pipe-puzzle
+    label: Finished the pipe puzzle
+    when: { flag: finished-pipe-puzzle }
+  - id: dug-hole
+    label: Had Lockjaw dig
+    when: { flag: dug-hole }
+  - id: picked-flowers
+    label: Picked the flowers
+    when: { flag: picked-flowers }
+  - id: freed-poor-richard
+    label: Freed Poor Richard
+    when: { flag: freed-poor-richard }
+  - id: gave-water
+    label: Gave Poor Richard water
+    when: { flag: gave-water }
+  - id: delivered-kings-letter
+    label: Delivered the King’s letter
+    when: { flag: delivered-kings-letter }
+  - id: returned-carpet-bag
+    label: Gave Richard the carpetbag
+    when: { flag: returned-carpet-bag }
+  - id: hammered-nails
+    label: Hammered in the nails
+    when: { flag: hammered-nails }
+  - id: collected-herbs
+    label: Collected the herbs
+    when: { flag: collected-herbs }
+  - id: escaped-hiding-place
+    label: Escaped with Poor Richard
+    when: { flag: escaped-hiding-place }
+  - id: changed-clothes
+    label: Changed Pepper’s clothes
+    when: { flag: changed-clothes }
+  - id: wrapped-lockjaw
+    label: Wrapped up Lockjaw
+    when: { flag: wrapped-lockjaw }
+  - id: gave-marbles
+    label: Gave the gambler the marbles
+    when: { flag: gave-marbles }
+  - id: gave-cabbage
+    label: Gave the cabbage away
+    when: { flag: gave-cabbage }
+  - id: gave-nellie-proverb
+    label: Gave Nellie her proverb
+    when: { flag: gave-nellie-proverb }
+  - id: gave-postal-proverb
+    label: Delivered the postal proverb
+    when: { flag: gave-postal-proverb }
+  - id: gave-recipe
+    label: Gave Goody the recipe
+    when: { flag: gave-recipe }
+  - id: made-bonbons
+    label: Got Goody to make the bonbons
+    when: { flag: made-bonbons }
+  - id: collected-tin
+    label: Picked up the tin
+    when: { flag: collected-tin }
+  - id: collected-matches
+    label: Collected the matches
+    when: { flag: collected-matches }
+  - id: collected-schematic
+    label: Collected Franklin’s schematic
+    when: { flag: collected-schematic }
+  - id: collected-special-edition
+    label: Collected the special edition
+    when: { flag: collected-special-edition }
+  - id: found-letter
+    label: Found the letter
+    when: { flag: found-letter }
+  - id: collected-tomato
+    label: Collected the tomato
+    when: { flag: collected-tomato }
+  - id: collected-iron-rod
+    label: Collected the iron rod
+    when: { flag: collected-iron-rod }
+  - id: collected-backscratcher
+    label: Collected the backscratcher
+    when: { flag: collected-backscratcher }
+  - id: collected-paddles
+    label: Collected the paddles
+    when: { flag: collected-paddles }
+  - id: collected-lever
+    label: Collected the lever
+    when: { flag: collected-lever }
+  - id: collected-tub-fan
+    label: Collected the tub fan
+    when: { flag: collected-tub-fan }
+  - id: collected-step-stool
+    label: Collected the step stool
+    when: { flag: collected-step-stool }
+  - id: pushed-key-out
+    label: Pushed the key out
+    when: { flag: pushed-key-out }
+  - id: used-magnet-on-door
+    label: Used the magnet on the door
+    when: { flag: used-magnet-on-door }
+  - id: unlocked-door
+    label: Unlocked the door
+    when: { flag: unlocked-door }
+  - id: distracted-with-bonbons
+    label: Distracted the guards with bonbons
+    when: { flag: distracted-with-bonbons }
   - id: kite-journey
-    label: "Took the kite downriver"
-    when: { room: kite-journey }
+    label: Took the kite downriver
+    when: { flag: kite-journey }
+  - id: took-letter
+    label: Had Lockjaw take the letter
+    when: { flag: took-letter }
+  - id: opened-generals-safe
+    label: Opened the general’s safe
+    when: { any: [{ flag: opened-generals-safe }, { flag: opened-safe-as-lockjaw }] }
+  - id: collected-money
+    label: Collected the bag of money
+    when: { flag: collected-money }
+  - id: let-ben-in
+    label: Let Ben in
+    when: { flag: let-ben-in }
+  - id: collected-iron
+    label: Collected the iron
+    when: { flag: collected-iron }
+  - id: ironed-dress
+    label: Ironed the dress
+    when: { flag: ironed-dress }
+  - id: wore-outfit
+    label: Put on the outfit
+    when: { flag: wore-outfit }
+  - id: opened-passage
+    label: Opened the passage
+    when: { flag: opened-passage }
+  - id: gave-ben-clothes
+    label: Gave Ben the clothes
+    when: { flag: gave-ben-clothes }
+  - id: gave-bifocals
+    label: Gave Ben the bifocals
+    when: { flag: gave-bifocals }
+  - id: gave-ben-herbs
+    label: Gave Ben the herbs
+    when: { flag: gave-ben-herbs }
   - id: winning-ending
     label: "Completed the final act"
     when: { all: [{ room: ending }, { variable: previous-room, equals: 600 }] }

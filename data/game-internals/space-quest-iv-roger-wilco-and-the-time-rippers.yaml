@@ -8,7 +8,7 @@ edition:
   game_id: sq4
   index_md5: bd29d3fb8ea4a8ee638edaf40aa5f5ed
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   hologram-and-reunion: 556
   final-return: 540
@@ -18,16 +18,82 @@ rooms:
 variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 }
+flags:
+  # Saved MSB-first puzzle awards in Main.sc, starting at global 114.
+  found-rope: { bank: globals, index: 116, mask: 0x0100 } # 39, rm065
+  caught-bunny: { bank: globals, index: 116, mask: 0x0040 } # 41, bunny
+  found-grate: { bank: globals, index: 116, mask: 0x0020 } # 42, rm050
+  collected-slug-slime: { bank: globals, index: 118, mask: 0x0020 } # 74, sewer
+  escaped-slug: { bank: globals, index: 116, mask: 0x0002 } # 46, rm341
+  got-oxygen-tank: { bank: globals, index: 116, mask: 0x0001 } # 47, rm335
+  threw-oxygen-tank: { bank: globals, index: 117, mask: 0x8000 } # 48, rm350
+  searched-body: { bank: globals, index: 117, mask: 0x0100 } # 55, rm297
+  entered-time-pod: { bank: globals, index: 117, mask: 0x0080 } # 56, rm530
+  made-time-jump: { bank: globals, index: 119, mask: 0x0200 } # 86, rm531
+  accessed-computer: { bank: globals, index: 119, mask: 0x0080 } # 88, rm514
+  opened-computer-door: { bank: globals, index: 119, mask: 0x0040 } # 89, rm514
+  used-droid-icon: { bank: globals, index: 117, mask: 0x0004 } # 61, rm544
+  used-brain-icon: { bank: globals, index: 117, mask: 0x0002 } # 62, rm544
+  installed-diskette: { bank: globals, index: 118, mask: 0x4000 } # 65, rm150
+  rescued-son: { bank: globals, index: 118, mask: 0x0001 } # 79, rm150
 milestones:
   - id: xenon-landing
     label: "Reached future Xenon"
     when: { room: xenon-landing }
+  - id: found-rope
+    label: Picked up the rope
+    when: { flag: found-rope }
+  - id: caught-bunny
+    label: Caught the mechanical bunny
+    when: { flag: caught-bunny }
+  - id: found-grate
+    label: Opened the sewer grate
+    when: { flag: found-grate }
+  - id: collected-slug-slime
+    label: Collected the sewer slime
+    when: { flag: collected-slug-slime }
   - id: sequel-police-ship
     label: "Reached the Sequel Police ship"
     when: { room: sequel-police-ship }
+  - id: escaped-slug
+    label: Escaped the sewer creature
+    when: { flag: escaped-slug }
+  - id: got-oxygen-tank
+    label: Got the oxygen tank
+    when: { flag: got-oxygen-tank }
+  - id: threw-oxygen-tank
+    label: Threw the oxygen tank to escape
+    when: { flag: threw-oxygen-tank }
+  - id: searched-body
+    label: Searched the body
+    when: { flag: searched-body }
+  - id: entered-time-pod
+    label: Entered the Sequel Police time pod
+    when: { flag: entered-time-pod }
+  - id: made-time-jump
+    label: Made a jump with the time pod
+    when: { flag: made-time-jump }
   - id: time-pod
     label: "Entered the time pod"
     when: { room: time-pod }
+  - id: accessed-computer
+    label: Entered the supercomputer complex
+    when: { flag: accessed-computer }
+  - id: opened-computer-door
+    label: Opened the supercomputer security door
+    when: { flag: opened-computer-door }
+  - id: used-droid-icon
+    label: Used the droid icon in the computer
+    when: { flag: used-droid-icon }
+  - id: used-brain-icon
+    label: Used the brain icon in the computer
+    when: { flag: used-brain-icon }
+  - id: installed-diskette
+    label: Inserted the diskette in the drive
+    when: { flag: installed-diskette }
+  - id: rescued-son
+    label: Rescued Roger’s son
+    when: { flag: rescued-son }
   - id: reunited-with-son
     label: Reunited with Roger Jr.
     when:

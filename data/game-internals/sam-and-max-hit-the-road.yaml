@@ -8,26 +8,78 @@ edition:
   game_id: samnmax
   index_md5: d917f311a448e3cc7239c31bddb00dd2
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: end-credits
 rooms:
   carnival: 16
   bumpusville: 47
   bigfoot-convention: 55
   forest-ending: 86
   end-credits: 90
+flags:
+  # Global script 72 sets this after the carnival case briefing.
+  carnival-briefing: { bank: scumm_bit_bytes, index: 4, mask: 0x01 }
+  # Room 25 script 205 records the completed path over the driving range.
+  crossed-driving-range: { bank: scumm_bit_bytes, index: 8, mask: 0x02 }
+  # Room 42 script 203 marks the first Bumpusville arrival.
+  arrived-bumpusville: { bank: scumm_bit_bytes, index: 20, mask: 0x04 }
+  # Room 48 script 208 sets this after the virtual reality key sequence.
+  won-vr-key: { bank: scumm_bit_bytes, index: 27, mask: 0x02 }
+  # Room 47 entry sets this after the security system is disabled.
+  freed-bruno: { bank: scumm_bit_bytes, index: 9, mask: 0x08 }
+  # Room 56 script 204 records the kitchen confrontation.
+  locked-bumpus-in-freezer: { bank: scumm_bit_bytes, index: 27, mask: 0x04 }
+objects:
+  # Room 54 object 515 marks each totem after accepting its item.
+  tornado-totem: 522
+  tooth-totem: 523
+  vegetable-totem: 524
+  hair-totem: 525
+  forest-restored: 839
 milestones:
   - id: carnival
     label: Reached the Kushman carnival
-    when: { room: carnival }
+    when: { any: [{ room: carnival }, { flag: carnival-briefing }] }
+  - id: crossed-driving-range
+    label: Made a path across the driving range
+    when: { flag: crossed-driving-range }
   - id: bumpusville
     label: Reached Bumpusville
-    when: { room: bumpusville }
+    when: { any: [{ room: bumpusville }, { flag: arrived-bumpusville }] }
+  - id: won-vr-key
+    label: Won the key in virtual reality
+    implies: [bumpusville]
+    when: { flag: won-vr-key }
+  - id: freed-bruno
+    label: Freed Bruno and Trixie from Bumpusville
+    implies: [won-vr-key]
+    when: { flag: freed-bruno }
   - id: bigfoot-convention
     label: Reached the Bigfoot convention
     when: { room: bigfoot-convention }
+  - id: locked-bumpus-in-freezer
+    label: Locked Conroy and Lee-Harvey in the freezer
+    implies: [bigfoot-convention]
+    when: { flag: locked-bumpus-in-freezer }
+  - id: solved-tornado-totem
+    label: Made the snow globe offering for the tornado totem
+    implies: [bigfoot-convention]
+    when: { object: tornado-totem, equals: 1 }
+  - id: solved-tooth-totem
+    label: Made the dinosaur tooth offering
+    implies: [bigfoot-convention]
+    when: { object: tooth-totem, equals: 1 }
+  - id: solved-vegetable-totem
+    label: Made the vegetable likeness offering
+    implies: [bigfoot-convention]
+    when: { object: vegetable-totem, equals: 1 }
+  - id: solved-hair-totem
+    label: Made the hair tonic offering
+    implies: [bigfoot-convention]
+    when: { object: hair-totem, equals: 1 }
   - id: forest-ending
     label: Helped the Bigfoots restore their forest
-    when: { room: forest-ending }
+    implies: [solved-tornado-totem, solved-tooth-totem, solved-vegetable-totem, solved-hair-totem]
+    when: { object: forest-restored, equals: 1 }
   - id: end-credits
     label: Closed the Bigfoot case
-    when: { room: end-credits }
+    when: { all: [{ room: end-credits }, { object: forest-restored, equals: 1 }] }

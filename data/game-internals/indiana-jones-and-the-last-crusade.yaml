@@ -1,3 +1,4 @@
+# English Amiga/EGA. Native evidence: edition scripts and room directory.
 schema_version: 1
 game: indiana-jones-and-the-last-crusade
 engine_id: scumm
@@ -5,7 +6,7 @@ edition:
   game_id: indy3
   # English Amiga/EGA index.
   index_md5: 9c0fee288ad564a7d25ec3e841810d79
-scoring: highest_stage
+completion_milestone: surviving-ending
 rooms:
   castle-brunwald: 12
   castle-interior: 13
@@ -18,6 +19,7 @@ rooms:
 variables:
   ending-outcome: { bank: scumm_vars, index: 99 }
 flags:
+  diary-read: { bank: scumm_vars, index: 94, mask: 0x1000 } # Room 2 object 68.
   diary-unwrapped: { bank: scumm_vars, index: 93, mask: 0x8000 }
   catacombs-entered: { bank: scumm_vars, index: 94, mask: 0x0040 }
   catacomb-wooden-door-opened: { bank: scumm_vars, index: 95, mask: 0x0200 }
@@ -39,6 +41,10 @@ milestones:
   - id: opened-grail-diary
     label: Unwrapped Henry's Grail Diary
     when: { flag: diary-unwrapped }
+  - id: read-grail-diary
+    label: Read Henry’s Grail Diary
+    implies: [opened-grail-diary]
+    when: { flag: diary-read }
   - id: departed-barnett
     label: Left Barnett for the Grail search
     when: { flag: left-barnett }
@@ -54,6 +60,7 @@ milestones:
     when: { flag: catacombs-entered }
   - id: opened-catacomb-wooden-door
     label: Unlatched the wooden door in the catacombs
+    implies: [venice-catacombs]
     when: { flag: catacomb-wooden-door-opened }
   - id: read-venice-shield
     label: Read the Iskenderun clue on the shield
@@ -72,6 +79,7 @@ milestones:
     when: { flag: found-henry }
   - id: henry-out-of-cell
     label: Got Henry out of his cell
+    implies: [found-henry]
     when: { flag: henry-out-of-cell }
   - id: reached-airport
     label: Reached the airport after leaving the castle
@@ -105,12 +113,14 @@ milestones:
         - { flag: true-grail-chosen }
   - id: true-grail
     label: Chose the true Grail and returned to Henry
+    implies: [chose-grail]
     when:
       all:
         - { flag: true-grail-chosen }
         - { flag: henry-healing-started }
   - id: surviving-ending
     label: Reached the ending with Indy alive
+    implies: [true-grail]
     when:
       all:
         - { room: ending-credits }

@@ -5,7 +5,7 @@ edition:
   game_id: atlantis
   # English DOS CD index (ATLANTIS.000).
   index_md5: 182344899c2e2998fca0bebcd82aa81a
-scoring: highest_stage
+completion_milestone: escaped-atlantis
 rooms:
   atlantis-canal: 46
   atlantis-middle-ring: 94
@@ -46,6 +46,8 @@ flags:
   costa-first-collection: { bank: scumm_bit_bytes, index: 27, mask: 0x02 }
   costa-second-collection: { bank: scumm_bit_bytes, index: 27, mask: 0x04 }
   costa-third-collection: { bank: scumm_bit_bytes, index: 27, mask: 0x08 }
+  # Room 97 scripts 202/205 record either successful way of defeating Fritz.
+  defeated-prison-guard: { bank: scumm_bit_bytes, index: 67, mask: 0x10 }
   # Bit 647 records the first approach from the lava maze.
   approached-colossus: { bank: scumm_bit_bytes, index: 80, mask: 0x80 }
 objects:
@@ -62,6 +64,7 @@ milestones:
     when: { flag: visited-new-york-theater }
   - id: sophias-lecture
     label: Saw Sophia's lecture on Atlantis
+    implies: [new-york-theater]
     when: { flag: saw-sophias-lecture }
   - id: thawed-iceland-eel
     label: Thawed the eel figurine in Iceland
@@ -119,9 +122,12 @@ milestones:
     when: { room: atlantis-airlock }
   - id: opened-airlock
     label: Opened the Atlantis airlock exit
+    implies: [atlantis]
     when: { object: airlock-exit, equals: 1 }
   - id: outer-ring
     label: Entered the Atlantis outer ring
+    # The first entrance, from room 48, requires the open exit.
+    implies: [opened-airlock]
     when:
       any:
         - { room: outer-ring-northwest }
@@ -130,9 +136,16 @@ milestones:
         - { room: outer-ring-southeast }
   - id: restored-orichalcum-factory
     label: Installed the orichalcum factory wheel
-    when: { object: orichalcum-factory-wheel, equals: 1 }
+    # Room 36 script 213 animates the installed wheel between states 1 and 2.
+    implies: [outer-ring]
+    when: { object: orichalcum-factory-wheel, one_of: [1, 2] }
+  - id: defeated-prison-guard
+    label: Defeated the guard in the Atlantis prison
+    implies: [outer-ring]
+    when: { flag: defeated-prison-guard }
   - id: canal
     label: Reached the Atlantis canal
+    implies: [outer-ring]
     when: { room: atlantis-canal }
   - id: middle-ring
     label: Reached the Atlantis middle ring
@@ -142,6 +155,7 @@ milestones:
     when: { room: inner-ring-lava-maze }
   - id: colossus
     label: Reached the Colossus chamber
+    implies: [inner-ring]
     when:
       any:
         - { room: god-machine-entrance }
@@ -150,6 +164,7 @@ milestones:
         - { flag: approached-colossus }
   - id: loaded-god-machine-disks
     label: Mounted all three disks on the god machine
+    implies: [colossus]
     when: { object: god-machine-spindle, equals: 3 }
   - id: escaped-atlantis
     label: Escaped Atlantis and reached the ending

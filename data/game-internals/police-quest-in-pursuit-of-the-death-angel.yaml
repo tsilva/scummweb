@@ -8,15 +8,16 @@ edition:
   game_id: pq1
   index_md5: cfa93e5f2aa7378bddd10ad6746a2ffb
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   bains-trial: 103
   award-ceremony: 104
 variables:
   score: { bank: vars, index: 3 }
   max-score: { bank: vars, index: 7 }
+  award-stage: { bank: vars, index: 139 } # Logic 104 announces the key at stage 4.
 flags:
-  found-trunk-evidence: { bank: flag_bytes, index: 12, mask: 64 } # Flag 102. Logic 9 opens the trunk and reveals the bag.
+  found-trunk-evidence: { bank: flag_bytes, index: 9, mask: 0x80 } # Flag 79. Logic 9 sets it on first entry and awards points.
   found-school-evidence: { bank: flag_bytes, index: 9, mask: 4 } # Flag 74. Logic 56 sets this when the search reveals the bag and identification card.
 milestones:
   - id: found-trunk-evidence
@@ -28,6 +29,13 @@ milestones:
   - id: reached-bains-trial
     label: Reached the trial of Jessie Bains
     when: { room: bains-trial }
+  - id: reached-award-ceremony
+    label: Reached the courthouse award ceremony
+    implies: [reached-bains-trial]
+    when: { room: award-ceremony }
   - id: winning-ending
     label: Received the key to the city
-    when: { room: award-ceremony }
+    when:
+      all:
+        - { room: award-ceremony }
+        - { variable: award-stage, one_of: [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18] }

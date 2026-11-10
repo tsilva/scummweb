@@ -7,7 +7,7 @@ edition:
   game_id: camelot
   index_md5: 1c48034c50d35cf5088460c300baa94d
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   flower-room: 31 # Script 30 gotoFlowerRoom enters 31.
   sea-voyage: 34 # Script 197 board enters the voyage in room 34.
@@ -16,20 +16,49 @@ rooms:
   ending: 92 # Script 80 takeOffHoser concludes the encounter and enters the ending.
 variables:
   score: { bank: globals, index: 15 }
+  gawaine-rescue: { bank: globals, index: 200 } # rm15 marks 2 only after sending Gawaine home.
   previous-room: { bank: globals, index: 12 } # SCI previous room global.
+flags:
+  # SetFlag in Main.sc uses MSB-first words starting at global 250.
+  broke-gawaine-shackles: { bank: globals, index: 252, mask: 0x1000 } # 35, rm15
+  solved-ice-riddles: { bank: globals, index: 254, mask: 0x1000 } # 67, Rm32
+  rescued-launcelot: { bank: globals, index: 254, mask: 0x4000 } # 65, Rm30
+  rescued-galahad: { bank: globals, index: 262, mask: 0x0002 } # 206, Rm70
+  exposed-temple-stairs: { bank: globals, index: 260, mask: 0x0002 } # 174, Rm72
 milestones:
+  - id: broke-gawaine-shackles
+    label: Broke Gawaine’s shackles
+    when: { flag: broke-gawaine-shackles }
+  - id: rescued-gawaine
+    label: Sent Gawaine safely back to Camelot
+    when: { variable: gawaine-rescue, equals: 2 }
   - id: flower-room
     label: "Reached the Ice Palace’s flower room"
     when: { room: flower-room }
+  - id: solved-ice-riddles
+    label: Solved the Ice Palace riddles
+    implies: [flower-room]
+    when: { flag: solved-ice-riddles }
+  - id: rescued-launcelot
+    label: Freed Launcelot from the Ice Palace
+    implies: [flower-room]
+    when: { flag: rescued-launcelot }
   - id: sea-voyage
     label: "Set sail on the Grail quest"
     when: { room: sea-voyage }
+  - id: rescued-galahad
+    label: Gave the healing elixir to Galahad
+    when: { flag: rescued-galahad }
+  - id: exposed-temple-stairs
+    label: Uncovered the stairs to the temple
+    when: { flag: exposed-temple-stairs }
   - id: temple
     label: "Reached the temple passage"
-    when: { room: temple }
+    when: { any: [{ room: temple }, { variable: previous-room, equals: 76 }] }
   - id: grail-chamber
     label: "Reached the Grail chamber"
     when: { room: grail-chamber }
   - id: winning-ending
     label: "Returned with the Grail"
+    implies: [grail-chamber, rescued-gawaine, rescued-launcelot, rescued-galahad]
     when: { all: [{ room: ending }, { variable: previous-room, equals: 80 }] }

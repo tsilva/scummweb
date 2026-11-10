@@ -7,7 +7,7 @@ edition:
   game_id: lsl3
   index_md5: 7e83b1e9ed446cae20bdd743bee457e2
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   patti-departure: 482 # Room 482 contains the sequence where Patti falls asleep.
   studio: 640 # Room 640 has Roberta and the scene involving both characters.
@@ -15,6 +15,28 @@ rooms:
 variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 } # SCI previous room global.
+flags:
+  # Saved MSB-first Main flag array.
+  picked-orchids: { bank: globals, index: 114, mask: 0x0200 } # 54, rm235
+  made-lei: { bank: globals, index: 114, mask: 0x0100 } # 55, LeiingScript
+  drank-sink-water: { bank: globals, index: 111, mask: 0x0100 } # 7, rm253
+  filled-bottle: { bank: globals, index: 113, mask: 0x0020 } # 42, rm253
+  wore-grass-skirt: { bank: globals, index: 114, mask: 0x0010 } # 59, rm253
+  got-tan: { bank: globals, index: 111, mask: 0x0010 } # 11, rm260
+  met-suzi: { bank: globals, index: 113, mask: 0x0004 } # 45, rm324
+  opened-spa-door: { bank: globals, index: 113, mask: 0x4000 } # 33, rm360
+  opened-locker: { bank: globals, index: 113, mask: 0x0080 } # 40, rm370
+  put-on-sweats: { bank: globals, index: 113, mask: 0x0040 } # 41, rm370
+  used-deodorant: { bank: globals, index: 114, mask: 0x0008 } # 60, rm370
+  dried-off: { bank: globals, index: 113, mask: 0x0100 } # 39, rm370
+  tipped-maitre-d: { bank: globals, index: 113, mask: 0x0001 } # 47, rm420
+  met-cherri: { bank: globals, index: 114, mask: 0x8000 } # 48, CherriScript
+  met-patti: { bank: globals, index: 111, mask: 0x0040 } # 9, rm450
+  used-penthouse-key: { bank: globals, index: 114, mask: 0x0001 } # 63, rm470
+  drank-river-water: { bank: globals, index: 111, mask: 0x0200 } # 6, rm510/rm520
+  picked-garden-plants: { bank: globals, index: 114, mask: 0x0020 } # 58, rm530
+  loaded-slingshot: { bank: globals, index: 115, mask: 0x0008 } # 76, rm540
+  stopped-porky: { bank: globals, index: 115, mask: 0x0800 } # 68, rm540
 milestones:
   - id: patti-departure
     label: "Reached the scene where Larry and Patti part"
@@ -22,6 +44,66 @@ milestones:
   - id: studio
     label: "Reached the Sierra film set"
     when: { room: studio }
+  - id: picked-orchids
+    label: Picked the orchids
+    when: { flag: picked-orchids }
+  - id: made-lei
+    label: Made a lei from orchids
+    when: { flag: made-lei }
+  - id: drank-sink-water
+    label: Drank water from the sink
+    when: { flag: drank-sink-water }
+  - id: filled-bottle
+    label: Filled the bottle with water
+    when: { flag: filled-bottle }
+  - id: wore-grass-skirt
+    label: Put on the grass skirt
+    when: { flag: wore-grass-skirt }
+  - id: got-tan
+    label: Got a tan
+    when: { flag: got-tan }
+  - id: met-suzi
+    label: Completed Suzi’s sequence
+    when: { flag: met-suzi }
+  - id: opened-spa-door
+    label: Opened the spa door with Suzi’s card
+    when: { flag: opened-spa-door }
+  - id: opened-locker
+    label: Opened locker 69
+    when: { flag: opened-locker }
+  - id: put-on-sweats
+    label: Put on the sweats
+    when: { flag: put-on-sweats }
+  - id: used-deodorant
+    label: Used the deodorant
+    when: { flag: used-deodorant }
+  - id: dried-off
+    label: Dried off with the towel
+    when: { flag: dried-off }
+  - id: tipped-maitre-d
+    label: Tipped the maître d’
+    when: { flag: tipped-maitre-d }
+  - id: met-cherri
+    label: Met Cherri Tart
+    when: { flag: met-cherri }
+  - id: met-patti
+    label: Met Patti
+    when: { flag: met-patti }
+  - id: used-penthouse-key
+    label: Used Patti’s penthouse key
+    when: { flag: used-penthouse-key }
+  - id: drank-river-water
+    label: Drank river water
+    when: { flag: drank-river-water }
+  - id: picked-garden-plants
+    label: Picked plants from Dr. Nonookee’s garden
+    when: { flag: picked-garden-plants }
+  - id: loaded-slingshot
+    label: Loaded the improvised slingshot
+    when: { flag: loaded-slingshot }
+  - id: stopped-porky
+    label: Stopped the wild boar
+    when: { flag: stopped-porky }
   - id: winning-ending
     label: "Reached the victory scene"
     when: { all: [{ room: ending }, { variable: previous-room, equals: 640 }] }

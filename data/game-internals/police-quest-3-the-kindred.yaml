@@ -8,7 +8,7 @@ edition:
   game_id: pq3
   index_md5: 5bd82ed17c41e596df61782f850c6ade
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   final-confrontation: 57
   police-station: 33
@@ -17,6 +17,32 @@ rooms:
 variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 }
+flags:
+  # Saved LSB-first SetScore awards in Main.sc.
+  collected-flashlight: { bank: globals, index: 171, mask: 0x0004 } # 98, rm016
+  submitted-form: { bank: globals, index: 171, mask: 0x0040 } # 102, rm024
+  threw-keys: { bank: globals, index: 171, mask: 0x0200 } # 105, rm028
+  used-baton: { bank: globals, index: 171, mask: 0x0400 } # 106, rm028
+  cuffed-suspect: { bank: globals, index: 171, mask: 0x0800 } # 107, rm028
+  frisked-suspect: { bank: globals, index: 171, mask: 0x1000 } # 108, rm013/rm027
+  cuffed-driver: { bank: globals, index: 172, mask: 0x0100 } # 120, drunk
+  searched-driver: { bank: globals, index: 172, mask: 0x0200 } # 121, drunk
+  jailed-suspect: { bank: globals, index: 172, mask: 0x0800 } # 123, rm013
+  collected-music-box: { bank: globals, index: 173, mask: 0x0002 } # 129, rm040
+  collected-rose: { bank: globals, index: 173, mask: 0x0040 } # 134, rm037
+  gave-music-box: { bank: globals, index: 173, mask: 0x0080 } # 135, rm036
+  gave-rose: { bank: globals, index: 173, mask: 0x0100 } # 136, rm036
+  identified-from-wallet: { bank: globals, index: 173, mask: 0x0800 } # 139, rm041
+  collected-tracker: { bank: globals, index: 174, mask: 0x0002 } # 145, rm024
+  placed-flares: { bank: globals, index: 175, mask: 0x0200 } # 169, crash
+  fixed-toilet: { bank: globals, index: 175, mask: 0x2000 } # 173, rm015
+  reported-partner: { bank: globals, index: 175, mask: 0x8000 } # 175, rm021
+  gave-locket: { bank: globals, index: 176, mask: 0x0004 } # 178, rm036
+  recovered-picture: { bank: globals, index: 176, mask: 0x0008 } # 179, rm052
+  collected-blood: { bank: globals, index: 176, mask: 0x0010 } # 180, rm053
+  collected-printout: { bank: globals, index: 176, mask: 0x0080 } # 183, rm054
+  used-remote: { bank: globals, index: 177, mask: 0x0002 } # 193, rm056
+  stopped-final-attacker: { bank: globals, index: 177, mask: 0x0004 } # 194, rm057
 milestones:
   - id: hospital
     label: "Reached Marie at the hospital"
@@ -27,6 +53,78 @@ milestones:
   - id: reached-confrontation
     label: Reached the final confrontation
     when: { room: final-confrontation }
+  - id: collected-flashlight
+    label: Collected the flashlight
+    when: { flag: collected-flashlight }
+  - id: submitted-form
+    label: Submitted the form
+    when: { flag: submitted-form }
+  - id: threw-keys
+    label: Threw the keys
+    when: { flag: threw-keys }
+  - id: used-baton
+    label: Used the baton to subdue the suspect
+    when: { flag: used-baton }
+  - id: cuffed-suspect
+    label: Handcuffed the suspect
+    when: { flag: cuffed-suspect }
+  - id: frisked-suspect
+    label: Frisked the suspect
+    when: { flag: frisked-suspect }
+  - id: cuffed-driver
+    label: Handcuffed the drunk driver
+    when: { flag: cuffed-driver }
+  - id: searched-driver
+    label: Searched the drunk driver
+    when: { flag: searched-driver }
+  - id: jailed-suspect
+    label: Put the suspect in jail
+    when: { flag: jailed-suspect }
+  - id: collected-music-box
+    label: Collected the music box
+    when: { flag: collected-music-box }
+  - id: collected-rose
+    label: Collected the rose
+    when: { flag: collected-rose }
+  - id: gave-music-box
+    label: Gave Marie the music box
+    when: { flag: gave-music-box }
+  - id: gave-rose
+    label: Gave Marie the rose
+    when: { flag: gave-rose }
+  - id: identified-from-wallet
+    label: Identified the person using the wallet
+    when: { flag: identified-from-wallet }
+  - id: collected-tracker
+    label: Collected the tracker
+    when: { flag: collected-tracker }
+  - id: placed-flares
+    label: Placed the flares at the crash site
+    when: { flag: placed-flares }
+  - id: fixed-toilet
+    label: Got the janitor to fix the toilet
+    when: { flag: fixed-toilet }
+  - id: reported-partner
+    label: Reported Pat’s conduct
+    when: { flag: reported-partner }
+  - id: gave-locket
+    label: Gave Marie the locket
+    when: { flag: gave-locket }
+  - id: recovered-picture
+    label: Recovered the picture
+    when: { flag: recovered-picture }
+  - id: collected-blood
+    label: Collected the blood sample
+    when: { flag: collected-blood }
+  - id: collected-printout
+    label: Collected the printout
+    when: { flag: collected-printout }
+  - id: used-remote
+    label: Used the remote
+    when: { flag: used-remote }
+  - id: stopped-final-attacker
+    label: Stopped the final attacker
+    when: { flag: stopped-final-attacker }
   - id: winning-ending
     label: Solved the murder case and returned to the station
     when:

@@ -4,8 +4,8 @@ ScummWEB owns the game internals maps in `data/game-internals/<game-slug>.yaml`.
 Each map records the edition's native rooms, variables, flags and objects
 alongside story milestone rules that interpret those facts. The
 tracker reads [ScummWEB evaluator telemetry](maintaining-scummweb.md#evaluator-telemetry)
-and reports the completed milestones, total, rounded percentage and latest
-milestone. The percentage measures story progress. A save restore rebuilds
+and reports the completed milestones, total, rounded percentage and furthest
+verified milestone in map order. The percentage measures story progress. A save restore rebuilds
 the result from the restored state.
 
 ## Authoring maps
@@ -27,11 +27,15 @@ condition. Three other optional mappings name native game state.
   `one_of` to accept several states.
 
 The loader rejects undeclared labels. Rules also accept direct bank predicates,
-`all`, `any`, and references to earlier milestones. Edition-specific maps
+`all`, `any`, and references to earlier milestones. A snapshot rule can look
+for a value anywhere in a contiguous bank range, for example
+`{ bank: globals, start: 228, length: 35, mask: 0x0fff, includes: 795 }`.
+The optional mask selects the bits to compare in each slot. Edition-specific maps
 require the native game ID and index MD5. Omit `scoring` to count each
 verified milestone independently. A checklist can name its final, verified
 win rule in `completion_milestone`. It reports no prescribed next objective
-and reaches 100% on a win, including when the ending resets puzzle state.
+and reports `won: true` and 100% on a verified win, including when the ending
+resets puzzle state. The list and count still include only verified milestones.
 Use `scoring: highest_stage` for maps that represent a sequence of story
 checkpoints, where the furthest verified stage counts the earlier stages.
 For a mixed route, use a checklist. Add `implies: [earlier-id]` to an
@@ -96,20 +100,20 @@ have no bar.
 
 | Game | Mapped edition | Milestones |
 | --- | --- | ---: |
-| Flight of the Amazon Queen | English DOS talkie | 24 |
+| Flight of the Amazon Queen | English DOS talkie | 37 |
 | Indiana Jones and the Last Crusade | English Amiga | 20 |
-| Indiana Jones and the Fate of Atlantis | English DOS CD | 22 |
+| Indiana Jones and the Fate of Atlantis | English DOS CD | 23 |
 | DreamWeb | English DOS CD | 15 |
 | Beneath a Steel Sky | English DOS CD | 28 |
 | Elvira: Mistress of the Dark | English Amiga floppy | 19 |
 | Elvira II: The Jaws of Cerberus | English Amiga floppy | 19 |
-| King's Quest: Quest for the Crown | English DOS SCI remake 1.000.051 | 4 |
-| King's Quest II: Romancing the Throne | English Amiga 2.0J | 8 |
+| King's Quest: Quest for the Crown | English DOS SCI remake 1.000.051 | 23 |
+| King's Quest II: Romancing the Throne | English Amiga 2.0J | 10 |
 | King's Quest III: To Heir Is Human | English Amiga 1.01 | 6 |
 | King's Quest IV: The Perils of Rosella | English Amiga SCI 1.023 | 4 |
 | King's Quest V: Absence Makes the Heart Go Yonder! | English Amiga 1.000.000 | 5 |
-| King's Quest VI: Heir Today, Gone Tomorrow | English DOS CD 1.000.00G | 6 |
-| King's Quest VII: The Princeless Bride | English DOS CD 2.00b | 7 |
+| King's Quest VI: Heir Today, Gone Tomorrow | English DOS CD 1.000.00G | 16 |
+| King's Quest VII: The Princeless Bride | English DOS CD 2.00b | 10 |
 | Police Quest: In Pursuit of the Death Angel | English Amiga AGI 2.0B | 4 |
 | Police Quest: In Pursuit of the Death Angel | English DOS SCI remake 2.000 | 4 |
 | Police Quest 2: The Vengeance | English Amiga 1.024 | 5 |
@@ -139,32 +143,32 @@ have no bar.
 | Leisure Suit Larry 6: Shape Up or Slip Out! | English DOS CD high resolution 1.000.000 | 3 |
 | Leisure Suit Larry in the Land of the Lounge Lizards | English Amiga VGA remake 1.000 | 3 |
 | Manhunter 2: San Francisco | English Amiga 3.06 | 4 |
-| Manhunter: New York | English Amiga 1.06 | 5 |
+| Manhunter: New York | English Amiga 1.06 | 8 |
 | Mixed Up Fairy Tales | English DOS EGA 1.000 | 2 |
-| Mixed-Up Mother Goose | English DOS AGI | 3 |
-| Mixed-Up Mother Goose Deluxe | English/Spanish Windows CD | 3 |
+| Mixed-Up Mother Goose | English DOS AGI | 18 |
+| Mixed-Up Mother Goose Deluxe | English/Spanish Windows CD | 18 |
 | Pepper's Adventures in Time | English DOS 1.000 | 3 |
-| Quest for Glory I: So You Want To Be A Hero | English Amiga 1.134 | 3 |
-| Quest for Glory I: So You Want To Be A Hero | English DOS VGA remake 2.000 | 3 |
-| Quest for Glory II: Trial by Fire | English Amiga 1.109 | 4 |
-| Quest for Glory III: Wages of War | English DOS 1.1 | 4 |
-| The Black Cauldron | English DOS AGI 2.10 | 3 |
+| Quest for Glory I: So You Want To Be A Hero | English Amiga 1.134 | 21 |
+| Quest for Glory I: So You Want To Be A Hero | English DOS VGA remake 2.000 | 21 |
+| Quest for Glory II: Trial by Fire | English Amiga 1.109 | 19 |
+| Quest for Glory III: Wages of War | English DOS 1.1 | 16 |
+| The Black Cauldron | English DOS AGI 2.10 | 6 |
 | The Island of Dr. Brain | English DOS 1.0 | 3 |
 | Maniac Mansion | English Amiga V2 | 4 |
 | Zak McKracken and the Alien Mindbenders | English Amiga V2 | 4 |
 | Loom | English DOS VGA CD | 5 |
-| The Secret of Monkey Island | English DOS VGA CD | 4 |
-| Monkey Island 2: LeChuck’s Revenge | English Amiga | 5 |
-| Day of the Tentacle | English DOS CD | 4 |
-| Sam & Max Hit the Road | English DOS CD | 5 |
+| The Secret of Monkey Island | English DOS VGA CD | 11 |
+| Monkey Island 2: LeChuck’s Revenge | English Amiga | 10 |
+| Day of the Tentacle | English DOS CD | 17 |
+| Sam & Max Hit the Road | English DOS CD | 13 |
 | Full Throttle | English DOS CD | 6 |
-| The Dig | English DOS CD | 5 |
+| The Dig | English DOS CD | 12 |
 | The Curse of Monkey Island | English Windows CD | 6 |
 | Grim Fandango | English Windows CD with the original update | 8 |
 | Escape from Monkey Island | English Windows CD with the original update | 9 |
 | The Beast Within: A Gabriel Knight Mystery | English DOS CD 1.1 | 7 |
 | Leisure Suit Larry 7: Love for Sail! | English DOS CD 1.01 | 5 |
-| Lighthouse: The Dark Being | English CD 1.1 | 5 |
+| Lighthouse: The Dark Being | English CD 1.1 | 8 |
 | Phantasmagoria | English CD 1.100.000 | 8 |
 | Phantasmagoria 2: A Puzzle of Flesh | English CD 001.0.06 | 7 |
 | RAMA | English CD 001.000.000 | 7 |

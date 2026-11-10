@@ -7,7 +7,7 @@ edition:
   game_id: lsl1sci
   index_md5: 7d115a9e27dc8ac71e8d5ef33d589bd5
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   wedding: 410 # Room 410 describes the ceremony with Fawn.
   penthouse: 380 # The flying-doll scene in room 360 goes to room 380.
@@ -15,6 +15,29 @@ rooms:
 variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 } # SCI previous room global.
+flags:
+  # Saved MSB-first Points awards in Main.sc.
+  ordered-drink: { bank: globals, index: 114, mask: 0x0800 } # 52, rm110
+  gave-drunk-a-drink: { bank: globals, index: 115, mask: 0x0010 } # 75, rm120
+  collected-rose: { bank: globals, index: 115, mask: 0x0002 } # 78, rm120
+  collected-ring: { bank: globals, index: 115, mask: 0x0004 } # 77, rm130
+  read-graffiti: { bank: globals, index: 116, mask: 0x2000 } # 82, rm130
+  collected-candy: { bank: globals, index: 115, mask: 0x4000 } # 65, rm150
+  collected-hammer: { bank: globals, index: 115, mask: 0x1000 } # 67, rm160
+  collected-pills: { bank: globals, index: 115, mask: 0x0040 } # 73, rm160
+  bought-apple: { bank: globals, index: 114, mask: 0x1000 } # 51, rm300
+  collected-pass: { bank: globals, index: 115, mask: 0x0080 } # 72, rm330
+  went-to-penthouse: { bank: globals, index: 114, mask: 0x2000 } # 50, rm350
+  finished-with-faith: { bank: globals, index: 115, mask: 0x8000 } # 64, rm355
+  opened-closet: { bank: globals, index: 115, mask: 0x2000 } # 66, rm370
+  inflated-doll: { bank: globals, index: 116, mask: 0x4000 } # 81, rm370
+  collected-ribbon: { bank: globals, index: 115, mask: 0x0008 } # 76, rm390
+  married-fawn: { bank: globals, index: 115, mask: 0x0100 } # 71, rm410
+  collected-knife: { bank: globals, index: 115, mask: 0x0800 } # 68, rm500
+  called-phone-service: { bank: globals, index: 114, mask: 0x0040 } # 57, rm505
+  called-ajax: { bank: globals, index: 114, mask: 0x0100 } # 55, rm505
+  called-sierra: { bank: globals, index: 114, mask: 0x0080 } # 56, rm505
+  collected-wine: { bank: globals, index: 115, mask: 0x0001 } # 79, rm510
 milestones:
   - id: wedding
     label: "Reached the wedding scene"
@@ -22,6 +45,69 @@ milestones:
   - id: penthouse
     label: "Reached the penthouse"
     when: { room: penthouse }
+  - id: ordered-drink
+    label: Ordered a drink at Lefty’s
+    when: { flag: ordered-drink }
+  - id: gave-drunk-a-drink
+    label: Gave the drunk a drink
+    when: { flag: gave-drunk-a-drink }
+  - id: collected-rose
+    label: Collected the rose
+    when: { flag: collected-rose }
+  - id: collected-ring
+    label: Collected the ring
+    when: { flag: collected-ring }
+  - id: read-graffiti
+    label: Read the graffiti
+    when: { flag: read-graffiti }
+  - id: collected-candy
+    label: Collected the candy
+    when: { flag: collected-candy }
+  - id: collected-hammer
+    label: Collected the hammer
+    when: { flag: collected-hammer }
+  - id: collected-pills
+    label: Collected the pills
+    when: { flag: collected-pills }
+  - id: bought-apple
+    label: Bought the apple
+    when: { flag: bought-apple }
+  - id: collected-pass
+    label: Collected the pass
+    when: { flag: collected-pass }
+  - id: went-to-penthouse
+    label: Took the elevator to the penthouse
+    when: { flag: went-to-penthouse }
+  - id: finished-with-faith
+    label: Finished talking to Faith
+    when: { flag: finished-with-faith }
+  - id: opened-closet
+    label: Opened the penthouse closet
+    when: { flag: opened-closet }
+  - id: inflated-doll
+    label: Inflated the doll
+    when: { flag: inflated-doll }
+  - id: collected-ribbon
+    label: Collected the ribbon
+    when: { flag: collected-ribbon }
+  - id: married-fawn
+    label: Married Fawn
+    when: { flag: married-fawn }
+  - id: collected-knife
+    label: Collected the knife
+    when: { flag: collected-knife }
+  - id: called-phone-service
+    label: Called the phone service
+    when: { flag: called-phone-service }
+  - id: called-ajax
+    label: Called Ajax
+    when: { flag: called-ajax }
+  - id: called-sierra
+    label: Called Sierra
+    when: { flag: called-sierra }
+  - id: collected-wine
+    label: Collected the wine
+    when: { flag: collected-wine }
   - id: winning-ending
     label: "Reached the victory scene"
     when: { all: [{ room: ending }, { variable: previous-room, equals: 375 }] }

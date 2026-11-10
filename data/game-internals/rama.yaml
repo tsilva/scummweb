@@ -9,7 +9,7 @@ edition:
   game_id: rama
   index_md5: a60b844ff796efb2a1afac2893104fab
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   hub-camp: 1000
   museum-entry: 4004
@@ -20,6 +20,16 @@ rooms:
   credits: 1300
 variables:
   previous-room: { bank: globals, index: 12 }
+flags:
+  # Saved MSB-first n1111 flags. Debug starts in whereTo seed some other state.
+  opened-first-locker: { bank: globals, index: 305, mask: 0x0200 } # 86, hubCampLocker1
+  opened-fourth-locker: { bank: globals, index: 305, mask: 0x0080 } # 88, hubCampLocker4
+  collected-knife: { bank: globals, index: 305, mask: 0x0400 } # 85, hubCampLocker1
+  activated-london-elevator: { bank: globals, index: 307, mask: 0x4000 } # 113, london_Elevator_Cntrl
+  played-avian-film: { bank: globals, index: 308, mask: 0x1000 } # 131, avianTheatre1
+  opened-avian-shaft: { bank: globals, index: 309, mask: 0x0200 } # 150, avianShaft
+  searched-uniform: { bank: globals, index: 312, mask: 0x0100 } # 199, octoCisUniformCU
+  defused-bomb: { bank: globals, index: 309, mask: 0x0004 } # 157, HumanBombCloseUp
 milestones:
   - id: reached-hub-camp
     label: Reached the hub camp
@@ -39,6 +49,30 @@ milestones:
   - id: found-bomb
     label: Reached the bomb controls
     when: { room: bomb }
+  - id: opened-first-locker
+    label: Opened the first hub locker
+    when: { flag: opened-first-locker }
+  - id: opened-fourth-locker
+    label: Opened the fourth hub locker
+    when: { flag: opened-fourth-locker }
+  - id: collected-knife
+    label: Collected the knife
+    when: { flag: collected-knife }
+  - id: activated-london-elevator
+    label: Activated the London elevator
+    when: { flag: activated-london-elevator }
+  - id: played-avian-film
+    label: Played the Avian theater film
+    when: { flag: played-avian-film }
+  - id: opened-avian-shaft
+    label: Opened the Avian shaft ledges
+    when: { flag: opened-avian-shaft }
+  - id: searched-uniform
+    label: Searched the Octospider uniform
+    when: { flag: searched-uniform }
+  - id: defused-bomb
+    label: Defused the bomb
+    when: { flag: defused-bomb }
   - id: winning-ending
     label: Defused the bomb and reached the finale
-    when: { all: [{ room: credits }, { variable: previous-room, equals: 5209 }] }
+    when: { all: [{ room: credits }, { variable: previous-room, equals: 5209 }, { flag: defused-bomb }] }

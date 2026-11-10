@@ -7,7 +7,7 @@ edition:
   game_id: longbow
   index_md5: 52944b462328558070bf02fb371618e2
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   tunnels: 562 # Script 561 includes the tunnel transition to 562.
   fulk-rescue: 600 # Room 600 contains rescueOfFulk.
@@ -17,7 +17,29 @@ variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 } # SCI previous room global.
   verdict: { bank: globals, index: 151 } # Script 421 selects the wedding for verdict 10; lesser outcomes share the credits.
+flags:
+  # SetFlag in Main.sc uses MSB-first words starting at global 204.
+  helped-woman: { bank: globals, index: 214, mask: 0x0004 } # 173, theMan_29
+  helped-poacher: { bank: globals, index: 214, mask: 0x0002 } # 174, theMan_8
+  found-fire-ring: { bank: globals, index: 210, mask: 0x0400 } # 101, thePuzzleBox
+  resolved-jeweler: { bank: globals, index: 211, mask: 0x4000 } # 113, jew
+  spared-jeweler: { bank: globals, index: 213, mask: 0x0080 } # 152, jew; two peaceful routes
 milestones:
+  - id: helped-woman
+    label: Rescued the woman on Watling Street
+    when: { flag: helped-woman }
+  - id: helped-poacher
+    label: Rescued the poacher
+    when: { flag: helped-poacher }
+  - id: found-fire-ring
+    label: Opened the puzzle box and found the fire ring
+    when: { flag: found-fire-ring }
+  - id: resolved-jeweler
+    label: Settled the dispute with the jeweler
+    when: { flag: resolved-jeweler }
+  - id: spared-jeweler
+    label: Let the jeweler go unharmed
+    when: { flag: spared-jeweler }
   - id: tunnels
     label: "Reached the monastery tunnels"
     when: { room: tunnels }
@@ -29,4 +51,9 @@ milestones:
     when: { room: judgement }
   - id: winning-ending
     label: "Won the title and married Marian"
-    when: { all: [{ room: ending }, { all: [{ variable: previous-room, equals: 421 }, { variable: verdict, equals: 10 }] }] }
+    implies: [judgement]
+    when:
+      all:
+        - { room: ending }
+        - { variable: previous-room, equals: 421 }
+        - { variable: verdict, equals: 10 }

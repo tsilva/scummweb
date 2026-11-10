@@ -1,6 +1,6 @@
 # English Amiga 1.01.
 # Traced against the original AGI logic resources for this edition.
-# Logic 8 sets flag 227 after the cat transformation. Logic 74 uses states 26 and 27 for the ending messages.
+# Logic 43 records each prepared spell. Logic 74 uses states 26 and 27 for the ending messages.
 schema_version: 1
 game: king-s-quest-iii-to-heir-is-human
 engine_id: agi
@@ -8,7 +8,7 @@ edition:
   game_id: kq3
   index_md5: 8ab343306df0e2d98f136be4e8cfd0ef
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   manannan-house: 8
   daventry-throne-room: 74
@@ -16,24 +16,61 @@ rooms:
 variables:
   score: { bank: vars, index: 3 }
   max-score: { bank: vars, index: 7 }
+  wizard-status: { bank: vars, index: 128 } # Logic 8 disables Manannan’s timer at state 20.
   reunion-stage: { bank: vars, index: 220 }
 flags:
-  manannan-transformed: { bank: flag_bytes, index: 28, mask: 8 } # Flag 227.
+  # Flag 227 is reused in many rooms; logic 8 pairs it with the disabled wizard timer.
+  manannan-transformed: { bank: flag_bytes, index: 28, mask: 0x08 }
+  prepared-animal-language: { bank: flag_bytes, index: 18, mask: 0x80 } # 151
+  prepared-flying: { bank: flag_bytes, index: 19, mask: 0x01 } # 152
+  prepared-teleportation: { bank: flag_bytes, index: 19, mask: 0x02 } # 153
+  prepared-sleep: { bank: flag_bytes, index: 19, mask: 0x04 } # 154
+  prepared-cat-cookie: { bank: flag_bytes, index: 19, mask: 0x08 } # 155
+  prepared-storm: { bank: flag_bytes, index: 19, mask: 0x10 } # 156
+  prepared-invisibility: { bank: flag_bytes, index: 19, mask: 0x20 } # 157
   defeated-dragon: { bank: flag_bytes, index: 22, mask: 128 } # Flag 183. Logic 66 sets this after the magical storm.
   untied-rosella: { bank: flag_bytes, index: 22, mask: 64 } # Flag 182. Logic 119 awards points for untying Rosella after the dragon dies.
 milestones:
+  - id: prepared-animal-language
+    label: Prepared the spell to understand animals
+    when: { flag: prepared-animal-language }
+  - id: prepared-flying
+    label: Prepared the flying spell
+    when: { flag: prepared-flying }
+  - id: prepared-teleportation
+    label: Prepared the teleportation spell
+    when: { flag: prepared-teleportation }
+  - id: prepared-sleep
+    label: Prepared the sleeping powder
+    when: { flag: prepared-sleep }
+  - id: prepared-cat-cookie
+    label: Prepared the cat transformation cookie
+    when: { flag: prepared-cat-cookie }
+  - id: prepared-storm
+    label: Prepared the storm brew
+    when: { flag: prepared-storm }
+  - id: prepared-invisibility
+    label: Prepared the invisibility ointment
+    when: { flag: prepared-invisibility }
   - id: defeated-manannan
     label: Transformed Manannan
-    when: { flag: manannan-transformed }
+    implies: [prepared-cat-cookie]
+    when:
+      all:
+        - { room: manannan-house }
+        - { flag: manannan-transformed }
+        - { flag: prepared-cat-cookie }
+        - { variable: wizard-status, equals: 20 }
   - id: pirate-ship
     label: "Reached the pirate ship’s deck"
     when: { room: pirate-ship }
   - id: defeated-dragon
     label: "Defeated the dragon"
+    implies: [prepared-storm]
     when: { flag: defeated-dragon }
   - id: untied-rosella
     label: "Freed Rosella"
-    when: { flag: untied-rosella }
+    when: { all: [{ flag: untied-rosella }, { flag: defeated-dragon }] }
   - id: returned-to-daventry
     label: Reunited with the royal family
     when: { room: daventry-throne-room }

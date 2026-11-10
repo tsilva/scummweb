@@ -1,7 +1,7 @@
 # English DOS CD.
 # Native evidence: scripts and room directory from the detected edition.
 # The tomb tram and lab scripts identify rooms 83 and 73. Script 235 advances the cathedral bridge sequence.
-# Script 237 in room 78 plays the final movie and loads room 110.
+# Room 78 object 535 starts global script 237, the only normal entry into the end credits.
 schema_version: 1
 game: the-dig
 engine_id: scumm
@@ -9,7 +9,7 @@ edition:
   game_id: dig
   index_md5: d8323015ecb8b10bf53474f6e6b0ae33
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: end-credits
 rooms:
   tomb-tram: 83
   lab: 73
@@ -17,14 +17,44 @@ rooms:
   finale: 78
   end-credits: 110
 flags:
-  inventor-confronted: { bank: scumm_bit_bytes, index: 29, mask: 0x10 }
+  wreck-examined: { bank: scumm_bit_bytes, index: 5, mask: 0x20 } # Bit 45, r019 local 2001.
+  excavated-grave: { bank: scumm_bit_bytes, index: 6, mask: 0x20 } # Bit 53, r020 local 2002.
+  reached-museum-spire: { bank: scumm_bit_bytes, index: 20, mask: 0x10 } # Bit 164, r023 object 175.
+  reached-map-spire: { bank: scumm_bit_bytes, index: 20, mask: 0x20 } # Bit 165, r023 object 173.
+  reached-cathedral-spire: { bank: scumm_bit_bytes, index: 20, mask: 0x40 } # Bit 166, r023 object 176.
+  tomb-tram: { bank: scumm_bit_bytes, index: 20, mask: 0x80 } # Bit 167, r023 object 177.
+  reached-planetarium-spire: { bank: scumm_bit_bytes, index: 21, mask: 0x01 } # Bit 168, r023 object 183.
+  lit-tomb: { bank: scumm_bit_bytes, index: 20, mask: 0x04 } # Bit 162, r058 object 403.
+  lab: { bank: scumm_bit_bytes, index: 14, mask: 0x08 } # Bit 115, r073 entry.
+  inventor-confronted: { bank: scumm_bit_bytes, index: 29, mask: 0x10 } # Bit 236, global 235.
 milestones:
+  - id: wreck-examined
+    label: Investigated the alien wreck
+    when: { flag: wreck-examined }
+  - id: excavated-grave
+    label: Excavated the alien grave
+    when: { flag: excavated-grave }
+  - id: reached-museum-spire
+    label: Reached the tram to the museum spire
+    when: { flag: reached-museum-spire }
+  - id: reached-map-spire
+    label: Reached the tram to the map spire
+    when: { flag: reached-map-spire }
+  - id: reached-cathedral-spire
+    label: Reached the tram to the cathedral spire
+    when: { flag: reached-cathedral-spire }
   - id: tomb-tram
     label: Reached the tomb tram
-    when: { room: tomb-tram }
+    when: { any: [{ room: tomb-tram }, { flag: tomb-tram }] }
+  - id: reached-planetarium-spire
+    label: Reached the tram to the planetarium spire
+    when: { flag: reached-planetarium-spire }
+  - id: lit-tomb
+    label: Lit the tomb with the blue crystal
+    when: { flag: lit-tomb }
   - id: lab
     label: Reached the life crystal laboratory
-    when: { room: lab }
+    when: { any: [{ room: lab }, { flag: lab }] }
   - id: cathedral-bridge
     label: Reached the cathedral bridge
     when: { any: [{ room: cathedral-bridge }, { flag: inventor-confronted }] }
@@ -33,4 +63,5 @@ milestones:
     when: { room: finale }
   - id: end-credits
     label: Reached the end credits
+    implies: [finale]
     when: { room: end-credits }

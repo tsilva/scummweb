@@ -9,7 +9,7 @@ edition:
   game_id: zak
   index_md5: e94c7cc3686fce406d3c91b5eae5a72d
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   guru: 19
 variables:
@@ -17,16 +17,45 @@ variables:
   victory-script: { bank: running_scripts, index: 149 }
 flags:
   learned-blue-crystal: { bank: object_state, index: 55, mask: 0x04 }
+  learned-yellow-crystal: { bank: object_state, index: 81, mask: 0x04 } # g045.
+  # The native V2 index initializes all five component slots with bit 0x08 set.
+  # Room 25 clears that bit as each component is installed.
+  missing-glowing-object: { bank: object_state, index: 427, mask: 0x08 }
+  missing-crystalabra: { bank: object_state, index: 428, mask: 0x08 }
+  missing-yellow-crystal: { bank: object_state, index: 429, mask: 0x08 }
+  missing-white-crystal: { bank: object_state, index: 430, mask: 0x08 }
+  missing-blue-crystal: { bank: object_state, index: 431, mask: 0x08 }
 milestones:
   - id: guru
     label: Reached the guru
     when: { room: guru }
   - id: learned-blue-crystal
     label: Learned to use the blue crystal
+    implies: [guru]
     when: { flag: learned-blue-crystal }
+  - id: learned-yellow-crystal
+    label: Learned to teleport with the yellow crystal
+    when: { flag: learned-yellow-crystal }
+  - id: installed-glowing-object
+    label: Placed the glowing object on the device base
+    when: { flag: missing-glowing-object, equals: false }
+  - id: installed-crystalabra
+    label: Fitted the crystalabra to the device
+    when: { flag: missing-crystalabra, equals: false }
+  - id: installed-yellow-crystal
+    label: Installed the yellow crystal
+    when: { flag: missing-yellow-crystal, equals: false }
+  - id: installed-white-crystal
+    label: Installed the white crystal
+    when: { flag: missing-white-crystal, equals: false }
+  - id: installed-blue-crystal
+    label: Installed the blue crystal
+    when: { flag: missing-blue-crystal, equals: false }
   - id: activated-device
     label: Activated the Skolarian device
+    implies: [installed-glowing-object, installed-crystalabra, installed-yellow-crystal, installed-white-crystal, installed-blue-crystal]
     when: { variable: device-script, equals: 1 }
   - id: winning-ending
     label: Stopped the Caponians
+    implies: [activated-device]
     when: { variable: victory-script, equals: 1 }

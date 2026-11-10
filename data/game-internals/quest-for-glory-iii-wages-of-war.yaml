@@ -7,7 +7,7 @@ edition:
   game_id: qfg3
   index_md5: 70f7ae052f2a06ae7e94c6943ab59fc0
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   simbani-village: 420 # Script 410 goToVillage enters room 420.
   waterfall: 740 # Script 180 toWaterFall sends the hero to 740, which contains Manu’s bridge puzzle.
@@ -16,16 +16,69 @@ rooms:
 variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 } # SCI previous room global.
+flags:
+  # The saved puzzle flags are stored most-significant bit first.
+  simbani-village: { bank: globals, index: 505, mask: 0x0100 } # 87, rm420
+  heard-simbani-story: { bank: globals, index: 516, mask: 0x0200 } # 262, rm420
+  returned-simbani-spear: { bank: globals, index: 516, mask: 0x0040 } # 265, rm420
+  received-heart-gift: { bank: globals, index: 520, mask: 0x0100 } # 327, rm780
+  collected-feather: { bank: globals, index: 516, mask: 0x0800 } # 260, rm400
+  received-dispel-potion: { bank: globals, index: 515, mask: 0x0400 } # 245, rm290
+  summoned-johari: { bank: globals, index: 519, mask: 0x0001 } # 319, egoTell
+  arranged-leopardman-meeting: { bank: globals, index: 520, mask: 0x8000 } # 320, egoTell
+  presented-magic-drum: { bank: globals, index: 518, mask: 0x0020 } # 298, rm620
+  crossed-waterfall: { bank: globals, index: 520, mask: 0x0400 } # 325, rm740
+  placed-opal: { bank: globals, index: 520, mask: 0x0020 } # 330, rm810
+  dispelled-reesha: { bank: globals, index: 521, mask: 0x4000 } # 337, rm830
+  destroyed-orb: { bank: globals, index: 521, mask: 0x0400 } # 341, endGame or rm854
 milestones:
   - id: simbani-village
-    label: "Reached the Simbani village"
-    when: { room: simbani-village }
+    label: Reached the Simbani village
+    when: { flag: simbani-village }
+  - id: heard-simbani-story
+    label: Heard the Simbani storyteller’s story
+    when: { flag: heard-simbani-story }
+  - id: returned-simbani-spear
+    label: Returned the Simbani’s Spear of Death
+    when: { flag: returned-simbani-spear }
+  - id: received-heart-gift
+    label: Received the gift from the Heart of the World
+    when: { flag: received-heart-gift }
+  - id: collected-feather
+    label: Collected the feather in the savanna
+    when: { flag: collected-feather }
+  - id: received-dispel-potion
+    label: Obtained the Dispel Potion
+    when: { flag: received-dispel-potion }
+  - id: summoned-johari
+    label: Called Johari out of hiding
+    when: { flag: summoned-johari }
+  - id: arranged-leopardman-meeting
+    label: Persuaded Johari to take you to her village
+    when: { flag: arranged-leopardman-meeting }
+  - id: presented-magic-drum
+    label: Presented the Drum of Magic to the Leopardmen
+    when: { flag: presented-magic-drum }
   - id: waterfall
-    label: "Reached the waterfall crossing"
+    label: Reached the waterfall crossing
     when: { room: waterfall }
+  - id: crossed-waterfall
+    label: Crossed the waterfall ravine
+    implies: [waterfall]
+    when: { flag: crossed-waterfall }
+  - id: placed-opal
+    label: Placed the opal in the ancient pedestal
+    when: { flag: placed-opal }
+  - id: dispelled-reesha
+    label: Used the Dispel Potion on Reeshaka
+    when: { flag: dispelled-reesha }
+  - id: destroyed-orb
+    label: Destroyed the Demon Wizard’s orb
+    when: { flag: destroyed-orb }
   - id: ending-scene
-    label: "Reached the final cartoon"
+    label: Reached the final cartoon
     when: { room: ending-scene }
   - id: winning-ending
-    label: "Completed Wages of War"
+    label: Completed Wages of War
+    implies: [ending-scene]
     when: { all: [{ room: ending }, { variable: previous-room, equals: 880 }] }

@@ -7,7 +7,7 @@ edition:
   game_id: lsl2
   index_md5: eef5fd18b71b353b18947e07d9f1645e
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   airport-gate: 56 # Room 56 describes the waiting room for gate one.
   adrift: 42 # Room 42 opens with the message about surviving weeks at sea.
@@ -15,6 +15,20 @@ rooms:
 variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 } # SCI previous room global.
+  got-haircut: { bank: globals, index: 121 } # rm125
+  looked-through-knothole: { bank: globals, index: 471 } # rm13
+  applied-sunscreen: { bank: globals, index: 477 } # rm300
+  reapplied-sunscreen: { bank: globals, index: 479 } # rm300
+  lowered-lifeboats: { bank: globals, index: 126 } # rm36
+  boarded-lifeboat: { bank: globals, index: 473 } # rm38
+  dyed-hair: { bank: globals, index: 130 } # rm45
+  waxed-body: { bank: globals, index: 131 } # rm45
+  distracted-krishnas: { bank: globals, index: 136 } # rm50
+  wore-parachute: { bank: globals, index: 480 } # rm63
+  passed-snake: { bank: globals, index: 145 } # rm72
+  passed-quicksand: { bank: globals, index: 146 } # rm73
+  passed-piranhas: { bank: globals, index: 147 } # rm74
+  met-rosella: { bank: globals, index: 478 } # rm151
 milestones:
   - id: adrift
     label: "Reached the island"
@@ -22,6 +36,48 @@ milestones:
   - id: airport-gate
     label: "Reached the airport gate"
     when: { room: airport-gate }
+  - id: got-haircut
+    label: Got a haircut in Los Angeles
+    when: { variable: got-haircut, equals: 1 }
+  - id: looked-through-knothole
+    label: Looked through the knothole
+    when: { variable: looked-through-knothole, equals: 1 }
+  - id: applied-sunscreen
+    label: Applied sunscreen
+    when: { variable: applied-sunscreen, equals: 1 }
+  - id: reapplied-sunscreen
+    label: Reapplied sunscreen
+    when: { variable: reapplied-sunscreen, equals: 1 }
+  - id: lowered-lifeboats
+    label: Lowered the lifeboats
+    when: { variable: lowered-lifeboats, equals: 1 }
+  - id: boarded-lifeboat
+    label: Boarded the lifeboat
+    when: { variable: boarded-lifeboat, equals: 1 }
+  - id: dyed-hair
+    label: Dyed Larry’s hair blond
+    when: { variable: dyed-hair, equals: 1 }
+  - id: waxed-body
+    label: Had Larry’s body waxed
+    when: { variable: waxed-body, equals: 1 }
+  - id: distracted-krishnas
+    label: Distracted the airport solicitors
+    when: { variable: distracted-krishnas, equals: 1 }
+  - id: wore-parachute
+    label: Put on the parachute
+    when: { variable: wore-parachute, equals: 1 }
+  - id: passed-snake
+    label: Got past the snake
+    when: { variable: passed-snake, equals: 3 }
+  - id: passed-quicksand
+    label: Got past the quicksand
+    when: { variable: passed-quicksand, equals: 1 }
+  - id: passed-piranhas
+    label: Got past the piranhas
+    when: { variable: passed-piranhas, equals: 1 }
+  - id: met-rosella
+    label: Met Rosella
+    when: { variable: met-rosella, equals: 1 }
   - id: winning-ending
     label: "Reached the reunion with Eve"
     when: { all: [{ room: ending }, { variable: previous-room, equals: 90 }] }

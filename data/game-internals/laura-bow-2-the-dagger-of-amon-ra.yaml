@@ -7,7 +7,7 @@ edition:
   game_id: laurabow2
   index_md5: eb41961ba4446d6f484edb9de91224b3
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   inquest: 750 # The evidence and testimony determine global126.
   departure: 770 # The departure cartoon branches on the inquest outcome.
@@ -18,13 +18,41 @@ variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 }
   inquest-outcome: { bank: globals, index: 126 }
+flags:
+  reached-inquest: { bank: globals, index: 195, mask: 0x1000 } # 147, rm750
+  cleared-rats: { bank: globals, index: 188, mask: 0x0002 } # 46, rm740
 milestones:
+  # addCluesCode (script 21) appends collected items in any order to the
+  # Things notebook at globals 228–262; the low 12 bits identify the item.
+  - id: collected-wire-cutters
+    label: Collected the wire cutters as evidence
+    when: { bank: globals, start: 228, length: 35, mask: 0x0fff, includes: 779 }
+  - id: collected-bifocals
+    label: Collected the bifocals as evidence
+    when: { bank: globals, start: 228, length: 35, mask: 0x0fff, includes: 795 }
+  - id: collected-red-hair
+    label: Collected the red hair as evidence
+    when: { bank: globals, start: 228, length: 35, mask: 0x0fff, includes: 796 }
+  - id: collected-grapes
+    label: Collected the grapes as evidence
+    when: { bank: globals, start: 228, length: 35, mask: 0x0fff, includes: 800 }
+  - id: recovered-dagger
+    label: Recovered the Dagger of Amon Ra
+    when: { bank: globals, start: 228, length: 35, mask: 0x0fff, includes: 780 }
+  - id: cleared-rats
+    label: Cleared the rats blocking the escape
+    when: { flag: cleared-rats }
   - id: reached-inquest
     label: Reached the inquest
-    when: { room: inquest }
+    when: { any: [{ room: inquest }, { flag: reached-inquest }] }
   - id: solved-murders
     label: Established the case against O’Riley
+    implies: [reached-inquest, collected-wire-cutters, collected-bifocals, collected-red-hair, collected-grapes]
     when: { variable: inquest-outcome, one_of: [1, 4] }
+  - id: solved-full-case
+    label: Established both cases and presented the dagger
+    implies: [solved-murders, recovered-dagger]
+    when: { variable: inquest-outcome, equals: 1 }
   - id: winning-ending
     label: Reached the successful ending
     when:

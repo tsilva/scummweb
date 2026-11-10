@@ -145,8 +145,7 @@ refreshes metadata after compression and filesystem close complete. This covers
 original save menus, autosaves and engines that omit explicit finalization.
 Failed or interrupted writes remain excluded, including after reload; a
 successful overwrite or restored save set can replace them. Metadata-write
-failures retry during play. Intro checkpoints are compared by their bytes after
-changes. No final save scan depends on tab-close handlers. Browser storage can
+failures retry during play. No final save scan depends on tab-close handlers. Browser storage can
 still be cleared or evicted, and metadata does not make save-file writes atomic.
 
 AgentSCUMM can launch a game with its own save scope. ScummWEB then gives that
@@ -408,10 +407,11 @@ debugger checkpoints captured before the first player decision. The bundled
 Curse of Monkey Island demo omits the intro video and opens in the ship's hold.
 Its `checkpointOnly` metadata keeps the seeded launch available without showing
 **Skip intro** over the opening scene. Quest for Infamy resumes at the
-Volksville entrance from an original in-game save. The launcher checks
-checkpoint bytes before writing. It can replace the exact incomplete
-checkpoints from the original release and protects a slot containing player
-progress.
+Volksville entrance from an original in-game save. The runtime reads these
+checkpoints from memory during startup and keeps them out of save menus and
+Continue. It removes older copies from the save folder only when their bytes
+match a shipped checkpoint, including known retired versions. A player save in
+the same slot remains available.
 
 Nippon Safes uses the native `boot-param` strategy (`bootParam: 1`) through
 patch 17 to skip the story while retaining its language and character choices.

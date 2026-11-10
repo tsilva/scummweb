@@ -1,5 +1,6 @@
 # English Amiga 1.01.
-# Traced against the original AGI logic resources for this edition.
+# Traced against this edition's AGI logic resources. Logic 119's
+# congratulations are for the Green River descent, not the ending.
 schema_version: 1
 game: gold-rush
 engine_id: agi
@@ -7,21 +8,65 @@ edition:
   game_id: goldrush
   index_md5: a1d4de3e75c2688c1e2ca2634ffc3bd8
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
-  sacramento: 72 # Logics 106 and 107 lead to Sacramento on arrival.
-  mine: 118 # Logic 108 enters 118, whose scripted sequence leads to 119.
-  ending: 119 # Logic 119 reaches stage 33 before its congratulations message.
+  green-river-descent: 118
+  green-river: 119
+  sacramento: 72 # Logic 106 or 107 on the two sea routes; 113 handles the overland arrival.
+  mine: 148 # Logic 148 checks the mine's heavy locks.
+  jakes-mine: 162
+  gold-cavern: 193
 variables:
   score: { bank: vars, index: 3 }
-  reunion-stage: { bank: vars, index: 106 } # Logic 119 increments this variable during the final sequence.
+  passage: { bank: vars, index: 40 } # Logics 3 and 31: Cape Horn = 1, Panama = 2, overland = 3.
+  green-river-stage: { bank: vars, index: 106 } # Logics 118 and 119.
+  cavern-opening: { bank: vars, index: 129 } # Logic 162: four pick strikes open the passage.
+  closing-stage: { bank: vars, index: 225 } # Logic 193 increments to 34 before the final message.
+flags:
+  read-letter: { bank: flag_bytes, index: 18, mask: 0x80 } # 151, logic 0
+  read-postmark: { bank: flag_bytes, index: 10, mask: 0x40 } # 86, logic 0
+  locked-wagon-wheels: { bank: flag_bytes, index: 9, mask: 0x80 } # 79, logics 118 and 119
+  arrived-california: { bank: flag_bytes, index: 5, mask: 0x08 } # 43, logics 72 and 113
+  opened-mine-locks: { bank: flag_bytes, index: 17, mask: 0x08 } # 139, logic 148
+  reunion-started: { bank: flag_bytes, index: 15, mask: 0x80 } # 127, logic 162
 milestones:
+  - id: read-letter
+    label: Read Jake’s letter
+    when: { flag: read-letter }
+  - id: read-postmark
+    label: Identified Sutter’s Fort from the postmark
+    when: { flag: read-postmark }
+  - id: booked-passage
+    label: Booked passage west
+    when: { variable: passage, one_of: [1, 2, 3] }
+  - id: green-river
+    label: Reached the Green River on the overland route
+    when: { any: [{ room: green-river-descent }, { room: green-river }] }
+  - id: locked-wagon-wheels
+    label: Chained the wagon wheels for the Green River descent
+    implies: [green-river]
+    when: { flag: locked-wagon-wheels }
+  - id: crossed-green-river
+    label: Survived the Green River crossing
+    implies: [green-river]
+    when: { all: [{ room: green-river }, { variable: green-river-stage, equals: 33 }] }
   - id: sacramento
-    label: "Arrived in Sacramento"
-    when: { room: sacramento }
+    label: Reached the Sacramento Valley
+    when: { any: [{ room: sacramento }, { flag: arrived-california }] }
   - id: mine
-    label: "Reached the mine"
+    label: Reached the mine’s locked door
     when: { room: mine }
+  - id: opened-mine-locks
+    label: Unlocked the mine door with the steel key
+    implies: [mine]
+    when: { flag: opened-mine-locks }
+  - id: found-jake
+    label: Found Jake in the mine
+    when: { flag: reunion-started }
+  - id: opened-cavern-passage
+    label: Opened a passage to the underground cavern
+    when: { all: [{ room: jakes-mine }, { variable: cavern-opening, equals: 4 }] }
   - id: winning-ending
-    label: "Completed the mine reunion"
-    when: { all: [{ room: ending }, { variable: reunion-stage, equals: 33 }] }
+    label: Discovered the gold cavern with Jake
+    implies: [found-jake, opened-cavern-passage]
+    when: { all: [{ room: gold-cavern }, { variable: closing-stage, equals: 34 }] }

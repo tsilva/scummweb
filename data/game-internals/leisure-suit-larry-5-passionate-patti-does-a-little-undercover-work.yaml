@@ -7,7 +7,7 @@ edition:
   game_id: lsl5
   index_md5: 65da8763be0ed02d6357f3df37ae7771
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   travel: 290 # Script 310 sLand enters room 290.
   vice-president-rescue: 460 # Script 460 has Inspector Desmond’s congratulations after the rescue.
@@ -15,6 +15,32 @@ rooms:
 variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 } # SCI previous room global.
+flags:
+  # Saved MSB-first Points awards in Main.sc.
+  read-inflight-magazine: { bank: globals, index: 190, mask: 0x0800 } # 68, invCode
+  plugged-in-charger: { bank: globals, index: 190, mask: 0x4000 } # 65, sPlugCharger
+  collected-change: { bank: globals, index: 188, mask: 0x2000 } # 34, rm260
+  played-slots: { bank: globals, index: 188, mask: 0x0800 } # 36, rm260
+  collected-card: { bank: globals, index: 191, mask: 0x0080 } # 88, rm180
+  opened-drawer: { bank: globals, index: 191, mask: 0x0040 } # 89, rm180
+  boarded-plane: { bank: globals, index: 192, mask: 0x4000 } # 97, rm290
+  collected-bra: { bank: globals, index: 192, mask: 0x0800 } # 100, rm435
+  used-music-box: { bank: globals, index: 192, mask: 0x0010 } # 107, rm510
+  collected-tape: { bank: globals, index: 192, mask: 0x0004 } # 109, rm510
+  found-credit-cards: { bank: globals, index: 193, mask: 0x4000 } # 113, rm535
+  found-money: { bank: globals, index: 193, mask: 0x2000 } # 114, rm535
+  collected-record: { bank: globals, index: 193, mask: 0x0040 } # 121, rm640
+  played-record-forward-slow: { bank: globals, index: 193, mask: 0x0020 } # 122, rm640
+  played-record-backward-slow: { bank: globals, index: 193, mask: 0x0010 } # 123, rm640
+  played-record-forward-fast: { bank: globals, index: 193, mask: 0x0008 } # 124, rm640
+  played-record-backward-fast: { bank: globals, index: 193, mask: 0x0004 } # 125, rm640
+  met-lana: { bank: globals, index: 194, mask: 0x0020 } # 138, rm760
+  used-rollerblades: { bank: globals, index: 194, mask: 0x0002 } # 142, rm790
+  recovered-desk-key: { bank: globals, index: 195, mask: 0x0800 } # 148, rm840
+  collected-letter-opener: { bank: globals, index: 195, mask: 0x0400 } # 149, rm840
+  copied-krappers-papers: { bank: globals, index: 195, mask: 0x0100 } # 151, rm840
+  collected-doily: { bank: globals, index: 196, mask: 0x4000 } # 161, rm905
+  recorded-chi-chi: { bank: globals, index: 196, mask: 0x0100 } # 167, rm920
 milestones:
   - id: travel
     label: "Arrived at the next assignment"
@@ -22,6 +48,78 @@ milestones:
   - id: vice-president-rescue
     label: "Reached the vice president’s rescue"
     when: { room: vice-president-rescue }
+  - id: read-inflight-magazine
+    label: Read the in-flight magazine
+    when: { flag: read-inflight-magazine }
+  - id: plugged-in-charger
+    label: Plugged in the battery charger
+    when: { flag: plugged-in-charger }
+  - id: collected-change
+    label: Collected change
+    when: { flag: collected-change }
+  - id: played-slots
+    label: Played the slots
+    when: { flag: played-slots }
+  - id: collected-card
+    label: Collected the card
+    when: { flag: collected-card }
+  - id: opened-drawer
+    label: Opened the drawer
+    when: { flag: opened-drawer }
+  - id: boarded-plane
+    label: Boarded the plane
+    when: { flag: boarded-plane }
+  - id: collected-bra
+    label: Collected the bra
+    when: { flag: collected-bra }
+  - id: used-music-box
+    label: Used the music box
+    when: { flag: used-music-box }
+  - id: collected-tape
+    label: Collected the tape
+    when: { flag: collected-tape }
+  - id: found-credit-cards
+    label: Found the credit cards
+    when: { flag: found-credit-cards }
+  - id: found-money
+    label: Found the money
+    when: { flag: found-money }
+  - id: collected-record
+    label: Collected the record
+    when: { flag: collected-record }
+  - id: played-record-forward-slow
+    label: Played the record forward at 33 RPM
+    when: { flag: played-record-forward-slow }
+  - id: played-record-backward-slow
+    label: Played the record backward at 33 RPM
+    when: { flag: played-record-backward-slow }
+  - id: played-record-forward-fast
+    label: Played the record forward at 78 RPM
+    when: { flag: played-record-forward-fast }
+  - id: played-record-backward-fast
+    label: Played the record backward at 78 RPM
+    when: { flag: played-record-backward-fast }
+  - id: met-lana
+    label: Met Lana
+    when: { flag: met-lana }
+  - id: used-rollerblades
+    label: Used the rollerblades
+    when: { flag: used-rollerblades }
+  - id: recovered-desk-key
+    label: Dug up the desk key
+    when: { flag: recovered-desk-key }
+  - id: collected-letter-opener
+    label: Collected Krapper’s letter opener
+    when: { flag: collected-letter-opener }
+  - id: copied-krappers-papers
+    label: Copied Krapper’s papers
+    when: { flag: copied-krappers-papers }
+  - id: collected-doily
+    label: Collected the doily
+    when: { flag: collected-doily }
+  - id: recorded-chi-chi
+    label: Recorded Chi Chi
+    when: { flag: recorded-chi-chi }
   - id: winning-ending
     label: "Reached the victory scene"
     when: { all: [{ room: ending }, { variable: previous-room, equals: 460 }] }

@@ -8,7 +8,7 @@ edition:
   game_id: sq1sci
   index_md5: 1dd1b7c042f0c7345730a94633d283fe
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   xenon-awards: 68
   credits: 2
@@ -19,16 +19,86 @@ rooms:
 variables:
   score: { bank: globals, index: 15 }
   previous-room: { bank: globals, index: 12 }
+flags:
+  # Saved MSB-first puzzle awards in Main.sc, starting at global 118.
+  heard-scientists-clue: { bank: globals, index: 126, mask: 0x1000 } # 131, rm3
+  opened-pod-bay: { bank: globals, index: 126, mask: 0x0200 } # 134, rm10
+  inserted-keycard: { bank: globals, index: 126, mask: 0x0100 } # 135, rm10
+  put-on-spacesuit: { bank: globals, index: 126, mask: 0x0080 } # 136, rm11
+  launched-pod: { bank: globals, index: 126, mask: 0x0020 } # 138, rm13
+  got-survival-kit: { bank: globals, index: 126, mask: 0x0008 } # 140, rm37
+  distracted-spider-droid: { bank: globals, index: 127, mask: 0x0800 } # 148, rm23/rm28
+  blocked-geyser: { bank: globals, index: 127, mask: 0x4000 } # 145, rm32
+  read-cartridge: { bank: globals, index: 127, mask: 0x0080 } # 152, rm35/viewCartridge
+  sold-skimmer: { bank: globals, index: 127, mask: 0x0020 } # 154, rm41
+  boarded-with-droid: { bank: globals, index: 127, mask: 0x0001 } # 159, rm45
+  used-vent-grate: { bank: globals, index: 128, mask: 0x1000 } # 163, rm54/rm55
+  got-sarien-uniform: { bank: globals, index: 128, mask: 0x0800 } # 164, rm57
+  got-sarien-id: { bank: globals, index: 128, mask: 0x0001 } # 175, rm57
+  got-grenade: { bank: globals, index: 128, mask: 0x0400 } # 165, rm58
+  disabled-forcefield: { bank: globals, index: 128, mask: 0x0010 } # 171, rm64
+  activated-self-destruct: { bank: globals, index: 128, mask: 0x0008 } # 172, rm65
 milestones:
+  - id: heard-scientists-clue
+    label: Heard the scientist’s archive clue
+    when: { flag: heard-scientists-clue }
+  - id: opened-pod-bay
+    label: Opened the escape pod bay
+    when: { flag: opened-pod-bay }
+  - id: inserted-keycard
+    label: Inserted the keycard in the Arcada console
+    when: { flag: inserted-keycard }
+  - id: put-on-spacesuit
+    label: Put on the spacesuit
+    when: { flag: put-on-spacesuit }
   - id: arcada-escape
     label: "Escaped the Arcada"
     when: { room: arcada-escape }
+  - id: launched-pod
+    label: Launched the escape pod
+    when: { flag: launched-pod }
+  - id: got-survival-kit
+    label: Collected the survival kit
+    when: { flag: got-survival-kit }
+  - id: distracted-spider-droid
+    label: Stopped the pursuing spider droid
+    when: { flag: distracted-spider-droid }
+  - id: blocked-geyser
+    label: Plugged the geyser
+    when: { flag: blocked-geyser }
   - id: skimmer-journey
     label: "Began the skimmer journey"
     when: { room: skimmer-journey }
+  - id: read-cartridge
+    label: Read the data cartridge
+    when: { flag: read-cartridge }
+  - id: sold-skimmer
+    label: Sold the skimmer for the ship deal
+    when: { flag: sold-skimmer }
+  - id: boarded-with-droid
+    label: Got the navigation droid into the ship
+    when: { flag: boarded-with-droid }
   - id: deltaur-boarding
     label: "Boarded the Deltaur"
     when: { room: deltaur-boarding }
+  - id: used-vent-grate
+    label: Used the grate to enter the Deltaur ventilation system
+    when: { flag: used-vent-grate }
+  - id: got-sarien-uniform
+    label: Got a Sarien uniform from the washer
+    when: { flag: got-sarien-uniform }
+  - id: got-sarien-id
+    label: Picked up the Sarien ID
+    when: { flag: got-sarien-id }
+  - id: got-grenade
+    label: Picked up a grenade
+    when: { flag: got-grenade }
+  - id: disabled-forcefield
+    label: Disabled the Star Generator’s force field
+    when: { flag: disabled-forcefield }
+  - id: activated-self-destruct
+    label: Triggered the Star Generator’s self-destruct
+    when: { flag: activated-self-destruct }
   - id: deltaur-escape
     label: "Launched from the Deltaur"
     when: { room: deltaur-escape }

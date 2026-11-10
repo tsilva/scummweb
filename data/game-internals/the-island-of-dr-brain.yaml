@@ -7,20 +7,117 @@ edition:
   game_id: islandbrain
   index_md5: 2388efef8430b041b0f3b00b9050e4a2
 telemetry: snapshot
-scoring: highest_stage
+completion_milestone: winning-ending
 rooms:
   microscope: 160 # Script 160 contains the microscope and transitions to 180.
   final-monitor: 420 # Script 400 goes to 420, where the score is assessed.
-  ending: 420 # Script 420 recognizes the full score of 390.
 variables:
   score: { bank: globals, index: 15 }
+  previous-room: { bank: globals, index: 12 }
+flags:
+  solved-jigsaw: { bank: globals, index: 253, mask: 0x0800 } # 52, jigsaw
+  solved-magic-square: { bank: globals, index: 250, mask: 0x4000 } # 1, barMagic
+  solved-flamingos: { bank: globals, index: 250, mask: 0x2000 } # 2, flamingos
+  solved-spectrum: { bank: globals, index: 250, mask: 0x1000 } # 3, spectrumPuzzle
+  solved-hanoi: { bank: globals, index: 250, mask: 0x0800 } # 4, hanoi
+  solved-weights: { bank: globals, index: 250, mask: 0x0400 } # 5, weightsPuzzle
+  solved-sarcophagus: { bank: globals, index: 250, mask: 0x0200 } # 6, sarc
+  solved-cartesian: { bank: globals, index: 250, mask: 0x0100 } # 7, cartesian
+  solved-gears: { bank: globals, index: 250, mask: 0x0080 } # 8, gearsPuzzle
+  solved-programmer: { bank: globals, index: 250, mask: 0x0040 } # 9, programmer
+  solved-bookcase: { bank: globals, index: 250, mask: 0x0020 } # 10, bookCase
+  solved-synonyms: { bank: globals, index: 250, mask: 0x0010 } # 11, synonymPuzzle
+  solved-homonyms: { bank: globals, index: 250, mask: 0x0008 } # 12, homonymPuzzle
+  solved-antonyms: { bank: globals, index: 250, mask: 0x0004 } # 13, antonymPuzzle
+  solved-cipher: { bank: globals, index: 251, mask: 0x8000 } # 16, cipher
+  found-hidden-words: { bank: globals, index: 251, mask: 0x4000 } # 17, hiddenFolPuzzle
+  solved-element-analyzer: { bank: globals, index: 251, mask: 0x2000 } # 18, elementAnalyzer
+  solved-genetics: { bank: globals, index: 251, mask: 0x1000 } # 19, genetics
+  solved-pattern: { bank: globals, index: 251, mask: 0x0200 } # 22, pattern
+  solved-word-puzzle: { bank: globals, index: 251, mask: 0x0080 } # 24, word_190
+  solved-music: { bank: globals, index: 251, mask: 0x0040 } # 25, music
+  solved-masks: { bank: globals, index: 251, mask: 0x0002 } # 30, hutMasks
+  solved-polyominoes: { bank: globals, index: 252, mask: 0x2000 } # 34, rm140 polyominoid
+  solved-art: { bank: globals, index: 252, mask: 0x0800 } # 36, art
 milestones:
   - id: microscope
     label: "Reached the laboratory puzzles"
     when: { room: microscope }
-  - id: final-monitor
-    label: "Reached the final monitor"
-    when: { room: final-monitor }
+  - id: earned-full-puzzle-score
+    label: Earned the maximum base puzzle score
+    when: { variable: score, equals: 390 }
+  - id: solved-jigsaw
+    label: Solved the jigsaw
+    when: { flag: solved-jigsaw }
+  - id: solved-magic-square
+    label: Solved the magic square
+    when: { flag: solved-magic-square }
+  - id: solved-flamingos
+    label: Solved the flamingo puzzle
+    when: { flag: solved-flamingos }
+  - id: solved-spectrum
+    label: Solved the color spectrum puzzle
+    when: { flag: solved-spectrum }
+  - id: solved-hanoi
+    label: Solved the Tower of Hanoi
+    when: { flag: solved-hanoi }
+  - id: solved-weights
+    label: Solved the weights puzzle
+    when: { flag: solved-weights }
+  - id: solved-sarcophagus
+    label: Solved the sarcophagus puzzle
+    when: { flag: solved-sarcophagus }
+  - id: solved-cartesian
+    label: Solved the coordinate puzzle
+    when: { flag: solved-cartesian }
+  - id: solved-gears
+    label: Solved the gears puzzle
+    when: { flag: solved-gears }
+  - id: solved-programmer
+    label: Solved the programming maze
+    when: { flag: solved-programmer }
+  - id: solved-bookcase
+    label: Solved the bookcase puzzle
+    when: { flag: solved-bookcase }
+  - id: solved-synonyms
+    label: Solved the synonym puzzle
+    when: { flag: solved-synonyms }
+  - id: solved-homonyms
+    label: Solved the homonym puzzle
+    when: { flag: solved-homonyms }
+  - id: solved-antonyms
+    label: Solved the antonym puzzle
+    when: { flag: solved-antonyms }
+  - id: solved-cipher
+    label: Solved the cipher
+    when: { flag: solved-cipher }
+  - id: found-hidden-words
+    label: Solved the hidden words puzzle
+    when: { flag: found-hidden-words }
+  - id: solved-element-analyzer
+    label: Solved the element analyzer
+    when: { flag: solved-element-analyzer }
+  - id: solved-genetics
+    label: Solved the genetics puzzle
+    when: { flag: solved-genetics }
+  - id: solved-pattern
+    label: Solved the pattern puzzle
+    when: { flag: solved-pattern }
+  - id: solved-word-puzzle
+    label: Solved the word puzzle
+    when: { flag: solved-word-puzzle }
+  - id: solved-music
+    label: Solved the music puzzle
+    when: { flag: solved-music }
+  - id: solved-masks
+    label: Solved the mask puzzle
+    when: { flag: solved-masks }
+  - id: solved-polyominoes
+    label: Solved the polyomino puzzle
+    when: { flag: solved-polyominoes }
+  - id: solved-art
+    label: Solved the art puzzle
+    when: { flag: solved-art }
   - id: winning-ending
-    label: "Reached the maximum puzzle score"
-    when: { all: [{ room: ending }, { variable: score, equals: 390 }] }
+    label: Delivered the battery and reached Dr. Brain’s final assessment
+    when: { all: [{ room: final-monitor }, { variable: previous-room, equals: 400 }] }

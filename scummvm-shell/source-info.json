@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-10T15:06:43.487903Z",
+  "generated_at_utc": "2026-11-10T15:34:01.950230Z",
   "scummvm": {
     "version": "v2026.4.0",
     "commit": "7d2709da5136866589f7602f5f5a7b17de03420e",
@@ -8,10 +8,10 @@
   "corresponding_source": {
     "page": "/doc/scummvm-source.html",
     "archive": "/doc/scummvm-source.zip",
-    "archive_sha256": "8e7949919f3fd26a3c8bc596ff9f29d3c96225217c7f697a93a5b7cfc41aba4d",
+    "archive_sha256": "7e377176b7741be0c58f3528008dc6901252435dd4e176afe9c795e462a565f3",
     "runtime_sha256": {
-      "scummvm.wasm": "3093f3cf8f5512372ba77476a9fa26d3fe8108ab4f68338d3a22317f70da0fdd",
-      "scummvm.js": "6c0b3b0ef6a4cfdb786952ee2cea20521dcef1cb95cc97efe572abc6e92c3ebe",
+      "scummvm.wasm": "f84a74d9f8bfe1e4ece658c1a303f99a16067d822f3288edf296f26536f9fef8",
+      "scummvm.js": "f360f603ee1fdf050421fe9bd07bdc45497fedf9f238e2403d7380ccb990b2b1",
       "data/plugins/libaccess.so": "ec69feccb201d898c2e7245f1e4469aa783816782fd75c4fb18d9b0df1062f26",
       "data/plugins/libadl.so": "25e3cd428ca9c538281bf51d2d22fdd089095b5d8c3a39200fe2353856ff6eaa",
       "data/plugins/libagi.so": "3fb3dba06225922b8106f858b3e20cda581190f1e709d09564e6789b8e0dd766",
@@ -55,7 +55,7 @@
       "data/plugins/libsky.so": "042c5233e7f09b22af93d776e2f5c27afd5a6b00f570424654795c2bf8678bdd",
       "data/plugins/libsword1.so": "b81b1d7634330287ad62dafdbfd4e9675ec918e022baf10523ec16db7296ffa0",
       "data/plugins/libsword2.so": "97638e72551ca77f98ead3bd43210c649188d940e22b210936e01a0187aae9bd",
-      "data/plugins/libsword25.so": "83922934744ec0add240016232eee300ddde836262062f66824e33b7fc8f3bcd",
+      "data/plugins/libsword25.so": "ad40c0305521aeb5727d4874b00bdbe94996f25634c870a7671e974ad76e5ef1",
       "data/plugins/libteenagent.so": "1f08a0a4c66a9abe2dfa0e54c74d1d68e868cb50a699778f688b6695a81f2b89",
       "data/plugins/libtinsel.so": "be9915267216ca6a9821a12a76646f2f53e79e7ce4a27c62632187e5f6387dc2",
       "data/plugins/libtitanic.so": "7152e220547e1b56db10f9db7869eebe7a87425137f291462935fd3bb1f3bd6c",

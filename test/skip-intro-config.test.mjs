@@ -136,54 +136,41 @@ test("save checkpoint launches keep their native slot and seed target", () => {
   assert.equal(decodeURIComponent(result.hash), "#-x 1 soltys");
 });
 
-test("intro checkpoint staging reuses equal bytes and protects an existing player save", async () => {
+test("Queen's startup checkpoint never occupies the player's native slot", async () => {
   const { readFile } = await import("node:fs/promises");
   const { runInNewContext } = await import("node:vm");
   const template = await readFile(new URL("../web-shell/scummvm.html", import.meta.url), "utf8");
   const start = template.indexOf("function setupSkipIntroSaves()");
   const end = template.indexOf("let localGameStatus", start);
-  const seeds = [
-    ["qfi-demo.098", Uint8Array.of(2, 3)],
-    ["companion.098", Uint8Array.of(5)],
-  ];
-  const retired = Uint8Array.of(1);
-  async function stage(existing) {
-    const files = new Map(existing);
-    const writes = [];
-    const config = { strategy: "save-slot", slot: 98, saveFiles: seeds.map(([name]) => name) };
-    const scope = {
-      skipIntroTarget: "qfi-demo",
-      getConfiguredSavePath: () => "/saves",
-      ensureDirectory() {},
-      buildVersionedAssetUrl: (url) => url,
-      __scummwebIsRetiredIntroCheckpoint: async (target, name, bytes) =>
-        target === "qfi-demo" && name === "qfi-demo.098" && bytes === retired,
-      console: { error() {} },
-      FS: {
-        analyzePath: (name) => ({ exists: files.has(name) }),
-        readFile: (name) => files.get(name),
-        writeFile(name, bytes) { writes.push(name); files.set(name, bytes); },
-      },
-      fetch: async (url) => url === "games.json"
-        ? { ok: true, json: async () => ({ games: [{ target: "qfi-demo", skipIntro: config }] }) }
-        : { ok: true, arrayBuffer: async () => new Map(seeds).get(url.split("/").at(-1)).buffer },
-    };
-    const result = runInNewContext(template.slice(start, end) + "\nsetupSkipIntroSaves();", scope);
-    return { files, writes, result };
-  }
-  const original = Uint8Array.of(6);
-  const conflict = await stage([["/saves/companion.098", original]]);
-  await assert.rejects(conflict.result, /conflicts with an existing save/);
-  assert.deepEqual(conflict.writes, []);
-  assert.equal(conflict.files.get("/saves/companion.098"), original);
-
-  const existing = await stage([["/saves/qfi-demo.098", seeds[0][1]]]);
-  await existing.result;
-  assert.deepEqual(existing.writes, ["/saves/companion.098"]);
-  assert.equal(existing.files.get("/saves/qfi-demo.098"), seeds[0][1]);
-
-  const repair = await stage([["/saves/qfi-demo.098", retired]]);
-  await repair.result;
-  assert.deepEqual(repair.writes, ["/saves/qfi-demo.098", "/saves/companion.098"]);
-  assert.notEqual(repair.files.get("/saves/qfi-demo.098"), retired);
+  const playerPath = "/home/web_user/.local/share/scummvm/saves/queen.s00";
+  const player = Uint8Array.of(6);
+  const checkpoint = Uint8Array.of(2, 3);
+  const files = new Map([[playerPath, player]]);
+  const config = { strategy: "save-slot", slot: 0, saveFiles: ["queen.s00"] };
+  const scope = {
+    skipIntroTarget: "queen",
+    scummwebLaunchUrl: new URL("https://scummweb.example/scummvm.html#-x%200%20queen"),
+    introCheckpointPath: "/tmp/scummweb-intro",
+    ensureDirectory() {},
+    buildVersionedAssetUrl: (url) => url,
+    FS: {
+      writeFile: (path, bytes) => files.set(path, bytes),
+      unlink: (path) => files.delete(path),
+    },
+    fetch: async (url) => url === "games.json"
+      ? { ok: true, json: async () => ({ games: [{ target: "queen", skipIntro: config }] }) }
+      : { ok: true, arrayBuffer: async () => checkpoint.buffer },
+  };
+  await runInNewContext("let finishIntroCheckpoint;\n" + template.slice(start, end) + "\nsetupSkipIntroSaves();", scope);
+  assert.equal(files.get(playerPath), player);
+  assert.equal(scope.__scummwebHasIntroCheckpoint, undefined);
+  scope.__scummwebBeginIntroCheckpoint("queen");
+  assert.equal(scope.__scummwebHasIntroCheckpoint("queen.s00"), true);
+  assert.equal(scope.__scummwebHasIntroCheckpoint("queen.s01"), false);
+  scope.__scummwebScanningSaves = true;
+  assert.equal(scope.__scummwebHasIntroCheckpoint("queen.s00"), false);
+  scope.__scummwebFinishIntroCheckpoint();
+  assert.equal(scope.__scummwebHasIntroCheckpoint, undefined);
+  assert.equal(scope.__scummwebSkipIntroSeedStatus.finished, true);
+  assert.deepEqual([...files], [[playerPath, player]]);
 });
