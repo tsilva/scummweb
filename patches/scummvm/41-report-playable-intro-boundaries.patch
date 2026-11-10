@@ -340,12 +340,13 @@ index ab155814..1ffe22b1 100644
  #include "scumm/imuse/drivers/macintosh.h"
  #include "scumm/imuse/drivers/midi.h"
  #include "scumm/detection_steam.h"
-@@ -2953,6 +2955,10 @@ Common::Error ScummEngine::go() {
+@@ -2953,6 +2955,11 @@ Common::Error ScummEngine::go() {
  				((SoundHE *)_sound)->feedMixer();
  			}
  
 +#ifdef __EMSCRIPTEN__
-+			if (_roomResource != 0 && _userPut > 0 && vm.cutSceneStackPointer == 0)
++			if (_roomResource != 0 && _userPut > 0 && vm.cutSceneStackPointer == 0 &&
++				(!ScummWebIntro::nativeSkipEnabled() || (_cursor.state > 0 && vm.cutScenePtr[0] == 0)))
 +				ScummWebIntro::gameplayStarted();
 +#endif
  			if (VAR_LAST_FRAME_SCUMM_TIME != 0xFF)
@@ -353,10 +354,9 @@ index ab155814..1ffe22b1 100644
  		}
 diff --git a/engines/scummweb-intro.h b/engines/scummweb-intro.h
 new file mode 100644
-index 00000000..5a005fca
 --- /dev/null
 +++ b/engines/scummweb-intro.h
-@@ -0,0 +1,25 @@
+@@ -0,0 +1,48 @@
 +/* ScummVM - Graphic Adventure Engine
 + *
 + * Distributed under the GNU General Public License, version 3 or later.
@@ -365,16 +365,39 @@ index 00000000..5a005fca
 +#define ENGINES_SCUMMWEB_INTRO_H
 +
 +#ifdef __EMSCRIPTEN__
-+#include <emscripten.h>
++#include <emscripten/em_asm.h>
 +
 +namespace ScummWebIntro {
 +
 +// One transition per game frame document. The shell owns the player UI.
++inline bool &startupFinished() {
++	static bool finished = false;
++	return finished;
++}
++
++inline bool nativeSkipEnabled() {
++	static const bool enabled = EM_ASM_INT({ return typeof globalThis.__scummwebUpdateIntroSkip === "function"; }, 0);
++	return enabled;
++}
++
++// Only a native skip point can consume a request. Deactivating the point
++// drops an unhandled click before the engine can enter a different scene.
++inline bool skipRequested(bool available = true) {
++	if (startupFinished())
++		return false;
++	return EM_ASM_INT({ return globalThis.__scummwebUpdateIntroSkip?.(!!$0) || 0; }, available);
++}
++
++class SkipSegment {
++public:
++	~SkipSegment() { skipRequested(false); }
++};
++
 +inline void gameplayStarted() {
-+	static bool reported = false;
-+	if (reported)
++	if (startupFinished())
 +		return;
-+	reported = true;
++	skipRequested(false);
++	startupFinished() = true;
 +	EM_ASM({ globalThis.__scummwebReportGameplayStarted?.(); });
 +}
 +

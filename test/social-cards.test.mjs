@@ -9,10 +9,8 @@ import proxyTesting from "next/experimental/testing/server.js";
 import sharp from "sharp";
 import { generateSocialCards } from "../scripts/generate-social-cards.mjs";
 import { getSocialCardData } from "../lib/social-card-data.mjs";
-import { getGameSocialCardPath } from "../lib/social-card-paths.mjs";
 import { getBundledGameLibrary } from "../lib/catalog.mjs";
 import { getRecognizedGames } from "../app/recognized-games.mjs";
-import manifest from "../data/social-cards.json" with { type: "json" };
 import library from "../scummvm-shell/games.json" with { type: "json" };
 import swc from "next/dist/build/swc/index.js";
 import { runInNewContext } from "node:vm";
@@ -140,9 +138,12 @@ test("the real renderer produces a complete JPEG offline from local WebP artwork
 
 test("every recognized game advertises a static asset, with static rewrites for both legacy URLs", async () => {
   await generateSocialCards();
+  // Generation can replace the manifest and prune the old filenames.
+  const { getGameSocialCardPath } = await import("../lib/social-card-paths.mjs");
   const games = getRecognizedGames(getBundledGameLibrary(library).games);
-  assert.deepEqual(Object.keys(manifest.cards).sort(), games.map((game) => game.slug).sort());
   const require = createRequire(import.meta.url);
+  const manifest = require("../data/social-cards.json");
+  assert.deepEqual(Object.keys(manifest.cards).sort(), games.map((game) => game.slug).sort());
   const config = require("../next.config.js");
   const rewrites = await config.rewrites();
   for (const game of games) {

@@ -170,7 +170,7 @@
     {
       "path": "patches/scummvm/41-report-playable-intro-boundaries.patch",
       "status": "active",
-      "sha256": "fc9f9668b6dad2c664a5be6b08b2614f03dc0eb739203d473bfdd97b5d8dd007",
+      "sha256": "634bcd99417e764c8103afcc7f60194e6b5d52f0fd61c7b8e3b2d7a14498abb9",
       "purpose": "Report the native transition out of the bundled intro to the browser player.",
       "invariants": [
         "Only report once per shell document at the engine's first playable transition, independently of the first rendered frame.",
@@ -675,6 +675,21 @@
         "Inspect PreAGI collection counters after a choice and check the victory predicate against the actual ending and quit paths."
       ],
       "retire_when": "Upstream exposes PreAGI native story counters and identity through an equivalent telemetry interface."
+    },
+    {
+      "path": "patches/scummvm/43-skip-imported-opening-segments.patch",
+      "status": "active",
+      "sha256": "b0ed6e16de9a68ad6c0a78648cb3ad0e34fff7ad6586b6792461dabee2013cdf",
+      "purpose": "Expose native intro skip points in imported Sierra and LucasArts games without borrowing another edition’s save.",
+      "invariants": [
+        "Offer the action only at an active native skip point. Discard pending requests at its end and permanently stop offering it after gameplay begins.",
+        "Preserve native menu and story choices. Keep bundled checkpoints, Continue, and unrelated input paths independent."
+      ],
+      "verification": [
+        "In Brave launch imported AGI, SCI, ADL, SCUMM and GrimE games, skip a supported opening segment and confirm first gameplay or the original selection prompt.",
+        "Confirm the action is absent in gameplay and on Continue, and verify bundled checkpoints still skip correctly."
+      ],
+      "retire_when": "Upstream reports and accepts edition-aware native startup skip points through a browser interface."
     }
   ]
 }

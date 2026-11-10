@@ -197,3 +197,7 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
   the evaluator change queue so the baseline and event budget stay stable.
   GrimE progress reads raw Lua fields inside a balanced stack block.
   Preserve the distinction between story credits and the menu credits.
+- For imported intro skipping, preserve the native boundary between a
+  skippable opening segment and a gameplay or selection prompt. Never use a
+  bundled save against an unverified edition. An intro skip request must
+  expire when its native skip point closes.

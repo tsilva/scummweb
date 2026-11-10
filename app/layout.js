@@ -3,9 +3,11 @@ import { getVersionedSiteAssetPath } from "./asset-paths";
 import { analyticsStartupScript } from "./analytics-startup.mjs";
 import { APP_THEME_COLOR, HOME_DESCRIPTION, HOME_TITLE, SITE_NAME } from "./seo";
 import { getMetadataBase } from "./site-config";
+import InstalledAppFullscreen from "./installed-app-fullscreen";
 import SiteAnalytics from "./site-analytics";
 import { initialHeroTitleFit } from "./home-shell/hero-title-fit.mjs";
 import { initialActionsScript } from "./home-shell/initial-actions.mjs";
+import { installPromptStartup } from "./home-shell/install-prompt-startup.mjs";
 import "./globals.css";
 import "./styles/home-shell.css";
 import "./styles/settings.css";
@@ -68,10 +70,12 @@ export default function RootLayout({ children }) {
         <meta content={APP_THEME_COLOR} name="theme-color" />
         <script dangerouslySetInnerHTML={{ __html: initialHeroTitleFit }} />
         <script dangerouslySetInnerHTML={{ __html: initialActionsScript }} />
+        <script dangerouslySetInnerHTML={{ __html: installPromptStartup }} />
         <script dangerouslySetInnerHTML={{ __html: analyticsStartupScript }} />
       </head>
       <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
         {children}
+        <InstalledAppFullscreen />
         <SiteAnalytics />
       </body>
     </html>

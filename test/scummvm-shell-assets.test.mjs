@@ -26,11 +26,12 @@ test("required shell asset paths are managed and versioned matchers cover expect
   assert.equal(isVersionedAsset("/unmanaged.txt"), false);
 });
 
-test("install manifests reference an opaque maskable icon and retain standard icons", async () => {
+test("the app requests fullscreen on launch and retains standard and maskable install icons", async () => {
   const shell = new URL("../scummvm-shell/", import.meta.url);
   const brand = new URL("../public/brand/web-seo/", import.meta.url);
   const shellManifest = JSON.parse(fs.readFileSync(new URL("manifest.json", shell)));
   const brandManifest = JSON.parse(fs.readFileSync(new URL("site.webmanifest", brand)));
+  assert.equal(shellManifest.display, "fullscreen");
   assert.deepEqual(shellManifest.icons, brandManifest.icons.map((icon) => ({
     ...icon,
     src: icon.src.replace("android-chrome-", "scummvm-"),

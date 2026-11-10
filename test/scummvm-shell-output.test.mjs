@@ -60,6 +60,35 @@ test("boot polling in the app still reads shell output for failures", () => {
   assert.match(bootStateSource, /BOOT_FAILURE_PATTERNS\.some\(\(pattern\) => pattern\.test\(outputValue\)\)/);
 });
 
+test("the imported intro bridge consumes clicks only at the active native skip point", () => {
+  const shell = fs.readFileSync(shellHtmlPath, "utf8");
+  const bridge = shell.match(/if \(isLocalGame && !isCatalogArchive && !scummwebLaunchUrl\.searchParams\.has\("continue"\)\) \{[\s\S]+?(?=const readyStatePriority=)/)?.[0];
+  assert.ok(bridge, "the generated shell includes the native intro bridge");
+  const messages = [];
+  const install = (query = "", isCatalogArchive = false) => {
+    const scope = {
+      isLocalGame: true, isCatalogArchive, scummwebLaunchUrl: new URL("https://scummweb.example/scummvm.html" + query),
+      scummwebMessageSource: "scummweb", buildCurrentFrameHref: () => "/scummvm.html#--auto-detect",
+      postParentMessage: (message) => messages.push(message.available),
+    };
+    vm.runInNewContext(bridge, scope);
+    return scope;
+  };
+  const { __scummwebRequestIntroSkip: request, __scummwebUpdateIntroSkip: update } = install();
+  assert.equal(request(), false);
+  assert.equal(update(true), false);
+  assert.equal(request(), true);
+  assert.equal(request(), false);
+  assert.equal(update(true), true);
+  assert.equal(update(true), false);
+  assert.equal(request(), true);
+  assert.equal(update(false), false);
+  assert.equal(update(true), false);
+  assert.deepEqual(messages, [true, false, true]);
+  assert.equal(install("?continue=1").__scummwebRequestIntroSkip, undefined);
+  assert.equal(install("", true).__scummwebRequestIntroSkip, undefined);
+});
+
 function createTouchInput() {
   const shellHtml = fs.readFileSync(shellHtmlPath, "utf8");
   const constants = shellHtml.match(/const touchTapDurationMs=[\s\S]+?(?=let gameRunning=)/);
