@@ -119,8 +119,8 @@ manifest["icons"] = [
     }
     for icon in brand_manifest["icons"]
 ]
-manifest["short_name"] = "scummweb"
-manifest["name"] = "scummweb"
+manifest["short_name"] = brand_manifest["short_name"]
+manifest["name"] = brand_manifest["name"]
 manifest["description"] = "Unofficial browser-targeted WebAssembly build forked from ScummVM."
 manifest["start_url"] = "/"
 manifest["background_color"] = "#1a4d1a"

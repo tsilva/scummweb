@@ -1402,6 +1402,8 @@ refresh favicon, manifest and Apple touch icon URLs when artwork changes.
 Existing Android installations can refresh their icons after deployment on the
 browser's update schedule.
 
+The app installs as `ScummWEB`.
+
 The app manifest requests fullscreen on launch. If the browser opens the
 installed app in a standalone window, ScummWEB requests fullscreen on the first
 interaction that grants permission and keeps it active between the catalog and
