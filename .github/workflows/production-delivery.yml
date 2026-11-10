@@ -37,3 +37,6 @@ jobs:
     uses: ./.github/workflows/prebuilt-delivery.yml
     with:
       promote: true
+    secrets:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
