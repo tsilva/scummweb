@@ -1266,6 +1266,10 @@ reference; never substitute reimagined hero art. Remove scan damage and extraneo
 stickers without redesigning the cover. Report missing original box references.
 Screenshots always remain original gameplay captures; never generate or repaint them.
 
+The Nippon Safes, Inc. gallery uses original English DOS captures from the
+[ScummVM screenshot gallery](https://www.scummvm.org/screenshots/other/parallaction:nippon/).
+The bundled Amiga game and recognized imports share this gallery.
+
 The Grim Fandango and Escape from Monkey Island demos use their games’ original
 English PC box fronts as references. Zork I–III use Infocom’s English grey-box
 fronts. The Museum of Computer Adventure Game History provides the reference

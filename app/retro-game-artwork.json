@@ -4671,14 +4671,31 @@
     ],
     "posterImage": "/launcher/nippon-scummweb-generated-2026-11-05-r1-cover.webp",
     "screenshots": [
-      "/launcher/nippon-shot-1.png",
-      "/launcher/nippon-shot-2.png",
-      "/launcher/nippon-shot-3.png"
+      "/launcher/nippon-en-shot-1.png",
+      "/launcher/nippon-en-shot-2.png",
+      "/launcher/nippon-en-shot-3.png"
     ],
     "summary": "Switch between three unlikely crooks as their separate jobs collide in a Japanese heist.",
     "studio": "Dynabyte",
     "genre": "Comedy caper adventure",
     "sources": {
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/parallaction/nippon/nippon_dos_en_1_3_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/parallaction:nippon/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/parallaction/nippon/nippon_dos_en_1_1_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/parallaction:nippon/"
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.scummvm.org/data/screenshots/parallaction/nippon/nippon_dos_en_1_2_full.png",
+          "page": "https://www.scummvm.org/screenshots/other/parallaction:nippon/"
+        }
+      ],
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2022"
       ],
