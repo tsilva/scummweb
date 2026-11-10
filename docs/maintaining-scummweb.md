@@ -416,8 +416,10 @@ The sliders icon beside **Game Library** opens sorting and genre filtering for
 both public and imported games. **Featured** is the default sort. It puts
 Beneath a Steel Sky, Flight of the Amazon Queen, Lure of the Temptress, DreamWeb,
 and Broken Sword 2.5 first, then lists other full games and demos in separate
-A–Z groups by displayed title. Select **All genres** to remove the genre filter,
-or sort the whole list by name, release year, genre, or studio.
+A–Z groups. Hugo's House of Horrors appears before Hugo II in each group.
+Hi-Res Adventure #1: Mystery House follows the Zork games at the end of the
+full-game group. Select **All genres** to remove the genre filter, or sort the
+whole list by name, release year, genre, or studio.
 The **Name** options keep numbered series in installment order, treating Roman and Arabic
 numerals alike. Sort-only aliases in `lib/game-title-sort.mjs` place unnumbered
 first games and irregularly named sequels with their series. For example,

@@ -1,4 +1,4 @@
-import { compareGameTitles } from "../../lib/game-title-sort.mjs";
+import { compareGameTitles, titleSortKey } from "../../lib/game-title-sort.mjs";
 import { isDemoGame } from "../game-versions.mjs";
 
 const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
@@ -7,9 +7,14 @@ const featuredTargets = ["sky", "queen", "lure", "dreamweb-cd", "sword25"];
 export const defaultLibraryQuery = { sort: "featured", genre: "" };
 
 function featuredRank(game) {
-  if (isDemoGame(game)) return featuredTargets.length + 1;
+  if (isDemoGame(game)) return featuredTargets.length + 2;
+  if (game.target === "hires1") return featuredTargets.length + 1;
   const index = featuredTargets.indexOf(game.target);
   return index >= 0 ? index : featuredTargets.length;
+}
+
+function featuredTitle({ game, title }) {
+  return (game.gameId || game.target) === "hugo1" ? titleSortKey(title) : title;
 }
 
 export function libraryYear(game) {
@@ -51,7 +56,7 @@ export function queryLibrary(items, query) {
   return result.sort((a, b) => {
     if (field === "featured") {
       return featuredRank(a.game) - featuredRank(b.game)
-        || collator.compare(a.title, b.title)
+        || collator.compare(featuredTitle(a), featuredTitle(b))
         || collator.compare(a.key, b.key);
     }
     if (field === "year") {
