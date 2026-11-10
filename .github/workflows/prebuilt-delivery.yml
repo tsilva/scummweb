@@ -139,7 +139,7 @@ jobs:
             jq -e --arg host "${DEPLOYMENT_URL#https://}" --arg project "$VERCEL_PROJECT_ID" \
               --arg commit "$GITHUB_SHA" --arg run "$GITHUB_RUN_ID" '
                 .url == $host and .projectId == $project and .target == "production"
-                and .readyState == "READY" and .alias == [] and .source == "cli"
+                and .readyState == "READY" and .alias == [] and .prebuilt == true
                 and .meta.scummwebBuildCommit == $commit and .meta.scummwebBuildRun == $run
               '
           vercel api "/v6/deployments/$DEPLOYMENT_ID/files?teamId=$VERCEL_ORG_ID" |
@@ -157,7 +157,17 @@ jobs:
           set -euo pipefail
           current_main=$(gh api repos/tsilva/scummweb/git/ref/heads/main --jq .object.sha)
           test "$current_main" = "$GITHUB_SHA" || { echo 'A newer commit is on main' >&2; exit 1; }
-          vercel promote "$DEPLOYMENT_ID" --yes --non-interactive
-          vercel api "/v9/projects/$VERCEL_PROJECT_ID?teamId=$VERCEL_ORG_ID" |
-            jq -e --arg id "$DEPLOYMENT_ID" '.targets.production.id == $id
-              and (.targets.production.alias | index("scummweb.tsilva.eu") != null)'
+          vercel api "/v10/projects/$VERCEL_PROJECT_ID/promote/$DEPLOYMENT_ID?teamId=$VERCEL_ORG_ID" \
+            --method POST
+          for _ in {1..24}; do
+            if vercel api "/v4/aliases/scummweb.tsilva.eu?teamId=$VERCEL_ORG_ID" |
+              jq -e --arg id "$DEPLOYMENT_ID" --arg project "$VERCEL_PROJECT_ID" '
+                .projectId == $project and .alias == "scummweb.tsilva.eu" and .deploymentId == $id
+              ' >/dev/null; then
+              printf 'Production is serving %s\n' "$DEPLOYMENT_ID"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo 'Timed out waiting for the production alias' >&2
+          exit 1
