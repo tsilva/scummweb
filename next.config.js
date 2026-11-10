@@ -3,6 +3,7 @@ const artworkStorage = require("./data/artwork-storage.json");
 const socialCards = require("./data/social-cards.json");
 const runtimeAssets = require("./scummvm-shell/runtime-assets.json");
 const assetConfig = require("./lib/scummvm-shell-assets.js");
+const prebuiltDeploymentId = process.env.SCUMMWEB_DEPLOYMENT_ID;
 
 function getScummvmAssetVersion() {
   const rawVersion =
@@ -44,6 +45,7 @@ function getSentryEnvironment() {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  ...(prebuiltDeploymentId ? { deploymentId: prebuiltDeploymentId } : {}),
   distDir: getDistDir(),
   turbopack: {
     rules: {
@@ -126,7 +128,9 @@ const nextConfig = {
   },
 };
 
-const isHostedBuild = process.env.VERCEL === "1" && Boolean(process.env.VERCEL_DEPLOYMENT_ID);
+const isHostedBuild = process.env.VERCEL === "1" && Boolean(
+  process.env.VERCEL_DEPLOYMENT_ID || (prebuiltDeploymentId && process.env.SENTRY_AUTH_TOKEN),
+);
 
 module.exports = withSentryConfig(nextConfig, {
   sourcemaps: { disable: !isHostedBuild },
