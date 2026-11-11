@@ -15,5 +15,5 @@ jobs:
   audit:
     uses: tsilva/.github/.github/workflows/lighthouse-ci.yml@1eb40277dd97b1c617d4ae53aef7bf21f5dd1dd3
     with:
-      url: "https://scummweb.tsilva.eu/?analytics_traffic=automated"
+      url: "https://scummweb.tsilva.eu/"
       sample_timings: true
