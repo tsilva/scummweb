@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[2]
 PREFIX = Path.home() / ".config/infisical"
 PROFILE = PREFIX / "sentry-readers/scummweb.json"
 PROJECT = "e1c358f8-0678-45d7-a2a8-270c2f29aadd"
+VAULT_PROJECT = "5078c850-3f93-46d8-8afe-82107df8b931"
 FILES = {
     ".infisical.json",
     "scripts/list_sentry_issues.mjs",
@@ -30,7 +31,7 @@ EXPECTED = {
     "source_secret_name": "SENTRY_AUTH_TOKEN",
     "bundle": "local-scummweb-sentry-read",
     "node": str(PREFIX / "runtimes/node-v24.22.1-darwin-arm64/bin/node"),
-    "infisical": str(PREFIX / "cli/0.44.13/infisical"),
+    "infisical": str(PREFIX / "cli/0.45.6/infisical"),
     "ca_file": str(PREFIX / "agent-vault-ca.pem"),
     "ca_fingerprint": (
         "SHA256:37:B2:E0:81:45:EC:C0:58:46:2E:D1:2F:E1:2B:E6:AE:"
@@ -99,6 +100,7 @@ def command(data, arguments):
         "agent-vault",
         "run",
         "--domain=https://app.infisical.com",
+        "--project-id=" + VAULT_PROJECT,
         "--access-bundle=" + data["bundle"],
         "--proxy=127.0.0.1:8283",
         "--ca-fingerprint=" + data["ca_fingerprint"],

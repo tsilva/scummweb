@@ -76,8 +76,10 @@ class SecretTests(unittest.TestCase):
                     "INFISICAL_TOKEN": "dummy-token", "INFISICAL_CLIENT_SECRET": "dummy-token",
                     "OPENROUTER_API_KEY": "stale", "SENTRY_ORG": "tsilva"}
         with patch.dict(os.environ, original, clear=True):
-            actual = application_environment({"SENTRY_AUTH_TOKEN": VALUE, "PATH": "/evil", "NODE_OPTIONS": "evil"})
-        self.assertEqual(actual["SENTRY_AUTH_TOKEN"], VALUE)
+            with self.assertRaisesRegex(SecretError, "cannot receive"):
+                application_environment({"SENTRY_AUTH_TOKEN": VALUE})
+            actual = application_environment({"PATH": "/evil", "NODE_OPTIONS": "evil"})
+        self.assertEqual(actual["SENTRY_AUTH_TOKEN"], "")
         self.assertEqual(actual["PATH"], "/safe/bin")
         self.assertEqual(actual["SENTRY_ORG"], "tsilva")
 
@@ -104,13 +106,42 @@ class SecretTests(unittest.TestCase):
             client.assert_not_called()
             execute.assert_not_called()
 
-    def test_failed_infisical_fetch_never_launches_the_application(self):
-        with patch("run.sys.argv", ["run.py", "dev", "--port", "auto"]), \
-                patch("run.Infisical") as client, patch("run.os.execvpe") as execute:
-            client.return_value.read.side_effect = SecretError("Fetch failed.")
-            with self.assertRaises(SecretError):
+    def test_local_commands_never_fetch_source_credentials(self):
+        for arguments in (["dev", "--port", "auto"], ["check"], ["issues", "--help"]):
+            with self.subTest(arguments=arguments), \
+                    patch("run.sys.argv", ["run.py", *arguments]), \
+                    patch("run.Infisical", side_effect=AssertionError("source fetch")) as client, \
+                    patch("run.os.chdir"), patch("run.os.execvpe") as execute, \
+                    patch.dict(os.environ, {"SENTRY_AUTH_TOKEN": VALUE, "UNRELATED_API_KEY": VALUE}):
                 launcher.main()
+                client.assert_not_called()
+                environment = execute.call_args.args[2]
+                self.assertEqual(environment["SENTRY_AUTH_TOKEN"], "")
+                self.assertNotIn("UNRELATED_API_KEY", environment)
+
+    def test_existing_issue_command_selects_the_sandboxed_reader(self):
+        arguments = launcher.selected_command(["issues", "--days", "3", "--limit", "1"])
+        self.assertEqual(arguments[:4], [launcher.sys.executable, "-I", "-S", "-B"])
+        self.assertEqual(arguments[4], str(ROOT / "scripts/infisical/sentry_vault.py"))
+        self.assertEqual(arguments[5:], ["issues", "--days", "3", "--limit", "1"])
+
+    def test_latest_native_reader_pins_project_and_sandbox(self):
+        import sentry_vault
+        command = sentry_vault.command(sentry_vault.EXPECTED, ["check"])
+        self.assertTrue(command[0].endswith("/cli/0.45.6/infisical"))
+        self.assertIn("--project-id=" + sentry_vault.VAULT_PROJECT, command)
+        self.assertIn("/usr/bin/sandbox-exec", command)
+        self.assertIn("SENTRY_AUTH_TOKEN=sentry_read_public_placeholder", command)
+
+    def test_changed_reader_pin_stops_without_source_fallback(self):
+        import sentry_vault
+        with patch.object(sentry_vault, "profile", side_effect=ValueError("pin")), \
+                patch.object(sentry_vault.subprocess, "run") as execute, \
+                patch("run.Infisical") as source:
+            with self.assertRaises(ValueError):
+                sentry_vault.main(["check"])
             execute.assert_not_called()
+            source.assert_not_called()
 
 
     def test_custom_sentry_loader_does_not_restore_a_missing_token(self):
@@ -170,6 +201,27 @@ class SecretTests(unittest.TestCase):
         self.assertIn("SENTRY_AUTH_TOKEN", result.stderr)
         self.assertNotIn("Unexpected provider request", result.stderr)
         self.assertNotIn("dummy-stale-only", result.stderr)
+
+    def test_direct_issue_reader_rejects_raw_key_without_opening_dotenv(self):
+        code = """
+          import fs from 'node:fs';
+          const read = fs.readFileSync;
+          fs.readFileSync = (path, ...args) => {
+            if (String(path).includes('.env')) throw new Error('Unexpected dotenv read');
+            return read(path, ...args);
+          };
+          globalThis.fetch = () => { throw new Error('Unexpected provider request'); };
+          await import(process.argv[1]);
+        """
+        environment = {"PATH": os.environ["PATH"], "SENTRY_AUTH_TOKEN": VALUE}
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", code, str(ROOT / "scripts/list_sentry_issues.mjs")],
+            env=environment, capture_output=True, text=True,
+        )
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("public placeholder", result.stderr)
+        self.assertNotIn("Unexpected", result.stderr)
+        self.assertNotIn(VALUE, result.stdout + result.stderr)
 
     def test_publisher_fetches_only_the_pinned_shared_pair(self):
         with patch.object(self.client, "command", side_effect=["a" * 32 + "\n", "b" * 64 + "\n"]) as command:

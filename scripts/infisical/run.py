@@ -1,4 +1,4 @@
-"""Load managed development credentials for the selected, isolated command."""
+"""Launch local checks without keys and route Sentry reads through Agent Vault."""
 
 import argparse
 import os
@@ -34,7 +34,9 @@ def selected_command(arguments):
     if arguments[0] == "issues":
         if "--env-file" in arguments[1:]:
             raise SecretError("Private env-file overrides are not supported.")
-        return [*COMMANDS["issues"], *arguments[1:]]
+        return [sys.executable, "-I", "-S", "-B",
+                str(ROOT / "scripts/infisical/sentry_vault.py"),
+                "issues", *arguments[1:]]
     if arguments[1:] and not (arguments[0] == "dev"
                               and arguments[1:] in (["--port", "auto"], ["--port=auto"])):
         raise SecretError("Only --port auto is supported for development; project and environment overrides are rejected.")
@@ -47,9 +49,7 @@ def main():
         environment = (cli_environment() if any(arg in ("--help", "-h") for arg in sys.argv[2:])
                        else publisher_environment(Infisical().read_publisher_credentials()))
     else:
-        environment = application_environment(Infisical().read())
-    if sys.argv[1] == "dev":
-        environment["SENTRY_AUTH_TOKEN"] = ""
+        environment = application_environment({})
     os.chdir(ROOT)
     os.execvpe(command[0], command, environment)
 
