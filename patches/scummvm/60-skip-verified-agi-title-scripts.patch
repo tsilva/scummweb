@@ -1,0 +1,127 @@
+diff --git a/engines/agi/agi.h b/engines/agi/agi.h
+--- a/engines/agi/agi.h
++++ b/engines/agi/agi.h
+@@ -396,6 +396,7 @@
+ 	bool playerControl;
+ #ifdef __EMSCRIPTEN__
+ 	bool checkedIntroKey = false;
++	int browserIntroSkippedRoom = -1;
+ #endif /**< player is in control */
+ 	bool exitAllLogics; /**< break cycle after new.room */
+ 	bool pictureShown;  /**< show.pic has been issued */
+@@ -711,6 +712,10 @@
+ 	~AgiEngine() override;
+ 
+ 	bool promptIsEnabled() override;
++#ifdef __EMSCRIPTEN__
++	bool isBrowserOpeningRoom();
++	bool wantsBrowserOpeningKey();
++#endif
+ 
+ 	Common::Error loadGameState(int slot) override;
+ 	Common::Error saveGameState(int slot, const Common::String &description, bool isAutosave = false) override;
+diff --git a/engines/agi/cycle.cpp b/engines/agi/cycle.cpp
+--- a/engines/agi/cycle.cpp
++++ b/engines/agi/cycle.cpp
+@@ -432,7 +432,7 @@
+ #endif
+ 			interpretCycle();
+ #ifdef __EMSCRIPTEN__
+-			if (_game.playerControl && _text->promptIsEnabled())
++			if (_game.playerControl && _text->promptIsEnabled() && !isBrowserOpeningRoom())
+ 				ScummWebIntro::gameplayStarted();
+ 			else if (!_game.checkedIntroKey)
+ 				ScummWebIntro::skipRequested(false);
+diff --git a/engines/agi/op_test.cpp b/engines/agi/op_test.cpp
+--- a/engines/agi/op_test.cpp
++++ b/engines/agi/op_test.cpp
+@@ -117,8 +117,64 @@
+ 	state->testResult = vm->testPosn(p[0], p[1], p[2], p[3], p[4]);
+ }
+ 
++#ifdef __EMSCRIPTEN__
++bool AgiEngine::isBrowserOpeningRoom() {
++	if (!ScummWebIntro::nativeSkipEnabled() || ScummWebIntro::startupFinished())
++		return false;
++
++	const char *md5 = getGameMD5();
++	if (!md5)
++		return false;
++	const int room = getVar(VM_VAR_CURRENT_ROOM);
++	switch (getGameID()) {
++	case GID_SQ1:
++		return room == 67 && strcmp(md5, "0b216d931e95750f1f4837d6a4b821e5") == 0;
++	case GID_SQ2:
++		return (room == 140 || room == 1) && strcmp(md5, "28add5125484302d213911df60d2aded") == 0;
++	case GID_KQ2:
++		return room == 97 && strcmp(md5, "b866f0fab2fad91433a637a828cfa410") == 0;
++	case GID_GOLDRUSH:
++		return room == 73 && strcmp(md5, "a1d4de3e75c2688c1e2ca2634ffc3bd8") == 0;
++	case GID_PQ1:
++		return room == 1 && strcmp(md5, "cfa93e5f2aa7378bddd10ad6746a2ffb") == 0;
++	case GID_BC:
++		return room == 67 && strcmp(md5, "0c5a9acbcc7e51127c34818e75806df6") == 0;
++	case GID_MH2:
++		return (room == 153 || room == 154) && strcmp(md5, "b412e8a126368b76696696f7632d4c16") == 0;
++	default:
++		return false;
++	}
++}
++
++bool AgiEngine::wantsBrowserOpeningKey() {
++	const int room = getVar(VM_VAR_CURRENT_ROOM);
++	if (_game.browserIntroSkippedRoom == room)
++		return false;
++	_game.checkedIntroKey = true;
++
++	const bool continuing =
++		(getGameID() == GID_SQ2 && _game.browserIntroSkippedRoom == 140 && room == 1) ||
++		(getGameID() == GID_MH2 && _game.browserIntroSkippedRoom == 153 && room == 154);
++	if (!continuing && !ScummWebIntro::skipRequested())
++		return false;
++
++	_game.browserIntroSkippedRoom = room;
++	ScummWebIntro::skipRequested(false);
++	return true;
++}
++#endif
++
+ void condController(AgiGame *state, AgiEngine *vm, uint8 *p) {
+ 	state->testResult = vm->testController(p[0]);
++#ifdef __EMSCRIPTEN__
++	const int room = vm->getVar(VM_VAR_CURRENT_ROOM);
++	// The original Manhunter 2 title script tests controller 20 with these
++	// guards before advancing. Other controllers retain their ordinary input.
++	if (!state->testResult && p[0] == 20 && vm->getGameID() == GID_MH2 &&
++		vm->isBrowserOpeningRoom() && state->_curLogic == &state->logics[room] &&
++		!vm->getFlag(21) && (room == 153 || !vm->getFlag(20)))
++		state->testResult = vm->wantsBrowserOpeningKey();
++#endif
+ }
+ 
+ void condHaveKey(AgiGame *state, AgiEngine *vm, uint8 *p) {
+@@ -135,14 +191,17 @@
+ 	uint16 key = vm->processAGIEvents();
+ 	vm->cycleInnerLoopInactive();
+ #ifdef __EMSCRIPTEN__
+-	// English Amiga Space Quest keeps the interpreter's default movement
+-	// flag in room 67, where have.key advances the credits to the Arcada.
+-	const char *md5 = vm->getGameMD5();
+-	const bool spaceQuestOpening = vm->getGameID() == GID_SQ1 && vm->getVar(VM_VAR_CURRENT_ROOM) == 67 &&
+-		md5 && strcmp(md5, "0b216d931e95750f1f4837d6a4b821e5") == 0;
+-	state->checkedIntroKey = !vm->promptIsEnabled() && (!state->playerControl || spaceQuestOpening);
+-	if (ScummWebIntro::skipRequested(state->checkedIntroKey) && !key)
++	const int room = vm->getVar(VM_VAR_CURRENT_ROOM);
++	const bool opening = vm->isBrowserOpeningRoom() && vm->getGameID() != GID_MH2 &&
++		(vm->getGameID() == GID_SQ1 || state->_curLogic == &state->logics[room]);
++	if (!key && opening && vm->wantsBrowserOpeningKey()) {
+ 		key = AGI_KEY_ENTER;
++	} else if (!opening) {
++		const bool canSkip = !vm->promptIsEnabled() && !state->playerControl;
++		state->checkedIntroKey |= canSkip;
++		if (!key && canSkip && ScummWebIntro::skipRequested())
++			key = AGI_KEY_ENTER;
++	}
+ #endif
+ 	if (key) {
+ 		debugC(5, kDebugLevelInput, "keypress = %02x", key);

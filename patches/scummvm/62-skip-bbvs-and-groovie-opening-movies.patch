@@ -1,0 +1,160 @@
+diff --git a/engines/bbvs/bbvs.cpp b/engines/bbvs/bbvs.cpp
+--- a/engines/bbvs/bbvs.cpp
++++ b/engines/bbvs/bbvs.cpp
+@@ -21,6 +21,7 @@
+ 
+ #include "engines/scummweb-telemetry.h"
+ 
++#include "engines/scummweb-intro.h"
+ #include "bbvs/bbvs.h"
+ #include "bbvs/dialogs.h"
+ #include "bbvs/gamemodule.h"
+@@ -224,6 +225,10 @@
+ 			playVideo(_playVideoNumber);
+ 			_playVideoNumber = 0;
+ 		}
++#ifdef __EMSCRIPTEN__
++		if (_currSceneNum == 23)
++			ScummWebIntro::gameplayStarted();
++#endif
+ 	}
+ 
+ 	writeContinueSavegame();
+diff --git a/engines/bbvs/bbvs.h b/engines/bbvs/bbvs.h
+--- a/engines/bbvs/bbvs.h
++++ b/engines/bbvs/bbvs.h
+@@ -420,6 +420,9 @@
+ 
+ 	bool runMinigame(int minigameNum);
+ 	void playVideo(int videoNum);
++#ifdef __EMSCRIPTEN__
++	bool _skipPublisherVideos = false;
++#endif
+ 
+ 	void runMainMenu();
+ 	void checkEasterEgg(char key);
+diff --git a/engines/bbvs/videoplayer.cpp b/engines/bbvs/videoplayer.cpp
+--- a/engines/bbvs/videoplayer.cpp
++++ b/engines/bbvs/videoplayer.cpp
+@@ -19,6 +19,7 @@
+  *
+  */
+ 
++#include "engines/scummweb-intro.h"
+ #include "bbvs/bbvs.h"
+ #include "engines/util.h"
+ #include "graphics/surface.h"
+@@ -53,7 +54,22 @@
+ 
+ 	bool skipVideo = false;
+ 
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++	// The two publisher clips precede the original menu. Movie 2 is
++	// entered separately when the player chooses New Game.
++	const bool publisher = videoNum == 1 || videoNum == 13;
++	const bool opening = (publisher || videoNum == 2 || (isDemo() && videoNum == 3)) &&
++		ScummWebIntro::nativeSkipEnabled() && !ScummWebIntro::startupFinished();
++#endif
++
+ 	while (!shouldQuit() && !videoDecoder.endOfVideo() && !skipVideo) {
++#ifdef __EMSCRIPTEN__
++		if (opening && ((publisher && _skipPublisherVideos) || ScummWebIntro::skipRequested())) {
++			_skipPublisherVideos |= publisher;
++			break;
++		}
++#endif
+ 		if (videoDecoder.needsUpdate()) {
+ 			const Graphics::Surface *frame = videoDecoder.decodeNextFrame();
+ 			if (frame) {
+diff --git a/engines/groovie/script.cpp b/engines/groovie/script.cpp
+--- a/engines/groovie/script.cpp
++++ b/engines/groovie/script.cpp
+@@ -23,6 +23,7 @@
+ 
+ #include "audio/mididrv.h"
+ 
++#include "engines/scummweb-intro.h"
+ #include "groovie/script.h"
+ #include "groovie/cursor.h"
+ #include "groovie/graphics.h"
+@@ -362,7 +363,23 @@
+ 	}
+ }
+ 
++#ifdef __EMSCRIPTEN__
++bool Script::isT7GNewGameOpening() const {
++	// The DOS main script plays the publisher and story clips in this
++	// section after its Start New menu action and before ordinary input.
++	return _version == kGroovieT7G && _scriptFile == "script.grv" && _codeSize == 16659 &&
++		_currentInstruction >= 0x407 && _currentInstruction < 0x4cb;
++}
++#endif
++
+ void Script::step() {
++#ifdef __EMSCRIPTEN__
++	if (_browserSkipOpening && !isT7GNewGameOpening()) {
++		_browserSkipOpening = false;
++		resetFastForward();
++		ScummWebIntro::skipRequested(false);
++	}
++#endif
+ 	// Prepare the base debug string
+ 	_debugString = _scriptFile + Common::String::format("@0x%04X: ", _currentInstruction);
+ 
+@@ -994,6 +1011,19 @@
+ 		_eventMouseClicked = 0;
+ 	}
+ 
++#ifdef __EMSCRIPTEN__
++	const bool publisherLogo = _version == kGroovieT7G && _scriptFile == "script.grv" &&
++		_currentInstruction == 0x176 && fileref == 0x2431;
++	const bool story = isT7GNewGameOpening();
++	if ((publisherLogo || story) && !loopUntilAudioDone && ScummWebIntro::nativeSkipEnabled()) {
++		if ((story && _browserSkipOpening) || (!_fastForwarding && ScummWebIntro::skipRequested())) {
++			_browserSkipOpening = story;
++			_vm->_videoPlayer->fastForward();
++			_fastForwarding = true;
++			ScummWebIntro::skipRequested(false);
++		}
++	}
++#endif
+ 	// Check if the user wants to skip the video
+ 	if (_eventMouseClicked == 2 || _eventAction == kActionSkip) {
+ 		// we don't want to clear a left click here, that would eat the input
+@@ -1041,6 +1071,10 @@
+ 		}
+ 
+ 		if (endVideo || (loopUntilAudioDone && !_vm->_musicPlayer->isPlaying())) {
++#ifdef __EMSCRIPTEN__
++			if (publisherLogo || story)
++				ScummWebIntro::skipRequested(false);
++#endif
+ 			// The video has ended, or it was being looped and the audio has ended.
+ 
+ 			// Close the file
+@@ -1336,6 +1370,10 @@
+ 
+ void Script::o_sleep() {
+ 	uint16 time = readScript16bits();
++#ifdef __EMSCRIPTEN__
++	if (_browserSkipOpening && isT7GNewGameOpening())
++		return;
++#endif
+ 
+ 	debugC(1, kDebugScript, "Groovie::Script: SLEEP 0x%04X (%d ms)", time, time*3);
+ 
+diff --git a/engines/groovie/script.h b/engines/groovie/script.h
+--- a/engines/groovie/script.h
++++ b/engines/groovie/script.h
+@@ -130,6 +130,10 @@
+ 	uint16 _hotspotLeftAction;
+ 	uint16 _hotspotSlot;
+ 	bool _fastForwarding;
++#ifdef __EMSCRIPTEN__
++	bool _browserSkipOpening = false;
++	bool isT7GNewGameOpening() const;
++#endif
+ 	void resetFastForward();
+ 
+ 	// Video

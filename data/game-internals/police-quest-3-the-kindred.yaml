@@ -118,15 +118,18 @@ milestones:
     when: { flag: collected-blood }
   - id: collected-printout
     label: Collected the printout
+    implies: [army-records]
     when: { flag: collected-printout }
   - id: used-remote
     label: Used the remote
     when: { flag: used-remote }
   - id: stopped-final-attacker
     label: Stopped the final attacker
+    implies: [reached-confrontation]
     when: { flag: stopped-final-attacker }
   - id: winning-ending
     label: Solved the murder case and returned to the station
+    implies: [reached-confrontation]
     when:
       all:
         - { room: police-station }

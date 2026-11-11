@@ -1,7 +1,7 @@
 # English Windows CD 1.02.
 # Script reference: https://github.com/sluicebox/sci-scripts/tree/870a8015b689474484bf3d8b41416956d4315432/shivers-win-1.02/src
 # Script n951 proc951_12 sets each captured Ixupi bit in global104 and increments global547.
-# The postgame tour seeds all ten captures and sets flag 87; it is not a puzzle playthrough.
+# Only the successful ending menu can start the museum tour; flag 87 keeps that win verified.
 # rm39v260 enters closingMovie when all ten are captured. Its normal route enters room 923.
 schema_version: 1
 game: shivers
@@ -32,39 +32,41 @@ flags:
 milestones:
   - id: captured-sand
     label: Captured the Sand Ixupi
-    when: { all: [{ flag: captured-sand }, { flag: tour-mode, equals: false }] }
+    when: { flag: captured-sand }
   - id: captured-crystal
     label: Captured the Crystal Ixupi
-    when: { all: [{ flag: captured-crystal }, { flag: tour-mode, equals: false }] }
+    when: { flag: captured-crystal }
   - id: captured-metal
     label: Captured the Metal Ixupi
-    when: { all: [{ flag: captured-metal }, { flag: tour-mode, equals: false }] }
+    when: { flag: captured-metal }
   - id: captured-tar
     label: Captured the Tar Ixupi
-    when: { all: [{ flag: captured-tar }, { flag: tour-mode, equals: false }] }
+    when: { flag: captured-tar }
   - id: captured-wood
     label: Captured the Wood Ixupi
-    when: { all: [{ flag: captured-wood }, { flag: tour-mode, equals: false }] }
+    when: { flag: captured-wood }
   - id: captured-electric
     label: Captured the Electric Ixupi
-    when: { all: [{ flag: captured-electric }, { flag: tour-mode, equals: false }] }
+    when: { flag: captured-electric }
   - id: captured-ash
     label: Captured the Ash Ixupi
-    when: { all: [{ flag: captured-ash }, { flag: tour-mode, equals: false }] }
+    when: { flag: captured-ash }
   - id: captured-water
     label: Captured the Water Ixupi
-    when: { all: [{ flag: captured-water }, { flag: tour-mode, equals: false }] }
+    when: { flag: captured-water }
   - id: captured-fabric
     label: Captured the Fabric Ixupi
-    when: { all: [{ flag: captured-fabric }, { flag: tour-mode, equals: false }] }
+    when: { flag: captured-fabric }
   - id: captured-wax
     label: Captured the Wax Ixupi
-    when: { all: [{ flag: captured-wax }, { flag: tour-mode, equals: false }] }
+    when: { flag: captured-wax }
   - id: winning-ending
     label: Finished the museum challenge
     when:
       all:
-        - { room: ending }
-        - { variable: previous-room, equals: 935 }
         - { variable: captured, equals: 10 }
-        - { flag: tour-mode, equals: false }
+        - any:
+            - all:
+                - { room: ending }
+                - { variable: previous-room, equals: 935 }
+            - { flag: tour-mode }

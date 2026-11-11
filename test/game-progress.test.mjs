@@ -409,7 +409,7 @@ test('Elvira II counts early puzzles and studios in either order without credit 
 
 test('Sierra maps match their edition and distinguish the winning branches', async t => {
   const editions = [
-    ['space-quest-the-sarien-encounter', 'agi', 'sq1', '0b216d931e95750f1f4837d6a4b821e5', 64, {}, 43],
+    ['space-quest-the-sarien-encounter', 'agi', 'sq1', '0b216d931e95750f1f4837d6a4b821e5', 64, { vars: { 1: 63 } }],
     ['space-quest-the-sarien-encounter-sq1sci', 'sci', 'sq1sci', '1dd1b7c042f0c7345730a94633d283fe', 2, { globals: { 12: 68 } }],
     ['space-quest-ii-chapter-ii-vohaul-s-revenge', 'agi', 'sq2', '28add5125484302d213911df60d2aded', 93,
       { vars: { 96: 11, 144: 2 }, flag_bytes: { 14: 8, 24: 32 } }, 95],
@@ -604,7 +604,8 @@ test('AGI milestones distinguish reused bits and partial endings', async t => {
       [20, {}, { 6: 4 }, ['hen-wen-refuge', 'delivered-hen-wen']],
       [20, { 35: 1 }, {}, ['neutralized-cauldron']],
       [60, { 102: 69 }, {}, ['reached-cauldron-chamber', 'neutralized-cauldron']],
-      [71, {}, {}, ['neutralized-cauldron', 'winning-ending']],
+      [71, {}, {}, []],
+      [71, { 1: 12 }, {}, ['neutralized-cauldron', 'winning-ending']],
     ]],
   ];
   for (const [slug, game_id, index_md5, steps] of cases) {
@@ -786,7 +787,7 @@ test('LucasArts snapshot maps recognize the documented endings', async t => {
       { scumm_bit_bytes: { 6: 0, 9: 0, 10: 0, 11: 0, 49: 64, 56: 32 }, object_state: { 272: 1 }, running_scripts: { 138: 1 } }],
     ['monkey-island-2-lechuck-s-revenge', 'monkey2', '132bff65e6367c09cc69318ce1b59333', 110, { scumm_bit_bytes: { 6: 0, 8: 0, 40: 0, 42: 0, 45: 0 },
         object_state: { 519: 0 }, running_scripts: { 160: 1 } }],
-    ['day-of-the-tentacle', 'tentacle', '4167a92a1d46baa4f4127d918d561f88', 88, { scumm_bit_bytes: { 1: 6, 2: 0, 3: 0, 4: 0, 5: 0, 10: 0, 32: 16, 43: 0 },
+    ['day-of-the-tentacle', 'tentacle', '4167a92a1d46baa4f4127d918d561f88', 88, { scumm_bit_bytes: { 1: 6, 2: 0, 3: 0, 4: 0, 5: 0, 10: 0, 32: 16, 43: 0, 44: 0 },
         object_state: { 225: 0, 545: 0, 596: 0 } }],
     ['sam-and-max-hit-the-road', 'samnmax', 'd917f311a448e3cc7239c31bddb00dd2', 90, {
       scumm_bit_bytes: { 4: 0, 8: 0, 9: 0, 20: 0, 27: 0 },
@@ -897,11 +898,13 @@ test('Day of the Tentacle scores the two machines and human show results indepen
   const identity = { engine_id: 'scumm', game_id: 'tentacle', index_md5: '4167a92a1d46baa4f4127d918d561f88' };
   const accept = (bits, object_state = { 225: 0, 545: 0, 596: 2 }) => {
     tracker.acceptSnapshot(identity, { room_id: 29, sample_time_ms: 1, banks: {
-      scumm_bit_bytes: Object.assign(Array(44).fill(0), bits), object_state,
+      scumm_bit_bytes: Object.assign(Array(45).fill(0), bits), object_state,
     } });
     return tracker.report().reached;
   };
   assert.deepEqual(accept({}), []);
+  assert.deepEqual(accept({ 5: 2 }), [], 'Starting the final act does not deliver the patent letter');
+  assert.deepEqual(accept({ 44: 8 }), ['delivered-patent-letter']);
   assert.deepEqual(accept({ 1: 2 }), ['powered-hoagies-chron-o-john']);
   assert.deepEqual(accept({ 1: 4 }), ['started-hamster-generator', 'connected-generator-cord',
     'connected-chron-o-john-cord', 'powered-lavernes-chron-o-john']);
@@ -988,4 +991,66 @@ test('Beneath a Steel Sky scores saved script variables and the winning credits 
   assert.equal(tracker.report().percent, 100);
   vars.fill(0);
   accept(4, 2, { 125: 42, 420: 42, 640: 1 }, 'Restoring an earlier save rebuilds the score');
+});
+
+test('Shivers credits each captured Ixupi and retains the verified win in the museum tour', () => {
+  const tracker = trackerFor('shivers');
+  const identity = { engine_id: 'sci', game_id: 'shivers', index_md5: '5dc3653b80fee5c69f7c850c990cbbcc' };
+  const accept = (room_id, captured, flags = 0, previous = 0, tour = false) => {
+    const globals = Array(550).fill(0);
+    Object.assign(globals, { 12: previous, 104: flags, 214: tour ? 0x0100 : 0, 547: captured });
+    tracker.acceptSnapshot(identity, { room_id, sample_time_ms: 1, banks: { globals } });
+    return tracker.report();
+  };
+
+  assert.deepEqual(accept(39001, 1, 0x80).reached, ['captured-water']);
+  assert.deepEqual(accept(39001, 2, 0x280).reached, ['captured-water', 'captured-wax']);
+  assert.deepEqual(accept(39001, 1, 0x200).reached, ['captured-wax']);
+  assert.equal(accept(935, 10, 0x3ff).won, false);
+  assert.equal(accept(923, 10, 0x3ff, 935).won, true);
+  assert.equal(accept(39260, 10, 0x3ff, 923, true).won, true, 'Only the ending menu can enter the tour');
+  assert.equal(accept(39260, 10, 0x3ff).won, false, 'A full count alone does not prove the ending');
+  assert.deepEqual(accept(900, 0).reached, []);
+});
+
+test('The Island of Dr. Brain can be finished without maximum points', () => {
+  const tracker = trackerFor('the-island-of-dr-brain');
+  const identity = { engine_id: 'sci', game_id: 'islandbrain', index_md5: '2388efef8430b041b0f3b00b9050e4a2' };
+  const accept = (room_id, previous, score, flags = {}) => {
+    const globals = Object.assign(Array(260).fill(0), { 12: previous, 15: score }, flags);
+    tracker.acceptSnapshot(identity, { room_id, sample_time_ms: 1, banks: { globals } });
+    return tracker.report();
+  };
+
+  assert.deepEqual(accept(100, 0, 5, { 250: 0x0080 }).reached, ['solved-gears']);
+  assert.deepEqual(accept(100, 0, 5, { 250: 0x4000 }).reached, ['solved-magic-square']);
+  assert.equal(accept(100, 0, 390).won, false);
+  assert.deepEqual(accept(420, 400, 260).reached, ['winning-ending']);
+  assert.deepEqual(accept(420, 400, 390).reached, ['earned-full-puzzle-score', 'winning-ending']);
+});
+
+test('Torin’s Passage distinguishes the chapter picker from solving the previous chapter', () => {
+  const tracker = trackerFor('torin-s-passage');
+  const identity = { engine_id: 'sci', game_id: 'torin', index_md5: '1e28b9e1a0f897d9d31980fc347c427b' };
+  const accept = (room_id, prior) => {
+    tracker.acceptSnapshot(identity, { room_id, sample_time_ms: 1, banks: { globals: { 12: prior } } });
+    return tracker.report();
+  };
+  assert.deepEqual(accept(50000, -4436).reached, [], 'Room 61100 is the chapter picker');
+  assert.deepEqual(accept(50000, -24636).reached, ['reached-chapter-5']);
+  assert.equal(accept(51500, -4436).won, false, 'The chapter picker can also open the credits');
+  assert.deepEqual(accept(51500, -14136).reached, ['reached-lycentia', 'reunited-family', 'winning-ending']);
+});
+
+test('Manhunter 2 does not fill the lava maze or earlier stages when the pursuit is won', () => {
+  const tracker = trackerFor('manhunter-2-san-francisco');
+  const identity = { engine_id: 'agi', game_id: 'mh2', index_md5: 'b412e8a126368b76696696f7632d4c16' };
+  const accept = (room_id, previous, route) => {
+    const vars = Object.assign(Array(256).fill(0), { 1: previous, 90: route });
+    tracker.acceptSnapshot(identity, { room_id, sample_time_ms: 1, banks: { vars } });
+    return tracker.report();
+  };
+  assert.deepEqual(accept(186, 185, 0).reached, ['lava-maze', 'escaped-maze']);
+  assert.equal(accept(187, 183, 1).won, false);
+  assert.deepEqual(accept(187, 183, 4).reached, ['ferry-building', 'winning-ending']);
 });

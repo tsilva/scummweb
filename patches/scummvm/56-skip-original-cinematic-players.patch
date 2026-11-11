@@ -1,0 +1,257 @@
+diff --git a/engines/access/amazon/amazon_logic.cpp b/engines/access/amazon/amazon_logic.cpp
+--- a/engines/access/amazon/amazon_logic.cpp
++++ b/engines/access/amazon/amazon_logic.cpp
+@@ -389,7 +389,7 @@
+ 		_vm->_sound->playSound(0);
+ 		screen.forceFadeOut();
+ 		_vm->_events->_vbCount = 100;
+-		while (!_vm->shouldQuit() && _vm->_events->_vbCount > 0)
++		while (!_vm->shouldQuit() && !skipTitle && _vm->_events->_vbCount > 0)
+ 			_vm->_events->pollEventsAndWait();
+ 		if (_vm->shouldQuit())
+ 			return;
+@@ -397,6 +397,12 @@
+ 		_vm->_sound->freeSounds();
+ 		delete _vm->_objectsTable[0];
+ 		_vm->_objectsTable[0] = nullptr;
++
++		if (skipTitle) {
++			_vm->_room->clearRoom();
++			_vm->_events->showCursor();
++			return;
++		}
+ 
+ 		_vm->_files->_setPaletteFlag = false;
+ 		_vm->_files->loadScreen(0, 5);
+diff --git a/engines/drascula/animation.cpp b/engines/drascula/animation.cpp
+--- a/engines/drascula/animation.cpp
++++ b/engines/drascula/animation.cpp
+@@ -19,6 +19,7 @@
+  *
+  */
+ 
++#include "engines/scummweb-intro.h"
+ #include "drascula/drascula.h"
+ 
+ #include "common/text-to-speech.h"
+@@ -47,6 +48,10 @@
+ 
+ void DrasculaEngine::animation_1_1() {
+ 	debug(4, "animation_1_1()");
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++	_browserOpening = ScummWebIntro::nativeSkipEnabled();
++#endif
+ 
+ 	Common::Keymapper *keymapper = g_system->getEventManager()->getKeymapper();
+ 	keymapper->getKeymap("game-shortcuts")->setEnabled(false);
+@@ -366,6 +371,10 @@
+ 	keymapper->getKeymap("animation")->setEnabled(false);
+ 	keymapper->getKeymap("game-shortcuts")->setEnabled(true);
+ 
++#ifdef __EMSCRIPTEN__
++	_browserOpening = false;
++	_browserSkipOpening = false;
++#endif
+ 	clearRoom();
+ 	loadPic(96, frontSurface, COMPLETE_PAL);
+ 	loadPic(99, backSurface);
+diff --git a/engines/drascula/drascula.cpp b/engines/drascula/drascula.cpp
+--- a/engines/drascula/drascula.cpp
++++ b/engines/drascula/drascula.cpp
+@@ -33,6 +33,7 @@
+ 
+ #include "engines/util.h"
+ 
++#include "engines/scummweb-intro.h"
+ #include "drascula/drascula.h"
+ #include "drascula/console.h"
+ 
+@@ -468,6 +469,9 @@
+ 			curY = 56;
+ 			walkToPoint(Common::Point(65, 145));
+ 		}
++#ifdef __EMSCRIPTEN__
++		ScummWebIntro::gameplayStarted();
++#endif
+ 
+ 		// REMINDER: This is a good place to debug animations
+ 	} else if (currentChapter == 2) {
+@@ -851,6 +855,12 @@
+ 
+ Common::CustomEventType DrasculaEngine::getAction() {
+ 	updateEvents();
++#ifdef __EMSCRIPTEN__
++	if (_browserOpening && (_browserSkipOpening || ScummWebIntro::skipRequested())) {
++		_browserSkipOpening = true;
++		return kActionSkip;
++	}
++#endif
+ 	if (_actionBufferHead == _actionBufferTail)
+ 		return kActionNone;
+ 
+diff --git a/engines/drascula/drascula.h b/engines/drascula/drascula.h
+--- a/engines/drascula/drascula.h
++++ b/engines/drascula/drascula.h
+@@ -480,6 +480,10 @@
+ 	int igorX, igorY, trackIgor;
+ 	int drasculaX, drasculaY, trackDrascula;
+ 	int term_int;
++#ifdef __EMSCRIPTEN__
++	bool _browserOpening = false;
++	bool _browserSkipOpening = false;
++#endif
+ 	int currentChapter;
+ 	bool _loadedDifferentChapter;
+ 	int _currentSaveSlot;
+diff --git a/engines/hopkins/events.cpp b/engines/hopkins/events.cpp
+--- a/engines/hopkins/events.cpp
++++ b/engines/hopkins/events.cpp
+@@ -21,6 +21,7 @@
+ 
+ #include "engines/scummweb-telemetry.h"
+ 
++#include "engines/scummweb-intro.h"
+ #include "hopkins/events.h"
+ 
+ #include "hopkins/files.h"
+@@ -247,6 +248,12 @@
+ void EventsManager::pollEvents() {
+ 	checkForNextFrameCounter();
+ 
++#ifdef __EMSCRIPTEN__
++	if (_vm->_browserOpening && (_vm->_browserSkipOpening || ScummWebIntro::skipRequested())) {
++		_vm->_browserSkipOpening = true;
++		_escKeyFl = true;
++	}
++#endif
+ 	Common::Event event;
+ 	while (g_system->getEventManager()->pollEvent(event)) {
+ 		// Handle keypress
+diff --git a/engines/hopkins/hopkins.cpp b/engines/hopkins/hopkins.cpp
+--- a/engines/hopkins/hopkins.cpp
++++ b/engines/hopkins/hopkins.cpp
+@@ -19,6 +19,7 @@
+  *
+  */
+ 
++#include "engines/scummweb-intro.h"
+ #include "hopkins/hopkins.h"
+ #include "hopkins/base.h"
+ #include "hopkins/graphics.h"
+@@ -796,6 +797,9 @@
+ }
+ 
+ bool HopkinsEngine::runFull() {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++#endif
+ 	if (_startGameSlot == -1 && getPlatform() == Common::kPlatformLinux)
+ 		_soundMan->playSound(16);
+ 
+@@ -839,6 +843,9 @@
+ 	_graphicsMan->clearPalette();
+ 
+ 	if (_startGameSlot == -1) {
++#ifdef __EMSCRIPTEN__
++		_browserOpening = ScummWebIntro::nativeSkipEnabled();
++#endif
+ 		if (getPlatform() == Common::kPlatformLinux) {
+ 			_graphicsMan->loadImage("H2");
+ 			_graphicsMan->fadeInLong();
+@@ -861,6 +868,11 @@
+ 		if (shouldQuit())
+ 			return false;
+ 	}
++#ifdef __EMSCRIPTEN__
++	_browserOpening = false;
++	_browserSkipOpening = false;
++	ScummWebIntro::skipRequested(false);
++#endif
+ 
+ 	if (getPlatform() != Common::kPlatformLinux && _startGameSlot == -1) {
+ 		_graphicsMan->fadeOutShort();
+diff --git a/engines/hopkins/hopkins.h b/engines/hopkins/hopkins.h
+--- a/engines/hopkins/hopkins.h
++++ b/engines/hopkins/hopkins.h
+@@ -191,6 +191,10 @@
+ 	Common::Error saveGameState(int slot, const Common::String &desc, bool isAutosave = false) override;
+ 
+ 	int _startGameSlot;
++#ifdef __EMSCRIPTEN__
++	bool _browserOpening = false;
++	bool _browserSkipOpening = false;
++#endif
+ 
+ 	/**
+ 	 * Run the introduction sequence
+diff --git a/engines/made/pmvplayer.cpp b/engines/made/pmvplayer.cpp
+--- a/engines/made/pmvplayer.cpp
++++ b/engines/made/pmvplayer.cpp
+@@ -19,6 +19,7 @@
+  *
+  */
+ 
++#include "engines/scummweb-intro.h"
+ #include "made/pmvplayer.h"
+ #include "made/made.h"
+ #include "made/screen.h"
+@@ -336,6 +337,11 @@
+ 
+ bool PmvPlayer::play(const char *filename) {
+ 	bool aborted = false;
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++	const bool opening = ScummWebIntro::nativeSkipEnabled() &&
++		(!scumm_stricmp(filename, "fintro00.pmv") || !scumm_stricmp(filename, "fintro01.pmv"));
++#endif
+ 
+ 	if (load(filename)) {
+ 		uint32 pmvStartTime = _vm->getTotalPlayTime();
+@@ -424,6 +430,12 @@
+ 			frameNumber++;
+ 
+ 			aborted = handleEvents(_vm);
++#ifdef __EMSCRIPTEN__
++			if (!aborted && opening && ScummWebIntro::skipRequested()) {
++				_vm->stopTextToSpeech();
++				aborted = true;
++			}
++#endif
+ 		}
+ 
+ 		close();
+diff --git a/engines/tucker/sequences.cpp b/engines/tucker/sequences.cpp
+--- a/engines/tucker/sequences.cpp
++++ b/engines/tucker/sequences.cpp
+@@ -29,6 +29,7 @@
+ #include "graphics/paletteman.h"
+ #include "graphics/surface.h"
+ 
++#include "engines/scummweb-intro.h"
+ #include "tucker/tucker.h"
+ #include "tucker/graphics.h"
+ 
+@@ -514,6 +515,9 @@
+ }
+ 
+ void AnimationSequencePlayer::mainLoop() {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++#endif
+ 	static const SequenceUpdateFunc _demoSeqUpdateFuncs[] = {
+ 		{ 13, 2, &AnimationSequencePlayer::loadIntroSeq13_14, &AnimationSequencePlayer::playIntroSeq13_14 },
+ 		{ 15, 2, &AnimationSequencePlayer::loadIntroSeq15_16, &AnimationSequencePlayer::playIntroSeq15_16 },
+@@ -575,6 +579,12 @@
+ void AnimationSequencePlayer::syncTime() {
+ 	uint32 end = _lastFrameTime + kSequenceFrameTime * _frameTime;
+ 	do {
++#ifdef __EMSCRIPTEN__
++		if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested()) {
++			_seqNum = 1;
++			break;
++		}
++#endif
+ 		Common::Event ev;
+ 		while (_event->pollEvent(ev)) {
+ 			switch (ev.type) {

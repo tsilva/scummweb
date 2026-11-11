@@ -1,0 +1,32 @@
+diff --git a/engines/scumm/resource.cpp b/engines/scumm/resource.cpp
+--- a/engines/scumm/resource.cpp
++++ b/engines/scumm/resource.cpp
+@@ -754,6 +754,28 @@
+ 		// On the long run, it would be preferable to not turn this check off,
+ 		// but instead to explicitly support the variations in the HE games.
+ 		tag = _fileHandle->readUint32BE();
++#ifdef __EMSCRIPTEN__
++		// The ScummC fan game Road is auto-detected as Day of the Tentacle.
++		// In this data set the opening costume header is one byte before the
++		// offset used by the interpreter. Keep the standard check everywhere else.
++		static const byte roadIndexMD5[] = {
++			0x44, 0x8c, 0x2b, 0xbb, 0x5f, 0xa0, 0x2c, 0x05,
++			0x70, 0x3e, 0xaf, 0x76, 0xe5, 0xbd, 0xe1, 0xca
++		};
++		if (_game.id == GID_TENTACLE && type == rtCostume && idx == 1 && roomNr == 1 &&
++			_fileOffset == 83032 && fileOffs == 6661 && _fileHandle->size() == 125241 &&
++			tag == MKTAG('O', 'S', 'T', 0) && !memcmp(_gameMD5, roadIndexMD5, sizeof(roadIndexMD5))) {
++			const uint32 offset = _fileOffset + fileOffs;
++			_fileHandle->seek(offset - 1, SEEK_SET);
++			const uint32 candidateTag = _fileHandle->readUint32BE();
++			const uint32 candidateSize = _fileHandle->readUint32BE();
++			if (candidateTag == _res->_types[type]._tag && candidateSize == 19412) {
++				tag = candidateTag;
++				--fileOffs;
++			}
++			_fileHandle->seek(_fileOffset + fileOffs + 4, SEEK_SET);
++		}
++#endif
+ 		if (tag != _res->_types[type]._tag && _game.heversion < 70) {
+ 			error("Unknown res tag '%s' encountered (expected '%s') "
+ 			        "while trying to load res (%s,%d) in room %d at %d+%d in file %s",

@@ -1,0 +1,303 @@
+diff --git a/engines/dreamweb/dreamweb.h b/engines/dreamweb/dreamweb.h
+--- a/engines/dreamweb/dreamweb.h
++++ b/engines/dreamweb/dreamweb.h
+@@ -953,6 +953,11 @@
+ 	void endGame();
+ 	void monkSpeaking();
+ 	void gettingShot();
++#ifdef __EMSCRIPTEN__
++	bool _browserOpening = false;
++	bool _browserSkipOpening = false;
++	void checkBrowserOpeningSkip();
++#endif
+ 	void bibleQuote();
+ 	void hangOne(uint16 delay);
+ 	void intro();
+diff --git a/engines/dreamweb/stubs.cpp b/engines/dreamweb/stubs.cpp
+--- a/engines/dreamweb/stubs.cpp
++++ b/engines/dreamweb/stubs.cpp
+@@ -642,6 +642,10 @@
+ 
+ 			// "titles"
+ 			// TODO: In the demo version, titles() did nothing
++#ifdef __EMSCRIPTEN__
++			_browserOpening = true;
++			_browserSkipOpening = false;
++#endif
+ 			clearPalette();
+ 			bibleQuote();
+ 			if (!_quitRequested) // "titlesearly"
+@@ -653,6 +657,10 @@
+ 			// "credits"
+ 			clearPalette();
+ 			realCredits();
++#ifdef __EMSCRIPTEN__
++			_browserOpening = false;
++			ScummWebIntro::skipRequested(false);
++#endif
+ 
+ 			if (_quitRequested)
+ 				return;
+diff --git a/engines/dreamweb/titles.cpp b/engines/dreamweb/titles.cpp
+--- a/engines/dreamweb/titles.cpp
++++ b/engines/dreamweb/titles.cpp
+@@ -201,18 +201,30 @@
+ 	_lastHardKey = Common::KEYCODE_INVALID;
+ }
+ 
++#ifdef __EMSCRIPTEN__
++void DreamWebEngine::checkBrowserOpeningSkip() {
++	if (!_browserOpening || !ScummWebIntro::nativeSkipEnabled())
++		return;
++	if (_browserSkipOpening || ScummWebIntro::skipRequested()) {
++		_browserSkipOpening = true;
++		_lastHardKey = Common::KEYCODE_ESCAPE;
++		ScummWebIntro::skipRequested(false);
++	}
++}
++#endif
++
+ void DreamWebEngine::hangOne(uint16 delay) {
+ 	do {
+ 		waitForVSync();
++#ifdef __EMSCRIPTEN__
++		checkBrowserOpeningSkip();
++#endif
+ 		if (_lastHardKey == Common::KEYCODE_ESCAPE)
+ 			return; // "hangonearly"
+ 	} while	(--delay);
+ }
+ 
+ void DreamWebEngine::intro() {
+-#ifdef __EMSCRIPTEN__
+-	ScummWebIntro::SkipSegment introSegment;
+-#endif
+ 	loadTempText("T82");
+ 	loadPalFromIFF();
+ 	setMode();
+@@ -273,8 +285,7 @@
+ 	do {
+ 		waitForVSync();
+ #ifdef __EMSCRIPTEN__
+-		if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested())
+-			_lastHardKey = Common::KEYCODE_ESCAPE;
++		checkBrowserOpeningSkip();
+ #endif
+ 
+ 		if (_lastHardKey == Common::KEYCODE_ESCAPE)
+diff --git a/engines/mohawk/riven.cpp b/engines/mohawk/riven.cpp
+--- a/engines/mohawk/riven.cpp
++++ b/engines/mohawk/riven.cpp
+@@ -677,6 +677,9 @@
+ }
+ 
+ void MohawkEngine_Riven::startNewGame() {
++#ifdef __EMSCRIPTEN__
++	_browserSkipOpening = false;
++#endif
+ 	// Clear all the state data
+ 	_menuSavedStack = -1;
+ 	_menuSavedCard = -1;
+diff --git a/engines/mohawk/riven.h b/engines/mohawk/riven.h
+--- a/engines/mohawk/riven.h
++++ b/engines/mohawk/riven.h
+@@ -102,6 +102,9 @@
+ 	Common::RandomSource *_rnd;
+ 	RivenScriptManager *_scriptMan;
+ 	RivenInventory *_inventory;
++#ifdef __EMSCRIPTEN__
++	bool _browserSkipOpening = false;
++#endif
+ 
+ 	// Display debug rectangles around the hotspots
+ 	bool _showHotspots;
+diff --git a/engines/mohawk/riven_video.cpp b/engines/mohawk/riven_video.cpp
+--- a/engines/mohawk/riven_video.cpp
++++ b/engines/mohawk/riven_video.cpp
+@@ -23,7 +23,9 @@
+ 
+ #include "mohawk/cursors.h"
+ #include "mohawk/resource.h"
++#include "engines/scummweb-intro.h"
+ #include "mohawk/riven.h"
++#include "mohawk/riven_card.h"
+ #include "mohawk/riven_graphics.h"
+ #include "mohawk/riven_scripts.h"
+ #include "mohawk/riven_stack.h"
+@@ -235,13 +237,29 @@
+ 		enable();
+ 	}
+ 
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++	const RivenStack *stack = _vm->getStack();
++	// Start New first enters the Atrus movie on the menu stack, then
++	// switches to the arrival movie on the original Temple Island card.
++	const bool opening = playTillEnd && ScummWebIntro::nativeSkipEnabled() &&
++		((stack->getId() == kStackAspit && _vm->getCard()->getId() == 2) ||
++		(stack->getId() == kStackTspit && stack->getCurrentCardGlobalId() == 0x6e9a));
++#endif
+ 	bool continuePlaying = true;
+ 	while (!endOfVideo() && !_vm->hasGameEnded() && continuePlaying) {
+ 		// Draw a frame
+ 		_vm->doFrame();
+ 
+ 		// Handle skipping
+-		if (playTillEnd && _vm->getStack()->getAction() == kRivenActionSkip) {
++		bool skip = playTillEnd && _vm->getStack()->getAction() == kRivenActionSkip;
++#ifdef __EMSCRIPTEN__
++		if (opening && (_vm->_browserSkipOpening || ScummWebIntro::skipRequested())) {
++			_vm->_browserSkipOpening = true;
++			skip = true;
++		}
++#endif
++		if (skip) {
+ 			continuePlaying = false;
+ 
+ 			// Seek to the last frame
+diff --git a/engines/ngi/modal.cpp b/engines/ngi/modal.cpp
+--- a/engines/ngi/modal.cpp
++++ b/engines/ngi/modal.cpp
+@@ -104,8 +104,12 @@
+ 
+ bool ModalIntro::init(int counterdiff) {
+ #ifdef __EMSCRIPTEN__
+-	if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested(_stillRunning && g_vars->sceneIntro_playing))
++	if (ScummWebIntro::nativeSkipEnabled() && _stillRunning && g_vars->sceneIntro_playing &&
++			(_browserSkipOpening || ScummWebIntro::skipRequested())) {
++		_browserSkipOpening = true;
++		ScummWebIntro::skipRequested(false);
+ 		skipIntro();
++	}
+ #endif
+ 	if (!g_vars->sceneIntro_playing) {
+ 		if (!_stillRunning) {
+@@ -126,7 +130,7 @@
+ 
+ 		g_nmi->_modalObject = player;
+ 		player->_parentObj = this;
+-		player->play("intro.avi");
++		_browserSkipOpening = player->play("intro.avi", _browserSkipOpening);
+ 
+ 		_countDown--;
+ 
+@@ -150,7 +154,7 @@
+ 
+ 		g_nmi->_modalObject = player;
+ 		player->_parentObj = this;
+-		player->play("intro2.avi");
++		_browserSkipOpening = player->play("intro2.avi", _browserSkipOpening);
+ 
+ 		_countDown--;
+ 		if (_countDown > 0)
+@@ -403,9 +407,11 @@
+ 	}
+ }
+ 
+-void ModalVideoPlayer::play(const char *filename) {
++bool ModalVideoPlayer::play(const char *filename, bool skipOpening) {
++	if (skipOpening)
++		return true;
+ 	if (!_decoder.loadFile(filename))
+-		return;
++		return false;
+ 
+ 	uint16 x = (g_system->getWidth() - _decoder.getWidth()) / 2;
+ 	uint16 y = (g_system->getHeight() - _decoder.getHeight()) / 2;
+@@ -414,12 +420,14 @@
+ 
+ #ifdef __EMSCRIPTEN__
+ 	ScummWebIntro::SkipSegment introSegment;
+-	const bool opening = !strcmp(filename, "intro2.avi") && ScummWebIntro::nativeSkipEnabled();
++	const bool opening = ScummWebIntro::nativeSkipEnabled();
+ #endif
+ 	while (!g_nmi->shouldQuit() && !_decoder.endOfVideo()) {
+ #ifdef __EMSCRIPTEN__
+-		if (opening && ScummWebIntro::skipRequested())
++		if (opening && ScummWebIntro::skipRequested()) {
++			skipOpening = true;
+ 			break;
++		}
+ #endif
+ 		if (_decoder.needsUpdate()) {
+ 			const Graphics::Surface *frame = _decoder.decodeNextFrame();
+@@ -451,6 +459,7 @@
+ 
+ finish:
+ 	_decoder.close();
++	return skipOpening;
+ }
+ 
+ ModalMap::ModalMap() {
+diff --git a/engines/ngi/modal.h b/engines/ngi/modal.h
+--- a/engines/ngi/modal.h
++++ b/engines/ngi/modal.h
+@@ -66,6 +66,7 @@
+ 	int _countDown;
+ 	int _stillRunning;
+ 	int _sfxVolume;
++	bool _browserSkipOpening = false;
+ 
+ 	void skipIntro();
+ 
+@@ -111,7 +112,7 @@
+ 	void update() override {}
+ 	void saveload() override {}
+ 
+-	void play(const char *fname);
++	bool play(const char *fname, bool skipOpening);
+ 
+ private:
+ 	Video::AVIDecoder _decoder;
+diff --git a/engines/tinsel/bmv.cpp b/engines/tinsel/bmv.cpp
+--- a/engines/tinsel/bmv.cpp
++++ b/engines/tinsel/bmv.cpp
+@@ -21,6 +21,7 @@
+  */
+ 
+ #include "tinsel/tinsel.h"
++#include "engines/scummweb-intro.h"
+ #include "tinsel/background.h"
+ #include "tinsel/bmv.h"
+ #include "tinsel/cliprect.h"
+@@ -1000,6 +1001,9 @@
+  * Called from the foreground when ending playback of a movie.
+  */
+ void BMVPlayer::FinishBMV() {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::skipRequested(false);
++#endif
+ 	int	i;
+ 
+ 	// Notify the sound channel
+@@ -1362,6 +1366,17 @@
+ 	if (!bMovieOn)
+ 		return;
+ 
++#ifdef __EMSCRIPTEN__
++	// The first two publisher movies and the original New Game opening
++	// share the browser action. Other Discworld movies retain native input.
++	const bool intro = !scumm_stricmp(szMovieFile, "INTRO.BMV");
++	const bool opening = _vm->getGameId() == GID_DW2 && ScummWebIntro::nativeSkipEnabled() &&
++		(intro || !scumm_stricmp(szMovieFile, "PSYG.BMV") || !scumm_stricmp(szMovieFile, "PRODUCED.BMV"));
++	if (opening && stream.isOpen() && (_browserSkipOpening || ScummWebIntro::skipRequested())) {
++		_browserSkipOpening = !intro;
++		bAbort = true;
++	}
++#endif
+ 	// Escape the rest if appropriate
+ 	if (bAbort || (bmvEscape && bmvEscape != GetEscEvents())) {
+ 		FinishBMV();
+diff --git a/engines/tinsel/bmv.h b/engines/tinsel/bmv.h
+--- a/engines/tinsel/bmv.h
++++ b/engines/tinsel/bmv.h
+@@ -54,6 +54,9 @@
+ 
+ 	/// Set to kill one off
+ 	bool bAbort;
++#ifdef __EMSCRIPTEN__
++	bool _browserSkipOpening = false;
++#endif
+ 
+ 	/// For escaping out of movies
+ 	int bmvEscape;

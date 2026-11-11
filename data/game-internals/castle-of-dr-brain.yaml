@@ -44,8 +44,8 @@ milestones:
   - id: puzzle-door
     label: "Reached the tangram door"
     when: { room: puzzle-door }
-  - id: solved-entry-memory
-    label: Solved the front door memory puzzle
+  - id: front-hall
+    label: Unlocked the front door
     when: { flag: solved-entry-memory }
   - id: solved-word-search
     label: Solved the word search
@@ -64,6 +64,7 @@ milestones:
     when: { flag: solved-clock }
   - id: solved-hourglass
     label: Solved the hourglass puzzle
+    implies: [clock-room]
     when: { flag: solved-hourglass }
   - id: solved-cipher
     label: Solved the cipher
@@ -88,6 +89,7 @@ milestones:
     when: { flag: solved-password }
   - id: solved-tangram
     label: Solved the tangram
+    implies: [puzzle-door]
     when: { flag: solved-tangram }
   - id: solved-constellation
     label: Solved the constellation puzzle

@@ -59,7 +59,7 @@ milestones:
     label: Completed Lamb's factory tour
     when: { variable: factory-tour-completed, equals: 42 }
   - id: opened-locker
-    label: Opened the locker in Reich’s room
+    label: Opened the locker
     when: { variable: locker-opened, equals: 42 }
   - id: anita-jammer
     label: Got the jammer from Anita

@@ -1,0 +1,92 @@
+diff --git a/engines/gob/mult.cpp b/engines/gob/mult.cpp
+--- a/engines/gob/mult.cpp
++++ b/engines/gob/mult.cpp
+@@ -208,8 +208,10 @@
+ 
+ #ifdef __EMSCRIPTEN__
+ 	ScummWebIntro::SkipSegment introSegment;
+-	const bool opening = checkEscape && !handleMouse && ScummWebIntro::nativeSkipEnabled() &&
+-		isSkippableOpeningAnimation(*_vm);
++	const bool openingScript = isSkippableOpeningAnimation(*_vm);
++	if (!openingScript)
++		_browserSkipOpening = false;
++	const bool opening = checkEscape && !handleMouse && ScummWebIntro::nativeSkipEnabled() && openingScript;
+ #endif
+ 	Common::TextToSpeechManager *ttsMan = g_system->getTextToSpeechManager();
+ 	do {
+@@ -246,8 +248,11 @@
+ 			if (checkEscape && (_vm->_util->checkKey() == kKeyEscape))
+ 				stop = true;
+ #ifdef __EMSCRIPTEN__
+-			if (!stop && opening && ScummWebIntro::skipRequested())
++			if (!stop && opening && (_browserSkipOpening || ScummWebIntro::skipRequested())) {
++				_browserSkipOpening = true;
++				ScummWebIntro::skipRequested(false);
+ 				stop = true;
++			}
+ #endif
+ 
+ 			_vm->_util->waitEndFrame();
+diff --git a/engines/gob/mult.h b/engines/gob/mult.h
+--- a/engines/gob/mult.h
++++ b/engines/gob/mult.h
+@@ -282,6 +282,9 @@
+ 	int16 _index;
+ 	int16 _counter;
+ 	bool _animDataAllocated;
++#ifdef __EMSCRIPTEN__
++	bool _browserSkipOpening = false;
++#endif
+ 
+ 	Mult_Data *_multDatas[8];
+ 
+diff --git a/engines/gob/util.cpp b/engines/gob/util.cpp
+--- a/engines/gob/util.cpp
++++ b/engines/gob/util.cpp
+@@ -336,6 +336,33 @@
+ 	getKeyFromBuffer(key);
+ 
+ #ifdef __EMSCRIPTEN__
++	if (_vm->getGameType() == kGameTypeGeisha && _vm->getPlatform() == Common::kPlatformAmiga &&
++			ScummWebIntro::nativeSkipEnabled()) {
++		const Script &script = *_vm->_game->_script;
++		const int position = script.pos();
++		// This exact script enters 28658 only after the native Start/Resume
++		// selection. Retain that choice before exposing story cancellation.
++		if (_vm->isCurrentTot("intro.tot") && script.getSize() == 64179 && position == 28658) {
++			static const byte expected[] = {0x01, 0x60, 0x18, 0x06, 0xf5, 0x14, 0x78, 0x00,
++				0x63, 0x14, 0x36, 0x00, 0x63, 0x14, 0x39, 0x00};
++			byte signature[sizeof(expected)];
++			_browserGeishaOpening = script.peek(signature, sizeof(signature), 128 - position) == sizeof(signature) &&
++				memcmp(signature, expected, sizeof(expected)) == 0;
++		}
++		if (_browserGeishaOpening) {
++			if (!_vm->isCurrentTot("intro.tot") && !_vm->isCurrentTot("intro2.tot")) {
++				_browserGeishaOpening = false;
++				_browserGeishaIntroSkipped = false;
++				ScummWebIntro::gameplayStarted();
++			} else if (position != _browserGeishaSkippedPosition && key.keycode == Common::KEYCODE_INVALID &&
++					(_browserGeishaIntroSkipped || ScummWebIntro::skipRequested())) {
++				_browserGeishaIntroSkipped = true;
++				_browserGeishaSkippedPosition = position;
++				ScummWebIntro::skipRequested(false);
++				return kKeyEscape;
++			}
++		}
++	}
+ 	if (_vm->getGameType() == kGameTypeWeen && _vm->getPlatform() == Common::kPlatformAmiga &&
+ 			_vm->isCurrentTot("intro016.tot") && ScummWebIntro::nativeSkipEnabled()) {
+ 		const Script &script = *_vm->_game->_script;
+diff --git a/engines/gob/util.h b/engines/gob/util.h
+--- a/engines/gob/util.h
++++ b/engines/gob/util.h
+@@ -158,6 +158,9 @@
+ 
+ protected:
+ #ifdef __EMSCRIPTEN__
++	bool _browserGeishaOpening = false;
++	bool _browserGeishaIntroSkipped = false;
++	int _browserGeishaSkippedPosition = -1;
+ 	int _browserWeenIntroSkippedPosition = -1;
+ 	bool _browserWeenIntroSkipped = false;
+ 	bool _browserWeenIntroFinished = false;

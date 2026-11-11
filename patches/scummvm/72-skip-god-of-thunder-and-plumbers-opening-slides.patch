@@ -1,0 +1,91 @@
+diff --git a/engines/got/events.cpp b/engines/got/events.cpp
+--- a/engines/got/events.cpp
++++ b/engines/got/events.cpp
+@@ -19,6 +19,7 @@
+  *
+  */
+ 
++#include "engines/scummweb-intro.h"
+ #include "engines/scummweb-telemetry.h"
+ 
+ #include "got/events.h"
+@@ -123,6 +124,23 @@
+ 	// Check if any script needs resuming
+ 	_G(scripts).runIfResuming();
+ #ifdef __EMSCRIPTEN__
++	if (focusedView() && ScummWebIntro::nativeSkipEnabled() && !ScummWebIntro::startupFinished()) {
++		const Common::String &name = focusedView()->getName();
++		if (name == "MainMenu")
++			_browserPassedMainMenu = true;
++
++		const bool publisher = !_browserPassedMainMenu &&
++			(name == "Opening" || name == "Credits" || name == "HighScores");
++		const bool story = !_G(demo) && (name == "Story" || name == "PartTitle");
++		if ((name == "PartTitle" && _browserSkipStory) || ScummWebIntro::skipRequested(publisher || story)) {
++			_browserSkipStory = name == "Story";
++			ScummWebIntro::skipRequested(false);
++			msgAction(ActionMessage(KEYBIND_ESCAPE));
++		}
++		if (name == "Game" && !_G(demo))
++			ScummWebIntro::gameplayStarted();
++	}
++
+ 	if (focusedView() && focusedView()->getName() == "Game") {
+ 		ScummWebTelemetry::Sample sample(_G(currentLevel));
+ 		sample.bank("flags", _G(setup)._flags, ARRAYSIZE(_G(setup)._flags));
+diff --git a/engines/got/events.h b/engines/got/events.h
+--- a/engines/got/events.h
++++ b/engines/got/events.h
+@@ -279,6 +279,10 @@
+ 	int _palCnt1 = 0;
+ 	int _palCnt2 = 0;
+ 
++#ifdef __EMSCRIPTEN__
++	bool _browserPassedMainMenu = false;
++	bool _browserSkipStory = false;
++#endif
+ 	void nextFrame();
+ 	int actionToKeyFlag(int action) const;
+ 	void rotatePalette();
+diff --git a/engines/plumbers/plumbers.cpp b/engines/plumbers/plumbers.cpp
+--- a/engines/plumbers/plumbers.cpp
++++ b/engines/plumbers/plumbers.cpp
+@@ -19,6 +19,7 @@
+  *
+  */
+ 
++#include "engines/scummweb-intro.h"
+ #include "engines/scummweb-telemetry.h"
+ 
+ #include "plumbers/plumbers.h"
+@@ -165,6 +166,9 @@
+ 
+ 	_quit = false;
+ 
++#ifdef __EMSCRIPTEN__
++	bool browserSkipOpening = false;
++#endif
+ 	while (!_quit && !_endGameFl) {
+ 		Common::Event event;
+ 		while (g_system->getEventManager()->pollEvent(event)) {
+@@ -173,6 +177,20 @@
+ 
+ 		preActions();
+ #ifdef __EMSCRIPTEN__
++		if (getPlatform() == Common::kPlatformWindows && ScummWebIntro::nativeSkipEnabled() &&
++				!ScummWebIntro::startupFinished()) {
++			// SC99 is the technical introduction. SC00 offers the first
++			// player choice, including the edition's original story option.
++			const bool opening = _curSceneIdx == 0 && _scenes[0]._sceneName == "SC99" &&
++				_scenes[0]._decisionChoices == 1 && _timerInstalled;
++			if (opening && (browserSkipOpening || ScummWebIntro::skipRequested())) {
++				browserSkipOpening = true;
++				ScummWebIntro::skipRequested(false);
++				onTimer(this);
++			}
++			if (_leftButtonDownFl)
++				ScummWebIntro::gameplayStarted();
++		}
+ 		{
+ 			ScummWebTelemetry::Sample sample(_curSceneIdx, _scenes[_curSceneIdx]._sceneName.c_str());
+ 			sample.variable("game_vars", "score", _totScore);

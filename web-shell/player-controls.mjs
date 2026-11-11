@@ -1,11 +1,8 @@
 export function installPlayerControls(scope, requestMenu) {
-  const settingsKey = "scummweb.player-controls.v1";
   const clamp = (value, min, max, fallback) =>
     Number.isFinite(value) ? Math.min(max, Math.max(min, value)) : fallback;
-  let saved;
-  try { saved = JSON.parse(scope.localStorage.getItem(settingsKey)); } catch {}
-  let volume = clamp(saved?.volume, 0, 100, 100);
-  let speed = clamp(saved?.speed, 0.5, 1.5, 1);
+  let volume = 100;
+  let speed = 1;
   let menuOpen = false;
   let rawClock;
   let gameClock = 0;
@@ -38,7 +35,6 @@ export function installPlayerControls(scope, requestMenu) {
       volume = clamp(settings.volume, 0, 100, volume);
       speed = clamp(settings.speed, 0.5, 1.5, speed);
       applyVolume();
-      try { scope.localStorage.setItem(settingsKey, JSON.stringify({ volume, speed })); } catch {}
     },
     setMenuOpen(open) {
       menuOpen = open;

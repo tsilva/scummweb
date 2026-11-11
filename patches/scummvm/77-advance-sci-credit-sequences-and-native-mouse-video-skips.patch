@@ -1,0 +1,116 @@
+diff --git a/engines/agi/op_test.cpp b/engines/agi/op_test.cpp
+--- a/engines/agi/op_test.cpp
++++ b/engines/agi/op_test.cpp
+@@ -127,6 +127,8 @@
+ 		return false;
+ 	const int room = getVar(VM_VAR_CURRENT_ROOM);
+ 	switch (getGameID()) {
++	case GID_DDP:
++		return room == 1 && strcmp(md5, "550971d196f65190a5c760d2479406ef") == 0;
+ 	case GID_SQ1:
+ 		return room == 67 && strcmp(md5, "0b216d931e95750f1f4837d6a4b821e5") == 0;
+ 	case GID_SQ2:
+@@ -148,11 +150,12 @@
+ 
+ bool AgiEngine::wantsBrowserOpeningKey() {
+ 	const int room = getVar(VM_VAR_CURRENT_ROOM);
+-	if (_game.browserIntroSkippedRoom == room)
++	if (_game.browserIntroSkippedRoom == room && getGameID() != GID_DDP)
+ 		return false;
+ 	_game.checkedIntroKey = true;
+ 
+ 	const bool continuing =
++		(getGameID() == GID_DDP && _game.browserIntroSkippedRoom == 1 && room == 1) ||
+ 		(getGameID() == GID_SQ2 && _game.browserIntroSkippedRoom == 140 && room == 1) ||
+ 		(getGameID() == GID_MH2 && _game.browserIntroSkippedRoom == 153 && room == 154);
+ 	if (!continuing && !ScummWebIntro::skipRequested())
+diff --git a/engines/gob/videoplayer.cpp b/engines/gob/videoplayer.cpp
+--- a/engines/gob/videoplayer.cpp
++++ b/engines/gob/videoplayer.cpp
+@@ -450,6 +450,14 @@
+ 		properties.openingLogo = true;
+ #endif
+ 
++#ifdef __EMSCRIPTEN__
++	if (primary && properties.breakKey != 0 &&
++			((_vm->getGameType() == kGameTypeWoodruff && _vm->isCurrentTot("intro1.tot") &&
++			  (video->fileName.equalsIgnoreCase("intro") || video->fileName.equalsIgnoreCase("intro.vmd"))) ||
++			 (_vm->getGameType() == kGameTypeInca2 && _vm->isCurrentTot("intro.tot") &&
++			  video->fileName.equalsIgnoreCase("lokbb.imd"))))
++		properties.openingLogo = true;
++#endif
+ 	if (properties.startFrame < 0)
+ 		properties.startFrame = video->decoder->getCurFrame() + 1;
+ 	if (properties.lastFrame  < 0)
+diff --git a/engines/sci/engine/kevent.cpp b/engines/sci/engine/kevent.cpp
+--- a/engines/sci/engine/kevent.cpp
++++ b/engines/sci/engine/kevent.cpp
+@@ -99,7 +99,7 @@
+ 		s->_browserIntroAvailable = false;
+ 		ScummWebIntro::skipRequested(false);
+ 	}
+-	if (!opening && !ScummWebIntro::startupFinished() && globals && size > kGlobalVarUser &&
++	if (!opening && openingRoom > 0 && !ScummWebIntro::startupFinished() && globals && size > kGlobalVarUser &&
+ 		(mask & kSciEventKeyDown) && g_sci->_guestAdditions->userHasControl(false) &&
+ 		(!ScummWebIntro::nativeSkipEnabled() || !s->isBrowserTimedOpening()))
+ 		ScummWebIntro::gameplayStarted();
+diff --git a/engines/sci/engine/state.cpp b/engines/sci/engine/state.cpp
+--- a/engines/sci/engine/state.cpp
++++ b/engines/sci/engine/state.cpp
+@@ -155,6 +155,41 @@
+ 	// These publisher rooms advance on script time instead of handling
+ 	// Escape. The original title menus and first gameplay rooms are separate.
+ 	switch (g_sci->getGameId()) {
++	case GID_CASTLEBRAIN:
++		return room == 802;
++	case GID_CAMELOT:
++		return room == 112 || room == 100;
++	case GID_ICEMAN:
++		return room == 99 || room == 100;
++	case GID_ECOQUEST:
++		return room == 803;
++	case GID_ECOQUEST2:
++		return room == 10;
++	case GID_QFG1:
++	case GID_QFG1VGA:
++		return room == 299;
++	case GID_QFG2:
++		return room == 98;
++	case GID_KQ1:
++		return room == 777;
++	case GID_LSL1:
++		return room == 803 || room == 710;
++	case GID_LSL3:
++		return room == 120;
++	case GID_LSL5:
++	case GID_LSL6HIRES:
++		return room == 100;
++	case GID_MOTHERGOOSEHIRES:
++		return room == 108;
++	case GID_PQ2:
++		return room == 99 || room == 200;
++	case GID_PQ3:
++		return room == 99 || room == 1;
++	case GID_SQ1:
++	case GID_SQ4:
++		return room == 803 || room == 1;
++	case GID_SQ3:
++		return room == 777 || room == 900;
+ 	case GID_GK1:
+ 		return room == 94;
+ 	case GID_KQ5:
+diff --git a/engines/sci/graphics/video32.cpp b/engines/sci/graphics/video32.cpp
+--- a/engines/sci/graphics/video32.cpp
++++ b/engines/sci/graphics/video32.cpp
+@@ -177,8 +177,9 @@
+ 		// dropping the new frame entirely
+ 		stopFlag = checkForEvent(flags);
+ #ifdef __EMSCRIPTEN__
+-		if (stopFlag == kEventFlagNone && ScummWebIntro::skipRequested(flags & kEventFlagEscapeKey))
+-			stopFlag = kEventFlagEscapeKey;
++		const bool canSkip = flags & (kEventFlagEscapeKey | kEventFlagMouseDown);
++		if (stopFlag == kEventFlagNone && ScummWebIntro::skipRequested(canSkip))
++			stopFlag = (flags & kEventFlagEscapeKey) ? kEventFlagEscapeKey : kEventFlagMouseDown;
+ #endif
+ 		if (stopFlag != kEventFlagNone) {
+ 			break;

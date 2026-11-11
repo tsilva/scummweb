@@ -1,0 +1,113 @@
+diff --git a/engines/scumm/input.cpp b/engines/scumm/input.cpp
+--- a/engines/scumm/input.cpp
++++ b/engines/scumm/input.cpp
+@@ -401,13 +401,20 @@
+ 	_keyPressed.reset();
+ 
+ #ifdef __EMSCRIPTEN__
+-	if (ScummWebIntro::nativeSkipEnabled()) {
++	if (ScummWebIntro::nativeSkipEnabled() && !ScummWebIntro::startupFinished()) {
++		static bool skipOpening = false;
+ 		const bool exitEnabled = VAR_CUTSCENEEXIT_KEY == 0xFF || VAR(VAR_CUTSCENEEXIT_KEY) != 0;
+ 		bool canSkip = vm.cutScenePtr[vm.cutSceneStackPointer] != 0;
+ #ifdef ENABLE_SCUMM_7_8
+ 		canSkip |= isSmushActive();
+ #endif
+-		if (ScummWebIntro::skipRequested(canSkip && exitEnabled))
++		canSkip &= exitEnabled;
++		if (!skipOpening && ScummWebIntro::skipRequested(canSkip)) {
++			// Apply the request to subsequent native overrides until the first playable state.
++			skipOpening = true;
++			ScummWebIntro::skipRequested(false);
++		}
++		if (skipOpening && canSkip && !lastKeyHit.ascii)
+ 			lastKeyHit = Common::KeyState(Common::KEYCODE_ESCAPE);
+ 	}
+ #endif
+diff --git a/engines/toon/movie.h b/engines/toon/movie.h
+--- a/engines/toon/movie.h
++++ b/engines/toon/movie.h
+@@ -61,7 +61,7 @@
+ 	bool isPlaying() { return _playing; }
+ 
+ protected:
+-	void playVideo(bool isFirstIntroVideo);
++	void playVideo(bool isFirstIntroVideo, bool opening);
+ 	ToonEngine *_vm;
+ 	ToonstruckSmackerDecoder *_decoder;
+ 	bool _playing;
+diff --git a/engines/toon/movie.cpp b/engines/toon/movie.cpp
+--- a/engines/toon/movie.cpp
++++ b/engines/toon/movie.cpp
+@@ -38,6 +38,8 @@
+ #include "toon/movie.h"
+ #include "toon/toon.h"
+ #include "toon/subtitles.h"
++
++#include "engines/scummweb-intro.h"
+ 
+ namespace Toon {
+ 
+@@ -100,7 +102,7 @@
+ 		error("Unable to play video %s", video.toString().c_str());
+ 	}
+ 	_subtitle->load(video);
+-	playVideo(isFirstIntroVideo);
++	playVideo(isFirstIntroVideo, video == "VIELOGOM.SMK");
+ 	_vm->flushPalette(true);
+ 	if (flags & 1)
+ 		_vm->getAudioManager()->setMusicVolume(_vm->getAudioManager()->isMusicMuted() ? 0 : 255);
+@@ -108,12 +110,19 @@
+ 	_playing = false;
+ }
+ 
+-void Movie::playVideo(bool isFirstIntroVideo) {
++void Movie::playVideo(bool isFirstIntroVideo, bool opening) {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++#endif
+ 	debugC(1, kDebugMovie, "playVideo(isFirstIntroVideo: %d)", isFirstIntroVideo);
+ 
+ 	_decoder->start();
+ 
+ 	while (!_vm->shouldQuit() && !_decoder->endOfVideo()) {
++#ifdef __EMSCRIPTEN__
++		if (opening && ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested())
++			break;
++#endif
+ 		if (_decoder->needsUpdate()) {
+ 			const Graphics::Surface *frame = _decoder->decodeNextFrame();
+ 			byte unused = 0;
+diff --git a/engines/voyeur/voyeur.cpp b/engines/voyeur/voyeur.cpp
+--- a/engines/voyeur/voyeur.cpp
++++ b/engines/voyeur/voyeur.cpp
+@@ -32,6 +32,8 @@
+ #include "video/mve_decoder.h"
+ 
+ #include "backends/keymapper/keymapper.h"
++
++#include "engines/scummweb-intro.h"
+ 
+ namespace Voyeur {
+ 
+@@ -882,6 +884,9 @@
+ }
+ 
+ void VoyeurEngine::showLogo8Intro() {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++#endif
+ 	Common::File *file = new Common::File();
+ 	if(!file->open("logo8.exe")) {
+ 		delete file;
+@@ -906,6 +911,10 @@
+ 
+ 		bool skipMovie = false;
+ 		while (!decoder->endOfVideo() && !skipMovie && !shouldQuit()) {
++#ifdef __EMSCRIPTEN__
++			if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested())
++				break;
++#endif
+ 			unsigned int delay = MIN<uint32>(decoder->getTimeToNextFrame(), 10u);
+ 			g_system->delayMillis(delay);
+ 

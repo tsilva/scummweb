@@ -1,0 +1,42 @@
+diff --git a/engines/gob/util.cpp b/engines/gob/util.cpp
+--- a/engines/gob/util.cpp
++++ b/engines/gob/util.cpp
+@@ -354,8 +354,12 @@
+ 			byte signature[sizeof(expected)];
+ 			const bool matched = script.peek(signature, sizeof(signature), 128 - position) == sizeof(signature) &&
+ 				memcmp(signature, expected, sizeof(expected)) == 0;
+-			if ((matched || _browserWeenIntroSkipped) && key.keycode == Common::KEYCODE_INVALID &&
++			// Each original wait must also observe the key release. Holding
++			// Escape across its repeated polls traps the credit debounce loop.
++			if (position != _browserWeenIntroSkippedPosition &&
++					(matched || _browserWeenIntroSkipped) && key.keycode == Common::KEYCODE_INVALID &&
+ 					(_browserWeenIntroSkipped || ScummWebIntro::skipRequested())) {
++				_browserWeenIntroSkippedPosition = position;
+ 				_browserWeenIntroSkipped = true;
+ 				ScummWebIntro::skipRequested(false);
+ 				return kKeyEscape;
+diff --git a/engines/gob/util.h b/engines/gob/util.h
+--- a/engines/gob/util.h
++++ b/engines/gob/util.h
+@@ -158,6 +158,7 @@
+ 
+ protected:
+ #ifdef __EMSCRIPTEN__
++	int _browserWeenIntroSkippedPosition = -1;
+ 	bool _browserWeenIntroSkipped = false;
+ 	bool _browserWeenIntroFinished = false;
+ #endif
+diff --git a/engines/sci/sci.cpp b/engines/sci/sci.cpp
+--- a/engines/sci/sci.cpp
++++ b/engines/sci/sci.cpp
+@@ -1177,8 +1177,8 @@
+ uint32 SciEngine::getTickCount() {
+ 	uint32 elapsed = getTotalPlayTime();
+ #ifdef __EMSCRIPTEN__
+-	// Preserve script clock continuity after the opening. The save file
+-	// continues to use actual play time.
++	// Preserve script clock continuity after the opening. Native saves store
++	// this clock alongside script timers and restore it as their baseline.
+ 	if (_gamestate)
+ 		elapsed += _gamestate->_browserOpeningClockOffset;
+ #endif

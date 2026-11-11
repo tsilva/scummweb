@@ -63,25 +63,25 @@ milestones:
     label: Combined the tape recorder and magazine
     when: { flag: combined-recorder-and-magazine }
   - id: played-tour-stop-910
-    label: Played the tour tape at stop 910
+    label: Played the entry hall tour recording
     when: { flag: played-tour-stop-910 }
   - id: played-tour-stop-920
-    label: Played the tour tape at stop 920
+    label: Played the bedroom tour recording
     when: { flag: played-tour-stop-920 }
   - id: played-tour-stop-940
-    label: Played the tour tape at stop 940
+    label: Played the chapel tour recording
     when: { flag: played-tour-stop-940 }
   - id: played-tour-stop-950
-    label: Played the tour tape at stop 950
+    label: Played the living room tour recording
     when: { flag: played-tour-stop-950 }
   - id: played-tour-stop-960
-    label: Played the tour tape at stop 960
+    label: Played the grotto tour recording
     when: { flag: played-tour-stop-960 }
   - id: played-tour-stop-930
-    label: Played the tour tape at stop 930
+    label: Played the study tour recording
     when: { flag: played-tour-stop-930 }
   - id: played-tour-stop-970
-    label: Played the tour tape at stop 970
+    label: Played the Singer’s Hall tour recording
     when: { flag: played-tour-stop-970 }
   - id: examined-wahnfried-plaque
     label: Examined the Wahnfried plaque

@@ -1,0 +1,132 @@
+diff --git a/engines/made/made.cpp b/engines/made/made.cpp
+--- a/engines/made/made.cpp
++++ b/engines/made/made.cpp
+@@ -34,6 +34,7 @@
+ #include "common/system.h"
+ #include "common/error.h"
+ 
++#include "engines/scummweb-intro.h"
+ #include "engines/util.h"
+ 
+ #include "graphics/wincursor.h"
+@@ -327,6 +328,14 @@
+ }
+ #endif
+ 
++void MadeEngine::primaryButtonPressed() {
++	_eventNum = 2;
++	if (_openingCreditsOpen) {
++		_openingCreditsOpen = false;
++		stopTextToSpeech();
++	}
++}
++
+ void MadeEngine::handleEvents() {
+ 
+ 	Common::Event event;
+@@ -349,13 +358,11 @@
+ 			break;
+ 
+ 		case Common::EVENT_LBUTTONDOWN:
+-			_eventNum = 2;
+-
+-			if (_openingCreditsOpen) {
+-				_openingCreditsOpen = false;
+-				stopTextToSpeech();
+-			}
+-
++#ifdef __EMSCRIPTEN__
++			if (getGameID() == GID_RTZ && _openingCreditsOpen)
++				ScummWebIntro::skipRequested(false);
++#endif
++			primaryButtonPressed();
+ 			break;
+ 
+ 		case Common::EVENT_LBUTTONUP:
+@@ -424,6 +431,14 @@
+ 		}
+ 	}
+ 
++#ifdef __EMSCRIPTEN__
++	if (getGameID() == GID_RTZ && _openingCreditsOpen && ScummWebIntro::nativeSkipEnabled() &&
++			ScummWebIntro::skipRequested()) {
++		_browserSkipOpening = true;
++		ScummWebIntro::skipRequested(false);
++		primaryButtonPressed();
++	}
++#endif
+ 	_system->getAudioCDManager()->update();
+ 
+ }
+diff --git a/engines/made/made.h b/engines/made/made.h
+--- a/engines/made/made.h
++++ b/engines/made/made.h
+@@ -125,6 +125,9 @@
+ 	int _previousTextBox;
+ 	bool _saveLoadScreenOpen;
+ 	bool _openingCreditsOpen;
++#ifdef __EMSCRIPTEN__
++	bool _browserSkipOpening = false;
++#endif
+ 	bool _tapeRecorderOpen;
+ 
+ 	bool _voiceText;
+@@ -166,6 +169,9 @@
+ 
+ protected:
+ 	void pauseEngineIntern(bool pause) override;
++
++private:
++	void primaryButtonPressed();
+ };
+ 
+ } // End of namespace Made
+diff --git a/engines/made/pmvplayer.cpp b/engines/made/pmvplayer.cpp
+--- a/engines/made/pmvplayer.cpp
++++ b/engines/made/pmvplayer.cpp
+@@ -189,6 +189,10 @@
+ 	// First cutscene after the opening credits finish
+ 	if (strcmp(filename, "FWIZ01X1.PMV") == 0) {
+ 		_vm->_openingCreditsOpen = false;
++#ifdef __EMSCRIPTEN__
++		_vm->_browserSkipOpening = false;
++		ScummWebIntro::skipRequested(false);
++#endif
+ 	}
+ 
+ 	// ready to go!
+@@ -431,7 +435,8 @@
+ 
+ 			aborted = handleEvents(_vm);
+ #ifdef __EMSCRIPTEN__
+-			if (!aborted && opening && ScummWebIntro::skipRequested()) {
++			if (!aborted && opening && (_vm->_browserSkipOpening || ScummWebIntro::skipRequested())) {
++				_vm->_browserSkipOpening = true;
+ 				_vm->stopTextToSpeech();
+ 				aborted = true;
+ 			}
+diff --git a/engines/tinsel/bmv.cpp b/engines/tinsel/bmv.cpp
+--- a/engines/tinsel/bmv.cpp
++++ b/engines/tinsel/bmv.cpp
+@@ -1371,7 +1371,8 @@
+ 	// share the browser action. Other Discworld movies retain native input.
+ 	const bool intro = !scumm_stricmp(szMovieFile, "INTRO.BMV");
+ 	const bool opening = _vm->getGameId() == GID_DW2 && ScummWebIntro::nativeSkipEnabled() &&
+-		(intro || !scumm_stricmp(szMovieFile, "PSYG.BMV") || !scumm_stricmp(szMovieFile, "PRODUCED.BMV"));
++		(intro || !scumm_stricmp(szMovieFile, "PERFECT.BMV") ||
++		!scumm_stricmp(szMovieFile, "PSYG.BMV") || !scumm_stricmp(szMovieFile, "PRODUCED.BMV"));
+ 	if (opening && stream.isOpen() && (_browserSkipOpening || ScummWebIntro::skipRequested())) {
+ 		_browserSkipOpening = !intro;
+ 		bAbort = true;
+diff --git a/engines/tinsel/tinsel.cpp b/engines/tinsel/tinsel.cpp
+--- a/engines/tinsel/tinsel.cpp
++++ b/engines/tinsel/tinsel.cpp
+@@ -157,7 +157,7 @@
+ 	CORO_BEGIN_CODE(_ctx);
+ 	while (true) {
+ #ifdef __EMSCRIPTEN__
+-		if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested(InDw1Intro()))
++		if (TinselVersion == 1 && ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested(InDw1Intro()))
+ 			ProcessKeyEvent(PLR_ESCAPE);
+ #endif
+ 		if (_vm->_keypresses.empty()) {

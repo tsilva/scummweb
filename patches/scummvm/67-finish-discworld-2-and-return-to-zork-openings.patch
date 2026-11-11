@@ -1,0 +1,63 @@
+diff --git a/engines/made/made.h b/engines/made/made.h
+--- a/engines/made/made.h
++++ b/engines/made/made.h
+@@ -127,6 +127,7 @@
+ 	bool _openingCreditsOpen;
+ #ifdef __EMSCRIPTEN__
+ 	bool _browserSkipOpening = false;
++	bool _browserFirstStory = true;
+ #endif
+ 	bool _tapeRecorderOpen;
+ 
+diff --git a/engines/made/pmvplayer.cpp b/engines/made/pmvplayer.cpp
+--- a/engines/made/pmvplayer.cpp
++++ b/engines/made/pmvplayer.cpp
+@@ -189,10 +189,6 @@
+ 	// First cutscene after the opening credits finish
+ 	if (strcmp(filename, "FWIZ01X1.PMV") == 0) {
+ 		_vm->_openingCreditsOpen = false;
+-#ifdef __EMSCRIPTEN__
+-		_vm->_browserSkipOpening = false;
+-		ScummWebIntro::skipRequested(false);
+-#endif
+ 	}
+ 
+ 	// ready to go!
+@@ -343,8 +339,10 @@
+ 	bool aborted = false;
+ #ifdef __EMSCRIPTEN__
+ 	ScummWebIntro::SkipSegment introSegment;
+-	const bool opening = ScummWebIntro::nativeSkipEnabled() &&
+-		(!scumm_stricmp(filename, "fintro00.pmv") || !scumm_stricmp(filename, "fintro01.pmv"));
++	const bool rtz = _vm->getGameID() == GID_RTZ && ScummWebIntro::nativeSkipEnabled();
++	const bool firstStory = rtz && _vm->_browserFirstStory && !scumm_stricmp(filename, "fwiz01x1.pmv");
++	const bool opening = rtz &&
++		(firstStory || !scumm_stricmp(filename, "fintro00.pmv") || !scumm_stricmp(filename, "fintro01.pmv"));
+ #endif
+ 
+ 	if (load(filename)) {
+@@ -444,6 +442,12 @@
+ 		}
+ 
+ 		close();
++#ifdef __EMSCRIPTEN__
++		if (firstStory) {
++			_vm->_browserFirstStory = false;
++			_vm->_browserSkipOpening = false;
++		}
++#endif
+ 	}
+ 
+ 	return !aborted;
+diff --git a/engines/tinsel/bmv.cpp b/engines/tinsel/bmv.cpp
+--- a/engines/tinsel/bmv.cpp
++++ b/engines/tinsel/bmv.cpp
+@@ -1370,7 +1370,7 @@
+ 	// The first two publisher movies and the original New Game opening
+ 	// share the browser action. Other Discworld movies retain native input.
+ 	const bool intro = !scumm_stricmp(szMovieFile, "INTRO.BMV");
+-	const bool opening = _vm->getGameId() == GID_DW2 && ScummWebIntro::nativeSkipEnabled() &&
++	const bool opening = _vm->getGameID() == GID_DW2 && ScummWebIntro::nativeSkipEnabled() &&
+ 		(intro || !scumm_stricmp(szMovieFile, "PERFECT.BMV") ||
+ 		!scumm_stricmp(szMovieFile, "PSYG.BMV") || !scumm_stricmp(szMovieFile, "PRODUCED.BMV"));
+ 	if (opening && stream.isOpen() && (_browserSkipOpening || ScummWebIntro::skipRequested())) {

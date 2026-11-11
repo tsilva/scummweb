@@ -1,0 +1,147 @@
+diff --git a/engines/gnap/scenes/intro.cpp b/engines/gnap/scenes/intro.cpp
+--- a/engines/gnap/scenes/intro.cpp
++++ b/engines/gnap/scenes/intro.cpp
+@@ -26,6 +26,8 @@
+ #include "gnap/resource.h"
+ #include "gnap/scenes/intro.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Gnap {
+ 
+ SceneIntro::SceneIntro(GnapEngine *vm) : Scene(vm) {
+@@ -36,6 +38,10 @@
+ }
+ 
+ void SceneIntro::run() {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++	bool skipOpening = false;
++#endif
+ 	const int animIdArr[] = {
+ 		0x356, 0x357, 0x358, 0x35A, 0x35F,
+ 		0x360, 0x361, 0x362, 0x363, 0x364,
+@@ -76,6 +82,12 @@
+ 	_vm->screenEffect(1, 255, 255, 255);
+ 
+ 	while (!_vm->shouldQuit() && !videoDecoder->endOfVideo() && !skipVideo) {
++#ifdef __EMSCRIPTEN__
++		if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested()) {
++			skipOpening = true;
++			break;
++		}
++#endif
+ 		if (videoDecoder->needsUpdate()) {
+ 			const Graphics::Surface *frame = videoDecoder->decodeNextFrame();
+ 			if (frame) {
+@@ -158,7 +170,14 @@
+ 			}
+ 		}
+ 
+-		if (_vm->isKeyStatus1(Common::KEYCODE_ESCAPE) || _vm->isKeyStatus1(Common::KEYCODE_SPACE) || _vm->isKeyStatus1(Common::KEYCODE_RETURN)) {
++		bool skipScene = _vm->isKeyStatus1(Common::KEYCODE_ESCAPE) || _vm->isKeyStatus1(Common::KEYCODE_SPACE) || _vm->isKeyStatus1(Common::KEYCODE_RETURN);
++#ifdef __EMSCRIPTEN__
++		if (ScummWebIntro::nativeSkipEnabled() && (skipOpening || ScummWebIntro::skipRequested())) {
++			skipOpening = true;
++			skipScene = true;
++		}
++#endif
++		if (skipScene) {
+ 			_vm->clearKeyStatus1(Common::KEYCODE_ESCAPE);
+ 			_vm->clearKeyStatus1(Common::KEYCODE_SPACE);
+ 			_vm->clearKeyStatus1(Common::KEYCODE_RETURN);
+diff --git a/engines/parallaction/gui_ns.cpp b/engines/parallaction/gui_ns.cpp
+--- a/engines/parallaction/gui_ns.cpp
++++ b/engines/parallaction/gui_ns.cpp
+@@ -68,8 +68,18 @@
+ 	}
+ 
+ 	MenuInputState* run() override {
++#ifdef __EMSCRIPTEN__
++		if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested()) {
++			ScummWebIntro::skipRequested(false);
++			return _helper->getState("chooselanguage");
++		}
++#endif
+ 		uint32 curTime = _vm->_system->getMillis();
+ 		if (curTime - _startTime > _timeOut) {
++#ifdef __EMSCRIPTEN__
++			if (_nextState == "chooselanguage")
++				ScummWebIntro::skipRequested(false);
++#endif
+ 			return _helper->getState(_nextState);
+ 		}
+ 		return this;
+diff --git a/engines/zvision/zvision.h b/engines/zvision/zvision.h
+--- a/engines/zvision/zvision.h
++++ b/engines/zvision/zvision.h
+@@ -249,7 +249,7 @@
+ 	 * @param srcRect         What subset of video to blit to destRect (In video frame coords)  // TODO implement
+ 	 * @param skippable       If true, the video can be skipped at any time using [Spacebar]
+ 	 */
+-	void playVideo(Video::VideoDecoder &videoDecoder, Common::Rect destRect = Common::Rect(0, 0, 0, 0), bool skippable = true, uint16 sub = 0, Common::Rect srcRect = Common::Rect(0, 0, 0, 0));
++	void playVideo(Video::VideoDecoder &videoDecoder, Common::Rect destRect = Common::Rect(0, 0, 0, 0), bool skippable = true, uint16 sub = 0, Common::Rect srcRect = Common::Rect(0, 0, 0, 0), bool opening = false);
+ 	Video::VideoDecoder *loadAnimation(const Common::Path &fileName);
+ 
+ 	void setRenderDelay(uint);
+diff --git a/engines/zvision/video/video.cpp b/engines/zvision/video/video.cpp
+--- a/engines/zvision/video/video.cpp
++++ b/engines/zvision/video/video.cpp
+@@ -38,6 +38,8 @@
+ #include "zvision/video/rlf_decoder.h"
+ #include "zvision/video/zork_avi_decoder.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace ZVision {
+ 
+ Video::VideoDecoder *ZVision::loadAnimation(const Common::Path &fileName) {
+@@ -85,7 +87,7 @@
+  * @param srcRect   Rectangle within video frame, defined relative to frame origin, to blit to output.  Only used for removing baked-in letterboxing in ZGI DVD HD videos
+  */
+ 
+-void ZVision::playVideo(Video::VideoDecoder &vid, Common::Rect dstRect, bool skippable, uint16 sub, Common::Rect srcRect) {
++void ZVision::playVideo(Video::VideoDecoder &vid, Common::Rect dstRect, bool skippable, uint16 sub, Common::Rect srcRect, bool opening) {
+ 	Common::Rect frameArea = Common::Rect(vid.getWidth(), vid.getHeight());
+ 	Common::Rect workingArea = _renderManager->getWorkingArea();
+ 	// If dstRect is empty, no specific scaling was requested. However, we may choose to do scaling anyway
+@@ -128,8 +130,15 @@
+ 	_cutscenesKeymap->setEnabled(true);
+ 	_gameKeymap->setEnabled(false);
+ 	
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++#endif
+ 	// Only continue while the video is still playing
+ 	while (!shouldQuit() && !vid.endOfVideo() && vid.isPlaying()) {
++#ifdef __EMSCRIPTEN__
++		if (opening && skippable && ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested())
++			break;
++#endif
+ 		// Check for engine quit and video stop key presses
+ 		while (_eventMan->pollEvent(_event)) {
+ 			switch (_event.type) {
+diff --git a/engines/zvision/scripting/actions.cpp b/engines/zvision/scripting/actions.cpp
+--- a/engines/zvision/scripting/actions.cpp
++++ b/engines/zvision/scripting/actions.cpp
+@@ -1164,7 +1164,19 @@
+ 		_engine->_mixer->pauseAll(true);
+ 	}
+ 
+-	_engine->playVideo(*decoder, destRect, _skippable, sub, srcRect);
++	bool opening = false;
++#ifdef __EMSCRIPTEN__
++	// The startup node owns the logo movies and the first new-game video.
++	if (_engine->getScriptManager()->getCurrentLocation() == "gary") {
++		const Common::String name = _fileName.baseName();
++		if (_engine->getGameId() == GID_GRANDINQUISITOR)
++			opening = name.equalsIgnoreCase("g000m971.avi") || name.equalsIgnoreCase("g000m991.avi") ||
++				name.equalsIgnoreCase("g000m981.avi") || name.equalsIgnoreCase("g000m411.avi");
++		else if (_engine->getGameId() == GID_NEMESIS)
++			opening = name.equalsIgnoreCase("u000a51c.avi");
++	}
++#endif
++	_engine->playVideo(*decoder, destRect, _skippable, sub, srcRect, opening);
+ 
+ 	if (pauseBackgroundMusic) {
+ 		_engine->_mixer->pauseAll(false);

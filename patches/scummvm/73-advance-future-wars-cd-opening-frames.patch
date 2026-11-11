@@ -1,0 +1,84 @@
+diff --git a/engines/cine/cine.cpp b/engines/cine/cine.cpp
+--- a/engines/cine/cine.cpp
++++ b/engines/cine/cine.cpp
+@@ -307,6 +307,10 @@
+ }
+ 
+ uint32 CineEngine::getTimerDelay() const {
++#ifdef __EMSCRIPTEN__
++	if (_browserSkipOpening)
++		return 0;
++#endif
+ 	return (10923000 * _timerDelayMultiplier) / 1193180;
+ }
+ 
+diff --git a/engines/cine/cine.h b/engines/cine/cine.h
+--- a/engines/cine/cine.h
++++ b/engines/cine/cine.h
+@@ -210,6 +210,9 @@
+ 	Common::String getTargetSaveStateName(Common::String target, int slot) const;
+ 
+ 	bool _preLoad;
++#ifdef __EMSCRIPTEN__
++	bool _browserSkipOpening = false;
++#endif
+ 	int _timerDelayMultiplier;
+ 
+ public:
+diff --git a/engines/cine/main_loop.cpp b/engines/cine/main_loop.cpp
+--- a/engines/cine/main_loop.cpp
++++ b/engines/cine/main_loop.cpp
+@@ -20,6 +20,7 @@
+  */
+ 
+ 
++#include "engines/scummweb-intro.h"
+ #include "engines/scummweb-telemetry.h"
+ 
+ #include "common/scummsys.h"
+@@ -407,6 +408,11 @@
+ 
+ void CineEngine::mainLoop(int bootScriptIdx) {
+ 	byte di;
++#ifdef __EMSCRIPTEN__
++	_browserSkipOpening = false;
++	const bool browserOpening = !_preLoad && getGameType() == GType_FW &&
++		(getFeatures() & GF_CD) && ScummWebIntro::nativeSkipEnabled();
++#endif
+ 
+ 	if (_preLoad == false) {
+ 		resetBgIncrustList();
+@@ -509,6 +515,21 @@
+ 		executeObjectScripts();
+ 		executeGlobalScripts();
+ #ifdef __EMSCRIPTEN__
++		if (browserOpening && !ScummWebIntro::startupFinished()) {
++			// The CD publisher and forest backgrounds precede the
++			// original window-cleaning scene and its player instructions.
++			const char *bg = renderer->getBgName();
++			const bool opening = !allowPlayerInput &&
++				(!scumm_stricmp(bg, "LOGO.PI1") || !scumm_stricmp(bg, "CINEMA.PI1") ||
++				 !scumm_stricmp(bg, "L0.PI1"));
++			if (!_browserSkipOpening && ScummWebIntro::skipRequested(opening)) {
++				_browserSkipOpening = true;
++				ScummWebIntro::skipRequested(false);
++			}
++			_browserSkipOpening &= opening;
++			if (allowPlayerInput)
++				ScummWebIntro::gameplayStarted();
++		}
+ 		{
+ 			ScummWebTelemetry::Sample sample(-1, renderer->getBgName());
+ 			if (sample) {
+@@ -559,7 +580,10 @@
+ 			if (_messageLen < 800)
+ 				_messageLen = 800;
+ 
+-			manageEvents(MAIN_LOOP_WAIT_FOR_PLAYER_CLICK, UNTIL_MOUSE_BUTTON_UP_DOWN_UP);
++#ifdef __EMSCRIPTEN__
++			if (!_browserSkipOpening)
++#endif
++				manageEvents(MAIN_LOOP_WAIT_FOR_PLAYER_CLICK, UNTIL_MOUSE_BUTTON_UP_DOWN_UP);
+ 			stopTextToSpeech();
+ 			waitForPlayerClick = 0;
+ 		}

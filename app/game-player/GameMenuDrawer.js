@@ -43,7 +43,7 @@ export default function GameMenuDrawer({ frameRef, onClose, onExit, onNativeMenu
   const [page, setPage] = useState("menu");
   const [settings, setSettings] = useState(defaultSettings);
   const [busy, setBusy] = useState(false);
-  const [notice, setNotice] = useState(null);
+  const [error, setError] = useState(null);
   const [overwrite, setOverwrite] = useState(null);
 
   useEffect(() => {
@@ -69,7 +69,7 @@ export default function GameMenuDrawer({ frameRef, onClose, onExit, onNativeMenu
 
   function go(next) {
     setSettings(controller.current?.read() ?? defaultSettings);
-    setNotice(null);
+    setError(null);
     setOverwrite(null);
     setPage(next);
   }
@@ -83,19 +83,16 @@ export default function GameMenuDrawer({ frameRef, onClose, onExit, onNativeMenu
     const player = controller.current;
     if (!player || busy) return;
     setBusy(true);
-    setNotice(null);
+    setError(null);
     try {
       const result = await player.run(operation, slot);
       if (player !== controller.current) return;
       setSettings(player.read());
-      if (result.error) setNotice({ error: true, text: result.error });
+      if (result.error) setError(result.error);
       else if (operation === "load") dialogRef.current?.close();
-      else {
-        setOverwrite(null);
-        setNotice({ text: "Game saved." });
-      }
+      else setOverwrite(null);
     } catch {
-      if (player === controller.current) setNotice({ error: true, text: "The game could not complete the request." });
+      if (player === controller.current) setError("The game could not complete the request.");
     } finally {
       if (player === controller.current) setBusy(false);
     }
@@ -221,7 +218,7 @@ export default function GameMenuDrawer({ frameRef, onClose, onExit, onNativeMenu
             </>
           )}
           {busy && <p className="game-menu-note" role="status">{page === "save" ? "Saving…" : "Loading…"}</p>}
-          {notice && <p className="game-menu-note" role={notice.error ? "alert" : "status"}>{notice.text}</p>}
+          {error && <p className="game-menu-note" role="alert">{error}</p>}
         </div>
       )}
     </dialog>

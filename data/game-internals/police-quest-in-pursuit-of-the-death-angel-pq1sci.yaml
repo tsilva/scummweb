@@ -66,9 +66,11 @@ milestones:
     when: { flag: tested-driver }
   - id: read-rights
     label: Read the felony suspect his Miranda rights
+    implies: [felony-stop]
     when: { flag: read-rights }
   - id: inspected-trunk
     label: Found the drugs in the trunk
+    implies: [felony-stop]
     when: { flag: inspected-trunk }
   - id: presented-warrant
     label: Presented the warrant
@@ -93,9 +95,11 @@ milestones:
     when: { flag: made-hotel-call }
   - id: used-pen
     label: Used the transmitter pen
+    implies: [confronted-bains]
     when: { flag: used-pen }
   - id: winning-ending
     label: Defeated Bains and received the award
+    implies: [confronted-bains]
     when:
       all:
         - { room: award-ceremony }

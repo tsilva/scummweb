@@ -1,0 +1,17 @@
+diff --git a/engines/scumm/scumm.cpp b/engines/scumm/scumm.cpp
+--- a/engines/scumm/scumm.cpp
++++ b/engines/scumm/scumm.cpp
+@@ -2964,9 +2964,12 @@
+ 			// then plays the mansion movie. Neither room starts gameplay.
+ 			const bool maniacOpening = _game.id == GID_MANIAC && _game.platform == Common::kPlatformAmiga &&
+ 				(_currentRoom == 45 || _currentRoom == 33);
++			// Curse of Monkey Island chooses its puzzle difficulty before the
++			// opening SMUSH movie. Room 87 is still the original title choice.
++			const bool curseOpening = _game.id == GID_CMI && _currentRoom == 87;
+ 			if (_roomResource != 0 && _userPut > 0 && vm.cutSceneStackPointer == 0 &&
+ 				(!ScummWebIntro::nativeSkipEnabled() ||
+-				 (!loomOpening && !maniacOpening && _cursor.state > 0 && vm.cutScenePtr[0] == 0)))
++				 (!loomOpening && !maniacOpening && !curseOpening && _cursor.state > 0 && vm.cutScenePtr[0] == 0)))
+ 				ScummWebIntro::gameplayStarted();
+ #endif
+ 			if (VAR_LAST_FRAME_SCUMM_TIME != 0xFF)

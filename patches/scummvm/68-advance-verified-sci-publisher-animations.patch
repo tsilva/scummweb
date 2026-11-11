@@ -1,0 +1,148 @@
+diff --git a/engines/sci/engine/kevent.cpp b/engines/sci/engine/kevent.cpp
+--- a/engines/sci/engine/kevent.cpp
++++ b/engines/sci/engine/kevent.cpp
+@@ -100,7 +100,8 @@
+ 		ScummWebIntro::skipRequested(false);
+ 	}
+ 	if (!opening && !ScummWebIntro::startupFinished() && globals && size > kGlobalVarUser &&
+-		(mask & kSciEventKeyDown) && g_sci->_guestAdditions->userHasControl(false))
++		(mask & kSciEventKeyDown) && g_sci->_guestAdditions->userHasControl(false) &&
++		(!ScummWebIntro::nativeSkipEnabled() || !s->isBrowserTimedOpening()))
+ 		ScummWebIntro::gameplayStarted();
+ #endif
+ 
+diff --git a/engines/sci/engine/state.cpp b/engines/sci/engine/state.cpp
+--- a/engines/sci/engine/state.cpp
++++ b/engines/sci/engine/state.cpp
+@@ -19,6 +19,7 @@
+  *
+  */
+ #include "common/system.h"
++#include "engines/scummweb-intro.h"
+ 
+ #include "sci/sci.h"	// for INCLUDE_OLDGFX
+ #include "sci/debug.h"	// for g_debug_sleeptime_factor
+@@ -102,6 +103,13 @@
+ 	r_rest = 0;
+ 
+ 	lastWaitTime = 0;
++#ifdef __EMSCRIPTEN__
++	if (_browserTimedOpeningAvailable)
++		ScummWebIntro::skipRequested(false);
++	_browserOpeningClockOffset = 0;
++	_browserTimedOpeningAvailable = false;
++	_browserSkipTimedOpening = false;
++#endif
+ 
+ 	gcCountDown = 0;
+ 
+@@ -136,8 +144,36 @@
+ 	}
+ }
+ 
++#ifdef __EMSCRIPTEN__
++bool EngineState::isBrowserTimedOpening() const {
++	const auto *globals = variables[VAR_GLOBAL];
++	if (_delayedRestoreGameId != -1 || !globals || variablesMax[VAR_GLOBAL] <= kGlobalVarNewRoomNo ||
++			!globals[kGlobalVarNewRoomNo].isNumber())
++		return false;
++
++	const int room = currentRoomNumber();
++	// These publisher rooms advance on script time instead of handling
++	// Escape. The original title menus and first gameplay rooms are separate.
++	switch (g_sci->getGameId()) {
++	case GID_GK1:
++		return room == 94;
++	case GID_KQ5:
++		return room == 99;
++	case GID_KQ7:
++		return room == 15;
++	case GID_PEPPER:
++		return room == 100;
++	default:
++		return false;
++	}
++}
++#endif
++
+ uint16 EngineState::wait(uint16 ticks) {
+ 	uint32 time = g_system->getMillis();
++#ifdef __EMSCRIPTEN__
++	time += _browserOpeningClockOffset;
++#endif
+ 
+ 	uint32 ms = ticks * 1000 / 60;
+ 	uint32 duration = time - lastWaitTime;
+diff --git a/engines/sci/engine/state.h b/engines/sci/engine/state.h
+--- a/engines/sci/engine/state.h
++++ b/engines/sci/engine/state.h
+@@ -177,6 +177,10 @@
+ #ifdef __EMSCRIPTEN__
+ 	int _browserIntroSkippedRoom = -1;
+ 	bool _browserIntroAvailable = false;
++	uint32 _browserOpeningClockOffset = 0;
++	bool _browserTimedOpeningAvailable = false;
++	bool _browserSkipTimedOpening = false;
++	bool isBrowserTimedOpening() const;
+ #endif
+ 	void setRoomNumber(uint16 roomNumber);
+ 
+diff --git a/engines/sci/sci.cpp b/engines/sci/sci.cpp
+--- a/engines/sci/sci.cpp
++++ b/engines/sci/sci.cpp
+@@ -35,6 +35,7 @@
+ #include "engines/util.h"
+ #include "engines/scummweb-agent-loop.h"
+ 
++#include "engines/scummweb-intro.h"
+ #include "sci/sci.h"
+ #include "sci/debug.h"
+ #include "sci/console.h"
+@@ -999,6 +1000,31 @@
+ 		return;
+ 	}
+ 
++#ifdef __EMSCRIPTEN__
++	if (_gamestate && ScummWebIntro::nativeSkipEnabled()) {
++		auto &state = *_gamestate;
++		if (!ScummWebIntro::startupFinished() && state.isBrowserTimedOpening()) {
++			if (!state._browserSkipTimedOpening) {
++				state._browserTimedOpeningAvailable = true;
++				if (ScummWebIntro::skipRequested()) {
++					state._browserSkipTimedOpening = true;
++					state._browserTimedOpeningAvailable = false;
++					ScummWebIntro::skipRequested(false);
++				}
++			}
++			if (state._browserSkipTimedOpening) {
++				const uint32 shortened = MAX<uint32>(msecs / 16, 1);
++				state._browserOpeningClockOffset += msecs - shortened;
++				msecs = shortened;
++			}
++		} else {
++			if (state._browserTimedOpeningAvailable)
++				ScummWebIntro::skipRequested(false);
++			state._browserTimedOpeningAvailable = false;
++			state._browserSkipTimedOpening = false;
++		}
++	}
++#endif
+ 	const uint32 wakeUpTime = _system->getMillis() + msecs;
+ 
+ 	for (;;) {
+@@ -1139,7 +1165,14 @@
+ }
+ 
+ uint32 SciEngine::getTickCount() {
+-	return getTotalPlayTime() * 60 / 1000;
++	uint32 elapsed = getTotalPlayTime();
++#ifdef __EMSCRIPTEN__
++	// Preserve script clock continuity after the opening. The save file
++	// continues to use actual play time.
++	if (_gamestate)
++		elapsed += _gamestate->_browserOpeningClockOffset;
++#endif
++	return elapsed * 60 / 1000;
+ }
+ void SciEngine::setTickCount(const uint32 ticks) {
+ 	return setTotalPlayTime(ticks * 1000 / 60);

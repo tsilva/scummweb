@@ -1,0 +1,42 @@
+diff --git a/engines/gob/util.cpp b/engines/gob/util.cpp
+--- a/engines/gob/util.cpp
++++ b/engines/gob/util.cpp
+@@ -340,9 +340,9 @@
+ 			_vm->isCurrentTot("intro016.tot") && ScummWebIntro::nativeSkipEnabled()) {
+ 		const Script &script = *_vm->_game->_script;
+ 		const int position = script.pos();
+-		// This exact Amiga script places its copy-protection input at 2321.
+-		// The preceding 2298 call clears the opening's buffered keys.
+-		if (position >= 2298) {
++		// The original credits wait reads at 2321. Protection setup starts
++		// at 2583 and its answer input reads at 4246 in this exact script.
++		if (position >= 2583) {
+ 			_browserWeenIntroFinished = true;
+ 			if (_browserWeenIntroSkipped)
+ 				ScummWebIntro::skipRequested(false);
+diff --git a/engines/tinsel/bmv.h b/engines/tinsel/bmv.h
+--- a/engines/tinsel/bmv.h
++++ b/engines/tinsel/bmv.h
+@@ -145,6 +145,7 @@
+ public:
+ #ifdef __EMSCRIPTEN__
+ 	void resetBrowserOpening() { _browserSkipOpening = OpeningGroup::None; }
++	bool hasBrowserStoryRequest() const { return _browserSkipOpening == OpeningGroup::Story; }
+ #endif
+ 	BMVPlayer();
+ 
+diff --git a/engines/tinsel/tinsel.cpp b/engines/tinsel/tinsel.cpp
+--- a/engines/tinsel/tinsel.cpp
++++ b/engines/tinsel/tinsel.cpp
+@@ -158,6 +158,11 @@
+ 	while (true) {
+ #ifdef __EMSCRIPTEN__
+ 		if (TinselVersion == 1 && ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested(InDw1Intro()))
++			ProcessKeyEvent(PLR_ESCAPE);
++		// The opening funeral conversation follows the movies. Carry the
++		// accepted request through its original Escape events until control.
++		if (_vm->getGameID() == GID_DW2 && GetSceneHandle() == 0x1e000000 &&
++				_vm->_bmv->hasBrowserStoryRequest() && !ControlIsOn())
+ 			ProcessKeyEvent(PLR_ESCAPE);
+ #endif
+ 		if (_vm->_keypresses.empty()) {

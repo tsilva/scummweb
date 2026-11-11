@@ -1,0 +1,186 @@
+diff --git a/engines/agos/agos.cpp b/engines/agos/agos.cpp
+--- a/engines/agos/agos.cpp
++++ b/engines/agos/agos.cpp
+@@ -1240,10 +1240,6 @@
+ 	_openingScript = ScummWebIntro::nativeSkipEnabled() && !ConfMan.hasKey("save_slot");
+ #endif
+ 	runSubroutine101();
+-#ifdef __EMSCRIPTEN__
+-	_openingScript = false;
+-	ScummWebIntro::gameplayStarted();
+-#endif
+ 	permitInput();
+ 
+ 	while (!shouldQuit()) {
+diff --git a/engines/agos/input.cpp b/engines/agos/input.cpp
+--- a/engines/agos/input.cpp
++++ b/engines/agos/input.cpp
+@@ -23,6 +23,7 @@
+ #include "common/events.h"
+ #include "common/file.h"
+ 
++#include "engines/scummweb-intro.h"
+ #include "agos/intern.h"
+ #include "agos/agos.h"
+ #include "agos/midi.h"
+@@ -224,6 +225,12 @@
+ 				hitarea_stuff_helper();
+ #ifdef __EMSCRIPTEN__
+ 				_scummWebAgentIdle = true;
++				// Initial timed scripts can run after startup subroutine 101.
++				if (!ScummWebIntro::startupFinished() && canSaveGameStateCurrently() &&
++					!getBitFlag(9)) {
++					_openingScript = false;
++					ScummWebIntro::gameplayStarted();
++				}
+ #endif
+ 				delay(100);
+ #ifdef __EMSCRIPTEN__
+diff --git a/engines/gob/mult.cpp b/engines/gob/mult.cpp
+--- a/engines/gob/mult.cpp
++++ b/engines/gob/mult.cpp
+@@ -27,6 +27,7 @@
+ 
+ #include "common/endian.h"
+ 
++#include "engines/scummweb-intro.h"
+ #include "gob/gob.h"
+ #include "gob/mult.h"
+ #include "gob/global.h"
+@@ -164,6 +165,29 @@
+ 	_multData = nullptr;
+ }
+ 
++#ifdef __EMSCRIPTEN__
++static bool isSkippableOpeningAnimation(const GobEngine &vm) {
++	switch (vm.getGameType()) {
++	case kGameTypeGob1:
++	case kGameTypeGeisha:
++	case kGameTypeLostInTime:
++	case kGameTypeUrban:
++		return vm.isCurrentTot("intro.tot");
++	case kGameTypeGob2:
++		return vm.isCurrentTot("intro.tot") || vm.isCurrentTot("intro0.tot");
++	case kGameTypeWoodruff:
++	case kGameTypeFascination:
++		return vm.isCurrentTot("intro.tot") || vm.isCurrentTot("intro1.tot");
++	case kGameTypeBargon:
++		return vm.isCurrentTot("intro.tot") || vm.isCurrentTot("intro0.tot") || vm.isCurrentTot("intro1.tot");
++	case kGameTypeWeen:
++		return vm.isCurrentTot("intro.tot") || vm.isCurrentTot("intro016.tot");
++	default:
++		return false;
++	}
++}
++#endif
++
+ void Mult::playMult(int16 startFrame, int16 endFrame, char checkEscape,
+ 	    char handleMouse) {
+ 	bool stopNoClear;
+@@ -180,6 +204,11 @@
+ 	if (_frame == -1)
+ 		playMultInit();
+ 
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++	const bool opening = checkEscape && !handleMouse && ScummWebIntro::nativeSkipEnabled() &&
++		isSkippableOpeningAnimation(*_vm);
++#endif
+ 	Common::TextToSpeechManager *ttsMan = g_system->getTextToSpeechManager();
+ 	do {
+ 		stop = true;
+@@ -214,6 +243,10 @@
+ 			_vm->_util->processInput();
+ 			if (checkEscape && (_vm->_util->checkKey() == kKeyEscape))
+ 				stop = true;
++#ifdef __EMSCRIPTEN__
++			if (!stop && opening && ScummWebIntro::skipRequested())
++				stop = true;
++#endif
+ 
+ 			_vm->_util->waitEndFrame();
+ 		} while (!stop && stopNoClear && ttsMan && ttsMan->isSpeaking());
+diff --git a/engines/mortevielle/mortevielle.cpp b/engines/mortevielle/mortevielle.cpp
+--- a/engines/mortevielle/mortevielle.cpp
++++ b/engines/mortevielle/mortevielle.cpp
+@@ -465,7 +465,6 @@
+ #ifdef __EMSCRIPTEN__
+ 	_openingText = false;
+ 	skipMusic = _skipOpeningText;
+-	ScummWebIntro::skipRequested(false);
+ #endif
+ 	showTitleScreen();
+ 	music(skipMusic);
+@@ -490,6 +489,10 @@
+ 	clearScreen();
+ 	drawRightFrame();
+ 	_mouse->showMouse();
++
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::gameplayStarted();
++#endif
+ 
+ 	// Loop to play the game
+ 	do {
+diff --git a/engines/mortevielle/sound.cpp b/engines/mortevielle/sound.cpp
+--- a/engines/mortevielle/sound.cpp
++++ b/engines/mortevielle/sound.cpp
+@@ -25,6 +25,7 @@
+  */
+ 
+ #include "mortevielle/mortevielle.h"
++#include "engines/scummweb-intro.h"
+ #include "mortevielle/sound.h"
+ #include "mortevielle/dialogs.h"
+ 
+@@ -305,8 +306,13 @@
+ 	Audio::SoundHandle songHandle;
+ 	_mixer->playStream(Audio::Mixer::kSFXSoundType, &songHandle, stream, -1, Audio::Mixer::kMaxChannelVolume, 0, DisposeAfterUse::YES);
+ 
+-	while (_mixer->isSoundHandleActive(songHandle) && !_vm->keyPressed() && !_vm->_mouseClick && !_vm->shouldQuit())
+-		;
++	while (_mixer->isSoundHandleActive(songHandle) && !_vm->keyPressed() && !_vm->_mouseClick && !_vm->shouldQuit()) {
++#ifdef __EMSCRIPTEN__
++		// This song is only played by the original title screen.
++		if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested())
++			break;
++#endif
++	}
+ 	// In case the handle is still active, stop it.
+ 	_mixer->stopHandle(songHandle);
+ }
+diff --git a/engines/mortevielle/utils.cpp b/engines/mortevielle/utils.cpp
+--- a/engines/mortevielle/utils.cpp
++++ b/engines/mortevielle/utils.cpp
+@@ -59,6 +59,14 @@
+ 	// Delay briefly to keep CPU usage down
+ 	g_system->delayMillis(5);
+ 
++#ifdef __EMSCRIPTEN__
++	if (_openingText && _keypresses.empty() &&
++		(_skipOpeningText || ScummWebIntro::skipRequested())) {
++		_skipOpeningText = true;
++		_keypresses.push(66); // F8 advances the spoken introduction.
++	}
++#endif
++
+ 	// Return if there are any pending key presses
+ 	return !_keypresses.empty();
+ }
+@@ -70,15 +78,8 @@
+ int MortevielleEngine::getChar() {
+ 	bool end = false;
+ 	// If there isn't any pending keypress, wait until there is
+-	while (!shouldQuit() && !end) {
++	while (!shouldQuit() && !end)
+ 		end = keyPressed();
+-#ifdef __EMSCRIPTEN__
+-		if (!end && _openingText && (_skipOpeningText || ScummWebIntro::skipRequested())) {
+-			_skipOpeningText = true;
+-			return 66; // F8 advances the spoken introduction.
+-		}
+-#endif
+-	}
+ 
+ 	// Return the top keypress
+ 	return shouldQuit() ? 0 : _keypresses.pop();

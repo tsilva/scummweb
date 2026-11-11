@@ -1,0 +1,198 @@
+diff --git a/engines/gob/videoplayer.cpp b/engines/gob/videoplayer.cpp
+--- a/engines/gob/videoplayer.cpp
++++ b/engines/gob/videoplayer.cpp
+@@ -460,6 +460,11 @@
+ 		properties.openingLogo = true;
+ #endif
+ #ifdef __EMSCRIPTEN__
++	if (primary && _vm->getGameType() == kGameTypeUrban && _vm->isCurrentTot("emam2000.tot") &&
++			video->fileName.equalsIgnoreCase("mxpours.vmd") && properties.breakKey != 0)
++		properties.openingLogo = true;
++#endif
++#ifdef __EMSCRIPTEN__
+ 	if (primary && !properties.openingLogo)
+ 		_browserSkipOpening = false;
+ #endif
+diff --git a/engines/sci/engine/kevent.cpp b/engines/sci/engine/kevent.cpp
+--- a/engines/sci/engine/kevent.cpp
++++ b/engines/sci/engine/kevent.cpp
+@@ -70,13 +70,14 @@
+ 	case GID_LSL1:
+ 		return room == 710;
+ 	case GID_LSL6HIRES:
++	case GID_LSL7:
+ 		return room == 100;
+ 	case GID_FREDDYPHARKAS:
+ 		return room == 100;
+ 	case GID_JONES:
+ 		return room == 2;
+ 	case GID_LONGBOW:
+-		return room == 98 || room == 96;
++		return room == 98 || room == 96 || room == 95;
+ 	default:
+ 		return false;
+ 	}
+@@ -162,13 +163,29 @@
+ 
+ 	curEvent = g_sci->getEventManager()->getSciEvent(mask);
+ #ifdef __EMSCRIPTEN__
+-	if (opening && s->_browserIntroSkippedRoom != openingRoom && curEvent.type == kSciEventNone &&
++	bool openingHandlerReady = true;
++	if (opening && g_sci->getGameId() == GID_LSL7) {
++		const int scriptSelector = g_sci->getKernel()->findSelector("script");
++		const int stateSelector = g_sci->getKernel()->findSelector("state");
++		openingHandlerReady = false;
++		if (scriptSelector >= 0 && stateSelector >= 0) {
++			const reg_t script = readSelector(segMan, globals[kGlobalVarCurrentRoom], scriptSelector);
++			const char *name = segMan->getObjectName(script);
++			if (name && strcmp(name, "soPlayIntro") == 0) {
++				const uint16 state = readSelectorValue(segMan, script, stateSelector);
++				// The original any-event handler is registered in state 3.
++				openingHandlerReady = state >= 3 && state <= 9;
++			}
++		}
++	}
++	if (opening && openingHandlerReady && s->_browserIntroSkippedRoom != openingRoom && curEvent.type == kSciEventNone &&
+ 		(mask & kSciEventKeyDown) && !(mask & kSciEventPeek)) {
+ 		s->_browserIntroAvailable = true;
+ 		// Longbow's second opening room can use the same request. Do not
+ 		// repeat it in the same room or carry it into the actual game.
+ 		const bool continueLongbowOpening = g_sci->getGameId() == GID_LONGBOW &&
+-			s->_browserIntroSkippedRoom == 98 && openingRoom == 96;
++			((s->_browserIntroSkippedRoom == 98 && openingRoom == 96) ||
++			 (s->_browserIntroSkippedRoom == 96 && openingRoom == 95));
+ 		// Known credit rooms can follow a timed publisher animation. Carry
+ 		// its accepted request only into these original opening key handlers.
+ 		const bool continueTimedOpening = s->_browserSkipTimedOpening;
+diff --git a/engines/sci/graphics/video32.cpp b/engines/sci/graphics/video32.cpp
+--- a/engines/sci/graphics/video32.cpp
++++ b/engines/sci/graphics/video32.cpp
+@@ -178,8 +178,15 @@
+ 		stopFlag = checkForEvent(flags);
+ #ifdef __EMSCRIPTEN__
+ 		const bool canSkip = flags & (kEventFlagEscapeKey | kEventFlagMouseDown);
+-		if (stopFlag == kEventFlagNone && ScummWebIntro::skipRequested(canSkip))
++		const bool openingGroup = !ScummWebIntro::startupFinished() && g_sci->getGameId() == GID_TORIN &&
++			g_sci->getEngineState()->currentRoomNumber() == 61000;
++		if (!openingGroup)
++			_browserSkipOpening = false;
++		if (stopFlag == kEventFlagNone && canSkip &&
++				(_browserSkipOpening || ScummWebIntro::skipRequested())) {
++			_browserSkipOpening = openingGroup;
+ 			stopFlag = (flags & kEventFlagEscapeKey) ? kEventFlagEscapeKey : kEventFlagMouseDown;
++		}
+ #endif
+ 		if (stopFlag != kEventFlagNone) {
+ 			break;
+diff --git a/engines/sci/graphics/video32.h b/engines/sci/graphics/video32.h
+--- a/engines/sci/graphics/video32.h
++++ b/engines/sci/graphics/video32.h
+@@ -77,6 +77,9 @@
+ 
+ protected:
+ 	EventManager *_eventMan;
++#ifdef __EMSCRIPTEN__
++	bool _browserSkipOpening = false;
++#endif
+ 
+ 	/**
+ 	 * The video decoder to use for video playback by this player.
+diff --git a/engines/tinsel/tinlib.cpp b/engines/tinsel/tinlib.cpp
+--- a/engines/tinsel/tinlib.cpp
++++ b/engines/tinsel/tinlib.cpp
+@@ -28,6 +28,7 @@
+ #define BODGE
+ 
+ #include "common/coroutines.h"
++#include "engines/scummweb-intro.h"
+ #include "tinsel/actors.h"
+ #include "tinsel/background.h"
+ #include "tinsel/bmv.h"
+@@ -2506,6 +2507,16 @@
+ 		// PSX scripts restart directly to the title screen.
+ 		ResetDw1Intro();
+ 	}
++#ifdef __EMSCRIPTEN__
++	if (_vm->getGameID() == GID_DW1 && _vm->getPlatform() == Common::kPlatformDOS &&
++			!ScummWebIntro::startupFinished() &&
++			GetSceneHandle() == _vm->_handle->GetDw1TitleSceneHandle()) {
++		// The user selected New Game at the original title. Its story uses
++		// native Escape cleanup, without redirecting back to that title.
++		_vm->_browserDw1NewGame = true;
++		EndDw1Intro();
++	}
++#endif
+ }
+ 
+ /**
+diff --git a/engines/tinsel/tinsel.cpp b/engines/tinsel/tinsel.cpp
+--- a/engines/tinsel/tinsel.cpp
++++ b/engines/tinsel/tinsel.cpp
+@@ -157,8 +157,28 @@
+ 	CORO_BEGIN_CODE(_ctx);
+ 	while (true) {
+ #ifdef __EMSCRIPTEN__
+-		if (TinselVersion == 1 && ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested(InDw1Intro()))
+-			ProcessKeyEvent(PLR_ESCAPE);
++		if (TinselVersion == 1 && ScummWebIntro::nativeSkipEnabled()) {
++			const bool initialOpening = InDw1Intro();
++			const auto scene = GetSceneHandle();
++			// The title and its idle credits precede the original start choice.
++			// The story after that choice retains its native Escape handlers.
++			const bool story = _vm->getGameID() == GID_DW1 && _vm->getPlatform() == Common::kPlatformDOS &&
++				!ScummWebIntro::startupFinished() && !initialOpening && scene &&
++				scene != _vm->_handle->GetDw1TitleSceneHandle() &&
++				(scene != 0x06000000 || _vm->_browserDw1NewGame) &&
++				!ControlIsOn() && !_vm->_dialogs->menuActive();
++			if (!story)
++				_vm->_browserSkipDw1Story = false;
++			if (!_vm->_browserSkipDw1Story && ScummWebIntro::skipRequested(initialOpening || story)) {
++				if (story) {
++					_vm->_browserSkipDw1Story = true;
++					ScummWebIntro::skipRequested(false);
++				}
++				ProcessKeyEvent(PLR_ESCAPE);
++			} else if (story && _vm->_browserSkipDw1Story) {
++				ProcessKeyEvent(PLR_ESCAPE);
++			}
++		}
+ 		// The opening funeral conversation follows the movies. Carry the
+ 		// accepted request through its original Escape events until control.
+ 		if (_vm->getGameID() == GID_DW2 && GetSceneHandle() == 0x1e000000 &&
+@@ -1220,6 +1240,14 @@
+ #ifdef __EMSCRIPTEN__
+ 	{
+ 		const auto handle = GetSceneHandle();
++		if (getGameID() == GID_DW1 && getPlatform() == Common::kPlatformDOS && handle &&
++				handle != _handle->GetDw1TitleSceneHandle() && handle != 0x06000000 &&
++				ControlIsOn() && !_dialogs->menuActive()) {
++			EndDw1Intro();
++			_browserSkipDw1Story = false;
++			_browserDw1NewGame = false;
++			ScummWebIntro::gameplayStarted();
++		}
+ 		// The two title scenes retain their original New Game menu.
+ 		// Release the movie request when the first game scene gives control.
+ 		if (getGameID() == GID_DW2 && handle && handle != 0x06000000 && handle != 0x0a000000 &&
+@@ -1309,6 +1337,7 @@
+  */
+ void TinselEngine::RestartGame() {
+ #ifdef __EMSCRIPTEN__
++	_browserSkipDw1Story = false;
+ 	_bmv->resetBrowserOpening();
+ #endif
+ 	_vm->_dialogs->holdItem(INV_NOICON); // Holding nothing
+diff --git a/engines/tinsel/tinsel.h b/engines/tinsel/tinsel.h
+--- a/engines/tinsel/tinsel.h
++++ b/engines/tinsel/tinsel.h
+@@ -200,6 +200,10 @@
+ 	PCMMusicPlayer *_pcmMusic;
+ 	Music *_music;
+ 	BMVPlayer *_bmv;
++#ifdef __EMSCRIPTEN__
++	bool _browserDw1NewGame = false;
++	bool _browserSkipDw1Story = false;
++#endif
+ 	Background* _bg;
+ 	Font *_font;
+ 	Cursor *_cursor;

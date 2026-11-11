@@ -1,0 +1,63 @@
+diff --git a/engines/sci/engine/state.cpp b/engines/sci/engine/state.cpp
+--- a/engines/sci/engine/state.cpp
++++ b/engines/sci/engine/state.cpp
+@@ -107,7 +107,7 @@
+ 	if (_browserTimedOpeningAvailable)
+ 		ScummWebIntro::skipRequested(false);
+ 	_browserOpeningClockOffset = 0;
+-	_browserOpeningClockTime = 0;
++	_browserOpeningFrames = 0;
+ 	_browserTimedOpeningAvailable = false;
+ 	_browserSkipTimedOpening = false;
+ #endif
+diff --git a/engines/sci/engine/state.h b/engines/sci/engine/state.h
+--- a/engines/sci/engine/state.h
++++ b/engines/sci/engine/state.h
+@@ -178,7 +178,7 @@
+ 	int _browserIntroSkippedRoom = -1;
+ 	bool _browserIntroAvailable = false;
+ 	uint32 _browserOpeningClockOffset = 0;
+-	uint32 _browserOpeningClockTime = 0;
++	uint8 _browserOpeningFrames = 0;
+ 	bool _browserTimedOpeningAvailable = false;
+ 	bool _browserSkipTimedOpening = false;
+ 	bool isBrowserTimedOpening() const;
+diff --git a/engines/sci/sci.cpp b/engines/sci/sci.cpp
+--- a/engines/sci/sci.cpp
++++ b/engines/sci/sci.cpp
+@@ -1008,25 +1008,26 @@
+ 				state._browserTimedOpeningAvailable = true;
+ 				if (ScummWebIntro::skipRequested()) {
+ 					state._browserSkipTimedOpening = true;
+-					state._browserOpeningClockTime = getTotalPlayTime();
++					state._browserOpeningFrames = 0;
+ 					state._browserTimedOpeningAvailable = false;
+ 					ScummWebIntro::skipRequested(false);
+ 				}
+ 			}
+ 			if (state._browserSkipTimedOpening) {
+-				// Browser frame yields can outlast the requested sleep. Scale
+-				// actual unpaused script time so that those yields still advance
+-				// the opening at the requested rate.
+-				const uint32 now = getTotalPlayTime();
+-				state._browserOpeningClockOffset += (now - state._browserOpeningClockTime) * 15;
+-				state._browserOpeningClockTime = now;
+-				msecs = MIN<uint32>(msecs, 1);
++				// Some original credits count VM cycles instead of seconds.
++				// Execute a bounded batch between browser yields, advancing
++				// each requested script wait while retaining native transitions.
++				if (++state._browserOpeningFrames % 16 != 0) {
++					state._browserOpeningClockOffset += msecs;
++					return;
++				}
++				state._browserOpeningClockOffset += msecs - 1;
++				msecs = 1;
+ 			}
+ 		} else {
+ 			if (state._browserTimedOpeningAvailable)
+ 				ScummWebIntro::skipRequested(false);
+ 			state._browserTimedOpeningAvailable = false;
+-			state._browserOpeningClockTime = getTotalPlayTime();
+ 			// Keep one accepted request through intermediate loading rooms.
+ 			// Only the whitelisted opening rooms receive accelerated time.
+ 			if (ScummWebIntro::startupFinished())
