@@ -1,6 +1,6 @@
 {
   "schemaVersion": 4,
-  "recordedOn": "2026-11-09",
+  "recordedOn": "2026-11-11",
   "scope": "Startup verification by edition; warnings and failures describe ScummVM or ScummWEB limitations, excluding problems specific to supplied game files. Not full-game compatibility.",
   "upstreamReference": {
     "version": "2026.4.0",
@@ -1386,7 +1386,19 @@
       "status": "startup-verified",
       "gameId": "scumm:bluesabctime",
       "edition": "Blue's ABC Time (Windows).zip",
-      "observation": "A game frame renders at startup."
+      "observation": "Converted DXA opening movies play. Skip Intro preserves the original player-name choice, and the activity selection screen responds after choosing a player.",
+      "history": [
+        {
+          "recordedOn": "2026-11-09",
+          "status": "startup-verified",
+          "observation": "A game frame renders at startup."
+        },
+        {
+          "recordedOn": "2026-11-11",
+          "status": "startup-verified",
+          "observation": "Converted DXA opening movies play. Skip Intro preserves the original player-name choice, and the activity selection screen responds after choosing a player."
+        }
+      ]
     },
     {
       "title": "Blue's Clues: Blue's Art Time Activities",

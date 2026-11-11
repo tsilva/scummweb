@@ -1387,6 +1387,19 @@
         "Run native build and patch checks. Verify the same original Phobos character choice, Manhole control and Fascination protection endpoints, including normal input after the skip."
       ],
       "retire_when": "Upstream provides equivalent bounded signatures and opening request lifetime."
+    },
+    {
+      "path": "patches/scummvm/94-restore-he-converted-dxa-movies.patch",
+      "status": "active",
+      "sha256": "be30f62e888e99991f27ef5e2b60c3101ebfacd399ac40cc15d9f52157eef539",
+      "purpose": "Restore legacy converted DXA movie loading in Humongous games without replacing original Smacker or Bink movies.",
+      "invariants": [
+        "Prefer an existing original movie. Only try a same-directory DXA alternative for absent DAT/SMK files. Select a fresh decoder for every load, preserving image-surface, palette, frame count and native opening cancellation. Do not mask corrupt originals or missing game resources."
+      ],
+      "verification": [
+        "In Brave verify converted Blue’s ABC Time plays its opening and one Skip Intro request reaches its original activity choice. Verify a native Smacker HE game and a 16-bit Bink HE game still load. Run native build, runtime tests and offline patch checker."
+      ],
+      "retire_when": "Upstream HE MoviePlayer again loads legacy converted DXA movies while preserving original-file precedence and decoder switching."
     }
   ]
 }
