@@ -387,17 +387,101 @@ excludes local imports, direct ZIP links, and saved external launches.
 | `game_launch_attempt` | The player starts preparing a catalog game. |
 | `game_launch` | ScummVM renders the first frame. `load_time_ms` measures time since the attempt. |
 | `game_launch_failed` | Startup fails or times out. `failure_reason` is `startup_error` or `first_frame_timeout`. |
+| `game_play_30s` | The ready player accumulates 30 visible seconds with controls available. |
+| `game_play_60s` | The ready player accumulates 60 visible seconds with controls available. |
 | `game_play_milestone` | The ready player accumulates five visible minutes with controls available. `play_time_seconds` is 300. |
 
 Events share `game_slug`, `entry_point` (`hero`, `library`, `game_detail`,
-or `direct`), and `launch_mode` (`fresh` or `continue`). Intro skips stay
-in the same visit. A visit can recover after a failure. Page locations sent to
-GA4 and Vercel Analytics omit URL fragments.
+or `direct`), `launch_mode` (`fresh` or `continue`), and a random `launch_id`.
+The ID identifies one catalog play-page visit, stays stable through failure
+recovery and intro skips, and changes for another visit. It contains no user or
+save identity. A visit can recover after a failure, so failure and success counts
+are not mutually exclusive. Milestones use cumulative visible, ready time, pause
+while hidden or controls are unavailable, and fire once per threshold. They do
+not establish active input or puzzle progress. The existing five-minute event
+retains its meaning; shorter milestones have distinct names.
 
-Use a closed GA4 funnel from attempt to launch to milestone. Use **Event
-count** for visit-level event totals and analyze failures separately. Register
-the shared fields and `failure_reason` as event-scoped dimensions and
-`load_time_ms` as a custom metric to use them in reports.
+Page locations sent to GA4 omit URL fragments; Vercel Analytics redacts direct
+ZIP fragments. Do not include ZIP URLs, file names, saves, or input contents in
+analytics fields.
+
+### GA4 custom definitions
+
+Sending a parameter alone does not make it available in standard reports.
+In the production property's **Admin → Data display → Custom definitions**,
+maintain these event-scoped definitions:
+
+| Parameter | Definition | Reporting API name |
+| --- | --- | --- |
+| `game_slug` | Dimension: Game slug | `customEvent:game_slug` |
+| `entry_point` | Dimension: Entry point | `customEvent:entry_point` |
+| `launch_mode` | Dimension: Launch mode | `customEvent:launch_mode` |
+| `failure_reason` | Dimension: Failure reason | `customEvent:failure_reason` |
+| `play_time_seconds` | Dimension: Play milestone seconds | `customEvent:play_time_seconds` |
+| `traffic_type` | Dimension: Traffic type | `customEvent:traffic_type` |
+| `automation_reason` | Dimension: Automation reason | `customEvent:automation_reason` |
+| `load_time_ms` | Metric: Load time, unit Milliseconds | `customEvent:load_time_ms` |
+
+Use `averageCustomEvent:load_time_ms` for average startup latency; the unprefixed
+custom metric sums durations. `play_time_seconds` is a milestone category, not a
+measure to sum into total play time. Allow 24–48 hours for new custom definitions
+to become reportable; do not assume historical values are backfilled. See
+[Google's custom-definition guidance](https://support.google.com/analytics/answer/14240153).
+
+Keep `launch_id` as a raw event parameter for DebugView or an already configured
+event export. Do not register a unique-per-launch ID as a reporting dimension:
+it can cause high-cardinality aggregation. Exact launch matching requires raw
+events; aggregate Data API counts alone are not a matched funnel. These changes
+do not configure an export or provision another service.
+
+Verify the registration through the approved installed GA4 reporting route:
+
+```sh
+infisical-token-broker refresh ga4-reporting
+pnpm analytics:check:vault YYYY-MM-DD YYYY-MM-DD
+```
+
+Supply explicit report dates. The check resolves ScummWEB from the approved
+local property inventory and uses only the installed sandboxed `runReport`
+launcher. It prints schema acceptance, not visitor data; successful empty or
+`(not set)` rows verify registration, not event delivery. Access or registration
+failures stop without credential or API fallbacks. Preserve an enabled shared
+renewal service; follow the installed reporting guide for isolated-batch cleanup.
+
+### Identifying automated and internal traffic
+
+GA4 receives `traffic_type` and `automation_reason` before its initial config,
+so automatic page views and enhanced-measurement events are classified too.
+Catalog events carry the same fields explicitly.
+
+- `automated`: `navigator.webdriver`, a Lighthouse/headless user agent, or an
+  explicit automation marker. The reason is `webdriver`, `lighthouse`,
+  `headless`, or `declared`.
+- `internal`: a non-production origin or an explicit internal marker, with
+  reason `none`.
+- `external`: unmarked production traffic, with reason `none`. This is not a
+  guarantee of a human visitor; automation can hide its browser signals.
+
+Open `/?analytics_traffic=internal` for internal testing, or
+`/?analytics_traffic=automated` for an automated audit. The explicit setting
+persists through same-tab navigation in session storage; use
+`/?analytics_traffic=external` to clear it. Storage failures do not prevent page
+startup. Browser automation can instead set
+`window.__scummwebAnalyticsTraffic = "automated"` before page scripts execute.
+The Lighthouse workflow supplies the URL marker; standard WebDriver-controlled
+game sessions are detected automatically. Ordinary browser/OS combinations,
+country, and low engagement are not automation signals.
+
+For prospective audience reports, filter production hostname and
+`customEvent:traffic_type = external`; exclude Portugal separately only when the
+analysis requests it. Keep unclassified historical traffic separate rather than
+retroactively calling it human or automated. Use report filters; identifying
+traffic does not require activating irreversible GA4 collection filters.
+
+Use a closed GA4 funnel from attempt to launch to 30 seconds, 60 seconds, and the
+five-minute milestone. Use **Event count** for visit-level event totals and
+analyze failures separately. Session counts containing each event describe
+session coverage, not one-to-one launch outcomes.
 
 ## Artwork storage and publishing
 
