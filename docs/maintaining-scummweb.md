@@ -170,6 +170,10 @@ while their engine exposes a supported opening segment. The action advances
 through the game's original transition and preserves its menus and choices.
 Continue omits the action.
 
+Humongous games can load legacy DXA conversions when the requested DAT or SMK
+movie is absent. Existing original movies take precedence; a converted movie
+does not replace a corrupt original or other missing game resources.
+
 Keep bundled checkpoints in [`launcher/skip-intro/`](../scummvm-shell/launcher/skip-intro/)
 and their edition-specific settings in
 [`launcher-game-overrides.json`](../launcher-game-overrides.json). Use

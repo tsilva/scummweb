@@ -237,3 +237,7 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
 - Focus the native canvas for keyboard verification. A key sent to the outer
   launcher can leave the engine without the event. Check sequential archive
   handoff after releasing each prior worker’s local-game storage lock.
+
+## Legacy Humongous movie conversions
+
+HE packages may contain valid DXA conversions instead of their original DAT/SMK movies. Current upstream MoviePlayer only chooses Smacker or Bink; a missing DAT error alone does not establish damaged game data. Preserve patch 94’s absent-original fallback and fresh decoder selection for every load. Keep original movies authoritative and do not hide corruption in an existing original. Compare file contents and an unmodified desktop engine before removing a failed library edition.

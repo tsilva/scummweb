@@ -1,0 +1,92 @@
+--- a/engines/scumm/he/animation_he.cpp
++++ b/engines/scumm/he/animation_he.cpp
+@@ -22,11 +22,13 @@
+ #ifdef ENABLE_HE
+ 
+ #include "common/scummsys.h"
++#include "common/file.h"
+ 
+ #include "scumm/he/animation_he.h"
+ #include "scumm/he/intern_he.h"
+ 
+ #include "video/smk_decoder.h"
++#include "video/dxa_decoder.h"
+ 
+ #ifdef USE_BINK
+ #include "video/bink_decoder.h"
+@@ -39,15 +41,20 @@
+ namespace Scumm {
+ 
+ MoviePlayer::MoviePlayer(ScummEngine_v90he *vm, Audio::Mixer *mixer) : _vm(vm) {
++	_video = createDecoder(false);
++
++	_flags = 0;
++	_wizResNum = 0;
++}
++
++Video::VideoDecoder *MoviePlayer::createDecoder(bool converted) const {
++	if (converted)
++		return new Video::DXADecoder();
+ #ifdef USE_BINK
+ 	if (_vm->_game.heversion >= 100 && (_vm->_game.features & GF_16BIT_COLOR))
+-		_video = new Video::BinkDecoder();
+-	else
++		return new Video::BinkDecoder();
+ #endif
+-		_video = new Video::SmackerDecoder();
+-
+-	_flags = 0;
+-	_wizResNum = 0;
++	return new Video::SmackerDecoder();
+ }
+ 
+ MoviePlayer::~MoviePlayer() {
+@@ -62,10 +69,24 @@
+ }
+ 
+ int MoviePlayer::load(const Common::Path &filename, int flags, int image) {
+-	if (_video->isVideoLoaded())
+-		_video->close();
+-
+-	if (!_video->loadFile(filename)) {
++	// Original movies take precedence. Legacy converted HE packages replace
++	// DAT/SMK movies with DXA files; select the decoder for every load so a
++	// subsequent original movie never reuses the converted decoder.
++	Common::Path moviePath = filename;
++	bool converted = false;
++	Common::String baseName = filename.baseName();
++	if (!Common::File::exists(filename) &&
++		(baseName.hasSuffixIgnoreCase(".dat") || baseName.hasSuffixIgnoreCase(".smk"))) {
++		Common::Path candidate = filename.getParent().join(baseName.substr(0, baseName.size() - 4) + ".dxa");
++		if (Common::File::exists(candidate)) {
++			moviePath = candidate;
++			converted = true;
++		}
++	}
++
++	delete _video;
++	_video = createDecoder(converted);
++	if (!_video->loadFile(moviePath)) {
+ 		warning("Failed to load video file %s", filename.toString().c_str());
+ 		return -1;
+ 	}
+@@ -75,7 +96,7 @@
+ 
+ 	_video->start();
+ 
+-	debug(1, "Playing video %s", filename.toString().c_str());
++	debug(1, "Playing video %s", moviePath.toString().c_str());
+ 
+ 	int bitsPerPixel = (_vm->_game.features & GF_16BIT_COLOR) ? 16 : 8;
+ 	if (flags & vfImageSurface)
+--- a/engines/scumm/he/animation_he.h
++++ b/engines/scumm/he/animation_he.h
+@@ -66,6 +66,8 @@
+ 	int getCurFrame() const;
+ 
+ private:
++	Video::VideoDecoder *createDecoder(bool converted) const;
++
+ 	ScummEngine_v90he *_vm;
+ 
+ 	Video::VideoDecoder *_video;
