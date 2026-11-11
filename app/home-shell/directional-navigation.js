@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { isKnownTvBrowser, isTvBrowser } from "../controller-device.mjs";
 import { enterImmersiveMode } from "../game-player/immersive-mode.mjs";
 import { directionalNeighbor } from "./directional-neighbor.mjs";
+import { readStandardGamepad } from "./read-standard-gamepad.mjs";
 
 const controls = "a[href], button, summary";
 const directions = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
@@ -159,7 +160,7 @@ export default function DirectionalNavigation({ initialFocus, onResumeGame }) {
 
     function pollGamepad(now) {
       frame = 0;
-      const pad = [...navigator.getGamepads()].find((device) => device?.mapping === "standard");
+      const pad = readStandardGamepad(navigator);
       if (!pad || document.hidden) {
         previous = [];
         return;
@@ -178,7 +179,7 @@ export default function DirectionalNavigation({ initialFocus, onResumeGame }) {
 
     function onGamepad() {
       if (frame || document.hidden) return;
-      const pad = navigator.getGamepads?.().find((device) => device?.mapping === "standard");
+      const pad = readStandardGamepad(navigator);
       if (!pad) return;
       // A held launch button must not also activate Skip intro when it appears.
       if (initialFocus === "skip-intro") previous[4] = Boolean(pad.buttons[0]?.pressed);
