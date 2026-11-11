@@ -281,7 +281,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     },
     gameReady(href) {
       for (const handler of [...messages]) handler({ origin: window.location.origin, source: frame.contentWindow,
-        data: { type: "scummvm-ready", source: "scummweb", target: "sky", href, reason: "rendered-frame-detected" } });
+        data: { type: "scummvm-ready", source: "scummweb", target: game.target, href, reason: "rendered-frame-detected" } });
     },
     gameplayStarted({ origin = window.location.origin, source = frame.contentWindow,
       href = frame.contentDocument.URL, target = "sky" } = {}) {
@@ -624,6 +624,55 @@ test("a slow archive keeps the fallback frame identity through the first-frame m
   assert.equal(player.deliveries.length, 1);
   player.gameReady("/scummvm.html?localGame=1&catalogSaveTarget=sky&hostCompatibilityWarning=1&hostPlayer=1&launchRetry=inline#sky");
   assert.equal(player.confirmations, 1, "the parent accepts the actual fallback frame's ready message");
+  player.unmount();
+});
+
+test("a late Sword25 first frame recovers the startup timeout without hiding other failures", async () => {
+  for (const failure of ["timeout", "runtime"]) {
+    const player = pendingArchivePlayer({ realBoot: true,
+      game: { target: "sword25", slug: "broken-sword-2-5-the-return-of-the-templars", engineId: "sword25" },
+    });
+    player.render(); player.ready();
+    player.archive.resolve([{ path: "data.b25c", data: Uint8Array.of(1) }]);
+    await new Promise(setImmediate); player.render();
+    if (failure === "timeout") [...player.timers.values()].find(({ delay }) => delay === 120_000).callback();
+    else player.genericError();
+    player.render();
+    assert.equal(player.overlay.hasBootFailed, true);
+    assert.equal(player.children.some(({ type }) => type === "iframe"), failure === "timeout",
+      "only a recoverable watchdog error keeps the actual runtime frame mounted");
+    player.gameReady("/wrong-frame"); player.render();
+    assert.equal(player.overlay.hasBootFailed, true, "unrelated readiness cannot clear a failure");
+    player.gameReady(player.frame.contentDocument.URL); player.render();
+    assert.equal(player.overlay.hasBootFailed, failure !== "timeout");
+    if (failure === "timeout") assert.equal(player.overlay.showBootOverlay, false, "the actual game is usable after slow startup");
+    player.unmount();
+  }
+});
+
+test("a queued startup watchdog cannot fail a game after its accepted first frame", async () => {
+  const player = pendingArchivePlayer({ realBoot: true });
+  player.render(); player.ready();
+  player.archive.resolve([{ path: "sky.dnr", data: Uint8Array.of(1) }]);
+  await new Promise(setImmediate); player.render();
+  const watchdog = [...player.timers.values()].find(({ delay }) => delay === 120_000).callback;
+  player.gameReady(player.frame.contentDocument.URL); player.render();
+  watchdog(); player.render();
+  assert.equal(player.overlay.hasBootFailed, false);
+  assert.equal(player.overlay.showBootOverlay, false);
+  player.unmount();
+});
+
+test("a startup timeout keeps prepared files available for a late runtime receiver", async () => {
+  const player = pendingArchivePlayer();
+  player.render();
+  player.archive.resolve([{ path: "sky.dnr", data: Uint8Array.of(1) }]);
+  await new Promise(setImmediate); player.render();
+  [...player.timers.values()].find(({ delay }) => delay === 120_000).callback();
+  player.render(); player.ready(); player.render();
+  assert.equal(player.deliveries.length, 1, "late startup must not lose the selected game files");
+  player.ready();
+  assert.equal(player.deliveries.length, 1, "recovery preserves one handoff");
   player.unmount();
 });
 
