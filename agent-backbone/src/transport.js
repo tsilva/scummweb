@@ -110,9 +110,13 @@ export class BackboneServer {
   }
 
   async close() {
+    if (this.closed) return;
     this.closed = true;
-    process.stdin.off('data', this.onData);
-    process.stdin.pause();
+    if (this.onData) {
+      process.stdin.off('data', this.onData);
+      this.onData = null;
+      process.stdin.pause();
+    }
     for (const controller of this.active.values()) controller.abort();
   }
 }

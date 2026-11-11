@@ -3,6 +3,38 @@ import assert from 'node:assert/strict';
 import { spawn, spawnSync } from 'node:child_process';
 import { createInterface } from 'node:readline';
 import { once } from 'node:events';
+import { BackboneServer } from '../src/transport.js';
+
+test('shutdown before connection and repeated shutdown leave stdin untouched', async () => {
+  const server = new BackboneServer({ name: 'synthetic-backbone', version: '1' }, {});
+  const listeners = process.stdin.listenerCount('data');
+  const paused = process.stdin.isPaused();
+  await server.close();
+  await server.close();
+  assert.equal(server.closed, true);
+  assert.equal(process.stdin.listenerCount('data'), listeners);
+  assert.equal(process.stdin.isPaused(), paused);
+});
+
+test('connected shutdown detaches input and cancels an in-flight request', { timeout: 2000 }, async () => {
+  const server = new BackboneServer({ name: 'synthetic-backbone', version: '1' }, {});
+  server.send = () => {};
+  let aborted = false;
+  server.registerTool('pending', { inputSchema: {} }, async (_, { signal }) => {
+    await new Promise(resolve => signal.addEventListener('abort', () => { aborted = true; resolve(); }, { once: true }));
+    return {};
+  });
+  const listeners = process.stdin.listenerCount('data');
+  server.connect();
+  await server.handle({ jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18' } });
+  const pending = server.handle({ jsonrpc: '2.0', id: 2, method: 'tools/call', params: { name: 'pending' } });
+  await server.close();
+  await pending;
+  await server.close();
+  assert.equal(aborted, true);
+  assert.equal(process.stdin.listenerCount('data'), listeners);
+  assert.equal(server.active.size, 0);
+});
 
 function peer(t) {
   const child = spawn(process.execPath, [new URL('./transport-fixture.js', import.meta.url).pathname],
