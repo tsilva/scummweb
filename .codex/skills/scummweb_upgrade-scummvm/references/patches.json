@@ -1400,6 +1400,34 @@
         "In Brave verify converted Blue’s ABC Time plays its opening and one Skip Intro request reaches its original activity choice. Verify a native Smacker HE game and a 16-bit Bink HE game still load. Run native build, runtime tests and offline patch checker."
       ],
       "retire_when": "Upstream HE MoviePlayer again loads legacy converted DXA movies while preserving original-file precedence and decoder switching."
+    },
+    {
+      "path": "scripts/patch_scummvm_lifecycle.py",
+      "status": "active",
+      "sha256": "f13500fdce0864f949b757be71c27f3ee8617017fc853537c653bafb3485a171",
+      "purpose": "Avoid invoking the native unload signal before Emscripten completes runtime initialization.",
+      "invariants": [
+        "Check runtimeInitialized, ABORT and the callable export before SIGINT; an exported function alone does not mean the native signal table has initialized. Preserve SIGINT after initialization and propagate genuine native failures.",
+        "Apply through the maintained staging path on full and shell-only builds; keep matching corresponding source and runtime fingerprints."
+      ],
+      "verification": [
+        "Run test/runtime-lifecycle.test.mjs. In Brave unload actual generated JS/Wasm while exports are missing and while preRun holds native constructors; the old hook produces TypeError or function-signature mismatch and the guarded hook exits cleanly. Verify initialized shutdown remains functional."
+      ],
+      "retire_when": "Upstream generated web unload handling guards the native initialization boundary with equivalent behavior."
+    },
+    {
+      "path": "scripts/patch_scummvm_speech.py",
+      "status": "active",
+      "sha256": "88927695c5e67cb17db38fbc612a08659898751d44be0f5e178f93d749b49503",
+      "purpose": "Permit games to initialize and clean up when the browser does not implement optional Web Speech synthesis.",
+      "invariants": [
+        "Initialize empty voice and utterance collections before returning for unsupported speech; keep discovery, voice changes, utterance queues and controls intact when supported.",
+        "Do not fake a browser API, hide supported-API failures or disable recorded game speech/audio. Missing support yields no selectable voices."
+      ],
+      "verification": [
+        "Run test/runtime-speech.test.mjs; boot actual generated runtime in Brave with Web Speech absent, then verify ordinary game startup and supported controls."
+      ],
+      "retire_when": "Upstream Emscripten speech integration feature-detects absent browser synthesis and keeps all cleanup and status methods safe."
     }
   ]
 }

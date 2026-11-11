@@ -111,6 +111,8 @@ test("generated shell overlaps engine, storage and runtime loading and mounts on
   const runtime = appended.find(({ src }) => src.includes("scummvm.js"));
   assert.ok(runtime, "runtime loading does not wait for BrowserFS or the engine prefetch");
   assert.match(browserfs.integrity, /^sha512-/);
+  assert.equal(browserfs.scummwebPlayerAsset, "browserfs.min.js");
+  assert.equal(runtime.scummwebPlayerAsset, "scummvm.js");
   assert.equal(runtime.src, `https://example.test/scummvm.js?v=${context.SCUMMWEB_RUNTIME_ASSETS["/scummvm.js"]}`);
   assert.deepEqual(prefetched, ["/translations.dat", "/shaders.dat", "/scummmodern.zip", "/helpdialog.zip",
     "/residualvm.zip", "/scummremastered.zip", "/wintermute.zip", "/scummclassic.zip", "/plugins/libdreamweb.so"]);

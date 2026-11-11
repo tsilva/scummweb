@@ -114,10 +114,20 @@ test("reports an early shell error from an inline retry once, without waiting fo
 test("reports a failed runtime script load without including the asset URL", () => {
   const session = shell();
   session.dispatch("error", { target: { tagName: "IMG", src: "/favicon.svg" } });
-  session.dispatch("error", { target: { tagName: "SCRIPT", src: "https://example.test/scummvm.js?v=hash" } });
+  session.dispatch("error", { target: { tagName: "SCRIPT", src: "https://example.test/scummvm.js?v=hash", scummwebPlayerAsset: "scummvm.js" } });
   assert.equal(session.reports.length, 1);
   assert.equal(session.reports[0].stage, "script-load");
   assert.equal(session.reports[0].message, "scummvm.js");
+});
+
+test("unrelated failed scripts cannot consume the player's one startup report", () => {
+  const session = shell();
+  session.dispatch("error", { target: { tagName: "SCRIPT", src: "https://extension.example/injected.js" } });
+  session.dispatch("error", { target: { tagName: "SCRIPT", src: "https://extension.example/scummvm.js" } });
+  assert.deepEqual(session.reports, []);
+  session.dispatch("error", { target: { tagName: "SCRIPT", scummwebPlayerAsset: "browserfs.min.js" } });
+  assert.equal(session.reports.length, 1);
+  assert.equal(session.reports[0].message, "browserfs.min.js");
 });
 
 test("classifies native game detection without forwarding engine output", () => {

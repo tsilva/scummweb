@@ -37,8 +37,12 @@ var reportScummvmBootError = (function () {
       if (typeof event.message === "string") {
         report("script-error", event.error, event.message);
       } else if (event.target && event.target.tagName === "SCRIPT") {
-        var asset = /\/(browserfs\.min\.js|scummvm\.js)(?:[?#]|$)/.exec(event.target.src);
-        report("script-load", null, asset ? asset[1] : "");
+        // Extensions can insert scripts into the frame. Only a script created
+        // by this player can establish that a player dependency failed.
+        var asset = event.target.scummwebPlayerAsset;
+        if (asset === "browserfs.min.js" || asset === "scummvm.js") {
+          report("script-load", null, asset);
+        }
       }
     }, true);
     window.addEventListener("unhandledrejection", function (event) {
@@ -53,6 +57,7 @@ var reportScummvmBootError = (function () {
 </script><script>
 const scummwebBrowserFsReady=new Promise((resolve,reject)=>{
   const script=document.createElement("script");
+  script.scummwebPlayerAsset="browserfs.min.js";
   script.src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js";
   script.async=true;
   script.crossOrigin="anonymous";
@@ -893,4 +898,4 @@ if (isLocalGame) {
     throw error;
   };
 }
-</script><script>(function(){const v=new URLSearchParams(scummwebLaunchUrl.search).get("v");window.Module=window.Module||{};const originalLocateFile=window.Module.locateFile;window.Module.locateFile=function(path,prefix){const raw=typeof originalLocateFile=="function"?originalLocateFile(path,prefix):`${prefix||""}${path}`;return buildVersionedAssetUrl(raw)};const script=document.createElement("script");script.async=true;script.src=buildVersionedAssetUrl("scummvm.js");scummwebAudioControlReady.then(()=>document.body.appendChild(script))})();</script></body></html>
+</script><script>(function(){const v=new URLSearchParams(scummwebLaunchUrl.search).get("v");window.Module=window.Module||{};const originalLocateFile=window.Module.locateFile;window.Module.locateFile=function(path,prefix){const raw=typeof originalLocateFile=="function"?originalLocateFile(path,prefix):`${prefix||""}${path}`;return buildVersionedAssetUrl(raw)};const script=document.createElement("script");script.scummwebPlayerAsset="scummvm.js";script.async=true;script.src=buildVersionedAssetUrl("scummvm.js");scummwebAudioControlReady.then(()=>document.body.appendChild(script))})();</script></body></html>
