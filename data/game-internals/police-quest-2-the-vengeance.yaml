@@ -23,11 +23,16 @@ flags:
   called-steelton-pd: { bank: globals, index: 255, mask: 0x0002 } # 94, phone
   called-colby: { bank: globals, index: 255, mask: 0x0001 } # 95, phone
   collected-towel: { bank: globals, index: 256, mask: 0x1000 } # 99, rm42
-  completed-rescue: { bank: globals, index: 257, mask: 0x0020 } # 122, rm133
+  located-marie: { bank: globals, index: 257, mask: 0x0020 } # 122, rm133
+  buckled-seat-belt: { bank: globals, index: 260, mask: 0x1000 } # 163, rm40
 milestones:
   - id: flight
     label: "Boarded the flight"
     when: { room: flight }
+  - id: buckled-seat-belt
+    label: Buckled the seat belt on the flight
+    implies: [flight]
+    when: { flag: buckled-seat-belt }
   - id: next-investigation
     label: "Reached the next day of the investigation"
     when: { room: next-investigation }
@@ -46,11 +51,13 @@ milestones:
   - id: collected-towel
     label: Collected the towel
     when: { flag: collected-towel }
-  - id: completed-rescue
-    label: Completed the rescue sequence
-    when: { flag: completed-rescue }
+  - id: located-marie
+    label: Located Marie
+    implies: [reached-rescue]
+    when: { flag: located-marie }
   - id: winning-ending
     label: Rescued Marie and reached the finale
+    implies: [reached-rescue]
     when:
       all:
         - { room: finale }

@@ -14,7 +14,7 @@ rooms:
   cauldron-chamber: 60 # Horned King’s secret chamber.
   ending: 71 # Logic 0 enters 71 from the success branch; 71 shows the Prydain epilogue.
 variables:
-  score: { bank: vars, index: 3 }
+  previous-room: { bank: vars, index: 1 }
   cauldron-outcome: { bank: vars, index: 35 }
   limited-ending: { bank: vars, index: 102 } # Logic 0 sets 69 for sacrifice endings (logic 103).
 flags:
@@ -40,7 +40,7 @@ milestones:
         - { flag: gurgi-sacrificed }
         - { variable: cauldron-outcome, one_of: [1, 2] }
         - { variable: limited-ending, equals: 69 }
-        - { room: ending }
+        - { all: [{ room: ending }, { variable: previous-room, equals: 12 }] }
   - id: winning-ending
     label: "Reached the success epilogue"
-    when: { room: ending }
+    when: { all: [{ room: ending }, { variable: previous-room, equals: 12 }] }

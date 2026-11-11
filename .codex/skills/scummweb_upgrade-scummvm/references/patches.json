@@ -724,6 +724,669 @@
         "Check a scoped or fresh launch and a launch with legacy checkpoint bytes. Verify startup load and ordinary slot metadata in Sword25."
       ],
       "retire_when": "Upstream accepts an ephemeral startup save stream separate from the native save manager's player files."
+    },
+    {
+      "path": "patches/scummvm/46-skip-imported-engine-intros.patch",
+      "status": "active",
+      "sha256": "ee9ae0a969571768b894fd3b7ea3a3b6874e28fd838ca9f199a99a12acc969a5",
+      "purpose": "Expose native opening skips for imported Beneath a Steel Sky, Living Books, Hugo, TeenAgent, Pegasus Prime and Broken Sword I and II.",
+      "invariants": [
+        "Use the original engine abort and startup transitions. Retain the Living Books Read/Play choice and the Pegasus Prime menu.",
+        "Identify Broken Sword opening movies by their script identity and leave later movies alone.",
+        "Only imported fresh launches can request a skip. Keep existing bundled launch methods and Continue independent."
+      ],
+      "verification": [
+        "In Brave compare normal play and Skip intro on imported editions of the affected games, including multiple Living Books versions. Verify the original menu or first scene.",
+        "Check that the action closes after the opening and is absent on Continue. Retest the bundled Beneath a Steel Sky and Pegasus Prime demo launches."
+      ],
+      "retire_when": "Upstream supplies equivalent browser callbacks for these native opening transitions."
+    },
+    {
+      "path": "patches/scummvm/47-skip-more-imported-openings.patch",
+      "status": "active",
+      "sha256": "639b90287fcabe5b017417f255ffea3624b30e05872d1ffd165488c60b8a7cfb",
+      "purpose": "Support native opening skips in imported SCUMM and Humongous games, Personal Nightmare, Dragon History, Lure and Kyrandia engine titles.",
+      "invariants": [
+        "Require a real script override before simulating the SCUMM cutscene action. Stop offering it when the engine hands control to the player.",
+        "Use Dragon History’s original opening-room transition and Personal Nightmare’s original cutscene exits.",
+        "Keep Lure’s ordinary animation waits unchanged and preserve Kyrandia’s new-game and save-menu choices. A browser skip must not trigger the Kyrandia I slot-zero restore."
+      ],
+      "verification": [
+        "In Brave compare fresh normal and skipped openings for Personal Nightmare, Dragon History, Lure, the Kyrandia I and II editions and Lands of Lore.",
+        "Test Kyrandia I with slot zero present and verify Skip intro starts a new game. Test multiple Humongous engine versions and confirm later cutscenes remain untouched."
+      ],
+      "retire_when": "Upstream supplies equivalent browser callbacks for these native opening transitions."
+    },
+    {
+      "path": "patches/scummvm/48-skip-native-opening-sequences.patch",
+      "status": "active",
+      "sha256": "2a2097e7515d4f3e489154613bfaa3c140dcc3fd6385c6576c68c348442f991c",
+      "purpose": "Use native opening-scene exits in imported SAGA games, Discworld I, Sołtys, Sfinx and The Labyrinth of Time.",
+      "invariants": [
+        "Keep SAGA’s original first scene and character selection. Leave later videos and credits outside the startup skip.",
+        "Use the existing Discworld intro detector and the original Escape transition to the title screen.",
+        "Keep the native CGE movie cleanup and leave title checks, saved games and ending movies independent."
+      ],
+      "verification": [
+        "In Brave compare the natural and skipped openings for both SAGA titles, both Discworld I editions, Sołtys, Sfinx and The Labyrinth of Time.",
+        "Confirm the same first scene or required selection is available and the action closes after the opening."
+      ],
+      "retire_when": "Upstream supplies equivalent browser callbacks for these native opening transitions."
+    },
+    {
+      "path": "patches/scummvm/49-skip-imported-logo-and-story-openings.patch",
+      "status": "active",
+      "sha256": "1ee90a9566eb906e88ea31a646c45e03fd071266dac8a2f576405f092a9131e1",
+      "purpose": "Expose native opening skips for imported DreamWeb, TeenAgent, Flight of the Amazon Queen and Full Pipe.",
+      "invariants": [
+        "Reuse the native DreamWeb and Full Pipe abort paths and leave later scenes untouched.",
+        "Skip TeenAgent’s publisher logos and opening together through the existing first-scene transition.",
+        "Stop only Queen cutaways that the engine permits skipping. Preserve non-skippable choices and state updates."
+      ],
+      "verification": [
+        "In Brave use the action during the logos in TeenAgent and during the opening in DreamWeb, Queen and Full Pipe. Check the original first playable scene or required choice.",
+        "Compare natural starts and verify the bundled launch and Continue paths still use their original save behavior."
+      ],
+      "retire_when": "Upstream supplies equivalent browser callbacks for these native opening transitions."
+    },
+    {
+      "path": "patches/scummvm/50-finish-scripted-openings-with-one-request.patch",
+      "status": "active",
+      "sha256": "a43a72749b4d44c1baa9eed09eea6bffb81729e8ee087d4bccfee9dba2752d58",
+      "purpose": "Carry a single imported SCUMM intro request through native opening overrides and add native logo skips to Toonstruck and Voyeur.",
+      "invariants": [
+        "Only consume an opening request at an enabled native override or an active native movie. Do not simulate a key after the engine reports the first playable state or while another key is pending.",
+        "Leave native video cleanup, required choices, later cinematics, bundled checkpoints and Continue independent."
+      ],
+      "verification": [
+        "In Brave launch the Atlantis CD and Day of the Tentacle imports. A single click should leave the original first playable scene, including launches with multiple opening clips.",
+        "Check Toonstruck and Voyeur against the original title or first scene. Confirm later cutscenes and saves remain independent."
+      ],
+      "retire_when": "Upstream supplies a native opening skip that spans startup transitions and stops at the first required player action."
+    },
+    {
+      "path": "patches/scummvm/51-skip-openings-with-native-selection.patch",
+      "status": "active",
+      "sha256": "cd7e752ee3c9cfd11fea2f264aa73647bf2f9bbc0c04e91ec18356818c017bf9",
+      "purpose": "Expose the native opening abort for Gnap, Nippon Safes, Zork Nemesis and Zork Grand Inquisitor.",
+      "invariants": [
+        "Keep Gnap’s scene setup and sound cleanup, and keep Nippon’s original language and character choices.",
+        "Limit Zork skips to the exact skippable video resources owned by the startup node. Never seek past a menu choice or unrelated video."
+      ],
+      "verification": [
+        "In Brave check Gnap after one skip and verify Nippon preserves the language and character menus.",
+        "Exercise both Zork DVD editions, including opening videos, New Game, and the first playable scene."
+      ],
+      "retire_when": "Upstream exposes browser callbacks at these native startup boundaries."
+    },
+    {
+      "path": "patches/scummvm/52-load-road-opening-costume.patch",
+      "status": "active",
+      "sha256": "f06e7892bb55112ccd1c0ec8355e1ea0389cb2abd1291ed2871ce4d20c486380",
+      "purpose": "Load the opening costume of the ScummC fan game Road when its fallback SCUMM target supplies the observed one-byte offset drift.",
+      "invariants": [
+        "Require the exact index fingerprint and file and resource layout. Keep all other resource validation intact.",
+        "Do not rewrite the archive or relax the ordinary Day of the Tentacle resource checks."
+      ],
+      "verification": [
+        "In Brave confirm Road reaches the opening player scene without entering the native debugger and test a normal Day of the Tentacle launch."
+      ],
+      "retire_when": "Upstream recognizes the Road data and loads its original costume correctly."
+    },
+    {
+      "path": "patches/scummvm/53-skip-native-startup-waits.patch",
+      "status": "active",
+      "sha256": "9fee8e9386e315736d77df56920bc2ba5aa89afceae724171a3ef6c0eb70dcb5",
+      "purpose": "Expose native startup waits in AGOS, the Coktel startup logo in Gob, and the spoken opening in Mortville Manor.",
+      "invariants": [
+        "Limit AGOS to the original startup subroutine and existing skippable movie and synchronization paths. Preserve ordinary dialogue and later cutscenes.",
+        "Limit Gob to the engine’s Coktel startup logo and preserve its normal video cleanup.",
+        "Advance Mortville Manor through its native introduction key and retain game state initialization and ordinary music behavior."
+      ],
+      "verification": [
+        "In Brave check Elvira, Simon and Feeble Files editions at startup and ensure later cutscenes are unaffected.",
+        "Check supported Coktel openings and Mortville Manor for the expected first choice or playable scene."
+      ],
+      "retire_when": "Upstream supplies equivalent browser callbacks for these native startup waits."
+    },
+    {
+      "path": "patches/scummvm/54-skip-myst-sherlock-and-amazon-openings.patch",
+      "status": "active",
+      "sha256": "6ddcc52c49302b14638029dd9497d051573198a82fbfb27e69289725433d0b97",
+      "purpose": "Expose the native opening transitions in Myst, both Sherlock Holmes adventures, and Amazon.",
+      "invariants": [
+        "Preserve the Myst linking book interaction, the Rose Tattoo logo lockout, and Amazon opening room cleanup. Leave ordinary game input and saved-game entry intact."
+      ],
+      "verification": [
+        "Use both personal Myst editions, both Sherlock DOS CD editions, and the Amazon DOS edition to verify the native opening action and the first menu or playable scene."
+      ],
+      "retire_when": "The engines provide equivalent scoped web startup skip transitions."
+    },
+    {
+      "path": "patches/scummvm/55-scope-imported-opening-waits-to-playable-boundaries.patch",
+      "status": "active",
+      "sha256": "0b91a6b2ccf7892a30abd8822823549ede19e48b778538a4f802411fb3d23e7e",
+      "purpose": "Keep native startup waits available through initial AGOS scripts, Mortville Manor’s title music, and recognized Coktel animations.",
+      "invariants": [
+        "Use actual AGOS input and cursor state before sealing startup. Preserve native cutscene and movie abort conditions.",
+        "Keep Mortville’s initial save setup and the original native F8 path. Use the original Esc animation stop only when Gob’s opening script permits it and does not handle the mouse."
+      ],
+      "verification": [
+        "Verify the title music and initial controls of the Mortville Manor import, and confirm Simon and Elvira reach their first playable screens.",
+        "Check that recognizable Coktel opening animations can be skipped while interactive menus retain normal input."
+      ],
+      "retire_when": "The engines supply equivalent startup-aware abort transitions."
+    },
+    {
+      "path": "patches/scummvm/56-skip-original-cinematic-players.patch",
+      "status": "active",
+      "sha256": "6cd4f65bed0ea4a96f20b07a6533447628ab5a9cb8039841ec2c54696fa02179",
+      "purpose": "Abort the original startup cinematics in Drascula, Hopkins FBI, Bud Tucker, and Return to Zork, and finish Amazon’s native countdown skip.",
+      "invariants": [
+        "Use the original Escape or movie-canceled transition and preserve resource cleanup. Keep other cinematics, the Hopkins warning and menus, and save loading separate.",
+        "Limit the PMV hook to the two named opening files. Preserve the movie completion result passed to the game script."
+      ],
+      "verification": [
+        "In Brave verify all five imported editions, including the original first menu, choice or playable scene after skipping."
+      ],
+      "retire_when": "The engines expose equivalent native web opening transitions."
+    },
+    {
+      "path": "patches/scummvm/57-preserve-opening-choices-and-advance-cinematics.patch",
+      "status": "active",
+      "sha256": "ed424e01bd2892550eebf58d66edb4c3062775ae4bdb3e13cc6ff0be5bfb9877",
+      "purpose": "Keep Loom CD’s original difficulty choice separate from its opening skip, and expose native opening transitions in Neverhood, Kyrandia 3 and Eye of the Beholder.",
+      "invariants": [
+        "Do not select a Loom difficulty or seal opening availability at the difficulty screen.",
+        "Use Neverhood’s existing Space message and preserve game-state setup. Scope Kyra VQA to the first launch movie and EoB skips to the known intro methods. Preserve menus and party creation."
+      ],
+      "verification": [
+        "In Brave choose a difficulty in Loom CD and use one Skip Intro after the choice. Check Neverhood, both Eye of the Beholder imports and Kyrandia 3 for their expected first playable scene or required choice."
+      ],
+      "retire_when": "The engines provide browser startup skip callbacks with the same native choice boundaries."
+    },
+    {
+      "path": "patches/scummvm/58-skip-verified-sci-startup-scripts.patch",
+      "status": "active",
+      "sha256": "1af46f22efb6dfea5a8fd2397790f8612592a06bd2aefa381e50d3f310c8c1ab",
+      "purpose": "Use the SCI script’s original Escape transition in known startup rooms.",
+      "invariants": [
+        "Consume an explicit browser request only in the named game and startup room, through the original non-peeking keyboard poll with no real event pending.",
+        "Keep title menus, prompts, saved games, later scenes, and normal keyboard input separate. Do not send a second key to the same room."
+      ],
+      "verification": [
+        "Check the original SCI room transition and visible title or first playable scene in each listed personal edition. Check a saved-game launch and a normal unskipped launch."
+      ],
+      "retire_when": "SCI exposes equivalent startup-aware browser skip controls."
+    },
+    {
+      "path": "patches/scummvm/59-skip-zork-nemesis-new-game-movie.patch",
+      "status": "active",
+      "sha256": "84fb44397d7d5880add246e50041546c090fd612e914110738fa889faea439d4",
+      "purpose": "Expose the native abort for the original Zork Nemesis new-game movie after the menu.",
+      "invariants": [
+        "Match the original gjg0 node and its precise video. Preserve New Game, Restore, the temple transition, and all subsequent cutscenes."
+      ],
+      "verification": [
+        "In Brave use the DVD DOS edition to select New Game, request Skip Intro during the movie, and confirm the temple panorama remains interactive."
+      ],
+      "retire_when": "Upstream reports browser skip availability at the original new-game cinematic."
+    },
+    {
+      "path": "patches/scummvm/60-skip-verified-agi-title-scripts.patch",
+      "status": "active",
+      "sha256": "bd6979ec814097e1b80ef0a77e85dad1d8cb56726547ba2ce4f0d1663a9dbc75",
+      "purpose": "Use original AGI title-script input for the fingerprinted personal editions.",
+      "invariants": [
+        "Match the game, directory fingerprint and title room. Use the title logic’s own have.key or guarded controller check. Preserve required text, copy-protection and menu choices.",
+        "Continue the same request only in the observed second opening rooms in Space Quest II and Manhunter II. Leave real keypresses and ordinary rooms independent."
+      ],
+      "verification": [
+        "In Brave check Gold Rush, King’s Quest II, Police Quest, Black Cauldron, Manhunter II and both Space Quest II imports. Confirm the prior Space Quest Amiga path still reaches the crew-name choice."
+      ],
+      "retire_when": "Upstream exposes the original AGI title-input boundary to browser hosts."
+    },
+    {
+      "path": "patches/scummvm/61-skip-composer-publisher-sequences-and-time-zone-title.patch",
+      "status": "active",
+      "sha256": "f27105cea418e72f530d2844036a31efc477f337b6fb16b0683c64df858c4fa2",
+      "purpose": "Advance verified Composer publisher pages and the Time Zone title with the browser opening action.",
+      "invariants": [
+        "Run the original Composer scripts and their normal page unload and load sequence. Advance only known Windows publisher pages, then resume ordinary timing before the first choice.",
+        "Use the original Time Zone title key without sending it to the game menu. Keep Hi-Res title delays and original cleanup intact."
+      ],
+      "verification": [
+        "Compare the visual destinations and title transitions of the five personal Composer editions. Use Time Zone’s native start menu after skipping its title."
+      ],
+      "retire_when": "Upstream provides equivalent opening controls with the same page and input boundaries."
+    },
+    {
+      "path": "patches/scummvm/62-skip-bbvs-and-groovie-opening-movies.patch",
+      "status": "active",
+      "sha256": "01e071803ed9740cee61f312f27eb589ef89240761c22559693bbf5b73fe073c",
+      "purpose": "Expose the native opening movie controls in Virtual Stupidity and The 7th Guest.",
+      "invariants": [
+        "Keep Virtual Stupidity’s publisher clips separate from its New Game story and preserve the original title menu. Match the original Groovie publisher instruction and DOS new-game section. Retain native video decoding, music initialization, cleanup and menu input."
+      ],
+      "verification": [
+        "In Brave exercise the original imported game menus and any subsequent new-game opening movie. Verify later in-game videos continue to use ordinary input."
+      ],
+      "retire_when": "Upstream exposes equivalent web startup video controls."
+    },
+    {
+      "path": "patches/scummvm/63-skip-riven-dreamweb-full-pipe-and-discworld-2-openings.patch",
+      "status": "active",
+      "sha256": "30fdeaacfc3f7f706d15b0b66b4c7d67c9e3e75c0fe024b89f86425d38afda7e",
+      "purpose": "Carry the browser action through the original Riven, DreamWeb, Full Pipe and Discworld II opening sequences.",
+      "invariants": [
+        "Use native movie skip and cleanup, preserve Riven menu choices and limit Riven playback to the original Atrus and arrival cards.",
+        "Scope DreamWeb to the quote, intro and credits in its New Game path. Run Full Pipe’s existing modal transition and Discworld II’s original BMV cleanup."
+      ],
+      "verification": [
+        "In Brave use each imported edition’s original startup flow. Check the action closes on arrival at the first controllable scene and later movies keep normal controls."
+      ],
+      "retire_when": "Upstream offers equivalent browser-facing opening boundaries for these four engines."
+    },
+    {
+      "path": "patches/scummvm/64-skip-tsage-openings-and-finish-native-cinematic-handoffs.patch",
+      "status": "active",
+      "sha256": "41b79baf2e59c7ef6ad314dc68eb7a6384343ea32543db769c30b6084b7ab0bf",
+      "purpose": "Expose original TsAGE startup transitions and close Riven and Groovie skips at their interactive boundaries.",
+      "invariants": [
+        "Use the original TsAGE game scene and native scene cleanup. Preserve in-game scenes, original menu input and loaded saves.",
+        "Keep Riven requests local to a single New Game and preserve later visits to Temple Island. Restore normal playback speed before the original 7th Guest foyer hotspots."
+      ],
+      "verification": [
+        "Launch Blue Force and both Ringworld editions in Brave and check native movement at the original first playable scene.",
+        "Verify Riven’s original menu and first island and The 7th Guest’s foyer hotspots after one request."
+      ],
+      "retire_when": "Upstream offers equivalent browser-facing startup and scene lifecycle controls."
+    },
+    {
+      "path": "patches/scummvm/65-connect-return-to-zork-credits-and-discworld-2-logo.patch",
+      "status": "active",
+      "sha256": "940772c8cf5a7471dc9a660499f1b259977c4d639f9f6804c0310453f62a0449",
+      "purpose": "Skip the original Return to Zork credits and carry the Discworld II action across its first publisher movie.",
+      "invariants": [
+        "Use the same script event and TTS cleanup as clicking Return to Zork’s credits. Reuse the two native PMV aborts and release the latch before the first ordinary cutscene.",
+        "The Discworld I keyboard process owns only the Discworld I action. Discworld II’s named movies own their separate action and original cleanup."
+      ],
+      "verification": [
+        "In Brave skip Return to Zork from the original credits and verify that Mountain Pass is interactive. Verify Discworld II reaches its original first scene from one publisher skip."
+      ],
+      "retire_when": "Upstream exposes equivalent browser-facing publisher, credits and opening movie controls."
+    },
+    {
+      "path": "patches/scummvm/66-skip-cruise-titanic-and-sword25-openings.patch",
+      "status": "active",
+      "sha256": "eda7a9017696cba693173452da8a159ea3a20eaaad81a1328fd673c54382ae1e",
+      "purpose": "Skip the original Cruise for a Corpse, Starship Titanic and Broken Sword 2.5 openings.",
+      "invariants": [
+        "Cruise keeps executing its original animation and text-wait instructions, restores normal timing at the original player-menu boundary and preserves saved games.",
+        "Starship Titanic uses native movie cancellation only for CCredits. Broken Sword 2.5 uses its original Lua cancellation, fade and text cleanup for the two apartment opening movies."
+      ],
+      "verification": [
+        "In Brave verify both Cruise editions reach the original deck and accept movement. Verify the Titanic embarkation lobby and the Broken Sword apartment, including ordinary movement after the opening."
+      ],
+      "retire_when": "Upstream exposes equivalent browser-facing skip actions for these opening sequences."
+    },
+    {
+      "path": "patches/scummvm/67-finish-discworld-2-and-return-to-zork-openings.patch",
+      "status": "active",
+      "sha256": "1a9759fb99b8452e5eeb4e4676e5045cdc8795d5df71892e3316dda321c43e3e",
+      "purpose": "Use the detected Discworld II game identity and finish the first Return to Zork story movie.",
+      "invariants": [
+        "Use the detected Tinsel game enum independently of the compatibility flags. Skip only the named initial movies and preserve native BMV cleanup.",
+        "The original wizard movie is part of the Return to Zork opening only the first time it plays. Preserve later interactions and native movie abort results."
+      ],
+      "verification": [
+        "In Brave check the original Discworld II publisher opening and the first playable scene. Check Return to Zork reaches a responsive Mountain Pass after one request during the credits."
+      ],
+      "retire_when": "Upstream startup callbacks expose the same original opening and gameplay boundaries."
+    },
+    {
+      "path": "patches/scummvm/68-advance-verified-sci-publisher-animations.patch",
+      "status": "active",
+      "sha256": "a9ed907ee993447605e73cd1f25f4aafe8cc9320550180799e8de9d18612aa3e",
+      "purpose": "Advance the original publisher animations in Gabriel Knight, King’s Quest V and VII, and Pepper’s Adventures in Time.",
+      "invariants": [
+        "Shorten only the observed title room waits after a browser request. Keep original scripts, event polls, clock continuity and saved script timer continuity.",
+        "Resume ordinary timing on the first different room and discard the timing adjustment when a saved game restores the script state."
+      ],
+      "verification": [
+        "Run the four exact personal editions in Brave. Compare original title menu choices, normal waiting and the first subsequent interactive scene. Verify save restores preserve their clock."
+      ],
+      "retire_when": "Upstream provides a script-aware action for the original Sierra publisher animations."
+    },
+    {
+      "path": "patches/scummvm/69-skip-playtoons-publisher-and-titanic-arrival-clips.patch",
+      "status": "active",
+      "sha256": "5238ac33e0922775cb57b45cad62585e4a91a5c156743a0619a14613bb0b652e",
+      "purpose": "Expose the Playtoons publisher video and Titanic house arrival and advance the Cruise prologue faster.",
+      "invariants": [
+        "Match Playtoons’ original publisher file in DEBUT.TOT and keep its menu and story choices. Limit animated Gob skip to scripts that already enable original Escape.",
+        "Titanic retains the original disc insertion, sounds, Doorbot state and dialogue. Only the ten opening room movie ranges share a browser request.",
+        "Cruise continues original frame and text-wait handling and yields regularly while advancing the prologue."
+      ],
+      "verification": [
+        "In Brave verify each exact Playtoons import reaches its native choices. Check both Cruise editions and Titanic’s original disc interaction and boarding sequence."
+      ],
+      "retire_when": "Upstream provides equivalent browser skip points and opening timing."
+    },
+    {
+      "path": "patches/scummvm/70-preserve-maniac-team-choice-and-finish-discworld-2-story.patch",
+      "status": "active",
+      "sha256": "55003d44adb858c44ae9a456effaeb20588f3bfa57e7fe45ca241beae71ef6d9",
+      "purpose": "Keep Maniac Mansion’s Amiga character choice separate from gameplay and finish Discworld II’s first story credits.",
+      "invariants": [
+        "Preserve the Amiga character team and use the native cutscene override after selecting Start. Hand off in the original playable room.",
+        "Treat Discworld II’s original publisher and New Game movies as separate sequences. Use native BMV abort and cleanup for the opening story and animated credits only."
+      ],
+      "verification": [
+        "In Brave assemble an original team, skip Maniac Mansion’s movie and confirm movement in the first scene. Verify Discworld II’s original New Game menu, story skip and first playable scene."
+      ],
+      "retire_when": "Upstream exposes browser availability at both original transition boundaries."
+    },
+    {
+      "path": "patches/scummvm/71-skip-rex-nebular-and-cge-title-sequences.patch",
+      "status": "active",
+      "sha256": "cc75f7eac25d2dc2892cde0bb7d9a75f42eb66e8311f66482e36a24d8525a695",
+      "purpose": "Connect the original Rex Nebular title and story controls and the Soltys and Sfinx opening waits.",
+      "invariants": [
+        "Use Rex Nebular’s original transition to title choices and exact opening playlists with their native cancellation and cleanup.",
+        "Preserve Soltys’s title setup and the Sfinx game initialization. Only the known publisher and opening commands share the browser request."
+      ],
+      "verification": [
+        "In Brave check Rex Nebular’s original title choices and its Intro selection. Verify Soltys and Sfinx reach their original first scenes after the scoped opening action."
+      ],
+      "retire_when": "Upstream provides equivalent startup-aware browser controls in MADS, CGE and CGE2."
+    },
+    {
+      "path": "patches/scummvm/72-skip-god-of-thunder-and-plumbers-opening-slides.patch",
+      "status": "active",
+      "sha256": "e7ca6aa1358d9b1e83ec1a4d69796a701648a9f5f8f86c7f4042fc647ea4aef7",
+      "purpose": "Use the original God of Thunder and Plumbers opening transitions.",
+      "invariants": [
+        "God of Thunder keeps its main and episode menus, skips only the original pre-menu publisher sequence and the selected episode story, and preserves later credits.",
+        "Plumbers uses the original timer to advance the technical slides. Preserve SC00 choices, scores and later scene transitions."
+      ],
+      "verification": [
+        "In Brave check the original God of Thunder title and chosen episode, and verify Plumbers first presents both original options with normal score."
+      ],
+      "retire_when": "Upstream exposes equivalent browser actions for these original opening views."
+    },
+    {
+      "path": "patches/scummvm/73-advance-future-wars-cd-opening-frames.patch",
+      "status": "active",
+      "sha256": "74036e2739b5bd26183c54ed5147a078e94ebcf080c953dd4defb0f308de1d4d",
+      "purpose": "Advance the original publisher and forest opening sequence in Future Wars CD.",
+      "invariants": [
+        "Execute the original script frames and keep the first skyscraper scene and its native text prompt. Preserve ordinary timing, input, saved games and other Cine editions."
+      ],
+      "verification": [
+        "In Brave compare an ordinary Future Wars CD opening with one request during the publisher sequence. Dismiss the native first-room text and verify movement and verbs."
+      ],
+      "retire_when": "Upstream exposes the native Future Wars CD opening boundary to browser hosts."
+    },
+    {
+      "path": "patches/scummvm/74-skip-touche-opening-and-carry-discworld-2-movies.patch",
+      "status": "active",
+      "sha256": "36c4cdb3fff448a9ae37e37185f13d33cfa4ee618e72d975d5ad36c70abe20e0",
+      "purpose": "Connect Touche startup episode Escape and retain a Discworld II opening request across both original story movies.",
+      "invariants": [
+        "Only the original Touche startup episode receives its native Escape flag. Keep native dialogs, later episodes and restores. Retain Discworld II New Game and reset its movie latch at first scene control or engine restart."
+      ],
+      "verification": [
+        "In Brave request Touche opening skip and move in the first town. In Discworld II preserve New Game, request once for both story movies, then verify first control and ordinary later movie input."
+      ],
+      "retire_when": "Upstream exposes equivalent native opening boundaries to browser hosts."
+    },
+    {
+      "path": "patches/scummvm/75-skip-voyeur-toltecs-and-smoking-mirror-publisher.patch",
+      "status": "active",
+      "sha256": "85b5eabb0939a57e62bc31a32d07bfa065d3caf466aef4859ded9c467a3efb85",
+      "purpose": "Connect native opening exits for Voyeur and Toltecs and retain Smoking Mirror publisher skip through its intro.",
+      "invariants": [
+        "Retain Voyeur copy protection and recording cleanup. Only title delays and original pre-game movies consume its request. Toltecs only skips the movie in original scene 215 and lets the native script load canyon 146. Smoking Mirror retains audio, subtitle and palette cleanup and scopes its latch to eye and intro movies. Preserve later videos and restored games."
+      ],
+      "verification": [
+        "In Brave skip each opening and exercise its first room. Verify original menus and later cutscenes keep native input. Run full engine rebuild, patch ledger checks and imported startup regression."
+      ],
+      "retire_when": "Upstream exposes equivalent browser opening controls."
+    },
+    {
+      "path": "patches/scummvm/76-skip-tony-opening-and-discworld-2-credits.patch",
+      "status": "active",
+      "sha256": "7ca18f71cf2e9bdf59ecf72e110a9ab02cedd44b83861420641f242f9ce55722",
+      "purpose": "Skip Tony Tough original scripted opening waits and retain the Discworld II story request through its animated opening credits.",
+      "invariants": [
+        "Preserve Tony Tough New Game, difficulty, MPAL script initialization and later waits. Reset the native skip flag before the first ordinary location enters. Only skip Discworld II CREDITS.BMV while carrying an accepted story request, preserving the optional credits menu."
+      ],
+      "verification": [
+        "In Brave choose Tony Tough difficulty, request once in opening 91 and verify first office movement in room 1. In Discworld II request once after New Game and verify both opening films and animated credits are passed before first control."
+      ],
+      "retire_when": "Upstream exposes equivalent native startup controls."
+    },
+    {
+      "path": "patches/scummvm/77-advance-sci-credit-sequences-and-native-mouse-video-skips.patch",
+      "status": "active",
+      "sha256": "ee48791fbc79bcd95d3e319a05430841ac4af8a754675f698e847e2c451c680e",
+      "purpose": "Advance observed SCI publisher and credit scripts, honor SCI32 native mouse-only movie cancellation, and skip the fingerprinted Donald Duck title.",
+      "invariants": [
+        "Advance original SCI script time only in observed publisher and credit rooms. Preserve adjacent character, copy-protection, new-game and restore choices and saved script timer continuity. SCI32 returns only an originally permitted Escape or mouse stop flag. Donald Duck follows both original title-key states and leaves room 3 choices intact. Gob only uses original permitted break keys for exact startup media."
+      ],
+      "verification": [
+        "In Brave check each added SCI edition against its observed native choice or first room, including save/restore clock continuity. Verify Donald Duck title transitions to its original choice. Verify Woodruff and Inca II exact publisher movies and later native movie input."
+      ],
+      "retire_when": "Upstream exposes equivalent native opening boundaries."
+    },
+    {
+      "path": "patches/scummvm/78-finish-discworld-woodruff-and-ween-opening-groups.patch",
+      "status": "active",
+      "sha256": "dee89951d35ade1f2eaa5583655cc8e2ffdd50bd77e014226b201624c4017c9c",
+      "purpose": "Retain Discworld II and Woodruff requests across their exact original opening media and use Ween Amiga native Escape before copy protection.",
+      "invariants": [
+        "Discworld II PRODUCED belongs to the active story group when interleaved before CREDITS. WILDCAT belongs to initial publisher clips. Woodruff only carries the action across SIERRA, COKTEL and intro in INTRO1.TOT, ending at the next primary movie. Ween requires the exact Amiga script size and bytecode signature and expires before its copy-protection input. Preserve original transitions, choices, movie cleanup and later input."
+      ],
+      "verification": [
+        "In Brave issue one Discworld II story request and verify credits complete before first control. Verify Woodruff publisher and story movies reach the original game scene. Verify Ween reaches the original color-chart question with no generated input reaching that question."
+      ],
+      "retire_when": "Upstream exposes equivalent opening groups and protected boundaries."
+    },
+    {
+      "path": "patches/scummvm/79-scale-sci-opening-clock-across-browser-frame-yields.patch",
+      "status": "active",
+      "sha256": "903b1f8a706020c57fd8e5d3118ca1b9dacd4b6863f343cf35ea8ed3ee5976bb",
+      "purpose": "Scale observed SCI opening script time despite browser frame yields and carry a request across intermediate loading rooms.",
+      "invariants": [
+        "Only whitelisted startup rooms receive clock acceleration. Derive extra time from actual unpaused play time, exclude intervening loading or selection time, retain monotonic script time, preserve the saved script clock baseline and clear transient offsets on restore. Preserve original menu and protection input."
+      ],
+      "verification": [
+        "In Brave compare accepted skip timings for multi-room credit sequences against original playback, exercise first scene controls and a save/restore, and verify ordinary later timing. Rebuild and run the runtime and patch checks."
+      ],
+      "retire_when": "Upstream exposes equivalent browser startup acceleration with pause and save continuity."
+    },
+    {
+      "path": "patches/scummvm/80-finish-ween-credits-and-discworld-2-scripted-prologue.patch",
+      "status": "active",
+      "sha256": "930cc36c04d47784c488367fcb23822aa01a6c2d84683deea36d4dd4e4f222e2",
+      "purpose": "Finish Ween original credits before its protection prompt and carry a Discworld II story request through the scripted funeral prologue.",
+      "invariants": [
+        "Ween only cancels the fingerprinted opening and credits and expires at protection setup 2583 before answer input 4246. Discworld II uses original Escape events only in the observed non-controllable funeral scene 0x1e000000 while carrying an accepted story request. The first controlled scene clears that request. Preserve later scenes, original menu choices and restored games."
+      ],
+      "verification": [
+        "In Brave request once in Ween opening and verify credits end at the untouched original color-chart question. Arm one Discworld II story request after New Game and verify the first controlled university view, movement and original later input."
+      ],
+      "retire_when": "Upstream exposes equivalent full-opening controls and protected prompt boundaries."
+    },
+    {
+      "path": "patches/scummvm/81-batch-original-sci-opening-cycles-between-browser-yields.patch",
+      "status": "active",
+      "sha256": "70d74bab5df1bcf0ce95d7465244b691d4e66bac6b8e2405da79f93531db8922",
+      "purpose": "Advance cycle-counted SCI opening credits with bounded original VM batches between browser yields.",
+      "invariants": [
+        "Only an accepted request in observed startup rooms batches waits. Keep original VM scripts, native transitions, protection and menu input, bounded event servicing and ordinary later timing. Record virtual script time using the existing native save format so restored timer values remain consistent. Reset transient offsets and counters on restore."
+      ],
+      "verification": [
+        "In Brave verify cycle-counted credits reach their original menu or first room, check keyboard and pointer responsiveness, and exercise a native save/restore. Compare imported and bundled startup regressions and rebuild with patch checks."
+      ],
+      "retire_when": "Upstream exposes equivalent cycle-aware startup advancement with compatible saves."
+    },
+    {
+      "path": "patches/scummvm/82-retain-ween-request-through-the-native-credit-wait.patch",
+      "status": "active",
+      "sha256": "7ac605ab6539e82e02cc8b659a67282ea69cda2216448c75d231802200e788db",
+      "purpose": "Retain a verified Ween Amiga opening request through its native credit wait and expire it at the original answer reader.",
+      "invariants": [
+        "Generate Escape only in the fingerprinted opening code through position 2321. Preserve protection setup at 2583 and 3345. At answer input 4246 clear the request before returning native user input. Carry the initial script fingerprint decision with the accepted request."
+      ],
+      "verification": [
+        "In Brave issue one opening request, verify the original color-chart question remains unanswered, then check the skip action is absent and native answer input remains usable."
+      ],
+      "retire_when": "Upstream exposes equivalent scoped Ween opening cancellation."
+    },
+    {
+      "path": "patches/scummvm/83-preserve-curse-of-monkey-island-difficulty-before-intro.patch",
+      "status": "active",
+      "sha256": "dca5781adf846e70c48a9eba42b5c52fe5e9231fcac329e1ed50282adb4a6806",
+      "purpose": "Keep Curse of Monkey Island native difficulty room 87 before the browser opening-complete boundary.",
+      "invariants": [
+        "Preserve Normal and Mega-Monkey choices. Allow the original SMUSH opening skip after the selected difficulty. Retain the ordinary first playable-room boundary and saved games."
+      ],
+      "verification": [
+        "In Brave choose Normal through the original title screen, request once in the opening movie and verify first cannon-room controls. Check Mega-Monkey remains available and unselected by Skip Intro."
+      ],
+      "retire_when": "Upstream exposes the native Curse of Monkey Island opening boundary after its original difficulty choice."
+    },
+    {
+      "path": "patches/scummvm/84-advance-ween-native-credit-fades.patch",
+      "status": "active",
+      "sha256": "9fd66cbc03333ae87650c6373c416ea3593cb6aa0f0733739774933d35249ce7",
+      "purpose": "Release each generated Ween opening Escape before its original input debounce loop polls again.",
+      "invariants": [
+        "A previously fingerprinted Ween Amiga intro016.tot request emits one Escape per observed opening key position. Repeated polls must receive native key release. Preserve original credit timing, transitions, protection setup and unanswered input at 4246. Document SCI native saved script clock continuity accurately."
+      ],
+      "verification": [
+        "In Brave request once during the Ween opening, verify the original color-chart question is untouched and native input remains usable. Rebuild and run offline patch checks."
+      ],
+      "retire_when": "Upstream supplies equivalent scoped Ween opening cancellation with native key release."
+    },
+    {
+      "path": "patches/scummvm/85-carry-gob-opening-animations-and-preserve-geisha-menu.patch",
+      "status": "active",
+      "sha256": "50e0fc072d73491dfd9c6d06b19c405872445172cfe883d170ac051cdcf48d28",
+      "purpose": "Carry accepted Gob animation requests through original opening segments and expose Geisha story cancellation after its native menu.",
+      "invariants": [
+        "Only known opening scripts and native Escape-enabled noninteractive animations carry Mult cancellation. Clear it at a nonopening script. Fingerprint the Geisha Amiga Start-selected boundary at position 28658 in the 64179-byte script. Emit one Escape per key wait through intro and intro2, clear at the first later script, and preserve Start/Resume and original gameplay input."
+      ],
+      "verification": [
+        "In Brave verify one Bargon request reaches the native first choice or playable scene. Choose Geisha Start, request once, and verify original story cleanup and first apartment control. Recheck other Gob opening menus and rebuild with patch checks."
+      ],
+      "retire_when": "Upstream exposes equivalent original Gob opening groups with native choice boundaries."
+    },
+    {
+      "path": "patches/scummvm/86-advance-geisha-scripted-frames-and-sci-credit-handoffs.patch",
+      "status": "active",
+      "sha256": "008dbaf19d7d0f555c70c5d56b9ba364b4025305c5fb18a4f62cd4eff7c63d35",
+      "purpose": "Advance accepted Geisha frame-counted opening scripts and connect observed SCI credit rooms to native Escape.",
+      "invariants": [
+        "Only the fingerprinted, Start-selected Geisha opening request batches original script waits in intro and intro2. Yield native input and redraw every 16 waits, retain original script transitions, and restore ordinary waits immediately outside those scripts. EcoQuest only generates one original Escape in credit room 360, including after an accepted timed publisher request. Hoyle I only exposes its original room 900 startup cancel. Preserve original choices, later timing and saves."
+      ],
+      "verification": [
+        "In Brave compare Geisha opening time after one request and verify first photo/apartment native input. Verify both EcoQuest editions leave credits for the first original room, and Hoyle I reaches its original game choice. Recheck native save/restore and run patch and runtime tests."
+      ],
+      "retire_when": "Upstream exposes equivalent scoped original frame advancement and SCI credit handoffs."
+    },
+    {
+      "path": "patches/scummvm/87-use-original-sci-credit-cancel-and-larry-fast-forward.patch",
+      "status": "active",
+      "sha256": "8e0a5afe7c0e9a1ee68928ecdf56f4ad2c76aea449dc7aa66715f8011ac780de",
+      "purpose": "Use original SCI credit key handlers and Larry 5 native opening Fast Forward room transition.",
+      "invariants": [
+        "Only observed startup credit rooms accept one original key, with Return for Police Quest II and Escape for the others. Preserve original skip/watch/restore dialogs, copy protection, character setup and later input. Carry accepted timed publisher requests only into those known opening handlers. Larry 5 is restricted to Amiga room 100 named rm100 with the original gFfRoom value 120, invokes its native newRoom selector, and applies the original consumed-destination marker 1120. Do not apply it to restored or later scenes."
+      ],
+      "verification": [
+        "In Brave verify each credit room reaches its original choice or first scene. Verify Larry 5 first interactive destination and native save/restore after one request. Replay first-choice, ordinary input and later timing checks. Rebuild and run native patch and runtime tests."
+      ],
+      "retire_when": "Upstream exposes equivalent original SCI opening cancellations and Larry 5 Fast Forward integration."
+    },
+    {
+      "path": "patches/scummvm/88-finish-post-title-story-and-native-opening-groups.patch",
+      "status": "active",
+      "sha256": "3725f324b725cd25364ebeae3e507ee9c909a3239c4cb7ec04b27ac655222044",
+      "purpose": "Finish observed post-title stories and native opening groups in Discworld, Longbow, Larry 7, Torin and Urban Runner.",
+      "invariants": [
+        "Discworld DOS preserves the title and idle credits before the start choice, uses native Escape during the selected story, and clears at actual control outside menus. New Game selected at the native title keeps original story cleanup without the initial-intro redirect back to title. Longbow carries its original Escape from rooms 98 and 96 into opening room 95. Larry 7 exposes its original any-event cancel only once soPlayIntro reaches handler states 3 through 9 in room 100. Torin only carries native allowed video cancellation within opening room 61000. Urban Runner only cancels MXPOURS.VMD in EMAM2000.TOT through its existing allowed break and final-frame cleanup. Preserve choices, first controls, restores and later movies."
+      ],
+      "verification": [
+        "In Brave verify both Discworld editions through original start choices, one story request and first bedroom movement. Verify Longbow first camp, Larry 7 first menu/room, Torin one request across its opening movies, and Urban Runner original next choice or first control. Run native save/restore, patch and runtime checks."
+      ],
+      "retire_when": "Upstream supplies equivalent native opening boundaries and complete group cancellation."
+    },
+    {
+      "path": "patches/scummvm/89-wait-for-native-opening-handlers-and-skip-phobos-prologue.patch",
+      "status": "active",
+      "sha256": "32398073b0db185fbd86ad814f54db49648692ae8655c2295cc38d2b810a56eb",
+      "purpose": "Wait for Longbow’s original poem handler, retain Torin’s opening request across its story movie, and connect Phobos 2’s fingerprinted prologue Return wait.",
+      "invariants": [
+        "Longbow room 95 only injects Escape after bardsTheme installs its native handler. Torin retains original allowed video cancellation in opening rooms 61000 and 8000. Patch 90 supersedes this patch’s provisional Phobos helper-20 gate with fingerprinted main-interpreter opening objects. Preserve that later boundary and its character choice."
+      ],
+      "verification": [
+        "In Brave verify one request reaches Longbow first camp, Torin original menu or first control, and Phobos 2 character choice. Verify later input and native save/restore. Run patch, native build and runtime checks."
+      ],
+      "retire_when": "Upstream provides equivalent exact opening boundaries and native cancellation."
+    },
+    {
+      "path": "patches/scummvm/90-complete-scripted-opening-input-handoffs.patch",
+      "status": "active",
+      "sha256": "394040e4e067aadfc0c1fcf618800270769578634b8f38fcd6c9dc987d60facf",
+      "purpose": "Carry original input across fingerprinted MADE opening objects, complete Longbow’s final native cancel and target Urban Runner’s nonblocking-video script key.",
+      "invariants": [
+        "MADE uses exact main script index, poll offset and bytecode prefix. Phobos 2 only carries Return through observed opening objects and stops before character object 312. Manhole only advances opening credit objects 1825 through 1847 with native mouse press and release, stopping outside that group. Longbow sends one additional Escape in room 95 lastScript after its original poem cancel. Urban only supplies Escape at EMAM2000.TOT position 2467 while MXPOURS.VMD is open, once per startup. Original choices and later game input remain under player control."
+      ],
+      "verification": [
+        "In Brave verify complete MADE openings, original Phobos character choice and Manhole first interaction. Verify Longbow first camp after one request and Urban original menu/first control. Run native save/restore and full patch, build and runtime checks."
+      ],
+      "retire_when": "Upstream exposes equivalent native startup groups and complete cancellation semantics."
+    },
+    {
+      "path": "patches/scummvm/91-finish-credit-waits-and-close-manhole-opening.patch",
+      "status": "active",
+      "sha256": "79ee4b637b553dd97840f830537c4c7143cf068af7cd8f324f1002cc76b45883",
+      "purpose": "Finish observed Gob and Soltys credit waits and close Manhole’s opening at its first scene.",
+      "invariants": [
+        "Fascination Amiga only releases the blocking AMIGA.TOT credit Return wait before the original INTRO1.TOT color chart. Gob2 INTRO0.TOT position 1257 and Gob3 DEMO.TOT position 602 require exact size and 16-byte signatures and send one native Escape. Preserve original menus and first scenes. Soltys carries only its original opening logo, paylist, wink and intro movie cleanup. Manhole releases its final synthetic mouse press and closes startup support before ordinary scene input."
+      ],
+      "verification": [
+        "In Brave verify one request reaches Fascination protection, Gob2 first courtyard, Gob3 original menu or first ship, Soltys first scene and responsive Manhole cover. Run patch, build, native save/restore and runtime checks."
+      ],
+      "retire_when": "Upstream supplies equivalent complete opening groups and lifecycle boundaries."
+    },
+    {
+      "path": "patches/scummvm/92-connect-fascination-credit-polls-and-gob3-publisher-request.patch",
+      "status": "active",
+      "sha256": "60fab47bc890d4a576e78d12e174ff4f0ee6356667f0b4646fee29ec97228158",
+      "purpose": "Connect Fascination’s nonblocking credit polls and carry Gob3’s accepted publisher request into its scripted opening.",
+      "invariants": [
+        "Fascination only supplies Return in AMIGA.TOT on Amiga, once per distinct poll position with release polls between events. Its next INTRO1.TOT color-chart reader receives original input. Gob3 carries an already accepted opening video cancellation into the existing Mult opening group, which clears on nonopening scripts. Preserve first menu choices, protection and gameplay."
+      ],
+      "verification": [
+        "In Brave verify Fascination reaches original color-chart prompt and Gob3 reaches its original menu or first ship after one request. Run patch, build, native save/restore and runtime checks."
+      ],
+      "retire_when": "Upstream provides equivalent native credit polling and opening-group handoff."
+    },
+    {
+      "path": "patches/scummvm/93-bound-opening-signatures-and-expire-fascination-credit-request.patch",
+      "status": "active",
+      "sha256": "628a651996b8848af0db343cf5fb1eef7d266a5323aa252785e2073854ceca66",
+      "purpose": "Bound MADE main-code signature reads and expire accepted Fascination credit requests outside their opening script.",
+      "invariants": [
+        "Check script data length before reading either MADE main-code prefix. Once an accepted Fascination credit request leaves AMIGA.TOT, clear its latch and prevent another credit cancellation from that startup request. Preserve original protection, ordinary input and later credit playback."
+      ],
+      "verification": [
+        "Run native build and patch checks. Verify the same original Phobos character choice, Manhole control and Fascination protection endpoints, including normal input after the skip."
+      ],
+      "retire_when": "Upstream provides equivalent bounded signatures and opening request lifetime."
     }
   ]
 }

@@ -39,9 +39,6 @@ flags:
   called-sierra: { bank: globals, index: 114, mask: 0x0080 } # 56, rm505
   collected-wine: { bank: globals, index: 115, mask: 0x0001 } # 79, rm510
 milestones:
-  - id: wedding
-    label: "Reached the wedding scene"
-    when: { room: wedding }
   - id: penthouse
     label: "Reached the penthouse"
     when: { room: penthouse }
@@ -90,7 +87,7 @@ milestones:
   - id: collected-ribbon
     label: Collected the ribbon
     when: { flag: collected-ribbon }
-  - id: married-fawn
+  - id: wedding
     label: Married Fawn
     when: { flag: married-fawn }
   - id: collected-knife

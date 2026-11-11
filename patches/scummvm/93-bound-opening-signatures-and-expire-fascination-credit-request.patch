@@ -1,0 +1,59 @@
+diff --git a/engines/gob/util.cpp b/engines/gob/util.cpp
+--- a/engines/gob/util.cpp
++++ b/engines/gob/util.cpp
+@@ -333,8 +333,10 @@
+ 	while (!getKeyFromBuffer(key)) {
+ #ifdef __EMSCRIPTEN__
+ 		if (_vm->getGameType() == kGameTypeFascination && _vm->getPlatform() == Common::kPlatformAmiga &&
+-				_vm->isCurrentTot("amiga.tot") && ScummWebIntro::nativeSkipEnabled() &&
++				!_browserFascinationCreditsFinished && _vm->isCurrentTot("amiga.tot") &&
++				ScummWebIntro::nativeSkipEnabled() &&
+ 				(_vm->_mult->browserOpeningSkipped() || ScummWebIntro::skipRequested())) {
++			_browserFascinationCreditSkipped = true;
+ 			ScummWebIntro::skipRequested(false);
+ 			return translateKey(Common::KeyState(Common::KEYCODE_RETURN, 13));
+ 		}
+@@ -353,8 +355,13 @@
+ 	getKeyFromBuffer(key);
+ 
+ #ifdef __EMSCRIPTEN__
++	if (_browserFascinationCreditSkipped && !_vm->isCurrentTot("amiga.tot")) {
++		_browserFascinationCreditSkipped = false;
++		_browserFascinationCreditsFinished = true;
++	}
+ 	if (_vm->getGameType() == kGameTypeFascination && _vm->getPlatform() == Common::kPlatformAmiga &&
+-			_vm->isCurrentTot("amiga.tot") && ScummWebIntro::nativeSkipEnabled()) {
++			!_browserFascinationCreditsFinished && _vm->isCurrentTot("amiga.tot") &&
++			ScummWebIntro::nativeSkipEnabled()) {
+ 		const int position = _vm->_game->_script->pos();
+ 		if (position != _browserFascinationSkippedPosition && key.keycode == Common::KEYCODE_INVALID &&
+ 				(_browserFascinationCreditSkipped || _vm->_mult->browserOpeningSkipped() || ScummWebIntro::skipRequested())) {
+diff --git a/engines/gob/util.h b/engines/gob/util.h
+--- a/engines/gob/util.h
++++ b/engines/gob/util.h
+@@ -171,6 +171,7 @@
+ 	bool _browserFinalOpeningAvailable = false;
+ 	int _browserFascinationSkippedPosition = -1;
+ 	bool _browserFascinationCreditSkipped = false;
++	bool _browserFascinationCreditsFinished = false;
+ #endif
+ 	MouseButtons _mouseButtons;
+ 
+diff --git a/engines/made/script.cpp b/engines/made/script.cpp
+--- a/engines/made/script.cpp
++++ b/engines/made/script.cpp
+@@ -181,10 +181,12 @@
+ 			static const byte manholeMain[] = {6, 19, 8, 0, 32, 0, 20, 21, 0, 2, 14, 1, 20, 18, 0, 2};
+ 			const bool phobos = _vm->getGameID() == GID_LGOP2 &&
+ 				_vm->_dat->getMainCodeObjectIndex() == 214 && _runningScriptObjectIndex == 214 &&
+-				_codeIp - _codeBase == 88 && memcmp(_codeBase, phobosMain, sizeof(phobosMain)) == 0;
++				_codeIp - _codeBase == 88 && _vm->_dat->getObject(214)->getSize() >= sizeof(phobosMain) &&
++				memcmp(_codeBase, phobosMain, sizeof(phobosMain)) == 0;
+ 			const bool manhole = _vm->getGameID() == GID_MANHOLE &&
+ 				_vm->_dat->getMainCodeObjectIndex() == 69 && _runningScriptObjectIndex == 69 &&
+-				_codeIp - _codeBase == 38 && memcmp(_codeBase, manholeMain, sizeof(manholeMain)) == 0;
++				_codeIp - _codeBase == 38 && _vm->_dat->getObject(69)->getSize() >= sizeof(manholeMain) &&
++				memcmp(_codeBase, manholeMain, sizeof(manholeMain)) == 0;
+ 			if (phobos || manhole) {
+ 				const int16 object = _vm->_dat->getVar(phobos ? 11 : 10);
+ 				bool opening = manhole && object >= 1825 && object <= 1847;

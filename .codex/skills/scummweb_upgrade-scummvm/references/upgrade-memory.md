@@ -85,6 +85,7 @@ tests when porting; do not treat an old implementation shape as the requirement.
 
 - Intro skip is edition-specific. Patch 24 uses the engine's normal first-scene transition or native intro abort and keeps original character, input and menu choices. Exercise both paths and keep the original Play path for fresh launches.
 - Patch 41 separates intro completion from first-frame readiness. Report at the native transition to player input or a preserved selection screen. Recheck the exact first playable states when a bundled edition changes. A rendered frame, cursor alone, or elapsed time cannot establish that the intro ended.
+- Imported intro requests belong to the native opening sequence that owns the transition. Keep an ordinary abort path shared when it preserves the expected state. Kyrandia I's keyboard abort can restore slot zero, so its browser request uses a separate opening flag and leaves fresh launches independent of existing saves.
 
 ## Keyboard callback lifetime
 
@@ -216,3 +217,23 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
 - Keep the hosted speed multiplier on the Emscripten engine clock and delays.
   Preserve the real audio sample rate. Apply hosted volume after SDL3 sample
   validation so mute cannot hide invalid-sample detection.
+
+
+## Scripted opening input boundaries
+
+- A rendered title can still be an opening or an attract sequence. Verify the
+  original next choice or first interactive scene and keep the native choice.
+- A polling helper can flush input instead of handling it. MADE helper 20 is a
+  debounce wait. Match the main interpreter, its exact poll offset and code
+  prefix, then scope requests to observed opening objects. Release synthetic
+  mouse presses before first scene input and close availability at control.
+- One synthetic Escape can install a final SCI cleanup script while its native
+  dialog still needs another event. Scope any follow-up to the exact cleanup
+  script and send it once. Keep virtual script time continuous with saved timers.
+- A Gob movie can run without blocking, disabling the video player’s own abort
+  poll. Use the original script key reader for that exact movie and position.
+  Carry an accepted publisher request only into known opening scripts, clear it
+  outside them, and release each generated key before native debounce polls.
+- Focus the native canvas for keyboard verification. A key sent to the outer
+  launcher can leave the engine without the event. Check sequential archive
+  handoff after releasing each prior worker’s local-game storage lock.

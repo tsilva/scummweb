@@ -64,5 +64,53 @@ The [sandboxed R2 publisher](docs/maintaining-scummweb.md#single-object-publishi
 signs single-object uploads with the ScummWEB Development `/` R2 pair, pinned
 to `https://app.infisical.com` and `scummvm-games`. Only the loopback relay
 capability enters the temporary Agent Vault bundle. The sandboxed process
-gets a placeholder and can reach only the local proxy. Bulk publishing has
-separate credential requirements.
+gets a placeholder and can reach only the local proxy.
+
+For agent-operated batch artwork publishing, use `pnpm artwork:check:vault`, then
+`pnpm publish:artwork:vault WORKSPACE` only after the exact artwork plan is approved.
+The reviewed service mapping is this native project, Development `/`, source pair
+`AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY`, bundle `local-scummweb-artwork-batch`.
+Vault injects the pair only into the protected signing relay's credential header;
+the batch publisher receives `scummweb_artwork_proxy_placeholder`. The relay limits
+requests to the reviewed content-addressed artwork plan in `scummvm-games`, verifies
+bytes and metadata, and uses conditional creates. No game uploads, pruning,
+overwrites or bucket administration are included. Check is a HEAD-only request
+for one pinned existing artwork object; it reads no object body.
+
+The owner-only `artwork-relay/scummweb` profile under the Infisical configuration
+directory pins the source binding, source files, runtime, installed relay and
+policy. Changed pins require trusted review. Ordinary launches never fetch source
+keys; trusted administrative sync is required after rotation. The macOS sandbox
+allows only the native proxy, the isolated Python runtime and the selected artwork
+files, and denies writes and credential-file access. Other full-access same-user
+processes remain outside this boundary. Follow the batch-publishing section in
+`docs/maintaining-scummweb.md`; keep the existing commands, application defaults
+and production delivery unchanged. Missing bindings and failed requests stop
+without raw-key fallback.
+
+## Agent Vault: local Sentry issue reader
+
+- For agent-operated Sentry reads, use `pnpm sentry:check:vault`, then
+  `pnpm sentry:issues:vault -- --days 14 --limit 10` when issue contents are needed.
+- Select native project `e1c358f8-0678-45d7-a2a8-270c2f29aadd`, Development
+  (`dev`), `/`, `SENTRY_AUTH_TOKEN`, instance `https://app.infisical.com`.
+  The dedicated bundle is `local-scummweb-sentry-read`.
+- The original reader executes through a public placeholder and the macOS
+  sandbox. Its project-filtered organization query is adapted to the equivalent
+  single-project endpoint. The native service permits ScummWEB GET routes only.
+- Use the reviewed source and runtime pins. Missing bindings, changed files and
+  rejected authentication must stop explicitly. Trusted rotation refreshes only
+  this service's credential from the same source, followed by the bounded check.
+- Follow `docs/maintaining-scummweb.md#sentry-issue-reads-through-agent-vault`.
+  Do not select the legacy injection command as a fallback or reuse an unrelated
+  project's key. Real issue queries remain subject to their requested scope.
+
+## Agent backbone
+
+ScummWEB owns `agent-backbone/`: mechanical controls, captures, profiles,
+spectator and native evaluation receipts. ScummBench launches it as an internal
+managed backend and exposes the public MCP endpoint. The dependency direction
+is AgentSCUMM → ScummBench MCP → ScummWEB; never import or launch AgentSCUMM
+from this backbone. Keep puzzle-solving instructions and benchmark policy out
+of it. See [the backbone guide](docs/agent-backbone.md). Run
+`pnpm check:backbone` and `pnpm test:backbone` for changes to this component.

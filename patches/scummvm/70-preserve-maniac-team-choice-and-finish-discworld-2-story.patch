@@ -1,0 +1,77 @@
+diff --git a/engines/scumm/scumm.cpp b/engines/scumm/scumm.cpp
+--- a/engines/scumm/scumm.cpp
++++ b/engines/scumm/scumm.cpp
+@@ -2960,9 +2960,13 @@
+ 			// its publisher sequence before handing over the distaff.
+ 			const bool loomOpening = _game.id == GID_LOOM && _game.version == 4 &&
+ 				_game.platform == Common::kPlatformDOS && _currentRoom == 69;
++			// Maniac Mansion first asks the player to assemble a team and
++			// then plays the mansion movie. Neither room starts gameplay.
++			const bool maniacOpening = _game.id == GID_MANIAC && _game.platform == Common::kPlatformAmiga &&
++				(_currentRoom == 45 || _currentRoom == 33);
+ 			if (_roomResource != 0 && _userPut > 0 && vm.cutSceneStackPointer == 0 &&
+ 				(!ScummWebIntro::nativeSkipEnabled() ||
+-				 (!loomOpening && _cursor.state > 0 && vm.cutScenePtr[0] == 0)))
++				 (!loomOpening && !maniacOpening && _cursor.state > 0 && vm.cutScenePtr[0] == 0)))
+ 				ScummWebIntro::gameplayStarted();
+ #endif
+ 			if (VAR_LAST_FRAME_SCUMM_TIME != 0xFF)
+diff --git a/engines/tinsel/bmv.cpp b/engines/tinsel/bmv.cpp
+--- a/engines/tinsel/bmv.cpp
++++ b/engines/tinsel/bmv.cpp
+@@ -1002,6 +1002,8 @@
+  */
+ void BMVPlayer::FinishBMV() {
+ #ifdef __EMSCRIPTEN__
++	if (_browserSkipOpening == OpeningGroup::Story && !scumm_stricmp(szMovieFile, "DTHINTRO.BMV"))
++		_browserSkipOpening = OpeningGroup::None;
+ 	ScummWebIntro::skipRequested(false);
+ #endif
+ 	int	i;
+@@ -1367,15 +1369,24 @@
+ 		return;
+ 
+ #ifdef __EMSCRIPTEN__
+-	// The first two publisher movies and the original New Game opening
+-	// share the browser action. Other Discworld movies retain native input.
+-	const bool intro = !scumm_stricmp(szMovieFile, "INTRO.BMV");
+-	const bool opening = _vm->getGameID() == GID_DW2 && ScummWebIntro::nativeSkipEnabled() &&
+-		(intro || !scumm_stricmp(szMovieFile, "PERFECT.BMV") ||
+-		!scumm_stricmp(szMovieFile, "PSYG.BMV") || !scumm_stricmp(szMovieFile, "PRODUCED.BMV"));
+-	if (opening && stream.isOpen() && (_browserSkipOpening || ScummWebIntro::skipRequested())) {
+-		_browserSkipOpening = !intro;
+-		bAbort = true;
++	// Publisher clips lead to the original New Game choice. The story
++	// and its animated credits form a separate opening after that choice.
++	if (_vm->getGameID() == GID_DW2 && ScummWebIntro::nativeSkipEnabled() && stream.isOpen()) {
++		const bool storyCredits = !scumm_stricmp(szMovieFile, "DTHINTRO.BMV");
++		OpeningGroup opening = OpeningGroup::None;
++		if (storyCredits || !scumm_stricmp(szMovieFile, "INTRO.BMV"))
++			opening = OpeningGroup::Story;
++		else if (!scumm_stricmp(szMovieFile, "PERFECT.BMV") ||
++				!scumm_stricmp(szMovieFile, "PSYG.BMV") || !scumm_stricmp(szMovieFile, "PRODUCED.BMV"))
++			opening = OpeningGroup::Publisher;
++
++		if (opening != _browserSkipOpening)
++			_browserSkipOpening = OpeningGroup::None;
++		if (opening != OpeningGroup::None &&
++				(_browserSkipOpening == opening || ScummWebIntro::skipRequested())) {
++			_browserSkipOpening = storyCredits ? OpeningGroup::None : opening;
++			bAbort = true;
++		}
+ 	}
+ #endif
+ 	// Escape the rest if appropriate
+diff --git a/engines/tinsel/bmv.h b/engines/tinsel/bmv.h
+--- a/engines/tinsel/bmv.h
++++ b/engines/tinsel/bmv.h
+@@ -55,7 +55,8 @@
+ 	/// Set to kill one off
+ 	bool bAbort;
+ #ifdef __EMSCRIPTEN__
+-	bool _browserSkipOpening = false;
++	enum class OpeningGroup { None, Publisher, Story };
++	OpeningGroup _browserSkipOpening = OpeningGroup::None;
+ #endif
+ 
+ 	/// For escaping out of movies

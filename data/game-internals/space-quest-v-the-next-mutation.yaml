@@ -107,6 +107,7 @@ milestones:
     when: { room: final-sequence }
   - id: winning-ending
     label: Reached the farewell ending
+    implies: [reached-final-sequence]
     when:
       all:
         - { room: farewell }

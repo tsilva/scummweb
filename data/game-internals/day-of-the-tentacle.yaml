@@ -15,8 +15,8 @@ rooms:
 flags:
   # Room 11 object 48 and room 13 object 84 record the wine deposit in bit 350.
   wine-in-time-capsule: { bank: scumm_bit_bytes, index: 43, mask: 0x40 }
-  # Room 30 script 205 completes the patent letter scene.
-  patent-letter-delivered: { bank: scumm_bit_bytes, index: 5, mask: 0x02 }
+  # Room 30 script 205 records actual delivery in bit 355. Global 30 seeds bit 41 for the final act.
+  patent-letter-delivered: { bank: scumm_bit_bytes, index: 44, mask: 0x08 }
   hoagies-power: { bank: scumm_bit_bytes, index: 1, mask: 0x02 }
   # Global script 82 records each first place separately after evaluating the entry.
   harold-disqualified: { bank: scumm_bit_bytes, index: 3, mask: 0x04 }

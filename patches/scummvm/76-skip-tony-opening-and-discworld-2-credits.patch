@@ -1,0 +1,92 @@
+diff --git a/engines/tinsel/bmv.cpp b/engines/tinsel/bmv.cpp
+--- a/engines/tinsel/bmv.cpp
++++ b/engines/tinsel/bmv.cpp
+@@ -1372,7 +1372,11 @@
+ 	if (_vm->getGameID() == GID_DW2 && ScummWebIntro::nativeSkipEnabled() && stream.isOpen()) {
+ 		const bool storyCredits = !scumm_stricmp(szMovieFile, "DTHINTRO.BMV");
+ 		OpeningGroup opening = OpeningGroup::None;
+-		if (storyCredits || !scumm_stricmp(szMovieFile, "INTRO.BMV"))
++		// The animated CREDITS movie follows the story. Only include it
++		// in an already requested story sequence, preserving menu credits.
++		const bool openingCredits = _browserSkipOpening == OpeningGroup::Story &&
++			!scumm_stricmp(szMovieFile, "CREDITS.BMV");
++		if (storyCredits || openingCredits || !scumm_stricmp(szMovieFile, "INTRO.BMV"))
+ 			opening = OpeningGroup::Story;
+ 		else if (!scumm_stricmp(szMovieFile, "PERFECT.BMV") ||
+ 				!scumm_stricmp(szMovieFile, "PSYG.BMV") || !scumm_stricmp(szMovieFile, "PRODUCED.BMV"))
+diff --git a/engines/tony/gfxengine.cpp b/engines/tony/gfxengine.cpp
+--- a/engines/tony/gfxengine.cpp
++++ b/engines/tony/gfxengine.cpp
+@@ -26,6 +26,8 @@
+  */
+ 
+ #include "common/savefile.h"
++#include "common/config-manager.h"
++#include "engines/scummweb-intro.h"
+ #include "tony/mpal/lzo.h"
+ #include "tony/mpal/mpalutils.h"
+ #include "tony/custom.h"
+@@ -33,6 +35,12 @@
+ #include "tony/tony.h"
+ 
+ namespace Tony {
++
++#ifdef __EMSCRIPTEN__
++static bool isBrowserOpeningLocation(int location) {
++	return (location >= 91 && location <= 104) || location == 71 || location == 72;
++}
++#endif
+ 
+ /****************************************************************************\
+ *       RMGfxEngine Methods
+@@ -142,6 +150,23 @@
+ 
+ 	// Poll of input devices
+ 	_input.poll();
++#ifdef __EMSCRIPTEN__
++	if (ScummWebIntro::nativeSkipEnabled() && !ScummWebIntro::startupFinished() &&
++			!ConfMan.hasKey("save_slot")) {
++		const bool opening = isBrowserOpeningLocation(_nCurLoc);
++		if (opening && (_browserSkipOpening || ScummWebIntro::skipRequested())) {
++			_browserSkipOpening = true;
++			// Use the original MPAL visual-wait cancellation. Its scripts
++			// still load locations and perform their state initialization.
++			GLOBALS._bSkipIdle = true;
++			CoroScheduler.setEvent(GLOBALS._hSkipIdle);
++			ScummWebIntro::skipRequested(false);
++		} else if (!opening && _nCurLoc > 0 && _nCurLoc != 106 && _bInput &&
++				!_bOption && !_tony.inAction()) {
++			ScummWebIntro::gameplayStarted();
++		}
++	}
++#endif
+ 
+ 	if (_bMustEnterMenu && GLOBALS._bIdleExited) {
+ 		_bOption = true;
+@@ -393,6 +418,13 @@
+ }
+ 
+ uint32 RMGfxEngine::loadLocation(int nLoc, RMPoint ptTonyStart, RMPoint start) {
++#ifdef __EMSCRIPTEN__
++	if (_browserSkipOpening && !isBrowserOpeningLocation(nLoc)) {
++		_browserSkipOpening = false;
++		GLOBALS._bSkipIdle = false;
++		CoroScheduler.resetEvent(GLOBALS._hSkipIdle);
++	}
++#endif
+ 	_nCurLoc = nLoc;
+ 
+ 	bool bLoaded = false;
+diff --git a/engines/tony/gfxengine.h b/engines/tony/gfxengine.h
+--- a/engines/tony/gfxengine.h
++++ b/engines/tony/gfxengine.h
+@@ -68,6 +68,9 @@
+ 	int _nWipeStep;
+ 
+ 	bool _bMustEnterMenu;
++#ifdef __EMSCRIPTEN__
++	bool _browserSkipOpening = false;
++#endif
+ protected:
+ 	static void itemIrq(uint32 dwItem, int nPattern, int nStatus);
+ 	void initForNewLocation(int nLoc, RMPoint ptTonyStart, RMPoint start);

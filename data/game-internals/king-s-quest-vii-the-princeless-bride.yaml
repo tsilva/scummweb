@@ -23,21 +23,67 @@ flags:
   gila-comb: { bank: globals, index: 160, mask: 0x0400 } # Flag 533, rm1000.
   enchanted-rope: { bank: globals, index: 131, mask: 0x0200 } # Flag 70, rm2550.
   reached-etheria: { bank: globals, index: 139, mask: 0x0010 } # Flag 203, rm6200.
+  split-gourd: { bank: globals, index: 129, mask: 0x0020 } # Flag 42, rm1100.
+  collected-powder: { bank: globals, index: 128, mask: 0x1000 } # Flag 19, rm1601_1610.
+  traded-gem: { bank: globals, index: 151, mask: 0x0800 } # Flag 388, rm2050.
+  collected-left-bowl: { bank: globals, index: 161, mask: 0x0020 } # Flag 554, rm2500.
+  collected-right-bowl: { bank: globals, index: 161, mask: 0x0010 } # Flag 555, rm2500.
+  collected-beetle: { bank: globals, index: 161, mask: 0x0008 } # Flag 556, rm2500.
+  removed-spike: { bank: globals, index: 133, mask: 0x0040 } # Flag 105, rm3200.
+  collected-nectar: { bank: globals, index: 135, mask: 0x2000 } # Flag 130, rm3250.
+  collected-medal: { bank: globals, index: 141, mask: 0x1000 } # Flag 227, rm4000.
+  returned-bone: { bank: globals, index: 138, mask: 0x0100 } # Flag 183, rm4200.
+  collected-crystal-shaft: { bank: globals, index: 158, mask: 0x4000 } # Flag 497, rm4450.
+  collected-dream-catcher: { bank: globals, index: 162, mask: 0x0400 } # Flag 565, rm6060.
+  took-dream-tapestry: { bank: globals, index: 140, mask: 0x4000 } # Flag 209, rm6150.
 milestones:
   # Room 35 also opens from the chapter menu (room 20); require the actual scene.
+  - id: split-gourd
+    label: Found the seed inside the split gourd
+    when: { flag: split-gourd }
+  - id: collected-powder
+    label: Collected the bug-reducing powder
+    when: { flag: collected-powder }
   - id: reached-chapter-2
     label: Recovered the golden comb and completed chapter 1
     when: { flag: gila-comb }
   - id: used-enchanted-rope
     label: Used the enchanted rope to reach the bucket
     when: { flag: enchanted-rope }
+  - id: traded-gem
+    label: Traded the gem for the hammer and chisel
+    when: { flag: traded-gem }
+  - id: collected-left-bowl
+    label: Collected the left bowl
+    when: { flag: collected-left-bowl }
+  - id: collected-right-bowl
+    label: Collected the right bowl
+    when: { flag: collected-right-bowl }
+  - id: collected-beetle
+    label: Collected the beetle
+    when: { flag: collected-beetle }
   - id: reached-chapter-3
     label: Completed chapter 2 in play
     implies: [used-enchanted-rope]
     when: { all: [{ room: chapter-transition }, { variable: previous-room, equals: 2550 }, { variable: chapter, equals: 2 }] }
+  - id: removed-spike
+    label: Removed the spike from Attis
+    when: { flag: removed-spike }
+  - id: collected-nectar
+    label: Collected the flower nectar
+    when: { flag: collected-nectar }
   - id: reached-chapter-4
     label: Completed chapter 3 in play
     when: { all: [{ room: chapter-transition }, { variable: previous-room, equals: 5300 }, { variable: chapter, equals: 3 }] }
+  - id: collected-medal
+    label: Collected the Horseman’s medal
+    when: { flag: collected-medal }
+  - id: returned-bone
+    label: Returned the bone
+    when: { flag: returned-bone }
+  - id: collected-crystal-shaft
+    label: Collected the crystal shaft
+    when: { flag: collected-crystal-shaft }
   - id: reached-chapter-5
     label: Completed chapter 4 in play
     when: { all: [{ room: chapter-transition }, { variable: previous-room, equals: 2202 }, { variable: chapter, equals: 4 }] }
@@ -47,6 +93,12 @@ milestones:
   - id: reached-etheria
     label: Reached Etheria
     when: { flag: reached-etheria }
+  - id: collected-dream-catcher
+    label: Collected the dream catcher
+    when: { flag: collected-dream-catcher }
+  - id: took-dream-tapestry
+    label: Took the dream tapestry
+    when: { flag: took-dream-tapestry }
   - id: reached-chapter-6
     label: Completed chapter 5 in play
     when: { all: [{ room: chapter-transition }, { variable: previous-room, equals: 6010 }, { variable: chapter, equals: 5 }] }

@@ -26,7 +26,13 @@
     "artwork:verify": "node ./scripts/artwork-storage.mjs verify",
     "artwork:activate": "node ./scripts/artwork-storage.mjs activate",
     "artwork:retire-local": "node ./scripts/artwork-storage.mjs retire-local",
-    "publish:artwork": "python3 scripts/infisical/run.py publish-artwork"
+    "publish:artwork": "python3 scripts/infisical/run.py publish-artwork",
+    "sentry:check:vault": "python3 -I -S scripts/infisical/sentry_vault.py check",
+    "sentry:issues:vault": "python3 -I -S scripts/infisical/sentry_vault.py issues",
+    "artwork:check:vault": "python3 -I -S -B scripts/infisical/artwork_vault.py check",
+    "publish:artwork:vault": "python3 -I -S -B scripts/infisical/artwork_vault.py publish",
+    "check:backbone": "node agent-backbone/check.js",
+    "test:backbone": "node --test agent-backbone/test/*.test.js"
   },
   "dependencies": {
     "@sentry/nextjs": "11.10.0",

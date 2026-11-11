@@ -1,0 +1,193 @@
+diff --git a/engines/cge/cge.h b/engines/cge/cge.h
+--- a/engines/cge/cge.h
++++ b/engines/cge/cge.h
+@@ -244,6 +244,9 @@
+ 	void runGame();
+ 	bool showTitle(const char *name);
+ 	void movie(const char *ext);
++#ifdef __EMSCRIPTEN__
++	bool _browserSkipOpening = false;
++#endif
+ 	void inf(const char *text, bool wideSpace = false);
+ 	void selectSound();
+ 	void dummy() {}
+diff --git a/engines/cge/cge_main.cpp b/engines/cge/cge_main.cpp
+--- a/engines/cge/cge_main.cpp
++++ b/engines/cge/cge_main.cpp
+@@ -1469,12 +1469,15 @@
+ 		_keyboard->setClient(_sys);
+ #ifdef __EMSCRIPTEN__
+ 		ScummWebIntro::SkipSegment introSegment;
+-		const bool opening = !strcmp(ext, kIntroExt) && ScummWebIntro::nativeSkipEnabled();
++		const bool opening = (!strcmp(ext, kIntroExt) || !strcmp(ext, kLgoExt)) &&
++			ScummWebIntro::nativeSkipEnabled();
+ #endif
+ 		while (!_commandHandler->idle() && !_quitFlag) {
+ #ifdef __EMSCRIPTEN__
+-			if (opening && ScummWebIntro::skipRequested())
++			if (opening && (_browserSkipOpening || ScummWebIntro::skipRequested())) {
++				_browserSkipOpening = true;
+ 				break;
++			}
+ #endif
+ 			mainLoop();
+ 		}
+diff --git a/engines/cge2/cge2.h b/engines/cge2/cge2.h
+--- a/engines/cge2/cge2.h
++++ b/engines/cge2/cge2.h
+@@ -177,6 +177,9 @@
+ 	char *mergeExt(char *buf, const char *name, const char *ext);
+ 	void inf(const char *text, ColorBank col = kCBInf);
+ 	void movie(const char *ext);
++#ifdef __EMSCRIPTEN__
++	bool _browserSkipTitle = false;
++#endif
+ 	void runGame();
+ 	void loadHeroes();
+ 	void loadScript(const char *fname, bool onlyToolbar = false);
+diff --git a/engines/cge2/cge2_main.cpp b/engines/cge2/cge2_main.cpp
+--- a/engines/cge2/cge2_main.cpp
++++ b/engines/cge2/cge2_main.cpp
+@@ -402,7 +402,7 @@
+ #endif
+ 		while (!_commandHandler->idle() && !_quitFlag) {
+ #ifdef __EMSCRIPTEN__
+-			if (opening && ScummWebIntro::skipRequested())
++			if (opening && (_browserSkipTitle || ScummWebIntro::skipRequested()))
+ 				break;
+ #endif
+ 			mainLoop();
+@@ -831,6 +831,20 @@
+ 	_vga->sunrise(_vga->_sysPal);
+ 	_vga->update();
+ 
++#ifdef __EMSCRIPTEN__
++	if (!strcmp(name, "WELCOME") && ScummWebIntro::nativeSkipEnabled()) {
++		ScummWebIntro::SkipSegment introSegment;
++		const uint32 started = g_system->getMillis();
++		while (!shouldQuit() && g_system->getMillis() - started < 2500) {
++			if (ScummWebIntro::skipRequested()) {
++				_browserSkipTitle = true;
++				break;
++			}
++			g_system->delayMillis(16);
++		}
++		return !shouldQuit();
++	}
++#endif
+ 	g_system->delayMillis(2500);
+ 
+ 	return true;
+diff --git a/engines/mads/animview/animview.cpp b/engines/mads/animview/animview.cpp
+--- a/engines/mads/animview/animview.cpp
++++ b/engines/mads/animview/animview.cpp
+@@ -20,6 +20,7 @@
+  */
+ 
+ #include "audio/audiostream.h"
++#include "engines/scummweb-intro.h"
+ #include "common/file.h"
+ #include "mads/core/env.h"
+ #include "mads/core/kernel.h"
+@@ -184,7 +185,7 @@
+ /**
+  * Responsible for running a loaded animation
+  */
+-static void run_animation(int animIndex) {
++static void run_animation(int animIndex, bool opening) {
+ 	int ctr;
+ 
+ 	if (!hasAnimInited) {
+@@ -329,7 +330,11 @@
+ 		} else {
+ 			if (g_engine->shouldQuit())
+ 				current_error_code = 1;
+-			if (g_engine->hasPendingKey()) {
++			bool skip = g_engine->hasPendingKey();
++#ifdef __EMSCRIPTEN__
++			skip |= opening && ScummWebIntro::skipRequested();
++#endif
++			if (skip) {
+ 				g_engine->flushKeys();
+ 				error_code = 1;
+ 				current_error_code = 1;
+@@ -393,7 +398,11 @@
+ 					current_error_code = 1;
+ 				}
+ 			} else {
+-				if (g_engine->hasPendingKey()) {
++				bool skip = g_engine->hasPendingKey();
++#ifdef __EMSCRIPTEN__
++				skip |= opening && ScummWebIntro::skipRequested();
++#endif
++				if (skip) {
+ 					g_engine->flushKeys();
+ 					error_code = 1;
+ 					current_error_code = 1;
+@@ -427,7 +436,7 @@
+  * Iterate over the entries in the anim_list, animating each
+  * in sequence
+  */
+-static void animate() {
++static void animate(bool opening) {
+ 	char buf[80];
+ 	AnimFile anim_in;
+ 	int count, ctr;
+@@ -596,7 +605,7 @@
+ 		}
+ 
+ 		// Run the animation
+-		run_animation(count);
++		run_animation(count, opening);
+ 
+ 		// Stop any speech
+ 		speech_all_off();
+@@ -688,7 +697,13 @@
+ 		env_get_path(sound_file_name, snd_name);
+ 	}
+ 
+-	animate();
++	bool opening = false;
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++	opening = ScummWebIntro::nativeSkipEnabled() &&
++		(!scumm_stricmp(resName, "@rexopen") || !scumm_stricmp(resName, "@demodisk"));
++#endif
++	animate(opening);
+ 
+ 	g_engine->flushKeys();
+ }
+diff --git a/engines/mads/nebular/main_menu.cpp b/engines/mads/nebular/main_menu.cpp
+--- a/engines/mads/nebular/main_menu.cpp
++++ b/engines/mads/nebular/main_menu.cpp
+@@ -19,6 +19,7 @@
+  *
+  */
+ 
++#include "engines/scummweb-intro.h"
+ #include "mads/core/general.h"
+ #include "mads/core/config.h"
+ #include "mads/core/env.h"
+@@ -353,7 +354,22 @@
+ 
+ 	mouse_init_cycle();
+ 
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++	bool browserTitleAnimating = ScummWebIntro::nativeSkipEnabled() &&
++		g_engine->getPlatform() == Common::kPlatformDOS;
++#endif
+ 	while (going && !g_engine->shouldQuit()) {
++#ifdef __EMSCRIPTEN__
++		if (browserTitleAnimating) {
++			if (ScummWebIntro::skipRequested(menu_mode == MENU_APPEARING))
++				menu_mode = MENU_ACCEPTING_COMMANDS;
++			if (menu_mode != MENU_APPEARING) {
++				ScummWebIntro::skipRequested(false);
++				browserTitleAnimating = false;
++			}
++		}
++#endif
+ 		if (keys_any()) {
+ 			mykey = keys_get();
+ 			switch (toupper(mykey)) {

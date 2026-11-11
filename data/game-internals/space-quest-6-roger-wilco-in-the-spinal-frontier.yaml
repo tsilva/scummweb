@@ -112,6 +112,7 @@ milestones:
     when: { room: epilogue }
   - id: winning-ending
     label: Reached the ending credits
+    implies: [reached-epilogue]
     when:
       all:
         - { room: ending-credits }

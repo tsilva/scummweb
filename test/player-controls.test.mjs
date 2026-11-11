@@ -93,9 +93,24 @@ test("speed changes preserve a continuous clock and volume resumes at the select
   assert.equal(scope.__scummwebPlayerDelay(120), 240);
   controls.setMenuOpen(false);
   assert.equal(scope.__scummwebPlayerVolume, 0.45);
-  installPlayerControls(scope);
-  assert.equal(scope.scummwebPlayerControls.read().volume, 45);
-  assert.equal(scope.scummwebPlayerControls.read().speed, 0.5);
+  assert.equal(controls.read().volume, 45);
+  assert.equal(controls.read().speed, 0.5);
+});
+
+test("each launch starts at full volume and normal speed despite older browser settings", () => {
+  const { scope, storage, controls } = createPlayer();
+  const legacySettings = JSON.stringify({ volume: 25, speed: 0.5 });
+  const key = "scummweb.player-controls.v1";
+  storage.set(key, legacySettings);
+  controls.setSettings({ volume: 45, speed: 1.5 });
+
+  const nextLaunch = { localStorage: scope.localStorage };
+  installPlayerControls(nextLaunch);
+  assert.equal(nextLaunch.scummwebPlayerControls.read().volume, 100);
+  assert.equal(nextLaunch.scummwebPlayerControls.read().speed, 1);
+  assert.equal(nextLaunch.__scummwebPlayerVolume, 1);
+  assert.equal(nextLaunch.__scummwebPlayerDelay(120), 120);
+  assert.equal(storage.get(key), legacySettings);
 });
 
 test("Escape opens the shared drawer and is consumed before it reaches SDL", () => {

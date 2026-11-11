@@ -1,0 +1,178 @@
+diff --git a/engines/adl/adl.cpp b/engines/adl/adl.cpp
+--- a/engines/adl/adl.cpp
++++ b/engines/adl/adl.cpp
+@@ -182,6 +182,7 @@
+ 
+ #ifdef __EMSCRIPTEN__
+ static bool runningIntro = false;
++static bool skipIntro = false;
+ #endif
+ 
+ void AdlEngine::delay(uint32 ms) const {
+@@ -196,8 +197,11 @@
+ 
+ 	while (!shouldQuit() && now < end) {
+ #ifdef __EMSCRIPTEN__
+-		if (runningIntro && ScummWebIntro::skipRequested())
++		if (runningIntro && (skipIntro || ScummWebIntro::skipRequested())) {
++			skipIntro = true;
++			ScummWebIntro::skipRequested(false);
+ 			break;
++		}
+ #endif
+ 		Common::Event event;
+ 		pollEvent(event);
+@@ -278,8 +282,14 @@
+ 	}
+ }
+ 
+-byte AdlEngine::inputKey(bool showCursor) const {
++byte AdlEngine::inputKey(bool showCursor, bool opening) const {
+ 	byte key = 0;
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++	opening = opening && ScummWebIntro::nativeSkipEnabled();
++#else
++	(void)opening;
++#endif
+ 
+ 	// If debug script is active, we fake a return press for the text overflow handling
+ 	if (_inputScript && !_scriptPaused)
+@@ -289,6 +299,13 @@
+ 		_display->showCursor(true);
+ 
+ 	while (!shouldQuit() && !_isRestoring && key == 0) {
++#ifdef __EMSCRIPTEN__
++		if (opening && ScummWebIntro::skipRequested()) {
++			stopTextToSpeech();
++			key = convertKey(Common::KEYCODE_RETURN);
++			break;
++		}
++#endif
+ 		Common::Event event;
+ 		if (pollEvent(event)) {
+ 			if (event.type != Common::EVENT_KEYDOWN)
+@@ -819,6 +836,7 @@
+ 	} else {
+ #ifdef __EMSCRIPTEN__
+ 		runningIntro = true;
++		skipIntro = false;
+ #endif
+ 		runIntro();
+ #ifdef __EMSCRIPTEN__
+diff --git a/engines/adl/adl.h b/engines/adl/adl.h
+--- a/engines/adl/adl.h
++++ b/engines/adl/adl.h
+@@ -286,7 +286,7 @@
+ 
+ 	virtual Common::String getLine();
+ 	Common::String inputString(byte prompt = 0) const;
+-	byte inputKey(bool showCursor = true) const;
++	byte inputKey(bool showCursor = true, bool opening = false) const;
+ 	void waitKey(uint32 ms = 0, Common::KeyCode keycode = Common::KEYCODE_INVALID) const;
+ 	virtual void getInput(uint &verb, uint &noun);
+ 	Common::String getWord(const Common::String &line, uint &index) const;
+diff --git a/engines/adl/hires5.cpp b/engines/adl/hires5.cpp
+--- a/engines/adl/hires5.cpp
++++ b/engines/adl/hires5.cpp
+@@ -247,7 +247,7 @@
+ 	display->loadFrameBuffer(*stream);
+ 	display->renderGraphics();
+ 
+-	inputKey();
++	inputKey(true, true);
+ 
+ 	display->home();
+ 	display->setMode(Display::kModeText);
+diff --git a/engines/composer/composer.cpp b/engines/composer/composer.cpp
+--- a/engines/composer/composer.cpp
++++ b/engines/composer/composer.cpp
+@@ -35,12 +35,25 @@
+ #include "engines/util.h"
+ #include "engines/scummweb-agent-loop.h"
+ 
++#include "engines/scummweb-intro.h"
+ #include "composer/composer.h"
+ #include "composer/graphics.h"
+ #include "composer/resource.h"
+ #include "composer/console.h"
+ 
+ namespace Composer {
++
++#ifdef __EMSCRIPTEN__
++static bool isPublisherPage(const Common::String &game, uint page) {
++	if (game == "darby")
++		return page == 99 || page == 61 || page == 62;
++	if (game == "gregory")
++		return page == 99 || page == 43 || page == 42;
++	if (game == "liam" || game == "sleepingcub" || game == "princess")
++		return page == 99 || page == 16 || page == 15;
++	return false;
++}
++#endif
+ 
+ ComposerEngine::ComposerEngine(OSystem *syst, const ComposerGameDescription *gameDesc) : Engine(syst), _gameDescription(gameDesc) {
+ 	_rnd = new Common::RandomSource("composer");
+@@ -141,8 +154,13 @@
+ 	uint32 lastDrawTime = 0;
+ 
+ 	bool loadFromLauncher = ConfMan.hasKey("save_slot");
++	bool advanceOpening = false;
+ #ifdef __EMSCRIPTEN__
+ 	ScummWebAgentLoop agentLoop;
++	ScummWebIntro::SkipSegment introSegment;
++	bool watchingOpening = !loadFromLauncher && getPlatform() == Common::kPlatformWindows &&
++		getGameType() == GType_ComposerV2 && !_libraries.empty() && _libraries.front()._id == 99 &&
++		ScummWebIntro::nativeSkipEnabled() && isPublisherPage(gameId, 99);
+ #endif
+ 
+ 	while (!shouldQuit()) {
+@@ -156,6 +174,16 @@
+ 		}
+ 		_pendingPageChanges.clear();
+ #ifdef __EMSCRIPTEN__
++		if (watchingOpening) {
++			if (_libraries.empty() || !isPublisherPage(gameId, _libraries.front()._id)) {
++				watchingOpening = false;
++				advanceOpening = false;
++				ScummWebIntro::gameplayStarted();
++			} else if (!advanceOpening && ScummWebIntro::skipRequested()) {
++				advanceOpening = true;
++				ScummWebIntro::skipRequested(false);
++			}
++		}
+ 		{
+ 			// Several active pages can be layered. A single loaded page has an unambiguous ID.
+ 			ScummWebTelemetry::Sample sample(_libraries.size() == 1 ? int(_libraries.front()._id) : -1);
+@@ -167,7 +195,7 @@
+ 		// maintain our own internal timing, since otherwise we get
+ 		// confused when starved of CPU (for example when the user
+ 		// is dragging the scummvm window around)
+-		if (thisTime > _lastTime + frameTime)
++		if (advanceOpening || thisTime > _lastTime + frameTime)
+ 			_currentTime += frameTime;
+ 		else
+ 			_currentTime += thisTime - _lastTime;
+@@ -185,9 +213,9 @@
+ 			runScript(script._scriptId, i, 0, 0);
+ 		}
+ 
+-		if (lastDrawTime + frameTime <= thisTime) {
++		if (advanceOpening || lastDrawTime + frameTime <= thisTime) {
+ 			// catch up if we're more than 2 frames behind
+-			if (lastDrawTime + (frameTime * 2) <= thisTime)
++			if (advanceOpening || lastDrawTime + (frameTime * 2) <= thisTime)
+ 				lastDrawTime = thisTime;
+ 			else
+ 				lastDrawTime += frameTime;
+@@ -233,7 +261,9 @@
+ 			}
+ 		}
+ 
+-		_system->delayMillis(20);
++		// While advancing, give the browser a chance to process quit and
++		// redraw without waiting out each frame of the publisher animation.
++		_system->delayMillis(advanceOpening ? 1 : 20);
+ 	}
+ 
+ 	_screen.free();

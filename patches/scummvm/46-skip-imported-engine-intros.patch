@@ -1,0 +1,357 @@
+diff --git a/engines/hugo/hugo.cpp b/engines/hugo/hugo.cpp
+index f0bb141c..07367919 100644
+--- a/engines/hugo/hugo.cpp
++++ b/engines/hugo/hugo.cpp
+@@ -424,6 +424,10 @@ void HugoEngine::runMachine() {
+ 		gameStatus._viewState = kViewIntro;
+ 		break;
+ 	case kViewIntro:                                // Do any game-dependant preamble
++#ifdef __EMSCRIPTEN__
++		if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested())
++			gameStatus._skipIntroFl = true;
++#endif
+ 		if (_intro->introPlay()) {                  // Process intro screen
+ 			_scheduler->newScreen(0);               // Initialize first screen
+ 			gameStatus._viewState = kViewPlay;
+diff --git a/engines/mohawk/livingbooks.cpp b/engines/mohawk/livingbooks.cpp
+index da4019ed..563564e1 100644
+--- a/engines/mohawk/livingbooks.cpp
++++ b/engines/mohawk/livingbooks.cpp
+@@ -43,6 +43,8 @@
+ 
+ #include "graphics/cursorman.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Mohawk {
+ 
+ // read a null-terminated string from a stream
+@@ -157,6 +159,14 @@ Common::Error MohawkEngine_LivingBooks::run() {
+ 
+ 	Common::Event event;
+ 	while (!shouldQuit()) {
++#ifdef __EMSCRIPTEN__
++		if (_curMode != kLBIntroMode) {
++			ScummWebIntro::gameplayStarted();
++		} else if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested()) {
++			// Same transition as Escape on the opening page. Keep the Read/Play menu.
++			tryLoadPageStart(kLBControlMode, 1);
++		}
++#endif
+ 		while (_eventMan->pollEvent(event)) {
+ 			LBItem *found = nullptr;
+ 
+diff --git a/engines/pegasus/pegasus.cpp b/engines/pegasus/pegasus.cpp
+index 867fca4b..8c773fb0 100644
+--- a/engines/pegasus/pegasus.cpp
++++ b/engines/pegasus/pegasus.cpp
+@@ -351,6 +351,9 @@ void PegasusEngine::createItem(ItemID itemID, NeighborhoodID neighborhoodID, Roo
+ }
+ 
+ void PegasusEngine::runIntro() {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++#endif
+ 	stopIntroTimer();
+ 
+ 	bool skipped = false;
+@@ -361,6 +364,12 @@ void PegasusEngine::runIntro() {
+ 		video->start();
+ 
+ 		while (!shouldQuit() && !video->endOfVideo() && !skipped) {
++#ifdef __EMSCRIPTEN__
++			if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested()) {
++				skipped = true;
++				break;
++			}
++#endif
+ 			if (video->needsUpdate()) {
+ 				const Graphics::Surface *frame = video->decodeNextFrame();
+ 
+@@ -391,7 +400,7 @@ void PegasusEngine::runIntro() {
+ 
+ 		if (hqVideo.loadFile(_introDirectory.appendComponent("BigMovie_hq.ogg"))) {
+ 			hqVideo.start();
+-			playMovieScaled(&hqVideo, 0, 0);
++			playMovieScaled(&hqVideo, 0, 0, true);
+ 			return;
+ 		}
+ 	}
+@@ -410,7 +419,7 @@ void PegasusEngine::runIntro() {
+ 	video->seek(Audio::Timestamp(0, 10 * 600, 600));
+ 	video->start();
+ 
+-	playMovieScaled(video, 0, 0);
++	playMovieScaled(video, 0, 0, true);
+ 
+ 	delete video;
+ }
+@@ -850,6 +859,9 @@ void PegasusEngine::receiveNotification(Notification *notification, const Notifi
+ 			} else {
+ 				// Display the intro
+ 				runIntro();
++#ifdef __EMSCRIPTEN__
++				ScummWebIntro::gameplayStarted();
++#endif
+ 				resetIntroTimer();
+ 
+ 				if (shouldQuit())
+@@ -1675,12 +1687,16 @@ void PegasusEngine::checkFlashlight() {
+ 		_neighborhood->checkFlashlight();
+ }
+ 
+-bool PegasusEngine::playMovieScaled(Video::VideoDecoder *video, uint16 x, uint16 y) {
++bool PegasusEngine::playMovieScaled(Video::VideoDecoder *video, uint16 x, uint16 y, bool intro) {
+ 	bool skipped = false;
+ 
+ 	assert(video->isPlaying());
+ 
+ 	while (!shouldQuit() && !video->endOfVideo() && !skipped) {
++#ifdef __EMSCRIPTEN__
++		if (intro && ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested())
++			return true;
++#endif
+ 		if (video->needsUpdate()) {
+ 			const Graphics::Surface *frame = video->decodeNextFrame();
+ 
+diff --git a/engines/pegasus/pegasus.h b/engines/pegasus/pegasus.h
+index 767586b2..af17f8d4 100644
+--- a/engines/pegasus/pegasus.h
++++ b/engines/pegasus/pegasus.h
+@@ -277,7 +277,7 @@ private:
+ 	HotspotList _allHotspots;
+ 	InputHandler *_savedHandler;
+ 	void showTempScreen(const Common::Path &fileName);
+-	bool playMovieScaled(Video::VideoDecoder *video, uint16 x, uint16 y);
++	bool playMovieScaled(Video::VideoDecoder *video, uint16 x, uint16 y, bool intro = false);
+ 	void throwAwayEverything();
+ 	void shellGameInput(const Input &input, const Hotspot *cursorSpot);
+ 	Common::RandomSource *_rnd;
+diff --git a/engines/sky/intro.cpp b/engines/sky/intro.cpp
+index f134065b..cb54c811 100644
+--- a/engines/sky/intro.cpp
++++ b/engines/sky/intro.cpp
+@@ -38,6 +38,8 @@
+ #include "audio/audiostream.h"
+ #include "audio/decoders/raw.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Sky {
+ 
+ #define SHOWSCREEN		 0
+@@ -662,6 +664,9 @@ Intro::~Intro() {
+ }
+ 
+ bool Intro::doIntro(bool floppyIntro) {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++#endif
+ 	if (!SkyEngine::isCDVersion())
+ 		floppyIntro = true;
+ 
+@@ -925,6 +930,10 @@ bool Intro::escDelay(uint32 msecs) {
+ 
+ 	int32 nDelay = 0;
+ 	do {
++#ifdef __EMSCRIPTEN__
++		if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested())
++			return false;
++#endif
+ 		while (eventMan->pollEvent(event)) {
+ 			if (event.type == Common::EVENT_CUSTOM_ENGINE_ACTION_START) {
+ 				if (event.customType == kSkyActionSkip)
+diff --git a/engines/sword1/animation.cpp b/engines/sword1/animation.cpp
+index 6dd77a27..a71853d2 100644
+--- a/engines/sword1/animation.cpp
++++ b/engines/sword1/animation.cpp
+@@ -47,6 +47,8 @@
+ 
+ #include "engines/util.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Sword1 {
+ 
+ static const char *const sequenceList[20] = {
+@@ -215,11 +217,15 @@ Common::Error MoviePlayer::load(uint32 id) {
+ 	return Common::kNoError;
+ }
+ 
+-void MoviePlayer::play() {
++void MoviePlayer::play(bool intro) {
+ 	_textX = 0;
+ 	_textY = 0;
+ 
+-	playVideo();
++	playVideo(intro);
++#ifdef __EMSCRIPTEN__
++	if (intro)
++		ScummWebIntro::gameplayStarted();
++#endif
+ 
+ 	_textMan->releaseText(2, false);
+ 
+@@ -310,12 +316,21 @@ void MoviePlayer::performPostProcessing(byte *screen) {
+ 	}
+ }
+ 
+-bool MoviePlayer::playVideo() {
++bool MoviePlayer::playVideo(bool intro) {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++#endif
+ 	bool skipped = false;
+ 	uint16 x = (g_system->getWidth() - _decoder->getWidth()) / 2;
+ 	uint16 y = (g_system->getHeight() - _decoder->getHeight()) / 2;
+ 
+ 	while (!_vm->shouldQuit() && !_decoder->endOfVideo() && !skipped) {
++#ifdef __EMSCRIPTEN__
++		if (intro && ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested()) {
++			skipped = true;
++			break;
++		}
++#endif
+ 		if (_decoder->needsUpdate()) {
+ 			const Graphics::Surface *frame = _decoder->decodeNextFrame();
+ 			if (frame) {
+diff --git a/engines/sword1/animation.h b/engines/sword1/animation.h
+index 84effd73..3914dd66 100644
+--- a/engines/sword1/animation.h
++++ b/engines/sword1/animation.h
+@@ -63,7 +63,7 @@ public:
+ 	MoviePlayer(SwordEngine *vm, Text *textMan, ResMan *resMan, Sound *sound, OSystem *system, Video::VideoDecoder *decoder, DecoderType decoderType);
+ 	virtual ~MoviePlayer();
+ 	Common::Error load(uint32 id);
+-	void play();
++	void play(bool intro);
+ 
+ protected:
+ 	SwordEngine *_vm;
+@@ -81,7 +81,7 @@ protected:
+ 
+ 	Video::VideoDecoder *_decoder;
+ 
+-	bool playVideo();
++	bool playVideo(bool intro);
+ 	void performPostProcessing(byte *screen);
+ 	void drawFramePSX(const Graphics::Surface *frame);
+ 
+diff --git a/engines/sword1/logic.cpp b/engines/sword1/logic.cpp
+index dbc9282a..98184c59 100644
+--- a/engines/sword1/logic.cpp
++++ b/engines/sword1/logic.cpp
+@@ -1020,7 +1020,7 @@ int Logic::fnPlaySequence(Object *cpt, int32 id, int32 sequenceId, int32 d, int3
+ 			_screen->clearScreen();
+ 			err = player->load(sequenceId);
+ 			if (err.getCode() == Common::kNoError)
+-				player->play();
++				player->play(sequenceId == 4); // Original opening movie
+ 			else
+ 				GUI::displayErrorDialog(err);
+ 			delete player;
+diff --git a/engines/sword2/animation.cpp b/engines/sword2/animation.cpp
+index a7319a02..6125f109 100644
+--- a/engines/sword2/animation.cpp
++++ b/engines/sword2/animation.cpp
+@@ -52,6 +52,8 @@
+ 
+ #include "engines/util.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Sword2 {
+ 
+ ///////////////////////////////////////////////////////////////////////////////
+@@ -123,7 +125,7 @@ Common::Error MoviePlayer::load(const char *name) {
+ 	return Common::kNoError;
+ }
+ 
+-void MoviePlayer::play(MovieText *movieTexts, uint32 numMovieTexts, uint32 leadIn, uint32 leadOut) {
++void MoviePlayer::play(MovieText *movieTexts, uint32 numMovieTexts, uint32 leadIn, uint32 leadOut, bool intro) {
+ 	_leadOutFrame = _decoder->getFrameCount();
+ 	if (_leadOutFrame > 60)
+ 		_leadOutFrame -= 60;
+@@ -136,7 +138,11 @@ void MoviePlayer::play(MovieText *movieTexts, uint32 numMovieTexts, uint32 leadI
+ 	if (leadIn)
+ 		_vm->_sound->playMovieSound(leadIn, kLeadInSound);
+ 
+-	bool terminated = !playVideo();
++	bool terminated = !playVideo(intro);
++#ifdef __EMSCRIPTEN__
++	if (intro)
++		ScummWebIntro::gameplayStarted();
++#endif
+ 
+ 	closeTextObject(_currentMovieText, nullptr, 0);
+ 
+@@ -329,11 +335,18 @@ void MoviePlayer::performPostProcessing(Graphics::Surface *screen, uint16 pitch)
+ 	}
+ }
+ 
+-bool MoviePlayer::playVideo() {
++bool MoviePlayer::playVideo(bool intro) {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++#endif
+ 	uint16 x = (g_system->getWidth() - _decoder->getWidth()) / 2;
+ 	uint16 y = (g_system->getHeight() - _decoder->getHeight()) / 2;
+ 
+ 	while (!_vm->shouldQuit() && !_decoder->endOfVideo()) {
++#ifdef __EMSCRIPTEN__
++		if (intro && ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested())
++			return false;
++#endif
+ 		if (_decoder->needsUpdate()) {
+ 			const Graphics::Surface *frame = _decoder->decodeNextFrame();
+ 			if (frame) {
+diff --git a/engines/sword2/animation.h b/engines/sword2/animation.h
+index 9c057a22..e3a81568 100644
+--- a/engines/sword2/animation.h
++++ b/engines/sword2/animation.h
+@@ -65,7 +65,7 @@ public:
+ 	virtual ~MoviePlayer();
+ 
+ 	Common::Error load(const char *name);
+-	void play(MovieText *movieTexts, uint32 numMovieTexts, uint32 leadIn, uint32 leadOut);
++	void play(MovieText *movieTexts, uint32 numMovieTexts, uint32 leadIn, uint32 leadOut, bool intro);
+ 
+ protected:
+ 	Sword2Engine *_vm;
+@@ -85,7 +85,7 @@ protected:
+ 	int _leadOutFrame;
+ 
+ 	void performPostProcessing(Graphics::Surface *screen, uint16 pitch);
+-	bool playVideo();
++	bool playVideo(bool intro);
+ 	void drawFramePSX(const Graphics::Surface *frame);
+ 
+ 	void openTextObject(uint32 index);
+diff --git a/engines/sword2/function.cpp b/engines/sword2/function.cpp
+index 43de1af9..f97b5066 100644
+--- a/engines/sword2/function.cpp
++++ b/engines/sword2/function.cpp
+@@ -2148,7 +2148,7 @@ int32 Logic::fnPlaySequence(int32 *params) {
+ 	if (_moviePlayer) {
+ 		Common::Error err = _moviePlayer->load(filename);
+ 		if (err.getCode() == Common::kNoError)
+-			_moviePlayer->play(_sequenceTextList, _sequenceTextLines, _smackerLeadIn, _smackerLeadOut);
++			_moviePlayer->play(_sequenceTextList, _sequenceTextLines, _smackerLeadIn, _smackerLeadOut, scumm_stricmp(filename, "intro") == 0);
+ 		else
+ 			GUI::displayErrorDialog(err);
+ 	}
+diff --git a/engines/teenagent/teenagent.cpp b/engines/teenagent/teenagent.cpp
+index 406523c7..f7906a55 100644
+--- a/engines/teenagent/teenagent.cpp
++++ b/engines/teenagent/teenagent.cpp
+@@ -664,6 +664,10 @@ Common::Error TeenAgentEngine::run() {
+ 	uint32 timer = _system->getMillis();
+ 
+ 	do {
++#ifdef __EMSCRIPTEN__
++		if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested(scene->intro))
++			scene->skipIntro();
++#endif
+ 		Object *currentObject = scene->findObject(mouse);
+ 
+ 		while (_event->pollEvent(event)) {

@@ -1,0 +1,80 @@
+diff --git a/engines/gob/util.cpp b/engines/gob/util.cpp
+--- a/engines/gob/util.cpp
++++ b/engines/gob/util.cpp
+@@ -83,6 +83,14 @@
+ }
+ 
+ void Util::longDelay(uint16 msecs) {
++#ifdef __EMSCRIPTEN__
++	if (_browserGeishaOpening && _browserGeishaIntroSkipped &&
++			(_vm->isCurrentTot("intro.tot") || _vm->isCurrentTot("intro2.tot"))) {
++		if (++_browserGeishaOpeningFrames % 16 != 0)
++			return;
++		msecs = 1;
++	}
++#endif
+ 	uint32 time = g_system->getMillis() * _vm->_global->_speedFactor + msecs;
+ 	do {
+ 		_vm->_video->waitRetrace();
+@@ -533,6 +541,21 @@
+ }
+ 
+ void Util::waitEndFrame(bool handleInput) {
++#ifdef __EMSCRIPTEN__
++	// These original Geisha animation frames do not test their key result.
++	// Retain their script cycles, with bounded native input and redraw yields.
++	if (_browserGeishaOpening && _browserGeishaIntroSkipped &&
++			(_vm->isCurrentTot("intro.tot") || _vm->isCurrentTot("intro2.tot"))) {
++		if (++_browserGeishaOpeningFrames % 16 == 0) {
++			if (handleInput)
++				processInput();
++			_vm->_video->retrace();
++			delay(1);
++		}
++		_startFrameTime = getTimeKey();
++		return;
++	}
++#endif
+ 	int32 time;
+ 
+ 	time = getTimeKey() - _startFrameTime;
+diff --git a/engines/gob/util.h b/engines/gob/util.h
+--- a/engines/gob/util.h
++++ b/engines/gob/util.h
+@@ -158,6 +158,7 @@
+ 
+ protected:
+ #ifdef __EMSCRIPTEN__
++	uint8 _browserGeishaOpeningFrames = 0;
+ 	bool _browserGeishaOpening = false;
+ 	bool _browserGeishaIntroSkipped = false;
+ 	int _browserGeishaSkippedPosition = -1;
+diff --git a/engines/sci/engine/kevent.cpp b/engines/sci/engine/kevent.cpp
+--- a/engines/sci/engine/kevent.cpp
++++ b/engines/sci/engine/kevent.cpp
+@@ -53,9 +53,12 @@
+ 	switch (game) {
+ 	case GID_CNICK_KQ:
+ 	case GID_CNICK_LAURABOW:
++	case GID_HOYLE1:
+ 	case GID_HOYLE2:
+ 	case GID_HOYLE3:
+ 		return room == 900;
++	case GID_ECOQUEST:
++		return room == 360;
+ 	case GID_FREDDYPHARKAS:
+ 		return room == 100;
+ 	case GID_JONES:
+@@ -134,7 +137,11 @@
+ 		// repeat it in the same room or carry it into the actual game.
+ 		const bool continueLongbowOpening = g_sci->getGameId() == GID_LONGBOW &&
+ 			s->_browserIntroSkippedRoom == 98 && openingRoom == 96;
+-		if (continueLongbowOpening || ScummWebIntro::skipRequested()) {
++		// EcoQuest credits follow its timed publisher room. Carry that
++		// accepted request into the original Escape-enabled credit script.
++		const bool continueTimedOpening = g_sci->getGameId() == GID_ECOQUEST &&
++			openingRoom == 360 && s->_browserSkipTimedOpening;
++		if (continueLongbowOpening || continueTimedOpening || ScummWebIntro::skipRequested()) {
+ 			curEvent.type = kSciEventKeyDown;
+ 			curEvent.character = kSciKeyEsc;
+ 			s->_browserIntroSkippedRoom = openingRoom;

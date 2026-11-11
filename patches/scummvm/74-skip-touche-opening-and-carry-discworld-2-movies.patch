@@ -1,0 +1,106 @@
+diff --git a/engines/tinsel/bmv.cpp b/engines/tinsel/bmv.cpp
+--- a/engines/tinsel/bmv.cpp
++++ b/engines/tinsel/bmv.cpp
+@@ -1002,8 +1002,6 @@
+  */
+ void BMVPlayer::FinishBMV() {
+ #ifdef __EMSCRIPTEN__
+-	if (_browserSkipOpening == OpeningGroup::Story && !scumm_stricmp(szMovieFile, "DTHINTRO.BMV"))
+-		_browserSkipOpening = OpeningGroup::None;
+ 	ScummWebIntro::skipRequested(false);
+ #endif
+ 	int	i;
+@@ -1384,7 +1382,7 @@
+ 			_browserSkipOpening = OpeningGroup::None;
+ 		if (opening != OpeningGroup::None &&
+ 				(_browserSkipOpening == opening || ScummWebIntro::skipRequested())) {
+-			_browserSkipOpening = storyCredits ? OpeningGroup::None : opening;
++			_browserSkipOpening = opening;
+ 			bAbort = true;
+ 		}
+ 	}
+diff --git a/engines/tinsel/bmv.h b/engines/tinsel/bmv.h
+--- a/engines/tinsel/bmv.h
++++ b/engines/tinsel/bmv.h
+@@ -143,6 +143,9 @@
+ 
+ 	int nextMaintain;
+ public:
++#ifdef __EMSCRIPTEN__
++	void resetBrowserOpening() { _browserSkipOpening = OpeningGroup::None; }
++#endif
+ 	BMVPlayer();
+ 
+ 	void PlayBMV(CORO_PARAM, SCNHANDLE hFileStem, int myEscape);
+diff --git a/engines/tinsel/tinsel.cpp b/engines/tinsel/tinsel.cpp
+--- a/engines/tinsel/tinsel.cpp
++++ b/engines/tinsel/tinsel.cpp
+@@ -1215,6 +1215,13 @@
+ #ifdef __EMSCRIPTEN__
+ 	{
+ 		const auto handle = GetSceneHandle();
++		// The two title scenes retain their original New Game menu.
++		// Release the movie request when the first game scene gives control.
++		if (getGameID() == GID_DW2 && handle && handle != 0x06000000 && handle != 0x0a000000 &&
++				!_bmv->MoviePlaying() && ControlIsOn()) {
++			_bmv->resetBrowserOpening();
++			ScummWebIntro::gameplayStarted();
++		}
+ 		// Scene handles are unsigned resource IDs and can use the high bit.
+ 		ScummWebTelemetry::Sample sample(handle ? int64(handle) : -1);
+ 		if (sample) {
+@@ -1296,6 +1303,9 @@
+  * Restart the game
+  */
+ void TinselEngine::RestartGame() {
++#ifdef __EMSCRIPTEN__
++	_bmv->resetBrowserOpening();
++#endif
+ 	_vm->_dialogs->holdItem(INV_NOICON); // Holding nothing
+ 
+ 	_bg->DropBackground();	// No background
+diff --git a/engines/touche/touche.cpp b/engines/touche/touche.cpp
+--- a/engines/touche/touche.cpp
++++ b/engines/touche/touche.cpp
+@@ -20,6 +20,7 @@
+  */
+ 
+ 
++#include "engines/scummweb-intro.h"
+ #include "engines/scummweb-telemetry.h"
+ 
+ #include "common/config-manager.h"
+@@ -401,6 +402,20 @@
+ }
+ 
+ void ToucheEngine::processEvents(bool handleKeyEvents) {
++#ifdef __EMSCRIPTEN__
++	if (handleKeyEvents && ScummWebIntro::nativeSkipEnabled() && !ScummWebIntro::startupFinished()) {
++		const bool opening = _currentEpisodeNum == kStartupEpisode && !_displayQuitDialog &&
++			!ConfMan.hasKey("save_slot");
++		if (opening && (_browserSkipOpening || ScummWebIntro::skipRequested())) {
++			_browserSkipOpening = true;
++			_flagsTable[600] = Common::KEYCODE_ESCAPE;
++			ScummWebIntro::skipRequested(false);
++		} else if (_currentEpisodeNum != 0 && _currentEpisodeNum != kStartupEpisode) {
++			_browserSkipOpening = false;
++			ScummWebIntro::gameplayStarted();
++		}
++	}
++#endif
+ 	Common::Event event;
+ 	while (_eventMan->pollEvent(event)) {
+ 		switch (event.type) {
+diff --git a/engines/touche/touche.h b/engines/touche/touche.h
+--- a/engines/touche/touche.h
++++ b/engines/touche/touche.h
+@@ -844,6 +844,9 @@
+ 
+ 	int _newEpisodeNum;
+ 	int _currentEpisodeNum;
++#ifdef __EMSCRIPTEN__
++	bool _browserSkipOpening = false;
++#endif
+ 
+ 	int _currentAmountOfMoney;
+ 	int _giveItemToKeyCharNum;

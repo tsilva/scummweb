@@ -1,0 +1,315 @@
+diff --git a/engines/cruise/cruise_main.cpp b/engines/cruise/cruise_main.cpp
+--- a/engines/cruise/cruise_main.cpp
++++ b/engines/cruise/cruise_main.cpp
+@@ -19,6 +19,7 @@
+  *
+  */
+ 
++#include "engines/scummweb-intro.h"
+ #include "engines/scummweb-telemetry.h"
+ 
+ #include "common/config-manager.h"
+@@ -1814,7 +1815,17 @@
+ 	if (ConfMan.hasKey("save_slot"))
+ 		loadGameState(ConfMan.getInt("save_slot"));
+ 
++#ifdef __EMSCRIPTEN__
++	bool browserFastIntro = false;
++#endif
+ 	do {
++#ifdef __EMSCRIPTEN__
++		if (ScummWebIntro::nativeSkipEnabled() && !_speedFlag && !canLoadGameStateCurrently() &&
++				!browserFastIntro && ScummWebIntro::skipRequested()) {
++			browserFastIntro = true;
++			ScummWebIntro::skipRequested(false);
++		}
++#endif
+ 		// Handle frame delay
+ 		uint32 currentTick = g_system->getMillis();
+ 
+@@ -1859,6 +1870,12 @@
+ 			if (!skipEvents || bFastMode)
+ 				skipEvents = manageEvents();
+ 
++#ifdef __EMSCRIPTEN__
++			if (browserFastIntro) {
++				g_system->delayMillis(1);
++				break;
++			}
++#endif
+ 			if (!bFastMode) {
+ 				g_system->delayMillis(10);
+ 				currentTick = g_system->getMillis();
+@@ -1877,7 +1894,15 @@
+ 		if (!_speedFlag && canLoadGameStateCurrently()) {
+ 			_speedFlag = true;
+ 			_gameSpeed = GAME_FRAME_DELAY_2;
+-		}
++#ifdef __EMSCRIPTEN__
++			browserFastIntro = false;
++			ScummWebIntro::skipRequested(false);
++#endif
++		}
++#ifdef __EMSCRIPTEN__
++		if (canSaveGameStateCurrently())
++			ScummWebIntro::gameplayStarted();
++#endif
+ 
+ 		// Handle the next frame
+ 
+@@ -1895,6 +1920,10 @@
+ 			currentMouseButton = 0;
+ 		}
+ 
++#ifdef __EMSCRIPTEN__
++		if (browserFastIntro && userWait && action == kActionNone)
++			action = kActionEndUserWaiting;
++#endif
+ 		_playerDontAskQuit = processInput();
+ 		if (_playerDontAskQuit)
+ 			break;
+diff --git a/engines/sword25/fmv/movieplayer.cpp b/engines/sword25/fmv/movieplayer.cpp
+--- a/engines/sword25/fmv/movieplayer.cpp
++++ b/engines/sword25/fmv/movieplayer.cpp
+@@ -34,6 +34,7 @@
+ #include "common/util.h"
+ 
+ #include "sword25/sword25.h"	// for kDebugScript
++#include "engines/scummweb-intro.h"
+ #include "sword25/fmv/movieplayer.h"
+ #include "sword25/gfx/graphicengine.h"
+ #include "sword25/gfx/panel.h"
+@@ -61,6 +62,12 @@
+ bool MoviePlayer::loadMovie(const Common::String &filename, uint z) {
+ 	if (isMovieLoaded())
+ 		unloadMovie();
++#ifdef __EMSCRIPTEN__
++	const bool openingStory = filename == "/rooms/apt/fmv/intro.ogv";
++	_browserOpeningMovie = openingStory || filename == "/rooms/apt/fmv/logo.ogv";
++	if (!openingStory)
++		_browserSkipOpening = false;
++#endif
+ 	// Get the file and load it into the decoder
+ 	Common::SeekableReadStream *in = Kernel::getInstance()->getPackage()->getStream(filename);
+ 	_decoder.loadStream(in);
+@@ -104,7 +111,24 @@
+ 	return true;
+ }
+ 
++#ifdef __EMSCRIPTEN__
++bool MoviePlayer::browserOpeningSkip() {
++	if (!_browserOpeningMovie || !isMovieLoaded() || !ScummWebIntro::nativeSkipEnabled())
++		return false;
++	if (!_browserSkipOpening && ScummWebIntro::skipRequested()) {
++		_browserSkipOpening = true;
++		ScummWebIntro::skipRequested(false);
++	}
++	return _browserSkipOpening;
++}
++#endif
++
+ bool MoviePlayer::unloadMovie() {
++#ifdef __EMSCRIPTEN__
++	if (_browserOpeningMovie)
++		ScummWebIntro::skipRequested(false);
++	_browserOpeningMovie = false;
++#endif
+ 	_decoder.close();
+ 	_outputBitmap.erase();
+ 
+diff --git a/engines/sword25/fmv/movieplayer.h b/engines/sword25/fmv/movieplayer.h
+--- a/engines/sword25/fmv/movieplayer.h
++++ b/engines/sword25/fmv/movieplayer.h
+@@ -69,6 +69,9 @@
+ 	 * @return              Returns false if an error occurred while loading, otherwise true.
+ 	*/
+ 	bool loadMovie(const Common::String &filename, uint z);
++#if defined(__EMSCRIPTEN__) && defined(USE_THEORADEC)
++	bool browserOpeningSkip();
++#endif
+ 
+ 	/**
+ 	 * Unloads the currently loaded movie file.
+@@ -146,6 +149,10 @@
+ 	int _outX, _outY;
+ 
+ 	RenderObjectPtr<Bitmap>	_outputBitmap;
++#ifdef __EMSCRIPTEN__
++	bool _browserOpeningMovie = false;
++	bool _browserSkipOpening = false;
++#endif
+ #endif
+ };
+ 
+diff --git a/engines/sword25/input/inputengine_script.cpp b/engines/sword25/input/inputengine_script.cpp
+--- a/engines/sword25/input/inputengine_script.cpp
++++ b/engines/sword25/input/inputengine_script.cpp
+@@ -37,6 +37,9 @@
+ #include "sword25/script/luacallback.h"
+ 
+ #include "sword25/input/inputengine.h"
++#if defined(__EMSCRIPTEN__) && defined(USE_THEORADEC)
++#include "sword25/fmv/movieplayer.h"
++#endif
+ 
+ namespace Sword25 {
+ 
+@@ -116,8 +119,14 @@
+ 
+ static int wasLeftMouseDown(lua_State *L) {
+ 	InputEngine *pIE = getIE();
+-
+-	lua_pushbooleancpp(L, pIE->wasLeftMouseDown());
++	bool pressed = pIE->wasLeftMouseDown();
++#if defined(__EMSCRIPTEN__) && defined(USE_THEORADEC)
++	MoviePlayer *movie = Kernel::getInstance()->getFMV();
++	// Run the original Lua cancellation and text cleanup in the opening
++	// movie coroutine. Other movies and ordinary input are independent.
++	pressed = pressed || (movie && movie->browserOpeningSkip());
++#endif
++	lua_pushbooleancpp(L, pressed);
+ 	return 1;
+ }
+ 
+diff --git a/engines/titanic/core/game_object.cpp b/engines/titanic/core/game_object.cpp
+--- a/engines/titanic/core/game_object.cpp
++++ b/engines/titanic/core/game_object.cpp
+@@ -710,7 +710,7 @@
+ 	playClip(name, flags);
+ }
+ 
+-bool CGameObject::playCutscene(uint startFrame, uint endFrame) {
++bool CGameObject::playCutscene(uint startFrame, uint endFrame, bool opening) {
+ 	if (!_surface) {
+ 		if (!_resource.empty())
+ 			loadResource(_resource);
+@@ -720,7 +720,7 @@
+ 	bool result = true;
+ 	if (_surface && _surface->loadIfReady() && _surface->_movie) {
+ 		disableMouse();
+-		result = _surface->_movie->playCutscene(_bounds, startFrame, endFrame);
++		result = _surface->_movie->playCutscene(_bounds, startFrame, endFrame, opening);
+ 		enableMouse();
+ 	}
+ 
+diff --git a/engines/titanic/core/game_object.h b/engines/titanic/core/game_object.h
+--- a/engines/titanic/core/game_object.h
++++ b/engines/titanic/core/game_object.h
+@@ -412,7 +412,7 @@
+ 	 * Play a cutscene
+ 	 * @returns		True if the cutscene was not interrupted
+ 	 */
+-	bool playCutscene(uint startFrame, uint endFrame);
++	bool playCutscene(uint startFrame, uint endFrame, bool opening = false);
+ 
+ 	/**
+ 	 * Play a clip randomly from a passed list of names
+diff --git a/engines/titanic/game/credits.cpp b/engines/titanic/game/credits.cpp
+--- a/engines/titanic/game/credits.cpp
++++ b/engines/titanic/game/credits.cpp
+@@ -61,11 +61,11 @@
+ 	loadSound(TRANSLATE("a#16.wav", "a#11.wav"));
+ 	loadSound(TRANSLATE("a#24.wav", "a#19.wav"));
+ 
+-	if (playCutscene(0, 18)) {
++	if (playCutscene(0, 18, true)) {
+ 		playAmbientSound(TRANSLATE("a#16.wav", "a#11.wav"), VOL_NORMAL, false, false, 0);
+-		if (playCutscene(19, 642)) {
++		if (playCutscene(19, 642, true)) {
+ 			playSound(TRANSLATE("a#24.wav", "a#19.wav"));
+-			playCutscene(643, 750);
++			playCutscene(643, 750, true);
+ 		}
+ 	}
+ 
+diff --git a/engines/titanic/support/avi_surface.cpp b/engines/titanic/support/avi_surface.cpp
+--- a/engines/titanic/support/avi_surface.cpp
++++ b/engines/titanic/support/avi_surface.cpp
+@@ -19,6 +19,7 @@
+  *
+  */
+ 
++#include "engines/scummweb-intro.h"
+ #include "titanic/support/avi_surface.h"
+ #include "titanic/support/screen_manager.h"
+ #include "titanic/support/video_surface.h"
+@@ -485,7 +486,7 @@
+ 	}
+ }
+ 
+-bool AVISurface::playCutscene(const Rect &r, uint startFrame, uint endFrame) {
++bool AVISurface::playCutscene(const Rect &r, uint startFrame, uint endFrame, bool opening) {
+ 	if (g_vm->shouldQuit())
+ 		return false;
+ 
+@@ -514,7 +515,16 @@
+ 		_movieFrameSurface[0]->h != r.height();
+ 
+ 	bool isFinished = true;
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++#endif
+ 	while (_currentFrame < (int)endFrame && !g_vm->shouldQuit()) {
++#ifdef __EMSCRIPTEN__
++		if (opening && ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested()) {
++			isFinished = false;
++			break;
++		}
++#endif
+ 		if (isNextFrame()) {
+ 			renderFrame();
+ 			++_currentFrame;
+diff --git a/engines/titanic/support/avi_surface.h b/engines/titanic/support/avi_surface.h
+--- a/engines/titanic/support/avi_surface.h
++++ b/engines/titanic/support/avi_surface.h
+@@ -255,7 +255,7 @@
+ 	 * Plays an interruptable cutscene
+ 	 * @returns		True if the cutscene was not interrupted
+ 	 */
+-	bool playCutscene(const Rect &r, uint startFrame, uint endFrame);
++	bool playCutscene(const Rect &r, uint startFrame, uint endFrame, bool opening);
+ 
+ 	/**
+ 	 * Returns the pixel depth of the movie in bits
+diff --git a/engines/titanic/support/movie.cpp b/engines/titanic/support/movie.cpp
+--- a/engines/titanic/support/movie.cpp
++++ b/engines/titanic/support/movie.cpp
+@@ -118,7 +118,7 @@
+ 		movieStarted();
+ }
+ 
+-bool OSMovie::playCutscene(const Rect &drawRect, uint startFrame, uint endFrame) {
++bool OSMovie::playCutscene(const Rect &drawRect, uint startFrame, uint endFrame, bool opening) {
+ 	if (!_movieSurface)
+ 		_movieSurface = CScreenManager::_screenManagerPtr->createSurface(600, 340, 32);
+ 
+@@ -126,7 +126,7 @@
+ 	CEventTarget eventTarget;
+ 	g_vm->_events->addTarget(&eventTarget);
+ 
+-	bool result = _aviSurface.playCutscene(drawRect, startFrame, endFrame);
++	bool result = _aviSurface.playCutscene(drawRect, startFrame, endFrame, opening);
+ 
+ 	g_vm->_events->removeTarget();
+ 	return result;
+diff --git a/engines/titanic/support/movie.h b/engines/titanic/support/movie.h
+--- a/engines/titanic/support/movie.h
++++ b/engines/titanic/support/movie.h
+@@ -86,7 +86,7 @@
+ 	 * the playback ends or a key has been pressed
+ 	 * @returns		True if the cutscene was not interrupted
+ 	 */
+-	virtual bool playCutscene(const Rect &drawRect, uint startFrame, uint endFrame) = 0;
++	virtual bool playCutscene(const Rect &drawRect, uint startFrame, uint endFrame, bool opening = false) = 0;
+ 
+ 	/**
+ 	 * Pauses a movie
+@@ -199,7 +199,7 @@
+ 	 * the playback ends or a key has been pressed
+ 	 * @returns		True if the cutscene was not interrupted
+ 	 */
+-	bool playCutscene(const Rect &drawRect, uint startFrame, uint endFrame) override;
++	bool playCutscene(const Rect &drawRect, uint startFrame, uint endFrame, bool opening = false) override;
+ 
+ 	/**
+ 	 * Pauses a movie

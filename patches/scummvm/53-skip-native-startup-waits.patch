@@ -1,0 +1,270 @@
+diff --git a/engines/agos/agos.h b/engines/agos/agos.h
+--- a/engines/agos/agos.h
++++ b/engines/agos/agos.h
+@@ -517,6 +517,11 @@
+ 	bool _rejectBlock;
+ 
+ 	bool _exitCutscene, _picture8600;
++#ifdef __EMSCRIPTEN__
++	bool _openingScript = false;
++	bool _skipOpeningScript = false;
++	bool wantsSkipOpening(bool canSkip);
++#endif
+ 
+ 	uint16 _soundFileId;
+ 	int16 _lastMusicPlayed;
+diff --git a/engines/agos/agos.cpp b/engines/agos/agos.cpp
+--- a/engines/agos/agos.cpp
++++ b/engines/agos/agos.cpp
+@@ -41,6 +41,8 @@
+ #include "graphics/fonts/amigafont.h"
+ 
+ #include "audio/mididrv.h"
++
++#include "engines/scummweb-intro.h"
+ 
+ namespace AGOS {
+ 
+@@ -1180,6 +1182,18 @@
+ 	}
+ }
+ 
++#ifdef __EMSCRIPTEN__
++bool AGOSEngine::wantsSkipOpening(bool canSkip) {
++	if (!_openingScript)
++		return false;
++	if (!_skipOpeningScript && ScummWebIntro::skipRequested(canSkip)) {
++		_skipOpeningScript = true;
++		ScummWebIntro::skipRequested(false);
++	}
++	return canSkip && _skipOpeningScript;
++}
++#endif
++
+ Common::Error AGOSEngine::go() {
+ #ifdef ENABLE_AGOS2
+ 	loadArchives();
+@@ -1222,7 +1236,14 @@
+ 		playMusic(0, 0);
+ 	}
+ 
++#ifdef __EMSCRIPTEN__
++	_openingScript = ScummWebIntro::nativeSkipEnabled() && !ConfMan.hasKey("save_slot");
++#endif
+ 	runSubroutine101();
++#ifdef __EMSCRIPTEN__
++	_openingScript = false;
++	ScummWebIntro::gameplayStarted();
++#endif
+ 	permitInput();
+ 
+ 	while (!shouldQuit()) {
+diff --git a/engines/agos/script.cpp b/engines/agos/script.cpp
+--- a/engines/agos/script.cpp
++++ b/engines/agos/script.cpp
+@@ -1090,6 +1090,14 @@
+ 	_rightButtonDown = false;
+ 
+ 	while (_vgaWaitFor != 0 && !shouldQuit()) {
++#ifdef __EMSCRIPTEN__
++		const auto type = getGameType();
++		const bool canSkip = (type == GType_ELVIRA1 && _variableArray[105] == 0) ||
++			((type == GType_ELVIRA2 || type == GType_WW) && _vgaWaitFor == 51) ||
++			((type == GType_SIMON1 || type == GType_SIMON2 || type == GType_FF) && getBitFlag(9));
++		if (wantsSkipOpening(canSkip))
++			_exitCutscene = true;
++#endif
+ 		if (_rightButtonDown) {
+ 			if (_vgaWaitFor == 200 && (getGameType() == GType_FF || !getBitFlag(14))) {
+ 				skipSpeech();
+diff --git a/engines/agos/script_s2.cpp b/engines/agos/script_s2.cpp
+--- a/engines/agos/script_s2.cpp
++++ b/engines/agos/script_s2.cpp
+@@ -484,6 +484,10 @@
+ void AGOSEngine::waitForMark(uint i) {
+ 	_exitCutscene = false;
+ 	while (!(_marks & (1 << i))) {
++#ifdef __EMSCRIPTEN__
++		if (wantsSkipOpening(getGameType() != GType_PP && getBitFlag(9)))
++			_exitCutscene = true;
++#endif
+ 		if (_exitCutscene) {
+ 			if (getGameType() == GType_PP) {
+ 				if (_picture8600)
+diff --git a/engines/agos/animation.cpp b/engines/agos/animation.cpp
+--- a/engines/agos/animation.cpp
++++ b/engines/agos/animation.cpp
+@@ -98,6 +98,12 @@
+ }
+ 
+ void MoviePlayer::handleNextFrame() {
++#ifdef __EMSCRIPTEN__
++	if (_vm->wantsSkipOpening(true)) {
++		_leftButtonDown = true;
++		_rightButtonDown = true;
++	}
++#endif
+ 	Common::Event event;
+ 	Common::EventManager *eventMan = _vm->_system->getEventManager();
+ 	while (eventMan->pollEvent(event)) {
+diff --git a/engines/gob/videoplayer.h b/engines/gob/videoplayer.h
+--- a/engines/gob/videoplayer.h
++++ b/engines/gob/videoplayer.h
+@@ -89,6 +89,9 @@
+ 		bool forceSeek; ///< Force the seeking to the start frame.
+ 
+ 		int16 breakKey; ///< Keycode of the break/abort key.
++#ifdef __EMSCRIPTEN__
++		bool openingLogo = false;
++#endif
+ 
+ 		uint16 palCmd;      ///< Palette command.
+ 		int16 palStart;    ///< Palette entry to start with.
+diff --git a/engines/gob/init.cpp b/engines/gob/init.cpp
+--- a/engines/gob/init.cpp
++++ b/engines/gob/init.cpp
+@@ -175,6 +175,9 @@
+ 			_vm->_util->longDelay(200); // Letting everything settle
+ 
+ 			VideoPlayer::Properties props;
++#ifdef __EMSCRIPTEN__
++			props.openingLogo = true;
++#endif
+ 			int slot;
+ 			if ((slot = _vm->_vidPlayer->openVideo(true, "coktel.imd", props)) >= 0) {
+ 				_vm->_vidPlayer->play(slot, props);
+diff --git a/engines/gob/videoplayer.cpp b/engines/gob/videoplayer.cpp
+--- a/engines/gob/videoplayer.cpp
++++ b/engines/gob/videoplayer.cpp
+@@ -39,6 +39,8 @@
+ #include "gob/map.h"
+ #include "gob/sound/sound.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Gob {
+ 
+ VideoPlayer::Properties::Properties() : type(kVideoTypeTry), sprite(Draw::kFrontSurface),
+@@ -432,6 +434,9 @@
+ }
+ 
+ bool VideoPlayer::play(int slot, Properties &properties) {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++#endif
+ 	Video *video = getVideoBySlot(slot);
+ 	if (!video)
+ 		return false;
+@@ -894,6 +899,10 @@
+ 
+ 		// Check for that specific key
+ 		bool pressedBreak = (VAR(0) == (unsigned)properties.breakKey);
++#ifdef __EMSCRIPTEN__
++		if (properties.openingLogo && ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested())
++			pressedBreak = true;
++#endif
+ 		if (_vm->getGameType() == kGameTypeAdibou2 || _vm->getGameType() == kGameTypeAdi4) {
+ 			if (pressedBreak ||
+ 				_vm->_game->_mouseButtons == properties.breakKey) {
+diff --git a/engines/mortevielle/mortevielle.h b/engines/mortevielle/mortevielle.h
+--- a/engines/mortevielle/mortevielle.h
++++ b/engines/mortevielle/mortevielle.h
+@@ -213,6 +213,10 @@
+ 	int  _num;
+ 	int  _searchCount;
+ 	bool _introSpeechPlayed;
++#ifdef __EMSCRIPTEN__
++	bool _openingText = false;
++	bool _skipOpeningText = false;
++#endif
+ 	int  _inGameHourDuration;
+ 	int  _x;
+ 	int  _y;
+@@ -271,7 +275,7 @@
+ 	void showConfigScreen();
+ 	void decodeNumber(byte *pStart, int count);
+ 	void resetVariables();
+-	void music();
++	void music(bool skip = false);
+ 	void drawRightFrame();
+ 	void prepareRoom();
+ 	void drawClock();
+diff --git a/engines/mortevielle/mortevielle.cpp b/engines/mortevielle/mortevielle.cpp
+--- a/engines/mortevielle/mortevielle.cpp
++++ b/engines/mortevielle/mortevielle.cpp
+@@ -40,6 +40,8 @@
+ #include "engines/util.h"
+ #include "engines/engine.h"
+ #include "graphics/pixelformat.h"
++
++#include "engines/scummweb-intro.h"
+ 
+ namespace Mortevielle {
+ 
+@@ -445,6 +447,10 @@
+  * Show the game introduction
+  */
+ void MortevielleEngine::showIntroduction() {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++	_openingText = ScummWebIntro::nativeSkipEnabled();
++#endif
+ 	_dialogManager->displayIntroScreen(false);
+ 	_dialogManager->checkForF8(142, false);
+ 	if (shouldQuit())
+@@ -455,8 +461,14 @@
+ 	if (shouldQuit())
+ 		return;
+ 
++	bool skipMusic = false;
++#ifdef __EMSCRIPTEN__
++	_openingText = false;
++	skipMusic = _skipOpeningText;
++	ScummWebIntro::skipRequested(false);
++#endif
+ 	showTitleScreen();
+-	music();
++	music(skipMusic);
+ 	_mixer->stopAll();
+ }
+ 
+diff --git a/engines/mortevielle/utils.cpp b/engines/mortevielle/utils.cpp
+--- a/engines/mortevielle/utils.cpp
++++ b/engines/mortevielle/utils.cpp
+@@ -36,6 +36,8 @@
+ #include "common/scummsys.h"
+ #include "graphics/cursorman.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Mortevielle {
+ 
+ /**
+@@ -70,6 +72,12 @@
+ 	// If there isn't any pending keypress, wait until there is
+ 	while (!shouldQuit() && !end) {
+ 		end = keyPressed();
++#ifdef __EMSCRIPTEN__
++		if (!end && _openingText && (_skipOpeningText || ScummWebIntro::skipRequested())) {
++			_skipOpeningText = true;
++			return 66; // F8 advances the spoken introduction.
++		}
++#endif
+ 	}
+ 
+ 	// Return the top keypress
+@@ -2106,11 +2114,13 @@
+  * Engine function - Play Music
+  * @remarks	Originally called 'music'
+  */
+-void MortevielleEngine::music() {
++void MortevielleEngine::music(bool skip) {
+ 	if (_soundOff)
+ 		return;
+ 
+ 	_reloadCFIEC = true;
++	if (skip)
++		return;
+ 
+ 	Common::File f;
+ 	if (!f.open("mort.img")) {

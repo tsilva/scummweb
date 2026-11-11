@@ -1,0 +1,89 @@
+diff --git a/engines/sci/engine/kevent.cpp b/engines/sci/engine/kevent.cpp
+--- a/engines/sci/engine/kevent.cpp
++++ b/engines/sci/engine/kevent.cpp
+@@ -46,6 +46,28 @@
+ 
+ namespace Sci {
+ 
++#ifdef __EMSCRIPTEN__
++static bool isBrowserOpeningRoom(SciGameId game, int room) {
++	// These original opening rooms handle Escape before changing to the
++	// title menu or game. Keep their adjacent interactive rooms out of scope.
++	switch (game) {
++	case GID_CNICK_KQ:
++	case GID_CNICK_LAURABOW:
++	case GID_HOYLE2:
++	case GID_HOYLE3:
++		return room == 900;
++	case GID_FREDDYPHARKAS:
++		return room == 100;
++	case GID_JONES:
++		return room == 2;
++	case GID_LONGBOW:
++		return room == 98 || room == 96;
++	default:
++		return false;
++	}
++}
++#endif
++
+ reg_t kGetEvent(EngineState *s, int argc, reg_t *argv) {
+ #ifdef __EMSCRIPTEN__
+ 	const auto *globals = s->variables[VAR_GLOBAL];
+@@ -69,8 +91,16 @@
+ 	Common::Point mousePos;
+ 
+ #ifdef __EMSCRIPTEN__
+-	if (!ScummWebIntro::startupFinished() && globals && size > kGlobalVarUser && (mask & kSciEventKeyDown) &&
+-		g_sci->_guestAdditions->userHasControl(false))
++	const int openingRoom = globals && size > kGlobalVarNewRoomNo && globals[kGlobalVarNewRoomNo].isNumber()
++		? s->currentRoomNumber() : -1;
++	const bool opening = ScummWebIntro::nativeSkipEnabled() && !ScummWebIntro::startupFinished() &&
++		isBrowserOpeningRoom(g_sci->getGameId(), openingRoom);
++	if (!opening && s->_browserIntroAvailable) {
++		s->_browserIntroAvailable = false;
++		ScummWebIntro::skipRequested(false);
++	}
++	if (!opening && !ScummWebIntro::startupFinished() && globals && size > kGlobalVarUser &&
++		(mask & kSciEventKeyDown) && g_sci->_guestAdditions->userHasControl(false))
+ 		ScummWebIntro::gameplayStarted();
+ #endif
+ 
+@@ -95,6 +125,23 @@
+ 	}
+ 
+ 	curEvent = g_sci->getEventManager()->getSciEvent(mask);
++#ifdef __EMSCRIPTEN__
++	if (opening && s->_browserIntroSkippedRoom != openingRoom && curEvent.type == kSciEventNone &&
++		(mask & kSciEventKeyDown) && !(mask & kSciEventPeek)) {
++		s->_browserIntroAvailable = true;
++		// Longbow's second opening room can use the same request. Do not
++		// repeat it in the same room or carry it into the actual game.
++		const bool continueLongbowOpening = g_sci->getGameId() == GID_LONGBOW &&
++			s->_browserIntroSkippedRoom == 98 && openingRoom == 96;
++		if (continueLongbowOpening || ScummWebIntro::skipRequested()) {
++			curEvent.type = kSciEventKeyDown;
++			curEvent.character = kSciKeyEsc;
++			s->_browserIntroSkippedRoom = openingRoom;
++			s->_browserIntroAvailable = false;
++			ScummWebIntro::skipRequested(false);
++		}
++	}
++#endif
+ 
+ 	// For Mac games with an icon bar, handle possible icon bar events first
+ 	if (g_sci->hasMacIconBar()) {
+diff --git a/engines/sci/engine/state.h b/engines/sci/engine/state.h
+--- a/engines/sci/engine/state.h
++++ b/engines/sci/engine/state.h
+@@ -174,6 +174,10 @@
+ 	int scriptGCInterval; // Number of steps in between gcs
+ 
+ 	uint16 currentRoomNumber() const;
++#ifdef __EMSCRIPTEN__
++	int _browserIntroSkippedRoom = -1;
++	bool _browserIntroAvailable = false;
++#endif
+ 	void setRoomNumber(uint16 roomNumber);
+ 
+ 	/**

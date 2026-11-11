@@ -1,0 +1,26 @@
+diff --git a/engines/gob/util.cpp b/engines/gob/util.cpp
+--- a/engines/gob/util.cpp
++++ b/engines/gob/util.cpp
+@@ -342,18 +342,19 @@
+ 		const int position = script.pos();
+ 		// The original credits wait reads at 2321. Protection setup starts
+ 		// at 2583 and its answer input reads at 4246 in this exact script.
+-		if (position >= 2583) {
++		if (position == 4246) {
+ 			_browserWeenIntroFinished = true;
+ 			if (_browserWeenIntroSkipped)
+ 				ScummWebIntro::skipRequested(false);
+ 			_browserWeenIntroSkipped = false;
+-		} else if (!_browserWeenIntroFinished && script.getSize() == 4270 && position > 0) {
++		} else if (!_browserWeenIntroFinished && script.getSize() == 4270 &&
++				position > 0 && position <= 2321) {
+ 			static const byte expected[] = {0x01, 0x03, 0x54, 0x00, 0x90, 0x17, 0x3b, 0x00,
+ 				0x15, 0x00, 0x63, 0xc7, 0x15, 0x0a, 0x63, 0x60};
+ 			byte signature[sizeof(expected)];
+ 			const bool matched = script.peek(signature, sizeof(signature), 128 - position) == sizeof(signature) &&
+ 				memcmp(signature, expected, sizeof(expected)) == 0;
+-			if (matched && key.keycode == Common::KEYCODE_INVALID &&
++			if ((matched || _browserWeenIntroSkipped) && key.keycode == Common::KEYCODE_INVALID &&
+ 					(_browserWeenIntroSkipped || ScummWebIntro::skipRequested())) {
+ 				_browserWeenIntroSkipped = true;
+ 				ScummWebIntro::skipRequested(false);

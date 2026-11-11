@@ -1,0 +1,122 @@
+diff --git a/engines/gob/util.cpp b/engines/gob/util.cpp
+--- a/engines/gob/util.cpp
++++ b/engines/gob/util.cpp
+@@ -32,6 +32,8 @@
+ #include "gob/gob.h"
+ #include "gob/hotspots.h"
+ #include "gob/util.h"
++#include "gob/script.h"
++#include "engines/scummweb-intro.h"
+ #include "gob/global.h"
+ #include "gob/dataio.h"
+ #include "gob/draw.h"
+@@ -333,6 +335,33 @@
+ 
+ 	getKeyFromBuffer(key);
+ 
++#ifdef __EMSCRIPTEN__
++	if (_vm->getGameType() == kGameTypeWeen && _vm->getPlatform() == Common::kPlatformAmiga &&
++			_vm->isCurrentTot("intro016.tot") && ScummWebIntro::nativeSkipEnabled()) {
++		const Script &script = *_vm->_game->_script;
++		const int position = script.pos();
++		// This exact Amiga script places its copy-protection input at 2321.
++		// The preceding 2298 call clears the opening's buffered keys.
++		if (position >= 2298) {
++			_browserWeenIntroFinished = true;
++			if (_browserWeenIntroSkipped)
++				ScummWebIntro::skipRequested(false);
++			_browserWeenIntroSkipped = false;
++		} else if (!_browserWeenIntroFinished && script.getSize() == 4270 && position > 0) {
++			static const byte expected[] = {0x01, 0x03, 0x54, 0x00, 0x90, 0x17, 0x3b, 0x00,
++				0x15, 0x00, 0x63, 0xc7, 0x15, 0x0a, 0x63, 0x60};
++			byte signature[sizeof(expected)];
++			const bool matched = script.peek(signature, sizeof(signature), 128 - position) == sizeof(signature) &&
++				memcmp(signature, expected, sizeof(expected)) == 0;
++			if (matched && key.keycode == Common::KEYCODE_INVALID &&
++					(_browserWeenIntroSkipped || ScummWebIntro::skipRequested())) {
++				_browserWeenIntroSkipped = true;
++				ScummWebIntro::skipRequested(false);
++				return kKeyEscape;
++			}
++		}
++	}
++#endif
+ 	return translateKey(key);
+ }
+ 
+diff --git a/engines/gob/util.h b/engines/gob/util.h
+--- a/engines/gob/util.h
++++ b/engines/gob/util.h
+@@ -157,6 +157,10 @@
+ 	Util(GobEngine *vm);
+ 
+ protected:
++#ifdef __EMSCRIPTEN__
++	bool _browserWeenIntroSkipped = false;
++	bool _browserWeenIntroFinished = false;
++#endif
+ 	MouseButtons _mouseButtons;
+ 
+ 	Common::KeyState _keyBuffer[KEYBUFSIZE];
+diff --git a/engines/gob/videoplayer.cpp b/engines/gob/videoplayer.cpp
+--- a/engines/gob/videoplayer.cpp
++++ b/engines/gob/videoplayer.cpp
+@@ -453,10 +453,15 @@
+ #ifdef __EMSCRIPTEN__
+ 	if (primary && properties.breakKey != 0 &&
+ 			((_vm->getGameType() == kGameTypeWoodruff && _vm->isCurrentTot("intro1.tot") &&
+-			  (video->fileName.equalsIgnoreCase("intro") || video->fileName.equalsIgnoreCase("intro.vmd"))) ||
++			  (video->fileName.equalsIgnoreCase("intro") || video->fileName.equalsIgnoreCase("intro.vmd") ||
++			   video->fileName.equalsIgnoreCase("sierra") || video->fileName.equalsIgnoreCase("coktel"))) ||
+ 			 (_vm->getGameType() == kGameTypeInca2 && _vm->isCurrentTot("intro.tot") &&
+ 			  video->fileName.equalsIgnoreCase("lokbb.imd"))))
+ 		properties.openingLogo = true;
++#endif
++#ifdef __EMSCRIPTEN__
++	if (primary && !properties.openingLogo)
++		_browserSkipOpening = false;
+ #endif
+ 	if (properties.startFrame < 0)
+ 		properties.startFrame = video->decoder->getCurFrame() + 1;
+@@ -915,8 +920,11 @@
+ 		// Check for that specific key
+ 		bool pressedBreak = (VAR(0) == (unsigned)properties.breakKey);
+ #ifdef __EMSCRIPTEN__
+-		if (properties.openingLogo && ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested())
++		if (properties.openingLogo && ScummWebIntro::nativeSkipEnabled() &&
++				(_browserSkipOpening || ScummWebIntro::skipRequested())) {
++			_browserSkipOpening = true;
+ 			pressedBreak = true;
++		}
+ #endif
+ 		if (_vm->getGameType() == kGameTypeAdibou2 || _vm->getGameType() == kGameTypeAdi4) {
+ 			if (pressedBreak ||
+diff --git a/engines/gob/videoplayer.h b/engines/gob/videoplayer.h
+--- a/engines/gob/videoplayer.h
++++ b/engines/gob/videoplayer.h
+@@ -220,6 +220,9 @@
+ 
+ 	bool _noCursorSwitch;
+ 	bool _woodruffCohCottWorkaround;
++#ifdef __EMSCRIPTEN__
++	bool _browserSkipOpening = false;
++#endif
+ 	uint32 _lastLiveVideosLoopCall;
+ 
+ 
+diff --git a/engines/tinsel/bmv.cpp b/engines/tinsel/bmv.cpp
+--- a/engines/tinsel/bmv.cpp
++++ b/engines/tinsel/bmv.cpp
+@@ -1379,8 +1379,10 @@
+ 		if (storyCredits || openingCredits || !scumm_stricmp(szMovieFile, "INTRO.BMV"))
+ 			opening = OpeningGroup::Story;
+ 		else if (!scumm_stricmp(szMovieFile, "PERFECT.BMV") ||
+-				!scumm_stricmp(szMovieFile, "PSYG.BMV") || !scumm_stricmp(szMovieFile, "PRODUCED.BMV"))
+-			opening = OpeningGroup::Publisher;
++				!scumm_stricmp(szMovieFile, "PSYG.BMV") || !scumm_stricmp(szMovieFile, "WILDCAT.BMV") ||
++				!scumm_stricmp(szMovieFile, "PRODUCED.BMV"))
++			// PRODUCED also plays between the story and its animated credits.
++			opening = _browserSkipOpening == OpeningGroup::Story ? OpeningGroup::Story : OpeningGroup::Publisher;
+ 
+ 		if (opening != _browserSkipOpening)
+ 			_browserSkipOpening = OpeningGroup::None;

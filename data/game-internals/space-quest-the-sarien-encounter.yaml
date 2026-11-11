@@ -19,7 +19,7 @@ rooms:
   deltaur-escape: 63 # Logic 63 shows the destruction of the Deltaur before the ceremony.
 variables:
   score: { bank: vars, index: 3 }
-  max-score: { bank: vars, index: 7 }
+  previous-room: { bank: vars, index: 1 }
 flags:
   pod-autopilot: { bank: flag_bytes, index: 10, mask: 0x02 } # 81, logic 10
   read-cartridge: { bank: flag_bytes, index: 22, mask: 0x08 } # 179, logic 31
@@ -61,4 +61,4 @@ milestones:
   - id: winning-ending
     label: Reached the Xenon awards ceremony
     implies: [deltaur-escape, reached-deltaur]
-    when: { room: xenon-awards }
+    when: { all: [{ room: xenon-awards }, { variable: previous-room, equals: 63 }] }

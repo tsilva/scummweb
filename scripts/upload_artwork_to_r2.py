@@ -17,6 +17,22 @@ ENDPOINT = f"https://{ACCOUNT}.r2.cloudflarestorage.com"
 CACHE_CONTROL = "public, max-age=31536000, immutable"
 
 
+class ArtworkObjectMissing(Exception):
+    """The approved artwork transport found no object at the immutable key."""
+
+
+def object_missing(error):
+    if isinstance(error, ArtworkObjectMissing):
+        return True
+    try:
+        from botocore.exceptions import ClientError
+    except ImportError:
+        return False
+    return isinstance(error, ClientError) and str(error.response.get("Error", {}).get("Code")) in {
+        "404", "NoSuchKey", "NotFound",
+    }
+
+
 def artwork_workspace():
     import re
     name = os.environ.get("SCUMMWEB_ARTWORK_WORKSPACE", "artwork-migration")
@@ -47,14 +63,13 @@ def publish(client, manifest, root=ROOT):
         prepared.append((filename, entry))
 
     # Check all local inputs before the first request. Never overwrite an existing key.
-    from botocore.exceptions import ClientError
     def upload_one(item):
         filename, entry = item
         uploaded = 0
         try:
             result = client.get_object(Bucket=BUCKET, Key=entry["key"])
-        except ClientError as exc:
-            if str(exc.response.get("Error", {}).get("Code")) not in {"404", "NoSuchKey", "NotFound"}:
+        except Exception as exc:
+            if not object_missing(exc):
                 raise RuntimeError("R2 artwork lookup failed") from None
             data = filename.read_bytes()
             # Recheck immediately before upload; plans and object backups are mutable.

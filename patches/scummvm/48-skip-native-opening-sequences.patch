@@ -1,0 +1,198 @@
+diff --git a/engines/saga/saga.cpp b/engines/saga/saga.cpp
+--- a/engines/saga/saga.cpp
++++ b/engines/saga/saga.cpp
+@@ -54,6 +54,8 @@
+ #include "saga/palanim.h"
+ #include "saga/objectmap.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Saga {
+ 
+ const char *engineKeyMapId = "engine-default";
+@@ -538,6 +540,11 @@
+ 			_events->handleEvents(msec);
+ 			_script->executeThreads(msec);
+ 		}
++#ifdef __EMSCRIPTEN__
++		if (getGameId() == GID_ITE && ScummWebIntro::nativeSkipEnabled() &&
++			ScummWebIntro::skipRequested(_scene->isInIntro()))
++			_scene->skipScene();
++#endif
+ 		// Per frame processing
+ 		_render->drawScene();
+ #ifdef __EMSCRIPTEN__
+diff --git a/engines/saga/introproc_ihnm.cpp b/engines/saga/introproc_ihnm.cpp
+--- a/engines/saga/introproc_ihnm.cpp
++++ b/engines/saga/introproc_ihnm.cpp
+@@ -38,6 +38,8 @@
+ 
+ #include "common/events.h"
+ #include "common/system.h"
++
++#include "engines/scummweb-intro.h"
+ 
+ namespace Saga {
+ 
+@@ -179,6 +181,10 @@
+ }
+ 
+ bool Scene::playTitle(int title, int time, int mode) {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++	const bool opening = title >= 0 && title <= 2 && isInIntro() && ScummWebIntro::nativeSkipEnabled();
++#endif
+ 	bool interrupted = false;
+ 	int startTime = _vm->_system->getMillis();
+ 	int frameTime = 0;
+@@ -233,7 +239,7 @@
+ 			startTime = curTime;
+ 			break;
+ 
+-		case 5: // playback
++		case 5: { // playback
+ 			if (time < 0) {
+ 				if (_vm->_frameCount >= -time) {
+ 					phase++;
+@@ -246,7 +252,12 @@
+ 				}
+ 			}
+ 
+-			if (checkKey()) {
++			bool skip = checkKey();
++#ifdef __EMSCRIPTEN__
++			if (opening && ScummWebIntro::skipRequested())
++				skip = true;
++#endif
++			if (skip) {
+ 				_vm->_scene->cutawaySkip();
+ 				interrupted = true;
+ 				phase = 6;	// end playback and fade out
+@@ -269,6 +280,8 @@
+ 			}
+ 			break;
+ 
++		}
++
+ 		case 6: // playback end
+ 			startTime = curTime;
+ 			_vm->_gfx->getCurrentPal(cur_pal);
+diff --git a/engines/tinsel/tinsel.cpp b/engines/tinsel/tinsel.cpp
+--- a/engines/tinsel/tinsel.cpp
++++ b/engines/tinsel/tinsel.cpp
+@@ -73,6 +73,8 @@
+ #include "tinsel/noir/sysreel.h"
+ #include "tinsel/noir/spriter.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Tinsel {
+ 
+ //----------------- EXTERNAL FUNCTIONS ---------------------
+@@ -154,6 +156,10 @@
+ 
+ 	CORO_BEGIN_CODE(_ctx);
+ 	while (true) {
++#ifdef __EMSCRIPTEN__
++		if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested(InDw1Intro()))
++			ProcessKeyEvent(PLR_ESCAPE);
++#endif
+ 		if (_vm->_keypresses.empty()) {
+ 			// allow scheduling
+ 			CORO_SLEEP(1);
+diff --git a/engines/cge/cge_main.cpp b/engines/cge/cge_main.cpp
+--- a/engines/cge/cge_main.cpp
++++ b/engines/cge/cge_main.cpp
+@@ -1467,8 +1467,17 @@
+ 		feedSnail(_vga->_showQ->locate(999), kTake);
+ 		_vga->_showQ->append(_mouse);
+ 		_keyboard->setClient(_sys);
+-		while (!_commandHandler->idle() && !_quitFlag)
++#ifdef __EMSCRIPTEN__
++		ScummWebIntro::SkipSegment introSegment;
++		const bool opening = !strcmp(ext, kIntroExt) && ScummWebIntro::nativeSkipEnabled();
++#endif
++		while (!_commandHandler->idle() && !_quitFlag) {
++#ifdef __EMSCRIPTEN__
++			if (opening && ScummWebIntro::skipRequested())
++				break;
++#endif
+ 			mainLoop();
++		}
+ 
+ 		_keyboard->setClient(nullptr);
+ 		_commandHandler->addCommand(kCmdClear, -1, 0, nullptr);
+diff --git a/engines/cge2/cge2_main.cpp b/engines/cge2/cge2_main.cpp
+--- a/engines/cge2/cge2_main.cpp
++++ b/engines/cge2/cge2_main.cpp
+@@ -396,8 +396,17 @@
+ 		sceneUp(_now);
+ 		_keyboard->setClient(_sys);
+ 
+-		while (!_commandHandler->idle() && !_quitFlag)
++#ifdef __EMSCRIPTEN__
++		ScummWebIntro::SkipSegment introSegment;
++		const bool opening = !strcmp(ext, kIntroExt) && ScummWebIntro::nativeSkipEnabled();
++#endif
++		while (!_commandHandler->idle() && !_quitFlag) {
++#ifdef __EMSCRIPTEN__
++			if (opening && ScummWebIntro::skipRequested())
++				break;
++#endif
+ 			mainLoop();
++		}
+ 
+ 		_keyboard->setClient(nullptr);
+ 		_commandHandler->addCommand(kCmdClear, -1, 0, nullptr);
+diff --git a/engines/lab/intro.cpp b/engines/lab/intro.cpp
+--- a/engines/lab/intro.cpp
++++ b/engines/lab/intro.cpp
+@@ -39,6 +39,8 @@
+ #include "lab/resource.h"
+ #include "lab/utils.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Lab {
+ 
+ Intro::Intro(LabEngine *vm) : _vm(vm) {
+@@ -51,6 +53,12 @@
+ }
+ 
+ void Intro::introEatMessages() {
++#ifdef __EMSCRIPTEN__
++	if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested(!_quitIntro)) {
++		_quitIntro = true;
++		return;
++	}
++#endif
+ 	while (1) {
+ 		IntuiMessage *msg = _vm->_event->getMsg();
+ 
+@@ -124,6 +132,16 @@
+ 			_quitIntro = true;
+ 			return;
+ 		}
++
++#ifdef __EMSCRIPTEN__
++		if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested()) {
++			_quitIntro = true;
++			if (isScreen)
++				_vm->_graphics->fade(false);
++			delete[] textBuffer;
++			return;
++		}
++#endif
+ 
+ 		if (!msg) {
+ 			_vm->updateEvents();
+@@ -222,6 +240,9 @@
+ }
+ 
+ void Intro::play() {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++#endif
+ 	uint16 palette[16] = {
+ 		0x0000, 0x0855, 0x0FF9, 0x0EE7,
+ 		0x0ED5, 0x0DB4, 0x0CA2, 0x0C91,

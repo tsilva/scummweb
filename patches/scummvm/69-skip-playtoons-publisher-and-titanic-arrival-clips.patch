@@ -1,0 +1,251 @@
+diff --git a/engines/cruise/cruise_main.cpp b/engines/cruise/cruise_main.cpp
+--- a/engines/cruise/cruise_main.cpp
++++ b/engines/cruise/cruise_main.cpp
+@@ -1817,6 +1817,7 @@
+ 
+ #ifdef __EMSCRIPTEN__
+ 	bool browserFastIntro = false;
++	uint browserIntroFrames = 0;
+ #endif
+ 	do {
+ #ifdef __EMSCRIPTEN__
+@@ -1872,7 +1873,9 @@
+ 
+ #ifdef __EMSCRIPTEN__
+ 			if (browserFastIntro) {
+-				g_system->delayMillis(1);
++				// Run several original script frames between browser yields.
++				if (++browserIntroFrames % 8 == 0)
++					g_system->delayMillis(1);
+ 				break;
+ 			}
+ #endif
+diff --git a/engines/gob/mult.cpp b/engines/gob/mult.cpp
+--- a/engines/gob/mult.cpp
++++ b/engines/gob/mult.cpp
+@@ -169,6 +169,8 @@
+ static bool isSkippableOpeningAnimation(const GobEngine &vm) {
+ 	switch (vm.getGameType()) {
+ 	case kGameTypeGob1:
++	case kGameTypeGob3:
++	case kGameTypeInca2:
+ 	case kGameTypeGeisha:
+ 	case kGameTypeLostInTime:
+ 	case kGameTypeUrban:
+diff --git a/engines/gob/videoplayer.cpp b/engines/gob/videoplayer.cpp
+--- a/engines/gob/videoplayer.cpp
++++ b/engines/gob/videoplayer.cpp
+@@ -442,6 +442,13 @@
+ 		return false;
+ 
+ 	bool primary = slot == 0;
++#ifdef __EMSCRIPTEN__
++	// DEBUT.TOT plays this exact publisher video before the Playtoons
++	// title menu. The main script's animated menu and stories are separate.
++	if (primary && _vm->getGameType() == kGameTypePlaytoons && _vm->isCurrentTot("debut.tot") &&
++			(video->fileName.equalsIgnoreCase("generik") || video->fileName.equalsIgnoreCase("generik.vmd")))
++		properties.openingLogo = true;
++#endif
+ 
+ 	if (properties.startFrame < 0)
+ 		properties.startFrame = video->decoder->getCurFrame() + 1;
+diff --git a/engines/titanic/core/game_object.cpp b/engines/titanic/core/game_object.cpp
+--- a/engines/titanic/core/game_object.cpp
++++ b/engines/titanic/core/game_object.cpp
+@@ -688,14 +688,14 @@
+ 		playMovie(clip->_startFrame, clip->_endFrame, flags);
+ }
+ 
+-void CGameObject::playClip(uint startFrame, uint endFrame) {
++void CGameObject::playClip(uint startFrame, uint endFrame, bool *skipOpening) {
+ 	debugC(DEBUG_DETAILED, kDebugScripts, "playClip - %d to %d", startFrame, endFrame);
+ 
+ 	CMovieClip *clip = new CMovieClip("", startFrame, endFrame);
+ 	CGameManager *gameManager = getGameManager();
+ 	CRoomItem *room = gameManager->getRoom();
+ 
+-	gameManager->playClip(clip, room, room);
++	gameManager->playClip(clip, room, room, skipOpening);
+ 	delete clip;
+ }
+ 
+diff --git a/engines/titanic/core/game_object.h b/engines/titanic/core/game_object.h
+--- a/engines/titanic/core/game_object.h
++++ b/engines/titanic/core/game_object.h
+@@ -406,7 +406,7 @@
+ 	/**
+ 	 * Play a clip
+ 	 */
+-	void playClip(uint startFrame, uint endFrame);
++	void playClip(uint startFrame, uint endFrame, bool *skipOpening = nullptr);
+ 
+ 	/**
+ 	 * Play a cutscene
+diff --git a/engines/titanic/game/computer_screen.cpp b/engines/titanic/game/computer_screen.cpp
+--- a/engines/titanic/game/computer_screen.cpp
++++ b/engines/titanic/game/computer_screen.cpp
+@@ -115,41 +115,44 @@
+ 		break;
+ 
+ 	case 2: {
++		// The arrival plays several ranges of the same room movie.
++		// Preserve the surrounding original actions and Doorbot dialogue.
++		bool skipOpening = false;
+ 		CChangeMusicMsg musicMsg(CString(), MUSIC_STOP);
+ 		musicMsg.execute("HomeMusicPlayer");
+ 		playSound(TRANSLATE("a#33.wav", "a#28.wav"));
+ 		playSound(TRANSLATE("a#31.wav", "a#26.wav"));
+ 		changeView("Home.Node 4.E", "");
+-		playClip(51, 150);
++		playClip(51, 150, &skipOpening);
+ 		playSound(TRANSLATE("a#31.wav", "a#26.wav"));
+-		playClip(151, 200);
++		playClip(151, 200, &skipOpening);
+ 
+ 		handle = playSound(TRANSLATE("a#27.wav", "a#22.wav"));
+-		playClip(200, 306);
++		playClip(200, 306, &skipOpening);
+ 		playSound(TRANSLATE("a#30.wav", "a#25.wav"));
+ 		stopSound(handle, 0);
+ 
+-		playClip(306, 338);
++		playClip(306, 338, &skipOpening);
+ 		handle = playSound(TRANSLATE("a#28.wav", "a#23.wav"));
+-		playClip(338, 392);
++		playClip(338, 392, &skipOpening);
+ 		playSound(TRANSLATE("a#29.wav", "a#24.wav"));
+ 		stopSound(handle);
+ 
+ 		handle = playSound(TRANSLATE("y#662.wav", "y#0.wav"));
+ 		setSoundVolume(handle, 10, 2);
+-		playClip(392, 450);
++		playClip(392, 450, &skipOpening);
+ 		startTalking("Doorbot", 0x3611A);
+ 		sleep(TRANSLATE(8000, 7000));
+ 
+-		playClip(450, 492);
++		playClip(450, 492, &skipOpening);
+ 		startTalking("Doorbot", 0x36121);
+-		playClip(492, 522);
++		playClip(492, 522, &skipOpening);
+ 		setSoundVolume(handle, 30, 2);
+ 
+-		playClip(523, 540);
++		playClip(523, 540, &skipOpening);
+ 		setSoundVolume(handle, 0, 1);
+ 
+-		playClip(541, 551);
++		playClip(541, 551, &skipOpening);
+ 		stopSound(handle);
+ 		break;
+ 	}
+diff --git a/engines/titanic/game_manager.cpp b/engines/titanic/game_manager.cpp
+--- a/engines/titanic/game_manager.cpp
++++ b/engines/titanic/game_manager.cpp
+@@ -148,7 +148,7 @@
+ 	}
+ }
+ 
+-void CGameManager::playClip(CMovieClip *clip, CRoomItem *oldRoom, CRoomItem *newRoom) {
++void CGameManager::playClip(CMovieClip *clip, CRoomItem *oldRoom, CRoomItem *newRoom, bool *skipOpening) {
+ 	if (oldRoom != newRoom || newRoom != _movieRoom || !_movie)
+ 		roomTransition(oldRoom, newRoom);
+ 
+@@ -159,7 +159,7 @@
+ 
+ 		lockInputHandler();
+ 		mouseCursor.incHideCounter();
+-		_movie->playCutscene(tempRect, clip->_startFrame, clip->_endFrame);
++		_movie->playCutscene(tempRect, clip->_startFrame, clip->_endFrame, skipOpening != nullptr, skipOpening);
+ 		mouseCursor.decHideCounter();
+ 		unlockInputHandler();
+ 	}
+diff --git a/engines/titanic/game_manager.h b/engines/titanic/game_manager.h
+--- a/engines/titanic/game_manager.h
++++ b/engines/titanic/game_manager.h
+@@ -154,7 +154,7 @@
+ 	/**
+ 	 * Plays a movie clip
+ 	 */
+-	void playClip(CMovieClip *clip, CRoomItem *oldRoom, CRoomItem *newRoom);
++	void playClip(CMovieClip *clip, CRoomItem *oldRoom, CRoomItem *newRoom, bool *skipOpening = nullptr);
+ 
+ 	/**
+ 	 * Main frame update method for the game
+diff --git a/engines/titanic/support/avi_surface.cpp b/engines/titanic/support/avi_surface.cpp
+--- a/engines/titanic/support/avi_surface.cpp
++++ b/engines/titanic/support/avi_surface.cpp
+@@ -486,8 +486,8 @@
+ 	}
+ }
+ 
+-bool AVISurface::playCutscene(const Rect &r, uint startFrame, uint endFrame, bool opening) {
+-	if (g_vm->shouldQuit())
++bool AVISurface::playCutscene(const Rect &r, uint startFrame, uint endFrame, bool opening, bool *skipOpening) {
++	if (g_vm->shouldQuit() || (skipOpening && *skipOpening))
+ 		return false;
+ 
+ 	// TODO: Fixes slight "jumping back" when rotating in place in Top Of Well
+@@ -521,6 +521,8 @@
+ 	while (_currentFrame < (int)endFrame && !g_vm->shouldQuit()) {
+ #ifdef __EMSCRIPTEN__
+ 		if (opening && ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested()) {
++			if (skipOpening)
++				*skipOpening = true;
+ 			isFinished = false;
+ 			break;
+ 		}
+diff --git a/engines/titanic/support/avi_surface.h b/engines/titanic/support/avi_surface.h
+--- a/engines/titanic/support/avi_surface.h
++++ b/engines/titanic/support/avi_surface.h
+@@ -255,7 +255,7 @@
+ 	 * Plays an interruptable cutscene
+ 	 * @returns		True if the cutscene was not interrupted
+ 	 */
+-	bool playCutscene(const Rect &r, uint startFrame, uint endFrame, bool opening);
++	bool playCutscene(const Rect &r, uint startFrame, uint endFrame, bool opening, bool *skipOpening);
+ 
+ 	/**
+ 	 * Returns the pixel depth of the movie in bits
+diff --git a/engines/titanic/support/movie.cpp b/engines/titanic/support/movie.cpp
+--- a/engines/titanic/support/movie.cpp
++++ b/engines/titanic/support/movie.cpp
+@@ -118,7 +118,7 @@
+ 		movieStarted();
+ }
+ 
+-bool OSMovie::playCutscene(const Rect &drawRect, uint startFrame, uint endFrame, bool opening) {
++bool OSMovie::playCutscene(const Rect &drawRect, uint startFrame, uint endFrame, bool opening, bool *skipOpening) {
+ 	if (!_movieSurface)
+ 		_movieSurface = CScreenManager::_screenManagerPtr->createSurface(600, 340, 32);
+ 
+@@ -126,7 +126,7 @@
+ 	CEventTarget eventTarget;
+ 	g_vm->_events->addTarget(&eventTarget);
+ 
+-	bool result = _aviSurface.playCutscene(drawRect, startFrame, endFrame, opening);
++	bool result = _aviSurface.playCutscene(drawRect, startFrame, endFrame, opening, skipOpening);
+ 
+ 	g_vm->_events->removeTarget();
+ 	return result;
+diff --git a/engines/titanic/support/movie.h b/engines/titanic/support/movie.h
+--- a/engines/titanic/support/movie.h
++++ b/engines/titanic/support/movie.h
+@@ -86,7 +86,7 @@
+ 	 * the playback ends or a key has been pressed
+ 	 * @returns		True if the cutscene was not interrupted
+ 	 */
+-	virtual bool playCutscene(const Rect &drawRect, uint startFrame, uint endFrame, bool opening = false) = 0;
++	virtual bool playCutscene(const Rect &drawRect, uint startFrame, uint endFrame, bool opening = false, bool *skipOpening = nullptr) = 0;
+ 
+ 	/**
+ 	 * Pauses a movie
+@@ -199,7 +199,7 @@
+ 	 * the playback ends or a key has been pressed
+ 	 * @returns		True if the cutscene was not interrupted
+ 	 */
+-	bool playCutscene(const Rect &drawRect, uint startFrame, uint endFrame, bool opening = false) override;
++	bool playCutscene(const Rect &drawRect, uint startFrame, uint endFrame, bool opening = false, bool *skipOpening = nullptr) override;
+ 
+ 	/**
+ 	 * Pauses a movie

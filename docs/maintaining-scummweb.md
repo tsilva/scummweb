@@ -165,8 +165,9 @@ URL when replacing a hosted archive so cached launches pick up the new files.
 
 Bundled **Skip intro** uses a native startup option or a checkpoint captured
 before the first player decision. Preserve language, character, or control
-selection when the original game requires it. Imported SCUMM, GrimE, AGI, SCI,
-and Hi-Res Adventure games can skip supported opening segments in place.
+selection when the original game requires it. Imported games offer **Skip intro**
+while their engine exposes a supported opening segment. The action advances
+through the game's original transition and preserves its menus and choices.
 Continue omits the action.
 
 Keep bundled checkpoints in [`launcher/skip-intro/`](../scummvm-shell/launcher/skip-intro/)
@@ -202,9 +203,9 @@ credits only when verified independently of the generic `studio` field.
 ### Development commands
 
 Follow the [README quickstart](../README.md#run-locally) for a credential-free
-server. The managed `pnpm run dev --port auto` and `pnpm run sentry:issues`
-use the project's Development Sentry bindings. Agents follow the repository's
-credential policy when a command needs private values.
+server. The managed development command uses the project's Development Sentry
+bindings. For agent-operated issue reads, use the
+[Vault reader](#sentry-issue-reads-through-agent-vault).
 
 | Command | Purpose |
 | --- | --- |
@@ -233,6 +234,41 @@ For mobile changes, check the launcher, settings, gallery, and player at
 320px and 390px portrait widths, short landscape, and tablet widths. Test
 rotation, fullscreen refusal, audio, and touch input on physical Android and
 iOS devices before claiming device coverage.
+
+### Sentry issue reads through Agent Vault
+
+On a provisioned macOS checkout:
+
+```sh
+pnpm sentry:check:vault
+pnpm sentry:issues:vault -- --days 14 --limit 10 --query 'is:unresolved'
+```
+
+The check reads project metadata. The issue command executes the existing reader
+with its supported days, limit, query and help options. Explicit `--env-file`
+overrides are rejected. Optional dotenv discovery is bypassed, and the separate
+native sandbox independently denies credential files and direct outbound sockets.
+The child receives `sentry_read_public_placeholder` and a short-lived proxy session.
+
+The source mapping is the native `.infisical.json` project, Development `/`,
+`SENTRY_AUTH_TOKEN` at `https://app.infisical.com`. Trusted setup copies that exact
+source in memory into `local-scummweb-sentry-read`. The GET-only service targets
+`/api/0/projects/tsilva/scummweb/` on `sentry.io`. The transport validates project
+identity and converts the existing project-filtered organization issue query into
+the matching project endpoint, preserving its date/query behavior.
+
+Protected metadata under `~/.config/infisical/sentry-readers/scummweb.json` pins
+source identity, launcher, reader, native sandbox, Node, CLI and public proxy CA.
+Changed pins require trusted review. After source rotation, a trusted administrator
+must refresh this one Vault credential and rerun the metadata check. Ordinary
+startup never fetches source values, approves new pins or falls back to injection.
+The trusted proxy, administrator and other full-access host processes remain
+outside the child sandbox boundary.
+
+Fake verification exercises the actual reader, credential replacement, filtered
+metadata, native write/other-project/prefix-sibling/traversal denial and protected
+file/direct-TCP denial. Live verification uses metadata and an empty-result issue
+query. Existing app commands, publishing and delivery retain their behavior.
 
 ## Maintaining game compatibility
 
@@ -380,10 +416,10 @@ The default is `artwork-migration`. A stale plan cannot activate.
 2. Run `pnpm run artwork:plan`. It keeps the active manifest, records exact
    input bytes, and generates small previews. For previously published
    originals missing previews, use `node scripts/artwork-storage.mjs placeholders`.
-3. Publish the plan through an authorized route. The existing
-   `pnpm run publish:artwork` bulk launcher injects the scoped Development R2
-   pair. Agents need explicit authorization for that credential operation
-   until a compatible broker is reviewed. For one object, use the
+3. Publish the approved plan through the
+   [batch Vault route](#batch-artwork-publishing-through-agent-vault).
+   The existing human `pnpm run publish:artwork` launcher remains unchanged;
+   agents must not use its raw credential injection as a fallback. For one object, use the
    [sandboxed publisher](#single-object-publishing-through-agent-vault).
 4. Run `pnpm run artwork:verify`, then `pnpm run artwork:activate`. Activation
    independently checks public bytes, MIME type, length, and immutable cache
@@ -398,6 +434,56 @@ For a full optimization pass, publish and activate new originals first, then
 run `pnpm run optimize:artwork` and plan, publish, and verify its delivery
 variants. Normal builds use public or cached checksum-verified source images
 and need no R2 writer credentials.
+
+### Batch artwork publishing through Agent Vault
+
+Use the opt-in macOS route for the existing batch publisher:
+
+```sh
+pnpm artwork:check:vault
+pnpm publish:artwork:vault WORKSPACE
+```
+
+`check` performs only an authenticated HEAD request for one pinned existing
+artwork object. It verifies size, content type and cache policy, without reading
+object bytes or changing R2. Publishing requires separate approval of the exact
+planned artwork; verification of this route does not authorize an upload.
+
+The protected local profile must already be provisioned by trusted administration.
+It binds the native ScummWEB Development `/` source pair to the dedicated
+`local-scummweb-artwork-batch` bundle. Agent Vault supplies the pair to a trusted
+R2 signing relay through its credential header. The sandboxed publisher receives
+only a public placeholder and a short-lived proxy session. The relay's upstream
+is pinned to `scummvm-games`; it exposes neither keys nor presigned URLs.
+Ordinary starts never retrieve source secrets. After rotating either source key,
+trusted administration must update the Vault copy and the protected policy digest.
+
+Each invocation reviews the selected plan's current base hash, canonical object
+keys, MIME types and checksums. Limits are 512 objects and 2 MiB per object;
+symlinked workspaces and object paths are rejected. Only the exact plan is
+accepted by the relay. Missing objects use `If-None-Match: *`; existing objects
+are verified without overwriting them. There is no pruning, game publishing,
+bucket administration, multipart transfer or automatic activation. Large objects
+need a separate compatibility review rather than a raw-key fallback.
+
+The local signer and policy are owner-only and checksum-pinned. The publisher
+runs in a macOS sandbox that permits the native proxy and selected artwork files,
+blocks direct sockets and private credential files, and denies writes. This
+protects the sandboxed child; full-access same-user processes and the host remain
+trusted. An unavailable profile, changed source/runtime or failed authentication
+stops the operation. Existing app, build, production and human command defaults
+remain unchanged.
+
+Synthetic regression checks require no provider access:
+
+```sh
+python3 -I -S -B scripts/infisical/test_artwork_vault.py
+python3 -B -m unittest discover -s scripts -p test_artwork_storage.py
+```
+
+The second command uses the existing publisher's `boto3` test dependency. The
+Vault publisher itself uses the Python standard library and does not load SDK
+credential discovery, dotenv files or site startup hooks.
 
 ### Single-object publishing through Agent Vault
 

@@ -1,0 +1,278 @@
+diff --git a/engines/kyra/engine/eobcommon.cpp b/engines/kyra/engine/eobcommon.cpp
+--- a/engines/kyra/engine/eobcommon.cpp
++++ b/engines/kyra/engine/eobcommon.cpp
+@@ -21,6 +21,7 @@
+ 
+ #ifdef ENABLE_EOB
+ 
++#include "engines/scummweb-intro.h"
+ #include "kyra/engine/kyra_rpg.h"
+ #include "kyra/resource/resource.h"
+ #include "kyra/sound/sound_intern.h"
+@@ -41,6 +42,16 @@
+ #include "backends/keymapper/standard-actions.h"
+ 
+ namespace Kyra {
++
++#ifdef __EMSCRIPTEN__
++bool EoBCoreEngine::skipFlag() const {
++	if (_browserOpening && (_browserSkipOpening || ScummWebIntro::skipRequested())) {
++		_browserSkipOpening = true;
++		return true;
++	}
++	return KyraRpgEngine::skipFlag();
++}
++#endif
+ 
+ const char *const EoBCoreEngine::kKeymapName = "eob";
+ 
+diff --git a/engines/kyra/engine/eobcommon.h b/engines/kyra/engine/eobcommon.h
+--- a/engines/kyra/engine/eobcommon.h
++++ b/engines/kyra/engine/eobcommon.h
+@@ -992,6 +992,11 @@
+ 	int8 _rrId[10];
+ 
+ 	bool _allowSkip;
++#ifdef __EMSCRIPTEN__
++	bool _browserOpening = false;
++	mutable bool _browserSkipOpening = false;
++	bool skipFlag() const override;
++#endif
+ 	bool _allowImport;
+ 
+ 	bool _closeSpellbookAfterUse;
+diff --git a/engines/kyra/engine/kyra_mr.cpp b/engines/kyra/engine/kyra_mr.cpp
+--- a/engines/kyra/engine/kyra_mr.cpp
++++ b/engines/kyra/engine/kyra_mr.cpp
+@@ -280,7 +280,7 @@
+ 	const bool firstTimeGame = !saveFileLoadable(0);
+ 
+ 	if (firstTimeGame) {
+-		playVQA("K3INTRO");
++		playVQA("K3INTRO", true);
+ 		_wasPlayingVQA = false;
+ 	}
+ 
+@@ -391,7 +391,7 @@
+ 	_menu = nullptr;
+ }
+ 
+-void KyraEngine_MR::playVQA(const char *name) {
++void KyraEngine_MR::playVQA(const char *name, bool opening) {
+ 	VQAMovie vqa(this, _system);
+ 
+ 	Common::String filename = Common::String::format("%s%d.VQA", name, _configVQAQuality);
+@@ -408,7 +408,7 @@
+ 		_screen->fadeToBlack(60);
+ 		_screen->clearPage(0);
+ 
+-		vqa.play();
++		vqa.play(opening);
+ 		vqa.close();
+ 
+ 		_soundDigital->stopAllSounds();
+diff --git a/engines/kyra/engine/kyra_mr.h b/engines/kyra/engine/kyra_mr.h
+--- a/engines/kyra/engine/kyra_mr.h
++++ b/engines/kyra/engine/kyra_mr.h
+@@ -60,7 +60,7 @@
+ 
+ 	Common::Error go() override;
+ 
+-	void playVQA(const char *name);
++	void playVQA(const char *name, bool opening = false);
+ 
+ private:
+ 	static const EngineDesc _mrEngineDesc;
+diff --git a/engines/kyra/graphics/vqa.cpp b/engines/kyra/graphics/vqa.cpp
+--- a/engines/kyra/graphics/vqa.cpp
++++ b/engines/kyra/graphics/vqa.cpp
+@@ -28,6 +28,7 @@
+ // The jung2.vqa movie does work, but only thanks to a grotesque hack.
+ 
+ #include "kyra/kyra_v1.h"
++#include "engines/scummweb-intro.h"
+ #include "kyra/graphics/vqa.h"
+ #include "kyra/graphics/screen.h"
+ 
+@@ -613,7 +614,13 @@
+ 	}
+ }
+ 
+-void VQAMovie::play() {
++void VQAMovie::play(bool opening) {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++	opening = opening && ScummWebIntro::nativeSkipEnabled();
++#else
++	(void)opening;
++#endif
+ 	if (_decoder->loadStream(&_file)) {
+ 		Common::EventManager *eventMan = _vm->getEventManager();
+ 		int width = _decoder->getWidth();
+@@ -628,6 +635,10 @@
+ 		// avoid sound underflow.
+ 
+ 		while (!_decoder->endOfVideo()) {
++#ifdef __EMSCRIPTEN__
++			if (opening && ScummWebIntro::skipRequested())
++				return;
++#endif
+ 			Common::Event event;
+ 			while (eventMan->pollEvent(event)) {
+ 				switch (event.type) {
+diff --git a/engines/kyra/graphics/vqa.h b/engines/kyra/graphics/vqa.h
+--- a/engines/kyra/graphics/vqa.h
++++ b/engines/kyra/graphics/vqa.h
+@@ -146,7 +146,7 @@
+ 
+ 	bool open(const char *filename);
+ 	void close();
+-	void play();
++	void play(bool opening);
+ private:
+ 	OSystem *_system;
+ 	KyraEngine_v1 *_vm;
+diff --git a/engines/kyra/sequence/sequences_darkmoon.cpp b/engines/kyra/sequence/sequences_darkmoon.cpp
+--- a/engines/kyra/sequence/sequences_darkmoon.cpp
++++ b/engines/kyra/sequence/sequences_darkmoon.cpp
+@@ -21,6 +21,7 @@
+ 
+ #ifdef ENABLE_EOB
+ 
++#include "engines/scummweb-intro.h"
+ #include "kyra/engine/darkmoon.h"
+ #include "kyra/graphics/screen_eob.h"
+ #include "kyra/resource/resource.h"
+@@ -251,6 +252,10 @@
+ }
+ 
+ void DarkMoonEngine::seq_playIntro() {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++	_browserOpening = ScummWebIntro::nativeSkipEnabled();
++#endif
+ 	DarkmoonSequenceHelper sq(_system, this, _screen, DarkmoonSequenceHelper::kIntro);
+ 
+ 	_screen->setCurPage(0);
+@@ -646,6 +651,10 @@
+ 		_screen->clearCurPage();
+ 	}
+ 	sq.fadePalette(9, 10);
++#ifdef __EMSCRIPTEN__
++	_browserOpening = false;
++	_browserSkipOpening = false;
++#endif
+ }
+ 
+ void DarkMoonEngine::seq_playFinale() {
+diff --git a/engines/kyra/sequence/sequences_eob.cpp b/engines/kyra/sequence/sequences_eob.cpp
+--- a/engines/kyra/sequence/sequences_eob.cpp
++++ b/engines/kyra/sequence/sequences_eob.cpp
+@@ -21,6 +21,7 @@
+ 
+ #ifdef ENABLE_EOB
+ 
++#include "engines/scummweb-intro.h"
+ #include "kyra/engine/eob.h"
+ #include "kyra/graphics/screen_eob.h"
+ #include "kyra/graphics/screen_eob_segacd.h"
+@@ -2297,6 +2298,10 @@
+ }
+ 
+ void EoBEngine::seq_playIntro(int part) {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++	_browserOpening = ScummWebIntro::nativeSkipEnabled();
++#endif
+ 	if (_flags.platform == Common::kPlatformSegaCD) {
+ 		if (part == kOnlyCredits)
+ 			seq_segaOpeningCredits(false);
+@@ -2305,6 +2310,10 @@
+ 	} else {
+ 		EoBIntroPlayer(this, _screen).start((EoBIntroPlayer::IntroPart)part);
+ 	}
++#ifdef __EMSCRIPTEN__
++	_browserOpening = false;
++	_browserSkipOpening = false;
++#endif
+ }
+ 
+ void EoBEngine::seq_playFinale() {
+diff --git a/engines/neverhood/gamemodule.cpp b/engines/neverhood/gamemodule.cpp
+--- a/engines/neverhood/gamemodule.cpp
++++ b/engines/neverhood/gamemodule.cpp
+@@ -28,6 +28,7 @@
+ #include "neverhood/modules/module1200.h"
+ #include "neverhood/modules/module1300.h"
+ #include "neverhood/modules/module1400.h"
++#include "engines/scummweb-intro.h"
+ #include "neverhood/modules/module1500.h"
+ #include "neverhood/modules/module1600.h"
+ #include "neverhood/modules/module1700.h"
+@@ -660,6 +661,9 @@
+ 			break;
+ 		case 1500:
+ 			createModule(1000, 0);
++#ifdef __EMSCRIPTEN__
++			ScummWebIntro::gameplayStarted();
++#endif
+ 			break;
+ 		case 1600:
+ 			if (_moduleResult == 1)
+diff --git a/engines/neverhood/modules/module1500.cpp b/engines/neverhood/modules/module1500.cpp
+--- a/engines/neverhood/modules/module1500.cpp
++++ b/engines/neverhood/modules/module1500.cpp
+@@ -19,6 +19,7 @@
+  *
+  */
+ 
++#include "engines/scummweb-intro.h"
+ #include "neverhood/modules/module1500.h"
+ 
+ namespace Neverhood {
+@@ -62,6 +63,14 @@
+ }
+ 
+ void Module1500::updateScene() {
++#ifdef __EMSCRIPTEN__
++	if (!_skipOpening && ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested()) {
++		_skipOpening = true;
++		ScummWebIntro::skipRequested(false);
++	}
++	if (_skipOpening)
++		sendMessage(_childObject, NM_KEYPRESS_SPACE, 0);
++#endif
+ 	if (!updateChild()) {
+ 		switch (_sceneNum) {
+ 		case 0:
+diff --git a/engines/neverhood/modules/module1500.h b/engines/neverhood/modules/module1500.h
+--- a/engines/neverhood/modules/module1500.h
++++ b/engines/neverhood/modules/module1500.h
+@@ -36,6 +36,9 @@
+ 	Module1500(NeverhoodEngine *vm, Module *parentModule, int which);
+ protected:
+ 	int _sceneNum;
++#ifdef __EMSCRIPTEN__
++	bool _skipOpening = false;
++#endif
+ 	void createScene(int sceneNum, int which);
+ 	void updateScene();
+ };
+diff --git a/engines/scumm/scumm.cpp b/engines/scumm/scumm.cpp
+--- a/engines/scumm/scumm.cpp
++++ b/engines/scumm/scumm.cpp
+@@ -2956,8 +2956,13 @@
+ 			}
+ 
+ #ifdef __EMSCRIPTEN__
++			// Loom CD accepts the difficulty choice in room 69 and starts
++			// its publisher sequence before handing over the distaff.
++			const bool loomOpening = _game.id == GID_LOOM && _game.version == 4 &&
++				_game.platform == Common::kPlatformDOS && _currentRoom == 69;
+ 			if (_roomResource != 0 && _userPut > 0 && vm.cutSceneStackPointer == 0 &&
+-				(!ScummWebIntro::nativeSkipEnabled() || (_cursor.state > 0 && vm.cutScenePtr[0] == 0)))
++				(!ScummWebIntro::nativeSkipEnabled() ||
++				 (!loomOpening && _cursor.state > 0 && vm.cutScenePtr[0] == 0)))
+ 				ScummWebIntro::gameplayStarted();
+ #endif
+ 			if (VAR_LAST_FRAME_SCUMM_TIME != 0xFF)

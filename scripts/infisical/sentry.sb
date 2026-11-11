@@ -1,0 +1,18 @@
+(version 1)
+(allow default)
+(deny process-exec)
+(allow process-exec (literal (param "NODE_BIN")))
+(deny network*)
+(allow network-outbound (remote tcp "localhost:8283"))
+(deny mach-lookup (global-name "com.apple.securityd") (global-name "com.apple.securityd.xpc"))
+(deny file-read-data file-write* (subpath (param "USER_HOME")))
+(allow file-read-data
+  (subpath (param "REPO_ROOT"))
+  (subpath (param "NODE_ROOT"))
+  (literal (param "CA_FILE")))
+(deny file-write* (subpath (param "REPO_ROOT")))
+(deny file-read-data
+  (subpath (string-append (param "REPO_ROOT") "/.git"))
+  (subpath (string-append (param "REPO_ROOT") "/.internal"))
+  (regex #"(^|/)[.]env($|[./])")
+  (regex #"(^|/)([.]netrc|[.]access[.]local[.]toml)$"))

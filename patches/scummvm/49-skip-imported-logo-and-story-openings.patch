@@ -1,0 +1,208 @@
+diff --git a/engines/dreamweb/titles.cpp b/engines/dreamweb/titles.cpp
+--- a/engines/dreamweb/titles.cpp
++++ b/engines/dreamweb/titles.cpp
+@@ -24,6 +24,8 @@
+ #include "engines/util.h"
+ #include "common/text-to-speech.h"
+ #include "common/config-manager.h"
++
++#include "engines/scummweb-intro.h"
+ 
+ namespace DreamWeb {
+ 
+@@ -208,6 +210,9 @@
+ }
+ 
+ void DreamWebEngine::intro() {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++#endif
+ 	loadTempText("T82");
+ 	loadPalFromIFF();
+ 	setMode();
+@@ -267,6 +272,10 @@
+ 
+ 	do {
+ 		waitForVSync();
++#ifdef __EMSCRIPTEN__
++		if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested())
++			_lastHardKey = Common::KEYCODE_ESCAPE;
++#endif
+ 
+ 		if (_lastHardKey == Common::KEYCODE_ESCAPE)
+ 			break;
+diff --git a/engines/teenagent/teenagent.h b/engines/teenagent/teenagent.h
+--- a/engines/teenagent/teenagent.h
++++ b/engines/teenagent/teenagent.h
+@@ -118,7 +118,10 @@
+ 	bool showLogo();
+ 	bool showCDLogo();
+ 	bool showMetropolis();
+-	int skipEvents() const;
++	int skipEvents();
++#ifdef __EMSCRIPTEN__
++	bool _scummwebSkipOpening = false;
++#endif
+ 
+ 	Common::String parseMessage(uint32 addr);
+ 
+diff --git a/engines/teenagent/teenagent.cpp b/engines/teenagent/teenagent.cpp
+--- a/engines/teenagent/teenagent.cpp
++++ b/engines/teenagent/teenagent.cpp
+@@ -351,7 +351,13 @@
+ 	return Common::kNoError;
+ }
+ 
+-int TeenAgentEngine::skipEvents() const {
++int TeenAgentEngine::skipEvents() {
++#ifdef __EMSCRIPTEN__
++	if (ScummWebIntro::nativeSkipEnabled() && (_scummwebSkipOpening || ScummWebIntro::skipRequested())) {
++		_scummwebSkipOpening = true;
++		return 1;
++	}
++#endif
+ 	Common::EventManager *_event = _system->getEventManager();
+ 	Common::Event event;
+ 	while (_event->pollEvent(event)) {
+@@ -651,7 +657,12 @@
+ 			return Common::kNoError;
+ 		scene->intro = true;
+ 		_sceneBusy = true;
+-		fnIntro();
++#ifdef __EMSCRIPTEN__
++		if (_scummwebSkipOpening)
++			scene->skipIntro();
++		else
++#endif
++			fnIntro();
+ 	}
+ 
+ 	CursorMan.showMouse(true);
+diff --git a/engines/queen/input.h b/engines/queen/input.h
+--- a/engines/queen/input.h
++++ b/engines/queen/input.h
+@@ -109,6 +109,9 @@
+ 
+ 	//! set this if we can quit
+ 	bool _canQuit;
++#ifdef __EMSCRIPTEN__
++	bool _skipOpeningCutaways = false;
++#endif
+ 
+ 	//! moved Cutaway::_quit here
+ 	bool _cutawayQuit;
+diff --git a/engines/queen/input.cpp b/engines/queen/input.cpp
+--- a/engines/queen/input.cpp
++++ b/engines/queen/input.cpp
+@@ -26,6 +26,8 @@
+ 
+ #include "queen/queen.h"
+ #include "queen/input.h"
++
++#include "engines/scummweb-intro.h"
+ 
+ namespace Queen {
+ 
+@@ -102,6 +104,15 @@
+ }
+ 
+ void Input::checkKeys() {
++#ifdef __EMSCRIPTEN__
++	if (ScummWebIntro::nativeSkipEnabled() && !ScummWebIntro::startupFinished()) {
++		const bool canSkip = _canQuit && _cutawayRunning && !_cutawayQuit;
++		if (ScummWebIntro::skipRequested(canSkip))
++			_skipOpeningCutaways = true;
++		if (canSkip && _skipOpeningCutaways && _inKey == kActionNone)
++			_inKey = kActionSkipCutaway;
++	}
++#endif
+ 
+ 	if (_inKey)
+ 		debug(6, "[Input::checkKeys] _inKey = %i", _inKey);
+diff --git a/engines/ngi/modal.h b/engines/ngi/modal.h
+--- a/engines/ngi/modal.h
++++ b/engines/ngi/modal.h
+@@ -66,6 +66,8 @@
+ 	int _countDown;
+ 	int _stillRunning;
+ 	int _sfxVolume;
++
++	void skipIntro();
+ 
+  public:
+ 	ModalIntro();
+diff --git a/engines/ngi/modal.cpp b/engines/ngi/modal.cpp
+--- a/engines/ngi/modal.cpp
++++ b/engines/ngi/modal.cpp
+@@ -38,6 +38,8 @@
+ 
+ #include "backends/keymapper/keymapper.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace NGI {
+ 
+ ModalIntro::ModalIntro() {
+@@ -64,6 +66,9 @@
+ }
+ 
+ ModalIntro::~ModalIntro() {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::skipRequested(false);
++#endif
+ 	g_nmi->stopAllSounds();
+ 	g_nmi->_sfxVolume = _sfxVolume;
+ 
+@@ -82,20 +87,26 @@
+ 	if (message->_param != kActionSkipIntro)
+ 		return false;
+ 
+-	if (_stillRunning) {
+-		if (!(_introFlags & 0x10)) {
+-			_countDown = 0;
+-			g_vars->sceneIntro_needBlackout = true;
+-			return true;
+-		}
++	skipIntro();
++	return true;
++}
++
++void ModalIntro::skipIntro() {
++	if (!_stillRunning)
++		return;
++
++	if (_introFlags & 0x10)
+ 		g_vars->sceneIntro_playing = false;
+-		g_vars->sceneIntro_needBlackout = true;
+-	}
+-
+-	return true;
++	else
++		_countDown = 0;
++	g_vars->sceneIntro_needBlackout = true;
+ }
+ 
+ bool ModalIntro::init(int counterdiff) {
++#ifdef __EMSCRIPTEN__
++	if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested(_stillRunning && g_vars->sceneIntro_playing))
++		skipIntro();
++#endif
+ 	if (!g_vars->sceneIntro_playing) {
+ 		if (!_stillRunning) {
+ 			finish();
+@@ -401,7 +412,15 @@
+ 
+ 	_decoder.start();
+ 
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++	const bool opening = !strcmp(filename, "intro2.avi") && ScummWebIntro::nativeSkipEnabled();
++#endif
+ 	while (!g_nmi->shouldQuit() && !_decoder.endOfVideo()) {
++#ifdef __EMSCRIPTEN__
++		if (opening && ScummWebIntro::skipRequested())
++			break;
++#endif
+ 		if (_decoder.needsUpdate()) {
+ 			const Graphics::Surface *frame = _decoder.decodeNextFrame();
+ 			if (frame) {

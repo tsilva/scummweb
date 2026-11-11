@@ -50,6 +50,11 @@ pnpm run dev:app --port auto
 Open the printed URL and select **Beneath a Steel Sky → Play**. This setup
 needs no Infisical login.
 
+For agent-operated Sentry reads on a provisioned Mac, run
+`pnpm sentry:check:vault` or `pnpm sentry:issues:vault -- --limit 10`.
+The reader uses the scoped Vault proxy. See the
+[Sentry access guide](docs/maintaining-scummweb.md#sentry-issue-reads-through-agent-vault).
+
 ## Further reading
 
 - [Player guide and maintenance](docs/maintaining-scummweb.md)

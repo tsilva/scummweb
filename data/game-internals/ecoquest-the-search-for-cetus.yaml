@@ -132,10 +132,13 @@ milestones:
     when: { flag: stopped-manta }
   - id: removed-harpoon
     label: Removed the harpoon from Cetus
+    implies: [whale]
     when: { flag: removed-harpoon }
   - id: treated-cetus
     label: Treated Cetus’s wound
+    implies: [whale]
     when: { flag: treated-cetus }
   - id: winning-ending
     label: "Returned after saving Cetus"
+    implies: [final-fight]
     when: { all: [{ room: ending }, { variable: previous-room, equals: 580 }] }

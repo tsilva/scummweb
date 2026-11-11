@@ -1,0 +1,465 @@
+diff --git a/engines/agos/pn.cpp b/engines/agos/pn.cpp
+--- a/engines/agos/pn.cpp
++++ b/engines/agos/pn.cpp
+@@ -23,6 +23,8 @@
+ 
+ #include "agos/intern.h"
+ #include "agos/agos.h"
++
++#include "engines/scummweb-intro.h"
+ 
+ namespace AGOS {
+ 
+@@ -171,6 +173,10 @@
+ }
+ 
+ void AGOSEngine_PN::introSeq() {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++	bool skipOpening = false;
++#endif
+ 	if (isPnAmiga())
+ 		_videoWindows[15] = 200;
+ 
+@@ -179,6 +185,12 @@
+ 
+ 	_exitCutscene = false;
+ 	while (!shouldQuit() && !_exitCutscene && _variableArray[228] != 1) {
++#ifdef __EMSCRIPTEN__
++		if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested()) {
++			skipOpening = true;
++			break;
++		}
++#endif
+ 		processSpecialKeys();
+ 		delay(1);
+ 	}
+@@ -191,6 +203,10 @@
+ 
+ 	_exitCutscene = false;
+ 	while (!shouldQuit() && !_exitCutscene && _variableArray[228] != 2) {
++#ifdef __EMSCRIPTEN__
++		if (skipOpening || (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested()))
++			break;
++#endif
+ 		processSpecialKeys();
+ 		delay(1);
+ 	}
+diff --git a/engines/draci/game.h b/engines/draci/game.h
+--- a/engines/draci/game.h
++++ b/engines/draci/game.h
+@@ -269,6 +269,9 @@
+ 	void addItem(int itemID);
+ 
+ 	int getEscRoom() const { return _currentRoom._escRoom; }
++#ifdef __EMSCRIPTEN__
++	bool isOpeningRoom() const { return getRoomNum() == _info._startRoom && getRoomNum() != getMapRoom(); }
++#endif
+ 	int getMapRoom() const { return _info._mapRoom; }
+ 	int getMapID() const { return _currentRoom._mapID; }
+ 
+diff --git a/engines/draci/draci.cpp b/engines/draci/draci.cpp
+--- a/engines/draci/draci.cpp
++++ b/engines/draci/draci.cpp
+@@ -46,6 +46,8 @@
+ #include "draci/script.h"
+ #include "draci/sound.h"
+ #include "draci/sprite.h"
++
++#include "engines/scummweb-intro.h"
+ 
+ namespace Draci {
+ 
+@@ -307,6 +309,46 @@
+ }
+ 
+ void DraciEngine::handleEvents() {
++	const auto escape = [this]() {
++		if (_game->getLoopStatus() == kStatusInventory &&
++		   _game->getLoopSubstatus() == kOuterLoop) {
++			_game->inventoryDone();
++			return;
++		}
++
++		const int escRoom = _game->getRoomNum() != _game->getMapRoom()
++			? _game->getEscRoom() : _game->getPreviousRoomNum();
++
++		// Check if there is an escape room defined for the current room
++		if (escRoom >= 0) {
++
++			// Schedule room change
++			// TODO: gate 0 (always present) is not always best for
++			// returning from the map, e.g. in the starting location.
++			// also, after loading the game, we shouldn't run any gate
++			// program, but rather restore the state of all objects.
++			_game->scheduleEnteringRoomUsingGate(escRoom, 0);
++
++			// Immediately cancel any running animation or dubbing and
++			// end any currently running GPL programs.  In the intro it
++			// works as intended---skipping the rest of it.
++			//
++			// In the map, this causes that animation on newly
++			// discovered locations will be re-run next time and
++			// cut-scenes won't be played.
++			_game->setExitLoop(true);
++			_script->endCurrentProgram(true);
++
++			stopTextToSpeech();
++		}
++	};
++
++#ifdef __EMSCRIPTEN__
++	if (ScummWebIntro::nativeSkipEnabled() &&
++		ScummWebIntro::skipRequested(_game->isOpeningRoom() && _game->getEscRoom() >= 0))
++		escape();
++#endif
++
+ 	Common::Event event;
+ 
+ 	while (_eventMan->pollEvent(event)) {
+@@ -329,40 +371,9 @@
+ 			break;
+ 		case Common::EVENT_CUSTOM_ENGINE_ACTION_START:
+ 			switch (event.customType) {
+-			case kActionEscape: {
+-				if (_game->getLoopStatus() == kStatusInventory &&
+-				   _game->getLoopSubstatus() == kOuterLoop) {
+-					_game->inventoryDone();
+-					break;
+-				}
+-
+-				const int escRoom = _game->getRoomNum() != _game->getMapRoom()
+-					? _game->getEscRoom() : _game->getPreviousRoomNum();
+-
+-				// Check if there is an escape room defined for the current room
+-				if (escRoom >= 0) {
+-
+-					// Schedule room change
+-					// TODO: gate 0 (always present) is not always best for
+-					// returning from the map, e.g. in the starting location.
+-					// also, after loading the game, we shouldn't run any gate
+-					// program, but rather restore the state of all objects.
+-					_game->scheduleEnteringRoomUsingGate(escRoom, 0);
+-
+-					// Immediately cancel any running animation or dubbing and
+-					// end any currently running GPL programs.  In the intro it
+-					// works as intended---skipping the rest of it.
+-					//
+-					// In the map, this causes that animation on newly
+-					// discovered locations will be re-run next time and
+-					// cut-scenes won't be played.
+-					_game->setExitLoop(true);
+-					_script->endCurrentProgram(true);
+-
+-					stopTextToSpeech();
+-				}
+-				break;
+-			}
++			case kActionEscape:
++				escape();
++				break;
+ 			case kActionMap:
+ 				if (_game->getLoopStatus() == kStatusOrdinary) {
+ 					const int new_room = _game->getRoomNum() != _game->getMapRoom()
+diff --git a/engines/kyra/engine/kyra_lok.h b/engines/kyra/engine/kyra_lok.h
+--- a/engines/kyra/engine/kyra_lok.h
++++ b/engines/kyra/engine/kyra_lok.h
+@@ -388,6 +388,10 @@
+ 	bool _seqPlayerFlag;
+ 	bool _skipIntroFlag;
+ 	bool _abortIntroFlag;
++#ifdef __EMSCRIPTEN__
++	bool _scummwebOpening = false;
++	bool _scummwebSkipOpening = false;
++#endif
+ 
+ 	bool _menuDirectlyToLoad;
+ 	uint8 *_itemBkgBackUp[2];
+diff --git a/engines/kyra/engine/kyra_lok.cpp b/engines/kyra/engine/kyra_lok.cpp
+--- a/engines/kyra/engine/kyra_lok.cpp
++++ b/engines/kyra/engine/kyra_lok.cpp
+@@ -35,6 +35,8 @@
+ #include "common/config-manager.h"
+ #include "common/debug-channels.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Kyra {
+ 
+ KyraEngine_LoK::KyraEngine_LoK(OSystem *system, const GameFlags &flags)
+@@ -363,7 +365,15 @@
+ 		if (_gameToLoad == -1) {
+ 			setGameFlag(0xEF);
+ 			_seqPlayerFlag = true;
++#ifdef __EMSCRIPTEN__
++			_scummwebOpening = ScummWebIntro::nativeSkipEnabled() && !_flags.isDemo;
++#endif
+ 			seq_intro();
++#ifdef __EMSCRIPTEN__
++			_scummwebOpening = false;
++			_scummwebSkipOpening = false;
++			ScummWebIntro::skipRequested(false);
++#endif
+ 			_seqPlayerFlag = false;
+ 
+ 			if (_flags.isDemo) {
+@@ -582,6 +592,13 @@
+ 		if (amount > 0 && !skipFlag() && !shouldQuit())
+ 			_system->delayMillis(10);
+ 
++#ifdef __EMSCRIPTEN__
++		if (_scummwebOpening && (_scummwebSkipOpening || ScummWebIntro::skipRequested())) {
++			_scummwebSkipOpening = true;
++			snd_stopVoice();
++			return;
++		}
++#endif
+ 		// FIXME: Major hackery to allow skipping the intro
+ 		if (_seqPlayerFlag) {
+ 			for (Common::List<Event>::iterator i = _eventList.begin(); i != _eventList.end(); ++i) {
+diff --git a/engines/kyra/sequence/sequences_lok.cpp b/engines/kyra/sequence/sequences_lok.cpp
+--- a/engines/kyra/sequence/sequences_lok.cpp
++++ b/engines/kyra/sequence/sequences_lok.cpp
+@@ -1520,6 +1520,10 @@
+ }
+ 
+ bool KyraEngine_LoK::seq_skipSequence() const {
++#ifdef __EMSCRIPTEN__
++	if (_scummwebSkipOpening)
++		return true;
++#endif
+ 	return shouldQuit() || _abortIntroFlag;
+ }
+ 
+diff --git a/engines/kyra/sequence/sequences_hof.cpp b/engines/kyra/sequence/sequences_hof.cpp
+--- a/engines/kyra/sequence/sequences_hof.cpp
++++ b/engines/kyra/sequence/sequences_hof.cpp
+@@ -28,6 +28,8 @@
+ #include "kyra/engine/timer.h"
+ 
+ #include "common/system.h"
++
++#include "engines/scummweb-intro.h"
+ 
+ namespace Kyra {
+ 
+@@ -558,6 +560,9 @@
+ 	_vm->sound()->loadSoundFile(0);
+ 
+ 	setupCallbacks();
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++#endif
+ 	runLoop();
+ 
+ 	return _result;
+@@ -791,6 +796,15 @@
+ 
+ 	if (_abortRequested)
+ 		return true;
++
++#ifdef __EMSCRIPTEN__
++	if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested(
++		_target == kHoF && !_isFinale && _curScene <= _lastScene && _curScene > _preventSkipBeforeScene &&
++		(!_startupSaveLoadable || _curScene != kSequenceTitle))) {
++		_abortRequested = true;
++		return true;
++	}
++#endif
+ 
+ 	while (_system->getEventManager()->pollEvent(event)) {
+ 		switch (event.type) {
+diff --git a/engines/kyra/sequence/sequences_lol.cpp b/engines/kyra/sequence/sequences_lol.cpp
+--- a/engines/kyra/sequence/sequences_lol.cpp
++++ b/engines/kyra/sequence/sequences_lol.cpp
+@@ -28,6 +28,8 @@
+ 
+ #include "common/system.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Kyra {
+ 
+ #pragma mark - Intro
+@@ -258,7 +260,14 @@
+ 	_screen->hideMouse();
+ 
+ 	uint32 palNextFadeStep = 0;
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++#endif
+ 	while (!_tim->finished() && !shouldQuit() && !skipFlag()) {
++#ifdef __EMSCRIPTEN__
++		if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested())
++			break;
++#endif
+ 		updateInput();
+ 		_tim->exec(intro, false);
+ 		if (!(_flags.isDemo && !_flags.isTalkie) && _flags.platform != Common::kPlatformPC98)
+diff --git a/engines/lure/intro.cpp b/engines/lure/intro.cpp
+--- a/engines/lure/intro.cpp
++++ b/engines/lure/intro.cpp
+@@ -24,6 +24,8 @@
+ #include "lure/animseq.h"
+ #include "lure/events.h"
+ #include "lure/sound.h"
++
++#include "engines/scummweb-intro.h"
+ 
+ namespace Lure {
+ 
+@@ -94,7 +96,7 @@
+ bool Introduction::interruptableDelay(uint32 milliseconds) {
+ 	Events &events = Events::getReference();
+ 
+-	if (events.interruptableDelay(milliseconds)) {
++	if (events.interruptableDelay(milliseconds, true)) {
+ 		if (events.type() == Common::EVENT_CUSTOM_ENGINE_ACTION_START) 
+ 			return events.event().customType == kActionEscape;
+ 		else if (LureEngine::getReference().shouldQuit())
+@@ -110,6 +112,9 @@
+ // Main method for the introduction sequence
+ 
+ bool Introduction::show() {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++#endif
+ 	Screen &screen = Screen::getReference();
+ 	bool isEGA = LureEngine::getReference().isEGA();
+ 	screen.setPaletteEmpty();
+@@ -157,7 +162,7 @@
+ 		}
+ 
+ 		result = false;
+-		switch (anim->show()) {
++		switch (anim->show(true)) {
+ 		case ABORT_NONE:
+ 			if (curr_anim->endingPause != 0) {
+ 				if (curr_anim->soundTransitionPause != 0) {
+diff --git a/engines/lure/events.h b/engines/lure/events.h
+--- a/engines/lure/events.h
++++ b/engines/lure/events.h
+@@ -67,7 +67,7 @@
+ 
+ 	bool pollEvent();
+ 	void waitForPress();
+-	bool interruptableDelay(uint32 milliseconds);
++	bool interruptableDelay(uint32 milliseconds, bool opening = false);
+ 
+ 	Common::Event event() { return _event; }
+ 	Common::EventType type() { return _event.type; }
+diff --git a/engines/lure/events.cpp b/engines/lure/events.cpp
+--- a/engines/lure/events.cpp
++++ b/engines/lure/events.cpp
+@@ -27,6 +27,8 @@
+ #include "lure/events.h"
+ #include "lure/lure.h"
+ #include "lure/res.h"
++
++#include "engines/scummweb-intro.h"
+ 
+ namespace Lure {
+ 
+@@ -203,13 +205,22 @@
+ // Delays for a given number of milliseconds. If it returns true, it indicates that
+ // the Escape has been pressed to abort whatever sequence is being displayed
+ 
+-bool Events::interruptableDelay(uint32 milliseconds) {
++bool Events::interruptableDelay(uint32 milliseconds, bool opening) {
+ 	Events &events = Events::getReference();
+ 	LureEngine &engine = LureEngine::getReference();
+ 	uint32 delayCtr = g_system->getMillis() + milliseconds;
+ 
+ 	while (g_system->getMillis() < delayCtr) {
+ 		if (engine.shouldQuit()) return true;
++
++#ifdef __EMSCRIPTEN__
++		if (opening && ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested()) {
++			_event = Common::Event();
++			_event.type = Common::EVENT_CUSTOM_ENGINE_ACTION_START;
++			_event.customType = kActionEscape;
++			return true;
++		}
++#endif
+ 
+ 		if (events.pollEvent()) {
+ 			if (((events.type() == Common::EVENT_KEYDOWN) && (events.event().kbd.ascii != 0)) ||
+diff --git a/engines/lure/animseq.h b/engines/lure/animseq.h
+--- a/engines/lure/animseq.h
++++ b/engines/lure/animseq.h
+@@ -50,7 +50,7 @@
+ 	int _frameDelay;
+ 	uint8 _loops;
+ 
+-	AnimAbortType delay(uint32 milliseconds);
++	AnimAbortType delay(uint32 milliseconds, bool opening = false);
+ 	void egaDecodeFrame(byte *&pPixels);
+ 	void vgaDecodeFrame(byte *&pPixels, byte *&pLines);
+ public:
+@@ -58,7 +58,7 @@
+ 		const AnimSoundSequence *soundList = NULL, uint8 loops = 1);
+ 	~AnimationSequence();
+ 
+-	AnimAbortType show();
++	AnimAbortType show(bool opening = false);
+ 	bool step();
+ 	byte *showInitialScreen(byte *pSrc = 0);
+ };
+diff --git a/engines/lure/animseq.cpp b/engines/lure/animseq.cpp
+--- a/engines/lure/animseq.cpp
++++ b/engines/lure/animseq.cpp
+@@ -27,17 +27,23 @@
+ #include "lure/sound.h"
+ #include "common/endian.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Lure {
+ 
+ // delay
+ // Delays for a given number of milliseconds. If it returns true, it indicates that
+ // Escape has been pressed, and the introduction should be aborted.
+ 
+-AnimAbortType AnimationSequence::delay(uint32 milliseconds) {
++AnimAbortType AnimationSequence::delay(uint32 milliseconds, bool opening) {
+ 	Events &events = Events::getReference();
+ 	uint32 delayCtr = g_system->getMillis() + milliseconds;
+ 
+ 	while (g_system->getMillis() < delayCtr) {
++#ifdef __EMSCRIPTEN__
++		if (opening && ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested())
++			return ABORT_END_INTRO;
++#endif
+ 		while (events.pollEvent()) {
+ 			if ((events.type() == Common::EVENT_CUSTOM_ENGINE_ACTION_START) && (events.event().customType != kActionNone)) {
+ 				if (events.event().customType == kActionEscape)
+@@ -202,7 +208,7 @@
+ // show
+ // Main method for displaying the animation
+ 
+-AnimAbortType AnimationSequence::show() {
++AnimAbortType AnimationSequence::show(bool opening) {
+ 	Screen &screen = Screen::getReference();
+ 	AnimAbortType result;
+ 	const AnimSoundSequence *soundFrame = _soundList;
+@@ -238,7 +244,7 @@
+ 			}
+ 		}
+ 
+-		result = delay(_frameDelay * 1000 / 50);
++		result = delay(_frameDelay * 1000 / 50, opening);
+ 		if (result != ABORT_NONE) return result;
+ 
+ 		if ((soundFrame != nullptr) && (++frameCtr == soundFrame->numFrames)) {
+diff --git a/engines/scumm/input.cpp b/engines/scumm/input.cpp
+--- a/engines/scumm/input.cpp
++++ b/engines/scumm/input.cpp
+@@ -401,7 +401,7 @@
+ 	_keyPressed.reset();
+ 
+ #ifdef __EMSCRIPTEN__
+-	if (_game.id < GID_HEGAME && !_game.heversion) {
++	if (ScummWebIntro::nativeSkipEnabled()) {
+ 		const bool exitEnabled = VAR_CUTSCENEEXIT_KEY == 0xFF || VAR(VAR_CUTSCENEEXIT_KEY) != 0;
+ 		bool canSkip = vm.cutScenePtr[vm.cutSceneStackPointer] != 0;
+ #ifdef ENABLE_SCUMM_7_8

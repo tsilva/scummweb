@@ -1,0 +1,69 @@
+diff --git a/engines/sci/engine/kevent.cpp b/engines/sci/engine/kevent.cpp
+--- a/engines/sci/engine/kevent.cpp
++++ b/engines/sci/engine/kevent.cpp
+@@ -59,6 +59,18 @@
+ 		return room == 900;
+ 	case GID_ECOQUEST:
+ 		return room == 360;
++	case GID_PQ2:
++		return room == 200;
++	case GID_PQ3:
++	case GID_SQ1:
++	case GID_SQ4:
++		return room == 1;
++	case GID_SQ3:
++		return room == 900;
++	case GID_LSL1:
++		return room == 710;
++	case GID_LSL6HIRES:
++		return room == 100;
+ 	case GID_FREDDYPHARKAS:
+ 		return room == 100;
+ 	case GID_JONES:
+@@ -96,6 +108,26 @@
+ #ifdef __EMSCRIPTEN__
+ 	const int openingRoom = globals && size > kGlobalVarNewRoomNo && globals[kGlobalVarNewRoomNo].isNumber()
+ 		? s->currentRoomNumber() : -1;
++	// Larry 5's original Fast Forward icon changes to gFfRoom and marks
++	// that destination consumed. Reuse its native newRoom method for this
++	// exact Amiga opening state, preserving normal disposal and room setup.
++	if (g_sci->getGameId() == GID_LSL5 && g_sci->getPlatform() == Common::kPlatformAmiga &&
++			ScummWebIntro::nativeSkipEnabled() && !ScummWebIntro::startupFinished() &&
++			openingRoom == 100 && s->_browserIntroSkippedRoom != 100 && size > 151 &&
++			globals[151] == make_reg(0, 120)) {
++		const char *roomName = segMan->getObjectName(globals[kGlobalVarCurrentRoom]);
++		const int newRoomSelector = g_sci->getKernel()->findSelector("newRoom");
++		if (roomName && strcmp(roomName, "rm100") == 0 && newRoomSelector >= 0 &&
++				(s->_browserSkipTimedOpening || ScummWebIntro::skipRequested())) {
++			s->_browserIntroSkippedRoom = 100;
++			s->_browserSkipTimedOpening = false;
++			ScummWebIntro::skipRequested(false);
++			const reg_t destination = globals[151];
++			invokeSelector(s, globals[kGlobalVarCurrentRoom], newRoomSelector, argc, argv, 1, &destination);
++			s->variables[VAR_GLOBAL][151] = make_reg(0, 1120);
++			return NULL_REG;
++		}
++	}
+ 	const bool opening = ScummWebIntro::nativeSkipEnabled() && !ScummWebIntro::startupFinished() &&
+ 		isBrowserOpeningRoom(g_sci->getGameId(), openingRoom);
+ 	if (!opening && s->_browserIntroAvailable) {
+@@ -137,13 +169,14 @@
+ 		// repeat it in the same room or carry it into the actual game.
+ 		const bool continueLongbowOpening = g_sci->getGameId() == GID_LONGBOW &&
+ 			s->_browserIntroSkippedRoom == 98 && openingRoom == 96;
+-		// EcoQuest credits follow its timed publisher room. Carry that
+-		// accepted request into the original Escape-enabled credit script.
+-		const bool continueTimedOpening = g_sci->getGameId() == GID_ECOQUEST &&
+-			openingRoom == 360 && s->_browserSkipTimedOpening;
++		// Known credit rooms can follow a timed publisher animation. Carry
++		// its accepted request only into these original opening key handlers.
++		const bool continueTimedOpening = s->_browserSkipTimedOpening;
+ 		if (continueLongbowOpening || continueTimedOpening || ScummWebIntro::skipRequested()) {
+ 			curEvent.type = kSciEventKeyDown;
+-			curEvent.character = kSciKeyEsc;
++			// Police Quest II's original Introduction accepts Return or a
++			// printable character. Its Escape handler does not skip credits.
++			curEvent.character = g_sci->getGameId() == GID_PQ2 ? kSciKeyEnter : kSciKeyEsc;
+ 			s->_browserIntroSkippedRoom = openingRoom;
+ 			s->_browserIntroAvailable = false;
+ 			ScummWebIntro::skipRequested(false);

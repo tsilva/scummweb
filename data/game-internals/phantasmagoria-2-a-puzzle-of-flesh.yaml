@@ -9,7 +9,7 @@ edition:
   game_id: phantasmagoria2
   index_md5: b200596c2dc7277d0510dee44bac9ee0
 telemetry: snapshot
-completion_milestone: winning-ending
+completion_milestone: resolved-threshold
 rooms:
   access-panel: 9021
   threshold: 9400
@@ -56,6 +56,6 @@ milestones:
   - id: solved-alien-console
     label: Solved the alien console
     when: { flag: solved-alien-console }
-  - id: winning-ending
+  - id: resolved-threshold
     label: Solved the alien console and reached the final choice
     when: { all: [{ room: epilogue-choice }, { variable: previous-room, equals: -23504 }, { flag: solved-alien-console }] }

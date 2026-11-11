@@ -1,0 +1,80 @@
+diff --git a/engines/made/script.cpp b/engines/made/script.cpp
+--- a/engines/made/script.cpp
++++ b/engines/made/script.cpp
+@@ -27,6 +27,7 @@
+ #include "made/database.h"
+ #include "made/screen.h"
+ #include "engines/scummweb-agent-loop.h"
++#include "engines/scummweb-intro.h"
+ 
+ #include "common/util.h"
+ 
+@@ -163,10 +164,34 @@
+ 	const bool mainInterpreter = _vm->_script == this && _vm->_agentRestoreScript;
+ 	static constexpr byte kExtendOpcode = 52;
+ 	static constexpr byte kPollEventExternal = 6;
++	bool browserOpeningWaitAvailable = false;
+ #endif
+ 	while (_running && !_vm->shouldQuit()) {
+ 		byte opcode = readByte();
+ #ifdef __EMSCRIPTEN__
++		if (opcode == kExtendOpcode && *_codeIp == kPollEventExternal &&
++				_vm->getGameID() == GID_LGOP2 && ScummWebIntro::nativeSkipEnabled() &&
++				!ScummWebIntro::startupFinished()) {
++			static const byte waitCode[] = {6, 52, 6, 0, 2, 10, 0, 3, 1, 0, 31};
++			const bool openingWait = _vm->_dat->getMainCodeObjectIndex() == 214 &&
++				_runningScriptObjectIndex == 20 && _codeIp - _codeBase == 2 &&
++				_stack.peek(_localStackPos + 1) == 162 && _stack.peek(_localStackPos + 2) == 6 &&
++				_vm->_dat->getObject(20)->getSize() == sizeof(waitCode) &&
++				memcmp(_codeBase, waitCode, sizeof(waitCode)) == 0;
++			if (openingWait) {
++				browserOpeningWaitAvailable = true;
++				if (ScummWebIntro::skipRequested()) {
++					// The prologue's original Return handler leads to its
++					// character choice without choosing a character.
++					_vm->_eventKey = 13;
++					_vm->_eventNum = 5;
++					ScummWebIntro::skipRequested(false);
++				}
++			} else if (browserOpeningWaitAvailable) {
++				browserOpeningWaitAvailable = false;
++				ScummWebIntro::skipRequested(false);
++			}
++		}
+ 		if (mainInterpreter && opcode == kExtendOpcode && *_codeIp == kPollEventExternal) {
+ 			const bool mainInput = _runningScriptObjectIndex == _vm->_dat->getMainCodeObjectIndex();
+ 			if (mainInput)
+diff --git a/engines/sci/engine/kevent.cpp b/engines/sci/engine/kevent.cpp
+--- a/engines/sci/engine/kevent.cpp
++++ b/engines/sci/engine/kevent.cpp
+@@ -164,6 +164,17 @@
+ 	curEvent = g_sci->getEventManager()->getSciEvent(mask);
+ #ifdef __EMSCRIPTEN__
+ 	bool openingHandlerReady = true;
++	if (opening && g_sci->getGameId() == GID_LONGBOW && openingRoom == 95) {
++		const int scriptSelector = g_sci->getKernel()->findSelector("script");
++		openingHandlerReady = false;
++		if (scriptSelector >= 0) {
++			const reg_t script = readSelector(segMan, globals[kGlobalVarCurrentRoom], scriptSelector);
++			const char *name = segMan->getObjectName(script);
++			// ZScript::init registers the original Escape handler before
++			// bardsTheme becomes the current room script.
++			openingHandlerReady = name && strcmp(name, "bardsTheme") == 0;
++		}
++	}
+ 	if (opening && g_sci->getGameId() == GID_LSL7) {
+ 		const int scriptSelector = g_sci->getKernel()->findSelector("script");
+ 		const int stateSelector = g_sci->getKernel()->findSelector("state");
+diff --git a/engines/sci/graphics/video32.cpp b/engines/sci/graphics/video32.cpp
+--- a/engines/sci/graphics/video32.cpp
++++ b/engines/sci/graphics/video32.cpp
+@@ -179,7 +179,8 @@
+ #ifdef __EMSCRIPTEN__
+ 		const bool canSkip = flags & (kEventFlagEscapeKey | kEventFlagMouseDown);
+ 		const bool openingGroup = !ScummWebIntro::startupFinished() && g_sci->getGameId() == GID_TORIN &&
+-			g_sci->getEngineState()->currentRoomNumber() == 61000;
++			(g_sci->getEngineState()->currentRoomNumber() == 61000 ||
++			 g_sci->getEngineState()->currentRoomNumber() == 8000);
+ 		if (!openingGroup)
+ 			_browserSkipOpening = false;
+ 		if (stopFlag == kEventFlagNone && canSkip &&

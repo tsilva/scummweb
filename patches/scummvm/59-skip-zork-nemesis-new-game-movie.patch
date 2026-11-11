@@ -1,0 +1,28 @@
+diff --git a/engines/zvision/scripting/actions.cpp b/engines/zvision/scripting/actions.cpp
+--- a/engines/zvision/scripting/actions.cpp
++++ b/engines/zvision/scripting/actions.cpp
+@@ -1166,15 +1166,15 @@
+ 
+ 	bool opening = false;
+ #ifdef __EMSCRIPTEN__
+-	// The startup node owns the logo movies and the first new-game video.
+-	if (_engine->getScriptManager()->getCurrentLocation() == "gary") {
+-		const Common::String name = _fileName.baseName();
+-		if (_engine->getGameId() == GID_GRANDINQUISITOR)
+-			opening = name.equalsIgnoreCase("g000m971.avi") || name.equalsIgnoreCase("g000m991.avi") ||
+-				name.equalsIgnoreCase("g000m981.avi") || name.equalsIgnoreCase("g000m411.avi");
+-		else if (_engine->getGameId() == GID_NEMESIS)
+-			opening = name.equalsIgnoreCase("u000a51c.avi");
+-	}
++	// Match both the original startup node and the individual movie.
++	const auto location = _engine->getScriptManager()->getCurrentLocation();
++	const Common::String name = _fileName.baseName();
++	if (_engine->getGameId() == GID_GRANDINQUISITOR && location == "gary")
++		opening = name.equalsIgnoreCase("g000m971.avi") || name.equalsIgnoreCase("g000m991.avi") ||
++			name.equalsIgnoreCase("g000m981.avi") || name.equalsIgnoreCase("g000m411.avi");
++	else if (_engine->getGameId() == GID_NEMESIS)
++		opening = (location == "gary" && name.equalsIgnoreCase("u000a51c.avi")) ||
++			(location == "gjg0" && name.equalsIgnoreCase("t000a11c.avi"));
+ #endif
+ 	_engine->playVideo(*decoder, destRect, _skippable, sub, srcRect, opening);
+ 

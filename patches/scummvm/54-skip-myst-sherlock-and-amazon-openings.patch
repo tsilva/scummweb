@@ -1,0 +1,337 @@
+diff --git a/engines/access/amazon/amazon_game.cpp b/engines/access/amazon/amazon_game.cpp
+--- a/engines/access/amazon/amazon_game.cpp
++++ b/engines/access/amazon/amazon_game.cpp
+@@ -20,6 +20,7 @@
+  */
+ 
+ #include "access/resources.h"
++#include "engines/scummweb-intro.h"
+ #include "access/amazon/amazon_game.h"
+ #include "access/amazon/amazon_resources.h"
+ #include "access/amazon/amazon_room.h"
+@@ -143,6 +144,9 @@
+ 		}
+ 
+ 		// Execute the room
++#ifdef __EMSCRIPTEN__
++		ScummWebIntro::gameplayStarted();
++#endif
+ 		_room->doRoom();
+ 	} while (_restartFl);
+ }
+diff --git a/engines/access/amazon/amazon_logic.cpp b/engines/access/amazon/amazon_logic.cpp
+--- a/engines/access/amazon/amazon_logic.cpp
++++ b/engines/access/amazon/amazon_logic.cpp
+@@ -24,6 +24,7 @@
+ #include "access/resources.h"
+ #include "access/screen.h"
+ #include "access/amazon/amazon_game.h"
++#include "engines/scummweb-intro.h"
+ #include "access/amazon/amazon_logic.h"
+ #include "access/amazon/amazon_resources.h"
+ 
+@@ -158,7 +159,11 @@
+ 
+ 		events.pollEventsAndWait();
+ 
+-		if (_vm->_events->isKeyActionMousePressed()) {
++		bool skipCamp = false;
++#ifdef __EMSCRIPTEN__
++		skipCamp = ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested();
++#endif
++		if (skipCamp || _vm->_events->isKeyActionMousePressed()) {
+ 			_skipStart = true;
+ 			_vm->_midi->newMusic(10, 1);
+ 			break;
+@@ -212,6 +217,9 @@
+ }
+ 
+ void Opening::doIntroduction() {
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::SkipSegment introSegment;
++#endif
+ 	Screen &screen = *_vm->_screen;
+ 
+ 	screen.setInitialPalettte();
+@@ -346,6 +354,7 @@
+ 		_vm->_buffer2.copyFrom(*_vm->_screen);
+ 		_vm->_buffer1.copyFrom(*_vm->_screen);
+ 
++		bool skipTitle = false;
+ 		const int COUNTDOWN[6] = { 2, 0x80, 1, 0x7d, 0, 0x87 };
+ 		for (_pCount = 0; _pCount < 3 && !_vm->shouldQuit(); ++_pCount) {
+ 			_vm->_buffer2.blitFrom(_vm->_buffer1);
+@@ -358,6 +367,12 @@
+ 			while (!_vm->shouldQuit() && _vm->_events->_vbCount > 0 && !_skipStart) {
+ 				_vm->_events->pollEventsAndWait();
+ 				bool skip = _vm->_events->_rightButton;
++#ifdef __EMSCRIPTEN__
++				if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested()) {
++					skipTitle = true;
++					skip = true;
++				}
++#endif
+ 				if (_vm->_events->peekAction() == kActionSkip) {
+ 					Common::CustomEventType event;
+ 					_vm->_events->getAction(event);
+@@ -390,11 +405,17 @@
+ 		screen.forceFadeIn();
+ 		_vm->_midi->newMusic(1, 0);
+ 		_vm->_events->_vbCount = 950;
+-		while (!_vm->shouldQuit() && (_vm->_events->_vbCount > 0) && !_vm->_events->isKeyActionMousePressed()) {
++		while (!_vm->shouldQuit() && (_vm->_events->_vbCount > 0) && !skipTitle && !_vm->_events->isKeyActionMousePressed()) {
+ 			_vm->_events->pollEventsAndWait();
+-		}
+-
+-		if (_vm->_events->_rightButton) {
++#ifdef __EMSCRIPTEN__
++			if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested()) {
++				skipTitle = true;
++				break;
++			}
++#endif
++		}
++
++		if (skipTitle || _vm->_events->_rightButton) {
+ 			_skipStart = true;
+ 			_vm->_room->clearRoom();
+ 			_vm->_events->showCursor();
+@@ -424,8 +445,12 @@
+ 	_pCount = 0;
+ 
+ 	while (!_vm->shouldQuit()) {
+-		if (_vm->_events->isKeyActionMousePressed()) {
+-			if (_vm->_events->_rightButton)
++		bool skipTitle = false;
++#ifdef __EMSCRIPTEN__
++		skipTitle = ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested();
++#endif
++		if (skipTitle || _vm->_events->isKeyActionMousePressed()) {
++			if (skipTitle || _vm->_events->_rightButton)
+ 				_skipStart = true;
+ 			_vm->_room->clearRoom();
+ 			_vm->_events->showCursor();
+diff --git a/engines/mohawk/myst_stacks/intro.cpp b/engines/mohawk/myst_stacks/intro.cpp
+--- a/engines/mohawk/myst_stacks/intro.cpp
++++ b/engines/mohawk/myst_stacks/intro.cpp
+@@ -19,6 +19,7 @@
+  *
+  */
+ 
++#include "engines/scummweb-intro.h"
+ #include "mohawk/myst.h"
+ #include "mohawk/myst_areas.h"
+ #include "mohawk/myst_graphics.h"
+@@ -60,8 +61,15 @@
+ }
+ 
+ void Intro::runPersistentScripts() {
+-	if (_introMoviesRunning)
++	if (_introMoviesRunning) {
++#ifdef __EMSCRIPTEN__
++		if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested()) {
++			_vm->_video->stopVideos();
++			_introStep = 6;
++		}
++#endif
+ 		introMovies_run();
++	}
+ 
+ 	if (_linkBookRunning)
+ 		mystLinkBook_run();
+@@ -124,6 +132,9 @@
+ 			_introStep = 6;
+ 		break;
+ 	default:
++#ifdef __EMSCRIPTEN__
++		ScummWebIntro::skipRequested(false);
++#endif
+ 		if (_vm->isGameVariant(GF_DEMO))
+ 			_vm->changeToCard(2001, kTransitionRightToLeft);
+ 		else
+diff --git a/engines/sherlock/animation.cpp b/engines/sherlock/animation.cpp
+--- a/engines/sherlock/animation.cpp
++++ b/engines/sherlock/animation.cpp
+@@ -19,6 +19,7 @@
+  *
+  */
+ 
++#include "engines/scummweb-intro.h"
+ #include "sherlock/animation.h"
+ #include "sherlock/sherlock.h"
+ #include "sherlock/scalpel/scalpel_screen.h"
+@@ -130,6 +131,12 @@
+ 			events.wait(speed * 3);
+ 		}
+ 
++#ifdef __EMSCRIPTEN__
++		if (intro && ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested()) {
++			skipped = true;
++			break;
++		}
++#endif
+ 		if (events.actionHit()) {
+ 			Common::CustomEventType action = events.getAction();
+ 			if (action == kActionSkipAnim) {
+diff --git a/engines/sherlock/events.cpp b/engines/sherlock/events.cpp
+--- a/engines/sherlock/events.cpp
++++ b/engines/sherlock/events.cpp
+@@ -25,9 +25,11 @@
+ #include "engines/util.h"
+ #include "graphics/cursorman.h"
+ #include "sherlock/sherlock.h"
++#include "engines/scummweb-intro.h"
+ #include "sherlock/events.h"
+ #include "sherlock/surface.h"
+ #include "sherlock/tattoo/tattoo.h"
++#include "sherlock/tattoo/tattoo_user_interface.h"
+ 
+ namespace Sherlock {
+ 
+@@ -191,6 +193,15 @@
+ void Events::pollEvents() {
+ 	checkForNextFrameCounter();
+ 
++#ifdef __EMSCRIPTEN__
++	if (!IS_SERRATED_SCALPEL && ScummWebIntro::nativeSkipEnabled() &&
++		static_cast<Tattoo::TattooEngine *>(_vm)->_runningProlog &&
++		!static_cast<Tattoo::TattooUserInterface *>(_vm->_ui)->_lockoutTimer &&
++		ScummWebIntro::skipRequested()) {
++		_pendingActions.push(kActionTattooSkipProlog);
++	}
++#endif
++
+ 	Common::Event event;
+ 	while (g_system->getEventManager()->pollEvent(event)) {
+ 		// Handle events
+diff --git a/engines/sherlock/scalpel/scalpel.cpp b/engines/sherlock/scalpel/scalpel.cpp
+--- a/engines/sherlock/scalpel/scalpel.cpp
++++ b/engines/sherlock/scalpel/scalpel.cpp
+@@ -21,6 +21,7 @@
+ 
+ #include "engines/util.h"
+ #include "gui/saveload.h"
++#include "engines/scummweb-intro.h"
+ #include "sherlock/scalpel/scalpel.h"
+ #include "sherlock/scalpel/scalpel_fixed_text.h"
+ #include "sherlock/scalpel/scalpel_map.h"
+@@ -339,9 +340,10 @@
+ 		_events->clearEvents();
+ 		_music->stopMusic();
+ 	} else {
+-		TsAGE::Logo::show(this);
+-
+-		finished = showCityCutscene();
++		bool browserSkipped = false;
++		TsAGE::Logo::show(this, &browserSkipped);
++
++		finished = !browserSkipped && showCityCutscene();
+ 		if (finished)
+ 			finished = showAlleyCutscene();
+ 		if (finished)
+@@ -354,6 +356,9 @@
+ 	}
+ 
+ 	_events->setFrameRate(GAME_FRAME_RATE);
++#ifdef __EMSCRIPTEN__
++	ScummWebIntro::skipRequested(false);
++#endif
+ }
+ 
+ bool ScalpelEngine::showCityCutscene() {
+diff --git a/engines/sherlock/scalpel/tsage/logo.cpp b/engines/sherlock/scalpel/tsage/logo.cpp
+--- a/engines/sherlock/scalpel/tsage/logo.cpp
++++ b/engines/sherlock/scalpel/tsage/logo.cpp
+@@ -20,6 +20,7 @@
+  */
+ 
+ #include "common/scummsys.h"
++#include "engines/scummweb-intro.h"
+ #include "sherlock/scalpel/tsage/logo.h"
+ #include "sherlock/scalpel/scalpel.h"
+ 
+@@ -385,10 +386,13 @@
+ 
+ /*----------------------------------------------------------------*/
+ 
+-bool Logo::show(ScalpelEngine *vm) {
++bool Logo::show(ScalpelEngine *vm, bool *browserSkipped) {
+ 	Events &events = *vm->_events;
+ 	Logo *logo = new Logo(vm);
+ 	bool interrupted = false;
++#ifndef __EMSCRIPTEN__
++	(void)browserSkipped;
++#endif
+ 
+ 	while (!logo->finished()) {
+ 		logo->nextFrame();
+@@ -404,6 +408,13 @@
+ 		++logo->_frameCounter;
+ 
+ 		interrupted = vm->shouldQuit() || events.kbHit() || events._pressed || events.actionHit();
++#ifdef __EMSCRIPTEN__
++		if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested()) {
++			if (browserSkipped)
++				*browserSkipped = true;
++			interrupted = true;
++		}
++#endif
+ 		if (interrupted) {
+ 			// Keyboard, mouse, or action button pressed, so break out of logo display
+ 			events.clearEvents();
+diff --git a/engines/sherlock/scalpel/tsage/logo.h b/engines/sherlock/scalpel/tsage/logo.h
+--- a/engines/sherlock/scalpel/tsage/logo.h
++++ b/engines/sherlock/scalpel/tsage/logo.h
+@@ -239,7 +239,7 @@
+ 	 */
+ 	void fade(const byte palette[Graphics::PALETTE_SIZE], int step = 6);
+ public:
+-	static bool show(ScalpelEngine *vm);
++	static bool show(ScalpelEngine *vm, bool *browserSkipped = nullptr);
+ };
+ 
+ } // end of namespace TsAGE
+diff --git a/engines/sherlock/sherlock.cpp b/engines/sherlock/sherlock.cpp
+--- a/engines/sherlock/sherlock.cpp
++++ b/engines/sherlock/sherlock.cpp
+@@ -21,6 +21,7 @@
+ 
+ #include "engines/scummweb-telemetry.h"
+ 
++#include "engines/scummweb-intro.h"
+ #include "sherlock/sherlock.h"
+ #include "sherlock/surface.h"
+ #include "common/scummsys.h"
+@@ -160,6 +161,11 @@
+ 		// Clear the screen
+ 		_screen->clear();
+ 
++#ifdef __EMSCRIPTEN__
++		if (getGameID() == GType_SerratedScalpel)
++			ScummWebIntro::gameplayStarted();
++#endif
++
+ 		// Reset UI flags
+ 		_ui->reset();
+ 
+diff --git a/engines/sherlock/tattoo/tattoo_scene.cpp b/engines/sherlock/tattoo/tattoo_scene.cpp
+--- a/engines/sherlock/tattoo/tattoo_scene.cpp
++++ b/engines/sherlock/tattoo/tattoo_scene.cpp
+@@ -19,6 +19,7 @@
+  *
+  */
+ 
++#include "engines/scummweb-intro.h"
+ #include "sherlock/tattoo/tattoo_scene.h"
+ #include "sherlock/tattoo/tattoo_people.h"
+ #include "sherlock/tattoo/tattoo_talk.h"
+@@ -77,6 +78,9 @@
+ 	// If we're going to the first game scene after the intro sequence, flag it as finished
+ 	if (vm._runningProlog && _currentScene == STARTING_GAME_SCENE) {
+ 		vm._runningProlog = false;
++#ifdef __EMSCRIPTEN__
++		ScummWebIntro::gameplayStarted();
++#endif
+ 		events.showCursor();
+ 		talk._talkToAbort = false;
+ 

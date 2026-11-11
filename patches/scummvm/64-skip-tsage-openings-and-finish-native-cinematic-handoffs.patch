@@ -1,0 +1,222 @@
+diff --git a/engines/groovie/script.cpp b/engines/groovie/script.cpp
+--- a/engines/groovie/script.cpp
++++ b/engines/groovie/script.cpp
+@@ -367,8 +367,16 @@
+ bool Script::isT7GNewGameOpening() const {
+ 	// The DOS main script plays the publisher and story clips in this
+ 	// section after its Start New menu action and before ordinary input.
+-	return _version == kGroovieT7G && _scriptFile == "script.grv" && _codeSize == 16659 &&
+-		_currentInstruction >= 0x407 && _currentInstruction < 0x4cb;
++	if (_version != kGroovieT7G || _scriptFile != "script.grv" || _codeSize != 16659)
++		return false;
++	if (_currentInstruction >= 0x407 && _currentInstruction < 0x4fd)
++		return true;
++
++	// Continue an accepted request through the original foyer entry call
++	// and its palette helper before the first hotspot input loop.
++	return _browserSkipOpening &&
++		((_currentInstruction >= 0x36bf && _currentInstruction < 0x36df) ||
++		(_currentInstruction >= 0x3471 && _currentInstruction < 0x3479));
+ }
+ #endif
+ 
+diff --git a/engines/mohawk/riven.cpp b/engines/mohawk/riven.cpp
+--- a/engines/mohawk/riven.cpp
++++ b/engines/mohawk/riven.cpp
+@@ -644,6 +644,12 @@
+ 		delete _card;
+ 	}
+ 	_card = new RivenCard(this, dest);
++#ifdef __EMSCRIPTEN__
++	if (_browserOpening && !isBrowserOpeningCard(dest)) {
++		_browserOpening = false;
++		_browserSkipOpening = false;
++	}
++#endif
+ 	_card->enter(true);
+ 
+ 	// Now we need to redraw the cursor if necessary and handle mouse over scripts
+@@ -676,8 +682,17 @@
+ 	}
+ }
+ 
++#ifdef __EMSCRIPTEN__
++bool MohawkEngine_Riven::isBrowserOpeningCard(uint16 card) const {
++	// The Atrus movie on the menu stack precedes the Temple Island arrival.
++	return (_stack->getId() == kStackAspit && card == 2) ||
++		(_stack->getId() == kStackTspit && _stack->getCardGlobalId(card) == 0x6e9a);
++}
++#endif
++
+ void MohawkEngine_Riven::startNewGame() {
+ #ifdef __EMSCRIPTEN__
++	_browserOpening = true;
+ 	_browserSkipOpening = false;
+ #endif
+ 	// Clear all the state data
+diff --git a/engines/mohawk/riven.h b/engines/mohawk/riven.h
+--- a/engines/mohawk/riven.h
++++ b/engines/mohawk/riven.h
+@@ -103,7 +103,9 @@
+ 	RivenScriptManager *_scriptMan;
+ 	RivenInventory *_inventory;
+ #ifdef __EMSCRIPTEN__
++	bool _browserOpening = false;
+ 	bool _browserSkipOpening = false;
++	bool isBrowserOpeningCard(uint16 card) const;
+ #endif
+ 
+ 	// Display debug rectangles around the hotspots
+diff --git a/engines/mohawk/riven_video.cpp b/engines/mohawk/riven_video.cpp
+--- a/engines/mohawk/riven_video.cpp
++++ b/engines/mohawk/riven_video.cpp
+@@ -239,12 +239,8 @@
+ 
+ #ifdef __EMSCRIPTEN__
+ 	ScummWebIntro::SkipSegment introSegment;
+-	const RivenStack *stack = _vm->getStack();
+-	// Start New first enters the Atrus movie on the menu stack, then
+-	// switches to the arrival movie on the original Temple Island card.
+-	const bool opening = playTillEnd && ScummWebIntro::nativeSkipEnabled() &&
+-		((stack->getId() == kStackAspit && _vm->getCard()->getId() == 2) ||
+-		(stack->getId() == kStackTspit && stack->getCurrentCardGlobalId() == 0x6e9a));
++	const bool opening = playTillEnd && _vm->_browserOpening && ScummWebIntro::nativeSkipEnabled() &&
++		_vm->isBrowserOpeningCard(_vm->getCard()->getId());
+ #endif
+ 	bool continuePlaying = true;
+ 	while (!endOfVideo() && !_vm->hasGameEnded() && continuePlaying) {
+diff --git a/engines/tsage/blue_force/blueforce_logic.cpp b/engines/tsage/blue_force/blueforce_logic.cpp
+--- a/engines/tsage/blue_force/blueforce_logic.cpp
++++ b/engines/tsage/blue_force/blueforce_logic.cpp
+@@ -20,6 +20,7 @@
+  */
+ 
+ #include "common/config-manager.h"
++#include "engines/scummweb-intro.h"
+ #include "tsage/blue_force/blueforce_logic.h"
+ #include "tsage/blue_force/blueforce_dialogs.h"
+ #include "tsage/blue_force/blueforce_scenes0.h"
+@@ -961,8 +962,24 @@
+ 	BF_GLOBALS._scenePalette.refresh();
+ }
+ 
++static void startPlay() {
++	BF_GLOBALS._dayNumber = 1;
++	BF_GLOBALS._sceneManager.changeScene(190);
++}
++
+ void SceneHandlerExt::process(Event &event) {
+ 	SceneExt *scene = (SceneExt *)BF_GLOBALS._sceneManager._scene;
++#ifdef __EMSCRIPTEN__
++	if (ScummWebIntro::nativeSkipEnabled() && event.eventType == EVENT_NONE) {
++		if (ScummWebIntro::skipRequested(scene && BF_GLOBALS._dayNumber == 0)) {
++			ScummWebIntro::skipRequested(false);
++			startPlay();
++			return;
++		}
++		if (BF_GLOBALS._dayNumber == 1 && BF_GLOBALS._player._enabled)
++			ScummWebIntro::gameplayStarted();
++	}
++#endif
+ 	if (scene && scene->_focusObject)
+ 		scene->_focusObject->process(event);
+ 
+@@ -1004,8 +1021,7 @@
+ 			}
+ 			if (rc == 0) {
+ 				// Start the game
+-				BF_GLOBALS._dayNumber = 1;
+-				BF_GLOBALS._sceneManager.changeScene(190);
++				startPlay();
+ 			} else {
+ 				BF_GLOBALS._player.disableControl();
+ 			}
+diff --git a/engines/tsage/core.cpp b/engines/tsage/core.cpp
+--- a/engines/tsage/core.cpp
++++ b/engines/tsage/core.cpp
+@@ -25,6 +25,7 @@
+ #include "engines/engine.h"
+ #include "graphics/paletteman.h"
+ #include "tsage/tsage.h"
++#include "engines/scummweb-intro.h"
+ #include "tsage/core.h"
+ #include "tsage/dialogs.h"
+ #include "tsage/events.h"
+@@ -4622,6 +4623,21 @@
+ 		postLoad(priorSceneBeforeLoad, currentSceneBeforeLoad);
+ 	}
+ 
++#ifdef __EMSCRIPTEN__
++	if (ScummWebIntro::nativeSkipEnabled() && g_vm->getGameID() == GType_Ringworld) {
++		const SceneManager &manager = g_globals->_sceneManager;
++		const bool opening = (manager._sceneNumber == 1000 && manager._previousScene == 0) ||
++			manager._sceneNumber == 10 || manager._sceneNumber == 15 ||
++			(manager._sceneNumber == 20 && manager._previousScene == 15);
++		if (ScummWebIntro::skipRequested(opening)) {
++			ScummWebIntro::skipRequested(false);
++			g_globals->_game->restart();
++			return;
++		}
++		if (manager._sceneNumber == 30 && g_globals->_player._enabled)
++			ScummWebIntro::gameplayStarted();
++	}
++#endif
+ 	g_globals->_soundManager.dispatch();
+ 	g_globals->_scenePalette.signalListeners();
+ 
+diff --git a/engines/tsage/ringworld2/ringworld2_scenes0.cpp b/engines/tsage/ringworld2/ringworld2_scenes0.cpp
+--- a/engines/tsage/ringworld2/ringworld2_scenes0.cpp
++++ b/engines/tsage/ringworld2/ringworld2_scenes0.cpp
+@@ -23,6 +23,7 @@
+ #include "tsage/tsage.h"
+ #include "tsage/staticres.h"
+ #include "tsage/ringworld2/ringworld2_dialogs.h"
++#include "engines/scummweb-intro.h"
+ #include "tsage/ringworld2/ringworld2_scenes0.h"
+ #include "tsage/ringworld2/ringworld2_speakers.h"
+ 
+@@ -383,6 +384,10 @@
+ }
+ 
+ void Scene100::dispatch() {
++#ifdef __EMSCRIPTEN__
++	if (R2_GLOBALS._player._enabled)
++		ScummWebIntro::gameplayStarted();
++#endif
+ 	int regionIndex = R2_GLOBALS._player.getRegionIndex();
+ 	if (regionIndex == 13)
+ 		R2_GLOBALS._player._shade = 4;
+@@ -1892,6 +1897,9 @@
+ 		break;
+ 
+ 	case 50:
++#ifdef __EMSCRIPTEN__
++		ScummWebIntro::skipRequested(false);
++#endif
+ 		R2_GLOBALS._scene180Mode = 0;
+ 		_helpEnabled = false;
+ 
+@@ -1925,6 +1933,23 @@
+ }
+ 
+ void Scene180::dispatch() {
++#ifdef __EMSCRIPTEN__
++	if (ScummWebIntro::nativeSkipEnabled() && R2_GLOBALS._sceneManager._previousScene == 0 &&
++			ScummWebIntro::skipRequested()) {
++		ScummWebIntro::skipRequested(false);
++		if (_animationPlayer._isActive) {
++			_animationPlayer._isActive = false;
++			_animationPlayer.close();
++			_animationPlayer.remove();
++		}
++		_frameInc = 0;
++		// Finish the original briefing and skip the optional wake-up view.
++		_sceneMode = 50;
++		signal();
++		R2_GLOBALS._sceneManager.setNewScene(100);
++		return;
++	}
++#endif
+ 	if (_frameInc) {
+ 		uint32 gameFrame = R2_GLOBALS._events.getFrameNumber();
+ 
