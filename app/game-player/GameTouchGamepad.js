@@ -52,12 +52,14 @@ function isAxisEngaged(value, crossAxis, travel, wasHeld) {
 export function GameMovementStick({ frameRef, hugo = false }) {
   const grip = useRef(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [activeDirections, setActiveDirections] = useState([]);
 
   useEffect(() => {
     const frame = frameRef.current;
     function reset() {
       releaseStick(grip);
       setOffset({ x: 0, y: 0 });
+      setActiveDirections([]);
     }
     function handleVisibility() {
       if (document.hidden) reset();
@@ -95,6 +97,7 @@ export function GameMovementStick({ frameRef, hugo = false }) {
     const wasHeld = (direction) => hugo ? active.hugoDirections.includes(direction) : active.held.has(direction);
     if (isAxisEngaged(y, x, active.travel, wasHeld(vertical))) wanted.push(vertical);
     if (isAxisEngaged(x, y, active.travel, wasHeld(horizontal))) wanted.push(horizontal);
+    setActiveDirections(wanted);
 
     if (hugo) {
       const key = wanted.length === 2 ? hugoDiagonals[vertical.name][horizontal.name] : wanted[0]?.key;
@@ -144,6 +147,7 @@ export function GameMovementStick({ frameRef, hugo = false }) {
     if (grip.current?.pointerId !== event.pointerId) return;
     releaseStick(grip);
     setOffset({ x: 0, y: 0 });
+    setActiveDirections([]);
   }
 
   return (
@@ -158,7 +162,13 @@ export function GameMovementStick({ frameRef, hugo = false }) {
       role="group"
     >
       {directions.map(({ name, Icon }) => (
-        <Icon key={name} data-direction={name.toLowerCase()} aria-hidden="true" size={15} />
+        <Icon
+          key={name}
+          data-direction={name.toLowerCase()}
+          data-active={activeDirections.some((direction) => direction.name === name)}
+          aria-hidden="true"
+          size={15}
+        />
       ))}
       <span
         className="game-route-stick-knob"

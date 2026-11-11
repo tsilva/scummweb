@@ -69,6 +69,10 @@ The game remains open when you rotate back. **Exit game** stays available.
 - Tap the game to position the cursor. Double-tap or press **L** to left-click.
   Use **R** for right-click. Drag the cursor pad while holding either button
   to drag in the game. You can also hold and drag directly on the canvas.
+- Touch pads share a circular disc and thumb cap. The pointer symbol marks
+  cursor control: moving your finger moves the cursor; holding still does not.
+  Lifting resets the cap without repositioning the game cursor. Arrows mark
+  movement controls, which retain each game's directional behavior.
 - In Grim Fandango, the stick walks or turns. The lightning button opens
   Use/Talk, Examine, Pick up/Put away, and Inventory. In Hugo games, the stick
   walks in the direction you drag.
