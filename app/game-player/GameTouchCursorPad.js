@@ -1,3 +1,5 @@
+import { MousePointer2 } from "lucide-react";
+
 export default function GameTouchCursorPad({
   indicatorOffset,
   onPointerCancel,
@@ -22,14 +24,15 @@ export default function GameTouchCursorPad({
         type="button"
       >
         <span aria-hidden="true" className="game-route-touch-cursor-pad-grid" />
-        <span aria-hidden="true" className="game-route-touch-cursor-pad-crosshair" />
         <span
           aria-hidden="true"
           className="game-route-touch-cursor-pad-indicator"
           style={{
             transform: `translate(${indicatorOffset.x}px, ${indicatorOffset.y}px)`,
           }}
-        />
+        >
+          <MousePointer2 aria-hidden="true" size={18} />
+        </span>
       </button>
     </div>
   );
