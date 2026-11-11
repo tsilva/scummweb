@@ -54,8 +54,10 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Secrets
 
-Local builds skip Sentry source-map uploads. Managed dev uses Infisical
-ScummWEB Development `/` for Sentry. Keep storage and OpenRouter credentials
+Local builds skip Sentry source-map uploads. Local dev and `secrets:check` fetch
+no service credentials; the check verifies that private credentials are absent.
+ScummWEB Development `/` remains the source for the scoped Sentry Vault reader.
+Keep storage and OpenRouter credentials
 out of the web process. [Production delivery](docs/production-delivery.md)
 uses scummweb-production Production `/`. Keep private values out of logs and
 retain Keychain originals until verified rotation.
@@ -92,6 +94,8 @@ without raw-key fallback.
 
 - For agent-operated Sentry reads, use `pnpm sentry:check:vault`, then
   `pnpm sentry:issues:vault -- --days 14 --limit 10` when issue contents are needed.
+  The existing `pnpm sentry:issues -- --days 14 --limit 10` command selects the same
+  protected reader. It never exports the source token into the reader process.
 - Select native project `e1c358f8-0678-45d7-a2a8-270c2f29aadd`, Development
   (`dev`), `/`, `SENTRY_AUTH_TOKEN`, instance `https://app.infisical.com`.
   The dedicated bundle is `local-scummweb-sentry-read`.
@@ -104,6 +108,12 @@ without raw-key fallback.
 - Follow `docs/maintaining-scummweb.md#sentry-issue-reads-through-agent-vault`.
   Do not select the legacy injection command as a fallback or reuse an unrelated
   project's key. Real issue queries remain subject to their requested scope.
+
+The Sentry reader pins Infisical 0.45.6 and explicitly selects its reviewed
+Agent Vault project. Ordinary launchers never approve source or runtime changes.
+General game-batch publishing remains a separate compatibility review; do not
+use its historical credential-injection path as an agent fallback. The scoped
+artwork routes above remain the approved publisher paths.
 
 ## Agent backbone
 

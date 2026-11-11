@@ -207,8 +207,9 @@ credits only when verified independently of the generic `studio` field.
 ### Development commands
 
 Follow the [README quickstart](../README.md#run-locally) for a credential-free
-server. The managed development command uses the project's Development Sentry
-bindings. For agent-operated issue reads, use the
+server. Both development launchers run without private service credentials or
+an Infisical login. `pnpm secrets:check` verifies credential absence without
+retrieving source values. For agent-operated issue reads, use the
 [Vault reader](#sentry-issue-reads-through-agent-vault).
 
 | Command | Purpose |
@@ -248,9 +249,13 @@ pnpm sentry:check:vault
 pnpm sentry:issues:vault -- --days 14 --limit 10 --query 'is:unresolved'
 ```
 
+The existing `pnpm sentry:issues -- --days 14 --limit 10` command selects this
+same sandboxed reader. It does not load the source token into its environment.
+
 The check reads project metadata. The issue command executes the existing reader
 with its supported days, limit, query and help options. Explicit `--env-file`
-overrides are rejected. Optional dotenv discovery is bypassed, and the separate
+overrides are rejected. The reader never opens dotenv files and rejects raw tokens;
+the separate
 native sandbox independently denies credential files and direct outbound sockets.
 The child receives `sentry_read_public_placeholder` and a short-lived proxy session.
 
@@ -263,7 +268,8 @@ the matching project endpoint, preserving its date/query behavior.
 
 Protected metadata under `~/.config/infisical/sentry-readers/scummweb.json` pins
 source identity, launcher, reader, native sandbox, Node, CLI and public proxy CA.
-Changed pins require trusted review. After source rotation, a trusted administrator
+The reader pins Infisical 0.45.6 and explicitly selects the reviewed Agent Vault
+project. Changed pins require trusted review. After source rotation, a trusted administrator
 must refresh this one Vault credential and rerun the metadata check. Ordinary
 startup never fetches source values, approves new pins or falls back to injection.
 The trusted proxy, administrator and other full-access host processes remain
@@ -271,8 +277,11 @@ outside the child sandbox boundary.
 
 Fake verification exercises the actual reader, credential replacement, filtered
 metadata, native write/other-project/prefix-sibling/traversal denial and protected
-file/direct-TCP denial. Live verification uses metadata and an empty-result issue
-query. Existing app commands, publishing and delivery retain their behavior.
+file/direct-TCP denial, plus suppression of reflected credentials in error bodies.
+The bounded live check reads project metadata only. General game-batch publishing
+still requires a separate compatibility review; its historical raw-credential
+launcher is not an ordinary agent fallback. Artwork uses the reviewed routes
+below. Production delivery remains separate.
 
 ## Maintaining game compatibility
 

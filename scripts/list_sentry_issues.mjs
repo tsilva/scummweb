@@ -1,23 +1,4 @@
-import fs from "node:fs";
-import path from "node:path";
 import process from "node:process";
-
-const ROOT_DIR = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
-const DEFAULT_ENV_CANDIDATES = [
-  path.join(ROOT_DIR, ".env"),
-  path.join(ROOT_DIR, ".env.sentry-mcp"),
-];
-const PLACEHOLDER_TOKENS = new Set(["sntrys_your_token_here", "sntrys_", "sntryu_"]);
-
-function resolveDefaultEnvPath() {
-  for (const candidate of DEFAULT_ENV_CANDIDATES) {
-    if (fs.existsSync(candidate)) {
-      return candidate;
-    }
-  }
-
-  return DEFAULT_ENV_CANDIDATES[0];
-}
 
 function printHelp() {
   console.log(`Usage: pnpm run sentry:issues -- [options]
@@ -26,7 +7,6 @@ Options:
   --days <n>        Relative window in days. Default: 14
   --limit <n>       Maximum issues to return. Default: 10
   --query <text>    Sentry issue query string
-  --env-file <path> Alternate env file path. Default: .env (falls back to .env.sentry-mcp)
   --help            Show this help message
 `);
 }
@@ -34,7 +14,6 @@ Options:
 function parseArgs(argv) {
   const options = {
     days: 14,
-    envFile: resolveDefaultEnvPath(),
     help: false,
     limit: 10,
     query: "",
@@ -71,9 +50,7 @@ function parseArgs(argv) {
     }
 
     if (arg === "--env-file") {
-      options.envFile = path.resolve(process.cwd(), argv[index + 1] || "");
-      index += 1;
-      continue;
+      throw new Error("Private env-file overrides are not supported; use the reviewed Vault reader.");
     }
 
     throw new Error(`Unknown argument: ${arg}`);
@@ -90,58 +67,14 @@ function parseArgs(argv) {
   return options;
 }
 
-function loadEnvFile(filePath) {
-  if (!fs.existsSync(filePath)) {
-    return {};
-  }
-
-  const raw = fs.readFileSync(filePath, "utf8");
-  const result = {};
-
-  for (const line of raw.split(/\r?\n/)) {
-    const trimmed = line.trim();
-
-    if (!trimmed || trimmed.startsWith("#")) {
-      continue;
-    }
-
-    const separatorIndex = trimmed.indexOf("=");
-
-    if (separatorIndex === -1) {
-      continue;
-    }
-
-    const key = trimmed.slice(0, separatorIndex).trim();
-    let value = trimmed.slice(separatorIndex + 1).trim();
-
-    if (
-      (value.startsWith('"') && value.endsWith('"')) ||
-      (value.startsWith("'") && value.endsWith("'"))
-    ) {
-      value = value.slice(1, -1);
-    }
-
-    result[key] = value;
-  }
-
-  return result;
-}
-
 function validateEnv(env) {
   const token = env.SENTRY_AUTH_TOKEN || "";
 
-  if (!token) {
-    throw new Error("SENTRY_AUTH_TOKEN is required. Use pnpm sentry:issues with Infisical.");
+  if (env.SENTRY_VAULT_TRANSPORT !== "agent-vault" || token !== "sentry_read_public_placeholder") {
+    throw new Error("SENTRY_AUTH_TOKEN must be the public placeholder from the reviewed Vault launcher.");
   }
-
-  if (PLACEHOLDER_TOKENS.has(token)) {
-    throw new Error("SENTRY_AUTH_TOKEN still has the placeholder value.");
-  }
-
-  for (const key of ["SENTRY_ORG", "SENTRY_PROJECT", "SENTRY_BASE_URL"]) {
-    if (!env[key]) {
-      throw new Error(`${key} is required in the Sentry env file.`);
-    }
+  if (env.SENTRY_ORG !== "tsilva" || env.SENTRY_PROJECT !== "scummweb" || !env.SENTRY_BASE_URL) {
+    throw new Error("Expected the reviewed ScummWEB Sentry binding.");
   }
 }
 
@@ -201,7 +134,6 @@ async function main() {
     SENTRY_ORG: "tsilva",
     SENTRY_PROJECT: "scummweb",
     SENTRY_BASE_URL: "https://sentry.io",
-    ...loadEnvFile(options.envFile),
     ...process.env,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN ?? "",
   };

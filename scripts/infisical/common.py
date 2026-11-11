@@ -110,14 +110,17 @@ def matches(left, right):
 
 
 def application_environment(values):
+    if any(values.get(key) for key in KEYS):
+        raise SecretError("Local app commands cannot receive service credentials; use the reviewed Vault route.")
     environment = cli_environment()
+    for key in list(environment):
+        public = key.startswith(("NEXT_PUBLIC_", "VITE_", "PUBLIC_"))
+        if not public and re.search(r"TOKEN|SECRET|PASSWORD|PASSWD|API_KEY|ACCESS_KEY|PRIVATE_KEY|DATABASE_(URL|DSN)|CREDENTIAL", key):
+            del environment[key]
     for key in KEYS:
-        value = values.get(key, "") if key in APPLICATION_KEYS else ""
-        if "\0" in value:
-            raise SecretError("An application secret contains an invalid null byte.")
         # Next.js preserves existing process.env entries, including empty ones.
-        # An absent Infisical key must not fall back to an old dotenv credential.
-        environment[key] = value
+        # Local commands must not fall back to an old dotenv credential.
+        environment[key] = ""
     return environment
 
 
