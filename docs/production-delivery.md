@@ -1,13 +1,22 @@
 # Production delivery
 
-A push to `main` starts [Production delivery](../.github/workflows/production-delivery.yml).
-It scans for committed secrets, then calls a pinned shared workflow that waits
-for CI on the exact commit and syncs the Production allowlist from Infisical.
+Successful main-push `CI` completion starts [Production delivery](../.github/workflows/production-delivery.yml)
+through `workflow_run`. It scans for committed secrets, then calls a pinned shared
+workflow that rechecks completed CI on the exact current main commit and syncs
+the Production allowlist from Infisical.
 A separate job builds and stages the artifact on Vercel, checks the deployment
 and its function inventory, and rechecks the head of `main` before promotion.
 Vercel's automatic Git deployments are disabled.
 
-The [pinned trust contract](https://github.com/tsilva/.github/blob/48a4449de4ac5f4d5e14343f70fe5fc57bc2cd74/.github/actions/production-delivery/README.md)
+Automatic delivery accepts only successful main-push CI from this repository,
+for the same SHA as the delivery run and the current head of `main`. The CI
+workflow path, immutable repository IDs, run ID and rerun attempt are checked
+again against GitHub before secret access. Failed, cancelled, forked, stale or
+superseded runs cannot deploy. Manual and secret-change relay dispatches remain
+available, but fail immediately if the latest exact-commit CI is not already
+successful. CI artifacts and caches are not imported into the trusted sync job.
+
+The [pinned trust contract](https://github.com/tsilva/.github/blob/c262be7b75fe4654c170eb5e13240808a70b9936/.github/actions/production-delivery/README.md)
 defines the OIDC policy, caller-to-vault mapping, and allowlist. The trusted
 sync job keeps application secrets inside its boundary. Vercel supplies
 runtime secrets at deployment. Keep **Require Separate Values** enabled and
