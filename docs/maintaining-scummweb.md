@@ -468,9 +468,11 @@ persists through same-tab navigation in session storage; use
 `/?analytics_traffic=external` to clear it. Storage failures do not prevent page
 startup. Browser automation can instead set
 `window.__scummwebAnalyticsTraffic = "automated"` before page scripts execute.
-The Lighthouse workflow supplies the URL marker; standard WebDriver-controlled
-game sessions are detected automatically. Ordinary browser/OS combinations,
-country, and low engagement are not automation signals.
+The shared Lighthouse workflow blocks analytics requests and requires a URL
+without a query string, so its configured audit URL needs no marker. Other
+audits can supply the marker when collecting analytics intentionally. Standard
+WebDriver-controlled game sessions are detected automatically. Ordinary
+browser/OS combinations, country, and low engagement are not automation signals.
 
 For prospective audience reports, filter production hostname and
 `customEvent:traffic_type = external`; exclude Portugal separately only when the
