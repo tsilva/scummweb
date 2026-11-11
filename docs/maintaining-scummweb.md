@@ -349,6 +349,11 @@ support may leave no voices; it must not abort startup or cleanup. Startup
 resource reports identify only scripts created by the player, while runtime
 exceptions and failures of those dependencies remain visible.
 
+The startup watchdog reports slow launches while retaining the runtime frame
+and prepared game files. A late, validated ready signal clears only that timeout and cancels its
+watchdog; other startup failures remain visible. Exiting still releases the
+selected game and cancels the launch.
+
 Follow [the upgrade skill](../.codex/skills/scummweb_upgrade-scummvm/SKILL.md)
 to change the engine or SDK pin. It owns the ordered patch procedure,
 [patch ledger](../.codex/skills/scummweb_upgrade-scummvm/references/patches.json),
@@ -555,6 +560,8 @@ object bytes or changing R2. Publishing requires separate approval of the exact
 planned artwork; verification of this route does not authorize an upload.
 
 The protected local profile must already be provisioned by trusted administration.
+The launcher pins Infisical CLI 0.45.6 and the reviewed Agent Vault project; it
+rejects noncanonical protected paths and changed source/runtime hashes.
 It binds the native ScummWEB Development `/` source pair to the dedicated
 `local-scummweb-artwork-batch` bundle. Agent Vault supplies the pair to a trusted
 R2 signing relay through its credential header. The sandboxed publisher receives

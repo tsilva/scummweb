@@ -37,6 +37,7 @@ const SCUMMWEB_FRAME_MESSAGE_SOURCE = "scummweb";
 const SCUMMWEB_ASPECT_RATIO_MESSAGE_TYPE = "scummweb-aspect-ratio";
 const ARCHIVE_FRAME_NAVIGATION_TIMEOUT_MS = 8000;
 const ARCHIVE_BOOT_IDLE_TIMEOUT_MS = 120_000;
+const ARCHIVE_BOOT_TIMEOUT_MESSAGE = "ScummVM took too long to start. Exit the player and try again.";
 const BOOT_ERROR_MESSAGES = new Map([
   ["script-load", "Could not load a player script"],
   ["script-error", "Player JavaScript error"],
@@ -401,15 +402,22 @@ export default function GameRouteFrame({
     function restartArchiveBootTimer() {
       window.clearTimeout(archiveBootTimer);
       archiveBootTimer = window.setTimeout(() => {
-        archiveFiles.current = null;
+        if (frameBoot.ready || frameBootRef.current !== frameBoot) return;
+        // Keep prepared files available if the runtime becomes ready later.
         reportBootError("startup-timeout");
-        setArchiveError("ScummVM took too long to start. Exit the player and try again.");
+        setArchiveError(ARCHIVE_BOOT_TIMEOUT_MESSAGE);
       }, ARCHIVE_BOOT_IDLE_TIMEOUT_MS);
     }
 
     function stopArchiveBootTimer() {
       window.clearTimeout(archiveBootTimer);
       archiveFrame?.removeEventListener("load", restartArchiveBootTimer);
+    }
+
+    function finishArchiveBoot() {
+      stopArchiveBootTimer();
+      frameBoot.ready = true;
+      setArchiveError((current) => current === ARCHIVE_BOOT_TIMEOUT_MESSAGE ? null : current);
     }
 
     if (archiveFrame && archivePrepared) {
@@ -483,7 +491,7 @@ export default function GameRouteFrame({
         if (event.data?.type === "scummweb:local-game-status") {
           stopArchiveBootTimer();
           if (event.data.status === "running") {
-            frameBoot.ready = true;
+            finishArchiveBoot();
             if (!catalogLaunch) {
               setReadySignal((current) => current ?? { href: frameSrc, reason: "archive-running" });
             }
@@ -529,7 +537,7 @@ export default function GameRouteFrame({
           return;
         }
 
-        frameBoot.ready = true;
+        finishArchiveBoot();
         const detectedGame = iframeWindow.__scummwebSaveStatus;
         setReadySignal({
           detectedGame: detectedGame?.engineId && detectedGame?.gameId
@@ -1022,7 +1030,7 @@ export default function GameRouteFrame({
           />
         </form>
       ) : null}
-      {frameSrc && !archiveError ? <iframe
+      {frameSrc && (!archiveError || archiveError === ARCHIVE_BOOT_TIMEOUT_MESSAGE) ? <iframe
         key={loadArchive ? frameSrc : undefined}
         allow="autoplay; fullscreen"
         className="game-route-frame"
