@@ -1,12 +1,15 @@
-import { GOOGLE_ANALYTICS_ID } from "../lib/site-config.mjs";
+import { DEFAULT_SITE_URL, GOOGLE_ANALYTICS_ID } from "../lib/site-config.mjs";
+import { classifyAnalyticsTraffic } from "../lib/analytics-traffic.mjs";
 
-function startAnalytics(id) {
+function startAnalytics(id, productionOrigin, classifyTraffic) {
   window.dataLayer = window.dataLayer || [];
   window.gtag = function () { window.dataLayer.push(arguments); };
+  // Set before config so automatic page views and enhanced-measurement events
+  // receive the same classification as the catalog funnel.
+  window.gtag("set", classifyTraffic(window, productionOrigin));
   window.gtag("js", new Date());
-  const { origin, pathname, search, hash } = window.location;
-  window.gtag("config", id, new URLSearchParams(hash.slice(1)).has("zip")
-    ? { page_location: origin + pathname + search } : {});
+  const { origin, pathname, search } = window.location;
+  window.gtag("config", id, { page_location: origin + pathname + search });
 
   function load() {
     const script = document.createElement("script");
@@ -29,4 +32,4 @@ function startAnalytics(id) {
   else window.addEventListener("load", afterLoad, { once: true });
 }
 
-export const analyticsStartupScript = `(${startAnalytics.toString()})(${JSON.stringify(GOOGLE_ANALYTICS_ID)});`;
+export const analyticsStartupScript = `(${startAnalytics.toString()})(${JSON.stringify(GOOGLE_ANALYTICS_ID)},${JSON.stringify(DEFAULT_SITE_URL)},(${classifyAnalyticsTraffic.toString()}));`;

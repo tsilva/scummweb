@@ -1,6 +1,12 @@
 import { DEFAULT_SITE_URL, GOOGLE_ANALYTICS_ID } from "../../lib/site-config.mjs";
+import { classifyAnalyticsTraffic } from "../../lib/analytics-traffic.mjs";
 
-const PLAY_MILESTONE_MS = 5 * 60 * 1000;
+// Preserve the existing five-minute event's meaning for historical reports.
+const PLAY_MILESTONES = [
+  { ms: 30_000, event: "game_play_30s" },
+  { ms: 60_000, event: "game_play_60s" },
+  { ms: 300_000, event: "game_play_milestone" },
+];
 const ENTRY_POINTS = new Set(["hero", "library", "game_detail"]);
 
 export function createGameLaunchAnalytics(gameSlug) {
@@ -8,7 +14,8 @@ export function createGameLaunchAnalytics(gameSlug) {
   let launched = false;
   let reportedFailure = false;
   let foregroundMs = 0;
-  let reportedMilestone = false;
+  let nextMilestone = 0;
+  let stopWatching = null;
 
   function send(name, fields = {}) {
     window.gtag("event", name, { ...attempt.fields, ...fields, send_to: GOOGLE_ANALYTICS_ID });
@@ -23,9 +30,11 @@ export function createGameLaunchAnalytics(gameSlug) {
       attempt = {
         startedAt: window.performance.now(),
         fields: {
+          launch_id: window.crypto.randomUUID(),
           game_slug: gameSlug,
           entry_point: ENTRY_POINTS.has(entryPoint) ? entryPoint : "direct",
           launch_mode: window.location.hash === "#continue" ? "continue" : "fresh",
+          ...classifyAnalyticsTraffic(window, DEFAULT_SITE_URL),
         },
       };
       send("game_launch_attempt");
@@ -44,7 +53,9 @@ export function createGameLaunchAnalytics(gameSlug) {
     },
 
     watchPlayTime() {
-      if (!launched || reportedMilestone) return;
+      if (!launched || nextMilestone === PLAY_MILESTONES.length) return;
+      // A duplicate watcher must not double-count the same foreground interval.
+      stopWatching?.();
 
       let pageActive = true;
       let visibleSince = null;
@@ -56,9 +67,10 @@ export function createGameLaunchAnalytics(gameSlug) {
         visibleSince = null;
         window.clearTimeout(timer);
 
-        if (foregroundMs >= PLAY_MILESTONE_MS && !reportedMilestone) {
-          reportedMilestone = true;
-          send("game_play_milestone", { play_time_seconds: PLAY_MILESTONE_MS / 1000 });
+        while (nextMilestone < PLAY_MILESTONES.length &&
+            foregroundMs >= PLAY_MILESTONES[nextMilestone].ms) {
+          const milestone = PLAY_MILESTONES[nextMilestone++];
+          send(milestone.event, { play_time_seconds: milestone.ms / 1000 });
         }
       }
 
@@ -67,12 +79,12 @@ export function createGameLaunchAnalytics(gameSlug) {
           pause();
           return;
         }
-        if (visibleSince !== null || reportedMilestone) return;
+        if (visibleSince !== null || nextMilestone === PLAY_MILESTONES.length) return;
         visibleSince = window.performance.now();
         timer = window.setTimeout(() => {
           pause();
           syncVisibility();
-        }, Math.ceil(PLAY_MILESTONE_MS - foregroundMs));
+        }, Math.ceil(PLAY_MILESTONES[nextMilestone].ms - foregroundMs));
       }
 
       function hidePage() {
@@ -89,12 +101,15 @@ export function createGameLaunchAnalytics(gameSlug) {
       window.addEventListener("pagehide", hidePage);
       window.addEventListener("pageshow", showPage);
       syncVisibility();
-      return () => {
+      const stop = () => {
         pause();
         document.removeEventListener("visibilitychange", syncVisibility);
         window.removeEventListener("pagehide", hidePage);
         window.removeEventListener("pageshow", showPage);
+        if (stopWatching === stop) stopWatching = null;
       };
+      stopWatching = stop;
+      return stop;
     },
   };
 }
