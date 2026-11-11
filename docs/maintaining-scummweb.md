@@ -343,6 +343,12 @@ the staged shell using the existing compiled runtime. Changes to native patches
 or generated `scummvm.js` require the full build and a matching
 [corresponding-source archive](../scummvm-shell/doc/scummvm-source.html).
 
+Keep generated adapters in the staging path. Native unload signals must wait
+for runtime initialization, including native constructors. Optional Web Speech
+support may leave no voices; it must not abort startup or cleanup. Startup
+resource reports identify only scripts created by the player, while runtime
+exceptions and failures of those dependencies remain visible.
+
 Follow [the upgrade skill](../.codex/skills/scummweb_upgrade-scummvm/SKILL.md)
 to change the engine or SDK pin. It owns the ordered patch procedure,
 [patch ledger](../.codex/skills/scummweb_upgrade-scummvm/references/patches.json),

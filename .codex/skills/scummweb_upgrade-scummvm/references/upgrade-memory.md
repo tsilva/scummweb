@@ -87,6 +87,24 @@ tests when porting; do not treat an old implementation shape as the requirement.
 - Patch 41 separates intro completion from first-frame readiness. Report at the native transition to player input or a preserved selection screen. Recheck the exact first playable states when a bundled edition changes. A rendered frame, cursor alone, or elapsed time cannot establish that the intro ended.
 - Imported intro requests belong to the native opening sequence that owns the transition. Keep an ordinary abort path shared when it preserves the expected state. Kyrandia I's keyboard abort can restore slot zero, so its browser request uses a separate opening flag and leaves fresh launches independent of existing saves.
 
+## Optional browser speech
+
+- Web Speech synthesis is absent in some browsers and embedded views. Native
+  manager initialization must leave an empty voice map instead of aborting game
+  startup. Guard unsupported cleanup, pause/resume and status paths too. Preserve
+  supported voice discovery, voice-change notifications, queues and genuine API
+  failures; do not install a fake browser speech service or disable game audio.
+
+## Native unload lifetime
+
+- Emscripten publishes `_raise` before native constructors initialize its signal
+  table. Unloading in this interval can trap with a function-signature mismatch;
+  unloading earlier finds no export at all. Gate unload SIGINT on
+  `runtimeInitialized`, a non-aborted runtime and the callable export. Preserve
+  normal initialized signaling and real native failures. Keep the strict generated
+  lifecycle adapter, actual-runtime browser reproducer and matching source offer
+  when updating the SDK or upstream shell.
+
 ## Keyboard callback lifetime
 
 - SDL 3.2.4's Emscripten unregister path dereferences the numeric window target
