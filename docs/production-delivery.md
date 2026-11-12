@@ -59,6 +59,30 @@ pnpm run publish:games --game soltys.zip
 ```
 
 Existing objects are skipped by default. `--force` overwrites them.
+The game publisher signs payloads with SHA-256 and avoids optional AWS chunked
+checksum trailers for R2 compatibility. Archives up to 5 MiB use one PUT with
+a content checksum and conditional creation unless overwriting was requested;
+larger files use sequential 5 MiB multipart transfers, with per-part checksums,
+progress, and conditional completion. Private owner-only receipts under ignored
+`.internal/evidence/game-publishing/` retain completed parts after a failure.
+Retrying the same exact archive resumes its session; changed bytes or metadata
+use a different receipt. Successful completion removes the receipt. Concurrent
+publishers of the same archive are rejected. Receipts contain no credentials.
+Requests use a 10-second connection
+timeout, a 120-second read timeout, and at most two attempts. Stage messages are
+flushed immediately; SDK failures report their category and HTTP status without
+provider details. After a failed transfer, check the public object before retrying.
+Transfers omit the optional `Expect: 100-continue` handshake for compatibility
+with HTTPS forwarding transports; TLS and payload signing remain enabled.
+For a connection that repeatedly closes during SDK part uploads, an explicit
+`SCUMMVM_R2_HTTP2=1` selects curl's negotiated HTTP/2 for multipart bodies.
+The existing SDK signs a 15-minute URL bound to the part, length and MD5;
+curl receives it over stdin with no service keys, credential environment,
+redirects or persistent URL files. Only game bytes enter an owner-only temporary
+file, removed after the request. TLS verification remains enabled, each request
+is limited to ten minutes, and failures preserve the same upload receipt.
+This option requires an HTTP/2-enabled curl; it does not select another endpoint
+or credential source. Verify the completed public archive's SHA-256 as usual.
 `--prune` deletes remote game objects absent locally within the selected
 scope. Without `--game`, it can prune the entire game library. The
 `artwork/` namespace is reserved and excluded.
@@ -72,5 +96,7 @@ it up, then revoke and verify rejection of the old token. The documented
 publisher token expires **October 15, 2027**.
 
 Verify the hosted ZIP and refresh its fingerprint before deploying a new
-catalog entry. Use the separate [artwork publishing flow](maintaining-scummweb.md#artwork-storage-and-publishing)
+catalog entry with `node scripts/generate-bundled-game-files.mjs --remote TARGET`.
+This refreshes only that target from the bucket, preserving other fingerprints.
+Use the separate [artwork publishing flow](maintaining-scummweb.md#artwork-storage-and-publishing)
 for images.

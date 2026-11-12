@@ -6,7 +6,7 @@ import test from "node:test";
 test("catalog launches forward the native gameplay boundary once", async () => {
   const html = await readFile(new URL("../scummvm-shell/scummvm.html", import.meta.url), "utf8");
   const start = html.indexOf("if (!isLocalGame || isCatalogArchive) {\n  globalThis.__scummwebReportGameplayStarted");
-  const end = html.indexOf("if (isLocalGame && !isCatalogArchive", start);
+  const end = html.indexOf('if (!scummwebLaunchUrl.searchParams.has("continue"))', start);
   assert.ok(start >= 0 && end > start);
   const bridge = new Script(html.slice(start, end));
   for (const [isLocalGame, isCatalogArchive, expected] of [[false, false, true], [true, true, true], [true, false, false]]) {

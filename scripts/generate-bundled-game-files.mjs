@@ -6,11 +6,12 @@ import { gameFileFingerprint } from "../app/local-game-matching.mjs";
 
 const root = new URL("../", import.meta.url);
 const args = process.argv.slice(2);
-if (args.length && (args.length < 2 || args[0] !== "--local-dir")) {
-  throw new Error("Usage: node scripts/generate-bundled-game-files.mjs [--local-dir DIRECTORY [TARGET ...]]");
+const remote = args[0] === "--remote";
+if (args.length && (args.length < 2 || (!remote && args[0] !== "--local-dir"))) {
+  throw new Error("Usage: node scripts/generate-bundled-game-files.mjs [--remote TARGET ... | --local-dir DIRECTORY [TARGET ...]]");
 }
-const localDir = args[1];
-const targets = new Set(args.slice(2));
+const localDir = remote ? undefined : args[1];
+const targets = new Set(args.slice(remote ? 1 : 2));
 const catalog = JSON.parse(await fs.readFile(new URL("scummvm-shell/games.json", root))).games;
 const manifestUrl = new URL("data/bundled-game-files.json", root);
 const games = targets.size

@@ -60,9 +60,9 @@ test("boot polling in the app still reads shell output for failures", () => {
   assert.match(bootStateSource, /BOOT_FAILURE_PATTERNS\.some\(\(pattern\) => pattern\.test\(outputValue\)\)/);
 });
 
-test("the imported intro bridge consumes clicks only at the active native skip point", () => {
+test("the intro bridge consumes clicks only at the active native skip point", () => {
   const shell = fs.readFileSync(shellHtmlPath, "utf8");
-  const bridge = shell.match(/if \(isLocalGame && !isCatalogArchive && !scummwebLaunchUrl\.searchParams\.has\("continue"\)\) \{[\s\S]+?(?=const readyStatePriority=)/)?.[0];
+  const bridge = shell.match(/if \(!scummwebLaunchUrl\.searchParams\.has\("continue"\)\) \{[\s\S]+?(?=const readyStatePriority=)/)?.[0];
   assert.ok(bridge, "the generated shell includes the native intro bridge");
   const messages = [];
   const install = (query = "", isCatalogArchive = false) => {
@@ -86,7 +86,7 @@ test("the imported intro bridge consumes clicks only at the active native skip p
   assert.equal(update(true), false);
   assert.deepEqual(messages, [true, false, true]);
   assert.equal(install("?continue=1").__scummwebRequestIntroSkip, undefined);
-  assert.equal(install("", true).__scummwebRequestIntroSkip, undefined);
+  assert.equal(typeof install("", true).__scummwebRequestIntroSkip, "function");
 });
 
 function createTouchInput() {
