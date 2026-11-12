@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Sam & Max Hit the Road (Demo)", target: "samnmax-demo", engineId: "scumm", gameId: "samnmax",
+    files: [["samdemo.000", 7505, 0x112b0cbd], ["samdemo.001", 1190282, 0xa0b3f988]],
+  },
+  {
     title: "Full Throttle (Demo)", target: "ft-demo", engineId: "scumm", gameId: "ft",
     files: [["ft.000", 7885, 0x5a4b7e9a], ["ft.001", 50371781, 0xb93903c9]],
   },

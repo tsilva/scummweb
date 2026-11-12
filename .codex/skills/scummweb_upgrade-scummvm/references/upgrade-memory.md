@@ -34,6 +34,16 @@ tests when porting; do not treat an old implementation shape as the requirement.
 
 ## Browser/runtime compatibility
 
+- GrimE dialogue confirmation uses Enter in both Grim Fandango and Escape from
+  Monkey Island; EMI's exploration Use key is U and does not choose a line.
+  Patch 98 publishes choice availability from the live raw Lua
+  `system.buttonHandler` after Lua updates. Match `Dialog.buttonHandler` or a
+  dialogue object inheriting from `Dialog` through its raw `parent` chain,
+  following `LuaBase::callback`'s function/object dispatch. Keep
+  this independent of evaluation telemetry and preserve Lua stack blocks.
+  Conversation-running flags and visible subtitles also cover spoken responses,
+  so they cannot identify when the player can select a dialogue choice.
+
 - Shell mounts must remain visible to the POSIX backend. Preserve BrowserFS
   operation receiver binding and WASI errno translation for Emscripten 4, default
   config initialization, per-version save directories, and current save-access

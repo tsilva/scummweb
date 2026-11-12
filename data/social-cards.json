@@ -1041,6 +1041,11 @@
       "inputHash": "0be38b59bec793e191a2979f9409a17bd3933e13670836558e6df4762f2ca748",
       "imageHash": "d1361ca6646e5b4b6aa964a352e437080d3536c5c0b2683def65d810d833f3f7"
     },
+    "sam-and-max-hit-the-road-demo": {
+      "file": "sam-and-max-hit-the-road-demo-6d92d8ec999ea1601a826341a9c053130cc8a19ef5743ddc41dcdca2f2a65b50.jpg",
+      "inputHash": "6d92d8ec999ea1601a826341a9c053130cc8a19ef5743ddc41dcdca2f2a65b50",
+      "imageHash": "a91e14abec6f824693df223033768a1245f249bfe7e6c389f0879a199cc954de"
+    },
     "sfinx": {
       "file": "sfinx-da3050eea7920f49f2fd9e0c0b679e7d41f71a7976eb2eb84657627829f3a426.jpg",
       "inputHash": "da3050eea7920f49f2fd9e0c0b679e7d41f71a7976eb2eb84657627829f3a426",

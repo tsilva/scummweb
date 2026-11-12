@@ -1,12 +1,12 @@
 {
-  "version": "sha-be2dcb0cad1480bbea59f65d",
+  "version": "sha-dbcea2f2a65bbe92b29201ff",
   "files": {
     "/scummvm.js": "sha-164881a8b3724f87e596eb62",
-    "/scummvm.wasm": "sha-15365023d8bccdc799f30a30",
+    "/scummvm.wasm": "sha-65be657f6772935ba14c5c95",
     "/scummvm_fs.js": "sha-a1070971ba693ed248d9e700",
     "/audio-start-control.mjs": "sha-5be22420debc1de1477fe594",
-    "/scummvm.ini": "sha-84a32e5b63ed0430d2091aca",
-    "/games.json": "sha-dbb220b25e06077ba35aa941",
+    "/scummvm.ini": "sha-fd0cd6932bd2f7a92eb01b6e",
+    "/games.json": "sha-61635dcf25849e0471cac9b4",
     "/data/access.dat": "sha-c108b691e81f8b9ac54feac3",
     "/data/achievements.dat": "sha-6f5394edee3a2ed9165d1ac0",
     "/data/classicmacfonts.dat": "sha-d33aa56fbbe119a1567a843d",
@@ -23,14 +23,14 @@
     "/data/gui-icons.dat": "sha-e772a8bb64ad3d7a807e859a",
     "/data/helpdialog.zip": "sha-9ff3c7964a63b18ffa0e9cfc",
     "/data/hugo.dat": "sha-228dd029399ce7318a60aebe",
-    "/data/index.json": "sha-58ce2533718dc41d01f554e2",
+    "/data/index.json": "sha-6f8595bd09dd755aab5848dd",
     "/data/kyra.dat": "sha-6b2cc168d3201305039e78bc",
     "/data/lure.dat": "sha-9c17cfb5349c4bd13e56b065",
     "/data/macgui.dat": "sha-5e55c29903809bf5297a28fe",
     "/data/monkey4-patch.m4b": "sha-6d0141a132bf34eb4c81d7db",
     "/data/mort.dat": "sha-ed4f797fd4aff885000ebe58",
     "/data/neverhood.dat": "sha-b86cb788237ace2988f7a8b7",
-    "/data/plugins/index.json": "sha-dd23d1cadf1de82a48544f24",
+    "/data/plugins/index.json": "sha-0430714b6cc44cc3b3e982e3",
     "/data/plugins/libaccess.so": "sha-79a18a2095309ab38d6510e5",
     "/data/plugins/libadl.so": "sha-cc810ca950ff679bd9cedde1",
     "/data/plugins/libagi.so": "sha-6bd54fd6ebf0f7262ca74370",
@@ -50,7 +50,7 @@
     "/data/plugins/libgnap.so": "sha-ec884a4773b8ad28d60f755d",
     "/data/plugins/libgob.so": "sha-026b510b47983030ef45f1cc",
     "/data/plugins/libgot.so": "sha-5424224f331991c1b7e431fa",
-    "/data/plugins/libgrim.so": "sha-ecd7f238df13ad774063466f",
+    "/data/plugins/libgrim.so": "sha-2f334530c5a9735bb9a77e93",
     "/data/plugins/libgroovie.so": "sha-b5cbb48d8e1d04689ce58ed9",
     "/data/plugins/libhopkins.so": "sha-f2d46a628239663c1d0f5251",
     "/data/plugins/libhugo.so": "sha-441fb875cd2a8dd92409652a",
@@ -175,6 +175,6 @@
     "/launcher/skip-intro/sky/SKY-VM.000": "sha-4a980c9a92fb713cf4e4f990",
     "/launcher/skip-intro/soltys/soltys.001": "sha-a228224141169a9874a5f13a",
     "/launcher/skip-intro/sword25/sword25.000": "sha-182cf3396ee26d6ea6d3d567",
-    "/scummvm.html": "sha-be2dcb0cad1480bbea59f65d"
+    "/scummvm.html": "sha-dbcea2f2a65bbe92b29201ff"
   }
 }

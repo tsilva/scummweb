@@ -88,8 +88,11 @@ hidden. They return to their normal visibility when the action disappears.
   Lifting resets the cap without repositioning the game cursor. Arrows mark
   movement controls, which retain each game's directional behavior.
 - In Grim Fandango and Escape from Monkey Island, the stick walks or turns. The lightning button opens
-  Use/Talk, Examine, Pick up/Put away, and Inventory. In Hugo games, the stick
-  walks in the direction you drag.
+  Use/Talk, Examine, Pick up/Put away, and Inventory. When dialogue choices are
+  available, the right-hand actions become a single checkmark to confirm the
+  highlighted line (Enter). Move the stick up/down to change the selection.
+  Exploration actions return automatically when choices close. In Hugo games,
+  the stick walks in the direction you drag.
 - In Hugo, Apple II Hi-Res Adventures, and Zork I–III, tap the keyboard icon
   and press Enter to submit a command. An empty field sends Enter by itself.
 - In Zork I–III, supported phone browsers also show a microphone beside the

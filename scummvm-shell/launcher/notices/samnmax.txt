@@ -1,0 +1,287 @@
+		  Sam & Max Hit the Road
+			    CD-ROM DEMO
+
+
+
+			QUICK START
+
+Just type "playdemo".  A menu of nifty-keen options will pop up
+on your screen.  If you haven't played Sam and Max Hit the Road
+before, you should choose the "Configure Sound Boards" option from
+the menu.  Once you're done, select the "Play Sam n Max Demo" option,
+and you're on your way.
+
+
+		      MEMORY CONCERNS:
+
+This demo requires about 1 Megabytes of RAM to run smoothly.  While your
+machine may have RAM, many programs, such as RAM drives or hard disk caches,
+will use part of memory.  It is also possible that other programs that are
+pre-loaded into your memory will conflict with our software.  If you are
+having difficulty running the demo, you might try solving the problem by
+making a "Boot Disk."  BOOTMKR is a program included that will create a
+Boot Disk for you.
+
+			HOW TO MAKE A BOOT DISK:
+
+A Boot Disk is essentially a floppy disk that, when inserted in your "A"
+drive before startup, will load only the software necessary to play the
+Sam & Max demo. BOOTMKR requires a clean floppy disk that it may re-
+format and erase, so be sure to acquire a clean disk before making your
+boot disk.  To run BOOTMKR, switch to your CD drive and, at the DOS
+prompt, type BOOTMKR.  Simply follow the instructions and voila!  Your
+new boot disk ready for use.
+
+If you are having problems with BOOTMKR, you may create your
+boot disk by following these instructions:
+
+How to make a basic BOOT Disk to run a CD-based game
+
+Note:  In all of the following sections, read an underscore
+( _ ) as a space.
+
+First, you will need to format a floppy disk and make it
+bootable.
+
+1)   Insert a new, unformatted floppy disk into your A:
+drive.
+2)   At your "C:\" prompt, type:
+
+     format_A:_/s  <enter>
+
+     This will format the floppy disk and tell the operating
+system that this disk can be booted from.
+
+3)   At your C:\ prompt, type:
+
+     dir_A: <enter>
+
+     A list of files on the newly formatted floppy disk will
+appear.  Look for a file called COMMAND.COM.  If you do not
+find one, you will need to copy it to the floppy from your
+hard drive by typing at the C: prompt:
+
+     copy_command.com_A:  <enter>
+
+     If you get an error message that the copy command
+cannot find COMMAND.COM, it might be because the file has
+been moved to your DOS directory.  Copy it from there by
+typing:
+
+     copy_dos\command.com_A:  <enter>
+
+, Now you need to tell the boot floppy how to talk to your CD
+drive.
+
+     The system gets this information from two files:
+CONFIG.SYS and AUTOEXEC.BAT.  You will need to create these
+two files on your boot floppy, using the two versions on
+your hard drive as reference.
+
+4)   At your C:\ prompt, type:
+
+     copy_config.sys_a: <enter>
+     copy_autoexec.bat_a: <enter>
+
+     This will copy the two files from your hard drive to
+the floppy disk.
+
+5)   At your C:\ prompt, type:
+
+     a: <enter>
+
+     This changes your current drive from your C: drive to
+your A: drive.  Your C:\ prompt should change to A:\.
+IMPORTANT!   Verify that your prompt has changed to A:\.  We
+will be modifying your CONFIG.SYS and AUTOEXEC.BAT files on
+the floppy disk.  If you fail to change drives first, you
+will change the files on your hard disk instead and may make
+your hard disk unbootable.
+
+6)   At your A:\ prompt, type:
+
+     edit_config.sys <enter>
+
+     You will now find the DOS text editor, which you may
+use to modify the CONFIG.SYS file.  Move your cursor around
+the file with the arrow keys.  You can insert text at the
+cursor location by simply typing it, or delete the character
+currently over the cursor by pressing the <delete> key.
+
+7)   On your floppy disk, delete non-essential lines from
+the CONFIG.SYS file by moving the cursor to the beginning of
+the line and pressing delete several times.  Keep any lines
+relating you your CD drive and sound card.  Unfortunately,
+exactly what lines you will need to keep will vary slightly
+depending on what hardware you have installed in your
+machine.  When you are done, your file should look something
+like this:
+
+     LASTDRIVE = E
+     DEVICE = C:\DOS\HIMEM.SYS
+     DEVICE = C:\SCSI\MA13B.SYS
+     DEVICE = C:\SCSI\NECCDR.SYS /D:NECCD
+     DEVICE = C:\SBPRO\DRV\SBPCD.SYS /D:MSCD001 /P:220
+     DOS = HIGH
+     DOS = UMB
+     BUFFERS = 20
+     FILES = 20
+     DEVICE = C:\DOS\SETVER.EXE
+
+     The above example is for a computer set up for an NEC
+CD-ROM drive with a Sound Blaster Pro sound card.  For your
+setup, the lines in italics may be completely different, and
+there may be more or fewer lines.  Look for and keep lines
+that list your CD-drive's name, sound card's name, or "CD"
+in them somewhere.
+
+8) Hold down the <alt> key and press F.  then press the X
+key.  This will allow you to save your changes and exit the
+text editor.
+
+9)   At your A:\ prompt, type:
+
+     edit_autoexec.bat<enter>
+
+     You will be entered into the DOS text editor, where you
+can modify the AUTOEXEC.BAT file.
+
+10)  On your floppy disk, delete non-essential lines from
+the AUTOEXEC.BAT file.  Keep any lines referring to your
+sound card, CD drive or mouse.  Again, exactly what lines you will
+need to keep will vary slightly depending on what hardware
+you have installed in your machine.  When you are done, your
+file should look something like this:
+
+     @ECHO OFF
+     C:\SCSI\MSCDEX /D:NECCD /M:10 /L:d /V
+     PROMPT    $P$G
+     SET TEMP=C:\DOS
+     SET BLASTER=A220 I7 D1 T4
+     SET SOUND=C:\SBPRO
+     PATH=C:\;C:\DOS;C:\SCSI;C:\WINDOWS
+     C:\WINDOWS\MOUSE.COM /Y
+
+Again, the lines in italics may vary greatly from those
+shown, depending on your particular hardware and how it is
+configured.  Other lines may vary slightly.
+
+11) Save your changes and exit the text editor as before.
+
+12) Try out your boot disk.
+
+You can now cold boot your computer with this disk in your
+A: drive. To cold boot,  take all disks out of disk drives.
+Manually turn off the computer using the main switch.  Wait
+for the machine to stop running.  Put the boot disk into the
+A: drive.  Switch on the machine.
+
+If your boot disk does not work you may have deleted lines
+necessary for your particular system.  Remove the boot
+floppy, boot from your hard disk and repeat the process.  If
+you have questions, refer to your sound card and CD-ROM
+manuals or contact their technical support departments.
+
+
+Note: A boot disk does not affect your hard drive in any permanent way.
+To get your hard drive back to its normal state, simply restart your
+computer without inserting the boot disk.
+
+			  WINDOWS:
+
+The CD-ROM demo of Sam & Max Hit the Road will not run under Windows.
+Turn it off.  Don't use it.
+
+			SAVE GAMES:
+
+This demonstration of Sam & Max Hit the Road is not designed
+to save games.  While playing the demo, please DO NOT
+attempt to save your game.
+
+			SOUND VOLUME:
+
+The volume controls are as follows:
+[ or ] -- Lowers or raises the volume of the music.
+{ or } -- Lowers or raises the volume of the sound effects.
+; or ' -- Lowers or raises the volume of the voices.
+
+			SOUND CARDS:
+
+In order to hear sound and music during the game, you'll have to tell
+the game about your sound card.  You can do this by typing "playdemo"
+and choosing "Configure Sound Boards" from the main menu.
+
+If your game starts and no sound or music is heard, either you don't
+have a sound card we currently support, or you have not configured the
+game properly.  If everything seems to be configured properly, check
+your volume level and your speaker connections.
+
+A majority of all sound problems encountered in a game have to do
+with hardware communications.  This means that either 1) your game
+thinks your hardware is configured in some way other than it really
+is, or 2) your sound card itself is depending on either a PORT, an
+IRQ number, or a DMA channel which is being used by something else
+in your system.  Unfortunately, hardware configuration problems are
+not always obvious.  Your game may appear to play music and sound
+effects just fine, and then, at some unexpected moment, the sound
+may stop, or the game may "lock up."  This is often not the fault
+of the game, but a hardware conflict that didn't occur until the
+game used the hardware in a particular way.  Finally -- and this is
+extremely important -- just because Game A works with your
+configuration and Game B doesn't, does not necessarily mean the
+problem is in Game B.  It may be that Game B uses capabilites of the
+hardware that Game A doesn't, and is therefore more likely to run
+into problems with the hardware configuration.
+
+If you don't know how to resolve a sound card problem, first consult
+the documentation provided with your sound card.  Often sound card
+manufacturers provide diagnostic programs with their cards.
+If you are still encountering difficulties, see the Technical Support
+section below.
+
+
+		      HOW TO REACH US
+
+		     Technical Support
+If you are having any technical difficulties with this product,
+please phone the technical support department.  If you have a
+technical problem, we recommend that you are sitting in front of
+your computer when you call so that we will be able to assist you
+more quickly.  It is also helpful to have a list of your machine's
+current hardware and software configurations.
+
+Phone - (415) 721-3333 - M-Th:30am - 6:00pm, F:8:30am - 5:00pm, Pacific Time
+Fax - (415) 721-3482 - 24 hours
+BBS - (415) 257-3070 - 24 hours - NOT a message base.  For file download ONLY.
+Mail - LucasArts Entertainment Co.
+       P.O. Box 10307
+       San Rafael, CA  94912
+
+			  Hints
+If you require hints for our games, please call our hintline at
+1-900-740-JEDI.  Callers must be over the age of 18 or have
+parents permission when they call.  Each call costs $.75 per minute.
+
+			 On Line
+LucasArts Entertainment BBS
+(415) 257-3070t8N1, ANSI 016 lines, 24 hours, 7 days a week
+Demos, Patches, On-line technical support
+
+Compuserve
+Send mail to 75300, 454
+Game Publisher's Forum A
+(Go GAMAPUB)
+
+GEnie
+Sen mail to "LucasArts"
+Games RoundTable Category 27
+(M805)
+
+America Online
+Keyword "Lucas"
+
+Internet E-Mail
+send mail to "75300.454@COMPUSERVE.COM"
+
+If you would like information about our other games or would
+like a catalog of our products, please call us at 1-800-STARWARS.

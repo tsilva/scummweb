@@ -1,0 +1,52 @@
+diff --git a/engines/grim/grim.cpp b/engines/grim/grim.cpp
+--- a/engines/grim/grim.cpp
++++ b/engines/grim/grim.cpp
+@@ -86,6 +86,9 @@
+ #include "engines/grim/imuse/imuse.h"
+ #include "engines/grim/emi/sound/emisound.h"
+ #include "engines/grim/lua/lua.h"
++#ifdef __EMSCRIPTEN__
++#include "engines/grim/lua/lapi.h"
++#endif
+ 
+ #include "engines/scummweb-intro.h"
+ 
+@@ -102,6 +105,30 @@
+ 	lua_pushobject(table);
+ 	lua_pushstring(key);
+ 	return lua_rawgettable();
++}
++
++// A conversation may keep running while its actors speak. Only offer Confirm
++// while the original dialog choice handler is actually accepting input.
++static void publishDialogueChoices() {
++	if (!EM_ASM_INT({ return Boolean(globalThis.__scummwebSetDialogueActive); }))
++		return;
++	lua_beginblock();
++	lua_Object handler = storyField(lua_rawgetglobal("system"), "buttonHandler");
++	const lua_Object dialog = lua_rawgetglobal("Dialog");
++	const lua_Object chooser = storyField(dialog, "buttonHandler");
++	bool active = lua_isfunction(handler) && lua_isfunction(chooser) &&
++		luaO_equalObj(luaA_Address(handler), luaA_Address(chooser));
++	// LuaBase::callback also accepts an object, passing it as self. Dialog
++	// instances inherit their choice handler through the raw parent chain.
++	for (uint depth = 0; lua_istable(handler) && depth < 16; ++depth) {
++		if (lua_istable(dialog) && luaO_equalObj(luaA_Address(handler), luaA_Address(dialog))) {
++			active = true;
++			break;
++		}
++		handler = storyField(handler, "parent");
++	}
++	lua_endblock();
++	EM_ASM({ globalThis.__scummwebSetDialogueActive(Boolean($0)); }, active);
+ }
+ 
+ static lua_Object storyIndex(lua_Object table, int index) {
+@@ -1279,6 +1306,7 @@
+ 		}
+ 
+ #ifdef __EMSCRIPTEN__
++		publishDialogueChoices();
+ 		if (_currSet) {
+ 			ScummWebTelemetry::Sample sample(-1, _currSet->getName().c_str());
+ 			sample.variable("scene_state", "camera_setup", _currSet->getSetup());

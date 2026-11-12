@@ -4,6 +4,7 @@ export function installPlayerControls(scope, requestMenu) {
   let volume = 100;
   let speed = 1;
   let menuOpen = false;
+  let dialogueActive = false;
   let rawClock;
   let gameClock = 0;
   let maxSlot = 0;
@@ -28,7 +29,7 @@ export function installPlayerControls(scope, requestMenu) {
 
   scope.scummwebPlayerControls = Object.freeze({
     read: () => ({
-      volume, speed, canSave, canLoad, nextSlot: nextSlot(),
+      volume, speed, canSave, canLoad, dialogueActive, nextSlot: nextSlot(),
       saves: saves.filter(({ slot }) => slot <= maxSlot),
     }),
     setSettings(settings) {
@@ -61,6 +62,8 @@ export function installPlayerControls(scope, requestMenu) {
       });
     },
   });
+
+  scope.__scummwebSetDialogueActive = (active) => { dialogueActive = Boolean(active); };
 
   scope.__scummwebPlayerMillis = (millis) => {
     if (rawClock === undefined) gameClock = millis;

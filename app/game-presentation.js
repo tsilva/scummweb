@@ -116,6 +116,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "samnmax-demo": {
+    ...retroGameArtwork["scumm:samnmax"],
+    title: "Sam & Max Hit the Road (Demo)",
+    year: "1993",
+    language: "en",
+    heroImageMobilePosition: "88% top",
+    summary: "Try the voiced English demo of Sam and Max’s comedy road-trip adventure.",
+  },
   "ft-demo": {
     ...retroGameArtwork["scumm:ft"],
     title: "Full Throttle (Demo)",

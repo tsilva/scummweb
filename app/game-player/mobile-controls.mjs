@@ -8,3 +8,23 @@ export function getMobileControlMode({ engineId, gameId } = {}) {
   if (engineId === "adl" || (engineId === "glk" && zorkStories.has(gameId))) return "command";
   return "mouse";
 }
+
+export function watchDialogueChoices(frame, onChange, timers = window) {
+  let previous;
+  function read() {
+    let active = false;
+    try {
+      active = frame?.contentWindow?.scummwebPlayerControls?.read().dialogueActive === true;
+    } catch { /* A navigating frame has no current dialogue choices. */ }
+    if (active === previous) return;
+    previous = active;
+    onChange(active);
+  }
+  frame?.addEventListener("load", read);
+  read();
+  const timer = timers.setInterval(read, 100);
+  return () => {
+    timers.clearInterval(timer);
+    frame?.removeEventListener("load", read);
+  };
+}

@@ -31,6 +31,7 @@ test("official classic archives are recognized by contents without relying on fi
     ["sfinx", [["sfinx-en-v1.1/vol.cat", 129024, 950468179], ["sfinx-en-v1.1/vol.dat", 34182773, 4051689322]]],
     ["comi-demo", [["COMI.LA0", 18041, 0x2f43bb49], ["COMI.LA1", 10579949, 0x1ea49b19]]],
     ["ft-demo", [["wrapper/FT.000", 7885, 0x5a4b7e9a], ["wrapper/FT.001", 50371781, 0xb93903c9]]],
+    ["samnmax-demo", [["wrapper/SAMDEMO.000", 7505, 0x112b0cbd], ["wrapper/SAMDEMO.001", 1190282, 0xa0b3f988]]],
   ]) {
     assert.equal(getArchiveGamePresentation(files)?.target, target);
     assert.equal(getArchiveGamePresentation(files.map(([name, size]) => [name, size, 0])), null);

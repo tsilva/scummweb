@@ -298,6 +298,25 @@
         "basis": "Official ScummVM-hosted playable promotional demo; inspected all included text notices. No redistribution prohibition or separate EULA found; no express rehosting grant found. This is an evidence-based assessment, not an express rights-holder license.",
         "preservation": "Serve the complete upstream ZIP byte-for-byte, retaining FTREADME.TXT, HSB.TXT and all original files and copyright notices."
       }
+    },
+    {
+      "target": "samnmax-demo",
+      "title": "Sam & Max Hit the Road (Demo)",
+      "engineId": "scumm",
+      "gameId": "samnmax",
+      "platform": "pc",
+      "extra": "Demo",
+      "archive": "samnmax-dos-cd-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/scumm/samnmax-dos-cd-demo-en.zip",
+      "sha256": "232be6248de958f77da58af7b79e94d28d678c26ac53a06dad405727e48992a3",
+      "preserveArchive": true,
+      "noticeFile": "README.TXT",
+      "redistributionReview": {
+        "reviewedOn": "2026-11-12",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "Official ScummVM-hosted playable promotional CD demo. All included text notices and binary copyright/license strings inspected; no express redistribution prohibition or rehosting grant found. This is an evidence-based assessment, not an express rights-holder license.",
+        "preservation": "Serve the complete upstream ZIP byte-for-byte, preserving README.TXT, README.1ST, runtime notices and every original file."
+      }
     }
   ]
 }
