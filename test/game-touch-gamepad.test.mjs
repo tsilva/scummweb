@@ -22,12 +22,13 @@ const pointer = (pointerId, clientX, clientY) => ({
   },
 });
 
-function loadGamepad(keyboard) {
+function loadGamepad(keyboard, mouse = {}) {
   let cursor = 0;
   let hooks = [];
   const module = { exports: {} };
   runInNewContext(code, {
     module, exports: module.exports,
+    window: { location: { origin: "https://example.test" } },
     require(name) {
       if (name === "react") return {
         useEffect() {},
@@ -40,6 +41,7 @@ function loadGamepad(keyboard) {
         },
       };
       if (name === "./keyboard") return keyboard;
+      if (name === "./game-mouse.mjs") return mouse;
       return requireNative(name);
     },
   });
@@ -62,7 +64,7 @@ test("Grim's stick ignores thumb drift and holds both keys on a deliberate diago
     },
   });
   const { children: [movementStick, actions] } =
-    gamepad.GrimTouchGamepad({ frameRef: { current: {} } }).props;
+    gamepad.GameTouchGamepad({ frameRef: { current: {} } }).props;
   const [toggle, choices] = actions.props.children;
   const buttons = [toggle, ...choices.props.children];
   assert.deepEqual(Array.from(buttons, ({ props }) => props["aria-label"]), [
@@ -139,4 +141,60 @@ test("Hugo's stick changes direction without toggling on drift and stops after a
   const afterCenter = presses.length;
   stick.onPointerCancel(pointer(2, 50, 50));
   assert.equal(presses.length, afterCenter);
+});
+
+test("Castle Master's stick holds walking or turning and releases on recenter, cancel, and lift", () => {
+  const events = [];
+  const frame = {};
+  const gamepad = loadGamepad({
+    holdGameKey(target, input) {
+      assert.equal(target, frame);
+      const key = typeof input === "string" ? input : input.key;
+      events.push(`press ${key}`);
+      return () => events.push(`release ${key}`);
+    },
+  });
+  const stick = gamepad.GameMovementStick({ frameRef: { current: frame }, castle: true }).props;
+  stick.onPointerDown(pointer(1, 50, 50));
+  stick.onPointerMove(pointer(1, 50, 25));
+  stick.onPointerMove(pointer(1, 52, 25));
+  assert.deepEqual(events, ["press ArrowUp"]);
+  stick.onPointerMove(pointer(1, 75, 30)); // Dominant horizontal axis turns, rather than strafing.
+  stick.onPointerMove(pointer(1, 55, 25)); // Returning vertical resumes native walking repeat.
+  stick.onPointerMove(pointer(1, 50, 50));
+  assert.deepEqual(events, ["press ArrowUp", "release ArrowUp", "press x", "release x",
+    "press ArrowUp", "release ArrowUp"]);
+  stick.onPointerMove(pointer(1, 25, 50));
+  stick.onPointerUp(pointer(1, 25, 50));
+  stick.onLostPointerCapture(pointer(1, 25, 50));
+  stick.onPointerDown(pointer(2, 50, 50));
+  stick.onPointerMove(pointer(2, 50, 75));
+  stick.onPointerCancel(pointer(2, 50, 75));
+  assert.deepEqual(events.slice(6), ["press z", "release z", "press ArrowDown", "release ArrowDown"]);
+});
+
+test("Castle Master actions dispatch the native keys and activation uses right click", () => {
+  const events = [];
+  const frame = {};
+  const gamepad = loadGamepad({
+    dispatchSyntheticKeypress(target, key) {
+      assert.equal(target, frame);
+      events.push(key);
+    },
+  }, {
+    clickGameMouse(target, origin, button) {
+      assert.equal(target, frame);
+      assert.equal(origin, "https://example.test");
+      events.push(button);
+    },
+  });
+  const [stick, actions] = gamepad.GameTouchGamepad({ frameRef: { current: frame }, mode: "castle" }).props.children;
+  assert.equal(stick.props.castle, true);
+  const [, choices] = actions.props.children;
+  const buttons = choices.props.children;
+  assert.deepEqual(Array.from(buttons, ({ props }) => props["aria-label"]), [
+    "Use / Activate", "Throw rock", "Look up", "Look down", "Face forward", "Walk", "Run", "Crawl", "Game information",
+  ]);
+  for (const button of buttons) button.props.onClick();
+  assert.deepEqual(events, ["right", "0", "p", "l", "f", "w", "r", "c", "i"]);
 });

@@ -63,6 +63,7 @@ function player({ fullscreen = false, landscape = false, mobile = true, tv = fal
     screen: { orientation: {
       type: landscape ? "portrait-primary" : "landscape-primary",
       lock: unsupportedOrientation ? undefined : async (orientation) => { actions.push(orientation); },
+      unlock: unsupportedOrientation ? undefined : () => { actions.push("unlock"); },
     } },
     document,
     useState(initial) {
@@ -142,17 +143,17 @@ test("exiting during a pending fullscreen request prevents a late landscape lock
   const exiting = client.exit();
   client.resolveFullscreen();
   await exiting;
-  assert.deepEqual(client.actions, ["fullscreen", "exit", "portrait"]);
+  assert.deepEqual(client.actions, ["fullscreen", "exit", "unlock"]);
   assert.equal(client.document.fullscreenElement, null);
 });
 
-test("leaving the route releases fullscreen before requesting portrait", async () => {
+test("leaving the route releases fullscreen and orientation for browsing", async () => {
   const client = player({ fullscreen: true });
   client.begin();
   await client.settle();
   client.unmount();
   await new Promise(setImmediate);
-  assert.deepEqual(client.actions, ["fullscreen", "landscape", "exit", "portrait"]);
+  assert.deepEqual(client.actions, ["fullscreen", "landscape", "exit", "unlock"]);
 });
 
 test("browser fullscreen exit while playing keeps requesting landscape", async () => {

@@ -1,14 +1,18 @@
 import {
-  ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Backpack, Eye, HandGrab, MessageCircle, Zap,
+  ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Backpack, Eye, Footprints, Gauge,
+  HandGrab, Info, MessageCircle, MoveDown, Target, Zap,
 } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 import { dispatchSyntheticKeypress, holdGameKey } from "./keyboard";
+import { clickGameMouse } from "./game-mouse.mjs";
 
 const up = { name: "Up", Icon: ArrowUp, key: { key: "ArrowUp", keyCode: 38 } };
 const left = { name: "Left", Icon: ArrowLeft, key: { key: "ArrowLeft", keyCode: 37 } };
 const right = { name: "Right", Icon: ArrowRight, key: { key: "ArrowRight", keyCode: 39 } };
 const down = { name: "Down", Icon: ArrowDown, key: { key: "ArrowDown", keyCode: 40 } };
 const directions = [up, left, right, down];
+// ScummVM maps Castle Master's arrows to strafing; Z/X turn the camera.
+const castleDirectionKeys = { Left: "z", Right: "x" };
 const hugoDiagonals = {
   Up: {
     Left: { key: "7", code: "Numpad7", keyCode: 103 },
@@ -49,7 +53,7 @@ function isAxisEngaged(value, crossAxis, travel, wasHeld) {
   return Math.abs(value) > Math.max(deadZone, diagonalThreshold);
 }
 
-export function GameMovementStick({ frameRef, hugo = false }) {
+export function GameMovementStick({ frameRef, hugo = false, castle = false }) {
   const grip = useRef(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [activeDirections, setActiveDirections] = useState([]);
@@ -97,6 +101,9 @@ export function GameMovementStick({ frameRef, hugo = false }) {
     const wasHeld = (direction) => hugo ? active.hugoDirections.includes(direction) : active.held.has(direction);
     if (isAxisEngaged(y, x, active.travel, wasHeld(vertical))) wanted.push(vertical);
     if (isAxisEngaged(x, y, active.travel, wasHeld(horizontal))) wanted.push(horizontal);
+    // Freescape repeats one action at a time. Avoid leaving a held axis without
+    // native repeat when the other axis is released.
+    if (castle && wanted.length === 2) wanted.splice(Math.abs(x) > Math.abs(y) ? 0 : 1, 1);
     setActiveDirections(wanted);
 
     if (hugo) {
@@ -118,7 +125,7 @@ export function GameMovementStick({ frameRef, hugo = false }) {
     }
     for (const direction of wanted) {
       if (active.held.has(direction)) continue;
-      const release = holdGameKey(frameRef.current, direction.key);
+      const release = holdGameKey(frameRef.current, (castle && castleDirectionKeys[direction.name]) || direction.key);
       if (release) active.held.set(direction, release);
     }
   }
@@ -185,14 +192,27 @@ const grimActions = [
   { key: "i", label: "Inventory", Icon: Backpack },
 ];
 
-export function GrimTouchGamepad({ frameRef }) {
+const castleActions = [
+  { button: "right", label: "Use / Activate", Icon: HandGrab },
+  { key: "0", label: "Throw rock", Icon: Target },
+  { key: "p", label: "Look up", Icon: ArrowUp },
+  { key: "l", label: "Look down", Icon: ArrowDown },
+  { key: "f", label: "Face forward", Icon: Eye },
+  { key: "w", label: "Walk", Icon: Footprints },
+  { key: "r", label: "Run", Icon: Gauge },
+  { key: "c", label: "Crawl", Icon: MoveDown },
+  { key: "i", label: "Game information", Icon: Info },
+];
+
+export function GameTouchGamepad({ frameRef, mode = "grim" }) {
+  const castle = mode === "castle";
   const [actionsOpen, setActionsOpen] = useState(false);
   const actionsId = useId();
   const actionsButton = useRef(null);
 
   return (
-    <div className="game-route-touch-gamepad game-route-grim-gamepad">
-      <GameMovementStick frameRef={frameRef} />
+    <div className={`game-route-touch-gamepad game-route-grim-gamepad${castle ? " game-route-castle-gamepad" : ""}`}>
+      <GameMovementStick frameRef={frameRef} castle={castle} />
       <div
         className="game-route-grim-actions"
         onKeyDown={(event) => {
@@ -217,14 +237,15 @@ export function GrimTouchGamepad({ frameRef }) {
           <Zap aria-hidden="true" size={20} />
         </button>
         <div aria-label="Game actions" className="game-route-grim-action-choices" hidden={!actionsOpen} id={actionsId} role="group">
-          {grimActions.map(({ key, label, Icon }) => (
+          {(castle ? castleActions : grimActions).map(({ key, button, label, Icon }) => (
             <button
               aria-label={label}
               className="game-route-control-button is-gamepad"
               key={label}
               onClick={() => {
                 setActionsOpen(false);
-                dispatchSyntheticKeypress(frameRef.current, key);
+                if (button) clickGameMouse(frameRef.current, window.location.origin, button);
+                else dispatchSyntheticKeypress(frameRef.current, key);
               }}
               onMouseDown={(event) => event.preventDefault()}
               title={label}
