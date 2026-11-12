@@ -12,7 +12,9 @@ import { isTvBrowser } from "./controller-device.mjs";
 import GameBootOverlay from "./game-player/GameBootOverlay";
 import GamePlayerControls from "./game-player/GamePlayerControls";
 import GameTouchCursorPad from "./game-player/GameTouchCursorPad";
-import { GameMovementStick, GrimTouchGamepad } from "./game-player/GameTouchGamepad";
+import GameVoiceCommand from "./game-player/GameVoiceCommand";
+import { isZorkVoiceGame } from "./game-player/voice-command.mjs";
+import { GameMovementStick, GameTouchGamepad } from "./game-player/GameTouchGamepad";
 import { createGameLaunchAnalytics } from "./game-player/game-launch-analytics.mjs";
 import { observeStartupDiagnostics } from "./game-player/startup-diagnostics.mjs";
 import { withGameTelemetry } from "./game-player/telemetry.mjs";
@@ -190,6 +192,7 @@ export default function GameRouteFrame({
   const [commandOpen, setCommandOpen] = useState(false);
   const [commandSending, setCommandSending] = useState(false);
   const [gameMenuOpen, setGameMenuOpen] = useState(false);
+  const [isExiting, setIsExiting] = useState(false);
   const restoreFullscreenOnResume = useRef(false);
   const fullscreenExitExpected = useRef(false);
   const restoreRemoteFullscreen = useCallback(() => {
@@ -222,6 +225,8 @@ export default function GameRouteFrame({
   });
   const immersiveMode = useImmersiveMode({ shellRef });
   const navigateHome = useCallback(async (href) => {
+    // Remove every overlay control before fullscreen teardown or navigation can wait.
+    flushSync(() => setIsExiting(true));
     fullscreenExitExpected.current = true;
     // Keep the landscape lock until the mobile player has left the screen.
     if (!isTouchMobileClient()) await immersiveMode.exitImmersiveMode();
@@ -237,16 +242,16 @@ export default function GameRouteFrame({
   }, [frameSrc, showBootOverlay, waitingForLandscape]);
   const showSkipIntroBottomAction =
     (canSkipNativeIntro || (Boolean(skipIntro) && bootState.showSkipIntroButton)) &&
-    !gameplayStarted && !showBootOverlay && !waitingForLandscape;
+    !isExiting && !gameplayStarted && !showBootOverlay && !waitingForLandscape;
   const mobileControlsReady =
-    immersiveMode.isMobileViewport && !waitingForLandscape && bootState.hasBootCompleted && !hasBootFailed &&
+    !isExiting && immersiveMode.isMobileViewport && !waitingForLandscape && bootState.hasBootCompleted && !hasBootFailed &&
     !showSkipIntroBottomAction;
   const mobileControlMode = getMobileControlMode(currentReadySignal?.detectedGame ?? game ?? undefined);
   const usesCommandInput = mobileControlMode === "command" || mobileControlMode === "hugo";
   const showCommandInput = mobileControlsReady && usesCommandInput;
   const showCommandForm = showCommandInput && commandOpen;
   const showHugoStick = mobileControlsReady && !showCommandForm && mobileControlMode === "hugo";
-  const showGrimGamepad = mobileControlsReady && mobileControlMode === "grim";
+  const showTouchGamepad = mobileControlsReady && (mobileControlMode === "grim" || mobileControlMode === "castle");
   const showTouchMouse = mobileControlsReady && mobileControlMode === "mouse";
   const touchCursorPad = useTouchCursorPad({
     enabled: showTouchMouse,
@@ -925,7 +930,7 @@ export default function GameRouteFrame({
     immersiveMode.canFullscreen && !immersiveMode.isTouchMobile && bootState.hasBootPresentationCompleted;
   const showGameMenuButton =
     bootState.showGameMenuButton && !hasBootFailed && !waitingForLandscape;
-  const touchActions = showCommandInput && !showCommandForm ? (
+  const keyboardAction = showCommandInput && !showCommandForm ? (
     <button
       aria-controls="game-route-command"
       aria-label="Open keyboard"
@@ -937,6 +942,12 @@ export default function GameRouteFrame({
       <Keyboard aria-hidden="true" size={20} />
     </button>
   ) : null;
+  const touchActions = keyboardAction && isZorkVoiceGame(currentReadySignal?.detectedGame ?? game ?? undefined) ? (
+    <div aria-label="Game command controls" className="game-route-command-actions" role="group">
+      <GameVoiceCommand enabled={!gameMenuOpen && !remoteToolbarOpen} frameRef={frameRef} key={frameSrc} />
+      {keyboardAction}
+    </div>
+  ) : keyboardAction;
   const showBottomActions = showSkipIntroBottomAction || showTouchMouse || Boolean(touchActions);
 
   return (
@@ -948,14 +959,14 @@ export default function GameRouteFrame({
       }}
       ref={shellRef}
     >
-      <div className="mobile-orientation-message">
+      {!isExiting && <div className="mobile-orientation-message">
         <p role="status">Rotate your device to landscape to play.</p>
         {immersiveMode.canFullscreen && !immersiveMode.isFullscreen && (
           <button className="secondary-button" type="button" onClick={() => void enterImmersiveMode(document.documentElement)}>
             Enter fullscreen
           </button>
         )}
-      </div>
+      </div>}
       <GameBootOverlay
         archiveBytes={loadArchive && !archivePrepared && !archiveCached ? archiveProgress?.loaded : undefined}
         bootStatusText={archiveError || (loadArchive && !archivePrepared
@@ -967,7 +978,7 @@ export default function GameRouteFrame({
         showBundledTags={catalogLaunch}
         title={title}
       />
-      <GamePlayerControls
+      {!isExiting && <GamePlayerControls
         autoHide={bootState.hasBootPresentationCompleted && !showBootOverlay && !immersiveMode.isMobileViewport && !remoteToolbarOpen && !gameMenuOpen}
         compatibilityWarnings={waitingForLandscape ? [] : compatibilityWarnings}
         frameRef={frameRef}
@@ -991,22 +1002,22 @@ export default function GameRouteFrame({
         toolbarFocused={remoteToolbarOpen}
         title={game?.displayTitle ?? game?.title ?? title}
         touchActions={touchActions}
-      />
-      <GameTouchCursorPad
+      />}
+      {!isExiting && <GameTouchCursorPad
         indicatorOffset={touchCursorPad.indicatorOffset}
         onPointerCancel={touchCursorPad.handlePointerCancel}
         onPointerDown={touchCursorPad.handlePointerDown}
         onPointerMove={touchCursorPad.handlePointerMove}
         onPointerUp={touchCursorPad.handlePointerUp}
         showTouchCursorPad={showTouchMouse}
-      />
+      />}
       {showHugoStick ? (
         <div className="game-route-touch-gamepad" key={`hugo:${frameSrc}`}>
           <GameMovementStick frameRef={frameRef} hugo />
         </div>
       ) : null}
-      {showGrimGamepad ? (
-        <GrimTouchGamepad frameRef={frameRef} key={`grim:${frameSrc}`} />
+      {showTouchGamepad ? (
+        <GameTouchGamepad frameRef={frameRef} mode={mobileControlMode} key={`${mobileControlMode}:${frameSrc}`} />
       ) : null}
       {showCommandInput ? (
         <form className="game-route-command" hidden={!showCommandForm} id="game-route-command" onSubmit={handleCommandSubmit}>
@@ -1037,7 +1048,7 @@ export default function GameRouteFrame({
         className="game-route-frame"
         data-scummvm-route-frame="true"
         data-scummvm-target={target}
-        inert={gameMenuOpen || remoteToolbarOpen || waitingForLandscape}
+        inert={isExiting || gameMenuOpen || remoteToolbarOpen || waitingForLandscape}
         ref={frameRef}
         loading="eager"
         src={loadArchive ? "about:blank" : frameSrc}

@@ -47,7 +47,8 @@ Adjust the `--game-control-*` variables together to keep every control consisten
   boundary.
   Sound Volume starts at 100% and Game Speed at 1.0× each launch. Changes apply
   for the current session. **Resume Game** returns focus to the game, and
-  **Quit Game** returns to the game page or library.
+  **Quit Game** returns to the game page or library. Choosing Exit or Quit Game
+  immediately removes the toolbar and touch controls while navigation completes.
 - **Save Game** and **Load Game** use the selected edition's native slots.
   **New Save** takes an unused manual slot. Overwriting asks for confirmation
   and keeps the existing caption. Games can deny saving or loading during
@@ -66,8 +67,10 @@ appear under **Compatibility warning**. Fatal errors stop startup.
 
 ### Mobile play
 
-Browse in portrait and play in landscape. If the browser refuses fullscreen or
-rotation, rotate the device manually and use **Enter fullscreen** when offered.
+Browse in portrait or landscape; gameplay uses landscape. Leaving a game releases
+the orientation lock so the gallery follows your device. If the browser refuses
+fullscreen or rotation, rotate the device manually and use **Enter fullscreen**
+when offered.
 The game remains open when you rotate back. **Exit game** stays available.
 While **Skip intro** is visible, the toolbar and touch gameplay controls stay
 hidden. They return to their normal visibility when the action disappears.
@@ -84,6 +87,18 @@ hidden. They return to their normal visibility when the action disappears.
   walks in the direction you drag.
 - In Hugo, Apple II Hi-Res Adventures, and Zork I–III, tap the keyboard icon
   and press Enter to submit a command. An empty field sends Enter by itself.
+- In Zork I–III, supported phone browsers also show a microphone beside the
+  keyboard. Hold it while speaking an English command; release to transcribe
+  and submit it automatically, without opening the keyboard. This uses the
+  browser's built-in speech recognition (Siri's speech engine in Safari),
+  which may require a network connection and microphone permission. The mic
+  stays hidden when recognition is unsupported, and hides if permission or
+  the speech service is unavailable. Cancelling the touch, leaving the player,
+  or opening the game menu discards the recording without sending a command.
+- In Castle Master, hold the movement stick up/down to walk or left/right to
+  turn; release it to stop. The lightning button opens Use/Activate, Throw rock,
+  Look up/down, Face forward, Walk, Run, Crawl, and Game information. Tap the
+  game to aim; double-tap to choose a character or dismiss a title screen.
 
 ### Continue and native saves
 

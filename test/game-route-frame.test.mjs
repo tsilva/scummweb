@@ -9,6 +9,7 @@ import * as telemetry from "../app/game-player/telemetry.mjs";
 import { getStoryProgressRevision } from "../app/game-player/story-progress.mjs";
 import * as gameMenu from "../app/game-player/game-menu.mjs";
 import * as mobileControls from "../app/game-player/mobile-controls.mjs";
+import * as voiceCommands from "../app/game-player/voice-command.mjs";
 import * as controllerDevice from "../app/controller-device.mjs";
 import { gameLoadingStatus } from "../app/game-loading-status.mjs";
 
@@ -57,7 +58,9 @@ for (const [message, mobile, installed] of [
           useEffect: (effect) => effects.push(effect), useLayoutEffect() {},
         };
         if (name === "react/jsx-runtime") return nativeRequire(name);
+        if (name === "react-dom") return { flushSync: (callback) => callback() };
         if (name.endsWith("/mobile-controls.mjs")) return mobileControls;
+        if (name.endsWith("/voice-command.mjs")) return voiceCommands;
         if (name === "./skip-intro-config.mjs") return skipIntroConfig;
         if (name === "./controller-device.mjs") return controllerDevice;
         if (name.endsWith("/game-menu.mjs")) return gameMenu;
@@ -197,6 +200,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       if (name === "react/jsx-runtime") return nativeRequire(name);
       if (name === "react-dom") return { flushSync(callback) { callback(); render(); } };
       if (name.endsWith("/mobile-controls.mjs")) return mobileControls;
+      if (name.endsWith("/voice-command.mjs")) return voiceCommands;
       if (name === "@sentry/nextjs") return {
         withScope(callback) {
           try { callback({ addEventProcessor: (processor) => { eventProcessor = processor; } }); }
@@ -349,7 +353,7 @@ test("Zork overlays its command field without resizing the game and follows nati
   player.setBootCompleted();
   let blurred = false;
   form().props.children.props.ref.current = { focus() {}, blur() { blurred = true; } };
-  player.controls.touchActions.props.onClick();
+  keyboardAction(player).props.onClick();
   assert.equal(form().props.hidden, false);
   assert.equal(inset(), "30px");
 
@@ -389,7 +393,7 @@ test("a fullscreen command field follows keyboard geometry without switching vie
   player.render();
   assert.equal(keyboard.overlaysContent, true);
   player.setBootCompleted();
-  player.controls.touchActions.props.onClick();
+  keyboardAction(player).props.onClick();
 
   showKeyboard();
   assert.equal(player.shellProperties.get("--game-command-inset"), "245px");
@@ -400,7 +404,7 @@ test("a fullscreen command field follows keyboard geometry without switching vie
   assert.equal(keyboard.overlaysContent, true);
   assert.equal(player.shellProperties.has("--game-command-inset"), false);
 
-  player.controls.touchActions.props.onClick();
+  keyboardAction(player).props.onClick();
   showKeyboard();
   // Submitting a command can blur the field before Android hides the keyboard.
   form().props.children.props.onBlur();
@@ -732,34 +736,49 @@ test("leaving a pending launch cancels its handoff", async () => {
   assert.equal(player.deliveries.length, 0);
 });
 
-function readyPlayer(game, { ready = true, failed = false, mobile = false, landscape = true } = {}) {
+function keyboardAction(player) {
+  const action = player.controls.touchActions;
+  return action.props.role === "group" ? action.props.children[1] : action;
+}
+
+function readyPlayer(game, { ready = true, failed = false, mobile = false, landscape = true,
+  exitImmersiveMode = () => {} } = {}) {
   function Controls() {}
   function CursorPad() {}
   function MovementStick() {}
-  function GrimGamepad() {}
+  function TouchGamepad() {}
   const keypresses = [];
   const commands = [];
   const frame = { contentWindow: {} };
   let refIndex = 0;
+  let stateIndex = 0;
+  const states = [];
+  const navigations = [];
+  let children;
   const module = { exports: {} };
   runInNewContext(code, {
     module, exports: module.exports, URL, URLSearchParams,
     window: {
-      location: { href: "https://example.test/play", origin: "https://example.test", hash: "", search: "" },
+      location: { href: "https://example.test/play", origin: "https://example.test", hash: "", search: "", replace: (href) => navigations.push(href) },
       requestAnimationFrame: (callback) => callback(),
     },
     require(name) {
       if (name === "react") return {
-        useState: (value) => [typeof value === "function" ? value() : value, () => {}],
+        useState(initial) {
+          const index = stateIndex++;
+          if (!(index in states)) states[index] = typeof initial === "function" ? initial() : initial;
+          return [states[index], (value) => { states[index] = value; }];
+        },
         useRef: (current) => ({ current: refIndex++ === 1 ? frame : current }),
         useCallback: (callback) => callback,
         useEffect() {}, useLayoutEffect() {},
       };
       if (name === "react/jsx-runtime") return nativeRequire(name);
-      if (name === "react-dom") return { flushSync: (callback) => callback() };
+      if (name === "react-dom") return { flushSync(callback) { callback(); render(); } };
       if (name.endsWith("/mobile-controls.mjs")) return mobileControls;
+      if (name.endsWith("/voice-command.mjs")) return voiceCommands;
       if (name === "./skip-intro-config.mjs") return skipIntroConfig;
-      if (name === "next/navigation") return { useRouter: () => ({}) };
+      if (name === "next/navigation") return { useRouter: () => ({ replace: (href) => navigations.push(href) }) };
       if (name.endsWith("/game-menu.mjs")) return gameMenu;
       if (name.endsWith("/telemetry.mjs")) return telemetry;
       if (name.endsWith("/story-progress.mjs")) return { getStoryProgressRevision };
@@ -771,13 +790,14 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
       };
       if (name.endsWith("/GamePlayerControls")) return Controls;
       if (name.endsWith("/GameTouchCursorPad")) return CursorPad;
-      if (name.endsWith("/GameTouchGamepad")) return { GameMovementStick: MovementStick, GrimTouchGamepad: GrimGamepad };
+      if (name.endsWith("/GameTouchGamepad")) return { GameMovementStick: MovementStick, GameTouchGamepad: TouchGamepad };
       if (name.endsWith("/useBootState")) return { useBootState: () => ({
         hasBootCompleted: ready, hasBootPresentationCompleted: ready,
         showGameMenuButton: ready, hasBootFailed: failed,
       }) };
+      if (name.endsWith("/immersive-mode.mjs")) return { isTouchMobileClient: () => mobile };
       if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({
-        isMobileViewport: mobile, isTouchMobile: mobile, isLandscapeViewport: landscape,
+        isMobileViewport: mobile, isTouchMobile: mobile, isLandscapeViewport: landscape, exitImmersiveMode,
       }) };
       if (name.endsWith("/useTouchClickMode")) return { useTouchClickActions: () => ({}) };
       if (name.endsWith("/useTouchCursorPad")) return { useTouchCursorPad: () => ({}) };
@@ -785,15 +805,54 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
       return {};
     },
   });
-  const children = module.exports.default({ game, target: game.target, src: "/scummvm.html#game" }).props.children.filter(Boolean);
+  function render() {
+    refIndex = 0;
+    stateIndex = 0;
+    children = module.exports.default({ game, target: game.target, src: "/scummvm.html#game" }).props.children.filter(Boolean);
+  }
+  render();
   return {
-    controls: children.find(({ type }) => type === Controls).props,
-    cursorPad: children.find(({ type }) => type === CursorPad).props,
-    hugoStick: children.find(({ props }) => props.children?.type === MovementStick)?.props.children,
-    grimGamepad: children.find(({ type }) => type === GrimGamepad),
-    form: children.find(({ type }) => type === "form"),
+    get controls() { return children.find(({ type }) => type === Controls)?.props; },
+    get cursorPad() { return children.find(({ type }) => type === CursorPad)?.props; },
+    get hugoStick() { return children.find(({ props }) => props.children?.type === MovementStick)?.props.children; },
+    get grimGamepad() { return children.find(({ type, props }) => type === TouchGamepad && props.mode === "grim"); },
+    get castleGamepad() { return children.find(({ type, props }) => type === TouchGamepad && props.mode === "castle"); },
+    get form() { return children.find(({ type }) => type === "form"); },
+    render, navigations,
     frame, keypresses, commands,
   };
+}
+
+for (const game of [
+  { engineId: "sky", gameId: "sky", target: "sky" },
+  { engineId: "grim", gameId: "grim", target: "grim-demo" },
+  { engineId: "freescape", gameId: "castlemaster", target: "castlemaster-demo" },
+  { engineId: "hugo", gameId: "hugo1", target: "hugo1-demo" },
+  { engineId: "glk", gameId: "zork1", target: "zork1" },
+]) {
+  for (const mobile of [false, true]) {
+    test(`Exit immediately removes controls for ${game.target} in ${mobile ? "mobile" : "desktop"} play`, async () => {
+      const fullscreenExit = Promise.withResolvers();
+      const player = readyPlayer(game, { mobile, exitImmersiveMode: () => fullscreenExit.promise });
+      assert.ok(player.controls);
+      if (mobile) assert.ok(player.controls.showTouchClickButtons || player.hugoStick || player.grimGamepad || player.castleGamepad || player.form);
+      player.controls.onOpenMenu();
+      player.render();
+      assert.equal(player.controls.gameMenuOpen, true);
+      const exit = player.controls.onExit();
+      // No extra render: controls must disappear inside the exit handler itself.
+      assert.equal(player.controls, undefined);
+      assert.equal(player.cursorPad, undefined);
+      assert.equal(player.hugoStick, undefined);
+      assert.equal(player.grimGamepad, undefined);
+      assert.equal(player.castleGamepad, undefined);
+      assert.equal(player.form, undefined);
+      assert.equal(player.navigations.length, mobile ? 1 : 0);
+      fullscreenExit.resolve();
+      await exit;
+      assert.equal(player.navigations.length, 1);
+    });
+  }
 }
 
 for (const [game, expectedKey] of [
@@ -844,7 +903,7 @@ test("Mystery House opens a command field from the keyboard control on mobile", 
   assert.equal(inputElement.type, "input");
   assert.equal(inputElement.props.enterKeyHint, "enter");
   inputElement.props.ref.current = { focus: () => { focused = true; } };
-  player.controls.touchActions.props.onClick();
+  keyboardAction(player).props.onClick();
   assert.equal(focused, true);
   let blurred = false;
   let prevented = false;
@@ -885,10 +944,28 @@ test("mobile control modes cover Grim, Hugo, and the three Zork stories", () => 
   for (const gameId of ["zork1", "zork2", "zork3"]) {
     const zork = readyPlayer({ engineId: "glk", gameId, target: gameId }, mobile);
     assert.equal(zork.hugoStick, undefined);
-    assert.equal(zork.controls.touchActions.props["aria-label"], "Open keyboard");
+    assert.equal(keyboardAction(zork).props["aria-label"], "Open keyboard");
+    const microphone = zork.controls.touchActions.props.children[0];
+    assert.equal(microphone.props.frameRef.current, zork.frame);
+    assert.equal(microphone.props.enabled, true);
     assert.equal(zork.cursorPad.showTouchCursorPad, false);
   }
   const graphical = readyPlayer({ engineId: "zvision", gameId: "zgi", target: "zgi" }, mobile);
   assert.equal(graphical.cursorPad.showTouchCursorPad, true);
   assert.equal(graphical.form, undefined);
+});
+
+test("Castle Master uses a movement gamepad only during ready landscape mobile play", () => {
+  const game = { engineId: "freescape", gameId: "castlemaster", target: "castlemaster-demo" };
+  const player = readyPlayer(game, { mobile: true });
+  assert.equal(player.castleGamepad.props.mode, "castle");
+  assert.equal(player.castleGamepad.props.frameRef.current, player.frame);
+  assert.equal(player.cursorPad.showTouchCursorPad, false);
+  assert.equal(player.controls.showTouchClickButtons, false);
+  assert.equal(player.form, undefined);
+  for (const options of [{}, { mobile: true, ready: false }, { mobile: true, failed: true },
+    { mobile: true, landscape: false }]) {
+    assert.equal(readyPlayer(game, options).castleGamepad, undefined);
+  }
+  assert.equal(mobileControls.getMobileControlMode({ engineId: "freescape", gameId: "driller" }), "mouse");
 });
