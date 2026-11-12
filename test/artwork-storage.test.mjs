@@ -218,3 +218,74 @@ test("fresh checkouts fetch verified build inputs once and reject corrupt remote
   assert.deepEqual(await readArtworkFile(root, "/launcher/sample-cover.webp", request), bytes);
   assert.equal(calls, 1);
 });
+
+test("artwork downloads retry transient connections and server errors, then cache only verified bytes", async (t) => {
+  const root = await fixture(t);
+  await fs.unlink(path.join(root, "scummvm-shell/launcher/sample-cover.webp"));
+  const signals = new Set();
+  let calls = 0;
+  let cancelled = false;
+  const request = async (url, options) => {
+    assert.equal(url, `${sample.origin}/${file.key}`);
+    assert.equal(options.redirect, "error");
+    assert.equal(signals.has(options.signal), false, "each attempt gets a fresh timeout");
+    signals.add(options.signal);
+    if (++calls === 1) throw new TypeError("fetch failed", { cause: { code: "ECONNRESET" } });
+    if (calls === 2) return new Response(new ReadableStream({ cancel() { cancelled = true; } }), { status: 503 });
+    return response();
+  };
+  assert.deepEqual(await readArtworkFile(root, "/launcher/sample-cover.webp", request, { manifest: { ...sample, published: true } }), bytes);
+  assert.equal(calls, 3);
+  assert.equal(cancelled, true, "discard the failed response body before retrying");
+  assert.deepEqual(await fs.readFile(path.join(root, ".cache/artwork", sha256)), bytes);
+});
+
+test("an interrupted artwork body restarts from the beginning without caching partial bytes", async (t) => {
+  const root = await fixture(t);
+  await fs.unlink(path.join(root, "scummvm-shell/launcher/sample-cover.webp"));
+  let calls = 0;
+  const request = async () => {
+    if (++calls > 1) return response();
+    let chunk = 0;
+    return new Response(new ReadableStream({
+      pull(controller) {
+        if (chunk++ === 0) controller.enqueue(bytes.subarray(0, 5));
+        else controller.error(new TypeError("terminated"));
+      },
+    }));
+  };
+  assert.deepEqual(await readArtworkFile(root, "/launcher/sample-cover.webp", request, { manifest: { ...sample, published: true } }), bytes);
+  assert.equal(calls, 2);
+  assert.deepEqual(await fs.readFile(path.join(root, ".cache/artwork", sha256)), bytes);
+});
+
+test("artwork retry exhaustion identifies the asset and connection failure without caching it", async (t) => {
+  const root = await fixture(t);
+  await fs.unlink(path.join(root, "scummvm-shell/launcher/sample-cover.webp"));
+  let calls = 0;
+  await assert.rejects(readArtworkFile(root, "/launcher/sample-cover.webp", async () => {
+    calls++;
+    throw new TypeError("fetch failed", { cause: { code: "UND_ERR_CONNECT_TIMEOUT" } });
+  }, { manifest: { ...sample, published: true } }), /sample-cover\.webp.*UND_ERR_CONNECT_TIMEOUT.*3 attempts/);
+  assert.equal(calls, 3);
+  await assert.rejects(fs.access(path.join(root, ".cache/artwork", sha256)), { code: "ENOENT" });
+});
+
+test("missing, forbidden and corrupt artwork fails immediately and is never cached", async (t) => {
+  const root = await fixture(t);
+  await fs.unlink(path.join(root, "scummvm-shell/launcher/sample-cover.webp"));
+  for (const [makeResponse, expected] of [
+    [() => new Response(null, { status: 403 }), /HTTP 403/],
+    [() => new Response(null, { status: 404 }), /HTTP 404/],
+    [() => response(Buffer.alloc(bytes.length)), /checksum mismatch/],
+    [() => response(Buffer.alloc(bytes.length + 1)), /size mismatch/],
+  ]) {
+    let calls = 0;
+    await assert.rejects(readArtworkFile(root, "/launcher/sample-cover.webp", async () => {
+      calls++;
+      return makeResponse();
+    }, { manifest: { ...sample, published: true } }), expected);
+    assert.equal(calls, 1);
+    await assert.rejects(fs.access(path.join(root, ".cache/artwork", sha256)), { code: "ENOENT" });
+  }
+});

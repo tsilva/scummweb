@@ -596,7 +596,12 @@ The default is `artwork-migration`. A stale plan cannot activate.
 For a full optimization pass, publish and activate new originals first, then
 run `pnpm run optimize:artwork` and plan, publish, and verify its delivery
 variants. Normal builds use public or cached checksum-verified source images
-and need no R2 writer credentials.
+and need no R2 writer credentials. Artwork downloads make up to three attempts
+for connection failures, timeouts, HTTP 408/429 and server errors, with a fresh
+30-second timeout per attempt. Missing or forbidden files and integrity failures
+fail immediately. Errors identify the logical artwork path and failure.
+CI restores the content-addressed `.cache/artwork` between runs; every cached
+image still passes the manifest's byte-count and SHA-256 checks before use.
 
 ### Batch artwork publishing through Agent Vault
 
