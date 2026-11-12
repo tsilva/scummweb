@@ -439,8 +439,8 @@ test("Skip intro stays available through the intro and ends on the active game's
   player.unmount();
 });
 
-test("Imported games skip in place only while the active native frame offers the action", () => {
-  const player = pendingArchivePlayer({ catalog: false });
+for (const catalog of [false, true]) test(`${catalog ? "Unseeded catalog" : "Imported"} games skip in place only while the active native frame offers the action`, () => {
+  const player = pendingArchivePlayer({ catalog });
   player.render();
   player.nativeIntro(true);
   assert.equal(player.controls.showSkipIntroAction, false);

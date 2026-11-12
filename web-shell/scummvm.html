@@ -562,7 +562,7 @@ if (!isLocalGame || isCatalogArchive) {
     });
   };
 }
-if (isLocalGame && !isCatalogArchive && !scummwebLaunchUrl.searchParams.has("continue")) {
+if (!scummwebLaunchUrl.searchParams.has("continue")) {
   let available = false;
   let requested = false;
   globalThis.__scummwebRequestIntroSkip = () => {

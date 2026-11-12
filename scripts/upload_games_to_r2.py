@@ -1,15 +1,23 @@
 #!/usr/bin/env python3
 
 import argparse
+import base64
+import fcntl
+import hashlib
 import json
 import os
+import re
+import shutil
+import subprocess
+import tempfile
 from mimetypes import guess_type
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 import boto3
 from botocore.config import Config
-from botocore.exceptions import ClientError
+from botocore.exceptions import BotoCoreError, ClientError
+from boto3.exceptions import S3UploadFailedError
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,6 +36,164 @@ INDEX_CACHE_CONTROL = os.environ.get(
     "public, max-age=60, stale-while-revalidate=300",
 )
 GAMES_LIBRARY_PATH = ROOT / "dist" / "games.json"
+SINGLE_UPLOAD_LIMIT = 5 * 1024 * 1024
+MULTIPART_BYTES = 5 * 1024 * 1024
+UPLOAD_STATE_DIR = ROOT / ".internal" / "evidence" / "game-publishing"
+
+
+def r2_client_config():
+    # Avoid optional AWS streaming-checksum trailers on the S3-compatible
+    # endpoint. SigV4 still signs the SHA-256 of every uploaded payload.
+    return Config(
+        signature_version="s3v4",
+        request_checksum_calculation="when_required",
+        s3={"payload_signing_enabled": True},
+        connect_timeout=10,
+        read_timeout=120,
+        retries={"mode": "standard", "total_max_attempts": 2},
+    )
+
+
+def configure_r2_client(client):
+    # The optional interim 100 response is mishandled by some HTTPS forwarding
+    # transports. Sending the already signed body directly avoids that handshake.
+    def omit_expect(request, **_):
+        request.headers.pop("Expect", None)
+
+    for operation in ("PutObject", "UploadPart"):
+        client.meta.events.register_first(f"before-send.s3.{operation}", omit_expect)
+    return client
+
+
+def save_upload_state(path, state):
+    with tempfile.NamedTemporaryFile(mode="w", dir=path.parent, prefix=".receipt-", delete=False) as stream:
+        temporary = Path(stream.name)
+        try:
+            json.dump(state, stream)
+            stream.flush()
+            os.fsync(stream.fileno())
+            os.replace(temporary, path)
+        finally:
+            temporary.unlink(missing_ok=True)
+
+
+def upload_part_http2(client, request):
+    """Use curl's negotiated HTTP/2 without exposing signing keys to curl."""
+    executable = shutil.which("curl")
+    if not executable:
+        raise SystemExit("HTTP/2 publishing requires curl with HTTP/2 support")
+    UPLOAD_STATE_DIR.mkdir(parents=True, exist_ok=True)
+    # The temporary file contains only game bytes. The short-lived signed URL
+    # enters curl over stdin, never argv, a file, or a credential environment.
+    with tempfile.NamedTemporaryFile(dir=UPLOAD_STATE_DIR, prefix=".part-") as body:
+        body.write(request["Body"])
+        body.flush()
+        parameters = {name: value for name, value in request.items() if name != "Body"}
+        url = client.generate_presigned_url("upload_part", Params=parameters, ExpiresIn=900)
+        options = {"url": url, "request": "PUT", "upload-file": body.name,
+                   "header": f"Content-MD5: {request['ContentMD5']}"}
+        config = "\n".join(f"{name} = {json.dumps(value)}" for name, value in options.items())
+        config += '\nheader = "Expect:"\nhttp2\nproto = "=https"\nconnect-timeout = 10\nmax-time = 600\nsilent\ndump-header = "-"\noutput = "/dev/null"\n'
+        result = subprocess.run([executable, "--disable", "--config", "-"], input=config.encode(),
+                                capture_output=True, timeout=620, env={"PATH": os.defpath})
+    statuses = re.findall(rb"^HTTP/\S+ (\d{3})", result.stdout, re.MULTILINE)
+    status = int(statuses[-1]) if statuses else None
+    if result.returncode or status != 200:
+        raise SystemExit(f"R2 HTTP/2 part failed (curl {result.returncode}, HTTP {status}); provider details withheld")
+    etags = re.findall(rb'^etag:\s*("[a-fA-F0-9]{32}")\s*\r?$', result.stdout, re.MULTILINE | re.IGNORECASE)
+    if not etags:
+        raise SystemExit("R2 HTTP/2 part response has no valid ETag; progress preserved")
+    return {"ETag": etags[-1].decode("ascii")}
+
+
+def upload_multipart(client, filename, key, metadata, overwrite):
+    file_digest = hashlib.sha256()
+    with filename.open("rb") as body:
+        for block in iter(lambda: body.read(1024 * 1024), b""):
+            file_digest.update(block)
+    digest = file_digest.hexdigest()
+    expected = {"version": 1, "bucket": BUCKET, "endpoint": ENDPOINT, "key": key,
+                "sha256": digest, "bytes": filename.stat().st_size, "partBytes": MULTIPART_BYTES,
+                "metadata": metadata, "overwrite": overwrite}
+    identity = hashlib.sha256(json.dumps(expected, sort_keys=True).encode()).hexdigest()
+    UPLOAD_STATE_DIR.mkdir(parents=True, exist_ok=True)
+    path = UPLOAD_STATE_DIR / f"{identity}.json"
+    descriptor = os.open(path.with_suffix(".lock"), os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+    with os.fdopen(descriptor, "w") as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            raise RuntimeError("Another publisher is handling this exact game archive") from None
+        if path.exists():
+            if path.is_symlink() or path.stat().st_size > 2 * 1024 * 1024:
+                raise ValueError("Invalid multipart receipt")
+            state = json.loads(path.read_text())
+            if (set(state) != set(expected) | {"uploadId", "parts"}
+                    or any(state.get(name) != value for name, value in expected.items())
+                    or not isinstance(state["uploadId"], str) or not 0 < len(state["uploadId"]) <= 2048
+                    or not isinstance(state["parts"], list)):
+                raise ValueError("Multipart receipt does not match this exact game archive")
+            print(f"Resuming multipart upload after {len(state['parts'])} completed parts", flush=True)
+        else:
+            print("Creating multipart upload session", flush=True)
+            upload_id = client.create_multipart_upload(Bucket=BUCKET, Key=key, **metadata)["UploadId"]
+            state = {**expected, "uploadId": upload_id, "parts": []}
+            save_upload_state(path, state)
+            print("Multipart upload session created", flush=True)
+        sent = 0
+        number = 0
+        current_digest = hashlib.sha256()
+        with filename.open("rb") as body:
+            for number, block in enumerate(iter(lambda: body.read(MULTIPART_BYTES), b""), 1):
+                current_digest.update(block)
+                part_digest = hashlib.sha256(block).hexdigest()
+                if number <= len(state["parts"]):
+                    saved = state["parts"][number - 1]
+                    if (set(saved) != {"PartNumber", "ETag", "sha256", "bytes"}
+                            or saved["PartNumber"] != number or saved["sha256"] != part_digest
+                            or saved["bytes"] != len(block) or not isinstance(saved["ETag"], str)
+                            or not 0 < len(saved["ETag"]) <= 256):
+                        raise ValueError("Saved multipart progress does not match the game bytes")
+                else:
+                    print(f"Uploading part {number} ({len(block)} bytes)", flush=True)
+                    request = dict(Bucket=BUCKET, Key=key, UploadId=state["uploadId"], PartNumber=number,
+                                   Body=block, ContentLength=len(block),
+                                   ContentMD5=base64.b64encode(hashlib.md5(block, usedforsecurity=False).digest()).decode("ascii"))
+                    response = (upload_part_http2(client, request) if os.environ.get("SCUMMVM_R2_HTTP2") == "1"
+                                else client.upload_part(**request))
+                    state["parts"].append({"PartNumber": number, "ETag": response["ETag"],
+                                           "sha256": part_digest, "bytes": len(block)})
+                    save_upload_state(path, state)
+                    print(f"Uploaded part {number}: {sent + len(block)}/{expected['bytes']} bytes", flush=True)
+                sent += len(block)
+        if current_digest.hexdigest() != digest or sent != expected["bytes"] or len(state["parts"]) != number:
+            raise ValueError("Game archive changed during its multipart upload")
+        client.complete_multipart_upload(
+            Bucket=BUCKET, Key=key, UploadId=state["uploadId"],
+            MultipartUpload={"Parts": [{"PartNumber": part["PartNumber"], "ETag": part["ETag"]}
+                                       for part in state["parts"]]},
+            **({} if overwrite else {"IfNoneMatch": "*"}),
+        )
+        path.unlink()
+
+
+def upload_game_file(client, filename, key, metadata, overwrite=False):
+    size = filename.stat().st_size
+    if size > SINGLE_UPLOAD_LIMIT:
+        upload_multipart(client, filename, key, metadata, overwrite)
+        return
+    # Keep individual requests small, including on slower connections. A
+    # conditional PUT atomically preserves a concurrently created key.
+    with filename.open("rb") as body:
+        checksum = hashlib.md5(usedforsecurity=False)
+        for block in iter(lambda: body.read(1024 * 1024), b""):
+            checksum.update(block)
+        body.seek(0)
+        client.put_object(
+            Bucket=BUCKET, Key=key, Body=body, ContentLength=size,
+            ContentMD5=base64.b64encode(checksum.digest()).decode("ascii"),
+            **metadata, **({} if overwrite else {"IfNoneMatch": "*"}),
+        )
 
 
 def require_env(name: str) -> str:
@@ -260,11 +426,11 @@ def main() -> None:
         aws_secret_access_key=require_env("AWS_SECRET_ACCESS_KEY"),
         region_name="auto",
     )
-    client = session.client(
+    client = configure_r2_client(session.client(
         "s3",
         endpoint_url=ENDPOINT,
-        config=Config(signature_version="s3v4"),
-    )
+        config=r2_client_config(),
+    ))
 
     files, scope_label = collect_files(games_dir, selected_prefix)
     if any(path.relative_to(games_dir).parts[0] == "artwork" for path in files):
@@ -273,7 +439,8 @@ def main() -> None:
     prune_label = " with prune enabled" if args.prune else ""
     print(
         f"Uploading {len(files)} files from {games_dir}"
-        f" (scope: {scope_label}) to bucket '{BUCKET}' via {ENDPOINT}{force_label}{prune_label}"
+        f" (scope: {scope_label}) to bucket '{BUCKET}' via {ENDPOINT}{force_label}{prune_label}",
+        flush=True,
     )
 
     local_keys = {path.relative_to(games_dir).as_posix() for path in files}
@@ -291,17 +458,19 @@ def main() -> None:
             selected_prefix is not None and (key == "index.json" or key.endswith("/index.json"))
         )
 
+        print(f"Checking object: {key}", flush=True)
         if not should_overwrite and remote_key_exists(client, BUCKET, key):
             skipped += 1
             if skipped % 25 == 0 or index == len(files):
                 print(f"Skipped {skipped} existing files so far; latest: {key}")
             continue
 
-        client.upload_file(str(path), BUCKET, key, ExtraArgs=extra_args)
+        print(f"Uploading object: {key} ({path.stat().st_size} bytes)", flush=True)
+        upload_game_file(client, path, key, extra_args, overwrite=should_overwrite)
         uploaded += 1
 
         if index % 25 == 0 or index == len(files):
-            print(f"Processed {index}/{len(files)} files; uploaded latest: {key}")
+            print(f"Processed {index}/{len(files)} files; uploaded latest: {key}", flush=True)
 
     deleted = 0
     if args.prune:
@@ -315,5 +484,17 @@ def main() -> None:
     print(f"Upload complete: uploaded {uploaded}, skipped {skipped}, deleted {deleted}")
 
 
+def run():
+    try:
+        main()
+    except (BotoCoreError, ClientError, S3UploadFailedError) as error:
+        # Provider messages and request details can contain private data.
+        # Report only the SDK exception category and numeric HTTP status.
+        status = (error.response.get("ResponseMetadata", {}).get("HTTPStatusCode")
+                  if isinstance(error, ClientError) else None)
+        suffix = f" (HTTP {status})" if type(status) is int else ""
+        raise SystemExit(f"R2 publishing failed: {type(error).__name__}{suffix}; provider details withheld.") from None
+
+
 if __name__ == "__main__":
-    main()
+    run()
