@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Full Throttle (Demo)", target: "ft-demo", engineId: "scumm", gameId: "ft",
+    files: [["ft.000", 7885, 0x5a4b7e9a], ["ft.001", 50371781, 0xb93903c9]],
+  },
+  {
     title: "God of Thunder",
     files: [["gotres.dat", 739710, 34139293]],
   },

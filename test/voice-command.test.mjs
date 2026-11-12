@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { createRequire } from "node:module";
 import { runInNewContext } from "node:vm";
 import test from "node:test";
+import * as voiceFullscreen from "../app/game-player/voice-fullscreen.mjs";
 import swc from "next/dist/build/swc/index.js";
 import * as voiceCommands from "../app/game-player/voice-command.mjs";
 const { createVoiceCommand, getSpeechRecognition, isZorkVoiceGame } = voiceCommands;
@@ -172,23 +173,36 @@ const { code } = await swc.transform(await readFile(componentUrl, "utf8"), {
   jsc: { parser: { syntax: "ecmascript", jsx: true }, transform: { react: { runtime: "automatic" } } },
 });
 
-function microphone({ supported = true } = {}) {
+function microphone({ supported = true, fullscreen = false, deniedFullscreen = false } = {}) {
   const fake = speechHost(true);
   const host = Object.assign(new EventTarget(), fake.host);
   if (!supported) delete host.webkitSpeechRecognition;
   const document = Object.assign(new EventTarget(), { hidden: false });
-  const frameRef = { current: {} };
+  host.document = document;
+  document.documentElement = {};
+  document.fullscreenElement = fullscreen ? document.documentElement : null;
+  const frameRef = { current: Object.assign(new EventTarget(), { contentDocument: new EventTarget() }) };
+  const shellRef = { current: {} };
+  const fullscreenRequests = [];
   const commands = [];
   const hooks = [];
   let cursor = 0;
   let effects = [];
-  let props = { frameRef, enabled: true };
+  let props = { frameRef, shellRef, enabled: true };
   let tree;
   const module = { exports: {} };
   runInNewContext(code, {
     module, exports: module.exports, window: host, document,
     require(name) {
       if (name === "./voice-command.mjs") return voiceCommands;
+      if (name === "./voice-fullscreen.mjs") return voiceFullscreen;
+      if (name === "./immersive-mode.mjs") return { async enterImmersiveMode(target) {
+        fullscreenRequests.push(target);
+        if (deniedFullscreen) return false;
+        document.fullscreenElement = target;
+        document.dispatchEvent(new Event("fullscreenchange"));
+        return true;
+      } };
       if (name === "./keyboard") return { dispatchGameCommand(frame, command) { commands.push({ frame, command }); return true; } };
       if (name === "react") return {
         useRef(initial) { return hooks[cursor++] ??= { current: initial }; },
@@ -218,7 +232,8 @@ function microphone({ supported = true } = {}) {
   render();
   render();
   return {
-    ...fake, host, document, frameRef, commands, render,
+    ...fake, host, document, frameRef, commands, render, fullscreenRequests,
+    allowFullscreen() { deniedFullscreen = false; },
     get button() { return tree.props.children.find((child) => child?.type === "button")?.props; },
     get status() { return tree.props.children.find((child) => child?.props?.role === "status")?.props.children; },
     unmount() { for (const hook of hooks) hook?.cleanup?.(); },
@@ -228,6 +243,92 @@ function microphone({ supported = true } = {}) {
 function pointer(pointerId = 1) {
   return { pointerId, button: 0, preventDefault() {}, currentTarget: { setPointerCapture() {} } };
 }
+
+function leaveFullscreen(player) {
+  player.document.fullscreenElement = null;
+  player.document.dispatchEvent(new Event("fullscreenchange"));
+}
+
+test("microphone restores its original fullscreen target when permission resolves", async () => {
+  const player = microphone({ fullscreen: true });
+  player.button.onPointerDown(pointer());
+  leaveFullscreen(player);
+  assert.equal(player.fullscreenRequests.length, 0);
+  player.instances[0].onstart();
+  await new Promise(setImmediate);
+  assert.deepEqual(player.fullscreenRequests, [player.document.documentElement]);
+  assert.equal(player.document.fullscreenElement, player.document.documentElement);
+  leaveFullscreen(player);
+  player.host.dispatchEvent(new Event("focus"));
+  assert.equal(player.fullscreenRequests.length, 1, "recovery ends after success");
+  player.unmount();
+});
+
+test("releasing the microphone before the permission UI exits fullscreen preserves recovery", async () => {
+  const player = microphone({ fullscreen: true });
+  player.button.onPointerDown(pointer());
+  player.document.dispatchEvent(Object.defineProperty(new Event("pointerup"), "isTrusted", { value: true }));
+  player.button.onPointerUp(pointer());
+  leaveFullscreen(player);
+  player.instances[0].onstart();
+  await new Promise(setImmediate);
+  assert.equal(player.fullscreenRequests.length, 1);
+  player.unmount();
+});
+
+test("permission blur can cancel recording while focus still restores fullscreen", async () => {
+  const player = microphone({ fullscreen: true });
+  player.button.onPointerDown(pointer());
+  player.host.dispatchEvent(new Event("blur"));
+  leaveFullscreen(player);
+  assert.equal(player.fullscreenRequests.length, 0);
+  player.host.dispatchEvent(new Event("focus"));
+  await new Promise(setImmediate);
+  assert.equal(player.fullscreenRequests.length, 1);
+  assert.deepEqual(player.commands, []);
+  player.unmount();
+});
+
+for (const location of ["toolbar", "game"]) {
+  test(`blocked fullscreen recovery retries on the next trusted ${location} gesture`, async () => {
+    const player = microphone({ fullscreen: true, deniedFullscreen: true });
+    player.button.onPointerDown(pointer());
+    leaveFullscreen(player);
+    player.instances[0].onstart();
+    await new Promise(setImmediate);
+    assert.equal(player.fullscreenRequests.length, 1);
+    player.allowFullscreen();
+    const owner = location === "game" ? player.frameRef.current.contentDocument : player.document;
+    owner.dispatchEvent(new Event("pointerup"));
+    assert.equal(player.fullscreenRequests.length, 1, "synthetic input must not restore fullscreen");
+    owner.dispatchEvent(Object.defineProperty(new Event("pointerup"), "isTrusted", { value: true }));
+    await new Promise(setImmediate);
+    assert.equal(player.fullscreenRequests.length, 2);
+    assert.equal(player.document.fullscreenElement, player.document.documentElement);
+    player.unmount();
+  });
+}
+
+test("voice fullscreen recovery respects windowed play, menus, and player teardown", async () => {
+  for (const fullscreen of [false, true]) {
+    for (const action of ["menu", "exit"]) {
+      const player = microphone({ fullscreen, deniedFullscreen: true });
+      player.button.onPointerDown(pointer());
+      leaveFullscreen(player);
+      player.instances[0].onstart();
+      await new Promise(setImmediate);
+      const before = player.fullscreenRequests.length;
+      if (action === "menu") player.render({ enabled: false });
+      else player.unmount();
+      player.allowFullscreen();
+      player.host.dispatchEvent(new Event("focus"));
+      player.document.dispatchEvent(Object.defineProperty(new Event("pointerup"), "isTrusted", { value: true }));
+      assert.equal(player.fullscreenRequests.length, before);
+      if (!fullscreen) assert.equal(before, 0);
+      player.unmount();
+    }
+  }
+});
 
 test("mic stays hidden without native recognition and starts only on a deliberate hold", () => {
   const unsupported = microphone({ supported: false });

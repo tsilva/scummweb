@@ -197,8 +197,8 @@ export function dispatchSyntheticKeypress(frame, input, options) {
   return true;
 }
 
-export function holdGameKey(frame, input) {
-  const dispatch = prepareKeyboardDispatch(frame, input);
+export function holdGameKey(frame, input, options) {
+  const dispatch = prepareKeyboardDispatch(frame, input, options);
   if (!dispatch) return null;
   dispatch("keydown");
   return () => dispatch("keyup");

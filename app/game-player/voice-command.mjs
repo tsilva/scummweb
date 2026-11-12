@@ -14,7 +14,7 @@ function normalizeCommand(transcript) {
 }
 
 // One held gesture owns one recognition session and at most one submitted command.
-export function createVoiceCommand(host, { onState, onCommand, onUnavailable }) {
+export function createVoiceCommand(host, { onState, onCommand, onUnavailable, onCaptureStarted = () => {} }) {
   let session = null;
   let timer = null;
 
@@ -70,6 +70,7 @@ export function createVoiceCommand(host, { onState, onCommand, onUnavailable }) 
       recognition.interimResults = false;
       recognition.maxAlternatives = 1;
       recognition.onstart = () => {
+        if (session === current) onCaptureStarted();
         // Release can happen while the phone's permission prompt is still open.
         if (session === current && current.released) {
           try { recognition.stop(); } catch { fail("Could not finish recording. Please try again."); }

@@ -2,9 +2,12 @@ import { Mic } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { dispatchGameCommand } from "./keyboard";
 import { createVoiceCommand, getSpeechRecognition } from "./voice-command.mjs";
+import { enterImmersiveMode } from "./immersive-mode.mjs";
+import { observeVoiceFullscreen } from "./voice-fullscreen.mjs";
 
-export default function GameVoiceCommand({ frameRef, enabled }) {
+export default function GameVoiceCommand({ frameRef, shellRef, enabled }) {
   const controllerRef = useRef(null);
+  const fullscreenRef = useRef(null);
   const pressRef = useRef(null);
   const [available, setAvailable] = useState(false);
   const [feedback, setFeedback] = useState({ state: "idle", message: "" });
@@ -12,28 +15,40 @@ export default function GameVoiceCommand({ frameRef, enabled }) {
   useEffect(() => {
     if (!getSpeechRecognition(window)) return;
     setAvailable(true);
+    const fullscreen = observeVoiceFullscreen(window, {
+      shell: shellRef.current, frame: frameRef.current, enterFullscreen: enterImmersiveMode,
+    });
+    fullscreenRef.current = fullscreen;
     const controller = createVoiceCommand(window, {
-      onState: (state, message) => setFeedback({ state, message }),
+      onState: (state, message) => {
+        setFeedback({ state, message });
+        if (state === "idle" || state === "holding") fullscreen.settled();
+      },
+      onCaptureStarted: fullscreen.returned,
       onUnavailable: () => setAvailable(false),
       onCommand: (command) => dispatchGameCommand(frameRef.current, command),
     });
     controllerRef.current = controller;
     const cancel = () => { pressRef.current = null; controller.cancel(); };
+    const onBlur = () => { fullscreen.suspend(); cancel(); };
     const onVisibility = () => { if (document.hidden) cancel(); };
-    window.addEventListener("blur", cancel);
+    window.addEventListener("blur", onBlur);
     window.addEventListener("pagehide", cancel);
     document.addEventListener("visibilitychange", onVisibility);
     return () => {
+      fullscreenRef.current = null;
+      fullscreen.dispose();
       controllerRef.current = null;
       cancel();
-      window.removeEventListener("blur", cancel);
+      window.removeEventListener("blur", onBlur);
       window.removeEventListener("pagehide", cancel);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [frameRef]);
+  }, [frameRef, shellRef]);
 
   useEffect(() => {
     if (!enabled) {
+      fullscreenRef.current?.clear();
       pressRef.current = null;
       controllerRef.current?.cancel();
     }
@@ -42,6 +57,7 @@ export default function GameVoiceCommand({ frameRef, enabled }) {
   function start(press) {
     if (!enabled || pressRef.current !== null || feedback.state === "processing") return false;
     pressRef.current = press;
+    fullscreenRef.current?.arm();
     if (!controllerRef.current?.start()) {
       pressRef.current = null;
       return false;

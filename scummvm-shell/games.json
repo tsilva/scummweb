@@ -398,6 +398,16 @@
           "qfi-demo.098"
         ]
       }
+    },
+    {
+      "target": "ft-demo",
+      "title": "Full Throttle (Demo)",
+      "path": "/games/ft",
+      "engineId": "scumm",
+      "gameId": "ft",
+      "platform": "pc",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/ft.txt"
     }
   ]
 }
