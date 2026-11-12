@@ -1385,6 +1385,11 @@
       "file": "broken-sword-the-shadow-of-the-templars-demo-164d77043ab66be010c4341a2ef8db82fbda545a43a80019683e70c9c90a322f.jpg",
       "inputHash": "164d77043ab66be010c4341a2ef8db82fbda545a43a80019683e70c9c90a322f",
       "imageHash": "d80d0594fc459a49e53ad706a17e1e82f13203ac2937a04a2bf18c5aa4d69251"
+    },
+    "broken-sword-ii-the-smoking-mirror-demo": {
+      "file": "broken-sword-ii-the-smoking-mirror-demo-d5c0f3902de4904a84a58a60a741f67c4125418b393e877f99a732c3cd97a539.jpg",
+      "inputHash": "d5c0f3902de4904a84a58a60a741f67c4125418b393e877f99a732c3cd97a539",
+      "imageHash": "1e85eebc5af87f8eda56bf6a0177aa6a9cb1721f8de102aca99a4f89df45b4f0"
     }
   }
 }

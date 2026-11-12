@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Broken Sword II: The Smoking Mirror (Demo)", target: "sword2-demo", engineId: "sword2", gameId: "sword2",
+    files: [["general.clu", 8030769, 1224036629], ["docks.clu", 20262263, 238789565]],
+  },
+  {
     title: "Broken Sword: The Shadow of the Templars (Demo)", target: "sword1-demo", engineId: "sword1", gameId: "sword1",
     files: [["scripts.clm", 1088468, 3493304599], ["swordres.rif", 59788, 2626330415]],
   },

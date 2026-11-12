@@ -116,6 +116,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "sword2-demo": {
+    ...retroGameArtwork["sword2:sword2"],
+    title: "Broken Sword II: The Smoking Mirror (Demo)",
+    year: "1997",
+    language: "en",
+    summary: "Explore the docks as George Stobbart in the original English Windows demo of The Smoking Mirror.",
+  },
   "sword1-demo": {
     ...retroGameArtwork["sword1:sword1"],
     title: "Broken Sword: The Shadow of the Templars (Demo)",

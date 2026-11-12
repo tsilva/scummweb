@@ -4404,6 +4404,13 @@
       "edition": "Official English Macintosh demo (sword1-mac-demo-en.zip)",
       "observation": "The opening movie is black in this edition; Skip intro advances to the rendered Paris street scene. Walking, native saves and Continue work. With existing saves, the original menu appears; select Start and press Enter to begin a fresh game.",
       "issueScope": "scummweb"
+    },
+    {
+      "title": "Broken Sword II: The Smoking Mirror (Demo)",
+      "status": "startup-verified",
+      "gameId": "sword2:sword2",
+      "edition": "Official English Windows demo (sword2-win-demo-en.zip)",
+      "observation": "The dock scene and opening text render. Walking, native saves and cached Continue work. The unchanged official demo archive does not provide the intro movies under the names expected by the engine. Skip intro uses a checkpoint at the initial player decision."
     }
   ]
 }

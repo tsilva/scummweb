@@ -177,6 +177,15 @@
           "efmi090.gsv"
         ]
       }
+    },
+    "sword2-demo": {
+      "skipIntro": {
+        "strategy": "save-slot",
+        "slot": 90,
+        "saveFiles": [
+          "sword2-demo.090"
+        ]
+      }
     }
   }
 }
