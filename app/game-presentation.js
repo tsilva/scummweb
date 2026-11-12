@@ -116,6 +116,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "dw-demo": {
+    ...retroGameArtwork["tinsel:dw"],
+    heroImageMobilePosition: "100% top",
+    title: "Discworld (Demo)",
+    year: "1995",
+    language: "en",
+    summary: "Meet Rincewind and explore Unseen University in the original English CD demo of Discworld.",
+  },
   "sword2-demo": {
     ...retroGameArtwork["sword2:sword2"],
     title: "Broken Sword II: The Smoking Mirror (Demo)",

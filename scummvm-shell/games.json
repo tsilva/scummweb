@@ -451,6 +451,16 @@
           "sword2-demo.090"
         ]
       }
+    },
+    {
+      "target": "dw-demo",
+      "title": "Discworld (Demo)",
+      "path": "/games/dw",
+      "engineId": "tinsel",
+      "gameId": "dw",
+      "platform": "pc",
+      "extra": "CD Demo",
+      "readmeHref": ""
     }
   ]
 }
