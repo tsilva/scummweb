@@ -212,8 +212,7 @@ export default function GameRouteFrame({
     });
   }, [restoreRemoteFullscreen]);
   const skipIntro = isResuming || intro?.checkpointOnly ? null : intro;
-  const canSkipNativeIntro = (!catalogLaunch || !intro) && !isResuming &&
-    frameSrc !== null && nativeIntroFrameHref === frameSrc;
+  const canSkipNativeIntro = !catalogLaunch && !isResuming && frameSrc !== null && nativeIntroFrameHref === frameSrc;
   const gameplayStarted = frameSrc !== null && gameplayFrameHref === frameSrc;
   const currentReadySignal = readySignal?.href === frameSrc ? readySignal : null;
   const bootState = useBootState({
@@ -514,7 +513,7 @@ export default function GameRouteFrame({
       }
 
       if (event.data?.type === "scummvm-intro-availability") {
-        if (frameSrc && event.source === frameRef.current?.contentWindow &&
+        if (!catalogLaunch && frameSrc && event.source === frameRef.current?.contentWindow &&
             event.data.source === SCUMMWEB_FRAME_MESSAGE_SOURCE &&
             getNormalizedFrameHref(event.data.href) === frameSrc) {
           setNativeIntroFrameHref(event.data.available === true ? frameSrc : null);

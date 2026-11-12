@@ -116,13 +116,6 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
-  "ft-demo": {
-    ...retroGameArtwork["scumm:ft"],
-    title: "Full Throttle (Demo)",
-    year: "1995",
-    language: "en",
-    summary: "Play three segments of Ben’s adventure: the Kickstand bar, a biker road duel, and the Cavefish hideout.",
-  },
   draci: {
     ...retroGameArtwork["draci:draci"],
     studio: "NoSense",
