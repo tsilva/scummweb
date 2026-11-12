@@ -1106,6 +1106,13 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "The Dig (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:dig",
+      "edition": "dig-dos-demo-en.zip",
+      "observation": "The English DOS demo renders its opening movie and alien clearing. Native Skip intro works; mouse input moves Boston Low, and native saving and restoring the scene work."
+    },
+    {
       "title": "The Feeble Files",
       "status": "startup-verified",
       "gameId": "agos:feeble",

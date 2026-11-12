@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "The Dig (Demo)", target: "dig-demo", engineId: "scumm", gameId: "dig",
+    files: [["dig.la0", 3472, 0x0d806066], ["dig.la1", 13564378, 0x792615a2]],
+  },
+  {
     title: "Sam & Max Hit the Road (Demo)", target: "samnmax-demo", engineId: "scumm", gameId: "samnmax",
     files: [["samdemo.000", 7505, 0x112b0cbd], ["samdemo.001", 1190282, 0xa0b3f988]],
   },
