@@ -47,6 +47,13 @@ jobs:
       - name: Check JavaScript syntax
         run: pnpm lint
 
+      - name: Restore verified artwork
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          path: .cache/artwork
+          key: artwork-${{ runner.os }}-v1-${{ hashFiles('data/artwork-storage.json') }}
+          restore-keys: artwork-${{ runner.os }}-v1-
+
       - name: Test
         run: pnpm test
 
