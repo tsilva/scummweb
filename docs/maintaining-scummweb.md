@@ -429,7 +429,10 @@ The God of Thunder engine is available for personal imports. The official
 redistribution.
 
 Nippon Safes uses the official ScummVM freeware game data. In the browser,
-its original manual-code screen is replaced with an interactive version of the
+its opening choice keeps the L/R mouse controls available: left click watches
+the intro and right click starts the game. It does not offer a separate
+**Skip intro** action.
+Its original manual-code screen is replaced with an interactive version of the
 game's own portrait screen. Click Donna, Dough or Dino to start that character's
 original reveal and story, including after completing a part. Hovering highlights
 the portrait and displays its original name graphic. Keyboard users can select

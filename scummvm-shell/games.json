@@ -77,11 +77,7 @@
       "gameId": "nippon",
       "platform": "amiga",
       "extra": "Multi-lingual",
-      "readmeHref": "/launcher/notices/nippon.txt",
-      "skipIntro": {
-        "strategy": "boot-param",
-        "bootParam": 1
-      }
+      "readmeHref": "/launcher/notices/nippon.txt"
     },
     {
       "target": "queen",

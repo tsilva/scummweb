@@ -492,6 +492,26 @@ test("Skip intro hides gameplay controls in the first render of the restart", as
   player.unmount();
 });
 
+test("Nippon Safes keeps L/R available for its native intro choice", async () => {
+  const library = JSON.parse(await readFile(new URL("../scummvm-shell/games.json", import.meta.url), "utf8"));
+  const overrides = JSON.parse(await readFile(new URL("../launcher-game-overrides.json", import.meta.url), "utf8"));
+  const game = library.games.find(({ target }) => target === "nippon-amiga");
+  assert.equal(game.skipIntro, undefined);
+  assert.equal(overrides.byTarget[game.target]?.skipIntro, undefined, "rebuilds preserve the native intro choice");
+
+  const player = pendingArchivePlayer({
+    game,
+    skipIntro: skipIntroConfig.normalizeSkipIntroConfig(game.skipIntro),
+    visualViewport: Object.assign(new EventTarget(), { height: 390, scale: 1 }),
+  });
+  player.render();
+  assert.equal(player.controls.showTouchClickButtons, false, "controls wait for startup");
+  player.setBootCompleted();
+  assert.equal(player.controls.showSkipIntroAction, false);
+  assert.equal(player.controls.showTouchClickButtons, true, "both intro choices are usable before gameplay starts");
+  player.unmount();
+});
+
 test("the Curse demo opens without offering Skip intro over its playable scene", async () => {
   const library = JSON.parse(await readFile(new URL("../scummvm-shell/games.json", import.meta.url), "utf8"));
   const game = library.games.find(({ target }) => target === "comi-demo");
