@@ -434,6 +434,23 @@
       "platform": "macintosh",
       "extra": "Demo",
       "readmeHref": "/launcher/notices/sword1.txt"
+    },
+    {
+      "target": "sword2-demo",
+      "title": "Broken Sword II: The Smoking Mirror (Demo)",
+      "path": "/games/sword2",
+      "engineId": "sword2",
+      "gameId": "sword2",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/sword2.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "slot": 90,
+        "saveFiles": [
+          "sword2-demo.090"
+        ]
+      }
     }
   ]
 }
