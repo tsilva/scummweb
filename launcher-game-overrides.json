@@ -81,12 +81,6 @@
         ]
       }
     },
-    "nippon-amiga": {
-      "skipIntro": {
-        "strategy": "boot-param",
-        "bootParam": 1
-      }
-    },
     "sword25": {
       "skipIntro": {
         "strategy": "save-slot",
