@@ -1,5 +1,8 @@
 # Production delivery
 
+Use the [build and release skill](../.codex/skills/scummweb_build-release/SKILL.md)
+for agent-operated builds, deployments and production verification.
+
 Successful main-push `CI` completion starts [Production delivery](../.github/workflows/production-delivery.yml)
 through `workflow_run`. It scans for committed secrets, then calls a pinned shared
 workflow that rechecks completed CI on the exact current main commit and syncs

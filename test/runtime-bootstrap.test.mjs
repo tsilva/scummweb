@@ -3,6 +3,32 @@ import { readFile } from "node:fs/promises";
 import { createContext, Script } from "node:vm";
 import test from "node:test";
 
+test("catalog launches forward the native gameplay boundary once", async () => {
+  const html = await readFile(new URL("../scummvm-shell/scummvm.html", import.meta.url), "utf8");
+  const start = html.indexOf("if (!isLocalGame || isCatalogArchive) {\n  globalThis.__scummwebReportGameplayStarted");
+  const end = html.indexOf("if (isLocalGame && !isCatalogArchive", start);
+  assert.ok(start >= 0 && end > start);
+  const bridge = new Script(html.slice(start, end));
+  for (const [isLocalGame, isCatalogArchive, expected] of [[false, false, true], [true, true, true], [true, false, false]]) {
+    const messages = [];
+    let finished = 0;
+    const context = createContext({ isLocalGame, isCatalogArchive, scummwebMessageSource: "scummweb", finishIntroCheckpoint: () => finished++,
+      target: "nippon-amiga", buildCurrentFrameHref: () => "/scummvm.html#nippon-amiga",
+      postParentMessage: (message) => messages.push(message) });
+    bridge.runInContext(context);
+    assert.equal(typeof context.__scummwebReportGameplayStarted === "function", expected);
+    if (expected) {
+      context.__scummwebReportGameplayStarted();
+      assert.equal(context.__scummwebReportGameplayStarted, undefined);
+      assert.equal(finished, 1);
+      assert.equal(messages.length, 1);
+      assert.equal(messages[0].type, "scummvm-gameplay-started");
+      assert.equal(messages[0].target, "nippon-amiga");
+      assert.equal(messages[0].href, "/scummvm.html#nippon-amiga");
+    }
+  }
+});
+
 test("a declined pointer lock request stays optional for the native canvas", async () => {
   const html = await readFile(new URL("../scummvm-shell/scummvm.html", import.meta.url), "utf8");
   const wrapper = html.match(/const requestPointerLock = canvas\.requestPointerLock;[\s\S]*?\n\}/)?.[0];

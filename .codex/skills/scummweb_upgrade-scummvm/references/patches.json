@@ -599,12 +599,12 @@
       "path": "patches/scummvm/36-agent-kyra-main-loop-checkpoints.patch",
       "status": "active",
       "sha256": "5f8a48a26308d7c76b9c1aff5369bd561f3b746d671b562435f5a501ee0aedfb",
-      "purpose": "Service Kyrandia checkpoints during the original input routine’s save window.",
+      "purpose": "Service Kyrandia checkpoints during the original input routine\u2019s save window.",
       "invariants": [
-        "Keep the engine’s native save restrictions and serializer."
+        "Keep the engine\u2019s native save restrictions and serializer."
       ],
       "verification": [
-        "Save at Brandon’s home, walk to a new position, and load the original position."
+        "Save at Brandon\u2019s home, walk to a new position, and load the original position."
       ],
       "retire_when": "Upstream exposes a safe manual save boundary for browser callers."
     },
@@ -612,7 +612,7 @@
       "path": "patches/scummvm/37-agent-gnap-runtime-saves.patch",
       "status": "active",
       "sha256": "7e9a359b613a46fc0692908336d4a91f6834c3924cb469dcfb576d6f464458ca",
-      "purpose": "Expose Gnap’s native in-game save and restore at a completed scene update.",
+      "purpose": "Expose Gnap\u2019s native in-game save and restore at a completed scene update.",
       "invariants": [
         "Preserve native checkpoint files and the normal scene-reconstruction path.",
         "Reject external checkpoints while the scene is leaving or an in-game menu is open."
@@ -626,7 +626,7 @@
       "path": "patches/scummvm/38-agent-made-native-script-restore.patch",
       "status": "active",
       "sha256": "fc7da2d46f0fa90936b7bb6391d59c7b34cf9f80e58a8608603a786f0c26e931",
-      "purpose": "Expose Return to Zork’s native database save and script-driven room restore through MCP.",
+      "purpose": "Expose Return to Zork\u2019s native database save and script-driven room restore through MCP.",
       "invariants": [
         "Recognize the supported CD script layout before advertising runtime saves.",
         "Use the original save format and room-entry script from a main interpreter input boundary."
@@ -640,7 +640,7 @@
       "path": "patches/scummvm/39-agent-woodruff-script-checkpoints.patch",
       "status": "active",
       "sha256": "800f0c718ded55d1e8b53c6c153315559192ce1f6683421b6db460914fdbab5f",
-      "purpose": "Expose Woodruff’s original save and restore callbacks from playable Gob scenes.",
+      "purpose": "Expose Woodruff\u2019s original save and restore callbacks from playable Gob scenes.",
       "invariants": [
         "Match the native menu script before enabling checkpoints.",
         "Keep native slot files and the scene data and reconstruction used by the original menu."
@@ -648,7 +648,7 @@
       "verification": [
         "Save Woodruff in the first playable street, walk or change a scene, and restore the previous gameplay state."
       ],
-      "retire_when": "Upstream exposes Woodruff’s script callbacks as native runtime checkpoints."
+      "retire_when": "Upstream exposes Woodruff\u2019s script callbacks as native runtime checkpoints."
     },
     {
       "path": "patches/scummvm/40-preserve-nippon-location-keys.patch",
@@ -682,7 +682,7 @@
       "path": "patches/scummvm/43-skip-imported-opening-segments.patch",
       "status": "active",
       "sha256": "b0ed6e16de9a68ad6c0a78648cb3ad0e34fff7ad6586b6792461dabee2013cdf",
-      "purpose": "Expose native intro skip points in imported Sierra and LucasArts games without borrowing another edition’s save.",
+      "purpose": "Expose native intro skip points in imported Sierra and LucasArts games without borrowing another edition\u2019s save.",
       "invariants": [
         "Offer the action only at an active native skip point. Discard pending requests at its end and permanently stop offering it after gameplay begins.",
         "Preserve native menu and story choices. Keep bundled checkpoints, Continue, and unrelated input paths independent."
@@ -705,7 +705,7 @@
       ],
       "verification": [
         "In Brave, save, reload and restore Sky, Queen and a game on the shared native boundary. Exercise old saves, autosaves and unavailable scenes.",
-        "Change playback speed while the drawer is open and resume. Verify slower and faster gameplay and the default 1× behavior. Run the AgentSCUMM and Continue regression tests."
+        "Change playback speed while the drawer is open and resume. Verify slower and faster gameplay and the default 1\u00d7 behavior. Run the AgentSCUMM and Continue regression tests."
       ],
       "retire_when": "Upstream exposes a browser player API with equivalent native save metadata, safe runtime control and adjustable game speed."
     },
@@ -748,8 +748,8 @@
       "purpose": "Support native opening skips in imported SCUMM and Humongous games, Personal Nightmare, Dragon History, Lure and Kyrandia engine titles.",
       "invariants": [
         "Require a real script override before simulating the SCUMM cutscene action. Stop offering it when the engine hands control to the player.",
-        "Use Dragon History’s original opening-room transition and Personal Nightmare’s original cutscene exits.",
-        "Keep Lure’s ordinary animation waits unchanged and preserve Kyrandia’s new-game and save-menu choices. A browser skip must not trigger the Kyrandia I slot-zero restore."
+        "Use Dragon History\u2019s original opening-room transition and Personal Nightmare\u2019s original cutscene exits.",
+        "Keep Lure\u2019s ordinary animation waits unchanged and preserve Kyrandia\u2019s new-game and save-menu choices. A browser skip must not trigger the Kyrandia I slot-zero restore."
       ],
       "verification": [
         "In Brave compare fresh normal and skipped openings for Personal Nightmare, Dragon History, Lure, the Kyrandia I and II editions and Lands of Lore.",
@@ -761,14 +761,14 @@
       "path": "patches/scummvm/48-skip-native-opening-sequences.patch",
       "status": "active",
       "sha256": "2a2097e7515d4f3e489154613bfaa3c140dcc3fd6385c6576c68c348442f991c",
-      "purpose": "Use native opening-scene exits in imported SAGA games, Discworld I, Sołtys, Sfinx and The Labyrinth of Time.",
+      "purpose": "Use native opening-scene exits in imported SAGA games, Discworld I, So\u0142tys, Sfinx and The Labyrinth of Time.",
       "invariants": [
-        "Keep SAGA’s original first scene and character selection. Leave later videos and credits outside the startup skip.",
+        "Keep SAGA\u2019s original first scene and character selection. Leave later videos and credits outside the startup skip.",
         "Use the existing Discworld intro detector and the original Escape transition to the title screen.",
         "Keep the native CGE movie cleanup and leave title checks, saved games and ending movies independent."
       ],
       "verification": [
-        "In Brave compare the natural and skipped openings for both SAGA titles, both Discworld I editions, Sołtys, Sfinx and The Labyrinth of Time.",
+        "In Brave compare the natural and skipped openings for both SAGA titles, both Discworld I editions, So\u0142tys, Sfinx and The Labyrinth of Time.",
         "Confirm the same first scene or required selection is available and the action closes after the opening."
       ],
       "retire_when": "Upstream supplies equivalent browser callbacks for these native opening transitions."
@@ -780,7 +780,7 @@
       "purpose": "Expose native opening skips for imported DreamWeb, TeenAgent, Flight of the Amazon Queen and Full Pipe.",
       "invariants": [
         "Reuse the native DreamWeb and Full Pipe abort paths and leave later scenes untouched.",
-        "Skip TeenAgent’s publisher logos and opening together through the existing first-scene transition.",
+        "Skip TeenAgent\u2019s publisher logos and opening together through the existing first-scene transition.",
         "Stop only Queen cutaways that the engine permits skipping. Preserve non-skippable choices and state updates."
       ],
       "verification": [
@@ -810,7 +810,7 @@
       "sha256": "cd7e752ee3c9cfd11fea2f264aa73647bf2f9bbc0c04e91ec18356818c017bf9",
       "purpose": "Expose the native opening abort for Gnap, Nippon Safes, Zork Nemesis and Zork Grand Inquisitor.",
       "invariants": [
-        "Keep Gnap’s scene setup and sound cleanup, and keep Nippon’s original language and character choices.",
+        "Keep Gnap\u2019s scene setup and sound cleanup, and keep Nippon\u2019s original language and character choices.",
         "Limit Zork skips to the exact skippable video resources owned by the startup node. Never seek past a menu choice or unrelated video."
       ],
       "verification": [
@@ -840,7 +840,7 @@
       "purpose": "Expose native startup waits in AGOS, the Coktel startup logo in Gob, and the spoken opening in Mortville Manor.",
       "invariants": [
         "Limit AGOS to the original startup subroutine and existing skippable movie and synchronization paths. Preserve ordinary dialogue and later cutscenes.",
-        "Limit Gob to the engine’s Coktel startup logo and preserve its normal video cleanup.",
+        "Limit Gob to the engine\u2019s Coktel startup logo and preserve its normal video cleanup.",
         "Advance Mortville Manor through its native introduction key and retain game state initialization and ordinary music behavior."
       ],
       "verification": [
@@ -866,10 +866,10 @@
       "path": "patches/scummvm/55-scope-imported-opening-waits-to-playable-boundaries.patch",
       "status": "active",
       "sha256": "0b91a6b2ccf7892a30abd8822823549ede19e48b778538a4f802411fb3d23e7e",
-      "purpose": "Keep native startup waits available through initial AGOS scripts, Mortville Manor’s title music, and recognized Coktel animations.",
+      "purpose": "Keep native startup waits available through initial AGOS scripts, Mortville Manor\u2019s title music, and recognized Coktel animations.",
       "invariants": [
         "Use actual AGOS input and cursor state before sealing startup. Preserve native cutscene and movie abort conditions.",
-        "Keep Mortville’s initial save setup and the original native F8 path. Use the original Esc animation stop only when Gob’s opening script permits it and does not handle the mouse."
+        "Keep Mortville\u2019s initial save setup and the original native F8 path. Use the original Esc animation stop only when Gob\u2019s opening script permits it and does not handle the mouse."
       ],
       "verification": [
         "Verify the title music and initial controls of the Mortville Manor import, and confirm Simon and Elvira reach their first playable screens.",
@@ -881,7 +881,7 @@
       "path": "patches/scummvm/56-skip-original-cinematic-players.patch",
       "status": "active",
       "sha256": "6cd4f65bed0ea4a96f20b07a6533447628ab5a9cb8039841ec2c54696fa02179",
-      "purpose": "Abort the original startup cinematics in Drascula, Hopkins FBI, Bud Tucker, and Return to Zork, and finish Amazon’s native countdown skip.",
+      "purpose": "Abort the original startup cinematics in Drascula, Hopkins FBI, Bud Tucker, and Return to Zork, and finish Amazon\u2019s native countdown skip.",
       "invariants": [
         "Use the original Escape or movie-canceled transition and preserve resource cleanup. Keep other cinematics, the Hopkins warning and menus, and save loading separate.",
         "Limit the PMV hook to the two named opening files. Preserve the movie completion result passed to the game script."
@@ -895,10 +895,10 @@
       "path": "patches/scummvm/57-preserve-opening-choices-and-advance-cinematics.patch",
       "status": "active",
       "sha256": "ed424e01bd2892550eebf58d66edb4c3062775ae4bdb3e13cc6ff0be5bfb9877",
-      "purpose": "Keep Loom CD’s original difficulty choice separate from its opening skip, and expose native opening transitions in Neverhood, Kyrandia 3 and Eye of the Beholder.",
+      "purpose": "Keep Loom CD\u2019s original difficulty choice separate from its opening skip, and expose native opening transitions in Neverhood, Kyrandia 3 and Eye of the Beholder.",
       "invariants": [
         "Do not select a Loom difficulty or seal opening availability at the difficulty screen.",
-        "Use Neverhood’s existing Space message and preserve game-state setup. Scope Kyra VQA to the first launch movie and EoB skips to the known intro methods. Preserve menus and party creation."
+        "Use Neverhood\u2019s existing Space message and preserve game-state setup. Scope Kyra VQA to the first launch movie and EoB skips to the known intro methods. Preserve menus and party creation."
       ],
       "verification": [
         "In Brave choose a difficulty in Loom CD and use one Skip Intro after the choice. Check Neverhood, both Eye of the Beholder imports and Kyrandia 3 for their expected first playable scene or required choice."
@@ -909,7 +909,7 @@
       "path": "patches/scummvm/58-skip-verified-sci-startup-scripts.patch",
       "status": "active",
       "sha256": "1af46f22efb6dfea5a8fd2397790f8612592a06bd2aefa381e50d3f310c8c1ab",
-      "purpose": "Use the SCI script’s original Escape transition in known startup rooms.",
+      "purpose": "Use the SCI script\u2019s original Escape transition in known startup rooms.",
       "invariants": [
         "Consume an explicit browser request only in the named game and startup room, through the original non-peeking keyboard poll with no real event pending.",
         "Keep title menus, prompts, saved games, later scenes, and normal keyboard input separate. Do not send a second key to the same room."
@@ -938,11 +938,11 @@
       "sha256": "bd6979ec814097e1b80ef0a77e85dad1d8cb56726547ba2ce4f0d1663a9dbc75",
       "purpose": "Use original AGI title-script input for the fingerprinted personal editions.",
       "invariants": [
-        "Match the game, directory fingerprint and title room. Use the title logic’s own have.key or guarded controller check. Preserve required text, copy-protection and menu choices.",
+        "Match the game, directory fingerprint and title room. Use the title logic\u2019s own have.key or guarded controller check. Preserve required text, copy-protection and menu choices.",
         "Continue the same request only in the observed second opening rooms in Space Quest II and Manhunter II. Leave real keypresses and ordinary rooms independent."
       ],
       "verification": [
-        "In Brave check Gold Rush, King’s Quest II, Police Quest, Black Cauldron, Manhunter II and both Space Quest II imports. Confirm the prior Space Quest Amiga path still reaches the crew-name choice."
+        "In Brave check Gold Rush, King\u2019s Quest II, Police Quest, Black Cauldron, Manhunter II and both Space Quest II imports. Confirm the prior Space Quest Amiga path still reaches the crew-name choice."
       ],
       "retire_when": "Upstream exposes the original AGI title-input boundary to browser hosts."
     },
@@ -956,7 +956,7 @@
         "Use the original Time Zone title key without sending it to the game menu. Keep Hi-Res title delays and original cleanup intact."
       ],
       "verification": [
-        "Compare the visual destinations and title transitions of the five personal Composer editions. Use Time Zone’s native start menu after skipping its title."
+        "Compare the visual destinations and title transitions of the five personal Composer editions. Use Time Zone\u2019s native start menu after skipping its title."
       ],
       "retire_when": "Upstream provides equivalent opening controls with the same page and input boundaries."
     },
@@ -966,7 +966,7 @@
       "sha256": "01e071803ed9740cee61f312f27eb589ef89240761c22559693bbf5b73fe073c",
       "purpose": "Expose the native opening movie controls in Virtual Stupidity and The 7th Guest.",
       "invariants": [
-        "Keep Virtual Stupidity’s publisher clips separate from its New Game story and preserve the original title menu. Match the original Groovie publisher instruction and DOS new-game section. Retain native video decoding, music initialization, cleanup and menu input."
+        "Keep Virtual Stupidity\u2019s publisher clips separate from its New Game story and preserve the original title menu. Match the original Groovie publisher instruction and DOS new-game section. Retain native video decoding, music initialization, cleanup and menu input."
       ],
       "verification": [
         "In Brave exercise the original imported game menus and any subsequent new-game opening movie. Verify later in-game videos continue to use ordinary input."
@@ -980,10 +980,10 @@
       "purpose": "Carry the browser action through the original Riven, DreamWeb, Full Pipe and Discworld II opening sequences.",
       "invariants": [
         "Use native movie skip and cleanup, preserve Riven menu choices and limit Riven playback to the original Atrus and arrival cards.",
-        "Scope DreamWeb to the quote, intro and credits in its New Game path. Run Full Pipe’s existing modal transition and Discworld II’s original BMV cleanup."
+        "Scope DreamWeb to the quote, intro and credits in its New Game path. Run Full Pipe\u2019s existing modal transition and Discworld II\u2019s original BMV cleanup."
       ],
       "verification": [
-        "In Brave use each imported edition’s original startup flow. Check the action closes on arrival at the first controllable scene and later movies keep normal controls."
+        "In Brave use each imported edition\u2019s original startup flow. Check the action closes on arrival at the first controllable scene and later movies keep normal controls."
       ],
       "retire_when": "Upstream offers equivalent browser-facing opening boundaries for these four engines."
     },
@@ -998,7 +998,7 @@
       ],
       "verification": [
         "Launch Blue Force and both Ringworld editions in Brave and check native movement at the original first playable scene.",
-        "Verify Riven’s original menu and first island and The 7th Guest’s foyer hotspots after one request."
+        "Verify Riven\u2019s original menu and first island and The 7th Guest\u2019s foyer hotspots after one request."
       ],
       "retire_when": "Upstream offers equivalent browser-facing startup and scene lifecycle controls."
     },
@@ -1008,8 +1008,8 @@
       "sha256": "940772c8cf5a7471dc9a660499f1b259977c4d639f9f6804c0310453f62a0449",
       "purpose": "Skip the original Return to Zork credits and carry the Discworld II action across its first publisher movie.",
       "invariants": [
-        "Use the same script event and TTS cleanup as clicking Return to Zork’s credits. Reuse the two native PMV aborts and release the latch before the first ordinary cutscene.",
-        "The Discworld I keyboard process owns only the Discworld I action. Discworld II’s named movies own their separate action and original cleanup."
+        "Use the same script event and TTS cleanup as clicking Return to Zork\u2019s credits. Reuse the two native PMV aborts and release the latch before the first ordinary cutscene.",
+        "The Discworld I keyboard process owns only the Discworld I action. Discworld II\u2019s named movies own their separate action and original cleanup."
       ],
       "verification": [
         "In Brave skip Return to Zork from the original credits and verify that Mountain Pass is interactive. Verify Discworld II reaches its original first scene from one publisher skip."
@@ -1048,7 +1048,7 @@
       "path": "patches/scummvm/68-advance-verified-sci-publisher-animations.patch",
       "status": "active",
       "sha256": "a9ed907ee993447605e73cd1f25f4aafe8cc9320550180799e8de9d18612aa3e",
-      "purpose": "Advance the original publisher animations in Gabriel Knight, King’s Quest V and VII, and Pepper’s Adventures in Time.",
+      "purpose": "Advance the original publisher animations in Gabriel Knight, King\u2019s Quest V and VII, and Pepper\u2019s Adventures in Time.",
       "invariants": [
         "Shorten only the observed title room waits after a browser request. Keep original scripts, event polls, clock continuity and saved script timer continuity.",
         "Resume ordinary timing on the first different room and discard the timing adjustment when a saved game restores the script state."
@@ -1064,12 +1064,12 @@
       "sha256": "5238ac33e0922775cb57b45cad62585e4a91a5c156743a0619a14613bb0b652e",
       "purpose": "Expose the Playtoons publisher video and Titanic house arrival and advance the Cruise prologue faster.",
       "invariants": [
-        "Match Playtoons’ original publisher file in DEBUT.TOT and keep its menu and story choices. Limit animated Gob skip to scripts that already enable original Escape.",
+        "Match Playtoons\u2019 original publisher file in DEBUT.TOT and keep its menu and story choices. Limit animated Gob skip to scripts that already enable original Escape.",
         "Titanic retains the original disc insertion, sounds, Doorbot state and dialogue. Only the ten opening room movie ranges share a browser request.",
         "Cruise continues original frame and text-wait handling and yields regularly while advancing the prologue."
       ],
       "verification": [
-        "In Brave verify each exact Playtoons import reaches its native choices. Check both Cruise editions and Titanic’s original disc interaction and boarding sequence."
+        "In Brave verify each exact Playtoons import reaches its native choices. Check both Cruise editions and Titanic\u2019s original disc interaction and boarding sequence."
       ],
       "retire_when": "Upstream provides equivalent browser skip points and opening timing."
     },
@@ -1077,13 +1077,13 @@
       "path": "patches/scummvm/70-preserve-maniac-team-choice-and-finish-discworld-2-story.patch",
       "status": "active",
       "sha256": "55003d44adb858c44ae9a456effaeb20588f3bfa57e7fe45ca241beae71ef6d9",
-      "purpose": "Keep Maniac Mansion’s Amiga character choice separate from gameplay and finish Discworld II’s first story credits.",
+      "purpose": "Keep Maniac Mansion\u2019s Amiga character choice separate from gameplay and finish Discworld II\u2019s first story credits.",
       "invariants": [
         "Preserve the Amiga character team and use the native cutscene override after selecting Start. Hand off in the original playable room.",
-        "Treat Discworld II’s original publisher and New Game movies as separate sequences. Use native BMV abort and cleanup for the opening story and animated credits only."
+        "Treat Discworld II\u2019s original publisher and New Game movies as separate sequences. Use native BMV abort and cleanup for the opening story and animated credits only."
       ],
       "verification": [
-        "In Brave assemble an original team, skip Maniac Mansion’s movie and confirm movement in the first scene. Verify Discworld II’s original New Game menu, story skip and first playable scene."
+        "In Brave assemble an original team, skip Maniac Mansion\u2019s movie and confirm movement in the first scene. Verify Discworld II\u2019s original New Game menu, story skip and first playable scene."
       ],
       "retire_when": "Upstream exposes browser availability at both original transition boundaries."
     },
@@ -1093,11 +1093,11 @@
       "sha256": "cc75f7eac25d2dc2892cde0bb7d9a75f42eb66e8311f66482e36a24d8525a695",
       "purpose": "Connect the original Rex Nebular title and story controls and the Soltys and Sfinx opening waits.",
       "invariants": [
-        "Use Rex Nebular’s original transition to title choices and exact opening playlists with their native cancellation and cleanup.",
-        "Preserve Soltys’s title setup and the Sfinx game initialization. Only the known publisher and opening commands share the browser request."
+        "Use Rex Nebular\u2019s original transition to title choices and exact opening playlists with their native cancellation and cleanup.",
+        "Preserve Soltys\u2019s title setup and the Sfinx game initialization. Only the known publisher and opening commands share the browser request."
       ],
       "verification": [
-        "In Brave check Rex Nebular’s original title choices and its Intro selection. Verify Soltys and Sfinx reach their original first scenes after the scoped opening action."
+        "In Brave check Rex Nebular\u2019s original title choices and its Intro selection. Verify Soltys and Sfinx reach their original first scenes after the scoped opening action."
       ],
       "retire_when": "Upstream provides equivalent startup-aware browser controls in MADS, CGE and CGE2."
     },
@@ -1327,9 +1327,9 @@
       "path": "patches/scummvm/89-wait-for-native-opening-handlers-and-skip-phobos-prologue.patch",
       "status": "active",
       "sha256": "32398073b0db185fbd86ad814f54db49648692ae8655c2295cc38d2b810a56eb",
-      "purpose": "Wait for Longbow’s original poem handler, retain Torin’s opening request across its story movie, and connect Phobos 2’s fingerprinted prologue Return wait.",
+      "purpose": "Wait for Longbow\u2019s original poem handler, retain Torin\u2019s opening request across its story movie, and connect Phobos 2\u2019s fingerprinted prologue Return wait.",
       "invariants": [
-        "Longbow room 95 only injects Escape after bardsTheme installs its native handler. Torin retains original allowed video cancellation in opening rooms 61000 and 8000. Patch 90 supersedes this patch’s provisional Phobos helper-20 gate with fingerprinted main-interpreter opening objects. Preserve that later boundary and its character choice."
+        "Longbow room 95 only injects Escape after bardsTheme installs its native handler. Torin retains original allowed video cancellation in opening rooms 61000 and 8000. Patch 90 supersedes this patch\u2019s provisional Phobos helper-20 gate with fingerprinted main-interpreter opening objects. Preserve that later boundary and its character choice."
       ],
       "verification": [
         "In Brave verify one request reaches Longbow first camp, Torin original menu or first control, and Phobos 2 character choice. Verify later input and native save/restore. Run patch, native build and runtime checks."
@@ -1340,7 +1340,7 @@
       "path": "patches/scummvm/90-complete-scripted-opening-input-handoffs.patch",
       "status": "active",
       "sha256": "394040e4e067aadfc0c1fcf618800270769578634b8f38fcd6c9dc987d60facf",
-      "purpose": "Carry original input across fingerprinted MADE opening objects, complete Longbow’s final native cancel and target Urban Runner’s nonblocking-video script key.",
+      "purpose": "Carry original input across fingerprinted MADE opening objects, complete Longbow\u2019s final native cancel and target Urban Runner\u2019s nonblocking-video script key.",
       "invariants": [
         "MADE uses exact main script index, poll offset and bytecode prefix. Phobos 2 only carries Return through observed opening objects and stops before character object 312. Manhole only advances opening credit objects 1825 through 1847 with native mouse press and release, stopping outside that group. Longbow sends one additional Escape in room 95 lastScript after its original poem cancel. Urban only supplies Escape at EMAM2000.TOT position 2467 while MXPOURS.VMD is open, once per startup. Original choices and later game input remain under player control."
       ],
@@ -1353,7 +1353,7 @@
       "path": "patches/scummvm/91-finish-credit-waits-and-close-manhole-opening.patch",
       "status": "active",
       "sha256": "79ee4b637b553dd97840f830537c4c7143cf068af7cd8f324f1002cc76b45883",
-      "purpose": "Finish observed Gob and Soltys credit waits and close Manhole’s opening at its first scene.",
+      "purpose": "Finish observed Gob and Soltys credit waits and close Manhole\u2019s opening at its first scene.",
       "invariants": [
         "Fascination Amiga only releases the blocking AMIGA.TOT credit Return wait before the original INTRO1.TOT color chart. Gob2 INTRO0.TOT position 1257 and Gob3 DEMO.TOT position 602 require exact size and 16-byte signatures and send one native Escape. Preserve original menus and first scenes. Soltys carries only its original opening logo, paylist, wink and intro movie cleanup. Manhole releases its final synthetic mouse press and closes startup support before ordinary scene input."
       ],
@@ -1366,7 +1366,7 @@
       "path": "patches/scummvm/92-connect-fascination-credit-polls-and-gob3-publisher-request.patch",
       "status": "active",
       "sha256": "60fab47bc890d4a576e78d12e174ff4f0ee6356667f0b4646fee29ec97228158",
-      "purpose": "Connect Fascination’s nonblocking credit polls and carry Gob3’s accepted publisher request into its scripted opening.",
+      "purpose": "Connect Fascination\u2019s nonblocking credit polls and carry Gob3\u2019s accepted publisher request into its scripted opening.",
       "invariants": [
         "Fascination only supplies Return in AMIGA.TOT on Amiga, once per distinct poll position with release polls between events. Its next INTRO1.TOT color-chart reader receives original input. Gob3 carries an already accepted opening video cancellation into the existing Mult opening group, which clears on nonopening scripts. Preserve first menu choices, protection and gameplay."
       ],
@@ -1397,7 +1397,7 @@
         "Prefer an existing original movie. Only try a same-directory DXA alternative for absent DAT/SMK files. Select a fresh decoder for every load, preserving image-surface, palette, frame count and native opening cancellation. Do not mask corrupt originals or missing game resources."
       ],
       "verification": [
-        "In Brave verify converted Blue’s ABC Time plays its opening and one Skip Intro request reaches its original activity choice. Verify a native Smacker HE game and a 16-bit Bink HE game still load. Run native build, runtime tests and offline patch checker."
+        "In Brave verify converted Blue\u2019s ABC Time plays its opening and one Skip Intro request reaches its original activity choice. Verify a native Smacker HE game and a 16-bit Bink HE game still load. Run native build, runtime tests and offline patch checker."
       ],
       "retire_when": "Upstream HE MoviePlayer again loads legacy converted DXA movies while preserving original-file precedence and decoder switching."
     },
@@ -1444,6 +1444,20 @@
         "In Brave verify all three choices reach their own original opening scenes, Escape does not choose a story, Skip intro retains the picker, and the shared save/load menu still works. Exercise the official Amiga package and an official DOS import, then repeat a visible launch on Production."
       ],
       "retire_when": "Upstream provides an equivalent manual-free character selector for both Nippon Safes editions while preserving original story transitions and non-web behavior."
+    },
+    {
+      "path": "patches/scummvm/96-report-nippon-playable-opening.patch",
+      "status": "active",
+      "sha256": "3070f8f72b540a46443d5d62caa14e9743b0f5603c6846f530fd565e64702aea",
+      "purpose": "Report Nippon Safes interactive bank opening to the web player.",
+      "invariants": [
+        "Report gameplay when the fogne location becomes interactive, including the new-game and restore-menu paths; keep preceding menus and cinematics skippable.",
+        "Preserve original game logic, location transitions and non-web behavior."
+      ],
+      "verification": [
+        "In Brave, start the normal Amiga catalog game, enter the bank opening and confirm Skip Intro disappears while the scene remains interactive. Verify Skip Intro retains language and character choices."
+      ],
+      "retire_when": "Upstream exposes an equivalent playable opening boundary for Nippon Safes."
     }
   ]
 }

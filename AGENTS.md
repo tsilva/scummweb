@@ -1,5 +1,8 @@
 # ScummWEB agent instructions
 
+- Use [$scummweb_build-release](.codex/skills/scummweb_build-release/SKILL.md)
+  for production builds, deployments and release verification.
+
 - Edit runtime templates in `web-shell/` and native patches in `patches/scummvm/`.
   Rebuild the tracked `scummvm-shell/` using the [runtime build guide](docs/maintaining-scummweb.md#rebuilding-and-upgrading-scummvm).
   App commands validate and stage that bundle into `public/`.

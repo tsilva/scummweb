@@ -247,6 +247,9 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
 
 ## Scripted opening input boundaries
 
+- Nippon Safes enters an interactive bank scene at `fogne` before its
+  character picker. Report that boundary independently of the later picker;
+  the restore menu can also lead into this scene.
 - A rendered title can still be an opening or an attract sequence. Verify the
   original next choice or first interactive scene and keep the native choice.
 - A polling helper can flush input instead of handling it. MADE helper 20 is a

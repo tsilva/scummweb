@@ -550,7 +550,7 @@ globalThis.__scummvmRequestExit=requestExit;
 const scummwebMessageSource="scummweb";
 const postParentMessage=message=>{if(!(window.parent&&window.parent!==window))return false;try{window.parent.postMessage(message,scummwebLaunchUrl.origin);return true}catch{return false}};
 const buildCurrentFrameHref=()=>`${scummwebLaunchUrl.pathname}${scummwebLaunchUrl.search}${scummwebLaunchUrl.hash}`;
-if (isCatalogArchive) {
+if (!isLocalGame || isCatalogArchive) {
   globalThis.__scummwebReportGameplayStarted = () => {
     delete globalThis.__scummwebReportGameplayStarted;
     finishIntroCheckpoint?.();
