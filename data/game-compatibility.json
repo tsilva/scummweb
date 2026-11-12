@@ -135,7 +135,7 @@
       "status": "startup-verified",
       "gameId": "freescape:castlemaster",
       "edition": "castle-dos-demo.zip",
-      "observation": "The DOS demo starts and accepts keyboard input through character selection into the first 3D level."
+      "observation": "The DOS web demo automatically selects the prince on both Play and Skip intro, reaching the first 3D level without character-selection input; keyboard movement is verified."
     },
     {
       "title": "Castle of Dr. Brain",
@@ -723,14 +723,14 @@
       "status": "startup-verified",
       "gameId": "parallaction:nippon",
       "edition": "Nippon Safes Inc (Amiga, Multilanguage).zip",
-      "observation": "Official freeware package reaches a named character picker without manual codes. Dino, Donna and Dough each start their original story; intro skipping and in-game save/restore work."
+      "observation": "Official freeware package uses its original portraits as a character selector without manual codes. Donna, Dough and Dino each reach their original opening; keyboard selection, intro skipping and in-game save/restore work."
     },
     {
       "title": "Nippon Safes, Inc.",
       "status": "startup-verified",
       "gameId": "parallaction:nippon",
       "edition": "Nippon Safes Inc (Floppy DOS, Multilanguage).zip",
-      "observation": "Official freeware package preserves language and new-game choices, then offers Dino, Donna and Dough buttons instead of manual codes."
+      "observation": "Official freeware package preserves language and new-game choices, then uses its original portraits and name graphics instead of manual codes. Keyboard selection and Dino's original reveal work."
     },
     {
       "title": "Once Upon A Time: Little Red Riding Hood",

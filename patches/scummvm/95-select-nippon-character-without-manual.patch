@@ -1,54 +1,136 @@
 diff --git a/engines/parallaction/gui_ns.cpp b/engines/parallaction/gui_ns.cpp
 --- a/engines/parallaction/gui_ns.cpp
 +++ b/engines/parallaction/gui_ns.cpp
-@@ -21,6 +21,11 @@
- 
- #include "engines/scummweb-intro.h"
- 
-+#ifdef __EMSCRIPTEN__
-+#include "common/translation.h"
-+#include "gui/message.h"
-+#endif
-+
- #include "common/config-manager.h"
- #include "common/system.h"
- #include "common/hashmap.h"
-@@ -485,6 +490,44 @@
+@@ -485,6 +485,138 @@
  	}
  };
  
 +#ifdef __EMSCRIPTEN__
-+// The original manual codes only select which character's story to start.
-+// Keep that choice and the original transitions without requiring the manual.
++// Reuse the original test-result artwork as an interactive character menu.
++// Keep the selected character's scripted reveal and story transition intact.
 +class SelectCharacterInputState_NS : public MenuInputState {
 +	Parallaction_ns *_vm;
++	GfxObj *_portraits[3] = {};
++	GfxObj *_names = nullptr;
++	GfxObj *_label = nullptr;
++	Common::Rect _blocks[3];
++	Common::Point _lastMousePos;
++	Graphics::Surface _background;
++	int _selection = -1;
 +
-+public:
-+	SelectCharacterInputState_NS(Parallaction_ns *vm, MenuInputHelper *helper) : MenuInputState("selectcharacter", helper), _vm(vm) { }
++	void cleanup() {
++		_vm->_gfx->freeDialogueObjects();
++		_vm->_gfx->unregisterLabel(_label);
++		delete _label;
++		_label = nullptr;
++		for (int i = 0; i < 3; ++i) {
++			delete _portraits[i];
++			_portraits[i] = nullptr;
++		}
++		delete _names;
++		_names = nullptr;
++		_background.free();
++	}
 +
-+	MenuInputState *run() override {
-+		Common::U32StringArray alternatives;
-+		alternatives.push_back(Common::U32String("D~o~nna"));
-+		alternatives.push_back(Common::U32String("Do~u~gh"));
-+		GUI::MessageDialog picker(_("Choose a character"), Common::U32String("Dino"), alternatives);
-+		const int character = picker.runModal();
-+		if (_vm->shouldQuit())
-+			return nullptr;
-+		// Escape dismisses the dialog without choosing a story.
-+		if (character < 0 || character >= 3)
-+			return this;
++	int hitTest(const Common::Point &p) const {
++		for (int i = 0; i < 3; ++i) {
++			if (_blocks[i].contains(p))
++				return i;
++		}
++		return -1;
++	}
 +
-+		static const char *const startLocations[] = { "test.dino", "test.donna", "test.dough" };
++	void select(int character) {
++		if (_selection == character)
++			return;
++		_selection = character;
++		_vm->_gfx->_backgroundInfo->bg.copyFrom(_background);
++		_vm->_gfx->showGfxObj(_names, character >= 0);
++		if (character < 0)
++			return;
++		// Original name frames are Dough, Donna, Dino; portraits are left to right.
++		static const uint nameFrames[] = { 1, 0, 2 };
++		_names->frame = nameFrames[character];
++		Common::Rect outline(_blocks[character]);
++		outline.grow(2);
++		_vm->_gfx->_backgroundInfo->bg.frameRect(outline, 1);
++	}
++
++	MenuInputState *start(int character) {
++		static const char *const startLocations[] = { "test.donna", "test.dough", "test.dino" };
 +		_vm->_gfx->setBlackPalette();
++		cleanup();
 +		_vm->cleanupGame();
 +		_vm->scheduleLocationSwitch(startLocations[character]);
 +		return nullptr;
 +	}
 +
++public:
++	SelectCharacterInputState_NS(Parallaction_ns *vm, MenuInputHelper *helper) : MenuInputState("selectcharacter", helper), _vm(vm) { }
++
++	~SelectCharacterInputState_NS() override {
++		cleanup();
++	}
++
++	MenuInputState *run() override {
++		if (_vm->shouldQuit())
++			return nullptr;
++		Common::Point p;
++		_vm->_input->getCursorPos(p);
++		if (p != _lastMousePos) {
++			select(hitTest(p));
++			_lastMousePos = p;
++		}
++		if (_vm->_input->getLastButtonEvent() == kMouseLeftUp) {
++			const int character = hitTest(p);
++			if (character >= 0)
++				return start(character);
++		}
++
++		uint16 key;
++		if (_vm->_input->getLastKeyDown(key)) {
++			if (key == Common::KEYCODE_ESCAPE)
++				select(-1);
++			else if (key == Common::KEYCODE_TAB)
++				select((_selection + 1) % 3);
++			else if (key >= '1' && key <= '3')
++				select(key - '1');
++			else if ((key == Common::KEYCODE_RETURN || key == Common::KEYCODE_SPACE) && _selection >= 0)
++				return start(_selection);
++		}
++		return this;
++	}
++
 +	void enter() override {
 +		_vm->_soundManI->stopMusic();
-+		_vm->_gfx->setBlackPalette();
-+		_vm->_gfx->updateScreen();
++		_vm->_gfx->beginFrame();
++		_vm->_gfx->freeDialogueObjects();
++		_vm->_disk->selectArchive("disk1");
++		BackgroundInfo *info = new BackgroundInfo;
++		_vm->_disk->loadScenery(*info, "test", nullptr, nullptr);
++		_vm->_gfx->setBackground(kBackgroundSlide, info);
++		_background.copyFrom(info->bg);
++
++		static const char *const portraitNames[] = { "donnaf", "doughf", "dinof" };
++		static const int portraitX[] = { 60, 140, 221 };
++		for (int i = 0; i < 3; ++i) {
++			_portraits[i] = _vm->_gfx->loadAnim(portraitNames[i]);
++			_vm->_gfx->setItem(_portraits[i], portraitX[i], 88);
++			_portraits[i]->getRect(0, _blocks[i]);
++			_blocks[i].moveTo(portraitX[i], 88);
++		}
++		_names = _vm->_gfx->loadAnim("names");
++		_vm->_gfx->setItem(_names, 119, 177);
++		_vm->_gfx->showGfxObj(_names, false);
++
++		static const char *const prompts[] = {
++			"SCEGLI UN PERSONAGGIO", "CHOISISSEZ UN PERSONNAGE",
++			"CHOOSE A CHARACTER", "FIGUR AUSWAEHLEN"
++		};
++		_label = _vm->_gfx->createLabel(_vm->_introFont, prompts[_vm->getInternLanguage()], 1);
++		_vm->_gfx->showLabel(_label, CENTER_LABEL_HORIZONTAL, 30);
++		_selection = -1;
++		_vm->_input->getCursorPos(_lastMousePos);
 +		_vm->_input->setArrowCursor();
 +		_vm->_input->setMouseState(MOUSE_ENABLED_SHOW);
 +		ScummWebIntro::gameplayStarted();
@@ -58,7 +140,7 @@ diff --git a/engines/parallaction/gui_ns.cpp b/engines/parallaction/gui_ns.cpp
  class SelectCharacterInputState_NS : public MenuInputState {
  
  	#define PASSWORD_LEN	6
-@@ -753,6 +796,7 @@
+@@ -753,6 +885,7 @@
  	"test.donna",
  	"test.dough"
  };

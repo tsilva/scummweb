@@ -83,7 +83,7 @@ tests when porting; do not treat an old implementation shape as the requirement.
   before truncation, retryable metadata persistence and exclusive save-session
   lock. Metadata does not make multi-key filesystem writes crash-atomic.
 
-- Intro skip is edition-specific. Patch 24 uses the engine's normal first-scene transition or native intro abort and keeps original character, input and menu choices. Exercise both paths and keep the original Play path for fresh launches.
+- Intro skip is edition-specific. Patch 24 uses the engine's normal first-scene transition or native intro abort and keeps original input and menu choices. Patch 97 deliberately bypasses the bundled Castle Master DOS demo's character prompt and selects the prince on both ordinary and skipped intros; keep that choice before native game-state initialization and outside save restoration. Exercise both paths and keep the original Play path for fresh launches.
 - Patch 41 separates intro completion from first-frame readiness. Report at the native transition to player input or a preserved selection screen. Recheck the exact first playable states when a bundled edition changes. A rendered frame, cursor alone, or elapsed time cannot establish that the intro ended.
 - Imported intro requests belong to the native opening sequence that owns the transition. Keep an ordinary abort path shared when it preserves the expected state. Kyrandia I's keyboard abort can restore slot zero, so its browser request uses a separate opening flag and leaves fresh launches independent of existing saves.
 
@@ -120,11 +120,14 @@ tests when porting; do not treat an old implementation shape as the requirement.
 
 - Nippon Safes' manual codes are implemented in ScummVM's character-selection
   state, so replacing the game archive with the official freeware data does
-  not remove the screen. Patch 95 offers named character buttons in that same
-  state on the web, keeping the original test-scene transitions and part
-  progression. Preserve all three choices after normal intros, skipped intros
-  and completed parts. Cancellation must not select a character, and the
-  picker must close intro availability at this interactive boundary.
+  not remove the screen. Patch 95 turns the original test-result background,
+  portraits and name frames into an interactive web selector. Load disk1 before
+  its artwork, including after completed parts; keep original test-scene reveals
+  and story transitions. Portrait order is Donna, Dough, Dino; name-frame order
+  is Dough, Donna, Dino. Preserve pointer/touch and keyboard choices after normal
+  and skipped intros. Outside clicks, Escape and quitting must not start a story.
+  Release menu graphics before gameplay and close intro availability at this
+  interactive boundary. Desktop character selection remains unchanged.
 
 - Some engines save normally but do not honor startup `save_slot`. Patch 17
   uses Nippon Safes boot parameter 1 to retain language/character selection
