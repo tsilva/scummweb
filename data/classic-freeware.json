@@ -377,6 +377,27 @@
         "basis": "Official ScummVM-hosted playable promotional demo. Included text files and executable/data copyright strings inspected. TEXT.CLU retains the standard installation warning against unauthorized reproduction or distribution; no demo-specific rehosting grant or NOT FOR PUBLIC DISTRIBUTION restriction was found. Official promotional hosting supports this assessment, but does not constitute an express rights-holder license.",
         "preservation": "Serve the complete unchanged upstream ZIP, retaining readme.txt, files.txt, TEXT.CLU copyright warnings and every other original file."
       }
+    },
+    {
+      "target": "dw-demo",
+      "title": "Discworld (Demo)",
+      "engineId": "tinsel",
+      "gameId": "dw",
+      "platform": "pc",
+      "extra": "CD Demo",
+      "archive": "dw-dos-cd-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/tinsel/dw-dos-cd-demo-en.zip",
+      "sha256": "8fb1229f747e52ae12d873765b650fa953c30ff0edd82ccc6576f4ea725ecd4a",
+      "preserveArchive": true,
+      "config": {
+        "path": "/games/dw/DISCWLD"
+      },
+      "redistributionReview": {
+        "reviewedOn": "2026-11-12",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "Official ScummVM-hosted English playable CD promotional demo. Included files and binary copyright/distribution strings inspected; no express redistribution ban or rehosting grant found. The archive contains original driver/runtime copyright notices and no standalone EULA. Official hosting supports this assessment but is not an express rights-holder license.",
+        "preservation": "Serve the complete unchanged upstream ZIP, including the DISCWLD directory, root setup files and all original copyright notices."
+      }
     }
   ]
 }

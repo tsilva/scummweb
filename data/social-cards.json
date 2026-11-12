@@ -1390,6 +1390,11 @@
       "file": "broken-sword-ii-the-smoking-mirror-demo-d5c0f3902de4904a84a58a60a741f67c4125418b393e877f99a732c3cd97a539.jpg",
       "inputHash": "d5c0f3902de4904a84a58a60a741f67c4125418b393e877f99a732c3cd97a539",
       "imageHash": "1e85eebc5af87f8eda56bf6a0177aa6a9cb1721f8de102aca99a4f89df45b4f0"
+    },
+    "discworld-demo": {
+      "file": "discworld-demo-425ae255ed3b5fb8f924e4a8f48e8bd21a413396db3b124c1f5c563905df6047.jpg",
+      "inputHash": "425ae255ed3b5fb8f924e4a8f48e8bd21a413396db3b124c1f5c563905df6047",
+      "imageHash": "1e3fc19fdae7940a9fc756b7784ccb4fdb74fabf9b3aa9cb26bbbfec682bd94e"
     }
   }
 }

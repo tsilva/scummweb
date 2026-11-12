@@ -4411,6 +4411,13 @@
       "gameId": "sword2:sword2",
       "edition": "Official English Windows demo (sword2-win-demo-en.zip)",
       "observation": "The dock scene and opening text render. Walking, native saves and cached Continue work. The unchanged official demo archive does not provide the intro movies under the names expected by the engine. Skip intro uses a checkpoint at the initial player decision."
+    },
+    {
+      "title": "Discworld (Demo)",
+      "status": "startup-verified",
+      "gameId": "tinsel:dw",
+      "edition": "Official English DOS CD demo (dw-dos-cd-demo-en.zip)",
+      "observation": "The original logos, title and Rincewind room render. Native Skip intro advances through the opening while preserving the title screen; click the title to begin. Walking works. This demo does not offer saving through the game menu."
     }
   ]
 }
