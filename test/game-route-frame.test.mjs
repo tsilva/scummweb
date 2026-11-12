@@ -414,11 +414,15 @@ test("a fullscreen command field follows keyboard geometry without switching vie
 });
 
 test("Skip intro stays available through the intro and ends on the active game's native signal", () => {
-  const player = pendingArchivePlayer({ skipIntro: { strategy: "boot-param", bootParam: 1, durationMinutes: 0.5 } });
+  const player = pendingArchivePlayer({
+    skipIntro: { strategy: "boot-param", bootParam: 1, durationMinutes: 0.5 },
+    visualViewport: Object.assign(new EventTarget(), { height: 390, scale: 1 }),
+  });
   player.render();
   assert.equal(player.controls.showSkipIntroAction, false);
   player.setBootCompleted();
   assert.equal(player.controls.showSkipIntroAction, true);
+  assert.equal(player.controls.showTouchClickButtons, false);
   assert.equal([...player.timers.values()].some(({ delay }) => delay === 30_000), false);
   player.gameplayStarted({ source: {} });
   player.gameplayStarted({ origin: "https://elsewhere.test" });
@@ -427,6 +431,7 @@ test("Skip intro stays available through the intro and ends on the active game's
   assert.equal(player.controls.showSkipIntroAction, true);
   player.gameplayStarted();
   assert.equal(player.controls.showSkipIntroAction, false);
+  assert.equal(player.controls.showTouchClickButtons, true);
   player.unmount();
 });
 
@@ -470,7 +475,7 @@ test("Skip intro hides gameplay controls in the first render of the restart", as
   player.render();
   assert.equal(player.overlay.showBootOverlay, false);
   assert.equal(player.controls.showSkipIntroAction, true);
-  assert.equal(player.controls.showTouchClickButtons, true);
+  assert.equal(player.controls.showTouchClickButtons, false);
 
   player.controls.onSkipIntro();
   player.render(() => {

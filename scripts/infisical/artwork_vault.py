@@ -37,7 +37,7 @@ EXPECTED = {
     "source_names": ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY"],
     "bundle": "local-scummweb-artwork-batch",
     "python": str(PYTHON),
-    "infisical": str(PREFIX / "cli/0.44.13/infisical"),
+    "infisical": str(PREFIX / "cli/0.45.6/infisical"),
     "ca_fingerprint": "SHA256:37:B2:E0:81:45:EC:C0:58:46:2E:D1:2F:E1:2B:E6:AE:2B:78:B1:B3:F0:21:CD:8F:EC:54:CC:30:2D:36:9E:37",
 }
 
@@ -47,6 +47,8 @@ def digest(path):
 
 
 def protected(path, directory=False):
+    if path.resolve() != path:
+        raise ValueError("Protected paths must be canonical")
     info = path.lstat()
     if (
         (
@@ -84,10 +86,11 @@ def load():
         raise ValueError("Incomplete source or runtime pins")
     for name, value in p["code_sha256"].items():
         path = ROOT / name
-        if path.is_symlink() or digest(path) != value:
+        if path.resolve() != path or digest(path) != value:
             raise ValueError("Source changed; trusted review required")
     for name, value in p["runtime_sha256"].items():
-        if digest(Path(p[name])) != value:
+        path = Path(p[name])
+        if path.resolve() != path or digest(path) != value:
             raise ValueError("Runtime changed; trusted review required")
     if (
         digest(BASE / "policy.json") != p["policy_sha256"]
@@ -173,6 +176,7 @@ def command(p, port, mode, workspace, manifest, objects, client=None):
         "agent-vault",
         "run",
         "--domain=https://app.infisical.com",
+        "--project-id=5078c850-3f93-46d8-8afe-82107df8b931",
         "--access-bundle=" + p["bundle"],
         "--proxy=127.0.0.1:8283",
         "--ca-fingerprint=" + p["ca_fingerprint"],

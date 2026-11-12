@@ -93,7 +93,7 @@ class ArtworkVaultTests(unittest.TestCase):
 
     def test_profile_rejects_scope_schema_and_source_pin_changes(self):
         with tempfile.TemporaryDirectory() as temporary:
-            base = Path(temporary)
+            base = Path(temporary).resolve()
             base.chmod(0o700)
             p = {
                 **launcher.EXPECTED,
@@ -121,7 +121,7 @@ class ArtworkVaultTests(unittest.TestCase):
 
     def test_protected_paths_reject_symlinks_and_shared_modes(self):
         with tempfile.TemporaryDirectory() as temporary:
-            path = Path(temporary) / "profile"
+            path = Path(temporary).resolve() / "profile"
             path.write_text("metadata only")
             path.chmod(0o644)
             with self.assertRaises(ValueError):
@@ -132,6 +132,17 @@ class ArtworkVaultTests(unittest.TestCase):
             os.symlink(path, link)
             with self.assertRaises(ValueError):
                 launcher.protected(link)
+
+    def test_native_launch_pins_project_and_child_sandbox(self):
+        arguments = launcher.command(
+            launcher.EXPECTED, 12345, "check", "no-artwork-read",
+            Path("/synthetic/manifest"), Path("/synthetic/objects"),
+        )
+        self.assertIn("--project-id=5078c850-3f93-46d8-8afe-82107df8b931", arguments)
+        self.assertIn("--domain=https://app.infisical.com", arguments)
+        self.assertIn("/usr/bin/sandbox-exec", arguments)
+        self.assertIn("--no-ca-trust", arguments)
+        self.assertIn("--no-skills", arguments)
 
     def test_read_only_relay_and_invalid_body_stop_before_upstream(self):
         raw = json.dumps({"access_key_id": "a" * 32, "secret_access_key": "b" * 64})

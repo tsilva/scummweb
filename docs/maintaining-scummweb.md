@@ -65,6 +65,8 @@ appear under **Compatibility warning**. Fatal errors stop startup.
 Browse in portrait and play in landscape. If the browser refuses fullscreen or
 rotation, rotate the device manually and use **Enter fullscreen** when offered.
 The game remains open when you rotate back. **Exit game** stays available.
+While **Skip intro** is visible, the toolbar and touch gameplay controls stay
+hidden. They return to their normal visibility when the action disappears.
 
 - Tap the game to position the cursor. Double-tap or press **L** to left-click.
   Use **R** for right-click. Drag the cursor pad while holding either button
