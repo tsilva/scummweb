@@ -1375,6 +1375,11 @@
       "file": "zork-nemesis-the-forbidden-lands-1b33f57695624e51eaf461eadfe2f729b04878c7617231f7bebf185af1853199.jpg",
       "inputHash": "1b33f57695624e51eaf461eadfe2f729b04878c7617231f7bebf185af1853199",
       "imageHash": "eae9e06b8cefa2e3ede3113a6b615c163974f119d4df9387d2afad4fc9865699"
+    },
+    "the-dig-demo": {
+      "file": "the-dig-demo-b4baccc560d1b1057bbae438f7bf127af945204edcc57a83fbe6dc9586855379.jpg",
+      "inputHash": "b4baccc560d1b1057bbae438f7bf127af945204edcc57a83fbe6dc9586855379",
+      "imageHash": "e2ae8d625220a982351df2eaef564b4c6552831c35da1abf405f17ef44464653"
     }
   }
 }

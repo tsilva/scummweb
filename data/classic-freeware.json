@@ -317,6 +317,28 @@
         "basis": "Official ScummVM-hosted playable promotional CD demo. All included text notices and binary copyright/license strings inspected; no express redistribution prohibition or rehosting grant found. This is an evidence-based assessment, not an express rights-holder license.",
         "preservation": "Serve the complete upstream ZIP byte-for-byte, preserving README.TXT, README.1ST, runtime notices and every original file."
       }
+    },
+    {
+      "target": "dig-demo",
+      "title": "The Dig (Demo)",
+      "engineId": "scumm",
+      "gameId": "dig",
+      "platform": "pc",
+      "extra": "Demo",
+      "archive": "dig-dos-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/scumm/dig-dos-demo-en.zip",
+      "sha256": "f4c56e572a66df0d11e3aa02ebc35610cbe6b707d3af330f1f3aaa73c7457bcf",
+      "preserveArchive": true,
+      "noticeFile": "readme.txt",
+      "config": {
+        "guioptions": "sndNoMIDI"
+      },
+      "redistributionReview": {
+        "reviewedOn": "2026-11-12",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "Official ScummVM-hosted playable promotional demo. Its readme retains LucasArts copyright and Used Under Authorization notices; no express redistribution prohibition or third-party rehosting grant was found in the archive. Official hosting supports this assessment but is not an express rights-holder license.",
+        "preservation": "Serve the complete unchanged upstream ZIP, retaining readme.txt, its copyright notices, original audio/video and every other file."
+      }
     }
   ]
 }

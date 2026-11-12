@@ -414,6 +414,16 @@
       "platform": "pc",
       "extra": "Demo",
       "readmeHref": "/launcher/notices/samnmax.txt"
+    },
+    {
+      "target": "dig-demo",
+      "title": "The Dig (Demo)",
+      "path": "/games/dig",
+      "engineId": "scumm",
+      "gameId": "dig",
+      "platform": "pc",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/dig.txt"
     }
   ]
 }

@@ -116,6 +116,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "dig-demo": {
+    ...retroGameArtwork["scumm:dig"],
+    title: "The Dig (Demo)",
+    year: "1995",
+    language: "en",
+    summary: "Explore an alien world as Commander Boston Low in this voiced science-fiction adventure demo.",
+  },
   "samnmax-demo": {
     ...retroGameArtwork["scumm:samnmax"],
     title: "Sam & Max Hit the Road (Demo)",
