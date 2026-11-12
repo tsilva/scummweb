@@ -171,6 +171,11 @@ iPhone or iPad or **Add to Dock** on macOS Sonoma and later.
 ScummWEB opens in its own window after installation. Fullscreen follows the
 same controls and device-specific rules as play in a browser tab.
 
+The homepage captures early browser installation offers before hydration. It
+loads the invitation stylesheet only after an eligible offer; keep the native
+installation prompt inside the click handler. `pnpm test` covers early offers,
+stylesheet failures, installation gestures, and persisted dismissal.
+
 ### Library and game files
 
 For a direct ZIP link, URL-encode a direct HTTPS archive URL in the fragment.

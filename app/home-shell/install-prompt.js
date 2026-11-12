@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { usePathname } from "next/navigation";
-import "../styles/install-prompt.css";
+import { captureException } from "@sentry/nextjs";
 
 const dismissalKey = "scummweb.install-prompt-dismissed";
 const appDisplayModes = "(display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui), (display-mode: window-controls-overlay)";
@@ -27,6 +27,7 @@ export default function InstallPrompt() {
   const pathname = usePathname();
   const [offer, setOffer] = useState(null);
   const offerHandled = useRef(false);
+  const [stylesReady, setStylesReady] = useState(false);
 
   useEffect(() => {
     if (window.top !== window || !window.isSecureContext) return;
@@ -61,6 +62,18 @@ export default function InstallPrompt() {
     };
   }, []);
 
+  useEffect(() => {
+    if (pathname !== "/" || !offer || stylesReady) return;
+    let active = true;
+    const ready = () => { if (active) setStylesReady(true); };
+    void import("./install-prompt-styles").then(ready, (error) => {
+      captureException(error, { tags: { feature: "install-prompt-styles" } });
+      // Keep installation and dismissal available if the optional styles fail.
+      ready();
+    });
+    return () => { active = false; };
+  }, [offer, pathname, stylesReady]);
+
   function dismiss() {
     offerHandled.current = true;
     try { window.localStorage.setItem(dismissalKey, "1"); } catch {}
@@ -77,7 +90,7 @@ export default function InstallPrompt() {
     catch { setOffer("menu"); }
   }
 
-  if (pathname !== "/" || !offer) return null;
+  if (pathname !== "/" || !offer || !stylesReady) return null;
 
   return (
     <aside className="install-prompt" aria-label="Install ScummWEB">
