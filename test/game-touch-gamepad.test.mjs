@@ -48,6 +48,10 @@ function loadGamepad(keyboard, mouse = {}) {
 
   return {
     ...module.exports,
+    rerender(render) {
+      cursor = 0;
+      return render();
+    },
     resetHooks() {
       cursor = 0;
       hooks = [];
@@ -105,6 +109,41 @@ test("Grim's stick ignores thumb drift and holds both keys on a deliberate diago
   assert.deepEqual(events.slice(8), [
     "press ArrowDown", "press ArrowRight", "release ArrowDown", "release ArrowRight",
   ]);
+});
+
+test("Escape from Monkey Island shares Grim's stick and sends its native action keys", () => {
+  const frame = {};
+  const events = [];
+  const gamepad = loadGamepad({
+    holdGameKey(target, { key }) {
+      assert.equal(target, frame);
+      events.push(`press ${key}`);
+      return () => events.push(`release ${key}`);
+    },
+    dispatchSyntheticKeypress(target, key) {
+      assert.equal(target, frame);
+      events.push(key);
+    },
+  });
+  const [movement, actions] = gamepad.GameTouchGamepad({ frameRef: { current: frame }, mode: "monkey4" }).props.children;
+  gamepad.resetHooks();
+  const stick = movement.type(movement.props).props;
+  stick.onPointerDown(pointer(1, 50, 50));
+  stick.onPointerMove(pointer(1, 75, 25));
+  stick.onPointerUp(pointer(1, 75, 25));
+  assert.deepEqual(events.splice(0), ["press ArrowUp", "press ArrowRight", "release ArrowUp", "release ArrowRight"]);
+  const [, choices] = actions.props.children;
+  assert.deepEqual(Array.from(choices.props.children, ({ props }) => props["aria-label"]), [
+    "Use / Talk", "Examine", "Pick up / Put away", "Inventory",
+  ]);
+  for (const button of choices.props.children) button.props.onClick();
+  assert.equal(events[0], "u");
+  assert.equal(events[1], "e");
+  assert.equal(events[2].key, "+");
+  assert.equal(events[2].code, "NumpadAdd");
+  assert.equal(events[2].keyCode, 107);
+  assert.equal(events[3].key, "Insert");
+  assert.equal(events[3].keyCode, 45);
 });
 
 test("Hugo's stick changes direction without toggling on drift and stops after a collision", () => {
@@ -191,6 +230,59 @@ test("Castle Master's touch drag sends movement without transferring focus to th
   assert.deepEqual(events, ["press x", "release", "press z"]);
   stick.onPointerUp(pointer(1, 25, 50));
   assert.deepEqual(events, ["press x", "release", "press z", "release"]);
+});
+
+test("Castle Master's finger moves the knob despite pointer cancellation and stops only for that finger", () => {
+  const events = [];
+  const frame = {};
+  const gamepad = loadGamepad({
+    holdGameKey(target, input, options) {
+      assert.equal(target, frame);
+      assert.equal(options.focus, false);
+      const key = typeof input === "string" ? input : input.key;
+      events.push(`press ${key}`);
+      return () => events.push(`release ${key}`);
+    },
+  });
+  const frameRef = { current: frame };
+  const render = () => gamepad.rerender(() => gamepad.GameMovementStick({ frameRef, castle: true }).props);
+  const touch = (identifier, clientX, clientY) => ({ identifier, clientX, clientY });
+  const touchEvent = (...changedTouches) => ({
+    changedTouches, currentTarget: pointer(7, 50, 50).currentTarget,
+  });
+  let stick = render();
+  const touchPointer = { ...pointer(7, 50, 50), pointerType: "touch" };
+  touchPointer.currentTarget.setPointerCapture = () => assert.fail("touch must not require pointer capture");
+  stick.onPointerDown(touchPointer);
+  stick.onTouchStart(touchEvent(touch(7, 50, 50)));
+  stick.onPointerCancel(touchPointer);
+  stick.onLostPointerCapture(touchPointer);
+  stick.onTouchMove(touchEvent(touch(7, 75, 50)));
+  stick = render();
+  assert.equal(stick.children.at(-1).props.style.transform, "translate(25px, 0px)");
+  assert.deepEqual(events, ["press x"]);
+
+  stick.onPointerUp(touchPointer);
+  stick.onTouchStart(touchEvent(touch(8, 80, 50)));
+  stick.onTouchMove(touchEvent(touch(8, 25, 50)));
+  stick.onTouchEnd(touchEvent(touch(8, 25, 50)));
+  assert.deepEqual(events, ["press x"], "another finger must not replace or release the grip");
+
+  stick.onTouchMove(touchEvent(touch(7, 50, 25)));
+  assert.deepEqual(events, ["press x", "release x", "press ArrowUp"]);
+  stick.onLostPointerCapture(touchPointer);
+  stick.onTouchEnd(touchEvent(touch(7, 50, 25)));
+  stick = render();
+  assert.equal(stick.children.at(-1).props.style.transform, "translate(0px, 0px)");
+  assert.deepEqual(events, ["press x", "release x", "press ArrowUp", "release ArrowUp"]);
+
+  stick.onTouchStart(touchEvent(touch(9, 50, 50)));
+  stick.onTouchMove(touchEvent(touch(9, 25, 50)));
+  stick.onTouchMove(touchEvent(touch(9, 50, 50)));
+  stick.onTouchMove(touchEvent(touch(9, 50, 75)));
+  stick.onTouchCancel(touchEvent(touch(9, 50, 75)));
+  stick.onTouchEnd(touchEvent(touch(9, 50, 75)));
+  assert.deepEqual(events.slice(4), ["press z", "release z", "press ArrowDown", "release ArrowDown"]);
 });
 
 test("a gesture cancelled during movement dispatch cannot leave a key held", () => {
