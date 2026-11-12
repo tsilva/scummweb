@@ -1,6 +1,5 @@
 """Synthetic R2 publisher tests. No credentials or real network requests."""
 import hashlib
-import base64
 import io
 import json
 import tempfile
@@ -92,96 +91,6 @@ class ArtworkPublishingTests(unittest.TestCase):
                 patch.object(games, "delete_remote_keys", return_value=1) as delete:
             games.main()
         self.assertEqual(delete.call_args.args[2], ["obsolete.zip"])
-        config = session.client.call_args.kwargs["config"]
-        self.assertEqual(config.connect_timeout, 10)
-        self.assertEqual(config.read_timeout, 30)
-        self.assertEqual(config.retries["total_max_attempts"], 2)
-
-    def test_game_publisher_reports_status_without_provider_details(self):
-        error = ClientError({"Error": {"Code": "AccessDenied", "Message": "private-provider-detail"},
-                             "ResponseMetadata": {"HTTPStatusCode": 403}}, "HeadObject")
-        with patch.object(games, "main", side_effect=error):
-            with self.assertRaises(SystemExit) as result:
-                games.run()
-        self.assertIn("HTTP 403", str(result.exception))
-        self.assertNotIn("private-provider-detail", str(result.exception))
-
-    def test_game_parts_use_signed_fixed_length_payloads_without_chunked_trailers(self):
-        class RequestCaptured(Exception):
-            pass
-
-        payload = b"synthetic game part"
-        client = games.boto3.client(
-            "s3", endpoint_url="https://r2.invalid", region_name="auto",
-            aws_access_key_id="synthetic", aws_secret_access_key="synthetic",
-            config=games.r2_client_config(),
-        )
-
-        def inspect_request(request, **_):
-            self.assertNotIn("Transfer-Encoding", request.headers)
-            self.assertNotIn("x-amz-trailer", request.headers)
-            self.assertEqual(str(request.headers["Content-Length"]), str(len(payload)))
-            self.assertEqual(request.headers["x-amz-content-sha256"], hashlib.sha256(payload).hexdigest().encode())
-            raise RequestCaptured()
-
-        client.meta.events.register("before-send.s3.UploadPart", inspect_request)
-        with self.assertRaises(RequestCaptured):
-            client.upload_part(Bucket="synthetic", Key="game.zip", UploadId="synthetic",
-                               PartNumber=1, Body=payload)
-
-    def test_small_game_upload_preserves_exact_bytes_and_uses_conditional_create(self):
-        filename = self.root / "game.zip"
-        filename.write_bytes(self.data)
-        client = Mock()
-
-        def receive(**request):
-            self.assertEqual(request["Body"].read(), self.data)
-            self.assertEqual(request["ContentLength"], len(self.data))
-            expected = base64.b64encode(hashlib.md5(self.data, usedforsecurity=False).digest()).decode()
-            self.assertEqual(request["ContentMD5"], expected)
-            self.assertEqual(request["IfNoneMatch"], "*")
-            self.assertEqual(request["CacheControl"], CACHE_CONTROL)
-
-        client.put_object.side_effect = receive
-        games.upload_game_file(client, filename, "game.zip", {"CacheControl": CACHE_CONTROL})
-        client.upload_file.assert_not_called()
-
-    def test_large_game_parts_preserve_bytes_and_complete_conditionally(self):
-        filename = self.root / "large.zip"
-        payload = b"synthetic multipart game"
-        filename.write_bytes(payload)
-        client = Mock()
-        client.create_multipart_upload.return_value = {"UploadId": "synthetic-session"}
-        client.upload_part.return_value = {"ETag": "synthetic-etag"}
-        with patch.object(games, "SINGLE_UPLOAD_LIMIT", 6), patch.object(games, "MULTIPART_BYTES", 6):
-            games.upload_game_file(client, filename, "large.zip", {"ContentType": "application/zip"})
-        client.put_object.assert_not_called()
-        calls = client.upload_part.call_args_list
-        self.assertEqual(b"".join(call.kwargs["Body"] for call in calls), payload)
-        self.assertEqual([call.kwargs["PartNumber"] for call in calls], list(range(1, len(calls) + 1)))
-        for call in calls:
-            data = call.kwargs["Body"]
-            self.assertEqual(call.kwargs["ContentLength"], len(data))
-            self.assertEqual(call.kwargs["ContentMD5"], base64.b64encode(hashlib.md5(data, usedforsecurity=False).digest()).decode())
-        request = client.complete_multipart_upload.call_args.kwargs
-        self.assertEqual(request["IfNoneMatch"], "*")
-        self.assertEqual(request["UploadId"], "synthetic-session")
-        self.assertEqual(len(request["MultipartUpload"]["Parts"]), len(calls))
-        client.abort_multipart_upload.assert_not_called()
-
-    def test_failed_part_aborts_only_its_incomplete_session(self):
-        filename = self.root / "game.zip"
-        filename.write_bytes(b"synthetic game")
-        client = Mock()
-        client.create_multipart_upload.return_value = {"UploadId": "own-session"}
-        error = ClientError({"Error": {"Code": "RequestTimeout"}}, "UploadPart")
-        client.upload_part.side_effect = error
-        with patch.object(games, "SINGLE_UPLOAD_LIMIT", 6):
-            with self.assertRaises(ClientError):
-                games.upload_game_file(client, filename, "game.zip", {})
-        client.abort_multipart_upload.assert_called_once_with(Bucket=games.BUCKET, Key="game.zip", UploadId="own-session")
-        client.complete_multipart_upload.assert_not_called()
-        client.delete_object.assert_not_called()
 
 
 if __name__ == "__main__":

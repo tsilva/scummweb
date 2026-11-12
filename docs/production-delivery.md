@@ -59,15 +59,6 @@ pnpm run publish:games --game soltys.zip
 ```
 
 Existing objects are skipped by default. `--force` overwrites them.
-The game publisher signs payloads with SHA-256 and avoids optional AWS chunked
-checksum trailers for R2 compatibility. Archives up to 5 MiB use one PUT with
-a content checksum and conditional creation unless overwriting was requested;
-larger files use sequential 5 MiB multipart transfers, with per-part checksums,
-progress, and conditional completion. Failed sessions are aborted without
-deleting committed objects. Requests use a 10-second connection
-timeout, a 30-second read timeout, and at most two attempts. Stage messages are
-flushed immediately; SDK failures report their category and HTTP status without
-provider details. After a failed transfer, check the public object before retrying.
 `--prune` deletes remote game objects absent locally within the selected
 scope. Without `--game`, it can prune the entire game library. The
 `artwork/` namespace is reserved and excluded.
