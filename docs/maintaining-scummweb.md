@@ -37,6 +37,10 @@ The command uses public range reads.
 
 ### Player controls
 
+In-game overlay buttons and touch pads share the translucent surface, border,
+icon colors and interaction states in [`game-controls.css`](../app/styles/game-controls.css).
+Adjust the `--game-control-*` variables together to keep every control consistent.
+
 - **Esc** or **Open game menu** opens the shared menu. **Esc** returns from a
   picker or closes the menu. Clicking or tapping outside the menu closes it
   when no save or load is in progress. The game pauses at a supported update
