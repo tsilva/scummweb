@@ -251,7 +251,7 @@ export default function GameRouteFrame({
   const showCommandInput = mobileControlsReady && usesCommandInput;
   const showCommandForm = showCommandInput && commandOpen;
   const showHugoStick = mobileControlsReady && !showCommandForm && mobileControlMode === "hugo";
-  const showTouchGamepad = mobileControlsReady && (mobileControlMode === "grim" || mobileControlMode === "castle");
+  const showTouchGamepad = mobileControlsReady && ["grim", "monkey4", "castle"].includes(mobileControlMode);
   const showTouchMouse = mobileControlsReady && mobileControlMode === "mouse";
   const touchCursorPad = useTouchCursorPad({
     enabled: showTouchMouse,

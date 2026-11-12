@@ -1,5 +1,6 @@
 .game-route-shell {
   --game-control-inline-inset: max(2rem, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+  --game-control-right-inset: max(0.75rem, env(safe-area-inset-right, 0px));
   --game-control-block-inset: max(0.75rem, env(safe-area-inset-top, 0px), env(safe-area-inset-bottom, 0px));
   --game-control-background: rgba(32, 39, 34, 0.24);
   --game-control-border: rgba(234, 243, 236, 0.2);
@@ -78,7 +79,7 @@
 }
 
 .game-route-control-group.is-right {
-  right: var(--game-control-inline-inset);
+  right: var(--game-control-right-inset);
 }
 
 .game-route-control-button {
@@ -165,7 +166,7 @@
 
 .game-route-bottom-actions {
   position: fixed;
-  right: var(--game-control-inline-inset);
+  right: var(--game-control-right-inset);
   bottom: var(--game-control-block-inset);
   z-index: 7;
   display: flex;
@@ -269,7 +270,7 @@
 }
 
 .game-route-grim-gamepad {
-  right: var(--game-control-inline-inset);
+  right: var(--game-control-right-inset);
   display: flex;
   align-items: flex-end;
   justify-content: space-between;

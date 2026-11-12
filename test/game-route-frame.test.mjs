@@ -817,6 +817,7 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
     get cursorPad() { return children.find(({ type }) => type === CursorPad)?.props; },
     get hugoStick() { return children.find(({ props }) => props.children?.type === MovementStick)?.props.children; },
     get grimGamepad() { return children.find(({ type, props }) => type === TouchGamepad && props.mode === "grim"); },
+    get monkey4Gamepad() { return children.find(({ type, props }) => type === TouchGamepad && props.mode === "monkey4"); },
     get castleGamepad() { return children.find(({ type, props }) => type === TouchGamepad && props.mode === "castle"); },
     get form() { return children.find(({ type }) => type === "form"); },
     render, navigations,
@@ -836,6 +837,7 @@ test("fullscreen is offered beside the menu on mobile after leaving fullscreen",
 for (const game of [
   { engineId: "sky", gameId: "sky", target: "sky" },
   { engineId: "grim", gameId: "grim", target: "grim-demo" },
+  { engineId: "grim", gameId: "monkey4", target: "monkey4-demo" },
   { engineId: "freescape", gameId: "castlemaster", target: "castlemaster-demo" },
   { engineId: "hugo", gameId: "hugo1", target: "hugo1-demo" },
   { engineId: "glk", gameId: "zork1", target: "zork1" },
@@ -845,7 +847,7 @@ for (const game of [
       const fullscreenExit = Promise.withResolvers();
       const player = readyPlayer(game, { mobile, exitImmersiveMode: () => fullscreenExit.promise });
       assert.ok(player.controls);
-      if (mobile) assert.ok(player.controls.showTouchClickButtons || player.hugoStick || player.grimGamepad || player.castleGamepad || player.form);
+      if (mobile) assert.ok(player.controls.showTouchClickButtons || player.hugoStick || player.grimGamepad || player.monkey4Gamepad || player.castleGamepad || player.form);
       player.controls.onOpenMenu();
       player.render();
       assert.equal(player.controls.gameMenuOpen, true);
@@ -855,6 +857,7 @@ for (const game of [
       assert.equal(player.cursorPad, undefined);
       assert.equal(player.hugoStick, undefined);
       assert.equal(player.grimGamepad, undefined);
+      assert.equal(player.monkey4Gamepad, undefined);
       assert.equal(player.castleGamepad, undefined);
       assert.equal(player.form, undefined);
       assert.equal(player.navigations.length, mobile ? 1 : 0);
@@ -963,6 +966,22 @@ test("mobile control modes cover Grim, Hugo, and the three Zork stories", () => 
   const graphical = readyPlayer({ engineId: "zvision", gameId: "zgi", target: "zgi" }, mobile);
   assert.equal(graphical.cursorPad.showTouchCursorPad, true);
   assert.equal(graphical.form, undefined);
+});
+
+test("Escape from Monkey Island uses a movement gamepad for demo and imported targets", () => {
+  for (const target of ["monkey4-demo", "monkey4", "custom-import"]) {
+    const game = { engineId: "grim", gameId: "monkey4", target };
+    const player = readyPlayer(game, { mobile: true });
+    assert.equal(player.monkey4Gamepad.props.frameRef.current, player.frame);
+    assert.equal(player.cursorPad.showTouchCursorPad, false);
+    assert.equal(player.controls.showTouchClickButtons, false);
+    assert.equal(player.form, undefined);
+    for (const options of [{}, { mobile: true, ready: false }, { mobile: true, failed: true },
+      { mobile: true, landscape: false }]) {
+      assert.equal(readyPlayer(game, options).monkey4Gamepad, undefined);
+    }
+  }
+  assert.equal(mobileControls.getMobileControlMode({ engineId: "scumm", gameId: "monkey" }), "mouse");
 });
 
 test("Castle Master uses a movement gamepad only during ready landscape mobile play", () => {

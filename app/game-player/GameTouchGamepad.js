@@ -85,9 +85,9 @@ export function GameMovementStick({ frameRef, hugo = false, castle = false }) {
     };
   }, [frameRef]);
 
-  function move(event) {
+  function move(event, inputType = "pointer") {
     const active = grip.current;
-    if (!active || event.pointerId !== active.pointerId) return;
+    if (!active || active.inputType !== inputType || event.pointerId !== active.pointerId) return;
     const dx = event.clientX - active.originX;
     const dy = event.clientY - active.originY;
     const scale = active.travel / Math.max(active.travel, Math.hypot(dx, dy));
@@ -138,18 +138,16 @@ export function GameMovementStick({ frameRef, hugo = false, castle = false }) {
     }
   }
 
-  function start(event) {
-    if (event.button !== 0 || grip.current) return;
-    event.preventDefault();
-    const bounds = event.currentTarget.getBoundingClientRect();
+  function beginGrip(point, target, inputType) {
+    const bounds = target.getBoundingClientRect();
     const travel = Math.min(bounds.width, bounds.height) * 0.27;
     if (!travel) return;
-    event.currentTarget.setPointerCapture(event.pointerId);
     const frame = frameRef.current;
     grip.current = {
-      pointerId: event.pointerId,
-      originX: event.clientX,
-      originY: event.clientY,
+      inputType,
+      pointerId: point.pointerId,
+      originX: point.clientX,
+      originY: point.clientY,
       travel,
       held: new Map(),
       frame,
@@ -158,11 +156,41 @@ export function GameMovementStick({ frameRef, hugo = false, castle = false }) {
     };
   }
 
-  function stop(event) {
-    if (grip.current?.pointerId !== event.pointerId) return;
+  function start(event) {
+    if ((castle && event.pointerType === "touch") || event.button !== 0 || grip.current) return;
+    event.preventDefault();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    beginGrip(event, event.currentTarget, "pointer");
+  }
+
+  function stop(event, inputType = "pointer") {
+    if (grip.current?.inputType !== inputType || grip.current?.pointerId !== event.pointerId) return;
     releaseStick(grip);
     setOffset({ x: 0, y: 0 });
     setActiveDirections([]);
+  }
+
+  // Touch events stay targeted at the element where the finger landed, even
+  // when a browser drops pointer capture around the embedded game. Track the
+  // finger separately so pointercancel/lostpointercapture cannot reset it.
+  function startTouch(event) {
+    if (grip.current) return;
+    const touch = event.changedTouches[0];
+    if (touch) beginGrip(touchPoint(touch), event.currentTarget, "touch");
+  }
+
+  function touchPoint(touch) {
+    return { pointerId: touch.identifier, clientX: touch.clientX, clientY: touch.clientY };
+  }
+
+  function moveTouch(event) {
+    const touch = Array.from(event.changedTouches).find(({ identifier }) => identifier === grip.current?.pointerId);
+    if (touch) move(touchPoint(touch), "touch");
+  }
+
+  function stopTouch(event) {
+    const touch = Array.from(event.changedTouches).find(({ identifier }) => identifier === grip.current?.pointerId);
+    if (touch) stop(touchPoint(touch), "touch");
   }
 
   return (
@@ -174,6 +202,10 @@ export function GameMovementStick({ frameRef, hugo = false, castle = false }) {
       onPointerDown={start}
       onPointerMove={move}
       onPointerUp={stop}
+      onTouchStart={castle ? startTouch : undefined}
+      onTouchMove={castle ? moveTouch : undefined}
+      onTouchEnd={castle ? stopTouch : undefined}
+      onTouchCancel={castle ? stopTouch : undefined}
       role="group"
     >
       {directions.map(({ name, Icon }) => (
@@ -198,6 +230,14 @@ const grimActions = [
   { key: "e", label: "Examine", Icon: Eye },
   { key: "p", label: "Pick up / Put away", Icon: HandGrab },
   { key: "i", label: "Inventory", Icon: Backpack },
+];
+
+// EMI shares Grim's movement keys, but its native action bindings differ.
+const monkey4Actions = [
+  { key: "u", label: "Use / Talk", Icon: MessageCircle },
+  { key: "e", label: "Examine", Icon: Eye },
+  { key: { key: "+", code: "NumpadAdd", keyCode: 107 }, label: "Pick up / Put away", Icon: HandGrab },
+  { key: { key: "Insert", keyCode: 45 }, label: "Inventory", Icon: Backpack },
 ];
 
 const castleActions = [
@@ -245,7 +285,7 @@ export function GameTouchGamepad({ frameRef, mode = "grim" }) {
           <Zap aria-hidden="true" size={20} />
         </button>
         <div aria-label="Game actions" className="game-route-grim-action-choices" hidden={!actionsOpen} id={actionsId} role="group">
-          {(castle ? castleActions : grimActions).map(({ key, button, label, Icon }) => (
+          {(castle ? castleActions : mode === "monkey4" ? monkey4Actions : grimActions).map(({ key, button, label, Icon }) => (
             <button
               aria-label={label}
               className="game-route-control-button is-gamepad"
