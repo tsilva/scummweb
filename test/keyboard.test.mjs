@@ -90,6 +90,17 @@ test("held movement keeps the key down and releases it on the original canvas", 
     [["keydown", "ArrowUp"], ["keyup", "ArrowUp"]]);
 });
 
+test("a touch control can hold a game key without moving browser focus", () => {
+  const frame = fixture();
+  const { body, canvas } = frame.contentDocument;
+  frame.contentWindow.focus = () => assert.fail("touch input must retain focus in its document");
+  const release = holdGameKey(frame, "x", { focus: false });
+  assert.equal(frame.contentDocument.activeElement, body);
+  assert.deepEqual(canvas.received.map(({ type }) => type), ["keydown"]);
+  release();
+  assert.deepEqual(canvas.received.map(({ type }) => type), ["keydown", "keyup"]);
+});
+
 test("long Hugo commands arrive in batches with Enter at the end", async () => {
   const frame = fixture();
   const command = "use the long wooden ladder";

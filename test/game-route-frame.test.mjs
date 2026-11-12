@@ -742,7 +742,7 @@ function keyboardAction(player) {
 }
 
 function readyPlayer(game, { ready = true, failed = false, mobile = false, landscape = true,
-  exitImmersiveMode = () => {} } = {}) {
+  fullscreen = false, canFullscreen = true, exitImmersiveMode = () => {} } = {}) {
   function Controls() {}
   function CursorPad() {}
   function MovementStick() {}
@@ -798,6 +798,7 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
       if (name.endsWith("/immersive-mode.mjs")) return { isTouchMobileClient: () => mobile };
       if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({
         isMobileViewport: mobile, isTouchMobile: mobile, isLandscapeViewport: landscape, exitImmersiveMode,
+        isFullscreen: fullscreen, canFullscreen,
       }) };
       if (name.endsWith("/useTouchClickMode")) return { useTouchClickActions: () => ({}) };
       if (name.endsWith("/useTouchCursorPad")) return { useTouchCursorPad: () => ({}) };
@@ -822,6 +823,15 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
     frame, keypresses, commands,
   };
 }
+
+test("fullscreen is offered beside the menu on mobile after leaving fullscreen", () => {
+  const game = { target: "zork1", engineId: "glk", gameId: "zork1" };
+  assert.equal(readyPlayer(game, { mobile: true }).controls.showFullscreenControl, true);
+  assert.equal(readyPlayer(game, { mobile: true, fullscreen: true }).controls.showFullscreenControl, false);
+  assert.equal(readyPlayer(game, { mobile: true, canFullscreen: false }).controls.showFullscreenControl, false);
+  assert.equal(readyPlayer(game, { mobile: true, ready: false }).controls.showFullscreenControl, false);
+  assert.equal(readyPlayer(game, { fullscreen: true }).controls.showFullscreenControl, true);
+});
 
 for (const game of [
   { engineId: "sky", gameId: "sky", target: "sky" },

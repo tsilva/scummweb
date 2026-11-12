@@ -143,17 +143,17 @@ test("exiting during a pending fullscreen request prevents a late landscape lock
   const exiting = client.exit();
   client.resolveFullscreen();
   await exiting;
-  assert.deepEqual(client.actions, ["fullscreen", "exit", "unlock"]);
+  assert.deepEqual(client.actions, ["fullscreen", "exit", "portrait"]);
   assert.equal(client.document.fullscreenElement, null);
 });
 
-test("leaving the route releases fullscreen and orientation for browsing", async () => {
+test("leaving the route exits fullscreen and requests portrait for browsing", async () => {
   const client = player({ fullscreen: true });
   client.begin();
   await client.settle();
   client.unmount();
   await new Promise(setImmediate);
-  assert.deepEqual(client.actions, ["fullscreen", "landscape", "exit", "unlock"]);
+  assert.deepEqual(client.actions, ["fullscreen", "landscape", "exit", "portrait"]);
 });
 
 test("browser fullscreen exit while playing keeps requesting landscape", async () => {

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import argparse
+import base64
+import hashlib
 import json
 import os
 from mimetypes import guess_type
@@ -9,7 +11,8 @@ from typing import Dict, List, Optional, Tuple
 
 import boto3
 from botocore.config import Config
-from botocore.exceptions import ClientError
+from botocore.exceptions import BotoCoreError, ClientError
+from boto3.exceptions import S3UploadFailedError
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,6 +31,39 @@ INDEX_CACHE_CONTROL = os.environ.get(
     "public, max-age=60, stale-while-revalidate=300",
 )
 GAMES_LIBRARY_PATH = ROOT / "dist" / "games.json"
+SINGLE_UPLOAD_LIMIT = 100 * 1024 * 1024
+
+
+def r2_client_config():
+    # Avoid optional AWS streaming-checksum trailers on the S3-compatible
+    # endpoint. SigV4 still signs the SHA-256 of every uploaded payload.
+    return Config(
+        signature_version="s3v4",
+        request_checksum_calculation="when_required",
+        s3={"payload_signing_enabled": True},
+        connect_timeout=10,
+        read_timeout=30,
+        retries={"mode": "standard", "total_max_attempts": 2},
+    )
+
+
+def upload_game_file(client, filename, key, metadata, overwrite=False):
+    size = filename.stat().st_size
+    if size > SINGLE_UPLOAD_LIMIT:
+        client.upload_file(str(filename), BUCKET, key, ExtraArgs=metadata)
+        return
+    # R2 recommends a single PUT for small/medium objects. Besides avoiding a
+    # multipart session, this can atomically preserve a concurrently created key.
+    with filename.open("rb") as body:
+        checksum = hashlib.md5(usedforsecurity=False)
+        for block in iter(lambda: body.read(1024 * 1024), b""):
+            checksum.update(block)
+        body.seek(0)
+        client.put_object(
+            Bucket=BUCKET, Key=key, Body=body, ContentLength=size,
+            ContentMD5=base64.b64encode(checksum.digest()).decode("ascii"),
+            **metadata, **({} if overwrite else {"IfNoneMatch": "*"}),
+        )
 
 
 def require_env(name: str) -> str:
@@ -263,7 +299,7 @@ def main() -> None:
     client = session.client(
         "s3",
         endpoint_url=ENDPOINT,
-        config=Config(signature_version="s3v4"),
+        config=r2_client_config(),
     )
 
     files, scope_label = collect_files(games_dir, selected_prefix)
@@ -273,7 +309,8 @@ def main() -> None:
     prune_label = " with prune enabled" if args.prune else ""
     print(
         f"Uploading {len(files)} files from {games_dir}"
-        f" (scope: {scope_label}) to bucket '{BUCKET}' via {ENDPOINT}{force_label}{prune_label}"
+        f" (scope: {scope_label}) to bucket '{BUCKET}' via {ENDPOINT}{force_label}{prune_label}",
+        flush=True,
     )
 
     local_keys = {path.relative_to(games_dir).as_posix() for path in files}
@@ -291,17 +328,19 @@ def main() -> None:
             selected_prefix is not None and (key == "index.json" or key.endswith("/index.json"))
         )
 
+        print(f"Checking object: {key}", flush=True)
         if not should_overwrite and remote_key_exists(client, BUCKET, key):
             skipped += 1
             if skipped % 25 == 0 or index == len(files):
                 print(f"Skipped {skipped} existing files so far; latest: {key}")
             continue
 
-        client.upload_file(str(path), BUCKET, key, ExtraArgs=extra_args)
+        print(f"Uploading object: {key} ({path.stat().st_size} bytes)", flush=True)
+        upload_game_file(client, path, key, extra_args, overwrite=should_overwrite)
         uploaded += 1
 
         if index % 25 == 0 or index == len(files):
-            print(f"Processed {index}/{len(files)} files; uploaded latest: {key}")
+            print(f"Processed {index}/{len(files)} files; uploaded latest: {key}", flush=True)
 
     deleted = 0
     if args.prune:
@@ -315,5 +354,17 @@ def main() -> None:
     print(f"Upload complete: uploaded {uploaded}, skipped {skipped}, deleted {deleted}")
 
 
+def run():
+    try:
+        main()
+    except (BotoCoreError, ClientError, S3UploadFailedError) as error:
+        # Provider messages and request details can contain private data.
+        # Report only the SDK exception category and numeric HTTP status.
+        status = (error.response.get("ResponseMetadata", {}).get("HTTPStatusCode")
+                  if isinstance(error, ClientError) else None)
+        suffix = f" (HTTP {status})" if type(status) is int else ""
+        raise SystemExit(f"R2 publishing failed: {type(error).__name__}{suffix}; provider details withheld.") from None
+
+
 if __name__ == "__main__":
-    main()
+    run()

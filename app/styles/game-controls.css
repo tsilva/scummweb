@@ -1,9 +1,11 @@
 .game-route-shell {
-  --game-control-background: rgba(32, 39, 34, 0.42);
-  --game-control-border: rgba(234, 243, 236, 0.3);
-  --game-control-color: rgba(255, 255, 255, 0.76);
-  --game-control-active-background: rgba(48, 54, 50, 0.56);
-  --game-control-active-border: rgba(234, 243, 236, 0.48);
+  --game-control-inline-inset: max(2rem, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+  --game-control-block-inset: max(0.75rem, env(safe-area-inset-top, 0px), env(safe-area-inset-bottom, 0px));
+  --game-control-background: rgba(32, 39, 34, 0.24);
+  --game-control-border: rgba(234, 243, 236, 0.2);
+  --game-control-color: rgba(255, 255, 255, 0.5);
+  --game-control-active-background: rgba(48, 54, 50, 0.72);
+  --game-control-active-border: rgba(234, 243, 236, 0.64);
 }
 
 .game-route-control-button,
@@ -19,7 +21,7 @@
 }
 
 :is(.game-route-control-button, .game-route-skip-intro-button,
-    .game-route-stick-base, .game-route-touch-cursor-pad):is(:active, :focus-visible, [aria-expanded="true"]) {
+    .game-route-stick-base, .game-route-touch-cursor-pad):is(:active, :focus-visible, [aria-expanded="true"], [aria-pressed="true"]) {
   background: var(--game-control-active-background);
   border-color: var(--game-control-active-border);
   color: #fff;
@@ -65,18 +67,18 @@
 
 .game-route-control-group {
   position: fixed;
-  top: max(1rem, env(safe-area-inset-top));
+  top: var(--game-control-block-inset);
   display: flex;
   gap: 0.625rem;
   pointer-events: none;
 }
 
 .game-route-control-group.is-left {
-  left: max(0.5rem, env(safe-area-inset-left));
+  left: var(--game-control-inline-inset);
 }
 
 .game-route-control-group.is-right {
-  right: max(0.5rem, env(safe-area-inset-right));
+  right: var(--game-control-inline-inset);
 }
 
 .game-route-control-button {
@@ -163,8 +165,8 @@
 
 .game-route-bottom-actions {
   position: fixed;
-  right: max(2rem, env(safe-area-inset-right));
-  bottom: max(0.75rem, env(safe-area-inset-bottom));
+  right: var(--game-control-inline-inset);
+  bottom: var(--game-control-block-inset);
   z-index: 7;
   display: flex;
   flex-direction: column;
@@ -215,8 +217,8 @@
 
 .game-route-touch-gamepad {
   position: fixed;
-  left: max(2rem, env(safe-area-inset-left));
-  bottom: max(0.75rem, env(safe-area-inset-bottom));
+  left: var(--game-control-inline-inset);
+  bottom: var(--game-control-block-inset);
   z-index: 7;
   pointer-events: none;
 }
@@ -267,7 +269,7 @@
 }
 
 .game-route-grim-gamepad {
-  right: max(2rem, env(safe-area-inset-right));
+  right: var(--game-control-inline-inset);
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -341,8 +343,8 @@
 
 .game-route-touch-cursor-pad-shell {
   position: fixed;
-  left: max(2rem, env(safe-area-inset-left));
-  bottom: max(0.75rem, env(safe-area-inset-bottom));
+  left: var(--game-control-inline-inset);
+  bottom: var(--game-control-block-inset);
   z-index: 7;
   pointer-events: none;
 }

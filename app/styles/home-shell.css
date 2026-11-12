@@ -2,6 +2,22 @@
   position: relative;
 }
 
+.gallery-rotation-icon {
+  width: 4rem;
+  height: 4rem;
+  color: var(--accent-strong);
+}
+
+@media (orientation: landscape) {
+  [data-mobile-orientation="portrait"] > .mobile-orientation-message {
+    display: grid;
+  }
+
+  [data-mobile-orientation="portrait"] > .gallery-orientation-content {
+    display: none;
+  }
+}
+
 html[data-dpad-navigation] {
   scroll-padding-block: 5rem 0.75rem;
 }

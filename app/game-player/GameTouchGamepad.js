@@ -125,8 +125,16 @@ export function GameMovementStick({ frameRef, hugo = false, castle = false }) {
     }
     for (const direction of wanted) {
       if (active.held.has(direction)) continue;
-      const release = holdGameKey(frameRef.current, (castle && castleDirectionKeys[direction.name]) || direction.key);
-      if (release) active.held.set(direction, release);
+      // Keep a mobile drag in the host document. Focusing the iframe can cancel
+      // its pointer capture before the held key has been registered for cleanup.
+      const release = holdGameKey(frameRef.current,
+        (castle && castleDirectionKeys[direction.name]) || direction.key, { focus: !castle });
+      if (!release) continue;
+      if (grip.current !== active) {
+        release();
+        return;
+      }
+      active.held.set(direction, release);
     }
   }
 

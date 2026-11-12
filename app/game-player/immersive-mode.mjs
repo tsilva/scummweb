@@ -79,11 +79,5 @@ export async function exitImmersiveMode() {
   } catch {
     // Navigation remains available if the browser has already left fullscreen.
   }
-  if (exitRevision === revision && isTouchMobileClient()) {
-    try {
-      screen.orientation?.unlock?.();
-    } catch {
-      // Browsing remains available when orientation control is unsupported.
-    }
-  }
+  if (exitRevision === revision) await lockOrientation("portrait");
 }

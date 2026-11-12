@@ -927,7 +927,7 @@ export default function GameRouteFrame({
 
   const showExitControl = true;
   const showFullscreenControl =
-    immersiveMode.canFullscreen && !immersiveMode.isTouchMobile && bootState.hasBootPresentationCompleted;
+    immersiveMode.canFullscreen && (!immersiveMode.isTouchMobile || !immersiveMode.isFullscreen) && bootState.hasBootPresentationCompleted;
   const showGameMenuButton =
     bootState.showGameMenuButton && !hasBootFailed && !waitingForLandscape;
   const keyboardAction = showCommandInput && !showCommandForm ? (
@@ -944,7 +944,7 @@ export default function GameRouteFrame({
   ) : null;
   const touchActions = keyboardAction && isZorkVoiceGame(currentReadySignal?.detectedGame ?? game ?? undefined) ? (
     <div aria-label="Game command controls" className="game-route-command-actions" role="group">
-      <GameVoiceCommand enabled={!gameMenuOpen && !remoteToolbarOpen} frameRef={frameRef} key={frameSrc} />
+      <GameVoiceCommand enabled={!gameMenuOpen && !remoteToolbarOpen && !isExiting} frameRef={frameRef} shellRef={shellRef} key={frameSrc} />
       {keyboardAction}
     </div>
   ) : keyboardAction;

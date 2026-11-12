@@ -40,6 +40,10 @@ The command uses public range reads.
 In-game overlay buttons and touch pads share the translucent surface, border,
 icon colors and interaction states in [`game-controls.css`](../app/styles/game-controls.css).
 Adjust the `--game-control-*` variables together to keep every control consistent.
+Idle controls use subdued colors; hover, keyboard focus, pressed and expanded
+states increase their opacity. Top and bottom controls share vertical insets,
+and both sides share horizontal insets, using the larger safe-area inset on
+each axis to preserve symmetric spacing around cutouts.
 
 - **Esc** or **Open game menu** opens the shared menu. **Esc** returns from a
   picker or closes the menu. Clicking or tapping outside the menu closes it
@@ -67,10 +71,11 @@ appear under **Compatibility warning**. Fatal errors stop startup.
 
 ### Mobile play
 
-Browse in portrait or landscape; gameplay uses landscape. Leaving a game releases
-the orientation lock so the gallery follows your device. If the browser refuses
-fullscreen or rotation, rotate the device manually and use **Enter fullscreen**
-when offered.
+Browse in portrait; gameplay uses landscape. Leaving a game requests portrait
+again. If the browser refuses rotation, the gallery shows a phone rotation icon
+and a prompt to turn your device upright. If fullscreen is refused, use
+the fullscreen button beside the game menu to try again. It is available outside
+fullscreen on supported devices once the game has opened.
 The game remains open when you rotate back. **Exit game** stays available.
 While **Skip intro** is visible, the toolbar and touch gameplay controls stay
 hidden. They return to their normal visibility when the action disappears.
@@ -95,6 +100,9 @@ hidden. They return to their normal visibility when the action disappears.
   stays hidden when recognition is unsupported, and hides if permission or
   the speech service is unavailable. Cancelling the touch, leaving the player,
   or opening the game menu discards the recording without sending a command.
+  If the permission prompt leaves fullscreen, the player tries to restore it
+  when recording starts or focus returns. Browsers that require another gesture
+  retry on the next tap or key press in the player.
 - In Castle Master, hold the movement stick up/down to walk or left/right to
   turn; release it to stop. The lightning button opens Use/Activate, Throw rock,
   Look up/down, Face forward, Walk, Run, Crawl, and Game information. Tap the

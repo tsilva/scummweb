@@ -173,6 +173,44 @@ test("Castle Master's stick holds walking or turning and releases on recenter, c
   assert.deepEqual(events.slice(6), ["press z", "release z", "press ArrowDown", "release ArrowDown"]);
 });
 
+test("Castle Master's touch drag sends movement without transferring focus to the iframe", () => {
+  const events = [];
+  let stick;
+  const gamepad = loadGamepad({
+    holdGameKey(_frame, input, options) {
+      events.push(`press ${typeof input === "string" ? input : input.key}`);
+      // Model a mobile focus transfer cancelling the active pointer gesture.
+      if (options?.focus !== false) stick.onPointerCancel(pointer(1, 75, 50));
+      return () => events.push("release");
+    },
+  });
+  stick = gamepad.GameMovementStick({ frameRef: { current: {} }, castle: true }).props;
+  stick.onPointerDown(pointer(1, 50, 50));
+  stick.onPointerMove(pointer(1, 75, 50));
+  stick.onPointerMove(pointer(1, 25, 50));
+  assert.deepEqual(events, ["press x", "release", "press z"]);
+  stick.onPointerUp(pointer(1, 25, 50));
+  assert.deepEqual(events, ["press x", "release", "press z", "release"]);
+});
+
+test("a gesture cancelled during movement dispatch cannot leave a key held", () => {
+  const events = [];
+  let stick;
+  const gamepad = loadGamepad({
+    holdGameKey() {
+      events.push("press");
+      stick.onLostPointerCapture(pointer(1, 50, 25));
+      return () => events.push("release");
+    },
+  });
+  stick = gamepad.GameMovementStick({ frameRef: { current: {} }, castle: true }).props;
+  stick.onPointerDown(pointer(1, 50, 50));
+  stick.onPointerMove(pointer(1, 50, 25));
+  assert.deepEqual(events, ["press", "release"]);
+  stick.onPointerUp(pointer(1, 50, 25));
+  assert.deepEqual(events, ["press", "release"]);
+});
+
 test("Castle Master actions dispatch the native keys and activation uses right click", () => {
   const events = [];
   const frame = {};
