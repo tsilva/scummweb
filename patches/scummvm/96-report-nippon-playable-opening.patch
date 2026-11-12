@@ -1,0 +1,23 @@
+diff --git a/engines/parallaction/parallaction_ns.cpp b/engines/parallaction/parallaction_ns.cpp
+--- a/engines/parallaction/parallaction_ns.cpp
++++ b/engines/parallaction/parallaction_ns.cpp
+@@ -31,6 +31,7 @@
+ #include "parallaction/sound.h"
+ #include "parallaction/walk.h"
+ #include "engines/scummweb-agent-loop.h"
++#include "engines/scummweb-intro.h"
+ 
+ 
+ namespace Parallaction {
+@@ -458,5 +459,11 @@ void Parallaction_ns::changeLocation() {
+ 
+ 	_cmdExec->run(_location._aCommands);
+ 
++#ifdef __EMSCRIPTEN__
++	// The bank opening is interactive, even though it precedes the character picker.
++	if (!strcmp(locname.location(), "fogne"))
++		ScummWebIntro::gameplayStarted();
++#endif
++
+ 	if (_location._hasSound)
+ 		_soundManI->playSfx(_location._soundFile, 0, true);
