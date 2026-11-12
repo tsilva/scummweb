@@ -194,7 +194,10 @@ URL when replacing a hosted archive so cached launches pick up the new files.
 
 Bundled **Skip intro** uses a native startup option or a checkpoint captured
 before the first player decision. Preserve language, character, or control
-selection when the original game requires it. Imported games offer **Skip intro**
+selection when the original game requires it. An edition without a checkpoint
+can use its engine's live intro action, shown only while that engine reports
+an opening segment that can be skipped. Full Throttle's demo uses this path
+because saving is unavailable before its first decision. Imported games offer **Skip intro**
 while their engine exposes a supported opening segment. The action advances
 through the game's original transition and preserves its menus and choices.
 Continue omits the action.
