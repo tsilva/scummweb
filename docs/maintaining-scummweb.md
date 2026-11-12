@@ -265,7 +265,10 @@ build and start when an audit must coexist with another server.
 
 `SCUMMVM_GAMES_ORIGIN` selects the game bucket and `NEXT_PUBLIC_SITE_URL`
 sets canonical URLs. Game data downloads directly from the bucket. Local
-verification can use `/games-proxy/*`.
+verification can use `/games-proxy/*`. The Broken Sword Macintosh demo keeps
+its complete upstream archive and has a 200 MiB download allowance with a
+ten-minute timeout. Downloads up to 256 MiB use memory backing to avoid browser
+temporary-file reservation failures; larger catalog ZIPs retain Blob backing.
 
 Local builds skip Sentry source-map uploads. For startup reports, filter Sentry
 by `component:scummvm-player` and narrow by `startup_stage`, `game_source`,

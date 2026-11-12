@@ -1380,6 +1380,11 @@
       "file": "the-dig-demo-b4baccc560d1b1057bbae438f7bf127af945204edcc57a83fbe6dc9586855379.jpg",
       "inputHash": "b4baccc560d1b1057bbae438f7bf127af945204edcc57a83fbe6dc9586855379",
       "imageHash": "e2ae8d625220a982351df2eaef564b4c6552831c35da1abf405f17ef44464653"
+    },
+    "broken-sword-the-shadow-of-the-templars-demo": {
+      "file": "broken-sword-the-shadow-of-the-templars-demo-164d77043ab66be010c4341a2ef8db82fbda545a43a80019683e70c9c90a322f.jpg",
+      "inputHash": "164d77043ab66be010c4341a2ef8db82fbda545a43a80019683e70c9c90a322f",
+      "imageHash": "d80d0594fc459a49e53ad706a17e1e82f13203ac2937a04a2bf18c5aa4d69251"
     }
   }
 }

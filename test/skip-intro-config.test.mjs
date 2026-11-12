@@ -65,7 +65,7 @@ test("catalog intro checkpoints match their rebuild overrides and ship intact", 
   const directPrompt = new Set(["zork1", "zork2", "zork3"]);
   // Full Throttle's demo disables saving before its first decision; its
   // verified native intro action skips in place without a seeded save.
-  const nativeOnly = new Set(["ft-demo", "samnmax-demo", "dig-demo"]);
+  const nativeOnly = new Set(["ft-demo", "samnmax-demo", "dig-demo", "sword1-demo"]);
   const nativeChoice = new Set(["nippon-amiga"]);
   assert.deepEqual(new Set(library.games.filter((game) => !game.skipIntro).map((game) => game.target)),
     new Set([...directPrompt, ...nativeOnly, ...nativeChoice]), "unseeded editions need a direct prompt, native intro choice or verified native intro action");

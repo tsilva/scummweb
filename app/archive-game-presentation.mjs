@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Broken Sword: The Shadow of the Templars (Demo)", target: "sword1-demo", engineId: "sword1", gameId: "sword1",
+    files: [["scripts.clm", 1088468, 3493304599], ["swordres.rif", 59788, 2626330415]],
+  },
+  {
     title: "The Dig (Demo)", target: "dig-demo", engineId: "scumm", gameId: "dig",
     files: [["dig.la0", 3472, 0x0d806066], ["dig.la1", 13564378, 0x792615a2]],
   },

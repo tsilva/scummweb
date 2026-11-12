@@ -116,6 +116,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "sword1-demo": {
+    ...retroGameArtwork["sword1:sword1"],
+    title: "Broken Sword: The Shadow of the Templars (Demo)",
+    year: "1996",
+    language: "en",
+    summary: "Investigate a Parisian mystery in the original voiced English Macintosh demo of Broken Sword.",
+  },
   "dig-demo": {
     ...retroGameArtwork["scumm:dig"],
     title: "The Dig (Demo)",

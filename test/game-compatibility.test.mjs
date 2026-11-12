@@ -99,6 +99,7 @@ test("normal original game prompts do not create compatibility warnings", () => 
     "mohawk:arthurrace",
     "mohawk:catinthehat",
     "parallaction:bra",
+    "sword1:sword1",
     "zvision:zgi",
   ]);
 });

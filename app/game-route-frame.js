@@ -53,6 +53,7 @@ const BOOT_ERROR_MESSAGES = new Map([
 ]);
 const MIB = 1024 * 1024;
 const catalogArchiveLimits = {
+  "sword1-demo": { archiveLimit: 200 * MIB, timeoutMs: 600_000 },
   "dreamweb-cd": { archiveLimit: 300 * MIB, expandedLimit: 300 * MIB, timeoutMs: 600_000 },
   queen: { timeoutMs: 600_000 },
   "qfi-demo": { archiveLimit: 300 * MIB, expandedLimit: 300 * MIB, timeoutMs: 600_000 },
