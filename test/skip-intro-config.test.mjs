@@ -63,8 +63,11 @@ test("catalog intro checkpoints match their rebuild overrides and ship intact", 
   const overrides = JSON.parse(await readFile(new URL("../launcher-game-overrides.json", import.meta.url), "utf8"));
   const manifest = JSON.parse(await readFile(new URL("runtime-assets.json", shell), "utf8"));
   const directPrompt = new Set(["zork1", "zork2", "zork3"]);
+  // Full Throttle's demo disables saving before its first decision; its
+  // verified native intro action skips in place without a seeded save.
+  const nativeOnly = new Set(["ft-demo"]);
   assert.deepEqual(new Set(library.games.filter((game) => !game.skipIntro).map((game) => game.target)),
-    directPrompt, "only editions that start directly at a prompt need no skip action");
+    new Set([...directPrompt, ...nativeOnly]), "unseeded editions need a direct prompt or a verified native intro action");
   const configuredTargets = new Set();
   for (const game of library.games) {
     if (!game.skipIntro) continue;
