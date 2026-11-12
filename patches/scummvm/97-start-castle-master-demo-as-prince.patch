@@ -1,0 +1,18 @@
+diff --git a/engines/freescape/games/castle/castle.cpp b/engines/freescape/games/castle/castle.cpp
+--- a/engines/freescape/games/castle/castle.cpp
++++ b/engines/freescape/games/castle/castle.cpp
+@@ -2326,6 +2326,14 @@
+ }
+ 
+ void CastleEngine::selectCharacterScreen() {
++#ifdef __EMSCRIPTEN__
++	// The bundled web demo starts as the prince without a character prompt.
++	// Both ordinary Play and Skip intro enter through this method.
++	if (isDOS() && ConfMan.getActiveDomainName() == "castlemaster-demo") {
++		_selectedPrincess = false;
++		return;
++	}
++#endif
+ 	Common::Array<Common::String> lines;
+ 	uint32 color = _gfx->_texturePixelFormat.ARGBToColor(0x00, 0x00, 0x00, 0x00);
+ 	Graphics::Surface *surface = new Graphics::Surface();

@@ -106,7 +106,9 @@ hidden. They return to their normal visibility when the action disappears.
 - In Castle Master, hold the movement stick up/down to walk or left/right to
   turn; release it to stop. The lightning button opens Use/Activate, Throw rock,
   Look up/down, Face forward, Walk, Run, Crawl, and Game information. Tap the
-  game to aim; double-tap to choose a character or dismiss a title screen.
+  game to aim; double-tap to dismiss a title screen. The bundled DOS demo
+  automatically selects the prince and skips character selection on both Play
+  and Skip intro.
 
 ### Continue and native saves
 
@@ -424,11 +426,14 @@ The God of Thunder engine is available for personal imports. The official
 redistribution.
 
 Nippon Safes uses the official ScummVM freeware game data. In the browser,
-its original manual-code screen is replaced with Dino, Donna and Dough
-buttons. Each starts the original character's story, including when choosing
-another character after completing a part. Language selection, introductions
-and saved progress keep their original behavior. The picker applies to Amiga
-and DOS imports; desktop ScummVM retains its own character-selection screen.
+its original manual-code screen is replaced with an interactive version of the
+game's own portrait screen. Click Donna, Dough or Dino to start that character's
+original reveal and story, including after completing a part. Hovering highlights
+the portrait and displays its original name graphic. Keyboard users can select
+with Tab or 1–3 (left to right), then confirm with Enter or Space. Escape and
+clicks outside the portraits do not start a story. Language selection,
+introductions and saved progress keep their original behavior. This applies to
+Amiga and DOS imports; desktop ScummVM retains its own character-selection screen.
 
 Build the Zork I–III packages with [ZILF 1.9](https://github.com/taradinoc/zilf/releases/tag/1.9)
 and `python3 scripts/build_zork_packages.py /path/to/zilf/bin`. The packages

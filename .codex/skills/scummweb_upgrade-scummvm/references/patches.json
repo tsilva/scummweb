@@ -430,7 +430,7 @@
       "invariants": [
         "Require an explicit browser boot parameter and the matching bundled target. Preserve original fresh starts, saves and imports.",
         "Reuse Dragon History's data-defined escape destination, the Teen Agent engine's native intro abort, and Hugo's first-scene scheduler.",
-        "Preserve the Pegasus Prime demo menu and Castle Master's character and input choices."
+        "Preserve the Pegasus Prime demo menu and Castle Master's input setup; patch 97 selects the prince for the bundled web demo."
       ],
       "verification": [
         "In Brave use normal Play and Skip intro for all seven target entries. Verify the first scene or original required choice.",
@@ -1432,16 +1432,16 @@
     {
       "path": "patches/scummvm/95-select-nippon-character-without-manual.patch",
       "status": "active",
-      "sha256": "c6b32256221ec7d7160b16c17ec9b55285df05b114559384057b060fccc22425",
-      "purpose": "Replace Nippon Safes manual-code character selection with named native buttons in the web runtime.",
+      "sha256": "77e8b077995273c7b531fe5680337ce4c65c694a0489f2b17740ad0741668251",
+      "purpose": "Use Nippon Safes original character portraits as the browser character selector without manual codes.",
       "invariants": [
-        "Keep Dino, Donna and Dough as explicit player choices and route each through its original test.dino, test.donna or test.dough transition. Apply to both supported Amiga and DOS editions, including selection after the intro or a completed story.",
+        "Render the original test background, portraits and name frames from the game data. Keep Donna, Dough and Dino as explicit choices, each followed by its original test.donna, test.dough or test.dino reveal and story transition. Apply to both Amiga and DOS, including selection after a completed story.",
         "Preserve language selection, ordinary intros, intro skipping, game-part progress, save names and original game data. Keep non-web character selection unchanged. Escape and quitting must not start an unintended character.",
-        "Mark the character picker as an interactive intro boundary and reuse the native GUI for pointer, touch and keyboard activation."
+        "Mark the portrait menu as an interactive intro boundary. Support pointer/touch hit testing and keyboard selection (Tab or 1-3, then Enter/Space); Escape, clicks outside portraits and quitting must not start a story. Release menu graphics before entering gameplay."
       ],
       "verification": [
-        "Build the complete maintained native patch series and run the offline checker, application tests and production build.",
-        "In Brave verify all three choices reach their own original opening scenes, Escape does not choose a story, Skip intro retains the picker, and the shared save/load menu still works. Exercise the official Amiga package and an official DOS import, then repeat a visible launch on Production."
+        "Compile the actual menu against the native behavioral fixture in test/nippon-character-selector.test.mjs; build the complete maintained native patch series, run the offline checker, application tests and production build.",
+        "In Brave verify original artwork in Amiga and DOS, all three portraits reach their own original opening scenes, outside clicks and Escape do not select a story, keyboard selection works, Skip intro retains the portraits, and the shared save/load menu still works. Repeat a visible launch on Production when deployed."
       ],
       "retire_when": "Upstream provides an equivalent manual-free character selector for both Nippon Safes editions while preserving original story transitions and non-web behavior."
     },
@@ -1458,6 +1458,22 @@
         "In Brave, start the normal Amiga catalog game, enter the bank opening and confirm Skip Intro disappears while the scene remains interactive. Verify Skip Intro retains language and character choices."
       ],
       "retire_when": "Upstream exposes an equivalent playable opening boundary for Nippon Safes."
+    },
+    {
+      "path": "patches/scummvm/97-start-castle-master-demo-as-prince.patch",
+      "status": "active",
+      "sha256": "dd6aa4b90925c93ad5c7407ed98ccfd0cc462a2976ea685119e070359689be1e",
+      "purpose": "Start the bundled Castle Master DOS web demo as the prince without its blocking character-selection screen.",
+      "invariants": [
+        "Apply only to Emscripten DOS launches with target castlemaster-demo, for both ordinary Play and Skip intro.",
+        "Set _selectedPrincess to false before normal game-state initialization; preserve title/intro handling, input reset, restart and native save loading.",
+        "Keep other targets, platforms and desktop character selection unchanged."
+      ],
+      "verification": [
+        "Run test/castle-master-character.test.mjs for web and desktop selection boundaries.",
+        "In Brave launch the bundled demo with normal Play and Skip intro; reach the first 3D level without character input, verify movement, then save and resume."
+      ],
+      "retire_when": "The web demo has an equivalent reliable prince startup that removes the need for this selection-screen bypass."
     }
   ]
 }
