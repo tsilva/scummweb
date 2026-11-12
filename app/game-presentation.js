@@ -140,7 +140,7 @@ const artByTarget = {
     studio: "LucasArts",
     year: "1997",
     language: "en",
-    summary: "Help Guybrush Threepwood escape a pirate ship in LucasArts’ original Windows web demo. This edition includes voice acting.",
+    summary: "Help Guybrush Threepwood escape a pirate ship in this voiced demo.",
     posterImage: retroGameArtwork["scumm:comi"].posterImage,
     heroImage: retroGameArtwork["scumm:comi"].heroImage,
     heroImagePosition: retroGameArtwork["scumm:comi"].heroImagePosition,
@@ -294,7 +294,7 @@ const artByTarget = {
     eyebrow: "Lucasfilm Games Demo",
     mobileSummary: "Explore Mêlée Island as aspiring pirate Guybrush Threepwood in this playable demo.",
     summary:
-      "As aspiring pirate Guybrush Threepwood, explore Mêlée Island, question the locals, and find the magic phrase that will get you past a troll. This playable EGA demo remixes scenes and characters from the full adventure into a short story of its own.",
+      "Explore Mêlée Island as aspiring pirate Guybrush Threepwood in this standalone demo adventure.",
     genre: retroGameArtwork["scumm:monkey"].genre,
     studio: "Lucasfilm Games",
     year: "1990",
@@ -316,7 +316,7 @@ const artByTarget = {
     eyebrow: "Featured Classic",
     mobileSummary: "Escape a towering dystopian city in this classic cyberpunk adventure.",
     summary:
-      "Beneath a Steel Sky opens with a broken hovercar, a towering dystopian city, and the kind of dry wit that only 90s cyberpunk adventures could get away with.",
+      "Escape Union City as Robert Foster and uncover the secrets behind its oppressive rule.",
     genre: "Cyberpunk adventure",
     studio: "Revolution Software",
     year: "1994",
@@ -357,7 +357,7 @@ const artByTarget = {
     eyebrow: "Night Shift Pick",
     mobileSummary: "Uncover a sinister cult in a rain-soaked city of the future.",
     summary:
-      "DreamWeb trades bright heroics for rain, cult dread, and a killer drifting through a diseased future city. It is still one of the strangest things you can boot from ScummVM.",
+      "Follow bartender Ryan through a dystopian city as disturbing dreams draw him into a deadly mission.",
     genre: "Noir thriller",
     studio: "Empire Interactive",
     year: "1994",
@@ -379,7 +379,7 @@ const artByTarget = {
     eyebrow: "Jungle Matinee",
     mobileSummary: "Join a pulp pilot on a comic adventure through the Amazon.",
     summary:
-      "Flight of the Amazon Queen throws a pulp pilot, a film star, and a lost-city conspiracy into a bright comic-book trek across the Amazon. It is breezier than DreamWeb and a lot better dressed for danger.",
+      "Pilot Joe King crashes in the Amazon and becomes entangled in a mad scientist's plot.",
     genre: "Comic adventure",
     studio: "Interactive Binary Illusions",
     year: "1995",
@@ -401,7 +401,7 @@ const artByTarget = {
     eyebrow: "Castle Intrigue",
     mobileSummary: "Explore a troubled kingdom and outwit the forces threatening its people.",
     summary:
-      "Lure of the Temptress drops you into a plague-struck kingdom full of shifting loyalties, suspicious guards, and the early Revolution Software menace that already points toward Beneath a Steel Sky.",
+      "Help Diermot escape captivity and oppose the sorceress Selena in the village of Turnvale.",
     genre: "Fantasy adventure",
     studio: "Revolution Software",
     year: "1992",
@@ -419,7 +419,7 @@ const artByTarget = {
     eyebrow: "Vampire Farce",
     mobileSummary: "Take on a cartoon vampire in a point-and-click comedy full of B-movie antics.",
     summary:
-      "Drascula throws a dimwitted hero, cartoon vampire melodrama, and rapid-fire gag writing into a point-and-click comedy that never lets its B-movie premise sit still.",
+      "Help John Hacker rescue Billie Jean from Count Drascula in a vampire comedy.",
     genre: "Comedy horror adventure",
     studio: "Alcachofa Soft",
     year: "1996",
@@ -437,7 +437,7 @@ const artByTarget = {
     eyebrow: "Heist Fever Dream",
     mobileSummary: "Follow three unlikely crooks through a colorful caper full of bad luck.",
     summary:
-      "Nippon Safes, Inc. turns a three-way caper into a neon cartoon of crooks, bad luck, and sharply drawn Amiga absurdity. It feels like a pulp comic strip that got lost in a cyberpunk fever dream.",
+      "Switch between three unlikely crooks as their separate jobs collide in a Japanese heist.",
     genre: "Comedy caper adventure",
     studio: "Dynabyte",
     year: "1992",
@@ -456,7 +456,7 @@ const artByTarget = {
     mobileSummary: "Join George and Nico in a hand-painted Templar conspiracy.",
     mobileBadge: "Fan game",
     summary:
-      "Broken Sword 2.5 sends George and Nico back into a hand-painted conspiracy full of autumn streets, Templar fallout, and the lavish fan-made craft that made it a ScummVM showcase.",
+      "Reunite George and Nico in Paris to investigate a new conspiracy in this fan-made sequel.",
     genre: "Conspiracy adventure",
     studio: "mindFactory",
     year: "2008",
