@@ -1489,6 +1489,22 @@
         "Verify missing Dialog/system handlers are inactive and existing save, intro, agent and telemetry boundaries remain intact."
       ],
       "retire_when": "Upstream exposes an equivalent reliable dialogue-choice state to the hosted web player."
+    },
+    {
+      "path": "patches/scummvm/99-route-nippon-load-to-player-menu.patch",
+      "status": "active",
+      "sha256": "361942d870ba0266aa515ef55ddb11fe60787bd589a80dbe038b24e1211c2c8d",
+      "purpose": "Open the hosted Load Game drawer from Nippon Safes original Saved Game choice and restore through its native serializer.",
+      "invariants": [
+        "Intercept only a hosted browser player; preserve the native dialog for desktop, standalone and agent launches.",
+        "Keep the startup menu alive while the drawer is open. Cancel returns to New/Saved Game without starting a story; a restore exits the menu into the saved location.",
+        "Permit loading only at this explicit startup-load state or the existing idle gameplay boundary. Do not enable saving at the startup menu; preserve save files and progress slots."
+      ],
+      "verification": [
+        "Run the native startup-load state and browser menu bridge regression tests.",
+        "In Brave, open Saved Game, verify the Load Game drawer, cancel and reopen it, then restore a real save into its scene. Verify New Game, L/R intro choices and normal gameplay save/load."
+      ],
+      "retire_when": "Upstream routes the original startup load choice through an equivalent hosted browser picker with safe cancellation and restoration."
     }
   ]
 }

@@ -154,3 +154,22 @@ test("Escape opens the shared drawer and is consumed before it reaches SDL", () 
   assert.equal(press("keyup"), 2);
   assert.equal(requests, 1);
 });
+
+test("native load-menu requests hold the engine before opening the requested drawer page", () => {
+  const { scope, controls } = createPlayer();
+  assert.equal(scope.__scummwebRequestPlayerMenu, undefined, "standalone controls keep the native dialog");
+  scope.addEventListener = () => {};
+  const pages = [];
+  installPlayerControls(scope, (page) => {
+    assert.equal(scope.__scummwebAgentFrameBoundary(true, 99, 0, true, true), -1);
+    assert.equal(scope.__scummwebPlayerVolume, 0);
+    pages.push(page);
+  });
+  assert.equal(scope.__scummwebRequestPlayerMenu("load"), true);
+  assert.equal(scope.__scummwebPlayerMenuOpen(), true);
+  scope.scummwebPlayerControls.setMenuOpen(false);
+  assert.equal(scope.__scummwebPlayerMenuOpen(), false);
+  assert.equal(scope.__scummwebAgentFrameBoundary(true, 99, 0, true, true), 0);
+  scope.__scummwebRequestPlayerMenu("untrusted-page");
+  assert.deepEqual(pages, ["load", "menu"]);
+});

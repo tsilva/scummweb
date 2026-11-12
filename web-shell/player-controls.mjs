@@ -113,6 +113,14 @@ export function installPlayerControls(scope, requestMenu) {
   };
 
   if (requestMenu) {
+    scope.__scummwebPlayerMenuOpen = () => menuOpen;
+    scope.__scummwebRequestPlayerMenu = (page) => {
+      // Hold the engine before the asynchronous parent message opens its drawer.
+      menuOpen = true;
+      applyVolume();
+      requestMenu(page === "load" ? "load" : "menu");
+      return true;
+    };
     const handleEscape = (event) => {
       if (!event.isTrusted || event.key !== "Escape" || event.isComposing ||
           event.altKey || event.ctrlKey || event.metaKey || event.shiftKey ||

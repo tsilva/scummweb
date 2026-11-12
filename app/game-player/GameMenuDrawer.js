@@ -36,11 +36,11 @@ function MenuSlider({ label, value, min, max, step, text, onChange, disabled }) 
   );
 }
 
-export default function GameMenuDrawer({ frameRef, onClose, onExit, onNativeMenu, title }) {
+export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose, onExit, onNativeMenu, title }) {
   const dialogRef = useRef(null);
   const pressedBackdrop = useRef(false);
   const controller = useRef(null);
-  const [page, setPage] = useState("menu");
+  const [page, setPage] = useState(initialPage === "load" ? "load" : "menu");
   const [settings, setSettings] = useState(defaultSettings);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);

@@ -249,6 +249,12 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
 
 ## Shared game menu
 
+- Nippon Safes' startup Saved Game choice enters a separate native menu state.
+  Patch 99 keeps that state alive while the hosted Load Game drawer is open,
+  returns to the original choice on cancellation and leaves it after a native
+  restore schedules its location. Permit startup loads only in that explicit
+  state; saving still requires gameplay. Standalone and agent launches keep
+  the native dialog. Pass the requested drawer page through the shell bridge.
 - Hosted players share the native save and restore boundaries with AgentSCUMM
   but use the ordinary per-edition save path. Preserve the scoped protocol,
   pause behavior and captions for agent launches. List occupied slots even

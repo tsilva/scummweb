@@ -1,0 +1,96 @@
+diff --git a/engines/parallaction/parallaction.h b/engines/parallaction/parallaction.h
+--- a/engines/parallaction/parallaction.h
++++ b/engines/parallaction/parallaction.h
+@@ -350,6 +350,7 @@
+ 
+ 	bool hasFeature(EngineFeature f) const override;
+ #ifdef __EMSCRIPTEN__
++	bool _scummwebStartupLoad = false;
+ 	bool canLoadGameStateCurrently(Common::U32String *msg = nullptr) override;
+ 	bool canSaveGameStateCurrently(Common::U32String *msg = nullptr) override;
+ 	bool canSaveAutosaveCurrently() override { return false; }
+diff --git a/engines/parallaction/parallaction.cpp b/engines/parallaction/parallaction.cpp
+--- a/engines/parallaction/parallaction.cpp
++++ b/engines/parallaction/parallaction.cpp
+@@ -281,13 +281,13 @@
+ 
+ #ifdef __EMSCRIPTEN__
+ bool Parallaction::canLoadGameStateCurrently(Common::U32String *) {
+-	return getGameType() == GType_Nippon && _saveLoad && _char._ani &&
+-		_input->_inputMode == Input::kInputModeGame &&
++	return getGameType() == GType_Nippon && _saveLoad &&
++		(_scummwebStartupLoad || (_char._ani && _input->_inputMode == Input::kInputModeGame)) &&
+ 		!(g_engineFlags & (kEngineChangeLocation | kEngineWalking));
+ }
+ 
+ bool Parallaction::canSaveGameStateCurrently(Common::U32String *msg) {
+-	return canLoadGameStateCurrently(msg) && scumm_stricmp(_location._name, "caveau");
++	return !_scummwebStartupLoad && canLoadGameStateCurrently(msg) && scumm_stricmp(_location._name, "caveau");
+ }
+ 
+ Common::Error Parallaction::saveGameState(int slot, const Common::String &desc, bool isAutosave) {
+diff --git a/engines/parallaction/gui_ns.cpp b/engines/parallaction/gui_ns.cpp
+--- a/engines/parallaction/gui_ns.cpp
++++ b/engines/parallaction/gui_ns.cpp
+@@ -341,38 +341,61 @@
+ };
+ 
+ const char *SelectGameInputState_NS::loadGameMsg[4] = {
+ 	"GIOCO SALVATO",
+ 	"JEU SAUVE'",
+ 	"SAVED GAME",
+ 	"SPIEL GESPEICHERT"
+ };
+ 
+ 
+ 
+ class LoadGameInputState_NS : public MenuInputState {
++#ifdef __EMSCRIPTEN__
++	bool _hosted = false;
++#endif
+ 	bool _result;
+ 	Parallaction *_vm;
+ 
+ public:
+ 	LoadGameInputState_NS(Parallaction *vm, MenuInputHelper *helper) : MenuInputState("loadgame", helper), _vm(vm), _result(false) { }
+ 
+ 	MenuInputState* run() override {
++#ifdef __EMSCRIPTEN__
++		if (_hosted) {
++			if (g_engineFlags & kEngineChangeLocation) {
++				_vm->_scummwebStartupLoad = false;
++				return nullptr;
++			}
++			if (EM_ASM_INT({ return Boolean(globalThis.__scummwebPlayerMenuOpen?.()); }))
++				return this;
++			// Cancelling the browser picker returns to the original New/Saved Game choice.
++			_vm->_scummwebStartupLoad = false;
++			return _helper->getState("selectgame");
++		}
++#endif
+ 		if (!_result) {
+ 			_vm->scheduleLocationSwitch("fogne.dough");
+ 		}
+ 		return nullptr;
+ 	}
+ 
+ 	void enter() override {
++#ifdef __EMSCRIPTEN__
++		_hosted = EM_ASM_INT({ return Boolean(globalThis.__scummwebRequestPlayerMenu?.("load")); });
++		if (_hosted) {
++			_vm->_scummwebStartupLoad = true;
++			return;
++		}
++#endif
+ 		_result = _vm->_saveLoad->loadGame();
+ 	}
+ };
+ 
+ #ifdef USE_TTS
+ 
+ // This text is translated for TTS. Only English is translated in-game
+ static const char *ttsIntroMsg[] = {
+ 	// Italian
+ 	"Premi il tasto sinistro del mouse per vedere l'introduzione\n"
+ 	"Premere il tasto destro del mouse per iniziare",
+ 	// French

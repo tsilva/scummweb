@@ -299,6 +299,11 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
         data: { type: "scummvm-intro-availability", source: "scummweb", href, available } });
       render();
     },
+    requestMenu(page, { origin = window.location.origin, source = frame.contentWindow } = {}) {
+      for (const handler of [...messages]) handler({ origin, source,
+        data: { type: "scummvm-open-game-menu", page } });
+      render();
+    },
     compatibilityWarning(message, { origin = window.location.origin, source = frame.contentWindow, href = frame.contentDocument.URL } = {}) {
       for (const handler of [...messages]) handler({ origin, source,
         data: { type: "scummweb:compatibility-warning", href, message } });
@@ -509,6 +514,28 @@ test("Nippon Safes keeps L/R available for its native intro choice", async () =>
   player.setBootCompleted();
   assert.equal(player.controls.showSkipIntroAction, false);
   assert.equal(player.controls.showTouchClickButtons, true, "both intro choices are usable before gameplay starts");
+  player.unmount();
+});
+
+test("native Load Game opens the load drawer only from the ready active frame", async () => {
+  const player = pendingArchivePlayer();
+  player.render();
+  player.requestMenu("load");
+  assert.equal(player.controls.gameMenuOpen, false);
+  player.archive.resolve([{ path: "sky.dnr", data: Uint8Array.of(1) }]);
+  await new Promise(setImmediate);
+  player.render();
+  player.gameReady(player.frame.contentDocument.URL);
+  player.setBootCompleted();
+  player.requestMenu("load", { source: {} });
+  player.requestMenu("load", { origin: "https://untrusted.test" });
+  assert.equal(player.controls.gameMenuOpen, false);
+  player.requestMenu("load");
+  assert.equal(player.controls.gameMenuOpen, true);
+  assert.equal(player.controls.gameMenuPage, "load");
+  player.controls.onOpenMenu();
+  player.render();
+  assert.equal(player.controls.gameMenuPage, "menu", "the toolbar still opens the normal menu");
   player.unmount();
 });
 
