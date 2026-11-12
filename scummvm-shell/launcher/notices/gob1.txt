@@ -1,0 +1,14 @@
+SIERRA FAMILY DEMONSTRATION CD-ROM VERSION 2.0 8/1/93
+
+Although this demo was designed to be run from the menu system
+provided on the CD, it is also a standalone runnable product.
+Simply type DEMO from within this subdirectory.
+
+This demo cannot be run directly from the CD-ROM, you will be
+prompted to copy the files to your C: drive.  It requires
+approximately 1.1 mbytes of space.
+
+From within the game, click on the skull to display the exit
+menu.
+
+Enjoy.

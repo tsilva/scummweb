@@ -1395,6 +1395,11 @@
       "file": "discworld-demo-425ae255ed3b5fb8f924e4a8f48e8bd21a413396db3b124c1f5c563905df6047.jpg",
       "inputHash": "425ae255ed3b5fb8f924e4a8f48e8bd21a413396db3b124c1f5c563905df6047",
       "imageHash": "1e3fc19fdae7940a9fc756b7784ccb4fdb74fabf9b3aa9cb26bbbfec682bd94e"
+    },
+    "gobliiins-demo": {
+      "file": "gobliiins-demo-f5802c0facb30361938b9d0ab43d89d7573ef713dd2751c30ecf1907aa6d5ee9.jpg",
+      "inputHash": "f5802c0facb30361938b9d0ab43d89d7573ef713dd2751c30ecf1907aa6d5ee9",
+      "imageHash": "10a335939e8bfb11b1480bff76ee64d6c7d2ebdba76fccf142f16be00d3c9087"
     }
   }
 }

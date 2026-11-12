@@ -8997,6 +8997,62 @@
           10115062
         ]
       ]
+    },
+    "gob1-demo": {
+      "url": "https://scummvm-games.tsilva.eu/gob1.zip",
+      "fingerprint": "6c3a19a4d44232fd9115fdb45ba90c2adc1f6ce75abaaabe25ffc487bf4ed7c5",
+      "files": [
+        [
+          "ALL.ASK",
+          5831,
+          365349996
+        ],
+        [
+          "DISK1.STK",
+          662036,
+          670765929
+        ],
+        [
+          "gdemo.BAT",
+          971,
+          603263090
+        ],
+        [
+          "GETKEY.COM",
+          14672,
+          3030529452
+        ],
+        [
+          "INTRO.STK",
+          280044,
+          1661689621
+        ],
+        [
+          "LEGA.GDR",
+          14299,
+          4185840511
+        ],
+        [
+          "LOADER.EXE",
+          80202,
+          314704742
+        ],
+        [
+          "LVGA.GDR",
+          4844,
+          921827475
+        ],
+        [
+          "README",
+          483,
+          3665368610
+        ],
+        [
+          "WHAT.EXE",
+          3170,
+          1802572668
+        ]
+      ]
     }
   }
 }

@@ -116,6 +116,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "gob1-demo": {
+    ...retroGameArtwork["gob:gob1"],
+    title: "Gobliiins (Demo)",
+    year: "1991",
+    language: "en",
+    summary: "Guide three goblins with different abilities through the original English DOS interactive demo.",
+  },
   "dw-demo": {
     ...retroGameArtwork["tinsel:dw"],
     heroImageMobilePosition: "100% top",

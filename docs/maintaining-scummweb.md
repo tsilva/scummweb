@@ -210,7 +210,9 @@ an opening segment that can be skipped. Full Throttle's demo uses this path
 because saving is unavailable before its first decision. Imported games offer **Skip intro**
 while their engine exposes a supported opening segment. The action advances
 through the game's original transition and preserves its menus and choices.
-Continue omits the action.
+Continue omits the action. Gobliiins’ bundled interactive DOS demo uses the native
+intro action and retains its original character controls; saving through the
+ScummWEB game menu is unavailable for this edition.
 
 Humongous games can load legacy DXA conversions when the requested DAT or SMK
 movie is absent. Existing original movies take precedence; a converted movie

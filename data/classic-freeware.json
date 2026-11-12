@@ -398,6 +398,28 @@
         "basis": "Official ScummVM-hosted English playable CD promotional demo. Included files and binary copyright/distribution strings inspected; no express redistribution ban or rehosting grant found. The archive contains original driver/runtime copyright notices and no standalone EULA. Official hosting supports this assessment but is not an express rights-holder license.",
         "preservation": "Serve the complete unchanged upstream ZIP, including the DISCWLD directory, root setup files and all original copyright notices."
       }
+    },
+    {
+      "target": "gob1-demo",
+      "title": "Gobliiins (Demo)",
+      "engineId": "gob",
+      "gameId": "gob1",
+      "platform": "pc",
+      "extra": "Interactive Demo (v2.0)",
+      "archive": "gob1-dos-demo1-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/gob/gob1-dos-demo1-en.zip",
+      "sha256": "c0827e8f6edf5ed06d0f74387cf8de8bc7d7ed91b41db230a152d2e008b7216e",
+      "preserveArchive": true,
+      "noticeFile": "README",
+      "config": {
+        "guioptions": "sndNoSpeech sndNoSubs"
+      },
+      "redistributionReview": {
+        "reviewedOn": "2026-11-12",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "Official ScummVM-hosted interactive promotional demo. The Sierra Family Demonstration CD-ROM README describes this demo as a standalone runnable product. Included files and copyright/distribution strings inspected; no express redistribution ban or rehosting grant found. Official hosting supports this assessment but is not an express rights-holder license.",
+        "preservation": "Serve the complete unchanged upstream ZIP, retaining README, original executables and every other file."
+      }
     }
   ]
 }
