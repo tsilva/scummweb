@@ -1,0 +1,68 @@
+diff --git a/engines/parallaction/gui_ns.cpp b/engines/parallaction/gui_ns.cpp
+--- a/engines/parallaction/gui_ns.cpp
++++ b/engines/parallaction/gui_ns.cpp
+@@ -21,6 +21,11 @@
+ 
+ #include "engines/scummweb-intro.h"
+ 
++#ifdef __EMSCRIPTEN__
++#include "common/translation.h"
++#include "gui/message.h"
++#endif
++
+ #include "common/config-manager.h"
+ #include "common/system.h"
+ #include "common/hashmap.h"
+@@ -485,6 +490,44 @@
+ 	}
+ };
+ 
++#ifdef __EMSCRIPTEN__
++// The original manual codes only select which character's story to start.
++// Keep that choice and the original transitions without requiring the manual.
++class SelectCharacterInputState_NS : public MenuInputState {
++	Parallaction_ns *_vm;
++
++public:
++	SelectCharacterInputState_NS(Parallaction_ns *vm, MenuInputHelper *helper) : MenuInputState("selectcharacter", helper), _vm(vm) { }
++
++	MenuInputState *run() override {
++		Common::U32StringArray alternatives;
++		alternatives.push_back(Common::U32String("D~o~nna"));
++		alternatives.push_back(Common::U32String("Do~u~gh"));
++		GUI::MessageDialog picker(_("Choose a character"), Common::U32String("Dino"), alternatives);
++		const int character = picker.runModal();
++		if (_vm->shouldQuit())
++			return nullptr;
++		// Escape dismisses the dialog without choosing a story.
++		if (character < 0 || character >= 3)
++			return this;
++
++		static const char *const startLocations[] = { "test.dino", "test.donna", "test.dough" };
++		_vm->_gfx->setBlackPalette();
++		_vm->cleanupGame();
++		_vm->scheduleLocationSwitch(startLocations[character]);
++		return nullptr;
++	}
++
++	void enter() override {
++		_vm->_soundManI->stopMusic();
++		_vm->_gfx->setBlackPalette();
++		_vm->_gfx->updateScreen();
++		_vm->_input->setArrowCursor();
++		_vm->_input->setMouseState(MOUSE_ENABLED_SHOW);
++		ScummWebIntro::gameplayStarted();
++	}
++};
++#else
+ class SelectCharacterInputState_NS : public MenuInputState {
+ 
+ 	#define PASSWORD_LEN	6
+@@ -753,6 +796,7 @@
+ 	"test.donna",
+ 	"test.dough"
+ };
++#endif // __EMSCRIPTEN__
+ 
+ #ifdef USE_TTS
+ 

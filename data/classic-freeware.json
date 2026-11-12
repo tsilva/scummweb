@@ -1,6 +1,21 @@
 {
   "games": [
     {
+      "target": "nippon-amiga",
+      "title": "Nippon Safes, Inc. (Multi-lingual/Amiga)",
+      "engineId": "parallaction",
+      "gameId": "nippon",
+      "platform": "amiga",
+      "extra": "Multi-lingual",
+      "archive": "nippon-amiga-1.0.zip",
+      "url": "https://downloads.scummvm.org/frs/extras/Nippon%20Safes/nippon-amiga-1.0.zip",
+      "sha256": "cac4d764ce56fb051031d85736f84786170e48a1091afff6212fa0fe96b3f535",
+      "preserveArchive": true,
+      "config": {
+        "guioptions": "sndNoSpeech launchNoLoad"
+      }
+    },
+    {
       "target": "soltys",
       "title": "Sołtys (Freeware v1.0/DOS/English)",
       "engineId": "cge",

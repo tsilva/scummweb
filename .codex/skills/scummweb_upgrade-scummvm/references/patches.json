@@ -1428,6 +1428,22 @@
         "Run test/runtime-speech.test.mjs; boot actual generated runtime in Brave with Web Speech absent, then verify ordinary game startup and supported controls."
       ],
       "retire_when": "Upstream Emscripten speech integration feature-detects absent browser synthesis and keeps all cleanup and status methods safe."
+    },
+    {
+      "path": "patches/scummvm/95-select-nippon-character-without-manual.patch",
+      "status": "active",
+      "sha256": "c6b32256221ec7d7160b16c17ec9b55285df05b114559384057b060fccc22425",
+      "purpose": "Replace Nippon Safes manual-code character selection with named native buttons in the web runtime.",
+      "invariants": [
+        "Keep Dino, Donna and Dough as explicit player choices and route each through its original test.dino, test.donna or test.dough transition. Apply to both supported Amiga and DOS editions, including selection after the intro or a completed story.",
+        "Preserve language selection, ordinary intros, intro skipping, game-part progress, save names and original game data. Keep non-web character selection unchanged. Escape and quitting must not start an unintended character.",
+        "Mark the character picker as an interactive intro boundary and reuse the native GUI for pointer, touch and keyboard activation."
+      ],
+      "verification": [
+        "Build the complete maintained native patch series and run the offline checker, application tests and production build.",
+        "In Brave verify all three choices reach their own original opening scenes, Escape does not choose a story, Skip intro retains the picker, and the shared save/load menu still works. Exercise the official Amiga package and an official DOS import, then repeat a visible launch on Production."
+      ],
+      "retire_when": "Upstream provides an equivalent manual-free character selector for both Nippon Safes editions while preserving original story transitions and non-web behavior."
     }
   ]
 }

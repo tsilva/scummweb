@@ -118,6 +118,14 @@ tests when porting; do not treat an old implementation shape as the requirement.
 
 ## Intro checkpoints
 
+- Nippon Safes' manual codes are implemented in ScummVM's character-selection
+  state, so replacing the game archive with the official freeware data does
+  not remove the screen. Patch 95 offers named character buttons in that same
+  state on the web, keeping the original test-scene transitions and part
+  progression. Preserve all three choices after normal intros, skipped intros
+  and completed parts. Cancellation must not select a character, and the
+  picker must close intro availability at this interactive boundary.
+
 - Some engines save normally but do not honor startup `save_slot`. Patch 17
   uses Nippon Safes boot parameter 1 to retain language/character selection
   without the story intro, and routes Sword25 through its queued Lua persistence API after resource and

@@ -716,14 +716,14 @@
       "status": "startup-verified",
       "gameId": "parallaction:nippon",
       "edition": "Nippon Safes Inc (Amiga, Multilanguage).zip",
-      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
+      "observation": "Official freeware package reaches a named character picker without manual codes. Dino, Donna and Dough each start their original story; intro skipping and in-game save/restore work."
     },
     {
       "title": "Nippon Safes, Inc.",
       "status": "startup-verified",
       "gameId": "parallaction:nippon",
       "edition": "Nippon Safes Inc (Floppy DOS, Multilanguage).zip",
-      "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
+      "observation": "Official freeware package preserves language and new-game choices, then offers Dino, Donna and Dough buttons instead of manual codes."
     },
     {
       "title": "Once Upon A Time: Little Red Riding Hood",
