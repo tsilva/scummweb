@@ -239,7 +239,8 @@ export default function GameRouteFrame({
     (canSkipNativeIntro || (Boolean(skipIntro) && bootState.showSkipIntroButton)) &&
     !gameplayStarted && !showBootOverlay && !waitingForLandscape;
   const mobileControlsReady =
-    immersiveMode.isMobileViewport && !waitingForLandscape && bootState.hasBootCompleted && !hasBootFailed;
+    immersiveMode.isMobileViewport && !waitingForLandscape && bootState.hasBootCompleted && !hasBootFailed &&
+    !showSkipIntroBottomAction;
   const mobileControlMode = getMobileControlMode(currentReadySignal?.detectedGame ?? game ?? undefined);
   const usesCommandInput = mobileControlMode === "command" || mobileControlMode === "hugo";
   const showCommandInput = mobileControlsReady && usesCommandInput;

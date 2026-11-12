@@ -84,7 +84,9 @@ directory pins the source binding, source files, runtime, installed relay and
 policy. Changed pins require trusted review. Ordinary launches never fetch source
 keys; trusted administrative sync is required after rotation. The macOS sandbox
 allows only the native proxy, the isolated Python runtime and the selected artwork
-files, and denies writes and credential-file access. Other full-access same-user
+files, and denies writes and credential-file access. The launcher uses reviewed
+CLI 0.45.6 and explicitly pins its Agent Vault project; source, runtime and
+protected-path changes require trusted review. Other full-access same-user
 processes remain outside this boundary. Follow the batch-publishing section in
 `docs/maintaining-scummweb.md`; keep the existing commands, application defaults
 and production delivery unchanged. Missing bindings and failed requests stop

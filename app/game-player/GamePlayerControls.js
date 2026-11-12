@@ -113,10 +113,12 @@ export default function GamePlayerControls({
 
   return (
     <>
-      {toolbarFocused || gameMenuOpen ? <DirectionalNavigation initialFocus="toolbar" onResumeGame={onResumeGame} />
-        : showSkipIntroAction && <DirectionalNavigation initialFocus="skip-intro" />}
+      {gameMenuOpen ? <DirectionalNavigation initialFocus="toolbar" onResumeGame={onResumeGame} />
+        : showSkipIntroAction ? <DirectionalNavigation initialFocus="skip-intro" />
+          : toolbarFocused && <DirectionalNavigation initialFocus="toolbar" onResumeGame={onResumeGame} />}
       <div
         className={`game-route-controls${autoHide && !visible ? " is-idle" : ""}`}
+        hidden={showSkipIntroAction}
         onBlur={keepToolbarFocus}
         ref={controlsRef}
       >
