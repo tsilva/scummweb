@@ -1,10 +1,11 @@
 import {
   ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Backpack, Eye, Footprints, Gauge,
-  HandGrab, Info, MessageCircle, MoveDown, Target, Zap,
+  Check, HandGrab, Info, MessageCircle, MoveDown, Target, Zap,
 } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 import { dispatchSyntheticKeypress, holdGameKey } from "./keyboard";
 import { clickGameMouse } from "./game-mouse.mjs";
+import { watchDialogueChoices } from "./mobile-controls.mjs";
 
 const up = { name: "Up", Icon: ArrowUp, key: { key: "ArrowUp", keyCode: 38 } };
 const left = { name: "Left", Icon: ArrowLeft, key: { key: "ArrowLeft", keyCode: 37 } };
@@ -255,8 +256,17 @@ const castleActions = [
 export function GameTouchGamepad({ frameRef, mode = "grim" }) {
   const castle = mode === "castle";
   const [actionsOpen, setActionsOpen] = useState(false);
+  const [dialogueActive, setDialogueActive] = useState(false);
   const actionsId = useId();
   const actionsButton = useRef(null);
+
+  useEffect(() => {
+    if (mode !== "grim" && mode !== "monkey4") return;
+    return watchDialogueChoices(frameRef.current, (active) => {
+      setDialogueActive(active);
+      setActionsOpen(false);
+    });
+  }, [frameRef, mode]);
 
   return (
     <div className={`game-route-touch-gamepad game-route-grim-gamepad${castle ? " game-route-castle-gamepad" : ""}`}>
@@ -271,7 +281,16 @@ export function GameTouchGamepad({ frameRef, mode = "grim" }) {
           actionsButton.current?.focus();
         }}
       >
-        <button
+        {dialogueActive ? <button
+          aria-label="Confirm dialogue choice"
+          className="game-route-control-button is-gamepad"
+          onClick={() => dispatchSyntheticKeypress(frameRef.current, { key: "Enter", keyCode: 13 })}
+          onMouseDown={(event) => event.preventDefault()}
+          title="Confirm dialogue choice"
+          type="button"
+        >
+          <Check aria-hidden="true" size={20} />
+        </button> : <button
           aria-controls={actionsId}
           aria-expanded={actionsOpen}
           aria-label="Actions"
@@ -283,8 +302,8 @@ export function GameTouchGamepad({ frameRef, mode = "grim" }) {
           type="button"
         >
           <Zap aria-hidden="true" size={20} />
-        </button>
-        <div aria-label="Game actions" className="game-route-grim-action-choices" hidden={!actionsOpen} id={actionsId} role="group">
+        </button>}
+        {!dialogueActive && <div aria-label="Game actions" className="game-route-grim-action-choices" hidden={!actionsOpen} id={actionsId} role="group">
           {(castle ? castleActions : mode === "monkey4" ? monkey4Actions : grimActions).map(({ key, button, label, Icon }) => (
             <button
               aria-label={label}
@@ -302,7 +321,7 @@ export function GameTouchGamepad({ frameRef, mode = "grim" }) {
               <Icon aria-hidden="true" size={20} />
             </button>
           ))}
-        </div>
+        </div>}
       </div>
     </div>
   );

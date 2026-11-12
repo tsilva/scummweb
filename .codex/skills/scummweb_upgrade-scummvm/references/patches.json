@@ -1474,6 +1474,21 @@
         "In Brave launch the bundled demo with normal Play and Skip intro; reach the first 3D level without character input, verify movement, then save and resume."
       ],
       "retire_when": "The web demo has an equivalent reliable prince startup that removes the need for this selection-screen bypass."
+    },
+    {
+      "path": "patches/scummvm/98-expose-grim-dialogue-choices.patch",
+      "status": "active",
+      "sha256": "0f100bbc7d96a8a68286fdcbead8b4fbda9d5334d275603726f0d1cde40d1d23",
+      "purpose": "Expose when GrimE dialogue choices accept input so touch controls offer a single Confirm action.",
+      "invariants": [
+        "Recognize the live system.buttonHandler as either Dialog.buttonHandler or a Dialog instance through a bounded raw parent chain, matching LuaBase::callback object dispatch; do not invoke Lua tag methods or change scripts.",
+        "Publish only to hosted player controls at the Lua frame boundary, independently of opt-in evaluation telemetry; preserve Lua stack blocks and non-web behavior."
+      ],
+      "verification": [
+        "In Brave Escape from Monkey Island and Grim Fandango, enter choices, move the highlight with the stick, confirm with Enter, and verify exploration actions return during responses and after leaving dialogue.",
+        "Verify missing Dialog/system handlers are inactive and existing save, intro, agent and telemetry boundaries remain intact."
+      ],
+      "retire_when": "Upstream exposes an equivalent reliable dialogue-choice state to the hosted web player."
     }
   ]
 }

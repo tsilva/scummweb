@@ -408,6 +408,16 @@
       "platform": "pc",
       "extra": "Demo",
       "readmeHref": "/launcher/notices/ft.txt"
+    },
+    {
+      "target": "samnmax-demo",
+      "title": "Sam & Max Hit the Road (Demo)",
+      "path": "/games/samnmax",
+      "engineId": "scumm",
+      "gameId": "samnmax",
+      "platform": "pc",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/samnmax.txt"
     }
   ]
 }

@@ -923,6 +923,13 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Sam & Max Hit the Road (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:samnmax",
+      "edition": "samnmax-dos-cd-demo-en.zip",
+      "observation": "The voiced English CD demo renders its opening credits and office. Native Skip intro reaches the office, and mouse input moves Sam and Max. Its original readme says this demo is not designed to save games."
+    },
+    {
       "title": "Shivers",
       "status": "startup-verified",
       "gameId": "sci:shivers",

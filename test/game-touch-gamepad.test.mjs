@@ -22,16 +22,17 @@ const pointer = (pointerId, clientX, clientY) => ({
   },
 });
 
-function loadGamepad(keyboard, mouse = {}) {
+function loadGamepad(keyboard, mouse = {}, dialogueWatcher) {
   let cursor = 0;
   let hooks = [];
+  const effects = [];
   const module = { exports: {} };
   runInNewContext(code, {
     module, exports: module.exports,
     window: { location: { origin: "https://example.test" } },
     require(name) {
       if (name === "react") return {
-        useEffect() {},
+        useEffect(effect) { effects.push(effect); },
         useId: () => "actions",
         useRef: (current) => hooks[cursor++] ??= { current },
         useState(initial) {
@@ -42,12 +43,14 @@ function loadGamepad(keyboard, mouse = {}) {
       };
       if (name === "./keyboard") return keyboard;
       if (name === "./game-mouse.mjs") return mouse;
+      if (name === "./mobile-controls.mjs" && dialogueWatcher) return { watchDialogueChoices: dialogueWatcher };
       return requireNative(name);
     },
   });
 
   return {
     ...module.exports,
+    flushEffects() { return effects.splice(0).map((effect) => effect()); },
     rerender(render) {
       cursor = 0;
       return render();
@@ -110,6 +113,47 @@ test("Grim's stick ignores thumb drift and holds both keys on a deliberate diago
     "press ArrowDown", "press ArrowRight", "release ArrowDown", "release ArrowRight",
   ]);
 });
+
+for (const mode of ["grim", "monkey4"]) {
+  test(`${mode} replaces an open action menu with one dialogue confirmation and restores closed actions`, () => {
+    const frame = {};
+    const events = [];
+    let publish;
+    const gamepad = loadGamepad({
+      dispatchSyntheticKeypress(target, key) {
+        assert.equal(target, frame);
+        events.push(key);
+      },
+    }, {}, (target, notify) => {
+      assert.equal(target, frame);
+      publish = notify;
+      notify(false);
+      return () => {};
+    });
+    const frameRef = { current: frame };
+    const render = () => gamepad.rerender(() => gamepad.GameTouchGamepad({ frameRef, mode }).props.children[1].props.children);
+    let [toggle] = render();
+    gamepad.flushEffects();
+    toggle.props.onClick();
+    let choices;
+    [toggle, choices] = render();
+    assert.equal(choices.props.hidden, false);
+    publish(true);
+    const [confirm, hiddenChoices] = render();
+    assert.equal(confirm.props["aria-label"], "Confirm dialogue choice");
+    assert.equal(confirm.props.children.type.displayName, "Check");
+    assert.equal(hiddenChoices, false);
+    confirm.props.onClick();
+    assert.equal(events.length, 1);
+    assert.equal(events[0].key, "Enter");
+    assert.equal(events[0].keyCode, 13);
+    publish(false);
+    [toggle, choices] = render();
+    assert.equal(toggle.props["aria-label"], "Actions");
+    assert.equal(toggle.props["aria-expanded"], false);
+    assert.equal(choices.props.hidden, true);
+  });
+}
 
 test("Escape from Monkey Island shares Grim's stick and sends its native action keys", () => {
   const frame = {};

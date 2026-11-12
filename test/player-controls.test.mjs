@@ -19,6 +19,17 @@ function createPlayer() {
   return { scope, storage, timers, controls: scope.scummwebPlayerControls };
 }
 
+test("dialogue choices are inactive until the native handler reports them and reset for every launch", () => {
+  const { scope, controls } = createPlayer();
+  assert.equal(controls.read().dialogueActive, false);
+  scope.__scummwebSetDialogueActive(true);
+  assert.equal(controls.read().dialogueActive, true);
+  scope.__scummwebSetDialogueActive(false);
+  assert.equal(controls.read().dialogueActive, false);
+  scope.__scummwebSetDialogueActive(true);
+  assert.equal(createPlayer().controls.read().dialogueActive, false);
+});
+
 test("hosted save operations honor occupied slots, autosaves, and native confirmation", async () => {
   const { scope, controls } = createPlayer();
   const boundary = () => scope.__scummwebAgentFrameBoundary(true, 8, 2, true, true);
