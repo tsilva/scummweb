@@ -432,6 +432,9 @@ Nippon Safes uses the official ScummVM freeware game data. In the browser,
 its opening choice keeps the L/R mouse controls available: left click watches
 the intro and right click starts the game. It does not offer a separate
 **Skip intro** action.
+The original **Saved Game** choice opens ScummWEB's **Load Game** drawer.
+Closing it returns to the New Game/Saved Game choice; choosing a save restores
+the saved story directly.
 Its original manual-code screen is replaced with an interactive version of the
 game's own portrait screen. Click Donna, Dough or Dino to start that character's
 original reveal and story, including after completing a part. Hovering highlights

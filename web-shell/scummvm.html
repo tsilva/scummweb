@@ -86,8 +86,8 @@ const agentSaveScope = scummwebLaunchUrl.searchParams.get("agentSaveScope");
 if (agentSaveScope && /^[a-f0-9]{64}$/.test(agentSaveScope)) installAgentControls(window, agentSaveScope);
 else if (window.parent !== window && scummwebLaunchUrl.searchParams.get("hostPlayer") === "1" &&
     agentSaveScope === null && !scummwebLaunchUrl.searchParams.has("saveQuery")) {
-  installPlayerControls(window, () => {
-    window.parent.postMessage({ type: "scummvm-open-game-menu" }, scummwebLaunchUrl.origin);
+  installPlayerControls(window, (page) => {
+    window.parent.postMessage({ type: "scummvm-open-game-menu", page }, scummwebLaunchUrl.origin);
   });
 }
 if (scummwebLaunchUrl.searchParams.get("telemetry") === "1") {

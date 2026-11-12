@@ -192,6 +192,7 @@ export default function GameRouteFrame({
   const [commandOpen, setCommandOpen] = useState(false);
   const [commandSending, setCommandSending] = useState(false);
   const [gameMenuOpen, setGameMenuOpen] = useState(false);
+  const [gameMenuPage, setGameMenuPage] = useState("menu");
   const [isExiting, setIsExiting] = useState(false);
   const restoreFullscreenOnResume = useRef(false);
   const fullscreenExitExpected = useRef(false);
@@ -461,7 +462,7 @@ export default function GameRouteFrame({
         return;
       }
       if (event.data?.type === "scummvm-open-game-menu") {
-        if (frameBoot.ready && event.source === frameRef.current?.contentWindow) handleGameMenuClick();
+        if (frameBoot.ready && event.source === frameRef.current?.contentWindow) handleGameMenuClick(event.data.page);
         return;
       }
       if (event.data?.type === "scummvm-boot-error") {
@@ -799,9 +800,10 @@ export default function GameRouteFrame({
 
   const gameMenuShortcut = getGameMenuShortcut(game);
 
-  function handleGameMenuClick() {
+  function handleGameMenuClick(page) {
     const gameDocument = frameRef.current?.contentDocument;
     if (gameDocument?.pointerLockElement) gameDocument.exitPointerLock?.();
+    setGameMenuPage(page === "load" ? "load" : "menu");
     setGameMenuOpen(true);
   }
 
@@ -984,6 +986,7 @@ export default function GameRouteFrame({
         compatibilityWarnings={waitingForLandscape ? [] : compatibilityWarnings}
         frameRef={frameRef}
         gameMenuOpen={gameMenuOpen}
+        gameMenuPage={gameMenuPage}
         menuShortcut={gameMenuShortcut}
         handleControlMouseDown={handleControlMouseDown}
         isFullscreen={immersiveMode.isFullscreen}

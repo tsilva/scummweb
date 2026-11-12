@@ -59,6 +59,7 @@ export default function GamePlayerControls({
   compatibilityWarnings,
   frameRef,
   gameMenuOpen,
+  gameMenuPage,
   menuShortcut,
   handleControlMouseDown,
   isFullscreen,
@@ -183,6 +184,7 @@ export default function GamePlayerControls({
       {gameMenuOpen && (
         <GameMenuDrawer
           frameRef={frameRef}
+          initialPage={gameMenuPage}
           onClose={onCloseMenu}
           onExit={onExit}
           onNativeMenu={onNativeMenu}
