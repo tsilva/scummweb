@@ -32,6 +32,7 @@ test("official classic archives are recognized by contents without relying on fi
     ["comi-demo", [["COMI.LA0", 18041, 0x2f43bb49], ["COMI.LA1", 10579949, 0x1ea49b19]]],
     ["ft-demo", [["wrapper/FT.000", 7885, 0x5a4b7e9a], ["wrapper/FT.001", 50371781, 0xb93903c9]]],
     ["samnmax-demo", [["wrapper/SAMDEMO.000", 7505, 0x112b0cbd], ["wrapper/SAMDEMO.001", 1190282, 0xa0b3f988]]],
+    ["gob1-demo", [["INTRO.STK", 280044, 1661689621], ["DISK1.STK", 662036, 670765929]]],
     ["dw-demo", [["DISCWLD/DW.GRA", 781676, 2418090083], ["DISCWLD/ENGLISH.SMP", 51889165, 1007388091]]],
     ["sword2-demo", [["wrapper/General.clu", 8030769, 1224036629], ["wrapper/Docks.clu", 20262263, 238789565]]],
     ["sword1-demo", [["wrapper/CLUSTERS/scripts.CLm", 1088468, 3493304599], ["wrapper/CLUSTERS/SWORDRES.RIF", 59788, 2626330415]]],

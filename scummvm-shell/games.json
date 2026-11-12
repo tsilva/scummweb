@@ -461,6 +461,16 @@
       "platform": "pc",
       "extra": "CD Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "gob1-demo",
+      "title": "Gobliiins (Demo)",
+      "path": "/games/gob1",
+      "engineId": "gob",
+      "gameId": "gob1",
+      "platform": "pc",
+      "extra": "Interactive Demo (v2.0)",
+      "readmeHref": "/launcher/notices/gob1.txt"
     }
   ]
 }

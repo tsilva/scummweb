@@ -4418,6 +4418,13 @@
       "gameId": "tinsel:dw",
       "edition": "Official English DOS CD demo (dw-dos-cd-demo-en.zip)",
       "observation": "The original logos, title and Rincewind room render. Native Skip intro advances through the opening while preserving the title screen; click the title to begin. Walking works. This demo does not offer saving through the game menu."
+    },
+    {
+      "title": "Gobliiins (Demo)",
+      "status": "startup-verified",
+      "gameId": "gob:gob1",
+      "edition": "Official English DOS interactive demo v2.0 (gob1-dos-demo1-en.zip)",
+      "observation": "The original opening and village scenes render. Native Skip intro advances into the demo; goblin selection and walking work. This demo does not offer saving through the game menu."
     }
   ]
 }

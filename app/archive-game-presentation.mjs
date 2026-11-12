@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Gobliiins (Demo)", target: "gob1-demo", engineId: "gob", gameId: "gob1",
+    files: [["intro.stk", 280044, 1661689621], ["disk1.stk", 662036, 670765929]],
+  },
+  {
     title: "Discworld (Demo)", target: "dw-demo", engineId: "tinsel", gameId: "dw",
     files: [["dw.gra", 781676, 2418090083], ["english.smp", 51889165, 1007388091]],
   },
