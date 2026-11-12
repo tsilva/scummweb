@@ -1,4 +1,4 @@
-import { ArchiveError, maxArchiveSize, openPreparedGameArchive, readGameArchiveBytes, readLocalGameArchive } from "./local-game-archive.mjs";
+import { ArchiveError, maxArchiveSize, maxExpandedSize, openPreparedGameArchive, readGameArchiveBytes, readLocalGameArchive } from "./local-game-archive.mjs";
 import { cachePreparedGame, deleteCachedGameZip, readCachedGameData } from "./game-zip-cache.mjs";
 
 import { normalizeGameZipUrl } from "./game-bucket-sources.mjs";
@@ -98,9 +98,9 @@ async function downloadGameArchive(zipUrl, { signal, onEntries, onProgress, arch
     },
   }));
   const download = new Response(limitedBody);
-  // A streamed Blob can require temporary disk space in Chromium. Use memory
-  // for ordinary ZIPs and retain Blob backing for the larger catalog titles.
-  const useBlob = (hasTotal ? total : archiveLimit) > maxArchiveSize;
+  // Blob backing can fail when the browser cannot reserve temporary disk
+  // space. Keep moderate ZIPs in memory; large catalog titles retain Blob backing.
+  const useBlob = (hasTotal ? total : archiveLimit) > maxExpandedSize;
   const archive = useBlob ? await download.blob() : new Uint8Array(await download.arrayBuffer());
   onProgress?.(100, { loaded: size, total: size });
   let entries;

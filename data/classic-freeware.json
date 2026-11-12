@@ -339,6 +339,25 @@
         "basis": "Official ScummVM-hosted playable promotional demo. Its readme retains LucasArts copyright and Used Under Authorization notices; no express redistribution prohibition or third-party rehosting grant was found in the archive. Official hosting supports this assessment but is not an express rights-holder license.",
         "preservation": "Serve the complete unchanged upstream ZIP, retaining readme.txt, its copyright notices, original audio/video and every other file."
       }
+    },
+    {
+      "target": "sword1-demo",
+      "title": "Broken Sword: The Shadow of the Templars (Demo)",
+      "engineId": "sword1",
+      "gameId": "sword1",
+      "platform": "macintosh",
+      "extra": "Demo",
+      "archive": "sword1-mac-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/sword1/sword1-mac-demo-en.zip",
+      "sha256": "2af783de8aadcb5dda653933c1a474fd71542a990658ce3b55495ab1e8cc4dc6",
+      "preserveArchive": true,
+      "noticeFile": "ReadMe",
+      "redistributionReview": {
+        "reviewedOn": "2026-11-12",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "Official ScummVM-hosted Macintosh playable promotional demo. Included ReadMe and all archive data inspected; no express redistribution prohibition or rehosting grant found. The Windows edition is excluded because its SWORD.EXE contains a NOT FOR PUBLIC DISTRIBUTION notice. This assessment applies only to the distinct complete Macintosh archive.",
+        "preservation": "Serve the complete unchanged upstream Macintosh ZIP, retaining ReadMe and every original file."
+      }
     }
   ]
 }

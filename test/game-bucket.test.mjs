@@ -146,11 +146,15 @@ test("a cold catalog launch can extract a ZIP when response Blob storage fails",
   const previous = Object.getOwnPropertyDescriptor(globalThis, "window");
   Object.defineProperty(globalThis, "window", { configurable: true, value: { location: { hostname: "scummweb.tsilva.eu" } } });
   t.after(() => previous ? Object.defineProperty(globalThis, "window", previous) : delete globalThis.window);
-  t.mock.method(globalThis, "fetch", async () => new Response(bytes));
   t.mock.method(Response.prototype, "blob", async () => { throw new TypeError("Failed to fetch"); });
-
-  const files = await readCatalogGameArchive(`${customUrl}/sky.zip`);
-  assert.deepEqual(files, [{ path: "sky.dnr", data: Uint8Array.of(1, 2, 3) }]);
+  for (const contentLength of [null, String(186008416)]) {
+    const fetch = t.mock.method(globalThis, "fetch", async () => new Response(bytes, {
+      headers: contentLength === null ? {} : { "content-length": contentLength },
+    }));
+    const files = await readCatalogGameArchive(`${customUrl}/sky.zip`, { archiveLimit: 200 * 1024 * 1024 });
+    assert.deepEqual(files, [{ path: "sky.dnr", data: Uint8Array.of(1, 2, 3) }]);
+    fetch.mock.restore();
+  }
 });
 
 test("repeat launches reuse a persisted ZIP and preserve URL query identity", async (t) => {

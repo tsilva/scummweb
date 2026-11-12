@@ -4396,6 +4396,14 @@
       "gameId": "wintermute:zilm",
       "status": "not-tested",
       "upstreamRating": "Good"
+    },
+    {
+      "title": "Broken Sword: The Shadow of the Templars (Demo)",
+      "status": "startup-warning",
+      "gameId": "sword1:sword1",
+      "edition": "Official English Macintosh demo (sword1-mac-demo-en.zip)",
+      "observation": "The opening movie is black in this edition; Skip intro advances to the rendered Paris street scene. Walking, native saves and Continue work. With existing saves, the original menu appears; select Start and press Enter to begin a fresh game.",
+      "issueScope": "scummweb"
     }
   ]
 }

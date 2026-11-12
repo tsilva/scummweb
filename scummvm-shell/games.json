@@ -424,6 +424,16 @@
       "platform": "pc",
       "extra": "Demo",
       "readmeHref": "/launcher/notices/dig.txt"
+    },
+    {
+      "target": "sword1-demo",
+      "title": "Broken Sword: The Shadow of the Templars (Demo)",
+      "path": "/games/sword1",
+      "engineId": "sword1",
+      "gameId": "sword1",
+      "platform": "macintosh",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/sword1.txt"
     }
   ]
 }
