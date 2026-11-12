@@ -393,6 +393,13 @@ The God of Thunder engine is available for personal imports. The official
 `gotfree.zip` remains excluded because its included license prohibits
 redistribution.
 
+Nippon Safes uses the official ScummVM freeware game data. In the browser,
+its original manual-code screen is replaced with Dino, Donna and Dough
+buttons. Each starts the original character's story, including when choosing
+another character after completing a part. Language selection, introductions
+and saved progress keep their original behavior. The picker applies to Amiga
+and DOS imports; desktop ScummVM retains its own character-selection screen.
+
 Build the Zork I–III packages with [ZILF 1.9](https://github.com/taradinoc/zilf/releases/tag/1.9)
 and `python3 scripts/build_zork_packages.py /path/to/zilf/bin`. The packages
 include the compiled stories and their license and source information.
