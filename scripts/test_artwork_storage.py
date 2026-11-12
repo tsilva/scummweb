@@ -146,14 +146,42 @@ class ArtworkPublishingTests(unittest.TestCase):
         games.upload_game_file(client, filename, "game.zip", {"CacheControl": CACHE_CONTROL})
         client.upload_file.assert_not_called()
 
-    def test_large_game_keeps_multipart_transfer(self):
+    def test_large_game_parts_preserve_bytes_and_complete_conditionally(self):
         filename = self.root / "large.zip"
-        with filename.open("wb") as stream:
-            stream.truncate(games.SINGLE_UPLOAD_LIMIT + 1)
+        payload = b"synthetic multipart game"
+        filename.write_bytes(payload)
         client = Mock()
-        games.upload_game_file(client, filename, "large.zip", {"ContentType": "application/zip"})
+        client.create_multipart_upload.return_value = {"UploadId": "synthetic-session"}
+        client.upload_part.return_value = {"ETag": "synthetic-etag"}
+        with patch.object(games, "SINGLE_UPLOAD_LIMIT", 6), patch.object(games, "MULTIPART_BYTES", 6):
+            games.upload_game_file(client, filename, "large.zip", {"ContentType": "application/zip"})
         client.put_object.assert_not_called()
-        client.upload_file.assert_called_once()
+        calls = client.upload_part.call_args_list
+        self.assertEqual(b"".join(call.kwargs["Body"] for call in calls), payload)
+        self.assertEqual([call.kwargs["PartNumber"] for call in calls], list(range(1, len(calls) + 1)))
+        for call in calls:
+            data = call.kwargs["Body"]
+            self.assertEqual(call.kwargs["ContentLength"], len(data))
+            self.assertEqual(call.kwargs["ContentMD5"], base64.b64encode(hashlib.md5(data, usedforsecurity=False).digest()).decode())
+        request = client.complete_multipart_upload.call_args.kwargs
+        self.assertEqual(request["IfNoneMatch"], "*")
+        self.assertEqual(request["UploadId"], "synthetic-session")
+        self.assertEqual(len(request["MultipartUpload"]["Parts"]), len(calls))
+        client.abort_multipart_upload.assert_not_called()
+
+    def test_failed_part_aborts_only_its_incomplete_session(self):
+        filename = self.root / "game.zip"
+        filename.write_bytes(b"synthetic game")
+        client = Mock()
+        client.create_multipart_upload.return_value = {"UploadId": "own-session"}
+        error = ClientError({"Error": {"Code": "RequestTimeout"}}, "UploadPart")
+        client.upload_part.side_effect = error
+        with patch.object(games, "SINGLE_UPLOAD_LIMIT", 6):
+            with self.assertRaises(ClientError):
+                games.upload_game_file(client, filename, "game.zip", {})
+        client.abort_multipart_upload.assert_called_once_with(Bucket=games.BUCKET, Key="game.zip", UploadId="own-session")
+        client.complete_multipart_upload.assert_not_called()
+        client.delete_object.assert_not_called()
 
 
 if __name__ == "__main__":

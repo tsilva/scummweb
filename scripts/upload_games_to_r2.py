@@ -31,7 +31,8 @@ INDEX_CACHE_CONTROL = os.environ.get(
     "public, max-age=60, stale-while-revalidate=300",
 )
 GAMES_LIBRARY_PATH = ROOT / "dist" / "games.json"
-SINGLE_UPLOAD_LIMIT = 100 * 1024 * 1024
+SINGLE_UPLOAD_LIMIT = 5 * 1024 * 1024
+MULTIPART_BYTES = 5 * 1024 * 1024
 
 
 def r2_client_config():
@@ -50,10 +51,35 @@ def r2_client_config():
 def upload_game_file(client, filename, key, metadata, overwrite=False):
     size = filename.stat().st_size
     if size > SINGLE_UPLOAD_LIMIT:
-        client.upload_file(str(filename), BUCKET, key, ExtraArgs=metadata)
+        print("Creating multipart upload session", flush=True)
+        upload_id = client.create_multipart_upload(Bucket=BUCKET, Key=key, **metadata)["UploadId"]
+        parts = []
+        sent = 0
+        try:
+            with filename.open("rb") as body:
+                for block in iter(lambda: body.read(MULTIPART_BYTES), b""):
+                    number = len(parts) + 1
+                    response = client.upload_part(
+                        Bucket=BUCKET, Key=key, UploadId=upload_id, PartNumber=number,
+                        Body=block, ContentLength=len(block),
+                        ContentMD5=base64.b64encode(hashlib.md5(block, usedforsecurity=False).digest()).decode("ascii"),
+                    )
+                    parts.append({"PartNumber": number, "ETag": response["ETag"]})
+                    sent += len(block)
+                    print(f"Uploaded part {number}: {sent}/{size} bytes", flush=True)
+            client.complete_multipart_upload(
+                Bucket=BUCKET, Key=key, UploadId=upload_id, MultipartUpload={"Parts": parts},
+                **({} if overwrite else {"IfNoneMatch": "*"}),
+            )
+        except BaseException:
+            try:
+                client.abort_multipart_upload(Bucket=BUCKET, Key=key, UploadId=upload_id)
+            except Exception:
+                print("Could not abort this incomplete upload session; provider details withheld.", flush=True)
+            raise
         return
-    # R2 recommends a single PUT for small/medium objects. Besides avoiding a
-    # multipart session, this can atomically preserve a concurrently created key.
+    # Keep individual requests small, including on slower connections. A
+    # conditional PUT atomically preserves a concurrently created key.
     with filename.open("rb") as body:
         checksum = hashlib.md5(usedforsecurity=False)
         for block in iter(lambda: body.read(1024 * 1024), b""):
