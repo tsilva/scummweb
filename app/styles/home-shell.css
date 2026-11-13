@@ -622,6 +622,12 @@ button.nav-icon-link {
   contain-intrinsic-size: 36rem;
 }
 
+/* Anchor navigation focuses the library container; its controls keep their own rings. */
+#library:focus,
+#game-library-heading:focus {
+  outline: none;
+}
+
 .section-header {
   margin-bottom: 2rem;
 }
