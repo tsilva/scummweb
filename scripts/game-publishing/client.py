@@ -49,8 +49,11 @@ class Client:
         result = json.loads(body)
         if result.get("ok") is not True:
             stage, kind, status = result.get("stage"), result.get("kind"), result.get("status")
-            if stage in {"prepared", "source-validation", "existing-object-check", "source-read", "conditional-upload", "public-verification"} and kind in {"http", "connection", "input", "internal"}:
+            if stage in {"prepared", "source-validation", "existing-object-check", "source-read", "conditional-upload", "multipart-init", "multipart-part", "multipart-completion", "public-verification"} and kind in {"http", "connection", "input", "internal"}:
                 suffix = f", HTTP {status}" if type(status) is int and 100 <= status <= 599 else ""
+                code, sent = result.get("curlCode"), result.get("uploadedBytes")
+                if type(code) is int and 0 <= code <= 999 and type(sent) is int and 0 <= sent <= 4 * 1024**3:
+                    suffix += f", curl {code}, sent {sent} bytes"
                 raise SystemExit(f"Game publishing failed at {stage} ({kind}{suffix}); provider details withheld")
             raise ValueError("Game relay refused request")
         return result

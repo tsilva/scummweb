@@ -313,6 +313,13 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Freddy Pharkas: Frontier Pharmacist (Demo)",
+      "status": "startup-verified",
+      "gameId": "sci:freddypharkas",
+      "edition": "freddypharkas-win-cd-demo-en.zip",
+      "observation": "The English voiced CD demo renders its narrated opening and Coarsegold town scene. Skip intro loads the first playable scene; walking, saving, loading and cached Continue work, and the intro checkpoint stays out of the player save list. The original Windows package shares game-data signatures that ScummVM labels CD Demo/DOS/English."
+    },
+    {
       "title": "Full Pipe",
       "status": "startup-verified",
       "gameId": "ngi:fullpipe",

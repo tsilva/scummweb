@@ -9516,6 +9516,82 @@
           3373489413
         ]
       ]
+    },
+    "freddypharkas-demo": {
+      "url": "https://scummvm-games.tsilva.eu/freddypharkas.zip",
+      "fingerprint": "ca6a69aac5d9d0bea110ccb705c1650a8e9446f69522af4581d527568fcf864c",
+      "files": [
+        [
+          "RESOURCE.MAP",
+          1918,
+          1006686103
+        ],
+        [
+          "RESOURCE.SFX",
+          521316,
+          388628438
+        ],
+        [
+          "SCIDLL.DLL",
+          15872,
+          3146990407
+        ],
+        [
+          "SIERRA.INF",
+          7961,
+          2416895229
+        ],
+        [
+          "SIERRA.INI",
+          158,
+          4258533750
+        ],
+        [
+          "SIERRAW.EXE",
+          187392,
+          952101122
+        ],
+        [
+          "VERSION",
+          11,
+          3453253132
+        ],
+        [
+          "FPDemoCD.ico",
+          766,
+          4234833445
+        ],
+        [
+          "INTERP.ERR",
+          6205,
+          3763597046
+        ],
+        [
+          "LANGUAGE.INF",
+          1934,
+          2185373631
+        ],
+        [
+          "MMAWARE.DLL",
+          7089,
+          2778133358
+        ],
+        [
+          "README.TXT",
+          2095,
+          126506298
+        ],
+        [
+          "RESOURCE.000",
+          957382,
+          1863300513
+        ],
+        [
+          "RESOURCE.AUD",
+          32699389,
+          2472861172
+        ]
+      ]
     }
   }
 }

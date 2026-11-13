@@ -1,0 +1,42 @@
+
+                         FREDDY PHARKAS, FRONTIER PHARMACIST!
+                                     DEMO CD
+
+                             We hope you enjoy playing
+                          Freddy Pharkas Interactive Demo.
+
+        1.  REQUIREMENTS FOR RUNNING & INSTALLING FPFPCD DEMO:
+            *  Windows 3.1 or better
+            *  A 386/25 or better 4Meg Ram, MS-DOS compatible machine
+               with a VGA display and hard drive (As always: the faster,
+               the better.)
+            *  a CD-ROM drive (Duh!) (double-speed recommended)
+            *  a Microsoft-compatible mouse
+
+        2.  FREDDY PHARKAS DEMO may not run properly if you are running in
+            more than 256 colors. Change your Windows setup to use a 256-color
+            Windows mode.  (To do this: In Windows, click on the Windows Setup
+            icon, then select OPTIONS and select CHANGE SYSTEM SETTINGS.
+            Change DISPLAY to 256-color mode, then restart Windows.)
+
+        NOTE: Windows may request a Windows install disk, this only
+              happens if you have never run Windows in 256 color mode.
+
+        3.   SOME SOUND ISSUES:
+             A.  If you are using a Microsoft Sound Card you may experience
+                 distortion or slightly off-key notes.  If you do use the
+                 MS Sound Card we suggest you configure for BASE MIDI.
+                 You will need to have your MIDI MAP set to BASE mode before
+                 you install the Demo.
+
+             B.  Due to the music being developed for 16-bit sound cards,
+                 8-bit sound cards may produce some distorted notes.  This
+                 distortion will be more evident in some areas than others.
+
+        4.  The Control Panel has a TEXT slider (one of the hanging guys),
+            this option is not availible in the demo (that's because there
+            is no text in the Demo).
+
+
+                          SCREW LOOSE AMUSEMENTS
+                         (The Freddy Pharkas Team)
