@@ -3,7 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { CircleCheck, CircleMinus, CircleX, Download, File } from "lucide-react";
-import { captureGameDrop } from "../local-game-import.mjs";
+import { captureGameDrop } from "../game-import-nodes.mjs";
 
 export function chooseArchiveHandles(multiple) {
   return window.showOpenFilePicker({

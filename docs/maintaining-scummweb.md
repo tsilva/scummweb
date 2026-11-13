@@ -203,6 +203,12 @@ stylesheet failures, installation gestures, and persisted dismissal.
 
 ### Library and game files
 
+Capture file-picker and drop handles in the original user event before loading
+import processing. Keep saved-source restoration and permission requests eager.
+Library transactions abort on synchronous write or clone failures, retaining the
+original error and preventing partial saves or removals. `pnpm test` covers these
+boundaries, chunk-load failure recovery, and temporary-file fallback.
+
 For a direct ZIP link, URL-encode a direct HTTPS archive URL in the fragment.
 
 ```text
