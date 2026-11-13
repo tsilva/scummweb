@@ -172,12 +172,14 @@ class Fixture(unittest.TestCase):
         value = plan.load(self.root, plan.prepare(self.root, "example-demo"))
 
         class Provider(BaseHTTPRequestHandler):
+            protocol_version = "HTTP/1.1"
             def log_message(self, *_args):
                 pass
 
             def do_HEAD(self):
                 received.append(("HEAD", self.path))
                 self.send_response(404)
+                self.send_header("Content-Length", "0")
                 self.end_headers()
 
             def do_PUT(self):
@@ -203,7 +205,7 @@ class Fixture(unittest.TestCase):
         thread.start()
         base = "http://127.0.0.1:" + str(provider.server_port)
         try:
-            with patch.object(relay, "ENDPOINT", base), patch.object(relay, "ORIGIN", base):
+            with patch.object(relay, "ENDPOINT", base), patch.object(relay, "ORIGIN", base), patch.object(relay, "TRANSFER_PROTOCOL", "=http"):
                 result = relay.Bridge(POLICY, value, self.root).publish(FAKE_CREDENTIAL)
             self.assertTrue(result["uploaded"])
             self.assertEqual(stored["body"], content)
@@ -257,6 +259,161 @@ class Fixture(unittest.TestCase):
             with self.assertRaisesRegex(SystemExit, "conditional-upload \\(http, HTTP 403\\)") as caught:
                 actual.call("status")
         self.assertNotIn("b" * 64, str(caught.exception))
+
+    def test_http2_put_keeps_signatures_in_stdin_and_reuses_the_open_source(self):
+        headers = relay.signed_headers("PUT", "example.zip", self.entry["sha256"], FAKE_CREDENTIAL,
+            {"if-none-match": "*", "content-type": "application/zip", "content-length": str(self.source.stat().st_size)})
+        result = relay.subprocess.CompletedProcess([], 0, '200|2|5|"' + "a" * 32 + '"', "")
+        with self.source.open("rb") as source, patch.object(relay.subprocess, "run", return_value=result) as run:
+            with relay.curl_request("PUT", "example.zip", headers, source):
+                pass
+            args, options = run.call_args
+            self.assertEqual(args[0], [relay.CURL, "--disable", "--config", "-"])
+            self.assertEqual(options["pass_fds"], (source.fileno(),))
+            self.assertIn('upload-file = "/dev/fd/', options["input"])
+            self.assertIn('proto = "=https"', options["input"])
+            self.assertIn('header = "Expect:"', options["input"])
+            self.assertIn("http2", options["input"])
+            self.assertIn("tlsv1.2", options["input"])
+            self.assertNotIn("insecure", options["input"])
+            self.assertNotIn(headers["authorization"], json.dumps(args))
+            self.assertNotIn(headers["authorization"], json.dumps(options["env"]))
+            self.assertNotIn("b" * 64, options["input"])
+
+    def test_https_rejects_legacy_http_redirects_and_reflected_diagnostics(self):
+        headers = relay.signed_headers("HEAD", "example.zip", hashlib.sha256(b"").hexdigest(), FAKE_CREDENTIAL)
+        for stdout in ["200|1|5|application/zip", "200|2|5|" + RAW]:
+            result = relay.subprocess.CompletedProcess([], 0, stdout, RAW)
+            with patch.object(relay.subprocess, "run", return_value=result):
+                with self.assertRaises((ValueError, OSError)) as caught:
+                    relay.curl_request("HEAD", "example.zip", headers)
+            self.assertNotIn("b" * 64, str(caught.exception))
+        result = relay.subprocess.CompletedProcess([], 0, "302|2||", RAW)
+        with patch.object(relay.subprocess, "run", return_value=result):
+            with self.assertRaises(urllib.error.HTTPError) as caught:
+                relay.curl_request("HEAD", "example.zip", headers)
+        self.assertEqual(caught.exception.code, 302)
+        self.assertNotIn("b" * 64, str(caught.exception))
+
+    def test_failed_put_exposes_only_numeric_transfer_diagnostics(self):
+        headers = {"if-none-match": "*", "content-type": "application/zip", "content-length": str(self.source.stat().st_size)}
+        failed = relay.subprocess.CompletedProcess([], 56, "000|1.1|5242880|", RAW)
+        with self.source.open("rb") as source, patch.object(relay.subprocess, "run", return_value=failed):
+            with self.assertRaises(relay.TransferError) as caught:
+                relay.curl_request("PUT", "example.zip", headers, source)
+        self.assertEqual((caught.exception.code, caught.exception.uploaded), (56, 5242880))
+        self.assertNotIn("b" * 64, str(caught.exception))
+
+    def test_multipart_queries_cannot_select_other_operations_or_paths(self):
+        for query in [{"uploads": "", "uploadId": "other"}, {"delete": ""},
+                      {"uploadId": "x\nheader"}, {"partNumber": "0", "uploadId": "id"},
+                      {"partNumber": "1&delete=", "uploadId": "id"}]:
+            with self.assertRaises(ValueError):
+                relay.multipart_query(query)
+        self.assertEqual(relay.multipart_query({"uploadId": "a+b/="}), "uploadId=a%2Bb%2F%3D")
+
+    def test_multipart_receipt_drift_fails_before_any_part_is_sent(self):
+        path = self.path.with_name("multipart.json")
+        for changed in ["plan", "part"]:
+            state = {"plan": dict(self.value), "partBytes": 1, "uploadId": "synthetic-id", "parts": []}
+            if changed == "plan":
+                state["plan"]["sha256"] = "0" * 64
+            else:
+                state["parts"] = [{"number": 1, "sha256": "0" * 64, "bytes": 1, "etag": '"' + "a" * 32 + '"'}]
+            path.write_text(json.dumps(state))
+            path.chmod(0o600)
+            with patch.object(relay, "PART_BYTES", 1), self.source.open("rb") as source:
+                with self.assertRaises(ValueError):
+                    self.bridge.multipart(source, "example.zip", FAKE_CREDENTIAL, {})
+            self.assertEqual(self.r2.requests, [])
+
+    def test_actual_curl_multipart_resumes_exact_parts_and_completes_conditionally(self):
+        data = io.BytesIO()
+        with zipfile.ZipFile(data, "w") as archive:
+            archive.writestr("synthetic.bin", b"synthetic data " * 450000)
+        content = data.getvalue()
+        self.source.write_bytes(content)
+        self.entry["sha256"] = hashlib.sha256(content).hexdigest()
+        self.catalog.write_text(json.dumps({"games": [self.entry]}))
+        self.path.unlink()
+        value = plan.load(self.root, plan.prepare(self.root, "example-demo"))
+        state = {"parts": {}, "requests": [], "fail": True, "complete": False, "completionError": True}
+
+        class Provider(BaseHTTPRequestHandler):
+            protocol_version = "HTTP/1.1"
+
+            def log_message(self, *_args):
+                pass
+
+            def reply(self, code, body=b"", headers=None):
+                self.send_response(code)
+                self.send_header("Content-Length", str(len(body)))
+                for key, item in (headers or {}).items():
+                    self.send_header(key, item)
+                self.end_headers()
+                self.wfile.write(body)
+
+            def do_HEAD(self):
+                self.reply(404)
+
+            def do_POST(self):
+                body = self.rfile.read(int(self.headers["Content-Length"]))
+                state["requests"].append(("POST", self.path, dict(self.headers)))
+                if self.path.endswith("?uploads="):
+                    self.reply(200, b"<InitiateMultipartUploadResult><UploadId>synthetic-id</UploadId></InitiateMultipartUploadResult>")
+                else:
+                    state["complete"] = True
+                    state["completion"] = body
+                    self.reply(200, b"<Error/>" if state["completionError"] else b"<CompleteMultipartUploadResult/>")
+
+            def do_PUT(self):
+                query = urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query)
+                number = int(query["partNumber"][0])
+                body = self.rfile.read(int(self.headers["Content-Length"]))
+                state["requests"].append(("PUT", number, dict(self.headers)))
+                if number == 2 and state["fail"]:
+                    state["fail"] = False
+                    self.reply(503)
+                    return
+                state["parts"][number] = body
+                etag = '"' + hashlib.md5(body, usedforsecurity=False).hexdigest() + '"'
+                self.reply(200, headers={"ETag": etag})
+
+            def do_GET(self):
+                self.reply(200, content, {"Content-Type": "application/zip", "Cache-Control": relay.CACHE})
+
+        provider = ThreadingHTTPServer(("127.0.0.1", 0), Provider)
+        thread = threading.Thread(target=provider.serve_forever, daemon=True)
+        thread.start()
+        base = "http://127.0.0.1:" + str(provider.server_port)
+        try:
+            with patch.object(relay, "ENDPOINT", base), patch.object(relay, "ORIGIN", base), patch.object(relay, "TRANSFER_PROTOCOL", "=http"):
+                with self.assertRaises(urllib.error.HTTPError):
+                    relay.Bridge(POLICY, value, self.root).publish(FAKE_CREDENTIAL)
+                receipt = self.path.with_name("multipart.json")
+                self.assertEqual(len(json.loads(receipt.read_text())["parts"]), 1)
+                self.assertEqual(receipt.stat().st_mode & 0o777, 0o600)
+                self.assertNotIn("b" * 64, receipt.read_text())
+                with self.assertRaises(ValueError):
+                    relay.Bridge(POLICY, value, self.root).publish(FAKE_CREDENTIAL)
+                self.assertEqual(len(json.loads(receipt.read_text())["parts"]), 2)
+                state["completionError"] = False
+                self.assertTrue(relay.Bridge(POLICY, value, self.root).publish(FAKE_CREDENTIAL)["uploaded"])
+                self.assertFalse(receipt.exists())
+            self.assertTrue(state["complete"])
+            self.assertEqual(b"".join(state["parts"][n] for n in sorted(state["parts"])), content)
+            self.assertEqual(sum(item[:2] == ("PUT", 1) for item in state["requests"]), 1)
+            for method, _, headers in state["requests"]:
+                if method == "POST":
+                    self.assertEqual(headers["If-None-Match"], "*")
+                else:
+                    self.assertIn("content-md5", {name.lower(): value for name, value in headers.items()})
+                    self.assertNotIn("transfer-encoding", {name.lower(): value for name, value in headers.items()})
+            self.assertIn(b"<PartNumber>2</PartNumber>", state["completion"])
+        finally:
+            provider.shutdown()
+            provider.server_close()
+            thread.join()
 
     def test_policy_rejects_permissions_scope_and_probe_drift(self):
         path = self.root / "policy.json"

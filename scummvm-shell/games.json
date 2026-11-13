@@ -501,6 +501,23 @@
       "platform": "pc",
       "extra": "Demo",
       "readmeHref": "/launcher/notices/gk1demo.txt"
+    },
+    {
+      "target": "freddypharkas-demo",
+      "title": "Freddy Pharkas: Frontier Pharmacist (Demo)",
+      "path": "/games/freddypharkas",
+      "engineId": "sci",
+      "gameId": "freddypharkas",
+      "platform": "pc",
+      "extra": "CD Demo",
+      "readmeHref": "/launcher/notices/freddypharkas.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "slot": 90,
+        "saveFiles": [
+          "freddypharkas-demo.090"
+        ]
+      }
     }
   ]
 }

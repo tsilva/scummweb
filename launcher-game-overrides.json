@@ -186,6 +186,15 @@
           "sword2-demo.090"
         ]
       }
+    },
+    "freddypharkas-demo": {
+      "skipIntro": {
+        "strategy": "save-slot",
+        "slot": 90,
+        "saveFiles": [
+          "freddypharkas-demo.090"
+        ]
+      }
     }
   }
 }

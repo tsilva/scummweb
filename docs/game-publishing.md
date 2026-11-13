@@ -36,9 +36,10 @@ canonical source, runtime, public CA and reviewed Runbox release.
 
 The owner-only signer policy contains version `1`, port `61788`, the credential
 SHA-256, the exact source binding declared in `relay.py`, and the pinned check
-object `gob3.zip` with `1055315` bytes. It contains no credential values. Named
-machine-runtime resources `game-policy` and `game-base` select this policy and
-its private lock directory. The source files in the profile remain integrity
+object `gob3.zip` with `1055315` bytes. It contains no credential values. The machine
+runtime must also pin the installed `/usr/bin/curl` with HTTP/2 support as
+`binaries.game-curl`. Named machine-runtime resources `game-policy` and `game-base`
+select this policy and its private lock directory. The source files remain integrity
 pinned; the selected game plan remains data validated against the catalog.
 
 After provisioning and approval, verify access with the bounded HEAD-only check:
@@ -50,10 +51,22 @@ runbox --profile game-publish run -- game-publish gk1-demo
 
 The check reads no object body and uploads nothing. Publishing streams the exact
 planned ZIP using a signed SHA-256, Content-MD5 and conditional `If-None-Match: *`
-PUT. Existing objects are never overwritten. A creation race also preserves the
-winner. The signer verifies the public object's complete bytes, MIME type and
-immutable cache metadata before reporting success. Changed files, redirects,
-foreign destinations and arbitrary upload bodies fail explicitly.
+PUT. Packages larger than 5 MiB use checksum-verified 5 MiB parts and conditional
+[multipart completion](https://developers.cloudflare.com/r2/api/s3/conditional-operations/#conditional-multipart-uploads).
+Private owner-only receipts bind progress to the exact plan, source checksum and
+part bytes; a later invocation resumes validated parts.
+Only the selected object's multipart session can be created or completed; the
+signer cannot list or delete objects. Receipts contain no credentials and remain
+until full public verification succeeds. Existing objects are never overwritten.
+A creation race also preserves the winner. The signer verifies the public
+object's complete bytes, MIME type and
+immutable cache metadata before reporting success. Signed HEAD and PUT requests
+use the reviewed system curl with TLS 1.2 or newer, certificate and hostname
+verification, and negotiated HTTP/2 or HTTP/1.1. Request signatures enter curl
+through stdin and game bytes through an open file descriptor. No credentials
+or signatures enter its arguments, environment or temporary files. Redirects
+and legacy protocols fail; diagnostics expose only phase and numeric status.
+Changed files, foreign destinations and arbitrary upload bodies fail explicitly.
 
 The client sends only a placeholder and empty protocol requests through the
 native proxy. Upload work runs in the trusted signer, with bounded status polling

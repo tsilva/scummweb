@@ -252,6 +252,11 @@ and enters its ship scene directly, with no intro checkpoint or menu saving.
 Gabriel Knight’s Day One demo retains its original Intro/Play menu. Choose Play
 to enter the bookshop; native saves and restore are supported.
 
+Freddy Pharkas’s voiced CD demo retains its original Windows package; ScummVM
+identifies the shared game data as its English DOS CD demo. Saving and loading
+are supported in this edition. Its bundled intro checkpoint starts at the first
+playable town scene after the original narration, before any player action.
+
 Humongous games can load legacy DXA conversions when the requested DAT or SMK
 movie is absent. Existing original movies take precedence; a converted movie
 does not replace a corrupt original or other missing game resources.

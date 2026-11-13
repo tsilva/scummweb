@@ -37,6 +37,7 @@ const launchTagsByTarget = new Map([
   ["gob2-demo", ["Point-and-click", "Fantasy puzzles"]],
   ["gob3-demo", ["Point-and-click", "Surreal fantasy"]],
   ["gk1-demo", ["Point-and-click", "Supernatural mystery"]],
+  ["freddypharkas-demo", ["Point-and-click", "Western comedy"]],
 ]);
 
 export function getBundledLaunchTags(game) {
