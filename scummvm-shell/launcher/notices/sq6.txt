@@ -1,0 +1,37 @@
+SPACE QUEST 6 INTERACTIVE DEMO
+
+
+Welcome to another in the series of Roger Wilco's bumbling
+but good hearted adventures. We hope you'll find this demo entertaining
+and that, most importantly of course, it will make you want to
+shell out those hard-earned buckazoids for the full blown game.
+(Ken Williams made me say that part. You know how bosses are!)
+
+There are plenty of puzzles to solve here, but please note that
+they are an entirely different set of puzzles from what you will
+find in the real game so, by playing this all the way through, you
+will not be shorted on play value when you get the entire game.
+Hopefully, it will give you some bonus enjoyment. That indeed is
+our aim. (Along with wanting to sell a whole lot of these suckers!)
+
+Enjoy!
+
+
+LOADING A VESA DRIVER
+
+Space Quest VI Demo will require that your video card supports
+VESA - a special video driver that allows your video card to
+display the high resolution graphics on your computer.  Many
+of the modern video cards have VESA drivers built in.  Other
+video cards may require that you load a VESA driver prior to
+launching the game.
+
+The Space Quest VI Demo CD contains a set of the most common
+VESA driver for the more common video cards.  If the game will
+not load because it indicates you need a VESA driver, look in
+the VESA directory on the CD and see if there is a driver for
+your video card.  Loading a VESA driver for each video card
+requires different steps.  For complete instructions about
+loading a VESA driver for your video card, please consult your
+video card documentation or contact your video card
+manufacturer.

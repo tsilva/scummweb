@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Space Quest 6: Roger Wilco in the Spinal Frontier (Demo)", target: "sq6-demo", engineId: "sci", gameId: "sq6",
+    files: [["resource.map", 2572, 1622953036], ["resource.000", 2272050, 3325270940]],
+  },
+  {
     title: "Freddy Pharkas: Frontier Pharmacist (Demo)", target: "freddypharkas-demo", engineId: "sci", gameId: "freddypharkas",
     files: [["resource.map", 1918, 1006686103], ["resource.000", 957382, 1863300513]],
   },

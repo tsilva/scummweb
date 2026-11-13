@@ -264,6 +264,10 @@ identifies the shared game data as its English DOS CD demo. Saving and loading
 are supported in this edition. Its bundled intro checkpoint starts at the first
 playable town scene after the original narration, before any player action.
 
+Space Quest 6’s voiced interactive demo retains its original title, instructions
+and opening scenes. This edition explicitly disables saving and restoring, so
+it has no intro checkpoint or Continue.
+
 Humongous games can load legacy DXA conversions when the requested DAT or SMK
 movie is absent. Existing original movies take precedence; a converted movie
 does not replace a corrupt original or other missing game resources.

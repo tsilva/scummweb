@@ -63,7 +63,10 @@ object's complete bytes, MIME type and
 immutable cache metadata before reporting success. Signed HEAD and PUT requests
 use the reviewed system curl with TLS 1.2 or newer, certificate and hostname
 verification, and negotiated HTTP/2 or HTTP/1.1. Request signatures enter curl
-through stdin and game bytes through an open file descriptor. No credentials
+through stdin. Curl reads each checked body through an open file descriptor into
+a buffer bounded to 5 MiB before sending it. Requests retain their signed length
+and checksum; interrupted parts restart in full while completed parts remain in
+the exact-plan receipt. No credentials
 or signatures enter its arguments, environment or temporary files. Redirects
 and legacy protocols fail; diagnostics expose only phase and numeric status.
 Changed files, foreign destinations and arbitrary upload bodies fail explicitly.

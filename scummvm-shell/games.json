@@ -518,6 +518,16 @@
           "freddypharkas-demo.090"
         ]
       }
+    },
+    {
+      "target": "sq6-demo",
+      "title": "Space Quest 6: Roger Wilco in the Spinal Frontier (Demo)",
+      "path": "/games/sq6",
+      "engineId": "sci",
+      "gameId": "sq6",
+      "platform": "pc",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/sq6.txt"
     }
   ]
 }
