@@ -1,7 +1,7 @@
 import { ArrowLeft, ChevronRight, FolderOpen, Plus, Save, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-const defaultSettings = { volume: 100, speed: 1, saves: [] };
+const defaultSettings = { volume: 100, speed: 1, subtitles: true, canToggleSubtitles: false, saves: [] };
 const formatDate = new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
 
 function saveTitle(save) {
@@ -162,6 +162,13 @@ export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose
               text={`${settings.volume}%`} onChange={(value) => update("volume", value)} disabled={!controller.current} />
             <MenuSlider label="Game Speed" value={settings.speed} min={0.5} max={1.5} step={0.1}
               text={`${settings.speed}×`} onChange={(value) => update("speed", value)} disabled={!controller.current} />
+            {settings.canToggleSubtitles && (
+              <label className="game-menu-toggle">
+                <span>Subtitles</span>
+                <input type="checkbox" role="switch" checked={settings.subtitles}
+                  onChange={(event) => update("subtitles", event.currentTarget.checked)} />
+              </label>
+            )}
           </div>
           <div className="game-menu-session-actions">
             <button className="game-menu-primary" onClick={() => dialogRef.current.close()} type="button">Resume Game</button>

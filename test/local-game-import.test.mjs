@@ -60,7 +60,7 @@ test("folders without ZIPs produce a useful error", async () => {
     } })]);
     assert.equal(nodes.length, 1);
     assert.equal(nodes[0].name, "Empty");
-    await assert.rejects(prepareLocalZip(nodes[0]), /No ZIP files found/);
+    await assert.rejects(prepareLocalZip(nodes[0]), /No ZIP or ISO files found/);
   }
 });
 

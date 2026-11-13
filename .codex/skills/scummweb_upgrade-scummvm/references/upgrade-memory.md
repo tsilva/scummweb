@@ -249,6 +249,15 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
 
 ## Shared game menu
 
+- SCUMM's original menu imports voice mode during setup only when the active
+  target contains both `subtitles` and `speech_mute`. A lone subtitle default
+  can leave Full Throttle's demo in speech-only mode. Patch 99-subtitle-settings
+  initializes both before hosted engine construction and changes the live mode
+  through `syncSoundSettings()`. Preserve mandatory text for no-speech games
+  and hide the switch when native GUI options disallow subtitle selection.
+  Refresh legacy cached modes through `applyGameSettings()` before sound sync;
+  retain engine-specific language and edition constraints. Neverhood must keep
+  subtitle players and fonts loaded while hiding their rendered surfaces.
 - Nippon Safes' startup Saved Game choice enters a separate native menu state.
   Patch 99 keeps that state alive while the hosted Load Game drawer is open,
   returns to the original choice on cancellation and leaves it after a native

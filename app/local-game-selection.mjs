@@ -5,7 +5,7 @@ export const maxGameEntries = 8192;
 
 export class ArchiveError extends Error {}
 
-// Hand the ZIP loader to the player route through this tab's memory.
+// Hand the archive loader to the player route through this tab's memory.
 let selectedArchive;
 
 export function selectGameArchive(loadArchive, game) {
@@ -34,5 +34,18 @@ export function validateGameZip(file, archiveLimit = maxArchiveSize) {
   }
   if (file.size > archiveLimit) {
     throw new ArchiveError(`Choose a ZIP of ${archiveLimit / (1024 * 1024)} MiB or less.`);
+  }
+}
+
+export function localGameArchiveKind(file) {
+  return /\.iso$/i.test(file.name) ? "iso" : "zip";
+}
+
+export function validateLocalGameArchive(file, archiveLimit = maxLocalGameSize) {
+  if (!/\.(zip|iso)$/i.test(file.name)) {
+    throw new ArchiveError("Choose a ZIP or ISO containing one ScummVM game.");
+  }
+  if (file.size > archiveLimit) {
+    throw new ArchiveError(`Choose a ZIP or ISO of ${archiveLimit / (1024 * 1024)} MiB or less.`);
   }
 }

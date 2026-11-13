@@ -27,7 +27,7 @@ export default function SourceLaunchActions({ version, onLaunch, helpId = "game-
   };
   return <>
     {needsAccess && showAccessHelp && <p className="file-access-help" id={helpId}>
-      To play, ScummWEB needs to read this game’s ZIP on your device. Choose Allow file access,
+      To play, ScummWEB needs to read this game’s ZIP or ISO on your device. Choose Allow file access,
       then allow access in the browser prompt. Your game files stay on your device.
     </p>}
     <button type="button" className="launch-button" disabled={version.action.disabled}

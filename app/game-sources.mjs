@@ -1,5 +1,5 @@
 import { bucketStorageKey, bucketZipUrl, checkGameZip, readSavedBucket } from "./game-bucket-sources.mjs";
-import { maxLocalGameSize, validateGameZip } from "./local-game-selection.mjs";
+import { localGameArchiveKind, validateLocalGameArchive } from "./local-game-selection.mjs";
 
 export function remoteGame(url, game) {
   const name = decodeURIComponent(new URL(url).pathname.split("/").at(-1));
@@ -8,15 +8,15 @@ export function remoteGame(url, game) {
 }
 
 export function localGame(handle, file, id = crypto.randomUUID()) {
-  if (!isLocalZipSource({ name: file.name, kind: file.kind, handle })) throw new Error("Choose a ZIP containing one ScummVM game.");
-  validateGameZip(file, maxLocalGameSize);
-  return { id, name: file.name, ...(handle && { handle }),
+  if (!isLocalArchiveSource({ name: file.name, kind: file.kind, handle })) throw new Error("Choose a ZIP or ISO containing one ScummVM game.");
+  validateLocalGameArchive(file);
+  return { id, name: file.name, ...(localGameArchiveKind(file) === "iso" && { kind: "iso" }), ...(handle && { handle }),
     ...(file.fingerprint && { fingerprint: file.fingerprint }),
     ...(file.archiveFiles && { archiveFiles: file.archiveFiles }) };
 }
 
-export function isLocalZipSource(source) {
-  return (!source.kind || source.kind === "zip") && source.handle?.kind !== "directory" && /\.zip$/i.test(source.name);
+export function isLocalArchiveSource(source) {
+  return (!source.kind || source.kind === localGameArchiveKind(source)) && source.handle?.kind !== "directory" && /\.(zip|iso)$/i.test(source.name);
 }
 
 export function bucketGames(url, targets, catalog) {
@@ -34,10 +34,10 @@ export async function checkGameSource(source) {
   try {
     if (source.url) return await checkRemoteGame(source) ? "available" : "missing";
     // Keep old folder entries reconnectable without accessing their contents.
-    if (!isLocalZipSource(source)) return "locate";
+    if (!isLocalArchiveSource(source)) return "locate";
     if (!source.handle) return "locate";
     if (await source.handle.queryPermission({ mode: "read" }) !== "granted") return "permission";
-    validateGameZip(await source.handle.getFile(), maxLocalGameSize);
+    validateLocalGameArchive(await source.handle.getFile());
     return "available";
   } catch (error) {
     if (source.url) return "unverified";
