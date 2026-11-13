@@ -29,6 +29,7 @@ test("the version save folder exists before files release ScummVM's startup depe
   assert.equal(events[1][1], "scummweb:local-game-files");
   assert.equal(events[1][3], files[0].data.buffer);
   assert.match(buildZipGamePlayerUrl("/#library", { saveNamespace }).hash, new RegExp(`--savepath=${savePath}$`));
+  assert.match(buildZipGamePlayerUrl("/").hash, /--path=\/local-game --recursive --auto-detect/);
 });
 
 test("invalid or inaccessible save folders prevent file handoff; legacy launches keep their default folder", () => {

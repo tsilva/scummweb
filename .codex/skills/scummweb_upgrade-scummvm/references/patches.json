@@ -1538,6 +1538,22 @@
         "In Brave import a full FT ZIP containing MONSTER.SOF, trigger speech, interrupt/skip lines, toggle subtitles, save and resume; replay the original-SOU demo."
       ],
       "retire_when": "Upstream supports legacy FT FLAC speech through current digital iMUSE, including save restoration."
+    },
+    {
+      "path": "patches/scummvm/101-recursive-web-autodetection.patch",
+      "status": "active",
+      "sha256": "af857c07c9406136487fcd81896c6aa27e5e8f5214e155f69b605d10da49af1c",
+      "purpose": "Launch imported archives with nested game data through recursive web auto-detection.",
+      "invariants": [
+        "Emscripten auto-detect accepts --recursive and launches from the selected detection result path; preserve engine/game filters, archive paths and version save namespaces.",
+        "Prefer a game detected at the archive root before searching subdirectories. Keep desktop recursive auto-detect rejection and ordinary --detect listing unchanged.",
+        "Emit no terminal missing-game warning until recursive detection has also failed."
+      ],
+      "verification": [
+        "Run test/recursive-game-detection.test.mjs for nested/root/absent data, selected paths, filters and desktop behavior; run ZIP/ISO and launch regressions.",
+        "In Brave import an ISO with installers beside nested data and reach game startup; verify an extracted ZIP and catalog game still launch."
+      ],
+      "retire_when": "Upstream supports recursive auto-detection with correct selected-directory launch settings."
     }
   ]
 }

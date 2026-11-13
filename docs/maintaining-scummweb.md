@@ -19,8 +19,11 @@ Use **Add a game**, or drop ZIPs, ISOs, or a folder containing them onto the
 homepage or a game page. Pack one game per ZIP, with its data at the root or
 inside one enclosing folder. Local archives support up to 4 GiB including
 unpacked contents. ISO imports support ISO 9660 and Joliet data discs with
-2048-byte sectors and read game files directly from the image. Import checks
-the file contents to distinguish editions; large discs can take longer to scan.
+2048-byte sectors and read game files directly from the image. Imported ZIPs and
+ISOs detect games at the archive root first, then search subfolders and launch
+from the detected data directory. Installers beside the game data can stay in
+place. Import checks the file contents to distinguish editions; large discs can
+take longer to scan.
 UDF-only images, raw BIN/CUE images, interleaved files and multi-extent files
 need to be extracted and packed as a ZIP first. Disc images must contain
 ScummVM game data; installer-only discs need installation/extraction first.
