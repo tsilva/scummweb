@@ -1,5 +1,6 @@
-import { ArrowLeft, ChevronRight, FolderOpen, Plus, Save, X } from "lucide-react";
+import { ArrowLeft, Bug, ChevronRight, FolderOpen, Plus, Save, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import GameBugReport from "./GameBugReport";
 
 const defaultSettings = { volume: 100, speed: 1, subtitles: true, canToggleSubtitles: false, saves: [] };
 const formatDate = new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
@@ -36,7 +37,7 @@ function MenuSlider({ label, value, min, max, step, text, onChange, disabled }) 
   );
 }
 
-export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose, onExit, onNativeMenu, title }) {
+export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose, onExit, onNativeMenu, reportGame, title }) {
   const dialogRef = useRef(null);
   const pressedBackdrop = useRef(false);
   const controller = useRef(null);
@@ -98,7 +99,7 @@ export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose
     }
   }
 
-  const heading = { menu: "Game Menu", save: "Save Game", load: "Load Game" }[page];
+  const heading = { menu: "Game Menu", save: "Save Game", load: "Load Game", report: "Report a bug" }[page];
   const supported = page === "save" ? settings.canSave : settings.canLoad;
   const slots = page === "save"
     ? settings.saves.filter((save) => save.writable && save.slot > 0)
@@ -173,8 +174,14 @@ export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose
           <div className="game-menu-session-actions">
             <button className="game-menu-primary" onClick={() => dialogRef.current.close()} type="button">Resume Game</button>
             <button className="game-menu-outlined" onClick={onExit} type="button">Quit Game</button>
+            <button className="game-menu-outlined game-menu-report" onClick={() => go("report")} type="button">
+              <Bug aria-hidden="true" size={22} /><span>Report a bug</span><ChevronRight aria-hidden="true" size={19} />
+            </button>
           </div>
         </>
+      ) : page === "report" ? (
+        <GameBugReport frameRef={frameRef} game={reportGame} onBusyChange={setBusy}
+          onCancel={() => go("menu")} onResume={() => dialogRef.current.close()} />
       ) : (
         <div aria-busy={busy} className="game-menu-picker">
           {!supported ? (

@@ -174,3 +174,46 @@
 .game-menu-slots small { margin-top: .25rem; }
 .game-menu-note { margin: .5rem 0; }
 .game-menu-note[role="alert"] { color: #ffd7c5; }
+
+.game-menu-report { margin-top: .5rem; }
+.game-bug-report { display: grid; gap: 1rem; padding-top: 1.75rem; }
+.game-bug-report label { font-weight: 700; }
+.game-bug-report textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 9.5rem;
+  height: 9.5rem;
+  padding: .875rem;
+  resize: vertical;
+  border: 1px solid #a6a6a6;
+  border-radius: 4px;
+  background: #131313;
+  color: inherit;
+  font: inherit;
+  line-height: 1.5;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.game-bug-report textarea:focus-visible { outline: 2px solid var(--accent-strong); outline-offset: 3px; }
+.game-bug-report-actions { display: grid; gap: 1rem; }
+.game-bug-report-cancel { min-height: 2.75rem; border: 0; background: transparent; color: inherit; }
+.game-bug-report-cancel:hover:not(:disabled) { color: var(--accent-strong); }
+.game-bug-report-success { padding-top: 2.75rem; }
+.game-bug-report-success > svg { color: var(--accent-strong); }
+.game-bug-report-success h3 { margin: 0; font-size: 1.8rem; letter-spacing: -.04em; }
+.game-bug-report-success p { margin: 0; line-height: 1.5; }
+.game-bug-report-success .game-menu-primary { margin-top: .75rem; }
+
+@media (max-height: 500px) {
+  .game-menu-drawer:has(.game-bug-report) { padding-top: .75rem; padding-bottom: .75rem; }
+  .game-menu-drawer:has(.game-bug-report) .game-menu-header { padding-bottom: .5rem; }
+  .game-menu-drawer:has(.game-bug-report) .game-menu-heading-row h2 { font-size: 1.4rem; }
+  .game-bug-report { gap: .625rem; padding-top: .75rem; }
+  .game-bug-report textarea { min-height: 4rem; height: 4rem; padding: .5rem; line-height: 1.35; }
+  .game-bug-report-actions { grid-template-columns: 1fr auto; gap: .75rem; }
+  .game-bug-report-cancel { padding-inline: 1rem; }
+  .game-bug-report-success > svg { width: 32px; height: 32px; }
+  .game-bug-report-success h3 { font-size: 1.5rem; }
+  .game-bug-report-success p { font-size: .9rem; line-height: 1.35; }
+  .game-bug-report-success .game-menu-primary { margin-top: 0; }
+}

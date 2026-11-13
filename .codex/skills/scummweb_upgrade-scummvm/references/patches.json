@@ -1554,6 +1554,22 @@
         "In Brave import an ISO with installers beside nested data and reach game startup; verify an extracted ZIP and catalog game still launch."
       ],
       "retire_when": "Upstream supports recursive auto-detection with correct selected-directory launch settings."
+    },
+    {
+      "path": "patches/scummvm/99z-isolate-bug-report-saves.patch",
+      "status": "active",
+      "sha256": "b08fd810cead84849f1a39983d6d5ecf0f6bec803c44409d050e0635625e6b7b",
+      "purpose": "Capture diagnostic saves in nonpersistent MEMFS without changing player saves, Continue metadata or library synchronization.",
+      "invariants": [
+        "Diagnostic savepath redirection is scoped to an acknowledged hosted-player capture and never changes ConfMan or agent save scope.",
+        "Report saves and all companion files stay under /tmp/scummweb-bug-report; save refreshes are suppressed until capture completion.",
+        "The native capability export prevents a newer shell from saving into the player directory with an older compiled runtime."
+      ],
+      "verification": [
+        "Run diagnostic-saves, player-controls and bug-report collector regression tests.",
+        "In Brave, capture a catalog game and an imported game; compare save bytes and Continue index before/after, verify attached saves restore and cancellation or capture timeout never changes player progress."
+      ],
+      "retire_when": "Upstream exposes an equivalent isolated in-memory runtime save export with capability detection and no player-save metadata publication."
     }
   ]
 }

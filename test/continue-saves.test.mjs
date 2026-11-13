@@ -107,6 +107,7 @@ test("the managed Wasm actually exports the native save bridge", async () => {
   const bytes = await readFile(new URL("../scummvm-shell/scummvm.wasm", import.meta.url));
   const exports = WebAssembly.Module.exports(new WebAssembly.Module(bytes));
   assert.ok(exports.some(({ name, kind }) => name === "scummweb_refresh_saves" && kind === "function"));
+  assert.ok(exports.some(({ name, kind }) => name === "scummweb_diagnostic_saves_supported" && kind === "function"));
 });
 
 test("latest save selection uses write time across slots and is refreshed before native launch", async () => {

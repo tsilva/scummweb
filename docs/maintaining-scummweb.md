@@ -90,6 +90,13 @@ each axis to preserve symmetric spacing around cutouts.
   and keeps the existing caption. Games can deny saving or loading during
   cutscenes. Unsupported actions offer the native menu. Maintain verified
   shortcuts in [`game-menu.mjs`](../app/game-player/game-menu.mjs).
+- **Report a bug** is the last game-menu action. Describe the problem and send
+  the report; game identity and player settings are included automatically.
+  Opening the form requests a native diagnostic save when the engine permits
+  it. The temporary save and companion files live only in memory, outside the
+  library, Continue index, save backups and cloud synchronization. Cancelling
+  discards the capture. Unsupported, failed or timed-out saves do not block
+  reports; the report records why a snapshot is absent.
 - On desktop, move the pointer to the top edge or outside the game canvas to
   reveal the toolbar. Keyboard focus or an open game menu keeps it visible.
   Press **Esc** to release cursor capture and reveal the toolbar.
@@ -353,6 +360,44 @@ iOS devices before claiming device coverage.
 
 `pnpm sentry:issues -- --days 14 --limit 10` uses the process's explicitly configured
 Sentry credentials, organization and project. It never opens dotenv files. Failed authentication stops the read.
+
+### Bug report collection
+
+`POST /api/bug-report` accepts the game menu's description and diagnostic save
+attachments. It uses the existing server Sentry configuration and sends a
+Feedback event only after explicit submission. Delivery failures retain the
+description for retry. Success requires a successful Sentry ingestion response.
+The route returns 503 when reporting is disabled or unconfigured.
+
+Each report includes `reproduction.json` with the catalog identity or detected
+engine/game/edition, runtime version, player settings, native slot, original
+save filenames and SHA-256 checksums. Download its save attachments, verify their
+checksums and restore them with the matching edition and native filenames.
+Game data is not attached; reproducing an imported game requires the same game
+edition. Saves restore progress, not browser/audio state or a crashed process.
+Reports omit automatic personal library titles, archive filenames, private ZIP
+URLs, request cookies and breadcrumbs. The player's description and native save
+contents are submitted as entered/captured. Sentry controls report retention.
+
+The collector requires a same-origin request, limits descriptions to 4,000
+characters, and accepts at most 16 save files totaling 2 MiB within a 3 MiB request.
+It validates filenames and metadata and applies a bounded per-instance limit of
+five attempts per ten minutes. Identical retries reuse a report ID within that
+instance. These are best-effort serverless limits; hosting-level protection is
+needed for shared limits across instances. No additional storage service is used.
+
+Regression checks:
+
+```sh
+node --test test/bug-report.test.mjs test/sentry-bug-report.test.mjs test/diagnostic-saves.test.mjs test/player-controls.test.mjs
+```
+
+The SDK test uses an in-process transport and sends no live reports. Browser QA
+can point the standard Sentry DSN settings at a local envelope receiver. Verify
+menu order, capture, cancel, success, failed delivery/retry, unsupported saves and
+mobile layout. Compare player saves and Continue before and after capture, and
+restore an attached save with the matching edition. Native patch and shell changes
+require the normal [runtime rebuild](#rebuilding-and-upgrading-scummvm).
 
 ## Maintaining game compatibility
 

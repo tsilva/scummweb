@@ -70,6 +70,7 @@ export default function GamePlayerControls({
   onResumeGame,
   onSkipIntro,
   onToggleFullscreen,
+  reportGame,
   showBottomActions,
   showExitControl,
   showFullscreenControl,
@@ -188,6 +189,7 @@ export default function GamePlayerControls({
           onClose={onCloseMenu}
           onExit={onExit}
           onNativeMenu={onNativeMenu}
+          reportGame={reportGame}
           title={title}
         />
       )}

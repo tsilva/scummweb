@@ -113,6 +113,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
   // Native save ownership brackets the complete compressed output lifetime.
   // Persist the pending name BEFORE opening/truncating a previously indexed slot.
   scope.__scummwebBeginSaveWrite = (name) => {
+    if (scope.__scummwebDiagnosticSaves?.active) return scope.__scummwebDiagnosticSaves.beginWrite(name);
     if (!snapshot || !validName(name) || writers.has(name)) return false;
     const wasPending = pending.has(name);
     pending.add(name);
@@ -129,9 +130,14 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     return true;
   };
   scope.__scummwebSaveIoFailed = (path) => {
+    if (scope.__scummwebDiagnosticSaves?.active) { scope.__scummwebDiagnosticSaves.ioFailed(path); return; }
     if (path.startsWith(savePath + "/")) ioFailures.add(path.slice(savePath.length + 1));
   };
   scope.__scummwebEndSaveWrite = (name, success) => {
+    if (scope.__scummwebDiagnosticSaves?.active) {
+      scope.__scummwebDiagnosticSaves.endWrite(name, success);
+      return false;
+    }
     if (!writers.delete(name)) return false;
     if (success && !ioFailures.has(name)) {
       pending.delete(name);
@@ -142,6 +148,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     return writers.size === 0;
   };
   scope.__scummwebSaveDeleted = (name) => {
+    if (scope.__scummwebDiagnosticSaves?.active) return false;
     pending.delete(name);
     needsPublish = true;
     return writers.size === 0;

@@ -1,0 +1,33 @@
+diff --git a/backends/saves/default/default-saves.cpp b/backends/saves/default/default-saves.cpp
+--- a/backends/saves/default/default-saves.cpp
++++ b/backends/saves/default/default-saves.cpp
+@@ -298,6 +298,11 @@
+ }
+ 
+ Common::Path DefaultSaveFileManager::getSavePath() const {
++#ifdef __EMSCRIPTEN__
++	// Report captures must never enter BrowserFS or the player's save cache.
++	if (EM_ASM_INT({ return !!globalThis.__scummwebDiagnosticSaves?.active; }))
++		return Common::Path("/tmp/scummweb-bug-report");
++#endif
+ 
+ 	Common::Path dir;
+ 
+diff --git a/base/main.cpp b/base/main.cpp
+--- a/base/main.cpp
++++ b/base/main.cpp
+@@ -272,7 +272,14 @@
+ 	return EM_ASM_INT({ return globalThis.__scummwebEndSaveScan ? globalThis.__scummwebEndSaveScan() : -1; });
+ }
+ 
++extern "C" EMSCRIPTEN_KEEPALIVE int scummweb_diagnostic_saves_supported() {
++	return 1;
++}
++
+ extern "C" EMSCRIPTEN_KEEPALIVE void scummweb_refresh_saves() {
++	// Temporary report saves are not player progress, including multi-file saves.
++	if (EM_ASM_INT({ return !!globalThis.__scummwebDiagnosticSaves?.active; }))
++		return;
+ 	if (scummwebMetaEngine)
+ 		scummwebReportSaves(*scummwebMetaEngine, scummwebEngineId, scummwebGameId, scummwebTarget);
+ }

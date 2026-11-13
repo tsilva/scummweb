@@ -255,6 +255,13 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
 
 ## Shared game menu
 
+- Bug-report snapshots redirect the default save manager to nonpersistent MEMFS
+  only during the native save operation. Suppress progress publication until all
+  output streams close; retain the active capture after a dispatched timeout
+  until its native acknowledgement. Require the native capability export before
+  dispatch so mixed shell/engine versions cannot write a diagnostic player save.
+  Never implement this by writing and deleting a normal library slot.
+
 - SCUMM's original menu imports voice mode during setup only when the active
   target contains both `subtitles` and `speech_mute`. A lone subtitle default
   can leave Full Throttle's demo in speech-only mode. Patch 99-subtitle-settings
