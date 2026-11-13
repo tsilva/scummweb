@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "myst-demo": {
+    ...retroGameArtwork["mohawk:myst"],
+    title: "Myst (Demo)",
+    media: "CD",
+    year: "1993",
+    language: "en",
+    summary: "Explore the mysterious library in an interactive preview of Cyan’s island adventure.",
+  },
   "sq6-demo": {
     ...retroGameArtwork["sci:sq6"],
     heroImageMobilePosition: "90% -20vh",

@@ -712,6 +712,13 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Myst (Demo)",
+      "status": "startup-verified",
+      "gameId": "mohawk:myst",
+      "edition": "myst-win-cd-demo-en.zip",
+      "observation": "English Windows CD demo reaches its original preview menu and interactive library. Native intro skip, library navigation and cold/cached starts work. This demo disables saving and loading, so Continue and startup checkpoints are unavailable."
+    },
+    {
       "title": "Myst",
       "status": "startup-verified",
       "gameId": "mohawk:myst",

@@ -1425,6 +1425,11 @@
       "file": "space-quest-6-roger-wilco-in-the-spinal-frontier-demo-0cdc8ecf6082f41753420a80cf3504b716a09c8150c19c923840888039d8ae10.jpg",
       "inputHash": "0cdc8ecf6082f41753420a80cf3504b716a09c8150c19c923840888039d8ae10",
       "imageHash": "7520989b668ca6bc716adcd0d5f170dc11df20754a8b5109d653745c31c492af"
+    },
+    "myst-demo": {
+      "file": "myst-demo-6cde6569c76447701ded59d04b0f4880603e8596e2e3d3eeffb17e99b059e320.jpg",
+      "inputHash": "6cde6569c76447701ded59d04b0f4880603e8596e2e3d3eeffb17e99b059e320",
+      "imageHash": "6d6dae3e5bf097bdfcae86307ac4204c0e3766b85478b6452b95064f0094c0c0"
     }
   }
 }

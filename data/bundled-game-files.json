@@ -9793,6 +9793,117 @@
           3626726544
         ]
       ]
+    },
+    "myst-demo": {
+      "url": "https://scummvm-games.tsilva.eu/myst.zip",
+      "fingerprint": "69cb240f847aa263521aaa369fef8dc7a314f8118be77892010a45481a0aa04f",
+      "files": [
+        [
+          "CREDITS.DAT",
+          1311270,
+          1751317893
+        ],
+        [
+          "DEMO.DAT",
+          488921,
+          3831070402
+        ],
+        [
+          "MAKING.DAT",
+          8377,
+          1530349071
+        ],
+        [
+          "MYST.INI",
+          41,
+          229452558
+        ],
+        [
+          "MYSTDEMO.INF",
+          30026,
+          1831624792
+        ],
+        [
+          "MYSTDEMO.PVL",
+          867200,
+          1426803899
+        ],
+        [
+          "QTW/INTRO/BRODER.MOV",
+          833242,
+          2545121629
+        ],
+        [
+          "QTW/INTRO/CYANLOGO.MOV",
+          872409,
+          1214316375
+        ],
+        [
+          "QTW/MAKING/MAKINGOF.MOV",
+          73646274,
+          222598190
+        ],
+        [
+          "QTW/MYST/APAGE0.MOV",
+          1435490,
+          2144771811
+        ],
+        [
+          "QTW/MYST/APAGE1.MOV",
+          4507815,
+          3341708259
+        ],
+        [
+          "QTW/MYST/LIBTWIRL.MOV",
+          97149,
+          2317263556
+        ],
+        [
+          "QTW/MYST/LIBTWIST.MOV",
+          178216,
+          3312907794
+        ],
+        [
+          "QTW/MYST/LSTRSDWN.MOV",
+          234231,
+          3684442109
+        ],
+        [
+          "QTW/MYST/LSTRSUP.MOV",
+          365925,
+          1376757688
+        ],
+        [
+          "QTW/MYST/SPAGE0.MOV",
+          828432,
+          749590116
+        ],
+        [
+          "QTW/MYST/SPAGE1.MOV",
+          4748826,
+          635450183
+        ],
+        [
+          "README.TXT",
+          4910,
+          2628066442
+        ],
+        [
+          "SLIDES.DAT",
+          9483618,
+          1854365890
+        ],
+        [
+          "SNEAK.DAT",
+          18062683,
+          3634151761
+        ],
+        [
+          "SYSTEM.DAT",
+          72,
+          633663555
+        ]
+      ]
     }
   }
 }
