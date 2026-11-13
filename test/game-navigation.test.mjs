@@ -231,20 +231,23 @@ test("Manage library exposes removal only on cards with imports", async () => {
   }
 });
 
-test("mixed version chooser protects included entries and bulk removal selects only imports", async () => {
+test("mixed version chooser protects included entries and offers individual trash buttons", async () => {
   const Chooser = await component("library-version-removal", {
-    react: { useRef: (current) => ({ current }), useEffect() {} },
+    react: { useRef: (current) => ({ current }), useState: (initial) => [initial, () => {}], useEffect() {} },
+    "lucide-react": { Trash2: "trash-icon", X: "close-icon" },
   });
   const bundled = { key: "catalog:sky", label: "Bundled CD" };
   const imported = { key: "source:custom", label: "Imported floppy", source: { id: "custom", name: "sky.zip" } };
   let removed;
   const item = { title: "Sky", versions: [bundled, imported] };
-  const tree = Chooser({ item, onRemove: (_, versions) => { removed = versions; } });
+  const tree = Chooser({ item, onRemove: async (_, versions) => { removed = versions; return true; } });
   const buttons = elements(tree).filter(({ type }) => type === "button");
+  assert.equal(buttons.length, 2, "only Close and the imported version's trash button are offered");
   assert.equal(buttons.some(({ props }) => props["aria-label"] === "Remove Bundled CD"), false);
-  buttons.find(({ props }) => props["aria-label"] === "Remove Imported floppy").props.onClick();
-  assert.deepEqual(Array.from(removed), [imported]);
-  buttons.find(({ props }) => props.children === "Remove imported versions").props.onClick();
+  const remove = buttons.find(({ props }) => props["aria-label"] === "Remove Imported floppy");
+  assert.equal(remove.props.title, "Remove Imported floppy");
+  assert.equal(remove.props.children.type, "trash-icon");
+  await remove.props.onClick({ currentTarget: {} });
   assert.deepEqual(Array.from(removed), [imported]);
 });
 

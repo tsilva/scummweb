@@ -824,7 +824,7 @@ button.nav-icon-link {
 }
 
 .library-removal-heading,
-.library-version-removal li {
+.library-removal-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -842,12 +842,55 @@ button.nav-icon-link {
   line-height: 1.5;
 }
 
+#library-removal-description {
+  font-size: 0.85rem;
+}
+
 .library-version-removal ul {
   display: grid;
-  gap: 1rem;
   padding: 0;
-  margin: 1.5rem 0;
+  margin: 1.5rem 0 0;
   list-style: none;
+}
+
+.library-version-removal li {
+  display: grid;
+  grid-template-rows: 1fr;
+  margin-bottom: 1rem;
+}
+
+.library-removal-row {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.library-removal-row > span:first-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.library-version-trash {
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0;
+}
+
+.library-version-removal li[data-removing] {
+  animation: library-version-remove 320ms ease-in-out forwards;
+}
+
+@keyframes library-version-remove {
+  0% { opacity: 1; grid-template-rows: 1fr; margin-bottom: 1rem; }
+  45% { opacity: 0; grid-template-rows: 1fr; margin-bottom: 1rem; }
+  100% { opacity: 0; grid-template-rows: 0fr; margin-bottom: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .library-version-removal li[data-removing] {
+    animation: none;
+  }
 }
 
 .library-version-removal small {

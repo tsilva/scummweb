@@ -155,7 +155,7 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
         })}
       </div>
       {removing && <LibraryVersionRemoval item={removing} disabled={importDisabled} notice={notice}
-        onRemove={removeVersions} onClose={() => {
+        onRemove={onRemove} onClose={() => {
           setRemoving(null);
           requestAnimationFrame(() => editButton.current?.focus({ preventScroll: true }));
         }} />}
