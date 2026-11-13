@@ -144,7 +144,7 @@ diff --git a/engines/mohawk/myst_stacks/intro.cpp b/engines/mohawk/myst_stacks/i
  		break;
  	default:
 +#ifdef __EMSCRIPTEN__
-+		ScummWebIntro::skipRequested(false);
++		ScummWebIntro::gameplayStarted();
 +#endif
  		if (_vm->isGameVariant(GF_DEMO))
  			_vm->changeToCard(2001, kTransitionRightToLeft);

@@ -321,3 +321,5 @@ retaining mouth tags and original logical SOU offsets. Saved speech streams must
 reconstruct the same line from the saved original offset. Keep the conversion
 bounded to one line and retain native DiMUSE playback and original-SOU behavior.
 Do not apply this exception to compressed DIG/COMI bundles or lossy FT formats.
+
+- Intro availability must cover Iceman’s credits (102) and Tahiti prologue (1), ending at first beach control. Use Return for its original any-key cancellation; Escape opens Sierra’s menu. Myst must finish startup at its linking book or demo menu so later polls cannot reopen Skip intro. Verify natural completion and an explicit skip.
