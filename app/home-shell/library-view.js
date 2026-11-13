@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Check, CircleCheck, ChevronDown, Plus, SlidersHorizontal } from "lucide-react";
 import { GamePoster } from "./library-cards";
@@ -19,11 +19,23 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
   const toggle = useRef(null);
   const [editing, setEditing] = useState(false);
   const [removing, setRemoving] = useState(null);
+  const [fadingRemoval, setFadingRemoval] = useState(null);
+  const [dismissedRemoval, setDismissedRemoval] = useState(null);
   const section = useRef(null);
   const editButton = useRef(null);
   const visible = useMemo(() => queryLibrary(items, query), [items, query]);
   const genres = useMemo(() => libraryFacet(items, "genre"), [items]);
   const changed = Boolean(query.genre) || query.sort !== defaultLibraryQuery.sort;
+  useEffect(() => {
+    if (!removal) return;
+    const fade = setTimeout(() => setFadingRemoval(removal), 5000);
+    const dismiss = setTimeout(() => setDismissedRemoval(removal), 5250);
+    return () => {
+      clearTimeout(fade);
+      clearTimeout(dismiss);
+    };
+  }, [removal]);
+
   const update = (field) => (event) => {
     browsing.query = { ...query, [field]: event.target.value };
     setQuery(browsing.query);
@@ -151,7 +163,8 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
           setRemoving(null);
           requestAnimationFrame(() => editButton.current?.focus({ preventScroll: true }));
         }} />}
-      {removal && createPortal(<div className="library-removal-notice" role="status" aria-live="polite" aria-atomic="true">
+      {removal && removal !== dismissedRemoval && createPortal(<div className="library-removal-notice"
+        data-dismissing={removal === fadingRemoval || undefined} role="status" aria-live="polite" aria-atomic="true">
         <CircleCheck size={22} aria-hidden="true" />
         <span>{removal.title} removed</span>
         <button type="button" disabled={importDisabled} onClick={async () => {

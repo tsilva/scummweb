@@ -762,6 +762,17 @@ button.nav-icon-link {
   background: var(--surface-high);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   font-size: 0.9rem;
+  transition: opacity 250ms ease-out;
+}
+
+.library-removal-notice[data-dismissing] {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .library-removal-notice {
+    transition: none;
+  }
 }
 
 .library-removal-notice > svg {
