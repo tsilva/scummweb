@@ -116,6 +116,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "gob3-demo": {
+    ...retroGameArtwork["gob:gob3"],
+    heroImageMobilePosition: "100% top",
+    title: "Goblins Quest 3 (Demo)",
+    year: "1993",
+    language: "en",
+    summary: "Join Blount and his parrot Chump aboard a sinking ship in the original English DOS interactive demo.",
+  },
   "gob2-demo": {
     ...retroGameArtwork["gob:gob2"],
     heroImageMobilePosition: "80% top",

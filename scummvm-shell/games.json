@@ -481,6 +481,16 @@
       "platform": "pc",
       "extra": "Interactive Demo (v1.01)",
       "readmeHref": ""
+    },
+    {
+      "target": "gob3-demo",
+      "title": "Goblins Quest 3 (Demo)",
+      "path": "/games/gob3",
+      "engineId": "gob",
+      "gameId": "gob3",
+      "platform": "pc",
+      "extra": "Interactive Demo 3 (v0.02)",
+      "readmeHref": "/launcher/notices/gob3.txt"
     }
   ]
 }

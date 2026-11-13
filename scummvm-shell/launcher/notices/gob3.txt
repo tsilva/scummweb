@@ -1,0 +1,22 @@
+                  ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+                  ³            Goblins 3            ³
+                  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
+                  ³ Requirements: Any PC with VGA   ³
+                  ³ Directory installed to: \GOB3   ³
+                  ³ To run type INSTALL             ³
+                  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+IN this playable demo of Goblins 3 you take on the role of one of the happy
+chappies, Blount, trying to save yourself, and your parrot friend Chump, from a
+sinking ship. When you first load the program from the MegaDisk you will need
+to run INSTALL in the GOB3 directory. Then make sure you are in the \DEMOGOB3
+directory and either type GOB3 to run the program or SETUP to configure it for
+your system.
+
+Before you can start playing you must wait until the introductory screens have
+finished. Use the mouse to point at an object. To move to it, click the left
+mouse button while clicking the right will bring up your inventory. To select
+an item from this, click on it.
+
+Tip: Point and click the left mouse button at the club to add it to your
+inventory. Click the right mouse button twice to use it. Click on the crown and
+point this at the screw which is holding up the hook.

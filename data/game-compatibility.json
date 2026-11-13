@@ -4432,6 +4432,13 @@
       "gameId": "gob:gob2",
       "edition": "Official English (GB) DOS interactive demo v1.01 (gob2-dos-demo-en.zip)",
       "observation": "The original title and village scene render. Click the title to enter the playable demo. Character selection and walking work. This demo does not offer saving through the game menu."
+    },
+    {
+      "title": "Goblins Quest 3 (Demo)",
+      "status": "startup-verified",
+      "gameId": "gob:gob3",
+      "edition": "Official English DOS interactive demo 3 v0.02 (gob3-dos-demo-en.zip)",
+      "observation": "The original title and ship scene render. Click the title to start the playable demo. Blount responds to walking input. This demo does not offer saving through the game menu."
     }
   ]
 }
