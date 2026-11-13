@@ -45,6 +45,10 @@ assigning production domains, use **Stage prebuilt deployment** from
 
 ## Game-library publishing
 
+For agent-operated unchanged demo uploads, use the separately provisioned and
+reviewed [game-only Runbox connection](game-publishing.md). Artwork access does
+not grant game publishing access.
+
 Game ZIPs ship separately from the app. Name each archive `<gameId>.zip`
 using [the catalog](../scummvm-shell/games.json) and put game files at its
 root. The public bucket must allow cross-origin GETs from ScummWEB.

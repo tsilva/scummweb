@@ -1,0 +1,80 @@
+version: 1
+default: game-publish
+profiles:
+  game-publish:
+    provider:
+      type: infisical
+      instance: https://app.infisical.com
+      project-id: 5078c850-3f93-46d8-8afe-82107df8b931
+      access-bundle: local-scummweb-games
+      source:
+        project-id: e1c358f8-0678-45d7-a2a8-270c2f29aadd
+        environment: dev
+        secret-path: /
+    session:
+      ttl: 10m
+      proxy: 127.0.0.1:8283
+    environment:
+      SCUMMWEB_GAME_PROXY_TOKEN: scummweb_game_proxy_placeholder
+    execution:
+      sandbox: macos-command
+      command: game-publish
+      argv:
+      - '{python}'
+      - -I
+      - -S
+      - -B
+      - '{repo}/scripts/game-publishing/client.py'
+      - publish
+      - http://127.0.0.1:61788
+      arguments:
+      - - pattern: '[a-z0-9][a-z0-9-]{0,63}'
+      probe-argv:
+      - '{python}'
+      - -I
+      - -S
+      - -B
+      - '{repo}/scripts/game-publishing/client.py'
+      - check
+      - http://127.0.0.1:61788
+      integrity:
+        files:
+        - scripts/game-publishing/client.py
+        - scripts/game-publishing/relay.py
+        - scripts/game-publishing/plan.py
+      permissions:
+        read:
+        - directory: '{python-root}'
+        - file: '{repo}/scripts/game-publishing/client.py'
+        - file: '{ca-file}'
+        write: []
+        execute:
+        - '{python}'
+        deny-all-writes: true
+      inputs:
+        game-plan:
+          argument: 1
+          when-prefix:
+          - game-publish
+          root: repo
+          exclude:
+          - .internal
+          allow:
+          - .internal/evidence
+          path-template: .internal/evidence/game-publishing/{argument}/plan.json
+    services:
+      lock: '{game-base}/session.lock'
+      processes:
+      - argv:
+        - '{python}'
+        - -I
+        - -S
+        - -B
+        - '{repo}/scripts/game-publishing/relay.py'
+        - '{game-policy}'
+        - '{game-plan}'
+        cwd: '{repo}'
+        ready:
+          ready: true
+          port: 61788
+        timeout: 8

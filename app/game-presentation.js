@@ -116,6 +116,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "gk1-demo": {
+    ...retroGameArtwork["sci:gk1"],
+    title: "Gabriel Knight: Sins of the Fathers (Demo)",
+    year: "1993",
+    language: "en",
+    summary: "Investigate New Orleans as Gabriel Knight in the original English playable Day One demo.",
+  },
   "gob3-demo": {
     ...retroGameArtwork["gob:gob3"],
     heroImageMobilePosition: "100% top",
