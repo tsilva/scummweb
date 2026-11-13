@@ -44,16 +44,10 @@ Use Node.js 22 (the CI-tested version) and pnpm 10.27.0.
 git clone https://github.com/tsilva/scummweb.git
 cd scummweb
 pnpm install --frozen-lockfile
-pnpm run dev:app --port auto
+pnpm run dev --port auto
 ```
 
-Open the printed URL and select **Beneath a Steel Sky → Play**. This setup
-needs no Infisical login.
-
-For agent-operated Sentry reads on a provisioned Mac, run
-`pnpm sentry:check:vault` or `pnpm sentry:issues:vault -- --limit 10`.
-The reader uses the scoped Vault proxy. See the
-[Sentry access guide](docs/maintaining-scummweb.md#sentry-issue-reads-through-agent-vault).
+Open the printed URL and select **Beneath a Steel Sky → Play**.
 
 ## Further reading
 

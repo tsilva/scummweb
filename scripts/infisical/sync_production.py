@@ -9,8 +9,7 @@ PRODUCTION_KEYS = (KEY, "SENTRY_SMOKE_TEST_TOKEN")
 
 class Production(Infisical):
     def __init__(self):
-        super().__init__(ROOT)
-        self.project = PROJECT
+        super().__init__(ROOT, project=PROJECT)
         if self.domain != "https://app.infisical.com":
             raise SecretError("This production destination is pinned to the US cloud.")
     def command(self, args, value=None):

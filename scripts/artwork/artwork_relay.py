@@ -5,6 +5,7 @@ import datetime
 import hashlib
 import hmac
 import json
+from pathlib import Path
 import re
 import sys
 import urllib.error
@@ -256,21 +257,52 @@ def server(bridge, port):
     return Server(("127.0.0.1", port), Handler)
 
 
-def main():
-    from pathlib import Path
+def load_plan(manifest_path, active_path, logical=None):
+    """Validate the bounded immutable plan before exposing the signing listener."""
+    manifest_path, active_path = Path(manifest_path), Path(active_path)
+    for path in [manifest_path, active_path]:
+        if not path.is_absolute() or path.resolve() != path or not path.is_file():
+            raise ValueError("Artwork paths must be canonical regular files")
+    if manifest_path.stat().st_size > 4 * 1024 * 1024:
+        raise ValueError("Oversized artwork plan")
+    plan = json.loads(manifest_path.read_text())
+    if plan.get("baseHash") != digest(active_path.read_bytes()):
+        raise ValueError("Artwork plan is stale")
+    entries(plan)
+    if logical is not None:
+        if logical not in plan["files"]:
+            raise ValueError("Object outside approved plan")
+        plan = {**plan, "files": {logical: plan["files"][logical]}}
+    directory = manifest_path.parent / "objects"
+    if not directory.is_dir() or directory.resolve() != directory:
+        raise ValueError("Expected canonical artwork objects")
+    # The child receives this selected directory. Never grant a linked subtree.
+    for path in directory.rglob("*"):
+        if path.is_symlink():
+            raise ValueError("Object links are not allowed")
+    for entry in entries(plan).values():
+        source = directory / entry["key"]
+        if source.resolve() != source:
+            raise ValueError("Object links are not allowed")
+        if source.exists():
+            if not source.is_file() or source.stat().st_size != entry["bytes"] or digest(source.read_bytes()) != entry["sha256"]:
+                raise ValueError("Artwork bytes changed")
+        elif logical is not None:
+            raise ValueError("Single-object publishing requires its planned local bytes")
+    return plan
 
-    if len(sys.argv) != 2:
-        raise ValueError()
+
+def main():
+    if len(sys.argv) != 5:
+        raise ValueError("Expected policy, manifest, active mapping and logical selector")
     policy = json.loads(Path(sys.argv[1]).read_text())
-    if (
-        set(policy) != {"version", "listen_port", "credential_sha256", "check_object"}
-        or policy["version"] != 1
-    ):
-        raise ValueError()
-    raw = sys.stdin.buffer.read(4 * 1024 * 1024 + 1)
-    if len(raw) > 4 * 1024 * 1024:
-        raise ValueError()
-    plan = json.loads(raw)
+    if (set(policy) != {"version", "listen_port", "credential_sha256", "check_object"}
+            or type(policy["version"]) is not int or policy["version"] != 1
+            or type(policy["listen_port"]) is not int or not 1024 <= policy["listen_port"] <= 65535
+            or not re.fullmatch(r"[a-f0-9]{64}", policy["credential_sha256"])):
+        raise ValueError("Invalid signing policy")
+    manifest, active, logical = sys.argv[2:]
+    plan = None if manifest == "/dev/null" else load_plan(manifest, active, None if logical == "/dev/null" else logical)
     with server(Bridge(policy, plan), policy["listen_port"]) as http:
         print(json.dumps({"ready": True, "port": http.server_port}), flush=True)
         http.serve_forever()

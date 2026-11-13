@@ -50,7 +50,7 @@ function parseArgs(argv) {
     }
 
     if (arg === "--env-file") {
-      throw new Error("Private env-file overrides are not supported; use the reviewed Vault reader.");
+      throw new Error("Private env-file overrides are not supported; configure the process environment.");
     }
 
     throw new Error(`Unknown argument: ${arg}`);
@@ -70,11 +70,14 @@ function parseArgs(argv) {
 function validateEnv(env) {
   const token = env.SENTRY_AUTH_TOKEN || "";
 
-  if (env.SENTRY_VAULT_TRANSPORT !== "agent-vault" || token !== "sentry_read_public_placeholder") {
-    throw new Error("SENTRY_AUTH_TOKEN must be the public placeholder from the reviewed Vault launcher.");
-  }
-  if (env.SENTRY_ORG !== "tsilva" || env.SENTRY_PROJECT !== "scummweb" || !env.SENTRY_BASE_URL) {
-    throw new Error("Expected the reviewed ScummWEB Sentry binding.");
+  if (!token) throw new Error("SENTRY_AUTH_TOKEN is required.");
+  if (env.SENTRY_VAULT_TRANSPORT) {
+    if (env.SENTRY_VAULT_TRANSPORT !== "agent-vault" || token !== "sentry_read_public_placeholder") {
+      throw new Error("Expected the public placeholder from the reviewed access route.");
+    }
+    if (env.SENTRY_ORG !== "tsilva" || env.SENTRY_PROJECT !== "scummweb" || !env.SENTRY_BASE_URL) {
+      throw new Error("Expected the reviewed ScummWEB Sentry binding.");
+    }
   }
 }
 

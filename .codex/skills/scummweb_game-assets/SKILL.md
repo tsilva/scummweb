@@ -63,7 +63,9 @@ remain distinct actions within the user's requested scope.
 5. After activation, run `pnpm run artwork:retire-local`. It verifies public delivery again, preserves exact private copies, and removes registered image files from local source and staging directories. It rejects changed originals and preserves notices and skip-intro saves. Keep older R2 objects available for older deployments.
 6. Run `pnpm run prepare` and the relevant verification below. Commit the mappings, credits, storage and rendition manifests, and any intended source-image deletions when committing is authorized. A publishing request does not itself authorize a Git push or deployment.
 
-The existing Infisical publisher passes the scoped S3 key pair into its subprocess. Under the repository's proxy-first access policy, use a reviewed compatible broker when available; otherwise obtain explicit authorization for that raw credential operation before running it. Approval for an earlier migration is not approval for a later upload. Never display or persist keys, add dotenv fallbacks, reuse another project's credentials, or broaden access to bypass a missing route.
+Publishing requires approval of the exact artwork plan and authorized bucket access.
+Keep credentials out of logs, files and browser assets. Do not broaden access or
+bypass failed authorization to complete an upload.
 
 For verification-only requests, run `pnpm run artwork:plan` to prepare the intended image set, then `pnpm run artwork:verify`. Verification reads public objects without publishing, activating, or retiring files and requires no storage credentials. Unpublished local revisions in the plan can legitimately fail public verification.
 
@@ -79,6 +81,6 @@ The storage manifest's optional `images` map activates optimized fallbacks and c
 ## Verification
 
 - Use the bundled Browser runtime. Initialize `browser-client`, explicitly select Brave with `agent.browsers.get("brave")`, and read its documentation. Follow the repository's browser policy if the connection is unavailable.
-- Reuse a suitable preview or start `pnpm run dev:app --port auto`, then report the printed URL. Verify the visible cover and any hero or screenshot placement on the affected route. For a newly supported personal import, drop the actual ZIP into the local app and verify that ScummVM detects the intended edition and renders a game frame.
+- Reuse a suitable preview or start `pnpm run dev --port auto`, then report the printed URL. Verify the visible cover and any hero or screenshot placement on the affected route. For a newly supported personal import, drop the actual ZIP into the local app and verify that ScummVM detects the intended edition and renders a game frame.
 - Check that affected covers, heroes, gallery images, and responsive candidates load directly from R2 and that source credits remain present. After retirement, verify with local originals absent; include a fresh-cache public-image read when changing build-time artwork loading.
 - Run `pnpm run lint` and relevant tests, including artwork storage, posters, social cards, and imported-game metadata. For storage or publishing changes, also run the synthetic Python artwork publisher and credential-isolation tests, then a production build in an output directory separate from any running server. Use the Chrome/Chromium verification harness only when the user explicitly selects that browser.

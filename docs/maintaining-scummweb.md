@@ -235,6 +235,9 @@ exact engine detection; it also has no saving through the ScummWEB game menu.
 Goblins Quest 3’s English interactive demo likewise starts from a clickable title
 and enters its ship scene directly, with no intro checkpoint or menu saving.
 
+Gabriel Knight’s Day One demo retains its original Intro/Play menu. Choose Play
+to enter the bookshop; native saves and restore are supported.
+
 Humongous games can load legacy DXA conversions when the requested DAT or SMK
 movie is absent. Existing original movies take precedence; a converted movie
 does not replace a corrupt original or other missing game resources.
@@ -277,10 +280,8 @@ Legacy lossy FT speech and recompressed DIG/COMI bundles remain unsupported.
 ### Development commands
 
 Follow the [README quickstart](../README.md#run-locally) for a credential-free
-server. Both development launchers run without private service credentials or
-an Infisical login. `pnpm secrets:check` verifies credential absence without
-retrieving source values. For agent-operated issue reads, use the
-[Vault reader](#sentry-issue-reads-through-agent-vault).
+server. Development needs no private service credentials. `pnpm secrets:check` verifies credential absence without
+retrieving source values.
 
 | Command | Purpose |
 | --- | --- |
@@ -313,48 +314,10 @@ For mobile changes, check the launcher, settings, gallery, and player at
 rotation, fullscreen refusal, audio, and touch input on physical Android and
 iOS devices before claiming device coverage.
 
-### Sentry issue reads through Agent Vault
+### Sentry issue reads
 
-On a provisioned macOS checkout:
-
-```sh
-pnpm sentry:check:vault
-pnpm sentry:issues:vault -- --days 14 --limit 10 --query 'is:unresolved'
-```
-
-The existing `pnpm sentry:issues -- --days 14 --limit 10` command selects this
-same sandboxed reader. It does not load the source token into its environment.
-
-The check reads project metadata. The issue command executes the existing reader
-with its supported days, limit, query and help options. Explicit `--env-file`
-overrides are rejected. The reader never opens dotenv files and rejects raw tokens;
-the separate
-native sandbox independently denies credential files and direct outbound sockets.
-The child receives `sentry_read_public_placeholder` and a short-lived proxy session.
-
-The source mapping is the native `.infisical.json` project, Development `/`,
-`SENTRY_AUTH_TOKEN` at `https://app.infisical.com`. Trusted setup copies that exact
-source in memory into `local-scummweb-sentry-read`. The GET-only service targets
-`/api/0/projects/tsilva/scummweb/` on `sentry.io`. The transport validates project
-identity and converts the existing project-filtered organization issue query into
-the matching project endpoint, preserving its date/query behavior.
-
-Protected metadata under `~/.config/infisical/sentry-readers/scummweb.json` pins
-source identity, launcher, reader, native sandbox, Node, CLI and public proxy CA.
-The reader pins Infisical 0.45.6 and explicitly selects the reviewed Agent Vault
-project. Changed pins require trusted review. After source rotation, a trusted administrator
-must refresh this one Vault credential and rerun the metadata check. Ordinary
-startup never fetches source values, approves new pins or falls back to injection.
-The trusted proxy, administrator and other full-access host processes remain
-outside the child sandbox boundary.
-
-Fake verification exercises the actual reader, credential replacement, filtered
-metadata, native write/other-project/prefix-sibling/traversal denial and protected
-file/direct-TCP denial, plus suppression of reflected credentials in error bodies.
-The bounded live check reads project metadata only. General game-batch publishing
-still requires a separate compatibility review; its historical raw-credential
-launcher is not an ordinary agent fallback. Artwork uses the reviewed routes
-below. Production delivery remains separate.
+`pnpm sentry:issues -- --days 14 --limit 10` uses the process's explicitly configured
+Sentry credentials, organization and project. It never opens dotenv files. Failed authentication stops the read.
 
 ## Maintaining game compatibility
 
@@ -487,7 +450,7 @@ include the compiled stories and their license and source information.
 To preview staged packages, run
 `python3 -m http.server 0 --bind 127.0.0.1 --directory dist/games`.
 Point `SCUMMVM_GAMES_ORIGIN` at that server and start
-`pnpm run dev:app --port auto`. Publish and verify each ZIP before deploying
+`pnpm run dev --port auto`. Publish and verify each ZIP before deploying
 its catalog entry. See [game-library publishing](production-delivery.md#game-library-publishing).
 
 ## Game launch analytics
@@ -547,165 +510,29 @@ it can cause high-cardinality aggregation. Exact launch matching requires raw
 events; aggregate Data API counts alone are not a matched funnel. These changes
 do not configure an export or provision another service.
 
-Verify the registration through the approved installed GA4 reporting route:
+Validate these names through the property’s reporting API after registration.
+
+### Artwork signing relay
+
+The signing relay limits requests to the approved immutable artwork plan.
+Access verification performs HEAD for one pinned existing object and reads no
+object body. Publishing requires separate approval of the exact plan. Before
+listening, the relay checks the active mapping hash, canonical nonlinked workspace,
+content-addressed keys, MIME types, checksums and limits of 512 objects and 2 MiB
+per object. The single-object route selects one exact logical entry and requires
+its planned local bytes; its signer cannot access sibling entries.
+
+Creates use `If-None-Match: *`; existing objects are verified without overwrites.
+The publisher verifies bytes and immutable cache metadata after delivery. These
+routes include no games, pruning, bucket administration or automatic activation.
+Keep the signing policy private and credential rotation separate from publishing.
+Failed authentication stops the operation.
+
+Run synthetic signer and plan checks without provider access:
 
 ```sh
-infisical-token-broker refresh ga4-reporting
-pnpm analytics:check:vault YYYY-MM-DD YYYY-MM-DD
+pnpm test:artwork-relay
 ```
-
-Supply explicit report dates. The check resolves ScummWEB from the approved
-local property inventory and uses only the installed sandboxed `runReport`
-launcher. It prints schema acceptance, not visitor data; successful empty or
-`(not set)` rows verify registration, not event delivery. Access or registration
-failures stop without credential or API fallbacks. Preserve an enabled shared
-renewal service; follow the installed reporting guide for isolated-batch cleanup.
-
-### Identifying automated and internal traffic
-
-GA4 receives `traffic_type` and `automation_reason` before its initial config,
-so automatic page views and enhanced-measurement events are classified too.
-Catalog events carry the same fields explicitly.
-
-- `automated`: `navigator.webdriver`, a Lighthouse/headless user agent, or an
-  explicit automation marker. The reason is `webdriver`, `lighthouse`,
-  `headless`, or `declared`.
-- `internal`: a non-production origin or an explicit internal marker, with
-  reason `none`.
-- `external`: unmarked production traffic, with reason `none`. This is not a
-  guarantee of a human visitor; automation can hide its browser signals.
-
-Open `/?analytics_traffic=internal` for internal testing, or
-`/?analytics_traffic=automated` for an automated audit. The explicit setting
-persists through same-tab navigation in session storage; use
-`/?analytics_traffic=external` to clear it. Storage failures do not prevent page
-startup. Browser automation can instead set
-`window.__scummwebAnalyticsTraffic = "automated"` before page scripts execute.
-The shared Lighthouse workflow blocks analytics requests and requires a URL
-without a query string, so its configured audit URL needs no marker. Other
-audits can supply the marker when collecting analytics intentionally. Standard
-WebDriver-controlled game sessions are detected automatically. Ordinary
-browser/OS combinations, country, and low engagement are not automation signals.
-
-For prospective audience reports, filter production hostname and
-`customEvent:traffic_type = external`; exclude Portugal separately only when the
-analysis requests it. Keep unclassified historical traffic separate rather than
-retroactively calling it human or automated. Use report filters; identifying
-traffic does not require activating irreversible GA4 collection filters.
-
-Use a closed GA4 funnel from attempt to launch to 30 seconds, 60 seconds, and the
-five-minute milestone. Use **Event count** for visit-level event totals and
-analyze failures separately. Session counts containing each event describe
-session coverage, not one-to-one launch outcomes.
-
-## Artwork storage and publishing
-
-[`data/artwork-storage.json`](../data/artwork-storage.json) maps logical
-`/launcher/` paths to content-addressed R2 objects when `published` is true.
-It records checksums and HTTP metadata, optional responsive variants, and
-inline previews. Keep older objects for deployments that still reference them.
-Mappings, source credits, branding, notices, and intro saves stay in Git.
-
-Use the same `SCUMMWEB_ARTWORK_WORKSPACE` slug throughout an operation.
-Separate slugs isolate concurrent private plans under `.internal/evidence/`.
-The default is `artwork-migration`. A stale plan cannot activate.
-
-1. Stage originals under `scummvm-shell/launcher/`, update the logical paths
-   and credits, then run `pnpm run generate:artwork`.
-2. Run `pnpm run artwork:plan`. It keeps the active manifest, records exact
-   input bytes, and generates small previews. For previously published
-   originals missing previews, use `node scripts/artwork-storage.mjs placeholders`.
-3. Publish the approved plan through the
-   [batch Vault route](#batch-artwork-publishing-through-agent-vault).
-   The existing human `pnpm run publish:artwork` launcher remains unchanged;
-   agents must not use its raw credential injection as a fallback. For one object, use the
-   [sandboxed publisher](#single-object-publishing-through-agent-vault).
-4. Run `pnpm run artwork:verify`, then `pnpm run artwork:activate`. Activation
-   independently checks public bytes, MIME type, length, and immutable cache
-   metadata before switching the tracked manifest.
-5. Run `pnpm run artwork:retire-local` after activation. It verifies delivery
-   again, preserves exact private copies, and removes matching originals from
-   source and staging directories. Changed originals are rejected.
-6. Run `pnpm run prepare`, `pnpm lint`, `pnpm test`, and `pnpm build`. Verify
-   covers, heroes, galleries, and source credits in the browser.
-
-For a full optimization pass, publish and activate new originals first, then
-run `pnpm run optimize:artwork` and plan, publish, and verify its delivery
-variants. Normal builds use public or cached checksum-verified source images
-and need no R2 writer credentials. Artwork downloads make up to three attempts
-for connection failures, timeouts, HTTP 408/429 and server errors, with a fresh
-30-second timeout per attempt. Missing or forbidden files and integrity failures
-fail immediately. Errors identify the logical artwork path and failure.
-CI restores the content-addressed `.cache/artwork` between runs; every cached
-image still passes the manifest's byte-count and SHA-256 checks before use.
-
-### Batch artwork publishing through Agent Vault
-
-Use the opt-in macOS route for the existing batch publisher:
-
-```sh
-pnpm artwork:check:vault
-pnpm publish:artwork:vault WORKSPACE
-```
-
-`check` performs only an authenticated HEAD request for one pinned existing
-artwork object. It verifies size, content type and cache policy, without reading
-object bytes or changing R2. Publishing requires separate approval of the exact
-planned artwork; verification of this route does not authorize an upload.
-
-The protected local profile must already be provisioned by trusted administration.
-The launcher pins Infisical CLI 0.45.6 and the reviewed Agent Vault project; it
-rejects noncanonical protected paths and changed source/runtime hashes.
-It binds the native ScummWEB Development `/` source pair to the dedicated
-`local-scummweb-artwork-batch` bundle. Agent Vault supplies the pair to a trusted
-R2 signing relay through its credential header. The sandboxed publisher receives
-only a public placeholder and a short-lived proxy session. The relay's upstream
-is pinned to `scummvm-games`; it exposes neither keys nor presigned URLs.
-Ordinary starts never retrieve source secrets. After rotating either source key,
-trusted administration must update the Vault copy and the protected policy digest.
-
-Each invocation reviews the selected plan's current base hash, canonical object
-keys, MIME types and checksums. Limits are 512 objects and 2 MiB per object;
-symlinked workspaces and object paths are rejected. Only the exact plan is
-accepted by the relay. Missing objects use `If-None-Match: *`; existing objects
-are verified without overwriting them. There is no pruning, game publishing,
-bucket administration, multipart transfer or automatic activation. Large objects
-need a separate compatibility review rather than a raw-key fallback.
-
-The local signer and policy are owner-only and checksum-pinned. The publisher
-runs in a macOS sandbox that permits the native proxy and selected artwork files,
-blocks direct sockets and private credential files, and denies writes. This
-protects the sandboxed child; full-access same-user processes and the host remain
-trusted. An unavailable profile, changed source/runtime or failed authentication
-stops the operation. Existing app, build, production and human command defaults
-remain unchanged.
-
-Synthetic regression checks require no provider access:
-
-```sh
-python3 -I -S -B scripts/infisical/test_artwork_vault.py
-python3 -B -m unittest discover -s scripts -p test_artwork_storage.py
-```
-
-The second command uses the existing publisher's `boto3` test dependency. The
-Vault publisher itself uses the Python standard library and does not load SDK
-credential discovery, dotenv files or site startup hooks.
-
-### Single-object publishing through Agent Vault
-
-Use the sandboxed macOS publisher with the local Infisical Agent Vault proxy
-and Python with `boto3`. Supply the plan workspace and exact logical path of
-one object up to 2 MiB.
-
-```sh
-python3 scripts/infisical/publish_immutable_artwork.py WORKSPACE /launcher/optimized/ARTWORK.avif --publish
-```
-
-Omit `--publish` for the synthetic relay test. Publishing also runs that test,
-checks R2, and uses a trusted five-minute conditional PUT for the planned
-object. The sandboxed process receives a placeholder and reaches only the
-local relay. The publisher verifies public bytes and cache policy. Activate
-only after the entire plan passes verification.
 
 ### Generated heroes and card box art
 
@@ -762,6 +589,15 @@ Maintain game metadata, logical artwork paths, and per-image credits in
 [`app/game-presentation.js`](../app/game-presentation.js) and
 [`app/retro-game-artwork.json`](../app/retro-game-artwork.json).
 Give each recognized game a summary, studio, genre, and metadata sources.
+Keep its specific `genre` description and set an explicit `category` from
+`libraryCategories` in `app/home-shell/library-query.mjs` for library filtering
+and sorting. Preserve the category when sharing metadata with demos and imports.
+Use Sports for the Backyard sports games, Cards & board games for card and
+board collections, Family & education for children's activities and adventures,
+and Animation for the non-interactive Christmas cards. Genre inference remains
+a fallback for older imports without a category.
+Give every bundled target play-style and theme launch tags in
+`app/game-player/launch-tags.mjs`; year and platform come from edition metadata.
 Record unresolved credits in `metadataNote`. Keep remakes and demos distinct,
 and share art across editions when it accurately represents the game.
 Prefer three distinct gameplay captures showing locations, puzzles, or actions.

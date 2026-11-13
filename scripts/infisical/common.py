@@ -25,18 +25,6 @@ class SecretError(Exception):
     """Only fixed, credential-free messages cross the CLI boundary."""
 
 
-def configuration(root=ROOT):
-    try:
-        settings = json.loads((root / ".infisical.json").read_text())
-        project = str(UUID(settings["workspaceId"]))
-        domain = settings.get("domain", "https://app.infisical.com")
-        if domain not in ("https://app.infisical.com", "https://eu.infisical.com"):
-            raise ValueError()
-        return project, domain
-    except Exception:
-        raise SecretError("Run infisical init in this repository and set its US/EU domain in .infisical.json.") from None
-
-
 def cli_environment():
     # This workflow deliberately uses the human login saved by infisical login.
     return {key: value for key, value in os.environ.items()
@@ -44,9 +32,11 @@ def cli_environment():
 
 
 class Infisical:
-    def __init__(self, root=ROOT):
+    def __init__(self, root=ROOT, *, project=PUBLISHER_PROJECT, domain="https://app.infisical.com"):
         self.root = root
-        self.project, self.domain = configuration(root)
+        self.project, self.domain = str(UUID(project)), domain
+        if domain != "https://app.infisical.com":
+            raise SecretError("The trusted destination is pinned to the US cloud.")
 
     def command(self, args, value=None):
         command = ["infisical", *args, "--projectId", self.project,
@@ -81,15 +71,6 @@ class Infisical:
         except Exception:
             raise SecretError("Unexpected Infisical response or duplicate secrets; raw output suppressed.") from None
 
-    def read_publisher_credentials(self):
-        if self.project != PUBLISHER_PROJECT or self.domain != "https://app.infisical.com":
-            raise SecretError("Publishing requires the pinned ScummWeb Development vault.")
-        return {
-            key: self.command(["secrets", "get", key, "--plain", "--expand=false",
-                               "--include-imports=false", "--secret-overriding=false"]).rstrip("\r\n")
-            for key in PUBLISHER_KEYS
-        }
-
     def create_and_verify(self, key, value):
         # CLI reads the exact bytes from stdin. No credential appears in argv or a file.
         # The human-login CLI resolves @/dev/stdin before issuing its request.
@@ -107,36 +88,3 @@ class Infisical:
 
 def matches(left, right):
     return hmac.compare_digest(left.encode(), right.encode())
-
-
-def application_environment(values):
-    if any(values.get(key) for key in KEYS):
-        raise SecretError("Local app commands cannot receive service credentials; use the reviewed Vault route.")
-    environment = cli_environment()
-    for key in list(environment):
-        public = key.startswith(("NEXT_PUBLIC_", "VITE_", "PUBLIC_"))
-        if not public and re.search(r"TOKEN|SECRET|PASSWORD|PASSWD|API_KEY|ACCESS_KEY|PRIVATE_KEY|DATABASE_(URL|DSN)|CREDENTIAL", key):
-            del environment[key]
-    for key in KEYS:
-        # Next.js preserves existing process.env entries, including empty ones.
-        # Local commands must not fall back to an old dotenv credential.
-        environment[key] = ""
-    return environment
-
-
-def publisher_environment(values):
-    for key, expected in PUBLISHER_TARGET.items():
-        if os.environ.get(key) not in (None, "", expected):
-            raise SecretError("Publishing target overrides are not supported.")
-    for key, length in zip(PUBLISHER_KEYS, (32, 64)):
-        if not re.fullmatch(r"[a-f0-9]{" + str(length) + r"}", values.get(key, "")):
-            raise SecretError("The managed R2 publishing credential pair is missing or invalid.")
-    environment = {
-        key: value for key, value in cli_environment().items()
-        if not key.startswith(("AWS_", "R2_", "INFISICAL_"))
-    }
-    # Empty values also block the uploader's setdefault-based dotenv fallback.
-    environment.update({key: "" for key in KEYS})
-    environment.update({key: values[key] for key in PUBLISHER_KEYS})
-    environment.update(PUBLISHER_TARGET)
-    return environment
