@@ -8,6 +8,7 @@ import GameSelectionLink from "./game-selection-link";
 import { defaultLibraryQuery, libraryFacet, queryLibrary } from "./library-query.mjs";
 import LibraryEditCard from "./library-edit-card";
 import LibraryVersionRemoval from "./library-version-removal";
+import { removableLibraryVersions } from "./library-removal.mjs";
 
 // Keep browsing choices across client-side game routes in this tab.
 const browsing = { open: false, query: defaultLibraryQuery };
@@ -25,6 +26,7 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
   const editButton = useRef(null);
   const visible = useMemo(() => queryLibrary(items, query), [items, query]);
   const genres = useMemo(() => libraryFacet(items, "genre"), [items]);
+  const hasImportedGames = items.some((item) => removableLibraryVersions(item).length > 0);
   const changed = Boolean(query.genre) || query.sort !== defaultLibraryQuery.sort;
   useEffect(() => {
     if (!removal) return;
@@ -53,7 +55,7 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
   function finishEditing() {
     setEditing(false);
     setRemoving(null);
-    editButton.current?.focus({ preventScroll: true });
+    (hasImportedGames ? editButton.current : toggle.current)?.focus({ preventScroll: true });
   }
 
   async function removeVersions(item, versions) {
@@ -84,7 +86,7 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
           <SlidersHorizontal size={17} aria-hidden="true" />
           <ChevronDown size={16} aria-hidden="true" className={open ? "is-open" : undefined} />
         </button>
-        {onRemove && <button ref={editButton} type="button" className={`secondary-button library-edit-toggle${editing ? " library-edit-done" : ""}`}
+        {onRemove && (hasImportedGames || editing) && <button ref={editButton} type="button" className={`secondary-button library-edit-toggle${editing ? " library-edit-done" : ""}`}
           aria-pressed={editing} disabled={importDisabled} onClick={editing ? finishEditing : editLibrary}>
           {editing && <Check size={17} aria-hidden="true" />}{editing ? "Done" : "Manage library"}
         </button>}
@@ -142,7 +144,7 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
           const fileStatus = versions.every(({ status }) => status === "checking") ? "Checking files"
             : "Locate files";
           return (
-            <LibraryEditCard key={key} item={item} editing={editing} disabled={importDisabled || !onRemove} onEdit={editLibrary}
+            <LibraryEditCard key={key} item={item} editing={editing} disabled={importDisabled || !onRemove || !hasImportedGames} onEdit={editLibrary}
               onRemove={(item) => item.versions.length > 1 ? setRemoving(item) : removeVersions(item, item.versions)}>
               <GameSelectionLink game={game} aria-current={key === selectedKey ? "page" : undefined}
                 aria-disabled={editing || undefined} tabIndex={editing ? -1 : undefined} draggable={false}
@@ -164,7 +166,7 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
         <CircleCheck size={22} aria-hidden="true" />
         <span>{removal.title} removed</span>
         <button type="button" disabled={importDisabled} onClick={async () => {
-          if (await onUndo()) editButton.current?.focus({ preventScroll: true });
+          if (await onUndo()) requestAnimationFrame(() => editButton.current?.focus({ preventScroll: true }));
         }}>Undo</button>
       </div>, document.body)}
     </section>

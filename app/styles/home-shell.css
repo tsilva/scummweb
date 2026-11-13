@@ -622,6 +622,12 @@ button.nav-icon-link {
   contain-intrinsic-size: 36rem;
 }
 
+#library {
+  /* Keep the 5px focus ring and 2px button lift inside the paint containment. */
+  margin-top: -7px;
+  padding-top: 7px;
+}
+
 /* Anchor navigation focuses the library container; its controls keep their own rings. */
 #library:focus,
 #game-library-heading:focus {
