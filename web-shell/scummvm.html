@@ -83,6 +83,7 @@ if (window.parent !== window && scummwebLaunchUrl.searchParams.get("hostCompatib
 const agentSaveScope = scummwebLaunchUrl.searchParams.get("agentSaveScope");
 /*__SCUMMWEB_AGENT_CONTROLS__*/
 /*__SCUMMWEB_PLAYER_CONTROLS__*/
+/*__SCUMMWEB_DIAGNOSTIC_SAVES__*/
 if (agentSaveScope && /^[a-f0-9]{64}$/.test(agentSaveScope)) installAgentControls(window, agentSaveScope);
 else if (window.parent !== window && scummwebLaunchUrl.searchParams.get("hostPlayer") === "1" &&
     agentSaveScope === null && !scummwebLaunchUrl.searchParams.has("saveQuery")) {
@@ -490,6 +491,7 @@ function setupFilesystem() {
       ? installMissingCatalogTarget().then(setupSkipIntroSaves)
       : undefined)
     .then(() => !scummwebLaunchUrl.searchParams.has("saveQuery") ? setupGameDefaults() : undefined)
+    .then(() => { if (window.scummwebPlayerControls) installDiagnosticSaves(window, FS, Module); })
     .then(() => globalThis.__scummwebInstallContinueSaves?.({ scope: window, FS, Module,
       launchUrl: scummwebLaunchUrl, assetUrl: buildVersionedAssetUrl }));
   Promise.all([window.ScummvmFSReady, localFilesReady])

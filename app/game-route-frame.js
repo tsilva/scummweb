@@ -983,6 +983,7 @@ export default function GameRouteFrame({
         title={title}
       />
       {!isExiting && <GamePlayerControls
+        reportGame={{ ...game, source: catalogLaunch ? "catalog" : "local" }}
         autoHide={bootState.hasBootPresentationCompleted && !showBootOverlay && !immersiveMode.isMobileViewport && !remoteToolbarOpen && !gameMenuOpen}
         compatibilityWarnings={waitingForLandscape ? [] : compatibilityWarnings}
         frameRef={frameRef}

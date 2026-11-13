@@ -42,6 +42,7 @@ BUILD_FILES = (
     "web-shell/audio-start-control.mjs",
     "web-shell/canvas-fit.mjs",
     "web-shell/continue-saves.mjs",
+    "web-shell/diagnostic-saves.mjs",
     "web-shell/first-frame.mjs",
     "web-shell/game-defaults.mjs",
     "web-shell/player-controls.mjs",
