@@ -37,14 +37,15 @@ Reimporting the same archive also refreshes access. Reconnecting preserves the
 source ID and its saves.
 
 Press and hold a game cover, or choose **Manage library**, to enter removal mode.
-Use the **×** on a cover to remove its library reference; original game files,
+Use the **×** on an imported game's cover to remove its library reference; original game files,
 cached archives and saved games stay untouched. A card with multiple versions
-lets you remove one version or all of them. **Undo** restores removals in reverse
+lets you remove one imported version or all imported versions. Bundled versions
+cannot be removed. **Undo** restores removals in reverse
 order during the current visit, including the original imported-game IDs.
 The removal notice offers Undo for five seconds, then fades out.
-Choose **Done** or press Escape to return to browsing. Included games stay hidden
-across reloads; use **Sort and filter games → Restore included games** to show
-them again. These library changes apply to the current browser only.
+Choose **Done** or press Escape to return to browsing. Previously hidden bundled
+games are restored automatically when the library loads. These library changes
+apply to the current browser only.
 
 An import with the same game data as an included copy uses the bundled version.
 Reimport an older unverified archive to make a distinct edition selectable again.

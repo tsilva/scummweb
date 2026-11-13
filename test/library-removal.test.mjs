@@ -1,31 +1,26 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createLibraryHold, readHiddenCatalogVersions, visibleLibraryGroups, writeHiddenCatalogVersions } from "../app/home-shell/library-removal.mjs";
+import { createLibraryHold, removableLibraryVersions, restoreIncludedCatalog } from "../app/home-shell/library-removal.mjs";
 
-test("catalog removal persists independently of saves and promotes a remaining edition", () => {
-  const values = new Map([["scummweb.save-namespace.v1:source:original", "original namespace"], ["/saves/game.001", "save bytes"]]);
-  const storage = { getItem: (key) => values.get(key), setItem: (key, value) => values.set(key, value) };
-  const first = { key: "catalog:english", game: { target: "english" }, title: "Game" };
-  const second = { key: "catalog:french", game: { target: "french" }, title: "Game" };
-  const group = { ...first, key: "family:game", versions: [first, second] };
-  writeHiddenCatalogVersions([first.key, first.key], storage);
-  assert.deepEqual(readHiddenCatalogVersions(storage), [first.key]);
-  const [visible] = visibleLibraryGroups([group], readHiddenCatalogVersions(storage));
-  assert.equal(visible.key, group.key);
-  assert.equal(visible.game.target, "french");
-  assert.deepEqual(visible.versions, [second]);
-  assert.deepEqual(group.versions, [first, second], "original catalog is unchanged");
-  writeHiddenCatalogVersions([first.key, second.key], storage);
-  assert.deepEqual(visibleLibraryGroups([group], readHiddenCatalogVersions(storage)), []);
-  writeHiddenCatalogVersions([], storage);
-  assert.equal(visibleLibraryGroups([group], readHiddenCatalogVersions(storage))[0], group);
-  assert.equal(values.get("/saves/game.001"), "save bytes");
-  assert.equal(values.get("scummweb.save-namespace.v1:source:original"), "original namespace");
+test("restoring bundled games clears only the retired hiding preference, including malformed data", () => {
+  for (const hidden of ['["catalog:sky", "catalog:queen"]', '{broken']) {
+    const values = new Map([["scummweb.hidden-catalog-versions.v1", hidden],
+      ["scummweb.save-namespace.v1:source:original", "original namespace"], ["/saves/game.001", "save bytes"]]);
+    const storage = { removeItem: (key) => values.delete(key) };
+    restoreIncludedCatalog(storage);
+    restoreIncludedCatalog(storage);
+    assert.equal(values.has("scummweb.hidden-catalog-versions.v1"), false);
+    assert.equal(values.get("/saves/game.001"), "save bytes");
+    assert.equal(values.get("scummweb.save-namespace.v1:source:original"), "original namespace");
+  }
 });
 
-test("unavailable preference storage fails visibly instead of pretending removal persisted", () => {
-  assert.throws(() => writeHiddenCatalogVersions(["catalog:game"], { setItem() { throw new Error("Storage blocked"); } }), /Storage blocked/);
-  assert.throws(() => readHiddenCatalogVersions({ getItem: () => "{}" }), /Could not read/);
+test("only imported versions can be removed from bundled, imported and mixed cards", () => {
+  const bundled = { key: "catalog:sky", game: { target: "sky" } };
+  const imported = { key: "source:custom", source: { id: "custom" } };
+  assert.deepEqual(removableLibraryVersions({ versions: [bundled] }), []);
+  assert.deepEqual(removableLibraryVersions({ versions: [imported] }), [imported]);
+  assert.deepEqual(removableLibraryVersions({ versions: [bundled, imported] }), [imported]);
 });
 
 test("hold requires 600 ms on the primary pointer and cancels for release, movement or scrolling", () => {

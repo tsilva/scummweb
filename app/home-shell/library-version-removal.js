@@ -2,8 +2,10 @@
 
 import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
+import { removableLibraryVersions } from "./library-removal.mjs";
 
 export default function LibraryVersionRemoval({ item, disabled, notice, onRemove, onClose }) {
+  const removable = removableLibraryVersions(item);
   const dialog = useRef(null);
   useEffect(() => {
     const element = dialog.current;
@@ -21,14 +23,16 @@ export default function LibraryVersionRemoval({ item, disabled, notice, onRemove
         <X size={20} aria-hidden="true" />
       </button>
     </div>
-    <p id="library-removal-description">Choose a version to remove. Your files and saved games stay.</p>
+    <p id="library-removal-description">Choose an imported version to remove. Included games, your files and saved games stay.</p>
     {notice?.tone === "error" && <p role="alert">{notice.message}</p>}
     <ul>{item.versions.map((version) => <li key={version.key}>
       <span>{version.label}{version.source && <small>{version.source.name}</small>}</span>
-      <button type="button" className="secondary-button" disabled={disabled}
+      {version.source ? <button type="button" className="secondary-button" disabled={disabled}
         aria-label={`Remove ${version.label}`} onClick={() => onRemove(item, [version])}>Remove</button>
+        : <span>Included</span>}
     </li>)}</ul>
-    <button type="button" className="secondary-button" disabled={disabled}
-      onClick={() => onRemove(item, item.versions)}>Remove all versions</button>
+    {removable.length > 0 && <button type="button" className="secondary-button" disabled={disabled}
+      onClick={() => onRemove(item, removable)}>{removable.length === item.versions.length
+        ? "Remove all versions" : "Remove imported versions"}</button>}
   </dialog>;
 }

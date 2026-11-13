@@ -17,7 +17,7 @@ import { GameNavigationContext } from "./game-navigation";
 import BrowseMetadata from "./browse-metadata";
 import { ArtworkDelivery } from "./artwork-delivery";
 import { loadArtworkStorage } from "../../lib/artwork-storage.mjs";
-import { readHiddenCatalogVersions, visibleLibraryGroups, writeHiddenCatalogVersions } from "./library-removal.mjs";
+import { removableLibraryVersions, restoreIncludedCatalog } from "./library-removal.mjs";
 
 const sessionGames = new Map();
 const sessionSources = new Map();
@@ -63,7 +63,6 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
   const fileInput = useRef(null);
   const replacingSource = useRef(null);
   const entriesRef = useRef([]);
-  const [hiddenVersions, setHiddenVersions] = useState([]);
   const [removals, setRemovals] = useState([]);
 
   function showNotice(message, tone = "error") {
@@ -86,13 +85,8 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
   }, [entries]);
 
   useEffect(() => {
-    const restore = () => {
-      try { setHiddenVersions(readHiddenCatalogVersions()); }
-      catch { showNotice("Could not load removed library games from this browser."); }
-    };
-    restore();
-    window.addEventListener("storage", restore);
-    return () => window.removeEventListener("storage", restore);
+    try { restoreIncludedCatalog(); }
+    catch { /* Bundled games stay visible even when preference storage is blocked. */ }
   }, []);
 
   useEffect(() => {
@@ -241,23 +235,18 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
   }
 
   function removeLibraryVersions(item, versions) {
+    const removable = removableLibraryVersions({ versions });
+    if (!removable.length) return false;
     return run(async () => {
-      const ids = new Set(versions.flatMap(({ source }) => source ? [source.id] : []));
+      const ids = new Set(removable.map(({ source }) => source.id));
       const removed = entries.filter(({ source }) => ids.has(source.id));
-      const catalogKeys = versions.filter(({ source }) => !source).map(({ key }) => key);
-      const previousHidden = readHiddenCatalogVersions();
-      const nextHidden = [...new Set([...previousHidden, ...catalogKeys])];
+      if (!removed.length) return false;
       const session = removed.map(({ source }) => ({
         id: source.id, source: sessionSources.get(source.id), data: sessionGames.get(source.id),
       }));
-      // Persist the reversible preference first. Roll it back if source removal fails.
-      writeHiddenCatalogVersions(nextHidden);
-      try { await removeSources(removed.map(({ source }) => source)); }
-      catch (error) { writeHiddenCatalogVersions(previousHidden); throw error; }
-      setHiddenVersions(nextHidden);
+      await removeSources(removed.map(({ source }) => source));
       setRemovals((current) => [...current, {
         title: item.title, entries: removed, session,
-        catalogKeys: catalogKeys.filter((key) => !previousHidden.includes(key)),
       }]);
       return true;
     });
@@ -271,8 +260,6 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
       const temporary = new Set(removal.session.filter(({ source }) => source).map(({ id }) => id));
       const saved = removal.entries.filter(({ source }) => !temporary.has(source.id) && !existingIds.has(source.id));
       if (saved.length) await saveGameSources(saved.map(({ source }) => source));
-      const hidden = readHiddenCatalogVersions().filter((key) => !removal.catalogKeys.includes(key));
-      writeHiddenCatalogVersions(hidden);
       for (const { id, source, data } of removal.session) {
         if (existingIds.has(id)) continue;
         if (source) sessionSources.set(id, source);
@@ -282,19 +269,8 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
         const currentIds = new Set(current.map(({ source }) => source.id));
         return [...current, ...removal.entries.filter(({ source }) => !currentIds.has(source.id))];
       });
-      setHiddenVersions(hidden);
       setRemovals((current) => current.slice(0, -1));
       return true;
-    });
-  }
-
-  function restoreIncludedGames() {
-    return run(async () => {
-      writeHiddenCatalogVersions([]);
-      setHiddenVersions([]);
-      setRemovals((current) => current.filter((removal) => removal.entries.length)
-        .map((removal) => ({ ...removal, catalogKeys: [] })));
-      showNotice("Included games restored to your library.", "success");
     });
   }
 
@@ -346,11 +322,6 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
       async function save(game, label = game.name) {
         const reconnect = replacing ?? await findLocalGameSource(game, known.values(), reconnectable);
         const included = findBundledGame(game, catalog);
-        if (included) {
-          const hidden = readHiddenCatalogVersions().filter((key) => key !== `catalog:${included.target}`);
-          writeHiddenCatalogVersions(hidden);
-          setHiddenVersions(hidden);
-        }
         if (included && !reconnect) {
           const item = { label, status: "skipped", message: "Already included. Using the bundled copy." };
           items.push(item);
@@ -508,7 +479,7 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
     };
   });
   const catalogGroups = useMemo(() => groupGameVersions(catalogGameEntries(catalog)), [catalog]);
-  const groups = visibleLibraryGroups(library.length ? sourcePresentation.libraryItems(catalog, library) : catalogGroups, hiddenVersions);
+  const groups = library.length ? sourcePresentation.libraryItems(catalog, library) : catalogGroups;
   const featuredGroup = featuredGame && groups.find(({ game }) => getGameFamilyKey(game) === getGameFamilyKey(featuredGame));
   const featuredKey = getGameFamilyKey(featuredGame) || `catalog:${featuredGame?.target}`;
   const heroGroups = featuredGroup || isHomePage ? groups : [...groups, {
@@ -551,7 +522,6 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
           <RecentGamesRail groups={groups} />
           <LibraryView items={groups} heading={libraryHeading} notice={notice}
             onRemove={removeLibraryVersions} onUndo={undoRemoval} removal={removals.at(-1)}
-            hiddenCount={hiddenVersions.length} onRestoreIncluded={restoreIncludedGames}
             onAddGame={() => chooseArchive()} importDisabled={disabled} selectedKey={selection || (!isHomePage ? featuredKey : null)} />
         </div>
       </GameNavigationContext>
