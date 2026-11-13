@@ -298,3 +298,13 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
 ## Legacy Humongous movie conversions
 
 HE packages may contain valid DXA conversions instead of their original DAT/SMK movies. Current upstream MoviePlayer only chooses Smacker or Bink; a missing DAT error alone does not establish damaged game data. Preserve patch 94’s absent-original fallback and fresh decoder selection for every load. Keep original movies authoritative and do not hide corruption in an existing original. Compare file contents and an unmodified desktop engine before removing a failed library edition.
+
+## Legacy Full Throttle speech
+
+ScummVM's current digital iMUSE intentionally disables games using recompressed
+speech, even with FLAC linked. Decoder-symbol checks alone cannot establish
+per-game support. Patch 100 reconstructs one FT SOF line as unsigned 8-bit VOC,
+retaining mouth tags and original logical SOU offsets. Saved speech streams must
+reconstruct the same line from the saved original offset. Keep the conversion
+bounded to one line and retain native DiMUSE playback and original-SOU behavior.
+Do not apply this exception to compressed DIG/COMI bundles or lossy FT formats.

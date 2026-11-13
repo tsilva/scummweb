@@ -71,7 +71,7 @@ test("the bundled catalog engines and SCUMM are indexed WebAssembly plugins", ()
   }
 });
 
-test("the bundled SCUMM engine can open FLAC speech archives", () => {
+test("the bundled SCUMM engine links the FLAC decoder", () => {
   const path = new URL("../scummvm-shell/data/plugins/libscumm.so", import.meta.url);
   const plugin = new WebAssembly.Module(fs.readFileSync(path));
   assert.ok(WebAssembly.Module.imports(plugin).some(({ name }) => name.includes("makeFLACStream")));

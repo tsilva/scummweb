@@ -1522,6 +1522,22 @@
         "In Brave verify Full Throttle Demo starts with visible dialogue subtitles, toggles off and back on during play, retains the setting across menu openings, and resets on a fresh launch. Check Sky and a personal import, plus a game without optional subtitles."
       ],
       "retire_when": "Upstream supplies an equivalent hosted subtitle control and initializes SCUMM original-menu voice mode from subtitle defaults."
+    },
+    {
+      "path": "patches/scummvm/100-full-throttle-flac-speech.patch",
+      "status": "active",
+      "sha256": "12f524dabc550c57b86239059b437d92b5d015d4561872a0c748d48701ca9e64",
+      "purpose": "Restore legacy lossless Full Throttle SOF speech through per-line VOC reconstruction for the current digital iMUSE engine.",
+      "invariants": [
+        "Emscripten FT FLAC speech only; original SOU and other games/codecs retain their existing paths and warnings.",
+        "Decode only the current mono 11025/22050-Hz line with an 8-MiB PCM limit; preserve mouth tags, original offsets and save/load reconstruction.",
+        "Keep native speech mixing, stopping, subtitles, pauses and music ducking through digital iMUSE."
+      ],
+      "verification": [
+        "Run test/full-throttle-speech.test.mjs, including PCM/header/offset and malformed-input checks.",
+        "In Brave import a full FT ZIP containing MONSTER.SOF, trigger speech, interrupt/skip lines, toggle subtitles, save and resume; replay the original-SOU demo."
+      ],
+      "retire_when": "Upstream supports legacy FT FLAC speech through current digital iMUSE, including save restoration."
     }
   ]
 }
