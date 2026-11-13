@@ -116,6 +116,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "gob2-demo": {
+    ...retroGameArtwork["gob:gob2"],
+    heroImageMobilePosition: "80% top",
+    title: "Gobliins 2: The Prince Buffoon (Demo)",
+    year: "1992",
+    language: "en",
+    summary: "Team up as Fingus and Winkle in the original English DOS interactive demo of Gobliins 2.",
+  },
   "gob1-demo": {
     ...retroGameArtwork["gob:gob1"],
     title: "Gobliiins (Demo)",

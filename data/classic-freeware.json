@@ -420,6 +420,28 @@
         "basis": "Official ScummVM-hosted interactive promotional demo. The Sierra Family Demonstration CD-ROM README describes this demo as a standalone runnable product. Included files and copyright/distribution strings inspected; no express redistribution ban or rehosting grant found. Official hosting supports this assessment but is not an express rights-holder license.",
         "preservation": "Serve the complete unchanged upstream ZIP, retaining README, original executables and every other file."
       }
+    },
+    {
+      "target": "gob2-demo",
+      "title": "Gobliins 2: The Prince Buffoon (Demo)",
+      "engineId": "gob",
+      "gameId": "gob2",
+      "platform": "pc",
+      "extra": "Interactive Demo (v1.01)",
+      "archive": "gob2-dos-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/gob/gob2-dos-demo-en.zip",
+      "sha256": "6def73d57872e45c8c3b21555a73692b4508134742facda9607d0c1bc6b72871",
+      "preserveArchive": true,
+      "config": {
+        "guioptions": "sndNoSpeech sndNoSubs",
+        "language": "gb"
+      },
+      "redistributionReview": {
+        "reviewedOn": "2026-11-13",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "Official ScummVM-hosted English interactive promotional demo. All eight files and copyright/distribution strings inspected; no standalone license, express redistribution ban or rehosting grant found. Official hosting supports this assessment but is not an express rights-holder license.",
+        "preservation": "Serve the complete unchanged upstream ZIP, including its original loader, drivers, save data and copyright notices."
+      }
     }
   ]
 }
