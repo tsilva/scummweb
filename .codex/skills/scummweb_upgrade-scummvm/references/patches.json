@@ -852,13 +852,15 @@
     {
       "path": "patches/scummvm/54-skip-myst-sherlock-and-amazon-openings.patch",
       "status": "active",
-      "sha256": "6ddcc52c49302b14638029dd9497d051573198a82fbfb27e69289725433d0b97",
+      "sha256": "e419b2119eaee4187adcb140020a52c0b5240dba2c02e44e9e632550e31d3822",
       "purpose": "Expose the native opening transitions in Myst, both Sherlock Holmes adventures, and Amazon.",
       "invariants": [
-        "Preserve the Myst linking book interaction, the Rose Tattoo logo lockout, and Amazon opening room cleanup. Leave ordinary game input and saved-game entry intact."
+        "Preserve the Myst linking book interaction, the Rose Tattoo logo lockout, and Amazon opening room cleanup. Leave ordinary game input and saved-game entry intact.",
+        "Finish Myst startup once the opening movies reach the original linking book or demo preview menu. Later persistent scripts must never re-enable Skip intro; retain the original book and menu interactions."
       ],
       "verification": [
-        "Use both personal Myst editions, both Sherlock DOS CD editions, and the Amazon DOS edition to verify the native opening action and the first menu or playable scene."
+        "Use both personal Myst editions, both Sherlock DOS CD editions, and the Amazon DOS edition to verify the native opening action and the first menu or playable scene.",
+        "In Brave finish Myst movies naturally and with Skip intro; verify the action stays absent at the linking book, on Myst Island, and in the demo preview menu."
       ],
       "retire_when": "The engines provide equivalent scoped web startup skip transitions."
     },
@@ -1170,13 +1172,15 @@
     {
       "path": "patches/scummvm/77-advance-sci-credit-sequences-and-native-mouse-video-skips.patch",
       "status": "active",
-      "sha256": "ee48791fbc79bcd95d3e319a05430841ac4af8a754675f698e847e2c451c680e",
+      "sha256": "ef47c3018c6d9013509a7cbe887009b2dba3b4a390c90363b2af582d09ebc481",
       "purpose": "Advance observed SCI publisher and credit scripts, honor SCI32 native mouse-only movie cancellation, and skip the fingerprinted Donald Duck title.",
       "invariants": [
-        "Advance original SCI script time only in observed publisher and credit rooms. Preserve adjacent character, copy-protection, new-game and restore choices and saved script timer continuity. SCI32 returns only an originally permitted Escape or mouse stop flag. Donald Duck follows both original title-key states and leaves room 3 choices intact. Gob only uses original permitted break keys for exact startup media."
+        "Advance original SCI script time only in observed publisher and credit rooms. Preserve adjacent character, copy-protection, new-game and restore choices and saved script timer continuity. SCI32 returns only an originally permitted Escape or mouse stop flag. Donald Duck follows both original title-key states and leaves room 3 choices intact. Gob only uses original permitted break keys for exact startup media.",
+        "Iceman startup includes publisher room 99, title room 100, credits room 102 and Tahiti prologue room 1. Keep opening advancement available until beach room 2 accepts player input; never accelerate later room 1 visits after startup completes."
       ],
       "verification": [
-        "In Brave check each added SCI edition against its observed native choice or first room, including save/restore clock continuity. Verify Donald Duck title transitions to its original choice. Verify Woodruff and Inca II exact publisher movies and later native movie input."
+        "In Brave check each added SCI edition against its observed native choice or first room, including save/restore clock continuity. Verify Donald Duck title transitions to its original choice. Verify Woodruff and Inca II exact publisher movies and later native movie input.",
+        "In Brave let Iceman reach credits without skipping the publisher, then request once and verify credits and Tahiti narration finish at the controllable beach with no Skip intro. Also request during the publisher and check the same endpoint."
       ],
       "retire_when": "Upstream exposes equivalent native opening boundaries."
     },
@@ -1570,6 +1574,20 @@
         "In Brave, capture a catalog game and an imported game; compare save bytes and Continue index before/after, verify attached saves restore and cancellation or capture timeout never changes player progress."
       ],
       "retire_when": "Upstream exposes an equivalent isolated in-memory runtime save export with capability detection and no player-save metadata publication."
+    },
+    {
+      "path": "patches/scummvm/99y-complete-iceman-opening.patch",
+      "status": "active",
+      "sha256": "199926cf4623b1994fca7663ebb134cd79ac1c30f127e304fcd67a35e006fc14",
+      "purpose": "Use Amiga Iceman\u2019s original title and credit cancellation handlers and carry one skip through the Tahiti prologue.",
+      "invariants": [
+        "Only Amiga Iceman rooms 100 and 102 expose the native key cancellation. Carry one accepted action into the existing timed prologue, then stop at first beach control. Preserve normal game input, original room cleanup and later room visits.",
+        "Use Return for Iceman\u2019s any-key handler: Escape is intercepted by its Sierra menu before the room cancellation handler."
+      ],
+      "verification": [
+        "In Brave request from Iceman title and credits separately; one request must reach the original controllable beach without waiting for the credit soundtrack or a second Skip intro click. Check ordinary launches and input after skipping."
+      ],
+      "retire_when": "Upstream supplies an equivalent browser opening callback across the original Iceman title, credits and prologue."
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-13T20:38:54.552275Z",
+  "generated_at_utc": "2026-11-13T21:16:12.739171Z",
   "scummvm": {
     "version": "v2026.4.0",
     "commit": "7d2709da5136866589f7602f5f5a7b17de03420e",
@@ -8,9 +8,9 @@
   "corresponding_source": {
     "page": "/doc/scummvm-source.html",
     "archive": "/doc/scummvm-source.zip",
-    "archive_sha256": "2b2d2326ab69ff0a95f55c894b0a2c1a77c79c4d63c8d08ecd3711a3a417e591",
+    "archive_sha256": "7bda1905d6bf47c1140c9b1419c426febc3ffb1023b3f5711e85e54222ab6b94",
     "runtime_sha256": {
-      "scummvm.wasm": "9b42fca05fe3a373fdd7205179146bd7c02196954398c50e5fbd2970ad149228",
+      "scummvm.wasm": "4f0116da9e6168ebd918eef015f4c08ae1ad4fb1756688de9f750181409dbe81",
       "scummvm.js": "d7908af659926563fd78bdc5495e9e0bd0b3996624c354ebfa0558de50eae914",
       "data/plugins/libaccess.so": "79a18a2095309ab38d6510e5d66088491b1cbdbeff023069df055123f2242c18",
       "data/plugins/libadl.so": "cc810ca950ff679bd9cedde1fec90fc2e4be3c10eb8b23928124b29aaa76bb16",
@@ -40,7 +40,7 @@
       "data/plugins/liblure.so": "0f34df7bdeba873e0b79acc499082e9bf1a5fd13acea5a10f81a3b5d56cbe8d7",
       "data/plugins/libmade.so": "9681fcd39c8062b7f361a15739e5b74147ceef3fc321dfdccc65e586375abc9c",
       "data/plugins/libmads.so": "3de893f0e0280437971b0b3eb942bbcc10aa5469b8b3721efa6a39a3c8a070a6",
-      "data/plugins/libmohawk.so": "12184dccda7dcf176d15a4471ed61aa220771acfc5b32c7ffb5f349693aaf0dd",
+      "data/plugins/libmohawk.so": "726d41e2058b21acf77e8f216d1d12ce548fa60fba2d46fa61acd8a7f5086759",
       "data/plugins/libmortevielle.so": "1d368754b858c8142de93ae512a35ea7f84fdb92c29e11d6e9611b00222a8f72",
       "data/plugins/libneverhood.so": "99f3b3860d228e67d1407a19e4531f2f1e3d3444b3400f879eb1fa98de046013",
       "data/plugins/libngi.so": "37ebaecf025e8040e0ce9b8d62084b3772e522d536662a8f24fbe1d4c73f8994",
@@ -49,7 +49,7 @@
       "data/plugins/libplumbers.so": "65dfdf9df889c5df5022c17e53ffc3f2a896b00e72b568fcd5830147da95359f",
       "data/plugins/libqueen.so": "18d6c5ec0d8ea7a24c3363f0dab45079f87088391fec65418cb83f4a9b08b5a6",
       "data/plugins/libsaga.so": "4f1d3fbcd9745faeccc6ab8e4e491b700ba53d46ca936a0db11737f5b7f6312e",
-      "data/plugins/libsci.so": "052799f29049d0a612f72036d0dccd40c93fd426db69a44970324792b0ae2b52",
+      "data/plugins/libsci.so": "6eee16eb120de2650c0586f1854f45e03c0fe20fa6960d7fddf47f2c242f9bb4",
       "data/plugins/libscumm.so": "924bb3472eefcbbe8eb8b03e071383121ff97efe32974d2c9c09c73e040f4d1f",
       "data/plugins/libsherlock.so": "6fef9cc3facb2898bbfa530dc0e3ffb1a5d39bd61978e7c0a1b3d3ae77243829",
       "data/plugins/libsky.so": "11518edb4af45ce69deab12cc4da7394d3575be3ad2847dc448e3cd2cb3c653a",

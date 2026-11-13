@@ -1,0 +1,26 @@
+diff --git a/engines/sci/engine/kevent.cpp b/engines/sci/engine/kevent.cpp
+--- a/engines/sci/engine/kevent.cpp
++++ b/engines/sci/engine/kevent.cpp
+@@ -59,6 +59,8 @@
+ 		return room == 900;
+ 	case GID_ECOQUEST:
+ 		return room == 360;
++	case GID_ICEMAN:
++		return g_sci->getPlatform() == Common::kPlatformAmiga && (room == 100 || room == 102);
+ 	case GID_PQ2:
+ 		return room == 200;
+ 	case GID_PQ3:
+@@ -207,10 +209,12 @@
+ 		if (continueLongbowOpening || continueTimedOpening || finishLongbowOpening || ScummWebIntro::skipRequested()) {
+ 			if (finishLongbowOpening)
+ 				s->_browserLongbowFinalEscape = true;
++			if (g_sci->getGameId() == GID_ICEMAN)
++				s->_browserSkipTimedOpening = true;
+ 			curEvent.type = kSciEventKeyDown;
+ 			// Police Quest II's original Introduction accepts Return or a
+ 			// printable character. Its Escape handler does not skip credits.
+-			curEvent.character = g_sci->getGameId() == GID_PQ2 ? kSciKeyEnter : kSciKeyEsc;
++			curEvent.character = (g_sci->getGameId() == GID_PQ2 || g_sci->getGameId() == GID_ICEMAN) ? kSciKeyEnter : kSciKeyEsc;
+ 			s->_browserIntroSkippedRoom = openingRoom;
+ 			s->_browserIntroAvailable = false;
+ 			ScummWebIntro::skipRequested(false);

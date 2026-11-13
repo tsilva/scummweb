@@ -255,7 +255,10 @@ an opening segment that can be skipped. Full Throttle's demo uses this path
 because saving is unavailable before its first decision. Imported games offer **Skip intro**
 while their engine exposes a supported opening segment. The action advances
 through the game's original transition and preserves its menus and choices.
-Continue omits the action. Gobliiins’ bundled interactive DOS demo uses the native
+Continue omits the action. Iceman’s opening includes its credits and Tahiti
+prologue, ending when the beach accepts player input. Myst closes the action
+permanently at its original linking book or demo preview menu.
+Gobliiins’ bundled interactive DOS demo uses the native
 intro action and retains its original character controls; saving through the
 ScummWEB game menu is unavailable for this edition. Gobliins 2’s interactive DOS
 demo starts at its original clickable title and uses British English (`gb`) for
