@@ -594,6 +594,9 @@ Maintain game metadata, logical artwork paths, and per-image credits in
 [`app/game-presentation.js`](../app/game-presentation.js) and
 [`app/retro-game-artwork.json`](../app/retro-game-artwork.json).
 Give each recognized game a summary, studio, genre, and metadata sources.
+Keep summaries, including mobile summaries, focused on the story and gameplay.
+Put platform, language, voice support, media, and edition details in metadata
+instead of descriptions; keep the `(Demo)` title suffix for demos.
 Keep its specific `genre` description and set an explicit `category` from
 `libraryCategories` in `app/home-shell/library-query.mjs` for library filtering
 and sorting. Preserve the category when sharing metadata with demos and imports.
