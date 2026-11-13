@@ -67,9 +67,16 @@ async function withGameStore(mode, operation) {
   try {
     return await new Promise((resolve, reject) => {
       const transaction = db.transaction("games", mode);
+      let request;
       transaction.onabort = () => reject(transaction.error);
       transaction.oncomplete = () => resolve(request?.result);
-      const request = operation(transaction.objectStore("games"));
+      try {
+        request = operation(transaction.objectStore("games"));
+      } catch (error) {
+        // A synchronous clone/write failure must not commit earlier operations.
+        reject(error);
+        transaction.abort();
+      }
     });
   } finally {
     db.close();

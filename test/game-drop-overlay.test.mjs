@@ -26,7 +26,7 @@ function overlay(disabled = false) {
       removeEventListener: (name) => listeners.delete(name),
     },
     require(name) {
-      if (name === "../local-game-import.mjs") return imports;
+      if (name === "../game-import-nodes.mjs") return imports;
       if (name === "react-dom") return { createPortal: (element) => element };
       if (name === "react") return {
         useState(initial) {
