@@ -36,3 +36,4 @@ tmp/
 /scummvm-shell/launcher/optimized/
 /scummvm-shell/launcher/*.avif
 /image-assets/sources/road-gameplay.jpg
+/.runbox.yaml

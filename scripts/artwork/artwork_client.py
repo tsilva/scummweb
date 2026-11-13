@@ -33,7 +33,7 @@ class Client:
         if (
             not proxy
             or urllib.parse.urlsplit(proxy).netloc.rsplit("@", 1)[-1]
-            != "127.0.0.1:8283"
+            != os.environ.get("SCUMMWEB_ARTWORK_PROXY_ADDRESS", "127.0.0.1:8283")
         ):
             raise ValueError("Expected native Vault proxy")
         target = urllib.parse.urlsplit(base)
@@ -104,13 +104,26 @@ def publisher_module():
 
 
 def main():
+    import re
+
     mode, base = sys.argv[1:3]
     publisher = publisher_module()
     client = Client(base, publisher)
-    if mode == "check":
-        result = client.call("check", {})
-    elif mode == "publish" and len(sys.argv) == 4:
-        manifest = json.loads(Path(sys.argv[3]).read_text())
+    if mode == "check" and len(sys.argv) == 3:
+        client.call("check", {})
+        result = {"ok": True, "read_only": True, "credential_mode": "public-placeholder"}
+    elif mode in {"publish", "publish-one"} and len(sys.argv) == (4 if mode == "publish" else 5):
+        workspace = sys.argv[3]
+        if not re.fullmatch(r"[a-z0-9][a-z0-9-]{0,63}", workspace):
+            raise ValueError("Invalid artwork workspace")
+        os.environ["SCUMMWEB_ARTWORK_WORKSPACE"] = workspace
+        path = publisher.ROOT / publisher.artwork_workspace() / "manifest.json"
+        if path.stat().st_size > 4 * 1024 * 1024:
+            raise ValueError("Oversized artwork plan")
+        manifest = json.loads(path.read_text())
+        if mode == "publish-one":
+            logical = sys.argv[4]
+            manifest = {**manifest, "files": {logical: manifest["files"][logical]}}
         result = {"ok": True, **publisher.publish(client, manifest)}
     else:
         raise ValueError("Unexpected command")

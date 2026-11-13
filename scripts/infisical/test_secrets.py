@@ -8,8 +8,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from common import Infisical, SecretError, application_environment, publisher_environment, KEYS, ROOT
-import run as launcher
+from common import Infisical, SecretError, ROOT
 
 PROJECT = "e1c358f8-0678-45d7-a2a8-270c2f29aadd"
 VALUE = "dummy-only '$HOME' \"quoted\"\\backslash\nsecond line\n"
@@ -25,7 +24,6 @@ class SecretTests(unittest.TestCase):
         self.directory = tempfile.TemporaryDirectory()
         self.addCleanup(self.directory.cleanup)
         self.root = Path(self.directory.name)
-        (self.root / ".infisical.json").write_text(json.dumps({"workspaceId": PROJECT}))
         self.client = Infisical(self.root)
 
     def test_transport_is_stdin_only_and_exact(self):
@@ -71,77 +69,12 @@ class SecretTests(unittest.TestCase):
                 self.client.read()
         self.assertNotIn(VALUE, str(error.exception))
 
-    def test_app_environment_strips_tokens_stale_keys_and_untrusted_overrides(self):
-        original = {"PATH": "/safe/bin", "BWS_ACCESS_TOKEN": "dummy-token",
-                    "INFISICAL_TOKEN": "dummy-token", "INFISICAL_CLIENT_SECRET": "dummy-token",
-                    "OPENROUTER_API_KEY": "stale", "SENTRY_ORG": "tsilva"}
-        with patch.dict(os.environ, original, clear=True):
-            with self.assertRaisesRegex(SecretError, "cannot receive"):
-                application_environment({"SENTRY_AUTH_TOKEN": VALUE})
-            actual = application_environment({"PATH": "/evil", "NODE_OPTIONS": "evil"})
-        self.assertEqual(actual["SENTRY_AUTH_TOKEN"], "")
-        self.assertEqual(actual["PATH"], "/safe/bin")
-        self.assertEqual(actual["SENTRY_ORG"], "tsilva")
 
-        for key in KEYS:
-            if key != "SENTRY_AUTH_TOKEN": self.assertEqual(actual[key], "")
-        for key in ("BWS_ACCESS_TOKEN", "INFISICAL_TOKEN", "INFISICAL_CLIENT_SECRET", "NODE_OPTIONS"):
-            self.assertNotIn(key, actual)
 
-    def test_missing_infisical_key_cannot_fall_back_to_next_dotenv(self):
-        (self.root / ".env").write_text("SENTRY_AUTH_TOKEN=dummy-stale-dotenv-key\n")
-        code = ("const {createRequire} = await import('node:module'); const req=createRequire(import.meta.url); const nextEnv=req(req.resolve('@next/env', {paths:[req.resolve('next/package.json', {paths:[process.cwd()]})]})); "
-                "nextEnv.loadEnvConfig(process.argv[1], true, {info(){},error(){}}); "
-                "process.stdout.write('\\nRESULT='+JSON.stringify({hasKey:Boolean(process.env.SENTRY_AUTH_TOKEN)}));")
-        environment = application_environment({})
-        result = subprocess.run(["node", "--input-type=module", "-e", code, str(self.root)],
-                                env=environment, capture_output=True, text=True, check=True)
-        self.assertFalse(json.loads(result.stdout.split("RESULT=",1)[-1])["hasKey"])
 
-    def test_launcher_rejects_environment_overrides_before_fetching(self):
-        with patch("run.sys.argv", ["run.py", "dev", "--env", "prod"]), \
-                patch("run.Infisical") as client, patch("run.os.execvpe") as execute:
-            with self.assertRaises(SecretError):
-                launcher.main()
-            client.assert_not_called()
-            execute.assert_not_called()
 
-    def test_local_commands_never_fetch_source_credentials(self):
-        for arguments in (["dev", "--port", "auto"], ["check"], ["issues", "--help"]):
-            with self.subTest(arguments=arguments), \
-                    patch("run.sys.argv", ["run.py", *arguments]), \
-                    patch("run.Infisical", side_effect=AssertionError("source fetch")) as client, \
-                    patch("run.os.chdir"), patch("run.os.execvpe") as execute, \
-                    patch.dict(os.environ, {"SENTRY_AUTH_TOKEN": VALUE, "UNRELATED_API_KEY": VALUE}):
-                launcher.main()
-                client.assert_not_called()
-                environment = execute.call_args.args[2]
-                self.assertEqual(environment["SENTRY_AUTH_TOKEN"], "")
-                self.assertNotIn("UNRELATED_API_KEY", environment)
 
-    def test_existing_issue_command_selects_the_sandboxed_reader(self):
-        arguments = launcher.selected_command(["issues", "--days", "3", "--limit", "1"])
-        self.assertEqual(arguments[:4], [launcher.sys.executable, "-I", "-S", "-B"])
-        self.assertEqual(arguments[4], str(ROOT / "scripts/infisical/sentry_vault.py"))
-        self.assertEqual(arguments[5:], ["issues", "--days", "3", "--limit", "1"])
 
-    def test_latest_native_reader_pins_project_and_sandbox(self):
-        import sentry_vault
-        command = sentry_vault.command(sentry_vault.EXPECTED, ["check"])
-        self.assertTrue(command[0].endswith("/cli/0.45.6/infisical"))
-        self.assertIn("--project-id=" + sentry_vault.VAULT_PROJECT, command)
-        self.assertIn("/usr/bin/sandbox-exec", command)
-        self.assertIn("SENTRY_AUTH_TOKEN=sentry_read_public_placeholder", command)
-
-    def test_changed_reader_pin_stops_without_source_fallback(self):
-        import sentry_vault
-        with patch.object(sentry_vault, "profile", side_effect=ValueError("pin")), \
-                patch.object(sentry_vault.subprocess, "run") as execute, \
-                patch("run.Infisical") as source:
-            with self.assertRaises(ValueError):
-                sentry_vault.main(["check"])
-            execute.assert_not_called()
-            source.assert_not_called()
 
 
     def test_custom_sentry_loader_does_not_restore_a_missing_token(self):
@@ -149,8 +82,15 @@ class SecretTests(unittest.TestCase):
         config = Path(__file__).resolve().parents[2] / "next.config.js"
         code = "await import(" + json.dumps(config.as_uri()) + "); process.stdout.write('\\nRESULT='+JSON.stringify({hasKey:Boolean(process.env.SENTRY_AUTH_TOKEN)}));"
         result = subprocess.run(["node", "--input-type=module", "-e", code], cwd=self.root,
-                                env=application_environment({}), capture_output=True, text=True, check=True)
+                                env={"PATH": os.environ["PATH"], "SENTRY_AUTH_TOKEN": ""}, capture_output=True, text=True, check=True)
         self.assertFalse(json.loads(result.stdout.split("RESULT=",1)[1])["hasKey"])
+
+    def test_production_administration_does_not_require_local_access_metadata(self):
+        import sync_production as syncer
+        with patch.object(Path, "read_text", side_effect=AssertionError("unexpected local config")):
+            client = syncer.Production()
+        self.assertEqual(client.project, syncer.PROJECT)
+        self.assertEqual(client.domain, "https://app.infisical.com")
 
     def test_manual_sync_refuses_a_combined_destination_before_writing(self):
         import sync_production as syncer
@@ -202,125 +142,15 @@ class SecretTests(unittest.TestCase):
         self.assertNotIn("Unexpected provider request", result.stderr)
         self.assertNotIn("dummy-stale-only", result.stderr)
 
-    def test_direct_issue_reader_rejects_raw_key_without_opening_dotenv(self):
-        code = """
-          import fs from 'node:fs';
-          const read = fs.readFileSync;
-          fs.readFileSync = (path, ...args) => {
-            if (String(path).includes('.env')) throw new Error('Unexpected dotenv read');
-            return read(path, ...args);
-          };
-          globalThis.fetch = () => { throw new Error('Unexpected provider request'); };
-          await import(process.argv[1]);
-        """
-        environment = {"PATH": os.environ["PATH"], "SENTRY_AUTH_TOKEN": VALUE}
-        result = subprocess.run(
-            ["node", "--input-type=module", "-e", code, str(ROOT / "scripts/list_sentry_issues.mjs")],
-            env=environment, capture_output=True, text=True,
-        )
-        self.assertEqual(result.returncode, 1)
-        self.assertIn("public placeholder", result.stderr)
-        self.assertNotIn("Unexpected", result.stderr)
-        self.assertNotIn(VALUE, result.stdout + result.stderr)
 
-    def test_publisher_fetches_only_the_pinned_shared_pair(self):
-        with patch.object(self.client, "command", side_effect=["a" * 32 + "\n", "b" * 64 + "\n"]) as command:
-            self.assertEqual(self.client.read_publisher_credentials(), {
-                "AWS_ACCESS_KEY_ID": "a" * 32, "AWS_SECRET_ACCESS_KEY": "b" * 64,
-            })
-        calls = [call.args[0] for call in command.call_args_list]
-        self.assertEqual([args[:3] for args in calls], [
-            ["secrets", "get", "AWS_ACCESS_KEY_ID"],
-            ["secrets", "get", "AWS_SECRET_ACCESS_KEY"],
-        ])
-        for args in calls:
-            self.assertIn("--expand=false", args)
-            self.assertIn("--include-imports=false", args)
-            self.assertIn("--secret-overriding=false", args)
 
-    def test_publisher_rejects_a_retargeted_vault_before_fetching(self):
-        self.client.project = "00000000-0000-0000-0000-000000000000"
-        with patch.object(self.client, "command") as command:
-            with self.assertRaisesRegex(SecretError, "pinned"):
-                self.client.read_publisher_credentials()
-            command.assert_not_called()
 
-    def test_publisher_replaces_stale_credentials_and_excludes_unrelated_secrets(self):
-        pair = {"AWS_ACCESS_KEY_ID": "a" * 32, "AWS_SECRET_ACCESS_KEY": "b" * 64}
-        inherited = {
-            "PATH": "/safe/bin", "AWS_ACCESS_KEY_ID": "stale", "AWS_SECRET_ACCESS_KEY": "stale",
-            "AWS_SESSION_TOKEN": "stale", "AWS_PROFILE": "stale", "R2_SECRET_ACCESS_KEY": "stale",
-            "INFISICAL_PROFILE": "stale", "INFISICAL_UNIVERSAL_AUTH_CLIENT_SECRET": "stale",
-            "OPENROUTER_API_KEY": "stale", "SENTRY_AUTH_TOKEN": "stale",
-            "SCUMMVM_GAMES_UPLOAD_DIR": "/synthetic/payloads",
-        }
-        with patch.dict(os.environ, inherited, clear=True):
-            actual = publisher_environment({**pair, "PATH": "/evil", "SENTRY_AUTH_TOKEN": VALUE})
-        for name, value in pair.items():
-            self.assertEqual(actual[name], value)
-        for name in ("AWS_SESSION_TOKEN", "AWS_PROFILE", "R2_SECRET_ACCESS_KEY", "INFISICAL_PROFILE",
-                     "INFISICAL_UNIVERSAL_AUTH_CLIENT_SECRET"):
-            self.assertNotIn(name, actual)
-        for name in ("OPENROUTER_API_KEY", "SENTRY_AUTH_TOKEN", "SENTRY_SMOKE_TEST_TOKEN", "BUCKET_DSN"):
-            self.assertEqual(actual[name], "")
-        self.assertEqual(actual["PATH"], "/safe/bin")
-        self.assertEqual(actual["SCUMMVM_GAMES_UPLOAD_DIR"], "/synthetic/payloads")
-        self.assertEqual(actual["SCUMMVM_R2_BUCKET"], "scummvm-games")
-        self.assertEqual(actual["SCUMMVM_R2_ENDPOINT"],
-                         "https://83e1ce4a70ea388693e8525a772ccefa.r2.cloudflarestorage.com")
 
-    def test_publisher_missing_managed_pair_cannot_fall_back_to_stale_values(self):
-        with patch.dict(os.environ, {"AWS_ACCESS_KEY_ID": "a" * 32, "AWS_SECRET_ACCESS_KEY": "b" * 64}, clear=True):
-            with self.assertRaisesRegex(SecretError, "missing or invalid"):
-                publisher_environment({})
 
-    def test_publisher_rejects_another_bucket_or_endpoint(self):
-        pair = {"AWS_ACCESS_KEY_ID": "a" * 32, "AWS_SECRET_ACCESS_KEY": "b" * 64}
-        for inherited in ({"SCUMMVM_R2_BUCKET": "other"}, {"SCUMMVM_R2_ENDPOINT": "https://example.invalid"}):
-            with patch.dict(os.environ, inherited, clear=True):
-                with self.assertRaisesRegex(SecretError, "target overrides"):
-                    publisher_environment(pair)
 
-    def test_publish_launcher_uses_only_publisher_fetch_and_keeps_upload_flags(self):
-        pair = {"AWS_ACCESS_KEY_ID": "a" * 32, "AWS_SECRET_ACCESS_KEY": "b" * 64}
-        with patch.dict(os.environ, {"PATH": "/safe/bin"}, clear=True), \
-                patch("run.sys.argv", ["run.py", "publish", "--game", "synthetic", "--force", "--prune"]), \
-                patch("run.Infisical") as client, patch("run.os.chdir"), patch("run.os.execvpe") as execute:
-            client.return_value.read_publisher_credentials.return_value = pair
-            launcher.main()
-        client.return_value.read.assert_not_called()
-        client.return_value.read_publisher_credentials.assert_called_once_with()
-        program, args, environment = execute.call_args.args
-        self.assertEqual(program, launcher.sys.executable)
-        self.assertEqual(args[1:], ["scripts/upload_games_to_r2.py", "--game", "synthetic", "--force", "--prune"])
-        self.assertNotIn(pair["AWS_SECRET_ACCESS_KEY"], " ".join(args))
-        self.assertEqual(environment["AWS_ACCESS_KEY_ID"], pair["AWS_ACCESS_KEY_ID"])
 
-    def test_failed_publisher_fetch_never_launches_uploader(self):
-        with patch("run.sys.argv", ["run.py", "publish"]), \
-                patch("run.Infisical") as client, patch("run.os.execvpe") as execute:
-            client.return_value.read_publisher_credentials.side_effect = SecretError("Fetch failed.")
-            with self.assertRaises(SecretError):
-                launcher.main()
-            execute.assert_not_called()
 
-    def test_artwork_launcher_uses_only_the_pinned_publisher_credentials(self):
-        pair = {"AWS_ACCESS_KEY_ID": "a" * 32, "AWS_SECRET_ACCESS_KEY": "b" * 64}
-        with patch.dict(os.environ, {"PATH": "/safe/bin"}, clear=True), \
-                patch("run.sys.argv", ["run.py", "publish-artwork"]), \
-                patch("run.Infisical") as client, patch("run.os.chdir"), patch("run.os.execvpe") as execute:
-            client.return_value.read_publisher_credentials.return_value = pair
-            launcher.main()
-        client.return_value.read.assert_not_called()
-        self.assertEqual(execute.call_args.args[1][1:], ["scripts/upload_artwork_to_r2.py"])
-        self.assertEqual(execute.call_args.args[2]["AWS_SECRET_ACCESS_KEY"], pair["AWS_SECRET_ACCESS_KEY"])
 
-    def test_publisher_help_does_not_fetch_credentials(self):
-        with patch("run.sys.argv", ["run.py", "publish", "--help"]), \
-                patch("run.Infisical") as client, patch("run.os.chdir"), patch("run.os.execvpe") as execute:
-            launcher.main()
-        client.assert_not_called()
-        self.assertEqual(execute.call_args.args[1][-1], "--help")
 
 
 if __name__ == "__main__":

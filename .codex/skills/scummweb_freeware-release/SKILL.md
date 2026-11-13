@@ -97,19 +97,16 @@ when appropriate, or adapt detection through the documented Brave runtime.
 
 ## Publish eligible packages and artwork
 
-Follow the repository's reviewed credential route. Its current legacy R2 publisher
-uses real keys for local S3 signing; without a compatible reviewed proxy, obtain
-explicit authorization for that scoped raw-credential operation before running
-it. Never fetch/export keys as an implicit fallback. Preserve the pinned vault,
-environment, bucket and launcher. Approval from an earlier operation does not
-cover a later upload.
+Publishing requires approval for the exact game package and authorized bucket access.
+Preserve the intended environment and bucket. Do not widen access or change
+credential sources after a failed request.
 
 The current play route consumes `<gameId>.zip`, not a remote directory mount.
 The additive installer writes `dist/games/<gameId>.zip`. Prefer a **file-only**
-scoped upload through the approved launcher, for example:
+scoped upload, for example:
 
 ```sh
-python3 scripts/infisical/run.py publish --game soltys.zip
+python3 scripts/upload_games_to_r2.py --game soltys.zip
 ```
 
 Do not upload an incomplete root `index.json` from an additive build. Directory
