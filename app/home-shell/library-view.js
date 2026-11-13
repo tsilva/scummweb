@@ -13,7 +13,7 @@ import LibraryVersionRemoval from "./library-version-removal";
 const browsing = { open: false, query: defaultLibraryQuery };
 
 export default function LibraryView({ items, heading, notice, onAddGame, importDisabled, selectedKey,
-  onRemove, onUndo, removal, hiddenCount = 0, onRestoreIncluded }) {
+  onRemove, onUndo, removal }) {
   const [open, setOpen] = useState(() => browsing.open);
   const [query, setQuery] = useState(() => browsing.query);
   const toggle = useRef(null);
@@ -89,7 +89,7 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
           {editing && <Check size={17} aria-hidden="true" />}{editing ? "Done" : "Manage library"}
         </button>}
       </div>
-      {editing && <p className="library-edit-help" role="status">Remove games from your library without deleting game files or saves.</p>}
+      {editing && <p className="library-edit-help" role="status">Remove imported games without deleting game files or saves. Included games stay in your library.</p>}
       <div id="library-controls" className="library-controls" hidden={!open}
         onKeyDown={(event) => {
           if (event.key === "Escape") {
@@ -121,15 +121,11 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
             <ChevronDown size={16} aria-hidden="true" />
           </span>
         </label>
-        {hiddenCount > 0 && <button type="button" className="secondary-button" disabled={importDisabled}
-          onClick={onRestoreIncluded}>Restore included games ({hiddenCount})</button>}
       </div>
       {(open || changed) && <p className="library-results" role="status">Showing {visible.length} of {items.length} games</p>}
       <p className="local-game-status" role="status" data-tone={notice?.tone}>{notice?.message}</p>
       {visible.length === 0 && <div className="library-empty">
         <p>{items.length ? "No games match this genre." : "Your library is empty. Add a game to get started."}</p>
-        {!items.length && hiddenCount > 0 && <button type="button" className="secondary-button" disabled={importDisabled}
-          onClick={onRestoreIncluded}>Restore included games</button>}
       </div>}
       <div className="poster-grid">
         <div className="poster-entry">

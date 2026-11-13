@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
-import { createLibraryHold } from "./library-removal.mjs";
+import { createLibraryHold, removableLibraryVersions } from "./library-removal.mjs";
 
 export default function LibraryEditCard({ children, item, editing, disabled, onEdit, onRemove }) {
   const blockedClick = useRef(false);
@@ -51,7 +51,7 @@ export default function LibraryEditCard({ children, item, editing, disabled, onE
     }}
     onClickCapture={blockNavigation} onAuxClickCapture={blockNavigation}>
     {children}
-    {editing && <button type="button" className="library-remove" data-library-remove
+    {editing && removableLibraryVersions(item).length > 0 && <button type="button" className="library-remove" data-library-remove
       aria-label={`Remove ${item.title} from library`} title={`Remove ${item.title} from library`}
       disabled={disabled} onClick={() => onRemove(item)}>
       <X size={20} aria-hidden="true" />

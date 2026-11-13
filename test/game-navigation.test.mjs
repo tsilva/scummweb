@@ -38,12 +38,20 @@ async function component(file, imports, globals = {}) {
 const sky = { target: "sky", gameId: "sky", engineId: "sky", href: "/beneath-a-steel-sky", displayTitle: "Beneath a Steel Sky" };
 const queen = { target: "queen", gameId: "queen", engineId: "queen", href: "/flight-of-the-amazon-queen", displayTitle: "Flight of the Amazon Queen" };
 
-async function library() {
+async function library({ hidden, storageBlocked = false, mixed = false } = {}) {
   const catalog = [sky, queen];
   const imported = { source: { id: "custom", name: "My game.zip", kind: "zip" }, status: "available", game: { displayTitle: "My game" } };
+  if (mixed) {
+    imported.source.target = sky.target;
+    imported.source.archiveFiles = [["distinct-edition.dat", 123, 456]];
+  }
   const hooks = [], effects = [], listeners = new Map(), history = [];
   const values = new Map([["save-file", "original save bytes"]]);
-  const storage = { getItem: (key) => values.get(key), setItem: (key, value) => values.set(key, value) };
+  if (hidden !== undefined) values.set("scummweb.hidden-catalog-versions.v1", hidden);
+  const storage = { removeItem(key) {
+    if (storageBlocked) throw new Error("Storage blocked");
+    values.delete(key);
+  } };
   const persistentSources = new Map([[imported.source.id, imported.source]]);
   const failures = {};
   const window = {
@@ -77,8 +85,7 @@ async function library() {
     },
     "./library-removal.mjs": {
       ...libraryRemoval,
-      readHiddenCatalogVersions: () => libraryRemoval.readHiddenCatalogVersions(storage),
-      writeHiddenCatalogVersions: (keys) => libraryRemoval.writeHiddenCatalogVersions(keys, storage),
+      restoreIncludedCatalog: () => libraryRemoval.restoreIncludedCatalog(storage),
     },
     "../game-versions.mjs": versions,
     "./hero-selection.mjs": selection,
@@ -103,6 +110,7 @@ async function library() {
   }
   render();
   const cleanup = effects[0]();
+  effects[2](); // Clear the retired bundled-game hiding preference on mount.
   return { render, history, cleanup, listeners, persistentSources, values, failures,
     restore(href) { window.location = new URL(href, window.location); listeners.get("popstate")(); return render(); },
   };
@@ -126,21 +134,32 @@ test("library removal and Undo preserve the original imported reference and save
   assert.equal(app.values.get("save-file"), "original save bytes");
 });
 
-test("catalog removal filters the library and Undo handles several removals in reverse order", async () => {
+test("bundled removal is rejected without hiding games or creating Undo records", async () => {
   const app = await library();
   for (const target of ["sky", "queen"]) {
     const view = app.render().view.props;
     const item = view.items.find(({ game }) => game.target === target);
-    assert.equal(await view.onRemove(item, item.versions), true);
+    assert.equal(await view.onRemove(item, item.versions), false);
   }
-  assert.equal(app.render().view.props.hiddenCount, 2);
-  assert.equal(app.render().view.props.items.length, 1);
-  await app.render().view.props.onUndo();
-  assert.equal(app.render().view.props.hiddenCount, 1);
-  assert.equal(app.render().view.props.items.some(({ game }) => game.target === "queen"), true);
-  await app.render().view.props.onUndo();
-  assert.equal(app.render().view.props.hiddenCount, 0);
+  const view = app.render().view.props;
+  assert.equal(view.items.length, 3);
+  assert.equal(view.removal, undefined);
   assert.equal(app.values.get("save-file"), "original save bytes");
+});
+
+test("previously hidden bundled games return automatically, even with malformed or blocked storage", async () => {
+  for (const hidden of ['["catalog:sky", "catalog:queen"]', '{broken']) {
+    for (const storageBlocked of [false, true]) {
+      const app = await library({ hidden, storageBlocked });
+      const view = app.render().view.props;
+      assert.equal(view.items.length, 3);
+      assert.equal(view.notice, null);
+      assert.equal(view.removal, undefined);
+      if (!storageBlocked) assert.equal(app.values.has("scummweb.hidden-catalog-versions.v1"), false);
+      assert.equal(app.persistentSources.has("custom"), true);
+      assert.equal(app.values.get("save-file"), "original save bytes");
+    }
+  }
 });
 
 test("failed removal keeps the card; failed Undo retains its recovery record", async () => {
@@ -164,36 +183,69 @@ test("failed removal keeps the card; failed Undo retains its recovery record", a
   assert.equal(await view.onUndo(), true);
 });
 
-test("removing the last game leaves a usable empty library and Undo restores it", async () => {
+test("removing every removable game preserves the bundled library and hero", async () => {
   const app = await library();
   for (const item of app.render().view.props.items) {
     await app.render().view.props.onRemove(item, item.versions);
   }
-  const empty = app.render();
-  assert.equal(empty.view.props.items.length, 0);
-  assert.equal(empty.hero, undefined, "the slideshow must not receive an empty list");
-  assert.equal(empty.view.props.hiddenCount, 2);
-  assert.equal(await empty.view.props.onUndo(), true);
-  assert.equal(app.render().view.props.items.length, 1);
+  const next = app.render();
+  assert.equal(next.view.props.items.length, 2);
+  assert.ok(next.hero);
+  assert.equal(await next.view.props.onUndo(), true);
+  assert.equal(app.render().view.props.items.length, 3);
 });
 
-test("restoring included games retires their Undo records while keeping imported recovery", async () => {
-  const app = await library();
-  for (const target of ["sky", "custom"]) {
-    const view = app.render().view.props;
-    const item = view.items.find((item) => item.versions.some((version) =>
-      version.game.target === target || version.source?.id === target));
-    await view.onRemove(item, item.versions);
-  }
-  await app.render().view.props.onRestoreIncluded();
+test("bulk removal from a mixed card retains the bundled version and Undo restores the import", async () => {
+  const app = await library({ mixed: true, storageBlocked: true });
   let view = app.render().view.props;
-  assert.equal(view.hiddenCount, 0);
-  assert.equal(view.removal.title, "My game");
-  assert.equal(view.items.some(({ game }) => game.target === "sky"), true);
+  const item = view.items.find(({ game }) => game.target === "sky");
+  assert.equal(item.versions.length, 2);
+  assert.equal(await view.onRemove(item, item.versions), true);
+  view = app.render().view.props;
+  assert.equal(app.persistentSources.has("custom"), false);
+  assert.equal(view.items.find(({ game }) => game.target === "sky").versions.length, 1);
   assert.equal(await view.onUndo(), true);
   view = app.render().view.props;
-  assert.equal(view.removal, undefined);
   assert.equal(app.persistentSources.has("custom"), true);
+  assert.equal(view.items.find(({ game }) => game.target === "sky").versions.length, 2);
+  assert.equal(app.values.get("save-file"), "original save bytes");
+});
+
+function elements(tree) {
+  if (!tree || typeof tree !== "object") return [];
+  return [tree, ...[tree.props?.children].flat(Infinity).flatMap(elements)];
+}
+
+test("Manage library exposes removal only on cards with imports", async () => {
+  const Card = await component("library-edit-card", {
+    react: { useRef: (current) => ({ current }), useEffect() {} },
+  });
+  const bundled = { key: "catalog:sky" };
+  const imported = { key: "source:custom", source: { id: "custom" } };
+  for (const variants of [[bundled], [imported], [bundled, imported]]) {
+    for (const editing of [false, true]) {
+      const tree = Card({ item: { title: "Sky", versions: variants }, editing });
+      assert.equal(elements(tree).filter(({ type }) => type === "button").length,
+        editing && variants.includes(imported) ? 1 : 0);
+    }
+  }
+});
+
+test("mixed version chooser protects included entries and bulk removal selects only imports", async () => {
+  const Chooser = await component("library-version-removal", {
+    react: { useRef: (current) => ({ current }), useEffect() {} },
+  });
+  const bundled = { key: "catalog:sky", label: "Bundled CD" };
+  const imported = { key: "source:custom", label: "Imported floppy", source: { id: "custom", name: "sky.zip" } };
+  let removed;
+  const item = { title: "Sky", versions: [bundled, imported] };
+  const tree = Chooser({ item, onRemove: (_, versions) => { removed = versions; } });
+  const buttons = elements(tree).filter(({ type }) => type === "button");
+  assert.equal(buttons.some(({ props }) => props["aria-label"] === "Remove Bundled CD"), false);
+  buttons.find(({ props }) => props["aria-label"] === "Remove Imported floppy").props.onClick();
+  assert.deepEqual(Array.from(removed), [imported]);
+  buttons.find(({ props }) => props.children === "Remove imported versions").props.onClick();
+  assert.deepEqual(Array.from(removed), [imported]);
 });
 
 test("game navigation updates the mounted library and restores Back/Forward selections", async () => {
