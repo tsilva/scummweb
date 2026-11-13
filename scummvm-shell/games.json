@@ -491,6 +491,16 @@
       "platform": "pc",
       "extra": "Interactive Demo 3 (v0.02)",
       "readmeHref": "/launcher/notices/gob3.txt"
+    },
+    {
+      "target": "gk1-demo",
+      "title": "Gabriel Knight: Sins of the Fathers (Demo)",
+      "path": "/games/gk1demo",
+      "engineId": "sci",
+      "gameId": "gk1demo",
+      "platform": "pc",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/gk1demo.txt"
     }
   ]
 }

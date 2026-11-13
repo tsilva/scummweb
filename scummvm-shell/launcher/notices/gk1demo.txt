@@ -1,0 +1,48 @@
+     GABRIEL KNIGHT: The Sins of the Fathers
+                   Playable Demo
+
+Although fully interactive, this demo covers only "day
+one" of the game's ten days. If, during play, you
+encounter messages like "Not included on Day One
+Playable Demo" please understand that you have stumbled
+upon features under development. You do not need any of
+these features to solve the puzzles and complete
+day one. Please check out the game's "About Screen"
+(click on the Sierra Logo in the control panel). There
+you will find information about the full game, the
+purpose of this demo, and some playing tips.
+
+Note: The music in this game has been authored only for
+Sound Blaster, MT32, and Sound Canvas drivers. If
+your hardware supports any of these formats, please
+select the appropriate driver. If not, you'll have to
+wait until the full game ships in fall '93 to hear
+our score.
+
+Also...this demo is meant to be played with a mouse.
+Although keyboard and joystick input is possible, it
+has not been thoroughly tested.  By the way, the entire
+Gabriel Knight Overture can be heard if you leave the
+initial title screen up for a long enough time.
+
+SIERRA FAMILY DEMONSTRATION CD-ROM VERSION 2.0 8/1/93
+
+Although this demo was designed to be run from
+the menu system provided on the CD, it is also a
+standalone runnable product.  Simply type DEMO from
+within this subdirectory.
+
+If you have not originally configured this product,
+you will enter the Install program to configure the
+demo.  This will create a file in the directory
+C:\SIERRA\DEMOCD.  This directory MUST exist on your
+hard drive for Install to work properly.  This directory
+is created the first time you run the DEMO Menu System
+(by typing DEMO from the root directory of this CD-ROM.)
+Alternately, you can create the C:\SIERRA\DEMOCD
+subdirectory manually.
+
+Once configured, typing DEMO will start the demo
+program.  To make any subsequent changes to the
+configuration, type INSTALL from within this
+demo subdirectory.

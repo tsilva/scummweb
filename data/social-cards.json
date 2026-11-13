@@ -1410,6 +1410,11 @@
       "file": "goblins-quest-3-demo-bdb2ed6ec26eb1fcabfe91f945757a9197a79cd1c808fc370e38728a89df2dfb.jpg",
       "inputHash": "bdb2ed6ec26eb1fcabfe91f945757a9197a79cd1c808fc370e38728a89df2dfb",
       "imageHash": "d02dada4e67632bb44d29623d898dbc1fdec37565585626c329f9833ae392d37"
+    },
+    "gabriel-knight-sins-of-the-fathers-demo": {
+      "file": "gabriel-knight-sins-of-the-fathers-demo-2322ce995c92aba7108a9b1cc044c628575e8a8e12b752b7480d6178c9bd56d8.jpg",
+      "inputHash": "2322ce995c92aba7108a9b1cc044c628575e8a8e12b752b7480d6178c9bd56d8",
+      "imageHash": "aadc3092dbdda54f56e581647b21c71c02b81004a4bc5a0e1e636c5fc3194169"
     }
   }
 }

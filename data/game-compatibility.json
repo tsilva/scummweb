@@ -1,6 +1,6 @@
 {
   "schemaVersion": 4,
-  "recordedOn": "2026-11-12",
+  "recordedOn": "2026-11-13",
   "scope": "Startup verification by edition; warnings and failures describe ScummVM or ScummWEB limitations, excluding problems specific to supplied game files. Not full-game compatibility.",
   "upstreamReference": {
     "version": "2026.4.0",
@@ -4439,6 +4439,13 @@
       "gameId": "gob:gob3",
       "edition": "Official English DOS interactive demo 3 v0.02 (gob3-dos-demo-en.zip)",
       "observation": "The original title and ship scene render. Click the title to start the playable demo. Blount responds to walking input. This demo does not offer saving through the game menu."
+    },
+    {
+      "title": "Gabriel Knight: Sins of the Fathers (Demo)",
+      "status": "startup-verified",
+      "gameId": "sci:gk1demo",
+      "edition": "Official English DOS playable Day One demo (gk1-dos-demo-en.zip)",
+      "observation": "The original Intro/Play menu, optional intro movie, Day One opening and bookshop scene render. Examination, action selection, walking, native saves and restore work. Choose Play in the original menu to enter the demo."
     }
   ]
 }

@@ -464,6 +464,25 @@
         "basis": "Official ScummVM-hosted English interactive promotional demo. Included 2.txt describes the playable MegaDisk demo. All twelve files and the nested LHA installer contents inspected without execution; no express redistribution ban or rehosting grant found. Official hosting supports this assessment but is not an express rights-holder license.",
         "preservation": "Serve the complete unchanged upstream ZIP, retaining 2.txt, its original packed installer, game data, setup files and all copyright notices."
       }
+    },
+    {
+      "target": "gk1-demo",
+      "title": "Gabriel Knight: Sins of the Fathers (Demo)",
+      "engineId": "sci",
+      "gameId": "gk1demo",
+      "platform": "pc",
+      "extra": "Demo",
+      "archive": "gk1-dos-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/sci/gk1-dos-demo-en.zip",
+      "sha256": "1d15dcf1010ea4844ed257e2f0d9b9f112a950f65e8cc7c293f4b765a2ea0531",
+      "preserveArchive": true,
+      "noticeFile": "README.TXT",
+      "redistributionReview": {
+        "reviewedOn": "2026-11-13",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "Official ScummVM-hosted playable Day One promotional demo. README calls it fully interactive and standalone runnable. Included notices and binary distribution strings inspected; no express rehosting grant or archive-wide redistribution ban found. INSTALL.HLP lists noload.drv as not for shipping, but that driver is absent; the included MT32.DRV is a separate driver. Official hosting supports this assessment but is not an express rights-holder license.",
+        "preservation": "Serve the complete unchanged upstream ZIP, retaining README.TXT, INSTALL.HLP, all original drivers, game resources and copyright notices."
+      }
     }
   ]
 }
