@@ -1,0 +1,183 @@
+diff --git a/engines/scumm/scummweb_ft_speech.h b/engines/scumm/scummweb_ft_speech.h
+new file mode 100644
+--- /dev/null
++++ b/engines/scumm/scummweb_ft_speech.h
+@@ -0,0 +1,71 @@
++#ifndef SCUMM_SCUMMWEB_FT_SPEECH_H
++#define SCUMM_SCUMMWEB_FT_SPEECH_H
++
++#include "common/memstream.h"
++#include "audio/audiostream.h"
++#include "scumm/file.h"
++
++namespace Scumm {
++
++// A single decoded line keeps original SOU offsets, including across save/load.
++class ScummWebFTSpeechFile : public ScummFile {
++	uint32 _origin;
++public:
++	ScummWebFTSpeechFile(ScummEngine *vm, byte *data, uint32 size, uint32 origin)
++		: ScummFile(vm), _origin(origin) {
++		_baseStream.reset(new Common::MemoryReadStream(data, size, DisposeAfterUse::YES));
++	}
++	int64 pos() const override { return _origin + _baseStream->pos(); }
++	int64 size() const override { return _origin + _baseStream->size(); }
++	bool seek(int64 offset, int whence = SEEK_SET) override {
++		return _baseStream->seek(whence == SEEK_SET ? offset - _origin : offset, whence);
++	}
++};
++
++// FT's current DiMUSE consumes unsigned 8-bit VOC, not compressed AudioStreams.
++// The old SOF format retains mouth tags and lossless PCM but omits VOC headers.
++static ScummFile *makeScummWebFTSpeechFile(ScummEngine *vm, Audio::AudioStream &audio,
++		const byte *tags, uint32 tagBytes, uint32 origin) {
++	if (audio.isStereo() || (audio.getRate() != 22050 && audio.getRate() != 11025) ||
++			tagBytes > 1024 || (tagBytes & 1))
++		return nullptr;
++	Common::MemoryWriteStreamDynamic out(DisposeAfterUse::YES);
++	out.writeUint32BE(MKTAG('V', 'C', 'T', 'L'));
++	out.writeUint32BE(tagBytes + 8);
++	out.write(tags, tagBytes);
++	out.writeUint32BE(MKTAG('V', 'T', 'L', 'K'));
++	out.writeUint32BE(0); // Filled after decoding the line.
++	out.write("Creative Voice File\x1a", 20);
++	out.writeUint16LE(26);
++	out.writeUint16LE(0x010a);
++	out.writeUint16LE(0x1129);
++	out.writeUint32LE(1); // Type 1, with a three-byte length filled below.
++	out.writeByte(audio.getRate() == 22050 ? 211 : 165);
++	out.writeByte(0); // Unsigned 8-bit PCM.
++	int16 samples[4096];
++	uint32 count = 0;
++	while (!audio.endOfStream()) {
++		const int n = audio.readBuffer(samples, ARRAYSIZE(samples));
++		// Some decoders discover EOF only on the final zero-length read.
++		if (n == 0 && audio.endOfStream())
++			break;
++		if (n <= 0 || n > (int)ARRAYSIZE(samples) || count + n > 8 * 1024 * 1024)
++			return nullptr;
++		for (int i = 0; i < n; ++i)
++			out.writeByte((samples[i] + 32768) >> 8);
++		count += n;
++	}
++	if (!count)
++		return nullptr;
++	out.writeByte(0); // VOC terminator.
++	byte *data = (byte *)malloc(out.size());
++	if (!data)
++		return nullptr;
++	memcpy(data, out.getData(), out.size());
++	WRITE_BE_UINT32(data + 12 + tagBytes, 8 + 26 + 6 + count + 1);
++	WRITE_LE_UINT32(data + 16 + tagBytes + 26, ((count + 2) << 8) | 1);
++	return new ScummWebFTSpeechFile(vm, data, out.size(), origin);
++}
++
++} // namespace Scumm
++#endif
+diff --git a/engines/scumm/sound.cpp b/engines/scumm/sound.cpp
+--- a/engines/scumm/sound.cpp
++++ b/engines/scumm/sound.cpp
+@@ -31,6 +31,9 @@
+ #include "scumm/resource.h"
+ #include "scumm/scumm.h"
+ #include "scumm/sound.h"
++#if defined(__EMSCRIPTEN__) && defined(USE_FLAC)
++#include "scumm/scummweb_ft_speech.h"
++#endif
+ 
+ #include "audio/audiostream.h"
+ #include "audio/decoders/flac.h"
+@@ -564,6 +567,15 @@
+ 			if (!file)
+ 				error("startTalkSound: Out of memory");
+ 
++#if defined(__EMSCRIPTEN__) && defined(USE_FLAC)
++			if (_soundMode == kFLACMode) {
++				file.reset(restoreDiMUSESpeechFile(_sfxFilename.c_str(), offset));
++				if (!file) {
++					warning("startTalkSound: could not decode FT FLAC speech");
++					return;
++				}
++			} else
++#endif
+ 			if (!_vm->openFile(*file, Common::Path(_sfxFilename))) {
+ 				warning("startTalkSound: could not open sfx file %s", _sfxFilename.c_str());
+ 				return;
+@@ -1055,6 +1067,11 @@
+ }
+ 
+ bool Sound::isSfxFileCompressed() {
++#if defined(__EMSCRIPTEN__) && defined(USE_FLAC)
++	// FT SOF speech is reconstructed one line at a time for native DiMUSE.
++	if (_vm->_game.id == GID_FT && _soundMode == kFLACMode)
++		return false;
++#endif
+ 	return !(_soundMode == kVOCMode);
+ }
+ 
+@@ -1063,13 +1080,40 @@
+ 	return !_sfxFilename.empty();
+ }
+ 
+-ScummFile *Sound::restoreDiMUSESpeechFile(const char *fileName) {
++ScummFile *Sound::restoreDiMUSESpeechFile(const char *fileName, uint32 speechOffset) {
+ 	Common::ScopedPtr<ScummFile> file;
+ 	file.reset(_vm->instantiateScummFile());
+ 	if (!_vm->openFile(*file, fileName)) {
+ 		return NULL;
+ 	}
+ 
++#if defined(__EMSCRIPTEN__) && defined(USE_FLAC)
++	if (_vm->_game.id == GID_FT && _soundMode == kFLACMode) {
++		// A saved stream offset lies inside its original SOU record.
++		const MP3OffsetTable *entry = nullptr;
++		for (int i = 0; i < _numSoundEffects; ++i) {
++			if (_offsetTable[i].org_offset < 0 || (uint32)_offsetTable[i].org_offset > speechOffset)
++				break;
++			entry = &_offsetTable[i];
++		}
++		if (!entry || entry->new_offset < 0 || entry->num_tags < 0 ||
++				entry->num_tags > 1024 || (entry->num_tags & 1) || entry->compressed_size <= 0 ||
++				(int64)entry->new_offset + entry->num_tags + entry->compressed_size > file->size())
++			return nullptr;
++		byte tags[1024];
++		if (!file->seek(entry->new_offset) || file->read(tags, entry->num_tags) != (uint32)entry->num_tags)
++			return nullptr;
++		const uint32 start = entry->new_offset + entry->num_tags;
++		Common::ScopedPtr<Audio::SeekableAudioStream> audio(Audio::makeFLACStream(
++			new Common::SeekableSubReadStream(file.release(), start, start + entry->compressed_size,
++				DisposeAfterUse::YES), DisposeAfterUse::YES));
++		if (!audio)
++			return nullptr;
++		return makeScummWebFTSpeechFile(_vm, *audio, tags, entry->num_tags, entry->org_offset);
++	}
++#else
++	(void)speechOffset;
++#endif
+ 	return file.release();
+ }
+ 
+diff --git a/engines/scumm/sound.h b/engines/scumm/sound.h
+--- a/engines/scumm/sound.h
++++ b/engines/scumm/sound.h
+@@ -138,7 +138,7 @@
+ 	virtual void pauseSounds(bool pause);
+ 	bool isSfxFileCompressed();
+ 	bool hasSfxFile() const;
+-	ScummFile *restoreDiMUSESpeechFile(const char *fileName);
++	ScummFile *restoreDiMUSESpeechFile(const char *fileName, uint32 speechOffset = 0);
+ 	void extractSyncsFromDiMUSEMarker(const char *marker);
+ 	void incrementSpeechTimer();
+ 	void resetSpeechTimer();
+diff --git a/engines/scumm/imuse_digi/dimuse_files.cpp b/engines/scumm/imuse_digi/dimuse_files.cpp
+--- a/engines/scumm/imuse_digi/dimuse_files.cpp
++++ b/engines/scumm/imuse_digi/dimuse_files.cpp
+@@ -89,7 +89,7 @@
+ 			ser.syncAsSint32LE(_ftSpeechSubFileOffset, VER(103));
+ 			ser.syncArray(_ftSpeechFilename, sizeof(_ftSpeechFilename), Common::Serializer::SByte, VER(103));
+ 			if (strlen(_ftSpeechFilename))
+-				_ftSpeechFile = _vm->_sound->restoreDiMUSESpeechFile(_ftSpeechFilename);
++				_ftSpeechFile = _vm->_sound->restoreDiMUSESpeechFile(_ftSpeechFilename, _ftSpeechSubFileOffset);
+ 		}
+ 	}
+ }

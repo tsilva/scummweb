@@ -269,6 +269,11 @@ display titles or slugs. The editorial budgets are 65 characters for titles
 and 160 for descriptions. Supply developer and publisher structured-data
 credits only when verified independently of the generic `studio` field.
 
+Full Throttle imports support legacy `MONSTER.SOF` FLAC speech as well as the
+original `MONSTER.SOU`. The runtime reconstructs one mono 11025/22050-Hz speech
+line at a time for digital iMUSE, preserving mouth animation and save restoration.
+Legacy lossy FT speech and recompressed DIG/COMI bundles remain unsupported.
+
 ### Development commands
 
 Follow the [README quickstart](../README.md#run-locally) for a credential-free
