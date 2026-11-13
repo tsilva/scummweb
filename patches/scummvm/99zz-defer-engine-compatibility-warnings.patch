@@ -1,0 +1,621 @@
+diff --git a/engines/scummweb-startup.h b/engines/scummweb-startup.h
+--- a/engines/scummweb-startup.h
++++ b/engines/scummweb-startup.h
+@@ -7,6 +7,7 @@
+ 
+ #include "common/str.h"
+ #include "common/ustr.h"
++#include "gui/message.h"
+ 
+ namespace ScummWebStartup {
+ 
+@@ -24,6 +25,12 @@
+ #endif
+ }
+ 
++// Use only for nonfatal compatibility notices that need no player decision.
++inline void showCompatibilityWarning(const Common::U32String &message) {
++	if (!deferCompatibilityWarning(message))
++		GUI::MessageDialog(message).runModal();
++}
++
+ } // End of namespace ScummWebStartup
+ 
+ #endif
+diff --git a/engines/sci/sci.cpp b/engines/sci/sci.cpp
+--- a/engines/sci/sci.cpp
++++ b/engines/sci/sci.cpp
+@@ -18,6 +18,8 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  *
+  */
++
++#include "engines/scummweb-startup.h"
+ 
+ #include "engines/scummweb-telemetry.h"
+ #ifdef __EMSCRIPTEN__
+@@ -461,7 +463,7 @@
+ 	// Show any special warnings for buggy scripts with severe game bugs,
+ 	// which have been patched by Sierra
+ 	if (getGameId() == GID_KQ7 && ConfMan.getBool("subtitles")) {
+-		showScummVMDialog(_("Subtitles are enabled, but subtitling in King's"
++		ScummWebStartup::showCompatibilityWarning(_("Subtitles are enabled, but subtitling in King's"
+ 						  " Quest 7 was unfinished and disabled in the release"
+ 						  " version of the game. ScummVM allows the subtitles"
+ 						  " to be re-enabled, but because they were removed from"
+@@ -485,7 +487,7 @@
+ 			case GID_SQ1:
+ 			case GID_SQ4:
+ 			case GID_FAIRYTALES:
+-				showScummVMDialog(_("You have selected General MIDI as a sound device. Sierra "
++				ScummWebStartup::showCompatibilityWarning(_("You have selected General MIDI as a sound device. Sierra "
+ 				                  "has provided after-market support for General MIDI for this "
+ 				                  "game in their \"General MIDI Utility\". Please, apply this "
+ 				                  "patch in order to enjoy MIDI music with this game. Once you "
+diff --git a/engines/agos/midi.cpp b/engines/agos/midi.cpp
+--- a/engines/agos/midi.cpp
++++ b/engines/agos/midi.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-startup.h"
++
+ #include "common/config-manager.h"
+ #include "common/file.h"
+ #include "common/textconsole.h"
+@@ -183,13 +185,12 @@
+ 	// original driver does, so no warning needed in that case.
+ 	if (_dataType == MT_MT32 && _deviceType == MT_GM && !_pc98) {
+ 		// Not a real MT32 / no MUNT
+-		::GUI::MessageDialog dialog(_(
++		ScummWebStartup::showCompatibilityWarning(_(
+ 			"You appear to be using a General MIDI device,\n"
+ 			"but your game only supports Roland MT32 MIDI.\n"
+ 			"We try to map the Roland MT32 instruments to\n"
+ 			"General MIDI ones. It is still possible that\n"
+ 			"some tracks sound incorrect."));
+-		dialog.runModal();
+ 	}
+ 
+ 	// Elvira 2, Waxworks and Simon 1 DOS floppy have MIDI SFX.
+@@ -308,13 +309,12 @@
+ 					_driverMsMusic = createMidiDriverSimon1AdLib("MT_FM.IBK", oplType);
+ 				} else {
+ 					// Fallback in case AdLib instrument definitions are missing.
+-					GUI::MessageDialog dialog(
++					ScummWebStartup::showCompatibilityWarning(
+ 						Common::U32String::format(
+ 							_("Could not find AdLib instrument definition file\n"
+ 							  "%s. Without this file,\n"
+ 							  "the music will not sound the same as the original game."),
+ 							"MT_FM.IBK"));
+-					dialog.runModal();
+ 
+ 					_driverMsMusic = new MidiDriver_ADLIB_Multisource(oplType);
+ 					_driverMsMusic->setInstrumentRemapping(MidiDriver::_mt32ToGm);
+@@ -362,13 +362,12 @@
+ 					_driverMsSfx = createMidiDriverSimon1AdLib("MT_FM.IBK", oplType);
+ 				} else {
+ 					// Fallback in case AdLib instrument definitions are missing.
+-					GUI::MessageDialog dialog(
++					ScummWebStartup::showCompatibilityWarning(
+ 						Common::U32String::format(
+ 							_("Could not find AdLib instrument definition file\n"
+ 							  "%s. Without this file,\n"
+ 							  "the sound effects will not sound the same as the original game."),
+ 							"MT_FM.IBK"));
+-					dialog.runModal();
+ 
+ 					_driverMsSfx = new MidiDriver_ADLIB_Multisource(oplType);
+ 					_driverMsSfx->setInstrumentRemapping(MidiDriver::_mt32ToGm);
+@@ -440,13 +439,12 @@
+ 					delete midpakAdLibStream;
+ 				} else {
+ 					// Fallback in case AdLib instrument definitions are missing.
+-					GUI::MessageDialog dialog(
++					ScummWebStartup::showCompatibilityWarning(
+ 						Common::U32String::format(
+ 							_("Could not find AdLib instrument definition file\n"
+ 							  "%s or %s. Without one of these files,\n"
+ 							  "the music will not sound the same as the original game."),
+ 							"MIDPAK.AD", "SETUP.SHR"));
+-					dialog.runModal();
+ 
+ 					_driverMsMusic = new MidiDriver_ADLIB_Multisource(oplType);
+ 				}
+diff --git a/engines/kyra/sound/sound_pc_midi.cpp b/engines/kyra/sound/sound_pc_midi.cpp
+--- a/engines/kyra/sound/sound_pc_midi.cpp
++++ b/engines/kyra/sound/sound_pc_midi.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-startup.h"
++
+ #include "kyra/sound/sound_intern.h"
+ 
+ #include "kyra/resource/resource.h"
+@@ -73,12 +75,11 @@
+ 	// (This will only happen in The Legend of Kyrandia 1 though, all other
+ 	// supported games include special General MIDI tracks).
+ 	if (_type == kMidiMT32 && !_nativeMT32) {
+-		::GUI::MessageDialog dialog(_("You appear to be using a General MIDI device,\n"
++		ScummWebStartup::showCompatibilityWarning(_("You appear to be using a General MIDI device,\n"
+ 									"but your game only supports Roland MT32 MIDI.\n"
+ 									"We try to map the Roland MT32 instruments to\n"
+ 									"General MIDI ones. It is still possible that\n"
+ 									"some tracks sound incorrect."));
+-		dialog.runModal();
+ 	}
+ }
+ 
+diff --git a/engines/scumm/scumm.cpp b/engines/scumm/scumm.cpp
+--- a/engines/scumm/scumm.cpp
++++ b/engines/scumm/scumm.cpp
+@@ -20,6 +20,8 @@
+  */
+ 
+ #ifdef __EMSCRIPTEN__
++#include "engines/scummweb-startup.h"
++
+ #include <emscripten.h>
+ #endif
+ 
+@@ -339,10 +341,9 @@
+ 
+ 	if (_game.platform == Common::kPlatformFMTowns && _game.id != GID_LOOM && _game.version == 3)
+ 		if (ConfMan.getBool("aspect_ratio") && !ConfMan.getBool("trim_fmtowns_to_200_pixels")) {
+-			GUI::MessageDialog dialog(
++			ScummWebStartup::showCompatibilityWarning(
+ 				_("You have enabled 'aspect ratio correction'. However, FM-TOWNS' natural resolution is 320x240, which doesn't allow aspect ratio correction.\n"
+ 				  "Aspect ratio correction can be achieved by trimming the resolution to 320x200, under 'engine' tab."));
+-			dialog.runModal();
+ 		}
+ 
+ 	switch (_renderMode) {
+@@ -1416,10 +1417,9 @@
+ 					return Common::Error(Common::kReadingFailed, Common::U32String::format(_("This game requires the '%s' Macintosh executable for its music and fonts."), gameName));
+ 				}
+ 
+-				GUI::MessageDialog dialog(Common::U32String::format(
++				ScummWebStartup::showCompatibilityWarning(Common::U32String::format(
+ 					_("Could not find the '%s' Macintosh executable to read resources from. %s will be disabled."),
+ 						gameName, (_game.id == GID_MONKEY2 || _game.version > 6) ? _s("The Mac GUI") : _s("The music and the Mac GUI")));
+-				dialog.runModal();
+ 			} else if (isUsingOriginalGUI() || _game.id == GID_INDY3 || _game.id == GID_LOOM) {
+ 				// FIXME: THIS IS A TEMPORARY WORKAROUND!
+ 				// The reason why we are initializing the Mac GUI even without original GUI active
+@@ -1622,11 +1622,10 @@
+ 
+ #ifndef USE_FREETYPE2
+ 	if (_game.id == GID_FUNSHOP) {
+-		GUI::MessageDialog dialog(_(
++		ScummWebStartup::showCompatibilityWarning(_(
+ 			"It appears your ScummVM version was not built with TrueType Fonts support.\n\n"
+ 			"Since the One-Stop Fun Shop series makes extensive use of TTF fonts,\n"
+ 			"some of the graphics on screen will be missing."));
+-		dialog.runModal();
+ 	}
+ #endif
+ 
+@@ -1963,11 +1962,10 @@
+ 	_musicEngine = _imuseDigital = new IMuseDigital(this, sampleRate, _mixer, &_resourceAccessMutex, lowLatencyMode);
+ 
+ 	if (filesAreCompressed) {
+-		GUI::MessageDialog dialog(_(
++		ScummWebStartup::showCompatibilityWarning(_(
+ 			"Audio files compressed with ScummVM Tools were detected; *.BUN/*.SOU\n"
+ 			"compression is not supported anymore for this game, audio will be disabled.\n"
+ 			"Please copy the game from the original media without compression."));
+-		dialog.runModal();
+ 		_imuseDigital->disableEngine();
+ 	}
+ 
+@@ -2452,11 +2450,10 @@
+ 		}
+ 
+ 		if (missingFile) {
+-			GUI::MessageDialog dialog(
++			ScummWebStartup::showCompatibilityWarning(
+ 				Common::U32String::format(
+ 					_("Native MIDI support requires the Roland Upgrade from LucasArts,\n"
+ 					"but %s is missing. Using AdLib instead."), fileName.toString(Common::Path::kNativeSeparator).c_str()));
+-			dialog.runModal();
+ 			_sound->_musicType = MDT_ADLIB;
+ 		}
+ 	}
+@@ -2468,10 +2465,9 @@
+ 	// error about DISK00.LEC.
+ 	if (_game.id == GID_MONKEY_VGA && _language == Common::FR_FRA && _sound->_musicType == MDT_MIDI &&
+ 		memcmp(_gameMD5, "\xa0\x1f\xab\x4a\x64\xd4\x7b\x96\xe2\xe5\x8e\x6b\x0f\x82\x5c\xc7", 16) == 0) {
+-		GUI::MessageDialog dialog(
++		ScummWebStartup::showCompatibilityWarning(
+ 			_("This particular version of Monkey Island 1 is known to miss some\n"
+ 			"required resources for MT-32. Using AdLib instead."));
+-		dialog.runModal();
+ 		_sound->_musicType = MDT_ADLIB;
+ 	}
+ 
+diff --git a/engines/agi/font.cpp b/engines/agi/font.cpp
+--- a/engines/agi/font.cpp
++++ b/engines/agi/font.cpp
+@@ -18,6 +18,8 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  *
+  */
++
++#include "engines/scummweb-startup.h"
+ 
+ #include "common/config-manager.h"
+ #include "common/translation.h"
+@@ -677,8 +679,7 @@
+ 		// Continue, if no file was not found
+ 		warning("Could not open/use file 'hgc_font' for Hercules hires font");
+ 		if (GUI::GuiManager::hasInstance()) {
+-			GUI::MessageDialog dialog(_("Could not open/use file 'hgc_font' for Hercules hires font.\nIf you have such file in other AGI (Sierra) game, you can copy it to the game directory"));
+-			dialog.runModal();
++			ScummWebStartup::showCompatibilityWarning(_("Could not open/use file 'hgc_font' for Hercules hires font.\nIf you have such file in other AGI (Sierra) game, you can copy it to the game directory"));
+ 		}
+ 	}
+ }
+diff --git a/engines/vcruise/vcruise.cpp b/engines/vcruise/vcruise.cpp
+--- a/engines/vcruise/vcruise.cpp
++++ b/engines/vcruise/vcruise.cpp
+@@ -19,6 +19,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-startup.h"
++
+ #include "engines/util.h"
+ 
+ #include "common/compression/gentee_installer.h"
+@@ -90,19 +92,17 @@
+ 
+ #if !defined(USE_OGG) || !defined(USE_VORBIS)
+ 	if (_gameDescription->desc.flags & VCRUISE_GF_WANT_OGG_VORBIS) {
+-		GUI::MessageDialog dialog(
++		ScummWebStartup::showCompatibilityWarning(
+ 			_("Music for this game requires Ogg Vorbis support, which was not compiled in.\n"
+ 			  "The game will still play, but will not have any music."));
+-		dialog.runModal();
+ 	}
+ #endif
+ 
+ #if !defined(USE_MAD)
+ 	if (_gameDescription->desc.flags & VCRUISE_GF_WANT_MP3) {
+-		GUI::MessageDialog dialog(
++		ScummWebStartup::showCompatibilityWarning(
+ 			_("Music for this game requires MP3 support, which was not compiled in.\n"
+ 			  "The game will still play, but will not have any music."));
+-		dialog.runModal();
+ 	}
+ #endif
+ 
+diff --git a/engines/mtropolis/mtropolis.cpp b/engines/mtropolis/mtropolis.cpp
+--- a/engines/mtropolis/mtropolis.cpp
++++ b/engines/mtropolis/mtropolis.cpp
+@@ -18,6 +18,8 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  *
+  */
++
++#include "engines/scummweb-startup.h"
+ 
+ #include "common/config-manager.h"
+ #include "common/debug.h"
+@@ -107,20 +109,18 @@
+ Common::Error MTropolisEngine::run() {
+ #if !defined(USE_MPEG2)
+ 	if (_gameDescription->desc.flags & MTGF_WANT_MPEG_VIDEO) {
+-		GUI::MessageDialog dialog(
++		ScummWebStartup::showCompatibilityWarning(
+ 			_("This game requires MPEG video support for some\n"
+ 			  "content but MPEG video support was not compiled in.\n"
+ 			  "The game will still play, but MPEG videos will not work."));
+-		dialog.runModal();
+ 	}
+ #endif
+ #if !defined(USE_MAD)
+ 	if (_gameDescription->desc.flags & MTGF_WANT_MPEG_AUDIO) {
+-		GUI::MessageDialog dialog(
++		ScummWebStartup::showCompatibilityWarning(
+ 			_("This game requires MPEG audio support for some\n"
+ 			  "content but MPEG audio support was not compiled in.\n"
+ 			  "The game will still play, but some audio will not work."));
+-		dialog.runModal();
+ 	}
+ #endif
+ 
+diff --git a/engines/stark/stark.cpp b/engines/stark/stark.cpp
+--- a/engines/stark/stark.cpp
++++ b/engines/stark/stark.cpp
+@@ -18,6 +18,8 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  *
+  */
++
++#include "engines/scummweb-startup.h"
+ 
+ #include "engines/stark/stark.h"
+ 
+@@ -332,8 +334,10 @@
+ 		message += _("\n\nYou can download the missing files from the demo version from the ScummVM website.");
+ 		warning("%s", message.c_str());
+ 
+-		GUI::MessageDialogWithURL dialog(message, url);
+-		dialog.runModal();
++		if (!ScummWebStartup::deferCompatibilityWarning(Common::U32String(message) + "\n\n" + url)) {
++			GUI::MessageDialogWithURL dialog(message, url);
++			dialog.runModal();
++		}
+ 	}
+ }
+ 
+diff --git a/engines/zvision/zvision.cpp b/engines/zvision/zvision.cpp
+--- a/engines/zvision/zvision.cpp
++++ b/engines/zvision/zvision.cpp
+@@ -18,6 +18,8 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  *
+  */
++
++#include "engines/scummweb-startup.h"
+ 
+ #include "audio/mixer.h"
+ #include "backends/keymapper/keymap.h"
+@@ -319,17 +321,17 @@
+ 		return Common::kUnknownError;
+ 	}
+ 	if (getGameId() == GID_NEMESIS && !_midiManager->isAvailable()) {
+-		GUI::MessageDialog MIDIdialog(_(
++		const Common::U32String message = _(
+ 				"MIDI playback is not available, or else improperly configured. "
+ 				"Zork Nemesis contains several music puzzles which require "
+ 				"MIDI audio in order to be solved.  These puzzles may alternatively "
+ 				"be solved using subtitles, if supported. Continue launching game?"
+-				),
+-				_("Yes"),
+-				_("No")
+-			);
+-		if (MIDIdialog.runModal() != GUI::kMessageOK)
+-			quitGame();
++				);
++		if (!ScummWebStartup::deferCompatibilityWarning(message)) {
++			GUI::MessageDialog MIDIdialog(message, _("Yes"), _("No"));
++			if (MIDIdialog.runModal() != GUI::kMessageOK)
++				quitGame();
++		}
+ 	}
+ 
+ 	// Main loop
+diff --git a/engines/engine.cpp b/engines/engine.cpp
+--- a/engines/engine.cpp
++++ b/engines/engine.cpp
+@@ -389,44 +389,37 @@
+ 	if (gfxError & OSystem::kTransactionFormatNotSupported) {
+ 		Common::U32String message = _("Could not initialize color format.");
+ 
+-		GUI::MessageDialog dialog(message);
+-		dialog.runModal();
++		ScummWebStartup::showCompatibilityWarning(message);
+ 	}
+ 
+ 	if (gfxError & OSystem::kTransactionModeSwitchFailed) {
+ 		Common::U32String message;
+ 		message = Common::U32String::format(_("Could not switch to video mode '%s'."), ConfMan.get("gfx_mode").c_str());
+ 
+-		GUI::MessageDialog dialog(message);
+-		dialog.runModal();
++		ScummWebStartup::showCompatibilityWarning(message);
+ 	}
+ 
+ 	if (gfxError & OSystem::kTransactionStretchModeSwitchFailed) {
+ 		Common::U32String message;
+ 		message = Common::U32String::format(_("Could not switch to stretch mode '%s'."), ConfMan.get("stretch_mode").c_str());
+ 
+-		GUI::MessageDialog dialog(message);
+-		dialog.runModal();
++		ScummWebStartup::showCompatibilityWarning(message);
+ 	}
+ 
+ 	if (gfxError & OSystem::kTransactionAspectRatioFailed) {
+-		GUI::MessageDialog dialog(_("Could not apply aspect ratio setting."));
+-		dialog.runModal();
++		ScummWebStartup::showCompatibilityWarning(_("Could not apply aspect ratio setting."));
+ 	}
+ 
+ 	if (gfxError & OSystem::kTransactionFullscreenFailed) {
+-		GUI::MessageDialog dialog(_("Could not apply fullscreen setting."));
+-		dialog.runModal();
++		ScummWebStartup::showCompatibilityWarning(_("Could not apply fullscreen setting."));
+ 	}
+ 
+ 	if (gfxError & OSystem::kTransactionFilteringFailed) {
+-		GUI::MessageDialog dialog(_("Could not apply filtering setting."));
+-		dialog.runModal();
++		ScummWebStartup::showCompatibilityWarning(_("Could not apply filtering setting."));
+ 	}
+ 
+ 	if (gfxError & OSystem::kTransactionShaderChangeFailed) {
+-		GUI::MessageDialog dialog(_("Could not apply shader setting."));
+-		dialog.runModal();
++		ScummWebStartup::showCompatibilityWarning(_("Could not apply shader setting."));
+ 	}
+ }
+ 
+diff --git a/engines/lab/engine.cpp b/engines/lab/engine.cpp
+--- a/engines/lab/engine.cpp
++++ b/engines/lab/engine.cpp
+@@ -27,6 +27,8 @@
+  *
+  */
+ 
++#include "engines/scummweb-startup.h"
++
+ #include "common/config-manager.h"
+ #include "common/file.h"
+ #include "common/translation.h"
+@@ -123,8 +125,7 @@
+ 			// Wyrmkeep trial version
+ 			_extraGameFeatures = GF_WINDOWS_TRIAL;
+ 
+-			GUI::MessageDialog trialMessage(_("This is a trial Windows version of the game. To play the full version, you will need to use the original interpreter and purchase a key from Wyrmkeep"));
+-			trialMessage.runModal();
++			ScummWebStartup::showCompatibilityWarning(_("This is a trial Windows version of the game. To play the full version, you will need to use the original interpreter and purchase a key from Wyrmkeep"));
+ 		}
+ 		else {
+ 			knownVersion = false;
+diff --git a/engines/sword1/animation.cpp b/engines/sword1/animation.cpp
+--- a/engines/sword1/animation.cpp
++++ b/engines/sword1/animation.cpp
+@@ -18,6 +18,8 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  *
+  */
++
++#include "engines/scummweb-startup.h"
+ 
+ #include "common/file.h"
+ #include "common/events.h"
+@@ -578,16 +580,14 @@
+ 		Video::VideoDecoder *aviDecoder = new Video::AVIDecoder(12);
+ 		return new MoviePlayer(vm, textMan, resMan, sound, system, aviDecoder, kVideoDecoderMP2);
+ #else
+-		GUI::MessageDialog dialog(_("MPEG-2 cutscenes found but ScummVM has been built without MPEG-2 support"));
+-		dialog.runModal();
++		ScummWebStartup::showCompatibilityWarning(_("MPEG-2 cutscenes found but ScummVM has been built without MPEG-2 support"));
+ 		return 0;
+ #endif
+ 	}
+ 
+ 	if (!vm->isPsx() || scumm_stricmp(sequenceList[id], "enddemo") != 0) {
+ 		Common::U32String buf = Common::U32String::format(_("Cutscene '%s' not found"), sequenceList[id]);
+-		GUI::MessageDialog dialog(buf);
+-		dialog.runModal();
++		ScummWebStartup::showCompatibilityWarning(buf);
+ 	}
+ 
+ 	return 0;
+diff --git a/engines/sword2/animation.cpp b/engines/sword2/animation.cpp
+--- a/engines/sword2/animation.cpp
++++ b/engines/sword2/animation.cpp
+@@ -21,6 +21,8 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ 
++#include "engines/scummweb-startup.h"
++
+ #include "common/file.h"
+ #include "common/mutex.h"
+ #include "common/system.h"
+@@ -474,8 +476,7 @@
+ 		Video::AVIDecoder *aviDecoder = new Video::AVIDecoder(12);
+ 		return new MoviePlayer(vm, system, aviDecoder, kVideoDecoderMP2);
+ #else
+-		GUI::MessageDialog dialog(_("MPEG-2 cutscenes found but ScummVM has been built without MPEG-2 support"));
+-		dialog.runModal();
++		ScummWebStartup::showCompatibilityWarning(_("MPEG-2 cutscenes found but ScummVM has been built without MPEG-2 support"));
+ 		return nullptr;
+ #endif
+ 	}
+@@ -484,8 +485,7 @@
+ 	// In addition, some of the later re-releases of the game don't have the "eye" Virgin logo movie.
+ 	if (!vm->_logic->readVar(DEMO) && strcmp(name, "eye") != 0) {
+ 		Common::U32String buf = Common::U32String::format(_("Cutscene '%s' not found"), name);
+-		GUI::MessageDialog dialog(buf);
+-		dialog.runModal();
++		ScummWebStartup::showCompatibilityWarning(buf);
+ 	} else
+ 		warning("Cutscene '%s' not found", name);
+ 
+diff --git a/engines/agos/animation.cpp b/engines/agos/animation.cpp
+--- a/engines/agos/animation.cpp
++++ b/engines/agos/animation.cpp
+@@ -22,6 +22,8 @@
+ 
+ 
+ #ifdef ENABLE_AGOS2
++
++#include "engines/scummweb-startup.h"
+ 
+ #include "common/endian.h"
+ #include "common/events.h"
+@@ -580,8 +582,7 @@
+ 	}
+ 
+ 	Common::U32String buf = Common::U32String::format(_("Cutscene file '%s' not found!"), baseName);
+-	GUI::MessageDialog dialog(buf);
+-	dialog.runModal();
++	ScummWebStartup::showCompatibilityWarning(buf);
+ 
+ 	return NULL;
+ }
+diff --git a/engines/sci/graphics/video32.cpp b/engines/sci/graphics/video32.cpp
+--- a/engines/sci/graphics/video32.cpp
++++ b/engines/sci/graphics/video32.cpp
+@@ -18,6 +18,8 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  *
+  */
++
++#include "engines/scummweb-startup.h"
+ 
+ #include "audio/mixer.h"                 // for Audio::Mixer::kSFXSoundType
+ #include "common/config-manager.h"       // for ConfMan
+@@ -69,7 +71,7 @@
+ 	// KQ7 2.00b videos are compressed in 24bpp Cinepak, so cannot play on a
+ 	// system with no RGB support
+ 	// TODO: Optionally support dithering for Cinepak videos
+-	showScummVMDialog(Common::U32String::format(_("Cannot play back %s video on a system with maximum color depth of 8bpp"), _decoder->getPixelFormat().toString().c_str()));
++	ScummWebStartup::showCompatibilityWarning(Common::U32String::format(_("Cannot play back %s video on a system with maximum color depth of 8bpp"), _decoder->getPixelFormat().toString().c_str()));
+ }
+ 
+ bool VideoPlayer::startHQVideo(const Graphics::PixelFormat &format) {
+diff --git a/engines/sci/resource/resource.cpp b/engines/sci/resource/resource.cpp
+--- a/engines/sci/resource/resource.cpp
++++ b/engines/sci/resource/resource.cpp
+@@ -20,6 +20,8 @@
+  */
+ 
+ // Resource library
++
++#include "engines/scummweb-startup.h"
+ 
+ #include "common/config-manager.h"
+ #include "common/file.h"
+@@ -856,7 +858,7 @@
+ 	// be warned of bad resources in this situation (KQ Collection 1997 has a
+ 	// bad copy of KQ5 on CD 1; the working copy is on CD 2)
+ 	if (!_detectionMode && _hasBadResources) {
+-		showScummVMDialog(_("Missing or corrupt game resources have been detected. "
++		ScummWebStartup::showCompatibilityWarning(_("Missing or corrupt game resources have been detected. "
+ 							"Some game features may not work properly. Please check "
+ 							"the console for more information, and verify that your "
+ 							"game files are valid."));
+diff --git a/engines/sword1/sword1.cpp b/engines/sword1/sword1.cpp
+--- a/engines/sword1/sword1.cpp
++++ b/engines/sword1/sword1.cpp
+@@ -18,6 +18,8 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  *
+  */
++
++#include "engines/scummweb-startup.h"
+ 
+ #include "engines/scummweb-telemetry.h"
+ 
+@@ -521,8 +523,10 @@
+ 				}
+ 		}
+ 	}
+-	GUI::MessageDialog dialog(msg);
+-	dialog.runModal();
++	if (type == TYPE_IMMED || !ScummWebStartup::deferCompatibilityWarning(Common::U32String(msg))) {
++		GUI::MessageDialog dialog(msg);
++		dialog.runModal();
++	}
+ 	if (type == TYPE_IMMED) // we can't start without this file, so error() out.
+ 		error("%s", msg);
+ }
