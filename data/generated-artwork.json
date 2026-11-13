@@ -20271,6 +20271,81 @@
         }
       ],
       "prompt": "Use case: illustration-story. Recompose the supplied original Quest for Infamy promotional banner into a 5:3 full-bleed landscape game-page hero, at least 1600 by 960. Use the three adventurers, cave ledge, vines, dark blue cliffside castle, distant green fog and painted early-2010s fantasy illustration style from the original banner. Preserve the characters’ visual identities, costumes, props and expressive poses. Remove the large logo, all lettering, signatures, borders and watermarks. Put the three adventurers on the right, inset safely from the edges. Bring the left 42 percent into quiet dark blue-grey mist and distant castle silhouettes for the real page title. Keep quiet margins at the top and bottom. No new characters or objects."
+    },
+    {
+      "target": "geminirue-demo",
+      "role": "hero",
+      "asset": "/launcher/gemini-rue-scummweb-generated-2026-11-13-r1-hero.webp",
+      "generatedOn": "2026-11-13",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "1f4d1b36dfcbe6aece3915e471524d4d30d63225631c0c894d84368aa72f4eb7",
+        "width": 1619,
+        "height": 971
+      },
+      "output": {
+        "sha256": "b6a5d64eeab285859b7d39cbaa8077d1a29185706e7cd3283dc7966dfc57d567",
+        "width": 1600,
+        "height": 960,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://media.indiedb.com/images/games/1/16/15658/gemini_rue_box.jpg",
+          "sha256": "67d17ed154c10be7d7f541bb7b1808fac4d01c1300cd6b4024cafeb5e74352dc",
+          "kind": "box-front",
+          "credit": "Original Gemini Rue cover illustration hosted by the Wadjet Eye Games IndieDB game page; original artwork belongs to its creators and rights holders."
+        },
+        {
+          "url": "https://wadjeteyegames.com/wp-content/uploads/geminirue_slide-940x240.jpg",
+          "sha256": "7656edef0cbbdcbddbc995c6f426fd2dd57c9d295621d6fbd64258d5828ff39e",
+          "credit": "Official Wadjet Eye Games promotional banner."
+        }
+      ],
+      "prompt": "Use case: compositing. Create a full-bleed 5:3 website hero illustration for Gemini Rue, at least 1600x960 pixels, preferably 1920x1152. Image 1 is the original game box-front illustration, Image 2 is the official publisher banner: both are reference art, not screenshots or edit targets. Faithfully preserve Azriel Odin's dark swept hair, green trench coat and tie, and Delta-Six's short brown hair and plain light shirt, the painterly brushwork, somber green/teal city and warm ochre cloud/planet horizon. Recompose those original motifs into a wide scene, both men on the right half, faces fully visible and safely inset, looking away from each other. The left 42% must be naturally dark, low-detail rainy city atmosphere for the application's white title and Play button. Leave quiet top 9% and bottom 12% for navigation/fade; ensure both heads remain safe in a narrow mobile crop focused on the right half. No title, letters, logos, badges, borders, signatures, watermark or UI. This is promotional illustration, never a synthetic gameplay screenshot. Preserve original identities and medium."
+    },
+    {
+      "target": "geminirue-demo",
+      "role": "cover",
+      "asset": "/launcher/gemini-rue-scummweb-generated-2026-11-13-r1-cover.webp",
+      "generatedOn": "2026-11-13",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "bd22b0fe4e0f4e970bd798b52fac2410f7c3ded99ce20e742299b83898d13db3",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "6306bdd3e7c1445e614c1083540d4e2d093b67a98927e027da691c181e2c0a65",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://media.indiedb.com/images/games/1/16/15658/gemini_rue_box.jpg",
+          "sha256": "67d17ed154c10be7d7f541bb7b1808fac4d01c1300cd6b4024cafeb5e74352dc",
+          "kind": "box-front",
+          "credit": "Original Gemini Rue cover illustration hosted by the Wadjet Eye Games IndieDB game page; original artwork belongs to its creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: precise-object-edit. Restore/recreate the original Gemini Rue flat front cover from the supplied original box-front reference, at a portrait 3:4 ratio with at least 900x1200 pixels. The reference is the original cover, not a screenshot. Faithfully preserve its original layout and painterly medium: dark-haired Azriel Odin on the left in a green coat, white shirt and loosened dark tie; short brown-haired Delta-Six on the right in an off-white shirt, both facing away from one another; warm ochre clouds above a planet's curved horizon; moody green shadows. Keep the original white spaced title verbatim 'GEMINI RUE' near the bottom, same slim monospaced letterforms and placement. Improve resolution, brushwork clarity and lettering without redesigning the cover or inventing badges, logos, credits, new subjects or details. Flat front face only, no spine, 3D box, scan border, retailer sticker, watermark or UI. Preserve all original art and title, fitting 3:4 with only minimal neutral extension if needed, never cropping away the title or rearranging the composition."
     }
   ]
 }

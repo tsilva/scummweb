@@ -39421,6 +39421,123 @@
       "width": 1246,
       "height": 935,
       "placeholder": "UklGRlwAAABXRUJQVlA4IFAAAADQAQCdASoMAAkAAsBIJZACdADdPOxZIAD+wfoFTIMW010Z5oB531bAycZLBY8mgnhx19z3X2qxcdk8Oftxe0tZG3Zp2fyNBmZzSpfvB+iYAA=="
+    },
+    "/launcher/gemini-rue-scummweb-generated-2026-11-13-r1-cover.webp": {
+      "key": "artwork/6306bdd3e7c1445e614c1083540d4e2d093b67a98927e027da691c181e2c0a65/gemini-rue-scummweb-generated-2026-11-13-r1-cover.webp",
+      "sha256": "6306bdd3e7c1445e614c1083540d4e2d093b67a98927e027da691c181e2c0a65",
+      "bytes": 69488,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200,
+      "placeholder": "UklGRmAAAABXRUJQVlA4IFQAAAAwAgCdASoJAAwAAsBIJQBOgMV45EycpcvNgAD+0PYFFW+Dk3CSqzkhZ2uHccAIeyaSTdHph5obii9rD5U6U7RV5RCe2e0NQKIiWzClXeZD7JwAAAA="
+    },
+    "/launcher/gemini-rue-scummweb-generated-2026-11-13-r1-hero.webp": {
+      "key": "artwork/b6a5d64eeab285859b7d39cbaa8077d1a29185706e7cd3283dc7966dfc57d567/gemini-rue-scummweb-generated-2026-11-13-r1-hero.webp",
+      "sha256": "b6a5d64eeab285859b7d39cbaa8077d1a29185706e7cd3283dc7966dfc57d567",
+      "bytes": 72644,
+      "contentType": "image/webp",
+      "width": 1600,
+      "height": 960,
+      "placeholder": "UklGRkoAAABXRUJQVlA4ID4AAADwAQCdASoMAAcAAsBIJYwC7ADdLt6ERxAA/vba+vi0f8MkOlXEoFKgPCSnonal0mk6InaDJPSmygUH0EAAAA=="
+    },
+    "/launcher/gemini-rue-shot-1.webp": {
+      "key": "artwork/60923773f8605e17029442e2e0474227c14939b7408e45b9cb761909701385a2/gemini-rue-shot-1.webp",
+      "sha256": "60923773f8605e17029442e2e0474227c14939b7408e45b9cb761909701385a2",
+      "bytes": 25400,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 960,
+      "placeholder": "UklGRlYAAABXRUJQVlA4IEoAAADQAQCdASoMAAkAAsBIJZwCdAEO7RIuAAD8Es/n8sqXMBo2sfmlj9aidG34Z/lnSjIqEVXaFNfXZH2Q64W2mqZTTV5GrH7zzDEIAA=="
+    },
+    "/launcher/gemini-rue-shot-2.webp": {
+      "key": "artwork/278274d3dff44be50d148b764cf4b89fd33ff313d0968908ac573fbfd1c2e50f/gemini-rue-shot-2.webp",
+      "sha256": "278274d3dff44be50d148b764cf4b89fd33ff313d0968908ac573fbfd1c2e50f",
+      "bytes": 54534,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 960,
+      "placeholder": "UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoMAAkAAsBIJaQAAueBWnqtAAD+9aODyOiW/rT07oDlQHs0dEbNnt5s2WKqTFpjzPRCTBRtMBho4AAA"
+    },
+    "/launcher/gemini-rue-shot-3.webp": {
+      "key": "artwork/3b7c85d2a7d1572dd066f0b1e93518d615f137ccfda95ad09500f4d27647254b/gemini-rue-shot-3.webp",
+      "sha256": "3b7c85d2a7d1572dd066f0b1e93518d615f137ccfda95ad09500f4d27647254b",
+      "bytes": 12808,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 960,
+      "placeholder": "UklGRlAAAABXRUJQVlA4IEQAAAAQAgCdASoMAAkAAsBIJQBOiP/wPQmy1532AP7OAWXn1Lyry8OwJTIv2Qsfz3Yj3hrzwEoNzqZhAsCRdvrL+OIWJCgAAA=="
+    },
+    "/launcher/responsive/gemini-rue-scummweb-generated-2026-11-13-r1-cover-320.webp": {
+      "key": "artwork/7a653bc6368e27850e5e7f3f15b46185ada7eed836bba797c402759fddb88dc2/gemini-rue-scummweb-generated-2026-11-13-r1-cover-320.webp",
+      "sha256": "7a653bc6368e27850e5e7f3f15b46185ada7eed836bba797c402759fddb88dc2",
+      "bytes": 13638,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/gemini-rue-scummweb-generated-2026-11-13-r1-cover-480.webp": {
+      "key": "artwork/c2b78a8ff1443cd2d86d59e982b5daceffe12a3ac561e010a7a04a1b7d7deb95/gemini-rue-scummweb-generated-2026-11-13-r1-cover-480.webp",
+      "sha256": "c2b78a8ff1443cd2d86d59e982b5daceffe12a3ac561e010a7a04a1b7d7deb95",
+      "bytes": 23764,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/gemini-rue-scummweb-generated-2026-11-13-r1-cover-640.webp": {
+      "key": "artwork/e4c8de0235b3976c49bf415b95f44d7edac48355fc91b30ced66872129bd73bc/gemini-rue-scummweb-generated-2026-11-13-r1-cover-640.webp",
+      "sha256": "e4c8de0235b3976c49bf415b95f44d7edac48355fc91b30ced66872129bd73bc",
+      "bytes": 35584,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/gemini-rue-scummweb-generated-2026-11-13-r1-hero-1280.webp": {
+      "key": "artwork/3ce31e093a609be3191d85d0ff2efdfe58c9f90c18f82bbf8a55079723e25726/gemini-rue-scummweb-generated-2026-11-13-r1-hero-1280.webp",
+      "sha256": "3ce31e093a609be3191d85d0ff2efdfe58c9f90c18f82bbf8a55079723e25726",
+      "bytes": 40954,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/gemini-rue-scummweb-generated-2026-11-13-r1-hero-640.webp": {
+      "key": "artwork/b81371690045ccff205a2c9f21364b2db8031e325dac2c365baf41799617765d/gemini-rue-scummweb-generated-2026-11-13-r1-hero-640.webp",
+      "sha256": "b81371690045ccff205a2c9f21364b2db8031e325dac2c365baf41799617765d",
+      "bytes": 16456,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/gemini-rue-scummweb-generated-2026-11-13-r1-hero-960.webp": {
+      "key": "artwork/21529865c9048f5555a610dd24a00dcaff8acf5a82190bc67fdb3e4f2186c2e2/gemini-rue-scummweb-generated-2026-11-13-r1-hero-960.webp",
+      "sha256": "21529865c9048f5555a610dd24a00dcaff8acf5a82190bc67fdb3e4f2186c2e2",
+      "bytes": 29236,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/gemini-rue-shot-1-640.webp": {
+      "key": "artwork/fd5c4cdfe177e18e0932e5b6989f615afddb8aeed4da0d070811116861f1c3ff/gemini-rue-shot-1-640.webp",
+      "sha256": "fd5c4cdfe177e18e0932e5b6989f615afddb8aeed4da0d070811116861f1c3ff",
+      "bytes": 22596,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/gemini-rue-shot-2-640.webp": {
+      "key": "artwork/00b2298853a36eed2a2f7c698a7b4daca0e2191526ae6f879bc1c687f62ae300/gemini-rue-shot-2-640.webp",
+      "sha256": "00b2298853a36eed2a2f7c698a7b4daca0e2191526ae6f879bc1c687f62ae300",
+      "bytes": 47938,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
+    },
+    "/launcher/responsive/gemini-rue-shot-3-640.webp": {
+      "key": "artwork/48fbafeea5cf9b77ecbab52a7251ffac49b8aa2831d88edb4f1ddd53419222c7/gemini-rue-shot-3-640.webp",
+      "sha256": "48fbafeea5cf9b77ecbab52a7251ffac49b8aa2831d88edb4f1ddd53419222c7",
+      "bytes": 11434,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 480
     }
   },
   "images": {
@@ -53564,6 +53681,60 @@
       "fallback": "/launcher/optimized/nippon-en-shot-3.webp",
       "webp": [
         "/launcher/optimized/nippon-en-shot-3.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/gemini-rue-scummweb-generated-2026-11-13-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/gemini-rue-scummweb-generated-2026-11-13-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/gemini-rue-scummweb-generated-2026-11-13-r1-cover-320.webp",
+        "/launcher/responsive/gemini-rue-scummweb-generated-2026-11-13-r1-cover-480.webp",
+        "/launcher/responsive/gemini-rue-scummweb-generated-2026-11-13-r1-cover-640.webp",
+        "/launcher/gemini-rue-scummweb-generated-2026-11-13-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/gemini-rue-scummweb-generated-2026-11-13-r1-hero.webp": {
+      "width": 1600,
+      "height": 960,
+      "fallback": "/launcher/gemini-rue-scummweb-generated-2026-11-13-r1-hero.webp",
+      "webp": [
+        "/launcher/responsive/gemini-rue-scummweb-generated-2026-11-13-r1-hero-640.webp",
+        "/launcher/responsive/gemini-rue-scummweb-generated-2026-11-13-r1-hero-960.webp",
+        "/launcher/responsive/gemini-rue-scummweb-generated-2026-11-13-r1-hero-1280.webp",
+        "/launcher/gemini-rue-scummweb-generated-2026-11-13-r1-hero.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/gemini-rue-shot-1.webp": {
+      "width": 1280,
+      "height": 960,
+      "fallback": "/launcher/gemini-rue-shot-1.webp",
+      "webp": [
+        "/launcher/responsive/gemini-rue-shot-1-640.webp",
+        "/launcher/gemini-rue-shot-1.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/gemini-rue-shot-2.webp": {
+      "width": 1280,
+      "height": 960,
+      "fallback": "/launcher/gemini-rue-shot-2.webp",
+      "webp": [
+        "/launcher/responsive/gemini-rue-shot-2-640.webp",
+        "/launcher/gemini-rue-shot-2.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/gemini-rue-shot-3.webp": {
+      "width": 1280,
+      "height": 960,
+      "fallback": "/launcher/gemini-rue-shot-3.webp",
+      "webp": [
+        "/launcher/responsive/gemini-rue-shot-3-640.webp",
+        "/launcher/gemini-rue-shot-3.webp"
       ],
       "avif": []
     }

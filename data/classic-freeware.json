@@ -543,6 +543,25 @@
         "basis": "Official ScummVM-hosted English Windows CD promotional demo. All twenty-one original files, technical README and binary legal strings inspected; no express redistribution grant or ban found. Official hosting supports this assessment without constituting an express rights-holder license.",
         "preservation": "Serve the complete unchanged upstream ZIP, retaining README.TXT, original data, QuickTime movies, making-of feature and copyright notices."
       }
+    },
+    {
+      "target": "geminirue-demo",
+      "title": "Gemini Rue (Demo)",
+      "engineId": "ags",
+      "gameId": "geminirue",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "gemini_rue-demo.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/ags/gemini_rue-demo.zip",
+      "sha256": "78506f19a91f8529a4885b7c7417417dc086978bd2171809ca67af4fac2594c1",
+      "preserveArchive": true,
+      "noticeFile": "Gemini Rue DEMO - Manual.txt",
+      "redistributionReview": {
+        "reviewedOn": "2026-11-13",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "Official ScummVM-hosted English interactive promotional demo. All eleven files, included manual and ASCII/UTF-16 executable notices inspected; no express redistribution grant or ban found. Official hosting supports this assessment without constituting an express rights-holder license.",
+        "preservation": "Serve the complete unchanged upstream ZIP, retaining original manual and credits, executables, speech, music, plugins and copyright notices."
+      }
     }
   ]
 }

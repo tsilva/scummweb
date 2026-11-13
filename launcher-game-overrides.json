@@ -195,6 +195,15 @@
           "freddypharkas-demo.090"
         ]
       }
+    },
+    "geminirue-demo": {
+      "skipIntro": {
+        "strategy": "save-slot",
+        "slot": 90,
+        "saveFiles": [
+          "geminirue-demo.090"
+        ]
+      }
     }
   }
 }

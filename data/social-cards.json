@@ -1430,6 +1430,16 @@
       "file": "myst-demo-6cde6569c76447701ded59d04b0f4880603e8596e2e3d3eeffb17e99b059e320.jpg",
       "inputHash": "6cde6569c76447701ded59d04b0f4880603e8596e2e3d3eeffb17e99b059e320",
       "imageHash": "6d6dae3e5bf097bdfcae86307ac4204c0e3766b85478b6452b95064f0094c0c0"
+    },
+    "gemini-rue": {
+      "file": "gemini-rue-10860a8e26e5da027655106f724427b43ffffff7f2fbd7d1d0aa790ef3755a53.jpg",
+      "inputHash": "10860a8e26e5da027655106f724427b43ffffff7f2fbd7d1d0aa790ef3755a53",
+      "imageHash": "f97ecbd129160d44801f2ae915222aa997e7603c4aad6e024463bc44a34fa3e4"
+    },
+    "gemini-rue-demo": {
+      "file": "gemini-rue-demo-27b0555ad5d1599d9d616edf2e9ce8c6e2016c5d5dead8626e31fb5ba855707a.jpg",
+      "inputHash": "27b0555ad5d1599d9d616edf2e9ce8c6e2016c5d5dead8626e31fb5ba855707a",
+      "imageHash": "1d7ecda48cdb3325af7a3c2b4fc2bda3a82f2052617872f5cf1b975b5b044675"
     }
   }
 }
