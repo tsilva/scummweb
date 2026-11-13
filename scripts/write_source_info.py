@@ -84,7 +84,9 @@ def verify_checkout(checkout, commit, patches):
     with TemporaryDirectory() as tmp:
         env = {**os.environ, "GIT_INDEX_FILE": str(Path(tmp) / "index")}
         git("read-tree", commit, env=env)
-        git("apply", "--cached", *patches, env=env)
+        # Later patches can extend files introduced earlier in the series.
+        for patch in patches:
+            git("apply", "--cached", patch, env=env)
         if git("diff", "--name-only", env=env):
             raise ValueError("The ScummVM checkout contains changes outside the published patch series.")
 

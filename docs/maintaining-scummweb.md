@@ -106,7 +106,11 @@ each axis to preserve symmetric spacing around cutouts.
   hold and release to right-click.
 
 If the browser suspends audio, choose **Start audio**. Nonfatal engine messages
-appear under **Compatibility warning**. Fatal errors stop startup.
+appear as a **Compatibility warning** icon; click it to read every notice for
+the current launch. This includes King's Quest VII's unfinished subtitles and
+optional font, music and codec warnings. Notices do not open automatically or
+interrupt startup. Fatal errors stop startup; game and file choices still ask
+for input.
 
 ### Mobile play
 

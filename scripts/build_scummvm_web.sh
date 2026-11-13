@@ -191,10 +191,12 @@ bootstrap_scummvm_checkout() {
     echo "The source checkout is modified and does not match patches/scummvm: $SCUMMVM_DIR" >&2
     exit 1
   fi
-  git -C "$SCUMMVM_DIR" apply "${patches[@]}" || {
-    echo "Could not apply patches/scummvm to $SCUMMVM_TAG. Review the rejected hunks." >&2
-    exit 1
-  }
+  for patch in "${patches[@]}"; do
+    git -C "$SCUMMVM_DIR" apply "$patch" || {
+      echo "Could not apply $patch to $SCUMMVM_TAG. Review the rejected hunks." >&2
+      exit 1
+    }
+  done
 }
 
 bootstrap_toolchain() {
