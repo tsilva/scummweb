@@ -38,6 +38,7 @@ Use the **×** on a cover to remove its library reference; original game files,
 cached archives and saved games stay untouched. A card with multiple versions
 lets you remove one version or all of them. **Undo** restores removals in reverse
 order during the current visit, including the original imported-game IDs.
+The removal notice offers Undo for five seconds, then fades out.
 Choose **Done** or press Escape to return to browsing. Included games stay hidden
 across reloads; use **Sort and filter games → Restore included games** to show
 them again. These library changes apply to the current browser only.
