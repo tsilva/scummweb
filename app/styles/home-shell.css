@@ -709,6 +709,9 @@ button.nav-icon-link {
 
 .library-edit-card[data-editing] {
   content-visibility: visible;
+}
+
+.library-edit-card[data-editing]:has(> .library-remove) {
   animation: library-wiggle 340ms ease-in-out infinite alternate;
   transform-origin: center 60%;
 }
@@ -858,7 +861,7 @@ button.nav-icon-link {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .library-edit-card[data-editing] {
+  .library-edit-card[data-editing]:has(> .library-remove) {
     animation: none;
   }
 }

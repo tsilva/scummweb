@@ -37,6 +37,7 @@ Reimporting the same archive also refreshes access. Reconnecting preserves the
 source ID and its saves.
 
 Press and hold a game cover, or choose **Manage library**, to enter removal mode.
+Only cards with removable imported versions shake in this mode.
 Use the **×** on an imported game's cover to remove its library reference; original game files,
 cached archives and saved games stay untouched. A card with multiple versions
 lets you remove one imported version or all imported versions. Bundled versions

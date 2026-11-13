@@ -2,7 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { readFile } from "node:fs/promises";
 import { libraryItems } from "../app/home-shell/library-items.mjs";
-import { defaultLibraryQuery, libraryFacet, libraryGenre, queryLibrary } from "../app/home-shell/library-query.mjs";
+import { defaultLibraryQuery, libraryCategories, libraryFacet, libraryGenre, queryLibrary } from "../app/home-shell/library-query.mjs";
+import { getImportedGamePresentation } from "../app/game-presentation.js";
 import { getBundledGameLibrary } from "../lib/catalog.mjs";
 import { getRecognizedGames } from "../app/recognized-games.mjs";
 
@@ -167,15 +168,18 @@ test("broad categories preserve meaningful distinctions and classify hybrid genr
   const examples = {
     "Action & arcade": ["Action adventure", "Arcade action"],
     Adventure: ["Archaeological adventure", "Historical adventure", "Jungle adventure", "Swashbuckling adventure", "Point-and-click adventure", "ScummVM Adventure"],
+    Animation: ["Holiday animation"],
+    "Cards & board games": ["Card games", "Board games", "Casino games", "Solitaire"],
     Comedy: ["Adult comedy adventure", "Cartoon comedy adventure", "Pirate comedy adventure", "Western comedy adventure"],
-    "Family & education": ["Children's arcade action", "Children's fantasy adventure", "Educational time-travel adventure", "Environmental adventure", "Interactive storybook"],
+    "Family & education": ["Children's arcade action", "Children's fantasy adventure", "Educational time-travel adventure", "Environmental adventure", "Interactive storybook", "Preschool activities", "Junior adventure", "Interactive field trip", "Activity collection", "Creative activities", "Interactive poetry"],
     Fantasy: ["Arthurian adventure", "Fantasy comedy", "Fantasy puzzle adventure", "Musical fantasy adventure"],
     Horror: ["Psychological horror adventure", "Interactive movie horror", "Horror puzzle adventure"],
     "Mystery & thriller": ["Conspiracy Adventure", "Crime thriller adventure", "Detective adventure", "Noir Thriller", "Police procedural adventure", "Supernatural mystery adventure"],
     Puzzle: ["Claymation puzzle adventure", "Exploration puzzle adventure", "Surreal puzzle adventure", "Puzzle collection"],
     "Role-playing": ["Dungeon-crawling role-playing game", "Fantasy role-playing game", "Horror role-playing adventure"],
-    "Science fiction": ["Cyberpunk Adventure", "Science-fiction comedy", "Science-fiction mystery", "Science-fiction puzzle adventure", "Time-travel comedy adventure"],
+    "Science fiction": ["Cyberpunk Adventure", "Science-fiction comedy", "Science-fiction mystery", "Science-fiction puzzle adventure", "Time-travel comedy adventure", "Space adventure"],
     Simulation: ["Life simulation board game", "Espionage adventure and simulation"],
+    Sports: ["Baseball", "Basketball", "American football"],
   };
   for (const [category, labels] of Object.entries(examples)) {
     assert.equal(libraryGenre({ genre: category }), category, "category labels must filter their own games");
@@ -183,16 +187,51 @@ test("broad categories preserve meaningful distinctions and classify hybrid genr
   }
 });
 
-test("the full artwork catalog uses eleven broad genres and every game remains filterable", async () => {
+test("the full artwork catalog has explicit categories and every game remains filterable", async () => {
   const artwork = JSON.parse(await readFile(new URL("../app/retro-game-artwork.json", import.meta.url), "utf8"));
   const games = Object.entries(artwork).map(([target, game]) => ({ ...game, target, displayTitle: game.title }));
   const all = libraryItems(games, []);
   const categories = libraryFacet(all, "genre");
-  assert.deepEqual(categories, [
-    "Action & arcade", "Adventure", "Comedy", "Family & education", "Fantasy", "Horror",
-    "Mystery & thriller", "Puzzle", "Role-playing", "Science fiction", "Simulation",
-  ]);
+  assert.deepEqual(categories, libraryCategories);
+  for (const game of games) assert.ok(libraryCategories.includes(game.category), game.target);
   const filtered = categories.flatMap((genre) => queryLibrary(all, { ...defaultLibraryQuery, genre }));
   assert.equal(filtered.length, all.length);
   assert.equal(new Set(filtered.map(({ key }) => key)).size, all.length);
+});
+
+test("explicit categories override ambiguous genres and drive filtering and sorting", () => {
+  const game = { target: "child", displayTitle: "Junior game", genre: "Point-and-click adventure", category: "Family & education" };
+  const combined = libraryItems([game, catalog[1]], []);
+  assert.equal(libraryGenre(game), "Family & education");
+  assert.equal(game.genre, "Point-and-click adventure");
+  assert.deepEqual(queryLibrary(combined, { ...defaultLibraryQuery, genre: "Family & education" }).map(({ title }) => title), ["Junior game"]);
+  assert.deepEqual(queryLibrary(combined, { ...defaultLibraryQuery, sort: "genre-asc" }).map(({ title }) => title), ["Alpha", "Junior game"]);
+  assert.equal(libraryGenre({ genre: "Mystery", category: "unrecognized" }), "Mystery & thriller");
+});
+
+test("reviewed classifications survive catalog presentation and archive import", async () => {
+  const artwork = JSON.parse(await readFile(new URL("../app/retro-game-artwork.json", import.meta.url), "utf8"));
+  const games = getRecognizedGames([]);
+  for (const [id, record] of Object.entries(artwork)) {
+    const game = games.find(({ familyId }) => familyId === id);
+    const imported = getImportedGamePresentation(`${record.aliases[0]}.zip`);
+    assert.equal(game.category, record.category, id);
+    assert.equal(imported.category, record.category, id);
+  }
+  const cases = {
+    Sports: ["scumm:baseball", "scumm:baseball2001", "scumm:baseball2003", "scumm:basketball", "scumm:football", "scumm:football2002"],
+    "Cards & board games": ["sci:hoyle1", "sci:hoyle2", "sci:hoyle3", "sci:cnick-kq", "sci:cnick-lsl", "sci:cnick-laurabow", "sci:cnick-longbow"],
+    "Family & education": ["scumm:blues123time", "scumm:bluesabctime", "scumm:arttime", "scumm:bluesbirthday", "scumm:readtime", "scumm:airport", "scumm:farm", "scumm:jungle", "scumm:fbear", "scumm:fbpack", "scumm:pajama", "scumm:pajama2", "scumm:pajama3", "scumm:pjgames", "scumm:activity", "scumm:puttrace", "scumm:puttmoon", "scumm:puttcircus", "scumm:puttputt", "scumm:puttzoo", "scumm:putttime", "scumm:funpack", "scumm:puttsfunshop", "scumm:freddi4", "scumm:spyfox", "scumm:spyfox2", "scumm:spyozon", "mohawk:newkid"],
+    Animation: ["agi:xmascard", "sci:christmas1988", "sci:christmas1990", "sci:christmas1992"],
+    "Science fiction": ["gob:inca2"],
+    "Mystery & thriller": ["grim:grim"],
+    Comedy: ["grim:monkey4"],
+  };
+  for (const [category, families] of Object.entries(cases)) {
+    const filtered = queryLibrary(libraryItems(games, []), { ...defaultLibraryQuery, genre: category });
+    for (const id of families) assert.ok(filtered.some(({ game }) => game.familyId === id), `${id} missing from ${category}`);
+  }
+  for (const [name, genre] of [["Grim Fandango", "Noir comedy adventure"], ["Escape from Monkey Island", "Pirate comedy adventure"]]) {
+    assert.equal(getImportedGamePresentation(`${name}.zip`).genre, genre);
+  }
 });

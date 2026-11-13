@@ -19,6 +19,7 @@ Review the complete candidate, preserve unrelated work and stop on unresolved
 conflicts or remote divergence. Do not switch branches or discard work.
 
 Run applicable syntax and regression checks and a production application build.
+Run tests and builds sequentially; both can generate artwork and share its lock.
 Reuse completed checks for unchanged source. Use a separate project-relative
 `SCUMMWEB_DIST_DIR` for the build when a development server is running, as
 described in the [maintenance guide](../../../docs/maintaining-scummweb.md#development-commands).

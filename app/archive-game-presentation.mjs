@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Freddy Pharkas: Frontier Pharmacist (Demo)", target: "freddypharkas-demo", engineId: "sci", gameId: "freddypharkas",
+    files: [["resource.map", 1918, 1006686103], ["resource.000", 957382, 1863300513]],
+  },
+  {
     title: "Gabriel Knight: Sins of the Fathers (Demo)", target: "gk1-demo", engineId: "sci", gameId: "gk1demo",
     files: [["resource.map", 2490, 2514227026], ["resource.000", 1718450, 661574477]],
   },

@@ -136,10 +136,20 @@
       "inputHash": "cc4ad9afb2ed046d16680a8f4a2813a9d39df0d75e08e66ded9c1d1abcc361a6",
       "imageHash": "2c7db31a40674af0140960e78872ffbcd8eaadcaf78b6bc56861bc5c5c607efd"
     },
+    "broken-sword-ii-the-smoking-mirror-demo": {
+      "file": "broken-sword-ii-the-smoking-mirror-demo-00372c0b11bbd0449a96ff0cf2829c4907f839d16c1a07672ea098cb37532794.jpg",
+      "inputHash": "00372c0b11bbd0449a96ff0cf2829c4907f839d16c1a07672ea098cb37532794",
+      "imageHash": "1e85eebc5af87f8eda56bf6a0177aa6a9cb1721f8de102aca99a4f89df45b4f0"
+    },
     "broken-sword-the-shadow-of-the-templars": {
       "file": "broken-sword-the-shadow-of-the-templars-d11f2c7aaf96843e9216a80b17ce3c40e7832867b5dd4d4cf143ee1066146668.jpg",
       "inputHash": "d11f2c7aaf96843e9216a80b17ce3c40e7832867b5dd4d4cf143ee1066146668",
       "imageHash": "79214f9bf8c8b408719355c53f39fba909309245f53a1481193bbe33fd90c6b8"
+    },
+    "broken-sword-the-shadow-of-the-templars-demo": {
+      "file": "broken-sword-the-shadow-of-the-templars-demo-0b8278111f568dd497e2118cdb8969581b0fc6d3cae02e2a38167bbfa1d35ae2.jpg",
+      "inputHash": "0b8278111f568dd497e2118cdb8969581b0fc6d3cae02e2a38167bbfa1d35ae2",
+      "imageHash": "d80d0594fc459a49e53ad706a17e1e82f13203ac2937a04a2bf18c5aa4d69251"
     },
     "bud-tucker-in-double-trouble": {
       "file": "bud-tucker-in-double-trouble-e9131502c4f6478daf68e13502ea271c5965be1751051026fda07a58e8522869.jpg",
@@ -241,6 +251,11 @@
       "inputHash": "c2b5751bee617c8e8ea16a45e08abf33e706a9313c825f3b4f05d82f3cf2306e",
       "imageHash": "33ac005ca40c9acc40b050f226f04327adc3c5cc766bfbf3844ab5a45bed7660"
     },
+    "discworld-demo": {
+      "file": "discworld-demo-5e628beade86b172b6d6cdec4600c93fa114b1b8d099d5923065ce5aebdf2b2d.jpg",
+      "inputHash": "5e628beade86b172b6d6cdec4600c93fa114b1b8d099d5923065ce5aebdf2b2d",
+      "imageHash": "1e3fc19fdae7940a9fc756b7784ccb4fdb74fabf9b3aa9cb26bbbfec682bd94e"
+    },
     "discworld-ii-missing-presumed": {
       "file": "discworld-ii-missing-presumed-c44628bad8414542c823f8945e1a95ddb9c851aa0183a1c46cbc2a849fb553ba.jpg",
       "inputHash": "c44628bad8414542c823f8945e1a95ddb9c851aa0183a1c46cbc2a849fb553ba",
@@ -292,14 +307,14 @@
       "imageHash": "1f119add938c4e61562523ba1d7969f8a79794894965986e5eaefdf87a7bff93"
     },
     "escape-from-monkey-island": {
-      "file": "escape-from-monkey-island-07d8edaf98c301e6c8e587e8019cc28979dfe48d3b381d398125bd1bbb069dd6.jpg",
-      "inputHash": "07d8edaf98c301e6c8e587e8019cc28979dfe48d3b381d398125bd1bbb069dd6",
-      "imageHash": "cc063b21c33ea5d0556deab7fc5c2fd087223f1f37c729b9514c041126805f5a"
+      "file": "escape-from-monkey-island-3839f1945344334e189f09ab3b2e54cdfd06c59c6d7fd467a6b676ba16d16c6f.jpg",
+      "inputHash": "3839f1945344334e189f09ab3b2e54cdfd06c59c6d7fd467a6b676ba16d16c6f",
+      "imageHash": "8efc0c2d89d1dcb7d8d8e4f5b8d16dd892a611f465852e11bae851fe6ac453d0"
     },
     "escape-from-monkey-island-demo": {
-      "file": "escape-from-monkey-island-demo-e88e7212b730ff3abcd3cd970df67402d366a170ed49405433346abfe42e2f2b.jpg",
-      "inputHash": "e88e7212b730ff3abcd3cd970df67402d366a170ed49405433346abfe42e2f2b",
-      "imageHash": "9e615966ee1e16aadcb1b9689e60be97a97db472b61b75bdded43c2ac6b861f3"
+      "file": "escape-from-monkey-island-demo-48d1859c0dbf2d3dd94654403eadf5dc58eeb69f0c90d716fbb907b16a60836e.jpg",
+      "inputHash": "48d1859c0dbf2d3dd94654403eadf5dc58eeb69f0c90d716fbb907b16a60836e",
+      "imageHash": "306e562248abddb3d98c9038211a20f5f5a9fbbee03b48b3ae96287444de5461"
     },
     "eye-of-the-beholder": {
       "file": "eye-of-the-beholder-5aaebfdc618634332fe546d4116375af87b93cbc32e36eca87effb89b36f0510.jpg",
@@ -401,6 +416,11 @@
       "inputHash": "fbb4c4d8770ae5e234bce6c6a163ec76ae59a2dc2af14a9975a04f105610f304",
       "imageHash": "3589368afe748aa23d68871587b6222a4d67460e146c36a13fc15e0a1700e12e"
     },
+    "gabriel-knight-sins-of-the-fathers-demo": {
+      "file": "gabriel-knight-sins-of-the-fathers-demo-7b908343fdf67c44ce14a2a8a6b8149c157e09f100ddeb687958cbf167b336eb.jpg",
+      "inputHash": "7b908343fdf67c44ce14a2a8a6b8149c157e09f100ddeb687958cbf167b336eb",
+      "imageHash": "aadc3092dbdda54f56e581647b21c71c02b81004a4bc5a0e1e636c5fc3194169"
+    },
     "geisha": {
       "file": "geisha-d0f1bfc8a33c21be5877c139f120ea3f29888f0a0e146d6be8cb645a6fb65a00.jpg",
       "inputHash": "d0f1bfc8a33c21be5877c139f120ea3f29888f0a0e146d6be8cb645a6fb65a00",
@@ -416,15 +436,30 @@
       "inputHash": "2f27960541b1dca185e1aa484591d4e43a6d1b23688761e1fef8a0018454c275",
       "imageHash": "2eb3277283e4f9757ab1bc12bc6f4f54f2b79981fa8853be2aebe580d121ab55"
     },
+    "gobliiins-demo": {
+      "file": "gobliiins-demo-d71e5da847fd0917f873cd50ad2fc376cea4e254142204e81fb95d75644ae24c.jpg",
+      "inputHash": "d71e5da847fd0917f873cd50ad2fc376cea4e254142204e81fb95d75644ae24c",
+      "imageHash": "10a335939e8bfb11b1480bff76ee64d6c7d2ebdba76fccf142f16be00d3c9087"
+    },
     "gobliins-2-the-prince-buffoon": {
       "file": "gobliins-2-the-prince-buffoon-d7f342073627a6478a2af1238e30b8de98029ac3c607d9774c16221ff04cbc7b.jpg",
       "inputHash": "d7f342073627a6478a2af1238e30b8de98029ac3c607d9774c16221ff04cbc7b",
       "imageHash": "f70ac7366b701a29d4c77ab4146ba311f8381e92fd1bd215262c173127188b31"
     },
+    "gobliins-2-the-prince-buffoon-demo": {
+      "file": "gobliins-2-the-prince-buffoon-demo-46d1b1ffde8d3d5e0f48c5bdde67ea469a36341651aff05c3f874c83dda0714f.jpg",
+      "inputHash": "46d1b1ffde8d3d5e0f48c5bdde67ea469a36341651aff05c3f874c83dda0714f",
+      "imageHash": "5909b48afcb888e9c608ae1e87d3847c198e1e0dc4b41ffb8beb8127b21a519f"
+    },
     "goblins-quest-3": {
       "file": "goblins-quest-3-a60e0fca1935e830fbeb52c5d8bfaf232c28c1f7ddf393ba269621b442fc155a.jpg",
       "inputHash": "a60e0fca1935e830fbeb52c5d8bfaf232c28c1f7ddf393ba269621b442fc155a",
       "imageHash": "ebf457a192a52a7076f50bf4fc7f8b2adba8c815b82db6496224c39b78c32b61"
+    },
+    "goblins-quest-3-demo": {
+      "file": "goblins-quest-3-demo-75b331a329b4c7040bd87fe29d543c81a8ab2ecf07d5eea4eec4d1bc00f722a3.jpg",
+      "inputHash": "75b331a329b4c7040bd87fe29d543c81a8ab2ecf07d5eea4eec4d1bc00f722a3",
+      "imageHash": "d02dada4e67632bb44d29623d898dbc1fdec37565585626c329f9833ae392d37"
     },
     "god-of-thunder": {
       "file": "god-of-thunder-62e25242d14258082083a0549fe56181bbb0a201d77219c0c94d3954d7078ae5.jpg",
@@ -447,14 +482,14 @@
       "imageHash": "b0217cf3879c18d3af2aa5ad84310968cc09784f05d9bff88e35fd8615448184"
     },
     "grim-fandango": {
-      "file": "grim-fandango-0a005a73b7cc8cc2ec74d7db45396d15bb9e9d067c8b147343178def184ae707.jpg",
-      "inputHash": "0a005a73b7cc8cc2ec74d7db45396d15bb9e9d067c8b147343178def184ae707",
-      "imageHash": "48fb05f531f6c2295072250f6b856eab76e9d51d2c3c6ab8f32a0d120bccd0ab"
+      "file": "grim-fandango-8ead67c8e26f7af3010ffb40798cede16f36d58d7851bec765597870a3c7f9b2.jpg",
+      "inputHash": "8ead67c8e26f7af3010ffb40798cede16f36d58d7851bec765597870a3c7f9b2",
+      "imageHash": "7c84772a3948f143bbd162f986bf02761f72b938a9051d765142f4d2473442f5"
     },
     "grim-fandango-demo": {
-      "file": "grim-fandango-demo-ddb60a337d56f287f28248a9d0dbf32e30d06c033a1ce6dac6cf013e397f8ff3.jpg",
-      "inputHash": "ddb60a337d56f287f28248a9d0dbf32e30d06c033a1ce6dac6cf013e397f8ff3",
-      "imageHash": "aeebdb86a681702f535dcfd5cb1ac9839bf49d624df2104e725f1be274930688"
+      "file": "grim-fandango-demo-f4a66ce07394dc10258dd7fe7a52083632378c0909d025fd2fde99900f5285aa.jpg",
+      "inputHash": "f4a66ce07394dc10258dd7fe7a52083632378c0909d025fd2fde99900f5285aa",
+      "imageHash": "e74e5920318e113c6d61722b1e5f99bbd21b1e14e7eb17ac02a8bb636c1ac8b2"
     },
     "harlan-ellison-i-have-no-mouth-and-i-must-scream": {
       "file": "harlan-ellison-i-have-no-mouth-and-i-must-scream-5097c2ee06d7cbffca6093b749760494e30d57a9ef83cc1e9b50ee08a5888d4b.jpg",
@@ -1221,6 +1256,11 @@
       "inputHash": "57cd496f311655626035d991192e5c3a23df5b64e6e29dce4e35fcb16ef9b0f5",
       "imageHash": "4fcd8f5235ac576bd2c83934e750e6a0ad8c3814b66d771390edf15b4fe1af4e"
     },
+    "the-dig-demo": {
+      "file": "the-dig-demo-c0372923bb504b09838051c595bd8cbee78ed08e5bce260d2a7bec83367ac76e.jpg",
+      "inputHash": "c0372923bb504b09838051c595bd8cbee78ed08e5bce260d2a7bec83367ac76e",
+      "imageHash": "e2ae8d625220a982351df2eaef564b4c6552831c35da1abf405f17ef44464653"
+    },
     "the-feeble-files": {
       "file": "the-feeble-files-c0657d934b5a8aff9c3ce3eb2f45b62a74856034dbb5abd89daecc4efab66c1d.jpg",
       "inputHash": "c0657d934b5a8aff9c3ce3eb2f45b62a74856034dbb5abd89daecc4efab66c1d",
@@ -1375,46 +1415,6 @@
       "file": "zork-nemesis-the-forbidden-lands-1b33f57695624e51eaf461eadfe2f729b04878c7617231f7bebf185af1853199.jpg",
       "inputHash": "1b33f57695624e51eaf461eadfe2f729b04878c7617231f7bebf185af1853199",
       "imageHash": "eae9e06b8cefa2e3ede3113a6b615c163974f119d4df9387d2afad4fc9865699"
-    },
-    "the-dig-demo": {
-      "file": "the-dig-demo-b4baccc560d1b1057bbae438f7bf127af945204edcc57a83fbe6dc9586855379.jpg",
-      "inputHash": "b4baccc560d1b1057bbae438f7bf127af945204edcc57a83fbe6dc9586855379",
-      "imageHash": "e2ae8d625220a982351df2eaef564b4c6552831c35da1abf405f17ef44464653"
-    },
-    "broken-sword-the-shadow-of-the-templars-demo": {
-      "file": "broken-sword-the-shadow-of-the-templars-demo-164d77043ab66be010c4341a2ef8db82fbda545a43a80019683e70c9c90a322f.jpg",
-      "inputHash": "164d77043ab66be010c4341a2ef8db82fbda545a43a80019683e70c9c90a322f",
-      "imageHash": "d80d0594fc459a49e53ad706a17e1e82f13203ac2937a04a2bf18c5aa4d69251"
-    },
-    "broken-sword-ii-the-smoking-mirror-demo": {
-      "file": "broken-sword-ii-the-smoking-mirror-demo-d5c0f3902de4904a84a58a60a741f67c4125418b393e877f99a732c3cd97a539.jpg",
-      "inputHash": "d5c0f3902de4904a84a58a60a741f67c4125418b393e877f99a732c3cd97a539",
-      "imageHash": "1e85eebc5af87f8eda56bf6a0177aa6a9cb1721f8de102aca99a4f89df45b4f0"
-    },
-    "discworld-demo": {
-      "file": "discworld-demo-425ae255ed3b5fb8f924e4a8f48e8bd21a413396db3b124c1f5c563905df6047.jpg",
-      "inputHash": "425ae255ed3b5fb8f924e4a8f48e8bd21a413396db3b124c1f5c563905df6047",
-      "imageHash": "1e3fc19fdae7940a9fc756b7784ccb4fdb74fabf9b3aa9cb26bbbfec682bd94e"
-    },
-    "gobliiins-demo": {
-      "file": "gobliiins-demo-f5802c0facb30361938b9d0ab43d89d7573ef713dd2751c30ecf1907aa6d5ee9.jpg",
-      "inputHash": "f5802c0facb30361938b9d0ab43d89d7573ef713dd2751c30ecf1907aa6d5ee9",
-      "imageHash": "10a335939e8bfb11b1480bff76ee64d6c7d2ebdba76fccf142f16be00d3c9087"
-    },
-    "gobliins-2-the-prince-buffoon-demo": {
-      "file": "gobliins-2-the-prince-buffoon-demo-b3108a420af6c3f64a518b83daac608a7a8aa32f6995b40fee6125218c5e045c.jpg",
-      "inputHash": "b3108a420af6c3f64a518b83daac608a7a8aa32f6995b40fee6125218c5e045c",
-      "imageHash": "5909b48afcb888e9c608ae1e87d3847c198e1e0dc4b41ffb8beb8127b21a519f"
-    },
-    "goblins-quest-3-demo": {
-      "file": "goblins-quest-3-demo-bdb2ed6ec26eb1fcabfe91f945757a9197a79cd1c808fc370e38728a89df2dfb.jpg",
-      "inputHash": "bdb2ed6ec26eb1fcabfe91f945757a9197a79cd1c808fc370e38728a89df2dfb",
-      "imageHash": "d02dada4e67632bb44d29623d898dbc1fdec37565585626c329f9833ae392d37"
-    },
-    "gabriel-knight-sins-of-the-fathers-demo": {
-      "file": "gabriel-knight-sins-of-the-fathers-demo-2322ce995c92aba7108a9b1cc044c628575e8a8e12b752b7480d6178c9bd56d8.jpg",
-      "inputHash": "2322ce995c92aba7108a9b1cc044c628575e8a8e12b752b7480d6178c9bd56d8",
-      "imageHash": "aadc3092dbdda54f56e581647b21c71c02b81004a4bc5a0e1e636c5fc3194169"
     }
   }
 }

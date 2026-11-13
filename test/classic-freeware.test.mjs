@@ -33,6 +33,7 @@ test("official classic archives are recognized by contents without relying on fi
     ["ft-demo", [["wrapper/FT.000", 7885, 0x5a4b7e9a], ["wrapper/FT.001", 50371781, 0xb93903c9]]],
     ["samnmax-demo", [["wrapper/SAMDEMO.000", 7505, 0x112b0cbd], ["wrapper/SAMDEMO.001", 1190282, 0xa0b3f988]]],
     ["gk1-demo", [["RESOURCE.MAP", 2490, 2514227026], ["RESOURCE.000", 1718450, 661574477]]],
+    ["freddypharkas-demo", [["RESOURCE.MAP", 1918, 1006686103], ["RESOURCE.000", 957382, 1863300513]]],
     ["gob3-demo", [["INTRO.STK", 395561, 546295456], ["IMD.ITK", 83129, 1237808976]]],
     ["gob2-demo", [["INTRO.STK", 492226, 2476912281], ["ALL.ASK", 6078, 581017231]]],
     ["gob1-demo", [["INTRO.STK", 280044, 1661689621], ["DISK1.STK", 662036, 670765929]]],
