@@ -11,7 +11,7 @@ export function buildZipGamePlayerUrl(exitTo, { saveNamespace } = {}) {
   const savePath = versionSavePath(saveNamespace);
   return buildVersionedAssetPath("/scummvm.html", {
     searchParams: { localGame: "1", exitTo, saveNamespace },
-    hash: "--path=/local-game --auto-detect" + (savePath ? ` --savepath=${savePath}` : ""),
+    hash: "--path=/local-game --recursive --auto-detect" + (savePath ? ` --savepath=${savePath}` : ""),
   });
 }
 

@@ -34,6 +34,12 @@ tests when porting; do not treat an old implementation shape as the requirement.
 
 ## Browser/runtime compatibility
 
+- Imported archives can contain installers beside nested game data. Web auto-detection
+  must prefer the root, then recurse and pass the selected detection path into launch
+  settings. Upstream rejects recursive auto-detect; enabling recursion alone still
+  launches from the wrong directory. Keep detection failures terminal only after the
+  complete search and preserve archive fingerprints and version save namespaces.
+
 - GrimE dialogue confirmation uses Enter in both Grim Fandango and Escape from
   Monkey Island; EMI's exploration Use key is U and does not choose a line.
   Patch 98 publishes choice availability from the live raw Lua

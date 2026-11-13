@@ -1,0 +1,197 @@
+--- a/base/commandLine.cpp
++++ b/base/commandLine.cpp
+@@ -1655,96 +1655,101 @@
+ 		printf("Path %s does not exist or is not a directory.\n", dir.getPath().toString(Common::Path::kNativeSeparator).c_str());
+ 		return DetectedGames();
+ 	}
+ 
+ 	// detect Games
+ 	DetectionResults detectionResults = EngineMan.detectGames(files);
+ 
+ 	if (detectionResults.foundUnknownGames()) {
+ 		Common::U32String report = detectionResults.generateUnknownGameReport(false, 80);
+ 		g_system->logMessage(LogMessageType::kInfo, report.encode().c_str());
+ 	}
+ 
+ 	return detectionResults.listRecognizedGames();
+ }
+ 
+ static DetectedGames recListGames(const Common::FSNode &dir, const Common::String &engineId, const Common::String &gameId, bool recursive) {
+ 	DetectedGames list = getGameList(dir);
+ 
+ 	if (recursive) {
+ 		Common::FSList files;
+ 		dir.getChildren(files, Common::FSNode::kListDirectoriesOnly);
+ 		for (const auto &file : files) {
+ 			DetectedGames rec = recListGames(file, engineId, gameId, recursive);
+ 			for (auto &game : rec) {
+ 				if ((game.engineId == engineId && game.gameId == gameId)
+ 				    || gameId.empty())
+ 					list.push_back(game);
+ 			}
+ 		}
+ 	}
+ 
+ 	return list;
+ }
+ 
+ /** Display all games in the given directory, return ID of first detected game */
+-static Common::String detectGames(const Common::Path &path, const Common::String &engineId, const Common::String &gameId, bool recursive) {
++static Common::String detectGames(const Common::Path &path, const Common::String &engineId, const Common::String &gameId, bool recursive, Common::Path *detectedPath = nullptr) {
+ 	bool noPath = path.empty();
+ 	//Current directory
+ 	Common::FSNode dir(path);
+-	DetectedGames candidates = recListGames(dir, engineId, gameId, recursive);
++	// Autostart prefers a game at the root before searching nested disc data.
++	DetectedGames candidates = recListGames(dir, engineId, gameId, detectedPath ? false : recursive);
++	if (detectedPath && candidates.empty() && recursive)
++		candidates = recListGames(dir, engineId, gameId, true);
+ 
+ 	if (candidates.empty()) {
+ 		printf("WARNING: ScummVM could not find any game in %s\n", dir.getPath().toString(Common::Path::kNativeSeparator).c_str());
+ 		if (noPath) {
+ 			printf("WARNING: Consider using --path=<path> to specify a directory\n");
+ 		}
+ 		if (!recursive) {
+ 			printf("WARNING: Consider using --recursive to search inside subdirectories\n");
+ 		}
+ 		return Common::String();
+ 	}
+ 	// TODO this is not especially pretty
+ 	printf("GameID                         Description                                                Full Path\n");
+ 	printf("------------------------------ ---------------------------------------------------------- ---------------------------------------------------------\n");
+ 	for (const auto &v : candidates) {
+ 		printf("%-30s %-58s %s\n",
+ 		       buildQualifiedGameName(v.engineId, v.gameId).c_str(),
+ 		       v.description.c_str(),
+ 		       v.path.toString(Common::Path::kNativeSeparator).c_str());
+ 	}
+ 
++	if (detectedPath)
++		*detectedPath = candidates[0].path;
+ 	return buildQualifiedGameName(candidates[0].engineId, candidates[0].gameId);
+ }
+ 
+ static int recAddGames(const Common::FSNode &dir, const Common::String &engineId, const Common::String &gameId, bool recursive) {
+ 	int count = 0;
+ 	DetectedGames list = getGameList(dir);
+ 	for (const auto &v : list) {
+ 		if ((v.engineId != engineId || v.gameId != gameId)
+ 		    && !gameId.empty()) {
+ 			printf("Found %s, only adding %s per --game option, ignoring...\n",
+ 			       buildQualifiedGameName(v.engineId, v.gameId).c_str(),
+ 			       buildQualifiedGameName(engineId, gameId).c_str());
+ 		} else if (ConfMan.hasGameDomain(v.preferredTarget)) {
+ 			// TODO Better check for game already added?
+ 			printf("Found %s, but has already been added, skipping\n",
+ 			       buildQualifiedGameName(v.engineId, v.gameId).c_str());
+ 		} else {
+ 			Common::String target = EngineMan.createTargetForGame(v);
+ 			count++;
+ 
+ 			// Display added game info
+ 			printf("Game Added: \n  Target:   %s\n  GameID:   %s\n  Name:     %s\n  Language: %s\n  Platform: %s\n",
+ 			       target.c_str(),
+ 			       buildQualifiedGameName(v.engineId, v.gameId).c_str(),
+ 			       v.description.c_str(),
+ 			       Common::getLanguageDescription(v.language),
+ 			       Common::getPlatformDescription(v.platform)
+ 			);
+ 		}
+ 	}
+ 
+ 	if (recursive) {
+ 		Common::FSList files;
+ 		if (dir.getChildren(files, Common::FSNode::kListDirectoriesOnly)) {
+ 			for (const auto &file : files) {
+@@ -2139,80 +2144,89 @@
+ 		for (auto &l : langs) {
+ 			if (s.size() + l.size() + 2 >= kCommandMaxWidth) {
+ 				printf("%s,\n", s.c_str());
+ 				s = kCommandLineIndent + l;
+ 			} else {
+ 				s += ", " + l;
+ 			}
+ 		}
+ 
+ 		printf("%s)\n", s.c_str());
+ 
+ 		s = HELP_STRING3;
+ 		Common::List<Common::String> platforms = Common::getPlatformList();
+ 		s += platforms.front();
+ 		langs.pop_front();
+ 
+ 		for (auto &p : platforms) {
+ 			if (s.size() + p.size() + 2 >= kCommandMaxWidth) {
+ 				printf("%s,\n", s.c_str());
+ 				s = kCommandLineIndent + p;
+ 			} else {
+ 				s += ", " + p;
+ 			}
+ 		}
+ 
+ 		printf("%s)\n", s.c_str());
+ 
+ 		printf(HELP_STRING4);
+ #endif
+ 		return cmdDoExit;
+ 	} else if (command == "auto-detect") {
+ 		bool resursive = settings["recursive"] == "true";
+ 		// If auto-detects fails (returns an empty ID) return true to close ScummVM.
+ 		// If we get a non-empty ID, we store it in command so that it gets processed together with the
+ 		// other command line options below.
++		#ifndef __EMSCRIPTEN__
+ 		if (resursive) {
+ 			printf("ERROR: Autodetection not supported with --recursive; are you sure you didn't want --detect?\n");
+ 			err = Common::kUnknownError;
+ 			return cmdDoExit;
+ 			// There is not a particularly good technical reason for this.
+ 			// From an UX point of view, however, it might get confusing.
+ 			// Consider removing this if consensus says otherwise.
+-		} else {
++		} else
++		#endif
++		{
+ 			Common::Path path(Common::Path::fromConfig(settings["path"]));
++#ifdef __EMSCRIPTEN__
++			command = detectGames(path, gameOption.engineId, gameOption.gameId, resursive, &path);
++			if (!command.empty())
++				settings["path"] = path.toConfig();
++#else
+ 			command = detectGames(path, gameOption.engineId, gameOption.gameId, resursive);
++#endif
+ 			if (command.empty()) {
+ 				err = Common::kNoGameDataFoundError;
+ 				return cmdDoExit;
+ 			}
+ 		}
+ 	} else if (command == "detect") {
+ 		Common::Path path(Common::Path::fromConfig(settings["path"]));
+ 		detectGames(path, gameOption.engineId, gameOption.gameId, settings["recursive"] == "true");
+ 		return cmdDoExit;
+ 	} else if (command == "add") {
+ 		Common::Path path(Common::Path::fromConfig(settings["path"]));
+ 		addGames(path, gameOption.engineId, gameOption.gameId, settings["recursive"] == "true");
+ 		return cmdDoExit;
+ 	} else if (command == "md5" || command == "md5mac") {
+ 		Common::String filename = settings.getValOrDefault("md5-path", "scummvm");
+ 		// Assume '/' separator except on Windows if the path contain at least one `\`
+ 		char sep = '/';
+ #ifdef WIN32
+ 		if (filename.contains('\\'))
+ 			sep = '\\';
+ #endif
+ 		Common::Path Filename(filename, sep);
+ 		int32 md5Length = 0;
+ 		bool allLengths = true;
+ 
+ 		if (settings.contains("md5-length")) {
+ 			md5Length = strtol(settings["md5-length"].c_str(), nullptr, 10);
+ 			allLengths = false;
+ 		}
+ 
+ 		if (settings.contains("md5-engine")) {
+ 			Common::String engineID = settings["md5-engine"];
+ 
+ 			const Plugin *plugin = EngineMan.findDetectionPlugin(engineID);
+ 			if (!plugin) {
