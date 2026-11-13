@@ -45,7 +45,7 @@ test("previously imported DOS archives resolve to their game pages by stored ZIP
 
 test("remakes retain separate identities, labels and edition-matched artwork", () => {
   const originals = { "sci:pq1sci": "agi:pq1", "sci:qfg1vga": "sci:qfg1", "sci:sq1sci": "agi:sq1" };
-  for (const [id, game] of Object.entries(artwork).filter(([, game]) => /remake/i.test(game.summary))) {
+  for (const [id, game] of Object.entries(artwork).filter(([, game]) => /remake/i.test(game.editionLabel || ""))) {
     assert.equal(game.editionLabel, id === "sci:kq1sci" ? "SCI Remake" : "VGA Remake", id);
     assert.equal(game.artworkFrom, undefined, id);
     for (const source of game.sources.screenshots) {
