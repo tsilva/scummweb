@@ -1588,6 +1588,23 @@
         "In Brave request from Iceman title and credits separately; one request must reach the original controllable beach without waiting for the credit soundtrack or a second Skip intro click. Check ordinary launches and input after skipping."
       ],
       "retire_when": "Upstream supplies an equivalent browser opening callback across the original Iceman title, credits and prologue."
+    },
+    {
+      "path": "patches/scummvm/99zz-defer-engine-compatibility-warnings.patch",
+      "status": "active",
+      "sha256": "49ef5d6db6d76e7b9494807bea18d196579eeab9a88f8e0fa3db81a049a66720",
+      "purpose": "Route engine-specific nonfatal startup notices, including King's Quest VII subtitles, through the existing hosted warning icon.",
+      "invariants": [
+        "Keep the original translated warning and forward only when the player explicitly opts in; preserve native dialogs for standalone and other hosts.",
+        "Cover SCI subtitle and MIDI notices, AGI optional fonts, AGOS/Kyra MIDI and instrument fallbacks, SCUMM optional resources/audio/render settings, ZVision MIDI, Stark optional resources and MTropolis/VCruise optional codecs. Preserve fallback initialization after the notice. Include shared recoverable graphics-setting failures, Lab trial restrictions, SCI resource/video notices and AGOS/Sword missing cutscenes; keep fatal Sword resource failures modal.",
+        "Leave fatal missing-resource/codec errors, original game messages, save/load failures and game/file-choice dialogs modal. Keep the native ZVision continue/cancel choice and Stark download URL outside the opted-in host."
+      ],
+      "verification": [
+        "Run native-compatibility-warnings, runtime-bootstrap and game-route-frame tests, offline patch-memory validation, and rebuild the managed runtime with matching source provenance.",
+        "In Brave verify King's Quest VII launches with subtitles without an automatic warning dialog; click the warning icon to read its full notice. Check a stable catalog launch and imported warning games.",
+        "Verify multiple distinct warnings accumulate without opening a dialog; unhosted games retain native warnings and fatal startup errors still stop launch."
+      ],
+      "retire_when": "Upstream routes engine-specific nonfatal compatibility notices to an opted-in browser host, preserving fallback behavior and native dialogs elsewhere."
     }
   ]
 }
