@@ -212,7 +212,9 @@ while their engine exposes a supported opening segment. The action advances
 through the game's original transition and preserves its menus and choices.
 Continue omits the action. Gobliiins’ bundled interactive DOS demo uses the native
 intro action and retains its original character controls; saving through the
-ScummWEB game menu is unavailable for this edition.
+ScummWEB game menu is unavailable for this edition. Gobliins 2’s interactive DOS
+demo starts at its original clickable title and uses British English (`gb`) for
+exact engine detection; it also has no saving through the ScummWEB game menu.
 
 Humongous games can load legacy DXA conversions when the requested DAT or SMK
 movie is absent. Existing original movies take precedence; a converted movie

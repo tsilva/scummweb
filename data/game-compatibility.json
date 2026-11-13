@@ -4425,6 +4425,13 @@
       "gameId": "gob:gob1",
       "edition": "Official English DOS interactive demo v2.0 (gob1-dos-demo1-en.zip)",
       "observation": "The original opening and village scenes render. Native Skip intro advances into the demo; goblin selection and walking work. This demo does not offer saving through the game menu."
+    },
+    {
+      "title": "Gobliins 2: The Prince Buffoon (Demo)",
+      "status": "startup-verified",
+      "gameId": "gob:gob2",
+      "edition": "Official English (GB) DOS interactive demo v1.01 (gob2-dos-demo-en.zip)",
+      "observation": "The original title and village scene render. Click the title to enter the playable demo. Character selection and walking work. This demo does not offer saving through the game menu."
     }
   ]
 }

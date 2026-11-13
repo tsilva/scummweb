@@ -471,6 +471,16 @@
       "platform": "pc",
       "extra": "Interactive Demo (v2.0)",
       "readmeHref": "/launcher/notices/gob1.txt"
+    },
+    {
+      "target": "gob2-demo",
+      "title": "Gobliins 2: The Prince Buffoon (Demo)",
+      "path": "/games/gob2",
+      "engineId": "gob",
+      "gameId": "gob2",
+      "platform": "pc",
+      "extra": "Interactive Demo (v1.01)",
+      "readmeHref": ""
     }
   ]
 }

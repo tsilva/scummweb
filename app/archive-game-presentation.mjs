@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Gobliins 2: The Prince Buffoon (Demo)", target: "gob2-demo", engineId: "gob", gameId: "gob2",
+    files: [["intro.stk", 492226, 2476912281], ["all.ask", 6078, 581017231]],
+  },
+  {
     title: "Gobliiins (Demo)", target: "gob1-demo", engineId: "gob", gameId: "gob1",
     files: [["intro.stk", 280044, 1661689621], ["disk1.stk", 662036, 670765929]],
   },

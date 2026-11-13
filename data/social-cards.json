@@ -1400,6 +1400,11 @@
       "file": "gobliiins-demo-f5802c0facb30361938b9d0ab43d89d7573ef713dd2751c30ecf1907aa6d5ee9.jpg",
       "inputHash": "f5802c0facb30361938b9d0ab43d89d7573ef713dd2751c30ecf1907aa6d5ee9",
       "imageHash": "10a335939e8bfb11b1480bff76ee64d6c7d2ebdba76fccf142f16be00d3c9087"
+    },
+    "gobliins-2-the-prince-buffoon-demo": {
+      "file": "gobliins-2-the-prince-buffoon-demo-b3108a420af6c3f64a518b83daac608a7a8aa32f6995b40fee6125218c5e045c.jpg",
+      "inputHash": "b3108a420af6c3f64a518b83daac608a7a8aa32f6995b40fee6125218c5e045c",
+      "imageHash": "5909b48afcb888e9c608ae1e87d3847c198e1e0dc4b41ffb8beb8127b21a519f"
     }
   }
 }
