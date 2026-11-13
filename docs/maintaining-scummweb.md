@@ -268,6 +268,11 @@ Space Quest 6’s voiced interactive demo retains its original title, instructio
 and opening scenes. This edition explicitly disables saving and restoring, so
 it has no intro checkpoint or Continue.
 
+Myst’s Windows CD demo retains its original preview menu and interactive library.
+Native Skip intro advances past the publisher opening while preserving the
+Sneak Preview, Scenes from Myst and Making of Myst choices. Saving and loading
+are disabled for this demo, so it has no checkpoint or Continue.
+
 Humongous games can load legacy DXA conversions when the requested DAT or SMK
 movie is absent. Existing original movies take precedence; a converted movie
 does not replace a corrupt original or other missing game resources.

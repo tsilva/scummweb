@@ -524,6 +524,25 @@
         "basis": "Official ScummVM-hosted voiced English DOS/Windows CD interactive promotional demo. README describes a standalone sample with its own puzzles. All thirty-nine files and legal strings inspected; no express game rehosting grant or redistribution ban found. READ.ME permits distribution of VESA driver material rather than the game. INSTALL.HLP marks absent noload.drv as not for shipping; included MT32.DRV is distinct. Official hosting supports this assessment without constituting an express rights-holder license.",
         "preservation": "Serve the complete unchanged upstream ZIP, retaining README, READ.ME, README.WRI, installer help, original executables, drivers, resources and copyright notices."
       }
+    },
+    {
+      "target": "myst-demo",
+      "title": "Myst (Demo)",
+      "engineId": "mohawk",
+      "gameId": "myst",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "myst-win-cd-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/mohawk/myst-win-cd-demo-en.zip",
+      "sha256": "0a3f17cbfd6e39fcf5ec9a329e2db69985fffa52f588acdcc09d48a045ba9fd5",
+      "preserveArchive": true,
+      "noticeFile": "README.TXT",
+      "redistributionReview": {
+        "reviewedOn": "2026-11-13",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "Official ScummVM-hosted English Windows CD promotional demo. All twenty-one original files, technical README and binary legal strings inspected; no express redistribution grant or ban found. Official hosting supports this assessment without constituting an express rights-holder license.",
+        "preservation": "Serve the complete unchanged upstream ZIP, retaining README.TXT, original data, QuickTime movies, making-of feature and copyright notices."
+      }
     }
   ]
 }

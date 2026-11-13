@@ -528,6 +528,16 @@
       "platform": "pc",
       "extra": "Demo",
       "readmeHref": "/launcher/notices/sq6.txt"
+    },
+    {
+      "target": "myst-demo",
+      "title": "Myst (Demo)",
+      "path": "/games/myst",
+      "engineId": "mohawk",
+      "gameId": "myst",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/myst.txt"
     }
   ]
 }
