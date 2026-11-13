@@ -12,6 +12,10 @@ tests when porting; do not treat an old implementation shape as the requirement.
   patch series, dynamic engine/subengine configuration and codec/toolchain setup.
   Its engine arrays and subengine checks are the current support inventory;
   do not replace them with upstream defaults or duplicate their list here.
+  Apply dependent patches one at a time in both checkout preparation and the
+  verifier's temporary index. Filenames sort lexicographically; follow-up patches
+  must sort after any headers or changes they extend. Validate the full series
+  against the pin before compiling.
 - Preserve Ogg/Vorbis, FLAC, MAD/MP3, PNG, JPEG, zlib and Theora configuration and
   the intentional disabled external MIDI/synth paths. Rebuild codec libraries
   when SDK/ABI compatibility requires it. Keep upstream license notices.
@@ -69,6 +73,11 @@ tests when porting; do not treat an old implementation shape as the requirement.
   Keep the translated native text and show every distinct warning for that
   launch. Fatal startup errors and dialogs requiring a game or file choice
   must retain their native behavior.
+  Engine-specific notices can bypass the shared unsupported-game helpers:
+  SCI calls `showScummVMDialog` for King's Quest VII subtitles and MIDI. Patch
+  99zz routes these and optional font, audio, instrument and codec notices through
+  the same host bridge. Audit call-site semantics; never suppress every
+  `MessageDialog`, which also serves fatal errors and original game choices.
 - A hosted game can request Return to Launcher without terminating the runtime.
   Patch 14 guards native launcher construction and explicitly signals successful
   main teardown. Emscripten's keepalive runtime can bypass both `Module.quit` and
