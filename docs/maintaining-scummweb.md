@@ -15,6 +15,13 @@ or browser language used to break ties. Demos have separate cards. **Game not
 included** means you need your own copy. Check the
 [compatibility results](game-testing.md) for tested editions.
 
+The app-install invitation becomes eligible on the third homepage visit in the
+same browser. A fresh page load counts once; client-side navigation and component
+remounts do not add visits. Dismissing it permanently suppresses the invitation,
+including in other open tabs, while the browser retains the site's local data.
+Installed apps, embedded pages and browsers without writable local storage do
+not show it. Installation still depends on browser support.
+
 Use **Add a game**, or drop ZIPs, ISOs, or a folder containing them onto the
 homepage or a game page. Pack one game per ZIP, with its data at the root or
 inside one enclosing folder. Local archives support up to 4 GiB including
