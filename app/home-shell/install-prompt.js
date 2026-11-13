@@ -6,9 +6,11 @@ import { usePathname } from "next/navigation";
 import { captureException } from "@sentry/nextjs";
 
 const dismissalKey = "scummweb.install-prompt-dismissed";
+const visitsKey = "scummweb.install-prompt-visits";
+const minimumVisits = 3;
 const appDisplayModes = "(display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui), (display-mode: window-controls-overlay)";
 const instructions = {
-  native: "Launch it from your device like any other app.",
+  native: "Launch it like any other app.",
   ios: "In Safari, choose Share, then Add to Home Screen. Turn on Open as Web App if shown.",
   mac: "In Safari on macOS Sonoma or later, choose File, then Add to Dock.",
   menu: "Open your browser menu and choose the option to install ScummWEB.",
@@ -31,11 +33,24 @@ export default function InstallPrompt() {
 
   useEffect(() => {
     if (window.top !== window || !window.isSecureContext) return;
+    const displayMode = window.matchMedia(appDisplayModes);
+    if (displayMode.matches || navigator.standalone) return;
     try {
       if (window.localStorage.getItem(dismissalKey)) return;
-    } catch {}
+      // A document counts once, including effect replays and client-side remounts.
+      if (window.scummwebInstallVisitCount === undefined) {
+        const stored = Number(window.localStorage.getItem(visitsKey));
+        const previous = Number.isSafeInteger(stored) && stored >= 0 ? stored : 0;
+        const visits = Math.min(previous + 1, minimumVisits);
+        window.localStorage.setItem(visitsKey, String(visits));
+        window.scummwebInstallVisitCount = visits;
+      }
+      if (window.scummwebInstallVisitCount < minimumVisits) return;
+    } catch {
+      // Stay quiet if visits and permanent dismissal cannot be remembered.
+      return;
+    }
 
-    const displayMode = window.matchMedia(appDisplayModes);
     const safariOption = safariInstallOption();
 
     function refresh() {
@@ -51,13 +66,19 @@ export default function InstallPrompt() {
       setOffer(null);
     }
 
+    function syncDismissal(event) {
+      if (event.key === dismissalKey && event.newValue) hideOffer();
+    }
+
     window.addEventListener("beforeinstallprompt", refresh);
     window.addEventListener("appinstalled", hideOffer);
+    window.addEventListener("storage", syncDismissal);
     displayMode.addEventListener("change", refresh);
     refresh();
     return () => {
       window.removeEventListener("beforeinstallprompt", refresh);
       window.removeEventListener("appinstalled", hideOffer);
+      window.removeEventListener("storage", syncDismissal);
       displayMode.removeEventListener("change", refresh);
     };
   }, []);
@@ -94,14 +115,12 @@ export default function InstallPrompt() {
 
   return (
     <aside className="install-prompt" aria-label="Install ScummWEB">
-      <div>
-        <strong>Install ScummWEB</strong>
-        <p>{instructions[offer]}</p>
-        {offer === "native" && (
-          <button type="button" className="secondary-button" onClick={install}>Install app</button>
-        )}
-      </div>
-      <button type="button" className="nav-icon-link" aria-label="Dismiss install invitation" onClick={dismiss}>
+      <strong>Install ScummWEB</strong>
+      <p>{instructions[offer]}</p>
+      {offer === "native" && (
+        <button type="button" className="secondary-button" onClick={install}>Install app</button>
+      )}
+      <button type="button" className="install-prompt-dismiss" aria-label="Dismiss install invitation" onClick={dismiss}>
         <X className="icon" aria-hidden="true" />
       </button>
     </aside>
