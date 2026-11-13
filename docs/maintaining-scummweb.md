@@ -215,6 +215,8 @@ intro action and retains its original character controls; saving through the
 ScummWEB game menu is unavailable for this edition. Gobliins 2’s interactive DOS
 demo starts at its original clickable title and uses British English (`gb`) for
 exact engine detection; it also has no saving through the ScummWEB game menu.
+Goblins Quest 3’s English interactive demo likewise starts from a clickable title
+and enters its ship scene directly, with no intro checkpoint or menu saving.
 
 Humongous games can load legacy DXA conversions when the requested DAT or SMK
 movie is absent. Existing original movies take precedence; a converted movie

@@ -442,6 +442,28 @@
         "basis": "Official ScummVM-hosted English interactive promotional demo. All eight files and copyright/distribution strings inspected; no standalone license, express redistribution ban or rehosting grant found. Official hosting supports this assessment but is not an express rights-holder license.",
         "preservation": "Serve the complete unchanged upstream ZIP, including its original loader, drivers, save data and copyright notices."
       }
+    },
+    {
+      "target": "gob3-demo",
+      "title": "Goblins Quest 3 (Demo)",
+      "engineId": "gob",
+      "gameId": "gob3",
+      "platform": "pc",
+      "extra": "Interactive Demo 3 (v0.02)",
+      "archive": "gob3-dos-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/gob/gob3-dos-demo-en.zip",
+      "sha256": "b1af7ec3b3b6f5d517261508fb39324b0bb73aaed8377903605353c735fa46ed",
+      "preserveArchive": true,
+      "noticeFile": "2.txt",
+      "config": {
+        "guioptions": "sndNoSpeech sndNoSubs"
+      },
+      "redistributionReview": {
+        "reviewedOn": "2026-11-13",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "Official ScummVM-hosted English interactive promotional demo. Included 2.txt describes the playable MegaDisk demo. All twelve files and the nested LHA installer contents inspected without execution; no express redistribution ban or rehosting grant found. Official hosting supports this assessment but is not an express rights-holder license.",
+        "preservation": "Serve the complete unchanged upstream ZIP, retaining 2.txt, its original packed installer, game data, setup files and all copyright notices."
+      }
     }
   ]
 }

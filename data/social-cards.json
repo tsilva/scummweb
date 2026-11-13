@@ -1405,6 +1405,11 @@
       "file": "gobliins-2-the-prince-buffoon-demo-b3108a420af6c3f64a518b83daac608a7a8aa32f6995b40fee6125218c5e045c.jpg",
       "inputHash": "b3108a420af6c3f64a518b83daac608a7a8aa32f6995b40fee6125218c5e045c",
       "imageHash": "5909b48afcb888e9c608ae1e87d3847c198e1e0dc4b41ffb8beb8127b21a519f"
+    },
+    "goblins-quest-3-demo": {
+      "file": "goblins-quest-3-demo-bdb2ed6ec26eb1fcabfe91f945757a9197a79cd1c808fc370e38728a89df2dfb.jpg",
+      "inputHash": "bdb2ed6ec26eb1fcabfe91f945757a9197a79cd1c808fc370e38728a89df2dfb",
+      "imageHash": "d02dada4e67632bb44d29623d898dbc1fdec37565585626c329f9833ae392d37"
     }
   }
 }
