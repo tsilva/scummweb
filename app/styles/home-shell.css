@@ -631,7 +631,26 @@ button.nav-icon-link {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.5rem;
+}
+
+.library-header .secondary-button {
+  width: auto;
+  flex-shrink: 0;
+}
+
+#library[data-editing] .library-header {
+  position: sticky;
+  top: 5rem;
+  z-index: 5;
+  padding-block: 0.5rem;
+  background: var(--surface);
+}
+
+@media (max-width: 48rem) {
+  #library[data-editing] .library-header {
+    top: calc(4.4rem + env(safe-area-inset-top));
+  }
 }
 
 .library-toggle {
@@ -649,6 +668,183 @@ button.nav-icon-link {
 
 .library-toggle .is-open {
   transform: rotate(180deg);
+}
+
+.library-edit-toggle {
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+}
+
+.library-edit-done {
+  background: var(--accent-strong);
+  color: var(--surface-lowest);
+}
+
+.library-edit-help {
+  margin: -1rem 0 1.75rem;
+  color: var(--ink-muted);
+  font-size: 0.9rem;
+}
+
+.section-stack.library-without-hero {
+  padding-top: 7rem;
+}
+
+.library-edit-card {
+  position: relative;
+}
+
+.library-edit-card > .poster-card {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.library-edit-card[data-editing] {
+  content-visibility: visible;
+  animation: library-wiggle 340ms ease-in-out infinite alternate;
+  transform-origin: center 60%;
+}
+
+.library-edit-card[data-editing]:nth-child(even) {
+  animation-direction: alternate-reverse;
+}
+
+.library-edit-card[data-editing] > .poster-card {
+  cursor: default;
+  outline: 1px solid rgba(229, 226, 225, 0.45);
+  outline-offset: -1px;
+  transform: none;
+}
+
+.library-remove {
+  position: absolute;
+  top: -0.35rem;
+  left: -0.35rem;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid rgba(229, 226, 225, 0.65);
+  border-radius: 50%;
+  background: var(--surface-high);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.library-remove:hover {
+  background: var(--surface-highest);
+  color: #fff;
+}
+
+.library-remove:focus-visible {
+  outline: 3px solid var(--accent-strong);
+  outline-offset: 3px;
+}
+
+.library-removal-notice {
+  position: fixed;
+  inset: auto auto max(1.5rem, env(safe-area-inset-bottom)) 50%;
+  transform: translateX(-50%);
+  z-index: 45;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: max-content;
+  max-width: calc(100vw - 2rem);
+  padding: 0.6rem 0.8rem 0.6rem 1rem;
+  border: 1px solid var(--ghost-border);
+  border-radius: 1rem;
+  background: var(--surface-high);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  font-size: 0.9rem;
+}
+
+.library-removal-notice > svg {
+  flex-shrink: 0;
+  color: var(--accent-strong);
+}
+
+.library-removal-notice > span {
+  overflow-wrap: anywhere;
+}
+
+.library-removal-notice button {
+  min-width: 3.5rem;
+  min-height: 2.75rem;
+  padding: 0 0.5rem;
+  border: 0;
+  background: none;
+  color: var(--accent-strong);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#library[data-editing] {
+  padding-bottom: 6rem;
+}
+
+.library-version-removal {
+  width: min(32rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 3rem);
+  padding: 1.5rem;
+  border: 1px solid var(--ghost-border);
+  border-radius: 1rem;
+  background: var(--surface-mid);
+  color: var(--ink);
+}
+
+.library-version-removal::backdrop {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.library-removal-heading,
+.library-version-removal li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.library-removal-heading h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.library-version-removal p,
+.library-version-removal small {
+  color: var(--ink-muted);
+  line-height: 1.5;
+}
+
+.library-version-removal ul {
+  display: grid;
+  gap: 1rem;
+  padding: 0;
+  margin: 1.5rem 0;
+  list-style: none;
+}
+
+.library-version-removal small {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+@keyframes library-wiggle {
+  from { transform: rotate(-0.65deg); }
+  to { transform: rotate(0.65deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .library-edit-card[data-editing] {
+    animation: none;
+  }
 }
 
 .library-controls {
