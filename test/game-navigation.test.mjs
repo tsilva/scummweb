@@ -11,6 +11,7 @@ import * as playSources from "../app/game-play-source.mjs";
 import { libraryItems } from "../app/home-shell/library-items.mjs";
 import * as seo from "../lib/seo.mjs";
 import * as initialActions from "../app/home-shell/initial-actions.mjs";
+import * as libraryRemoval from "../app/home-shell/library-removal.mjs";
 
 await swc.loadBindings();
 async function component(file, imports, globals = {}) {
@@ -26,6 +27,7 @@ async function component(file, imports, globals = {}) {
       if (name === "react/jsx-runtime") return createRequire(url)(name);
       if (name === "./hero-order.mjs") return heroOrder;
       if (name === "./initial-actions.mjs") return initialActions;
+      if (name === "./library-removal.mjs") return imports[name] ?? libraryRemoval;
       if (name === "./artwork-delivery") return imports[name] ?? { useArtworkDelivery: () => undefined };
       return imports[name] ?? {};
     },
@@ -40,6 +42,10 @@ async function library() {
   const catalog = [sky, queen];
   const imported = { source: { id: "custom", name: "My game.zip", kind: "zip" }, status: "available", game: { displayTitle: "My game" } };
   const hooks = [], effects = [], listeners = new Map(), history = [];
+  const values = new Map([["save-file", "original save bytes"]]);
+  const storage = { getItem: (key) => values.get(key), setItem: (key, value) => values.set(key, value) };
+  const persistentSources = new Map([[imported.source.id, imported.source]]);
+  const failures = {};
   const window = {
     location: new URL("https://example.test/"),
     history: { pushState(data, title, href) { history.push(href); window.location = new URL(href, window.location); } },
@@ -58,7 +64,22 @@ async function library() {
     react: { useState: state, useRef: (current) => state({ current })[0], useMemo: (fn) => fn(), useEffect: (fn) => effects.push(fn) },
     "next/navigation": { usePathname: () => window.location.pathname, useRouter: () => ({ push() { assert.fail("selection must not fetch a Next.js route"); } }) },
     "../game-presentation": { getImportedGamePresentation: () => imported.game, getGamePresentation: (game) => game },
-    "../game-sources.mjs": { isLocalArchiveSource: () => true },
+    "../game-sources.mjs": {
+      isLocalArchiveSource: () => true,
+      removeGameSources: async (ids) => {
+        if (failures.remove) throw new Error("Removal failed");
+        for (const id of ids) persistentSources.delete(id);
+      },
+      saveGameSources: async (sources) => {
+        if (failures.save) throw new Error("Restore failed");
+        for (const source of sources) persistentSources.set(source.id, source);
+      },
+    },
+    "./library-removal.mjs": {
+      ...libraryRemoval,
+      readHiddenCatalogVersions: () => libraryRemoval.readHiddenCatalogVersions(storage),
+      writeHiddenCatalogVersions: (keys) => libraryRemoval.writeHiddenCatalogVersions(keys, storage),
+    },
     "../game-versions.mjs": versions,
     "./hero-selection.mjs": selection,
     "./home-hero": Hero,
@@ -69,6 +90,7 @@ async function library() {
   // Preserve an already-restored imported source in the mounted library.
   hooks[0] = [imported];
   hooks[1] = { ...playSources, getRecognizedGames: () => catalog, libraryItems };
+  hooks[2] = false;
   function render() {
     cursor = 0;
     const tree = SourceLibrary({ catalog, featuredGame: sky, isHomePage: true }).props.children;
@@ -81,10 +103,98 @@ async function library() {
   }
   render();
   const cleanup = effects[0]();
-  return { render, history, cleanup, listeners,
+  return { render, history, cleanup, listeners, persistentSources, values, failures,
     restore(href) { window.location = new URL(href, window.location); listeners.get("popstate")(); return render(); },
   };
 }
+
+test("library removal and Undo preserve the original imported reference and saved data", async () => {
+  const app = await library();
+  const view = app.render().view.props;
+  const imported = view.items.find((item) => item.versions.some(({ source }) => source));
+  const original = app.persistentSources.get("custom");
+  assert.equal(await view.onRemove(imported, imported.versions), true);
+  let next = app.render().view.props;
+  assert.equal(app.persistentSources.has("custom"), false);
+  assert.equal(next.items.some((item) => item.key === imported.key), false);
+  assert.equal(next.removal.title, "My game");
+  assert.equal(await next.onUndo(), true);
+  next = app.render().view.props;
+  assert.equal(app.persistentSources.get("custom"), original);
+  assert.equal(next.items.find((item) => item.key === imported.key).versions[0].source.id, "custom");
+  assert.equal(next.removal, undefined);
+  assert.equal(app.values.get("save-file"), "original save bytes");
+});
+
+test("catalog removal filters the library and Undo handles several removals in reverse order", async () => {
+  const app = await library();
+  for (const target of ["sky", "queen"]) {
+    const view = app.render().view.props;
+    const item = view.items.find(({ game }) => game.target === target);
+    assert.equal(await view.onRemove(item, item.versions), true);
+  }
+  assert.equal(app.render().view.props.hiddenCount, 2);
+  assert.equal(app.render().view.props.items.length, 1);
+  await app.render().view.props.onUndo();
+  assert.equal(app.render().view.props.hiddenCount, 1);
+  assert.equal(app.render().view.props.items.some(({ game }) => game.target === "queen"), true);
+  await app.render().view.props.onUndo();
+  assert.equal(app.render().view.props.hiddenCount, 0);
+  assert.equal(app.values.get("save-file"), "original save bytes");
+});
+
+test("failed removal keeps the card; failed Undo retains its recovery record", async () => {
+  const app = await library();
+  let view = app.render().view.props;
+  const item = view.items.find((item) => item.versions.some(({ source }) => source));
+  app.failures.remove = true;
+  assert.equal(await view.onRemove(item, item.versions), undefined);
+  view = app.render().view.props;
+  assert.equal(view.items.some(({ key }) => key === item.key), true);
+  assert.equal(view.removal, undefined);
+  assert.match(view.notice.message, /Removal failed/);
+  app.failures.remove = false;
+  await view.onRemove(item, item.versions);
+  app.failures.save = true;
+  await app.render().view.props.onUndo();
+  view = app.render().view.props;
+  assert.equal(view.removal.title, "My game");
+  assert.match(view.notice.message, /Restore failed/);
+  app.failures.save = false;
+  assert.equal(await view.onUndo(), true);
+});
+
+test("removing the last game leaves a usable empty library and Undo restores it", async () => {
+  const app = await library();
+  for (const item of app.render().view.props.items) {
+    await app.render().view.props.onRemove(item, item.versions);
+  }
+  const empty = app.render();
+  assert.equal(empty.view.props.items.length, 0);
+  assert.equal(empty.hero, undefined, "the slideshow must not receive an empty list");
+  assert.equal(empty.view.props.hiddenCount, 2);
+  assert.equal(await empty.view.props.onUndo(), true);
+  assert.equal(app.render().view.props.items.length, 1);
+});
+
+test("restoring included games retires their Undo records while keeping imported recovery", async () => {
+  const app = await library();
+  for (const target of ["sky", "custom"]) {
+    const view = app.render().view.props;
+    const item = view.items.find((item) => item.versions.some((version) =>
+      version.game.target === target || version.source?.id === target));
+    await view.onRemove(item, item.versions);
+  }
+  await app.render().view.props.onRestoreIncluded();
+  let view = app.render().view.props;
+  assert.equal(view.hiddenCount, 0);
+  assert.equal(view.removal.title, "My game");
+  assert.equal(view.items.some(({ game }) => game.target === "sky"), true);
+  assert.equal(await view.onUndo(), true);
+  view = app.render().view.props;
+  assert.equal(view.removal, undefined);
+  assert.equal(app.persistentSources.has("custom"), true);
+});
 
 test("game navigation updates the mounted library and restores Back/Forward selections", async () => {
   const app = await library();
