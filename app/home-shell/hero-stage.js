@@ -107,11 +107,11 @@ export default function HeroStage({
               {notice ? <p className="file-access-help hero-notice" id="hero-file-access-help"
                 role="status" data-tone={notice.tone}>{notice.message}</p>
                 : (sourceVersion?.action.needsAccess || sourceAction?.needsAccess) && <p className="file-access-help" id="hero-file-access-help">
-                Allow access in the browser prompt so ScummWEB can read this game’s ZIP.
+                Allow access in the browser prompt so ScummWEB can read this game’s ZIP or ISO.
                 Your game files stay on your device.
               </p>}
               {!notice && featuredGame.importRequired && !sourceVersion && !sourceAction && <p className="file-access-help hero-import-help">
-                This game is not included due to copyright restrictions. If you own a copy, drop its ZIP onto this page to add it to your library.
+                This game is not included due to copyright restrictions. If you own a copy, drop its ZIP or ISO onto this page to add it to your library.
               </p>}
               <div className="hero-version-control" data-reserved={!hasMultipleVersions || undefined}
                 aria-hidden={!hasMultipleVersions || undefined}>

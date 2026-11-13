@@ -27,14 +27,23 @@ export function installPlayerControls(scope, requestMenu) {
     return null;
   }
 
+  function subtitleState() {
+    const value = scope.Module?._scummweb_player_subtitles?.(-1) ?? -1;
+    return { subtitles: value === 1, canToggleSubtitles: value >= 0 };
+  }
+
   scope.scummwebPlayerControls = Object.freeze({
     read: () => ({
       volume, speed, canSave, canLoad, dialogueActive, nextSlot: nextSlot(),
+      ...subtitleState(),
       saves: saves.filter(({ slot }) => slot <= maxSlot),
     }),
     setSettings(settings) {
       volume = clamp(settings.volume, 0, 100, volume);
       speed = clamp(settings.speed, 0.5, 1.5, speed);
+      if (typeof settings.subtitles === "boolean") {
+        scope.Module?._scummweb_player_subtitles?.(Number(settings.subtitles));
+      }
       applyVolume();
     },
     setMenuOpen(open) {

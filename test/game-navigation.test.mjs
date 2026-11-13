@@ -58,7 +58,7 @@ async function library() {
     react: { useState: state, useRef: (current) => state({ current })[0], useMemo: (fn) => fn(), useEffect: (fn) => effects.push(fn) },
     "next/navigation": { usePathname: () => window.location.pathname, useRouter: () => ({ push() { assert.fail("selection must not fetch a Next.js route"); } }) },
     "../game-presentation": { getImportedGamePresentation: () => imported.game, getGamePresentation: (game) => game },
-    "../game-sources.mjs": { isLocalZipSource: () => true },
+    "../game-sources.mjs": { isLocalArchiveSource: () => true },
     "../game-versions.mjs": versions,
     "./hero-selection.mjs": selection,
     "./home-hero": Hero,

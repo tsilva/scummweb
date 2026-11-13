@@ -66,7 +66,7 @@ export function prepareInitialActions(container, readSave) {
     container.innerHTML = container.parentElement.querySelector('.hero-actions[data-ready="false"]').innerHTML;
     const primary = container.querySelector(".launch-button");
     primary.classList.toggle("game-unavailable", state.unavailable);
-    primary.textContent = state.unavailable ? "Game not included" : state.locate ? "Locate ZIP"
+    primary.textContent = state.unavailable ? "Game not included" : state.locate ? "Locate ZIP or ISO"
       : state.access ? "Allow file access" : save ? "Continue" : "Play";
     if (!state.unavailable && !state.source) primary.href = href + (save ? "#continue" : "");
     else if (state.source) { primary.setAttribute("role", "button"); primary.setAttribute("aria-disabled", "true"); }

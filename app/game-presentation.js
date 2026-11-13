@@ -640,7 +640,7 @@ for (const [id, record] of Object.entries(retroGameArtwork)) {
 }
 
 export function getImportedGamePresentation(filename) {
-  const archive = /^(.+?)((?:\s+\([^()]+\))*)\.zip$/i.exec(filename);
+  const archive = /^(.+?)((?:\s+\([^()]+\))*)\.(?:zip|iso)$/i.exec(filename);
   const indy = archive && /^indiana jones and the (fate of atlantis|last crusade)(?:[: -]+the graphic adventure)?$/i.exec(archive[1]);
   if (indy && !/\baction game\b/i.test(archive[2])) {
     const atlantis = indy[1].toLowerCase() === "fate of atlantis";
@@ -685,8 +685,8 @@ export function getImportedGamePresentation(filename) {
     }
   }
 
-  const sfinx = /^sfinx(?:-(en|pl|de))?(?:-v(\d+(?:\.\d+)*))?\.zip$/i.exec(filename);
-  const labeledSfinx = /^sfinx v(\d+(?:\.\d+)*) \(DOS, (English|Polish|German)\)\.zip$/i.exec(filename);
+  const sfinx = /^sfinx(?:-(en|pl|de))?(?:-v(\d+(?:\.\d+)*))?\.(?:zip|iso)$/i.exec(filename);
+  const labeledSfinx = /^sfinx v(\d+(?:\.\d+)*) \(DOS, (English|Polish|German)\)\.(?:zip|iso)$/i.exec(filename);
   if (!sfinx && !labeledSfinx) return null;
 
   const languages = { en: "English", pl: "Polish", de: "German" };

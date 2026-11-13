@@ -1505,6 +1505,23 @@
         "In Brave, open Saved Game, verify the Load Game drawer, cancel and reopen it, then restore a real save into its scene. Verify New Game, L/R intro choices and normal gameplay save/load."
       ],
       "retire_when": "Upstream routes the original startup load choice through an equivalent hosted browser picker with safe cancellation and restoration."
+    },
+    {
+      "path": "patches/scummvm/99-subtitle-settings.patch",
+      "status": "active",
+      "sha256": "10e6f72e456d45fd29d0f07ab40f3b1bac585d78e3ba2741255e5624c09fab7f",
+      "purpose": "Default hosted games to subtitles with speech and expose the live native subtitle setting to the game menu.",
+      "invariants": [
+        "Initialize both subtitles and speech_mute on the active target before engine construction so SCUMM original menus import the voice mode, including Full Throttle Demo. Apply this to catalog and imported games only when hosted player controls are present.",
+        "Use the engine sound-settings synchronizer for runtime changes. Do not flush settings or change volume, saves, agent launches or desktop behavior.",
+        "Hide the toggle for GUIO_NOSUBTITLES and GUIO_NOSPEECH games, preserving mandatory text and speech. Disabling subtitles must leave speech enabled.",
+        "Refresh cached subtitle state through applyGameSettings in Sky, Drascula, AGOS, GrimE, Tinsel, Toltecs and Tucker; retain AGOS language/edition restrictions, Tucker no-subtitle editions and Tinsel mandatory-language rules. Hide Neverhood subtitle surfaces while disabled without changing its loaded font or subtitle-player availability; redraw when re-enabled."
+      ],
+      "verification": [
+        "Run native-subtitle-settings, player-controls and game-menu tests and the offline patch-memory checker; rebuild the runtime and corresponding source archive.",
+        "In Brave verify Full Throttle Demo starts with visible dialogue subtitles, toggles off and back on during play, retains the setting across menu openings, and resets on a fresh launch. Check Sky and a personal import, plus a game without optional subtitles."
+      ],
+      "retire_when": "Upstream supplies an equivalent hosted subtitle control and initializes SCUMM original-menu voice mode from subtitle defaults."
     }
   ]
 }

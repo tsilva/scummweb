@@ -3,15 +3,15 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { exitImmersiveMode } from "../game-player/immersive-mode.mjs";
-import { checkGameSource, isLocalZipSource, localGame, readGameSources, removeGameSources, requestGameSourceAccess, saveGameSources } from "../game-sources.mjs";
+import { checkGameSource, isLocalArchiveSource, localGame, readGameSources, removeGameSources, requestGameSourceAccess, saveGameSources } from "../game-sources.mjs";
 import { findLocalGameSource } from "../local-game-matching.mjs";
-import { maxLocalGameSize, selectGameArchive, validateGameZip } from "../local-game-selection.mjs";
-import { collectGameImportNodes, fileNode, handleNode, inspectLocalSourceFiles, prepareLocalZip } from "../local-game-import.mjs";
+import { selectGameArchive, validateLocalGameArchive } from "../local-game-selection.mjs";
+import { collectGameImportNodes, fileNode, handleNode, inspectLocalSourceFiles, prepareLocalArchive } from "../local-game-import.mjs";
 import LibraryView from "./library-view";
 import { catalogGameEntries, getGameFamilyKey, getVersionSaveNamespace, groupGameVersions, rememberGameVersion } from "../game-versions.mjs";
 import { buildGameExitHref, readHeroSelection } from "./hero-selection.mjs";
 import HomeHero from "./home-hero";
-import GameDropOverlay, { chooseZipHandles } from "./local-game";
+import GameDropOverlay, { chooseArchiveHandles } from "./local-game";
 import RecentGamesRail from "../recent-games-rail";
 import { GameNavigationContext } from "./game-navigation";
 import BrowseMetadata from "./browse-metadata";
@@ -92,11 +92,11 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
         if (checking.has(source)) continue;
         checking.add(source);
         // Only imports without a persistent handle rely on their in-memory copy.
-        const check = isLocalZipSource(source) && !source.handle && sessionGames.has(source.id)
+        const check = isLocalArchiveSource(source) && !source.handle && sessionGames.has(source.id)
           ? Promise.resolve("session") : checkGameSource(source);
         void check.then(async (status) => {
           let archiveFiles = source.archiveFiles;
-          // Recheck legacy imports and changed ZIPs using existing read access.
+          // Recheck legacy imports and changed archives using existing read access.
           // Never delete source records or request permission in the background.
           if (status === "available" && !source.url && source.handle) {
             archiveFiles = await inspectLocalSourceFiles(source, inspected).catch(() => []);
@@ -232,8 +232,8 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
     const source = { ...existing, ...localGame(game.handle, game, existing?.id) };
     // A fallback picker must replace a stale saved handle with its fresh in-memory files.
     if (!game.handle) delete source.handle;
-    // A ZIP can replace a legacy folder while retaining its source ID and saves.
-    delete source.kind;
+    // An archive can replace a legacy folder while retaining its source ID and saves.
+    if (game.kind === "zip") delete source.kind;
     try {
       await saveGameSources([source]);
       sessionSources.delete(source.id);
@@ -256,7 +256,7 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
       const selectionRoots = typeof selection === "function" ? await selection() : selection;
       if (!selectionRoots.length) return;
       const { findBundledGame } = await import("./library-items.mjs");
-      setPending([{ index: 0, label: "Finding game ZIPs…", message: "Checking dropped files and folders…" }]);
+      setPending([{ index: 0, label: "Finding game ZIPs and ISOs…", message: "Checking dropped files and folders…" }]);
       const roots = await collectGameImportNodes(selectionRoots);
       const known = new Map(entries.map(({ source }) => [source.id, source]));
       const items = [];
@@ -295,7 +295,7 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
         return item;
       }
 
-      setPending(roots.map((root, index) => ({ index, label: root.name ?? "Game ZIP", message: "Waiting to scan…" })));
+      setPending(roots.map((root, index) => ({ index, label: root.name ?? "Game archive", message: "Waiting to scan…" })));
       try {
         for (const [index, root] of roots.entries()) {
           let label = "Dropped item";
@@ -303,8 +303,8 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
             const node = await root;
             if (!node) throw new Error("Could not read this item. Try dropping it again.");
             label = node.name;
-            updateProgress(index, { label, message: "Checking ZIP…", value: index, total: roots.length });
-            const item = await save(await prepareLocalZip(node));
+            updateProgress(index, { label, message: "Checking game files…", value: index, total: roots.length });
+            const item = await save(await prepareLocalArchive(node));
             updateProgress(index, item);
           } catch (error) {
             const item = { label, message: error.message, status: "error" };
@@ -321,7 +321,7 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
       setImportResult({ savedIds, items, replacing, temporary });
     }, (message) => setImportResult({
       savedIds: new Set(),
-      items: [{ label: "Game ZIP", message, status: "error" }],
+      items: [{ label: "Game archive", message, status: "error" }],
     }));
   }
 
@@ -330,9 +330,9 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
     setImportResult(null);
   }
 
-  function chooseZip(replacing = null) {
+  function chooseArchive(replacing = null) {
     if (typeof window.showOpenFilePicker === "function") {
-      importRoots(async () => (await chooseZipHandles(!replacing)).map(handleNode), replacing);
+      importRoots(async () => (await chooseArchiveHandles(!replacing)).map(handleNode), replacing);
     } else {
       replacingSource.current = replacing;
       fileInput.current.multiple = !replacing;
@@ -347,7 +347,7 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
   }
 
   function play(source, game, resume = false, legacySaves = false) {
-    if (!source.url && !isLocalZipSource(source)) return chooseZip(source);
+    if (!source.url && !isLocalArchiveSource(source)) return chooseArchive(source);
     let navigated = false;
     return run(async () => {
       if (!source.url && source.handle && !sessionGames.has(source.id)
@@ -368,21 +368,21 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
         const data = sessionGames.get(source.id);
         if (!data && !source.handle) {
           updateStatus(source, "locate");
-          showNotice("Locate the game ZIP to play again.");
+          showNotice("Locate the game ZIP or ISO to play again.");
           return;
         }
         try {
           const file = data ?? await source.handle.getFile();
-          validateGameZip(file, maxLocalGameSize);
+          validateLocalGameArchive(file);
           selectGameArchive(async (signal, onProgress) => {
-            const { openLocalGameZip } = await import("../local-game-archive.mjs");
-            return openLocalGameZip(file, signal, onProgress);
+            const { openLocalGameArchive } = await import("../local-game-archive.mjs");
+            return openLocalGameArchive(file, signal, onProgress);
           }, game);
         } catch (error) {
           const permission = ["NotAllowedError", "SecurityError"].includes(error?.name);
           updateStatus(source, permission ? "permission" : "missing");
           showNotice(permission ? "Allow file access to play this game."
-            : "Could not open the ZIP. Locate the file to reconnect it.");
+            : "Could not open the game file. Locate the file to reconnect it.");
           return;
         }
       }
@@ -405,7 +405,7 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
       }
       showNotice(status === "available" ? "File access allowed. You can now play."
         : status === "permission" ? "File access was not allowed. Try again and allow access in your browser to play."
-        : "Could not open the ZIP. Locate the file to reconnect it.", status === "available" ? "success" : "error");
+        : "Could not open the game file. Locate the file to reconnect it.", status === "available" ? "success" : "error");
     });
   }
 
@@ -413,8 +413,8 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
   const library = entries.map(({ source, status, archiveFiles }) => {
     const game = sourcePresentation.getSourceGamePresentation(source, catalog, recognizedGames);
     const title = game.displayTitle;
-    const locate = !source.url && (!isLocalZipSource(source) || ["missing", "locate"].includes(status));
-    const locateLabel = "Locate ZIP";
+    const locate = !source.url && (!isLocalArchiveSource(source) || ["missing", "locate"].includes(status));
+    const locateLabel = "Locate ZIP or ISO";
     const needsAccess = status === "permission";
     return {
       source, status, archiveFiles, game, title, locate, locateLabel,
@@ -423,10 +423,10 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
         buttonLabel: locate ? locateLabel : needsAccess ? "Allow file access" : "Play",
         needsAccess,
         disabled: disabled || status === "checking",
-        onClick: () => locate ? chooseZip(source) : needsAccess ? allowAccess(source) : play(source, game),
+        onClick: () => locate ? chooseArchive(source) : needsAccess ? allowAccess(source) : play(source, game),
         onContinue: () => play(source, game, true),
         onLegacy: () => play(source, game, false, true),
-        onLocate: () => chooseZip(source),
+        onLocate: () => chooseArchive(source),
         onRemove: () => run(() => removeSources([source])),
       },
     };
@@ -458,7 +458,7 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
     <ArtworkDelivery value={(hasSources && sourcePresentation?.artwork) || artwork}>
       <GameNavigationContext value={selectGame}>
         {!playerRoute && <BrowseMetadata game={featuredGame} catalog={catalog} isHomePage={isHomePage} />}
-        <input ref={fileInput} type="file" accept=".zip,application/zip" multiple hidden
+        <input ref={fileInput} type="file" accept=".zip,.iso,application/zip,application/x-iso9660-image" multiple hidden
           onChange={(event) => {
             const files = [...event.target.files];
             if (files.length) importRoots(files.map(fileNode), replacingSource.current);
@@ -474,7 +474,7 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
         <div className="section-stack">
           <RecentGamesRail groups={groups} />
           <LibraryView items={groups} heading={libraryHeading} notice={notice}
-            onAddGame={() => chooseZip()} importDisabled={disabled} selectedKey={selection || (!isHomePage ? featuredKey : null)} />
+            onAddGame={() => chooseArchive()} importDisabled={disabled} selectedKey={selection || (!isHomePage ? featuredKey : null)} />
         </div>
       </GameNavigationContext>
     </ArtworkDelivery>

@@ -15,20 +15,26 @@ or browser language used to break ties. Demos have separate cards. **Game not
 included** means you need your own copy. Check the
 [compatibility results](game-testing.md) for tested editions.
 
-Use **Add a game**, or drop ZIPs or a folder containing ZIPs onto the homepage
-or a game page. Pack one game per ZIP, with its data at the root or inside one
-enclosing folder. Local ZIPs support up to 4 GiB including unpacked contents.
+Use **Add a game**, or drop ZIPs, ISOs, or a folder containing them onto the
+homepage or a game page. Pack one game per ZIP, with its data at the root or
+inside one enclosing folder. Local archives support up to 4 GiB including
+unpacked contents. ISO imports support ISO 9660 and Joliet data discs with
+2048-byte sectors and read game files directly from the image. Import checks
+the file contents to distinguish editions; large discs can take longer to scan.
+UDF-only images, raw BIN/CUE images, interleaved files and multi-extent files
+need to be extracted and packed as a ZIP first. Disc images must contain
+ScummVM game data; installer-only discs need installation/extraction first.
 Large compressed ZIPs need temporary browser storage. A large ZIP with
 compression disabled can be read directly from disk. See
 [packaging a collection](#package-a-local-scummvm-collection).
 
-If a ZIP is inaccessible, use **Allow file access** to restore permission or
-**Locate ZIP** to reconnect a moved file or replace a legacy folder entry.
-Reimporting the same ZIP also refreshes access. Reconnecting preserves the
+If a ZIP or ISO is inaccessible, use **Allow file access** to restore permission or
+**Locate ZIP or ISO** to reconnect a moved file or replace a legacy folder entry.
+Reimporting the same archive also refreshes access. Reconnecting preserves the
 source ID and its saves.
 
 An import with the same game data as an included copy uses the bundled version.
-Reimport an older unverified ZIP to make a distinct edition selectable again.
+Reimport an older unverified archive to make a distinct edition selectable again.
 Fingerprints compare normalized data paths, uncompressed sizes, and CRC-32
 values, ignoring manuals, licenses, launchers, and configuration. Regenerate
 [`data/bundled-game-files.json`](../data/bundled-game-files.json) with
@@ -49,8 +55,9 @@ each axis to preserve symmetric spacing around cutouts.
   picker or closes the menu. Clicking or tapping outside the menu closes it
   when no save or load is in progress. The game pauses at a supported update
   boundary.
-  Sound Volume starts at 100% and Game Speed at 1.0× each launch. Changes apply
-  for the current session. **Resume Game** returns focus to the game, and
+  Sound Volume starts at 100%, Game Speed at 1.0×, and subtitles enabled with
+  speech each launch. Games with optional subtitles show a **Subtitles** switch;
+  changes apply to the running game for the current session. **Resume Game** returns focus to the game, and
   **Quit Game** returns to the game page or library. Choosing Exit or Quit Game
   immediately removes the toolbar and touch controls while navigation completes.
 - **Save Game** and **Load Game** use the selected edition's native slots.

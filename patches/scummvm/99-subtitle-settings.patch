@@ -1,0 +1,302 @@
+diff --git a/base/main.cpp b/base/main.cpp
+--- a/base/main.cpp
++++ b/base/main.cpp
+@@ -47,6 +47,9 @@
+ #include "common/debug.h"
+ #include "common/debug-channels.h" /* for debug manager */
+ #include "common/events.h"
++#ifdef __EMSCRIPTEN__
++#include "common/gui_options.h"
++#endif
+ #include "gui/EventRecorder.h"
+ #include "common/fs.h"
+ #ifdef ENABLE_EVENTRECORDER
+@@ -275,6 +278,28 @@
+ }
+ #endif
+ 
++#ifdef __EMSCRIPTEN__
++// -1 queries the live value; unsupported games cannot hide their only text.
++extern "C" EMSCRIPTEN_KEEPALIVE int scummweb_player_subtitles(int enabled) {
++	if (!g_engine || !g_engine->getMetaEngine() ||
++			!EM_ASM_INT({ return Boolean(globalThis.scummwebPlayerControls); }))
++		return -1;
++	const Common::String options = ConfMan.get("guioptions");
++	if (Common::checkGameGUIOption(GUIO_NOSUBTITLES, options) ||
++			Common::checkGameGUIOption(GUIO_NOSPEECH, options))
++		return -1;
++	if (enabled == 0 || enabled == 1) {
++		ConfMan.setBool("subtitles", enabled != 0);
++		// Disabling text must leave recorded speech available.
++		if (!enabled)
++			ConfMan.setBool("speech_mute", false);
++		g_engine->applyGameSettings();
++		g_engine->syncSoundSettings();
++	}
++	return ConfMan.getBool("subtitles") ? 1 : 0;
++}
++#endif
++
+ static Common::Error runGame(const Plugin *enginePlugin, OSystem &system, const DetectedGame &game, const void *meDescriptor) {
+ 	assert(enginePlugin);
+ 
+@@ -312,6 +337,12 @@
+ 		// need to set this up before instance creation.
+ 		metaEngine.registerDefaultSettings(target);
+ #ifdef __EMSCRIPTEN__
++		if (EM_ASM_INT({ return Boolean(globalThis.scummwebPlayerControls); })) {
++			// Set both target options before construction: SCUMM's original
++			// GUI imports its voice mode only when both keys are present.
++			ConfMan.setBool("subtitles", true);
++			ConfMan.setBool("speech_mute", false);
++		}
+ 		const int resumeSlot = scummwebReportSaves(metaEngine, game.engineId, game.gameId, target);
+ 		if (resumeSlot >= 0)
+ 			ConfMan.setInt("save_slot", resumeSlot, Common::ConfigManager::kTransientDomain);
+diff --git a/engines/sky/sky.h b/engines/sky/sky.h
+--- a/engines/sky/sky.h
++++ b/engines/sky/sky.h
+@@ -103,6 +103,9 @@
+ 	~SkyEngine() override;
+ 
+ 	void syncSoundSettings() override;
++#ifdef __EMSCRIPTEN__
++	void applyGameSettings() override;
++#endif
+ 
+ 	static bool isDemo();
+ 	static bool isCDVersion();
+diff --git a/engines/sky/sky.cpp b/engines/sky/sky.cpp
+--- a/engines/sky/sky.cpp
++++ b/engines/sky/sky.cpp
+@@ -135,6 +135,18 @@
+ 	delete _big5Font;
+ 	_big5Font = nullptr;
+ }
++
++#ifdef __EMSCRIPTEN__
++void SkyEngine::applyGameSettings() {
++	if (isCDVersion()) {
++		_systemVars->systemFlags &= ~(SF_ALLOW_TEXT | SF_ALLOW_SPEECH);
++		if (ConfMan.getBool("subtitles"))
++			_systemVars->systemFlags |= SF_ALLOW_TEXT;
++		if (!ConfMan.getBool("speech_mute"))
++			_systemVars->systemFlags |= SF_ALLOW_SPEECH;
++	}
++}
++#endif
+ 
+ void SkyEngine::syncSoundSettings() {
+ 	Engine::syncSoundSettings();
+diff --git a/engines/drascula/drascula.h b/engines/drascula/drascula.h
+--- a/engines/drascula/drascula.h
++++ b/engines/drascula/drascula.h
+@@ -339,6 +339,9 @@
+ protected:
+ 	// Engine APIs
+ 	Common::Error run() override;
++#ifdef __EMSCRIPTEN__
++	void applyGameSettings() override;
++#endif
+ 
+ public:
+ 	DrasculaEngine(OSystem *syst, const DrasculaGameDescription *gameDesc);
+diff --git a/engines/drascula/drascula.cpp b/engines/drascula/drascula.cpp
+--- a/engines/drascula/drascula.cpp
++++ b/engines/drascula/drascula.cpp
+@@ -224,6 +224,12 @@
+ 	freeTexts(_textd1);
+ }
+ 
++#ifdef __EMSCRIPTEN__
++void DrasculaEngine::applyGameSettings() {
++	_subtitlesDisabled = !ConfMan.getBool("subtitles");
++}
++#endif
++
+ bool DrasculaEngine::hasFeature(EngineFeature f) const {
+ 	return
+ 		(f == kSupportsReturnToLauncher || f == kSupportsLoadingDuringRuntime || f == kSupportsSavingDuringRuntime);
+diff --git a/engines/agos/agos.h b/engines/agos/agos.h
+--- a/engines/agos/agos.h
++++ b/engines/agos/agos.h
+@@ -271,6 +271,9 @@
+ 	bool _scummWebAgentIdle = false;
+ #endif
+ 	void syncSoundSettings() override;
++#ifdef __EMSCRIPTEN__
++	void applyGameSettings() override;
++#endif
+ 	// Applies AGOS engine internal sound settings to ConfigManager, digital
+ 	// sound channels and MIDI.
+ 	void syncSoundSettingsIntern();
+diff --git a/engines/agos/agos.cpp b/engines/agos/agos.cpp
+--- a/engines/agos/agos.cpp
++++ b/engines/agos/agos.cpp
+@@ -614,6 +614,17 @@
+ 	SearchMan.addSubDirectoryMatching(gameDataDir, "sfx");
+ 	SearchMan.addSubDirectoryMatching(gameDataDir, "speech");
+ }
++
++#ifdef __EMSCRIPTEN__
++void AGOSEngine::applyGameSettings() {
++	if ((getFeatures() & GF_TALKIE) && getGameType() != GType_PP &&
++			!(getGameType() == GType_SIMON1 &&
++			(_language == Common::EN_ANY || _language == Common::DE_DEU))) {
++		_subtitles = ConfMan.getBool("subtitles");
++		_speech = !ConfMan.getBool("speech_mute");
++	}
++}
++#endif
+ 
+ Common::Error AGOSEngine::init() {
+ 	if (getGameId() == GID_DIMP) {
+diff --git a/engines/grim/grim.h b/engines/grim/grim.h
+--- a/engines/grim/grim.h
++++ b/engines/grim/grim.h
+@@ -60,6 +60,9 @@
+ protected:
+ 	// Engine APIs
+ 	Common::Error run() override;
++#ifdef __EMSCRIPTEN__
++	void applyGameSettings() override;
++#endif
+ 
+ public:
+ 	enum EngineMode {
+diff --git a/engines/grim/grim.cpp b/engines/grim/grim.cpp
+--- a/engines/grim/grim.cpp
++++ b/engines/grim/grim.cpp
+@@ -321,6 +321,15 @@
+ 	g_grim = nullptr;
+ }
+ 
++#ifdef __EMSCRIPTEN__
++void GrimEngine::applyGameSettings() {
++	_speechMode = ConfMan.getBool("speech_mute") ? TextOnly
++		: ConfMan.getBool("subtitles") ? TextAndVoice : VoiceOnly;
++	if (g_registry)
++		g_registry->setInt("SpeechMode", _speechMode);
++}
++#endif
++
+ void GrimEngine::clearPools() {
+ 	Actor::getPool().deleteObjects();
+ 	Set::getPool().deleteObjects();
+diff --git a/engines/tinsel/tinsel.h b/engines/tinsel/tinsel.h
+--- a/engines/tinsel/tinsel.h
++++ b/engines/tinsel/tinsel.h
+@@ -163,6 +163,9 @@
+ 	// Engine APIs
+ 	void initializePath(const Common::FSNode &gamePath) override;
+ 	Common::Error run() override;
++#ifdef __EMSCRIPTEN__
++	void applyGameSettings() override;
++#endif
+ 	bool hasFeature(EngineFeature f) const override;
+ 	Common::Error loadGameState(int slot) override;
+ #ifdef __EMSCRIPTEN__
+diff --git a/engines/tinsel/tinsel.cpp b/engines/tinsel/tinsel.cpp
+--- a/engines/tinsel/tinsel.cpp
++++ b/engines/tinsel/tinsel.cpp
+@@ -1036,6 +1036,13 @@
+ 	return Common::String::format("%s.%03d", getTargetName().c_str(), saveNum);
+ }
+ 
++#ifdef __EMSCRIPTEN__
++void TinselEngine::applyGameSettings() {
++	if (_config)
++		_config->readFromDisk();
++}
++#endif
++
+ void TinselEngine::initializePath(const Common::FSNode &gamePath) {
+ 	if (TinselV1PSX) {
+ 		// Add subfolders needed for PSX versions of Discworld 1
+diff --git a/engines/toltecs/toltecs.h b/engines/toltecs/toltecs.h
+--- a/engines/toltecs/toltecs.h
++++ b/engines/toltecs/toltecs.h
+@@ -106,6 +106,9 @@
+ 
+ protected:
+ 	Common::Error run() override;
++#ifdef __EMSCRIPTEN__
++	void applyGameSettings() override;
++#endif
+ //	void shutdown();
+ 
+ public:
+diff --git a/engines/toltecs/toltecs.cpp b/engines/toltecs/toltecs.cpp
+--- a/engines/toltecs/toltecs.cpp
++++ b/engines/toltecs/toltecs.cpp
+@@ -120,6 +120,13 @@
+ 	delete _rnd;
+ }
+ 
++#ifdef __EMSCRIPTEN__
++void ToltecsEngine::applyGameSettings() {
++	_cfgText = ConfMan.getBool("subtitles");
++	_cfgVoices = !ConfMan.getBool("speech_mute");
++}
++#endif
++
+ Common::Error ToltecsEngine::run() {
+ 	initGraphics(640, 400);
+ 
+diff --git a/engines/tucker/tucker.h b/engines/tucker/tucker.h
+--- a/engines/tucker/tucker.h
++++ b/engines/tucker/tucker.h
+@@ -453,6 +453,9 @@
+ 	~TuckerEngine() override;
+ 
+ 	Common::Error run() override;
++#ifdef __EMSCRIPTEN__
++	void applyGameSettings() override;
++#endif
+ 	bool hasFeature(EngineFeature f) const override;
+ 
+ 	WARN_UNUSED_RESULT static SavegameError readSavegameHeader(Common::InSaveFile *file, SavegameHeader &header, bool skipThumbnail = true);
+diff --git a/engines/tucker/tucker.cpp b/engines/tucker/tucker.cpp
+--- a/engines/tucker/tucker.cpp
++++ b/engines/tucker/tucker.cpp
+@@ -79,6 +79,12 @@
+ 
+ TuckerEngine::~TuckerEngine() {
+ }
++
++#ifdef __EMSCRIPTEN__
++void TuckerEngine::applyGameSettings() {
++	_displaySpeechText = !(_gameFlags & kGameFlagNoSubtitles) && ConfMan.getBool("subtitles");
++}
++#endif
+ 
+ bool TuckerEngine::hasFeature(EngineFeature f) const {
+ 	switch (f) {
+diff --git a/engines/neverhood/subtitles.cpp b/engines/neverhood/subtitles.cpp
+--- a/engines/neverhood/subtitles.cpp
++++ b/engines/neverhood/subtitles.cpp
+@@ -20,6 +20,9 @@
+  */
+ 
+ #include "graphics/palette.h"
++#ifdef __EMSCRIPTEN__
++#include "common/config-manager.h"
++#endif
+ 
+ #include "neverhood/resource.h"
+ #include "neverhood/resourceman.h"
+@@ -95,6 +98,14 @@
+ }
+ 
+ void SubtitlePlayer::renderFrame(uint frameNumber, int centerX) {
++#ifdef __EMSCRIPTEN__
++	if (!ConfMan.getBool("subtitles")) {
++		_haveBottomSubs = false;
++		_haveTopSubs = false;
++		_currentFrame = -1;
++		return;
++	}
++#endif
+ 	// Reuse old rendering if no frame has passed
+ 	if (_currentFrame == (int64)frameNumber)
+ 		return;

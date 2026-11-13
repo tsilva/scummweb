@@ -19,6 +19,36 @@ function createPlayer() {
   return { scope, storage, timers, controls: scope.scummwebPlayerControls };
 }
 
+test("subtitle controls read and change the live engine setting without changing other settings", () => {
+  const { scope, controls } = createPlayer();
+  assert.equal(controls.read().canToggleSubtitles, false, "older or uninitialized runtimes hide the toggle");
+  let nativeSubtitles = 1;
+  const requests = [];
+  scope.Module = { _scummweb_player_subtitles(value) {
+    requests.push(value);
+    if (value >= 0) nativeSubtitles = value;
+    return nativeSubtitles;
+  } };
+  assert.equal(controls.read().subtitles, true);
+  assert.equal(controls.read().canToggleSubtitles, true);
+  controls.setMenuOpen(true);
+  controls.setSettings({ subtitles: false });
+  assert.equal(controls.read().subtitles, false);
+  controls.setMenuOpen(false);
+  controls.setMenuOpen(true);
+  assert.equal(controls.read().subtitles, false, "reopening the menu retains the selection");
+  controls.setSettings({ subtitles: true });
+  assert.equal(controls.read().subtitles, true);
+  assert.equal(controls.read().volume, 100);
+  assert.equal(controls.read().speed, 1);
+  const writes = () => requests.filter((value) => value >= 0);
+  assert.deepEqual(writes(), [0, 1]);
+  controls.setSettings({ subtitles: "false", volume: 40 });
+  assert.deepEqual(writes(), [0, 1], "invalid settings and volume changes do not write the subtitle setting");
+  nativeSubtitles = -1;
+  assert.equal(controls.read().canToggleSubtitles, false, "native games without optional subtitles hide the toggle");
+});
+
 test("dialogue choices are inactive until the native handler reports them and reset for every launch", () => {
   const { scope, controls } = createPlayer();
   assert.equal(controls.read().dialogueActive, false);
