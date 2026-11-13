@@ -40,8 +40,9 @@ Press and hold a game cover, or choose **Manage library**, to enter removal mode
 Only cards with removable imported versions shake in this mode.
 Use the **×** on an imported game's cover to remove its library reference; original game files,
 cached archives and saved games stay untouched. A card with multiple versions
-lets you remove one imported version or all imported versions. Bundled versions
-cannot be removed. **Undo** restores removals in reverse
+opens a chooser with a trash button beside each imported version. Removed rows
+fade out and collapse; the chooser stays open to remove another version or close
+when finished. Bundled versions cannot be removed. **Undo** restores removals in reverse
 order during the current visit, including the original imported-game IDs.
 The removal notice offers Undo for five seconds, then fades out.
 Choose **Done** or press Escape to return to browsing. Previously hidden bundled
