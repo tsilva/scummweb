@@ -120,6 +120,16 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "sq6-demo": {
+    ...retroGameArtwork["sci:sq6"],
+    heroImageMobilePosition: "90% -20vh",
+    title: "Space Quest 6: Roger Wilco in the Spinal Frontier (Demo)",
+    shortTitle: "Space Quest 6 (Demo)",
+    media: "CD",
+    year: "1995",
+    language: "en",
+    summary: "Roger Wilco faces a fresh set of puzzles in a standalone science-fiction comedy adventure.",
+  },
   "freddypharkas-demo": {
     ...retroGameArtwork["sci:freddypharkas"],
     title: "Freddy Pharkas: Frontier Pharmacist (Demo)",

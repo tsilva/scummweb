@@ -270,7 +270,7 @@ class Fixture(unittest.TestCase):
             args, options = run.call_args
             self.assertEqual(args[0], [relay.CURL, "--disable", "--config", "-"])
             self.assertEqual(options["pass_fds"], (source.fileno(),))
-            self.assertIn('upload-file = "/dev/fd/', options["input"])
+            self.assertIn('data-binary = "@/dev/fd/', options["input"])
             self.assertIn('proto = "=https"', options["input"])
             self.assertIn('header = "Expect:"', options["input"])
             self.assertIn("http2", options["input"])
@@ -294,6 +294,14 @@ class Fixture(unittest.TestCase):
                 relay.curl_request("HEAD", "example.zip", headers)
         self.assertEqual(caught.exception.code, 302)
         self.assertNotIn("b" * 64, str(caught.exception))
+
+    def test_buffered_body_is_bounded_before_curl_starts(self):
+        size = relay.PART_BYTES + 1
+        headers = {"if-none-match": "*", "content-type": "application/zip", "content-length": str(size)}
+        with self.source.open("rb") as source, patch.object(relay.os, "fstat", return_value=relay.SimpleNamespace(st_size=size)), patch.object(relay.subprocess, "run") as run:
+            with self.assertRaises(ValueError):
+                relay.curl_request("PUT", "example.zip", headers, source)
+        run.assert_not_called()
 
     def test_failed_put_exposes_only_numeric_transfer_diagnostics(self):
         headers = {"if-none-match": "*", "content-type": "application/zip", "content-length": str(self.source.stat().st_size)}

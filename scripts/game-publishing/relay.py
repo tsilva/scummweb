@@ -82,10 +82,11 @@ def curl_request(method, key, headers, body=None, query=None):
         if body is None or (not part and (headers.get("if-none-match") != "*" or headers.get("content-type") != "application/zip")):
             raise ValueError("Conditional ZIP upload required")
         descriptor = body.fileno()
-        if str(os.fstat(descriptor).st_size) != headers.get("content-length"):
+        size = os.fstat(descriptor).st_size
+        if not 0 < size <= PART_BYTES or str(size) != headers.get("content-length"):
             raise ValueError("Transfer length differs from the source")
         descriptors = (descriptor,)
-        options += ['request = "PUT"', "upload-file = " + json.dumps("/dev/fd/" + str(descriptor)), 'header = "Expect:"',
+        options += ['request = "PUT"', "data-binary = " + json.dumps("@/dev/fd/" + str(descriptor)), 'header = "Expect:"',
                     'write-out = "%{http_code}|%{http_version}|%{size_upload}|%header{etag}"']
     else:
         if body is not None:

@@ -505,6 +505,25 @@
         "basis": "Official ScummVM-hosted English Windows CD interactive promotional demo. All fourteen files and included notices inspected; no express CD-archive rehosting grant or redistribution ban found. The separately hosted DOS demo explicitly invites free distribution, supporting promotional intent without being treated as an express CD-archive license. ScummVM identifies this package’s shared game resources as its English DOS CD demo.",
         "preservation": "Serve the complete unchanged upstream ZIP, retaining README.TXT, original Windows executables and DLLs, all game resources and copyright notices."
       }
+    },
+    {
+      "target": "sq6-demo",
+      "title": "Space Quest 6: Roger Wilco in the Spinal Frontier (Demo)",
+      "engineId": "sci",
+      "gameId": "sq6",
+      "platform": "pc",
+      "extra": "Demo",
+      "archive": "sq6-dos-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/sci/sq6-dos-demo-en.zip",
+      "sha256": "d2ea3c77ff18b74f7544067822624233898883b3ef1f63512337ce92baba8704",
+      "preserveArchive": true,
+      "noticeFile": "README",
+      "redistributionReview": {
+        "reviewedOn": "2026-11-13",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "Official ScummVM-hosted voiced English DOS/Windows CD interactive promotional demo. README describes a standalone sample with its own puzzles. All thirty-nine files and legal strings inspected; no express game rehosting grant or redistribution ban found. READ.ME permits distribution of VESA driver material rather than the game. INSTALL.HLP marks absent noload.drv as not for shipping; included MT32.DRV is distinct. Official hosting supports this assessment without constituting an express rights-holder license.",
+        "preservation": "Serve the complete unchanged upstream ZIP, retaining README, READ.ME, README.WRI, installer help, original executables, drivers, resources and copyright notices."
+      }
     }
   ]
 }

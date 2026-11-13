@@ -986,6 +986,13 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Space Quest 6: Roger Wilco in the Spinal Frontier (Demo)",
+      "status": "startup-verified",
+      "gameId": "sci:sq6",
+      "edition": "sq6-dos-demo-en.zip",
+      "observation": "The English voiced interactive demo renders its original title, instructions, ship and hangar scenes. Walking and the original controls respond. The original demo explicitly disables saving and restoring; its original startup is preserved without an intro checkpoint or Continue."
+    },
+    {
       "title": "Space Quest II: Chapter II - Vohaul's Revenge",
       "status": "startup-verified",
       "gameId": "agi:sq2",
