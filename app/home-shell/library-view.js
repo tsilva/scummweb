@@ -77,7 +77,7 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
           {editing && <Check size={17} aria-hidden="true" />}{editing ? "Done" : "Manage library"}
         </button>}
       </div>
-      {editing && <p className="library-edit-help" role="status">Remove games from your library. Your files and saved games stay.</p>}
+      {editing && <p className="library-edit-help" role="status">Remove games from your library without deleting game files or saves.</p>}
       <div id="library-controls" className="library-controls" hidden={!open}
         onKeyDown={(event) => {
           if (event.key === "Escape") {

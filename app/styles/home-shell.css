@@ -644,7 +644,6 @@ button.nav-icon-link {
   top: 5rem;
   z-index: 5;
   padding-block: 0.5rem;
-  background: var(--surface);
 }
 
 @media (max-width: 48rem) {
