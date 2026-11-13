@@ -86,7 +86,7 @@ test("catalog intro checkpoints match their rebuild overrides and ship intact", 
       const bytes = await readFile(new URL(assetPath.slice(1), shell));
       assert.ok(bytes.length > 0, `${assetPath}: checkpoint must not be empty`);
       if (file.endsWith(".gsv")) assert.doesNotThrow(() => gunzipSync(bytes), `${assetPath}: complete compressed save`);
-      if (game.target === "qfi-demo") {
+      if (game.engineId === "ags") {
         assert.equal(bytes.toString("ascii", 0, 4), "RGMH");
         const thumbnailStart = bytes.readUInt32LE(8) + Number(bytes.readBigUInt64LE(12));
         const thumbnailSize = bytes.readUInt32LE(20);

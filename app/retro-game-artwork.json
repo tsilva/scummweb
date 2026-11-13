@@ -18244,5 +18244,85 @@
     "heroImage": "/launcher/astro-chicken-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%",
     "posterImage": "/launcher/astro-chicken-scummweb-generated-2026-11-07-r1-cover.webp"
+  },
+  "ags:geminirue": {
+    "title": "Gemini Rue",
+    "aliases": [
+      "Gemini Rue (Demo)",
+      "gemini_rue-demo.zip",
+      "Gemini Rue (Windows)"
+    ],
+    "posterImage": "/launcher/gemini-rue-scummweb-generated-2026-11-13-r1-cover.webp",
+    "heroImage": "/launcher/gemini-rue-scummweb-generated-2026-11-13-r1-hero.webp",
+    "heroImagePosition": "80% 38%",
+    "screenshots": [
+      "/launcher/gemini-rue-shot-1.webp",
+      "/launcher/gemini-rue-shot-2.webp",
+      "/launcher/gemini-rue-shot-3.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-13",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://media.indiedb.com/images/games/1/16/15658/gemini_rue_box.jpg",
+            "sha256": "67d17ed154c10be7d7f541bb7b1808fac4d01c1300cd6b4024cafeb5e74352dc",
+            "kind": "box-front",
+            "credit": "Original Gemini Rue cover illustration hosted by the Wadjet Eye Games IndieDB game page; original artwork belongs to its creators and rights holders."
+          }
+        ]
+      },
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-13",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "url": "https://media.indiedb.com/images/games/1/16/15658/gemini_rue_box.jpg",
+            "sha256": "67d17ed154c10be7d7f541bb7b1808fac4d01c1300cd6b4024cafeb5e74352dc",
+            "kind": "box-front",
+            "credit": "Original Gemini Rue cover illustration hosted by the Wadjet Eye Games IndieDB game page; original artwork belongs to its creators and rights holders."
+          },
+          {
+            "url": "https://wadjeteyegames.com/wp-content/uploads/geminirue_slide-940x240.jpg",
+            "sha256": "7656edef0cbbdcbddbc995c6f426fd2dd57c9d295621d6fbd64258d5828ff39e",
+            "credit": "Official Wadjet Eye Games promotional banner."
+          }
+        ]
+      },
+      "screenshots": [
+        {
+          "url": "https://wadjeteyegames.com/wp-content/uploads/GR_screen3.png",
+          "page": "https://wadjeteyegames.com/games/gemini-rue/",
+          "kind": "gameplay",
+          "sha256": "8afb111718670990c256a68bffda62e67f96bd22356c3140cc9626e330cbadd7",
+          "credit": "Original publisher gameplay screenshot; preserved without repainting."
+        },
+        {
+          "url": "https://wadjeteyegames.com/wp-content/uploads/GR_screen6.png",
+          "page": "https://wadjeteyegames.com/games/gemini-rue/",
+          "kind": "gameplay",
+          "sha256": "850c2db0622bd27ae8dc3a29df0c00959c46f201d08520cec2550968a04858d5",
+          "credit": "Original publisher gameplay screenshot; preserved without repainting."
+        },
+        {
+          "url": "https://wadjeteyegames.com/wp-content/uploads/GR_screen7.png",
+          "page": "https://wadjeteyegames.com/games/gemini-rue/",
+          "kind": "gameplay",
+          "sha256": "60a8a74c731ec1d7db4c0f124c2c878a3ed445761165940d2273af1d3cf60f09",
+          "credit": "Original publisher gameplay screenshot; preserved without repainting."
+        }
+      ],
+      "metadata": [
+        "https://wadjeteyegames.com/games/gemini-rue/"
+      ]
+    },
+    "summary": "Follow an ex-assassin and an amnesiac prisoner through a rain-soaked science-fiction mystery.",
+    "studio": "Joshua Nuernberger",
+    "genre": "Science-fiction noir adventure",
+    "category": "Science fiction"
   }
 }

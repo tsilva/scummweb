@@ -280,6 +280,15 @@ Native Skip intro advances past the publisher opening while preserving the
 Sneak Preview, Scenes from Myst and Making of Myst choices. Saving and loading
 are disabled for this demo, so it has no checkpoint or Continue.
 
+Gemini Rue’s English Windows demo supports native saving and restoration. Its
+intro checkpoint starts on the first playable street scene after the original
+prologue and phone conversation, before any player action. The complete archive
+retains its manual, credits, original voice pack and plugins.
+
+The Riven Windows demo remains personal-import only because its included
+QuickTime installer license restricts distribution and network transmission.
+The intact archive is not published or stripped of its original components.
+
 Humongous games can load legacy DXA conversions when the requested DAT or SMK
 movie is absent. Existing original movies take precedence; a converted movie
 does not replace a corrupt original or other missing game resources.
@@ -341,8 +350,8 @@ build and start when an audit must coexist with another server.
 
 `SCUMMVM_GAMES_ORIGIN` selects the game bucket and `NEXT_PUBLIC_SITE_URL`
 sets canonical URLs. Game data downloads directly from the bucket. Local
-verification can use `/games-proxy/*`. The Broken Sword Macintosh demo keeps
-its complete upstream archive and has a 200 MiB download allowance with a
+verification can use `/games-proxy/*`. The Broken Sword Macintosh and Gemini Rue demos keep
+their complete upstream archives and each has a 200 MiB download allowance with a
 ten-minute timeout. Downloads up to 256 MiB use memory backing to avoid browser
 temporary-file reservation failures; larger catalog ZIPs retain Blob backing.
 

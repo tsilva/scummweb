@@ -369,6 +369,13 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Gemini Rue (Demo)",
+      "status": "startup-verified",
+      "gameId": "ags:geminirue",
+      "edition": "gemini_rue-demo.zip",
+      "observation": "English Windows interactive demo renders its original menu, prologue and first street scene with voices and rain effects. Bucket startup, native intro checkpoint, walking, saving and restoration work. The checkpoint begins before any player action."
+    },
+    {
       "title": "Gnap (U.F.O.s)",
       "status": "startup-verified",
       "gameId": "gnap:gnap",
@@ -2761,12 +2768,6 @@
       "gameId": "director:ganbareinuchan2",
       "status": "not-tested",
       "upstreamRating": "Excellent"
-    },
-    {
-      "title": "Gemini Rue",
-      "gameId": "ags:geminirue",
-      "status": "not-tested",
-      "upstreamRating": "Good"
     },
     {
       "title": "Ghost in the Sheet",

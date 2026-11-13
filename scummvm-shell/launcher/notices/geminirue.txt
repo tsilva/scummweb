@@ -1,0 +1,149 @@
+GEMINI RUE - DEMO
+A Joshua Nuernberger Production
+In association with Wadjet Eye Games
+
+GAME MANUAL - 2/24/2011
+
+
+========================================
+CONTROLS:
+========================================
+GAMEPLAY
+--------------------
+Left Click:      Walk / Perform Action (in Verb Interface)
+Right Click:    Bring up Verb Interface / Look at Inventory Item (in Verb Interface)
+Double-Click:  Redo Last Action
+
+
+ACTION
+--------------------
+W:	Switch Target
+A:	Return to Cover / Go out of Cover (Top Side)
+S:	Return to cover from either side (Not always applicable)
+D:	Go out of Cover (Bottom Side)
+R:	Reload
+SPACE:	Fire
+CTRL:	Breathe In
+ESCAPE:	Cancel Action (Not always applicable)
+
+
+BOX
+--------------------
+W:	Get on Box
+A:	Move Box Left
+D:	Move Box Right
+S:	Cancel Box / Get off Box
+
+MENU
+--------------------
+F1: 	Help
+F5:	Save
+F7:	Load
+F9:	Restart
+F10:	Load Autosave
+ESCAPE:	Menu / Skip to Walk Destination (Only works in certain scenes)
+Ctrl-Q: 	Quit Game
+
+
+You can die in the game, but it will AUTOSAVE before most death sequences.
+In addition, you can save the game manually, as well with F5.
+
+The difficulty of the COMBAT may be changed in the OPTIONS menu between MEDIUM and EASY.
+
+Commentary mode is disabled in the DEMO version.
+
+========================================
+CREDITS:
+========================================
+
+A JOSHUA NUERNBERGER Production
+In Association with WADJET EYE GAMES
+
+
+Starring:
+BRIAN SILLIMAN as Azriel & Delta-Six
+SHELLY SMITH-SHENOY as Sayuri & Epsilon-Five
+JOE RODRIGUEZ as The Director
+CLAY MACLEOD CHAPMAN as Matthius & Balder
+ABE GOLDFARB as Kane
+DARA SEITZMAN as Giselle
+SARAH ELMALEH as Computer & BeeBee, Scientist 4
+FRANCISCO GONZALEZ as Street Vendor
+
+DAVE GILBERT as Kenneth, Agent 1, Scientist 1
+DARYL LATHON as Boryokudan Boss & Cell Mate & Receptionist
+MATT MOREA as Paul Erickson & Agent 4, Scientist 3
+RAY SALTRELLI as Doorman, Scientist 2
+JOSEPH M WARD as Meds Doorman & Agent 2
+WALID K BA-ATTIYAH as Agent 3
+NATHAN ALLEN PINARD as Receptionist 2
+BRIAN CHIU as Scientist 5 & Resident
+BONNIE ANNE HUDSON PINARD as Defector Voice
+
+
+Music & Sound by NATHAN ALLEN PINARD
+Art, Animation & Programming by JOSHUA NUERNBERGER
+Story Assistance by NICHOLAS BELLEROPHON
+Character Portrait Art by IAN SCHLAEPFER
+Voice Directing & Casting by DAVE GILBERT
+
+Written, Designed, and Developed by JOSHUA NUERNBERGER
+
+
+SnowRain Plugin by SCORPIORUS
+Drag & Drop Module by JAN SIMON
+Credits Module by ANDREW MACCORMACK
+
+AGS Engine by CHRIS JONES
+
+
+PLAYTESTING:
+TEAM1
+Jan Simon, Vince Twelve, Nathan Allen Pinard, Ben Chandler, Misha
+Nicholas Bellerophon, Simson Chiu, Chris Kim, Josiah Vinson
+David, Ben & Gloria Nuernberger, Peter Lu, Adeline Ducker
+
+TEAM2
+Jackie Sargent, Craig Pirall, Andrew MacMormack, Luna Sevithiainen
+Ori Avtalion, Rikard Nordgren, Vin Lettera, Lou Huang, Marshika Szabo
+Dylan Downing, Mattius Schneider, Shane Stevens, Martin Mulrooney
+Ilona Peters, Janet Gilbert, Chelle 'the Cat' Cortino
+Chelle Destefano, stee01
+
+
+EASTER EGG CHARACTERS
+Xander Mobus, Anthony Sardinha
+Natalie Van Sistine, Kimlinh Tran
+
+PUBLIC RELATIONS
+Emily Morganti
+
+
+SPECIAL THANKS TO:
+Edmundo Ruiz
+Tzach Shabtay
+Chris Jones
+Ron Gilbert
+Independent Games Festival
+IndieCade
+Indie Games Arcade
+PC Gamer
+Game Developer Magazine
+BigBlueCup Community
+UCLA Game Lab
+
+And everybody who helped make, or supported this game
+Thank you for playing!
+
+
+© 2011 A Joshua 'THEJBURGER' Nuernberger Production
+In Association with WADJET EYE GAMES
+
+GEMINI RUE
+
+========================================
+"Munro" font by http://www.tenbytwenty.com/products/typefaces/munro
+"pf_tempesta_seven_condensed_bold" font by Yusuke Kamiyamane (http://p.yusukekamiyamane.com/fonts/)
+
+Bug reports, comments, and suggestions are welcome.
+Contact: thejburger@gmail.com

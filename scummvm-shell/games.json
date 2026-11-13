@@ -538,6 +538,23 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": "/launcher/notices/myst.txt"
+    },
+    {
+      "target": "geminirue-demo",
+      "title": "Gemini Rue (Demo)",
+      "path": "/games/geminirue",
+      "engineId": "ags",
+      "gameId": "geminirue",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/geminirue.txt",
+      "skipIntro": {
+        "strategy": "save-slot",
+        "slot": 90,
+        "saveFiles": [
+          "geminirue-demo.090"
+        ]
+      }
     }
   ]
 }

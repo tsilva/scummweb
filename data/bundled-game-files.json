@@ -9904,6 +9904,67 @@
           633663555
         ]
       ]
+    },
+    "geminirue-demo": {
+      "url": "https://scummvm-games.tsilva.eu/geminirue.zip",
+      "fingerprint": "42f1490039a2a8a7d73d06d5f656787964df352dc85ba7a4657de88abec7e27e",
+      "files": [
+        [
+          "speech.vox",
+          103642847,
+          1984807282
+        ],
+        [
+          "winsetup.exe",
+          69664,
+          3258792890
+        ],
+        [
+          "Gemini Rue DEMO.exe",
+          61839853,
+          1256240307
+        ],
+        [
+          "unins000.exe",
+          730398,
+          705767276
+        ],
+        [
+          "PRELOAD.pcx",
+          7448,
+          2003196605
+        ],
+        [
+          "audio.vox",
+          18243605,
+          1924177979
+        ],
+        [
+          "ags_snowrain.dll",
+          65536,
+          97058785
+        ],
+        [
+          "ags_shell.dll",
+          40960,
+          1223580907
+        ],
+        [
+          "acsetup.cfg",
+          298,
+          306720685
+        ],
+        [
+          "unins000.dat",
+          1944,
+          2294003631
+        ],
+        [
+          "Gemini Rue DEMO - Manual.txt",
+          3919,
+          4235948865
+        ]
+      ]
     }
   }
 }

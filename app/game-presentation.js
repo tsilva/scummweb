@@ -120,6 +120,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "geminirue-demo": {
+    ...retroGameArtwork["ags:geminirue"],
+    heroImageMobilePosition: "100% top",
+    title: "Gemini Rue (Demo)",
+    year: "2011",
+    language: "en",
+  },
   "myst-demo": {
     ...retroGameArtwork["mohawk:myst"],
     title: "Myst (Demo)",
