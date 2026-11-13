@@ -5,10 +5,20 @@ import { getBundledGameLibrary } from "../lib/catalog.mjs";
 import { getRecognizedGames } from "../app/recognized-games.mjs";
 import { getRecognizedGamePresentations } from "../app/game-presentation.js";
 import { getGameFamilyKey } from "../app/game-versions.mjs";
+import { libraryCategories } from "../app/home-shell/library-query.mjs";
 import { buildGameMetadata, buildGameStructuredData } from "../lib/seo.mjs";
 
 const bundled = getBundledGameLibrary(library).games;
 const games = getRecognizedGames(bundled);
+
+test("every supported catalog entry has an explicit filter category", () => {
+  for (const game of games) {
+    assert.ok(libraryCategories.includes(game.category), game.displayTitle);
+  }
+  for (const [target, genre] of [["grim-demo", "Noir comedy adventure"], ["monkey4-demo", "Pirate comedy adventure"]]) {
+    assert.equal(games.find((game) => game.target === target).genre, genre);
+  }
+});
 
 test("classic freeware has public launch routes while God of Thunder remains import-only", () => {
   for (const target of ["soltys", "sfinx", "hires1"]) {

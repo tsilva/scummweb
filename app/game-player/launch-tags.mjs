@@ -27,6 +27,16 @@ const launchTagsByTarget = new Map([
   ["comi-demo", ["Point-and-click", "Pirate comedy"]],
   ["pegasus-demo", ["First-person adventure", "Time travel"]],
   ["monkey-demo", ["Point-and-click", "Pirate comedy"]],
+  ["ft-demo", ["Point-and-click", "Biker thriller"]],
+  ["samnmax-demo", ["Point-and-click", "Road-trip comedy"]],
+  ["dig-demo", ["Point-and-click", "Alien archaeology"]],
+  ["sword1-demo", ["Point-and-click", "Templar conspiracy"]],
+  ["sword2-demo", ["Point-and-click", "Ancient conspiracy"]],
+  ["dw-demo", ["Point-and-click", "Fantasy comedy"]],
+  ["gob1-demo", ["Point-and-click", "Fantasy puzzles"]],
+  ["gob2-demo", ["Point-and-click", "Fantasy puzzles"]],
+  ["gob3-demo", ["Point-and-click", "Surreal fantasy"]],
+  ["gk1-demo", ["Point-and-click", "Supernatural mystery"]],
 ]);
 
 export function getBundledLaunchTags(game) {

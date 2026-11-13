@@ -6,6 +6,15 @@ const featuredTargets = ["sky", "queen", "lure", "dreamweb-cd", "sword25"];
 
 export const defaultLibraryQuery = { sort: "featured", genre: "" };
 
+export const libraryCategories = [
+  "Action & arcade", "Adventure", "Animation", "Cards & board games", "Comedy",
+  "Family & education", "Fantasy", "Horror", "Mystery & thriller", "Puzzle",
+  "Role-playing", "Science fiction", "Simulation", "Sports",
+];
+
+const normalizeGenre = (value) => (value || "").trim().replace(/\s+/g, " ").toLocaleLowerCase("en");
+const categoriesByName = new Map(libraryCategories.map((category) => [normalizeGenre(category), category]));
+
 function featuredRank(game) {
   if (isDemoGame(game)) return featuredTargets.length + 2;
   if (game.target === "hires1") return featuredTargets.length + 1;
@@ -17,15 +26,18 @@ export function libraryYear(game) {
   return /^\d{4}$/.test(String(game.year)) ? String(game.year) : "Unknown";
 }
 
-// Earlier groups take precedence for hybrids: educational time travel stays
-// family-friendly, horror RPGs stay role-playing, and sci-fi comedy stays sci-fi.
+// Fallback for older saved imports without an explicit catalog category.
+// Earlier groups take precedence for hybrid genres.
 const genreGroups = [
-  ["Family & education", /children|storybook|educat(?:ion|ional)|environmental|\bfamily\b/],
+  ["Family & education", /children|storybook|educat(?:ion|ional)|environmental|\bfamily\b|preschool|junior adventure|interactive field trip|activity collection|creative activities|interactive poetry/],
   ["Role-playing", /role[ -]playing|\brpg\b|dungeon[ -]crawling/],
   ["Action & arcade", /\baction\b|\barcade\b/],
-  ["Simulation", /simulation|board game/],
+  ["Simulation", /simulation/],
+  ["Cards & board games", /card games|board games?|casino|solitaire/],
+  ["Sports", /\bsports?\b|baseball|basketball|american football/],
+  ["Animation", /holiday animation/],
   ["Horror", /horror/],
-  ["Science fiction", /science[ -]fiction|sci[ -]fi|cyberpunk|time[ -]travel/],
+  ["Science fiction", /science[ -]fiction|sci[ -]fi|cyberpunk|time[ -]travel|space adventure/],
   ["Fantasy", /fantasy|arthurian/],
   ["Mystery & thriller", /mystery|thriller|detective|police|conspiracy|noir|espionage/],
   ["Comedy", /comedy|comic|caper/],
@@ -33,8 +45,11 @@ const genreGroups = [
 ];
 
 export function libraryGenre(game) {
-  const genre = (game.genre || "").trim().replace(/\s+/g, " ").toLocaleLowerCase("en");
+  const category = categoriesByName.get(normalizeGenre(game.category));
+  if (category) return category;
+  const genre = normalizeGenre(game.genre);
   if (!genre || genre === "unknown") return "Unknown";
+  if (categoriesByName.has(genre)) return categoriesByName.get(genre);
   return genreGroups.find(([, pattern]) => pattern.test(genre))?.[0] ?? "Adventure";
 }
 

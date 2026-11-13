@@ -48,6 +48,8 @@ const importedAdventureGames = [
     target: "grim",
     engineId: "grim",
     titles: ["Grim Fandango"],
+    genre: "Noir comedy adventure",
+    category: "Mystery & thriller",
     studio: "LucasArts",
     year: "1998",
     summary: "Follow Manny Calavera as he searches for Meche across the Land of the Dead.",
@@ -56,6 +58,8 @@ const importedAdventureGames = [
     target: "monkey4",
     engineId: "grim",
     titles: ["Escape from Monkey Island"],
+    genre: "Pirate comedy adventure",
+    category: "Comedy",
     studio: "LucasArts",
     year: "2000",
     summary: "Help Guybrush and Elaine stop a plot to take over the Caribbean.",
@@ -116,6 +120,15 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "freddypharkas-demo": {
+    ...retroGameArtwork["sci:freddypharkas"],
+    title: "Freddy Pharkas: Frontier Pharmacist (Demo)",
+    platform: "windows",
+    media: "CD",
+    year: "1993",
+    language: "en",
+    summary: "Try the fully voiced English CD demo of Sierra’s comedy Western in Coarsegold.",
+  },
   "gk1-demo": {
     ...retroGameArtwork["sci:gk1"],
     title: "Gabriel Knight: Sins of the Fathers (Demo)",
@@ -199,6 +212,7 @@ const artByTarget = {
   },
   "atlantis-demo": {
     genre: "Point-and-click adventure",
+    category: "Adventure",
     studio: "LucasArts",
     year: "1992",
     language: "en",
@@ -211,6 +225,7 @@ const artByTarget = {
   },
   "comi-demo": {
     genre: retroGameArtwork["scumm:comi"].genre,
+    category: retroGameArtwork["scumm:comi"].category,
     studio: "LucasArts",
     year: "1997",
     language: "en",
@@ -244,6 +259,7 @@ const artByTarget = {
   },
   "castlemaster-demo": {
     genre: "First-person fantasy adventure",
+    category: "Fantasy",
     studio: "Incentive Software",
     year: "1990",
     language: "en",
@@ -267,6 +283,7 @@ const artByTarget = {
   },
   "qfi-demo": {
     genre: "Adventure RPG",
+    category: "Role-playing",
     studio: "Infamous Quests",
     year: "2014",
     language: "en",
@@ -292,7 +309,8 @@ const artByTarget = {
     },
   },
   "grim-demo": {
-    genre: "Graphic adventure",
+    genre: "Noir comedy adventure",
+    category: "Mystery & thriller",
     studio: "LucasArts",
     year: "1998",
     language: "en",
@@ -300,7 +318,8 @@ const artByTarget = {
     ...bundledArtworkByTarget["grim-demo"],
   },
   "monkey4-demo": {
-    genre: "Graphic adventure",
+    genre: "Pirate comedy adventure",
+    category: "Comedy",
     studio: "LucasArts",
     year: "2000",
     language: "en",
@@ -313,6 +332,7 @@ const artByTarget = {
     ["zork3", "1982", "Face the final trials of the Great Underground Empire and seek the Dungeon Master."],
   ].map(([target, year, summary]) => [target, {
     genre: "Text adventure",
+    category: "Adventure",
     studio: "Infocom",
     language: "en",
     year,
@@ -322,9 +342,10 @@ const artByTarget = {
   soltys: { ...retroGameArtwork["cge:soltys"], year: "1995" },
   hires1: { ...retroGameArtwork["adl:hires1"], year: "1980" },
   got: { ...retroGameArtwork["got:got"], year: "1993" },
-  ...Object.fromEntries(importedAdventureGames.map(({ target, engineId = "scumm", studio, year, summary }) => [target, {
+  ...Object.fromEntries(importedAdventureGames.map(({ target, engineId = "scumm", studio, year, summary, genre, category }) => [target, {
     eyebrow: `${studio} Adventure`,
-    genre: retroGameArtwork[`${engineId}:${target}`]?.genre || "Graphic adventure",
+    genre: retroGameArtwork[`${engineId}:${target}`]?.genre || genre || "Graphic adventure",
+    category: retroGameArtwork[`${engineId}:${target}`]?.category || category || "Adventure",
     studio,
     year,
     summary,
@@ -335,6 +356,7 @@ const artByTarget = {
     eyebrow: "LucasArts Adventure",
     summary: "Indy and Sophia Hapgood race to find Atlantis in an original globetrotting adventure.",
     genre: retroGameArtwork["scumm:atlantis"].genre,
+    category: retroGameArtwork["scumm:atlantis"].category,
     studio: "LucasArts",
     year: "1992",
     posterImage: retroGameArtwork["scumm:atlantis"].posterImage,
@@ -344,6 +366,7 @@ const artByTarget = {
     eyebrow: "Lucasfilm Games Adventure",
     summary: "Follow Indy and his father on the search for the Holy Grail in the graphic adventure based on the film.",
     genre: retroGameArtwork["scumm:indy3"].genre,
+    category: retroGameArtwork["scumm:indy3"].category,
     studio: "Lucasfilm Games",
     year: "1989",
     posterImage: retroGameArtwork["scumm:indy3"].posterImage,
@@ -353,6 +376,7 @@ const artByTarget = {
     eyebrow: "L.K. Avalon",
     summary: "Switch between two young adventurers and solve puzzles in this colorful Polish point-and-click comedy.",
     genre: "Comedy adventure",
+    category: "Comedy",
     studio: "L.K. Avalon",
     year: "1997",
     heroImage: "/launcher/sfinx-scummweb-generated-2026-11-05-r1-hero.webp",
@@ -370,6 +394,7 @@ const artByTarget = {
     summary:
       "Explore Mêlée Island as aspiring pirate Guybrush Threepwood in this standalone demo adventure.",
     genre: retroGameArtwork["scumm:monkey"].genre,
+    category: retroGameArtwork["scumm:monkey"].category,
     studio: "Lucasfilm Games",
     year: "1990",
     badge: "English DOS EGA demo",
@@ -392,6 +417,7 @@ const artByTarget = {
     summary:
       "Escape Union City as Robert Foster and uncover the secrets behind its oppressive rule.",
     genre: "Cyberpunk adventure",
+    category: "Science fiction",
     studio: "Revolution Software",
     year: "1994",
     badge: "CD Release",
@@ -433,6 +459,7 @@ const artByTarget = {
     summary:
       "Follow bartender Ryan through a dystopian city as disturbing dreams draw him into a deadly mission.",
     genre: "Noir thriller",
+    category: "Mystery & thriller",
     studio: "Empire Interactive",
     year: "1994",
     badge: "CD Edition",
@@ -455,6 +482,7 @@ const artByTarget = {
     summary:
       "Pilot Joe King crashes in the Amazon and becomes entangled in a mad scientist's plot.",
     genre: "Comic adventure",
+    category: "Comedy",
     studio: "Interactive Binary Illusions",
     year: "1995",
     badge: "Talkie CD",
@@ -477,6 +505,7 @@ const artByTarget = {
     summary:
       "Help Diermot escape captivity and oppose the sorceress Selena in the village of Turnvale.",
     genre: "Fantasy adventure",
+    category: "Fantasy",
     studio: "Revolution Software",
     year: "1992",
     badge: "Freeware VGA",
@@ -495,6 +524,7 @@ const artByTarget = {
     summary:
       "Help John Hacker rescue Billie Jean from Count Drascula in a vampire comedy.",
     genre: "Comedy horror adventure",
+    category: "Horror",
     studio: "Alcachofa Soft",
     year: "1996",
     badge: "English Freeware",
@@ -513,6 +543,7 @@ const artByTarget = {
     summary:
       "Switch between three unlikely crooks as their separate jobs collide in a Japanese heist.",
     genre: "Comedy caper adventure",
+    category: "Comedy",
     studio: "Dynabyte",
     year: "1992",
     badge: "Amiga Freeware",
@@ -532,6 +563,7 @@ const artByTarget = {
     summary:
       "Reunite George and Nico in Paris to investigate a new conspiracy in this fan-made sequel.",
     genre: "Conspiracy adventure",
+    category: "Mystery & thriller",
     studio: "mindFactory",
     year: "2008",
     badge: "Freeware Fan Game",
@@ -552,6 +584,7 @@ const artByTarget = {
 
 const defaultArt = {
   genre: "ScummVM adventure",
+  category: null,
   studio: "ScummVM Runtime",
   year: null,
   badge: null,
@@ -607,6 +640,7 @@ function getImportedAdventurePresentation(target, title, variant, engineId = "sc
       summary: metadata.summary,
       studio: metadata.studio,
       genre: metadata.genre,
+      category: metadata.category,
     }),
     platform,
     edition,
@@ -685,6 +719,7 @@ export function getImportedGamePresentation(filename) {
           summary: retro.summary,
           studio: retro.studio,
           genre: retro.genre,
+          category: retro.category,
           editionLabel: retro.editionLabel,
         }),
         badge: labels.join(" · ") || "Local game",

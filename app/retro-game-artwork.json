@@ -63,6 +63,7 @@
     "summary": "Search the Amazon for a missing expedition and uncover a conspiracy surrounding a remote jungle tribe.",
     "studio": "Access Software",
     "genre": "Jungle adventure",
+    "category": "Adventure",
     "heroImage": "/launcher/amazon-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -127,6 +128,7 @@
     "summary": "Guide Taran through the land of Prydain and stop the Horned King from using the Black Cauldron.",
     "studio": "Sierra On-Line",
     "genre": "Fantasy adventure",
+    "category": "Fantasy",
     "heroImage": "/launcher/bc-scummweb-generated-2026-11-06-r2-hero.webp",
     "heroImagePosition": "80% 38%",
     "heroImageMobilePosition": "100% top"
@@ -195,6 +197,7 @@
     "summary": "Leave Brooklyn for California and navigate the hazards of the 1849 gold rush.",
     "studio": "MacNeill Computer Company",
     "genre": "Historical adventure",
+    "category": "Adventure",
     "heroImage": "/launcher/goldrush-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -266,6 +269,7 @@
     "summary": "Help King Graham explore Kolyma, unlock three magical doors, and rescue the imprisoned Valanice.",
     "studio": "Sierra On-Line",
     "genre": "Fantasy adventure",
+    "category": "Fantasy",
     "heroImage": "/launcher/kq2-scummweb-generated-2026-11-05-r2-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -336,6 +340,7 @@
     "summary": "Escape the wizard Manannan by learning his spells and discovering the truth about your family.",
     "studio": "Sierra On-Line",
     "genre": "Fantasy adventure",
+    "category": "Fantasy",
     "heroImage": "/launcher/kq3-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -406,6 +411,7 @@
     "summary": "Investigate disappearances in an alien-occupied New York while secretly working against its invaders.",
     "studio": "Evryware",
     "genre": "Science-fiction mystery",
+    "category": "Science fiction",
     "heroImage": "/launcher/mh1-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -476,6 +482,7 @@
     "summary": "Follow a fugitive through alien-occupied San Francisco and solve the mysteries behind a resistance movement.",
     "studio": "Evryware",
     "genre": "Science-fiction mystery",
+    "category": "Science fiction",
     "heroImage": "/launcher/mh2-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -534,6 +541,7 @@
     "summary": "Travel with Mickey Mouse through the solar system to collect crystals and restore an alien world's history.",
     "studio": "Sierra On-Line",
     "genre": "Children's adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/mickey-scummweb-generated-2026-11-06-r1-hero.webp",
     "heroImagePosition": "80% 38%",
     "heroImageMobilePosition": "100% top"
@@ -607,6 +615,7 @@
     "summary": "Patrol Lytton as officer Sonny Bonds and follow a traffic investigation into a dangerous drug case.",
     "studio": "Sierra On-Line",
     "genre": "Police procedural adventure",
+    "category": "Mystery & thriller",
     "heroImage": "/launcher/pq1-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -676,6 +685,7 @@
     "summary": "Help janitor Roger Wilco survive a spaceship attack and recover the stolen Star Generator.",
     "studio": "Sierra On-Line",
     "genre": "Science-fiction comedy",
+    "category": "Science fiction",
     "heroImage": "/launcher/sq1-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -753,6 +763,7 @@
     "summary": "Escape a hostile jungle planet and stop Sludge Vohaul's plan to unleash an army of salesmen.",
     "studio": "Sierra On-Line",
     "genre": "Science-fiction comedy",
+    "category": "Science fiction",
     "heroImage": "/launcher/sq2-scummweb-generated-2026-11-05-r2-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -820,6 +831,7 @@
     "summary": "Explore a fantasy world, choose paths through illustrated scenes, and recover treasure stolen by a troll.",
     "studio": "Sierra On-Line",
     "genre": "Children's adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/troll-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -878,6 +890,7 @@
     "summary": "Help Pooh explore the Hundred Acre Wood and return lost belongings to his friends.",
     "studio": "Sierra On-Line",
     "genre": "Children's adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/winnie-scummweb-generated-2026-11-06-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -945,6 +958,7 @@
     "summary": "Explore a haunted castle, battle its monsters, and help Elvira stop an ancient witch's return.",
     "studio": "Horror Soft",
     "genre": "Horror role-playing adventure",
+    "category": "Role-playing",
     "heroImage": "/launcher/elvira1-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -1012,6 +1026,7 @@
     "summary": "Search a movie studio's haunted sets to rescue Elvira from a demon.",
     "studio": "Horror Soft",
     "genre": "Horror role-playing adventure",
+    "category": "Role-playing",
     "heroImage": "/launcher/elvira2-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -1080,6 +1095,7 @@
     "summary": "Help an unlikely alien hero resist the OmniBrain and its oppressive interplanetary bureaucracy.",
     "studio": "Adventure Soft",
     "genre": "Science-fiction comedy",
+    "category": "Science fiction",
     "heroImage": "/launcher/feeble-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -1150,6 +1166,7 @@
     "summary": "Play Simon-themed puzzles, including Jumble, NoPatience, and Demon in My Pocket, alongside Swampy's arcade adventure.",
     "studio": "Adventure Soft",
     "genre": "Puzzle collection",
+    "category": "Puzzle",
     "heroImage": "/launcher/jumble-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -1219,6 +1236,7 @@
     "summary": "Investigate a sinister English village where an evil presence has taken control of the inhabitants.",
     "studio": "Horror Soft",
     "genre": "Horror adventure",
+    "category": "Horror",
     "heroImage": "/launcher/pn-scummweb-generated-2026-11-06-r1-hero.webp",
     "heroImagePosition": "80% 38%",
     "heroImageMobilePosition": "100% top"
@@ -1287,6 +1305,7 @@
     "summary": "A magical book transports Simon into a fairy-tale world where he must become a wizard and confront Sordid.",
     "studio": "Adventure Soft",
     "genre": "Fantasy comedy",
+    "category": "Fantasy",
     "heroImage": "/launcher/simon1-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -1356,6 +1375,7 @@
     "summary": "Simon returns to a world of sarcastic fairy tales as Sordid plots his revenge.",
     "studio": "Adventure Soft",
     "genre": "Fantasy comedy",
+    "category": "Fantasy",
     "heroImage": "/launcher/simon2-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -1426,6 +1446,7 @@
     "summary": "Enter cursed waxwork exhibits across different eras to break an ancestral curse.",
     "studio": "Horror Soft",
     "genre": "Horror role-playing adventure",
+    "category": "Role-playing",
     "heroImage": "/launcher/waxworks-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -1493,6 +1514,7 @@
     "summary": "Help Beavis and Butt-Head explore Highland and attempt to impress local gang leader Todd.",
     "studio": "Viacom New Media",
     "genre": "Comedy adventure",
+    "category": "Comedy",
     "heroImage": "/launcher/bbvs-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -1551,6 +1573,7 @@
     "summary": "Explore a Polish village as its hapless headman and help resolve a troublesome family wedding.",
     "studio": "LK Avalon",
     "genre": "Comedy adventure",
+    "category": "Comedy",
     "heroImage": "/launcher/soltys-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -1621,6 +1644,7 @@
     "summary": "A window cleaner discovers a time machine and becomes involved in a battle against alien invaders.",
     "studio": "Delphine Software",
     "genre": "Science-fiction adventure",
+    "category": "Science fiction",
     "heroImage": "/launcher/fw-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -1688,6 +1712,7 @@
     "summary": "Help Darby gather ingredients for a potion to undo a magical-wand accident involving his sister Sparkle.",
     "studio": "Animation Magic",
     "genre": "Children's fantasy adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/darby-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -1761,6 +1786,7 @@
     "summary": "Follow Gregory and his friend on a balloon journey filled with characters, exploration, and puzzles.",
     "studio": "Animation Magic",
     "genre": "Children's adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/gregory-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -1828,6 +1854,7 @@
     "summary": "Help Liam find an original story to satisfy the fairy who has captured his family.",
     "studio": "Animation Magic",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/liam-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -1895,6 +1922,7 @@
     "summary": "Guide a princess through a series of challenges to rescue a prince from an evil fairy's spell.",
     "studio": "Animation Magic",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/princess-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -1962,6 +1990,7 @@
     "summary": "Join Sleeping Cub's search for the mystical elk dogs as he tries to help his people find the buffalo.",
     "studio": "Animation Magic",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/sleepingcub-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -2030,6 +2059,7 @@
     "summary": "Investigate a murder aboard a luxury ship as Inspector Raoul Dusentier and question its suspicious passengers.",
     "studio": "Delphine Software",
     "genre": "Detective adventure",
+    "category": "Mystery & thriller",
     "heroImage": "/launcher/cruise-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -2097,6 +2127,7 @@
     "summary": "Guide the young dragon Bert through a humorous world as he searches for his missing father.",
     "studio": "NoSense",
     "genre": "Fantasy comedy",
+    "category": "Fantasy",
     "heroImage": "/launcher/draci-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -2114,6 +2145,7 @@
     "summary": "Help John Hacker rescue Billie Jean from Count Drascula in a town full of vampires and absurd characters.",
     "studio": "Alcachofa Soft",
     "genre": "Comedy horror adventure",
+    "category": "Horror",
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2282"
@@ -2178,6 +2210,7 @@
     "summary": "Follow troubled bartender Ryan through a dystopian city as disturbing dreams draw him into a deadly mission.",
     "studio": "Creative Reality",
     "genre": "Cyberpunk adventure",
+    "category": "Science fiction",
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3151"
@@ -2272,6 +2305,7 @@
     "summary": "Help the stranded alien Gnap repair his spacecraft while dealing with Earth's eccentric inhabitants.",
     "studio": "Artech Digital Entertainment",
     "genre": "Science-fiction comedy",
+    "category": "Science fiction",
     "heroImage": "/launcher/gnap-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -2348,6 +2382,7 @@
     "summary": "A young programmer takes on the Bargon aliens after they conquer Earth and enslave humanity.",
     "studio": "Coktel Vision",
     "genre": "Science-fiction adventure",
+    "category": "Science fiction",
     "heroImage": "/launcher/bargon-scummweb-generated-2026-11-05-r2-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -2415,6 +2450,7 @@
     "summary": "Pilot Doralice investigates a dangerous drug and the mysterious circumstances surrounding a dying man's request.",
     "studio": "Coktel Vision",
     "genre": "Mature mystery adventure",
+    "category": "Mystery & thriller",
     "heroImage": "/launcher/fascination-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -2482,6 +2518,7 @@
     "summary": "Rescue Eva from a scientist who intends to transform her into a robotic geisha.",
     "studio": "Coktel Vision",
     "genre": "Mature science-fiction adventure",
+    "category": "Science fiction",
     "heroImage": "/launcher/geisha-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -2549,6 +2586,7 @@
     "summary": "Coordinate three goblins with different abilities to cure their king and overcome a series of magical obstacles.",
     "studio": "Coktel Vision",
     "genre": "Puzzle adventure",
+    "category": "Puzzle",
     "heroImage": "/launcher/gob1-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -2619,6 +2657,7 @@
     "summary": "Use Fingus and Winkle's contrasting skills to rescue a prince from an evil demon.",
     "studio": "Coktel Vision",
     "genre": "Puzzle adventure",
+    "category": "Puzzle",
     "heroImage": "/launcher/gob2-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -2686,6 +2725,7 @@
     "summary": "Help the goblin journalist Blount investigate a royal feud in a world of surreal puzzles.",
     "studio": "Coktel Vision",
     "genre": "Puzzle adventure",
+    "category": "Puzzle",
     "heroImage": "/launcher/gob3-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -2756,6 +2796,7 @@
     "summary": "Guide Doralice between the present and the past as she investigates a ship and a hidden threat.",
     "studio": "Coktel Vision",
     "genre": "Time-travel adventure",
+    "category": "Science fiction",
     "heroImage": "/launcher/lit-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -2823,6 +2864,7 @@
     "summary": "Explore an interactive fairy-tale world inspired by Little Red Riding Hood.",
     "studio": "Coktel Vision",
     "genre": "Children's storybook adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/littlered-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -2890,6 +2932,7 @@
     "summary": "A journalist framed for murder teams up with a young woman to uncover a criminal conspiracy in Paris.",
     "studio": "Coktel Vision",
     "genre": "Interactive movie thriller",
+    "category": "Mystery & thriller",
     "heroImage": "/launcher/urban-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%",
     "heroImageMobilePosition": "100% top"
@@ -2958,6 +3001,7 @@
     "summary": "Gather magical objects and solve puzzles as Ween tries to defeat an evil wizard and fulfil an ancient prophecy.",
     "studio": "Coktel Vision",
     "genre": "Fantasy puzzle adventure",
+    "category": "Fantasy",
     "heroImage": "/launcher/ween-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%",
     "heroImageMobilePosition": "100% top"
@@ -3027,6 +3071,7 @@
     "summary": "Help Woodruff search for his missing adoptive father and challenge the rulers of a strange post-apocalyptic society.",
     "studio": "Coktel Vision",
     "genre": "Science-fiction comedy",
+    "category": "Science fiction",
     "heroImage": "/launcher/woodruff-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -3097,6 +3142,7 @@
     "summary": "Explore Henry Stauf's mansion and solve its puzzles while uncovering the fate of six invited guests.",
     "studio": "Trilobyte",
     "genre": "Horror puzzle adventure",
+    "category": "Horror",
     "heroImage": "/launcher/t7g-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -3164,6 +3210,7 @@
     "summary": "Track an escaped criminal as FBI agent Hopkins in an adventure mixing investigation, violence, and science fiction.",
     "studio": "MP Entertainment",
     "genre": "Crime thriller adventure",
+    "category": "Mystery & thriller",
     "heroImage": "/launcher/hopkins-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%",
     "heroImageMobilePosition": "100% top"
@@ -3241,6 +3288,7 @@
     "summary": "Enter a mansion full of monsters as Hugo searches for his missing girlfriend Penelope.",
     "studio": "Gray Design Associates",
     "genre": "Horror comedy adventure",
+    "category": "Horror",
     "heroImage": "/launcher/hugo1-scummweb-generated-2026-11-06-r2-hero.webp",
     "heroImagePosition": "80% 20%",
     "heroImageMobilePosition": "100% top"
@@ -3310,6 +3358,7 @@
     "summary": "Investigate a murder and search a sprawling estate as Penelope tries to find Hugo.",
     "studio": "Gray Design Associates",
     "genre": "Mystery adventure",
+    "category": "Mystery & thriller",
     "heroImage": "/launcher/hugo2-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -3386,6 +3435,7 @@
     "summary": "Explore a jungle and search for a cure after a spider bites Penelope.",
     "studio": "Gray Design Associates",
     "genre": "Jungle adventure",
+    "category": "Adventure",
     "heroImage": "/launcher/hugo3-scummweb-generated-2026-11-06-r2-hero.webp",
     "heroImagePosition": "80% 38%",
     "heroImageMobilePosition": "100% top"
@@ -3463,6 +3513,7 @@
     "summary": "Lead a party of adventurers beneath Waterdeep to investigate an evil presence in its sewers.",
     "studio": "Westwood Associates",
     "genre": "Dungeon-crawling role-playing game",
+    "category": "Role-playing",
     "heroImage": "/launcher/eob-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -3533,6 +3584,7 @@
     "summary": "Explore the temple of Darkmoon with a party of adventurers and confront its sinister powers.",
     "studio": "Westwood Associates",
     "genre": "Dungeon-crawling role-playing game",
+    "category": "Role-playing",
     "heroImage": "/launcher/eob2-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -3610,6 +3662,7 @@
     "summary": "Help Brandon restore the kingdom of Kyrandia after the jester Malcolm escapes and turns its inhabitants to stone.",
     "studio": "Westwood Studios",
     "genre": "Fantasy adventure",
+    "category": "Fantasy",
     "heroImage": "/launcher/kyra1-scummweb-generated-2026-11-05-r2-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -3683,6 +3736,7 @@
     "summary": "Guide the alchemist Zanthia on a journey to stop Kyrandia from disappearing.",
     "studio": "Westwood Studios",
     "genre": "Fantasy adventure",
+    "category": "Fantasy",
     "heroImage": "/launcher/kyra2-scummweb-generated-2026-11-05-r2-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -3754,6 +3808,7 @@
     "summary": "Play as the mischievous Malcolm, clear his name, and discover the truth behind Kyrandia's royal murders.",
     "studio": "Westwood Studios",
     "genre": "Fantasy comedy",
+    "category": "Fantasy",
     "heroImage": "/launcher/kyra3-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -3827,6 +3882,7 @@
     "summary": "Lead a party through the Lands of Lore to confront the sorceress Scotia and save the kingdom of Gladstone.",
     "studio": "Westwood Studios",
     "genre": "Fantasy role-playing game",
+    "category": "Role-playing",
     "heroImage": "/launcher/lol-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -3899,6 +3955,7 @@
     "summary": "Explore a labyrinth spanning different places and eras, solving puzzles to prevent an ancient evil from escaping.",
     "studio": "Terra Nova Development",
     "genre": "Surreal puzzle adventure",
+    "category": "Puzzle",
     "heroImage": "/launcher/lab-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -3969,6 +4026,7 @@
     "summary": "Explore a small village and its surrounding paths in this fan-made adventure.",
     "studio": "Uncredited independent creator",
     "genre": "Fan-made adventure",
+    "category": "Adventure",
     "metadataNote": "The creator credit could not be verified. The description is based on the locally verified fan-game build.",
     "heroImage": "/launcher/road-scummweb-generated-2026-11-06-r1-hero.webp",
     "heroImagePosition": "80% 38%"
@@ -3987,6 +4045,7 @@
     "summary": "Help Diermot escape captivity and oppose the sorceress Selena in the troubled village of Turnvale.",
     "studio": "Revolution Software",
     "genre": "Fantasy adventure",
+    "category": "Fantasy",
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1510"
@@ -4104,6 +4163,7 @@
     "summary": "Investigate a crashed spaceship in a desert town and become involved in an interplanetary adventure.",
     "studio": "Infocom",
     "genre": "Science-fiction comedy",
+    "category": "Science fiction",
     "heroImage": "/launcher/lgop2-scummweb-generated-2026-11-06-r1-hero.webp",
     "heroImagePosition": "80% 38%",
     "heroImageMobilePosition": "100% top"
@@ -4172,6 +4232,7 @@
     "summary": "Explore five colourful learning games designed to introduce children to using a computer.",
     "studio": "Activision",
     "genre": "Educational minigame collection",
+    "category": "Family & education",
     "heroImage": "/launcher/rodney-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -4239,6 +4300,7 @@
     "summary": "Travel into the Great Underground Empire, investigate a spreading evil, and discover the power behind the wizard Morphius.",
     "studio": "Infocom",
     "genre": "Fantasy adventure",
+    "category": "Fantasy",
     "heroImage": "/launcher/rtz-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -4306,6 +4368,7 @@
     "summary": "A smuggler searching for a valuable vase crash-lands on a planet whose inhabitants have a surprising secret.",
     "studio": "MicroProse",
     "genre": "Science-fiction comedy",
+    "category": "Science fiction",
     "heroImage": "/launcher/nebular-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -4380,6 +4443,7 @@
     "summary": "Explore a deserted island and travel through linking books to uncover the history of Atrus and his family.",
     "studio": "Cyan",
     "genre": "Exploration puzzle adventure",
+    "category": "Puzzle",
     "heroImage": "/launcher/myst-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -4447,6 +4511,7 @@
     "summary": "Journey to Riven, decipher its machinery and culture, and help Atrus rescue Catherine from Gehn.",
     "studio": "Cyan",
     "genre": "Exploration puzzle adventure",
+    "category": "Puzzle",
     "heroImage": "/launcher/riven-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -4518,6 +4583,7 @@
     "summary": "Guide Klaymen through a clay-built world and uncover its history through exploration and puzzles.",
     "studio": "The Neverhood, Inc.",
     "genre": "Claymation puzzle adventure",
+    "category": "Puzzle",
     "heroImage": "/launcher/neverhood-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -4585,6 +4651,7 @@
     "summary": "Follow an ordinary man through a trapdoor into a strange underground world filled with eccentric creatures and machinery.",
     "studio": "PIPE Studio",
     "genre": "Surreal puzzle adventure",
+    "category": "Puzzle",
     "heroImage": "/launcher/fullpipe-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -4660,6 +4727,7 @@
     "summary": "Follow a Russian couple and an American tourist through a comic caper involving stolen treasures.",
     "studio": "Dynabyte",
     "genre": "Comedy adventure",
+    "category": "Comedy",
     "heroImage": "/launcher/bra-scummweb-generated-2026-11-05-r2-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -4678,6 +4746,7 @@
     "summary": "Switch between three unlikely crooks as their separate jobs collide in a Japanese heist.",
     "studio": "Dynabyte",
     "genre": "Comedy caper adventure",
+    "category": "Comedy",
     "sources": {
       "screenshots": [
         {
@@ -4786,6 +4855,7 @@
     "summary": "Travel through historical simulations as temporal agent Gage Blackwood to stop a plot against humanity.",
     "studio": "Presto Studios",
     "genre": "Time-travel adventure",
+    "category": "Science fiction",
     "heroImage": "/launcher/pegasus-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -4842,6 +4912,7 @@
     "summary": "Choose how a photographic comedy unfolds as a plumber and a young woman encounter romance and workplace intrigue.",
     "studio": "Kirin Entertainment / United Pixtures",
     "genre": "Mature interactive movie",
+    "category": "Adventure",
     "heroImage": "/launcher/plumbers-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -4859,6 +4930,7 @@
     "summary": "Pilot Joe King crashes in the Amazon and becomes entangled in a mad scientist's plot.",
     "studio": "Interactive Binary Illusions",
     "genre": "Comedy adventure",
+    "category": "Comedy",
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1505"
@@ -4951,6 +5023,7 @@
     "summary": "Guide five damaged characters through scenarios created by the supercomputer AM and confront their fears and past actions.",
     "studio": "The Dreamers Guild",
     "genre": "Psychological horror adventure",
+    "category": "Horror",
     "heroImage": "/launcher/ihnm-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -5018,6 +5091,7 @@
     "summary": "Help Rif the fox clear his name after the Orb of Storms is stolen from a world of talking animals.",
     "studio": "The Dreamers Guild",
     "genre": "Fantasy adventure",
+    "category": "Fantasy",
     "heroImage": "/launcher/ite-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -5088,6 +5162,7 @@
     "summary": "Guide King Arthur on a perilous quest for the Holy Grail to save Camelot.",
     "studio": "Sierra On-Line",
     "genre": "Arthurian adventure",
+    "category": "Fantasy",
     "heroImage": "/launcher/camelot-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -5156,6 +5231,7 @@
     "summary": "Solve mathematics, language, logic, and science puzzles to explore Dr. Brain's castle.",
     "studio": "Sierra On-Line",
     "genre": "Educational puzzle adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/castlebrain-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -5224,6 +5300,7 @@
     "summary": "Help Adam and the dolphin Delphineus explore an underwater kingdom and confront threats to the ocean.",
     "studio": "Sierra On-Line",
     "genre": "Environmental adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/ecoquest-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -5294,6 +5371,7 @@
     "summary": "Join Adam in the Amazon rainforest and investigate the pollution threatening its wildlife.",
     "studio": "Sierra On-Line",
     "genre": "Environmental adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/ecoquest2-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -5367,6 +5445,7 @@
     "summary": "A former gunslinger working as a pharmacist must save the frontier town of Coarsegold.",
     "studio": "Sierra On-Line",
     "genre": "Western comedy adventure",
+    "category": "Comedy",
     "heroImage": "/launcher/freddypharkas-scummweb-generated-2026-11-05-r2-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -5428,6 +5507,7 @@
     "summary": "Browse Doug Oldfield's humorous interactive guide to places around Sierra's home in eastern Madera County.",
     "studio": "Sierra On-Line",
     "genre": "Interactive travel comedy",
+    "category": "Comedy",
     "heroImage": "/launcher/funseeker-scummweb-generated-2026-11-06-r1-hero.webp",
     "heroImagePosition": "80% 38%",
     "heroImageMobilePosition": "100% top"
@@ -5492,6 +5572,7 @@
     "summary": "Investigate a series of murders in New Orleans as writer Gabriel Knight discovers his family's supernatural legacy.",
     "studio": "Sierra On-Line",
     "genre": "Supernatural mystery adventure",
+    "category": "Mystery & thriller",
     "heroImage": "/launcher/gk1-scummweb-generated-2026-11-06-r1-hero.webp",
     "heroImagePosition": "80% 38%",
     "heroImageMobilePosition": "100% top"
@@ -5560,6 +5641,7 @@
     "summary": "Alternate between Gabriel Knight and Grace Nakimura to investigate a werewolf mystery in Bavaria.",
     "studio": "Sierra On-Line",
     "genre": "Interactive movie mystery",
+    "category": "Mystery & thriller",
     "heroImage": "/launcher/gk2-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -5633,6 +5715,7 @@
     "summary": "Join naval officer Johnny Westland on a mission involving a submarine, international intrigue, and a hostage rescue.",
     "studio": "Sierra On-Line",
     "genre": "Espionage adventure and simulation",
+    "category": "Simulation",
     "heroImage": "/launcher/iceman-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -5707,6 +5790,7 @@
     "summary": "Explore Dr. Brain's island laboratory and solve puzzles covering science, music, language, and logic.",
     "studio": "Sierra On-Line",
     "genre": "Educational puzzle adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/islandbrain-scummweb-generated-2026-11-05-r2-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -5780,6 +5864,7 @@
     "summary": "Compete for education, money, career success, and happiness while balancing work and daily expenses.",
     "studio": "Sierra On-Line",
     "genre": "Life simulation board game",
+    "category": "Simulation",
     "heroImage": "/launcher/jones-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -5847,6 +5932,7 @@
     "summary": "Help Graham recover three lost treasures and restore the kingdom of Daventry in this SCI remake.",
     "studio": "Sierra On-Line",
     "genre": "Fantasy adventure",
+    "category": "Fantasy",
     "editionLabel": "SCI Remake",
     "heroImage": "/launcher/kq1sci-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
@@ -5915,6 +6001,7 @@
     "summary": "Guide Princess Rosella through Tamir to find a magical fruit that can save her father.",
     "studio": "Sierra On-Line",
     "genre": "Fantasy adventure",
+    "category": "Fantasy",
     "heroImage": "/launcher/kq4sci-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -5983,6 +6070,7 @@
     "summary": "Follow King Graham through Serenia as he searches for his family and castle after a wizard makes them disappear.",
     "studio": "Sierra On-Line",
     "genre": "Fantasy adventure",
+    "category": "Fantasy",
     "heroImage": "/launcher/kq5-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -6050,6 +6138,7 @@
     "summary": "Help Prince Alexander explore the Land of the Green Isles and find Princess Cassima.",
     "studio": "Sierra On-Line",
     "genre": "Fantasy adventure",
+    "category": "Fantasy",
     "heroImage": "/launcher/kq6-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -6120,6 +6209,7 @@
     "summary": "Play as Valanice and Rosella as they explore a magical land and oppose the sorceress Malicia.",
     "studio": "Sierra On-Line",
     "genre": "Fantasy adventure",
+    "category": "Fantasy",
     "heroImage": "/launcher/kq7-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -6193,6 +6283,7 @@
     "summary": "Investigate a series of murders during a family gathering at a secluded Louisiana plantation.",
     "studio": "Sierra On-Line",
     "genre": "Murder mystery adventure",
+    "category": "Mystery & thriller",
     "heroImage": "/launcher/laurabow-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -6260,6 +6351,7 @@
     "summary": "Reporter Laura Bow investigates a museum robbery and a series of murders in 1920s New York.",
     "studio": "Sierra On-Line",
     "genre": "Murder mystery adventure",
+    "category": "Mystery & thriller",
     "heroImage": "/launcher/laurabow2-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -6327,6 +6419,7 @@
     "summary": "Follow a mysterious being through a portal and explore an alternate world to rescue a kidnapped child.",
     "studio": "Sierra On-Line",
     "genre": "Science-fiction puzzle adventure",
+    "category": "Science fiction",
     "heroImage": "/launcher/lighthouse-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -6395,6 +6488,7 @@
     "summary": "Lead Robin Hood and his companions through Sherwood Forest to oppose the Sheriff and help King Richard.",
     "studio": "Sierra On-Line",
     "genre": "Historical adventure",
+    "category": "Adventure",
     "heroImage": "/launcher/longbow-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -6463,6 +6557,7 @@
     "summary": "Explore the nightlife of Lost Wages as Larry Laffer searches for romance in this SCI remake.",
     "studio": "Sierra On-Line",
     "genre": "Adult comedy adventure",
+    "category": "Comedy",
     "editionLabel": "VGA Remake",
     "heroImage": "/launcher/lsl1sci-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
@@ -6532,6 +6627,7 @@
     "summary": "Larry's search for love takes him from Los Angeles to a cruise ship and a tropical island while secret agents pursue him.",
     "studio": "Sierra On-Line",
     "genre": "Adult comedy adventure",
+    "category": "Comedy",
     "heroImage": "/launcher/lsl2-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -6600,6 +6696,7 @@
     "summary": "Follow Larry and Passionate Patti through the resorts and jungles of Nontoonyt Island.",
     "studio": "Sierra On-Line",
     "genre": "Adult comedy adventure",
+    "category": "Comedy",
     "heroImage": "/launcher/lsl3-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -6674,6 +6771,7 @@
     "summary": "Alternate between Larry's search for television talent and Patti's undercover investigation for the FBI.",
     "studio": "Sierra On-Line",
     "genre": "Adult comedy adventure",
+    "category": "Comedy",
     "heroImage": "/launcher/lsl5-scummweb-generated-2026-11-05-r2-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -6741,6 +6839,7 @@
     "summary": "Help Larry navigate the La Costa Lotta resort, solve its guests' problems, and pursue romance.",
     "studio": "Sierra On-Line",
     "genre": "Adult comedy adventure",
+    "category": "Comedy",
     "heroImage": "/launcher/lsl6hires-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -6811,6 +6910,7 @@
     "summary": "Join Larry aboard a luxury cruise ship and compete in contests for a chance to spend time with Captain Thygh.",
     "studio": "Sierra On-Line",
     "genre": "Adult comedy adventure",
+    "category": "Comedy",
     "heroImage": "/launcher/lsl7-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -6868,6 +6968,7 @@
     "summary": "Fly Ms. Astro Chicken through a scrolling arcade challenge inspired by Space Quest's comic universe.",
     "studio": "Sierra On-Line",
     "genre": "Arcade action",
+    "category": "Action & arcade",
     "heroImage": "/launcher/msastrochicken-scummweb-generated-2026-11-06-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -6935,6 +7036,7 @@
     "summary": "Travel with Pepper and her dog Lockjaw to colonial America to stop a villain from changing history.",
     "studio": "Sierra On-Line",
     "genre": "Educational time-travel adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/pepper-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -7002,6 +7104,7 @@
     "summary": "Explore an isolated mansion as writer Adrienne Delaney uncovers its violent history and a supernatural threat.",
     "studio": "Sierra On-Line",
     "genre": "Interactive movie horror",
+    "category": "Horror",
     "heroImage": "/launcher/phantasmagoria-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -7071,6 +7174,7 @@
     "summary": "Investigate disturbing visions and workplace murders as Curtis Craig questions his memories and identity.",
     "studio": "Sierra On-Line",
     "genre": "Interactive movie horror",
+    "category": "Horror",
     "heroImage": "/launcher/phantasmagoria2-scummweb-generated-2026-11-06-r1-hero.webp",
     "heroImagePosition": "80% 38%",
     "heroImageMobilePosition": "100% top"
@@ -7090,6 +7194,7 @@
     "summary": "Follow officer Sonny Bonds through traffic patrols and a drug investigation in this SCI remake.",
     "studio": "Sierra On-Line",
     "genre": "Police procedural adventure",
+    "category": "Mystery & thriller",
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1726"
@@ -7208,6 +7313,7 @@
     "summary": "Detective Sonny Bonds pursues the escaped criminal Jessie Bains while protecting the people he threatens.",
     "studio": "Sierra On-Line",
     "genre": "Police procedural adventure",
+    "category": "Mystery & thriller",
     "heroImage": "/launcher/pq2-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -7278,6 +7384,7 @@
     "summary": "Investigate a series of crimes linked to a cult as Sonny Bonds and his partner patrol Lytton.",
     "studio": "Sierra On-Line",
     "genre": "Police procedural adventure",
+    "category": "Mystery & thriller",
     "heroImage": "/launcher/pq3-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -7351,6 +7458,7 @@
     "summary": "Investigate a police officer's murder as LAPD detective John Carey follows a case through Los Angeles.",
     "studio": "Sierra On-Line",
     "genre": "Police procedural adventure",
+    "category": "Mystery & thriller",
     "heroImage": "/launcher/pq4-scummweb-generated-2026-11-05-r2-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -7427,6 +7535,7 @@
     "summary": "Build a hero's skills, help the people of Spielburg, and lift the curses affecting its valley.",
     "studio": "Sierra On-Line",
     "genre": "Role-playing adventure",
+    "category": "Role-playing",
     "heroImage": "/launcher/qfg1-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -7445,6 +7554,7 @@
     "summary": "Explore Spielburg as a fighter, magic user, or thief in this VGA remake of the first Quest for Glory.",
     "studio": "Sierra On-Line",
     "genre": "Role-playing adventure",
+    "category": "Role-playing",
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=2647"
@@ -7564,6 +7674,7 @@
     "summary": "Explore the desert city of Shapeir, confront elemental threats, and investigate neighbouring Raseir.",
     "studio": "Sierra On-Line",
     "genre": "Role-playing adventure",
+    "category": "Role-playing",
     "heroImage": "/launcher/qfg2-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -7637,6 +7748,7 @@
     "summary": "Journey to Tarna and use your skills and diplomacy to prevent a war between rival peoples.",
     "studio": "Sierra On-Line",
     "genre": "Role-playing adventure",
+    "category": "Role-playing",
     "heroImage": "/launcher/qfg3-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -7704,6 +7816,7 @@
     "summary": "Explore an immense alien spacecraft and decipher its mathematics, language, and mysterious purpose.",
     "studio": "Sierra On-Line",
     "genre": "Science-fiction puzzle adventure",
+    "category": "Science fiction",
     "heroImage": "/launcher/rama-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -7772,6 +7885,7 @@
     "summary": "Search an abandoned museum and capture spirits released from its collection of strange exhibits.",
     "studio": "Sierra On-Line",
     "genre": "Horror puzzle adventure",
+    "category": "Horror",
     "heroImage": "/launcher/shivers-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -7790,6 +7904,7 @@
     "summary": "Help janitor Roger Wilco recover the Star Generator in the VGA remake of his first adventure.",
     "studio": "Sierra On-Line",
     "genre": "Science-fiction comedy",
+    "category": "Science fiction",
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1723"
@@ -7911,6 +8026,7 @@
     "summary": "Escape a space junk freighter and help the Two Guys from Andromeda in Roger Wilco's third adventure.",
     "studio": "Sierra On-Line",
     "genre": "Science-fiction comedy",
+    "category": "Science fiction",
     "heroImage": "/launcher/sq3-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -7981,6 +8097,7 @@
     "summary": "Travel through Space Quest's past and future as Roger Wilco tries to escape the Sequel Police.",
     "studio": "Sierra On-Line",
     "genre": "Science-fiction comedy",
+    "category": "Science fiction",
     "heroImage": "/launcher/sq4-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -8051,6 +8168,7 @@
     "summary": "Command the garbage scow Eureka and help Roger Wilco uncover a conspiracy threatening StarCon.",
     "studio": "Dynamix",
     "genre": "Science-fiction comedy",
+    "category": "Science fiction",
     "heroImage": "/launcher/sq5-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -8124,6 +8242,7 @@
     "summary": "Follow Roger Wilco through a futuristic city and into a microscopic adventure inside the human body.",
     "studio": "Sierra On-Line",
     "genre": "Science-fiction comedy",
+    "category": "Science fiction",
     "heroImage": "/launcher/sq6-scummweb-generated-2026-11-05-r2-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -8191,6 +8310,7 @@
     "summary": "Travel through the worlds beneath Strata as Torin searches for his kidnapped parents.",
     "studio": "Sierra On-Line",
     "genre": "Fantasy adventure",
+    "category": "Fantasy",
     "heroImage": "/launcher/torin-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -8208,6 +8328,7 @@
     "summary": "Join Indy and Sophia Hapgood in a race to uncover Atlantis before a Nazi expedition.",
     "studio": "LucasArts",
     "genre": "Archaeological adventure",
+    "category": "Adventure",
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1668"
@@ -8324,6 +8445,7 @@
     "summary": "Help Blue and her friends collect clues, solve activities, and follow a treasure hunt.",
     "studio": "Humongous Entertainment",
     "genre": "Educational adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/bluestreasurehunt-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -8394,6 +8516,7 @@
     "summary": "Pilot a bear's aeroplane through a light-hearted arcade game.",
     "studio": "Humongous Entertainment",
     "genre": "Children's arcade action",
+    "category": "Family & education",
     "heroImage": "/launcher/brstorm-scummweb-generated-2026-11-06-r1-hero.webp",
     "heroImagePosition": "80% 38%",
     "heroImageMobilePosition": "100% top"
@@ -8451,6 +8574,7 @@
     "summary": "Help Guybrush Threepwood lift a curse that has transformed Elaine into a solid-gold statue.",
     "studio": "LucasArts",
     "genre": "Pirate comedy adventure",
+    "category": "Comedy",
     "heroImage": "/launcher/comi-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -8524,6 +8648,7 @@
     "summary": "An asteroid mission transports three astronauts to an alien world filled with ancient technology.",
     "studio": "LucasArts",
     "genre": "Science-fiction adventure",
+    "category": "Science fiction",
     "heroImage": "/launcher/dig-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -8597,6 +8722,7 @@
     "summary": "Biker Ben investigates a murder conspiracy and tries to save his motorcycle gang.",
     "studio": "LucasArts",
     "genre": "Action adventure",
+    "category": "Action & arcade",
     "heroImage": "/launcher/ft-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -8614,6 +8740,7 @@
     "summary": "Help Indiana Jones and his father search for the Holy Grail in the adventure based on the film.",
     "studio": "Lucasfilm Games",
     "genre": "Archaeological adventure",
+    "category": "Adventure",
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1666"
@@ -8677,6 +8804,7 @@
     "summary": "Use musical drafts as Bobbin Threadbare to discover the fate of the Weavers and reshape the world.",
     "studio": "Lucasfilm Games",
     "genre": "Musical fantasy adventure",
+    "category": "Fantasy",
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1667"
@@ -8743,6 +8871,7 @@
     "summary": "Choose a team of teenagers to explore Dr. Fred's mansion and rescue Sandy.",
     "studio": "Lucasfilm Games",
     "genre": "Comedy horror adventure",
+    "category": "Horror",
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1000"
@@ -8852,6 +8981,7 @@
     "summary": "Help aspiring pirate Guybrush Threepwood pass three trials, meet Elaine Marley, and confront the ghost pirate LeChuck.",
     "studio": "Lucasfilm Games",
     "genre": "Pirate comedy adventure",
+    "category": "Comedy",
     "heroImage": "/launcher/monkey-demo-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -8870,6 +9000,7 @@
     "summary": "Search for the treasure of Big Whoop as Guybrush Threepwood faces the returning pirate LeChuck.",
     "studio": "Lucasfilm Games",
     "genre": "Pirate comedy adventure",
+    "category": "Comedy",
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=998"
@@ -8990,6 +9121,7 @@
     "summary": "Sample scenes featuring Indiana Jones, Monkey Island, and Loom in Lucasfilm Games' three-part adventure demo.",
     "studio": "Lucasfilm Games",
     "genre": "Adventure demo collection",
+    "category": "Adventure",
     "heroImage": "/launcher/pass-scummweb-generated-2026-11-05-r2-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -9008,6 +9140,7 @@
     "summary": "Join freelance police Sam and Max on a road trip to track down a missing carnival Bigfoot.",
     "studio": "LucasArts",
     "genre": "Comedy adventure",
+    "category": "Comedy",
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1671"
@@ -9071,6 +9204,7 @@
     "summary": "Coordinate Bernard, Hoagie, and Laverne across three eras to stop Purple Tentacle from taking over the world.",
     "studio": "LucasArts",
     "genre": "Time-travel comedy adventure",
+    "category": "Science fiction",
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1670"
@@ -9191,6 +9325,7 @@
     "summary": "Join Ben and Becky Brightly for activities designed around first-grade learning skills.",
     "studio": "Humongous Entertainment",
     "genre": "Educational activity collection",
+    "category": "Family & education",
     "heroImage": "/launcher/thinker1-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -9260,6 +9395,7 @@
     "summary": "Explore Ben and Becky Brightly's house through activities designed for kindergarten learners.",
     "studio": "Humongous Entertainment",
     "genre": "Educational activity collection",
+    "category": "Family & education",
     "heroImage": "/launcher/thinkerk-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -9277,6 +9413,7 @@
     "summary": "Tabloid reporter Zak McKracken investigates an alien plot to make Earth's population less intelligent.",
     "studio": "Lucasfilm Games",
     "genre": "Science-fiction comedy",
+    "category": "Science fiction",
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=1665"
@@ -9390,6 +9527,7 @@
     "summary": "Investigate a bombing and a web of intrigue as Sherlock Holmes and Dr. Watson explore Victorian London.",
     "studio": "Mythos Software",
     "genre": "Detective adventure",
+    "category": "Mystery & thriller",
     "heroImage": "/launcher/rosetattoo-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -9458,6 +9596,7 @@
     "summary": "Help Holmes and Watson investigate a London murder that appears to be connected to Jack the Ripper.",
     "studio": "Mythos Software",
     "genre": "Detective adventure",
+    "category": "Mystery & thriller",
     "heroImage": "/launcher/scalpel-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -9475,6 +9614,7 @@
     "summary": "Escape Union City with engineer Robert Foster and his robot companion Joey while uncovering the secrets of its ruling computer.",
     "studio": "Revolution Software",
     "genre": "Cyberpunk adventure",
+    "category": "Science fiction",
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=952"
@@ -9569,6 +9709,7 @@
     "summary": "Join George Stobbart and Nicole Collard as a Paris bombing leads to a conspiracy involving the Knights Templar.",
     "studio": "Revolution Software",
     "genre": "Conspiracy adventure",
+    "category": "Mystery & thriller",
     "heroImage": "/launcher/sword1-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -9586,6 +9727,7 @@
     "summary": "George Stobbart returns to Paris and reunites with Nicole Collard to investigate a new conspiracy.",
     "studio": "mindFactory",
     "genre": "Conspiracy adventure",
+    "category": "Mystery & thriller",
     "sources": {
       "metadata": [
         "https://wiki.scummvm.org/index.php?curid=3071"
@@ -9686,6 +9828,7 @@
     "summary": "Guide George and Nico through a mystery involving stolen artefacts, smugglers, and an ancient Mayan prophecy.",
     "studio": "Revolution Software",
     "genre": "Conspiracy adventure",
+    "category": "Mystery & thriller",
     "heroImage": "/launcher/sword2-scummweb-generated-2026-11-05-r2-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -9753,6 +9896,7 @@
     "summary": "An ordinary teenager is recruited into a secret agency and sent to investigate disappearing gold.",
     "studio": "Metropolis Software",
     "genre": "Comedy adventure",
+    "category": "Comedy",
     "heroImage": "/launcher/teenagent-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -9821,6 +9965,7 @@
     "summary": "Help the inept wizard Rincewind stop a dragon from terrorising Ankh-Morpork.",
     "studio": "Perfect 10 Productions / Teeny Weeny Games",
     "genre": "Fantasy comedy",
+    "category": "Fantasy",
     "heroImage": "/launcher/dw-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -9894,6 +10039,7 @@
     "summary": "Track down the missing Death as Rincewind tries to restore the natural order of the Discworld.",
     "studio": "Perfect Entertainment",
     "genre": "Fantasy comedy",
+    "category": "Fantasy",
     "heroImage": "/launcher/dw2-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -9961,6 +10107,7 @@
     "summary": "Explore a luxurious interstellar cruise liner and help restore its damaged central intelligence, Titania.",
     "studio": "The Digital Village",
     "genre": "Science-fiction comedy",
+    "category": "Science fiction",
     "heroImage": "/launcher/titanic-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -10028,6 +10175,7 @@
     "summary": "Help Fenimore Fillmore find three golden skulls that hold the key to a lost Toltec treasure.",
     "studio": "Revistronic",
     "genre": "Western comedy adventure",
+    "category": "Comedy",
     "heroImage": "/launcher/toltecs-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -10095,6 +10243,7 @@
     "summary": "Private investigator Tony Tough pursues the culprit stealing children's Halloween sweets.",
     "studio": "Nayma Software / Prograph Research",
     "genre": "Comedy mystery adventure",
+    "category": "Mystery & thriller",
     "heroImage": "/launcher/tony-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -10162,6 +10311,7 @@
     "summary": "An animator is pulled into a cartoon world and must stop a villain from turning it into a sinister new creation.",
     "studio": "Burst Studios",
     "genre": "Cartoon comedy adventure",
+    "category": "Comedy",
     "heroImage": "/launcher/toon-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -10229,6 +10379,7 @@
     "summary": "Help would-be musketeer Geoffroi Le Brun investigate a murder and a stolen will in sixteenth-century France.",
     "studio": "Clipper Software",
     "genre": "Swashbuckling adventure",
+    "category": "Adventure",
     "heroImage": "/launcher/touche-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -10296,6 +10447,7 @@
     "summary": "Investigate crimes as rookie officer Jake Ryan and uncover the truth about his parents' deaths.",
     "studio": "Tsunami Media",
     "genre": "Police procedural adventure",
+    "category": "Mystery & thriller",
     "heroImage": "/launcher/blueforce-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -10363,6 +10515,7 @@
     "summary": "Explore Larry Niven's Ringworld and search for information that could prevent a war between the Kzinti and humanity.",
     "studio": "Tsunami Media",
     "genre": "Science-fiction adventure",
+    "category": "Science fiction",
     "heroImage": "/launcher/ringworld-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -10430,6 +10583,7 @@
     "summary": "Return to the Ringworld and follow its travellers through another interstellar conflict.",
     "studio": "Tsunami Media",
     "genre": "Science-fiction adventure",
+    "category": "Science fiction",
     "heroImage": "/launcher/ringworld2-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -10500,6 +10654,7 @@
     "summary": "Help pizza delivery boy and lab assistant Bud Tucker rescue a professor and stop a plot involving cloned villains.",
     "studio": "Merit Studios",
     "genre": "Comedy adventure",
+    "category": "Comedy",
     "heroImage": "/launcher/tucker-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -10567,6 +10722,7 @@
     "summary": "Watch a powerful family's mansion through a camera and gather evidence of crimes before the weekend ends.",
     "studio": "Entertainment Software Partners / Philips P.O.V.",
     "genre": "Interactive movie thriller",
+    "category": "Mystery & thriller",
     "heroImage": "/launcher/voyeur-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -10638,6 +10794,7 @@
     "summary": "A peasant sent to kill the Queen of Everything discovers an open-ended quest with choices about loyalty and violence.",
     "studio": "Deirdra Kiai (Squinky)",
     "genre": "Fantasy adventure",
+    "category": "Fantasy",
     "heroImage": "/launcher/chivalry-scummweb-generated-2026-11-06-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -10700,6 +10857,7 @@
     "summary": "Explore an isolated Victorian house, search for treasure, and uncover a killer using typed commands.",
     "studio": "On-Line Systems",
     "genre": "Text-command graphic adventure",
+    "category": "Adventure",
     "heroImage": "/launcher/hires1-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -10771,6 +10929,7 @@
     "summary": "Wield Thor’s hammer, solve environmental puzzles, and battle monsters across three Norse adventures.",
     "studio": "Adept Software",
     "genre": "Action puzzle adventure",
+    "category": "Action & arcade",
     "heroImage": "/launcher/got-scummweb-generated-2026-11-05-r1-hero.webp",
     "heroImagePosition": "80% 38%"
   },
@@ -10847,6 +11006,7 @@
     "summary": "Help Arthur and his friends figure out what to do when two birthday parties land on the same day.",
     "studio": "Living Books",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/arthurs-birthday-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "69% 40%"
   },
@@ -10923,6 +11083,7 @@
     "summary": "Join Arthur and his friends as a computer game turns an afternoon indoors into an underwater adventure.",
     "studio": "Living Books",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/arthurs-computer-adventure-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "69% 40%"
   },
@@ -10998,6 +11159,7 @@
     "summary": "Tag along as D.W. tries to read ten words to win a challenge from her older brother Arthur.",
     "studio": "Living Books",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/arthurs-reading-race-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "69% 40%"
   },
@@ -11074,6 +11236,7 @@
     "summary": "Follow the steady Tortoise and the speedy Hare as they race through an interactive retelling of Aesop’s fable.",
     "studio": "Living Books",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/the-tortoise-and-the-hare-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "71% 46%"
   },
@@ -11153,6 +11316,7 @@
     "summary": "Detective Jérôme Lange investigates a death at a snowbound manor, questioning the guests and following clues as time passes.",
     "studio": "Lankhor",
     "genre": "Detective mystery",
+    "category": "Mystery & thriller",
     "heroImage": "/launcher/mortville-manor-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "67% 39%"
   },
@@ -11229,6 +11393,7 @@
     "summary": "Pick a team of neighborhood kids and play a season of sandlot baseball.",
     "studio": "Humongous Entertainment",
     "genre": "Baseball",
+    "category": "Sports",
     "heroImage": "/launcher/backyard-baseball-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "68% 39%"
   },
@@ -11304,6 +11469,7 @@
     "summary": "Build a team from the Backyard Kids and kid versions of Major League stars for a season on the sandlot.",
     "studio": "Humongous Entertainment",
     "genre": "Baseball",
+    "category": "Sports",
     "heroImage": "/launcher/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -11380,6 +11546,7 @@
     "summary": "Draft your own sandlot lineup and take on backyard teams with kid versions of professional ballplayers.",
     "studio": "Humongous Entertainment",
     "genre": "Baseball",
+    "category": "Sports",
     "heroImage": "/launcher/backyard-baseball-2003-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -11456,6 +11623,7 @@
     "summary": "Put together a team of neighborhood players and take them to the court for a season of basketball.",
     "studio": "Humongous Entertainment",
     "genre": "Basketball",
+    "category": "Sports",
     "heroImage": "/launcher/backyard-basketball-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 40%"
   },
@@ -11531,6 +11699,7 @@
     "summary": "Choose the kids for your backyard football team, call the plays and take the field.",
     "studio": "Humongous Entertainment",
     "genre": "American football",
+    "category": "Sports",
     "heroImage": "/launcher/backyard-football-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -11606,6 +11775,7 @@
     "summary": "Take the field with a team of Backyard Kids and kid versions of NFL players.",
     "studio": "Humongous Entertainment",
     "genre": "American football",
+    "category": "Sports",
     "heroImage": "/launcher/backyard-football-2002-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -11682,6 +11852,7 @@
     "summary": "Swim with Freddi and Luther to recover Grandma Grouper’s missing kelp seeds before the reef runs out of food.",
     "studio": "Humongous Entertainment",
     "genre": "Undersea mystery",
+    "category": "Family & education",
     "heroImage": "/launcher/freddi-fish-1-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%",
     "shortTitle": "Freddi Fish 1"
@@ -11760,6 +11931,7 @@
     "summary": "Help Freddi and Luther build a trap for the ghost stealing toys from their underwater school.",
     "studio": "Humongous Entertainment",
     "genre": "Undersea mystery",
+    "category": "Family & education",
     "heroImage": "/launcher/freddi-fish-2-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 43%",
     "shortTitle": "Freddi Fish 2"
@@ -11837,6 +12009,7 @@
     "summary": "Search a tropical reef with Freddi and Luther for the missing Great Conch Shell before the Founder's Day festival.",
     "studio": "Humongous Entertainment",
     "genre": "Undersea mystery",
+    "category": "Family & education",
     "heroImage": "/launcher/freddi-fish-3-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -11913,6 +12086,7 @@
     "summary": "Ride into Briny Gulch with Freddi and Luther to find Calico’s missing hogfish and expose the rustlers.",
     "studio": "Humongous Entertainment",
     "genre": "Undersea Western",
+    "category": "Family & education",
     "heroImage": "/launcher/freddi-fish-4-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "69% 43%",
     "shortTitle": "Freddi Fish 4"
@@ -11990,6 +12164,7 @@
     "summary": "Explore Coral Cove with Freddi and Luther and find out what is behind reports of a sea creature at the park.",
     "studio": "Humongous Entertainment",
     "genre": "Undersea mystery",
+    "category": "Family & education",
     "heroImage": "/launcher/freddi-fish-5-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "69% 40%",
     "shortTitle": "Freddi Fish 5"
@@ -12067,6 +12242,7 @@
     "summary": "Put on a red cape and join Sam in the Land of Darkness, where the creatures in his closet help him face his fear of the dark.",
     "studio": "Humongous Entertainment",
     "genre": "Junior adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/pajama-sam-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "68% 32%",
     "shortTitle": "Pajama Sam"
@@ -12144,6 +12320,7 @@
     "summary": "Help Spy Fox track down a hidden switch at the World's Fair and stop a giant robot dog before it can hatch a world takeover.",
     "studio": "Humongous Entertainment",
     "genre": "Spy adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/spy-fox-2-scummweb-generated-2026-11-07-r2-hero.webp",
     "heroImagePosition": "69% 39%"
   },
@@ -12221,6 +12398,7 @@
     "summary": "Carry a talkative lantern through the Great Underground Empire and uncover the magic its Grand Inquisitor has banned.",
     "studio": "Activision",
     "genre": "Fantasy comedy",
+    "category": "Fantasy",
     "heroImage": "/launcher/zork-grand-inquisitor-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "69% 25%"
   },
@@ -12297,6 +12475,7 @@
     "summary": "Explore the Forbidden Lands and follow the trail of four vanished alchemists through the ruined Temple of Agrippa.",
     "studio": "Zombie Studios",
     "genre": "Dark fantasy mystery",
+    "category": "Fantasy",
     "heroImage": "/launcher/zork-nemesis-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -12373,6 +12552,7 @@
     "summary": "Play counting, matching and simple math games with Blue and her friends.",
     "studio": "Humongous Entertainment",
     "genre": "Preschool activities",
+    "category": "Family & education",
     "heroImage": "/launcher/blues-123-time-activities-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 43%"
   },
@@ -12449,6 +12629,7 @@
     "summary": "Practice letters and sounds with Blue through games and stories around the house.",
     "studio": "Humongous Entertainment",
     "genre": "Preschool activities",
+    "category": "Family & education",
     "heroImage": "/launcher/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 43%"
   },
@@ -12525,6 +12706,7 @@
     "summary": "Help Blue and her friends with art projects using drawing, color and everyday craft supplies.",
     "studio": "Humongous Entertainment",
     "genre": "Preschool activities",
+    "category": "Family & education",
     "heroImage": "/launcher/blues-art-time-activities-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 43%"
   },
@@ -12602,6 +12784,7 @@
     "summary": "Follow clues and help Blue’s friends get ready for her birthday party.",
     "studio": "Humongous Entertainment",
     "genre": "Preschool adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 43%"
   },
@@ -12678,6 +12861,7 @@
     "summary": "Read along with Blue and play with letters, sounds and words.",
     "studio": "Humongous Entertainment",
     "genre": "Preschool activities",
+    "category": "Family & education",
     "heroImage": "/launcher/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 43%"
   },
@@ -12754,6 +12938,7 @@
     "summary": "Sit down with King Graham for checkers and backgammon in this Sierra board-game collection.",
     "studio": "Sierra On-Line",
     "genre": "Board games",
+    "category": "Cards & board games",
     "heroImage": "/launcher/king-grahams-board-game-challenge-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -12830,6 +13015,7 @@
     "summary": "Join Larry Laffer for slots, blackjack and poker in a collection of Sierra casino games.",
     "studio": "Sierra On-Line",
     "genre": "Casino games",
+    "category": "Cards & board games",
     "heroImage": "/launcher/leisure-suit-larrys-casino-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -12906,6 +13092,7 @@
     "summary": "Play dominoes and the dice game Yacht against Laura Bow in her parlor.",
     "studio": "Sierra On-Line",
     "genre": "Board games",
+    "category": "Cards & board games",
     "heroImage": "/launcher/parlor-games-with-laura-bow-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -12982,6 +13169,7 @@
     "summary": "Try archery, Nine Men’s Morris and Sticks with Robin Hood in a trio of Sierra minigames.",
     "studio": "Sierra On-Line",
     "genre": "Minigame collection",
+    "category": "Cards & board games",
     "heroImage": "/launcher/robin-hoods-games-of-skill-and-chance-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -13059,6 +13247,7 @@
     "summary": "Join Roger Wilco for Ms. Astro Chicken, Monolith Burger Building and Sand Skimmer.",
     "studio": "Sierra On-Line",
     "genre": "Arcade collection",
+    "category": "Action & arcade",
     "heroImage": "/launcher/roger-wilcos-spaced-out-game-pack-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -13126,6 +13315,7 @@
     "summary": "Meet Dr. Seuss’s curious creatures and follow an animated journey through the alphabet.",
     "studio": "Living Books",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/dr-seusss-abc-scummweb-generated-2026-11-07-r2-hero.webp",
     "heroImagePosition": "70% 42%",
     "posterImage": "/launcher/dr-seusss-abc-original-cover.webp"
@@ -13203,6 +13393,7 @@
     "summary": "Help Fatty Bear and the other toys set up a surprise party for Kayla before she wakes up.",
     "studio": "Humongous Entertainment",
     "genre": "Point-and-click adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -13278,6 +13469,7 @@
     "summary": "Play Go Fish, Reversi, tangrams and other activities with Fatty Bear.",
     "studio": "Humongous Entertainment",
     "genre": "Activity collection",
+    "category": "Family & education",
     "heroImage": "/launcher/fatty-bears-funpack-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -13353,6 +13545,7 @@
     "summary": "Help Freddi and Luther find their way through a series of winding underwater mazes.",
     "studio": "Humongous Entertainment",
     "genre": "Undersea arcade game",
+    "category": "Action & arcade",
     "heroImage": "/launcher/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -13428,6 +13621,7 @@
     "summary": "Guide Freddi and Luther through underwater arcade levels filled with obstacles.",
     "studio": "Humongous Entertainment",
     "genre": "Undersea arcade game",
+    "category": "Action & arcade",
     "heroImage": "/launcher/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -13495,6 +13689,7 @@
     "summary": "Follow Sam-I-Am and his reluctant friend in an animated adaptation of Dr. Seuss’s rhyming story.",
     "studio": "Living Books",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/green-eggs-and-ham-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%",
     "posterImage": "/launcher/green-eggs-and-ham-original-cover.webp"
@@ -13572,6 +13767,7 @@
     "summary": "Join Harry and his friends as they venture inside a spooky house to find their baseball.",
     "studio": "Living Books",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -13648,6 +13844,7 @@
     "summary": "Race to reach an asteroid and destroy it before it collides with Earth.",
     "studio": "On-Line Systems",
     "genre": "Illustrated text adventure",
+    "category": "Adventure",
     "heroImage": "/launcher/mission-asteroid-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "71% 42%"
   },
@@ -13724,6 +13921,7 @@
     "summary": "Travel through the kingdom of Serenia to rescue a princess from the wizard who imprisoned her.",
     "studio": "On-Line Systems",
     "genre": "Illustrated text adventure",
+    "category": "Adventure",
     "heroImage": "/launcher/the-wizard-and-the-princess-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "71% 42%"
   },
@@ -13800,6 +13998,7 @@
     "summary": "Use a time machine to travel through history and stop a threat from the distant future.",
     "studio": "On-Line Systems",
     "genre": "Illustrated text adventure",
+    "category": "Adventure",
     "heroImage": "/launcher/time-zone-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "71% 42%"
   },
@@ -13867,6 +14066,7 @@
     "summary": "Guide Jen across Thra to restore the Dark Crystal in Sierra’s adaptation of the fantasy film.",
     "studio": "Sierra On-Line",
     "genre": "Illustrated text adventure",
+    "category": "Adventure",
     "heroImage": "/launcher/the-dark-crystal-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%",
     "posterImage": "/launcher/the-dark-crystal-original-cover.webp"
@@ -13944,6 +14144,7 @@
     "summary": "Play six familiar card games including gin rummy, crazy eights, cribbage and hearts.",
     "studio": "Sierra On-Line",
     "genre": "Card games",
+    "category": "Cards & board games",
     "heroImage": "/launcher/hoyles-official-book-of-games-volume-1-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -14020,6 +14221,7 @@
     "summary": "Try 28 forms of solitaire, including Klondike, Pyramid and Yukon.",
     "studio": "Sierra On-Line",
     "genre": "Solitaire",
+    "category": "Cards & board games",
     "heroImage": "/launcher/hoyles-official-book-of-games-volume-2-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -14096,6 +14298,7 @@
     "summary": "Play classic board games such as checkers, backgammon and dominoes.",
     "studio": "Sierra On-Line",
     "genre": "Board games",
+    "category": "Cards & board games",
     "heroImage": "/launcher/hoyles-official-book-of-games-volume-3-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -14172,6 +14375,7 @@
     "summary": "Spend a day at the beach with Little Critter and his grandma in Mercer Mayer’s interactive storybook.",
     "studio": "Living Books",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/just-grandma-and-me-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -14245,6 +14449,7 @@
     "summary": "Test what you remember about the King’s Quest adventures in this trivia game from the Collector’s Edition.",
     "studio": "Sierra On-Line",
     "genre": "Trivia",
+    "category": "Adventure",
     "heroImage": "/launcher/kings-questions-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%",
     "posterImage": "/launcher/kings-questions-scummweb-generated-2026-11-07-r2-cover.webp"
@@ -14321,6 +14526,7 @@
     "summary": "Follow Buzzy the Knowledge Bug through a working airport and learn what goes on before and after a flight.",
     "studio": "Humongous Entertainment",
     "genre": "Interactive field trip",
+    "category": "Family & education",
     "heroImage": "/launcher/lets-explore-the-airport-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -14396,6 +14602,7 @@
     "summary": "Take a field trip with Buzzy to learn about crops, farm animals and the machines that keep a farm running.",
     "studio": "Humongous Entertainment",
     "genre": "Interactive field trip",
+    "category": "Family & education",
     "heroImage": "/launcher/lets-explore-the-farm-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -14471,6 +14678,7 @@
     "summary": "Explore jungle habitats with Buzzy and learn about the plants and animals that live there.",
     "studio": "Humongous Entertainment",
     "genre": "Interactive field trip",
+    "category": "Family & education",
     "heroImage": "/launcher/lets-explore-the-jungle-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -14547,6 +14755,7 @@
     "summary": "Spend a school day with Little Monster and his classmates in Mercer Mayer’s interactive storybook.",
     "studio": "Living Books",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/little-monster-at-school-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -14623,6 +14832,7 @@
     "summary": "Follow Arthur as he practices for the school spelling bee in Marc Brown’s interactive storybook.",
     "studio": "Living Books",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -14699,6 +14909,7 @@
     "summary": "Help return familiar fairy-tale characters and objects to the stories they came from.",
     "studio": "Sierra On-Line",
     "genre": "Children’s adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/mixed-up-fairy-tales-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -14775,6 +14986,7 @@
     "summary": "Explore Mother Goose Land and return missing items to the nursery rhyme characters who need them.",
     "studio": "Sierra On-Line",
     "genre": "Children’s adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/mixed-up-mother-goose-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -14851,6 +15063,7 @@
     "summary": "Help Mother Goose put the nursery rhymes back together in Sierra’s illustrated Deluxe edition.",
     "studio": "Sierra On-Line",
     "genre": "Children’s adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -14927,6 +15140,7 @@
     "summary": "Explore Michael Sheail’s short two-room adventure in its ScummC adaptation.",
     "studio": "Michael Sheail",
     "genre": "Point-and-click adventure",
+    "category": "Adventure",
     "heroImage": "/launcher/open-quest-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%",
     "posterImage": "/launcher/open-quest-scummweb-generated-2026-11-07-r1-cover.webp"
@@ -15005,6 +15219,7 @@
     "summary": "Help Pajama Sam get the weather machines working again before World Wide Weather loses control of the skies.",
     "studio": "Humongous Entertainment",
     "genre": "Point-and-click adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/pajama-sam-2-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -15082,6 +15297,7 @@
     "summary": "Help Pajama Sam find the missing delegates and bring peace to the food groups before dinner.",
     "studio": "Humongous Entertainment",
     "genre": "Point-and-click adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/pajama-sam-3-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -15158,6 +15374,7 @@
     "summary": "Play a collection of board games and puzzles with Pajama Sam and his friends.",
     "studio": "Humongous Entertainment",
     "genre": "Minigame collection",
+    "category": "Family & education",
     "heroImage": "/launcher/pajama-sam-games-to-play-on-any-day-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -15234,6 +15451,7 @@
     "summary": "Travel with Pajama Sam to collect lost objects while navigating a series of arcade courses.",
     "studio": "Humongous Entertainment",
     "genre": "Arcade game",
+    "category": "Action & arcade",
     "heroImage": "/launcher/pajama-sams-lost-and-found-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -15309,6 +15527,7 @@
     "summary": "Sort pairs of socks with Pajama Sam as the sock machine gets faster and trickier.",
     "studio": "Humongous Entertainment",
     "genre": "Arcade puzzle",
+    "category": "Action & arcade",
     "heroImage": "/launcher/pajama-sams-sock-works-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -15384,6 +15603,7 @@
     "summary": "Read Uncle Archibald’s animated story or arrange characters and scenery to tell a story of your own.",
     "studio": "Coktel Vision",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -15460,6 +15680,7 @@
     "summary": "Follow an animated mystery and build scenes of your own with the Playtoons story tools.",
     "studio": "Coktel Vision",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/playtoons-2-the-case-of-the-counterfeit-collaborator-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -15535,6 +15756,7 @@
     "summary": "Explore the castle in an animated story, then use the characters and scenery to create a new adventure.",
     "studio": "Coktel Vision",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/playtoons-3-the-secret-of-the-castle-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -15610,6 +15832,7 @@
     "summary": "Follow the Mandarine Prince through his animated story and use the Playtoons editor to create your own scenes.",
     "studio": "Coktel Vision",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/playtoons-4-the-mandarine-prince-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -15687,6 +15910,7 @@
     "summary": "Follow Bambou, the smallest warrior in his village, as he takes on a giant boa in this French interactive story.",
     "studio": "Coktel Vision",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -15761,6 +15985,7 @@
     "summary": "Join Putt-Putt and Fatty Bear for a collection of classic puzzles, coloring and board games.",
     "studio": "Humongous Entertainment",
     "genre": "Activity collection",
+    "category": "Family & education",
     "heroImage": "/launcher/putt-putt-and-fatty-bears-activity-pack-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -15836,6 +16061,7 @@
     "summary": "Bounce through arcade levels with Putt-Putt and Pep to pop balloons and collect bonuses.",
     "studio": "Humongous Entertainment",
     "genre": "Arcade game",
+    "category": "Action & arcade",
     "heroImage": "/launcher/putt-putt-and-peps-balloon-o-rama-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -15911,6 +16137,7 @@
     "summary": "Help Pep hop through courses on his pogo stick and collect treats.",
     "studio": "Humongous Entertainment",
     "genre": "Arcade game",
+    "category": "Action & arcade",
     "heroImage": "/launcher/putt-putt-and-peps-dog-on-a-stick-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -15987,6 +16214,7 @@
     "summary": "Help Putt-Putt and Pep find the equipment they need to enter the Cartown race.",
     "studio": "Humongous Entertainment",
     "genre": "Point-and-click adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/putt-putt-enters-the-race-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -16063,6 +16291,7 @@
     "summary": "Help Putt-Putt find a way back to Earth after a trip to the Moon.",
     "studio": "Humongous Entertainment",
     "genre": "Point-and-click adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/putt-putt-goes-to-the-moon-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -16139,6 +16368,7 @@
     "summary": "Follow Putt-Putt and Pep as they help the performers get ready for the Cartown circus.",
     "studio": "Humongous Entertainment",
     "genre": "Point-and-click adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/putt-putt-joins-the-circus-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -16215,6 +16445,7 @@
     "summary": "Help Putt-Putt get ready to join the annual Cartown parade.",
     "studio": "Humongous Entertainment",
     "genre": "Point-and-click adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/putt-putt-joins-the-parade-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -16291,6 +16522,7 @@
     "summary": "Find the missing baby animals before the Cartown Zoo opens.",
     "studio": "Humongous Entertainment",
     "genre": "Point-and-click adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/putt-putt-saves-the-zoo-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -16367,6 +16599,7 @@
     "summary": "Travel through different eras to find Pep and recover the things that slipped through the time portal.",
     "studio": "Humongous Entertainment",
     "genre": "Point-and-click adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/putt-putt-travels-through-time-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -16442,6 +16675,7 @@
     "summary": "Play a collection of puzzles, board games and coloring activities with Putt-Putt.",
     "studio": "Humongous Entertainment",
     "genre": "Activity collection",
+    "category": "Family & education",
     "heroImage": "/launcher/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -16517,6 +16751,7 @@
     "summary": "Make cards, posters and other printable projects with Putt-Putt and Pep.",
     "studio": "Humongous Entertainment",
     "genre": "Creative activities",
+    "category": "Family & education",
     "heroImage": "/launcher/putt-putts-one-stop-fun-shop-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -16593,6 +16828,7 @@
     "summary": "Follow Ruff as his quest for a bone takes him through a series of surprising places.",
     "studio": "Living Books",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/ruffs-bone-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -16669,6 +16905,7 @@
     "summary": "Follow Sheila Rae and her sister Louise when an unfamiliar route home puts Sheila Rae’s courage to the test.",
     "studio": "Living Books",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/sheila-rae-the-brave-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -16745,6 +16982,7 @@
     "summary": "Join Slater and Charlie on a camping trip in Sierra’s interactive storybook.",
     "studio": "Sierra On-Line",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/slater-and-charlie-go-camping-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -16820,6 +17058,7 @@
     "summary": "Help Spy Fox pursue stolen cheese through a series of arcade levels.",
     "studio": "Humongous Entertainment",
     "genre": "Arcade game",
+    "category": "Action & arcade",
     "heroImage": "/launcher/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -16896,6 +17135,7 @@
     "summary": "Track down the missing dairy cows and foil William the Kid’s plan to control the milk supply.",
     "studio": "Humongous Entertainment",
     "genre": "Point-and-click adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/spy-fox-in-dry-cereal-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -16971,6 +17211,7 @@
     "summary": "Pilot Spy Fox’s craft through arcade courses and collect the supplies needed to stop the mustard operation.",
     "studio": "Humongous Entertainment",
     "genre": "Arcade game",
+    "category": "Action & arcade",
     "heroImage": "/launcher/spy-fox-in-hold-the-mustard-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -17047,6 +17288,7 @@
     "summary": "Help Spy Fox stop Poodles Galore’s aerosol scheme before it damages the ozone layer.",
     "studio": "Humongous Entertainment",
     "genre": "Point-and-click adventure",
+    "category": "Family & education",
     "heroImage": "/launcher/spy-fox-operation-ozone-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -17123,6 +17365,7 @@
     "summary": "Read along as a young fruit bat learns how to fit in with the birds who take her in.",
     "studio": "Living Books",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/stellaluna-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -17199,6 +17442,7 @@
     "summary": "See what happens when Brother and Sister Bear have a quarrel and try to make things right.",
     "studio": "Living Books",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/the-berenstain-bears-get-in-a-fight-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -17275,6 +17519,7 @@
     "summary": "Follow the Bear family as Sister Bear learns how ordinary shadows can seem scary at night.",
     "studio": "Living Books",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/the-berenstain-bears-in-the-dark-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -17342,6 +17587,7 @@
     "summary": "Read along as the Cat in the Hat brings chaos to a quiet, rainy afternoon.",
     "studio": "Living Books",
     "genre": "Interactive storybook",
+    "category": "Family & education",
     "heroImage": "/launcher/the-cat-in-the-hat-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%",
     "posterImage": "/launcher/the-cat-in-the-hat-original-cover.webp"
@@ -17419,6 +17665,7 @@
     "summary": "Climb down a manhole and explore a playful world full of unusual creatures and hidden paths.",
     "studio": "Cyan",
     "genre": "Exploration adventure",
+    "category": "Adventure",
     "heroImage": "/launcher/the-manhole-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -17495,6 +17742,7 @@
     "summary": "Explore a selection of Jack Prelutsky’s poems with animated characters and read-along narration.",
     "studio": "Living Books",
     "genre": "Interactive poetry",
+    "category": "Family & education",
     "heroImage": "/launcher/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%"
   },
@@ -17569,6 +17817,7 @@
     "summary": "Watch Sierra’s first animated holiday greeting, with Christmas scenes and seasonal music.",
     "studio": "Sierra On-Line",
     "genre": "Holiday animation",
+    "category": "Animation",
     "heroImage": "/launcher/christmas-card-1986-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%",
     "posterImage": "/launcher/christmas-card-1986-scummweb-generated-2026-11-07-r1-cover.webp"
@@ -17644,6 +17893,7 @@
     "summary": "Listen to seasonal music and watch an animated Christmas greeting from Sierra On-Line.",
     "studio": "Sierra On-Line",
     "genre": "Holiday animation",
+    "category": "Animation",
     "heroImage": "/launcher/christmas-card-1988-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%",
     "posterImage": "/launcher/christmas-card-1988-scummweb-generated-2026-11-07-r1-cover.webp"
@@ -17720,6 +17970,7 @@
     "summary": "Watch an audition for Christmas characters go awry in Sierra’s animated holiday short.",
     "studio": "Sierra On-Line",
     "genre": "Holiday animation",
+    "category": "Animation",
     "heroImage": "/launcher/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%",
     "posterImage": "/launcher/christmas-card-1990-the-seasoned-professional-scummweb-generated-2026-11-07-r1-cover.webp"
@@ -17795,6 +18046,7 @@
     "summary": "Enjoy a Sierra holiday greeting with snowy landscapes and seasonal music.",
     "studio": "Sierra On-Line",
     "genre": "Holiday animation",
+    "category": "Animation",
     "heroImage": "/launcher/christmas-card-1992-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%",
     "posterImage": "/launcher/christmas-card-1992-scummweb-generated-2026-11-07-r1-cover.webp"
@@ -17850,6 +18102,7 @@
     "summary": "Help Donald earn change through four jobs and buy equipment for his nephews’ playground.",
     "studio": "Sierra On-Line",
     "genre": "Educational game",
+    "category": "Family & education",
     "posterImage": "/launcher/donald-ducks-playground-original-cover.webp"
   },
   "gob:inca2": {
@@ -17911,6 +18164,7 @@
     "summary": "Investigate a mysterious asteroid threatening the Inca empire in this space adventure.",
     "studio": "Coktel Vision",
     "genre": "Space adventure",
+    "category": "Science fiction",
     "posterImage": "/launcher/inca-ii-wiracocha-scummweb-generated-2026-11-07-r1-cover.webp"
   },
   "sci:astrochicken": {
@@ -17986,6 +18240,7 @@
     "summary": "Land the arcade chicken safely on a series of pads in Sierra’s playable Space Quest III demo.",
     "studio": "Sierra On-Line",
     "genre": "Arcade game",
+    "category": "Action & arcade",
     "heroImage": "/launcher/astro-chicken-scummweb-generated-2026-11-07-r1-hero.webp",
     "heroImagePosition": "70% 42%",
     "posterImage": "/launcher/astro-chicken-scummweb-generated-2026-11-07-r1-cover.webp"

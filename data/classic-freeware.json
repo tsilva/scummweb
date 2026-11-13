@@ -483,6 +483,28 @@
         "basis": "Official ScummVM-hosted playable Day One promotional demo. README calls it fully interactive and standalone runnable. Included notices and binary distribution strings inspected; no express rehosting grant or archive-wide redistribution ban found. INSTALL.HLP lists noload.drv as not for shipping, but that driver is absent; the included MT32.DRV is a separate driver. Official hosting supports this assessment but is not an express rights-holder license.",
         "preservation": "Serve the complete unchanged upstream ZIP, retaining README.TXT, INSTALL.HLP, all original drivers, game resources and copyright notices."
       }
+    },
+    {
+      "target": "freddypharkas-demo",
+      "title": "Freddy Pharkas: Frontier Pharmacist (Demo)",
+      "engineId": "sci",
+      "gameId": "freddypharkas",
+      "platform": "pc",
+      "extra": "CD Demo",
+      "archive": "freddypharkas-win-cd-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/sci/freddypharkas-win-cd-demo-en.zip",
+      "sha256": "c4c7ffe606c42329510d2eafcfbc35146a5400e110404f20eb02f07401a8796e",
+      "preserveArchive": true,
+      "noticeFile": "README.TXT",
+      "config": {
+        "subtitles": "false"
+      },
+      "redistributionReview": {
+        "reviewedOn": "2026-11-13",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "Official ScummVM-hosted English Windows CD interactive promotional demo. All fourteen files and included notices inspected; no express CD-archive rehosting grant or redistribution ban found. The separately hosted DOS demo explicitly invites free distribution, supporting promotional intent without being treated as an express CD-archive license. ScummVM identifies this package’s shared game resources as its English DOS CD demo.",
+        "preservation": "Serve the complete unchanged upstream ZIP, retaining README.TXT, original Windows executables and DLLs, all game resources and copyright notices."
+      }
     }
   ]
 }
