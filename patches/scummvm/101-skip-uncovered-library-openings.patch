@@ -1,0 +1,99 @@
+diff --git a/engines/parallaction/gui_br.cpp b/engines/parallaction/gui_br.cpp
+--- a/engines/parallaction/gui_br.cpp
++++ b/engines/parallaction/gui_br.cpp
+@@ -29,6 +29,8 @@
+ #include "parallaction/parallaction.h"
+ #include "parallaction/saveload.h"
+ 
++#include "engines/scummweb-intro.h"
++
+ namespace Parallaction {
+ 
+ class SplashInputState_BR : public MenuInputState {
+@@ -49,6 +51,13 @@
+ 	}
+ 
+ 	MenuInputState* run() override {
++#ifdef __EMSCRIPTEN__
++		if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested()) {
++			// Both publisher slides lead to the original New/Load/See Intro menu.
++			ScummWebIntro::skipRequested(false);
++			return _helper->getState("mainmenu");
++		}
++#endif
+ 		if (_fadeSteps > 0) {
+ 			pal.fadeTo(blackPal, 1);
+ 			_vm->_gfx->setPalette(pal);
+@@ -57,6 +66,10 @@
+ 		}
+ 
+ 		if (_fadeSteps == 0) {
++#ifdef __EMSCRIPTEN__
++			if (_nextState == "mainmenu")
++				ScummWebIntro::skipRequested(false);
++#endif
+ 			return _helper->getState(_nextState);
+ 		}
+ 
+diff --git a/engines/wintermute/base/scriptables/script_engine.h b/engines/wintermute/base/scriptables/script_engine.h
+--- a/engines/wintermute/base/scriptables/script_engine.h
++++ b/engines/wintermute/base/scriptables/script_engine.h
+@@ -111,6 +111,10 @@
+ 	void dumpStats();
+ 
+ private:
++#ifdef __EMSCRIPTEN__
++	bool _browserOpeningSeen = false;
++	bool _browserSkipOpening = false;
++#endif
+ 
+ 	CScCachedScript *_cachedScripts[MAX_CACHED_SCRIPTS];
+ 	bool _isProfiling;
+diff --git a/engines/wintermute/base/scriptables/script_engine.cpp b/engines/wintermute/base/scriptables/script_engine.cpp
+--- a/engines/wintermute/base/scriptables/script_engine.cpp
++++ b/engines/wintermute/base/scriptables/script_engine.cpp
+@@ -35,6 +35,8 @@
+ #include "engines/wintermute/utils/utils.h"
+ #include "engines/wintermute/platform_osystem.h"
+ #include "engines/wintermute/dcgf.h"
++
++#include "engines/scummweb-intro.h"
+ 
+ namespace Wintermute {
+ 
+@@ -273,6 +275,35 @@
+ 
+ //////////////////////////////////////////////////////////////////////////
+ bool ScEngine::tick() {
++#ifdef __EMSCRIPTEN__
++	ScScript *browserOpening = nullptr;
++	if (ScummWebIntro::nativeSkipEnabled() && !ScummWebIntro::startupFinished() &&
++			BaseEngine::instance().getGameId() == "chivalry") {
++		for (int32 i = 0; i < _scripts.getSize(); i++) {
++			ScScript *script = _scripts[i];
++			// This title script runs after the original instructions dialog.
++			// Wake only its timed waits; retain its actor setup and ChangeScene.
++			if (!script->_thread && script->_filename && script->_bufferSize == 999 &&
++					Common::String(script->_filename).equalsIgnoreCase("scenes\\intro\\scr\\scene_init.script") &&
++					script->_state != SCRIPT_FINISHED && script->_state != SCRIPT_ERROR &&
++					script->_state != SCRIPT_PERSISTENT) {
++				browserOpening = script;
++				break;
++			}
++		}
++		if (browserOpening) {
++			_browserOpeningSeen = true;
++			const bool available = browserOpening->_state == SCRIPT_SLEEPING && _game->_state == GAME_RUNNING;
++			if (ScummWebIntro::skipRequested(available))
++				_browserSkipOpening = true;
++			if (available && _browserSkipOpening)
++				browserOpening->run();
++		} else if (_browserOpeningSeen) {
++			_browserSkipOpening = false;
++			ScummWebIntro::gameplayStarted();
++		}
++	}
++#endif
+ 	if (_scripts.getSize() == 0) {
+ 		return STATUS_OK;
+ 	}

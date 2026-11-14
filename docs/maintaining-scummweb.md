@@ -259,7 +259,10 @@ an opening segment that can be skipped. Full Throttle's demo uses this path
 because saving is unavailable before its first decision. Imported games offer **Skip intro**
 while their engine exposes a supported opening segment. The action advances
 through the game's original transition and preserves its menus and choices.
-Continue omits the action. Iceman’s opening includes its credits and Tahiti
+Continue omits the action. The Big Red Adventure can skip its publisher slides
+to the original New Game, Load and See Intro menu. Chivalry is Not Dead retains
+its instructions dialog, then can skip its title sequence through the original
+scene initializer, preserving its first story choice. Iceman’s opening includes its credits and Tahiti
 prologue, ending when the beach accepts player input. Myst closes the action
 permanently at its original linking book or demo preview menu.
 Gobliiins’ bundled interactive DOS demo uses the native

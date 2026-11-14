@@ -1605,6 +1605,23 @@
         "Verify multiple distinct warnings accumulate without opening a dialog; unhosted games retain native warnings and fatal startup errors still stop launch."
       ],
       "retire_when": "Upstream routes engine-specific nonfatal compatibility notices to an opted-in browser host, preserving fallback behavior and native dialogs elsewhere."
+    },
+    {
+      "path": "patches/scummvm/101-skip-uncovered-library-openings.patch",
+      "status": "active",
+      "sha256": "99cd48d00c8ae07f162032a5f80bd1f503d3eb575f6c17f2207b0d5d5ae741f4",
+      "purpose": "Expose native intro skips for The Big Red Adventure publisher slides and Chivalry is Not Dead title-script waits.",
+      "invariants": [
+        "Keep Big Red Adventure New Game, Load and optional See Intro choices; natural publisher fades and desktop behavior remain intact.",
+        "Chivalry retains its instructions dialog, original script execution, actor setup and first story choice. Only the verified 999-byte intro scene initializer may have its sleeping state advanced.",
+        "No ordinary gameplay, paused scripts, saved games, other Wintermute titles or unrelated script waits are fast-forwarded; finish startup after the original intro script exits."
+      ],
+      "verification": [
+        "In Brave, skip Big Red Adventure during either publisher slide and reach its usable original menu; launch New Game and verify control.",
+        "In Brave, close Chivalry instructions, skip its title sequence and reach its original first dialogue choice; verify natural startup and saving/restoring without an intro action.",
+        "Rebuild the full native runtime and validate the complete patch series, bundle provenance and intro/player regression suite."
+      ],
+      "retire_when": "Upstream provides equivalent edition-scoped native intro controls and first-choice boundaries for both games."
     }
   ]
 }

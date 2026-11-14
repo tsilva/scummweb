@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-13T21:28:24.643494Z",
+  "generated_at_utc": "2026-11-14T09:01:34.781449Z",
   "scummvm": {
     "version": "v2026.4.0",
     "commit": "7d2709da5136866589f7602f5f5a7b17de03420e",
@@ -8,9 +8,9 @@
   "corresponding_source": {
     "page": "/doc/scummvm-source.html",
     "archive": "/doc/scummvm-source.zip",
-    "archive_sha256": "0999eb040740d744a6e3c634f798e6f2e637ab604d9955c41ec9fbc599660ee6",
+    "archive_sha256": "28d5aaf5efcc2acb0991ebbf9a1b1d915793da23caf1957a880dd424aca9e30a",
     "runtime_sha256": {
-      "scummvm.wasm": "88611e27769d76787ca645f0b9eb2b86ee45e48e251c81836e16b6f236de1cae",
+      "scummvm.wasm": "be671cb85d19e475866a6b12e52dee8475d132f72b805bdde772ca5639e0143b",
       "scummvm.js": "75f3c83758889742489c230483d2590a0fa171c788f812a77d1ac8dc4f69aec0",
       "data/plugins/libaccess.so": "79a18a2095309ab38d6510e5d66088491b1cbdbeff023069df055123f2242c18",
       "data/plugins/libadl.so": "cc810ca950ff679bd9cedde1fec90fc2e4be3c10eb8b23928124b29aaa76bb16",
@@ -44,7 +44,7 @@
       "data/plugins/libmortevielle.so": "1d368754b858c8142de93ae512a35ea7f84fdb92c29e11d6e9611b00222a8f72",
       "data/plugins/libneverhood.so": "99f3b3860d228e67d1407a19e4531f2f1e3d3444b3400f879eb1fa98de046013",
       "data/plugins/libngi.so": "37ebaecf025e8040e0ce9b8d62084b3772e522d536662a8f24fbe1d4c73f8994",
-      "data/plugins/libparallaction.so": "38ac15285829a738f3eb2656b96af847d9382fd478737a2ffc0aa74d713820fb",
+      "data/plugins/libparallaction.so": "c299f932ec4389fdc3183409b511a4ed0e623b3b6914d7cc73efe6da68c7e79a",
       "data/plugins/libpegasus.so": "972c10ba9afdc0f2c738ee5cb33ebb392aec025eb05fb2ea9acf8f9ed369a5a7",
       "data/plugins/libplumbers.so": "65dfdf9df889c5df5022c17e53ffc3f2a896b00e72b568fcd5830147da95359f",
       "data/plugins/libqueen.so": "18d6c5ec0d8ea7a24c3363f0dab45079f87088391fec65418cb83f4a9b08b5a6",
@@ -66,7 +66,7 @@
       "data/plugins/libtsage.so": "6f264f3b0a55c3b76c2b37e7965998c8a646ae4e7d58f0b863644b7bfb7bbc3e",
       "data/plugins/libtucker.so": "0e1775bd44f76d864bd4a90408a956f983b7f378ca10033fb57687073e14ef94",
       "data/plugins/libvoyeur.so": "3a832677c0d4caa8854d1e93a5f5de555323089ed4ccef1162d5b4bfd69f6945",
-      "data/plugins/libwintermute.so": "5f66e4702f40f909686590f73c9c6d8a8b2a7445d9951803a0a6095694d90654",
+      "data/plugins/libwintermute.so": "b51900080672e7f019b77142a9dc195d7b8a26492451eff0b951af7f584ab4ac",
       "data/plugins/libzvision.so": "0878446fca51ec7bfbf8c95395c2b6c420fc0438fb3c0676838e23bcfbf0160c"
     }
   }
