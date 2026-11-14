@@ -685,6 +685,9 @@ neighbors continue loading at low priority. Leaving or blurring a card cancels
 its unfinished preload by clearing both AVIF and fallback sources. Completed
 covers stay warm; clicking commits the preload through the navigation handoff.
 Obsolete slideshow preloads clear their sources too.
+The selected slide commits before scrolling into view, avoiding a frame of the
+previous game. Unfinished neighbor preloads wait until the current hero decodes;
+already decoded neighbors remain available for immediate navigation.
 
 ## Branding
 

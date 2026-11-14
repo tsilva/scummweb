@@ -408,11 +408,13 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
     const href = buildGameExitHref(game);
     // Only handle selections this mounted library can render. Other links keep
     // normal Next.js navigation, including direct links from compatibility.
-    if (!groups.some((group) => buildGameExitHref(group.game) === href)) return false;
+    const group = groups.find((group) => buildGameExitHref(group.game) === href);
+    if (!group) return false;
     if (`${window.location.pathname}${window.location.search}${window.location.hash}` !== href) {
       window.history.pushState(null, "", href);
     }
-    setSelection(readHeroSelection(new URL(href, window.location.origin).hash));
+    // Next updates usePathname in a transition; select the hero immediately.
+    setSelection(group.key);
     setNavigationId((value) => value + 1);
     return true;
   }

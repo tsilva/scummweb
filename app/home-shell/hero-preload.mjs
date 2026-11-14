@@ -35,6 +35,37 @@ export function disposeHeroPreload(picture) {
   picture.remove();
 }
 
+export function preloadHeroWindow(props, images) {
+  const keys = props.map((image) => JSON.stringify(image));
+  const currentKey = keys[0];
+  // Retain decoded neighbors, but stop unfinished background work while the
+  // visible hero is still loading. Its request gets the connection first.
+  for (const [key, picture] of images) {
+    const image = picture.querySelector("img");
+    if (!keys.includes(key) || (key !== currentKey && !(image.complete && image.naturalWidth))) {
+      disposeHeroPreload(picture);
+      images.delete(key);
+    }
+  }
+  if (!currentKey) return;
+  let current = images.get(currentKey);
+  if (!current) {
+    current = createHeroPreload(props[0]);
+    images.set(currentKey, current);
+  }
+  let cancelled = false;
+  const warmNeighbors = () => {
+    if (cancelled) return;
+    for (let index = 1; index < props.length; index += 1) {
+      if (!images.has(keys[index])) images.set(keys[index], createHeroPreload(props[index]));
+    }
+  };
+  const image = current.querySelector("img");
+  if (image.complete && image.naturalWidth) warmNeighbors();
+  else void image.decode().then(warmNeighbors, () => {});
+  return () => { cancelled = true; };
+}
+
 export function preloadSelectedHero(game, artwork, committed = false) {
   const props = getHeroImageProps(game, artwork);
   if (!props.src) return;

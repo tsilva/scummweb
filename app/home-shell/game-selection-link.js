@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef } from "react";
+import { flushSync } from "react-dom";
 import { buildGameExitHref } from "./hero-selection.mjs";
 import { useGameNavigation } from "./game-navigation";
 import { useArtworkDelivery } from "./artwork-delivery";
@@ -26,7 +27,10 @@ export default function GameSelectionLink({ game, children, onPointerEnter, onPo
     onBlur={(event) => { releaseHero(); onBlur?.(event); }}
     onNavigate={(event) => {
       warmHero(true);
-      if (selectGame?.(game)) event.preventDefault();
+      // Commit the selected slide before scrolling it into view.
+      flushSync(() => {
+        if (selectGame?.(game)) event.preventDefault();
+      });
       window.scrollTo({ top: 0, behavior: "instant" });
     }}>{children}</Link>;
 }

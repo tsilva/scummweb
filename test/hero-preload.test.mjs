@@ -11,7 +11,7 @@ const { code } = await swc.transform(await readFile(url, "utf8"), {
   jsc: { parser: { syntax: "ecmascript" } },
 });
 
-function harness() {
+function harness({ deferredDecode = false } = {}) {
   class Element {
     constructor(tag) { this.tag = tag; this.children = []; this.complete = false; this.naturalWidth = 0; }
     append(child) { this.children.push(child); child.parent = this; }
@@ -19,7 +19,14 @@ function harness() {
     querySelectorAll(tag) { return this.children.filter((child) => child.tag === tag); }
     querySelector(tag) { return this.querySelectorAll(tag)[0]; }
     removeAttribute(name) { delete this[name]; }
-    decode() { this.decodingStarted = true; return Promise.resolve(); }
+    decode() {
+      this.decodingStarted = true;
+      if (!deferredDecode) return Promise.resolve();
+      this.decoded ??= new Promise((resolve) => { this.finishDecode = () => {
+        this.complete = true; this.naturalWidth = 1200; resolve();
+      }; });
+      return this.decoded;
+    }
   }
   const body = new Element("body"), module = { exports: {} };
   runInNewContext(code, {
@@ -90,4 +97,33 @@ test("completed covers stay decoded while obsolete slideshow preloads release th
   h.disposeHeroPreload(neighbor);
   assert.equal(neighbor.querySelector("img").src, undefined);
   assert.equal(h.body.children.length, 1);
+});
+
+test("slideshow neighbors wait for the current hero to decode", async () => {
+  const h = harness({ deferredDecode: true }), images = new Map();
+  h.preloadHeroWindow([first, second], images);
+  assert.equal(h.body.children.length, 1, "the current cover gets the connection first");
+  h.body.children[0].querySelector("img").finishDecode();
+  await Promise.resolve();
+  assert.equal(h.body.children.length, 2, "neighbors warm only after the current cover is ready");
+  const neighbor = images.get(JSON.stringify(second));
+  neighbor.querySelector("img").finishDecode();
+  h.preloadHeroWindow([first, second], images);
+  assert.equal(images.get(JSON.stringify(second)), neighbor, "ready neighbors stay decoded");
+});
+
+test("rapid slideshow changes cancel obsolete downloads and cannot warm a stale window", async () => {
+  const h = harness({ deferredDecode: true }), images = new Map();
+  const cancel = h.preloadHeroWindow([first, second], images);
+  const oldImage = h.body.children[0].querySelector("img");
+  cancel();
+  const third = { ...first, src: "/three.webp" };
+  h.preloadHeroWindow([second, third], images);
+  assert.equal(oldImage.src, undefined);
+  oldImage.finishDecode();
+  await Promise.resolve();
+  assert.equal(h.body.children.length, 1, "late decoding cannot revive the previous window");
+  h.body.children[0].querySelector("img").finishDecode();
+  await Promise.resolve();
+  assert.equal(h.body.children.length, 2);
 });
