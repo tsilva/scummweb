@@ -45,10 +45,11 @@ same origin, so the usual application XSS protections remain essential.
 
 ## Player experience
 
-Choose **Settings → Connect Dropbox**. Active browser saves and preserved
-backup sets are copied automatically, without deleting browser originals.
+Choose **Settings → Saved games → Connect Dropbox**. Active browser saves and
+preserved backup sets are copied automatically, without deleting browser originals.
 The normal status is **Dropbox connected**, with a white Dropbox icon. The
-only routine secondary action is **Disconnect Dropbox**.
+sync status shows a spinner while connecting or syncing. A compact **Disconnect**
+button sits beside it and can cancel an ongoing sync.
 
 Completed player saves are captured with companion files and queued in
 IndexedDB before network publication. Pending native writes and isolated agent
