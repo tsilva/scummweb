@@ -120,6 +120,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "neverhood-demo": {
+    ...retroGameArtwork["neverhood:neverhood"],
+    heroImageMobilePosition: "80% -8vh",
+    title: "The Neverhood (Demo)",
+    year: "1996",
+    language: "en",
+  },
   "spyfox-demo": {
     ...retroGameArtwork["scumm:spyfox"],
     heroImageMobilePosition: "85% -8vh",

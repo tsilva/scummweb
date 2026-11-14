@@ -10256,6 +10256,32 @@
           4206804348
         ]
       ]
+    },
+    "neverhood-demo": {
+      "url": "https://scummvm-games.tsilva.eu/neverhood.zip",
+      "fingerprint": "63e988c384232b35ab0d913350abf75d4afbf568769d02d5f99f216a52aa3806",
+      "files": [
+        [
+          "A.BLB",
+          11973,
+          2870863031
+        ],
+        [
+          "NEVDEMO.BLB",
+          22564568,
+          3388389503
+        ],
+        [
+          "NEVDEMO.EXE",
+          324608,
+          2088921073
+        ],
+        [
+          "SMACKW32.DLL",
+          66048,
+          2402440488
+        ]
+      ]
     }
   }
 }

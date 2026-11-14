@@ -1480,6 +1480,11 @@
       "file": "zork-nemesis-the-forbidden-lands-108534972258666dc7b2fc57846d118cfc91dc70049447eb5827da71e9407856.jpg",
       "inputHash": "108534972258666dc7b2fc57846d118cfc91dc70049447eb5827da71e9407856",
       "imageHash": "eae9e06b8cefa2e3ede3113a6b615c163974f119d4df9387d2afad4fc9865699"
+    },
+    "the-neverhood-demo": {
+      "file": "the-neverhood-demo-7c56228c57020dfdc24b6bff691822fc36edb73adca3ec70f56e2a52e18e8a9f.jpg",
+      "inputHash": "7c56228c57020dfdc24b6bff691822fc36edb73adca3ec70f56e2a52e18e8a9f",
+      "imageHash": "8f8371d6b4ba00d410bf34124cc136eeb7d36f90c3b982bef6cc8366f3a380e1"
     }
   }
 }

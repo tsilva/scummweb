@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "The Neverhood (Demo)", target: "neverhood-demo", engineId: "neverhood", gameId: "neverhood",
+    files: [["a.blb", 11973, 2870863031], ["nevdemo.blb", 22564568, 3388389503]],
+  },
+  {
     title: "Spy Fox in \"Dry Cereal\" (Demo)", target: "spyfox-demo", engineId: "scumm", gameId: "spyfox",
     files: [["foxdemo.he0", 20103, 1482007684], ["foxdemo.he1", 14746318, 1132169902]],
   },

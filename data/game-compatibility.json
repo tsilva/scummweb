@@ -1232,6 +1232,14 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "The Neverhood (Demo)",
+      "status": "startup-verified",
+      "gameId": "neverhood:neverhood",
+      "edition": "neverhood-win-demo-en.zip",
+      "recordedOn": "2026-11-14",
+      "observation": "English Windows demo renders its original copyright opening and first clay room. Native intro skip, waking Klaymen and walking work. Save, Load and Continue restore the saved starting position."
+    },
+    {
       "title": "The Secret of Monkey Island",
       "status": "startup-verified",
       "gameId": "scumm:monkey",
