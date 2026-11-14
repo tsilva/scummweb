@@ -73,6 +73,14 @@ jobs:
             jq -er 'select(.key == "NEXT_PUBLIC_SENTRY_DSN") | .value
               | select(test("^https://[a-f0-9]+@[^/[:space:]]+\\.sentry\\.io/[0-9]+$"))
               | "NEXT_PUBLIC_SENTRY_DSN=" + .' >> "$GITHUB_ENV"
+          dropbox_id=$(vercel api "/v10/projects/$VERCEL_PROJECT_ID/env?teamId=$VERCEL_ORG_ID" |
+            jq -er '[.envs[] | select(.key == "NEXT_PUBLIC_DROPBOX_APP_KEY" and .type == "plain"
+              and (.target | index("production")) != null and .gitBranch == null)] | select(length == 1)
+              | .[0].id | select(test("^[a-zA-Z0-9_-]+$"))')
+          vercel api "/v1/projects/$VERCEL_PROJECT_ID/env/$dropbox_id?teamId=$VERCEL_ORG_ID" |
+            jq -er 'select(.key == "NEXT_PUBLIC_DROPBOX_APP_KEY" and .type == "plain") | .value
+              | select(test("^[a-zA-Z0-9_-]{8,128}$"))
+              | "NEXT_PUBLIC_DROPBOX_APP_KEY=" + .' >> "$GITHUB_ENV"
 
       - name: Restore social cards
         uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
