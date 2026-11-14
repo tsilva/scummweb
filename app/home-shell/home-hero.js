@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import HeroStage from "./hero-stage";
 import { getHeroPreloadImages, HERO_PRELOAD_AHEAD } from "./hero-images.mjs";
-import { createHeroPreload, disposeHeroPreload } from "./hero-preload.mjs";
+import { preloadHeroWindow, disposeHeroPreload } from "./hero-preload.mjs";
 import { useArtworkDelivery } from "./artwork-delivery";
 import { chooseGameVersion, getGameFamilyKey, readPreferredGameVersion, rememberGameVersion } from "../game-versions.mjs";
 import { orderHeroGroups } from "./hero-order.mjs";
@@ -83,21 +83,7 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
     return () => window.clearTimeout(timeout);
   }, [isDesktop, warmDistantSlides]);
 
-  useEffect(() => {
-    const nextImages = new Map();
-    for (const props of JSON.parse(preloadKey)) {
-      const key = JSON.stringify(props);
-      let picture = preloadedImages.current.get(key);
-      if (!picture) {
-        picture = createHeroPreload(props);
-      }
-      nextImages.set(key, picture);
-    }
-    for (const [key, picture] of preloadedImages.current) {
-      if (!nextImages.has(key)) disposeHeroPreload(picture);
-    }
-    preloadedImages.current = nextImages;
-  }, [preloadKey]);
+  useEffect(() => preloadHeroWindow(JSON.parse(preloadKey), preloadedImages.current), [preloadKey]);
 
   useEffect(() => () => {
     for (const picture of preloadedImages.current.values()) disposeHeroPreload(picture);

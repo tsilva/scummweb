@@ -25,6 +25,7 @@ async function component(file, imports, globals = {}) {
     ...globals, module, exports: module.exports, URL,
     require(name) {
       if (name === "react/jsx-runtime") return createRequire(url)(name);
+      if (name === "react-dom") return imports[name] ?? { flushSync: (fn) => fn() };
       if (name === "./hero-order.mjs") return heroOrder;
       if (name === "./initial-actions.mjs") return initialActions;
       if (name === "./library-removal.mjs") return imports[name] ?? libraryRemoval;
@@ -54,6 +55,7 @@ async function library({ hidden, storageBlocked = false, mixed = false } = {}) {
   } };
   const persistentSources = new Map([[imported.source.id, imported.source]]);
   const failures = {};
+  let heldPathname;
   const window = {
     location: new URL("https://example.test/"),
     history: { pushState(data, title, href) { history.push(href); window.location = new URL(href, window.location); } },
@@ -70,7 +72,7 @@ async function library({ hidden, storageBlocked = false, mixed = false } = {}) {
   function View() {}
   const SourceLibrary = await component("source-library", {
     react: { useState: state, useRef: (current) => state({ current })[0], useMemo: (fn) => fn(), useEffect: (fn) => effects.push(fn) },
-    "next/navigation": { usePathname: () => window.location.pathname, useRouter: () => ({ push() { assert.fail("selection must not fetch a Next.js route"); } }) },
+    "next/navigation": { usePathname: () => heldPathname ?? window.location.pathname, useRouter: () => ({ push() { assert.fail("selection must not fetch a Next.js route"); } }) },
     "../game-presentation": { getImportedGamePresentation: () => imported.game, getGamePresentation: (game) => game },
     "../game-sources.mjs": {
       isLocalArchiveSource: () => true,
@@ -112,6 +114,7 @@ async function library({ hidden, storageBlocked = false, mixed = false } = {}) {
   const cleanup = effects[0]();
   effects[2](); // Clear the retired bundled-game hiding preference on mount.
   return { render, history, cleanup, listeners, persistentSources, values, failures,
+    holdPathname(pathname) { heldPathname = pathname; },
     restore(href) { window.location = new URL(href, window.location); listeners.get("popstate")(); return render(); },
   };
 }
@@ -282,6 +285,17 @@ test("same-page imported selections update immediately and clear when history re
   app.cleanup();
 });
 
+test("canonical card selections update the hero while Next pathname is still pending", async () => {
+  const app = await library();
+  app.holdPathname("/");
+  app.render().select(queen);
+  const view = app.render();
+  assert.equal(view.hero.props.featuredGame, sky, "the route transition has not committed yet");
+  assert.equal(view.hero.props.selection, versions.getGameFamilyKey(queen));
+  assert.equal(view.view.props.selectedKey, versions.getGameFamilyKey(queen));
+  app.cleanup();
+});
+
 test("selection links cancel route fetching only when the current library handles the game", async () => {
   let select = () => true, prevented = false;
   const warmed = [];
@@ -341,6 +355,21 @@ test("card exit, cancelled touch, blur and unmount release speculative hero work
   assert.equal(warmed.at(-1).committed, true, "navigation protects the image through scroll/blur");
   cleanups[0]();
   assert.equal(released.at(-1), warmed.at(-1), "unmount releases the link's current claim");
+});
+
+test("card navigation commits the selected hero before scrolling it into view", async () => {
+  let pending, rendered;
+  const events = [];
+  const Link = await component("game-selection-link", {
+    react: { useRef: (current) => ({ current }), useEffect() {} },
+    "react-dom": { flushSync(fn) { fn(); rendered = pending; events.push("commit"); } },
+    "next/link": "a",
+    "./hero-selection.mjs": selection,
+    "./game-navigation": { useGameNavigation: () => (game) => { pending = game; return true; } },
+    "./hero-preload.mjs": { preloadSelectedHero() { events.push("preload"); } },
+  }, { window: { scrollTo() { assert.equal(rendered, queen); events.push("scroll"); } } });
+  Link({ game: queen }).props.onNavigate({ preventDefault() {} });
+  assert.deepEqual(events, ["preload", "commit", "scroll"]);
 });
 
 test("a mounted hero resets to the requested game after automatic rotation or reselecting its route", async () => {
