@@ -1897,6 +1897,14 @@
       "observation": "A game frame renders at startup."
     },
     {
+      "title": "Putt-Putt Joins the Parade (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:puttputt",
+      "edition": "puttputt-win-demo-us.zip",
+      "observation": "English Windows demo renders its original voiced opening and first road scene. Native intro skip and flower animation input work. Saving is unavailable in the tested opening and first playable scene.",
+      "recordedOn": "2026-11-14"
+    },
+    {
       "title": "Putt-Putt Saves the Zoo",
       "status": "startup-verified",
       "gameId": "scumm:puttzoo",

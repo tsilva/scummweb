@@ -14,8 +14,9 @@ Preparation reads no credentials. It writes a private plan under
 `.internal/evidence/game-publishing/<target>/plan.json`, binding the current
 catalog, exact archive, byte count and SHA-256. Changed existing plans are
 rejected. The source must be an owned, nonlinked ZIP in `downloads/`, preserved
-unchanged and hosted under the official ScummVM demo directory. The maximum is
-4 GiB, matching the application import limit.
+unchanged and hosted under the official ScummVM demo directory. Humongous
+packages may use the exact `scumm/he/` subdirectory for the SCUMM engine.
+The maximum is 4 GiB, matching the application import limit.
 
 ## Optional Runbox connection
 

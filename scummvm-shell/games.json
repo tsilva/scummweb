@@ -575,6 +575,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": "/launcher/notices/technobabylon.txt"
+    },
+    {
+      "target": "puttputt-demo",
+      "title": "Putt-Putt Joins the Parade (Demo)",
+      "path": "/games/puttputt",
+      "engineId": "scumm",
+      "gameId": "puttputt",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

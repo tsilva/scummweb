@@ -120,6 +120,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "puttputt-demo": {
+    ...retroGameArtwork["scumm:puttputt"],
+    heroImageMobilePosition: "100% -30vh",
+    title: "Putt-Putt Joins the Parade (Demo)",
+    year: "1992",
+    language: "en",
+  },
   "technobabylon-demo": {
     ...retroGameArtwork["ags:technobabylon"],
     heroImageMobilePosition: "80% -8vh",
