@@ -688,6 +688,24 @@
         "basis": "All four original files scanned as data for ASCII, UTF16 and XOR69 legal strings; retained PKWARE, Watcom and original 1996 notices. No express redistribution ban or rehosting grant found. No standalone license, compiled Help or nested installer is present in this archive. Official promotional hosting supports the cautious assessment explicitly authorized in this chat, without establishing an express rights-holder license. Original rendered copyright warning retained.",
         "preservation": "Serve complete unchanged ZIP, retaining original enclosing directory, both BLB data files, NEVDEMO.EXE and SMACKW32.DLL."
       }
+    },
+    {
+      "target": "toon-demo",
+      "title": "Toonstruck (Demo)",
+      "engineId": "toon",
+      "gameId": "toon",
+      "platform": "pc",
+      "extra": "Demo",
+      "archive": "toon-demo.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/toon/toon-demo.zip",
+      "sha256": "922177951ea0642c5db39ea4e8d3cdc897f4470b0b370e1092cf2fcd46132516",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-14",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "Complete unchanged official ScummVM-hosted promotional ZIP reviewed as data: all files ASCII, UTF16 and XOR69 legal scans, ZIP integrity/safe paths, plus validated uncompressed indexes for all nine nested PAK archives (813 entries). No standalone license, compiled Help, notice-bearing nested entry, express redistribution ban or rehosting grant found. Retain original Burst, Virgin, HMI, Watcom, SciTech and other notices. Eligibility uses only the cautious official promotional-hosting assessment explicitly authorized by the user, not an express rights-holder redistribution license.",
+        "preservation": "Serve the exact complete source ZIP including all ACT1 directories, original PAK/SVL/MUS/SMK data, executables, setup files, sound drivers and notices."
+      }
     }
   ]
 }

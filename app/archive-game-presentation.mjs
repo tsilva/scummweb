@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Toonstruck (Demo)", target: "toon-demo", engineId: "toon", gameId: "toon",
+    files: [["local.pak", 2680573, 3491990584], ["generic.svl", 7739319, 281706566]],
+  },
+  {
     title: "The Neverhood (Demo)", target: "neverhood-demo", engineId: "neverhood", gameId: "neverhood",
     files: [["a.blb", 11973, 2870863031], ["nevdemo.blb", 22564568, 3388389503]],
   },

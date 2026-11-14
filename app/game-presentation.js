@@ -120,6 +120,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "toon-demo": {
+    ...retroGameArtwork["toon:toon"],
+    heroImageMobilePosition: "80% -8vh",
+    title: "Toonstruck (Demo)",
+    year: "1996",
+    language: "en",
+  },
   "neverhood-demo": {
     ...retroGameArtwork["neverhood:neverhood"],
     heroImageMobilePosition: "80% -8vh",

@@ -1261,6 +1261,14 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Toonstruck (Demo)",
+      "status": "startup-verified",
+      "gameId": "toon:toon",
+      "edition": "toon-demo.zip",
+      "recordedOn": "2026-11-14",
+      "observation": "English DOS demo: native detection, original Zanydu opening, native intro skip, walking, Save/Load and Continue verified. Restores the starting scene and positions. Full playthrough and independent audible output not verified."
+    },
+    {
       "title": "Torin's Passage",
       "status": "startup-verified",
       "gameId": "sci:torin",

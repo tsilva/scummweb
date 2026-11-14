@@ -625,6 +625,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "toon-demo",
+      "title": "Toonstruck (Demo)",
+      "path": "/games/toon",
+      "engineId": "toon",
+      "gameId": "toon",
+      "platform": "pc",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

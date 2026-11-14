@@ -25,6 +25,7 @@ test("fresh browser configuration preserves UTF-8 titles and records byte length
 
 test("official classic archives are recognized by contents without relying on filenames", () => {
   for (const [target, files] of [
+    ["toon-demo", [["LOCAL.PAK", 2680573, 3491990584], ["GENERIC.SVL", 7739319, 281706566]]],
     ["got", [["GOTRES.DAT", 739710, 34139293]]],
     ["hires1", [["MYSTHOUS.DSK", 143360, 1258297292]]],
     ["soltys", [["vol.cat", 50176, 623096146], ["vol.dat", 8430868, 1606659223]]],
