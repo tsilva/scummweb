@@ -652,6 +652,24 @@
         "basis": "All nine original files inspected for ASCII, UTF16 and XOR69 legal notices. Compiled Windows Help fully decompiled and plain text reviewed, and complete INF settings inspected; no express redistribution ban or rehosting grant found. Original copyright notices retained. Official ScummVM promotional hosting supports user-authorized cautious assessment without establishing an express rights-holder license.",
         "preservation": "Serve complete unchanged original archive, retaining DLL, executable, W32, HLP, INF and all game/audio files and notices."
       }
+    },
+    {
+      "target": "spyfox-demo",
+      "title": "Spy Fox in \"Dry Cereal\" (Demo)",
+      "engineId": "scumm",
+      "gameId": "spyfox",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "spyfox-win-demo1-us.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/scumm/he/spyfox-win-demo1-us.zip",
+      "sha256": "295a3954d2ec75b6fce665751f4251c26d0f2cae4aacf8c9392ab1973da2ff24",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-14",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "All ten original files inspected for ASCII, UTF16 and XOR69 legal notices. Compiled Windows Help fully decompiled and plain text reviewed, and complete INF settings inspected; no express redistribution ban or rehosting grant found. Original copyright notices retained. Official ScummVM promotional hosting supports user-authorized cautious assessment without establishing an express rights-holder license. The 42-topic Help file is byte-identical to the fully reviewed Pajama Sam demo Help file.",
+        "preservation": "Serve complete unchanged original archive, retaining D32, DLL, executable, W32, HLP, INF and all game/audio files and notices."
+      }
     }
   ]
 }

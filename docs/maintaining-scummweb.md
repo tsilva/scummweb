@@ -308,6 +308,14 @@ Native Skip intro advances past the publisher opening while preserving the
 Sneak Preview, Scenes from Myst and Making of Myst choices. Saving and loading
 are disabled for this demo, so it has no checkpoint or Continue.
 
+Spy Fox’s English US Windows demo retains its complete unchanged package,
+including executable libraries, audio, original Windows Help and settings.
+No express rehosting grant or redistribution ban was found in the inspected
+notices; official promotional hosting supports the cautious assessment recorded
+in the catalog. The original opening, native intro action and phone-booth keypad
+work. Saving is unavailable in the tested first playable scene; no checkpoint
+is supplied. The demo shares its existing published hero and box art.
+
 Pajama Sam’s English Windows demo retains its complete unchanged package,
 including its compiled Help, configuration and notices. Native intro skip
 reaches the original treehouse scene, and clicking its path enters the next

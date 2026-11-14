@@ -1475,6 +1475,11 @@
       "file": "pajama-sam-no-need-to-hide-when-it-s-dark-outside-demo-b17d8233ea76219be8d8f88a00b9b97aa92d5a71fa0a70fa53ba0ba0b8d0deee.jpg",
       "inputHash": "b17d8233ea76219be8d8f88a00b9b97aa92d5a71fa0a70fa53ba0ba0b8d0deee",
       "imageHash": "a4c7341cc8ec3de64c78b8b644c30025303488485b7c2ebaf2cfd86f2ce63fe9"
+    },
+    "spy-fox-in-dry-cereal-demo": {
+      "file": "spy-fox-in-dry-cereal-demo-5a7a1cc98d621dd56060e701ff3c99e2a54b0b729a80d33072e40215e7bc5092.jpg",
+      "inputHash": "5a7a1cc98d621dd56060e701ff3c99e2a54b0b729a80d33072e40215e7bc5092",
+      "imageHash": "362c2ecd10204c0b10b86e2f681983a03a53d985db655acad2bd13bdf7e743af"
     }
   }
 }

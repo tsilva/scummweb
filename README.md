@@ -25,6 +25,12 @@ or import compatible graphical and text adventures from your own collection.
 Wait for the opening scene and select **Start audio** if prompted. Phones and
 tablets have touch controls.
 
+Try official demos such as [Full Throttle](https://scummweb.tsilva.eu/full-throttle-demo),
+[Pajama Sam](https://scummweb.tsilva.eu/pajama-sam-no-need-to-hide-when-it-s-dark-outside-demo)
+and [Spy Fox](https://scummweb.tsilva.eu/spy-fox-in-dry-cereal-demo).
+Edition-specific limitations are listed in the
+[compatibility results](https://scummweb.tsilva.eu/compatibility).
+
 Saves stay in your browser. Before clearing site data or moving devices, export
 them through **Settings → Saved games**. See
 [save backups and transfers](docs/maintaining-scummweb.md#backing-up-and-transferring-saved-progress).

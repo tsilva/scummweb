@@ -1991,6 +1991,14 @@
       "observation": "A game frame renders at startup."
     },
     {
+      "title": "Spy Fox in \"Dry Cereal\" (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:spyfox",
+      "edition": "spyfox-win-demo1-us.zip",
+      "recordedOn": "2026-11-14",
+      "observation": "English US Windows demo renders its original opening and village scene. Native intro skip works; clicking the phone booth opens a responsive keypad. Saving is unavailable in the tested first playable scene."
+    },
+    {
       "title": "Spy Fox in \"Hold the Mustard\"",
       "status": "startup-verified",
       "gameId": "scumm:mustard",

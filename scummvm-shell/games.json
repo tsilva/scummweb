@@ -605,6 +605,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "spyfox-demo",
+      "title": "Spy Fox in \"Dry Cereal\" (Demo)",
+      "path": "/games/spyfox",
+      "engineId": "scumm",
+      "gameId": "spyfox",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }
