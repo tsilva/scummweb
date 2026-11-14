@@ -204,6 +204,10 @@ node --test test/browser-saves.test.mjs test/continue-saves.test.mjs \
 
 ### Backing up and transferring saved progress
 
+Optional [Dropbox save syncing](dropbox-save-sync.md) copies existing browser
+saves and preserved backups automatically after connection. Configure the public
+Dropbox app key and callback before enabling it. Game archive storage is unchanged.
+
 Close every game tab, then open **Settings → Saved games → Export all saves**.
 The ZIP includes active and preserved saves. Saves live in the current browser
 profile and clearing site data removes them. Backup and restore require Web
@@ -413,7 +417,8 @@ retrieving source values.
 | `pnpm lint` | Check JavaScript and JSX syntax. |
 | `pnpm test` | Run the Node tests. |
 | `pnpm build` | Stage assets and build the app. |
-| `pnpm run start --port auto` | Serve the production build. |
+| `pnpm run dev` | Develop at `http://localhost:47831`. |
+| `pnpm run start` | Serve the production build at `http://localhost:47831`. |
 | `pnpm run record:preview` | Stream distinct preview frames as MPEG-TS. |
 | `pnpm run verify` | Boot detected games with the Chrome/Chromium harness. |
 
@@ -421,6 +426,12 @@ The app stages the tracked `scummvm-shell/` into `public/`. Edit
 `web-shell/` for browser-runtime changes. Keep the core and engine plugins
 from the same build. Set the same project-relative `SCUMMWEB_DIST_DIR` for
 build and start when an audit must coexist with another server.
+
+Local app servers default to port `47831` so Dropbox can use one stable callback:
+`http://localhost:47831/dropbox-callback.html`. An occupied port fails startup
+instead of selecting another port. Explicit `--port NUMBER` and `--port auto`
+remain available for isolated checks; OAuth on those origins requires its own
+registered callback.
 
 `SCUMMVM_GAMES_ORIGIN` selects the game bucket and `NEXT_PUBLIC_SITE_URL`
 sets canonical URLs. Game data downloads directly from the bucket. Local
@@ -613,7 +624,7 @@ include the compiled stories and their license and source information.
 To preview staged packages, run
 `python3 -m http.server 0 --bind 127.0.0.1 --directory dist/games`.
 Point `SCUMMVM_GAMES_ORIGIN` at that server and start
-`pnpm run dev --port auto`. Publish and verify each ZIP before deploying
+`pnpm run dev`. Publish and verify each ZIP before deploying
 its catalog entry. See [game-library publishing](production-delivery.md#game-library-publishing).
 
 ## Game launch analytics

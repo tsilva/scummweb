@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex"><title>Connect Dropbox | ScummWEB</title>
+<script>
+  const parameters = new URLSearchParams(location.search);
+  history.replaceState(null, "", location.pathname);
+  if (window.opener) {
+    window.opener.postMessage({ type: "scummweb:dropbox-authorization", code: parameters.get("code"),
+      state: parameters.get("state"), denied: parameters.has("error") }, location.origin);
+  }
+</script>
+</head><body style="background:#191919;color:#e5e2e1;font-family:system-ui;padding:2rem">
+<p>Return to ScummWEB to finish connecting Dropbox. You can close this window.</p>
+</body></html>

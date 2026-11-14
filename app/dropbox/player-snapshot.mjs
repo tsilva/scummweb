@@ -25,7 +25,7 @@ export function capturePlayerSaveSet(player, game) {
   let total = 0;
   function walk(directory, prefix = "") {
     for (const name of FS.readdir(directory)) {
-      if (name === "." || name === "..") continue;
+      if (name === "." || name === ".." || name === "timestamps") continue;
       const relative = prefix + name;
       if (!safePath(relative)) throw new Error("A save has an unsupported filename.");
       const full = directory + "/" + name;

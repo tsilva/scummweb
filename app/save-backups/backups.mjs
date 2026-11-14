@@ -40,6 +40,7 @@ export async function getActiveSaveSets(storage, destinations) {
   const snapshot = captureFilesystem(storage);
   const groups = new Map();
   for (const file of snapshot.files) {
+    if (file.path.split("/").at(-1) === "timestamps") continue; // Native cloud bookkeeping, not saved progress.
     const [first, ...rest] = file.path.split("/");
     const namespace = /^version-[a-f0-9]{64}$/.test(first) ? first : "";
     const family = namespace ? null : rootFamily(first);
@@ -49,7 +50,8 @@ export async function getActiveSaveSets(storage, destinations) {
     groups.get(destination.key).files.push({ ...file, path: namespace ? rest.join("/") : file.path });
   }
   const isolatedSets = [];
-  for (const [edition, files] of snapshot.editions) {
+  for (const [edition, contents] of snapshot.editions) {
+    const files = contents.filter((file) => file.path.split("/").at(-1) !== "timestamps");
     if (!files.length) continue;
     const catalog = edition.startsWith("catalog-");
     const family = catalog ? edition.slice("catalog-".length) : null;
@@ -62,7 +64,7 @@ export async function getActiveSaveSets(storage, destinations) {
   return { sets, editionKeys: new Set(snapshot.editions.keys()), revision: snapshot.revision };
 }
 
-export async function exportBackup(sets) {
+export async function exportBackup(sets, { cloud } = {}) {
   if (!sets.length) throw new Error("There are no saved games to export yet.");
   const files = sets.flatMap((set) => set.files);
   if (sets.length > 1000 || files.length > maxFiles || files.reduce((total, file) => total + file.data.length, 0) > maxBytes - 1024 * 1024) {
@@ -71,6 +73,7 @@ export async function exportBackup(sets) {
   const { ZipWriter, BlobWriter, Uint8ArrayReader, TextReader } = await import("@zip.js/zip.js");
   const writer = new ZipWriter(new BlobWriter("application/zip"), { useWebWorkers: false, level: 0 });
   const manifest = { format: "scummweb-save-backup", version: 1, createdAt: new Date().toISOString(), sets: [] };
+  if (cloud) manifest.cloud = cloud;
   for (const [index, set] of sets.entries()) {
     const files = [];
     for (const [number, file] of set.files.entries()) {
@@ -100,7 +103,7 @@ function validateDestination(value) {
     fingerprint: value.fingerprint || null, ...(!value.namespace && value.isolated === true && { isolated: true }) };
 }
 
-export async function readBackup(file) {
+export async function readBackup(file, { withManifest = false } = {}) {
   if (!file || file.size > maxBytes) throw new Error("Choose a save backup ZIP of 64 MiB or less.");
   const { ZipReader, BlobReader, Uint8ArrayWriter } = await import("@zip.js/zip.js");
   const reader = new ZipReader(new BlobReader(file), { useWebWorkers: false });
@@ -156,7 +159,7 @@ export async function readBackup(file) {
       sets.push({ ...set, hash: await identifySet(set) });
     }
     if (referenced.size !== entries.size) throw new Error("This backup contains unexpected files.");
-    return sets;
+    return withManifest ? { sets, manifest } : sets;
   } catch (error) {
     if (error instanceof SyntaxError) throw new Error("This backup has an invalid manifest.");
     throw error;
@@ -203,8 +206,9 @@ export async function withSaveLock(action) {
   });
 }
 
-export async function applyImport({ storage, rows, destinations, revision, initialConfig, preserve = preserveSets }) {
+export async function applyImport({ storage, rows, destinations, revision, initialConfig, preserve = preserveSets, check = () => {} }) {
   const current = await getActiveSaveSets(storage, destinations);
+  check();
   if (current.revision !== revision) throw new Error("Saves changed after review. Open the backup again before importing.");
   const archived = [];
   const updates = [];
@@ -232,6 +236,7 @@ export async function applyImport({ storage, rows, destinations, revision, initi
   }
   // Preserve both sides durably before any active files change.
   await preserve(archived);
+  check();
   if (updates.length && typeof storage.key === "function") {
     // Native save metadata belongs to the old bytes, even if sizes/times match.
     // Invalidate BEFORE the root swap so interruption cannot leave an old

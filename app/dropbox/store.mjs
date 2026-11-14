@@ -7,7 +7,11 @@ async function operate(mode, action) {
   });
   try {
     return await new Promise((resolve, reject) => {
-      const tx = db.transaction("records", mode);
+      // Request a disk flush before acknowledging an outbox/baseline commit.
+      // Older browsers may not implement the durability option.
+      let tx;
+      try { tx = db.transaction("records", mode, { durability: "strict" }); }
+      catch (error) { if (!(error instanceof TypeError)) throw error; tx = db.transaction("records", mode); }
       let request;
       tx.oncomplete = () => resolve(request?.result);
       tx.onabort = tx.onerror = () => reject(new Error("Could not retain pending Dropbox saves on this device."));
@@ -19,5 +23,15 @@ export const syncStore = {
   get: (id) => operate("readonly", (store) => store.get(id)),
   put: (record) => operate("readwrite", (store) => store.put(record)),
   remove: (id) => operate("readwrite", (store) => store.delete(id)),
+  removeIf: (id, predicate) => operate("readwrite", (store) => {
+    const request = store.get(id);
+    request.onsuccess = () => { if (request.result && predicate(request.result)) store.delete(id); };
+    return request;
+  }),
+  putIf: (record, predicate) => operate("readwrite", (store) => {
+    const request = store.get(record.id);
+    request.onsuccess = () => { if (request.result && predicate(request.result)) store.put(record); };
+    return request;
+  }),
   async all(prefix) { return (await operate("readonly", (store) => store.getAll())).filter(({ id }) => id.startsWith(prefix)); },
 };

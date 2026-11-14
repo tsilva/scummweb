@@ -4,12 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { Check, ChevronDown, Download, Info, Save, Upload } from "lucide-react";
 import { readGameSources } from "../game-sources.mjs";
 import "../styles/settings-details.css";
+import DropboxRow from "./dropbox-row";
 
 const formatSaveCount = (count) => `${count} save ${count === 1 ? "file" : "files"}`;
 
 export default function SettingsContent({ catalog, officialUrl, scummvmVersion, sourceInfoDate, working, busy, setBusy }) {
   const picker = useRef(null);
-  const [section, setSection] = useState("saves");
+  const [section, setSection] = useState("");
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
   const [data, setData] = useState({ sets: [], stored: [], unmatched: new Set(), destinations: [], revision: "" });
@@ -126,6 +127,7 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
   const unmatchedCount = review?.rows.filter((row) => !row.destinationKey).length ?? 0;
 
   return <>
+    <DropboxRow />
     {error && <p className="settings-error" role="alert">{error}</p>}
     <p className="settings-status" role="status">{notice}</p>
     <button type="button" className={`settings-section-heading ${section === "saves" ? "is-active" : ""}`}

@@ -18,6 +18,10 @@
   device names, browser-profile details, and agent logs. Describe compatibility
   in product terms.
 - Treat `deploy` as Production unless the user asks for Preview.
+- Use `pnpm dev` for the explicitly selected fixed local port `47831`; Dropbox
+  uses `http://localhost:47831/dropbox-callback.html`. Do not select another
+  port on a conflict. Explicit isolated checks may use `--port auto`, but OAuth
+  then requires a separately registered callback.
 
 ## Game artwork generation
 

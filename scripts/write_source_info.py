@@ -42,6 +42,8 @@ BUILD_FILES = (
     "web-shell/audio-start-control.mjs",
     "web-shell/canvas-fit.mjs",
     "web-shell/continue-saves.mjs",
+    "web-shell/cloud.html",
+    "web-shell/cloud-service.mjs",
     "web-shell/diagnostic-saves.mjs",
     "web-shell/first-frame.mjs",
     "web-shell/game-defaults.mjs",
@@ -84,7 +86,8 @@ def verify_checkout(checkout, commit, patches):
     with TemporaryDirectory() as tmp:
         env = {**os.environ, "GIT_INDEX_FILE": str(Path(tmp) / "index")}
         git("read-tree", commit, env=env)
-        # Later patches can extend files introduced earlier in the series.
+        # Each patch may modify a file introduced by an earlier patch. Flush
+        # the temporary index between patches, just like the ordered build.
         for patch in patches:
             git("apply", "--cached", patch, env=env)
         if git("diff", "--name-only", env=env):

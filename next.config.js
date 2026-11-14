@@ -113,6 +113,10 @@ const nextConfig = {
         source: "/scummvm.html",
         headers: [{ key: "X-Robots-Tag", value: "noindex" }, sourceOfferHeader],
       },
+      {
+        source: "/cloud.html",
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }, { key: "Cache-Control", value: "no-cache" }, sourceOfferHeader],
+      },
       ...["/scummvm.js", "/scummvm.wasm"].map((source) => ({ source, headers: [sourceOfferHeader] })),
       {
         source: "/data/plugins/:engine.so",

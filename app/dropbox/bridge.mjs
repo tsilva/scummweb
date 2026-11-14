@@ -10,8 +10,9 @@ export async function prepareDropboxLaunch() {
 export function reportDropboxSave(player, game) {
   if (!dropboxEnabled()) return;
   // Copy in this task, before any async hashing/import/network work.
-  void import("./player-snapshot.mjs").then(({ capturePlayerSaveSet }) => {
+  try {
     const set = capturePlayerSaveSet(player, game);
-    if (set) return import("./runtime.mjs").then((sync) => sync.queuePlayerSave(set));
-  }).catch(() => import("./runtime.mjs").then((sync) => sync.markWaiting()));
+    if (set) void import("./runtime.mjs").then((sync) => sync.queuePlayerSave(set)).catch(() => {});
+  } catch { void import("./runtime.mjs").then((sync) => sync.markWaiting()); }
 }
+import { capturePlayerSaveSet } from "./player-snapshot.mjs";
