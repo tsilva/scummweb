@@ -13,6 +13,7 @@ public/*
 public/social-cards/*.png
 public/social-cards/*.jpg
 !public/.gitignore
+!public/dropbox-callback.html
 tools/
 vendor/
 public/games/

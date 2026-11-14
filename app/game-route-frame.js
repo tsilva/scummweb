@@ -7,6 +7,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { flushSync } from "react-dom";
 import { buildSkipIntroLaunchSrc } from "./skip-intro-config.mjs";
 import { readCatalogGameArchive } from "./game-bucket.mjs";
+import { dropboxEnabled, prepareDropboxLaunch, reportDropboxSave } from "./dropbox/bridge.mjs";
 import { gameLoadingStatus } from "./game-loading-status.mjs";
 import { isTvBrowser } from "./controller-device.mjs";
 import GameBootOverlay from "./game-player/GameBootOverlay";
@@ -477,6 +478,7 @@ export default function GameRouteFrame({
         return;
       }
       if (event.data?.type === "scummweb:saves-listed" && event.source === frameRef.current?.contentWindow) {
+        reportDropboxSave(event.source, game);
         if (new URL(frameSrc, window.location.href).searchParams.get("continue") === "1") {
           setIsResuming(Number.isInteger(event.data.latestSlot));
         }
@@ -615,6 +617,8 @@ export default function GameRouteFrame({
 
     async function openGame() {
       try {
+        if (dropboxEnabled()) await prepareDropboxLaunch();
+        if (controller.signal.aborted) return;
         let launchSrc = src;
         if (window.location.hash === "#continue") {
           const resumeUrl = new URL(launchSrc, window.location.origin);

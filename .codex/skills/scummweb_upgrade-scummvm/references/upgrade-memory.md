@@ -38,6 +38,20 @@ tests when porting; do not treat an old implementation shape as the requirement.
 
 ## Browser/runtime compatibility
 
+- Host cloud transfers run in a dedicated MEMFS service before plugin or GUI
+  initialization. Keep native provider implementations enabled with `--enable-cloud`.
+  Dropbox PKCE tokens belong to the site's app, so renew directly with its public
+  client ID rather than ScummVM's broker. Never log authorization headers, form
+  values or OAuth JSON. Immutable, checksum-named archives keep timestamp-based
+  overwrite policy away from browser saves; the host owns migration and conflicts.
+  The flat `/saves/` copy-in inbox is read-only; never broaden native uploads or
+  permit arbitrary paths to support loose imports. Preserve original provider
+  filename case and opaque revisions: lowercase names change save identities,
+  and size/mtime cannot safely identify unchanged copies. Keep filename checks.
+  A headless service must upload from an explicit filesystem stream: the generic
+  path overload searches engine archives. Native downloads must close atomic
+  output before callbacks and reject transport errors even with HTTP 200.
+
 - Imported archives can contain installers beside nested game data. Web auto-detection
   must prefer the root, then recurse and pass the selected detection path into launch
   settings. Upstream rejects recursive auto-detect; enabling recursion alone still

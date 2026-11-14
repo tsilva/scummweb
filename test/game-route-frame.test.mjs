@@ -48,6 +48,7 @@ for (const [message, mobile, installed] of [
         hash: "", search: "", replace: (href) => navigations.push(href),
       } },
       require(name) {
+        if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, reportDropboxSave() {} };
         if (name === "react") return {
           useState(initial) {
             const index = stateIndex++;
@@ -183,6 +184,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     navigator: { virtualKeyboard }, HTMLElement: class {},
     fetch: async () => ({ ok: true, text: async () => "<html><head></head><body></body></html>" }),
     require: function require(name) {
+      if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, reportDropboxSave() {} };
       if (name === "react") return {
         useState(initial) {
           const index = cursor++;
@@ -810,6 +812,7 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
       requestAnimationFrame: (callback) => callback(),
     },
     require(name) {
+      if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, reportDropboxSave() {} };
       if (name === "react") return {
         useState(initial) {
           const index = stateIndex++;

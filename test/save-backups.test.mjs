@@ -335,3 +335,17 @@ test("restoring bytes invalidates native Continue metadata even when filenames a
   assert.equal(storage.getItem("scummweb.continue.v1:catalog:sky"), null);
   assert.equal(storage.getItem("scummweb.other-preference"), "preserve me");
 });
+
+test("cancelled cloud restoration cannot swap browser saves after preservation completes late", async () => {
+  const storage = storageFixture({ "SKY-VM.001": bytes("current") });
+  const before = new Map(storage.values);
+  const current = await getActiveSaveSets(storage, destinations);
+  const imported = await set(sky, [file("SKY-VM.001", "cloud")]);
+  let cancelled = false;
+  await assert.rejects(applyImport({ storage, destinations, revision: current.revision,
+    rows: [{ set: imported, destinationKey: sky.key, choice: "imported" }],
+    preserve: async () => { cancelled = true; },
+    check: () => { if (cancelled) throw new Error("Sync cancelled"); },
+  }), /Sync cancelled/);
+  assert.deepEqual(storage.values, before);
+});

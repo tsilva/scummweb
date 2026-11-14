@@ -1576,18 +1576,23 @@
       "retire_when": "Upstream exposes an equivalent isolated in-memory runtime save export with capability detection and no player-save metadata publication."
     },
     {
-      "path": "patches/scummvm/99y-complete-iceman-opening.patch",
+      "path": "patches/scummvm/100-host-cloud-service.patch",
       "status": "active",
-      "sha256": "199926cf4623b1994fca7663ebb134cd79ac1c30f127e304fcd67a35e006fc14",
-      "purpose": "Use Amiga Iceman\u2019s original title and credit cancellation handlers and carry one skip through the Tahiti prologue.",
+      "sha256": "fdfc93c18179d1e4313171d6ebe0665b32e4c28923f48a21822992ee6b681dce",
+      "purpose": "Expose upstream native cloud storage to an isolated, UI-free host service with Dropbox PKCE renewal.",
       "invariants": [
-        "Only Amiga Iceman rooms 100 and 102 expose the native key cancellation. Carry one accepted action into the existing timed prologue, then stop at first beach control. Preserve normal game input, original room cleanup and later room visits.",
-        "Use Return for Iceman\u2019s any-key handler: Escape is intercepted by its Sierra menu before the room cancellation handler."
+        "Never enter the native launcher or cloud wizard in host service mode.",
+        "Use a separate MEMFS config/transfer root; never mount browser game saves.",
+        "Use native provider implementations and redact OAuth/header diagnostics.",
+        "Restrict writes to checksum-named immutable snapshot archives; allow only flat, validated read-only /saves/ inbox transfers and bound network responses.",
+        "Reject incomplete Dropbox listings, preserve copied save filename case and opaque revisions, and use the current create-folder response shape.",
+        "Native downloads flush/close atomic output before callbacks and reject transport or disk failures."
       ],
       "verification": [
-        "In Brave request from Iceman title and credits separately; one request must reach the original controllable beach without waiting for the credit soundtrack or a second Skip intro click. Check ordinary launches and input after skipping."
+        "Native cloud build enabled; host command and snapshot fault tests.",
+        "Brave service readiness and native provider request smoke test; normal game launch regression."
       ],
-      "retire_when": "Upstream supplies an equivalent browser opening callback across the original Iceman title, credits and prologue."
+      "retire_when": "Upstream provides an equivalent host-controlled, UI-free cloud service and application-specific PKCE renewal."
     },
     {
       "path": "patches/scummvm/99zz-defer-engine-compatibility-warnings.patch",
@@ -1605,6 +1610,20 @@
         "Verify multiple distinct warnings accumulate without opening a dialog; unhosted games retain native warnings and fatal startup errors still stop launch."
       ],
       "retire_when": "Upstream routes engine-specific nonfatal compatibility notices to an opted-in browser host, preserving fallback behavior and native dialogs elsewhere."
+    },
+    {
+      "path": "patches/scummvm/99y-complete-iceman-opening.patch",
+      "status": "active",
+      "sha256": "199926cf4623b1994fca7663ebb134cd79ac1c30f127e304fcd67a35e006fc14",
+      "purpose": "Use Amiga Iceman\u2019s original title and credit cancellation handlers and carry one skip through the Tahiti prologue.",
+      "invariants": [
+        "Only Amiga Iceman rooms 100 and 102 expose the native key cancellation. Carry one accepted action into the existing timed prologue, then stop at first beach control. Preserve normal game input, original room cleanup and later room visits.",
+        "Use Return for Iceman\u2019s any-key handler: Escape is intercepted by its Sierra menu before the room cancellation handler."
+      ],
+      "verification": [
+        "In Brave request from Iceman title and credits separately; one request must reach the original controllable beach without waiting for the credit soundtrack or a second Skip intro click. Check ordinary launches and input after skipping."
+      ],
+      "retire_when": "Upstream supplies an equivalent browser opening callback across the original Iceman title, credits and prologue."
     },
     {
       "path": "patches/scummvm/101-skip-uncovered-library-openings.patch",

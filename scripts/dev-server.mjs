@@ -2,6 +2,9 @@
 
 import { spawn } from "node:child_process";
 import { createServer } from "node:net";
+import { pathToFileURL } from "node:url";
+
+export const DEFAULT_LOCAL_PORT = 47831;
 
 async function randomAvailablePort() {
   const server = createServer();
@@ -31,7 +34,7 @@ function usesServeListenFlag(command, args) {
   return command === "serve" || (command === "pnpm" && args[0] === "exec" && args[1] === "serve");
 }
 
-async function resolveAutoPortArgs(command, args) {
+export async function resolvePortArgs(command, args) {
   const nextArgs = [...args];
   const serveListenFlag = usesServeListenFlag(command, args);
 
@@ -55,6 +58,9 @@ async function resolveAutoPortArgs(command, args) {
     }
   }
 
+  const localNextServer = command === "next" && ["dev", "start"].includes(nextArgs[0]);
+  const explicitPort = nextArgs.some((arg) => /^(--port|-p)(=|$)/.test(arg));
+  if (localNextServer && !explicitPort) nextArgs.push("--port", String(DEFAULT_LOCAL_PORT));
   return nextArgs;
 }
 
@@ -66,7 +72,7 @@ async function main() {
     process.exit(1);
   }
 
-  const args = await resolveAutoPortArgs(command, rawArgs);
+  const args = await resolvePortArgs(command, rawArgs);
   const child = spawn(command, args, {
     env: process.env,
     stdio: "inherit",
@@ -94,7 +100,9 @@ async function main() {
   });
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+}

@@ -4,6 +4,7 @@ import { analyticsStartupScript } from "./analytics-startup.mjs";
 import { APP_THEME_COLOR, HOME_DESCRIPTION, HOME_TITLE, SITE_NAME } from "./seo";
 import { getMetadataBase } from "./site-config";
 import SiteAnalytics from "./site-analytics";
+import DropboxSaveSync from "./dropbox-save-sync";
 import { initialHeroTitleFit } from "./home-shell/hero-title-fit.mjs";
 import { initialActionsScript } from "./home-shell/initial-actions.mjs";
 import { installPromptStartup } from "./home-shell/install-prompt-startup.mjs";
@@ -75,6 +76,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
         {children}
+        <DropboxSaveSync />
         <SiteAnalytics />
       </body>
     </html>

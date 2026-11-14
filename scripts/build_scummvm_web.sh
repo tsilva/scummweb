@@ -419,7 +419,7 @@ build_scummvm_web_target() {
     --disable-detection-full \
     "${engine_config_args[@]}" \
     "${codec_config_args[@]}" \
-    --enable-flac --with-flac-prefix="$FLAC_PREFIX" \
+    --enable-flac --with-flac-prefix="$FLAC_PREFIX" --enable-cloud \
     --disable-seq-midi \
     --disable-timidity
 

@@ -1,0 +1,462 @@
+--- a/base/main.cpp
++++ b/base/main.cpp
+@@ -566,7 +566,15 @@
+ 	}
+ }
+ 
++#if defined(__EMSCRIPTEN__) && defined(USE_CLOUD)
++extern int runScummwebCloudService();
++#endif
++
+ extern "C" int scummvm_main(int argc, const char * const argv[]) {
++#if defined(__EMSCRIPTEN__) && defined(USE_CLOUD)
++	if (EM_ASM_INT({ return globalThis.__scummwebCloudService === true; }))
++		return runScummwebCloudService();
++#endif
+ 	Common::String specialDebug;
+ 	Common::String command;
+ 
+--- a/backends/platform/sdl/emscripten/emscripten.cpp
++++ b/backends/platform/sdl/emscripten/emscripten.cpp
+@@ -71,14 +71,17 @@
+ });
+ 
+ #ifdef USE_CLOUD
++#include "backends/platform/sdl/emscripten/scummweb-cloud.h"
+ /* Listener to feed the activation JSON from the wizard at cloud.scummvm.org back 
+  * Usage: Run the following on the final page of the activation flow:
+  * 		  window.opener.postMessage(document.getElementById("json").value,"*")
+  */
+ EM_JS(bool, cloud_connection_open_oauth_window, (char const *url), {
++	if (globalThis.__scummwebCloudService) return false;
+ 	oauth_window = window.open(UTF8ToString(url));
+ 	window.addEventListener("message", (event) => {
+-		Module._cloud_connection_json_callback(stringToNewUTF8( JSON.stringify(event.data)));
++		if (event.origin !== "https://cloud.scummvm.org" || event.source !== oauth_window) return;
++		Module._cloud_connection_json_callback(stringToNewUTF8(JSON.stringify(event.data)));
+ 		oauth_window.close()
+ 	}, {once : true});
+ 	return true;
+@@ -88,7 +91,7 @@
+ extern "C" {
+ #ifdef USE_CLOUD
+ void EMSCRIPTEN_KEEPALIVE cloud_connection_json_callback(char *str) {
+-	warning("cloud_connection_callback: %s", str);
++	// Never log OAuth activation payloads.
+ 	OSystem_Emscripten *emscripten_g_system = dynamic_cast<OSystem_Emscripten *>(g_system);
+ 	if (emscripten_g_system->_cloudConnectionCallback) {
+ 		(*emscripten_g_system->_cloudConnectionCallback)(new Common::String(str));
+--- /dev/null
++++ b/backends/platform/sdl/emscripten/scummweb-cloud.h
+@@ -0,0 +1,132 @@
++// ScummWEB's private host bridge. Storage implementations and transfers remain upstream.
++#include "backends/cloud/cloudmanager.h"
++#include "backends/cloud/basestorage.h"
++#include "common/config-manager.h"
++#include "common/formats/json.h"
++#include "common/file.h"
++#include "common/fs.h"
++
++EM_JS(char *, scummwebCloudTakeCommand, (), {
++  const command = globalThis.__scummwebCloudCommand;
++  if (!command) return 0;
++  globalThis.__scummwebCloudCommand = null;
++  return stringToNewUTF8(JSON.stringify(command));
++});
++EM_JS(void, scummwebCloudReply, (const char *json), {
++  globalThis.__scummwebCloudReply?.(JSON.parse(UTF8ToString(json)));
++});
++
++class ScummwebCloudService {
++  bool _busy = false;
++  void reply(Common::JSONObject result) {
++    result.setVal("ok", new Common::JSONValue(true));
++    Common::JSONValue value(result);
++    scummwebCloudReply(value.stringify().c_str());
++    _busy = false;
++  }
++public:
++  void error(const Networking::ErrorResponse &response) {
++    // Do not expose provider response bodies: OAuth responses can contain credentials.
++    const char *kind = response.httpResponseCode == 401 || response.httpResponseCode == 400 ? "auth" :
++      response.response.contains("not_found") ? "missing" : "request";
++    Common::JSONObject result;
++    result.setVal("ok", new Common::JSONValue(false));
++    result.setVal("kind", new Common::JSONValue(kind));
++    Common::JSONValue value(result);
++    scummwebCloudReply(value.stringify().c_str());
++    _busy = false;
++  }
++  void done(const Cloud::Storage::BoolResponse &response) {
++    if (!response.value) { error(Networking::ErrorResponse(nullptr, "Cloud operation failed")); return; }
++    reply(Common::JSONObject());
++  }
++  void refreshed(const Cloud::Storage::BoolResponse &response) {
++    if (!response.value) { error(Networking::ErrorResponse(nullptr, false, true, "Authorization expired", 401)); return; }
++    reply(Common::JSONObject());
++  }
++  void uploaded(const Cloud::Storage::UploadResponse &) { reply(Common::JSONObject()); }
++  void listed(const Cloud::Storage::ListDirectoryResponse &response) {
++    Common::JSONArray entries;
++    for (const Cloud::StorageFile &file : response.value) {
++      Common::JSONObject entry;
++      entry.setVal("name", new Common::JSONValue(file.name()));
++      entry.setVal("size", new Common::JSONValue((double)file.size()));
++      entry.setVal("directory", new Common::JSONValue(file.isDirectory()));
++      entry.setVal("modifiedAt", new Common::JSONValue((double)file.timestamp() * 1000));
++      entry.setVal("revision", new Common::JSONValue(file.revision()));
++      entries.push_back(new Common::JSONValue(entry));
++    }
++    Common::JSONObject result;
++    result.setVal("entries", new Common::JSONValue(entries));
++    reply(result);
++  }
++  void command(const char *text) {
++    const Common::JSONValue *json = Common::JSON::parse(text);
++    if (!json || !json->isObject()) { delete json; return; }
++    const Common::JSONObject data = json->asObject();
++    const Common::String op = data.getVal("op")->asString();
++    const Common::String name = data.contains("name") ? data.getVal("name")->asString() : "";
++    delete json;
++    if (_busy) return;
++    _busy = true;
++    Cloud::Storage *storage = CloudMan.getCurrentStorage();
++    if (!storage) { error(Networking::ErrorResponse(nullptr, false, true, "Not connected", 401)); return; }
++    // Only immutable snapshots are writable. The flat save inbox is read-only.
++    Common::String remote = "/scummweb-snapshots-v1/";
++    if (op == "list-imports" || op == "download-import") remote = "/saves/";
++    if (op == "download-import") {
++      if (name.empty() || name.size() > 120) { error(Networking::ErrorResponse(nullptr, "Invalid save filename")); return; }
++      for (uint i = 0; i < name.size(); ++i) {
++        const char c = name[i];
++        const bool alnum = (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9');
++        if (!(alnum || (i > 0 && (c == ' ' || c == '_' || c == '(' || c == ')' || c == '.' || c == '-')))) {
++          error(Networking::ErrorResponse(nullptr, "Invalid save filename")); return;
++        }
++      }
++      remote += name;
++    }
++    if (op == "upload" || op == "download") {
++      if (name.size() != 68 || !name.hasSuffix(".zip")) { error(Networking::ErrorResponse(nullptr, "Invalid snapshot")); return; }
++      for (uint i = 0; i < 64; ++i) {
++        if (!((name[i] >= '0' && name[i] <= '9') || (name[i] >= 'a' && name[i] <= 'f'))) {
++          error(Networking::ErrorResponse(nullptr, "Invalid snapshot")); return;
++        }
++      }
++      remote += name;
++    }
++    Networking::ErrorCallback ecb = new Common::Callback<ScummwebCloudService, const Networking::ErrorResponse &>(this, &ScummwebCloudService::error);
++    Cloud::Storage::BoolCallback cb = new Common::Callback<ScummwebCloudService, const Cloud::Storage::BoolResponse &>(this, &ScummwebCloudService::done);
++    if (op == "refresh") {
++      delete cb;
++      static_cast<Cloud::BaseStorage *>(storage)->refreshAccessToken(new Common::Callback<ScummwebCloudService, const Cloud::Storage::BoolResponse &>(this, &ScummwebCloudService::refreshed), ecb);
++    } else if (op == "list" || op == "list-imports") {
++      delete cb;
++      storage->listDirectory(remote, new Common::Callback<ScummwebCloudService, const Cloud::Storage::ListDirectoryResponse &>(this, &ScummwebCloudService::listed), ecb);
++    } else if (op == "mkdir") {
++      storage->createDirectory("/scummweb-snapshots-v1", cb, ecb);
++    } else if (op == "download" || op == "download-import") {
++      storage->download(remote, Common::Path("/cloud/transfer"), cb, ecb);
++    } else if (op == "upload") {
++      delete cb;
++      storage->upload(remote, Common::FSNode(Common::Path("/cloud/transfer")).createReadStream(), new Common::Callback<ScummwebCloudService, const Cloud::Storage::UploadResponse &>(this, &ScummwebCloudService::uploaded), ecb);
++    } else {
++      delete cb; delete ecb;
++      error(Networking::ErrorResponse(nullptr, "Unknown cloud operation"));
++    }
++  }
++};
++
++int runScummwebCloudService() {
++  ConfMan.loadConfigFile(Common::Path("/cloud/config.ini"), Common::Path());
++  g_system->initBackend();
++  CloudMan.init();
++  ScummwebCloudService service;
++  EM_ASM({ globalThis.__scummwebCloudReady?.(); });
++  // No launcher, wizard, engine plugins, game filesystem or OSD is initialized.
++  for (;;) {
++    char *command = scummwebCloudTakeCommand();
++    if (command) { service.command(command); free(command); }
++    g_system->delayMillis(20);
++  }
++  return 0;
++}
+--- a/backends/cloud/basestorage.cpp
++++ b/backends/cloud/basestorage.cpp
+@@ -70,7 +70,6 @@
+ 		result = json->asObject();
+ 		if (!Networking::HttpJsonRequest::jsonContainsAttribute(result, "error", "BaseStorage::codeFlowComplete")) {
+ 			warning("BaseStorage: bad response, no 'error' attribute passed");
+-			debug(9, "%s", json->stringify(true).c_str());
+ 			success = false;
+ 			callbackMessage = "Incorrect JSON.";
+ 		}
+@@ -88,7 +87,6 @@
+ 
+ 	if (success && !Networking::HttpJsonRequest::jsonContainsObject(result, "oauth", "BaseStorage::codeFlowComplete")) {
+ 		warning("BaseStorage: bad response, no 'oauth' attribute passed");
+-		debug(9, "%s", json->stringify(true).c_str());
+ 		success = false;
+ 		callbackMessage = "Incorrect JSON.";
+ 	}
+@@ -100,7 +98,6 @@
+ 		if (!Networking::HttpJsonRequest::jsonContainsString(oauth, "access_token", "BaseStorage::codeFlowComplete") ||
+ 			!Networking::HttpJsonRequest::jsonContainsString(oauth, "refresh_token", "BaseStorage::codeFlowComplete", !requiresRefreshToken)) {
+ 			warning("BaseStorage: bad response, no 'access_token' or 'refresh_token' attribute passed");
+-			debug(9, "%s", json->stringify(true).c_str());
+ 			success = false;
+ 			callbackMessage = "Incorrect JSON.";
+ 		}
+@@ -133,6 +130,36 @@
+ 	delete callback;
+ }
+ 
++namespace {
++Common::String cloudFormEncode(const Common::String &value) {
++ Common::String result;
++ for (uint i = 0; i < value.size(); ++i) {
++  const unsigned char c = value[i];
++  if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '-' || c == '_' || c == '.' || c == '~') result += c;
++  else result += Common::String::format("%%%02X", c);
++ }
++ return result;
++}
++class ScummwebDropboxRefresh : public Networking::HttpJsonRequest {
++public:
++ ScummwebDropboxRefresh(Networking::JsonCallback cb, Networking::ErrorCallback ecb) : HttpJsonRequest(cb, ecb, "https://api.dropboxapi.com/oauth2/token") {}
++ void finishJson(const Common::JSONValue *json) override {
++  if (!json || !json->isObject() || !json->asObject().contains("access_token")) {
++   delete json;
++   finishError(Networking::ErrorResponse(this, false, true, "Dropbox authorization expired", 401));
++   return;
++  }
++  Common::JSONObject oauth;
++  oauth.setVal("access_token", new Common::JSONValue(json->asObject().getVal("access_token")->asString()));
++  Common::JSONObject result;
++  result.setVal("error", new Common::JSONValue(false));
++  result.setVal("oauth", new Common::JSONValue(oauth));
++  delete json;
++  HttpJsonRequest::finishJson(new Common::JSONValue(result));
++ }
++};
++}
++
+ void BaseStorage::refreshAccessToken(BoolCallback callback, Networking::ErrorCallback errorCallback) {
+ 	if (_refreshToken == "") {
+ 		warning("BaseStorage: no refresh token available to get new access token.");
+@@ -144,6 +171,16 @@
+ 	if (errorCallback == nullptr)
+ 		errorCallback = getErrorPrintingCallback();
+ 
++	if (cloudProvider() == "dropbox" && ConfMan.hasKey("scummweb_dropbox_client_id")) {
++		Networking::HttpJsonRequest *request = new ScummwebDropboxRefresh(innerCallback, errorCallback);
++		request->addHeader("Content-Type: application/x-www-form-urlencoded");
++		request->addPostField("grant_type=refresh_token");
++		request->addPostField("refresh_token=" + cloudFormEncode(_refreshToken));
++		request->addPostField("client_id=" + cloudFormEncode(ConfMan.get("scummweb_dropbox_client_id")));
++		addRequest(request);
++		return;
++	}
++
+ 	Common::String url = Common::String::format("https://cloud.scummvm.org/%s/refresh", cloudProvider().c_str());
+ 	Networking::HttpJsonRequest *request = new Networking::HttpJsonRequest(innerCallback, errorCallback, url);
+ 	request->addHeader("X-ScummVM-Refresh-Token: " + _refreshToken);
+@@ -169,7 +206,6 @@
+ 		result = json->asObject();
+ 		if (!Networking::HttpJsonRequest::jsonContainsAttribute(result, "error", "BaseStorage::tokenRefreshed")) {
+ 			warning("BaseStorage: bad response, no 'error' attribute passed");
+-			debug(9, "%s", json->stringify(true).c_str());
+ 			success = false;
+ 		}
+ 	}
+@@ -185,7 +221,6 @@
+ 
+ 	if (success && !Networking::HttpJsonRequest::jsonContainsObject(result, "oauth", "BaseStorage::tokenRefreshed")) {
+ 		warning("BaseStorage: bad response, no 'oauth' attribute passed");
+-		debug(9, "%s", json->stringify(true).c_str());
+ 		success = false;
+ 	}
+ 
+@@ -196,13 +231,11 @@
+ 		if (!Networking::HttpJsonRequest::jsonContainsString(oauth, "access_token", "BaseStorage::tokenRefreshed") ||
+ 			!Networking::HttpJsonRequest::jsonContainsString(oauth, "refresh_token", "BaseStorage::tokenRefreshed", !requiresRefreshToken)) {
+ 			warning("BaseStorage: bad response, no 'access_token' or 'refresh_token' attribute passed");
+-			debug(9, "%s", json->stringify(true).c_str());
+-			success = false;
+-		}
+-	}
+-
+-	if (success) {
+-		debug(9, "%s", json->stringify(true).c_str()); // TODO: remove when done testing against cloud.scummvm.org
++			success = false;
++		}
++	}
++
++	if (success) {
+ 
+ 		_token = oauth.getVal("access_token")->asString();
+ 		if (requiresRefreshToken) {
+--- a/backends/networking/http/emscripten/networkreadstream-emscripten.cpp
++++ b/backends/networking/http/emscripten/networkreadstream-emscripten.cpp
+@@ -73,7 +73,6 @@
+ 		value.trim();
+ 		headers[idx++] = scumm_strdup(key.c_str());
+ 		headers[idx++] = scumm_strdup(value.c_str());
+-		debug(5, "Header: '%s' = '%s'", key.c_str(), value.c_str());
+ 	}
+ 
+ 	headers[idx] = nullptr;
+--- a/backends/networking/http/emscripten/networkreadstream-emscripten.js
++++ b/backends/networking/http/emscripten/networkreadstream-emscripten.js
+@@ -68,7 +68,6 @@
+                 const value = UTF8ToString(valuePtr);
+                 // Don't set Content-Type for FormData - browser will set it with boundary
+                 if (!formFieldsPtr && !formFilesPtr || key.toLowerCase() !== 'content-type') {
+-                    console.debug(`Adding header: ${key} = ${value}`);
+                     headersObj.append(key, value);
+                 }
+                 i++;
+@@ -78,7 +77,8 @@
+ 
+         const options = {
+             method: method,
+-            headers: headers
++            headers: headers,
++            credentials: "omit", cache: "no-store", redirect: "error", referrerPolicy: "no-referrer"
+         };
+ 
+         // Add body if needed
+@@ -102,7 +102,6 @@
+                         const name = UTF8ToString(namePtr);
+                         const value = UTF8ToString(valuePtr);
+                         formData.append(name, value);
+-                        console.debug(`FormData field: ${name} = ${value}`);
+                     }
+                     i += 2;  // Skip both name and value
+                 }
+@@ -175,6 +174,7 @@
+                 const contentLength = response.headers.get('Content-Length');
+                 if (contentLength) {
+                     fetch.totalBytes = parseInt(contentLength, 10);
++                    if (globalThis.__scummwebCloudService && fetch.totalBytes > 67108864) throw new Error("Cloud response exceeds limit");
+                     fetch.bufferSize = fetch.totalBytes * 1.2; // Allocate 20% extra space for gzipped content
+                 } else {
+                     fetch.bufferSize = 1024 * 1024; // 1MB
+@@ -211,6 +211,7 @@
+                                 break;
+                             }
+ 
++                            if (globalThis.__scummwebCloudService && fetch.numBytes + value.length > 67108864) { await reader.cancel(); throw new Error("Cloud response exceeds limit"); }
+                             // Ensure we have enough buffer space
+                             if (fetch.numBytes + value.length > fetch.bufferSize) { // totalBytes is based on content-length header which is off for gzipped content
+                                 console.debug(`Fetch #${fetchId} expanding buffer from ${fetch.bufferSize} to ${(fetch.numBytes + value.length) * 1.2}`);
+--- a/backends/cloud/dropbox/dropboxlistdirectoryrequest.cpp
++++ b/backends/cloud/dropbox/dropboxlistdirectoryrequest.cpp
+@@ -21,6 +21,7 @@
+ 
+ #include "backends/cloud/dropbox/dropboxlistdirectoryrequest.h"
+ #include "backends/cloud/dropbox/dropboxstorage.h"
++#include "common/config-manager.h"
+ #include "backends/cloud/dropbox/dropboxtokenrefresher.h"
+ #include "backends/cloud/iso8601.h"
+ #include "backends/cloud/storage.h"
+@@ -117,6 +118,26 @@ void DropboxListDirectoryRequest::responseCallback(const Networking::JsonRespons
+ 		return;
+ 	}
+ 
++	// A host save scan must be complete; never silently skip malformed entries.
++	if (ConfMan.hasKey("scummweb_dropbox_client_id")) {
++		bool valid = responseObject.contains("entries") && responseObject.getVal("entries")->isArray() &&
++			responseObject.contains("has_more") && responseObject.getVal("has_more")->isBool();
++		if (valid) for (const Common::JSONValue *entry : responseObject.getVal("entries")->asArray()) {
++			if (!entry->isObject()) { valid = false; break; }
++			const Common::JSONObject item = entry->asObject();
++			if (!item.contains("path_lower") || !item.getVal("path_lower")->isString() ||
++				!item.contains(".tag") || !item.getVal(".tag")->isString() ||
++				!item.contains("name") || !item.getVal("name")->isString()) { valid = false; break; }
++			if (item.getVal(".tag")->asString() != "folder" &&
++				(!item.contains("size") || !item.getVal("size")->isIntegerNumber() ||
++				 !item.contains("server_modified") || !item.getVal("server_modified")->isString())) { valid = false; break; }
++		}
++		if (!valid) {
++			error.response = "Incomplete cloud folder listing";
++			finishError(error); delete json; return;
++		}
++	}
++
+ 	//check that ALL keys exist AND HAVE RIGHT TYPE to avoid segfaults
+ 	if (responseObject.contains("entries")) {
+ 		if (!responseObject.getVal("entries")->isArray()) {
+@@ -153,7 +174,13 @@ void DropboxListDirectoryRequest::responseCallback(const Networking::JsonRespons
+ 				size = item.getVal("size")->asIntegerNumber();
+ 				timestamp = ISO8601::convertToTimestamp(item.getVal("server_modified")->asString());
+ 			}
+-			_files.push_back(StorageFile(path, size, timestamp, isDirectory));
++			if (ConfMan.hasKey("scummweb_dropbox_client_id")) {
++				StorageFile file(path, path, item.getVal("name")->asString(), size, timestamp, isDirectory);
++				if (!isDirectory && item.contains("rev") && item.getVal("rev")->isString()) file.setRevision(item.getVal("rev")->asString());
++				_files.push_back(file);
++			}
++			else
++				_files.push_back(StorageFile(path, size, timestamp, isDirectory));
+ 		}
+ 	}
+ 
+--- a/backends/cloud/dropbox/dropboxcreatedirectoryrequest.cpp
++++ b/backends/cloud/dropbox/dropboxcreatedirectoryrequest.cpp
+@@ -31,7 +31,7 @@
+ namespace Cloud {
+ namespace Dropbox {
+ 
+-#define DROPBOX_API_CREATE_FOLDER "https://api.dropboxapi.com/2/files/create_folder"
++#define DROPBOX_API_CREATE_FOLDER "https://api.dropboxapi.com/2/files/create_folder_v2"
+ 
+ DropboxCreateDirectoryRequest::DropboxCreateDirectoryRequest(DropboxStorage *storage, const Common::String &path, Storage::BoolCallback cb, Networking::ErrorCallback ecb):
+ 	Networking::Request(nullptr, ecb), _storage(storage), _path(path), _boolCallback(cb),
+@@ -94,7 +94,7 @@
+ 	}
+ 
+ 	Common::JSONObject info = json->asObject();
+-	if (info.contains("id")) {
++	if (info.contains("metadata") && info.getVal("metadata")->isObject() && info.getVal("metadata")->asObject().contains("id")) {
+ 		finishCreation(true);
+ 	} else {
+ 		if (Networking::HttpJsonRequest::jsonContainsString(info, "error_summary", "DropboxCreateDirectoryRequest")) {
+--- a/backends/cloud/downloadrequest.cpp
++++ b/backends/cloud/downloadrequest.cpp
+@@ -104,9 +104,11 @@
+ 			// so we can't return error message anymore
+ 		}
+ 
+-		finishDownload(_remoteFileStream->httpResponseCode() == 200);
+-
+-		_localFile->close(); //yes, I know it's closed automatically in ~DumpFile()
++		// Complete the atomic local write before exposing its path to the host.
++		bool success = _remoteFileStream->httpResponseCode() == 200 && !_remoteFileStream->hasError() &&
++			_localFile->flush() && !_localFile->err();
++		_localFile->close();
++		finishDownload(success);
+ 	}
+ }
+ 
+
+--- a/backends/cloud/storagefile.h
++++ b/backends/cloud/storagefile.h
+@@ -40,7 +40,7 @@ namespace Cloud {
+  * If storage supports path notation, id would actually contain path.
+  */
+ class StorageFile {
+-	Common::String _id, _path, _name;
++	Common::String _id, _path, _name, _revision;
+ 	uint32 _size, _timestamp;
+ 	bool _isDirectory;
+ 
+@@ -50,6 +50,8 @@ public:
+ 	StorageFile(const Common::String &fileId, const Common::String &filePath, const Common::String &fileName, uint32 sz, uint32 ts, bool dir);
+ 
+ 	Common::String id() const { return _id; }
++	Common::String revision() const { return _revision; }
++	void setRevision(const Common::String &revision) { _revision = revision; }
+ 	Common::String path() const { return _path; }
+ 	Common::String name() const { return _name; }
+ 	uint32 size() const { return _size; }

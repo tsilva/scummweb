@@ -50,10 +50,10 @@ Use Node.js 22 (the CI-tested version) and pnpm 10.27.0.
 git clone https://github.com/tsilva/scummweb.git
 cd scummweb
 pnpm install --frozen-lockfile
-pnpm run dev --port auto
+pnpm run dev
 ```
 
-Open the printed URL and select **Beneath a Steel Sky → Play**.
+Open `http://localhost:47831` and select **Beneath a Steel Sky → Play**.
 
 ## Further reading
 

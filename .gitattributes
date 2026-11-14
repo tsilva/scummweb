@@ -1,0 +1,2 @@
+# Unified diffs retain upstream context whitespace; native patch checks validate them.
+patches/scummvm/*.patch -whitespace
