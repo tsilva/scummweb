@@ -1,5 +1,8 @@
 # ScummWEB agent instructions
 
+- Use [$scummweb_add-game](.codex/skills/scummweb_add-game/SKILL.md)
+  for complete game/demo additions, metadata, bucket delivery, artwork and live QA.
+
 - Use [$scummweb_build-release](.codex/skills/scummweb_build-release/SKILL.md)
   for production builds, deployments and release verification.
 
