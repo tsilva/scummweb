@@ -99,7 +99,8 @@ each axis to preserve symmetric spacing around cutouts.
   when no save or load is in progress. The game pauses at a supported update
   boundary.
   Sound Volume starts at 100%, Game Speed at 1.0×, and subtitles enabled with
-  speech each launch. Games with optional subtitles show a **Subtitles** switch;
+  speech each launch. Game Speed ranges from 0.5× to 2× in 0.1× steps.
+  Games with optional subtitles show a **Subtitles** switch;
   changes apply to the running game for the current session. **Resume Game** returns focus to the game, and
   **Quit Game** returns to the game page or library. Choosing Exit or Quit Game
   immediately removes the toolbar and touch controls while navigation completes.
@@ -114,7 +115,9 @@ each axis to preserve symmetric spacing around cutouts.
   it. The temporary save and companion files live only in memory, outside the
   library, Continue index, save backups and cloud synchronization. Cancelling
   discards the capture. Unsupported, failed or timed-out saves do not block
-  reports; the report records why a snapshot is absent.
+  reports; the report records a bounded failure reason when available. Each
+  completed capture restores the native save listing to the player directory,
+  so consecutive reports can reuse the temporary slot without stale entries.
 - On desktop, move the pointer to the top edge or outside the game canvas to
   reveal the toolbar. Keyboard focus or an open game menu keeps it visible.
   Press **Esc** to release cursor capture and reveal the toolbar.
@@ -479,6 +482,18 @@ edition. Saves restore progress, not browser/audio state or a crashed process.
 Reports omit automatic personal library titles, archive filenames, private ZIP
 URLs, request cookies and breadcrumbs. The player's description and native save
 contents are submitted as entered/captured. Sentry controls report retention.
+
+Missing snapshots include an allowlisted `capture.reason` when available, such
+as `slot-unavailable`, `native-save-rejected` or `capture-timeout`. Raw native
+errors are excluded because they may contain private paths. Older reports may
+have only a status and cannot identify the exact capture failure.
+
+Sentry's project-level **Enable Spam Detection** setting can automatically
+classify feedback as spam. These reports remain stored but are hidden from the
+normal feedback inbox and do not trigger feedback alerts. Include the Spam
+folder when reviewing reports; successful ingestion does not imply inbox or
+alert delivery. Keep this setting enabled unless deliberately changed in
+**Settings → Projects → scummweb → User Feedback**.
 
 The collector requires a same-origin request, limits descriptions to 4,000
 characters, and accepts at most 16 save files totaling 2 MiB within a 3 MiB request.

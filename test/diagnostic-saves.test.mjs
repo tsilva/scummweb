@@ -74,9 +74,61 @@ test("report snapshots capture all native companion files without modifying play
 
 test("older runtime and unsupported saving never dispatch a normal player save", async () => {
   const { scope, controls, directories } = fixture(false);
-  assert.deepEqual(await controls.run("report"), { status: "unavailable", files: [] });
+  assert.deepEqual(await controls.run("report"), { status: "unavailable", files: [], reason: "runtime-unavailable" });
   assert.equal(scope.__scummwebAgentFrameBoundary(false, 2, 2, true, true), -1);
   assert.equal(directories.has("/tmp/scummweb-bug-report"), false);
+});
+
+test("consecutive reports reset the native filename cache even without resuming gameplay", async () => {
+  const { scope, controls, files, FS, storage } = fixture();
+  const before = [...storage];
+  // DefaultSaveFileManager::assureCached refreshes only when getSavePath changes.
+  // Removing/recreating a MEMFS directory does not invalidate its filename cache.
+  let cachedPath;
+  let cachedNames;
+  const listing = () => {
+    const directory = scope.__scummwebDiagnosticSaves.active ? "/tmp/scummweb-bug-report" : defaultSavePath;
+    if (cachedPath !== directory) {
+      cachedPath = directory;
+      cachedNames = new Set(FS.readdir(directory));
+    }
+    return cachedNames;
+  };
+  scope.Module._scummweb_refresh_saves = () => {
+    assert.equal(scope.__scummwebDiagnosticSaves.active, false, "refresh only after leaving isolation");
+    listing();
+  };
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const result = controls.run("report");
+    scope.__scummwebAgentFrameBoundary(false, 2, 2, true, true);
+    const names = listing();
+    if (names.has("game.001")) {
+      scope.__scummwebAgentSaveResult("Save ID is unavailable in this run");
+    } else {
+      scope.__scummwebBeginSaveWrite("game.001");
+      files.set("/tmp/scummweb-bug-report/game.001", new Uint8Array([attempt + 1]));
+      names.add("game.001");
+      scope.__scummwebEndSaveWrite("game.001", true);
+      scope.__scummwebAgentSaveResult(null);
+    }
+    const capture = await result;
+    assert.equal(capture.status, "captured", `report ${attempt + 1}`);
+    assert.deepEqual([...capture.files[0].data], [attempt + 1]);
+    assert.deepEqual([...files], [[`${defaultSavePath}/game.001`, new Uint8Array([7, 8, 9])]]);
+    assert.deepEqual([...storage], before);
+  }
+});
+
+test("native rejections record bounded reasons without sending raw error text", async () => {
+  for (const [error, reason] of [["Save ID is unavailable in this run", "slot-unavailable"],
+    ["Cannot save in the current scene", "native-save-rejected"],
+    ["Write failed: /private/personal-file.zip", "native-save-rejected"]]) {
+    const { scope, controls } = fixture();
+    const result = controls.run("report");
+    scope.__scummwebAgentFrameBoundary(false, 2, 2, true, true);
+    scope.__scummwebAgentSaveResult(error);
+    assert.deepEqual(await result, { status: "unavailable", files: [], reason, slot: 1 });
+  }
 });
 
 test("a dispatched timeout keeps the native output isolated until the late acknowledgement", async () => {

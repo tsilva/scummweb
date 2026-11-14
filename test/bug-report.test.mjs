@@ -25,11 +25,12 @@ test("collector attaches verified save bytes and a reproduction manifest with ca
   const { post, reports } = fixture();
   const response = await post(request({ files: [{ name: "SKY-VM.001", bytes: new Uint8Array([1, 2, 3]) }],
     metadata: { game: { source: "catalog", target: "sky", title: "spoofed", zip: "https://private.test/token" },
-      player: { volume: 80, speed: 1.5, subtitles: true, token: "private" }, runtimeVersion: "build-123" } }));
+      player: { volume: 80, speed: 2, subtitles: true, token: "private" }, runtimeVersion: "build-123" } }));
   assert.equal(response.status, 200);
   assert.equal(reports.length, 1);
   assert.equal(reports[0].manifest.game.title, "Beneath a Steel Sky");
   assert.equal(reports[0].manifest.game.engineId, "sky");
+  assert.equal(reports[0].manifest.player.speed, 2);
   assert.deepEqual([...reports[0].attachments[0].data], [1, 2, 3]);
   assert.equal(reports[0].manifest.capture.files[0].sha256, "039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81");
   const manifest = new TextDecoder().decode(reports[0].attachments.at(-1).data);
@@ -61,6 +62,16 @@ test("collector rejects foreign origins, unknown games, missing descriptions, un
     assert.ok((await post(request(data))).status >= 400);
     assert.equal(reports.length, 0);
   }
+});
+
+test("snapshot failure reasons are allowlisted and raw native errors are discarded", async () => {
+  const { post, reports } = fixture();
+  for (const reason of ["slot-unavailable", "Write failed: /private/personal-file.zip"]) {
+    assert.equal((await post(request({ metadata: { capture: { status: "unavailable", files: [], reason } } }))).status, 200);
+  }
+  assert.equal(reports[0].manifest.capture.reason, "slot-unavailable");
+  assert.equal(reports[1].manifest.capture.reason, undefined);
+  assert.doesNotMatch(new TextDecoder().decode(reports[1].attachments[0].data), /private|personal-file/);
 });
 
 test("collector bounds streaming bodies even without Content-Length", async () => {

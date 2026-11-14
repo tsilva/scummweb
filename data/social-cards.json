@@ -1386,6 +1386,11 @@
       "inputHash": "07570c2fecda9585d848dc31b65fbd18e1be25d5ed3f991364400c544b6ccc82",
       "imageHash": "48481648e0f3c5ddfabeb608be01ce6b0fc1bf57f80e3c4db8437dd2b911eb1b"
     },
+    "the-neverhood-demo": {
+      "file": "the-neverhood-demo-7c56228c57020dfdc24b6bff691822fc36edb73adca3ec70f56e2a52e18e8a9f.jpg",
+      "inputHash": "7c56228c57020dfdc24b6bff691822fc36edb73adca3ec70f56e2a52e18e8a9f",
+      "imageHash": "8f8371d6b4ba00d410bf34124cc136eeb7d36f90c3b982bef6cc8366f3a380e1"
+    },
     "the-new-kid-on-the-block": {
       "file": "the-new-kid-on-the-block-e93c44c5c3f2e0774126fcaa55074bea2f915948798e1d7f5172845f1d7c0570.jpg",
       "inputHash": "e93c44c5c3f2e0774126fcaa55074bea2f915948798e1d7f5172845f1d7c0570",
@@ -1480,11 +1485,6 @@
       "file": "zork-nemesis-the-forbidden-lands-108534972258666dc7b2fc57846d118cfc91dc70049447eb5827da71e9407856.jpg",
       "inputHash": "108534972258666dc7b2fc57846d118cfc91dc70049447eb5827da71e9407856",
       "imageHash": "eae9e06b8cefa2e3ede3113a6b615c163974f119d4df9387d2afad4fc9865699"
-    },
-    "the-neverhood-demo": {
-      "file": "the-neverhood-demo-7c56228c57020dfdc24b6bff691822fc36edb73adca3ec70f56e2a52e18e8a9f.jpg",
-      "inputHash": "7c56228c57020dfdc24b6bff691822fc36edb73adca3ec70f56e2a52e18e8a9f",
-      "imageHash": "8f8371d6b4ba00d410bf34124cc136eeb7d36f90c3b982bef6cc8366f3a380e1"
     }
   }
 }

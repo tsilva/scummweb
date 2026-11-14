@@ -24,7 +24,7 @@ export default function GameBugReport({ frameRef, game, onBusyChange, onCancel, 
       player: reportPlayerSettings(player?.read() ?? {}),
       runtimeVersion: scummvmAssetVersion,
     };
-    Promise.resolve().then(() => current ? player?.run("report") ?? { status: "unavailable", files: [] } : null)
+    Promise.resolve().then(() => current ? player?.run("report") ?? { status: "unavailable", files: [], reason: "runtime-unavailable" } : null)
       .then((result) => {
         if (current) setCapture(result?.status ? result : { status: "unavailable", files: [] });
       }, () => { if (current) setCapture({ status: "failed", files: [] }); });
@@ -48,7 +48,8 @@ export default function GameBugReport({ frameRef, game, onBusyChange, onCancel, 
       const form = new FormData();
       form.set("message", message);
       form.set("metadata", JSON.stringify({ ...context.current, reportId: submission.current.id,
-        capture: { status: capture.status, slot: capture.slot, files: capture.files.map(({ name }) => ({ name })) } }));
+        capture: { status: capture.status, slot: capture.slot, reason: capture.reason,
+          files: capture.files.map(({ name }) => ({ name })) } }));
       capture.files.forEach(({ name, data }, index) => {
         form.set(`save-${index}`, new Blob([data], { type: "application/octet-stream" }), name);
       });

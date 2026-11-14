@@ -161,7 +161,7 @@ export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose
           <div className="game-menu-sliders">
             <MenuSlider label="Sound Volume" value={settings.volume} min={0} max={100} step={1}
               text={`${settings.volume}%`} onChange={(value) => update("volume", value)} disabled={!controller.current} />
-            <MenuSlider label="Game Speed" value={settings.speed} min={0.5} max={1.5} step={0.1}
+            <MenuSlider label="Game Speed" value={settings.speed} min={0.5} max={2} step={0.1}
               text={`${settings.speed}×`} onChange={(value) => update("speed", value)} disabled={!controller.current} />
             {settings.canToggleSubtitles && (
               <label className="game-menu-toggle">
