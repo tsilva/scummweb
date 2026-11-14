@@ -432,6 +432,8 @@ async function bulkConflictSetup(t) {
 test("a bulk decision is durable before publication and applies both games in the background", async (t) => {
   const { runtime, storage, destinations, server, remotes, originals, choices, locks } = await bulkConflictSetup(t);
   locks.busy = true;
+  await runtime.syncDropbox();
+  assert.ok(runtime.getDropboxState().conflicts.every(({ canResolve }) => !canResolve), "review remains possible while applying is locked");
   const uploads = server.uploads;
   await runtime.queueDropboxConflictResolutions(choices);
   const batches = await syncStore.all(key("resolutions", ""));

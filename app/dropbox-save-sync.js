@@ -34,7 +34,7 @@ export default function DropboxSaveSync() {
     window.addEventListener("storage", start);
     return () => { stopped = true; cleanup?.(); unsubscribe?.(); window.removeEventListener("scummweb:dropbox-connection", start); window.removeEventListener("storage", start); };
   }, []);
-  const conflicts = state?.conflicts.filter(({ canResolve }) => canResolve) ?? [];
+  const conflicts = state?.conflicts ?? [];
   const reviewId = conflictReviewId(conflicts);
   const selected = (conflict) => choices[conflict.profile]?.version === conflictVersion(conflict) ? choices[conflict.profile].choice : "";
   useEffect(() => {

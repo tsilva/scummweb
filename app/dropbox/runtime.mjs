@@ -371,7 +371,7 @@ export async function queueDropboxConflictResolutions(choices) {
   }
   const items = choices.map(({ profile, choice, version }) => {
     const conflict = state.conflicts.find((item) => item.profile === profile);
-    if (!conflict?.canResolve || !["local", "remote"].includes(choice) || version && version !== conflictVersion(conflict)) {
+    if (!conflict || !["local", "remote"].includes(choice) || version && version !== conflictVersion(conflict)) {
       throw new DropboxError("Saved progress changed. Review your choices again.", "conflict");
     }
     return { conflict, choice };
