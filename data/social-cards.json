@@ -1440,6 +1440,16 @@
       "file": "gemini-rue-demo-27b0555ad5d1599d9d616edf2e9ce8c6e2016c5d5dead8626e31fb5ba855707a.jpg",
       "inputHash": "27b0555ad5d1599d9d616edf2e9ce8c6e2016c5d5dead8626e31fb5ba855707a",
       "imageHash": "1d7ecda48cdb3325af7a3c2b4fc2bda3a82f2052617872f5cf1b975b5b044675"
+    },
+    "primordia": {
+      "file": "primordia-7ccc71c2722d222fab0ddb48e65837bf51d67901feb979e15fb483f0dd08f284.jpg",
+      "inputHash": "7ccc71c2722d222fab0ddb48e65837bf51d67901feb979e15fb483f0dd08f284",
+      "imageHash": "dd30be2b74c2cd0503d9e3007ff717605952df503312c65fdd62054685957211"
+    },
+    "primordia-demo": {
+      "file": "primordia-demo-ab5e76d3087bba00121ebeeffccacde7a0cbf75a234895bad42c495f0a4437d7.jpg",
+      "inputHash": "ab5e76d3087bba00121ebeeffccacde7a0cbf75a234895bad42c495f0a4437d7",
+      "imageHash": "c647b57849fbba67b9bd5662fc9ffa0e1ad74dd9651a9bed75295154d47e168f"
     }
   }
 }

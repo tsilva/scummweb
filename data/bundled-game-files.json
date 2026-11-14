@@ -9965,6 +9965,52 @@
           4235948865
         ]
       ]
+    },
+    "primordia-demo": {
+      "url": "https://scummvm-games.tsilva.eu/primordia.zip",
+      "fingerprint": "6c7e56f9f74e51c870b905e547f0d1053d3cc7bdcce16559afc5f3da1eb2c01c",
+      "files": [
+        [
+          "speech.vox",
+          212231939,
+          2479583785
+        ],
+        [
+          "winsetup.exe",
+          147482,
+          726327307
+        ],
+        [
+          "unins000.exe",
+          802590,
+          1525623368
+        ],
+        [
+          "audio.vox",
+          2862062,
+          382561233
+        ],
+        [
+          "ags_shell.dll",
+          40960,
+          1223580907
+        ],
+        [
+          "acsetup.cfg",
+          299,
+          3443222121
+        ],
+        [
+          "Primordia.exe",
+          727898212,
+          584883832
+        ],
+        [
+          "unins000.dat",
+          1605,
+          976948168
+        ]
+      ]
     }
   }
 }

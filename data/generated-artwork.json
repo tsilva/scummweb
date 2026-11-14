@@ -20346,6 +20346,81 @@
         }
       ],
       "prompt": "Use case: precise-object-edit. Restore/recreate the original Gemini Rue flat front cover from the supplied original box-front reference, at a portrait 3:4 ratio with at least 900x1200 pixels. The reference is the original cover, not a screenshot. Faithfully preserve its original layout and painterly medium: dark-haired Azriel Odin on the left in a green coat, white shirt and loosened dark tie; short brown-haired Delta-Six on the right in an off-white shirt, both facing away from one another; warm ochre clouds above a planet's curved horizon; moody green shadows. Keep the original white spaced title verbatim 'GEMINI RUE' near the bottom, same slim monospaced letterforms and placement. Improve resolution, brushwork clarity and lettering without redesigning the cover or inventing badges, logos, credits, new subjects or details. Flat front face only, no spine, 3D box, scan border, retailer sticker, watermark or UI. Preserve all original art and title, fitting 3:4 with only minimal neutral extension if needed, never cropping away the title or rearranging the composition."
+    },
+    {
+      "target": "primordia-demo",
+      "role": "hero",
+      "asset": "/launcher/primordia-scummweb-generated-2026-11-13-r1-hero.webp",
+      "generatedOn": "2026-11-13",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 1600,
+        "height": 960
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "width": 1619,
+        "height": 971,
+        "sha256": "b12f64a013ddc9fdac57626a436c3fe255618cfd7a5eb4086244c8cb96f7b971"
+      },
+      "output": {
+        "width": 1600,
+        "height": 960,
+        "sha256": "fd169a63065673e382aa65883c9359598bb8ca69d9f4cf06fb0afbda85292824",
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co1m4v.jpg",
+          "sha256": "d21aaa7fa417017fef3df6aa7c82167877263d092cb3723d7364675d4a2b3385",
+          "kind": "box-front",
+          "credit": "Original Primordia cover illustration hosted by IGDB; original artwork and title belong to their creators and rights holders."
+        },
+        {
+          "url": "https://wadjeteyegames.com/wp-content/uploads/primordia-slide-940x240.jpg",
+          "sha256": "0b1feb1c9ca3210f44ed733498d349b71754d241673241fbfd224f7062134642",
+          "credit": "Official Wadjet Eye Games promotional banner."
+        }
+      ],
+      "prompt": "Use case: compositing. Create a full-bleed 5:3 website hero for Primordia, at least 1600x960 pixels, preferably 1920x1152. Image 1 is the original game cover, Image 2 the official publisher banner; use them as original-art references, never as gameplay screenshots. Preserve the original drawn, etched and painterly mechanical illustration medium, sepia/rust industrial spires, amber windows and vivid cyan glow. Faithfully preserve hooded robot Horatio Nullbuilt's distinctive metal skull mask, glowing cyan eyes, ragged brown hood/cloak and skeletal mechanical hands around the small luminous geometric power core. Preserve floating companion Crispin's rounded blue metal body, two bright circular eyes and small top antenna. Recompose the pair as a close, safely inset cluster on the right half, with Crispin near Horatio's shoulder and both faces and the core comfortably visible within a narrow mobile crop focused on the right. Keep heads away from the top edge and core above the lower half where practical. The left 42% is naturally dark, quiet low-detail industrial haze for real white page copy and a green Play button. Quiet top 9% and bottom 12% for navigation/fade. No lettering, title, logos, symbols resembling text, badges, borders, signatures, watermarks, interface, screenshot inset, new characters or invented props. This is promotional artwork, never a synthetic gameplay capture."
+    },
+    {
+      "target": "primordia-demo",
+      "role": "cover",
+      "asset": "/launcher/primordia-scummweb-generated-2026-11-13-r1-cover.webp",
+      "generatedOn": "2026-11-13",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "width": 1086,
+        "height": 1448,
+        "sha256": "103e97c3cab2412dbb29df6bfc79eaa983ee63ec7d50d0df455dfe10cb7d0bce"
+      },
+      "output": {
+        "width": 900,
+        "height": 1200,
+        "sha256": "37ffcc2642caa2812b5f5d167d7384bd72a70f5e261ef66bc3a61a165ce64d14",
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "url": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co1m4v.jpg",
+          "sha256": "d21aaa7fa417017fef3df6aa7c82167877263d092cb3723d7364675d4a2b3385",
+          "kind": "box-front",
+          "credit": "Original Primordia cover illustration hosted by IGDB; original artwork and title belong to their creators and rights holders."
+        }
+      ],
+      "prompt": "Use case: precise-object-edit. Faithfully restore/recreate the original Primordia flat front cover from the supplied original cover reference, at 3:4 portrait with at least 900x1200 pixels. Preserve its exact original layout, illustration medium, colors, character identities and title lettering: the stylized glowing cyan 'PRIMORDIA' title across the top; towering intricate dark industrial spires and warm amber windows against rust-brown skies; hooded Horatio Nullbuilt at the bottom center with his distinctive skull-like metal mask, luminous cyan eyes, ragged brown cloak and skeletal hands around the radiant geometric power core; round blue hovering robot Crispin with two bright eyes and small antenna on the left. Keep the title verbatim and its distinctive angular neon letterforms, preserving all letters. Improve resolution, line clarity, print fidelity and small details without redesigning, relocating elements or imposing a photorealistic/3D style. Flat front face only: no box mockup, spine, scan frame, new badges, publisher logos, new text, watermark or UI. Preserve all original art and typography, with no crop of important characters, hands, core or title."
     }
   ]
 }
