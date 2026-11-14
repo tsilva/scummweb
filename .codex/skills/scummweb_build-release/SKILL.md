@@ -18,6 +18,21 @@ belong to the requested deployment or the user explicitly includes them.
 Review the complete candidate, preserve unrelated work and stop on unresolved
 conflicts or remote divergence. Do not switch branches or discard work.
 
+### Prepare generated assets
+
+For fresh or isolated candidates, reuse available verified `.cache/artwork/`
+files and generated JPEGs in `public/social-cards/` from an existing ScummWEB
+checkout or candidate. Copy missing files into task-owned candidate directories;
+preserve source caches and the candidate's selected artwork, catalog and
+social-card manifests. Keep artwork size/SHA-256 and card input/image-hash
+validation enabled. Missing, stale or corrupt entries use normal regeneration.
+
+Before testing, run `pnpm run prepare` in the candidate to stage the runtime and
+refresh generated game-progress and social-card metadata. Repeat after
+incorporating upstream changes affecting catalog, copy or artwork. Use the
+documented runtime/shell regeneration path first when needed. Review generated
+manifest changes against the intended release and keep cache files out of Git.
+
 Run applicable syntax and regression checks and a production application build.
 Run tests and builds sequentially; both can generate artwork and share its lock.
 Reuse completed checks for unchanged source. Use a separate project-relative
