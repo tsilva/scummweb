@@ -2,10 +2,10 @@ const key = "scummweb.dropbox-connection.v1";
 export function dropboxEnabled() {
   try { return JSON.parse(window.localStorage.getItem(key))?.enabled === true; } catch { return false; }
 }
-export async function prepareDropboxLaunch() {
+export async function prepareDropboxLaunch(launchDestinationKey = null) {
   if (!dropboxEnabled()) return;
   const sync = await import("./runtime.mjs");
-  await sync.syncDropbox({ beforeLaunch: true });
+  await sync.syncDropbox({ beforeLaunch: true, launchDestinationKey });
 }
 export function reportDropboxSave(player, game) {
   if (!dropboxEnabled()) return;

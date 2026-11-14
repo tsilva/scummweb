@@ -13,6 +13,7 @@ const listeners = new Set();
 let state = { phase: "disconnected", message: "", conflicts: [] };
 let flight = null, flightController, queue = Promise.resolve(), generation = 0, contextPromise;
 let connecting = false, localGeneration = 0;
+let launchSyncSnapshot = null;
 const appKey = () => process.env.NEXT_PUBLIC_DROPBOX_APP_KEY || "";
 export function dropboxConfigured() { return Boolean(appKey()); }
 export function getDropboxState() { return state; }
@@ -182,6 +183,7 @@ async function syncAccount(auth, epoch, signal, progress) {
       if (!groups.has(profile)) groups.set(profile, { local: null, alternatives: [] });
     }
     const conflicts = [];
+    const readyProfiles = new Set();
     let deferred = Boolean(collected.incomplete || importMessage);
     for (const [profile, group] of groups) {
       check();
@@ -234,6 +236,7 @@ async function syncAccount(auth, epoch, signal, progress) {
       }
       await syncStore.put({ id: recordKey(account, "base", profile), hash: result.head.active, tips: result.head.tips });
       await syncStore.removeIf(recordKey(account, "pending", profile), (pending) => pending.set.hash === group.local?.hash);
+      readyProfiles.add(profile);
     }
     check();
     const observedGeneration = localGeneration;
@@ -241,13 +244,31 @@ async function syncAccount(auth, epoch, signal, progress) {
     const pending = await syncStore.all(recordKey(account, "pending", ""));
     if (observedGeneration !== localGeneration) deferred = true;
     check();
+    // A conflict elsewhere must not block a game whose own profile finished
+    // syncing. Keep unknown/incomplete scans and every pending profile blocked.
+    const pendingProfiles = new Set(pending.map((item) => item.profile));
+    launchSyncSnapshot = { epoch, account, localGeneration: observedGeneration,
+      complete: !collected.busy && !collected.incomplete && !importMessage && observedGeneration === localGeneration,
+      scanned: new Set(groups.keys()), ready: new Set([...readyProfiles].filter((profile) => !pendingProfiles.has(profile))) };
     update({ phase: conflicts.length ? "conflict" : pending.length || deferred ? "waiting" : "connected", conflicts,
       message: conflicts.length ? "Choose which saved progress to continue." : importMessage || (deferred ? "Cloud saves will be restored after you exit the game."
         : pending.length ? "Your latest saves are waiting to sync." : "") });
   } finally { transport.close(); }
 }
 
-export async function syncDropbox({ beforeLaunch = false } = {}) {
+async function launchHasNoConflict(destinationKey) {
+  const snapshot = launchSyncSnapshot;
+  if (!destinationKey || state.phase !== "conflict" || !snapshot?.complete) return false;
+  const { destinations } = await context();
+  const destination = destinations.find((item) => item.key === destinationKey);
+  if (!destination) return false;
+  const profile = await saveProfileId({ destination });
+  return snapshot === launchSyncSnapshot && snapshot.epoch === generation && snapshot.account === session()?.accountId
+    && snapshot.localGeneration === localGeneration
+    && (!snapshot.scanned.has(profile) || snapshot.ready.has(profile));
+}
+
+export async function syncDropbox({ beforeLaunch = false, launchDestinationKey = null } = {}) {
   if (!connection()?.enabled) { update({ phase: "disconnected", message: "", conflicts: [] }); return; }
   const auth = session();
   if (!auth) {
@@ -257,6 +278,7 @@ export async function syncDropbox({ beforeLaunch = false } = {}) {
     return;
   }
   if (!flight) {
+    launchSyncSnapshot = null;
     const epoch = generation;
     const controller = new AbortController();
     flightController = controller;
@@ -285,7 +307,9 @@ export async function syncDropbox({ beforeLaunch = false } = {}) {
   }
   try {
     await flight;
-    if (beforeLaunch && state.phase !== "connected") throw new DropboxError(state.message || "Finish syncing before playing.");
+    if (beforeLaunch && state.phase !== "connected" && !await launchHasNoConflict(launchDestinationKey)) {
+      throw new DropboxError(state.message || "Finish syncing before playing.");
+    }
   } catch (error) { if (beforeLaunch) throw error; }
 }
 

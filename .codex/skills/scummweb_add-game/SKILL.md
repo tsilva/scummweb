@@ -141,6 +141,10 @@ application build sequentially. Restore temporary preview-route adapters before
 final gates. Use [$scummweb_build-release](../scummweb_build-release/SKILL.md) to
 preserve the complete verified runtime/source receipt and stage only the scoped
 candidate. Do not stage concurrent Cloud, native, artwork or UI work implicitly.
+Before committing, check the expected HEAD and the exact staged path/blob set
+against the reviewed candidate. A failed staging guard must stop execution before
+`git commit`; preserve another task’s index entries. Use failure-stopping command
+chains or checked subprocesses so a rejected guard cannot fall through.
 
 For authorized publication, commit/push through `$private-skills_push`, monitor
 successful exact-commit CI and the existing Production delivery workflow, verify

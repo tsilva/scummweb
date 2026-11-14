@@ -9,7 +9,7 @@ import { browserSaveStorage, fakeNativeStorage, nativeCloudBrowser, indexedDbFix
 const bytes = (text) => new TextEncoder().encode(text);
 const account = "dbid:synthetic-account";
 const key = (kind, profile) => `${account}/${kind}/${profile}`;
-async function setup(t, contents = "browser progress") {
+async function setup(t, contents = "browser progress", catalog = [{ target: "sky", displayTitle: "Beneath a Steel Sky" }]) {
   const original = new Map(["window", "document", "localStorage", "sessionStorage", "indexedDB", "navigator", "fetch", "location"]
     .map((name) => [name, Object.getOwnPropertyDescriptor(globalThis, name)]));
   const storage = browserSaveStorage(contents === null ? {} : { "SKY-VM.001": bytes(contents) });
@@ -17,7 +17,7 @@ async function setup(t, contents = "browser progress") {
   const locks = { busy: false, async request(name, options, run) { if (typeof options === "function") run = options; return run(this.busy && name === "scummweb-saves" ? null : { name }); } };
   const browser = nativeCloudBrowser(server, storage);
   const globals = { window: browser.window, document: browser.document, location: browser.location, localStorage: storage, sessionStorage: sessions, indexedDB: idb, navigator: { locks },
-    fetch: async (url) => url === "/games.json" ? Response.json({ games: [{ target: "sky", displayTitle: "Beneath a Steel Sky" }] })
+    fetch: async (url) => url === "/games.json" ? Response.json({ games: catalog })
       : new Response("[scummvm]\n") };
   for (const [name, value] of Object.entries(globals)) Object.defineProperty(globalThis, name, { configurable: true, writable: true, value });
   storage.setItem(connectionKey, JSON.stringify({ enabled: true, accountId: account }));
@@ -27,7 +27,7 @@ async function setup(t, contents = "browser progress") {
   } });
   await syncStore.put({ id: "native/dropbox/" + account, config: "[cloud]\ncurrent_storage=1\n" });
   const runtime = await import(`../app/dropbox/runtime.mjs?test=${crypto.randomUUID()}`);
-  const destinations = await getSaveDestinations([{ target: "sky", displayTitle: "Beneath a Steel Sky" }], []);
+  const destinations = await getSaveDestinations(catalog, []);
   return { storage, sessions, idb, server, locks, runtime, destinations };
 }
 
@@ -218,6 +218,42 @@ test("copied progress conflicting with browser progress requires a choice and ke
   assert.equal(runtime.getDropboxState().phase, "connected");
 });
 
+for (const existingProgress of [false, true]) test(`an unrelated conflict permits a fully synced game ${existingProgress ? "with cloud progress" : "without saves"}`, async (t) => {
+  const catalog = [{ target: "sky", displayTitle: "Beneath a Steel Sky" },
+    { target: "neverhood-demo", displayTitle: "The Neverhood (Demo)" }];
+  const { runtime, storage, destinations, server, locks } = await setup(t, "browser progress", catalog);
+  fastImportObservation(t);
+  await runtime.syncDropbox({ beforeLaunch: true });
+  const original = (await getActiveSaveSets(storage, destinations)).sets[0];
+  let remote;
+  if (existingProgress) {
+    remote = { destination: { ...destinations.find(({ key }) => key === "catalog:neverhood-demo"), isolated: true },
+      files: [{ path: "neverhood-demo.001", data: bytes("other game's progress"), modifiedAt: 100 }] };
+    remote.hash = await identifySet(remote);
+    await publishProfile({ client: await createSaveCollection(server), profile: await saveProfileId(remote), local: remote });
+  }
+  copyBass(server);
+  await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:neverhood-demo" });
+  assert.equal(runtime.getDropboxState().phase, "conflict");
+  const active = (await getActiveSaveSets(storage, destinations)).sets;
+  assert.ok(active.some(({ hash }) => hash === original.hash));
+  if (remote) assert.ok(active.some(({ hash }) => hash === remote.hash));
+  assert.equal(server.imports.size, 2);
+  assert.ok((await readStoredSets()).some(({ hash }) => hash !== original.hash));
+  for (const launchDestinationKey of ["catalog:sky", "catalog:unknown", null]) {
+    await assert.rejects(runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey }), /Choose which saved progress/);
+  }
+  // A busy save scan cannot establish that an unrelated edition is safe.
+  locks.busy = true;
+  await assert.rejects(runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:neverhood-demo" }), /Choose which saved progress/);
+  locks.busy = false;
+  storage.setItem("scummweb.continue.v1:catalog-neverhood-demo", JSON.stringify({ pending: ["neverhood-demo.001"] }));
+  await assert.rejects(runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:neverhood-demo" }), /Choose which saved progress/);
+  storage.removeItem("scummweb.continue.v1:catalog-neverhood-demo");
+  server.offline = true;
+  await assert.rejects(runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:neverhood-demo" }));
+});
+
 test("a lost copied-save publication reply resumes without losing or duplicating the import", async (t) => {
   const { runtime, storage, destinations, server } = await setup(t, null);
   fastImportObservation(t); copyBass(server); server.failAfterUpload = true;
@@ -232,9 +268,11 @@ test("a lost copied-save publication reply resumes without losing or duplicating
 test("a stalled coordinator releases its flight and lock, retries, and fences the late result", async (t) => {
   const { runtime, server, locks } = await setup(t);
   const timer = globalThis.setTimeout, fetcher = globalThis.fetch;
-  globalThis.setTimeout = (callback, delay, ...args) => timer(callback, delay === 180000 ? 25 : delay, ...args);
-  t.after(() => { globalThis.setTimeout = timer; });
   let release;
+  globalThis.setTimeout = (callback, delay, ...args) => delay === 180000
+    ? timer(function expireStalledFetch() { if (release) callback(...args); else timer(expireStalledFetch, 1); }, 25)
+    : timer(callback, delay, ...args);
+  t.after(() => { globalThis.setTimeout = timer; });
   globalThis.fetch = () => new Promise((resolve) => { release = resolve; });
   let held = false;
   const request = locks.request.bind(locks);
