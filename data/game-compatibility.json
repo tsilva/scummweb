@@ -1611,6 +1611,14 @@
       "observation": "A game frame renders at startup."
     },
     {
+      "title": "Freddi Fish and the Case of the Missing Kelp Seeds (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:freddi",
+      "edition": "freddi-win-demo-us.zip",
+      "recordedOn": "2026-11-14",
+      "observation": "English Windows demo renders its original voiced opening and shipwreck scene. Native intro skip and wheel animation input work. Saving is unavailable in the tested first playable scene."
+    },
+    {
       "title": "Green Eggs and Ham",
       "status": "startup-verified",
       "gameId": "mohawk:greeneggs",

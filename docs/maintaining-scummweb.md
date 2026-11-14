@@ -308,6 +308,12 @@ Native Skip intro advances past the publisher opening while preserving the
 Sneak Preview, Scenes from Myst and Making of Myst choices. Saving and loading
 are disabled for this demo, so it has no checkpoint or Continue.
 
+Freddi Fish and the Case of the Missing Kelp Seeds’ English Windows demo
+retains its unchanged original package, including its Help file and notices.
+Native intro skip reaches the shipwreck scene, which accepts object-click input.
+Saving is unavailable in that tested scene; no intro checkpoint is bundled.
+The existing shared hero and box art are reused.
+
 Putt-Putt Joins the Parade’s English Windows demo retains its complete original
 Windows package, including the compiled Help file. Native intro skip advances
 the opening, and the first road scene accepts click-point input. Saving is

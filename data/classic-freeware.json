@@ -616,6 +616,24 @@
         "basis": "All eight original files inspected for ASCII, UTF16 and XOR69 legal strings. Windows Help file fully decompiled into98 topics with HelpDeco and converted to plain text; includes installation, technical help and promotional catalog, no express redistribution ban or rehosting grant found. Official ScummVM promotional hosting supports user-authorized cautious assessment without establishing an express rights-holder license.",
         "preservation": "Serve complete original unchanged archive including executable, W32 and HLP; no removal or repacking."
       }
+    },
+    {
+      "target": "freddi-demo",
+      "title": "Freddi Fish and the Case of the Missing Kelp Seeds (Demo)",
+      "engineId": "scumm",
+      "gameId": "freddi",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "freddi-win-demo-us.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/scumm/he/freddi-win-demo-us.zip",
+      "sha256": "f543c5551883ea23f8741b9e942a47b05360c1f8f9c539ff8468fd3bb4889eba",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-14",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "All eight original files inspected for ASCII, UTF16 and XOR69 legal notices. Compiled Windows Help fully decompiled and plain text checked; installation, troubleshooting and promotional catalog, no express redistribution ban or rehosting grant found. Original copyright and all-rights-reserved notices retained. Official ScummVM promotional hosting supports user-authorized cautious assessment without establishing an express rights-holder license.",
+        "preservation": "Serve complete unchanged original archive, retaining executable, W32, HLP and all game/audio files and notices."
+      }
     }
   ]
 }
