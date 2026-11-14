@@ -1485,6 +1485,11 @@
       "file": "zork-nemesis-the-forbidden-lands-108534972258666dc7b2fc57846d118cfc91dc70049447eb5827da71e9407856.jpg",
       "inputHash": "108534972258666dc7b2fc57846d118cfc91dc70049447eb5827da71e9407856",
       "imageHash": "eae9e06b8cefa2e3ede3113a6b615c163974f119d4df9387d2afad4fc9865699"
+    },
+    "toonstruck-demo": {
+      "file": "toonstruck-demo-6be2cf6d8a1369c185c7c1eda4026eac39a4e5b94f74fa06a820725009fa63b0.jpg",
+      "inputHash": "6be2cf6d8a1369c185c7c1eda4026eac39a4e5b94f74fa06a820725009fa63b0",
+      "imageHash": "801fbca2c7bcc4d340e4f02f5e71ebcb3759aaabb2b26d5e677573a4031737a0"
     }
   }
 }

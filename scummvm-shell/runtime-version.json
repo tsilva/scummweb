@@ -1,12 +1,12 @@
 {
-  "version": "sha-cdc3cdf03dd53e41d8f4a576",
+  "version": "sha-6b157a1e76fdac0b9d7a0fdb",
   "files": {
     "/scummvm.js": "sha-ff257f9b4cc4cbe68d41a028",
     "/scummvm.wasm": "sha-c95d61adcef7188f58c4d678",
     "/scummvm_fs.js": "sha-a1070971ba693ed248d9e700",
     "/audio-start-control.mjs": "sha-5be22420debc1de1477fe594",
-    "/scummvm.ini": "sha-197c46a073baa870637fd998",
-    "/games.json": "sha-b437a6933f68c48ade07e566",
-    "/scummvm.html": "sha-cdc3cdf03dd53e41d8f4a576"
+    "/scummvm.ini": "sha-d96c07df34230cbec2dca481",
+    "/games.json": "sha-04750769d0cf7799142839c6",
+    "/scummvm.html": "sha-6b157a1e76fdac0b9d7a0fdb"
   }
 }

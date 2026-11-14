@@ -315,6 +315,8 @@ Native Skip intro advances past the publisher opening while preserving the
 Sneak Preview, Scenes from Myst and Making of Myst choices. Saving and loading
 are disabled for this demo, so it has no checkpoint or Continue.
 
+Toonstruck’s English DOS demo uses the complete unchanged official ZIP and shares the original game’s artwork. Native intro skip preserves the opening Zanydu scene. Walking, Save/Load and Continue are verified; the original demo content and choices remain intact.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.
