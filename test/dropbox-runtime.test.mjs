@@ -81,15 +81,27 @@ test("lost upload success replies retain the outbox until restart verifies publi
 
 test("a clean browser restores cloud progress before the launch gate completes", async (t) => {
   const { runtime, storage, destinations, server } = await setup(t, null);
+  let changes = 0;
+  window.addEventListener("scummweb:saves-changed", () => { changes++; });
   const set = { destination: destinations[0], files: [{ path: "SKY-VM.001", data: bytes("from another device"), modifiedAt: 100 }] };
   set.hash = await identifySet(set);
   await publishProfile({ client: await createSaveCollection(server), profile: await saveProfileId(set), local: set });
   await runtime.syncDropbox({ beforeLaunch: true });
   assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, set.hash);
+  await runtime.syncDropbox({ beforeLaunch: true });
+  assert.equal(changes, 1, "an actual restore notifies the library once");
 });
 
 test("unknown cloud editions stay preserved until their matching game is available", async (t) => {
   const { runtime, storage, destinations, server } = await setup(t, null);
+  let changes = 0;
+  window.addEventListener("scummweb:saves-changed", () => { changes++; });
+  storage.removeItem("/");
+  const fetcher = globalThis.fetch;
+  globalThis.fetch = (url, ...args) => {
+    assert.notEqual(url, "/scummvm.ini", "preservation must not initialize an unavailable edition");
+    return fetcher(url, ...args);
+  };
   const namespace = "version-" + "c".repeat(64);
   const set = { destination: { key: namespace, namespace, title: "Missing edition", fingerprint: "f".repeat(64) },
     files: [{ path: "game.001", data: bytes("preserve"), modifiedAt: 100 }] };
@@ -98,6 +110,9 @@ test("unknown cloud editions stay preserved until their matching game is availab
   await runtime.syncDropbox({ beforeLaunch: true });
   assert.equal((await getActiveSaveSets(storage, destinations)).sets.length, 0);
   assert.ok((await readStoredSets()).some(({ hash }) => hash === set.hash));
+  await runtime.syncDropbox({ beforeLaunch: true });
+  assert.equal(changes, 0, "preserving an unavailable edition must not trigger another sync pass");
+  assert.equal(storage.getItem("/"), null);
 });
 
 test("cloud changes never replace a running player's working copy", async (t) => {

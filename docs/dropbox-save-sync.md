@@ -128,6 +128,8 @@ cloud manifest. Its checksum-derived filename identifies its profile, complete
 file contents, active/recovery role and parent snapshot IDs. Imported editions
 with matching fingerprints share a profile across different browser source IDs.
 Unknown editions remain preserved until their matching game is available.
+Preserving these editions does not restart synchronization or initialize an
+empty browser's game files.
 
 A snapshot is uploaded and downloaded for integrity verification before the
 outbox is acknowledged. Readback checks ZIP integrity, file hashes, profile and
