@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import HeroStage from "./hero-stage";
 import { getHeroPreloadImages, HERO_PRELOAD_AHEAD } from "./hero-images.mjs";
-import { createHeroPreload } from "./hero-preload.mjs";
+import { createHeroPreload, disposeHeroPreload } from "./hero-preload.mjs";
 import { useArtworkDelivery } from "./artwork-delivery";
 import { chooseGameVersion, getGameFamilyKey, readPreferredGameVersion, rememberGameVersion } from "../game-versions.mjs";
 import { orderHeroGroups } from "./hero-order.mjs";
@@ -94,13 +94,13 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
       nextImages.set(key, picture);
     }
     for (const [key, picture] of preloadedImages.current) {
-      if (!nextImages.has(key)) picture.remove();
+      if (!nextImages.has(key)) disposeHeroPreload(picture);
     }
     preloadedImages.current = nextImages;
   }, [preloadKey]);
 
   useEffect(() => () => {
-    for (const picture of preloadedImages.current.values()) picture.remove();
+    for (const picture of preloadedImages.current.values()) disposeHeroPreload(picture);
     preloadedImages.current.clear();
   }, []);
 
