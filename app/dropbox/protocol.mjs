@@ -77,16 +77,21 @@ export async function createSaveCollection(transport, cache) {
   let nodes = [];
   async function refresh() {
     const names = [...new Set(await transport.list())];
-    nodes = [];
+    // Snapshots are immutable and already verified. Reuse this pass's bytes
+    // instead of reopening IndexedDB for the entire history after every game.
+    // Build the active collection from the fresh listing so deletions still count.
+    const verified = new Map(nodes.map((node) => [node.id, node]));
+    const next = [];
     let totalBytes = 0;
     for (const name of names) {
       const id = name.slice(0, -4);
-      let node = await cache?.load(id);
+      let node = verified.get(id) ?? await cache?.load(id);
       if (!node) { node = await readNode(transport, id); await cache?.save(node); }
       totalBytes += node.set.files.reduce((sum, file) => sum + file.data.length, 0);
       if (totalBytes > 256 * 1024 * 1024) throw new DropboxError("Cloud save history exceeds the supported collection size. Your copies are retained.");
-      nodes.push(node);
+      next.push(node);
     }
+    nodes = next;
   }
   await refresh();
   const history = (profile) => profileHistory(nodes, profile);
