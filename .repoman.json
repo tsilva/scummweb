@@ -13,5 +13,18 @@
       "npm:@next/swc-win32-x64-msvc@16.4.5#age": "Audited Next.js 16.4.5 security release (vercel/next.js@4e5335a). Verified registry signatures, source attestations, and package contents. This release family is normally eligible on 2026-11-10 at 18:01:55 UTC.",
       "npm:next@16.4.5#age": "Audited Next.js 16.4.5 security release (vercel/next.js@4e5335a). Verified registry signatures, source attestations, and package contents. This release family is normally eligible on 2026-11-10 at 18:01:55 UTC."
     }
+  },
+  "websites": {
+    "scummweb.tsilva.eu": {
+      "url": "https://scummweb.tsilva.eu/",
+      "availability": "reachable",
+      "ga4": "tag-detected",
+      "sentry": "source-detected",
+      "checked-on": "2026-11-03",
+      "ga4-expectation": "required",
+      "ga4-verification-path": "/",
+      "sentry-expectation": "required",
+      "sentry-verification-path": "/"
+    }
   }
 }
