@@ -120,6 +120,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "primordia-demo": {
+    ...retroGameArtwork["ags:primordia"],
+    heroImageMobilePosition: "90% -20vh",
+    title: "Primordia (Demo)",
+    year: "2012",
+    language: "en",
+  },
   "geminirue-demo": {
     ...retroGameArtwork["ags:geminirue"],
     heroImageMobilePosition: "100% top",

@@ -18324,5 +18324,86 @@
     "studio": "Joshua Nuernberger",
     "genre": "Science-fiction noir adventure",
     "category": "Science fiction"
+  },
+  "ags:primordia": {
+    "title": "Primordia",
+    "aliases": [
+      "Primordia (Demo)",
+      "primordia-demo.zip",
+      "Primordia (Windows)"
+    ],
+    "posterImage": "/launcher/primordia-scummweb-generated-2026-11-13-r1-cover.webp",
+    "heroImage": "/launcher/primordia-scummweb-generated-2026-11-13-r1-hero.webp",
+    "heroImagePosition": "80% 38%",
+    "screenshots": [
+      "/launcher/primordia-shot-1.webp",
+      "/launcher/primordia-shot-2.webp",
+      "/launcher/primordia-shot-3.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-13",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co1m4v.jpg",
+            "sha256": "d21aaa7fa417017fef3df6aa7c82167877263d092cb3723d7364675d4a2b3385",
+            "kind": "box-front",
+            "credit": "Original Primordia cover illustration hosted by IGDB; original artwork and title belong to their creators and rights holders."
+          }
+        ]
+      },
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-13",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "url": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co1m4v.jpg",
+            "sha256": "d21aaa7fa417017fef3df6aa7c82167877263d092cb3723d7364675d4a2b3385",
+            "kind": "box-front",
+            "credit": "Original Primordia cover illustration hosted by IGDB; original artwork and title belong to their creators and rights holders."
+          },
+          {
+            "url": "https://wadjeteyegames.com/wp-content/uploads/primordia-slide-940x240.jpg",
+            "sha256": "0b1feb1c9ca3210f44ed733498d349b71754d241673241fbfd224f7062134642",
+            "credit": "Official Wadjet Eye Games promotional banner."
+          }
+        ]
+      },
+      "screenshots": [
+        {
+          "url": "https://wadjeteyegames.com/wp-content/uploads/primordia_bomb.png",
+          "sha256": "5ee1a8224b8575f6516feec5a5eecdf36c3b49bc8b49a98b9a63ff5deee6efd1",
+          "page": "https://wadjeteyegames.com/games/primordia/",
+          "kind": "gameplay",
+          "credit": "Original publisher gameplay screenshot; preserved without repainting."
+        },
+        {
+          "url": "https://wadjeteyegames.com/wp-content/uploads/primordia_blastdoor.png",
+          "sha256": "2cfc8aad808f78ba7ed12f30b9ce5f9636f302d0a06e8f7ad9ac1f33bf5e0c85",
+          "page": "https://wadjeteyegames.com/games/primordia/",
+          "kind": "gameplay",
+          "credit": "Original publisher gameplay screenshot; preserved without repainting."
+        },
+        {
+          "url": "https://wadjeteyegames.com/wp-content/uploads/primshot6.png",
+          "sha256": "ca8152e06a6f33b2984975bd97c72bb524899129a2561a5de5fa5bec9da8551b",
+          "page": "https://wadjeteyegames.com/games/primordia/",
+          "kind": "gameplay",
+          "credit": "Original publisher gameplay screenshot; preserved without repainting."
+        }
+      ],
+      "metadata": [
+        "https://wadjeteyegames.com/games/primordia/",
+        "https://www.wormwoodstudios.com/p/primordia.html"
+      ]
+    },
+    "summary": "Help Horatio and his floating companion Crispin recover their stolen power core in a world of forgotten machines.",
+    "studio": "Wormwood Studios",
+    "genre": "Post-apocalyptic puzzle adventure",
+    "category": "Science fiction"
   }
 }

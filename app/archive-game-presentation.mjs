@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Primordia (Demo)", target: "primordia-demo", engineId: "ags", gameId: "primordia",
+    files: [["primordia.exe", 727898212, 584883832], ["speech.vox", 212231939, 2479583785]],
+  },
+  {
     title: "Gemini Rue (Demo)", target: "geminirue-demo", engineId: "ags", gameId: "geminirue",
     files: [["gemini rue demo.exe", 61839853, 1256240307], ["speech.vox", 103642847, 1984807282]],
   },

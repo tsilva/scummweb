@@ -92,6 +92,7 @@ test("normal original game prompts do not create compatibility warnings", () => 
   assert.ok(prompts.every((entry) => entry.status === "startup-verified"));
   assert.ok(prompts.every((entry) => /gameplay beyond it was not verified/.test(entry.observation)));
   assert.deepEqual(filterCompatibilityEntries(data.entries, { status: "startup-warning" }).map((entry) => entry.gameId).sort(), [
+    "ags:primordia",
     "grim:monkey4",
     "mads:nebular",
     "mohawk:arthurbday",

@@ -555,6 +555,16 @@
           "geminirue-demo.090"
         ]
       }
+    },
+    {
+      "target": "primordia-demo",
+      "title": "Primordia (Demo)",
+      "path": "/games/primordia",
+      "engineId": "ags",
+      "gameId": "primordia",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

@@ -287,6 +287,13 @@ Native Skip intro advances past the publisher opening while preserving the
 Sneak Preview, Scenes from Myst and Making of Myst choices. Saving and loading
 are disabled for this demo, so it has no checkpoint or Continue.
 
+Primordia’s English Windows demo retains its original Start Game menu and opening.
+The unchanged archive is approximately 804 MiB, so this target alone allows a
+900 MiB download, 1 GiB expanded data and a 15-minute download timeout. Its
+first deck scene accepts walking input. Save attempts currently produce empty
+files in the browser runtime; saving and Continue are unreliable for this demo.
+Keep this limitation in the compatibility record and play the demo in one sitting.
+
 Gemini Rue’s English Windows demo supports native saving and restoration. Its
 intro checkpoint starts on the first playable street scene after the original
 prologue and phone conversation, before any player action. The complete archive

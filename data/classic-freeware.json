@@ -562,6 +562,24 @@
         "basis": "Official ScummVM-hosted English interactive promotional demo. All eleven files, included manual and ASCII/UTF-16 executable notices inspected; no express redistribution grant or ban found. Official hosting supports this assessment without constituting an express rights-holder license.",
         "preservation": "Serve the complete unchanged upstream ZIP, retaining original manual and credits, executables, speech, music, plugins and copyright notices."
       }
+    },
+    {
+      "target": "primordia-demo",
+      "title": "Primordia (Demo)",
+      "engineId": "ags",
+      "gameId": "primordia",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "primordia-demo.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/ags/primordia-demo.zip",
+      "sha256": "37494080fc4e96f0638641b455fcbfe493664cd5b16c8c0ff62185be11c3a70d",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-13",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "Official ScummVM-hosted English interactive promotional demo. All eight files, complete ASCII strings and streamed UTF-16 notices inspected; no standalone license, express archive-wide redistribution ban or rehosting grant found. An embedded font notice permits freeware noncommercial use; ScummWEB serves this intact promotional demo without commercial use. This font notice is not treated as a game license. Official hosting supports this assessment without constituting an express rights-holder license.",
+        "preservation": "Serve the complete unchanged upstream ZIP, retaining original executables, voice and audio packs, plugin, configuration, uninstaller and all embedded notices."
+      }
     }
   ]
 }
