@@ -397,7 +397,7 @@ button.nav-icon-link {
   display: block;
   width: 100%;
   line-height: 0.9;
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
 }
 
 .hero-mobile-copy {

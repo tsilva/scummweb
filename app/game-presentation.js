@@ -120,6 +120,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "technobabylon-demo": {
+    ...retroGameArtwork["ags:technobabylon"],
+    heroImageMobilePosition: "80% -8vh",
+    title: "Technobabylon (Demo)",
+    year: "2015",
+    language: "en",
+  },
   "primordia-demo": {
     ...retroGameArtwork["ags:primordia"],
     heroImageMobilePosition: "90% -20vh",

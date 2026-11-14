@@ -39695,6 +39695,195 @@
       "contentType": "image/webp",
       "width": 480,
       "height": 300
+    },
+    "/launcher/technobabylon-scummweb-generated-2026-11-14-r1-cover.webp": {
+      "key": "artwork/0f7447dd6d73c74573231891aa83368792418dff97cf7c96266fe97ee6dae1c8/technobabylon-scummweb-generated-2026-11-14-r1-cover.webp",
+      "sha256": "0f7447dd6d73c74573231891aa83368792418dff97cf7c96266fe97ee6dae1c8",
+      "bytes": 200294,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200,
+      "placeholder": "UklGRmQAAABXRUJQVlA4IFgAAADwAQCdASoJAAwAAsBIJbACdLoAAmt8TWAA/vMqgCSLqNh6QZd8Ti+cWvP+kkeFpJB2OMtW+Lg2Pls9YfQViBY6LBCplquHnXdlTrJiox4IlsQbiFVFcAAA"
+    },
+    "/launcher/technobabylon-scummweb-generated-2026-11-14-r1-hero.webp": {
+      "key": "artwork/a73a09c099f1ba16b4072614aaccd7cd2846b86591c456fe3775086f7d1e035f/technobabylon-scummweb-generated-2026-11-14-r1-hero.webp",
+      "sha256": "a73a09c099f1ba16b4072614aaccd7cd2846b86591c456fe3775086f7d1e035f",
+      "bytes": 118254,
+      "contentType": "image/webp",
+      "width": 1600,
+      "height": 960,
+      "placeholder": "UklGRkgAAABXRUJQVlA4IDwAAADwAQCdASoMAAcAAsBIJagCdAEPhwRkztAA/vnIes7RhHlm/yqM6tRPedHHtDZr8BSLLyxjs7rxrmYoGAA="
+    },
+    "/launcher/technobabylon-shot-1.webp": {
+      "key": "artwork/28246c3acd7abb93f799af5cc3fcd2c273a4664fa6dd1500c9487330a9420e50/technobabylon-shot-1.webp",
+      "sha256": "28246c3acd7abb93f799af5cc3fcd2c273a4664fa6dd1500c9487330a9420e50",
+      "bytes": 110686,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 800,
+      "placeholder": "UklGRlAAAABXRUJQVlA4IEQAAADwAQCdASoMAAgAAsBIJYwCdADcO/6xHkAA/vb5xuV62N9AkMaVM/ft6hnUC4jOc/kZG9JcgcJcFMlRIguI4OXag1gAAA=="
+    },
+    "/launcher/technobabylon-shot-2.webp": {
+      "key": "artwork/a1856e96eaa7656706a687f64025d44ed3de37f9448e816143f5a17845bddc7b/technobabylon-shot-2.webp",
+      "sha256": "a1856e96eaa7656706a687f64025d44ed3de37f9448e816143f5a17845bddc7b",
+      "bytes": 122656,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 800,
+      "placeholder": "UklGRk4AAABXRUJQVlA4IEIAAADQAQCdASoMAAgAAsBIJZQC7ADdSVOwKAD+9bZej7sMXRltf0ELJx+O1IhwjaZPiFTmHBHX0yYIiZDcpAeH5OfUAAA="
+    },
+    "/launcher/technobabylon-shot-3.webp": {
+      "key": "artwork/06f484a2191b1c2d13a53c74e92f010af5fe86c729d38459ffe46023e4487219/technobabylon-shot-3.webp",
+      "sha256": "06f484a2191b1c2d13a53c74e92f010af5fe86c729d38459ffe46023e4487219",
+      "bytes": 133694,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 800,
+      "placeholder": "UklGRmAAAABXRUJQVlA4IFQAAAAwAgCdASoMAAgAAsBIJZACdGuAAq6iTv3+gAD+qgXRUKZefEQNRNoWt8YXuweHrDLoS/PuBmc9f2sx+yRFoPSrcGoKIP8hMEoqQ3Y4DdK2oFkAAAA="
+    },
+    "/launcher/optimized/technobabylon-scummweb-generated-2026-11-14-r1-hero.avif": {
+      "key": "artwork/d86291f82b183c1d748d0ae9d781bcd2f1bd632a26c7d7170c5f6f3a7b7f0a7f/technobabylon-scummweb-generated-2026-11-14-r1-hero.avif",
+      "sha256": "d86291f82b183c1d748d0ae9d781bcd2f1bd632a26c7d7170c5f6f3a7b7f0a7f",
+      "bytes": 90839,
+      "contentType": "image/avif",
+      "width": 1600,
+      "height": 960
+    },
+    "/launcher/responsive/technobabylon-scummweb-generated-2026-11-14-r1-cover-320.webp": {
+      "key": "artwork/a6ab7a54a4285223ece952a6fd6be0bbeea908cf6c8118254a17de3a6af216a4/technobabylon-scummweb-generated-2026-11-14-r1-cover-320.webp",
+      "sha256": "a6ab7a54a4285223ece952a6fd6be0bbeea908cf6c8118254a17de3a6af216a4",
+      "bytes": 35954,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/technobabylon-scummweb-generated-2026-11-14-r1-cover-480.webp": {
+      "key": "artwork/a5e575eaa48a3850bde87229e83aab6bd3545e5d4215b6c7aa7ed7a6879e5a5a/technobabylon-scummweb-generated-2026-11-14-r1-cover-480.webp",
+      "sha256": "a5e575eaa48a3850bde87229e83aab6bd3545e5d4215b6c7aa7ed7a6879e5a5a",
+      "bytes": 70688,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/technobabylon-scummweb-generated-2026-11-14-r1-cover-640.webp": {
+      "key": "artwork/cfda8bfe9da66853a599511cd3752eb55ad838bd66fa99bb6f870f856ca3c8b9/technobabylon-scummweb-generated-2026-11-14-r1-cover-640.webp",
+      "sha256": "cfda8bfe9da66853a599511cd3752eb55ad838bd66fa99bb6f870f856ca3c8b9",
+      "bytes": 108050,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/technobabylon-scummweb-generated-2026-11-14-r1-hero-1280.avif": {
+      "key": "artwork/63cf83151ee295850253c00a184c4963642a26873f53d86e71cca82c4d1e8b21/technobabylon-scummweb-generated-2026-11-14-r1-hero-1280.avif",
+      "sha256": "63cf83151ee295850253c00a184c4963642a26873f53d86e71cca82c4d1e8b21",
+      "bytes": 60801,
+      "contentType": "image/avif",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/technobabylon-scummweb-generated-2026-11-14-r1-hero-1280.webp": {
+      "key": "artwork/d8f31416799cac2b5a4b01b4db8db045d82a776aa3c352ab147de67575bd8ef0/technobabylon-scummweb-generated-2026-11-14-r1-hero-1280.webp",
+      "sha256": "d8f31416799cac2b5a4b01b4db8db045d82a776aa3c352ab147de67575bd8ef0",
+      "bytes": 69426,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 768
+    },
+    "/launcher/responsive/technobabylon-scummweb-generated-2026-11-14-r1-hero-640.avif": {
+      "key": "artwork/02b56352ed4c89c34ef391898e40f17e9c622106cab5d08a1e737ca08cedccf0/technobabylon-scummweb-generated-2026-11-14-r1-hero-640.avif",
+      "sha256": "02b56352ed4c89c34ef391898e40f17e9c622106cab5d08a1e737ca08cedccf0",
+      "bytes": 21883,
+      "contentType": "image/avif",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/technobabylon-scummweb-generated-2026-11-14-r1-hero-640.webp": {
+      "key": "artwork/6c5dac7dd654516cd1e52a0282471d36f550fb9d61fa0503c6f7725690ba2b3d/technobabylon-scummweb-generated-2026-11-14-r1-hero-640.webp",
+      "sha256": "6c5dac7dd654516cd1e52a0282471d36f550fb9d61fa0503c6f7725690ba2b3d",
+      "bytes": 25638,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 384
+    },
+    "/launcher/responsive/technobabylon-scummweb-generated-2026-11-14-r1-hero-960.avif": {
+      "key": "artwork/10c08a071e1e97646bca353c1a497e3bafd177044eedd058fc4d5c072aa4cef2/technobabylon-scummweb-generated-2026-11-14-r1-hero-960.avif",
+      "sha256": "10c08a071e1e97646bca353c1a497e3bafd177044eedd058fc4d5c072aa4cef2",
+      "bytes": 41702,
+      "contentType": "image/avif",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/technobabylon-scummweb-generated-2026-11-14-r1-hero-960.webp": {
+      "key": "artwork/7bfa3d45a8d21704158720ab9aa61e0882a6eafbb87211cc57d1688e4ea34641/technobabylon-scummweb-generated-2026-11-14-r1-hero-960.webp",
+      "sha256": "7bfa3d45a8d21704158720ab9aa61e0882a6eafbb87211cc57d1688e4ea34641",
+      "bytes": 49256,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 576
+    },
+    "/launcher/responsive/technobabylon-shot-1-320.webp": {
+      "key": "artwork/cebf8115f62c594d1cbeedf08f1b0d0f2212e5c7a9d1cfaba5c5ae4374f80caf/technobabylon-shot-1-320.webp",
+      "sha256": "cebf8115f62c594d1cbeedf08f1b0d0f2212e5c7a9d1cfaba5c5ae4374f80caf",
+      "bytes": 65894,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 200
+    },
+    "/launcher/responsive/technobabylon-shot-1-640.webp": {
+      "key": "artwork/e0daca348ad8db21dff7a3627147582eabe4d7e26f4b6e5fbd3896f7bad02ed6/technobabylon-shot-1-640.webp",
+      "sha256": "e0daca348ad8db21dff7a3627147582eabe4d7e26f4b6e5fbd3896f7bad02ed6",
+      "bytes": 92886,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 400
+    },
+    "/launcher/responsive/technobabylon-shot-2-320.webp": {
+      "key": "artwork/6a9695d7775840559f2ba73e6c84c2111bd3b43703631630f4546ebedfcc8fdb/technobabylon-shot-2-320.webp",
+      "sha256": "6a9695d7775840559f2ba73e6c84c2111bd3b43703631630f4546ebedfcc8fdb",
+      "bytes": 81496,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 200
+    },
+    "/launcher/responsive/technobabylon-shot-2-640.webp": {
+      "key": "artwork/90bf05909dc881b3a3da90f69c933e24a1910d717c3b48dd19b00c26dc0b7d59/technobabylon-shot-2-640.webp",
+      "sha256": "90bf05909dc881b3a3da90f69c933e24a1910d717c3b48dd19b00c26dc0b7d59",
+      "bytes": 102634,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 400
+    },
+    "/launcher/responsive/technobabylon-shot-2-960.webp": {
+      "key": "artwork/961dae26400d53505f48ac78eb10e83ea63bdafc72286ebbddbb08d1055d92f3/technobabylon-shot-2-960.webp",
+      "sha256": "961dae26400d53505f48ac78eb10e83ea63bdafc72286ebbddbb08d1055d92f3",
+      "bytes": 118362,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 600
+    },
+    "/launcher/responsive/technobabylon-shot-3-320.webp": {
+      "key": "artwork/3804f7d26b0c1c50cf830a24f9638b0bf2754a7de33bdd3310072ab1be8df004/technobabylon-shot-3-320.webp",
+      "sha256": "3804f7d26b0c1c50cf830a24f9638b0bf2754a7de33bdd3310072ab1be8df004",
+      "bytes": 91120,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 200
+    },
+    "/launcher/responsive/technobabylon-shot-3-640.webp": {
+      "key": "artwork/84103d2f61b49773c14b66e370a93d4b71c0f7957d1c3104a4fbd7f9ec005eba/technobabylon-shot-3-640.webp",
+      "sha256": "84103d2f61b49773c14b66e370a93d4b71c0f7957d1c3104a4fbd7f9ec005eba",
+      "bytes": 113698,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 400
+    },
+    "/launcher/responsive/technobabylon-shot-3-960.webp": {
+      "key": "artwork/56a95a2d734a515923bee996e83b847330753a087d6c5761dadb5089b406d71e/technobabylon-shot-3-960.webp",
+      "sha256": "56a95a2d734a515923bee996e83b847330753a087d6c5761dadb5089b406d71e",
+      "bytes": 130294,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 600
     }
   },
   "images": {
@@ -53952,6 +54141,70 @@
         "/launcher/responsive/primordia-shot-3-320.webp",
         "/launcher/responsive/primordia-shot-3-480.webp",
         "/launcher/primordia-shot-3.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/technobabylon-scummweb-generated-2026-11-14-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/technobabylon-scummweb-generated-2026-11-14-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/technobabylon-scummweb-generated-2026-11-14-r1-cover-320.webp",
+        "/launcher/responsive/technobabylon-scummweb-generated-2026-11-14-r1-cover-480.webp",
+        "/launcher/responsive/technobabylon-scummweb-generated-2026-11-14-r1-cover-640.webp",
+        "/launcher/technobabylon-scummweb-generated-2026-11-14-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/technobabylon-scummweb-generated-2026-11-14-r1-hero.webp": {
+      "width": 1600,
+      "height": 960,
+      "fallback": "/launcher/technobabylon-scummweb-generated-2026-11-14-r1-hero.webp",
+      "webp": [
+        "/launcher/responsive/technobabylon-scummweb-generated-2026-11-14-r1-hero-640.webp",
+        "/launcher/responsive/technobabylon-scummweb-generated-2026-11-14-r1-hero-960.webp",
+        "/launcher/responsive/technobabylon-scummweb-generated-2026-11-14-r1-hero-1280.webp",
+        "/launcher/technobabylon-scummweb-generated-2026-11-14-r1-hero.webp"
+      ],
+      "avif": [
+        "/launcher/responsive/technobabylon-scummweb-generated-2026-11-14-r1-hero-640.avif",
+        "/launcher/responsive/technobabylon-scummweb-generated-2026-11-14-r1-hero-960.avif",
+        "/launcher/responsive/technobabylon-scummweb-generated-2026-11-14-r1-hero-1280.avif",
+        "/launcher/optimized/technobabylon-scummweb-generated-2026-11-14-r1-hero.avif"
+      ]
+    },
+    "/launcher/technobabylon-shot-1.webp": {
+      "width": 1280,
+      "height": 800,
+      "fallback": "/launcher/technobabylon-shot-1.webp",
+      "webp": [
+        "/launcher/responsive/technobabylon-shot-1-320.webp",
+        "/launcher/responsive/technobabylon-shot-1-640.webp",
+        "/launcher/technobabylon-shot-1.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/technobabylon-shot-2.webp": {
+      "width": 1280,
+      "height": 800,
+      "fallback": "/launcher/technobabylon-shot-2.webp",
+      "webp": [
+        "/launcher/responsive/technobabylon-shot-2-320.webp",
+        "/launcher/responsive/technobabylon-shot-2-640.webp",
+        "/launcher/responsive/technobabylon-shot-2-960.webp",
+        "/launcher/technobabylon-shot-2.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/technobabylon-shot-3.webp": {
+      "width": 1280,
+      "height": 800,
+      "fallback": "/launcher/technobabylon-shot-3.webp",
+      "webp": [
+        "/launcher/responsive/technobabylon-shot-3-320.webp",
+        "/launcher/responsive/technobabylon-shot-3-640.webp",
+        "/launcher/responsive/technobabylon-shot-3-960.webp",
+        "/launcher/technobabylon-shot-3.webp"
       ],
       "avif": []
     }

@@ -1,0 +1,24 @@
+Technobabylon (Demo) - embedded font credits
+
+This notice credits fonts embedded in the unchanged official promotional demo.
+It does not license the game, artwork, voices, music or other game content.
+
+Creator: nedraed. Copyright 2013-2014 nedraed.
+License: Creative Commons Attribution-ShareAlike 3.0 Unported.
+https://creativecommons.org/licenses/by-sa/3.0/
+
+Original font titles and source links retained in the executable:
+TB-display-Legible (2014): http://fontstruct.com/fontstructions/show/1089064
+TB-Legible (2014): http://fontstruct.com/fontstructions/show/1089057
+TB - Speech: Dave Outline (2014): http://fontstruct.com/fontstructions/show/1058896
+TB-APOGEE (2013): http://fontstruct.com/fontstructions/show/849294
+TB Display - HiRes (2014): http://fontstruct.com/fontstructions/show/1086545
+TB Speech: Hires (2014): http://fontstruct.com/fontstructions/show/1086650
+
+The embedded font data is unchanged. Original notices and license links remain
+inside the executable. No endorsement by the font creator is implied.
+
+Official demo source:
+https://downloads.scummvm.org/frs/demos/ags/technobabylon-demo.zip
+ScummVM demo directory: https://www.scummvm.org/demos/
+Game developer: Technocrat Games. Publisher: Wadjet Eye Games.

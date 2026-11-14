@@ -64,9 +64,9 @@ test("catalog intro checkpoints match their rebuild overrides and ship intact", 
   const manifest = JSON.parse(await readFile(new URL("runtime-assets.json", shell), "utf8"));
   // Retain original text/title prompts. SQ6’s demo disables saving and loading,
   // so its original title, instructions and opening remain the startup path.
-  // Primordia retains its original Start Game menu until a post-intro save is verified.
+  // Primordia and Technobabylon retain original Start menus while saves are unreliable.
   // Myst’s save-disabled demo retains its original preview menu after native intro skip.
-  const directPrompt = new Set(["zork1", "zork2", "zork3", "gob2-demo", "gob3-demo", "sq6-demo", "primordia-demo"]);
+  const directPrompt = new Set(["zork1", "zork2", "zork3", "gob2-demo", "gob3-demo", "sq6-demo", "primordia-demo", "technobabylon-demo"]);
   // Full Throttle's demo disables saving before its first decision; its
   // verified native intro action skips in place without a seeded save.
   const nativeOnly = new Set(["ft-demo", "samnmax-demo", "dig-demo", "sword1-demo", "dw-demo", "gob1-demo", "myst-demo"]);

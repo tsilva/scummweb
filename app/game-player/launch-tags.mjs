@@ -38,6 +38,7 @@ const launchTagsByTarget = new Map([
   ["gob3-demo", ["Point-and-click", "Surreal fantasy"]],
   ["gk1-demo", ["Point-and-click", "Supernatural mystery"]],
   ["freddypharkas-demo", ["Point-and-click", "Western comedy"]],
+  ["technobabylon-demo", ["Point-and-click", "Cyberpunk mystery"]],
   ["primordia-demo", ["Point-and-click", "Post-apocalyptic mystery"]],
   ["geminirue-demo", ["Point-and-click", "Science-fiction noir"]],
   ["myst-demo", ["First-person adventure", "Library mysteries"]],

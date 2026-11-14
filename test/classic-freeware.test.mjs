@@ -34,6 +34,7 @@ test("official classic archives are recognized by contents without relying on fi
     ["samnmax-demo", [["wrapper/SAMDEMO.000", 7505, 0x112b0cbd], ["wrapper/SAMDEMO.001", 1190282, 0xa0b3f988]]],
     ["gk1-demo", [["RESOURCE.MAP", 2490, 2514227026], ["RESOURCE.000", 1718450, 661574477]]],
     ["freddypharkas-demo", [["RESOURCE.MAP", 1918, 1006686103], ["RESOURCE.000", 957382, 1863300513]]],
+    ["technobabylon-demo", [["Technobabylon.exe", 595787927, 1286211410], ["speech.vox", 54621204, 1148941554]]],
     ["primordia-demo", [["Primordia.exe", 727898212, 584883832], ["speech.vox", 212231939, 2479583785]]],
     ["geminirue-demo", [["Gemini Rue DEMO.exe", 61839853, 1256240307], ["speech.vox", 103642847, 1984807282]]],
     ["myst-demo", [["DEMO.DAT", 488921, 3831070402], ["SLIDES.DAT", 9483618, 1854365890]]],

@@ -565,6 +565,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "technobabylon-demo",
+      "title": "Technobabylon (Demo)",
+      "path": "/games/technobabylon",
+      "engineId": "ags",
+      "gameId": "technobabylon",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/technobabylon.txt"
     }
   ]
 }

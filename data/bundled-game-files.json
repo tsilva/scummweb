@@ -10011,6 +10011,52 @@
           976948168
         ]
       ]
+    },
+    "technobabylon-demo": {
+      "url": "https://scummvm-games.tsilva.eu/technobabylon.zip",
+      "fingerprint": "ca8757610a6a00a2f2e19a5a3f645384749e36674da4dcb45fe6c3192d8fd953",
+      "files": [
+        [
+          "speech.vox",
+          54621204,
+          1148941554
+        ],
+        [
+          "winsetup.exe",
+          69662,
+          912563680
+        ],
+        [
+          "Technobabylon.exe",
+          595787927,
+          1286211410
+        ],
+        [
+          "unins000.exe",
+          731809,
+          3212842580
+        ],
+        [
+          "audio.vox",
+          93207238,
+          4123770500
+        ],
+        [
+          "ags_shell.dll",
+          40960,
+          1223580907
+        ],
+        [
+          "acsetup.cfg",
+          307,
+          3424045456
+        ],
+        [
+          "unins000.dat",
+          1653,
+          866780176
+        ]
+      ]
     }
   }
 }

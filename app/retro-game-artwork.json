@@ -18405,5 +18405,86 @@
     "studio": "Wormwood Studios",
     "genre": "Post-apocalyptic puzzle adventure",
     "category": "Science fiction"
+  },
+  "ags:technobabylon": {
+    "title": "Technobabylon",
+    "aliases": [
+      "Technobabylon (Demo)",
+      "technobabylon-demo.zip",
+      "Technobabylon (Windows)"
+    ],
+    "posterImage": "/launcher/technobabylon-scummweb-generated-2026-11-14-r1-cover.webp",
+    "heroImage": "/launcher/technobabylon-scummweb-generated-2026-11-14-r1-hero.webp",
+    "heroImagePosition": "80% 38%",
+    "screenshots": [
+      "/launcher/technobabylon-shot-1.webp",
+      "/launcher/technobabylon-shot-2.webp",
+      "/launcher/technobabylon-shot-3.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "generated-cover",
+        "generatedOn": "2026-11-14",
+        "generator": "image_gen (built-in)",
+        "creativeBasis": "box-front-restoration",
+        "references": [
+          {
+            "url": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co22wd.jpg",
+            "sha256": "eec4566e1189d93dd8d5124e41b391f35fdc2b94fa09a32cba40721782ac057a",
+            "kind": "box-front",
+            "credit": "Original Technobabylon digital cover illustration hosted by IGDB; original artwork, title and brands belong to their creators and rights holders."
+          }
+        ]
+      },
+      "hero": {
+        "kind": "generated-hero",
+        "generatedOn": "2026-11-14",
+        "generator": "image_gen (built-in)",
+        "references": [
+          {
+            "url": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co22wd.jpg",
+            "sha256": "eec4566e1189d93dd8d5124e41b391f35fdc2b94fa09a32cba40721782ac057a",
+            "kind": "box-front",
+            "credit": "Original Technobabylon digital cover illustration hosted by IGDB; original artwork, title and brands belong to their creators and rights holders."
+          },
+          {
+            "url": "https://wadjeteyegames.com/wp-content/uploads/technobanner1-940x240.png",
+            "sha256": "d7307457a86908f8ad06354aa767dd9a96dd9398bece3a3e6451fb2d405a8d96",
+            "credit": "Official Wadjet Eye Games promotional banner."
+          }
+        ]
+      },
+      "screenshots": [
+        {
+          "url": "https://wadjeteyegames.com/wp-content/uploads/TB-lathaapt.png",
+          "sha256": "501e5524e5fbb9190d1774aabad4f69aee95e2b4b34ec370375ba25358595b05",
+          "page": "https://wadjeteyegames.com/games/technobabylon/",
+          "kind": "gameplay",
+          "credit": "Original publisher gameplay screenshot; preserved without repainting."
+        },
+        {
+          "url": "https://wadjeteyegames.com/wp-content/uploads/TB-street1.png",
+          "sha256": "70156b31a35c0f5d89bc1a7324dc09c66d35c70e915c2021e57c92401f1ae695",
+          "page": "https://wadjeteyegames.com/games/technobabylon/",
+          "kind": "gameplay",
+          "credit": "Original publisher gameplay screenshot; preserved without repainting."
+        },
+        {
+          "url": "https://wadjeteyegames.com/wp-content/uploads/TB-subway.png",
+          "sha256": "3b4a51a266ce81e259ca62e01f73160777009d50ac1b74f9174d3a7e9adc7962",
+          "page": "https://wadjeteyegames.com/games/technobabylon/",
+          "kind": "gameplay",
+          "credit": "Original publisher gameplay screenshot; preserved without repainting."
+        }
+      ],
+      "metadata": [
+        "https://wadjeteyegames.com/games/technobabylon/",
+        "https://store.steampowered.com/app/307580/Technobabylon/"
+      ]
+    },
+    "summary": "Follow three citizens of Newton through a cyberpunk conspiracy of stolen memories, genetic engineering and virtual worlds.",
+    "studio": "Technocrat Games",
+    "genre": "Cyberpunk mystery adventure",
+    "category": "Science fiction"
   }
 }

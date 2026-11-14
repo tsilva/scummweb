@@ -580,6 +580,24 @@
         "basis": "Official ScummVM-hosted English interactive promotional demo. All eight files, complete ASCII strings and streamed UTF-16 notices inspected; no standalone license, express archive-wide redistribution ban or rehosting grant found. An embedded font notice permits freeware noncommercial use; ScummWEB serves this intact promotional demo without commercial use. This font notice is not treated as a game license. Official hosting supports this assessment without constituting an express rights-holder license.",
         "preservation": "Serve the complete unchanged upstream ZIP, retaining original executables, voice and audio packs, plugin, configuration, uninstaller and all embedded notices."
       }
+    },
+    {
+      "target": "technobabylon-demo",
+      "title": "Technobabylon (Demo)",
+      "engineId": "ags",
+      "gameId": "technobabylon",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "technobabylon-demo.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/ags/technobabylon-demo.zip",
+      "sha256": "ee9fb9b374782439fdb6beb0ce39b891e226ef34fb6c72faeba57a703555c84c",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-14",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "All eight original files and complete ASCII/streamed UTF16 notices reviewed. No standalone game license, express archive-wide redistribution ban or rehosting grant found. Embedded original nedraed fonts identify CC BY-SA3.0; unchanged font data/notices retained and separate attribution prepared. Font license is not treated as a game license. Official ScummVM hosting supports the user-authorized cautious promotional-demo assessment without constituting an express rights-holder license.",
+        "preservation": "Publish unchanged originalZIP, retaining executables, uninstaller, audio, voices, plugin and config. No font removal/replacement. Attribution notice staged separately in launcher."
+      }
     }
   ]
 }
