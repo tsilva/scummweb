@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { readFile } from "node:fs/promises";
 import { libraryItems } from "../app/home-shell/library-items.mjs";
+import { orderHeroGroups } from "../app/home-shell/hero-order.mjs";
 import { defaultLibraryQuery, libraryCategories, libraryFacet, libraryGenre, queryLibrary } from "../app/home-shell/library-query.mjs";
 import { getImportedGamePresentation } from "../app/game-presentation.js";
 import { getBundledGameLibrary } from "../lib/catalog.mjs";
@@ -23,6 +24,8 @@ test("Featured keeps the five picks first, then sorts full games and demos by se
     { source: { id: "demo" }, title: "A Local Demo", game: { extra: "DOS Demo" } },
   ]);
   const featured = queryLibrary(catalog, defaultLibraryQuery);
+  assert.deepEqual(orderHeroGroups(catalog).map(({ key }) => key), featured.map(({ key }) => key),
+    "the slideshow follows the catalogue Featured order, including imports and demos");
   const alphabetical = queryLibrary(catalog, { ...defaultLibraryQuery, sort: "name-asc" });
   const first = ["sky", "queen", "lure", "dreamweb-cd", "sword25"];
   const isDemo = ({ source, title }) => source?.id === "demo" || title.endsWith(" (Demo)");

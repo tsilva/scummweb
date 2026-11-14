@@ -717,6 +717,8 @@ reference credits, dates, prompts, hashes, dimensions, and any approved
 illustrated compositions. The game mappings retain source credits and
 `heroImageMobilePosition` can adjust the narrow-screen crop.
 Desktop hero titles shrink to preserve whole words; mobile titles wrap naturally.
+The hero slideshow uses the catalogue's Featured order, including imported games
+and demos, regardless of the catalogue's current sort or genre filter.
 
 Generate heroes from original promotional references. Faithfully restore
 original box fronts for card covers. Keep gameplay screenshots as original
