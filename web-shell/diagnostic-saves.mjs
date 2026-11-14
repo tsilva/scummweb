@@ -43,7 +43,9 @@ export function installDiagnosticSaves(scope, FS, Module) {
       if (path.startsWith(directory + "/")) failed = true;
     },
     finish(error) {
-      let result = { status: error ? "unavailable" : "failed", files: [] };
+      let result = { status: error ? "unavailable" : "failed", files: [],
+        reason: error ? (error === "Save ID is unavailable in this run" ? "slot-unavailable" : "native-save-rejected")
+          : failed || writers.size ? "save-write-failed" : "no-save-output" };
       try {
         if (!error && !failed && !writers.size && completed.size) {
           let size = 0;
@@ -57,12 +59,16 @@ export function installDiagnosticSaves(scope, FS, Module) {
           });
           result = { status: "captured", files };
         }
-      } catch { /* Reporting remains available without a snapshot. */ }
+      } catch { result.reason = "save-read-failed"; }
       finally {
         active = false;
         try { cleanup(); } catch { /* A failed temporary tree is never persisted or indexed. */ }
         writers.clear();
         completed.clear();
+        // The native manager caches filenames by directory, even after MEMFS
+        // removes them. Return its cache to the real savepath before another
+        // capture recreates this directory and reuses the same isolated slot.
+        try { Module._scummweb_refresh_saves?.(); } catch { /* Keep the captured bytes usable. */ }
       }
       return result;
     },

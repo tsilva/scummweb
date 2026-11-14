@@ -127,10 +127,16 @@ test("speed changes preserve a continuous clock and volume resumes at the select
   assert.equal(scope.__scummwebPlayerMillis(200), 250);
   assert.equal(scope.__scummwebPlayerDelay(120), 80);
   assert.equal(scope.__scummwebPlayerVolume, 0.3);
+  controls.setSettings({ speed: 2 });
+  assert.equal(controls.read().speed, 2);
+  assert.equal(scope.__scummwebPlayerMillis(300), 450);
+  assert.equal(scope.__scummwebPlayerDelay(120), 60);
+  controls.setSettings({ speed: 3 });
+  assert.equal(controls.read().speed, 2, "speeds above the supported maximum are clamped");
   controls.setMenuOpen(true);
   assert.equal(scope.__scummwebPlayerVolume, 0);
   controls.setSettings({ speed: 0.5, volume: 45 });
-  assert.equal(scope.__scummwebPlayerMillis(300), 300);
+  assert.equal(scope.__scummwebPlayerMillis(400), 500);
   assert.equal(scope.__scummwebPlayerDelay(120), 240);
   controls.setMenuOpen(false);
   assert.equal(scope.__scummwebPlayerVolume, 0.45);

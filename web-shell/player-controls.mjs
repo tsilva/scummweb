@@ -40,7 +40,7 @@ export function installPlayerControls(scope, requestMenu) {
     }),
     setSettings(settings) {
       volume = clamp(settings.volume, 0, 100, volume);
-      speed = clamp(settings.speed, 0.5, 1.5, speed);
+      speed = clamp(settings.speed, 0.5, 2, speed);
       if (typeof settings.subtitles === "boolean") {
         scope.Module?._scummweb_player_subtitles?.(Number(settings.subtitles));
       }
@@ -54,13 +54,14 @@ export function installPlayerControls(scope, requestMenu) {
       if (!menuOpen || pending) return { error: "Another save or load is still in progress." };
       const diagnostic = operation === "report";
       if (diagnostic && (!canSave || !scope.__scummwebDiagnosticSaves?.supported())) {
-        return { status: "unavailable", files: [] };
+        return { status: "unavailable", files: [],
+          reason: !canSave ? "saving-unsupported" : "runtime-unavailable" };
       }
       const isNew = diagnostic || operation === "save" && requestedSlot === null;
       const slot = diagnostic ? (reservedSlot === 1 ? 2 : 1) : isNew ? nextSlot() : requestedSlot;
       const entry = saves.find((save) => save.slot === slot);
       if (diagnostic) {
-        if (slot > maxSlot) return { status: "unavailable", files: [] };
+        if (slot > maxSlot) return { status: "unavailable", files: [], reason: "no-manual-slot" };
       } else if (operation === "save") {
         if (!canSave || !Number.isInteger(slot) || slot < 1 || slot > maxSlot || slot === reservedSlot ||
             (!isNew && !entry?.writable)) return { error: "This save slot is unavailable." };
@@ -69,7 +70,7 @@ export function installPlayerControls(scope, requestMenu) {
       }
       return new Promise((resolve) => {
         const timer = scope.setTimeout(() => {
-          resolve(diagnostic ? { status: "timeout", files: [] }
+          resolve(diagnostic ? { status: "timeout", files: [], reason: "capture-timeout" }
             : { error: "The game did not respond. Resume playing and try again." });
           // A late acknowledgment belongs to this request, never to a retry.
           if (!pending.dispatched) pending = undefined;
@@ -108,7 +109,7 @@ export function installPlayerControls(scope, requestMenu) {
     if (pending && !pending.dispatched) {
       if (pending.operation === "report" && !scope.__scummwebDiagnosticSaves.begin()) {
         scope.clearTimeout(pending.timer);
-        pending.resolve({ status: "unavailable", files: [] });
+        pending.resolve({ status: "unavailable", files: [], reason: "temporary-storage-unavailable" });
         pending = undefined;
         return menuOpen ? -1 : 0;
       }
