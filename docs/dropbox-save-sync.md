@@ -43,6 +43,15 @@ data also removes authorization; reconnecting the same Dropbox account restores
 verified cloud saves. Browser-side credentials are accessible to scripts on the
 same origin, so the usual application XSS protections remain essential.
 
+## Live testing access
+
+Dropbox controls are temporarily hidden unless the current page URL includes
+`?dropbox=true` (or `&dropbox=true` alongside other parameters). For example,
+open `https://scummweb.tsilva.eu/?dropbox=true`, then open Settings.
+The flag is not saved between pages and does not disable synchronization for
+an already connected account. It controls visibility only; anyone with the URL
+can reveal the controls and must still authorize their own Dropbox account.
+
 ## Player experience
 
 Choose **Settings → Saved games → Connect Dropbox**. Active browser saves and
