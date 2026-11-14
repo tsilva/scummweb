@@ -127,7 +127,6 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
   const unmatchedCount = review?.rows.filter((row) => !row.destinationKey).length ?? 0;
 
   return <>
-    <DropboxRow />
     {error && <p className="settings-error" role="alert">{error}</p>}
     <p className="settings-status" role="status">{notice}</p>
     <button type="button" className={`settings-section-heading ${section === "saves" ? "is-active" : ""}`}
@@ -136,6 +135,7 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
       <Save size={24} /><span>Saved games</span><ChevronDown size={20} />
     </button>
     <section id="settings-saves" hidden={section !== "saves"} aria-busy={busy}>
+      <DropboxRow />
       {!review && <>
         <div className="settings-action-block"><Download size={25} aria-hidden="true" />
           <div><h3>Export saves</h3><p>Download all saved progress as a ZIP.</p></div>
