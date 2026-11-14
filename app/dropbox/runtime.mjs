@@ -1,12 +1,14 @@
 import { createNativeCloudClient, credentialKey, dropboxNativeConfig } from "../cloud/native-client.mjs";
 import { authorizationRequest, connectionKey, DropboxError, exchangeCode, sessionKey } from "./client.mjs";
-import { createSaveCollection, publishProfile, readSnapshot, saveProfileId } from "./protocol.mjs";
+import { createSaveCollection, makeSnapshot, publishProfile, readSnapshot, saveProfileId } from "./protocol.mjs";
 import { syncStore } from "./store.mjs";
+import { conflictVersion } from "./conflict-review.mjs";
 import { discoverLooseSaves, importListingIdentity } from "./loose-import.mjs";
 import { applyImport, getActiveSaveSets, getSaveDestinations, identifySet, matchDestination, preserveSets,
   readStoredSets, saveLockName } from "../save-backups/backups.mjs";
 import { captureFilesystem } from "../save-backups/filesystem.mjs";
 import { readGameSources } from "../game-sources.mjs";
+import { editionDirectory, editionKey, editionLockName, matchesLegacySave, saveDirectory } from "../../web-shell/save-editions.mjs";
 
 const ownerKey = "scummweb.dropbox-owner.v1";
 const listeners = new Set();
@@ -14,6 +16,7 @@ let state = { phase: "disconnected", message: "", conflicts: [] };
 let flight = null, flightController, queue = Promise.resolve(), generation = 0, contextPromise;
 let connecting = false, localGeneration = 0;
 let launchSyncSnapshot = null;
+let resolutionPending = false;
 const appKey = () => process.env.NEXT_PUBLIC_DROPBOX_APP_KEY || "";
 export function dropboxConfigured() { return Boolean(appKey()); }
 export function getDropboxState() { return state; }
@@ -102,6 +105,8 @@ async function syncAccount(auth, epoch, signal, progress) {
     });
     const { destinations } = await context();
     check();
+    const resolutionIssue = await applyQueuedResolutions(auth, client, destinations, check);
+    check();
     const entries = await transport.listImports();
     const inboxIdentity = importListingIdentity(entries, destinations);
     const receipt = await syncStore.get(recordKey(account, "inbox", "processed"));
@@ -185,6 +190,7 @@ async function syncAccount(auth, epoch, signal, progress) {
     const conflicts = [];
     const readyProfiles = new Set();
     let deferred = Boolean(collected.incomplete || importMessage);
+    let deferredMessage = collected.incomplete ? "An incomplete game save needs attention. Your previous cloud saves are retained." : "";
     for (const [profile, group] of groups) {
       check();
       const baseline = await syncStore.get(recordKey(account, "base", profile));
@@ -212,7 +218,10 @@ async function syncAccount(auth, epoch, signal, progress) {
       }
       if (remote && (result.action === "download" || !collected.busy && remote.hash !== group.browserSet?.hash)) {
         if (collected.busy) {
-          if (baseline?.hash !== remote.hash) deferred = true;
+          if (baseline?.hash !== remote.hash) {
+            deferred = true;
+            deferredMessage ||= "Close games in other ScummWEB tabs before restoring cloud saves.";
+          }
           continue; // Never replace a running game's files.
         }
         const restored = await lockedSaves(async () => {
@@ -232,7 +241,12 @@ async function syncAccount(auth, epoch, signal, progress) {
             rows: [{ set: remote, destinationKey, choice: "imported" }] });
           return { changed: false, restored: Boolean(destinationKey) && local?.hash !== remote.hash };
         });
-        if (restored.busy || restored.changed) { deferred = true; continue; }
+        if (restored.busy || restored.changed) {
+          deferred = true;
+          deferredMessage ||= restored.busy ? "Close games in other ScummWEB tabs before restoring cloud saves."
+            : "Saves changed on this device during sync. They will be checked again shortly.";
+          continue;
+        }
         // Preserving an unavailable edition changes no active saves. Announcing
         // it would schedule another pass forever through startDropboxSync.
         if (restored.restored) window.dispatchEvent(new Event("scummweb:saves-changed"));
@@ -245,27 +259,61 @@ async function syncAccount(auth, epoch, signal, progress) {
     const observedGeneration = localGeneration;
     await queue.catch(() => {});
     const pending = await syncStore.all(recordKey(account, "pending", ""));
-    if (observedGeneration !== localGeneration) deferred = true;
+    if (observedGeneration !== localGeneration) {
+      deferred = true;
+      deferredMessage ||= "New saves are waiting for the next sync.";
+    }
     check();
     // A conflict elsewhere must not block a game whose own profile finished
     // syncing. Keep unknown/incomplete scans and every pending profile blocked.
     const pendingProfiles = new Set(pending.map((item) => item.profile));
+    const scanComplete = !collected.incomplete && !importMessage && observedGeneration === localGeneration;
     launchSyncSnapshot = { epoch, account, localGeneration: observedGeneration,
-      complete: !collected.busy && !collected.incomplete && !importMessage && observedGeneration === localGeneration,
+      complete: !collected.busy && scanComplete, checkEmptyEdition: Boolean(collected.busy && scanComplete),
       scanned: new Set(groups.keys()), ready: new Set([...readyProfiles].filter((profile) => !pendingProfiles.has(profile))) };
-    update({ phase: conflicts.length ? "conflict" : pending.length || deferred ? "waiting" : "connected", conflicts,
-      message: conflicts.length ? "Choose which saved progress to continue." : importMessage || (deferred ? "Cloud saves will be restored after you exit the game."
+    update({ phase: conflicts.length ? "conflict" : pending.length || deferred || resolutionIssue ? "waiting" : "connected", conflicts,
+      resolutionProgress: null,
+      message: conflicts.length ? "Choose which saved progress to continue." : resolutionIssue || importMessage || (deferred ? deferredMessage || "Saved progress is waiting to be checked again."
         : pending.length ? "Your latest saves are waiting to sync." : "") });
   } finally { transport.close(); }
 }
 
+async function emptyCatalogEdition(destination) {
+  if (destination.namespace || destination.key !== `catalog:${destination.family}` || !navigator.locks) return false;
+  const edition = editionKey("", destination.family);
+  if (!edition) return false;
+  // Other isolated players hold a shared root lock. Read only this edition,
+  // excluding legacy-wide operations and a player using this same edition.
+  return navigator.locks.request(saveLockName, { mode: "shared", ifAvailable: true }, async (rootLock) => {
+    if (!rootLock) return false;
+    return navigator.locks.request(editionLockName(edition), { mode: "exclusive", ifAvailable: true }, (lock) => {
+      if (!lock) return false;
+      try {
+        ensureCompleteSaves();
+        const { root } = captureFilesystem(localStorage, true);
+        const editions = root.children.get(editionDirectory);
+        if (editions && (!editions.children || editions.children.has(edition))) return false;
+        let legacy = root;
+        for (const part of saveDirectory) {
+          if (!legacy) break;
+          if (!legacy.children) return false;
+          legacy = legacy.children.get(part);
+        }
+        return !legacy || Boolean(legacy.children)
+          && ![...legacy.children.keys()].some((name) => matchesLegacySave(destination.family, name));
+      } catch { return false; }
+    });
+  });
+}
+
 async function launchHasNoConflict(destinationKey) {
   const snapshot = launchSyncSnapshot;
-  if (!destinationKey || state.phase !== "conflict" || !snapshot?.complete) return false;
+  if (!destinationKey || state.phase !== "conflict" || !snapshot) return false;
   const { destinations } = await context();
   const destination = destinations.find((item) => item.key === destinationKey);
   if (!destination) return false;
   const profile = await saveProfileId({ destination });
+  if (!snapshot.complete && (!snapshot.checkEmptyEdition || snapshot.scanned.has(profile) || !await emptyCatalogEdition(destination))) return false;
   return snapshot === launchSyncSnapshot && snapshot.epoch === generation && snapshot.account === session()?.accountId
     && snapshot.localGeneration === localGeneration
     && (!snapshot.scanned.has(profile) || snapshot.ready.has(profile));
@@ -292,7 +340,7 @@ export async function syncDropbox({ beforeLaunch = false, launchDestinationKey =
     };
     progress();
     const aborted = new Promise((_, reject) => controller.signal.addEventListener("abort", () => reject(controller.signal.reason), { once: true }));
-    update({ phase: "syncing", message: "" });
+    update({ phase: resolutionPending ? "resolving" : "syncing", message: "" });
     const work = (async () => {
       if (!navigator.locks) throw new DropboxError("This browser cannot safely coordinate cloud saves.");
       await navigator.locks.request("scummweb-dropbox-sync", { mode: "exclusive", signal: controller.signal }, async (lock) => {
@@ -316,42 +364,124 @@ export async function syncDropbox({ beforeLaunch = false, launchDestinationKey =
   } catch (error) { if (beforeLaunch) throw error; }
 }
 
-export async function resolveDropboxConflict(profile, choice) {
-  const conflict = state.conflicts.find((item) => item.profile === profile);
+export async function queueDropboxConflictResolutions(choices) {
   const auth = session(), epoch = generation;
-  if (!conflict || !auth || !["local", "remote"].includes(choice)) throw new DropboxError("Reconnect Dropbox and review these saves again.");
-  const selected = choice === "local" ? conflict.local : conflict.remote;
-  const resolution = await lockedSaves(async () => {
-    const check = () => { if (epoch !== generation) throw new DropboxError("Dropbox disconnected.", "cancelled"); };
-    const { destinations } = await context();
-    const current = await getActiveSaveSets(localStorage, destinations);
-    const active = current.sets.find((set) => matchDestination(conflict.local, [set.destination]));
-    if (active && ![conflict.local.hash, conflict.remote.hash].includes(active.hash)) throw new DropboxError("Saves changed on this device. Review them again.", "conflict");
-    const transport = await createNativeCloudClient(auth);
-    let result;
-    try {
-      const client = await createSaveCollection(transport);
-      result = await publishProfile({ client, profile, local: selected,
-        alternatives: [conflict.local, conflict.remote], resolve: true, expectedTips: conflict.tips, check });
-    } finally { transport.close(); }
-    if (result.action === "conflict") throw new DropboxError("Saves changed while you were choosing. Review them again.", "conflict");
-    check();
-    // The selected cloud set is durable before changing active browser files.
-    let initialConfig;
-    if (!captureFilesystem(localStorage).root.key) {
-      const response = await fetch("/scummvm.ini", { signal: AbortSignal.timeout(15000) });
-      if (!response.ok) throw new DropboxError("Could not initialize restored saves.");
-      initialConfig = await response.text();
+  if (!auth || !Array.isArray(choices) || !choices.length || new Set(choices.map(({ profile }) => profile)).size !== choices.length) {
+    throw new DropboxError("Review the saved progress choices again.", "conflict");
+  }
+  const items = choices.map(({ profile, choice, version }) => {
+    const conflict = state.conflicts.find((item) => item.profile === profile);
+    if (!conflict?.canResolve || !["local", "remote"].includes(choice) || version && version !== conflictVersion(conflict)) {
+      throw new DropboxError("Saved progress changed. Review your choices again.", "conflict");
     }
-    check();
-    await applyImport({ storage: localStorage, destinations, revision: current.revision, initialConfig, check,
-      rows: [{ set: selected, destinationKey: matchDestination(selected, destinations), choice: "imported" }] });
-    await syncStore.put({ id: recordKey(auth.accountId, "base", profile), hash: selected.hash, tips: result.head.tips });
-    await syncStore.removeIf(recordKey(auth.accountId, "pending", profile),
-      (pending) => [conflict.local.hash, conflict.remote.hash].includes(pending.set.hash));
+    return { conflict, choice };
   });
-  if (resolution?.busy) throw new DropboxError("Exit the game before choosing saved progress.");
-  window.dispatchEvent(new Event("scummweb:saves-changed"));
+  const previousConflicts = state.conflicts;
+  const previousFlight = flight;
+  resolutionPending = true;
+  launchSyncSnapshot = null;
+  update({ phase: "resolving", message: "", resolutionProgress: { current: 0, total: items.length } });
+  flightController?.abort(new DropboxError("Save choices queued.", "cancelled"));
+  const batch = { id: recordKey(auth.accountId, "resolutions", crypto.randomUUID()), items, createdAt: Date.now() };
+  queue = queue.catch(() => {}).then(async () => {
+    if (epoch !== generation || session()?.accountId !== auth.accountId || session()?.connectionId !== auth.connectionId) {
+      throw new DropboxError("Dropbox disconnected.", "cancelled");
+    }
+    // One strict transaction retains the entire bulk decision before UI dismissal.
+    await syncStore.put(batch);
+  });
+  try { await queue; }
+  catch (error) {
+    if (epoch === generation) {
+      resolutionPending = false;
+      update({ phase: session() ? "conflict" : "disconnected", conflicts: previousConflicts,
+        message: "Could not retain your choices. Review them again.", resolutionProgress: null });
+    }
+    throw error;
+  }
+  if (epoch !== generation) return;
+  update({ conflicts: state.conflicts.filter(({ profile }) => !choices.some((item) => item.profile === profile)) });
+  // Publication runs through the ordinary fenced coordinator, never in the dialog.
+  void (async () => {
+    await previousFlight?.catch(() => {});
+    if (epoch === generation) await syncDropbox();
+  })().catch((error) => { if (epoch === generation) failure(error); });
+}
+
+async function applyQueuedResolutions(auth, client, destinations, check) {
+  const batches = (await syncStore.all(recordKey(auth.accountId, "resolutions", "")))
+    .sort((a, b) => a.createdAt - b.createdAt || a.id.localeCompare(b.id));
+  resolutionPending = batches.length > 0;
+  const total = batches.reduce((sum, batch) => sum + batch.items.length, 0);
+  let current = 0, issue = "";
+  for (const batch of batches) {
+    while (batch.items.length) {
+      check();
+      const { conflict, choice } = batch.items[0];
+      let changed = false;
+      update({ phase: "resolving", message: "", conflicts: [], resolutionProgress: { current: current + 1, total } });
+      try {
+        const selected = choice === "local" ? conflict.local : conflict.remote;
+        const resolution = await lockedSaves(async () => {
+          check();
+          ensureCompleteSaves();
+          const before = await getActiveSaveSets(localStorage, destinations);
+          const active = before.sets.find((set) => matchDestination(conflict.local, [set.destination]));
+          if (active && ![conflict.local.hash, conflict.remote.hash].includes(active.hash)) {
+            throw new DropboxError("Saved progress changed on this device. Review it again.", "conflict");
+          }
+          // A killed tab can lose a successful upload reply. Recognize the exact
+          // deterministic commit instead of either duplicating or rejecting it.
+          const intended = await makeSnapshot(selected, conflict.tips, true);
+          const head = client.head(conflict.profile);
+          const committed = !head.concurrent && head.active === selected.hash && head.tips.includes(intended.id);
+          const result = committed ? { action: "same", head } : await publishProfile({ client, profile: conflict.profile,
+            local: selected, alternatives: [conflict.local, conflict.remote], resolve: true, expectedTips: conflict.tips, check });
+          if (result.action === "conflict") throw new DropboxError("Saved progress changed while applying your choices. Review it again.", "conflict");
+          check();
+          const destinationKey = matchDestination(selected, destinations);
+          let initialConfig;
+          if (destinationKey && !captureFilesystem(localStorage).root.key) {
+            const response = await fetch("/scummvm.ini", { signal: AbortSignal.timeout(15000) });
+            if (!response.ok) throw new DropboxError("Could not initialize restored saves.");
+            initialConfig = await response.text();
+          }
+          check();
+          await applyImport({ storage: localStorage, destinations, revision: before.revision, initialConfig, check,
+            rows: [{ set: selected, destinationKey, choice: "imported" }] });
+          check();
+          await syncStore.put({ id: recordKey(auth.accountId, "base", conflict.profile), hash: selected.hash, tips: result.head.tips });
+          check();
+          await syncStore.removeIf(recordKey(auth.accountId, "pending", conflict.profile),
+            (pending) => [conflict.local.hash, conflict.remote.hash].includes(pending.set.hash));
+          return { changed: Boolean(destinationKey) && active?.hash !== selected.hash };
+        });
+        if (resolution?.busy) throw new DropboxError("Close games in other ScummWEB tabs to apply your saved progress choices.", "busy");
+        changed = resolution.changed;
+      } catch (error) {
+        // Stale decisions are never replayed. The normal scan below will find
+        // the fresh copies; unrelated decisions in this batch can still finish.
+        if (error.kind !== "conflict") throw error;
+        issue = error.message;
+      }
+      check();
+      const remaining = { ...batch, items: batch.items.slice(1) };
+      if (remaining.items.length) await syncStore.put(remaining);
+      else await syncStore.remove(batch.id);
+      batch.items = remaining.items;
+      check();
+      if (changed) window.dispatchEvent(new Event("scummweb:saves-changed"));
+      current++;
+    }
+  }
+  check();
+  resolutionPending = false;
+  update({ phase: "syncing", message: "", resolutionProgress: null });
+  return issue;
+}
+
+export async function resolveDropboxConflict(profile, choice) {
+  await queueDropboxConflictResolutions([{ profile, choice }]);
   await syncDropbox({ beforeLaunch: true });
 }
 
@@ -403,6 +533,7 @@ export async function connectDropbox() {
 }
 export async function disconnectDropbox() {
   generation++;
+  resolutionPending = false;
   flightController?.abort(new DropboxError("Dropbox disconnected.", "cancelled"));
   sessionStorage.removeItem(sessionKey);
   const previous = connection();
