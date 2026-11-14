@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { runInNewContext } from "node:vm";
 import test from "node:test";
 import swc from "next/dist/build/swc/index.js";
+import { isInAppBrowser } from "../app/in-app-browser.mjs";
 
 await swc.loadBindings();
 const { code } = await swc.transform(await readFile(new URL("../proxy.js", import.meta.url), "utf8"), {
@@ -13,6 +14,7 @@ const module = { exports: {} };
 runInNewContext(code, {
   module, exports: module.exports, URL,
   require(name) {
+    if (name === "./app/in-app-browser.mjs") return { isInAppBrowser };
     assert.equal(name, "next/server");
     return { NextResponse: {
       next: () => ({ kind: "next", headers: new Headers() }),
