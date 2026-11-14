@@ -5,6 +5,7 @@ import { Check, ChevronDown, Download, Info, Save, Upload } from "lucide-react";
 import { readGameSources } from "../game-sources.mjs";
 import "../styles/settings-details.css";
 import DropboxRow from "./dropbox-row";
+import DropboxPreview from "./dropbox-preview";
 
 const formatSaveCount = (count) => `${count} save ${count === 1 ? "file" : "files"}`;
 
@@ -135,7 +136,7 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
       <Save size={24} /><span>Saved games</span><ChevronDown size={20} />
     </button>
     <section id="settings-saves" hidden={section !== "saves"} aria-busy={busy}>
-      <DropboxRow />
+      <DropboxPreview><DropboxRow /></DropboxPreview>
       {!review && <>
         <div className="settings-action-block"><Download size={25} aria-hidden="true" />
           <div><h3>Export saves</h3><p>Download all saved progress as a ZIP.</p></div>
