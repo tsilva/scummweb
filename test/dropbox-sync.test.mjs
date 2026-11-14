@@ -58,6 +58,34 @@ test("cloud snapshots remain ordinary importable v1 backups, including companion
   const [restored] = await readBackup(server.files.get(`${node.id}.zip`));
   assert.equal(restored.hash, set.hash); assert.deepEqual(restored.files, set.files);
 });
+test("collection refresh reuses verified history while observing new and deleted remote snapshots", async () => {
+  const server = fakeNativeStorage(), local = await save("base"), profile = await saveProfileId(local);
+  await publish(server, local);
+  const saved = new Map();
+  let loads = 0, downloads = 0, listings = 0;
+  const transport = { ...server,
+    async list() { listings++; return server.list(); },
+    async download(name) { downloads++; return server.download(name); },
+  };
+  const client = await createSaveCollection(transport, {
+    async load(id) { loads++; return saved.get(id); },
+    async save(node) { saved.set(node.id, node); },
+  });
+  const baseTips = client.head(profile).tips;
+  for (let pass = 0; pass < 3; pass++) await publishProfile({ client, profile, local, base: local.hash, baseTips });
+  assert.equal(loads, 1, "unchanged history must not be reread from IndexedDB for each game");
+  assert.equal(downloads, 1);
+  assert.equal(listings, 4, "each refresh still checks Dropbox for concurrent changes");
+  const remote = await save("other device");
+  const newer = await publish(server, remote, { base: local.hash, baseTips });
+  const result = await publishProfile({ client, profile, local, base: local.hash, baseTips });
+  assert.equal(result.action, "download");
+  assert.equal(result.head.active, remote.hash);
+  assert.equal(loads, 2); assert.equal(downloads, 2);
+  // Reuse must not hide remote deletions or missing ancestry.
+  server.files.delete(`${baseTips[0]}.zip`);
+  await assert.rejects(publishProfile({ client, profile, local: remote, base: remote.hash, baseTips: newer.head.tips }), /incomplete/);
+});
 for (const afterCommit of [false, true]) test(`interrupted upload resumes ${afterCommit ? "after" : "before"} durable remote commit`, async () => {
   const server = fakeNativeStorage(), set = await save("latest");
   if (afterCommit) server.failAfterUpload = true; else server.offline = true;

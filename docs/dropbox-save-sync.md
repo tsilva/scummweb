@@ -148,6 +148,8 @@ preservation and activation behavior. Cloud ZIPs can also be imported manually
 using **Saved games**. Save archives retain the 64 MiB limit. The current
 collection scan permits up to 10,000 snapshot files; history is retained rather
 than silently pruned. Scans stop safely above 256 MiB of decoded save history.
+Within one sync pass, verified snapshots are reused across games. Fresh Dropbox
+listings still detect new snapshots and missing history.
 
 `app/cloud/native-client.mjs` owns the provider registry and native bridge.
 Dropbox is enabled first. ScummVM's Google Drive, OneDrive and Box IDs are
