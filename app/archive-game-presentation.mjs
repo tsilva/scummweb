@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Spy Fox in \"Dry Cereal\" (Demo)", target: "spyfox-demo", engineId: "scumm", gameId: "spyfox",
+    files: [["foxdemo.he0", 20103, 1482007684], ["foxdemo.he1", 14746318, 1132169902]],
+  },
+  {
     title: "Pajama Sam: No Need to Hide When It's Dark Outside (Demo)", target: "pajama-demo", engineId: "scumm", gameId: "pajama",
     files: [["pjs-demo.he0", 18354, 4124670312], ["pjs-demo.he1", 13164357, 3769183567]],
   },

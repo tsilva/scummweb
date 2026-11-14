@@ -120,6 +120,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "spyfox-demo": {
+    ...retroGameArtwork["scumm:spyfox"],
+    heroImageMobilePosition: "85% -8vh",
+    title: "Spy Fox in \"Dry Cereal\" (Demo)",
+    year: "1997",
+    language: "en",
+  },
   "pajama-demo": {
     ...retroGameArtwork["scumm:pajama"],
     heroImageMobilePosition: "75% -8vh",

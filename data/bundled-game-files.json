@@ -10200,6 +10200,62 @@
           3425707639
         ]
       ]
+    },
+    "spyfox-demo": {
+      "url": "https://scummvm-games.tsilva.eu/spyfox.zip",
+      "fingerprint": "a5bd442a5a3a1b77ac7d066aa58e61ed04f559448523edb22de2709e43d585b5",
+      "files": [
+        [
+          "FOXDEMO.D32",
+          36352,
+          2792432017
+        ],
+        [
+          "FOXDEMO.DLL",
+          8896,
+          2724663474
+        ],
+        [
+          "FOXDEMO.EXE",
+          21616,
+          363076792
+        ],
+        [
+          "FOXDEMO.HE0",
+          20103,
+          1482007684
+        ],
+        [
+          "FOXDEMO.HE1",
+          14746318,
+          1132169902
+        ],
+        [
+          "FOXDEMO.HE2",
+          16355143,
+          842400804
+        ],
+        [
+          "FOXDEMO.HE4",
+          12602664,
+          1359403440
+        ],
+        [
+          "FOXDEMO.HLP",
+          337614,
+          307860129
+        ],
+        [
+          "FOXDEMO.INF",
+          2218,
+          2000176017
+        ],
+        [
+          "FOXDEMO.W32",
+          365056,
+          4206804348
+        ]
+      ]
     }
   }
 }
