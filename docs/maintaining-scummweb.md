@@ -22,6 +22,24 @@ including in other open tabs, while the browser retains the site's local data.
 Installed apps, embedded pages and browsers without writable local storage do
 not show it. Installation still depends on browser support.
 
+Recognized in-app browsers show an **Open in browser** screen before the library
+or player loads. This covers Facebook, Messenger, Instagram, TikTok, LinkedIn,
+Snapchat, Pinterest, LINE, WeChat and Android webviews with explicit signatures.
+Detection is best effort: apps that identify themselves as ordinary browsers
+cannot always be distinguished. Normal browser tabs and link-preview crawlers
+keep the usual experience.
+
+The screen retains the original page URL, including its query and fragment.
+On Android, **Open in browser** attempts a browser intent without requiring a
+specific installed browser. Apps may block the attempt. On iPhone and other
+platforms, the button focuses instructions for the containing app's menu.
+**Copy link** offers a selectable URL if clipboard access is denied. Browser
+menu labels vary; opening externally does not transfer browser-local saves or
+imported files. The handoff uses an uncached request rewrite; assets, API calls,
+cloud callbacks and monitoring bypass it. Verify these rules with
+`node --test test/in-app-browser.test.mjs` and test the native handoff on real
+devices when changing app-specific behavior.
+
 Use **Add a game**, or drop ZIPs, ISOs, or a folder containing them onto the
 homepage or a game page. Pack one game per ZIP, with its data at the root or
 inside one enclosing folder. Local archives support up to 4 GiB including
