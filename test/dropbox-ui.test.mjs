@@ -27,9 +27,9 @@ const text = (node) => typeof node === "string" || typeof node === "number" ? St
 const button = (root, name) => nodes(root).find((node) => node.type === "button" && text(node) === name);
 const conflicts = ["Beneath a Steel Sky", "Flight of the Amazon Queen"].map((title, index) => ({ profile: "profile-" + index, title,
   local: { hash: "local-" + index, files: [{}, {}] }, remote: { hash: "remote-" + index, files: [{}] },
-  remoteHash: "remote-" + index, tips: ["tip-" + index], canResolve: true }));
+  remoteHash: "remote-" + index, tips: ["tip-" + index], canResolve: index === 0 }));
 
-test("bulk review collects both games, waits only for local acceptance, then closes", async () => {
+test("bulk review collects locked and unlocked games, waits only for local acceptance, then closes", async () => {
   let accept, acceptedChoices, closed = 0, cursor = 0;
   const durable = new Promise((resolve) => { accept = resolve; });
   const runtime = { queueDropboxConflictResolutions(choices) { acceptedChoices = structuredClone(choices); return durable; } };
