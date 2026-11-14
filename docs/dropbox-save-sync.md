@@ -94,6 +94,10 @@ If devices independently change an edition's progress, complete copies remain
 in Dropbox. A small choice dialog selects which to continue; the alternatives
 remain available through **Saved games**. A third device changing progress while
 that dialog is open invalidates the choice and requires another review.
+Choosing **Decide later** preserves both copies. Other games can launch once
+their own saves have finished syncing; the conflicting edition still requires
+a choice. An incomplete save scan or unfinished restore continues to block
+launch until synchronization can establish that the selected game is ready.
 Identical contents merge automatically. No timestamp winner or slot-by-slot
 merge is used. An existing browser's saves are bound to the first connected
 Dropbox account; use that account or a separate browser profile.
