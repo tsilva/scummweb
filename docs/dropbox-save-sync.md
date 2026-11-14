@@ -57,7 +57,9 @@ can reveal the controls and must still authorize their own Dropbox account.
 Choose **Settings → Saved games → Connect Dropbox**. Active browser saves and
 preserved backup sets are copied automatically, without deleting browser originals.
 The normal status is **Dropbox connected**, with a white Dropbox icon. The
-sync status shows a spinner while connecting or syncing. A compact **Disconnect**
+sync status shows a spinner while connecting, syncing, or applying choices.
+Only the current activity is shown; an old review notice does not remain under
+an active sync spinner. A compact **Disconnect**
 button sits beside it and can cancel an ongoing sync.
 
 Completed player saves are captured with companion files and queued in
@@ -101,13 +103,21 @@ old inbox contents over newer progress. The inbox allows up to 4,096 files and
 less than 63 MiB total.
 
 If devices independently change an edition's progress, complete copies remain
-in Dropbox. A small choice dialog selects which to continue; the alternatives
+in Dropbox. A compact dialog collects one choice per conflicting game in a
+single review. **Apply choices** durably queues the whole batch locally, closes
+the dialog, and shows **Applying choices** with progress in the Dropbox row.
+Cloud publication and restoration run in the background using the normal sync
+coordinator. Queued decisions survive a closed or killed browser and are removed
+one at a time only after verified publication and safe local restoration. Lost
+publication replies resume the exact same immutable commit. The alternatives
 remain available through **Saved games**. A third device changing progress while
 that dialog is open invalidates the choice and requires another review.
 Choosing **Decide later** preserves both copies. Other games can launch once
 their own saves have finished syncing; the conflicting edition still requires
-a choice. An incomplete save scan or unfinished restore continues to block
-launch until synchronization can establish that the selected game is ready.
+a choice. A new catalog edition with no local or cloud saves can also launch
+while another isolated edition is running, after a read-only check under its own
+save lock. Existing unsynced progress, a same-edition player, incomplete writes
+or an unfinished restore continue to block an unverified launch.
 Identical contents merge automatically. No timestamp winner or slot-by-slot
 merge is used. An existing browser's saves are bound to the first connected
 Dropbox account; use that account or a separate browser profile.

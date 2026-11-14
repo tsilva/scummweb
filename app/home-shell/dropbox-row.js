@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { Check, LoaderCircle, Unplug } from "lucide-react";
 import { connectDropbox, disconnectDropbox, dropboxConfigured, getDropboxState, subscribeDropbox, syncDropbox } from "../dropbox/runtime.mjs";
 
 const labels = {
   disconnected: "Connect Dropbox", connecting: "Connecting Dropbox…", connected: "Dropbox connected",
-  syncing: "Syncing saves…", reconnect: "Reconnect Dropbox", waiting: "Saves waiting to sync", conflict: "Choose saved progress",
+  syncing: "Syncing saves…", resolving: "Applying choices…", reconnect: "Reconnect Dropbox", waiting: "Saves waiting to sync", conflict: "Choose saved progress",
 };
 
 function DropboxIcon() {
@@ -20,15 +20,21 @@ export default function DropboxRow() {
   const [disconnecting, setDisconnecting] = useState(false);
   const [notice, setNotice] = useState("");
   const configured = dropboxConfigured();
-  const busy = disconnecting || state.phase === "connecting" || state.phase === "syncing";
+  const busy = disconnecting || ["connecting", "syncing", "resolving"].includes(state.phase);
   const connected = !["disconnected", "connecting"].includes(state.phase);
-  const label = disconnecting ? "Disconnecting…" : labels[state.phase] || labels.waiting;
+  const progress = state.phase === "resolving" && state.resolutionProgress;
+  const label = disconnecting ? "Disconnecting…" : progress?.current
+    ? `Applying choices (${progress.current}/${progress.total})…` : labels[state.phase] || labels.waiting;
+  useEffect(() => setNotice(""), [state.phase, state.message]);
   async function activate() {
     setNotice("");
     try {
       if (["disconnected", "reconnect"].includes(state.phase)) await connectDropbox();
       else {
-        if (state.phase === "conflict") window.dispatchEvent(new Event("scummweb:dropbox-review"));
+        if (state.phase === "conflict") {
+          window.dispatchEvent(new Event("scummweb:dropbox-review"));
+          return;
+        }
         await syncDropbox({ beforeLaunch: true });
       }
     } catch (error) { setNotice(error.message); }
@@ -56,6 +62,6 @@ export default function DropboxRow() {
         <Unplug size={16} aria-hidden="true" />Disconnect
       </button>}
     </div>
-    {(notice || state.message) && <p className="dropbox-notice" role="status">{notice || state.message}</p>}
+    {!busy && (notice || state.message) && <p className="dropbox-notice" role="status">{notice || state.message}</p>}
   </div>;
 }
