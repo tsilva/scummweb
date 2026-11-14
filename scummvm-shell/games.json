@@ -585,6 +585,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "freddi-demo",
+      "title": "Freddi Fish and the Case of the Missing Kelp Seeds (Demo)",
+      "path": "/games/freddi",
+      "engineId": "scumm",
+      "gameId": "freddi",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

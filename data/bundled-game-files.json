@@ -10103,6 +10103,52 @@
           3585262549
         ]
       ]
+    },
+    "freddi-demo": {
+      "url": "https://scummvm-games.tsilva.eu/freddi.zip",
+      "fingerprint": "e6dfb2c84c13b040bd72e870270aef4190f5e50c47bd5ba1cea6df32fdd0bcce",
+      "files": [
+        [
+          "FREDDEMO.EXE",
+          30720,
+          3977933096
+        ],
+        [
+          "FREDDEMO.HE0",
+          9779,
+          2319558390
+        ],
+        [
+          "FREDDEMO.HE1",
+          6141457,
+          1951420878
+        ],
+        [
+          "FREDDEMO.HE2",
+          1546248,
+          62969377
+        ],
+        [
+          "FREDDEMO.HE3",
+          36864,
+          1727248941
+        ],
+        [
+          "FREDDEMO.HE4",
+          4802906,
+          512118557
+        ],
+        [
+          "FREDDEMO.HLP",
+          98304,
+          2679901276
+        ],
+        [
+          "FREDDEMO.W32",
+          246784,
+          2205267415
+        ]
+      ]
     }
   }
 }

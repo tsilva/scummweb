@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "freddi-demo": {
+    ...retroGameArtwork["scumm:freddi"],
+    heroImageMobilePosition: "90% -35vh",
+    title: "Freddi Fish and the Case of the Missing Kelp Seeds (Demo)",
+    shortTitle: "Freddi Fish (Demo)",
+    year: "1994",
+    language: "en",
+  },
   "puttputt-demo": {
     ...retroGameArtwork["scumm:puttputt"],
     heroImageMobilePosition: "100% -30vh",
