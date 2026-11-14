@@ -1807,6 +1807,14 @@
       "observation": "A game frame renders at startup."
     },
     {
+      "title": "Pajama Sam: No Need to Hide When It's Dark Outside (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:pajama",
+      "edition": "pajama-win-demo-us.zip",
+      "recordedOn": "2026-11-14",
+      "observation": "English Windows demo renders its original opening and treehouse scene. Native intro skip works, and clicking the treehouse path reaches the next room. Saving is unavailable in the tested first playable scene."
+    },
+    {
       "title": "Pajama Sam's Lost & Found",
       "status": "startup-verified",
       "gameId": "scumm:lost",

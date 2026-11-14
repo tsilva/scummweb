@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "pajama-demo": {
+    ...retroGameArtwork["scumm:pajama"],
+    heroImageMobilePosition: "75% -8vh",
+    title: "Pajama Sam: No Need to Hide When It's Dark Outside (Demo)",
+    shortTitle: "Pajama Sam (Demo)",
+    year: "1996",
+    language: "en",
+  },
   "freddi-demo": {
     ...retroGameArtwork["scumm:freddi"],
     heroImageMobilePosition: "90% -35vh",

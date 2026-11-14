@@ -595,6 +595,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "pajama-demo",
+      "title": "Pajama Sam: No Need to Hide When It's Dark Outside (Demo)",
+      "path": "/games/pajama",
+      "engineId": "scumm",
+      "gameId": "pajama",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }
