@@ -670,6 +670,24 @@
         "basis": "All ten original files inspected for ASCII, UTF16 and XOR69 legal notices. Compiled Windows Help fully decompiled and plain text reviewed, and complete INF settings inspected; no express redistribution ban or rehosting grant found. Original copyright notices retained. Official ScummVM promotional hosting supports user-authorized cautious assessment without establishing an express rights-holder license. The 42-topic Help file is byte-identical to the fully reviewed Pajama Sam demo Help file.",
         "preservation": "Serve complete unchanged original archive, retaining D32, DLL, executable, W32, HLP, INF and all game/audio files and notices."
       }
+    },
+    {
+      "target": "neverhood-demo",
+      "title": "The Neverhood (Demo)",
+      "engineId": "neverhood",
+      "gameId": "neverhood",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "neverhood-win-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/neverhood/neverhood-win-demo-en.zip",
+      "sha256": "d5ae887662f5074e6994a05fdb8a5186f08fd6839be267081f0c4d4b67fcc72a",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-14",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "All four original files scanned as data for ASCII, UTF16 and XOR69 legal strings; retained PKWARE, Watcom and original 1996 notices. No express redistribution ban or rehosting grant found. No standalone license, compiled Help or nested installer is present in this archive. Official promotional hosting supports the cautious assessment explicitly authorized in this chat, without establishing an express rights-holder license. Original rendered copyright warning retained.",
+        "preservation": "Serve complete unchanged ZIP, retaining original enclosing directory, both BLB data files, NEVDEMO.EXE and SMACKW32.DLL."
+      }
     }
   ]
 }

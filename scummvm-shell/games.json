@@ -615,6 +615,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "neverhood-demo",
+      "title": "The Neverhood (Demo)",
+      "path": "/games/neverhood",
+      "engineId": "neverhood",
+      "gameId": "neverhood",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

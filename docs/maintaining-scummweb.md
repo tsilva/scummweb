@@ -312,6 +312,13 @@ Native Skip intro advances past the publisher opening while preserving the
 Sneak Preview, Scenes from Myst and Making of Myst choices. Saving and loading
 are disabled for this demo, so it has no checkpoint or Continue.
 
+The Neverhood’s English Windows demo keeps its complete unchanged archive,
+including its original data, executable and Smacker library. The original opening
+and first clay room render; native intro skip, waking Klaymen and walking work.
+Save, Load and Continue restore the saved position. The existing native intro
+action is used without a seeded save. Its published hero and faithful box-front
+cover are shared with personal imports.
+
 Spy Fox’s English US Windows demo retains its complete unchanged package,
 including executable libraries, audio, original Windows Help and settings.
 No express rehosting grant or redistribution ban was found in the inspected
