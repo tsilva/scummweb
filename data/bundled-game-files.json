@@ -10149,6 +10149,57 @@
           2205267415
         ]
       ]
+    },
+    "pajama-demo": {
+      "url": "https://scummvm-games.tsilva.eu/pajama.zip",
+      "fingerprint": "cff407dade34616c232d733d737a40461a309fc9c6a0e2ee00640ac0070318e9",
+      "files": [
+        [
+          "PJS-DEMO.DLL",
+          8896,
+          2724663474
+        ],
+        [
+          "PJS-DEMO.EXE",
+          21616,
+          331283864
+        ],
+        [
+          "PJS-DEMO.HE0",
+          18354,
+          4124670312
+        ],
+        [
+          "PJS-DEMO.HE1",
+          13164357,
+          3769183567
+        ],
+        [
+          "PJS-DEMO.HE2",
+          6514765,
+          3195048220
+        ],
+        [
+          "PJS-DEMO.HE4",
+          10836436,
+          3781484984
+        ],
+        [
+          "PJS-DEMO.HLP",
+          337614,
+          307860129
+        ],
+        [
+          "PJS-DEMO.INF",
+          2215,
+          3366534951
+        ],
+        [
+          "PJS-DEMO.W32",
+          323584,
+          3425707639
+        ]
+      ]
     }
   }
 }

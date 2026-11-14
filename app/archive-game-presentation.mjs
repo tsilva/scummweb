@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Pajama Sam: No Need to Hide When It's Dark Outside (Demo)", target: "pajama-demo", engineId: "scumm", gameId: "pajama",
+    files: [["pjs-demo.he0", 18354, 4124670312], ["pjs-demo.he1", 13164357, 3769183567]],
+  },
+  {
     title: "Freddi Fish and the Case of the Missing Kelp Seeds (Demo)", target: "freddi-demo", engineId: "scumm", gameId: "freddi",
     files: [["freddemo.he0", 9779, 2319558390], ["freddemo.he1", 6141457, 1951420878]],
   },

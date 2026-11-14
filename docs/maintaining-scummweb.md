@@ -308,6 +308,12 @@ Native Skip intro advances past the publisher opening while preserving the
 Sneak Preview, Scenes from Myst and Making of Myst choices. Saving and loading
 are disabled for this demo, so it has no checkpoint or Continue.
 
+Pajama Sam’s English Windows demo retains its complete unchanged package,
+including its compiled Help, configuration and notices. Native intro skip
+reaches the original treehouse scene, and clicking its path enters the next
+room. Saving is unavailable in the tested first scene, so no intro checkpoint
+is bundled. The existing shared hero and box art are reused.
+
 Freddi Fish and the Case of the Missing Kelp Seeds’ English Windows demo
 retains its unchanged original package, including its Help file and notices.
 Native intro skip reaches the shipwreck scene, which accepts object-click input.

@@ -634,6 +634,24 @@
         "basis": "All eight original files inspected for ASCII, UTF16 and XOR69 legal notices. Compiled Windows Help fully decompiled and plain text checked; installation, troubleshooting and promotional catalog, no express redistribution ban or rehosting grant found. Original copyright and all-rights-reserved notices retained. Official ScummVM promotional hosting supports user-authorized cautious assessment without establishing an express rights-holder license.",
         "preservation": "Serve complete unchanged original archive, retaining executable, W32, HLP and all game/audio files and notices."
       }
+    },
+    {
+      "target": "pajama-demo",
+      "title": "Pajama Sam: No Need to Hide When It's Dark Outside (Demo)",
+      "engineId": "scumm",
+      "gameId": "pajama",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "pajama-win-demo-us.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/scumm/he/pajama-win-demo-us.zip",
+      "sha256": "742e501121faf8276f7bce4021f204588185036c081a90d956f6750295995ca5",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-14",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "All nine original files inspected for ASCII, UTF16 and XOR69 legal notices. Compiled Windows Help fully decompiled and plain text reviewed, and complete INF settings inspected; no express redistribution ban or rehosting grant found. Original copyright notices retained. Official ScummVM promotional hosting supports user-authorized cautious assessment without establishing an express rights-holder license.",
+        "preservation": "Serve complete unchanged original archive, retaining DLL, executable, W32, HLP, INF and all game/audio files and notices."
+      }
     }
   ]
 }
