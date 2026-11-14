@@ -589,9 +589,9 @@ add each frame's `performance.timeOrigin`.
 
 ### Classic freeware additions
 
-Follow the [freeware release skill](../.codex/skills/scummweb_freeware-release/SKILL.md)
-for redistribution checks, engine registration, fingerprints, publishing,
-and verification. [`data/classic-freeware.json`](../data/classic-freeware.json)
+Follow the [add-game skill](../.codex/skills/scummweb_add-game/SKILL.md)
+for complete metadata, tags, redistribution checks, engine registration,
+fingerprints, bucket delivery, hero and box art, gameplay and live verification. [`data/classic-freeware.json`](../data/classic-freeware.json)
 pins the approved packages, upstream URLs, and SHA-256 values. Put exact
 archives and required source files in `downloads/`. The additive build
 preserves existing targets and writes packages to `dist/games/<gameId>.zip`.
