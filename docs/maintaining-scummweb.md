@@ -661,6 +661,10 @@ candidate must save at least 10% against WebP and reach 35 dB decoded RGB PSNR.
 Inspect text, fine detail, gradients, and pixel art before publishing. Offer
 AVIF only when it covers every WebP width. Match preload sizes and sources to
 the visible hero so the browser can reuse its request.
+Game cards preload and decode their matching responsive hero at high priority
+when hovered, focused or pressed, alongside the cover animation. Navigation also
+warms it as a fallback. Only the latest card's preload is retained; slideshow
+neighbors continue loading at low priority.
 
 ## Branding
 

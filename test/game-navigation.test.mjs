@@ -284,16 +284,24 @@ test("same-page imported selections update immediately and clear when history re
 
 test("selection links cancel route fetching only when the current library handles the game", async () => {
   let select = () => true, prevented = false;
+  const warmed = [];
   const Link = await component("game-selection-link", {
     "next/link": "a",
     "./hero-selection.mjs": selection,
     "./game-navigation": { useGameNavigation: () => select },
+    "./hero-preload.mjs": { preloadSelectedHero: (game) => warmed.push(game) },
   }, { window: { scrollTo() {} } });
   const event = { preventDefault() { prevented = true; } };
   let link = Link({ game: queen, children: "Queen" });
   assert.equal(link.props.href, queen.href, "native and new-tab links retain the canonical route");
   assert.equal(link.props.prefetch, false);
+  assert.equal(warmed.length, 0, "rendering the library does not preload every hero");
+  for (const handler of ["onPointerEnter", "onFocus", "onPointerDown"]) {
+    link.props[handler]({});
+    assert.equal(warmed.at(-1), queen, `${handler} warms the matching hero before navigation`);
+  }
   link.props.onNavigate(event);
+  assert.equal(warmed.length, 4, "navigation warms the hero even without a preceding pointer or focus event");
   assert.equal(prevented, true);
   select = null;
   prevented = false;

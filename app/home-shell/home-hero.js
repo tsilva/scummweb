@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import HeroStage from "./hero-stage";
 import { getHeroPreloadImages, HERO_PRELOAD_AHEAD } from "./hero-images.mjs";
+import { createHeroPreload } from "./hero-preload.mjs";
 import { useArtworkDelivery } from "./artwork-delivery";
 import { chooseGameVersion, getGameFamilyKey, readPreferredGameVersion, rememberGameVersion } from "../game-versions.mjs";
 import { orderHeroGroups } from "./hero-order.mjs";
@@ -88,25 +89,7 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
       const key = JSON.stringify(props);
       let picture = preloadedImages.current.get(key);
       if (!picture) {
-        picture = document.createElement("picture");
-        picture.hidden = true;
-        if (props.avifSrcSet) {
-          const source = document.createElement("source");
-          source.type = "image/avif";
-          source.sizes = props.sizes;
-          source.srcset = props.avifSrcSet;
-          picture.append(source);
-        }
-        const image = new Image();
-        picture.append(image);
-        document.body.append(picture);
-        image.decoding = "async";
-        image.fetchPriority = "low";
-        image.sizes = props.sizes;
-        if (props.srcSet) image.srcset = props.srcSet;
-        image.src = props.src;
-        // Decode offscreen, keeping these images alive until they leave the window.
-        void image.decode().catch(() => {});
+        picture = createHeroPreload(props);
       }
       nextImages.set(key, picture);
     }
