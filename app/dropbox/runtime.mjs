@@ -220,19 +220,22 @@ async function syncAccount(auth, epoch, signal, progress) {
           const current = await getActiveSaveSets(localStorage, destinations);
           const local = current.sets.find((set) => matchDestination(remote, [set.destination]));
           if (local && local.hash !== group.browserSet?.hash) return { changed: true };
+          const destinationKey = matchDestination(remote, destinations);
           let initialConfig;
-          if (!captureFilesystem(localStorage).root.key) {
+          if (destinationKey && !captureFilesystem(localStorage).root.key) {
             const response = await fetch("/scummvm.ini", { signal: AbortSignal.timeout(15000) });
             if (!response.ok) throw new DropboxError("Could not initialize restored saves.");
             initialConfig = await response.text();
           }
           check();
           await applyImport({ storage: localStorage, destinations, revision: current.revision, initialConfig, check,
-            rows: [{ set: remote, destinationKey: matchDestination(remote, destinations), choice: "imported" }] });
-          return { changed: false };
+            rows: [{ set: remote, destinationKey, choice: "imported" }] });
+          return { changed: false, restored: Boolean(destinationKey) && local?.hash !== remote.hash };
         });
         if (restored.busy || restored.changed) { deferred = true; continue; }
-        window.dispatchEvent(new Event("scummweb:saves-changed"));
+        // Preserving an unavailable edition changes no active saves. Announcing
+        // it would schedule another pass forever through startDropboxSync.
+        if (restored.restored) window.dispatchEvent(new Event("scummweb:saves-changed"));
       }
       await syncStore.put({ id: recordKey(account, "base", profile), hash: result.head.active, tips: result.head.tips });
       await syncStore.removeIf(recordKey(account, "pending", profile), (pending) => pending.set.hash === group.local?.hash);
