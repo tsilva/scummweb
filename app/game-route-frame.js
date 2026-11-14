@@ -53,6 +53,7 @@ const BOOT_ERROR_MESSAGES = new Map([
 ]);
 const MIB = 1024 * 1024;
 const catalogArchiveLimits = {
+  "technobabylon-demo": { archiveLimit: 300 * MIB, expandedLimit: 900 * MIB, timeoutMs: 600_000 },
   "primordia-demo": { archiveLimit: 900 * MIB, expandedLimit: 1024 * MIB, timeoutMs: 900_000 },
   "geminirue-demo": { archiveLimit: 200 * MIB, timeoutMs: 600_000 },
   "sword1-demo": { archiveLimit: 200 * MIB, timeoutMs: 600_000 },

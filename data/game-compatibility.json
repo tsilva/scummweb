@@ -3715,10 +3715,12 @@
       "upstreamRating": "Good"
     },
     {
-      "title": "Resonance",
+      "title": "Resonance (Demo)",
       "gameId": "ags:resonance",
-      "status": "not-tested",
-      "upstreamRating": "Good"
+      "status": "startup-verified",
+      "edition": "resonance-demo.zip",
+      "recordedOn": "2026-11-14",
+      "observation": "English Windows demo renders its original New Game/Load Game menu and loads its voice pack through personal ZIP import. Further gameplay was not checked."
     },
     {
       "title": "Return of the Phantom",
@@ -3967,10 +3969,13 @@
       "upstreamRating": "Good"
     },
     {
-      "title": "Technobabylon",
+      "title": "Technobabylon (Demo)",
       "gameId": "ags:technobabylon",
-      "status": "not-tested",
-      "upstreamRating": "Good"
+      "status": "startup-warning",
+      "edition": "technobabylon-demo.zip",
+      "issueScope": "scummweb",
+      "recordedOn": "2026-11-14",
+      "observation": "English Windows demo renders its original Start menu, voiced introduction and first Trance scene; walking works. Host save creation failed verification, so saving and Continue are unreliable in this browser runtime. Play this demo in one sitting."
     },
     {
       "title": "Tender Loving Care",

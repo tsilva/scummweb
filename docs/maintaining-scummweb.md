@@ -287,6 +287,14 @@ Native Skip intro advances past the publisher opening while preserving the
 Sneak Preview, Scenes from Myst and Making of Myst choices. Saving and loading
 are disabled for this demo, so it has no checkpoint or Continue.
 
+Technobabylon’s English Windows demo preserves its original Start menu and
+opening. Its approximately 206 MiB unchanged ZIP has a target-only 300 MiB download,
+900 MiB expanded-data allowance and 10-minute timeout. The first Trance scene
+accepts walking. Host save creation failed verification, so saving and Continue
+are unreliable for this demo. Its embedded nedraed fonts retain their CC BY-SA 3.0
+notices; a separate launcher notice provides the original font titles, creator,
+source links and license link. This font license does not cover the game itself.
+
 Primordia’s English Windows demo retains its original Start Game menu and opening.
 The unchanged archive is approximately 804 MiB, so this target alone allows a
 900 MiB download, 1 GiB expanded data and a 15-minute download timeout. Its
@@ -298,6 +306,11 @@ Gemini Rue’s English Windows demo supports native saving and restoration. Its
 intro checkpoint starts on the first playable street scene after the original
 prologue and phone conversation, before any player action. The complete archive
 retains its manual, credits, original voice pack and plugins.
+
+Resonance’s Windows demo remains personal-import only while its embedded font
+redistribution restrictions are unresolved. Its original archive is preserved
+unchanged; no public game-data package is published. Existing AGS import support
+reaches the original menu.
 
 The Riven Windows demo remains personal-import only because its included
 QuickTime installer license restricts distribution and network transmission.
@@ -645,6 +658,7 @@ its [generation reference](../.codex/skills/scummweb_game-assets/references/gene
 reference credits, dates, prompts, hashes, dimensions, and any approved
 illustrated compositions. The game mappings retain source credits and
 `heroImageMobilePosition` can adjust the narrow-screen crop.
+Desktop hero titles shrink to preserve whole words; mobile titles wrap naturally.
 
 Generate heroes from original promotional references. Faithfully restore
 original box fronts for card covers. Keep gameplay screenshots as original

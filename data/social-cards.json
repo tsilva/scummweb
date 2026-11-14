@@ -1450,6 +1450,16 @@
       "file": "primordia-demo-ab5e76d3087bba00121ebeeffccacde7a0cbf75a234895bad42c495f0a4437d7.jpg",
       "inputHash": "ab5e76d3087bba00121ebeeffccacde7a0cbf75a234895bad42c495f0a4437d7",
       "imageHash": "c647b57849fbba67b9bd5662fc9ffa0e1ad74dd9651a9bed75295154d47e168f"
+    },
+    "technobabylon": {
+      "file": "technobabylon-30c52c7f1eb9a55c87c69bbced3e46fe9128bf9e833d8f30737561e92ff26cc7.jpg",
+      "inputHash": "30c52c7f1eb9a55c87c69bbced3e46fe9128bf9e833d8f30737561e92ff26cc7",
+      "imageHash": "080e8310e804b091bdea4c859c135269eae81c21088a37a414a760a65b2e27b8"
+    },
+    "technobabylon-demo": {
+      "file": "technobabylon-demo-36583c981f084766817cf3a2633fccee827c6fdfa4e3a680b08c5aef262f9f86.jpg",
+      "inputHash": "36583c981f084766817cf3a2633fccee827c6fdfa4e3a680b08c5aef262f9f86",
+      "imageHash": "bc1f64cb408ba54021e2cc26fa94db9c2adeca081b6830c744158851b180cb54"
     }
   }
 }
