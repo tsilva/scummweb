@@ -25,12 +25,35 @@ export function createHeroPreload(props, fetchPriority = "low") {
   return picture;
 }
 
-export function preloadSelectedHero(game, artwork) {
+export function disposeHeroPreload(picture) {
+  // Removing a picture alone can leave its image request running. Clear every
+  // candidate together so neither the AVIF nor fallback keeps downloading.
+  for (const source of picture.querySelectorAll("source")) source.removeAttribute("srcset");
+  const image = picture.querySelector("img");
+  image.removeAttribute("srcset");
+  image.removeAttribute("src");
+  picture.remove();
+}
+
+export function preloadSelectedHero(game, artwork, committed = false) {
   const props = getHeroImageProps(game, artwork);
   if (!props.src) return;
   const key = JSON.stringify(props);
-  if (selectedHero?.key === key) return;
-  selectedHero?.picture.remove();
-  // Retain only the latest selection, even when many cards are hovered.
-  selectedHero = { key, picture: createHeroPreload(props, "high") };
+  if (selectedHero?.key !== key) {
+    if (selectedHero) disposeHeroPreload(selectedHero.picture);
+    // Retain only the latest selection, even when many cards are hovered.
+    selectedHero = { key, picture: createHeroPreload(props, "high"), committed: false };
+  }
+  const entry = selectedHero;
+  const claim = Symbol();
+  entry.claim = claim;
+  entry.committed ||= committed;
+  return () => {
+    // A late leave/unmount from an older card must not cancel a newer intent.
+    if (selectedHero !== entry || entry.claim !== claim || entry.committed) return;
+    const image = entry.picture.querySelector("img");
+    if (image.complete && image.naturalWidth) return;
+    disposeHeroPreload(entry.picture);
+    selectedHero = null;
+  };
 }

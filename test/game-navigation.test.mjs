@@ -286,6 +286,7 @@ test("selection links cancel route fetching only when the current library handle
   let select = () => true, prevented = false;
   const warmed = [];
   const Link = await component("game-selection-link", {
+    react: { useRef: (current) => ({ current }), useEffect() {} },
     "next/link": "a",
     "./hero-selection.mjs": selection,
     "./game-navigation": { useGameNavigation: () => select },
@@ -308,6 +309,38 @@ test("selection links cancel route fetching only when the current library handle
   link = Link({ game: queen });
   link.props.onNavigate(event);
   assert.equal(prevented, false, "links outside a library retain Next.js navigation");
+});
+
+test("card exit, cancelled touch, blur and unmount release speculative hero work", async () => {
+  const cleanups = [], warmed = [], released = [], forwarded = [];
+  const Link = await component("game-selection-link", {
+    react: { useRef: (current) => ({ current }), useEffect: (effect) => cleanups.push(effect()) },
+    "next/link": "a",
+    "./hero-selection.mjs": selection,
+    "./game-navigation": { useGameNavigation: () => () => true },
+    "./hero-preload.mjs": { preloadSelectedHero(game, artwork, committed) {
+      const claim = { game, committed };
+      warmed.push(claim);
+      return () => released.push(claim);
+    } },
+  }, { window: { scrollTo() {} } });
+  const link = Link({ game: queen,
+    onPointerLeave: () => forwarded.push("leave"), onBlur: () => forwarded.push("blur"),
+    onPointerCancel: () => forwarded.push("cancel"),
+  });
+  link.props.onPointerEnter({});
+  link.props.onPointerLeave({});
+  link.props.onFocus({});
+  link.props.onBlur({});
+  link.props.onPointerDown({});
+  link.props.onPointerCancel({});
+  assert.deepEqual(released, warmed);
+  assert.deepEqual(forwarded, ["leave", "blur", "cancel"]);
+  assert.ok(warmed.every(({ committed }) => !committed));
+  link.props.onNavigate({ preventDefault() {} });
+  assert.equal(warmed.at(-1).committed, true, "navigation protects the image through scroll/blur");
+  cleanups[0]();
+  assert.equal(released.at(-1), warmed.at(-1), "unmount releases the link's current claim");
 });
 
 test("a mounted hero resets to the requested game after automatic rotation or reselecting its route", async () => {

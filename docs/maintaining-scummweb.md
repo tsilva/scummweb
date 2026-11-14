@@ -664,7 +664,10 @@ the visible hero so the browser can reuse its request.
 Game cards preload and decode their matching responsive hero at high priority
 when hovered, focused or pressed, alongside the cover animation. Navigation also
 warms it as a fallback. Only the latest card's preload is retained; slideshow
-neighbors continue loading at low priority.
+neighbors continue loading at low priority. Leaving or blurring a card cancels
+its unfinished preload by clearing both AVIF and fallback sources. Completed
+covers stay warm; clicking commits the preload through the navigation handoff.
+Obsolete slideshow preloads clear their sources too.
 
 ## Branding
 
