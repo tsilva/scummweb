@@ -290,6 +290,12 @@ Native Skip intro advances past the publisher opening while preserving the
 Sneak Preview, Scenes from Myst and Making of Myst choices. Saving and loading
 are disabled for this demo, so it has no checkpoint or Continue.
 
+Putt-Putt Joins the Parade’s English Windows demo retains its complete original
+Windows package, including the compiled Help file. Native intro skip advances
+the opening, and the first road scene accepts click-point input. Saving is
+unavailable in the tested opening and first playable scene; no intro checkpoint
+is bundled. Its existing shared artwork is reused.
+
 Technobabylon’s English Windows demo preserves its original Start menu and
 opening. Its approximately 206 MiB unchanged ZIP has a target-only 300 MiB download,
 900 MiB expanded-data allowance and 10-minute timeout. The first Trance scene

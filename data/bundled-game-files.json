@@ -10057,6 +10057,52 @@
           866780176
         ]
       ]
+    },
+    "puttputt-demo": {
+      "url": "https://scummvm-games.tsilva.eu/puttputt.zip",
+      "fingerprint": "e98a03e83a4eab96d8742c12b21f437b98ff48a666c1b9796878dec58422d10f",
+      "files": [
+        [
+          "PUTTDEMO.EXE",
+          30720,
+          3210714670
+        ],
+        [
+          "PUTTDEMO.HE0",
+          8269,
+          921152807
+        ],
+        [
+          "PUTTDEMO.HE1",
+          826701,
+          2065697123
+        ],
+        [
+          "PUTTDEMO.HE2",
+          740662,
+          903562130
+        ],
+        [
+          "PUTTDEMO.HE3",
+          36864,
+          1991548164
+        ],
+        [
+          "PUTTDEMO.HE4",
+          6033263,
+          577863504
+        ],
+        [
+          "PUTTDEMO.HLP",
+          94208,
+          771259037
+        ],
+        [
+          "PUTTDEMO.W32",
+          261120,
+          3585262549
+        ]
+      ]
     }
   }
 }

@@ -129,6 +129,28 @@ class Fixture(unittest.TestCase):
             plan.prepare(self.root, "example-demo")
         self.assertEqual(self.path.read_text(), "{}")
 
+    def test_humongous_official_subdirectory_preserves_exact_plan_binding(self):
+        entry = {**self.entry, "engineId": "scumm", "url": "https://downloads.scummvm.org/frs/demos/scumm/he/example.zip"}
+        self.catalog.write_text(json.dumps({"games": [entry]}))
+        self.path.unlink()
+        value = plan.load(self.root, plan.prepare(self.root, "example-demo"))
+        self.assertEqual(plan.validate(self.root, value), self.source)
+        self.assertEqual(value["url"], entry["url"])
+
+    def test_humongous_source_does_not_allow_other_paths_or_engines(self):
+        for engine, url in [
+            ("sci", "https://downloads.scummvm.org/frs/demos/scumm/he/example.zip"),
+            ("scumm", "https://downloads.scummvm.org/frs/demos/scumm/he/other.zip"),
+            ("scumm", "https://downloads.scummvm.org/frs/demos/scumm/he/../example.zip"),
+            ("scumm", "https://downloads.scummvm.org/frs/demos/scumm/other/example.zip"),
+            ("scumm", "https://downloads.scummvm.org/frs/demos/scumm/he/example.zip?redirect=1"),
+            ("scumm", "https://example.org/frs/demos/scumm/he/example.zip"),
+        ]:
+            with self.subTest(engine=engine, url=url):
+                self.catalog.write_text(json.dumps({"games": [{**self.entry, "engineId": engine, "url": url}]}))
+                with self.assertRaises(ValueError):
+                    plan.prepare(self.root, "example-demo")
+
     def test_conditional_streamed_upload_and_public_body_verification(self):
         result = self.bridge.publish(FAKE_CREDENTIAL)
         self.assertTrue(result["uploaded"])

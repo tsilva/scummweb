@@ -39,8 +39,11 @@ def catalog_entry(root, target):
         or not entry["redistributionReview"].get("basis")
         or not re.fullmatch(r"[a-z0-9][a-z0-9-]{0,63}", entry["gameId"])
         or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]*\.zip", entry["archive"])
-        or entry["url"] != "https://downloads.scummvm.org/frs/demos/"
-        + entry["engineId"] + "/" + entry["archive"]
+        or entry["url"] not in {
+            "https://downloads.scummvm.org/frs/demos/" + entry["engineId"] + "/" + entry["archive"],
+            *({"https://downloads.scummvm.org/frs/demos/scumm/he/" + entry["archive"]}
+              if entry["engineId"] == "scumm" else set()),
+        }
         or not re.fullmatch(r"[a-f0-9]{64}", entry["sha256"])
     ):
         raise ValueError("Only reviewed unchanged official demo ZIPs are supported")

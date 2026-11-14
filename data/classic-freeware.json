@@ -598,6 +598,24 @@
         "basis": "All eight original files and complete ASCII/streamed UTF16 notices reviewed. No standalone game license, express archive-wide redistribution ban or rehosting grant found. Embedded original nedraed fonts identify CC BY-SA3.0; unchanged font data/notices retained and separate attribution prepared. Font license is not treated as a game license. Official ScummVM hosting supports the user-authorized cautious promotional-demo assessment without constituting an express rights-holder license.",
         "preservation": "Publish unchanged originalZIP, retaining executables, uninstaller, audio, voices, plugin and config. No font removal/replacement. Attribution notice staged separately in launcher."
       }
+    },
+    {
+      "target": "puttputt-demo",
+      "title": "Putt-Putt Joins the Parade (Demo)",
+      "engineId": "scumm",
+      "gameId": "puttputt",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "puttputt-win-demo-us.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/scumm/he/puttputt-win-demo-us.zip",
+      "sha256": "c99b0ed8a17018333fe4fed06ebd690895c3eb510637911787fb95f2f2ee5140",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-14",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "All eight original files inspected for ASCII, UTF16 and XOR69 legal strings. Windows Help file fully decompiled into98 topics with HelpDeco and converted to plain text; includes installation, technical help and promotional catalog, no express redistribution ban or rehosting grant found. Official ScummVM promotional hosting supports user-authorized cautious assessment without establishing an express rights-holder license.",
+        "preservation": "Serve complete original unchanged archive including executable, W32 and HLP; no removal or repacking."
+      }
     }
   ]
 }
