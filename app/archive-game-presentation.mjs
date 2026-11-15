@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Simon the Sorcerer (Demo)", target: "simon1-demo", engineId: "agos", gameId: "simon1",
+    files: [["gamepc", 30879, 1563266732], ["simon.gme", 1237886, 3194878688]],
+  },
+  {
     title: "Toonstruck (Demo)", target: "toon-demo", engineId: "toon", gameId: "toon",
     files: [["local.pak", 2680573, 3491990584], ["generic.svl", 7739319, 281706566]],
   },

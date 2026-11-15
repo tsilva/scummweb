@@ -965,6 +965,14 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Simon the Sorcerer (Demo)",
+      "status": "startup-verified",
+      "gameId": "agos:simon1",
+      "edition": "simon1-dos-cd-demo-en.zip",
+      "recordedOn": "2026-11-14",
+      "observation": "English DOS CD demo: native edition detection, original prison scene, movement into the adjoining torture room, and verb selection verified. A short original publisher splash leads directly to play. ScummWEB Save/Load and Continue are unavailable with this engine; native quick-save is rejected at the tested scene. No checkpoint. Full playthrough and independent audible output not verified."
+    },
+    {
       "title": "Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe",
       "status": "startup-verified",
       "gameId": "agos:simon2",

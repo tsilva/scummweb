@@ -254,19 +254,19 @@ test("an empty new catalog edition can launch alongside another isolated player 
   assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, original);
   assert.equal(server.imports.size, 2);
   locks.editionBusy = "scummweb-saves:edition:catalog-neverhood-demo";
-  await assert.rejects(launch(), /Choose which saved progress/);
+  await assert.rejects(launch(), /Finish syncing saved progress|An incomplete game save/);
   locks.editionBusy = null;
   storage.setItem("scummweb.continue.v1:catalog-neverhood-demo", JSON.stringify({ pending: ["neverhood-demo.001"] }));
-  await assert.rejects(launch(), /Choose which saved progress/);
+  await assert.rejects(launch(), /Finish syncing saved progress|An incomplete game save/);
   storage.removeItem("scummweb.continue.v1:catalog-neverhood-demo");
   initializeSaveEdition(storage, "catalog-neverhood-demo");
-  await assert.rejects(launch(), /Choose which saved progress/);
+  await assert.rejects(launch(), /Finish syncing saved progress|An incomplete game save/);
   // Legacy progress must be reconciled, even when the cloud has no matching profile.
   const legacy = browserSaveStorage({ "SKY-VM.001": bytes("browser progress"), "neverhood-demo.001": bytes("unsynced progress") });
   for (const [name, value] of legacy.values) storage.setItem(name, value);
-  await assert.rejects(launch(), /Choose which saved progress/);
+  await assert.rejects(launch(), /Finish syncing saved progress|An incomplete game save/);
   storage.setItem("/", "corrupted");
-  await assert.rejects(launch(), /Choose which saved progress/);
+  await assert.rejects(launch(), /Finish syncing saved progress|An incomplete game save/);
 });
 
 for (const existingProgress of [false, true]) test(`an unrelated conflict permits a fully synced game ${existingProgress ? "with cloud progress" : "without saves"}`, async (t) => {
@@ -296,14 +296,14 @@ for (const existingProgress of [false, true]) test(`an unrelated conflict permit
   }
   // An existing remote profile still needs a completed local reconciliation.
   locks.busy = "shared";
-  if (existingProgress) await assert.rejects(runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:neverhood-demo" }), /Choose which saved progress/);
+  if (existingProgress) await assert.rejects(runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:neverhood-demo" }), /Finish syncing saved progress|An incomplete game save/);
   else await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:neverhood-demo" });
   // A legacy-wide operation excludes even the read-only empty-edition check.
   locks.busy = true;
-  await assert.rejects(runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:neverhood-demo" }), /Choose which saved progress/);
+  await assert.rejects(runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:neverhood-demo" }), /Finish syncing saved progress|An incomplete game save/);
   locks.busy = false;
   storage.setItem("scummweb.continue.v1:catalog-neverhood-demo", JSON.stringify({ pending: ["neverhood-demo.001"] }));
-  await assert.rejects(runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:neverhood-demo" }), /Choose which saved progress/);
+  await assert.rejects(runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:neverhood-demo" }), /Finish syncing saved progress|An incomplete game save/);
   storage.removeItem("scummweb.continue.v1:catalog-neverhood-demo");
   server.offline = true;
   await assert.rejects(runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:neverhood-demo" }));

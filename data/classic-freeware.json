@@ -706,6 +706,24 @@
         "basis": "Complete unchanged official ScummVM-hosted promotional ZIP reviewed as data: all files ASCII, UTF16 and XOR69 legal scans, ZIP integrity/safe paths, plus validated uncompressed indexes for all nine nested PAK archives (813 entries). No standalone license, compiled Help, notice-bearing nested entry, express redistribution ban or rehosting grant found. Retain original Burst, Virgin, HMI, Watcom, SciTech and other notices. Eligibility uses only the cautious official promotional-hosting assessment explicitly authorized by the user, not an express rights-holder redistribution license.",
         "preservation": "Serve the exact complete source ZIP including all ACT1 directories, original PAK/SVL/MUS/SMK data, executables, setup files, sound drivers and notices."
       }
+    },
+    {
+      "target": "simon1-demo",
+      "title": "Simon the Sorcerer (Demo)",
+      "engineId": "agos",
+      "gameId": "simon1",
+      "platform": "pc",
+      "extra": "CD Demo",
+      "archive": "simon1-dos-cd-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/agos/simon1-dos-cd-demo-en.zip",
+      "sha256": "45d3e03b3e28e0dc3c10bc2fbd12d1b3891efed49709d74536177e2831ecff1c",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-14",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "All 16 original files reviewed as data with complete ASCII, UTF16 and XOR69 legal scans, ZIP integrity/safe paths, and full original read.me, itxt.txt and install.dat text. The installer script contains setup/copy instructions, not a license acceptance flow; its referenced external CD driver library is not included in the official ZIP. No standalone license, compiled Help, nested installer/archive, express redistribution ban or rehosting grant found. Retain original Microsoft, Creative, DIGPAK and other copyright notices. Eligibility uses only the cautious official promotional-hosting assessment explicitly authorized by the user, not an express rights-holder redistribution license.",
+        "preservation": "Serve the complete unchanged ZIP with all original game/voice/effect data, executables, installer text and notices."
+      }
     }
   ]
 }
