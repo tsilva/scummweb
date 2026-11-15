@@ -101,6 +101,10 @@ test("empty placeholders, missing files and unsupported native snapshots never e
   f.put("SKY-VM.001", "player", 200);
   assert.equal(f.scan([[1, "SKY-VM.001"]], false), -1);
   assert.equal(supportsContinue("mohawk", "myst", "Demo"), false);
+  // Fresh startup loading misplaces Rex in the three-room DOS demo.
+  assert.equal(supportsContinue("mads", "nebular", "Demo"), false);
+  assert.equal(supportsContinue("mads", "nebular"), true);
+  assert.equal(supportsContinue("mads", "phantom", "Demo"), true);
 });
 
 test("the managed Wasm actually exports the native save bridge", async () => {

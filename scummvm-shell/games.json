@@ -765,6 +765,16 @@
       "platform": "dos",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "nebular-demo",
+      "title": "Rex Nebular and the Cosmic Gender Bender (Demo)",
+      "path": "/games/nebular",
+      "engineId": "mads",
+      "gameId": "nebular",
+      "platform": "dos",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/nebular.txt"
     }
   ]
 }

@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Rex Nebular and the Cosmic Gender Bender (Demo)", target: "nebular-demo", engineId: "mads", gameId: "nebular",
+    files: [["section1.hag", 192065, 2775015795], ["section9.hag", 543156, 2326445887]],
+  },
+  {
     title: "Bud Tucker in Double Trouble (Demo)", target: "tucker-demo", engineId: "tucker", gameId: "tucker",
     files: [["infobar.txt", 203, 2809140262], ["tucker.exe", 233145, 3209492942]],
   },

@@ -1,0 +1,19 @@
+
+REX NEBULAR AND THE COSMIC GENDER BENDER - DEMONSTRATION
+
+
+At last, the long awaited Rex Nebular demonstration is here!
+
+Be sure to run the INSTALL program to tell the demo what type
+of sound card you have.   Use the "Reconfigure Hardware
+ Options" option on the install menu.   You don't need to use the
+"Install Game Files to Hard Disk" option.
+
+The demo features a few scenes from the opening animation, and 3
+playable rooms from the game.
+
+To run the demo, type REX and press [ENTER].
+To run the opening continously type REX LOOP.
+To run the interactive part of the game type REX GAME.
+
+Rex should be on store shelves some time in late fall so look for it!

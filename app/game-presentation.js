@@ -120,6 +120,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "nebular-demo": {
+    ...retroGameArtwork["mads:nebular"],
+    heroImageMobilePosition: "80% -8vh",
+    title: "Rex Nebular and the Cosmic Gender Bender (Demo)",
+    year: "1992",
+    language: "en",
+  },
   "tucker-demo": {
     ...retroGameArtwork["tucker:tucker"],
     heroImageMobilePosition: "83% -20vh",

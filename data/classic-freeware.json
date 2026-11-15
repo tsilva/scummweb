@@ -942,6 +942,24 @@
         "basis": "All 1,228 original files and 4 directories were inspected as data: ZIP integrity and safe paths, complete file hashes, ASCII/UTF-16/XOR69 legal scans, additional restriction and authorization scans, Miles header/driver list and project metadata. The OMF object library and developer files are preserved; no nested compressed archives or compiled Help were identified. Miles, Rational, Microsoft and Watcom copyright notices are retained. No express demo redistribution grant or packaged prohibition was found. Eligibility uses only the user-authorized cautious assessment of official promotional hosting, not an express rights-holder license.",
         "preservation": "Serve the complete unchanged official ZIP, preserving original source/data files, OMF library, DOS executables, drivers, notices and all WAV audio. No installer or game executable was executed."
       }
+    },
+    {
+      "target": "nebular-demo",
+      "title": "Rex Nebular and the Cosmic Gender Bender (Demo)",
+      "engineId": "mads",
+      "gameId": "nebular",
+      "platform": "dos",
+      "extra": "Demo",
+      "archive": "rex-dos-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/mads/rex-dos-demo-en.zip",
+      "sha256": "3e932bf0fb01aa8a9efc12b03aad2614d7cf081582e646e9fe473d12ddab2bc2",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-15",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "The complete unchanged 20-file official English DOS interactive demo was inspected as data: ZIP integrity/safe paths, complete file hashes, ASCII/UTF-16/XOR69 and additional restriction scans, original README/batch files, all 139 bounded HAG entries and 456 raw/decoded MADSPACK blocks. The pinned native DCL decoder was used with validated offsets, sizes, exact output lengths and address/undefined sanitizers. MicroProse, Microsoft and PKWARE copyright notices are retained. No express demo redistribution grant or packaged prohibition was found. Eligibility uses only the user-authorized cautious assessment of official promotional hosting, not an express rights-holder license.",
+        "preservation": "Serve the complete unchanged official ZIP, preserving all original executables, batch/configuration files, notices, sound drivers and HAG resources. No downloaded executable or installer was executed."
+      }
     }
   ]
 }

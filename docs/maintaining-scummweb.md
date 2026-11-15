@@ -343,6 +343,8 @@ Sherlock Holmes: The Serrated Scalpel’s English DOS interactive demo preserves
 
 Bud Tucker’s English DOS interactive demo keeps the complete unchanged official ZIP, including its original source/data files, sound drivers and WAV audio. It starts directly in the original Plugs scene without a seeded checkpoint. Movement, scene scrolling, the F1 action-panel switch, Save/Load and Continue are verified.
 
+Rex Nebular’s English DOS three-room interactive demo keeps the complete unchanged official ZIP, including its original intro, executables and sound drivers. It preserves the original opening and native Skip intro without a seeded checkpoint. Movement and in-session Save/Load are verified. Continue is disabled because fresh startup loading misplaces Rex.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.
