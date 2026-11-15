@@ -1617,6 +1617,14 @@
       "observation": "A game frame renders at startup."
     },
     {
+      "title": "Freddi Fish 2: The Case of the Haunted Schoolhouse (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:freddi2",
+      "edition": "freddi2-win-demo-us.zip",
+      "recordedOn": "2026-11-15",
+      "observation": "English Windows HE80 demo: correct native detector/selected game, cold and cached bucket starts, original turtle scene, native intro skip and pipe interaction triggering Tucker dialogue/animation verified. Personal and hosted native saving rejected in that tested scene, including before hosted input; no save or Continue checkpoint seeded. Full playthrough and independent audible output not verified."
+    },
+    {
       "title": "Freddi Fish 3: The Case of the Stolen Conch Shell",
       "status": "startup-verified",
       "gameId": "scumm:freddi3",

@@ -695,6 +695,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "freddi2-demo",
+      "title": "Freddi Fish 2: The Case of the Haunted Schoolhouse (Demo)",
+      "path": "/games/freddi2",
+      "engineId": "scumm",
+      "gameId": "freddi2",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

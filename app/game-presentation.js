@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "freddi2-demo": {
+    ...retroGameArtwork["scumm:freddi2"],
+    heroImageMobilePosition: "65% -25vh",
+    title: "Freddi Fish 2: The Case of the Haunted Schoolhouse (Demo)",
+    year: "1996",
+    language: "en",
+    shortTitle: "Freddi Fish 2 (Demo)",
+  },
   "putttime-demo": {
     ...retroGameArtwork["scumm:putttime"],
     heroImageMobilePosition: "65% -30vh",
