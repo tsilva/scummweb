@@ -25,6 +25,7 @@ test("fresh browser configuration preserves UTF-8 titles and records byte length
 
 test("official classic archives are recognized by contents without relying on filenames", () => {
   for (const [target, files] of [
+    ["tucker-demo", [["INFOBAR.TXT", 203, 2809140262], ["TUCKER.EXE", 233145, 3209492942]]],
     ["scalpel-demo", [["TALK.LIB", 121102, 1973471485], ["RES03.RRM", 140669, 3291922347]]],
     ["rtz-demo", [["RTZCD.RED", 130683, 769598157], ["RTZCD.PRJ", 43016792, 2406992190]]],
     ["tony-demo", [["roasted.MPC", 39211, 3632859460], ["roasted.MPR", 14972409, 2203660658], ["VOICES.VDB", 20189260, 2600640084]]],

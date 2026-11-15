@@ -755,6 +755,16 @@
       "platform": "dos",
       "extra": "Interactive Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "tucker-demo",
+      "title": "Bud Tucker in Double Trouble (Demo)",
+      "path": "/games/tucker",
+      "engineId": "tucker",
+      "gameId": "tucker",
+      "platform": "dos",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }
