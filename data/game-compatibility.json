@@ -990,6 +990,14 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Shivers (Demo)",
+      "status": "startup-verified",
+      "gameId": "sci:shivers",
+      "edition": "shivers-win-demo2-en.zip",
+      "recordedOn": "2026-11-15",
+      "observation": "English Windows interactive demo: correct native edition, original menu/New Game movie and office start prompt preserved without a seeded browser checkpoint. Desk scrapbook opens and pages turn; return navigation works. Saving rejected in tested scrapbook and stable office views; Load and Continue have no verified save. Full playthrough and independent audible output not verified."
+    },
+    {
       "title": "Simon the Sorcerer",
       "status": "startup-verified",
       "gameId": "agos:simon1",

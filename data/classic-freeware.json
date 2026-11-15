@@ -978,6 +978,24 @@
         "basis": "All33 original files were inspected as data: ZIP integrity/safe paths, complete hashes, ASCII/UTF16/XOR and additional restriction scans; original BBS postings/README/install scripts and plain Sierra installer Help; all561 SCI32 game resources were LZS-decoded with bounded map/header parity and exact lengths; all6 packed DH91 setup members were DCL-decoded through real end markers with exact consumed lengths and MZ/NE/MIDI/Help validation, then original104-topic WindowsHelp was decoded to coherent complete RTF/text. Original compiler, runtime, Sierra, Microsoft, SciTech and Husdawg notices are retained. No express demo redistribution grant or packaged prohibition was found. Eligibility uses only the user-authorized cautious assessment of official promotional hosting, not an express rights-holder license.",
         "preservation": "Serve the complete unchanged official ZIP, preserving original setup archive, executables, DLLs, Help, documents, drivers and all game audio/resources. No downloaded executable or installer was run."
       }
+    },
+    {
+      "target": "shivers-demo",
+      "title": "Shivers (Demo)",
+      "engineId": "sci",
+      "gameId": "shivers",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "shivers-win-demo2-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/sci/shivers-win-demo2-en.zip",
+      "sha256": "5f9ca83befbbb07d356d9042c1cdbd6a50e9fd492e819c4a40128fbe7c68f513",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-15",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "All72 original files inspected as data: ZIP integrity and safe paths, complete hashes, ASCII/UTF16/XOR and extra restriction scans. All1172 SCI32 resources LZS-decoded with exact sizes/map-header parity. All6 DH91 setup members DCL-decoded through real end markers and all49 KWAJ Microsoft video/setup members decoded with pinned libmspack ASAN/UBSAN. Original101-topic Sierra setup Help,13-topic MapWin Help and68-topic MediaPlayer Help decoded to coherent complete RTF/text in separate directories without final diagnostics. Original compiler/runtime/Microsoft/Sierra/Intel/SuperMac/Husdawg notices retained; no express demo redistribution grant or packaged prohibition found. Eligibility uses only the user-authorized cautious official promotional hosting assessment, not an express rights-holder license.",
+        "preservation": "Serve the complete unchanged official ZIP including packed setup, video runtimes, executables, Help, game resources and movies. No downloaded executable or installer was run."
+      }
     }
   ]
 }
