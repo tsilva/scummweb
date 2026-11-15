@@ -1505,6 +1505,11 @@
       "file": "the-legend-of-kyrandia-hand-of-fate-demo-24f5c88926ef4c97d017295cfd33eabdb38c77c29f9fadcd5c0bb27ff04b06fb.jpg",
       "inputHash": "24f5c88926ef4c97d017295cfd33eabdb38c77c29f9fadcd5c0bb27ff04b06fb",
       "imageHash": "aac1a20c8e93cbfc6cba773e7dd30c7b791b959397861181fdaabaa0313f576e"
+    },
+    "lands-of-lore-the-throne-of-chaos-demo": {
+      "file": "lands-of-lore-the-throne-of-chaos-demo-b780cc75f8738eece7c590e9e141e8cafeb7258b77bcb8ca867faae41214b314.jpg",
+      "inputHash": "b780cc75f8738eece7c590e9e141e8cafeb7258b77bcb8ca867faae41214b314",
+      "imageHash": "8accf25514db474d2c7ac3f7f1b7d6a140951364520157b6744cb23fbea9d986"
     }
   }
 }

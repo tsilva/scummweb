@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "lol-demo": {
+    ...retroGameArtwork["kyra:lol"],
+    heroImageMobilePosition: "80% -8vh",
+    title: "Lands of Lore: The Throne of Chaos (Demo)",
+    year: "1993",
+    language: "en",
+    shortTitle: "Lands of Lore (Demo)",
+  },
   "kyra2-demo": {
     ...retroGameArtwork["kyra:kyra2"],
     heroImageMobilePosition: "80% -8vh",

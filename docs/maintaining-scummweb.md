@@ -323,6 +323,8 @@ Simon the Sorcerer II’s English DOS CD demo preserves the complete unchanged o
 
 Hand of Fate’s English DOS interactive CD demo preserves the complete unchanged official ZIP, with original game fonts, drivers and notices. Native intro skip reaches Zanthia’s laboratory, and walking works. Bucket-backed Save/Load and cached Continue restored the tested save positions. Native guards can reject further save/load requests in the opening room; no checkpoint is seeded.
 
+Lands of Lore’s English DOS interactive CD demo preserves the complete unchanged official ZIP and its original notices. Native intro skip reaches the original Gladstone dungeon. Turning, personal-import and bucket-backed Save/Load and cached Continue restored the tested direction. Let movement settle before loading; an immediate post-turn request was rejected. No checkpoint is seeded.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.

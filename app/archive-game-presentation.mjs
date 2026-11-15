@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Lands of Lore: The Throne of Chaos (Demo)", target: "lol-demo", engineId: "kyra", gameId: "lol",
+    files: [["general.pak", 710633, 385577937], ["l01.pak", 68733, 2853084991]],
+  },
+  {
     title: "The Legend of Kyrandia: Hand of Fate (Demo)", target: "kyra2-demo", engineId: "kyra", gameId: "kyra2",
     files: [["thanks.cps", 7768, 3139399110], ["hofcd.exe", 199284, 1859532215]],
   },
