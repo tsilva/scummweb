@@ -337,6 +337,8 @@ Touché’s English DOS demo preserves the complete unchanged official ZIP, incl
 
 Tony Tough’s English Windows extracted demo keeps the complete unchanged official ZIP with all music and speech directories. It retains the original New Game menu and native intro action. Movement works in the office; the original demo disables saving and loading, so no Continue checkpoint is seeded.
 
+Return to Zork’s English DOS v1.2 CD demo preserves the complete unchanged official ZIP, including its compressed RED driver archives and original Anthology readme. The original valley, native intro action and sign interactions work. Use the game’s F2 Save and F3 Load menus; saved progress restores after a fresh launch, while ScummWEB’s save drawer and Continue are unavailable for this engine. The upstream demo has no ripped CD audio tracks and displays ScummVM’s CD-audio notice; acknowledge it to proceed. Its checksum-pinned ZIP exceeds the standard 128 MiB download limit, so this catalog target allows 150 MiB while retaining the standard 256 MiB expanded limit.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.

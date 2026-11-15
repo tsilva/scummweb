@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "rtz-demo": {
+    ...retroGameArtwork["made:rtz"],
+    heroImageMobilePosition: "78% -8vh",
+    title: "Return to Zork (Demo)",
+    year: "1993",
+    language: "en",
+    studio: "Infocom / Activision",
+  },
   "tony-demo": {
     ...retroGameArtwork["tony:tony"],
     heroImageMobilePosition: "88% -8vh",

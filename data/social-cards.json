@@ -1540,6 +1540,11 @@
       "file": "tony-tough-and-the-night-of-roasted-moths-demo-98b4dcb0237e31f2ca33e6ab4345a847fa2fb0f4aec08f88fd06c3f1a1692302.jpg",
       "inputHash": "98b4dcb0237e31f2ca33e6ab4345a847fa2fb0f4aec08f88fd06c3f1a1692302",
       "imageHash": "e34b5226857c36753f66d1fb30ef3eb1c31b45049eb8a53fb63ef00739c9d9ad"
+    },
+    "return-to-zork-demo": {
+      "file": "return-to-zork-demo-58acdb472c613060622303215ada7927844ce81de1818f988367a62c448bab40.jpg",
+      "inputHash": "58acdb472c613060622303215ada7927844ce81de1818f988367a62c448bab40",
+      "imageHash": "12ceeb29ca43c8a9974bbe44ebe531c3c43a4fd0349be87effe88174aed99663"
     }
   }
 }

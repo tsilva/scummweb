@@ -735,6 +735,16 @@
       "platform": "windows",
       "extra": "Extracted Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "rtz-demo",
+      "title": "Return to Zork (Demo)",
+      "path": "/games/rtz",
+      "engineId": "made",
+      "gameId": "rtz",
+      "platform": "dos",
+      "extra": "V1.2, 9/8/94, Demo CD",
+      "readmeHref": ""
     }
   ]
 }
