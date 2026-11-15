@@ -120,6 +120,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "simon1-demo": {
+    ...retroGameArtwork["agos:simon1"],
+    heroImageMobilePosition: "80% -8vh",
+    title: "Simon the Sorcerer (Demo)",
+    year: "1993",
+    language: "en",
+  },
   "toon-demo": {
     ...retroGameArtwork["toon:toon"],
     heroImageMobilePosition: "80% -8vh",

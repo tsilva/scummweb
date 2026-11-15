@@ -270,6 +270,8 @@ async function syncAccount(auth, epoch, signal, progress) {
     const scanComplete = !collected.incomplete && !importMessage && observedGeneration === localGeneration;
     launchSyncSnapshot = { epoch, account, localGeneration: observedGeneration,
       complete: !collected.busy && scanComplete, checkEmptyEdition: Boolean(collected.busy && scanComplete),
+      blockedMessage: importMessage || (collected.incomplete ? "An incomplete game save needs attention. Your previous cloud saves are retained."
+        : collected.busy ? "Finish syncing saved progress and close other ScummWEB games before playing." : ""),
       scanned: new Set(groups.keys()), ready: new Set([...readyProfiles].filter((profile) => !pendingProfiles.has(profile))) };
     update({ phase: conflicts.length ? "conflict" : pending.length || deferred || resolutionIssue ? "waiting" : "connected", conflicts,
       resolutionProgress: null,
@@ -359,7 +361,9 @@ export async function syncDropbox({ beforeLaunch = false, launchDestinationKey =
   try {
     await flight;
     if (beforeLaunch && state.phase !== "connected" && !await launchHasNoConflict(launchDestinationKey)) {
-      throw new DropboxError(state.message || "Finish syncing before playing.");
+      const message = launchDestinationKey && state.phase === "conflict" && !launchSyncSnapshot?.complete
+        ? launchSyncSnapshot?.blockedMessage || state.message : state.message;
+      throw new DropboxError(message || "Finish syncing before playing.");
     }
   } catch (error) { if (beforeLaunch) throw error; }
 }

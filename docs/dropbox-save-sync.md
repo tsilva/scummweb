@@ -117,7 +117,9 @@ their own saves have finished syncing; the conflicting edition still requires
 a choice. A new catalog edition with no local or cloud saves can also launch
 while another isolated edition is running, after a read-only check under its own
 save lock. Existing unsynced progress, a same-edition player, incomplete writes
-or an unfinished restore continue to block an unverified launch.
+or an unfinished restore continue to block an unverified launch. The launch
+message identifies an incomplete write, unfinished copy-in, or active save
+operation when one of these prevents verification.
 Identical contents merge automatically. No timestamp winner or slot-by-slot
 merge is used. An existing browser's saves are bound to the first connected
 Dropbox account; use that account or a separate browser profile.

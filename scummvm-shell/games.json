@@ -635,6 +635,16 @@
       "platform": "pc",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "simon1-demo",
+      "title": "Simon the Sorcerer (Demo)",
+      "path": "/games/simon1",
+      "engineId": "agos",
+      "gameId": "simon1",
+      "platform": "pc",
+      "extra": "CD Demo",
+      "readmeHref": ""
     }
   ]
 }

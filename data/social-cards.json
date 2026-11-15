@@ -1490,6 +1490,11 @@
       "file": "toonstruck-demo-6be2cf6d8a1369c185c7c1eda4026eac39a4e5b94f74fa06a820725009fa63b0.jpg",
       "inputHash": "6be2cf6d8a1369c185c7c1eda4026eac39a4e5b94f74fa06a820725009fa63b0",
       "imageHash": "801fbca2c7bcc4d340e4f02f5e71ebcb3759aaabb2b26d5e677573a4031737a0"
+    },
+    "simon-the-sorcerer-demo": {
+      "file": "simon-the-sorcerer-demo-6f285ea4e75f275f0901a7074e5c460e4a24713f1dc8368d2ee94c1a540f9f30.jpg",
+      "inputHash": "6f285ea4e75f275f0901a7074e5c460e4a24713f1dc8368d2ee94c1a540f9f30",
+      "imageHash": "e6ae462697928646ac73bade074b6700cf36c77435eb60f24f44e1febd36a25a"
     }
   }
 }
