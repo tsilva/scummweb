@@ -2805,7 +2805,7 @@
     "aliases": [
       "Once Upon A Time - Little Red Riding Hood (Floppy DOS)"
     ],
-    "posterImage": "/launcher/littlered-scummweb-generated-2026-11-06-r1-cover.webp",
+    "posterImage": "/launcher/littlered-scummweb-generated-2026-11-15-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-gob-littlered-shot.webp",
       "/launcher/retro-gob-littlered-shot-2.webp",
@@ -2814,7 +2814,7 @@
     "sources": {
       "poster": {
         "kind": "generated-cover",
-        "generatedOn": "2026-11-06",
+        "generatedOn": "2026-11-15",
         "generator": "image_gen (built-in)",
         "creativeBasis": "box-front-restoration",
         "references": [
@@ -2824,8 +2824,15 @@
             "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Once%20Upon%20a%20Time_%20Little%20Red%20Riding%20Hood.png",
             "sha256": "2f1a79c6d3a90c168b7ab423621e80b1147505f4ed0f24215a1fa16a707eba36",
             "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          },
+          {
+            "asset": "/launcher/littlered-scummweb-generated-2026-11-06-r1-cover.webp",
+            "sha256": "0a7f129db898e418d6fbb8d76147ec3d9da1e9d079bde53d9596177f55fe224e",
+            "kind": "edit-target",
+            "credit": "Previous generated box-front restoration; original box reference retained."
           }
-        ]
+        ],
+        "revision": "Correct publisher wordmark to COKTEL VISION; preserve original front design."
       },
       "screenshots": [
         {
@@ -2942,7 +2949,7 @@
     "aliases": [
       "Ween The Prophecy (Amiga)"
     ],
-    "posterImage": "/launcher/ween-scummweb-generated-2026-11-06-r1-cover.webp",
+    "posterImage": "/launcher/ween-scummweb-generated-2026-11-15-r2-cover.webp",
     "screenshots": [
       "/launcher/retro-gob-ween-shot.webp",
       "/launcher/retro-gob-ween-shot-2.webp",
@@ -2951,7 +2958,7 @@
     "sources": {
       "poster": {
         "kind": "generated-cover",
-        "generatedOn": "2026-11-06",
+        "generatedOn": "2026-11-15",
         "generator": "image_gen (built-in)",
         "creativeBasis": "box-front-restoration",
         "references": [
@@ -2961,8 +2968,15 @@
             "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Ween_%20The%20Prophecy.png",
             "sha256": "f7922dad3facf57eb002d911a389586233524b832c0601b97e618d3523eb67d7",
             "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          },
+          {
+            "asset": "/launcher/ween-scummweb-generated-2026-11-06-r1-cover.webp",
+            "sha256": "e99624fcc3a1d662a18681e7678980c248be17b76bffab010101b4d8d7d3a553",
+            "kind": "edit-target",
+            "credit": "Previous generated box-front restoration; original box reference retained."
           }
-        ]
+        ],
+        "revision": "Correct publisher wordmark to COKTEL VISION; preserve original front design."
       },
       "screenshots": [
         {

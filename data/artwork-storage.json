@@ -39884,6 +39884,72 @@
       "contentType": "image/webp",
       "width": 960,
       "height": 600
+    },
+    "/launcher/littlered-scummweb-generated-2026-11-15-r1-cover.webp": {
+      "key": "artwork/cc2fcc01b1dee9738e1d9c0ab39109089d8025dcee7d9347bca1c3bc7a66a482/littlered-scummweb-generated-2026-11-15-r1-cover.webp",
+      "sha256": "cc2fcc01b1dee9738e1d9c0ab39109089d8025dcee7d9347bca1c3bc7a66a482",
+      "bytes": 231452,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200,
+      "placeholder": "UklGRmoAAABXRUJQVlA4IF4AAADwAQCdASoJAAwAAsBIJbACdH8AFjWQCYAA/tgTQK65q3BSjTPNS3M/uQg2nOIeaDv7O/PuACbhj0cby5q6OJr6m1Hu2gXi09HnXVE6jvmkmckaf+VOltH/ynR7zsAA"
+    },
+    "/launcher/responsive/littlered-scummweb-generated-2026-11-15-r1-cover-320.webp": {
+      "key": "artwork/a9e9bd7977180e37085bd7c27b03ac6d0d889c140f5ac562a4d9308ae585d4c4/littlered-scummweb-generated-2026-11-15-r1-cover-320.webp",
+      "sha256": "a9e9bd7977180e37085bd7c27b03ac6d0d889c140f5ac562a4d9308ae585d4c4",
+      "bytes": 41690,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/littlered-scummweb-generated-2026-11-15-r1-cover-640.webp": {
+      "key": "artwork/be206dc0ad1f8d2f41dd1ddd25923d4441aa003519fe4a2a80e7b5af64689233/littlered-scummweb-generated-2026-11-15-r1-cover-640.webp",
+      "sha256": "be206dc0ad1f8d2f41dd1ddd25923d4441aa003519fe4a2a80e7b5af64689233",
+      "bytes": 120698,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/ween-scummweb-generated-2026-11-15-r2-cover-320.webp": {
+      "key": "artwork/f038a78f81179b388f5d44ec6fdbcd911623587c39955466d644c849609eb3b8/ween-scummweb-generated-2026-11-15-r2-cover-320.webp",
+      "sha256": "f038a78f81179b388f5d44ec6fdbcd911623587c39955466d644c849609eb3b8",
+      "bytes": 31688,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/ween-scummweb-generated-2026-11-15-r2-cover-640.webp": {
+      "key": "artwork/480ca7e6babdddb181efec37cc71f97dfc1852d366bcc2d5e0f123167572276a/ween-scummweb-generated-2026-11-15-r2-cover-640.webp",
+      "sha256": "480ca7e6babdddb181efec37cc71f97dfc1852d366bcc2d5e0f123167572276a",
+      "bytes": 89288,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/ween-scummweb-generated-2026-11-15-r2-cover.webp": {
+      "key": "artwork/47c5d7651b715d5f9133039ce9d77922940bc56a89245c3539ff74cd7a506a1f/ween-scummweb-generated-2026-11-15-r2-cover.webp",
+      "sha256": "47c5d7651b715d5f9133039ce9d77922940bc56a89245c3539ff74cd7a506a1f",
+      "bytes": 163710,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200,
+      "placeholder": "UklGRm4AAABXRUJQVlA4IGIAAAAwAgCdASoJAAwAAsBIJaACdAYtLax0ht+eoAD+8zgrAwwwBcnv0hTR/HsOfqBdI63L+QRuhSYfyYR3Q+45VQXOPrbGYEAXvQaCRgDb/HYgGWtsoawvrPlUF8FnTzVPD7AAAA=="
+    },
+    "/launcher/responsive/littlered-scummweb-generated-2026-11-15-r1-cover-480.webp": {
+      "key": "artwork/143387d909cc69d81d01f40d790982e16d5da097a75d7977475fbc7bdd8d62f0/littlered-scummweb-generated-2026-11-15-r1-cover-480.webp",
+      "sha256": "143387d909cc69d81d01f40d790982e16d5da097a75d7977475fbc7bdd8d62f0",
+      "bytes": 79236,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
+    },
+    "/launcher/responsive/ween-scummweb-generated-2026-11-15-r2-cover-480.webp": {
+      "key": "artwork/7857b4d17f5df0e4c356bc12a602aaee86901924a64e2b383c7d8d6593e348f3/ween-scummweb-generated-2026-11-15-r2-cover-480.webp",
+      "sha256": "7857b4d17f5df0e4c356bc12a602aaee86901924a64e2b383c7d8d6593e348f3",
+      "bytes": 58936,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
     }
   },
   "images": {
@@ -54205,6 +54271,30 @@
         "/launcher/responsive/technobabylon-shot-3-640.webp",
         "/launcher/responsive/technobabylon-shot-3-960.webp",
         "/launcher/technobabylon-shot-3.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/littlered-scummweb-generated-2026-11-15-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/littlered-scummweb-generated-2026-11-15-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/littlered-scummweb-generated-2026-11-15-r1-cover-320.webp",
+        "/launcher/responsive/littlered-scummweb-generated-2026-11-15-r1-cover-480.webp",
+        "/launcher/responsive/littlered-scummweb-generated-2026-11-15-r1-cover-640.webp",
+        "/launcher/littlered-scummweb-generated-2026-11-15-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/ween-scummweb-generated-2026-11-15-r2-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/ween-scummweb-generated-2026-11-15-r2-cover.webp",
+      "webp": [
+        "/launcher/responsive/ween-scummweb-generated-2026-11-15-r2-cover-320.webp",
+        "/launcher/responsive/ween-scummweb-generated-2026-11-15-r2-cover-480.webp",
+        "/launcher/responsive/ween-scummweb-generated-2026-11-15-r2-cover-640.webp",
+        "/launcher/ween-scummweb-generated-2026-11-15-r2-cover.webp"
       ],
       "avif": []
     }

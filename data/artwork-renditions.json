@@ -3358,5 +3358,21 @@
       320,
       640
     ]
+  },
+  "/launcher/littlered-scummweb-generated-2026-11-15-r1-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
+  },
+  "/launcher/ween-scummweb-generated-2026-11-15-r2-cover.webp": {
+    "width": 900,
+    "height": 1200,
+    "widths": [
+      320,
+      640
+    ]
   }
 }
