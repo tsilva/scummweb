@@ -345,6 +345,8 @@ Bud Tucker’s English DOS interactive demo keeps the complete unchanged officia
 
 Rex Nebular’s English DOS three-room interactive demo keeps the complete unchanged official ZIP, including its original intro, executables and sound drivers. It preserves the original opening and native Skip intro without a seeded checkpoint. Movement and in-session Save/Load are verified. Continue is disabled because fresh startup loading misplaces Rex.
 
+Torin’s Passage’s English DOS/Windows interactive demo keeps its complete unchanged official ZIP, including the original packed setup, Help, drivers, documents and audio. Its original preview menu and Escarpa start prompt are preserved without a seeded browser checkpoint. Movement, scene navigation and native pause are verified. Saving was rejected in both tested Escarpa views; Load and Continue have no verified player save. Its original Windows Write README is delivered as readable UTF-8 text; the source ZIP remains unchanged.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.

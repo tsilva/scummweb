@@ -25,6 +25,7 @@ test("fresh browser configuration preserves UTF-8 titles and records byte length
 
 test("official classic archives are recognized by contents without relying on filenames", () => {
   for (const [target, files] of [
+    ["torin-demo", [["RESMAP.000", 3403, 3083944811], ["RESSCI.000", 5073868, 1095201545]]],
     ["nebular-demo", [["SECTION1.HAG", 192065, 2775015795], ["SECTION9.HAG", 543156, 2326445887]]],
     ["tucker-demo", [["INFOBAR.TXT", 203, 2809140262], ["TUCKER.EXE", 233145, 3209492942]]],
     ["scalpel-demo", [["TALK.LIB", 121102, 1973471485], ["RES03.RRM", 140669, 3291922347]]],
@@ -98,6 +99,35 @@ test("rebuilding without optional freeware preserves existing targets and settin
     fs.writeFileSync(path.join(dir, "scummvm.ini"), original);
     execFileSync("python3", [installer, dir, "--downloads", path.join(dir, "downloads")]);
     assert.equal(fs.readFileSync(path.join(dir, "scummvm.ini"), "utf8"), original);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+
+test("Windows Write notices expose readable UTF-8 text and reject invalid boundaries", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "scummweb-write-notice-"));
+  try {
+    const gameDir = path.join(dir, "games", "write-notice");
+    fs.mkdirSync(gameDir, { recursive: true });
+    const ini = path.join(dir, "scummvm.ini");
+    const output = path.join(dir, "games.json");
+    fs.writeFileSync(ini, "[write-notice]\nengineid=sci\ngameid=write-notice\npath=/games/write-notice\n");
+    const body = Buffer.from([0x93, ...Buffer.from("Torin's Passage"), 0x94, 13, 10]);
+    const bytes = Buffer.alloc(128 + body.length + 32, 0xff);
+    bytes.writeUInt16LE(0xbe31, 0);
+    bytes.writeUInt32LE(128 + body.length, 14);
+    body.copy(bytes, 128);
+    const notice = path.join(gameDir, "README.WRI");
+    fs.writeFileSync(notice, bytes);
+    const generator = path.join(root, "scripts/create_launcher_metadata.mjs");
+    execFileSync(process.execPath, [generator, ini, output]);
+    assert.equal(fs.readFileSync(path.join(dir, "launcher/notices/write-notice.txt"), "utf8"), "“Torin's Passage”\n");
+    bytes.writeUInt32LE(bytes.length + 1, 14);
+    fs.writeFileSync(notice, bytes);
+    const result = spawnSync(process.execPath, [generator, ini, output]);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr.toString(), /Invalid Windows Write text boundary/);
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }

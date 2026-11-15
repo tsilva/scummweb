@@ -93,9 +93,23 @@ async function stageNotice(gamePath, gameId) {
   const noticeFile = configuredNotice ?? noticeEntry?.name;
   if (noticeFile && entries.length) {
     await fs.mkdir(path.dirname(noticeDestination), { recursive: true });
-    const text = await fs.readFile(path.join(absoluteGamePath, noticeFile), "latin1");
+    const bytes = await fs.readFile(path.join(absoluteGamePath, noticeFile));
+    const isWrite = /\.wri$/i.test(noticeFile);
+    let text;
+    if (isWrite) {
+      if (bytes.length < 128 || ![0xbe31, 0xbe32].includes(bytes.readUInt16LE(0))) {
+        throw new Error(`Invalid Windows Write notice: ${noticeFile}`);
+      }
+      const textEnd = bytes.readUInt32LE(14);
+      if (textEnd < 128 || textEnd > bytes.length) {
+        throw new Error(`Invalid Windows Write text boundary: ${noticeFile}`);
+      }
+      text = new TextDecoder("windows-1252").decode(bytes.subarray(128, textEnd));
+    } else {
+      text = bytes.toString("latin1");
+    }
     const normalized = text.replaceAll("\r\n", "\n").replace(/\x1a+$/, "").replace(/[ \t]+$/gm, "").trimEnd();
-    await fs.writeFile(noticeDestination, `${normalized}\n`, "latin1");
+    await fs.writeFile(noticeDestination, `${normalized}\n`, isWrite ? "utf8" : "latin1");
   }
   try {
     await fs.access(noticeDestination);

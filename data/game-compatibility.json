@@ -1348,6 +1348,14 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Torin's Passage (Demo)",
+      "status": "startup-verified",
+      "gameId": "sci:torin",
+      "edition": "torin-dos-win-demo-en.zip",
+      "recordedOn": "2026-11-15",
+      "observation": "English DOS/Windows interactive demo: correct native Windows/English edition, original preview menu and Escarpa start prompt preserved without a seeded browser checkpoint. Movement, scene navigation and native pause work. Saving rejected in both tested Escarpa views; no saved game was available for Load or Continue. Full playthrough and independent audible output not verified."
+    },
+    {
       "title": "Touché: The Adventures of the Fifth Musketeer",
       "status": "startup-verified",
       "gameId": "touche:touche",

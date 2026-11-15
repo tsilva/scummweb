@@ -775,6 +775,16 @@
       "platform": "dos",
       "extra": "Demo",
       "readmeHref": "/launcher/notices/nebular.txt"
+    },
+    {
+      "target": "torin-demo",
+      "title": "Torin's Passage (Demo)",
+      "path": "/games/torin",
+      "engineId": "sci",
+      "gameId": "torin",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/torin.txt"
     }
   ]
 }

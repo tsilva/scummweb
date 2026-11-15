@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Torin's Passage (Demo)", target: "torin-demo", engineId: "sci", gameId: "torin",
+    files: [["resmap.000", 3403, 3083944811], ["ressci.000", 5073868, 1095201545]],
+  },
+  {
     title: "Rex Nebular and the Cosmic Gender Bender (Demo)", target: "nebular-demo", engineId: "mads", gameId: "nebular",
     files: [["section1.hag", 192065, 2775015795], ["section9.hag", 543156, 2326445887]],
   },
