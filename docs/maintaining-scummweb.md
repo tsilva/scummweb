@@ -335,6 +335,8 @@ Pajama Sam 2’s English Windows HE95 demo preserves the complete unchanged offi
 
 Touché’s English DOS demo preserves the complete unchanged official ZIP, including its DATABASE directory and root speech files. The native intro action reaches the original street without a seeded checkpoint. Movement, Save/Load and Continue restore the tested character position.
 
+Tony Tough’s English Windows extracted demo keeps the complete unchanged official ZIP with all music and speech directories. It retains the original New Game menu and native intro action. Movement works in the office; the original demo disables saving and loading, so no Continue checkpoint is seeded.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.

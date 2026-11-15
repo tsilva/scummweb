@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Tony Tough and the Night of Roasted Moths (Demo)", target: "tony-demo", engineId: "tony", gameId: "tony",
+    files: [["roasted.mpc", 39211, 3632859460], ["roasted.mpr", 14972409, 2203660658], ["voices.vdb", 20189260, 2600640084]],
+  },
+  {
     title: "Touch\u00e9: The Adventures of the Fifth Musketeer (Demo)", target: "touche-demo", engineId: "touche", gameId: "touche",
     files: [["touche.dat", 8720683, 3670628460], ["obj", 5503572, 1897254655]],
   },
