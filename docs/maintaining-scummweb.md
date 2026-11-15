@@ -333,6 +333,8 @@ Freddi Fish 2’s English Windows HE80 demo keeps the complete unchanged officia
 
 Pajama Sam 2’s English Windows HE95 demo preserves the complete unchanged official ZIP and its original notices. Native intro skip reaches the original storeroom; interacting with the vacuum cleaner triggers its character animation. Personal and hosted saving is rejected in that tested scene; no Continue checkpoint is seeded.
 
+Touché’s English DOS demo preserves the complete unchanged official ZIP, including its DATABASE directory and root speech files. The native intro action reaches the original street without a seeded checkpoint. Movement, Save/Load and Continue restore the tested character position.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.

@@ -1315,6 +1315,14 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Touché: The Adventures of the Fifth Musketeer (Demo)",
+      "status": "startup-verified",
+      "gameId": "touche:touche",
+      "edition": "touche-dos-demo-en.zip",
+      "recordedOn": "2026-11-15",
+      "observation": "English DOS demo: correct native edition detection, original opening street, movement, native intro skip, Save/Load and Continue restoring position verified. Complete unchanged official ZIP retains DATABASE data and root speech files. Full playthrough and independent audible output not verified."
+    },
+    {
       "title": "Troll's Tale",
       "status": "startup-verified",
       "gameId": "agi:troll",

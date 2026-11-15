@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Touch\u00e9: The Adventures of the Fifth Musketeer (Demo)", target: "touche-demo", engineId: "touche", gameId: "touche",
+    files: [["touche.dat", 8720683, 3670628460], ["obj", 5503572, 1897254655]],
+  },
+  {
     title: "Pajama Sam 2: Thunder and Lightning Aren't so Frightening (Demo)", target: "pajama2-demo", engineId: "scumm", gameId: "pajama2",
     files: [["pj2demo.he0", 58749, 374208885], ["pj2demo.he1", 6103756, 4209458581]],
   },
