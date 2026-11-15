@@ -1545,6 +1545,11 @@
       "file": "return-to-zork-demo-58acdb472c613060622303215ada7927844ce81de1818f988367a62c448bab40.jpg",
       "inputHash": "58acdb472c613060622303215ada7927844ce81de1818f988367a62c448bab40",
       "imageHash": "12ceeb29ca43c8a9974bbe44ebe531c3c43a4fd0349be87effe88174aed99663"
+    },
+    "the-lost-files-of-sherlock-holmes-the-case-of-the-serrated-scalpel-demo": {
+      "file": "the-lost-files-of-sherlock-holmes-the-case-of-the-serrated-scalpel-demo-a494258afe743e5cefb9175750b602a9509451340bbf7edf6fd48b1a8c9cc811.jpg",
+      "inputHash": "a494258afe743e5cefb9175750b602a9509451340bbf7edf6fd48b1a8c9cc811",
+      "imageHash": "ba0e489583e6cec51984991aada71c8dc005dbb9e717df09bedf3b3f6784c7fb"
     }
   }
 }

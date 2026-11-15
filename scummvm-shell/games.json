@@ -745,6 +745,16 @@
       "platform": "dos",
       "extra": "V1.2, 9/8/94, Demo CD",
       "readmeHref": ""
+    },
+    {
+      "target": "scalpel-demo",
+      "title": "The Lost Files of Sherlock Holmes: The Case of the Serrated Scalpel (Demo)",
+      "path": "/games/scalpel",
+      "engineId": "sherlock",
+      "gameId": "scalpel",
+      "platform": "dos",
+      "extra": "Interactive Demo",
+      "readmeHref": ""
     }
   ]
 }

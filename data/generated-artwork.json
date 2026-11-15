@@ -20626,6 +20626,48 @@
       ],
       "prompt": "Use case: text-localization. Image1 is the edit target: restored portrait box front of Once Upon a Time Little Red Riding Hood. Image2 is the original printed box reference. Correct ONLY the bottom-center white publisher wordmark beneath the red horizontal stripes. It is currently corrupted as L.L. VISION. Replace that line with exactly COKTEL VISION, spelled C O K T E L space V I S I O N. Use readable white uppercase italic sans-serif, preserving the original logo placement and red stripes; make K unmistakable with a vertical left stem and two diagonals, never X. Fit the full wordmark under the stripes. Preserve ALL other original/restored artwork and text exactly: Once Upon a Time scroll, child face, squirrel, house, tree, blue/green/cream watercolor texture, all four language title lines and their layout. Do not change illustration, colors, framing, badges or any other text. Flat full uncropped3:4portrait, at least900x1200, no mockup. Only the publisher lettering is being repaired.",
       "review": "Publisher lettering corrected to COKTEL VISION; original and responsive public bodies verified, optimization and320px visual card checks passed."
+    },
+    {
+      "target": "scalpel",
+      "role": "cover",
+      "asset": "/launcher/scalpel-scummweb-generated-2026-11-15-r1-cover.webp",
+      "generatedOn": "2026-11-15",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "b92b08c5d527fd5ca1169d0064b5d699dd9204c8c006b7a5fdd7f6fee966d7bb",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "f436150853a1a33f528cfd49727a5d5665c6f93658ac8b0c8ecd63127e6f8805",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Lost%20Files%20of%20Sherlock%20Holmes_%20The%20Case%20of%20the%20Serrated%20Scalpel.png",
+          "sha256": "a9df672508c8d9f08f23b80a2c92e42c7337855572cdc1e966771e14bb022d79",
+          "credit": "Original Electronic Arts box-front scan hosted by Libretro; original artwork and brands belong to their respective creators and rights holders."
+        },
+        {
+          "asset": "/launcher/scalpel-scummweb-generated-2026-11-06-r1-cover.webp",
+          "sha256": "c306e1e5f0480fd58948bebad69074119c9f3fa3df866206863ad6662aa305eb",
+          "kind": "edit-target",
+          "note": "Prior generated restoration used only as edit target; original box is the branding authority."
+        }
+      ],
+      "prompt": "Precisely edit image 1, the restored portrait game box cover, using original box front image 2 as the authority. Correct ONLY the erroneous publisher markings along the bottom border. The original publisher is ELECTRONIC ARTS, not LucasArts. Replace the bottom center black logo plaque with the original Electronic Arts geometric square/circle/triangle logo and the words ELECTRONIC ARTS as visible in image 2. Replace bottom-right 'A LUCASARTS GAME' with exact 'AN ELECTRONIC ARTS GAME'. Keep bottom-left exact 'BY MYTHOS SOFTWARE'. Preserve all other artwork, title typography 'THE LOST FILES OF SHERLOCK HOLMES', colors, composition, faces, border, proportions and portrait crop exactly as image 1. No other logos, no redesign, no additional text. High fidelity archival box-front correction.",
+      "review": "Original Electronic Arts publisher marks restored; full source,320px and480px covers visually checked. All4 source/responsive public objects verified with conditional publication and full checksum/metadata readback. Complete optimizer pass rejected incomplete AVIF coverage and retained WebP."
     }
   ]
 }

@@ -9551,7 +9551,7 @@
     "aliases": [
       "The Lost Files of Sherlock Holmes - The Case of the Serrated Scalpel (CD DOS)"
     ],
-    "posterImage": "/launcher/scalpel-scummweb-generated-2026-11-06-r1-cover.webp",
+    "posterImage": "/launcher/scalpel-scummweb-generated-2026-11-15-r1-cover.webp",
     "screenshots": [
       "/launcher/retro-sherlock-scalpel-shot.webp",
       "/launcher/retro-sherlock-scalpel-shot-2.webp",
@@ -9560,7 +9560,7 @@
     "sources": {
       "poster": {
         "kind": "generated-cover",
-        "generatedOn": "2026-11-06",
+        "generatedOn": "2026-11-15",
         "generator": "image_gen (built-in)",
         "creativeBasis": "box-front-restoration",
         "references": [
@@ -9570,6 +9570,18 @@
             "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Lost%20Files%20of%20Sherlock%20Holmes_%20The%20Case%20of%20the%20Serrated%20Scalpel.png",
             "sha256": "1d7e7afcfbb1d63b8567defb0a2a28b41c115722a7c7445a6a4576099cc41c67",
             "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+          },
+          {
+            "asset": "/launcher/scalpel-scummweb-generated-2026-11-06-r1-cover.webp",
+            "kind": "edit-target",
+            "sha256": "c306e1e5f0480fd58948bebad69074119c9f3fa3df866206863ad6662aa305eb",
+            "note": "Prior generated restoration used only for publisher-mark correction; original Electronic Arts box front retained as authority."
+          },
+          {
+            "kind": "box-scan",
+            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/The%20Lost%20Files%20of%20Sherlock%20Holmes_%20The%20Case%20of%20the%20Serrated%20Scalpel.png",
+            "sha256": "a9df672508c8d9f08f23b80a2c92e42c7337855572cdc1e966771e14bb022d79",
+            "credit": "Original Electronic Arts box-front scan hosted by Libretro; reference refreshed for publisher-mark verification."
           }
         ]
       },

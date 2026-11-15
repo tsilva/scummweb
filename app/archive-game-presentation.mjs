@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "The Lost Files of Sherlock Holmes: The Case of the Serrated Scalpel (Demo)", target: "scalpel-demo", engineId: "sherlock", gameId: "scalpel",
+    files: [["talk.lib", 121102, 1973471485], ["res03.rrm", 140669, 3291922347]],
+  },
+  {
     title: "Return to Zork (Demo)", target: "rtz-demo", engineId: "made", gameId: "rtz",
     files: [["rtzcd.red", 130683, 769598157], ["rtzcd.prj", 43016792, 2406992190]],
   },
