@@ -135,7 +135,9 @@ export async function readBackup(file, { withManifest = false } = {}) {
     const sets = [];
     for (const item of manifest.sets) {
       const destination = validateDestination(item.destination);
-      if (!Array.isArray(item.files) || !item.files.length || item.files.length > maxFiles) throw new Error("Invalid files in backup.");
+      // Cloud history can record deletion of the last file after a merge.
+      const cloudSnapshot = manifest.cloud?.format === "scummweb-cloud-snapshot" && manifest.cloud.version === 1;
+      if (!Array.isArray(item.files) || (!item.files.length && !cloudSnapshot) || item.files.length > maxFiles) throw new Error("Invalid files in backup.");
       const names = new Set();
       const files = [];
       for (const fileInfo of item.files) {

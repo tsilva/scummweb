@@ -95,16 +95,31 @@ The copy-in folder is read-only to ScummWEB. Files are never removed or updated
 there, and progress does not sync back to desktop ScummVM. The importer observes
 the same contents twice before publication. Copies are published and verified
 in the normal recoverable cloud history before browser files change. Different
-existing progress uses the normal choice dialog, without silently merging slots
-or choosing by modification time. Identical contents are skipped. Unchanged Dropbox revisions avoid repeated
+existing progress is compared file by file: separate slots and identical files
+combine automatically, while overlapping incompatible changes use the choice
+dialog. Modification time never picks a winner. Identical contents are skipped. Unchanged Dropbox revisions avoid repeated
 downloads; size and modification time alone are never treated as identity. Import
 identities remain in cloud history, so clearing browser data does not reimport
 old inbox contents over newer progress. The inbox allows up to 4,096 files and
 less than 63 MiB total.
 
 If devices independently change an edition's progress, complete copies remain
-in Dropbox. A compact dialog collects one choice per conflicting game in a
-single review. **Apply choices** durably queues the whole batch locally, closes
+in Dropbox. Compatible files merge automatically across all devices, including
+first connections without a local sync baseline. Shared ancestry lets edits to
+different files combine and distinguishes deletions from missing files. Without
+shared history, missing files are treated as additional saves to retain. Two
+different versions of the same file, or a deletion opposed by an edit, require
+a choice. Companion files participate in the same content checks; binary file
+contents are never spliced together.
+
+A compact dialog collects one choice per conflicting game in a single review.
+It names the conflicting files, explains content or deletion differences, and
+shows each copy's file sizes and recorded modification times. Matching sizes
+or dates do not imply matching contents. Identical files are counted separately;
+compatible changes can be expanded for inspection. Every concurrent copy is
+available to choose, and compatible files from all copies are retained whichever
+version is chosen for the conflicting files.
+**Apply choices** durably queues the whole batch locally, closes
 the dialog, and shows **Applying choices** with progress in the Dropbox row.
 Cloud publication and restoration run in the background using the normal sync
 coordinator. Queued decisions survive a closed or killed browser and are removed
@@ -120,8 +135,7 @@ save lock. Existing unsynced progress, a same-edition player, incomplete writes
 or an unfinished restore continue to block an unverified launch. The launch
 message identifies an incomplete write, unfinished copy-in, or active save
 operation when one of these prevents verification.
-Identical contents merge automatically. No timestamp winner or slot-by-slot
-merge is used. An existing browser's saves are bound to the first connected
+No timestamp winner is used. An existing browser's saves are bound to the first connected
 Dropbox account; use that account or a separate browser profile.
 
 ## Native boundary and recovery
@@ -150,7 +164,11 @@ Concurrent writers publish independent immutable nodes; neither can overwrite
 the other's progress. Resolution creates a new node referencing all reviewed
 tips. Missing ancestry or invalid archives stop synchronization and retain local
 copies. There is no mutable cloud index or dependency on provider-specific
-conditional writes, and no automatic history deletion.
+conditional writes, and no automatic history deletion. Automatic file merges
+also reference every merged tip and are read back before restoration. A fresh
+listing after publication incorporates arrivals during the merge; a continually
+changing collection waits for a later pass. A cloud snapshot can contain no files
+when compatible deletions remove the last saves.
 
 The outbox requests strict IndexedDB durability where supported. An older
 BrowserFS working copy cannot replace a newer durable pending set after restart.
@@ -183,14 +201,16 @@ within the same deadline. Disconnect cancels a pending pass.
 ## Verification
 
 ```sh
-node --test test/dropbox-sync.test.mjs test/dropbox-runtime.test.mjs test/dropbox-loose-import.test.mjs \
+node --test test/dropbox-sync.test.mjs test/dropbox-merge.test.mjs test/dropbox-runtime.test.mjs test/dropbox-ui.test.mjs test/dropbox-loose-import.test.mjs \
   test/save-backups.test.mjs test/game-route-frame.test.mjs
 ```
 
 Tests cover faults around remote commits, lost replies, coordinator restarts,
 independent browser-storage flushes, concurrent writers, stale conflict choices,
 missing ancestry, account boundaries, live-player locks, checksum validation,
-and portable ZIP round trips. Native changes require a full runtime rebuild
+portable ZIP round trips, compatible unions, concurrent file edits and deletions,
+multiple-device conflicts, interrupted merges, and file difference presentation.
+Native changes require a full runtime rebuild
 with `--enable-cloud` through the maintained build script.
 
 Before rollout, verify real Dropbox authorization, renewal and two-device

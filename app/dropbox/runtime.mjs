@@ -2,7 +2,7 @@ import { createNativeCloudClient, credentialKey, dropboxNativeConfig } from "../
 import { authorizationRequest, connectionKey, DropboxError, exchangeCode, sessionKey } from "./client.mjs";
 import { createSaveCollection, makeSnapshot, publishProfile, readSnapshot, saveProfileId } from "./protocol.mjs";
 import { syncStore } from "./store.mjs";
-import { conflictVersion } from "./conflict-review.mjs";
+import { conflictOptions, conflictSelection, conflictVersion } from "./conflict-review.mjs";
 import { discoverLooseSaves, importListingIdentity } from "./loose-import.mjs";
 import { applyImport, getActiveSaveSets, getSaveDestinations, identifySet, matchDestination, preserveSets,
   readStoredSets, saveLockName } from "../save-backups/backups.mjs";
@@ -133,7 +133,7 @@ async function syncAccount(auth, epoch, signal, progress) {
           continue;
         }
         // An independent branch preserves existing progress without choosing
-        // a timestamp winner. The ordinary conflict flow reviews both copies.
+        // a timestamp winner. Compatible files merge; overlapping changes ask.
         await publishProfile({ client, profile: await saveProfileId(set), local: set, check });
       }
     }
@@ -208,12 +208,16 @@ async function syncAccount(auth, epoch, signal, progress) {
       check();
       if (alternatives.length) await preserveSets(alternatives);
       if (result.action === "conflict") {
+        const pendingHash = group.local?.hash;
         group.local = result.conflictLocal;
         await preserveSets([group.local, remote]);
         conflicts.push({ profile, local: group.local, remote, title: group.local.destination.title,
           localLabel: copiedHashes.has(group.local.hash) ? "Copied ScummVM saves" : group.browserSet?.hash === group.local.hash ? "This device" : "Other progress",
           remoteLabel: copiedHashes.has(remote.hash) ? "Copied ScummVM saves" : "Dropbox",
-          remoteHash: result.head.active, tips: result.head.tips, canResolve: !collected.busy });
+          remoteHash: result.head.active, tips: result.head.tips, canResolve: !collected.busy,
+          browserHash: group.browserSet?.hash, pendingHash,
+          others: result.conflictSets.slice(2), candidates: result.conflictMerge.candidates,
+          differences: result.conflictMerge.differences, identical: result.conflictMerge.identical });
         continue;
       }
       if (remote && (result.action === "download" || !collected.busy && remote.hash !== group.browserSet?.hash)) {
@@ -375,7 +379,7 @@ export async function queueDropboxConflictResolutions(choices) {
   }
   const items = choices.map(({ profile, choice, version }) => {
     const conflict = state.conflicts.find((item) => item.profile === profile);
-    if (!conflict || !["local", "remote"].includes(choice) || version && version !== conflictVersion(conflict)) {
+    if (!conflict || !conflictSelection(conflict, choice) || version && version !== conflictVersion(conflict)) {
       throw new DropboxError("Saved progress changed. Review your choices again.", "conflict");
     }
     return { conflict, choice };
@@ -425,13 +429,14 @@ async function applyQueuedResolutions(auth, client, destinations, check) {
       let changed = false;
       update({ phase: "resolving", message: "", conflicts: [], resolutionProgress: { current: current + 1, total } });
       try {
-        const selected = choice === "local" ? conflict.local : conflict.remote;
+        const selected = conflictSelection(conflict, choice);
         const resolution = await lockedSaves(async () => {
           check();
           ensureCompleteSaves();
           const before = await getActiveSaveSets(localStorage, destinations);
           const active = before.sets.find((set) => matchDestination(conflict.local, [set.destination]));
-          if (active && ![conflict.local.hash, conflict.remote.hash].includes(active.hash)) {
+          const reviewed = conflictOptions(conflict).map(({ set }) => set);
+          if (active && active.hash !== conflict.browserHash && ![...reviewed, selected].some(({ hash }) => hash === active.hash)) {
             throw new DropboxError("Saved progress changed on this device. Review it again.", "conflict");
           }
           // A killed tab can lose a successful upload reply. Recognize the exact
@@ -440,7 +445,7 @@ async function applyQueuedResolutions(auth, client, destinations, check) {
           const head = client.head(conflict.profile);
           const committed = !head.concurrent && head.active === selected.hash && head.tips.includes(intended.id);
           const result = committed ? { action: "same", head } : await publishProfile({ client, profile: conflict.profile,
-            local: selected, alternatives: [conflict.local, conflict.remote], resolve: true, expectedTips: conflict.tips, check });
+            local: selected, alternatives: reviewed, resolve: true, expectedTips: conflict.tips, check });
           if (result.action === "conflict") throw new DropboxError("Saved progress changed while applying your choices. Review it again.", "conflict");
           check();
           const destinationKey = matchDestination(selected, destinations);
@@ -457,7 +462,7 @@ async function applyQueuedResolutions(auth, client, destinations, check) {
           await syncStore.put({ id: recordKey(auth.accountId, "base", conflict.profile), hash: selected.hash, tips: result.head.tips });
           check();
           await syncStore.removeIf(recordKey(auth.accountId, "pending", conflict.profile),
-            (pending) => [conflict.local.hash, conflict.remote.hash].includes(pending.set.hash));
+            (pending) => pending.set.hash === conflict.pendingHash || reviewed.some(({ hash }) => hash === pending.set.hash));
           return { changed: Boolean(destinationKey) && active?.hash !== selected.hash };
         });
         if (resolution?.busy) throw new DropboxError("Close games in other ScummWEB tabs to apply your saved progress choices.", "busy");

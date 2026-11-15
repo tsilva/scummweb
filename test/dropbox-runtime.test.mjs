@@ -4,7 +4,7 @@ import { connectionKey, sessionKey } from "../app/dropbox/client.mjs";
 import { captureFilesystem, initializeSaveEdition } from "../app/save-backups/filesystem.mjs";
 import { createSaveCollection, makeSnapshot, publishProfile, saveProfileId } from "../app/dropbox/protocol.mjs";
 import { syncStore } from "../app/dropbox/store.mjs";
-import { conflictVersion } from "../app/dropbox/conflict-review.mjs";
+import { conflictOptions, conflictSelection, conflictVersion } from "../app/dropbox/conflict-review.mjs";
 import { applyImport, getActiveSaveSets, getSaveDestinations, identifySet, preserveSets, readStoredSets } from "../app/save-backups/backups.mjs";
 import { browserSaveStorage, fakeNativeStorage, nativeCloudBrowser, indexedDbFixture, memoryStorage } from "./helpers/dropbox-fixtures.mjs";
 
@@ -92,6 +92,95 @@ test("a clean browser restores cloud progress before the launch gate completes",
   assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, set.hash);
   await runtime.syncDropbox({ beforeLaunch: true });
   assert.equal(changes, 1, "an actual restore notifies the library once");
+});
+
+test("first sync merges compatible local and cloud slots and acknowledges only the restored union", async (t) => {
+  const { runtime, storage, destinations, server } = await setup(t);
+  const local = (await getActiveSaveSets(storage, destinations)).sets[0];
+  const remote = { ...local, files: [{ path: "SKY-VM.002", data: bytes("cloud slot"), modifiedAt: 200 }] };
+  remote.hash = await identifySet(remote);
+  await publishProfile({ client: await createSaveCollection(server), profile: await saveProfileId(remote), local: remote });
+  await runtime.syncDropbox({ beforeLaunch: true });
+  assert.equal(runtime.getDropboxState().phase, "connected");
+  assert.equal(runtime.getDropboxState().conflicts.length, 0);
+  const merged = (await getActiveSaveSets(storage, destinations)).sets[0], profile = await saveProfileId(merged);
+  assert.deepEqual(merged.files.map(({ path }) => path).sort(), ["SKY-VM.001", "SKY-VM.002"]);
+  assert.equal((await syncStore.get(key("base", profile))).hash, merged.hash);
+  assert.equal(await syncStore.get(key("pending", profile)), undefined);
+  await runtime.syncDropbox({ beforeLaunch: true });
+  assert.equal(runtime.getDropboxState().phase, "connected");
+  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, merged.hash);
+});
+
+test("a killed first-sync merge restores its verified result without a baseline or a false conflict", async (t) => {
+  const { runtime, storage, destinations, server } = await setup(t);
+  const local = (await getActiveSaveSets(storage, destinations)).sets[0];
+  const remote = { ...local, files: [{ path: "SKY-VM.002", data: bytes("cloud slot"), modifiedAt: 200 }] };
+  remote.hash = await identifySet(remote);
+  await publishProfile({ client: await createSaveCollection(server), profile: await saveProfileId(remote), local: remote });
+  const merged = { ...local, files: [...local.files, ...remote.files] };
+  merged.hash = await identifySet(merged);
+  server.onUpload = () => {
+    if (server.files.size === 3) { server.onUpload = null; server.failAfterUpload = true; }
+  };
+  await runtime.syncDropbox();
+  assert.equal(runtime.getDropboxState().phase, "waiting");
+  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, local.hash);
+  const restarted = await import(`../app/dropbox/runtime.mjs?merged-reply=${crypto.randomUUID()}`);
+  await restarted.syncDropbox({ beforeLaunch: true });
+  assert.equal(restarted.getDropboxState().phase, "connected");
+  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, merged.hash);
+  assert.equal(server.files.size, 3);
+});
+
+test("choosing between two newer cloud branches consumes the unchanged older browser outbox", async (t) => {
+  const { runtime, storage, destinations, server } = await setup(t);
+  await runtime.syncDropbox({ beforeLaunch: true });
+  const base = (await getActiveSaveSets(storage, destinations)).sets[0], profile = await saveProfileId(base);
+  const baseline = await syncStore.get(key("base", profile));
+  for (const value of ["cloud one", "cloud two"]) {
+    const remote = { ...base, files: base.files.map((file) => ({ ...file, data: bytes(value) })) };
+    remote.hash = await identifySet(remote);
+    await publishProfile({ client: await createSaveCollection(server), profile, local: remote, base: base.hash, baseTips: baseline.tips });
+  }
+  await runtime.syncDropbox();
+  const conflict = runtime.getDropboxState().conflicts[0];
+  assert.ok(conflictOptions(conflict).every(({ set }) => set.hash !== base.hash));
+  const selected = conflictSelection(conflict, "local");
+  await runtime.resolveDropboxConflict(profile, "local");
+  assert.equal(runtime.getDropboxState().phase, "connected");
+  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, selected.hash);
+  assert.equal(await syncStore.get(key("pending", profile)), undefined);
+  await runtime.syncDropbox({ beforeLaunch: true });
+  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, selected.hash);
+});
+
+test("conflict resolution keeps compatible files from every device and survives a lost commit reply", async (t) => {
+  const { runtime, storage, destinations, server } = await setup(t);
+  const local = (await getActiveSaveSets(storage, destinations)).sets[0];
+  for (const slot of [2, 3]) {
+    const other = { ...local, files: [{ path: "SKY-VM.001", data: bytes(`other ${slot}`), modifiedAt: 200 },
+      { path: `SKY-VM.00${slot}`, data: bytes(`slot ${slot}`), modifiedAt: 200 }] };
+    other.hash = await identifySet(other);
+    await publishProfile({ client: await createSaveCollection(server), profile: await saveProfileId(other), local: other });
+  }
+  await runtime.syncDropbox();
+  const conflict = runtime.getDropboxState().conflicts[0];
+  assert.equal(conflictOptions(conflict).length, 3);
+  assert.deepEqual(conflict.differences.filter(({ conflict }) => conflict).map(({ path }) => path), ["SKY-VM.001"]);
+  const choice = "other-0", selected = conflictSelection(conflict, choice);
+  const intended = await makeSnapshot(selected, conflict.tips, true);
+  server.onUpload = () => { if (server.files.has(`${intended.id}.zip`)) { server.onUpload = null; server.failAfterUpload = true; } };
+  await runtime.queueDropboxConflictResolutions([{ profile: conflict.profile, choice, version: conflictVersion(conflict) }]);
+  await runtime.syncDropbox();
+  assert.equal(runtime.getDropboxState().phase, "waiting");
+  const restarted = await import(`../app/dropbox/runtime.mjs?merged-resolution=${crypto.randomUUID()}`);
+  await restarted.syncDropbox({ beforeLaunch: true });
+  assert.equal(restarted.getDropboxState().phase, "connected");
+  const restored = (await getActiveSaveSets(storage, destinations)).sets[0];
+  assert.equal(restored.hash, selected.hash);
+  assert.deepEqual(restored.files.map(({ path }) => path).sort(), ["SKY-VM.001", "SKY-VM.002", "SKY-VM.003"]);
+  assert.equal((await syncStore.all(key("resolutions", ""))).length, 0);
 });
 
 test("unknown cloud editions stay preserved until their matching game is available", async (t) => {
