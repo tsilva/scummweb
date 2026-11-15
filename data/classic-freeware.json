@@ -888,6 +888,24 @@
         "basis": "All 20 original files and four directories reviewed as data with ZIP integrity, safe paths and complete ASCII/UTF-16/encoded scans. Complete MPC and all 392 MPR resources decoded with bounded safe LZO and exact output lengths. Original Nayma and incorporated audio-tool copyright notices retained. No express redistribution grant or prohibition found. Eligibility uses only the user-authorized cautious assessment of official promotional hosting, not an express rights-holder license.",
         "preservation": "Serve the complete unchanged official extracted-demo ZIP, retaining original MPC/MPR, voices and all music directories."
       }
+    },
+    {
+      "target": "rtz-demo",
+      "title": "Return to Zork (Demo)",
+      "engineId": "made",
+      "gameId": "rtz",
+      "platform": "dos",
+      "extra": "V1.2, 9/8/94, Demo CD",
+      "archive": "rtz-dos-cd-demo2-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/made/rtz-dos-cd-demo2-en.zip",
+      "sha256": "65bc735de68f4e2eb34cc277f2c144e8e08f6e49a4d3d44d8d71ea1bd9ba9793",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-15",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "All 62 original ZIP files reviewed as data, including integrity, safe paths, ASCII/UTF-16/encoded scans and all 39 nested files in the three RED archives. The bounded pinned native LZH reader decoded each nested record to its exact declared size with clean address/undefined sanitizers; the complete original Anthology READ.ME was read. Activision, audio-tool, sound-driver, compiler and library copyright notices retained. No express redistribution grant or prohibition found. Eligibility uses only the user-authorized cautious assessment of official promotional hosting, not an express rights-holder license.",
+        "preservation": "Serve the complete unchanged official ZIP, retaining all RED driver/executable archives, project databases, original notices and movie formats. No installer or game executable was run."
+      }
     }
   ]
 }

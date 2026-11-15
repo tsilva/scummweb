@@ -909,6 +909,14 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Return to Zork (Demo)",
+      "status": "startup-verified",
+      "gameId": "made:rtz",
+      "edition": "rtz-dos-cd-demo2-en.zip",
+      "recordedOn": "2026-11-15",
+      "observation": "English DOS v1.2 CD demo: native detection, original valley opening, native intro skip and sign/action interaction verified. Original F2 Save and F3 Load restore the saved close-up after a fresh launch; host save drawer and launcher Continue are unsupported. The unchanged upstream ZIP lacks ripped CD audio tracks and displays a native CD-audio notice. Full playthrough and independent audible output not verified."
+    },
+    {
       "title": "Rex Nebular and the Cosmic Gender Bender",
       "status": "startup-warning",
       "gameId": "mads:nebular",

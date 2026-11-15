@@ -25,6 +25,7 @@ test("fresh browser configuration preserves UTF-8 titles and records byte length
 
 test("official classic archives are recognized by contents without relying on filenames", () => {
   for (const [target, files] of [
+    ["rtz-demo", [["RTZCD.RED", 130683, 769598157], ["RTZCD.PRJ", 43016792, 2406992190]]],
     ["tony-demo", [["roasted.MPC", 39211, 3632859460], ["roasted.MPR", 14972409, 2203660658], ["VOICES.VDB", 20189260, 2600640084]]],
     ["touche-demo", [["TOUCHE.DAT", 8720683, 3670628460], ["OBJ", 5503572, 1897254655]]],
     ["pajama2-demo", [["PJ2DEMO.HE0", 58749, 374208885], ["PJ2DEMO.HE1", 6103756, 4209458581]]],
