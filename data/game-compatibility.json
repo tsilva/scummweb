@@ -1286,6 +1286,14 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Tony Tough and the Night of Roasted Moths (Demo)",
+      "status": "startup-verified",
+      "gameId": "tony:tony",
+      "edition": "tony-demo.zip",
+      "recordedOn": "2026-11-15",
+      "observation": "English Windows extracted demo: correct native detection, original New Game menu, native intro skip and office movement verified. Saving and loading are disabled by the original demo; no Continue or seeded checkpoint. Full playthrough and independent audible output not verified."
+    },
+    {
       "title": "Toonstruck",
       "status": "startup-verified",
       "gameId": "toon:toon",

@@ -120,6 +120,15 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "tony-demo": {
+    ...retroGameArtwork["tony:tony"],
+    heroImageMobilePosition: "88% -8vh",
+    title: "Tony Tough and the Night of Roasted Moths (Demo)",
+    year: "1997",
+    language: "en",
+    shortTitle: "Tony Tough (Demo)",
+    studio: "Nayma Software",
+  },
   "touche-demo": {
     ...retroGameArtwork["touche:touche"],
     heroImageMobilePosition: "78% -8vh",

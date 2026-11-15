@@ -870,6 +870,24 @@
         "basis": "All 14 files and the original directory were inspected as data, including ZIP integrity, safe paths, executable notices, data text and ASCII/UTF-16/encoded legal strings. No express redistribution grant or prohibition was found. Eligibility uses the user-authorized cautious assessment of official promotional hosting; ScummVM hosting is not an express rights-holder license.",
         "preservation": "Serve the complete unchanged ZIP, preserving DATABASE/TOUCHE.DAT, original OBJ/V speech data, executables, notices and configuration."
       }
+    },
+    {
+      "target": "tony-demo",
+      "title": "Tony Tough and the Night of Roasted Moths (Demo)",
+      "engineId": "tony",
+      "gameId": "tony",
+      "platform": "windows",
+      "extra": "Extracted Demo",
+      "archive": "tony-demo.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/tony/tony-demo.zip",
+      "sha256": "d9462bd86fd131d600978e7fbaa1b6b5fcaf43502b73f091a4555edc0f2bebe8",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-15",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "All 20 original files and four directories reviewed as data with ZIP integrity, safe paths and complete ASCII/UTF-16/encoded scans. Complete MPC and all 392 MPR resources decoded with bounded safe LZO and exact output lengths. Original Nayma and incorporated audio-tool copyright notices retained. No express redistribution grant or prohibition found. Eligibility uses only the user-authorized cautious assessment of official promotional hosting, not an express rights-holder license.",
+        "preservation": "Serve the complete unchanged official extracted-demo ZIP, retaining original MPC/MPR, voices and all music directories."
+      }
     }
   ]
 }
