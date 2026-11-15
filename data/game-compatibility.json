@@ -1842,6 +1842,14 @@
       "observation": "A game frame renders at startup."
     },
     {
+      "title": "Pajama Sam 2: Thunder and Lightning Aren't so Frightening (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:pajama2",
+      "edition": "pajama2-win-demo-us.zip",
+      "recordedOn": "2026-11-15",
+      "observation": "English Windows HE95 demo: correct native detector/selected game, cold and cached bucket starts, original storeroom, native intro skip and vacuum character interaction/animation verified. Personal and hosted native saving rejected in that tested scene; no save or Continue checkpoint seeded. Full playthrough and independent audible output not verified."
+    },
+    {
       "title": "Pajama Sam 3: You Are What You Eat From Your Head To Your Feet",
       "status": "startup-verified",
       "gameId": "scumm:pajama3",

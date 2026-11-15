@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "pajama2-demo": {
+    ...retroGameArtwork["scumm:pajama2"],
+    heroImageMobilePosition: "75% -8vh",
+    title: "Pajama Sam 2: Thunder and Lightning Aren't so Frightening (Demo)",
+    year: "1998",
+    language: "en",
+    shortTitle: "Pajama Sam 2 (Demo)",
+  },
   "freddi2-demo": {
     ...retroGameArtwork["scumm:freddi2"],
     heroImageMobilePosition: "65% -25vh",
