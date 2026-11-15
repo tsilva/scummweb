@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Freddi Fish 2: The Case of the Haunted Schoolhouse (Demo)", target: "freddi2-demo", engineId: "scumm", gameId: "freddi2",
+    files: [["ff2-demo.he0", 27298, 1506492051], ["ff2-demo.he1", 16911456, 1972877193]],
+  },
+  {
     title: "Putt-Putt Travels Through Time (Demo)", target: "putttime-demo", engineId: "scumm", gameId: "putttime",
     files: [["timedemo.he0", 18394, 3353746237], ["timedemo.he1", 12042331, 451864772]],
   },
