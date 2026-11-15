@@ -785,6 +785,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": "/launcher/notices/torin.txt"
+    },
+    {
+      "target": "shivers-demo",
+      "title": "Shivers (Demo)",
+      "path": "/games/shivers",
+      "engineId": "sci",
+      "gameId": "shivers",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

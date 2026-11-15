@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Shivers (Demo)", target: "shivers-demo", engineId: "sci", gameId: "shivers",
+    files: [["resmap.000", 7069, 592407770], ["ressci.000", 37404155, 377852859]],
+  },
+  {
     title: "Torin's Passage (Demo)", target: "torin-demo", engineId: "sci", gameId: "torin",
     files: [["resmap.000", 3403, 3083944811], ["ressci.000", 5073868, 1095201545]],
   },

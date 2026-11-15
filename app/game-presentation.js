@@ -120,6 +120,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "shivers-demo": {
+    ...retroGameArtwork["sci:shivers"],
+    heroImageMobilePosition: "80% -8vh",
+    title: "Shivers (Demo)",
+    year: "1995",
+    language: "en",
+  },
   "torin-demo": {
     ...retroGameArtwork["sci:torin"],
     heroImageMobilePosition: "80% -8vh",
