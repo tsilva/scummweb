@@ -327,6 +327,8 @@ Lands of Lore’s English DOS interactive CD demo preserves the complete unchang
 
 Putt-Putt Saves the Zoo’s English Windows HE72 demo keeps its complete unchanged official ZIP, including original executable, W32 runtime and compiled Help. Native intro skip reaches the original raft scene, and selecting the inventory log works. Personal and hosted saving is rejected in that tested scene; no Continue checkpoint is seeded.
 
+Putt-Putt Travels Through Time’s English US Windows HE90 demo preserves the complete unchanged official ZIP and its original notices. Native intro skip retains the four-era portal choice; selecting the dinosaur portal enters its original scene. Personal and hosted saving is rejected in that tested scene; no Continue checkpoint is seeded.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.
