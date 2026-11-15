@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "touche-demo": {
+    ...retroGameArtwork["touche:touche"],
+    heroImageMobilePosition: "78% -8vh",
+    title: "Touché: The Adventures of the Fifth Musketeer (Demo)",
+    year: "1995",
+    language: "en",
+    shortTitle: "Touché (Demo)",
+  },
   "pajama2-demo": {
     ...retroGameArtwork["scumm:pajama2"],
     heroImageMobilePosition: "75% -8vh",

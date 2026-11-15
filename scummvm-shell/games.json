@@ -715,6 +715,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "touche-demo",
+      "title": "Touché: The Adventures of the Fifth Musketeer (Demo)",
+      "path": "/games/touche",
+      "engineId": "touche",
+      "gameId": "touche",
+      "platform": "dos",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }
