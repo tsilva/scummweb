@@ -1500,6 +1500,11 @@
       "file": "simon-the-sorcerer-ii-the-lion-the-wizard-and-the-wardrobe-demo-078450fa836a5b201ebe40fb1e2089778ded07a04c404e7c67cf2b7f9ecf26b1.jpg",
       "inputHash": "078450fa836a5b201ebe40fb1e2089778ded07a04c404e7c67cf2b7f9ecf26b1",
       "imageHash": "6a5da97ab8bc6c18ea77ba94241363e7850ba9052ad8ad599e56d25a60d69f6f"
+    },
+    "the-legend-of-kyrandia-hand-of-fate-demo": {
+      "file": "the-legend-of-kyrandia-hand-of-fate-demo-24f5c88926ef4c97d017295cfd33eabdb38c77c29f9fadcd5c0bb27ff04b06fb.jpg",
+      "inputHash": "24f5c88926ef4c97d017295cfd33eabdb38c77c29f9fadcd5c0bb27ff04b06fb",
+      "imageHash": "aac1a20c8e93cbfc6cba773e7dd30c7b791b959397861181fdaabaa0313f576e"
     }
   }
 }

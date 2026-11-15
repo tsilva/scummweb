@@ -1227,6 +1227,14 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "The Legend of Kyrandia: Hand of Fate (Demo)",
+      "status": "startup-verified",
+      "gameId": "kyra:kyra2",
+      "edition": "kyra2-dos-cd-demo-en.zip",
+      "recordedOn": "2026-11-15",
+      "observation": "English DOS interactive CD demo: correct native edition detection, original laboratory, native intro skip and walking verified. Bucket-backed Save/Load restored the saved position; cached Continue and personal-import Continue also restored their saved positions. Native guards rejected some opening-room save/load requests, including after dialogue ended; retain that limitation. No seeded checkpoint. Full playthrough and independent audible output not verified."
+    },
+    {
       "title": "The Lost Files of Sherlock Holmes: Case of the Rose Tattoo",
       "status": "startup-verified",
       "gameId": "sherlock:rosetattoo",

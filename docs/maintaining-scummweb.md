@@ -321,6 +321,8 @@ Simon the Sorcerer’s English DOS CD demo keeps its complete unchanged official
 
 Simon the Sorcerer II’s English DOS CD demo preserves the complete unchanged official ZIP, including its compressed setup bundle and notices. The original intro can be skipped with the supported native action. Movement and in-session Save/Load work; launcher Continue is unavailable for this engine, so restart and use Load Game. No checkpoint is seeded. Its catalog target follows the original fixed simon2 save prefix.
 
+Hand of Fate’s English DOS interactive CD demo preserves the complete unchanged official ZIP, with original game fonts, drivers and notices. Native intro skip reaches Zanthia’s laboratory, and walking works. Bucket-backed Save/Load and cached Continue restored the tested save positions. Native guards can reject further save/load requests in the opening room; no checkpoint is seeded.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.

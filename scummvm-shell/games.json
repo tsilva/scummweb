@@ -655,6 +655,16 @@
       "platform": "pc",
       "extra": "CD Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "kyra2-demo",
+      "title": "The Legend of Kyrandia: Hand of Fate (Demo)",
+      "path": "/games/kyra2",
+      "engineId": "kyra",
+      "gameId": "kyra2",
+      "platform": "pc",
+      "extra": "CD/Demo",
+      "readmeHref": "/launcher/notices/kyra2.txt"
     }
   ]
 }

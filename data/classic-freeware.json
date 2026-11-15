@@ -742,6 +742,25 @@
         "basis": "Complete unchanged official ScummVM-hosted promotional ZIP reviewed as data: all 16 top-level files with ASCII/UTF16/XOR69 legal scans, ZIP integrity/safe paths, full installer configuration, original CD Gamer instructions and batch files. The setup configuration has no license-acceptance flow. All 44 compressed SETUP.SHR entries decoded with the pinned ScummVM DCL algorithm; exact compressed boundaries/end markers and full decoded legal scans verified. No standalone license, express redistribution ban or rehosting grant found. Retain Adventure Soft, DIGPAK/MIDPAK, Miles, VESA, Rational, PKWARE, Microsoft and other notices. Eligibility uses only the cautious official promotional-hosting assessment explicitly authorized by the user, not an express rights-holder redistribution license.",
         "preservation": "Serve the complete unchanged source ZIP including SETUP.SHR, original installers, drivers, batch scripts, magazine instructions and game/voice data."
       }
+    },
+    {
+      "target": "kyra2-demo",
+      "title": "The Legend of Kyrandia: Hand of Fate (Demo)",
+      "engineId": "kyra",
+      "gameId": "kyra2",
+      "platform": "pc",
+      "extra": "CD/Demo",
+      "archive": "kyra2-dos-cd-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/kyra/kyra2-dos-cd-demo-en.zip",
+      "sha256": "faa80b3784cf8ca31c9c6cbb0df19c0c46fa3be3009d5ade78bccd030a9bb3d8",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-15",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "Complete unchanged official ScummVM-hosted interactive CD demo reviewed as data: all 54 files with ASCII/UTF16/XOR69 legal scans, safe ZIP integrity, full original README and setup/batch instructions. All 36 PAK indexes validated against pinned ScummVM resource loader (971 uncompressed entries), including original game bitmap fonts and sound drivers; outer complete scans cover all uncompressed payloads. No standalone license, compiled Help, separate restricted font, express redistribution ban or rehosting grant found. Retain Westwood, Miles, Creative, Borland and other notices. Eligibility uses only the cautious official promotional-hosting assessment explicitly authorized by the user, not an express rights-holder redistribution license.",
+        "preservation": "Serve the complete unchanged official ZIP including original PAK/TLK data, game bitmap fonts, drivers, DOS/Windows executables, setup resources, batch scripts and README."
+      },
+      "noticeFile": "README.TXT"
     }
   ]
 }
