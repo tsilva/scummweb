@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe (Demo)", target: "simon2", engineId: "agos", gameId: "simon2",
+    files: [["gsptr30", 58757, 2279999647], ["simon2.gme", 4187270, 1777768517]],
+  },
+  {
     title: "Simon the Sorcerer (Demo)", target: "simon1-demo", engineId: "agos", gameId: "simon1",
     files: [["gamepc", 30879, 1563266732], ["simon.gme", 1237886, 3194878688]],
   },
