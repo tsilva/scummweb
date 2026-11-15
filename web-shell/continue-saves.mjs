@@ -19,6 +19,7 @@ export async function isRetiredIntroCheckpoint(target, name, bytes) {
 
 export function supportsContinue(engineId, gameId, extra = "") {
   return supportedEngines.has(engineId)
+    && !(engineId === "mads" && gameId === "nebular" && /demo/i.test(extra))
     && !(engineId === "agi" && ["mickey", "winnie", "troll"].includes(gameId))
     && !(engineId === "mohawk" && (!["myst", "riven"].includes(gameId) || /demo/i.test(extra)));
 }

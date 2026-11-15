@@ -933,6 +933,14 @@
       "issueScope": "scummvm"
     },
     {
+      "title": "Rex Nebular and the Cosmic Gender Bender (Demo)",
+      "status": "startup-verified",
+      "gameId": "mads:nebular",
+      "edition": "rex-dos-demo-en.zip",
+      "recordedOn": "2026-11-15",
+      "observation": "English DOS three-room demo: correct native detection, original intro/cabin, native intro skip, movement and in-session Save/Load verified. Fresh startup loading misplaces Rex; Continue is disabled for this demo. No seeded checkpoint. Full playthrough and independent audible output not verified."
+    },
+    {
       "title": "Ringworld: Revenge of the Patriarch",
       "status": "startup-verified",
       "gameId": "tsage:ringworld",
