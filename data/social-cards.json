@@ -1550,6 +1550,11 @@
       "file": "the-lost-files-of-sherlock-holmes-the-case-of-the-serrated-scalpel-demo-a494258afe743e5cefb9175750b602a9509451340bbf7edf6fd48b1a8c9cc811.jpg",
       "inputHash": "a494258afe743e5cefb9175750b602a9509451340bbf7edf6fd48b1a8c9cc811",
       "imageHash": "ba0e489583e6cec51984991aada71c8dc005dbb9e717df09bedf3b3f6784c7fb"
+    },
+    "bud-tucker-in-double-trouble-demo": {
+      "file": "bud-tucker-in-double-trouble-demo-8fc769f116d86209949eb6bfbfe22b2cfebda5632269258b78828c9ea8815dab.jpg",
+      "inputHash": "8fc769f116d86209949eb6bfbfe22b2cfebda5632269258b78828c9ea8815dab",
+      "imageHash": "7bf0c914ebcbef7d388e2f512d3ed961b33d47863a710b6dcfda85de64f8f1ba"
     }
   }
 }

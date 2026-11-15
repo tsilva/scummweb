@@ -66,7 +66,7 @@ test("catalog intro checkpoints match their rebuild overrides and ship intact", 
   // so its original title, instructions and opening remain the startup path.
   // Primordia and Technobabylon retain original Start menus while saves are unreliable.
   // Myst’s save-disabled demo retains its original preview menu after native intro skip.
-  const directPrompt = new Set(["zork1", "zork2", "zork3", "gob2-demo", "gob3-demo", "sq6-demo", "primordia-demo", "technobabylon-demo", "simon1-demo", "tony-demo", "scalpel-demo"]);
+  const directPrompt = new Set(["zork1", "zork2", "zork3", "gob2-demo", "gob3-demo", "sq6-demo", "primordia-demo", "technobabylon-demo", "simon1-demo", "tony-demo", "scalpel-demo", "tucker-demo"]);
   // Full Throttle's demo disables saving before its first decision; its
   // verified native intro action skips in place without a seeded save.
   const nativeOnly = new Set(["ft-demo", "samnmax-demo", "dig-demo", "sword1-demo", "dw-demo", "gob1-demo", "myst-demo", "puttputt-demo", "freddi-demo", "pajama-demo", "spyfox-demo", "neverhood-demo", "toon-demo", "simon2", "kyra2-demo", "lol-demo", "puttzoo-demo", "putttime-demo", "freddi2-demo", "pajama2-demo", "touche-demo", "rtz-demo"]);

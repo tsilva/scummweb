@@ -131,6 +131,14 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Bud Tucker in Double Trouble (Demo)",
+      "status": "startup-verified",
+      "gameId": "tucker:tucker",
+      "edition": "tucker-dos-demo.zip",
+      "recordedOn": "2026-11-15",
+      "observation": "English DOS demo: correct native detection and original Plugs opening rendered directly, without a seeded checkpoint. Movement, scene scrolling, F1 action-panel switch, Save/Load and fresh Continue restoration verified. Full playthrough and independent audible output not verified."
+    },
+    {
       "title": "Castle Master (Demo)",
       "status": "startup-verified",
       "gameId": "freescape:castlemaster",

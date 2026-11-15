@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Bud Tucker in Double Trouble (Demo)", target: "tucker-demo", engineId: "tucker", gameId: "tucker",
+    files: [["infobar.txt", 203, 2809140262], ["tucker.exe", 233145, 3209492942]],
+  },
+  {
     title: "The Lost Files of Sherlock Holmes: The Case of the Serrated Scalpel (Demo)", target: "scalpel-demo", engineId: "sherlock", gameId: "scalpel",
     files: [["talk.lib", 121102, 1973471485], ["res03.rrm", 140669, 3291922347]],
   },

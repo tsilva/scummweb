@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "tucker-demo": {
+    ...retroGameArtwork["tucker:tucker"],
+    heroImageMobilePosition: "83% -20vh",
+    title: "Bud Tucker in Double Trouble (Demo)",
+    year: "1996",
+    language: "en",
+    studio: "Merit Studios (Europe)",
+  },
   "scalpel-demo": {
     ...retroGameArtwork["sherlock:scalpel"],
     heroImageMobilePosition: "82% -8vh",

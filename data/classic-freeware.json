@@ -924,6 +924,24 @@
         "basis": "All 16 unchanged official demo files were inspected as data: ZIP integrity and safe paths, executable text, ASCII/UTF-16/XOR69 legal scans and 430 bounded decoded records using the pinned Sherlock LIB/LZV format. No express demo redistribution grant or packaged prohibition was found. Eligibility uses the user-authorized cautious official promotional hosting assessment, not an invented rights-holder license.",
         "preservation": "Serve the complete unchanged ZIP, preserving all original executables, sound drivers, configuration and resources."
       }
+    },
+    {
+      "target": "tucker-demo",
+      "title": "Bud Tucker in Double Trouble (Demo)",
+      "engineId": "tucker",
+      "gameId": "tucker",
+      "platform": "dos",
+      "extra": "Demo",
+      "archive": "tucker-dos-demo.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/tucker/tucker-dos-demo.zip",
+      "sha256": "ff910031ff760bc5d12a87f3f5929053c3d27398e0d9dce5a65ac4c8ac0b82fe",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-15",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "All 1,228 original files and 4 directories were inspected as data: ZIP integrity and safe paths, complete file hashes, ASCII/UTF-16/XOR69 legal scans, additional restriction and authorization scans, Miles header/driver list and project metadata. The OMF object library and developer files are preserved; no nested compressed archives or compiled Help were identified. Miles, Rational, Microsoft and Watcom copyright notices are retained. No express demo redistribution grant or packaged prohibition was found. Eligibility uses only the user-authorized cautious assessment of official promotional hosting, not an express rights-holder license.",
+        "preservation": "Serve the complete unchanged official ZIP, preserving original source/data files, OMF library, DOS executables, drivers, notices and all WAV audio. No installer or game executable was executed."
+      }
     }
   ]
 }

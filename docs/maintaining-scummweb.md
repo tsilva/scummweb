@@ -341,6 +341,8 @@ Return to Zork’s English DOS v1.2 CD demo preserves the complete unchanged off
 
 Sherlock Holmes: The Serrated Scalpel’s English DOS interactive demo preserves the complete unchanged official ZIP. It starts with the original Lestrade dialogue and verb interface, without a seeded checkpoint; examination, movement and native save/Continue restoration are verified.
 
+Bud Tucker’s English DOS interactive demo keeps the complete unchanged official ZIP, including its original source/data files, sound drivers and WAV audio. It starts directly in the original Plugs scene without a seeded checkpoint. Movement, scene scrolling, the F1 action-panel switch, Save/Load and Continue are verified.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.
