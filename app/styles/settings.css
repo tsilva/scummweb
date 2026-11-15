@@ -27,6 +27,16 @@
 .dropbox-conflict .settings-choice:has(input:checked) { border-color: var(--accent-strong); background: #20271f; }
 .dropbox-conflict .settings-choice span { display: grid; gap: .15rem; }
 .dropbox-conflict .settings-choice small { color: #bbb; }
+.dropbox-file-differences { overflow-x: auto; margin-top: .65rem; }
+.dropbox-file-differences table { width: 100%; border-collapse: collapse; font-size: .75rem; text-align: left; }
+.dropbox-file-differences th, .dropbox-file-differences td { padding: .45rem; border-bottom: 1px solid #383838; vertical-align: top; }
+.dropbox-file-differences th { font-weight: 500; }
+.dropbox-file-differences code { white-space: nowrap; }
+.dropbox-file-differences small, .dropbox-file-copy { display: grid; gap: .2rem; font-weight: 400; }
+.dropbox-file-differences small, .dropbox-file-copy time { color: #bbb; }
+.dropbox-combined-files { margin-top: .65rem; font-size: .75rem; }
+.dropbox-combined-files summary { cursor: pointer; }
+.dropbox-conflict .dropbox-identical-files { margin-top: .45rem; color: #bbb; font-size: .75rem; }
 .dropbox-conflict .settings-review-actions { display: flex; justify-content: flex-end; gap: .65rem; margin: .85rem 0 0; }
 .dropbox-conflict button { background: transparent; color: var(--ink); border: 1px solid #888; min-height: 2.75rem; padding: .6rem .8rem; cursor: pointer; }
 .dropbox-conflict button:last-child { background: var(--accent-strong); color: #101810; border-color: var(--accent-strong); }

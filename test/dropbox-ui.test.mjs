@@ -5,6 +5,7 @@ import { runInNewContext } from "node:vm";
 import test from "node:test";
 import swc from "next/dist/build/swc/index.js";
 import * as review from "../app/dropbox/conflict-review.mjs";
+import { renderToStaticMarkup } from "react-dom/server";
 
 const nativeRequire = createRequire(import.meta.url);
 await swc.loadBindings();
@@ -72,6 +73,33 @@ test("a refreshed game invalidates just that game's existing radio choice", asyn
   assert.equal(inputs[0].props.checked, true);
   assert.equal(inputs[2].props.checked, false); assert.equal(inputs[3].props.checked, false);
   assert.equal(button(tree, "Apply choices").props.disabled, true);
+});
+
+test("review shows actual conflicting files even when sizes and dates match, and distinguishes compatible changes", async () => {
+  const conflict = { ...conflicts[0], others: [{ hash: "third", files: [{}] }], identical: 2,
+    differences: [
+      { path: "SKY-VM.001", conflict: true, reason: "Different contents",
+        versions: Array.from({ length: 3 }, () => ({ path: "SKY-VM.001", size: 2048, modifiedAt: 1730000000000 })) },
+      { path: "SKY-VM.002", conflict: true, reason: "Deleted in one copy, changed in another",
+        versions: [null, { path: "SKY-VM.002", size: 512, modifiedAt: 1730000000000 }, null] },
+      { path: "SKY-VM.003", conflict: false, reason: "Combined automatically",
+        versions: [{ path: "SKY-VM.003", size: 1024, modifiedAt: 1730000000000 }, null, null] },
+    ] };
+  let cursor = 0;
+  const state = [null, { phase: "conflict", conflicts: [conflict] }, {}, false, "", ""];
+  const View = await component("../app/dropbox-save-sync.js", {
+    "./dropbox/bridge.mjs": { dropboxEnabled: () => true }, "./dropbox/conflict-review.mjs": review,
+  }, { useEffect() {}, useRef: () => ({ current: null }), useState() { return [state[cursor++], () => {}]; } });
+  const tree = View(), html = renderToStaticMarkup(tree);
+  assert.equal(nodes(tree).filter(({ type }) => type === "input").length, 3);
+  for (const detail of ["SKY-VM.001", "Different contents", "2,048 bytes", "Deleted in one copy, changed in another", "Absent",
+    "Other changes kept with either choice (1)", "Combined automatically", "2 identical files kept.", "Other saved copy 1", "<time"]) assert.ok(html.includes(detail), detail);
+});
+
+test("reordered additional copies invalidate choices even when the same cloud tips are listed", () => {
+  const conflict = { ...conflicts[0], others: [{ hash: "third" }, { hash: "fourth" }] };
+  const reordered = { ...conflict, others: [...conflict.others].reverse() };
+  assert.notEqual(review.conflictVersion(conflict), review.conflictVersion(reordered));
 });
 
 async function row(state, initialNotice = "") {

@@ -1,5 +1,6 @@
 import { exportBackup, identifySet, readBackup } from "../save-backups/backups.mjs";
 import { DropboxError, hex, sha256 } from "./client.mjs";
+import { commonSaveAncestors, mergeSaveSets } from "./save-merge.mjs";
 
 const hashPattern = /^[a-f0-9]{64}$/;
 export async function saveProfileId(set) {
@@ -139,14 +140,33 @@ export async function createSaveCollection(transport, cache) {
       // Re-list after publication to observe another device's concurrent commit.
       await refresh();
       let after = head(profile);
-      const tips = history(profile).tips;
-      if (tips.length > 1 && new Set(tips.map(({ hash }) => hash)).size === 1) {
-        await put(tips[0].set, after.tips, true, check);
+      let merged = false, conflictMerge, conflictSets;
+      for (let attempt = 0; after.concurrent; attempt++) {
+        if (resolve) break; // A newly arrived branch was not part of this decision.
+        const { tips, own } = history(profile);
+        const remote = tips[0];
+        const other = tips.find((node) => node.hash === local?.hash && node.hash !== remote.hash)
+          || tips.find((node) => node.hash !== remote.hash) || tips[1];
+        const ordered = [other, remote, ...tips.filter((node) => node !== other && node !== remote)]
+          .filter((node, index, all) => all.findIndex(({ hash }) => hash === node.hash) === index);
+        const merge = await mergeSaveSets(ordered.map(({ set }) => set), commonSaveAncestors(own, tips));
+        if (!merge.set) {
+          conflictMerge = merge;
+          conflictSets = ordered.map(({ set }) => set);
+          break;
+        }
+        if (attempt === 4) throw new DropboxError("Saves are still changing on another device. They will be checked again shortly.");
+        await put(merge.set, after.tips, true, check);
+        // Include arrivals during the merge, never acknowledge unseen branches.
+        await refresh();
         after = head(profile);
+        merged = true;
       }
-      const action = after.concurrent ? "conflict" : reconcileSave(base, local?.hash ?? null, after.active);
-      const conflictLocal = after.concurrent ? local && local.hash !== after.active ? local : history(profile).tips[1].set : undefined;
-      return { action, head: after, conflictLocal };
+      const reconciled = reconcileSave(base, local?.hash ?? null, after.active);
+      // A retry without its local baseline can present an already incorporated
+      // parent again. Its immutable publication is now an ancestor, not a fork.
+      const action = after.concurrent ? "conflict" : merged || reconciled === "conflict" ? "download" : reconciled;
+      return { action, head: after, conflictLocal: conflictSets?.[0], conflictSets, conflictMerge };
     },
   };
 }

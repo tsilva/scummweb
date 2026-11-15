@@ -351,6 +351,11 @@
       "inputHash": "a177586cdb87f14bb0b8b5ce2812708ff7a176aa9f5c54866d3a5972fb1c9c3c",
       "imageHash": "40dde884d3e2f4fb497da0146649adb908e9e5c6ece42d6db7371ebb94cad35b"
     },
+    "freddi-fish-2-the-case-of-the-haunted-schoolhouse-demo": {
+      "file": "freddi-fish-2-the-case-of-the-haunted-schoolhouse-demo-3fad95efdf7e7e0c25d936424551bfd73fa2e9e477af0fc9604482e4037ebd77.jpg",
+      "inputHash": "3fad95efdf7e7e0c25d936424551bfd73fa2e9e477af0fc9604482e4037ebd77",
+      "imageHash": "2e715d0d01d5763f312a3d961fffe299c99690ce447dbba053829bb1bd4cabf8"
+    },
     "freddi-fish-3-the-case-of-the-stolen-conch-shell": {
       "file": "freddi-fish-3-the-case-of-the-stolen-conch-shell-ae73ac2b9e6a7eb9c41d8aa557830db557a5b7f6f477b9314de233bab59f437a.jpg",
       "inputHash": "ae73ac2b9e6a7eb9c41d8aa557830db557a5b7f6f477b9314de233bab59f437a",
@@ -676,6 +681,11 @@
       "inputHash": "ddf6bf008e27db9d9ddef71efe70632a183ec2e0f2ee68250433d23641663f1d",
       "imageHash": "83db22162dee58e9043c49dea70f429896834ca16bff9f0ed593938413cebd49"
     },
+    "lands-of-lore-the-throne-of-chaos-demo": {
+      "file": "lands-of-lore-the-throne-of-chaos-demo-b780cc75f8738eece7c590e9e141e8cafeb7258b77bcb8ca867faae41214b314.jpg",
+      "inputHash": "b780cc75f8738eece7c590e9e141e8cafeb7258b77bcb8ca867faae41214b314",
+      "imageHash": "8accf25514db474d2c7ac3f7f1b7d6a140951364520157b6744cb23fbea9d986"
+    },
     "laura-bow-2-the-dagger-of-amon-ra": {
       "file": "laura-bow-2-the-dagger-of-amon-ra-e3d427d8f603bb1037be10252e8338c3fc2ed1831036d2eb0277e21dbd254c38.jpg",
       "inputHash": "e3d427d8f603bb1037be10252e8338c3fc2ed1831036d2eb0277e21dbd254c38",
@@ -866,6 +876,11 @@
       "inputHash": "8e2d3c7bc90dec06efa115b1f0b0909a52d10692ca7c103d8fe5b4a4bbd08742",
       "imageHash": "06d7f4e76b8bbb0570f4cb0057ddbad044dfe374675ca9e2ec1820645d214212"
     },
+    "pajama-sam-2-thunder-and-lightning-aren-t-so-frightening-demo": {
+      "file": "pajama-sam-2-thunder-and-lightning-aren-t-so-frightening-demo-9eb9620d7f929ccb9bdf01139d3965b862bcb29813ab5669a5078f20463232d1.jpg",
+      "inputHash": "9eb9620d7f929ccb9bdf01139d3965b862bcb29813ab5669a5078f20463232d1",
+      "imageHash": "d65d771ee10de8790201d95b3ce7f2adac7742ca5e6e25d0b3a55c5baa1d0f81"
+    },
     "pajama-sam-3-you-are-what-you-eat-from-your-head-to-your-feet": {
       "file": "pajama-sam-3-you-are-what-you-eat-from-your-head-to-your-feet-37561c20e499b57d3ddf3364294046bb89bf2b854c85ae80444a146afca5d171.jpg",
       "inputHash": "37561c20e499b57d3ddf3364294046bb89bf2b854c85ae80444a146afca5d171",
@@ -1041,10 +1056,20 @@
       "inputHash": "63e7e269b4ede27f196cd489608abfce649ce1a71d584af142dabe0c178c5601",
       "imageHash": "64f7e440a7d121d7ed2288cfd441da57232b07a5ab229c40d956ccc6b3b0c260"
     },
+    "putt-putt-saves-the-zoo-demo": {
+      "file": "putt-putt-saves-the-zoo-demo-0a15a4c8f47a7b021eddac9a7fbb5f492b84d03fec9bcb388a0b51be84e9397c.jpg",
+      "inputHash": "0a15a4c8f47a7b021eddac9a7fbb5f492b84d03fec9bcb388a0b51be84e9397c",
+      "imageHash": "4a1abbc02a0e6abbc01ec7937327053858d8882de084728510049f4b7c04d08e"
+    },
     "putt-putt-travels-through-time": {
       "file": "putt-putt-travels-through-time-4388c7756f5333915a59e4bdb30ffab2f397700a4475a929a7527cf58d108fe5.jpg",
       "inputHash": "4388c7756f5333915a59e4bdb30ffab2f397700a4475a929a7527cf58d108fe5",
       "imageHash": "80d542d259e01198eb7877f6c4c782b941899dc079e92be4e1db89583c211c88"
+    },
+    "putt-putt-travels-through-time-demo": {
+      "file": "putt-putt-travels-through-time-demo-8dbe933482c2f34d3094580ccd6454647293ed4a45b50d044fa76ecc296e89fe.jpg",
+      "inputHash": "8dbe933482c2f34d3094580ccd6454647293ed4a45b50d044fa76ecc296e89fe",
+      "imageHash": "53eab240e3b8b4d32197a03f56ca6a0e1079d53e202d7ca328c72ab3c979946f"
     },
     "quest-for-glory-i-so-you-want-to-be-a-hero": {
       "file": "quest-for-glory-i-so-you-want-to-be-a-hero-057a8a6138c2a059d0ae38c6273df44d37b20d8c1582044dfec6cc2f8017a2ba.jpg",
@@ -1146,10 +1171,20 @@
       "inputHash": "c87dd6d5b05a17934be972a70d9eb0c4c988d55cc3775ccc164095dd599a656f",
       "imageHash": "be718174ff8979ff9bc2c32dd1d04c7da6053ae9f6d23d959640b0915da516ba"
     },
+    "simon-the-sorcerer-demo": {
+      "file": "simon-the-sorcerer-demo-6f285ea4e75f275f0901a7074e5c460e4a24713f1dc8368d2ee94c1a540f9f30.jpg",
+      "inputHash": "6f285ea4e75f275f0901a7074e5c460e4a24713f1dc8368d2ee94c1a540f9f30",
+      "imageHash": "e6ae462697928646ac73bade074b6700cf36c77435eb60f24f44e1febd36a25a"
+    },
     "simon-the-sorcerer-ii-the-lion-the-wizard-and-the-wardrobe": {
-      "file": "simon-the-sorcerer-ii-the-lion-the-wizard-and-the-wardrobe-c9c06836f906af42fe9fd331d456a6bd470107e891be4edbc0cc55b6306023b7.jpg",
-      "inputHash": "c9c06836f906af42fe9fd331d456a6bd470107e891be4edbc0cc55b6306023b7",
-      "imageHash": "76b639e46b62eafc318502586854b720c1960399a2c26d4447b932ec52c2da53"
+      "file": "simon-the-sorcerer-ii-the-lion-the-wizard-and-the-wardrobe-926fc386f4d39ebe1ad9025915a62aef5a48fd6c74dd626d9e52f6d64f24d864.jpg",
+      "inputHash": "926fc386f4d39ebe1ad9025915a62aef5a48fd6c74dd626d9e52f6d64f24d864",
+      "imageHash": "1d53efda30f16362052423921c2e8e6c750bd58cd6bc00ff696852012684e7a6"
+    },
+    "simon-the-sorcerer-ii-the-lion-the-wizard-and-the-wardrobe-demo": {
+      "file": "simon-the-sorcerer-ii-the-lion-the-wizard-and-the-wardrobe-demo-078450fa836a5b201ebe40fb1e2089778ded07a04c404e7c67cf2b7f9ecf26b1.jpg",
+      "inputHash": "078450fa836a5b201ebe40fb1e2089778ded07a04c404e7c67cf2b7f9ecf26b1",
+      "imageHash": "6a5da97ab8bc6c18ea77ba94241363e7850ba9052ad8ad599e56d25a60d69f6f"
     },
     "simon-the-sorcerer-s-puzzle-pack": {
       "file": "simon-the-sorcerer-s-puzzle-pack-096c29f2404e6ff50b211a3ac881d636b1c3b5f7361a9bc16e77c99a04c2f4ed.jpg",
@@ -1366,6 +1401,11 @@
       "inputHash": "4a2029b36f5ed9beea7a70608910cd3dc66d3598c472b713746e06d717d4998b",
       "imageHash": "1186f875f1ed110370eda528d1e9086f32086f2a20d27cb9e789062275d19e63"
     },
+    "the-legend-of-kyrandia-hand-of-fate-demo": {
+      "file": "the-legend-of-kyrandia-hand-of-fate-demo-24f5c88926ef4c97d017295cfd33eabdb38c77c29f9fadcd5c0bb27ff04b06fb.jpg",
+      "inputHash": "24f5c88926ef4c97d017295cfd33eabdb38c77c29f9fadcd5c0bb27ff04b06fb",
+      "imageHash": "aac1a20c8e93cbfc6cba773e7dd30c7b791b959397861181fdaabaa0313f576e"
+    },
     "the-lost-files-of-sherlock-holmes-case-of-the-rose-tattoo": {
       "file": "the-lost-files-of-sherlock-holmes-case-of-the-rose-tattoo-4788f50fc7ec572286df893afea37f74e22ea00176acf39e76a2e3150a0de96e.jpg",
       "inputHash": "4788f50fc7ec572286df893afea37f74e22ea00176acf39e76a2e3150a0de96e",
@@ -1415,6 +1455,11 @@
       "file": "toonstruck-589f2d840a3586fb889517f637087b68ff4b89bba6b34799ea54dc36d06c020a.jpg",
       "inputHash": "589f2d840a3586fb889517f637087b68ff4b89bba6b34799ea54dc36d06c020a",
       "imageHash": "8c190b5510ba2087fd0896e6fd38e5e2152a9e9f78f958c5894b9aed9cecb3a2"
+    },
+    "toonstruck-demo": {
+      "file": "toonstruck-demo-6be2cf6d8a1369c185c7c1eda4026eac39a4e5b94f74fa06a820725009fa63b0.jpg",
+      "inputHash": "6be2cf6d8a1369c185c7c1eda4026eac39a4e5b94f74fa06a820725009fa63b0",
+      "imageHash": "801fbca2c7bcc4d340e4f02f5e71ebcb3759aaabb2b26d5e677573a4031737a0"
     },
     "torin-s-passage": {
       "file": "torin-s-passage-6cfbb0df580e9d180f7d253b37a72b13bf42be587017b2261ce7188c2b41450b.jpg",
@@ -1485,51 +1530,6 @@
       "file": "zork-nemesis-the-forbidden-lands-108534972258666dc7b2fc57846d118cfc91dc70049447eb5827da71e9407856.jpg",
       "inputHash": "108534972258666dc7b2fc57846d118cfc91dc70049447eb5827da71e9407856",
       "imageHash": "eae9e06b8cefa2e3ede3113a6b615c163974f119d4df9387d2afad4fc9865699"
-    },
-    "toonstruck-demo": {
-      "file": "toonstruck-demo-6be2cf6d8a1369c185c7c1eda4026eac39a4e5b94f74fa06a820725009fa63b0.jpg",
-      "inputHash": "6be2cf6d8a1369c185c7c1eda4026eac39a4e5b94f74fa06a820725009fa63b0",
-      "imageHash": "801fbca2c7bcc4d340e4f02f5e71ebcb3759aaabb2b26d5e677573a4031737a0"
-    },
-    "simon-the-sorcerer-demo": {
-      "file": "simon-the-sorcerer-demo-6f285ea4e75f275f0901a7074e5c460e4a24713f1dc8368d2ee94c1a540f9f30.jpg",
-      "inputHash": "6f285ea4e75f275f0901a7074e5c460e4a24713f1dc8368d2ee94c1a540f9f30",
-      "imageHash": "e6ae462697928646ac73bade074b6700cf36c77435eb60f24f44e1febd36a25a"
-    },
-    "simon-the-sorcerer-ii-the-lion-the-wizard-and-the-wardrobe-demo": {
-      "file": "simon-the-sorcerer-ii-the-lion-the-wizard-and-the-wardrobe-demo-078450fa836a5b201ebe40fb1e2089778ded07a04c404e7c67cf2b7f9ecf26b1.jpg",
-      "inputHash": "078450fa836a5b201ebe40fb1e2089778ded07a04c404e7c67cf2b7f9ecf26b1",
-      "imageHash": "6a5da97ab8bc6c18ea77ba94241363e7850ba9052ad8ad599e56d25a60d69f6f"
-    },
-    "the-legend-of-kyrandia-hand-of-fate-demo": {
-      "file": "the-legend-of-kyrandia-hand-of-fate-demo-24f5c88926ef4c97d017295cfd33eabdb38c77c29f9fadcd5c0bb27ff04b06fb.jpg",
-      "inputHash": "24f5c88926ef4c97d017295cfd33eabdb38c77c29f9fadcd5c0bb27ff04b06fb",
-      "imageHash": "aac1a20c8e93cbfc6cba773e7dd30c7b791b959397861181fdaabaa0313f576e"
-    },
-    "lands-of-lore-the-throne-of-chaos-demo": {
-      "file": "lands-of-lore-the-throne-of-chaos-demo-b780cc75f8738eece7c590e9e141e8cafeb7258b77bcb8ca867faae41214b314.jpg",
-      "inputHash": "b780cc75f8738eece7c590e9e141e8cafeb7258b77bcb8ca867faae41214b314",
-      "imageHash": "8accf25514db474d2c7ac3f7f1b7d6a140951364520157b6744cb23fbea9d986"
-    },
-    "putt-putt-saves-the-zoo-demo": {
-      "file": "putt-putt-saves-the-zoo-demo-0a15a4c8f47a7b021eddac9a7fbb5f492b84d03fec9bcb388a0b51be84e9397c.jpg",
-      "inputHash": "0a15a4c8f47a7b021eddac9a7fbb5f492b84d03fec9bcb388a0b51be84e9397c",
-      "imageHash": "4a1abbc02a0e6abbc01ec7937327053858d8882de084728510049f4b7c04d08e"
-    },
-    "putt-putt-travels-through-time-demo": {
-      "file": "putt-putt-travels-through-time-demo-8dbe933482c2f34d3094580ccd6454647293ed4a45b50d044fa76ecc296e89fe.jpg",
-      "inputHash": "8dbe933482c2f34d3094580ccd6454647293ed4a45b50d044fa76ecc296e89fe",
-      "imageHash": "53eab240e3b8b4d32197a03f56ca6a0e1079d53e202d7ca328c72ab3c979946f"
-    },
-    "freddi-fish-2-the-case-of-the-haunted-schoolhouse-demo": {
-      "file": "freddi-fish-2-the-case-of-the-haunted-schoolhouse-demo-3fad95efdf7e7e0c25d936424551bfd73fa2e9e477af0fc9604482e4037ebd77.jpg",
-      "inputHash": "3fad95efdf7e7e0c25d936424551bfd73fa2e9e477af0fc9604482e4037ebd77",
-      "imageHash": "2e715d0d01d5763f312a3d961fffe299c99690ce447dbba053829bb1bd4cabf8"
-    },
-    "pajama-sam-2-thunder-and-lightning-aren-t-so-frightening-demo": {
-      "file": "pajama-sam-2-thunder-and-lightning-aren-t-so-frightening-demo-9eb9620d7f929ccb9bdf01139d3965b862bcb29813ab5669a5078f20463232d1.jpg",
-      "inputHash": "9eb9620d7f929ccb9bdf01139d3965b862bcb29813ab5669a5078f20463232d1",
-      "imageHash": "d65d771ee10de8790201d95b3ce7f2adac7742ca5e6e25d0b3a55c5baa1d0f81"
     }
   }
 }
