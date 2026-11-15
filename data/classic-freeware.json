@@ -761,6 +761,25 @@
         "preservation": "Serve the complete unchanged official ZIP including original PAK/TLK data, game bitmap fonts, drivers, DOS/Windows executables, setup resources, batch scripts and README."
       },
       "noticeFile": "README.TXT"
+    },
+    {
+      "target": "lol-demo",
+      "title": "Lands of Lore: The Throne of Chaos (Demo)",
+      "engineId": "kyra",
+      "gameId": "lol",
+      "platform": "pc",
+      "extra": "CD/Demo",
+      "archive": "lol-dos-cd-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/kyra/lol-dos-cd-demo-en.zip",
+      "sha256": "679540905378d7a65379d45db4d61b0f29e49df17609526f260e0f9574636d12",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-15",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "Complete unchanged official ScummVM-hosted interactive CD demo reviewed as data: all 50 files with ASCII/UTF16/XOR69 legal scans, ZIP integrity/safe paths and full original README. All 36 PAK indexes validated against pinned ScummVM resource loader (671 uncompressed entries), including original game bitmap fonts and Miles sound drivers; complete outer scans cover all uncompressed payloads. No installer, compiled Help, separate restricted font, express redistribution ban or rehosting grant found. Retain Westwood, Miles, Borland and other notices. Eligibility uses only the cautious official promotional-hosting assessment explicitly authorized by the user, not an express rights-holder redistribution license.",
+        "preservation": "Serve the complete unchanged official ZIP with all original PAK/TLK data, game bitmap fonts, sound drivers, executables and README."
+      },
+      "noticeFile": "readme.txt"
     }
   ]
 }

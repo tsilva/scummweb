@@ -558,6 +558,14 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Lands of Lore: The Throne of Chaos (Demo)",
+      "status": "startup-verified",
+      "gameId": "kyra:lol",
+      "edition": "lol-dos-cd-demo-en.zip",
+      "recordedOn": "2026-11-15",
+      "observation": "English DOS interactive CD demo: correct native edition, original Gladstone dungeon, native intro skip and turning verified. Personal-import and bucket-backed Save/Load and cached Continue restored the saved direction. An immediate post-turn Load was rejected; loading after movement settled passed. No seeded checkpoint. Full playthrough and independent audible output not verified."
+    },
+    {
       "title": "Laura Bow 2: The Dagger of Amon Ra",
       "status": "startup-verified",
       "gameId": "sci:laurabow2",
@@ -1232,7 +1240,7 @@
       "gameId": "kyra:kyra2",
       "edition": "kyra2-dos-cd-demo-en.zip",
       "recordedOn": "2026-11-15",
-      "observation": "English DOS interactive CD demo: correct native edition detection, original laboratory, native intro skip and walking verified. Bucket-backed Save/Load restored the saved position; cached Continue and personal-import Continue also restored their saved positions. Native guards rejected some opening-room save/load requests, including after dialogue ended; retain that limitation. No seeded checkpoint. Full playthrough and independent audible output not verified."
+      "observation": "English DOS interactive CD demo: correct native edition detection, original laboratory, native intro skip and walking verified. Bucket-backed Save/Load restored the saved position; cached Continue and personal-import Continue also restored their saved positions. Native guards rejected some opening-room save/load requests, including after dialogue ended. No seeded checkpoint. Full playthrough and independent audible output not verified."
     },
     {
       "title": "The Lost Files of Sherlock Holmes: Case of the Rose Tattoo",

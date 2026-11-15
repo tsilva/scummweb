@@ -665,6 +665,16 @@
       "platform": "pc",
       "extra": "CD/Demo",
       "readmeHref": "/launcher/notices/kyra2.txt"
+    },
+    {
+      "target": "lol-demo",
+      "title": "Lands of Lore: The Throne of Chaos (Demo)",
+      "path": "/games/lol",
+      "engineId": "kyra",
+      "gameId": "lol",
+      "platform": "pc",
+      "extra": "CD/Demo",
+      "readmeHref": "/launcher/notices/lol.txt"
     }
   ]
 }
