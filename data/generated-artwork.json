@@ -20496,6 +20496,136 @@
         }
       ],
       "prompt": "Use case: precise-object-edit. Asset type: Technobabylon portrait card box front. Faithfully restore/recreate the supplied original digital front cover at a 3:4 portrait ratio with at least900x1200 pixels. Preserve the exact original layout, hand-drawn comic illustration medium and dark blue/cyan/teal palette: angular circuit-inspired title 'TECHNOBABYLON' across the top; sprawling neon city; Latha with dark ponytail, warm skin, sleeveless dark top and loose navy cargo trousers leaning on a railing on the left, one hand raised and her other hand supporting a glowing cyan cyber-skull; her translucent binary/data-pattern digital double on the right. Preserve their identities, poses, hands, title letterforms and all original composition. Improve resolution, line clarity and lettering legibility without redesigning, rearranging or inventing brands, text or props. The title must read verbatim TECHNOBABYLON, with its distinctive angular lettering. Flat front face only, no spine, 3D box, badges, new logos, scan border, sticker, watermark or UI. Keep all important art and title safely inside the portrait frame."
+    },
+    {
+      "target": "ween",
+      "role": "cover",
+      "asset": "/launcher/ween-scummweb-generated-2026-11-15-r1-cover.webp",
+      "generatedOn": "2026-11-15",
+      "generator": "image_gen (built-in)",
+      "stage": "preview",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": false,
+      "master": {
+        "sha256": "1ba45570fff29798a1312d3a9b45d864374aa728b1fb1431b0e8dc0d51dad5bb",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "73603ddd5709ea1141e9b735eb929d1f5f81d1eaad705c2e47e95b0c3c81f0e7",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-gob-ween-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Ween_%20The%20Prophecy.png",
+          "sha256": "f7922dad3facf57eb002d911a389586233524b832c0601b97e618d3523eb67d7",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        },
+        {
+          "asset": "/launcher/ween-scummweb-generated-2026-11-06-r1-cover.webp",
+          "sha256": "e99624fcc3a1d662a18681e7678980c248be17b76bffab010101b4d8d7d3a553",
+          "kind": "edit-target",
+          "note": "Previously generated cover used only for this publisher-lettering correction; original box reference retained above."
+        }
+      ],
+      "prompt": "Use case: text-localization. Edit target is image1, the flat restored portrait box cover of THE PROPHECY (Ween). Image2 is the actual original box front, a reference for the publisher logo. Correct ONLY the bottom-center publisher lettering: it must clearly read COKTEL VISION, spelled C O K T E L [space] V I S I O N, with an unmistakable K (a vertical stem and two diagonals), never COXTEL. Faithfully retain the original white italic Coktel Vision logo and red horizontal stripes above it; improve the incorrect/ambiguous K so the brand reads correctly at card size. Preserve ALL other pixels/design as closely as possible: full portrait framing, black border, title typography THE PROPHECY, exact quotation at top, red FREE promotional panel, blue MS-DOS badge, Part of the Sierra Family line, hourglass, dragon and figure illustration, colors and composition. No redesign, no new elements, no additional text, no 3D perspective. Render sufficiently large 3:4 portrait at least900x1200 with complete uncropped original front.",
+      "review": "Rejected: publisher K remained ambiguous; never activated."
+    },
+    {
+      "target": "ween",
+      "role": "cover",
+      "asset": "/launcher/ween-scummweb-generated-2026-11-15-r2-cover.webp",
+      "generatedOn": "2026-11-15",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "20a537ed9db538eb6c2229207fa13982e53157a6a4faed9f1b9b7efae14aad0b",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "47c5d7651b715d5f9133039ce9d77922940bc56a89245c3539ff74cd7a506a1f",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-gob-ween-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Ween_%20The%20Prophecy.png",
+          "sha256": "f7922dad3facf57eb002d911a389586233524b832c0601b97e618d3523eb67d7",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        },
+        {
+          "asset": "/launcher/ween-scummweb-generated-2026-11-06-r1-cover.webp",
+          "sha256": "e99624fcc3a1d662a18681e7678980c248be17b76bffab010101b4d8d7d3a553",
+          "kind": "edit-target",
+          "note": "Previously generated cover used only for this publisher-lettering correction; original box reference retained above."
+        }
+      ],
+      "prompt": "Surgical text correction, image1 is edit target; image2 preserves the original cover reference. The bottom publisher label in image1 STILL INCORRECTLY SAYS COXTEL VISION. Erase only those white publisher letters beneath the red stripes and redraw exactly: COKTEL VISION. In particular the third letter is K, never X. Draw the K with a strong full-height VERTICAL LEFT STEM and two short diagonals branching right from the middle. Use simple legible white uppercase sans-serif italic letters instead of the ambiguous stylized logo font. The six letters in the first word are C,O,K,T,E,L. It must read COKTEL VISION. Leave red stripes, Part of the Sierra Family, all other cover typography, badge, title, illustration, composition and full framing unchanged. Same flat3:4portrait cover and size. This is not a cover redesign; only replace the bottom publisher wordmark with correctly spelled clearly legible lettering.",
+      "review": "Publisher lettering corrected to COKTEL VISION; original and responsive public bodies verified, optimization and320px visual card checks passed.",
+      "revisionInputMasterSha256": "1ba45570fff29798a1312d3a9b45d864374aa728b1fb1431b0e8dc0d51dad5bb"
+    },
+    {
+      "target": "littlered",
+      "role": "cover",
+      "asset": "/launcher/littlered-scummweb-generated-2026-11-15-r1-cover.webp",
+      "generatedOn": "2026-11-15",
+      "generator": "image_gen (built-in)",
+      "stage": "ready",
+      "targetSize": {
+        "width": 900,
+        "height": 1200
+      },
+      "deliveryOptimized": true,
+      "master": {
+        "sha256": "a0cfb8e7194f1e204d632ba1784719f28f582db1ffe799b47bb609f22d055bc6",
+        "width": 1086,
+        "height": 1448
+      },
+      "output": {
+        "sha256": "cc2fcc01b1dee9738e1d9c0ab39109089d8025dcee7d9347bca1c3bc7a66a482",
+        "width": 900,
+        "height": 1200,
+        "format": "webp",
+        "quality": 80,
+        "effort": 6
+      },
+      "references": [
+        {
+          "asset": "/launcher/retro-gob-littlered-poster.webp",
+          "kind": "box-scan",
+          "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Once%20Upon%20a%20Time_%20Little%20Red%20Riding%20Hood.png",
+          "sha256": "2f1a79c6d3a90c168b7ab423621e80b1147505f4ed0f24215a1fa16a707eba36",
+          "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
+        },
+        {
+          "asset": "/launcher/littlered-scummweb-generated-2026-11-06-r1-cover.webp",
+          "sha256": "0a7f129db898e418d6fbb8d76147ec3d9da1e9d079bde53d9596177f55fe224e",
+          "kind": "edit-target",
+          "note": "Previously generated cover used only for this publisher-lettering correction; original box reference retained above."
+        }
+      ],
+      "prompt": "Use case: text-localization. Image1 is the edit target: restored portrait box front of Once Upon a Time Little Red Riding Hood. Image2 is the original printed box reference. Correct ONLY the bottom-center white publisher wordmark beneath the red horizontal stripes. It is currently corrupted as L.L. VISION. Replace that line with exactly COKTEL VISION, spelled C O K T E L space V I S I O N. Use readable white uppercase italic sans-serif, preserving the original logo placement and red stripes; make K unmistakable with a vertical left stem and two diagonals, never X. Fit the full wordmark under the stripes. Preserve ALL other original/restored artwork and text exactly: Once Upon a Time scroll, child face, squirrel, house, tree, blue/green/cream watercolor texture, all four language title lines and their layout. Do not change illustration, colors, framing, badges or any other text. Flat full uncropped3:4portrait, at least900x1200, no mockup. Only the publisher lettering is being repaired.",
+      "review": "Publisher lettering corrected to COKTEL VISION; original and responsive public bodies verified, optimization and320px visual card checks passed."
     }
   ]
 }
