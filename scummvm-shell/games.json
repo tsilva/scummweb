@@ -645,6 +645,16 @@
       "platform": "pc",
       "extra": "CD Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "simon2",
+      "title": "Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe (Demo)",
+      "path": "/games/simon2",
+      "engineId": "agos",
+      "gameId": "simon2",
+      "platform": "pc",
+      "extra": "CD Demo",
+      "readmeHref": ""
     }
   ]
 }

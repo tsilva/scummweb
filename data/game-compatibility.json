@@ -970,7 +970,7 @@
       "gameId": "agos:simon1",
       "edition": "simon1-dos-cd-demo-en.zip",
       "recordedOn": "2026-11-14",
-      "observation": "English DOS CD demo: native edition detection, original prison scene, movement into the adjoining torture room, and verb selection verified. A short original publisher splash leads directly to play. ScummWEB Save/Load and Continue are unavailable with this engine; native quick-save is rejected at the tested scene. No checkpoint. Full playthrough and independent audible output not verified."
+      "observation": "English DOS CD demo: native edition detection, original prison scene, movement into the adjoining torture room, and verb selection verified. A short original publisher splash leads directly to play. ScummWEB Save/Load and native quick-save were rejected at the tested opening scenes; launcher Continue is unavailable for this engine. No checkpoint. Full playthrough and independent audible output not verified."
     },
     {
       "title": "Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe",
@@ -978,6 +978,14 @@
       "gameId": "agos:simon2",
       "edition": "Simon the Sorcerer 2 (Amiga CD32).zip",
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
+    },
+    {
+      "title": "Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe (Demo)",
+      "status": "startup-verified",
+      "gameId": "agos:simon2",
+      "edition": "simon2-dos-cd-demo-en.zip",
+      "recordedOn": "2026-11-15",
+      "observation": "English DOS CD demo: native edition detection, original village opening, native intro skip, movement, Save and Load restoring the original doorway position verified. Launcher Continue is not supported for AGOS; restart and use Load Game. No seeded checkpoint. Full playthrough and independent audible output not verified."
     },
     {
       "title": "Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe",

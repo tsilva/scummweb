@@ -1495,6 +1495,11 @@
       "file": "simon-the-sorcerer-demo-6f285ea4e75f275f0901a7074e5c460e4a24713f1dc8368d2ee94c1a540f9f30.jpg",
       "inputHash": "6f285ea4e75f275f0901a7074e5c460e4a24713f1dc8368d2ee94c1a540f9f30",
       "imageHash": "e6ae462697928646ac73bade074b6700cf36c77435eb60f24f44e1febd36a25a"
+    },
+    "simon-the-sorcerer-ii-the-lion-the-wizard-and-the-wardrobe-demo": {
+      "file": "simon-the-sorcerer-ii-the-lion-the-wizard-and-the-wardrobe-demo-078450fa836a5b201ebe40fb1e2089778ded07a04c404e7c67cf2b7f9ecf26b1.jpg",
+      "inputHash": "078450fa836a5b201ebe40fb1e2089778ded07a04c404e7c67cf2b7f9ecf26b1",
+      "imageHash": "6a5da97ab8bc6c18ea77ba94241363e7850ba9052ad8ad599e56d25a60d69f6f"
     }
   }
 }

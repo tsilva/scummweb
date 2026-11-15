@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "simon2": {
+    ...retroGameArtwork["agos:simon2"],
+    heroImageMobilePosition: "80% -8vh",
+    title: "Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe (Demo)",
+    shortTitle: "Simon the Sorcerer II (Demo)",
+    year: "1995",
+    language: "en",
+  },
   "simon1-demo": {
     ...retroGameArtwork["agos:simon1"],
     heroImageMobilePosition: "80% -8vh",

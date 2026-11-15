@@ -317,7 +317,9 @@ are disabled for this demo, so it has no checkpoint or Continue.
 
 Toonstruck’s English DOS demo uses the complete unchanged official ZIP and shares the original game’s artwork. Native intro skip preserves the opening Zanydu scene. Walking, Save/Load and Continue are verified; the original demo content and choices remain intact.
 
-Simon the Sorcerer’s English DOS CD demo keeps its complete unchanged official ZIP, including installer files and notices. Its brief publisher splash leads directly to the original prison scene. Movement and verb selection work. ScummWEB Save/Load and Continue are unavailable with the pinned engine, and the original quick-save command is rejected at the tested scene; no checkpoint is seeded.
+Simon the Sorcerer’s English DOS CD demo keeps its complete unchanged official ZIP, including installer files and notices. Its brief publisher splash leads directly to the original prison scene. Movement and verb selection work. ScummWEB Save/Load and the original quick-save command are rejected at the tested opening scenes; launcher Continue is unavailable for this engine. No checkpoint is seeded.
+
+Simon the Sorcerer II’s English DOS CD demo preserves the complete unchanged official ZIP, including its compressed setup bundle and notices. The original intro can be skipped with the supported native action. Movement and in-session Save/Load work; launcher Continue is unavailable for this engine, so restart and use Load Game. No checkpoint is seeded. Its catalog target follows the original fixed simon2 save prefix.
 
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
