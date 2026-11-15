@@ -120,6 +120,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "torin-demo": {
+    ...retroGameArtwork["sci:torin"],
+    heroImageMobilePosition: "80% -8vh",
+    title: "Torin's Passage (Demo)",
+    year: "1995",
+    language: "en",
+  },
   "nebular-demo": {
     ...retroGameArtwork["mads:nebular"],
     heroImageMobilePosition: "80% -8vh",

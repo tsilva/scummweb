@@ -960,6 +960,24 @@
         "basis": "The complete unchanged 20-file official English DOS interactive demo was inspected as data: ZIP integrity/safe paths, complete file hashes, ASCII/UTF-16/XOR69 and additional restriction scans, original README/batch files, all 139 bounded HAG entries and 456 raw/decoded MADSPACK blocks. The pinned native DCL decoder was used with validated offsets, sizes, exact output lengths and address/undefined sanitizers. MicroProse, Microsoft and PKWARE copyright notices are retained. No express demo redistribution grant or packaged prohibition was found. Eligibility uses only the user-authorized cautious assessment of official promotional hosting, not an express rights-holder license.",
         "preservation": "Serve the complete unchanged official ZIP, preserving all original executables, batch/configuration files, notices, sound drivers and HAG resources. No downloaded executable or installer was executed."
       }
+    },
+    {
+      "target": "torin-demo",
+      "title": "Torin's Passage (Demo)",
+      "engineId": "sci",
+      "gameId": "torin",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "torin-dos-win-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/sci/torin-dos-win-demo-en.zip",
+      "sha256": "fc2f9f35e1be60601571c5500b3a282b15b837dabd6fcce367798ac25ca24cfa",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-15",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "All33 original files were inspected as data: ZIP integrity/safe paths, complete hashes, ASCII/UTF16/XOR and additional restriction scans; original BBS postings/README/install scripts and plain Sierra installer Help; all561 SCI32 game resources were LZS-decoded with bounded map/header parity and exact lengths; all6 packed DH91 setup members were DCL-decoded through real end markers with exact consumed lengths and MZ/NE/MIDI/Help validation, then original104-topic WindowsHelp was decoded to coherent complete RTF/text. Original compiler, runtime, Sierra, Microsoft, SciTech and Husdawg notices are retained. No express demo redistribution grant or packaged prohibition was found. Eligibility uses only the user-authorized cautious assessment of official promotional hosting, not an express rights-holder license.",
+        "preservation": "Serve the complete unchanged official ZIP, preserving original setup archive, executables, DLLs, Help, documents, drivers and all game audio/resources. No downloaded executable or installer was run."
+      }
     }
   ]
 }
