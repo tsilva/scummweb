@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Putt-Putt Saves the Zoo (Demo)", target: "puttzoo-demo", engineId: "scumm", gameId: "puttzoo",
+    files: [["zoodemo.he0", 14337, 1935052607], ["zoodemo.he1", 13326164, 1569084410]],
+  },
+  {
     title: "Lands of Lore: The Throne of Chaos (Demo)", target: "lol-demo", engineId: "kyra", gameId: "lol",
     files: [["general.pak", 710633, 385577937], ["l01.pak", 68733, 2853084991]],
   },

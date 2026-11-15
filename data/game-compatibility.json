@@ -1976,6 +1976,14 @@
       "observation": "A game frame renders at startup."
     },
     {
+      "title": "Putt-Putt Saves the Zoo (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:puttzoo",
+      "edition": "puttzoo-win-demo-us.zip",
+      "recordedOn": "2026-11-15",
+      "observation": "English Windows HE72 demo: correct native edition, cold and cached bucket starts, original raft scene, native intro skip and inventory selection verified. Personal and hosted native saving rejected in the tested scene; no save or Continue checkpoint seeded. Full playthrough and independent audible output not verified."
+    },
+    {
       "title": "Putt-Putt Travels Through Time",
       "status": "startup-verified",
       "gameId": "scumm:putttime",

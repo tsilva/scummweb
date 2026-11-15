@@ -11207,6 +11207,52 @@
           2831828518
         ]
       ]
+    },
+    "puttzoo-demo": {
+      "url": "https://scummvm-games.tsilva.eu/puttzoo.zip",
+      "fingerprint": "64c4df2e81f442fcaa19ca557f7a6743a89030722782fa29b41e3cc08edf7496",
+      "files": [
+        [
+          "ZOODEMO.EXE",
+          30720,
+          4048382284
+        ],
+        [
+          "ZOODEMO.HE0",
+          14337,
+          1935052607
+        ],
+        [
+          "ZOODEMO.HE1",
+          13326164,
+          1569084410
+        ],
+        [
+          "ZOODEMO.HE2",
+          7569249,
+          1962885845
+        ],
+        [
+          "ZOODEMO.HE3",
+          36864,
+          1747299155
+        ],
+        [
+          "ZOODEMO.HE4",
+          9683210,
+          3953170872
+        ],
+        [
+          "ZOODEMO.HLP",
+          35217,
+          4249811085
+        ],
+        [
+          "ZOODEMO.W32",
+          293376,
+          3389867623
+        ]
+      ]
     }
   }
 }

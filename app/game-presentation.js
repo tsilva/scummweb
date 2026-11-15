@@ -120,6 +120,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "puttzoo-demo": {
+    ...retroGameArtwork["scumm:puttzoo"],
+    heroImageMobilePosition: "80% -30vh",
+    title: "Putt-Putt Saves the Zoo (Demo)",
+    year: "1995",
+    language: "en",
+  },
   "lol-demo": {
     ...retroGameArtwork["kyra:lol"],
     heroImageMobilePosition: "80% -8vh",
