@@ -675,6 +675,16 @@
       "platform": "pc",
       "extra": "CD/Demo",
       "readmeHref": "/launcher/notices/lol.txt"
+    },
+    {
+      "target": "puttzoo-demo",
+      "title": "Putt-Putt Saves the Zoo (Demo)",
+      "path": "/games/puttzoo",
+      "engineId": "scumm",
+      "gameId": "puttzoo",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }
