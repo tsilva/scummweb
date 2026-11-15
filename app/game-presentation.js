@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "scalpel-demo": {
+    ...retroGameArtwork["sherlock:scalpel"],
+    heroImageMobilePosition: "82% -8vh",
+    title: "The Lost Files of Sherlock Holmes: The Case of the Serrated Scalpel (Demo)",
+    year: "1992",
+    language: "en",
+    shortTitle: "Sherlock Holmes: The Serrated Scalpel (Demo)",
+  },
   "rtz-demo": {
     ...retroGameArtwork["made:rtz"],
     heroImageMobilePosition: "78% -8vh",

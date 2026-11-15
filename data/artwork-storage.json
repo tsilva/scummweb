@@ -39950,6 +39950,39 @@
       "contentType": "image/webp",
       "width": 480,
       "height": 640
+    },
+    "/launcher/responsive/scalpel-scummweb-generated-2026-11-15-r1-cover-320.webp": {
+      "key": "artwork/7af967d0ac35d69db8d245ebc05cb6cc81823a88985b530895db81b837735526/scalpel-scummweb-generated-2026-11-15-r1-cover-320.webp",
+      "sha256": "7af967d0ac35d69db8d245ebc05cb6cc81823a88985b530895db81b837735526",
+      "bytes": 32976,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/scalpel-scummweb-generated-2026-11-15-r1-cover-640.webp": {
+      "key": "artwork/82867a5fa1446262a5e7ae5d8550ec0a432d2572bfe076a36bbe4d37968c85a6/scalpel-scummweb-generated-2026-11-15-r1-cover-640.webp",
+      "sha256": "82867a5fa1446262a5e7ae5d8550ec0a432d2572bfe076a36bbe4d37968c85a6",
+      "bytes": 84138,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/scalpel-scummweb-generated-2026-11-15-r1-cover.webp": {
+      "key": "artwork/f436150853a1a33f528cfd49727a5d5665c6f93658ac8b0c8ecd63127e6f8805/scalpel-scummweb-generated-2026-11-15-r1-cover.webp",
+      "sha256": "f436150853a1a33f528cfd49727a5d5665c6f93658ac8b0c8ecd63127e6f8805",
+      "bytes": 161106,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200,
+      "placeholder": "UklGRmYAAABXRUJQVlA4IFoAAADwAQCdASoJAAwAAsBIJbACdAEQEqxRQgAA/u9lSsf1nbdO16woKha0YtoNOWcdd+Y12zqBqR83ZT5urOlOupqnuy408ZM7Dd2ADIeytDsPWPspmqfXcl4AAAA="
+    },
+    "/launcher/responsive/scalpel-scummweb-generated-2026-11-15-r1-cover-480.webp": {
+      "key": "artwork/f415e0e898cab6eb158e2bce7ed7ffd12631c48e931002337414609c95acec11/scalpel-scummweb-generated-2026-11-15-r1-cover-480.webp",
+      "sha256": "f415e0e898cab6eb158e2bce7ed7ffd12631c48e931002337414609c95acec11",
+      "bytes": 56588,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 640
     }
   },
   "images": {
@@ -54295,6 +54328,18 @@
         "/launcher/responsive/ween-scummweb-generated-2026-11-15-r2-cover-480.webp",
         "/launcher/responsive/ween-scummweb-generated-2026-11-15-r2-cover-640.webp",
         "/launcher/ween-scummweb-generated-2026-11-15-r2-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/scalpel-scummweb-generated-2026-11-15-r1-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/scalpel-scummweb-generated-2026-11-15-r1-cover.webp",
+      "webp": [
+        "/launcher/responsive/scalpel-scummweb-generated-2026-11-15-r1-cover-320.webp",
+        "/launcher/responsive/scalpel-scummweb-generated-2026-11-15-r1-cover-480.webp",
+        "/launcher/responsive/scalpel-scummweb-generated-2026-11-15-r1-cover-640.webp",
+        "/launcher/scalpel-scummweb-generated-2026-11-15-r1-cover.webp"
       ],
       "avif": []
     }

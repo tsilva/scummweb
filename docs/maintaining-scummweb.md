@@ -339,6 +339,8 @@ Tony Tough’s English Windows extracted demo keeps the complete unchanged offic
 
 Return to Zork’s English DOS v1.2 CD demo preserves the complete unchanged official ZIP, including its compressed RED driver archives and original Anthology readme. The original valley, native intro action and sign interactions work. Use the game’s F2 Save and F3 Load menus; saved progress restores after a fresh launch, while ScummWEB’s save drawer and Continue are unavailable for this engine. The upstream demo has no ripped CD audio tracks and displays ScummVM’s CD-audio notice; acknowledge it to proceed. Its checksum-pinned ZIP exceeds the standard 128 MiB download limit, so this catalog target allows 150 MiB while retaining the standard 256 MiB expanded limit.
 
+Sherlock Holmes: The Serrated Scalpel’s English DOS interactive demo preserves the complete unchanged official ZIP. It starts with the original Lestrade dialogue and verb interface, without a seeded checkpoint; examination, movement and native save/Continue restoration are verified.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.
