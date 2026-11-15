@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "The Legend of Kyrandia: Hand of Fate (Demo)", target: "kyra2-demo", engineId: "kyra", gameId: "kyra2",
+    files: [["thanks.cps", 7768, 3139399110], ["hofcd.exe", 199284, 1859532215]],
+  },
+  {
     title: "Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe (Demo)", target: "simon2", engineId: "agos", gameId: "simon2",
     files: [["gsptr30", 58757, 2279999647], ["simon2.gme", 4187270, 1777768517]],
   },

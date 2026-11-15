@@ -120,6 +120,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "kyra2-demo": {
+    ...retroGameArtwork["kyra:kyra2"],
+    heroImageMobilePosition: "80% -8vh",
+    title: "The Legend of Kyrandia: Hand of Fate (Demo)",
+    year: "1993",
+    language: "en",
+  },
   "simon2": {
     ...retroGameArtwork["agos:simon2"],
     heroImageMobilePosition: "80% -8vh",

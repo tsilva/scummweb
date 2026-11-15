@@ -1,0 +1,18 @@
+
+   If you are using a Sound Blaster compatible sound card and are not hearing
+   digitized speech or sounds, make sure your AUTOEXEC.BAT file contains the
+   following line...
+
+	SET BLASTER=A220 I7 D1 T1
+
+   ...where A### is the address of your card (220 or 240),
+   I# is the interrupt (5, 7, 10), D# is the DMA
+   channel (1 or 3), and always T1.
+
+   Please consult your sound card manual with any options regarding emulation
+   of the Sound Blaster. Make sure to reboot your computer after making any
+   changes to AUTOEXEC.BAT, so that this setting will take effect.
+
+   Also, if you have run MEMMAKER from DOS 6.2, a HIGHSCAN option may have
+   been added to the EMM386 command line in your CONFIG.SYS file. If you
+   experience problems, you should try removing the HIGHSCAN option.

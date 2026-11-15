@@ -25,6 +25,7 @@ test("fresh browser configuration preserves UTF-8 titles and records byte length
 
 test("official classic archives are recognized by contents without relying on filenames", () => {
   for (const [target, files] of [
+    ["kyra2-demo", [["THANKS.CPS", 7768, 3139399110], ["HOFCD.EXE", 199284, 1859532215]]],
     ["simon2", [["GSPTR30", 58757, 2279999647], ["SIMON2.GME", 4187270, 1777768517]]],
     ["simon1-demo", [["GAMEPC", 30879, 1563266732], ["SIMON.GME", 1237886, 3194878688]]],
     ["toon-demo", [["LOCAL.PAK", 2680573, 3491990584], ["GENERIC.SVL", 7739319, 281706566]]],
