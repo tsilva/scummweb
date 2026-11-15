@@ -1991,6 +1991,14 @@
       "observation": "ScummVM detects the Windows edition and renders a game frame."
     },
     {
+      "title": "Putt-Putt Travels Through Time (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:putttime",
+      "edition": "putttime-win-demo-us.zip",
+      "recordedOn": "2026-11-15",
+      "observation": "English US Windows HE90 demo: correct native detector/selected game, cold and cached bucket starts, original four-era portal choice, native intro skip and entering the dinosaur era verified. Personal and hosted native saving rejected in that tested scene; no save or Continue checkpoint seeded. Full playthrough and independent audible output not verified."
+    },
+    {
       "title": "Putt-Putt's Fun Pack",
       "status": "startup-verified",
       "gameId": "scumm:funpack",

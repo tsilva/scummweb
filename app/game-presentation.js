@@ -120,6 +120,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "putttime-demo": {
+    ...retroGameArtwork["scumm:putttime"],
+    heroImageMobilePosition: "65% -30vh",
+    title: "Putt-Putt Travels Through Time (Demo)",
+    year: "1997",
+    language: "en",
+  },
   "puttzoo-demo": {
     ...retroGameArtwork["scumm:puttzoo"],
     heroImageMobilePosition: "80% -30vh",

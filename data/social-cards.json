@@ -1515,6 +1515,11 @@
       "file": "putt-putt-saves-the-zoo-demo-0a15a4c8f47a7b021eddac9a7fbb5f492b84d03fec9bcb388a0b51be84e9397c.jpg",
       "inputHash": "0a15a4c8f47a7b021eddac9a7fbb5f492b84d03fec9bcb388a0b51be84e9397c",
       "imageHash": "4a1abbc02a0e6abbc01ec7937327053858d8882de084728510049f4b7c04d08e"
+    },
+    "putt-putt-travels-through-time-demo": {
+      "file": "putt-putt-travels-through-time-demo-8dbe933482c2f34d3094580ccd6454647293ed4a45b50d044fa76ecc296e89fe.jpg",
+      "inputHash": "8dbe933482c2f34d3094580ccd6454647293ed4a45b50d044fa76ecc296e89fe",
+      "imageHash": "53eab240e3b8b4d32197a03f56ca6a0e1079d53e202d7ca328c72ab3c979946f"
     }
   }
 }

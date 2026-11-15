@@ -685,6 +685,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "putttime-demo",
+      "title": "Putt-Putt Travels Through Time (Demo)",
+      "path": "/games/putttime",
+      "engineId": "scumm",
+      "gameId": "putttime",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

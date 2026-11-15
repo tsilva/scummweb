@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Putt-Putt Travels Through Time (Demo)", target: "putttime-demo", engineId: "scumm", gameId: "putttime",
+    files: [["timedemo.he0", 18394, 3353746237], ["timedemo.he1", 12042331, 451864772]],
+  },
+  {
     title: "Putt-Putt Saves the Zoo (Demo)", target: "puttzoo-demo", engineId: "scumm", gameId: "puttzoo",
     files: [["zoodemo.he0", 14337, 1935052607], ["zoodemo.he1", 13326164, 1569084410]],
   },

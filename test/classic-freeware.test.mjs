@@ -25,6 +25,7 @@ test("fresh browser configuration preserves UTF-8 titles and records byte length
 
 test("official classic archives are recognized by contents without relying on filenames", () => {
   for (const [target, files] of [
+    ["putttime-demo", [["TIMEDEMO.HE0", 18394, 3353746237], ["TIMEDEMO.HE1", 12042331, 451864772]]],
     ["puttzoo-demo", [["ZOODEMO.HE0", 14337, 1935052607], ["ZOODEMO.HE1", 13326164, 1569084410]]],
     ["lol-demo", [["GENERAL.PAK", 710633, 385577937], ["L01.PAK", 68733, 2853084991]]],
     ["kyra2-demo", [["THANKS.CPS", 7768, 3139399110], ["HOFCD.EXE", 199284, 1859532215]]],

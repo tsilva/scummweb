@@ -11253,6 +11253,62 @@
           3389867623
         ]
       ]
+    },
+    "putttime-demo": {
+      "url": "https://scummvm-games.tsilva.eu/putttime.zip",
+      "fingerprint": "a7a0bda3309454364d4ef7f33e81421c1df95dd152258d08ed47b495ba2d795c",
+      "files": [
+        [
+          "TIMEDEMO.D32",
+          36352,
+          2792432017
+        ],
+        [
+          "TIMEDEMO.DLL",
+          8896,
+          2724663474
+        ],
+        [
+          "TIMEDEMO.EXE",
+          21616,
+          222143432
+        ],
+        [
+          "TIMEDEMO.HE0",
+          18394,
+          3353746237
+        ],
+        [
+          "TIMEDEMO.HE1",
+          12042331,
+          451864772
+        ],
+        [
+          "TIMEDEMO.HE2",
+          6434131,
+          170837451
+        ],
+        [
+          "TIMEDEMO.HE4",
+          9557765,
+          3099628726
+        ],
+        [
+          "TIMEDEMO.HLP",
+          337614,
+          307860129
+        ],
+        [
+          "TIMEDEMO.INF",
+          2237,
+          1437077227
+        ],
+        [
+          "TIMEDEMO.W32",
+          365568,
+          2132101262
+        ]
+      ]
     }
   }
 }
