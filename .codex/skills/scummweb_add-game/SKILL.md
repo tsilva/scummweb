@@ -67,6 +67,13 @@ Use [$scummweb_game-assets](../scummweb_game-assets/SKILL.md). Check existing
 published mappings before generating anything. Verify reused public image bodies
 against their expected hashes, sizes, MIME types and decoded dimensions.
 
+- Demos and full versions MUST share the same hero and box art. Reuse the
+  existing game's logical mappings; do not generate demo-specific replacements.
+  When artwork exists only on the demo, wire any recognized/imported full-game
+  entry to that same set. Verify resolved `heroImage` and `posterImage` equality
+  across both entries and imported copies; run the sharing regression in
+  `test/retro-game-metadata.test.mjs`. Keep `(Demo)` labels and gameplay capture
+  attribution edition-specific.
 - A cover is a portrait, faithful restoration of the original box front,
   preserving its artwork, title typography, logos, composition and palette.
   Use the original box front as the reference; obtain a valid source before

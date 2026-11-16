@@ -774,6 +774,8 @@ its [generation reference](../.codex/skills/scummweb_game-assets/references/gene
 reference credits, dates, prompts, hashes, dimensions, and any approved
 illustrated compositions. The game mappings retain source credits and
 `heroImageMobilePosition` can adjust the narrow-screen crop.
+Demos and full versions share the same hero and box art; keep demo labels and
+edition-specific gameplay captures separate from those shared images.
 Desktop hero titles shrink to preserve whole words; mobile titles wrap naturally.
 The hero slideshow uses the catalogue's Featured order, including imported games
 and demos, regardless of the catalogue's current sort or genre filter.
@@ -801,8 +803,10 @@ its unfinished preload by clearing both AVIF and fallback sources. Completed
 covers stay warm; clicking commits the preload through the navigation handoff.
 Obsolete slideshow preloads clear their sources too.
 The selected slide commits before scrolling into view, avoiding a frame of the
-previous game. Unfinished neighbor preloads wait until the current hero decodes;
-already decoded neighbors remain available for immediate navigation.
+previous game. Slideshow warming waits for the rendered hero to decode and have
+a paint opportunity; the initial hero does not create a hidden duplicate.
+The initial backdrop requests synchronous decoding on home and game pages.
+Already decoded neighbors remain available for immediate navigation.
 
 ## Branding
 

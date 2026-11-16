@@ -2,13 +2,33 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import { createHash } from "node:crypto";
 import test from "node:test";
-import { getImportedGamePresentation } from "../app/game-presentation.js";
+import { getGamePresentation, getImportedGamePresentation, getRecognizedGamePresentations } from "../app/game-presentation.js";
 import { getRecognizedGames } from "../app/recognized-games.mjs";
 import { getSourceGamePresentation } from "../app/game-play-source.mjs";
 import { getVersionedSiteAssetPath } from "../app/asset-paths.js";
 import storage from "../data/artwork-storage.json" with { type: "json" };
 
 const artwork = JSON.parse(fs.readFileSync(new URL("../app/retro-game-artwork.json", import.meta.url)));
+
+test("demos share hero and box art with their recognized full game and imported copies", () => {
+  const catalog = JSON.parse(fs.readFileSync(new URL("../scummvm-shell/games.json", import.meta.url)));
+  const recognized = getRecognizedGamePresentations();
+  let compared = 0;
+  for (const game of catalog.games.filter(({ title }) => /\(Demo\)$/.test(title))) {
+    const title = game.title.replace(/\s*\(Demo\)$/, "");
+    const full = recognized.find(({ displayTitle }) => displayTitle === title);
+    if (!full) continue; // Standalone demos may have no recognized full-game entry.
+    const demo = getGamePresentation({ ...game, displayTitle: game.title });
+    const imported = getImportedGamePresentation(`${title}.zip`);
+    for (const field of ["heroImage", "posterImage"]) {
+      assert.ok(demo[field], `${game.target} needs ${field}`);
+      assert.equal(demo[field], full[field], `${game.target} and its full game must share ${field}`);
+      assert.equal(demo[field], imported?.[field], `${game.target} and its imported full game must share ${field}`);
+    }
+    compared++;
+  }
+  assert.ok(compared >= 40, "exercise the catalog's recognized demo/full-game pairs");
+});
 
 test("recognized imports retain their shared hero artwork and focal position", () => {
   for (const [id, game] of Object.entries(artwork)) {

@@ -83,7 +83,8 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
     return () => window.clearTimeout(timeout);
   }, [isDesktop, warmDistantSlides]);
 
-  useEffect(() => preloadHeroWindow(JSON.parse(preloadKey), preloadedImages.current), [preloadKey]);
+  useEffect(() => preloadHeroWindow(JSON.parse(preloadKey), preloadedImages.current,
+    document.querySelector(".hero-stage-library .hero-backdrop-image")), [preloadKey]);
 
   useEffect(() => () => {
     for (const picture of preloadedImages.current.values()) disposeHeroPreload(picture);

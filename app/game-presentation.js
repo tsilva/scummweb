@@ -561,6 +561,7 @@ const artByTarget = {
     studio,
     year,
     summary,
+    heroImage: retroGameArtwork[`${engineId}:${target}`]?.heroImage ?? bundledArtworkByTarget[`${target}-demo`]?.heroImage,
     posterImage: retroGameArtwork[`${engineId}:${target}`]?.posterImage ?? bundledArtworkByTarget[`${target}-demo`]?.posterImage,
     screenshots: retroGameArtwork[`${engineId}:${target}`]?.screenshots ?? [],
   }])),

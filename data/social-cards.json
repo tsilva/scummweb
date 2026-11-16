@@ -156,6 +156,11 @@
       "inputHash": "3eb556a6deb84170b05ad5ba8ddc762d1fcd02d1551ceb3ae2e38eb5cc6bfdf4",
       "imageHash": "849a85bfe4626310bb961101a67ca6675c1c6570ec0662f9dcb662111cbd3ce8"
     },
+    "bud-tucker-in-double-trouble-demo": {
+      "file": "bud-tucker-in-double-trouble-demo-8fc769f116d86209949eb6bfbfe22b2cfebda5632269258b78828c9ea8815dab.jpg",
+      "inputHash": "8fc769f116d86209949eb6bfbfe22b2cfebda5632269258b78828c9ea8815dab",
+      "imageHash": "7bf0c914ebcbef7d388e2f512d3ed961b33d47863a710b6dcfda85de64f8f1ba"
+    },
     "castle-master-demo": {
       "file": "castle-master-demo-e34da78bc2e4b8296f7c197fcbdb33bf165d643328240b3c745dbfdfa88d6fd2.jpg",
       "inputHash": "e34da78bc2e4b8296f7c197fcbdb33bf165d643328240b3c745dbfdfa88d6fd2",
@@ -307,9 +312,9 @@
       "imageHash": "1f119add938c4e61562523ba1d7969f8a79794894965986e5eaefdf87a7bff93"
     },
     "escape-from-monkey-island": {
-      "file": "escape-from-monkey-island-dc966fdde90d7919ac220a57c2053ce557907936631c39421f6d584b49d78f55.jpg",
-      "inputHash": "dc966fdde90d7919ac220a57c2053ce557907936631c39421f6d584b49d78f55",
-      "imageHash": "8efc0c2d89d1dcb7d8d8e4f5b8d16dd892a611f465852e11bae851fe6ac453d0"
+      "file": "escape-from-monkey-island-051d006a9542135a962bcfc753def6d24a6e993796ca024f60cba7e29ac5d0d4.jpg",
+      "inputHash": "051d006a9542135a962bcfc753def6d24a6e993796ca024f60cba7e29ac5d0d4",
+      "imageHash": "499c6e3a40e1275a743733019d5a47f806ac8a7bf94311e343351f48d6254ee8"
     },
     "escape-from-monkey-island-demo": {
       "file": "escape-from-monkey-island-demo-84411b4ecb6c6680a46f13ee151731990b9862a7d555e03dcde2ddb33a4c1ca9.jpg",
@@ -507,9 +512,9 @@
       "imageHash": "b0217cf3879c18d3af2aa5ad84310968cc09784f05d9bff88e35fd8615448184"
     },
     "grim-fandango": {
-      "file": "grim-fandango-1b640c081e1d44916aa86c08c8b7010e8a4e6b6d7758a11640bdbe864c9613bb.jpg",
-      "inputHash": "1b640c081e1d44916aa86c08c8b7010e8a4e6b6d7758a11640bdbe864c9613bb",
-      "imageHash": "7c84772a3948f143bbd162f986bf02761f72b938a9051d765142f4d2473442f5"
+      "file": "grim-fandango-4f57230e3a21d4be44c4b1dd6703f6aa0c2a9d5e36a11fa08b8774139b404c48.jpg",
+      "inputHash": "4f57230e3a21d4be44c4b1dd6703f6aa0c2a9d5e36a11fa08b8774139b404c48",
+      "imageHash": "6521ac6c56575ccb3743ee0b91bbb06f23722f4b87512d9fc562e6dc0d310b87"
     },
     "grim-fandango-demo": {
       "file": "grim-fandango-demo-3bd5000bde545058686971aebf937208be0f7859176003e72b69ebeb740cea60.jpg",
@@ -750,6 +755,11 @@
       "file": "lighthouse-the-dark-being-4e95c56d185c52dae2ec38e14498b416122329147004cdd1b25b873eda614964.jpg",
       "inputHash": "4e95c56d185c52dae2ec38e14498b416122329147004cdd1b25b873eda614964",
       "imageHash": "78bc8e0c23076c320336567a2808981b570ab8edc2451ee80d5088f6fdb39c7b"
+    },
+    "lighthouse-the-dark-being-demo": {
+      "file": "lighthouse-the-dark-being-demo-9ff9e9b3ee321efa84b8c03031405176e4777e1485b83c2324db93fc3cd62151.jpg",
+      "inputHash": "9ff9e9b3ee321efa84b8c03031405176e4777e1485b83c2324db93fc3cd62151",
+      "imageHash": "b32a7f3821f187954a03fcd457f7788f4ab590832128ee85d7502facaf1329a1"
     },
     "little-monster-at-school": {
       "file": "little-monster-at-school-d52a516cd293d68f4938dcc4121e141706a544e33934dd1204a37d7de0e3cb29.jpg",
@@ -1111,10 +1121,20 @@
       "inputHash": "efdbb7c3652c72d2d8f5031718c956ec99ae436792e26c69da623cb6afea0b0e",
       "imageHash": "9141d6fdccb0637c33e32b9aef4c927b55326dbf72bf60a0bff0e794137b352d"
     },
+    "return-to-zork-demo": {
+      "file": "return-to-zork-demo-58acdb472c613060622303215ada7927844ce81de1818f988367a62c448bab40.jpg",
+      "inputHash": "58acdb472c613060622303215ada7927844ce81de1818f988367a62c448bab40",
+      "imageHash": "12ceeb29ca43c8a9974bbe44ebe531c3c43a4fd0349be87effe88174aed99663"
+    },
     "rex-nebular-and-the-cosmic-gender-bender": {
       "file": "rex-nebular-and-the-cosmic-gender-bender-be7eb5dc34f46de662f4e2f567609adade79aaaaf65dea78fafd1a7cfa49ab75.jpg",
       "inputHash": "be7eb5dc34f46de662f4e2f567609adade79aaaaf65dea78fafd1a7cfa49ab75",
       "imageHash": "abae8971090cae467599b07efe4723cad4d4e455090f4be011bfad34cb88824c"
+    },
+    "rex-nebular-and-the-cosmic-gender-bender-demo": {
+      "file": "rex-nebular-and-the-cosmic-gender-bender-demo-5553cf88ea76f8cb942dc1611b337d0513e46ae384dde494d63f89ae328a132b.jpg",
+      "inputHash": "5553cf88ea76f8cb942dc1611b337d0513e46ae384dde494d63f89ae328a132b",
+      "imageHash": "2848ac53fa4828bb9ad410bbf5b723da0bf48bf0b283c4d48373862b6aba075d"
     },
     "ringworld-revenge-of-the-patriarch": {
       "file": "ringworld-revenge-of-the-patriarch-e4a3de8afa7de99fd607dcd436724db746c6ab718184e83db53aadfcac4e7773.jpg",
@@ -1165,6 +1185,11 @@
       "file": "shivers-4527bd0603f159eaf9d62f8e6f7b93f6ffdaa2e567702788a2b3c70dd748418e.jpg",
       "inputHash": "4527bd0603f159eaf9d62f8e6f7b93f6ffdaa2e567702788a2b3c70dd748418e",
       "imageHash": "37a2ba71f2d2cf6db5520ba4f349b522c03ef7ca9ae0103901c780f7e10c6934"
+    },
+    "shivers-demo": {
+      "file": "shivers-demo-8f23337ef8ec76c46fbd06244031bb4b8b1b04e25a1c5036b25f7ccd5fc9a98d.jpg",
+      "inputHash": "8f23337ef8ec76c46fbd06244031bb4b8b1b04e25a1c5036b25f7ccd5fc9a98d",
+      "imageHash": "d0b2bd7d34a973d60a9b5a027e18675b104ba4f1c6445a41c682ca37804d257d"
     },
     "simon-the-sorcerer": {
       "file": "simon-the-sorcerer-c87dd6d5b05a17934be972a70d9eb0c4c988d55cc3775ccc164095dd599a656f.jpg",
@@ -1416,6 +1441,11 @@
       "inputHash": "8db6487ae2b2c573c2095d0aac7caba819f714e855d0dbe1933b0626e65d404a",
       "imageHash": "a32b320400aa6f8969f1dd904507780cd54774d22fff29be88427a07029b51d1"
     },
+    "the-lost-files-of-sherlock-holmes-the-case-of-the-serrated-scalpel-demo": {
+      "file": "the-lost-files-of-sherlock-holmes-the-case-of-the-serrated-scalpel-demo-a494258afe743e5cefb9175750b602a9509451340bbf7edf6fd48b1a8c9cc811.jpg",
+      "inputHash": "a494258afe743e5cefb9175750b602a9509451340bbf7edf6fd48b1a8c9cc811",
+      "imageHash": "ba0e489583e6cec51984991aada71c8dc005dbb9e717df09bedf3b3f6784c7fb"
+    },
     "the-manhole": {
       "file": "the-manhole-b8c0be69b7f8140810334f309023ef4e411cdc716f25e7dfe65d8fd166a2fa88.jpg",
       "inputHash": "b8c0be69b7f8140810334f309023ef4e411cdc716f25e7dfe65d8fd166a2fa88",
@@ -1451,6 +1481,11 @@
       "inputHash": "cae2339b424cb2ff62d36793b5dfc61c484a79fc79b249e69256f9d0ee190528",
       "imageHash": "768d8026b37144b33bb01a7e887e6e1b7c6a55b6a012d721e11e9636757c2eae"
     },
+    "tony-tough-and-the-night-of-roasted-moths-demo": {
+      "file": "tony-tough-and-the-night-of-roasted-moths-demo-98b4dcb0237e31f2ca33e6ab4345a847fa2fb0f4aec08f88fd06c3f1a1692302.jpg",
+      "inputHash": "98b4dcb0237e31f2ca33e6ab4345a847fa2fb0f4aec08f88fd06c3f1a1692302",
+      "imageHash": "e34b5226857c36753f66d1fb30ef3eb1c31b45049eb8a53fb63ef00739c9d9ad"
+    },
     "toonstruck": {
       "file": "toonstruck-589f2d840a3586fb889517f637087b68ff4b89bba6b34799ea54dc36d06c020a.jpg",
       "inputHash": "589f2d840a3586fb889517f637087b68ff4b89bba6b34799ea54dc36d06c020a",
@@ -1466,10 +1501,20 @@
       "inputHash": "6cfbb0df580e9d180f7d253b37a72b13bf42be587017b2261ce7188c2b41450b",
       "imageHash": "6679bcc02a95128c8225af86060786d4f6387bc6c36b7bd1e4c3aab1250a7fab"
     },
+    "torin-s-passage-demo": {
+      "file": "torin-s-passage-demo-7c69d1e07dcebce3fcec5498bb81f4033522b7099b76643cf2ff7429fb2fa9a9.jpg",
+      "inputHash": "7c69d1e07dcebce3fcec5498bb81f4033522b7099b76643cf2ff7429fb2fa9a9",
+      "imageHash": "21776412c95302aa6b05741534c99f332d606b89f6deaf0624ab7dee21678800"
+    },
     "touche-the-adventures-of-the-fifth-musketeer": {
       "file": "touche-the-adventures-of-the-fifth-musketeer-3a57fec55395bb3dee5ac2c3fdabba34a4e10169c4d5bc4b23f4358748ccf82a.jpg",
       "inputHash": "3a57fec55395bb3dee5ac2c3fdabba34a4e10169c4d5bc4b23f4358748ccf82a",
       "imageHash": "05952dcd551d671a1d5a416a8419e326bad1456dd2f88cc4b30c751e01adea69"
+    },
+    "touche-the-adventures-of-the-fifth-musketeer-demo": {
+      "file": "touche-the-adventures-of-the-fifth-musketeer-demo-8e39c536acc562cf92a87d8a57a9d909d4cb2fbb32e177802f86532cb7927cef.jpg",
+      "inputHash": "8e39c536acc562cf92a87d8a57a9d909d4cb2fbb32e177802f86532cb7927cef",
+      "imageHash": "0f32ab4eca2b06e50f1baa6c19943e94d352f2ac07b46aa53609ac66e283c982"
     },
     "troll-s-tale": {
       "file": "troll-s-tale-9a0dd5de513bc8eb028e17f883b92bf4a3443513e9edc3b96106d58f25778cc5.jpg",
@@ -1530,51 +1575,6 @@
       "file": "zork-nemesis-the-forbidden-lands-108534972258666dc7b2fc57846d118cfc91dc70049447eb5827da71e9407856.jpg",
       "inputHash": "108534972258666dc7b2fc57846d118cfc91dc70049447eb5827da71e9407856",
       "imageHash": "eae9e06b8cefa2e3ede3113a6b615c163974f119d4df9387d2afad4fc9865699"
-    },
-    "touche-the-adventures-of-the-fifth-musketeer-demo": {
-      "file": "touche-the-adventures-of-the-fifth-musketeer-demo-8e39c536acc562cf92a87d8a57a9d909d4cb2fbb32e177802f86532cb7927cef.jpg",
-      "inputHash": "8e39c536acc562cf92a87d8a57a9d909d4cb2fbb32e177802f86532cb7927cef",
-      "imageHash": "0f32ab4eca2b06e50f1baa6c19943e94d352f2ac07b46aa53609ac66e283c982"
-    },
-    "tony-tough-and-the-night-of-roasted-moths-demo": {
-      "file": "tony-tough-and-the-night-of-roasted-moths-demo-98b4dcb0237e31f2ca33e6ab4345a847fa2fb0f4aec08f88fd06c3f1a1692302.jpg",
-      "inputHash": "98b4dcb0237e31f2ca33e6ab4345a847fa2fb0f4aec08f88fd06c3f1a1692302",
-      "imageHash": "e34b5226857c36753f66d1fb30ef3eb1c31b45049eb8a53fb63ef00739c9d9ad"
-    },
-    "return-to-zork-demo": {
-      "file": "return-to-zork-demo-58acdb472c613060622303215ada7927844ce81de1818f988367a62c448bab40.jpg",
-      "inputHash": "58acdb472c613060622303215ada7927844ce81de1818f988367a62c448bab40",
-      "imageHash": "12ceeb29ca43c8a9974bbe44ebe531c3c43a4fd0349be87effe88174aed99663"
-    },
-    "the-lost-files-of-sherlock-holmes-the-case-of-the-serrated-scalpel-demo": {
-      "file": "the-lost-files-of-sherlock-holmes-the-case-of-the-serrated-scalpel-demo-a494258afe743e5cefb9175750b602a9509451340bbf7edf6fd48b1a8c9cc811.jpg",
-      "inputHash": "a494258afe743e5cefb9175750b602a9509451340bbf7edf6fd48b1a8c9cc811",
-      "imageHash": "ba0e489583e6cec51984991aada71c8dc005dbb9e717df09bedf3b3f6784c7fb"
-    },
-    "bud-tucker-in-double-trouble-demo": {
-      "file": "bud-tucker-in-double-trouble-demo-8fc769f116d86209949eb6bfbfe22b2cfebda5632269258b78828c9ea8815dab.jpg",
-      "inputHash": "8fc769f116d86209949eb6bfbfe22b2cfebda5632269258b78828c9ea8815dab",
-      "imageHash": "7bf0c914ebcbef7d388e2f512d3ed961b33d47863a710b6dcfda85de64f8f1ba"
-    },
-    "rex-nebular-and-the-cosmic-gender-bender-demo": {
-      "file": "rex-nebular-and-the-cosmic-gender-bender-demo-5553cf88ea76f8cb942dc1611b337d0513e46ae384dde494d63f89ae328a132b.jpg",
-      "inputHash": "5553cf88ea76f8cb942dc1611b337d0513e46ae384dde494d63f89ae328a132b",
-      "imageHash": "2848ac53fa4828bb9ad410bbf5b723da0bf48bf0b283c4d48373862b6aba075d"
-    },
-    "torin-s-passage-demo": {
-      "file": "torin-s-passage-demo-7c69d1e07dcebce3fcec5498bb81f4033522b7099b76643cf2ff7429fb2fa9a9.jpg",
-      "inputHash": "7c69d1e07dcebce3fcec5498bb81f4033522b7099b76643cf2ff7429fb2fa9a9",
-      "imageHash": "21776412c95302aa6b05741534c99f332d606b89f6deaf0624ab7dee21678800"
-    },
-    "shivers-demo": {
-      "file": "shivers-demo-8f23337ef8ec76c46fbd06244031bb4b8b1b04e25a1c5036b25f7ccd5fc9a98d.jpg",
-      "inputHash": "8f23337ef8ec76c46fbd06244031bb4b8b1b04e25a1c5036b25f7ccd5fc9a98d",
-      "imageHash": "d0b2bd7d34a973d60a9b5a027e18675b104ba4f1c6445a41c682ca37804d257d"
-    },
-    "lighthouse-the-dark-being-demo": {
-      "file": "lighthouse-the-dark-being-demo-9ff9e9b3ee321efa84b8c03031405176e4777e1485b83c2324db93fc3cd62151.jpg",
-      "inputHash": "9ff9e9b3ee321efa84b8c03031405176e4777e1485b83c2324db93fc3cd62151",
-      "imageHash": "b32a7f3821f187954a03fcd457f7788f4ab590832128ee85d7502facaf1329a1"
     }
   }
 }
