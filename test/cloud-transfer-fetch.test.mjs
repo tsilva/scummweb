@@ -21,10 +21,11 @@ test("upload percentage counts confirmed offsets, never sent buffers or failed r
   await failed(endpoint("upload"), options);
 });
 
-test("downloads report actual stream chunks with identical bytes, status, headers and cancellation", async () => {
+test("downloads report actual stream chunks with identical bytes, status, headers and cancellation", { timeout: 2000 }, async () => {
   const transfer = { op: "download", total: 100 }, events = [];
-  let cancelled = false;
-  const source = new ReadableStream({ start(controller) { controller.enqueue(new Uint8Array(42).fill(7)); }, cancel() { cancelled = true; } });
+  let confirmCancellation;
+  const cancelled = new Promise(resolve => { confirmCancellation = resolve; });
+  const source = new ReadableStream({ start(controller) { controller.enqueue(new Uint8Array(42).fill(7)); }, cancel() { confirmCancellation(); } });
   const observed = createCloudTransferFetch(async () => new Response(source, { headers: { "Content-Length": "100", "X-Native": "kept" } }), () => transfer,
     (operation, bytes) => events.push(bytes));
   const response = await observed(endpoint("download"));
@@ -32,7 +33,8 @@ test("downloads report actual stream chunks with identical bytes, status, header
   const reader = response.body.getReader();
   assert.deepEqual((await reader.read()).value, new Uint8Array(42).fill(7));
   assert.deepEqual(events, [{ loaded: 42, total: 100 }]);
-  await reader.cancel(); assert.equal(cancelled, true);
+  await reader.cancel();
+  await cancelled; // Node versions differ in when the pipe forwards cancellation.
 });
 
 test("metadata, provider errors, and stale operations never impersonate save transfers", async () => {
