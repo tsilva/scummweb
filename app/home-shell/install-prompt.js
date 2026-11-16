@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { captureException } from "@sentry/nextjs";
+import { captureException } from "../../lib/browser-sentry.mjs";
 
 const dismissalKey = "scummweb.install-prompt-dismissed";
 const visitsKey = "scummweb.install-prompt-visits";

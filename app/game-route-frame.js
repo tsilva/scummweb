@@ -1,6 +1,6 @@
 "use client";
 
-import { captureMessage, withScope } from "@sentry/nextjs";
+import { withBrowserSentry } from "../lib/browser-sentry.mjs";
 import { Keyboard } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -355,7 +355,7 @@ export default function GameRouteFrame({
       const description = BOOT_ERROR_MESSAGES.get(stage);
       if (!frameSrc || !description || frameBoot.ready || frameBoot.reported) return;
       frameBoot.reported = true;
-      withScope((scope) => {
+      void withBrowserSentry(({ withScope, captureMessage }) => withScope((scope) => {
         if (!catalogLaunch) {
           // The page URL or navigation breadcrumbs can contain a private ZIP link.
           scope.addEventProcessor(({ request, breadcrumbs, transaction, contexts, ...event }) => {
@@ -380,7 +380,7 @@ export default function GameRouteFrame({
             },
           },
         });
-      });
+      }));
     }
 
     const navigationTimer = loadArchive && frameSrc && !archiveFrameDocument ? window.setTimeout(async () => {

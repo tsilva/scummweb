@@ -203,6 +203,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       if (name === "react-dom") return { flushSync(callback) { callback(); render(); } };
       if (name.endsWith("/mobile-controls.mjs")) return mobileControls;
       if (name.endsWith("/voice-command.mjs")) return voiceCommands;
+      if (name === "../lib/browser-sentry.mjs") return { withBrowserSentry: (callback) => callback(require("@sentry/nextjs")) };
       if (name === "@sentry/nextjs") return {
         withScope(callback) {
           try { callback({ addEventProcessor: (processor) => { eventProcessor = processor; } }); }
