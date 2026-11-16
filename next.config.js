@@ -47,6 +47,9 @@ function getSentryEnvironment() {
 const nextConfig = {
   ...(prebuiltDeploymentId ? { deploymentId: prebuiltDeploymentId } : {}),
   distDir: getDistDir(),
+  experimental: {
+    inlineCss: true,
+  },
   turbopack: {
     rules: {
       "**/lib/artwork-data.mjs": {
