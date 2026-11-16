@@ -1,4 +1,4 @@
-"""Trusted single-demo signer; credentials arrive only from the reviewed proxy."""
+"""Trusted single-package signer; credentials arrive only through the reviewed proxy."""
 
 import base64
 import contextlib
@@ -286,7 +286,7 @@ class Bridge:
         plan = self.plan
         self.stage = "source-validation"
         source = validate(self.root, plan)
-        key = plan["gameId"] + ".zip"
+        key = plan.get("key", plan["gameId"] + ".zip")
         self.stage = "existing-object-check"
         existing = self.head(key, credential)
         uploaded = False

@@ -1,8 +1,12 @@
-# Publishing unchanged official demos
+# Publishing game downloads
 
 Game archives are separate from the application deployment. Keep the upstream
 ZIP unchanged, review its redistribution terms, and retain its notices. A
 ScummVM download link alone is not an express redistribution license.
+
+The only modified-package exception is the reviewed English DOS CD Queen FLAC
+recipe described in [revised game downloads](game-downloads.md). Its original
+licence permits modified data with a prominent notice; preserve that licence.
 
 Prepare one checksum-pinned demo from `data/classic-freeware.json`:
 
@@ -17,6 +21,20 @@ rejected. The source must be an owned, nonlinked ZIP in `downloads/`, preserved
 unchanged and hosted under the official ScummVM demo directory. Humongous
 packages may use the exact `scumm/he/` subdirectory for the SCUMM engine.
 The maximum is 4 GiB, matching the application import limit.
+
+For Queen, build and fully verify the lossless package first, then run:
+
+```sh
+python3 -B scripts/game-publishing/plan.py queen
+```
+
+This version-2 plan binds `data/game-downloads.json` and permits only its exact
+`queen-flac-<SHA-256 prefix>.zip` key. Validation pins the original source and
+licence, the recipe and English CD FLAC header, bounds expanded data, and checks
+the whole ZIP. Other full games and arbitrary repacks remain unsupported.
+Version-1 demo plans retain their existing behavior. Changes to the
+integrity-pinned publisher require trusted owner review before Runbox access;
+preparing a plan does not approve that change.
 
 ## Optional Runbox connection
 

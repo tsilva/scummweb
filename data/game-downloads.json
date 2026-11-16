@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "games": {
+    "queen": {
+      "target": "queen",
+      "gameId": "queen",
+      "engineId": "queen",
+      "title": "Flight of the Amazon Queen",
+      "recipe": "queen-flac-v1",
+      "archive": "queen-flac-67a4a16b9413.zip",
+      "url": "https://scummvm-games.tsilva.eu/queen-flac-67a4a16b9413.zip",
+      "bytes": 79104254,
+      "sha256": "67a4a16b9413d102db0d1df2c249680649a3187f1acf0ad7c1bc2172e0964a51",
+      "originalReadmeSha256": "d9d78411e5547be1d8fa3819e4b6d02e33a035cf5f709cb05940f1e3daa850f8",
+      "source": {
+        "url": "https://scummvm-games.tsilva.eu/queen.zip",
+        "sha256": "9064bd0e4b26774943b1a363113f9753dff31a2dc7b152059d985b66bc5e07bb"
+      }
+    }
+  }
+}

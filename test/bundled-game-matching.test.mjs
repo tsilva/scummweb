@@ -6,16 +6,22 @@ import { findBundledGame, gameDataFiles } from "../app/bundled-game-matching.mjs
 import { gameFileFingerprint } from "../app/local-game-matching.mjs";
 import { libraryItems } from "../app/home-shell/library-items.mjs";
 import { chooseGameVersion } from "../app/game-versions.mjs";
+import { catalogZipUrl } from "../app/game-bucket-sources.mjs";
 
 test("published signatures cover the current included catalog and retain legacy fingerprints", async () => {
   assert.equal(bundled.version, 1);
   assert.deepEqual(Object.keys(bundled.games).sort(), catalog.games.map(({ target }) => target).sort());
   for (const game of catalog.games) {
     const archive = bundled.games[game.target];
-    assert.equal(archive.url, `https://scummvm-games.tsilva.eu/${game.gameId}.zip`);
+    assert.equal(archive.url, catalogZipUrl("https://scummvm-games.tsilva.eu", game.gameId));
     assert.equal(await gameFileFingerprint("zip", archive.files), archive.fingerprint);
     assert.equal(findBundledGame({ fingerprint: archive.fingerprint }, catalog.games), game);
     assert.equal(findBundledGame({ archiveFiles: archive.files }, catalog.games), game);
+    for (const previous of archive.previous ?? []) {
+      assert.equal(await gameFileFingerprint("zip", previous.files), previous.fingerprint);
+      assert.equal(findBundledGame({ fingerprint: previous.fingerprint }, catalog.games), game);
+      assert.equal(findBundledGame({ archiveFiles: previous.files }, catalog.games), game);
+    }
   }
 });
 

@@ -1,3 +1,14 @@
+MODIFIED VERSION - ScummWEB lossless audio edition
+=================================================
+This is a modified version of Flight of the Amazon Queen (English DOS CD).
+ScummWEB converted its original speech and sound effects to lossless FLAC.
+Every original audio sample and all non-audio game resources are preserved.
+Audio remains 8-bit mono at 11840 Hz. No game content was removed.
+The game authors did not create or endorse this modification.
+
+Original readme, attribution and licence follow unchanged:
+--------------------------------------------------------
+
 Flight of the Amazon Queen (Talkie)
 -----------------------------------
 Copyright (C) 1995-2008 John Passfield & Steve Stamatiadis
@@ -10,8 +21,8 @@ Once again, we here at ScummVM have the pleasure of bringing you yet another
 classic adventure game, thanks to John Passfield and Steve Stamatiadis over at
 Krome Studios in Australia. This game requires at least ScummVM 0.6.0 to play.
 
-Flight of the Amazon Queen is a 2D point-and-click adventure game set in the
-1940s, originally published for DOS and the Amiga.
+Flight of the Amazon Queen is a 2D point-and-click adventure game set in the 
+1940s, originally published for DOS and the Amiga. 
 
 You assume the role of Joe King, a pilot for hire who is given the job of flying
 Faye Russell (a famous movie star) into the Amazon jungle for a photo shoot. Of
@@ -37,7 +48,7 @@ You should always read the instructions included with the latest version of
 ScummVM, but for here is a quick three-step guide for the impatient:
 
  1) Unzip the game to a directory and install ScummVM
- 2) After running ScummVM, click the 'Add Game' button and browse to the
+ 2) After running ScummVM, click the 'Add Game' button and browse to the 
     directory you just created.
  3) After adding the game to the list, on future plays simply select it
     from the 'Game List' and click 'Start'!
@@ -68,7 +79,7 @@ Thanks for, obviously, making a great game and giving us the honour of rewriting
 the engine and releasing it as freeware.
 
 Traditionally the next set of credits go to those who dug through the original
-PC-release C source (which was a rather interesting port of the original Amiga
+PC-release C source (which was a rather interesting port of the original Amiga 
 AMOS version itself!) and re-engineered a new engine:
   David Eriksson, Gregory Montoir and Joost Peters.
 

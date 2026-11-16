@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Flight of the Amazon Queen", target: "queen", engineId: "queen", gameId: "queen",
+    files: [["queen.1c", 97380030, 2505654023]],
+  },
+  {
     title: "Lighthouse: The Dark Being (Demo)", target: "lighthouse-demo", engineId: "sci", gameId: "lighthouse",
     files: [["resmap.000", 1525, 1708619834], ["ressci.000", 11494351, 2082545035]],
   },

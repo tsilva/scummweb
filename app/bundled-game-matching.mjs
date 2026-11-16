@@ -13,8 +13,10 @@ export function gameDataFiles(files) {
   return data.sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0);
 }
 
+const variants = (archive) => [archive, ...(archive.previous ?? [])];
 const bundledData = new Map(Object.entries(bundledArchives.games)
-  .map(([target, archive]) => [target, JSON.stringify(gameDataFiles(archive.files))]));
+  .map(([target, archive]) => [target, variants(archive)
+    .map((entry) => JSON.stringify(gameDataFiles(entry.files)))]));
 
 export function findBundledGame(source, catalog, archives = bundledArchives.games) {
   const files = source.archiveFiles && gameDataFiles(source.archiveFiles);
@@ -24,9 +26,9 @@ export function findBundledGame(source, catalog, archives = bundledArchives.game
     if (game.importRequired) return false;
     const archive = archives[game.target];
     if (!archive) return false;
-    return files ? signature === (archives === bundledArchives.games ? bundledData.get(game.target)
-      : JSON.stringify(gameDataFiles(archive.files)))
-      : source.fingerprint && source.fingerprint === archive.fingerprint;
+    return files ? (archives === bundledArchives.games ? bundledData.get(game.target)
+      : variants(archive).map((entry) => JSON.stringify(gameDataFiles(entry.files)))).includes(signature)
+      : source.fingerprint && variants(archive).some((entry) => source.fingerprint === entry.fingerprint);
   });
   // An ambiguous signature must never silently pick a different edition.
   return matches.length === 1 ? matches[0] : null;
