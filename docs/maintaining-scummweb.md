@@ -473,6 +473,13 @@ The app stages the tracked `scummvm-shell/` into `public/`. Edit
 from the same build. Set the same project-relative `SCUMMWEB_DIST_DIR` for
 build and start when an audit must coexist with another server.
 
+Production builds use Next.js `experimental.inlineCss` to include each route's
+existing styles in its HTML, removing the first-render stylesheet request.
+Development and client-side navigation retain Next's normal stylesheet handling.
+Check HTML size, cold and cached visits, responsive layouts and interactive
+states when changing this setting; inline styles cannot be cached independently
+of the HTML.
+
 Local app servers default to port `47831` so Dropbox can use one stable callback:
 `http://localhost:47831/dropbox-callback.html`. An occupied port fails startup
 instead of selecting another port. Explicit `--port NUMBER` and `--port auto`
