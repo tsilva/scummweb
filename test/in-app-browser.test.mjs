@@ -26,13 +26,26 @@ const proxyModule = (await compile("../proxy.js", { "./app/in-app-browser.mjs": 
 
 test("explicit in-app signatures and Android webviews are recognized", () => {
   for (const signature of ["[FBAN/FBIOS;FBAV/490]", "[FBAN/FB4A;FBAV/490]", "[FBAN/MessengerForiOS]", "FB_IAB/FB4A", "Instagram 420", "LinkedInApp", "Snapchat/13", "Pinterest/12", "MicroMessenger/8", "TikTok 36", "BytedanceWebview", "musical_ly_202300", "Line/14", "Android 15; Pixel 9 Build/AB; wv)"]) {
-    assert.equal(isInAppBrowser(`Mozilla/5.0 ${signature}`), true, signature);
+    for (const value of [signature, signature.toLowerCase(), signature.toUpperCase()]) {
+      const ua = `Mozilla/5.0 ${value}`;
+      assert.equal(isInAppBrowser(ua), true, ua);
+      for (const url of ["/", "/beneath-a-steel-sky", "/beneath-a-steel-sky/play?edition=cd", "/legacy-play", "/scummvm.html#sky"]) {
+        assert.equal(doesProxyMatch({ config: proxyModule.config, nextConfig: {}, url,
+          headers: { "user-agent": ua } }), true, `${ua}: ${url}`);
+      }
+    }
   }
 });
 
 test("ordinary browsers, installed apps and link-preview crawlers are not blocked", () => {
   for (const ua of ["", "Mozilla/5.0 (iPhone) Version/18.0 Mobile/15E148 Safari/604.1", "Mozilla/5.0 (iPhone) CriOS/130 Mobile/15E148 Safari/604.1", "Mozilla/5.0 (iPhone) FxiOS/130 Mobile/15E148 Safari/604.1", "Mozilla/5.0 (Android 15) Chrome/130.0 Mobile Safari/537.36", "Mozilla/5.0 (Android 15) SamsungBrowser/27 Chrome/130.0 Mobile Safari/537.36", "Mozilla/5.0 (Macintosh) AppleWebKit/605.1.15", "facebookexternalhit/1.1", "Facebot", "Slackbot-LinkExpanding 1.0", "Twitterbot/1.0"]) {
     assert.equal(isInAppBrowser(ua), false, ua);
+    for (const url of ["/", "/beneath-a-steel-sky", "/beneath-a-steel-sky/play", "/compatibility", "/legacy-play"]) {
+      assert.equal(doesProxyMatch({ config: proxyModule.config, nextConfig: {}, url,
+        headers: { "user-agent": ua } }), false, `${ua}: ${url}`);
+    }
+    assert.equal(doesProxyMatch({ config: proxyModule.config, nextConfig: {}, url: "/scummvm.html",
+      headers: { "user-agent": ua } }), true, ua);
   }
 });
 
@@ -51,10 +64,10 @@ test("browser intent preserves the full game URL and uses an installed browser",
 
 test("proxy covers entry pages and legacy launches but leaves assets, callbacks and APIs alone", () => {
   for (const url of ["/", "/beneath-a-steel-sky", "/beneath-a-steel-sky/play?edition=cd", "/legacy-play", "/scummvm.html#sky"]) {
-    assert.equal(doesProxyMatch({ config: proxyModule.config, nextConfig: {}, url }), true, url);
+    assert.equal(doesProxyMatch({ config: proxyModule.config, nextConfig: {}, url, headers: { "user-agent": "Instagram 420" } }), true, url);
   }
   for (const url of ["/api/report", "/api", "/_next/static/chunk.js", "/monitoring", "/monitoring/envelope", "/in-app-browser", "/brand/in-app-browser-doorway.webp", "/scummvm.wasm", "/dropbox-callback.html?code=test", "/cloud.html", "/robots.txt", "/sitemap.xml"]) {
-    assert.equal(doesProxyMatch({ config: proxyModule.config, nextConfig: {}, url }), false, url);
+    assert.equal(doesProxyMatch({ config: proxyModule.config, nextConfig: {}, url, headers: { "user-agent": "Instagram 420" } }), false, url);
   }
 });
 

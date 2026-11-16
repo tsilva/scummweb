@@ -221,7 +221,7 @@ test("social cards and assets bypass Proxy while entry pages allow browser detec
   });
   const compiled = { exports: {} };
   runInNewContext(code, { module: compiled, exports: compiled.exports, require: createRequire(moduleUrl) });
-  const matches = (url) => unstable_doesMiddlewareMatch({ config: compiled.exports.config, nextConfig: {}, url });
+  const matches = (url) => unstable_doesMiddlewareMatch({ config: compiled.exports.config, nextConfig: {}, url, headers: { "user-agent": "Instagram 420" } });
   assert.equal(matches("/social-cards/sample-abc.jpg"), false);
   assert.equal(matches("/beneath-a-steel-sky/social-card.png?v=old-deployment"), false);
   assert.equal(matches("/beneath-a-steel-sky/opengraph-image?oldhash"), false);
