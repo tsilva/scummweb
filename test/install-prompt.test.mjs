@@ -59,7 +59,7 @@ function fixture({ available = false, pathname = "/", standalone = false, embedd
       if (name === "react/jsx-runtime") return require(name);
       if (name === "lucide-react") return { X: () => null };
       if (name === "next/navigation") return { usePathname: () => pathname };
-      if (name === "@sentry/nextjs") return { captureException: error => reports.push(error.message) };
+      if (name === "../../lib/browser-sentry.mjs") return { captureException: error => reports.push(error.message) };
       throw new Error(`Unexpected import ${name}`);
     },
   });

@@ -1,12 +1,7 @@
-import * as Sentry from "@sentry/nextjs";
-import { getSentryOptions, isSentryEnabled } from "./sentry.runtime.config";
+import { startBrowserSentry, withBrowserSentry } from "./lib/browser-sentry.mjs";
 
-const sentryEnabled = isSentryEnabled("browser");
+startBrowserSentry();
 
-if (sentryEnabled) {
-  Sentry.init(getSentryOptions("browser"));
+export function onRouterTransitionStart(...args) {
+  void withBrowserSentry((sdk) => sdk.captureRouterTransitionStart(...args));
 }
-
-export const onRouterTransitionStart = sentryEnabled
-  ? Sentry.captureRouterTransitionStart
-  : () => {};
