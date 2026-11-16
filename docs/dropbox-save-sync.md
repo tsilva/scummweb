@@ -130,11 +130,15 @@ one at a time only after verified publication and safe local restoration. Lost
 publication replies resume the exact same immutable commit. The alternatives
 remain available through **Saved games**. A third device changing progress while
 that dialog is open invalidates the choice and requires another review.
-Choosing **Decide later** preserves both copies. Other games can launch once
-their own saves have finished syncing; the conflicting edition still requires
-a choice. A new catalog edition with no local or cloud saves can also launch
-while another isolated edition is running, after a read-only check under its own
-save lock. Existing unsynced progress, a same-edition player, incomplete writes
+
+Choosing **Decide later** preserves both copies. The same postponed review stays
+dismissed across navigation, reloads and tabs for that Dropbox account until its
+actual copies or cloud tips change. The Dropbox row can always reopen it
+explicitly; dismissing a review picks no winner.
+Other games can launch once their own saves have finished syncing; the conflicting
+edition still requires a choice. A new catalog edition with no local or cloud
+saves can also launch while another isolated edition is running, after a read-only
+check under its own save lock. Existing unsynced progress, a same-edition player, incomplete writes
 or an unfinished restore continue to block an unverified launch. The launch
 message identifies an incomplete write, unfinished copy-in, or active save
 operation when one of these prevents verification.
