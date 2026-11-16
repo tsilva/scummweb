@@ -82,6 +82,27 @@
   right: var(--game-control-right-inset);
 }
 
+.game-route-shell:has(.game-route-boot-overlay.is-visible) > .game-route-controls > .is-left {
+  top: max(clamp(1.25rem, 2.2vw, 2.5rem), env(safe-area-inset-top));
+  left: max(clamp(1.25rem, 2.7vw, 3rem), env(safe-area-inset-left));
+}
+
+.game-route-control-button.is-exit.is-launching {
+  width: auto;
+  min-height: 2.75rem;
+  height: auto;
+  gap: 0.55rem;
+  padding: 0.25rem 0.5rem;
+  margin: -0.5rem;
+  border-color: transparent;
+  border-radius: 0.35rem;
+  background: transparent;
+  color: #f8f2d8;
+  font: inherit;
+  font-size: clamp(1rem, 1.6vw, 1.5rem);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+}
+
 .game-route-control-button {
   display: inline-flex;
   align-items: center;
@@ -112,7 +133,7 @@
   }
 }
 
-.game-route-control-button.is-exit svg {
+.game-route-control-button.is-exit:not(.is-launching) svg {
   transform: scaleX(-1);
 }
 

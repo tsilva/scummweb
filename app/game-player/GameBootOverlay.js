@@ -1,3 +1,4 @@
+import { LoaderCircle, TriangleAlert } from "lucide-react";
 import { useArtworkDelivery } from "../home-shell/artwork-delivery";
 import DecorativeImage from "../home-shell/decorative-image";
 import { getHeroImageProps } from "../home-shell/hero-images.mjs";
@@ -16,6 +17,8 @@ export default function GameBootOverlay({
   const artwork = useArtworkDelivery();
   const backdrop = game ? getHeroImageProps(game, artwork, "hero") : null;
   const tags = showBundledTags ? getBundledLaunchTags(game) : null;
+  const metadata = [game?.year, ...(tags ? tags.slice(1).filter((tag) => tag !== game?.year) : [game?.badge])].filter(Boolean);
+  const StatusIcon = hasBootFailed ? TriangleAlert : LoaderCircle;
 
   return (
     <div
@@ -27,39 +30,36 @@ export default function GameBootOverlay({
       data-launch-overlay-state={hasBootFailed ? "error" : showBootOverlay ? "visible" : "hidden"}
       data-launch-archive-bytes={archiveBytes}
     >
-      {backdrop?.src ? (
-        <DecorativeImage
-          {...backdrop}
-          className="game-route-boot-backdrop"
-          decoding="sync"
-          fetchPriority="high"
-          loading="eager"
-          style={getHeroImageStyle(game.heroImagePosition, game.heroImageMobilePosition)}
-        />
-      ) : null}
-      <div className="game-route-boot-scrim" />
-      <div className="game-route-boot-content">
-        <div className={`game-route-boot-card ${hasBootFailed ? "is-error" : ""}`}>
-          {game?.eyebrow ? (
-            <p className="game-route-boot-kicker">{game.eyebrow}</p>
-          ) : null}
+      <div className="game-route-boot-artwork">
+        {backdrop?.src ? (
+          <DecorativeImage
+            {...backdrop}
+            className="game-route-boot-backdrop"
+            decoding="sync"
+            fetchPriority="high"
+            loading="eager"
+            style={getHeroImageStyle(game.heroImagePosition, game.heroImageMobilePosition)}
+          />
+        ) : null}
+        <div className="game-route-boot-scrim" />
+        <span aria-hidden="true" className="game-route-boot-brand">ScummWEB</span>
+      </div>
+      <div className="game-route-boot-dock">
+        {!hasBootFailed ? <div aria-hidden="true" className="game-route-boot-progress" /> : null}
+        <div className="game-route-boot-details">
           <h1 className="game-route-boot-title">{game?.displayTitle || title}</h1>
-          <div className="game-route-boot-meta">
-            {tags ? tags.map((tag) => <span key={tag}>{tag}</span>) : <>
-              {game?.target ? <span>{game.target}</span> : null}
-              {game?.year ? <span>{game.year}</span> : null}
-              {game?.badge ? <span>{game.badge}</span> : null}
-            </>}
-          </div>
-          {game?.summary ? (
-            <p className="game-route-boot-summary">{game.summary}</p>
+          {metadata.length ? (
+            <div className="game-route-boot-meta">
+              {metadata.map((tag, index) => <span key={`${index}:${tag}`}>{tag}</span>)}
+            </div>
           ) : null}
-          <div className="game-route-boot-status-block">
-            <p className="game-route-boot-status-label">
-              {hasBootFailed ? "Launch failed" : "Launching"}
-            </p>
+        </div>
+        <div className="game-route-boot-status-block" role={hasBootFailed ? "alert" : "status"} aria-atomic="true">
+          <StatusIcon aria-hidden="true" className="game-route-boot-status-icon" size={30} strokeWidth={2} />
+          <div>
+            {hasBootFailed ? <p className="game-route-boot-status-label">Launch failed</p> : null}
             <p className="game-route-boot-status-text" data-launch-status="true">
-              {bootStatusText}
+              {bootStatusText || "Loading game…"}
             </p>
           </div>
         </div>

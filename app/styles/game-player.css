@@ -25,20 +25,21 @@
 }
 
 .game-route-boot-overlay {
+  --boot-accent: #f6e08a;
+  --boot-gutter: clamp(1.25rem, 4.6vw, 5rem);
   position: absolute;
   inset: 0;
   z-index: 8;
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
   scrollbar-width: none;
   overscroll-behavior: contain;
-  background:
-    radial-gradient(ellipse at 65% 0%, #46583f, transparent 70%),
-    linear-gradient(145deg, #233a30, #101a16);
+  background: #131313;
+  color: #f8f2d8;
   opacity: 1;
   pointer-events: auto;
-  transition:
-    opacity 260ms ease,
-    visibility 260ms ease;
+  transition: opacity 260ms ease, visibility 260ms ease;
 }
 
 .game-route-boot-overlay.is-hidden {
@@ -47,16 +48,26 @@
   visibility: hidden;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .game-route-boot-overlay {
-    transition: none;
-  }
+.game-route-boot-overlay.is-error {
+  --boot-accent: #ff9e9e;
+}
+
+.game-route-boot-artwork {
+  position: relative;
+  flex: 1 0 10rem;
+  isolation: isolate;
+  overflow: hidden;
+  background: #233a30;
 }
 
 .game-route-boot-backdrop,
 .game-route-boot-scrim {
   position: absolute;
   inset: 0;
+}
+
+.game-route-boot-overlay.tone-sky .game-route-boot-backdrop {
+  --artwork-position: 80% top;
 }
 
 .game-route-boot-backdrop {
@@ -69,135 +80,136 @@
 }
 
 .game-route-boot-scrim {
-  opacity: 0.5;
-  background:
-    linear-gradient(180deg, rgba(6, 8, 7, 0.18), rgba(6, 8, 7, 0.84)),
-    radial-gradient(circle at 22% 18%, rgba(246, 224, 138, 0.18), transparent 30%),
-    linear-gradient(135deg, rgba(16, 33, 26, 0.82), rgba(6, 8, 7, 0.94));
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.38), transparent 24%, transparent 80%, rgba(0, 0, 0, 0.12));
 }
 
-.game-route-boot-overlay.tone-dreamweb .game-route-boot-scrim {
-  background:
-    linear-gradient(180deg, rgba(5, 8, 9, 0.22), rgba(5, 8, 9, 0.88)),
-    radial-gradient(circle at 22% 18%, rgba(126, 208, 219, 0.16), transparent 30%),
-    linear-gradient(135deg, rgba(10, 25, 28, 0.84), rgba(4, 8, 10, 0.96));
+.game-route-boot-brand {
+  position: absolute;
+  top: max(clamp(1.25rem, 2.2vw, 2.5rem), env(safe-area-inset-top));
+  right: max(clamp(1.25rem, 2.7vw, 3rem), env(safe-area-inset-right));
+  font-size: clamp(1rem, 1.6vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1.25;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
 }
 
-.game-route-boot-overlay.tone-sky .game-route-boot-scrim {
-  background:
-    linear-gradient(180deg, rgba(4, 9, 8, 0.2), rgba(4, 9, 8, 0.84)),
-    radial-gradient(circle at 22% 18%, rgba(246, 224, 138, 0.2), transparent 30%),
-    linear-gradient(135deg, rgba(17, 39, 31, 0.82), rgba(6, 9, 8, 0.95));
-}
-
-.game-route-boot-overlay.is-error .game-route-boot-scrim {
-  background:
-    linear-gradient(180deg, rgba(14, 3, 3, 0.36), rgba(14, 3, 3, 0.9)),
-    radial-gradient(circle at 22% 18%, rgba(255, 98, 98, 0.2), transparent 30%),
-    linear-gradient(135deg, rgba(33, 8, 8, 0.9), rgba(9, 5, 5, 0.96));
-}
-
-.game-route-boot-content {
+.game-route-boot-dock {
   position: relative;
-  z-index: 1;
+  flex: 0 0 auto;
   display: flex;
-  align-items: flex-end;
-  min-height: 100%;
-  padding:
-    max(1.25rem, env(safe-area-inset-top))
-    max(1.25rem, env(safe-area-inset-right))
-    max(1.5rem, env(safe-area-inset-bottom))
-    max(1.25rem, env(safe-area-inset-left));
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem 3rem;
+  min-height: clamp(7rem, 14.2dvh, 10rem);
+  padding: 1.35rem max(var(--boot-gutter), env(safe-area-inset-right)) max(1.35rem, env(safe-area-inset-bottom)) max(var(--boot-gutter), env(safe-area-inset-left));
+  background: #131313;
 }
 
-.game-route-boot-card {
-  width: min(100%, 34rem);
-  padding: 1.35rem 1.35rem 1.25rem;
-  border: 1px solid rgba(246, 224, 138, 0.26);
-  border-radius: 1.5rem;
-  background: linear-gradient(180deg, rgba(17, 21, 18, 0.8), rgba(7, 9, 8, 0.86));
-  color: #f8f2d8;
-  box-shadow: 0 1.3rem 3.6rem rgba(0, 0, 0, 0.42);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+.game-route-boot-progress {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  overflow: hidden;
 }
 
-.game-route-boot-card.is-error {
-  border-color: rgba(255, 98, 98, 0.4);
-  background:
-    linear-gradient(180deg, rgba(28, 10, 10, 0.94), rgba(10, 5, 5, 0.97)),
-    #120808;
+.game-route-boot-progress::after {
+  content: "";
+  display: block;
+  width: 16%;
+  height: 100%;
+  background: var(--boot-accent);
+  animation: boot-progress 2.4s ease-in-out infinite;
 }
 
-.game-route-boot-kicker,
-.game-route-boot-status-label {
-  margin: 0;
-  color: #f6e08a;
-  font:
-    700
-    0.78rem/1.3
-    "Trebuchet MS",
-    Verdana,
-    Tahoma,
-    sans-serif;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.game-route-boot-card.is-error .game-route-boot-kicker,
-.game-route-boot-card.is-error .game-route-boot-status-label {
-  color: #ff9e9e;
-}
+.game-route-boot-details { min-width: 0; }
 
 .game-route-boot-title {
-  margin: 0.55rem 0 0;
-  font-size: clamp(2.1rem, 5vw, 3.7rem);
-  line-height: 0.96;
+  margin: 0;
+  font-size: clamp(1.25rem, 2.1vw, 2.25rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+  overflow-wrap: anywhere;
 }
 
 .game-route-boot-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.55rem;
-  margin-top: 0.9rem;
+  gap: 0.25rem 0;
+  margin-top: 0.45rem;
+  color: rgba(248, 242, 216, 0.68);
+  font-size: clamp(0.8rem, 1.2vw, 1.25rem);
+  line-height: 1.4;
 }
 
-.game-route-boot-meta span {
-  padding: 0.38rem 0.65rem;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(248, 242, 216, 0.88);
-  font-size: 0.82rem;
-  line-height: 1;
-}
-
-.game-route-boot-summary {
-  margin: 1rem 0 0;
-  color: rgba(248, 242, 216, 0.84);
-  font-size: 0.98rem;
-  line-height: 1.55;
+.game-route-boot-meta span + span::before {
+  content: "·";
+  padding-inline: 0.6em;
 }
 
 .game-route-boot-status-block {
-  margin-top: 1.15rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  max-width: min(45%, 34rem);
+  color: var(--boot-accent);
+}
+
+.game-route-boot-status-icon {
+  flex: 0 0 auto;
+}
+
+.game-route-boot-overlay:not(.is-error) .game-route-boot-status-icon {
+  animation: boot-spin 1.2s linear infinite;
+}
+
+.game-route-boot-status-label {
+  margin: 0 0 0.25rem;
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
 .game-route-boot-status-text {
-  margin: 0.38rem 0 0;
-  color: #fff;
-  font-size: 1rem;
+  margin: 0;
+  font-size: clamp(0.95rem, 1.4vw, 1.5rem);
   line-height: 1.45;
-  min-height: 2.9em;
   font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
 }
 
-.game-route-boot-actions {
-  display: flex;
-  justify-content: flex-start;
-  margin-top: 1rem;
+.game-route-boot-overlay.is-error .game-route-boot-status-text {
+  color: #f8f2d8;
+}
+
+@keyframes boot-spin { to { transform: rotate(360deg); } }
+@keyframes boot-progress {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(725%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-route-boot-overlay { transition: none; }
+  .game-route-boot-overlay .game-route-boot-status-icon,
+  .game-route-boot-progress::after { animation: none; }
+}
+
+@media (max-width: 640px) {
+  .game-route-boot-dock {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .game-route-boot-status-block { max-width: 100%; }
+  .game-route-boot-status-icon { width: 20px; height: 20px; }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .game-route-boot-artwork { flex-basis: 5rem; }
+  .game-route-boot-dock { min-height: 5rem; padding-block: 0.85rem; }
+  .game-route-boot-title { font-size: 1.15rem; }
+  .game-route-boot-brand { top: max(1rem, env(safe-area-inset-top)); }
 }
 
 @media (max-width: 900px) {
@@ -264,10 +276,6 @@
 
   .hero-metadata {
     grid-template-columns: 1fr;
-  }
-
-  .game-route-boot-content {
-    align-items: flex-end;
   }
 
 }
@@ -468,24 +476,6 @@
     min-height: 8rem;
   }
 
-  .game-route-boot-content {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  .game-route-boot-card {
-    width: 100%;
-    padding: 1.15rem 1rem 1rem;
-    border-radius: 1.15rem;
-  }
-
-  .game-route-boot-title {
-    font-size: clamp(2rem, 11vw, 3rem);
-  }
-
-  .game-route-boot-summary {
-    font-size: 0.94rem;
-  }
 }
 
 /* Static mobile showcase; desktop keeps the carousel and reserved text areas. */
@@ -764,15 +754,4 @@
   .section-stack > .content-band {
     padding-inline: max(1rem, env(safe-area-inset-left));
   }
-}
-
-/* Keep loading and orientation actions reachable on short landscape screens. */
-@media (max-height: 500px) and (orientation: landscape) {
-  .game-route-boot-content {
-    padding-top: max(4.5rem, env(safe-area-inset-top));
-    align-items: flex-start;
-  }
-
-  .game-route-boot-title { font-size: 2rem; }
-  .game-route-boot-summary { margin-top: 0.65rem; }
 }
