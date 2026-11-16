@@ -31,7 +31,7 @@
     "test:artwork-relay": "python3 -B -m unittest discover -s scripts/artwork -p 'test_*.py'"
   },
   "dependencies": {
-    "@sentry/nextjs": "11.10.0",
+    "@sentry/nextjs": "11.11.0",
     "@vercel/analytics": "2.0.1",
     "@zip.js/zip.js": "2.24.0",
     "lucide-react": "1.66.0",
