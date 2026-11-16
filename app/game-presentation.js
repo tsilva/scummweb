@@ -120,6 +120,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "lighthouse-demo": {
+    ...retroGameArtwork["sci:lighthouse"],
+    heroImageMobilePosition: "80% -8vh",
+    title: "Lighthouse: The Dark Being (Demo)",
+    year: "1996",
+    language: "en",
+  },
   "shivers-demo": {
     ...retroGameArtwork["sci:shivers"],
     heroImageMobilePosition: "80% -8vh",

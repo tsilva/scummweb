@@ -349,6 +349,8 @@ Torin’s Passage’s English DOS/Windows interactive demo keeps its complete un
 
 Shivers’ English Windows interactive demo keeps its complete unchanged official ZIP, including packed Sierra setup, Microsoft video runtimes, Help and original movies. It fits the ordinary archive limits. The original menu, New Game movie and office start prompt are preserved without a seeded browser checkpoint. Scrapbook interaction and page navigation work. Saving was rejected in both the scrapbook and stable office views; Load and Continue have no verified player save.
 
+Lighthouse: The Dark Being’s English interactive demo keeps its complete unchanged official Windows ZIP, including original packed setup, Help, robot movies and notices. The pinned native detector identifies this edition as DOS/English. Its original menu and Island Fortress prompt are preserved without a seeded browser checkpoint; scene navigation works. Saving was rejected in the tested reached scene; Load and Continue have no verified player save. Its Word 6 README, named README.WRI upstream, is delivered as readable UTF-8 text with the original ZIP unchanged.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.

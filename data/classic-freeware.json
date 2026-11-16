@@ -996,6 +996,24 @@
         "basis": "All72 original files inspected as data: ZIP integrity and safe paths, complete hashes, ASCII/UTF16/XOR and extra restriction scans. All1172 SCI32 resources LZS-decoded with exact sizes/map-header parity. All6 DH91 setup members DCL-decoded through real end markers and all49 KWAJ Microsoft video/setup members decoded with pinned libmspack ASAN/UBSAN. Original101-topic Sierra setup Help,13-topic MapWin Help and68-topic MediaPlayer Help decoded to coherent complete RTF/text in separate directories without final diagnostics. Original compiler/runtime/Microsoft/Sierra/Intel/SuperMac/Husdawg notices retained; no express demo redistribution grant or packaged prohibition found. Eligibility uses only the user-authorized cautious official promotional hosting assessment, not an express rights-holder license.",
         "preservation": "Serve the complete unchanged official ZIP including packed setup, video runtimes, executables, Help, game resources and movies. No downloaded executable or installer was run."
       }
+    },
+    {
+      "target": "lighthouse-demo",
+      "title": "Lighthouse: The Dark Being (Demo)",
+      "engineId": "sci",
+      "gameId": "lighthouse",
+      "platform": "dos",
+      "extra": "Demo",
+      "archive": "lighthouse-win-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/sci/lighthouse-win-demo-en.zip",
+      "sha256": "9692d95ca5df9ea2b7376a41ff1fb4c1e28c9eb21501f45c29b1c3889ad839cf",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-16",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "All30 original files inspected as data: ZIP integrity/safe paths/full hashes, raw/UTF16/XOR restrictions scans; original README.WRI identified as Word6 CFB and completely decoded, matching independent system conversion. All249 SCI3 resources LZS-decoded with map/header parity/exact lengths using native SCI3 compression selection. All13 DH91 setup members DCL-decoded through actual endcodes with exact consumed lengths and MZ/NE/PE/WinHelp/MIDI validation; original Setup101topic, nestedSierraSetup and SignaturePatch WindowsHelp decoded to coherent complete RTF/text without final diagnostics. Original Sierra/Microsoft/Watcom/STAC/Husdawg notices retained. Installer testProductID warning applies to99999; original SIERRA.INF has32377, not an outstanding certification condition. No express demo redistribution grant or packaged prohibition found. Eligibility uses only the user-authorized cautious official promotional hosting assessment, not an express rights-holder license.",
+        "preservation": "Serve complete unchanged official ZIP including original Word README, packed setup, allHelp/executables/DLLs, robot movies, resources and notices. No downloaded executable or installer executed."
+      }
     }
   ]
 }

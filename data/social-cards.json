@@ -1570,6 +1570,11 @@
       "file": "shivers-demo-8f23337ef8ec76c46fbd06244031bb4b8b1b04e25a1c5036b25f7ccd5fc9a98d.jpg",
       "inputHash": "8f23337ef8ec76c46fbd06244031bb4b8b1b04e25a1c5036b25f7ccd5fc9a98d",
       "imageHash": "d0b2bd7d34a973d60a9b5a027e18675b104ba4f1c6445a41c682ca37804d257d"
+    },
+    "lighthouse-the-dark-being-demo": {
+      "file": "lighthouse-the-dark-being-demo-9ff9e9b3ee321efa84b8c03031405176e4777e1485b83c2324db93fc3cd62151.jpg",
+      "inputHash": "9ff9e9b3ee321efa84b8c03031405176e4777e1485b83c2324db93fc3cd62151",
+      "imageHash": "b32a7f3821f187954a03fcd457f7788f4ab590832128ee85d7502facaf1329a1"
     }
   }
 }
