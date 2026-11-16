@@ -1,7 +1,10 @@
 // Dedicated native service: no launcher, game plugins, BrowserFS or player UI.
+import { createCloudTransferFetch } from "./cloud-transfer-fetch.mjs";
 const parentOrigin = location.origin;
 let initialized = false, pending = null;
 const send = (data) => parent.postMessage({ type: "scummweb:cloud", ...data }, parentOrigin);
+globalThis.fetch = createCloudTransferFetch(globalThis.fetch.bind(globalThis), () => pending,
+  (transfer, bytes) => send({ id: transfer.id, op: "progress", ...bytes }));
 window.addEventListener("message", async (event) => {
   if (event.origin !== parentOrigin || event.source !== parent || event.data?.type !== "scummweb:cloud") return;
   const data = event.data;
@@ -20,7 +23,7 @@ window.addEventListener("message", async (event) => {
       globalThis.__scummwebCloudService = true;
       globalThis.__scummwebCloudReady = () => send({ id: data.id, ok: true });
       globalThis.__scummwebCloudReply = (result) => {
-        const id = pending;
+        const id = pending?.id;
         pending = null;
         try {
           const bytes = result.ok && ["download", "download-import"].includes(globalThis.__scummwebCloudLastOperation)
@@ -38,7 +41,7 @@ window.addEventListener("message", async (event) => {
           globalThis.FS.mkdir("/cloud");
           globalThis.FS.writeFile("/cloud/config.ini", data.config);
         }],
-        onAbort: () => send({ id: pending ?? data.id, ok: false, kind: "runtime" }),
+        onAbort: () => send({ id: pending?.id ?? data.id, ok: false, kind: "runtime" }),
       };
       const script = document.createElement("script");
       script.src = versioned("scummvm.js");
@@ -52,7 +55,7 @@ window.addEventListener("message", async (event) => {
       if (!(data.bytes instanceof Uint8Array) || data.bytes.byteLength > 67108864) return;
       globalThis.FS.writeFile("/cloud/transfer", data.bytes);
     }
-    pending = data.id;
+    pending = { id: data.id, op: data.op, total: data.op === "upload" ? data.bytes.byteLength : data.size };
     globalThis.__scummwebCloudLastOperation = data.op;
     globalThis.__scummwebCloudCommand = { op: data.op, name: data.name };
   }

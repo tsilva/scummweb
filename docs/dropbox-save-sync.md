@@ -56,8 +56,28 @@ can reveal the controls and must still authorize their own Dropbox account.
 
 Choose **Settings → Saved games → Connect Dropbox**. Active browser saves and
 preserved backup sets are copied automatically, without deleting browser originals.
-The normal status is **Dropbox connected**, with a white Dropbox icon. The
-sync status shows a spinner while connecting, syncing, or applying choices.
+The normal status is **Dropbox connected**, with a white Dropbox icon.
+Routine metadata checks keep **Dropbox connected** visible without a spinner.
+The synced checkmark appears after verification; initial connection status alone
+does not claim browser progress is already backed up. A completed new save shows
+**Preparing saves…** while being queued. Actual backup uploads, downloads and
+local restoration show **Syncing saves…**, with an inline activity line such as
+**42% · Beneath a Steel Sky · Uploading**. The percentage measures bytes for the
+current backup, rather than elapsed time or the entire account. An incoming backup
+advances as its bytes are received. Publication counts the uploaded bytes and the
+required equal-sized verification readback, so upload occupies the first half and
+**Verifying** occupies the second half. Upload progress advances only when Dropbox
+confirms a native upload chunk; small backups may jump directly to verification.
+The native provider's requests, authentication and chunk sizes stay unchanged.
+
+The game name comes from the save set. A previously unseen remote backup briefly
+shows **Identifying game…** until its contents and identity have been verified.
+Copied regular saves use their recognized library game immediately. Missing or
+inconsistent byte totals show the activity without a fabricated percentage.
+**100%** reports transferred bytes; verification and local restoration still finish
+before the connected checkmark appears. A retry measures its current transfer
+again; it never treats a previous partial percentage as a durable acknowledgement.
+Connecting and applying conflict choices also show their existing progress.
 Only the current activity is shown; an old review notice does not remain under
 an active sync spinner. A compact **Disconnect**
 button sits beside it and can cancel an ongoing sync.

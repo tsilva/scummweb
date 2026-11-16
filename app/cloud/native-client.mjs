@@ -30,12 +30,13 @@ export async function createNativeCloudClient({ provider = "dropbox", accountId,
   frame.setAttribute("aria-hidden", "true");
   frame.src = "/cloud.html";
   let pending, counter = 0, closed = false;
+  const sizes = new Map();
   let refreshAfter = saved.refreshAfter || 0;
-  const request = (op, extra = {}) => new Promise((resolve, reject) => {
+  const request = (op, extra = {}, onProgress) => new Promise((resolve, reject) => {
     if (closed || pending) { reject(new DropboxError("Cloud sync is unavailable. Try again.")); return; }
     const id = ++counter;
     const timer = setTimeout(() => { reject(new DropboxError("Cloud sync timed out. Your local saves are retained.")); close(); }, 120000);
-    pending = { id, op, resolve, reject, timer };
+    pending = { id, op, resolve, reject, timer, onProgress };
     frame.contentWindow.postMessage({ type: "scummweb:cloud", id, op, ...extra }, location.origin);
   });
   const ready = new Promise((resolve, reject) => {
@@ -51,6 +52,17 @@ export async function createNativeCloudClient({ provider = "dropbox", accountId,
     }
     if (!pending || data.id !== pending.id) return;
     const operation = pending;
+    if (data.op === "progress") {
+      if (!["upload", "download", "download-import"].includes(operation.op)
+        || !Number.isSafeInteger(data.loaded) || data.loaded < 0 || data.loaded > maxBackupBytes
+        || !Number.isSafeInteger(data.total) || data.total < 0 || data.total > maxBackupBytes
+        || data.total && data.loaded > data.total) return;
+      progress();
+      clearTimeout(operation.timer);
+      operation.timer = setTimeout(() => { operation.reject(new DropboxError("Cloud sync timed out. Your local saves are retained.")); close(); }, 120000);
+      operation.onProgress?.({ loaded: data.loaded, total: data.total });
+      return; // Progress never acknowledges an operation or persists credentials.
+    }
     progress();
     try {
       // A disconnect may have removed the credential record during a request.
@@ -92,11 +104,12 @@ export async function createNativeCloudClient({ provider = "dropbox", accountId,
       if (!Array.isArray(result.entries) || result.entries.length > 10000) throw new DropboxError("Cloud save history exceeds the supported limit.");
       return result.entries.filter((entry) => !entry.directory && /^[a-f0-9]{64}\.zip$/.test(entry.name)).map((entry) => {
         if (!Number.isSafeInteger(entry.size) || entry.size > maxBackupBytes) throw new DropboxError("A cloud snapshot exceeds the save limit.", "integrity");
+        sizes.set(entry.name, entry.size);
         return entry.name;
       });
     },
-    async download(name) {
-      const result = await request("download", { name });
+    async download(name, { onProgress } = {}) {
+      const result = await request("download", { name, size: sizes.get(name) }, onProgress);
       if (!(result.bytes instanceof Uint8Array) || result.bytes.length > maxBackupBytes) throw new DropboxError("Invalid cloud snapshot.", "integrity");
       return new Blob([result.bytes]);
     },
@@ -108,15 +121,15 @@ export async function createNativeCloudClient({ provider = "dropbox", accountId,
       if (result.entries.length > 4096) throw new DropboxError("The Dropbox saves folder contains too many files.");
       return result.entries;
     },
-    async downloadImport(name) {
+    async downloadImport(name, { size, onProgress } = {}) {
       if (!importFilename.test(name)) throw new DropboxError("Invalid copied save filename.", "integrity");
-      const result = await request("download-import", { name });
+      const result = await request("download-import", { name, size }, onProgress);
       if (!(result.bytes instanceof Uint8Array) || result.bytes.length > maxBackupBytes) throw new DropboxError("Invalid copied save file.", "integrity");
       return new Blob([result.bytes]);
     },
-    async upload(name, blob) {
+    async upload(name, blob, { onProgress } = {}) {
       if (blob.size > maxBackupBytes) throw new DropboxError("This save backup exceeds the 64 MiB limit.");
-      await request("upload", { name, bytes: new Uint8Array(await blob.arrayBuffer()) });
+      await request("upload", { name, bytes: new Uint8Array(await blob.arrayBuffer()) }, onProgress);
     },
   };
 }

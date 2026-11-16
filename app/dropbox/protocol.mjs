@@ -37,12 +37,13 @@ export async function readNode(client, id) {
   if (sets.length !== 1 || sets[0].hash !== node.hash || await saveProfileId(sets[0]) !== node.profile || await nodeId(node) !== id) {
     throw new DropboxError("Cloud save contents failed verification. Local saves are unchanged.", "integrity");
   }
+  client.verified?.(`${id}.zip`, sets[0]);
   return { ...node, id, set: sets[0] };
 }
 export async function writeSnapshot(client, node) {
   await client.upload(`${node.id}.zip`, await exportBackup([node.set], { cloud: {
     format: node.format, version: node.version, profile: node.profile, hash: node.hash, active: node.active, parents: node.parents,
-  } }));
+  } }), { title: node.set.destination.title });
   // Never acknowledge a write based only on its HTTP response. A retry uses the
   // same logical ID; ZIP creation timestamps do not change the save identity.
   return readNode(client, node.id);
