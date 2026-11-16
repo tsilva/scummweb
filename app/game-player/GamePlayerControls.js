@@ -1,4 +1,4 @@
-import { LogOut, Maximize, Menu, Minimize, TriangleAlert } from "lucide-react";
+import { ArrowLeft, LogOut, Maximize, Menu, Minimize, TriangleAlert } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import DirectionalNavigation from "../home-shell/directional-navigation";
 import { observeControlVisibility } from "./control-visibility.mjs";
@@ -63,6 +63,7 @@ export default function GamePlayerControls({
   menuShortcut,
   handleControlMouseDown,
   isFullscreen,
+  isLaunching = false,
   onExit,
   onCloseMenu,
   onNativeMenu,
@@ -127,14 +128,15 @@ export default function GamePlayerControls({
         {showExitControl ? (
           <div className="game-route-control-group is-left">
             <button
-              aria-label="Exit game"
-              className="game-route-control-button is-exit"
+              aria-label={isLaunching ? "Return to library" : "Exit game"}
+              className={`game-route-control-button is-exit${isLaunching ? " is-launching" : ""}`}
               onClick={onExit}
               onMouseDown={handleControlMouseDown}
-              title="Exit game"
+              title={isLaunching ? "Return to library" : "Exit game"}
               type="button"
             >
-              <LogOut aria-hidden="true" size={17} strokeWidth={2} />
+              {isLaunching ? <><ArrowLeft aria-hidden="true" size={20} strokeWidth={1.8} /><span>Library</span></>
+                : <LogOut aria-hidden="true" size={17} strokeWidth={2} />}
             </button>
           </div>
         ) : null}

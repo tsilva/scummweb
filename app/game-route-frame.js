@@ -1000,6 +1000,7 @@ export default function GameRouteFrame({
         menuShortcut={gameMenuShortcut}
         handleControlMouseDown={handleControlMouseDown}
         isFullscreen={immersiveMode.isFullscreen}
+        isLaunching={showBootOverlay}
         onCloseMenu={closeGameMenu}
         onExit={handleExitClick}
         onNativeMenu={openNativeMenu}

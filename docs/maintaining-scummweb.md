@@ -631,6 +631,14 @@ and prepared game files. A late, validated ready signal clears only that timeout
 watchdog; other startup failures remain visible. Exiting still releases the
 selected game and cancels the launch.
 
+The launch screen keeps the existing hero artwork above a full-width status
+strip with the game title, edition metadata and current loading message. Its
+spinner and progress accent are indeterminate and stop animating with reduced
+motion enabled. Startup failures replace them with a static warning and keep
+the Library action available. Check the strip with long titles and download
+errors on narrow and short landscape viewports; it must remain readable without
+covering the navigation controls.
+
 Follow [the upgrade skill](../.codex/skills/scummweb_upgrade-scummvm/SKILL.md)
 to change the engine or SDK pin. It owns the ordered patch procedure,
 [patch ledger](../.codex/skills/scummweb_upgrade-scummvm/references/patches.json),
