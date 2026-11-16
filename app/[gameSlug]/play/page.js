@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { getGamesOrigin } from "../../../lib/site-config.mjs";
 import { artworkDelivery } from "../../../lib/artwork-storage.mjs";
 import { buildVersionedAssetPath } from "../../asset-paths";
-import { bucketZipUrl } from "../../game-bucket.mjs";
+import { catalogZipUrl } from "../../game-bucket.mjs";
 import {
   buildPlayRouteMetadata,
   getGameStaticParams,
@@ -60,7 +60,7 @@ export default async function GamePlayRoutePage({ params }) {
           {!game.importRequired && <GameRouteFrame
             key={game.slug}
             game={game}
-            catalogArchiveUrl={bucketZipUrl(getGamesOrigin(), game.gameId)}
+            catalogArchiveUrl={catalogZipUrl(getGamesOrigin(), game.gameId)}
             skipIntro={game.skipIntro}
             src={launchHref}
             target={game.target}

@@ -3302,19 +3302,37 @@
       ]
     },
     "queen": {
-      "url": "https://scummvm-games.tsilva.eu/queen.zip",
-      "fingerprint": "e12e29dd37919010e0866b89862927e8a33865340a13ec46100192a0dcc1d005",
+      "url": "https://scummvm-games.tsilva.eu/queen-flac-67a4a16b9413.zip",
+      "fingerprint": "d9e88b28294440d236571581156f5f18d52e5a96d9a03ef98d3a9f3b37704d12",
       "files": [
         [
-          "queen.1",
-          190787021,
-          501481959
+          "readme.txt",
+          5916,
+          1604050821
         ],
         [
-          "readme.txt",
-          5342,
-          1118773047
+          "queen.1c",
+          97380030,
+          2505654023
         ]
+      ],
+      "previous": [
+        {
+          "url": "https://scummvm-games.tsilva.eu/queen.zip",
+          "fingerprint": "e12e29dd37919010e0866b89862927e8a33865340a13ec46100192a0dcc1d005",
+          "files": [
+            [
+              "queen.1",
+              190787021,
+              501481959
+            ],
+            [
+              "readme.txt",
+              5342,
+              1118773047
+            ]
+          ]
+        }
       ]
     },
     "sky": {

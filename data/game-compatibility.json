@@ -314,6 +314,14 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Flight of the Amazon Queen",
+      "status": "startup-verified",
+      "gameId": "queen:queen",
+      "edition": "queen-flac-67a4a16b9413.zip",
+      "recordedOn": "2026-11-16",
+      "observation": "English DOS CD lossless FLAC edition: hotel gameplay renders. A save created with the original queen.1 assets restores with both Continue and manual Load using queen.1c, preserving the catalog save target. Every audio clip was independently decoded and compared with the original engine samples; all non-audio resources are unchanged. Full playthrough and independent audible output were not verified."
+    },
+    {
       "title": "Freddy Pharkas: Frontier Pharmacist",
       "status": "startup-verified",
       "gameId": "sci:freddypharkas",

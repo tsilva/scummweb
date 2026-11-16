@@ -514,5 +514,84 @@ class Fixture(unittest.TestCase):
                 client.Client(base)
 
 
+class PreparedQueen(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory(prefix="scummweb-queen-publish-")
+        self.root = Path(self.temporary.name).resolve()
+        (self.root / "data").mkdir()
+        (self.root / "downloads").mkdir()
+        (self.root / "data/classic-freeware.json").write_text('{"games": []}')
+        self.readme = b"Synthetic original licence, no third-party game data."
+        self.readme_pin = patch.object(plan, "QUEEN_README", hashlib.sha256(self.readme).hexdigest())
+        self.readme_pin.start()
+        self.addCleanup(self.readme_pin.stop)
+        relay_pin = patch.object(relay.plan_module, "QUEEN_README", hashlib.sha256(self.readme).hexdigest())
+        relay_pin.start()
+        self.addCleanup(relay_pin.stop)
+        self.addCleanup(self.temporary.cleanup)
+        separator = b"Original readme, attribution and licence follow unchanged:\n--------------------------------------------------------\n\n"
+        self.notice = b"MODIFIED VERSION - ScummWEB lossless audio edition\n" + separator + self.readme
+        self.write_package()
+
+    def write_package(self, data=None, notice=None):
+        payload = io.BytesIO()
+        with zipfile.ZipFile(payload, "w") as archive:
+            archive.writestr("readme.txt", self.notice if notice is None else notice)
+            archive.writestr("queen.1c", data if data is not None else b"QTBL" + b"CEM10\0" + bytes([0, 0, 3]) + b"synthetic")
+        self.content = payload.getvalue()
+        checksum = hashlib.sha256(self.content).hexdigest()
+        self.entry = {"target": "queen", "gameId": "queen", "engineId": "queen", "title": "Flight of the Amazon Queen",
+                      "recipe": "queen-flac-v1", "archive": f"queen-flac-{checksum[:12]}.zip", "bytes": len(self.content),
+                      "sha256": checksum, "originalReadmeSha256": plan.QUEEN_README,
+                      "source": {"url": plan.ORIGIN + "/queen.zip", "sha256": plan.QUEEN_SOURCE}}
+        self.entry["url"] = plan.ORIGIN + "/" + self.entry["archive"]
+        self.manifest = self.root / "data/game-downloads.json"
+        self.manifest.write_text(json.dumps({"version": 1, "games": {"queen": self.entry}}))
+        self.source = self.root / "downloads" / self.entry["archive"]
+        self.source.write_bytes(self.content)
+
+    def prepare(self):
+        self.value = plan.load(self.root, plan.prepare(self.root, "queen"))
+        self.r2 = FakeR2(self.content)
+        self.bridge = relay.Bridge(POLICY, self.value, self.root, self.r2)
+
+    def test_revision_uses_exact_key_and_conditional_create(self):
+        self.prepare()
+        self.assertEqual(self.value["version"], 2)
+        self.assertEqual(self.value["key"], self.entry["archive"])
+        Fixture.test_conditional_streamed_upload_and_public_body_verification(self)
+        self.assertTrue(all(request.full_url.endswith('/' + self.entry['archive']) for request in self.r2.requests))
+
+    def test_revision_uses_the_actual_placeholder_client(self):
+        self.prepare()
+        Fixture.test_placeholder_client_uses_real_http_proxy_even_with_no_proxy(self)
+
+    def test_source_recipe_key_and_licence_pins_cannot_be_broadened(self):
+        for field, value in [("recipe", "arbitrary"), ("gameId", "sky"), ("target", "sky"),
+                             ("archive", "queen.zip"), ("url", "https://example.test/queen.zip"),
+                             ("source", {}), ("originalReadmeSha256", "0" * 64)]:
+            with self.subTest(field=field):
+                self.manifest.write_text(json.dumps({"version": 1, "games": {"queen": {**self.entry, field: value}}}))
+                with self.assertRaises(ValueError):
+                    plan.prepare(self.root, "queen")
+
+    def test_notice_licence_and_rebuilt_header_are_required(self):
+        for data, notice in [(b"not Queen data", None), (None, b"no notice"),
+                             (None, self.notice + b"modified original licence")]:
+            with self.subTest(data=data, notice=notice):
+                self.write_package(data, notice)
+                with self.assertRaises(ValueError):
+                    plan.prepare(self.root, "queen")
+
+    def test_manifest_and_destination_drift_fail_before_provider_access(self):
+        self.prepare()
+        with self.assertRaises(ValueError):
+            plan.validate(self.root, {**self.value, "key": "queen.zip"})
+        self.manifest.write_text(self.manifest.read_text() + " ")
+        with self.assertRaises(ValueError):
+            self.bridge.publish(FAKE_CREDENTIAL)
+        self.assertEqual(self.r2.requests, [])
+
+
 if __name__ == "__main__":
     unittest.main()

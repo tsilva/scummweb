@@ -1,4 +1,5 @@
 import { maxArchiveSize } from "./local-game-selection.mjs";
+import downloads from "../data/game-downloads.json" with { type: "json" };
 
 export const bucketStorageKey = "scummweb.game-bucket.v1";
 
@@ -39,6 +40,16 @@ export function bucketZipName(target) {
 
 export function bucketZipUrl(baseUrl, target) {
   return `${baseUrl}/${encodeURIComponent(bucketZipName(target))}`;
+}
+
+// Download revisions never change native game IDs, routes or save namespaces.
+// Custom libraries keep the original <gameId>.zip convention above.
+export function catalogZipName(gameId) {
+  return downloads.games[gameId]?.archive ?? bucketZipName(gameId);
+}
+
+export function catalogZipUrl(baseUrl, gameId) {
+  return `${baseUrl}/${encodeURIComponent(catalogZipName(gameId))}`;
 }
 
 export function readSavedBucket(value, games) {

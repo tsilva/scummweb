@@ -3,6 +3,7 @@ import path from "node:path";
 import { HttpRangeReader, Uint8ArrayReader } from "@zip.js/zip.js";
 import { scanGameZipReader, maxLocalGameSize } from "../app/local-game-archive.mjs";
 import { gameFileFingerprint } from "../app/local-game-matching.mjs";
+import { catalogZipName, catalogZipUrl } from "../app/game-bucket-sources.mjs";
 
 const root = new URL("../", import.meta.url);
 const args = process.argv.slice(2);
@@ -14,17 +15,17 @@ const localDir = remote ? undefined : args[1];
 const targets = new Set(args.slice(remote ? 1 : 2));
 const catalog = JSON.parse(await fs.readFile(new URL("scummvm-shell/games.json", root))).games;
 const manifestUrl = new URL("data/bundled-game-files.json", root);
-const games = targets.size
-  ? JSON.parse(await fs.readFile(manifestUrl, "utf8")).games : {};
+const previousGames = JSON.parse(await fs.readFile(manifestUrl, "utf8")).games;
+const games = targets.size ? { ...previousGames } : {};
 for (const target of targets) {
   if (!catalog.some((game) => game.target === target)) throw new Error(`Unknown game target: ${target}`);
 }
 for (const game of catalog) {
   if (targets.size && !targets.has(game.target)) continue;
-  const url = `https://scummvm-games.tsilva.eu/${game.gameId}.zip`;
+  const url = catalogZipUrl("https://scummvm-games.tsilva.eu", game.gameId);
   const signal = AbortSignal.timeout(30_000);
   let remaining = 2 * 1024 * 1024;
-  const localPath = localDir && path.join(localDir, `${game.gameId}.zip`);
+  const localPath = localDir && path.join(localDir, catalogZipName(game.gameId));
   const localBytes = localPath && await fs.readFile(localPath).catch((error) => {
     if (error.code !== "ENOENT" || targets.size) throw error;
     return null;
@@ -51,7 +52,14 @@ for (const game of catalog) {
     },
   });
   const files = await scanGameZipReader(reader, { signal, expandedLimit: maxLocalGameSize });
-  games[game.target] = { url, fingerprint: await gameFileFingerprint("zip", files), files };
+  const fingerprint = await gameFileFingerprint("zip", files);
+  const old = previousGames[game.target];
+  const previous = [...(old?.previous ?? [])];
+  if (old && old.fingerprint !== fingerprint && !previous.some((entry) => entry.fingerprint === old.fingerprint)) {
+    previous.push({ url: old.url, fingerprint: old.fingerprint, files: old.files });
+  }
+  games[game.target] = { url, fingerprint, files,
+    ...(previous.length ? { previous } : {}) };
   console.log(`${game.target}: ${files.length} ZIP entries`);
 }
 await fs.writeFile(manifestUrl, `${JSON.stringify({ version: 1, games }, null, 2)}\n`);

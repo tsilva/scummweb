@@ -45,7 +45,7 @@ assigning production domains, use **Stage prebuilt deployment** from
 
 ## Game-library publishing
 
-For agent-operated unchanged demo uploads, use the separately provisioned and
+For agent-operated unchanged demo uploads and the reviewed Queen lossless recipe, use the separately provisioned and
 reviewed [game-only Runbox connection](game-publishing.md). Artwork access does
 not grant game publishing access.
 
@@ -53,6 +53,10 @@ Game ZIPs ship separately from the app. Name each archive `<gameId>.zip`
 using [the catalog](../scummvm-shell/games.json) and put game files at its
 root. The public bucket must allow cross-origin GETs from ScummWEB.
 Keep notices under `/launcher/notices/`.
+Reviewed revisions may instead select a checksum-derived immutable filename in
+`data/game-downloads.json`; see [revised game downloads](game-downloads.md).
+Publish and verify that object before deploying its selection, and retain the
+old object for older clients. Download revisions must preserve compatible saves.
 
 Use `dist/games` or set `SCUMMVM_GAMES_UPLOAD_DIR` to a staged payload
 directory. For an additive release, publish only the selected archive, for

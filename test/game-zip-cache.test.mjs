@@ -2,6 +2,20 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { cachePreparedGame, readCachedGameData } from "../app/game-zip-cache.mjs";
 import { installGameZipCache } from "./helpers/game-zip-cache.mjs";
+import { bucketZipUrl, catalogZipUrl } from "../app/game-bucket-sources.mjs";
+
+test("the Queen download revision cannot reuse the original cached package", async (t) => {
+  installGameZipCache(t);
+  const origin = "https://scummvm-games.tsilva.eu";
+  const original = bucketZipUrl(origin, "queen");
+  const revised = catalogZipUrl(origin, "queen");
+  assert.equal(original, `${origin}/queen.zip`);
+  assert.notEqual(revised, original);
+  await cachePreparedGame(original, new Blob(["old ZIP"]),
+    [{ path: "queen.1", data: Uint8Array.of(1) }], [["queen.1", 1, 1]]);
+  assert.ok(await readCachedGameData(original));
+  assert.equal(await readCachedGameData(revised), null);
+});
 
 test("a repeat launch can reuse verified bytes while their cache write is still pending", { timeout: 1000 }, async (t) => {
   const { cache, entries } = installGameZipCache(t);
