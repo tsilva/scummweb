@@ -1,0 +1,35 @@
+                           Lighthouse Demo Readme File
+                                        1/12/97
+**********************************************************************************
+If you would like to order a game you can call Sierra On-lines Sales Support at 1-800-757-7707
+**********************************************************************************
+
+
+HOW TO INSTALL THE GAME.
+Just double click on the setup.exe file and choose install from the next screen.
+
+SYSTEM REUIREMENTS
+486/66
+8MB RAM
+Windows
+
+
+
+
+                Welcome to the Lighthouse Interactive Demo!
+
+        This is just a very small sample of the gameplay, animation, sound and music you will experience with Lighthouse from Sierra Online. The Demo features two puzzles, both of which must be solved in any sequence in order to finish it. The interface is simple, simply click on everything and you will discover what they do in short order.
+
+        Lighthouse is a story about a parallel world.  It is the story of a kidnapping.  The story and the world unfold as the player pursues the kidnapper, a diabolical Dark Being, through a bizarre and exotic land.
+        The player receives a desperate call from a new found friend, the eccentric scientist Dr. Jeremiah Krick, and is asked to watch his baby girl on short notice. The  message explains that there has been a sudden emergency, and there is no-one else to care for her.
+        The kidnapping leaves the player with many unanswered questions.  Where is Dr. Krick?   What is the strange Dark Being? Where is it from, and what are it's motives?  Why has it stolen the child?  The player must solve these riddles, and rescue the child and her father to complete the game.
+
+        The focus of Lighthouse is on good storytelling combined with exciting interactivity. The art and animation for Lighthouse was created with Alias Power Animator and Autodesk 3D Studio.  Each area of the game is detailed, imaginative, and as interactive as possible.  The player operates strange machines, pilots exotic vehicles and aircraft, and solves puzzles based on manipulating 3D modeled and rendered objects.
+        Lighthouse combines elements of  fantasy, science fiction, and  folk tales. It is designed to interest both men and women.  Lighthouse will appeal to players that like a good story, challenging puzzles, and high quality artwork and animation.  Lighthouse is interactive science fiction at it's best!
+
+For more on Lighthouse and other Sierra games, visit the Sierra Online World Wide Web site at http://www.sierra.com
+
+Enjoy!
+
+
+SIERRA ON-LINE, INC. DOES NOT WARRANTY OR PROMISE THAT THE INFORMATION HEREIN WILL WORK WITH ANY OR ALL COMPUTER SYSTEMS.  SIERRA DOES NOT ASSUME ANY LIABILITY, EITHER INCIDENTAL OR CONSEQUENTIAL, FOR THE USE OF THE INFORMATION HEREIN, INCLUDING ANY AND ALL DAMAGE TO OR LOST USE OF COMPUTER HARDWARE OR SOFTWARE PRODUCTS, LOSS OF WARRANTIES, OR LOST DATA BY THE CUSTOMER OR ANY THIRD PARTY.  NO ORAL OR WRITTEN INFORMATION OR ADVICE GIVEN BY SIERRA, ITS EMPLOYEES, DISTRIBUTORS, DEALER OR AGENTS SHALL CHANGE THE RESTRICTION OF LIABILITY OR CREATE ANY NEW WARRANTIES.  IN NO CASE SHALL SIERRA'S LIABILITY EXCEED THE PURCHASE PRICE OF THE SIERRA SOFTWARE PRODUCT.

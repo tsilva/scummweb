@@ -795,6 +795,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "lighthouse-demo",
+      "title": "Lighthouse: The Dark Being (Demo)",
+      "path": "/games/lighthouse",
+      "engineId": "sci",
+      "gameId": "lighthouse",
+      "platform": "dos",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/lighthouse.txt"
     }
   ]
 }

@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { readLegacyWordNotice } from "./read-legacy-word-notice.mjs";
 import catalogPackages from "../data/classic-freeware.json" with { type: "json" };
 
 const [iniPath, libraryOutPath] = process.argv.slice(2);
@@ -96,7 +97,9 @@ async function stageNotice(gamePath, gameId) {
     const bytes = await fs.readFile(path.join(absoluteGamePath, noticeFile));
     const isWrite = /\.wri$/i.test(noticeFile);
     let text;
-    if (isWrite) {
+    if (isWrite && bytes.subarray(0, 8).equals(Buffer.from("d0cf11e0a1b11ae1", "hex"))) {
+      text = readLegacyWordNotice(bytes);
+    } else if (isWrite) {
       if (bytes.length < 128 || ![0xbe31, 0xbe32].includes(bytes.readUInt16LE(0))) {
         throw new Error(`Invalid Windows Write notice: ${noticeFile}`);
       }
