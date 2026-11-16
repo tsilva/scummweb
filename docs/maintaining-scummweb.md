@@ -791,6 +791,8 @@ Generate heroes from original promotional references. Faithfully restore
 original box fronts for card covers. Keep gameplay screenshots as original
 captures, with delivery resizing or lossless encoding only.
 
+The homepage sends artwork delivery metadata only for the heroes and covers it renders, plus the featured screenshot strip. Alternate mobile sources remain available for heroes without responsive renditions. All responsive candidates and image placeholders are preserved; other screenshot metadata loads when its gallery becomes visible.
+
 ### Delivery encoding and sizing
 
 Use full-resolution lossless WebP for PNG captures and lossless WebP for
