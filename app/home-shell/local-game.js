@@ -3,6 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { CircleCheck, CircleMinus, CircleX, Download, File } from "lucide-react";
+import { handoverLibraryDrops } from "./library-hydration.mjs";
 import { captureGameDrop } from "../game-import-nodes.mjs";
 
 export function chooseArchiveHandles(multiple) {
@@ -48,6 +49,7 @@ export default function GameDropOverlay({ importRoots, disabled, pending, result
       void importRoots(roots);
     }
 
+    if (!disabled) handoverLibraryDrops(importRoots, window);
     window.addEventListener("dragenter", enter);
     window.addEventListener("dragover", over);
     window.addEventListener("dragleave", leave);

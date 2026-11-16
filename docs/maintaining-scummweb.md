@@ -503,6 +503,8 @@ For mobile changes, check the launcher, settings, gallery, and player at
 rotation, fullscreen refusal, audio, and touch input on physical Android and
 iOS devices before claiming device coverage.
 
+The initial library renders complete HTML on the server. Its interactive bundle loads after the hero decodes and receives two animation frames, or immediately on keyboard, pointer or drag input. A one-second deadline releases a stalled image. File drops capture handles during the original event and hand them to the importer once it is ready. This uses Turbopack's `import.meta.env.SSR` branch elimination; keep the server-rendered markup intact when changing the loading boundary.
+
 Browser error listeners start before hydration. The full Sentry SDK loads after the initial hero decodes and has a paint opportunity; an early error, explicit report or router transition loads it immediately. Errors retain their original objects and unhandled mechanisms until initialization completes. Global errors, install-prompt failures and private startup reports use this shared loader. SDK options and server-side reporting remain unchanged. Automatic breadcrumbs, logs and request instrumentation begin when the SDK initializes.
 
 ### Sentry issue reads

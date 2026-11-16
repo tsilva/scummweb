@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Fragment } from "react";
 import { getVersionedSiteAssetPath } from "./asset-paths";
 import Icon from "./home-shell/shell-icon";
-import SourceLibrary from "./home-shell/source-library";
+import SourceLibrary from "./home-shell/deferred-source-library";
 import SettingsPanel from "./home-shell/settings-panel";
 import InstallPrompt from "./home-shell/install-prompt";
 import DirectionalNavigation from "./home-shell/directional-navigation";
