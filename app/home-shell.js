@@ -9,6 +9,7 @@ import DirectionalNavigation from "./home-shell/directional-navigation";
 import GalleryOrientation from "./home-shell/GalleryOrientation";
 import { getGamesOrigin } from "../lib/site-config.mjs";
 import { artworkDelivery, artworkStorage } from "../lib/artwork-storage.mjs";
+import { homeArtworkDelivery } from "./home-shell/initial-artwork.mjs";
 import assetConfig from "../lib/scummvm-shell-assets";
 
 const repositoryUrl = "https://github.com/tsilva/scummweb";
@@ -31,9 +32,9 @@ export default function HomeShell({
   const galleryUrl = isHomePage && artworkStorage.published
     ? getVersionedSiteAssetPath("/gallery-artwork.json") : null;
   const artworkGames = featuredGame ? [...catalog, featuredGame] : catalog;
-  const artwork = children == null ? artworkDelivery(galleryUrl
-    ? artworkGames.map((game) => game === featuredGame ? game : { ...game, screenshots: [] })
-    : artworkGames) : null;
+  const artwork = children == null ? galleryUrl
+    ? homeArtworkDelivery(artworkGames, featuredGame)
+    : artworkDelivery(artworkGames) : null;
 
   return (
     <Shell>
