@@ -34,7 +34,7 @@ export async function discoverLooseSaves(transport, destinations, entries = null
       && matchesLegacySave(destination.family, entry.name));
     if (matches.length !== 1) { issues.push("Some copied saves could not be matched to a library game. Keep their original ScummVM filenames."); continue; }
     const destination = { ...matches[0], isolated: true };
-    const blob = await transport.downloadImport(entry.name);
+    const blob = await transport.downloadImport(entry.name, { title: destination.title, size: entry.size });
     if (blob.size !== entry.size) throw new DropboxError("Copied saves changed during import. They will be checked again shortly.");
     if (!groups.has(destination.key)) groups.set(destination.key, { destination, files: [] });
     groups.get(destination.key).files.push({ path: entry.name, data: new Uint8Array(await blob.arrayBuffer()),

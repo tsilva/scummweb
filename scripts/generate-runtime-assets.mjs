@@ -22,7 +22,7 @@ export async function generateRuntimeAssets(directory) {
   }
   for (const name of core) await hashFile(name);
   // Older synthetic bundles need not contain the optional headless service.
-  for (const name of ["cloud-service.mjs"]) {
+  for (const name of ["cloud-service.mjs", "cloud-transfer-fetch.mjs"]) {
     await hashFile(name).catch((error) => { if (error.code !== "ENOENT") throw error; });
   }
   await walk("data");

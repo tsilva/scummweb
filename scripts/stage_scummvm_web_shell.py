@@ -38,5 +38,6 @@ filesystem = (source / "scummvm_fs.js").read_text().replace("__SCUMMWEB_GAMES_OR
 (target / "scummvm.html").write_text(html)
 (target / "cloud.html").write_text((source / "cloud.html").read_text())
 (target / "cloud-service.mjs").write_text((source / "cloud-service.mjs").read_text())
+(target / "cloud-transfer-fetch.mjs").write_text((source / "cloud-transfer-fetch.mjs").read_text())
 (target / "scummvm_fs.js").write_text(filesystem)
 (target / "audio-start-control.mjs").write_text((source / "audio-start-control.mjs").read_text())

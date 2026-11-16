@@ -11,6 +11,9 @@
 .dropbox-disconnect:hover:not(:disabled) { border-color: #a6a6a6; color: var(--ink); background: #242424; }
 .settings-content .dropbox-connect:disabled { opacity: 1; color: var(--ink-muted); }
 .settings-content .dropbox-notice { font-size: .8rem; margin: 0 0 .8rem 2.1rem; color: #e9c395; }
+.settings-content .dropbox-progress { font-size: .8rem; margin: 0 0 .8rem 2.1rem; color: var(--ink-muted); }
+.dropbox-percentage { color: var(--accent-strong); font-variant-numeric: tabular-nums; }
+.dropbox-progress-game { color: var(--ink); overflow-wrap: anywhere; }
 @keyframes dropbox-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .dropbox-spinner { animation: none; } }
 .dropbox-sync-warning { position: fixed; bottom: max(1rem, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); z-index: 200; max-width: min(32rem, 90vw); background: #24221e; color: #f1d5ac; border: 1px solid #76634a; padding: .65rem 1rem; font-size: .8125rem; pointer-events: none; }

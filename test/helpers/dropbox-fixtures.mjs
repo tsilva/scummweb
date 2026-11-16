@@ -98,6 +98,7 @@ export function nativeCloudBrowser(server, storage) {
     const frame = { setAttribute() {}, remove() { frames.delete(frame); }, contentWindow: { postMessage(data) {
       setTimeout(async () => {
         try {
+          await server.onRequest?.(data, (progress) => dispatch(frame.contentWindow, { id: data.id, ...progress }));
           let result = {};
           if (data.op === "init") config = data.config;
           else if (data.op === "refresh") { if (server.offline) throw new Error("Offline"); config += "\n# renewed\n"; }

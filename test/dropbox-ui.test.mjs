@@ -6,6 +6,7 @@ import test from "node:test";
 import swc from "next/dist/build/swc/index.js";
 import * as review from "../app/dropbox/conflict-review.mjs";
 import { connectionKey } from "../app/dropbox/client.mjs";
+import * as transfers from "../app/cloud/transfer-progress.mjs";
 import { renderToStaticMarkup } from "react-dom/server";
 
 const nativeRequire = createRequire(import.meta.url);
@@ -205,6 +206,7 @@ async function row(state, initialNotice = "") {
     "lucide-react": { Check: Icon, LoaderCircle: Icon, Unplug: Icon },
     "../dropbox/runtime.mjs": { getDropboxState: () => state, subscribeDropbox() {}, dropboxConfigured: () => true,
       async syncDropbox() { syncCalls++; }, async connectDropbox() {}, async disconnectDropbox() {} },
+    "../cloud/transfer-progress.mjs": transfers,
     window: { dispatchEvent(event) { if (event.type === "scummweb:dropbox-review") reviews++; } },
   }, { useSyncExternalStore: () => state, useEffect() {}, useState() { return [cursor++ === 0 ? false : initialNotice, () => {}]; } });
   return { tree: Row(), calls: () => ({ syncCalls, reviews }) };
@@ -216,9 +218,38 @@ test("opening conflict review starts no competing cloud sync", async () => {
   assert.deepEqual(calls(), { syncCalls: 0, reviews: 1 });
 });
 
-for (const phase of ["connecting", "syncing", "resolving"]) test(`${phase} never shows an obsolete choose-progress message`, async () => {
+for (const phase of ["connecting", "preparing", "syncing", "resolving"]) test(`${phase} never shows an obsolete choose-progress message`, async () => {
   const { tree } = await row({ phase, message: "Choose which saved progress to continue.", conflicts,
     resolutionProgress: { current: 1, total: 2 } }, "Choose which saved progress to continue.");
   assert.equal(nodes(tree).some(({ props }) => props?.className === "dropbox-notice"), false);
   if (phase === "resolving") assert.match(text(tree), /Applying choices \(1\/2\)/);
+});
+
+test("verified routine checks keep connected text and no transfer activity", async () => {
+  const { tree } = await row({ phase: "connected", checking: true, verified: true, message: "" });
+  assert.match(text(tree), /Dropbox connected/);
+  assert.equal(text(tree).includes("Syncing"), false);
+  assert.equal(nodes(tree).some(({ props }) => props?.className === "dropbox-spinner"), false);
+  assert.equal(nodes(tree).some(({ props }) => props?.className === "dropbox-progress"), false);
+  assert.equal(nodes(tree).some(({ props }) => props?.["aria-label"] === "Saves synced"), true);
+  const firstCheck = await row({ phase: "connected", checking: true, verified: false, message: "" });
+  assert.equal(nodes(firstCheck.tree).some(({ props }) => props?.["aria-label"] === "Saves synced"), false);
+});
+
+for (const [stage, direction, expected] of [
+  ["upload", "upload", "42% · Beneath a Steel Sky · Uploading"],
+  ["download", "download", "42% · Beneath a Steel Sky · Downloading"],
+  ["verify", "upload", "42% · Beneath a Steel Sky · Verifying"],
+  ["restore", null, "42% · Beneath a Steel Sky · Restoring"],
+]) test(`syncing exposes ${stage}/${direction} activity in its status line`, async () => {
+  const { tree } = await row({ phase: "syncing", message: "obsolete", transferProgress: { stage, direction, percentage: 42, title: "Beneath a Steel Sky" } });
+  assert.equal(text(nodes(tree).find(({ props }) => props?.className === "dropbox-progress")), expected);
+  assert.equal(text(nodes(tree).find(({ props }) => props?.className === "dropbox-percentage")), "42%");
+  assert.equal(nodes(tree).some(({ props }) => props?.className === "dropbox-notice"), false);
+});
+
+test("an unknown transfer total shows no fabricated percentage", async () => {
+  const { tree } = await row({ phase: "syncing", transferProgress: { stage: "download", direction: "download", percentage: null } });
+  assert.equal(nodes(tree).some(({ props }) => props?.className === "dropbox-percentage"), false);
+  assert.match(text(tree), /Identifying game… · Downloading/);
 });

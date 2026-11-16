@@ -3,10 +3,11 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { Check, LoaderCircle, Unplug } from "lucide-react";
 import { connectDropbox, disconnectDropbox, dropboxConfigured, getDropboxState, subscribeDropbox, syncDropbox } from "../dropbox/runtime.mjs";
+import { transferProgressDetails } from "../cloud/transfer-progress.mjs";
 
 const labels = {
   disconnected: "Connect Dropbox", connecting: "Connecting Dropbox…", connected: "Dropbox connected",
-  syncing: "Syncing saves…", resolving: "Applying choices…", reconnect: "Reconnect Dropbox", waiting: "Saves waiting to sync", conflict: "Choose saved progress",
+  preparing: "Preparing saves…", syncing: "Syncing saves…", resolving: "Applying choices…", reconnect: "Reconnect Dropbox", waiting: "Saves waiting to sync", conflict: "Choose saved progress",
 };
 
 function DropboxIcon() {
@@ -20,9 +21,10 @@ export default function DropboxRow() {
   const [disconnecting, setDisconnecting] = useState(false);
   const [notice, setNotice] = useState("");
   const configured = dropboxConfigured();
-  const busy = disconnecting || ["connecting", "syncing", "resolving"].includes(state.phase);
+  const busy = disconnecting || ["connecting", "preparing", "syncing", "resolving"].includes(state.phase);
   const connected = !["disconnected", "connecting"].includes(state.phase);
   const progress = state.phase === "resolving" && state.resolutionProgress;
+  const transfer = !disconnecting && ["syncing", "resolving"].includes(state.phase) ? transferProgressDetails(state.transferProgress) : null;
   const label = disconnecting ? "Disconnecting…" : progress?.current
     ? `Applying choices (${progress.current}/${progress.total})…` : labels[state.phase] || labels.waiting;
   useEffect(() => setNotice(""), [state.phase, state.message]);
@@ -54,7 +56,7 @@ export default function DropboxRow() {
         <span className="dropbox-status" role="status">
           {busy && <LoaderCircle size={18} className="dropbox-spinner" aria-hidden="true" />}
           <span>{label}</span>
-          {!busy && state.phase === "connected" && <Check size={18} className="dropbox-check" aria-label="Saves synced" />}
+          {!busy && state.phase === "connected" && state.verified && <Check size={18} className="dropbox-check" aria-label="Saves synced" />}
         </span>
       </button>
       {connected && <button type="button" className="dropbox-disconnect" aria-label="Disconnect Dropbox"
@@ -62,6 +64,10 @@ export default function DropboxRow() {
         <Unplug size={16} aria-hidden="true" />Disconnect
       </button>}
     </div>
+    {transfer && <p className="dropbox-progress" role="status">
+      {transfer.percentage !== null && <><span className="dropbox-percentage">{transfer.percentage}%</span><span aria-hidden="true"> · </span></>}
+      <span className="dropbox-progress-game">{transfer.title}</span><span aria-hidden="true"> · </span><span>{transfer.direction}</span>
+    </p>}
     {!busy && (notice || state.message) && <p className="dropbox-notice" role="status">{notice || state.message}</p>}
   </div>;
 }

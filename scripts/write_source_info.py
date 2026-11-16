@@ -44,6 +44,7 @@ BUILD_FILES = (
     "web-shell/continue-saves.mjs",
     "web-shell/cloud.html",
     "web-shell/cloud-service.mjs",
+    "web-shell/cloud-transfer-fetch.mjs",
     "web-shell/diagnostic-saves.mjs",
     "web-shell/first-frame.mjs",
     "web-shell/game-defaults.mjs",

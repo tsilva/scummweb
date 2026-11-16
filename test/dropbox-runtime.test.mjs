@@ -108,10 +108,126 @@ test("idle synchronization checks the collection twice rather than once per save
   let listings = 0;
   const list = server.list.bind(server), uploads = server.uploads;
   server.list = () => { listings++; return list(); };
+  const idleStates = [];
+  const unsubscribe = runtime.subscribeDropbox(() => idleStates.push(structuredClone(runtime.getDropboxState())));
   await runtime.syncDropbox({ beforeLaunch: true });
+  unsubscribe();
   assert.equal(listings, 2, "fresh start and final checks cover the whole collection");
   assert.equal(server.uploads, uploads, "an idle check must not publish more history");
   assert.equal(runtime.getDropboxState().phase, "connected");
+  assert.ok(idleStates.length > 0);
+  assert.ok(idleStates.some(({ checking }) => checking), "the check still runs");
+  assert.ok(idleStates.every(({ phase, transferProgress, verified }) => phase === "connected" && !transferProgress && verified),
+    "metadata-only checks must not paint a transfer or lose their verified status");
+});
+
+test("a quiet connected label does not release the launch gate before metadata checking finishes", async (t) => {
+  const { runtime, server } = await setup(t);
+  await runtime.syncDropbox({ beforeLaunch: true });
+  let release, started;
+  const listed = new Promise((resolve) => { started = resolve; });
+  const gate = new Promise((resolve) => { release = resolve; });
+  const list = server.list.bind(server);
+  server.list = async () => { started(); await gate; return list(); };
+  let finished = false;
+  const launch = runtime.syncDropbox({ beforeLaunch: true }).then(() => { finished = true; });
+  await listed;
+  assert.equal(runtime.getDropboxState().phase, "connected");
+  assert.equal(runtime.getDropboxState().checking, true);
+  assert.equal(finished, false, "launch must await the safety check despite the quiet label");
+  release(); await launch;
+  assert.equal(runtime.getDropboxState().checking, false);
+});
+
+test("a failed metadata check surfaces an error without pretending it was transferring", async (t) => {
+  const { runtime, server } = await setup(t);
+  await runtime.syncDropbox();
+  const phases = [];
+  const unsubscribe = runtime.subscribeDropbox(() => phases.push(runtime.getDropboxState().phase));
+  server.offline = true;
+  await runtime.syncDropbox(); unsubscribe();
+  assert.equal(phases.includes("syncing"), false);
+  assert.equal(runtime.getDropboxState().phase, "waiting");
+  assert.equal(runtime.getDropboxState().verified, false);
+  assert.equal(runtime.getDropboxState().transferProgress, null);
+  assert.ok(runtime.getDropboxState().message);
+});
+
+test("new completed saves show preparation, actual upload and verification before connected", async (t) => {
+  const { runtime, storage, destinations, server } = await setup(t);
+  await runtime.syncDropbox();
+  const base = (await getActiveSaveSets(storage, destinations)).sets[0];
+  const latest = { ...base, files: base.files.map((file) => ({ ...file, data: bytes("new completed save") })) };
+  latest.hash = await identifySet(latest);
+  const states = [], atUpload = [];
+  const unsubscribe = runtime.subscribeDropbox(() => states.push(structuredClone(runtime.getDropboxState())));
+  server.onUpload = () => atUpload.push(structuredClone(runtime.getDropboxState()));
+  await runtime.queuePlayerSave(latest); await runtime.syncDropbox(); unsubscribe();
+  assert.ok(states.some(({ phase }) => phase === "preparing"));
+  assert.equal(atUpload.length, 1);
+  assert.equal(atUpload[0].phase, "syncing");
+  assert.equal(atUpload[0].transferProgress.stage, "upload");
+  assert.equal(atUpload[0].transferProgress.direction, "upload");
+  assert.equal(atUpload[0].transferProgress.percentage, 0);
+  assert.equal(atUpload[0].transferProgress.title, latest.destination.title);
+  assert.ok(states.some(({ transferProgress }) => transferProgress?.stage === "verify" && transferProgress.direction === "upload"));
+  assert.equal(runtime.getDropboxState().phase, "connected");
+  assert.equal(runtime.getDropboxState().transferProgress, null);
+  assert.equal(runtime.getDropboxState().verified, true);
+  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, latest.hash);
+});
+
+test("restoring cached cloud bytes still exposes actual local restoration progress", async (t) => {
+  const { runtime, storage, destinations, server } = await setup(t, null);
+  const set = { destination: destinations[0], files: [{ path: "SKY-VM.001", data: bytes("cached cloud progress"), modifiedAt: 100 }] };
+  set.hash = await identifySet(set);
+  const node = await makeSnapshot(set); await writeSnapshot(server, node);
+  await syncStore.put({ id: key("node", node.id), node });
+  const states = [];
+  const unsubscribe = runtime.subscribeDropbox(() => states.push(structuredClone(runtime.getDropboxState())));
+  await runtime.syncDropbox({ beforeLaunch: true }); unsubscribe();
+  assert.ok(states.some(({ phase, transferProgress }) => phase === "syncing" && transferProgress?.stage === "restore"));
+  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, set.hash);
+  assert.equal(runtime.getDropboxState().verified, true);
+});
+
+test("native byte progress updates the row without acknowledging uploads or accepting stale messages", async (t) => {
+  const { runtime, storage, destinations, server } = await setup(t);
+  await runtime.syncDropbox();
+  const base = (await getActiveSaveSets(storage, destinations)).sets[0];
+  const latest = { ...base, files: base.files.map(file => ({ ...file, data: bytes("new measured progress") })) };
+  latest.hash = await identifySet(latest);
+  await runtime.queuePlayerSave(latest);
+  let release, entered, emitLate;
+  const gate = new Promise(resolve => { release = resolve; });
+  const started = new Promise(resolve => { entered = resolve; });
+  const uploads = server.uploads;
+  server.onRequest = async (request, emit) => {
+    if (request.op !== "upload") return;
+    emitLate = emit;
+    emit({ op: "progress", loaded: Math.floor(request.bytes.length * .84), total: request.bytes.length, config: "must not be persisted" });
+    const percentage = runtime.getDropboxState().transferProgress.percentage;
+    emit({ op: "progress", id: request.id + 1000, loaded: request.bytes.length, total: request.bytes.length });
+    emit({ op: "progress", loaded: -1, total: request.bytes.length });
+    emit({ op: "progress", loaded: request.bytes.length + 1, total: request.bytes.length });
+    assert.equal(runtime.getDropboxState().transferProgress.percentage, percentage);
+    entered(); await gate;
+  };
+  const flight = runtime.syncDropbox(); await started;
+  try {
+    const state = runtime.getDropboxState();
+    assert.ok(state.transferProgress.percentage >= 41 && state.transferProgress.percentage <= 42);
+    assert.equal(state.transferProgress.title, latest.destination.title);
+    assert.equal(state.transferProgress.direction, "upload");
+    assert.equal(state.verified, false);
+    assert.equal(server.uploads, uploads, "a progress event must never count as an upload reply");
+    assert.ok((await syncStore.all(key("pending", ""))).some(record => record.set.hash === latest.hash));
+    assert.notEqual((await syncStore.get("native/dropbox/" + account)).config, "must not be persisted");
+  } finally { release(); }
+  await flight;
+  assert.equal(runtime.getDropboxState().phase, "connected");
+  emitLate({ op: "progress", loaded: 42, total: 100 });
+  assert.equal(runtime.getDropboxState().transferProgress, null);
 });
 
 test("a remote arrival at the final collection check is restored before launch", async (t) => {
@@ -574,9 +690,13 @@ test("launch waits for another coordinator's lock instead of failing a healthy s
   };
   const launch = runtime.syncDropbox({ beforeLaunch: true });
   await new Promise((resolve) => setTimeout(resolve, 10));
-  assert.equal(runtime.getDropboxState().phase, "syncing");
-  assert.equal(server.uploads, 0);
-  release();
+  try {
+    assert.equal(runtime.getDropboxState().phase, "connected");
+    assert.equal(runtime.getDropboxState().checking, true);
+    assert.equal(runtime.getDropboxState().verified, false);
+    assert.equal(runtime.getDropboxState().transferProgress, null);
+    assert.equal(server.uploads, 0);
+  } finally { release(); }
   await launch;
   assert.equal(runtime.getDropboxState().phase, "connected");
 });
