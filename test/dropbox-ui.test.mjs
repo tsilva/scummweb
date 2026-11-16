@@ -5,6 +5,7 @@ import { runInNewContext } from "node:vm";
 import test from "node:test";
 import swc from "next/dist/build/swc/index.js";
 import * as review from "../app/dropbox/conflict-review.mjs";
+import { connectionKey } from "../app/dropbox/client.mjs";
 import { renderToStaticMarkup } from "react-dom/server";
 
 const nativeRequire = createRequire(import.meta.url);
@@ -100,6 +101,101 @@ test("reordered additional copies invalidate choices even when the same cloud ti
   const conflict = { ...conflicts[0], others: [{ hash: "third" }, { hash: "fourth" }] };
   const reordered = { ...conflict, others: [...conflict.others].reverse() };
   assert.notEqual(review.conflictVersion(conflict), review.conflictVersion(reordered));
+});
+
+test("postponed review identity follows copies and tips, independently of listing order", () => {
+  const original = structuredClone(conflicts);
+  original[0].others = [{ hash: "third" }, { hash: "fourth" }];
+  original[0].tips.push("another-tip");
+  const reordered = structuredClone(original).reverse();
+  reordered[1].others.reverse(); reordered[1].tips.reverse();
+  [reordered[1].local, reordered[1].remote] = [reordered[1].remote, reordered[1].local];
+  reordered[1].remoteHash = reordered[1].remote.hash;
+  assert.equal(review.conflictReviewId(original), review.conflictReviewId(reordered));
+  reordered[1].tips.push("new-cloud-tip");
+  assert.notEqual(review.conflictReviewId(original), review.conflictReviewId(reordered));
+  reordered[1].tips.pop(); reordered[1].local.hash = "changed-save";
+  assert.notEqual(review.conflictReviewId(original), review.conflictReviewId(reordered));
+});
+
+function reviewWindow(account = "account-a") {
+  const values = new Map([[connectionKey, JSON.stringify({ accountId: account })]]);
+  return Object.assign(new EventTarget(), { localStorage: {
+    getItem(key) { return values.get(key) ?? null; },
+    setItem(key, value) { values.set(key, value); },
+  } });
+}
+
+test("postponement is scoped to the connected account and tolerates unavailable preferences", () => {
+  const { localStorage: storage } = reviewWindow();
+  review.rememberDismissedConflictReview(storage, "review-a");
+  assert.equal(review.readDismissedConflictReview(storage), "review-a");
+  storage.setItem(connectionKey, JSON.stringify({ accountId: "account-b" }));
+  assert.equal(review.readDismissedConflictReview(storage), "");
+  storage.setItem(review.conflictDismissalKey, "invalid JSON");
+  assert.equal(review.readDismissedConflictReview(storage), "");
+  const denied = { getItem() { throw Error("denied"); }, setItem() { throw Error("denied"); } };
+  assert.equal(review.readDismissedConflictReview(denied), "");
+  assert.doesNotThrow(() => review.rememberDismissedConflictReview(denied, "review-a"));
+  assert.doesNotThrow(() => review.rememberDismissedConflictReview(null, "review-a"));
+});
+
+async function mountReview(window, currentConflicts = conflicts) {
+  let cursor, effectCursor, pending;
+  const state = [null, { phase: "conflict", conflicts: currentConflicts }];
+  const effects = [];
+  const panel = { open: false, showModal() { this.open = true; }, close() { this.open = false; } };
+  const View = await component("../app/dropbox-save-sync.js", {
+    window, "./dropbox/client.mjs": { connectionKey },
+    "./dropbox/bridge.mjs": { dropboxEnabled: () => false }, "./dropbox/conflict-review.mjs": review,
+  }, {
+    useRef: () => ({ current: panel }),
+    useState(initial) {
+      const index = cursor++;
+      if (!(index in state)) state[index] = typeof initial === "function" ? initial() : initial;
+      return [state[index], (value) => { state[index] = typeof value === "function" ? value(state[index]) : value; }];
+    },
+    useEffect(run, deps) {
+      const index = effectCursor++, old = effects[index];
+      if (!old || deps.some((value, i) => !Object.is(value, old.deps[i]))) {
+        pending.push(() => { old?.cleanup?.(); effects[index] = { deps, cleanup: run() }; });
+      }
+    },
+  });
+  return { panel,
+    render(nextConflicts) {
+      if (nextConflicts) state[1] = { phase: "conflict", conflicts: nextConflicts };
+      cursor = 0; effectCursor = 0; pending = [];
+      const tree = View(); for (const run of pending) run(); return tree;
+    },
+    unmount() { for (const effect of effects) effect.cleanup?.(); },
+  };
+}
+
+test("Decide later survives a new page, reload and reordered review; manual review and new tips still open", async () => {
+  const window = reviewWindow(), first = await mountReview(window);
+  button(first.render(), "Decide later").props.onClick(); first.render();
+  assert.equal(first.panel.open, false); first.unmount();
+  const next = await mountReview(window, [...conflicts].reverse()); next.render();
+  assert.equal(next.panel.open, false, "navigation must not repeat an unchanged review");
+  window.dispatchEvent(new Event("scummweb:dropbox-review")); next.render();
+  assert.equal(next.panel.open, true, "Dropbox row explicitly reopens review in this tab");
+  next.unmount();
+  const reload = await mountReview(window); reload.render();
+  assert.equal(reload.panel.open, false, "explicit review does not erase the saved dismissal");
+  const changed = structuredClone(conflicts); changed[0].tips.push("new-cloud-tip"); reload.render(changed);
+  assert.equal(reload.panel.open, true, "a new cloud version needs a fresh review"); reload.unmount();
+});
+
+test("another tab's postponement closes its matching review, and account changes do not inherit it", async () => {
+  const window = reviewWindow(), mounted = await mountReview(window); mounted.render();
+  assert.equal(mounted.panel.open, true);
+  review.rememberDismissedConflictReview(window.localStorage, review.conflictReviewId(conflicts));
+  window.dispatchEvent(Object.assign(new Event("storage"), { key: review.conflictDismissalKey })); mounted.render();
+  assert.equal(mounted.panel.open, false);
+  window.localStorage.setItem(connectionKey, JSON.stringify({ accountId: "account-b" }));
+  window.dispatchEvent(new Event("scummweb:dropbox-connection")); mounted.render();
+  assert.equal(mounted.panel.open, true); mounted.unmount();
 });
 
 async function row(state, initialNotice = "") {

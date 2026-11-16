@@ -2,7 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { dropboxEnabled } from "./dropbox/bridge.mjs";
-import { conflictOptions, conflictReviewId, conflictVersion } from "./dropbox/conflict-review.mjs";
+import { connectionKey } from "./dropbox/client.mjs";
+import { conflictDismissalKey, conflictOptions, conflictReviewId, conflictVersion,
+  readDismissedConflictReview, rememberDismissedConflictReview } from "./dropbox/conflict-review.mjs";
+
+function reviewStorage() {
+  try { return typeof window === "undefined" ? null : window.localStorage; } catch { return null; }
+}
 
 function FileCopy({ file }) {
   if (!file) return <span>Absent</span>;
@@ -29,12 +35,22 @@ export default function DropboxSaveSync() {
   const [choices, setChoices] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [dismissed, setDismissed] = useState("");
+  const [dismissed, setDismissed] = useState(() => readDismissedConflictReview(reviewStorage()));
   const dialog = useRef(null);
   useEffect(() => {
     const review = () => setDismissed("");
+    const connection = () => setDismissed(readDismissedConflictReview(reviewStorage()));
+    const storage = (event) => {
+      if (event.key === conflictDismissalKey || event.key === connectionKey || event.key === null) connection();
+    };
     window.addEventListener("scummweb:dropbox-review", review);
-    return () => window.removeEventListener("scummweb:dropbox-review", review);
+    window.addEventListener("scummweb:dropbox-connection", connection);
+    window.addEventListener("storage", storage);
+    return () => {
+      window.removeEventListener("scummweb:dropbox-review", review);
+      window.removeEventListener("scummweb:dropbox-connection", connection);
+      window.removeEventListener("storage", storage);
+    };
   }, []);
   useEffect(() => {
     let stopped = false, cleanup, unsubscribe;
@@ -55,6 +71,10 @@ export default function DropboxSaveSync() {
   }, []);
   const conflicts = state?.conflicts ?? [];
   const reviewId = conflictReviewId(conflicts);
+  const dismiss = () => {
+    rememberDismissedConflictReview(reviewStorage(), reviewId);
+    setDismissed(reviewId);
+  };
   const selected = (conflict) => choices[conflict.profile]?.version === conflictVersion(conflict) ? choices[conflict.profile].choice : "";
   useEffect(() => {
     setError("");
@@ -69,7 +89,7 @@ export default function DropboxSaveSync() {
       // Wait only for durable local acceptance, never for a Dropbox request.
       await sync.queueDropboxConflictResolutions(conflicts.map((conflict) => ({ profile: conflict.profile,
         choice: selected(conflict), version: conflictVersion(conflict) })));
-      setDismissed(reviewId);
+      dismiss();
       dialog.current?.close();
       setChoices({});
     } catch (failure) { setError(failure.message); }
@@ -80,7 +100,7 @@ export default function DropboxSaveSync() {
       {state.phase === "reconnect" ? "Reconnect Dropbox in Settings to protect your latest saves." : "Latest saves are on this device, waiting to sync."}
     </aside>}
     <dialog ref={dialog} className="dropbox-conflict" aria-labelledby="dropbox-conflict-title"
-      onCancel={(event) => { event.preventDefault(); if (!submitting) setDismissed(reviewId); }}>
+      onCancel={(event) => { event.preventDefault(); if (!submitting) dismiss(); }}>
       {conflicts.length > 0 && <>
         <h2 id="dropbox-conflict-title">Choose saved progress</h2>
         <p>Separate saves are combined automatically. Choose which copy to use for files with conflicting changes.</p>
@@ -107,7 +127,7 @@ export default function DropboxSaveSync() {
         <p className="dropbox-conflict-hint">Compatible saves are kept with either choice. Original copies remain available in Saved games.</p>
         {error && <p role="alert">{error}</p>}
         <div className="settings-review-actions">
-          <button type="button" disabled={submitting} onClick={() => setDismissed(reviewId)}>Decide later</button>
+          <button type="button" disabled={submitting} onClick={dismiss}>Decide later</button>
           <button type="button" disabled={submitting || conflicts.some((conflict) => !selected(conflict))} onClick={resolve}>Apply choices</button>
         </div>
       </>}
