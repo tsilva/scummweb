@@ -11,7 +11,7 @@ const { code } = await swc.transform(await readFile(url, "utf8"), {
   jsc: { parser: { syntax: "ecmascript" } },
 });
 
-function harness({ deferredDecode = false } = {}) {
+function harness({ deferredDecode = false, failedDecode = false } = {}) {
   class Element {
     constructor(tag) { this.tag = tag; this.children = []; this.complete = false; this.naturalWidth = 0; }
     append(child) { this.children.push(child); child.parent = this; }
@@ -21,6 +21,7 @@ function harness({ deferredDecode = false } = {}) {
     removeAttribute(name) { delete this[name]; }
     decode() {
       this.decodingStarted = true;
+      if (failedDecode) return Promise.reject(new Error("Image unavailable"));
       if (!deferredDecode) return Promise.resolve();
       this.decoded ??= new Promise((resolve) => { this.finishDecode = () => {
         this.complete = true; this.naturalWidth = 1200; resolve();
@@ -28,14 +29,23 @@ function harness({ deferredDecode = false } = {}) {
       return this.decoded;
     }
   }
-  const body = new Element("body"), module = { exports: {} };
+  const body = new Element("body"), module = { exports: {} }, frames = new Map();
+  let nextFrame = 0;
   runInNewContext(code, {
     module, exports: module.exports,
     require: () => ({ getHeroImageProps: (game) => game }),
     document: { body, createElement: (tag) => new Element(tag) },
     Image: class extends Element { constructor() { super("img"); } },
+    requestAnimationFrame: (callback) => { frames.set(++nextFrame, callback); return nextFrame; },
+    cancelAnimationFrame: (frame) => frames.delete(frame),
   });
-  return { ...module.exports, body };
+  return { ...module.exports, body, visibleImage: () => new Element("img"),
+    paint() {
+      const callbacks = [...frames.values()];
+      frames.clear();
+      for (const callback of callbacks) callback();
+    },
+  };
 }
 
 const first = { src: "/one.webp", srcSet: "/one.webp 1200w", avifSrcSet: "/one.avif 1200w", sizes: "100vw" };
@@ -99,31 +109,67 @@ test("completed covers stay decoded while obsolete slideshow preloads release th
   assert.equal(h.body.children.length, 1);
 });
 
-test("slideshow neighbors wait for the current hero to decode", async () => {
-  const h = harness({ deferredDecode: true }), images = new Map();
-  h.preloadHeroWindow([first, second], images);
-  assert.equal(h.body.children.length, 1, "the current cover gets the connection first");
-  h.body.children[0].querySelector("img").finishDecode();
+test("slideshow neighbors wait for the visible hero to decode and paint without a hidden duplicate", async () => {
+  const h = harness({ deferredDecode: true }), images = new Map(), visible = h.visibleImage();
+  h.preloadHeroWindow([first, second], images, visible);
+  assert.equal(h.body.children.length, 0, "the rendered cover owns the initial request and decode");
+  visible.finishDecode();
   await Promise.resolve();
-  assert.equal(h.body.children.length, 2, "neighbors warm only after the current cover is ready");
+  h.paint();
+  assert.equal(h.body.children.length, 0, "decoding must leave an opportunity to paint first");
+  h.paint();
+  assert.equal(h.body.children.length, 1, "only the neighboring cover is preloaded");
+  assert.equal(images.has(JSON.stringify(first)), false);
   const neighbor = images.get(JSON.stringify(second));
   neighbor.querySelector("img").finishDecode();
-  h.preloadHeroWindow([first, second], images);
+  h.preloadHeroWindow([first, second], images, visible);
   assert.equal(images.get(JSON.stringify(second)), neighbor, "ready neighbors stay decoded");
 });
 
 test("rapid slideshow changes cancel obsolete downloads and cannot warm a stale window", async () => {
-  const h = harness({ deferredDecode: true }), images = new Map();
-  const cancel = h.preloadHeroWindow([first, second], images);
-  const oldImage = h.body.children[0].querySelector("img");
+  const h = harness({ deferredDecode: true }), images = new Map(), oldImage = h.visibleImage();
+  const obsolete = h.createHeroPreload(first);
+  images.set(JSON.stringify(first), obsolete);
+  const cancel = h.preloadHeroWindow([first, second], images, oldImage);
   cancel();
-  const third = { ...first, src: "/three.webp" };
-  h.preloadHeroWindow([second, third], images);
-  assert.equal(oldImage.src, undefined);
+  const third = { ...first, src: "/three.webp" }, visible = h.visibleImage();
+  h.preloadHeroWindow([second, third], images, visible);
+  assert.equal(obsolete.querySelector("img").src, undefined);
   oldImage.finishDecode();
   await Promise.resolve();
-  assert.equal(h.body.children.length, 1, "late decoding cannot revive the previous window");
-  h.body.children[0].querySelector("img").finishDecode();
+  h.paint();
+  h.paint();
+  assert.equal(h.body.children.length, 0, "late decoding cannot revive the previous window");
+  visible.finishDecode();
   await Promise.resolve();
-  assert.equal(h.body.children.length, 2);
+  h.paint();
+  h.paint();
+  assert.equal(h.body.children.length, 1);
+  assert.equal(h.body.children[0].querySelector("img").src, third.src);
+});
+
+test("a cached visible hero still paints before warming, and cancelled frames stay cancelled", () => {
+  const h = harness(), images = new Map(), visible = h.visibleImage();
+  visible.complete = true;
+  visible.naturalWidth = 1200;
+  const cancel = h.preloadHeroWindow([first, second], images, visible);
+  h.paint();
+  assert.equal(h.body.children.length, 0);
+  cancel();
+  h.paint();
+  assert.equal(h.body.children.length, 0);
+  h.preloadHeroWindow([first, second], images, visible);
+  h.paint();
+  h.paint();
+  assert.equal(h.body.children.length, 1);
+});
+
+test("missing or failed visible artwork does not trigger speculative downloads", async () => {
+  const h = harness({ failedDecode: true }), images = new Map();
+  h.preloadHeroWindow([first, second], images, null);
+  h.preloadHeroWindow([first, second], images, h.visibleImage());
+  await Promise.resolve();
+  h.paint();
+  h.paint();
+  assert.equal(h.body.children.length, 0);
 });

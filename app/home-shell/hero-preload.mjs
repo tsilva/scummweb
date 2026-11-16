@@ -35,7 +35,7 @@ export function disposeHeroPreload(picture) {
   picture.remove();
 }
 
-export function preloadHeroWindow(props, images) {
+export function preloadHeroWindow(props, images, currentImage) {
   const keys = props.map((image) => JSON.stringify(image));
   const currentKey = keys[0];
   // Retain decoded neighbors, but stop unfinished background work while the
@@ -47,23 +47,27 @@ export function preloadHeroWindow(props, images) {
       images.delete(key);
     }
   }
-  if (!currentKey) return;
-  let current = images.get(currentKey);
-  if (!current) {
-    current = createHeroPreload(props[0]);
-    images.set(currentKey, current);
-  }
+  if (props.length < 2 || !currentImage) return;
   let cancelled = false;
+  let frame;
   const warmNeighbors = () => {
     if (cancelled) return;
     for (let index = 1; index < props.length; index += 1) {
       if (!images.has(keys[index])) images.set(keys[index], createHeroPreload(props[index]));
     }
   };
-  const image = current.querySelector("img");
-  if (image.complete && image.naturalWidth) warmNeighbors();
-  else void image.decode().then(warmNeighbors, () => {});
-  return () => { cancelled = true; };
+  const afterPaint = () => {
+    if (cancelled) return;
+    // Decode the rendered hero, rather than a hidden copy of it. Two frames
+    // leave a paint opportunity before starting background image work.
+    frame = requestAnimationFrame(() => { frame = requestAnimationFrame(warmNeighbors); });
+  };
+  if (currentImage.complete && currentImage.naturalWidth) afterPaint();
+  else void currentImage.decode().then(afterPaint, () => {});
+  return () => {
+    cancelled = true;
+    if (frame !== undefined) cancelAnimationFrame(frame);
+  };
 }
 
 export function preloadSelectedHero(game, artwork, committed = false) {
