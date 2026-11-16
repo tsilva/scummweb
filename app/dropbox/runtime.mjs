@@ -194,12 +194,12 @@ async function syncAccount(auth, epoch, signal, progress) {
     for (const [profile, group] of groups) {
       check();
       const baseline = await syncStore.get(recordKey(account, "base", profile));
-      let result = await publishProfile({ client, profile, ...group, base: baseline?.hash ?? null, baseTips: baseline?.tips ?? [], check });
+      let result = await publishProfile({ client, profile, ...group, base: baseline?.hash ?? null, baseTips: baseline?.tips ?? [], refreshUnchanged: false, check });
       if (group.browserSet && group.browserSet.hash !== group.local?.hash && group.browserSet.hash !== baseline?.hash) {
         // If the working copy ALSO changed independently, preserve it and ask.
         // Do not guess which of two durable local histories is newer.
         group.local = group.browserSet;
-        result = await publishProfile({ client, profile, local: group.local, base: baseline?.hash ?? null, baseTips: baseline?.tips ?? [], check });
+        result = await publishProfile({ client, profile, local: group.local, base: baseline?.hash ?? null, baseTips: baseline?.tips ?? [], refreshUnchanged: false, check });
       }
       check();
       const remote = result.head.active ? await readSnapshot(client, profile, result.head.active) : null;
@@ -260,6 +260,16 @@ async function syncAccount(auth, epoch, signal, progress) {
       readyProfiles.add(profile);
     }
     check();
+    // Unchanged profiles share a listing. A final fresh listing fences remote
+    // arrivals/deletions before launch, without one network trip per game.
+    const cloudChanged = await client.refresh();
+    check();
+    if (cloudChanged) {
+      launchSyncSnapshot = null;
+      update({ phase: "waiting", conflicts: [], resolutionProgress: null,
+        message: "Cloud saves changed during sync. Checking them again shortly." });
+      return { retry: true };
+    }
     const observedGeneration = localGeneration;
     await queue.catch(() => {});
     const pending = await syncStore.all(recordKey(account, "pending", ""));
@@ -281,6 +291,8 @@ async function syncAccount(auth, epoch, signal, progress) {
       resolutionProgress: null,
       message: conflicts.length ? "Choose which saved progress to continue." : resolutionIssue || importMessage || (deferred ? deferredMessage || "Saved progress is waiting to be checked again."
         : pending.length ? "Your latest saves are waiting to sync." : "") });
+    return { retry: !collected.busy && !collected.incomplete && !importMessage && !conflicts.length && !resolutionIssue
+      && (pending.length > 0 || observedGeneration !== localGeneration) };
   } finally { transport.close(); }
 }
 
@@ -352,7 +364,12 @@ export async function syncDropbox({ beforeLaunch = false, launchDestinationKey =
       await navigator.locks.request("scummweb-dropbox-sync", { mode: "exclusive", signal: controller.signal }, async (lock) => {
         if (!lock) throw new DropboxError("Another ScummWEB tab is syncing. Try again shortly.");
         controller.signal.throwIfAborted();
-        await Promise.race([syncAccount(auth, epoch, controller.signal, progress), aborted]);
+        for (let attempt = 0; attempt < 3; attempt++) {
+          const result = await Promise.race([syncAccount(auth, epoch, controller.signal, progress), aborted]);
+          if (!result?.retry || attempt === 2) break;
+          controller.signal.throwIfAborted();
+          update({ phase: resolutionPending ? "resolving" : "syncing", message: "", conflicts: [] });
+        }
       });
     })();
     flight = Promise.race([work, aborted]).catch((error) => {

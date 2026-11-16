@@ -64,7 +64,10 @@ button sits beside it and can cancel an ongoing sync.
 
 Completed player saves are captured with companion files and queued in
 IndexedDB before network publication. Pending native writes and isolated agent
-runs are excluded. Cloud checks happen before a connected launch, after save
+runs are excluded. Files remaining in the game's save folder are retained even
+when absent from the native save list or named like a skip-intro checkpoint;
+only the shell's exact-byte checkpoint cleanup can identify bundled copies.
+Cloud checks happen before a connected launch, after save
 changes, when returning to the app, when connectivity returns, and periodically
 while the page is visible. A running game's files are never replaced remotely.
 
@@ -180,6 +183,14 @@ collection scan permits up to 10,000 snapshot files; history is retained rather
 than silently pruned. Scans stop safely above 256 MiB of decoded save history.
 Within one sync pass, verified snapshots are reused across games. Fresh Dropbox
 listings still detect new snapshots and missing history.
+Unchanged games share the pass's initial collection listing and a final fresh
+check, rather than listing the same folder separately for every game. Writes
+still re-list immediately. New cloud changes or newly queued completed saves
+trigger up to three immediate passes before a launch succeeds; continued changes
+leave a retryable waiting status instead of launching with unchecked progress.
+Import, export and activation briefly retry a busy save lock so a short sync
+restore or metadata check does not immediately report an open game. A running
+player still prevents these operations; the wait is bounded to two seconds.
 
 `app/cloud/native-client.mjs` owns the provider registry and native bridge.
 Dropbox is enabled first. ScummVM's Google Drive, OneDrive and Box IDs are

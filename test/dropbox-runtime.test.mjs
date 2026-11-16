@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { connectionKey, sessionKey } from "../app/dropbox/client.mjs";
 import { captureFilesystem, initializeSaveEdition } from "../app/save-backups/filesystem.mjs";
-import { createSaveCollection, makeSnapshot, publishProfile, saveProfileId } from "../app/dropbox/protocol.mjs";
+import { createSaveCollection, makeSnapshot, publishProfile, saveProfileId, writeSnapshot } from "../app/dropbox/protocol.mjs";
 import { syncStore } from "../app/dropbox/store.mjs";
 import { conflictOptions, conflictSelection, conflictVersion } from "../app/dropbox/conflict-review.mjs";
 import { applyImport, getActiveSaveSets, getSaveDestinations, identifySet, preserveSets, readStoredSets } from "../app/save-backups/backups.mjs";
@@ -92,6 +92,94 @@ test("a clean browser restores cloud progress before the launch gate completes",
   assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, set.hash);
   await runtime.syncDropbox({ beforeLaunch: true });
   assert.equal(changes, 1, "an actual restore notifies the library once");
+});
+
+test("idle synchronization checks the collection twice rather than once per saved game", async (t) => {
+  const catalog = ["sky", "queen", "lure"].map((target) => ({ target, displayTitle: target }));
+  const { runtime, server, destinations } = await setup(t, null, catalog);
+  const client = await createSaveCollection(server);
+  for (const destination of destinations.filter(({ family }) => family !== "shared")) {
+    const set = { destination: { ...destination, isolated: true },
+      files: [{ path: `${destination.family}.001`, data: bytes(destination.family), modifiedAt: 100 }] };
+    set.hash = await identifySet(set);
+    await publishProfile({ client, profile: await saveProfileId(set), local: set });
+  }
+  await runtime.syncDropbox({ beforeLaunch: true });
+  let listings = 0;
+  const list = server.list.bind(server), uploads = server.uploads;
+  server.list = () => { listings++; return list(); };
+  await runtime.syncDropbox({ beforeLaunch: true });
+  assert.equal(listings, 2, "fresh start and final checks cover the whole collection");
+  assert.equal(server.uploads, uploads, "an idle check must not publish more history");
+  assert.equal(runtime.getDropboxState().phase, "connected");
+});
+
+test("a remote arrival at the final collection check is restored before launch", async (t) => {
+  const { runtime, storage, destinations, server } = await setup(t);
+  await runtime.syncDropbox({ beforeLaunch: true });
+  const base = (await getActiveSaveSets(storage, destinations)).sets[0], profile = await saveProfileId(base);
+  const baseline = await syncStore.get(key("base", profile));
+  const remote = { ...base, files: base.files.map((file) => ({ ...file, data: bytes("late remote progress") })) };
+  remote.hash = await identifySet(remote);
+  const node = await makeSnapshot(remote, baseline.tips), staged = fakeNativeStorage();
+  await writeSnapshot(staged, node);
+  let listings = 0;
+  const list = server.list.bind(server);
+  server.list = () => {
+    if (++listings === 2) server.files.set(`${node.id}.zip`, staged.files.get(`${node.id}.zip`));
+    return list();
+  };
+  await runtime.syncDropbox({ beforeLaunch: true });
+  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, remote.hash);
+  assert.equal(runtime.getDropboxState().phase, "connected");
+  assert.equal(await syncStore.get(key("pending", profile)), undefined);
+});
+
+test("a completed save arriving at the final check is drained before launch", async (t) => {
+  const { runtime, storage, destinations, server } = await setup(t);
+  await runtime.syncDropbox({ beforeLaunch: true });
+  const base = (await getActiveSaveSets(storage, destinations)).sets[0], profile = await saveProfileId(base);
+  const latest = { ...base, files: base.files.map((file) => ({ ...file, data: bytes("latest durable completed save") })) };
+  latest.hash = await identifySet(latest);
+  let listings = 0;
+  const list = server.list.bind(server);
+  server.list = async () => {
+    if (++listings === 2) await syncStore.put({ id: key("pending", profile), set: latest, profile });
+    return list();
+  };
+  await runtime.syncDropbox({ beforeLaunch: true });
+  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, latest.hash);
+  assert.equal(runtime.getDropboxState().phase, "connected");
+  assert.equal(await syncStore.get(key("pending", profile)), undefined);
+});
+
+test("continuous remote changes bound immediate recovery and leave a safe retry", async (t) => {
+  const { runtime, storage, destinations, server } = await setup(t);
+  await runtime.syncDropbox({ beforeLaunch: true });
+  const base = (await getActiveSaveSets(storage, destinations)).sets[0], profile = await saveProfileId(base);
+  let parents = (await syncStore.get(key("base", profile))).tips;
+  const arrivals = [], staged = fakeNativeStorage();
+  for (let index = 0; index < 3; index++) {
+    const set = { ...base, files: base.files.map((file) => ({ ...file, data: bytes(`remote revision ${index}`) })) };
+    set.hash = await identifySet(set);
+    const node = await makeSnapshot(set, parents);
+    await writeSnapshot(staged, node);
+    arrivals.push(node); parents = [node.id];
+  }
+  let listings = 0;
+  const list = server.list.bind(server);
+  server.list = () => {
+    if (++listings % 2 === 0 && arrivals.length) {
+      const node = arrivals.shift(); server.files.set(`${node.id}.zip`, staged.files.get(`${node.id}.zip`));
+    }
+    return list();
+  };
+  await assert.rejects(runtime.syncDropbox({ beforeLaunch: true }), /Cloud saves changed/);
+  assert.equal(listings, 6, "three complete attempts must not become an unbounded launch loop");
+  assert.equal(runtime.getDropboxState().phase, "waiting");
+  await runtime.syncDropbox({ beforeLaunch: true });
+  assert.equal(runtime.getDropboxState().phase, "connected");
+  assert.equal(new TextDecoder().decode((await getActiveSaveSets(storage, destinations)).sets[0].files[0].data), "remote revision 2");
 });
 
 test("first sync merges compatible local and cloud slots and acknowledges only the restored union", async (t) => {
