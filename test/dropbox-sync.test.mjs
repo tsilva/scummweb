@@ -159,6 +159,20 @@ test("player capture refuses pending native writes and excludes agent scopes", (
   assert.equal(capturePlayerSaveSet(player, {}), null);
 });
 
+test("player capture retains an unlisted save sharing a skip-intro filename", () => {
+  const key = saveIndexKey("", "sky");
+  const index = JSON.stringify({ pending: [], saves: [{ name: "SKY-VM.001" }] });
+  const original = bytes("original user progress, not a bundled checkpoint");
+  const player = { location: { href: "https://example.test/scummvm.html?hostPlayer=1&catalogSaveTarget=sky" },
+    __scummwebSaveStatus: { target: "sky" }, localStorage: { getItem: (name) => name === key ? index : null },
+    FS: { readdir: () => [".", "..", "SKY-VM.000", "SKY-VM.001", "SKY-VM.SAV"],
+      lstat: () => ({ mode: 1, size: original.length, mtime: 100 }), isDir: () => false, isFile: () => true,
+      readFile: (path) => path.endsWith(".000") ? original : bytes(path) } };
+  const captured = capturePlayerSaveSet(player, { displayTitle: "Sky", skipIntro: { saveFiles: ["SKY-VM.000"] } });
+  assert.deepEqual(captured.files.map(({ path }) => path), ["SKY-VM.000", "SKY-VM.001", "SKY-VM.SAV"]);
+  assert.deepEqual(captured.files[0].data, original);
+});
+
 test("native cloud bookkeeping does not create a shared save profile during migration", async () => {
   const storage = browserSaveStorage({ "SKY-VM.001": bytes("progress"), timestamps: bytes("native metadata") });
   const destinations = await getSaveDestinations([{ target: "sky", displayTitle: "Sky" }], []);

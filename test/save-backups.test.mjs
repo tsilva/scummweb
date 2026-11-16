@@ -235,6 +235,25 @@ test("edition locks admit different games, reject duplicates, and exclude backup
   await assert.rejects(withSaveLock(() => assert.fail("must not run while a game holds the lock")), /Close games/);
 });
 
+test("backup actions wait for a short save operation and run once under the exclusive lock", async (t) => {
+  const { withSaveLock, saveLockName } = await import("../app/save-backups/backups.mjs");
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, "navigator");
+  t.after(() => { if (descriptor) Object.defineProperty(globalThis, "navigator", descriptor); else delete globalThis.navigator; });
+  let requests = 0, actions = 0, held = false;
+  const locks = { async request(name, options, use) {
+    assert.equal(name, saveLockName); assert.equal(options.mode, "exclusive"); assert.equal(options.ifAvailable, true);
+    if (++requests === 1) return use(null);
+    held = true;
+    try { return await use({ name }); } finally { held = false; }
+  } };
+  Object.defineProperty(globalThis, "navigator", { configurable: true, value: { locks } });
+  assert.equal(await withSaveLock(() => { assert.ok(held); actions++; return "exported"; }), "exported");
+  assert.equal(actions, 1); assert.equal(requests, 2);
+  requests = 1;
+  await assert.rejects(withSaveLock(() => { throw new Error("backup failed"); }), /backup failed/);
+  assert.equal(requests, 2, "a failure inside the action must not retry a partial restore");
+});
+
 test("legacy edition migration preserves Continue, timestamps, companion files, and unclaimed saves", async (t) => {
   const namespace = "version-" + "a".repeat(64);
   const storage = storageFixture({

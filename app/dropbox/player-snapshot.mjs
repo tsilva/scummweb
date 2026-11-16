@@ -20,8 +20,6 @@ export function capturePlayerSaveSet(player, game) {
   const path = defaultSavePath + (namespace ? "/" + namespace : "");
   const FS = player.FS;
   const files = [];
-  const introNames = new Set(game?.skipIntro?.saveFiles || []);
-  const indexedNames = new Set(parsed.saves?.map(({ name }) => name) || []);
   let total = 0;
   function walk(directory, prefix = "") {
     for (const name of FS.readdir(directory)) {
@@ -32,7 +30,9 @@ export function capturePlayerSaveSet(player, game) {
       const stat = FS.lstat(full);
       if (FS.isDir(stat.mode)) { walk(full, relative + "/"); continue; }
       if (!FS.isFile(stat.mode)) throw new Error("A save contains an unsupported file type.");
-      if (!prefix && introNames.has(name) && !indexedNames.has(name)) continue;
+      // A filename or missing native-list entry cannot identify a bundled
+      // checkpoint. Preserve every file left in the save folder; the shell
+      // removes legacy checkpoints only after comparing their exact bytes.
       total += stat.size;
       if (total > 63 * 1024 * 1024 || files.length >= 4096) throw new Error("These saves exceed the backup limit.");
       files.push({ path: relative, modifiedAt: Number(stat.mtime), data: new Uint8Array(FS.readFile(full)) });

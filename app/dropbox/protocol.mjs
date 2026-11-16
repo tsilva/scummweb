@@ -78,6 +78,8 @@ export async function createSaveCollection(transport, cache) {
   let nodes = [];
   async function refresh() {
     const names = [...new Set(await transport.list())];
+    const previousIds = new Set(nodes.map((node) => `${node.id}.zip`));
+    const changed = names.length !== previousIds.size || names.some((name) => !previousIds.has(name));
     // Snapshots are immutable and already verified. Reuse this pass's bytes
     // instead of reopening IndexedDB for the entire history after every game.
     // Build the active collection from the fresh listing so deletions still count.
@@ -93,6 +95,7 @@ export async function createSaveCollection(transport, cache) {
       next.push(node);
     }
     nodes = next;
+    return changed;
   }
   await refresh();
   const history = (profile) => profileHistory(nodes, profile);
@@ -109,10 +112,13 @@ export async function createSaveCollection(transport, cache) {
       const confirmed = await writeSnapshot(transport, node);
       await cache?.save(confirmed);
       nodes.push(confirmed);
+      return true;
     }
+    return false;
   }
   return {
     close: () => transport.close(),
+    refresh,
     profiles: () => [...new Set(nodes.map(({ profile }) => profile))],
     hasImported: (hash) => nodes.some((node) => node.active && node.hash === hash),
     head,
@@ -121,24 +127,27 @@ export async function createSaveCollection(transport, cache) {
       if (!node) throw new DropboxError("Cloud snapshot is missing. Local saves are unchanged.", "integrity");
       return node.set;
     },
-    async publish({ profile, local, alternatives = [], base = null, baseTips = [], resolve = false, expectedTips = [], check = () => {} }) {
+    async publish({ profile, local, alternatives = [], base = null, baseTips = [], resolve = false, expectedTips = [], refreshUnchanged = true, check = () => {} }) {
       const before = head(profile);
       if (base !== null && (!before.snapshots.includes(base) || baseTips.some((id) => !nodes.some((node) => node.id === id)))) {
         throw new DropboxError("Cloud history is missing. Your local copies are retained.", "integrity");
       }
-      for (const set of alternatives) if (resolve || !before.snapshots.includes(set.hash)) await put(set, [], false, check);
+      let wrote = false;
+      for (const set of alternatives) if (resolve || !before.snapshots.includes(set.hash)) wrote = await put(set, [], false, check) || wrote;
       if (resolve) {
         await refresh();
         const current = head(profile);
         if (JSON.stringify([...current.tips].sort()) !== JSON.stringify([...expectedTips].sort())) {
           throw new DropboxError("Saves changed while you were choosing. Review them again.", "conflict");
         }
-        await put(local, current.tips, true, check);
+        wrote = await put(local, current.tips, true, check) || wrote;
       } else if (local && local.hash !== base && !history(profile).tips.some((node) => node.hash === local.hash)) {
-        await put(local, baseTips, true, check);
+        wrote = await put(local, baseTips, true, check) || wrote;
       }
       // Re-list after publication to observe another device's concurrent commit.
-      await refresh();
+      // A coordinator can batch unchanged profiles, then refresh the complete
+      // collection before declaring it ready. Actual writes always re-list.
+      if (wrote || resolve || refreshUnchanged) await refresh();
       let after = head(profile);
       let merged = false, conflictMerge, conflictSets;
       for (let attempt = 0; after.concurrent; attempt++) {

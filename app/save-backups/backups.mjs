@@ -202,10 +202,16 @@ export async function preserveSets(sets) {
 
 export async function withSaveLock(action) {
   if (!navigator.locks) throw new Error("This browser cannot safely restore saves. Use a browser with Web Locks support.");
-  return navigator.locks.request(saveLockName, { mode: "exclusive", ifAvailable: true }, async (lock) => {
-    if (!lock) throw new Error("Close games in all ScummWEB tabs before exporting or restoring saves.");
-    return action();
-  });
+  const busy = {};
+  // A short cloud restore or save-metadata check is not a running game. Let
+  // those finish, without queuing an unbounded lock behind a real player.
+  for (let attempt = 0; attempt <= 20; attempt++) {
+    const result = await navigator.locks.request(saveLockName, { mode: "exclusive", ifAvailable: true },
+      (lock) => lock ? action() : busy);
+    if (result !== busy) return result;
+    if (attempt < 20) await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+  throw new Error("Saved games are busy. Close games in other ScummWEB tabs or wait for syncing to finish, then try again.");
 }
 
 export async function applyImport({ storage, rows, destinations, revision, initialConfig, preserve = preserveSets, check = () => {} }) {
