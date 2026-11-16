@@ -36,7 +36,7 @@ platforms, the button focuses instructions for the containing app's menu.
 **Copy link** offers a selectable URL if clipboard access is denied. Browser
 menu labels vary; opening externally does not transfer browser-local saves or
 imported files. The handoff uses an uncached request rewrite; assets, API calls,
-cloud callbacks and monitoring bypass it. Verify these rules with
+cloud callbacks and monitoring bypass it. Ordinary browser page requests also bypass the proxy function through a static user-agent matcher; the legacy `/scummvm.html` handler remains unconditional. Keep the matcher a superset of the in-app detector. Verify these rules with
 `node --test test/in-app-browser.test.mjs` and test the native handoff on real
 devices when changing app-specific behavior.
 
