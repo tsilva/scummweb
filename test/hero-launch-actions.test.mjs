@@ -394,6 +394,7 @@ test("launch feedback commits synchronously and portals the existing boot screen
   function BootOverlay() {}
   const useFeedback = await loadComponent("../app/game-player/useLaunchFeedback.js", {
     "./GameBootOverlay": BootOverlay,
+    "next/navigation": { usePathname: () => "/beneath-a-steel-sky" },
     "react-dom": {
       flushSync(callback) { calls.push("flush start"); callback(); calls.push("flush end"); },
       createPortal(content, target) { assert.equal(target, body); return content; },
@@ -401,6 +402,7 @@ test("launch feedback commits synchronously and portals the existing boot screen
   }, {
     useState: () => [selected, (value) => { selected = value; calls.push("state committed"); }],
     useEffect() {},
+    useLayoutEffect() {},
   }, { document: { body } });
   const initial = useFeedback();
   assert.equal(initial.overlay, null);
@@ -414,6 +416,39 @@ test("launch feedback commits synchronously and portals the existing boot screen
   assert.equal(overlay.props.children.props.bootStatusText, "Loading game…");
   useFeedback().dismiss();
   assert.equal(useFeedback().overlay, null);
+});
+
+test("leaving a preserved hero clears launch feedback before returning to the library", async () => {
+  let selected = null, cleanup;
+  let pathname = "/beneath-a-steel-sky";
+  const body = {};
+  const useFeedback = await loadComponent("../app/game-player/useLaunchFeedback.js", {
+    "./GameBootOverlay": () => null,
+    "next/navigation": { usePathname: () => pathname },
+    "react-dom": {
+      flushSync(callback) { callback(); },
+      createPortal(content, target) { assert.equal(target, body); return content; },
+    },
+  }, {
+    useState: () => [selected, (value) => { selected = value; }],
+    useEffect() {},
+    useLayoutEffect(setup, dependencies) {
+      assert.equal(dependencies[0], pathname);
+      cleanup = setup();
+    },
+  }, { document: { body } });
+
+  useFeedback().show(game);
+  assert.ok(useFeedback().overlay);
+  // Route departure/hiding runs layout cleanup while React can retain state.
+  cleanup();
+  pathname = "/beneath-a-steel-sky/play";
+  assert.equal(useFeedback().overlay, null);
+  pathname = "/beneath-a-steel-sky";
+  assert.equal(useFeedback().overlay, null);
+  // The restored hero can start a fresh launch.
+  useFeedback().show(game);
+  assert.ok(useFeedback().overlay);
 });
 
 test("the loading screen reuses the hero's responsive artwork and requests synchronous decoding", async () => {
