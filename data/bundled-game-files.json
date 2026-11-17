@@ -20874,6 +20874,52 @@
           4008972198
         ]
       ]
+    },
+    "puttmoon-demo": {
+      "url": "https://scummvm-games.tsilva.eu/puttmoon.zip",
+      "fingerprint": "554995dc0c836334039b398518f2d073f74dcc06fb518f7fd0dc2f26f10e5d79",
+      "files": [
+        [
+          "MOONDEMO.EXE",
+          30720,
+          2692976413
+        ],
+        [
+          "MOONDEMO.HE0",
+          8856,
+          3451413547
+        ],
+        [
+          "MOONDEMO.HE1",
+          933372,
+          1040395290
+        ],
+        [
+          "MOONDEMO.HE2",
+          720805,
+          1000079129
+        ],
+        [
+          "MOONDEMO.HE3",
+          36864,
+          3890885278
+        ],
+        [
+          "MOONDEMO.HE4",
+          6381595,
+          2977687850
+        ],
+        [
+          "MOONDEMO.HLP",
+          94208,
+          771259037
+        ],
+        [
+          "MOONDEMO.W32",
+          261120,
+          3272264076
+        ]
+      ]
     }
   }
 }

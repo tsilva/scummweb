@@ -865,6 +865,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "puttmoon-demo",
+      "title": "Putt-Putt Goes to the Moon (Demo)",
+      "path": "/games/puttmoon",
+      "engineId": "scumm",
+      "gameId": "puttmoon",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

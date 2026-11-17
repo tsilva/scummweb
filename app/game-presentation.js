@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "puttmoon-demo": {
+    ...retroGameArtwork["scumm:puttmoon"],
+    heroImageMobilePosition: "90% -25vh",
+    title: "Putt-Putt Goes to the Moon (Demo)",
+    year: "1993",
+    language: "en",
+    summary: "Explore lunar craters and their animated surprises with Putt-Putt.",
+  },
   "puttrace-demo": {
     ...retroGameArtwork["scumm:puttrace"],
     heroImageMobilePosition: "80% -25vh",
