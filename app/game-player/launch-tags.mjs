@@ -1,6 +1,7 @@
 import { getVersionMetadata } from "../game-versions.mjs";
 
 const launchTagsByTarget = new Map([
+  ["freddi4-demo", ["Point-and-click", "Underwater Western"]],
   ["freddi3-demo", ["Point-and-click", "Underwater mystery"]],
   ["lsl7-demo", ["Liar's Dice", "Adult comedy"]],
   ["phantasmagoria-demo", ["Interactive movie", "Supernatural horror"]],

@@ -20721,6 +20721,57 @@
           630306712
         ]
       ]
+    },
+    "freddi4-demo": {
+      "url": "https://scummvm-games.tsilva.eu/freddi4.zip",
+      "fingerprint": "afe4fd3dcbb2cc52afdf488bf265c0fb905c135fe388b64e2e113400ca3bd1e5",
+      "files": [
+        [
+          "FF4DEMO.(A)",
+          6322129,
+          3496239882
+        ],
+        [
+          "ff4demo.d32",
+          45056,
+          4278968466
+        ],
+        [
+          "ff4demo.exe",
+          475182,
+          3401650043
+        ],
+        [
+          "FF4DEMO.HE0",
+          13600,
+          2900540967
+        ],
+        [
+          "FF4DEMO.HE2",
+          4203746,
+          1294071234
+        ],
+        [
+          "ff4demo.he4",
+          623886,
+          1289745086
+        ],
+        [
+          "FF4DEMO.hlp",
+          767167,
+          271658410
+        ],
+        [
+          "ff4demo.inf",
+          2146,
+          3467356271
+        ],
+        [
+          "FreddiUK.ICO",
+          766,
+          446533524
+        ]
+      ]
     }
   }
 }

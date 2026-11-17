@@ -1590,6 +1590,11 @@
       "file": "freddi-fish-3-the-case-of-the-stolen-conch-shell-demo-8b50c0db41a0bde5a4e4f7f7152c5782a8b54622008b89e895737e93c29808c8.jpg",
       "inputHash": "8b50c0db41a0bde5a4e4f7f7152c5782a8b54622008b89e895737e93c29808c8",
       "imageHash": "a4b60cfc54524b727209070346ccc18d32d926afbfb0c5945f820971e65ead5d"
+    },
+    "freddi-fish-4-the-case-of-the-hogfish-rustlers-of-briny-gulch-demo": {
+      "file": "freddi-fish-4-the-case-of-the-hogfish-rustlers-of-briny-gulch-demo-5866746e40c268171c027f5c3d759a3de334493d4ae0d786da4d59ed4394c9f1.jpg",
+      "inputHash": "5866746e40c268171c027f5c3d759a3de334493d4ae0d786da4d59ed4394c9f1",
+      "imageHash": "3ac6d381b6577001e656651c5790da427d524eb36fec0bd6dc8f4ff84494f1b3"
     }
   }
 }

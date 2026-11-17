@@ -835,6 +835,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "freddi4-demo",
+      "title": "Freddi Fish 4: The Case of the Hogfish Rustlers of Briny Gulch (Demo)",
+      "path": "/games/freddi4",
+      "engineId": "scumm",
+      "gameId": "freddi4",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

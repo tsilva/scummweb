@@ -120,6 +120,15 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "freddi4-demo": {
+    ...retroGameArtwork["scumm:freddi4"],
+    heroImageMobilePosition: "65% -25vh",
+    title: "Freddi Fish 4: The Case of the Hogfish Rustlers of Briny Gulch (Demo)",
+    year: "1999",
+    language: "en",
+    shortTitle: "Freddi Fish 4 (Demo)",
+    summary: "Explore Briny Gulch with Freddi and Luther, follow the canyon paths and meet fast-talking wheel-nut seller Gill Barker.",
+  },
   "freddi3-demo": {
     ...retroGameArtwork["scumm:freddi3"],
     heroImageMobilePosition: "65% -25vh",

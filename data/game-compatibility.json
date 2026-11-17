@@ -1743,6 +1743,14 @@
       "observation": "ScummVM detects the Windows edition and renders a game frame."
     },
     {
+      "title": "Freddi Fish 4: The Case of the Hogfish Rustlers of Briny Gulch (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:freddi4",
+      "edition": "freddi4-win-demo-uk.zip",
+      "recordedOn": "2026-11-17",
+      "observation": "English UK Windows HE99 demo. Exact native Demo/Windows/EnglishGB detector, cold and cached bucket starts, original introduction, native intro skip and canyon navigation to Gill Barker verified. ScummWEB saving unavailable, Load empty; original demo computer opens only Quit. No verified Continue save or seeded checkpoint. Full playthrough and independent audible output unverified."
+    },
+    {
       "title": "Freddi Fish 5: The Case of the Creature of Coral Cove",
       "status": "startup-verified",
       "gameId": "scumm:freddicove",
