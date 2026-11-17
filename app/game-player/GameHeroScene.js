@@ -1,4 +1,5 @@
 import { formatVersionLabel, getVersionMetadata } from "../game-versions.mjs";
+import { getVersionedSiteAssetPath } from "../asset-paths";
 import { useArtworkDelivery } from "../home-shell/artwork-delivery";
 import DecorativeImage from "../home-shell/decorative-image";
 import { getHeroImageProps } from "../home-shell/hero-images.mjs";
@@ -8,7 +9,7 @@ import { getBundledLaunchTags } from "./launch-tags.mjs";
 // Browsing, route preparation and runtime loading share this exact composition.
 // Keep the action slot independent of its contents so status changes cannot
 // move the title or change the artwork's dimensions.
-export default function GameHeroScene({ game, title, children, footer, isInitialSlide = true }) {
+export default function GameHeroScene({ game, title, children, footer, isInitialSlide = true, showBrand = true }) {
   const artwork = useArtworkDelivery();
   const backdrop = game ? getHeroImageProps(game, artwork, "hero") : null;
   const tags = getBundledLaunchTags(game);
@@ -30,7 +31,11 @@ export default function GameHeroScene({ game, title, children, footer, isInitial
         /> : null}
       </div>
       <div aria-hidden="true" className="game-hero-shade" />
-      <a className="game-hero-brand" href="/" aria-label="ScummWEB home">ScummWEB</a>
+      {showBrand ? <a className="game-hero-brand" href="/" aria-label="ScummWEB home">
+        <img alt="" aria-hidden="true" src={getVersionedSiteAssetPath("/logo-nav.png")}
+          srcSet={`${getVersionedSiteAssetPath("/brand/logo/logo-nav-142.png")} 1x, ${getVersionedSiteAssetPath("/logo-nav.png")} 2x`}
+          width="273" height="54" decoding="async" />
+      </a> : null}
       <div className="game-hero-content">
         <div className="game-hero-copy hero-copy">
           <h1 className="game-hero-title"><span className="hero-title-text">{sceneTitle}</span></h1>

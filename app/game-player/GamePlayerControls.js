@@ -1,9 +1,10 @@
-import { ArrowLeft, LogOut, Maximize, Menu, Minimize, TriangleAlert } from "lucide-react";
+import { Maximize, Menu, Minimize, TriangleAlert } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import DirectionalNavigation from "../home-shell/directional-navigation";
 import { observeControlVisibility } from "./control-visibility.mjs";
 import { clickGameMouse, setGameMouseButton } from "./game-mouse.mjs";
 import GameMenuDrawer from "./GameMenuDrawer";
+import GameExitButton from "./GameExitButton";
 
 function TouchMouseButton({ button, frameRef }) {
   const pressRef = useRef(null);
@@ -127,20 +128,10 @@ export default function GamePlayerControls({
       >
         {showExitControl ? (
           <div className="game-route-control-group is-left">
-            <button
-              aria-label={isLaunching ? "Return to library" : "Exit game"}
-              className={`game-route-control-button is-exit${isLaunching ? " is-launching" : ""}`}
-              onClick={onExit}
-              onMouseDown={handleControlMouseDown}
-              title={isLaunching ? "Return to library" : "Exit game"}
-              type="button"
-            >
-              {isLaunching ? <><ArrowLeft aria-hidden="true" size={20} strokeWidth={1.8} /><span>Library</span></>
-                : <LogOut aria-hidden="true" size={17} strokeWidth={2} />}
-            </button>
+            <GameExitButton onClick={onExit} onMouseDown={handleControlMouseDown} />
           </div>
         ) : null}
-        <div className="game-route-control-group is-right">
+        {!isLaunching && <div className="game-route-control-group is-right">
           {compatibilityWarnings.length > 0 ? (
             <button
               aria-controls="game-compatibility-warning"
@@ -182,7 +173,7 @@ export default function GamePlayerControls({
               <Menu aria-hidden="true" size={18} strokeWidth={2} />
             </button>
           ) : null}
-        </div>
+        </div>}
       </div>
       {gameMenuOpen && (
         <GameMenuDrawer

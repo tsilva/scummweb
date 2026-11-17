@@ -641,8 +641,10 @@ The browsing hero and launch screen share `GameHeroScene`: the selected game's
 title, edition metadata, summary, artwork source, crop and viewport geometry
 stay fixed during launch. The homepage also shows the selected game's title.
 The reserved action area changes from Play/Continue to the current loading
-message; it never moves the title or resizes the artwork. Browsing navigation
-gives way to the Library action. The spinner and progress accent are
+message; it never moves the title or resizes the artwork. The hero toolbar keeps
+the original logo and consistent navigation links on the left, with Settings at
+the right edge. Loading shows only the same exit control used during play,
+including while the route is being prepared. The spinner and progress accent are
 indeterminate and stop animating with reduced motion enabled. Startup failures
 replace them with a static warning in the same reserved area. Check direct
 launches, selected imported editions, long titles and errors on narrow and short

@@ -13,6 +13,7 @@ import "./styles/home-shell.css";
 import "./styles/settings.css";
 import "./styles/game-player.css";
 import "./styles/game-hero-scene.css";
+import "./styles/game-controls.css";
 
 const inter = Inter({
   display: "optional",
