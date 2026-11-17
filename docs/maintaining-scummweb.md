@@ -389,6 +389,8 @@ Putt-Putt Enters the Race’s English UK Windows HE99 demo keeps the complete un
 
 Putt-Putt Goes to the Moon’s English Windows HE70 demo keeps its complete unchanged official ZIP, including original launcher/runtime, HE data and compiled Help. Native intro skip reaches the lunar crater scene, where hotspot animation and movement work. ScummWEB saving is unavailable in the tested scene; no browser checkpoint is seeded.
 
+Spy Fox 3: Operation Ozone’s English US Windows demo keeps its complete unchanged official ZIP, including original launcher, runtime and game data. Native intro skip reaches the courtyard; entering the bowling alley pro shop works. ScummWEB saving is unavailable in the tested scene; no browser checkpoint is seeded.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.

@@ -120,6 +120,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "spyozon-demo": {
+    ...retroGameArtwork["scumm:spyozon"],
+    heroImageMobilePosition: "60% -25vh",
+    title: "Spy Fox 3: Operation Ozone (Demo)",
+    year: "2001",
+    language: "en",
+  },
   "puttmoon-demo": {
     ...retroGameArtwork["scumm:puttmoon"],
     heroImageMobilePosition: "90% -25vh",
