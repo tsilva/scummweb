@@ -18,7 +18,9 @@
 .settings-content .launch-button:hover:not(:disabled) { background: #a0e39b; }
 .settings-set small, .settings-choice small { display: block; color: #bdbdbd; font-size: .8125rem; line-height: 1.5; }
 .settings-content .settings-action-block > .settings-status { grid-column: 1 / -1; margin-bottom: 0; }
-.settings-download { display: inline-block; margin-left: .65rem; color: var(--accent-strong); text-decoration: underline; }
+.settings-export-spinner { animation: settings-export-spin 1s linear infinite; }
+@keyframes settings-export-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .settings-export-spinner { animation: none; } }
 .settings-review-game { min-width: 0; margin: 1.75rem 0; padding: 1rem 0 0; border: 0; border-top: 1px solid #555; }
 .settings-review-game legend { max-width: 100%; overflow-wrap: anywhere; padding: 0 .6rem 0 0; font-size: .95rem; font-weight: 700; }
 .settings-choice { display: flex; gap: .9rem; align-items: center; padding: 1rem 0; border-bottom: 1px solid #444; cursor: pointer; font-size: .9rem; }
@@ -45,3 +47,6 @@
 .settings-set button { justify-self: start; margin-top: .5rem; }
 .settings-active { display: flex; align-items: center; gap: .4rem; color: var(--accent-strong) !important; font-size: .85rem; }
 #settings-about a { display: inline-block; margin-top: 1rem; color: var(--accent-strong); }
+
+.settings-import-game { grid-column: 1 / -1; display: grid; gap: .5rem; margin-top: .75rem; }
+.settings-import-game select { width: 100%; min-height: 2.75rem; padding: .5rem; color: var(--ink); background: #242424; border: 1px solid #555; font: inherit; }

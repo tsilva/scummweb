@@ -50,7 +50,7 @@ test("metadata, provider errors, and stale operations never impersonate save tra
 
 test("absent and underestimated download sizes stay indeterminate without buffering another copy", async () => {
   for (const total of [0, 3]) {
-    const events = [], transfer = { op: "download-import", total };
+    const events = [], transfer = { op: "download", total };
     const observed = createCloudTransferFetch(async () => new Response(new Uint8Array(5)), () => transfer, (_, bytes) => events.push(bytes));
     const response = await observed(endpoint("download"));
     assert.equal((await response.arrayBuffer()).byteLength, 5);

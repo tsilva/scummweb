@@ -7,7 +7,7 @@ export function createCloudTransferFetch(fetch, current, report) {
     const provider = address.origin === "https://content.dropboxapi.com";
     const upload = provider && transfer?.op === "upload"
       && /^\/2\/files\/(?:upload|upload_session\/(?:start|append_v2|finish))$/.test(address.pathname);
-    const download = provider && ["download", "download-import"].includes(transfer?.op)
+    const download = provider && transfer?.op === "download"
       && address.pathname === "/2/files/download";
     // Capture the offset before awaiting: native memory can change afterwards.
     let end;

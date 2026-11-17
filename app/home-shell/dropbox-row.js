@@ -7,7 +7,7 @@ import { transferProgressDetails } from "../cloud/transfer-progress.mjs";
 
 const labels = {
   disconnected: "Connect Dropbox", connecting: "Connecting Dropbox…", connected: "Dropbox connected",
-  preparing: "Preparing saves…", syncing: "Syncing saves…", resolving: "Applying choices…", reconnect: "Reconnect Dropbox", waiting: "Saves waiting to sync", conflict: "Choose saved progress",
+  preparing: "Preparing saves…", syncing: "Syncing saves…", reconnect: "Reconnect Dropbox", waiting: "Saves waiting to sync",
 };
 
 function DropboxIcon() {
@@ -21,22 +21,16 @@ export default function DropboxRow() {
   const [disconnecting, setDisconnecting] = useState(false);
   const [notice, setNotice] = useState("");
   const configured = dropboxConfigured();
-  const busy = disconnecting || ["connecting", "preparing", "syncing", "resolving"].includes(state.phase);
+  const busy = disconnecting || ["connecting", "preparing", "syncing"].includes(state.phase);
   const connected = !["disconnected", "connecting"].includes(state.phase);
-  const progress = state.phase === "resolving" && state.resolutionProgress;
-  const transfer = !disconnecting && ["syncing", "resolving"].includes(state.phase) ? transferProgressDetails(state.transferProgress) : null;
-  const label = disconnecting ? "Disconnecting…" : progress?.current
-    ? `Applying choices (${progress.current}/${progress.total})…` : labels[state.phase] || labels.waiting;
+  const transfer = !disconnecting && ["syncing"].includes(state.phase) ? transferProgressDetails(state.transferProgress) : null;
+  const label = disconnecting ? "Disconnecting…" : labels[state.phase] || labels.waiting;
   useEffect(() => setNotice(""), [state.phase, state.message]);
   async function activate() {
     setNotice("");
     try {
       if (["disconnected", "reconnect"].includes(state.phase)) await connectDropbox();
       else {
-        if (state.phase === "conflict") {
-          window.dispatchEvent(new Event("scummweb:dropbox-review"));
-          return;
-        }
         await syncDropbox({ beforeLaunch: true });
       }
     } catch (error) { setNotice(error.message); }

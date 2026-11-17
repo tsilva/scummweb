@@ -48,7 +48,7 @@
  		(*emscripten_g_system->_cloudConnectionCallback)(new Common::String(str));
 --- /dev/null
 +++ b/backends/platform/sdl/emscripten/scummweb-cloud.h
-@@ -0,0 +1,132 @@
+@@ -0,0 +1,120 @@
 +// ScummWEB's private host bridge. Storage implementations and transfers remain upstream.
 +#include "backends/cloud/cloudmanager.h"
 +#include "backends/cloud/basestorage.h"
@@ -122,20 +122,8 @@
 +    _busy = true;
 +    Cloud::Storage *storage = CloudMan.getCurrentStorage();
 +    if (!storage) { error(Networking::ErrorResponse(nullptr, false, true, "Not connected", 401)); return; }
-+    // Only immutable snapshots are writable. The flat save inbox is read-only.
-+    Common::String remote = "/scummweb-snapshots-v1/";
-+    if (op == "list-imports" || op == "download-import") remote = "/saves/";
-+    if (op == "download-import") {
-+      if (name.empty() || name.size() > 120) { error(Networking::ErrorResponse(nullptr, "Invalid save filename")); return; }
-+      for (uint i = 0; i < name.size(); ++i) {
-+        const char c = name[i];
-+        const bool alnum = (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9');
-+        if (!(alnum || (i > 0 && (c == ' ' || c == '_' || c == '(' || c == ')' || c == '.' || c == '-')))) {
-+          error(Networking::ErrorResponse(nullptr, "Invalid save filename")); return;
-+        }
-+      }
-+      remote += name;
-+    }
++    // Cloud sync owns one folder; desktop saves use the host import/export UI.
++    Common::String remote = "/saves/";
 +    if (op == "upload" || op == "download") {
 +      if (name.size() != 68 || !name.hasSuffix(".zip")) { error(Networking::ErrorResponse(nullptr, "Invalid snapshot")); return; }
 +      for (uint i = 0; i < 64; ++i) {
@@ -150,12 +138,12 @@
 +    if (op == "refresh") {
 +      delete cb;
 +      static_cast<Cloud::BaseStorage *>(storage)->refreshAccessToken(new Common::Callback<ScummwebCloudService, const Cloud::Storage::BoolResponse &>(this, &ScummwebCloudService::refreshed), ecb);
-+    } else if (op == "list" || op == "list-imports") {
++    } else if (op == "list") {
 +      delete cb;
 +      storage->listDirectory(remote, new Common::Callback<ScummwebCloudService, const Cloud::Storage::ListDirectoryResponse &>(this, &ScummwebCloudService::listed), ecb);
 +    } else if (op == "mkdir") {
-+      storage->createDirectory("/scummweb-snapshots-v1", cb, ecb);
-+    } else if (op == "download" || op == "download-import") {
++      storage->createDirectory("/saves", cb, ecb);
++    } else if (op == "download") {
 +      storage->download(remote, Common::Path("/cloud/transfer"), cb, ecb);
 +    } else if (op == "upload") {
 +      delete cb;

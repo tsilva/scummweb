@@ -1,6 +1,5 @@
 import { syncStore } from "../dropbox/store.mjs";
 import { DropboxError, maxBackupBytes } from "../dropbox/client.mjs";
-import { importFilename } from "../dropbox/loose-import.mjs";
 
 // IDs belong to ScummVM's Cloud::StorageID, not to the UI. Add an auth adapter
 // before enabling another provider; the snapshot/recovery protocol is shared.
@@ -53,7 +52,7 @@ export async function createNativeCloudClient({ provider = "dropbox", accountId,
     if (!pending || data.id !== pending.id) return;
     const operation = pending;
     if (data.op === "progress") {
-      if (!["upload", "download", "download-import"].includes(operation.op)
+      if (!["upload", "download"].includes(operation.op)
         || !Number.isSafeInteger(data.loaded) || data.loaded < 0 || data.loaded > maxBackupBytes
         || !Number.isSafeInteger(data.total) || data.total < 0 || data.total > maxBackupBytes
         || data.total && data.loaded > data.total) return;
@@ -111,20 +110,6 @@ export async function createNativeCloudClient({ provider = "dropbox", accountId,
     async download(name, { onProgress } = {}) {
       const result = await request("download", { name, size: sizes.get(name) }, onProgress);
       if (!(result.bytes instanceof Uint8Array) || result.bytes.length > maxBackupBytes) throw new DropboxError("Invalid cloud snapshot.", "integrity");
-      return new Blob([result.bytes]);
-    },
-    async listImports() {
-      let result;
-      try { result = await request("list-imports"); }
-      catch (error) { if (error.kind === "missing") return []; throw error; }
-      if (!Array.isArray(result.entries)) throw new DropboxError("Could not read copied Dropbox saves.", "integrity");
-      if (result.entries.length > 4096) throw new DropboxError("The Dropbox saves folder contains too many files.");
-      return result.entries;
-    },
-    async downloadImport(name, { size, onProgress } = {}) {
-      if (!importFilename.test(name)) throw new DropboxError("Invalid copied save filename.", "integrity");
-      const result = await request("download-import", { name, size }, onProgress);
-      if (!(result.bytes instanceof Uint8Array) || result.bytes.length > maxBackupBytes) throw new DropboxError("Invalid copied save file.", "integrity");
       return new Blob([result.bytes]);
     },
     async upload(name, blob, { onProgress } = {}) {

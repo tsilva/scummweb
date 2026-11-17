@@ -1,10 +1,8 @@
 import { createNativeCloudClient, credentialKey, dropboxNativeConfig } from "../cloud/native-client.mjs";
 import { trackCloudTransfers } from "../cloud/transfer-progress.mjs";
 import { authorizationRequest, connectionKey, DropboxError, exchangeCode, sessionKey } from "./client.mjs";
-import { createSaveCollection, makeSnapshot, publishProfile, readSnapshot, saveProfileId } from "./protocol.mjs";
+import { createSaveCollection, publishProfile, readSnapshot, saveProfileId } from "./protocol.mjs";
 import { syncStore } from "./store.mjs";
-import { conflictOptions, conflictSelection, conflictVersion } from "./conflict-review.mjs";
-import { discoverLooseSaves, importListingIdentity } from "./loose-import.mjs";
 import { applyImport, getActiveSaveSets, getSaveDestinations, identifySet, matchDestination, preserveSets,
   readStoredSets, saveLockName } from "../save-backups/backups.mjs";
 import { captureFilesystem } from "../save-backups/filesystem.mjs";
@@ -17,13 +15,12 @@ let state = { phase: "disconnected", message: "", conflicts: [], checking: false
 let flight = null, flightController, queue = Promise.resolve(), generation = 0, contextPromise;
 let connecting = false, localGeneration = 0;
 let launchSyncSnapshot = null;
-let resolutionPending = false;
 const appKey = () => process.env.NEXT_PUBLIC_DROPBOX_APP_KEY || "";
 export function dropboxConfigured() { return Boolean(appKey()); }
 export function getDropboxState() { return state; }
 export function subscribeDropbox(listener) { listeners.add(listener); return () => listeners.delete(listener); }
 function update(next) {
-  if (next.phase && !["syncing", "resolving"].includes(next.phase)) next = { transferProgress: null, ...next };
+  if (next.phase && next.phase !== "syncing") next = { transferProgress: null, ...next };
   state = { ...state, ...next }; for (const listener of listeners) listener();
 }
 export function markWaiting(message = "Your latest saves are on this device and waiting to sync.") {
@@ -69,7 +66,8 @@ function ensureCompleteSaves() {
     } catch (error) { if (error instanceof DropboxError) throw error; }
   }
 }
-const recordKey = (account, kind, profile) => `${account}/${kind}/${profile}`;
+// Baselines and cached nodes belong to this storage layout and snapshot format.
+const recordKey = (account, kind, profile) => `${account}/saves-v1/${kind}/${profile}`;
 async function enqueue(account, set) {
   set = { ...set, hash: await identifySet(set) };
   const profile = await saveProfileId(set);
@@ -103,7 +101,7 @@ async function syncAccount(auth, epoch, signal, progress) {
   await queue.catch(() => {});
   const activity = (transferProgress) => {
     check();
-    update({ phase: resolutionPending ? "resolving" : "syncing", message: "", verified: false, transferProgress });
+    update({ phase: "syncing", message: "", verified: false, transferProgress });
   };
   const transport = trackCloudTransfers(await createNativeCloudClient(auth, { signal, progress }), activity);
   try {
@@ -113,42 +111,6 @@ async function syncAccount(auth, epoch, signal, progress) {
     });
     const { destinations } = await context();
     check();
-    const resolutionIssue = await applyQueuedResolutions(auth, client, destinations, check, activity);
-    check();
-    const entries = await transport.listImports();
-    const inboxIdentity = importListingIdentity(entries, destinations);
-    const receipt = await syncStore.get(recordKey(account, "inbox", "processed"));
-    const alreadyRead = inboxIdentity && receipt?.identity === inboxIdentity && receipt.hashes?.every((hash) => client.hasImported(hash));
-    const imports = alreadyRead ? { sets: [], message: "" } : await discoverLooseSaves(transport, destinations, entries);
-    check();
-    const copiedHashes = new Set(alreadyRead ? receipt.hashes : imports.sets.map(({ hash }) => hash));
-    const fresh = imports.sets.filter((set) => !client.hasImported(set.hash));
-    let importMessage = imports.message;
-    if (fresh.length) {
-      // A directory copy can expose only its first files. Require stable bytes.
-      await new Promise((resolve, reject) => {
-        const abort = () => { clearTimeout(timer); reject(signal.reason); };
-        const timer = setTimeout(() => { signal.removeEventListener("abort", abort); resolve(); }, 2000);
-        signal.addEventListener("abort", abort, { once: true });
-      });
-      check();
-      const confirmed = await discoverLooseSaves(transport, destinations);
-      importMessage = confirmed.message;
-      for (const set of fresh) {
-        check();
-        if (!confirmed.sets.some((item) => item.hash === set.hash)) {
-          importMessage = "Copied saves are still changing. They will be checked again shortly.";
-          continue;
-        }
-        // An independent branch preserves existing progress without choosing
-        // a timestamp winner. Compatible files merge; overlapping changes ask.
-        await publishProfile({ client, profile: await saveProfileId(set), local: set, check });
-      }
-    }
-    check();
-    if (inboxIdentity && !importMessage && imports.sets.every((set) => client.hasImported(set.hash))) {
-      await syncStore.put({ id: recordKey(account, "inbox", "processed"), identity: inboxIdentity, hashes: [...copiedHashes] });
-    }
     const groups = new Map();
     const collected = await lockedSaves(async () => {
       check();
@@ -195,17 +157,16 @@ async function syncAccount(auth, epoch, signal, progress) {
     for (const profile of client.profiles()) {
       if (!groups.has(profile)) groups.set(profile, { local: null, alternatives: [] });
     }
-    const conflicts = [];
     const readyProfiles = new Set();
-    let deferred = Boolean(collected.incomplete || importMessage);
+    let deferred = Boolean(collected.incomplete);
     let deferredMessage = collected.incomplete ? "An incomplete game save needs attention. Your previous cloud saves are retained." : "";
     for (const [profile, group] of groups) {
       check();
       const baseline = await syncStore.get(recordKey(account, "base", profile));
       let result = await publishProfile({ client, profile, ...group, base: baseline?.hash ?? null, baseTips: baseline?.tips ?? [], refreshUnchanged: false, check });
       if (group.browserSet && group.browserSet.hash !== group.local?.hash && group.browserSet.hash !== baseline?.hash) {
-        // If the working copy ALSO changed independently, preserve it and ask.
-        // Do not guess which of two durable local histories is newer.
+        // If the working copy ALSO changed independently, preserve it as an independent branch.
+        // Automatic convergence retains both complete local histories.
         group.local = group.browserSet;
         result = await publishProfile({ client, profile, local: group.local, base: baseline?.hash ?? null, baseTips: baseline?.tips ?? [], refreshUnchanged: false, check });
       }
@@ -215,19 +176,6 @@ async function syncAccount(auth, epoch, signal, progress) {
       for (const hash of result.head.alternatives) alternatives.push(await readSnapshot(client, profile, hash));
       check();
       if (alternatives.length) await preserveSets(alternatives);
-      if (result.action === "conflict") {
-        const pendingHash = group.local?.hash;
-        group.local = result.conflictLocal;
-        await preserveSets([group.local, remote]);
-        conflicts.push({ profile, local: group.local, remote, title: group.local.destination.title,
-          localLabel: copiedHashes.has(group.local.hash) ? "Copied ScummVM saves" : group.browserSet?.hash === group.local.hash ? "This device" : "Other progress",
-          remoteLabel: copiedHashes.has(remote.hash) ? "Copied ScummVM saves" : "Dropbox",
-          remoteHash: result.head.active, tips: result.head.tips, canResolve: !collected.busy,
-          browserHash: group.browserSet?.hash, pendingHash,
-          others: result.conflictSets.slice(2), candidates: result.conflictMerge.candidates,
-          differences: result.conflictMerge.differences, identical: result.conflictMerge.identical });
-        continue;
-      }
       if (remote && (result.action === "download" || !collected.busy && remote.hash !== group.browserSet?.hash)) {
         if (collected.busy) {
           if (baseline?.hash !== remote.hash) {
@@ -276,7 +224,7 @@ async function syncAccount(auth, epoch, signal, progress) {
     check();
     if (cloudChanged) {
       launchSyncSnapshot = null;
-      update({ phase: "waiting", conflicts: [], resolutionProgress: null,
+      update({ phase: "waiting", conflicts: [],
         message: "Cloud saves changed during sync. Checking them again shortly." });
       return { retry: true };
     }
@@ -288,21 +236,21 @@ async function syncAccount(auth, epoch, signal, progress) {
       deferredMessage ||= "New saves are waiting for the next sync.";
     }
     check();
-    // A conflict elsewhere must not block a game whose own profile finished
-    // syncing. Keep unknown/incomplete scans and every pending profile blocked.
+    // Keep incomplete scans and every pending profile blocked.
     const pendingProfiles = new Set(pending.map((item) => item.profile));
-    const scanComplete = !collected.incomplete && !importMessage && observedGeneration === localGeneration;
+    const scanComplete = !collected.incomplete && observedGeneration === localGeneration;
     launchSyncSnapshot = { epoch, account, localGeneration: observedGeneration,
       complete: !collected.busy && scanComplete, checkEmptyEdition: Boolean(collected.busy && scanComplete),
-      blockedMessage: importMessage || (collected.incomplete ? "An incomplete game save needs attention. Your previous cloud saves are retained."
+      blockedMessage: (collected.incomplete ? "An incomplete game save needs attention. Your previous cloud saves are retained."
         : collected.busy ? "Finish syncing saved progress and close other ScummWEB games before playing." : ""),
       scanned: new Set(groups.keys()), ready: new Set([...readyProfiles].filter((profile) => !pendingProfiles.has(profile))) };
-    update({ phase: conflicts.length ? "conflict" : pending.length || deferred || resolutionIssue ? "waiting" : "connected", conflicts,
-      resolutionProgress: null, verified: !conflicts.length && !pending.length && !deferred && !resolutionIssue && !collected.busy,
-      message: conflicts.length ? "Choose which saved progress to continue." : resolutionIssue || importMessage || (deferred ? deferredMessage || "Saved progress is waiting to be checked again."
-        : pending.length ? "Your latest saves are waiting to sync." : "") });
-    return { retry: !collected.busy && !collected.incomplete && !importMessage && !conflicts.length && !resolutionIssue
+    update({ phase: pending.length || deferred ? "waiting" : "connected", conflicts: [],
+      verified: !pending.length && !deferred && !collected.busy,
+      message: deferred ? deferredMessage || "Saved progress is waiting to be checked again."
+        : pending.length ? "Your latest saves are waiting to sync." : "" });
+    return { retry: !collected.busy && !collected.incomplete
       && (pending.length > 0 || observedGeneration !== localGeneration) };
+
   } finally { transport.close(); }
 }
 
@@ -334,9 +282,9 @@ async function emptyCatalogEdition(destination) {
   });
 }
 
-async function launchHasNoConflict(destinationKey) {
+async function launchIsVerified(destinationKey) {
   const snapshot = launchSyncSnapshot;
-  if (!destinationKey || state.phase !== "conflict" || !snapshot) return false;
+  if (!destinationKey || state.phase !== "waiting" || !snapshot) return false;
   const { destinations } = await context();
   const destination = destinations.find((item) => item.key === destinationKey);
   if (!destination) return false;
@@ -368,10 +316,9 @@ export async function syncDropbox({ beforeLaunch = false, launchDestinationKey =
     };
     progress();
     const aborted = new Promise((_, reject) => controller.signal.addEventListener("abort", () => reject(controller.signal.reason), { once: true }));
-    // A check is not a transfer. Keep the last useful connected/error/conflict
+    // A check is not a transfer. Keep the last useful connected/error
     // status while listing metadata; beforeLaunch still awaits the full flight.
-    update({ checking: true, ...(resolutionPending ? { phase: "resolving", message: "" }
-      : state.phase === "disconnected" ? { phase: "connected", verified: false } : {}) });
+    update({ checking: true, ...(state.phase === "disconnected" ? { phase: "connected", verified: false } : {}) });
     const work = (async () => {
       if (!navigator.locks) throw new DropboxError("This browser cannot safely coordinate cloud saves.");
       await navigator.locks.request("scummweb-dropbox-sync", { mode: "exclusive", signal: controller.signal }, async (lock) => {
@@ -398,136 +345,12 @@ export async function syncDropbox({ beforeLaunch = false, launchDestinationKey =
   }
   try {
     await flight;
-    if (beforeLaunch && state.phase !== "connected" && !await launchHasNoConflict(launchDestinationKey)) {
-      const message = launchDestinationKey && state.phase === "conflict" && !launchSyncSnapshot?.complete
+    if (beforeLaunch && state.phase !== "connected" && !await launchIsVerified(launchDestinationKey)) {
+      const message = launchDestinationKey && state.phase === "waiting" && !launchSyncSnapshot?.complete
         ? launchSyncSnapshot?.blockedMessage || state.message : state.message;
       throw new DropboxError(message || "Finish syncing before playing.");
     }
   } catch (error) { if (beforeLaunch) throw error; }
-}
-
-export async function queueDropboxConflictResolutions(choices) {
-  const auth = session(), epoch = generation;
-  if (!auth || !Array.isArray(choices) || !choices.length || new Set(choices.map(({ profile }) => profile)).size !== choices.length) {
-    throw new DropboxError("Review the saved progress choices again.", "conflict");
-  }
-  const items = choices.map(({ profile, choice, version }) => {
-    const conflict = state.conflicts.find((item) => item.profile === profile);
-    if (!conflict || !conflictSelection(conflict, choice) || version && version !== conflictVersion(conflict)) {
-      throw new DropboxError("Saved progress changed. Review your choices again.", "conflict");
-    }
-    return { conflict, choice };
-  });
-  const previousConflicts = state.conflicts;
-  const previousFlight = flight;
-  resolutionPending = true;
-  launchSyncSnapshot = null;
-  update({ phase: "resolving", message: "", resolutionProgress: { current: 0, total: items.length } });
-  flightController?.abort(new DropboxError("Save choices queued.", "cancelled"));
-  const batch = { id: recordKey(auth.accountId, "resolutions", crypto.randomUUID()), items, createdAt: Date.now() };
-  queue = queue.catch(() => {}).then(async () => {
-    if (epoch !== generation || session()?.accountId !== auth.accountId || session()?.connectionId !== auth.connectionId) {
-      throw new DropboxError("Dropbox disconnected.", "cancelled");
-    }
-    // One strict transaction retains the entire bulk decision before UI dismissal.
-    await syncStore.put(batch);
-  });
-  try { await queue; }
-  catch (error) {
-    if (epoch === generation) {
-      resolutionPending = false;
-      update({ phase: session() ? "conflict" : "disconnected", conflicts: previousConflicts,
-        message: "Could not retain your choices. Review them again.", resolutionProgress: null });
-    }
-    throw error;
-  }
-  if (epoch !== generation) return;
-  update({ conflicts: state.conflicts.filter(({ profile }) => !choices.some((item) => item.profile === profile)) });
-  // Publication runs through the ordinary fenced coordinator, never in the dialog.
-  void (async () => {
-    await previousFlight?.catch(() => {});
-    if (epoch === generation) await syncDropbox();
-  })().catch((error) => { if (epoch === generation) failure(error); });
-}
-
-async function applyQueuedResolutions(auth, client, destinations, check, activity) {
-  const batches = (await syncStore.all(recordKey(auth.accountId, "resolutions", "")))
-    .sort((a, b) => a.createdAt - b.createdAt || a.id.localeCompare(b.id));
-  resolutionPending = batches.length > 0;
-  const total = batches.reduce((sum, batch) => sum + batch.items.length, 0);
-  let current = 0, issue = "";
-  for (const batch of batches) {
-    while (batch.items.length) {
-      check();
-      const { conflict, choice } = batch.items[0];
-      let changed = false;
-      update({ phase: "resolving", message: "", conflicts: [], resolutionProgress: { current: current + 1, total } });
-      try {
-        const selected = conflictSelection(conflict, choice);
-        const resolution = await lockedSaves(async () => {
-          check();
-          ensureCompleteSaves();
-          const before = await getActiveSaveSets(localStorage, destinations);
-          const active = before.sets.find((set) => matchDestination(conflict.local, [set.destination]));
-          const reviewed = conflictOptions(conflict).map(({ set }) => set);
-          if (active && active.hash !== conflict.browserHash && ![...reviewed, selected].some(({ hash }) => hash === active.hash)) {
-            throw new DropboxError("Saved progress changed on this device. Review it again.", "conflict");
-          }
-          // A killed tab can lose a successful upload reply. Recognize the exact
-          // deterministic commit instead of either duplicating or rejecting it.
-          const intended = await makeSnapshot(selected, conflict.tips, true);
-          const head = client.head(conflict.profile);
-          const committed = !head.concurrent && head.active === selected.hash && head.tips.includes(intended.id);
-          const result = committed ? { action: "same", head } : await publishProfile({ client, profile: conflict.profile,
-            local: selected, alternatives: reviewed, resolve: true, expectedTips: conflict.tips, check });
-          if (result.action === "conflict") throw new DropboxError("Saved progress changed while applying your choices. Review it again.", "conflict");
-          check();
-          const destinationKey = matchDestination(selected, destinations);
-          let initialConfig;
-          if (destinationKey && !captureFilesystem(localStorage).root.key) {
-            const response = await fetch("/scummvm.ini", { signal: AbortSignal.timeout(15000) });
-            if (!response.ok) throw new DropboxError("Could not initialize restored saves.");
-            initialConfig = await response.text();
-          }
-          check();
-          activity({ stage: "restore", title: selected.destination.title, percentage: 100 });
-          await applyImport({ storage: localStorage, destinations, revision: before.revision, initialConfig, check,
-            rows: [{ set: selected, destinationKey, choice: "imported" }] });
-          activity({ stage: "verify", title: selected.destination.title, percentage: 100 });
-          check();
-          await syncStore.put({ id: recordKey(auth.accountId, "base", conflict.profile), hash: selected.hash, tips: result.head.tips });
-          check();
-          await syncStore.removeIf(recordKey(auth.accountId, "pending", conflict.profile),
-            (pending) => pending.set.hash === conflict.pendingHash || reviewed.some(({ hash }) => hash === pending.set.hash));
-          return { changed: Boolean(destinationKey) && active?.hash !== selected.hash };
-        });
-        if (resolution?.busy) throw new DropboxError("Close games in other ScummWEB tabs to apply your saved progress choices.", "busy");
-        changed = resolution.changed;
-      } catch (error) {
-        // Stale decisions are never replayed. The normal scan below will find
-        // the fresh copies; unrelated decisions in this batch can still finish.
-        if (error.kind !== "conflict") throw error;
-        issue = error.message;
-      }
-      check();
-      const remaining = { ...batch, items: batch.items.slice(1) };
-      if (remaining.items.length) await syncStore.put(remaining);
-      else await syncStore.remove(batch.id);
-      batch.items = remaining.items;
-      check();
-      if (changed) window.dispatchEvent(new Event("scummweb:saves-changed"));
-      current++;
-    }
-  }
-  check();
-  resolutionPending = false;
-  if (total) update({ phase: "syncing", message: "", resolutionProgress: null });
-  return issue;
-}
-
-export async function resolveDropboxConflict(profile, choice) {
-  await queueDropboxConflictResolutions([{ profile, choice }]);
-  await syncDropbox({ beforeLaunch: true });
 }
 
 export async function connectDropbox() {
@@ -578,7 +401,6 @@ export async function connectDropbox() {
 }
 export async function disconnectDropbox() {
   generation++;
-  resolutionPending = false;
   flightController?.abort(new DropboxError("Dropbox disconnected.", "cancelled"));
   sessionStorage.removeItem(sessionKey);
   const previous = connection();

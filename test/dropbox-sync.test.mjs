@@ -94,27 +94,27 @@ for (const afterCommit of [false, true]) test(`interrupted upload resumes ${afte
   const result = await publish(server, set);
   assert.equal(result.head.active, set.hash); assert.equal(server.files.size, 1);
 });
-test("independent writers retain both histories and resolution joins every observed tip", async () => {
+test("independent writers join every observed tip automatically and retain both histories", async () => {
   const server = fakeNativeStorage(), base = await save("base");
   const initial = await publish(server, base);
   const left = await save("left"), right = await save("right"), profile = await saveProfileId(base);
+  right.files.forEach((file) => { file.modifiedAt = 200; });
   await publish(server, left, { base: base.hash, baseTips: initial.head.tips });
-  const conflict = await publish(server, right, { base: base.hash, baseTips: initial.head.tips });
-  assert.equal(conflict.action, "conflict"); assert.equal(conflict.head.tips.length, 2);
-  const resolved = await publish(server, right, { resolve: true, expectedTips: conflict.head.tips, alternatives: [left, right] });
-  assert.equal(resolved.head.active, right.hash); assert.equal(resolved.head.concurrent, false);
-  assert.equal(server.files.size, 6);
-  assert.ok(resolved.head.alternatives.includes(left.hash));
+  const result = await publish(server, right, { base: base.hash, baseTips: initial.head.tips });
+  assert.equal(result.action, "download"); assert.equal(result.head.concurrent, false);
+  assert.equal(result.head.active, right.hash);
+  assert.ok(result.head.alternatives.includes(left.hash));
   const collection = await createSaveCollection(server);
   assert.equal(collection.snapshot(profile, left.hash).hash, left.hash);
 });
-test("a stale conflict choice cannot consume a newly published branch", async () => {
-  const server = fakeNativeStorage(), a = await save("a"), b = await save("b"), c = await save("c");
-  await publish(server, a); const conflict = await publish(server, b);
-  await publish(server, c);
-  await assert.rejects(publish(server, b, { resolve: true, expectedTips: conflict.head.tips }), /changed while/);
-  assert.equal(server.files.size, 3);
+
+test("save-time preference is bound to immutable snapshot identity", async () => {
+  const first = await save("same bytes"), second = structuredClone(first);
+  second.files[0].modifiedAt = 200;
+  assert.equal(first.hash, second.hash);
+  assert.notEqual((await makeSnapshot(first)).id, (await makeSnapshot(second)).id);
 });
+
 test("identical saves on independent branches merge automatically", async () => {
   const server = fakeNativeStorage(), base = await save("base"), latest = await save("latest");
   const first = await publish(server, base);

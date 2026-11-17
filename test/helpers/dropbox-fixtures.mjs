@@ -62,10 +62,7 @@ export function indexedDbFixture() {
 
 export function fakeNativeStorage() {
   const files = new Map();
-  const revisions = new WeakMap();
-  let revision = 0;
-  return { files, imports: new Map(), importDownloads: 0,
-    importRevision(blob) { if (!revisions.has(blob)) revisions.set(blob, String(++revision)); return revisions.get(blob); },
+  return { files,
     offline: false, uploads: 0, failAfterUpload: false, onUpload: null,
     close() {}, async list() { if (this.offline) throw new Error("Offline"); return [...files.keys()]; },
     async download(name) { if (this.offline) throw new Error("Offline"); if (!files.has(name)) throw new Error("Missing"); return files.get(name); },
@@ -103,11 +100,6 @@ export function nativeCloudBrowser(server, storage) {
           if (data.op === "init") config = data.config;
           else if (data.op === "refresh") { if (server.offline) throw new Error("Offline"); config += "\n# renewed\n"; }
           else if (data.op === "list") result = { entries: (await server.list()).map((name) => ({ name, size: server.files.get(name).size })) };
-          else if (data.op === "list-imports") {
-            if (server.offline) throw new Error("Offline");
-            result = { entries: [...server.imports].map(([name, blob]) => ({ name, size: blob.size, modifiedAt: 100, revision: server.importRevision(blob) })) };
-          }
-          else if (data.op === "download-import") { server.importDownloads++; result = { bytes: new Uint8Array(await server.imports.get(data.name).arrayBuffer()) }; }
           else if (data.op === "upload") await server.upload(data.name, new Blob([data.bytes]));
           else if (data.op === "download") result = { bytes: new Uint8Array(await (await server.download(data.name)).arrayBuffer()) };
           dispatch(frame.contentWindow, { id: data.id, ok: true, config, ...result });

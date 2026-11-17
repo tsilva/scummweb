@@ -58,7 +58,11 @@ Choose **Settings → Saved games → Sync saves → Connect Dropbox**. Active b
 preserved backup sets are copied automatically, without deleting browser originals.
 The normal status is **Dropbox connected**, with a white Dropbox icon.
 The main Saved games view contains Sync saves and Transfer saves. Transfer saves
-offers Export saves and Import backup side by side.
+offers Export saves and Import saves side by side.
+Export starts the ZIP download automatically. Its button shows **Exporting**,
+**Downloading**, then briefly **Downloaded** before returning to **Export saves**.
+Both transfer buttons stay disabled throughout this sequence. **Downloaded**
+indicates the download was handed to the browser; the browser manages saving the file.
 Earlier copies are available separately through **Recover saved progress**,
 grouped by game. Restoring a copy opens a review before changing progress and
 keeps the previous copy as a backup. The main panel does not list routine saves
@@ -78,13 +82,12 @@ The native provider's requests, authentication and chunk sizes stay unchanged.
 
 The game name comes from the save set. A previously unseen remote backup briefly
 shows **Identifying game…** until its contents and identity have been verified.
-Copied regular saves use their recognized library game immediately. Missing or
-inconsistent byte totals show the activity without a fabricated percentage.
+Missing or inconsistent byte totals show the activity without a fabricated percentage.
 **100%** reports transferred bytes; verification and local restoration still finish
 before the connected checkmark appears. A retry measures its current transfer
 again; it never treats a previous partial percentage as a durable acknowledgement.
-Connecting and applying conflict choices also show their existing progress.
-Only the current activity is shown; an old review notice does not remain under
+Connecting also shows its progress.
+Only the current activity is shown; an old notice does not remain under
 an active sync spinner. A compact **Disconnect**
 button sits beside it and can cancel an ongoing sync.
 
@@ -103,73 +106,64 @@ durable work. Clearing site data before an upload finishes can still lose
 unsynced progress. Only verified cloud copies survive a site-data reset.
 Dropbox remains optional; unconnected play stays local.
 
-### Import saves from desktop ScummVM
+### Transfer saves to and from desktop ScummVM
 
-Copy ordinary ScummVM save files into **Apps → ScummWEB → saves** in Dropbox.
-Keep their original filenames, and copy the complete set for the game, including
-companion files (for Beneath a Steel Sky, include `SKY-VM.SAV` with its slots).
-There is no ZIP step. ScummWEB checks the folder during normal synchronization
-and imports stable, recognizable files automatically. The folder can be created
-in Dropbox when first needed; an absent folder is treated as empty.
+Use **Settings → Saved games → Import saves** to select ordinary ScummVM save
+files or a ZIP containing them. Keep original filenames and include companion
+files, such as `SKY-VM.SAV` with Beneath a Steel Sky slots. Recognizable catalog
+filenames are matched automatically. If a game cannot be identified safely,
+choose the matching library game; the selected files remain available for that
+choice. Use compatible game editions and ScummVM versions. Filename recognition
+cannot guarantee that an engine can load a particular save format.
 
-Matching uses the library games' save filename conventions. Unrecognized or
-ambiguous names, subfolders, empty files and missing known companion files
-produce an actionable Settings message; ScummWEB does not guess an edition.
-Automatic matching currently covers catalog games, rather than arbitrary
-personal-game versions with unrelated desktop target names. Use compatible game
-editions and ScummVM versions; filename recognition cannot guarantee that an
-engine can load a particular save format.
+Import shows a confirmation of the incoming saves, without conflict choices.
+Compatible separate slots are combined; incoming overlapping slots take precedence.
+A changed companion/index selects the complete incoming copy. Previous progress is retained under
+**Recover saved progress**. Additional copies for the same game are retained for
+recovery. Confirmation refreshes current saves under the exclusive save lock and
+merges the original incoming files again, so background synchronization during
+review does not discard newly completed compatible slots or require reopening the ZIP. Games absent from an exported collection remain unchanged.
 
-The copy-in folder is read-only to ScummWEB. Files are never removed or updated
-there, and progress does not sync back to desktop ScummVM. The importer observes
-the same contents twice before publication. Copies are published and verified
-in the normal recoverable cloud history before browser files change. Different
-existing progress is compared file by file: separate slots and identical files
-combine automatically, while overlapping incompatible changes use the choice
-dialog. Modification time never picks a winner. Identical contents are skipped. Unchanged Dropbox revisions avoid repeated
-downloads; size and modification time alone are never treated as identity. Import
-identities remain in cloud history, so clearing browser data does not reimport
-old inbox contents over newer progress. The inbox allows up to 4,096 files and
-less than 63 MiB total.
+**Export saves** downloads a ZIP of ordinary ScummVM save files with original
+filenames and unchanged bytes. Each game edition has its own folder, with
+`current` and separate `recovery-…` copies so matching filenames never overwrite
+each other. Extract the chosen copy's contents into desktop ScummVM's save
+folder. Exported collections can also be imported back into ScummWEB; edition
+identities in folder names preserve matching across browsers. The ZIP requires
+no ScummWEB manifest. Cloud backup ZIPs can still be imported for recovery.
 
-If devices independently change an edition's progress, complete copies remain
-in Dropbox. Compatible files merge automatically across all devices, including
-first connections without a local sync baseline. Shared ancestry lets edits to
+Dropbox contains only **Apps → ScummWEB → saves**, which ScummWEB manages for
+syncing. Do not copy desktop files into that folder: transfers use Import saves.
+Desktop ScummVM does not automatically sync with ScummWEB.
+
+### Automatic reconciliation
+
+Compatible files merge automatically across all devices, including first
+connections without a local sync baseline. Shared ancestry lets edits to
 different files combine and distinguishes deletions from missing files. Without
-shared history, missing files are treated as additional saves to retain. Two
-different versions of the same file, or a deletion opposed by an edit, require
-a choice. Companion files participate in the same content checks; binary file
-contents are never spliced together.
+shared history, missing files are treated as additional saves to retain.
+Binary file contents are never spliced together.
 
-A compact dialog collects one choice per conflicting game in a single review.
-It names the conflicting files, explains content or deletion differences, and
-shows each copy's file sizes and recorded modification times. Matching sizes
-or dates do not imply matching contents. Identical files are counted separately;
-compatible changes can be expanded for inspection. Every concurrent copy is
-available to choose, and compatible files from all copies are retained whichever
-version is chosen for the conflicting files.
-**Apply choices** durably queues the whole batch locally, closes
-the dialog, and shows **Applying choices** with progress in the Dropbox row.
-Cloud publication and restoration run in the background using the normal sync
-coordinator. Queued decisions survive a closed or killed browser and are removed
-one at a time only after verified publication and safe local restoration. Lost
-publication replies resume the exact same immutable commit. The alternatives
-remain available through **Saved games**. A third device changing progress while
-that dialog is open invalidates the choice and requires another review.
+Overlapping changes resolve automatically, with no conflict dialog or queued
+user decisions. The copy with the latest recorded save time supplies the
+conflicting slots; equal times use a stable content-hash order independent of
+device and directory listing order. Compatible separate slots are retained.
+When a changed companion/index or file/folder collision makes combining unsafe,
+the complete preferred copy is selected. All original competing copies are
+published and verified as recovery copies before the result is acknowledged;
+they remain available through **Recover saved progress**. The recorded preference
+time is included in the immutable snapshot identity.
 
-Choosing **Decide later** preserves both copies. The same postponed review stays
-dismissed across navigation, reloads and tabs for that Dropbox account until its
-actual copies or cloud tips change. The Dropbox row can always reopen it
-explicitly; dismissing a review picks no winner.
-Other games can launch once their own saves have finished syncing; the conflicting
-edition still requires a choice. A new catalog edition with no local or cloud
-saves can also launch while another isolated edition is running, after a read-only
-check under its own save lock. Existing unsynced progress, a same-edition player, incomplete writes
-or an unfinished restore continue to block an unverified launch. The launch
-message identifies an incomplete write, unfinished copy-in, or active save
-operation when one of these prevents verification.
-No timestamp winner is used. An existing browser's saves are bound to the first connected
-Dropbox account; use that account or a separate browser profile.
+Recorded save times cannot establish which story position is furthest ahead,
+and clocks can differ across devices. Shared ancestry remains authoritative for
+ordinary sequential saves; time is only a preference between concurrent copies.
+Recovery preserves the alternative without interrupting normal play.
+
+A running game's files are never replaced remotely. Existing unsynced progress,
+a same-edition player, incomplete writes or an unfinished restore continue to
+block an unverified launch; transient contention retries automatically.
+An existing browser's saves are bound to the first connected Dropbox account;
+use that account or a separate browser profile.
 
 ## Native boundary and recovery
 
@@ -177,14 +171,14 @@ A dedicated, hidden `cloud.html` service runs the compiled ScummVM cloud API
 before GUI or engine-plugin initialization. Its configuration and transfer file
 live in an isolated MEMFS root. It never mounts BrowserFS or a running game's
 files. Its message bridge accepts only the same-origin parent, permits only
-snapshot writes and read-only flat `/saves/` imports, bounds responses, and
+checksum-named snapshot transfers inside `/saves/`, bounds responses, and
 returns sanitized errors. Credentials are persisted after native renewal before acknowledging an
 operation. Service teardown discards incomplete scratch transfers.
 
-The remote folder is `/scummweb-snapshots-v1/` inside the app folder. Every
+The only remote folder is `/saves/` inside the app folder. Every
 snapshot is an ordinary `scummweb-save-backup` version 1 ZIP with an additional
 cloud manifest. Its checksum-derived filename identifies its profile, complete
-file contents, active/recovery role and parent snapshot IDs. Imported editions
+file contents, recorded save time, active/recovery role and parent snapshot IDs. Imported editions
 with matching fingerprints share a profile across different browser source IDs.
 Unknown editions remain preserved until their matching game is available.
 Preserving these editions does not restart synchronization or initialize an
@@ -194,8 +188,8 @@ A snapshot is uploaded and downloaded for integrity verification before the
 outbox is acknowledged. Readback checks ZIP integrity, file hashes, profile and
 snapshot identity. Retrying a lost response reuses the same logical identity.
 Concurrent writers publish independent immutable nodes; neither can overwrite
-the other's progress. Resolution creates a new node referencing all reviewed
-tips. Missing ancestry or invalid archives stop synchronization and retain local
+the other's progress. Automatic reconciliation creates a new node referencing every observed
+tip. Missing ancestry or invalid archives stop synchronization and retain local
 copies. There is no mutable cloud index or dependency on provider-specific
 conditional writes, and no automatic history deletion. Automatic file merges
 also reference every merged tip and are read back before restoration. A fresh
@@ -206,8 +200,8 @@ when compatible deletions remove the last saves.
 The outbox requests strict IndexedDB durability where supported. An older
 BrowserFS working copy cannot replace a newer durable pending set after restart.
 Existing save locks protect migration and restoration; a separate cross-tab
-lock serializes cloud coordination. Import/export retains its existing review,
-preservation and activation behavior. Cloud ZIPs can also be imported manually
+lock serializes cloud coordination. Import and recovery retain revision checks, preservation before activation and
+exclusive save locks. Cloud ZIPs can also be imported manually
 using **Saved games**. Save archives retain the 64 MiB limit. The current
 collection scan permits up to 10,000 snapshot files; history is retained rather
 than silently pruned. Scans stop safely above 256 MiB of decoded save history.
@@ -225,11 +219,10 @@ player still prevents these operations; the wait is bounded to two seconds.
 `app/cloud/native-client.mjs` owns the provider registry and native bridge.
 Dropbox is enabled first. ScummVM's Google Drive, OneDrive and Box IDs are
 reserved but disabled until their own authentication/setup adapters and browser
-compatibility checks exist. The snapshot, recovery and conflict protocol is
+compatibility checks exist. The snapshot, recovery and automatic-reconciliation protocol is
 provider independent. This folder format is specific to ScummWEB; it does not
 synchronize directly with the standard native ScummVM `/saves/` folder.
-The optional copy-in inbox imports ordinary files from `/saves/` in ScummWEB's
-own app folder; it cannot access another Dropbox application's folder.
+
 
 Stalled sync passes have a three-minute inactivity deadline in addition to
 per-request deadlines. Cancellation removes the native service, releases the
@@ -242,15 +235,15 @@ within the same deadline. Disconnect cancels a pending pass.
 ## Verification
 
 ```sh
-node --test test/dropbox-sync.test.mjs test/dropbox-merge.test.mjs test/dropbox-runtime.test.mjs test/dropbox-ui.test.mjs test/dropbox-loose-import.test.mjs \
+node --test test/dropbox-sync.test.mjs test/dropbox-merge.test.mjs test/dropbox-runtime.test.mjs test/dropbox-ui.test.mjs test/scummvm-transfer.test.mjs \
   test/save-backups.test.mjs test/game-route-frame.test.mjs
 ```
 
 Tests cover faults around remote commits, lost replies, coordinator restarts,
-independent browser-storage flushes, concurrent writers, stale conflict choices,
+independent browser-storage flushes, concurrent writers, deterministic automatic choices,
 missing ancestry, account boundaries, live-player locks, checksum validation,
 portable ZIP round trips, compatible unions, concurrent file edits and deletions,
-multiple-device conflicts, interrupted merges, and file difference presentation.
+multiple-device overlaps, interrupted merges, native desktop files and recovery without conflict dialogs.
 Native changes require a full runtime rebuild
 with `--enable-cloud` through the maintained build script.
 

@@ -4,13 +4,12 @@ import { connectionKey, sessionKey } from "../app/dropbox/client.mjs";
 import { captureFilesystem, initializeSaveEdition } from "../app/save-backups/filesystem.mjs";
 import { createSaveCollection, makeSnapshot, publishProfile, saveProfileId, writeSnapshot } from "../app/dropbox/protocol.mjs";
 import { syncStore } from "../app/dropbox/store.mjs";
-import { conflictOptions, conflictSelection, conflictVersion } from "../app/dropbox/conflict-review.mjs";
 import { applyImport, getActiveSaveSets, getSaveDestinations, identifySet, preserveSets, readStoredSets } from "../app/save-backups/backups.mjs";
 import { browserSaveStorage, fakeNativeStorage, nativeCloudBrowser, indexedDbFixture, memoryStorage } from "./helpers/dropbox-fixtures.mjs";
 
 const bytes = (text) => new TextEncoder().encode(text);
 const account = "dbid:synthetic-account";
-const key = (kind, profile) => `${account}/${kind}/${profile}`;
+const key = (kind, profile) => `${account}/saves-v1/${kind}/${profile}`;
 async function setup(t, contents = "browser progress", catalog = [{ target: "sky", displayTitle: "Beneath a Steel Sky" }]) {
   const original = new Map(["window", "document", "localStorage", "sessionStorage", "indexedDB", "navigator", "fetch", "location"]
     .map((name) => [name, Object.getOwnPropertyDescriptor(globalThis, name)]));
@@ -337,56 +336,6 @@ test("a killed first-sync merge restores its verified result without a baseline 
   assert.equal(server.files.size, 3);
 });
 
-test("choosing between two newer cloud branches consumes the unchanged older browser outbox", async (t) => {
-  const { runtime, storage, destinations, server } = await setup(t);
-  await runtime.syncDropbox({ beforeLaunch: true });
-  const base = (await getActiveSaveSets(storage, destinations)).sets[0], profile = await saveProfileId(base);
-  const baseline = await syncStore.get(key("base", profile));
-  for (const value of ["cloud one", "cloud two"]) {
-    const remote = { ...base, files: base.files.map((file) => ({ ...file, data: bytes(value) })) };
-    remote.hash = await identifySet(remote);
-    await publishProfile({ client: await createSaveCollection(server), profile, local: remote, base: base.hash, baseTips: baseline.tips });
-  }
-  await runtime.syncDropbox();
-  const conflict = runtime.getDropboxState().conflicts[0];
-  assert.ok(conflictOptions(conflict).every(({ set }) => set.hash !== base.hash));
-  const selected = conflictSelection(conflict, "local");
-  await runtime.resolveDropboxConflict(profile, "local");
-  assert.equal(runtime.getDropboxState().phase, "connected");
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, selected.hash);
-  assert.equal(await syncStore.get(key("pending", profile)), undefined);
-  await runtime.syncDropbox({ beforeLaunch: true });
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, selected.hash);
-});
-
-test("conflict resolution keeps compatible files from every device and survives a lost commit reply", async (t) => {
-  const { runtime, storage, destinations, server } = await setup(t);
-  const local = (await getActiveSaveSets(storage, destinations)).sets[0];
-  for (const slot of [2, 3]) {
-    const other = { ...local, files: [{ path: "SKY-VM.001", data: bytes(`other ${slot}`), modifiedAt: 200 },
-      { path: `SKY-VM.00${slot}`, data: bytes(`slot ${slot}`), modifiedAt: 200 }] };
-    other.hash = await identifySet(other);
-    await publishProfile({ client: await createSaveCollection(server), profile: await saveProfileId(other), local: other });
-  }
-  await runtime.syncDropbox();
-  const conflict = runtime.getDropboxState().conflicts[0];
-  assert.equal(conflictOptions(conflict).length, 3);
-  assert.deepEqual(conflict.differences.filter(({ conflict }) => conflict).map(({ path }) => path), ["SKY-VM.001"]);
-  const choice = "other-0", selected = conflictSelection(conflict, choice);
-  const intended = await makeSnapshot(selected, conflict.tips, true);
-  server.onUpload = () => { if (server.files.has(`${intended.id}.zip`)) { server.onUpload = null; server.failAfterUpload = true; } };
-  await runtime.queueDropboxConflictResolutions([{ profile: conflict.profile, choice, version: conflictVersion(conflict) }]);
-  await runtime.syncDropbox();
-  assert.equal(runtime.getDropboxState().phase, "waiting");
-  const restarted = await import(`../app/dropbox/runtime.mjs?merged-resolution=${crypto.randomUUID()}`);
-  await restarted.syncDropbox({ beforeLaunch: true });
-  assert.equal(restarted.getDropboxState().phase, "connected");
-  const restored = (await getActiveSaveSets(storage, destinations)).sets[0];
-  assert.equal(restored.hash, selected.hash);
-  assert.deepEqual(restored.files.map(({ path }) => path).sort(), ["SKY-VM.001", "SKY-VM.002", "SKY-VM.003"]);
-  assert.equal((await syncStore.all(key("resolutions", ""))).length, 0);
-});
-
 test("unknown cloud editions stay preserved until their matching game is available", async (t) => {
   const { runtime, storage, destinations, server } = await setup(t, null);
   let changes = 0;
@@ -478,141 +427,6 @@ for (const stage of ["startup", "transfer"]) test(`native ${stage} timeout leave
   assert.match(runtime.getDropboxState().message, /start save sync|timed out/);
 });
 
-function fastImportObservation(t) {
-  const timer = globalThis.setTimeout;
-  globalThis.setTimeout = (callback, delay, ...args) => timer(callback, delay === 2000 ? 1 : delay, ...args);
-  t.after(() => { globalThis.setTimeout = timer; });
-}
-function copyBass(server, contents = "copied ScummVM progress") {
-  server.imports.set("SKY-VM.001", new Blob([contents]));
-  server.imports.set("SKY-VM.SAV", new Blob(["ScummVM companion"]));
-}
-
-test("copied regular saves restore, and old inbox contents never reimport after browser reset", async (t) => {
-  const { runtime, storage, destinations, server } = await setup(t, null);
-  fastImportObservation(t); copyBass(server);
-  await runtime.syncDropbox({ beforeLaunch: true });
-  const imported = (await getActiveSaveSets(storage, destinations)).sets[0];
-  assert.equal(imported.destination.isolated, true);
-  assert.equal(imported.files.length, 2);
-  assert.equal(new TextDecoder().decode(imported.files.find((file) => file.path === "SKY-VM.001").data), "copied ScummVM progress");
-  const newer = { ...imported, files: imported.files.map((file) => file.path === "SKY-VM.001" ? { ...file, data: bytes("newer cloud progress") } : file) };
-  newer.hash = await identifySet(newer);
-  const client = await createSaveCollection(server), profile = await saveProfileId(imported);
-  await publishProfile({ client, profile, local: newer, base: imported.hash, baseTips: client.head(profile).tips });
-  storage.removeItem("/");
-  for (const record of await syncStore.all(account + "/")) await syncStore.remove(record.id);
-  const restarted = await import(`../app/dropbox/runtime.mjs?loose-restart=${crypto.randomUUID()}`);
-  await restarted.syncDropbox({ beforeLaunch: true });
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, newer.hash);
-  assert.equal(server.files.size, 2);
-  assert.equal(server.imports.size, 2);
-});
-
-test("copied progress conflicting with browser progress requires a choice and keeps both copies", async (t) => {
-  const { runtime, storage, destinations, server } = await setup(t);
-  fastImportObservation(t);
-  await runtime.syncDropbox({ beforeLaunch: true });
-  const original = (await getActiveSaveSets(storage, destinations)).sets[0];
-  copyBass(server);
-  await runtime.syncDropbox();
-  assert.equal(runtime.getDropboxState().phase, "conflict");
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, original.hash);
-  const conflict = runtime.getDropboxState().conflicts[0];
-  const choice = conflict.local.hash === original.hash ? "remote" : "local";
-  await runtime.resolveDropboxConflict(conflict.profile, choice);
-  assert.equal(runtime.getDropboxState().phase, "connected");
-  assert.notEqual((await getActiveSaveSets(storage, destinations)).sets[0].hash, original.hash);
-  assert.ok((await readStoredSets()).some((set) => set.hash === original.hash));
-  await runtime.syncDropbox({ beforeLaunch: true });
-  assert.equal(runtime.getDropboxState().phase, "connected");
-});
-
-test("an empty new catalog edition can launch alongside another isolated player without choosing unrelated progress", async (t) => {
-  const catalog = [{ target: "sky", displayTitle: "Beneath a Steel Sky" },
-    { target: "neverhood-demo", displayTitle: "The Neverhood (Demo)" }];
-  const { runtime, server, locks, storage, destinations } = await setup(t, "browser progress", catalog);
-  fastImportObservation(t);
-  await runtime.syncDropbox({ beforeLaunch: true });
-  const original = (await getActiveSaveSets(storage, destinations)).sets[0].hash;
-  initializeSaveEdition(storage, "catalog-sky");
-  copyBass(server);
-  locks.busy = "shared";
-  const launch = () => runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:neverhood-demo" });
-  const otherEdition = captureFilesystem(storage, true).root.children.get(".scummweb-editions").children.get("catalog-sky").key;
-  const getItem = storage.getItem;
-  storage.getItem = (name) => { assert.notEqual(name, otherEdition, "must not read the running edition's body"); return getItem(name); };
-  try { await launch(); } finally { storage.getItem = getItem; }
-  assert.equal(runtime.getDropboxState().phase, "conflict");
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, original);
-  assert.equal(server.imports.size, 2);
-  locks.editionBusy = "scummweb-saves:edition:catalog-neverhood-demo";
-  await assert.rejects(launch(), /Finish syncing saved progress|An incomplete game save/);
-  locks.editionBusy = null;
-  storage.setItem("scummweb.continue.v1:catalog-neverhood-demo", JSON.stringify({ pending: ["neverhood-demo.001"] }));
-  await assert.rejects(launch(), /Finish syncing saved progress|An incomplete game save/);
-  storage.removeItem("scummweb.continue.v1:catalog-neverhood-demo");
-  initializeSaveEdition(storage, "catalog-neverhood-demo");
-  await assert.rejects(launch(), /Finish syncing saved progress|An incomplete game save/);
-  // Legacy progress must be reconciled, even when the cloud has no matching profile.
-  const legacy = browserSaveStorage({ "SKY-VM.001": bytes("browser progress"), "neverhood-demo.001": bytes("unsynced progress") });
-  for (const [name, value] of legacy.values) storage.setItem(name, value);
-  await assert.rejects(launch(), /Finish syncing saved progress|An incomplete game save/);
-  storage.setItem("/", "corrupted");
-  await assert.rejects(launch(), /Finish syncing saved progress|An incomplete game save/);
-});
-
-for (const existingProgress of [false, true]) test(`an unrelated conflict permits a fully synced game ${existingProgress ? "with cloud progress" : "without saves"}`, async (t) => {
-  const catalog = [{ target: "sky", displayTitle: "Beneath a Steel Sky" },
-    { target: "neverhood-demo", displayTitle: "The Neverhood (Demo)" }];
-  const { runtime, storage, destinations, server, locks } = await setup(t, "browser progress", catalog);
-  fastImportObservation(t);
-  await runtime.syncDropbox({ beforeLaunch: true });
-  const original = (await getActiveSaveSets(storage, destinations)).sets[0];
-  let remote;
-  if (existingProgress) {
-    remote = { destination: { ...destinations.find(({ key }) => key === "catalog:neverhood-demo"), isolated: true },
-      files: [{ path: "neverhood-demo.001", data: bytes("other game's progress"), modifiedAt: 100 }] };
-    remote.hash = await identifySet(remote);
-    await publishProfile({ client: await createSaveCollection(server), profile: await saveProfileId(remote), local: remote });
-  }
-  copyBass(server);
-  await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:neverhood-demo" });
-  assert.equal(runtime.getDropboxState().phase, "conflict");
-  const active = (await getActiveSaveSets(storage, destinations)).sets;
-  assert.ok(active.some(({ hash }) => hash === original.hash));
-  if (remote) assert.ok(active.some(({ hash }) => hash === remote.hash));
-  assert.equal(server.imports.size, 2);
-  assert.ok((await readStoredSets()).some(({ hash }) => hash !== original.hash));
-  for (const launchDestinationKey of ["catalog:sky", "catalog:unknown", null]) {
-    await assert.rejects(runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey }), /Choose which saved progress/);
-  }
-  // An existing remote profile still needs a completed local reconciliation.
-  locks.busy = "shared";
-  if (existingProgress) await assert.rejects(runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:neverhood-demo" }), /Finish syncing saved progress|An incomplete game save/);
-  else await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:neverhood-demo" });
-  // A legacy-wide operation excludes even the read-only empty-edition check.
-  locks.busy = true;
-  await assert.rejects(runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:neverhood-demo" }), /Finish syncing saved progress|An incomplete game save/);
-  locks.busy = false;
-  storage.setItem("scummweb.continue.v1:catalog-neverhood-demo", JSON.stringify({ pending: ["neverhood-demo.001"] }));
-  await assert.rejects(runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:neverhood-demo" }), /Finish syncing saved progress|An incomplete game save/);
-  storage.removeItem("scummweb.continue.v1:catalog-neverhood-demo");
-  server.offline = true;
-  await assert.rejects(runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:neverhood-demo" }));
-});
-
-test("a lost copied-save publication reply resumes without losing or duplicating the import", async (t) => {
-  const { runtime, storage, destinations, server } = await setup(t, null);
-  fastImportObservation(t); copyBass(server); server.failAfterUpload = true;
-  await runtime.syncDropbox();
-  assert.equal(runtime.getDropboxState().phase, "waiting");
-  const restarted = await import(`../app/dropbox/runtime.mjs?loose-crash=${crypto.randomUUID()}`);
-  await restarted.syncDropbox({ beforeLaunch: true });
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].files.length, 2);
-  assert.equal(server.files.size, 1);
-});
-
 test("a stalled coordinator releases its flight and lock, retries, and fences the late result", async (t) => {
   const { runtime, server, locks } = await setup(t);
   const timer = globalThis.setTimeout, fetcher = globalThis.fetch;
@@ -662,21 +476,6 @@ test("returning to a visible tab retries a failed sync without reload", async (t
   } finally { stop(); }
 });
 
-test("unchanged copied files avoid downloads, while same-size same-time revisions are imported", async (t) => {
-  const { runtime, server } = await setup(t, null);
-  fastImportObservation(t); copyBass(server, "first progress");
-  await runtime.syncDropbox({ beforeLaunch: true });
-  const downloads = server.importDownloads;
-  assert.ok(downloads > 0);
-  await runtime.syncDropbox({ beforeLaunch: true });
-  assert.equal(server.importDownloads, downloads);
-  // Equal length and mtime are insufficient; Dropbox's revision changed.
-  copyBass(server, "other progress");
-  await runtime.syncDropbox();
-  assert.ok(server.importDownloads > downloads);
-  assert.equal(runtime.getDropboxState().phase, "conflict");
-});
-
 test("launch waits for another coordinator's lock instead of failing a healthy sync", async (t) => {
   const { runtime, locks, server } = await setup(t);
   const request = locks.request.bind(locks);
@@ -701,140 +500,6 @@ test("launch waits for another coordinator's lock instead of failing a healthy s
   assert.equal(runtime.getDropboxState().phase, "connected");
 });
 
-async function bulkConflictSetup(t) {
-  const fixture = await setup(t, "local sky", [{ target: "sky", displayTitle: "Beneath a Steel Sky" }, { target: "queen", displayTitle: "Flight of the Amazon Queen" }]);
-  const { storage, destinations, runtime, server } = fixture;
-  const queen = { destination: destinations.find(({ key }) => key === "catalog:queen"),
-    files: [{ path: "queen.s00", data: bytes("local queen"), modifiedAt: 100 }] };
-  queen.hash = await identifySet(queen);
-  const current = await getActiveSaveSets(storage, destinations);
-  await applyImport({ storage, destinations, revision: current.revision,
-    rows: [{ set: queen, destinationKey: queen.destination.key, choice: "imported" }] });
-  await runtime.syncDropbox({ beforeLaunch: true });
-  const originals = (await getActiveSaveSets(storage, destinations)).sets;
-  assert.equal(originals.length, 2);
-  const client = await createSaveCollection(server), remotes = [];
-  for (const set of originals) {
-    const remote = { ...set, files: set.files.map((file) => ({ ...file, data: bytes("remote " + set.destination.key) })) };
-    remote.hash = await identifySet(remote); remotes.push(remote);
-    await publishProfile({ client, profile: await saveProfileId(remote), local: remote });
-  }
-  await runtime.syncDropbox();
-  assert.equal(runtime.getDropboxState().conflicts.length, 2);
-  const choices = runtime.getDropboxState().conflicts.map((conflict) => ({ profile: conflict.profile,
-    choice: remotes.some(({ hash }) => hash === conflict.local.hash) ? "local" : "remote", version: conflictVersion(conflict) }));
-  return { ...fixture, originals, remotes, choices };
-}
-
-test("a bulk decision is durable before publication and applies both games in the background", async (t) => {
-  const { runtime, storage, destinations, server, remotes, originals, choices, locks } = await bulkConflictSetup(t);
-  locks.busy = true;
-  await runtime.syncDropbox();
-  assert.ok(runtime.getDropboxState().conflicts.every(({ canResolve }) => !canResolve), "review remains possible while applying is locked");
-  const uploads = server.uploads;
-  await runtime.queueDropboxConflictResolutions(choices);
-  const batches = await syncStore.all(key("resolutions", ""));
-  assert.equal(batches.length, 1); assert.equal(batches[0].items.length, 2);
-  assert.equal(server.uploads, uploads, "accepting choices requires no Dropbox upload");
-  assert.equal(runtime.getDropboxState().phase, "resolving");
-  await runtime.syncDropbox();
-  assert.equal(runtime.getDropboxState().phase, "waiting");
-  assert.match(runtime.getDropboxState().message, /Close games/);
-  locks.busy = false;
-  await runtime.syncDropbox({ beforeLaunch: true });
-  assert.equal(runtime.getDropboxState().phase, "connected");
-  assert.deepEqual(new Set((await getActiveSaveSets(storage, destinations)).sets.map(({ hash }) => hash)), new Set(remotes.map(({ hash }) => hash)));
-  const preserved = await readStoredSets();
-  assert.ok(originals.every((original) => preserved.some(({ hash }) => hash === original.hash)));
-  assert.equal((await syncStore.all(key("resolutions", ""))).length, 0);
-});
-
-test("an offline bulk decision survives coordinator restart with all selected copies intact", async (t) => {
-  const { runtime, storage, destinations, server, remotes, choices } = await bulkConflictSetup(t);
-  server.offline = true;
-  await runtime.queueDropboxConflictResolutions(choices);
-  await runtime.syncDropbox();
-  assert.equal((await syncStore.all(key("resolutions", "")))[0].items.length, 2);
-  server.offline = false;
-  const restarted = await import(`../app/dropbox/runtime.mjs?bulk-restart=${crypto.randomUUID()}`);
-  await restarted.syncDropbox({ beforeLaunch: true });
-  assert.equal(restarted.getDropboxState().phase, "connected");
-  assert.deepEqual(new Set((await getActiveSaveSets(storage, destinations)).sets.map(({ hash }) => hash)), new Set(remotes.map(({ hash }) => hash)));
-  assert.equal((await syncStore.all(key("resolutions", ""))).length, 0);
-});
-
-test("a lost resolution upload reply resumes the exact decision without duplicating publication", async (t) => {
-  const { runtime, server, choices } = await bulkConflictSetup(t);
-  const conflict = runtime.getDropboxState().conflicts.find(({ profile }) => profile === choices[0].profile);
-  const selected = choices[0].choice === "local" ? conflict.local : conflict.remote;
-  const intended = await makeSnapshot(selected, conflict.tips, true);
-  let failed = false;
-  server.onUpload = () => {
-    if (!failed && server.files.has(intended.id + ".zip")) { failed = true; server.failAfterUpload = true; }
-  };
-  await runtime.queueDropboxConflictResolutions(choices);
-  await runtime.syncDropbox();
-  assert.equal(runtime.getDropboxState().phase, "waiting");
-  assert.equal(failed, true, "the interrupted reply belongs to the active resolution commit");
-  assert.ok((await syncStore.all(key("resolutions", ""))).length);
-  const restarted = await import(`../app/dropbox/runtime.mjs?resolution-reply=${crypto.randomUUID()}`);
-  await restarted.syncDropbox({ beforeLaunch: true });
-  assert.equal(restarted.getDropboxState().phase, "connected");
-  const count = server.files.size;
-  await restarted.syncDropbox({ beforeLaunch: true });
-  assert.equal(server.files.size, count);
-});
-
-test("a stale bulk review is rejected before enqueueing or uploading", async (t) => {
-  const { runtime, server, choices } = await bulkConflictSetup(t);
-  const uploads = server.uploads;
-  await assert.rejects(runtime.queueDropboxConflictResolutions([{ ...choices[0], version: "stale review" }, choices[1]]), /changed/);
-  assert.equal(server.uploads, uploads);
-  assert.equal((await syncStore.all(key("resolutions", ""))).length, 0);
-});
-
-test("a changed cloud tip invalidates only its queued choice and preserves the fresh conflict", async (t) => {
-  const { runtime, server, choices, remotes, originals, storage, destinations } = await bulkConflictSetup(t);
-  server.offline = true;
-  await runtime.queueDropboxConflictResolutions(choices); await runtime.syncDropbox();
-  server.offline = false;
-  const changed = { ...remotes[0], files: remotes[0].files.map((file) => ({ ...file, data: bytes("third device changed this game") })) };
-  changed.hash = await identifySet(changed);
-  const profile = await saveProfileId(changed);
-  await publishProfile({ client: await createSaveCollection(server), profile, local: changed });
-  const restarted = await import(`../app/dropbox/runtime.mjs?stale-bulk=${crypto.randomUUID()}`);
-  await restarted.syncDropbox();
-  assert.equal(restarted.getDropboxState().phase, "conflict");
-  assert.equal(restarted.getDropboxState().conflicts.length, 1);
-  assert.equal(restarted.getDropboxState().conflicts[0].profile, profile);
-  const active = (await getActiveSaveSets(storage, destinations)).sets;
-  assert.ok(active.some(({ hash }) => hash === originals[0].hash), "stale choice must not replace this game's working copy");
-  assert.ok(active.some(({ hash }) => hash === remotes[1].hash), "unrelated queued choice can complete");
-  assert.equal((await syncStore.all(key("resolutions", ""))).length, 0);
-});
-
-test("a failed durable bulk enqueue keeps the review and performs no cloud work", async (t) => {
-  const { runtime, server, choices } = await bulkConflictSetup(t);
-  const put = syncStore.put; t.after(() => { syncStore.put = put; });
-  syncStore.put = (record) => record.id.includes("/resolutions/") ? Promise.reject(new Error("Synthetic full storage")) : put(record);
-  const uploads = server.uploads;
-  await assert.rejects(runtime.queueDropboxConflictResolutions(choices), /full storage/);
-  assert.equal(runtime.getDropboxState().phase, "conflict");
-  assert.equal(runtime.getDropboxState().conflicts.length, 2);
-  assert.match(runtime.getDropboxState().message, /retain your choices/);
-  assert.equal(server.uploads, uploads);
-});
-
-test("disconnect fences an applying batch and retains its remaining decisions", async (t) => {
-  const { runtime, server, choices, originals, storage, destinations } = await bulkConflictSetup(t);
-  server.onUpload = () => { server.onUpload = null; void runtime.disconnectDropbox(); };
-  await runtime.queueDropboxConflictResolutions(choices); await runtime.syncDropbox();
-  assert.equal(runtime.getDropboxState().phase, "disconnected");
-  assert.ok((await syncStore.all(key("resolutions", ""))).length);
-  assert.deepEqual(new Set((await getActiveSaveSets(storage, destinations)).sets.map(({ hash }) => hash)), new Set(originals.map(({ hash }) => hash)));
-});
-
-
 test("an incomplete save explains its actual blocker instead of asking to exit a nonexistent game", async (t) => {
   const { runtime, storage } = await setup(t);
   storage.setItem("scummweb.continue.v1:synthetic", JSON.stringify({ pending: ["SKY-VM.001"] }));
@@ -842,4 +507,59 @@ test("an incomplete save explains its actual blocker instead of asking to exit a
   assert.equal(runtime.getDropboxState().phase, "waiting");
   assert.match(runtime.getDropboxState().message, /incomplete game save/);
   assert.doesNotMatch(runtime.getDropboxState().message, /exit the game/);
+});
+
+
+test("overlapping first-sync progress resolves automatically and keeps both complete originals", async (t) => {
+  const { runtime, storage, destinations, server } = await setup(t);
+  const local = (await getActiveSaveSets(storage, destinations)).sets[0];
+  const remote = { ...local, files: local.files.map((file) => ({ ...file, data: bytes("newer remote progress"), modifiedAt: 200 })) };
+  remote.hash = await identifySet(remote);
+  await writeSnapshot(server, await makeSnapshot(remote));
+  await runtime.syncDropbox({ beforeLaunch: true });
+  assert.equal(runtime.getDropboxState().phase, "connected");
+  assert.equal(runtime.getDropboxState().conflicts.length, 0);
+  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, remote.hash);
+  const preserved = await readStoredSets();
+  assert.ok([local, remote].every((set) => preserved.some(({ hash }) => hash === set.hash)));
+  const uploads = server.uploads;
+  await runtime.syncDropbox({ beforeLaunch: true });
+  assert.equal(server.uploads, uploads, "a settled automatic decision must not republish");
+});
+
+test("an interrupted automatic choice retains local progress until restart verifies the cloud result", async (t) => {
+  const { runtime, storage, destinations, server } = await setup(t);
+  await runtime.syncDropbox({ beforeLaunch: true });
+  const local = (await getActiveSaveSets(storage, destinations)).sets[0], profile = await saveProfileId(local);
+  const base = await syncStore.get(key("base", profile));
+  const branches = [];
+  for (const modifiedAt of [200, 300]) {
+    const set = { ...local, files: local.files.map((file) => ({ ...file, data: bytes(`remote ${modifiedAt}`), modifiedAt })) };
+    set.hash = await identifySet(set); branches.push(set);
+    await writeSnapshot(server, await makeSnapshot(set, base.tips));
+  }
+  server.failAfterUpload = true;
+  await runtime.syncDropbox();
+  assert.equal(runtime.getDropboxState().phase, "waiting");
+  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, local.hash);
+  const restarted = await import(`../app/dropbox/runtime.mjs?automatic-restart=${crypto.randomUUID()}`);
+  await restarted.syncDropbox({ beforeLaunch: true });
+  assert.equal(restarted.getDropboxState().phase, "connected");
+  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, branches[1].hash);
+  assert.equal(await syncStore.get(key("pending", profile)), undefined);
+  const preserved = await readStoredSets();
+  assert.ok(branches.every((set) => preserved.some(({ hash }) => hash === set.hash)));
+});
+
+
+test("a different pre-release storage layout cannot supply baselines to the saves collection", async (t) => {
+  const { runtime, storage, destinations, server } = await setup(t);
+  const set = (await getActiveSaveSets(storage, destinations)).sets[0], profile = await saveProfileId(set);
+  const legacy = { id: `${account}/base/${profile}`, hash: "a".repeat(64), tips: ["b".repeat(64)] };
+  await syncStore.put(legacy);
+  await runtime.syncDropbox({ beforeLaunch: true });
+  assert.equal(runtime.getDropboxState().phase, "connected");
+  assert.equal((await syncStore.get(key("base", profile))).hash, set.hash);
+  assert.deepEqual(await syncStore.get(legacy.id), legacy, "other layouts remain untouched");
+  assert.ok(server.files.size > 0);
 });
