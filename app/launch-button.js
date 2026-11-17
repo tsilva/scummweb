@@ -6,7 +6,7 @@ import useLaunchFeedback from "./game-player/useLaunchFeedback";
 import useBrowserSave from "./use-browser-save";
 import { cancelBrowserSaveQueries } from "./browser-saves.mjs";
 
-export default function LaunchButton({ game, entryPoint, label = "Play", continueLabel = "Continue", className = "", onLaunch, browseHref }) {
+export default function LaunchButton({ game, entryPoint, label = "Play", continueLabel = "Continue", className = "", onLaunch, browseHref, primaryOnly = false }) {
   const router = useRouter();
   const launchFeedback = useLaunchFeedback();
   const classes = ["launch-button", className].filter(Boolean).join(" ");
@@ -35,9 +35,9 @@ export default function LaunchButton({ game, entryPoint, label = "Play", continu
       <a className={classes} href={canContinue ? `${href}#continue` : href} onClick={launch}>
         {canContinue ? continueLabel : label}
       </a>
-      {canContinue ? (
+      {!primaryOnly && (canContinue ? (
         <a className="secondary-button start-fresh-button" href={href} onClick={launch}>Start from beginning</a>
-      ) : browseHref ? <a className="secondary-button browse-games-button" href={browseHref}>Browse Games</a> : null}
+      ) : browseHref ? <a className="secondary-button browse-games-button" href={browseHref}>Browse Games</a> : null)}
       {launchFeedback.overlay}
     </>
   );

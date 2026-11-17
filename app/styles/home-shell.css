@@ -1092,9 +1092,6 @@ button.nav-icon-link {
 
 .recent-story-progress {
   appearance: none;
-  position: absolute;
-  inset: auto 0 0;
-  z-index: 2;
   display: block;
   width: 100%;
   height: 0.25rem;
@@ -1106,6 +1103,43 @@ button.nav-icon-link {
 .recent-story-progress::-webkit-progress-bar { background: transparent; }
 .recent-story-progress::-webkit-progress-value { background: var(--accent-strong); }
 .recent-story-progress::-moz-progress-bar { background: var(--accent-strong); }
+
+.recent-game-card {
+  flex: 0 0 min(25rem, calc(100vw - 3rem));
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid rgb(255 255 255 / 12%);
+  background: var(--surface-high);
+}
+
+.recent-game-details {
+  display: grid;
+  grid-template-columns: 6rem minmax(0, 1fr);
+  gap: 1rem;
+  flex: 1;
+  color: inherit;
+  text-decoration: none;
+}
+
+.recent-game-cover {
+  width: 6rem;
+  height: 9rem;
+  object-fit: contain;
+  align-self: start;
+}
+
+.recent-game-summary { min-width: 0; }
+.recent-game-title { color: inherit; text-decoration: none; }
+.recent-game-title:hover { color: var(--accent-strong); }
+.recent-game-summary h3 { margin: 0; font-size: 1rem; line-height: 1.3; }
+.recent-game-progress { min-height: 2.5rem; margin-top: 0.75rem; }
+.recent-progress-value { display: grid; gap: 0.35rem; font-size: 0.75rem; color: rgb(255 255 255 / 70%); }
+.recent-game-stats { display: flex; gap: 1.25rem; margin: 0.5rem 0 0; }
+.recent-game-stats dt { color: rgb(255 255 255 / 65%); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.recent-game-stats dd { margin: 0.25rem 0 0; font-size: 0.85rem; font-variant-numeric: tabular-nums; }
+.recent-game-actions .launch-button { width: 100%; min-height: 2.75rem; }
 
 .spotlight-badge span {
   font-size: 0.68rem;
@@ -1709,6 +1743,46 @@ button.nav-icon-link {
   background: var(--surface-lowest);
   color: var(--ink);
   font-size: 0.75rem;
+}
+
+.source-poster-hint[data-checking] {
+  display: inline-flex;
+  align-items: center;
+  inset-inline: 0.6rem auto;
+  max-width: calc(100% - 1.2rem);
+  padding: 0.4rem;
+}
+
+.source-poster-spinner {
+  flex-shrink: 0;
+  animation: source-poster-spin 1s linear infinite;
+}
+
+.source-poster-checking-label {
+  min-width: 0;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: max-width 180ms ease, margin-inline-start 180ms ease;
+}
+
+.poster-card:is(:hover, :focus-visible) .source-poster-checking-label {
+  max-width: 10rem;
+  margin-inline-start: 0.4rem;
+}
+
+@keyframes source-poster-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .source-poster-spinner {
+    animation: none;
+  }
+
+  .source-poster-checking-label {
+    transition: none;
+  }
 }
 
 .source-poster-remove {

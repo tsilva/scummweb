@@ -1,2 +1,4 @@
 # Unified diffs retain upstream context whitespace; native patch checks validate them.
 patches/scummvm/*.patch -whitespace
+# pnpm validates dependency patches during frozen installs.
+patches/dependencies/*.patch -whitespace

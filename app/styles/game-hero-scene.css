@@ -171,7 +171,11 @@ html:has(.game-route-boot-overlay.is-visible) {
   grid-row: 2;
   grid-column: 2;
   align-self: center;
-  justify-self: end;
+  justify-self: start;
+}
+
+.game-hero-scene .hero-actions:has(> .hero-version-control[data-reserved]) > .hero-license {
+  grid-column: 1 / -1;
 }
 
 .game-hero-scene .hero-actions > .file-access-help {

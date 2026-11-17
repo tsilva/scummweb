@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Check, CircleCheck, ChevronDown, Plus, SlidersHorizontal } from "lucide-react";
+import { Check, CircleCheck, ChevronDown, LoaderCircle, Plus, SlidersHorizontal } from "lucide-react";
 import { GamePoster } from "./library-cards";
 import GameSelectionLink from "./game-selection-link";
 import { defaultLibraryQuery, libraryFacet, queryLibrary } from "./library-query.mjs";
@@ -141,8 +141,7 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
         {visible.map((item) => {
           const { key, game, title, versions } = item;
           const needsFiles = versions.every(({ source, status }) => source && !["available", "session", "permission"].includes(status));
-          const fileStatus = versions.every(({ status }) => status === "checking") ? "Checking files"
-            : "Locate files";
+          const checkingFiles = versions.every(({ status }) => status === "checking");
           return (
             <LibraryEditCard key={key} item={item} editing={editing} disabled={importDisabled || !onRemove || !hasImportedGames} onEdit={editLibrary}
               onRemove={(item) => item.versions.length > 1 ? setRemoving(item) : removeVersions(item, item.versions)}>
@@ -150,7 +149,12 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
                 aria-disabled={editing || undefined} tabIndex={editing ? -1 : undefined} draggable={false}
                 className={`poster-card ${game.tone}`} data-game-target={game.target}>
                 <GamePoster title={title} image={game.posterImage} editionLabel={game.editionLabel} count={visible.length + 1} />
-                {needsFiles && <span className="source-poster-hint">{fileStatus}</span>}
+                {needsFiles && <span className="source-poster-hint" data-checking={checkingFiles || undefined}>
+                  {checkingFiles ? <>
+                    <LoaderCircle size={12} className="source-poster-spinner" aria-hidden="true" />
+                    <span className="source-poster-checking-label">Checking files</span>
+                  </> : "Locate files"}
+                </span>}
               </GameSelectionLink>
             </LibraryEditCard>
           );

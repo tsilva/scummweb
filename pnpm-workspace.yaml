@@ -14,6 +14,22 @@ overrides:
   "fast-uri": "3.1.9"
   source-map-js: 1.2.2
   brace-expansion: 5.0.12
+  # Patched callers use minimatch; fdir receives an explicit matcher.
+  '@rollup/plugin-commonjs@28.0.1>picomatch': '-'
+  '@rollup/pluginutils@5.4.0>picomatch': '-'
+  'fdir@6.5.0>picomatch': '-'
+
+packageExtensions:
+  '@rollup/plugin-commonjs@28.0.1':
+    dependencies:
+      minimatch: 11.0.1
+  '@rollup/pluginutils@5.4.0':
+    dependencies:
+      minimatch: 11.0.1
+
+patchedDependencies:
+  '@rollup/plugin-commonjs@28.0.1': patches/dependencies/@rollup__plugin-commonjs@28.0.1.patch
+  '@rollup/pluginutils@5.4.0': patches/dependencies/@rollup__pluginutils@5.4.0.patch
 
 # User-approved security patch exception; all other packages retain the age hold.
 minimumReleaseAgeExclude:

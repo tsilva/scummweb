@@ -1,0 +1,47 @@
+diff --git a/dist/cjs/index.js b/dist/cjs/index.js
+index 525e32db5b49e714939fd5cccb165cc44d568d9f..461fc34272578286acf7bd3028cf0a280b55967b 100644
+--- a/dist/cjs/index.js
++++ b/dist/cjs/index.js
+@@ -4,7 +4,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
+ 
+ var path = require('path');
+ var estreeWalker = require('estree-walker');
+-var pm = require('picomatch');
++var minimatch = require('minimatch');
+ 
+ const addExtension = function addExtension(filename, ext = '.js') {
+     let result = `${filename}`;
+@@ -192,8 +192,8 @@ const createFilter = function createFilter(include, exclude, options) {
+             test: (what) => {
+                 // this refactor is a tad overly verbose but makes for easy debugging
+                 const pattern = getMatcherString(id, resolutionBase);
+-                const fn = pm(pattern, { dot: true });
+-                const result = fn(what);
++                const matcher = new minimatch.Minimatch(pattern, { dot: true, nonegate: pattern.startsWith('!('), nocomment: true });
++                const result = matcher.match(what);
+                 return result;
+             }
+         };
+diff --git a/dist/es/index.js b/dist/es/index.js
+index 38996b0549709db2203e70db32bd4c3ac7e4db88..122daa5f7e8f719cb0d0c0c15ce9ef3fc03075e5 100644
+--- a/dist/es/index.js
++++ b/dist/es/index.js
+@@ -1,6 +1,6 @@
+ import { extname, win32, posix, isAbsolute, resolve } from 'path';
+ import { walk } from 'estree-walker';
+-import pm from 'picomatch';
++import { Minimatch } from 'minimatch';
+ 
+ const addExtension = function addExtension(filename, ext = '.js') {
+     let result = `${filename}`;
+@@ -188,8 +188,8 @@ const createFilter = function createFilter(include, exclude, options) {
+             test: (what) => {
+                 // this refactor is a tad overly verbose but makes for easy debugging
+                 const pattern = getMatcherString(id, resolutionBase);
+-                const fn = pm(pattern, { dot: true });
+-                const result = fn(what);
++                const matcher = new Minimatch(pattern, { dot: true, nonegate: pattern.startsWith('!('), nocomment: true });
++                const result = matcher.match(what);
+                 return result;
+             }
+         };

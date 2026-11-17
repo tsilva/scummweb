@@ -61,7 +61,7 @@ export function recordRecentGameTarget(target) {
 export function getRecentlyPlayedGames(groups, recentTargets) {
   const gamesById = new Map(groups.flatMap((group) => group.versions.map((version) => [
     version.source ? `source:${version.source.id}` : version.game.target,
-    { ...group, game: version.game },
+    { ...group, game: version.game, recentVersionKey: version.key },
   ])));
   const seen = new Set();
   return normalizeRecentGameTargets(recentTargets).flatMap((id) => {
