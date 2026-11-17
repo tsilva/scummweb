@@ -45,7 +45,7 @@ same origin, so the usual application XSS protections remain essential.
 
 ## Live testing access
 
-Dropbox controls are temporarily hidden unless the current page URL includes
+Dropbox controls and sync warnings are temporarily hidden unless the current page URL includes
 `?dropbox=true` (or `&dropbox=true` alongside other parameters). For example,
 open `https://scummweb.tsilva.eu/?dropbox=true`, then open Settings.
 The flag is not saved between pages and does not disable synchronization for
