@@ -6,6 +6,9 @@
 - Use [$scummweb_build-release](.codex/skills/scummweb_build-release/SKILL.md)
   for production builds, deployments and release verification.
 
+- Use [$scummweb_verify-dropbox](.codex/skills/scummweb_verify-dropbox/SKILL.md)
+  for Dropbox save-sync regression checks, live-account QA and interruption recovery.
+
 - Edit runtime templates in `web-shell/` and native patches in `patches/scummvm/`.
   Rebuild the tracked `scummvm-shell/` using the [runtime build guide](docs/maintaining-scummweb.md#rebuilding-and-upgrading-scummvm).
   App commands validate and stage that bundle into `public/`.
