@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "lsl7-demo": {
+    ...retroGameArtwork["sci:lsl7"],
+    heroImageMobilePosition: "58% -8vh",
+    title: "Leisure Suit Larry 7: Love for Sail! (Demo)",
+    year: "1996",
+    language: "en",
+    summary: "Join Larry aboard a luxury cruise ship, watch the original tour or jump into a playable Liar's Dice game.",
+  },
   "phantasmagoria-demo": {
     ...retroGameArtwork["sci:phantasmagoria"],
     heroImageMobilePosition: "80% -8vh",

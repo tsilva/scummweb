@@ -1580,6 +1580,11 @@
       "file": "phantasmagoria-demo-9eaac1b0faa3882608e72ecf30ed5187386ca4eabec941f6ed4d9c66bc715951.jpg",
       "inputHash": "9eaac1b0faa3882608e72ecf30ed5187386ca4eabec941f6ed4d9c66bc715951",
       "imageHash": "b9e7b024e1309e45f002ab02a647cee05b2146baf55178415ec72eebced58174"
+    },
+    "leisure-suit-larry-7-love-for-sail-demo": {
+      "file": "leisure-suit-larry-7-love-for-sail-demo-e9d238443be6c148d6a2aa53257547a873f177bb93dafe5c144df9094314d92e.jpg",
+      "inputHash": "e9d238443be6c148d6a2aa53257547a873f177bb93dafe5c144df9094314d92e",
+      "imageHash": "661c42c19fb2f95ecdaf11a10b7e6d9a746e9861f31968307664ed04d708ea92"
     }
   }
 }

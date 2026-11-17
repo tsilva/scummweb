@@ -353,6 +353,8 @@ Lighthouse: The Dark Being’s English interactive demo keeps its complete uncha
 
 Phantasmagoria’s English DOS v1.100.000 interactive demo keeps the complete unchanged official ZIP, including all movies, drivers, packed setup and original notices. Its original menu, game naming and chapter selection are preserved without a seeded browser checkpoint. Shift+Escape sends the native movie skip action while Escape opens the browser game menu. Movies and kitchen navigation work; the original P control-panel Save/Restore bookmark and native Continue Old Game work. ScummWEB’s separate Save is rejected and Load remains empty even after a native bookmark; reopen with Play and use the original game controls. The original PDOCO.TXT gameplay guide is exposed as readable text. Only this demo receives a 400 MiB archive/450 MiB expanded limit and a 15-minute download timeout, covering its pinned 363,714,852-byte ZIP and 436,843,348-byte expansion.
 
+Leisure Suit Larry 7: Love for Sail!’s English DOS v1.0 demo keeps its complete unchanged official ZIP, including original drivers, PKLITE-packed installer, DOS Help, audio/music and README. The pinned demo uses SCI2.1, while the full edition uses SCI3. Its original menu offers a promotional tour and a playable Liar’s Dice scene; tutorial and dice quantity selection work. Saving was rejected in the tested dice scene, with no verified Load or Continue save. No browser checkpoint is seeded.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.

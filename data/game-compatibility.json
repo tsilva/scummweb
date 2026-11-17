@@ -638,6 +638,14 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Leisure Suit Larry 7: Love for Sail! (Demo)",
+      "status": "startup-verified",
+      "gameId": "sci:lsl7",
+      "edition": "lsl7-dos-demo-en.zip",
+      "recordedOn": "2026-11-17",
+      "observation": "English DOS v1.0 interactive demo using SCI2.1. Original menu offers the promotional tour or a direct jump into Liar's Dice; the tutorial and dice quantity selector respond. Saving rejected in the tested dice scene; no verified Load or Continue save. No seeded browser checkpoint. Full round, full playthrough and independent audible output not verified."
+    },
+    {
       "title": "Leisure Suit Larry in the Land of the Lounge Lizards",
       "status": "startup-verified",
       "gameId": "sci:lsl1sci",
