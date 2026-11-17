@@ -1,11 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { createPortal, flushSync } from "react-dom";
+import { usePathname } from "next/navigation";
 import GameBootOverlay from "./GameBootOverlay";
 
 export default function useLaunchFeedback({ showBundledTags = true } = {}) {
   const [game, setGame] = useState(null);
+  const pathname = usePathname();
+
+  useLayoutEffect(() => () => {
+    // Loading feedback is transient, even when navigation preserves the hero.
+    // Clear its body portal before leaving or hiding the originating route.
+    setGame(null);
+  }, [pathname]);
 
   useEffect(() => {
     // A document restored from the back/forward cache can retain a pending launch.
