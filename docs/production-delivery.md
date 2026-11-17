@@ -52,7 +52,8 @@ remain; application and Cloudflare bot-protection scripts are included.
 
 The run summary lists every score and identifies Lighthouse's representative run
 using its median FCP/TTI selection. The `lighthouse` artifact retains every HTML
-and JSON report plus raw traces and network logs for seven days. Automatic audits
+and JSON report plus traces and network logs for seven days. Cookie and authorization
+values are removed in memory before artifacts are written. Automatic audits
 require all samples to match the triggering Production deployment; mixed or
 superseded deployments fail verification. Manual audits report the deployment
 actually measured. Run `node --test test/lighthouse-ci.test.mjs` for collector

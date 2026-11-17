@@ -1,7 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { createRequire } from "node:module";
-import { spawnSync } from "node:child_process";
 import { pathToFileURL } from "node:url";
 import desktop from "lighthouse/core/config/desktop-config.js";
 import { computeMedianRun } from "lighthouse/core/lib/median-run.js";
@@ -46,6 +45,46 @@ export function summarize(reports, expectedDeployment = "") {
       metrics: report.audits.metrics?.details?.items?.[0] ?? {} })) };
 }
 
+// Browser protocol logs can include clearance/session cookies. Scrub before any
+// artifact is written, including duplicate token values embedded in trace data.
+export function redactAuditData(input, secrets = new Set()) {
+  const sensitive = /^(?:cookie|set-cookie|authorization|proxy-authorization)$/i;
+  function remember(value, name) {
+    if (typeof value !== "string") {
+      if (value && typeof value.value === "string") remember(value.value, name);
+      return;
+    }
+    if (value.length >= 8) secrets.add(value);
+    const pairs = /^set-cookie$/i.test(name) ? value.split("\n").map(line => line.split(";", 1)[0]) : value.split(";");
+    const parts = /cookie/i.test(name) ? pairs.map(part => part.slice(part.indexOf("=") + 1).trim())
+      : [value.replace(/^\S+\s+/, "")];
+    for (const token of parts) if (token.length >= 8) secrets.add(token);
+  }
+  function visit(value, key = "") {
+    if (sensitive.test(key)) remember(value, key);
+    if (!value || typeof value !== "object") return;
+    if (sensitive.test(value.name)) remember(value.value, value.name);
+    for (const [name, item] of Object.entries(value)) {
+      if (/headerstext$/i.test(name) && typeof item === "string") {
+        for (const line of item.split(/\r?\n/)) {
+          const split = line.indexOf(":");
+          if (split > 0 && sensitive.test(line.slice(0, split))) remember(line.slice(split + 1).trim(), line.slice(0, split));
+        }
+      }
+      visit(item, name);
+    }
+  }
+  visit(input);
+  return JSON.parse(JSON.stringify(input, (key, value) => {
+    if (sensitive.test(key)) return "[redacted]";
+    if (value && typeof value === "object" && sensitive.test(value.name)) return { ...value, value: "[redacted]" };
+    if (typeof value !== "string") return value;
+    if (/headerstext$/i.test(key)) value = value.replace(/^(?:cookie|set-cookie|authorization|proxy-authorization):[^\r\n]*/gmi, "[redacted]");
+    for (const secret of secrets) value = value.replaceAll(secret, "[redacted]");
+    return value;
+  }));
+}
+
 export async function runAudit() {
   const require = createRequire(import.meta.url);
   const packageJson = JSON.parse(await fs.readFile(new URL("../package.json", import.meta.url), "utf8"));
@@ -56,14 +95,29 @@ export async function runAudit() {
   await fs.mkdir(directory, { recursive: true });
   const configPath = path.join(directory, "config.json");
   await fs.writeFile(configPath, JSON.stringify(config));
+  const lighthouse = (await import("lighthouse")).default;
+  const lighthouseRequire = createRequire(require.resolve("lighthouse"));
+  const { launch } = await import(pathToFileURL(lighthouseRequire.resolve("chrome-launcher")).href);
+  const { saveAssets } = await import("lighthouse/core/lib/asset-saver.js");
+  const { ReportGenerator } = await import("lighthouse/report/generator/report-generator.js");
   const reports = [];
   for (let run = 1; run <= 3; run++) {
     const prefix = path.join(directory, `sample-${run}`);
-    const child = spawnSync(process.execPath, [require.resolve("lighthouse/cli/index.js"), url,
-      `--config-path=${configPath}`, "--output=json", "--output=html", `--output-path=${prefix}`,
-      "--save-assets", "--quiet", "--chrome-flags=--headless --no-sandbox --disable-dev-shm-usage"], { stdio: "inherit" });
-    if (child.error || child.status !== 0) throw child.error || new Error(`Lighthouse run ${run} failed.`);
-    reports.push(JSON.parse(await fs.readFile(`${prefix}.report.json`, "utf8")));
+    const chrome = await launch({ chromeFlags: ["--headless", "--no-sandbox", "--disable-dev-shm-usage"] });
+    try {
+      const result = await lighthouse(url, { port: chrome.port, logLevel: "error", channel: "cli" }, config);
+      if (!result) throw new Error(`Lighthouse run ${run} returned no result.`);
+      const safe = redactAuditData({ lhr: result.lhr, artifacts: {
+        Trace: result.artifacts.Trace, DevtoolsLog: result.artifacts.DevtoolsLog,
+        TraceError: result.artifacts.TraceError, DevtoolsLogError: result.artifacts.DevtoolsLogError,
+      } });
+      await fs.writeFile(`${prefix}.report.json`, JSON.stringify(safe.lhr, null, 2) + "\n");
+      await fs.writeFile(`${prefix}.report.html`, ReportGenerator.generateReportHtml(safe.lhr));
+      await saveAssets(safe.artifacts, safe.lhr.audits, prefix);
+      reports.push(safe.lhr);
+    } finally {
+      await chrome.kill();
+    }
   }
   const result = summarize(reports, process.env.LIGHTHOUSE_EXPECTED_DEPLOYMENT || "");
   await fs.writeFile(path.join(directory, "summary.json"), JSON.stringify(result, null, 2) + "\n");
@@ -71,7 +125,7 @@ export async function runAudit() {
     "| Run | Performance | Accessibility | Best practices | SEO | Representative |",
     "| --- | --- | --- | --- | --- | --- |",
     ...result.samples.map(sample => `| ${sample.run} | ${["performance", "accessibility", "best-practices", "seo"].map(key => Math.round(sample.scores[key] * 100)).join(" | ")} | ${sample.representative ? "Yes" : ""} |`),
-    "", "All reports and raw traces are in the Lighthouse artifact.", ""];
+    "", "All reports and redacted traces are in the Lighthouse artifact.", ""];
   if (process.env.GITHUB_STEP_SUMMARY) await fs.appendFile(process.env.GITHUB_STEP_SUMMARY, lines.join("\n"));
   console.log(JSON.stringify(result));
 }

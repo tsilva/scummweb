@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { auditUrl, config, summarize } from "../scripts/lighthouse-ci.mjs";
+import { auditUrl, config, summarize, redactAuditData } from "../scripts/lighthouse-ci.mjs";
 
 function report(fcp, interactive, score, deployment = "gha-123-1") {
   return { requestedUrl: "https://scummweb.tsilva.eu/", lighthouseVersion: "13.6.0", configSettings: { formFactor: "desktop" },
@@ -30,4 +30,25 @@ test("desktop settings and existing analytics exclusions keep bot scripts measur
   assert.equal(config.settings.blockedUrlPatterns.some(value => /cloudflare|cdn-cgi|_next/.test(value)), false);
   assert.equal(auditUrl("https://scummweb.tsilva.eu/"), "https://scummweb.tsilva.eu/");
   for (const value of ["http://example.com", "https://user:pass@example.com", "https://example.com/?token=a", "https://example.com/#a"]) assert.throws(() => auditUrl(value));
+});
+
+
+test("artifact redaction removes protocol credentials and their trace copies without changing metrics", () => {
+  const token = "synthetic-clearance-token";
+  const source = { metrics: { largestContentfulPaint: 720, totalBlockingTime: 2 },
+    headers: { Cookie: `cf_clearance=${token}`, Authorization: "Bearer synthetic-auth-token", Accept: "image/avif" },
+    entries: [{ name: "Set-Cookie", value: `cf_clearance=${token}; Path=/; Domain=example.test; Expires=Wed, 18 Nov 2026 00:00:00 GMT; Secure` }],
+    responseHeadersText: `HTTP/2 200\r\nSet-Cookie: cf_clearance=${token}\r\nContent-Type: text/html`,
+    associatedCookies: [{ cookie: { name: "cf_clearance", value: token } }],
+    trace: { timestamp: 123, duplicate: token, auth: "synthetic-auth-token", url: "https://app.example.test/", expires: "Wed, 18 Nov 2026 00:00:00 GMT" } };
+  const safe = redactAuditData(source);
+  const serialized = JSON.stringify(safe);
+  assert.equal(serialized.includes(token), false);
+  assert.equal(serialized.includes("synthetic-auth-token"), false);
+  assert.deepEqual(safe.metrics, source.metrics);
+  assert.equal(safe.trace.timestamp, 123);
+  assert.equal(safe.trace.url, source.trace.url);
+  assert.equal(safe.trace.expires, source.trace.expires);
+  assert.equal(safe.headers.Accept, "image/avif");
+  assert.equal(source.headers.Cookie, `cf_clearance=${token}`, "redaction must not mutate measurement inputs");
 });
