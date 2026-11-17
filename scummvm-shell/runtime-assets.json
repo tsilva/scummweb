@@ -1,12 +1,12 @@
 {
-  "version": "sha-a1c224b57d6ce86562956c33",
+  "version": "sha-42808de00bbee6fc6a9a3f59",
   "files": {
     "/scummvm.js": "sha-ff257f9b4cc4cbe68d41a028",
     "/scummvm.wasm": "sha-c95d61adcef7188f58c4d678",
     "/scummvm_fs.js": "sha-a1070971ba693ed248d9e700",
     "/audio-start-control.mjs": "sha-5be22420debc1de1477fe594",
-    "/scummvm.ini": "sha-04a7d53cfe2ac52c63be5c9a",
-    "/games.json": "sha-ee18c4b397893ee0f47abc54",
+    "/scummvm.ini": "sha-fe2a95c4552666c4421e3058",
+    "/games.json": "sha-cd18923377a7409d35f537b7",
     "/cloud-service.mjs": "sha-671194ab622ed8e93368b42f",
     "/cloud-transfer-fetch.mjs": "sha-91abc685c58cad72e1483d91",
     "/data/access.dat": "sha-c108b691e81f8b9ac54feac3",
@@ -180,6 +180,6 @@
     "/launcher/skip-intro/soltys/soltys.001": "sha-a228224141169a9874a5f13a",
     "/launcher/skip-intro/sword2-demo/sword2-demo.090": "sha-78be5e51bbb930a02ffd917b",
     "/launcher/skip-intro/sword25/sword25.000": "sha-182cf3396ee26d6ea6d3d567",
-    "/scummvm.html": "sha-a1c224b57d6ce86562956c33"
+    "/scummvm.html": "sha-42808de00bbee6fc6a9a3f59"
   }
 }

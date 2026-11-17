@@ -1070,6 +1070,24 @@
         "basis": "All11 original files reviewed with ZIP integrity/safe paths/full hashes and complete ASCII/UTF16/XOR69 scans. Original INF read and original promotional BMP viewed. NE EXE/DLL and PE W32/D32 runtime libraries inspected as data; no included system installer or nested archive. Compiled Help successfully decoded to42 topics with clean diagnostics; complete Help bytes identical to the previously fully-reviewed Humongous interactive catalog Help (SHA256365bab9464458b29a0eb8b97e8888a06e69a0dd8e937ac4f2695146f1de4b904). No express redistribution grant or packaged prohibition found. Eligibility uses only the user-authorized cautious official promotional-hosting assessment, not an express rights-holder license.",
         "preservation": "Serve complete unchanged official ZIP, retaining original executables/libraries, HE data, compiled Help, INF and promotional BMP. No downloaded executable executed."
       }
+    },
+    {
+      "target": "freddi4-demo",
+      "title": "Freddi Fish 4: The Case of the Hogfish Rustlers of Briny Gulch (Demo)",
+      "engineId": "scumm",
+      "gameId": "freddi4",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "freddi4-win-demo-uk.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/scumm/he/freddi4-win-demo-uk.zip",
+      "sha256": "0509f3f3bf71b13d923c24e5862ffe1aca0e110e5767c93fa18dbfa58762bd4d",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-17",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "All9 original files inspected with ZIP integrity/safe paths/full hashes and complete ASCII/UTF16/XOR69 scans. Original INF read and PE executable/runtime library inspected as data. Compiled Help fully decoded to23 topics with clean diagnostics and complete text reviewed, including original 1999-2001 Humongous copyright, all-rights-reserved notice and Infogrames Europe publishing credit. The phrase taken without permission is the dictionary definition of rustled, not a redistribution clause. No express demo redistribution grant or packaged prohibition found; no nested archive or system installer. Eligibility uses only the user-authorized cautious official promotional-hosting assessment, not an express rights-holder license.",
+        "preservation": "Serve complete unchanged official ZIP with original PE executable/runtime library, HE data, settings, compiled Help and icon. No downloaded executable executed."
+      }
     }
   ]
 }

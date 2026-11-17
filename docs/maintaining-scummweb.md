@@ -357,6 +357,8 @@ Leisure Suit Larry 7: Love for Sail!’s English DOS v1.0 demo keeps its complet
 
 Freddi Fish 3’s English Windows HE90 mini demo keeps the complete unchanged official ZIP, including original runtime libraries, promotional bitmap, settings and compiled Help. Native intro skip reaches Pelican Sam’s landing; buoy navigation opens the net scene. Saving was rejected in that tested scene; no browser checkpoint is seeded.
 
+Freddi Fish 4’s English UK Windows HE99 demo keeps the complete unchanged official ZIP, including original executable/runtime library, settings, compiled Help and icon. Native intro skip and canyon navigation reach Gill Barker’s wheel-nut stall. ScummWEB saving is unavailable and the original demo computer opens only Quit; no browser checkpoint is seeded.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.
