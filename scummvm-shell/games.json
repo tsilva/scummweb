@@ -825,6 +825,16 @@
       "platform": "dos",
       "extra": "Demo",
       "readmeHref": "/launcher/notices/lsl7.txt"
+    },
+    {
+      "target": "freddi3-demo",
+      "title": "Freddi Fish 3: The Case of the Stolen Conch Shell (Demo)",
+      "path": "/games/freddi3",
+      "engineId": "scumm",
+      "gameId": "freddi3",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

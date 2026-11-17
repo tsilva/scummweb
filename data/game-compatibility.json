@@ -1728,6 +1728,14 @@
       "observation": "ScummVM detects the Windows edition and renders a game frame."
     },
     {
+      "title": "Freddi Fish 3: The Case of the Stolen Conch Shell (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:freddi3",
+      "edition": "freddi3-win-demo-us.zip",
+      "recordedOn": "2026-11-17",
+      "observation": "English Windows HE90 mini demo. Correct native detector, original pelican landing, native intro skip and buoy navigation to the net scene verified. Saving rejected in the tested net scene; no verified Load or Continue checkpoint. Full playthrough and independent audible output unverified."
+    },
+    {
       "title": "Freddi Fish 4: The Case of the Hogfish Rustlers of Briny Gulch",
       "status": "startup-verified",
       "gameId": "scumm:freddi4",

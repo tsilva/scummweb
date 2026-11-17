@@ -355,6 +355,8 @@ Phantasmagoria’s English DOS v1.100.000 interactive demo keeps the complete un
 
 Leisure Suit Larry 7: Love for Sail!’s English DOS v1.0 demo keeps its complete unchanged official ZIP, including original drivers, PKLITE-packed installer, DOS Help, audio/music and README. The pinned demo uses SCI2.1, while the full edition uses SCI3. Its original menu offers a promotional tour and a playable Liar’s Dice scene; tutorial and dice quantity selection work. Saving was rejected in the tested dice scene, with no verified Load or Continue save. No browser checkpoint is seeded.
 
+Freddi Fish 3’s English Windows HE90 mini demo keeps the complete unchanged official ZIP, including original runtime libraries, promotional bitmap, settings and compiled Help. Native intro skip reaches Pelican Sam’s landing; buoy navigation opens the net scene. Saving was rejected in that tested scene; no browser checkpoint is seeded.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.

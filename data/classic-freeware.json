@@ -1052,6 +1052,24 @@
         "preservation": "Serve complete unchanged official ZIP including all original DOS executables/drivers, installer, Help, resource/audio/music files, README and third-party copyright notices. No downloaded executable or installer executed."
       },
       "noticeFile": "README.TXT"
+    },
+    {
+      "target": "freddi3-demo",
+      "title": "Freddi Fish 3: The Case of the Stolen Conch Shell (Demo)",
+      "engineId": "scumm",
+      "gameId": "freddi3",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "freddi3-win-demo-us.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/scumm/he/freddi3-win-demo-us.zip",
+      "sha256": "92572ec2abe4133ea0078c48e4a4506c55dca1d6b21caf3a97c0756887cd8273",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-17",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "All11 original files reviewed with ZIP integrity/safe paths/full hashes and complete ASCII/UTF16/XOR69 scans. Original INF read and original promotional BMP viewed. NE EXE/DLL and PE W32/D32 runtime libraries inspected as data; no included system installer or nested archive. Compiled Help successfully decoded to42 topics with clean diagnostics; complete Help bytes identical to the previously fully-reviewed Humongous interactive catalog Help (SHA256365bab9464458b29a0eb8b97e8888a06e69a0dd8e937ac4f2695146f1de4b904). No express redistribution grant or packaged prohibition found. Eligibility uses only the user-authorized cautious official promotional-hosting assessment, not an express rights-holder license.",
+        "preservation": "Serve complete unchanged official ZIP, retaining original executables/libraries, HE data, compiled Help, INF and promotional BMP. No downloaded executable executed."
+      }
     }
   ]
 }

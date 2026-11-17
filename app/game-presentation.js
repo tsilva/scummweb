@@ -120,6 +120,15 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "freddi3-demo": {
+    ...retroGameArtwork["scumm:freddi3"],
+    heroImageMobilePosition: "65% -25vh",
+    title: "Freddi Fish 3: The Case of the Stolen Conch Shell (Demo)",
+    year: "1998",
+    language: "en",
+    shortTitle: "Freddi Fish 3 (Demo)",
+    summary: "Explore a tropical reef with Freddi and Luther, meet Pelican Sam and investigate a net blocking their path.",
+  },
   "lsl7-demo": {
     ...retroGameArtwork["sci:lsl7"],
     heroImageMobilePosition: "58% -8vh",
