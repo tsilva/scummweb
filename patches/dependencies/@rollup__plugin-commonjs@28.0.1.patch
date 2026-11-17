@@ -1,0 +1,50 @@
+diff --git a/dist/cjs/index.js b/dist/cjs/index.js
+index 59d667364541b6369ad183f9d4b8debd6d57083f..bcda18eea319f984c046ba2d5391bd73041cd9ea 100644
+--- a/dist/cjs/index.js
++++ b/dist/cjs/index.js
+@@ -7,6 +7,7 @@ var pluginutils = require('@rollup/pluginutils');
+ var fs = require('fs');
+ var getCommonDir = require('commondir');
+ var fdir = require('fdir');
++var minimatch = require('minimatch');
+ var estreeWalker = require('estree-walker');
+ var MagicString = require('magic-string');
+ var isReference = require('is-reference');
+@@ -182,6 +183,12 @@ function getDynamicRequireModules(patterns, dynamicRequireRoot) {
+     for (const path$1 of new fdir.fdir()
+       .withBasePath()
+       .withDirs()
++      .withGlobFunction((patterns) => {
++        const matchers = patterns.map((pattern) =>
++          new minimatch.Minimatch(pattern, { dot: true, nonegate: true, nocomment: true })
++        );
++        return (id) => matchers.some((matcher) => matcher.match(id));
++      })
+       .glob(isNegated ? pattern.substr(1) : pattern)
+       .crawl()
+       .sync()
+diff --git a/dist/es/index.js b/dist/es/index.js
+index 3a3786f9b0af9fa8e29066b87c3d350b468fd1d2..7b9e853661b17504041c398dba477c2fcdc0fc49 100644
+--- a/dist/es/index.js
++++ b/dist/es/index.js
+@@ -3,6 +3,7 @@ import { makeLegalIdentifier, createFilter, attachScopes, extractAssignedNames }
+ import { existsSync, readFileSync, statSync } from 'fs';
+ import getCommonDir from 'commondir';
+ import { fdir } from 'fdir';
++import { Minimatch } from 'minimatch';
+ import { walk } from 'estree-walker';
+ import MagicString from 'magic-string';
+ import isReference from 'is-reference';
+@@ -178,6 +179,12 @@ function getDynamicRequireModules(patterns, dynamicRequireRoot) {
+     for (const path of new fdir()
+       .withBasePath()
+       .withDirs()
++      .withGlobFunction((patterns) => {
++        const matchers = patterns.map((pattern) =>
++          new Minimatch(pattern, { dot: true, nonegate: true, nocomment: true })
++        );
++        return (id) => matchers.some((matcher) => matcher.match(id));
++      })
+       .glob(isNegated ? pattern.substr(1) : pattern)
+       .crawl()
+       .sync()

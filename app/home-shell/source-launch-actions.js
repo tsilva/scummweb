@@ -5,7 +5,7 @@ import useLaunchFeedback from "../game-player/useLaunchFeedback";
 import useBrowserSave from "../use-browser-save";
 import { cancelBrowserSaveQueries } from "../browser-saves.mjs";
 
-export default function SourceLaunchActions({ version, onLaunch, helpId = "game-file-access-help", showAccessHelp = true, browseHref }) {
+export default function SourceLaunchActions({ version, onLaunch, helpId = "game-file-access-help", showAccessHelp = true, browseHref, primaryOnly = false }) {
   const launchFeedback = useLaunchFeedback({ showBundledTags: false });
   const slot = useBrowserSave(version.game);
   const needsAccess = version.action.needsAccess;
@@ -31,11 +31,11 @@ export default function SourceLaunchActions({ version, onLaunch, helpId = "game-
       then allow access in the browser prompt. Your game files stay on your device.
     </p>}
     <button type="button" className="launch-button" disabled={version.action.disabled}
-      aria-describedby={needsAccess ? helpId : undefined}
+      aria-describedby={needsAccess && (showAccessHelp || !primaryOnly) ? helpId : undefined}
       onClick={() => { void launch(canContinue ? version.action.onContinue : version.action.onClick); }}>
       {version.locate ? version.locateLabel : needsAccess ? "Allow file access" : canContinue ? "Continue" : "Play"}
     </button>
-    {canContinue && <button type="button" className="secondary-button start-fresh-button"
+    {canContinue && !primaryOnly && <button type="button" className="secondary-button start-fresh-button"
       disabled={version.action.disabled} onClick={() => { void launch(version.action.onClick); }}>Start from beginning</button>}
     {!canContinue && browseHref && <a className="secondary-button browse-games-button" href={browseHref}>Browse Games</a>}
     {launchFeedback.overlay}

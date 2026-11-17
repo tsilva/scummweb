@@ -20,6 +20,7 @@ import { createGameLaunchAnalytics } from "./game-player/game-launch-analytics.m
 import { observeStartupDiagnostics } from "./game-player/startup-diagnostics.mjs";
 import { withGameTelemetry } from "./game-player/telemetry.mjs";
 import { getStoryProgressRevision, observeStoryProgress } from "./game-player/story-progress.mjs";
+import { observePlayHistory } from "./game-player/play-history.mjs";
 import storyProgressIndex from "../public/game-progress/index.json";
 import { dispatchGameCommand, dispatchHugoCommand, dispatchSyntheticKeypressSequence } from "./game-player/keyboard";
 import { getMobileControlMode } from "./game-player/mobile-controls.mjs";
@@ -707,6 +708,14 @@ export default function GameRouteFrame({
     if (canCountPlayTime) return launchAnalytics.watchPlayTime();
   }, [canCountPlayTime, launchAnalytics]);
 
+  const canRecordPlayHistory = Boolean(currentReadySignal) &&
+    currentReadySignal.reason !== "rendered-frame-timeout" && !showBootOverlay &&
+    !waitingForLandscape && !gameMenuOpen && !remoteToolbarOpen && !isExiting;
+  useEffect(() => {
+    if (!canRecordPlayHistory || new URL(window.location.href).searchParams.has("agentSaveScope")) return;
+    return observePlayHistory(window, progressVersion);
+  }, [canRecordPlayHistory, progressVersion]);
+
   useEffect(() => {
     const iframe = frameRef.current;
 
@@ -752,8 +761,10 @@ export default function GameRouteFrame({
   }, [frameSrc, src]);
 
   useEffect(() => {
+    if (!currentReadySignal || hasBootFailed || currentReadySignal.reason === "rendered-frame-timeout" ||
+        new URL(window.location.href).searchParams.has("agentSaveScope")) return;
     recordRecentGameTarget(catalogLaunch ? target : game?.recentGameId);
-  }, [catalogLaunch, game?.recentGameId, target]);
+  }, [catalogLaunch, currentReadySignal, game?.recentGameId, hasBootFailed, target]);
 
   useEffect(() => {
     let focusTimer = 0;

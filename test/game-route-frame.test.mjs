@@ -128,6 +128,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   const archiveOptions = [];
   const reports = [];
   const storyObservers = [];
+  const playObservers = [];
   let cursor = 0;
   let dirty = false;
   let children = [];
@@ -144,6 +145,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   };
   const shellProperties = new Map();
   const shell = {
+    querySelector() { return null; },
     getBoundingClientRect: () => ({ bottom: shellBottom }),
     style: {
       setProperty: (name, value) => shellProperties.set(name, value),
@@ -152,6 +154,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   };
   const window = {
     visualViewport,
+    requestAnimationFrame(callback) { callback(); },
     innerHeight: visualViewport?.height,
     location: new URL(`https://example.test/sky/play${queryTelemetry ? "?telemetry=1" : ""}`),
     setTimeout(callback, delay) { const id = Symbol(); timers.set(id, { callback, delay }); return id; },
@@ -224,6 +227,11 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
         storyObservers.push(observer);
         return () => { observer.stopped = true; };
       } };
+      if (name.endsWith("/play-history.mjs")) return { observePlayHistory: (_scope, version) => {
+        const observer = { version, stopped: false };
+        playObservers.push(observer);
+        return () => { observer.stopped = true; };
+      } };
       if (name.endsWith("/game-progress/index.json")) return { games: storyMaps };
       if (name === "next/navigation") return { useRouter: () => ({}) };
       if (name === "./game-loading-status.mjs") return { gameLoadingStatus };
@@ -279,7 +287,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     } while (dirty);
   }
   return {
-    archive, archiveOptions, frame, deliveries, reports, timers, render, shellProperties, storyObservers,
+    archive, archiveOptions, frame, deliveries, reports, timers, render, shellProperties, storyObservers, playObservers,
     get children() { return children; },
     get loadCount() { return loadCount; },
     get confirmations() { return confirmations; },
@@ -330,6 +338,38 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     unmount() { for (const hook of hooks) hook?.cleanup?.(); },
   };
 }
+
+test("personal play history starts after a confirmed frame and pauses for the shared menu", async () => {
+  const player = pendingArchivePlayer();
+  player.render();
+  assert.equal(player.playObservers.length, 0);
+  player.archive.resolve([{ path: "sky.dnr", data: Uint8Array.of(1) }]);
+  await new Promise(setImmediate);
+  player.render();
+  assert.equal(player.playObservers.length, 0);
+  player.gameReady(player.frame.contentDocument.URL);
+  player.setBootCompleted();
+  assert.equal(player.playObservers.length, 1);
+  assert.equal(player.playObservers[0].version, "catalog:sky");
+  player.controls.onOpenMenu(); player.render();
+  assert.equal(player.playObservers[0].stopped, true);
+  player.controls.onCloseMenu(); player.render();
+  assert.equal(player.playObservers.length, 2);
+  player.unmount();
+  assert.equal(player.playObservers[1].stopped, true);
+});
+
+test("isolated agent saves never change personal play history", async () => {
+  const player = pendingArchivePlayer({ agentSaveScope: "qa" });
+  player.render();
+  player.archive.resolve([{ path: "sky.dnr", data: Uint8Array.of(1) }]);
+  await new Promise(setImmediate);
+  player.render();
+  player.gameReady(player.frame.contentDocument.URL);
+  player.setBootCompleted();
+  assert.equal(player.playObservers.length, 0);
+  player.unmount();
+});
 
 test("mobile mouse play tracks the visible height and releases it during zoom", () => {
   const viewport = Object.assign(new EventTarget(), { height: 390, scale: 1 });

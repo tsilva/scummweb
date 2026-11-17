@@ -15,6 +15,17 @@ or browser language used to break ties. Demos have separate cards. **Game not
 included** means you need your own copy. Check the
 [compatibility results](game-testing.md) for tested editions.
 
+Recently Played shows the last played copy of each game, its recorded **Played**
+time and **Last played** date, and a direct **Continue** button when a compatible
+save exists (otherwise **Play**). Imported copies retain their file-access and
+locate actions. Supported editions also show verified story progress; see
+[progress tracking](game-progress.md#recently-played).
+Play time starts after the game is ready and counts visible play, including
+cutscenes. Loading, background tabs, the shared game menu, rotation prompts and
+exiting do not count. Progress made before time tracking was introduced has no
+recorded duration or date. These statistics stay in this browser, per copy;
+save backups and cloud save syncing do not transfer them.
+
 The app-install invitation becomes eligible on the third homepage visit in the
 same browser. A fresh page load counts once; client-side navigation and component
 remounts do not add visits. Dismissing it permanently suppresses the invitation,
@@ -60,6 +71,10 @@ If a ZIP or ISO is inaccessible, use **Allow file access** to restore permission
 **Locate ZIP or ISO** to reconnect a moved file or replace a legacy folder entry.
 Reimporting the same archive also refreshes access. Reconnecting preserves the
 source ID and its saves.
+While file access is being checked, the library card shows a spinner in its
+top-left corner. Hover over the card or focus it with the keyboard to reveal
+**Checking files**. The status remains available to screen readers, and reduced
+motion disables the spinner animation.
 
 Once the library contains an imported version, press and hold a game cover, or
 choose **Manage library**, to enter removal mode. The button stays hidden when
@@ -480,6 +495,18 @@ Legacy lossy FT speech and recompressed DIG/COMI bundles remain unsupported.
 Follow the [README quickstart](../README.md#run-locally) for a credential-free
 server. Development needs no private service credentials. `pnpm secrets:check` verifies credential absence without
 retrieving source values.
+
+The pinned patches in `patches/dependencies/` replace Rollup's vulnerable
+`picomatch` calls with the already pinned `minimatch` implementation. Package
+extensions supply the replacement; overrides remove both direct dependencies
+and fdir's unused optional peer. Both CommonJS and ES module entry points are
+patched. This covers Sentry's current filters and wrapping, plus ordinary
+dynamic target globs, rather than promising identical semantics for every
+picomatch-specific glob form. `test/dependency-security.test.mjs` checks bounded
+ReDoS inputs, both entry points, CommonJS wrapping, source maps, dotfiles and
+ordered dynamic target exclusions. Remove the patches, extensions and removal
+overrides together once an audited upstream release replaces the affected
+dependency. Keep the full dependency audit and supply-chain holds enabled.
 
 | Command | Purpose |
 | --- | --- |
