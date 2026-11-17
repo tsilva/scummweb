@@ -19,7 +19,7 @@ export default function GameBootOverlay({
       data-launch-overlay-state={hasBootFailed ? "error" : showBootOverlay ? "visible" : "hidden"}
       data-launch-archive-bytes={archiveBytes}
     >
-      <GameHeroScene game={game} title={title}>
+      <GameHeroScene game={game} title={title} showBrand={false}>
         <div className="game-hero-loading" role={hasBootFailed ? "alert" : "status"} aria-atomic="true">
           {!hasBootFailed ? <div aria-hidden="true" className="game-hero-progress" /> : null}
           <div className="game-hero-loading-message">

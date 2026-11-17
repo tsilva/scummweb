@@ -47,16 +47,26 @@ html:has(.game-route-boot-overlay.is-visible) {
     linear-gradient(180deg, rgba(6, 8, 7, 0.28), transparent 20%, transparent 72%, rgba(6, 8, 7, 0.32));
 }
 
+.game-hero-brand,
+.dashboard-nav-home {
+  --toolbar-brand-width: 9rem;
+}
+
 .game-hero-brand {
   position: fixed;
   z-index: 2;
   top: max(1.25rem, env(safe-area-inset-top));
-  right: max(var(--scene-gutter), env(safe-area-inset-right));
-  font-size: clamp(1.1rem, 1.6vw, 1.5rem);
-  font-weight: 700;
-  letter-spacing: -0.045em;
-  line-height: 1.5;
-  text-shadow: 0 1px 8px #0008;
+  left: max(var(--scene-gutter), env(safe-area-inset-left));
+  display: flex;
+  align-items: center;
+  width: var(--toolbar-brand-width);
+  height: 1.75rem;
+}
+
+.game-hero-brand img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .game-hero-content {
@@ -245,10 +255,45 @@ html:has(.game-route-boot-overlay.is-visible) {
 }
 .dashboard-nav-home > * { pointer-events: auto; }
 .dashboard-nav-home .nav-brand-group { display: none; }
-.dashboard-nav-home .nav-cluster-left { width: auto; gap: 0; }
-.dashboard-nav-home .nav-links { width: auto; gap: 1rem; }
-.dashboard-nav-home .nav-actions { width: auto; gap: 0.5rem; }
-.dashboard-nav-home .nav-links .nav-library-link { font-size: 1.1rem; text-transform: none; letter-spacing: 0; font-weight: 400; }
+.dashboard-nav-home .nav-cluster-left {
+  display: flex;
+  flex: 0 1 auto;
+  width: auto;
+  gap: 0;
+  padding-inline-start: calc(var(--toolbar-brand-width) + 2rem);
+}
+.dashboard-nav-home .nav-links { width: auto; margin: 0; gap: 1.5rem; }
+.dashboard-nav-home .nav-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: #f8f2d8d9;
+  font-family: var(--font-body), sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.dashboard-nav-home .nav-links a:is(:hover, :focus-visible) { color: #f8f2d8; }
+.dashboard-nav-home .nav-actions {
+  position: static;
+  flex-shrink: 0;
+  width: auto;
+  gap: 0.5rem;
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+}
+.dashboard-nav-home .nav-icon-link {
+  color: #f8f2d8d9;
+  border-color: #f8f2d833;
+  background: #0b0d0c4d;
+}
+.dashboard-nav-home .nav-icon-link:is(:hover, :focus-visible) {
+  color: #f8f2d8;
+  border-color: #f8f2d866;
+  background: #0b0d0c99;
+}
 
 @keyframes scene-spin { to { transform: rotate(360deg); } }
 @keyframes scene-progress { from { transform: translateX(-100%); } to { transform: translateX(386%); } }
@@ -259,6 +304,8 @@ html:has(.game-route-boot-overlay.is-visible) {
 }
 
 @media (max-width: 48rem) {
+  .game-hero-brand,
+  .dashboard-nav-home { --toolbar-brand-width: 7.5rem; }
   .game-hero-scene { min-height: 34rem; }
   .game-hero-scene .game-hero-image { --artwork-position: var(--hero-image-mobile-position, var(--hero-image-position, 75% top)); }
   .game-hero-shade {
@@ -273,10 +320,9 @@ html:has(.game-route-boot-overlay.is-visible) {
   .game-hero-action-slot { margin-top: 1.25rem; }
   .game-hero-scene .hero-actions { grid-template-rows: 3.4rem 2.75rem; }
   .game-hero-scene .hero-actions > .hero-version-control[data-reserved] { display: block; }
-  .dashboard-nav-home .nav-cluster-left { flex: 0 1 auto; }
-  .dashboard-nav-home .nav-links { display: flex; flex-wrap: wrap; max-width: 14rem; margin-inline-start: 0; gap: 0.1rem 0.7rem; }
-  .dashboard-nav-home .nav-library-link { flex-basis: 100%; }
-  .dashboard-nav-home .nav-actions { position: absolute; top: 4.1rem; right: var(--scene-gutter, 1.25rem); padding-top: 0; }
+  .dashboard-nav-home .nav-links { display: flex; flex-wrap: nowrap; gap: 0.75rem; }
+  .dashboard-nav-home .nav-cluster-left { padding-inline-start: calc(var(--toolbar-brand-width) + 0.75rem); }
+  .dashboard-nav-home .nav-actions { margin-inline-end: 0; padding-top: 0; }
 }
 
 @media (max-height: 500px) and (orientation: landscape) {

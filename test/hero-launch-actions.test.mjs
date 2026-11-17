@@ -11,6 +11,7 @@ import * as heroOrder from "../app/home-shell/hero-order.mjs";
 import { chooseGameVersion, formatVersionLabel, getVersionMetadata, readChosenVersion, rememberGameVersion } from "../app/game-versions.mjs";
 import * as initialActions from "../app/home-shell/initial-actions.mjs";
 import { getBundledLaunchTags } from "../app/game-player/launch-tags.mjs";
+import { buildGameExitHref } from "../app/home-shell/hero-selection.mjs";
 
 await swc.loadBindings();
 let savedIdentity = null;
@@ -62,6 +63,7 @@ const SourceLaunchActions = await loadComponent("../app/home-shell/source-launch
   "../use-browser-save": useBrowserSave, "../browser-saves.mjs": { cancelBrowserSaveQueries() {} },
 });
 const SharedHeroScene = await loadComponent("../app/game-player/GameHeroScene.js", {
+  "../asset-paths": { getVersionedSiteAssetPath: (path) => path },
   "../game-versions.mjs": { formatVersionLabel, getVersionMetadata },
   "../home-shell/artwork-delivery": { useArtworkDelivery: () => undefined },
   "../home-shell/decorative-image": () => null,
@@ -392,8 +394,11 @@ test("launch feedback commits synchronously and portals the existing boot screen
   const calls = [];
   const body = {};
   function BootOverlay() {}
+  function ExitButton() {}
   const useFeedback = await loadComponent("../app/game-player/useLaunchFeedback.js", {
     "./GameBootOverlay": BootOverlay,
+    "./GameExitButton": ExitButton,
+    "../home-shell/hero-selection.mjs": { buildGameExitHref },
     "next/navigation": { usePathname: () => "/beneath-a-steel-sky" },
     "react-dom": {
       flushSync(callback) { calls.push("flush start"); callback(); calls.push("flush end"); },
@@ -410,10 +415,14 @@ test("launch feedback commits synchronously and portals the existing boot screen
   assert.deepEqual(calls, ["flush start", "state committed", "flush end"]);
   const overlay = useFeedback().overlay;
   assert.equal(overlay.props.className, "game-launch-feedback");
-  assert.equal(overlay.props.children.type, BootOverlay);
-  assert.equal(overlay.props.children.props.game, game);
-  assert.equal(overlay.props.children.props.showBootOverlay, true);
-  assert.equal(overlay.props.children.props.bootStatusText, "Loading game…");
+  const [boot, controls] = overlay.props.children;
+  assert.equal(boot.type, BootOverlay);
+  assert.equal(boot.props.game, game);
+  assert.equal(boot.props.showBootOverlay, true);
+  assert.equal(boot.props.bootStatusText, "Loading game…");
+  const exit = controls.props.children.props.children;
+  assert.equal(exit.type, ExitButton);
+  assert.equal(exit.props.href, buildGameExitHref(game));
   useFeedback().dismiss();
   assert.equal(useFeedback().overlay, null);
 });
@@ -424,6 +433,8 @@ test("leaving a preserved hero clears launch feedback before returning to the li
   const body = {};
   const useFeedback = await loadComponent("../app/game-player/useLaunchFeedback.js", {
     "./GameBootOverlay": () => null,
+    "./GameExitButton": () => null,
+    "../home-shell/hero-selection.mjs": { buildGameExitHref },
     "next/navigation": { usePathname: () => pathname },
     "react-dom": {
       flushSync(callback) { callback(); },
@@ -467,6 +478,7 @@ test("the loading screen reuses the hero's responsive artwork and requests synch
     "./artwork-image-props.mjs": { getArtworkPlaceholderStyle },
   });
   const Scene = await loadComponent("../app/game-player/GameHeroScene.js", {
+    "../asset-paths": { getVersionedSiteAssetPath: (path) => path },
     "../game-versions.mjs": { formatVersionLabel, getVersionMetadata },
     "../home-shell/artwork-delivery": { useArtworkDelivery: () => artwork },
     "../home-shell/decorative-image": DecorativeImage,
@@ -483,7 +495,28 @@ test("the loading screen reuses the hero's responsive artwork and requests synch
     "./launch-tags.mjs": { getBundledLaunchTags },
   });
   const html = renderToStaticMarkup(GameBootOverlay({ game: { ...game, heroImage: hero }, showBootOverlay: true }));
+  assert.doesNotMatch(html, /game-hero-brand/);
   assert.match(html, /<source type="image\/avif" srcSet="https:\/\/artwork.example\/artwork\/sky.avif 960w"/);
   assert.match(html, /<img[^>]*decoding="sync"[^>]*srcSet="https:\/\/artwork.example\/artwork\/sky.webp 960w"/);
   assert.match(html, /<img[^>]*style="[^"]*--artwork-placeholder:url\(&quot;data:image\/svg\+xml,/);
+});
+
+test("loading uses the identical game exit control and hides the remaining toolbar", async () => {
+  const ExitButton = await loadComponent("../app/game-player/GameExitButton.js");
+  const Controls = await loadComponent("../app/game-player/GamePlayerControls.js", {
+    "./GameExitButton": ExitButton,
+  }, {
+    useRef: (value) => ({ current: value }),
+    useState: () => [true, () => {}],
+    useEffect() {},
+  });
+  const props = { compatibilityWarnings: ["Test warning"], frameRef: { current: null },
+    showExitControl: true, showFullscreenControl: true, showGameMenuButton: true };
+  const loading = renderToStaticMarkup(Controls({ ...props, isLaunching: true }));
+  const ready = renderToStaticMarkup(Controls({ ...props, isLaunching: false }));
+  const exit = (html) => html.match(/<button aria-label="Exit game"[\s\S]*?<\/button>/)?.[0];
+  assert.ok(exit(loading));
+  assert.equal(exit(loading), exit(ready));
+  assert.doesNotMatch(loading, /aria-label="(?:Compatibility warning|Enter fullscreen|Open game menu)"/);
+  assert.match(ready, /aria-label="Open game menu"/);
 });
