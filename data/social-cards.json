@@ -1610,6 +1610,11 @@
       "file": "putt-putt-goes-to-the-moon-demo-4e9c07adc41828b2a67b15e3b8160f1d07c14873a87fafca48b9df73e5fc9a0f.jpg",
       "inputHash": "4e9c07adc41828b2a67b15e3b8160f1d07c14873a87fafca48b9df73e5fc9a0f",
       "imageHash": "2500566f358549ade94fd9ce4b66a154547b3b1d3dc011279ecc0853f4b6789e"
+    },
+    "spy-fox-3-operation-ozone-demo": {
+      "file": "spy-fox-3-operation-ozone-demo-9480a9ca4bfa3b4341fb1eb5cc65303397775593dd570779047cd2aee0524237.jpg",
+      "inputHash": "9480a9ca4bfa3b4341fb1eb5cc65303397775593dd570779047cd2aee0524237",
+      "imageHash": "6a4234171a95215ae7b19b1bc3ad10c513bdee614c9069ead763fd47be335d38"
     }
   }
 }

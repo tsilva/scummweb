@@ -875,6 +875,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "spyozon-demo",
+      "title": "Spy Fox 3: Operation Ozone (Demo)",
+      "path": "/games/spyozon",
+      "engineId": "scumm",
+      "gameId": "spyozon",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

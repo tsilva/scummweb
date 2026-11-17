@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Spy Fox 3: Operation Ozone (Demo)", target: "spyozon-demo", engineId: "scumm", gameId: "spyozon",
+    files: [["sf3-demo.he0", 15317, 1494850748], ["sf3-demo.he2", 5876993, 2107715046]],
+  },
+  {
     title: "Putt-Putt Goes to the Moon (Demo)", target: "puttmoon-demo", engineId: "scumm", gameId: "puttmoon",
     files: [["moondemo.he0", 8856, 3451413547], ["moondemo.he1", 933372, 1040395290]],
   },

@@ -1142,6 +1142,24 @@
         "basis": "All 8 original files inspected with ZIP integrity, safe paths, full hashes and complete ASCII/UTF16/XOR69 legal scans. Original Windows NE launcher and PE runtime inspected as data. Compiled Help fully decoded to 98 topics with clean diagnostics and validated RTF/plaintext output; complete decoded text scanned and legal contexts reviewed. Its permission reference concerns creating a local save directory. No referenced licence agreement, express demo redistribution grant or packaged prohibition found. No nested archive or separately bundled system installer/driver. Eligibility uses only the user-authorized cautious official promotional-hosting assessment, not an express rights-holder licence.",
         "preservation": "Serve the complete unchanged official ZIP with original launcher, runtime, HE data and compiled Help. No downloaded executable executed."
       }
+    },
+    {
+      "target": "spyozon-demo",
+      "title": "Spy Fox 3: Operation Ozone (Demo)",
+      "engineId": "scumm",
+      "gameId": "spyozon",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "spyozon-win-demo-us.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/scumm/he/spyozon-win-demo-us.zip",
+      "sha256": "347c9f01de64168f1ba1ce031035761136733939b3dc08ba79899a7db4c85a68",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-17",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "All 9 original files inspected: ZIP CRC integrity, safe paths, full SHA-256 and complete ASCII/UTF16/XOR69 legal scans. Original PE launcher and runtime inspected as data. All INF licence settings are disabled semicolon comments; no active acceptance requirement or referenced licence. No packaged express reproduction restriction, express redistribution grant, nested archive or system installer/driver found. Eligibility uses only the user-authorized cautious official promotional-hosting assessment, not express rights-holder permission.",
+        "preservation": "Serve the complete unchanged official ZIP with launcher/runtime, INF, icon and all original game data. No downloaded executable executed."
+      }
     }
   ]
 }

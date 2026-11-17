@@ -25,6 +25,7 @@ test("fresh browser configuration preserves UTF-8 titles and records byte length
 
 test("official classic archives are recognized by contents without relying on filenames", () => {
   for (const [target, files] of [
+    ["spyozon-demo", [["SF3-DEMO.HE0", 15317, 1494850748], ["SF3-DEMO.HE2", 5876993, 2107715046]]],
     ["puttmoon-demo", [["MOONDEMO.HE0", 8856, 3451413547], ["MOONDEMO.HE1", 933372, 1040395290]]],
     ["puttrace-demo", [["RACEDEMO.HE0", 13108, 25833763], ["RACEDEMO.(A)", 6406987, 1004425682]]],
     ["pajama3-demo", [["PJ3DEMO.HE0", 13911, 1009492682], ["PJ3DEMO.(A)", 5476892, 450480674]]],
