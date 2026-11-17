@@ -17,7 +17,7 @@ async function component(path, imports, react) {
     module: { type: "commonjs" }, jsc: { parser: { syntax: "ecmascript", jsx: true }, transform: { react: { runtime: "automatic" } } } });
   const compiled = { exports: {} };
   runInNewContext(code, { module: compiled, exports: compiled.exports,
-    window: imports.window, Event,
+    window: imports.window, localStorage: imports.window?.localStorage, Event,
     require: (name) => name === "react" ? react : name === "react/jsx-runtime" ? nativeRequire(name) : imports[name] });
   return compiled.exports.default;
 }
@@ -252,4 +252,66 @@ test("an unknown transfer total shows no fabricated percentage", async () => {
   const { tree } = await row({ phase: "syncing", transferProgress: { stage: "download", direction: "download", percentage: null } });
   assert.equal(nodes(tree).some(({ props }) => props?.className === "dropbox-percentage"), false);
   assert.match(text(tree), /Identifying game… · Downloading/);
+});
+
+async function settingsFixture() {
+  const destination = { key: "catalog:sky", title: "Beneath a Steel Sky", family: "sky" };
+  const active = { destination, hash: "current", files: [{}] };
+  const copies = ["older", "oldest"].map((hash, index) => ({ destination, hash, files: [{}], id: hash, preservedAt: 1700000000000 - index * 1000 }));
+  const data = { sets: [active], stored: copies, destinations: [destination], revision: "current-revision",
+    matches: new Map(copies.map(set => [set, destination.key])), unmatched: new Set() };
+  let cursor = 0, writes = 0;
+  const state = ["saves", "", "", data, null, null, false];
+  const calls = [];
+  const backups = { matchDestination: () => destination.key, getSaveDestinations: async () => [destination],
+    getActiveSaveSets: async () => ({ sets: [active], revision: "fresh-revision" }), readStoredSets: async () => copies,
+    withSaveLock: run => run(), applyImport: async options => { writes++; calls.push(options); } };
+  const View = await component("../app/home-shell/settings-content.js", {
+    "lucide-react": Object.fromEntries(["ArrowDownUp", "ArrowLeft", "Check", "ChevronDown", "Download", "Info", "Save", "Upload"].map(name => [name, () => null])),
+    "../styles/settings-details.css": {}, "../game-sources.mjs": { readGameSources: async () => [] },
+    "./dropbox-row": { default: () => null }, "./dropbox-preview": { default: () => null },
+    "../save-backups/backups.mjs": backups, "../save-backups/filesystem.mjs": { captureFilesystem: () => ({ root: { key: "existing" } }) },
+    window: Object.assign(new EventTarget(), { localStorage: {} }),
+  }, { useEffect() {}, useRef: () => ({ current: null }), useState(initial) {
+    const index = cursor++; if (!(index in state)) state[index] = initial;
+    return [state[index], value => { state[index] = typeof value === "function" ? value(state[index]) : value; }];
+  } });
+  const props = { catalog: [], officialUrl: "https://example.test", working: { current: false }, busy: false, setBusy() {} };
+  return { calls, copies, writes: () => writes, render() { cursor = 0; return View(props); } };
+}
+
+test("the normal panel hides routine saves; recovery groups backups and leaves progress untouched", async () => {
+  const fixture = await settingsFixture(); let tree = fixture.render();
+  assert.equal(text(tree).includes("Beneath a Steel Sky"), false);
+  assert.equal(text(tree).includes("Only active"), false);
+  assert.equal(text(tree).includes("Game files are not included"), false);
+  assert.ok(button(tree, "Recover saved progress"));
+  button(tree, "Recover saved progress").props.onClick(); tree = fixture.render();
+  assert.equal(nodes(tree).filter(node => node.type === "details").length, 1);
+  assert.match(text(tree), /Beneath a Steel Sky2 backups/);
+  assert.equal(nodes(tree).filter(node => node.type === "button" && text(node) === "Restore this copy…").length, 2);
+  assert.equal(text(tree).includes(" · Active"), false);
+  assert.equal(text(tree).includes("Preserved"), false);
+  assert.equal(fixture.writes(), 0);
+  button(tree, "Back to saved games").props.onClick();
+  assert.ok(button(fixture.render(), "Recover saved progress")); assert.equal(fixture.writes(), 0);
+});
+
+test("recovery reviews a selected copy before restoring and keeps the safe import path", async () => {
+  const fixture = await settingsFixture();
+  button(fixture.render(), "Recover saved progress").props.onClick();
+  await button(fixture.render(), "Restore this copy…").props.onClick();
+  let tree = fixture.render();
+  assert.match(text(tree), /Restore saved progress/);
+  assert.equal(fixture.writes(), 0, "opening the review must not restore anything");
+  button(tree, "Cancel").props.onClick();
+  assert.equal(fixture.writes(), 0);
+  await button(fixture.render(), "Restore this copy…").props.onClick();
+  await button(fixture.render(), "Restore this copy").props.onClick();
+  assert.equal(fixture.writes(), 1);
+  assert.equal(fixture.calls[0].rows[0].set, fixture.copies[0]);
+  assert.equal(fixture.calls[0].rows[0].choice, "imported");
+  assert.equal(fixture.calls[0].revision, "fresh-revision");
+  tree = fixture.render(); assert.ok(button(tree, "Recover saved progress"));
+  assert.equal(text(tree).includes("Saved progress restored."), true);
 });
