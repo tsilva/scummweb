@@ -815,6 +815,16 @@
       "platform": "dos",
       "extra": "Demo",
       "readmeHref": "/launcher/notices/phantasmagoria.txt"
+    },
+    {
+      "target": "lsl7-demo",
+      "title": "Leisure Suit Larry 7: Love for Sail! (Demo)",
+      "path": "/games/lsl7",
+      "engineId": "sci",
+      "gameId": "lsl7",
+      "platform": "dos",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/lsl7.txt"
     }
   ]
 }

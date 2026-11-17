@@ -1033,6 +1033,25 @@
         "preservation": "Serve complete unchanged official ZIP including all original installers, libraries, drivers, documents, Write diagrams, video and resource files. No downloaded executable or installer executed."
       },
       "noticeFile": "PDOCO.TXT"
+    },
+    {
+      "target": "lsl7-demo",
+      "title": "Leisure Suit Larry 7: Love for Sail! (Demo)",
+      "engineId": "sci",
+      "gameId": "lsl7",
+      "platform": "dos",
+      "extra": "Demo",
+      "archive": "lsl7-dos-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/sci/lsl7-dos-demo-en.zip",
+      "sha256": "a8e26190013416e45504eb188ebfc4e76e3a1bba5c176e0deaba1b6d84eb5968",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-17",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "All31 original files inspected with ZIP integrity/safe paths/full hashes and raw/UTF16/XOR scans. All443 SCI2.1 resources LZS-decoded with map/header IDs, bounds and exact output lengths validated. PKLITE-compressed INSTALL.EXE statically decompressed with pinned Deark to readable MZ and scanned; only original PKWARE/Borland/Sierra copyright notices found. SIER.EXE is DOS4GW-bound with LE overlay at162508; no recognized DOS executable packing. Original DOS Help and Al Lowe README reviewed; Help reference to a NoLoad development driver does not apply because that driver is absent. No express demo redistribution grant or packaged prohibition found. Eligibility uses only the user-authorized cautious official promotional-hosting assessment, not an express rights-holder license.",
+        "preservation": "Serve complete unchanged official ZIP including all original DOS executables/drivers, installer, Help, resource/audio/music files, README and third-party copyright notices. No downloaded executable or installer executed."
+      },
+      "noticeFile": "README.TXT"
     }
   ]
 }

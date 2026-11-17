@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Leisure Suit Larry 7: Love for Sail! (Demo)", target: "lsl7-demo", engineId: "sci", gameId: "lsl7",
+    files: [["resmap.000", 2695, 285310727], ["ressci.000", 10195878, 2468665899]],
+  },
+  {
     title: "Phantasmagoria (Demo)", target: "phantasmagoria-demo", engineId: "sci", gameId: "phantasmagoria",
     files: [["resmap.001", 11518, 1988159651], ["ressci.001", 65844612, 3646433611]],
   },

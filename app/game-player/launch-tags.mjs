@@ -1,6 +1,7 @@
 import { getVersionMetadata } from "../game-versions.mjs";
 
 const launchTagsByTarget = new Map([
+  ["lsl7-demo", ["Liar's Dice", "Adult comedy"]],
   ["phantasmagoria-demo", ["Interactive movie", "Supernatural horror"]],
   ["lighthouse-demo", ["First-person", "Science-fiction puzzles"]],
   ["shivers-demo", ["First-person", "Horror puzzles"]],
