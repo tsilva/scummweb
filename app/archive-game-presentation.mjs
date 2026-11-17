@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Freddi Fish 3: The Case of the Stolen Conch Shell (Demo)", target: "freddi3-demo", engineId: "scumm", gameId: "freddi3",
+    files: [["f3-mdemo.he0", 22718, 3705901357], ["f3-mdemo.he1", 5579470, 864671203]],
+  },
+  {
     title: "Leisure Suit Larry 7: Love for Sail! (Demo)", target: "lsl7-demo", engineId: "sci", gameId: "lsl7",
     files: [["resmap.000", 2695, 285310727], ["ressci.000", 10195878, 2468665899]],
   },
