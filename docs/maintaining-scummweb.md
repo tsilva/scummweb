@@ -635,13 +635,16 @@ and prepared game files. A late, validated ready signal clears only that timeout
 watchdog; other startup failures remain visible. Exiting still releases the
 selected game and cancels the launch.
 
-The launch screen keeps the existing hero artwork above a full-width status
-strip with the game title, edition metadata and current loading message. Its
-spinner and progress accent are indeterminate and stop animating with reduced
-motion enabled. Startup failures replace them with a static warning and keep
-the Library action available. Check the strip with long titles and download
-errors on narrow and short landscape viewports; it must remain readable without
-covering the navigation controls.
+The browsing hero and launch screen share `GameHeroScene`: the selected game's
+title, edition metadata, summary, artwork source, crop and viewport geometry
+stay fixed during launch. The homepage also shows the selected game's title.
+The reserved action area changes from Play/Continue to the current loading
+message; it never moves the title or resizes the artwork. Browsing navigation
+gives way to the Library action. The spinner and progress accent are
+indeterminate and stop animating with reduced motion enabled. Startup failures
+replace them with a static warning in the same reserved area. Check direct
+launches, selected imported editions, long titles and errors on narrow and short
+landscape viewports, including the route handoff and scrollbar spacing.
 
 Follow [the upgrade skill](../.codex/skills/scummweb_upgrade-scummvm/SKILL.md)
 to change the engine or SDK pin. It owns the ordered patch procedure,
