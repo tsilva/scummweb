@@ -2,16 +2,13 @@ import { ChevronDown } from "lucide-react";
 import { preload } from "react-dom";
 import LaunchButton from "../launch-button";
 import SourceLaunchActions from "./source-launch-actions";
-import { HOME_HERO_KICKER, HOME_HERO_SUMMARY, HOME_HERO_TITLE } from "../seo";
-import DecorativeImage from "./decorative-image";
-import HeroTitle from "./hero-title";
+import GameHeroScene from "../game-player/GameHeroScene";
 import HeroScrollCue from "./hero-scroll-cue";
 import GameScreenshots from "./game-screenshots";
 import { getHeroImageProps } from "./hero-images.mjs";
 import { useArtworkDelivery } from "./artwork-delivery";
-import { getDialogLinkProps, getHeroImageStyle } from "./shared";
+import { getDialogLinkProps } from "./shared";
 import { initialActionsMarkup } from "./initial-actions.mjs";
-import { formatVersionLabel } from "../game-versions.mjs";
 
 export default function HeroStage({
   carouselProps,
@@ -29,18 +26,11 @@ export default function HeroStage({
   onLaunch,
   notice,
 }) {
-  const showHomeIntro = isHomePage && isInitialSlide;
-  const heroKicker = showHomeIntro ? HOME_HERO_KICKER : featuredGame.eyebrow;
-  const heroTitle = showHomeIntro ? HOME_HERO_TITLE : featuredGame.displayTitle;
-  const heroSummary = showHomeIntro ? HOME_HERO_SUMMARY : featuredGame.summary;
-  const metadata = [featuredGame.studio, featuredGame.year, featuredGame.genre].filter(Boolean);
   const selectedVersion = versions.find(({ key }) => key === selectedVersionKey) || versions[0];
   const versionLabel = selectedVersion?.label || featuredGame.badge || "Included version";
-  const editionLabel = formatVersionLabel(featuredGame, { showRevision: false })
-    || (featuredGame.importRequired && featuredGame.badge) || "Included version";
   const hasMultipleVersions = versions.length > 1;
   const hasScreenshots = featuredGame.screenshots?.length > 0;
-  const backdrop = getHeroImageProps(featuredGame, useArtworkDelivery());
+  const backdrop = getHeroImageProps(featuredGame, useArtworkDelivery(), "hero");
   // React automatically preloads the eager WebP <img>, but skips images in <picture>.
   if (isInitialSlide && backdrop.avifSrcSet) {
     preload(backdrop.avifSrcSet.split(" ", 1)[0], {
@@ -52,36 +42,12 @@ export default function HeroStage({
   return (
     <div className="game-showcase">
       <section className={`hero-stage hero-stage-library ${featuredGame.tone}`} id="browse" {...carouselProps}>
-        <div className="hero-backdrop">
-          <DecorativeImage className="hero-backdrop-image"
-            decoding={isInitialSlide ? "sync" : "async"}
-            fetchPriority={isInitialSlide ? "high" : undefined} loading="eager"
-            {...backdrop} style={getHeroImageStyle(featuredGame.heroImagePosition, featuredGame.heroImageMobilePosition)} />
-        </div>
-        <div className="hero-gradient" />
-        <div className="hero-inner">
-          <div className="hero-copy">
-            <p className="hero-kicker">{showHomeIntro ? <>
-              <span className="hero-desktop-copy">{heroKicker}</span>
-              <span className="hero-mobile-copy">{featuredGame.eyebrow}</span>
-            </> : heroKicker}</p>
-            <HeroTitle title={heroTitle}>{showHomeIntro ? <>
-              <span className="hero-desktop-copy">{heroTitle}</span>
-              <span className="hero-mobile-copy">{featuredGame.displayTitle}</span>
-            </> : heroTitle}</HeroTitle>
-            <p className="hero-mobile-facts">
-              <span>{[featuredGame.studio, featuredGame.year].filter(Boolean).join(" · ")}</span>
-              <span className="hero-edition" title={editionLabel}>{editionLabel}</span>
-            </p>
-            <p className="hero-summary">
-              <span className="hero-desktop-copy">{heroSummary}</span>
-              <span className="hero-mobile-copy">{featuredGame.mobileSummary || featuredGame.summary}</span>
-            </p>
-            <ul className="hero-facts" aria-label="Game information">
-              {metadata.map((value, index) => <li key={`${index}:${value}`}>{value}</li>)}
-              <li className="hero-edition" title={editionLabel}>{editionLabel}</li>
-            </ul>
-          </div>
+        <GameHeroScene game={featuredGame} isInitialSlide={isInitialSlide} footer={
+          (hasScreenshots || controls) ? <div className="hero-footer">
+            {hasScreenshots && <HeroScrollCue />}
+            {controls}
+          </div> : null
+        }>
           <div className="hero-launch">
             {!actionsReady && initialActions && <div className="hero-actions hero-initial-actions"
               data-initial-actions={JSON.stringify(initialActions)}
@@ -134,11 +100,7 @@ export default function HeroStage({
             <noscript><style>{`.hero-actions[data-ready="false"] { visibility: visible; }
               .hero-actions-placeholder { display: none; }`}</style></noscript>
           </div>
-        </div>
-        {(hasScreenshots || controls) && <div className="hero-footer">
-          {hasScreenshots && <HeroScrollCue />}
-          {controls}
-        </div>}
+        </GameHeroScene>
       </section>
       <GameScreenshots key={featuredGame.screenshots?.join("|") || featuredGame.displayTitle} game={featuredGame} />
     </div>

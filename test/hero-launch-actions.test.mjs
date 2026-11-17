@@ -8,7 +8,7 @@ import swc from "next/dist/build/swc/index.js";
 import { getHeroImageProps } from "../app/home-shell/hero-images.mjs";
 import { getArtworkPlaceholderStyle } from "../app/home-shell/artwork-image-props.mjs";
 import * as heroOrder from "../app/home-shell/hero-order.mjs";
-import { chooseGameVersion, formatVersionLabel, readChosenVersion, rememberGameVersion } from "../app/game-versions.mjs";
+import { chooseGameVersion, formatVersionLabel, getVersionMetadata, readChosenVersion, rememberGameVersion } from "../app/game-versions.mjs";
 import * as initialActions from "../app/home-shell/initial-actions.mjs";
 import { getBundledLaunchTags } from "../app/game-player/launch-tags.mjs";
 
@@ -61,10 +61,19 @@ const SourceLaunchActions = await loadComponent("../app/home-shell/source-launch
   "../game-player/immersive-mode.mjs": { beginGameLaunch: () => false },
   "../use-browser-save": useBrowserSave, "../browser-saves.mjs": { cancelBrowserSaveQueries() {} },
 });
+const SharedHeroScene = await loadComponent("../app/game-player/GameHeroScene.js", {
+  "../game-versions.mjs": { formatVersionLabel, getVersionMetadata },
+  "../home-shell/artwork-delivery": { useArtworkDelivery: () => undefined },
+  "../home-shell/decorative-image": () => null,
+  "../home-shell/hero-images.mjs": { getHeroImageProps: () => heroImageProps },
+  "../home-shell/shared": { getHeroImageStyle: () => undefined },
+  "./launch-tags.mjs": { getBundledLaunchTags },
+});
 const HeroStage = await loadComponent("../app/home-shell/hero-stage.js", {
+  "../game-player/GameHeroScene": SharedHeroScene,
   "./artwork-delivery": { useArtworkDelivery: () => undefined },
   "react-dom": { preload: (url, options) => imagePreloads.push({ url, ...options }) },
-  "../game-versions.mjs": { formatVersionLabel },
+  "../game-versions.mjs": { formatVersionLabel, getVersionMetadata },
   "./initial-actions.mjs": { initialActionsMarkup: "" },
   "../launch-button": LaunchButton,
   "../launch-pending": LaunchPending,
@@ -109,10 +118,21 @@ test("game routes render the game's copy and start with rotation paused", () => 
   assert.doesNotMatch(html, /More Info|Back to library|aria-haspopup="dialog"/);
 });
 
-test("homepage ships desktop and mobile copy together before hydration", () => {
+test("homepage keeps the selected game's title before hydration and launch", () => {
   const html = renderToStaticMarkup(slideFor([{ key: "catalog:sky", game }], false, { isHomePage: true }));
-  assert.match(html, /class="hero-desktop-copy"/);
-  assert.match(html, /class="hero-mobile-copy">Beneath a Steel Sky<\/span>/);
+  assert.match(html, /class="game-hero-title"><span class="hero-title-text">Beneath a Steel Sky<\/span>/);
+  assert.doesNotMatch(html, /hero-desktop-copy|hero-mobile-copy/);
+});
+
+test("raw play-route metadata preserves the hero's normalized edition and copy", () => {
+  const raw = { ...game, path: "sky", year: "1994", platform: "pc",
+    title: "Beneath a Steel Sky (v0.0372 CD/DOS)", summary: "Escape Union City." };
+  const normalized = { ...raw, ...getVersionMetadata(raw) };
+  const coreCopy = (value) => renderToStaticMarkup(SharedHeroScene({ game: value }))
+    .match(/<h1[\s\S]*?<\/p>/)[0];
+  assert.equal(coreCopy(raw), coreCopy(normalized));
+  assert.match(coreCopy(raw), /DOS · CD/);
+  assert.doesNotMatch(coreCopy(raw), /title="pc"/);
 });
 
 test("slideshow preloads wait until the viewport is known to be desktop", () => {
@@ -240,7 +260,6 @@ test("restoring an imported edition keeps the category and revision-free badge s
     }));
     assert.match(html, /<li>Cyberpunk adventure<\/li>/);
     assert.match(html, /<li class="hero-edition" title="DOS · CD">DOS · CD<\/li>/);
-    assert.match(html, /<span class="hero-edition" title="DOS · CD">DOS · CD<\/span>/);
     assert.doesNotMatch(html, /hero-edition[^>]*(?:data-reserved|aria-hidden)/);
     if (key) assert.match(html, /<option value="source:zip" selected="">DOS · CD · v0.0368/);
   }
@@ -412,7 +431,16 @@ test("the loading screen reuses the hero's responsive artwork and requests synch
   const DecorativeImage = await loadComponent("../app/home-shell/decorative-image.js", {
     "./artwork-image-props.mjs": { getArtworkPlaceholderStyle },
   });
+  const Scene = await loadComponent("../app/game-player/GameHeroScene.js", {
+    "../game-versions.mjs": { formatVersionLabel, getVersionMetadata },
+    "../home-shell/artwork-delivery": { useArtworkDelivery: () => artwork },
+    "../home-shell/decorative-image": DecorativeImage,
+    "../home-shell/hero-images.mjs": { getHeroImageProps },
+    "../home-shell/shared": { getHeroImageStyle: () => undefined },
+    "./launch-tags.mjs": { getBundledLaunchTags },
+  });
   const GameBootOverlay = await loadComponent("../app/game-player/GameBootOverlay.js", {
+    "./GameHeroScene": Scene,
     "../home-shell/artwork-delivery": { useArtworkDelivery: () => artwork },
     "../home-shell/decorative-image": DecorativeImage,
     "../home-shell/hero-images.mjs": { getHeroImageProps },

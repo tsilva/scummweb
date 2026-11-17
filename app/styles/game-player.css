@@ -13,30 +13,20 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .game-launch-feedback {
-    transition: opacity 180ms ease-out;
-  }
-
+  .game-launch-feedback { transition: opacity 180ms ease-out; }
   @starting-style {
-    .game-launch-feedback {
-      opacity: 0;
-    }
+    .game-launch-feedback { opacity: 0; }
   }
 }
 
 .game-route-boot-overlay {
-  --boot-accent: #f6e08a;
-  --boot-gutter: clamp(1.25rem, 4.6vw, 5rem);
   position: absolute;
   inset: 0;
   z-index: 8;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
+  overflow: auto;
   scrollbar-width: none;
   overscroll-behavior: contain;
   background: #131313;
-  color: #f8f2d8;
   opacity: 1;
   pointer-events: auto;
   transition: opacity 260ms ease, visibility 260ms ease;
@@ -48,168 +38,8 @@
   visibility: hidden;
 }
 
-.game-route-boot-overlay.is-error {
-  --boot-accent: #ff9e9e;
-}
-
-.game-route-boot-artwork {
-  position: relative;
-  flex: 1 0 10rem;
-  isolation: isolate;
-  overflow: hidden;
-  background: #233a30;
-}
-
-.game-route-boot-backdrop,
-.game-route-boot-scrim {
-  position: absolute;
-  inset: 0;
-}
-
-.game-route-boot-overlay.tone-sky .game-route-boot-backdrop {
-  --artwork-position: 80% top;
-}
-
-.game-route-boot-backdrop {
-  --artwork-fit: cover;
-  --artwork-position: var(--hero-image-position, center);
-  width: 100%;
-  height: 100%;
-  object-fit: var(--artwork-fit);
-  object-position: var(--artwork-position);
-}
-
-.game-route-boot-scrim {
-  pointer-events: none;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.38), transparent 24%, transparent 80%, rgba(0, 0, 0, 0.12));
-}
-
-.game-route-boot-brand {
-  position: absolute;
-  top: max(clamp(1.25rem, 2.2vw, 2.5rem), env(safe-area-inset-top));
-  right: max(clamp(1.25rem, 2.7vw, 3rem), env(safe-area-inset-right));
-  font-size: clamp(1rem, 1.6vw, 1.5rem);
-  font-weight: 700;
-  letter-spacing: -0.045em;
-  line-height: 1.25;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
-}
-
-.game-route-boot-dock {
-  position: relative;
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.25rem 3rem;
-  min-height: clamp(7rem, 14.2dvh, 10rem);
-  padding: 1.35rem max(var(--boot-gutter), env(safe-area-inset-right)) max(1.35rem, env(safe-area-inset-bottom)) max(var(--boot-gutter), env(safe-area-inset-left));
-  background: #131313;
-}
-
-.game-route-boot-progress {
-  position: absolute;
-  inset: 0 0 auto;
-  height: 3px;
-  overflow: hidden;
-}
-
-.game-route-boot-progress::after {
-  content: "";
-  display: block;
-  width: 16%;
-  height: 100%;
-  background: var(--boot-accent);
-  animation: boot-progress 2.4s ease-in-out infinite;
-}
-
-.game-route-boot-details { min-width: 0; }
-
-.game-route-boot-title {
-  margin: 0;
-  font-size: clamp(1.25rem, 2.1vw, 2.25rem);
-  font-weight: 500;
-  line-height: 1.2;
-  letter-spacing: -0.035em;
-  overflow-wrap: anywhere;
-}
-
-.game-route-boot-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem 0;
-  margin-top: 0.45rem;
-  color: rgba(248, 242, 216, 0.68);
-  font-size: clamp(0.8rem, 1.2vw, 1.25rem);
-  line-height: 1.4;
-}
-
-.game-route-boot-meta span + span::before {
-  content: "·";
-  padding-inline: 0.6em;
-}
-
-.game-route-boot-status-block {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  max-width: min(45%, 34rem);
-  color: var(--boot-accent);
-}
-
-.game-route-boot-status-icon {
-  flex: 0 0 auto;
-}
-
-.game-route-boot-overlay:not(.is-error) .game-route-boot-status-icon {
-  animation: boot-spin 1.2s linear infinite;
-}
-
-.game-route-boot-status-label {
-  margin: 0 0 0.25rem;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.game-route-boot-status-text {
-  margin: 0;
-  font-size: clamp(0.95rem, 1.4vw, 1.5rem);
-  line-height: 1.45;
-  font-variant-numeric: tabular-nums;
-  overflow-wrap: anywhere;
-}
-
-.game-route-boot-overlay.is-error .game-route-boot-status-text {
-  color: #f8f2d8;
-}
-
-@keyframes boot-spin { to { transform: rotate(360deg); } }
-@keyframes boot-progress {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(725%); }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .game-route-boot-overlay { transition: none; }
-  .game-route-boot-overlay .game-route-boot-status-icon,
-  .game-route-boot-progress::after { animation: none; }
-}
-
-@media (max-width: 640px) {
-  .game-route-boot-dock {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-  .game-route-boot-status-block { max-width: 100%; }
-  .game-route-boot-status-icon { width: 20px; height: 20px; }
-}
-
-@media (max-height: 500px) and (orientation: landscape) {
-  .game-route-boot-artwork { flex-basis: 5rem; }
-  .game-route-boot-dock { min-height: 5rem; padding-block: 0.85rem; }
-  .game-route-boot-title { font-size: 1.15rem; }
-  .game-route-boot-brand { top: max(1rem, env(safe-area-inset-top)); }
 }
 
 @media (max-width: 900px) {
@@ -577,8 +407,7 @@
     inset: var(--mobile-nav-height) 0 0;
   }
 
-  .hero-stage-library .hero-backdrop-image,
-  .game-route-boot-backdrop {
+  .hero-stage-library .hero-backdrop-image {
     --artwork-position: var(--hero-image-mobile-position, 75% top);
   }
 
