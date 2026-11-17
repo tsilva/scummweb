@@ -120,6 +120,15 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "pajama3-demo": {
+    ...retroGameArtwork["scumm:pajama3"],
+    heroImageMobilePosition: "65% -25vh",
+    title: "Pajama Sam 3: You Are What You Eat From Your Head To Your Feet (Demo)",
+    year: "2000",
+    language: "en",
+    shortTitle: "Pajama Sam 3 (Demo)",
+    summary: "Join Sam in the sweets’ jail, meet Florette and inspect clues to their escape.",
+  },
   "freddi4-demo": {
     ...retroGameArtwork["scumm:freddi4"],
     heroImageMobilePosition: "65% -25vh",

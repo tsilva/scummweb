@@ -845,6 +845,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "pajama3-demo",
+      "title": "Pajama Sam 3: You Are What You Eat From Your Head To Your Feet (Demo)",
+      "path": "/games/pajama3",
+      "engineId": "scumm",
+      "gameId": "pajama3",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }
