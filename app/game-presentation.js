@@ -120,6 +120,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "fbear-demo": {
+    ...retroGameArtwork["scumm:fbear"],
+    heroImageMobilePosition: "65% -25vh",
+    title: "Fatty Bear's Birthday Surprise (Demo)",
+    year: "1993",
+    language: "en",
+  },
   "spyozon-demo": {
     ...retroGameArtwork["scumm:spyozon"],
     heroImageMobilePosition: "60% -25vh",

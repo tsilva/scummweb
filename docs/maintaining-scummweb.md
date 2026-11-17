@@ -391,6 +391,8 @@ Putt-Putt Goes to the Moon’s English Windows HE70 demo keeps its complete unch
 
 Spy Fox 3: Operation Ozone’s English US Windows demo keeps its complete unchanged official ZIP, including original launcher, runtime and game data. Native intro skip reaches the courtyard; entering the bowling alley pro shop works. ScummWEB saving is unavailable in the tested scene; no browser checkpoint is seeded.
 
+The English Windows HE70 demo of Fatty Bear’s Birthday Surprise keeps its complete unchanged official ZIP, including original launcher/runtime and all game data. Native intro skip reaches the front yard, where skateboarding and movement work. ScummWEB saving is unavailable in the tested scene; no browser checkpoint is seeded.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.

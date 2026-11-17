@@ -1160,6 +1160,24 @@
         "basis": "All 9 original files inspected: ZIP CRC integrity, safe paths, full SHA-256 and complete ASCII/UTF16/XOR69 legal scans. Original PE launcher and runtime inspected as data. All INF licence settings are disabled semicolon comments; no active acceptance requirement or referenced licence. No packaged express reproduction restriction, express redistribution grant, nested archive or system installer/driver found. Eligibility uses only the user-authorized cautious official promotional-hosting assessment, not express rights-holder permission.",
         "preservation": "Serve the complete unchanged official ZIP with launcher/runtime, INF, icon and all original game data. No downloaded executable executed."
       }
+    },
+    {
+      "target": "fbear-demo",
+      "title": "Fatty Bear's Birthday Surprise (Demo)",
+      "engineId": "scumm",
+      "gameId": "fbear",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "fbear-win-demo-us.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/scumm/he/fbear-win-demo-us.zip",
+      "sha256": "87d590f7defff2f7733a208c6a3b2bd09fbe6e1adf605911a18de4e24e52dd49",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-17",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "All 7 original files inspected with ZIP CRC integrity, safe paths, full SHA-256 and complete ASCII/UTF16/XOR69 legal scans. Original Windows NE launcher and PE runtime inspected as data. No packaged notices/Help/licence agreement, express redistribution grant, express reproduction prohibition, nested archive or system installer/driver found. Eligibility uses only the user-authorized cautious official promotional-hosting assessment, not an express rights-holder licence.",
+        "preservation": "Serve the complete unchanged official ZIP with original NE launcher, PE runtime and all HE data. No downloaded executable executed."
+      }
     }
   ]
 }
