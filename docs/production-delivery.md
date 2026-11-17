@@ -43,6 +43,21 @@ workflow → main**. To stage a Production-configured artifact without
 assigning production domains, use **Stage prebuilt deployment** from
 `main`. Its run summary links to the staged deployment.
 
+## Production performance audits
+
+Lighthouse CI runs after successful Production delivery, or by manual dispatch.
+It uses the exact Lighthouse version pinned in the package lock, the standard
+simulated desktop settings, and three runs. Existing analytics request exclusions
+remain; application and Cloudflare bot-protection scripts are included.
+
+The run summary lists every score and identifies Lighthouse's representative run
+using its median FCP/TTI selection. The `lighthouse` artifact retains every HTML
+and JSON report plus raw traces and network logs for seven days. Automatic audits
+require all samples to match the triggering Production deployment; mixed or
+superseded deployments fail verification. Manual audits report the deployment
+actually measured. Run `node --test test/lighthouse-ci.test.mjs` for collector
+validation without launching a browser.
+
 ## Game-library publishing
 
 For agent-operated unchanged demo uploads and the reviewed Queen lossless recipe, use the separately provisioned and

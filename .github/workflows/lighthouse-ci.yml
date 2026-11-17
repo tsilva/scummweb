@@ -1,11 +1,13 @@
 name: Lighthouse CI
 
 on:
-  push:
-    branches: ["main"]
+  workflow_run:
+    workflows: ["Production delivery"]
+    types: [completed]
   workflow_dispatch:
 
-permissions: {}
+permissions:
+  contents: read
 
 concurrency:
   group: lighthouse-ci-${{ github.workflow }}-${{ github.ref }}
@@ -13,7 +15,30 @@ concurrency:
 
 jobs:
   audit:
-    uses: tsilva/.github/.github/workflows/lighthouse-ci.yml@1eb40277dd97b1c617d4ae53aef7bf21f5dd1dd3
-    with:
-      url: "https://scummweb.tsilva.eu/"
-      sample_timings: true
+    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v6.3.0
+        with:
+          node-version: 22
+      - name: Install locked dependencies without lifecycle scripts
+        run: corepack enable && corepack prepare pnpm@10.27.0 --activate && pnpm install --frozen-lockfile --ignore-scripts
+      - name: Audit Production three times
+        env:
+          LIGHTHOUSE_URL: https://scummweb.tsilva.eu/
+          LIGHTHOUSE_EXPECTED_DEPLOYMENT: ${{ github.event_name == 'workflow_run' && format('gha-{0}-{1}', github.event.workflow_run.id, github.event.workflow_run.run_attempt) || '' }}
+        run: node scripts/lighthouse-ci.mjs
+      - name: Preserve all reports and traces
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: lighthouse
+          path: .internal/evidence/lighthouse-ci/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
