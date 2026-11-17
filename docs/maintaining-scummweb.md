@@ -351,6 +351,8 @@ Shivers’ English Windows interactive demo keeps its complete unchanged officia
 
 Lighthouse: The Dark Being’s English interactive demo keeps its complete unchanged official Windows ZIP, including original packed setup, Help, robot movies and notices. The pinned native detector identifies this edition as DOS/English. Its original menu and Island Fortress prompt are preserved without a seeded browser checkpoint; scene navigation works. Saving was rejected in the tested reached scene; Load and Continue have no verified player save. Its Word 6 README, named README.WRI upstream, is delivered as readable UTF-8 text with the original ZIP unchanged.
 
+Phantasmagoria’s English DOS v1.100.000 interactive demo keeps the complete unchanged official ZIP, including all movies, drivers, packed setup and original notices. Its original menu, game naming and chapter selection are preserved without a seeded browser checkpoint. Shift+Escape sends the native movie skip action while Escape opens the browser game menu. Movies and kitchen navigation work; the original P control-panel Save/Restore bookmark and native Continue Old Game work. ScummWEB’s separate Save is rejected and Load remains empty even after a native bookmark; reopen with Play and use the original game controls. The original PDOCO.TXT gameplay guide is exposed as readable text. Only this demo receives a 400 MiB archive/450 MiB expanded limit and a 15-minute download timeout, covering its pinned 363,714,852-byte ZIP and 436,843,348-byte expansion.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.

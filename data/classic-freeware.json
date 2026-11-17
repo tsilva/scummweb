@@ -1014,6 +1014,25 @@
         "basis": "All30 original files inspected as data: ZIP integrity/safe paths/full hashes, raw/UTF16/XOR restrictions scans; original README.WRI identified as Word6 CFB and completely decoded, matching independent system conversion. All249 SCI3 resources LZS-decoded with map/header parity/exact lengths using native SCI3 compression selection. All13 DH91 setup members DCL-decoded through actual endcodes with exact consumed lengths and MZ/NE/PE/WinHelp/MIDI validation; original Setup101topic, nestedSierraSetup and SignaturePatch WindowsHelp decoded to coherent complete RTF/text without final diagnostics. Original Sierra/Microsoft/Watcom/STAC/Husdawg notices retained. Installer testProductID warning applies to99999; original SIERRA.INF has32377, not an outstanding certification condition. No express demo redistribution grant or packaged prohibition found. Eligibility uses only the user-authorized cautious official promotional hosting assessment, not an express rights-holder license.",
         "preservation": "Serve complete unchanged official ZIP including original Word README, packed setup, allHelp/executables/DLLs, robot movies, resources and notices. No downloaded executable or installer executed."
       }
+    },
+    {
+      "target": "phantasmagoria-demo",
+      "title": "Phantasmagoria (Demo)",
+      "engineId": "sci",
+      "gameId": "phantasmagoria",
+      "platform": "dos",
+      "extra": "Demo",
+      "archive": "phantasmagoria-dos-win-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/sci/phantasmagoria-dos-win-demo-en.zip",
+      "sha256": "4c791420a3fb6c93d5e17d91a153d50efd8730b508a76960603dbaa148741ce1",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-16",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "All306 original files inspected as data: ZIP integrity, safe paths/full file hashes, ASCII/UTF16/XOR scans; Windows Write README decoded with pinned Deark to coherent text plus original diagrams. All1913 SCI2.1 resources LZS-decoded with exact declared map/header IDs and output sizes. All6 DH91 setup members DCL-decoded through endcodes, consumed lengths and native signatures validated. Nested SOL_ENG Windows Help decoded through all104 topics to coherent text; original DOS Help plaintext reviewed, referenced NoLoad driver absent. UVCONFIG is ordinary DOS EXE with original SciTech copyright, no executable compression detected by pinned Deark. No express demo redistribution grant or packaged prohibition found. Uses only the user-authorized cautious official promotional-hosting assessment, not an express rights-holder license.",
+        "preservation": "Serve complete unchanged official ZIP including all original installers, libraries, drivers, documents, Write diagrams, video and resource files. No downloaded executable or installer executed."
+      },
+      "noticeFile": "PDOCO.TXT"
     }
   ]
 }
