@@ -211,21 +211,22 @@ Optional [Dropbox save syncing](dropbox-save-sync.md) copies existing browser
 saves and preserved backups automatically after connection. Configure the public
 Dropbox app key and callback before enabling it. Game archive storage is unchanged.
 
-Close every game tab, then open **Settings → Saved games → Export all saves**.
+Close every game tab, then open **Settings → Saved games → Transfer saves → Export saves**.
 The ZIP includes active and preserved saves. Saves live in the current browser
 profile and clearing site data removes them. Backup and restore require Web
 Locks for site-wide coordination.
 
 On the destination device, add the matching game edition and choose **Import
-backup**. ScummWEB matches the destination by game identity and, for local
+backup** in **Transfer saves**. ScummWEB matches the destination by game identity and, for local
 copies where available, game-file fingerprint. Unmatched sets stay preserved
-until you add the matching edition and select **Review and activate**.
+until you add the matching edition, open **Recover saved progress**, and choose
+**Restore this copy…** for the desired backup. Review the choice before confirming.
 
 By default, a conflict keeps your current set active and preserves the imported
 set. **Use imported saves** switches sets after preserving the current one.
 Companion files and timestamps move together. Identical files are skipped.
-Older shared files with unknown ownership are grouped under **Other shared
-saves**.
+The recovery view groups earlier copies by game. Older shared files with unknown
+ownership appear under **Older imported saves**; all copies remain in exports.
 
 Backups use `scummweb-save-backup` v1 with file checksums in `manifest.json`
 and files under `saves/`. Imports accept ScummWEB backups up to 64 MiB compressed

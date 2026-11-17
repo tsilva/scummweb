@@ -48,10 +48,11 @@ export default function DropboxRow() {
     catch (error) { setNotice(error.message); }
     finally { setDisconnecting(false); }
   }
-  return <div className="dropbox-settings">
+  return <div className="settings-action-block dropbox-settings">
+    <DropboxIcon />
+    <div><h3>Sync saves</h3><p>Automatically back up your progress to Dropbox.</p></div>
     <div className="dropbox-row">
-      <DropboxIcon />
-      <button type="button" className="dropbox-connect" aria-label={label} disabled={busy || !configured}
+      <button type="button" className={`dropbox-connect${connected ? "" : " secondary-button settings-wide"}`} aria-label={label} disabled={busy || !configured}
         title={!configured ? "Dropbox sync is not configured for this site yet." : undefined} onClick={activate}>
         <span className="dropbox-status" role="status">
           {busy && <LoaderCircle size={18} className="dropbox-spinner" aria-hidden="true" />}

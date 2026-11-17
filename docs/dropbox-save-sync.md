@@ -54,9 +54,15 @@ can reveal the controls and must still authorize their own Dropbox account.
 
 ## Player experience
 
-Choose **Settings → Saved games → Connect Dropbox**. Active browser saves and
+Choose **Settings → Saved games → Sync saves → Connect Dropbox**. Active browser saves and
 preserved backup sets are copied automatically, without deleting browser originals.
 The normal status is **Dropbox connected**, with a white Dropbox icon.
+The main Saved games view contains Sync saves and Transfer saves. Transfer saves
+offers Export saves and Import backup side by side.
+Earlier copies are available separately through **Recover saved progress**,
+grouped by game. Restoring a copy opens a review before changing progress and
+keeps the previous copy as a backup. The main panel does not list routine saves
+or use internal active/preserved labels.
 Routine metadata checks keep **Dropbox connected** visible without a spinner.
 The synced checkmark appears after verification; initial connection status alone
 does not claim browser progress is already backed up. A completed new save shows
