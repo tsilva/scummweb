@@ -885,6 +885,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "fbear-demo",
+      "title": "Fatty Bear's Birthday Surprise (Demo)",
+      "path": "/games/fbear",
+      "engineId": "scumm",
+      "gameId": "fbear",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

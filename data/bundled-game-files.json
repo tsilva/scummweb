@@ -20971,6 +20971,47 @@
           1256489068
         ]
       ]
+    },
+    "fbear-demo": {
+      "url": "https://scummvm-games.tsilva.eu/fbear.zip",
+      "fingerprint": "7e10937247efef9e59e82fee83c00bd628171905c291c79b0ec76f5d63ad85b7",
+      "files": [
+        [
+          "FBDEMO.EXE",
+          30720,
+          4171508722
+        ],
+        [
+          "FBDEMO.HE0",
+          9593,
+          2725358755
+        ],
+        [
+          "FBDEMO.HE1",
+          1176219,
+          1667533979
+        ],
+        [
+          "FBDEMO.HE2",
+          612724,
+          4286931201
+        ],
+        [
+          "FBDEMO.HE3",
+          36864,
+          1991548164
+        ],
+        [
+          "FBDEMO.HE4",
+          7152951,
+          2600908886
+        ],
+        [
+          "FBDEMO.W32",
+          261120,
+          174307996
+        ]
+      ]
     }
   }
 }
