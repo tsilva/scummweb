@@ -20823,6 +20823,57 @@
           466630593
         ]
       ]
+    },
+    "puttrace-demo": {
+      "url": "https://scummvm-games.tsilva.eu/puttrace.zip",
+      "fingerprint": "41edf97f3e5225cf6de45069dd5552c5fee39813101af1e61a446ce10f0d3319",
+      "files": [
+        [
+          "RACEDEMO.(A)",
+          6406987,
+          1004425682
+        ],
+        [
+          "RACEDEMO.D32",
+          45056,
+          4278968466
+        ],
+        [
+          "racedemo.exe",
+          475182,
+          1309396218
+        ],
+        [
+          "RACEDEMO.HE0",
+          13108,
+          25833763
+        ],
+        [
+          "RaceDemo.he2",
+          3028389,
+          3286983756
+        ],
+        [
+          "RACEDEMO.HE4",
+          4092841,
+          2297480322
+        ],
+        [
+          "RACEDEMO.hlp",
+          1767481,
+          18413185
+        ],
+        [
+          "racedemo.inf",
+          2568,
+          3115659663
+        ],
+        [
+          "RaceUK.ICO",
+          766,
+          4008972198
+        ]
+      ]
     }
   }
 }

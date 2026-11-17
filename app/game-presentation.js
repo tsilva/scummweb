@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "puttrace-demo": {
+    ...retroGameArtwork["scumm:puttrace"],
+    heroImageMobilePosition: "80% -25vh",
+    title: "Putt-Putt Enters the Race (Demo)",
+    year: "1998",
+    language: "en",
+    summary: "Take Putt-Putt and Pep for a spin around Cartown as they prepare for the big race.",
+  },
   "pajama3-demo": {
     ...retroGameArtwork["scumm:pajama3"],
     heroImageMobilePosition: "65% -25vh",

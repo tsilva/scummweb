@@ -855,6 +855,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "puttrace-demo",
+      "title": "Putt-Putt Enters the Race (Demo)",
+      "path": "/games/puttrace",
+      "engineId": "scumm",
+      "gameId": "puttrace",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

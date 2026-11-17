@@ -2076,6 +2076,14 @@
       "observation": "A game frame renders at startup."
     },
     {
+      "title": "Putt-Putt Enters the Race (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:puttrace",
+      "edition": "puttrace-win-demo-uk.zip",
+      "recordedOn": "2026-11-17",
+      "observation": "English UK Windows HE99 demo. Exact native Demo/Windows/EnglishGB detection, original driveway, native intro skip and road navigation to the apple-tree scene verified. Original demo Save/Load are greyed out; ScummWEB Save unavailable and no verified Continue save or seeded checkpoint. Full playthrough and independent audible output unverified."
+    },
+    {
       "title": "Putt-Putt Goes to the Moon",
       "status": "startup-verified",
       "gameId": "scumm:puttmoon",

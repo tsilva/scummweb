@@ -362,6 +362,8 @@ Freddi Fish 4’s English UK Windows HE99 demo keeps the complete unchanged offi
 
 Pajama Sam 3’s English UK Windows HE99 demo keeps the complete unchanged official ZIP, including original executable/runtime library, settings, compiled Help and icon. Native intro skip reaches the sweets’ jail with Florette; inspecting the key triggers Sam’s original response. ScummWEB saving is unavailable in the tested scene; no browser checkpoint is seeded.
 
+Putt-Putt Enters the Race’s English UK Windows HE99 demo keeps the complete unchanged official ZIP, including original executable/runtime library, settings, compiled Help and icon. Native intro skip and road navigation reach the apple-tree scene. Original demo Save/Load are greyed out and ScummWEB saving is unavailable; no browser checkpoint is seeded.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.
