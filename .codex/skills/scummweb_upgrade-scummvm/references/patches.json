@@ -1578,18 +1578,18 @@
     {
       "path": "patches/scummvm/100-host-cloud-service.patch",
       "status": "active",
-      "sha256": "fdfc93c18179d1e4313171d6ebe0665b32e4c28923f48a21822992ee6b681dce",
+      "sha256": "245356b78fbde0556e9174a826a9c3d54c852e478b8d96142637fde1db4b0d1b",
       "purpose": "Expose upstream native cloud storage to an isolated, UI-free host service with Dropbox PKCE renewal.",
       "invariants": [
         "Never enter the native launcher or cloud wizard in host service mode.",
         "Use a separate MEMFS config/transfer root; never mount browser game saves.",
         "Use native provider implementations and redact OAuth/header diagnostics.",
-        "Restrict writes to checksum-named immutable snapshot archives; allow only flat, validated read-only /saves/ inbox transfers and bound network responses.",
+        "Restrict cloud reads and writes to checksum-named immutable archives inside /saves/; desktop files enter through the host import/export UI, never a second cloud inbox.",
         "Reject incomplete Dropbox listings, preserve copied save filename case and opaque revisions, and use the current create-folder response shape.",
         "Native downloads flush/close atomic output before callbacks and reject transport or disk failures."
       ],
       "verification": [
-        "Native cloud build enabled; host command and snapshot fault tests.",
+        "Native cloud build enabled; single-folder host command, automatic convergence and snapshot fault tests.",
         "Brave service readiness and native provider request smoke test; normal game launch regression."
       ],
       "retire_when": "Upstream provides an equivalent host-controlled, UI-free cloud service and application-specific PKCE renewal."

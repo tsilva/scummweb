@@ -43,11 +43,10 @@ tests when porting; do not treat an old implementation shape as the requirement.
   Dropbox PKCE tokens belong to the site's app, so renew directly with its public
   client ID rather than ScummVM's broker. Never log authorization headers, form
   values or OAuth JSON. Immutable, checksum-named archives keep timestamp-based
-  overwrite policy away from browser saves; the host owns migration and conflicts.
-  The flat `/saves/` copy-in inbox is read-only; never broaden native uploads or
-  permit arbitrary paths to support loose imports. Preserve original provider
-  filename case and opaque revisions: lowercase names change save identities,
-  and size/mtime cannot safely identify unchanged copies. Keep filename checks.
+  overwrite policy away from browser saves; the host resolves concurrent changes and retains recovery copies.
+  `/saves/` is the only cloud folder and accepts checksum-named archives only;
+  desktop ScummVM files use host import/export. Never broaden native paths to
+  accept arbitrary filenames. Content hashes, rather than size/mtime, identify bytes.
   A headless service must upload from an explicit filesystem stream: the generic
   path overload searches engine archives. Native downloads must close atomic
   output before callbacks and reject transport errors even with HTTP 200.

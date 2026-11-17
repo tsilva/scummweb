@@ -67,7 +67,7 @@ export async function mergeSaveSets(sets, bases = []) {
 }
 
 // All maximal common ancestors are retained. A file with ambiguous merge bases
-// requires a choice unless every current branch agrees on its contents.
+// retains competing versions unless every current branch agrees on its contents.
 export function commonSaveAncestors(nodes, tips) {
   const byId = new Map(nodes.map((node) => [node.id, node]));
   const ancestors = tips.map((tip) => {
@@ -84,3 +84,22 @@ export function commonSaveAncestors(nodes, tips) {
   const older = new Set(common.flatMap(({ parents }) => parents));
   return common.filter(({ id }) => !older.has(id)).map(({ set }) => set);
 }
+
+// Prefer the latest recorded save time; equal clocks use content identity so
+// listing order, device and retries cannot choose different winners.
+export async function automaticSaveMerge(sets, bases = []) {
+  const ordered = [...sets].sort((a, b) => saveSetTime(b) - saveSetTime(a) || (a.hash < b.hash ? -1 : a.hash > b.hash ? 1 : 0));
+  return preferredSaveMerge(ordered, bases);
+}
+
+export async function preferredSaveMerge(ordered, bases = []) {
+  const merge = await mergeSaveSets(ordered, bases);
+  if (merge.set) return { set: merge.set, selected: false };
+  // Slot files can coexist, but a changed companion/index or file/folder
+  // collision requires a complete coherent copy, not a mixture of layouts.
+  const independent = merge.differences.filter(({ conflict }) => conflict)
+    .every(({ path, reason }) => /\.(?:s)?[0-9]+$/i.test(path) && reason !== "File and folder use the same name");
+  return { set: independent ? merge.candidates[0] : ordered[0], selected: true };
+}
+
+export const saveSetTime = (set) => Math.max(0, ...set.files.map(({ modifiedAt }) => Number.isFinite(modifiedAt) ? modifiedAt : 0));

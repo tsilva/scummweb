@@ -217,21 +217,29 @@ profile and clearing site data removes them. Backup and restore require Web
 Locks for site-wide coordination.
 
 On the destination device, add the matching game edition and choose **Import
-backup** in **Transfer saves**. ScummWEB matches the destination by game identity and, for local
-copies where available, game-file fingerprint. Unmatched sets stay preserved
-until you add the matching edition, open **Recover saved progress**, and choose
-**Restore this copy…** for the desired backup. Review the choice before confirming.
+saves** in **Transfer saves**. Select ordinary ScummVM files or a ZIP. Original
+filenames and companion files are required; unrecognized filenames prompt for
+the matching library game. Compatible separate slots combine automatically,
+with incoming overlapping slots taking precedence. Changed companion/index files
+keep the complete incoming copy together. Previous progress is preserved for
+recovery before activation. Identical contents are skipped.
 
-By default, a conflict keeps your current set active and preserves the imported
-set. **Use imported saves** switches sets after preserving the current one.
-Companion files and timestamps move together. Identical files are skipped.
-The recovery view groups earlier copies by game. Older shared files with unknown
-ownership appear under **Older imported saves**; all copies remain in exports.
+Exports contain ordinary ScummVM save files with unchanged bytes, grouped by
+game edition and current/recovery copy. Extract the chosen copy into desktop
+ScummVM's save folder. Exported collections preserve edition identities in their
+folder names for reimport. Unavailable editions remain recoverable until their
+matching game is added. The recovery view groups earlier copies by game;
+**Restore this copy…** reviews and activates the selected complete copy, retaining
+the previous progress. All copies remain in exports.
 
-Backups use `scummweb-save-backup` v1 with file checksums in `manifest.json`
-and files under `saves/`. Imports accept ScummWEB backups up to 64 MiB compressed
-and expanded, 4,096 files, and 1,000 sets. Restoring can temporarily need space
-for both save trees. Quota failure preserves the active tree.
+Dropbox uses a single app-owned `saves` folder of checksum-named archives.
+Automatic reconciliation requires no conflict choices and retains the original
+competing copies. Desktop transfers use Import/Export rather than copying into
+Dropbox. Internal cloud archives use `scummweb-save-backup` v1 with checksums and
+a cloud manifest; they can also be imported for recovery. Desktop ZIPs need no
+application manifest. Transfers retain the 64 MiB archive and 4,096-file limits;
+ordinary save payloads total less than 63 MiB. Restoring can temporarily need
+space for both save trees. Quota failure preserves the active tree.
 
 ### Installing the web app
 

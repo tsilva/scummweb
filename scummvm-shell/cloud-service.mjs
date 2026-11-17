@@ -26,7 +26,7 @@ window.addEventListener("message", async (event) => {
         const id = pending?.id;
         pending = null;
         try {
-          const bytes = result.ok && ["download", "download-import"].includes(globalThis.__scummwebCloudLastOperation)
+          const bytes = result.ok && globalThis.__scummwebCloudLastOperation === "download"
             ? globalThis.FS.readFile("/cloud/transfer").slice() : undefined;
           // The parent persists renewed credentials before acknowledging the operation.
           send({ id, ...result, bytes, config: globalThis.FS.readFile("/cloud/config.ini", { encoding: "utf8" }) });
@@ -48,9 +48,8 @@ window.addEventListener("message", async (event) => {
       script.onerror = () => send({ id: data.id, ok: false, kind: "runtime" });
       document.head.append(script);
     } catch { send({ id: data.id, ok: false, kind: "runtime" }); }
-  } else if (initialized && !pending && ["refresh", "list", "mkdir", "upload", "download", "list-imports", "download-import"].includes(data.op)) {
+  } else if (initialized && !pending && ["refresh", "list", "mkdir", "upload", "download"].includes(data.op)) {
     if (["upload", "download"].includes(data.op) && !/^[a-f0-9]{64}\.zip$/.test(data.name || "")) return;
-    if (data.op === "download-import" && !/^[a-z0-9][a-z0-9 _().-]{0,119}$/i.test(data.name || "")) return;
     if (data.op === "upload") {
       if (!(data.bytes instanceof Uint8Array) || data.bytes.byteLength > 67108864) return;
       globalThis.FS.writeFile("/cloud/transfer", data.bytes);

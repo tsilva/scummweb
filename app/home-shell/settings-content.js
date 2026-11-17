@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowDownUp, ArrowLeft, Check, ChevronDown, Download, Info, Save, Upload } from "lucide-react";
+import { ArrowDownUp, ArrowLeft, Check, ChevronDown, Download, Info, LoaderCircle, Save, Upload } from "lucide-react";
 import { readGameSources } from "../game-sources.mjs";
 import "../styles/settings-details.css";
 import DropboxRow from "./dropbox-row";
@@ -11,15 +11,24 @@ const formatSaveCount = (count) => `${count} save ${count === 1 ? "file" : "file
 
 export default function SettingsContent({ catalog, officialUrl, scummvmVersion, sourceInfoDate, working, busy, setBusy }) {
   const picker = useRef(null);
+  const pendingImport = useRef(null);
   const [section, setSection] = useState("");
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
   const [data, setData] = useState({ sets: [], stored: [], unmatched: new Set(), matches: new Map(), destinations: [], revision: "" });
   const [review, setReview] = useState(null);
-  const [downloadReady, setDownloadReady] = useState(null);
+  const [downloadUrl, setDownloadUrl] = useState(null);
+  const [exportState, setExportState] = useState("idle");
   const [recovering, setRecovering] = useState(false);
+  const [importGame, setImportGame] = useState("");
+  const [needsImportGame, setNeedsImportGame] = useState(false);
 
-  useEffect(() => () => { if (downloadReady) URL.revokeObjectURL(downloadReady.href); }, [downloadReady]);
+  useEffect(() => () => { if (downloadUrl) URL.revokeObjectURL(downloadUrl); }, [downloadUrl]);
+  useEffect(() => {
+    if (exportState !== "downloaded") return;
+    const timer = setTimeout(() => setExportState("idle"), 1800);
+    return () => clearTimeout(timer);
+  }, [exportState]);
 
   async function refresh() {
     const [{ getActiveSaveSets, getSaveDestinations, matchDestination, readStoredSets }, sources] = await Promise.all([
@@ -40,7 +49,7 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
     setBusy(true);
     setError("");
     setNotice("");
-    setDownloadReady(null);
+    setDownloadUrl(null);
     try { await action(); }
     catch (failure) { setError(failure?.message || "Could not update saved games. Your current progress is still available."); }
     finally { working.current = false; setBusy(false); }
@@ -54,56 +63,92 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
 
   async function prepareReview(sets, current, activating = false) {
     const { matchDestination } = await import("../save-backups/backups.mjs");
+    const { preferredSaveMerge } = await import("../dropbox/save-merge.mjs");
     const used = new Set();
-    const rows = sets.map((set) => {
+    const rows = await Promise.all(sets.map(async (set) => {
+      const sourceSet = set;
       const destinationKey = matchDestination(set, current.destinations);
-      const active = current.sets.find((item) => item.destination.key === destinationKey);
-      const choice = used.has(destinationKey) ? "stored" : activating || !active ? "imported" : "current";
+      const choice = used.has(destinationKey) || set.recovery && !activating ? "stored" : "imported";
       used.add(destinationKey);
-      return { set, destinationKey, choice };
-    });
+      const active = current.sets.find((item) => item.destination.key === destinationKey);
+      if (!activating && choice === "imported" && active && active.hash !== set.hash) {
+        set = (await preferredSaveMerge([set, active])).set;
+      }
+      return { set, sourceSet, destinationKey, choice };
+    }));
     setReview({ rows, revision: current.revision, activating });
   }
 
-  function updateChoice(index, choice) {
-    setReview((current) => ({ ...current, rows: current.rows.map((row, i) => i === index
-      ? { ...row, choice } : row) }));
+  async function download() {
+    if (working.current || exportState !== "idle") return;
+    await run(async () => {
+      setExportState("exporting");
+      let downloaded = false;
+      try {
+        const [{ withSaveLock }, { exportScummvmSaves }] = await Promise.all([
+          import("../save-backups/backups.mjs"), import("../save-backups/scummvm-transfer.mjs"),
+        ]);
+        const blob = await withSaveLock(async () => {
+          const current = await refresh();
+          return exportScummvmSaves([...current.sets, ...current.stored]);
+        });
+        const href = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = href;
+        link.download = `scummweb-saves-${new Date().toISOString().slice(0, 10)}.zip`;
+        setDownloadUrl(href);
+        setExportState("downloading");
+        // Let the browser paint the handoff state before starting its download.
+        await new Promise((resolve) => setTimeout(resolve, 400));
+        document.body.appendChild(link);
+        try { link.click(); }
+        finally { link.remove(); }
+        downloaded = true;
+        setExportState("downloaded");
+      } finally {
+        if (!downloaded) setExportState("idle");
+      }
+    });
   }
 
-  async function download() {
+  async function reviewImport(files, game = importGame) {
     await run(async () => {
-      const { exportBackup, withSaveLock } = await import("../save-backups/backups.mjs");
-      const blob = await withSaveLock(async () => {
-        const current = await refresh();
-        const unique = new Map([...current.sets, ...current.stored].map((set) => [`${set.destination.key}:${set.hash}`, set]));
-        return exportBackup([...unique.values()]);
-      });
-      const href = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = href;
-      link.download = `scummweb-saves-${new Date().toISOString().slice(0, 10)}.zip`;
-      setDownloadReady({ href, name: link.download });
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+      const [{ readSaveImport }, { withSaveLock }] = await Promise.all([
+        import("../save-backups/scummvm-transfer.mjs"), import("../save-backups/backups.mjs"),
+      ]);
+      const current = await withSaveLock(refresh);
+      try {
+        const sets = await readSaveImport(files, current.destinations, game);
+        await prepareReview(sets, current);
+        pendingImport.current = null;
+        setNeedsImportGame(false);
+        setImportGame("");
+      } catch (error) {
+        if (error.kind === "choose-game") {
+          pendingImport.current = files;
+          setNeedsImportGame(true);
+        }
+        throw error;
+      }
     });
   }
 
   async function chooseBackup(event) {
-    const file = event.target.files?.[0];
+    const files = Array.from(event.target.files || []);
     event.target.value = "";
-    if (!file) return;
-    await run(async () => {
-      const { readBackup, withSaveLock } = await import("../save-backups/backups.mjs");
-      const sets = await readBackup(file);
-      await prepareReview(sets, await withSaveLock(refresh));
-    });
+    if (files.length) await reviewImport(files);
+  }
+
+  async function chooseImportGame(event) {
+    const game = event.target.value;
+    setImportGame(game);
+    if (game && pendingImport.current) await reviewImport(pendingImport.current, game);
   }
 
   async function confirmImport() {
     await run(async () => {
-      const [{ applyImport, withSaveLock }, { captureFilesystem }] = await Promise.all([
-        import("../save-backups/backups.mjs"), import("../save-backups/filesystem.mjs"),
+      const [{ applyImport, matchDestination, withSaveLock }, { captureFilesystem }, { preferredSaveMerge }] = await Promise.all([
+        import("../save-backups/backups.mjs"), import("../save-backups/filesystem.mjs"), import("../dropbox/save-merge.mjs"),
       ]);
       await withSaveLock(async () => {
         let initialConfig;
@@ -112,17 +157,34 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
           if (!response.ok) throw new Error("Could not initialize save storage. Try again when online.");
           initialConfig = await response.text();
         }
-        await applyImport({ storage: localStorage, ...review, destinations: data.destinations, initialConfig });
+        // Sync and native metadata checks can change the tree while review is
+        // open. Recompute from the original incoming files under the lock, so
+        // newly saved compatible slots are retained and current progress is
+        // preserved before an intentional incoming overwrite.
+        const current = await refresh();
+        const rows = await Promise.all(review.rows.map(async (row) => {
+          let set = row.sourceSet || row.set;
+          const destinationKey = matchDestination(set, current.destinations);
+          const active = current.sets.find((item) => item.destination.key === destinationKey);
+          if (!review.activating && row.choice === "imported" && active && active.hash !== set.hash) {
+            set = (await preferredSaveMerge([set, active])).set;
+          }
+          return { ...row, set, destinationKey };
+        }));
+        await applyImport({ storage: localStorage, ...review, rows, revision: current.revision,
+          destinations: current.destinations, initialConfig });
         await refresh();
       });
       window.dispatchEvent(new Event("scummweb:saves-changed"));
-      setNotice(review.activating ? "Saved progress restored." : "Backup imported.");
+      setNotice(review.activating ? "Saved progress restored." : "Saves imported.");
       setReview(null);
       setRecovering(false);
     });
   }
 
   const savedCount = data.sets.reduce((total, set) => total + set.files.length, 0);
+  const transferring = busy || exportState !== "idle";
+  const exportLabel = { idle: "Export saves", exporting: "Exporting", downloading: "Downloading", downloaded: "Downloaded" }[exportState];
   const storedOnly = data.stored.filter((set) => !data.sets.some((active) => active.destination.key === set.destination.key && active.hash === set.hash));
   const matchedStored = storedOnly.filter((set) => !data.unmatched.has(set));
   const recovery = new Map();
@@ -155,16 +217,22 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
       {!review && !recovering && <>
         <DropboxPreview><DropboxRow /></DropboxPreview>
         <div className="settings-action-block"><ArrowDownUp size={25} aria-hidden="true" />
-          <div><h3>Transfer saves</h3><p>Export your progress or restore a backup.</p></div>
+          <div><h3>Transfer saves</h3><p>Transfer saves to or from desktop ScummVM. Exported ZIPs keep the original save filenames.</p></div>
           <div className="settings-transfer-actions">
-            <button type="button" className="secondary-button settings-wide" disabled={busy || (!savedCount && !data.stored.length)} onClick={download}>
-              <Download size={20} aria-hidden="true" />Export saves
+            <button type="button" className="secondary-button settings-wide" disabled={transferring || (!savedCount && !data.stored.length)} onClick={download}>
+              {exportState === "idle" ? <Download size={20} aria-hidden="true" />
+                : exportState === "downloaded" ? <Check size={20} aria-hidden="true" />
+                  : <LoaderCircle size={20} className="settings-export-spinner" aria-hidden="true" />}
+              <span aria-live="polite" aria-atomic="true">{exportLabel}</span>
             </button>
-            <button type="button" className="launch-button settings-wide" disabled={busy} onClick={() => picker.current.click()}><Upload size={20} aria-hidden="true" />Import backup</button>
+            <button type="button" className="launch-button settings-wide" disabled={transferring} onClick={() => picker.current.click()}><Upload size={20} aria-hidden="true" />Import saves</button>
           </div>
-          <p className="settings-status" role="status">{downloadReady && <>
-            Backup ready. <a className="settings-download" href={downloadReady.href} download={downloadReady.name}>Download ZIP</a>
-          </>}</p>
+          {needsImportGame && <label className="settings-import-game">Game for imported saves
+            <select value={importGame} disabled={busy} onChange={chooseImportGame}>
+              <option value="">Detect automatically</option>
+              {data.destinations.filter(({ key }) => key !== "shared").map(({ key, title }) => <option key={key} value={key}>{title}</option>)}
+            </select>
+          </label>}
         </div>
         {(recoveryGroups.length > 0 || unmatchedFileCount > 0) && <button type="button" className="settings-recovery-link" disabled={busy}
           onClick={() => setRecovering(true)}>Recover saved progress</button>}
@@ -195,12 +263,8 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
           const identical = active?.hash === row.set.hash;
           return <fieldset key={index} className="settings-review-game" disabled={busy}><legend>{row.set.destination.title}</legend>
             {identical ? <p className="settings-active"><Check size={17} />Identical saves — nothing to change.</p> : <>
-              {active && <p>Different saves exist on this device.</p>}
-              <label className="settings-choice"><input type="radio" name={`save-choice-${index}`} checked={row.choice !== "imported"}
-                onChange={() => updateChoice(index, active ? "current" : "stored")} />
-                <span><strong>{active ? "Keep current progress" : "Keep as a backup"}</strong><small>{active ? `This device · ${formatSaveCount(active.files.length)}` : "Restore later from Recover saved progress"}</small></span></label>
-              <label className="settings-choice"><input type="radio" name={`save-choice-${index}`} checked={row.choice === "imported"}
-                onChange={() => updateChoice(index, "imported")} /><span><strong>{review.activating ? "Use this saved copy" : "Use imported saves"}</strong><small>Backup · {formatSaveCount(row.set.files.length)}</small></span></label>
+              <p>{formatSaveCount(row.set.files.length)} · {row.choice === "stored" ? "Keep as a recovery copy" : "Ready to import"}</p>
+              {active && <p>Your current progress will be kept in Recover saved progress.</p>}
             </>}
           </fieldset>;
         })}
@@ -210,7 +274,7 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
         </fieldset>}
         {replacingProgress && <p className="settings-reassurance">Your current progress will be kept as a backup in Recover saved progress.</p>}
         <div className="settings-review-actions"><button type="button" className="secondary-button" disabled={busy} onClick={() => setReview(null)}>Cancel</button>
-          <button type="button" className="launch-button" disabled={busy} onClick={confirmImport}>{review.activating ? "Restore this copy" : "Import backup"}</button></div>
+          <button type="button" className="launch-button" disabled={busy} onClick={confirmImport}>{review.activating ? "Restore this copy" : "Import saves"}</button></div>
       </div>}
     </section>
     <button type="button" className={`settings-section-heading ${section === "about" ? "is-active" : ""}`}
@@ -224,6 +288,6 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
       <p>ScummVM {scummvmVersion}<br />Bundle built {sourceInfoDate}.</p>
       <a href="https://www.scummvm.org/" target="_blank" rel="noreferrer">Visit ScummVM</a>
     </section>
-    <input ref={picker} type="file" accept=".zip,application/zip" aria-label="Choose save backup ZIP" hidden onChange={chooseBackup} />
+    <input ref={picker} type="file" multiple aria-label="Choose ScummVM save files or a ZIP" hidden onChange={chooseBackup} />
   </>;
 }

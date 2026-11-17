@@ -17,34 +17,6 @@
 @keyframes dropbox-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .dropbox-spinner { animation: none; } }
 .dropbox-sync-warning { position: fixed; bottom: max(1rem, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); z-index: 200; max-width: min(32rem, 90vw); background: #24221e; color: #f1d5ac; border: 1px solid #76634a; padding: .65rem 1rem; font-size: .8125rem; pointer-events: none; }
-.dropbox-conflict { box-sizing: border-box; width: 42rem; max-width: calc(100vw - 1.5rem); max-height: calc(100dvh - 1.5rem); background: #191919; color: var(--ink); border: 1px solid #444; padding: 1rem; }
-.dropbox-conflict::backdrop { background: rgb(0 0 0 / 65%); }
-.dropbox-conflict h2 { font-size: 1.25rem; margin: 0 0 .5rem; }
-.dropbox-conflict p { font-size: .875rem; line-height: 1.5; margin: 0; }
-.dropbox-conflict-games { max-height: min(55dvh, 28rem); overflow-y: auto; margin: .85rem 0; padding-right: .2rem; }
-.dropbox-conflict fieldset { min-width: 0; border: 0; padding: 0; margin: 0 0 .85rem; }
-.dropbox-conflict fieldset:last-child { margin-bottom: 0; }
-.dropbox-conflict legend { padding: 0; margin-bottom: .4rem; font-size: .9rem; font-weight: 600; }
-.dropbox-conflict-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
-.dropbox-conflict .settings-choice { display: flex; align-items: center; gap: .6rem; border: 1px solid #555; padding: .65rem .75rem; margin: 0; cursor: pointer; }
-.dropbox-conflict .settings-choice:has(input:checked) { border-color: var(--accent-strong); background: #20271f; }
-.dropbox-conflict .settings-choice span { display: grid; gap: .15rem; }
-.dropbox-conflict .settings-choice small { color: #bbb; }
-.dropbox-file-differences { overflow-x: auto; margin-top: .65rem; }
-.dropbox-file-differences table { width: 100%; border-collapse: collapse; font-size: .75rem; text-align: left; }
-.dropbox-file-differences th, .dropbox-file-differences td { padding: .45rem; border-bottom: 1px solid #383838; vertical-align: top; }
-.dropbox-file-differences th { font-weight: 500; }
-.dropbox-file-differences code { white-space: nowrap; }
-.dropbox-file-differences small, .dropbox-file-copy { display: grid; gap: .2rem; font-weight: 400; }
-.dropbox-file-differences small, .dropbox-file-copy time { color: #bbb; }
-.dropbox-combined-files { margin-top: .65rem; font-size: .75rem; }
-.dropbox-combined-files summary { cursor: pointer; }
-.dropbox-conflict .dropbox-identical-files { margin-top: .45rem; color: #bbb; font-size: .75rem; }
-.dropbox-conflict .settings-review-actions { display: flex; justify-content: flex-end; gap: .65rem; margin: .85rem 0 0; }
-.dropbox-conflict button { background: transparent; color: var(--ink); border: 1px solid #888; min-height: 2.75rem; padding: .6rem .8rem; cursor: pointer; }
-.dropbox-conflict button:last-child { background: var(--accent-strong); color: #101810; border-color: var(--accent-strong); }
-.dropbox-conflict button:disabled { opacity: .45; cursor: not-allowed; }
-@media (max-width: 36rem) { .dropbox-conflict-options { grid-template-columns: 1fr; } }
 .settings-drawer { position: fixed; inset: 5rem 0 0 auto; margin: 0; padding: 0; width: min(38rem, 100%); max-width: 100%; height: calc(100dvh - 5rem); max-height: calc(100dvh - 5rem); border: 0; border-left: 1px solid #343434; background: #191919; color: var(--ink); font-size: .875rem; overflow-y: auto; overscroll-behavior: contain; -webkit-user-select: none; user-select: none; transform: translateX(100%); transition: transform 240ms cubic-bezier(.2, .8, .2, 1), display 240ms allow-discrete, overlay 240ms allow-discrete; }
 .settings-drawer[open] { transform: translateX(0); }
 .settings-drawer { scrollbar-gutter: stable; }

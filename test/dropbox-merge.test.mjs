@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { identifySet, readBackup } from "../app/save-backups/backups.mjs";
-import { commonSaveAncestors, mergeSaveSets } from "../app/dropbox/save-merge.mjs";
+import { commonSaveAncestors, mergeSaveSets, automaticSaveMerge, preferredSaveMerge } from "../app/dropbox/save-merge.mjs";
 import { createSaveCollection, makeSnapshot, publishProfile, saveProfileId, writeSnapshot } from "../app/dropbox/protocol.mjs";
 import { fakeNativeStorage } from "./helpers/dropbox-fixtures.mjs";
 
@@ -91,28 +91,45 @@ test("all concurrent tips participate in a merge, including a new arrival during
   assert.equal(client.snapshot(await saveProfileId(local), result.head.active).files.length, 4);
 });
 
-test("three conflicting branches expose every choice and keep compatible slots in all candidates", async () => {
+test("three overlapping branches converge automatically and retain every original for recovery", async () => {
   const server = fakeNativeStorage();
-  const sets = await Promise.all([1, 2, 3].map((slot) => save({ "SKY-VM.001": `variant ${slot}`, [`SKY-VM.00${slot + 1}`]: String(slot) })));
+  const sets = await Promise.all([1, 2, 3].map((slot) => save({ "SKY-VM.001": `variant ${slot}`, [`SKY-VM.00${slot + 1}`]: String(slot) }, slot * 100)));
   for (const set of sets) await writeSnapshot(server, await makeSnapshot(set));
   const result = await publish(server, sets[0]);
-  assert.equal(result.action, "conflict"); assert.equal(result.conflictSets.length, 3);
-  assert.equal(result.conflictMerge.differences.filter(({ conflict }) => conflict).length, 1);
-  assert.ok(result.conflictMerge.candidates.every(({ files }) => files.length === 4));
+  assert.equal(result.action, "download"); assert.equal(result.head.concurrent, false);
+  const client = await createSaveCollection(server), profile = await saveProfileId(sets[0]);
+  const active = contents(client.snapshot(profile, result.head.active));
+  assert.deepEqual(active, { "SKY-VM.001": "variant 3", "SKY-VM.002": "1", "SKY-VM.003": "2", "SKY-VM.004": "3" });
+  for (const set of sets) {
+    assert.equal(client.snapshot(profile, set.hash).hash, set.hash);
+    assert.ok(result.head.alternatives.includes(set.hash));
+  }
 });
 
-test("duplicate branch contents offer one choice while retaining all ancestry tips", async () => {
-  const server = fakeNativeStorage(), a = await save({ "SKY-VM.001": "a" }), b = await save({ "SKY-VM.001": "b" });
-  const base = await makeSnapshot(await save({ "SKY-VM.001": "base" }));
-  await writeSnapshot(server, base);
-  await writeSnapshot(server, await makeSnapshot(a, [base.id]));
-  await writeSnapshot(server, await makeSnapshot(a));
-  await writeSnapshot(server, await makeSnapshot(b));
-  const result = await publish(server, a);
-  assert.equal(result.action, "conflict"); assert.equal(result.head.tips.length, 3);
-  assert.equal(result.conflictSets.length, 2);
-  assert.notEqual(result.conflictSets[0].hash, result.conflictSets[1].hash);
-  assert.equal(result.conflictSets[1].hash, result.head.active);
+test("equal timestamps converge independently of listing order and device identity", async () => {
+  const sets = await Promise.all(["left", "away", "third"].map((value) => save({ "SKY-VM.001": value })));
+  const outcomes = [];
+  for (const order of [sets, [...sets].reverse(), [sets[1], sets[2], sets[0]]]) {
+    const server = fakeNativeStorage();
+    for (const set of order) await writeSnapshot(server, await makeSnapshot(set));
+    outcomes.push((await publish(server, order[0])).head.active);
+  }
+  assert.equal(new Set(outcomes).size, 1);
+  assert.equal(outcomes[0], [...sets].sort((a, b) => a.hash.localeCompare(b.hash))[0].hash);
+});
+
+test("changed companion indexes select a coherent whole copy while preserving alternatives", async () => {
+  const first = await save({ "SKY-VM.001": "old slot", "SKY-VM.SAV": "old index" }, 100);
+  const second = await save({ "SKY-VM.002": "new slot", "SKY-VM.SAV": "new index" }, 200);
+  const result = await automaticSaveMerge([first, second]);
+  assert.equal(result.selected, true);
+  assert.equal(result.set.hash, second.hash);
+  assert.deepEqual(contents(result.set), contents(second));
+});
+
+test("automatic file/folder collision handling always restores a valid complete layout", async () => {
+  const flat = await save({ "slot": "file" }, 100), nested = await save({ "slot/data": "nested" }, 200);
+  assert.equal((await automaticSaveMerge([flat, nested])).set.hash, nested.hash);
 });
 
 test("a lost auto-merge reply retries the same immutable result", async () => {
@@ -149,4 +166,12 @@ test("ambiguous common ancestors do not guess between overwritten contents", asy
   const bases = commonSaveAncestors([a, b, c, d], [c, d]);
   assert.deepEqual(bases, [a.set, b.set]);
   assert.equal((await mergeSaveSets([c.set, d.set], bases)).set, null);
+});
+
+
+test("manual imports keep separate slots and intentionally prefer incoming overlapping slots", async () => {
+  const current = await save({ "SKY-VM.001": "current", "SKY-VM.002": "separate" }, 300);
+  const incoming = await save({ "SKY-VM.001": "imported", "SKY-VM.003": "new slot" }, 100);
+  const result = await preferredSaveMerge([incoming, current]);
+  assert.deepEqual(contents(result.set), { "SKY-VM.001": "imported", "SKY-VM.002": "separate", "SKY-VM.003": "new slot" });
 });

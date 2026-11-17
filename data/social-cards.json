@@ -366,10 +366,20 @@
       "inputHash": "ae73ac2b9e6a7eb9c41d8aa557830db557a5b7f6f477b9314de233bab59f437a",
       "imageHash": "3b480366e7b6247d055cd4783e4cecd810f0e2455c16e3154483ae5f9e2e2494"
     },
+    "freddi-fish-3-the-case-of-the-stolen-conch-shell-demo": {
+      "file": "freddi-fish-3-the-case-of-the-stolen-conch-shell-demo-8b50c0db41a0bde5a4e4f7f7152c5782a8b54622008b89e895737e93c29808c8.jpg",
+      "inputHash": "8b50c0db41a0bde5a4e4f7f7152c5782a8b54622008b89e895737e93c29808c8",
+      "imageHash": "a4b60cfc54524b727209070346ccc18d32d926afbfb0c5945f820971e65ead5d"
+    },
     "freddi-fish-4-the-case-of-the-hogfish-rustlers-of-briny-gulch": {
       "file": "freddi-fish-4-the-case-of-the-hogfish-rustlers-of-briny-gulch-ad6a158f402b1cf8dd0c245f9449313d893520eb031b73ca02fd4f7428aee8dc.jpg",
       "inputHash": "ad6a158f402b1cf8dd0c245f9449313d893520eb031b73ca02fd4f7428aee8dc",
       "imageHash": "db12d486ffa2b4dee274ebaed8ce2b45ade3e4ee6a380c3feb9e48a3f3688536"
+    },
+    "freddi-fish-4-the-case-of-the-hogfish-rustlers-of-briny-gulch-demo": {
+      "file": "freddi-fish-4-the-case-of-the-hogfish-rustlers-of-briny-gulch-demo-5866746e40c268171c027f5c3d759a3de334493d4ae0d786da4d59ed4394c9f1.jpg",
+      "inputHash": "5866746e40c268171c027f5c3d759a3de334493d4ae0d786da4d59ed4394c9f1",
+      "imageHash": "3ac6d381b6577001e656651c5790da427d524eb36fec0bd6dc8f4ff84494f1b3"
     },
     "freddi-fish-5-the-case-of-the-creature-of-coral-cove": {
       "file": "freddi-fish-5-the-case-of-the-creature-of-coral-cove-4731ae57a47463ab05fcad5b1a0556f5642afb7a9f3f6b1fa2e60a6818aa3486.jpg",
@@ -731,6 +741,11 @@
       "inputHash": "f71a5d86965f7cda0ee815866774816c620ffd307a70f332041fa38271167071",
       "imageHash": "bf4bb65693760df62264c73ca4b92018dc136f23e197652c1eb97a9b4a809072"
     },
+    "leisure-suit-larry-7-love-for-sail-demo": {
+      "file": "leisure-suit-larry-7-love-for-sail-demo-e9d238443be6c148d6a2aa53257547a873f177bb93dafe5c144df9094314d92e.jpg",
+      "inputHash": "e9d238443be6c148d6a2aa53257547a873f177bb93dafe5c144df9094314d92e",
+      "imageHash": "661c42c19fb2f95ecdaf11a10b7e6d9a746e9861f31968307664ed04d708ea92"
+    },
     "leisure-suit-larry-in-the-land-of-the-lounge-lizards": {
       "file": "leisure-suit-larry-in-the-land-of-the-lounge-lizards-d73ce69a6c93f80564c7a04c3c49397ce690b30f5b81a9a61c7e821eda970d2e.jpg",
       "inputHash": "d73ce69a6c93f80564c7a04c3c49397ce690b30f5b81a9a61c7e821eda970d2e",
@@ -896,6 +911,11 @@
       "inputHash": "37561c20e499b57d3ddf3364294046bb89bf2b854c85ae80444a146afca5d171",
       "imageHash": "7c574af1e957eb5f410e1dc186c24acb1fde49236faf2ad5d278414c24e4379d"
     },
+    "pajama-sam-3-you-are-what-you-eat-from-your-head-to-your-feet-demo": {
+      "file": "pajama-sam-3-you-are-what-you-eat-from-your-head-to-your-feet-demo-535fc8c57f5c855e04fc4ea32d7c8dcff70f01a8768ff517d529f20cc3a104da.jpg",
+      "inputHash": "535fc8c57f5c855e04fc4ea32d7c8dcff70f01a8768ff517d529f20cc3a104da",
+      "imageHash": "404427007edc0739cd8c8fb84d76d94f35cb22cbe25d1e76797034db2892d52f"
+    },
     "pajama-sam-games-to-play-on-any-day": {
       "file": "pajama-sam-games-to-play-on-any-day-b926d4f3f00307880e80ab2d0531cc503a287fc90a1366de56275a94d3246452.jpg",
       "inputHash": "b926d4f3f00307880e80ab2d0531cc503a287fc90a1366de56275a94d3246452",
@@ -945,6 +965,11 @@
       "file": "phantasmagoria-2-a-puzzle-of-flesh-75acc7af620a24c070809280696d7b33838e2ec189bf91f1020ade052f9c5156.jpg",
       "inputHash": "75acc7af620a24c070809280696d7b33838e2ec189bf91f1020ade052f9c5156",
       "imageHash": "09569445a175431f42cc0739eeee5a4fa5771c85668393f04d6c65a27661e778"
+    },
+    "phantasmagoria-demo": {
+      "file": "phantasmagoria-demo-9eaac1b0faa3882608e72ecf30ed5187386ca4eabec941f6ed4d9c66bc715951.jpg",
+      "inputHash": "9eaac1b0faa3882608e72ecf30ed5187386ca4eabec941f6ed4d9c66bc715951",
+      "imageHash": "b9e7b024e1309e45f002ab02a647cee05b2146baf55178415ec72eebced58174"
     },
     "playtoons-1-uncle-archibald": {
       "file": "playtoons-1-uncle-archibald-773115d5d7266d7b550e507e1c2dbcc79549690c2f866357d52f20224aecbabd.jpg",
@@ -1030,6 +1055,11 @@
       "file": "putt-putt-enters-the-race-6f23dc385c503021553dd0b905f6a4f20759ef792d997003b9201c86cc57c6b5.jpg",
       "inputHash": "6f23dc385c503021553dd0b905f6a4f20759ef792d997003b9201c86cc57c6b5",
       "imageHash": "1e106270a70e22fb656402ca704c33c0b4aacca676f6af20dabe6acb3f3edf52"
+    },
+    "putt-putt-enters-the-race-demo": {
+      "file": "putt-putt-enters-the-race-demo-7c26e4b7dc2983eaf99519a74b4de9d361a9efea0bef9ba59ac482c66c0fed86.jpg",
+      "inputHash": "7c26e4b7dc2983eaf99519a74b4de9d361a9efea0bef9ba59ac482c66c0fed86",
+      "imageHash": "a941b33ad7ee247d99070e718f9a64500b7d5c51953c618abe8c0bf785bc5ce7"
     },
     "putt-putt-goes-to-the-moon": {
       "file": "putt-putt-goes-to-the-moon-c3621c82272ed706391e2e584077a466a70487cdf165c7745ad8cb43e5e0c477.jpg",
@@ -1575,36 +1605,6 @@
       "file": "zork-nemesis-the-forbidden-lands-108534972258666dc7b2fc57846d118cfc91dc70049447eb5827da71e9407856.jpg",
       "inputHash": "108534972258666dc7b2fc57846d118cfc91dc70049447eb5827da71e9407856",
       "imageHash": "eae9e06b8cefa2e3ede3113a6b615c163974f119d4df9387d2afad4fc9865699"
-    },
-    "phantasmagoria-demo": {
-      "file": "phantasmagoria-demo-9eaac1b0faa3882608e72ecf30ed5187386ca4eabec941f6ed4d9c66bc715951.jpg",
-      "inputHash": "9eaac1b0faa3882608e72ecf30ed5187386ca4eabec941f6ed4d9c66bc715951",
-      "imageHash": "b9e7b024e1309e45f002ab02a647cee05b2146baf55178415ec72eebced58174"
-    },
-    "leisure-suit-larry-7-love-for-sail-demo": {
-      "file": "leisure-suit-larry-7-love-for-sail-demo-e9d238443be6c148d6a2aa53257547a873f177bb93dafe5c144df9094314d92e.jpg",
-      "inputHash": "e9d238443be6c148d6a2aa53257547a873f177bb93dafe5c144df9094314d92e",
-      "imageHash": "661c42c19fb2f95ecdaf11a10b7e6d9a746e9861f31968307664ed04d708ea92"
-    },
-    "freddi-fish-3-the-case-of-the-stolen-conch-shell-demo": {
-      "file": "freddi-fish-3-the-case-of-the-stolen-conch-shell-demo-8b50c0db41a0bde5a4e4f7f7152c5782a8b54622008b89e895737e93c29808c8.jpg",
-      "inputHash": "8b50c0db41a0bde5a4e4f7f7152c5782a8b54622008b89e895737e93c29808c8",
-      "imageHash": "a4b60cfc54524b727209070346ccc18d32d926afbfb0c5945f820971e65ead5d"
-    },
-    "freddi-fish-4-the-case-of-the-hogfish-rustlers-of-briny-gulch-demo": {
-      "file": "freddi-fish-4-the-case-of-the-hogfish-rustlers-of-briny-gulch-demo-5866746e40c268171c027f5c3d759a3de334493d4ae0d786da4d59ed4394c9f1.jpg",
-      "inputHash": "5866746e40c268171c027f5c3d759a3de334493d4ae0d786da4d59ed4394c9f1",
-      "imageHash": "3ac6d381b6577001e656651c5790da427d524eb36fec0bd6dc8f4ff84494f1b3"
-    },
-    "pajama-sam-3-you-are-what-you-eat-from-your-head-to-your-feet-demo": {
-      "file": "pajama-sam-3-you-are-what-you-eat-from-your-head-to-your-feet-demo-535fc8c57f5c855e04fc4ea32d7c8dcff70f01a8768ff517d529f20cc3a104da.jpg",
-      "inputHash": "535fc8c57f5c855e04fc4ea32d7c8dcff70f01a8768ff517d529f20cc3a104da",
-      "imageHash": "404427007edc0739cd8c8fb84d76d94f35cb22cbe25d1e76797034db2892d52f"
-    },
-    "putt-putt-enters-the-race-demo": {
-      "file": "putt-putt-enters-the-race-demo-7c26e4b7dc2983eaf99519a74b4de9d361a9efea0bef9ba59ac482c66c0fed86.jpg",
-      "inputHash": "7c26e4b7dc2983eaf99519a74b4de9d361a9efea0bef9ba59ac482c66c0fed86",
-      "imageHash": "a941b33ad7ee247d99070e718f9a64500b7d5c51953c618abe8c0bf785bc5ce7"
     }
   }
 }
