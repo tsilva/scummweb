@@ -120,6 +120,13 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "phantasmagoria-demo": {
+    ...retroGameArtwork["sci:phantasmagoria"],
+    heroImageMobilePosition: "80% -8vh",
+    title: "Phantasmagoria (Demo)",
+    year: "1995",
+    language: "en",
+  },
   "lighthouse-demo": {
     ...retroGameArtwork["sci:lighthouse"],
     heroImageMobilePosition: "80% -8vh",

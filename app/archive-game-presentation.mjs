@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Phantasmagoria (Demo)", target: "phantasmagoria-demo", engineId: "sci", gameId: "phantasmagoria",
+    files: [["resmap.001", 11518, 1988159651], ["ressci.001", 65844612, 3646433611]],
+  },
+  {
     title: "Flight of the Amazon Queen", target: "queen", engineId: "queen", gameId: "queen",
     files: [["queen.1c", 97380030, 2505654023]],
   },

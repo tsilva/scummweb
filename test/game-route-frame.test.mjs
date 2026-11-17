@@ -125,6 +125,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   const messages = new Set();
   const timers = new Map();
   const deliveries = [];
+  const archiveOptions = [];
   const reports = [];
   const storyObservers = [];
   let cursor = 0;
@@ -226,7 +227,9 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       if (name.endsWith("/game-progress/index.json")) return { games: storyMaps };
       if (name === "next/navigation") return { useRouter: () => ({}) };
       if (name === "./game-loading-status.mjs") return { gameLoadingStatus };
-      if (name === "./game-bucket.mjs") return { readCatalogGameArchive: (_url, { onProgress }) => {
+      if (name === "./game-bucket.mjs") return { readCatalogGameArchive: (_url, options) => {
+        archiveOptions.push(options);
+        const { onProgress } = options;
         loadCount++;
         onProgress(13, downloadDetails);
         return archive.promise;
@@ -276,7 +279,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     } while (dirty);
   }
   return {
-    archive, frame, deliveries, reports, timers, render, shellProperties, storyObservers,
+    archive, archiveOptions, frame, deliveries, reports, timers, render, shellProperties, storyObservers,
     get children() { return children; },
     get loadCount() { return loadCount; },
     get confirmations() { return confirmations; },
@@ -1048,4 +1051,19 @@ test("Castle Master uses a movement gamepad only during ready landscape mobile p
     assert.equal(readyPlayer(game, options).castleGamepad, undefined);
   }
   assert.equal(mobileControls.getMobileControlMode({ engineId: "freescape", gameId: "driller" }), "mouse");
+});
+
+// The unchanged official Phantasmagoria demo exceeds ordinary remote ZIP limits.
+test("Phantasmagoria's reviewed package limits are confined to its demo target", () => {
+  const demo = pendingArchivePlayer({ game: { target: "phantasmagoria-demo", slug: "phantasmagoria-demo", engineId: "sci" } });
+  demo.render();
+  assert.equal(demo.archiveOptions[0].archiveLimit, 400 * 1024 * 1024);
+  assert.equal(demo.archiveOptions[0].expandedLimit, 450 * 1024 * 1024);
+  assert.equal(demo.archiveOptions[0].timeoutMs, 900_000);
+  for (const target of ["sky", "phantasmagoria", "lighthouse-demo"]) {
+    const other = pendingArchivePlayer({ game: { target, slug: target, engineId: "sci" } });
+    other.render();
+    assert.equal(other.archiveOptions[0].archiveLimit, undefined);
+    assert.equal(other.archiveOptions[0].expandedLimit, undefined);
+  }
 });

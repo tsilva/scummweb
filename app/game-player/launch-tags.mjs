@@ -1,6 +1,7 @@
 import { getVersionMetadata } from "../game-versions.mjs";
 
 const launchTagsByTarget = new Map([
+  ["phantasmagoria-demo", ["Interactive movie", "Supernatural horror"]],
   ["lighthouse-demo", ["First-person", "Science-fiction puzzles"]],
   ["shivers-demo", ["First-person", "Horror puzzles"]],
   ["torin-demo", ["Point-and-click", "Fantasy adventure"]],

@@ -805,6 +805,16 @@
       "platform": "dos",
       "extra": "Demo",
       "readmeHref": "/launcher/notices/lighthouse.txt"
+    },
+    {
+      "target": "phantasmagoria-demo",
+      "title": "Phantasmagoria (Demo)",
+      "path": "/games/phantasmagoria",
+      "engineId": "sci",
+      "gameId": "phantasmagoria",
+      "platform": "dos",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/phantasmagoria.txt"
     }
   ]
 }

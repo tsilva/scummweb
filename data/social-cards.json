@@ -1575,6 +1575,11 @@
       "file": "zork-nemesis-the-forbidden-lands-108534972258666dc7b2fc57846d118cfc91dc70049447eb5827da71e9407856.jpg",
       "inputHash": "108534972258666dc7b2fc57846d118cfc91dc70049447eb5827da71e9407856",
       "imageHash": "eae9e06b8cefa2e3ede3113a6b615c163974f119d4df9387d2afad4fc9865699"
+    },
+    "phantasmagoria-demo": {
+      "file": "phantasmagoria-demo-9eaac1b0faa3882608e72ecf30ed5187386ca4eabec941f6ed4d9c66bc715951.jpg",
+      "inputHash": "9eaac1b0faa3882608e72ecf30ed5187386ca4eabec941f6ed4d9c66bc715951",
+      "imageHash": "b9e7b024e1309e45f002ab02a647cee05b2146baf55178415ec72eebced58174"
     }
   }
 }

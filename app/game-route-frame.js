@@ -54,6 +54,7 @@ const BOOT_ERROR_MESSAGES = new Map([
 ]);
 const MIB = 1024 * 1024;
 const catalogArchiveLimits = {
+  "phantasmagoria-demo": { archiveLimit: 400 * MIB, expandedLimit: 450 * MIB, timeoutMs: 900_000 },
   "rtz-demo": { archiveLimit: 150 * MIB, timeoutMs: 600_000 },
   "technobabylon-demo": { archiveLimit: 300 * MIB, expandedLimit: 900 * MIB, timeoutMs: 600_000 },
   "primordia-demo": { archiveLimit: 900 * MIB, expandedLimit: 1024 * MIB, timeoutMs: 900_000 },
