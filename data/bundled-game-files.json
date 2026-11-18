@@ -21165,6 +21165,62 @@
           3689520446
         ]
       ]
+    },
+    "thinkerk-demo": {
+      "url": "https://scummvm-games.tsilva.eu/thinkerk.zip",
+      "fingerprint": "11aca4b8e671bdd439e1cd1a6430b9de5af90daed04a0e4c417cf893c9977021",
+      "files": [
+        [
+          "KINDDEMO.D32",
+          36352,
+          2792432017
+        ],
+        [
+          "KINDDEMO.DLL",
+          8896,
+          2724663474
+        ],
+        [
+          "KINDDEMO.EXE",
+          21696,
+          3279641362
+        ],
+        [
+          "KINDDEMO.HE0",
+          29789,
+          1887773344
+        ],
+        [
+          "KINDDEMO.HE1",
+          7003070,
+          2334537534
+        ],
+        [
+          "KINDDEMO.HE2",
+          14774069,
+          3739990453
+        ],
+        [
+          "KINDDEMO.HE4",
+          14080291,
+          1360508685
+        ],
+        [
+          "KINDDEMO.HLP",
+          337614,
+          307860129
+        ],
+        [
+          "KINDDEMO.INF",
+          2274,
+          2682284998
+        ],
+        [
+          "KINDDEMO.W32",
+          365568,
+          665796559
+        ]
+      ]
     }
   }
 }

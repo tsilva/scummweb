@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "thinkerk-demo": {
+    ...retroGameArtwork["scumm:thinkerk"],
+    heroImageMobilePosition: "58% -10vh",
+    title: "Big Thinkers! Kindergarten (Demo)",
+    year: "1997",
+    language: "en",
+    summary: "Join Ben and Becky Brightly in the backyard for bird counting, hide-and-seek, and mazes.",
+  },
   "thinker1-demo": {
     ...retroGameArtwork["scumm:thinker1"],
     heroImageMobilePosition: "55% -9vh",

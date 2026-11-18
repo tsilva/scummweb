@@ -1,5 +1,8 @@
 {
   "byTarget": {
+    "thinkerk-demo": {
+      "platform": "windows"
+    },
     "brstorm-demo": {
       "platform": "dos"
     },

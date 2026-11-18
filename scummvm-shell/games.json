@@ -925,6 +925,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "thinkerk-demo",
+      "title": "Big Thinkers! Kindergarten (Demo)",
+      "path": "/games/thinkerk",
+      "engineId": "scumm",
+      "gameId": "thinkerk",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

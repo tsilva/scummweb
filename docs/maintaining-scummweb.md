@@ -414,6 +414,8 @@ Bear Stormin’ is the standalone DOS version of the Putt-Putt Goes to the Moon 
 
 Big Thinkers! 1st Grade’s American English Windows demo opens in Ben and Becky’s activity room. The native Skip Intro action works. Select the puzzle box to start the jigsaw and move pieces from the tray to the board. ScummWEB saving was unavailable in the tested puzzle.
 
+Big Thinkers! Kindergarten’s American English Windows demo includes Bird Perch Math, Hide ’n’ Seek, and Mealtime Mazes. The native Skip Intro action reaches the original backyard. Choose the fence to play Bird Perch Math, then select the number that matches the birds. ScummWEB saving was unavailable in the tested activity. The complete original Windows Help file remains inside the download.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.
