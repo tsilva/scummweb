@@ -9,6 +9,7 @@ import { activityCacheKey } from "../game-player/activity.mjs";
 import { applyImport, getActiveSaveSets, getSaveDestinations, identifySet, matchDestination, preserveSets,
   readStoredSets, saveLockName } from "../save-backups/backups.mjs";
 import { captureFilesystem } from "../save-backups/filesystem.mjs";
+import { isEmptyBaseballRecordsWrite, readIncompleteSaveWrites } from "../save-backups/incomplete-writes.mjs";
 import { readGameSources } from "../game-sources.mjs";
 import { editionDirectory, editionKey, editionLockName, matchesLegacySave, saveDirectory } from "../../web-shell/save-editions.mjs";
 
@@ -92,17 +93,7 @@ async function lockedSaves(action) {
   return navigator.locks.request(saveLockName, { mode: "exclusive", ifAvailable: true },
     (lock) => lock ? action() : { busy: true });
 }
-function ensureCompleteSaves() {
-  for (let index = 0; index < localStorage.length; index++) {
-    const key = localStorage.key(index);
-    if (!key?.startsWith("scummweb.continue.v1:") || key.includes(":agent-")) continue;
-    try {
-      if (JSON.parse(localStorage.getItem(key))?.pending?.length) {
-        throw new DropboxError("An incomplete game save needs attention. Your previous cloud saves are retained.", "incomplete");
-      }
-    } catch (error) { if (error instanceof DropboxError) throw error; }
-  }
-}
+const incompleteSaveMessage = "An incomplete game save needs attention. Your previous cloud saves are retained.";
 // Baselines and cached nodes belong to this storage layout and snapshot format.
 const recordKey = (account, kind, profile) => `${account}/saves-v1/${kind}/${profile}`;
 async function enqueue(account, set) {
@@ -153,13 +144,27 @@ async function syncAccount(auth, epoch, signal, progress) {
     const groups = new Map();
     const collected = await lockedSaves(async () => {
       check();
-      try { ensureCompleteSaves(); }
-      catch (error) { if (error.kind === "incomplete") return { busy: true, incomplete: true }; throw error; }
       const active = await getActiveSaveSets(localStorage, destinations);
+      const incomplete = readIncompleteSaveWrites(localStorage, destinations, active.sets);
+      const blocked = new Set();
+      const localOnly = new Set();
+      const requiresRecovery = new Set();
+      for (const entry of incomplete) {
+        const destination = destinations.find(({ key }) => key === entry.destinationKey && key !== "shared");
+        if (!destination) return { busy: true, incomplete: true };
+        const profile = await saveProfileId({ destination });
+        blocked.add(profile);
+        // Only permit local launch for the exact observed empty auxiliary file,
+        // and only if no other unfinished file shares this cloud profile.
+        if (isEmptyBaseballRecordsWrite(entry)) localOnly.add(profile);
+        else requiresRecovery.add(profile);
+      }
+      for (const profile of requiresRecovery) localOnly.delete(profile);
       const stored = await readStoredSets();
       check();
       for (const set of active.sets) {
         const profile = await saveProfileId(set);
+        if (blocked.has(profile)) continue;
         let group = groups.get(profile);
         if (!group) groups.set(profile, group = { local: null, alternatives: [] });
         // An isolated edition is authoritative over a leftover legacy root copy.
@@ -168,6 +173,7 @@ async function syncAccount(auth, epoch, signal, progress) {
       }
       for (const set of stored) {
         const profile = await saveProfileId(set);
+        if (blocked.has(profile)) continue;
         if (!groups.has(profile)) groups.set(profile, { local: null, alternatives: [] });
         groups.get(profile).alternatives.push(set);
       }
@@ -182,7 +188,7 @@ async function syncAccount(auth, epoch, signal, progress) {
         // Preserved imports/migration data survive a browser purge as well.
         for (const set of group.alternatives) await syncStore.put({ id: recordKey(account, "preserved", `${profile}/${set.hash}`), profile, set });
       }
-      return { busy: false };
+      return { busy: false, blocked, localOnly };
     });
     check();
     for (const item of await syncStore.all(recordKey(account, "pending", ""))) {
@@ -197,10 +203,12 @@ async function syncAccount(auth, epoch, signal, progress) {
       if (!groups.has(profile)) groups.set(profile, { local: null, alternatives: [] });
     }
     const readyProfiles = new Set();
-    let deferred = Boolean(collected.incomplete);
-    let deferredMessage = collected.incomplete ? "An incomplete game save needs attention. Your previous cloud saves are retained." : "";
+    const hasIncomplete = Boolean(collected.incomplete || collected.blocked?.size);
+    let deferred = hasIncomplete;
+    let deferredMessage = hasIncomplete ? incompleteSaveMessage : "";
     for (const [profile, group] of groups) {
       check();
+      if (collected.blocked?.has(profile)) continue;
       const baseline = await syncStore.get(recordKey(account, "base", profile));
       let result = await publishProfile({ client, profile, ...group, base: baseline?.hash ?? null, baseTips: baseline?.tips ?? [], refreshUnchanged: false, check });
       if (group.browserSet && group.browserSet.hash !== group.local?.hash && group.browserSet.hash !== baseline?.hash) {
@@ -225,10 +233,14 @@ async function syncAccount(auth, epoch, signal, progress) {
         }
         const restored = await lockedSaves(async () => {
           check();
+          const destinationKey = matchDestination(remote, destinations);
+          for (const entry of readIncompleteSaveWrites(localStorage, destinations)) {
+            const destination = destinations.find(({ key }) => key === entry.destinationKey && key !== "shared");
+            if (!destination || await saveProfileId({ destination }) === profile) return { changed: true };
+          }
           const current = await getActiveSaveSets(localStorage, destinations);
           const local = current.sets.find((set) => matchDestination(remote, [set.destination]));
           if (local && local.hash !== group.browserSet?.hash) return { changed: true };
-          const destinationKey = matchDestination(remote, destinations);
           let initialConfig;
           if (destinationKey && !captureFilesystem(localStorage).root.key) {
             const response = await fetch("/scummvm.ini", { signal: AbortSignal.timeout(15000) });
@@ -280,7 +292,8 @@ async function syncAccount(auth, epoch, signal, progress) {
     const scanComplete = !collected.incomplete && observedGeneration === localGeneration;
     launchSyncSnapshot = { epoch, account, localGeneration: observedGeneration,
       complete: !collected.busy && scanComplete, checkEmptyEdition: Boolean(collected.busy && scanComplete),
-      blockedMessage: (collected.incomplete ? "An incomplete game save needs attention. Your previous cloud saves are retained."
+      blocked: collected.blocked, localOnly: collected.localOnly,
+      blockedMessage: (hasIncomplete ? incompleteSaveMessage
         : collected.busy ? "Finish syncing saved progress and close other ScummWEB games before playing." : ""),
       scanned: new Set(groups.keys()), ready: new Set([...readyProfiles].filter((profile) => !pendingProfiles.has(profile))) };
     update({ phase: pending.length || deferred ? "waiting" : "connected", conflicts: [],
@@ -288,7 +301,7 @@ async function syncAccount(auth, epoch, signal, progress) {
       message: deferred ? deferredMessage || "Saved progress is waiting to be checked again."
         : pending.length ? "Your latest saves are waiting to sync." : "" });
     return { retry: !collected.busy && !collected.incomplete
-      && (pending.length > 0 || observedGeneration !== localGeneration) };
+      && (pending.some((item) => !collected.blocked?.has(item.profile)) || observedGeneration !== localGeneration) };
 
   } finally { transport.close(); }
 }
@@ -304,7 +317,7 @@ async function emptyCatalogEdition(destination) {
     return navigator.locks.request(editionLockName(edition), { mode: "exclusive", ifAvailable: true }, (lock) => {
       if (!lock) return false;
       try {
-        ensureCompleteSaves();
+        if (readIncompleteSaveWrites(localStorage).length) return false;
         const { root } = captureFilesystem(localStorage, true);
         const editions = root.children.get(editionDirectory);
         if (editions && (!editions.children || editions.children.has(edition))) return false;
@@ -328,10 +341,12 @@ async function launchIsVerified(destinationKey) {
   const destination = destinations.find((item) => item.key === destinationKey);
   if (!destination) return false;
   const profile = await saveProfileId({ destination });
+  const editionPaused = snapshot.blocked?.has(profile);
+  if (editionPaused && !snapshot.localOnly?.has(profile)) return false;
   if (!snapshot.complete && (!snapshot.checkEmptyEdition || snapshot.scanned.has(profile) || !await emptyCatalogEdition(destination))) return false;
   return snapshot === launchSyncSnapshot && snapshot.epoch === generation && snapshot.account === session()?.accountId
     && snapshot.localGeneration === localGeneration
-    && (!snapshot.scanned.has(profile) || snapshot.ready.has(profile));
+    && (editionPaused || !snapshot.scanned.has(profile) || snapshot.ready.has(profile));
 }
 
 export async function syncDropbox({ beforeLaunch = false, launchDestinationKey = null } = {}) {

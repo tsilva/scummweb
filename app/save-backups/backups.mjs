@@ -251,7 +251,16 @@ export async function applyImport({ storage, rows, destinations, revision, initi
     // positive record attached to replacement bytes. Failed restores can repair
     // the now-missing index in the background without changing player files.
     const keys = Array.from({ length: storage.length }, (_, index) => storage.key(index));
-    for (const key of keys) if (key?.startsWith(saveIndexPrefix)) storage.removeItem(key);
+    for (const key of keys) {
+      if (!key?.startsWith(saveIndexPrefix)) continue;
+      let index;
+      try { index = JSON.parse(storage.getItem(key)); } catch { /* Invalid metadata has no usable index. */ }
+      // An import invalidates the old positive index, but proves nothing about
+      // unfinished writes in other editions (or files included in a merge).
+      if (Array.isArray(index?.pending) && index.pending.length) {
+        storage.setItem(key, JSON.stringify({ ...index, saves: [], revision: null }));
+      } else storage.removeItem(key);
+    }
   }
   restoreSaveGroups(storage, updates, revision, initialConfig);
 }

@@ -6,7 +6,7 @@ import { readGameSources } from "../game-sources.mjs";
 import "../styles/settings-details.css";
 import DropboxRow from "./dropbox-row";
 import DropboxPreview from "./dropbox-preview";
-import { readIncompleteSaveWrites } from "../save-backups/incomplete-writes.mjs";
+import { isEmptyBaseballRecordsWrite, readIncompleteSaveWrites } from "../save-backups/incomplete-writes.mjs";
 
 const formatSaveCount = (count) => `${count} save ${count === 1 ? "file" : "files"}`;
 
@@ -221,9 +221,10 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
         {data.incomplete?.length > 0 && <div className="settings-action-block">
           <Info size={25} aria-hidden="true" />
           <div><h3>Unfinished saves</h3>
-            <p>These writes have no confirmed completion. Export your saves before attempting recovery. Existing files are kept unchanged.</p>
+            <p>Dropbox skips affected games until their unfinished writes are resolved. Export your saves before attempting recovery.</p>
             <ul>{data.incomplete.map((entry) => <li key={entry.key}><strong>{entry.title}</strong>
               <ul>{entry.files.map((file) => <li key={file.name}>{file.name} — {file.exists ? `${file.size} bytes retained` : "file not present"}</li>)}</ul>
+              {isEmptyBaseballRecordsWrite(entry) && <p>You can play this game locally while Dropbox waits for a completed records write.</p>}
             </li>)}</ul>
           </div>
         </div>}

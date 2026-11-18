@@ -190,9 +190,13 @@ and clocks can differ across devices. Shared ancestry remains authoritative for
 ordinary sequential saves; time is only a preference between concurrent copies.
 Recovery preserves the alternative without interrupting normal play.
 
-A running game's files are never replaced remotely. Existing unsynced progress,
-a same-edition player, incomplete writes or an unfinished restore continue to
-block an unverified launch; transient contention retries automatically.
+A running game's files are never replaced remotely. An incomplete write holds
+sync for its identified edition while other editions can sync and launch.
+Unidentified writes still require the broader safety hold. An empty Backyard
+Baseball records write stays on the device and allows local play for its
+edition while its cloud saves are held. A successful new records write clears
+the marker. Other incomplete writes still block an unverified launch of their
+edition. Transient contention retries automatically.
 An existing browser's saves are bound to the first connected Dropbox account;
 use that account or a separate browser profile.
 

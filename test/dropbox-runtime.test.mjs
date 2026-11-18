@@ -584,6 +584,50 @@ test("an incomplete save explains its actual blocker instead of asking to exit a
   assert.doesNotMatch(runtime.getDropboxState().message, /exit the game/);
 });
 
+test("an empty Baseball records write stays local and does not block verified cloud saves for other games", async (t) => {
+  const { runtime, storage, destinations, server } = await setup(t, "local progress", [
+    { target: "sky", displayTitle: "Beneath a Steel Sky" },
+    { target: "baseball", displayTitle: "Backyard Baseball" },
+  ]);
+  const marker = "scummweb.continue.v1:catalog:baseball";
+  const baseball = destinations.find(({ family }) => family === "baseball");
+  const sky = destinations.find(({ family }) => family === "sky");
+  const incomplete = await getActiveSaveSets(storage, destinations);
+  const set = await makeSet({ ...baseball, isolated: true }, "baseball-records.bbl", "");
+  await applyImport({ storage, destinations, revision: incomplete.revision,
+    rows: [{ set, destinationKey: baseball.key, choice: "imported" }] });
+  storage.setItem(marker, JSON.stringify({ schemaVersion: 1, engineId: "scumm", gameId: "baseball",
+    target: "baseball", saves: [], pending: ["baseball-records.bbl"] }));
+  const validRecords = await makeSet({ ...baseball, isolated: true }, "baseball-records.bbl", "verified records");
+  const baseballNode = await writeSnapshot(server, await makeSnapshot(validRecords));
+  const original = (await getActiveSaveSets(storage, destinations)).sets.find((item) => item.destination.key === sky.key);
+  await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: sky.key });
+  await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: baseball.key });
+  assert.equal(runtime.getDropboxState().phase, "waiting");
+  assert.equal((await getActiveSaveSets(storage, destinations)).sets.find((item) => item.destination.key === baseball.key).files[0].data.length, 0);
+  assert.equal(await syncStore.get(key("base", baseballNode.profile)), undefined);
+  assert.equal((await syncStore.get(key("base", await saveProfileId(original)))).hash, original.hash);
+
+  // A concurrent device can bring a completed save for a different edition.
+  // Restoring it must not erase the unfinished marker and unblock Baseball sync.
+  const firstSkyNode = (await syncStore.get(key("base", await saveProfileId(original)))).tips[0];
+  const latestSky = await makeSet(sky, "SKY-VM.001", "newer verified Sky save", 300);
+  await writeSnapshot(server, await makeSnapshot(latestSky, [firstSkyNode]));
+  await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: sky.key });
+  assert.deepEqual(JSON.parse(storage.getItem(marker)).pending, ["baseball-records.bbl"]);
+  assert.equal((await getActiveSaveSets(storage, destinations)).sets.find((item) => item.destination.key === sky.key).hash, latestSky.hash);
+
+  storage.setItem(marker, JSON.stringify({ engineId: "scumm", gameId: "baseball", target: "baseball",
+    pending: ["baseball-records.bbl", "baseball.s01"] }));
+  await assert.rejects(runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: baseball.key }), /incomplete game save/);
+  await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: sky.key });
+
+  async function makeSet(destination, path, content, modifiedAt = 200) {
+    const item = { destination, files: [{ path, data: bytes(content), modifiedAt }] };
+    return { ...item, hash: await identifySet(item) };
+  }
+});
+
 
 test("overlapping first-sync progress resolves automatically and keeps both complete originals", async (t) => {
   const { runtime, storage, destinations, server } = await setup(t);
