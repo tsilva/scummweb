@@ -1104,6 +1104,31 @@ button.nav-icon-link {
 .recent-story-progress::-webkit-progress-value { background: var(--accent-strong); }
 .recent-story-progress::-moz-progress-bar { background: var(--accent-strong); }
 
+.recent-games-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+}
+
+.recent-rail-controls { display: flex; gap: 0.5rem; }
+.recent-rail-controls button {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid rgb(255 255 255 / 12%);
+  background: var(--surface-high);
+  color: var(--ink);
+  cursor: pointer;
+}
+.recent-rail-controls button:hover:enabled { background: var(--accent); color: #111; }
+.recent-rail-controls button:focus-visible { outline: 2px solid var(--accent-strong); outline-offset: 3px; }
+.recent-rail-controls button:disabled { opacity: 0.35; cursor: default; }
+
 .recent-game-card {
   flex: 0 0 min(25rem, calc(100vw - 3rem));
   display: flex;

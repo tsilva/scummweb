@@ -20,6 +20,9 @@ time and **Last played** date, and a direct **Continue** button when a compatibl
 save exists (otherwise **Play**). Imported copies retain their file-access and
 locate actions. Supported editions also show verified story progress; see
 [progress tracking](game-progress.md#recently-played).
+Use the arrow buttons beside Recently Played to scroll through the cards with
+a mouse or keyboard. They appear when the row overflows; touch and trackpad
+scrolling also remain available.
 Play time starts after the game is ready and counts visible play, including
 cutscenes. Loading, background tabs, the shared game menu, rotation prompts and
 exiting do not count. Progress made before time tracking was introduced has no
