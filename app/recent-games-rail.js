@@ -10,19 +10,23 @@ import GameSelectionLink from "./home-shell/game-selection-link";
 import { chosenGameVersionUpdatedEvent, readPreferredGameVersion, rememberGameVersion } from "./game-versions.mjs";
 import LaunchButton from "./launch-button";
 import SourceLaunchActions from "./home-shell/source-launch-actions";
-import { formatLastPlayed, formatPlayedTime, playHistoryUpdatedEvent, readPlayHistory } from "./game-player/play-history.mjs";
+import { formatLastPlayed, formatPlayedTime, playHistoryUpdatedEvent } from "./game-player/play-history.mjs";
+import { activityDevice, activityUpdatedEvent, indexActivity, mergeRecentActivity, readActivityCache, versionActivity } from "./game-player/activity.mjs";
+import { connectionKey } from "./dropbox/client.mjs";
 import { getCachedBrowserSaveContents } from "./browser-saves.mjs";
 import useBrowserSave from "./use-browser-save";
 import { getQueenSaveProgress } from "./game-player/queen-save-progress.mjs";
-import { getStoryProgressRevision, readStoryProgress } from "./game-player/story-progress.mjs";
+import { getStoryProgressRevision } from "./game-player/story-progress.mjs";
 import storyProgressIndex from "../public/game-progress/index.json";
 
-function RecentStoryProgress({ version }) {
+function progressRevision(version) {
   const { slug, importRequired } = version.game;
-  const revision = getStoryProgressRevision(storyProgressIndex, slug, !version.source && !importRequired);
+  return getStoryProgressRevision(storyProgressIndex, slug, !version.source && !importRequired);
+}
+
+function RecentStoryProgress({ version, revision, percent }) {
   if (!revision) return null;
-  const percent = readStoryProgress(window, version.key, slug, revision);
-  if (version.key === "catalog:queen" && !importRequired) {
+  if (version.key === "catalog:queen" && !version.game.importRequired) {
     return <QueenSaveProgress game={version.game} revision={revision} fallback={percent} />;
   }
   return <StoryProgressBar percent={percent} />;
@@ -52,13 +56,14 @@ function StoryProgressBar({ percent, saved }) {
   </span>;
 }
 
-function RecentGameCard({ group, now }) {
+function RecentGameCard({ group, now, synced }) {
   const artwork = useArtworkDelivery();
   const { key, versions, recentVersionKey } = group;
   const version = versions.find((version) => version.key === recentVersionKey)
     || readPreferredGameVersion(versions, key);
   const { game } = version;
-  const history = readPlayHistory(window, version.key);
+  const revision = progressRevision(version);
+  const { history, percent } = versionActivity(window, version, synced, revision);
   const onLaunch = () => rememberGameVersion(key, version.key);
   return <article className={`recent-game-card ${game.tone}`} data-game-target={game.target} aria-label={game.displayTitle}>
     <div className="recent-game-details">
@@ -66,7 +71,7 @@ function RecentGameCard({ group, now }) {
         {...getPosterImageProps(game.posterImage, false, 12, artwork)} sizes="96px" /> : <span className="recent-game-cover" />}
       <div className="recent-game-summary">
         <GameSelectionLink game={game} onClick={onLaunch} className="recent-game-title"><h3>{game.displayTitle}</h3></GameSelectionLink>
-        <div className="recent-game-progress"><RecentStoryProgress version={version} /></div>
+        <div className="recent-game-progress"><RecentStoryProgress version={version} revision={revision} percent={percent} /></div>
         <dl className="recent-game-stats">
           <div><dt>Played</dt><dd>{formatPlayedTime(history?.playedMs)}</dd></div>
           <div><dt>Last played</dt><dd><time dateTime={history ? new Date(history.lastPlayedAt).toISOString() : undefined}
@@ -82,34 +87,50 @@ function RecentGameCard({ group, now }) {
   </article>;
 }
 
+function readSyncedActivity() {
+  try {
+    const { localStorage } = window;
+    const account = JSON.parse(localStorage.getItem(connectionKey))?.accountId;
+    const data = readActivityCache(localStorage, account);
+    return data && indexActivity(data, activityDevice(localStorage));
+  } catch { return null; }
+}
+
 export default function RecentGamesRail({ groups }) {
   const [recentTargets, setRecentTargets] = useState([]);
   const [now, setNow] = useState(null);
+  const [synced, setSynced] = useState(null);
   const railRef = useRef(null);
   const [scrollable, setScrollable] = useState({ previous: false, next: false });
 
   useEffect(() => {
     const update = () => { setRecentTargets(getRecentGameTargets()); setNow(Date.now()); };
-    update();
+    const updateSynced = () => { setSynced(readSyncedActivity()); update(); };
+    updateSynced();
     const timer = window.setInterval(update, 60_000);
     window.addEventListener("focus", update);
-    window.addEventListener("pageshow", update);
-    window.addEventListener("storage", update);
+    window.addEventListener("pageshow", updateSynced);
+    window.addEventListener("storage", updateSynced);
+    window.addEventListener(activityUpdatedEvent, updateSynced);
+    window.addEventListener("scummweb:dropbox-connection", updateSynced);
     window.addEventListener(recentGamesUpdatedEvent, update);
     window.addEventListener(chosenGameVersionUpdatedEvent, update);
     window.addEventListener(playHistoryUpdatedEvent, update);
     return () => {
       window.clearInterval(timer);
       window.removeEventListener("focus", update);
-      window.removeEventListener("pageshow", update);
-      window.removeEventListener("storage", update);
+      window.removeEventListener("pageshow", updateSynced);
+      window.removeEventListener("storage", updateSynced);
+      window.removeEventListener(activityUpdatedEvent, updateSynced);
+      window.removeEventListener("scummweb:dropbox-connection", updateSynced);
       window.removeEventListener(recentGamesUpdatedEvent, update);
       window.removeEventListener(chosenGameVersionUpdatedEvent, update);
       window.removeEventListener(playHistoryUpdatedEvent, update);
     };
   }, []);
 
-  const recentGames = getRecentlyPlayedGames(groups, recentTargets);
+  const targets = synced ? mergeRecentActivity(window, groups, recentTargets, synced, progressRevision) : recentTargets;
+  const recentGames = getRecentlyPlayedGames(groups, targets);
 
   useEffect(() => {
     const rail = railRef.current;
@@ -129,7 +150,7 @@ export default function RecentGamesRail({ groups }) {
       observer.disconnect();
       rail.removeEventListener("scroll", update);
     };
-  }, [groups, recentTargets]);
+  }, [groups, recentTargets, synced]);
 
   function scrollGames(direction) {
     const rail = railRef.current;
@@ -158,7 +179,7 @@ export default function RecentGamesRail({ groups }) {
         </div>}
       </div>
       <div className="landscape-rail recent-games-rail" id="recently-played-rail" ref={railRef}>
-        {recentGames.map((group) => <RecentGameCard key={group.key} group={group} now={now} />)}
+        {recentGames.map((group) => <RecentGameCard key={group.key} group={group} now={now} synced={synced} />)}
       </div>
     </section>
   );

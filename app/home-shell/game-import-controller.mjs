@@ -2,6 +2,7 @@ import { findLocalGameSource } from "../local-game-matching.mjs";
 import { localGame, saveGameSources } from "../game-sources.mjs";
 import { collectGameImportNodes, prepareLocalArchive } from "../local-game-import.mjs";
 import { findBundledGame } from "./library-items.mjs";
+import { preserveSourceActivity } from "../game-player/activity.mjs";
 
 const reconnectStatuses = new Set(["locate", "missing", "permission"]);
 
@@ -9,6 +10,10 @@ export async function importLibraryRoots(selectionRoots, replacing, { catalog, e
   async function saveLocal(game, known, existing) {
     if (!sourcePresentation?.artwork) setSourcePresentation(await loadSourcePresentation());
     const source = { ...existing, ...localGame(game.handle, game, existing?.id) };
+    if (existing && existing.fingerprint !== source.fingerprint) {
+      preserveSourceActivity(globalThis, existing);
+      source.activityVersioned = true;
+    }
     // A fallback picker must replace a stale saved handle with its fresh in-memory files.
     if (!game.handle) delete source.handle;
     // An archive can replace a legacy folder while retaining its source ID and saves.

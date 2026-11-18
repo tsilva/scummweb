@@ -1,8 +1,9 @@
 # Dropbox save syncing
 
-ScummWEB can optionally keep saved progress in the player's Dropbox app folder.
-The website supplies the UI; ScummVM supplies the native cloud storage API,
-provider requests, transfers, pagination and access-token renewal. No ScummVM
+ScummWEB can optionally keep saves and Recently Played activity in the player's
+Dropbox app folder.
+The website supplies the UI; ScummVM supplies the native save storage API,
+save transfers, pagination and access-token renewal. No ScummVM
 launcher or cloud wizard appears. Personal game archives keep their existing
 library/import flows; game discovery is outside this integration.
 
@@ -30,8 +31,8 @@ Without the public key, Settings shows a disabled Connect Dropbox control.
 Authentication uses a popup, PKCE S256, offline access, a checked state value,
 and an exact-origin/source callback. The static callback contains no analytics
 and removes its authorization query immediately. Denying access leaves saves
-intact. The initial code exchange runs in the host; subsequent provider operations
-run through ScummVM. Site-specific PKCE tokens renew directly with Dropbox rather
+intact. The initial code exchange runs in the host. Save operations and token
+renewal run through ScummVM. Site-specific PKCE tokens renew directly with Dropbox rather
 than ScummVM's authentication broker.
 
 Native cloud configuration, including refresh credentials, is retained in the
@@ -135,9 +136,29 @@ folder. Exported collections can also be imported back into ScummWEB; edition
 identities in folder names preserve matching across browsers. The ZIP requires
 no ScummWEB manifest. Cloud backup ZIPs can still be imported for recovery.
 
-Dropbox contains only **Apps → ScummWEB → saves**, which ScummWEB manages for
-syncing. Do not copy desktop files into that folder: transfers use Import saves.
+ScummWEB manages **Apps → ScummWEB → saves** for save syncing. Use **Import
+saves** to transfer desktop saves.
 Desktop ScummVM does not automatically sync with ScummWEB.
+
+### Recently Played across devices
+
+With Dropbox connected and the URL flag enabled on each device, ScummWEB also
+syncs recorded playtime, last-played dates and verified story progress. Existing
+browser records contribute on the next sync. Older cards with no time or date
+recorded cannot supply those values. Activity can make a game appear in Recently
+Played on a device that has the matching copy but has never opened it.
+
+Playtime sums each browser's recorded contribution. Last played uses the newest
+recorded date. The story bar uses the highest verified percentage for the same
+edition and map revision. Flight of the Amazon Queen can still show progress
+from its selected Continue save. Imported archives sync activity when they have
+a matching fingerprint. Game files and library imports are set up on each device.
+
+Activity lives in `play-activity-v1.json` in the Dropbox app folder using the same
+authorization as saves. Separate browser counters and Dropbox revision checks
+keep retries and overlapping uploads from double counting play. A failed activity
+sync retries in the background and does not hold up save sync or game launches.
+Native save exports continue to contain only save files.
 
 ### Automatic reconciliation
 
@@ -178,7 +199,7 @@ checksum-named snapshot transfers inside `/saves/`, bounds responses, and
 returns sanitized errors. Credentials are persisted after native renewal before acknowledging an
 operation. Service teardown discards incomplete scratch transfers.
 
-The only remote folder is `/saves/` inside the app folder. Every
+The native bridge uses `/saves/` inside the app folder. Every
 snapshot is an ordinary `scummweb-save-backup` version 1 ZIP with an additional
 cloud manifest. Its checksum-derived filename identifies its profile, complete
 file contents, recorded save time, active/recovery role and parent snapshot IDs. Imported editions
@@ -238,7 +259,7 @@ within the same deadline. Disconnect cancels a pending pass.
 ## Verification
 
 ```sh
-node --test test/dropbox-sync.test.mjs test/dropbox-merge.test.mjs test/dropbox-runtime.test.mjs test/dropbox-ui.test.mjs test/scummvm-transfer.test.mjs \
+node --test test/dropbox-activity.test.mjs test/dropbox-sync.test.mjs test/dropbox-merge.test.mjs test/dropbox-runtime.test.mjs test/dropbox-ui.test.mjs test/scummvm-transfer.test.mjs \
   test/save-backups.test.mjs test/game-route-frame.test.mjs
 ```
 
@@ -246,7 +267,8 @@ Tests cover faults around remote commits, lost replies, coordinator restarts,
 independent browser-storage flushes, concurrent writers, deterministic automatic choices,
 missing ancestry, account boundaries, live-player locks, checksum validation,
 portable ZIP round trips, compatible unions, concurrent file edits and deletions,
-multiple-device overlaps, interrupted merges, native desktop files and recovery without conflict dialogs.
+multiple-device overlaps, interrupted merges, native desktop files, recovery without
+conflict dialogs and activity convergence after a lost upload response.
 Native changes require a full runtime rebuild
 with `--enable-cloud` through the maintained build script.
 

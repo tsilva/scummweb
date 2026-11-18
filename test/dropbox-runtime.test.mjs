@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { connectionKey, sessionKey } from "../app/dropbox/client.mjs";
+import { activityCacheKey } from "../app/game-player/activity.mjs";
 import { dropboxEnabled, prepareDropboxLaunch, reportDropboxSave } from "../app/dropbox/bridge.mjs";
 import { captureFilesystem, initializeSaveEdition } from "../app/save-backups/filesystem.mjs";
 import { createSaveCollection, makeSnapshot, publishProfile, saveProfileId, writeSnapshot } from "../app/dropbox/protocol.mjs";
@@ -78,6 +79,32 @@ test("removing the URL flag cancels an active background sync without disconnect
   assert.equal(runtime.getDropboxState().checking, false);
   assert.equal(JSON.parse(storage.getItem(connectionKey)).enabled, true);
   assert.equal(server.files.size, 0);
+});
+
+test("activity uses the scoped Dropbox session without blocking play and disconnect cancels it", async (t) => {
+  const { runtime, storage } = await setup(t, null);
+  await syncStore.put({ id: "native/dropbox/" + account, config: "[cloud]\nstorage_Dropbox_access_token=test-token\n" });
+  const fetchCatalog = globalThis.fetch;
+  let request;
+  let started;
+  const ready = new Promise((resolve) => { started = resolve; });
+  globalThis.fetch = async (url, options) => {
+    if (url === "https://content.dropboxapi.com/2/files/download") {
+      request = options;
+      started();
+      return new Promise((_, reject) => {
+        options.signal.addEventListener("abort", () => reject(options.signal.reason), { once: true });
+      });
+    }
+    return fetchCatalog(url, options);
+  };
+  await runtime.syncDropbox({ beforeLaunch: true });
+  await ready;
+  assert.equal(runtime.getDropboxState().phase, "connected");
+  assert.equal(request.headers.Authorization, "Bearer test-token");
+  await runtime.disconnectDropbox();
+  assert.ok(request.signal.aborted);
+  assert.equal(storage.getItem(activityCacheKey), null);
 });
 
 test("first connection migrates active AND preserved browser saves without deleting the originals", async (t) => {

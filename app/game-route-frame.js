@@ -170,7 +170,7 @@ export default function GameRouteFrame({
   }), [catalogArchiveUrl, target]);
   const loadArchive = catalogArchiveUrl ? loadCatalogArchive : loadPersonalArchive;
   const catalogLaunch = !loadArchive || Boolean(catalogArchiveUrl);
-  const progressVersion = catalogLaunch ? `catalog:${target}` : game?.recentGameId;
+  const progressVersion = catalogLaunch ? `catalog:${target}` : game?.activityVersion ?? game?.recentGameId;
   const progressSlug = game?.slug;
   const progressRevision = getStoryProgressRevision(storyProgressIndex, progressSlug, catalogLaunch);
   const router = useRouter();

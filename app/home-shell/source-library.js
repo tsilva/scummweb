@@ -1,5 +1,7 @@
 "use client";
 
+import { sourceActivityVersion } from "../game-player/activity.mjs";
+
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { exitImmersiveMode } from "../game-player/immersive-mode.mjs";
@@ -320,7 +322,8 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
         if (group) selectGame(group.game);
         return;
       }
-      game = { ...game, recentGameId: `source:${source.id}`, saveVersionId: legacySaves ? undefined : source.id,
+      game = { ...game, recentGameId: `source:${source.id}`, activityVersion: sourceActivityVersion(source),
+        saveVersionId: legacySaves ? undefined : source.id,
         saveNamespace: legacySaves ? undefined : await getVersionSaveNamespace(source.id), skipIntro: null };
       if (source.url) {
         selectGameArchive(async (signal, onProgress) => {

@@ -1,5 +1,6 @@
 import { syncStore } from "../dropbox/store.mjs";
 import { DropboxError, maxBackupBytes } from "../dropbox/client.mjs";
+import { createDropboxActivityClient } from "../dropbox/activity-sync.mjs";
 
 // IDs belong to ScummVM's Cloud::StorageID, not to the UI. Add an auth adapter
 // before enabling another provider; the snapshot/recovery protocol is shared.
@@ -31,6 +32,7 @@ export async function createNativeCloudClient({ provider = "dropbox", accountId,
   let pending, counter = 0, closed = false;
   const sizes = new Map();
   let refreshAfter = saved.refreshAfter || 0;
+  let config = saved.config;
   const request = (op, extra = {}, onProgress) => new Promise((resolve, reject) => {
     if (closed || pending) { reject(new DropboxError("Cloud sync is unavailable. Try again.")); return; }
     const id = ++counter;
@@ -46,7 +48,7 @@ export async function createNativeCloudClient({ provider = "dropbox", accountId,
     if (event.origin !== location.origin || event.source !== frame.contentWindow || event.data?.type !== "scummweb:cloud") return;
     const data = event.data;
     if (data.op === "booted" && pending?.id === 0) {
-      frame.contentWindow.postMessage({ type: "scummweb:cloud", id: 0, op: "init", config: saved.config }, location.origin);
+      frame.contentWindow.postMessage({ type: "scummweb:cloud", id: 0, op: "init", config }, location.origin);
       return;
     }
     if (!pending || data.id !== pending.id) return;
@@ -66,8 +68,11 @@ export async function createNativeCloudClient({ provider = "dropbox", accountId,
     try {
       // A disconnect may have removed the credential record during a request.
       if (operation.op === "refresh" && data.ok) refreshAfter = Date.now() + 30 * 60 * 1000;
-      if (data.config) await syncStore.putIf({ id: key, config: data.config, refreshAfter, connectionId },
-        (current) => current.connectionId === connectionId);
+      if (data.config) {
+        await syncStore.putIf({ id: key, config: data.config, refreshAfter, connectionId },
+          (current) => current.connectionId === connectionId);
+        config = data.config;
+      }
       if (data.ok) operation.resolve(data);
       else operation.reject(new DropboxError(data.kind === "auth" ? "Reconnect Dropbox to sync your saves."
         : "Could not sync cloud saves. Your local copies are retained.", data.kind));
@@ -92,6 +97,12 @@ export async function createNativeCloudClient({ provider = "dropbox", accountId,
   catch (error) { close(); throw error; }
   return {
     close,
+    activityClient() {
+      if (provider !== "dropbox") return null;
+      // Reuse the scoped session after native renewal.
+      const token = /^storage_Dropbox_access_token[ \t]*=[ \t]*([^\r\n]+)/m.exec(config)?.[1].trim();
+      return token ? createDropboxActivityClient(token) : null;
+    },
     async list() {
       let result;
       try { result = await request("list"); }
