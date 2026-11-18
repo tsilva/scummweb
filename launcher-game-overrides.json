@@ -1,5 +1,8 @@
 {
   "byTarget": {
+    "bluesbirthday-demo": {
+      "platform": "windows"
+    },
     "bluesabctime-demo": {
       "platform": "windows"
     },

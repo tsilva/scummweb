@@ -419,6 +419,8 @@ Big Thinkers! Kindergarten’s American English Windows demo includes Bird Perch
 
 Blue’s ABC Time Activities’ English Windows Sneak Peek demo includes Bathtime Rhymes. Native Skip Intro reaches the bathtub. Choose a picture bubble, then choose a picture whose word rhymes with the first. The original Windows Help and rights notices remain in the download. ScummWEB saving was unavailable during the activity.
 
+Blue’s Birthday Adventure’s English Windows Sneak Peek demo includes the toy room, farm, and one clue. Click the farm picture, follow the garden sign, and give the watering can to the chick to reveal the clue. The complete archive retains its original live-action clips and Windows Help. The original Help says this demo does not save game progress.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.
