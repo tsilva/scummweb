@@ -955,6 +955,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "airport-demo",
+      "title": "Let's Explore the Airport (Demo)",
+      "path": "/games/airport",
+      "engineId": "scumm",
+      "gameId": "airport",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

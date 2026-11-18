@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Let's Explore the Airport (Demo)", target: "airport-demo", engineId: "scumm", gameId: "airport",
+    files: [["airdemo.he0", 51131, 3554372771], ["airdemo.he1", 28668826, 3361941333]],
+  },
+  {
     title: "Blue's Clues: Blue's Birthday Adventure (Demo)", target: "bluesbirthday-demo", engineId: "scumm", gameId: "bluesbirthday",
     files: [["bluesbirthdaydemo.he0", 15789, 4262623801], ["bluesbirthdaydemo.(a)", 14266316, 388128617], ["bluesbirthdaydemo.(b)", 2679222, 2749443637]],
   },

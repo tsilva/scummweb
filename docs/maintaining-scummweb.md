@@ -421,6 +421,8 @@ Blue’s ABC Time Activities’ English Windows Sneak Peek demo includes Bathtim
 
 Blue’s Birthday Adventure’s English Windows Sneak Peek demo includes the toy room, farm, and one clue. Click the farm picture, follow the garden sign, and give the watering can to the chick to reveal the clue. The complete archive retains its original live-action clips and Windows Help. The original Help says this demo does not save game progress.
 
+The English Windows demo of Let’s Explore the Airport opens at an airplane boarding gate. The native Skip Intro action works. Select the open airplane door to enter the passenger cabin, and use the green arrow to go back. ScummWEB saving was unavailable in the tested cabin scene.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.
