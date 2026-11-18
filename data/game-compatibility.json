@@ -77,6 +77,14 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Big Thinkers! 1st Grade (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:thinker1",
+      "edition": "thinker1-win-demo-us.zip",
+      "recordedOn": "2026-11-18",
+      "observation": "American English Windows demo. The original introduction, native Skip Intro, interactive room and jigsaw piece placement were verified. ScummWEB saving was unavailable in the tested puzzle. A full activity inventory and audible output were unverified."
+    },
+    {
       "title": "Big Thinkers! Kindergarten",
       "status": "startup-verified",
       "gameId": "scumm:thinkerk",

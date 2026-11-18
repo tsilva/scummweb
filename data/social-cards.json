@@ -1630,6 +1630,11 @@
       "file": "bear-stormin-demo-6f585fd9fa5c9ed7ffd7e3d42eb874cf6889182987cd68fbb19322113ea0ee4f.jpg",
       "inputHash": "6f585fd9fa5c9ed7ffd7e3d42eb874cf6889182987cd68fbb19322113ea0ee4f",
       "imageHash": "37cc19a6d37853c997b193442c6618e395744b4713d16ffd2c5910bb89486a21"
+    },
+    "big-thinkers-1st-grade-demo": {
+      "file": "big-thinkers-1st-grade-demo-70eb4e7dbd200d52fb963c1058a29ef92bdf971f9967b07ed43d493a0c7bab85.jpg",
+      "inputHash": "70eb4e7dbd200d52fb963c1058a29ef92bdf971f9967b07ed43d493a0c7bab85",
+      "imageHash": "dbc05c143381df3c7bf7c948ac229030650d23ac31ba9c125fcaeb4f1926afe9"
     }
   }
 }

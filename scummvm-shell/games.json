@@ -915,6 +915,16 @@
       "platform": "dos",
       "extra": "",
       "readmeHref": ""
+    },
+    {
+      "target": "thinker1-demo",
+      "title": "Big Thinkers! 1st Grade (Demo)",
+      "path": "/games/thinker1",
+      "engineId": "scumm",
+      "gameId": "thinker1",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

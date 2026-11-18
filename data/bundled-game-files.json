@@ -21104,6 +21104,67 @@
           1456839864
         ]
       ]
+    },
+    "thinker1-demo": {
+      "url": "https://scummvm-games.tsilva.eu/thinker1.zip",
+      "fingerprint": "d7d43de0ab844abb1a92bf71da170e1c462d295b20ed85145cdcddda88db23b6",
+      "files": [
+        [
+          "1GRADEMO.bmp",
+          132406,
+          1946039252
+        ],
+        [
+          "1grademo.d32",
+          36352,
+          2792432017
+        ],
+        [
+          "1grademo.dll",
+          8896,
+          2724663474
+        ],
+        [
+          "1grademo.exe",
+          21712,
+          3562741174
+        ],
+        [
+          "1grademo.HE0",
+          30919,
+          813602397
+        ],
+        [
+          "1grademo.HE1",
+          8031672,
+          3070787722
+        ],
+        [
+          "1grademo.he2",
+          8875119,
+          2233283916
+        ],
+        [
+          "1grademo.he4",
+          8900151,
+          3134806136
+        ],
+        [
+          "1grademo.ico",
+          766,
+          72200133
+        ],
+        [
+          "1GRADEMO.INF",
+          2284,
+          3354923849
+        ],
+        [
+          "1GRADEMO.W32",
+          365568,
+          3689520446
+        ]
+      ]
     }
   }
 }

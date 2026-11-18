@@ -409,6 +409,8 @@ Backyard Football’s English Windows demo preserves its original mode selection
 
 Bear Stormin’ is the standalone DOS version of the Putt-Putt Goes to the Moon flying minigame. The ScummVM downloads page lists it as a demo. Press Space to pause or resume flight. The original level prompts display passcodes. ScummWEB saving was unavailable during the tested flight.
 
+Big Thinkers! 1st Grade’s American English Windows demo opens in Ben and Becky’s activity room. The native Skip Intro action works. Select the puzzle box to start the jigsaw and move pieces from the tray to the board. ScummWEB saving was unavailable in the tested puzzle.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.
