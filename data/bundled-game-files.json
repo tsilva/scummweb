@@ -21012,6 +21012,52 @@
           174307996
         ]
       ]
+    },
+    "football-demo": {
+      "url": "https://scummvm-games.tsilva.eu/football.zip",
+      "fingerprint": "eeb57a91e234efe8ba4844b5c8cbc26dad663b43efa6b6f5f0e09d9c90b80393",
+      "files": [
+        [
+          "Football-Demo-Two-Player.txt",
+          374,
+          2963498351
+        ],
+        [
+          "FOOTDEMO.(A)",
+          28052915,
+          2683461038
+        ],
+        [
+          "FOOTDEMO.D32",
+          36352,
+          2495837105
+        ],
+        [
+          "FOOTDEMO.EXE",
+          425984,
+          2895884559
+        ],
+        [
+          "FOOTDEMO.HE0",
+          23135,
+          1468339392
+        ],
+        [
+          "FOOTDEMO.HE2",
+          10696556,
+          3909202253
+        ],
+        [
+          "FOOTDEMO.HE4",
+          3492825,
+          714127695
+        ],
+        [
+          "FOOTDEMO.INF",
+          4080,
+          2900771016
+        ]
+      ]
     }
   }
 }

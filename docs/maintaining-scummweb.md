@@ -405,6 +405,8 @@ Spy Fox 3: Operation Ozone’s English US Windows demo keeps its complete unchan
 
 The English Windows HE70 demo of Fatty Bear’s Birthday Surprise keeps its complete unchanged official ZIP, including original launcher/runtime and all game data. Native intro skip reaches the front yard, where skateboarding and movement work. ScummWEB saving is unavailable in the tested scene; no browser checkpoint is seeded.
 
+Backyard Football’s English Windows demo preserves its original mode selection and bundled two-player controls note. The one-player matchup and kick return work. The original note specifies mouse input for the 49ers and a joystick or gamepad for the Melonheads in two-player mode. ScummWEB saving was unavailable in the tested play.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.

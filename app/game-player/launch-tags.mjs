@@ -1,6 +1,7 @@
 import { getVersionMetadata } from "../game-versions.mjs";
 
 const launchTagsByTarget = new Map([
+  ["football-demo", ["Sports", "American football"]],
   ["fbear-demo", ["Point-and-click", "Birthday adventure"]],
   ["spyozon-demo", ["Point-and-click", "Spy adventure"]],
   ["puttmoon-demo", ["Point-and-click", "Lunar adventure"]],
