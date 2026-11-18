@@ -109,9 +109,15 @@ for (const [stage, direction, expected] of [
 });
 
 test("an unknown transfer total shows no fabricated percentage", async () => {
-  const { tree } = await row({ phase: "syncing", transferProgress: { stage: "download", direction: "download", percentage: null } });
+  const { tree } = await row({ phase: "syncing", transferProgress: { stage: "download", direction: "download", percentage: null, title: "Beneath a Steel Sky" } });
   assert.equal(nodes(tree).some(({ props }) => props?.className === "dropbox-percentage"), false);
-  assert.match(text(tree), /Identifying game… · Downloading/);
+  assert.match(text(tree), /Beneath a Steel Sky · Downloading/);
+});
+
+test("syncing before the first named game has no placeholder row", async () => {
+  const { tree } = await row({ phase: "syncing", transferProgress: null });
+  assert.match(text(tree), /Syncing saves/);
+  assert.equal(nodes(tree).some(({ props }) => props?.className === "dropbox-progress"), false);
 });
 
 async function settingsFixture({ needsGame = false, markMerged = false } = {}) {

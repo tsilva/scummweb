@@ -100,12 +100,17 @@ IndexedDB before network publication. Pending native writes and isolated agent
 runs are excluded. Files remaining in the game's save folder are retained even
 when absent from the native save list or named like a skip-intro checkpoint;
 only the shell's exact-byte checkpoint cleanup can identify bundled copies.
-Cloud checks happen before a connected launch, after save
-changes, when returning to the app, when connectivity returns, and periodically
-while the page is visible. A running game's files are never replaced remotely.
+Continue can open an intact local save while Dropbox is still checking the
+library. Launches without a usable local Continue save still check Dropbox for
+progress before playing. Sync also runs after saves change, when returning to
+the app, when connectivity returns, and periodically while the page is visible.
+A running game's files are never replaced remotely. The transfer row keeps the
+last named game visible until the next game is identified.
 
 Network, authorization and quota errors keep unsynced saves on the device and
-show an actionable status. A closed browser cannot upload; reopening retries
+show an actionable status. Restores reuse unchanged save files. If one game's
+cloud copy exceeds the available browser space, its restore is deferred and
+other games can still sync. A closed browser cannot upload; reopening retries
 durable work. Clearing site data before an upload finishes can still lose
 unsynced progress. Only verified cloud copies survive a site-data reset.
 Dropbox remains optional; unconnected play stays local.

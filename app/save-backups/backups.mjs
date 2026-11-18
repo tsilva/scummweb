@@ -245,22 +245,34 @@ export async function applyImport({ storage, rows, destinations, revision, initi
   // Preserve both sides durably before any active files change.
   await preserve(archived);
   check();
-  if (updates.length && typeof storage.key === "function") {
-    // Native save metadata belongs to the old bytes, even if sizes/times match.
-    // Invalidate BEFORE the root swap so interruption cannot leave an old
-    // positive record attached to replacement bytes. Failed restores can repair
-    // the now-missing index in the background without changing player files.
-    const keys = Array.from({ length: storage.length }, (_, index) => storage.key(index));
-    for (const key of keys) {
-      if (!key?.startsWith(saveIndexPrefix)) continue;
-      let index;
-      try { index = JSON.parse(storage.getItem(key)); } catch { /* Invalid metadata has no usable index. */ }
-      // An import invalidates the old positive index, but proves nothing about
-      // unfinished writes in other editions (or files included in a merge).
-      if (Array.isArray(index?.pending) && index.pending.length) {
-        storage.setItem(key, JSON.stringify({ ...index, saves: [], revision: null }));
-      } else storage.removeItem(key);
+  const beforeRoot = storage.getItem("/");
+  const invalidated = new Map();
+  try {
+    if (updates.length && typeof storage.key === "function") {
+      // Native save metadata belongs to the old bytes, even if sizes/times match.
+      // Invalidate before the root swap so interruption cannot leave a positive
+      // record attached to replacement bytes. Keep unfinished-write markers.
+      const keys = Array.from({ length: storage.length }, (_, index) => storage.key(index));
+      for (const key of keys) {
+        if (!key?.startsWith(saveIndexPrefix)) continue;
+        const value = storage.getItem(key);
+        if (value === null) continue;
+        invalidated.set(key, value);
+        let index;
+        try { index = JSON.parse(value); } catch { /* Invalid metadata has no usable index. */ }
+        if (Array.isArray(index?.pending) && index.pending.length) {
+          storage.setItem(key, JSON.stringify({ ...index, saves: [], revision: null }));
+        } else storage.removeItem(key);
+      }
     }
+    restoreSaveGroups(storage, updates, revision, initialConfig);
+  } catch (error) {
+    // A staged restore that never swapped the root left the old save index valid.
+    if (storage.getItem("/") === beforeRoot) {
+      for (const [key, value] of invalidated) {
+        try { storage.setItem(key, value); } catch { /* A later native scan can rebuild this index. */ }
+      }
+    }
+    throw error;
   }
-  restoreSaveGroups(storage, updates, revision, initialConfig);
 }
