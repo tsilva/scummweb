@@ -55,6 +55,14 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Bear Stormin' (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:brstorm",
+      "edition": "brstorm-dos-demo-us.zip",
+      "recordedOn": "2026-11-18",
+      "observation": "English DOS package listed as a demo by ScummVM. The native detector labels it Bear Stormin’ (English). Flight starts immediately. The original pause and resume controls and the Level 2 prompt were verified. ScummWEB saving was unavailable in the tested scene. A complete run and audible output were unverified."
+    },
+    {
       "title": "Beneath a Steel Sky",
       "status": "startup-verified",
       "gameId": "sky:sky",

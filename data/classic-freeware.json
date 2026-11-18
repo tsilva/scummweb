@@ -1196,6 +1196,27 @@
         "basis": "All eight original files inspected with ZIP CRC integrity, safe paths, SHA-256 and ASCII, UTF-16 and XOR-69 string review. The two-player note explains controls. The INF references files used by the retail installer and contains no licence acceptance requirement. The original launcher and runtime were inspected as data. No express redistribution grant or packaged prohibition found. Eligibility uses the user-authorized cautious official promotional-hosting assessment.",
         "preservation": "Serve the complete unchanged official ZIP with the two-player note, launcher, runtime, INF and original game data. No downloaded executable was run."
       }
+    },
+    {
+      "target": "brstorm-demo",
+      "title": "Bear Stormin' (Demo)",
+      "engineId": "scumm",
+      "gameId": "brstorm",
+      "platform": "dos",
+      "extra": "",
+      "config": {
+        "platform": ""
+      },
+      "archive": "brstorm-dos-demo-us.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/scumm/he/brstorm-dos-demo-us.zip",
+      "sha256": "7c36d9d341cdb318270e13a68fa3140ab914da3b06e9798c843b1d2ded9300d4",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-18",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "ScummVM lists this exact standalone DOS edition among its demos. All eight files passed ZIP path and CRC checks, SHA-256 and ASCII, UTF-16 and XOR-69 string review. The INI configures audio. All 21 records in the sound driver container were accounted for. The original game and sound driver copyright notices are preserved. No separate licence acceptance, express redistribution grant or packaged prohibition was found. Eligibility uses the cautious official promotional-hosting assessment.",
+        "preservation": "Serve the complete unchanged official ZIP with its original DOS launchers, sound drivers, configuration and game data. No downloaded executable was run."
+      }
     }
   ]
 }

@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "brstorm-demo": {
+    ...retroGameArtwork["scumm:brstorm"],
+    heroImageMobilePosition: "78% top",
+    title: "Bear Stormin' (Demo)",
+    year: "1993",
+    language: "en",
+    summary: "Fly Fatty Bear’s biplane past obstacles and collect balloons to refuel.",
+  },
   "football-demo": {
     ...retroGameArtwork["scumm:football"],
     heroImageMobilePosition: "54% -18vh",

@@ -1,5 +1,8 @@
 {
   "byTarget": {
+    "brstorm-demo": {
+      "platform": "dos"
+    },
     "drascula": {
       "skipIntro": {
         "strategy": "save-slot",

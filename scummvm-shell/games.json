@@ -905,6 +905,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "brstorm-demo",
+      "title": "Bear Stormin' (Demo)",
+      "path": "/games/brstorm",
+      "engineId": "scumm",
+      "gameId": "brstorm",
+      "platform": "dos",
+      "extra": "",
+      "readmeHref": ""
     }
   ]
 }
