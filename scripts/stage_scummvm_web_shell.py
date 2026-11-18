@@ -9,7 +9,7 @@ import sys
 source = Path(__file__).resolve().parents[1] / "web-shell"
 target = Path(sys.argv[1])
 asset_version = os.environ.get("SCUMMVM_BUNDLE_ASSET_VERSION", "dev")
-games_origin = os.environ.get("SCUMMVM_GAMES_ORIGIN", "https://scummvm-games.tsilva.eu").rstrip("/")
+games_origin = os.environ.get("SCUMMVM_GAMES_ORIGIN", "https://games.scummweb.tsilva.eu").rstrip("/")
 
 # Apply on full builds and shell-only refreshes; the adapter is idempotent.
 subprocess.run([sys.executable, str(source.parent / "scripts" / "patch_scummvm_keyboard.py"),

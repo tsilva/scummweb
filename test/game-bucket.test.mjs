@@ -5,6 +5,7 @@ import { normalizeBucketUrl, normalizeGameZipUrl, readCatalogGameArchive, readRe
 import { maxArchiveSize } from "../app/local-game-archive.mjs";
 import { installGameZipCache } from "./helpers/game-zip-cache.mjs";
 import { cacheGameZip, maxCachedGameZips, readCachedGameData } from "../app/game-zip-cache.mjs";
+import { DEFAULT_GAMES_ORIGIN, LEGACY_GAMES_ORIGIN } from "../lib/site-config.mjs";
 
 async function materialize(files) {
   return Promise.all(files.map(async ({ path, data, blob }) => ({
@@ -190,6 +191,37 @@ test("the catalog loader reuses cached ZIPs across launches", async (t) => {
   const fetch = t.mock.method(globalThis, "fetch", async () => new Response(archive));
   assert.deepEqual(await materialize(await readCatalogGameArchive(`${customUrl}/sky.zip`)), await materialize(await readCatalogGameArchive(`${customUrl}/sky.zip`)));
   assert.equal(fetch.mock.callCount(), 1);
+});
+
+test("a catalog host change reuses existing ZIP and prepared caches while fetching new revisions from the new host", async (t) => {
+  const { entries } = installGameZipCache(t);
+  const previous = Object.getOwnPropertyDescriptor(globalThis, "window");
+  Object.defineProperty(globalThis, "window", { configurable: true, value: { location: { hostname: "scummweb.tsilva.eu" } } });
+  t.after(() => previous ? Object.defineProperty(globalThis, "window", previous) : delete globalThis.window);
+  const writer = new ZipWriter(new BlobWriter());
+  await writer.add("sky.dnr", new Uint8ArrayReader(Uint8Array.of(1)));
+  const archive = await writer.close();
+  const path = "/sky.zip?v=1";
+  const legacyUrl = LEGACY_GAMES_ORIGIN + path;
+  const currentUrl = DEFAULT_GAMES_ORIGIN + path;
+  assert.notEqual(currentUrl, legacyUrl);
+  await cacheGameZip(legacyUrl, archive);
+  const fetch = t.mock.method(globalThis, "fetch", async () => new Response(archive));
+
+  const expected = [{ path: "sky.dnr", data: Uint8Array.of(1) }];
+  assert.deepEqual(await materialize(await readCatalogGameArchive(currentUrl)), expected);
+  assert.ok((await readCachedGameData(legacyUrl)).manifest);
+  const warm = await readCatalogGameArchive(currentUrl);
+  assert.ok(warm[0].blob instanceof Blob);
+  assert.deepEqual(await materialize(warm), expected);
+  assert.equal(fetch.mock.callCount(), 0);
+  assert.equal(entries.has(currentUrl), false);
+
+  const revision = "/sky.zip?v=2";
+  await readCatalogGameArchive(DEFAULT_GAMES_ORIGIN + revision);
+  assert.equal(fetch.mock.callCount(), 1);
+  assert.equal(fetch.mock.calls[0].arguments[0], DEFAULT_GAMES_ORIGIN + revision);
+  assert.ok(await readCachedGameData(LEGACY_GAMES_ORIGIN + revision));
 });
 
 test("invalid, incomplete and canceled downloads never enter the game cache", async (t) => {
