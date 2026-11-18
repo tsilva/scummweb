@@ -21058,6 +21058,52 @@
           2900771016
         ]
       ]
+    },
+    "brstorm-demo": {
+      "url": "https://scummvm-games.tsilva.eu/brstorm.zip",
+      "fingerprint": "02218610bf3d489fdd2a339ef7b53b5cff349923c4f58bb0a83907e8a760ab65",
+      "files": [
+        [
+          "BRSTORM.BRS",
+          45690,
+          2871489755
+        ],
+        [
+          "BRSTORM.DRV",
+          162085,
+          1598157268
+        ],
+        [
+          "BRSTORM.EXE",
+          142805,
+          350241283
+        ],
+        [
+          "BRSTORM.HE0",
+          5433,
+          2011138004
+        ],
+        [
+          "BRSTORM.HE1",
+          237722,
+          491020587
+        ],
+        [
+          "BRSTORM.INI",
+          114,
+          1433962467
+        ],
+        [
+          "BRSTORM.PIF",
+          545,
+          2986142198
+        ],
+        [
+          "CHECK.EXE",
+          7737,
+          1456839864
+        ]
+      ]
     }
   }
 }

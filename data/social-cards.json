@@ -1625,6 +1625,11 @@
       "file": "backyard-football-demo-cb06d5e89fcbafaebe7cb4a898c4f0fce404f9a5d5701ac06028a755dca8167b.jpg",
       "inputHash": "cb06d5e89fcbafaebe7cb4a898c4f0fce404f9a5d5701ac06028a755dca8167b",
       "imageHash": "9889db8bfa4b3a2e9fb2b2a0c293f3e7aa951e2ff9c0eb1b189115882addce09"
+    },
+    "bear-stormin-demo": {
+      "file": "bear-stormin-demo-6f585fd9fa5c9ed7ffd7e3d42eb874cf6889182987cd68fbb19322113ea0ee4f.jpg",
+      "inputHash": "6f585fd9fa5c9ed7ffd7e3d42eb874cf6889182987cd68fbb19322113ea0ee4f",
+      "imageHash": "37cc19a6d37853c997b193442c6618e395744b4713d16ffd2c5910bb89486a21"
     }
   }
 }

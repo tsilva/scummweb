@@ -407,6 +407,8 @@ The English Windows HE70 demo of Fatty Bear’s Birthday Surprise keeps its comp
 
 Backyard Football’s English Windows demo preserves its original mode selection and bundled two-player controls note. The one-player matchup and kick return work. The original note specifies mouse input for the 49ers and a joystick or gamepad for the Melonheads in two-player mode. ScummWEB saving was unavailable in the tested play.
 
+Bear Stormin’ is the standalone DOS version of the Putt-Putt Goes to the Moon flying minigame. The ScummVM downloads page lists it as a demo. Press Space to pause or resume flight. The original level prompts display passcodes. ScummWEB saving was unavailable during the tested flight.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.

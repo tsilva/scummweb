@@ -25,6 +25,7 @@ test("fresh browser configuration preserves UTF-8 titles and records byte length
 
 test("official classic archives are recognized by contents without relying on filenames", () => {
   for (const [target, files] of [
+    ["brstorm-demo", [["BRSTORM.HE0", 5433, 2011138004], ["BRSTORM.HE1", 237722, 491020587]]],
     ["football-demo", [["FOOTDEMO.HE0", 23135, 1468339392], ["FOOTDEMO.HE2", 10696556, 3909202253]]],
     ["fbear-demo", [["FBDEMO.HE0", 9593, 2725358755], ["FBDEMO.HE1", 1176219, 1667533979]]],
     ["spyozon-demo", [["SF3-DEMO.HE0", 15317, 1494850748], ["SF3-DEMO.HE2", 5876993, 2107715046]]],
@@ -83,6 +84,15 @@ test("official classic archives are recognized by contents without relying on fi
     assert.equal(getArchiveGamePresentation(files)?.target, target);
     assert.equal(getArchiveGamePresentation(files.map(([name, size]) => [name, size, 0])), null);
   }
+});
+
+test("Bear Stormin’ keeps its DOS label without forcing the native platform", () => {
+  const ini = fs.readFileSync(path.join(root, "scummvm-shell/scummvm.ini"), "utf8");
+  const section = ini.match(/^\[brstorm-demo\]\r?\n([^[]*)/m)?.[1];
+  assert.ok(section);
+  assert.match(section, /^platform=$/m);
+  const { games } = JSON.parse(fs.readFileSync(path.join(root, "scummvm-shell/games.json"), "utf8"));
+  assert.equal(games.find(({ target }) => target === "brstorm-demo")?.platform, "dos");
 });
 
 test("classic freeware installation rejects corrupt packages before changing the catalog", () => {
