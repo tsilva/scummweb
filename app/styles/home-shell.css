@@ -2422,10 +2422,6 @@ button.nav-icon-link {
 }
 
 @media (min-width: 48.001rem) {
-  .dashboard-nav-home .nav-brand-logo {
-    height: 1.75rem;
-  }
-
   .dashboard-nav-home .nav-links a {
     font-size: 0.8rem;
   }
