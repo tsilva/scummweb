@@ -895,6 +895,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "football-demo",
+      "title": "Backyard Football (Demo)",
+      "path": "/games/football",
+      "engineId": "scumm",
+      "gameId": "football",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

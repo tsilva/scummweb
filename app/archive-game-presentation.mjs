@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Backyard Football (Demo)", target: "football-demo", engineId: "scumm", gameId: "football",
+    files: [["footdemo.he0", 23135, 1468339392], ["footdemo.he2", 10696556, 3909202253]],
+  },
+  {
     title: "Fatty Bear's Birthday Surprise (Demo)", target: "fbear-demo", engineId: "scumm", gameId: "fbear",
     files: [["fbdemo.he0", 9593, 2725358755], ["fbdemo.he1", 1176219, 1667533979]],
   },

@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "football-demo": {
+    ...retroGameArtwork["scumm:football"],
+    heroImageMobilePosition: "54% -18vh",
+    title: "Backyard Football (Demo)",
+    year: "1999",
+    language: "en",
+    summary: "Call plays for the 49ers against the Humongous Melonheads in a short exhibition game.",
+  },
   "fbear-demo": {
     ...retroGameArtwork["scumm:fbear"],
     heroImageMobilePosition: "65% -25vh",

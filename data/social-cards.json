@@ -1620,6 +1620,11 @@
       "file": "fatty-bear-s-birthday-surprise-demo-18cc684f85f810201f1a917207d03e12f3de5f30aa476f26d989f6a64b39a71c.jpg",
       "inputHash": "18cc684f85f810201f1a917207d03e12f3de5f30aa476f26d989f6a64b39a71c",
       "imageHash": "c2555b8e406779b8ebe732a0d1f073ed869a7529bbdc29f22fcc6a92235528a4"
+    },
+    "backyard-football-demo": {
+      "file": "backyard-football-demo-cb06d5e89fcbafaebe7cb4a898c4f0fce404f9a5d5701ac06028a755dca8167b.jpg",
+      "inputHash": "cb06d5e89fcbafaebe7cb4a898c4f0fce404f9a5d5701ac06028a755dca8167b",
+      "imageHash": "9889db8bfa4b3a2e9fb2b2a0c293f3e7aa951e2ff9c0eb1b189115882addce09"
     }
   }
 }
