@@ -1,6 +1,6 @@
 import { exportBackup, identifySet, readBackup } from "../save-backups/backups.mjs";
 import { DropboxError, hex, sha256 } from "./client.mjs";
-import { commonSaveAncestors, automaticSaveMerge, saveSetTime } from "./save-merge.mjs";
+import { commonSaveAncestorNodes, automaticSaveMerge, saveSetTime } from "./save-merge.mjs";
 
 const hashPattern = /^[a-f0-9]{64}$/;
 export async function saveProfileId(set) {
@@ -32,7 +32,10 @@ function validateNode(node) {
 }
 export async function readNode(client, id) {
   if (!hashPattern.test(id)) throw new DropboxError("Invalid cloud snapshot identity.", "integrity");
-  const { sets, manifest } = await readBackup(await client.download(`${id}.zip`), { withManifest: true });
+  const archive = await client.download(`${id}.zip`);
+  let sets, manifest;
+  try { ({ sets, manifest } = await readBackup(archive, { withManifest: true })); }
+  catch { throw new DropboxError("Cloud save contents failed verification.", "integrity"); }
   const node = manifest.cloud;
   validateNode(node);
   if (sets.length !== 1 || sets[0].hash !== node.hash || saveSetTime(sets[0]) !== node.savedAt || await saveProfileId(sets[0]) !== node.profile || await nodeId(node) !== id) {
@@ -77,30 +80,58 @@ export function profileHistory(nodes, profile) {
 // This facade gives the coordinator a three-way merge without provider-specific
 // revisions. Concurrent nodes converge automatically while originals remain recoverable.
 export async function createSaveCollection(transport, cache) {
-  let nodes = [];
+  let nodes = new Map();
+  let damaged = new Map();
+  let recent;
+  function remember({ set, ...node }, revision) {
+    recent = { id: node.id, revision, set };
+    return { ...node, revision, fileCount: set.files.length };
+  }
+  async function readSet(node) {
+    if (recent?.id === node.id && recent.revision === node.revision) return recent.set;
+    const verified = await readNode(transport, node.id);
+    remember(verified, node.revision);
+    return verified.set;
+  }
   async function refresh() {
     const names = [...new Set(await transport.list())];
-    const previousIds = new Set(nodes.map((node) => `${node.id}.zip`));
-    const changed = names.length !== previousIds.size || names.some((name) => !previousIds.has(name));
-    // Snapshots are immutable and already verified. Reuse this pass's bytes
-    // instead of reopening IndexedDB for the entire history after every game.
-    // Build the active collection from the fresh listing so deletions still count.
-    const verified = new Map(nodes.map((node) => [node.id, node]));
-    const next = [];
-    let totalBytes = 0;
+    let changed = names.length !== nodes.size + damaged.size;
+    const next = new Map();
+    const rejected = new Map();
+    // Keep the complete verified graph, with at most one decoded backup from
+    // this scan. Old bytes stay available in Dropbox for merges and recovery.
     for (const name of names) {
       const id = name.slice(0, -4);
-      let node = verified.get(id) ?? await cache?.load(id);
-      if (!node) { node = await readNode(transport, id); await cache?.save(node); }
-      totalBytes += node.set.files.reduce((sum, file) => sum + file.data.length, 0);
-      if (totalBytes > 256 * 1024 * 1024) throw new DropboxError("Cloud save history exceeds the supported collection size. Your copies are retained.");
-      next.push(node);
+      const revision = transport.revision?.(name);
+      const previous = nodes.get(id);
+      const previouslyDamaged = damaged.has(id) && damaged.get(id) === revision;
+      if (previouslyDamaged && revision !== undefined) {
+        rejected.set(id, revision);
+        continue;
+      }
+      if (!previous && !previouslyDamaged || previous && previous.revision !== revision) changed = true;
+      let node = previous?.revision === revision ? previous : null;
+      if (!node && revision !== undefined) node = await cache?.load(id, revision);
+      if (!node) {
+        try { node = remember(await readNode(transport, id), revision); }
+        catch (error) {
+          if (error.kind !== "integrity") throw error;
+          if (!previouslyDamaged) changed = true;
+          rejected.set(id, revision);
+          continue;
+        }
+        if (revision !== undefined) await cache?.save(node);
+      }
+      if (previouslyDamaged) changed = true;
+      next.set(id, node);
     }
     nodes = next;
+    damaged = rejected;
+    if (recent && (!nodes.has(recent.id) || nodes.get(recent.id).revision !== recent.revision)) recent = undefined;
     return changed;
   }
   await refresh();
-  const history = (profile) => profileHistory(nodes, profile);
+  const history = (profile) => profileHistory([...nodes.values()], profile);
   const head = (profile) => {
     const { tips, alternatives, own } = history(profile);
     return { active: tips[0]?.hash ?? null, tips: tips.map(({ id }) => id), concurrent: tips.length > 1,
@@ -109,11 +140,10 @@ export async function createSaveCollection(transport, cache) {
   };
   async function put(set, parents, active, check) {
     const node = await makeSnapshot(set, parents, active);
-    if (!nodes.some(({ id }) => id === node.id)) {
+    if (!nodes.has(node.id)) {
       await check();
       const confirmed = await writeSnapshot(transport, node);
-      await cache?.save(confirmed);
-      nodes.push(confirmed);
+      nodes.set(node.id, remember(confirmed, transport.revision?.(`${node.id}.zip`)));
       return true;
     }
     return false;
@@ -121,18 +151,30 @@ export async function createSaveCollection(transport, cache) {
   return {
     close: () => transport.close(),
     refresh,
-    profiles: () => [...new Set(nodes.map(({ profile }) => profile))],
+    profiles: () => [...new Set([...nodes.values()].map(({ profile }) => profile))],
+    hasDamagedArchives: () => damaged.size > 0,
+    async *verifiedFallbacks() {
+      const latest = new Map();
+      // Missing ancestry cannot authorize a merge or upload. Individual
+      // checksummed archives can still seed a browser with no local progress.
+      for (const node of [...nodes.values()].filter(({ active }) => active)
+        .sort((a, b) => b.savedAt - a.savedAt || a.id.localeCompare(b.id))) {
+        if (!latest.has(node.profile)) latest.set(node.profile, node);
+      }
+      for (const node of latest.values()) if (node.fileCount) yield await readSet(node);
+    },
     head,
-    snapshot(profile, hash) {
+    async snapshot(profile, hash) {
       const { tips, own } = history(profile);
       const matches = tips.some((item) => item.hash === hash) ? tips : own;
       const node = matches.filter((item) => item.hash === hash).sort((a, b) => b.savedAt - a.savedAt || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))[0];
       if (!node) throw new DropboxError("Cloud snapshot is missing. Local saves are unchanged.", "integrity");
-      return node.set;
+      return readSet(node);
     },
     async publish({ profile, local, alternatives = [], base = null, baseTips = [], refreshUnchanged = true, check = () => {} }) {
+      if (damaged.size) throw new DropboxError("Cloud save history could not be verified.", "integrity");
       const before = head(profile);
-      if (base !== null && (!before.snapshots.includes(base) || baseTips.some((id) => !nodes.some((node) => node.id === id)))) {
+      if (base !== null && (!before.snapshots.includes(base) || baseTips.some((id) => !nodes.has(id)))) {
         throw new DropboxError("Cloud history is missing. Your local copies are retained.", "integrity");
       }
       let wrote = false;
@@ -144,17 +186,22 @@ export async function createSaveCollection(transport, cache) {
       // A coordinator can batch unchanged profiles, then refresh the complete
       // collection before declaring it ready. Actual writes always re-list.
       if (wrote || refreshUnchanged) await refresh();
+      if (damaged.size) throw new DropboxError("Cloud save history could not be verified.", "integrity");
       let after = head(profile);
       let merged = false;
       for (let attempt = 0; after.concurrent; attempt++) {
         if (attempt === 4) throw new DropboxError("Saves are still changing on another device. They will be checked again shortly.");
         const { tips, own } = history(profile);
-        const merge = await automaticSaveMerge(tips.map(({ set }) => set), commonSaveAncestors(own, tips));
+        const copies = [], bases = [];
+        for (const tip of tips) copies.push(await readSet(tip));
+        for (const ancestor of commonSaveAncestorNodes(own, tips)) bases.push(await readSet(ancestor));
+        const merge = await automaticSaveMerge(copies, bases);
         // Publish explicit recovery copies before acknowledging any automatic
         // selection. Originals and every ancestry edge remain immutable.
-        if (merge.selected) for (const { set } of tips) await put(set, [], false, check);
+        if (merge.selected) for (const set of copies) await put(set, [], false, check);
         await put(merge.set, after.tips, true, check);
         await refresh(); // Include arrivals during publication before restoring.
+        if (damaged.size) throw new DropboxError("Cloud save history could not be verified.", "integrity");
         after = head(profile);
         merged = true;
       }

@@ -13,7 +13,7 @@ import SourceLaunchActions from "./home-shell/source-launch-actions";
 import { formatLastPlayed, formatPlayedTime, playHistoryUpdatedEvent } from "./game-player/play-history.mjs";
 import { activityDevice, activityUpdatedEvent, indexActivity, mergeRecentActivity, readActivityCache, versionActivity } from "./game-player/activity.mjs";
 import { connectionKey } from "./dropbox/client.mjs";
-import { getCachedBrowserSaveContents } from "./browser-saves.mjs";
+import { getCachedAutosaveProgress, getCachedBrowserSaveContents } from "./browser-saves.mjs";
 import useBrowserSave from "./use-browser-save";
 import { getQueenSaveProgress } from "./game-player/queen-save-progress.mjs";
 import { getStoryProgressRevision } from "./game-player/story-progress.mjs";
@@ -25,9 +25,14 @@ function progressRevision(version) {
 }
 
 function RecentStoryProgress({ version, revision, percent }) {
+  const checkpoint = useBrowserSave(version.game, Boolean(revision), getCachedAutosaveProgress);
+  const saved = checkpoint && JSON.parse(checkpoint);
   if (!revision) return null;
   if (version.key === "catalog:queen" && !version.game.importRequired) {
     return <QueenSaveProgress game={version.game} revision={revision} fallback={percent} />;
+  }
+  if (saved?.slug === version.game.slug && saved.revision === revision) {
+    return <StoryProgressBar percent={saved.percent} saved />;
   }
   return <StoryProgressBar percent={percent} />;
 }

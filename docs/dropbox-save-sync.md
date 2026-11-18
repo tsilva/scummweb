@@ -110,12 +110,8 @@ durable work. Clearing site data before an upload finishes can still lose
 unsynced progress. Only verified cloud copies survive a site-data reset.
 Dropbox remains optional; unconnected play stays local.
 
-If synchronization reports an incomplete save, **Settings → Saved games →
-Unfinished saves** identifies the affected game and filenames, including files
-that are no longer present. Inspection leaves all saves and completion markers
-unchanged. Export the collection before attempting recovery; the export retains
-existing current and recovery files. After export, a download link remains
-available if the browser did not save the ZIP automatically.
+The export retains current and recovery files. After export, a download link
+remains available if the browser did not save the ZIP automatically.
 
 ### Transfer saves to and from desktop ScummVM
 
@@ -190,13 +186,13 @@ and clocks can differ across devices. Shared ancestry remains authoritative for
 ordinary sequential saves; time is only a preference between concurrent copies.
 Recovery preserves the alternative without interrupting normal play.
 
-A running game's files are never replaced remotely. An incomplete write holds
-sync for its identified edition while other editions can sync and launch.
-Unidentified writes still require the broader safety hold. An empty Backyard
-Baseball records write stays on the device and allows local play for its
-edition while its cloud saves are held. A successful new records write clears
-the marker. Other incomplete writes still block an unverified launch of their
-edition. Transient contention retries automatically.
+A running game's files are never replaced remotely. An unfinished write
+quietly holds cloud changes for its edition while the player can continue from
+an intact local save. An unidentified write holds the scan conservatively.
+Cloud archives that fail verification leave local copies available. Each
+ScummWEB autosave keeps its native slot and companion data in one checksummed
+record. When devices have different records in the same rotation slot, the
+newest valid record takes precedence and cloud history keeps the alternatives.
 An existing browser's saves are bound to the first connected Dropbox account;
 use that account or a separate browser profile.
 
@@ -224,8 +220,10 @@ outbox is acknowledged. Readback checks ZIP integrity, file hashes, profile and
 snapshot identity. Retrying a lost response reuses the same logical identity.
 Concurrent writers publish independent immutable nodes; neither can overwrite
 the other's progress. Automatic reconciliation creates a new node referencing every observed
-tip. Missing ancestry or invalid archives stop synchronization and retain local
-copies. There is no mutable cloud index or dependency on provider-specific
+tip. If an archive fails verification, an empty browser edition can recover
+from its latest verified active archive. Existing local progress takes
+precedence while cloud writes wait for verifiable history. There is no mutable
+cloud index or dependency on provider-specific
 conditional writes, and no automatic history deletion. Automatic file merges
 also reference every merged tip and are read back before restoration. A fresh
 listing after publication incorporates arrivals during the merge; a continually
@@ -237,11 +235,11 @@ BrowserFS working copy cannot replace a newer durable pending set after restart.
 Existing save locks protect migration and restoration; a separate cross-tab
 lock serializes cloud coordination. Import and recovery retain revision checks, preservation before activation and
 exclusive save locks. Cloud ZIPs can also be imported manually
-using **Saved games**. Save archives retain the 64 MiB limit. The current
-collection scan permits up to 10,000 snapshot files; history is retained rather
-than silently pruned. Scans stop safely above 256 MiB of decoded save history.
-Within one sync pass, verified snapshots are reused across games. Fresh Dropbox
-listings still detect new snapshots and missing history.
+using **Saved games**. Each save archive retains the 64 MiB limit. ScummWEB
+keeps the entire Dropbox history and caches verified snapshot metadata by
+Dropbox revision. A new browser verifies the listed snapshots one at a time.
+Later checks reuse verified metadata and download save bytes when needed for a
+restore or merge. Fresh listings detect new, changed and missing snapshots.
 Unchanged games share the pass's initial collection listing and a final fresh
 check, rather than listing the same folder separately for every game. Writes
 still re-list immediately. New cloud changes or newly queued completed saves

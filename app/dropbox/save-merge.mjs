@@ -1,4 +1,5 @@
 import { identifySet } from "../save-backups/backups.mjs";
+import { parseAutosave } from "../../web-shell/rotating-autosaves.mjs";
 
 // Timestamps describe a copy; only filenames, bytes and ancestry decide a merge.
 const same = (a, b) => !a || !b ? a === b
@@ -13,6 +14,17 @@ export async function mergeSaveSets(sets, bases = []) {
   let identical = 0;
   for (const path of paths) {
     const versions = copies.map((copy) => copy.get(path));
+    if (/^\.scummweb-autosave\.[0-2]$/.test(path)) {
+      // Each record includes the companion bytes. Never let a damaged or
+      // older record in one device's ring replace a newer valid record.
+      const valid = versions.flatMap(file => {
+        const checkpoint = file && parseAutosave(new TextDecoder().decode(file.data));
+        return checkpoint ? [{ file, savedAt: checkpoint.savedAt }] : [];
+      }).sort((a, b) => b.savedAt - a.savedAt);
+      if (valid.length) files.push(valid[0].file);
+      else if (versions.find(Boolean)) files.push(versions.find(Boolean));
+      continue;
+    }
     if (versions.every((file) => same(file, versions[0]))) {
       if (versions[0]) { files.push(versions[0]); identical++; }
       continue;
@@ -68,7 +80,7 @@ export async function mergeSaveSets(sets, bases = []) {
 
 // All maximal common ancestors are retained. A file with ambiguous merge bases
 // retains competing versions unless every current branch agrees on its contents.
-export function commonSaveAncestors(nodes, tips) {
+export function commonSaveAncestorNodes(nodes, tips) {
   const byId = new Map(nodes.map((node) => [node.id, node]));
   const ancestors = tips.map((tip) => {
     const found = new Set(), todo = [tip.id];
@@ -82,7 +94,7 @@ export function commonSaveAncestors(nodes, tips) {
   });
   const common = nodes.filter(({ id }) => ancestors.every((ids) => ids.has(id)));
   const older = new Set(common.flatMap(({ parents }) => parents));
-  return common.filter(({ id }) => !older.has(id)).map(({ set }) => set);
+  return common.filter(({ id }) => !older.has(id));
 }
 
 // Prefer the latest recorded save time; equal clocks use content identity so

@@ -1,4 +1,5 @@
 import { readCachedSave } from "../browser-save-cache.mjs";
+import { parseAutosave } from "../../web-shell/rotating-autosaves.mjs";
 import { supportsContinue } from "../../web-shell/continue-saves.mjs";
 import { editionDirectory, editionKey, readSaveTree, saveDirectory } from "../../web-shell/save-editions.mjs";
 import runtime from "../../scummvm-shell/runtime-version.json" with { type: "json" };
@@ -129,6 +130,7 @@ export const initialActionsScript = `(() => {
   const layout = ${JSON.stringify({ editionDirectory, saveDirectory })};
   const editionKey = ${editionKey.toString()};
   const readSaveTree = ${readSaveTree.toString()};
+  const parseAutosave = ${parseAutosave.toString()};
   const readCachedSave = ${readCachedSave.toString()};
   const readGameTree = (game, storage, namespace) => readSaveTree(storage, editionKey(namespace, game.target), namespace, layout);
   const readSave = (game, storage, namespace) => readCachedSave(game, storage, namespace, false, readGameTree);

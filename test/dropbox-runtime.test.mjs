@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { connectionKey, sessionKey } from "../app/dropbox/client.mjs";
+import { createNativeCloudClient } from "../app/cloud/native-client.mjs";
 import { activityCacheKey } from "../app/game-player/activity.mjs";
 import { dropboxEnabled, prepareDropboxLaunch, reportDropboxSave } from "../app/dropbox/bridge.mjs";
 import { captureFilesystem, initializeSaveEdition } from "../app/save-backups/filesystem.mjs";
@@ -13,7 +14,7 @@ const bytes = (text) => new TextEncoder().encode(text);
 const account = "dbid:synthetic-account";
 const key = (kind, profile) => `${account}/saves-v1/${kind}/${profile}`;
 async function setup(t, contents = "browser progress", catalog = [{ target: "sky", displayTitle: "Beneath a Steel Sky" }]) {
-  const original = new Map(["window", "document", "localStorage", "sessionStorage", "indexedDB", "navigator", "fetch", "location"]
+  const original = new Map(["window", "document", "localStorage", "sessionStorage", "indexedDB", "IDBKeyRange", "navigator", "fetch", "location"]
     .map((name) => [name, Object.getOwnPropertyDescriptor(globalThis, name)]));
   const storage = browserSaveStorage(contents === null ? {} : { "SKY-VM.001": bytes(contents) });
   const sessions = memoryStorage(), idb = indexedDbFixture(), server = fakeNativeStorage();
@@ -21,6 +22,7 @@ async function setup(t, contents = "browser progress", catalog = [{ target: "sky
   const browser = nativeCloudBrowser(server, storage);
   browser.location.search = "?dropbox=true";
   const globals = { window: browser.window, document: browser.document, location: browser.location, localStorage: storage, sessionStorage: sessions, indexedDB: idb, navigator: { locks },
+    IDBKeyRange: { bound: (lower, upper) => ({ lower, upper }) },
     fetch: async (url) => url === "/games.json" ? Response.json({ games: catalog })
       : new Response("[scummvm]\n") };
   for (const [name, value] of Object.entries(globals)) Object.defineProperty(globalThis, name, { configurable: true, writable: true, value });
@@ -34,6 +36,19 @@ async function setup(t, contents = "browser progress", catalog = [{ target: "sky
   const destinations = await getSaveDestinations(catalog, []);
   return { storage, sessions, idb, server, locks, runtime, destinations };
 }
+
+test("the native bridge lists more than 10,000 archived saves without downloading or pruning them", async (t) => {
+  const { server } = await setup(t, null);
+  const archive = new Blob(["list-only fixture"]);
+  for (let index = 0; index < 10001; index++) server.files.set(`${index.toString(16).padStart(64, "0")}.zip`, archive);
+  const transport = await createNativeCloudClient({ accountId: account });
+  try {
+    const names = await transport.list();
+    assert.equal(names.length, 10001);
+    assert.deepEqual(names, [...server.files.keys()]);
+    assert.equal(server.uploads, 0);
+  } finally { transport.close(); }
+});
 
 for (const search of ["", "?other=true", "?dropbox=false", "?dropbox=1"]) {
   test(`connected accounts do not sync or block launch with URL search ${JSON.stringify(search)}`, async (t) => {
@@ -166,6 +181,23 @@ test("a clean browser restores cloud progress before the launch gate completes",
   assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, set.hash);
   await runtime.syncDropbox({ beforeLaunch: true });
   assert.equal(changes, 1, "an actual restore notifies the library once");
+});
+
+test("a damaged newer cloud archive quietly falls back to verified progress on an empty device", async (t) => {
+  const { runtime, storage, destinations, server } = await setup(t, null);
+  const set = { destination: destinations[0], files: [{ path: "SKY-VM.001", data: bytes("previous save"), modifiedAt: 100 }] };
+  set.hash = await identifySet(set);
+  const older = await writeSnapshot(server, await makeSnapshot(set));
+  const newer = { ...set, files: [{ path: "SKY-VM.001", data: bytes("newer, damaged in transit"), modifiedAt: 200 }] };
+  newer.hash = await identifySet(newer);
+  const latest = await makeSnapshot(newer, [older.id]);
+  server.files.set(`${latest.id}.zip`, new Blob(["damaged"]));
+  const before = new Map(server.files);
+  await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: set.destination.key });
+  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, set.hash);
+  assert.equal(runtime.getDropboxState().phase, "connected");
+  assert.equal(runtime.getDropboxState().message, "");
+  assert.deepEqual(server.files, before, "recovery must not rewrite damaged or missing ancestry");
 });
 
 test("idle synchronization checks the collection twice rather than once per saved game", async (t) => {
@@ -575,13 +607,13 @@ test("launch waits for another coordinator's lock instead of failing a healthy s
   assert.equal(runtime.getDropboxState().phase, "connected");
 });
 
-test("an incomplete save explains its actual blocker instead of asking to exit a nonexistent game", async (t) => {
+test("an incomplete save quietly leaves the browser available for local play", async (t) => {
   const { runtime, storage } = await setup(t);
   storage.setItem("scummweb.continue.v1:synthetic", JSON.stringify({ pending: ["SKY-VM.001"] }));
-  await runtime.syncDropbox();
-  assert.equal(runtime.getDropboxState().phase, "waiting");
-  assert.match(runtime.getDropboxState().message, /incomplete game save/);
-  assert.doesNotMatch(runtime.getDropboxState().message, /exit the game/);
+  await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:sky" });
+  assert.equal(runtime.getDropboxState().phase, "connected");
+  assert.equal(runtime.getDropboxState().message, "");
+  assert.equal(runtime.getDropboxState().verified, false);
 });
 
 test("an empty Baseball records write stays local and does not block verified cloud saves for other games", async (t) => {
@@ -603,7 +635,7 @@ test("an empty Baseball records write stays local and does not block verified cl
   const original = (await getActiveSaveSets(storage, destinations)).sets.find((item) => item.destination.key === sky.key);
   await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: sky.key });
   await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: baseball.key });
-  assert.equal(runtime.getDropboxState().phase, "waiting");
+  assert.equal(runtime.getDropboxState().phase, "connected");
   assert.equal((await getActiveSaveSets(storage, destinations)).sets.find((item) => item.destination.key === baseball.key).files[0].data.length, 0);
   assert.equal(await syncStore.get(key("base", baseballNode.profile)), undefined);
   assert.equal((await syncStore.get(key("base", await saveProfileId(original)))).hash, original.hash);
@@ -619,7 +651,8 @@ test("an empty Baseball records write stays local and does not block verified cl
 
   storage.setItem(marker, JSON.stringify({ engineId: "scumm", gameId: "baseball", target: "baseball",
     pending: ["baseball-records.bbl", "baseball.s01"] }));
-  await assert.rejects(runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: baseball.key }), /incomplete game save/);
+  await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: baseball.key });
+  assert.equal(await syncStore.get(key("base", baseballNode.profile)), undefined);
   await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: sky.key });
 
   async function makeSet(destination, path, content, modifiedAt = 200) {

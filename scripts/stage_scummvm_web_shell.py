@@ -26,13 +26,15 @@ html = html.replace("/*__SCUMMWEB_GAME_DEFAULTS__*/", (source / "game-defaults.m
 html = html.replace("/*__SCUMMWEB_AGENT_CONTROLS__*/", (source / "agent-controls.mjs").read_text().replace("export ", ""))
 html = html.replace("/*__SCUMMWEB_PLAYER_CONTROLS__*/", (source / "player-controls.mjs").read_text().replace("export ", "", 1))
 html = html.replace("/*__SCUMMWEB_DIAGNOSTIC_SAVES__*/", (source / "diagnostic-saves.mjs").read_text().replace("export ", "", 1))
+html = html.replace("/*__SCUMMWEB_ROTATING_AUTOSAVES__*/", (source / "rotating-autosaves.mjs").read_text().replace("export ", ""))
 save_editions = (source / "save-editions.mjs").read_text().replace("export ", "")
 save_filesystem = (source.parent / "app/save-backups/filesystem.mjs").read_text()
 save_filesystem = "\n".join(line for line in save_filesystem.splitlines() if not line.startswith("import "))
 html = html.replace("/*__SCUMMWEB_SAVE_EDITIONS__*/", "(function(){\n" + save_editions
                     + save_filesystem.replace("export ", "")
                     + "\nglobalThis.__scummwebSaveEditions = { editionKey, acquireEditionSession, initializeSaveEdition, readSaveTree, saveLockName };\n})();")
-html = html.replace("/*__SCUMMWEB_SAVE_BRIDGE__*/", "(function(){\n" + (source / "continue-saves.mjs").read_text().replace("export ", "") + "\nglobalThis.__scummwebInstallContinueSaves = installContinueSaves;\n})();")
+continue_saves = "\n".join(line for line in (source / "continue-saves.mjs").read_text().splitlines() if not line.startswith("import "))
+html = html.replace("/*__SCUMMWEB_SAVE_BRIDGE__*/", "(function(){\n" + continue_saves.replace("export ", "") + "\nglobalThis.__scummwebInstallContinueSaves = installContinueSaves;\n})();")
 filesystem = (source / "scummvm_fs.js").read_text().replace("__SCUMMWEB_GAMES_ORIGIN__", json.dumps(games_origin))
 
 (target / "scummvm.html").write_text(html)

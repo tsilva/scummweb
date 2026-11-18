@@ -1,4 +1,5 @@
 import { editionKey, readSaveTree } from "../web-shell/save-editions.mjs";
+import { parseAutosave } from "../web-shell/rotating-autosaves.mjs";
 
 function readGameSaveTree(game, storage, namespace) {
   return readSaveTree(storage, editionKey(namespace, game.target), namespace);
@@ -17,6 +18,24 @@ export function readCachedSave(game, storage, namespace = "", includeContents = 
       || (game.gameId && index.gameId !== game.gameId)
       || (game.extra && index.extra?.toLowerCase() !== game.extra.toLowerCase()))) return null;
     const { files, inode } = readTree(game, storage, namespace);
+    let checkpoint;
+    for (let slot = 0; slot < 3; slot++) {
+      const file = inode(files[`.scummweb-autosave.${slot}`]);
+      if (file?.type !== 0x8000 || file.size <= 0 || file.size > 3 * 1024 * 1024) continue;
+      try {
+        const raw = atob(storage.getItem(file.dataKey) || "");
+        const candidate = parseAutosave(new TextDecoder().decode(Uint8Array.from(raw, char => char.charCodeAt(0))));
+        if (candidate && candidate.target === index.target && candidate.engineId === index.engineId
+          && candidate.gameId === index.gameId && candidate.extra === (index.extra || "")
+          && (!checkpoint || candidate.savedAt > checkpoint.savedAt)) checkpoint = candidate;
+      } catch { /* Try the next intact checkpoint. */ }
+    }
+    if (checkpoint) {
+      const suffix = String(checkpoint.slot).padStart(3, "0");
+      const contents = includeContents ? checkpoint.files.find(({ name }) => name.endsWith("." + suffix))?.contents : undefined;
+      return { slot: checkpoint.slot, modifiedAt: checkpoint.savedAt, engineId: checkpoint.engineId,
+        gameId: checkpoint.gameId, extra: checkpoint.extra, autosave: true, progress: checkpoint.progress, contents };
+    }
     const valid = index.saves.filter(save => {
       if (index.pending?.includes(save.name) || !Number.isInteger(save.slot) || save.slot < 0 || save.slot > 999) return false;
       const file = inode(files[save.name]);

@@ -38,6 +38,13 @@ tests when porting; do not treat an old implementation shape as the requirement.
 
 ## Browser/runtime compatibility
 
+- Hosted rotating autosaves capture complete native slot files and companions
+  through the existing diagnostic MEMFS save path. Keep these captures out of
+  normal save listings and publish one checksummed record per rotation entry.
+  Startup uses the isolated native checkpoint read path. Verify that a failed
+  capture leaves old checkpoints and manual files intact and that a malformed
+  checkpoint cannot prevent selecting an older one.
+
 - Host cloud transfers run in a dedicated MEMFS service before plugin or GUI
   initialization. Keep native provider implementations enabled with `--enable-cloud`.
   Dropbox PKCE tokens belong to the site's app, so renew directly with its public

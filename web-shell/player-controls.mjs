@@ -106,6 +106,15 @@ export function installPlayerControls(scope, requestMenu) {
     reservedSlot = reserved;
     canSave = save;
     canLoad = load;
+    const autosaveDue = scope.__scummwebAutosaves?.due();
+    if (!pending && !menuOpen && canSave && canLoad && autosaveDue) {
+      const slot = reserved === 1 ? 2 : 1;
+      scope.__scummwebAutosaves.retry();
+      if (slot <= maxSlot && scope.__scummwebDiagnosticSaves?.begin()) {
+        pending = { operation: "autosave", slot, dispatched: true };
+        return slot;
+      }
+    }
     if (pending && !pending.dispatched) {
       if (pending.operation === "report" && !scope.__scummwebDiagnosticSaves.begin()) {
         scope.clearTimeout(pending.timer);
@@ -129,12 +138,21 @@ export function installPlayerControls(scope, requestMenu) {
     const { operation, slot, timer, resolve, written } = pending;
     pending = undefined;
     scope.clearTimeout(timer);
+    if (operation === "autosave") {
+      const result = scope.__scummwebDiagnosticSaves.finish(error);
+      if (scope.__scummwebAutosaves.save(result, slot)) scope.Module?._scummweb_refresh_saves?.();
+      return;
+    }
     if (operation === "report") {
       resolve({ ...scope.__scummwebDiagnosticSaves.finish(error), slot });
       return;
     }
     if (!error && operation === "save" && !saves.some((save) => save.slot === slot && written.has(save.name))) {
       error = "ScummVM could not confirm that the save was stored.";
+    }
+    if (!error && operation === "load") {
+      scope.__scummwebAutosaves?.afterLoad();
+      scope.__scummwebAutosaveAfterLoad?.();
     }
     resolve(error ? { error } : { slot });
   };
