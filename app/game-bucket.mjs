@@ -1,5 +1,6 @@
 import { ArchiveError, maxArchiveSize, maxExpandedSize, openPreparedGameArchive, readGameArchiveBytes, readLocalGameArchive } from "./local-game-archive.mjs";
 import { cachePreparedGame, deleteCachedGameZip, readCachedGameData } from "./game-zip-cache.mjs";
+import { DEFAULT_GAMES_ORIGIN, LEGACY_GAMES_ORIGIN } from "../lib/site-config.mjs";
 
 import { normalizeGameZipUrl } from "./game-bucket-sources.mjs";
 
@@ -11,10 +12,16 @@ export async function readRemoteGameArchive(url, options) {
 
 export function readCatalogGameArchive(url, options) {
   const { hostname } = window.location;
-  const fetchUrl = hostname === "localhost" || hostname === "127.0.0.1" || hostname === "[::1]"
-    ? `/games-proxy/${new URL(url).pathname.split("/").at(-1)}`
-    : normalizeGameZipUrl(url);
-  return downloadGameArchive(fetchUrl, options);
+  if (hostname === "localhost" || hostname === "127.0.0.1" || hostname === "[::1]") {
+    return downloadGameArchive(`/games-proxy/${new URL(url).pathname.split("/").at(-1)}`, options);
+  }
+  const fetchUrl = normalizeGameZipUrl(url);
+  // Both official hosts serve the same objects. Keep the original catalog cache
+  // key so installed archives and old tabs can share a single entry per revision.
+  const cacheUrl = fetchUrl.startsWith(`${DEFAULT_GAMES_ORIGIN}/`)
+    ? LEGACY_GAMES_ORIGIN + fetchUrl.slice(DEFAULT_GAMES_ORIGIN.length)
+    : fetchUrl;
+  return downloadGameArchive(fetchUrl, options, cacheUrl);
 }
 
 export async function validateGameArchiveResponse(response, archiveLimit = maxArchiveSize) {
@@ -67,8 +74,8 @@ export async function readCachedGameArchive(zipUrl, { signal, onEntries, onProgr
   }
 }
 
-async function downloadGameArchive(zipUrl, { signal, onEntries, onProgress, archiveLimit = maxArchiveSize, expandedLimit, timeoutMs = 120_000 } = {}) {
-  const cachedFiles = await readCachedGameArchive(zipUrl, { signal, onEntries, onProgress, archiveLimit, expandedLimit });
+async function downloadGameArchive(zipUrl, { signal, onEntries, onProgress, archiveLimit = maxArchiveSize, expandedLimit, timeoutMs = 120_000 } = {}, cacheUrl = zipUrl) {
+  const cachedFiles = await readCachedGameArchive(cacheUrl, { signal, onEntries, onProgress, archiveLimit, expandedLimit });
   if (cachedFiles) return cachedFiles;
   const timeout = AbortSignal.timeout(timeoutMs);
   const response = await fetch(zipUrl, {
@@ -111,6 +118,6 @@ async function downloadGameArchive(zipUrl, { signal, onEntries, onProgress, arch
     ? await readLocalGameArchive(new File([archive], "game.zip"), options)
     : await readGameArchiveBytes(archive, options);
   signal?.throwIfAborted();
-  cachePreparedGame(zipUrl, archive, files, entries);
+  cachePreparedGame(cacheUrl, archive, files, entries);
   return files;
 }

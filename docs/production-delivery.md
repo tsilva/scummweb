@@ -68,6 +68,10 @@ not grant game publishing access.
 Game ZIPs ship separately from the app. Name each archive `<gameId>.zip`
 using [the catalog](../scummvm-shell/games.json) and put game files at its
 root. The public bucket must allow cross-origin GETs from ScummWEB.
+Catalog downloads use `https://games.scummweb.tsilva.eu`. Keep
+`https://scummvm-games.tsilva.eu` serving directly from the same bucket for
+existing links, artwork, and older clients. Catalog launches reuse the original
+host's browser cache keys, including the archive filename and query string.
 Keep notices under `/launcher/notices/`.
 Reviewed revisions may instead select a checksum-derived immutable filename in
 `data/game-downloads.json`; see [revised game downloads](game-downloads.md).

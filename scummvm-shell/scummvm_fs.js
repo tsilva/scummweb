@@ -54,7 +54,7 @@ function isLoopbackHost(hostname) {
 }
 
 function getDefaultGamesOrigin() {
-    return "https://scummvm-games.tsilva.eu";
+    return "https://games.scummweb.tsilva.eu";
 }
 
 function getDefaultRemoteFilesystems() {
