@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Big Thinkers! Kindergarten (Demo)", target: "thinkerk-demo", engineId: "scumm", gameId: "thinkerk",
+    files: [["kinddemo.he0", 29789, 1887773344], ["kinddemo.he1", 7003070, 2334537534]],
+  },
+  {
     title: "Big Thinkers! 1st Grade (Demo)", target: "thinker1-demo", engineId: "scumm", gameId: "thinker1",
     files: [["1grademo.he0", 30919, 813602397], ["1grademo.he1", 8031672, 3070787722]],
   },

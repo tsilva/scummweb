@@ -92,6 +92,14 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Big Thinkers! Kindergarten (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:thinkerk",
+      "edition": "thinkerk-win-demo-us.zip",
+      "recordedOn": "2026-11-18",
+      "observation": "American English Windows demo. The original introduction, native Skip Intro, backyard, and an answered Bird Perch Math round were verified. ScummWEB saving was unavailable in the tested activity. The other activities and independent audible output were unverified."
+    },
+    {
       "title": "Blue Force",
       "status": "startup-verified",
       "gameId": "tsage:blueforce",

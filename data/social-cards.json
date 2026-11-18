@@ -1635,6 +1635,11 @@
       "file": "big-thinkers-1st-grade-demo-70eb4e7dbd200d52fb963c1058a29ef92bdf971f9967b07ed43d493a0c7bab85.jpg",
       "inputHash": "70eb4e7dbd200d52fb963c1058a29ef92bdf971f9967b07ed43d493a0c7bab85",
       "imageHash": "dbc05c143381df3c7bf7c948ac229030650d23ac31ba9c125fcaeb4f1926afe9"
+    },
+    "big-thinkers-kindergarten-demo": {
+      "file": "big-thinkers-kindergarten-demo-46017640da7f37fa0513873460af3e70c6dd6e71762f592d8e3eb6351bab3540.jpg",
+      "inputHash": "46017640da7f37fa0513873460af3e70c6dd6e71762f592d8e3eb6351bab3540",
+      "imageHash": "96698f718f2024de0a9b3bf4a4989060059534185403322303c22ccfc24d97e5"
     }
   }
 }
