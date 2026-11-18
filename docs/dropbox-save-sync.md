@@ -110,6 +110,13 @@ durable work. Clearing site data before an upload finishes can still lose
 unsynced progress. Only verified cloud copies survive a site-data reset.
 Dropbox remains optional; unconnected play stays local.
 
+If synchronization reports an incomplete save, **Settings → Saved games →
+Unfinished saves** identifies the affected game and filenames, including files
+that are no longer present. Inspection leaves all saves and completion markers
+unchanged. Export the collection before attempting recovery; the export retains
+existing current and recovery files. After export, a download link remains
+available if the browser did not save the ZIP automatically.
+
 ### Transfer saves to and from desktop ScummVM
 
 Use **Settings → Saved games → Import saves** to select ordinary ScummVM save
