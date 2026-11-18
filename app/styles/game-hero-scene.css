@@ -47,28 +47,6 @@ html:has(.game-route-boot-overlay.is-visible) {
     linear-gradient(180deg, rgba(6, 8, 7, 0.28), transparent 20%, transparent 72%, rgba(6, 8, 7, 0.32));
 }
 
-.game-hero-brand,
-.dashboard-nav-home {
-  --toolbar-brand-width: 9rem;
-}
-
-.game-hero-brand {
-  position: fixed;
-  z-index: 2;
-  top: max(1.25rem, env(safe-area-inset-top));
-  left: max(var(--scene-gutter), env(safe-area-inset-left));
-  display: flex;
-  align-items: center;
-  width: var(--toolbar-brand-width);
-  height: 1.75rem;
-}
-
-.game-hero-brand img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
 .game-hero-content {
   position: relative;
   z-index: 1;
@@ -247,24 +225,50 @@ html:has(.game-route-boot-overlay.is-visible) {
 .is-error .game-hero-loading { --scene-accent: #ff9e9e; }
 .game-hero-status-label { color: var(--scene-accent); font-weight: 600; }
 
-/* The transparent browsing navigation sits on the same full-height artwork. */
+/* Keep the artwork visible at the top and separate the toolbar from scrolling content. */
 .dashboard-nav-home {
+  --toolbar-gutter: clamp(1.25rem, 3.5vw, 4rem);
   justify-content: flex-start;
   gap: 1rem;
   min-height: 4.25rem;
-  padding-inline: clamp(1.25rem, 3.5vw, 4rem);
+  padding-inline: max(var(--toolbar-gutter), env(safe-area-inset-left))
+    max(var(--toolbar-gutter), env(safe-area-inset-right));
   background: transparent;
   backdrop-filter: none;
   pointer-events: none;
 }
+.dashboard-nav-home[data-scrolled] {
+  background: rgb(17 17 17 / 92%);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 35%);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dashboard-nav-home {
+    transition: background-color 160ms ease-out, box-shadow 160ms ease-out;
+  }
+}
 .dashboard-nav-home > * { pointer-events: auto; }
-.dashboard-nav-home .nav-brand-group { display: none; }
+.dashboard-nav-home .nav-brand-group {
+  flex: 0 0 auto;
+  width: 9rem;
+}
+.dashboard-nav-home .nav-brand-tagline { display: none; }
+.dashboard-nav-home .nav-brand-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.dashboard-nav-home .nav-brand:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
 .dashboard-nav-home .nav-cluster-left {
   display: flex;
+  flex-direction: row;
   flex: 0 1 auto;
+  align-items: center;
   width: auto;
-  gap: 0;
-  padding-inline-start: calc(var(--toolbar-brand-width) + 2rem);
+  gap: 2rem;
 }
 .dashboard-nav-home .nav-links { width: auto; margin: 0; gap: 1.5rem; }
 .dashboard-nav-home .nav-links a {
@@ -308,8 +312,7 @@ html:has(.game-route-boot-overlay.is-visible) {
 }
 
 @media (max-width: 48rem) {
-  .game-hero-brand,
-  .dashboard-nav-home { --toolbar-brand-width: 7.5rem; }
+  .dashboard-nav-home .nav-brand-group { width: 7.5rem; }
   .game-hero-scene { min-height: 34rem; }
   .game-hero-scene .game-hero-image { --artwork-position: var(--hero-image-mobile-position, var(--hero-image-position, 75% top)); }
   .game-hero-shade {
@@ -325,7 +328,7 @@ html:has(.game-route-boot-overlay.is-visible) {
   .game-hero-scene .hero-actions { grid-template-rows: 3.4rem 2.75rem; }
   .game-hero-scene .hero-actions > .hero-version-control[data-reserved] { display: block; }
   .dashboard-nav-home .nav-links { display: flex; flex-wrap: nowrap; gap: 0.75rem; }
-  .dashboard-nav-home .nav-cluster-left { padding-inline-start: calc(var(--toolbar-brand-width) + 0.75rem); }
+  .dashboard-nav-home .nav-cluster-left { gap: 0.75rem; }
   .dashboard-nav-home .nav-actions { margin-inline-end: 0; padding-top: 0; }
 }
 

@@ -6,6 +6,7 @@ import SourceLibrary from "./home-shell/deferred-source-library";
 import SettingsPanel from "./home-shell/settings-panel";
 import InstallPrompt from "./home-shell/install-prompt";
 import DirectionalNavigation from "./home-shell/directional-navigation";
+import DashboardNav from "./home-shell/dashboard-nav";
 import GalleryOrientation from "./home-shell/GalleryOrientation";
 import { getGamesOrigin } from "../lib/site-config.mjs";
 import { artworkDelivery, artworkStorage } from "../lib/artwork-storage.mjs";
@@ -40,10 +41,10 @@ export default function HomeShell({
     <Shell>
       <DirectionalNavigation initialFocus={pageMode === "compatibility" ? undefined : "play"} />
       {artworkStorage.published && <link rel="preconnect" href={artworkStorage.origin} />}
-      <nav className={pageMode === "compatibility" ? "dashboard-nav" : "dashboard-nav dashboard-nav-home"}>
+      <DashboardNav overlaysHero={pageMode !== "compatibility"}>
         <div className="nav-cluster nav-cluster-left">
           <div className="nav-brand-group">
-            <BrandLink className="nav-brand" href={isHomePage ? "#top" : "/"} aria-label="ScummWEB home">
+            <BrandLink className="nav-brand" href="/" aria-label="ScummWEB home">
               <img
                 alt=""
                 aria-hidden="true"
@@ -81,7 +82,7 @@ export default function HomeShell({
           </a>
           <SettingsPanel catalog={catalog} officialUrl={getGamesOrigin()} scummvmVersion={scummvmVersion} sourceInfoDate={sourceInfoDate} />
         </div>
-      </nav>
+      </DashboardNav>
 
       {isHomePage && <InstallPrompt />}
 
