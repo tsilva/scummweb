@@ -1927,6 +1927,14 @@
       "observation": "A game frame renders at startup."
     },
     {
+      "title": "Let's Explore the Airport (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:airport",
+      "edition": "airport-win-demo-us.zip",
+      "recordedOn": "2026-11-18",
+      "observation": "English Windows demo. Native Skip Intro, the boarding gate and airplane cabin navigation were verified. ScummWEB saving was unavailable in the tested cabin scene. Full activity coverage and audible output were unverified."
+    },
+    {
       "title": "Let's Explore the Farm",
       "status": "startup-verified",
       "gameId": "scumm:farm",

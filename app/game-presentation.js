@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "airport-demo": {
+    ...retroGameArtwork["scumm:airport"],
+    heroImageMobilePosition: "82% -9vh",
+    title: "Let's Explore the Airport (Demo)",
+    year: "1995",
+    language: "en",
+    summary: "Join Buzzy at the boarding gate and step inside an airplane to explore the passenger cabin.",
+  },
   "bluesbirthday-demo": {
     ...retroGameArtwork["scumm:bluesbirthday"],
     heroImageMobilePosition: "73% -15vh",

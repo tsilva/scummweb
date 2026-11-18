@@ -21508,6 +21508,57 @@
           4096735301
         ]
       ]
+    },
+    "airport-demo": {
+      "url": "https://scummvm-games.tsilva.eu/airport.zip",
+      "fingerprint": "cd277edb914488735ba18d367dc24bcd6c972c0f2da606a1d85a4684c22bd84d",
+      "files": [
+        [
+          "AIRDEMO.EXE",
+          30720,
+          1510155429
+        ],
+        [
+          "AIRDEMO.HE0",
+          51131,
+          3554372771
+        ],
+        [
+          "AIRDEMO.HE1",
+          28668826,
+          3361941333
+        ],
+        [
+          "AIRDEMO.HE2",
+          2351409,
+          1162451801
+        ],
+        [
+          "AIRDEMO.HE3",
+          36864,
+          3227364055
+        ],
+        [
+          "AIRDEMO.HE4",
+          111925,
+          2026379398
+        ],
+        [
+          "AIRDEMO.HE9",
+          15461,
+          232414617
+        ],
+        [
+          "AIRDEMO.HLP",
+          94208,
+          771259037
+        ],
+        [
+          "AIRDEMO.W32",
+          260608,
+          2950473743
+        ]
+      ]
     }
   }
 }
