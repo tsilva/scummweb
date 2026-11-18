@@ -5,6 +5,7 @@ import { runInNewContext } from "node:vm";
 import test from "node:test";
 import swc from "next/dist/build/swc/index.js";
 import * as skipIntroConfig from "../app/skip-intro-config.mjs";
+import * as preview from "../app/dropbox/feature.mjs";
 import * as telemetry from "../app/game-player/telemetry.mjs";
 import { getStoryProgressRevision } from "../app/game-player/story-progress.mjs";
 import * as gameMenu from "../app/game-player/game-menu.mjs";
@@ -48,6 +49,7 @@ for (const [message, mobile, installed] of [
         hash: "", search: "", replace: (href) => navigations.push(href),
       } },
       require(name) {
+        if (name === "./dropbox/feature.mjs") return preview;
         if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, reportDropboxSave() {} };
         if (name === "react") return {
           useState(initial) {
@@ -188,6 +190,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     navigator: { virtualKeyboard }, HTMLElement: class {},
     fetch: async () => ({ ok: true, text: async () => "<html><head></head><body></body></html>" }),
     require: function require(name) {
+      if (name === "./dropbox/feature.mjs") return preview;
       if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, reportDropboxSave() {} };
       if (name === "react") return {
         useState(initial) {
@@ -856,6 +859,7 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
       requestAnimationFrame: (callback) => callback(),
     },
     require(name) {
+      if (name === "./dropbox/feature.mjs") return preview;
       if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, reportDropboxSave() {} };
       if (name === "react") return {
         useState(initial) {

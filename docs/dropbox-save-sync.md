@@ -46,13 +46,13 @@ same origin, so the usual application XSS protections remain essential.
 
 ## Live testing access
 
-Dropbox controls and synchronization are temporarily enabled only when the current page URL includes
+Dropbox controls, synchronization and rotating ScummWEB autosaves are available only when the current page URL includes
 `?dropbox=true` (or `&dropbox=true` alongside other parameters). For example,
 open `https://scummweb.tsilva.eu/?dropbox=true`, then open Settings.
-The flag is not saved between pages. Without it, even an already connected
-account performs no background sync, save queueing or pre-launch cloud checks;
-play stays local. Removing it stops the coordinator and cancels an active sync.
-Stored authorization, pending saves and cloud history are retained for the next
+Game selection, Continue, Play and game exit carry the flag in the URL. On a
+plain URL, the player uses the normal native save flow and performs no Dropbox
+sync. Removing the flag stops the coordinator and cancels an active sync.
+Stored authorization, checkpoints, pending saves and cloud history are retained for the next
 flagged visit. Anyone with the URL can reveal the controls and must still
 authorize their own Dropbox account.
 

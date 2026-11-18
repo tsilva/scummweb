@@ -10,6 +10,7 @@ import { useArtworkDelivery } from "./artwork-delivery";
 import { chooseGameVersion, getGameFamilyKey, readPreferredGameVersion, rememberGameVersion } from "../game-versions.mjs";
 import { orderHeroGroups } from "./hero-order.mjs";
 import { buildGameExitHref } from "./hero-selection.mjs";
+import { withDropboxPreview } from "../dropbox/feature.mjs";
 import { useGameNavigation } from "./game-navigation";
 import { initialActionState, rememberInitialActions } from "./initial-actions.mjs";
 import { focusHeroAction } from "./directional-navigation";
@@ -113,7 +114,7 @@ export default function HomeHero({ groups, featuredGame, isHomePage = true, sele
     setSelectedSlide({ routeKey, id: next.id });
     if (navigate) {
       setRotationPaused(true);
-      if (!selectGame?.(next.game)) router.push(buildGameExitHref(next.game), { scroll: false });
+      if (!selectGame?.(next.game)) router.push(withDropboxPreview(buildGameExitHref(next.game)), { scroll: false });
       window.scrollTo({ top: 0, behavior: "instant" });
     }
   }

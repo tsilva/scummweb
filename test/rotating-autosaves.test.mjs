@@ -11,7 +11,9 @@ const payload = (state) => ({ status: "captured", files: [
   { name: "SKY-VM.SAV", data: data.encode("companion") },
 ] });
 
-function player(files = new Map(), query = "hostPlayer=1", failWrite = () => false) {
+const preview = "hostPlayer=1&dropbox=true";
+
+function player(files = new Map(), query = preview, failWrite = () => false) {
   const scope = { __scummwebReadyState: { state: "ready" }, __scummwebSaveStatus: identity };
   const fs = { mkdir() {}, readFile(key) { return files.get(key); }, writeFile(key, value) {
     if (failWrite(key)) throw new Error("quota");
@@ -30,7 +32,7 @@ test("rotation keeps three independent checkpoints and restores the newest intac
   assert.equal(ring.length, 3);
   const ordered = ring.sort((a, b) => parseAutosave(files.get(b)).savedAt - parseAutosave(files.get(a)).savedAt);
   files.set(ordered[0], files.get(ordered[0]).slice(0, -1));
-  const resumed = player(files, "hostPlayer=1&continue=1");
+  const resumed = player(files, preview + "&continue=1");
   assert.equal(resumed.checkpoint.startup(identity), 1);
   assert.equal(resumed.scope.__scummwebHasIntroCheckpoint("SKY-VM.SAV"), true);
   assert.equal(Buffer.from(files.get("/tmp/scummweb-intro/SKY-VM.001")).toString(), "third");
@@ -38,7 +40,7 @@ test("rotation keeps three independent checkpoints and restores the newest intac
   assert.equal(resumed.checkpoint.due(), true);
   assert.equal(resumed.scope.__scummwebHasIntroCheckpoint, undefined);
   const tried = ordered[1].split("/").at(-1);
-  assert.equal(player(files, "hostPlayer=1&continue=1&excludeAutosaves=" + tried).checkpoint.startup(identity), 1);
+  assert.equal(player(files, preview + "&continue=1&excludeAutosaves=" + tried).checkpoint.startup(identity), 1);
   assert.equal(Buffer.from(files.get("/tmp/scummweb-intro/SKY-VM.001")).toString(), "second");
 });
 
@@ -46,9 +48,23 @@ test("failed native capture and browser quota cannot replace an intact checkpoin
   const { files, checkpoint } = player();
   assert.equal(checkpoint.save(payload("intact"), 1), true);
   const before = new Map(files);
-  const rejected = player(files, "hostPlayer=1", key => key.includes(name));
+  const rejected = player(files, preview, key => key.includes(name));
   assert.equal(rejected.checkpoint.save({ status: "failed", files: [] }, 1), false);
   assert.equal(rejected.checkpoint.save(payload("replacement"), 1), false);
   assert.deepEqual(files, before);
-  assert.equal(player(files, "hostPlayer=1&continue=1&agentSaveScope=fixture").checkpoint.startup(identity), -1);
+  assert.equal(player(files, preview + "&continue=1&agentSaveScope=fixture").checkpoint.startup(identity), -1);
+});
+
+test("ordinary game launches neither load nor replace preview checkpoints", () => {
+  const { files, checkpoint } = player();
+  assert.equal(checkpoint.save(payload("preview progress"), 1), true);
+  const before = new Map(files);
+  for (const query of ["hostPlayer=1&continue=1", "hostPlayer=1&continue=1&dropbox=false", "hostPlayer=1&continue=1&dropbox=1"]) {
+    const regular = player(files, query).checkpoint;
+    regular.afterLoad();
+    assert.equal(regular.due(), false);
+    assert.equal(regular.startup(identity), -1);
+    assert.equal(regular.save(payload("ordinary progress"), 1), false);
+  }
+  assert.deepEqual(files, before);
 });
