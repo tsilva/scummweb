@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "bluesabctime-demo": {
+    ...retroGameArtwork["scumm:bluesabctime"],
+    heroImageMobilePosition: "68% -8vh",
+    title: "Blue's ABC Time Activities (Demo)",
+    year: "1998",
+    language: "en",
+    summary: "Match picture bubbles to finish a rhyme with Blue and Slippery Soap.",
+  },
   "thinkerk-demo": {
     ...retroGameArtwork["scumm:thinkerk"],
     heroImageMobilePosition: "58% -10vh",

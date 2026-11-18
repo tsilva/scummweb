@@ -416,6 +416,8 @@ Big Thinkers! 1st Grade’s American English Windows demo opens in Ben and Becky
 
 Big Thinkers! Kindergarten’s American English Windows demo includes Bird Perch Math, Hide ’n’ Seek, and Mealtime Mazes. The native Skip Intro action reaches the original backyard. Choose the fence to play Bird Perch Math, then select the number that matches the birds. ScummWEB saving was unavailable in the tested activity. The complete original Windows Help file remains inside the download.
 
+Blue’s ABC Time Activities’ English Windows Sneak Peek demo includes Bathtime Rhymes. Native Skip Intro reaches the bathtub. Choose a picture bubble, then choose a picture whose word rhymes with the first. The original Windows Help and rights notices remain in the download. ScummWEB saving was unavailable during the activity.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.

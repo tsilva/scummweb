@@ -21221,6 +21221,57 @@
           665796559
         ]
       ]
+    },
+    "bluesabctime-demo": {
+      "url": "https://scummvm-games.tsilva.eu/bluesabctime.zip",
+      "fingerprint": "c5938a2c6a5cff6f8220de49250d7f46f55539ff1f48ef471e4c03461125a1c4",
+      "files": [
+        [
+          "BluesABCTimeDemo.(a)",
+          3892429,
+          4009412535
+        ],
+        [
+          "BluesABCTimeDemo.d32",
+          36352,
+          2495837105
+        ],
+        [
+          "BluesABCTimeDemo.dll",
+          8896,
+          2724663474
+        ],
+        [
+          "BluesABCTimeDemo.exe",
+          432128,
+          585992208
+        ],
+        [
+          "BluesABCTimeDemo.HE0",
+          12186,
+          541661588
+        ],
+        [
+          "BluesABCTimeDemo.he2",
+          4997211,
+          2911383523
+        ],
+        [
+          "BluesABCTimeDemo.he4",
+          574632,
+          1332794697
+        ],
+        [
+          "BluesABCTimeDemo.hlp",
+          638716,
+          348989488
+        ],
+        [
+          "BluesABCTimeDemo.inf",
+          2164,
+          4187710821
+        ]
+      ]
     }
   }
 }

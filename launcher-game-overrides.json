@@ -1,5 +1,8 @@
 {
   "byTarget": {
+    "bluesabctime-demo": {
+      "platform": "windows"
+    },
     "thinkerk-demo": {
       "platform": "windows"
     },

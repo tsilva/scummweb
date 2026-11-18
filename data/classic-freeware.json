@@ -1256,6 +1256,27 @@
       "config": {
         "platform": ""
       }
+    },
+    {
+      "target": "bluesabctime-demo",
+      "title": "Blue's ABC Time Activities (Demo)",
+      "engineId": "scumm",
+      "gameId": "bluesabctime",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "BluesABCTime-win-demo1-us.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/scumm/he/BluesABCTime-win-demo1-us.zip",
+      "sha256": "5392551e72cb4cced972e5bc57fcb654c0f5941842e1a61b543c2677e548d3fb",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-18",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "ScummVM lists this exact interactive Windows demo. All nine files passed path, CRC, SHA-256, and ASCII, UTF-16 and XOR-69 review. The original 38-topic Windows Help identifies the two-title Sneak Peek promotional CD and describes the included Bathtime Rhymes activity. It retains the separate 1998 Viacom and Humongous copyright notices. The INF configures gameplay and audio. No active licence acceptance, express redistribution grant or packaged redistribution prohibition was found. Eligibility uses the cautious official promotional-hosting assessment.",
+        "preservation": "Serve the complete unchanged official ZIP including original Windows Help, configuration, launcher, runtime, and HE game data. No downloaded executable was run."
+      },
+      "config": {
+        "platform": ""
+      }
     }
   ]
 }
