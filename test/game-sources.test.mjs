@@ -27,6 +27,8 @@ test("availability checks read file metadata only with existing permission", asy
   assert.equal(await checkGameSource(source), "available");
   missing = true;
   assert.equal(await checkGameSource(source), "missing");
+  missing = false;
+  assert.equal(await checkGameSource(source), "available", "the same saved handle recovers when the path returns");
 
   const unlinked = localGame(null, file, "game");
   assert.deepEqual(unlinked, { id: "game", name: file.name });

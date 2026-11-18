@@ -11,6 +11,7 @@ export function localGame(handle, file, id = crypto.randomUUID()) {
   if (!isLocalArchiveSource({ name: file.name, kind: file.kind, handle })) throw new Error("Choose a ZIP or ISO containing one ScummVM game.");
   validateLocalGameArchive(file);
   return { id, name: file.name, ...(localGameArchiveKind(file) === "iso" && { kind: "iso" }), ...(handle && { handle }),
+    ...(handle && file.archiveFolderId && { archiveFolderId: file.archiveFolderId }),
     ...(file.fingerprint && { fingerprint: file.fingerprint }),
     ...(file.archiveFiles && { archiveFiles: file.archiveFiles }) };
 }
@@ -30,14 +31,16 @@ export function checkRemoteGame(source) {
   return checkGameZip(source.url, AbortSignal.timeout(12_000));
 }
 
-export async function checkGameSource(source) {
+export async function checkGameSource(source, { onFile } = {}) {
   try {
     if (source.url) return await checkRemoteGame(source) ? "available" : "missing";
     // Keep old folder entries reconnectable without accessing their contents.
     if (!isLocalArchiveSource(source)) return "locate";
     if (!source.handle) return "locate";
     if (await source.handle.queryPermission({ mode: "read" }) !== "granted") return "permission";
-    validateLocalGameArchive(await source.handle.getFile());
+    const file = await source.handle.getFile();
+    validateLocalGameArchive(file);
+    onFile?.(file);
     return "available";
   } catch (error) {
     if (source.url) return "unverified";

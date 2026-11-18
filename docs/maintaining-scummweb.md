@@ -71,10 +71,18 @@ Large compressed ZIPs need temporary browser storage. A large ZIP with
 compression disabled can be read directly from disk. See
 [packaging a collection](#package-a-local-scummvm-collection).
 
-If a ZIP or ISO is inaccessible, use **Allow file access** to restore permission or
-**Locate ZIP or ISO** to reconnect a moved file or replace a legacy folder entry.
-Reimporting the same archive also refreshes access. Reconnecting preserves the
-source ID and its saves.
+When the browser gives the library file handles for a dropped folder, ScummWEB
+remembers which archives came from that folder, including its subfolders. While
+the tab is visible, the library rotates one probe at a time across folders and
+archives without a known folder. It backs off from three to 30 seconds between
+probes. When an archive becomes readable again, ScummWEB checks the other
+unavailable archives from its folder. For an archive with no known folder, it
+checks the other ungrouped archives.
+
+**Locate ZIP or ISO** checks that game's saved path immediately and opens the
+picker if you still need to reconnect it. Use **Allow file access** if your
+browser needs permission again. Reimporting the same archives by dropping their
+folder records the shared folder for existing entries and preserves their saves.
 While file access is being checked, the library card shows a spinner in its
 top-left corner. Hover over the card or focus it with the keyboard to reveal
 **Checking files**. The status remains available to screen readers, and reduced

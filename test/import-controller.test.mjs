@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 import { runInNewContext } from "node:vm";
 import { BlobWriter, Uint8ArrayReader, ZipWriter } from "@zip.js/zip.js";
 import { importLibraryRoots } from "../app/home-shell/game-import-controller.mjs";
-import { fileNode, prepareLocalArchive } from "../app/local-game-import.mjs";
+import { fileNode, handleNode, prepareLocalArchive } from "../app/local-game-import.mjs";
 import { gameIso } from "./helpers/game-iso.mjs";
 
 const source = await readFile(new URL("../app/home-shell/source-library.js", import.meta.url), "utf8");
@@ -120,4 +120,34 @@ test("storage failure never replaces an existing persistent source with a tempor
   assert.equal(f.state.result.items[0].status, "error");
   assert.equal(f.state.entries[0].source, existing);
   assert.equal(f.context.sessionSources.size, 0);
+});
+
+test("folder imports give each dropped root its own group even when the names match", async () => {
+  const file = await zip();
+  const iso = new File([await gameIso()], "fixture.iso");
+  const folder = (files) => handleNode({ kind: "directory", name: "Games", async *values() {
+    for (const file of files) yield { kind: "file", name: file.name, getFile: async () => file };
+  } });
+  const f = processing();
+  await importLibraryRoots([folder([file]), folder([iso])], null, f.context);
+  const [first, second] = f.state.entries.map(({ source }) => source.archiveFolderId);
+  assert.ok(first);
+  assert.ok(second);
+  assert.notEqual(first, second);
+});
+
+test("locating the same file keeps its folder group and a moved replacement clears it", async () => {
+  const file = await zip();
+  const game = await prepareLocalArchive(fileNode(file));
+  const handle = { kind: "file", name: file.name, getFile: async () => file };
+  for (const sameEntry of [true, false]) {
+    const existing = { id: "saved", name: file.name, handle, fingerprint: game.fingerprint,
+      archiveFolderId: "previous-folder" };
+    const f = processing([{ source: existing, status: "missing" }]);
+    f.context.sessionSources.set(existing.id, existing);
+    const selected = handleNode({ ...handle, isSameEntry: async () => sameEntry });
+    await importLibraryRoots([selected], existing, f.context);
+    assert.equal(f.state.entries[0].source.id, existing.id);
+    assert.equal(f.state.entries[0].source.archiveFolderId, sameEntry ? "previous-folder" : undefined);
+  }
 });

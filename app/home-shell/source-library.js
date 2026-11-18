@@ -9,6 +9,7 @@ import { checkGameSource, isLocalArchiveSource, readGameSources, removeGameSourc
 import { selectGameArchive, validateLocalGameArchive } from "../local-game-selection.mjs";
 import { fileNode, handleNode } from "../game-import-nodes.mjs";
 import { inspectLocalSourceFiles } from "../game-source-inspection.mjs";
+import { startArchiveRecovery } from "./archive-recovery.mjs";
 import LibraryView from "./library-view";
 import { catalogGameEntries, getGameFamilyKey, getVersionSaveNamespace, groupGameVersions, rememberGameVersion } from "../game-versions.mjs";
 import { buildGameExitHref, readHeroSelection } from "./hero-selection.mjs";
@@ -24,6 +25,15 @@ import { removableLibraryVersions, restoreIncludedCatalog } from "./library-remo
 const sessionGames = new Map();
 const sessionSources = new Map();
 const reducedMotionQuery = "(prefers-reduced-motion: reduce)";
+const locateStatuses = new Set(["missing", "locate", "unverified"]);
+
+function hasSavedArchive(source) {
+  return !source.url && source.handle && isLocalArchiveSource(source);
+}
+
+function shouldRetryLocalSource({ source, status }) {
+  return hasSavedArchive(source) && locateStatuses.has(status);
+}
 
 function scrollToLibraryItem(item, block) {
   const behavior = window.matchMedia(reducedMotionQuery).matches ? "instant" : "smooth";
@@ -62,11 +72,15 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
   const [importResult, setImportResult] = useState(null);
   const fileInput = useRef(null);
   const replacingSource = useRef(null);
+  const pickOnNextLocate = useRef(new WeakSet());
   const entriesRef = useRef([]);
+  const sourceChecks = useRef(null);
+  const archiveRecovery = useRef(null);
   const [removals, setRemovals] = useState([]);
+  const shouldRetryLocalSources = entries.some(shouldRetryLocalSource);
 
-  function showNotice(message, tone = "error") {
-    setNotice({ message, tone });
+  function showNotice(message, tone = "error", source = null) {
+    setNotice({ message, tone, source });
   }
 
   useEffect(() => {
@@ -91,35 +105,48 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
 
   useEffect(() => {
     let active = true;
-    const checking = new Set();
+    const checks = new WeakMap();
     const inspected = new WeakMap();
 
-    function checkSources(sources) {
-      for (const source of sources) {
-        if (checking.has(source)) continue;
-        checking.add(source);
+    function checkSource(source, force = false) {
+      if (!force && checks.has(source)) return checks.get(source).complete;
+      const check = {};
+      checks.set(source, check);
+      let checkedFile;
+      const readiness = (async () => {
         // Only imports without a persistent handle rely on their in-memory copy.
-        const check = isLocalArchiveSource(source) && !source.handle && sessionGames.has(source.id)
-          ? Promise.resolve("session") : checkGameSource(source);
-        void check.then(async (status) => {
-          let archiveFiles = source.archiveFiles;
-          // Recheck legacy imports and changed archives using existing read access.
-          // Never delete source records or request permission in the background.
-          if (status === "available" && !source.url && source.handle) {
-            archiveFiles = await inspectLocalSourceFiles(source, inspected).catch(() => []);
-          }
-          if (active) {
-            setEntries((current) => current.map((entry) =>
-              entry.source === source ? { ...entry, status, archiveFiles } : entry
-            ));
-          }
-        }).finally(() => checking.delete(source));
-      }
+        const status = isLocalArchiveSource(source) && !source.handle && sessionGames.has(source.id)
+          ? "session" : await checkGameSource(source, { onFile: (file) => { checkedFile = file; } });
+        if (!active || checks.get(source) !== check) return;
+        setEntries((current) => {
+          const entry = current.find((entry) => entry.source === source);
+          if (!entry || entry.status === status) return current;
+          return current.map((item) => item === entry ? { ...item, status } : item);
+        });
+        if (status === "available" || status === "permission") pickOnNextLocate.current.delete(source);
+        if (status === "available") setNotice((current) => current?.source === source ? null : current);
+        return status;
+      })();
+      check.complete = readiness.then(async (status) => {
+        if (status !== "available" || !checkedFile) return status;
+        // Keep edition matching up to date without delaying the availability result.
+        const archiveFiles = await inspectLocalSourceFiles(source, inspected, checkedFile).catch(() => []);
+        if (!active || checks.get(source) !== check) return;
+        setEntries((current) => current.map((entry) => entry.source === source
+          && entry.archiveFiles !== archiveFiles ? { ...entry, archiveFiles } : entry));
+        return status;
+      }).finally(() => {
+        if (checks.get(source) === check) checks.delete(source);
+      });
+      // The foreground Locate action can restore its button before inspection finishes.
+      return force ? readiness : check.complete;
     }
 
     function recheck() {
       if (!document.hidden && !working.current) {
-        checkSources(entriesRef.current.map(({ source }) => source));
+        for (const entry of entriesRef.current) {
+          if (!shouldRetryLocalSource(entry)) void checkSource(entry.source);
+        }
       }
     }
 
@@ -156,19 +183,36 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
       setEntries(sources.map((source) => ({ source, status: "checking" })));
       setLoading(false);
 
-      checkSources(sources);
+      for (const source of sources) void checkSource(source);
     }
+    sourceChecks.current = { checkSource, invalidate: (source) => checks.delete(source) };
     window.addEventListener("focus", recheck);
     window.addEventListener("pageshow", onPageShow);
     document.addEventListener("visibilitychange", recheck);
     void restore();
     return () => {
       active = false;
+      sourceChecks.current = null;
       window.removeEventListener("focus", recheck);
       window.removeEventListener("pageshow", onPageShow);
       document.removeEventListener("visibilitychange", recheck);
     };
   }, [catalog, officialUrl]);
+
+  useEffect(() => {
+    if (!shouldRetryLocalSources) return;
+    const recovery = startArchiveRecovery({
+      document,
+      getSources: () => entriesRef.current.filter(shouldRetryLocalSource).map(({ source }) => source),
+      checkSource: (source) => sourceChecks.current?.checkSource(source),
+      isBusy: () => working.current,
+    });
+    archiveRecovery.current = recovery;
+    return () => {
+      archiveRecovery.current = null;
+      recovery.stop();
+    };
+  }, [shouldRetryLocalSources]);
 
   useEffect(() => {
     if (window.matchMedia(reducedMotionQuery).matches) return;
@@ -305,7 +349,22 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
     }
   }
 
+  async function locateArchive(source) {
+    if (!hasSavedArchive(source) || pickOnNextLocate.current.delete(source)) return chooseArchive(source);
+    const status = await run(() => sourceChecks.current?.checkSource(source, true));
+    if (status === "available") archiveRecovery.current?.archiveAvailable(source);
+    if (!locateStatuses.has(status)) return;
+    // A slow disk can outlast the browser's activation window for opening a picker.
+    if (navigator.userActivation?.isActive === false) {
+      pickOnNextLocate.current.add(source);
+      showNotice("The saved file is still unavailable. Choose Locate ZIP or ISO again to pick the file.", "error", source);
+      return;
+    }
+    return chooseArchive(source);
+  }
+
   function updateStatus(source, status) {
+    sourceChecks.current?.invalidate(source);
     setEntries((current) => current.map((entry) =>
       entry.source === source ? { ...entry, status } : entry
     ));
@@ -334,7 +393,7 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
         const data = sessionGames.get(source.id);
         if (!data && !source.handle) {
           updateStatus(source, "locate");
-          showNotice("Locate the game ZIP or ISO to play again.");
+          showNotice("Locate the game ZIP or ISO to play again.", "error", source);
           return;
         }
         try {
@@ -348,7 +407,7 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
           const permission = ["NotAllowedError", "SecurityError"].includes(error?.name);
           updateStatus(source, permission ? "permission" : "missing");
           showNotice(permission ? "Allow file access to play this game."
-            : "Could not open the game file. Locate the file to reconnect it.");
+            : "Could not open the game file. Locate the file to reconnect it.", "error", source);
           return;
         }
       }
@@ -360,8 +419,8 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
     }).finally(() => { if (!navigated) void exitImmersiveMode(); }).then(() => navigated);
   }
 
-  function allowAccess(source) {
-    return run(async () => {
+  async function allowAccess(source) {
+    const updated = await run(async () => {
       // Request directly from the click, before any storage work can consume user activation.
       const status = await requestGameSourceAccess(source);
       updateStatus(source, status);
@@ -371,15 +430,18 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
       }
       showNotice(status === "available" ? "File access allowed. You can now play."
         : status === "permission" ? "File access was not allowed. Try again and allow access in your browser to play."
-        : "Could not open the game file. Locate the file to reconnect it.", status === "available" ? "success" : "error");
+        : "Could not open the game file. Locate the file to reconnect it.",
+      status === "available" ? "success" : "error", status === "available" ? null : source);
+      return status;
     });
+    if (updated === "available") archiveRecovery.current?.archiveAvailable(source);
   }
 
   const disabled = loading || busy || Boolean(importResult);
   const library = entries.map(({ source, status, archiveFiles }) => {
     const game = sourcePresentation.getSourceGamePresentation(source, catalog, recognizedGames);
     const title = game.displayTitle;
-    const locate = !source.url && (!isLocalArchiveSource(source) || ["missing", "locate"].includes(status));
+    const locate = !source.url && (!isLocalArchiveSource(source) || locateStatuses.has(status));
     const locateLabel = "Locate ZIP or ISO";
     const needsAccess = status === "permission";
     return {
@@ -389,10 +451,10 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
         buttonLabel: locate ? locateLabel : needsAccess ? "Allow file access" : "Play",
         needsAccess,
         disabled: disabled || status === "checking",
-        onClick: () => locate ? chooseArchive(source) : needsAccess ? allowAccess(source) : play(source, game),
+        onClick: () => locate ? locateArchive(source) : needsAccess ? allowAccess(source) : play(source, game),
         onContinue: () => play(source, game, true),
         onLegacy: () => play(source, game, false, true),
-        onLocate: () => chooseArchive(source),
+        onLocate: () => locateArchive(source),
         onRemove: () => run(() => removeSources([source])),
       },
     };
