@@ -7,7 +7,7 @@ function readGameSaveTree(game, storage, namespace) {
 
 // Also serialized for the small pre-paint reader.
 // Only indexed, complete files in the selected edition can offer Continue.
-export function readCachedSave(game, storage, namespace = "", includeContents = false, readTree = readGameSaveTree) {
+export function readCachedSave(game, storage, namespace = "", includeContents = false, readTree = readGameSaveTree, preview = false) {
   try {
     if (namespace === null) return null;
     const index = JSON.parse(storage.getItem("scummweb.continue.v1:" + (namespace || `catalog:${game.target}`)));
@@ -19,7 +19,7 @@ export function readCachedSave(game, storage, namespace = "", includeContents = 
       || (game.extra && index.extra?.toLowerCase() !== game.extra.toLowerCase()))) return null;
     const { files, inode } = readTree(game, storage, namespace);
     let checkpoint;
-    for (let slot = 0; slot < 3; slot++) {
+    for (let slot = 0; preview && slot < 3; slot++) {
       const file = inode(files[`.scummweb-autosave.${slot}`]);
       if (file?.type !== 0x8000 || file.size <= 0 || file.size > 3 * 1024 * 1024) continue;
       try {

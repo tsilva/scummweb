@@ -510,7 +510,8 @@ function readAutosaveRing(read, match, excluded = new Set()) {
 }
 
 function installRotatingAutosaves(scope, FS, savePath, params) {
-  const enabled = !params.has("agentSaveScope") && !params.has("saveQuery") && params.get("hostPlayer") === "1";
+  const enabled = params.get("dropbox") === "true" && params.get("hostPlayer") === "1"
+    && !params.has("agentSaveScope") && !params.has("saveQuery");
   const matches = (data, identity) => ["engineId", "gameId", "target", "extra"].every(key => data[key] === identity[key]);
   const read = name => FS.readFile(`${savePath}/${name}`, { encoding: "utf8" });
   let overlay;

@@ -1,4 +1,7 @@
+import { withDropboxPreview } from "../dropbox/feature.mjs";
+
 export function withGameTelemetry(href, current) {
+  href = withDropboxPreview(href, current);
   const launch = new URL(current);
   const telemetry = launch.searchParams.get("telemetry") === "1";
   const agentSaveScope = launch.searchParams.get("agentSaveScope");

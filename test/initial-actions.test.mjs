@@ -157,7 +157,7 @@ test("the standalone head script runs without a React bundle or imported closure
   const f = fixture(t);
   let onMutation, disconnected = false;
   runInNewContext(initialActionsScript, {
-    window, URL, atob, DataView, Uint8Array, TextDecoder,
+    window, URL, URLSearchParams, atob, DataView, Uint8Array, TextDecoder,
     document: { querySelector: () => f.container, documentElement: {}, addEventListener() {} },
     MutationObserver: class {
       constructor(callback) { onMutation = callback; }
@@ -168,4 +168,12 @@ test("the standalone head script runs without a React bundle or imported closure
   assert.equal(f.primary.textContent, "Play");
   assert.equal(f.container.dataset.prepared, "true");
   assert.equal(disconnected, true);
+});
+
+test("first-paint launch and restart preserve the opt-in before hydration", t => {
+  const f = fixture(t);
+  window.location = new URL("https://example.test/beneath-a-steel-sky?dropbox=true");
+  prepareInitialActions(f.container, () => ({ slot: 1 }));
+  assert.equal(f.primary.href, "/beneath-a-steel-sky/play?launch_from=game_detail&dropbox=true#continue");
+  assert.equal(f.restart.href, "/beneath-a-steel-sky/play?launch_from=game_detail&dropbox=true");
 });

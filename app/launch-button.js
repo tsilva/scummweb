@@ -5,6 +5,8 @@ import { beginGameLaunch } from "./game-player/immersive-mode.mjs";
 import useLaunchFeedback from "./game-player/useLaunchFeedback";
 import useBrowserSave from "./use-browser-save";
 import { cancelBrowserSaveQueries } from "./browser-saves.mjs";
+import { withDropboxPreview } from "./dropbox/feature.mjs";
+import { useDropboxPreviewHref } from "./dropbox/use-preview-href";
 
 export default function LaunchButton({ game, entryPoint, label = "Play", continueLabel = "Continue", className = "", onLaunch, browseHref, primaryOnly = false }) {
   const router = useRouter();
@@ -12,7 +14,7 @@ export default function LaunchButton({ game, entryPoint, label = "Play", continu
   const classes = ["launch-button", className].filter(Boolean).join(" ");
   const slot = useBrowserSave(game, !game.importRequired);
   const canContinue = slot !== undefined && slot !== null;
-  const href = entryPoint ? `${game.playHref}?launch_from=${entryPoint}` : game.playHref;
+  const href = useDropboxPreviewHref(entryPoint ? `${game.playHref}?launch_from=${entryPoint}` : game.playHref);
   const launch = (event) => {
     if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
@@ -20,7 +22,7 @@ export default function LaunchButton({ game, entryPoint, label = "Play", continu
     cancelBrowserSaveQueries();
     onLaunch?.();
     beginGameLaunch();
-    router.push(event.currentTarget.getAttribute("href"));
+    router.push(withDropboxPreview(event.currentTarget.getAttribute("href")));
   };
 
   if (game.importRequired) {

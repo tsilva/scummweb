@@ -1,4 +1,5 @@
 import { readCachedSave } from "../browser-save-cache.mjs";
+import { dropboxPreviewEnabled, withDropboxPreview } from "../dropbox/feature.mjs";
 import { parseAutosave } from "../../web-shell/rotating-autosaves.mjs";
 import { supportsContinue } from "../../web-shell/continue-saves.mjs";
 import { editionDirectory, editionKey, readSaveTree, saveDirectory } from "../../web-shell/save-editions.mjs";
@@ -15,7 +16,7 @@ export function initialActionState(group, version, versions, runtimeVersion = ru
   if (version.source) {
     try {
       const namespace = game.saveNamespace || window.localStorage.getItem(`scummweb.save-namespace.v1:${game.saveVersionId}`);
-      const save = readCachedSave(game, window.localStorage, namespace);
+      const save = readCachedSave(game, window.localStorage, namespace, false, undefined, dropboxPreviewEnabled());
       if (save) {
         nativeIdentity = [save.engineId, save.gameId, save.extra || ""];
         canContinue = canContinue && supportsContinue(...nativeIdentity);
@@ -61,7 +62,7 @@ export function prepareInitialActions(container, readSave) {
       ? readSave(state.game, storage, namespace) : null;
     if (save && state.source && (!state.game.engineId || state.nativeIdentity)
       && JSON.stringify(state.nativeIdentity) !== JSON.stringify([save.engineId, save.gameId, save.extra || ""])) return;
-    const href = state.playHref + (state.playHref.includes("?") ? "&" : "?") + "launch_from=" + container.dataset.entryPoint;
+    const href = withDropboxPreview(state.playHref + (state.playHref.includes("?") ? "&" : "?") + "launch_from=" + container.dataset.entryPoint, window.location.href);
     // Copy the server's actual controls so layout changes have one source of
     // truth. Only this opaque subtree changes before React takes over.
     container.innerHTML = container.parentElement.querySelector('.hero-actions[data-ready="false"]').innerHTML;
@@ -133,7 +134,9 @@ export const initialActionsScript = `(() => {
   const parseAutosave = ${parseAutosave.toString()};
   const readCachedSave = ${readCachedSave.toString()};
   const readGameTree = (game, storage, namespace) => readSaveTree(storage, editionKey(namespace, game.target), namespace, layout);
-  const readSave = (game, storage, namespace) => readCachedSave(game, storage, namespace, false, readGameTree);
+  const dropboxPreviewEnabled = ${dropboxPreviewEnabled.toString()};
+  const withDropboxPreview = ${withDropboxPreview.toString()};
+  const readSave = (game, storage, namespace) => readCachedSave(game, storage, namespace, false, readGameTree, dropboxPreviewEnabled(window.location.search));
   const prepare = ${prepareInitialActions.toString()};
   const observer = new MutationObserver(() => {
     const container = document.querySelector('[data-initial-actions]');

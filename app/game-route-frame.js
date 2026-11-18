@@ -8,6 +8,7 @@ import { flushSync } from "react-dom";
 import { buildSkipIntroLaunchSrc } from "./skip-intro-config.mjs";
 import { readCatalogGameArchive } from "./game-bucket.mjs";
 import { dropboxEnabled, prepareDropboxLaunch, reportDropboxSave } from "./dropbox/bridge.mjs";
+import { withDropboxPreview } from "./dropbox/feature.mjs";
 import { gameLoadingStatus } from "./game-loading-status.mjs";
 import { isTvBrowser } from "./controller-device.mjs";
 import GameBootOverlay from "./game-player/GameBootOverlay";
@@ -240,7 +241,7 @@ export default function GameRouteFrame({
     fullscreenExitExpected.current = true;
     // Keep the landscape lock until the mobile player has left the screen.
     if (!isTouchMobileClient()) await immersiveMode.exitImmersiveMode();
-    const destination = getSafeHref(href);
+    const destination = withDropboxPreview(getSafeHref(href));
     if (catalogLaunch) window.location.replace(destination);
     else router.replace(destination);
   }, [catalogLaunch, router, immersiveMode.exitImmersiveMode]);
@@ -675,6 +676,7 @@ export default function GameRouteFrame({
           }
         }
         const shellUrl = new URL(launchSrc, window.location.origin);
+        shellUrl.searchParams.delete("dropbox");
         if (target && !game?.saveNamespace) shellUrl.searchParams.set("catalogSaveTarget", target);
         shellUrl.searchParams.set("hostCompatibilityWarning", "1");
         shellUrl.searchParams.set("hostPlayer", "1");
