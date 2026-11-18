@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { connectionKey, sessionKey } from "../app/dropbox/client.mjs";
+import { dropboxEnabled, prepareDropboxLaunch, reportDropboxSave } from "../app/dropbox/bridge.mjs";
 import { captureFilesystem, initializeSaveEdition } from "../app/save-backups/filesystem.mjs";
 import { createSaveCollection, makeSnapshot, publishProfile, saveProfileId, writeSnapshot } from "../app/dropbox/protocol.mjs";
 import { syncStore } from "../app/dropbox/store.mjs";
@@ -17,6 +18,7 @@ async function setup(t, contents = "browser progress", catalog = [{ target: "sky
   const sessions = memoryStorage(), idb = indexedDbFixture(), server = fakeNativeStorage();
   const locks = { busy: false, async request(name, options, run) { if (typeof options === "function") run = options; return run(this.editionBusy === name || this.busy && name === "scummweb-saves" && !(this.busy === "shared" && options.mode === "shared") ? null : { name }); } };
   const browser = nativeCloudBrowser(server, storage);
+  browser.location.search = "?dropbox=true";
   const globals = { window: browser.window, document: browser.document, location: browser.location, localStorage: storage, sessionStorage: sessions, indexedDB: idb, navigator: { locks },
     fetch: async (url) => url === "/games.json" ? Response.json({ games: catalog })
       : new Response("[scummvm]\n") };
@@ -31,6 +33,52 @@ async function setup(t, contents = "browser progress", catalog = [{ target: "sky
   const destinations = await getSaveDestinations(catalog, []);
   return { storage, sessions, idb, server, locks, runtime, destinations };
 }
+
+for (const search of ["", "?other=true", "?dropbox=false", "?dropbox=1"]) {
+  test(`connected accounts do not sync or block launch with URL search ${JSON.stringify(search)}`, async (t) => {
+    const { storage, runtime, server, destinations } = await setup(t);
+    const set = (await getActiveSaveSets(storage, destinations)).sets[0];
+    storage.setItem("scummweb.continue.v1:synthetic", JSON.stringify({ pending: ["SKY-VM.001"] }));
+    const before = new Map(storage.values);
+    location.search = search;
+    let requests = 0;
+    server.onRequest = () => { requests++; };
+    assert.equal(dropboxEnabled(), false);
+    await prepareDropboxLaunch("catalog:sky");
+    reportDropboxSave(new Proxy({}, { get() { assert.fail("disabled sync must not capture the player"); } }), {});
+    await runtime.queuePlayerSave(set);
+    await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:sky" });
+    const stop = runtime.startDropboxSync();
+    window.dispatchEvent(new Event("online"));
+    window.dispatchEvent(new Event("focus"));
+    window.dispatchEvent(new Event("scummweb:saves-changed"));
+    stop();
+    assert.equal(requests, 0);
+    assert.equal(server.files.size, 0);
+    assert.deepEqual(await syncStore.all(key("pending", "")), []);
+    assert.deepEqual(storage.values, before, "connection and local saves are retained");
+    location.search = "?dropbox=true";
+    assert.equal(dropboxEnabled(), true, "the existing connection resumes only on a flagged visit");
+  });
+}
+
+test("removing the URL flag cancels an active background sync without disconnecting", async (t) => {
+  const { storage, runtime, server } = await setup(t);
+  let started;
+  const ready = new Promise((resolve) => { started = resolve; });
+  server.onRequest = async () => { started(); await new Promise(() => {}); };
+  const stop = runtime.startDropboxSync();
+  try {
+    await ready;
+    const flight = runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:sky" });
+    location.search = "";
+    stop();
+    await flight;
+  } finally { stop(); }
+  assert.equal(runtime.getDropboxState().checking, false);
+  assert.equal(JSON.parse(storage.getItem(connectionKey)).enabled, true);
+  assert.equal(server.files.size, 0);
+});
 
 test("first connection migrates active AND preserved browser saves without deleting the originals", async (t) => {
   const { storage, runtime, destinations, idb } = await setup(t);

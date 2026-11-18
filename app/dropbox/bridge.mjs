@@ -1,5 +1,8 @@
+import { dropboxPreviewEnabled } from "./feature.mjs";
+
 const key = "scummweb.dropbox-connection.v1";
 export function dropboxEnabled() {
+  if (!dropboxPreviewEnabled()) return false;
   try { return JSON.parse(window.localStorage.getItem(key))?.enabled === true; } catch { return false; }
 }
 export async function prepareDropboxLaunch(launchDestinationKey = null) {

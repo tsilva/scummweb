@@ -6,6 +6,7 @@ import test from "node:test";
 import swc from "next/dist/build/swc/index.js";
 import { connectionKey } from "../app/dropbox/client.mjs";
 import * as transfers from "../app/cloud/transfer-progress.mjs";
+import { dropboxPreviewEnabled } from "../app/dropbox/feature.mjs";
 import { renderToStaticMarkup } from "react-dom/server";
 
 const nativeRequire = createRequire(import.meta.url);
@@ -29,15 +30,16 @@ const text = (node) => typeof node === "string" || typeof node === "number" ? St
 const button = (root, name) => nodes(root).find((node) => node.type === "button" && text(node) === name);
 
 for (const phase of ["waiting", "reconnect"]) {
-  test(`${phase} sync warning follows the Dropbox URL flag without stopping background sync`, async () => {
+  test(`${phase} sync coordinator and warning require the Dropbox URL flag`, async () => {
     let query = "", state = null, starts = 0, stops = 0, unsubscribes = 0;
     const effects = [], listeners = new Map();
     const Preview = await component("../app/home-shell/dropbox-preview.js", {
       "next/navigation": { useSearchParams: () => new URLSearchParams(query) },
+      "../dropbox/feature.mjs": { dropboxPreviewEnabled },
     }, { Suspense: nativeRequire("react").Suspense });
     const Sync = await component("../app/dropbox-save-sync.js", {
       "./home-shell/dropbox-preview": Preview,
-      "./dropbox/bridge.mjs": { dropboxEnabled: () => true },
+      "./dropbox/bridge.mjs": { dropboxEnabled: () => dropboxPreviewEnabled(query) },
       "./dropbox/runtime.mjs": {
         getDropboxState: () => ({ phase }),
         subscribeDropbox: () => () => { unsubscribes++; },
@@ -48,19 +50,22 @@ for (const phase of ["waiting", "reconnect"]) {
     }, { useState: () => [state, (next) => { state = next; }], useEffect: (effect) => effects.push(effect) });
     const render = () => renderToStaticMarkup(Sync());
     assert.doesNotMatch(render(), /role="status"/);
-    const cleanup = effects[0]();
-    await new Promise(setImmediate);
-    assert.equal(starts, 1, "a connected account still synchronizes without the preview flag");
+    assert.equal(effects.length, 0, "unflagged pages never mount the coordinator");
     for (query of ["", "other=true", "dropbox=false", "dropbox=1"]) {
       assert.doesNotMatch(render(), /dropbox-sync-warning|role="status"/);
+      assert.equal(effects.length, 0);
     }
+    assert.equal(starts, 0);
     query = "other=true&dropbox=true";
+    render();
+    const cleanup = effects[0]();
+    await new Promise(setImmediate);
+    assert.equal(starts, 1);
     assert.match(render(), /class="dropbox-sync-warning" role="status"/);
     assert.match(render(), phase === "waiting" ? /waiting to sync/ : /Reconnect Dropbox/);
     query = "";
     assert.doesNotMatch(render(), /dropbox-sync-warning|role="status"/);
-    assert.equal(stops, 0, "hiding the warning does not stop synchronization");
-    cleanup();
+    cleanup(); // React unmounts the gated child when the flag is removed.
     assert.equal(stops, 1);
     assert.equal(unsubscribes, 1);
     assert.equal(listeners.size, 0);
