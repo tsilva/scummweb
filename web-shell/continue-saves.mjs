@@ -1,3 +1,5 @@
+import { installRotatingAutosaves } from "./rotating-autosaves.mjs";
+
 // Shared by the player shell and the library. Only native-listed, nonempty
 // files enter this index; an index never substitutes for the files themselves.
 export const saveIndexPrefix = "scummweb.continue.v1:";
@@ -16,7 +18,6 @@ export async function isRetiredIntroCheckpoint(target, name, bytes) {
   const digest = new Uint8Array(await globalThis.crypto.subtle.digest("SHA-256", bytes));
   return Array.from(digest, (byte) => byte.toString(16).padStart(2, "0")).join("") === expected;
 }
-
 export function supportsContinue(engineId, gameId, extra = "") {
   return supportedEngines.has(engineId)
     && !(engineId === "mads" && gameId === "nebular" && /demo/i.test(extra))
@@ -56,6 +57,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
   const storageNamespace = agentSaveScope ? `agent-${agentSaveScope}` : namespace;
   const savePath = agentSaveScope ? `${defaultSavePath}-agent/${agentSaveScope}`
     : defaultSavePath + (namespace ? `/${namespace}` : "");
+  if (scope.scummwebPlayerControls) scope.__scummwebAutosaves = installRotatingAutosaves(scope, FS, savePath, params);
   let snapshot;
   let lastRevision;
   let timer;
@@ -199,17 +201,24 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     const persisted = persist();
     if (playerSaves) scope.__scummwebPublishPlayerSaves(playerSaves, occupiedSlots);
     const save = latestPlayerSave(snapshot, listing);
+    const autoSlot = scope.__scummwebAutosaves?.startup(snapshot) ?? -1;
+    if (!resumeReported && (save && params.get("continue") === "1"
+      || /^#-x(?:%20| )/i.test(launchUrl.hash) && !params.has("skipIntroTarget"))) {
+      scope.__scummwebAutosaves?.afterLoad();
+    }
     if (params.get("continue") === "1" && !resumeReported) {
-      scope.console?.info(`ScummWEB Continue: ${snapshot.engineId}:${snapshot.gameId}, slot ${save?.slot ?? "unavailable"}`);
+      const selected = autoSlot >= 0 ? autoSlot : save?.slot ?? "unavailable";
+      scope.console?.info(`ScummWEB Continue: ${snapshot.engineId}:${snapshot.gameId}, slot ${selected}${autoSlot >= 0 ? " (autosave)" : ""}`);
       resumeReported = true;
     }
-    scope.__scummwebSaveStatus = { ...snapshot, latestSlot: save?.slot ?? null };
+    const latestSlot = autoSlot >= 0 ? autoSlot : save?.slot ?? null;
+    scope.__scummwebSaveStatus = { ...snapshot, latestSlot };
     if (!agentSaveScope) {
       scope.parent.postMessage({ type: "scummweb:saves-listed", query: params.get("saveQuery"),
-        ...snapshot, persisted, latestSlot: save?.slot ?? null }, launchUrl.origin);
+        ...snapshot, persisted, latestSlot }, launchUrl.origin);
     }
     scope.__scummwebBeginIntroCheckpoint?.(snapshot.target);
-    return params.get("continue") === "1" ? save?.slot ?? -1 : -1;
+    return params.get("continue") === "1" ? autoSlot >= 0 ? autoSlot : save?.slot ?? -1 : -1;
   };
 
   async function start() {

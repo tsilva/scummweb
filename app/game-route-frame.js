@@ -353,6 +353,24 @@ export default function GameRouteFrame({
     }
     const frameBoot = frameBootRef.current;
 
+    function retryAutosave() {
+      const rejected = frameRef.current?.contentWindow?.__scummwebStartupAutosave;
+      if (frameBoot.ready || !frameSrc || !/^\.scummweb-autosave\.[0-2]$/.test(rejected || "")) return false;
+      const url = new URL(frameSrc, window.location.href);
+      const excluded = (url.searchParams.get("excludeAutosaves") || "").split(",").filter(Boolean);
+      if (excluded.includes(rejected) || url.searchParams.get("continue") !== "1") return false;
+      excluded.push(rejected);
+      url.searchParams.set("excludeAutosaves", excluded.join(","));
+      url.searchParams.delete("launchRetry");
+      frameBoot.ready = true; // Fence late messages from the discarded player.
+      stopArchiveBootTimer();
+      archiveReceiver.current = null;
+      setArchiveFrameDocument(null);
+      setArchiveError(null);
+      setFrameSrc(`${url.pathname}${url.search}${url.hash}`);
+      return true;
+    }
+
     function reportBootError(stage, { name, message, status } = {}) {
       const description = BOOT_ERROR_MESSAGES.get(stage);
       if (!frameSrc || !description || frameBoot.ready || frameBoot.reported) return;
@@ -419,6 +437,7 @@ export default function GameRouteFrame({
       window.clearTimeout(archiveBootTimer);
       archiveBootTimer = window.setTimeout(() => {
         if (frameBoot.ready || frameBootRef.current !== frameBoot) return;
+        if (retryAutosave()) return;
         // Keep prepared files available if the runtime becomes ready later.
         reportBootError("startup-timeout");
         setArchiveError(ARCHIVE_BOOT_TIMEOUT_MESSAGE);
@@ -476,7 +495,7 @@ export default function GameRouteFrame({
       if (event.data?.type === "scummvm-boot-error") {
         if (event.source && event.source === frameRef.current?.contentWindow &&
             typeof event.data.href === "string" && getNormalizedFrameHref(event.data.href) === frameSrc) {
-          reportBootError(event.data.stage, event.data);
+          if (!retryAutosave()) reportBootError(event.data.stage, event.data);
         }
         return;
       }
@@ -554,6 +573,7 @@ export default function GameRouteFrame({
           return;
         }
 
+        if (event.data.reason === "rendered-frame-timeout" && retryAutosave()) return;
         finishArchiveBoot();
         const detectedGame = iframeWindow.__scummwebSaveStatus;
         setReadySignal({
@@ -582,6 +602,7 @@ export default function GameRouteFrame({
         event.source === frameRef.current?.contentWindow &&
         Number.isFinite(event.data.status) && event.data.status !== 0
       ) {
+        if (retryAutosave()) return;
         reportBootError("runtime-exit", { status: event.data.status });
         launchAnalytics.fail("startup_error");
       }

@@ -33,6 +33,17 @@ export function observeStoryProgress(scope, frame, { version, slug, revision }, 
   let timer;
   let lastSampleTime;
   let tracker;
+  let checkpointProgress;
+  const player = frame.contentWindow;
+  const checkpointSample = () => {
+    sample();
+    return checkpointProgress ?? null;
+  };
+  const resetCheckpointSample = () => { checkpointProgress = undefined; lastSampleTime = undefined; };
+  if (player) {
+    player.__scummwebReadAutosaveProgress = checkpointSample;
+    player.__scummwebAutosaveAfterLoad = resetCheckpointSample;
+  }
 
   function sample() {
     try {
@@ -41,6 +52,7 @@ export function observeStoryProgress(scope, frame, { version, slug, revision }, 
       lastSampleTime = snapshot.sample_time_ms;
       tracker.acceptSnapshot(identity, snapshot);
       const report = tracker.report();
+      checkpointProgress = report.state === "tracked" ? { slug, revision, percent: report.percent } : undefined;
       const storage = scope.localStorage;
       const previous = readStoryProgress(scope, version, slug, revision);
       if (report.state === "tracked" && (previous === null || report.percent > previous)) {
@@ -63,6 +75,10 @@ export function observeStoryProgress(scope, frame, { version, slug, revision }, 
 
   return () => {
     stopped = true;
+    try {
+      if (player?.__scummwebReadAutosaveProgress === checkpointSample) delete player.__scummwebReadAutosaveProgress;
+      if (player?.__scummwebAutosaveAfterLoad === resetCheckpointSample) delete player.__scummwebAutosaveAfterLoad;
+    } catch { /* The frame may have navigated. */ }
     if (tracker) {
       scope.clearInterval(timer);
       scope.removeEventListener("pagehide", sample);

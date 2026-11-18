@@ -9,7 +9,7 @@ import { activityCacheKey } from "../game-player/activity.mjs";
 import { applyImport, getActiveSaveSets, getSaveDestinations, identifySet, matchDestination, preserveSets,
   readStoredSets, saveLockName } from "../save-backups/backups.mjs";
 import { captureFilesystem } from "../save-backups/filesystem.mjs";
-import { isEmptyBaseballRecordsWrite, readIncompleteSaveWrites } from "../save-backups/incomplete-writes.mjs";
+import { readIncompleteSaveWrites } from "../save-backups/incomplete-writes.mjs";
 import { readGameSources } from "../game-sources.mjs";
 import { editionDirectory, editionKey, editionLockName, matchesLegacySave, saveDirectory } from "../../web-shell/save-editions.mjs";
 
@@ -37,6 +37,7 @@ function connection() {
 function session() { return dropboxPreviewEnabled() && connection()?.enabled ? connection() : null; }
 function failure(error) {
   if (error.kind === "cancelled") return;
+  if (error.kind === "integrity") { update({ phase: "connected", message: "", verified: false }); return; }
   update({ phase: !connection()?.enabled ? "disconnected" : error.kind === "auth" ? "reconnect" : "waiting",
     message: error instanceof DropboxError ? error.message : "Could not sync saves. Your local copies are retained.", verified: false });
 }
@@ -93,7 +94,6 @@ async function lockedSaves(action) {
   return navigator.locks.request(saveLockName, { mode: "exclusive", ifAvailable: true },
     (lock) => lock ? action() : { busy: true });
 }
-const incompleteSaveMessage = "An incomplete game save needs attention. Your previous cloud saves are retained.";
 // Baselines and cached nodes belong to this storage layout and snapshot format.
 const recordKey = (account, kind, profile) => `${account}/saves-v1/${kind}/${profile}`;
 async function enqueue(account, set) {
@@ -136,30 +136,58 @@ async function syncAccount(auth, epoch, signal, progress) {
     const { destinations, sources } = await context();
     check();
     syncAccountActivity(transport.activityClient(), auth, sources);
+    const historyPrefix = recordKey(account, "history", "");
+    const metadata = new Map((await syncStore.all(historyPrefix)).map(({ node }) => [node.id, node]));
     const client = await createSaveCollection(transport, {
-      load: async (id) => (await syncStore.get(recordKey(account, "node", id)))?.node,
-      save: (node) => syncStore.put({ id: recordKey(account, "node", node.id), node }),
+      load: (id, revision) => metadata.get(id)?.revision === revision ? metadata.get(id) : undefined,
+      async save(node) {
+        await syncStore.put({ id: historyPrefix + node.id, node });
+        metadata.set(node.id, node);
+      },
     });
     check();
+    if (client.hasDamagedArchives()) {
+      await lockedSaves(async () => {
+        const active = await getActiveSaveSets(localStorage, destinations);
+        const incomplete = readIncompleteSaveWrites(localStorage, destinations);
+        // When history cannot be verified, only seed empty editions. Keep
+        // existing local progress and avoid writing a new cloud history.
+        if (incomplete.some(entry => !destinations.some(({ key }) => key === entry.destinationKey))) return;
+        const occupied = new Set([...active.sets.map(set => set.destination.key), ...incomplete.map(entry => entry.destinationKey)]);
+        const rows = [];
+        for await (const set of client.verifiedFallbacks()) {
+          const destinationKey = matchDestination(set, destinations);
+          if (!destinationKey || destinationKey === "shared" || occupied.has(destinationKey)) continue;
+          occupied.add(destinationKey);
+          rows.push({ set, destinationKey, choice: "imported" });
+        }
+        if (!rows.length) return;
+        let initialConfig;
+        if (!captureFilesystem(localStorage).root.key) {
+          const response = await fetch("/scummvm.ini", { signal: AbortSignal.timeout(15000) });
+          if (!response.ok) return;
+          initialConfig = await response.text();
+        }
+        check();
+        await applyImport({ storage: localStorage, destinations, rows, revision: active.revision, initialConfig, check });
+        window.dispatchEvent(new Event("scummweb:saves-changed"));
+      });
+      update({ phase: "connected", message: "", verified: false });
+      return { retry: false };
+    }
+    const preservedHashes = new Set();
     const groups = new Map();
     const collected = await lockedSaves(async () => {
       check();
       const active = await getActiveSaveSets(localStorage, destinations);
       const incomplete = readIncompleteSaveWrites(localStorage, destinations, active.sets);
       const blocked = new Set();
-      const localOnly = new Set();
-      const requiresRecovery = new Set();
       for (const entry of incomplete) {
         const destination = destinations.find(({ key }) => key === entry.destinationKey && key !== "shared");
         if (!destination) return { busy: true, incomplete: true };
         const profile = await saveProfileId({ destination });
         blocked.add(profile);
-        // Only permit local launch for the exact observed empty auxiliary file,
-        // and only if no other unfinished file shares this cloud profile.
-        if (isEmptyBaseballRecordsWrite(entry)) localOnly.add(profile);
-        else requiresRecovery.add(profile);
       }
-      for (const profile of requiresRecovery) localOnly.delete(profile);
       const stored = await readStoredSets();
       check();
       for (const set of active.sets) {
@@ -173,6 +201,7 @@ async function syncAccount(auth, epoch, signal, progress) {
       }
       for (const set of stored) {
         const profile = await saveProfileId(set);
+        preservedHashes.add(`${profile}/${set.hash}`);
         if (blocked.has(profile)) continue;
         if (!groups.has(profile)) groups.set(profile, { local: null, alternatives: [] });
         groups.get(profile).alternatives.push(set);
@@ -188,7 +217,7 @@ async function syncAccount(auth, epoch, signal, progress) {
         // Preserved imports/migration data survive a browser purge as well.
         for (const set of group.alternatives) await syncStore.put({ id: recordKey(account, "preserved", `${profile}/${set.hash}`), profile, set });
       }
-      return { busy: false, blocked, localOnly };
+      return { busy: false, blocked };
     });
     check();
     for (const item of await syncStore.all(recordKey(account, "pending", ""))) {
@@ -204,8 +233,8 @@ async function syncAccount(auth, epoch, signal, progress) {
     }
     const readyProfiles = new Set();
     const hasIncomplete = Boolean(collected.incomplete || collected.blocked?.size);
-    let deferred = hasIncomplete;
-    let deferredMessage = hasIncomplete ? incompleteSaveMessage : "";
+    let deferred = false;
+    let deferredMessage = "";
     for (const [profile, group] of groups) {
       check();
       if (collected.blocked?.has(profile)) continue;
@@ -218,19 +247,25 @@ async function syncAccount(auth, epoch, signal, progress) {
         result = await publishProfile({ client, profile, local: group.local, base: baseline?.hash ?? null, baseTips: baseline?.tips ?? [], refreshUnchanged: false, check });
       }
       check();
-      const remote = result.head.active ? await readSnapshot(client, profile, result.head.active) : null;
-      const alternatives = [];
-      for (const hash of result.head.alternatives) alternatives.push(await readSnapshot(client, profile, hash));
-      check();
-      if (alternatives.length) await preserveSets(alternatives);
-      if (remote && (result.action === "download" || !collected.busy && remote.hash !== group.browserSet?.hash)) {
+      for (const hash of result.head.alternatives) {
+        const identity = `${profile}/${hash}`;
+        if (preservedHashes.has(identity)) continue;
+        const alternative = await readSnapshot(client, profile, hash);
+        check();
+        await preserveSets([alternative]);
+        preservedHashes.add(identity);
+      }
+      const remoteHash = result.head.active;
+      if (remoteHash && (result.action === "download" || !collected.busy && remoteHash !== group.browserSet?.hash)) {
         if (collected.busy) {
-          if (baseline?.hash !== remote.hash) {
+          if (baseline?.hash !== remoteHash) {
             deferred = true;
             deferredMessage ||= "Close games in other ScummWEB tabs before restoring cloud saves.";
           }
           continue; // Never replace a running game's files.
         }
+        const remote = await readSnapshot(client, profile, remoteHash);
+        check();
         const restored = await lockedSaves(async () => {
           check();
           const destinationKey = matchDestination(remote, destinations);
@@ -292,14 +327,14 @@ async function syncAccount(auth, epoch, signal, progress) {
     const scanComplete = !collected.incomplete && observedGeneration === localGeneration;
     launchSyncSnapshot = { epoch, account, localGeneration: observedGeneration,
       complete: !collected.busy && scanComplete, checkEmptyEdition: Boolean(collected.busy && scanComplete),
-      blocked: collected.blocked, localOnly: collected.localOnly,
-      blockedMessage: (hasIncomplete ? incompleteSaveMessage
-        : collected.busy ? "Finish syncing saved progress and close other ScummWEB games before playing." : ""),
+      incomplete: collected.incomplete, blocked: collected.blocked,
+      blockedMessage: !collected.incomplete && collected.busy ? "Finish syncing saved progress and close other ScummWEB games before playing." : "",
       scanned: new Set(groups.keys()), ready: new Set([...readyProfiles].filter((profile) => !pendingProfiles.has(profile))) };
-    update({ phase: pending.length || deferred ? "waiting" : "connected", conflicts: [],
-      verified: !pending.length && !deferred && !collected.busy,
+    const pendingOther = pending.some(item => !collected.incomplete && !collected.blocked?.has(item.profile));
+    update({ phase: pendingOther || deferred ? "waiting" : "connected", conflicts: [],
+      verified: !pending.length && !deferred && !collected.busy && !hasIncomplete,
       message: deferred ? deferredMessage || "Saved progress is waiting to be checked again."
-        : pending.length ? "Your latest saves are waiting to sync." : "" });
+        : pendingOther ? "Your latest saves are waiting to sync." : "" });
     return { retry: !collected.busy && !collected.incomplete
       && (pending.some((item) => !collected.blocked?.has(item.profile)) || observedGeneration !== localGeneration) };
 
@@ -337,16 +372,19 @@ async function emptyCatalogEdition(destination) {
 async function launchIsVerified(destinationKey) {
   const snapshot = launchSyncSnapshot;
   if (!destinationKey || state.phase !== "waiting" || !snapshot) return false;
+  if (snapshot.incomplete) return true;
   const { destinations } = await context();
   const destination = destinations.find((item) => item.key === destinationKey);
   if (!destination) return false;
   const profile = await saveProfileId({ destination });
   const editionPaused = snapshot.blocked?.has(profile);
-  if (editionPaused && !snapshot.localOnly?.has(profile)) return false;
+  // An interrupted write must not prevent loading an intact local checkpoint.
+  // The affected edition remains fenced from cloud restore and publication.
+  if (editionPaused) return true;
   if (!snapshot.complete && (!snapshot.checkEmptyEdition || snapshot.scanned.has(profile) || !await emptyCatalogEdition(destination))) return false;
   return snapshot === launchSyncSnapshot && snapshot.epoch === generation && snapshot.account === session()?.accountId
     && snapshot.localGeneration === localGeneration
-    && (editionPaused || !snapshot.scanned.has(profile) || snapshot.ready.has(profile));
+    && (!snapshot.scanned.has(profile) || snapshot.ready.has(profile));
 }
 
 export async function syncDropbox({ beforeLaunch = false, launchDestinationKey = null } = {}) {
@@ -406,7 +444,9 @@ export async function syncDropbox({ beforeLaunch = false, launchDestinationKey =
         ? launchSyncSnapshot?.blockedMessage || state.message : state.message;
       throw new DropboxError(message || "Finish syncing before playing.");
     }
-  } catch (error) { if (beforeLaunch && dropboxPreviewEnabled()) throw error; }
+  } catch (error) {
+    if (beforeLaunch && dropboxPreviewEnabled() && error.kind !== "integrity") throw error;
+  }
 }
 
 export async function connectDropbox() {

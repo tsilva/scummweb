@@ -30,7 +30,7 @@ export async function createNativeCloudClient({ provider = "dropbox", accountId,
   frame.setAttribute("aria-hidden", "true");
   frame.src = "/cloud.html";
   let pending, counter = 0, closed = false;
-  const sizes = new Map();
+  let entries = new Map();
   let refreshAfter = saved.refreshAfter || 0;
   let config = saved.config;
   const request = (op, extra = {}, onProgress) => new Promise((resolve, reject) => {
@@ -111,15 +111,18 @@ export async function createNativeCloudClient({ provider = "dropbox", accountId,
         try { await request("mkdir"); } catch { /* A competing device may have created the directory. Re-list it. */ }
         result = await request("list");
       }
-      if (!Array.isArray(result.entries) || result.entries.length > 10000) throw new DropboxError("Cloud save history exceeds the supported limit.");
-      return result.entries.filter((entry) => !entry.directory && /^[a-f0-9]{64}\.zip$/.test(entry.name)).map((entry) => {
-        if (!Number.isSafeInteger(entry.size) || entry.size > maxBackupBytes) throw new DropboxError("A cloud snapshot exceeds the save limit.", "integrity");
-        sizes.set(entry.name, entry.size);
-        return entry.name;
-      });
+      if (!Array.isArray(result.entries)) throw new DropboxError("Could not verify the cloud save listing.", "integrity");
+      entries = new Map(result.entries.filter((entry) => !entry.directory && /^[a-f0-9]{64}\.zip$/.test(entry.name))
+        .map((entry) => [entry.name, { size: entry.size, revision: entry.revision || undefined }]));
+      return [...entries.keys()];
     },
+    revision: (name) => entries.get(name)?.revision,
     async download(name, { onProgress } = {}) {
-      const result = await request("download", { name, size: sizes.get(name) }, onProgress);
+      const size = entries.get(name)?.size;
+      if (size !== undefined && (!Number.isSafeInteger(size) || size < 0 || size > maxBackupBytes)) {
+        throw new DropboxError("A cloud snapshot exceeds the save limit.", "integrity");
+      }
+      const result = await request("download", { name, size }, onProgress);
       if (!(result.bytes instanceof Uint8Array) || result.bytes.length > maxBackupBytes) throw new DropboxError("Invalid cloud snapshot.", "integrity");
       return new Blob([result.bytes]);
     },

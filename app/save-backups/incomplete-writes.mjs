@@ -21,11 +21,3 @@ export function readIncompleteSaveWrites(storage, destinations = [], sets = []) 
   }
   return result.sort((a, b) => a.title.localeCompare(b.title));
 }
-
-// Backyard Baseball opens a script-owned records stream through the same native
-// save manager as numbered slots. Keep an abandoned empty stream local until the
-// game closes a new write successfully. Never infer this from a filename alone.
-export function isEmptyBaseballRecordsWrite(entry) {
-  return entry.engineId === "scumm" && entry.gameId === "baseball" && entry.target === "baseball"
-    && entry.files.length === 1 && entry.files[0].name === "baseball-records.bbl" && entry.files[0].size === 0;
-}

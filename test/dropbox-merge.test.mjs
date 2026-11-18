@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { identifySet, readBackup } from "../app/save-backups/backups.mjs";
-import { commonSaveAncestors, mergeSaveSets, automaticSaveMerge, preferredSaveMerge } from "../app/dropbox/save-merge.mjs";
+import { commonSaveAncestorNodes, mergeSaveSets, automaticSaveMerge, preferredSaveMerge } from "../app/dropbox/save-merge.mjs";
 import { createSaveCollection, makeSnapshot, publishProfile, saveProfileId, writeSnapshot } from "../app/dropbox/protocol.mjs";
 import { fakeNativeStorage } from "./helpers/dropbox-fixtures.mjs";
 
@@ -24,7 +24,7 @@ test("first sync combines a superset and disjoint slots without requiring a base
     const result = await publish(server, local);
     assert.equal(result.action, "download"); assert.equal(result.head.concurrent, false);
     const client = await createSaveCollection(server);
-    assert.deepEqual(contents(client.snapshot(await saveProfileId(local), result.head.active)), { "SKY-VM.001": "one", "SKY-VM.002": "two" });
+    assert.deepEqual(contents(await client.snapshot(await saveProfileId(local), result.head.active)), { "SKY-VM.001": "one", "SKY-VM.002": "two" });
     assert.ok(client.head(await saveProfileId(local)).snapshots.includes(local.hash));
     assert.ok(client.head(await saveProfileId(local)).snapshots.includes(remote.hash));
   }
@@ -38,7 +38,7 @@ test("concurrent edits to different existing files use their common ancestor", a
   await publish(server, left, ancestry);
   const result = await publish(server, right, ancestry), client = await createSaveCollection(server);
   assert.equal(result.action, "download");
-  assert.deepEqual(contents(client.snapshot(await saveProfileId(base), result.head.active)), { "SKY-VM.001": "changed one", "SKY-VM.002": "changed two" });
+  assert.deepEqual(contents(await client.snapshot(await saveProfileId(base), result.head.active)), { "SKY-VM.001": "changed one", "SKY-VM.002": "changed two" });
 });
 
 test("deletion of an unchanged file combines with edits elsewhere; deletion versus edit conflicts", async () => {
@@ -88,7 +88,7 @@ test("all concurrent tips participate in a merge, including a new arrival during
   const local = await save({ "SKY-VM.001": "1" }), result = await publish(server, local);
   assert.equal(result.head.concurrent, false);
   const client = await createSaveCollection(server);
-  assert.equal(client.snapshot(await saveProfileId(local), result.head.active).files.length, 4);
+  assert.equal((await client.snapshot(await saveProfileId(local), result.head.active)).files.length, 4);
 });
 
 test("three overlapping branches converge automatically and retain every original for recovery", async () => {
@@ -98,10 +98,10 @@ test("three overlapping branches converge automatically and retain every origina
   const result = await publish(server, sets[0]);
   assert.equal(result.action, "download"); assert.equal(result.head.concurrent, false);
   const client = await createSaveCollection(server), profile = await saveProfileId(sets[0]);
-  const active = contents(client.snapshot(profile, result.head.active));
+  const active = contents(await client.snapshot(profile, result.head.active));
   assert.deepEqual(active, { "SKY-VM.001": "variant 3", "SKY-VM.002": "1", "SKY-VM.003": "2", "SKY-VM.004": "3" });
   for (const set of sets) {
-    assert.equal(client.snapshot(profile, set.hash).hash, set.hash);
+    assert.equal((await client.snapshot(profile, set.hash)).hash, set.hash);
     assert.ok(result.head.alternatives.includes(set.hash));
   }
 });
@@ -151,7 +151,7 @@ test("compatible deletions may produce a verified empty cloud snapshot", async (
   const initial = await publish(server, base), ancestry = { base: base.hash, baseTips: initial.head.tips };
   await publish(server, await save({ "SKY-VM.001": "one" }), ancestry);
   const result = await publish(server, await save({ "SKY-VM.002": "two" }), ancestry);
-  const client = await createSaveCollection(server), empty = client.snapshot(await saveProfileId(base), result.head.active);
+  const client = await createSaveCollection(server), empty = await client.snapshot(await saveProfileId(base), result.head.active);
   assert.equal(empty.files.length, 0);
   const node = await makeSnapshot(empty, result.head.tips);
   await writeSnapshot(server, node);
@@ -163,7 +163,7 @@ test("ambiguous common ancestors do not guess between overwritten contents", asy
   const b = { id: "b", parents: [], set: await save({ "SKY-VM.001": "two" }) };
   const c = { id: "c", parents: ["a", "b"], set: a.set };
   const d = { id: "d", parents: ["a", "b"], set: b.set };
-  const bases = commonSaveAncestors([a, b, c, d], [c, d]);
+  const bases = commonSaveAncestorNodes([a, b, c, d], [c, d]).map(({ set }) => set);
   assert.deepEqual(bases, [a.set, b.set]);
   assert.equal((await mergeSaveSets([c.set, d.set], bases)).set, null);
 });

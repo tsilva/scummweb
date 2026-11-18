@@ -66,6 +66,7 @@ test("collection refresh reuses verified history while observing new and deleted
   const transport = { ...server,
     async list() { listings++; return server.list(); },
     async download(name) { downloads++; return server.download(name); },
+    revision: (name) => name,
   };
   const client = await createSaveCollection(transport, {
     async load(id) { loads++; return saved.get(id); },
@@ -86,6 +87,67 @@ test("collection refresh reuses verified history while observing new and deleted
   server.files.delete(`${baseTips[0]}.zip`);
   await assert.rejects(publishProfile({ client, profile, local: remote, base: remote.hash, baseTips: newer.head.tips }), /incomplete/);
 });
+test("history beyond the previous 256 MiB limit keeps every node and reads older bytes on demand", async () => {
+  const server = fakeNativeStorage();
+  const original = await save("large checkpoint");
+  const files = [{ path: "SKY-VM.001", data: new Uint8Array(16 * 1024 * 1024), modifiedAt: 1 }];
+  const set = { destination: original.destination, files };
+  set.hash = await identifySet(set);
+  let parents = [];
+  let first;
+  for (let i = 1; i <= 17; i++) {
+    files[0].modifiedAt = i;
+    const node = await makeSnapshot(set, parents);
+    await writeSnapshot(server, node);
+    first ||= node.id;
+    parents = [node.id];
+  }
+  const originalNames = [...server.files.keys()];
+  const records = new Map();
+  const cache = { load: (id, revision) => records.get(id)?.revision === revision ? records.get(id) : undefined,
+    save(node) { assert.equal("set" in node, false); records.set(node.id, node); } };
+  let downloads = 0;
+  const transport = { ...server, download(name) { downloads++; return server.download(name); } };
+  const firstClient = await createSaveCollection(transport, cache);
+  assert.equal(downloads, originalNames.length);
+  const profile = await saveProfileId(set);
+  assert.deepEqual(firstClient.head(profile).tips, parents);
+  const reopened = await createSaveCollection(transport, cache);
+  assert.equal(downloads, originalNames.length, "routine sync uses verified metadata on restart");
+  assert.equal((await reopened.snapshot(profile, set.hash)).files[0].data.length, files[0].data.length);
+  assert.equal(downloads, originalNames.length + 1);
+  const latest = await save("new progress");
+  const published = await publishProfile({ client: reopened, profile, local: latest, base: set.hash, baseTips: parents });
+  assert.equal(published.head.active, latest.hash);
+  assert.deepEqual([...server.files.keys()].slice(0, originalNames.length), originalNames);
+  const oldest = await readNode(server, first);
+  assert.deepEqual(oldest.set.files[0].data, files[0].data);
+  assert.equal(oldest.set.files[0].modifiedAt, 1);
+});
+
+test("a changed Dropbox revision cannot reuse verified bytes or historical metadata", async () => {
+  const server = fakeNativeStorage(), original = await save("verified"), latest = await save("newer");
+  const parent = await makeSnapshot(original);
+  const tip = await makeSnapshot(latest, [parent.id]);
+  await writeSnapshot(server, parent);
+  await writeSnapshot(server, tip);
+  const records = new Map();
+  const cache = { load: (id, revision) => records.get(id)?.revision === revision ? records.get(id) : undefined,
+    save: (node) => records.set(node.id, node) };
+  const client = await createSaveCollection(server, cache);
+  const name = `${tip.id}.zip`;
+  const archived = server.files.get(name);
+  server.files.set(name, new Blob(["damaged revision"]));
+  assert.equal(await client.refresh(), true);
+  assert.equal(client.hasDamagedArchives(), true);
+  assert.equal((await client.verifiedFallbacks().next()).value.hash, original.hash);
+  await assert.rejects(publishProfile({ client, profile: tip.profile, local: latest }), /could not be verified/);
+  assert.equal((await createSaveCollection(server, cache)).hasDamagedArchives(), true);
+  server.files.set(name, archived);
+  assert.equal(await client.refresh(), true);
+  assert.equal(client.hasDamagedArchives(), false);
+  assert.equal((await client.snapshot(tip.profile, latest.hash)).hash, latest.hash);
+});
 for (const afterCommit of [false, true]) test(`interrupted upload resumes ${afterCommit ? "after" : "before"} durable remote commit`, async () => {
   const server = fakeNativeStorage(), set = await save("latest");
   if (afterCommit) server.failAfterUpload = true; else server.offline = true;
@@ -105,7 +167,7 @@ test("independent writers join every observed tip automatically and retain both 
   assert.equal(result.head.active, right.hash);
   assert.ok(result.head.alternatives.includes(left.hash));
   const collection = await createSaveCollection(server);
-  assert.equal(collection.snapshot(profile, left.hash).hash, left.hash);
+  assert.equal((await collection.snapshot(profile, left.hash)).hash, left.hash);
 });
 
 test("save-time preference is bound to immutable snapshot identity", async () => {

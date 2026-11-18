@@ -44,7 +44,8 @@ export function indexedDbFixture() {
           const tx = { objectStore() {
             const records = tables.get(table);
             return { get: (key) => { const request = { result: structuredClone(records.get(key)) }; queueMicrotask(() => request.onsuccess?.()); return request; },
-              getAll: () => ({ result: structuredClone([...records.values()]) }),
+              getAll: (range) => ({ result: structuredClone([...records.values()].filter(({ id }) =>
+                !range || id >= range.lower && id < range.upper)) }),
               put: (record) => { records.set(record.id, structuredClone(record)); return { result: record.id }; },
               delete: (key) => { records.delete(key); return {}; } };
           } };
@@ -62,9 +63,17 @@ export function indexedDbFixture() {
 
 export function fakeNativeStorage() {
   const files = new Map();
+  const revisions = new WeakMap();
+  let nextRevision = 0;
   return { files,
     offline: false, uploads: 0, failAfterUpload: false, onUpload: null,
     close() {}, async list() { if (this.offline) throw new Error("Offline"); return [...files.keys()]; },
+    revision(name) {
+      const file = files.get(name);
+      if (!file) return undefined;
+      if (!revisions.has(file)) revisions.set(file, String(++nextRevision));
+      return revisions.get(file);
+    },
     async download(name) { if (this.offline) throw new Error("Offline"); if (!files.has(name)) throw new Error("Missing"); return files.get(name); },
     async upload(name, blob) {
       if (this.offline) throw new Error("Offline");
@@ -99,7 +108,7 @@ export function nativeCloudBrowser(server, storage) {
           let result = {};
           if (data.op === "init") config = data.config;
           else if (data.op === "refresh") { if (server.offline) throw new Error("Offline"); config += "\n# renewed\n"; }
-          else if (data.op === "list") result = { entries: (await server.list()).map((name) => ({ name, size: server.files.get(name).size })) };
+          else if (data.op === "list") result = { entries: (await server.list()).map((name) => ({ name, size: server.files.get(name).size, revision: server.revision?.(name) })) };
           else if (data.op === "upload") await server.upload(data.name, new Blob([data.bytes]));
           else if (data.op === "download") result = { bytes: new Uint8Array(await (await server.download(data.name)).arrayBuffer()) };
           dispatch(frame.contentWindow, { id: data.id, ok: true, config, ...result });

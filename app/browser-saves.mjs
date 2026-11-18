@@ -60,6 +60,11 @@ export function getCachedBrowserSaveContents(game) {
   return getCachedSave(game, true)?.contents ?? null;
 }
 
+export function getCachedAutosaveProgress(game) {
+  const save = getCachedSave(game);
+  return save?.autosave && save.progress ? JSON.stringify(save.progress) : null;
+}
+
 async function queryNativeSaves(game, namespace, assetVersion, generation) {
   const gameId = game.gameId || game.target;
   if (!supportsContinue(game.engineId, gameId, game.extra) || !gameId || typeof document === "undefined") return Promise.resolve(null);
@@ -144,7 +149,7 @@ export async function getLatestBrowserSave(game, assetVersion) {
     // changed storage while the runtime was loading.
     const current = await readBrowserSaveFiles(game);
     index = readIndex(namespace, game);
-    return latestPlayerSave(index, current.files)?.slot ?? null;
+    return (getCachedSave(game)?.slot ?? latestPlayerSave(index, current.files)?.slot) ?? null;
   } catch {
     return null;
   }

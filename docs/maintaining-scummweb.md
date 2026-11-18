@@ -206,11 +206,14 @@ hidden. They return to their normal visibility when the action disappears.
 
 ### Continue and native saves
 
-**Continue** loads the selected edition's latest eligible native save by
-write time, including player autosaves. It checks the slot again at launch.
-Intro checkpoints, incomplete writes, and reserved restart slots stay out of
-Continue. **Start from beginning** keeps your saves. When an engine lacks
-startup-load support, use its in-game menu.
+**Continue** loads the latest intact ScummWEB autosave for the selected
+edition. It skips damaged checkpoints and can fall back to older checkpoints
+or an eligible native save. Supported games keep three hidden checkpoints,
+updated about every two minutes and at the first safe moment after loading.
+The browser captures the engine's native save and companion files without
+overwriting any manual slot. Saved story progress uses checkpoint data where a
+compatible story map is available. **Start from beginning** keeps your saves.
+Games without compatible save and startup-load support use their in-game menu.
 
 The browser-local index supplies launch actions from checked save files.
 Changed or unknown entries trigger a background native metadata query that

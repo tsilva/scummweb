@@ -84,6 +84,7 @@ const agentSaveScope = scummwebLaunchUrl.searchParams.get("agentSaveScope");
 /*__SCUMMWEB_AGENT_CONTROLS__*/
 /*__SCUMMWEB_PLAYER_CONTROLS__*/
 /*__SCUMMWEB_DIAGNOSTIC_SAVES__*/
+/*__SCUMMWEB_ROTATING_AUTOSAVES__*/
 if (agentSaveScope && /^[a-f0-9]{64}$/.test(agentSaveScope)) installAgentControls(window, agentSaveScope);
 else if (window.parent !== window && scummwebLaunchUrl.searchParams.get("hostPlayer") === "1" &&
     agentSaveScope === null && !scummwebLaunchUrl.searchParams.has("saveQuery")) {

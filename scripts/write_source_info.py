@@ -49,6 +49,7 @@ BUILD_FILES = (
     "web-shell/first-frame.mjs",
     "web-shell/game-defaults.mjs",
     "web-shell/player-controls.mjs",
+    "web-shell/rotating-autosaves.mjs",
     "web-shell/save-editions.mjs",
     "web-shell/scummvm.html",
     "web-shell/scummvm_fs.js",

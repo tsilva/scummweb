@@ -33,5 +33,7 @@ export const syncStore = {
     request.onsuccess = () => { if (request.result && predicate(request.result)) store.put(record); };
     return request;
   }),
-  async all(prefix) { return (await operate("readonly", (store) => store.getAll())).filter(({ id }) => id.startsWith(prefix)); },
+  all(prefix) {
+    return operate("readonly", (store) => store.getAll(IDBKeyRange.bound(prefix, `${prefix}\uffff`, false, true)));
+  },
 };
