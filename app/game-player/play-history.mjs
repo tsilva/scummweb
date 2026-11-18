@@ -1,9 +1,9 @@
-const storagePrefix = "scummweb.play-history.v1:";
+export const playHistoryPrefix = "scummweb.play-history.v1:";
 export const playHistoryUpdatedEvent = "scummweb:play-history-updated";
 
 export function readPlayHistory(scope, version) {
   try {
-    const entry = JSON.parse(scope.localStorage.getItem(storagePrefix + version));
+    const entry = JSON.parse(scope.localStorage.getItem(playHistoryPrefix + version));
     if (Number.isSafeInteger(entry?.playedMs) && entry.playedMs >= 0 &&
         Number.isSafeInteger(entry.lastPlayedAt) && entry.lastPlayedAt > 0 && entry.lastPlayedAt <= 8.64e15) return entry;
   } catch { /* Playback works without browser storage. */ }
@@ -25,7 +25,7 @@ export function observePlayHistory(scope, version) {
     visibleSince = now;
     try {
       const previous = readPlayHistory(scope, version);
-      scope.localStorage.setItem(storagePrefix + version, JSON.stringify({
+      scope.localStorage.setItem(playHistoryPrefix + version, JSON.stringify({
         playedMs: Math.min(Number.MAX_SAFE_INTEGER, (previous?.playedMs ?? 0) + elapsed),
         lastPlayedAt: Date.now(),
       }));

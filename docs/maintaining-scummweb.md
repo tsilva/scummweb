@@ -26,8 +26,9 @@ scrolling also remain available.
 Play time starts after the game is ready and counts visible play, including
 cutscenes. Loading, background tabs, the shared game menu, rotation prompts and
 exiting do not count. Progress made before time tracking was introduced has no
-recorded duration or date. These statistics stay in this browser, per copy;
-save backups and cloud save syncing do not transfer them.
+recorded duration or date. These statistics are recorded per copy. With Dropbox
+connected, [play activity sync](dropbox-save-sync.md#recently-played-across-devices)
+shares them across devices with the same game edition.
 
 The app-install invitation becomes eligible on the third homepage visit in the
 same browser. A fresh page load counts once; client-side navigation and component

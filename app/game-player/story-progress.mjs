@@ -1,4 +1,4 @@
-const storagePrefix = "scummweb.story-progress.v1:";
+export const storyProgressPrefix = "scummweb.story-progress.v1:";
 const sampleIntervalMs = 250;
 
 export async function createStoryTracker(slug, revision) {
@@ -13,11 +13,16 @@ export function getStoryProgressRevision(index, slug, bundled) {
 }
 
 export function readStoryProgress(scope, version, slug, revision) {
+  const entry = readStoryProgressRecord(scope, version);
+  return entry && entry.slug === slug && entry.revision === revision ? entry.percent : null;
+}
+
+export function readStoryProgressRecord(scope, version) {
   try {
-    const entry = JSON.parse(scope.localStorage.getItem(storagePrefix + version));
-    if (entry?.slug === slug && entry.revision === revision &&
+    const entry = JSON.parse(scope.localStorage.getItem(storyProgressPrefix + version));
+    if (typeof entry?.slug === "string" && typeof entry.revision === "string" &&
         Number.isInteger(entry.percent) && entry.percent >= 0 && entry.percent <= 100) {
-      return entry.percent;
+      return entry;
     }
   } catch { /* Story progress is optional when browser storage is unavailable. */ }
   return null;
@@ -39,11 +44,11 @@ export function observeStoryProgress(scope, frame, { version, slug, revision }, 
       const storage = scope.localStorage;
       const previous = readStoryProgress(scope, version, slug, revision);
       if (report.state === "tracked" && (previous === null || report.percent > previous)) {
-        storage.setItem(storagePrefix + version, JSON.stringify({ slug, revision, percent: report.percent }));
+        storage.setItem(storyProgressPrefix + version, JSON.stringify({ slug, revision, percent: report.percent }));
       } else if (previous !== null && (report.reason === "engine_mismatch" ||
           (report.reason === "edition_mismatch" && identity.index_md5))) {
         // A reconnected library entry may now point at a different edition.
-        storage.removeItem(storagePrefix + version);
+        storage.removeItem(storyProgressPrefix + version);
       }
     } catch { /* A disappearing iframe or inaccessible storage cannot affect play. */ }
   }

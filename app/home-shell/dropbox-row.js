@@ -44,7 +44,7 @@ export default function DropboxRow() {
   }
   return <div className="settings-action-block dropbox-settings">
     <DropboxIcon />
-    <div><h3>Sync saves</h3><p>Automatically back up your progress to Dropbox.</p></div>
+    <div><h3>Sync saves</h3><p>Sync saves and Recently Played activity through Dropbox.</p></div>
     <div className="dropbox-row">
       <button type="button" className={`dropbox-connect${connected ? "" : " secondary-button settings-wide"}`} aria-label={label} disabled={busy || !configured}
         title={!configured ? "Dropbox sync is not configured for this site yet." : undefined} onClick={activate}>

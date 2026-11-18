@@ -12,10 +12,10 @@ export async function sha256(bytes) {
 }
 export function hex(bytes) { return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join(""); }
 
-async function limitedBlob(response, limit) {
+export async function limitedBlob(response, limit) {
   if (Number(response.headers.get("content-length")) > limit) {
     await response.body?.cancel();
-    throw new DropboxError("Dropbox returned a file that exceeds the save limit.");
+    throw new DropboxError("Dropbox returned a response that exceeds the supported size.");
   }
   let size = 0;
   const chunks = [];
@@ -26,10 +26,10 @@ async function limitedBlob(response, limit) {
       const { value, done } = await reader.read();
       if (done) break;
       size += value.byteLength;
-      if (size > limit) throw new DropboxError("Dropbox returned a file that exceeds the save limit.");
+      if (size > limit) throw new DropboxError("Dropbox returned a response that exceeds the supported size.");
       chunks.push(value);
     }
-  } finally { await reader.cancel().catch(() => {}); }
+  } finally { await reader.cancel().catch(() => {}); reader.releaseLock(); }
   return new Blob(chunks);
 }
 

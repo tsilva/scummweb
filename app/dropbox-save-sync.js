@@ -22,9 +22,10 @@ function DropboxSyncContent() {
     window.addEventListener("storage", start);
     return () => { stopped = true; cleanup?.(); unsubscribe?.(); window.removeEventListener("scummweb:dropbox-connection", start); window.removeEventListener("storage", start); };
   }, []);
-  return state && ["waiting", "reconnect"].includes(state.phase) ? <aside className="dropbox-sync-warning" role="status">
-    {state.phase === "reconnect" ? "Reconnect Dropbox in Settings to protect your latest saves." : "Latest saves are on this device, waiting to sync."}
-  </aside> : null;
+  const warning = state?.phase === "reconnect" ? "Reconnect Dropbox in Settings to protect your latest saves."
+    : state?.phase === "waiting" ? "Latest saves are on this device, waiting to sync."
+    : state?.activityWaiting ? "Play activity is waiting to sync with Dropbox." : null;
+  return warning ? <aside className="dropbox-sync-warning" role="status">{warning}</aside> : null;
 }
 
 export default function DropboxSaveSync() {

@@ -4,6 +4,8 @@ import { trackCloudTransfers } from "../cloud/transfer-progress.mjs";
 import { authorizationRequest, connectionKey, DropboxError, exchangeCode, sessionKey } from "./client.mjs";
 import { createSaveCollection, publishProfile, readSnapshot, saveProfileId } from "./protocol.mjs";
 import { syncStore } from "./store.mjs";
+import { syncPlayActivity } from "./activity-sync.mjs";
+import { activityCacheKey } from "../game-player/activity.mjs";
 import { applyImport, getActiveSaveSets, getSaveDestinations, identifySet, matchDestination, preserveSets,
   readStoredSets, saveLockName } from "../save-backups/backups.mjs";
 import { captureFilesystem } from "../save-backups/filesystem.mjs";
@@ -16,6 +18,7 @@ let state = { phase: "disconnected", message: "", conflicts: [], checking: false
 let flight = null, flightController, queue = Promise.resolve(), generation = 0, contextPromise;
 let connecting = false, localGeneration = 0;
 let launchSyncSnapshot = null;
+let activityController;
 const appKey = () => process.env.NEXT_PUBLIC_DROPBOX_APP_KEY || "";
 export function dropboxConfigured() { return Boolean(appKey()); }
 export function getDropboxState() { return state; }
@@ -49,7 +52,40 @@ async function context() {
   }
   const catalog = await contextPromise;
   const sources = await readGameSources(catalog);
-  return { destinations: await getSaveDestinations(catalog, sources) };
+  return { destinations: await getSaveDestinations(catalog, sources), sources };
+}
+
+function syncAccountActivity(client, auth, sources) {
+  if (!client || activityController) return;
+  const controller = new AbortController();
+  activityController = controller;
+  const check = () => {
+    controller.signal.throwIfAborted();
+    const current = session();
+    if (!current || current.accountId !== auth.accountId || current.connectionId !== auth.connectionId) {
+      throw new DropboxError("Dropbox disconnected.", "cancelled");
+    }
+  };
+  // The separate lock and lifecycle keep activity out of save and launch gates.
+  void navigator.locks.request("scummweb-dropbox-activity", { ifAvailable: true, signal: controller.signal }, async (lock) => {
+    if (!lock) return;
+    try {
+      await syncPlayActivity({ client, scope: window, account: auth.accountId, sources, check, signal: controller.signal });
+      check();
+      if (state.activityWaiting) update({ activityWaiting: false });
+    } catch {
+      try { check(); } catch { return; }
+      if (!state.activityWaiting) update({ activityWaiting: true });
+    }
+  }).catch(() => {}).finally(() => {
+    if (activityController === controller) activityController = null;
+  });
+}
+
+function stopAccountActivity() {
+  activityController?.abort();
+  activityController = null;
+  if (state.activityWaiting) update({ activityWaiting: false });
 }
 async function lockedSaves(action) {
   if (!navigator.locks) throw new DropboxError("This browser cannot safely coordinate cloud saves.");
@@ -106,11 +142,13 @@ async function syncAccount(auth, epoch, signal, progress) {
   };
   const transport = trackCloudTransfers(await createNativeCloudClient(auth, { signal, progress }), activity);
   try {
+    const { destinations, sources } = await context();
+    check();
+    syncAccountActivity(transport.activityClient(), auth, sources);
     const client = await createSaveCollection(transport, {
       load: async (id) => (await syncStore.get(recordKey(account, "node", id)))?.node,
       save: (node) => syncStore.put({ id: recordKey(account, "node", node.id), node }),
     });
-    const { destinations } = await context();
     check();
     const groups = new Map();
     const collected = await lockedSaves(async () => {
@@ -391,6 +429,7 @@ export async function connectDropbox() {
     if (owner && owner !== account.account_id) throw new DropboxError("These browser saves belong to another Dropbox account. Reconnect that account or use a separate browser profile.");
     localStorage.setItem(ownerKey, account.account_id);
     generation++;
+    stopAccountActivity();
     flightController?.abort(new DropboxError("Dropbox connection replaced.", "cancelled"));
     if (flight) await flight.catch(() => {});
     const connectionId = crypto.randomUUID();
@@ -404,6 +443,7 @@ export async function connectDropbox() {
 }
 export async function disconnectDropbox() {
   generation++;
+  stopAccountActivity();
   flightController?.abort(new DropboxError("Dropbox disconnected.", "cancelled"));
   sessionStorage.removeItem(sessionKey);
   const previous = connection();
@@ -419,16 +459,21 @@ export function startDropboxSync() {
   const retry = () => { if (!document.hidden) void syncDropbox(); };
   let debounce;
   const changed = () => { clearTimeout(debounce); debounce = setTimeout(retry, 750); };
+  const storageChanged = (event) => {
+    if (event.key === connectionKey) stopAccountActivity();
+    if (event.key !== activityCacheKey) changed();
+  };
   const timer = setInterval(retry, 30000);
   window.addEventListener("online", retry);
   window.addEventListener("focus", retry);
   document.addEventListener("visibilitychange", retry);
-  window.addEventListener("storage", changed);
+  window.addEventListener("storage", storageChanged);
   window.addEventListener("scummweb:saves-changed", changed);
   retry();
   return () => {
     if (!dropboxPreviewEnabled()) {
       generation++;
+      stopAccountActivity();
       launchSyncSnapshot = null;
       flightController?.abort(new DropboxError("Dropbox preview disabled.", "cancelled"));
       update({ phase: "disconnected", message: "", conflicts: [], checking: false, verified: false });
@@ -436,6 +481,6 @@ export function startDropboxSync() {
     clearInterval(timer); clearTimeout(debounce);
     window.removeEventListener("online", retry); window.removeEventListener("focus", retry);
     document.removeEventListener("visibilitychange", retry);
-    window.removeEventListener("storage", changed); window.removeEventListener("scummweb:saves-changed", changed);
+    window.removeEventListener("storage", storageChanged); window.removeEventListener("scummweb:saves-changed", changed);
   };
 }

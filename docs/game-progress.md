@@ -63,7 +63,8 @@ use raw evaluator telemetry.
 ## Recently Played
 
 Cards show the highest verified percentage observed for each copy and map
-revision in the current browser. Continue opens the latest eligible save.
+revision, including [activity synced through Dropbox](dropbox-save-sync.md#recently-played-across-devices).
+Continue opens the latest eligible save.
 For the bundled English DOS CD edition of Flight of the Amazon Queen, a
 decodable selected Continue save takes precedence. The decoder covers native
 v0 and v1 saves for CEM10. Other existing saves contribute after you resume.
