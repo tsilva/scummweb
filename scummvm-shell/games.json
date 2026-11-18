@@ -935,6 +935,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "bluesabctime-demo",
+      "title": "Blue's ABC Time Activities (Demo)",
+      "path": "/games/bluesabctime",
+      "engineId": "scumm",
+      "gameId": "bluesabctime",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

@@ -1626,6 +1626,14 @@
       ]
     },
     {
+      "title": "Blue's ABC Time Activities (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:bluesabctime",
+      "edition": "BluesABCTime-win-demo1-us.zip",
+      "recordedOn": "2026-11-18",
+      "observation": "English Windows Sneak Peek demo. Native Skip Intro reaches Bathtime Rhymes. Picture selection, a completed rhyme and its letter reward were verified. ScummWEB saving was unavailable while playing. Independent audible output was unverified."
+    },
+    {
       "title": "Blue's Clues: Blue's Art Time Activities",
       "status": "startup-verified",
       "gameId": "scumm:arttime",
