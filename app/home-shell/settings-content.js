@@ -6,6 +6,7 @@ import { readGameSources } from "../game-sources.mjs";
 import "../styles/settings-details.css";
 import DropboxRow from "./dropbox-row";
 import DropboxPreview from "./dropbox-preview";
+import { readIncompleteSaveWrites } from "../save-backups/incomplete-writes.mjs";
 
 const formatSaveCount = (count) => `${count} save ${count === 1 ? "file" : "files"}`;
 
@@ -38,7 +39,8 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
     const [active, stored] = await Promise.all([getActiveSaveSets(window.localStorage, destinations), readStoredSets()]);
     const matches = new Map([...active.sets, ...stored].map((set) => [set, matchDestination(set, destinations)]));
     const unmatched = new Set([...matches].filter(([, key]) => !key).map(([set]) => set));
-    const result = { ...active, stored, unmatched, matches, destinations };
+    const incomplete = readIncompleteSaveWrites(window.localStorage, destinations, active.sets);
+    const result = { ...active, stored, unmatched, matches, destinations, incomplete };
     setData(result);
     return result;
   }
@@ -216,6 +218,15 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
     <section id="settings-saves" hidden={section !== "saves"} aria-busy={busy}>
       {!review && !recovering && <>
         <DropboxPreview><DropboxRow /></DropboxPreview>
+        {data.incomplete?.length > 0 && <div className="settings-action-block">
+          <Info size={25} aria-hidden="true" />
+          <div><h3>Unfinished saves</h3>
+            <p>These writes have no confirmed completion. Export your saves before attempting recovery. Existing files are kept unchanged.</p>
+            <ul>{data.incomplete.map((entry) => <li key={entry.key}><strong>{entry.title}</strong>
+              <ul>{entry.files.map((file) => <li key={file.name}>{file.name} — {file.exists ? `${file.size} bytes retained` : "file not present"}</li>)}</ul>
+            </li>)}</ul>
+          </div>
+        </div>}
         <div className="settings-action-block"><ArrowDownUp size={25} aria-hidden="true" />
           <div><h3>Transfer saves</h3><p>Transfer saves to or from desktop ScummVM. Exported ZIPs keep the original save filenames.</p></div>
           <div className="settings-transfer-actions">
@@ -227,6 +238,7 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
             </button>
             <button type="button" className="launch-button settings-wide" disabled={transferring} onClick={() => picker.current.click()}><Upload size={20} aria-hidden="true" />Import saves</button>
           </div>
+          {downloadUrl && <a href={downloadUrl} download={`scummweb-saves-${new Date().toISOString().slice(0, 10)}.zip`}>Download the exported ZIP again</a>}
           {needsImportGame && <label className="settings-import-game">Game for imported saves
             <select value={importGame} disabled={busy} onChange={chooseImportGame}>
               <option value="">Detect automatically</option>

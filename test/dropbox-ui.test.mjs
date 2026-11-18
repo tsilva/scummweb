@@ -7,6 +7,7 @@ import swc from "next/dist/build/swc/index.js";
 import { connectionKey } from "../app/dropbox/client.mjs";
 import * as transfers from "../app/cloud/transfer-progress.mjs";
 import { dropboxPreviewEnabled } from "../app/dropbox/feature.mjs";
+import { readIncompleteSaveWrites } from "../app/save-backups/incomplete-writes.mjs";
 import { renderToStaticMarkup } from "react-dom/server";
 
 const nativeRequire = createRequire(import.meta.url);
@@ -114,12 +115,12 @@ test("an unknown transfer total shows no fabricated percentage", async () => {
   assert.match(text(tree), /Identifying game… · Downloading/);
 });
 
-async function settingsFixture({ needsGame = false, markMerged = false } = {}) {
+async function settingsFixture({ needsGame = false, markMerged = false, incomplete = [] } = {}) {
   const destination = { key: "catalog:sky", title: "Beneath a Steel Sky", family: "sky" };
   const active = { destination, hash: "current", files: [{}] };
   const copies = ["older", "oldest"].map((hash, index) => ({ destination, hash, files: [{}], id: hash, preservedAt: 1700000000000 - index * 1000 }));
   const data = { sets: [active], stored: copies, destinations: [destination], revision: "current-revision",
-    matches: new Map(copies.map(set => [set, destination.key])), unmatched: new Set() };
+    matches: new Map(copies.map(set => [set, destination.key])), unmatched: new Set(), incomplete };
   let cursor = 0, refCursor = 0, writes = 0;
   const refs = [];
   const state = ["saves", "", "", data, null, null, "idle", false, "", false];
@@ -133,6 +134,7 @@ async function settingsFixture({ needsGame = false, markMerged = false } = {}) {
   const View = await component("../app/home-shell/settings-content.js", {
     "lucide-react": Object.fromEntries(["ArrowDownUp", "ArrowLeft", "Check", "ChevronDown", "Download", "Info", "Save", "Upload"].map(name => [name, () => null])),
     "../styles/settings-details.css": {}, "../game-sources.mjs": { readGameSources: async () => [] },
+    "../save-backups/incomplete-writes.mjs": { readIncompleteSaveWrites },
     "./dropbox-row": { default: () => null }, "./dropbox-preview": { default: () => null },
     "../save-backups/backups.mjs": backups, "../save-backups/filesystem.mjs": { captureFilesystem: () => ({ root: { key: "existing" } }) },
     "../dropbox/save-merge.mjs": { preferredSaveMerge: async (sets) => { merges.push(sets); return { set: markMerged ? { ...sets[0], hash: "merged-for-review" } : sets[0] }; } },
@@ -149,6 +151,17 @@ async function settingsFixture({ needsGame = false, markMerged = false } = {}) {
   const props = { catalog: [], officialUrl: "https://example.test", working: { current: false }, busy: false, setBusy() {} };
   return { calls, copies, imports, merges, setCurrent(set) { currentActive = set; currentRevision = "newer-revision"; }, writes: () => writes, render() { cursor = 0; refCursor = 0; return View(props); } };
 }
+
+test("unfinished saves show the affected game and retained filename without offering deletion", async () => {
+  const fixture = await settingsFixture({ incomplete: [{ key: "catalog:sky", title: "Beneath a Steel Sky",
+    files: [{ name: "SKY-VM.001", exists: true, size: 1234 }, { name: "SKY-VM.002", exists: false }] }] });
+  const tree = fixture.render();
+  assert.match(text(tree), /Unfinished saves/);
+  assert.match(text(tree), /Beneath a Steel Sky/);
+  assert.match(text(tree), /SKY-VM.001 — 1234 bytes retained/);
+  assert.match(text(tree), /SKY-VM.002 — file not present/);
+  assert.equal(fixture.writes(), 0);
+});
 
 test("the normal panel hides routine saves; recovery groups backups and leaves progress untouched", async () => {
   const fixture = await settingsFixture(); let tree = fixture.render();
