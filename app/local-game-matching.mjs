@@ -6,17 +6,21 @@ export async function gameFileFingerprint(kind, files) {
   return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
+export async function isSameLocalArchive(first, second) {
+  if (!first || !second || first.kind !== second.kind) return false;
+  try {
+    return await first.isSameEntry(second);
+  } catch {
+    // Removed files and disconnected drives can leave unusable handles.
+    return false;
+  }
+}
+
 export async function findLocalGameSource(game, sources, reconnectable = new Set()) {
   const local = [...sources].filter((source) => !source.url && (source.kind ?? "zip") === game.kind);
   if (game.handle) {
     for (const source of local) {
-      if (source.handle?.kind !== game.handle.kind) continue;
-      try {
-        if (await game.handle.isSameEntry(source.handle)) return source;
-      } catch {
-        // Removed files and disconnected drives can leave unusable handles.
-        // Continue with the saved fingerprint or legacy name instead.
-      }
+      if (await isSameLocalArchive(game.handle, source.handle)) return source;
     }
   }
   const fingerprint = game.fingerprint && local.find((source) => source.fingerprint === game.fingerprint);

@@ -1,4 +1,4 @@
-import { findLocalGameSource } from "../local-game-matching.mjs";
+import { findLocalGameSource, isSameLocalArchive } from "../local-game-matching.mjs";
 import { localGame, saveGameSources } from "../game-sources.mjs";
 import { collectGameImportNodes, prepareLocalArchive } from "../local-game-import.mjs";
 import { findBundledGame } from "./library-items.mjs";
@@ -16,6 +16,9 @@ export async function importLibraryRoots(selectionRoots, replacing, { catalog, e
     }
     // A fallback picker must replace a stale saved handle with its fresh in-memory files.
     if (!game.handle) delete source.handle;
+    // Only keep the old folder link if the replacement is the same filesystem entry.
+    if (existing?.archiveFolderId && !game.archiveFolderId
+      && !await isSameLocalArchive(game.handle, existing.handle)) delete source.archiveFolderId;
     // An archive can replace a legacy folder while retaining its source ID and saves.
     if (game.kind === "zip") delete source.kind;
     try {

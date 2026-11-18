@@ -6,19 +6,20 @@ export { inspectLocalSourceFiles } from "./game-source-inspection.mjs";
 
 export async function collectGameImportNodes(roots) {
   const nodes = [];
-  async function visit(root, nested = false) {
+  async function visit(root, archiveFolderId) {
     let node;
     try {
       node = await root;
       if (!node) throw new Error("Could not read this item. Try dropping it again.");
       if (node.kind === "directory") {
         const start = nodes.length;
-        for await (const child of node.children()) await visit(child, true);
-        if (!nested && nodes.length === start) {
+        const folderId = archiveFolderId ?? crypto.randomUUID();
+        for await (const child of node.children()) await visit(child, folderId);
+        if (!archiveFolderId && nodes.length === start) {
           throw new Error("No ZIP or ISO files found in this folder or its subfolders. Add a game ZIP or ISO, then drop the folder again.");
         }
-      } else if (!node.name.startsWith(".") && (!nested || /\.(zip|iso)$/i.test(node.name))) {
-        nodes.push(node);
+      } else if (!node.name.startsWith(".") && (!archiveFolderId || /\.(zip|iso)$/i.test(node.name))) {
+        nodes.push(archiveFolderId && node.handle ? { ...node, archiveFolderId } : node);
       }
     } catch (error) {
       // Keep readable siblings even if a folder disappears or access is denied.
@@ -37,7 +38,8 @@ export async function prepareLocalArchive(node) {
   const files = await scanLocalGameArchive(file);
   const kind = localGameArchiveKind(file);
   const fingerprint = await gameFileFingerprint(kind, files);
-  return { name: file.name, handle: node.handle, data: file, kind, fingerprint, archiveFiles: files };
+  return { name: file.name, handle: node.handle, data: file, kind, fingerprint, archiveFiles: files,
+    ...(node.archiveFolderId && { archiveFolderId: node.archiveFolderId }) };
 }
 
 // Preserve existing callers of the original ZIP import API.

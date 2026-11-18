@@ -15,6 +15,7 @@ test("a mixed drop captures every handle synchronously and recursively imports f
   const nestedHandle = { ...zipHandle, name: "nested.ZIP" };
   const folderHandle = { kind: "directory", name: "Collection", async *values() {
     yield { kind: "file", name: ".DS_Store", getFile: () => assert.fail("Ignore non-ZIPs") };
+    yield { ...zipHandle, name: "child.zip" };
     yield { kind: "directory", name: "Subfolder", async *values() { yield nestedHandle; } };
   } };
   const captures = [];
@@ -27,9 +28,13 @@ test("a mixed drop captures every handle synchronously and recursively imports f
     files: [],
   });
   assert.deepEqual(captures, [file.name, "Collection", "vol.cat"]);
-  const [archive, nested, loose] = await collectGameImportNodes(roots);
+  const [archive, child, nested, loose] = await collectGameImportNodes(roots);
   assert.equal((await prepareLocalZip(archive)).handle, zipHandle);
-  assert.equal((await prepareLocalZip(nested)).handle, nestedHandle);
+  assert.equal(archive.archiveFolderId, undefined);
+  const nestedArchive = await prepareLocalZip(nested);
+  assert.equal(nestedArchive.handle, nestedHandle);
+  assert.ok(nestedArchive.archiveFolderId);
+  assert.equal(nestedArchive.archiveFolderId, child.archiveFolderId);
   await assert.rejects(prepareLocalZip(loose), /Choose a ZIP/);
 });
 
@@ -156,6 +161,9 @@ test("existing imports are inspected with granted access and changed ZIPs invali
   const files = await inspectLocalSourceFiles(source, cache);
   assert.deepEqual(files, (await prepareLocalZip(fileNode(file))).archiveFiles);
   assert.equal(await inspectLocalSourceFiles(source, cache), files);
+  const previousReads = reads;
+  assert.deepEqual(await inspectLocalSourceFiles(source, new WeakMap(), file), files);
+  assert.equal(reads, previousReads, "inspection can reuse the checked file without another disk read");
   const zip = new ZipWriter(new BlobWriter());
   await zip.add("game/vol.cat", new Uint8ArrayReader(Uint8Array.of(3, 4)));
   file = new File([await zip.close()], original.name, { lastModified: 2 });
