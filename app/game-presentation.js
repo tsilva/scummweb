@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "thinker1-demo": {
+    ...retroGameArtwork["scumm:thinker1"],
+    heroImageMobilePosition: "55% -9vh",
+    title: "Big Thinkers! 1st Grade (Demo)",
+    year: "1997",
+    language: "en",
+    summary: "Join Ben and Becky Brightly in their activity room and put together a picture puzzle.",
+  },
   "brstorm-demo": {
     ...retroGameArtwork["scumm:brstorm"],
     heroImageMobilePosition: "78% top",

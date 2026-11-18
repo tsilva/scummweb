@@ -25,6 +25,7 @@ test("fresh browser configuration preserves UTF-8 titles and records byte length
 
 test("official classic archives are recognized by contents without relying on filenames", () => {
   for (const [target, files] of [
+    ["thinker1-demo", [["1grademo.HE0", 30919, 813602397], ["1grademo.HE1", 8031672, 3070787722]]],
     ["brstorm-demo", [["BRSTORM.HE0", 5433, 2011138004], ["BRSTORM.HE1", 237722, 491020587]]],
     ["football-demo", [["FOOTDEMO.HE0", 23135, 1468339392], ["FOOTDEMO.HE2", 10696556, 3909202253]]],
     ["fbear-demo", [["FBDEMO.HE0", 9593, 2725358755], ["FBDEMO.HE1", 1176219, 1667533979]]],

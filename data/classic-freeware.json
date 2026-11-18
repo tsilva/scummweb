@@ -1217,6 +1217,24 @@
         "basis": "ScummVM lists this exact standalone DOS edition among its demos. All eight files passed ZIP path and CRC checks, SHA-256 and ASCII, UTF-16 and XOR-69 string review. The INI configures audio. All 21 records in the sound driver container were accounted for. The original game and sound driver copyright notices are preserved. No separate licence acceptance, express redistribution grant or packaged prohibition was found. Eligibility uses the cautious official promotional-hosting assessment.",
         "preservation": "Serve the complete unchanged official ZIP with its original DOS launchers, sound drivers, configuration and game data. No downloaded executable was run."
       }
+    },
+    {
+      "target": "thinker1-demo",
+      "title": "Big Thinkers! 1st Grade (Demo)",
+      "engineId": "scumm",
+      "gameId": "thinker1",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "thinker1-win-demo-us.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/scumm/he/thinker1-win-demo-us.zip",
+      "sha256": "0d43a9871ab5c9943132ded0355d6961e9bcdc089998a949bf802570b31c5fc3",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-18",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "ScummVM lists this exact Windows demo. All 11 files passed path, CRC and SHA-256 checks and ASCII, UTF-16 and XOR-69 review. The INF configures the demo interface, printing and sound. The four Windows binaries were inspected as data and their original Humongous Entertainment copyright metadata is preserved. No separate licence acceptance, express redistribution grant or packaged prohibition was found. Eligibility uses the cautious official promotional-hosting assessment.",
+        "preservation": "Serve the complete unchanged official ZIP, retaining its original bitmap, icon, configuration, launchers, runtime, and game data. No downloaded executable was run."
+      }
     }
   ]
 }
