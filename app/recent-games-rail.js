@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import DecorativeImage from "./home-shell/decorative-image";
 import { getPosterImageProps } from "./home-shell/poster-images.mjs";
 import { useArtworkDelivery } from "./home-shell/artwork-delivery";
@@ -84,6 +85,8 @@ function RecentGameCard({ group, now }) {
 export default function RecentGamesRail({ groups }) {
   const [recentTargets, setRecentTargets] = useState([]);
   const [now, setNow] = useState(null);
+  const railRef = useRef(null);
+  const [scrollable, setScrollable] = useState({ previous: false, next: false });
 
   useEffect(() => {
     const update = () => { setRecentTargets(getRecentGameTargets()); setNow(Date.now()); };
@@ -107,14 +110,54 @@ export default function RecentGamesRail({ groups }) {
   }, []);
 
   const recentGames = getRecentlyPlayedGames(groups, recentTargets);
+
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+    const update = () => {
+      const previous = rail.scrollLeft > 1;
+      const next = rail.scrollLeft + rail.clientWidth < rail.scrollWidth - 1;
+      setScrollable((current) => current.previous === previous && current.next === next
+        ? current : { previous, next });
+    };
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(rail);
+    for (const card of rail.children) observer.observe(card);
+    rail.addEventListener("scroll", update, { passive: true });
+    return () => {
+      observer.disconnect();
+      rail.removeEventListener("scroll", update);
+    };
+  }, [groups, recentTargets]);
+
+  function scrollGames(direction) {
+    const rail = railRef.current;
+    if (!rail) return;
+    const card = rail.firstElementChild;
+    const step = card ? card.getBoundingClientRect().width + parseFloat(getComputedStyle(rail).columnGap) : rail.clientWidth;
+    rail.scrollBy({ left: direction * step,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+  }
+
   if (!recentGames.length) return null;
 
   return (
     <section className="content-band" aria-labelledby="recently-played-heading">
-      <div className="section-header">
+      <div className="section-header recent-games-header">
         <h2 id="recently-played-heading"><span className="section-mark" />Recently Played</h2>
+        {(scrollable.previous || scrollable.next) && <div className="recent-rail-controls">
+          <button type="button" aria-label="Previous recently played games" title="Previous games"
+            aria-controls="recently-played-rail" disabled={!scrollable.previous} onClick={() => scrollGames(-1)}>
+            <ChevronLeft size={20} aria-hidden="true" />
+          </button>
+          <button type="button" aria-label="Next recently played games" title="Next games"
+            aria-controls="recently-played-rail" disabled={!scrollable.next} onClick={() => scrollGames(1)}>
+            <ChevronRight size={20} aria-hidden="true" />
+          </button>
+        </div>}
       </div>
-      <div className="landscape-rail recent-games-rail">
+      <div className="landscape-rail recent-games-rail" id="recently-played-rail" ref={railRef}>
         {recentGames.map((group) => <RecentGameCard key={group.key} group={group} now={now} />)}
       </div>
     </section>
