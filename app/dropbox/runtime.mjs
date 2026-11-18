@@ -20,6 +20,9 @@ let flight = null, flightController, queue = Promise.resolve(), generation = 0, 
 let connecting = false, localGeneration = 0;
 let launchSyncSnapshot = null;
 let activityController;
+const restoreSpaceWait = new Map();
+const restoreSpaceMessage = "Browser storage is full. Saves that could not be restored are retained in Dropbox.";
+const isQuotaError = (error) => [error?.name, error?.cause?.name].includes("QuotaExceededError");
 const appKey = () => process.env.NEXT_PUBLIC_DROPBOX_APP_KEY || "";
 export function dropboxConfigured() { return Boolean(appKey()); }
 export function getDropboxState() { return state; }
@@ -39,7 +42,8 @@ function failure(error) {
   if (error.kind === "cancelled") return;
   if (error.kind === "integrity") { update({ phase: "connected", message: "", verified: false }); return; }
   update({ phase: !connection()?.enabled ? "disconnected" : error.kind === "auth" ? "reconnect" : "waiting",
-    message: error instanceof DropboxError ? error.message : "Could not sync saves. Your local copies are retained.", verified: false });
+    message: error instanceof DropboxError ? error.message : isQuotaError(error) ? restoreSpaceMessage
+      : "Could not sync saves. Your local copies are retained.", verified: false });
 }
 async function context() {
   if (!contextPromise) {
@@ -129,7 +133,8 @@ async function syncAccount(auth, epoch, signal, progress) {
   await queue.catch(() => {});
   const activity = (transferProgress) => {
     check();
-    update({ phase: "syncing", message: "", verified: false, transferProgress });
+    update({ phase: "syncing", message: "", verified: false,
+      transferProgress: transferProgress ?? state.transferProgress });
   };
   const transport = trackCloudTransfers(await createNativeCloudClient(auth, { signal, progress }), activity);
   try {
@@ -232,6 +237,7 @@ async function syncAccount(auth, epoch, signal, progress) {
       if (!groups.has(profile)) groups.set(profile, { local: null, alternatives: [] });
     }
     const readyProfiles = new Set();
+    const spaceBlocked = new Set();
     const hasIncomplete = Boolean(collected.incomplete || collected.blocked?.size);
     let deferred = false;
     let deferredMessage = "";
@@ -264,6 +270,12 @@ async function syncAccount(auth, epoch, signal, progress) {
           }
           continue; // Never replace a running game's files.
         }
+        const restoreKey = recordKey(account, "restore-space", profile);
+        const previous = restoreSpaceWait.get(restoreKey);
+        if (previous?.hash === remoteHash && previous.root === localStorage.getItem("/") && Date.now() < previous.retryAt) {
+          spaceBlocked.add(profile);
+          continue;
+        }
         const remote = await readSnapshot(client, profile, remoteHash);
         check();
         const restored = await lockedSaves(async () => {
@@ -288,13 +300,22 @@ async function syncAccount(auth, epoch, signal, progress) {
             rows: [{ set: remote, destinationKey, choice: "imported" }] });
           activity({ stage: "verify", title: remote.destination.title, percentage: 100 });
           return { changed: false, restored: Boolean(destinationKey) && local?.hash !== remote.hash };
+        }).catch((error) => {
+          if (!isQuotaError(error)) throw error;
+          restoreSpaceWait.set(restoreKey, { hash: remoteHash, root: localStorage.getItem("/"), retryAt: Date.now() + 120000 });
+          return { quota: true };
         });
+        if (restored.quota) {
+          spaceBlocked.add(profile);
+          continue;
+        }
         if (restored.busy || restored.changed) {
           deferred = true;
           deferredMessage ||= restored.busy ? "Close games in other ScummWEB tabs before restoring cloud saves."
             : "Saves changed on this device during sync. They will be checked again shortly.";
           continue;
         }
+        restoreSpaceWait.delete(restoreKey);
         // Preserving an unavailable edition changes no active saves. Announcing
         // it would schedule another pass forever through startDropboxSync.
         if (restored.restored) window.dispatchEvent(new Event("scummweb:saves-changed"));
@@ -302,6 +323,10 @@ async function syncAccount(auth, epoch, signal, progress) {
       await syncStore.put({ id: recordKey(account, "base", profile), hash: result.head.active, tips: result.head.tips });
       await syncStore.removeIf(recordKey(account, "pending", profile), (pending) => pending.set.hash === group.local?.hash);
       readyProfiles.add(profile);
+    }
+    if (spaceBlocked.size) {
+      deferred = true;
+      deferredMessage ||= restoreSpaceMessage;
     }
     check();
     // Unchanged profiles share a listing. A final fresh listing fences remote
@@ -336,7 +361,7 @@ async function syncAccount(auth, epoch, signal, progress) {
       message: deferred ? deferredMessage || "Saved progress is waiting to be checked again."
         : pendingOther ? "Your latest saves are waiting to sync." : "" });
     return { retry: !collected.busy && !collected.incomplete
-      && (pending.some((item) => !collected.blocked?.has(item.profile)) || observedGeneration !== localGeneration) };
+      && (pending.some((item) => !collected.blocked?.has(item.profile) && !spaceBlocked.has(item.profile)) || observedGeneration !== localGeneration) };
 
   } finally { transport.close(); }
 }

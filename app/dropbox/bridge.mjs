@@ -1,12 +1,16 @@
 import { dropboxPreviewEnabled } from "./feature.mjs";
+import { getCachedBrowserSave } from "../browser-saves.mjs";
 
 const key = "scummweb.dropbox-connection.v1";
 export function dropboxEnabled() {
   if (!dropboxPreviewEnabled()) return false;
   try { return JSON.parse(window.localStorage.getItem(key))?.enabled === true; } catch { return false; }
 }
-export async function prepareDropboxLaunch(launchDestinationKey = null) {
+export async function prepareDropboxLaunch(launchDestinationKey = null, resumeGame = null) {
   if (!dropboxEnabled()) return;
+  // Continue can use an intact local checkpoint without waiting for every
+  // cloud edition. Completed saves still go through the durable outbox.
+  if (resumeGame && getCachedBrowserSave(resumeGame) !== null) return;
   const sync = await import("./runtime.mjs");
   await sync.syncDropbox({ beforeLaunch: true, launchDestinationKey });
 }

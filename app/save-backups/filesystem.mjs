@@ -145,7 +145,9 @@ function editFilesystem(storage, snapshot, initialConfig, edit, skipEditionConte
     storage.setItem("/", rootInode);
   } catch (error) {
     for (const key of staged) storage.removeItem(key);
-    if (error.name === "QuotaExceededError") throw new Error("Not enough browser storage to restore safely. Your current saves are unchanged.");
+    if (error.name === "QuotaExceededError") {
+      throw new Error("Not enough browser storage to restore safely. Your current saves are unchanged.", { cause: error });
+    }
     throw error;
   }
   // Remove only nodes made unreachable by this root swap, never other app data.
@@ -215,12 +217,16 @@ export function restoreSaveGroups(storage, updates, expectedRevision, initialCon
         }
       }
       const target = descend(home, namespace ? [...saveDirectory, namespace] : saveDirectory);
+      const previous = { children: new Map(target.children) };
       for (const name of target.children.keys()) if (edition || namespace || matches(name)) target.children.delete(name);
       for (const file of files) {
         if (!safePath(file.path)) throw new Error("Invalid save filename.");
         const parts = file.path.split("/");
+        const existing = getNode(previous, parts);
+        const reusable = existing?.data?.length === file.data.length && existing.modifiedAt === file.modifiedAt
+          && (existing.mode & 0o200) && existing.data.every((byte, index) => byte === file.data[index]);
         const parent = descend(target, parts.slice(0, -1));
-        parent.children.set(parts.at(-1), { data: file.data, mode: 0x81b6, modifiedAt: file.modifiedAt });
+        parent.children.set(parts.at(-1), reusable ? existing : { data: file.data, mode: 0x81b6, modifiedAt: file.modifiedAt });
       }
     }
   });

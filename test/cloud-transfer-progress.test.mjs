@@ -39,13 +39,29 @@ test("incoming and copied saves show received-byte percentages; unknown totals r
     },
     async downloadImport(name, { size, onProgress }) { assert.equal(size, 100); onProgress({ loaded: 25, total: 100 }); return new Blob(); },
   }, event => events.push(event));
-  await client.download("unknown");
+  await client.download("known", { title: "Known game" });
   assert.equal(events[1].percentage, 42); assert.equal(events[2].percentage, null);
-  assert.equal(transferProgressLabel(events[1]), "42% · Identifying game… · Downloading");
-  client.verified("unknown", { destination: { title: "Verified game" } });
+  assert.equal(transferProgressLabel(events[1]), "42% · Known game · Downloading");
+  client.verified("known", { destination: { title: "Verified game" } });
   assert.equal(events.at(-1).title, "Verified game");
   await client.downloadImport("save.001", { title: "Copied game", size: 100 });
   assert.ok(events.some(event => event.title === "Copied game" && event.percentage === 25));
+});
+
+test("unidentified snapshots keep the previous verified game visible until the next named game", async () => {
+  const events = [];
+  const client = trackCloudTransfers({ async download(name, { onProgress }) {
+    onProgress({ loaded: 8, total: 16 });
+    return new Blob([new Uint8Array(16)]);
+  } }, event => events.push(event));
+  await client.download("first");
+  assert.deepEqual(events, [null]);
+  client.verified("first", { destination: { title: "Beneath a Steel Sky" } });
+  assert.equal(transferProgressLabel(events.at(-1)), "100% · Beneath a Steel Sky · Verifying");
+  await client.download("second");
+  assert.equal(events.length, 2);
+  client.verified("second", { destination: { title: "Flight of the Amazon Queen" } });
+  assert.equal(transferProgressLabel(events.at(-1)), "100% · Flight of the Amazon Queen · Verifying");
 });
 
 test("failure never reports completion or allows late progress to replace the error", async () => {
@@ -53,7 +69,7 @@ test("failure never reports completion or allows late progress to replace the er
   const client = trackCloudTransfers({ async upload(name, blob, { onProgress }) { late = onProgress; throw error; } }, event => events.push(event));
   await assert.rejects(client.upload("snapshot", new Blob(["save"])), failure => failure === error);
   late({ loaded: 4, total: 4 });
-  assert.equal(events.length, 1); assert.equal(events[0].percentage, 0);
+  assert.deepEqual(events, [null]);
   assert.equal(transferProgressLabel(null), "");
-  assert.equal(transferProgressLabel({ stage: "upload", direction: "upload", percentage: -1 }), "Identifying game… · Uploading");
+  assert.equal(transferProgressLabel({ stage: "upload", direction: "upload", percentage: -1 }), "");
 });

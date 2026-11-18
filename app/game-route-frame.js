@@ -642,7 +642,10 @@ export default function GameRouteFrame({
 
     async function openGame() {
       try {
-        if (dropboxEnabled()) await prepareDropboxLaunch(game?.saveNamespace || (catalogLaunch && target ? `catalog:${target}` : null));
+        if (dropboxEnabled()) {
+          const destination = game?.saveNamespace || (catalogLaunch && target ? `catalog:${target}` : null);
+          await prepareDropboxLaunch(destination, window.location.hash === "#continue" ? game : null);
+        }
         if (controller.signal.aborted) return;
         let launchSrc = src;
         if (window.location.hash === "#continue") {

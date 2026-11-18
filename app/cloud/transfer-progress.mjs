@@ -2,11 +2,17 @@
 // both the upload and its required readback; incoming backups measure downloads.
 export function trackCloudTransfers(client, report) {
   const uploaded = new Map();
-  let active;
+  let active, displayed;
   const emit = (activity) => {
-    const previous = active;
     active = activity;
-    if (!previous || ["name", "stage", "direction", "title", "percentage"].some(key => previous[key] !== activity[key])) report(activity);
+    if (!activity.title) {
+      if (displayed === undefined) { displayed = null; report(null); }
+      return;
+    }
+    if (!displayed || ["name", "stage", "direction", "title", "percentage"].some(key => displayed[key] !== activity[key])) {
+      displayed = activity;
+      report(activity);
+    }
   };
   async function download(name, options = {}, copied = false) {
     const publication = uploaded.get(name);
@@ -50,12 +56,12 @@ export function trackCloudTransfers(client, report) {
 }
 
 export function transferProgressDetails(activity) {
-  if (!activity) return null;
+  if (!activity?.title) return null;
   const direction = activity.stage === "restore" ? "Restoring" : activity.stage === "verify" ? "Verifying"
     : activity.direction === "upload" ? "Uploading" : "Downloading";
   const percentage = Number.isInteger(activity.percentage) && activity.percentage >= 0 && activity.percentage <= 100
     ? activity.percentage : null;
-  return { percentage, title: activity.title || "Identifying game…", direction };
+  return { percentage, title: activity.title, direction };
 }
 export function transferProgressLabel(activity) {
   const detail = transferProgressDetails(activity);

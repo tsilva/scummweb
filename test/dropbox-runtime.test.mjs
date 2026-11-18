@@ -183,6 +183,81 @@ test("a clean browser restores cloud progress before the launch gate completes",
   assert.equal(changes, 1, "an actual restore notifies the library once");
 });
 
+test("Continue uses an intact local save while an unrelated cloud archive is still downloading", async (t) => {
+  const sky = { target: "sky", engineId: "sky", gameId: "sky", displayTitle: "Beneath a Steel Sky" };
+  const lure = { target: "lure", displayTitle: "Lure of the Temptress" };
+  const contents = "verified local progress";
+  const { storage, server, runtime, destinations } = await setup(t, contents, [sky, lure]);
+  storage.setItem("scummweb.continue.v1:catalog:sky", JSON.stringify({
+    schemaVersion: 1, target: "sky", engineId: "sky", gameId: "sky", supported: true,
+    saves: [{ slot: 1, name: "SKY-VM.001", size: bytes(contents).length, modifiedAt: 100 }],
+  }));
+  const remote = { destination: destinations.find(({ key }) => key === "catalog:lure"),
+    files: [{ path: "lure.001", data: bytes("unrelated cloud progress"), modifiedAt: 200 }] };
+  remote.hash = await identifySet(remote);
+  await writeSnapshot(server, await makeSnapshot(remote));
+  const [cloudName] = server.files.keys();
+  let release, started;
+  const downloading = new Promise(resolve => { started = resolve; });
+  const gate = new Promise(resolve => { release = resolve; });
+  server.onRequest = async ({ op, name }) => {
+    if (op === "download" && name === cloudName) { started(); await gate; }
+  };
+  const flight = runtime.syncDropbox();
+  await downloading;
+  const before = new Map(storage.values);
+  const launch = prepareDropboxLaunch("catalog:sky", sky);
+  try {
+    assert.equal(await Promise.race([launch.then(() => true), new Promise(resolve => setTimeout(() => resolve(false), 100))]), true);
+    assert.deepEqual(storage.values, before);
+    assert.equal(server.files.size, 1);
+  } finally { release(); await flight; await launch; }
+  const { sets } = await getActiveSaveSets(storage, destinations);
+  assert.deepEqual(sets.find(({ destination }) => destination.key === "catalog:sky").files[0].data, bytes(contents));
+  assert.equal(sets.find(({ destination }) => destination.key === "catalog:lure").hash, remote.hash);
+  assert.ok(server.files.has(cloudName));
+});
+
+test("a full browser defers only the affected restore, retains both sets and retries later", async (t) => {
+  const { storage, server, runtime, destinations } = await setup(t, "local save", [
+    { target: "sky", displayTitle: "Beneath a Steel Sky" }, { target: "queen", displayTitle: "Flight of the Amazon Queen" },
+    { target: "lure", displayTitle: "Lure of the Temptress" },
+  ]);
+  const remoteSets = [];
+  for (const [key, path, data] of [["queen", "queen.s01", bytes("small")], ["lure", "lure.001", new Uint8Array(40000)]]) {
+    const set = { destination: { ...destinations.find(item => item.family === key), isolated: true },
+      files: [{ path, data, modifiedAt: 100 }] };
+    set.hash = await identifySet(set);
+    remoteSets.push(set);
+    await writeSnapshot(server, await makeSnapshot(set));
+  }
+  const initialCloud = [...server.files.keys()];
+  let quotaFailures = 0;
+  const write = storage.setItem;
+  storage.setItem = (key, value) => {
+    if (value.length > 50000) { quotaFailures++; throw new DOMException("full", "QuotaExceededError"); }
+    write(key, value);
+  };
+  await runtime.syncDropbox();
+  assert.equal(runtime.getDropboxState().phase, "waiting");
+  assert.match(runtime.getDropboxState().message, /storage is full/);
+  const read = () => getActiveSaveSets(storage, destinations);
+  const { sets } = await read();
+  assert.equal(sets.find(({ destination }) => destination.family === "queen").hash, remoteSets[0].hash);
+  assert.deepEqual(sets.find(({ destination }) => destination.family === "sky").files[0].data, bytes("local save"));
+  assert.equal(sets.some(({ destination }) => destination.family === "lure"), false);
+  assert.ok((await readStoredSets()).some(({ hash }) => hash === remoteSets[1].hash));
+  assert.ok(initialCloud.every(name => server.files.has(name)));
+  await runtime.syncDropbox();
+  assert.equal(quotaFailures, 1);
+  const retryTime = Date.now() + 120001;
+  t.mock.method(Date, "now", () => retryTime);
+  storage.setItem = write;
+  await runtime.syncDropbox();
+  assert.equal((await read()).sets.find(({ destination }) => destination.family === "lure").hash, remoteSets[1].hash);
+  assert.equal(runtime.getDropboxState().phase, "connected");
+});
+
 test("a damaged newer cloud archive quietly falls back to verified progress on an empty device", async (t) => {
   const { runtime, storage, destinations, server } = await setup(t, null);
   const set = { destination: destinations[0], files: [{ path: "SKY-VM.001", data: bytes("previous save"), modifiedAt: 100 }] };

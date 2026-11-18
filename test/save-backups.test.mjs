@@ -116,6 +116,7 @@ test("automatic matching preserves a missing edition instead of restoring to a g
 
 test("quota failures roll back staged nodes without changing existing files", async () => {
   const storage = storageFixture({ "SKY-VM.001": bytes("current") });
+  storage.setItem(saveIndexKey("", "sky"), JSON.stringify({ revision: "old", saves: [] }));
   const before = new Map(storage.values);
   let writes = 0;
   const put = storage.setItem;
@@ -125,6 +126,24 @@ test("quota failures roll back staged nodes without changing existing files", as
   };
   await assert.rejects(restore(storage, [await set(sky, [file("SKY-VM.002", "new")])]), /current saves are unchanged/);
   assert.deepEqual(storage.values, before);
+});
+
+test("an atomic restore can fit within quota by reusing unchanged save bytes", () => {
+  const data = bytes("x".repeat(500_000));
+  const storage = storageFixture({ "SKY-VM.001": data });
+  const oldInode = readSaveTree(storage, "").files["SKY-VM.001"];
+  const total = () => [...storage.values.values()].reduce((size, value) => size + value.length, 0);
+  const limit = total() + 16000;
+  const write = storage.setItem;
+  storage.setItem = (key, value) => {
+    if (total() + value.length - (storage.getItem(key)?.length ?? 0) > limit) throw new DOMException("full", "QuotaExceededError");
+    write(key, value);
+  };
+  restoreSaveGroups(storage, [{ namespace: "", matches: (name) => name.startsWith("SKY-VM."),
+    files: [{ path: "SKY-VM.001", data, modifiedAt: 100 }, file("SKY-VM.002", "new")],
+  }], captureFilesystem(storage).revision);
+  assert.equal(readSaveTree(storage, "").files["SKY-VM.001"], oldInode);
+  assert.deepEqual(captureFilesystem(storage).files.map(({ path }) => path), ["SKY-VM.001", "SKY-VM.002"]);
 });
 
 test("stale reviews and failed preservation never change active progress", async () => {
