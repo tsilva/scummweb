@@ -1277,6 +1277,27 @@
       "config": {
         "platform": ""
       }
+    },
+    {
+      "target": "bluesbirthday-demo",
+      "title": "Blue's Clues: Blue's Birthday Adventure (Demo)",
+      "engineId": "scumm",
+      "gameId": "bluesbirthday",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "BluesBirthday-win-demo1-us.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/scumm/he/BluesBirthday-win-demo1-us.zip",
+      "sha256": "dd9f3b183aa71a120baef382e86a8ae7738142212d2ed24eeac71ea5684aa2ac",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-18",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "ScummVM lists this exact interactive English Windows edition. All 46 files passed safe path, CRC and full SHA-256 checks plus ASCII, UTF-16 and XOR-69 review. The 34 original Smacker clips passed header checks, and the PE and NE binaries were inspected as data. The 38-topic compiled Help identifies the two-title promotional Sneak Peek CD and retains Viacom and Humongous copyright notices. The original RAD notice is retained in its DLL. No active licence acceptance, express redistribution grant or packaged redistribution prohibition was found. Eligibility uses the cautious official promotional-hosting assessment.",
+        "preservation": "Serve the complete unchanged official ZIP, with its original path structure, Help, configuration, launchers, Smacker runtime, movies, and all game data. No downloaded executable was run."
+      },
+      "config": {
+        "platform": ""
+      }
     }
   ]
 }

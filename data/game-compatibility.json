@@ -1648,6 +1648,14 @@
       "observation": "A game frame renders at startup."
     },
     {
+      "title": "Blue's Clues: Blue's Birthday Adventure (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:bluesbirthday",
+      "edition": "BluesBirthday-win-demo1-us.zip",
+      "recordedOn": "2026-11-18",
+      "observation": "English Windows Sneak Peek demo. Original live-action video, native Skip Intro, farm and garden, picking up and using the watering can, and opening the notebook clue were verified. The demo’s original Help says progress is not saved, and ScummWEB Save was unavailable in the tested scene. The pasture activity, ending and independent audible output were unverified."
+    },
+    {
       "title": "Blue's Clues: Blue's Birthday Adventure",
       "status": "startup-verified",
       "gameId": "scumm:bluesbirthday",

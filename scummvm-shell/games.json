@@ -945,6 +945,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "bluesbirthday-demo",
+      "title": "Blue's Clues: Blue's Birthday Adventure (Demo)",
+      "path": "/games/bluesbirthday",
+      "engineId": "scumm",
+      "gameId": "bluesbirthday",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

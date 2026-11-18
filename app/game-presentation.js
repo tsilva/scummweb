@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "bluesbirthday-demo": {
+    ...retroGameArtwork["scumm:bluesbirthday"],
+    heroImageMobilePosition: "73% -15vh",
+    title: "Blue's Clues: Blue's Birthday Adventure (Demo)",
+    year: "1998",
+    language: "en",
+    summary: "Search the farm with Blue and Steve for a clue about what Blue wants to eat at her birthday party.",
+  },
   "bluesabctime-demo": {
     ...retroGameArtwork["scumm:bluesabctime"],
     heroImageMobilePosition: "68% -8vh",
