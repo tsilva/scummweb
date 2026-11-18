@@ -12,7 +12,7 @@ export function readIncompleteSaveWrites(storage, destinations = [], sets = []) 
     const destinationKey = key.slice(saveIndexPrefix.length);
     const destination = destinations.find((item) => item.key === destinationKey);
     const files = sets.filter((set) => set.destination.key === destinationKey).flatMap((set) => set.files);
-    result.push({ key, destinationKey, target: record.target || "", engineId: record.engineId || "",
+    result.push({ key, destinationKey, target: record.target || "", engineId: record.engineId || "", gameId: record.gameId || "",
       title: destination?.title || record.target || "Unmatched saved game",
       files: [...new Set(record.pending)].filter((name) => typeof name === "string").map((name) => {
         const file = files.find((item) => item.path === name);
@@ -20,4 +20,12 @@ export function readIncompleteSaveWrites(storage, destinations = [], sets = []) 
       }) });
   }
   return result.sort((a, b) => a.title.localeCompare(b.title));
+}
+
+// Backyard Baseball opens a script-owned records stream through the same native
+// save manager as numbered slots. Keep an abandoned empty stream local until the
+// game closes a new write successfully. Never infer this from a filename alone.
+export function isEmptyBaseballRecordsWrite(entry) {
+  return entry.engineId === "scumm" && entry.gameId === "baseball" && entry.target === "baseball"
+    && entry.files.length === 1 && entry.files[0].name === "baseball-records.bbl" && entry.files[0].size === 0;
 }
