@@ -2,10 +2,11 @@
 
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { dropboxPreviewEnabled } from "../dropbox/feature.mjs";
 
 function DropboxPreviewContent({ children }) {
   const searchParams = useSearchParams();
-  return searchParams.get("dropbox") === "true" ? children : null;
+  return dropboxPreviewEnabled(searchParams) ? children : null;
 }
 
 export default function DropboxPreview({ children }) {
