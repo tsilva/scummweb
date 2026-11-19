@@ -49,6 +49,7 @@ export function trackCloudTransfers(client, report) {
     downloadImport: (name, options) => download(name, options, true),
     verified(name, set) {
       if (active?.name === name) emit({ ...active, title: set.destination.title, percentage: 100 });
+      else emit({ name, stage: "verify", direction: "download", title: set.destination.title, percentage: 100 });
       uploaded.delete(name);
       client.verified?.(name, set);
     },

@@ -1,11 +1,10 @@
 # Dropbox save syncing
 
 ScummWEB can optionally keep saves and Recently Played activity in the player's
-Dropbox app folder.
-The website supplies the UI; ScummVM supplies the native save storage API,
-save transfers, pagination and access-token renewal. No ScummVM
-launcher or cloud wizard appears. Personal game archives keep their existing
-library/import flows; game discovery is outside this integration.
+Dropbox app folder. ScummVM supplies the native save storage API, uploads,
+pagination and access-token renewal. The website uses that same authorized
+session for concurrent snapshot downloads. No ScummVM launcher or cloud wizard
+appears. Personal game archives keep their existing library and import flows.
 
 ## Configure the application
 
@@ -82,7 +81,7 @@ advances as its bytes are received. Publication counts the uploaded bytes and th
 required equal-sized verification readback, so upload occupies the first half and
 **Verifying** occupies the second half. Upload progress advances only when Dropbox
 confirms a native upload chunk; small backups may jump directly to verification.
-The native provider's requests, authentication and chunk sizes stay unchanged.
+Uploads and authentication continue to use ScummVM's native provider.
 
 The game name comes from the save set. A previously unseen remote backup briefly
 shows **Identifying game…** until its contents and identity have been verified.
@@ -111,8 +110,13 @@ file in the recovery export and uses the newest intact copy from that game
 edition's backups when available. If no copy exists, the remaining saves
 still sync.
 Continue can open an intact local save while Dropbox is still checking the
-library. Launches without a usable local Continue save still check Dropbox for
-progress before playing. Sync also runs after saves change, when returning to
+library. A launch that needs cloud progress verifies and restores the selected
+edition first, then lets the other games continue syncing in the background.
+On the first sync of an account, ScummWEB downloads and verifies unseen
+snapshots in small groups. Large ZIPs are verified one at a time. Subsequent
+checks reuse the metadata for unchanged Dropbox revisions. Changed editions
+share a folder refresh, and upload readback is reused when its revision
+matches the listing. Sync also runs after saves change, when returning to
 the app, when connectivity returns, and periodically while the page is visible.
 A running game's files are never replaced remotely. The transfer row keeps the
 last named game visible until the next game is identified.
@@ -223,7 +227,7 @@ checksum-named snapshot transfers inside `/saves/`, bounds responses, and
 returns sanitized errors. Credentials are persisted after native renewal before acknowledging an
 operation. Service teardown discards incomplete scratch transfers.
 
-The native bridge uses `/saves/` inside the app folder. Every
+Save transfers use `/saves/` inside the app folder. Every
 snapshot is an ordinary `scummweb-save-backup` version 1 ZIP with an additional
 cloud manifest. Its checksum-derived filename identifies its profile, complete
 file contents, recorded save time, active/recovery role and parent snapshot IDs. Imported editions
@@ -254,12 +258,13 @@ lock serializes cloud coordination. Import and recovery retain revision checks, 
 exclusive save locks. Cloud ZIPs can also be imported manually
 using **Saved games**. Each save archive retains the 64 MiB limit. ScummWEB
 keeps the entire Dropbox history and caches verified snapshot metadata by
-Dropbox revision. A new browser verifies the listed snapshots one at a time.
-Later checks reuse verified metadata and download save bytes when needed for a
-restore or merge. Fresh listings detect new, changed and missing snapshots.
-Unchanged games share the pass's initial collection listing and a final fresh
-check, rather than listing the same folder separately for every game. Writes
-still re-list immediately. New cloud changes or newly queued completed saves
+Dropbox revision. A new browser can verify up to four small listed snapshots
+at once. Later checks reuse verified metadata and download save bytes when
+needed for a restore or merge. Fresh listings detect new, changed and missing
+snapshots. One refresh covers a batch of independent uploads before
+reconciliation, and a final fresh check fences the completed pass. Conflicting
+histories are verified and reconciled before local activation. New cloud
+changes or newly queued completed saves
 trigger up to three immediate passes before a launch succeeds; continued changes
 leave a retryable waiting status instead of launching with unchecked progress.
 Import, export and activation briefly retry a busy save lock so a short sync
@@ -279,8 +284,9 @@ per-request deadlines. Cancellation removes the native service, releases the
 cloud coordination lock, and fences late work from restoring or acknowledging
 saves. Returning to a visible tab, reconnecting the network or the periodic
 retry starts a fresh pass without reloading. Pending catalog requests are bounded
-and evicted after cancellation. Launch waits for an existing sync coordinator
-within the same deadline. Disconnect cancels a pending pass.
+and evicted after cancellation. A launch can redirect a background pass in its
+own tab to the selected edition. An existing sync in another tab retains the
+coordination lock within the same deadline. Disconnect cancels a pending pass.
 
 ## Verification
 

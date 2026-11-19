@@ -87,6 +87,52 @@ test("collection refresh reuses verified history while observing new and deleted
   server.files.delete(`${baseTips[0]}.zip`);
   await assert.rejects(publishProfile({ client, profile, local: remote, base: remote.hash, baseTips: newer.head.tips }), /incomplete/);
 });
+test("bounded verification and a shared upload refresh retain every original snapshot", async () => {
+  const server = fakeNativeStorage(), originals = [];
+  for (let index = 0; index < 9; index++) {
+    const namespace = `version-${index.toString(16).repeat(64)}`;
+    const set = await save(`original ${index}`, { key: namespace, namespace, title: `Game ${index}` });
+    originals.push(await writeSnapshot(server, await makeSnapshot(set)));
+  }
+  let listings = 0, downloads = 0, inFlight = 0, peak = 0;
+  const initialArchives = new Map(server.files);
+  const cached = new Map();
+  const transport = { ...server,
+    parallelDownloads: 4,
+    size: name => server.files.get(name).size,
+    async list() { listings++; return server.list(); },
+    async download(name, { onRevision } = {}) {
+      downloads++;
+      peak = Math.max(peak, ++inFlight);
+      try {
+        await new Promise(resolve => setTimeout(resolve, 5));
+        const blob = await server.download(name);
+        onRevision?.(server.revision(name));
+        return blob;
+      } finally { inFlight--; }
+    },
+    async upload(name, blob) {
+      assert.equal(inFlight, 0, "writes and reads use separate phases");
+      await server.upload(name, blob);
+    },
+  };
+  const collection = await createSaveCollection(transport, {
+    load: (id, revision) => cached.get(id)?.revision === revision ? cached.get(id) : undefined,
+    save: node => cached.set(node.id, node),
+  });
+  assert.equal(downloads, 9);
+  assert.equal(peak, 4);
+  const updates = await Promise.all(originals.map(async ({ profile, id, set }) => ({
+    profile, local: await save("changed", set.destination), base: set.hash, baseTips: [id],
+  })));
+  for (const update of updates) await collection.stage(update);
+  assert.equal(downloads, 18, "each upload is read back exactly once");
+  assert.equal(await collection.refresh(), false);
+  for (const update of updates) assert.equal((await collection.reconcile(update)).head.active, update.local.hash);
+  assert.equal(downloads, 18, "an identical revision reuses already verified bytes");
+  assert.equal(listings, 2);
+  for (const [name, blob] of initialArchives) assert.equal(server.files.get(name), blob);
+});
 test("history beyond the previous 256 MiB limit keeps every node and reads older bytes on demand", async () => {
   const server = fakeNativeStorage();
   const original = await save("large checkpoint");

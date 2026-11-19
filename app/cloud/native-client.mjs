@@ -1,6 +1,7 @@
 import { syncStore } from "../dropbox/store.mjs";
 import { DropboxError, maxBackupBytes } from "../dropbox/client.mjs";
 import { createDropboxActivityClient } from "../dropbox/activity-sync.mjs";
+import { downloadDropboxSave } from "../dropbox/save-download.mjs";
 
 // IDs belong to ScummVM's Cloud::StorageID, not to the UI. Add an auth adapter
 // before enabling another provider; the snapshot/recovery protocol is shared.
@@ -33,6 +34,7 @@ export async function createNativeCloudClient({ provider = "dropbox", accountId,
   let entries = new Map();
   let refreshAfter = saved.refreshAfter || 0;
   let config = saved.config;
+  const accessToken = () => /^storage_Dropbox_access_token[ \t]*=[ \t]*([^\r\n]+)/m.exec(config)?.[1].trim();
   const request = (op, extra = {}, onProgress) => new Promise((resolve, reject) => {
     if (closed || pending) { reject(new DropboxError("Cloud sync is unavailable. Try again.")); return; }
     const id = ++counter;
@@ -69,8 +71,10 @@ export async function createNativeCloudClient({ provider = "dropbox", accountId,
       // A disconnect may have removed the credential record during a request.
       if (operation.op === "refresh" && data.ok) refreshAfter = Date.now() + 30 * 60 * 1000;
       if (data.config) {
-        await syncStore.putIf({ id: key, config: data.config, refreshAfter, connectionId },
-          (current) => current.connectionId === connectionId);
+        if (data.config !== config || operation.op === "refresh") {
+          await syncStore.putIf({ id: key, config: data.config, refreshAfter, connectionId },
+            (current) => current.connectionId === connectionId);
+        }
         config = data.config;
       }
       if (data.ok) operation.resolve(data);
@@ -97,10 +101,11 @@ export async function createNativeCloudClient({ provider = "dropbox", accountId,
   catch (error) { close(); throw error; }
   return {
     close,
+    parallelDownloads: provider === "dropbox" && accessToken() ? 4 : 1,
     activityClient() {
       if (provider !== "dropbox") return null;
       // Reuse the scoped session after native renewal.
-      const token = /^storage_Dropbox_access_token[ \t]*=[ \t]*([^\r\n]+)/m.exec(config)?.[1].trim();
+      const token = accessToken();
       return token ? createDropboxActivityClient(token) : null;
     },
     async list() {
@@ -117,10 +122,25 @@ export async function createNativeCloudClient({ provider = "dropbox", accountId,
       return [...entries.keys()];
     },
     revision: (name) => entries.get(name)?.revision,
-    async download(name, { onProgress } = {}) {
+    size: (name) => entries.get(name)?.size,
+    async download(name, { onProgress, onRevision } = {}) {
       const size = entries.get(name)?.size;
       if (size !== undefined && (!Number.isSafeInteger(size) || size < 0 || size > maxBackupBytes)) {
         throw new DropboxError("A cloud snapshot exceeds the save limit.", "integrity");
+      }
+      const token = provider === "dropbox" && accessToken();
+      if (token) {
+        try {
+          return await downloadDropboxSave({ name, revision: entries.get(name)?.revision, size, token, accountId,
+            signal, onProgress, onRevision, progress });
+        } catch (error) {
+          if (error.kind === "expired" && refreshAfter !== 0) {
+            refreshAfter = 0;
+            await syncStore.putIf({ id: key, config, refreshAfter, connectionId },
+              (current) => current.connectionId === connectionId);
+          }
+          throw error;
+        }
       }
       const result = await request("download", { name, size }, onProgress);
       if (!(result.bytes instanceof Uint8Array) || result.bytes.length > maxBackupBytes) throw new DropboxError("Invalid cloud snapshot.", "integrity");
