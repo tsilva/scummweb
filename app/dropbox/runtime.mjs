@@ -20,7 +20,7 @@ const listeners = new Set();
 let state = { phase: "disconnected", message: "", conflicts: [], checking: false, verified: false, transferProgress: null };
 let flight = null, flightController, queue = Promise.resolve(), generation = 0, contextPromise;
 let connecting = false, localGeneration = 0;
-let flightPriority;
+let flightPriority, flightPlayback, playing;
 let launchSyncSnapshot = null;
 let activityController;
 const restoreSpaceWait = new Map();
@@ -96,15 +96,32 @@ function stopAccountActivity() {
   activityController = null;
   if (state.activityWaiting) update({ activityWaiting: false });
 }
-async function lockedSaves(action) {
+async function lockedSaves(action, { readWhilePlaying = false, destination } = {}) {
   if (!navigator.locks) throw new DropboxError("This browser cannot safely coordinate cloud saves.");
   const db = await ensureSaveStorage().catch(error => {
     if (error.name !== "SaveSessionBusyError") throw error;
     return null;
   });
-  if (!db) return { busy: true };
-  return navigator.locks.request(saveLockName, { mode: "exclusive", ifAvailable: true },
-    async (lock) => lock ? action(await openSaveStorage(db)) : { busy: true });
+  const busy = { busy: true };
+  if (!db) return busy;
+  const locks = navigator.locks;
+  const exclusive = await locks.request(saveLockName, { mode: "exclusive", ifAvailable: true },
+    async (lock) => lock ? action(await openSaveStorage(db), false) : busy);
+  if (exclusive !== busy) return exclusive;
+  const edition = destination?.key !== "shared" && editionKey(destination?.namespace, destination?.family);
+  if (!readWhilePlaying && !edition) return busy;
+  return locks.request(saveLockName, { mode: "shared", ifAvailable: true }, async root => {
+    if (!root) return busy;
+    // The readonly IndexedDB transaction sees only complete player commits.
+    if (readWhilePlaying) return action(await openSaveStorage(db), true);
+    return locks.request(editionLockName(edition), { mode: "exclusive", ifAvailable: true }, editionLock => {
+      if (!editionLock) return { busy: true, playing: true };
+      // Taking the same setup lock as the native player serializes changes to
+      // the shared root. Running players write only beneath their own roots.
+      return locks.request(saveLockName + ":setup", { mode: "exclusive", ifAvailable: true },
+        async setup => setup ? action(await openSaveStorage(db), true) : busy);
+    });
+  });
 }
 // Baselines and cached nodes belong to this storage layout and snapshot format.
 const recordKey = (account, kind, profile) => `${account}/saves-v1/${kind}/${profile}`;
@@ -169,11 +186,34 @@ export function queuePlayerSave(set) {
     // Preserve the last complete bytes in IndexedDB before attempting network IO.
     await enqueue(account, set);
   }).catch((error) => { failure(error); throw error; });
-  void queue.then(() => syncDropbox()).catch(() => {});
+  void queue.then(async () => {
+    if (playing?.destination === set.destination.key && flight && !flightPriority?.waiting
+      && (flightPlayback?.destination !== playing.destination || flightPlayback.background)) {
+      flightController?.abort(new DropboxError("Prioritizing the latest save from the running game.", "priority"));
+      await flight.catch(() => {});
+    }
+    await syncDropbox();
+  }).catch(() => {});
   return queue;
 }
 
-async function syncAccount(auth, epoch, signal, progress, priority) {
+export function prioritizeDropboxGameplay(destination) {
+  if (!session()) return () => {};
+  const active = { destination };
+  playing = active;
+  void syncDropbox();
+  return () => {
+    if (playing !== active) return;
+    playing = null;
+    void (async () => {
+      if (flight) await flight.catch(() => {});
+      if (!playing) await syncDropbox();
+    })();
+  };
+}
+
+async function syncAccount(auth, epoch, signal, progress, priority, playback) {
+  if (playback) playback.background = false;
   const account = auth.accountId;
   const check = () => {
     signal.throwIfAborted();
@@ -193,6 +233,9 @@ async function syncAccount(auth, epoch, signal, progress, priority) {
     const { destinations, sources } = await context();
     const launchDestination = destinations.find(({ key }) => key === priority?.destination);
     const launchProfile = launchDestination && await saveProfileId({ destination: launchDestination });
+    const playingDestination = destinations.find(({ key }) => key === playback?.destination);
+    const playingProfile = playingDestination && await saveProfileId({ destination: playingDestination });
+    const focusProfile = launchProfile ?? playingProfile;
     check();
     syncAccountActivity(transport.activityClient(), auth, sources);
     const historyPrefix = recordKey(account, "history", "");
@@ -242,9 +285,10 @@ async function syncAccount(auth, epoch, signal, progress, priority) {
     const preservedUnmatched = new Set();
     const groups = new Map();
     const scanGeneration = localGeneration;
-    const collected = await lockedSaves(async (storage) => {
+    const collected = await lockedSaves(async (storage, shared) => {
       check();
-      const active = await recoverInterruptedBaseballRecords(storage, destinations, client, check);
+      const active = shared ? await getActiveSaveSets(storage, destinations)
+        : await recoverInterruptedBaseballRecords(storage, destinations, client, check);
       const incomplete = readIncompleteSaveWrites(storage, destinations, active.sets);
       const blocked = new Set();
       for (const entry of incomplete) {
@@ -288,8 +332,8 @@ async function syncAccount(auth, epoch, signal, progress, priority) {
         // Preserved imports/migration data survive a browser purge as well.
         for (const set of group.alternatives) await syncStore.put({ id: recordKey(account, "preserved", `${profile}/${set.hash}`), profile, set });
       }
-      return { busy: false, blocked, revision: active.revision };
-    });
+      return { busy: false, shared, blocked, revision: active.revision };
+    }, { readWhilePlaying: true });
     check();
     for (const item of await syncStore.all(recordKey(account, "pending", ""))) {
       if (collected.blocked?.has(item.profile) || collected.incomplete) continue;
@@ -315,7 +359,7 @@ async function syncAccount(auth, epoch, signal, progress, priority) {
       if (!groups.has(profile)) groups.set(profile, { local: null, alternatives: [] });
     }
     const ordered = new Map();
-    if (launchProfile) ordered.set(launchProfile, groups.get(launchProfile) ?? { local: null, alternatives: [] });
+    if (focusProfile) ordered.set(focusProfile, groups.get(focusProfile) ?? { local: null, alternatives: [] });
     for (const [profile, group] of groups) ordered.set(profile, group);
     const sameHead = (profile, head) => {
       const latest = client.head(profile);
@@ -331,7 +375,7 @@ async function syncAccount(auth, epoch, signal, progress, priority) {
       let wrote = false;
       for (const [profile, group] of ordered) {
         check();
-        if (profile === launchProfile || collected.blocked?.has(profile)) continue;
+        if (profile === focusProfile || collected.blocked?.has(profile)) continue;
         const input = inputFor(profile, group);
         if (!hasIndependentWorkingCopy(input)) wrote = await client.stage(input) || wrote;
       }
@@ -343,12 +387,20 @@ async function syncAccount(auth, epoch, signal, progress, priority) {
     const hasIncomplete = Boolean(collected.incomplete || collected.blocked?.size);
     let deferred = false;
     let deferredMessage = "";
+    const playingRestores = new Set();
+    async function deferPlayingRestore(profile, head, local) {
+      if (local && head.snapshots.includes(local.hash)) {
+        await syncStore.removeIf(recordKey(account, "pending", profile), pending => pending.set.hash === local.hash);
+      }
+      playingRestores.add(profile);
+    }
     let stagedBackground = false;
     for (const [profile, group] of ordered) {
       check();
       if (collected.blocked?.has(profile)) continue;
-      const focused = profile === launchProfile;
+      const focused = profile === focusProfile;
       if (!focused && !stagedBackground) {
+        if (playback) playback.background = true;
         await stageBackground();
         stagedBackground = true;
       }
@@ -381,6 +433,16 @@ async function syncAccount(auth, epoch, signal, progress, priority) {
           }
           continue; // Never replace a running game's files.
         }
+        const identity = `${profile}/${remoteHash}`;
+        if (profile === playingProfile && collected.shared && preservedHashes.has(identity)) {
+          const edition = editionKey(playingDestination.namespace, playingDestination.family);
+          const locks = await navigator.locks.query?.();
+          if (edition && locks?.held.some(lock => lock.name === editionLockName(edition))) {
+            check();
+            await deferPlayingRestore(profile, result.head, group.local);
+            continue;
+          }
+        }
         const restoreKey = recordKey(account, "restore-space", profile);
         const previous = restoreSpaceWait.get(restoreKey);
         if (previous?.hash === remoteHash && previous.revision === collected.revision && Date.now() < previous.retryAt) {
@@ -394,9 +456,10 @@ async function syncAccount(auth, epoch, signal, progress, priority) {
           return { retry: true };
         }
         let restoreRevision;
-        const restored = await lockedSaves(async (storage) => {
+        const destinationKey = matchDestination(remote, destinations);
+        const destination = destinations.find(({ key }) => key === destinationKey);
+        const restored = await lockedSaves(async (storage, scoped) => {
           check();
-          const destinationKey = matchDestination(remote, destinations);
           for (const entry of readIncompleteSaveWrites(storage, destinations)) {
             const destination = destinations.find(({ key }) => key === entry.destinationKey && key !== "shared");
             if (!destination || await saveProfileId({ destination }) === profile) return { changed: true };
@@ -414,17 +477,25 @@ async function syncAccount(auth, epoch, signal, progress, priority) {
           }
           check();
           activity({ stage: "restore", title: remote.destination.title, percentage: 100 });
-          await applyImport({ storage, destinations, revision: current.revision, initialConfig, check,
+          await applyImport({ storage, destinations, revision: current.revision, initialConfig, check, scoped: scoped ? destinationKey : undefined,
             rows: [{ set: remote, destinationKey, choice: "imported" }] });
           activity({ stage: "verify", title: remote.destination.title, percentage: 100 });
           return { changed: false, restored: Boolean(destinationKey) && local?.hash !== remote.hash };
-        }).catch((error) => {
+        }, { destination }).catch((error) => {
           if (!isQuotaError(error)) throw error;
           restoreSpaceWait.set(restoreKey, { hash: remoteHash, revision: restoreRevision, retryAt: Date.now() + 120000 });
           return { quota: true };
         });
         if (restored.quota) {
           spaceBlocked.add(profile);
+          continue;
+        }
+        if (restored.playing) {
+          // Keep the received result and the current player's exact bytes.
+          // Leave the old baseline until the local restore can be applied.
+          if (!preservedHashes.has(identity)) await preserveSets([remote]);
+          check();
+          await deferPlayingRestore(profile, result.head, group.local);
           continue;
         }
         if (restored.busy || restored.changed) {
@@ -442,7 +513,7 @@ async function syncAccount(auth, epoch, signal, progress, priority) {
       await syncStore.removeIf(recordKey(account, "pending", profile), (pending) => pending.set.hash === group.local?.hash);
       readyProfiles.add(profile);
       committedHeads.set(profile, result.head);
-      if (focused && !collected.busy && !collected.incomplete && scanGeneration === localGeneration) {
+      if (profile === launchProfile && !collected.busy && !collected.incomplete && scanGeneration === localGeneration) {
         // Check the selected edition again before letting it start. The
         // account-wide pass still verifies all editions before reporting done.
         await client.refresh();
@@ -491,7 +562,7 @@ async function syncAccount(auth, epoch, signal, progress, priority) {
       scanned: new Set(groups.keys()), ready: new Set([...readyProfiles].filter((profile) => !pendingProfiles.has(profile))) };
     const pendingOther = pending.some(item => !collected.incomplete && !collected.blocked?.has(item.profile));
     update({ phase: pendingOther || deferred ? "waiting" : "connected", conflicts: [],
-      verified: !pending.length && !deferred && !collected.busy && !hasIncomplete,
+      verified: !pending.length && !deferred && !collected.busy && !hasIncomplete && !playingRestores.size,
       message: deferred ? deferredMessage || "Saved progress is waiting to be checked again."
         : pendingOther ? "Your latest saves are waiting to sync." : "" });
     return { retry: !collected.busy && !collected.incomplete
@@ -572,8 +643,13 @@ export async function syncDropbox({ beforeLaunch = false, launchDestinationKey =
     const controller = new AbortController();
     flightController = controller;
     const priority = beforeLaunch && launchDestinationKey ? { destination: launchDestinationKey } : null;
-    if (priority) priority.promise = new Promise(resolve => { priority.ready = () => resolve(true); });
+    if (priority) {
+      priority.waiting = true;
+      priority.promise = new Promise(resolve => { priority.ready = () => { priority.waiting = false; resolve(true); }; });
+    }
     flightPriority = priority;
+    const playback = playing && { destination: playing.destination, background: false };
+    flightPlayback = playback;
     let deadline;
     const progress = () => {
       clearTimeout(deadline);
@@ -590,7 +666,7 @@ export async function syncDropbox({ beforeLaunch = false, launchDestinationKey =
         if (!lock) throw new DropboxError("Another ScummWEB tab is syncing. Try again shortly.");
         controller.signal.throwIfAborted();
         for (let attempt = 0; attempt < 3; attempt++) {
-          const result = await Promise.race([syncAccount(auth, epoch, controller.signal, progress, priority), aborted])
+          const result = await Promise.race([syncAccount(auth, epoch, controller.signal, progress, priority, playback), aborted])
             .catch(error => {
               if (error.kind !== "changed") throw error;
               update({ phase: "waiting", message: error.message, verified: false });
@@ -608,7 +684,7 @@ export async function syncDropbox({ beforeLaunch = false, launchDestinationKey =
       throw error;
     })
       .finally(() => {
-        clearTimeout(deadline); flight = null; flightPriority = null;
+        clearTimeout(deadline); flight = null; flightPriority = null; flightPlayback = null;
         if (flightController === controller) flightController = null;
         if (epoch === generation) update({ checking: false });
       });

@@ -118,8 +118,11 @@ checks reuse the metadata for unchanged Dropbox revisions. Changed editions
 share a folder refresh, and upload readback is reused when its revision
 matches the listing. Sync also runs after saves change, when returning to
 the app, when connectivity returns, and periodically while the page is visible.
-A running game's files are never replaced remotely. The transfer row keeps the
-last named game visible until the next game is identified.
+During play, the active game's completed local saves get priority for upload.
+Other editions can upload and restore in the background while their save
+folders are idle. Incoming progress for a running edition is retained and
+applies after the player exits. The transfer row keeps the last named game
+visible until the next game is identified.
 
 When the browser goes offline, Settings shows **Offline · Saves stay on this device**
 and sync resumes automatically on reconnect. **Reconnect Dropbox** is available

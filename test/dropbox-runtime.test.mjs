@@ -6,7 +6,7 @@ import { activityCacheKey } from "../app/game-player/activity.mjs";
 import { saveGameSources } from "../app/game-sources.mjs";
 import { dropboxEnabled, prepareDropboxLaunch, reportDropboxSave } from "../app/dropbox/bridge.mjs";
 import { captureFilesystem, initializeSaveEdition } from "../app/save-backups/filesystem.mjs";
-import { createSaveCollection, makeSnapshot, publishProfile, readSnapshot, saveProfileId, writeSnapshot } from "../app/dropbox/protocol.mjs";
+import { createSaveCollection, makeSnapshot, publishProfile, readNode, readSnapshot, saveProfileId, writeSnapshot } from "../app/dropbox/protocol.mjs";
 import { openSaveStorage } from "../web-shell/save-storage.mjs";
 import { readSaveTree } from "../web-shell/save-editions.mjs";
 import { syncStore } from "../app/dropbox/store.mjs";
@@ -659,6 +659,67 @@ test("cloud changes never replace a running player's working copy", async (t) =>
   locks.busy = false;
   await runtime.syncDropbox({ beforeLaunch: true });
   assert.equal((await activeSets(destinations)).sets[0].hash, remote.hash);
+});
+
+test("a running isolated game publishes first while another edition restores safely", async (t) => {
+  const catalog = ["sky", "queen", "lure"].map(target => ({ target, displayTitle: target }));
+  const { runtime, server, destinations, locks } = await setup(t, "initial Sky progress", catalog);
+  const sky = destinations.find(destination => destination.family === "sky");
+  const queen = destinations.find(destination => destination.family === "queen");
+  const lure = destinations.find(destination => destination.family === "lure");
+  const initial = await openSaveStorage();
+  initializeSaveEdition(initial, "catalog-sky");
+  await initial.commit();
+  await runtime.syncDropbox();
+  const skyBefore = (await activeSets(destinations)).sets.find(set => set.destination.key === sky.key);
+  const skyProfile = await saveProfileId(skyBefore);
+  const baseline = await syncStore.get(key("base", skyProfile));
+  const keep = await server.download(baseline.tips[0] + ".zip");
+  const make = async (destination, files) => {
+    const set = { destination: { ...destination, isolated: true }, files };
+    return { ...set, hash: await identifySet(set) };
+  };
+  const file = (path, text, modifiedAt) => ({ path, data: bytes(text), modifiedAt });
+  const playerSave = await make(sky, [...skyBefore.files, file("SKY-VM.002", "new player checkpoint", 200)]);
+  const incomingSky = await make(sky, [...skyBefore.files, file("SKY-VM.003", "other device slot", 300)]);
+  const queenSave = await make(queen, [file("queen.s01", "other game from Dropbox", 200)]);
+  const lureSave = await make(lure, [file("lure.001", "independent outbox", 200)]);
+  const remoteSkyNode = await writeSnapshot(server, await makeSnapshot(incomingSky, baseline.tips));
+  const remoteQueenNode = await writeSnapshot(server, await makeSnapshot(queenSave));
+  const earlier = await activeSets(destinations);
+  await applyImport({ storage: await openSaveStorage(), destinations, revision: earlier.revision,
+    rows: [{ set: playerSave, destinationKey: sky.key, choice: "imported" }] });
+  const playerIndex = "scummweb.continue.v1:" + sky.key;
+  await updateActive(playerIndex, { engineId: "sky", gameId: "sky", pending: [], saves: [{ name: "SKY-VM.002", slot: 2 }] });
+  const untouchedIndex = (await openSaveStorage()).getItem(playerIndex);
+  const expectedUpload = (await makeSnapshot(playerSave, baseline.tips)).id + ".zip";
+  const uploads = [];
+  server.onRequest = data => { if (data.op === "upload") uploads.push(data.name); };
+  locks.busy = "shared";
+  locks.editionBusy = "scummweb-saves:edition:catalog-sky";
+  await syncStore.put({ id: key("pending", await saveProfileId(lureSave)), profile: await saveProfileId(lureSave), set: lureSave });
+  const endPlay = runtime.prioritizeDropboxGameplay(sky.key);
+  await runtime.queuePlayerSave(playerSave);
+  await runtime.syncDropbox();
+  const during = (await activeSets(destinations)).sets;
+  assert.equal((await readNode(server, uploads[0].slice(0, -4))).profile, skyProfile);
+  assert.ok(server.files.has(expectedUpload));
+  assert.equal(await syncStore.get(key("pending", skyProfile)), undefined);
+  assert.equal(await syncStore.get(key("pending", await saveProfileId(lureSave))), undefined);
+  assert.deepEqual(during.find(set => set.destination.key === sky.key).files, playerSave.files);
+  assert.deepEqual(during.find(set => set.destination.key === queen.key).files, queenSave.files);
+  assert.equal((await openSaveStorage()).getItem(playerIndex), untouchedIndex, "other restore must preserve the running game's index");
+  assert.ok((await readStoredSets()).some(({ files }) => files.some(entry => entry.path === "SKY-VM.003")));
+  assert.equal(await server.download(baseline.tips[0] + ".zip"), keep);
+  assert.ok(server.files.has(remoteSkyNode.id + ".zip") && server.files.has(remoteQueenNode.id + ".zip"));
+  locks.busy = false;
+  locks.editionBusy = null;
+  endPlay();
+  await runtime.syncDropbox();
+  const settled = (await activeSets(destinations)).sets.find(set => set.destination.key === sky.key);
+  assert.deepEqual(settled.files.find(entry => entry.path === "SKY-VM.002"), playerSave.files[1]);
+  assert.deepEqual(settled.files.find(entry => entry.path === "SKY-VM.003"), incomingSky.files[1]);
+  assert.equal(runtime.getDropboxState().verified, true);
 });
 
 test("disconnect during upload prevents subsequent cloud writes and local restore", async (t) => {
