@@ -112,8 +112,8 @@ retrieval, alternate credential route, automatic trust-drift approval or bucket
 administration is part of adding a game. Unsupported sources/layouts need a
 reviewed publisher change, never a silent workaround.
 
-The player downloads `<gameId>.zip` from the existing game bucket origin
-`https://scummvm-games.tsilva.eu`. Publish only the selected package with
+The player downloads `<gameId>.zip` from the public hostname in the game
+publishing guide. Publish only the selected package with
 conditional creates. Never overwrite/delete objects or publish incomplete root
 indexes. Check full public ZIP bytes, SHA-256, length, MIME and immutable caching
 independently, then regenerate the selected hosted fingerprint. Respect archive,

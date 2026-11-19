@@ -78,8 +78,8 @@ Only the selected object's multipart session can be created or completed; the
 signer cannot list or delete objects. Receipts contain no credentials and remain
 until full public verification succeeds. Existing objects are never overwritten.
 A creation race also preserves the winner. The signer verifies the public
-object's complete bytes, MIME type and
-immutable cache metadata before reporting success. Signed HEAD and PUT requests
+object's complete bytes, MIME type and immutable cache metadata through
+`https://games.scummweb.tsilva.eu` before reporting success. Signed HEAD and PUT requests
 use the reviewed system curl with TLS 1.2 or newer, certificate and hostname
 verification, and negotiated HTTP/2 or HTTP/1.1. Request signatures enter curl
 through stdin. Curl reads each checked body through an open file descriptor into
@@ -96,13 +96,15 @@ so the proxy never has to carry the game ZIP. The client is sandboxed; the signe
 and other processes running as the same host user remain trusted. There are no
 delete, prune, force, bucket-listing or bucket-administration operations.
 
-Refresh the selected fingerprint from the public bucket after successful upload:
+Refresh the selected fingerprint from the same public hostname after successful
+upload:
 
 ```sh
 node scripts/generate-bundled-game-files.mjs --remote gk1-demo
 ```
 
-Local fingerprint preparation with `--local-dir` supports offline builds but
+Existing fingerprints retain their recorded URL until refreshed. Local
+fingerprint preparation with `--local-dir` supports offline builds but
 does not establish public delivery. Test the bucket-backed game in Brave, then
 follow the existing CI-gated Production delivery workflow and replay it live.
 

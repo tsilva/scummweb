@@ -4,6 +4,7 @@ import { HttpRangeReader, Uint8ArrayReader } from "@zip.js/zip.js";
 import { scanGameZipReader, maxLocalGameSize } from "../app/local-game-archive.mjs";
 import { gameFileFingerprint } from "../app/local-game-matching.mjs";
 import { catalogZipName, catalogZipUrl } from "../app/game-bucket-sources.mjs";
+import { DEFAULT_GAMES_ORIGIN } from "../lib/site-config.mjs";
 
 const root = new URL("../", import.meta.url);
 const args = process.argv.slice(2);
@@ -22,7 +23,7 @@ for (const target of targets) {
 }
 for (const game of catalog) {
   if (targets.size && !targets.has(game.target)) continue;
-  const url = catalogZipUrl("https://scummvm-games.tsilva.eu", game.gameId);
+  const url = catalogZipUrl(DEFAULT_GAMES_ORIGIN, game.gameId);
   const signal = AbortSignal.timeout(30_000);
   let remaining = 2 * 1024 * 1024;
   const localPath = localDir && path.join(localDir, catalogZipName(game.gameId));
