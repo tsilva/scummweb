@@ -39,7 +39,7 @@ absent from a native save list; an unlisted file is not proof of disposability.
 3. Review and confirm import without conflict radios. Distinct compatible slots
    combine; incoming overlapping slots take precedence. A changed companion/index
    selects the complete incoming copy. Verify prior current progress remains in
-   **Recover saved progress** and games absent from the import stay unchanged.
+   **Restore a backup** and games absent from the import stay unchanged.
 4. For a review race, complete a legitimate compatible save or let authorized
    sync finish while review remains open. Confirmation must recompute from the
    original incoming files and freshest current set under the save lock, retaining
