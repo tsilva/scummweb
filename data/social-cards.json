@@ -1670,6 +1670,11 @@
       "file": "arthur-s-birthday-demo-2c8684871061395b16f4302de731a20761d549e9a12a6714b527bc54d38bdf5b.jpg",
       "inputHash": "2c8684871061395b16f4302de731a20761d549e9a12a6714b527bc54d38bdf5b",
       "imageHash": "a5183c59c83d09710c2a1515e09195e6a78023c13c11505fb52c764c77acc25f"
+    },
+    "just-grandma-and-me-demo": {
+      "file": "just-grandma-and-me-demo-8b0f2751872abb9b28e4036fe73719b69b8fab90068e693ff8e9da91697b972e.jpg",
+      "inputHash": "8b0f2751872abb9b28e4036fe73719b69b8fab90068e693ff8e9da91697b972e",
+      "imageHash": "043e40c8dd460751618eb3511415d23b6a91cc215e845ab6cc984c98ce2772b5"
     }
   }
 }

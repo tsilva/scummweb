@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "grandma-demo": {
+    ...retroGameArtwork["mohawk:grandma"],
+    heroImageMobilePosition: "84% -9vh",
+    title: "Just Grandma and Me (Demo)",
+    year: "1992",
+    language: "en",
+    summary: "Set out for the beach with Little Critter and Grandma in this animated storybook preview. Choose English, Japanese or Spanish.",
+  },
   "arthurbday-demo": {
     ...retroGameArtwork["mohawk:arthurbday"],
     heroImageMobilePosition: "78% -9vh",
