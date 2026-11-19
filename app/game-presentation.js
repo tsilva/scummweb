@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "farm-demo": {
+    ...retroGameArtwork["scumm:farm"],
+    heroImageMobilePosition: "76% -9vh",
+    title: "Let's Explore the Farm (Demo)",
+    year: "1995",
+    language: "en",
+    summary: "Visit a red barn with Buzzy, meet the farm animals, and learn about them in an illustrated glossary.",
+  },
   "airport-demo": {
     ...retroGameArtwork["scumm:airport"],
     heroImageMobilePosition: "82% -9vh",

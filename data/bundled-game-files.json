@@ -21559,6 +21559,47 @@
           2950473743
         ]
       ]
+    },
+    "farm-demo": {
+      "url": "https://scummvm-games.tsilva.eu/farm.zip",
+      "fingerprint": "858cb20ca2c41b420e680b7da2a06d173f171efc2ae3cea06a552c80cca35412",
+      "files": [
+        [
+          "FARMDEMO.EXE",
+          30720,
+          2702858445
+        ],
+        [
+          "FARMDEMO.HE0",
+          18149,
+          4064708643
+        ],
+        [
+          "FARMDEMO.HE1",
+          8141104,
+          4243023337
+        ],
+        [
+          "FARMDEMO.HE2",
+          1099440,
+          20388266
+        ],
+        [
+          "FARMDEMO.HE3",
+          36864,
+          3389183884
+        ],
+        [
+          "FARMDEMO.HLP",
+          98304,
+          3730691247
+        ],
+        [
+          "FARMDEMO.W32",
+          229888,
+          1587081210
+        ]
+      ]
     }
   }
 }

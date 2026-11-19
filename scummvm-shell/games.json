@@ -965,6 +965,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "farm-demo",
+      "title": "Let's Explore the Farm (Demo)",
+      "path": "/games/farm",
+      "engineId": "scumm",
+      "gameId": "farm",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

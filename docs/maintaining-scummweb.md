@@ -423,6 +423,8 @@ Blue’s Birthday Adventure’s English Windows Sneak Peek demo includes the toy
 
 The English Windows demo of Let’s Explore the Airport opens at an airplane boarding gate. The native Skip Intro action works. Select the open airplane door to enter the passenger cabin, and use the green arrow to go back. ScummWEB saving was unavailable in the tested cabin scene.
 
+The English Windows demo of Let’s Explore the Farm opens in the barn. The native Skip Intro action works. Select the book to open the glossary and choose a word to see its illustrated entry. The original demo does not support saving.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.
