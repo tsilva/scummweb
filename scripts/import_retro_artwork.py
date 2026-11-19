@@ -22,7 +22,7 @@ SOURCE_HOSTS = {
     "thumbnails.libretro.com",
     "www.gamerscreed.com",
     "www.scummvm.org",
-    "scummvm-games.tsilva.eu",
+    "games.scummweb.tsilva.eu",
 }
 
 
@@ -117,7 +117,7 @@ def generate(task, args):
             if not original.is_file():
                 storage = json.loads((ROOT / "data/artwork-storage.json").read_text())
                 entry = storage["files"].get("/" + source["path"])
-                if not storage["published"] or not entry or storage["origin"] != "https://scummvm-games.tsilva.eu":
+                if not storage["published"] or not entry or storage["origin"] != "https://games.scummweb.tsilva.eu":
                     raise ValueError("Missing artwork source; publish its storage mapping first")
                 original = temporary / "original"
                 download(storage["origin"] + "/" + entry["key"], original)

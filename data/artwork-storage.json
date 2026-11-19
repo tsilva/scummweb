@@ -1,7 +1,7 @@
 {
   "version": 1,
   "published": true,
-  "origin": "https://scummvm-games.tsilva.eu",
+  "origin": "https://games.scummweb.tsilva.eu",
   "files": {
     "/image-assets/sources/road-gameplay.jpg": {
       "key": "artwork/3d8aa39c5b39432b68503ac15f9e492cfcc96447bb7c37fe982e4b2099f17d26/road-gameplay.jpg",

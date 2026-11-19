@@ -1,5 +1,5 @@
 import { getArchiveGamePresentation } from "./archive-game-presentation.mjs";
-import { normalizeGameZipUrl, readCachedGameArchive, readRemoteGameArchive, validateGameArchiveResponse } from "./game-bucket.mjs";
+import { gameZipFetchUrl, normalizeGameZipUrl, readCachedGameArchive, readRemoteGameArchive, validateGameArchiveResponse } from "./game-bucket.mjs";
 import { ArchiveError, maxArchiveSize, scanGameZipReader } from "./local-game-archive.mjs";
 
 const probeLimit = 2 * 1024 * 1024;
@@ -10,7 +10,7 @@ const probeTimeoutMs = 6000;
 class InspectionUnavailable extends ArchiveError {}
 
 export async function inspectRemoteGameArchive(url, { signal } = {}) {
-  const zipUrl = normalizeGameZipUrl(url);
+  const zipUrl = gameZipFetchUrl(normalizeGameZipUrl(url));
   const probeSignal = AbortSignal.any([AbortSignal.timeout(probeTimeoutMs), ...(signal ? [signal] : [])]);
   const { HttpRangeReader } = await import("@zip.js/zip.js");
   let remaining = probeLimit;

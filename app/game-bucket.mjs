@@ -2,7 +2,7 @@ import { ArchiveError, maxArchiveSize, maxExpandedSize, openPreparedGameArchive,
 import { cachePreparedGame, deleteCachedGameZip, readCachedGameData } from "./game-zip-cache.mjs";
 import { DEFAULT_GAMES_ORIGIN, LEGACY_GAMES_ORIGIN } from "../lib/site-config.mjs";
 
-import { normalizeGameZipUrl } from "./game-bucket-sources.mjs";
+import { gameZipFetchUrl, normalizeGameZipUrl } from "./game-bucket-sources.mjs";
 
 export * from "./game-bucket-sources.mjs";
 
@@ -78,7 +78,7 @@ async function downloadGameArchive(zipUrl, { signal, onEntries, onProgress, arch
   const cachedFiles = await readCachedGameArchive(cacheUrl, { signal, onEntries, onProgress, archiveLimit, expandedLimit });
   if (cachedFiles) return cachedFiles;
   const timeout = AbortSignal.timeout(timeoutMs);
-  const response = await fetch(zipUrl, {
+  const response = await fetch(gameZipFetchUrl(zipUrl), {
     mode: "cors",
     credentials: "omit",
     referrerPolicy: "no-referrer",

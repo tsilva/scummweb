@@ -42,7 +42,7 @@ def artwork_workspace():
 
 
 def publish(client, manifest, root=ROOT):
-    if (manifest.get("version") != 1 or manifest.get("origin") != "https://scummvm-games.tsilva.eu"
+    if (manifest.get("version") != 1 or manifest.get("origin") != "https://games.scummweb.tsilva.eu"
             or not isinstance(manifest.get("files"), dict) or not manifest["files"]):
         raise ValueError("Invalid artwork manifest")
     import re

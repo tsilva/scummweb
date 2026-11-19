@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
+import { DEFAULT_GAMES_ORIGIN } from "../lib/site-config.mjs";
 
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
 
@@ -72,7 +73,7 @@ export async function readArtworkFile(root, name, request = fetch, { manifest, c
   const cache = path.join(root, ".cache/artwork", entry.sha256);
   const cached = await fs.readFile(cache).catch((error) => { if (error.code !== "ENOENT") throw error; return null; });
   if (cached && valid(cached)) return cached;
-  if (manifest.origin !== "https://scummvm-games.tsilva.eu"
+  if (manifest.origin !== DEFAULT_GAMES_ORIGIN
     || entry.key !== `artwork/${entry.sha256}/${path.posix.basename(name)}`) throw new Error("Untrusted artwork location");
   const bytes = await downloadArtwork(name, `${manifest.origin}/${entry.key}`, entry, request);
   if (cacheDownload) {

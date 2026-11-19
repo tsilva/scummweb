@@ -14,7 +14,7 @@ import { readArtworkFile } from "../scripts/artwork-files.mjs";
 const bytes = await sharp({ create: { width: 8, height: 12, channels: 3, background: "#aabbcc" } }).webp().toBuffer();
 const sha256 = createHash("sha256").update(bytes).digest("hex");
 const file = { key: `artwork/${sha256}/sample-cover.webp`, sha256, bytes: bytes.length, width: 8, height: 12, contentType: "image/webp" };
-const sample = { version: 1, published: false, origin: "https://scummvm-games.tsilva.eu", files: { "/launcher/sample-cover.webp": file } };
+const sample = { version: 1, published: false, origin: "https://games.scummweb.tsilva.eu", files: { "/launcher/sample-cover.webp": file } };
 const manifestFile = "data/artwork-storage.json";
 const pendingFile = ".internal/evidence/artwork-migration/manifest.json";
 
