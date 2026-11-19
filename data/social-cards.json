@@ -1680,6 +1680,11 @@
       "file": "arthur-s-teacher-trouble-demo-0fe0ee51a79247d6fd5bda95997fa8877ad88245323a58fb9213624456462645.jpg",
       "inputHash": "0fe0ee51a79247d6fd5bda95997fa8877ad88245323a58fb9213624456462645",
       "imageHash": "8ab387aa5ae98ed8caa00d284c468acdd717875af99f8b0d296cdd3fce9555a1"
+    },
+    "ruff-s-bone-demo": {
+      "file": "ruff-s-bone-demo-ca92e7907535bfe5f5acfc7ad52859ddee8ff710e8bc49257197823174c087c4.jpg",
+      "inputHash": "ca92e7907535bfe5f5acfc7ad52859ddee8ff710e8bc49257197823174c087c4",
+      "imageHash": "b608942ec7ec4a835873c6c86623058ad1c963010a41e3a7476e1d249e82f9a6"
     }
   }
 }

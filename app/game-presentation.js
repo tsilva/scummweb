@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "ruff-demo": {
+    ...retroGameArtwork["mohawk:ruff"],
+    heroImageMobilePosition: "95% -7vh",
+    title: "Ruff's Bone (Demo)",
+    year: "1994",
+    language: "en",
+    summary: "Join Ruff in the yard as he waits for his Sunday bone. Explore the animated story page or read along in English or Spanish.",
+  },
   "arthur-demo": {
     ...retroGameArtwork["mohawk:arthur"],
     heroImageMobilePosition: "86% -9vh",

@@ -1406,6 +1406,24 @@
         "basis": "ScummVM lists this exact Windows demo. The Living Books configuration declares one bilingual page with Read and Play resources. Its MD5 matches the Windows Demo detector. All 30 original files passed path, CRC and SHA-256 checks. The game shows the publisher’s original promotional end page. Brøderbund notices remain intact. No mandatory licence acceptance or explicit packaged redistribution prohibition was located in the review. Eligibility uses the cautious official promotional-hosting assessment.",
         "preservation": "Serve the complete unchanged official ZIP with both languages, the original book data, Windows binaries, notices and packaging metadata. No downloaded executable was run."
       }
+    },
+    {
+      "target": "ruff-demo",
+      "title": "Ruff's Bone (Demo)",
+      "engineId": "mohawk",
+      "gameId": "ruff",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "ruff-win-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/mohawk/ruff-win-demo-en.zip",
+      "sha256": "f79248db8c7528dabb3627208c5df7f0b93a4ea3fd859c3605eed4620b771bfd",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-19",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "ScummVM lists this exact Windows demo. The Living Books configuration identifies version 1.0, declares one page in English and Spanish and retains its 1994 copyright notice. All 15 original files passed path, CRC and SHA-256 checks. The original end screen promotes the complete book through Living Books and retailers. The review found no mandatory licence acceptance or explicit packaged redistribution prohibition. Eligibility uses the cautious official promotional-hosting assessment.",
+        "preservation": "Serve the complete unchanged official ZIP with both languages, original book data, Windows binaries, notices and packaging metadata. No downloaded executable was run."
+      }
     }
   ]
 }

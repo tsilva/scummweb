@@ -21979,6 +21979,87 @@
           4187250282
         ]
       ]
+    },
+    "ruff-demo": {
+      "url": "https://games.scummweb.tsilva.eu/ruff.zip",
+      "fingerprint": "4af953fa0d6ea8914a2a4329fda94682551a31a84513e8f12b32f683f2e58e0e",
+      "files": [
+        [
+          "CHKLIST.MS",
+          81,
+          666581697
+        ],
+        [
+          "DATA/CP/COVER.IBM",
+          134129,
+          2151478760
+        ],
+        [
+          "DATA/CP/INTRO.IBM",
+          298788,
+          3477183934
+        ],
+        [
+          "DATA/CP/OPTION.IBM",
+          500151,
+          1649674555
+        ],
+        [
+          "DATA/CP/PANEL.IBM",
+          1862809,
+          777815661
+        ],
+        [
+          "DATA/CP/PDP.IBM",
+          13675,
+          2669673931
+        ],
+        [
+          "DATA/CP/QUIT.IBM",
+          125492,
+          234661969
+        ],
+        [
+          "DATA/EP/P01EP.IBM",
+          2744050,
+          2588385377
+        ],
+        [
+          "DATA/ER/P01ER.IBM",
+          948125,
+          1894177898
+        ],
+        [
+          "DATA/SP/P01SP.IBM",
+          2767560,
+          2980424538
+        ],
+        [
+          "DATA/SR/P01SR.IBM",
+          985750,
+          12495526
+        ],
+        [
+          "FILE.DLL",
+          6144,
+          3183172242
+        ],
+        [
+          "RSRC.DLL",
+          10752,
+          1033696743
+        ],
+        [
+          "RUFF.512",
+          693,
+          2000887134
+        ],
+        [
+          "RUFF.EXE",
+          61952,
+          14352974
+        ]
+      ]
     }
   }
 }
