@@ -106,6 +106,9 @@ export function installAgentControls(scope, saveScope) {
       && !scope.__scummwebSaveStatus?.saves.some(save => save.slot === pending.value)) {
       error = "ScummVM did not confirm the saved slot";
     }
-    finish(error);
+    if (!error && pending.operation === "save" && scope.__scummwebFlushSaveStorage) {
+      void scope.__scummwebFlushSaveStorage().then(() => finish(),
+        () => finish("Could not store the save on this device"));
+    } else finish(error);
   };
 }

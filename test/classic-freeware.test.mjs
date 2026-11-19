@@ -4,23 +4,25 @@ import os from "node:os";
 import path from "node:path";
 import { execFileSync, spawnSync } from "node:child_process";
 import test from "node:test";
-import { runInNewContext } from "node:vm";
+import { initializeSaveRoot } from "../app/save-backups/filesystem.mjs";
+import { readSaveTree } from "../web-shell/save-editions.mjs";
+import { memoryStorage } from "./helpers/dropbox-fixtures.mjs";
 import { getArchiveGamePresentation } from "../app/archive-game-presentation.mjs";
 
 const root = path.resolve(new URL("..", import.meta.url).pathname);
 const installer = path.join(root, "scripts/install_classic_freeware.py");
 
 test("fresh browser configuration preserves UTF-8 titles and records byte lengths", () => {
-  const html = fs.readFileSync(path.join(root, "scummvm-shell/scummvm.html"), "utf8");
-  const helper = html.match(/function encodeUtf8Base64\(text\) \{[\s\S]*?\n\}/)?.[0];
-  assert.ok(helper);
-  const encode = runInNewContext(`(${helper})`, { TextEncoder, btoa });
   const ini = "[soltys]\ndescription=Sołtys\n[example]\ndescription=日本語 😀\n";
-  const bytes = Buffer.from(encode(ini), "base64");
+  const storage = memoryStorage();
+  initializeSaveRoot(storage, ini);
+  const { inode } = readSaveTree(storage, "");
+  const rootEntry = inode("/");
+  const { "scummvm.ini": iniKey } = JSON.parse(Buffer.from(storage.getItem(rootEntry.dataKey), "base64"));
+  const config = inode(iniKey);
+  const bytes = Buffer.from(storage.getItem(config.dataKey), "base64");
   assert.equal(bytes.toString("utf8"), ini);
-  assert.equal(bytes.length, Buffer.byteLength(ini));
-  assert.match(html, /ini_data=encodeUtf8Base64\(e\)/);
-  assert.match(html, /size:atob\(ini_data\)\.length/);
+  assert.equal(config.size, Buffer.byteLength(ini));
 });
 
 test("official classic archives are recognized by contents without relying on filenames", () => {

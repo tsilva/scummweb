@@ -2,6 +2,8 @@ import { captureFilesystem, restoreSaveGroups, safePath } from "./filesystem.mjs
 import { getVersionSaveNamespace } from "../game-versions.mjs";
 import { saveIndexPrefix } from "../../web-shell/continue-saves.mjs";
 import { editionKey, saveLockName } from "../../web-shell/save-editions.mjs";
+import { ensureSaveStorage, openLegacyRecoveryStorage } from "../../web-shell/save-storage.mjs";
+import { readIncompleteSaveWrites } from "./incomplete-writes.mjs";
 
 export { saveLockName };
 const maxBytes = 64 * 1024 * 1024;
@@ -61,7 +63,7 @@ export async function getActiveSaveSets(storage, destinations) {
     isolatedSets.push({ destination: catalog ? { ...destination, isolated: true } : destination, files });
   }
   const sets = await Promise.all([...isolatedSets, ...groups.values()].map(async (set) => ({ ...set, hash: await identifySet(set) })));
-  return { sets, editionKeys: new Set(snapshot.editions.keys()), revision: snapshot.revision };
+  return { sets, editionKeys: new Set(snapshot.editions.keys()), revision: snapshot.revision, hasRoot: Boolean(snapshot.root.key) };
 }
 
 export async function exportBackup(sets, { cloud } = {}) {
@@ -193,7 +195,24 @@ async function withSetStore(mode, operation) {
     });
   } finally { db.close(); }
 }
-export function readStoredSets() { return withSetStore("readonly", (store) => store.getAll()); }
+export async function readStoredSets() {
+  const [stored, legacy] = await Promise.all([
+    withSetStore("readonly", (store) => store.getAll()), openLegacyRecoveryStorage(),
+  ]);
+  const copies = await Promise.all(legacy.map(async storage => {
+    const blocked = new Set(readIncompleteSaveWrites(storage).map(entry => entry.destinationKey));
+    const { sets } = await getActiveSaveSets(storage, []);
+    return sets.filter(set => !blocked.has(set.destination.key));
+  }));
+  const unique = new Map(stored.map(set => [`${set.destination.key}:${set.hash}`, set]));
+  for (const sets of copies) {
+    for (const set of sets) {
+      const id = `${set.destination.key}:${set.hash}`;
+      if (!unique.has(id)) unique.set(id, { ...set, id });
+    }
+  }
+  return [...unique.values()];
+}
 export async function preserveSets(sets) {
   return withSetStore("readwrite", (store) => {
     for (const set of sets) store.put({ ...set, id: `${set.destination.key}:${set.hash}`, preservedAt: Date.now() });
@@ -202,12 +221,13 @@ export async function preserveSets(sets) {
 
 export async function withSaveLock(action) {
   if (!navigator.locks) throw new Error("This browser cannot safely restore saves. Use a browser with Web Locks support.");
+  const db = globalThis.indexedDB ? await ensureSaveStorage() : undefined;
   const busy = {};
   // A short cloud restore or save-metadata check is not a running game. Let
   // those finish, without queuing an unbounded lock behind a real player.
   for (let attempt = 0; attempt <= 20; attempt++) {
     const result = await navigator.locks.request(saveLockName, { mode: "exclusive", ifAvailable: true },
-      (lock) => lock ? action() : busy);
+      (lock) => lock ? action(db) : busy);
     if (result !== busy) return result;
     if (attempt < 20) await new Promise((resolve) => setTimeout(resolve, 100));
   }
@@ -252,7 +272,7 @@ export async function applyImport({ storage, rows, destinations, revision, initi
       // Native save metadata belongs to the old bytes, even if sizes/times match.
       // Invalidate before the root swap so interruption cannot leave a positive
       // record attached to replacement bytes. Keep unfinished-write markers.
-      const keys = Array.from({ length: storage.length }, (_, index) => storage.key(index));
+      const keys = storage.keys?.() || Array.from({ length: storage.length }, (_, index) => storage.key(index));
       for (const key of keys) {
         if (!key?.startsWith(saveIndexPrefix)) continue;
         const value = storage.getItem(key);
@@ -266,6 +286,7 @@ export async function applyImport({ storage, rows, destinations, revision, initi
       }
     }
     restoreSaveGroups(storage, updates, revision, initialConfig);
+    await storage.commit?.();
   } catch (error) {
     // A staged restore that never swapped the root left the old save index valid.
     if (storage.getItem("/") === beforeRoot) {

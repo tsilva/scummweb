@@ -23,8 +23,9 @@ export function readCachedSave(game, storage, namespace = "", includeContents = 
       const file = inode(files[`.scummweb-autosave.${slot}`]);
       if (file?.type !== 0x8000 || file.size <= 0 || file.size > 3 * 1024 * 1024) continue;
       try {
-        const raw = atob(storage.getItem(file.dataKey) || "");
-        const candidate = parseAutosave(new TextDecoder().decode(Uint8Array.from(raw, char => char.charCodeAt(0))));
+        const bytes = storage.getBytes ? storage.getBytes(file.dataKey)
+          : Uint8Array.from(atob(storage.getItem(file.dataKey) || ""), char => char.charCodeAt(0));
+        const candidate = parseAutosave(new TextDecoder().decode(bytes));
         if (candidate && candidate.target === index.target && candidate.engineId === index.engineId
           && candidate.gameId === index.gameId && candidate.extra === (index.extra || "")
           && (!checkpoint || candidate.savedAt > checkpoint.savedAt)) checkpoint = candidate;
@@ -40,7 +41,8 @@ export function readCachedSave(game, storage, namespace = "", includeContents = 
       if (index.pending?.includes(save.name) || !Number.isInteger(save.slot) || save.slot < 0 || save.slot > 999) return false;
       const file = inode(files[save.name]);
       return file?.type === 0x8000 && file.size > 0 && Number.isFinite(file.modifiedAt)
-        && file.size === save.size && file.modifiedAt === save.modifiedAt && Boolean(storage.getItem(file.dataKey));
+        && file.size === save.size && file.modifiedAt === save.modifiedAt
+        && Boolean(storage.getBytes ? storage.getBytes(file.dataKey)?.length : storage.getItem(file.dataKey));
     }).sort((a, b) => b.modifiedAt - a.modifiedAt || a.slot - b.slot);
     const latest = valid[0];
     if (!latest) return null;

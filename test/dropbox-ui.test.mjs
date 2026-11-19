@@ -134,13 +134,13 @@ async function settingsFixture({ needsGame = false, markMerged = false } = {}) {
   const calls = [], merges = [];
   let currentActive = active, currentRevision = "fresh-revision";
   const backups = { matchDestination: () => destination.key, getSaveDestinations: async () => [destination],
-    getActiveSaveSets: async () => ({ sets: [currentActive], revision: currentRevision }), readStoredSets: async () => copies,
+    getActiveSaveSets: async () => ({ sets: [currentActive], revision: currentRevision, hasRoot: true }), readStoredSets: async () => copies,
     withSaveLock: run => run(), applyImport: async options => { writes++; calls.push(options); } };
   const View = await component("../app/home-shell/settings-content.js", {
     "lucide-react": Object.fromEntries(["ArrowDownUp", "ArrowLeft", "Check", "ChevronDown", "Download", "Info", "Save", "Upload"].map(name => [name, () => null])),
     "../styles/settings-details.css": {}, "../game-sources.mjs": { readGameSources: async () => [] },
     "./dropbox-row": { default: () => null }, "./dropbox-preview": { default: () => null },
-    "../save-backups/backups.mjs": backups, "../save-backups/filesystem.mjs": { captureFilesystem: () => ({ root: { key: "existing" } }) },
+    "../save-backups/backups.mjs": backups, "../../web-shell/save-storage.mjs": { openSaveStorage: async () => ({}) },
     "../dropbox/save-merge.mjs": { preferredSaveMerge: async (sets) => { merges.push(sets); return { set: markMerged ? { ...sets[0], hash: "merged-for-review" } : sets[0] }; } },
     "../save-backups/scummvm-transfer.mjs": { readSaveImport: async (files, destinations, game) => {
       imports.push({ files, destinations, game });

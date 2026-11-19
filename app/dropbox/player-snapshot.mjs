@@ -12,7 +12,9 @@ export function capturePlayerSaveSet(player, game) {
   const namespace = params.get("saveNamespace") || "";
   const target = params.get("catalogSaveTarget");
   if (namespace ? !/^version-[a-f0-9]{64}$/.test(namespace) : !/^[a-z0-9][a-z0-9_-]{0,79}$/.test(target || "")) return null;
-  const index = player.localStorage.getItem(saveIndexKey(namespace, status.target));
+  const storage = player.__scummwebSaveStorage || player.localStorage;
+  if (storage.isCommitted && !storage.isCommitted()) return null;
+  const index = storage.getItem(saveIndexKey(namespace, status.target));
   const parsed = index && JSON.parse(index);
   // The pending marker is published before opening/truncating a native file.
   // Failed/incomplete writes must never replace the last verified cloud set.
@@ -39,7 +41,7 @@ export function capturePlayerSaveSet(player, game) {
     }
   }
   walk(path);
-  if (player.localStorage.getItem(saveIndexKey(namespace, status.target)) !== index) return null;
+  if (storage.getItem(saveIndexKey(namespace, status.target)) !== index) return null;
   return files.length ? { destination: namespace
     ? { key: namespace, namespace, title: game?.displayTitle || status.target, fingerprint: null }
     : { key: `catalog:${target}`, namespace: "", family: target, title: game?.displayTitle || target, isolated: true }, files } : null;

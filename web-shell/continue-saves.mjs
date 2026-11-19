@@ -65,6 +65,10 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
   const pending = new Set();
   const writers = new Map();
   const ioFailures = new Set();
+  const storage = scope.__scummwebSaveStorage || scope.localStorage;
+  let writeCheckpoint;
+  let pendingBeforeWrite;
+  let writeFailed = false;
   let restoredPending = false;
   let needsPublish = false;
   let scannedFiles;
@@ -89,7 +93,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     snapshot.pending = [...pending];
     snapshot.revision = saveRevision(files());
     try {
-      scope.localStorage.setItem(indexKey(), JSON.stringify(snapshot));
+      storage.setItem(indexKey(), JSON.stringify(snapshot));
       lastRevision = snapshot.revision;
       needsPublish = false;
     } catch {
@@ -98,7 +102,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     }
     if (legacyIndexKey) {
       try {
-        scope.localStorage.removeItem(legacyIndexKey);
+        storage.removeItem(legacyIndexKey);
         legacyIndexKey = undefined;
       } catch { /* The canonical index was already published. */ }
     }
@@ -114,10 +118,17 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     } catch { return true; }
   }
   // Native save ownership brackets the complete compressed output lifetime.
-  // Persist the pending name BEFORE opening/truncating a previously indexed slot.
+  // The IndexedDB backend holds the prior bytes until all native streams close.
+  // The older synchronous backend uses a pending index before truncation.
+  scope.__scummwebSaveWriteInProgress = () => writers.size > 0;
   scope.__scummwebBeginSaveWrite = (name) => {
     if (scope.__scummwebDiagnosticSaves?.active) return scope.__scummwebDiagnosticSaves.beginWrite(name);
     if (!snapshot || !validName(name) || writers.has(name)) return false;
+    if (storage.checkpoint && !writers.size) {
+      writeCheckpoint = storage.checkpoint();
+      pendingBeforeWrite = [...pending];
+      writeFailed = false;
+    }
     const wasPending = pending.has(name);
     pending.add(name);
     const previousSaves = snapshot.saves;
@@ -145,6 +156,15 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     if (success && !ioFailures.has(name)) {
       pending.delete(name);
       scope.__scummwebPlayerSaveWritten?.(name);
+    } else writeFailed = true;
+    if (!writers.size && writeCheckpoint) {
+      if (writeFailed) {
+        storage.rollback(writeCheckpoint);
+        pending.clear();
+        for (const savedName of pendingBeforeWrite) pending.add(savedName);
+      }
+      writeCheckpoint = undefined;
+      pendingBeforeWrite = undefined;
     }
     needsPublish = true;
     // Native code calls refresh only after the last output stream has closed.
@@ -161,6 +181,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     scope.__scummwebScanningSaves = true;
     scannedFiles = new Map(files().map((file) => [file.name, file]));
     snapshot = { schemaVersion: 1, engineId, gameId, target, extra, supported: Boolean(supported), saves: [] };
+    if (storage.commit && params.has("saveQuery") && params.get("v")) snapshot.checkedByRuntime = params.get("v");
     if (scope.__scummwebPublishPlayerSaves) {
       playerSaves = [];
       occupiedSlots = new Set();
@@ -168,14 +189,14 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     if (!restoredPending) {
       restoredPending = true;
       try {
-        const previous = JSON.parse(scope.localStorage.getItem(indexKey()));
+        const previous = JSON.parse(storage.getItem(indexKey()));
         for (const name of previous?.pending || []) if (validName(name)) pending.add(name);
       } catch { /* Missing or invalid cache. */ }
       const archiveId = params.get("catalogGame") || params.get("saveGameId");
       if (!storageNamespace && archiveId && archiveId !== target) {
         const key = saveIndexKey("", archiveId);
         try {
-          const previous = JSON.parse(scope.localStorage.getItem(key));
+          const previous = JSON.parse(storage.getItem(key));
           if (previous?.target === target && previous.engineId === engineId
             && previous.gameId === gameId && previous.extra?.toLowerCase() === extra.toLowerCase()) {
             for (const name of previous.pending || []) if (validName(name)) pending.add(name);
@@ -213,10 +234,21 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     }
     const latestSlot = autoSlot >= 0 ? autoSlot : save?.slot ?? null;
     scope.__scummwebSaveStatus = { ...snapshot, latestSlot };
-    if (!agentSaveScope) {
+    const publish = () => {
+      if (agentSaveScope) return;
       scope.parent.postMessage({ type: "scummweb:saves-listed", query: params.get("saveQuery"),
         ...snapshot, persisted, latestSlot }, launchUrl.origin);
-    }
+    };
+    if (scope.__scummwebFlushSaveStorage) {
+      // A message advertising this index can trigger Dropbox publication.
+      const listed = snapshot;
+      void scope.__scummwebFlushSaveStorage().then(() => {
+        if (snapshot === listed) publish();
+      }, () => {
+        needsPublish = true;
+        scope.parent.postMessage({ type: "scummweb:save-storage-error", query: params.get("saveQuery") }, launchUrl.origin);
+      });
+    } else publish();
     scope.__scummwebBeginIntroCheckpoint?.(snapshot.target);
     return params.get("continue") === "1" ? autoSlot >= 0 ? autoSlot : save?.slot ?? -1 : -1;
   };

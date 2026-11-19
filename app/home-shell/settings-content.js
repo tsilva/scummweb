@@ -6,6 +6,7 @@ import { readGameSources } from "../game-sources.mjs";
 import "../styles/settings-details.css";
 import DropboxRow from "./dropbox-row";
 import DropboxPreview from "./dropbox-preview";
+import { openSaveStorage } from "../../web-shell/save-storage.mjs";
 
 const formatSaveCount = (count) => `${count} save ${count === 1 ? "file" : "files"}`;
 
@@ -30,12 +31,15 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
     return () => clearTimeout(timer);
   }, [exportState]);
 
-  async function refresh() {
+  async function refresh(storage) {
     const [{ getActiveSaveSets, getSaveDestinations, matchDestination, readStoredSets }, sources] = await Promise.all([
       import("../save-backups/backups.mjs"), readGameSources(catalog, officialUrl),
     ]);
     const destinations = await getSaveDestinations(catalog, sources);
-    const [active, stored] = await Promise.all([getActiveSaveSets(window.localStorage, destinations), readStoredSets()]);
+    const [active, stored] = await Promise.all([
+      (storage ? Promise.resolve(storage) : openSaveStorage()).then(view => getActiveSaveSets(view, destinations)),
+      readStoredSets(),
+    ]);
     const matches = new Map([...active.sets, ...stored].map((set) => [set, matchDestination(set, destinations)]));
     const unmatched = new Set([...matches].filter(([, key]) => !key).map(([set]) => set));
     const result = { ...active, stored, unmatched, matches, destinations };
@@ -116,7 +120,7 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
       const [{ readSaveImport }, { withSaveLock }] = await Promise.all([
         import("../save-backups/scummvm-transfer.mjs"), import("../save-backups/backups.mjs"),
       ]);
-      const current = await withSaveLock(refresh);
+      const current = await withSaveLock(() => refresh());
       try {
         const sets = await readSaveImport(files, current.destinations, game);
         await prepareReview(sets, current);
@@ -147,12 +151,14 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
 
   async function confirmImport() {
     await run(async () => {
-      const [{ applyImport, matchDestination, withSaveLock }, { captureFilesystem }, { preferredSaveMerge }] = await Promise.all([
-        import("../save-backups/backups.mjs"), import("../save-backups/filesystem.mjs"), import("../dropbox/save-merge.mjs"),
+      const [{ applyImport, matchDestination, withSaveLock }, { preferredSaveMerge }] = await Promise.all([
+        import("../save-backups/backups.mjs"), import("../dropbox/save-merge.mjs"),
       ]);
-      await withSaveLock(async () => {
+      await withSaveLock(async (db) => {
+        const storage = await openSaveStorage(db);
+        const current = await refresh(storage);
         let initialConfig;
-        if (!captureFilesystem(localStorage).root.key) {
+        if (!current.hasRoot) {
           const response = await fetch("/scummvm.ini");
           if (!response.ok) throw new Error("Could not initialize save storage. Try again when online.");
           initialConfig = await response.text();
@@ -161,7 +167,6 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
         // open. Recompute from the original incoming files under the lock, so
         // newly saved compatible slots are retained and current progress is
         // preserved before an intentional incoming overwrite.
-        const current = await refresh();
         const rows = await Promise.all(review.rows.map(async (row) => {
           let set = row.sourceSet || row.set;
           const destinationKey = matchDestination(set, current.destinations);
@@ -171,9 +176,9 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
           }
           return { ...row, set, destinationKey };
         }));
-        await applyImport({ storage: localStorage, ...review, rows, revision: current.revision,
+        await applyImport({ storage, ...review, rows, revision: current.revision,
           destinations: current.destinations, initialConfig });
-        await refresh();
+        await refresh(storage);
       });
       window.dispatchEvent(new Event("scummweb:saves-changed"));
       setNotice(review.activating ? "Saved progress restored." : "Saves imported.");
@@ -249,7 +254,7 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
             <span>{Number.isFinite(set.preservedAt) ? `Copy kept ${new Date(set.preservedAt).toLocaleDateString()}` : "Saved copy"}</span>
             <button type="button" className="secondary-button" disabled={busy} onClick={() => run(async () => {
               const { withSaveLock } = await import("../save-backups/backups.mjs");
-              await prepareReview([set], await withSaveLock(refresh), true);
+              await prepareReview([set], await withSaveLock(() => refresh()), true);
             })}>Restore this copy…</button>
           </div>)}
         </details>)}

@@ -3,12 +3,33 @@ import { latestPlayerSave, saveIndexKey, saveIndexPrefix, saveRevision, supports
 import { readCachedSave } from "./browser-save-cache.mjs";
 import { dropboxPreviewEnabled } from "./dropbox/feature.mjs";
 import { editionKey, editionLockName, readSaveTree, saveLockName } from "../web-shell/save-editions.mjs";
+import { openSaveStorage, saveStorageEvent, saveStorageKey } from "../web-shell/save-storage.mjs";
 
 const queries = new Map();
 const attempts = new Map();
 const cancellations = new Set();
 let queryGeneration = 0;
 let queryQueue = Promise.resolve();
+let cachedStorage, storageLoad, storageFactory;
+let cachedSignal;
+
+function activeStorage() {
+  if (!globalThis.indexedDB) return Promise.resolve(window.localStorage);
+  const signal = window.localStorage.getItem(saveStorageKey);
+  if (!storageLoad || signal !== cachedSignal || storageFactory !== globalThis.indexedDB) {
+    storageFactory = globalThis.indexedDB;
+    cachedSignal = signal;
+    const load = openSaveStorage().then(storage => {
+      if (storageLoad === load) cachedStorage = storage;
+      return storage;
+    }).catch(error => {
+      if (storageLoad === load) storageLoad = undefined;
+      throw error;
+    });
+    storageLoad = load;
+  }
+  return storageLoad;
+}
 
 export function cancelBrowserSaveQueries() {
   ++queryGeneration;
@@ -17,24 +38,23 @@ export function cancelBrowserSaveQueries() {
 
 export async function readBrowserSaveFiles(game) {
   const namespace = game.saveVersionId ? game.saveNamespace || await getVersionSaveNamespace(game.saveVersionId) : "";
-  return readSaveFiles(namespace, game.target);
+  return readSaveFiles(namespace, game.target, await activeStorage());
 }
 
-function readSaveFiles(namespace, target) {
-  const storage = window.localStorage;
+function readSaveFiles(namespace, target, storage) {
   const { files: listing, inode } = readSaveTree(storage, editionKey(namespace, target), namespace);
   const files = Object.entries(listing).flatMap(([name, key]) => {
     const file = inode(key);
     if (file?.type !== 0x8000 || !Number.isFinite(file.modifiedAt) || file.size <= 0) return [];
-    if (!storage.getItem(file.dataKey)) return [];
+    if (!(storage.getBytes ? storage.getBytes(file.dataKey)?.length : storage.getItem(file.dataKey))) return [];
     return [{ name, size: file.size, modifiedAt: file.modifiedAt }];
   });
   return { namespace, files };
 }
 
-function readIndex(namespace, game) {
+function readIndex(namespace, game, storage) {
   try {
-    const index = JSON.parse(window.localStorage.getItem(saveIndexKey(namespace, game.target)));
+    const index = JSON.parse(storage.getItem(saveIndexKey(namespace, game.target)));
     // Unknown imports learn their identity at native startup.
     if (!namespace && (index?.target !== (game.nativeTarget || game.target)
       || (game.engineId && index?.engineId !== game.engineId)
@@ -44,17 +64,21 @@ function readIndex(namespace, game) {
   } catch { return null; }
 }
 
-function getCachedSave(game, includeContents) {
+function getCachedSave(game, includeContents, storage = cachedStorage || window.localStorage) {
   try {
     if (game.engineId && !supportsContinue(game.engineId, game.gameId || game.target, game.extra)) return null;
     const namespace = game.saveVersionId ? game.saveNamespace || readVersionSaveNamespace(game.saveVersionId) : "";
-    const save = readCachedSave(game, window.localStorage, namespace, includeContents, undefined, dropboxPreviewEnabled());
+    const save = readCachedSave(game, storage, namespace, includeContents, undefined, dropboxPreviewEnabled());
     return save && supportsContinue(save.engineId, save.gameId, save.extra) ? save : null;
   } catch { return null; }
 }
 
 export function getCachedBrowserSave(game) {
   return getCachedSave(game)?.slot ?? null;
+}
+
+export async function readStoredBrowserSave(game) {
+  return getCachedSave(game, false, await activeStorage())?.slot ?? null;
 }
 
 export function getCachedBrowserSaveContents(game) {
@@ -98,9 +122,9 @@ async function queryNativeSaves(game, namespace, assetVersion, generation) {
       if (event.origin !== window.location.origin || event.source !== frame.contentWindow
         || !["scummweb:saves-listed", "scummweb:saves-query-error"].includes(event.data?.type) || event.data.query !== query) return;
       const result = event.data.type === "scummweb:saves-listed" ? event.data : null;
-      if (result?.persisted && game.engineId === "ags") {
+      if (result?.persisted && game.engineId === "ags" && !globalThis.indexedDB) {
         try {
-          const index = readIndex(namespace, game);
+          const index = readIndex(namespace, game, window.localStorage);
           if (index?.revision === result.revision) {
             window.localStorage.setItem(saveIndexKey(namespace, game.target), JSON.stringify({ ...index, checkedByRuntime: assetVersion }));
           }
@@ -122,7 +146,7 @@ export async function getLatestBrowserSave(game, assetVersion) {
     const { namespace, files } = await readBrowserSaveFiles(game);
     if (!files.length) return null;
     const key = saveIndexKey(namespace, game.target);
-    let index = readIndex(namespace, game);
+    let index = readIndex(namespace, game, await activeStorage());
     const revision = saveRevision(files);
     // Older AGS queries could fail before inspecting save files. Reconcile an
     // empty index once with the current runtime even when the files match it.
@@ -133,8 +157,8 @@ export async function getLatestBrowserSave(game, assetVersion) {
       if (!queries.has(queryKey) && Date.now() - (attempts.get(key) || 0) >= 30000) {
         const generation = queryGeneration;
         // Engine modules are large: never boot several save-query runtimes at once.
-        const request = queryQueue.then(() => {
-          if (generation !== queryGeneration || saveRevision(readSaveFiles(namespace, game.target).files) !== revision) return null;
+        const request = queryQueue.then(async () => {
+          if (generation !== queryGeneration || saveRevision(readSaveFiles(namespace, game.target, await activeStorage()).files) !== revision) return null;
           attempts.set(key, Date.now());
           return queryNativeSaves({ ...game,
           engineId: index?.engineId || game.engineId, gameId: index?.gameId || game.gameId,
@@ -149,7 +173,7 @@ export async function getLatestBrowserSave(game, assetVersion) {
     // Re-read after native work: another player tab or a restore may have
     // changed storage while the runtime was loading.
     const current = await readBrowserSaveFiles(game);
-    index = readIndex(namespace, game);
+    index = readIndex(namespace, game, await activeStorage());
     return (getCachedSave(game)?.slot ?? latestPlayerSave(index, current.files)?.slot) ?? null;
   } catch {
     return null;
@@ -169,16 +193,16 @@ export function subscribeBrowserSaves(game, assetVersion, notify) {
     }, 50);
   };
   const onStorage = (event) => {
-    if (event.key == null || event.key === "/" || event.key.startsWith(saveIndexPrefix)
+    if (event.key == null || event.key === "/" || event.key === saveStorageKey || event.key.startsWith(saveIndexPrefix)
       || event.key.startsWith("scummweb.save-namespace.v1:") || /^[a-f0-9-]{36}$/i.test(event.key)) refresh();
   };
   window.addEventListener("storage", onStorage);
-  for (const event of ["pageshow", "focus", "scummweb:saves-changed"]) window.addEventListener(event, refresh);
+  for (const event of ["pageshow", "focus", "scummweb:saves-changed", saveStorageEvent]) window.addEventListener(event, refresh);
   refresh();
   return () => {
     active = false;
     window.clearTimeout(timer);
     window.removeEventListener("storage", onStorage);
-    for (const event of ["pageshow", "focus", "scummweb:saves-changed"]) window.removeEventListener(event, refresh);
+    for (const event of ["pageshow", "focus", "scummweb:saves-changed", saveStorageEvent]) window.removeEventListener(event, refresh);
   };
 }

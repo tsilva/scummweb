@@ -154,7 +154,10 @@ export function installPlayerControls(scope, requestMenu) {
       scope.__scummwebAutosaves?.afterLoad();
       scope.__scummwebAutosaveAfterLoad?.();
     }
-    resolve(error ? { error } : { slot });
+    if (!error && operation === "save" && scope.__scummwebFlushSaveStorage) {
+      void scope.__scummwebFlushSaveStorage().then(() => resolve({ slot }),
+        () => resolve({ error: "Could not store this save on this device. Your previous save is retained." }));
+    } else resolve(error ? { error } : { slot });
   };
 
   if (requestMenu) {

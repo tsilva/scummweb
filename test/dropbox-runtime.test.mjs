@@ -6,12 +6,19 @@ import { activityCacheKey } from "../app/game-player/activity.mjs";
 import { dropboxEnabled, prepareDropboxLaunch, reportDropboxSave } from "../app/dropbox/bridge.mjs";
 import { captureFilesystem, initializeSaveEdition } from "../app/save-backups/filesystem.mjs";
 import { createSaveCollection, makeSnapshot, publishProfile, saveProfileId, writeSnapshot } from "../app/dropbox/protocol.mjs";
+import { openSaveStorage } from "../web-shell/save-storage.mjs";
 import { syncStore } from "../app/dropbox/store.mjs";
 import { applyImport, getActiveSaveSets, getSaveDestinations, identifySet, preserveSets, readStoredSets } from "../app/save-backups/backups.mjs";
 import { browserSaveStorage, fakeNativeStorage, nativeCloudBrowser, indexedDbFixture, memoryStorage } from "./helpers/dropbox-fixtures.mjs";
 
 const bytes = (text) => new TextEncoder().encode(text);
 const account = "dbid:synthetic-account";
+const activeSets = async destinations => getActiveSaveSets(await openSaveStorage(), destinations);
+const updateActive = async (key, value) => {
+  const view = await openSaveStorage();
+  view.setItem(key, JSON.stringify(value));
+  await view.commit();
+};
 const key = (kind, profile) => `${account}/saves-v1/${kind}/${profile}`;
 async function setup(t, contents = "browser progress", catalog = [{ target: "sky", displayTitle: "Beneath a Steel Sky" }]) {
   const original = new Map(["window", "document", "localStorage", "sessionStorage", "indexedDB", "IDBKeyRange", "navigator", "fetch", "location"]
@@ -53,8 +60,8 @@ test("the native bridge lists more than 10,000 archived saves without downloadin
 for (const search of ["", "?other=true", "?dropbox=false", "?dropbox=1"]) {
   test(`connected accounts do not sync or block launch with URL search ${JSON.stringify(search)}`, async (t) => {
     const { storage, runtime, server, destinations } = await setup(t);
-    const set = (await getActiveSaveSets(storage, destinations)).sets[0];
-    storage.setItem("scummweb.continue.v1:synthetic", JSON.stringify({ pending: ["SKY-VM.001"] }));
+    const set = (await activeSets(destinations)).sets[0];
+    await updateActive("scummweb.continue.v1:synthetic", { pending: ["SKY-VM.001"] });
     const before = new Map(storage.values);
     location.search = search;
     let requests = 0;
@@ -124,13 +131,14 @@ test("activity uses the scoped Dropbox session without blocking play and disconn
 
 test("first connection migrates active AND preserved browser saves without deleting the originals", async (t) => {
   const { storage, runtime, destinations, idb } = await setup(t);
-  const before = new Map(storage.values);
-  const preserved = { ...(await getActiveSaveSets(storage, destinations)).sets[0], files: [{ path: "SKY-VM.002", data: bytes("old preserved"), modifiedAt: 90 }] };
+  const preserved = { ...(await activeSets(destinations)).sets[0], files: [{ path: "SKY-VM.002", data: bytes("old preserved"), modifiedAt: 90 }] };
+  const before = await activeSets(destinations);
   preserved.hash = await identifySet(preserved);
   await preserveSets([preserved]);
   await runtime.syncDropbox({ beforeLaunch: true });
   assert.equal(runtime.getDropboxState().phase, "connected");
-  assert.deepEqual(storage.values, before);
+  assert.deepEqual((await activeSets(destinations)).sets, before.sets);
+  assert.equal(storage.getItem("/"), null);
   assert.ok((await readStoredSets()).some(({ hash }) => hash === preserved.hash));
   assert.ok(idb.durability.filter(({ name, mode }) => name === "scummweb.dropbox-sync" && mode === "readwrite")
     .every(({ durability }) => durability === "strict"));
@@ -139,7 +147,7 @@ test("first connection migrates active AND preserved browser saves without delet
 test("offline native saves survive a new coordinator instance and resume without an exit handler", async (t) => {
   const { runtime, storage, destinations, server, locks } = await setup(t);
   await runtime.syncDropbox({ beforeLaunch: true });
-  const old = (await getActiveSaveSets(storage, destinations)).sets[0];
+  const old = (await activeSets(destinations)).sets[0];
   const latest = { ...old, files: [{ path: "SKY-VM.001", data: bytes("latest completed bytes"), modifiedAt: 200 }] };
   latest.hash = await identifySet(latest);
   server.offline = true; locks.busy = true;
@@ -153,7 +161,7 @@ test("offline native saves survive a new coordinator instance and resume without
   const restarted = await import(`../app/dropbox/runtime.mjs?restart=${crypto.randomUUID()}`);
   await restarted.syncDropbox({ beforeLaunch: true });
   assert.equal(restarted.getDropboxState().phase, "connected");
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, latest.hash);
+  assert.equal((await activeSets(destinations)).sets[0].hash, latest.hash);
   assert.equal(await syncStore.get(key("pending", profile)), undefined);
 });
 
@@ -162,7 +170,7 @@ test("lost upload success replies retain the outbox until restart verifies publi
   server.failAfterUpload = true;
   await runtime.syncDropbox();
   assert.equal(runtime.getDropboxState().phase, "waiting");
-  const set = (await getActiveSaveSets(storage, destinations)).sets[0], profile = await saveProfileId(set);
+  const set = (await activeSets(destinations)).sets[0], profile = await saveProfileId(set);
   assert.ok(await syncStore.get(key("pending", profile)));
   const restarted = await import(`../app/dropbox/runtime.mjs?restart=${crypto.randomUUID()}`);
   await restarted.syncDropbox({ beforeLaunch: true });
@@ -178,7 +186,7 @@ test("a clean browser restores cloud progress before the launch gate completes",
   set.hash = await identifySet(set);
   await publishProfile({ client: await createSaveCollection(server), profile: await saveProfileId(set), local: set });
   await runtime.syncDropbox({ beforeLaunch: true });
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, set.hash);
+  assert.equal((await activeSets(destinations)).sets[0].hash, set.hash);
   await runtime.syncDropbox({ beforeLaunch: true });
   assert.equal(changes, 1, "an actual restore notifies the library once");
 });
@@ -188,10 +196,10 @@ test("Continue uses an intact local save while an unrelated cloud archive is sti
   const lure = { target: "lure", displayTitle: "Lure of the Temptress" };
   const contents = "verified local progress";
   const { storage, server, runtime, destinations } = await setup(t, contents, [sky, lure]);
-  storage.setItem("scummweb.continue.v1:catalog:sky", JSON.stringify({
+  await updateActive("scummweb.continue.v1:catalog:sky", {
     schemaVersion: 1, target: "sky", engineId: "sky", gameId: "sky", supported: true,
     saves: [{ slot: 1, name: "SKY-VM.001", size: bytes(contents).length, modifiedAt: 100 }],
-  }));
+  });
   const remote = { destination: destinations.find(({ key }) => key === "catalog:lure"),
     files: [{ path: "lure.001", data: bytes("unrelated cloud progress"), modifiedAt: 200 }] };
   remote.hash = await identifySet(remote);
@@ -212,14 +220,14 @@ test("Continue uses an intact local save while an unrelated cloud archive is sti
     assert.deepEqual(storage.values, before);
     assert.equal(server.files.size, 1);
   } finally { release(); await flight; await launch; }
-  const { sets } = await getActiveSaveSets(storage, destinations);
+  const { sets } = await activeSets(destinations);
   assert.deepEqual(sets.find(({ destination }) => destination.key === "catalog:sky").files[0].data, bytes(contents));
   assert.equal(sets.find(({ destination }) => destination.key === "catalog:lure").hash, remote.hash);
   assert.ok(server.files.has(cloudName));
 });
 
 test("a full browser defers only the affected restore, retains both sets and retries later", async (t) => {
-  const { storage, server, runtime, destinations } = await setup(t, "local save", [
+  const { idb, server, runtime, destinations } = await setup(t, "local save", [
     { target: "sky", displayTitle: "Beneath a Steel Sky" }, { target: "queen", displayTitle: "Flight of the Amazon Queen" },
     { target: "lure", displayTitle: "Lure of the Temptress" },
   ]);
@@ -233,15 +241,16 @@ test("a full browser defers only the affected restore, retains both sets and ret
   }
   const initialCloud = [...server.files.keys()];
   let quotaFailures = 0;
-  const write = storage.setItem;
-  storage.setItem = (key, value) => {
-    if (value.length > 50000) { quotaFailures++; throw new DOMException("full", "QuotaExceededError"); }
-    write(key, value);
+  idb.fail = ({ name, names, writes }) => {
+    if (name === "scummweb.active-saves" && names === "entries" && writes.some(({ record }) => record?.value?.length >= 40000)) {
+      quotaFailures++;
+      return new DOMException("full", "QuotaExceededError");
+    }
   };
   await runtime.syncDropbox();
   assert.equal(runtime.getDropboxState().phase, "waiting");
   assert.match(runtime.getDropboxState().message, /storage is full/);
-  const read = () => getActiveSaveSets(storage, destinations);
+  const read = () => activeSets(destinations);
   const { sets } = await read();
   assert.equal(sets.find(({ destination }) => destination.family === "queen").hash, remoteSets[0].hash);
   assert.deepEqual(sets.find(({ destination }) => destination.family === "sky").files[0].data, bytes("local save"));
@@ -252,7 +261,7 @@ test("a full browser defers only the affected restore, retains both sets and ret
   assert.equal(quotaFailures, 1);
   const retryTime = Date.now() + 120001;
   t.mock.method(Date, "now", () => retryTime);
-  storage.setItem = write;
+  idb.fail = null;
   await runtime.syncDropbox();
   assert.equal((await read()).sets.find(({ destination }) => destination.family === "lure").hash, remoteSets[1].hash);
   assert.equal(runtime.getDropboxState().phase, "connected");
@@ -269,7 +278,7 @@ test("a damaged newer cloud archive quietly falls back to verified progress on a
   server.files.set(`${latest.id}.zip`, new Blob(["damaged"]));
   const before = new Map(server.files);
   await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: set.destination.key });
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, set.hash);
+  assert.equal((await activeSets(destinations)).sets[0].hash, set.hash);
   assert.equal(runtime.getDropboxState().phase, "connected");
   assert.equal(runtime.getDropboxState().message, "");
   assert.deepEqual(server.files, before, "recovery must not rewrite damaged or missing ancestry");
@@ -337,7 +346,7 @@ test("a failed metadata check surfaces an error without pretending it was transf
 test("new completed saves show preparation, actual upload and verification before connected", async (t) => {
   const { runtime, storage, destinations, server } = await setup(t);
   await runtime.syncDropbox();
-  const base = (await getActiveSaveSets(storage, destinations)).sets[0];
+  const base = (await activeSets(destinations)).sets[0];
   const latest = { ...base, files: base.files.map((file) => ({ ...file, data: bytes("new completed save") })) };
   latest.hash = await identifySet(latest);
   const states = [], atUpload = [];
@@ -355,7 +364,7 @@ test("new completed saves show preparation, actual upload and verification befor
   assert.equal(runtime.getDropboxState().phase, "connected");
   assert.equal(runtime.getDropboxState().transferProgress, null);
   assert.equal(runtime.getDropboxState().verified, true);
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, latest.hash);
+  assert.equal((await activeSets(destinations)).sets[0].hash, latest.hash);
 });
 
 test("restoring cached cloud bytes still exposes actual local restoration progress", async (t) => {
@@ -368,14 +377,14 @@ test("restoring cached cloud bytes still exposes actual local restoration progre
   const unsubscribe = runtime.subscribeDropbox(() => states.push(structuredClone(runtime.getDropboxState())));
   await runtime.syncDropbox({ beforeLaunch: true }); unsubscribe();
   assert.ok(states.some(({ phase, transferProgress }) => phase === "syncing" && transferProgress?.stage === "restore"));
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, set.hash);
+  assert.equal((await activeSets(destinations)).sets[0].hash, set.hash);
   assert.equal(runtime.getDropboxState().verified, true);
 });
 
 test("native byte progress updates the row without acknowledging uploads or accepting stale messages", async (t) => {
   const { runtime, storage, destinations, server } = await setup(t);
   await runtime.syncDropbox();
-  const base = (await getActiveSaveSets(storage, destinations)).sets[0];
+  const base = (await activeSets(destinations)).sets[0];
   const latest = { ...base, files: base.files.map(file => ({ ...file, data: bytes("new measured progress") })) };
   latest.hash = await identifySet(latest);
   await runtime.queuePlayerSave(latest);
@@ -414,7 +423,7 @@ test("native byte progress updates the row without acknowledging uploads or acce
 test("a remote arrival at the final collection check is restored before launch", async (t) => {
   const { runtime, storage, destinations, server } = await setup(t);
   await runtime.syncDropbox({ beforeLaunch: true });
-  const base = (await getActiveSaveSets(storage, destinations)).sets[0], profile = await saveProfileId(base);
+  const base = (await activeSets(destinations)).sets[0], profile = await saveProfileId(base);
   const baseline = await syncStore.get(key("base", profile));
   const remote = { ...base, files: base.files.map((file) => ({ ...file, data: bytes("late remote progress") })) };
   remote.hash = await identifySet(remote);
@@ -427,7 +436,7 @@ test("a remote arrival at the final collection check is restored before launch",
     return list();
   };
   await runtime.syncDropbox({ beforeLaunch: true });
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, remote.hash);
+  assert.equal((await activeSets(destinations)).sets[0].hash, remote.hash);
   assert.equal(runtime.getDropboxState().phase, "connected");
   assert.equal(await syncStore.get(key("pending", profile)), undefined);
 });
@@ -435,7 +444,7 @@ test("a remote arrival at the final collection check is restored before launch",
 test("a completed save arriving at the final check is drained before launch", async (t) => {
   const { runtime, storage, destinations, server } = await setup(t);
   await runtime.syncDropbox({ beforeLaunch: true });
-  const base = (await getActiveSaveSets(storage, destinations)).sets[0], profile = await saveProfileId(base);
+  const base = (await activeSets(destinations)).sets[0], profile = await saveProfileId(base);
   const latest = { ...base, files: base.files.map((file) => ({ ...file, data: bytes("latest durable completed save") })) };
   latest.hash = await identifySet(latest);
   let listings = 0;
@@ -445,7 +454,7 @@ test("a completed save arriving at the final check is drained before launch", as
     return list();
   };
   await runtime.syncDropbox({ beforeLaunch: true });
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, latest.hash);
+  assert.equal((await activeSets(destinations)).sets[0].hash, latest.hash);
   assert.equal(runtime.getDropboxState().phase, "connected");
   assert.equal(await syncStore.get(key("pending", profile)), undefined);
 });
@@ -453,7 +462,7 @@ test("a completed save arriving at the final check is drained before launch", as
 test("continuous remote changes bound immediate recovery and leave a safe retry", async (t) => {
   const { runtime, storage, destinations, server } = await setup(t);
   await runtime.syncDropbox({ beforeLaunch: true });
-  const base = (await getActiveSaveSets(storage, destinations)).sets[0], profile = await saveProfileId(base);
+  const base = (await activeSets(destinations)).sets[0], profile = await saveProfileId(base);
   let parents = (await syncStore.get(key("base", profile))).tips;
   const arrivals = [], staged = fakeNativeStorage();
   for (let index = 0; index < 3; index++) {
@@ -476,30 +485,30 @@ test("continuous remote changes bound immediate recovery and leave a safe retry"
   assert.equal(runtime.getDropboxState().phase, "waiting");
   await runtime.syncDropbox({ beforeLaunch: true });
   assert.equal(runtime.getDropboxState().phase, "connected");
-  assert.equal(new TextDecoder().decode((await getActiveSaveSets(storage, destinations)).sets[0].files[0].data), "remote revision 2");
+  assert.equal(new TextDecoder().decode((await activeSets(destinations)).sets[0].files[0].data), "remote revision 2");
 });
 
 test("first sync merges compatible local and cloud slots and acknowledges only the restored union", async (t) => {
   const { runtime, storage, destinations, server } = await setup(t);
-  const local = (await getActiveSaveSets(storage, destinations)).sets[0];
+  const local = (await activeSets(destinations)).sets[0];
   const remote = { ...local, files: [{ path: "SKY-VM.002", data: bytes("cloud slot"), modifiedAt: 200 }] };
   remote.hash = await identifySet(remote);
   await publishProfile({ client: await createSaveCollection(server), profile: await saveProfileId(remote), local: remote });
   await runtime.syncDropbox({ beforeLaunch: true });
   assert.equal(runtime.getDropboxState().phase, "connected");
   assert.equal(runtime.getDropboxState().conflicts.length, 0);
-  const merged = (await getActiveSaveSets(storage, destinations)).sets[0], profile = await saveProfileId(merged);
+  const merged = (await activeSets(destinations)).sets[0], profile = await saveProfileId(merged);
   assert.deepEqual(merged.files.map(({ path }) => path).sort(), ["SKY-VM.001", "SKY-VM.002"]);
   assert.equal((await syncStore.get(key("base", profile))).hash, merged.hash);
   assert.equal(await syncStore.get(key("pending", profile)), undefined);
   await runtime.syncDropbox({ beforeLaunch: true });
   assert.equal(runtime.getDropboxState().phase, "connected");
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, merged.hash);
+  assert.equal((await activeSets(destinations)).sets[0].hash, merged.hash);
 });
 
 test("a killed first-sync merge restores its verified result without a baseline or a false conflict", async (t) => {
   const { runtime, storage, destinations, server } = await setup(t);
-  const local = (await getActiveSaveSets(storage, destinations)).sets[0];
+  const local = (await activeSets(destinations)).sets[0];
   const remote = { ...local, files: [{ path: "SKY-VM.002", data: bytes("cloud slot"), modifiedAt: 200 }] };
   remote.hash = await identifySet(remote);
   await publishProfile({ client: await createSaveCollection(server), profile: await saveProfileId(remote), local: remote });
@@ -510,11 +519,11 @@ test("a killed first-sync merge restores its verified result without a baseline 
   };
   await runtime.syncDropbox();
   assert.equal(runtime.getDropboxState().phase, "waiting");
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, local.hash);
+  assert.equal((await activeSets(destinations)).sets[0].hash, local.hash);
   const restarted = await import(`../app/dropbox/runtime.mjs?merged-reply=${crypto.randomUUID()}`);
   await restarted.syncDropbox({ beforeLaunch: true });
   assert.equal(restarted.getDropboxState().phase, "connected");
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, merged.hash);
+  assert.equal((await activeSets(destinations)).sets[0].hash, merged.hash);
   assert.equal(server.files.size, 3);
 });
 
@@ -534,7 +543,7 @@ test("unknown cloud editions stay preserved until their matching game is availab
   set.hash = await identifySet(set);
   await publishProfile({ client: await createSaveCollection(server), profile: await saveProfileId(set), local: set });
   await runtime.syncDropbox({ beforeLaunch: true });
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets.length, 0);
+  assert.equal((await activeSets(destinations)).sets.length, 0);
   assert.ok((await readStoredSets()).some(({ hash }) => hash === set.hash));
   await runtime.syncDropbox({ beforeLaunch: true });
   assert.equal(changes, 0, "preserving an unavailable edition must not trigger another sync pass");
@@ -544,27 +553,27 @@ test("unknown cloud editions stay preserved until their matching game is availab
 test("cloud changes never replace a running player's working copy", async (t) => {
   const { runtime, storage, destinations, server, locks } = await setup(t);
   await runtime.syncDropbox({ beforeLaunch: true });
-  const base = (await getActiveSaveSets(storage, destinations)).sets[0];
+  const base = (await activeSets(destinations)).sets[0];
   const remote = { ...base, files: [{ path: "SKY-VM.001", data: bytes("remote"), modifiedAt: 200 }] };
   remote.hash = await identifySet(remote);
   await publishProfile({ client: await createSaveCollection(server), profile: await saveProfileId(base), local: remote, base: base.hash, baseTips: (await createSaveCollection(server)).head(await saveProfileId(base)).tips });
   locks.busy = true;
   await runtime.syncDropbox();
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, base.hash);
+  assert.equal((await activeSets(destinations)).sets[0].hash, base.hash);
   assert.equal(runtime.getDropboxState().phase, "waiting");
   locks.busy = false;
   await runtime.syncDropbox({ beforeLaunch: true });
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, remote.hash);
+  assert.equal((await activeSets(destinations)).sets[0].hash, remote.hash);
 });
 
 test("disconnect during upload prevents subsequent cloud writes and local restore", async (t) => {
-  const { runtime, storage, server } = await setup(t);
-  const before = new Map(storage.values);
+  const { runtime, server } = await setup(t);
+  const before = (await openSaveStorage()).getItem("/");
   server.onUpload = () => { void runtime.disconnectDropbox(); };
   await runtime.syncDropbox();
   assert.equal(runtime.getDropboxState().phase, "disconnected");
   assert.equal(server.uploads, 1);
-  assert.equal(storage.getItem("/"), before.get("/"));
+  assert.equal((await openSaveStorage()).getItem("/"), before);
 });
 
 test("missing persisted native credentials require reconnect without cloud writes", async (t) => {
@@ -684,7 +693,7 @@ test("launch waits for another coordinator's lock instead of failing a healthy s
 
 test("an incomplete save quietly leaves the browser available for local play", async (t) => {
   const { runtime, storage } = await setup(t);
-  storage.setItem("scummweb.continue.v1:synthetic", JSON.stringify({ pending: ["SKY-VM.001"] }));
+  await updateActive("scummweb.continue.v1:synthetic", { pending: ["SKY-VM.001"] });
   await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:sky" });
   assert.equal(runtime.getDropboxState().phase, "connected");
   assert.equal(runtime.getDropboxState().message, "");
@@ -699,19 +708,19 @@ test("an empty Baseball records write stays local and does not block verified cl
   const marker = "scummweb.continue.v1:catalog:baseball";
   const baseball = destinations.find(({ family }) => family === "baseball");
   const sky = destinations.find(({ family }) => family === "sky");
-  const incomplete = await getActiveSaveSets(storage, destinations);
+  const incomplete = await activeSets(destinations);
   const set = await makeSet({ ...baseball, isolated: true }, "baseball-records.bbl", "");
-  await applyImport({ storage, destinations, revision: incomplete.revision,
+  await applyImport({ storage: await openSaveStorage(), destinations, revision: incomplete.revision,
     rows: [{ set, destinationKey: baseball.key, choice: "imported" }] });
-  storage.setItem(marker, JSON.stringify({ schemaVersion: 1, engineId: "scumm", gameId: "baseball",
-    target: "baseball", saves: [], pending: ["baseball-records.bbl"] }));
+  await updateActive(marker, { schemaVersion: 1, engineId: "scumm", gameId: "baseball",
+    target: "baseball", saves: [], pending: ["baseball-records.bbl"] });
   const validRecords = await makeSet({ ...baseball, isolated: true }, "baseball-records.bbl", "verified records");
   const baseballNode = await writeSnapshot(server, await makeSnapshot(validRecords));
-  const original = (await getActiveSaveSets(storage, destinations)).sets.find((item) => item.destination.key === sky.key);
+  const original = (await activeSets(destinations)).sets.find((item) => item.destination.key === sky.key);
   await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: sky.key });
   await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: baseball.key });
   assert.equal(runtime.getDropboxState().phase, "connected");
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets.find((item) => item.destination.key === baseball.key).files[0].data.length, 0);
+  assert.equal((await activeSets(destinations)).sets.find((item) => item.destination.key === baseball.key).files[0].data.length, 0);
   assert.equal(await syncStore.get(key("base", baseballNode.profile)), undefined);
   assert.equal((await syncStore.get(key("base", await saveProfileId(original)))).hash, original.hash);
 
@@ -721,11 +730,11 @@ test("an empty Baseball records write stays local and does not block verified cl
   const latestSky = await makeSet(sky, "SKY-VM.001", "newer verified Sky save", 300);
   await writeSnapshot(server, await makeSnapshot(latestSky, [firstSkyNode]));
   await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: sky.key });
-  assert.deepEqual(JSON.parse(storage.getItem(marker)).pending, ["baseball-records.bbl"]);
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets.find((item) => item.destination.key === sky.key).hash, latestSky.hash);
+  assert.deepEqual(JSON.parse((await openSaveStorage()).getItem(marker)).pending, ["baseball-records.bbl"]);
+  assert.equal((await activeSets(destinations)).sets.find((item) => item.destination.key === sky.key).hash, latestSky.hash);
 
-  storage.setItem(marker, JSON.stringify({ engineId: "scumm", gameId: "baseball", target: "baseball",
-    pending: ["baseball-records.bbl", "baseball.s01"] }));
+  await updateActive(marker, { engineId: "scumm", gameId: "baseball", target: "baseball",
+    pending: ["baseball-records.bbl", "baseball.s01"] });
   await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: baseball.key });
   assert.equal(await syncStore.get(key("base", baseballNode.profile)), undefined);
   await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: sky.key });
@@ -739,14 +748,14 @@ test("an empty Baseball records write stays local and does not block verified cl
 
 test("overlapping first-sync progress resolves automatically and keeps both complete originals", async (t) => {
   const { runtime, storage, destinations, server } = await setup(t);
-  const local = (await getActiveSaveSets(storage, destinations)).sets[0];
+  const local = (await activeSets(destinations)).sets[0];
   const remote = { ...local, files: local.files.map((file) => ({ ...file, data: bytes("newer remote progress"), modifiedAt: 200 })) };
   remote.hash = await identifySet(remote);
   await writeSnapshot(server, await makeSnapshot(remote));
   await runtime.syncDropbox({ beforeLaunch: true });
   assert.equal(runtime.getDropboxState().phase, "connected");
   assert.equal(runtime.getDropboxState().conflicts.length, 0);
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, remote.hash);
+  assert.equal((await activeSets(destinations)).sets[0].hash, remote.hash);
   const preserved = await readStoredSets();
   assert.ok([local, remote].every((set) => preserved.some(({ hash }) => hash === set.hash)));
   const uploads = server.uploads;
@@ -757,7 +766,7 @@ test("overlapping first-sync progress resolves automatically and keeps both comp
 test("an interrupted automatic choice retains local progress until restart verifies the cloud result", async (t) => {
   const { runtime, storage, destinations, server } = await setup(t);
   await runtime.syncDropbox({ beforeLaunch: true });
-  const local = (await getActiveSaveSets(storage, destinations)).sets[0], profile = await saveProfileId(local);
+  const local = (await activeSets(destinations)).sets[0], profile = await saveProfileId(local);
   const base = await syncStore.get(key("base", profile));
   const branches = [];
   for (const modifiedAt of [200, 300]) {
@@ -768,11 +777,11 @@ test("an interrupted automatic choice retains local progress until restart verif
   server.failAfterUpload = true;
   await runtime.syncDropbox();
   assert.equal(runtime.getDropboxState().phase, "waiting");
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, local.hash);
+  assert.equal((await activeSets(destinations)).sets[0].hash, local.hash);
   const restarted = await import(`../app/dropbox/runtime.mjs?automatic-restart=${crypto.randomUUID()}`);
   await restarted.syncDropbox({ beforeLaunch: true });
   assert.equal(restarted.getDropboxState().phase, "connected");
-  assert.equal((await getActiveSaveSets(storage, destinations)).sets[0].hash, branches[1].hash);
+  assert.equal((await activeSets(destinations)).sets[0].hash, branches[1].hash);
   assert.equal(await syncStore.get(key("pending", profile)), undefined);
   const preserved = await readStoredSets();
   assert.ok(branches.every((set) => preserved.some(({ hash }) => hash === set.hash)));
@@ -781,7 +790,7 @@ test("an interrupted automatic choice retains local progress until restart verif
 
 test("a different pre-release storage layout cannot supply baselines to the saves collection", async (t) => {
   const { runtime, storage, destinations, server } = await setup(t);
-  const set = (await getActiveSaveSets(storage, destinations)).sets[0], profile = await saveProfileId(set);
+  const set = (await activeSets(destinations)).sets[0], profile = await saveProfileId(set);
   const legacy = { id: `${account}/base/${profile}`, hash: "a".repeat(64), tips: ["b".repeat(64)] };
   await syncStore.put(legacy);
   await runtime.syncDropbox({ beforeLaunch: true });

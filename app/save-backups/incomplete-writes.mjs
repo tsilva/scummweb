@@ -3,8 +3,8 @@ import { saveIndexPrefix } from "../../web-shell/continue-saves.mjs";
 // Read only save-index records. Never inspect authorization or unrelated storage.
 export function readIncompleteSaveWrites(storage, destinations = [], sets = []) {
   const result = [];
-  for (let i = 0; i < storage.length; i++) {
-    const key = storage.key(i);
+  const keys = storage.keys?.() || Array.from({ length: storage.length }, (_, index) => storage.key(index));
+  for (const key of keys) {
     if (!key?.startsWith(saveIndexPrefix) || key.startsWith(`${saveIndexPrefix}agent-`)) continue;
     let record;
     try { record = JSON.parse(storage.getItem(key)); } catch { continue; }

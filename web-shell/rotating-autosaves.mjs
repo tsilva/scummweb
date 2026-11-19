@@ -111,10 +111,15 @@ export function installRotatingAutosaves(scope, FS, savePath, params) {
       const contents = encodeAutosave({ ...identity, ...result, slot, savedAt,
         progress: scope.__scummwebReadAutosaveProgress?.() ?? null });
       if (!parseAutosave(contents)) return false;
+      const storage = scope.__scummwebSaveStorage;
+      const checkpoint = storage?.checkpoint();
       try {
         FS.writeFile(`${savePath}/${name}`, contents);
-        if (read(name) !== contents) return false;
-      } catch { return false; }
+        if (read(name) !== contents) throw new Error("Incomplete autosave");
+      } catch {
+        if (checkpoint) storage.rollback(checkpoint);
+        return false;
+      }
       lastSavedAt = savedAt;
       due = Date.now() + intervalMs;
       return true;
