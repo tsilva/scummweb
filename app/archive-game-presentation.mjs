@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Mage's Initiation: Reign of the Elements (Demo)", target: "mage-demo", engineId: "ags", gameId: "mage",
+    files: [["mages demo.exe", 6638570, 4142230878], ["mages demo.002", 5841753, 340964810], ["mages demo.001", 109544095, 3764993321]],
+  },
+  {
     title: "MTV's Beavis and Butt-Head in Hock-A-Loogie (Demo)", target: "bbvs-loogie-demo", engineId: "bbvs", gameId: "bbvs",
     files: [["bbloogie.000", 324764, 4022305622], ["bbloogie.exe", 393728, 1031631760]],
   },

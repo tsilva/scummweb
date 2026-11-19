@@ -120,6 +120,15 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "mage-demo": {
+    ...retroGameArtwork["ags:mage"],
+    heroImageMobilePosition: "50% center",
+    title: "Mage's Initiation: Reign of the Elements (Demo)",
+    year: "2013",
+    language: "en",
+    summary: "Play as Fire Mage D’arc in Himalaya Studios’ 2013 Kickstarter demo. Explore the Mage’s Tower and try its puzzles, spellbook, and combat system.",
+    screenshotSourceTitle: "Mage's Initiation: Reign of the Elements",
+  },
   "bbvs-loogie-demo": {
     ...retroGameArtwork["bbvs:bbvs"],
     heroImageMobilePosition: "79% -4vh",

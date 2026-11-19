@@ -4924,6 +4924,14 @@
       "gameId": "sci:gk1demo",
       "edition": "Official English DOS playable Day One demo (gk1-dos-demo-en.zip)",
       "observation": "The original Intro/Play menu, optional intro movie, Day One opening and bookshop scene render. Examination, action selection, walking, native saves and restore work. Choose Play in the original menu to enter the demo."
+    },
+    {
+      "title": "Mage's Initiation: Reign of the Elements (Demo)",
+      "status": "startup-verified",
+      "gameId": "ags:mage",
+      "edition": "mage_initiation-demo.zip",
+      "recordedOn": "2026-11-19",
+      "observation": "The English 2013 Kickstarter alpha reaches its original prompts and Reading Hall. Mouse movement, the Tab spellbook, character stats, volume control and Save, Load and Continue were verified. The demo has music data and lacks the full game’s voice pack."
     }
   ]
 }

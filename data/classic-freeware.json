@@ -1609,6 +1609,24 @@
         "basis": "ScummVM lists this exact alternate Windows Hock-A-Loogie edition, and its data match the pinned alternate demo signature. The bundled alternate executable describes its own free promotional sample and preserves Viacom copyright and trademark notices. The exact 45-file package was inspected. No express package-specific copying restriction was found. The main adventure demo has a separate embedded copying and shared-access restriction. The other Loogie ZIP consists entirely of its nested files without the alternate notice. Eligibility uses the cautious official promotional-hosting assessment for the alternate only.",
         "preservation": "Serve the complete unchanged alternate ZIP including the original notice embedded in its executable, installer log, original sprite data, audio and enclosing directory. Only ScummVM ran in browser testing."
       }
+    },
+    {
+      "target": "mage-demo",
+      "title": "Mage's Initiation: Reign of the Elements (Demo)",
+      "engineId": "ags",
+      "gameId": "mage",
+      "platform": "windows",
+      "extra": "Demo",
+      "archive": "mage_initiation-demo.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/ags/mage_initiation-demo.zip",
+      "sha256": "409a99c2ebad4c6449a30aab6bee6a5b6ff78fbea626c56f20ae63d3c4d29925",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-19",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "ScummVM lists this exact English ZIP. Its own opening identifies a March 2013 alpha that Himalaya Studios released for Kickstarter promotion and feedback. The original package and embedded typography were reviewed. Both exact Petrock fonts match the designer’s published originals and their broad-use notice. Ray Larabie identifies the included first Goodfish release and has since dedicated Goodfish to the public domain. No demo-wide copying bar or express rehosting grant was found. The limited basis is the official promotional release.",
+        "preservation": "Serve the complete original ZIP unchanged, including the embedded fonts, original audio, original launcher and metadata. Retain Himalaya Studios and font creator credits separately on the site. Only ScummVM executed during testing."
+      }
     }
   ]
 }

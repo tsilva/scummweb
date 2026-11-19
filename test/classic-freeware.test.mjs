@@ -27,6 +27,7 @@ test("fresh browser configuration preserves UTF-8 titles and records byte length
 
 test("official classic archives are recognized by contents without relying on filenames", () => {
   for (const [target, files] of [
+    ["mage-demo", [["Mages Demo.exe", 6638570, 4142230878], ["Mages Demo.002", 5841753, 340964810], ["Mages Demo.001", 109544095, 3764993321]]],
     ["bbvs-loogie-demo", [["BBLOOGIE.000", 324764, 4022305622], ["BBLOOGIE.EXE", 393728, 1031631760]]],
     ["xmascard-demo", [["LOGDIR", 372, 3889777941], ["VOL.0", 179887, 2654463609], ["PICDIR", 315, 2697741264]]],
     ["slater-demo", [["RESOURCE.MAP", 1409, 989309201], ["RESOURCE.000", 377394, 3589100655], ["RESOURCE.MSG", 1364, 2314138439]]],

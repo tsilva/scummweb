@@ -1,0 +1,32 @@
+Mage's Initiation: Reign of the Elements (Demo) - credits
+
+This is Himalaya Studios' March 2013 Kickstarter alpha. The original game
+archive and embedded font files are distributed unchanged.
+
+Goodfish Bold - Copyright (c) 2000 Ray Larabie. See the creator's release
+history and the Goodfish public-domain dedication:
+https://typodermicfonts.com/between-the-lines/stories/goodfish/
+https://typodermicfonts.com/public-domain/
+
+Kingthings Petrock and Kingthings Petrock Light - Kevin King. Both embedded
+files match the creator's original, unmodified font release:
+https://www.dafont.com/kingthings-petrock.font
+
+Kingthings EULA - (End User License Agreement).
+
+All the fonts currently published on my website (www.kingthingsfonts.co.uk) are free for you to use for any purpose you wish.  Please do not change my original font files (.TTF).
+
+There are some paid-for versions of my fonts (with much enhanced character sets) available from to buy from www.cheapprofonts.com, these contain their own EULA and are not included or implied in this notice.
+
+Please enjoy all your creative work - and if you come up with anything you like, I would appreciate a picture.
+
+Regards
+
+Kevin King
+Exeter, England - February 2009
+
+The font terms cover the fonts. Game and artwork credits belong to Himalaya
+Studios and the respective creators.
+
+Original demo:
+https://downloads.scummvm.org/frs/demos/ags/mage_initiation-demo.zip
