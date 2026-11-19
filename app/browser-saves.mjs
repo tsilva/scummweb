@@ -64,11 +64,11 @@ function readIndex(namespace, game, storage) {
   } catch { return null; }
 }
 
-function getCachedSave(game, includeContents, storage = cachedStorage || window.localStorage) {
+function getCachedSave(game, { includeContents, autosavesOnly, storage = cachedStorage || window.localStorage } = {}) {
   try {
     if (game.engineId && !supportsContinue(game.engineId, game.gameId || game.target, game.extra)) return null;
     const namespace = game.saveVersionId ? game.saveNamespace || readVersionSaveNamespace(game.saveVersionId) : "";
-    const save = readCachedSave(game, storage, namespace, includeContents, undefined, dropboxPreviewEnabled());
+    const save = readCachedSave(game, storage, namespace, { includeContents, autosavesOnly, preview: dropboxPreviewEnabled() });
     return save && supportsContinue(save.engineId, save.gameId, save.extra) ? save : null;
   } catch { return null; }
 }
@@ -78,15 +78,15 @@ export function getCachedBrowserSave(game) {
 }
 
 export async function readStoredBrowserSave(game) {
-  return getCachedSave(game, false, await activeStorage())?.slot ?? null;
+  return getCachedSave(game, { storage: await activeStorage() })?.slot ?? null;
 }
 
 export function getCachedBrowserSaveContents(game) {
-  return getCachedSave(game, true)?.contents ?? null;
+  return getCachedSave(game, { includeContents: true })?.contents ?? null;
 }
 
 export function getCachedAutosaveProgress(game) {
-  const save = getCachedSave(game);
+  const save = getCachedSave(game, { autosavesOnly: true });
   return save?.autosave && save.progress ? JSON.stringify(save.progress) : null;
 }
 

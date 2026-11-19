@@ -16,7 +16,7 @@ export function initialActionState(group, version, versions, runtimeVersion = ru
   if (version.source) {
     try {
       const namespace = game.saveNamespace || window.localStorage.getItem(`scummweb.save-namespace.v1:${game.saveVersionId}`);
-      const save = readCachedSave(game, window.localStorage, namespace, false, undefined, dropboxPreviewEnabled());
+      const save = readCachedSave(game, window.localStorage, namespace, { preview: dropboxPreviewEnabled() });
       if (save) {
         nativeIdentity = [save.engineId, save.gameId, save.extra || ""];
         canContinue = canContinue && supportsContinue(...nativeIdentity);
@@ -136,7 +136,7 @@ export const initialActionsScript = `(() => {
   const readGameTree = (game, storage, namespace) => readSaveTree(storage, editionKey(namespace, game.target), namespace, layout);
   const dropboxPreviewEnabled = ${dropboxPreviewEnabled.toString()};
   const withDropboxPreview = ${withDropboxPreview.toString()};
-  const readSave = (game, storage, namespace) => readCachedSave(game, storage, namespace, false, readGameTree, dropboxPreviewEnabled(window.location.search));
+  const readSave = (game, storage, namespace) => readCachedSave(game, storage, namespace, { readTree: readGameTree, preview: dropboxPreviewEnabled(window.location.search) });
   const prepare = ${prepareInitialActions.toString()};
   const observer = new MutationObserver(() => {
     const container = document.querySelector('[data-initial-actions]');

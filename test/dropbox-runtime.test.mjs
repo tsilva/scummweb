@@ -309,6 +309,49 @@ test("Continue uses an intact local save while an unrelated cloud archive is sti
   assert.ok(server.files.has(cloudName));
 });
 
+test("Continue lets an already downloaded save for its edition commit before opening the player", { timeout: 5000 }, async t => {
+  const game = { target: "sky", engineId: "sky", gameId: "sky", displayTitle: "Beneath a Steel Sky" };
+  const { destinations, server, locks } = await setup(t, "the save shown on the card", [game]);
+  // Launch and background sync share this exact runtime module in the app.
+  const runtime = await import("../app/dropbox/runtime.mjs");
+  await runtime.syncDropbox();
+  const oldSave = (await activeSets(destinations)).sets[0];
+  const profile = await saveProfileId(oldSave);
+  await updateActive("scummweb.continue.v1:catalog:sky", {
+    schemaVersion: 1, target: "sky", engineId: "sky", gameId: "sky", supported: true,
+    saves: oldSave.files.map(({ path, data, modifiedAt }) => ({ slot: 1, name: path, size: data.length, modifiedAt })),
+  });
+  const remote = { ...oldSave, files: [...oldSave.files,
+    { path: "SKY-VM.002", data: bytes("newer Dropbox save"), modifiedAt: 200 }] };
+  remote.hash = await identifySet(remote);
+  await writeSnapshot(server, await makeSnapshot(remote, (await syncStore.get(key("base", profile))).tips));
+  const request = locks.request.bind(locks);
+  const { promise: downloaded, resolve: ready } = Promise.withResolvers();
+  const { promise: hold, resolve: release } = Promise.withResolvers();
+  let saveLocks = 0;
+  t.mock.method(locks, "request", async (name, options, run) => {
+    if (name === "scummweb-saves" && options.mode === "exclusive" && ++saveLocks === 2) {
+      ready();
+      await hold;
+    }
+    return request(name, options, run);
+  });
+  const flight = runtime.syncDropbox();
+  let launch;
+  try {
+    await downloaded;
+    launch = prepareDropboxLaunch("catalog:sky", game);
+    assert.equal(await Promise.race([launch.then(() => "launched"), new Promise(resolve => setTimeout(() => resolve("waiting"), 30))]), "waiting");
+    assert.deepEqual((await activeSets(destinations)).sets[0].files, oldSave.files);
+    release();
+    await launch;
+    assert.deepEqual((await activeSets(destinations)).sets[0].files, remote.files);
+  } finally {
+    release();
+    await Promise.all([flight, launch]);
+  }
+});
+
 test("a full browser defers only the affected restore, retains both sets and retries later", async (t) => {
   const { idb, server, runtime, destinations } = await setup(t, "local save", [
     { target: "sky", displayTitle: "Beneath a Steel Sky" }, { target: "queen", displayTitle: "Flight of the Amazon Queen" },

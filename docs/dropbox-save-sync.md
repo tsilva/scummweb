@@ -109,9 +109,12 @@ write that left an empty `baseball-records.bbl`. ScummWEB keeps the empty
 file in the recovery export and uses the newest intact copy from that game
 edition's backups when available. If no copy exists, the remaining saves
 still sync.
-Continue can open an intact local save while Dropbox is still checking the
-library. A launch that needs cloud progress verifies and restores the selected
-edition first, then lets the other games continue syncing in the background.
+Continue chooses the newest intact manual save or autosave at launch. If
+Dropbox has already downloaded progress for that edition, Continue lets the
+restore finish before choosing. An intact local save can open while unrelated
+games are still syncing. A launch that needs cloud progress verifies and
+restores the selected edition first, then lets the other games continue
+syncing in the background.
 On the first sync of an account, ScummWEB downloads and verifies unseen
 snapshots in small groups. Large ZIPs are verified one at a time. Subsequent
 checks reuse the metadata for unchanged Dropbox revisions. Changed editions

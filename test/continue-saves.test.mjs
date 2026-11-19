@@ -2,8 +2,9 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { installContinueSaves, latestPlayerSave, saveIndexKey, saveRevision, supportsContinue } from "../web-shell/continue-saves.mjs";
+import { encodeAutosave } from "../web-shell/rotating-autosaves.mjs";
 
-function shell({ namespace = "", agentSaveScope, resume = false, seed = false, query = false,
+function shell({ namespace = "", agentSaveScope, resume = false, seed = false, query = false, preview = false,
   target = "sky", catalogGame, storage = new Map(), files = new Map() } = {}) {
   const normal = "/home/web_user/.local/share/scummvm/saves";
   const base = agentSaveScope ? `${normal}-agent/${agentSaveScope}` : normal + (namespace ? `/${namespace}` : "");
@@ -14,8 +15,9 @@ function shell({ namespace = "", agentSaveScope, resume = false, seed = false, q
       .map((p) => p.slice(directory.length + 1)).filter((p) => !p.includes("/"))],
     stat: (path) => { const file = files.get(path); if (!file) throw new Error("missing"); return { mode: 0x8000, size: file.bytes.length, mtime: new Date(file.modifiedAt) }; },
     isFile: (mode) => mode === 0x8000,
-    readFile: (path) => { const file = files.get(path); if (!file) throw new Error("missing"); return file.bytes; },
-    writeFile: (path, text) => files.set(path, { bytes: new TextEncoder().encode(text), modifiedAt: 1 }),
+    readFile: (path, options) => { const file = files.get(path); if (!file) throw new Error("missing"); return options?.encoding === "utf8" ? new TextDecoder().decode(file.bytes) : file.bytes; },
+    writeFile: (path, data) => files.set(path, { bytes: typeof data === "string" ? new TextEncoder().encode(data) : data, modifiedAt: 1 }),
+    mkdir() {},
     unlink: (path) => files.delete(path),
   };
   const messages = [], Module = { arguments: [target] };
@@ -34,6 +36,11 @@ function shell({ namespace = "", agentSaveScope, resume = false, seed = false, q
   if (namespace) launchUrl.searchParams.set("saveNamespace", namespace);
   if (agentSaveScope) launchUrl.searchParams.set("agentSaveScope", agentSaveScope);
   if (resume) launchUrl.searchParams.set("continue", "1");
+  if (preview) {
+    scope.scummwebPlayerControls = true;
+    launchUrl.searchParams.set("hostPlayer", "1");
+    launchUrl.searchParams.set("dropbox", "true");
+  }
   if (query) for (const [key, value] of Object.entries({ saveQuery: "nonce", saveEngine: "sky", saveGameId: "sky", saveTarget: target })) launchUrl.searchParams.set(key, value);
   const start = () => installContinueSaves({ scope, FS, Module, launchUrl, assetUrl: (path) => path });
   function scan(saves, supported = true) {
@@ -123,6 +130,24 @@ test("latest save selection uses write time across slots and is refreshed before
   const index = JSON.parse(f.storage.get(saveIndexKey("", "sky")));
   assert.equal(index.revision, saveRevision(index.saves));
   assert.equal(latestPlayerSave(index, index.saves).slot, 9);
+});
+
+test("the player compares newly available manual saves with the intact autosave ring at launch", async () => {
+  const checkpoint = encodeAutosave({ engineId: "sky", gameId: "sky", target: "sky", slot: 2, savedAt: 200,
+    files: [{ name: "SKY-VM.002", data: new TextEncoder().encode("autosave state") }] });
+  for (const modifiedAt of [100, 200, 300]) {
+    const player = shell({ resume: true, preview: true });
+    player.put("SKY-VM.001", "manual state", 100);
+    player.put(".scummweb-autosave.0", checkpoint, 900);
+    player.put(".scummweb-autosave.1", "damaged", 1000);
+    await player.start();
+    // A Dropbox restore can add a newer native slot after Continue was shown.
+    player.put("SKY-VM.003", "restored manual state", modifiedAt);
+    const latest = player.scan([[1, "SKY-VM.001"], [3, "SKY-VM.003"]]);
+    assert.equal(latest, modifiedAt < 200 ? 2 : 3);
+    assert.equal(player.messages.at(-1).latestSlot, latest);
+    assert.equal(player.files.has("/tmp/scummweb-intro/SKY-VM.002"), modifiedAt < 200);
+  }
 });
 
 test("native query uses an ephemeral config and the exact selected import namespace", async () => {

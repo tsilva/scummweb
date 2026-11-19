@@ -222,17 +222,16 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     const persisted = persist();
     if (playerSaves) scope.__scummwebPublishPlayerSaves(playerSaves, occupiedSlots);
     const save = latestPlayerSave(snapshot, listing);
-    const autoSlot = scope.__scummwebAutosaves?.startup(snapshot) ?? -1;
-    if (!resumeReported && (save && params.get("continue") === "1"
+    const autoSlot = scope.__scummwebAutosaves?.startup(snapshot, save) ?? -1;
+    const latestSlot = autoSlot >= 0 ? autoSlot : save?.slot ?? null;
+    if (!resumeReported && (latestSlot !== null && params.get("continue") === "1"
       || /^#-x(?:%20| )/i.test(launchUrl.hash) && !params.has("skipIntroTarget"))) {
       scope.__scummwebAutosaves?.afterLoad();
     }
     if (params.get("continue") === "1" && !resumeReported) {
-      const selected = autoSlot >= 0 ? autoSlot : save?.slot ?? "unavailable";
-      scope.console?.info(`ScummWEB Continue: ${snapshot.engineId}:${snapshot.gameId}, slot ${selected}${autoSlot >= 0 ? " (autosave)" : ""}`);
+      scope.console?.info(`ScummWEB Continue: ${snapshot.engineId}:${snapshot.gameId}, slot ${latestSlot ?? "unavailable"}${autoSlot >= 0 ? " (autosave)" : ""}`);
       resumeReported = true;
     }
-    const latestSlot = autoSlot >= 0 ? autoSlot : save?.slot ?? null;
     scope.__scummwebSaveStatus = { ...snapshot, latestSlot };
     const publish = () => {
       if (agentSaveScope) return;
@@ -250,7 +249,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
       });
     } else publish();
     scope.__scummwebBeginIntroCheckpoint?.(snapshot.target);
-    return params.get("continue") === "1" ? autoSlot >= 0 ? autoSlot : save?.slot ?? -1 : -1;
+    return params.get("continue") === "1" ? latestSlot ?? -1 : -1;
   };
 
   async function start() {

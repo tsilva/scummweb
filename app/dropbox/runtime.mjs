@@ -24,12 +24,17 @@ let flightPriority, flightPlayback, playing;
 let launchSyncSnapshot = null;
 let activityController;
 const restoreSpaceWait = new Map();
+const downloadedRestores = new Map();
 const restoreSpaceMessage = "Browser storage is full. Saves that could not be restored are retained in Dropbox.";
 const isQuotaError = (error) => [error?.name, error?.cause?.name].includes("QuotaExceededError");
 const appKey = () => process.env.NEXT_PUBLIC_DROPBOX_APP_KEY || "";
 export function dropboxConfigured() { return Boolean(appKey()); }
 export function getDropboxState() { return state; }
 export function subscribeDropbox(listener) { listeners.add(listener); return () => listeners.delete(listener); }
+export async function waitForDownloadedSave(destinationKey) {
+  const pending = downloadedRestores.get(destinationKey);
+  return pending ? Boolean((await pending.catch(() => null))?.restored) : false;
+}
 function update(next) {
   if (next.phase && next.phase !== "syncing") next = { transferProgress: null, ...next };
   state = { ...state, ...next }; for (const listener of listeners) listener();
@@ -458,7 +463,7 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
         let restoreRevision;
         const destinationKey = matchDestination(remote, destinations);
         const destination = destinations.find(({ key }) => key === destinationKey);
-        const restored = await lockedSaves(async (storage, scoped) => {
+        const restoration = lockedSaves(async (storage, scoped) => {
           check();
           for (const entry of readIncompleteSaveWrites(storage, destinations)) {
             const destination = destinations.find(({ key }) => key === entry.destinationKey && key !== "shared");
@@ -486,6 +491,14 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
           restoreSpaceWait.set(restoreKey, { hash: remoteHash, revision: restoreRevision, retryAt: Date.now() + 120000 });
           return { quota: true };
         });
+        // Continue can wait for a downloaded save of its own edition to
+        // commit before the player takes that edition's lock.
+        if (destination) downloadedRestores.set(destination.key, restoration);
+        let restored;
+        try { restored = await restoration; }
+        finally {
+          if (destination && downloadedRestores.get(destination.key) === restoration) downloadedRestores.delete(destination.key);
+        }
         if (restored.quota) {
           spaceBlocked.add(profile);
           continue;

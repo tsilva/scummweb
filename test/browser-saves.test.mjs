@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { cancelBrowserSaveQueries, getCachedBrowserSave, getCachedBrowserSaveContents, getLatestBrowserSave, readBrowserSaveFiles, subscribeBrowserSaves } from "../app/browser-saves.mjs";
 import { saveIndexKey, saveRevision } from "../web-shell/continue-saves.mjs";
+import { encodeAutosave } from "../web-shell/rotating-autosaves.mjs";
+import { readCachedSave } from "../app/browser-save-cache.mjs";
 import { getVersionSaveNamespace } from "../app/game-versions.mjs";
 
 function makeBrowserStorage(files, namespaces = {}) {
@@ -72,6 +74,27 @@ test("Continue chooses the newest native-listed player save, not the highest slo
   await indexSaves(game, []);
   assert.equal(await getLatestBrowserSave(game, "test"), null);
   assert.equal(getCachedBrowserSaveContents(game), null);
+});
+
+test("the library chooses the newest intact manual save or autosave by its own save time", async (t) => {
+  const game = { target: "sky", engineId: "sky", gameId: "sky" };
+  const autoBytes = Buffer.from("autosave bytes");
+  const autosave = encodeAutosave({ ...game, slot: 2, savedAt: 200, files: [{ name: "SKY-VM.002", data: autoBytes }] });
+  useStorage(t, null);
+  for (const modifiedAt of [100, 200, 300]) {
+    const storage = makeBrowserStorage([
+      ["SKY-VM.001", "manual bytes", modifiedAt],
+      [".scummweb-autosave.0", autosave, 900],
+      [".scummweb-autosave.1", "damaged", 1000],
+    ]);
+    window.localStorage = storage;
+    await indexSaves(game, [["SKY-VM.001", 1]]);
+    const chosen = readCachedSave(game, storage, "", { includeContents: true, preview: true });
+    assert.equal(chosen.slot, modifiedAt < 200 ? 2 : 1);
+    assert.equal(chosen.contents, (modifiedAt < 200 ? autoBytes : Buffer.from("manual bytes")).toString("base64"));
+    assert.equal(readCachedSave(game, storage)?.slot, 1);
+    assert.equal(readCachedSave(game, storage, "", { preview: true, autosavesOnly: true })?.slot, 2);
+  }
 });
 
 test("Continue is isolated to the imported version, including an unknown ZIP title", async (t) => {
