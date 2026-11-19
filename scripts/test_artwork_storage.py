@@ -33,7 +33,7 @@ class ArtworkPublishingTests(unittest.TestCase):
         sha256 = hashlib.sha256(self.data).hexdigest()
         self.entry = {"key": f"artwork/{sha256}/sample-cover.webp", "sha256": sha256,
                       "bytes": len(self.data), "contentType": "image/webp"}
-        self.manifest = {"version": 1, "origin": "https://scummvm-games.tsilva.eu",
+        self.manifest = {"version": 1, "origin": "https://games.scummweb.tsilva.eu",
                          "files": {"/launcher/sample-cover.webp": self.entry}}
         self.filename = self.root / ".internal/evidence/artwork-migration/objects" / self.entry["key"]
         self.filename.parent.mkdir(parents=True)

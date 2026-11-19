@@ -16,7 +16,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 ACCOUNT = "83e1ce4a70ea388693e8525a772ccefa"
 BUCKET = "scummvm-games"
 ENDPOINT = f"https://{ACCOUNT}.r2.cloudflarestorage.com"
-ORIGIN = "https://scummvm-games.tsilva.eu"
+ORIGIN = "https://games.scummweb.tsilva.eu"
 CACHE = "public, max-age=31536000, immutable"
 MAX_BYTES = 2 * 1024 * 1024
 MAX_JSON = (MAX_BYTES * 4 // 3) + 8192

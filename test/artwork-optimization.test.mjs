@@ -19,7 +19,7 @@ test("optimization preserves screenshot pixels, originals, active delivery and h
   const source = await sharp({ create: { width: 640, height: 480, channels: 3, background: "#123456" } }).png().toBuffer();
   const sha256 = digest(source);
   const sourceName = "/launcher/example-shot-1.png";
-  const storage = { version: 1, published: true, origin: "https://scummvm-games.tsilva.eu", files: {
+  const storage = { version: 1, published: true, origin: "https://games.scummweb.tsilva.eu", files: {
     [sourceName]: { key: `artwork/${sha256}/example-shot-1.png`, sha256, bytes: source.length, contentType: "image/png", width: 640, height: 480 },
   } };
   await fs.mkdir(path.join(root, "data"), { recursive: true });

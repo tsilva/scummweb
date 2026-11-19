@@ -4,9 +4,10 @@ import { BlobWriter, Uint8ArrayReader, ZipWriter } from "@zip.js/zip.js";
 import { getArchiveGamePresentation } from "../app/archive-game-presentation.mjs";
 import { inspectRemoteGameArchive, prepareRemoteGameArchive } from "../app/remote-game-archive.mjs";
 import { maxArchiveSize } from "../app/local-game-archive.mjs";
-import { readRemoteGameArchive } from "../app/game-bucket.mjs";
+import { checkGameZip, readRemoteGameArchive } from "../app/game-bucket.mjs";
 import { installGameZipCache } from "./helpers/game-zip-cache.mjs";
 import { readCachedGameData } from "../app/game-zip-cache.mjs";
+import { DEFAULT_GAMES_ORIGIN, LEGACY_GAMES_ORIGIN } from "../lib/site-config.mjs";
 
 const url = "https://example.com/completely-renamed.zip?download=1";
 
@@ -102,6 +103,27 @@ test("range inspection reads the ZIP directory before the full download and reus
   const files = await prepared.loadArchive(new AbortController().signal);
   assert.equal(fullDownloads, 1);
   assert.deepEqual(files.map(({ path }) => path), ["SKY.DNR", "SKY.DSK"]);
+});
+
+test("saved official ZIP links use the current host for HEAD, range reads and downloads", async (t) => {
+  installGameZipCache(t);
+  const bytes = await makeZip();
+  const archivePath = "/sky.zip?download=1";
+  const saved = LEGACY_GAMES_ORIGIN + archivePath;
+  const fetch = t.mock.method(globalThis, "fetch", async (requestUrl, options) => {
+    assert.equal(requestUrl, DEFAULT_GAMES_ORIGIN + archivePath);
+    if (options.method === "HEAD") return new Response(null);
+    return options.headers?.Range ? rangeResponse(bytes, options) : new Response(bytes);
+  });
+  assert.equal(await checkGameZip(saved), true);
+  const archive = await prepareRemoteGameArchive(saved);
+  assert.equal(archive.game.target, "sky");
+  await archive.loadArchive();
+  assert.ok(await readCachedGameData(saved));
+  const requests = fetch.mock.callCount();
+  const cached = await prepareRemoteGameArchive(saved);
+  await cached.loadArchive();
+  assert.equal(fetch.mock.callCount(), requests);
 });
 
 test("hosts ignoring ranges cancel the probe and download once for identification and launch", async (t) => {

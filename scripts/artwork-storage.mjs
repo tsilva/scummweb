@@ -4,11 +4,12 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import sharp from "sharp";
+import { DEFAULT_GAMES_ORIGIN } from "../lib/site-config.mjs";
 import { readArtworkFile } from "./artwork-files.mjs";
 import { resolveArtworkWorkspace } from "./artwork-workspace.mjs";
 
 const rootDir = fileURLToPath(new URL("../", import.meta.url));
-const origin = "https://scummvm-games.tsilva.eu";
+const origin = DEFAULT_GAMES_ORIGIN;
 const types = { ".webp": "image/webp", ".avif": "image/avif", ".png": "image/png", ".jpg": "image/jpeg" };
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const manifestFile = "data/artwork-storage.json";

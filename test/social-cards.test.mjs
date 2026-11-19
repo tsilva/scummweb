@@ -105,7 +105,7 @@ test("Vercel restores verified social cards into a fresh checkout and repairs co
   await fs.mkdir(path.dirname(manifestPath));
   await fs.writeFile(path.join(f.root, "data/artwork-storage.json"), JSON.stringify({
     published: true,
-    origin: "https://scummvm-games.tsilva.eu",
+    origin: "https://games.scummweb.tsilva.eu",
     files: { "/launcher/cover.webp": { sha256, bytes: artwork.length, key: `artwork/${sha256}/cover.webp` } },
   }));
   const request = t.mock.method(globalThis, "fetch", async () => { throw new Error("Unexpected artwork download"); });

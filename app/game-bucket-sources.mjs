@@ -1,5 +1,6 @@
 import { maxArchiveSize } from "./local-game-selection.mjs";
 import downloads from "../data/game-downloads.json" with { type: "json" };
+import { DEFAULT_GAMES_ORIGIN, LEGACY_GAMES_ORIGIN } from "../lib/site-config.mjs";
 
 export const bucketStorageKey = "scummweb.game-bucket.v1";
 
@@ -34,6 +35,12 @@ export function normalizeGameZipUrl(value) {
   throw new Error("Enter a direct HTTPS link to a game ZIP.");
 }
 
+export function gameZipFetchUrl(url) {
+  return url.startsWith(`${LEGACY_GAMES_ORIGIN}/`)
+    ? DEFAULT_GAMES_ORIGIN + url.slice(LEGACY_GAMES_ORIGIN.length)
+    : url;
+}
+
 export function bucketZipName(target) {
   return `${target}.zip`;
 }
@@ -60,7 +67,7 @@ export function readSavedBucket(value, games) {
 }
 
 export async function checkGameZip(url, signal) {
-  const response = await fetch(url, {
+  const response = await fetch(gameZipFetchUrl(normalizeGameZipUrl(url)), {
     method: "HEAD",
     credentials: "omit",
     redirect: "error",
