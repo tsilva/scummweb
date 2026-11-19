@@ -1572,6 +1572,25 @@
         "preservation": "Serve the complete unchanged ZIP with all original notices, demos, resource and message files, original readme, audio, DOS interpreter and drivers. Browser checks ran the game data through ScummVM."
       },
       "noticeFile": "README"
+    },
+    {
+      "target": "xmascard-demo",
+      "title": "Christmas Card 1986 (Demo)",
+      "engineId": "agi",
+      "gameId": "xmascard",
+      "platform": "dos",
+      "extra": "Demo",
+      "archive": "xmascard-dos-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/agi/xmascard-dos-en.zip",
+      "sha256": "212d774e69e66f7539d657d135185bf93122c5007b696404228d7d9bfb60c890",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-19",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "ScummVM lists the exact DOS holiday demo, which matches its pinned November 1986 AGI detector. The original readme and welcome screen identify a promotional store demonstration. All 19 included original files, 218 present AGI resources and 287 decoded logic messages were reviewed, including the original help that identifies its disk as copyable. No express copying restriction applicable to the included files was found. Eligibility uses the cautious official promotional-hosting assessment.",
+        "preservation": "Serve the complete original ZIP as published by ScummVM with all supplied data, notices, original AGI interpreter and setup files. It includes VOL.0. Leave the original directory tables intact and add no external volume data."
+      },
+      "noticeFile": "READ.ME"
     }
   ]
 }

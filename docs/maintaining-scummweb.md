@@ -458,6 +458,8 @@ The original DOS game begins its scrolling arcade sequence after launch. Move th
 
 The original DOS Slater & Charlie Go Camping demo contains one interactive storybook page. Dismiss the original instructions, click the picture to animate a character, or select the reading icon beside the sentence. The original stop sign opens Sierra’s end card.
 
+The original DOS Christmas Card 1986 opens at Sierra’s greeting. Press Enter and type up to two lines or leave them blank to begin the native animation. F1 opens the original Help and F9 restarts the card.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.
