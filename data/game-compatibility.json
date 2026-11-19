@@ -2276,6 +2276,14 @@
       "observation": "A game frame renders at startup."
     },
     {
+      "title": "Ruff's Bone (Demo)",
+      "status": "startup-verified",
+      "gameId": "mohawk:ruff",
+      "edition": "ruff-win-demo-en.zip",
+      "recordedOn": "2026-11-19",
+      "observation": "Original Windows demo with one page in English and Spanish. Native Skip Intro, English Let Me Play, the original publisher end page and Spanish Read to Me were verified. ScummWEB save and load were unavailable. Audible narration was unverified."
+    },
+    {
       "title": "Sheila Rae, the Brave",
       "status": "startup-verified",
       "gameId": "mohawk:sheila",

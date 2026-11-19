@@ -1015,6 +1015,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "ruff-demo",
+      "title": "Ruff's Bone (Demo)",
+      "path": "/games/ruff",
+      "engineId": "mohawk",
+      "gameId": "ruff",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

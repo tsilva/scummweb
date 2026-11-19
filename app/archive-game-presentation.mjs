@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Ruff's Bone (Demo)", target: "ruff-demo", engineId: "mohawk", gameId: "ruff",
+    files: [["p01ep.ibm", 2744050, 2588385377], ["p01sp.ibm", 2767560, 2980424538], ["ruff.512", 693, 2000887134]],
+  },
+  {
     title: "Arthur's Teacher Trouble (Demo)", target: "arthur-demo", engineId: "mohawk", gameId: "arthur",
     files: [["p01e.ibm", 3374954, 1365000791], ["p01s.ibm", 3609898, 2006794541], ["pages.512", 642, 2220535430]],
   },
