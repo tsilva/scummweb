@@ -1,4 +1,4 @@
-import { ArrowLeft, Bug, ChevronRight, FolderOpen, Plus, Save, X } from "lucide-react";
+import { ArrowLeft, Bug, ChevronRight, FolderOpen, LoaderCircle, Plus, Save, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import GameBugReport from "./GameBugReport";
 
@@ -231,8 +231,18 @@ export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose
               ) : <p className="game-menu-note">No saved games yet.</p>}
             </>
           )}
-          {busy && <p className="game-menu-note" role="status">{page === "save" ? "Saving…" : "Loading…"}</p>}
+          {busy && page === "save" && <p className="game-menu-note" role="status">Saving…</p>}
           {error && <p className="game-menu-note" role="alert">{error}</p>}
+        </div>
+      )}
+      {page === "load" && (
+        <div className="game-menu-load-status" role="status">
+          {busy && (
+            <>
+              <span>Loading saved game</span>
+              <LoaderCircle aria-hidden="true" size={28} />
+            </>
+          )}
         </div>
       )}
     </dialog>
