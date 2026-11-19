@@ -1370,6 +1370,24 @@
         "basis": "ScummVM lists this exact Windows demo. The Living Books configuration gives both languages, two modes and the 1994 copyright. Its MD5 matches the Windows Demo detector. All 14 original files passed path, CRC and SHA-256 checks. Original Living Books and Brøderbund copyright notices are retained. No mandatory licence acceptance or explicit packaged redistribution prohibition was located in the review. Eligibility uses the cautious official promotional-hosting assessment.",
         "preservation": "Serve the complete unchanged official ZIP with both languages, original book data, copyright notices and Windows binaries. No downloaded executable was run."
       }
+    },
+    {
+      "target": "grandma-demo",
+      "title": "Just Grandma and Me (Demo)",
+      "engineId": "mohawk",
+      "gameId": "grandma",
+      "platform": "windows",
+      "extra": "Demo v1.0",
+      "archive": "grandma-win-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/mohawk/grandma-win-demo-en.zip",
+      "sha256": "9980f303bacf22b2847ec7b2be27a13992495eb1af534b1097953a7549299c8a",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-19",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "ScummVM lists this exact Windows v1.0 demo. The Living Books configuration declares one page in English, Japanese and Spanish, with separate Read and Play files. Its MD5 matches the Windows Demo v1.0 detector. All 32 files passed path, CRC and SHA-256 checks. Original Brøderbund notices and in-game credits are retained. No mandatory licence acceptance or explicit packaged redistribution prohibition was located in the review. Eligibility uses the cautious official promotional-hosting assessment.",
+        "preservation": "Serve the complete unchanged official ZIP with all three language resources, original notices, Windows binaries, data and packaging metadata. No downloaded executable was run."
+      }
     }
   ]
 }

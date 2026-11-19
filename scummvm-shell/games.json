@@ -995,6 +995,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "grandma-demo",
+      "title": "Just Grandma and Me (Demo)",
+      "path": "/games/grandma",
+      "engineId": "mohawk",
+      "gameId": "grandma",
+      "platform": "windows",
+      "extra": "Demo v1.0",
+      "readmeHref": ""
     }
   ]
 }

@@ -1929,6 +1929,14 @@
       "observation": "A game frame renders at startup."
     },
     {
+      "title": "Just Grandma and Me (Demo)",
+      "status": "startup-verified",
+      "gameId": "mohawk:grandma",
+      "edition": "grandma-win-demo-en.zip",
+      "recordedOn": "2026-11-19",
+      "observation": "Original Windows v1.0 demo with one page in English, Japanese and Spanish. Native Skip Intro, the Options screen, English Let Me Play, the read-along button and Japanese and Spanish Read to Me were verified. ScummWEB save and load are unavailable. Audible narration was unverified."
+    },
+    {
       "title": "King's Questions",
       "status": "startup-verified",
       "gameId": "sci:kquestions",
