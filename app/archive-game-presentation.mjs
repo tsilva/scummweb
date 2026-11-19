@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Slater & Charlie Go Camping (Demo)", target: "slater-demo", engineId: "sci", gameId: "slater",
+    files: [["resource.map", 1409, 989309201], ["resource.000", 377394, 3589100655], ["resource.msg", 1364, 2314138439]],
+  },
+  {
     title: "Ms. Astro Chicken (Demo)", target: "msastrochicken-demo", engineId: "sci", gameId: "msastrochicken",
     files: [["resource.map", 1158, 3876752578], ["resource.001", 229737, 1211620517], ["sierra.exe", 110353, 3803814439]],
   },

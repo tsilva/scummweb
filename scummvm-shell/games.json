@@ -1095,6 +1095,16 @@
       "platform": "dos",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "slater-demo",
+      "title": "Slater & Charlie Go Camping (Demo)",
+      "path": "/games/slater",
+      "engineId": "sci",
+      "gameId": "slater",
+      "platform": "dos",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/slater.txt"
     }
   ]
 }

@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "slater-demo": {
+    ...retroGameArtwork["sci:slater"],
+    heroImageMobilePosition: "83% -5vh",
+    title: "Slater & Charlie Go Camping (Demo)",
+    year: "1993",
+    language: "en",
+    summary: "Join two dinosaurs outside a sporting-goods shop as they get ready to go camping. Click the characters for animations, or follow along as the story text lights up.",
+  },
   "msastrochicken-demo": {
     ...retroGameArtwork["sci:msastrochicken"],
     heroImageMobilePosition: "77% -8vh",

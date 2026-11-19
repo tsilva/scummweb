@@ -2346,6 +2346,14 @@
       "observation": "A game frame renders at startup."
     },
     {
+      "title": "Slater & Charlie Go Camping (Demo)",
+      "status": "startup-verified",
+      "gameId": "sci:slater",
+      "edition": "slater-dos-demo.en.zip",
+      "recordedOn": "2026-11-19",
+      "observation": "The original English DOS demo opened Sierra’s introduction and the sporting-goods shop story page. A dinosaur hotspot animated and the reading control highlighted the sentence. The stop sign reached the original promotional end card. The tested page rejected saving."
+    },
+    {
       "title": "Spy Fox 2: \"Some Assembly Required\"",
       "status": "startup-verified",
       "gameId": "scumm:spyfox2",

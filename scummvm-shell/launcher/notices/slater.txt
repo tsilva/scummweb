@@ -1,0 +1,59 @@
+                      SLATER AND CHARLIE GO CAMPING
+
+SIERRA FAMILY DEMONSTRATION CD-ROM VERSION 2.0 8/1/93
+
+Although this demo was designed to be run from the menu system provided on
+the CD, it is also a standalone runnable product.  Simply type DEMO from
+within this subdirectory.
+
+If you have not originally configured this product, you will enter the
+Install program to configure the demo.  This will create a file in the
+directory C:\SIERRA\DEMOCD.  This directory MUST exist on your hard drive
+for Install to work properly.  This directory is created the first time you
+run the DEMO Menu System (by typing DEMO from the root directory of this
+CD-ROM.) Alternately, you can create the C:\SIERRA\DEMOCD subdirectory
+manually.
+
+Once configured, typing DEMO will start the demo program.  To make any
+subsequent changes to the configuration, type INSTALL from within this demo
+subdirectory.
+
+<<<<<<<    PROBLEMS???    >>>>>>>>>
+
+MY GAME RUNS SLOW!
+
+In DOS, "Slater And Charlie" supports the following configurations:
+   STANDARD INTERNAL SPEAKER W/O DAC
+   583680 BYTES (570K) FREE
+
+   ALL MIDI DEVICES W/O DAC
+   586035 BYTES (572.3K) FREE
+
+   SOUND CARDS WITH DAC
+   589000 BYTES (575.2K) FREE
+
+If you're having trouble getting this much free memory consult the
+Sierra Install Manual for help.  The more free memory you have the
+better the game will run.
+
+REMEMBER: "Slater and Charlie" requires in DOS at minimum
+a 286 16mhz, and in Windows a 386sx 16mhz with 2 meg of ram.
+
+
+THE DIGITAL AUDIO BREAKS UP OR HAS GAPS WHEN IT PLAYS:
+
+In DOS you can modify the following file, "C:\SIERRA\DEMOCD\SLATDEMO.CFG:
+audioSize = 12k".  You can experiment with the size.  Try 4k, 8k, or 16k to
+find the one that works best for you.  Adding this line will set that
+amount of memory aside for playing the audio which will decrease available
+memory for the game.  If you do this you may find you have to free up more
+memory to play the game.  In windows you really shouldn't have this
+problem.  If you still have problems in DOS (or Windows), it could be that
+your audio files are fragmented.  Try removing the game from your hard
+disk, compact the disk using a utility that both defragments and compacts
+the data, and then reinstall the game.
+
+
+PAS-16 USERS IN DOS:
+There is a specific driver for the PAS-16 for Audio.  During install
+you'll need to select the ProAudio 16 driver for speech.
