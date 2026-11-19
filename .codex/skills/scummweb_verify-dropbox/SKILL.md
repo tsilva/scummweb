@@ -54,7 +54,7 @@ games and explaining its impact. Preserve other tasks' tabs and processes.
 | Automatic reconciliation | Independent slots merge; overlapping slots choose deterministically; companion/index or layout conflicts retain a coherent complete copy. All competing originals remain recoverable, without conflict prompts. |
 | Multiple games/devices and retries | Devices converge on the same bytes regardless of listing order or equal clocks. Unchanged retries create no duplicate logical publication or recurring decisions. |
 | Interrupted publication/reconciliation | After a requested close or individually approved kill during verified durable work, reopening resumes automatically with intact ancestry, alternatives and native loadable bytes. |
-| Deliberate recovery | Recover saved progress opens a review; restoring a selected copy preserves the previous current set. Recovery remains optional, never a prerequisite for routine sync. |
+| Deliberate recovery | Expand Restore a backup, choose a game and copy, and review before restoring. The previous current set stays recoverable. Routine sync needs no user action. |
 | Multiple tabs | Same-edition access is fenced. A same-origin online tab may drain another tab's queue; distinguish that from an isolated outage. |
 | Isolated connection loss | Completed new slot is absent from every fresh cloud snapshot while offline; after exit/reconnection it uploads automatically once and loads natively. |
 

@@ -173,7 +173,7 @@ async function settingsFixture({ needsGame = false, markMerged = false, browserG
     matches: new Map(copies.map(set => [set, destination.key])), unmatched: new Set() };
   let cursor = 0, refCursor = 0, writes = 0;
   const refs = [];
-  const state = ["saves", "", "", data, null, "idle", false, "", false];
+  const state = ["saves", "", "", data, null, "idle", false, "", "", "", false];
   const imported = { destination, hash: "imported", files: [{ path: "custom.001" }] };
   const imports = [];
   const calls = [], merges = [];
@@ -182,7 +182,7 @@ async function settingsFixture({ needsGame = false, markMerged = false, browserG
     getActiveSaveSets: async () => ({ sets: [currentActive], revision: currentRevision, hasRoot: true }), readStoredSets: async () => copies,
     withSaveLock: run => run(), applyImport: async options => { writes++; calls.push(options); } };
   const View = await component("../app/home-shell/settings-content.js", {
-    "lucide-react": Object.fromEntries(["ArrowDownUp", "ArrowLeft", "Check", "ChevronDown", "Download", "Info", "Save", "Upload"].map(name => [name, () => null])),
+    "lucide-react": Object.fromEntries(["ArrowDownUp", "Check", "ChevronDown", "Download", "Info", "LoaderCircle", "Save", "Upload"].map(name => [name, () => null])),
     "../styles/settings-details.css": {}, "../game-sources.mjs": { readGameSources: async () => [] },
     "./dropbox-row": { default: () => null }, "./dropbox-preview": { default: () => null },
     "../save-backups/baseball-records.mjs": { hasEmptyBaseballRecords },
@@ -224,42 +224,50 @@ test("export hands the ZIP to the browser without adding a second download link"
   assert.deepEqual(revoked, ["blob:export"]);
 });
 
-test("the normal panel hides routine saves; recovery groups backups and leaves progress untouched", async () => {
+test("backup recovery stays collapsed and shows only the selected game's copies", async () => {
   const fixture = await settingsFixture(); let tree = fixture.render();
+  const toggle = (view) => button(view, "Restore a backup");
   assert.match(text(tree), /Transfer saves to or from your ScummVM apps/);
-  assert.doesNotMatch(text(tree), /Exported ZIPs/);
-  assert.equal(text(tree).includes("Beneath a Steel Sky"), false);
-  assert.equal(text(tree).includes("Only active"), false);
-  assert.equal(text(tree).includes("Game files are not included"), false);
-  assert.ok(button(tree, "Recover saved progress"));
-  button(tree, "Recover saved progress").props.onClick(); tree = fixture.render();
-  assert.equal(nodes(tree).filter(node => node.type === "details").length, 1);
-  assert.match(text(tree), /Beneath a Steel Sky2 backups/);
-  assert.equal(nodes(tree).filter(node => node.type === "button" && text(node) === "Restore this copy…").length, 2);
-  assert.equal(text(tree).includes(" · Active"), false);
-  assert.equal(text(tree).includes("Preserved"), false);
+  assert.doesNotMatch(text(tree), /Beneath a Steel Sky|Recover saved progress|Back to saved games/);
+  assert.equal(toggle(tree).props["aria-expanded"], false);
+  toggle(tree).props.onClick(); tree = fixture.render();
+  assert.equal(toggle(tree).props["aria-expanded"], true);
+  assert.ok(button(tree, "Export saves") && button(tree, "Import saves"));
+  const [game, backup] = nodes(tree).filter(({ type }) => type === "select");
+  assert.match(text(game), /Beneath a Steel Sky/);
+  assert.equal(backup.props.disabled, true);
+  assert.equal(button(tree, "Review backup").props.disabled, true);
+  game.props.onChange({ target: { value: "catalog:sky" } }); tree = fixture.render();
+  const options = nodes(tree).filter(({ type }) => type === "option");
+  assert.deepEqual(options.map(({ props }) => props.value), ["", "catalog:sky", "", "older", "oldest"]);
+  toggle(tree).props.onClick();
+  assert.equal(toggle(fixture.render()).props["aria-expanded"], false);
   assert.equal(fixture.writes(), 0);
-  button(tree, "Back to saved games").props.onClick();
-  assert.ok(button(fixture.render(), "Recover saved progress")); assert.equal(fixture.writes(), 0);
 });
 
 test("recovery reviews a selected copy before restoring and keeps the safe import path", async () => {
   const fixture = await settingsFixture();
-  fixture.copies[0].recovery = true;
-  button(fixture.render(), "Recover saved progress").props.onClick();
-  await button(fixture.render(), "Restore this copy…").props.onClick();
+  fixture.copies[1].recovery = true;
+  button(fixture.render(), "Restore a backup").props.onClick();
+  nodes(fixture.render()).filter(({ type }) => type === "select")[0].props.onChange({ target: { value: "catalog:sky" } });
+  nodes(fixture.render()).filter(({ type }) => type === "select")[1].props.onChange({ target: { value: "oldest" } });
+  await button(fixture.render(), "Review backup").props.onClick();
   let tree = fixture.render();
   assert.match(text(tree), /Restore saved progress/);
+  assert.match(text(tree), /Backup 2.*1 save file/);
+  assert.match(text(tree), /Your current progress will be kept as a backup/);
+  assert.doesNotMatch(text(tree), /Ready to import/);
   assert.equal(fixture.writes(), 0, "opening the review must not restore anything");
   button(tree, "Cancel").props.onClick();
   assert.equal(fixture.writes(), 0);
-  await button(fixture.render(), "Restore this copy…").props.onClick();
+  await button(fixture.render(), "Review backup").props.onClick();
   await button(fixture.render(), "Restore this copy").props.onClick();
   assert.equal(fixture.writes(), 1);
-  assert.equal(fixture.calls[0].rows[0].set, fixture.copies[0]);
+  assert.equal(fixture.calls[0].rows[0].set, fixture.copies[1]);
   assert.equal(fixture.calls[0].rows[0].choice, "imported");
   assert.equal(fixture.calls[0].revision, "fresh-revision");
-  tree = fixture.render(); assert.ok(button(tree, "Recover saved progress"));
+  tree = fixture.render();
+  assert.equal(button(tree, "Restore a backup").props["aria-expanded"], false);
   assert.equal(text(tree).includes("Saved progress restored."), true);
 });
 
