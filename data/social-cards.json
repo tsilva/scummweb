@@ -1705,6 +1705,11 @@
       "file": "ms-astro-chicken-demo-950af0057d86d94c9ce98904971a004aec65846889d7dc68ff7211ff350f5c7f.jpg",
       "inputHash": "950af0057d86d94c9ce98904971a004aec65846889d7dc68ff7211ff350f5c7f",
       "imageHash": "68ba08a93184a9709d6937ec2ca93cfad0cad8d8c644e81c4089ee709fe8ef04"
+    },
+    "slater-and-charlie-go-camping-demo": {
+      "file": "slater-and-charlie-go-camping-demo-e4ddd823c867382a50a00eaa0165a30a8db88ecd447cc379b7c6218e47a53ba2.jpg",
+      "inputHash": "e4ddd823c867382a50a00eaa0165a30a8db88ecd447cc379b7c6218e47a53ba2",
+      "imageHash": "9f651fcaefe83c4921604a5da7c0fa9bf8d27bb34b1432a366532571a93aa293"
     }
   }
 }
