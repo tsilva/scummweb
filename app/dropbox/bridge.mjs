@@ -14,6 +14,16 @@ export async function prepareDropboxLaunch(launchDestinationKey = null, resumeGa
   const sync = await import("./runtime.mjs");
   await sync.syncDropbox({ beforeLaunch: true, launchDestinationKey });
 }
+
+export function prioritizeDropboxGameplay(destination) {
+  if (!destination || !dropboxEnabled()) return () => {};
+  let ended = false, cleanup;
+  void import("./runtime.mjs").then(runtime => {
+    if (!ended) cleanup = runtime.prioritizeDropboxGameplay(destination);
+  }).catch(() => {});
+  return () => { ended = true; cleanup?.(); };
+}
+
 export function reportDropboxSave(player, game) {
   if (!dropboxEnabled()) return;
   // Copy in this task, before any async hashing/import/network work.

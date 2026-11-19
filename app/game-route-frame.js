@@ -7,7 +7,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { flushSync } from "react-dom";
 import { buildSkipIntroLaunchSrc } from "./skip-intro-config.mjs";
 import { readCatalogGameArchive } from "./game-bucket.mjs";
-import { dropboxEnabled, prepareDropboxLaunch, reportDropboxSave } from "./dropbox/bridge.mjs";
+import { dropboxEnabled, prepareDropboxLaunch, prioritizeDropboxGameplay, reportDropboxSave } from "./dropbox/bridge.mjs";
 import { withDropboxPreview } from "./dropbox/feature.mjs";
 import { gameLoadingStatus } from "./game-loading-status.mjs";
 import { isTvBrowser } from "./controller-device.mjs";
@@ -171,6 +171,7 @@ export default function GameRouteFrame({
   }), [catalogArchiveUrl, target]);
   const loadArchive = catalogArchiveUrl ? loadCatalogArchive : loadPersonalArchive;
   const catalogLaunch = !loadArchive || Boolean(catalogArchiveUrl);
+  const dropboxDestination = game?.saveNamespace || (catalogLaunch && target ? `catalog:${target}` : null);
   const progressVersion = catalogLaunch ? `catalog:${target}` : game?.activityVersion ?? game?.recentGameId;
   const progressSlug = game?.slug;
   const progressRevision = getStoryProgressRevision(storyProgressIndex, progressSlug, catalogLaunch);
@@ -653,8 +654,7 @@ export default function GameRouteFrame({
     async function openGame() {
       try {
         if (dropboxEnabled()) {
-          const destination = game?.saveNamespace || (catalogLaunch && target ? `catalog:${target}` : null);
-          await prepareDropboxLaunch(destination, window.location.hash === "#continue" ? game : null);
+          await prepareDropboxLaunch(dropboxDestination, window.location.hash === "#continue" ? game : null);
         }
         if (controller.signal.aborted) return;
         let launchSrc = src;
@@ -723,7 +723,12 @@ export default function GameRouteFrame({
 
     void openGame();
     return () => { controller.abort(); };
-  }, [catalogIntroLaunch, catalogLaunch, game, intro, launchAnalytics, loadArchive, progressRevision, progressVersion, src, target]);
+  }, [catalogIntroLaunch, catalogLaunch, dropboxDestination, game, intro, launchAnalytics, loadArchive, progressRevision, progressVersion, src, target]);
+
+  useEffect(() => {
+    if (!currentReadySignal || !dropboxEnabled() || new URL(window.location.href).searchParams.has("agentSaveScope")) return;
+    return prioritizeDropboxGameplay(dropboxDestination);
+  }, [currentReadySignal, dropboxDestination]);
 
   useEffect(() => {
     if (!currentReadySignal || !frameRef.current || !progressVersion || !progressRevision ||

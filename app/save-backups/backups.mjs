@@ -236,7 +236,10 @@ export async function withSaveLock(action) {
   throw new Error("Saved games are busy. Close games in other ScummWEB tabs or wait for syncing to finish, then try again.");
 }
 
-export async function applyImport({ storage, rows, destinations, revision, initialConfig, preserve = preserveSets, check = () => {} }) {
+export async function applyImport({ storage, rows, destinations, revision, initialConfig, scoped, preserve = preserveSets, check = () => {} }) {
+  if (scoped && (scoped === "shared" || rows.length !== 1 || rows[0].destinationKey !== scoped)) {
+    throw new Error("A running player requires an isolated save restore.");
+  }
   const current = await getActiveSaveSets(storage, destinations);
   check();
   if (current.revision !== revision) throw new Error("Saves changed after review. Open the backup again before importing.");
@@ -261,7 +264,8 @@ export async function applyImport({ storage, rows, destinations, revision, initi
       throw new Error("These files cannot be restored to that shared game. Choose the matching imported version instead.");
     }
     const edition = destination.key === "shared" ? "" : editionKey(destination.namespace, destination.family);
-    updates.push({ edition: isolated || current.editionKeys.has(edition) ? edition : "",
+    if (scoped && !edition) throw new Error("This save cannot be restored while a player is running.");
+    updates.push({ edition: scoped || isolated || current.editionKeys.has(edition) ? edition : "",
       namespace: destination.namespace, matches: (name) => destinationMatches(destination, name), files: imported.files });
   }
   // Preserve both sides durably before any active files change.
@@ -274,7 +278,8 @@ export async function applyImport({ storage, rows, destinations, revision, initi
       // Native save metadata belongs to the old bytes, even if sizes/times match.
       // Invalidate before the root swap so interruption cannot leave a positive
       // record attached to replacement bytes. Keep unfinished-write markers.
-      const keys = storage.keys?.() || Array.from({ length: storage.length }, (_, index) => storage.key(index));
+      const keys = scoped ? [saveIndexPrefix + scoped]
+        : storage.keys?.() || Array.from({ length: storage.length }, (_, index) => storage.key(index));
       for (const key of keys) {
         if (!key?.startsWith(saveIndexPrefix)) continue;
         const value = storage.getItem(key);
