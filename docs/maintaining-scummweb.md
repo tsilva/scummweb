@@ -460,6 +460,8 @@ The original DOS Slater & Charlie Go Camping demo contains one interactive story
 
 The original DOS Christmas Card 1986 opens at Sierra’s greeting. Press Enter and type up to two lines or leave them blank to begin the native animation. F1 opens the original Help and F9 restarts the card.
 
+The Hock-A-Loogie demo opens at the original character choice. Choose Beavis or Butt-Head, then use the mouse in the rooftop round. A brief click-and-hold can help the game register character selection. Its artwork is shared with Virtual Stupidity and the gallery shows captures from that game.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.

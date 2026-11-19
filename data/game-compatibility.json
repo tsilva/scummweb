@@ -807,6 +807,14 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "MTV's Beavis and Butt-Head in Hock-A-Loogie (Demo)",
+      "status": "startup-verified",
+      "gameId": "bbvs:bbvs",
+      "edition": "bbvs-demo-loogie-2.zip",
+      "recordedOn": "2026-11-19",
+      "observation": "The separately distributed English Windows Hock-A-Loogie promotion reached its character menu, opened the rooftop round with both characters, and incremented the original hit counter after mouse input. The round rejected saving."
+    },
+    {
       "title": "Myst (Demo)",
       "status": "startup-verified",
       "gameId": "mohawk:myst",

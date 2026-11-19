@@ -30,6 +30,17 @@ test("demos share hero and box art with their recognized full game and imported 
   assert.ok(compared >= 40, "exercise the catalog's recognized demo/full-game pairs");
 });
 
+test("Hock-A-Loogie shares its family artwork and attributes the gallery to the full game", () => {
+  const demo = getGamePresentation({ target: "bbvs-loogie-demo" });
+  const full = getImportedGamePresentation("Beavis and Butt-head in Virtual Stupidity (CD Windows).zip");
+  for (const field of ["heroImage", "posterImage"]) {
+    assert.ok(demo[field]);
+    assert.equal(demo[field], full[field]);
+  }
+  assert.deepEqual(demo.screenshots, full.screenshots);
+  assert.equal(demo.screenshotSourceTitle, full.displayTitle);
+});
+
 test("recognized imports retain their shared hero artwork and focal position", () => {
   for (const [id, game] of Object.entries(artwork)) {
     if (!game.heroImage) continue;
