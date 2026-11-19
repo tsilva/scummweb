@@ -1055,6 +1055,16 @@
       "platform": "dos",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "christmas1990-demo",
+      "title": "Christmas Card 1990: The Seasoned Professional (Demo)",
+      "path": "/games/christmas1990",
+      "engineId": "sci",
+      "gameId": "christmas1990",
+      "platform": "dos",
+      "extra": "16 Colors",
+      "readmeHref": ""
     }
   ]
 }

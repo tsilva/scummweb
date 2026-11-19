@@ -120,6 +120,15 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "christmas1990-demo": {
+    ...retroGameArtwork["sci:christmas1990"],
+    heroImageMobilePosition: "76% -8vh",
+    title: "Christmas Card 1990: The Seasoned Professional (Demo)",
+    year: "1990",
+    language: "en",
+    graphics: "EGA",
+    summary: "Watch a string of unlikely performers audition for a Christmas greeting in Sierra’s animated holiday short.",
+  },
   "christmas1988-demo": {
     ...retroGameArtwork["sci:christmas1988"],
     heroImageMobilePosition: "69% -8vh",

@@ -441,6 +441,8 @@ The original Commodore 64 Maniac Mansion demo offers a Hands-On Demo and a Self-
 
 The original DOS Christmas Card 1988 opens a message editor. Type a greeting and press Enter to watch it scroll across the card before the holiday animation.
 
+The original DOS EGA edition of The Seasoned Professional plays Sierra’s animated holiday short. Press F9 and choose Restart to replay it. The title opens directly into the original animation.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.
