@@ -1,8 +1,9 @@
 .game-menu-drawer {
+  --game-menu-width: min(25rem, 100vw);
   position: fixed;
   inset: 0 0 0 auto;
   box-sizing: border-box;
-  width: min(25rem, 100vw);
+  width: var(--game-menu-width);
   max-width: none;
   height: auto;
   max-height: none;
@@ -174,6 +175,33 @@
 .game-menu-slots small { margin-top: .25rem; }
 .game-menu-note { margin: .5rem 0; }
 .game-menu-note[role="alert"] { color: #ffd7c5; }
+
+.game-menu-load-status {
+  position: fixed;
+  inset: 0 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: var(--game-menu-width);
+  color: var(--accent-strong);
+  pointer-events: none;
+}
+.game-menu-load-status span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.game-menu-load-status svg {
+  box-sizing: content-box;
+  padding: .5rem;
+  border-radius: 50%;
+  background: #191919;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .game-menu-load-status svg { animation: game-menu-spin 1s linear infinite; }
+}
+@keyframes game-menu-spin { to { transform: rotate(1turn); } }
 
 .game-menu-report { margin-top: .5rem; }
 .game-bug-report { display: grid; gap: 1rem; padding-top: 1.75rem; }
