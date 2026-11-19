@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "MTV's Beavis and Butt-Head in Hock-A-Loogie (Demo)", target: "bbvs-loogie-demo", engineId: "bbvs", gameId: "bbvs",
+    files: [["bbloogie.000", 324764, 4022305622], ["bbloogie.exe", 393728, 1031631760]],
+  },
+  {
     title: "Christmas Card 1986 (Demo)", target: "xmascard-demo", engineId: "agi", gameId: "xmascard",
     files: [["logdir", 372, 3889777941], ["vol.0", 179887, 2654463609], ["picdir", 315, 2697741264]],
   },

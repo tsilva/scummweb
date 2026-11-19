@@ -120,6 +120,17 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "bbvs-loogie-demo": {
+    ...retroGameArtwork["bbvs:bbvs"],
+    heroImageMobilePosition: "79% -4vh",
+    title: "MTV's Beavis and Butt-Head in Hock-A-Loogie (Demo)",
+    year: "1995",
+    language: "en",
+    genre: "Arcade comedy",
+    category: "Action & arcade",
+    summary: "Choose Beavis or Butt-Head and rack up hits from the roof of Highland High in the Hock-A-Loogie mini-game from Virtual Stupidity.",
+    screenshotSourceTitle: "MTV's Beavis and Butt-Head in Virtual Stupidity",
+  },
   "xmascard-demo": {
     ...retroGameArtwork["agi:xmascard"],
     heroImageMobilePosition: "73% -9vh",

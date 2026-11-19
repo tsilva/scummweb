@@ -1591,6 +1591,24 @@
         "preservation": "Serve the complete original ZIP as published by ScummVM with all supplied data, notices, original AGI interpreter and setup files. It includes VOL.0. Leave the original directory tables intact and add no external volume data."
       },
       "noticeFile": "READ.ME"
+    },
+    {
+      "target": "bbvs-loogie-demo",
+      "title": "MTV's Beavis and Butt-Head in Hock-A-Loogie (Demo)",
+      "engineId": "bbvs",
+      "gameId": "bbvs",
+      "platform": "windows",
+      "extra": "Loogie Demo",
+      "archive": "bbvs-demo-loogie-2.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/bbvs/bbvs-demo-loogie-2.zip",
+      "sha256": "4c74bb8e860f2528837150cfec19b163a3b792165445e296ebcb59787d27066b",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-19",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "ScummVM lists this exact alternate Windows Hock-A-Loogie edition, and its data match the pinned alternate demo signature. The bundled alternate executable describes its own free promotional sample and preserves Viacom copyright and trademark notices. The exact 45-file package was inspected. No express package-specific copying restriction was found. The main adventure demo has a separate embedded copying and shared-access restriction. The other Loogie ZIP consists entirely of its nested files without the alternate notice. Eligibility uses the cautious official promotional-hosting assessment for the alternate only.",
+        "preservation": "Serve the complete unchanged alternate ZIP including the original notice embedded in its executable, installer log, original sprite data, audio and enclosing directory. Only ScummVM ran in browser testing."
+      }
     }
   ]
 }

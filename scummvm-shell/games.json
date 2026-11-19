@@ -1115,6 +1115,16 @@
       "platform": "dos",
       "extra": "Demo",
       "readmeHref": "/launcher/notices/xmascard.txt"
+    },
+    {
+      "target": "bbvs-loogie-demo",
+      "title": "MTV's Beavis and Butt-Head in Hock-A-Loogie (Demo)",
+      "path": "/games/bbvs",
+      "engineId": "bbvs",
+      "gameId": "bbvs",
+      "platform": "windows",
+      "extra": "Loogie Demo",
+      "readmeHref": ""
     }
   ]
 }

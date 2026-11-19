@@ -31,6 +31,7 @@ export default function GameScreenshots({ game }) {
   const thumbnails = useRef([]);
   const viewer = useRef(null);
   const shots = game.screenshots || [];
+  const screenshotTitle = game.screenshotSourceTitle || game.displayTitle;
   const { galleryUrl } = initialArtwork;
   const needsGallery = galleryUrl && shots.some((shot) =>
     !initialArtwork.files[artworkPath(shot, initialArtwork)?.split(/[?#]/, 1)[0]]);
@@ -78,7 +79,9 @@ export default function GameScreenshots({ game }) {
 
   return <section id="game-screenshots" className="game-screenshots content-band" aria-labelledby="game-screenshots-heading">
     <div className="section-header">
-      <h2 id="game-screenshots-heading"><span className="section-mark" />Screenshots</h2>
+      <h2 id="game-screenshots-heading"><span className="section-mark" />
+        {game.screenshotSourceTitle ? "Screenshots from the full game" : "Screenshots"}
+      </h2>
       <span className="game-screenshot-hint">Click to enlarge</span>
     </div>
     <div className="game-screenshot-strip" ref={strip}>
@@ -86,11 +89,11 @@ export default function GameScreenshots({ game }) {
         const image = getArtworkImageProps(shot, "gallery", artwork);
         const thumbnail = <DecorativeImage {...image}
           sizes="(max-width: 48rem) 9rem, calc((min(100vw, 100rem) - 8.5rem) / 3)"
-          alt={`${game.displayTitle} screenshot ${index + 1}`} loading="lazy" decoding="async" />;
+          alt={`${screenshotTitle} screenshot ${index + 1}`} loading="lazy" decoding="async" />;
         return <button key={shot} type="button" className="game-screenshot-thumb artwork-placeholder"
           style={showImages ? undefined : getArtworkPlaceholderStyle(image)}
           ref={(element) => { thumbnails.current[index] = element; }}
-          aria-label={`View ${game.displayTitle} screenshot ${index + 1}`}
+          aria-label={`View ${screenshotTitle} screenshot ${index + 1}`}
           aria-expanded={selected === index} aria-controls="game-screenshot-viewer"
           onClick={() => {
             setSelected(index);
@@ -104,7 +107,7 @@ export default function GameScreenshots({ game }) {
       })}
     </div>
     {selected !== null && <div ref={viewer} id="game-screenshot-viewer" className="game-screenshot-viewer"
-      role="region" aria-label={`${game.displayTitle} screenshot viewer`} tabIndex={-1}
+      role="region" aria-label={`${screenshotTitle} screenshot viewer`} tabIndex={-1}
       onKeyDown={(event) => {
         if (event.key === "Escape") { event.preventDefault(); close(); }
         if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
@@ -115,7 +118,7 @@ export default function GameScreenshots({ game }) {
       <div className="game-screenshot-viewer-image" style={viewerStyle}>
         {fullImage
           ? <DecorativeImage src={fullImage.src} width={fullImage.width} height={fullImage.height} placeholder={fullImage.placeholder}
-            alt={`${game.displayTitle} screenshot ${selected + 1}`} loading="eager" />
+            alt={`${screenshotTitle} screenshot ${selected + 1}`} loading="eager" />
           : <p role="status">Loading screenshot…</p>}
       </div>
       <div className="game-screenshot-toolbar">
