@@ -388,6 +388,14 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Fun Seeker's Guide to Eastern Madera County (Demo)",
+      "status": "startup-verified",
+      "gameId": "sci:funseeker",
+      "edition": "funseeker-dos-demo-en.zip",
+      "recordedOn": "2026-11-19",
+      "observation": "The original English DOS guide opened its instructions and advanced to the Talking Bear and Bass Lake with Space. The tested scene rejected saving. The catalog year follows the dated 1989 resource files in this build."
+    },
+    {
       "title": "Future Wars: Adventures in Time",
       "status": "startup-verified",
       "gameId": "cine:fw",
