@@ -439,6 +439,8 @@ The original Windows v1.1 demo of The New Kid on the Block includes one English 
 
 The original Commodore 64 Maniac Mansion demo offers a Hands-On Demo and a Self-Running Demo. F7 returns to the original menu. ScummWEB can save and restore progress in the hands-on mode.
 
+The original DOS Christmas Card 1988 opens a message editor. Type a greeting and press Enter to watch it scroll across the card before the holiday animation.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.

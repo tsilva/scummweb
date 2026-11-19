@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "christmas1988-demo": {
+    ...retroGameArtwork["sci:christmas1988"],
+    heroImageMobilePosition: "69% -8vh",
+    title: "Christmas Card 1988 (Demo)",
+    year: "1988",
+    language: "en",
+    summary: "Write your own scrolling greeting, then watch Sierra’s animated Christmas card with its decorated tree and glowing fireplace.",
+  },
   "maniac-demo": {
     ...retroGameArtwork["scumm:maniac"],
     heroImageMobilePosition: "81% -9vh",

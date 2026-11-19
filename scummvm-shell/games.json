@@ -1045,6 +1045,16 @@
       "platform": "c64",
       "extra": "C64 Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "christmas1988-demo",
+      "title": "Christmas Card 1988 (Demo)",
+      "path": "/games/christmas1988",
+      "engineId": "sci",
+      "gameId": "christmas1988",
+      "platform": "dos",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }
