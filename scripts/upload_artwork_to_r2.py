@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Publish only planned, content-addressed artwork to the existing game bucket.
 
-Run inside an explicitly approved publishing credential route. This script never
-loads dotenv files, discovers credentials, prunes objects, or alters bucket settings.
+The standalone CLI uses explicitly supplied R2 credentials. The shared publish
+function also works with the scoped artwork client.
 """
 import hashlib
 import json
@@ -98,6 +98,11 @@ def publish(client, manifest, root=ROOT):
 
 
 def main():
+    if any(name in os.environ for name in (
+        "INFISICAL_AGENT_VAULT_URL", "RUNBOX_POLICY",
+        "SCUMMWEB_GAME_PROXY_TOKEN", "SCUMMWEB_ARTWORK_PROXY_TOKEN",
+    )):
+        raise SystemExit("Use the reviewed scoped artwork publisher for an agent credential session.")
     import boto3
     from botocore.config import Config
     if not all(os.environ.get(key) for key in ("AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY")):

@@ -415,6 +415,11 @@ def delete_remote_keys(client, bucket: str, keys: List[str]) -> int:
 
 def main() -> None:
     args = parse_args()
+    if any(name in os.environ for name in (
+        "INFISICAL_AGENT_VAULT_URL", "RUNBOX_POLICY",
+        "SCUMMWEB_GAME_PROXY_TOKEN", "SCUMMWEB_ARTWORK_PROXY_TOKEN",
+    )):
+        raise SystemExit("Use the reviewed scoped game publisher for an agent credential session.")
     load_dotenv(ROOT / ".env")
     games_dir = resolve_games_dir()
     selected_prefix = resolve_selected_prefix(games_dir, args.game) if args.game else None

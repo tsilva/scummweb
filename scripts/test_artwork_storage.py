@@ -11,6 +11,7 @@ from unittest.mock import Mock, patch
 from botocore.exceptions import ClientError
 from upload_artwork_to_r2 import publish, CACHE_CONTROL, artwork_workspace
 import upload_games_to_r2 as games
+import upload_artwork_to_r2 as artwork
 
 
 class ArtworkPublishingTests(unittest.TestCase):
@@ -42,6 +43,26 @@ class ArtworkPublishingTests(unittest.TestCase):
     def response(self, data=None):
         return {"Body": io.BytesIO(self.data if data is None else data),
                 "ContentType": "image/webp", "CacheControl": CACHE_CONTROL}
+
+    def test_scoped_sessions_cannot_use_standalone_r2_credentials(self):
+        markers = (
+            "INFISICAL_AGENT_VAULT_URL", "RUNBOX_POLICY",
+            "SCUMMWEB_GAME_PROXY_TOKEN", "SCUMMWEB_ARTWORK_PROXY_TOKEN",
+        )
+        for marker in markers:
+            environment = {marker: "synthetic", "AWS_ACCESS_KEY_ID": "fake",
+                           "AWS_SECRET_ACCESS_KEY": "fake"}
+            with (self.subTest(marker=marker), patch.dict("os.environ", environment, clear=True),
+                  patch.object(games, "parse_args"), patch.object(games, "load_dotenv") as dotenv,
+                  patch.object(games.boto3.session, "Session") as session,
+                  patch.object(games.boto3, "client") as client):
+                with self.assertRaisesRegex(SystemExit, "scoped game publisher"):
+                    games.main()
+                with self.assertRaisesRegex(SystemExit, "scoped artwork publisher"):
+                    artwork.main()
+                dotenv.assert_not_called()
+                session.assert_not_called()
+                client.assert_not_called()
 
     def test_missing_object_is_created_once_then_verified_by_readback(self):
         client = Mock()
