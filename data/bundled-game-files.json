@@ -23450,6 +23450,47 @@
           3382268580
         ]
       ]
+    },
+    "mage-demo": {
+      "url": "https://games.scummweb.tsilva.eu/mage.zip",
+      "fingerprint": "00ea56c1ceabddbfe11a6462d74db7eaa9895c88d74aef54158372363183a271",
+      "files": [
+        [
+          "winsetup.exe",
+          53275,
+          1296950021
+        ],
+        [
+          "Mages Demo.exe",
+          6638570,
+          4142230878
+        ],
+        [
+          "Mages Demo.002",
+          5841753,
+          340964810
+        ],
+        [
+          "audio.vox",
+          5922197,
+          3338887550
+        ],
+        [
+          "ags_shell.dll",
+          40960,
+          1223580907
+        ],
+        [
+          "acsetup.cfg",
+          320,
+          2262407501
+        ],
+        [
+          "Mages Demo.001",
+          109544095,
+          3764993321
+        ]
+      ]
     }
   }
 }

@@ -462,6 +462,8 @@ The original DOS Christmas Card 1986 opens at Sierra’s greeting. Press Enter a
 
 The Hock-A-Loogie demo opens at the original character choice. Choose Beavis or Butt-Head, then use the mouse in the rooftop round. A brief click-and-hold can help the game register character selection. Its artwork is shared with Virtual Stupidity and the gallery shows captures from that game.
 
+Mage’s Initiation’s early Kickstarter demo starts with two original instruction screens. Click each to enter the Reading Hall as the Fire Mage. Click a walkable spot to move and press Tab to open the original spellbook. This edition has no speech pack. The gallery shows screenshots supplied by Himalaya Studios for the game.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.

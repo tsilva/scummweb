@@ -1125,6 +1125,16 @@
       "platform": "windows",
       "extra": "Loogie Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "mage-demo",
+      "title": "Mage's Initiation: Reign of the Elements (Demo)",
+      "path": "/games/mage",
+      "engineId": "ags",
+      "gameId": "mage",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": "/launcher/notices/mage.txt"
     }
   ]
 }

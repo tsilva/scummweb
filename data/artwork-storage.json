@@ -39983,6 +39983,147 @@
       "contentType": "image/webp",
       "width": 480,
       "height": 640
+    },
+    "/launcher/mage-initiation-original-cover.webp": {
+      "key": "artwork/ba3b7fcda58ab39492c844332b6d034c38f08feeb8266db7febe04fc59567e2e/mage-initiation-original-cover.webp",
+      "sha256": "ba3b7fcda58ab39492c844332b6d034c38f08feeb8266db7febe04fc59567e2e",
+      "bytes": 157212,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1222,
+      "placeholder": "UklGRmIAAABXRUJQVlA4IFYAAAAwAgCdASoJAAwAAsBIJZgCdGuAAkBnSv6MAAD+5f3bfHqpOQZ4qg28ppRLaIimz9zaChzKhFso5BbNWYsvLXMIhz9LsDWwgdFJ3FevfZrQqDpLqLQAAA=="
+    },
+    "/launcher/mage-initiation-original-hero.webp": {
+      "key": "artwork/9d5e138472e88a57f36e06b68ade1f7c92fd98f5c91ca96f00f91a48acf59028/mage-initiation-original-hero.webp",
+      "sha256": "9d5e138472e88a57f36e06b68ade1f7c92fd98f5c91ca96f00f91a48acf59028",
+      "bytes": 69636,
+      "contentType": "image/webp",
+      "width": 1600,
+      "height": 517,
+      "placeholder": "UklGRkAAAABXRUJQVlA4IDQAAACQAQCdASoMAAQAAsBIJYycAD+AIQAA/vae2AE3o9JIIUz212l2aiL//aVKUE1pUvJ+iMAA"
+    },
+    "/launcher/mage-initiation-shot-1.webp": {
+      "key": "artwork/8a3e743fd90681483b0fa48b6bf13803bb3bda5bece91c874180684ed96130e0/mage-initiation-shot-1.webp",
+      "sha256": "8a3e743fd90681483b0fa48b6bf13803bb3bda5bece91c874180684ed96130e0",
+      "bytes": 391680,
+      "contentType": "image/webp",
+      "width": 638,
+      "height": 456,
+      "placeholder": "UklGRkwAAABXRUJQVlA4IEAAAAAQAgCdASoMAAkAAsBIJYwCdAEVwnmyCLyAAP74VLeg6++zx9ZnJrXQL16PSFLw1USCKx+qaej+03bAu9eAQAAA"
+    },
+    "/launcher/mage-initiation-shot-2.webp": {
+      "key": "artwork/f7bc71bd0f8190743a102141ad405b44923eecbf426c6d1d567f10677e634b05/mage-initiation-shot-2.webp",
+      "sha256": "f7bc71bd0f8190743a102141ad405b44923eecbf426c6d1d567f10677e634b05",
+      "bytes": 460500,
+      "contentType": "image/webp",
+      "width": 638,
+      "height": 456,
+      "placeholder": "UklGRkoAAABXRUJQVlA4ID4AAABwAQCdASoMAAkAAsBIJZgCdAFAAAD+8IzlbPQd9+3VshmXCyGLJVZmPtocGRA+92rz98HY6n1UjXzaKwAAAA=="
+    },
+    "/launcher/mage-initiation-shot-3.webp": {
+      "key": "artwork/169ab554b8ba44629c4c65143c364f8067e76fb81df42c8f94dfc790b24a4e2b/mage-initiation-shot-3.webp",
+      "sha256": "169ab554b8ba44629c4c65143c364f8067e76fb81df42c8f94dfc790b24a4e2b",
+      "bytes": 449440,
+      "contentType": "image/webp",
+      "width": 638,
+      "height": 456,
+      "placeholder": "UklGRkQAAABXRUJQVlA4IDgAAADQAQCdASoMAAkAAsBIJQBOgB6W/YtAAAD++eYFwUGn7EKCcfmoGEinB3yaaC4Mu1luEnok8NYAAA=="
+    },
+    "/launcher/responsive/mage-initiation-original-cover-320.webp": {
+      "key": "artwork/efe42979fd40167e50a8d0924cc88922be2c0b14ec2188f3117d4fbdbfca8dd9/mage-initiation-original-cover-320.webp",
+      "sha256": "efe42979fd40167e50a8d0924cc88922be2c0b14ec2188f3117d4fbdbfca8dd9",
+      "bytes": 33618,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 434
+    },
+    "/launcher/responsive/mage-initiation-original-cover-480.webp": {
+      "key": "artwork/f0952dcb0e26de033458059c3006983b4e54b367bc4f3a411f1ae8010e174d50/mage-initiation-original-cover-480.webp",
+      "sha256": "f0952dcb0e26de033458059c3006983b4e54b367bc4f3a411f1ae8010e174d50",
+      "bytes": 60312,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 652
+    },
+    "/launcher/responsive/mage-initiation-original-cover-640.webp": {
+      "key": "artwork/e8bd617c0c6b59676c07965a96de332c69cdb6e3d49ca1980057b4af387d25f0/mage-initiation-original-cover-640.webp",
+      "sha256": "e8bd617c0c6b59676c07965a96de332c69cdb6e3d49ca1980057b4af387d25f0",
+      "bytes": 88202,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 869
+    },
+    "/launcher/responsive/mage-initiation-original-hero-640.webp": {
+      "key": "artwork/f465a377fff823cd71a19b2c2e8aba14b7fabab68c992d3b50afd53d891a01e5/mage-initiation-original-hero-640.webp",
+      "sha256": "f465a377fff823cd71a19b2c2e8aba14b7fabab68c992d3b50afd53d891a01e5",
+      "bytes": 17304,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 207
+    },
+    "/launcher/responsive/mage-initiation-original-hero-960.webp": {
+      "key": "artwork/9a0dc3341ccebe1e32cb9815686407ff165fe954e4bfd764727d5d835b1473cb/mage-initiation-original-hero-960.webp",
+      "sha256": "9a0dc3341ccebe1e32cb9815686407ff165fe954e4bfd764727d5d835b1473cb",
+      "bytes": 31740,
+      "contentType": "image/webp",
+      "width": 960,
+      "height": 310
+    },
+    "/launcher/responsive/mage-initiation-original-hero-1280.webp": {
+      "key": "artwork/e33050f982389ea1959bb2c5147dd0e18058204f6477a0e12a9b425350b24988/mage-initiation-original-hero-1280.webp",
+      "sha256": "e33050f982389ea1959bb2c5147dd0e18058204f6477a0e12a9b425350b24988",
+      "bytes": 43198,
+      "contentType": "image/webp",
+      "width": 1280,
+      "height": 414
+    },
+    "/launcher/responsive/mage-initiation-shot-1-320.webp": {
+      "key": "artwork/4249c93a035f0b9d7a28868cac3ce4ad0b4dace53871915e7eab8b61bdb608bd/mage-initiation-shot-1-320.webp",
+      "sha256": "4249c93a035f0b9d7a28868cac3ce4ad0b4dace53871915e7eab8b61bdb608bd",
+      "bytes": 108750,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 229
+    },
+    "/launcher/responsive/mage-initiation-shot-1-480.webp": {
+      "key": "artwork/f5af24e293add1b88e87abb3049e5a79870d72f56d75f8410725bcf396939172/mage-initiation-shot-1-480.webp",
+      "sha256": "f5af24e293add1b88e87abb3049e5a79870d72f56d75f8410725bcf396939172",
+      "bytes": 224942,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 343
+    },
+    "/launcher/responsive/mage-initiation-shot-2-320.webp": {
+      "key": "artwork/cf5f8fe61a1e3635adab273f828f4fa83efd2166316b880eb6addbaf0bb05eb0/mage-initiation-shot-2-320.webp",
+      "sha256": "cf5f8fe61a1e3635adab273f828f4fa83efd2166316b880eb6addbaf0bb05eb0",
+      "bytes": 123316,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 229
+    },
+    "/launcher/responsive/mage-initiation-shot-2-480.webp": {
+      "key": "artwork/aeb0c7c59f0e4262d108d8660a2a8984cb7fc28cee6e54956a5742a4bff4f4bf/mage-initiation-shot-2-480.webp",
+      "sha256": "aeb0c7c59f0e4262d108d8660a2a8984cb7fc28cee6e54956a5742a4bff4f4bf",
+      "bytes": 257798,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 343
+    },
+    "/launcher/responsive/mage-initiation-shot-3-320.webp": {
+      "key": "artwork/6cbb581a569594c7f06e2b375f2c917ccc6c2f97a362302648ae12c31d0a9197/mage-initiation-shot-3-320.webp",
+      "sha256": "6cbb581a569594c7f06e2b375f2c917ccc6c2f97a362302648ae12c31d0a9197",
+      "bytes": 120130,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 229
+    },
+    "/launcher/responsive/mage-initiation-shot-3-480.webp": {
+      "key": "artwork/977410fca5f35d15a9877a635fbe7c600e2d381eff13085cd695d620b6dc91df/mage-initiation-shot-3-480.webp",
+      "sha256": "977410fca5f35d15a9877a635fbe7c600e2d381eff13085cd695d620b6dc91df",
+      "bytes": 252702,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 343
     }
   },
   "images": {
@@ -54340,6 +54481,63 @@
         "/launcher/responsive/scalpel-scummweb-generated-2026-11-15-r1-cover-480.webp",
         "/launcher/responsive/scalpel-scummweb-generated-2026-11-15-r1-cover-640.webp",
         "/launcher/scalpel-scummweb-generated-2026-11-15-r1-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/mage-initiation-original-cover.webp": {
+      "width": 900,
+      "height": 1222,
+      "fallback": "/launcher/mage-initiation-original-cover.webp",
+      "webp": [
+        "/launcher/responsive/mage-initiation-original-cover-320.webp",
+        "/launcher/responsive/mage-initiation-original-cover-480.webp",
+        "/launcher/responsive/mage-initiation-original-cover-640.webp",
+        "/launcher/mage-initiation-original-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/mage-initiation-original-hero.webp": {
+      "width": 1600,
+      "height": 517,
+      "fallback": "/launcher/mage-initiation-original-hero.webp",
+      "webp": [
+        "/launcher/responsive/mage-initiation-original-hero-640.webp",
+        "/launcher/responsive/mage-initiation-original-hero-960.webp",
+        "/launcher/responsive/mage-initiation-original-hero-1280.webp",
+        "/launcher/mage-initiation-original-hero.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/mage-initiation-shot-1.webp": {
+      "width": 638,
+      "height": 456,
+      "fallback": "/launcher/mage-initiation-shot-1.webp",
+      "webp": [
+        "/launcher/responsive/mage-initiation-shot-1-320.webp",
+        "/launcher/responsive/mage-initiation-shot-1-480.webp",
+        "/launcher/mage-initiation-shot-1.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/mage-initiation-shot-2.webp": {
+      "width": 638,
+      "height": 456,
+      "fallback": "/launcher/mage-initiation-shot-2.webp",
+      "webp": [
+        "/launcher/responsive/mage-initiation-shot-2-320.webp",
+        "/launcher/responsive/mage-initiation-shot-2-480.webp",
+        "/launcher/mage-initiation-shot-2.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/mage-initiation-shot-3.webp": {
+      "width": 638,
+      "height": 456,
+      "fallback": "/launcher/mage-initiation-shot-3.webp",
+      "webp": [
+        "/launcher/responsive/mage-initiation-shot-3-320.webp",
+        "/launcher/responsive/mage-initiation-shot-3-480.webp",
+        "/launcher/mage-initiation-shot-3.webp"
       ],
       "avif": []
     }

@@ -18351,6 +18351,72 @@
     "genre": "Science-fiction noir adventure",
     "category": "Science fiction"
   },
+  "ags:mage": {
+    "title": "Mage's Initiation: Reign of the Elements",
+    "aliases": [
+      "Mage's Initiation",
+      "Mage's Initiation Demo",
+      "Mages Demo",
+      "mage_initiation-demo"
+    ],
+    "year": "2019",
+    "studio": "Himalaya Studios",
+    "genre": "Adventure RPG",
+    "category": "Role-playing",
+    "summary": "Train in elemental magic as D’arc and take on three trials across Iginor to earn a place among the Mage Masters.",
+    "posterImage": "/launcher/mage-initiation-original-cover.webp",
+    "heroImage": "/launcher/mage-initiation-original-hero.webp",
+    "heroImagePosition": "53% center",
+    "heroImageMobilePosition": "50% center",
+    "screenshots": [
+      "/launcher/mage-initiation-shot-1.webp",
+      "/launcher/mage-initiation-shot-2.webp",
+      "/launcher/mage-initiation-shot-3.webp"
+    ],
+    "sources": {
+      "poster": {
+        "kind": "box-scan",
+        "url": "https://www.adventurecorner.de/uploads/images/Cover2018/Mages_Initiation_Box.jpg",
+        "page": "https://www.adventurecorner.de/game/613/mage-s-initiation-reign-of-the-elements",
+        "sha256": "129064ce0f5cbc575c456e0dd98d552e1bb083e84a1e57d1bf8644e77e46f52f",
+        "credit": "Original Fire Mage box-front artwork from Himalaya Studios, hosted by Adventure Corner."
+      },
+      "hero": {
+        "kind": "promotional-art",
+        "url": "https://cdn.cloudflare.steamstatic.com/steam/apps/270610/library_hero.jpg",
+        "page": "https://store.steampowered.com/app/270610/",
+        "sha256": "3134d5e838f0eb26efde5d13527f486133fadb6deb9d07a1248f8fd77b36724c",
+        "credit": "Original Himalaya Studios Steam library hero, resized for delivery."
+      },
+      "screenshots": [
+        {
+          "kind": "gameplay",
+          "url": "https://www.himalayastudios.com/games/mages/media/picture1-large.jpg",
+          "page": "https://www.himalayastudios.com/games/mages/",
+          "sha256": "b1a1b553f79aa14f5d0e6d3a2da10dfe9de8a7d3cc9ea6a83ed9cb79b6437323",
+          "credit": "Original full-game screenshot from Himalaya Studios."
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.himalayastudios.com/games/mages/media/picture2-large.jpg",
+          "page": "https://www.himalayastudios.com/games/mages/",
+          "sha256": "87ad688167ad592ed75c0f9bd028067500ed21077b959f691df12141ce0e571b",
+          "credit": "Original full-game screenshot from Himalaya Studios."
+        },
+        {
+          "kind": "gameplay",
+          "url": "https://www.himalayastudios.com/games/mages/media/picture3-large.jpg",
+          "page": "https://www.himalayastudios.com/games/mages/",
+          "sha256": "06b1d9757a430dd787f7c3faf2468a88b7711d0f66f3d02478428b474bad7d72",
+          "credit": "Original full-game screenshot from Himalaya Studios."
+        }
+      ],
+      "metadata": [
+        "https://www.himalayastudios.com/games/mages/",
+        "https://store.steampowered.com/app/270610/"
+      ]
+    }
+  },
   "ags:primordia": {
     "title": "Primordia",
     "aliases": [
