@@ -122,8 +122,8 @@ durable work. Clearing site data before an upload finishes can still lose
 unsynced progress. Only verified cloud copies survive a site-data reset.
 Dropbox remains optional; unconnected play stays local.
 
-The export retains current and recovery files. After export, a download link
-remains available if the browser did not save the ZIP automatically.
+The export retains current and recovery files. Select **Export saves** again to
+create another ZIP.
 
 ### Transfer saves to and from desktop ScummVM
 

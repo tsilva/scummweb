@@ -11,13 +11,14 @@ import { renderToStaticMarkup } from "react-dom/server";
 
 const nativeRequire = createRequire(import.meta.url);
 await swc.loadBindings();
-async function component(path, imports, react) {
+async function component(path, imports, react, browserGlobals = {}) {
   const url = new URL(path, import.meta.url);
   const { code } = await swc.transform(await readFile(url, "utf8"), { filename: url.pathname, swcrc: false, configFile: false,
     module: { type: "commonjs" }, jsc: { parser: { syntax: "ecmascript", jsx: true }, transform: { react: { runtime: "automatic" } } } });
   const compiled = { exports: {} };
   runInNewContext(code, { module: compiled, exports: compiled.exports,
     window: imports.window, localStorage: imports.window?.localStorage, navigator: imports.navigator, Event,
+    ...browserGlobals,
     require: (name) => name === "react" ? react : name === "react/jsx-runtime" ? nativeRequire(name) : imports[name] });
   return compiled.exports.default;
 }
@@ -163,7 +164,7 @@ test("syncing before the first named game has no placeholder row", async () => {
   assert.equal(nodes(tree).some(({ props }) => props?.className === "dropbox-progress"), false);
 });
 
-async function settingsFixture({ needsGame = false, markMerged = false } = {}) {
+async function settingsFixture({ needsGame = false, markMerged = false, browserGlobals = {} } = {}) {
   const destination = { key: "catalog:sky", title: "Beneath a Steel Sky", family: "sky" };
   const active = { destination, hash: "current", files: [{}] };
   const copies = ["older", "oldest"].map((hash, index) => ({ destination, hash, files: [{}], id: hash, preservedAt: 1700000000000 - index * 1000 }));
@@ -171,7 +172,7 @@ async function settingsFixture({ needsGame = false, markMerged = false } = {}) {
     matches: new Map(copies.map(set => [set, destination.key])), unmatched: new Set() };
   let cursor = 0, refCursor = 0, writes = 0;
   const refs = [];
-  const state = ["saves", "", "", data, null, null, "idle", false, "", false];
+  const state = ["saves", "", "", data, null, "idle", false, "", false];
   const imported = { destination, hash: "imported", files: [{ path: "custom.001" }] };
   const imports = [];
   const calls = [], merges = [];
@@ -185,7 +186,7 @@ async function settingsFixture({ needsGame = false, markMerged = false } = {}) {
     "./dropbox-row": { default: () => null }, "./dropbox-preview": { default: () => null },
     "../save-backups/backups.mjs": backups, "../../web-shell/save-storage.mjs": { openSaveStorage: async () => ({}) },
     "../dropbox/save-merge.mjs": { preferredSaveMerge: async (sets) => { merges.push(sets); return { set: markMerged ? { ...sets[0], hash: "merged-for-review" } : sets[0] }; } },
-    "../save-backups/scummvm-transfer.mjs": { readSaveImport: async (files, destinations, game) => {
+    "../save-backups/scummvm-transfer.mjs": { exportScummvmSaves: async () => new Blob(["export"]), readSaveImport: async (files, destinations, game) => {
       imports.push({ files, destinations, game });
       if (needsGame && !game) throw Object.assign(new Error("Choose the matching game."), { kind: "choose-game" });
       return [imported];
@@ -194,10 +195,32 @@ async function settingsFixture({ needsGame = false, markMerged = false } = {}) {
   }, { useEffect() {}, useRef() { return refs[refCursor++] ||= { current: null }; }, useState(initial) {
     const index = cursor++; if (!(index in state)) state[index] = initial;
     return [state[index], value => { state[index] = typeof value === "function" ? value(state[index]) : value; }];
-  } });
+  } }, browserGlobals);
   const props = { catalog: [], officialUrl: "https://example.test", working: { current: false }, busy: false, setBusy() {} };
   return { calls, copies, imports, merges, setCurrent(set) { currentActive = set; currentRevision = "newer-revision"; }, writes: () => writes, render() { cursor = 0; refCursor = 0; return View(props); } };
 }
+
+test("export hands the ZIP to the browser without adding a second download link", async () => {
+  const revoked = [];
+  const timers = [];
+  const link = { click: () => { link.clicked = true; }, remove: () => { link.removed = true; } };
+  const fixture = await settingsFixture({ browserGlobals: {
+    document: { body: { appendChild: (element) => assert.equal(element, link) },
+      createElement: (tag) => { assert.equal(tag, "a"); return link; } },
+    URL: { createObjectURL: () => "blob:export", revokeObjectURL: (url) => revoked.push(url) },
+    setTimeout: (callback, delay) => { if (delay === 400) callback(); else timers.push(callback); },
+  } });
+  await button(fixture.render(), "Export saves").props.onClick();
+  assert.ok(link.clicked && link.removed);
+  assert.match(link.download, /^scummweb-saves-\d{4}-\d{2}-\d{2}\.zip$/);
+  const exported = fixture.render();
+  assert.ok(button(exported, "Downloaded"));
+  assert.ok(!nodes(exported).some(({ type, props }) => type === "a" && props?.download));
+  assert.deepEqual(revoked, []);
+  assert.equal(timers.length, 1);
+  timers[0]();
+  assert.deepEqual(revoked, ["blob:export"]);
+});
 
 test("the normal panel hides routine saves; recovery groups backups and leaves progress untouched", async () => {
   const fixture = await settingsFixture(); let tree = fixture.render();
