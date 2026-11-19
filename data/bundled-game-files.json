@@ -22060,6 +22060,72 @@
           14352974
         ]
       ]
+    },
+    "newkid-demo": {
+      "url": "https://games.scummweb.tsilva.eu/newkid.zip",
+      "fingerprint": "c05e4eb651bea3cfb64c96dbe907a65cc7ca3e0bb5dd72c1fa736b7d60f3b161",
+      "files": [
+        [
+          "DATA/CP/COVER.IBM",
+          100964,
+          2450793834
+        ],
+        [
+          "DATA/CP/INTRO.IBM",
+          297219,
+          808071343
+        ],
+        [
+          "DATA/CP/PANEL.IBM",
+          1483007,
+          2105757274
+        ],
+        [
+          "DATA/CP/PDP.IBM",
+          13675,
+          2669673931
+        ],
+        [
+          "DATA/CP/QUIT.IBM",
+          95624,
+          2013294250
+        ],
+        [
+          "DATA/EP/SHADONE.IBM",
+          1363607,
+          238202727
+        ],
+        [
+          "DATA/EP/SHADTWO.IBM",
+          1468430,
+          3615371406
+        ],
+        [
+          "DATA/ER/SHAD.IBM",
+          846349,
+          1028331814
+        ],
+        [
+          "FILE.DLL",
+          6144,
+          663094891
+        ],
+        [
+          "NEWKID.512",
+          561,
+          3039353385
+        ],
+        [
+          "NEWKID.EXE",
+          61952,
+          1040225580
+        ],
+        [
+          "RSRC.DLL",
+          10752,
+          3550502428
+        ]
+      ]
     }
   }
 }

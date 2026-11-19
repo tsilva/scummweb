@@ -2392,6 +2392,14 @@
       "observation": "A game frame renders at startup."
     },
     {
+      "title": "The New Kid on the Block (Demo)",
+      "status": "startup-verified",
+      "gameId": "mohawk:newkid",
+      "edition": "newkid-win-demo-en-v1.1.zip",
+      "recordedOn": "2026-11-19",
+      "observation": "Original Windows demo v1.1 with one English poem. Native Skip Intro, one Read to Me page with highlighted words, both Let Me Play pages and the original publisher ending in each mode were verified. ScummWEB Save and Load were unavailable. Audible narration was unverified."
+    },
+    {
       "title": "Zork Nemesis: The Forbidden Lands",
       "status": "startup-verified",
       "gameId": "zvision:znemesis",

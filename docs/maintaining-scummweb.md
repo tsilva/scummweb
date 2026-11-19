@@ -435,6 +435,8 @@ The original Windows demo of Arthur’s Teacher Trouble contains one animated sc
 
 The original Windows demo of Ruff’s Bone contains one animated story page in English and Spanish. Choose a language, then select Read to Me or Let Me Play. The right arrow opens the original end-of-demo page. Saving and loading through the ScummWEB menu are unavailable.
 
+The original Windows v1.1 demo of The New Kid on the Block includes one English poem. Read to Me shows one illustrated page. Let Me Play includes two interactive pages. The right arrow advances to the original publisher message after the last page. Saving and loading through the ScummWEB menu are unavailable.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.
