@@ -99,7 +99,9 @@ Completed player saves are captured with companion files and queued in
 IndexedDB before network publication. Active saves are also stored in IndexedDB,
 including when Dropbox is disabled. On the first visit, ScummWEB automatically
 moves legacy browser saves and their metadata after committing a recoverable
-copy. A failed migration leaves the original storage intact. Pending native writes and isolated agent
+copy. A failed migration leaves the original storage intact. Legacy files whose
+bytes are missing or truncated stay out of the active collection, and the
+migration archive retains their original records. Pending native writes and isolated agent
 runs are excluded. Files remaining in the game's save folder are retained even
 when absent from the native save list or named like a skip-intro checkpoint;
 only the shell's exact-byte checkpoint cleanup can identify bundled copies.

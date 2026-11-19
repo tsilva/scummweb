@@ -5,8 +5,9 @@ import { createNativeCloudClient } from "../app/cloud/native-client.mjs";
 import { activityCacheKey } from "../app/game-player/activity.mjs";
 import { dropboxEnabled, prepareDropboxLaunch, reportDropboxSave } from "../app/dropbox/bridge.mjs";
 import { captureFilesystem, initializeSaveEdition } from "../app/save-backups/filesystem.mjs";
-import { createSaveCollection, makeSnapshot, publishProfile, saveProfileId, writeSnapshot } from "../app/dropbox/protocol.mjs";
+import { createSaveCollection, makeSnapshot, publishProfile, readSnapshot, saveProfileId, writeSnapshot } from "../app/dropbox/protocol.mjs";
 import { openSaveStorage } from "../web-shell/save-storage.mjs";
+import { readSaveTree } from "../web-shell/save-editions.mjs";
 import { syncStore } from "../app/dropbox/store.mjs";
 import { applyImport, getActiveSaveSets, getSaveDestinations, identifySet, preserveSets, readStoredSets } from "../app/save-backups/backups.mjs";
 import { browserSaveStorage, fakeNativeStorage, nativeCloudBrowser, indexedDbFixture, memoryStorage } from "./helpers/dropbox-fixtures.mjs";
@@ -129,19 +130,46 @@ test("activity uses the scoped Dropbox session without blocking play and disconn
   assert.equal(storage.getItem(activityCacheKey), null);
 });
 
-test("first connection migrates active AND preserved browser saves without deleting the originals", async (t) => {
-  const { storage, runtime, destinations, idb } = await setup(t);
-  const preserved = { ...(await activeSets(destinations)).sets[0], files: [{ path: "SKY-VM.002", data: bytes("old preserved"), modifiedAt: 90 }] };
-  const before = await activeSets(destinations);
+test("first sync migrates a cold legacy library before uploading active and preserved saves", async (t) => {
+  const { storage, runtime, destinations, idb, server } = await setup(t);
+  const before = await getActiveSaveSets(storage, destinations);
+  const preserved = { ...before.sets[0], files: [{ path: "SKY-VM.002", data: bytes("old preserved"), modifiedAt: 90 }] };
   preserved.hash = await identifySet(preserved);
   await preserveSets([preserved]);
+  const originalRoot = storage.getItem("/");
+  assert.ok(originalRoot, "the first sync must see the unmigrated browser filesystem");
   await runtime.syncDropbox({ beforeLaunch: true });
   assert.equal(runtime.getDropboxState().phase, "connected");
-  assert.deepEqual((await activeSets(destinations)).sets, before.sets);
+  const [active] = (await activeSets(destinations)).sets;
+  assert.ok(active.files.some(file => file.path === "SKY-VM.001" && Buffer.from(file.data).equals(Buffer.from("browser progress"))));
   assert.equal(storage.getItem("/"), null);
+  const [migration] = idb.databases.get("scummweb.active-saves").get("migration").values();
+  assert.equal(migration.original.get("/"), originalRoot);
   assert.ok((await readStoredSets()).some(({ hash }) => hash === preserved.hash));
+  const cloud = await createSaveCollection(server);
+  const profile = await saveProfileId(active);
+  const uploaded = await readSnapshot(cloud, profile, cloud.head(profile).active);
+  assert.deepEqual(uploaded.files, active.files);
   assert.ok(idb.durability.filter(({ name, mode }) => name === "scummweb.dropbox-sync" && mode === "readwrite")
     .every(({ durability }) => durability === "strict"));
+});
+
+test("first sync restores a verified cloud slot instead of uploading a truncated legacy copy", async (t) => {
+  const { storage, runtime, destinations, idb, server } = await setup(t, "long legacy save");
+  const legacy = readSaveTree(storage, "");
+  const { dataKey } = legacy.inode(legacy.files["SKY-VM.001"]);
+  storage.setItem(dataKey, btoa("partial"));
+  const verified = { destination: destinations[0],
+    files: [{ path: "SKY-VM.001", data: bytes("intact cloud save"), modifiedAt: 90 }] };
+  verified.hash = await identifySet(verified);
+  await writeSnapshot(server, await makeSnapshot(verified));
+
+  await runtime.syncDropbox({ beforeLaunch: true });
+  assert.equal(runtime.getDropboxState().verified, true);
+  assert.deepEqual((await activeSets(destinations)).sets[0].files, verified.files);
+  const [migration] = idb.databases.get("scummweb.active-saves").get("migration").values();
+  assert.equal(migration.original.get(dataKey), btoa("partial"));
+  assert.equal(server.uploads, 1, "only the initial intact cloud snapshot was uploaded");
 });
 
 test("offline native saves survive a new coordinator instance and resume without an exit handler", async (t) => {
