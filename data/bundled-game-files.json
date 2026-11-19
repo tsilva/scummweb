@@ -21873,6 +21873,112 @@
           2410971494
         ]
       ]
+    },
+    "arthur-demo": {
+      "url": "https://games.scummweb.tsilva.eu/arthur.zip",
+      "fingerprint": "2f7942fbe1c6ee2f09b07301bf418d2766fbba9d9a8d3511ed64cb56cde526cf",
+      "files": [
+        [
+          "ARTHUR.EXE",
+          504082,
+          777278478
+        ],
+        [
+          "CHKLIST.MS",
+          81,
+          139707309
+        ],
+        [
+          "DATA/CP/COVER.IBM",
+          122270,
+          448358105
+        ],
+        [
+          "DATA/CP/CRED1.IBM",
+          815657,
+          69601670
+        ],
+        [
+          "DATA/CP/CRED2.IBM",
+          1070382,
+          3574614280
+        ],
+        [
+          "DATA/CP/CRED2_.IBM",
+          1070382,
+          3574614280
+        ],
+        [
+          "DATA/CP/END.IBM",
+          169331,
+          3131860689
+        ],
+        [
+          "DATA/CP/INTRO.IBM",
+          439206,
+          94834680
+        ],
+        [
+          "DATA/CP/OPTION.IBM",
+          193242,
+          280105547
+        ],
+        [
+          "DATA/CP/PANEL.IBM",
+          1452724,
+          1322340550
+        ],
+        [
+          "DATA/CP/PDP.IBM",
+          32336,
+          10200777
+        ],
+        [
+          "DATA/CP/PREVIEW.IBM",
+          1266569,
+          712855003
+        ],
+        [
+          "DATA/CP/QUIT.IBM",
+          90377,
+          2367729237
+        ],
+        [
+          "DATA/EP/P01E.IBM",
+          3374954,
+          1365000791
+        ],
+        [
+          "DATA/ER/P01ER.IBM",
+          1264851,
+          1810494465
+        ],
+        [
+          "DATA/SP/P01S.IBM",
+          3609898,
+          2006794541
+        ],
+        [
+          "DATA/SR/P01SR.IBM",
+          1427052,
+          3431478270
+        ],
+        [
+          "FILE.DLL",
+          6144,
+          3183172242
+        ],
+        [
+          "PAGES.512",
+          642,
+          2220535430
+        ],
+        [
+          "RSRC.DLL",
+          10752,
+          4187250282
+        ]
+      ]
     }
   }
 }

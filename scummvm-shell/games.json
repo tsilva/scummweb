@@ -1005,6 +1005,16 @@
       "platform": "windows",
       "extra": "Demo v1.0",
       "readmeHref": ""
+    },
+    {
+      "target": "arthur-demo",
+      "title": "Arthur's Teacher Trouble (Demo)",
+      "path": "/games/arthur",
+      "engineId": "mohawk",
+      "gameId": "arthur",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

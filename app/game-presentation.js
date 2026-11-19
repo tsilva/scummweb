@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "arthur-demo": {
+    ...retroGameArtwork["mohawk:arthur"],
+    heroImageMobilePosition: "86% -9vh",
+    title: "Arthur's Teacher Trouble (Demo)",
+    year: "1992",
+    language: "en",
+    summary: "Follow Arthur and Mr. Ratburn on the first day of school. Explore the animated hallway or read the story page in English or Spanish.",
+  },
   "grandma-demo": {
     ...retroGameArtwork["mohawk:grandma"],
     heroImageMobilePosition: "84% -9vh",
