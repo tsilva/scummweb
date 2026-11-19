@@ -27,7 +27,8 @@ also needs `https://scummweb.tsilva.eu/dropbox-callback.html`. Explicit port
 overrides require a matching callback; there is no automatic fallback when the
 default port is occupied.
 
-Without the public key, Settings shows a disabled Connect Dropbox control.
+Without the public key, Settings shows a disabled **Connect** button and explains
+that Dropbox sync is unavailable.
 Authentication uses a popup, PKCE S256, offline access, a checked state value,
 and an exact-origin/source callback. The static callback contains no analytics
 and removes its authorization query immediately. Denying access leaves saves
@@ -58,10 +59,9 @@ authorize their own Dropbox account.
 
 ## Player experience
 
-Choose **Settings → Saved games → Sync saves → Connect Dropbox**. Active browser saves and
+Choose **Settings → Saved games → Dropbox sync → Connect**. Active browser saves and
 preserved backup sets are copied automatically, without deleting browser originals.
-The normal status is **Dropbox connected**, with a white Dropbox icon.
-The main Saved games view contains Sync saves and Transfer saves. Transfer saves
+The main Saved games view contains Dropbox sync and Transfer saves. Transfer saves
 offers Export saves and Import saves side by side.
 Export starts the ZIP download automatically. Its button shows **Exporting**,
 **Downloading**, then briefly **Downloaded** before returning to **Export saves**.
@@ -71,9 +71,9 @@ Earlier copies are available separately through **Recover saved progress**,
 grouped by game. Restoring a copy opens a review before changing progress and
 keeps the previous copy as a backup. The main panel does not list routine saves
 or use internal active/preserved labels.
-Routine metadata checks keep **Dropbox connected** visible without a spinner.
-The synced checkmark appears after verification; initial connection status alone
-does not claim browser progress is already backed up. A completed new save shows
+The status is read-only. Routine metadata checks keep **Saves up to date** and
+its checkmark visible after verification. Before verification, the status shows
+**Checking saves…** or **Connected**. A completed new save shows
 **Preparing saves…** while being queued. Actual backup uploads, downloads and
 local restoration show **Syncing saves…**, with an inline activity line such as
 **42% · Beneath a Steel Sky · Uploading**. The percentage measures bytes for the
@@ -112,9 +112,11 @@ the app, when connectivity returns, and periodically while the page is visible.
 A running game's files are never replaced remotely. The transfer row keeps the
 last named game visible until the next game is identified.
 
-Network, authorization and quota errors keep unsynced saves on the device and
-show an actionable status. Restores reuse unchanged save files. If one game's
-cloud copy exceeds the available browser space, its restore is deferred and
+When the browser goes offline, Settings shows **Offline · Saves stay on this device**
+and sync resumes automatically on reconnect. **Reconnect Dropbox** is available
+when Dropbox requires sign-in again. Other failures show **Saves waiting to sync**
+with details. Unsynced saves stay on the device. Restores reuse unchanged save
+files. If one game's cloud copy exceeds the available browser space, its restore is deferred and
 other games can still sync. A closed browser cannot upload; reopening retries
 durable work. Clearing site data before an upload finishes can still lose
 unsynced progress. Only verified cloud copies survive a site-data reset.

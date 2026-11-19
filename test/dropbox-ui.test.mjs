@@ -17,7 +17,7 @@ async function component(path, imports, react) {
     module: { type: "commonjs" }, jsc: { parser: { syntax: "ecmascript", jsx: true }, transform: { react: { runtime: "automatic" } } } });
   const compiled = { exports: {} };
   runInNewContext(code, { module: compiled, exports: compiled.exports,
-    window: imports.window, localStorage: imports.window?.localStorage, Event,
+    window: imports.window, localStorage: imports.window?.localStorage, navigator: imports.navigator, Event,
     require: (name) => name === "react" ? react : name === "react/jsx-runtime" ? nativeRequire(name) : imports[name] });
   return compiled.exports.default;
 }
@@ -72,28 +72,71 @@ for (const phase of ["waiting", "reconnect"]) {
   });
 }
 
-async function row(state, initialNotice = "") {
-  let syncCalls = 0, reviews = 0, cursor = 0;
+async function row(state, { online = true, configured = true } = {}) {
+  const calls = [];
   const Icon = () => null;
   const Row = await component("../app/home-shell/dropbox-row.js", {
-    "lucide-react": { Check: Icon, LoaderCircle: Icon, Unplug: Icon },
-    "../dropbox/runtime.mjs": { getDropboxState: () => state, subscribeDropbox() {}, dropboxConfigured: () => true,
-      async syncDropbox() { syncCalls++; }, async connectDropbox() {}, async disconnectDropbox() {} },
+    "lucide-react": { Check: Icon, LoaderCircle: Icon },
+    "../dropbox/runtime.mjs": { getDropboxState: () => state, subscribeDropbox() {}, dropboxConfigured: () => configured,
+      async connectDropbox() { calls.push("connect"); }, async disconnectDropbox() { calls.push("disconnect"); } },
     "../cloud/transfer-progress.mjs": transfers,
-    window: { dispatchEvent(event) { if (event.type === "scummweb:dropbox-review") reviews++; } },
-  }, { useSyncExternalStore: () => state, useEffect() {}, useState() { return [cursor++ === 0 ? false : initialNotice, () => {}]; } });
-  return { tree: Row(), calls: () => ({ syncCalls, reviews }) };
+    navigator: { onLine: online },
+  }, { useSyncExternalStore: (_subscribe, getSnapshot) => getSnapshot(), useEffect() {}, useState: initial => [initial, () => {}] });
+  return { tree: Row(), calls };
 }
 
-test("verified routine checks keep connected text and no transfer activity", async () => {
-  const { tree } = await row({ phase: "connected", checking: true, verified: true, message: "" });
-  assert.match(text(tree), /Dropbox connected/);
+test("verified routine checks show an up-to-date status and only the disconnect action", async () => {
+  const { tree, calls } = await row({ phase: "connected", checking: true, verified: true, message: "" });
+  const status = nodes(tree).find(({ props }) => props?.role === "status");
+  assert.match(text(status), /Saves up to date/);
+  assert.match(text(status), /sync automatically/);
+  assert.equal(nodes(status).some(({ type }) => type === "button"), false);
   assert.equal(text(tree).includes("Syncing"), false);
   assert.equal(nodes(tree).some(({ props }) => props?.className === "dropbox-spinner"), false);
   assert.equal(nodes(tree).some(({ props }) => props?.className === "dropbox-progress"), false);
-  assert.equal(nodes(tree).some(({ props }) => props?.["aria-label"] === "Saves synced"), true);
+  const actions = nodes(tree).filter(({ type }) => type === "button");
+  assert.deepEqual(actions.map(text), ["Disconnect"]);
+  await actions[0].props.onClick();
+  assert.deepEqual(calls, ["disconnect"]);
   const firstCheck = await row({ phase: "connected", checking: true, verified: false, message: "" });
-  assert.equal(nodes(firstCheck.tree).some(({ props }) => props?.["aria-label"] === "Saves synced"), false);
+  assert.match(text(firstCheck.tree), /Checking saves/);
+  assert.doesNotMatch(text(firstCheck.tree), /Saves up to date/);
+});
+
+test("connect is the only disconnected action and opens Dropbox authorization", async () => {
+  const { tree, calls } = await row({ phase: "disconnected" });
+  assert.match(text(tree), /Saves are stored on this device/);
+  assert.deepEqual(nodes(tree).filter(({ type }) => type === "button").map(text), ["Connect"]);
+  await button(tree, "Connect").props.onClick();
+  assert.deepEqual(calls, ["connect"]);
+  const unavailable = await row({ phase: "disconnected" }, { configured: false });
+  assert.equal(button(unavailable.tree, "Connect").props.disabled, true);
+  assert.match(text(unavailable.tree), /Dropbox sync is unavailable/);
+});
+
+test("offline saves supersede up-to-date and in-progress cloud statuses", async () => {
+  for (const state of [{ phase: "connected", verified: true }, { phase: "syncing", transferProgress: { stage: "upload", direction: "upload", percentage: 42, title: "Beneath a Steel Sky" } }, { phase: "waiting" }]) {
+    const { tree } = await row(state, { online: false });
+    assert.match(text(tree), /Offline · Saves stay on this device/);
+    assert.match(text(tree), /Sync resumes automatically/);
+    assert.doesNotMatch(text(tree), /Saves up to date|Syncing saves|42%/);
+    assert.deepEqual(nodes(tree).filter(({ type }) => type === "button").map(text), ["Disconnect"]);
+  }
+  const { tree } = await row({ phase: "waiting", message: "Could not sync saves. Your local copies are retained." });
+  assert.match(text(tree), /Saves waiting to sync/);
+  assert.match(text(tree), /Your local copies are retained/);
+  assert.deepEqual(nodes(tree).filter(({ type }) => type === "button").map(text), ["Disconnect"]);
+});
+
+test("expired authorization offers reconnect and keeps that status visible offline", async () => {
+  const { tree, calls } = await row({ phase: "reconnect" });
+  assert.match(text(tree), /Dropbox needs to be reconnected/);
+  await button(tree, "Reconnect Dropbox").props.onClick();
+  assert.deepEqual(calls, ["connect"]);
+  const offline = await row({ phase: "reconnect" }, { online: false });
+  assert.match(text(offline.tree), /Dropbox needs to be reconnected/);
+  assert.match(text(offline.tree), /Go online to reconnect Dropbox/);
+  assert.equal(button(offline.tree, "Reconnect Dropbox").props.disabled, true);
 });
 
 for (const [stage, direction, expected] of [

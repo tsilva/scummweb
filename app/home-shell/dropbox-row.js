@@ -1,14 +1,28 @@
 "use client";
 
 import { useEffect, useState, useSyncExternalStore } from "react";
-import { Check, LoaderCircle, Unplug } from "lucide-react";
-import { connectDropbox, disconnectDropbox, dropboxConfigured, getDropboxState, subscribeDropbox, syncDropbox } from "../dropbox/runtime.mjs";
+import { Check, LoaderCircle } from "lucide-react";
+import { connectDropbox, disconnectDropbox, dropboxConfigured, getDropboxState, subscribeDropbox } from "../dropbox/runtime.mjs";
 import { transferProgressDetails } from "../cloud/transfer-progress.mjs";
 
 const labels = {
-  disconnected: "Connect Dropbox", connecting: "Connecting Dropbox…", connected: "Dropbox connected",
-  preparing: "Preparing saves…", syncing: "Syncing saves…", reconnect: "Reconnect Dropbox", waiting: "Saves waiting to sync",
+  disconnected: "Saves are stored on this device.", connecting: "Connecting…", disconnecting: "Disconnecting…",
+  preparing: "Preparing saves…", syncing: "Syncing saves…", reconnect: "Dropbox needs to be reconnected",
+  waiting: "Saves waiting to sync",
 };
+
+function subscribeConnectivity(listener) {
+  window.addEventListener("online", listener);
+  window.addEventListener("offline", listener);
+  return () => {
+    window.removeEventListener("online", listener);
+    window.removeEventListener("offline", listener);
+  };
+}
+
+function isOnline() {
+  return navigator.onLine !== false;
+}
 
 function DropboxIcon() {
   return <svg className="dropbox-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -18,23 +32,43 @@ function DropboxIcon() {
 
 export default function DropboxRow() {
   const state = useSyncExternalStore(subscribeDropbox, getDropboxState, getDropboxState);
+  const online = useSyncExternalStore(subscribeConnectivity, isOnline, () => true);
   const [disconnecting, setDisconnecting] = useState(false);
   const [notice, setNotice] = useState("");
   const configured = dropboxConfigured();
-  const busy = disconnecting || ["connecting", "preparing", "syncing"].includes(state.phase);
-  const connected = !["disconnected", "connecting"].includes(state.phase);
-  const transfer = !disconnecting && ["syncing"].includes(state.phase) ? transferProgressDetails(state.transferProgress) : null;
-  const label = disconnecting ? "Disconnecting…" : labels[state.phase] || labels.waiting;
-  useEffect(() => setNotice(""), [state.phase, state.message]);
-  async function activate() {
-    setNotice("");
-    try {
-      if (["disconnected", "reconnect"].includes(state.phase)) await connectDropbox();
-      else {
-        await syncDropbox({ beforeLaunch: true });
-      }
-    } catch (error) { setNotice(error.message); }
+  const phase = disconnecting ? "disconnecting" : state.phase;
+  const connected = !["disconnected", "connecting"].includes(phase);
+  const reconnect = phase === "reconnect";
+  const showConnect = !connected || reconnect;
+  const offline = !online && connected && !reconnect && !disconnecting;
+  const busy = !offline && ["connecting", "preparing", "syncing", "disconnecting"].includes(phase);
+  const upToDate = !offline && phase === "connected" && state.verified;
+  const transfer = !offline && phase === "syncing" ? transferProgressDetails(state.transferProgress) : null;
+  let label = labels[phase] || (state.checking ? "Checking saves…" : "Connected");
+  if (offline) label = "Offline · Saves stay on this device";
+  if (upToDate) label = "Saves up to date";
+
+  let description = "";
+  if (phase === "disconnected") {
+    if (!configured) description = "Dropbox sync is unavailable.";
+    else if (!online) description = "Go online to connect Dropbox.";
+    else description = "Connect to sync saves and Recently Played across devices.";
+  } else if (offline) {
+    description = "Sync resumes automatically when you’re back online.";
+  } else if (reconnect && !online) {
+    description = "Go online to reconnect Dropbox.";
+  } else if (phase === "connected") {
+    description = "Saves and Recently Played sync automatically.";
   }
+
+  const message = !busy && (notice || (!offline && state.message));
+  useEffect(() => setNotice(""), [state.phase, state.message]);
+  async function connect() {
+    setNotice("");
+    try { await connectDropbox(); }
+    catch (error) { setNotice(error.message); }
+  }
+
   async function disconnect() {
     setNotice("");
     setDisconnecting(true);
@@ -44,25 +78,29 @@ export default function DropboxRow() {
   }
   return <div className="settings-action-block dropbox-settings">
     <DropboxIcon />
-    <div><h3>Sync saves</h3><p>Sync saves and Recently Played activity through Dropbox.</p></div>
-    <div className="dropbox-row">
-      <button type="button" className={`dropbox-connect${connected ? "" : " secondary-button settings-wide"}`} aria-label={label} disabled={busy || !configured}
-        title={!configured ? "Dropbox sync is not configured for this site yet." : undefined} onClick={activate}>
-        <span className="dropbox-status" role="status">
+    <div>
+      <h3>Dropbox sync</h3>
+      <div role="status">
+        <p className="dropbox-status" data-state={offline || reconnect || phase === "waiting" ? "attention" : phase}>
           {busy && <LoaderCircle size={18} className="dropbox-spinner" aria-hidden="true" />}
-          <span>{label}</span>
-          {!busy && state.phase === "connected" && state.verified && <Check size={18} className="dropbox-check" aria-label="Saves synced" />}
-        </span>
-      </button>
+          {upToDate && <Check size={16} className="dropbox-check" aria-hidden="true" />}
+          {label}
+        </p>
+        {description && <p>{description}</p>}
+        {message && <p className="dropbox-notice">{message}</p>}
+      </div>
+      {transfer && <p className="dropbox-progress" role="status">
+        {transfer.percentage !== null && <><span className="dropbox-percentage">{transfer.percentage}%</span><span aria-hidden="true"> · </span></>}
+        <span className="dropbox-progress-game">{transfer.title}</span><span aria-hidden="true"> · </span><span>{transfer.direction}</span>
+      </p>}
+    </div>
+    <div className="dropbox-actions">
+      {showConnect && <button type="button" className="secondary-button" aria-label={reconnect ? undefined : "Connect Dropbox"}
+        disabled={busy || !configured || !online} onClick={connect}>{reconnect ? "Reconnect Dropbox" : "Connect"}</button>}
       {connected && <button type="button" className="dropbox-disconnect" aria-label="Disconnect Dropbox"
-        title="Disconnect Dropbox" disabled={disconnecting} onClick={disconnect}>
-        <Unplug size={16} aria-hidden="true" />Disconnect
+        disabled={disconnecting} onClick={disconnect}>
+        Disconnect
       </button>}
     </div>
-    {transfer && <p className="dropbox-progress" role="status">
-      {transfer.percentage !== null && <><span className="dropbox-percentage">{transfer.percentage}%</span><span aria-hidden="true"> · </span></>}
-      <span className="dropbox-progress-game">{transfer.title}</span><span aria-hidden="true"> · </span><span>{transfer.direction}</span>
-    </p>}
-    {!busy && (notice || state.message) && <p className="dropbox-notice" role="status">{notice || state.message}</p>}
   </div>;
 }
