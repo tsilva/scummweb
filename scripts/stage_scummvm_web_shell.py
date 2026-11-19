@@ -36,7 +36,7 @@ html = html.replace("/*__SCUMMWEB_SAVE_EDITIONS__*/", "(function(){\n" + save_ed
                     + save_filesystem.replace("export ", "")
                     + "\nconst indexedSaveStorage = (() => {\n" + save_storage.replace("export ", "")
                     + "\nreturn { ensureSaveStorage, openSaveStorage };\n})();"
-                    + "\nglobalThis.__scummwebSaveEditions = { editionKey, acquireEditionSession, initializeSaveEdition, initializeSaveRoot, saveLockName, ...indexedSaveStorage };\n})();")
+                    + "\nglobalThis.__scummwebSaveEditions = { editionKey, acquireEditionSession, initializeSaveEdition, initializeSaveRoot, saveLockName, waitForSaveSession, ...indexedSaveStorage };\n})();")
 continue_saves = "\n".join(line for line in (source / "continue-saves.mjs").read_text().splitlines() if not line.startswith("import "))
 html = html.replace("/*__SCUMMWEB_SAVE_BRIDGE__*/", "(function(){\n" + continue_saves.replace("export ", "") + "\nglobalThis.__scummwebInstallContinueSaves = installContinueSaves;\n})();")
 filesystem = (source / "scummvm_fs.js").read_text().replace("__SCUMMWEB_GAMES_ORIGIN__", json.dumps(games_origin))

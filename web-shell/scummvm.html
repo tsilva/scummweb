@@ -158,7 +158,7 @@ function bindBrowserFsOperations(filesystem) {
 /*__SCUMMWEB_SAVE_EDITIONS__*/
 async function prepareSaveRoot() {
   const { editionKey, acquireEditionSession, initializeSaveEdition, initializeSaveRoot, saveLockName,
-    ensureSaveStorage, openSaveStorage } = globalThis.__scummwebSaveEditions;
+    ensureSaveStorage, openSaveStorage, waitForSaveSession } = globalThis.__scummwebSaveEditions;
   const params = scummwebLaunchUrl.searchParams;
   const namespace = params.get("saveNamespace");
   const args = decodeURI(scummwebLaunchUrl.hash.slice(1)).trim().split(/\s+/);
@@ -166,9 +166,14 @@ async function prepareSaveRoot() {
   const directTarget = !params.has("localGame") && (args.length === 1 || args.length === 3 && args[0] === "-x") ? args.at(-1) : "";
   const target = params.get("catalogSaveTarget") || params.get("saveTarget") || catalogTarget || directTarget;
   const edition = agentSaveScope ? "" : editionKey(namespace, target);
-  const db = await ensureSaveStorage();
   const locks = navigator.locks;
-  await acquireEditionSession(locks, edition);
+  const openSession = async () => {
+    const db = await ensureSaveStorage();
+    await acquireEditionSession(locks, edition);
+    return db;
+  };
+  const db = params.get("hostPlayer") === "1" && !params.has("saveQuery") && agentSaveScope === null
+    ? await waitForSaveSession(openSession) : await openSession();
   return locks.request(saveLockName + ":setup", async () => {
     const storage = await openSaveStorage(db);
     let config;

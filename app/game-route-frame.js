@@ -247,6 +247,8 @@ export default function GameRouteFrame({
       try { await flushSaves(); }
       catch { /* The previous committed copy remains available after a failed write. */ }
     }
+    // Release this frame's save locks before revealing the launcher again.
+    flushSync(() => setFrameSrc(null));
     const destination = withDropboxPreview(getSafeHref(href));
     if (catalogLaunch) window.location.replace(destination);
     else router.replace(destination);
@@ -522,9 +524,9 @@ export default function GameRouteFrame({
 
       if (event.data?.type === "scummweb:save-session-busy" && event.source === frameRef.current?.contentWindow) {
         stopArchiveBootTimer();
-        setArchiveError(event.data.reason === "edition"
-          ? "This game edition is already open or checking saves in another tab. Close it or wait for the check, then try again."
-          : "A game or save operation is using shared storage. Close it or wait for it to finish, then try again.");
+        // A lock can appear after following a launch link. Return to the
+        // launch controls, which stay disabled until the lock is released.
+        void navigateHome(getExitHrefFromSrc(frameSrc || src));
         return;
       }
 
@@ -636,7 +638,7 @@ export default function GameRouteFrame({
       stopArchiveBootTimer();
       window.removeEventListener("message", handleMessage);
     };
-  }, [archiveFrameDocument, archivePrepared, catalogLaunch, frameSrc, game?.engineId, game?.saveNamespace, game?.slug, launchAnalytics, loadArchive, navigateHome, target]);
+  }, [archiveFrameDocument, archivePrepared, catalogLaunch, frameSrc, game?.engineId, game?.saveNamespace, game?.slug, launchAnalytics, loadArchive, navigateHome, src, target]);
 
   useEffect(() => {
     const controller = new AbortController();

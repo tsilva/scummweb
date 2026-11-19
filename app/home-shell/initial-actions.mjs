@@ -2,7 +2,7 @@ import { readCachedSave } from "../browser-save-cache.mjs";
 import { dropboxPreviewEnabled, withDropboxPreview } from "../dropbox/feature.mjs";
 import { parseAutosave } from "../../web-shell/rotating-autosaves.mjs";
 import { supportsContinue } from "../../web-shell/continue-saves.mjs";
-import { editionDirectory, editionKey, readSaveTree, saveDirectory } from "../../web-shell/save-editions.mjs";
+import { editionDirectory, editionKey, editionLockName, readSaveTree, saveDirectory, saveLaunchBlocked, saveLockName } from "../../web-shell/save-editions.mjs";
 import runtime from "../../scummvm-shell/runtime-version.json" with { type: "json" };
 
 export function initialActionState(group, version, versions, runtimeVersion = runtime.version) {
@@ -124,12 +124,41 @@ export function prepareInitialActions(container, readSave) {
       chooser.innerHTML = "";
     }
     container.dataset.prepared = "true";
+    if (!state.unavailable && !state.source && window.navigator?.locks?.query) {
+      const edition = editionKey(namespace, state.game.target);
+      const label = primary.textContent;
+      const primaryHref = primary.getAttribute("href");
+      const checkLocks = async () => {
+        const snapshot = await window.navigator.locks.query().catch(() => null);
+        if (!container.isConnected) return;
+        const updating = saveLaunchBlocked(snapshot, edition);
+        primary.classList.toggle("launch-button-pending", updating);
+        primary.textContent = updating ? "Updating…" : label;
+        for (const [link, availableHref] of [[primary, primaryHref], [restart, href]]) {
+          if (updating) {
+            link.removeAttribute("href");
+            link.setAttribute("aria-disabled", "true");
+          } else {
+            link.setAttribute("href", availableHref);
+            link.removeAttribute("aria-disabled");
+          }
+        }
+        if (updating) {
+          primary.setAttribute("aria-busy", "true");
+          setTimeout(checkLocks, 250);
+        } else primary.removeAttribute("aria-busy");
+      };
+      void checkLocks();
+    }
   } catch { /* Unknown or inaccessible browser data retains the safe fallback. */ }
 }
 
 export const initialActionsScript = `(() => {
   const layout = ${JSON.stringify({ editionDirectory, saveDirectory })};
   const editionKey = ${editionKey.toString()};
+  const saveLockName = ${JSON.stringify(saveLockName)};
+  const editionLockName = ${editionLockName.toString()};
+  const saveLaunchBlocked = ${saveLaunchBlocked.toString()};
   const readSaveTree = ${readSaveTree.toString()};
   const parseAutosave = ${parseAutosave.toString()};
   const readCachedSave = ${readCachedSave.toString()};

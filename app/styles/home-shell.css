@@ -499,11 +499,22 @@ button.nav-icon-link {
 
 .launch-button-pending {
   background: rgba(43, 43, 43, 0.82);
+  color: var(--ink);
   cursor: wait;
 }
 
 .launch-button-pending::before {
-  content: none;
+  content: "";
+  width: 0.8rem;
+  height: 0.8rem;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: source-poster-spin 0.85s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .launch-button-pending::before { animation: none; }
 }
 
 .launch-button.game-unavailable {

@@ -4,7 +4,7 @@ import { applyImport, destinationMatches, exportBackup, getActiveSaveSets, getSa
 import { captureFilesystem, initializeSaveEdition, restoreSaveGroups, safePath } from "../app/save-backups/filesystem.mjs";
 import { getCachedBrowserSave, getLatestBrowserSave, readBrowserSaveFiles } from "../app/browser-saves.mjs";
 import { saveIndexKey, saveRevision } from "../web-shell/continue-saves.mjs";
-import { acquireEditionSession, editionKey, editionLockName, readSaveTree } from "../web-shell/save-editions.mjs";
+import { acquireEditionSession, editionKey, editionLockName, readSaveTree, saveLaunchBlocked, saveLockName, waitForSaveSession } from "../web-shell/save-editions.mjs";
 
 const bytes = (text) => new TextEncoder().encode(text);
 const config = "[scummvm]\nsavepath=/home/web_user/.local/share/scummvm/saves\n";
@@ -252,6 +252,33 @@ test("edition locks admit different games, reject duplicates, and exclude backup
   await assert.rejects(acquireEditionSession(locks, skyEdition), { name: "SaveSessionBusyError", busyReason: "edition" });
   await assert.rejects(acquireEditionSession(locks, ""), { name: "SaveSessionBusyError", busyReason: "storage" });
   await assert.rejects(withSaveLock(() => assert.fail("must not run while a game holds the lock")), /Close games/);
+});
+
+test("launch only waits for storage locks that conflict with the requested edition", () => {
+  const skyEdition = editionKey("", "sky");
+  const held = [{ name: saveLockName, mode: "shared" },
+    { name: editionLockName(skyEdition), mode: "exclusive" },
+    { name: "scummweb-dropbox-sync", mode: "exclusive" }];
+  const queenEdition = editionKey("", "queen");
+  assert.equal(saveLaunchBlocked({ held }, skyEdition), true);
+  assert.equal(saveLaunchBlocked({ held }, queenEdition), false);
+  assert.equal(saveLaunchBlocked({ held }, ""), true);
+  assert.equal(saveLaunchBlocked({ held, pending: [{ name: saveLockName, mode: "exclusive" }] }, queenEdition), true);
+  assert.equal(saveLaunchBlocked({ held: [{ name: saveLockName, mode: "exclusive" }] }, queenEdition), true);
+  assert.equal(saveLaunchBlocked({ held: held.slice(-1) }, skyEdition), false);
+});
+
+test("hosted save startup recovers from short contention and propagates other failures", async () => {
+  const busy = Object.assign(new Error("Locked"), { name: "SaveSessionBusyError", busyReason: "storage" });
+  let attempts = 0;
+  assert.equal(await waitForSaveSession(() => {
+    if (++attempts <= 2) throw busy;
+    return "save session";
+  }, { retryMs: 1 }), "save session");
+  assert.equal(attempts, 3);
+  await assert.rejects(waitForSaveSession(() => { throw busy; }, { timeoutMs: 0 }), error => error === busy);
+  const failed = new Error("Unable to open database");
+  await assert.rejects(waitForSaveSession(() => { throw failed; }), error => error === failed);
 });
 
 test("backup actions wait for a short save operation and run once under the exclusive lock", async (t) => {
