@@ -105,6 +105,11 @@ migration archive retains their original records. Pending native writes and isol
 runs are excluded. Files remaining in the game's save folder are retained even
 when absent from the native save list or named like a skip-intro checkpoint;
 only the shell's exact-byte checkpoint cleanup can identify bundled copies.
+For Backyard Baseball, Dropbox sync automatically recovers an interrupted
+write that left an empty `baseball-records.bbl`. ScummWEB keeps the empty
+file in the recovery export and uses the newest intact copy from that game
+edition's backups when available. If no copy exists, the remaining saves
+still sync.
 Continue can open an intact local save while Dropbox is still checking the
 library. Launches without a usable local Continue save still check Dropbox for
 progress before playing. Sync also runs after saves change, when returning to

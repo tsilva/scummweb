@@ -7,6 +7,7 @@ import swc from "next/dist/build/swc/index.js";
 import { connectionKey } from "../app/dropbox/client.mjs";
 import * as transfers from "../app/cloud/transfer-progress.mjs";
 import { dropboxPreviewEnabled } from "../app/dropbox/feature.mjs";
+import { hasEmptyBaseballRecords } from "../app/save-backups/baseball-records.mjs";
 import { renderToStaticMarkup } from "react-dom/server";
 
 const nativeRequire = createRequire(import.meta.url);
@@ -184,6 +185,7 @@ async function settingsFixture({ needsGame = false, markMerged = false, browserG
     "lucide-react": Object.fromEntries(["ArrowDownUp", "ArrowLeft", "Check", "ChevronDown", "Download", "Info", "Save", "Upload"].map(name => [name, () => null])),
     "../styles/settings-details.css": {}, "../game-sources.mjs": { readGameSources: async () => [] },
     "./dropbox-row": { default: () => null }, "./dropbox-preview": { default: () => null },
+    "../save-backups/baseball-records.mjs": { hasEmptyBaseballRecords },
     "../save-backups/backups.mjs": backups, "../../web-shell/save-storage.mjs": { openSaveStorage: async () => ({}) },
     "../dropbox/save-merge.mjs": { preferredSaveMerge: async (sets) => { merges.push(sets); return { set: markMerged ? { ...sets[0], hash: "merged-for-review" } : sets[0] }; } },
     "../save-backups/scummvm-transfer.mjs": { exportScummvmSaves: async () => new Blob(["export"]), readSaveImport: async (files, destinations, game) => {

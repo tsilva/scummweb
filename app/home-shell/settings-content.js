@@ -7,6 +7,7 @@ import "../styles/settings-details.css";
 import DropboxRow from "./dropbox-row";
 import DropboxPreview from "./dropbox-preview";
 import { openSaveStorage } from "../../web-shell/save-storage.mjs";
+import { hasEmptyBaseballRecords } from "../save-backups/baseball-records.mjs";
 
 const formatSaveCount = (count) => `${count} save ${count === 1 ? "file" : "files"}`;
 
@@ -190,7 +191,7 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
   const transferring = busy || exportState !== "idle";
   const exportLabel = { idle: "Export saves", exporting: "Exporting", downloading: "Downloading", downloaded: "Downloaded" }[exportState];
   const storedOnly = data.stored.filter((set) => !data.sets.some((active) => active.destination.key === set.destination.key && active.hash === set.hash));
-  const matchedStored = storedOnly.filter((set) => !data.unmatched.has(set));
+  const matchedStored = storedOnly.filter((set) => !data.unmatched.has(set) && !(set.files.length === 1 && hasEmptyBaseballRecords(set)));
   const recovery = new Map();
   for (const set of matchedStored) {
     const key = data.matches.get(set) || set.destination.key;
