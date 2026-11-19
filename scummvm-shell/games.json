@@ -1075,6 +1075,16 @@
       "platform": "dos",
       "extra": "Demo",
       "readmeHref": "/launcher/notices/christmas1992.txt"
+    },
+    {
+      "target": "funseeker-demo",
+      "title": "Fun Seeker's Guide to Eastern Madera County (Demo)",
+      "path": "/games/funseeker",
+      "engineId": "sci",
+      "gameId": "funseeker",
+      "platform": "dos",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

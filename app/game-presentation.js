@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "funseeker-demo": {
+    ...retroGameArtwork["sci:funseeker"],
+    heroImageMobilePosition: "100% -8vh",
+    title: "Fun Seeker's Guide to Eastern Madera County (Demo)",
+    year: "1989",
+    language: "en",
+    summary: "Leaf through Sierra’s tongue-in-cheek guide to Eastern Madera County, from a fiberglass talking bear to the mountain getaway of Bass Lake.",
+  },
   "christmas1992-demo": {
     ...retroGameArtwork["sci:christmas1992"],
     heroImageMobilePosition: "92% -8vh",

@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Fun Seeker's Guide to Eastern Madera County (Demo)", target: "funseeker-demo", engineId: "sci", gameId: "funseeker",
+    files: [["resource.map", 282, 2832575178], ["resource.001", 40692, 3063887796], ["sciv.exe", 75075, 2912399413]],
+  },
+  {
     title: "Christmas Card 1992 (Demo)", target: "christmas1992-demo", engineId: "sci", gameId: "christmas1992",
     files: [["resource.map", 318, 1973929855], ["resource.000", 203396, 128637253], ["resource.aud", 31471, 114984518]],
   },
