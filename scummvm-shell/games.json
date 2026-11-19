@@ -975,6 +975,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "tortoise-demo",
+      "title": "Aesop's Fables: The Tortoise and the Hare (Demo)",
+      "path": "/games/tortoise",
+      "engineId": "mohawk",
+      "gameId": "tortoise",
+      "platform": "windows",
+      "extra": "Demo v1.0",
+      "readmeHref": ""
     }
   ]
 }

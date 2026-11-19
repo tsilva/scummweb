@@ -21600,6 +21600,87 @@
           1587081210
         ]
       ]
+    },
+    "tortoise-demo": {
+      "url": "https://scummvm-games.tsilva.eu/tortoise.zip",
+      "fingerprint": "f1cba72fd2dc8dabd3176f895b2e0222b7f06525a000d249e151bfbe9a83bf3f",
+      "files": [
+        [
+          "CHKLIST.MS",
+          81,
+          3388796426
+        ],
+        [
+          "DATA/CP/COVER.IBM",
+          100487,
+          3989507876
+        ],
+        [
+          "DATA/CP/INTRO.IBM",
+          353093,
+          1305300321
+        ],
+        [
+          "DATA/CP/OPTION.IBM",
+          183739,
+          881085236
+        ],
+        [
+          "DATA/CP/PANEL.IBM",
+          1298595,
+          3472645098
+        ],
+        [
+          "DATA/CP/PDP.IBM",
+          14711,
+          4000144803
+        ],
+        [
+          "DATA/CP/QUIT.IBM",
+          100758,
+          2367241499
+        ],
+        [
+          "DATA/EP/P01EP.IBM",
+          3493499,
+          2155196281
+        ],
+        [
+          "DATA/ER/P01ER.IBM",
+          927517,
+          3817826077
+        ],
+        [
+          "DATA/SP/P01SP.IBM",
+          3462902,
+          2216245485
+        ],
+        [
+          "DATA/SR/P01SR.IBM",
+          993613,
+          1128736726
+        ],
+        [
+          "FILE.DLL",
+          6144,
+          663094891
+        ],
+        [
+          "RSRC.DLL",
+          10752,
+          3550502428
+        ],
+        [
+          "TORTOISE.512",
+          636,
+          1799113419
+        ],
+        [
+          "TORTOISE.EXE",
+          60928,
+          2103246622
+        ]
+      ]
     }
   }
 }
