@@ -1535,6 +1535,24 @@
         "basis": "ScummVM lists this exact English DOS demo. Its two SCI resource signatures match the pinned detector. All 30 original members and 46 decoded SCI0 resources were checked. Generic installation help and Sierra and Microsoft copyright notices were present. The review found no package-specific copying restriction applying to the archive. Eligibility uses the cautious official promotional-hosting assessment.",
         "preservation": "Serve the unchanged ZIP with all original game resources, copyright strings, installation material, DOS interpreter, and drivers. ScummVM ran the original game data."
       }
+    },
+    {
+      "target": "msastrochicken-demo",
+      "title": "Ms. Astro Chicken (Demo)",
+      "engineId": "sci",
+      "gameId": "msastrochicken",
+      "platform": "dos",
+      "extra": "Demo",
+      "archive": "msastrochicken-dos-demo-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/sci/msastrochicken-dos-demo-en.zip",
+      "sha256": "897226711d65872a4d72cddbbc890e980a382836d15d8b7d10c3e22b3f4658ea",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-19",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "ScummVM lists this exact English DOS archive as the Ms. Astro Chicken demo. Both resource signatures match the pinned detector. All 28 files and 192 SCI1 resources were checked. The generic installation help lists a non-shipping MT-32 driver that is absent from this package. Sierra and Borland copyright notices were present, and no express copying restriction applying to the included files was found. Eligibility uses the cautious official promotional-hosting assessment.",
+        "preservation": "Keep the exact original ZIP, including all copyright notices, original game resources, DOS executables, drivers, and installation material. Only the ScummVM interpreter was used for browser testing."
+      }
     }
   ]
 }

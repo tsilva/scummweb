@@ -1700,6 +1700,11 @@
       "file": "fun-seeker-s-guide-to-eastern-madera-county-demo-1290b3db5eb9870ea9488fc4fe848b4f3a48e19ad8993c01eacfd47be7adcec9.jpg",
       "inputHash": "1290b3db5eb9870ea9488fc4fe848b4f3a48e19ad8993c01eacfd47be7adcec9",
       "imageHash": "6e047db0772e55f2e141be212c14aa31aeec61d717a32de8f4a86ac207e3a60a"
+    },
+    "ms-astro-chicken-demo": {
+      "file": "ms-astro-chicken-demo-950af0057d86d94c9ce98904971a004aec65846889d7dc68ff7211ff350f5c7f.jpg",
+      "inputHash": "950af0057d86d94c9ce98904971a004aec65846889d7dc68ff7211ff350f5c7f",
+      "imageHash": "68ba08a93184a9709d6937ec2ca93cfad0cad8d8c644e81c4089ee709fe8ef04"
     }
   }
 }

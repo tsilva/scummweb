@@ -8,7 +8,7 @@
   "corresponding_source": {
     "page": "/doc/scummvm-source.html",
     "archive": "/doc/scummvm-source.zip",
-    "archive_sha256": "abdf755203fbb16b22144af6c0ecaae9fd8cfde9aaa33f91ea134556f9da181c",
+    "archive_sha256": "2e78c922769ee8be7d515f7235b49214aca468e2a225b03c5356fccddd8bb13e",
     "runtime_sha256": {
       "scummvm.wasm": "1759c131bc29203fff214305902c4de7e290069f9c84a18a2b537599efe81f00",
       "scummvm.js": "8f3ee91dfbacb9a029e45336b432b4b2d1a36bb9cfd4dc5e9a7e0836b0ff652b",

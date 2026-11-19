@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "msastrochicken-demo": {
+    ...retroGameArtwork["sci:msastrochicken"],
+    heroImageMobilePosition: "77% -8vh",
+    title: "Ms. Astro Chicken (Demo)",
+    year: "1991",
+    language: "en",
+    summary: "Fly Ms. Astro Chicken over a scrolling landscape and steer clear of dogs, windmills, and hunters in Sierra’s Space Quest arcade spin-off.",
+  },
   "funseeker-demo": {
     ...retroGameArtwork["sci:funseeker"],
     heroImageMobilePosition: "100% -8vh",

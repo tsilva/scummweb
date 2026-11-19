@@ -1085,6 +1085,16 @@
       "platform": "dos",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "msastrochicken-demo",
+      "title": "Ms. Astro Chicken (Demo)",
+      "path": "/games/msastrochicken",
+      "engineId": "sci",
+      "gameId": "msastrochicken",
+      "platform": "dos",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

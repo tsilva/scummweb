@@ -792,6 +792,14 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Ms. Astro Chicken (Demo)",
+      "status": "startup-verified",
+      "gameId": "sci:msastrochicken",
+      "edition": "msastrochicken-dos-demo-en.zip",
+      "recordedOn": "2026-11-19",
+      "observation": "The original English DOS arcade game opened its scrolling playfield, responded to pointer movement, and reached Game Over. The initial personal launch hit a native assertion, followed by three successful launches. The tested scene rejected saving."
+    },
+    {
       "title": "MTV's Beavis and Butt-Head in Virtual Stupidity",
       "status": "startup-verified",
       "gameId": "bbvs:bbvs",
