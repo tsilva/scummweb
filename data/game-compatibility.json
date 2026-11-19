@@ -1519,6 +1519,14 @@
       "observation": "A game frame renders at startup."
     },
     {
+      "title": "Aesop's Fables: The Tortoise and the Hare (Demo)",
+      "status": "startup-verified",
+      "gameId": "mohawk:tortoise",
+      "edition": "tortoise-win-demo-en.zip",
+      "recordedOn": "2026-11-19",
+      "observation": "Original Windows v1.0 demo with one bilingual page. Native Skip Intro, English Let Me Play, a cottage-door animation and Spanish Read to Me word highlighting were verified. The ScummWEB save and load menus were unavailable for this edition. Audible narration was unverified."
+    },
+    {
       "title": "Arthur's Birthday",
       "status": "startup-warning",
       "gameId": "mohawk:arthurbday",

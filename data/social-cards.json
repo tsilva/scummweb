@@ -1660,6 +1660,11 @@
       "file": "let-s-explore-the-farm-demo-c7e98017c7001e256040f531371b977ec8c1b56efa9b99eb204264206459ba95.jpg",
       "inputHash": "c7e98017c7001e256040f531371b977ec8c1b56efa9b99eb204264206459ba95",
       "imageHash": "b7e1481259cf80923b94565ef92183b3478caa02627e1b70630b70f58a09a2b5"
+    },
+    "aesop-s-fables-the-tortoise-and-the-hare-demo": {
+      "file": "aesop-s-fables-the-tortoise-and-the-hare-demo-9a31d50b45b59bbbb3a1833ee4289f0154faed86f7fe5cda75b95a3e7f2d8966.jpg",
+      "inputHash": "9a31d50b45b59bbbb3a1833ee4289f0154faed86f7fe5cda75b95a3e7f2d8966",
+      "imageHash": "b621dfc15f4838f0c2b2f9147e4ceb7fbcf7ae65b8d7673ca61c8ea31a12de4c"
     }
   }
 }

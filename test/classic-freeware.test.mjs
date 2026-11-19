@@ -25,6 +25,7 @@ test("fresh browser configuration preserves UTF-8 titles and records byte length
 
 test("official classic archives are recognized by contents without relying on filenames", () => {
   for (const [target, files] of [
+    ["tortoise-demo", [["P01EP.IBM", 3493499, 2155196281], ["P01SP.IBM", 3462902, 2216245485], ["TORTOISE.512", 636, 1799113419]]],
     ["farm-demo", [["FARMDEMO.HE0", 18149, 4064708643], ["FARMDEMO.HE1", 8141104, 4243023337]]],
     ["airport-demo", [["AIRDEMO.HE0", 51131, 3554372771], ["AIRDEMO.HE1", 28668826, 3361941333]]],
     ["bluesbirthday-demo", [["BluesBirthdayDemo.HE0", 15789, 4262623801], ["BluesBirthdayDemo.(a)", 14266316, 388128617], ["BluesBirthdayDemo.(b)", 2679222, 2749443637]]],

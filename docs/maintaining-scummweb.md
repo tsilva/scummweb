@@ -425,6 +425,8 @@ The English Windows demo of Let’s Explore the Airport opens at an airplane boa
 
 The English Windows demo of Let’s Explore the Farm opens in the barn. The native Skip Intro action works. Select the book to open the glossary and choose a word to see its illustrated entry. The original demo does not support saving.
 
+The original Windows v1.0 demo of The Tortoise and the Hare contains one page in English and Spanish. Select a language on the book menu, then choose Read to Me for word highlighting or Let Me Play to explore the animated page. The cottage door reacts to clicks. Saving and loading through the ScummWEB menu are unavailable.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.

@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Aesop's Fables: The Tortoise and the Hare (Demo)", target: "tortoise-demo", engineId: "mohawk", gameId: "tortoise",
+    files: [["p01ep.ibm", 3493499, 2155196281], ["p01sp.ibm", 3462902, 2216245485], ["tortoise.512", 636, 1799113419]],
+  },
+  {
     title: "Let's Explore the Farm (Demo)", target: "farm-demo", engineId: "scumm", gameId: "farm",
     files: [["farmdemo.he0", 18149, 4064708643], ["farmdemo.he1", 8141104, 4243023337]],
   },

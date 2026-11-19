@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "tortoise-demo": {
+    ...retroGameArtwork["mohawk:tortoise"],
+    heroImageMobilePosition: "81% -9vh",
+    title: "Aesop's Fables: The Tortoise and the Hare (Demo)",
+    year: "1993",
+    language: "en",
+    summary: "Open the first page of this animated fable, in English or Spanish. Follow the highlighted words or click the scenery to see the characters come to life.",
+  },
   "farm-demo": {
     ...retroGameArtwork["scumm:farm"],
     heroImageMobilePosition: "76% -9vh",
