@@ -1025,6 +1025,16 @@
       "platform": "windows",
       "extra": "Demo",
       "readmeHref": ""
+    },
+    {
+      "target": "newkid-demo",
+      "title": "The New Kid on the Block (Demo)",
+      "path": "/games/newkid",
+      "engineId": "mohawk",
+      "gameId": "newkid",
+      "platform": "windows",
+      "extra": "Demo v1.1",
+      "readmeHref": ""
     }
   ]
 }

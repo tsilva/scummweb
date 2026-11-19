@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "The New Kid on the Block (Demo)", target: "newkid-demo", engineId: "mohawk", gameId: "newkid",
+    files: [["newkid.512", 561, 3039353385], ["shadone.ibm", 1363607, 238202727], ["shadtwo.ibm", 1468430, 3615371406]],
+  },
+  {
     title: "Ruff's Bone (Demo)", target: "ruff-demo", engineId: "mohawk", gameId: "ruff",
     files: [["p01ep.ibm", 2744050, 2588385377], ["p01sp.ibm", 2767560, 2980424538], ["ruff.512", 693, 2000887134]],
   },

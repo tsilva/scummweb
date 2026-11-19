@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "newkid-demo": {
+    ...retroGameArtwork["mohawk:newkid"],
+    heroImageMobilePosition: "80% -9vh",
+    title: "The New Kid on the Block (Demo)",
+    year: "1993",
+    language: "en",
+    summary: "A boy challenges his own shadow in an animated poem by Jack Prelutsky. Read along or explore both interactive pages.",
+  },
   "ruff-demo": {
     ...retroGameArtwork["mohawk:ruff"],
     heroImageMobilePosition: "95% -7vh",
