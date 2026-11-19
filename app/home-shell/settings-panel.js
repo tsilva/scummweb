@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Settings, X } from "lucide-react";
+import { LoaderCircle, Settings, X } from "lucide-react";
 
 export default function SettingsPanel(props) {
   const dialog = useRef(null);
@@ -54,9 +54,12 @@ export default function SettingsPanel(props) {
         </header>
         {open && (SettingsContent
           ? <SettingsContent {...props} working={working} busy={busy} setBusy={setBusy} />
-          : <p className="settings-status" role={loadFailed ? "alert" : "status"}>
-            {loadFailed ? "Could not load settings. Reload this page to try again." : "Loading settings…"}
-          </p>)}
+          : loadFailed
+            ? <p className="settings-status" role="alert">Could not load settings. Reload this page to try again.</p>
+            : <div className="settings-loader" role="status">
+              <LoaderCircle size={28} aria-hidden="true" />
+              <span>Loading settings…</span>
+            </div>)}
       </div>
     </dialog>
   </>;
