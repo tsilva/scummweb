@@ -1723,6 +1723,14 @@
       "observation": "A game frame renders at startup."
     },
     {
+      "title": "Christmas Card 1990: The Seasoned Professional (Demo)",
+      "status": "startup-verified",
+      "gameId": "sci:christmas1990",
+      "edition": "christmas1990-dos-ega-en.zip",
+      "recordedOn": "2026-11-19",
+      "observation": "The original English DOS EGA card opened the animated stage. F9 opened the native Restart Card prompt and Restart returned to the opening act. ScummWEB rejected saving in the tested scene. Audible music was unverified."
+    },
+    {
       "title": "Christmas Card 1992",
       "status": "startup-verified",
       "gameId": "sci:christmas1992",

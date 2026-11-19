@@ -1478,6 +1478,27 @@
         "basis": "ScummVM lists this exact Sierra DOS holiday greeting. All 25 original ZIP members passed integrity checks. All 70 SCI0 resources were decoded and checked at their documented lengths. The original scene identifies Sierra On-Line. The source and embedded resources contain no explicit package-specific copying condition located in the review. Eligibility uses the cautious official promotional-hosting assessment.",
         "preservation": "Serve the complete unchanged ZIP with the original SCI resources, installer, DOS interpreter and drivers. No downloaded executable was run."
       }
+    },
+    {
+      "target": "christmas1990-demo",
+      "title": "Christmas Card 1990: The Seasoned Professional (Demo)",
+      "engineId": "sci",
+      "gameId": "christmas1990",
+      "platform": "dos",
+      "extra": "16 Colors",
+      "archive": "christmas1990-dos-ega-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/sci/christmas1990-dos-ega-en.zip",
+      "sha256": "8c1926a7868db08fba722ff22a1eae14b41fa535ec5b8d1888125113f568fa26",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-19",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "ScummVM lists this exact English EGA holiday greeting. Its resource signatures match the pinned 16 Colors detector. All 29 original members and 99 SCI1 resource streams were verified. Sierra’s installation help is readable DOS text and the exact review found no explicit copying condition or mandatory licence acceptance. Eligibility uses the cautious official promotional-hosting assessment.",
+        "preservation": "Serve the complete unchanged EGA ZIP with the original 16CARD directory, DOS launcher files, complete installation help, drivers and story resources. No downloaded executable was run."
+      },
+      "config": {
+        "path": "/games/christmas1990/16CARD"
+      }
     }
   ]
 }
