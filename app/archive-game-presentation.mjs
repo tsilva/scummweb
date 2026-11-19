@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Arthur's Birthday (Demo)", target: "arthurbday-demo", engineId: "mohawk", gameId: "arthurbday",
+    files: [["birthday.512", 699, 2545112256], ["p01ep.ibm", 2478313, 1454066852], ["p01sp.ibm", 2837914, 702361151]],
+  },
+  {
     title: "Aesop's Fables: The Tortoise and the Hare (Demo)", target: "tortoise-demo", engineId: "mohawk", gameId: "tortoise",
     files: [["p01ep.ibm", 3493499, 2155196281], ["p01sp.ibm", 3462902, 2216245485], ["tortoise.512", 636, 1799113419]],
   },

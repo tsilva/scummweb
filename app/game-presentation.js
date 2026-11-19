@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "arthurbday-demo": {
+    ...retroGameArtwork["mohawk:arthurbday"],
+    heroImageMobilePosition: "78% -9vh",
+    title: "Arthur's Birthday (Demo)",
+    year: "1994",
+    language: "en",
+    summary: "Join Arthur in the kitchen as he makes birthday invitations. Read the animated page in English or Spanish and click the calendar to see it come to life.",
+  },
   "tortoise-demo": {
     ...retroGameArtwork["mohawk:tortoise"],
     heroImageMobilePosition: "81% -9vh",

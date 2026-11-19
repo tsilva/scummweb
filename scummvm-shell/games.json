@@ -985,6 +985,16 @@
       "platform": "windows",
       "extra": "Demo v1.0",
       "readmeHref": ""
+    },
+    {
+      "target": "arthurbday-demo",
+      "title": "Arthur's Birthday (Demo)",
+      "path": "/games/arthurbday",
+      "engineId": "mohawk",
+      "gameId": "arthurbday",
+      "platform": "windows",
+      "extra": "Demo",
+      "readmeHref": ""
     }
   ]
 }

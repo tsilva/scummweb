@@ -1535,6 +1535,14 @@
       "issueScope": "scummvm"
     },
     {
+      "title": "Arthur's Birthday (Demo)",
+      "status": "startup-verified",
+      "gameId": "mohawk:arthurbday",
+      "edition": "arthurbday-win-demo-en.zip",
+      "recordedOn": "2026-11-19",
+      "observation": "Original Windows demo with one bilingual page. Native Skip Intro, English Let Me Play, the kitchen calendar animation and Spanish Read to Me word highlighting were verified. The ScummWEB save and load menus were unavailable. Audible narration was unverified."
+    },
+    {
       "title": "Arthur's Computer Adventure",
       "status": "startup-warning",
       "gameId": "mohawk:arthurcomp",
