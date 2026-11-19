@@ -951,6 +951,22 @@ function initializeSaveRoot(storage, initialConfig) {
   if (storage.getItem("/") === null) editFilesystem(storage, captureFilesystem(storage, true), initialConfig, () => {}, true);
 }
 
+function replaceEmptySaveFile(storage, { edition, namespace, path, replacement, revision }) {
+  const snapshot = captureFilesystem(storage);
+  if (snapshot.revision !== revision) throw new Error("Saves changed while recovering the interrupted write.");
+  if (!safePath(path) || path.includes("/")) throw new Error("Invalid save filename.");
+  const saveParts = namespace ? [...saveDirectory, namespace] : saveDirectory;
+  const locations = edition ? [[editionDirectory, edition, ...saveParts], saveParts] : [saveParts];
+  const matching = locations.filter(parts => getNode(snapshot.root, [...parts, path])?.data?.length === 0);
+  if (matching.length !== 1) return false;
+  editFilesystem(storage, snapshot, undefined, (root, descend) => {
+    const directory = descend(root, matching[0]);
+    if (replacement) directory.children.set(path, { data: replacement.data, modifiedAt: replacement.modifiedAt, mode: 0x81b6 });
+    else directory.children.delete(path);
+  });
+  return true;
+}
+
 function restoreSaveGroups(storage, updates, expectedRevision, initialConfig) {
   const snapshot = captureFilesystem(storage);
   if (snapshot.revision !== expectedRevision) throw new Error("Saves changed after the review opened. Review the backup again.");

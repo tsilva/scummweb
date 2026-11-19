@@ -1,6 +1,7 @@
 import { exportBackup, identifySet, readBackup } from "../save-backups/backups.mjs";
 import { DropboxError, hex, sha256 } from "./client.mjs";
 import { commonSaveAncestorNodes, automaticSaveMerge, saveSetTime } from "./save-merge.mjs";
+import { baseballRecordsPath, newestBaseballRecords } from "../save-backups/baseball-records.mjs";
 
 const hashPattern = /^[a-f0-9]{64}$/;
 export async function saveProfileId(set) {
@@ -164,6 +165,31 @@ export async function createSaveCollection(transport, cache) {
       for (const node of latest.values()) if (node.fileCount) yield await readSet(node);
     },
     head,
+    async recoverBaseballRecords(profile, local, check) {
+      let latest = local;
+      const own = [...nodes.values()].filter(node => node.profile === profile && node.fileCount)
+        .sort((a, b) => b.savedAt - a.savedAt || a.id.localeCompare(b.id));
+      for (const node of own) {
+        if (latest && node.savedAt <= latest.modifiedAt) break;
+        check();
+        latest = newestBaseballRecords([await readSet(node)], latest);
+      }
+      if (damaged.size) return latest;
+      // Correct the heads with new immutable snapshots. Earlier archives and
+      // their other files remain available even when the records file was empty.
+      for (const tip of history(profile).tips) {
+        check();
+        const set = await readSet(tip);
+        const records = set.files.find(file => file.path === baseballRecordsPath);
+        if (records?.data.length || !records && !latest) continue;
+        const files = set.files.filter(file => file.path !== baseballRecordsPath);
+        if (latest) files.push(latest);
+        const repaired = { ...set, files };
+        repaired.hash = await identifySet(repaired);
+        await put(repaired, [tip.id], true, check);
+      }
+      return latest;
+    },
     async snapshot(profile, hash) {
       const { tips, own } = history(profile);
       const matches = tips.some((item) => item.hash === hash) ? tips : own;

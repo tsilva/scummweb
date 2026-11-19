@@ -187,7 +187,9 @@ async function withSetStore(mode, operation) {
   });
   try {
     return await new Promise((resolve, reject) => {
-      const transaction = db.transaction("sets", mode);
+      let transaction;
+      try { transaction = db.transaction("sets", mode, mode === "readwrite" ? { durability: "strict" } : undefined); }
+      catch (error) { if (!(error instanceof TypeError)) throw error; transaction = db.transaction("sets", mode); }
       let result;
       transaction.oncomplete = () => resolve(result?.result);
       transaction.onabort = () => reject(transaction.error || new Error("Could not preserve the save sets."));

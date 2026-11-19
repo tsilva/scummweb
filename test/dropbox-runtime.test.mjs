@@ -3,6 +3,7 @@ import test from "node:test";
 import { connectionKey, sessionKey } from "../app/dropbox/client.mjs";
 import { createNativeCloudClient } from "../app/cloud/native-client.mjs";
 import { activityCacheKey } from "../app/game-player/activity.mjs";
+import { saveGameSources } from "../app/game-sources.mjs";
 import { dropboxEnabled, prepareDropboxLaunch, reportDropboxSave } from "../app/dropbox/bridge.mjs";
 import { captureFilesystem, initializeSaveEdition } from "../app/save-backups/filesystem.mjs";
 import { createSaveCollection, makeSnapshot, publishProfile, readSnapshot, saveProfileId, writeSnapshot } from "../app/dropbox/protocol.mjs";
@@ -728,50 +729,102 @@ test("an incomplete save quietly leaves the browser available for local play", a
   assert.equal(runtime.getDropboxState().verified, false);
 });
 
-test("an empty Baseball records write stays local and does not block verified cloud saves for other games", async (t) => {
-  const { runtime, storage, destinations, server } = await setup(t, "local progress", [
-    { target: "sky", displayTitle: "Beneath a Steel Sky" },
-    { target: "baseball", displayTitle: "Backyard Baseball" },
-  ]);
-  const marker = "scummweb.continue.v1:catalog:baseball";
-  const baseball = destinations.find(({ family }) => family === "baseball");
-  const sky = destinations.find(({ family }) => family === "sky");
-  const incomplete = await activeSets(destinations);
-  const set = await makeSet({ ...baseball, isolated: true }, "baseball-records.bbl", "");
-  await applyImport({ storage: await openSaveStorage(), destinations, revision: incomplete.revision,
-    rows: [{ set, destinationKey: baseball.key, choice: "imported" }] });
+const baseballPath = "baseball-records.bbl";
+async function baseballFixture(t, pending = [baseballPath], content = "") {
+  const catalog = [{ target: "sky", displayTitle: "Beneath a Steel Sky" }];
+  const result = await setup(t, "local progress", catalog);
+  const source = { id: "backyard-baseball-fixture", name: "Backyard Baseball.zip", fingerprint: "5".repeat(64) };
+  await saveGameSources([source]);
+  const destinations = await getSaveDestinations(catalog, [source]);
+  const destination = destinations.find(({ fingerprint }) => fingerprint === source.fingerprint);
+  const marker = `scummweb.continue.v1:${destination.key}`;
+  const makeSet = async (contents, time, sibling = "") => {
+    const files = [{ path: baseballPath, data: bytes(contents), modifiedAt: time }];
+    if (sibling) files.push({ path: "baseball.s01", data: bytes(sibling), modifiedAt: time });
+    const set = { destination, files };
+    return { ...set, hash: await identifySet(set) };
+  };
+  const incomplete = await makeSet(content, 400, "another local slot");
+  const current = await activeSets(destinations);
+  await applyImport({ storage: await openSaveStorage(), destinations, revision: current.revision,
+    rows: [{ set: incomplete, destinationKey: destination.key, choice: "imported" }] });
   await updateActive(marker, { schemaVersion: 1, engineId: "scumm", gameId: "baseball",
-    target: "baseball", saves: [], pending: ["baseball-records.bbl"] });
-  const validRecords = await makeSet({ ...baseball, isolated: true }, "baseball-records.bbl", "verified records");
-  const baseballNode = await writeSnapshot(server, await makeSnapshot(validRecords));
-  const original = (await activeSets(destinations)).sets.find((item) => item.destination.key === sky.key);
-  await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: sky.key });
-  await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: baseball.key });
-  assert.equal(runtime.getDropboxState().phase, "connected");
-  assert.equal((await activeSets(destinations)).sets.find((item) => item.destination.key === baseball.key).files[0].data.length, 0);
-  assert.equal(await syncStore.get(key("base", baseballNode.profile)), undefined);
-  assert.equal((await syncStore.get(key("base", await saveProfileId(original)))).hash, original.hash);
+    target: "baseball", saves: [], pending });
+  return { ...result, destination, marker, makeSet, getWorking: async () => (await activeSets(destinations)).sets
+    .find(item => item.destination.key === destination.key) };
+}
 
-  // A concurrent device can bring a completed save for a different edition.
-  // Restoring it must not erase the unfinished marker and unblock Baseball sync.
-  const firstSkyNode = (await syncStore.get(key("base", await saveProfileId(original)))).tips[0];
-  const latestSky = await makeSet(sky, "SKY-VM.001", "newer verified Sky save", 300);
-  await writeSnapshot(server, await makeSnapshot(latestSky, [firstSkyNode]));
-  await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: sky.key });
-  assert.deepEqual(JSON.parse((await openSaveStorage()).getItem(marker)).pending, ["baseball-records.bbl"]);
-  assert.equal((await activeSets(destinations)).sets.find((item) => item.destination.key === sky.key).hash, latestSky.hash);
-
-  await updateActive(marker, { engineId: "scumm", gameId: "baseball", target: "baseball",
-    pending: ["baseball-records.bbl", "baseball.s01"] });
-  await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: baseball.key });
-  assert.equal(await syncStore.get(key("base", baseballNode.profile)), undefined);
-  await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: sky.key });
-
-  async function makeSet(destination, path, content, modifiedAt = 200) {
-    const item = { destination, files: [{ path, data: bytes(content), modifiedAt }] };
-    return { ...item, hash: await identifySet(item) };
-  }
+test("Baseball recovery keeps both originals, restores verified history and completes sync", async t => {
+  const { server, runtime, destination, marker, makeSet, getWorking } = await baseballFixture(t);
+  const valid = await makeSet("verified cloud records", 200);
+  const original = await writeSnapshot(server, await makeSnapshot(valid));
+  const bad = await makeSet("", 500, "another cloud slot");
+  const badHead = await writeSnapshot(server, await makeSnapshot(bad, [original.id]));
+  const [before, damagedBefore] = await Promise.all([server.download(original.id + ".zip"), server.download(badHead.id + ".zip")]);
+  await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: destination.key });
+  assert.equal(runtime.getDropboxState().verified, true);
+  const working = await getWorking();
+  assert.deepEqual(working.files.find(file => file.path === baseballPath), valid.files[0]);
+  assert.ok(working.files.some(file => file.path === "baseball.s01" && file.data.length > 0));
+  const olderCopies = (await readStoredSets()).filter(set => set.destination.key === destination.key);
+  assert.ok(olderCopies.some(set => set.files.length === 1 && !set.files[0].data.length));
+  assert.ok(olderCopies.some(set => set.files.some(file => Buffer.from(file.data).toString() === "another local slot")));
+  assert.deepEqual(JSON.parse((await openSaveStorage()).getItem(marker))?.pending ?? [], []);
+  assert.deepEqual(await (await server.download(original.id + ".zip")).arrayBuffer(), await before.arrayBuffer());
+  assert.deepEqual(await (await server.download(badHead.id + ".zip")).arrayBuffer(), await damagedBefore.arrayBuffer());
+  const collection = await createSaveCollection(server);
+  const profile = await saveProfileId({ destination });
+  assert.equal((await readSnapshot(collection, profile, collection.head(profile).active)).hash, working.hash);
 });
+
+test("Baseball recovery archives the empty file when no replacement exists and retries idempotently", async t => {
+  const { runtime, server, destination, getWorking } = await baseballFixture(t);
+  location.search = "?dropbox=false";
+  await runtime.syncDropbox();
+  assert.equal((await getWorking()).files.find(file => file.path === baseballPath).data.length, 0);
+  assert.equal(server.uploads, 0);
+  location.search = "?dropbox=true";
+  await runtime.syncDropbox({ beforeLaunch: true });
+  assert.equal(runtime.getDropboxState().verified, true);
+  assert.deepEqual((await getWorking()).files.map(file => file.path), ["baseball.s01"]);
+  const copies = await readStoredSets();
+  assert.ok(copies.some(set => set.destination.key === destination.key && set.files.length === 1 && !set.files[0].data.length));
+  const uploads = server.uploads;
+  await runtime.syncDropbox({ beforeLaunch: true });
+  assert.equal(server.uploads, uploads);
+});
+
+test("Baseball recovery waits for durable archival and prefers a complete local recovery copy", async t => {
+  const { runtime, idb, marker, makeSet, getWorking } = await baseballFixture(t);
+  const valid = await makeSet("verified local records", 300);
+  await preserveSets([valid]);
+  idb.fail = ({ name, mode, writes }) => name === "scummweb.save-backups" && mode === "readwrite"
+    && writes.some(({ record }) => record?.files?.length === 1 && record.files[0].path === baseballPath && !record.files[0].data.length)
+    ? new DOMException("disk full", "QuotaExceededError") : undefined;
+  await assert.rejects(runtime.syncDropbox({ beforeLaunch: true }), { name: "QuotaExceededError" });
+  assert.deepEqual(JSON.parse((await openSaveStorage()).getItem(marker)).pending, [baseballPath]);
+  assert.equal((await getWorking()).files.find(file => file.path === baseballPath).data.length, 0);
+  idb.fail = ({ name, writes }) => name === "scummweb.active-saves" && writes.some(({ key }) => key === marker)
+    ? new DOMException("simulated interruption", "AbortError") : undefined;
+  await assert.rejects(runtime.syncDropbox({ beforeLaunch: true }), { name: "AbortError" });
+  assert.deepEqual(JSON.parse((await openSaveStorage()).getItem(marker)).pending, [baseballPath]);
+  assert.equal((await getWorking()).files.find(file => file.path === baseballPath).data.length, 0);
+  assert.ok((await readStoredSets()).some(set => set.files.length === 1 && !set.files[0].data.length));
+  idb.fail = null;
+  await runtime.syncDropbox({ beforeLaunch: true });
+  assert.equal(runtime.getDropboxState().verified, true);
+  assert.deepEqual((await getWorking()).files.find(file => file.path === baseballPath), valid.files[0]);
+});
+
+for (const [pending, contents] of [[[baseballPath, "baseball.s01"], ""], [[baseballPath], "partial nonempty bytes"]]) {
+  test(`Baseball recovery preserves an ambiguous pending set ${pending.length}/${contents.length}`, async t => {
+    const { runtime, marker, getWorking } = await baseballFixture(t, pending, contents);
+    await runtime.syncDropbox({ beforeLaunch: true });
+    assert.equal(runtime.getDropboxState().verified, false);
+    assert.deepEqual(JSON.parse((await openSaveStorage()).getItem(marker)).pending, pending);
+    assert.equal((await getWorking()).files.find(file => file.path === baseballPath).data.length, contents.length);
+  });
+}
 
 
 test("overlapping first-sync progress resolves automatically and keeps both complete originals", async (t) => {
