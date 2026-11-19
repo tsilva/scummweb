@@ -29,7 +29,7 @@ ROOT, load, validate = plan_module.ROOT, plan_module.load, plan_module.validate
 
 BUCKET = "scummvm-games"
 ENDPOINT = "https://83e1ce4a70ea388693e8525a772ccefa.r2.cloudflarestorage.com"
-ORIGIN = "https://scummvm-games.tsilva.eu"
+ORIGIN = "https://games.scummweb.tsilva.eu"
 CACHE = "public, max-age=31536000, immutable"
 HEADER = "X-Scummweb-R2-Credential"
 SOURCE = {"instance": "https://app.infisical.com", "project-id": "e1c358f8-0678-45d7-a2a8-270c2f29aadd", "environment": "dev", "secret-path": "/"}
